@@ -2,94 +2,175 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D09272A1BAA
-	for <lists+linux-omap@lfdr.de>; Sun,  1 Nov 2020 03:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F14A32A2874
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Nov 2020 11:47:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726556AbgKACCc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 31 Oct 2020 22:02:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52590 "EHLO
+        id S1728253AbgKBKrL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Nov 2020 05:47:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726438AbgKACCc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 31 Oct 2020 22:02:32 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 992AAC0617A6;
-        Sat, 31 Oct 2020 19:02:30 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id r3so4982490plo.1;
-        Sat, 31 Oct 2020 19:02:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Dbp4d9VwR1A0nOp60T+uohgWaLBk9nOmKzpDG8Qbx/8=;
-        b=ZLbgrhc+7nOSB8eh8mP31c2+KarmkUSuGXGAqbqJfB9ZvXOafCv1aGdwAd2Z6NP6G0
-         dNW+T1uCn+qM8+XXrR5yhHLMAQ5XVPJGmOmDIT01hwyv6kCmgoJLWhntJOMwLJayQPuS
-         vIsDH+r16BemiYtyCKrW3avwyqImz4svzyVsQo2AMKUGl8sLfscwU9triryPsJBKZ8Rj
-         gxDF/h2j4bal60JLhR0xG7hDShl+Fh13S+YDNylh2m3GL9GTflkSOlpO1wWaTXD1uipl
-         TBYKRLgdFWn6AzBd26cPRYU0Ka4YXmgz+0Rh2Wobh69Js55bBYxkIAXQy+7Kwffi2MiX
-         CKZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Dbp4d9VwR1A0nOp60T+uohgWaLBk9nOmKzpDG8Qbx/8=;
-        b=bmyiQCg2h+4rb6+enr3LgcLERQzE9W+DfVFLFyiZu/lewABnq0hIBN9l+nOLEmRECZ
-         l+rcWZuBgG6f7vb6vuN5y4eY5klLX4SH/PmXoeX/23g9l+TXGISaSWcek4XUFjcquiSf
-         PNFop+YFqqsDnVswKgrFTUvyz0lT1DgLpqccwDoJfjbJcp69hjfu0db9j3oY1AU/fjtm
-         /JqI9+/d/FeUVMQxFE4sIfxy7xNhI75fShGj5j4JUGbNXNprqJ6Z5CtSP7FNMflGR/TR
-         JlFRGz1oxZb8v01l1g4TKMcv5S/XC8ETsHsnu+bh6o6mx0dgRvB+rVM14paJIxezEKA0
-         X6Ww==
-X-Gm-Message-State: AOAM5304qlCXHrJxRhJUW+BX0lxGNsy1/dugOjcE20YnjrTvVMQZEELI
-        h7K+PQBJfIXF81Thu8/KWa9MLYrHQCU=
-X-Google-Smtp-Source: ABdhPJwHPjvIgQsUSXdGSRnIvPhUIFAs56oi/mTngVauv94fJGqREA2H1wsoJYVwm7tZXDG53t1SsA==
-X-Received: by 2002:a17:90b:a4e:: with SMTP id gw14mr510551pjb.48.1604196150196;
-        Sat, 31 Oct 2020 19:02:30 -0700 (PDT)
-Received: from hoboy.vegasvil.org (c-73-241-114-122.hsd1.ca.comcast.net. [73.241.114.122])
-        by smtp.gmail.com with ESMTPSA id u5sm3008933pgk.80.2020.10.31.19.02.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2020 19:02:29 -0700 (PDT)
-Date:   Sat, 31 Oct 2020 19:02:27 -0700
-From:   Richard Cochran <richardcochran@gmail.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] net: ethernet: ti: cpsw: disable PTPv1 hw timestamping
- advertisement
-Message-ID: <20201101020227.GB2683@hoboy.vegasvil.org>
-References: <20201029190910.30789-1-grygorii.strashko@ti.com>
- <20201031114042.7ccdf507@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+        with ESMTP id S1728005AbgKBKrL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Nov 2020 05:47:11 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39EFC0617A6
+        for <linux-omap@vger.kernel.org>; Mon,  2 Nov 2020 02:47:10 -0800 (PST)
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1kZXMj-0002mr-0j; Mon, 02 Nov 2020 11:47:09 +0100
+Subject: Re: [Linux-stm32] [PATCH v7 10/12] ARM: dts: stm32: Fix schema
+ warnings for pwm-leds
+To:     Alexander Dahl <ada@thorsis.com>
+Cc:     Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-leds@vger.kernel.org
+References: <20201005203451.9985-1-post@lespocky.de>
+ <20201027100536.cpfizc67gwrolp2z@falbala.internal.home.lespocky.de>
+ <f6ed201d-51b6-f278-7a95-3e3e49dc19ee@pengutronix.de>
+ <5231529.NqohY00Rok@ada>
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <cba67329-d79d-b474-c4b4-77b19aebe52f@pengutronix.de>
+Date:   Mon, 2 Nov 2020 11:47:08 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201031114042.7ccdf507@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <5231529.NqohY00Rok@ada>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Oct 31, 2020 at 11:40:42AM -0700, Jakub Kicinski wrote:
-> On Thu, 29 Oct 2020 21:09:10 +0200 Grygorii Strashko wrote:
-> > The TI CPTS does not natively support PTPv1, only PTPv2. But, as it
-> > happens, the CPTS can provide HW timestamp for PTPv1 Sync messages, because
-> > CPTS HW parser looks for PTP messageType id in PTP message octet 0 which
-> > value is 0 for PTPv1. As result, CPTS HW can detect Sync messages for PTPv1
-> > and PTPv2 (Sync messageType = 0 for both), but it fails for any other PTPv1
-> > messages (Delay_req/resp) and will return PTP messageType id 0 for them.
-> > 
-> > The commit e9523a5a32a1 ("net: ethernet: ti: cpsw: enable
-> > HWTSTAMP_FILTER_PTP_V1_L4_EVENT filter") added PTPv1 hw timestamping
-> > advertisement by mistake, only to make Linux Kernel "timestamping" utility
-> > work, and this causes issues with only PTPv1 compatible HW/SW - Sync HW
-> > timestamped, but Delay_req/resp are not.
-> > 
-> > Hence, fix it disabling PTPv1 hw timestamping advertisement, so only PTPv1
-> > compatible HW/SW can properly roll back to SW timestamping.
-> > 
-> > Fixes: e9523a5a32a1 ("net: ethernet: ti: cpsw: enable HWTSTAMP_FILTER_PTP_V1_L4_EVENT filter")
-> > Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> 
-> CC: Richard
+Hello Alexander,
 
-Acked-by: Richard Cochran <richardcochran@gmail.com>
+On 10/28/20 8:34 AM, Alexander Dahl wrote:
+> Hello Ahmad,
+> 
+> Am Dienstag, 27. Oktober 2020, 11:58:10 CET schrieb Ahmad Fatoum:
+>> Hello,
+>>
+>> On 10/27/20 11:05 AM, Alexander Dahl wrote:
+>>> Hello Ahmad,
+>>>
+>>> thanks for your feedback, comments below.
+>>>
+>>>>> -	led-rgb {
+>>>>> +	led-controller-2 {
+>>>>
+>>>> Is a single RGB LED really a controller?
+>>>
+>>> I just followed the recommendations by Rob here.
+>>
+>> Do you happen to know if the new multicolor LED support could be used here?
+> 
+> AFAIK not yet. The multicolor class should be ready and it is used by some 
+> drivers for I²C connected LED controllers, but if I understood Pavel 
+> correctly, additional work has to be done for a gpio and/or pwm multicolor 
+> driver. See this thread from August for example:
+> 
+> https://lore.kernel.org/linux-leds/2530787.iFCFyWWcSu@g550jk/
+
+I see. Thanks for the info.
+
+>> I find it unfortunate that the device tree loses information relevant to
+>> humans to adhere to a fixed nomenclature. Apparently led-controller isn't
+>> even codified in the YAML binding (It's just in the examples). If you
+>> respin, please add a comment that this is a single RGB led. I'd prefer to
+>> keep the information in the DTB as well though.
+> 
+> The "new" attributes 'function' and 'color' attributes should cover this 
+> information. IIRC those were introduced sometime before v5.4 and documentation 
+> is in the leds/common.yaml binding. I don't see it in the scope of this patch 
+> series, but if we would merge this warning fix first, the information is lost, 
+> so maybe those attributes should be added before?
+
+Does it? The label already says it's a green LED, but the information that
+it's a single physical LED 'bulb' is lost.
+
+> 
+> My heuristics on that would be looking at the label and if there's a distinct 
+> color in it, add the color property. I could do that for all pwm LEDs known to 
+> the tree currently. That would be a bigger task for GPIO leds though. ;-)
+
+I would be ok with just the led-containing node hinting that it's a single RGB led.
+
+Cheers,
+Ahmad
+
+> 
+>>
+>>>>>  		compatible = "pwm-leds";
+>>>>>
+>>>>> -		led-red {
+>>>>> +		led-2 {
+>>>>
+>>>> Shouldn't this have been led-1 as well or is the numbering "global" ?
+>>>
+>>> Also good question. This numbering is for dts only, it usually does
+>>> not correspond with LEDs on the board, so it could be numbered per
+>>> led-controller as well?
+>>
+>> I'd prefer that it starts by 1. That way it's aligned with PWM channel
+>> ID.
+> 
+> Ack.
+> 
+>>
+>> Thanks for fixing the dtschema warnings by the way!
+> 
+> Well, I "introduced" them by converting the leds-pwm binding to yaml (not 
+> merged yet), so I could as well fix the warnings then? ;-)
+> 
+> Greets
+> Alex
+> 
+>>
+>> Cheers,
+>> Ahmad
+>>
+>>> Greets
+>>> Alex
+>>>
+>>>>>  			label = "mc1:red:rgb";
+>>>>>  			pwms = <&leds_pwm 1 1000000 0>;
+>>>>>  			max-brightness = <255>;
+>>>>>  			active-low;
+>>>>>  		
+>>>>>  		};
+>>>>>
+>>>>> -		led-green {
+>>>>> +		led-3 {
+>>>>>
+>>>>>  			label = "mc1:green:rgb";
+>>>>>  			pwms = <&leds_pwm 2 1000000 0>;
+>>>>>  			max-brightness = <255>;
+>>>>>  			active-low;
+>>>>>  		
+>>>>>  		};
+>>>>>
+>>>>> -		led-blue {
+>>>>> +		led-4 {
+>>>>>
+>>>>>  			label = "mc1:blue:rgb";
+>>>>>  			pwms = <&leds_pwm 3 1000000 0>;
+>>>>>  			max-brightness = <255>;
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
