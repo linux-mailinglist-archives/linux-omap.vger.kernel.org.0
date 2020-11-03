@@ -2,105 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D355C2A3CFC
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Nov 2020 07:50:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D383F2A3D83
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Nov 2020 08:22:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727671AbgKCGuz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 Nov 2020 01:50:55 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:49822 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726659AbgKCGuy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Nov 2020 01:50:54 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A36ohJT096870;
-        Tue, 3 Nov 2020 00:50:43 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604386243;
-        bh=6qKYBoE7dhstLWAsyXGwM4uWF/vz2ef/Ws3welqldwY=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=uew4Q2tiMVtpirF86L9mN9XDVXl4lXH+3FjnMP1qwwOzc9Aps975IoXVwe29CFYFp
-         xENsulvC94Wqpy4zvdxoLyy/E4CbmK6k2EUVcChKJjsZBc5+imjPsp+cSTV8ar5XTl
-         Sgh4bPnNb6BVo7+r7+cgR2V2BHlxERdkg180aeEM=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A36ohqS095201
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 3 Nov 2020 00:50:43 -0600
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 3 Nov
- 2020 00:50:42 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 3 Nov 2020 00:50:42 -0600
-Received: from [10.250.232.146] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A36oXAV113532;
-        Tue, 3 Nov 2020 00:50:36 -0600
-Subject: Re: [PATCH] thermal: ti-soc-thermal: Disable the CPU PM notifier for
- OMAP4430
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tony Lindgren <tony@atomide.com>
-CC:     <edubezval@gmail.com>, <aford173@gmail.com>,
-        <linux-pm@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <andreas@kemnade.info>,
-        <daniel.lezcano@linaro.org>
-References: <20201029100335.27665-1-peter.ujfalusi@ti.com>
- <20201029105125.GJ5639@atomide.com>
- <b05f4bae-c285-828b-d5f1-fbf8613b4ca4@ti.com>
-From:   "J, KEERTHY" <j-keerthy@ti.com>
-Message-ID: <2d6ecaaa-e760-759d-a23b-9556dd390758@ti.com>
-Date:   Tue, 3 Nov 2020 12:20:32 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+        id S1727844AbgKCHWa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Nov 2020 02:22:30 -0500
+Received: from mail2.directv.syn-alias.com ([69.168.106.50]:46008 "EHLO
+        mail.directv.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727839AbgKCHW3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Nov 2020 02:22:29 -0500
+DKIM-Signature: v=1; a=rsa-sha1; d=wildblue.net; s=20170921; c=relaxed/simple;
+        q=dns/txt; i=@wildblue.net; t=1604386933;
+        h=From:Subject:Date:To:MIME-Version:Content-Type;
+        bh=PmvmApXnyYfH9oWIPT4+UobxtR8=;
+        b=IYLivOnEOEMn94iG9ynuF09ePxMp7igiDtxDilhcTPVEQQ1EiMzD0JzNbpmAeemO
+        Vn8ascB4QbBeaZCKuEWUgKQh5nznUvNISM5egCmGktviH34jLjo1CR8wq8UibqBp
+        RM3GDkqgaG8BGVy/9DFyzLM9HHmCnV2neAPkZ0cChAw1JZ6YJWkIod8KAGI6od03
+        bbCTpmVUWkIP2Sv8gEbjO/T9/6kYttpTcFwsYs6w115xJCQyUr5E+72ttNFDF0l5
+        SqorirEmtccTpwMiSmviSEwi84SOzA5i+4ug67Po9zF2q20uC/xn2ykQ8zO+DPe9
+        5fHNDM5c/9Q1KcV68dBEGg==;
+X_CMAE_Category: , ,
+X-CNFS-Analysis: v=2.3 cv=Xt+ExmN9 c=1 sm=1 tr=0 cx=a_idp_x a=nfaRfHh3SbEwtWsx5XPaSQ==:117 a=9cW_t1CCXrUA:10 a=KGjhK52YXX0A:10 a=FKkrIqjQGGEA:10 a=ygrmT7gxR2oA:10 a=s7WOZ2_Ixt8A:10 a=IkcTkHD0fZMA:10 a=x7bEGLp0ZPQA:10 a=nNwsprhYR40A:10 a=Eoj24Je_-wkA:10 a=OIQJQQiFZvEA:10 a=y9MvFs8pOQU3BlF_QJUA:9 a=QEXdDO2ut3YA:10 a=xo5jKAKm-U-Zyk2_beg_:22 a=JEWwRQZEyXxBK19DtV0j:22 a=pHzHmUro8NiASowvMSCR:22 a=nt3jZW36AmriUCFCBwmW:22
+X-CM-Score: 0
+X-Scanned-by: Cloudmark Authority Engine
+X-Authed-Username: am9iZWFyQHdpbGRibHVlLm5ldA==
+Received: from [10.80.118.18] ([10.80.118.18:41712] helo=md05.jasper.bos.sync.lan)
+        by mail2.directv.syn-alias.com (envelope-from <jobear@wildblue.net>)
+        (ecelerity 3.6.25.56547 r(Core:3.6.25.0)) with ESMTP
+        id 68/83-32012-47001AF5; Tue, 03 Nov 2020 02:02:12 -0500
+Date:   Tue, 3 Nov 2020 02:02:12 -0500 (EST)
+From:   George <jobear@wildblue.net>
+Reply-To: geo4w11@gmail.com
+Message-ID: <1970484956.94241731.1604386932366.JavaMail.zimbra@wildblue.net>
+Subject: 
 MIME-Version: 1.0
-In-Reply-To: <b05f4bae-c285-828b-d5f1-fbf8613b4ca4@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [175.35.202.220]
+X-Mailer: Zimbra 8.7.6_GA_1776 (zclient/8.7.6_GA_1776)
+Thread-Index: igROVXAG1PYaGVvJW+3Ju2vO7y7XSA==
+Thread-Topic: 
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 11/3/2020 12:12 PM, Peter Ujfalusi wrote:
-> Eduardo, Keerthy,
-> 
-> On 29/10/2020 12.51, Tony Lindgren wrote:
->> * Peter Ujfalusi <peter.ujfalusi@ti.com> [201029 10:03]:
->>> Disabling the notifier fixes the random shutdowns on OMAP4430 (ES2.0 and ES2.1)
->>> but it does not cause any issues on OMAP4460 (PandaES) or OMAP3630 (BeagleXM).
->>> Tony's duovero with OMAP4430 ES2.3 did not ninja-shutdown, but he also have
->>> constant and steady stream of:
->>> thermal thermal_zone0: failed to read out thermal zone (-5)
->>
->> Works for me and I've verified duovero still keeps hitting core ret idle:
-> 
-> Can you pick this one up for 5.10 to make omap4430-sdp to be usable (to
-> not shut down randomly).
-> The regression was introduced in 5.10-rc1.
-
-Peter,
-
-Thanks for the fix.
-
-Acked-by: Keerthy <j-keerthy@ti.com>
-
-Best Regards,
-Keerthy
-
-> 
->> Tested-by: Tony Lindgren <tony@atomide.com>
->>
->> Regards,
->>
->> Tony
->>
-> 
-> - Péter
-> 
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-> 
+Do you get my previous message 
