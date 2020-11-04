@@ -2,81 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B01E02A5E39
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Nov 2020 07:45:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09A642A62BB
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Nov 2020 11:57:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726225AbgKDGpb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Nov 2020 01:45:31 -0500
-Received: from smtp25.cstnet.cn ([159.226.251.25]:56952 "EHLO cstnet.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725926AbgKDGpb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 4 Nov 2020 01:45:31 -0500
-Received: from localhost.localdomain (unknown [124.16.141.241])
-        by APP-05 (Coremail) with SMTP id zQCowACXh1DzTaJfb3v7AA--.33898S2;
-        Wed, 04 Nov 2020 14:45:08 +0800 (CST)
-From:   Xu Wang <vulab@iscas.ac.cn>
-To:     tony@atomide.com, linux@armlinux.org.uk,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: OMAP2+: Remove redundant null check before clk_prepare_enable/clk_disable_unprepare
-Date:   Wed,  4 Nov 2020 06:45:05 +0000
-Message-Id: <20201104064505.5737-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: zQCowACXh1DzTaJfb3v7AA--.33898S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrZFy8CFyfJFyxWr4xXr4UXFb_yoWkGrXEva
-        n7Kw4kWr4rAwnav3yUKF4Dur4qgw4kAry7W3s2yF15KFy3uanFyrZ2yan3AF4xXa9FkrW7
-        Aw10yr1fArsavjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb2AYjsxI4VWkKwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
-        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
-        cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
-        C2z280aVCY1x0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-        F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26F4j6r
-        4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc2xSY4AK67AK6r47MxAI
-        w28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr
-        4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxG
-        rwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8Jw
-        CI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY
-        6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07bYBTrUUUUU=
-X-Originating-IP: [124.16.141.241]
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQYKA102Zr6PwwAAs5
+        id S1729437AbgKDK5R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Nov 2020 05:57:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40000 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729654AbgKDK5O (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Nov 2020 05:57:14 -0500
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD741C061A4A
+        for <linux-omap@vger.kernel.org>; Wed,  4 Nov 2020 02:57:12 -0800 (PST)
+Received: by mail-wr1-x441.google.com with SMTP id k10so20217082wrw.13
+        for <linux-omap@vger.kernel.org>; Wed, 04 Nov 2020 02:57:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=NHw1cL4nU7m7k6IJhEyTVXOIiu4amLxGv+sgKD7ffvU=;
+        b=CwB6ru04l9JRFWNgT7ToGncpo+HNGbYihFz4YCsmWH8ZwCWAtGvmQKZl0UYZI84HCV
+         j9eKPJKKn3okZCfrTyC8Ea0YzVRCaEXfDZGSUDTlSJ9yTeyHK2IR7DZ0unfFMlhQoMZl
+         BPuqTHkol7UHJdsz7iA/IsK/y5dyYtC99oBHQNyoDmOHIsA0RxAECXAh6p+qn4gyxyiC
+         1NpYft9wA8sPh2TgtatNGWT77Ia/DRTznLI8gcLCVYClT83vJoOYcOSTAgtzE8/GK3eX
+         mi+E1cE4hJ6uCLzVasUqcu691dq0hCfOMAk9pUx5nOxpBuqp9fPV2EStTVop4C2bpaWV
+         eAQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=NHw1cL4nU7m7k6IJhEyTVXOIiu4amLxGv+sgKD7ffvU=;
+        b=ignqKP51/pgNTM8PMidiXKE79UpiEM4oiL7pPWnZJwciHbGGs/FselrhXi6YhCgeQC
+         Y/gtI/3TqeLDU3PPhsF4wxkBvE4pdNAWjsUVjNCmFCVA4OWTrej4mATxEjoQztFWCnxF
+         a8tffMhgE6x2RVX+0amJInlhOGxPyKi0ab1oPxvkLRfqPu3l9LvL2hnCjJozFze5YBM8
+         Udkvz59W1Y06GNz58dmRTJsJZZFmd0pR38Ad0Wr1oDPk9Mdtg2ObiPPe9iukNc+NIDmM
+         hIG7g9tT3itGJo3UR1yKt94RFkst3vT4DQv74sBOkFyimRCSfebUlcKruGuO9mzv/PGG
+         XG3g==
+X-Gm-Message-State: AOAM53236KtEJbtKurZI22pOFTs4u/YhpJLYMhHMG9C+ByAftETUGMCj
+        1/Xsn+Qi7miRbgHUfwMd6oTuFA==
+X-Google-Smtp-Source: ABdhPJw23+JmyqjHPIV3g1ngwlnPWgLkMEJtWfbcElDUL27lujHhGNbYDl5WsL2Jm/ZLLoRN/akwfg==
+X-Received: by 2002:a5d:4f0b:: with SMTP id c11mr31202434wru.316.1604487431684;
+        Wed, 04 Nov 2020 02:57:11 -0800 (PST)
+Received: from dell ([91.110.221.242])
+        by smtp.gmail.com with ESMTPSA id r3sm2037419wrm.51.2020.11.04.02.57.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2020 02:57:11 -0800 (PST)
+Date:   Wed, 4 Nov 2020 10:57:09 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Rikard Falkeborn <rikard.falkeborn@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 3/8] mfd: Constify static struct resource in OMAP2+
+ drivers
+Message-ID: <20201104105709.GU4488@dell>
+References: <20200922192659.14535-1-rikard.falkeborn@gmail.com>
+ <20200922192659.14535-4-rikard.falkeborn@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200922192659.14535-4-rikard.falkeborn@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Because clk_prepare_enable() and clk_disable_unprepare() already checked
-NULL clock parameter, so the additional checks are unnecessary, just
-remove them.
+On Tue, 22 Sep 2020, Rikard Falkeborn wrote:
 
-Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
----
- arch/arm/mach-omap2/display.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+> Constify a number of static struct resource. The only usage of the
+> structs are to assign their address to the resources field in the
+> mfd_cell struct. This allows the compiler to put them in read-only
+> memory. Done with the help of Coccinelle.
+> 
+> Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+> ---
+>  drivers/mfd/tps65217.c | 4 ++--
+>  drivers/mfd/tps65910.c | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/display.c b/arch/arm/mach-omap2/display.c
-index 2000fca6bd4e..6daaa645ae5d 100644
---- a/arch/arm/mach-omap2/display.c
-+++ b/arch/arm/mach-omap2/display.c
-@@ -385,8 +385,7 @@ int omap_dss_reset(struct omap_hwmod *oh)
- 	}
- 
- 	for (i = oh->opt_clks_cnt, oc = oh->opt_clks; i > 0; i--, oc++)
--		if (oc->_clk)
--			clk_prepare_enable(oc->_clk);
-+		clk_prepare_enable(oc->_clk);
- 
- 	dispc_disable_outputs();
- 
-@@ -412,8 +411,7 @@ int omap_dss_reset(struct omap_hwmod *oh)
- 		pr_debug("dss_core: softreset done\n");
- 
- 	for (i = oh->opt_clks_cnt, oc = oh->opt_clks; i > 0; i--, oc++)
--		if (oc->_clk)
--			clk_disable_unprepare(oc->_clk);
-+		clk_disable_unprepare(oc->_clk);
- 
- 	r = (c == MAX_MODULE_SOFTRESET_WAIT) ? -ETIMEDOUT : 0;
- 
+Applied, thanks.
+
 -- 
-2.17.1
-
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
