@@ -2,88 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09A642A62BB
-	for <lists+linux-omap@lfdr.de>; Wed,  4 Nov 2020 11:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0F552A656E
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Nov 2020 14:44:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729437AbgKDK5R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 Nov 2020 05:57:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40000 "EHLO
+        id S1730156AbgKDNoX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 4 Nov 2020 08:44:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729654AbgKDK5O (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Nov 2020 05:57:14 -0500
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD741C061A4A
-        for <linux-omap@vger.kernel.org>; Wed,  4 Nov 2020 02:57:12 -0800 (PST)
-Received: by mail-wr1-x441.google.com with SMTP id k10so20217082wrw.13
-        for <linux-omap@vger.kernel.org>; Wed, 04 Nov 2020 02:57:12 -0800 (PST)
+        with ESMTP id S1726608AbgKDNoW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 Nov 2020 08:44:22 -0500
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F31C0613D3;
+        Wed,  4 Nov 2020 05:44:22 -0800 (PST)
+Received: by mail-lj1-x242.google.com with SMTP id d24so22967660ljg.10;
+        Wed, 04 Nov 2020 05:44:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=NHw1cL4nU7m7k6IJhEyTVXOIiu4amLxGv+sgKD7ffvU=;
-        b=CwB6ru04l9JRFWNgT7ToGncpo+HNGbYihFz4YCsmWH8ZwCWAtGvmQKZl0UYZI84HCV
-         j9eKPJKKn3okZCfrTyC8Ea0YzVRCaEXfDZGSUDTlSJ9yTeyHK2IR7DZ0unfFMlhQoMZl
-         BPuqTHkol7UHJdsz7iA/IsK/y5dyYtC99oBHQNyoDmOHIsA0RxAECXAh6p+qn4gyxyiC
-         1NpYft9wA8sPh2TgtatNGWT77Ia/DRTznLI8gcLCVYClT83vJoOYcOSTAgtzE8/GK3eX
-         mi+E1cE4hJ6uCLzVasUqcu691dq0hCfOMAk9pUx5nOxpBuqp9fPV2EStTVop4C2bpaWV
-         eAQw==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lG8m8t2C1nVbYj88S+huwSckf3svcG0HOa4scIOwtCo=;
+        b=iUYHWfpU1L0CGH8EmSM+0BT/5Si5FL+ncB+hcQFEex4UbnogWuVlMYS/1PW9SjtDbQ
+         1f0WpK7FHbBDKD6vQXiK49W75jrYqjBTub520BSBEtUQMj/hdDD+MmLhnumdFjM5Sgtw
+         u7qo8Thulo9G5EMPCPJxsyW9ZZRzhTAzm+LEm0prgS/7gM1mastOGvrF2V276Oj+AfVP
+         GE5ETCVlhMgC4CUSKXq2Gmt5lBNf2cFFna9WK1hadwofOU+ohVfTZEL5PcmtOeYyLCn8
+         HMmk/4/0PnyTF0D6hZCWPAHz/W3PwnWsbhILkAd6uEhBb6CNvRImhvLPjH7D9hbWI7yU
+         A4vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=NHw1cL4nU7m7k6IJhEyTVXOIiu4amLxGv+sgKD7ffvU=;
-        b=ignqKP51/pgNTM8PMidiXKE79UpiEM4oiL7pPWnZJwciHbGGs/FselrhXi6YhCgeQC
-         Y/gtI/3TqeLDU3PPhsF4wxkBvE4pdNAWjsUVjNCmFCVA4OWTrej4mATxEjoQztFWCnxF
-         a8tffMhgE6x2RVX+0amJInlhOGxPyKi0ab1oPxvkLRfqPu3l9LvL2hnCjJozFze5YBM8
-         Udkvz59W1Y06GNz58dmRTJsJZZFmd0pR38Ad0Wr1oDPk9Mdtg2ObiPPe9iukNc+NIDmM
-         hIG7g9tT3itGJo3UR1yKt94RFkst3vT4DQv74sBOkFyimRCSfebUlcKruGuO9mzv/PGG
-         XG3g==
-X-Gm-Message-State: AOAM53236KtEJbtKurZI22pOFTs4u/YhpJLYMhHMG9C+ByAftETUGMCj
-        1/Xsn+Qi7miRbgHUfwMd6oTuFA==
-X-Google-Smtp-Source: ABdhPJw23+JmyqjHPIV3g1ngwlnPWgLkMEJtWfbcElDUL27lujHhGNbYDl5WsL2Jm/ZLLoRN/akwfg==
-X-Received: by 2002:a5d:4f0b:: with SMTP id c11mr31202434wru.316.1604487431684;
-        Wed, 04 Nov 2020 02:57:11 -0800 (PST)
-Received: from dell ([91.110.221.242])
-        by smtp.gmail.com with ESMTPSA id r3sm2037419wrm.51.2020.11.04.02.57.10
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lG8m8t2C1nVbYj88S+huwSckf3svcG0HOa4scIOwtCo=;
+        b=gmFLET84ypxH5Pv20Rs4s823DLpbtShNfjgoefr5dSZvpw84XkN0yW45VforS7t4Ul
+         uff4/xWkeD0hvcQJTqvyoMxUf+RHQr9xpuF48uV/5g9nmj1WVMOm2vtfHIlpmH3IHOPO
+         Dq8Y8lIg5fohqM7p2OAy5x9mzxRP7S7SBtvYW5jgjTeEIFhEjtI6V+oXPiIxSRH9/VAe
+         pRMEmTenO8VnyVvtz8QPXAE62B5q++KZ03e3lincuG+soA8YcpMp8Zr9yc6ZvPyYDrQ9
+         ymTOa8Q6EJT5KY6W4gXrylfn4fPManYKqnieqZuoG2Cm6bhq03IqmZocFUCWznOhTNtB
+         IPJg==
+X-Gm-Message-State: AOAM530WHhvvVO6JufXoCeiIB/pmvovjKAW6ahM+wri3LVAld7HvOvwC
+        OK/YP+uOWZyYnqPl+p4+FHY=
+X-Google-Smtp-Source: ABdhPJxsgKjH0LL5sRzuD8Zd282iKCvLxxZR96OZRsJmrhz9DirmeE8AJF0UHrwhf5fMPwMQxAkdUA==
+X-Received: by 2002:a2e:87d2:: with SMTP id v18mr10046561ljj.371.1604497460963;
+        Wed, 04 Nov 2020 05:44:20 -0800 (PST)
+Received: from localhost.localdomain (109-252-192-83.dynamic.spd-mgts.ru. [109.252.192.83])
+        by smtp.gmail.com with ESMTPSA id c24sm521947ljj.33.2020.11.04.05.44.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2020 02:57:11 -0800 (PST)
-Date:   Wed, 4 Nov 2020 10:57:09 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Rikard Falkeborn <rikard.falkeborn@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 3/8] mfd: Constify static struct resource in OMAP2+
- drivers
-Message-ID: <20201104105709.GU4488@dell>
-References: <20200922192659.14535-1-rikard.falkeborn@gmail.com>
- <20200922192659.14535-4-rikard.falkeborn@gmail.com>
+        Wed, 04 Nov 2020 05:44:20 -0800 (PST)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        Zack Pearsall <zpearsall@yahoo.com>
+Cc:     linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3] mfd: tps65910: Correct power-off programming sequence
+Date:   Wed,  4 Nov 2020 16:44:08 +0300
+Message-Id: <20201104134408.19911-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200922192659.14535-4-rikard.falkeborn@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 22 Sep 2020, Rikard Falkeborn wrote:
+This patch fixes system shutdown on a devices that use TPS65910 as a
+system's power controller. In accordance to the TPS65910 datasheet, the
+PMIC's state-machine transitions into the OFF state only when DEV_OFF
+bit of DEVCTRL_REG is set. The ON / SLEEP states also should be cleared,
+otherwise PMIC won't get into a proper state on shutdown. Devices like
+Nexus 7 tablet and Ouya game console are now shutting down properly.
 
-> Constify a number of static struct resource. The only usage of the
-> structs are to assign their address to the resources field in the
-> mfd_cell struct. This allows the compiler to put them in read-only
-> memory. Done with the help of Coccinelle.
-> 
-> Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
-> ---
->  drivers/mfd/tps65217.c | 4 ++--
->  drivers/mfd/tps65910.c | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
+Tested-by: Peter Geis <pgwipeout@gmail.com>
+Tested-by: Zack Pearsall <zpearsall@yahoo.com>
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+---
 
-Applied, thanks.
+Changelog:
 
+v3: - Removed the DEV_SLP_MASK clearing and adding clarifying comment to
+      the code about why clearing PWR_OFF bit needs to be done, which was
+      suggested by  Michał Mirosław in a review comment to v2.
+
+    - Added tested-by from Peter Geis who tested v3 on his Ouya game
+      console.
+
+v2: - Now using a single tps65910_reg_update_bits() instead of set+clear.
+      Thanks to Michał Mirosław for the suggestion.
+
+ drivers/mfd/tps65910.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mfd/tps65910.c b/drivers/mfd/tps65910.c
+index 11959021b50a..388214241558 100644
+--- a/drivers/mfd/tps65910.c
++++ b/drivers/mfd/tps65910.c
+@@ -436,12 +436,18 @@ static void tps65910_power_off(void)
+ 
+ 	tps65910 = dev_get_drvdata(&tps65910_i2c_client->dev);
+ 
++	/*
++	 * Note that the PWR_OFF bit needs to be set separately, before
++	 * transitioning to the OFF state. It enables the "sequential"
++	 * power-off mode on TPS65911, it's a NO-OP on TPS65910.
++	 */
+ 	if (tps65910_reg_set_bits(tps65910, TPS65910_DEVCTRL,
+ 			DEVCTRL_PWR_OFF_MASK) < 0)
+ 		return;
+ 
+-	tps65910_reg_clear_bits(tps65910, TPS65910_DEVCTRL,
+-			DEVCTRL_DEV_ON_MASK);
++	tps65910_reg_update_bits(tps65910, TPS65910_DEVCTRL,
++				 DEVCTRL_DEV_OFF_MASK | DEVCTRL_DEV_ON_MASK,
++				 DEVCTRL_DEV_OFF_MASK);
+ }
+ 
+ static int tps65910_i2c_probe(struct i2c_client *i2c,
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.27.0
+
