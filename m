@@ -2,64 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE6752A8899
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Nov 2020 22:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D9D62A889C
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Nov 2020 22:12:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732264AbgKEVMJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Nov 2020 16:12:09 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:41952 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726729AbgKEVMJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Nov 2020 16:12:09 -0500
-Received: by mail-oi1-f194.google.com with SMTP id m13so3161701oih.8;
-        Thu, 05 Nov 2020 13:12:07 -0800 (PST)
+        id S1732295AbgKEVML (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Nov 2020 16:12:11 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:42476 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726729AbgKEVML (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Nov 2020 16:12:11 -0500
+Received: by mail-ot1-f68.google.com with SMTP id h62so2766944oth.9;
+        Thu, 05 Nov 2020 13:12:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=442a8GkAxn3mpICSgvidAnWMtE6qKIe9YCk7F3LdGWc=;
-        b=HcemVWYnhZ68q1qZg88kq/mNm1mhMlnAI2xisY5tEOK7qIWqb6UfQpTqkYYPA9Jxgo
-         aXLqik2pdAfiD7T/5kyJk3XfVhZ9lamto3Ec/vDHq5v24zZPkfaRRzd5dsIANVnuUdzz
-         Ef3xkZqr/5DvHgVw823Y0vJEn3aE8dzP29kX/Kh9H8R76WBA8gNW1QZTIysVriRrdET/
-         XG4bhvvQjfDxZN+OTjQqwnbLg0k7SuJYsSJ+GxlVedmUmSNfm9RWlPD9pnYIXMKBsogs
-         +V2g5eVflNsmwPAiUq4pJWzke/EGepiR1p4RGimqtJ75ITguEyYw906ylR9q32G3Ehhr
-         1U2A==
-X-Gm-Message-State: AOAM531Vg/mRXBAA9gaS7LAHbj3YWf4+QkjILlt/eeuQIJ/tBStwGZI8
-        f6t67TSiF27w3s/oorJjpdc7fbdsVZvP
-X-Google-Smtp-Source: ABdhPJy7cnayHhPuaxMrfpx44XfVX4UgZMyeGHttqQvJKncvxYYNVc0UBfjpF9E9GkEM2sYmoptu9A==
-X-Received: by 2002:aca:ab81:: with SMTP id u123mr895442oie.26.1604610726924;
-        Thu, 05 Nov 2020 13:12:06 -0800 (PST)
+        bh=h0T8M9HFPja/Qcz5+OFxDy+3Ox865wq64TJqX0lZtiY=;
+        b=F7YlrhPPxlL5WCCv0QPOnLO/em6Hcj8vWG1huUJOoS1YhIwjPZYr+TKuPlXsAeBQMd
+         VbzPYZCqVRuION5zb7+oSrZUKOjroQpsfTBE27KaBrCGPYOW+oDz/ZNG4LXwwwoxvUxK
+         fITBBXR1FwqevgvyvvTf89lEIF7km1AidwI26tUBiAbXdAcDYZqOYc9bRS2emnzfHEtf
+         bJJWyrodS21DYgcQfyQBFmM/Nyot+DnCZSiFLopOKXicpwlnkzPfejJmAbd+3IOr7kKJ
+         KLji74BeKtf0aK/CEdp4G3YMZ03w8q7KEuxRAvyI4WwjLeXDFxd+qEQXyr1DUI/qE/WI
+         TNLQ==
+X-Gm-Message-State: AOAM531LQHt7UFBln09m+eRL18Xn+DaoucPP736vKqjEhC5zAwilTPuH
+        jR6Lt5lHTJtpvX3BDkQ+rauLjZhIwcDa
+X-Google-Smtp-Source: ABdhPJwarjWl30aVDAGce8K8v4WHCluvIN7s3dP5MLrAstD6QcD5fSGc1EK+FdHeAGtb6LE/YmxjFg==
+X-Received: by 2002:a9d:2268:: with SMTP id o95mr2871887ota.10.1604610730454;
+        Thu, 05 Nov 2020 13:12:10 -0800 (PST)
 Received: from xps15.herring.priv (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.googlemail.com with ESMTPSA id z19sm622549ooi.32.2020.11.05.13.12.05
+        by smtp.googlemail.com with ESMTPSA id z19sm622549ooi.32.2020.11.05.13.12.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2020 13:12:06 -0800 (PST)
+        Thu, 05 Nov 2020 13:12:09 -0800 (PST)
 From:   Rob Herring <robh@kernel.org>
 Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Kishon Vijay Abraham I <kishon@ti.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Minghuan Lian <minghuan.Lian@nxp.com>,
-        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-        Jonathan Chocron <jonnyc@amazon.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Pratyush Anand <pratyush.anand@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@axis.com, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>
-Subject: [PATCH v2 03/16] PCI: dwc: Move "dbi", "dbi2", and "addr_space" resource setup into common code
-Date:   Thu,  5 Nov 2020 15:11:46 -0600
-Message-Id: <20201105211159.1814485-4-robh@kernel.org>
+        Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org
+Subject: [PATCH v2 06/16] PCI: dwc/dra7xx: Use the common MSI irq_chip
+Date:   Thu,  5 Nov 2020 15:11:49 -0600
+Message-Id: <20201105211159.1814485-7-robh@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201105211159.1814485-1-robh@kernel.org>
 References: <20201105211159.1814485-1-robh@kernel.org>
@@ -70,698 +51,157 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Most DWC drivers use the common register resource names "dbi", "dbi2", and
-"addr_space", so let's move their setup into the DWC common code.
-
-This means 'dbi_base' in particular is setup later, but it looks like no
-drivers touch DBI registers before dw_pcie_host_init or dw_pcie_ep_init.
+The dra7xx MSI irq_chip implementation is identical to the default DWC one.
+The only difference is the interrupt handler as the MSI interrupt is muxed
+with other interrupts, but that doesn't affect the irq_chip part of it.
 
 Cc: Kishon Vijay Abraham I <kishon@ti.com>
 Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Murali Karicheri <m-karicheri2@ti.com>
-Cc: Minghuan Lian <minghuan.Lian@nxp.com>
-Cc: Mingkai Hu <mingkai.hu@nxp.com>
-Cc: Roy Zang <roy.zang@nxp.com>
-Cc: Jonathan Chocron <jonnyc@amazon.com>
-Cc: Jesper Nilsson <jesper.nilsson@axis.com>
-Cc: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-Cc: Xiaowei Song <songxiaowei@hisilicon.com>
-Cc: Binghui Wang <wangbinghui@hisilicon.com>
-Cc: Andy Gross <agross@kernel.org>
-Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc: Stanimir Varbanov <svarbanov@mm-sol.com>
-Cc: Pratyush Anand <pratyush.anand@gmail.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Jonathan Hunter <jonathanh@nvidia.com>
-Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc: linux-omap@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-arm-kernel@axis.com
-Cc: linux-arm-msm@vger.kernel.org
-Cc: linux-tegra@vger.kernel.org
-Acked-by: Jingoo Han <jingoohan1@gmail.com>
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
-v2:
- - Fix Layerscape EP build error
----
- drivers/pci/controller/dwc/pci-dra7xx.c       |  8 ----
- drivers/pci/controller/dwc/pci-keystone.c     | 29 +-----------
- .../pci/controller/dwc/pci-layerscape-ep.c    | 37 +--------------
- drivers/pci/controller/dwc/pcie-al.c          |  9 +---
- drivers/pci/controller/dwc/pcie-artpec6.c     | 43 ++----------------
- .../pci/controller/dwc/pcie-designware-ep.c   | 29 ++++++++++--
- .../pci/controller/dwc/pcie-designware-host.c |  7 +++
- .../pci/controller/dwc/pcie-designware-plat.c | 45 +------------------
- drivers/pci/controller/dwc/pcie-intel-gw.c    |  4 --
- drivers/pci/controller/dwc/pcie-kirin.c       |  5 ---
- drivers/pci/controller/dwc/pcie-qcom.c        |  8 ----
- drivers/pci/controller/dwc/pcie-spear13xx.c   | 11 +----
- drivers/pci/controller/dwc/pcie-tegra194.c    | 22 ---------
- drivers/pci/controller/dwc/pcie-uniphier-ep.c | 38 +---------------
- drivers/pci/controller/dwc/pcie-uniphier.c    |  6 ---
- 15 files changed, 47 insertions(+), 254 deletions(-)
+ drivers/pci/controller/dwc/pci-dra7xx.c | 125 ------------------------
+ 1 file changed, 125 deletions(-)
 
 diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 6d012d2b1e90..a4aabc85dbb1 100644
+index a4aabc85dbb1..4d0c35a4aa59 100644
 --- a/drivers/pci/controller/dwc/pci-dra7xx.c
 +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -578,7 +578,6 @@ static int __init dra7xx_add_pcie_ep(struct dra7xx_pcie *dra7xx,
- {
- 	int ret;
- 	struct dw_pcie_ep *ep;
--	struct resource *res;
- 	struct device *dev = &pdev->dev;
- 	struct dw_pcie *pci = dra7xx->pci;
- 
-@@ -594,13 +593,6 @@ static int __init dra7xx_add_pcie_ep(struct dra7xx_pcie *dra7xx,
- 	if (IS_ERR(pci->dbi_base2))
- 		return PTR_ERR(pci->dbi_base2);
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
--	if (!res)
--		return -EINVAL;
--
--	ep->phys_base = res->start;
--	ep->addr_size = resource_size(res);
--
- 	ret = dw_pcie_ep_init(ep);
- 	if (ret) {
- 		dev_err(dev, "failed to initialize endpoint\n");
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index a222728238ca..9cf14f13798b 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -977,33 +977,6 @@ static const struct dw_pcie_ep_ops ks_pcie_am654_ep_ops = {
- 	.get_features = &ks_pcie_am654_get_features,
- };
- 
--static int __init ks_pcie_add_pcie_ep(struct keystone_pcie *ks_pcie,
--				      struct platform_device *pdev)
--{
--	int ret;
--	struct dw_pcie_ep *ep;
--	struct resource *res;
--	struct device *dev = &pdev->dev;
--	struct dw_pcie *pci = ks_pcie->pci;
--
--	ep = &pci->ep;
--
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
--	if (!res)
--		return -EINVAL;
--
--	ep->phys_base = res->start;
--	ep->addr_size = resource_size(res);
--
--	ret = dw_pcie_ep_init(ep);
--	if (ret) {
--		dev_err(dev, "failed to initialize endpoint\n");
--		return ret;
--	}
--
--	return 0;
--}
--
- static void ks_pcie_disable_phy(struct keystone_pcie *ks_pcie)
- {
- 	int num_lanes = ks_pcie->num_lanes;
-@@ -1313,7 +1286,7 @@ static int __init ks_pcie_probe(struct platform_device *pdev)
- 		}
- 
- 		pci->ep.ops = ep_ops;
--		ret = ks_pcie_add_pcie_ep(ks_pcie, pdev);
-+		ret = dw_pcie_ep_init(&pci->ep);
- 		if (ret < 0)
- 			goto err_get_sync;
- 		break;
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index 84206f265e54..4d12efdacd2f 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -18,8 +18,6 @@
- 
- #include "pcie-designware.h"
- 
--#define PCIE_DBI2_OFFSET		0x1000	/* DBI2 base address*/
--
- #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
- 
- struct ls_pcie_ep_drvdata {
-@@ -124,34 +122,6 @@ static const struct of_device_id ls_pcie_ep_of_match[] = {
- 	{ },
- };
- 
--static int __init ls_add_pcie_ep(struct ls_pcie_ep *pcie,
--				 struct platform_device *pdev)
--{
--	struct dw_pcie *pci = pcie->pci;
--	struct device *dev = pci->dev;
--	struct dw_pcie_ep *ep;
--	struct resource *res;
--	int ret;
--
--	ep = &pci->ep;
--	ep->ops = pcie->drvdata->ops;
--
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
--	if (!res)
--		return -EINVAL;
--
--	ep->phys_base = res->start;
--	ep->addr_size = resource_size(res);
--
--	ret = dw_pcie_ep_init(ep);
--	if (ret) {
--		dev_err(dev, "failed to initialize endpoint\n");
--		return ret;
--	}
--
--	return 0;
--}
--
- static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -159,7 +129,6 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 	struct ls_pcie_ep *pcie;
- 	struct pci_epc_features *ls_epc;
- 	struct resource *dbi_base;
--	int ret;
- 
- 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
- 	if (!pcie)
-@@ -188,13 +157,11 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 	if (IS_ERR(pci->dbi_base))
- 		return PTR_ERR(pci->dbi_base);
- 
--	pci->dbi_base2 = pci->dbi_base + PCIE_DBI2_OFFSET;
-+	pci->ep.ops = &ls_pcie_ep_ops;
- 
- 	platform_set_drvdata(pdev, pcie);
- 
--	ret = ls_add_pcie_ep(pcie, pdev);
--
--	return ret;
-+	return dw_pcie_ep_init(&pci->ep);
- }
- 
- static struct platform_driver ls_pcie_ep_driver = {
-diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
-index f973fbca90cf..d06866921187 100644
---- a/drivers/pci/controller/dwc/pcie-al.c
-+++ b/drivers/pci/controller/dwc/pcie-al.c
-@@ -347,7 +347,6 @@ static int al_pcie_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct resource *controller_res;
- 	struct resource *ecam_res;
--	struct resource *dbi_res;
- 	struct al_pcie *al_pcie;
- 	struct dw_pcie *pci;
- 
-@@ -365,11 +364,6 @@ static int al_pcie_probe(struct platform_device *pdev)
- 	al_pcie->pci = pci;
- 	al_pcie->dev = dev;
- 
--	dbi_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
--	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_res);
--	if (IS_ERR(pci->dbi_base))
--		return PTR_ERR(pci->dbi_base);
--
- 	ecam_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "config");
- 	if (!ecam_res) {
- 		dev_err(dev, "couldn't find 'config' reg in DT\n");
-@@ -386,8 +380,7 @@ static int al_pcie_probe(struct platform_device *pdev)
- 		return PTR_ERR(al_pcie->controller_base);
- 	}
- 
--	dev_dbg(dev, "From DT: dbi_base: %pR, controller_base: %pR\n",
--		dbi_res, controller_res);
-+	dev_dbg(dev, "From DT: controller_base: %pR\n", controller_res);
- 
- 	platform_set_drvdata(pdev, al_pcie);
- 
-diff --git a/drivers/pci/controller/dwc/pcie-artpec6.c b/drivers/pci/controller/dwc/pcie-artpec6.c
-index 929448e9e0bc..52ad7909cd0c 100644
---- a/drivers/pci/controller/dwc/pcie-artpec6.c
-+++ b/drivers/pci/controller/dwc/pcie-artpec6.c
-@@ -403,38 +403,6 @@ static const struct dw_pcie_ep_ops pcie_ep_ops = {
- 	.raise_irq = artpec6_pcie_raise_irq,
- };
- 
--static int artpec6_add_pcie_ep(struct artpec6_pcie *artpec6_pcie,
--			       struct platform_device *pdev)
--{
--	int ret;
--	struct dw_pcie_ep *ep;
--	struct resource *res;
--	struct device *dev = &pdev->dev;
--	struct dw_pcie *pci = artpec6_pcie->pci;
--
--	ep = &pci->ep;
--	ep->ops = &pcie_ep_ops;
--
--	pci->dbi_base2 = devm_platform_ioremap_resource_byname(pdev, "dbi2");
--	if (IS_ERR(pci->dbi_base2))
--		return PTR_ERR(pci->dbi_base2);
--
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
--	if (!res)
--		return -EINVAL;
--
--	ep->phys_base = res->start;
--	ep->addr_size = resource_size(res);
--
--	ret = dw_pcie_ep_init(ep);
--	if (ret) {
--		dev_err(dev, "failed to initialize endpoint\n");
--		return ret;
--	}
--
--	return 0;
--}
--
- static int artpec6_pcie_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -469,10 +437,6 @@ static int artpec6_pcie_probe(struct platform_device *pdev)
- 	artpec6_pcie->variant = variant;
- 	artpec6_pcie->mode = mode;
- 
--	pci->dbi_base = devm_platform_ioremap_resource_byname(pdev, "dbi");
--	if (IS_ERR(pci->dbi_base))
--		return PTR_ERR(pci->dbi_base);
--
- 	artpec6_pcie->phy_base =
- 		devm_platform_ioremap_resource_byname(pdev, "phy");
- 	if (IS_ERR(artpec6_pcie->phy_base))
-@@ -504,9 +468,10 @@ static int artpec6_pcie_probe(struct platform_device *pdev)
- 		val = artpec6_pcie_readl(artpec6_pcie, PCIECFG);
- 		val &= ~PCIECFG_DEVICE_TYPE_MASK;
- 		artpec6_pcie_writel(artpec6_pcie, PCIECFG, val);
--		ret = artpec6_add_pcie_ep(artpec6_pcie, pdev);
--		if (ret < 0)
--			return ret;
-+
-+		pci->ep.ops = &pcie_ep_ops;
-+
-+		return dw_pcie_ep_init(&pci->ep);
- 		break;
- 	}
- 	default:
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index ad7da4ea43a5..6fe176e1bdd2 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/of.h>
-+#include <linux/platform_device.h>
- 
- #include "pcie-designware.h"
- #include <linux/pci-epc.h>
-@@ -676,20 +677,42 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
- 	int ret;
- 	void *addr;
- 	u8 func_no;
-+	struct resource *res;
- 	struct pci_epc *epc;
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	struct device *dev = pci->dev;
-+	struct platform_device *pdev = to_platform_device(dev);
- 	struct device_node *np = dev->of_node;
- 	const struct pci_epc_features *epc_features;
- 	struct dw_pcie_ep_func *ep_func;
- 
- 	INIT_LIST_HEAD(&ep->func_list);
- 
--	if (!pci->dbi_base || !pci->dbi_base2) {
--		dev_err(dev, "dbi_base/dbi_base2 is not populated\n");
--		return -EINVAL;
-+	if (!pci->dbi_base) {
-+		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
-+		pci->dbi_base = devm_pci_remap_cfg_resource(dev, res);
-+		if (IS_ERR(pci->dbi_base))
-+			return PTR_ERR(pci->dbi_base);
-+	}
-+
-+	if (!pci->dbi_base2) {
-+		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi2");
-+		if (!res)
-+			pci->dbi_base2 = pci->dbi_base + SZ_4K;
-+		else {
-+			pci->dbi_base2 = devm_pci_remap_cfg_resource(dev, res);
-+			if (IS_ERR(pci->dbi_base2))
-+				return PTR_ERR(pci->dbi_base2);
-+		}
- 	}
- 
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
-+	if (!res)
-+		return -EINVAL;
-+
-+	ep->phys_base = res->start;
-+	ep->addr_size = resource_size(res);
-+
- 	ret = of_property_read_u32(np, "num-ib-windows", &ep->num_ib_windows);
- 	if (ret < 0) {
- 		dev_err(dev, "Unable to read *num-ib-windows* property\n");
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index a6ffab9b537e..cde45b2076ee 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -310,6 +310,13 @@ int dw_pcie_host_init(struct pcie_port *pp)
- 		dev_err(dev, "Missing *config* reg space\n");
- 	}
- 
-+	if (!pci->dbi_base) {
-+		struct resource *dbi_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
-+		pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_res);
-+		if (IS_ERR(pci->dbi_base))
-+			return PTR_ERR(pci->dbi_base);
-+	}
-+
- 	bridge = devm_pci_alloc_host_bridge(dev, 0);
- 	if (!bridge)
- 		return -ENOMEM;
-diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
-index e3e300669ed5..562a05e07b1d 100644
---- a/drivers/pci/controller/dwc/pcie-designware-plat.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
-@@ -139,43 +139,11 @@ static int dw_plat_add_pcie_port(struct dw_plat_pcie *dw_plat_pcie,
+@@ -377,133 +377,8 @@ static int dra7xx_pcie_init_irq_domain(struct pcie_port *pp)
  	return 0;
  }
  
--static int dw_plat_add_pcie_ep(struct dw_plat_pcie *dw_plat_pcie,
--			       struct platform_device *pdev)
+-static void dra7xx_pcie_setup_msi_msg(struct irq_data *d, struct msi_msg *msg)
 -{
--	int ret;
--	struct dw_pcie_ep *ep;
--	struct resource *res;
--	struct device *dev = &pdev->dev;
--	struct dw_pcie *pci = dw_plat_pcie->pci;
+-	struct pcie_port *pp = irq_data_get_irq_chip_data(d);
+-	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+-	u64 msi_target;
 -
--	ep = &pci->ep;
--	ep->ops = &pcie_ep_ops;
+-	msi_target = (u64)pp->msi_data;
 -
--	pci->dbi_base2 = devm_platform_ioremap_resource_byname(pdev, "dbi2");
--	if (IS_ERR(pci->dbi_base2))
--		return PTR_ERR(pci->dbi_base2);
+-	msg->address_lo = lower_32_bits(msi_target);
+-	msg->address_hi = upper_32_bits(msi_target);
 -
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
--	if (!res)
--		return -EINVAL;
+-	msg->data = d->hwirq;
 -
--	ep->phys_base = res->start;
--	ep->addr_size = resource_size(res);
--
--	ret = dw_pcie_ep_init(ep);
--	if (ret) {
--		dev_err(dev, "Failed to initialize endpoint\n");
--		return ret;
--	}
--	return 0;
+-	dev_dbg(pci->dev, "msi#%d address_hi %#x address_lo %#x\n",
+-		(int)d->hwirq, msg->address_hi, msg->address_lo);
 -}
 -
- static int dw_plat_pcie_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct dw_plat_pcie *dw_plat_pcie;
- 	struct dw_pcie *pci;
--	struct resource *res;  /* Resource from DT */
- 	int ret;
- 	const struct of_device_id *match;
- 	const struct dw_plat_pcie_of_data *data;
-@@ -202,14 +170,6 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
- 	dw_plat_pcie->pci = pci;
- 	dw_plat_pcie->mode = mode;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
--	if (!res)
--		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--
--	pci->dbi_base = devm_ioremap_resource(dev, res);
--	if (IS_ERR(pci->dbi_base))
--		return PTR_ERR(pci->dbi_base);
--
- 	platform_set_drvdata(pdev, dw_plat_pcie);
- 
- 	switch (dw_plat_pcie->mode) {
-@@ -225,9 +185,8 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
- 		if (!IS_ENABLED(CONFIG_PCIE_DW_PLAT_EP))
- 			return -ENODEV;
- 
--		ret = dw_plat_add_pcie_ep(dw_plat_pcie, pdev);
--		if (ret < 0)
--			return ret;
-+		pci->ep.ops = &pcie_ep_ops;
-+		return dw_pcie_ep_init(&pci->ep);
- 		break;
- 	default:
- 		dev_err(dev, "INVALID device type %d\n", dw_plat_pcie->mode);
-diff --git a/drivers/pci/controller/dwc/pcie-intel-gw.c b/drivers/pci/controller/dwc/pcie-intel-gw.c
-index 77ef88333115..88782653ed21 100644
---- a/drivers/pci/controller/dwc/pcie-intel-gw.c
-+++ b/drivers/pci/controller/dwc/pcie-intel-gw.c
-@@ -237,10 +237,6 @@ static int intel_pcie_get_resources(struct platform_device *pdev)
- 	struct device *dev = pci->dev;
- 	int ret;
- 
--	pci->dbi_base = devm_platform_ioremap_resource_byname(pdev, "dbi");
--	if (IS_ERR(pci->dbi_base))
--		return PTR_ERR(pci->dbi_base);
--
- 	lpp->core_clk = devm_clk_get(dev, NULL);
- 	if (IS_ERR(lpp->core_clk)) {
- 		ret = PTR_ERR(lpp->core_clk);
-diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
-index d0a6a2dee6f5..3042a23cf09a 100644
---- a/drivers/pci/controller/dwc/pcie-kirin.c
-+++ b/drivers/pci/controller/dwc/pcie-kirin.c
-@@ -157,11 +157,6 @@ static long kirin_pcie_get_resource(struct kirin_pcie *kirin_pcie,
- 	if (IS_ERR(kirin_pcie->phy_base))
- 		return PTR_ERR(kirin_pcie->phy_base);
- 
--	kirin_pcie->pci->dbi_base =
--		devm_platform_ioremap_resource_byname(pdev, "dbi");
--	if (IS_ERR(kirin_pcie->pci->dbi_base))
--		return PTR_ERR(kirin_pcie->pci->dbi_base);
--
- 	kirin_pcie->crgctrl =
- 		syscon_regmap_lookup_by_compatible("hisilicon,hi3660-crgctrl");
- 	if (IS_ERR(kirin_pcie->crgctrl))
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index b4761640ffd9..3b4f70b9f3f0 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1368,7 +1368,6 @@ static const struct dw_pcie_ops dw_pcie_ops = {
- static int qcom_pcie_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	struct resource *res;
- 	struct pcie_port *pp;
- 	struct dw_pcie *pci;
- 	struct qcom_pcie *pcie;
-@@ -1407,13 +1406,6 @@ static int qcom_pcie_probe(struct platform_device *pdev)
- 		goto err_pm_runtime_put;
- 	}
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
--	pci->dbi_base = devm_pci_remap_cfg_resource(dev, res);
--	if (IS_ERR(pci->dbi_base)) {
--		ret = PTR_ERR(pci->dbi_base);
--		goto err_pm_runtime_put;
--	}
--
- 	pcie->elbi = devm_platform_ioremap_resource_byname(pdev, "elbi");
- 	if (IS_ERR(pcie->elbi)) {
- 		ret = PTR_ERR(pcie->elbi);
-diff --git a/drivers/pci/controller/dwc/pcie-spear13xx.c b/drivers/pci/controller/dwc/pcie-spear13xx.c
-index e348225f651f..1ed7e3501ff1 100644
---- a/drivers/pci/controller/dwc/pcie-spear13xx.c
-+++ b/drivers/pci/controller/dwc/pcie-spear13xx.c
-@@ -152,6 +152,8 @@ static int spear13xx_pcie_host_init(struct pcie_port *pp)
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
- 	struct spear13xx_pcie *spear13xx_pcie = to_spear13xx_pcie(pci);
- 
-+	spear13xx_pcie->app_base = pci->dbi_base + 0x2000;
-+
- 	spear13xx_pcie_establish_link(spear13xx_pcie);
- 	spear13xx_pcie_enable_interrupts(spear13xx_pcie);
- 
-@@ -203,7 +205,6 @@ static int spear13xx_pcie_probe(struct platform_device *pdev)
- 	struct dw_pcie *pci;
- 	struct spear13xx_pcie *spear13xx_pcie;
- 	struct device_node *np = dev->of_node;
--	struct resource *dbi_base;
- 	int ret;
- 
- 	spear13xx_pcie = devm_kzalloc(dev, sizeof(*spear13xx_pcie), GFP_KERNEL);
-@@ -242,14 +243,6 @@ static int spear13xx_pcie_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	dbi_base = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
--	pci->dbi_base = devm_pci_remap_cfg_resource(dev, dbi_base);
--	if (IS_ERR(pci->dbi_base)) {
--		ret = PTR_ERR(pci->dbi_base);
--		goto fail_clk;
--	}
--	spear13xx_pcie->app_base = pci->dbi_base + 0x2000;
--
- 	if (of_property_read_bool(np, "st,pcie-is-gen1"))
- 		pci->link_gen = 1;
- 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index f920e7efe118..f8fca6794282 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1907,19 +1907,12 @@ static int tegra_pcie_config_ep(struct tegra_pcie_dw *pcie,
- 	struct dw_pcie *pci = &pcie->pci;
- 	struct device *dev = pcie->dev;
- 	struct dw_pcie_ep *ep;
--	struct resource *res;
- 	char *name;
- 	int ret;
- 
- 	ep = &pci->ep;
- 	ep->ops = &pcie_ep_ops;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
--	if (!res)
--		return -EINVAL;
--
--	ep->phys_base = res->start;
--	ep->addr_size = resource_size(res);
- 	ep->page_size = SZ_64K;
- 
- 	ret = gpiod_set_debounce(pcie->pex_rst_gpiod, PERST_DEBOUNCE_TIME);
-@@ -1982,7 +1975,6 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct resource *atu_dma_res;
- 	struct tegra_pcie_dw *pcie;
--	struct resource *dbi_res;
- 	struct pcie_port *pp;
- 	struct dw_pcie *pci;
- 	struct phy **phys;
-@@ -2091,20 +2083,6 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
- 
- 	pcie->phys = phys;
- 
--	dbi_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
--	if (!dbi_res) {
--		dev_err(dev, "Failed to find \"dbi\" region\n");
--		return -ENODEV;
--	}
--	pcie->dbi_res = dbi_res;
--
--	pci->dbi_base = devm_ioremap_resource(dev, dbi_res);
--	if (IS_ERR(pci->dbi_base))
--		return PTR_ERR(pci->dbi_base);
--
--	/* Tegra HW locates DBI2 at a fixed offset from DBI */
--	pci->dbi_base2 = pci->dbi_base + 0x1000;
--
- 	atu_dma_res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
- 						   "atu_dma");
- 	if (!atu_dma_res) {
-diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-index 148355960061..69810c6b0d58 100644
---- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-@@ -218,35 +218,6 @@ static const struct dw_pcie_ep_ops uniphier_pcie_ep_ops = {
- 	.get_features = uniphier_pcie_get_features,
- };
- 
--static int uniphier_add_pcie_ep(struct uniphier_pcie_ep_priv *priv,
--				struct platform_device *pdev)
+-static int dra7xx_pcie_msi_set_affinity(struct irq_data *d,
+-					const struct cpumask *mask,
+-					bool force)
 -{
--	struct dw_pcie *pci = &priv->pci;
--	struct dw_pcie_ep *ep = &pci->ep;
--	struct device *dev = &pdev->dev;
--	struct resource *res;
+-	return -EINVAL;
+-}
+-
+-static void dra7xx_pcie_bottom_mask(struct irq_data *d)
+-{
+-	struct pcie_port *pp = irq_data_get_irq_chip_data(d);
+-	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+-	unsigned int res, bit, ctrl;
+-	unsigned long flags;
+-
+-	raw_spin_lock_irqsave(&pp->lock, flags);
+-
+-	ctrl = d->hwirq / MAX_MSI_IRQS_PER_CTRL;
+-	res = ctrl * MSI_REG_CTRL_BLOCK_SIZE;
+-	bit = d->hwirq % MAX_MSI_IRQS_PER_CTRL;
+-
+-	pp->irq_mask[ctrl] |= BIT(bit);
+-	dw_pcie_writel_dbi(pci, PCIE_MSI_INTR0_MASK + res,
+-			   pp->irq_mask[ctrl]);
+-
+-	raw_spin_unlock_irqrestore(&pp->lock, flags);
+-}
+-
+-static void dra7xx_pcie_bottom_unmask(struct irq_data *d)
+-{
+-	struct pcie_port *pp = irq_data_get_irq_chip_data(d);
+-	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+-	unsigned int res, bit, ctrl;
+-	unsigned long flags;
+-
+-	raw_spin_lock_irqsave(&pp->lock, flags);
+-
+-	ctrl = d->hwirq / MAX_MSI_IRQS_PER_CTRL;
+-	res = ctrl * MSI_REG_CTRL_BLOCK_SIZE;
+-	bit = d->hwirq % MAX_MSI_IRQS_PER_CTRL;
+-
+-	pp->irq_mask[ctrl] &= ~BIT(bit);
+-	dw_pcie_writel_dbi(pci, PCIE_MSI_INTR0_MASK + res,
+-			   pp->irq_mask[ctrl]);
+-
+-	raw_spin_unlock_irqrestore(&pp->lock, flags);
+-}
+-
+-static void dra7xx_pcie_bottom_ack(struct irq_data *d)
+-{
+-	struct pcie_port *pp  = irq_data_get_irq_chip_data(d);
+-	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+-	unsigned int res, bit, ctrl;
+-
+-	ctrl = d->hwirq / MAX_MSI_IRQS_PER_CTRL;
+-	res = ctrl * MSI_REG_CTRL_BLOCK_SIZE;
+-	bit = d->hwirq % MAX_MSI_IRQS_PER_CTRL;
+-
+-	dw_pcie_writel_dbi(pci, PCIE_MSI_INTR0_STATUS + res, BIT(bit));
+-}
+-
+-static struct irq_chip dra7xx_pci_msi_bottom_irq_chip = {
+-	.name = "DRA7XX-PCI-MSI",
+-	.irq_ack = dra7xx_pcie_bottom_ack,
+-	.irq_compose_msi_msg = dra7xx_pcie_setup_msi_msg,
+-	.irq_set_affinity = dra7xx_pcie_msi_set_affinity,
+-	.irq_mask = dra7xx_pcie_bottom_mask,
+-	.irq_unmask = dra7xx_pcie_bottom_unmask,
+-};
+-
+-static int dra7xx_pcie_msi_host_init(struct pcie_port *pp)
+-{
+-	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+-	struct device *dev = pci->dev;
+-	u32 ctrl, num_ctrls;
 -	int ret;
 -
--	ep->ops = &uniphier_pcie_ep_ops;
+-	pp->msi_irq_chip = &dra7xx_pci_msi_bottom_irq_chip;
 -
--	pci->dbi_base2 = devm_platform_ioremap_resource_byname(pdev, "dbi2");
--	if (IS_ERR(pci->dbi_base2))
--		return PTR_ERR(pci->dbi_base2);
+-	num_ctrls = pp->num_vectors / MAX_MSI_IRQS_PER_CTRL;
+-	/* Initialize IRQ Status array */
+-	for (ctrl = 0; ctrl < num_ctrls; ctrl++) {
+-		pp->irq_mask[ctrl] = ~0;
+-		dw_pcie_writel_dbi(pci, PCIE_MSI_INTR0_MASK +
+-				    (ctrl * MSI_REG_CTRL_BLOCK_SIZE),
+-				    pp->irq_mask[ctrl]);
+-		dw_pcie_writel_dbi(pci, PCIE_MSI_INTR0_ENABLE +
+-				    (ctrl * MSI_REG_CTRL_BLOCK_SIZE),
+-				    ~0);
+-	}
 -
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "addr_space");
--	if (!res)
--		return -EINVAL;
--
--	ep->phys_base = res->start;
--	ep->addr_size = resource_size(res);
--
--	ret = dw_pcie_ep_init(ep);
+-	ret = dw_pcie_allocate_domains(pp);
 -	if (ret)
--		dev_err(dev, "Failed to initialize endpoint (%d)\n", ret);
+-		return ret;
 -
+-	pp->msi_data = dma_map_single_attrs(dev, &pp->msi_msg,
+-					   sizeof(pp->msi_msg),
+-					   DMA_FROM_DEVICE,
+-					   DMA_ATTR_SKIP_CPU_SYNC);
+-	ret = dma_mapping_error(dev, pp->msi_data);
+-	if (ret) {
+-		dev_err(dev, "Failed to map MSI data\n");
+-		pp->msi_data = 0;
+-		dw_pcie_free_msi(pp);
+-	}
 -	return ret;
 -}
 -
- static int uniphier_pcie_ep_enable(struct uniphier_pcie_ep_priv *priv)
- {
- 	int ret;
-@@ -300,7 +271,6 @@ static int uniphier_pcie_ep_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct uniphier_pcie_ep_priv *priv;
--	struct resource *res;
- 	int ret;
+ static const struct dw_pcie_host_ops dra7xx_pcie_host_ops = {
+ 	.host_init = dra7xx_pcie_host_init,
+-	.msi_host_init = dra7xx_pcie_msi_host_init,
+ };
  
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -314,11 +284,6 @@ static int uniphier_pcie_ep_probe(struct platform_device *pdev)
- 	priv->pci.dev = dev;
- 	priv->pci.ops = &dw_pcie_ops;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
--	priv->pci.dbi_base = devm_pci_remap_cfg_resource(dev, res);
--	if (IS_ERR(priv->pci.dbi_base))
--		return PTR_ERR(priv->pci.dbi_base);
--
- 	priv->base = devm_platform_ioremap_resource_byname(pdev, "link");
- 	if (IS_ERR(priv->base))
- 		return PTR_ERR(priv->base);
-@@ -352,7 +317,8 @@ static int uniphier_pcie_ep_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	return uniphier_add_pcie_ep(priv, pdev);
-+	priv->pci.ep.ops = &uniphier_pcie_ep_ops;
-+	return dw_pcie_ep_init(&priv->pci.ep);
- }
- 
- static const struct pci_epc_features uniphier_pro5_data = {
-diff --git a/drivers/pci/controller/dwc/pcie-uniphier.c b/drivers/pci/controller/dwc/pcie-uniphier.c
-index 48176265c867..33130fb4af90 100644
---- a/drivers/pci/controller/dwc/pcie-uniphier.c
-+++ b/drivers/pci/controller/dwc/pcie-uniphier.c
-@@ -400,7 +400,6 @@ static int uniphier_pcie_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct uniphier_pcie_priv *priv;
--	struct resource *res;
- 	int ret;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -410,11 +409,6 @@ static int uniphier_pcie_probe(struct platform_device *pdev)
- 	priv->pci.dev = dev;
- 	priv->pci.ops = &dw_pcie_ops;
- 
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
--	priv->pci.dbi_base = devm_pci_remap_cfg_resource(dev, res);
--	if (IS_ERR(priv->pci.dbi_base))
--		return PTR_ERR(priv->pci.dbi_base);
--
- 	priv->base = devm_platform_ioremap_resource_byname(pdev, "link");
- 	if (IS_ERR(priv->base))
- 		return PTR_ERR(priv->base);
+ static void dra7xx_pcie_ep_init(struct dw_pcie_ep *ep)
 -- 
 2.25.1
 
