@@ -2,40 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 392C42A7DED
+	by mail.lfdr.de (Postfix) with ESMTP id A7A952A7DEE
 	for <lists+linux-omap@lfdr.de>; Thu,  5 Nov 2020 13:05:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730668AbgKEMEp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Nov 2020 07:04:45 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:46214 "EHLO
+        id S1730639AbgKEMEq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Nov 2020 07:04:46 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:46234 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730639AbgKEMEo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Nov 2020 07:04:44 -0500
+        with ESMTP id S1730669AbgKEMEq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Nov 2020 07:04:46 -0500
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A5C4ZVH070100;
-        Thu, 5 Nov 2020 06:04:35 -0600
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A5C4cIF070115;
+        Thu, 5 Nov 2020 06:04:38 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604577875;
-        bh=F7S7Xfkp/kNtsLBhFCjHg7XOVHhiMw3wA9fwR7dcWuk=;
+        s=ti-com-17Q1; t=1604577878;
+        bh=IQNNk2QnVmvXAzGc6JEefbVj8cIKmJNy5RJvtS4E1OA=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=v3B41dfUgowZxN8UBvJLrluwAKpr8mShVLiCfTu5m9kECp1m0hwiNIRMsqFOaY3eL
-         WLqXgLrrs7/byyRwb58+XAq8D3XvBwxwZP9fGAF4EoivI/ZirpScXV7gc/C7kuB2LI
-         AXoJawGIsh8TWOurM/PdA5pOrwDd+gMPG2T8PODU=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A5C4ZML125384
+        b=oKcH+klLAHOoSjbs8+tgi0K+RNOZJkC0+poXsWJZ2ZLYjCnwlO0KjS7AQC7VDmK6s
+         ElEeJ9tq9jJ9YybTvAfdOPvOexzsNil87601udGRjZ7M+eN82dq2oC5m4TBfb4QOYV
+         5+l745r3kyYz88kk0p7LXcvVJkh7oRxaVa/ZkRAY=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A5C4c66125438
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 5 Nov 2020 06:04:35 -0600
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 5 Nov 2020 06:04:38 -0600
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 5 Nov
- 2020 06:04:35 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 06:04:37 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 5 Nov 2020 06:04:35 -0600
+ Frontend Transport; Thu, 5 Nov 2020 06:04:37 -0600
 Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A5C3rfE039111;
-        Thu, 5 Nov 2020 06:04:32 -0600
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A5C3rfF039111;
+        Thu, 5 Nov 2020 06:04:35 -0600
 From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
 To:     Sebastian Reichel <sre@kernel.org>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -45,9 +45,9 @@ CC:     Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
         "H . Nikolaus Schaller" <hns@goldelico.com>,
         Sebastian Reichel <sebastian.reichel@collabora.com>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH v3 16/56] drm/omap: panel-dsi-cm: drop hardcoded VC
-Date:   Thu, 5 Nov 2020 14:02:53 +0200
-Message-ID: <20201105120333.947408-17-tomi.valkeinen@ti.com>
+Subject: [PATCH v3 17/56] drm/omap: panel-dsi-cm: use common MIPI DCS 1.3 defines
+Date:   Thu, 5 Nov 2020 14:02:54 +0200
+Message-ID: <20201105120333.947408-18-tomi.valkeinen@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201105120333.947408-1-tomi.valkeinen@ti.com>
 References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
@@ -61,108 +61,54 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-Use dsi->channel everywhere, which originates from DT.
+Drop local definition of common MIPI DCS 1.3 defines.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
 ---
- .../gpu/drm/omapdrm/displays/panel-dsi-cm.c   | 20 +++++++------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
-index b1ca9b34ce17..25183744a61d 100644
+index 25183744a61d..a7236d9c3046 100644
 --- a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
 +++ b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
-@@ -27,9 +27,6 @@
- 
+@@ -28,8 +28,6 @@
  #include "../dss/omapdss.h"
  
--/* DSI Virtual channel. Hardcoded for now. */
--#define TCH 0
--
  #define DCS_READ_NUM_ERRORS	0x05
- #define DCS_BRIGHTNESS		0x51
- #define DCS_CTRL_DISPLAY	0x53
-@@ -73,7 +70,6 @@ struct panel_drv_data {
- 	bool te_enabled;
+-#define DCS_BRIGHTNESS		0x51
+-#define DCS_CTRL_DISPLAY	0x53
+ #define DCS_GET_ID1		0xda
+ #define DCS_GET_ID2		0xdb
+ #define DCS_GET_ID3		0xdc
+@@ -333,8 +331,10 @@ static int dsicm_bl_update_status(struct backlight_device *dev)
+ 		src->ops->dsi.bus_lock(src);
  
- 	atomic_t do_update;
--	int channel;
+ 		r = dsicm_wake_up(ddata);
+-		if (!r)
+-			r = dsicm_dcs_write_1(ddata, DCS_BRIGHTNESS, level);
++		if (!r) {
++			r = dsicm_dcs_write_1(ddata,
++				MIPI_DCS_SET_DISPLAY_BRIGHTNESS, level);
++		}
  
- 	struct delayed_work te_timeout_work;
- 
-@@ -274,7 +270,7 @@ static int dsicm_exit_ulps(struct panel_drv_data *ddata)
- 		return 0;
- 
- 	src->ops->enable(src);
--	src->ops->dsi.enable_hs(src, ddata->channel, true);
-+	src->ops->dsi.enable_hs(src, ddata->dsi->channel, true);
- 
- 	r = _dsicm_enable_te(ddata, true);
- 	if (r) {
-@@ -591,7 +587,7 @@ static int dsicm_power_on(struct panel_drv_data *ddata)
- 
- 	dsicm_hw_reset(ddata);
- 
--	src->ops->dsi.enable_hs(src, ddata->channel, false);
-+	src->ops->dsi.enable_hs(src, ddata->dsi->channel, false);
- 
- 	r = dsicm_sleep_out(ddata);
- 	if (r)
-@@ -622,7 +618,7 @@ static int dsicm_power_on(struct panel_drv_data *ddata)
- 	if (r)
- 		goto err;
- 
--	r = src->ops->dsi.enable_video_output(src, ddata->channel);
-+	r = src->ops->dsi.enable_video_output(src, ddata->dsi->channel);
- 	if (r)
- 		goto err;
- 
-@@ -634,7 +630,7 @@ static int dsicm_power_on(struct panel_drv_data *ddata)
- 		ddata->intro_printed = true;
+ 		src->ops->dsi.bus_unlock(src);
  	}
+@@ -597,11 +597,11 @@ static int dsicm_power_on(struct panel_drv_data *ddata)
+ 	if (r)
+ 		goto err;
  
--	src->ops->dsi.enable_hs(src, ddata->channel, true);
-+	src->ops->dsi.enable_hs(src, ddata->dsi->channel, true);
+-	r = dsicm_dcs_write_1(ddata, DCS_BRIGHTNESS, 0xff);
++	r = dsicm_dcs_write_1(ddata, MIPI_DCS_SET_DISPLAY_BRIGHTNESS, 0xff);
+ 	if (r)
+ 		goto err;
  
- 	return 0;
- err:
-@@ -658,7 +654,7 @@ static void dsicm_power_off(struct panel_drv_data *ddata)
- 	struct omap_dss_device *src = ddata->src;
- 	int r;
- 
--	src->ops->dsi.disable_video_output(src, ddata->channel);
-+	src->ops->dsi.disable_video_output(src, ddata->dsi->channel);
- 
- 	r = mipi_dsi_dcs_set_display_off(ddata->dsi);
- 	if (!r)
-@@ -777,7 +773,7 @@ static irqreturn_t dsicm_te_isr(int irq, void *data)
- 	if (old) {
- 		cancel_delayed_work(&ddata->te_timeout_work);
- 
--		r = src->ops->dsi.update(src, ddata->channel, dsicm_framedone_cb,
-+		r = src->ops->dsi.update(src, ddata->dsi->channel, dsicm_framedone_cb,
- 				ddata);
- 		if (r)
- 			goto err;
-@@ -834,7 +830,7 @@ static int dsicm_update(struct omap_dss_device *dssdev,
- 				msecs_to_jiffies(250));
- 		atomic_set(&ddata->do_update, 1);
- 	} else {
--		r = src->ops->dsi.update(src, ddata->channel, dsicm_framedone_cb,
-+		r = src->ops->dsi.update(src, ddata->dsi->channel, dsicm_framedone_cb,
- 				ddata);
- 		if (r)
- 			goto err;
-@@ -1110,8 +1106,6 @@ static int dsicm_probe_of(struct mipi_dsi_device *dsi)
- 	struct display_timing timing;
- 	int err;
- 
--	ddata->channel = TCH;
--
- 	ddata->reset_gpio = devm_gpiod_get(&dsi->dev, "reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(ddata->reset_gpio)) {
- 		err = PTR_ERR(ddata->reset_gpio);
+-	r = dsicm_dcs_write_1(ddata, DCS_CTRL_DISPLAY,
++	r = dsicm_dcs_write_1(ddata, MIPI_DCS_WRITE_CONTROL_DISPLAY,
+ 			(1<<2) | (1<<5));	/* BL | BCTRL */
+ 	if (r)
+ 		goto err;
 -- 
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
 Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
