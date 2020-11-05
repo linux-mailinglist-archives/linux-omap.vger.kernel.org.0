@@ -2,376 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B0E72A7E46
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Nov 2020 13:06:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5144A2A8033
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Nov 2020 14:58:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729768AbgKEMGT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Nov 2020 07:06:19 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:43006 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730808AbgKEMGT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Nov 2020 07:06:19 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A5C6C5X057331;
-        Thu, 5 Nov 2020 06:06:12 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604577972;
-        bh=DyIUPOSebQljO3bMfDU97OoO08gGOVvPTv+N3zRhBQs=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=F2MFzcJk2CRyS9C+tbe6wNaJAgDieDP9BxdSClBXomXvj0imqfJ+py3WyK6KqkTGN
-         psrJaCFqFgJeuEE+2aTL0LT/nYsDcaJmbgSlD7hEUMAhVEb5gH3Wa7gTuFA1s4kjYj
-         58AxdiQ3kYo3dnrb1T3RNZeU6jie6+MhCBAi28h4=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A5C6C8N045009
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 5 Nov 2020 06:06:12 -0600
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 5 Nov
- 2020 06:06:12 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 5 Nov 2020 06:06:12 -0600
-Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A5C3rfs039111;
-        Thu, 5 Nov 2020 06:06:10 -0600
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-To:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-CC:     Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH v3 56/56] drm/omap: remove dss_mgr_ops
-Date:   Thu, 5 Nov 2020 14:03:33 +0200
-Message-ID: <20201105120333.947408-57-tomi.valkeinen@ti.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201105120333.947408-1-tomi.valkeinen@ti.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
+        id S1730799AbgKEN6i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Nov 2020 08:58:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39610 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730746AbgKEN6i (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Nov 2020 08:58:38 -0500
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21584C0613CF;
+        Thu,  5 Nov 2020 05:58:38 -0800 (PST)
+Received: by mail-lj1-x244.google.com with SMTP id l10so1669622lji.4;
+        Thu, 05 Nov 2020 05:58:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ua+XqBPg22ryhZgPJww6Uojlz0C1kaQl2r/pK/v+fys=;
+        b=fBI+X77XrljCuJQUBTFf5PQggFuOyq+QXV5hbyuS74jAFpRO59bE2ERGvHoGY0CAvc
+         0oRdE4s8eKfW3gH1wJSnyKiZcCxeeuLiqRckWXJB8oVoQENOBl8FtdP86pRrsV0Q6NWc
+         ndM5fnXHKSDJk5//k1l5Sd/hKB0zjf6gYR5tv2micFUJ2IBqX9FJmxAp/3RDYopf8K5I
+         nMhcC4ESBqtDfmkrnxWbAt3tPmcotxOO6ckZKrfL/BDMJLp6T+1X83Yh/N09R6aCiyq/
+         1ah4XNo+K2RYtXJ4fj8mMYm7Xf5AbZF9c+KQUt3stN2qEypLm1QekSfD25Re1ksVC5io
+         UdpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ua+XqBPg22ryhZgPJww6Uojlz0C1kaQl2r/pK/v+fys=;
+        b=IZgFmGyOOvSPH2VVkisayIEm8zuzBY3K8SlShu0kDw3b7uqpA25FjTDz0lT9zbQkqq
+         /GOUFlaLu3MhQy/dSoiHi1TD6BAt8jGecxNUZlf5Xj28Vh5U6xR6fRtGjLreYdwS4h4S
+         5+kXmdkX4cGASBfG1r1cEfOVfA3k7wqf3SgDB7/W/TO8c1Wzwmd3HP/OQuZscfTyuvCX
+         KO2NDSg2Cw+BiLiQ8+TdshMmpPiDNBOZK4LewKFQlj67eYa2IY7Qxoh92gdka2NrTJuh
+         S6y50YrODyIrZlhHY4PQ0EfZJ2zMQdOtnoqwMq8vemEeFftx+jy3Qdl9kz5KEZJQouYv
+         shBA==
+X-Gm-Message-State: AOAM532UL8l3lya2R9m0XfttgLQG2JIXc9J4L4HeBYf4H4HUgtzsY5eg
+        QxXpV/m8WHbm+I2OZJuStSxDNpn3KvE=
+X-Google-Smtp-Source: ABdhPJzPPD5FYtvWKbpRa9qB0kCASYkqtaVWxPZuIFeF8V5t1el23qhcHAmjRSJgIVs+Irv03CnhMw==
+X-Received: by 2002:a2e:9189:: with SMTP id f9mr874781ljg.295.1604584716456;
+        Thu, 05 Nov 2020 05:58:36 -0800 (PST)
+Received: from [192.168.2.145] (109-252-192-83.dynamic.spd-mgts.ru. [109.252.192.83])
+        by smtp.googlemail.com with ESMTPSA id a15sm190343lfi.165.2020.11.05.05.58.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2020 05:58:35 -0800 (PST)
+Subject: Re: [PATCH v3] mfd: tps65910: Correct power-off programming sequence
+To:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+Cc:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Zack Pearsall <zpearsall@yahoo.com>,
+        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20201104134408.19911-1-digetx@gmail.com>
+ <20201105013319.GA17266@qmqm.qmqm.pl>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <d0f435c7-6c58-b9af-8b08-934ee63e54cf@gmail.com>
+Date:   Thu, 5 Nov 2020 16:58:35 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <20201105013319.GA17266@qmqm.qmqm.pl>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-dss_mgr_ops was needed with the multi-module architecture, but is no
-longer needed. We can thus remove it and use direct calls.
+05.11.2020 04:33, Michał Mirosław пишет:
+> On Wed, Nov 04, 2020 at 04:44:08PM +0300, Dmitry Osipenko wrote:
+>> This patch fixes system shutdown on a devices that use TPS65910 as a
+>> system's power controller. In accordance to the TPS65910 datasheet, the
+>> PMIC's state-machine transitions into the OFF state only when DEV_OFF
+>> bit of DEVCTRL_REG is set. The ON / SLEEP states also should be cleared,
+>> otherwise PMIC won't get into a proper state on shutdown. Devices like
+>> Nexus 7 tablet and Ouya game console are now shutting down properly.
+> [...]
+> 
+> You might want to rebase on https://lkml.org/lkml/2020/9/26/397 as it's
+> probably going to be accepted shortly. This just means replacing
+> register accesses: tps65910_reg_*() -> regmap_*().
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
----
- drivers/gpu/drm/omapdrm/dss/dss.h     |  1 -
- drivers/gpu/drm/omapdrm/dss/omapdss.h | 42 +++++++++++----------------
- drivers/gpu/drm/omapdrm/dss/output.c  | 33 +++++----------------
- drivers/gpu/drm/omapdrm/omap_crtc.c   | 38 +++++-------------------
- drivers/gpu/drm/omapdrm/omap_crtc.h   |  2 --
- drivers/gpu/drm/omapdrm/omap_drv.c    |  4 +--
- 6 files changed, 33 insertions(+), 87 deletions(-)
-
-diff --git a/drivers/gpu/drm/omapdrm/dss/dss.h b/drivers/gpu/drm/omapdrm/dss/dss.h
-index 96f702314c8c..a547527bb2f3 100644
---- a/drivers/gpu/drm/omapdrm/dss/dss.h
-+++ b/drivers/gpu/drm/omapdrm/dss/dss.h
-@@ -257,7 +257,6 @@ struct dss_device {
- 	struct dss_pll	*video2_pll;
- 
- 	struct dispc_device *dispc;
--	const struct dss_mgr_ops *mgr_ops;
- 	struct omap_drm_private *mgr_ops_priv;
- };
- 
-diff --git a/drivers/gpu/drm/omapdrm/dss/omapdss.h b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-index fba5f05e5e48..9df322ca467d 100644
---- a/drivers/gpu/drm/omapdrm/dss/omapdss.h
-+++ b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-@@ -338,31 +338,23 @@ enum dss_writeback_channel {
- 	DSS_WB_LCD3_MGR =	7,
- };
- 
--struct dss_mgr_ops {
--	void (*start_update)(struct omap_drm_private *priv,
--			     enum omap_channel channel);
--	int (*enable)(struct omap_drm_private *priv,
--		      enum omap_channel channel);
--	void (*disable)(struct omap_drm_private *priv,
--			enum omap_channel channel);
--	void (*set_timings)(struct omap_drm_private *priv,
--			    enum omap_channel channel,
--			    const struct videomode *vm);
--	void (*set_lcd_config)(struct omap_drm_private *priv,
--			       enum omap_channel channel,
--			       const struct dss_lcd_mgr_config *config);
--	int (*register_framedone_handler)(struct omap_drm_private *priv,
--			enum omap_channel channel,
--			void (*handler)(void *), void *data);
--	void (*unregister_framedone_handler)(struct omap_drm_private *priv,
--			enum omap_channel channel,
--			void (*handler)(void *), void *data);
--};
--
--int dss_install_mgr_ops(struct dss_device *dss,
--			const struct dss_mgr_ops *mgr_ops,
--			struct omap_drm_private *priv);
--void dss_uninstall_mgr_ops(struct dss_device *dss);
-+void omap_crtc_dss_start_update(struct omap_drm_private *priv,
-+				       enum omap_channel channel);
-+void omap_crtc_set_enabled(struct drm_crtc *crtc, bool enable);
-+int omap_crtc_dss_enable(struct omap_drm_private *priv, enum omap_channel channel);
-+void omap_crtc_dss_disable(struct omap_drm_private *priv, enum omap_channel channel);
-+void omap_crtc_dss_set_timings(struct omap_drm_private *priv,
-+		enum omap_channel channel,
-+		const struct videomode *vm);
-+void omap_crtc_dss_set_lcd_config(struct omap_drm_private *priv,
-+		enum omap_channel channel,
-+		const struct dss_lcd_mgr_config *config);
-+int omap_crtc_dss_register_framedone(
-+		struct omap_drm_private *priv, enum omap_channel channel,
-+		void (*handler)(void *), void *data);
-+void omap_crtc_dss_unregister_framedone(
-+		struct omap_drm_private *priv, enum omap_channel channel,
-+		void (*handler)(void *), void *data);
- 
- void dss_mgr_set_timings(struct omap_dss_device *dssdev,
- 		const struct videomode *vm);
-diff --git a/drivers/gpu/drm/omapdrm/dss/output.c b/drivers/gpu/drm/omapdrm/dss/output.c
-index 7a14d2b5b2f7..2121c947947b 100644
---- a/drivers/gpu/drm/omapdrm/dss/output.c
-+++ b/drivers/gpu/drm/omapdrm/dss/output.c
-@@ -81,54 +81,35 @@ void omapdss_device_cleanup_output(struct omap_dss_device *out)
- 					out->next_bridge : out->bridge);
- }
- 
--int dss_install_mgr_ops(struct dss_device *dss,
--			const struct dss_mgr_ops *mgr_ops,
--			struct omap_drm_private *priv)
--{
--	if (dss->mgr_ops)
--		return -EBUSY;
--
--	dss->mgr_ops = mgr_ops;
--	dss->mgr_ops_priv = priv;
--
--	return 0;
--}
--
--void dss_uninstall_mgr_ops(struct dss_device *dss)
--{
--	dss->mgr_ops = NULL;
--	dss->mgr_ops_priv = NULL;
--}
--
- void dss_mgr_set_timings(struct omap_dss_device *dssdev,
- 			 const struct videomode *vm)
- {
--	dssdev->dss->mgr_ops->set_timings(dssdev->dss->mgr_ops_priv,
-+	omap_crtc_dss_set_timings(dssdev->dss->mgr_ops_priv,
- 					  dssdev->dispc_channel, vm);
- }
- 
- void dss_mgr_set_lcd_config(struct omap_dss_device *dssdev,
- 		const struct dss_lcd_mgr_config *config)
- {
--	dssdev->dss->mgr_ops->set_lcd_config(dssdev->dss->mgr_ops_priv,
-+	omap_crtc_dss_set_lcd_config(dssdev->dss->mgr_ops_priv,
- 					     dssdev->dispc_channel, config);
- }
- 
- int dss_mgr_enable(struct omap_dss_device *dssdev)
- {
--	return dssdev->dss->mgr_ops->enable(dssdev->dss->mgr_ops_priv,
-+	return omap_crtc_dss_enable(dssdev->dss->mgr_ops_priv,
- 					    dssdev->dispc_channel);
- }
- 
- void dss_mgr_disable(struct omap_dss_device *dssdev)
- {
--	dssdev->dss->mgr_ops->disable(dssdev->dss->mgr_ops_priv,
-+	omap_crtc_dss_disable(dssdev->dss->mgr_ops_priv,
- 				      dssdev->dispc_channel);
- }
- 
- void dss_mgr_start_update(struct omap_dss_device *dssdev)
- {
--	dssdev->dss->mgr_ops->start_update(dssdev->dss->mgr_ops_priv,
-+	omap_crtc_dss_start_update(dssdev->dss->mgr_ops_priv,
- 					   dssdev->dispc_channel);
- }
- 
-@@ -137,7 +118,7 @@ int dss_mgr_register_framedone_handler(struct omap_dss_device *dssdev,
- {
- 	struct dss_device *dss = dssdev->dss;
- 
--	return dss->mgr_ops->register_framedone_handler(dss->mgr_ops_priv,
-+	return omap_crtc_dss_register_framedone(dss->mgr_ops_priv,
- 							dssdev->dispc_channel,
- 							handler, data);
- }
-@@ -147,7 +128,7 @@ void dss_mgr_unregister_framedone_handler(struct omap_dss_device *dssdev,
- {
- 	struct dss_device *dss = dssdev->dss;
- 
--	dss->mgr_ops->unregister_framedone_handler(dss->mgr_ops_priv,
-+	omap_crtc_dss_unregister_framedone(dss->mgr_ops_priv,
- 						   dssdev->dispc_channel,
- 						   handler, data);
- }
-diff --git a/drivers/gpu/drm/omapdrm/omap_crtc.c b/drivers/gpu/drm/omapdrm/omap_crtc.c
-index 0bf5cef579b5..e3259338afb9 100644
---- a/drivers/gpu/drm/omapdrm/omap_crtc.c
-+++ b/drivers/gpu/drm/omapdrm/omap_crtc.c
-@@ -100,14 +100,14 @@ int omap_crtc_wait_pending(struct drm_crtc *crtc)
-  * the upstream part of the video pipe.
-  */
- 
--static void omap_crtc_dss_start_update(struct omap_drm_private *priv,
-+void omap_crtc_dss_start_update(struct omap_drm_private *priv,
- 				       enum omap_channel channel)
- {
- 	dispc_mgr_enable(priv->dispc, channel, true);
- }
- 
- /* Called only from the encoder enable/disable and suspend/resume handlers. */
--static void omap_crtc_set_enabled(struct drm_crtc *crtc, bool enable)
-+void omap_crtc_set_enabled(struct drm_crtc *crtc, bool enable)
- {
- 	struct omap_crtc_state *omap_state = to_omap_crtc_state(crtc->state);
- 	struct drm_device *dev = crtc->dev;
-@@ -180,8 +180,7 @@ static void omap_crtc_set_enabled(struct drm_crtc *crtc, bool enable)
- }
- 
- 
--static int omap_crtc_dss_enable(struct omap_drm_private *priv,
--				enum omap_channel channel)
-+int omap_crtc_dss_enable(struct omap_drm_private *priv, enum omap_channel channel)
- {
- 	struct drm_crtc *crtc = priv->channels[channel]->crtc;
- 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
-@@ -193,8 +192,7 @@ static int omap_crtc_dss_enable(struct omap_drm_private *priv,
- 	return 0;
- }
- 
--static void omap_crtc_dss_disable(struct omap_drm_private *priv,
--				  enum omap_channel channel)
-+void omap_crtc_dss_disable(struct omap_drm_private *priv, enum omap_channel channel)
- {
- 	struct drm_crtc *crtc = priv->channels[channel]->crtc;
- 	struct omap_crtc *omap_crtc = to_omap_crtc(crtc);
-@@ -202,7 +200,7 @@ static void omap_crtc_dss_disable(struct omap_drm_private *priv,
- 	omap_crtc_set_enabled(&omap_crtc->base, false);
- }
- 
--static void omap_crtc_dss_set_timings(struct omap_drm_private *priv,
-+void omap_crtc_dss_set_timings(struct omap_drm_private *priv,
- 		enum omap_channel channel,
- 		const struct videomode *vm)
- {
-@@ -213,7 +211,7 @@ static void omap_crtc_dss_set_timings(struct omap_drm_private *priv,
- 	omap_crtc->vm = *vm;
- }
- 
--static void omap_crtc_dss_set_lcd_config(struct omap_drm_private *priv,
-+void omap_crtc_dss_set_lcd_config(struct omap_drm_private *priv,
- 		enum omap_channel channel,
- 		const struct dss_lcd_mgr_config *config)
- {
-@@ -225,7 +223,7 @@ static void omap_crtc_dss_set_lcd_config(struct omap_drm_private *priv,
- 					    config);
- }
- 
--static int omap_crtc_dss_register_framedone(
-+int omap_crtc_dss_register_framedone(
- 		struct omap_drm_private *priv, enum omap_channel channel,
- 		void (*handler)(void *), void *data)
- {
-@@ -244,7 +242,7 @@ static int omap_crtc_dss_register_framedone(
- 	return 0;
- }
- 
--static void omap_crtc_dss_unregister_framedone(
-+void omap_crtc_dss_unregister_framedone(
- 		struct omap_drm_private *priv, enum omap_channel channel,
- 		void (*handler)(void *), void *data)
- {
-@@ -261,16 +259,6 @@ static void omap_crtc_dss_unregister_framedone(
- 	omap_crtc->framedone_handler_data = NULL;
- }
- 
--static const struct dss_mgr_ops mgr_ops = {
--	.start_update = omap_crtc_dss_start_update,
--	.enable = omap_crtc_dss_enable,
--	.disable = omap_crtc_dss_disable,
--	.set_timings = omap_crtc_dss_set_timings,
--	.set_lcd_config = omap_crtc_dss_set_lcd_config,
--	.register_framedone_handler = omap_crtc_dss_register_framedone,
--	.unregister_framedone_handler = omap_crtc_dss_unregister_framedone,
--};
--
- /* -----------------------------------------------------------------------------
-  * Setup, Flush and Page Flip
-  */
-@@ -753,16 +741,6 @@ static const char *channel_names[] = {
- 	[OMAP_DSS_CHANNEL_LCD3] = "lcd3",
- };
- 
--void omap_crtc_pre_init(struct omap_drm_private *priv)
--{
--	dss_install_mgr_ops(priv->dss, &mgr_ops, priv);
--}
--
--void omap_crtc_pre_uninit(struct omap_drm_private *priv)
--{
--	dss_uninstall_mgr_ops(priv->dss);
--}
--
- /* initialize crtc */
- struct drm_crtc *omap_crtc_init(struct drm_device *dev,
- 				struct omap_drm_pipeline *pipe,
-diff --git a/drivers/gpu/drm/omapdrm/omap_crtc.h b/drivers/gpu/drm/omapdrm/omap_crtc.h
-index 2fd57751ae2b..a8b9cbee86e0 100644
---- a/drivers/gpu/drm/omapdrm/omap_crtc.h
-+++ b/drivers/gpu/drm/omapdrm/omap_crtc.h
-@@ -22,8 +22,6 @@ struct videomode;
- 
- struct videomode *omap_crtc_timings(struct drm_crtc *crtc);
- enum omap_channel omap_crtc_channel(struct drm_crtc *crtc);
--void omap_crtc_pre_init(struct omap_drm_private *priv);
--void omap_crtc_pre_uninit(struct omap_drm_private *priv);
- struct drm_crtc *omap_crtc_init(struct drm_device *dev,
- 				struct omap_drm_pipeline *pipe,
- 				struct drm_plane *plane);
-diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
-index eb419387ed05..c5b2f50439d6 100644
---- a/drivers/gpu/drm/omapdrm/omap_drv.c
-+++ b/drivers/gpu/drm/omapdrm/omap_drv.c
-@@ -581,7 +581,7 @@ static int omapdrm_init(struct omap_drm_private *priv, struct device *dev)
- 	priv->dss = pdata->dss;
- 	priv->dispc = dispc_get_dispc(priv->dss);
- 
--	omap_crtc_pre_init(priv);
-+	priv->dss->mgr_ops_priv = priv;
- 
- 	soc = soc_device_match(omapdrm_soc_devices);
- 	priv->omaprev = soc ? (unsigned int)soc->data : 0;
-@@ -634,7 +634,6 @@ static int omapdrm_init(struct omap_drm_private *priv, struct device *dev)
- 	omap_gem_deinit(ddev);
- 	destroy_workqueue(priv->wq);
- 	omap_disconnect_pipelines(ddev);
--	omap_crtc_pre_uninit(priv);
- 	drm_dev_put(ddev);
- 	return ret;
- }
-@@ -660,7 +659,6 @@ static void omapdrm_cleanup(struct omap_drm_private *priv)
- 	destroy_workqueue(priv->wq);
- 
- 	omap_disconnect_pipelines(ddev);
--	omap_crtc_pre_uninit(priv);
- 
- 	drm_dev_put(ddev);
- }
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
+I'll update this patch once yours series will hit linux-next, thanks!
