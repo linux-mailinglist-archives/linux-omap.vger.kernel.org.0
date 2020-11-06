@@ -2,29 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E0792A8E8B
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Nov 2020 06:05:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E4492A8E8C
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Nov 2020 06:08:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725440AbgKFFFg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Nov 2020 00:05:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40258 "EHLO
+        id S1725616AbgKFFIO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Nov 2020 00:08:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgKFFFg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Nov 2020 00:05:36 -0500
+        with ESMTP id S1725306AbgKFFIN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Nov 2020 00:08:13 -0500
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBDA4C0613CF
-        for <linux-omap@vger.kernel.org>; Thu,  5 Nov 2020 21:05:33 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C54CC0613CF
+        for <linux-omap@vger.kernel.org>; Thu,  5 Nov 2020 21:08:13 -0800 (PST)
 Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 25383B16;
-        Fri,  6 Nov 2020 06:05:32 +0100 (CET)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id DF45BB16;
+        Fri,  6 Nov 2020 06:08:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1604639132;
-        bh=iL8lBi1i9Uav/IZw5nJecy2vntnUbCXGe3EFaOEHte4=;
+        s=mail; t=1604639292;
+        bh=EvGcaW0gKHQgA1E5M/q/O1AdjNDbdASwjkVEuH4XRA8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=sOv5SwBEm5fRlCn6jXhvWM02yVbczyQaArWUphvbq8WQXccb46w8Jj/mkDZQaZ7Ih
-         0e28Hp7nfrxZRY2sF0XJxJDpLzJ0hbwCaxD4CSn2mqPn9eNULF0f+4xfYR+DsAvZpx
-         OexqgYAX5vN2Caqmp76+rbk3KsS7QpZRAafiNQ84=
-Date:   Fri, 6 Nov 2020 07:05:30 +0200
+        b=PBkohtGDV0mwqYG4ksxp/HPMOO/6A0gw5OlnhUCKJMqkKH1V7s81n2985T4Le9KmT
+         MJXZEmCgzeffJAadPnSIpEHMeZ4ZoB9e52AQRF8NvOCKD0saKrJXaNDAGSTUp79O29
+         RSvbK27Q3tMoh0FyquSre2rZfSVt+la6mfqQ5pUs=
+Date:   Fri, 6 Nov 2020 07:08:10 +0200
 From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
 Cc:     Sebastian Reichel <sre@kernel.org>,
@@ -33,14 +33,14 @@ Cc:     Sebastian Reichel <sre@kernel.org>,
         Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
         "H . Nikolaus Schaller" <hns@goldelico.com>,
         Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v3 06/56] drm/omap: dsi: add generic transfer function
-Message-ID: <20201106050530.GA25769@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v3 07/56] drm/omap: panel-dsi-cm: convert to transfer API
+Message-ID: <20201106050810.GB25769@pendragon.ideasonboard.com>
 References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
- <20201105120333.947408-7-tomi.valkeinen@ti.com>
+ <20201105120333.947408-8-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201105120333.947408-7-tomi.valkeinen@ti.com>
+In-Reply-To: <20201105120333.947408-8-tomi.valkeinen@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -49,117 +49,233 @@ Hi Tomi and Sebastian,
 
 Thank you for the patch.
 
-On Thu, Nov 05, 2020 at 02:02:43PM +0200, Tomi Valkeinen wrote:
+On Thu, Nov 05, 2020 at 02:02:44PM +0200, Tomi Valkeinen wrote:
 > From: Sebastian Reichel <sebastian.reichel@collabora.com>
 > 
-> This prepares the driver for becoming a mipi_dsi_host implementation,
-> which provides a generic transfer function instead of all kind of
-> different read/write functions. The implementation will become more
-> elegant after unexporting the specific functions in the following
-> patches.
+> This converts the panel-dsi-cm driver to use the transfer
+> API instead of specific functions, so that the specific
+> functions can be unexported and squashed into the generic
+> transfer function.
 > 
 > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+
+There are a few very minor comments I would have made below, but as this
+file is going away later in this series, it doesn't matter.
+
+Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
 > ---
->  drivers/gpu/drm/omapdrm/dss/dsi.c     | 54 +++++++++++++++++++++++++++
->  drivers/gpu/drm/omapdrm/dss/omapdss.h |  3 ++
->  2 files changed, 57 insertions(+)
+>  .../gpu/drm/omapdrm/displays/panel-dsi-cm.c   | 132 +++++++++++++-----
+>  1 file changed, 95 insertions(+), 37 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> index 22d74d762a10..59a62d1d41cb 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> @@ -4842,6 +4842,58 @@ static void dsi_release_vc(struct omap_dss_device *dssdev, int channel)
->  	}
+> diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+> index b8f3a7aacbf4..8b2e80129bd8 100644
+> --- a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+> +++ b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+> @@ -140,45 +140,61 @@ static void hw_guard_wait(struct panel_drv_data *ddata)
+>  static int dsicm_dcs_read_1(struct panel_drv_data *ddata, u8 dcs_cmd, u8 *data)
+>  {
+>  	struct omap_dss_device *src = ddata->src;
+> -	int r;
+> -	u8 buf[1];
+> -
+> -	r = src->ops->dsi.dcs_read(src, ddata->channel, dcs_cmd, buf, 1);
+> -
+> -	if (r < 0)
+> -		return r;
+> -
+> -	*data = buf[0];
+> +	const struct mipi_dsi_msg msg = {
+> +		.channel = ddata->channel,
+> +		.type = MIPI_DSI_DCS_READ,
+> +		.tx_len = 1,
+> +		.tx_buf = &dcs_cmd,
+> +		.rx_len = 1,
+> +		.rx_buf = data
+> +	};
+>  
+> -	return 0;
+> +	return src->ops->dsi.transfer(src, &msg);
 >  }
 >  
-> +static ssize_t omap_dsi_transfer(struct omap_dss_device *dssdev,
-> +				 const struct mipi_dsi_msg *msg)
-> +{
-> +	/*
-> +	 * no_sync can be used to optimize performance by sending e.g. column
-
-Can we start this with "TODO: no_sync can ..." to make it standout as
-something to be addressed ?
-
-> +	 * and page information without syncing in between. It's not absolutley
-
-s/absolutley/absolutely/
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-> +	 * required, so postpone this feature for now.
-> +	 */
-> +	bool no_sync = false;
-> +	u16 val;
-> +
-> +	switch (msg->type) {
-> +	case MIPI_DSI_GENERIC_SHORT_WRITE_0_PARAM:
-> +	case MIPI_DSI_GENERIC_SHORT_WRITE_1_PARAM:
-> +	case MIPI_DSI_GENERIC_SHORT_WRITE_2_PARAM:
-> +	case MIPI_DSI_GENERIC_LONG_WRITE:
-> +		if (no_sync)
-> +			return dsi_vc_generic_write_nosync(dssdev, msg->channel,
-> +							   msg->tx_buf,
-> +							   msg->tx_len);
-> +		else
-> +			return dsi_vc_generic_write(dssdev, msg->channel,
-> +						    msg->tx_buf, msg->tx_len);
-> +	case MIPI_DSI_DCS_SHORT_WRITE:
-> +	case MIPI_DSI_DCS_SHORT_WRITE_PARAM:
-> +	case MIPI_DSI_DCS_LONG_WRITE:
-> +		if (no_sync)
-> +			return dsi_vc_dcs_write_nosync(dssdev, msg->channel,
-> +						       msg->tx_buf,
-> +						       msg->tx_len);
-> +		else
-> +			return dsi_vc_dcs_write(dssdev, msg->channel,
-> +						msg->tx_buf, msg->tx_len);
-> +	case MIPI_DSI_GENERIC_READ_REQUEST_0_PARAM:
-> +	case MIPI_DSI_GENERIC_READ_REQUEST_1_PARAM:
-> +	case MIPI_DSI_GENERIC_READ_REQUEST_2_PARAM:
-> +		return dsi_vc_generic_read(dssdev, msg->channel,
-> +					   msg->tx_buf, msg->tx_len,
-> +					   msg->rx_buf, msg->rx_len);
-> +	case MIPI_DSI_DCS_READ:
-> +		return dsi_vc_dcs_read(dssdev, msg->channel,
-> +				       ((u8 *)msg->tx_buf)[0],
-> +				       msg->rx_buf, msg->rx_len);
-> +	case MIPI_DSI_SET_MAXIMUM_RETURN_PACKET_SIZE:
-> +		val = le16_to_cpu(*((__le16 *)msg->tx_buf));
-> +		return dsi_vc_set_max_rx_packet_size(dssdev, msg->channel, val);
-> +	case MIPI_DSI_NULL_PACKET:
-> +		return dsi_vc_send_null(to_dsi_data(dssdev), msg->channel);
-> +	}
-> +
-> +	return -EINVAL;
-> +}
->  
->  static int dsi_get_clocks(struct dsi_data *dsi)
+>  static int dsicm_dcs_write_0(struct panel_drv_data *ddata, u8 dcs_cmd)
 >  {
-> @@ -4896,6 +4948,8 @@ static const struct omap_dss_device_ops dsi_ops = {
->  		.set_vc_id = dsi_set_vc_id,
->  		.release_vc = dsi_release_vc,
+>  	struct omap_dss_device *src = ddata->src;
+> +	const struct mipi_dsi_msg msg = {
+> +		.channel = ddata->channel,
+> +		.type = MIPI_DSI_DCS_SHORT_WRITE,
+> +		.tx_buf = &dcs_cmd,
+> +		.tx_len = 1,
+> +	};
 >  
-> +		.transfer = omap_dsi_transfer,
-> +
->  		.dcs_write = dsi_vc_dcs_write,
->  		.dcs_write_nosync = dsi_vc_dcs_write_nosync,
->  		.dcs_read = dsi_vc_dcs_read,
-> diff --git a/drivers/gpu/drm/omapdrm/dss/omapdss.h b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-> index 8e96ab2f20b6..654618e5a4e5 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/omapdss.h
-> +++ b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-> @@ -308,6 +308,9 @@ struct omapdss_dsi_ops {
->  	void (*release_vc)(struct omap_dss_device *dssdev, int channel);
+> -	return src->ops->dsi.dcs_write(src, ddata->channel, &dcs_cmd, 1);
+> +	return src->ops->dsi.transfer(src, &msg);
+>  }
 >  
->  	/* data transfer */
-> +	ssize_t (*transfer)(struct omap_dss_device *dssdev,
-> +			    const struct mipi_dsi_msg *msg);
+>  static int dsicm_dcs_write_1(struct panel_drv_data *ddata, u8 dcs_cmd, u8 param)
+>  {
+>  	struct omap_dss_device *src = ddata->src;
+> -	u8 buf[2] = { dcs_cmd, param };
+> +	const u8 buf[] = { dcs_cmd, param };
+> +	const struct mipi_dsi_msg msg = {
+> +		.channel = ddata->channel,
+> +		.type = MIPI_DSI_DCS_SHORT_WRITE_PARAM,
+> +		.tx_buf = &buf,
+> +		.tx_len = 2,
+> +	};
+>  
+> -	return src->ops->dsi.dcs_write(src, ddata->channel, buf, 2);
+> +	return src->ops->dsi.transfer(src, &msg);
+>  }
+>  
+>  static int dsicm_sleep_in(struct panel_drv_data *ddata)
+>  
+>  {
+>  	struct omap_dss_device *src = ddata->src;
+> -	u8 cmd;
+>  	int r;
+> +	const u8 cmd = MIPI_DCS_ENTER_SLEEP_MODE;
+> +	const struct mipi_dsi_msg msg = {
+> +		.channel = ddata->channel,
+> +		.type = MIPI_DSI_DCS_SHORT_WRITE,
+> +		.tx_buf = &cmd,
+> +		.tx_len = 1,
+> +	};
+>  
+>  	hw_guard_wait(ddata);
+>  
+> -	cmd = MIPI_DCS_ENTER_SLEEP_MODE;
+> -	r = src->ops->dsi.dcs_write_nosync(src, ddata->channel, &cmd, 1);
+> +	r = src->ops->dsi.transfer(src, &msg);
+>  	if (r)
+>  		return r;
+>  
+> @@ -233,28 +249,43 @@ static int dsicm_set_update_window(struct panel_drv_data *ddata,
+>  	u16 y1 = y;
+>  	u16 y2 = y + h - 1;
+>  
+> -	u8 buf[5];
+> -	buf[0] = MIPI_DCS_SET_COLUMN_ADDRESS;
+> -	buf[1] = (x1 >> 8) & 0xff;
+> -	buf[2] = (x1 >> 0) & 0xff;
+> -	buf[3] = (x2 >> 8) & 0xff;
+> -	buf[4] = (x2 >> 0) & 0xff;
+> +	const u8 paramX[] = {
+> +		MIPI_DCS_SET_COLUMN_ADDRESS,
+> +		(x1 >> 8) & 0xff,
+> +		(x1 >> 0) & 0xff,
+> +		(x2 >> 8) & 0xff,
+> +		(x2 >> 0) & 0xff,
+> +	};
+>  
+> -	r = src->ops->dsi.dcs_write_nosync(src, ddata->channel, buf, sizeof(buf));
+> -	if (r)
+> -		return r;
+> +	const struct mipi_dsi_msg msgX = {
+> +		.channel = ddata->channel,
+> +		.type = MIPI_DSI_GENERIC_LONG_WRITE,
+> +		.tx_buf = paramX,
+> +		.tx_len = 5,
+> +	};
 > +
->  	int (*dcs_write)(struct omap_dss_device *dssdev, int channel,
->  			const u8 *data, int len);
->  	int (*dcs_write_nosync)(struct omap_dss_device *dssdev, int channel,
+> +	const u8 paramY[] = {
+> +		MIPI_DCS_SET_PAGE_ADDRESS,
+> +		(y1 >> 8) & 0xff,
+> +		(y1 >> 0) & 0xff,
+> +		(y2 >> 8) & 0xff,
+> +		(y2 >> 0) & 0xff,
+> +	};
+>  
+> -	buf[0] = MIPI_DCS_SET_PAGE_ADDRESS;
+> -	buf[1] = (y1 >> 8) & 0xff;
+> -	buf[2] = (y1 >> 0) & 0xff;
+> -	buf[3] = (y2 >> 8) & 0xff;
+> -	buf[4] = (y2 >> 0) & 0xff;
+> +	const struct mipi_dsi_msg msgY = {
+> +		.channel = ddata->channel,
+> +		.type = MIPI_DSI_GENERIC_LONG_WRITE,
+> +		.tx_buf = paramY,
+> +		.tx_len = 5,
+> +	};
+>  
+> -	r = src->ops->dsi.dcs_write_nosync(src, ddata->channel, buf, sizeof(buf));
+> +	r = src->ops->dsi.transfer(src, &msgX);
+>  	if (r)
+>  		return r;
+>  
+> -	src->ops->dsi.bta_sync(src, ddata->channel);
+> +	r = src->ops->dsi.transfer(src, &msgY);
+> +	if (r)
+> +		return r;
+>  
+>  	return r;
+>  }
+> @@ -991,6 +1022,27 @@ static int dsicm_get_te(struct omap_dss_device *dssdev)
+>  	return r;
+>  }
+>  
+> +static int dsicm_set_max_rx_packet_size(struct omap_dss_device *dssdev,
+> +					u16 size)
+> +{
+> +	struct panel_drv_data *ddata = to_panel_data(dssdev);
+> +	struct omap_dss_device *src = ddata->src;
+> +
+> +	const u8 buf[] = {
+> +		size & 0xff,
+> +		size >> 8 & 0xff,
+> +	};
+> +
+> +	const struct mipi_dsi_msg msg = {
+> +		.channel = ddata->channel,
+> +		.type = MIPI_DSI_SET_MAXIMUM_RETURN_PACKET_SIZE,
+> +		.tx_buf = buf,
+> +		.tx_len = 2,
+> +	};
+> +
+> +	return src->ops->dsi.transfer(src, &msg);
+> +}
+> +
+>  static int dsicm_memory_read(struct omap_dss_device *dssdev,
+>  		void *buf, size_t size,
+>  		u16 x, u16 y, u16 w, u16 h)
+> @@ -1031,17 +1083,23 @@ static int dsicm_memory_read(struct omap_dss_device *dssdev,
+>  
+>  	dsicm_set_update_window(ddata, x, y, w, h);
+>  
+> -	r = src->ops->dsi.set_max_rx_packet_size(src, ddata->channel, plen);
+> +	r = dsicm_set_max_rx_packet_size(dssdev, plen);
+>  	if (r)
+>  		goto err2;
+>  
+>  	while (buf_used < size) {
+>  		u8 dcs_cmd = first ? 0x2e : 0x3e;
+> +		const struct mipi_dsi_msg msg = {
+> +			.channel = ddata->channel,
+> +			.type = MIPI_DSI_DCS_READ,
+> +			.tx_buf = &dcs_cmd,
+> +			.tx_len = 1,
+> +			.rx_buf = buf + buf_used,
+> +			.rx_len = size - buf_used,
+> +		};
+>  		first = 0;
+>  
+> -		r = src->ops->dsi.dcs_read(src, ddata->channel, dcs_cmd,
+> -				buf + buf_used, size - buf_used);
+> -
+> +		r = src->ops->dsi.transfer(src, &msg);
+>  		if (r < 0) {
+>  			dev_err(dssdev->dev, "read error\n");
+>  			goto err3;
+> @@ -1065,7 +1123,7 @@ static int dsicm_memory_read(struct omap_dss_device *dssdev,
+>  	r = buf_used;
+>  
+>  err3:
+> -	src->ops->dsi.set_max_rx_packet_size(src, ddata->channel, 1);
+> +	dsicm_set_max_rx_packet_size(dssdev, 1);
+>  err2:
+>  	src->ops->dsi.bus_unlock(src);
+>  err1:
 
 -- 
 Regards,
