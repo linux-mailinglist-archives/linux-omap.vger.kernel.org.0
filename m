@@ -2,110 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 121142A8E1E
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Nov 2020 05:14:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B968D2A8E72
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Nov 2020 05:41:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725828AbgKFEOs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Nov 2020 23:14:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60690 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725815AbgKFEOs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Nov 2020 23:14:48 -0500
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23766C0613CF
-        for <linux-omap@vger.kernel.org>; Thu,  5 Nov 2020 20:14:48 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id t22so62143plr.9
-        for <linux-omap@vger.kernel.org>; Thu, 05 Nov 2020 20:14:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=yo3AW3Al21SU/5tsHqsd5ykrA2rze4CjwWzLUbsw78k=;
-        b=suixD1TtCdQB6b0br0QxOvj74GH2MPhsxmA04eVKHkV9MLXcQ9E87ob1nDb/ZF8Pfy
-         spDPe/8bfSKj0wy1hWCjVf8KzCfbcqEZZSjM0mM2xUidXJ0isM7luLEV6oK0vSD9PHdM
-         qoSeBNf7xR7BISYqfABAynzTirWqFJ367b9gG+ZAuH/YB+b/LtyF6yJ+6XncGmYUpNUD
-         9uOlKb4PQA3UsL/f6Xh8wQ/jstlaaLt79gNkt9K4v+i6Rx5p1gdX14SF/0JZtP4AAW+Y
-         msvJA3OWuSHluJpM6ReblkRkxNs0Jg1HL2dyRam7lDBilfEv4ekA1JnRXqKhCDjENI0n
-         HXlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=yo3AW3Al21SU/5tsHqsd5ykrA2rze4CjwWzLUbsw78k=;
-        b=JB+Zw3GCZHQk153Em61+hYgRZIwUuvhvVI9vHaKsHFGDSYesiT6X50xK082guCnepi
-         hzXcqmGZfFMKxcusgxHZBgT0c9b39uOQtfi0pC4xA7gRvKF/CpN07sAUt78NjXTVSOqG
-         DeHozV9XakIEynS55fwQMN0f7+HXezMfz4eAImHFVw8z3dQ5k94VkZk0GxmCb/6rJCgZ
-         lQJ5RB3bmNhm4WYaEeSrZ+xTX4A6HVpkFLjORkZJUQoGwkKwm6MNXH0V4IZ2aRNiLZTJ
-         GgGMQwIVIiGxYB5/Y4oMlyaVFruueeaJ5ZblhmUzZkOhOGJQYQsfs36ivEcK1Woq4GIy
-         /SEQ==
-X-Gm-Message-State: AOAM5312dhz1wnaHpiNVSSsF4Q1bR5mo5AqzCpzyH/zfQK7/ywUgJIJB
-        ddNqewEZcliFcVHQCpiXQTwM4g==
-X-Google-Smtp-Source: ABdhPJz7Wzvu7Y2qs31wP/ioFNTCrcydLd+O+8Qt+NDYekXpmGTSjIL5tD8R9SW/WiDzKfMsziDBpA==
-X-Received: by 2002:a17:902:7487:b029:d6:c03b:bce4 with SMTP id h7-20020a1709027487b02900d6c03bbce4mr178476pll.36.1604636087566;
-        Thu, 05 Nov 2020 20:14:47 -0800 (PST)
-Received: from localhost ([122.172.12.172])
-        by smtp.gmail.com with ESMTPSA id b185sm4082621pgc.68.2020.11.05.20.14.46
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 05 Nov 2020 20:14:46 -0800 (PST)
-Date:   Fri, 6 Nov 2020 09:44:41 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     stephan@gerhold.net, rjw@rjwysocki.net, khilman@kernel.org,
-        ulf.hansson@linaro.org, vireshk@kernel.org, nm@ti.com,
-        sboyd@kernel.org, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, letux-kernel@openphoenux.org
-Subject: Re: [REGRESSION] opp: Allow dev_pm_opp_get_opp_table() to return
- -EPROBE_DEFER
-Message-ID: <20201106041441.uuz5vrtqeyn6ijdv@vireshk-i7>
-References: <20201106001018.02200778@aktux>
+        id S1726103AbgKFEla (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Nov 2020 23:41:30 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:59388 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725842AbgKFEla (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Nov 2020 23:41:30 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id CA4E5B16;
+        Fri,  6 Nov 2020 05:41:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1604637688;
+        bh=rMwUdWUtHi3sIZJYwTwbgP35duWhK1QVbKXTRTZIzDU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HRkdmtYzhrZdYAM9HC2zz7MP8M1+eGJtiAIQXOE60Q9vsg9t4N6tEeq8/PzW6O1U5
+         Et/7xznSGg1uS97+5maW/mMcZDIi5oXLGUgX6PYX0tj3tf1V5jYmfzP8lYhA04sEzp
+         vshw24H6tvWqRvRRPeUJW0wzmPMw3Ifg7Xe50olM=
+Date:   Fri, 6 Nov 2020 06:41:26 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Nikhil Devshatwar <nikhil.nd@ti.com>,
+        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: Re: [PATCH v3 01/56] drm/dsi: add MIPI_DSI_MODE_ULPS_IDLE
+Message-ID: <20201106044126.GB16469@pendragon.ideasonboard.com>
+References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
+ <20201105120333.947408-2-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201106001018.02200778@aktux>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <20201105120333.947408-2-tomi.valkeinen@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 06-11-20, 00:10, Andreas Kemnade wrote:
-> Hi,
-> 
-> On the GTA04 (DM3730, devicetree omap3-gta04*) I get my console flooded
-> up with the following:
-> [   24.517211] cpu cpu0: multiple regulators are not supported
-> [   24.523040] cpufreq: __target_index: Failed to change cpu frequency: -22
-> [   24.537231] ------------[ cut here ]------------
-> [   24.542083] WARNING: CPU: 0 PID: 5 at drivers/opp/core.c:678 dev_pm_opp_set_rate+0x23c/0x494
-> [   24.551086] Modules linked in: usb_f_ecm g_ether usb_f_rndis u_ether libcomposite configfs phy_twl4030_usb omap2430 musb_hdrc overlay
-> [   24.563842] CPU: 0 PID: 5 Comm: kworker/0:0 Tainted: G        W         5.9.0-rc1-00008-g629238068eb9 #14
-> [   24.573852] Hardware name: Generic OMAP36xx (Flattened Device Tree)
-> [   24.580413] Workqueue: events dbs_work_handler
-> [   24.585083] [<c010e6b4>] (unwind_backtrace) from [<c010a194>] (show_stack+0x10/0x14)
-> [   24.593200] [<c010a194>] (show_stack) from [<c0464ad0>] (dump_stack+0x8c/0xac)
-> [   24.600769] [<c0464ad0>] (dump_stack) from [<c01276a8>] (__warn+0xcc/0xe4)
-> [   24.608001] [<c01276a8>] (__warn) from [<c0127a3c>] (warn_slowpath_fmt+0x74/0xa0)
-> [   24.615844] [<c0127a3c>] (warn_slowpath_fmt) from [<c06364ac>] (dev_pm_opp_set_rate+0x23c/0x494)
-> [   24.625061] [<c06364ac>] (dev_pm_opp_set_rate) from [<c063ec08>] (set_target+0x2c/0x4c)
-> [   24.633453] [<c063ec08>] (set_target) from [<c063a950>] (__cpufreq_driver_target+0x190/0x22c)
-> [   24.642395] [<c063a950>] (__cpufreq_driver_target) from [<c063d4e0>] (od_dbs_update+0xcc/0x158)
-> [   24.651489] [<c063d4e0>] (od_dbs_update) from [<c063e090>] (dbs_work_handler+0x2c/0x54)
-> [   24.659881] [<c063e090>] (dbs_work_handler) from [<c013f71c>] (process_one_work+0x210/0x358)
-> [   24.668731] [<c013f71c>] (process_one_work) from [<c0140014>] (worker_thread+0x22c/0x2d0)
-> [   24.677307] [<c0140014>] (worker_thread) from [<c0144eac>] (kthread+0x140/0x14c)
-> [   24.685058] [<c0144eac>] (kthread) from [<c0100148>] (ret_from_fork+0x14/0x2c)
-> [   24.692626] Exception stack(0xde4b7fb0 to 0xde4b7ff8)
-> [   24.697906] 7fa0:                                     00000000 00000000 00000000 00000000
-> [   24.706481] 7fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-> [   24.715057] 7fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-> [   24.722198] ---[ end trace 038b3f231fae6f81 ]---
-> 
-> endlessly after the $subject commit. Any hints?
+Hi Tomi and Sebastian,
 
-The fix for this has been in linux-next for a couple of days and it
-made it to linus/master yesterday.
+Thank you for the patch.
 
-47efcbcb340c opp: Fix early exit from dev_pm_opp_register_set_opp_helper()
+On Thu, Nov 05, 2020 at 02:02:38PM +0200, Tomi Valkeinen wrote:
+> From: Sebastian Reichel <sebastian.reichel@collabora.com>
+> 
+> DSI command mode panels are self-refreshing displays, that
+> can be updated very rarely for static images. For this kind
+> of scenario some panels support, that the DSI bus switches
+> into ULPS mode until the panel needs to be refreshed.
+> 
+> This is problematic on some panels, so introduce a flag to
+> signal the DSI host implementation that the panel allows
+> going into ULPS mode.
+> 
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> ---
+>  include/drm/drm_mipi_dsi.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
+> index 360e6377e84b..f36f89c14b4a 100644
+> --- a/include/drm/drm_mipi_dsi.h
+> +++ b/include/drm/drm_mipi_dsi.h
+> @@ -132,6 +132,8 @@ struct mipi_dsi_host *of_find_mipi_dsi_host_by_node(struct device_node *node);
+>  #define MIPI_DSI_CLOCK_NON_CONTINUOUS	BIT(10)
+>  /* transmit data in low power */
+>  #define MIPI_DSI_MODE_LPM		BIT(11)
+> +/* allow going into ULPS mode while command mode panel is not updated */
+> +#define MIPI_DSI_MODE_ULPS_IDLE		BIT(12)
+>  
+>  enum mipi_dsi_pixel_format {
+>  	MIPI_DSI_FMT_RGB888,
 
 -- 
-viresh
+Regards,
+
+Laurent Pinchart
