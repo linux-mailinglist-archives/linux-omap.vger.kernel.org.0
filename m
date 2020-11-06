@@ -2,282 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E4492A8E8C
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Nov 2020 06:08:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD92C2A91AC
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Nov 2020 09:44:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725616AbgKFFIO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Nov 2020 00:08:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40662 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgKFFIN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Nov 2020 00:08:13 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C54CC0613CF
-        for <linux-omap@vger.kernel.org>; Thu,  5 Nov 2020 21:08:13 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id DF45BB16;
-        Fri,  6 Nov 2020 06:08:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1604639292;
-        bh=EvGcaW0gKHQgA1E5M/q/O1AdjNDbdASwjkVEuH4XRA8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PBkohtGDV0mwqYG4ksxp/HPMOO/6A0gw5OlnhUCKJMqkKH1V7s81n2985T4Le9KmT
-         MJXZEmCgzeffJAadPnSIpEHMeZ4ZoB9e52AQRF8NvOCKD0saKrJXaNDAGSTUp79O29
-         RSvbK27Q3tMoh0FyquSre2rZfSVt+la6mfqQ5pUs=
-Date:   Fri, 6 Nov 2020 07:08:10 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v3 07/56] drm/omap: panel-dsi-cm: convert to transfer API
-Message-ID: <20201106050810.GB25769@pendragon.ideasonboard.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
- <20201105120333.947408-8-tomi.valkeinen@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201105120333.947408-8-tomi.valkeinen@ti.com>
+        id S1726415AbgKFIoZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 Nov 2020 03:44:25 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:19902 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725830AbgKFIoY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Nov 2020 03:44:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1604652262;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=GaSWc8H4r1q4iknf5vzTIjcuGvaQMXSv5oarX7EEY6o=;
+        b=JUcvzTY5HdlxPdCh4fBJsjqKn8vARtiNYf/2MYl+G3Tm0Lr7E1USqupa4zrXaA/8Lo
+        NNfIqVK5nPKlpQaYL2QaDQILsotG5DALLpXUVlqREEUbV33WWvVta6KCEN6oEuJPiEiG
+        9CpyG69J/D+UP4bgu5am/dmlHQ71o2U1MgLo4P7bbzCi4IlaMG+Kucl/Wf+Q6i9ZmBSx
+        3K3d6Tysf7JNjtoadeAMf/ruvdRcUxtvADwqOQCTXudf7mTiIWHdpsLQY2e2N15ylSK7
+        fXAIU8jqmdKCEHqj4lKPvNGjZBIjVq0k+kYPLGwdws0OlUviT6obVE9igjKjC/f0HrUL
+        ix4Q==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlSYXA4JMOs="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 47.3.3 DYNA|AUTH)
+        with ESMTPSA id d04888wA68i609v
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Fri, 6 Nov 2020 09:44:06 +0100 (CET)
+Subject: Re: [Letux-kernel] [REGRESSION] opp: Allow dev_pm_opp_get_opp_table() to return -EPROBE_DEFER
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=us-ascii
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20201106041441.uuz5vrtqeyn6ijdv@vireshk-i7>
+Date:   Fri, 6 Nov 2020 09:44:05 +0100
+Cc:     nm@ti.com, ulf.hansson@linaro.org, stephan@gerhold.net,
+        khilman@kernel.org, sboyd@kernel.org, linux-pm@vger.kernel.org,
+        rjw@rjwysocki.net, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8728D936-6583-407F-96CF-92AE95AAECDF@goldelico.com>
+References: <20201106001018.02200778@aktux> <20201106041441.uuz5vrtqeyn6ijdv@vireshk-i7>
+To:     Andreas Kemnade <andreas@kemnade.info>, vireshk@kernel.org
+X-Mailer: Apple Mail (2.3124)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tomi and Sebastian,
 
-Thank you for the patch.
+> Am 06.11.2020 um 05:14 schrieb Viresh Kumar <viresh.kumar@linaro.org>:
+>=20
+> On 06-11-20, 00:10, Andreas Kemnade wrote:
+>> Hi,
+>>=20
+>> On the GTA04 (DM3730, devicetree omap3-gta04*) I get my console =
+flooded
+>> up with the following:
+>> [   24.517211] cpu cpu0: multiple regulators are not supported
+>> [   24.523040] cpufreq: __target_index: Failed to change cpu =
+frequency: -22
+>> [   24.537231] ------------[ cut here ]------------
+>> [   24.542083] WARNING: CPU: 0 PID: 5 at drivers/opp/core.c:678 =
+dev_pm_opp_set_rate+0x23c/0x494
+>> [   24.551086] Modules linked in: usb_f_ecm g_ether usb_f_rndis =
+u_ether libcomposite configfs phy_twl4030_usb omap2430 musb_hdrc overlay
+>> [   24.563842] CPU: 0 PID: 5 Comm: kworker/0:0 Tainted: G        W    =
+     5.9.0-rc1-00008-g629238068eb9 #14
+>> [   24.573852] Hardware name: Generic OMAP36xx (Flattened Device =
+Tree)
+>> [   24.580413] Workqueue: events dbs_work_handler
+>> [   24.585083] [<c010e6b4>] (unwind_backtrace) from [<c010a194>] =
+(show_stack+0x10/0x14)
+>> [   24.593200] [<c010a194>] (show_stack) from [<c0464ad0>] =
+(dump_stack+0x8c/0xac)
+>> [   24.600769] [<c0464ad0>] (dump_stack) from [<c01276a8>] =
+(__warn+0xcc/0xe4)
+>> [   24.608001] [<c01276a8>] (__warn) from [<c0127a3c>] =
+(warn_slowpath_fmt+0x74/0xa0)
+>> [   24.615844] [<c0127a3c>] (warn_slowpath_fmt) from [<c06364ac>] =
+(dev_pm_opp_set_rate+0x23c/0x494)
+>> [   24.625061] [<c06364ac>] (dev_pm_opp_set_rate) from [<c063ec08>] =
+(set_target+0x2c/0x4c)
+>> [   24.633453] [<c063ec08>] (set_target) from [<c063a950>] =
+(__cpufreq_driver_target+0x190/0x22c)
+>> [   24.642395] [<c063a950>] (__cpufreq_driver_target) from =
+[<c063d4e0>] (od_dbs_update+0xcc/0x158)
+>> [   24.651489] [<c063d4e0>] (od_dbs_update) from [<c063e090>] =
+(dbs_work_handler+0x2c/0x54)
+>> [   24.659881] [<c063e090>] (dbs_work_handler) from [<c013f71c>] =
+(process_one_work+0x210/0x358)
+>> [   24.668731] [<c013f71c>] (process_one_work) from [<c0140014>] =
+(worker_thread+0x22c/0x2d0)
+>> [   24.677307] [<c0140014>] (worker_thread) from [<c0144eac>] =
+(kthread+0x140/0x14c)
+>> [   24.685058] [<c0144eac>] (kthread) from [<c0100148>] =
+(ret_from_fork+0x14/0x2c)
+>> [   24.692626] Exception stack(0xde4b7fb0 to 0xde4b7ff8)
+>> [   24.697906] 7fa0:                                     00000000 =
+00000000 00000000 00000000
+>> [   24.706481] 7fc0: 00000000 00000000 00000000 00000000 00000000 =
+00000000 00000000 00000000
+>> [   24.715057] 7fe0: 00000000 00000000 00000000 00000000 00000013 =
+00000000
+>> [   24.722198] ---[ end trace 038b3f231fae6f81 ]---
+>>=20
+>> endlessly after the $subject commit. Any hints?
+>=20
+> The fix for this has been in linux-next for a couple of days and it
+> made it to linus/master yesterday.
+>=20
+> 47efcbcb340c opp: Fix early exit from =
+dev_pm_opp_register_set_opp_helper()
 
-On Thu, Nov 05, 2020 at 02:02:44PM +0200, Tomi Valkeinen wrote:
-> From: Sebastian Reichel <sebastian.reichel@collabora.com>
-> 
-> This converts the panel-dsi-cm driver to use the transfer
-> API instead of specific functions, so that the specific
-> functions can be unexported and squashed into the generic
-> transfer function.
-> 
-> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Seems to fix our problems on gta04 (OMAP3).
+Otherwise we would have found that v5.10-rc3 magically solves it :)
+Interestingly it did not affect OMAP5.
 
-There are a few very minor comments I would have made below, but as this
-file is going away later in this series, it doesn't matter.
+BR and thanks,
+Nikolaus Schaller
 
-Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-> ---
->  .../gpu/drm/omapdrm/displays/panel-dsi-cm.c   | 132 +++++++++++++-----
->  1 file changed, 95 insertions(+), 37 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
-> index b8f3a7aacbf4..8b2e80129bd8 100644
-> --- a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
-> +++ b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
-> @@ -140,45 +140,61 @@ static void hw_guard_wait(struct panel_drv_data *ddata)
->  static int dsicm_dcs_read_1(struct panel_drv_data *ddata, u8 dcs_cmd, u8 *data)
->  {
->  	struct omap_dss_device *src = ddata->src;
-> -	int r;
-> -	u8 buf[1];
-> -
-> -	r = src->ops->dsi.dcs_read(src, ddata->channel, dcs_cmd, buf, 1);
-> -
-> -	if (r < 0)
-> -		return r;
-> -
-> -	*data = buf[0];
-> +	const struct mipi_dsi_msg msg = {
-> +		.channel = ddata->channel,
-> +		.type = MIPI_DSI_DCS_READ,
-> +		.tx_len = 1,
-> +		.tx_buf = &dcs_cmd,
-> +		.rx_len = 1,
-> +		.rx_buf = data
-> +	};
->  
-> -	return 0;
-> +	return src->ops->dsi.transfer(src, &msg);
->  }
->  
->  static int dsicm_dcs_write_0(struct panel_drv_data *ddata, u8 dcs_cmd)
->  {
->  	struct omap_dss_device *src = ddata->src;
-> +	const struct mipi_dsi_msg msg = {
-> +		.channel = ddata->channel,
-> +		.type = MIPI_DSI_DCS_SHORT_WRITE,
-> +		.tx_buf = &dcs_cmd,
-> +		.tx_len = 1,
-> +	};
->  
-> -	return src->ops->dsi.dcs_write(src, ddata->channel, &dcs_cmd, 1);
-> +	return src->ops->dsi.transfer(src, &msg);
->  }
->  
->  static int dsicm_dcs_write_1(struct panel_drv_data *ddata, u8 dcs_cmd, u8 param)
->  {
->  	struct omap_dss_device *src = ddata->src;
-> -	u8 buf[2] = { dcs_cmd, param };
-> +	const u8 buf[] = { dcs_cmd, param };
-> +	const struct mipi_dsi_msg msg = {
-> +		.channel = ddata->channel,
-> +		.type = MIPI_DSI_DCS_SHORT_WRITE_PARAM,
-> +		.tx_buf = &buf,
-> +		.tx_len = 2,
-> +	};
->  
-> -	return src->ops->dsi.dcs_write(src, ddata->channel, buf, 2);
-> +	return src->ops->dsi.transfer(src, &msg);
->  }
->  
->  static int dsicm_sleep_in(struct panel_drv_data *ddata)
->  
->  {
->  	struct omap_dss_device *src = ddata->src;
-> -	u8 cmd;
->  	int r;
-> +	const u8 cmd = MIPI_DCS_ENTER_SLEEP_MODE;
-> +	const struct mipi_dsi_msg msg = {
-> +		.channel = ddata->channel,
-> +		.type = MIPI_DSI_DCS_SHORT_WRITE,
-> +		.tx_buf = &cmd,
-> +		.tx_len = 1,
-> +	};
->  
->  	hw_guard_wait(ddata);
->  
-> -	cmd = MIPI_DCS_ENTER_SLEEP_MODE;
-> -	r = src->ops->dsi.dcs_write_nosync(src, ddata->channel, &cmd, 1);
-> +	r = src->ops->dsi.transfer(src, &msg);
->  	if (r)
->  		return r;
->  
-> @@ -233,28 +249,43 @@ static int dsicm_set_update_window(struct panel_drv_data *ddata,
->  	u16 y1 = y;
->  	u16 y2 = y + h - 1;
->  
-> -	u8 buf[5];
-> -	buf[0] = MIPI_DCS_SET_COLUMN_ADDRESS;
-> -	buf[1] = (x1 >> 8) & 0xff;
-> -	buf[2] = (x1 >> 0) & 0xff;
-> -	buf[3] = (x2 >> 8) & 0xff;
-> -	buf[4] = (x2 >> 0) & 0xff;
-> +	const u8 paramX[] = {
-> +		MIPI_DCS_SET_COLUMN_ADDRESS,
-> +		(x1 >> 8) & 0xff,
-> +		(x1 >> 0) & 0xff,
-> +		(x2 >> 8) & 0xff,
-> +		(x2 >> 0) & 0xff,
-> +	};
->  
-> -	r = src->ops->dsi.dcs_write_nosync(src, ddata->channel, buf, sizeof(buf));
-> -	if (r)
-> -		return r;
-> +	const struct mipi_dsi_msg msgX = {
-> +		.channel = ddata->channel,
-> +		.type = MIPI_DSI_GENERIC_LONG_WRITE,
-> +		.tx_buf = paramX,
-> +		.tx_len = 5,
-> +	};
-> +
-> +	const u8 paramY[] = {
-> +		MIPI_DCS_SET_PAGE_ADDRESS,
-> +		(y1 >> 8) & 0xff,
-> +		(y1 >> 0) & 0xff,
-> +		(y2 >> 8) & 0xff,
-> +		(y2 >> 0) & 0xff,
-> +	};
->  
-> -	buf[0] = MIPI_DCS_SET_PAGE_ADDRESS;
-> -	buf[1] = (y1 >> 8) & 0xff;
-> -	buf[2] = (y1 >> 0) & 0xff;
-> -	buf[3] = (y2 >> 8) & 0xff;
-> -	buf[4] = (y2 >> 0) & 0xff;
-> +	const struct mipi_dsi_msg msgY = {
-> +		.channel = ddata->channel,
-> +		.type = MIPI_DSI_GENERIC_LONG_WRITE,
-> +		.tx_buf = paramY,
-> +		.tx_len = 5,
-> +	};
->  
-> -	r = src->ops->dsi.dcs_write_nosync(src, ddata->channel, buf, sizeof(buf));
-> +	r = src->ops->dsi.transfer(src, &msgX);
->  	if (r)
->  		return r;
->  
-> -	src->ops->dsi.bta_sync(src, ddata->channel);
-> +	r = src->ops->dsi.transfer(src, &msgY);
-> +	if (r)
-> +		return r;
->  
->  	return r;
->  }
-> @@ -991,6 +1022,27 @@ static int dsicm_get_te(struct omap_dss_device *dssdev)
->  	return r;
->  }
->  
-> +static int dsicm_set_max_rx_packet_size(struct omap_dss_device *dssdev,
-> +					u16 size)
-> +{
-> +	struct panel_drv_data *ddata = to_panel_data(dssdev);
-> +	struct omap_dss_device *src = ddata->src;
-> +
-> +	const u8 buf[] = {
-> +		size & 0xff,
-> +		size >> 8 & 0xff,
-> +	};
-> +
-> +	const struct mipi_dsi_msg msg = {
-> +		.channel = ddata->channel,
-> +		.type = MIPI_DSI_SET_MAXIMUM_RETURN_PACKET_SIZE,
-> +		.tx_buf = buf,
-> +		.tx_len = 2,
-> +	};
-> +
-> +	return src->ops->dsi.transfer(src, &msg);
-> +}
-> +
->  static int dsicm_memory_read(struct omap_dss_device *dssdev,
->  		void *buf, size_t size,
->  		u16 x, u16 y, u16 w, u16 h)
-> @@ -1031,17 +1083,23 @@ static int dsicm_memory_read(struct omap_dss_device *dssdev,
->  
->  	dsicm_set_update_window(ddata, x, y, w, h);
->  
-> -	r = src->ops->dsi.set_max_rx_packet_size(src, ddata->channel, plen);
-> +	r = dsicm_set_max_rx_packet_size(dssdev, plen);
->  	if (r)
->  		goto err2;
->  
->  	while (buf_used < size) {
->  		u8 dcs_cmd = first ? 0x2e : 0x3e;
-> +		const struct mipi_dsi_msg msg = {
-> +			.channel = ddata->channel,
-> +			.type = MIPI_DSI_DCS_READ,
-> +			.tx_buf = &dcs_cmd,
-> +			.tx_len = 1,
-> +			.rx_buf = buf + buf_used,
-> +			.rx_len = size - buf_used,
-> +		};
->  		first = 0;
->  
-> -		r = src->ops->dsi.dcs_read(src, ddata->channel, dcs_cmd,
-> -				buf + buf_used, size - buf_used);
-> -
-> +		r = src->ops->dsi.transfer(src, &msg);
->  		if (r < 0) {
->  			dev_err(dssdev->dev, "read error\n");
->  			goto err3;
-> @@ -1065,7 +1123,7 @@ static int dsicm_memory_read(struct omap_dss_device *dssdev,
->  	r = buf_used;
->  
->  err3:
-> -	src->ops->dsi.set_max_rx_packet_size(src, ddata->channel, 1);
-> +	dsicm_set_max_rx_packet_size(dssdev, 1);
->  err2:
->  	src->ops->dsi.bus_unlock(src);
->  err1:
-
--- 
-Regards,
-
-Laurent Pinchart
