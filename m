@@ -2,141 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BFEB72A9806
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Nov 2020 16:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB80D2AA504
+	for <lists+linux-omap@lfdr.de>; Sat,  7 Nov 2020 13:32:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727395AbgKFPFE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 Nov 2020 10:05:04 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:52690 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727020AbgKFPFD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 Nov 2020 10:05:03 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A6F4rfp019628;
-        Fri, 6 Nov 2020 09:04:53 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604675093;
-        bh=jf86HsFnU6JIjZtdf2WrYxGr0whj/xpzr7Vn5BqWcqg=;
-        h=Subject:From:To:CC:References:Date:In-Reply-To;
-        b=dcWGtlHuCcbQa/HUmf/5X78AgB+o242uO/G7z6SS51tP5bwUrGVPcqx4aFvvQ2dUc
-         Tz+0pCKS3+/FjSLc4K+ss4vwLr5cr7iDFtIyrBqzlUPN0rnPLTVTzG62Wy4TG0a+vu
-         +WsvFadFo1wa5gFHPg6tpJfCb8dXgqlYQ3S+63BI=
-Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A6F4rDG068077
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 6 Nov 2020 09:04:53 -0600
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 6 Nov
- 2020 09:04:53 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 6 Nov 2020 09:04:53 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A6F4pm1120342;
-        Fri, 6 Nov 2020 09:04:51 -0600
-Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and
- drm_panel
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-CC:     Sebastian Reichel <sre@kernel.org>,
+        id S1727611AbgKGMcH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 7 Nov 2020 07:32:07 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:31421 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727264AbgKGMcE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Nov 2020 07:32:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1604752317;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=A9A2kGyjSNtzr6whZaCacuKSTOMm8RNHpA91jGCYY3s=;
+        b=ne9NHDJ5GePL8w7KwIVI+jFTQm2BdPCP+9G6duhDuNltTT1jFW/9rGCLYdMg4vzyOq
+        EGlHICfSlRlOPFZMYHUymgaJLOZXuJEX2kKo3BiPkiw94ZhcKEPI4Aq2UuH+gDY0omnD
+        5e5mnUesJ2pXqnFcz7J8pEZPV+Iy7zIwLrNl6h+3T++ruJv+WsQm3E7EaOKG8D4mZxTj
+        A+NxRDhkjFufiad19dQmEXyVpDYMS4m59570xtFv71tOdpvUPgvw+R2jqH5jpLzlmAhr
+        FT1L9wkutrhjpc+zLbtnTcFYx4Rpl5i6FKipWWtUp79/H8EuaCcSbCaGoOvWD2SCAAbT
+        mAMA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlSVXAgNkQ=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 47.3.3 DYNA|AUTH)
+        with ESMTPSA id d04888wA7CJp6rs
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Sat, 7 Nov 2020 13:19:51 +0100 (CET)
+Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and drm_panel
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=us-ascii
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com>
+Date:   Sat, 7 Nov 2020 13:19:50 +0100
+Cc:     Sebastian Reichel <sre@kernel.org>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Nikhil Devshatwar <nikhil.nd@ti.com>,
-        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
         Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
- <61C04176-4654-4D2D-A55B-31FBB6D2E5AA@goldelico.com>
- <fcbc8488-5861-8e51-0f86-1ed6498083f7@ti.com>
- <579243AA-014A-411B-9014-F5846C9B8137@goldelico.com>
- <ab33baff-dd8c-2ee0-6f89-35aa4df7b9cf@ti.com>
- <837EA533-9946-43B3-B058-69060EC43981@goldelico.com>
- <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com>
-Message-ID: <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com>
-Date:   Fri, 6 Nov 2020 17:04:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <67786545-23D2-444F-85B8-7A030070B317@goldelico.com>
+References: <20201105120333.947408-1-tomi.valkeinen@ti.com> <61C04176-4654-4D2D-A55B-31FBB6D2E5AA@goldelico.com> <fcbc8488-5861-8e51-0f86-1ed6498083f7@ti.com> <579243AA-014A-411B-9014-F5846C9B8137@goldelico.com> <ab33baff-dd8c-2ee0-6f89-35aa4df7b9cf@ti.com> <837EA533-9946-43B3-B058-69060EC43981@goldelico.com> <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com> <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+X-Mailer: Apple Mail (2.3124)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 06/11/2020 16:37, Tomi Valkeinen wrote:
-> On 05/11/2020 20:56, H. Nikolaus Schaller wrote:
->>
->>> Am 05.11.2020 um 19:28 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
->>>
->>> On 05/11/2020 20:14, H. Nikolaus Schaller wrote:
->>>>
->>>>> Am 05.11.2020 um 18:36 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
->>>>>
->>>>> Hi,
->>>>>
->>>>> On 05/11/2020 19:15, H. Nikolaus Schaller wrote:
->>>>>
->>>>>> Next, I migrated my long waiting mipi_dsi/drm_panel driver conversion for
->>>>>> the panel of the Pyra handheld (omap 5 based) to compile on 5.10-rc2. And
->>>>>> I followed the latest existing panel-orisetech-otm8009a.c which uses a
->>>>>> similar video mode controller and mipi-dsi.
->>>>>>
->>>>>> That one seems to be used by arch/arm/boot/dts/stm32f469-disco.dts.
->>>>>>
->>>>>> Unfortunately my panel driver is not even loaded by drm/omap so I can't
->>>>>> debug. Does this set of drm/omap drivers need a modification of the device
->>>>>> tree? If yes, which one?
->>>>>
->>>>> omapdrm doesn't load the panel drivers. If not even your panel's probe is called, then it hints at
->>>>> DT and/or driver's compatible string issue. The panel's probe should get called even if omapdrm is
->>>>> not loaded at all.
->>>>
->>>> Well, I use the same device tree that loads the old driver...
->>>
->>> Yeah, I was mistaken above. With DSI the panel (may be) a child of the DSI host, so it will affect.
->>>
->>> Can you give pointers to the panel driver source and relevant dts files? BOE BTL507212-W677L?
->>
->> Yes. It is (now) 
->>
->> drivers/gpu/drm/panel/panel-boe-btl507212-w677l.c
->>
->> and
->>
->> arch/arm/boot/dts/omap5-letux-cortex15-common.dtsi (for the basic dsi definitions)
->> arch/arm/boot/dts/pyra-display.dtsi (for the specific display)
->>
->> All this is merged by some arch/arm/boot/dts/omap5-letux-cortex15-v5.3+pyra-v5.2.dts
-> 
-> I took the driver and make my omap4-sdp dts to use it. It probes for me, but stop after that:
-> 
-> [  119.346374] omapdss_dss 58000000.dss: supply vdda_video not found, using dummy regulator
-> [  119.358398] DSS: OMAP DSS rev 4.0
-> [  119.680053] panel-dsi-cm 58004000.encoder.0: failed to get video timing, using defaults
-> [  119.695709] panel-dsi-cm 58004000.encoder.0: supply vpnl not found, using dummy regulator
-> [  119.711242] panel-dsi-cm 58004000.encoder.0: supply vddi not found, using dummy regulator
-> [  119.769470] panel-btl507212-w677l 58005000.encoder.0: w677l_probe
-> [  119.779388] panel-btl507212-w677l 58005000.encoder.0: w677l_probe ok
-> [  119.846679] omapdss_dss 58000000.dss: bound 58001000.dispc (ops dispc_component_ops [omapdrm])
-> [  119.858673] omapdss_dss 58000000.dss: bound 58004000.encoder (ops dsi_component_ops [omapdrm])
-> [  119.882629] omapdss_dss 58000000.dss: bound 58005000.encoder (ops dsi_component_ops [omapdrm])
-> [  119.902069] omapdss_dss 58000000.dss: bound 58006000.encoder (ops hdmi4_component_ops [omapdrm])
-> [  119.962066] dmm 4e000000.dmm: initialized all PAT entries
-> [  120.014770] panel-btl507212-w677l 58005000.encoder.0: w677l_get_modes
-> 
-> I didn't debug yet where it's hanging. So you're not even getting the probe?
+Hi Tomi,
 
-Oh, it's stuck in a loop trying to calculate suitable timings. It doesn't find it, as I'm running on
-omap4, with just 2 datalanes instead of 4 which the panel needs. Looks like the code could use some
-improvement there.
+> Am 06.11.2020 um 16:04 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
+>=20
+>>=20
+>> I took the driver and make my omap4-sdp dts to use it. It probes for =
+me, but stop after that:
+>>=20
+>> [  119.346374] omapdss_dss 58000000.dss: supply vdda_video not found, =
+using dummy regulator
+>> [  119.358398] DSS: OMAP DSS rev 4.0
+>> [  119.680053] panel-dsi-cm 58004000.encoder.0: failed to get video =
+timing, using defaults
+>> [  119.695709] panel-dsi-cm 58004000.encoder.0: supply vpnl not =
+found, using dummy regulator
+>> [  119.711242] panel-dsi-cm 58004000.encoder.0: supply vddi not =
+found, using dummy regulator
+>> [  119.769470] panel-btl507212-w677l 58005000.encoder.0: w677l_probe
+>> [  119.779388] panel-btl507212-w677l 58005000.encoder.0: w677l_probe =
+ok
+>> [  119.846679] omapdss_dss 58000000.dss: bound 58001000.dispc (ops =
+dispc_component_ops [omapdrm])
+>> [  119.858673] omapdss_dss 58000000.dss: bound 58004000.encoder (ops =
+dsi_component_ops [omapdrm])
+>> [  119.882629] omapdss_dss 58000000.dss: bound 58005000.encoder (ops =
+dsi_component_ops [omapdrm])
+>> [  119.902069] omapdss_dss 58000000.dss: bound 58006000.encoder (ops =
+hdmi4_component_ops [omapdrm])
+>> [  119.962066] dmm 4e000000.dmm: initialized all PAT entries
+>> [  120.014770] panel-btl507212-w677l 58005000.encoder.0: =
+w677l_get_modes
+>>=20
+>> I didn't debug yet where it's hanging. So you're not even getting the =
+probe?
+>=20
+> Oh, it's stuck in a loop trying to calculate suitable timings. It =
+doesn't find it, as I'm running on
+> omap4, with just 2 datalanes instead of 4 which the panel needs. Looks =
+like the code could use some
+> improvement there.
+>=20
+> Anyway, possibly on omap5 it goes fine.
 
-Anyway, possibly on omap5 it goes fine.
+I have set up based on our complete letux-5.10-rc2 tree and maybe using =
+our private config makes
+the difference. Anyways, the driver is now probed and I can see the call =
+to w677l_get_modes().
 
- Tomi
+I have still no image and no calls to prepare/unprepare etc. but now I =
+can start to debug on omap5.
+And hopefully we are close to push the panel driver for review. And in a =
+second step some device
+tree for the Pyra.
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+The new tree is here: =
+https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
+s/work-pyra-panel
+
+BR and thanks,
+Nikolaus
+
