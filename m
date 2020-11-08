@@ -2,214 +2,437 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A0BA2AAC3B
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Nov 2020 17:33:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91D652AACDD
+	for <lists+linux-omap@lfdr.de>; Sun,  8 Nov 2020 19:43:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727929AbgKHQde (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Nov 2020 11:33:34 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:34944 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726388AbgKHQdd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Nov 2020 11:33:33 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A8GXEdc008393;
-        Sun, 8 Nov 2020 10:33:14 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604853194;
-        bh=nA0M4ELilpm9afDCq5TCAvNQHFYjRJwBMvAMNEz0jeg=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=yjD4jQ1x4Uiq5dAcUYepqIQLmsg9IiTJOna167c70UFrtxsa0oQxwuzydUc9SV4Zj
-         BfXGlnriuzTND3qn/+RqmvoehdraLyu9Yz2rVvScPvx+GZYox8yeXsDSVr1UIshwaR
-         2nEwVL8PDJfonZAfcYEKM9RuGLk3u+X8kxA8OZlc=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A8GXEiE054315
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 8 Nov 2020 10:33:14 -0600
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Sun, 8 Nov
- 2020 10:33:14 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Sun, 8 Nov 2020 10:33:14 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A8GXDaK018513;
-        Sun, 8 Nov 2020 10:33:14 -0600
-Date:   Sun, 8 Nov 2020 22:03:12 +0530
-From:   Nikhil Devshatwar <nikhil.nd@ti.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-CC:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and
- drm_panel
-Message-ID: <20201108163312.tl4y5oiyig4st2b5@NiksLab>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20201105120333.947408-1-tomi.valkeinen@ti.com>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S1728104AbgKHSnF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Nov 2020 13:43:05 -0500
+Received: from sender11-of-o52.zoho.eu ([31.186.226.238]:21344 "EHLO
+        sender11-of-o52.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727570AbgKHSnE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Nov 2020 13:43:04 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1604860975; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=TPSHozwPXyBFqCuAthPHRyS/1YLcj/pi0bh9QzNRTeiXfN/lMFq1K5EeQMgGD1dFDw/GwcIhRawOBWOmxhas+N1FQYi7rDvMGBcP8sZu1FXFtghFWYQ1hRjnLoXOCMZpaixgH7UMQjPODZGIlScHjrcbva9bEYsE1Nz3ZS8mkK4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1604860975; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=zjt5yFUDGrT2geUGRZwmDc4pdF4Bm0Qqgd45iVKkATI=; 
+        b=W7Ukv69ylamLKRi8v48t5a08oUh1KMGt3CSnPOQyoCP6dAcm+rDKlqKRbKz5CJj5nT37b1LDxYJ3DoRqVf8cJ+O8MNTQIB8MfnmPdNeQM3Pkh8Ei4jyhIILKUOVmcLaNl5a5IIvR9HZ0vH3Hzvmp6ZfloEmaJZuFlvpfyH1fJdI=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
+        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
+Received: from localhost.localdomain (ip-95-222-213-200.hsi15.unitymediagroup.de [95.222.213.200]) by mx.zoho.eu
+        with SMTPS id 1604860974512512.7355735218123; Sun, 8 Nov 2020 19:42:54 +0100 (CET)
+Date:   Sun, 8 Nov 2020 19:42:53 +0100
+From:   Carl Philipp Klemm <philipp@uvos.xyz>
+To:     Tony Lindgren <tony@atomide.com>, robh+dt@kernel.org
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH  v3] ARM: dts: mapphone: remove xt894 specific things from
+ motorola-mapphone-common.dtsi and add them to omap4-droid4-xt894.dts and
+ omap4-droid-bionic-xt875.dts as applicable.
+Message-Id: <20201108194253.4e954768aa924a6528d2c92f@uvos.xyz>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 14:02-20201105, Tomi Valkeinen wrote:
-> Hi,
-> 
-> This is third version of the series sent by Sebastian in February:
-> 
-> https://www.spinics.net/lists/linux-omap/msg153465.html
-> 
-> I took the patches from his git tree, and rebased on 5.10-rc2. There
-> were some conflicts and compilation errors, and one bug that made dsi to
-> not work (videomode variable was not initialized to 0).
-> 
-> I then fixed the few checkpatch and sparse issues. Overall, Sebastian's
-> patches are pretty much as they were previously. I did drop Laurent's
-> reviewed-bys, as it's been a long time since the previous series, and
-> the patches are not identical anyway.
-> 
-> The topmost 5 patches are new ones, cleanups enabled by the DSI
-> conversion. They could be handled separately, but it's such a nice
-> cleanup, and I've been waiting for years to get this done, so here they
-> are. That said, there are still a _lot_ of cleanups to do.
-> 
-> Almost all of the patches are omapdrm changes. The two non-omapdrm
-> changes are:
-> - After converting panel-dsi-cm to common DRM panel model, it is moved
->   to drm's panel directory.
-> - Add MIPI_DSI_MODE_ULPS_IDLE flag
-> 
-> I have tested these with OMAP4 SDP, AM5 EVM and OMAP4 Panda. SDP has
-> command mode panel, and I don't have any videomode panels.
-> 
-> Sebastian, I hope you're ok with all this? I did send you an email, but
-> didn't get a reply yet, so I thought to just proceed. If you want to
-> handle this in some other way, or don't want your
-> authorship/signed-off-by in some of the commits, just tell.
-> 
->  Tomi
-> 
-> Sebastian Reichel (51):
->   drm/dsi: add MIPI_DSI_MODE_ULPS_IDLE
->   Revert "drm/omap: dss: Remove unused omap_dss_device operations"
->   drm/omap: drop unused dsi.configure_pins
->   drm/omap: dsi: use MIPI_DSI_FMT_* instead of OMAP_DSS_DSI_FMT_*
->   drm/omap: constify write buffers
->   drm/omap: dsi: add generic transfer function
->   drm/omap: panel-dsi-cm: convert to transfer API
->   drm/omap: dsi: unexport specific data transfer functions
->   drm/omap: dsi: drop virtual channel logic
->   drm/omap: dsi: simplify write function
->   drm/omap: dsi: simplify read functions
->   drm/omap: dsi: switch dsi_vc_send_long/short to mipi_dsi_msg
->   drm/omap: dsi: introduce mipi_dsi_host
->   drm/omap: panel-dsi-cm: use DSI helpers
->   drm/omap: dsi: request VC via mipi_dsi_attach
->   drm/omap: panel-dsi-cm: drop hardcoded VC
->   drm/omap: panel-dsi-cm: use common MIPI DCS 1.3 defines
->   drm/omap: dsi: drop unused memory_read()
->   drm/omap: dsi: drop unused get_te()
->   drm/omap: dsi: drop unused enable_te()
->   drm/omap: dsi: drop useless sync()
->   drm/omap: dsi: use pixel-format and mode from attach
->   drm/omap: panel-dsi-cm: use bulk regulator API
->   drm/omap: dsi: lp/hs switching support for transfer()
->   drm/omap: dsi: move TE GPIO handling into core
->   drm/omap: dsi: drop custom enable_te() API
->   drm/omap: dsi: do bus locking in host driver
->   drm/omap: dsi: untangle ulps ops from enable/disable
->   drm/omap: dsi: do ULPS in host driver
->   drm/omap: dsi: move panel refresh function to host
->   drm/omap: dsi: Reverse direction of the DSS device enable/disable
->     operations
->   drm/omap: dsi: drop custom panel capability support
->   drm/omap: dsi: convert to drm_panel
->   drm/omap: drop omapdss-boot-init
->   drm/omap: dsi: implement check timings
->   drm/omap: panel-dsi-cm: use DEVICE_ATTR_RO
->   drm/omap: panel-dsi-cm: support unbinding
->   drm/omap: panel-dsi-cm: fix remove()
->   drm/omap: remove global dss_device variable
->   drm/panel: Move OMAP's DSI command mode panel driver
->   drm/omap: dsi: Register a drm_bridge
->   drm/omap: remove legacy DSS device operations
->   drm/omap: remove unused omap_connector
->   drm/omap: simplify omap_display_id
->   drm/omap: drop unused DSS next pointer
->   drm/omap: drop empty omap_encoder helper functions
->   drm/omap: drop DSS ops_flags
->   drm/omap: drop dssdev display field
->   drm/omap: simplify DSI manual update code
->   drm/omap: dsi: simplify pin config
->   ARM: omap2plus_defconfig: Update for moved DSI command mode panel
-> 
-> Tomi Valkeinen (5):
->   drm/omap: squash omapdrm sub-modules into one
->   drm/omap: remove unused display.c
->   drm/omap: drop unused owner field
->   drm/omap: remove dispc_ops
->   drm/omap: remove dss_mgr_ops
-> 
+ARM: dts: mapphone: remove xt894 specific things from
+motorola-mapphone-common.dtsi and add them to omap4-droid4-xt894.dts
+and omap4-droid-bionic-xt875.dts as applicable.
 
-Reviewed-by: Nikhil Devshatwar <nikhil.nd@ti.com>
+Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
+---
+ .../boot/dts/motorola-mapphone-common.dtsi    | 141 +----------------
+ .../arm/boot/dts/omap4-droid-bionic-xt875.dts |  30 ++++
+ arch/arm/boot/dts/omap4-droid4-xt894.dts      | 143 ++++++++++++++++++
+ 3 files changed, 174 insertions(+), 140 deletions(-)
 
-Thanks
-Nikhil D
-
->  arch/arm/configs/omap2plus_defconfig          |    2 +-
->  drivers/gpu/drm/omapdrm/Kconfig               |  120 +-
->  drivers/gpu/drm/omapdrm/Makefile              |   19 +-
->  drivers/gpu/drm/omapdrm/displays/Kconfig      |   10 -
->  drivers/gpu/drm/omapdrm/displays/Makefile     |    2 -
->  .../gpu/drm/omapdrm/displays/panel-dsi-cm.c   | 1385 -----------------
->  drivers/gpu/drm/omapdrm/dss/Kconfig           |  135 --
->  drivers/gpu/drm/omapdrm/dss/Makefile          |   20 -
->  drivers/gpu/drm/omapdrm/dss/base.c            |   87 +-
->  drivers/gpu/drm/omapdrm/dss/dispc.c           |  101 +-
->  drivers/gpu/drm/omapdrm/dss/display.c         |   60 -
->  drivers/gpu/drm/omapdrm/dss/dpi.c             |    1 -
->  drivers/gpu/drm/omapdrm/dss/dsi.c             | 1069 ++++++++-----
->  drivers/gpu/drm/omapdrm/dss/dss.c             |   28 +-
->  drivers/gpu/drm/omapdrm/dss/dss.h             |   72 +-
->  drivers/gpu/drm/omapdrm/dss/hdmi4.c           |    1 -
->  drivers/gpu/drm/omapdrm/dss/hdmi5.c           |    1 -
->  .../gpu/drm/omapdrm/dss/omapdss-boot-init.c   |  229 ---
->  drivers/gpu/drm/omapdrm/dss/omapdss.h         |  278 +---
->  drivers/gpu/drm/omapdrm/dss/output.c          |   57 +-
->  drivers/gpu/drm/omapdrm/dss/sdi.c             |    1 -
->  drivers/gpu/drm/omapdrm/dss/venc.c            |    2 -
->  drivers/gpu/drm/omapdrm/omap_connector.c      |  157 --
->  drivers/gpu/drm/omapdrm/omap_connector.h      |   28 -
->  drivers/gpu/drm/omapdrm/omap_crtc.c           |  103 +-
->  drivers/gpu/drm/omapdrm/omap_crtc.h           |    2 -
->  drivers/gpu/drm/omapdrm/omap_drv.c            |   65 +-
->  drivers/gpu/drm/omapdrm/omap_drv.h            |    3 +-
->  drivers/gpu/drm/omapdrm/omap_encoder.c        |   59 +-
->  drivers/gpu/drm/omapdrm/omap_irq.c            |   34 +-
->  drivers/gpu/drm/omapdrm/omap_plane.c          |   12 +-
->  drivers/gpu/drm/panel/Kconfig                 |    9 +
->  drivers/gpu/drm/panel/Makefile                |    1 +
->  drivers/gpu/drm/panel/panel-dsi-cm.c          |  647 ++++++++
->  include/drm/drm_mipi_dsi.h                    |    2 +
->  35 files changed, 1718 insertions(+), 3084 deletions(-)
->  delete mode 100644 drivers/gpu/drm/omapdrm/displays/Kconfig
->  delete mode 100644 drivers/gpu/drm/omapdrm/displays/Makefile
->  delete mode 100644 drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
->  delete mode 100644 drivers/gpu/drm/omapdrm/dss/Kconfig
->  delete mode 100644 drivers/gpu/drm/omapdrm/dss/Makefile
->  delete mode 100644 drivers/gpu/drm/omapdrm/dss/display.c
->  delete mode 100644 drivers/gpu/drm/omapdrm/dss/omapdss-boot-init.c
->  delete mode 100644 drivers/gpu/drm/omapdrm/omap_connector.c
->  delete mode 100644 drivers/gpu/drm/omapdrm/omap_connector.h
->  create mode 100644 drivers/gpu/drm/panel/panel-dsi-cm.c
-> 
-> -- 
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-> 
+diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+b/arch/arm/boot/dts/motorola-mapphone-common.dtsi index
+64ba1ae69c39..f63a898ab5be 100644
+--- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+@@ -113,32 +113,9 @@ wl12xx_vmmc: regulator-wl12xx {
+ 		enable-active-high;
+ 	};
+ 
+-	gpio_keys {
+-		compatible = "gpio-keys";
+-
+-		volume_down {
+-			label = "Volume Down";
+-			gpios = <&gpio5 26 GPIO_ACTIVE_LOW>; /*
+gpio154 */
+-			linux,code = <KEY_VOLUMEDOWN>;
+-			linux,can-disable;
+-			/* Value above 7.95ms for no GPIO hardware
+debounce */
+-			debounce-interval = <10>;
+-		};
+-
+-		slider {
+-			label = "Keypad Slide";
+-			gpios = <&gpio4 26 GPIO_ACTIVE_HIGH>; /*
+gpio122 */
+-			linux,input-type = <EV_SW>;
+-			linux,code = <SW_KEYPAD_SLIDE>;
+-			linux,can-disable;
+-			/* Value above 7.95ms for no GPIO hardware
+debounce */
+-			debounce-interval = <10>;
+-		};
+-	};
+-
+ 	soundcard {
+ 		compatible = "audio-graph-card";
+-		label = "Droid 4 Audio";
++		label = "Mapphone Audio";
+ 
+ 		simple-graph-card,widgets =
+ 			"Speaker", "Earpiece",
+@@ -314,80 +291,6 @@ tmp105@48 {
+ 	};
+ };
+ 
+-&keypad {
+-	keypad,num-rows = <8>;
+-	keypad,num-columns = <8>;
+-	linux,keymap = <
+-
+-	/* Row 1 */
+-	MATRIX_KEY(0, 2, KEY_1)
+-	MATRIX_KEY(0, 6, KEY_2)
+-	MATRIX_KEY(2, 3, KEY_3)
+-	MATRIX_KEY(0, 7, KEY_4)
+-	MATRIX_KEY(0, 4, KEY_5)
+-	MATRIX_KEY(5, 5, KEY_6)
+-	MATRIX_KEY(0, 1, KEY_7)
+-	MATRIX_KEY(0, 5, KEY_8)
+-	MATRIX_KEY(0, 0, KEY_9)
+-	MATRIX_KEY(1, 6, KEY_0)
+-
+-	/* Row 2 */
+-	MATRIX_KEY(3, 4, KEY_APOSTROPHE)
+-	MATRIX_KEY(7, 6, KEY_Q)
+-	MATRIX_KEY(7, 7, KEY_W)
+-	MATRIX_KEY(7, 2, KEY_E)
+-	MATRIX_KEY(1, 0, KEY_R)
+-	MATRIX_KEY(4, 4, KEY_T)
+-	MATRIX_KEY(1, 2, KEY_Y)
+-	MATRIX_KEY(6, 7, KEY_U)
+-	MATRIX_KEY(2, 2, KEY_I)
+-	MATRIX_KEY(5, 6, KEY_O)
+-	MATRIX_KEY(3, 7, KEY_P)
+-	MATRIX_KEY(6, 5, KEY_BACKSPACE)
+-
+-	/* Row 3 */
+-	MATRIX_KEY(5, 4, KEY_TAB)
+-	MATRIX_KEY(5, 7, KEY_A)
+-	MATRIX_KEY(2, 7, KEY_S)
+-	MATRIX_KEY(7, 0, KEY_D)
+-	MATRIX_KEY(2, 6, KEY_F)
+-	MATRIX_KEY(6, 2, KEY_G)
+-	MATRIX_KEY(6, 6, KEY_H)
+-	MATRIX_KEY(1, 4, KEY_J)
+-	MATRIX_KEY(3, 1, KEY_K)
+-	MATRIX_KEY(2, 1, KEY_L)
+-	MATRIX_KEY(4, 6, KEY_ENTER)
+-
+-	/* Row 4 */
+-	MATRIX_KEY(3, 6, KEY_LEFTSHIFT)		/* KEY_CAPSLOCK
+*/
+-	MATRIX_KEY(6, 1, KEY_Z)
+-	MATRIX_KEY(7, 4, KEY_X)
+-	MATRIX_KEY(5, 1, KEY_C)
+-	MATRIX_KEY(1, 7, KEY_V)
+-	MATRIX_KEY(2, 4, KEY_B)
+-	MATRIX_KEY(4, 1, KEY_N)
+-	MATRIX_KEY(1, 1, KEY_M)
+-	MATRIX_KEY(3, 5, KEY_COMMA)
+-	MATRIX_KEY(5, 2, KEY_DOT)
+-	MATRIX_KEY(6, 3, KEY_UP)
+-	MATRIX_KEY(7, 3, KEY_OK)
+-
+-	/* Row 5 */
+-	MATRIX_KEY(2, 5, KEY_LEFTCTRL)		/* KEY_LEFTSHIFT
+*/
+-	MATRIX_KEY(4, 5, KEY_LEFTALT)		/* SYM */
+-	MATRIX_KEY(6, 0, KEY_MINUS)
+-	MATRIX_KEY(4, 7, KEY_EQUAL)
+-	MATRIX_KEY(1, 5, KEY_SPACE)
+-	MATRIX_KEY(3, 2, KEY_SLASH)
+-	MATRIX_KEY(4, 3, KEY_LEFT)
+-	MATRIX_KEY(5, 3, KEY_DOWN)
+-	MATRIX_KEY(3, 3, KEY_RIGHT)
+-
+-	/* Side buttons, KEY_VOLUMEDOWN and KEY_PWER are on CPCAP? */
+-	MATRIX_KEY(5, 0, KEY_VOLUMEUP)
+-	>;
+-};
+-
+ &mmc1 {
+ 	vmmc-supply = <&vwlan2>;
+ 	bus-width = <4>;
+@@ -427,34 +330,6 @@ wlcore: wlcore@2 {
+ 	};
+ };
+ 
+-&i2c1 {
+-	led-controller@38 {
+-		compatible = "ti,lm3532";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		reg = <0x38>;
+-
+-		enable-gpios = <&gpio6 12 GPIO_ACTIVE_HIGH>;
+-
+-		ramp-up-us = <1024>;
+-		ramp-down-us = <8193>;
+-
+-		backlight_led: led@0 {
+-			reg = <0>;
+-			led-sources = <2>;
+-			ti,led-mode = <0>;
+-			label = ":backlight";
+-		};
+-
+-		led@1 {
+-			reg = <1>;
+-			led-sources = <1>;
+-			ti,led-mode = <0>;
+-			label = ":kbd_backlight";
+-		};
+-	};
+-};
+-
+ &i2c2 {
+ 	touchscreen: touchscreen@4a {
+ 		compatible = "atmel,maxtouch";
+@@ -856,20 +731,6 @@ ak8975: magnetometer@c {
+ 				  "0", "0", "-1";
+ 
+ 	};
+-
+-	lis3dh: accelerometer@18 {
+-		compatible = "st,lis3dh-accel";
+-		reg = <0x18>;
+-
+-		vdd-supply = <&vhvio>;
+-
+-		interrupt-parent = <&gpio2>;
+-		interrupts = <2 IRQ_TYPE_EDGE_BOTH>; /* gpio34 */
+-
+-		rotation-matrix = "0", "-1", "0",
+-				  "1", "0", "0",
+-				  "0", "0", "1";
+-	};
+ };
+ 
+ &mcbsp2 {
+diff --git a/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
+b/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts index ba5c35b7027d..
+49b2a8d55356 100644
+--- a/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
++++ b/arch/arm/boot/dts/omap4-droid-bionic-xt875.dts
+@@ -7,3 +7,33 @@ / {
+ 	model = "Motorola Droid Bionic XT875";
+ 	compatible = "motorola,droid-bionic", "ti,omap4430",
+"ti,omap4"; };
++
++&keypad {
++	keypad,num-rows = <8>;
++	keypad,num-columns = <8>;
++	linux,keymap = <
++	MATRIX_KEY(5, 0, KEY_VOLUMEUP)
++	MATRIX_KEY(3, 0, KEY_VOLUMEDOWN)
++	>;
++};
++
++&i2c1 {
++	led-controller@38 {
++		compatible = "ti,lm3532";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0x38>;
++
++		enable-gpios = <&gpio6 12 GPIO_ACTIVE_HIGH>;
++
++		ramp-up-us = <1024>;
++		ramp-down-us = <8193>;
++
++		backlight_led: led@0 {
++			reg = <0>;
++			led-sources = <2>;
++			ti,led-mode = <0>;
++			label = ":backlight";
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/omap4-droid4-xt894.dts
+b/arch/arm/boot/dts/omap4-droid4-xt894.dts index
+c0d2fd92aea3..3ea4c5b9fd31 100644
+--- a/arch/arm/boot/dts/omap4-droid4-xt894.dts
++++ b/arch/arm/boot/dts/omap4-droid4-xt894.dts
+@@ -3,7 +3,150 @@
+ 
+ #include "motorola-mapphone-common.dtsi"
+ 
++/ {
++	gpio_keys {
++		compatible = "gpio-keys";
++
++		volume_down {
++			label = "Volume Down";
++			gpios = <&gpio5 26 GPIO_ACTIVE_LOW>; /*
+gpio154 */
++			linux,code = <KEY_VOLUMEDOWN>;
++			linux,can-disable;
++			/* Value above 7.95ms for no GPIO hardware
+debounce */
++			debounce-interval = <10>;
++		};
++
++		slider {
++			label = "Keypad Slide";
++			gpios = <&gpio4 26 GPIO_ACTIVE_HIGH>; /*
+gpio122 */
++			linux,input-type = <EV_SW>;
++			linux,code = <SW_KEYPAD_SLIDE>;
++			linux,can-disable;
++			/* Value above 7.95ms for no GPIO hardware
+debounce */
++			debounce-interval = <10>;
++		};
++	};
++};
++
+ / {
+ 	model = "Motorola Droid 4 XT894";
+ 	compatible = "motorola,droid4", "ti,omap4430", "ti,omap4";
+ };
++
++&keypad {
++	keypad,num-rows = <8>;
++	keypad,num-columns = <8>;
++	linux,keymap = <
++
++	/* Row 1 */
++	MATRIX_KEY(0, 2, KEY_1)
++	MATRIX_KEY(0, 6, KEY_2)
++	MATRIX_KEY(2, 3, KEY_3)
++	MATRIX_KEY(0, 7, KEY_4)
++	MATRIX_KEY(0, 4, KEY_5)
++	MATRIX_KEY(5, 5, KEY_6)
++	MATRIX_KEY(0, 1, KEY_7)
++	MATRIX_KEY(0, 5, KEY_8)
++	MATRIX_KEY(0, 0, KEY_9)
++	MATRIX_KEY(1, 6, KEY_0)
++
++	/* Row 2 */
++	MATRIX_KEY(3, 4, KEY_APOSTROPHE)
++	MATRIX_KEY(7, 6, KEY_Q)
++	MATRIX_KEY(7, 7, KEY_W)
++	MATRIX_KEY(7, 2, KEY_E)
++	MATRIX_KEY(1, 0, KEY_R)
++	MATRIX_KEY(4, 4, KEY_T)
++	MATRIX_KEY(1, 2, KEY_Y)
++	MATRIX_KEY(6, 7, KEY_U)
++	MATRIX_KEY(2, 2, KEY_I)
++	MATRIX_KEY(5, 6, KEY_O)
++	MATRIX_KEY(3, 7, KEY_P)
++	MATRIX_KEY(6, 5, KEY_BACKSPACE)
++
++	/* Row 3 */
++	MATRIX_KEY(5, 4, KEY_TAB)
++	MATRIX_KEY(5, 7, KEY_A)
++	MATRIX_KEY(2, 7, KEY_S)
++	MATRIX_KEY(7, 0, KEY_D)
++	MATRIX_KEY(2, 6, KEY_F)
++	MATRIX_KEY(6, 2, KEY_G)
++	MATRIX_KEY(6, 6, KEY_H)
++	MATRIX_KEY(1, 4, KEY_J)
++	MATRIX_KEY(3, 1, KEY_K)
++	MATRIX_KEY(2, 1, KEY_L)
++	MATRIX_KEY(4, 6, KEY_ENTER)
++
++	/* Row 4 */
++	MATRIX_KEY(3, 6, KEY_LEFTSHIFT)		/* KEY_CAPSLOCK
+*/
++	MATRIX_KEY(6, 1, KEY_Z)
++	MATRIX_KEY(7, 4, KEY_X)
++	MATRIX_KEY(5, 1, KEY_C)
++	MATRIX_KEY(1, 7, KEY_V)
++	MATRIX_KEY(2, 4, KEY_B)
++	MATRIX_KEY(4, 1, KEY_N)
++	MATRIX_KEY(1, 1, KEY_M)
++	MATRIX_KEY(3, 5, KEY_COMMA)
++	MATRIX_KEY(5, 2, KEY_DOT)
++	MATRIX_KEY(6, 3, KEY_UP)
++	MATRIX_KEY(7, 3, KEY_OK)
++
++	/* Row 5 */
++	MATRIX_KEY(2, 5, KEY_LEFTCTRL)		/* KEY_LEFTSHIFT
+*/
++	MATRIX_KEY(4, 5, KEY_LEFTALT)		/* SYM */
++	MATRIX_KEY(6, 0, KEY_MINUS)
++	MATRIX_KEY(4, 7, KEY_EQUAL)
++	MATRIX_KEY(1, 5, KEY_SPACE)
++	MATRIX_KEY(3, 2, KEY_SLASH)
++	MATRIX_KEY(4, 3, KEY_LEFT)
++	MATRIX_KEY(5, 3, KEY_DOWN)
++	MATRIX_KEY(3, 3, KEY_RIGHT)
++
++	/* Side buttons, KEY_VOLUMEDOWN and KEY_PWER are on CPCAP? */
++	MATRIX_KEY(5, 0, KEY_VOLUMEUP)
++	>;
++};
++
++&i2c1 {
++	led-controller@38 {
++		compatible = "ti,lm3532";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0x38>;
++
++		enable-gpios = <&gpio6 12 GPIO_ACTIVE_HIGH>;
++
++		ramp-up-us = <1024>;
++		ramp-down-us = <8193>;
++
++		backlight_led: led@0 {
++			reg = <0>;
++			led-sources = <2>;
++			ti,led-mode = <0>;
++			label = ":backlight";
++		};
++
++		led@1 {
++			reg = <1>;
++			led-sources = <1>;
++			ti,led-mode = <0>;
++			label = ":kbd_backlight";
++		};
++	};
++};
++
++&i2c4 {
++	lis3dh: accelerometer@18 {
++		compatible = "st,lis3dh-accel";
++		reg = <0x18>;
++
++		vdd-supply = <&vhvio>;
++
++		interrupt-parent = <&gpio2>;
++		interrupts = <2 IRQ_TYPE_EDGE_BOTH>; /* gpio34 */
++
++		rotation-matrix = "0", "-1", "0",
++				  "1", "0", "0",
++				  "0", "0", "1";
++	};
++};
+-- 
+2.29.1
