@@ -2,112 +2,214 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB80D2AA504
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Nov 2020 13:32:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A0BA2AAC3B
+	for <lists+linux-omap@lfdr.de>; Sun,  8 Nov 2020 17:33:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727611AbgKGMcH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 7 Nov 2020 07:32:07 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:31421 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727264AbgKGMcE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 Nov 2020 07:32:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1604752317;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=A9A2kGyjSNtzr6whZaCacuKSTOMm8RNHpA91jGCYY3s=;
-        b=ne9NHDJ5GePL8w7KwIVI+jFTQm2BdPCP+9G6duhDuNltTT1jFW/9rGCLYdMg4vzyOq
-        EGlHICfSlRlOPFZMYHUymgaJLOZXuJEX2kKo3BiPkiw94ZhcKEPI4Aq2UuH+gDY0omnD
-        5e5mnUesJ2pXqnFcz7J8pEZPV+Iy7zIwLrNl6h+3T++ruJv+WsQm3E7EaOKG8D4mZxTj
-        A+NxRDhkjFufiad19dQmEXyVpDYMS4m59570xtFv71tOdpvUPgvw+R2jqH5jpLzlmAhr
-        FT1L9wkutrhjpc+zLbtnTcFYx4Rpl5i6FKipWWtUp79/H8EuaCcSbCaGoOvWD2SCAAbT
-        mAMA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlSVXAgNkQ=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 47.3.3 DYNA|AUTH)
-        with ESMTPSA id d04888wA7CJp6rs
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Sat, 7 Nov 2020 13:19:51 +0100 (CET)
-Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and drm_panel
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com>
-Date:   Sat, 7 Nov 2020 13:19:50 +0100
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <67786545-23D2-444F-85B8-7A030070B317@goldelico.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com> <61C04176-4654-4D2D-A55B-31FBB6D2E5AA@goldelico.com> <fcbc8488-5861-8e51-0f86-1ed6498083f7@ti.com> <579243AA-014A-411B-9014-F5846C9B8137@goldelico.com> <ab33baff-dd8c-2ee0-6f89-35aa4df7b9cf@ti.com> <837EA533-9946-43B3-B058-69060EC43981@goldelico.com> <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com> <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com>
+        id S1727929AbgKHQde (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Nov 2020 11:33:34 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:34944 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726388AbgKHQdd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Nov 2020 11:33:33 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A8GXEdc008393;
+        Sun, 8 Nov 2020 10:33:14 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1604853194;
+        bh=nA0M4ELilpm9afDCq5TCAvNQHFYjRJwBMvAMNEz0jeg=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=yjD4jQ1x4Uiq5dAcUYepqIQLmsg9IiTJOna167c70UFrtxsa0oQxwuzydUc9SV4Zj
+         BfXGlnriuzTND3qn/+RqmvoehdraLyu9Yz2rVvScPvx+GZYox8yeXsDSVr1UIshwaR
+         2nEwVL8PDJfonZAfcYEKM9RuGLk3u+X8kxA8OZlc=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A8GXEiE054315
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 8 Nov 2020 10:33:14 -0600
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Sun, 8 Nov
+ 2020 10:33:14 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Sun, 8 Nov 2020 10:33:14 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A8GXDaK018513;
+        Sun, 8 Nov 2020 10:33:14 -0600
+Date:   Sun, 8 Nov 2020 22:03:12 +0530
+From:   Nikhil Devshatwar <nikhil.nd@ti.com>
 To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-X-Mailer: Apple Mail (2.3124)
+CC:     Sebastian Reichel <sre@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and
+ drm_panel
+Message-ID: <20201108163312.tl4y5oiyig4st2b5@NiksLab>
+References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20201105120333.947408-1-tomi.valkeinen@ti.com>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tomi,
+On 14:02-20201105, Tomi Valkeinen wrote:
+> Hi,
+> 
+> This is third version of the series sent by Sebastian in February:
+> 
+> https://www.spinics.net/lists/linux-omap/msg153465.html
+> 
+> I took the patches from his git tree, and rebased on 5.10-rc2. There
+> were some conflicts and compilation errors, and one bug that made dsi to
+> not work (videomode variable was not initialized to 0).
+> 
+> I then fixed the few checkpatch and sparse issues. Overall, Sebastian's
+> patches are pretty much as they were previously. I did drop Laurent's
+> reviewed-bys, as it's been a long time since the previous series, and
+> the patches are not identical anyway.
+> 
+> The topmost 5 patches are new ones, cleanups enabled by the DSI
+> conversion. They could be handled separately, but it's such a nice
+> cleanup, and I've been waiting for years to get this done, so here they
+> are. That said, there are still a _lot_ of cleanups to do.
+> 
+> Almost all of the patches are omapdrm changes. The two non-omapdrm
+> changes are:
+> - After converting panel-dsi-cm to common DRM panel model, it is moved
+>   to drm's panel directory.
+> - Add MIPI_DSI_MODE_ULPS_IDLE flag
+> 
+> I have tested these with OMAP4 SDP, AM5 EVM and OMAP4 Panda. SDP has
+> command mode panel, and I don't have any videomode panels.
+> 
+> Sebastian, I hope you're ok with all this? I did send you an email, but
+> didn't get a reply yet, so I thought to just proceed. If you want to
+> handle this in some other way, or don't want your
+> authorship/signed-off-by in some of the commits, just tell.
+> 
+>  Tomi
+> 
+> Sebastian Reichel (51):
+>   drm/dsi: add MIPI_DSI_MODE_ULPS_IDLE
+>   Revert "drm/omap: dss: Remove unused omap_dss_device operations"
+>   drm/omap: drop unused dsi.configure_pins
+>   drm/omap: dsi: use MIPI_DSI_FMT_* instead of OMAP_DSS_DSI_FMT_*
+>   drm/omap: constify write buffers
+>   drm/omap: dsi: add generic transfer function
+>   drm/omap: panel-dsi-cm: convert to transfer API
+>   drm/omap: dsi: unexport specific data transfer functions
+>   drm/omap: dsi: drop virtual channel logic
+>   drm/omap: dsi: simplify write function
+>   drm/omap: dsi: simplify read functions
+>   drm/omap: dsi: switch dsi_vc_send_long/short to mipi_dsi_msg
+>   drm/omap: dsi: introduce mipi_dsi_host
+>   drm/omap: panel-dsi-cm: use DSI helpers
+>   drm/omap: dsi: request VC via mipi_dsi_attach
+>   drm/omap: panel-dsi-cm: drop hardcoded VC
+>   drm/omap: panel-dsi-cm: use common MIPI DCS 1.3 defines
+>   drm/omap: dsi: drop unused memory_read()
+>   drm/omap: dsi: drop unused get_te()
+>   drm/omap: dsi: drop unused enable_te()
+>   drm/omap: dsi: drop useless sync()
+>   drm/omap: dsi: use pixel-format and mode from attach
+>   drm/omap: panel-dsi-cm: use bulk regulator API
+>   drm/omap: dsi: lp/hs switching support for transfer()
+>   drm/omap: dsi: move TE GPIO handling into core
+>   drm/omap: dsi: drop custom enable_te() API
+>   drm/omap: dsi: do bus locking in host driver
+>   drm/omap: dsi: untangle ulps ops from enable/disable
+>   drm/omap: dsi: do ULPS in host driver
+>   drm/omap: dsi: move panel refresh function to host
+>   drm/omap: dsi: Reverse direction of the DSS device enable/disable
+>     operations
+>   drm/omap: dsi: drop custom panel capability support
+>   drm/omap: dsi: convert to drm_panel
+>   drm/omap: drop omapdss-boot-init
+>   drm/omap: dsi: implement check timings
+>   drm/omap: panel-dsi-cm: use DEVICE_ATTR_RO
+>   drm/omap: panel-dsi-cm: support unbinding
+>   drm/omap: panel-dsi-cm: fix remove()
+>   drm/omap: remove global dss_device variable
+>   drm/panel: Move OMAP's DSI command mode panel driver
+>   drm/omap: dsi: Register a drm_bridge
+>   drm/omap: remove legacy DSS device operations
+>   drm/omap: remove unused omap_connector
+>   drm/omap: simplify omap_display_id
+>   drm/omap: drop unused DSS next pointer
+>   drm/omap: drop empty omap_encoder helper functions
+>   drm/omap: drop DSS ops_flags
+>   drm/omap: drop dssdev display field
+>   drm/omap: simplify DSI manual update code
+>   drm/omap: dsi: simplify pin config
+>   ARM: omap2plus_defconfig: Update for moved DSI command mode panel
+> 
+> Tomi Valkeinen (5):
+>   drm/omap: squash omapdrm sub-modules into one
+>   drm/omap: remove unused display.c
+>   drm/omap: drop unused owner field
+>   drm/omap: remove dispc_ops
+>   drm/omap: remove dss_mgr_ops
+> 
 
-> Am 06.11.2020 um 16:04 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
->=20
->>=20
->> I took the driver and make my omap4-sdp dts to use it. It probes for =
-me, but stop after that:
->>=20
->> [  119.346374] omapdss_dss 58000000.dss: supply vdda_video not found, =
-using dummy regulator
->> [  119.358398] DSS: OMAP DSS rev 4.0
->> [  119.680053] panel-dsi-cm 58004000.encoder.0: failed to get video =
-timing, using defaults
->> [  119.695709] panel-dsi-cm 58004000.encoder.0: supply vpnl not =
-found, using dummy regulator
->> [  119.711242] panel-dsi-cm 58004000.encoder.0: supply vddi not =
-found, using dummy regulator
->> [  119.769470] panel-btl507212-w677l 58005000.encoder.0: w677l_probe
->> [  119.779388] panel-btl507212-w677l 58005000.encoder.0: w677l_probe =
-ok
->> [  119.846679] omapdss_dss 58000000.dss: bound 58001000.dispc (ops =
-dispc_component_ops [omapdrm])
->> [  119.858673] omapdss_dss 58000000.dss: bound 58004000.encoder (ops =
-dsi_component_ops [omapdrm])
->> [  119.882629] omapdss_dss 58000000.dss: bound 58005000.encoder (ops =
-dsi_component_ops [omapdrm])
->> [  119.902069] omapdss_dss 58000000.dss: bound 58006000.encoder (ops =
-hdmi4_component_ops [omapdrm])
->> [  119.962066] dmm 4e000000.dmm: initialized all PAT entries
->> [  120.014770] panel-btl507212-w677l 58005000.encoder.0: =
-w677l_get_modes
->>=20
->> I didn't debug yet where it's hanging. So you're not even getting the =
-probe?
->=20
-> Oh, it's stuck in a loop trying to calculate suitable timings. It =
-doesn't find it, as I'm running on
-> omap4, with just 2 datalanes instead of 4 which the panel needs. Looks =
-like the code could use some
-> improvement there.
->=20
-> Anyway, possibly on omap5 it goes fine.
+Reviewed-by: Nikhil Devshatwar <nikhil.nd@ti.com>
 
-I have set up based on our complete letux-5.10-rc2 tree and maybe using =
-our private config makes
-the difference. Anyways, the driver is now probed and I can see the call =
-to w677l_get_modes().
+Thanks
+Nikhil D
 
-I have still no image and no calls to prepare/unprepare etc. but now I =
-can start to debug on omap5.
-And hopefully we are close to push the panel driver for review. And in a =
-second step some device
-tree for the Pyra.
-
-The new tree is here: =
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/work-pyra-panel
-
-BR and thanks,
-Nikolaus
-
+>  arch/arm/configs/omap2plus_defconfig          |    2 +-
+>  drivers/gpu/drm/omapdrm/Kconfig               |  120 +-
+>  drivers/gpu/drm/omapdrm/Makefile              |   19 +-
+>  drivers/gpu/drm/omapdrm/displays/Kconfig      |   10 -
+>  drivers/gpu/drm/omapdrm/displays/Makefile     |    2 -
+>  .../gpu/drm/omapdrm/displays/panel-dsi-cm.c   | 1385 -----------------
+>  drivers/gpu/drm/omapdrm/dss/Kconfig           |  135 --
+>  drivers/gpu/drm/omapdrm/dss/Makefile          |   20 -
+>  drivers/gpu/drm/omapdrm/dss/base.c            |   87 +-
+>  drivers/gpu/drm/omapdrm/dss/dispc.c           |  101 +-
+>  drivers/gpu/drm/omapdrm/dss/display.c         |   60 -
+>  drivers/gpu/drm/omapdrm/dss/dpi.c             |    1 -
+>  drivers/gpu/drm/omapdrm/dss/dsi.c             | 1069 ++++++++-----
+>  drivers/gpu/drm/omapdrm/dss/dss.c             |   28 +-
+>  drivers/gpu/drm/omapdrm/dss/dss.h             |   72 +-
+>  drivers/gpu/drm/omapdrm/dss/hdmi4.c           |    1 -
+>  drivers/gpu/drm/omapdrm/dss/hdmi5.c           |    1 -
+>  .../gpu/drm/omapdrm/dss/omapdss-boot-init.c   |  229 ---
+>  drivers/gpu/drm/omapdrm/dss/omapdss.h         |  278 +---
+>  drivers/gpu/drm/omapdrm/dss/output.c          |   57 +-
+>  drivers/gpu/drm/omapdrm/dss/sdi.c             |    1 -
+>  drivers/gpu/drm/omapdrm/dss/venc.c            |    2 -
+>  drivers/gpu/drm/omapdrm/omap_connector.c      |  157 --
+>  drivers/gpu/drm/omapdrm/omap_connector.h      |   28 -
+>  drivers/gpu/drm/omapdrm/omap_crtc.c           |  103 +-
+>  drivers/gpu/drm/omapdrm/omap_crtc.h           |    2 -
+>  drivers/gpu/drm/omapdrm/omap_drv.c            |   65 +-
+>  drivers/gpu/drm/omapdrm/omap_drv.h            |    3 +-
+>  drivers/gpu/drm/omapdrm/omap_encoder.c        |   59 +-
+>  drivers/gpu/drm/omapdrm/omap_irq.c            |   34 +-
+>  drivers/gpu/drm/omapdrm/omap_plane.c          |   12 +-
+>  drivers/gpu/drm/panel/Kconfig                 |    9 +
+>  drivers/gpu/drm/panel/Makefile                |    1 +
+>  drivers/gpu/drm/panel/panel-dsi-cm.c          |  647 ++++++++
+>  include/drm/drm_mipi_dsi.h                    |    2 +
+>  35 files changed, 1718 insertions(+), 3084 deletions(-)
+>  delete mode 100644 drivers/gpu/drm/omapdrm/displays/Kconfig
+>  delete mode 100644 drivers/gpu/drm/omapdrm/displays/Makefile
+>  delete mode 100644 drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+>  delete mode 100644 drivers/gpu/drm/omapdrm/dss/Kconfig
+>  delete mode 100644 drivers/gpu/drm/omapdrm/dss/Makefile
+>  delete mode 100644 drivers/gpu/drm/omapdrm/dss/display.c
+>  delete mode 100644 drivers/gpu/drm/omapdrm/dss/omapdss-boot-init.c
+>  delete mode 100644 drivers/gpu/drm/omapdrm/omap_connector.c
+>  delete mode 100644 drivers/gpu/drm/omapdrm/omap_connector.h
+>  create mode 100644 drivers/gpu/drm/panel/panel-dsi-cm.c
+> 
+> -- 
+> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> 
