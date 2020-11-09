@@ -2,135 +2,117 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF0562AB50C
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 11:34:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C85DF2AB516
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 11:35:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727906AbgKIKej (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Nov 2020 05:34:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54360 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726176AbgKIKej (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Nov 2020 05:34:39 -0500
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B724C0613CF;
-        Mon,  9 Nov 2020 02:34:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=qH9b1O1m9yVoEB6n8QkB/6TaJXHCxIPP32Fq1mFfWKE=; b=gGrvZ5xBLQtSpNi2uSB0ANIyt
-        afY6SWLthCnmt6Eeq9iZZax1/dyotilgV7RwYmDtVPVh7RwXnEAYDGAtLsa727gWFqK5CzSIwzblw
-        DaYTkWl5eVU2agK0Wy6hnKjxer6VycAEWpMtm1NwlVYP8n9kJucFn6RRJt2oQiqC+/YAOq4k6TXTo
-        dYesdPUt9+kdk2famskEu8KnvAp6sqlxtQTkKiPG+IohXg8HNv0sKPXA55oJI+hF72r+UriKjmSUr
-        sydSD86p/UZ7m2nM8/IM9hJ+KGVUGO+/ml+2PkrHYDWyWW/YYlOyIF6iLw25zd+4lV3cvHJvnHiJX
-        ZcxHuRLig==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56980)
-        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1kc4V7-000858-1A; Mon, 09 Nov 2020 10:34:17 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1kc4V4-0000KD-S1; Mon, 09 Nov 2020 10:34:14 +0000
-Date:   Mon, 9 Nov 2020 10:34:14 +0000
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-Cc:     Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Patrice Chotard <patrice.chotard@st.com>,
-        linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH usb-next] usb: dwc3: Use devm_of_platform_populate
-Message-ID: <20201109103414.GF1559@shell.armlinux.org.uk>
-References: <20201109095953.7f810239@xhacker.debian>
+        id S1729390AbgKIKey (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Nov 2020 05:34:54 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:57438 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727077AbgKIKey (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Nov 2020 05:34:54 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A9AYj0D093523;
+        Mon, 9 Nov 2020 04:34:45 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1604918085;
+        bh=DgZjdXs8DMxtaQLTqgoKo38SaJaS6JFxfNRY0VF02kw=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=pFF0z/UJ6eytMwE7B6SLyVLzukfj8+/mz8oFoBqQ3qBj/UhPexVDatj6by9j2UsJY
+         CDxzO/9TcBllMcla8DlSQanS8bRaLMgJYm5pVDlB7zVxpR7O77rtWnpb6NFPsMAqx2
+         WYCymKHqQj0wrBaIXCsKvBK9VsNkvb0ANrdcl49E=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A9AYj8Q114519
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 9 Nov 2020 04:34:45 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 9 Nov
+ 2020 04:34:44 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 9 Nov 2020 04:34:44 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A9AYgCa107392;
+        Mon, 9 Nov 2020 04:34:43 -0600
+Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and
+ drm_panel
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+CC:     Sebastian Reichel <sre@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Nikhil Devshatwar <nikhil.nd@ti.com>,
+        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>
+References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
+ <61C04176-4654-4D2D-A55B-31FBB6D2E5AA@goldelico.com>
+ <fcbc8488-5861-8e51-0f86-1ed6498083f7@ti.com>
+ <579243AA-014A-411B-9014-F5846C9B8137@goldelico.com>
+ <ab33baff-dd8c-2ee0-6f89-35aa4df7b9cf@ti.com>
+ <837EA533-9946-43B3-B058-69060EC43981@goldelico.com>
+ <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com>
+ <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com>
+ <67786545-23D2-444F-85B8-7A030070B317@goldelico.com>
+ <a20f2b88-bfe6-0ab4-a19b-ba5316db6c4f@ti.com>
+ <17F5238B-1CC3-4764-B744-C57D9CE4EB42@goldelico.com>
+ <db0b9694-4d04-18ba-fdf0-093b5914bbf0@ti.com>
+ <6A9407FC-69F7-4E30-B4A3-FFB2E91CAE3B@goldelico.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <1cf563e5-2dc0-1802-86e3-3e24150f0651@ti.com>
+Date:   Mon, 9 Nov 2020 12:34:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201109095953.7f810239@xhacker.debian>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Sender: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+In-Reply-To: <6A9407FC-69F7-4E30-B4A3-FFB2E91CAE3B@goldelico.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Nov 09, 2020 at 09:59:53AM +0800, Jisheng Zhang wrote:
-> diff --git a/drivers/usb/dwc3/dwc3-meson-g12a.c b/drivers/usb/dwc3/dwc3-meson-g12a.c
-> index 417e05381b5d..83015bb7b926 100644
-> --- a/drivers/usb/dwc3/dwc3-meson-g12a.c
-> +++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
-> @@ -702,7 +702,6 @@ static int dwc3_meson_g12a_probe(struct platform_device *pdev)
->  {
->  	struct dwc3_meson_g12a	*priv;
->  	struct device		*dev = &pdev->dev;
-> -	struct device_node	*np = dev->of_node;
->  	void __iomem *base;
->  	int ret, i;
->  
-> @@ -794,7 +793,7 @@ static int dwc3_meson_g12a_probe(struct platform_device *pdev)
->  			goto err_phys_power;
->  	}
->  
-> -	ret = of_platform_populate(np, NULL, NULL, dev);
-> +	ret = devm_of_platform_populate(dev);
->  	if (ret)
->  		goto err_phys_power;
->  
-> @@ -832,8 +831,6 @@ static int dwc3_meson_g12a_remove(struct platform_device *pdev)
->  	if (priv->drvdata->otg_switch_supported)
->  		usb_role_switch_unregister(priv->role_switch);
->  
-> -	of_platform_depopulate(dev);
-> -
->  	for (i = 0 ; i < PHY_COUNT ; ++i) {
->  		phy_power_off(priv->phys[i]);
->  		phy_exit(priv->phys[i]);
+On 09/11/2020 12:31, H. Nikolaus Schaller wrote:
+> 
+>> Am 09.11.2020 um 11:22 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
+>>
+>> On 09/11/2020 11:30, H. Nikolaus Schaller wrote:
+>>>
+>>>> Am 09.11.2020 um 09:04 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
+>>>>
+>>>> On 07/11/2020 14:19, H. Nikolaus Schaller wrote:
+>>>>
+>>>>> I have set up based on our complete letux-5.10-rc2 tree and maybe using our private config makes
+>>>>> the difference. Anyways, the driver is now probed and I can see the call to w677l_get_modes().
+>>>>>
+>>>>> I have still no image and no calls to prepare/unprepare etc. but now I can start to debug on omap5.
+>>>>> And hopefully we are close to push the panel driver for review. And in a second step some device
+>>>>> tree for the Pyra.
+>>>>>
+>>>>> The new tree is here: https://git.goldelico.com/?p=letux-kernel.git;a=shortlog;h=refs/heads/work-pyra-panel
+>>>>
+>>>> Ok, good. Do you have a link the previous driver that works (omapdrm specific panel driver)? I think
+>>>> it's good to have that as a reference.
+>>>
+>>> Yes, here:
+>>>
+>>> https://git.goldelico.com/?p=letux-kernel.git;a=shortlog;h=refs/heads/letux/panels
+>>
+>> Ok. The old driver uses two separate VC configurations (request_vc calls),
+> 
+> yes indeed. I was not sure how to handle this with the new omapdrm drivers.
+> 
+>> so it may not work with
+>> this series. I think we need to implement logic to the dsi driver to somehow handle this kind of setup.
+> 
+> I see.
+> Anyways there is missing some simple thing which makes the driver not prepared/enabled.
+> Or is this related to VC?
 
-Does it matter that the order that things happen in
-dwc3_meson_g12a_remove() is changed as a result of your patch? Was
-the code relying on the platform devices being depopulated before
-powering off the PHYs?
+No, that's not related to the VC.
 
-> diff --git a/drivers/usb/dwc3/dwc3-of-simple.c b/drivers/usb/dwc3/dwc3-of-simple.c
-> index e62ecd22b3ed..f1c267e39d62 100644
-> --- a/drivers/usb/dwc3/dwc3-of-simple.c
-> +++ b/drivers/usb/dwc3/dwc3-of-simple.c
-> @@ -73,7 +73,7 @@ static int dwc3_of_simple_probe(struct platform_device *pdev)
->  	if (ret)
->  		goto err_resetc_assert;
->  
-> -	ret = of_platform_populate(np, NULL, NULL, dev);
-> +	ret = devm_of_platform_populate(dev);
->  	if (ret)
->  		goto err_clk_put;
->  
-> @@ -97,8 +97,6 @@ static int dwc3_of_simple_probe(struct platform_device *pdev)
->  
->  static void __dwc3_of_simple_teardown(struct dwc3_of_simple *simple)
->  {
-> -	of_platform_depopulate(simple->dev);
-> -
->  	clk_bulk_disable_unprepare(simple->num_clocks, simple->clks);
->  	clk_bulk_put_all(simple->num_clocks, simple->clks);
->  	simple->num_clocks = 0;
-
-Same here... and for anywhere else in this patch that you're deleting
-a of_platform_depopulate().
-
-You effectively are moving the call to of_platform_depopulate() *after*
-the driver's .remove function has been called.
+ Tomi
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
