@@ -2,688 +2,264 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A44E2AADAF
-	for <lists+linux-omap@lfdr.de>; Sun,  8 Nov 2020 22:29:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D46F2AAEDE
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 03:00:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728038AbgKHV3d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 8 Nov 2020 16:29:33 -0500
-Received: from sender11-of-o52.zoho.eu ([31.186.226.238]:21313 "EHLO
-        sender11-of-o52.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727570AbgKHV3d (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 8 Nov 2020 16:29:33 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1604870963; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=NG4i4tR6yiSGNSMMAmmwNoX25JoJGIFOsx51lkey2Yk3BSJSkybTTXlDhU3E/QpHNJIboJXwVUZFRkFWJcrorU47qbpy4NLsAxuA9OEJ8irI5JfHlnFe8/a9a5RI28RJjrbmTZSgyAatdjvWaYQ1FQNk072keEL+zfAaPg1ntZ4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1604870963; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=a6eIpdGoXU9hJltyfqd8EQeUkJfZAkdpQueRDQn0w/M=; 
-        b=LEOvCl/xBTzAI/hHGUUBZX0UoIt+bkaKKMZKwT76jZ5fDTGGjDJfKfhH6Kryp74qewWAKmcae3uFF9NFIW2Hgw3B5Q6M207hmkXiKA9PrMod935mPKTnhZIAoPnp7vsOZ6cHqf3ehKJ3i3G7m4ua1YPm0BFc3w3ZTqLe1D+voeg=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
-        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
-Received: from localhost.localdomain (ip-95-222-213-200.hsi15.unitymediagroup.de [95.222.213.200]) by mx.zoho.eu
-        with SMTPS id 1604870961166697.8286499744639; Sun, 8 Nov 2020 22:29:21 +0100 (CET)
-Date:   Sun, 8 Nov 2020 22:29:20 +0100
-From:   Carl Philipp Klemm <philipp@uvos.xyz>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>, tony@atomide.com
-Cc:     linux-omap@vger.kernel.org, linux-input@vger.kernel.org
-Subject: [PATCH v4] ARM: dts: motorola-mapphone-common: Add dts
- configureation for the android buttons beneath the screen
-Message-Id: <20201108222920.096d331ddf94f74c3bf0e023@uvos.xyz>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
+        id S1728068AbgKICAM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 8 Nov 2020 21:00:12 -0500
+Received: from mail-bn8nam11on2064.outbound.protection.outlook.com ([40.107.236.64]:2272
+        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728006AbgKICAM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 8 Nov 2020 21:00:12 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=b+m1Jg4qdOuqv5ChNGF/muB/aS5p6nyfY737yYDdfgp7Dtgw/xOhNXSmDB7v/Wa+w5555ARO2yEVzGopAYvTm7bSnsOAy2tEQLxWcOGbPQG+OZsalaFaqkSiMv3UIu9QAT3vm+6PMWAKlZPPaN7SrLJgQ9kTiAHPNu/2Go5JGfshiHg2EXnetVKLeIHmEVbo4xgpnOvpkSNYcX5b7gI9TXIeSumdStEC0+8FW+MOKjawUFNfnSO6n4+o1LlX1Qs2ezycWU0/7GBmoAsr83oeKpr4Ek6lX3Y11DLRQIbPSbtjz8jiN65L4RHl3A+SosS2VB76o55RybCZykEMtKONeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x/6qidCU8HCYN8iCrmdgB9fVq4wAkDYE6DXfnJSTwlI=;
+ b=L6eT8ZG+lpsvTrcRcEAupyXRIutp8GDGX//ulUyUveM2wKBP8JkmzgUPjR3KUS3Lbqc+gkaD4FFnNp57DG4GNoU8Dzv814y7Br5CS/FuE8G7GR3xB4RFeRc7sQhdbeevjS92/53OGGJsq9k8mS+vPxl54e42h/vxY6aiE5U8dTLP3ETO+nK8Oi3dZOa5k4RaqJgH2ZfdtsyKlbrqRR9IIDE8Iaf9aCAe+OEaYYWST+jVO4vCAzmk5ttOMqD9AIKiVCPJ51owhpjpdjdSNvlcUx0uMcoQ7/CqkzbmXQx1Pn/Ak1yU4Hs10f3dK1BYVFHcvMpaPcGFQncI60hA/ziHBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=synaptics.com; dmarc=pass action=none
+ header.from=synaptics.com; dkim=pass header.d=synaptics.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=Synaptics.onmicrosoft.com; s=selector2-Synaptics-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x/6qidCU8HCYN8iCrmdgB9fVq4wAkDYE6DXfnJSTwlI=;
+ b=FbrmHzP0cldX9vrS6b9vSdOPVcrer9reAo37NsK/m9bJgazC93iEFAvOzeZ1j5/CJtptewTUUnAXq23Yw69Wj1C1v+5MZlAT3SfBh2YoRP31FPcQ1Z9t2pzv//KeGKrGOFtwYNbx5XN1LVWt2WAH6OTWLY7V4ESVBzMd62Y1HGE=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=synaptics.com;
+Received: from SN2PR03MB2383.namprd03.prod.outlook.com (2603:10b6:804:d::23)
+ by SN6PR03MB3488.namprd03.prod.outlook.com (2603:10b6:805:40::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.25; Mon, 9 Nov
+ 2020 02:00:06 +0000
+Received: from SN2PR03MB2383.namprd03.prod.outlook.com
+ ([fe80::49be:5ea3:8961:a22]) by SN2PR03MB2383.namprd03.prod.outlook.com
+ ([fe80::49be:5ea3:8961:a22%6]) with mapi id 15.20.3541.024; Mon, 9 Nov 2020
+ 02:00:06 +0000
+Date:   Mon, 9 Nov 2020 09:59:53 +0800
+From:   Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+To:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Patrice Chotard <patrice.chotard@st.com>
+Cc:     linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: [PATCH usb-next] usb: dwc3: Use devm_of_platform_populate
+Message-ID: <20201109095953.7f810239@xhacker.debian>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+X-Originating-IP: [192.147.44.204]
+X-ClientProxiedBy: BYAPR07CA0016.namprd07.prod.outlook.com
+ (2603:10b6:a02:bc::29) To SN2PR03MB2383.namprd03.prod.outlook.com
+ (2603:10b6:804:d::23)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from xhacker.debian (192.147.44.204) by BYAPR07CA0016.namprd07.prod.outlook.com (2603:10b6:a02:bc::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.18 via Frontend Transport; Mon, 9 Nov 2020 02:00:00 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 44c8004b-f22a-48b6-1f46-08d884532e0c
+X-MS-TrafficTypeDiagnostic: SN6PR03MB3488:
+X-Microsoft-Antispam-PRVS: <SN6PR03MB348822E48A9331DC6CE6734FEDEA0@SN6PR03MB3488.namprd03.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:256;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: pz6q4Scy7kSOEoPJoTKTEN1QyJ8wuhasmLYYr0FK9X1nWwR5sRanT8ZbHUvCr34KKQs/LfZLlpkspG5v5Jdu8oEfKInxpoJMACcL7JpfXHqZQKfRKsBbXUTP7wv4P0pAHwAJLqYy3k5EL1Dc7yJZXvLbxN+fp1djjrkMcbfjUxNMHdzo2Oc0dk2kprFXkdsIUN+4aZnBnZWFGPTHA6TVMOrVX5u4XeUF1CHJ/GuEXP7AI/vWIbVcNd2jk6KdkAkNuliZYhJWQM3Q+YqJXA4ODG9SrV+KHMMi2rHDKLy83lNejzhLBsXUy3XscrA7PjkOfsACiWwagJ1lFj5jAsk3GOfERzZcfCqOLKlfPM8JtjXZoA6TcuFKyF6eIyct3K5D
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN2PR03MB2383.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39850400004)(366004)(136003)(376002)(396003)(346002)(6506007)(110136005)(186003)(86362001)(26005)(16526019)(316002)(956004)(7696005)(52116002)(8676002)(8936002)(4326008)(7416002)(478600001)(2906002)(9686003)(55016002)(5660300002)(66946007)(83380400001)(1076003)(66476007)(66556008)(6666004)(921003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 1Q1xHlRU8kpfURj/DX4KGduQplaxw1CYM5qqyLgNOqoYhOp+9sc1ei4yRKNL3C3LUayE6yIG7feHiGRsnXpygYCvU7KTOlA/nZsjmBxYVvLu2fImxTqdhvWfYJeAH20OIgCOH3vJb1ju/+hQAmf4vPj/JfaoScWpPnsWkVcmIyLzFcayZF8BisjCkv28yiIFa9cmjqox9R2Z1hf+EWHhlyseu7m5/vcDCZyiWctYx1OpACj4AXPhk61asIF5rGSZzkaDP8ZeC5cW9BnaWMtNdCUX88VwKfEirZO0UZkw4tN0IyYtkxItrENrzYZ2F0M0eEn3XDSLlhz59EqsIbf8atXMZKtNF0cwhiXXPAlFeL93oxlNZUWGscOCsRbe5LUoVakBRg+JeMQTFcexV5dvdb+fA4sxwwZ3ywaW27MwcNxOoHA7Cz62RCxPv/VEOVMVUEan85TAO707FFRqdbBN/LzH5PH0YWDVW4rFlWkJSCfqODJFUtG04RVBuiM8vTrLADMg5oI/0uFvG0QnHa69HDwYhciBgX+FY3VUfu+VC6TipFBe0TN3zN3Br8hVq7vWh3SR8DsgoC3JPiYBivyijOYAPl7Ei6cUqznLGKl2aqTa9cX994TvQEhV9zYNHrAmFv4B4QwIu6RDzrl7qtWrRA==
+X-OriginatorOrg: synaptics.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44c8004b-f22a-48b6-1f46-08d884532e0c
+X-MS-Exchange-CrossTenant-AuthSource: SN2PR03MB2383.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2020 02:00:06.4372
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335d1fbc-2124-4173-9863-17e7051a2a0e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dMYB2hv/U8iOC13y/GxxLjLyMCNSASkO6zaSXf9hu2t+uwe0g4rD8FUuDBvbwdfHj6/gNuUjIVG2ZUPJQNRz/w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR03MB3488
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Adds a driver for supporting permanet, physically labeled, buttons on
-touchscreen surfaces. As are common on android phones designed with android 1.0
-to 2.3 in mind. The driver works by attaching to another input device and
-creating key events on its device when a press is registerd on a button.
-It also provides a mirrored touchscreen device with the same events as the
-attached device, but with the touchches that land on buttons filterd away
-Buttons are arbitrary rectangles configurable via dts.
+Use managed API devm_of_platform_populate() to simplify error and exit
+code path.
 
-
-Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
+Signed-off-by: Jisheng Zhang <Jisheng.Zhang@synaptics.com>
 ---
- drivers/input/misc/Kconfig               |   8 +
- drivers/input/misc/Makefile              |   1 +
- drivers/input/misc/touchscreen-buttons.c | 592 +++++++++++++++++++++++
- 3 files changed, 601 insertions(+)
- create mode 100644 drivers/input/misc/touchscreen-buttons.c
+ drivers/usb/dwc3/dwc3-exynos.c     | 2 +-
+ drivers/usb/dwc3/dwc3-keystone.c   | 2 +-
+ drivers/usb/dwc3/dwc3-meson-g12a.c | 5 +----
+ drivers/usb/dwc3/dwc3-of-simple.c  | 4 +---
+ drivers/usb/dwc3/dwc3-omap.c       | 3 +--
+ drivers/usb/dwc3/dwc3-qcom.c       | 8 ++------
+ drivers/usb/dwc3/dwc3-st.c         | 4 +---
+ 7 files changed, 8 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/input/misc/Kconfig b/drivers/input/misc/Kconfig
-index 362e8a01980c..3d487b8e7d8b 100644
---- a/drivers/input/misc/Kconfig
-+++ b/drivers/input/misc/Kconfig
-@@ -318,6 +318,14 @@ config INPUT_CPCAP_PWRBUTTON
- 	  To compile this driver as a module, choose M here. The module will
- 	  be called cpcap-pwrbutton.
+diff --git a/drivers/usb/dwc3/dwc3-exynos.c b/drivers/usb/dwc3/dwc3-exynos.c
+index 90bb022737da..f567d1e63c05 100644
+--- a/drivers/usb/dwc3/dwc3-exynos.c
++++ b/drivers/usb/dwc3/dwc3-exynos.c
+@@ -110,7 +110,7 @@ static int dwc3_exynos_probe(struct platform_device *pdev)
+ 	}
  
-+config INPUT_TOUCHSCREEN_BUTTONS
-+	tristate "Touchscreen Buttons"
-+	help
-+	  Say Y here if you want to enable buttons on touchscreen devices.
-+
-+	  To compile this driver as a module, choose M here. The module will
-+	  be called touchscreen-buttons.
-+
- config INPUT_WISTRON_BTNS
- 	tristate "x86 Wistron laptop button interface"
- 	depends on X86_32
-diff --git a/drivers/input/misc/Makefile b/drivers/input/misc/Makefile
-index a48e5f2d859d..18032a1b2a9c 100644
---- a/drivers/input/misc/Makefile
-+++ b/drivers/input/misc/Makefile
-@@ -84,4 +84,5 @@ obj-$(CONFIG_INPUT_WM831X_ON)		+= wm831x-on.o
- obj-$(CONFIG_INPUT_XEN_KBDDEV_FRONTEND)	+= xen-kbdfront.o
- obj-$(CONFIG_INPUT_YEALINK)		+= yealink.o
- obj-$(CONFIG_INPUT_IDEAPAD_SLIDEBAR)	+= ideapad_slidebar.o
-+obj-$(CONFIG_INPUT_TOUCHSCREEN_BUTTONS)	+= touchscreen-buttons.o
+ 	if (node) {
+-		ret = of_platform_populate(node, NULL, NULL, dev);
++		ret = devm_of_platform_populate(dev);
+ 		if (ret) {
+ 			dev_err(dev, "failed to add dwc3 core\n");
+ 			goto populate_err;
+diff --git a/drivers/usb/dwc3/dwc3-keystone.c b/drivers/usb/dwc3/dwc3-keystone.c
+index 9a99253d5ba3..626b16c46688 100644
+--- a/drivers/usb/dwc3/dwc3-keystone.c
++++ b/drivers/usb/dwc3/dwc3-keystone.c
+@@ -157,7 +157,7 @@ static int kdwc3_probe(struct platform_device *pdev)
+ 	kdwc3_enable_irqs(kdwc);
  
-diff --git a/drivers/input/misc/touchscreen-buttons.c b/drivers/input/misc/touchscreen-buttons.c
-new file mode 100644
-index 000000000000..8b40dbb874c3
---- /dev/null
-+++ b/drivers/input/misc/touchscreen-buttons.c
-@@ -0,0 +1,592 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/**
-+ * Touchscreen Virutal Button Input Driver
-+ *
-+ * Copyright (C) 2020 Carl Klemm <carl@uvos.xyz>
-+ *
-+ * This file is subject to the terms and conditions of the GNU General
-+ * Public License. See the file "COPYING" in the main directory of this
-+ * archive for more details.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/types.h>
-+#include <linux/platform_device.h>
-+#include <linux/errno.h>
-+#include <linux/input.h>
-+#include <linux/slab.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+#include <linux/kernel.h>
-+#include <linux/limits.h>
-+#include <linux/input/mt.h>
-+#include <linux/device/bus.h>
-+#include <linux/string.h>
-+#include <linux/workqueue.h>
-+
-+#define EVENT_QUEUE_SIZE 32
-+
-+struct touchscreen_button {
-+	u32 x;
-+	u32 y;
-+	u32 width;
-+	u32 height;
-+	u32 keycode;
-+	u8 depressed;
-+};
-+
-+struct touchscreen_button_map {
-+	struct touchscreen_button *buttons;
-+	u32 count;
-+	struct device_node *ts_node;
-+};
-+
-+struct event {
-+	unsigned int type;
-+	unsigned int code;
-+	int value;
-+};
-+
-+struct event_queue {
-+	struct event events[EVENT_QUEUE_SIZE];
-+	unsigned int lastindex;
-+};
-+
-+struct touchscreen_buttons {
-+	struct device *dev;
-+	struct input_dev *buttons_idev;
-+	struct input_dev *filtered_ts_idev;
-+	struct touchscreen_button_map *map;
-+	struct input_handler *handler;
-+	struct input_handle *ts_handle;
-+	struct event_queue queue;
-+	struct workqueue_struct *workqueue;
-+	struct work_struct open_task;
-+	struct work_struct close_task;
-+	struct work_struct merge_task;
-+	struct mutex mutex;
-+};
-+
-+static const struct input_device_id touchscreen_buttons_ids[] = {
-+	{
-+	 .flags = INPUT_DEVICE_ID_MATCH_EVBIT,
-+	 .evbit = {BIT_MASK(EV_ABS)},
-+	 },
-+	{
-+	 .flags = INPUT_DEVICE_ID_MATCH_EVBIT,
-+	 .evbit = {BIT_MASK(EV_KEY)},
-+	 },
-+	{
-+	 .flags = INPUT_DEVICE_ID_MATCH_EVBIT,
-+	 .evbit = {BIT_MASK(EV_SYN)},
-+	 },
-+	{},
-+};
-+
-+static int touchscreen_buttons_process_syn(const struct event_queue *queue,
-+					   const struct touchscreen_button_map
-+					   *map, struct input_dev *idev)
-+{
-+	u32 i;
-+	int x, y, ret, pressed;
-+
-+	x = INT_MIN;
-+	y = INT_MIN;
-+	pressed = -1;
-+	ret = 0;
-+
-+	for (i = 0; i < queue->lastindex; ++i) {
-+		const struct event *ev;
-+
-+		ev = &queue->events[i];
-+		if (ev->type == EV_ABS && ev->code == ABS_X)
-+			x = ev->value;
-+		else if (ev->type == EV_ABS && ev->code == ABS_Y)
-+			y = ev->value;
-+		else if (ev->type == EV_KEY && ev->code == BTN_TOUCH)
-+			pressed = ev->value;
-+	}
-+
-+	for (i = 0; i < map->count; ++i) {
-+		struct touchscreen_button *button = &map->buttons[i];
-+
-+		if (pressed == 1 &&
-+		    button->x <= x &&
-+		    button->y <= y &&
-+		    button->width + button->x >= x &&
-+		    button->height + button->y >= y && button->depressed == 0) {
-+			input_report_key(idev, button->keycode, 1);
-+			button->depressed = 1;
-+			ret = 1;
-+		} else if (button->depressed == 1) {
-+			if (pressed == 0) {
-+				input_report_key(idev, button->keycode, 0);
-+				button->depressed = 0;
-+			}
-+			ret = 2;
-+		}
-+	}
-+
-+	if (ret != 0) {
-+		input_event(idev, EV_SYN, SYN_REPORT, 0);
-+	} else if (ret == 0) {
-+		bool buttonpressed = false;
-+
-+		for (i = 0; i < map->count; ++i)
-+			buttonpressed = buttonpressed
-+			    || map->buttons[i].depressed;
-+		if (buttonpressed)
-+			ret = 3;
-+	}
-+
-+	return ret;
-+}
-+
-+static void touchscreen_buttons_resend_events(const struct event_queue *queue,
-+					      struct input_dev *idev)
-+{
-+	u32 i;
-+
-+	for (i = 0; i < queue->lastindex; ++i)
-+		input_event(idev, queue->events[i].type, queue->events[i].code,
-+			    queue->events[i].value);
-+	input_event(idev, EV_SYN, SYN_REPORT, 0);
-+}
-+
-+static void touchscreen_buttons_copy_mt_slots(struct input_dev *target,
-+					      struct input_dev *source)
-+{
-+	if (source->mt && target->mt
-+	    && source->mt->num_slots == target->mt->num_slots) {
-+		memcpy(target->mt->slots, source->mt->slots,
-+		       sizeof(struct input_mt_slot) * source->mt->num_slots);
-+	}
-+}
-+
-+static void touchscreen_buttons_input_event(struct input_handle *handle,
-+					    unsigned int type,
-+					    unsigned int code, int value)
-+{
-+	struct touchscreen_buttons *buttons;
-+
-+	buttons = handle->private;
-+
-+	if (type == EV_SYN && code == SYN_REPORT) {
-+		if (touchscreen_buttons_process_syn(&buttons->queue,
-+						    buttons->map,
-+						    buttons->buttons_idev) == 0)
-+			touchscreen_buttons_resend_events(&buttons->queue,
-+							  buttons->filtered_ts_idev);
-+		buttons->queue.lastindex = 0;
-+	} else if (buttons->queue.lastindex < EVENT_QUEUE_SIZE) {
-+		buttons->queue.events[buttons->queue.lastindex].type = type;
-+		buttons->queue.events[buttons->queue.lastindex].code = code;
-+		buttons->queue.events[buttons->queue.lastindex].value = value;
-+		++buttons->queue.lastindex;
-+	} else {
-+		dev_warn(buttons->dev,
-+			 "event_qeue overrun, will not capture events until next SYN_REPORT\n");
-+	}
-+}
-+
-+static void touchscreen_buttons_merge_capabilitys(struct input_dev *target,
-+						  struct input_dev *source)
-+{
-+	unsigned int i;
-+
-+	mutex_lock(&target->mutex);
-+	mutex_lock(&source->mutex);
-+	for (i = 0; i < BITS_TO_LONGS(INPUT_PROP_CNT); ++i)
-+		target->propbit[i] = target->propbit[i] | source->propbit[i];
-+	for (i = 0; i < BITS_TO_LONGS(EV_CNT); ++i)
-+		target->evbit[i] = target->evbit[i] | source->evbit[i];
-+	for (i = 0; i < BITS_TO_LONGS(KEY_CNT); ++i)
-+		target->keybit[i] = target->keybit[i] | source->keybit[i];
-+	for (i = 0; i < BITS_TO_LONGS(REL_CNT); ++i)
-+		target->relbit[i] = target->relbit[i] | source->relbit[i];
-+	for (i = 0; i < BITS_TO_LONGS(ABS_CNT); ++i)
-+		target->absbit[i] = target->absbit[i] | source->absbit[i];
-+	for (i = 0; i < BITS_TO_LONGS(MSC_CNT); ++i)
-+		target->mscbit[i] = target->mscbit[i] | source->mscbit[i];
-+	for (i = 0; i < BITS_TO_LONGS(LED_CNT); ++i)
-+		target->ledbit[i] = target->ledbit[i] | source->ledbit[i];
-+	for (i = 0; i < BITS_TO_LONGS(SND_CNT); ++i)
-+		target->sndbit[i] = target->sndbit[i] | source->sndbit[i];
-+	for (i = 0; i < BITS_TO_LONGS(FF_CNT); ++i)
-+		target->ffbit[i] = target->ffbit[i] | source->ffbit[i];
-+	for (i = 0; i < BITS_TO_LONGS(SW_CNT); ++i)
-+		target->swbit[i] = target->swbit[i] | source->swbit[i];
-+
-+	if (*source->evbit & (1 << EV_ABS)) {
-+		input_alloc_absinfo(target);
-+		for (i = 0; i < ABS_CNT; ++i)
-+			target->absinfo[i] = source->absinfo[i];
-+		if (source->mt) {
-+			input_mt_init_slots(target, source->mt->num_slots,
-+					    source->mt->flags);
-+			touchscreen_buttons_copy_mt_slots(target, source);
-+		}
-+	}
-+	mutex_unlock(&source->mutex);
-+	mutex_unlock(&target->mutex);
-+}
-+
-+static void merge_task_handler(struct work_struct *work)
-+{
-+	struct touchscreen_buttons *buttons =
-+	    container_of(work, struct touchscreen_buttons, merge_task);
-+
-+	mutex_lock(&buttons->mutex);
-+	if (buttons->ts_handle && buttons->ts_handle->dev)
-+		touchscreen_buttons_merge_capabilitys(buttons->filtered_ts_idev,
-+						      buttons->ts_handle->dev);
-+	mutex_unlock(&buttons->mutex);
-+}
-+
-+static void close_task_handler(struct work_struct *work)
-+{
-+	struct touchscreen_buttons *buttons =
-+	    container_of(work, struct touchscreen_buttons, close_task);
-+
-+	mutex_lock(&buttons->mutex);
-+	if (buttons && buttons->ts_handle && buttons->ts_handle->open != 0)
-+		input_close_device(buttons->ts_handle);
-+	mutex_unlock(&buttons->mutex);
-+}
-+
-+static void open_task_handler(struct work_struct *work)
-+{
-+	struct touchscreen_buttons *buttons =
-+	    container_of(work, struct touchscreen_buttons, open_task);
-+	int error;
-+
-+	mutex_lock(&buttons->mutex);
-+	if (buttons && buttons->ts_handle) {
-+		error = input_open_device(buttons->ts_handle);
-+		if (error) {
-+			dev_err(buttons->dev,
-+				"Failed to open input device, error %d\n",
-+				error);
-+			input_unregister_handle(buttons->ts_handle);
-+			kfree(buttons->ts_handle);
-+			buttons->ts_handle = NULL;
-+		}
-+	}
-+	mutex_unlock(&buttons->mutex);
-+}
-+
-+static int touchscreen_buttons_input_connect(struct input_handler *handler,
-+					     struct input_dev *dev,
-+					     const struct input_device_id *id)
-+{
-+	struct touchscreen_buttons *buttons;
-+
-+	buttons = handler->private;
-+
-+	mutex_lock(&buttons->mutex);
-+
-+	if ((!buttons->ts_handle
-+	     && device_match_of_node(&dev->dev, buttons->map->ts_node))
-+	    || (dev->dev.parent
-+		&& device_match_of_node(dev->dev.parent,
-+					buttons->map->ts_node))) {
-+		int error;
-+
-+		dev_info(buttons->dev, "Binding to device: %s\n",
-+			 dev_name(&dev->dev));
-+
-+		buttons->ts_handle =
-+		    kzalloc(sizeof(*buttons->ts_handle), GFP_KERNEL);
-+		if (!buttons->ts_handle) {
-+			mutex_unlock(&buttons->mutex);
-+			return -ENOMEM;
-+		}
-+
-+		buttons->ts_handle->dev = dev;
-+		buttons->ts_handle->handler = handler;
-+		buttons->ts_handle->name = "touchscreen-buttons";
-+		buttons->ts_handle->private = handler->private;
-+		buttons->queue.lastindex = 0;
-+
-+		error = input_register_handle(buttons->ts_handle);
-+		if (error) {
-+			dev_err(buttons->dev,
-+				"Failed to register input handler, error %d\n",
-+				error);
-+			kfree(buttons->ts_handle);
-+			buttons->ts_handle = NULL;
-+			mutex_unlock(&buttons->mutex);
-+			return error;
-+		}
-+
-+		queue_work(buttons->workqueue, &buttons->merge_task);
-+
-+		if (buttons->filtered_ts_idev->users > 0
-+		    && buttons->ts_handle->open == 0)
-+			queue_work(buttons->workqueue, &buttons->open_task);
-+	}
-+
-+	mutex_unlock(&buttons->mutex);
-+	return 0;
-+}
-+
-+static void touchscreen_buttons_input_disconnect(struct input_handle *handle)
-+{
-+	struct touchscreen_buttons *buttons;
-+
-+	buttons = handle->private;
-+
-+	mutex_lock(&buttons->mutex);
-+	if (handle == buttons->ts_handle) {
-+		input_close_device(handle);
-+		input_unregister_handle(handle);
-+		kfree(handle);
-+		buttons->ts_handle = NULL;
-+		dev_info(buttons->dev,
-+			 "Touchscreen device disconnected buttons disabled\n");
-+	} else {
-+		dev_err(buttons->dev,
-+			"Unknown device disconnected, %p should be %p", handle,
-+			buttons->ts_handle);
-+	}
-+	mutex_unlock(&buttons->mutex);
-+}
-+
-+static struct touchscreen_button_map
-+*touchscreen_buttons_get_devtree_pdata(struct device *dev)
-+{
-+	struct touchscreen_button_map *map;
-+	struct fwnode_handle *child_node;
-+	struct device_node *node;
-+	int i;
-+
-+	map = kzalloc(sizeof(*map), GFP_KERNEL);
-+	if (!map)
-+		return ERR_PTR(-ENOMEM);
-+
-+	map->count = device_get_child_node_count(dev);
-+	if (map->count == 0) {
-+		kfree(map);
-+		return ERR_PTR(-ENODEV);
-+	}
-+
-+	map->buttons = kcalloc(map->count, sizeof(*map->buttons), GFP_KERNEL);
-+	if (!map->buttons)
-+		return ERR_PTR(-ENOMEM);
-+
-+	node = dev->of_node;
-+	map->ts_node = of_parse_phandle(node, "touchscreen_phandle", 0);
-+	if (!map->ts_node) {
-+		dev_err(dev, "touchscreen_phandle node missing\n");
-+		return ERR_PTR(-ENODEV);
-+	}
-+
-+	dev_info(dev, "Device_node name: %s\n", map->ts_node->name);
-+
-+	i = 0;
-+	device_for_each_child_node(dev, child_node) {
-+		struct touchscreen_button *button;
-+
-+		button = &map->buttons[i];
-+
-+		fwnode_property_read_u32(child_node, "x-position", &button->x);
-+		fwnode_property_read_u32(child_node, "y-position", &button->y);
-+		fwnode_property_read_u32(child_node, "x-size", &button->width);
-+		fwnode_property_read_u32(child_node, "y-size", &button->height);
-+		fwnode_property_read_u32(child_node, "keycode",
-+					 &button->keycode);
-+		dev_info(dev,
-+			 "Adding button at x=%u y=%u size %u x %u keycode=%u\n",
-+			 button->x, button->y, button->width, button->height,
-+			 button->keycode);
-+		++i;
-+	}
-+	return map;
-+}
-+
-+static int touchscreen_buttons_idev_opened(struct input_dev *idev)
-+{
-+	struct touchscreen_buttons *buttons;
-+
-+	buttons = dev_get_drvdata(idev->dev.parent);
-+
-+	mutex_lock(&buttons->mutex);
-+	if (buttons && buttons->ts_handle) {
-+		if (buttons->ts_handle->open == 0) {
-+			queue_work(buttons->workqueue, &buttons->open_task);
-+			dev_dbg(idev->dev.parent, "idev opened\n");
-+		} else {
-+			dev_info(idev->dev.parent, "idev allready opened\n");
-+		}
-+	} else {
-+		dev_warn(idev->dev.parent,
-+			 "Input device opend but touchscreen not opened. %p %p\n",
-+			 buttons, buttons->ts_handle);
-+	}
-+	mutex_unlock(&buttons->mutex);
-+	return 0;
-+}
-+
-+static void touchscreen_buttons_idev_closed(struct input_dev *idev)
-+{
-+	struct touchscreen_buttons *buttons;
-+
-+	buttons = dev_get_drvdata(idev->dev.parent);
-+
-+	mutex_lock(&buttons->mutex);
-+	if (buttons && buttons->ts_handle && buttons->ts_handle->open != 0) {
-+		queue_work(buttons->workqueue, &buttons->close_task);
-+		dev_dbg(idev->dev.parent, "idev closed\n");
-+	}
-+	mutex_unlock(&buttons->mutex);
-+}
-+
-+static int touchscreen_buttons_probe(struct platform_device *pdev)
-+{
-+	struct touchscreen_buttons *buttons;
-+	int error, i;
-+
-+	buttons = devm_kzalloc(&pdev->dev, sizeof(*buttons), GFP_KERNEL);
-+	if (!buttons)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(&pdev->dev, buttons);
-+
-+	buttons->workqueue =
-+	    create_singlethread_workqueue("touchscreen-buttons-workqueue");
-+	INIT_WORK(&buttons->merge_task, merge_task_handler);
-+	INIT_WORK(&buttons->open_task, open_task_handler);
-+	INIT_WORK(&buttons->close_task, close_task_handler);
-+
-+	mutex_init(&buttons->mutex);
-+
-+	buttons->queue.lastindex = 0;
-+	buttons->dev = &pdev->dev;
-+
-+	buttons->map = touchscreen_buttons_get_devtree_pdata(&pdev->dev);
-+	if (IS_ERR(buttons->map))
-+		return PTR_ERR(buttons->map);
-+
-+	/*filtered touchscreen device */
-+	buttons->filtered_ts_idev = input_allocate_device();
-+	if (!buttons->filtered_ts_idev)
-+		return -ENOMEM;
-+	buttons->filtered_ts_idev->name = "Filtered Touchscreen";
-+	buttons->filtered_ts_idev->phys = "touchscreen-buttons/input1";
-+	buttons->filtered_ts_idev->dev.parent = buttons->dev;
-+	buttons->filtered_ts_idev->open = touchscreen_buttons_idev_opened;
-+	buttons->filtered_ts_idev->close = touchscreen_buttons_idev_closed;
-+
-+	/*buttons input device */
-+	buttons->buttons_idev = input_allocate_device();
-+	if (!buttons->buttons_idev)
-+		return -ENOMEM;
-+	buttons->buttons_idev->name = "Touchscreen Buttons";
-+	buttons->buttons_idev->phys = "touchscreen-buttons/input0";
-+	buttons->buttons_idev->dev.parent = buttons->dev;
-+	for (i = 0; i < buttons->map->count; ++i)
-+		input_set_capability(buttons->buttons_idev, EV_KEY,
-+				     buttons->map->buttons[i].keycode);
-+
-+	/*handler for touchscreen input device */
-+	buttons->handler = kzalloc(sizeof(*buttons->handler), GFP_KERNEL);
-+
-+	buttons->handler->event = touchscreen_buttons_input_event;
-+	buttons->handler->connect = touchscreen_buttons_input_connect;
-+	buttons->handler->disconnect = touchscreen_buttons_input_disconnect;
-+	buttons->handler->name = "touchscreen-buttons";
-+	buttons->handler->id_table = touchscreen_buttons_ids;
-+	buttons->handler->private = buttons;
-+
-+	error = input_register_handler(buttons->handler);
-+	if (error) {
-+		dev_err(&pdev->dev, "Input handler register failed: %d\n",
-+			error);
-+		return error;
-+	}
-+
-+	error = input_register_device(buttons->buttons_idev);
-+	if (error) {
-+		dev_err(&pdev->dev, "Input device register failed: %d\n",
-+			error);
-+		return error;
-+	}
-+
-+	error = input_register_device(buttons->filtered_ts_idev);
-+	if (error) {
-+		dev_err(&pdev->dev, "Input device register failed: %d\n",
-+			error);
-+		return error;
-+	}
-+
-+	return 0;
-+}
-+
-+static int touchscreen_buttons_remove(struct platform_device *pdev)
-+{
-+	struct touchscreen_buttons *buttons;
-+	struct input_handle *ts_handle;
-+
-+	buttons = dev_get_drvdata(&pdev->dev);
-+
-+	mutex_lock(&buttons->mutex);
-+
-+	ts_handle = buttons->ts_handle;
-+
-+	input_unregister_handler(buttons->handler);
-+	if (buttons->ts_handle) {
-+		if (buttons->ts_handle->open != 0)
-+			input_close_device(buttons->ts_handle);
-+		input_unregister_handle(buttons->ts_handle);
-+		buttons->ts_handle = NULL;
-+	}
-+
-+	mutex_unlock(&buttons->mutex);
-+
-+	flush_workqueue(buttons->workqueue);
-+	destroy_workqueue(buttons->workqueue);
-+
-+	input_unregister_device(buttons->buttons_idev);
-+	input_unregister_device(buttons->filtered_ts_idev);
-+
-+	kfree(ts_handle);
-+
-+	if (buttons->map) {
-+		kfree(buttons->map->buttons);
-+		kfree(buttons->map);
-+	}
-+	kfree(buttons->handler);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_OF
-+static const struct of_device_id touchscreen_buttons_dt_match_table[] = {
-+	{.compatible = "touchscreen-buttons"},
-+	{},
-+};
-+
-+MODULE_DEVICE_TABLE(of, touchscreen_buttons_dt_match_table);
-+#endif
-+
-+static struct platform_driver touchscreen_buttons_driver = {
-+	.probe = touchscreen_buttons_probe,
-+	.remove = touchscreen_buttons_remove,
-+	.driver = {
-+		   .name = "touchscreen-buttons",
-+		   .of_match_table =
-+		   of_match_ptr(touchscreen_buttons_dt_match_table),
-+		   },
-+};
-+
-+module_platform_driver(touchscreen_buttons_driver);
-+
-+MODULE_ALIAS("platform:touchscreen-buttons");
-+MODULE_DESCRIPTION("touchscreen-buttons");
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Carl Klemm <carl@uvos.xyz>");
+ skip_irq:
+-	error = of_platform_populate(node, NULL, NULL, dev);
++	error = devm_of_platform_populate(dev);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "failed to create dwc3 core\n");
+ 		goto err_core;
+diff --git a/drivers/usb/dwc3/dwc3-meson-g12a.c b/drivers/usb/dwc3/dwc3-meson-g12a.c
+index 417e05381b5d..83015bb7b926 100644
+--- a/drivers/usb/dwc3/dwc3-meson-g12a.c
++++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
+@@ -702,7 +702,6 @@ static int dwc3_meson_g12a_probe(struct platform_device *pdev)
+ {
+ 	struct dwc3_meson_g12a	*priv;
+ 	struct device		*dev = &pdev->dev;
+-	struct device_node	*np = dev->of_node;
+ 	void __iomem *base;
+ 	int ret, i;
+ 
+@@ -794,7 +793,7 @@ static int dwc3_meson_g12a_probe(struct platform_device *pdev)
+ 			goto err_phys_power;
+ 	}
+ 
+-	ret = of_platform_populate(np, NULL, NULL, dev);
++	ret = devm_of_platform_populate(dev);
+ 	if (ret)
+ 		goto err_phys_power;
+ 
+@@ -832,8 +831,6 @@ static int dwc3_meson_g12a_remove(struct platform_device *pdev)
+ 	if (priv->drvdata->otg_switch_supported)
+ 		usb_role_switch_unregister(priv->role_switch);
+ 
+-	of_platform_depopulate(dev);
+-
+ 	for (i = 0 ; i < PHY_COUNT ; ++i) {
+ 		phy_power_off(priv->phys[i]);
+ 		phy_exit(priv->phys[i]);
+diff --git a/drivers/usb/dwc3/dwc3-of-simple.c b/drivers/usb/dwc3/dwc3-of-simple.c
+index e62ecd22b3ed..f1c267e39d62 100644
+--- a/drivers/usb/dwc3/dwc3-of-simple.c
++++ b/drivers/usb/dwc3/dwc3-of-simple.c
+@@ -73,7 +73,7 @@ static int dwc3_of_simple_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_resetc_assert;
+ 
+-	ret = of_platform_populate(np, NULL, NULL, dev);
++	ret = devm_of_platform_populate(dev);
+ 	if (ret)
+ 		goto err_clk_put;
+ 
+@@ -97,8 +97,6 @@ static int dwc3_of_simple_probe(struct platform_device *pdev)
+ 
+ static void __dwc3_of_simple_teardown(struct dwc3_of_simple *simple)
+ {
+-	of_platform_depopulate(simple->dev);
+-
+ 	clk_bulk_disable_unprepare(simple->num_clocks, simple->clks);
+ 	clk_bulk_put_all(simple->num_clocks, simple->clks);
+ 	simple->num_clocks = 0;
+diff --git a/drivers/usb/dwc3/dwc3-omap.c b/drivers/usb/dwc3/dwc3-omap.c
+index 3db17806e92e..46e7a1dd7c50 100644
+--- a/drivers/usb/dwc3/dwc3-omap.c
++++ b/drivers/usb/dwc3/dwc3-omap.c
+@@ -505,7 +505,7 @@ static int dwc3_omap_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto err1;
+ 
+-	ret = of_platform_populate(node, NULL, NULL, dev);
++	ret = devm_of_platform_populate(dev);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to create dwc3 core\n");
+ 		goto err1;
+@@ -535,7 +535,6 @@ static int dwc3_omap_remove(struct platform_device *pdev)
+ 
+ 	dwc3_omap_disable_irqs(omap);
+ 	disable_irq(omap->irq);
+-	of_platform_depopulate(omap->dev);
+ 	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index c703d552bbcf..8f5714c3d379 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -636,7 +636,7 @@ static int dwc3_qcom_of_register_core(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
+ 
+-	ret = of_platform_populate(np, NULL, NULL, dev);
++	ret = devm_of_platform_populate(dev);
+ 	if (ret) {
+ 		dev_err(dev, "failed to register dwc3 core - %d\n", ret);
+ 		return ret;
+@@ -775,9 +775,7 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ interconnect_exit:
+ 	dwc3_qcom_interconnect_exit(qcom);
+ depopulate:
+-	if (np)
+-		of_platform_depopulate(&pdev->dev);
+-	else
++	if (!np)
+ 		platform_device_put(pdev);
+ clk_disable:
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+@@ -796,8 +794,6 @@ static int dwc3_qcom_remove(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	int i;
+ 
+-	of_platform_depopulate(dev);
+-
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+ 		clk_put(qcom->clks[i]);
+diff --git a/drivers/usb/dwc3/dwc3-st.c b/drivers/usb/dwc3/dwc3-st.c
+index e733be840545..9ec2ecf8d81f 100644
+--- a/drivers/usb/dwc3/dwc3-st.c
++++ b/drivers/usb/dwc3/dwc3-st.c
+@@ -259,7 +259,7 @@ static int st_dwc3_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* Allocate and initialize the core */
+-	ret = of_platform_populate(node, NULL, NULL, dev);
++	ret = devm_of_platform_populate(dev);
+ 	if (ret) {
+ 		dev_err(dev, "failed to add dwc3 core\n");
+ 		goto err_node_put;
+@@ -309,8 +309,6 @@ static int st_dwc3_remove(struct platform_device *pdev)
+ {
+ 	struct st_dwc3 *dwc3_data = platform_get_drvdata(pdev);
+ 
+-	of_platform_depopulate(&pdev->dev);
+-
+ 	reset_control_assert(dwc3_data->rstc_pwrdn);
+ 	reset_control_assert(dwc3_data->rstc_rst);
+ 
 -- 
-2.29.1
-
+2.29.2
 
