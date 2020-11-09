@@ -2,84 +2,183 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C1A62AB3A5
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 10:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92A332AB39F
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 10:32:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726482AbgKIJd3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Nov 2020 04:33:29 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:28192 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728981AbgKIJd3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Nov 2020 04:33:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1604914407;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=MeJsKUHFOOrDgplDFdDbDkQpr7ypxrq9Rfygh+VRKKw=;
-        b=l7bdTqVs/b14oDR1O34hloQDqPGdgqOCIGKEY9mcviNEaMWrIMb/Glqwg8PABv/XhP
-        PvsLnt8WGLVoOE0zzkPUUv0vYBELBj1ntVQCRDHAg1pnCPakXo2v5rVlFAveAx6Y1YFN
-        xY4Z/wMEGvBajln4ThzHyuKd6CaIqo/OnUxK6E+g5ozgUOVxWmfyK9iDWu9mld9jdGpr
-        FGgVFO0/krFYOv44C8AyqKG1jfwr4hr0ZaSmDgvrUnbHdcgSHSvlPgRRWm8DrWSDiPZP
-        SaJ0DmGYQXlMbepMGBD/aYZVDTbTmAw1M1/Xwq0QAsdkLBISpHKb4p784e/3+fy+6FOh
-        r3Zg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlaVXA0JCQ=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 47.3.3 DYNA|AUTH)
-        with ESMTPSA id d04888wA99UKAp0
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Mon, 9 Nov 2020 10:30:20 +0100 (CET)
-Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and drm_panel
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <a20f2b88-bfe6-0ab4-a19b-ba5316db6c4f@ti.com>
-Date:   Mon, 9 Nov 2020 10:30:21 +0100
+        id S1725854AbgKIJcv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Nov 2020 04:32:51 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:40088 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726176AbgKIJcv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Nov 2020 04:32:51 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id BC446B2B;
+        Mon,  9 Nov 2020 10:32:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1604914368;
+        bh=QZM8pWa3XxAYZ/jFdcXufIqaoC5vUkVqklUwQthkAY0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZT/OyyJYYoo+ftRVZuQcbYex0j660Q0YDT8LJj+92QfV64CitInRH7PbVbvzqBS2d
+         lY56r0xnldU+eXHVQDLkxeJCjTEGyxk79c8koDKCL7hUJPv/jHg2yOsLW6P+6tPpJ1
+         E5e0jWuS6ow2Tkz34MlwfZxBE3aWNWG2ZuzL6XFo=
+Date:   Mon, 9 Nov 2020 11:32:45 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
 Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Nikhil Devshatwar <nikhil.nd@ti.com>,
         linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <17F5238B-1CC3-4764-B744-C57D9CE4EB42@goldelico.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com> <61C04176-4654-4D2D-A55B-31FBB6D2E5AA@goldelico.com> <fcbc8488-5861-8e51-0f86-1ed6498083f7@ti.com> <579243AA-014A-411B-9014-F5846C9B8137@goldelico.com> <ab33baff-dd8c-2ee0-6f89-35aa4df7b9cf@ti.com> <837EA533-9946-43B3-B058-69060EC43981@goldelico.com> <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com> <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com> <67786545-23D2-444F-85B8-7A030070B317@goldelico.com> <a20f2b88-bfe6-0ab4-a19b-ba5316db6c4f@ti.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-X-Mailer: Apple Mail (2.3124)
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: Re: [PATCH v3 26/56] drm/omap: dsi: drop custom enable_te() API
+Message-ID: <20201109093245.GW6029@pendragon.ideasonboard.com>
+References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
+ <20201105120333.947408-27-tomi.valkeinen@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201105120333.947408-27-tomi.valkeinen@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Tomi and Sebastian,
 
-> Am 09.11.2020 um 09:04 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
->=20
-> On 07/11/2020 14:19, H. Nikolaus Schaller wrote:
->=20
->> I have set up based on our complete letux-5.10-rc2 tree and maybe =
-using our private config makes
->> the difference. Anyways, the driver is now probed and I can see the =
-call to w677l_get_modes().
->>=20
->> I have still no image and no calls to prepare/unprepare etc. but now =
-I can start to debug on omap5.
->> And hopefully we are close to push the panel driver for review. And =
-in a second step some device
->> tree for the Pyra.
->>=20
->> The new tree is here: =
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/work-pyra-panel
->=20
-> Ok, good. Do you have a link the previous driver that works (omapdrm =
-specific panel driver)? I think
-> it's good to have that as a reference.
+Thank you for the patch.
 
-Yes, here:
+On Thu, Nov 05, 2020 at 02:03:03PM +0200, Tomi Valkeinen wrote:
+> From: Sebastian Reichel <sebastian.reichel@collabora.com>
+> 
+> Instead of using the custon enable_te() API, this automatically
 
-=
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/letux/panels
+s/custon/custom/
 
-BR and thanks,
-Nikolaus
+> enables/disables TE core support when a matching packet is send
 
+s/send/sent/
+
+> to the panel.
+> 
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> ---
+>  .../gpu/drm/omapdrm/displays/panel-dsi-cm.c   |  3 --
+>  drivers/gpu/drm/omapdrm/dss/dsi.c             | 34 ++++++++++++++-----
+>  drivers/gpu/drm/omapdrm/dss/omapdss.h         |  2 --
+>  3 files changed, 25 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+> index 43f63b5a120b..dc2c045cc6b0 100644
+> --- a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+> +++ b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+> @@ -772,7 +772,6 @@ static int dsicm_update(struct omap_dss_device *dssdev,
+>  
+>  static int _dsicm_enable_te(struct panel_drv_data *ddata, bool enable)
+>  {
+> -	struct omap_dss_device *src = ddata->src;
+>  	struct mipi_dsi_device *dsi = ddata->dsi;
+>  	int r;
+>  
+> @@ -781,8 +780,6 @@ static int _dsicm_enable_te(struct panel_drv_data *ddata, bool enable)
+>  	else
+>  		r = mipi_dsi_dcs_set_tear_off(dsi);
+>  
+> -	src->ops->dsi.enable_te(src, enable);
+> -
+>  	/* possible panel bug */
+>  	msleep(100);
+>  
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> index 921e7a1e1014..41431ca34568 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> @@ -4110,10 +4110,8 @@ static void dsi_display_disable(struct omap_dss_device *dssdev,
+>  	mutex_unlock(&dsi->lock);
+>  }
+>  
+> -static int dsi_enable_te(struct omap_dss_device *dssdev, bool enable)
+> +static int dsi_enable_te(struct dsi_data *dsi, bool enable)
+>  {
+> -	struct dsi_data *dsi = to_dsi_data(dssdev);
+> -
+>  	dsi->te_enabled = enable;
+>  
+>  	if (dsi->te_gpio) {
+> @@ -4723,6 +4721,7 @@ static ssize_t omap_dsi_host_transfer(struct mipi_dsi_host *host,
+>  {
+>  	struct dsi_data *dsi = host_to_omap(host);
+>  	struct omap_dss_device *dssdev = &dsi->output;
+> +	int r;
+>  
+>  	if (!!(msg->flags & MIPI_DSI_MSG_USE_LPM) != dsi->in_lp_mode) {
+>  		dsi_vc_enable_hs(dssdev, msg->channel,
+> @@ -4739,16 +4738,35 @@ static ssize_t omap_dsi_host_transfer(struct mipi_dsi_host *host,
+>  	case MIPI_DSI_DCS_LONG_WRITE:
+>  	case MIPI_DSI_SET_MAXIMUM_RETURN_PACKET_SIZE:
+>  	case MIPI_DSI_NULL_PACKET:
+> -		return dsi_vc_write_common(dssdev, msg);
+> +		r = dsi_vc_write_common(dssdev, msg);
+> +		break;
+>  	case MIPI_DSI_GENERIC_READ_REQUEST_0_PARAM:
+>  	case MIPI_DSI_GENERIC_READ_REQUEST_1_PARAM:
+>  	case MIPI_DSI_GENERIC_READ_REQUEST_2_PARAM:
+> -		return dsi_vc_generic_read(dssdev, msg);
+> +		r = dsi_vc_generic_read(dssdev, msg);
+> +		break;
+>  	case MIPI_DSI_DCS_READ:
+> -		return dsi_vc_dcs_read(dssdev, msg);
+> +		r = dsi_vc_dcs_read(dssdev, msg);
+> +		break;
+> +	default:
+> +		r = -EINVAL;
+> +		break;
+>  	}
+>  
+> -	return -EINVAL;
+> +	if (r < 0)
+> +		return r;
+> +
+> +	if (msg->type == MIPI_DSI_DCS_SHORT_WRITE ||
+> +	    msg->type == MIPI_DSI_DCS_SHORT_WRITE_PARAM) {
+> +		u8 cmd = ((u8 *)msg->tx_buf)[0];
+> +
+> +		if (cmd == MIPI_DCS_SET_TEAR_OFF)
+> +			dsi_enable_te(dsi, false);
+> +		else if (cmd == MIPI_DCS_SET_TEAR_ON)
+> +			dsi_enable_te(dsi, true);
+> +	}
+> +
+> +	return 0;
+>  }
+>  
+>  static int dsi_get_clocks(struct dsi_data *dsi)
+> @@ -4795,8 +4813,6 @@ static const struct omap_dss_device_ops dsi_ops = {
+>  		.disable_video_output = dsi_disable_video_output,
+>  
+>  		.update = dsi_update,
+> -
+> -		.enable_te = dsi_enable_te,
+>  	},
+>  };
+>  
+> diff --git a/drivers/gpu/drm/omapdrm/dss/omapdss.h b/drivers/gpu/drm/omapdrm/dss/omapdss.h
+> index 2d44a8e32fcc..1520a5f752b7 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/omapdss.h
+> +++ b/drivers/gpu/drm/omapdrm/dss/omapdss.h
+> @@ -288,8 +288,6 @@ struct omapdss_dsi_ops {
+>  	int (*set_config)(struct omap_dss_device *dssdev,
+>  			const struct omap_dss_dsi_config *cfg);
+>  
+> -	int (*enable_te)(struct omap_dss_device *dssdev, bool enable);
+> -
+>  	int (*update)(struct omap_dss_device *dssdev, int channel,
+>  			void (*callback)(int, void *), void *data);
+>  
+
+-- 
+Regards,
+
+Laurent Pinchart
