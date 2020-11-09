@@ -2,114 +2,195 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 607B62AB627
+	by mail.lfdr.de (Postfix) with ESMTP id CD5EE2AB628
 	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 12:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729045AbgKILJd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Nov 2020 06:09:33 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:8091 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729038AbgKILJd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Nov 2020 06:09:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1604920171;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=q7H5GEZMtbA6jUsFT4cXKJySbHW7NdZ0P4vXecXdY9g=;
-        b=HSC/cMKNC51A/qrKKPm9uYs2iG1BsG4nQy15pY3rjL4+iKRbQeSHBwQtyqrpvqYVBG
-        bAJ8l2A+aAPR1gRpvXliBJUDpeRZwv5CYAGO5ZAaDTAi38YIJNs73OVwFducKj/MBRhE
-        PlAVSng3Hl4ytPiFa07lRKew3yrqHKb68ab81du3oB6kThcIAFD1P2E1RuiAxrvv/nBt
-        2o9eBj8D5iUvYnYSmneXmF271hFG5WnL+LELQVWCIx7ysteOZSZvYIfWBMJFYQMBBvsC
-        gMRbmkvtI/j5h2b6zKCccJ/yIIKn5+yMYpSfy0Tff6ZPf5F5ZUKAVdk1VCTN4+oJtk20
-        I7fg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlaVXA0JCQ=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 47.3.3 DYNA|AUTH)
-        with ESMTPSA id d04888wA9B9LBSh
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Mon, 9 Nov 2020 12:09:21 +0100 (CET)
-Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and drm_panel
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <1cf563e5-2dc0-1802-86e3-3e24150f0651@ti.com>
-Date:   Mon, 9 Nov 2020 12:09:21 +0100
+        id S1729267AbgKILJh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Nov 2020 06:09:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60034 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729228AbgKILJh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Nov 2020 06:09:37 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D1D7C0613CF
+        for <linux-omap@vger.kernel.org>; Mon,  9 Nov 2020 03:09:37 -0800 (PST)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id EAE98B2B;
+        Mon,  9 Nov 2020 12:09:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1604920176;
+        bh=n8NTjNWVp3k6RpDjFsErQGCYu4i1iNrF4nNkXW7BEQk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tqbTpbiFcVuu2YWQ9tr9fpbRKGXHnqPicCiPTeEu7s14Bdf7dTgf3AClnJFgz8QMA
+         SDufgQI49SRmVP+qTIz3tLBXwcUt0uMOPovwCQt2FD6lTxq6ufhOFjs6xrMXIDpH8U
+         HpvH2xL4EQCwkhB9nNj8idU23p1v+Xwb9gLq1aA8=
+Date:   Mon, 9 Nov 2020 13:09:32 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
 Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Nikhil Devshatwar <nikhil.nd@ti.com>,
         linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BBC7824A-A689-4144-969C-32608A202A75@goldelico.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com> <61C04176-4654-4D2D-A55B-31FBB6D2E5AA@goldelico.com> <fcbc8488-5861-8e51-0f86-1ed6498083f7@ti.com> <579243AA-014A-411B-9014-F5846C9B8137@goldelico.com> <ab33baff-dd8c-2ee0-6f89-35aa4df7b9cf@ti.com> <837EA533-9946-43B3-B058-69060EC43981@goldelico.com> <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com> <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com> <67786545-23D2-444F-85B8-7A030070B317@goldelico.com> <a20f2b88-bfe6-0ab4-a19b-ba5316db6c4f@ti.com> <17F5238B-1CC3-4764-B744-C57D9CE4EB42@goldelico.com> <db0b9694-4d04-18ba-fdf0-093b5914bbf0@ti.com> <6A9407FC-69F7-4E30-B4A3-FFB2E91CAE3B@goldelico.com> <1cf563e5-2dc0-1802-86e3-3e24150f0651@ti.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-X-Mailer: Apple Mail (2.3124)
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: Re: [PATCH v3 50/56] drm/omap: dsi: simplify pin config
+Message-ID: <20201109110932.GU6029@pendragon.ideasonboard.com>
+References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
+ <20201105120333.947408-51-tomi.valkeinen@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201105120333.947408-51-tomi.valkeinen@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Tomi and Sebastian,
 
-> Am 09.11.2020 um 11:34 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
->=20
-> On 09/11/2020 12:31, H. Nikolaus Schaller wrote:
->>=20
->>> Am 09.11.2020 um 11:22 schrieb Tomi Valkeinen =
-<tomi.valkeinen@ti.com>:
->>>=20
->>> On 09/11/2020 11:30, H. Nikolaus Schaller wrote:
->>>>=20
->>>>> Am 09.11.2020 um 09:04 schrieb Tomi Valkeinen =
-<tomi.valkeinen@ti.com>:
->>>>>=20
->>>>> On 07/11/2020 14:19, H. Nikolaus Schaller wrote:
->>>>>=20
->>>>>> I have set up based on our complete letux-5.10-rc2 tree and maybe =
-using our private config makes
->>>>>> the difference. Anyways, the driver is now probed and I can see =
-the call to w677l_get_modes().
->>>>>>=20
->>>>>> I have still no image and no calls to prepare/unprepare etc. but =
-now I can start to debug on omap5.
->>>>>> And hopefully we are close to push the panel driver for review. =
-And in a second step some device
->>>>>> tree for the Pyra.
->>>>>>=20
->>>>>> The new tree is here: =
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/work-pyra-panel
->>>>>=20
->>>>> Ok, good. Do you have a link the previous driver that works =
-(omapdrm specific panel driver)? I think
->>>>> it's good to have that as a reference.
->>>>=20
->>>> Yes, here:
->>>>=20
->>>> =
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/letux/panels
->>>=20
->>> Ok. The old driver uses two separate VC configurations (request_vc =
-calls),
->>=20
->> yes indeed. I was not sure how to handle this with the new omapdrm =
-drivers.
->>=20
->>> so it may not work with
->>> this series. I think we need to implement logic to the dsi driver to =
-somehow handle this kind of setup.
->>=20
->> I see.
->> Anyways there is missing some simple thing which makes the driver not =
-prepared/enabled.
->> Or is this related to VC?
->=20
-> No, that's not related to the VC.
+Thank you for the patch.
 
-Ok, then it is worth searching for that independently. Any idea/hint =
-what could be missing?
+On Thu, Nov 05, 2020 at 02:03:27PM +0200, Tomi Valkeinen wrote:
+> From: Sebastian Reichel <sebastian.reichel@collabora.com>
+> 
+> Simplify DSI pin config, which always originates from DT
+> nowadays. With the code being fully contained in the DSI
+> encoder, we can drop the public structure.
+> 
+> Since the function is no longer exposed, it now directly
+> takes the private DSI data pointer. This drop a pointless
 
-BR and thanks,
-Nikolaus
+s/drop/drops/
 
+> conversion and means the pins can be configured earlier.
+> 
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> ---
+>  drivers/gpu/drm/omapdrm/dss/dsi.c     | 33 +++++++++------------------
+>  drivers/gpu/drm/omapdrm/dss/omapdss.h | 15 ------------
+>  2 files changed, 11 insertions(+), 37 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> index f47d7e3bb631..76e4f607d8cf 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> @@ -3568,12 +3568,9 @@ static void dsi_proto_timings(struct dsi_data *dsi)
+>  	}
+>  }
+>  
+> -static int dsi_configure_pins(struct omap_dss_device *dssdev,
+> -		const struct omap_dsi_pin_config *pin_cfg)
+> +static int dsi_configure_pins(struct dsi_data *dsi,
+> +		int num_pins, const u32 *pins)
+>  {
+> -	struct dsi_data *dsi = to_dsi_data(dssdev);
+> -	int num_pins;
+> -	const int *pins;
+>  	struct dsi_lane_config lanes[DSI_MAX_NR_LANES];
+>  	int num_lanes;
+>  	int i;
+> @@ -3586,9 +3583,6 @@ static int dsi_configure_pins(struct omap_dss_device *dssdev,
+>  		DSI_LANE_DATA4,
+>  	};
+>  
+> -	num_pins = pin_cfg->num_pins;
+> -	pins = pin_cfg->pins;
+> -
+>  	if (num_pins < 4 || num_pins > dsi->num_lanes_supported * 2
+>  			|| num_pins % 2 != 0)
+>  		return -EINVAL;
+> @@ -3600,7 +3594,7 @@ static int dsi_configure_pins(struct omap_dss_device *dssdev,
+>  
+>  	for (i = 0; i < num_pins; i += 2) {
+>  		u8 lane, pol;
+> -		int dx, dy;
+> +		u32 dx, dy;
+
+Is this change needed ?
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+>  
+>  		dx = pins[i];
+>  		dy = pins[i + 1];
+> @@ -5481,9 +5475,8 @@ static int dsi_probe_of(struct dsi_data *dsi)
+>  	struct property *prop;
+>  	u32 lane_arr[10];
+>  	int len, num_pins;
+> -	int r, i;
+> +	int r;
+>  	struct device_node *ep;
+> -	struct omap_dsi_pin_config pin_cfg;
+>  
+>  	ep = of_graph_get_endpoint_by_regs(node, 0, 0);
+>  	if (!ep)
+> @@ -5511,11 +5504,7 @@ static int dsi_probe_of(struct dsi_data *dsi)
+>  		goto err;
+>  	}
+>  
+> -	pin_cfg.num_pins = num_pins;
+> -	for (i = 0; i < num_pins; ++i)
+> -		pin_cfg.pins[i] = (int)lane_arr[i];
+> -
+> -	r = dsi_configure_pins(&dsi->output, &pin_cfg);
+> +	r = dsi_configure_pins(dsi, num_pins, lane_arr);
+>  	if (r) {
+>  		dev_err(dsi->dev, "failed to configure pins");
+>  		goto err;
+> @@ -5728,6 +5717,12 @@ static int dsi_probe(struct platform_device *pdev)
+>  	dsi->host.ops = &omap_dsi_host_ops;
+>  	dsi->host.dev = &pdev->dev;
+>  
+> +	r = dsi_probe_of(dsi);
+> +	if (r) {
+> +		DSSERR("Invalid DSI DT data\n");
+> +		goto err_pm_disable;
+> +	}
+> +
+>  	r = mipi_dsi_host_register(&dsi->host);
+>  	if (r < 0) {
+>  		dev_err(&pdev->dev, "failed to register DSI host: %d\n", r);
+> @@ -5738,12 +5733,6 @@ static int dsi_probe(struct platform_device *pdev)
+>  	if (r)
+>  		goto err_dsi_host_unregister;
+>  
+> -	r = dsi_probe_of(dsi);
+> -	if (r) {
+> -		DSSERR("Invalid DSI DT data\n");
+> -		goto err_uninit_output;
+> -	}
+> -
+>  	r = component_add(&pdev->dev, &dsi_component_ops);
+>  	if (r)
+>  		goto err_uninit_output;
+> diff --git a/drivers/gpu/drm/omapdrm/dss/omapdss.h b/drivers/gpu/drm/omapdrm/dss/omapdss.h
+> index a1236b8ef7ea..4a0826c8fed5 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/omapdss.h
+> +++ b/drivers/gpu/drm/omapdrm/dss/omapdss.h
+> @@ -243,21 +243,6 @@ struct omap_overlay_manager_info {
+>  	struct omap_dss_cpr_coefs cpr_coefs;
+>  };
+>  
+> -/* 22 pins means 1 clk lane and 10 data lanes */
+> -#define OMAP_DSS_MAX_DSI_PINS 22
+> -
+> -struct omap_dsi_pin_config {
+> -	int num_pins;
+> -	/*
+> -	 * pin numbers in the following order:
+> -	 * clk+, clk-
+> -	 * data1+, data1-
+> -	 * data2+, data2-
+> -	 * ...
+> -	 */
+> -	int pins[OMAP_DSS_MAX_DSI_PINS];
+> -};
+> -
+>  struct omap_dss_writeback_info {
+>  	u32 paddr;
+>  	u32 p_uv_addr;
+
+-- 
+Regards,
+
+Laurent Pinchart
