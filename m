@@ -2,94 +2,203 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECF362AB72F
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 12:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58A0A2ABB51
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 14:28:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729853AbgKILdy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Nov 2020 06:33:54 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:56910 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729882AbgKILdv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Nov 2020 06:33:51 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0A9BXeD0005873;
-        Mon, 9 Nov 2020 05:33:40 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604921620;
-        bh=3BSddBlFZc+VBUU/q2H/wH8ZwgDPC1EicBCpH1QebwE=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=NbcCvHMtvPXdhFVGkRHtOE+wdk8U8sM3134HSNUmZ58jOa9CunzjvLK8XRYMR4Yzh
-         NkecqhHmljgpqfKXmOsLnnJgdopKuidlbUUjqAGiNLw5DA/bubnVQ9KmVhroXt3jB7
-         fTuWTtY4LVKws1wITsU5tTxQArTvf6Tl3pfTLdu4=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0A9BXeIX124712
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 9 Nov 2020 05:33:40 -0600
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 9 Nov
- 2020 05:33:40 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 9 Nov 2020 05:33:40 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0A9BXc2J081879;
-        Mon, 9 Nov 2020 05:33:38 -0600
-Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and
- drm_panel
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-CC:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        id S2387610AbgKIN1K (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Nov 2020 08:27:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53818 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733119AbgKIN1J (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 9 Nov 2020 08:27:09 -0500
+Received: from earth.universe (dyndsl-037-138-191-067.ewe-ip-backbone.de [37.138.191.67])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1FB7A2076E;
+        Mon,  9 Nov 2020 13:27:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604928428;
+        bh=YGoAq9IhGZWUHld8b5bf2SB9KVKXDTE6tVk54H9iHPc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kpbUVZ0+ZNjiNL/foau4yNQSRPt+kLkLgVZxdaGBuCa7+6b3abPXgmwtFBn3upltL
+         xiz+axyD6rhybl+8nXhMD33rZmvzM20DiF/85aEjoetuZ81hk/2dquVTazYXT8OSAc
+         EBMgObvfrslAVil407noHddGtufUChbtD2nU9jLo=
+Received: by earth.universe (Postfix, from userid 1000)
+        id 0718B3C0C8E; Mon,  9 Nov 2020 14:27:06 +0100 (CET)
+Date:   Mon, 9 Nov 2020 14:27:05 +0100
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         Nikhil Devshatwar <nikhil.nd@ti.com>,
-        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>
+        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH v3 27/56] drm/omap: dsi: do bus locking in host driver
+Message-ID: <20201109132705.6n7h3ogsrlciw5nf@earth.universe>
 References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
- <61C04176-4654-4D2D-A55B-31FBB6D2E5AA@goldelico.com>
- <fcbc8488-5861-8e51-0f86-1ed6498083f7@ti.com>
- <579243AA-014A-411B-9014-F5846C9B8137@goldelico.com>
- <ab33baff-dd8c-2ee0-6f89-35aa4df7b9cf@ti.com>
- <837EA533-9946-43B3-B058-69060EC43981@goldelico.com>
- <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com>
- <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com>
- <67786545-23D2-444F-85B8-7A030070B317@goldelico.com>
- <a20f2b88-bfe6-0ab4-a19b-ba5316db6c4f@ti.com>
- <17F5238B-1CC3-4764-B744-C57D9CE4EB42@goldelico.com>
- <db0b9694-4d04-18ba-fdf0-093b5914bbf0@ti.com>
- <6A9407FC-69F7-4E30-B4A3-FFB2E91CAE3B@goldelico.com>
- <1cf563e5-2dc0-1802-86e3-3e24150f0651@ti.com>
- <BBC7824A-A689-4144-969C-32608A202A75@goldelico.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <7f820fd2-820b-bfdd-a43b-174ad6b09868@ti.com>
-Date:   Mon, 9 Nov 2020 13:33:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <20201105120333.947408-28-tomi.valkeinen@ti.com>
+ <20201109095255.GX6029@pendragon.ideasonboard.com>
+ <3c9eefd3-99bb-edce-f6ac-2fec3678743b@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <BBC7824A-A689-4144-969C-32608A202A75@goldelico.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cqwefbsz34j45lm2"
+Content-Disposition: inline
+In-Reply-To: <3c9eefd3-99bb-edce-f6ac-2fec3678743b@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 09/11/2020 13:09, H. Nikolaus Schaller wrote:
 
->>> I see.
->>> Anyways there is missing some simple thing which makes the driver not prepared/enabled.
->>> Or is this related to VC?
->>
->> No, that's not related to the VC.
-> 
-> Ok, then it is worth searching for that independently. Any idea/hint what could be missing?
+--cqwefbsz34j45lm2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Well, if I had to guess, I would go for either 1) some registration or such is missing from the
-panel driver, or 2) some config value is invalid, which makes the DRM framework or the DSI driver
-fail before calling prepare or enable.
+Hi,
 
- Tomi
+On Mon, Nov 09, 2020 at 12:08:33PM +0200, Tomi Valkeinen wrote:
+> On 09/11/2020 11:52, Laurent Pinchart wrote:
+> > Hi Tomi,
+> >=20
+> > Thank you for the patch.
+> >=20
+> > On Thu, Nov 05, 2020 at 02:03:04PM +0200, Tomi Valkeinen wrote:
+> >> From: Sebastian Reichel <sebastian.reichel@collabora.com>
+> >>
+> >> This moves the bus locking into the host driver and unexports
+> >> the custom API in preparation for drm_panel support.
+> >>
+> >> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> >> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+>=20
+> <snip>
+>=20
+> >>  static int dsicm_update(struct omap_dss_device *dssdev,
+> >> @@ -739,7 +704,6 @@ static int dsicm_update(struct omap_dss_device *ds=
+sdev,
+> >>  	dev_dbg(&ddata->dsi->dev, "update %d, %d, %d x %d\n", x, y, w, h);
+> >> =20
+> >>  	mutex_lock(&ddata->lock);
+> >> -	src->ops->dsi.bus_lock(src);
+> >> =20
+> >>  	r =3D dsicm_wake_up(ddata);
+> >>  	if (r)
+> >> @@ -761,11 +725,9 @@ static int dsicm_update(struct omap_dss_device *d=
+ssdev,
+> >>  	if (r)
+> >>  		goto err;
+> >> =20
+> >> -	/* note: no bus_unlock here. unlock is src framedone_cb */
+> >> -	mutex_unlock(&ddata->lock);
+> >> +	/* note: no unlock here. unlock is src framedone_cb */
+> >=20
+> > This change isn't described in the commit message. Could you explain why
+> > it's needed ? Locking a mutex in a function and unlocking it elsewhere
+> > always scares me.
+>=20
+> Good catch. I don't know why it is needed. I don't think it is, as
+> the dsi driver handles the bus lock.
+>=20
+> Sebastian, what was the reason for this lock?
+>=20
+> Note that this goes away in the series, and there's no such lock
+> in the end.
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+It's not really a change. What this patch basically does is to fold
+src->ops->dsi.bus_lock(src) into mutex_lock(&ddata->lock), so that
+there is only a single locking mechanism. This function previously
+had a matching pair of mutex_lock/unlock for ddata->lock, but the
+bus was not locked paired. So after conversion the lock must not be
+free'd here.
+
+My understanding is, that this is because the bus must not be used
+until the update has been done.
+
+-- Sebastian
+
+> >>  	return 0;
+> >>  err:
+> >> -	src->ops->dsi.bus_unlock(src);
+> >>  	mutex_unlock(&ddata->lock);
+> >>  	return r;
+> >>  }
+> >> @@ -791,7 +753,6 @@ static void dsicm_ulps_work(struct work_struct *wo=
+rk)
+> >>  	struct panel_drv_data *ddata =3D container_of(work, struct panel_drv=
+_data,
+> >>  			ulps_work.work);
+> >>  	struct omap_dss_device *dssdev =3D &ddata->dssdev;
+> >> -	struct omap_dss_device *src =3D ddata->src;
+> >> =20
+> >>  	mutex_lock(&ddata->lock);
+> >> =20
+> >> @@ -800,11 +761,8 @@ static void dsicm_ulps_work(struct work_struct *w=
+ork)
+> >>  		return;
+> >>  	}
+> >> =20
+> >> -	src->ops->dsi.bus_lock(src);
+> >> -
+> >>  	dsicm_enter_ulps(ddata);
+> >> =20
+> >> -	src->ops->dsi.bus_unlock(src);
+> >>  	mutex_unlock(&ddata->lock);
+> >>  }
+> >> =20
+> >> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapd=
+rm/dss/dsi.c
+> >> index 41431ca34568..d54b743c2b48 100644
+> >> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> >> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> >> @@ -476,17 +476,13 @@ static inline u32 dsi_read_reg(struct dsi_data *=
+dsi, const struct dsi_reg idx)
+> >>  	return __raw_readl(base + idx.idx);
+> >>  }
+> >> =20
+> >> -static void dsi_bus_lock(struct omap_dss_device *dssdev)
+> >> +static void dsi_bus_lock(struct dsi_data *dsi)
+> >>  {
+> >> -	struct dsi_data *dsi =3D to_dsi_data(dssdev);
+> >> -
+> >>  	down(&dsi->bus_lock);
+> >=20
+> > Nothing to be addressed in this patch, but is there a reason to use a
+> > semaphore instead of a mutex ?
+>=20
+> It's been a long time, but I think the reason was that mutex gave a warni=
+ng after being locked for a
+> bit longer time, and semaphore didn't. The resource is reserved while a D=
+SI transfer is active, so
+> it could be almost 2 frames (wait for vsync and then transfer frame). Or =
+reading the frame buffer
+> back from the panel, which could take a long time (seconds).
+>=20
+> There are better ways to implement it (after this series =3D).
+>=20
+>  Tomi
+>=20
+> --=20
+> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
+--cqwefbsz34j45lm2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl+pQ54ACgkQ2O7X88g7
++poqDBAAgAX4WVCigoBuE9bhqyMRnvjX9tyZGo4U80BMMLwYd1xpg5HtDEAOIour
+bG+sg/7QoAkgxSDSOHqqH0teVVksd4MAKD2xz69Og5qnSxE9evpC0hTeQDR927ob
+DsqcqYk3fFzaOnKJeIjHzWmWs3QfixdXMhlgjWTMrm4yVkk/n6GC0qmXeSQQtP3G
+FJvC+Mftk0HnOfGORLbzi05g+MmWF+0ORwPpv2wCJNl1/St921LaKHdN1IeuuWSk
+D+FyRQ2pF5UftR8SRgSR11bVxKUTZC1Lk9W3SQ0gS0uml1OjdiSv+UAzivrqZLPn
+0Pmn07zRjdhPFAEqABdoGXQUxoRRXcKg0vy4UMVO8WATdhIcGCuHdHl+nR4ljkzL
+xhtzENOybC7sg7VBnplQlh6jTduIqkFcz0kvb+g4Ocisp8jtuUlhhe+WeW8BMtPn
+jVbIASWI3IXdKxTDlKcGOlO2mx7DBze3+Yr05k7Klrku4DcSQ1YGjlamJOC3OKKA
+vePU6XLy7U1q8ln2aywkAEJkjPOT8Ez6KKOM4IAd8JEVpcL4eJFqe9JXKd6K+fan
+Xv0vg15MFHb4J+KWo9KJktFYfjTGDZx7w/igC+9mO5fF5O/mWN+MXOxBcRDMvLMi
+o9dsof1jYrQsS2k/S1qjqEaZ0+gEl2E92j/YPUWAQyHPDG6xN/s=
+=ssRc
+-----END PGP SIGNATURE-----
+
+--cqwefbsz34j45lm2--
