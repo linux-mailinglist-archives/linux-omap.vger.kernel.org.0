@@ -2,105 +2,135 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 212A72AB4E8
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 11:31:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF0562AB50C
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 11:34:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726646AbgKIKbp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Nov 2020 05:31:45 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:31352 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726176AbgKIKbp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Nov 2020 05:31:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1604917903;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=6t1/oILAK6yKl4dz79BGpL7PF+ZHXywu/wN3Dc5cPO8=;
-        b=Q/UHyNd77uJ8JIBepDO7P+WOE2fZauBkJnKc/Hv3aSr6U454hbRmncyU7qXmvr5a8k
-        Uf9jlVLXD20TAlFnclm4qG9bgkuzxZPy0IdpbWafjzChebRTxTiqxTH6LKLubTGr3vcW
-        I2O8OMtJSR+3KoTcHxDNMhNCS2BfcYCbMDN5+yXBhO7kodgm36V5uSClmt6VEA16n4sH
-        zx4qxPJ6M9JuQ+rGiWe86OdgrqJj4mlYEoc7KXDxRjYZl7Lmz4yQhZCHIs3MeMGSc6v1
-        8uRHxXdwE4fkEfjLgdFekwdaxj+wGb4LBnH6D5Cugq7g5dI3ebA8gKJyCfAh/SpSCt2+
-        jsow==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDlaVXA0JCQ=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 47.3.3 DYNA|AUTH)
-        with ESMTPSA id d04888wA9AVXBEs
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Mon, 9 Nov 2020 11:31:33 +0100 (CET)
-Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and drm_panel
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+        id S1727906AbgKIKej (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Nov 2020 05:34:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54360 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726176AbgKIKej (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Nov 2020 05:34:39 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B724C0613CF;
+        Mon,  9 Nov 2020 02:34:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=qH9b1O1m9yVoEB6n8QkB/6TaJXHCxIPP32Fq1mFfWKE=; b=gGrvZ5xBLQtSpNi2uSB0ANIyt
+        afY6SWLthCnmt6Eeq9iZZax1/dyotilgV7RwYmDtVPVh7RwXnEAYDGAtLsa727gWFqK5CzSIwzblw
+        DaYTkWl5eVU2agK0Wy6hnKjxer6VycAEWpMtm1NwlVYP8n9kJucFn6RRJt2oQiqC+/YAOq4k6TXTo
+        dYesdPUt9+kdk2famskEu8KnvAp6sqlxtQTkKiPG+IohXg8HNv0sKPXA55oJI+hF72r+UriKjmSUr
+        sydSD86p/UZ7m2nM8/IM9hJ+KGVUGO+/ml+2PkrHYDWyWW/YYlOyIF6iLw25zd+4lV3cvHJvnHiJX
+        ZcxHuRLig==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56980)
+        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1kc4V7-000858-1A; Mon, 09 Nov 2020 10:34:17 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1kc4V4-0000KD-S1; Mon, 09 Nov 2020 10:34:14 +0000
+Date:   Mon, 9 Nov 2020 10:34:14 +0000
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
+Cc:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH usb-next] usb: dwc3: Use devm_of_platform_populate
+Message-ID: <20201109103414.GF1559@shell.armlinux.org.uk>
+References: <20201109095953.7f810239@xhacker.debian>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <db0b9694-4d04-18ba-fdf0-093b5914bbf0@ti.com>
-Date:   Mon, 9 Nov 2020 11:31:33 +0100
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6A9407FC-69F7-4E30-B4A3-FFB2E91CAE3B@goldelico.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com> <61C04176-4654-4D2D-A55B-31FBB6D2E5AA@goldelico.com> <fcbc8488-5861-8e51-0f86-1ed6498083f7@ti.com> <579243AA-014A-411B-9014-F5846C9B8137@goldelico.com> <ab33baff-dd8c-2ee0-6f89-35aa4df7b9cf@ti.com> <837EA533-9946-43B3-B058-69060EC43981@goldelico.com> <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com> <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com> <67786545-23D2-444F-85B8-7A030070B317@goldelico.com> <a20f2b88-bfe6-0ab4-a19b-ba5316db6c4f@ti.com> <17F5238B-1CC3-4764-B744-C57D9CE4EB42@goldelico.com> <db0b9694-4d04-18ba-fdf0-093b5914bbf0@ti.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-X-Mailer: Apple Mail (2.3124)
+Content-Disposition: inline
+In-Reply-To: <20201109095953.7f810239@xhacker.debian>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Sender: Russell King - ARM Linux admin <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, Nov 09, 2020 at 09:59:53AM +0800, Jisheng Zhang wrote:
+> diff --git a/drivers/usb/dwc3/dwc3-meson-g12a.c b/drivers/usb/dwc3/dwc3-meson-g12a.c
+> index 417e05381b5d..83015bb7b926 100644
+> --- a/drivers/usb/dwc3/dwc3-meson-g12a.c
+> +++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
+> @@ -702,7 +702,6 @@ static int dwc3_meson_g12a_probe(struct platform_device *pdev)
+>  {
+>  	struct dwc3_meson_g12a	*priv;
+>  	struct device		*dev = &pdev->dev;
+> -	struct device_node	*np = dev->of_node;
+>  	void __iomem *base;
+>  	int ret, i;
+>  
+> @@ -794,7 +793,7 @@ static int dwc3_meson_g12a_probe(struct platform_device *pdev)
+>  			goto err_phys_power;
+>  	}
+>  
+> -	ret = of_platform_populate(np, NULL, NULL, dev);
+> +	ret = devm_of_platform_populate(dev);
+>  	if (ret)
+>  		goto err_phys_power;
+>  
+> @@ -832,8 +831,6 @@ static int dwc3_meson_g12a_remove(struct platform_device *pdev)
+>  	if (priv->drvdata->otg_switch_supported)
+>  		usb_role_switch_unregister(priv->role_switch);
+>  
+> -	of_platform_depopulate(dev);
+> -
+>  	for (i = 0 ; i < PHY_COUNT ; ++i) {
+>  		phy_power_off(priv->phys[i]);
+>  		phy_exit(priv->phys[i]);
 
-> Am 09.11.2020 um 11:22 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
->=20
-> On 09/11/2020 11:30, H. Nikolaus Schaller wrote:
->>=20
->>> Am 09.11.2020 um 09:04 schrieb Tomi Valkeinen =
-<tomi.valkeinen@ti.com>:
->>>=20
->>> On 07/11/2020 14:19, H. Nikolaus Schaller wrote:
->>>=20
->>>> I have set up based on our complete letux-5.10-rc2 tree and maybe =
-using our private config makes
->>>> the difference. Anyways, the driver is now probed and I can see the =
-call to w677l_get_modes().
->>>>=20
->>>> I have still no image and no calls to prepare/unprepare etc. but =
-now I can start to debug on omap5.
->>>> And hopefully we are close to push the panel driver for review. And =
-in a second step some device
->>>> tree for the Pyra.
->>>>=20
->>>> The new tree is here: =
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/work-pyra-panel
->>>=20
->>> Ok, good. Do you have a link the previous driver that works (omapdrm =
-specific panel driver)? I think
->>> it's good to have that as a reference.
->>=20
->> Yes, here:
->>=20
->> =
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/letux/panels
->=20
-> Ok. The old driver uses two separate VC configurations (request_vc =
-calls),
+Does it matter that the order that things happen in
+dwc3_meson_g12a_remove() is changed as a result of your patch? Was
+the code relying on the platform devices being depopulated before
+powering off the PHYs?
 
-yes indeed. I was not sure how to handle this with the new omapdrm =
-drivers.
+> diff --git a/drivers/usb/dwc3/dwc3-of-simple.c b/drivers/usb/dwc3/dwc3-of-simple.c
+> index e62ecd22b3ed..f1c267e39d62 100644
+> --- a/drivers/usb/dwc3/dwc3-of-simple.c
+> +++ b/drivers/usb/dwc3/dwc3-of-simple.c
+> @@ -73,7 +73,7 @@ static int dwc3_of_simple_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		goto err_resetc_assert;
+>  
+> -	ret = of_platform_populate(np, NULL, NULL, dev);
+> +	ret = devm_of_platform_populate(dev);
+>  	if (ret)
+>  		goto err_clk_put;
+>  
+> @@ -97,8 +97,6 @@ static int dwc3_of_simple_probe(struct platform_device *pdev)
+>  
+>  static void __dwc3_of_simple_teardown(struct dwc3_of_simple *simple)
+>  {
+> -	of_platform_depopulate(simple->dev);
+> -
+>  	clk_bulk_disable_unprepare(simple->num_clocks, simple->clks);
+>  	clk_bulk_put_all(simple->num_clocks, simple->clks);
+>  	simple->num_clocks = 0;
 
-> so it may not work with
-> this series. I think we need to implement logic to the dsi driver to =
-somehow handle this kind of setup.
+Same here... and for anywhere else in this patch that you're deleting
+a of_platform_depopulate().
 
-I see.
-Anyways there is missing some simple thing which makes the driver not =
-prepared/enabled.
-Or is this related to VC?
+You effectively are moving the call to of_platform_depopulate() *after*
+the driver's .remove function has been called.
 
-BR and thanks,
-Nikolaus
-
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
