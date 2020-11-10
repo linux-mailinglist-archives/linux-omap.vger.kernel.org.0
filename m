@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDD5F2AD4AC
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 12:21:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 128542AD4C0
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 12:21:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730740AbgKJLVB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Nov 2020 06:21:01 -0500
-Received: from muru.com ([72.249.23.125]:47694 "EHLO muru.com"
+        id S1731008AbgKJLVF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Nov 2020 06:21:05 -0500
+Received: from muru.com ([72.249.23.125]:47722 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729604AbgKJLVA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Nov 2020 06:21:00 -0500
+        id S1729604AbgKJLVE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Nov 2020 06:21:04 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 637AF80BA;
-        Tue, 10 Nov 2020 11:21:03 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 3F85881A8;
+        Tue, 10 Nov 2020 11:21:07 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
@@ -23,16 +23,16 @@ Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
         Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
         Philipp Zabel <p.zabel@pengutronix.de>,
         Santosh Shilimkar <ssantosh@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
         linux-remoteproc@vger.kernel.org
-Subject: [PATCH 3/9] clk: ti: am33xx: Keep am3 l3 main clock always on for genpd
-Date:   Tue, 10 Nov 2020 13:20:36 +0200
-Message-Id: <20201110112042.65489-4-tony@atomide.com>
+Subject: [PATCH 4/9] bus: ti-sysc: Support modules without control registers
+Date:   Tue, 10 Nov 2020 13:20:37 +0200
+Message-Id: <20201110112042.65489-5-tony@atomide.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201110112042.65489-1-tony@atomide.com>
 References: <20201110112042.65489-1-tony@atomide.com>
@@ -42,35 +42,40 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In order for suspend and resume to work with genpd on am3, we must keep
-l3 main clock always on. Otherwise prm_omap driver will shut down the l3
-main clock on suspend when simple-pm-bus and GENPD_FLAG_PM_CLK are used.
-Note that we already keep the l3 main clock always on with the legacy
-platform code.
+Some modules like MPU have a powerdomain and functional clock but not
+necessarily any control registers. Let's allow configuring interconnect
+target modules with no control registers.
 
-Later on we may want to start managing the l3 main clock with a dedicated
-interconnect driver instead of using simple-pm-bus and GENPD_FLAG_PM_CLK.
-
-Cc: linux-clk@vger.kernel.org
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/clk/ti/clk-33xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bus/ti-sysc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
---- a/drivers/clk/ti/clk-33xx.c
-+++ b/drivers/clk/ti/clk-33xx.c
-@@ -266,6 +266,8 @@ static const char *enable_init_clks[] = {
- 	"dpll_ddr_m2_ck",
- 	"dpll_mpu_m2_ck",
- 	"l3_gclk",
-+	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
-+	"l3-clkctrl:00bc:0",
- 	"l4hs_gclk",
- 	"l4fw_gclk",
- 	"l4ls_gclk",
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -853,8 +853,12 @@ static int sysc_ioremap(struct sysc *ddata)
+  */
+ static int sysc_map_and_check_registers(struct sysc *ddata)
+ {
++	struct device_node *np = ddata->dev->of_node;
+ 	int error;
+ 
++	if (!of_get_property(np, "reg", NULL))
++		return 0;
++
+ 	error = sysc_parse_and_check_child_range(ddata);
+ 	if (error)
+ 		return error;
+@@ -2911,6 +2915,9 @@ static int sysc_probe(struct platform_device *pdev)
+ 	if (!ddata)
+ 		return -ENOMEM;
+ 
++	ddata->offsets[SYSC_REVISION] = -ENODEV;
++	ddata->offsets[SYSC_SYSCONFIG] = -ENODEV;
++	ddata->offsets[SYSC_SYSSTATUS] = -ENODEV;
+ 	ddata->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, ddata);
+ 
 -- 
 2.29.2
