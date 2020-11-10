@@ -2,165 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC4082AD0BE
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 08:59:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 881F12AD256
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 10:21:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727001AbgKJH7x (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Nov 2020 02:59:53 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:54386 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726690AbgKJH7x (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Nov 2020 02:59:53 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AA7xl8A050669;
-        Tue, 10 Nov 2020 01:59:47 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604995187;
-        bh=su/u5MLwdji81ayMltO+o1mO9BwL4957maSF5Mx65Io=;
-        h=Subject:From:To:CC:References:Date:In-Reply-To;
-        b=vcXXZVi4z1QKI/p01jieSsLpJejAlVLyD/cBcc1D2dw2bbLtRSJCbMEusVg5u3ZrB
-         1+GM3MQVTLNdngEU92voU06C+8c7uUcR5mEZSt3bJ0qg9K1x7c2D62/5tWnROKiNTT
-         svNQslaDVfc98/tMsH5YZWsmBpQOTlc6hRyi5icY=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AA7xkSI007288
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 10 Nov 2020 01:59:46 -0600
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 10
- Nov 2020 01:59:46 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 10 Nov 2020 01:59:46 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AA7xiCx102363;
-        Tue, 10 Nov 2020 01:59:45 -0600
-Subject: Re: [PATCH] dmaengine: ti: omap-dma: Block PM if SDMA is busy to fix
- audio
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>,
-        Vinod <vkoul@kernel.org>
-CC:     <dmaengine@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-References: <20201109154013.11950-1-tony@atomide.com>
- <acf280b4-f34d-cfc6-874c-48843cd54365@ti.com>
-Message-ID: <39089a2c-a883-d9b4-f1d6-493af2190410@ti.com>
-Date:   Tue, 10 Nov 2020 10:00:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.1
+        id S1727001AbgKJJVd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Nov 2020 04:21:33 -0500
+Received: from muru.com ([72.249.23.125]:47606 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726467AbgKJJVd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Nov 2020 04:21:33 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id CC1B180BA;
+        Tue, 10 Nov 2020 09:21:36 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCHv2] bus: ti-sysc: Fix bogus resetdone warning on enable for cpsw
+Date:   Tue, 10 Nov 2020 11:21:27 +0200
+Message-Id: <20201110092127.46638-1-tony@atomide.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <acf280b4-f34d-cfc6-874c-48843cd54365@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Bail out early from sysc_wait_softreset() just like we do in sysc_reset()
+if there's no sysstatus srst_shift to fix a bogus resetdone warning on
+enable as suggested by Grygorii Strashko <grygorii.strashko@ti.com>.
 
-On 10/11/2020 9.58, Peter Ujfalusi wrote:
-> Hi Tony,
-> 
-> On 09/11/2020 17.40, Tony Lindgren wrote:
->> We now use cpu_pm for saving and restoring device context for deeper SoC
->> idle states. But for omap3, we must also block idle if SDMA is busy.
->>
->> If we don't block idle when SDMA is busy, we eventually end up saving and
->> restoring SDMA register state on PER domain idle while SDMA is active and
->> that causes at least audio playback to fail.
-> 
-> Thanks for the fix!
-> 
-> Tested-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> 
-> Vinod: Can you take this for 5.10 as a fix? The off mode got enabled by
-> default in 5.10-rc1 and audio got broken out of box.
+We do not currently handle resets for modules that need writing to the
+sysstatus register. If we at some point add that, we also need to add
+SYSS_QUIRK_RESETDONE_INVERTED flag for cpsw as the sysstatus bit is low
+when reset is done as described in the am335x TRM "Table 14-202
+SOFT_RESET Register Field Descriptions"
 
-to Vinod with corrected email address..
+Fixes: d46f9fbec719 ("bus: ti-sysc: Use optional clocks on for enable and wait for softreset bit")
+Suggested-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
 
-> Thanks,
-> - Péter
-> 
->> Fixes: 4c74ecf79227 ("dmaengine: ti: omap-dma: Add device tree match data and use it for cpu_pm")
->> Reported-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
->> Signed-off-by: Tony Lindgren <tony@atomide.com>
->> ---
->>  drivers/dma/ti/omap-dma.c | 37 ++++++++++++++++++++++++-------------
->>  1 file changed, 24 insertions(+), 13 deletions(-)
->>
->> diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
->> --- a/drivers/dma/ti/omap-dma.c
->> +++ b/drivers/dma/ti/omap-dma.c
->> @@ -1522,29 +1522,38 @@ static void omap_dma_free(struct omap_dmadev *od)
->>  	}
->>  }
->>  
->> +/* Currently used by omap2 & 3 to block deeper SoC idle states */
->> +static bool omap_dma_busy(struct omap_dmadev *od)
->> +{
->> +	struct omap_chan *c;
->> +	int lch = -1;
->> +
->> +	while (1) {
->> +		lch = find_next_bit(od->lch_bitmap, od->lch_count, lch + 1);
->> +		if (lch >= od->lch_count)
->> +			break;
->> +		c = od->lch_map[lch];
->> +		if (!c)
->> +			continue;
->> +		if (omap_dma_chan_read(c, CCR) & CCR_ENABLE)
->> +			return true;
->> +	}
->> +
->> +	return false;
->> +}
->> +
->>  /* Currently only used for omap2. For omap1, also a check for lcd_dma is needed */
->>  static int omap_dma_busy_notifier(struct notifier_block *nb,
->>  				  unsigned long cmd, void *v)
->>  {
->>  	struct omap_dmadev *od;
->> -	struct omap_chan *c;
->> -	int lch = -1;
->>  
->>  	od = container_of(nb, struct omap_dmadev, nb);
->>  
->>  	switch (cmd) {
->>  	case CPU_CLUSTER_PM_ENTER:
->> -		while (1) {
->> -			lch = find_next_bit(od->lch_bitmap, od->lch_count,
->> -					    lch + 1);
->> -			if (lch >= od->lch_count)
->> -				break;
->> -			c = od->lch_map[lch];
->> -			if (!c)
->> -				continue;
->> -			if (omap_dma_chan_read(c, CCR) & CCR_ENABLE)
->> -				return NOTIFY_BAD;
->> -		}
->> +		if (omap_dma_busy(od))
->> +			return NOTIFY_BAD;
->>  		break;
->>  	case CPU_CLUSTER_PM_ENTER_FAILED:
->>  	case CPU_CLUSTER_PM_EXIT:
->> @@ -1595,6 +1604,8 @@ static int omap_dma_context_notifier(struct notifier_block *nb,
->>  
->>  	switch (cmd) {
->>  	case CPU_CLUSTER_PM_ENTER:
->> +		if (omap_dma_busy(od))
->> +			return NOTIFY_BAD;
->>  		omap_dma_context_save(od);
->>  		break;
->>  	case CPU_CLUSTER_PM_ENTER_FAILED:
->>
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-> 
+Changes since v1:
+- Drop quirk handling and use fix suggested by Grygorii
 
-- Péter
+---
+ drivers/bus/ti-sysc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -227,6 +227,9 @@ static int sysc_wait_softreset(struct sysc *ddata)
+ 	u32 sysc_mask, syss_done, rstval;
+ 	int syss_offset, error = 0;
+ 
++	if (ddata->cap->regbits->srst_shift < 0)
++		return 0;
++
+ 	syss_offset = ddata->offsets[SYSC_SYSSTATUS];
+ 	sysc_mask = BIT(ddata->cap->regbits->srst_shift);
+ 
+-- 
+2.29.2
