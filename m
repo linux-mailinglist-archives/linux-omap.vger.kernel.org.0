@@ -2,146 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A31A2AD468
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 12:06:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 942252AD485
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 12:14:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbgKJLGT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Nov 2020 06:06:19 -0500
-Received: from muru.com ([72.249.23.125]:47634 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726152AbgKJLGS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Nov 2020 06:06:18 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id E5E2D80BA;
-        Tue, 10 Nov 2020 11:06:21 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] bus: ti-sysc: Assert reset only after disabling clocks
-Date:   Tue, 10 Nov 2020 13:06:11 +0200
-Message-Id: <20201110110611.64983-1-tony@atomide.com>
-X-Mailer: git-send-email 2.29.2
+        id S1726698AbgKJLOm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Nov 2020 06:14:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58462 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726690AbgKJLOm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Nov 2020 06:14:42 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6D03C0613CF
+        for <linux-omap@vger.kernel.org>; Tue, 10 Nov 2020 03:14:40 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id p1so12212885wrf.12
+        for <linux-omap@vger.kernel.org>; Tue, 10 Nov 2020 03:14:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=aWHxUGhey1sdeZpkX3+AVgMK2Ne/YLbuPchhZeuH/Uc=;
+        b=fJM5wgaDjVrR7PxPlVnAQztZB1IVl9oBIwtvGmcw3IAXMQE3YOUgs5o4O17HieztUA
+         qfTNm7C2FQjLHf4bglBB/WHT618E4b4F034ElU4ZD0+0A0odZDmWjgSX1rsN5KRsLMO4
+         DeykB940RWboozvg337Y/BhLyZluVx4nNjBoeUjvBjevkM+qmpkVrybQXxAYEIETwBE9
+         lCYOugcHON8xTeYXK3wYvTHCeKgSupLh6/TiTTlZB2m3SfZTySHcN1mXxlW6YyRaKhfp
+         zeFcTTIGVyFApKnwRObyEs6JgbnOlOzgFeaHhp2fTX/BuXsz0RBpOvntK63Ak1h2AAJj
+         yz8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=aWHxUGhey1sdeZpkX3+AVgMK2Ne/YLbuPchhZeuH/Uc=;
+        b=n0KUArMygW1GhIbhnhmwS5Y8gAPCyI04spL/2nlsc/B+xjhIlv1jAQ9xSM0LpgZsyw
+         kKTHumwDIwVA+70Mu/JhZNaF4z4L77hrtGLTa1tqvx4Cgw0206xbS2W83ZXnD1LU9TRw
+         /EPKF4C8AiIodgT3XWK7gNv76SDCfoIi3VcnHzFido+hOen2asOvRyButk5aMahPxfeI
+         be6JPUu+02GKYJMTktCxsoXw4oLXQbdoeIThYbx/6cev+6qmP5OfTYw9DYoUn7XHxSwJ
+         cA7A2ep9i9hj/MxeOk5+5LaCIFnm4ZHhKReFFjPmE/GHjHV0F5mwSzmqSX5i1+raj/te
+         uwfA==
+X-Gm-Message-State: AOAM531gWL0DOaay6b3fn4HDsN7asc0fTcfkUs+TBBtirbv5Jd0Mm1II
+        hvinz12qTegekqjNK7SIGAAsdkR5Uc5eofQr9+cZiHzrqQ==
+X-Google-Smtp-Source: ABdhPJwWtv4auqTmoAea0qYBb3hHktVqkzr94zqBc5Asks6CLIraXEZdnqZ+famSmvo+5blxMZkS7QiXwrGMYHQb/9A=
+X-Received: by 2002:adf:f24a:: with SMTP id b10mr7281813wrp.352.1605006879086;
+ Tue, 10 Nov 2020 03:14:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   Raffaele Recalcati <lamiaposta71@gmail.com>
+Date:   Tue, 10 Nov 2020 12:14:18 +0100
+Message-ID: <CAFU7RzNfOm+FYEAuM17bcgwwZFM3hDkBB-iQ+zNvxT0Z7vK_SA@mail.gmail.com>
+Subject: 
+To:     linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The rstctrl reset must be asserted after gating the module clock as
-described in the TRM at least for IVA. Otherwise the rstctrl reset
-done with module clock enabled can hang the system.
-
-Note that this issue is has been only seen with related IVA changes
-that we do not currently have merged. So probably no need to apply
-this patch as a fix.
-
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
-
-This can probably wait for merge window and be merged along with
-the other genpd related changes I have been posting. At least I
-have not seen this issue except with IVA resets so far.
-
----
- drivers/bus/ti-sysc.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1222,10 +1222,10 @@ static int __maybe_unused sysc_runtime_suspend(struct device *dev)
- 	ddata->enabled = false;
- 
- err_allow_idle:
--	reset_control_assert(ddata->rsts);
--
- 	sysc_clkdm_allow_idle(ddata);
- 
-+	reset_control_assert(ddata->rsts);
-+
- 	return error;
- }
- 
-@@ -1945,6 +1945,7 @@ static int sysc_reset(struct sysc *ddata)
-  */
- static int sysc_init_module(struct sysc *ddata)
- {
-+	bool rstctrl_deasserted = false;
- 	int error = 0;
- 
- 	error = sysc_clockdomain_init(ddata);
-@@ -1969,6 +1970,7 @@ static int sysc_init_module(struct sysc *ddata)
- 		error = reset_control_deassert(ddata->rsts);
- 		if (error)
- 			goto err_main_clocks;
-+		rstctrl_deasserted = true;
- 	}
- 
- 	ddata->revision = sysc_read_revision(ddata);
-@@ -1978,13 +1980,13 @@ static int sysc_init_module(struct sysc *ddata)
- 	if (ddata->legacy_mode) {
- 		error = sysc_legacy_init(ddata);
- 		if (error)
--			goto err_reset;
-+			goto err_main_clocks;
- 	}
- 
- 	if (!ddata->legacy_mode) {
- 		error = sysc_enable_module(ddata->dev);
- 		if (error)
--			goto err_reset;
-+			goto err_main_clocks;
- 	}
- 
- 	error = sysc_reset(ddata);
-@@ -1994,10 +1996,6 @@ static int sysc_init_module(struct sysc *ddata)
- 	if (error && !ddata->legacy_mode)
- 		sysc_disable_module(ddata->dev);
- 
--err_reset:
--	if (error && !(ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT))
--		reset_control_assert(ddata->rsts);
--
- err_main_clocks:
- 	if (error)
- 		sysc_disable_main_clocks(ddata);
-@@ -2008,6 +2006,10 @@ static int sysc_init_module(struct sysc *ddata)
- 		sysc_clkdm_allow_idle(ddata);
- 	}
- 
-+	if (error && rstctrl_deasserted &&
-+	    !(ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT))
-+		reset_control_assert(ddata->rsts);
-+
- 	return error;
- }
- 
-@@ -2975,9 +2977,6 @@ static int sysc_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Balance use counts as PM runtime should have enabled these all */
--	if (!(ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT))
--		reset_control_assert(ddata->rsts);
--
- 	if (!(ddata->cfg.quirks &
- 	      (SYSC_QUIRK_NO_IDLE | SYSC_QUIRK_NO_IDLE_ON_INIT))) {
- 		sysc_disable_main_clocks(ddata);
-@@ -2985,6 +2984,9 @@ static int sysc_probe(struct platform_device *pdev)
- 		sysc_clkdm_allow_idle(ddata);
- 	}
- 
-+	if (!(ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT))
-+		reset_control_assert(ddata->rsts);
-+
- 	sysc_show_registers(ddata);
- 
- 	ddata->dev->type = &sysc_device_type;
--- 
-2.29.2
+unsubscribe linux-omap
