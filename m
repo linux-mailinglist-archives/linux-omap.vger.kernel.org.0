@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F90C2AD4A9
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 12:21:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDD5F2AD4AC
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 12:21:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730291AbgKJLU5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Nov 2020 06:20:57 -0500
-Received: from muru.com ([72.249.23.125]:47682 "EHLO muru.com"
+        id S1730740AbgKJLVB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Nov 2020 06:21:01 -0500
+Received: from muru.com ([72.249.23.125]:47694 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730296AbgKJLU4 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Nov 2020 06:20:56 -0500
+        id S1729604AbgKJLVA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Nov 2020 06:21:00 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 83FA981A8;
-        Tue, 10 Nov 2020 11:20:59 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 637AF80BA;
+        Tue, 10 Nov 2020 11:21:03 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
@@ -23,16 +23,16 @@ Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
         Tero Kristo <t-kristo@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
         Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Philipp Zabel <p.zabel@pengutronix.de>,
         Santosh Shilimkar <ssantosh@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
         linux-remoteproc@vger.kernel.org
-Subject: [PATCH 2/9] ARM: OMAP2+: Probe PRCM first to probe l4_wkup with simple-pm-bus
-Date:   Tue, 10 Nov 2020 13:20:35 +0200
-Message-Id: <20201110112042.65489-3-tony@atomide.com>
+Subject: [PATCH 3/9] clk: ti: am33xx: Keep am3 l3 main clock always on for genpd
+Date:   Tue, 10 Nov 2020 13:20:36 +0200
+Message-Id: <20201110112042.65489-4-tony@atomide.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201110112042.65489-1-tony@atomide.com>
 References: <20201110112042.65489-1-tony@atomide.com>
@@ -42,42 +42,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In preparation for probing the interconnects with simple-pm-bus to
-make use of genpd, we need to probe the always-on PRCM first for the
-clocks needed by l4_wkup instance.
+In order for suspend and resume to work with genpd on am3, we must keep
+l3 main clock always on. Otherwise prm_omap driver will shut down the l3
+main clock on suspend when simple-pm-bus and GENPD_FLAG_PM_CLK are used.
+Note that we already keep the l3 main clock always on with the legacy
+platform code.
 
+Later on we may want to start managing the l3 main clock with a dedicated
+interconnect driver instead of using simple-pm-bus and GENPD_FLAG_PM_CLK.
+
+Cc: linux-clk@vger.kernel.org
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Tero Kristo <t-kristo@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/mach-omap2/pdata-quirks.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/clk/ti/clk-33xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -580,6 +580,8 @@ static void pdata_quirks_check(struct pdata_init *quirks)
- 
- void __init pdata_quirks_init(const struct of_device_id *omap_dt_match_table)
- {
-+	struct device_node *np;
-+
- 	/*
- 	 * We still need this for omap2420 and omap3 PM to work, others are
- 	 * using drivers/misc/sram.c already.
-@@ -591,6 +593,15 @@ void __init pdata_quirks_init(const struct of_device_id *omap_dt_match_table)
- 	if (of_machine_is_compatible("ti,omap3"))
- 		omap3_mcbsp_init();
- 	pdata_quirks_check(auxdata_quirks);
-+
-+	/* Populate always-on PRCM in l4_wkup to probe l4_wkup */
-+	np = of_find_node_by_name(NULL, "prcm");
-+	if (!np)
-+		np = of_find_node_by_name(NULL, "prm");
-+	if (np)
-+		of_platform_populate(np, omap_dt_match_table,
-+				     omap_auxdata_lookup, NULL);
-+
- 	of_platform_populate(NULL, omap_dt_match_table,
- 			     omap_auxdata_lookup, NULL);
- 	pdata_quirks_check(pdata_quirks);
+diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
+--- a/drivers/clk/ti/clk-33xx.c
++++ b/drivers/clk/ti/clk-33xx.c
+@@ -266,6 +266,8 @@ static const char *enable_init_clks[] = {
+ 	"dpll_ddr_m2_ck",
+ 	"dpll_mpu_m2_ck",
+ 	"l3_gclk",
++	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
++	"l3-clkctrl:00bc:0",
+ 	"l4hs_gclk",
+ 	"l4fw_gclk",
+ 	"l4ls_gclk",
 -- 
 2.29.2
