@@ -2,190 +2,153 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A8A2AC2B8
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Nov 2020 18:43:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB3652AD0BA
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 08:58:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731782AbgKIRns (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Nov 2020 12:43:48 -0500
-Received: from mga12.intel.com ([192.55.52.136]:17898 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730115AbgKIRns (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 9 Nov 2020 12:43:48 -0500
-IronPort-SDR: lJW53+Xu+twISsMs2YCEn++IFXFE3i4PCem8p8umKARrSklzJTlI6J0MDNCA4T4/Ui9+M/zkNq
- jTFa01VlDz+A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9800"; a="149122478"
-X-IronPort-AV: E=Sophos;i="5.77,463,1596524400"; 
-   d="scan'208";a="149122478"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2020 09:43:47 -0800
-IronPort-SDR: 9wKt7CZZSj9gX03zQZ6B8RtbPf7hnUs7N8ahExnRCbL6fk1G02yQiIna1np7evYvsDhPzWJnMx
- hHfXAgYGKrig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,463,1596524400"; 
-   d="scan'208";a="529433843"
-Received: from lkp-server01.sh.intel.com (HELO d0be80f1a028) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 09 Nov 2020 09:43:45 -0800
-Received: from kbuild by d0be80f1a028 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1kcBCj-0000KO-7g; Mon, 09 Nov 2020 17:43:45 +0000
-Date:   Tue, 10 Nov 2020 01:43:02 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Felipe Balbi <balbi@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: [balbi-usb:testing/next] BUILD SUCCESS
- e5bf91cd194629853ac2aaab3dd2ebac41d6a899
-Message-ID: <5fa97fa6.hIfRycjJk1ES/kW/%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1727098AbgKJH6U (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Nov 2020 02:58:20 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:53820 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726825AbgKJH6U (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Nov 2020 02:58:20 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AA7wCj3049915;
+        Tue, 10 Nov 2020 01:58:12 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1604995092;
+        bh=simLczeCwAE+HWLvGuciuciDXR2ji2w1iKWzoq3nUhY=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=WGDa9c/DTGXoJ4J/yPqDpSkCXW31rKViCz4p3z8a3KSY/7z3cRYgibNka2bf8xHkM
+         S6AXv0TT2J9UO3jAarFRleS6gk3c+Ds4NrcW3XEK+1S7LhRnW6b4dD660YRJfp6W6h
+         H5VXBFT5jggY/UZpjac95Lakjt/qtWeQNMn1KOHY=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AA7wBNA125419
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 10 Nov 2020 01:58:11 -0600
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 10
+ Nov 2020 01:58:10 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 10 Nov 2020 01:58:10 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AA7w9L1066999;
+        Tue, 10 Nov 2020 01:58:09 -0600
+Subject: Re: [PATCH] dmaengine: ti: omap-dma: Block PM if SDMA is busy to fix
+ audio
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     Vinod Koul <vinod.koul@intel.com>, <dmaengine@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20201109154013.11950-1-tony@atomide.com>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+Message-ID: <acf280b4-f34d-cfc6-874c-48843cd54365@ti.com>
+Date:   Tue, 10 Nov 2020 09:58:56 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20201109154013.11950-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/balbi/usb.git  testing/next
-branch HEAD: e5bf91cd194629853ac2aaab3dd2ebac41d6a899  arm64: dts: rockchip: enable rk3328-rock64 usb3 nodes
+Hi Tony,
 
-elapsed time: 720m
+On 09/11/2020 17.40, Tony Lindgren wrote:
+> We now use cpu_pm for saving and restoring device context for deeper SoC
+> idle states. But for omap3, we must also block idle if SDMA is busy.
+> 
+> If we don't block idle when SDMA is busy, we eventually end up saving and
+> restoring SDMA register state on PER domain idle while SDMA is active and
+> that causes at least audio playback to fail.
 
-configs tested: 126
-configs skipped: 3
+Thanks for the fix!
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Tested-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arc                        nsim_700_defconfig
-powerpc                       holly_defconfig
-xtensa                  audio_kc705_defconfig
-sh                           se7343_defconfig
-arm                  colibri_pxa270_defconfig
-x86_64                           allyesconfig
-openrisc                 simple_smp_defconfig
-xtensa                  cadence_csp_defconfig
-mips                      maltaaprp_defconfig
-powerpc                    sam440ep_defconfig
-powerpc                     pseries_defconfig
-m68k                         amcore_defconfig
-arm                         s5pv210_defconfig
-mips                  cavium_octeon_defconfig
-m68k                             alldefconfig
-nios2                         10m50_defconfig
-powerpc                     tqm8548_defconfig
-c6x                        evmc6474_defconfig
-sh                          rsk7201_defconfig
-nios2                         3c120_defconfig
-powerpc                mpc7448_hpc2_defconfig
-arm                          badge4_defconfig
-arm                       multi_v4t_defconfig
-h8300                               defconfig
-arm                          collie_defconfig
-arc                                 defconfig
-mips                      fuloong2e_defconfig
-sh                         microdev_defconfig
-arm                            mmp2_defconfig
-sh                        sh7757lcr_defconfig
-um                           x86_64_defconfig
-mips                          rm200_defconfig
-powerpc                      bamboo_defconfig
-arm                            u300_defconfig
-arm                       versatile_defconfig
-arc                              alldefconfig
-arm                        multi_v5_defconfig
-powerpc                 mpc834x_mds_defconfig
-powerpc                 mpc836x_mds_defconfig
-arm                       omap2plus_defconfig
-mips                           ip27_defconfig
-powerpc                 mpc8560_ads_defconfig
-mips                        qi_lb60_defconfig
-m68k                        m5307c3_defconfig
-arm                             rpc_defconfig
-m68k                        m5272c3_defconfig
-c6x                              alldefconfig
-powerpc                      pmac32_defconfig
-arm                          imote2_defconfig
-arc                        vdk_hs38_defconfig
-arm                          pcm027_defconfig
-arm                        realview_defconfig
-mips                          rb532_defconfig
-mips                        nlm_xlr_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-c6x                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a004-20201109
-x86_64               randconfig-a002-20201109
-x86_64               randconfig-a003-20201109
-x86_64               randconfig-a005-20201109
-x86_64               randconfig-a006-20201109
-x86_64               randconfig-a001-20201109
-i386                 randconfig-a004-20201109
-i386                 randconfig-a006-20201109
-i386                 randconfig-a005-20201109
-i386                 randconfig-a001-20201109
-i386                 randconfig-a003-20201109
-i386                 randconfig-a002-20201109
-i386                 randconfig-a014-20201109
-i386                 randconfig-a015-20201109
-i386                 randconfig-a013-20201109
-i386                 randconfig-a016-20201109
-i386                 randconfig-a011-20201109
-i386                 randconfig-a012-20201109
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                                   rhel
-x86_64                    rhel-7.6-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+Vinod: Can you take this for 5.10 as a fix? The off mode got enabled by
+default in 5.10-rc1 and audio got broken out of box.
 
-clang tested configs:
-x86_64               randconfig-a012-20201109
-x86_64               randconfig-a015-20201109
-x86_64               randconfig-a013-20201109
-x86_64               randconfig-a011-20201109
-x86_64               randconfig-a014-20201109
-x86_64               randconfig-a016-20201109
+Thanks,
+- Péter
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> Fixes: 4c74ecf79227 ("dmaengine: ti: omap-dma: Add device tree match data and use it for cpu_pm")
+> Reported-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/dma/ti/omap-dma.c | 37 ++++++++++++++++++++++++-------------
+>  1 file changed, 24 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
+> --- a/drivers/dma/ti/omap-dma.c
+> +++ b/drivers/dma/ti/omap-dma.c
+> @@ -1522,29 +1522,38 @@ static void omap_dma_free(struct omap_dmadev *od)
+>  	}
+>  }
+>  
+> +/* Currently used by omap2 & 3 to block deeper SoC idle states */
+> +static bool omap_dma_busy(struct omap_dmadev *od)
+> +{
+> +	struct omap_chan *c;
+> +	int lch = -1;
+> +
+> +	while (1) {
+> +		lch = find_next_bit(od->lch_bitmap, od->lch_count, lch + 1);
+> +		if (lch >= od->lch_count)
+> +			break;
+> +		c = od->lch_map[lch];
+> +		if (!c)
+> +			continue;
+> +		if (omap_dma_chan_read(c, CCR) & CCR_ENABLE)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  /* Currently only used for omap2. For omap1, also a check for lcd_dma is needed */
+>  static int omap_dma_busy_notifier(struct notifier_block *nb,
+>  				  unsigned long cmd, void *v)
+>  {
+>  	struct omap_dmadev *od;
+> -	struct omap_chan *c;
+> -	int lch = -1;
+>  
+>  	od = container_of(nb, struct omap_dmadev, nb);
+>  
+>  	switch (cmd) {
+>  	case CPU_CLUSTER_PM_ENTER:
+> -		while (1) {
+> -			lch = find_next_bit(od->lch_bitmap, od->lch_count,
+> -					    lch + 1);
+> -			if (lch >= od->lch_count)
+> -				break;
+> -			c = od->lch_map[lch];
+> -			if (!c)
+> -				continue;
+> -			if (omap_dma_chan_read(c, CCR) & CCR_ENABLE)
+> -				return NOTIFY_BAD;
+> -		}
+> +		if (omap_dma_busy(od))
+> +			return NOTIFY_BAD;
+>  		break;
+>  	case CPU_CLUSTER_PM_ENTER_FAILED:
+>  	case CPU_CLUSTER_PM_EXIT:
+> @@ -1595,6 +1604,8 @@ static int omap_dma_context_notifier(struct notifier_block *nb,
+>  
+>  	switch (cmd) {
+>  	case CPU_CLUSTER_PM_ENTER:
+> +		if (omap_dma_busy(od))
+> +			return NOTIFY_BAD;
+>  		omap_dma_context_save(od);
+>  		break;
+>  	case CPU_CLUSTER_PM_ENTER_FAILED:
+> 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
