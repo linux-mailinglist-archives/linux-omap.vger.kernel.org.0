@@ -2,75 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 892182ADC78
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 17:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AC3E2AE0DA
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Nov 2020 21:43:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726467AbgKJQxW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Nov 2020 11:53:22 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:52170 "EHLO
+        id S1726467AbgKJUnY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Nov 2020 15:43:24 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:46128 "EHLO
         fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726152AbgKJQxW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Nov 2020 11:53:22 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AAGr15W108557;
-        Tue, 10 Nov 2020 10:53:01 -0600
+        with ESMTP id S1725862AbgKJUnX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Nov 2020 15:43:23 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AAKgu3r061518;
+        Tue, 10 Nov 2020 14:42:56 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1605027181;
-        bh=8u4oKxeTgqtAZew3HCblnfmbiLoszkn5hzZ2L4oaGe0=;
+        s=ti-com-17Q1; t=1605040976;
+        bh=sifttbW0k5Lxcp2E71JaLXQzbHbeoqMjZBnpIupizDw=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=NnhWxmUfCIP6ZPiXRST7jzGP9FPMXhO+6VxemWjZRt56+u0jMnTgwOibILhvlIwC6
-         HPwCov/VILcKyV4wPI7h71j9A6Uo7cid/WI1SvMY6l6S9EwsyEfeXsTaiki5taZ5ta
-         /sQzk9+Z10FmizdixDPo7OKOv7+6nOHxsCEZYFPc=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AAGr1oO006869
+        b=LmrO7Q7Dlq6pUHsh8dqUlGvFLlSoLm74P/l8Cq/t1BTBUQGrpcEcPXonujHXvweye
+         tqRp6oyq2fnpIGQj5266vsEM13zx1p556lUWq39/CA74cl/jJnK0VE0P4jb6weD7tu
+         x23b+PvFD1x2sNVHla8AJHhSb8BhRHqBIyF9q+cQ=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AAKguLi130035
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 10 Nov 2020 10:53:01 -0600
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 10 Nov 2020 14:42:56 -0600
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 10
- Nov 2020 10:53:01 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2020 14:42:56 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 10 Nov 2020 10:53:01 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AAGqwaY036623;
-        Tue, 10 Nov 2020 10:52:59 -0600
-Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and
- drm_panel
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-CC:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
- <61C04176-4654-4D2D-A55B-31FBB6D2E5AA@goldelico.com>
- <fcbc8488-5861-8e51-0f86-1ed6498083f7@ti.com>
- <579243AA-014A-411B-9014-F5846C9B8137@goldelico.com>
- <ab33baff-dd8c-2ee0-6f89-35aa4df7b9cf@ti.com>
- <837EA533-9946-43B3-B058-69060EC43981@goldelico.com>
- <08589e51-f5e6-2743-57ec-8ac509f97ff0@ti.com>
- <1f1afce4-c822-0fbf-1ce3-dda0064b65c6@ti.com>
- <67786545-23D2-444F-85B8-7A030070B317@goldelico.com>
- <a20f2b88-bfe6-0ab4-a19b-ba5316db6c4f@ti.com>
- <17F5238B-1CC3-4764-B744-C57D9CE4EB42@goldelico.com>
- <db0b9694-4d04-18ba-fdf0-093b5914bbf0@ti.com>
- <6A9407FC-69F7-4E30-B4A3-FFB2E91CAE3B@goldelico.com>
- <1cf563e5-2dc0-1802-86e3-3e24150f0651@ti.com>
- <BBC7824A-A689-4144-969C-32608A202A75@goldelico.com>
- <7f820fd2-820b-bfdd-a43b-174ad6b09868@ti.com>
- <0AF59BFD-89F2-46D3-9EB6-F47FBB52B183@goldelico.com>
- <AEAA7281-7B82-47A6-A0BA-EF08C56824A8@goldelico.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <917fe1c6-4009-7788-f815-fcc1fc2ba7df@ti.com>
-Date:   Tue, 10 Nov 2020 18:52:58 +0200
+ Frontend Transport; Tue, 10 Nov 2020 14:42:56 -0600
+Received: from [10.250.64.205] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AAKgtB2063474;
+        Tue, 10 Nov 2020 14:42:55 -0600
+Subject: Re: [PATCH] soc: ti: pruss: Remove wrong check against
+ *get_match_data return value
+To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        <ssantosh@kernel.org>
+CC:     <santosh.shilimkar@oracle.com>, <lee.jones@linaro.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <praneeth@ti.com>,
+        <tony@atomide.com>, Wei Yongjun <weiyongjun1@huawei.com>
+References: <20201026144943.30821-1-grzegorz.jaszczyk@linaro.org>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <a1a787b2-efac-3baf-2a3c-ba135b8b32d0@ti.com>
+Date:   Tue, 10 Nov 2020 14:42:55 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <AEAA7281-7B82-47A6-A0BA-EF08C56824A8@goldelico.com>
+In-Reply-To: <20201026144943.30821-1-grzegorz.jaszczyk@linaro.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -79,79 +60,56 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/11/2020 18:49, H. Nikolaus Schaller wrote:
-> 
->> Am 10.11.2020 um 14:49 schrieb H. Nikolaus Schaller <hns@goldelico.com>:
->>
->> Hi Tomi,
->>
->>> Am 09.11.2020 um 12:33 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
->>>
->>> On 09/11/2020 13:09, H. Nikolaus Schaller wrote:
->>>
->>>>>> I see.
->>>>>> Anyways there is missing some simple thing which makes the driver not prepared/enabled.
->>>>>> Or is this related to VC?
->>>>>
->>>>> No, that's not related to the VC.
->>>>
->>>> Ok, then it is worth searching for that independently. Any idea/hint what could be missing?
->>>
->>> Well, if I had to guess, I would go for either 1) some registration or such is missing from the
->>> panel driver, or 2) some config value is invalid, which makes the DRM framework or the DSI driver
->>> fail before calling prepare or enable.
->>
->> I did now some tests based on v5.10-rc3 by adding mre and more printk() and dump_stack().
->> And I did blacklist the panel driver so that I could boot and after modprobing it manually
->> I could trigger a re-probe by inserting some USB memory stick.
->>
->> With this procedure I could trace the problem down to this call sequence:
->>
->> 	dsi_probe()
->>          ...
->> 	  w677l_probe()
->>            drm_panel_add()   -- after this, of_drm_find_panel() is successful
->>          ...
->> 	  component_add()
->> 	    try_to_bring_up_master()
->> 	      master->ops->bind(master->dev)
->>
->> This call to bind() does not return and likely the probing thread is then blocked and
->> holds some locks which manifests itself in that the system isn't running stable any
->> more (e.g. heartbeat LEDs are sometimes stuck although console still works).
->>
->> dbg_info() in try_to_bring_up_master() prints:
->>
->> [  102.199362] omapdss_dss 58000000.dss: trying to bring up master
->>
->> So I am not sure if this is a panel driver issue at all or the DSI patch set is not
->> running stable on OMAP5.
->>
->> Is a good next step to trace dss_bind() in drivers/gpu/drm/omapdrm//dss/dss.c?
-> 
-> There is indeed one kernel worker running at 100% CPU load.
-> 
-> top:
-> 
->   PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND                                                                   
->  3196 root      20   0       0      0      0 R  100.0  0.0   2:58.76 kworker/0:8+events                                                        
-> 
-> More analysis shows that it hangs in drm_client_modeset_probe() in the loop
-> 
-> 	for (i = 0; i < connector_count; i++)
-> 		total_modes_count += connectors[i]->funcs->fill_modes(connectors[i], width, height);
-> 
-> Most likely not in the loop because that looks sane, but connectors[i]->funcs->fill_modes().
-> 
-> So I have to find out what function connectors[i]->funcs->fill_modes is...
-> 
-> BTW: connector_count = 2.
+Hi Greg,
 
-I guess you have the same issue. It goes to dsi_bridge_mode_valid, then __dsi_calc_config, and stays
-there finding good clocks.
+On 10/26/20 9:49 AM, Grzegorz Jaszczyk wrote:
+> Since the of_device_get_match_data() doesn't return error code, remove
+> wrong IS_ERR test. Proper check against NULL pointer is already done
+> later before usage: if (data && data->...).
+> 
+> Additionally, proceeding with empty device data is valid (e.g. in case
+> of "ti,am3356-pruss").
+> 
+> Reported-by: Wei Yongjun <weiyongjun1@huawei.com>
 
- Tomi
+Please add the appropriate Fixes: tag.
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+And prefer %s/Remove/Fix/ in patch title.
+
+With that,
+Acked-by: Suman Anna <s-anna@ti.com>
+
+regards
+Suman
+
+> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> ---
+>  drivers/soc/ti/pruss.c | 6 ------
+>  1 file changed, 6 deletions(-)
+> 
+> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+> index cc0b4ad7a3d3..5d6e7132a5c4 100644
+> --- a/drivers/soc/ti/pruss.c
+> +++ b/drivers/soc/ti/pruss.c
+> @@ -126,8 +126,6 @@ static int pruss_clk_init(struct pruss *pruss, struct device_node *cfg_node)
+>  	int ret = 0;
+>  
+>  	data = of_device_get_match_data(dev);
+> -	if (IS_ERR(data))
+> -		return -ENODEV;
+>  
+>  	clks_np = of_get_child_by_name(cfg_node, "clocks");
+>  	if (!clks_np) {
+> @@ -175,10 +173,6 @@ static int pruss_probe(struct platform_device *pdev)
+>  	const char *mem_names[PRUSS_MEM_MAX] = { "dram0", "dram1", "shrdram2" };
+>  
+>  	data = of_device_get_match_data(&pdev->dev);
+> -	if (IS_ERR(data)) {
+> -		dev_err(dev, "missing private data\n");
+> -		return -ENODEV;
+> -	}
+>  
+>  	ret = dma_set_coherent_mask(dev, DMA_BIT_MASK(32));
+>  	if (ret) {
+> 
+
