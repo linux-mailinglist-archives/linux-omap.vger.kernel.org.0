@@ -2,342 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E90CC2AF599
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Nov 2020 16:59:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77AA92AF5A1
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Nov 2020 16:59:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727215AbgKKP7B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Nov 2020 10:59:01 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:53554 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727192AbgKKP7B (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Nov 2020 10:59:01 -0500
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id EA473A19;
-        Wed, 11 Nov 2020 16:58:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1605110338;
-        bh=oqEN+fdbqg3jG7pEN8XqeRq3tVUFUZsatWEgLi+sF1I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Dx6LKlhxNwHyzKew147u9nKDy1Vvb/ifxJ4cwtj03iE+R43NpaSoVbuHT1Z02mKaJ
-         KtccywCfBlRo9RhqoPovu/hOWADMLXyA3PXhtK/X/wy0Sze7kpwl+OB1pWnHtJVrJX
-         AzMjN5snqnb+SkJmpkKo8eYl3ideZLTCz8yj/WUs=
-Date:   Wed, 11 Nov 2020 17:58:54 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v3 30/56] drm/omap: dsi: move panel refresh function to
- host
-Message-ID: <20201111155854.GH4115@pendragon.ideasonboard.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
- <20201105120333.947408-31-tomi.valkeinen@ti.com>
- <20201109101003.GA6029@pendragon.ideasonboard.com>
- <6118c70e-6dc5-2d87-fc68-266cd3eeb66c@ti.com>
+        id S1727449AbgKKP7e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Nov 2020 10:59:34 -0500
+Received: from fallback10.mail.ru ([94.100.178.50]:44396 "EHLO
+        fallback10.mail.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727457AbgKKP7e (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Nov 2020 10:59:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru; s=mail3;
+        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From; bh=aBdXLMT74r6zkeVrrJgveQyIXIMrSCl4JXoVRSaRxYg=;
+        b=e0FKtfmY/OTPzjftseAqFZtdA6KQLzeBtME8P0tV2zd8nN7qGkOss49oopAaiWEXj2/0vMPTAxX9m0TRM1KXOBjKvteGCjgSF5XdO3Mk58LkgyZanGen4lmGTgmlFG+ypD1vQdHQ69HHyAsVyR7Z3Lctzt+XYCtCoB1petJrgXI=;
+Received: from [10.161.64.43] (port=50568 helo=smtp35.i.mail.ru)
+        by fallback10.m.smailru.net with esmtp (envelope-from <shc_work@mail.ru>)
+        id 1kcsWv-0004WQ-LJ; Wed, 11 Nov 2020 18:59:30 +0300
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru; s=mail3;
+        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc; bh=aBdXLMT74r6zkeVrrJgveQyIXIMrSCl4JXoVRSaRxYg=;
+        b=fMjfA7WnZbgrYyc4tnazg7c7SWqeeiOyoH1PUyJQHBSkGY0zJRCv2R0kh1LOfYEA4bPtG9QXnfus233q9/TawiKGnR1NO4jnhe/v+fl+i/e+guMl6V6TLaOXtg6QWda/Jb4B/EoY165SsQapmkximxj5khboyf7+2MgrZ31wh6g=;
+Received: by smtp35.i.mail.ru with esmtpa (envelope-from <shc_work@mail.ru>)
+        id 1kcsWq-0003hR-Eo; Wed, 11 Nov 2020 18:59:24 +0300
+From:   Alexander Shiyan <shc_work@mail.ru>
+To:     linux-omap@vger.kernel.org
+Cc:     devicetree@vger.kernel.org,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Alexander Shiyan <shc_work@mail.ru>
+Subject: [PATCH] ARM: dts: am335x: Fix comments for AM335X_PIN_GPMC_WPN pin in GPIO mode
+Date:   Wed, 11 Nov 2020 18:59:10 +0300
+Message-Id: <20201111155910.13728-1-shc_work@mail.ru>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6118c70e-6dc5-2d87-fc68-266cd3eeb66c@ti.com>
+Content-Transfer-Encoding: 8bit
+X-7564579A: B8F34718100C35BD
+X-77F55803: 4F1203BC0FB41BD94AF7078E5631C70217AEEF0C535DF74E33C953CE125805A500894C459B0CD1B905DE85E9F650E6E682FAF09B7934798414FD2C451A344CC20F40345E41D45524
+X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE76256B078082242EEEA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F7900637F54795A05D74C8838638F802B75D45FF5571747095F342E8C7A0BC55FA0FE5FC1E70F93F28DE8F2FDBB4CB3F3B5541DD90CD140A2BADD870389733CBF5DBD5E9D5E8D9A59859A8B652D31B9D28593E51CC7F00164DA146DA6F5DAA56C3B73B2321F2F7C9D6F236AF3AA81AA40904B5D9A18204E546F3947CC8A976F1B976E0ABBA3038C0950A5D36C8A9BA7A39EFB7668729DE7A884B61D1BA3038C0950A5D36D5E8D9A59859A8B651CA34BD62E700AA76E601842F6C81A1F004C90652538430CDED94BCBF13EF3B93EC92FD9297F6718AA50765F7900637571EAFDAACF43475A7F4EDE966BC389F395957E7521B51C24C7702A67D5C33162DBA43225CD8A89F890A246B268E114E57739F23D657EF2BB5C8C57E37DE458B4C7702A67D5C3316FA3894348FB808DBA1CE242F1348D5363B503F486389A921A5CC5B56E945C8DA
+X-B7AD71C0: 14C14B24D00AF5AC321EF223B8115265C77432E3705FE0C78E1CD14B953EB46DE9612696C3A85E77355D89D7DBCDD132
+X-C8649E89: CA6993954054F6283481399E65DAFA2CE1EB7B3EDF8343E68916CE8CCAA8A54ED62046F597BFFCA5
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojctyB8EdIch5nOPK5GBS26A==
+X-Mailru-Sender: 3BC6B8CA5785035CFA3B5901239938C88E7E8148BE7714F6EA1F80C4D3C083C220E83EB45F2FDE1F6B3B2BD4812BFD4DC77752E0C033A69E93554C27080790AB3B25A7FBAAF806F0AE208404248635DF
+X-Mras: Ok
+X-7564579A: 646B95376F6C166E
+X-77F55803: 6242723A09DB00B4A5EAA273AC3F3BA17C01F372D9D4960050C07392B76182F668F3CF0E9FE49B69BD0A8F4BFAE735A1B3E604C713BF4572534D822186C54774B61AF2FA7485086D
+X-7FA49CB5: 0D63561A33F958A5CC1D3F28F448E31799F5FFA661B2F35EDA71843D86CBE2818941B15DA834481F8AA50765F790063778FF21EF0A487A47389733CBF5DBD5E9B5C8C57E37DE458BC2E450F102A9CDD0D32BA5DBAC0009BE9E8FC8737B5C2249A3B1E9A7D1F2C5F276E601842F6C81A12EF20D2F80756B5FDA63EEEA5E5E9D65089D37D7C0E48F6CA18204E546F3947C890A246B268E114E57739F23D657EF2BC8A9BA7A39EFB7666BA297DBC24807EA089D37D7C0E48F6C8AA50765F7900637571EAFDAACF43475EFF80C71ABB335746BA297DBC24807EA27F269C8F02392CDC58410348177836E285124B2A10EEC6C00306258E7E6ABB4E4A6367B16DE6309
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojctyB8EdIch5h0S32k8UNjA==
+X-Mailru-MI: 800
+X-Mailru-Sender: A5480F10D64C90059EC859477DBBED74D841A95E25E1B0100FF97AF8CE61F16BE8285F0AB37D98A73786569BE0651809D50E20E2BC48EF5AFF3C6AF3E48A3A73EAB4BC95F72C04283CDA0F3B3F5B9367
+X-Mras: Ok
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tomi,
+According to AM335x datasheet pin AM335X_PIN_GPMC_WPN in MODE7 works as
+GPIO0[31].
 
-On Wed, Nov 11, 2020 at 05:34:52PM +0200, Tomi Valkeinen wrote:
-> On 09/11/2020 12:10, Laurent Pinchart wrote:
-> > On Thu, Nov 05, 2020 at 02:03:07PM +0200, Tomi Valkeinen wrote:
-> >> From: Sebastian Reichel <sebastian.reichel@collabora.com>
-> >>
-> >> This moves the panel refresh/update function from the panel
-> >> driver into the DSI host driver to prepare for common drm_panel
-> >> support.
-> >>
-> >> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> >> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> >> ---
-> >>  .../gpu/drm/omapdrm/displays/panel-dsi-cm.c   |  68 ------------
-> >>  drivers/gpu/drm/omapdrm/dss/dsi.c             | 101 ++++++++++++++++--
-> >>  drivers/gpu/drm/omapdrm/dss/omapdss.h         |  13 +--
-> >>  drivers/gpu/drm/omapdrm/omap_crtc.c           |  11 +-
-> >>  4 files changed, 97 insertions(+), 96 deletions(-)
-> >>
-> >> diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
-> >> index 030a8fa140db..1582960f9e90 100644
-> >> --- a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
-> >> +++ b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
-> >> @@ -177,27 +177,6 @@ static int dsicm_get_id(struct panel_drv_data *ddata, u8 *id1, u8 *id2, u8 *id3)
-> >>  	return 0;
-> >>  }
-> >>  
-> >> -static int dsicm_set_update_window(struct panel_drv_data *ddata,
-> >> -		u16 x, u16 y, u16 w, u16 h)
-> >> -{
-> >> -	struct mipi_dsi_device *dsi = ddata->dsi;
-> >> -	int r;
-> >> -	u16 x1 = x;
-> >> -	u16 x2 = x + w - 1;
-> >> -	u16 y1 = y;
-> >> -	u16 y2 = y + h - 1;
-> >> -
-> >> -	r = mipi_dsi_dcs_set_column_address(dsi, x1, x2);
-> >> -	if (r < 0)
-> >> -		return r;
-> >> -
-> >> -	r = mipi_dsi_dcs_set_page_address(dsi, y1, y2);
-> >> -	if (r < 0)
-> >> -		return r;
-> >> -
-> >> -	return 0;
-> >> -}
-> >> -
-> > 
-> > I can't tell whether this is common to all command-mode panels, or if
-> > there could be a need for panel-specific update procedures, so I can't
-> > really ack this patch.
-> 
-> I can't say either, but all the command mode panels I know need and support this. And, afaik, we
-> have only the single cmd mode panel driver which we add in this series.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/boot/dts/am335x-baltos.dtsi   | 2 +-
+ arch/arm/boot/dts/am335x-cm-t335.dts   | 2 +-
+ arch/arm/boot/dts/am335x-evm.dts       | 2 +-
+ arch/arm/boot/dts/am335x-igep0033.dtsi | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-Now that I think about it again, isn't it a layering violation ?
-Shouldn't the DSI host handle DSI commands transfers, with the panel
-driver taking care of specific DSI commands ?
-
-If keeping this code in the panel driver causes lots of rebase conflicts
-I'm fine fixing this on top, but it looks like it belongs to the panel
-driver.
-
-> >>  static int dsicm_bl_update_status(struct backlight_device *dev)
-> >>  {
-> >>  	struct panel_drv_data *ddata = dev_get_drvdata(&dev->dev);
-> >> @@ -470,48 +449,6 @@ static void dsicm_disable(struct omap_dss_device *dssdev)
-> >>  	mutex_unlock(&ddata->lock);
-> >>  }
-> >>  
-> >> -static void dsicm_framedone_cb(int err, void *data)
-> >> -{
-> >> -	struct panel_drv_data *ddata = data;
-> >> -
-> >> -	dev_dbg(&ddata->dsi->dev, "framedone, err %d\n", err);
-> >> -	mutex_unlock(&ddata->lock);
-> >> -}
-> >> -
-> >> -static int dsicm_update(struct omap_dss_device *dssdev,
-> >> -				    u16 x, u16 y, u16 w, u16 h)
-> >> -{
-> >> -	struct panel_drv_data *ddata = to_panel_data(dssdev);
-> >> -	struct omap_dss_device *src = ddata->src;
-> >> -	int r;
-> >> -
-> >> -	dev_dbg(&ddata->dsi->dev, "update %d, %d, %d x %d\n", x, y, w, h);
-> >> -
-> >> -	mutex_lock(&ddata->lock);
-> >> -
-> >> -	if (!ddata->enabled) {
-> >> -		r = 0;
-> >> -		goto err;
-> >> -	}
-> >> -
-> >> -	/* XXX no need to send this every frame, but dsi break if not done */
-> >> -	r = dsicm_set_update_window(ddata, 0, 0, ddata->vm.hactive,
-> >> -				    ddata->vm.vactive);
-> >> -	if (r)
-> >> -		goto err;
-> >> -
-> >> -	r = src->ops->dsi.update(src, ddata->dsi->channel, dsicm_framedone_cb,
-> >> -			ddata);
-> >> -	if (r)
-> >> -		goto err;
-> >> -
-> >> -	/* note: no unlock here. unlock is src framedone_cb */
-> >> -	return 0;
-> >> -err:
-> >> -	mutex_unlock(&ddata->lock);
-> >> -	return r;
-> >> -}
-> >> -
-> >>  static int _dsicm_enable_te(struct panel_drv_data *ddata, bool enable)
-> >>  {
-> >>  	struct mipi_dsi_device *dsi = ddata->dsi;
-> >> @@ -572,10 +509,6 @@ static const struct omap_dss_device_ops dsicm_ops = {
-> >>  	.check_timings	= dsicm_check_timings,
-> >>  };
-> >>  
-> >> -static const struct omap_dss_driver dsicm_dss_driver = {
-> >> -	.update		= dsicm_update,
-> >> -};
-> >> -
-> >>  static int dsicm_probe_of(struct mipi_dsi_device *dsi)
-> >>  {
-> >>  	struct device_node *node = dsi->dev.of_node;
-> >> @@ -658,7 +591,6 @@ static int dsicm_probe(struct mipi_dsi_device *dsi)
-> >>  	dssdev = &ddata->dssdev;
-> >>  	dssdev->dev = dev;
-> >>  	dssdev->ops = &dsicm_ops;
-> >> -	dssdev->driver = &dsicm_dss_driver;
-> >>  	dssdev->type = OMAP_DISPLAY_TYPE_DSI;
-> >>  	dssdev->display = true;
-> >>  	dssdev->owner = THIS_MODULE;
-> >> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> >> index 0f264654792d..0aa0d21cf896 100644
-> >> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-> >> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> >> @@ -214,6 +214,9 @@ static void dsi_display_uninit_dispc(struct dsi_data *dsi);
-> >>  
-> >>  static int dsi_vc_send_null(struct dsi_data *dsi, int channel);
-> >>  
-> >> +static ssize_t _omap_dsi_host_transfer(struct dsi_data *dsi,
-> >> +				       const struct mipi_dsi_msg *msg);
-> >> +
-> >>  /* DSI PLL HSDIV indices */
-> >>  #define HSDIV_DISPC	0
-> >>  #define HSDIV_DSI	1
-> >> @@ -383,9 +386,6 @@ struct dsi_data {
-> >>  
-> >>  	struct delayed_work ulps_work;
-> >>  
-> >> -	void (*framedone_callback)(int, void *);
-> >> -	void *framedone_data;
-> >> -
-> >>  	struct delayed_work framedone_timeout_work;
-> >>  
-> >>  #ifdef DSI_CATCH_MISSING_TE
-> >> @@ -3802,8 +3802,6 @@ static void dsi_handle_framedone(struct dsi_data *dsi, int error)
-> >>  	dsi_set_ulps_auto(dsi, true);
-> >>  	dsi_bus_unlock(dsi);
-> >>  
-> >> -	dsi->framedone_callback(error, dsi->framedone_data);
-> >> -
-> >>  	if (!error)
-> >>  		dsi_perf_show(dsi, "DISPC");
-> >>  }
-> >> @@ -3835,6 +3833,8 @@ static void dsi_framedone_irq_callback(void *data)
-> >>  
-> >>  	cancel_delayed_work(&dsi->framedone_timeout_work);
-> >>  
-> >> +	DSSDBG("Framedone received!\n");
-> >> +
-> >>  	dsi_handle_framedone(dsi, 0);
-> >>  }
-> >>  
-> >> @@ -3856,17 +3856,69 @@ static int _dsi_update(struct dsi_data *dsi)
-> >>  	return 0;
-> >>  }
-> >>  
-> >> -static int dsi_update(struct omap_dss_device *dssdev, int channel,
-> >> -		void (*callback)(int, void *), void *data)
-> >> +static int _dsi_update_window(struct dsi_data *dsi, int channel,
-> >> +			      int x, int y, int w, int h)
-> >> +{
-> >> +	int x1 = x, x2 = (x + w - 1);
-> >> +	int y1 = y, y2 = (y + h - 1);
-> >> +	u8 payloadX[5] = { MIPI_DCS_SET_COLUMN_ADDRESS,
-> >> +			   x1 >> 8, x1 & 0xff, x2 >> 8, x2 & 0xff };
-> >> +	u8 payloadY[5] = { MIPI_DCS_SET_PAGE_ADDRESS,
-> >> +			   y1 >> 8, y1 & 0xff, y2 >> 8, y2 & 0xff };
-> >> +	struct mipi_dsi_msg msgX = { 0 }, msgY = { 0 };
-> >> +	int ret;
-> >> +
-> >> +	WARN_ON(!dsi_bus_is_locked(dsi));
-> >> +
-> >> +	msgX.type = MIPI_DSI_DCS_LONG_WRITE;
-> >> +	msgX.channel = channel;
-> >> +	msgX.tx_buf = payloadX;
-> >> +	msgX.tx_len = sizeof(payloadX);
-> >> +
-> >> +	msgY.type = MIPI_DSI_DCS_LONG_WRITE;
-> >> +	msgY.channel = channel;
-> >> +	msgY.tx_buf = payloadY;
-> >> +	msgY.tx_len = sizeof(payloadY);
-> >> +
-> >> +	ret = _omap_dsi_host_transfer(dsi, &msgX);
-> >> +	if (ret != 0)
-> >> +		return ret;
-> >> +
-> >> +	return _omap_dsi_host_transfer(dsi, &msgY);
-> >> +}
-> >> +
-> >> +static int dsi_update_channel(struct omap_dss_device *dssdev, int channel)
-> >>  {
-> >>  	struct dsi_data *dsi = to_dsi_data(dssdev);
-> >> +	int r;
-> >> +
-> >> +	if (channel > 3)
-> >> +		return -EINVAL;
-> >>  
-> >>  	dsi_bus_lock(dsi);
-> >> +
-> >> +	if (!dsi->vc[channel].dest) {
-> >> +		r = -ENODEV;
-> >> +		goto err;
-> >> +	}
-> >> +
-> >> +	if (dsi->vm.hactive == 0 || dsi->vm.vactive == 0) {
-> >> +		r = -EINVAL;
-> >> +		goto err;
-> >> +	}
-> >> +
-> >> +	DSSDBG("dsi_update_channel: %d", channel);
-> >> +
-> >>  	dsi_set_ulps_auto(dsi, false);
-> >>  
-> >> +	r = _dsi_update_window(dsi, channel, 0, 0, dsi->vm.hactive,
-> >> +			       dsi->vm.vactive);
-> >> +	if (r < 0) {
-> >> +		DSSWARN("window update error: %d\n", r);
-> >> +		goto err;
-> >> +	}
-> >> +
-> >>  	dsi->update_channel = channel;
-> >> -	dsi->framedone_callback = callback;
-> >> -	dsi->framedone_data = data;
-> >>  
-> >>  	if (dsi->te_enabled && dsi->te_gpio) {
-> >>  		schedule_delayed_work(&dsi->te_timeout_work,
-> >> @@ -3877,6 +3929,24 @@ static int dsi_update(struct omap_dss_device *dssdev, int channel,
-> >>  	}
-> >>  
-> >>  	return 0;
-> >> +
-> >> +err:
-> >> +	dsi_set_ulps_auto(dsi, true);
-> >> +	dsi_bus_unlock(dsi);
-> >> +	return r;
-> >> +}
-> >> +
-> >> +static int dsi_update_all(struct omap_dss_device *dssdev)
-> >> +{
-> >> +	int i, r;
-> > 
-> > i should be unsigned as it's never negative.
-> > 
-> >> +
-> >> +	for (i = 0; i < 4; i++) {
-> >> +		r = dsi_update_channel(dssdev, i);
-> >> +		if (r != -ENODEV)
-> >> +			return r;
-> >> +	}
-> >> +
-> >> +	return r;
-> >>  }
-> >>  
-> >>  /* Display funcs */
-> >> @@ -4095,7 +4165,9 @@ static void dsi_display_enable(struct omap_dss_device *dssdev)
-> >>  {
-> >>  	struct dsi_data *dsi = to_dsi_data(dssdev);
-> >>  	DSSDBG("dsi_display_enable\n");
-> >> +	dsi_bus_lock(dsi);
-> > 
-> > Why is the lock needed here now ? Should it be part of a previous patch
-> > ? Or, if I'm missing something, should the commit message explain this ?
-> > Same for the other locations below.
-> 
-> Yes, the locking should've been done in earlier patch. I moved them.
-
+diff --git a/arch/arm/boot/dts/am335x-baltos.dtsi b/arch/arm/boot/dts/am335x-baltos.dtsi
+index b7f64c7ba83d..3ea286180382 100644
+--- a/arch/arm/boot/dts/am335x-baltos.dtsi
++++ b/arch/arm/boot/dts/am335x-baltos.dtsi
+@@ -168,7 +168,7 @@ AM33XX_PADCONF(AM335X_PIN_GPMC_AD5, PIN_INPUT_PULLUP, MUX_MODE0)	/* gpmc_ad5.gpm
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_AD6, PIN_INPUT_PULLUP, MUX_MODE0)	/* gpmc_ad6.gpmc_ad6 */
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_AD7, PIN_INPUT_PULLUP, MUX_MODE0)	/* gpmc_ad7.gpmc_ad7 */
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_WAIT0, PIN_INPUT_PULLUP, MUX_MODE0)	/* gpmc_wait0.gpmc_wait0 */
+-			AM33XX_PADCONF(AM335X_PIN_GPMC_WPN, PIN_INPUT_PULLUP, MUX_MODE7)	/* gpmc_wpn.gpio0_30 */
++			AM33XX_PADCONF(AM335X_PIN_GPMC_WPN, PIN_INPUT_PULLUP, MUX_MODE7)	/* gpmc_wpn.gpio0_31 */
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_CSN0, PIN_OUTPUT, MUX_MODE0)		/* gpmc_csn0.gpmc_csn0  */
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_ADVN_ALE, PIN_OUTPUT, MUX_MODE0)		/* gpmc_advn_ale.gpmc_advn_ale */
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_OEN_REN, PIN_OUTPUT, MUX_MODE0)		/* gpmc_oen_ren.gpmc_oen_ren */
+diff --git a/arch/arm/boot/dts/am335x-cm-t335.dts b/arch/arm/boot/dts/am335x-cm-t335.dts
+index c6fe9db660e2..36d963db4026 100644
+--- a/arch/arm/boot/dts/am335x-cm-t335.dts
++++ b/arch/arm/boot/dts/am335x-cm-t335.dts
+@@ -122,7 +122,7 @@ AM33XX_PADCONF(AM335X_PIN_GPMC_AD5, PIN_INPUT_PULLUP, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_AD6, PIN_INPUT_PULLUP, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_AD7, PIN_INPUT_PULLUP, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_WAIT0, PIN_INPUT_PULLUP, MUX_MODE0)
+-			/* gpmc_wpn.gpio0_30 */
++			/* gpmc_wpn.gpio0_31 */
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_WPN, PIN_INPUT_PULLUP, MUX_MODE7)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_CSN0, PIN_OUTPUT, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_ADVN_ALE, PIN_OUTPUT, MUX_MODE0)
+diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
+index 12dffccd1ffd..7c6f2c11f0e1 100644
+--- a/arch/arm/boot/dts/am335x-evm.dts
++++ b/arch/arm/boot/dts/am335x-evm.dts
+@@ -229,7 +229,7 @@ AM33XX_PADCONF(AM335X_PIN_GPMC_AD5, PIN_INPUT_PULLUP, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_AD6, PIN_INPUT_PULLUP, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_AD7, PIN_INPUT_PULLUP, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_WAIT0, PIN_INPUT_PULLUP, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_GPMC_WPN, PIN_INPUT_PULLUP, MUX_MODE7)	/* gpmc_wpn.gpio0_30 */
++			AM33XX_PADCONF(AM335X_PIN_GPMC_WPN, PIN_INPUT_PULLUP, MUX_MODE7)	/* gpmc_wpn.gpio0_31 */
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_CSN0, PIN_OUTPUT, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_ADVN_ALE, PIN_OUTPUT, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_OEN_REN, PIN_OUTPUT, MUX_MODE0)
+diff --git a/arch/arm/boot/dts/am335x-igep0033.dtsi b/arch/arm/boot/dts/am335x-igep0033.dtsi
+index c9f354fc984a..7ec23d47a429 100644
+--- a/arch/arm/boot/dts/am335x-igep0033.dtsi
++++ b/arch/arm/boot/dts/am335x-igep0033.dtsi
+@@ -70,7 +70,7 @@ AM33XX_PADCONF(AM335X_PIN_GPMC_AD5, PIN_INPUT_PULLUP, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_AD6, PIN_INPUT_PULLUP, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_AD7, PIN_INPUT_PULLUP, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_WAIT0, PIN_INPUT_PULLUP, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_GPMC_WPN, PIN_INPUT_PULLUP, MUX_MODE7)	/* gpmc_wpn.gpio0_30 */
++			AM33XX_PADCONF(AM335X_PIN_GPMC_WPN, PIN_INPUT_PULLUP, MUX_MODE7)	/* gpmc_wpn.gpio0_31 */
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_CSN0, PIN_OUTPUT, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_ADVN_ALE, PIN_OUTPUT, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_GPMC_OEN_REN, PIN_OUTPUT, MUX_MODE0)
 -- 
-Regards,
+2.26.2
 
-Laurent Pinchart
