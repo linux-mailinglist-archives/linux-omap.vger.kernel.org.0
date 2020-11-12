@@ -2,59 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E34E72AF909
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Nov 2020 20:28:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 077292B00DB
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Nov 2020 09:08:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbgKKT2R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Nov 2020 14:28:17 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:53048 "EHLO
+        id S1726107AbgKLIIm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Nov 2020 03:08:42 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:41330 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726507AbgKKT2R (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Nov 2020 14:28:17 -0500
+        with ESMTP id S1725996AbgKLIIj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Nov 2020 03:08:39 -0500
 Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0ABJS8D4077839;
-        Wed, 11 Nov 2020 13:28:08 -0600
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AC88PTx103946;
+        Thu, 12 Nov 2020 02:08:25 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1605122888;
-        bh=fMZ9y2f+W3hTXP4idBHxHjT/7PRMSuQUkiYuPFk+Xg0=;
+        s=ti-com-17Q1; t=1605168505;
+        bh=kTmPS+14L43/mN4J8NF4b/8F8zr576pK0ujbi8KDnd8=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=p1sIqPrFsJGQ3L/nuF07Xd6FUGrr4ORU0fPGScteDuOyUuVJM3mQ+Pe3M/blZ4AYw
-         CMmKx2v21ytQPfT9W57aqmy7Casfpiw95FLE0ITqqXIumZClkSYUQUaEa3dWY4YpA5
-         KN9BelalQumcBIHL7KH/GnE2Lb8U6XweZQc+SJ/4=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0ABJS8VM051366
+        b=Di49O4ZSj3WbRunCYxEc8afWOd55tiXH2Cbl2vQP37Sb5FT75DhahuBaCy7Qlkj/J
+         7F9zVEq5BQIyFkIbSKDN/cz8HdJM+RYlm7FeNqS4mxgkvWW6CuCC6u/zhPbG1rsDLx
+         xIqPJizmEOLzNpDi8+93I/oBYL0LxwpzKKIwMgx0=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AC88Pe7016167
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 11 Nov 2020 13:28:08 -0600
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 11
- Nov 2020 13:28:08 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 12 Nov 2020 02:08:25 -0600
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 12
+ Nov 2020 02:08:25 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 11 Nov 2020 13:28:08 -0600
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0ABJS4W1084521;
-        Wed, 11 Nov 2020 13:28:04 -0600
-Subject: Re: [PATCHv2] bus: ti-sysc: Fix bogus resetdone warning on enable for
- cpsw
-To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
-CC:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20201110092127.46638-1-tony@atomide.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <f7be510f-c105-54a1-9446-56687df97668@ti.com>
-Date:   Wed, 11 Nov 2020 21:28:19 +0200
+ Frontend Transport; Thu, 12 Nov 2020 02:08:25 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AC88MKE014002;
+        Thu, 12 Nov 2020 02:08:23 -0600
+Subject: Re: [PATCH v3 30/56] drm/omap: dsi: move panel refresh function to
+ host
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+CC:     Sebastian Reichel <sre@kernel.org>,
+        Nikhil Devshatwar <nikhil.nd@ti.com>,
+        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
+ <20201105120333.947408-31-tomi.valkeinen@ti.com>
+ <20201109101003.GA6029@pendragon.ideasonboard.com>
+ <6118c70e-6dc5-2d87-fc68-266cd3eeb66c@ti.com>
+ <20201111155854.GH4115@pendragon.ideasonboard.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <fca968af-9554-041a-c416-0781da8b70ca@ti.com>
+Date:   Thu, 12 Nov 2020 10:08:21 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20201110092127.46638-1-tony@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
+In-Reply-To: <20201111155854.GH4115@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -62,49 +65,78 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 11/11/2020 17:58, Laurent Pinchart wrote:
 
+>>>> diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+>>>> index 030a8fa140db..1582960f9e90 100644
+>>>> --- a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+>>>> +++ b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+>>>> @@ -177,27 +177,6 @@ static int dsicm_get_id(struct panel_drv_data *ddata, u8 *id1, u8 *id2, u8 *id3)
+>>>>  	return 0;
+>>>>  }
+>>>>  
+>>>> -static int dsicm_set_update_window(struct panel_drv_data *ddata,
+>>>> -		u16 x, u16 y, u16 w, u16 h)
+>>>> -{
+>>>> -	struct mipi_dsi_device *dsi = ddata->dsi;
+>>>> -	int r;
+>>>> -	u16 x1 = x;
+>>>> -	u16 x2 = x + w - 1;
+>>>> -	u16 y1 = y;
+>>>> -	u16 y2 = y + h - 1;
+>>>> -
+>>>> -	r = mipi_dsi_dcs_set_column_address(dsi, x1, x2);
+>>>> -	if (r < 0)
+>>>> -		return r;
+>>>> -
+>>>> -	r = mipi_dsi_dcs_set_page_address(dsi, y1, y2);
+>>>> -	if (r < 0)
+>>>> -		return r;
+>>>> -
+>>>> -	return 0;
+>>>> -}
+>>>> -
+>>>
+>>> I can't tell whether this is common to all command-mode panels, or if
+>>> there could be a need for panel-specific update procedures, so I can't
+>>> really ack this patch.
+>>
+>> I can't say either, but all the command mode panels I know need and support this. And, afaik, we
+>> have only the single cmd mode panel driver which we add in this series.
+> 
+> Now that I think about it again, isn't it a layering violation ?
+> Shouldn't the DSI host handle DSI commands transfers, with the panel
+> driver taking care of specific DSI commands ?
 
-On 10/11/2020 11:21, Tony Lindgren wrote:
-> Bail out early from sysc_wait_softreset() just like we do in sysc_reset()
-> if there's no sysstatus srst_shift to fix a bogus resetdone warning on
-> enable as suggested by Grygorii Strashko <grygorii.strashko@ti.com>.
-> 
-> We do not currently handle resets for modules that need writing to the
-> sysstatus register. If we at some point add that, we also need to add
-> SYSS_QUIRK_RESETDONE_INVERTED flag for cpsw as the sysstatus bit is low
-> when reset is done as described in the am335x TRM "Table 14-202
-> SOFT_RESET Register Field Descriptions"
-> 
-> Fixes: d46f9fbec719 ("bus: ti-sysc: Use optional clocks on for enable and wait for softreset bit")
-> Suggested-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
+Well, the DSI host (the HW) already handles specific DSI commands, as it does the update with DCS
+Write Start/Continue commands. The update is initiated from omap_crtc, via dssdev->dsi_ops->update().
 
-Acked-by: Grygorii Strashko <grygorii.strashko@ti.com>
+We could perhaps add a new function to drm_panel_funcs, say, prepare_update, which could then do the
+above.
 
-> 
-> Changes since v1:
-> - Drop quirk handling and use fix suggested by Grygorii
-> 
-> ---
->   drivers/bus/ti-sysc.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-> --- a/drivers/bus/ti-sysc.c
-> +++ b/drivers/bus/ti-sysc.c
-> @@ -227,6 +227,9 @@ static int sysc_wait_softreset(struct sysc *ddata)
->   	u32 sysc_mask, syss_done, rstval;
->   	int syss_offset, error = 0;
->   
-> +	if (ddata->cap->regbits->srst_shift < 0)
-> +		return 0;
-> +
->   	syss_offset = ddata->offsets[SYSC_SYSSTATUS];
->   	sysc_mask = BIT(ddata->cap->regbits->srst_shift);
->   
-> 
+Although I think the above code is not strictly speaking required, as the panel should remember the
+column and page address, and as such, they could be set just once at config time.
+
+However, I remember debugging issues related to this. And with a quick test, I can see that things
+break down if I just do the above once in the panel's setup. But things work if I send a DSI NOP
+instead in the dsi host. So looks to me that either the OMAP DSI or the panel I have need some
+command transmitted there. It probably has to happen between two frame transfers.
+
+There are also other things related to update which I'm not so happy about: 1) the TE gpio irq is
+handled in the dsi host driver now, even if it's a panel gpio, 2) the dsi host driver snoops the DSI
+packets sent by the panel, and catches TEAR_ON/OFF packets, and then change internal state accordingly.
+
+So... I could change the dsi host driver to only send a NOP, and do the page/column call from the
+panel's setup. That simplifies the code.
+
+Or I could add the new function to drm_panel_funcs, and send a NOP from there. But if this "needs a
+NOP" is an OMAP DSI feature, the panel driver is not the right place for it. I also think that
+managing the TE cleanly needs more thought, and probably requires some more interaction between the
+dsi host and the panel. It might be better to look at both the update callback and the TE at the
+same time.
+
+ Tomi
 
 -- 
-Best regards,
-grygorii
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
