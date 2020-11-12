@@ -2,129 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B142B03A7
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Nov 2020 12:15:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A11E2B03E0
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Nov 2020 12:31:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727845AbgKLLPp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Nov 2020 06:15:45 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:57150 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727035AbgKLLPp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Nov 2020 06:15:45 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0ACBFcaI009766;
-        Thu, 12 Nov 2020 05:15:38 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1605179738;
-        bh=2qkNvREGB6upemw2NWJh9LDH9SjawC+AaQHptIVURaU=;
-        h=From:To:CC:Subject:Date;
-        b=TrlhxvlbWT8h7c0pu9qlVVOLBhWz2v7FMK/szdxGG0DMuOK7dvUv8JriCbkY2mAuh
-         XwQIHgQOOS8Qu5Zk+klOXE7Cd3U1zkUh+wtum2P3S9EekipxkJLRH0OYAj0sxhb9MO
-         UavJ+Jd7bdNrBBadPoFamgfGOaaMYUJr0ylAvn9E=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0ACBFc6a058380
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 12 Nov 2020 05:15:38 -0600
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 12
- Nov 2020 05:15:37 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 12 Nov 2020 05:15:37 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0ACBFaoE099039;
-        Thu, 12 Nov 2020 05:15:37 -0600
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        id S1727789AbgKLLbv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Nov 2020 06:31:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59674 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726776AbgKLLbW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Nov 2020 06:31:22 -0500
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0371EC0613D4
+        for <linux-omap@vger.kernel.org>; Thu, 12 Nov 2020 03:31:21 -0800 (PST)
+Received: by mail-wr1-x444.google.com with SMTP id p1so5596731wrf.12
+        for <linux-omap@vger.kernel.org>; Thu, 12 Nov 2020 03:31:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=3hFMOP1kaxx+iv9jwczEH0E7M8oIpI0wqn8jI0YaIqg=;
+        b=KWiedg5B8zn8+OwTMdiLZ4n5EMt3C6INPsBizaMz8ELeM8BUQGUIavGDdB9r4HTo4c
+         F+vGtgQu+WQ8/iG623+aYr8VF4o38HJZKpHY3uBooBfaPRBfKoO815KlHlLJ9aTzUsJ2
+         pIuVq3+JI/A3T2nqK9xNMJD/bNOHF0DZS2eU9qF1DmJF8KVRier9cXpnFPvjx/Aoh+9e
+         eEGLoeo3uTbbnZqUv3f0qXPHbzP8Cm8GwGmerb3VVxsh5s4P/YWB90B0BIyk+dyYQCeu
+         YT0IVs71kpfrQl9SS1js/LmN7m5h4Woad3ZvPGpozgJfiVbyPj32xJlt7g85l5CyVkBU
+         olQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=3hFMOP1kaxx+iv9jwczEH0E7M8oIpI0wqn8jI0YaIqg=;
+        b=PBaI6NhXNKWW5SvINtWH95B0hVVA8BVCYlXgFfPIhgbf4sz7igsm7v7DTCncz7LWIc
+         nnV4zQTlCSU+Tl7dbtJ5gfAdVxEVrDaXfJGxIvLQ5JraiM8K3e6HxH4nBkttF686TjOe
+         IOZBzl4671BmaiaLheal9dBPgMsMORhjcR2laAOOyg7ReLbGYg9GtQS6FmZu3QRCKnWH
+         SlC9ezRlQBBRQvyrlHRQes7emLRHfDYLjtLQgwORy/lXOejjQl6gBYpfZ0tDbEQKyz7v
+         BD9yuthVIYeCJN1HXVAgcSnhAEBr8TimfDfoi42m3Xx7ErglIPVEBLUCzaFMLmlKyg9S
+         9TGg==
+X-Gm-Message-State: AOAM531IMwecsE3tLWlF/QbKzi+mr4aQPq1VeqtFlTClIP5zHLe0zUA0
+        8h9NQHeaqdT3LCtXNIbRQHw2SQ==
+X-Google-Smtp-Source: ABdhPJxJS6tYcViiFkrzHimtT5xX5JSJCBovTbYGDgIf8pM3wALfxQu5oLVoNrcxEt8jioJWJdBHuQ==
+X-Received: by 2002:adf:82cc:: with SMTP id 70mr34276916wrc.74.1605180680484;
+        Thu, 12 Nov 2020 03:31:20 -0800 (PST)
+Received: from ?IPv6:2a01:e34:ed2f:f020:6971:b700:3764:fa96? ([2a01:e34:ed2f:f020:6971:b700:3764:fa96])
+        by smtp.googlemail.com with ESMTPSA id a18sm5854108wmm.22.2020.11.12.03.31.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Nov 2020 03:31:19 -0800 (PST)
+Subject: Re: [PATCH] thermal: ti-soc-thermal: Disable the CPU PM notifier for
+ OMAP4430
+To:     Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Tony Lindgren <tony@atomide.com>
-CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH] net: ethernet: ti: cpsw: fix cpts irq after suspend
-Date:   Thu, 12 Nov 2020 13:15:46 +0200
-Message-ID: <20201112111546.20343-1-grygorii.strashko@ti.com>
-X-Mailer: git-send-email 2.17.1
+Cc:     edubezval@gmail.com, j-keerthy@ti.com, aford173@gmail.com,
+        linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        andreas@kemnade.info
+References: <20201029100335.27665-1-peter.ujfalusi@ti.com>
+ <20201029105125.GJ5639@atomide.com>
+ <b05f4bae-c285-828b-d5f1-fbf8613b4ca4@ti.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+Message-ID: <77940e9a-0e1a-f389-645a-071db5e1fcb5@linaro.org>
+Date:   Thu, 12 Nov 2020 12:31:18 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <b05f4bae-c285-828b-d5f1-fbf8613b4ca4@ti.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Depending on the SoC/platform the CPSW can completely lose context after a
-suspend/resume cycle, including CPSW wrapper (WR) which will cause reset of
-WR_C0_MISC_EN register, so CPTS IRQ will became disabled.
+On 03/11/2020 07:42, Peter Ujfalusi wrote:
+> Eduardo, Keerthy,
+> 
+> On 29/10/2020 12.51, Tony Lindgren wrote:
+>> * Peter Ujfalusi <peter.ujfalusi@ti.com> [201029 10:03]:
+>>> Disabling the notifier fixes the random shutdowns on OMAP4430 (ES2.0 and ES2.1)
+>>> but it does not cause any issues on OMAP4460 (PandaES) or OMAP3630 (BeagleXM).
+>>> Tony's duovero with OMAP4430 ES2.3 did not ninja-shutdown, but he also have
+>>> constant and steady stream of:
+>>> thermal thermal_zone0: failed to read out thermal zone (-5)
+>>
+>> Works for me and I've verified duovero still keeps hitting core ret idle:
+> 
+> Can you pick this one up for 5.10 to make omap4430-sdp to be usable (to
+> not shut down randomly).
+> The regression was introduced in 5.10-rc1.
+> 
+>> Tested-by: Tony Lindgren <tony@atomide.com>
 
-Fix it by moving CPTS IRQ enabling in cpsw_ndo_open() where CPTS is
-actually started.
+Applied as a fix for v5.10-rc
 
-Fixes: 84ea9c0a95d7 ("net: ethernet: ti: cpsw: enable cpts irq")
-Reported-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
----
- drivers/net/ethernet/ti/cpsw.c     | 10 ++++++----
- drivers/net/ethernet/ti/cpsw_new.c |  9 ++++++---
- 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index 9fd1f77190ad..fa2d1025cbb2 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -838,9 +838,12 @@ static int cpsw_ndo_open(struct net_device *ndev)
- 		if (ret < 0)
- 			goto err_cleanup;
- 
--		if (cpts_register(cpsw->cpts))
--			dev_err(priv->dev, "error registering cpts device\n");
--
-+		if (cpsw->cpts) {
-+			if (cpts_register(cpsw->cpts))
-+				dev_err(priv->dev, "error registering cpts device\n");
-+			else
-+				writel(0x10, &cpsw->wr_regs->misc_en);
-+		}
- 	}
- 
- 	cpsw_restore(priv);
-@@ -1716,7 +1719,6 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- 	/* Enable misc CPTS evnt_pend IRQ */
- 	cpts_set_irqpoll(cpsw->cpts, false);
--	writel(0x10, &cpsw->wr_regs->misc_en);
- 
- skip_cpts:
- 	cpsw_notice(priv, probe,
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index f779d2e1b5c5..2f5e0ad23ad7 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -873,8 +873,12 @@ static int cpsw_ndo_open(struct net_device *ndev)
- 		if (ret < 0)
- 			goto err_cleanup;
- 
--		if (cpts_register(cpsw->cpts))
--			dev_err(priv->dev, "error registering cpts device\n");
-+		if (cpsw->cpts) {
-+			if (cpts_register(cpsw->cpts))
-+				dev_err(priv->dev, "error registering cpts device\n");
-+			else
-+				writel(0x10, &cpsw->wr_regs->misc_en);
-+		}
- 
- 		napi_enable(&cpsw->napi_rx);
- 		napi_enable(&cpsw->napi_tx);
-@@ -2006,7 +2010,6 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- 	/* Enable misc CPTS evnt_pend IRQ */
- 	cpts_set_irqpoll(cpsw->cpts, false);
--	writel(0x10, &cpsw->wr_regs->misc_en);
- 
- skip_cpts:
- 	ret = cpsw_register_notifiers(cpsw);
+
 -- 
-2.17.1
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
