@@ -2,141 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 077292B00DB
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Nov 2020 09:08:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B142B03A7
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Nov 2020 12:15:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726107AbgKLIIm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 Nov 2020 03:08:42 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:41330 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725996AbgKLIIj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Nov 2020 03:08:39 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AC88PTx103946;
-        Thu, 12 Nov 2020 02:08:25 -0600
+        id S1727845AbgKLLPp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 Nov 2020 06:15:45 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:57150 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727035AbgKLLPp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 Nov 2020 06:15:45 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0ACBFcaI009766;
+        Thu, 12 Nov 2020 05:15:38 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1605168505;
-        bh=kTmPS+14L43/mN4J8NF4b/8F8zr576pK0ujbi8KDnd8=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Di49O4ZSj3WbRunCYxEc8afWOd55tiXH2Cbl2vQP37Sb5FT75DhahuBaCy7Qlkj/J
-         7F9zVEq5BQIyFkIbSKDN/cz8HdJM+RYlm7FeNqS4mxgkvWW6CuCC6u/zhPbG1rsDLx
-         xIqPJizmEOLzNpDi8+93I/oBYL0LxwpzKKIwMgx0=
-Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AC88Pe7016167
+        s=ti-com-17Q1; t=1605179738;
+        bh=2qkNvREGB6upemw2NWJh9LDH9SjawC+AaQHptIVURaU=;
+        h=From:To:CC:Subject:Date;
+        b=TrlhxvlbWT8h7c0pu9qlVVOLBhWz2v7FMK/szdxGG0DMuOK7dvUv8JriCbkY2mAuh
+         XwQIHgQOOS8Qu5Zk+klOXE7Cd3U1zkUh+wtum2P3S9EekipxkJLRH0OYAj0sxhb9MO
+         UavJ+Jd7bdNrBBadPoFamgfGOaaMYUJr0ylAvn9E=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0ACBFc6a058380
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 12 Nov 2020 02:08:25 -0600
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 12 Nov 2020 05:15:38 -0600
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 12
- Nov 2020 02:08:25 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2020 05:15:37 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 12 Nov 2020 02:08:25 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AC88MKE014002;
-        Thu, 12 Nov 2020 02:08:23 -0600
-Subject: Re: [PATCH v3 30/56] drm/omap: dsi: move panel refresh function to
- host
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC:     Sebastian Reichel <sre@kernel.org>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        "H . Nikolaus Schaller" <hns@goldelico.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
- <20201105120333.947408-31-tomi.valkeinen@ti.com>
- <20201109101003.GA6029@pendragon.ideasonboard.com>
- <6118c70e-6dc5-2d87-fc68-266cd3eeb66c@ti.com>
- <20201111155854.GH4115@pendragon.ideasonboard.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <fca968af-9554-041a-c416-0781da8b70ca@ti.com>
-Date:   Thu, 12 Nov 2020 10:08:21 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ Frontend Transport; Thu, 12 Nov 2020 05:15:37 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0ACBFaoE099039;
+        Thu, 12 Nov 2020 05:15:37 -0600
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Tony Lindgren <tony@atomide.com>
+CC:     Sekhar Nori <nsekhar@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH] net: ethernet: ti: cpsw: fix cpts irq after suspend
+Date:   Thu, 12 Nov 2020 13:15:46 +0200
+Message-ID: <20201112111546.20343-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20201111155854.GH4115@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 11/11/2020 17:58, Laurent Pinchart wrote:
+Depending on the SoC/platform the CPSW can completely lose context after a
+suspend/resume cycle, including CPSW wrapper (WR) which will cause reset of
+WR_C0_MISC_EN register, so CPTS IRQ will became disabled.
 
->>>> diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
->>>> index 030a8fa140db..1582960f9e90 100644
->>>> --- a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
->>>> +++ b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
->>>> @@ -177,27 +177,6 @@ static int dsicm_get_id(struct panel_drv_data *ddata, u8 *id1, u8 *id2, u8 *id3)
->>>>  	return 0;
->>>>  }
->>>>  
->>>> -static int dsicm_set_update_window(struct panel_drv_data *ddata,
->>>> -		u16 x, u16 y, u16 w, u16 h)
->>>> -{
->>>> -	struct mipi_dsi_device *dsi = ddata->dsi;
->>>> -	int r;
->>>> -	u16 x1 = x;
->>>> -	u16 x2 = x + w - 1;
->>>> -	u16 y1 = y;
->>>> -	u16 y2 = y + h - 1;
->>>> -
->>>> -	r = mipi_dsi_dcs_set_column_address(dsi, x1, x2);
->>>> -	if (r < 0)
->>>> -		return r;
->>>> -
->>>> -	r = mipi_dsi_dcs_set_page_address(dsi, y1, y2);
->>>> -	if (r < 0)
->>>> -		return r;
->>>> -
->>>> -	return 0;
->>>> -}
->>>> -
->>>
->>> I can't tell whether this is common to all command-mode panels, or if
->>> there could be a need for panel-specific update procedures, so I can't
->>> really ack this patch.
->>
->> I can't say either, but all the command mode panels I know need and support this. And, afaik, we
->> have only the single cmd mode panel driver which we add in this series.
-> 
-> Now that I think about it again, isn't it a layering violation ?
-> Shouldn't the DSI host handle DSI commands transfers, with the panel
-> driver taking care of specific DSI commands ?
+Fix it by moving CPTS IRQ enabling in cpsw_ndo_open() where CPTS is
+actually started.
 
-Well, the DSI host (the HW) already handles specific DSI commands, as it does the update with DCS
-Write Start/Continue commands. The update is initiated from omap_crtc, via dssdev->dsi_ops->update().
+Fixes: 84ea9c0a95d7 ("net: ethernet: ti: cpsw: enable cpts irq")
+Reported-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+---
+ drivers/net/ethernet/ti/cpsw.c     | 10 ++++++----
+ drivers/net/ethernet/ti/cpsw_new.c |  9 ++++++---
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-We could perhaps add a new function to drm_panel_funcs, say, prepare_update, which could then do the
-above.
-
-Although I think the above code is not strictly speaking required, as the panel should remember the
-column and page address, and as such, they could be set just once at config time.
-
-However, I remember debugging issues related to this. And with a quick test, I can see that things
-break down if I just do the above once in the panel's setup. But things work if I send a DSI NOP
-instead in the dsi host. So looks to me that either the OMAP DSI or the panel I have need some
-command transmitted there. It probably has to happen between two frame transfers.
-
-There are also other things related to update which I'm not so happy about: 1) the TE gpio irq is
-handled in the dsi host driver now, even if it's a panel gpio, 2) the dsi host driver snoops the DSI
-packets sent by the panel, and catches TEAR_ON/OFF packets, and then change internal state accordingly.
-
-So... I could change the dsi host driver to only send a NOP, and do the page/column call from the
-panel's setup. That simplifies the code.
-
-Or I could add the new function to drm_panel_funcs, and send a NOP from there. But if this "needs a
-NOP" is an OMAP DSI feature, the panel driver is not the right place for it. I also think that
-managing the TE cleanly needs more thought, and probably requires some more interaction between the
-dsi host and the panel. It might be better to look at both the update callback and the TE at the
-same time.
-
- Tomi
-
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index 9fd1f77190ad..fa2d1025cbb2 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -838,9 +838,12 @@ static int cpsw_ndo_open(struct net_device *ndev)
+ 		if (ret < 0)
+ 			goto err_cleanup;
+ 
+-		if (cpts_register(cpsw->cpts))
+-			dev_err(priv->dev, "error registering cpts device\n");
+-
++		if (cpsw->cpts) {
++			if (cpts_register(cpsw->cpts))
++				dev_err(priv->dev, "error registering cpts device\n");
++			else
++				writel(0x10, &cpsw->wr_regs->misc_en);
++		}
+ 	}
+ 
+ 	cpsw_restore(priv);
+@@ -1716,7 +1719,6 @@ static int cpsw_probe(struct platform_device *pdev)
+ 
+ 	/* Enable misc CPTS evnt_pend IRQ */
+ 	cpts_set_irqpoll(cpsw->cpts, false);
+-	writel(0x10, &cpsw->wr_regs->misc_en);
+ 
+ skip_cpts:
+ 	cpsw_notice(priv, probe,
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index f779d2e1b5c5..2f5e0ad23ad7 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -873,8 +873,12 @@ static int cpsw_ndo_open(struct net_device *ndev)
+ 		if (ret < 0)
+ 			goto err_cleanup;
+ 
+-		if (cpts_register(cpsw->cpts))
+-			dev_err(priv->dev, "error registering cpts device\n");
++		if (cpsw->cpts) {
++			if (cpts_register(cpsw->cpts))
++				dev_err(priv->dev, "error registering cpts device\n");
++			else
++				writel(0x10, &cpsw->wr_regs->misc_en);
++		}
+ 
+ 		napi_enable(&cpsw->napi_rx);
+ 		napi_enable(&cpsw->napi_tx);
+@@ -2006,7 +2010,6 @@ static int cpsw_probe(struct platform_device *pdev)
+ 
+ 	/* Enable misc CPTS evnt_pend IRQ */
+ 	cpts_set_irqpoll(cpsw->cpts, false);
+-	writel(0x10, &cpsw->wr_regs->misc_en);
+ 
+ skip_cpts:
+ 	ret = cpsw_register_notifiers(cpsw);
 -- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+2.17.1
+
