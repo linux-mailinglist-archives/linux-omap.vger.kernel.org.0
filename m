@@ -2,60 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1665A2B2888
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Nov 2020 23:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8BC12B2922
+	for <lists+linux-omap@lfdr.de>; Sat, 14 Nov 2020 00:28:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726020AbgKMWaF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Nov 2020 17:30:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33500 "EHLO mail.kernel.org"
+        id S1725885AbgKMX2J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Nov 2020 18:28:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46632 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725885AbgKMWaF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 13 Nov 2020 17:30:05 -0500
-Content-Type: text/plain; charset="utf-8"
+        id S1725866AbgKMX2J (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 13 Nov 2020 18:28:09 -0500
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 728D12224F;
+        Fri, 13 Nov 2020 23:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605306605;
-        bh=6z6tTtD9+PiRCUj2TF+yEnjWYj9gpWjEnV8wa7gYs/Y=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=RE+P4YsD/gc73qlZ8NUtDGlm8N4ZS1tJMygQ4tVyGwl7Ul7iXr23e214ZzmgArq4Y
-         hs8fN6gZ716HNsAb7rUxoPQwjcF9qq1aHMA7kW9mEybhGQ0UWCb8eIU1aAmqx047Gq
-         norcNJHZ2PxQgybtR+vdGEXFH/kgNsLmo3ysVBII=
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: ethernet: ti: cpsw: fix cpts irq after suspend
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <160530660503.10508.5316040028509331013.git-patchwork-notify@kernel.org>
-Date:   Fri, 13 Nov 2020 22:30:05 +0000
-References: <20201112111546.20343-1-grygorii.strashko@ti.com>
-In-Reply-To: <20201112111546.20343-1-grygorii.strashko@ti.com>
+        s=default; t=1605310089;
+        bh=TyTNr6dthjSmkZgrgaf8DURMMkJ5WSgZO7w2kKVizns=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=0NuvOODFEs7x0wHsurYcpaupbyC173TRYg/DSPerMt305c9MJYwTGwxJKvqCBKIfs
+         mnkUHJSk5Bajjl8shD83gYA90o+tfu9FKyCSV25EFWIsV6i2VS+TyqDP1sE9rs99yQ
+         +J0sRBRmPQT3lUVVtxoqA4PnAm302h9GkaxMbEsE=
+Date:   Fri, 13 Nov 2020 15:28:07 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
 To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
-        tony@atomide.com, nsekhar@ti.com, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, vigneshr@ti.com
+Cc:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Wang Qing <wangqing@vivo.com>, Sekhar Nori <nsekhar@ti.com>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH v5] net: ethernet: ti: am65-cpts: update ret when
+ ptp_clock is ERROR
+Message-ID: <20201113152807.649e49d9@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20201112164541.3223-1-grygorii.strashko@ti.com>
+References: <20201112164541.3223-1-grygorii.strashko@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
-
-This patch was applied to netdev/net.git (refs/heads/master):
-
-On Thu, 12 Nov 2020 13:15:46 +0200 you wrote:
-> Depending on the SoC/platform the CPSW can completely lose context after a
-> suspend/resume cycle, including CPSW wrapper (WR) which will cause reset of
-> WR_C0_MISC_EN register, so CPTS IRQ will became disabled.
+On Thu, 12 Nov 2020 18:45:41 +0200 Grygorii Strashko wrote:
+> From: Wang Qing <wangqing@vivo.com>
 > 
-> Fix it by moving CPTS IRQ enabling in cpsw_ndo_open() where CPTS is
-> actually started.
+> We always have to update the value of ret, otherwise the
+>  error value may be the previous one.
 > 
-> [...]
+> Fixes: f6bd59526ca5 ("net: ethernet: ti: introduce am654 common platform time sync driver")
+> Signed-off-by: Wang Qing <wangqing@vivo.com>
+> [grygorii.strashko@ti.com: fix build warn, subj add fixes tag]
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+> Acked-by: Richard Cochran <richardcochran@gmail.com>
 
-Here is the summary with links:
-  - net: ethernet: ti: cpsw: fix cpts irq after suspend
-    https://git.kernel.org/netdev/net/c/2b5668733050
-
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks for handling this, applied!
