@@ -2,61 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A04A2B15EB
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Nov 2020 07:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 104342B170A
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Nov 2020 09:16:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726268AbgKMGsD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Nov 2020 01:48:03 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:7188 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725999AbgKMGsD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 Nov 2020 01:48:03 -0500
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4CXTYc6SV2z15Vys;
-        Fri, 13 Nov 2020 14:47:48 +0800 (CST)
-Received: from compute.localdomain (10.175.112.70) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server (TLS)
- id 14.3.487.0; Fri, 13 Nov 2020 14:47:51 +0800
-From:   Zhang Changzhong <zhangchangzhong@huawei.com>
-To:     <grygorii.strashko@ti.com>, <davem@davemloft.net>,
-        <kuba@kernel.org>, <m-karicheri2@ti.com>, <brouer@redhat.com>,
-        <richardcochran@gmail.com>, <yanaijie@huawei.com>
-CC:     <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH net] net: ethernet: ti: cpsw: fix error return code in cpsw_probe()
-Date:   Fri, 13 Nov 2020 14:49:33 +0800
-Message-ID: <1605250173-18438-1-git-send-email-zhangchangzhong@huawei.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S1726142AbgKMIQB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 Nov 2020 03:16:01 -0500
+Received: from muru.com ([72.249.23.125]:48202 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725866AbgKMIQB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 13 Nov 2020 03:16:01 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A87178096;
+        Fri, 13 Nov 2020 08:16:05 +0000 (UTC)
+Date:   Fri, 13 Nov 2020 10:15:56 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH] net: ethernet: ti: cpsw: fix cpts irq after suspend
+Message-ID: <20201113081556.GW26857@atomide.com>
+References: <20201112111546.20343-1-grygorii.strashko@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.70]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201112111546.20343-1-grygorii.strashko@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix to return a negative error code from the error handling
-case instead of 0, as done elsewhere in this function.
+* Grygorii Strashko <grygorii.strashko@ti.com> [201112 11:15]:
+> Depending on the SoC/platform the CPSW can completely lose context after a
+> suspend/resume cycle, including CPSW wrapper (WR) which will cause reset of
+> WR_C0_MISC_EN register, so CPTS IRQ will became disabled.
+> 
+> Fix it by moving CPTS IRQ enabling in cpsw_ndo_open() where CPTS is
+> actually started.
+> 
+> Fixes: 84ea9c0a95d7 ("net: ethernet: ti: cpsw: enable cpts irq")
+> Reported-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-Fixes: 83a8471ba255 ("net: ethernet: ti: cpsw: refactor probe to group common hw initialization")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
----
- drivers/net/ethernet/ti/cpsw.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks this works for me:
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index 9fd1f77..7882a00 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -1631,6 +1631,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 				       CPSW_MAX_QUEUES, CPSW_MAX_QUEUES);
- 	if (!ndev) {
- 		dev_err(dev, "error allocating net_device\n");
-+		ret = -ENOMEM;
- 		goto clean_cpts;
- 	}
- 
--- 
-2.9.5
-
+Tested-by: Tony Lindgren <tony@atomide.com>
