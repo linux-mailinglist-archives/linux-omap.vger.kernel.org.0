@@ -2,78 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C54AE2B2B3C
-	for <lists+linux-omap@lfdr.de>; Sat, 14 Nov 2020 05:07:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEB812B2C31
+	for <lists+linux-omap@lfdr.de>; Sat, 14 Nov 2020 09:47:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726143AbgKNEH3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 Nov 2020 23:07:29 -0500
-Received: from mail.loongson.cn ([114.242.206.163]:36428 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726116AbgKNEH3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 13 Nov 2020 23:07:29 -0500
-Received: from bogon.localdomain (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dx_9L4V69f1h8OAA--.34910S2;
-        Sat, 14 Nov 2020 12:07:20 +0800 (CST)
-From:   Youling Tang <tangyouling@loongson.cn>
-To:     Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] arm: Fix kfree NULL pointer in omap2xxx_clkt_vps_init
-Date:   Sat, 14 Nov 2020 12:07:20 +0800
-Message-Id: <1605326840-13896-1-git-send-email-tangyouling@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-X-CM-TRANSID: AQAAf9Dx_9L4V69f1h8OAA--.34910S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrZFW5WFWkGw15tw17JF4xJFb_yoWfurc_Xa
-        s3tw1DGrySka1Ykw1Fkr43GrW2v390k3Z3XFW3JF4akF1YgrnrZ3y8ArZFqr47GayF9FWf
-        W34UJF15Zwn2kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb7kYjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
-        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
-        cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z2
-        80aVCY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-        w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4UMc
-        vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY02Avz4vE14v_Gryl42xK82IY
-        c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
-        026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF
-        0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0x
-        vE42xK8VAvwI8IcIk0rVW8JVW3JwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
-        6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUxPEfUUUUU
-X-CM-SenderInfo: 5wdqw5prxox03j6o00pqjv00gofq/
+        id S1726583AbgKNIqi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 14 Nov 2020 03:46:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60126 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726599AbgKNIqi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 14 Nov 2020 03:46:38 -0500
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2D5BC0617A6
+        for <linux-omap@vger.kernel.org>; Sat, 14 Nov 2020 00:46:37 -0800 (PST)
+Received: by mail-lj1-x241.google.com with SMTP id y16so13875267ljk.1
+        for <linux-omap@vger.kernel.org>; Sat, 14 Nov 2020 00:46:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=q/odiUkDnhOhV4xQfBLaQspz4F1FM/nkN18y8vgULzY=;
+        b=KDGZmUVgbdL/YA7L/+7H1n5zkFOp4DBJzHmWky7TcGvuGfkWWtrcEM4u9zNcvYIdJk
+         Yc/LcmM8D3eHuJhmsoM7/X9q7ScXj7KnuIq2yAfTfXw8RtI3JbJafYL0sW4JoOgqrPmu
+         SoyYnE7isp6Cz63BbXLBkdGeLRygmAnw/1jl6HurcI8vnKTb/Ub243TvXAvh4Yv78lPk
+         3gsJHbRAVLC8rE5QxRwC/v5s+jJsuoBduArDjo6FD6aBlDEZZKhP1jTv+CI4VOvi1M0i
+         zXA0/sr0nahI+EFUqPTAka6vI7sltCvf7R8AUU/RBLp9xxl+UNjd2R/wwtb68fSmqoWC
+         zJjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=q/odiUkDnhOhV4xQfBLaQspz4F1FM/nkN18y8vgULzY=;
+        b=R5M9OKtc5whh8rtnkbOWcdYOHdfriBs5LYdEi/poS+3RNVTKS5DyN1GHgmikMgQ7Mi
+         0H+9pVxBfurZW33qwFQq/mnOtN6VknXdis8dhiCdMloP26j+SSE98aqyXCP7fY4/p4qS
+         NcDB7EF4a8mxkgWZzvv98WiGrNKkt9JY2Jf2l3Xb3DCWG8/VAahNUX20RmtV0NvOGNzY
+         dDjfmbmLf92t2Np2IkqiWabgjfn5GwD/JQ0wqD9qS9lGWj3as1NsejXUxxD6Q5o0/Onr
+         Dn4SNpFJC2kS1U7/riNg3BAy3S1VkA0ZysvSYhF0ApGIa9gQGjJdxC3QYouVw+GCjRoT
+         sVcw==
+X-Gm-Message-State: AOAM530nLFMJA8pOahAQKYy4H9p2GVMnfZPo97LiOGg+ujTDayvJHY1J
+        xIvWliw0J3HEI+bBcDjl6i4YWA==
+X-Google-Smtp-Source: ABdhPJxhTC6f2DjKAimnwZMyHtCSx3cdDDyBEURpNSDwedARDzrJHku8HsXdtcAvY5gwDzccBcyyrQ==
+X-Received: by 2002:a2e:8504:: with SMTP id j4mr2414944lji.169.1605343596316;
+        Sat, 14 Nov 2020 00:46:36 -0800 (PST)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id f62sm1870081lfd.144.2020.11.14.00.46.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 14 Nov 2020 00:46:35 -0800 (PST)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     ohad@wizery.com, bjorn.andersson@linaro.org,
+        mathieu.poirier@linaro.org, s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, linux-remoteproc@vger.kernel.org,
+        robh+dt@kernel.org, lee.jones@linaro.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        praneeth@ti.com, rogerq@ti.com
+Subject: [PATCH 0/6] Add a PRU remoteproc driver
+Date:   Sat, 14 Nov 2020 09:46:07 +0100
+Message-Id: <20201114084613.13503-1-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.29.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The returns pointer is NULL when kzalloc fails to apply for space, so fix
-kfree NULL pointer.
+Hi All,
 
-Signed-off-by: Youling Tang <tangyouling@loongson.cn>
----
- arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+The Programmable Real-Time Unit and Industrial Communication Subsystem
+(PRU-ICSS or simply PRUSS) on various TI SoCs consists of dual 32-bit
+RISC cores (Programmable Real-Time Units, or PRUs) for program execution.
 
-diff --git a/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c b/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
-index 70892b3..edf046b 100644
---- a/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
-+++ b/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
-@@ -235,7 +235,7 @@ void omap2xxx_clkt_vps_init(void)
- 
- 	hw = kzalloc(sizeof(*hw), GFP_KERNEL);
- 	if (!hw)
--		goto cleanup;
-+		return;
- 	init.name = "virt_prcm_set";
- 	init.ops = &virt_prcm_set_ops;
- 	init.parent_names = &parent_name;
-@@ -251,8 +251,5 @@ void omap2xxx_clkt_vps_init(void)
- 	}
- 
- 	clkdev_create(clk, "cpufreq_ck", NULL);
--	return;
--cleanup:
--	kfree(hw);
- }
- #endif
+The K3 AM65x amd J721E SoCs have the next generation of the PRU-ICSS IP,
+commonly called ICSSG. The ICSSG IP on AM65x SoCs has two PRU cores,
+two auxiliary custom PRU cores called Real Time Units (RTUs). The K3
+AM65x SR2.0 and J721E SoCs have a revised version of the ICSSG IP, and
+include two additional custom auxiliary PRU cores called Transmit PRUs
+(Tx_PRUs).
+
+This series contains the PRUSS remoteproc driver together with relevant
+dt-binding. This is the 3rd foundation component for PRUSS subsystem, the
+previous two were already merged and can be found under:
+1) drivers/soc/ti/pruss.c
+   Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+2) drivers/irqchip/irq-pruss-intc.c
+   Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+
+Best regards,
+Grzegorz
+
+Grzegorz Jaszczyk (1):
+  remoteproc/pru: Add support for PRU specific interrupt configuration
+
+Suman Anna (5):
+  dt-bindings: remoteproc: Add binding doc for PRU cores in the PRU-ICSS
+  remoteproc/pru: Add a PRU remoteproc driver
+  remoteproc/pru: Add pru-specific debugfs support
+  remoteproc/pru: Add support for various PRU cores on K3 AM65x SoCs
+  remoteproc/pru: Add support for various PRU cores on K3 J721E SoCs
+
+ .../bindings/remoteproc/ti,pru-rproc.yaml     | 214 +++++
+ drivers/remoteproc/Kconfig                    |  12 +
+ drivers/remoteproc/Makefile                   |   1 +
+ drivers/remoteproc/pru_rproc.c                | 880 ++++++++++++++++++
+ drivers/remoteproc/pru_rproc.h                |  46 +
+ 5 files changed, 1153 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
+ create mode 100644 drivers/remoteproc/pru_rproc.c
+ create mode 100644 drivers/remoteproc/pru_rproc.h
+
 -- 
-2.1.0
+2.29.0
 
