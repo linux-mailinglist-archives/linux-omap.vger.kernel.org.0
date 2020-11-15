@@ -2,47 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D27F72B3677
-	for <lists+linux-omap@lfdr.de>; Sun, 15 Nov 2020 17:43:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B14432B3769
+	for <lists+linux-omap@lfdr.de>; Sun, 15 Nov 2020 18:49:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727215AbgKOQnl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Sun, 15 Nov 2020 11:43:41 -0500
-Received: from sw73-70-41.adsl.seed.net.tw ([203.73.70.41]:60866 "EHLO
-        oa.trendtek.com.tw" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1726823AbgKOQnl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 15 Nov 2020 11:43:41 -0500
-Received: from [156.96.44.214] ([156.96.44.214])
-        (authenticated bits=0)
-        by oa.trendtek.com.tw (8.13.8/8.13.1) with ESMTP id 0AFGhQqr030339
-        for <linux-omap@vger.kernel.org>; Mon, 16 Nov 2020 00:43:38 +0800
-Message-Id: <202011151643.0AFGhQqr030339@oa.trendtek.com.tw>
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726876AbgKORtN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 15 Nov 2020 12:49:13 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:35972 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727082AbgKORtM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 15 Nov 2020 12:49:12 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 3B28F1C0B9E; Sun, 15 Nov 2020 18:49:10 +0100 (CET)
+Date:   Sun, 15 Nov 2020 18:49:09 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz
+Subject: Re: v5.10-rc3 vs. Droid 4
+Message-ID: <20201115174909.GB32085@duo.ucw.cz>
+References: <20201114205744.GA7436@duo.ucw.cz>
+ <20201115083126.GX26857@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Corporate and Personal Loan *
-To:     linux-omap@vger.kernel.org
-From:   "Investment  Corporate" <financialcapability6@gmail.com>
-Date:   Sun, 15 Nov 2020 08:43:34 -0800
-Reply-To: hmurrah39@gmail.com
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="61jdw2sOBCFtR2d/"
+Content-Disposition: inline
+In-Reply-To: <20201115083126.GX26857@atomide.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello linux-omap@vger.kernel.org
 
+--61jdw2sOBCFtR2d/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+Hi!
+> >=20
+> > Does anyone have Droid 4 working with 5.10-rc3?
+> >=20
+> > I tried it with the original config; I got message about culomb
+> > counter calibration done scrolling (and boot progressing very slowly
+> > or not at all) . So ... I disabled cpcap battery & charger
+> > support. But init still drops me to emergency shell.
+> >=20
+> > I may try some more, but if someone know what is going on, let me
+> > know.
+>=20
+> I ran into this too, sorry I thought I added you to Cc but looks like not.
+> See the fix here:
+>=20
+> https://lore.kernel.org/lkml/20201111170613.46057-1-tony@atomide.com/
 
+You did (thank you!) but I failed to realize importance of that
+email. I have tested it and the culomb counter messages are gone.
 
-We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+Good.
 
+But it looks like my mmcblk interfaces got re-numbered, from mmcblk0 &
+mmcblk1 to mmcblk0 & mmcblk2. ... which breaks my startup. If someone
+knows what is going on there, please tell me :-).
 
-Please get back to me if you are interested for more
+Best regards,=20
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
 
-details.
+--61jdw2sOBCFtR2d/
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-Yours faithfully,
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX7FqFQAKCRAw5/Bqldv6
+8rq5AJsGb6vcyG0RSDM1QcZXNk5OHU9QJQCfVK/qDU8HJWmiKDsY42Mnau1/1G0=
+=guwv
+-----END PGP SIGNATURE-----
 
-Hashim Murrah
+--61jdw2sOBCFtR2d/--
