@@ -2,57 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D4C22B54FF
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Nov 2020 00:32:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9C072B555A
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Nov 2020 00:50:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729944AbgKPXag (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Nov 2020 18:30:36 -0500
-Received: from vps0.lunn.ch ([185.16.172.187]:58850 "EHLO vps0.lunn.ch"
+        id S1729378AbgKPXuF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Nov 2020 18:50:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49566 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726227AbgKPXag (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 16 Nov 2020 18:30:36 -0500
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1kenx5-007QmT-IU; Tue, 17 Nov 2020 00:30:27 +0100
-Date:   Tue, 17 Nov 2020 00:30:27 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>
-Subject: Re: [PATCH net-next 3/3] net: ethernet: ti: am65-cpsw: enable
- broadcast/multicast rate limit support
-Message-ID: <20201116233027.GC1756591@lunn.ch>
-References: <20201114035654.32658-1-grygorii.strashko@ti.com>
- <20201114035654.32658-4-grygorii.strashko@ti.com>
- <20201114191723.rvmhyrqinkhdjtpr@skbuf>
- <e9f2b153-d467-15fd-bd4a-601211601fca@ti.com>
- <20201116185919.qwaklquxhhhtqttg@skbuf>
+        id S1726287AbgKPXuF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 16 Nov 2020 18:50:05 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605570605;
+        bh=q3wS+H3J9kjKcuqBT+lCDYUtl0zMHa8jz4ZrJptsUjI=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=qy4tJbCNHsE0+HplofsAMdEAXIue/6ZS6msl/YTlH1kHRrM6QcD4DX+2TlPrnPTAF
+         ip8KmPdOT7Kw8MGZsHhs0zTKej7QwzjPpcfpAc1/DKZ6D1oILk+SjnjcTVmbcRBE3T
+         1i8kVFY/FfOX/pQ7WlGg1SdLjiwqPF0okEf+HU+0=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201116185919.qwaklquxhhhtqttg@skbuf>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: ethernet: ti: cpsw: fix error return code in
+ cpsw_probe()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <160557060526.20238.18082560282045278910.git-patchwork-notify@kernel.org>
+Date:   Mon, 16 Nov 2020 23:50:05 +0000
+References: <1605250173-18438-1-git-send-email-zhangchangzhong@huawei.com>
+In-Reply-To: <1605250173-18438-1-git-send-email-zhangchangzhong@huawei.com>
+To:     Zhang Changzhong <zhangchangzhong@huawei.com>
+Cc:     grygorii.strashko@ti.com, davem@davemloft.net, kuba@kernel.org,
+        m-karicheri2@ti.com, brouer@redhat.com, richardcochran@gmail.com,
+        yanaijie@huawei.com, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> Same as above, just in packets per second.
+Hello:
+
+This patch was applied to netdev/net.git (refs/heads/master):
+
+On Fri, 13 Nov 2020 14:49:33 +0800 you wrote:
+> Fix to return a negative error code from the error handling
+> case instead of 0, as done elsewhere in this function.
 > 
-> tc qdisc add dev eth0 clsact
-> tc filter add dev eth0 ingress flower skip_sw \
-> 	dst_mac 01:00:00:00:00:00/01:00:00:00:00:00 \
-> 	action police rate 20kpps
+> Fixes: 83a8471ba255 ("net: ethernet: ti: cpsw: refactor probe to group common hw initialization")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+> 
+> [...]
 
-I agree with Vladimir here. Since the hardware does PPS limits, the TC
-API should also be PPS limit based. And as you said, CPU load is more
-a factor of PPS than BPS, so it is a useful feature in general to
-have. You just need to implement the software version first, before
-you offload it to the hardware.
+Here is the summary with links:
+  - [net] net: ethernet: ti: cpsw: fix error return code in cpsw_probe()
+    https://git.kernel.org/netdev/net/c/35f735c66511
 
-    Andrew
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
