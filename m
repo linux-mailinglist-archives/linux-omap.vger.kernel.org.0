@@ -2,981 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCE692B3F99
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Nov 2020 10:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD39A2B3FA6
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Nov 2020 10:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726520AbgKPJQy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Nov 2020 04:16:54 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:14320 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726884AbgKPJQx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Nov 2020 04:16:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1605518200;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=GIu7n/MLG/1dvlKdJZydGFW9ausUgTh+l2Ecw46CD6o=;
-        b=ePQYFTOs7A724x5td7olSIQ6jKG7GGvf34hHym+bJrhhpU7vB+gwZowhzuGPlTpinE
-        t6nl5kT34/RBjhaQMbHx8ufd8raeBjiG5FXco0Xl8N5CLRYB/70dQH5OJtnfw9jsNwMt
-        cxYxdRqcmIcNaUUEYD6ZaE/8gGiGA6D9ShsGwZCB/N9qTT0/WR8NeYvbfCt4AvesNfti
-        es74rFGmIYB5sJU3kBEZT67nxaz1Wukpj9gQl4DliGFlUXRCQkZBR4CSy3roeEXCcUor
-        /UFgbk9JkFMLZ2jIfeTsOF3FG4ed8nDRmWY8jMf/FQvGFUT34AJAG95S02oJAbJuT7rp
-        mrHg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDleVXAkICw=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-        by smtp.strato.de (RZmta 47.3.4 DYNA|AUTH)
-        with ESMTPSA id N02faawAG9GJQ3I
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-        Mon, 16 Nov 2020 10:16:19 +0100 (CET)
-Subject: Re: [PATCH v3 00/56] Convert DSI code to use drm_mipi_dsi and drm_panel
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: multipart/mixed; boundary="Apple-Mail=_FCE9F26C-63D2-4AEE-8EBB-BDC76342C28B"
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <27cfb13a-62e3-0a53-153f-92641c437cee@ti.com>
-Date:   Mon, 16 Nov 2020 10:16:18 +0100
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-Message-Id: <A74325A5-90CC-44C8-8824-7D551B53B314@goldelico.com>
-References: <20201105120333.947408-1-tomi.valkeinen@ti.com> <BAFBC885-9BBE-46D1-B4C4-79910705864A@goldelico.com> <74abbdc4-cc1e-9caf-d4ee-0a5cdb557643@ti.com> <b0677958-02ad-1d2f-d755-! 25a9d384eddc@ti.com> <1A09B4DA-F726-4F37-8CF4-BC192C659950@goldelico.com> <9a4e373e-9092-6d82-937a-bc663d2376b4@ti.com> <09ebc3e3-72c7-41fb-fb21-bf28c! f883d3f@ti.com> <E738362A-8ECE-4ED5-8057-2ABB6F5C3056@goldelico.com> <9a21b475-eff0-9882-8d65-d1f! dd2139dc4@ti.com> <A1DEB54D-FEC0-493A-858C-E5C0DB24B35E@goldelico.com> <1150ba22-1ae2-39f3-0924-7! a1f1b468597@ti.com> <2999ED77-B9F7-4197-81B8-F1AFF329A1E9@goldelico.com> <cbc147d2-af41-2bed-5670-530d45cfb24e@ti.com> <106bfbee-c472-c04c-0f7b-db108a090a63@ti.com> <420b81bd-fc95-e294-fcbe-f34db1ef! f9e7@ti.c om> <B2FBCAE4-FAD9-4C0D-9C75-63A701215886@goldelico.com> <826B2E97-8B77-412A-8093-753BF7A65EE1@goldelico.com> <acad2006-53a2-6587-b8e6-787e358! 8932a@ti.com> <AF87C7B4-DCD2-4207-A300-567DB65B08ED@goldelico.com> <27cfb13a-62e3-0a53-153f-92641c437cee@ti.com>
+        id S1727977AbgKPJXA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 Nov 2020 04:23:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53374 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726837AbgKPJW7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Nov 2020 04:22:59 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69211C0613CF
+        for <linux-omap@vger.kernel.org>; Mon, 16 Nov 2020 01:22:59 -0800 (PST)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id A2DD0A1B;
+        Mon, 16 Nov 2020 10:22:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1605518577;
+        bh=gjPORnVHZI4CogWiQCl+tACejjoyvIZunPZcDsRQx/o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=vepne8ccmDnswB1AJtRJttWHriLx3uSSAJuFqpAAoSxlzeH/nE/lsF/z705xUoLNZ
+         1vibajfagm4VAm1rVR4ydyEAYZDrPEr5O2q7VEarmZ7Ibl17um8d5/aXjDV1Ii8pm1
+         5wop+0X9VXrtLzHyNmd2nQqsYOIJNshpzT6bo2zI=
+Date:   Mon, 16 Nov 2020 11:22:53 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-X-Mailer: Apple Mail (2.3124)
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Nikhil Devshatwar <nikhil.nd@ti.com>,
+        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: Re: [PATCH v3 30/56] drm/omap: dsi: move panel refresh function to
+ host
+Message-ID: <20201116092253.GE6540@pendragon.ideasonboard.com>
+References: <20201105120333.947408-1-tomi.valkeinen@ti.com>
+ <20201105120333.947408-31-tomi.valkeinen@ti.com>
+ <20201109101003.GA6029@pendragon.ideasonboard.com>
+ <6118c70e-6dc5-2d87-fc68-266cd3eeb66c@ti.com>
+ <20201111155854.GH4115@pendragon.ideasonboard.com>
+ <fca968af-9554-041a-c416-0781da8b70ca@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <fca968af-9554-041a-c416-0781da8b70ca@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
---Apple-Mail=_FCE9F26C-63D2-4AEE-8EBB-BDC76342C28B
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
-
 Hi Tomi,
-I hope you had a good weekend.
 
-And I have added back the CC: list because I think we have progress =
-after our internal discussion and only one issue remaining.
+On Thu, Nov 12, 2020 at 10:08:21AM +0200, Tomi Valkeinen wrote:
+> On 11/11/2020 17:58, Laurent Pinchart wrote:
+> 
+> >>>> diff --git a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+> >>>> index 030a8fa140db..1582960f9e90 100644
+> >>>> --- a/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+> >>>> +++ b/drivers/gpu/drm/omapdrm/displays/panel-dsi-cm.c
+> >>>> @@ -177,27 +177,6 @@ static int dsicm_get_id(struct panel_drv_data *ddata, u8 *id1, u8 *id2, u8 *id3)
+> >>>>  	return 0;
+> >>>>  }
+> >>>>  
+> >>>> -static int dsicm_set_update_window(struct panel_drv_data *ddata,
+> >>>> -		u16 x, u16 y, u16 w, u16 h)
+> >>>> -{
+> >>>> -	struct mipi_dsi_device *dsi = ddata->dsi;
+> >>>> -	int r;
+> >>>> -	u16 x1 = x;
+> >>>> -	u16 x2 = x + w - 1;
+> >>>> -	u16 y1 = y;
+> >>>> -	u16 y2 = y + h - 1;
+> >>>> -
+> >>>> -	r = mipi_dsi_dcs_set_column_address(dsi, x1, x2);
+> >>>> -	if (r < 0)
+> >>>> -		return r;
+> >>>> -
+> >>>> -	r = mipi_dsi_dcs_set_page_address(dsi, y1, y2);
+> >>>> -	if (r < 0)
+> >>>> -		return r;
+> >>>> -
+> >>>> -	return 0;
+> >>>> -}
+> >>>> -
+> >>>
+> >>> I can't tell whether this is common to all command-mode panels, or if
+> >>> there could be a need for panel-specific update procedures, so I can't
+> >>> really ack this patch.
+> >>
+> >> I can't say either, but all the command mode panels I know need and support this. And, afaik, we
+> >> have only the single cmd mode panel driver which we add in this series.
+> > 
+> > Now that I think about it again, isn't it a layering violation ?
+> > Shouldn't the DSI host handle DSI commands transfers, with the panel
+> > driver taking care of specific DSI commands ?
+> 
+> Well, the DSI host (the HW) already handles specific DSI commands, as it does the update with DCS
+> Write Start/Continue commands. The update is initiated from omap_crtc, via dssdev->dsi_ops->update().
+> 
+> We could perhaps add a new function to drm_panel_funcs, say, prepare_update, which could then do the
+> above.
+> 
+> Although I think the above code is not strictly speaking required, as the panel should remember the
+> column and page address, and as such, they could be set just once at config time.
+> 
+> However, I remember debugging issues related to this. And with a quick test, I can see that things
+> break down if I just do the above once in the panel's setup. But things work if I send a DSI NOP
+> instead in the dsi host. So looks to me that either the OMAP DSI or the panel I have need some
+> command transmitted there. It probably has to happen between two frame transfers.
+> 
+> There are also other things related to update which I'm not so happy about: 1) the TE gpio irq is
+> handled in the dsi host driver now, even if it's a panel gpio, 2) the dsi host driver snoops the DSI
+> packets sent by the panel, and catches TEAR_ON/OFF packets, and then change internal state accordingly.
+> 
+> So... I could change the dsi host driver to only send a NOP, and do the page/column call from the
+> panel's setup. That simplifies the code.
+> 
+> Or I could add the new function to drm_panel_funcs, and send a NOP from there. But if this "needs a
+> NOP" is an OMAP DSI feature, the panel driver is not the right place for it. I also think that
+> managing the TE cleanly needs more thought, and probably requires some more interaction between the
+> dsi host and the panel. It might be better to look at both the update callback and the TE at the
+> same time.
 
-> Am 13.11.2020 um 15:49 schrieb Tomi Valkeinen <tomi.valkeinen@ti.com>:
->=20
-> On 13/11/2020 16:41, H. Nikolaus Schaller wrote:
->> Hi Tomi,
->>=20
->>> Am 13.11.2020 um 14:38 schrieb Tomi Valkeinen =
-<tomi.valkeinen@ti.com>:
->>>=20
->>> On 13/11/2020 15:35, H. Nikolaus Schaller wrote:
->>>=20
->>>> So I'd say dsi_vc_send_short() fails if dsi_vc_enable_hs(0, 0) and =
-not dsi_vc_enable_hs(0, 1)
->>>=20
->>> Oh, forgot to mention this: remove MIPI_DSI_MODE_LPM from the panel =
-driver.
->>=20
->> Yes! This makes sending the init sequence work.
->>=20
->> I just have failures from w677l_read() but that may be the panel =
-driver wrapper code.
->=20
-> Ok, great! It would be good to have reads working too.
+I'm fine addressing both issues on top of this series. My concern is
+that an incorrect split of responsibilities between the panel driver and
+the DSI host driver will result in panel drivers being compatible only
+with specific DSI hosts. It's a difficult issue, but I think we need to
+extend the DSI API to handle this cleanly.
 
-I have fixed it. The call to mipi_dsi_dcs_read() was wrong.
+-- 
+Regards,
 
-> That way we can know for sure if the commands
-> go back and forth correctly (e.g. verify the panel version ID).
-
-I can now read registers. Panel version ID is nonsense but I know that =
-it was before.
-Maybe they did not flash it during production since I only read =
-0x40,0x00,0x00.
-But we can read it.
-
->=20
->> If I remove all read commands (they are not necessary for operation), =
-there are no error
->> messages and everything succeeds. I have a /dev/fb0.
->>=20
->> But I have no picture yet.
->>=20
->> Initially I thought that it was just the missing code to handle an =
-external PWM backlight.
->> But even with (and backlight working), I have just a framebuffer with =
-black screen.
->>=20
->> Anyways, I think we are very close. And this is a great step forwards =
-so that I need a
->> break...
->>=20
->> Maybe I manage to consolidate the panel driver code before v5.10-rc4 =
-arrives. This
->> would give a freshly merged letux tree.
->=20
-> Usually backlight glow is visible even if there's no picture.
-
-Well, it did not turn the PWM on at all. Now this works as well.
-
-Still I have no picture. But the readout of the register 0x45 (scan =
-line) shows varying
-values. Therefore I think the vsync is running and incrementing the scan =
-line counter.
-
-> But a comparison between the old, working driver, with dsi debugs =
-enabled, may give some hints. A
-> DISPC & DSI reg dump for both cases may also give hints.
-
-I have a script to mount debugfs and dump registers. Results are =
-attached.
-
-Significant difference seem to be in:
-
-DISPC_TIMING_H(LCD)
-DSI_CLK_CTRL
-DSI_VM_TIMING1
-DSI_VM_TIMING6
-DSI_VC_CTRL(0)
-DSI_VC_CTRL(1)
-DSI_DSIPHY_CFG2
-
-The consolidated panel driver code is here:
-
-	=
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/letux/boe-w677-dsi-panel-v2
-
-Well, not yet clean for upstreaming but functionally much better than =
-before.
-
-What I have hacked is to mask out MIPI_DSI_MODE_LPM in =
-mipi_dsi_attach(). This
-can/will be replaced if your series can handle it.
-
-BR,
-Nikolaus
-
-
---Apple-Mail=_FCE9F26C-63D2-4AEE-8EBB-BDC76342C28B
-Content-Disposition: attachment;
-	filename=dsi-new.txt
-Content-Type: text/plain;
-	name="dsi-new.txt"
-Content-Transfer-Encoding: 7bit
-
-root@letux:~# ./debugdsi 
-- DSS -
-FCK = 192000000
-- DISPC -
-dispc fclk source = FCK
-fck             192000000       
-- DISPC-CORE-CLK -
-lck             192000000       lck div 1
-- LCD -
-LCD clk source = PLL1:1
-lck             153600000       lck div 1
-pck             76800000        pck div 2
-- LCD2 -
-LCD2 clk source = FCK
-lck             48000000        lck div 4
-pck             48000000        pck div 1
-- LCD3 -
-LCD3 clk source = FCK
-lck             48000000        lck div 4
-pck             48000000        pck div 1
-DISPC_REVISION                                     00000051
-DISPC_SYSCONFIG                                    00002015
-DISPC_SYSSTATUS                                    00000001
-DISPC_IRQSTATUS                                    000000a2
-DISPC_IRQENABLE                                    0812d640
-DISPC_CONTROL                                      00018309
-DISPC_CONFIG                                       0000020c
-DISPC_CAPABLE                                      00000000
-DISPC_LINE_STATUS                                  000003e3
-DISPC_LINE_NUMBER                                  00000000
-DISPC_GLOBAL_ALPHA                                 ffffffff
-DISPC_CONTROL2                                     00000000
-DISPC_CONFIG2                                      00000000
-DISPC_CONTROL3                                     00000000
-DISPC_CONFIG3                                      00000000
-DISPC_GLOBAL_MFLAG_ATTRIBUTE                       00000001
-DISPC_DEFAULT_COLOR(LCD)                           00000000
-DISPC_TRANS_COLOR(LCD)                             00000000
-DISPC_SIZE_MGR(LCD)                                04ff02cf
-DISPC_TIMING_H(LCD)                                0040a100
-DISPC_TIMING_V(LCD)                                0320323b
-DISPC_POL_FREQ(LCD)                                00060000
-DISPC_DIVISORo(LCD)                                00010002
-DISPC_DATA_CYCLE1(LCD)                             00000000
-DISPC_DATA_CYCLE2(LCD)                             00000000
-DISPC_DATA_CYCLE3(LCD)                             00000000
-DISPC_CPR_COEF_R(LCD)                              00000000
-DISPC_CPR_COEF_G(LCD)                              00000000
-DISPC_CPR_COEF_B(LCD)                              00000000
-DISPC_DEFAULT_COLOR(TV)                            00000000
-DISPC_TRANS_COLOR(TV)                              00000000
-DISPC_SIZE_MGR(TV)                                 00000000
-DISPC_DEFAULT_COLOR(LCD2)                          00000000
-DISPC_TRANS_COLOR(LCD2)                            00000000
-DISPC_SIZE_MGR(LCD2)                               00000000
-DISPC_TIMING_H(LCD2)                               00000000
-DISPC_TIMING_V(LCD2)                               00000000
-DISPC_POL_FREQ(LCD2)                               00000000
-DISPC_DIVISORo(LCD2)                               00040001
-DISPC_DATA_CYCLE1(LCD2)                            00000000
-DISPC_DATA_CYCLE2(LCD2)                            00000000
-DISPC_DATA_CYCLE3(LCD2)                            00000000
-DISPC_CPR_COEF_R(LCD2)                             00000000
-DISPC_CPR_COEF_G(LCD2)                             00000000
-DISPC_CPR_COEF_B(LCD2)                             00000000
-DISPC_DEFAULT_COLOR(LCD3)                          00000000
-DISPC_TRANS_COLOR(LCD3)                            00000000
-DISPC_SIZE_MGR(LCD3)                               00000000
-DISPC_TIMING_H(LCD3)                               00000000
-DISPC_TIMING_V(LCD3)                               00000000
-DISPC_POL_FREQ(LCD3)                               00000000
-DISPC_DIVISORo(LCD3)                               00040001
-DISPC_DATA_CYCLE1(LCD3)                            00000000
-DISPC_DATA_CYCLE2(LCD3)                            00000000
-DISPC_DATA_CYCLE3(LCD3)                            00000000
-DISPC_CPR_COEF_R(LCD3)                             00000000
-DISPC_CPR_COEF_G(LCD3)                             00000000
-DISPC_CPR_COEF_B(LCD3)                             00000000
-DISPC_OVL_BA0(GFX)                                 10100000
-DISPC_OVL_BA1(GFX)                                 10100000
-DISPC_OVL_POSITION(GFX)                            00000000
-DISPC_OVL_SIZE(GFX)                                04ff02cf
-DISPC_OVL_ATTRIBUTES(GFX)                          320040b1
-DISPC_OVL_FIFO_THRESHOLD(GFX)                      07ff07f8
-DISPC_OVL_FIFO_SIZE_STATUS(GFX)                    00000500
-DISPC_OVL_ROW_INC(GFX)                             000074c1
-DISPC_OVL_PIXEL_INC(GFX)                           00000001
-DISPC_OVL_PRELOAD(GFX)                             000007ff
-DISPC_OVL_MFLAG_THRESHOLD(GFX)                     05000400
-DISPC_OVL_WINDOW_SKIP(GFX)                         00000000
-DISPC_OVL_TABLE_BA(GFX)                            00000000
-DISPC_OVL_BA0(VID1)                                00000000
-DISPC_OVL_BA1(VID1)                                00000000
-DISPC_OVL_POSITION(VID1)                           00000000
-DISPC_OVL_SIZE(VID1)                               00000000
-DISPC_OVL_ATTRIBUTES(VID1)                         02808400
-DISPC_OVL_FIFO_THRESHOLD(VID1)                     07ff07f8
-DISPC_OVL_FIFO_SIZE_STATUS(VID1)                   00000800
-DISPC_OVL_ROW_INC(VID1)                            00000001
-DISPC_OVL_PIXEL_INC(VID1)                          00000001
-DISPC_OVL_PRELOAD(VID1)                            000007ff
-DISPC_OVL_MFLAG_THRESHOLD(VID1)                    05000400
-DISPC_OVL_FIR(VID1)                                04000400
-DISPC_OVL_PICTURE_SIZE(VID1)                       00000000
-DISPC_OVL_ACCU0(VID1)                              00000000
-DISPC_OVL_ACCU1(VID1)                              00000000
-DISPC_OVL_BA0_UV(VID1)                             00000000
-DISPC_OVL_BA1_UV(VID1)                             00000000
-DISPC_OVL_FIR2(VID1)                               04000400
-DISPC_OVL_ACCU2_0(VID1)                            00000000
-DISPC_OVL_ACCU2_1(VID1)                            00000000
-DISPC_OVL_ATTRIBUTES2(VID1)                        00000000
-DISPC_OVL_BA0(VID2)                                00000000
-DISPC_OVL_BA1(VID2)                                00000000
-DISPC_OVL_POSITION(VID2)                           00000000
-DISPC_OVL_SIZE(VID2)                               00000000
-DISPC_OVL_ATTRIBUTES(VID2)                         02808400
-DISPC_OVL_FIFO_THRESHOLD(VID2)                     07ff07f8
-DISPC_OVL_FIFO_SIZE_STATUS(VID2)                   00000800
-DISPC_OVL_ROW_INC(VID2)                            00000001
-DISPC_OVL_PIXEL_INC(VID2)                          00000001
-DISPC_OVL_PRELOAD(VID2)                            000007ff
-DISPC_OVL_MFLAG_THRESHOLD(VID2)                    05000400
-DISPC_OVL_FIR(VID2)                                04000400
-DISPC_OVL_PICTURE_SIZE(VID2)                       00000000
-DISPC_OVL_ACCU0(VID2)                              00000000
-DISPC_OVL_ACCU1(VID2)                              00000000
-DISPC_OVL_BA0_UV(VID2)                             00000000
-DISPC_OVL_BA1_UV(VID2)                             00000000
-DISPC_OVL_FIR2(VID2)                               04000400
-DISPC_OVL_ACCU2_0(VID2)                            00000000
-DISPC_OVL_ACCU2_1(VID2)                            00000000
-DISPC_OVL_ATTRIBUTES2(VID2)                        00000000
-DISPC_OVL_BA0(VID3)                                00000000
-DISPC_OVL_BA1(VID3)                                00000000
-DISPC_OVL_POSITION(VID3)                           00000000
-DISPC_OVL_SIZE(VID3)                               00000000
-DISPC_OVL_ATTRIBUTES(VID3)                         02808400
-DISPC_OVL_FIFO_THRESHOLD(VID3)                     07ff07f8
-DISPC_OVL_FIFO_SIZE_STATUS(VID3)                   00000800
-DISPC_OVL_ROW_INC(VID3)                            00000001
-DISPC_OVL_PIXEL_INC(VID3)                          00000001
-DISPC_OVL_PRELOAD(VID3)                            000007ff
-DISPC_OVL_MFLAG_THRESHOLD(VID3)                    05000400
-DISPC_OVL_FIR(VID3)                                04000400
-DISPC_OVL_PICTURE_SIZE(VID3)                       00000000
-DISPC_OVL_ACCU0(VID3)                              00000000
-DISPC_OVL_ACCU1(VID3)                              00000000
-DISPC_OVL_BA0_UV(VID3)                             00000000
-DISPC_OVL_BA1_UV(VID3)                             00000000
-DISPC_OVL_FIR2(VID3)                               04000400
-DISPC_OVL_ACCU2_0(VID3)                            00000000
-DISPC_OVL_ACCU2_1(VID3)                            00000000
-DISPC_OVL_ATTRIBUTES2(VID3)                        00000000
-DISPC_OVL_BA0(WB)                                  00000000
-DISPC_OVL_BA1(WB)                                  00000000
-DISPC_OVL_SIZE(WB)                                 00000000
-DISPC_OVL_ATTRIBUTES(WB)                           00808000
-DISPC_OVL_FIFO_THRESHOLD(WB)                       00080000
-DISPC_OVL_FIFO_SIZE_STATUS(WB)                     00000800
-DISPC_OVL_ROW_INC(WB)                              00000001
-DISPC_OVL_PIXEL_INC(WB)                            00000001
-DISPC_OVL_MFLAG_THRESHOLD(WB)                      03200280
-DISPC_OVL_FIR(WB)                                  04000400
-DISPC_OVL_PICTURE_SIZE(WB)                         00000000
-DISPC_OVL_ACCU0(WB)                                00000000
-DISPC_OVL_ACCU1(WB)                                00000000
-DISPC_OVL_BA0_UV(WB)                               00000000
-DISPC_OVL_BA1_UV(WB)                               00000000
-DISPC_OVL_FIR2(WB)                                 04000400
-DISPC_OVL_ACCU2_0(WB)                              00000000
-DISPC_OVL_ACCU2_1(WB)                              00000000
-DISPC_OVL_ATTRIBUTES2(WB)                          00000000
-DISPC_OVL_FIR_COEF_H_0(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_1(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_2(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_3(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_4(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_5(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_6(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_7(VID1)                       00000000
-DISPC_OVL_FIR_COEF_HV_0(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_1(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_2(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_3(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_4(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_5(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_6(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_7(VID1)                      00000000
-DISPC_OVL_CONV_COEF_0(VID1)                        0199012a
-DISPC_OVL_CONV_COEF_1(VID1)                        012a0000
-DISPC_OVL_CONV_COEF_2(VID1)                        079c0730
-DISPC_OVL_CONV_COEF_3(VID1)                        0000012a
-DISPC_OVL_CONV_COEF_4(VID1)                        00000204
-DISPC_OVL_FIR_COEF_V_0(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_1(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_2(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_3(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_4(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_5(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_6(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_7(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H2_0(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_1(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_2(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_3(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_4(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_5(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_6(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_7(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV2_0(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_1(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_2(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_3(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_4(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_5(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_6(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_7(VID1)                     00000000
-DISPC_OVL_FIR_COEF_V2_0(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_1(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_2(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_3(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_4(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_5(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_6(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_7(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H_0(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_1(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_2(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_3(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_4(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_5(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_6(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_7(VID2)                       00000000
-DISPC_OVL_FIR_COEF_HV_0(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_1(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_2(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_3(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_4(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_5(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_6(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_7(VID2)                      00000000
-DISPC_OVL_CONV_COEF_0(VID2)                        0199012a
-DISPC_OVL_CONV_COEF_1(VID2)                        012a0000
-DISPC_OVL_CONV_COEF_2(VID2)                        079c0730
-DISPC_OVL_CONV_COEF_3(VID2)                        0000012a
-DISPC_OVL_CONV_COEF_4(VID2)                        00000204
-DISPC_OVL_FIR_COEF_V_0(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_1(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_2(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_3(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_4(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_5(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_6(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_7(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H2_0(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_1(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_2(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_3(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_4(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_5(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_6(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_7(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV2_0(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_1(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_2(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_3(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_4(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_5(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_6(VID2)                     00000000
-[  117.525871] DSI: dsi_runtime_get
-[  117.532527] DSI: dsi_runtime_put
-DISPC_OVL_FIR_COEF_HV2_7(VID2)                     00000000
-DISPC_OVL_FIR_COEF_V2_0(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_1(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_2(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_3(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_4(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_5(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_6(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_7(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H_0(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_1(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_2(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_3(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_4(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_5(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_6(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_7(VID3)                       00000000
-DISPC_OVL_FIR_COEF_HV_0(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_1(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_2(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_3(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_4(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_5(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_6(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_7(VID3)                      00000000
-DISPC_OVL_CONV_COEF_0(VID3)                        0199012a
-DISPC_OVL_CONV_COEF_1(VID3)                        012a0000
-DISPC_OVL_CONV_COEF_2(VID3)                        079c0730
-DISPC_OVL_CONV_COEF_3(VID3)                        0000012a
-DISPC_OVL_CONV_COEF_4(VID3)                        00000204
-DISPC_OVL_FIR_COEF_V_0(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_1(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_2(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_3(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_4(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_5(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_6(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_7(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H2_0(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_1(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_2(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_3(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_4(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_5(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_6(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_7(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV2_0(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_1(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_2(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_3(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_4(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_5(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_6(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_7(VID3)                     00000000
-DISPC_OVL_FIR_COEF_V2_0(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_1(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_2(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_3(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_4(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_5(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_6(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_7(VID3)                      00000000
-cat: /sys/kernel/debug/omapdss/dsi1_irqs: No such file or directory
-DSI_REVISION                        00000040
-DSI_SYSCONFIG                       00000015
-DSI_SYSSTATUS                       00000001
-DSI_IRQSTATUS                       00000000
-DSI_IRQENABLE                       0015c000
-DSI_CTRL                            00eaee9f
-DSI_COMPLEXIO_CFG1                  2a0dcba9
-DSI_COMPLEXIO_IRQ_STATUS            00000000
-DSI_COMPLEXIO_IRQ_ENABLE            3ff07fff
-DSI_CLK_CTRL                        a030400b
-DSI_TIMING1                         ffff1000
-DSI_TIMING2                         ffffffff
-DSI_VM_TIMING1                      00078003
-DSI_VM_TIMING2                      043c3232
-DSI_VM_TIMING3                      029a0500
-DSI_CLK_TIMING                      00001b10
-DSI_TX_FIFO_VC_SIZE                 13121110
-DSI_RX_FIFO_VC_SIZE                 13121110
-DSI_COMPLEXIO_CFG2                  00030000
-DSI_RX_FIFO_VC_FULLNESS             00000000
-DSI_VM_TIMING4                      00000000
-DSI_TX_FIFO_VC_EMPTINESS            1f1f1e1f
-DSI_VM_TIMING5                      00000000
-DSI_VM_TIMING6                      01000007
-DSI_VM_TIMING7                      00100010
-DSI_STOPCLK_TIMING                  00000080
-DSI_VC_CTRL(0)                      20808f81
-DSI_VC_TE(0)                        00000000
-DSI_VC_LONG_PACKET_HEADER(0)        00000000
-DSI_VC_LONG_PACKET_PAYLOAD(0)       00000000
-DSI_VC_SHORT_PACKET_HEADER(0)       00000000
-DSI_VC_IRQSTATUS(0)                 00000000
-DSI_VC_IRQENABLE(0)                 000000db
-DSI_VC_CTRL(1)                      20808fb1
-DSI_VC_TE(1)                        00000000
-DSI_VC_LONG_PACKET_HEADER(1)        00000000
-DSI_VC_LONG_PACKET_PAYLOAD(1)       00000000
-DSI_VC_SHORT_PACKET_HEADER(1)       00000000
-DSI_VC_IRQSTATUS(1)                 00000000
-DSI_VC_IRQENABLE(1)                 000000db
-DSI_VC_CTRL(2)                      20808d81
-DSI_VC_TE(2)                        00000000
-DSI_VC_LONG_PACKET_HEADER(2)        00000000
-DSI_VC_LONG_PACKET_PAYLOAD(2)       00000000
-DSI_VC_SHORT_PACKET_HEADER(2)       00000000
-DSI_VC_IRQSTATUS(2)                 00000000
-DSI_VC_IRQENABLE(2)                 000000db
-DSI_VC_CTRL(3)                      20808d81
-DSI_VC_TE(3)                        00000000
-DSI_VC_LONG_PACKET_HEADER(3)        00000000
-DSI_VC_LONG_PACKET_PAYLOAD(3)       00000000
-DSI_VC_SHORT_PACKET_HEADER(3)       00000000
-DSI_VC_IRQSTATUS(3)                 00000000
-DSI_VC_IRQENABLE(3)                 000000db
-DSI_DSIPHY_CFG0                     132b1322
-DSI_DSIPHY_CFG1                     42c6103c
-DSI_DSIPHY_CFG2                     b83e000f
-DSI_DSIPHY_CFG5                     ff000000
-DSI_PLL_CONTROL                     00000018
-DSI_PLL_STATUS                      00006383
-DSI_PLL_GO                          00000000
-DSI_PLL_CONFIGURATION1              10a03000
-DSI_PLL_CONFIGURATION2              00656004
-root@letux:~# 
---Apple-Mail=_FCE9F26C-63D2-4AEE-8EBB-BDC76342C28B
-Content-Disposition: attachment;
-	filename=dsi-oldi.txt
-Content-Type: text/plain;
-	name="dsi-oldi.txt"
-Content-Transfer-Encoding: 7bit
-
-root@letux:~# ./debugdsi 
-- DSS -
-FCK = 192000000
-- DISPC -
-dispc fclk source = FCK
-fck             192000000       
-- DISPC-CORE-CLK -
-lck             192000000       lck div 1
-- LCD -
-LCD clk source = PLL1:1
-lck             153600000       lck div 1
-pck             76800000        pck div 2
-- LCD2 -
-LCD2 clk source = FCK
-lck             48000000        lck div 4
-pck             48000000        pck div 1
-- LCD3 -
-LCD3 clk source = FCK
-lck             48000000        lck div 4
-pck             48000000        pck div 1
-DISPC_REVISION                                     00000051
-DISPC_SYSCONFIG                                    00002015
-DISPC_SYSSTATUS                                    00000001
-DISPC_IRQSTATUS                                    000000a2
-DISPC_IRQENABLE                                    0812d640
-DISPC_CONTROL                                      00018309
-DISPC_CONFIG                                       0000020c
-DISPC_CAPABLE                                      00000000
-DISPC_LINE_STATUS                                  000001af
-DISPC_LINE_NUMBER                                  00000000
-DISPC_GLOBAL_ALPHA                                 ffffffff
-DISPC_CONTROL2                                     00000000
-DISPC_CONFIG2                                      00000000
-DISPC_CONTROL3                                     00000000
-DISPC_CONFIG3                                      00000000
-DISPC_GLOBAL_MFLAG_ATTRIBUTE                       00000001
-DISPC_DEFAULT_COLOR(LCD)                           00000000
-DISPC_TRANS_COLOR(LCD)                             00000000
-DISPC_SIZE_MGR(LCD)                                04ff02cf
-DISPC_TIMING_H(LCD)                                09d00800
-DISPC_TIMING_V(LCD)                                0320323b
-DISPC_POL_FREQ(LCD)                                00060000
-DISPC_DIVISORo(LCD)                                00010002
-DISPC_DATA_CYCLE1(LCD)                             00000000
-DISPC_DATA_CYCLE2(LCD)                             00000000
-DISPC_DATA_CYCLE3(LCD)                             00000000
-DISPC_CPR_COEF_R(LCD)                              00000000
-DISPC_CPR_COEF_G(LCD)                              00000000
-DISPC_CPR_COEF_B(LCD)                              00000000
-DISPC_DEFAULT_COLOR(TV)                            00000000
-DISPC_TRANS_COLOR(TV)                              00000000
-DISPC_SIZE_MGR(TV)                                 00000000
-DISPC_DEFAULT_COLOR(LCD2)                          00000000
-DISPC_TRANS_COLOR(LCD2)                            00000000
-DISPC_SIZE_MGR(LCD2)                               00000000
-DISPC_TIMING_H(LCD2)                               00000000
-DISPC_TIMING_V(LCD2)                               00000000
-DISPC_POL_FREQ(LCD2)                               00000000
-DISPC_DIVISORo(LCD2)                               00040001
-DISPC_DATA_CYCLE1(LCD2)                            00000000
-DISPC_DATA_CYCLE2(LCD2)                            00000000
-DISPC_DATA_CYCLE3(LCD2)                            00000000
-DISPC_CPR_COEF_R(LCD2)                             00000000
-DISPC_CPR_COEF_G(LCD2)                             00000000
-DISPC_CPR_COEF_B(LCD2)                             00000000
-DISPC_DEFAULT_COLOR(LCD3)                          00000000
-DISPC_TRANS_COLOR(LCD3)                            00000000
-DISPC_SIZE_MGR(LCD3)                               00000000
-DISPC_TIMING_H(LCD3)                               00000000
-DISPC_TIMING_V(LCD3)                               00000000
-DISPC_POL_FREQ(LCD3)                               00000000
-DISPC_DIVISORo(LCD3)                               00040001
-DISPC_DATA_CYCLE1(LCD3)                            00000000
-DISPC_DATA_CYCLE2(LCD3)                            00000000
-DISPC_DATA_CYCLE3(LCD3)                            00000000
-DISPC_CPR_COEF_R(LCD3)                             00000000
-DISPC_CPR_COEF_G(LCD3)                             00000000
-DISPC_CPR_COEF_B(LCD3)                             00000000
-DISPC_OVL_BA0(GFX)                                 d0003440
-DISPC_OVL_BA1(GFX)                                 d0003440
-DISPC_OVL_POSITION(GFX)                            00000000
-DISPC_OVL_SIZE(GFX)                                04ff02cf
-DISPC_OVL_ATTRIBUTES(GFX)                          320040b1
-DISPC_OVL_FIFO_THRESHOLD(GFX)                      07ff07f8
-DISPC_OVL_FIFO_SIZE_STATUS(GFX)                    00000500
-DISPC_OVL_ROW_INC(GFX)                             000034c1
-DISPC_OVL_PIXEL_INC(GFX)                           00000001
-DISPC_OVL_PRELOAD(GFX)                             000007ff
-DISPC_OVL_MFLAG_THRESHOLD(GFX)                     05000400
-DISPC_OVL_WINDOW_SKIP(GFX)                         00000000
-DISPC_OVL_TABLE_BA(GFX)                            00000000
-DISPC_OVL_BA0(VID1)                                00000000
-DISPC_OVL_BA1(VID1)                                00000000
-DISPC_OVL_POSITION(VID1)                           00000000
-DISPC_OVL_SIZE(VID1)                               00000000
-DISPC_OVL_ATTRIBUTES(VID1)                         02808400
-DISPC_OVL_FIFO_THRESHOLD(VID1)                     07ff07f8
-DISPC_OVL_FIFO_SIZE_STATUS(VID1)                   00000800
-DISPC_OVL_ROW_INC(VID1)                            00000001
-DISPC_OVL_PIXEL_INC(VID1)                          00000001
-DISPC_OVL_PRELOAD(VID1)                            000007ff
-DISPC_OVL_MFLAG_THRESHOLD(VID1)                    05000400
-DISPC_OVL_FIR(VID1)                                04000400
-DISPC_OVL_PICTURE_SIZE(VID1)                       00000000
-DISPC_OVL_ACCU0(VID1)                              00000000
-DISPC_OVL_ACCU1(VID1)                              00000000
-DISPC_OVL_BA0_UV(VID1)                             00000000
-DISPC_OVL_BA1_UV(VID1)                             00000000
-DISPC_OVL_FIR2(VID1)                               04000400
-DISPC_OVL_ACCU2_0(VID1)                            00000000
-DISPC_OVL_ACCU2_1(VID1)                            00000000
-DISPC_OVL_ATTRIBUTES2(VID1)                        00000000
-DISPC_OVL_BA0(VID2)                                00000000
-DISPC_OVL_BA1(VID2)                                00000000
-DISPC_OVL_POSITION(VID2)                           00000000
-DISPC_OVL_SIZE(VID2)                               00000000
-DISPC_OVL_ATTRIBUTES(VID2)                         02808400
-DISPC_OVL_FIFO_THRESHOLD(VID2)                     07ff07f8
-DISPC_OVL_FIFO_SIZE_STATUS(VID2)                   00000800
-DISPC_OVL_ROW_INC(VID2)                            00000001
-DISPC_OVL_PIXEL_INC(VID2)                          00000001
-DISPC_OVL_PRELOAD(VID2)                            000007ff
-DISPC_OVL_MFLAG_THRESHOLD(VID2)                    05000400
-DISPC_OVL_FIR(VID2)                                04000400
-DISPC_OVL_PICTURE_SIZE(VID2)                       00000000
-DISPC_OVL_ACCU0(VID2)                              00000000
-DISPC_OVL_ACCU1(VID2)                              00000000
-DISPC_OVL_BA0_UV(VID2)                             00000000
-DISPC_OVL_BA1_UV(VID2)                             00000000
-DISPC_OVL_FIR2(VID2)                               04000400
-DISPC_OVL_ACCU2_0(VID2)                            00000000
-DISPC_OVL_ACCU2_1(VID2)                            00000000
-DISPC_OVL_ATTRIBUTES2(VID2)                        00000000
-DISPC_OVL_BA0(VID3)                                00000000
-DISPC_OVL_BA1(VID3)                                00000000
-DISPC_OVL_POSITION(VID3)                           00000000
-DISPC_OVL_SIZE(VID3)                               00000000
-DISPC_OVL_ATTRIBUTES(VID3)                         02808400
-DISPC_OVL_FIFO_THRESHOLD(VID3)                     07ff07f8
-DISPC_OVL_FIFO_SIZE_STATUS(VID3)                   00000800
-DISPC_OVL_ROW_INC(VID3)                            00000001
-DISPC_OVL_PIXEL_INC(VID3)                          00000001
-DISPC_OVL_PRELOAD(VID3)                            000007ff
-DISPC_OVL_MFLAG_THRESHOLD(VID3)                    05000400
-DISPC_OVL_FIR(VID3)                                04000400
-DISPC_OVL_PICTURE_SIZE(VID3)                       00000000
-DISPC_OVL_ACCU0(VID3)                              00000000
-DISPC_OVL_ACCU1(VID3)                              00000000
-DISPC_OVL_BA0_UV(VID3)                             00000000
-DISPC_OVL_BA1_UV(VID3)                             00000000
-DISPC_OVL_FIR2(VID3)                               04000400
-DISPC_OVL_ACCU2_0(VID3)                            00000000
-DISPC_OVL_ACCU2_1(VID3)                            00000000
-DISPC_OVL_ATTRIBUTES2(VID3)                        00000000
-DISPC_OVL_BA0(WB)                                  00000000
-DISPC_OVL_BA1(WB)                                  00000000
-DISPC_OVL_SIZE(WB)                                 00000000
-DISPC_OVL_ATTRIBUTES(WB)                           00808000
-DISPC_OVL_FIFO_THRESHOLD(WB)                       00080000
-DISPC_OVL_FIFO_SIZE_STATUS(WB)                     00000800
-DISPC_OVL_ROW_INC(WB)                              00000001
-DISPC_OVL_PIXEL_INC(WB)                            00000001
-DISPC_OVL_MFLAG_THRESHOLD(WB)                      03200280
-DISPC_OVL_FIR(WB)                                  04000400
-DISPC_OVL_PICTURE_SIZE(WB)                         00000000
-DISPC_OVL_ACCU0(WB)                                00000000
-DISPC_OVL_ACCU1(WB)                                00000000
-DISPC_OVL_BA0_UV(WB)                               00000000
-DISPC_OVL_BA1_UV(WB)                               00000000
-DISPC_OVL_FIR2(WB)                                 04000400
-DISPC_OVL_ACCU2_0(WB)                              00000000
-DISPC_OVL_ACCU2_1(WB)                              00000000
-DISPC_OVL_ATTRIBUTES2(WB)                          00000000
-DISPC_OVL_FIR_COEF_H_0(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_1(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_2(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_3(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_4(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_5(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_6(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H_7(VID1)                       00000000
-DISPC_OVL_FIR_COEF_HV_0(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_1(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_2(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_3(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_4(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_5(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_6(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV_7(VID1)                      00000000
-DISPC_OVL_CONV_COEF_0(VID1)                        0199012a
-DISPC_OVL_CONV_COEF_1(VID1)                        012a0000
-DISPC_OVL_CONV_COEF_2(VID1)                        079c0730
-DISPC_OVL_CONV_COEF_3(VID1)                        0000012a
-DISPC_OVL_CONV_COEF_4(VID1)                        00000204
-DISPC_OVL_FIR_COEF_V_0(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_1(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_2(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_3(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_4(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_5(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_6(VID1)                       00000000
-DISPC_OVL_FIR_COEF_V_7(VID1)                       00000000
-DISPC_OVL_FIR_COEF_H2_0(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_1(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_2(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_3(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_4(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_5(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_6(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H2_7(VID1)                      00000000
-DISPC_OVL_FIR_COEF_HV2_0(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_1(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_2(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_3(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_4(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_5(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_6(VID1)                     00000000
-DISPC_OVL_FIR_COEF_HV2_7(VID1)                     00000000
-DISPC_OVL_FIR_COEF_V2_0(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_1(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_2(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_3(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_4(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_5(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_6(VID1)                      00000000
-DISPC_OVL_FIR_COEF_V2_7(VID1)                      00000000
-DISPC_OVL_FIR_COEF_H_0(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_1(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_2(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_3(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_4(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_5(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_6(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H_7(VID2)                       00000000
-DISPC_OVL_FIR_COEF_HV_0(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_1(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_2(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_3(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_4(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_5(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_6(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV_7(VID2)                      00000000
-DISPC_OVL_CONV_COEF_0(VID2)                        0199012a
-DISPC_OVL_CONV_COEF_1(VID2)                        012a0000
-DISPC_OVL_CONV_COEF_2(VID2)                        079c0730
-DISPC_OVL_CONV_COEF_3(VID2)                        0000012a
-DISPC_OVL_CONV_COEF_4(VID2)                        00000204
-DISPC_OVL_FIR_COEF_V_0(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_1(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_2(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_3(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_4(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_5(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_6(VID2)                       00000000
-DISPC_OVL_FIR_COEF_V_7(VID2)                       00000000
-DISPC_OVL_FIR_COEF_H2_0(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_1(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_2(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_3(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_4(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_5(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_6(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H2_7(VID2)                      00000000
-DISPC_OVL_FIR_COEF_HV2_0(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_1(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_2(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_3(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_4(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_5(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_6(VID2)                     00000000
-DISPC_OVL_FIR_COEF_HV2_7(VID2)                     00000000
-DISPC_OVL_FIR_COEF_V2_0(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_1(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_2(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_3(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_4(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_5(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_6(VID2)                      00000000
-DISPC_OVL_FIR_COEF_V2_7(VID2)                      00000000
-DISPC_OVL_FIR_COEF_H_0(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_1(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_2(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_3(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_4(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_5(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_6(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H_7(VID3)                       00000000
-DISPC_OVL_FIR_COEF_HV_0(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_1(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_2(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_3(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_4(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_5(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_6(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV_7(VID3)                      00000000
-DISPC_OVL_CONV_COEF_0(VID3)                        0199012a
-DISPC_OVL_CONV_COEF_1(VID3)                        012a0000
-DISPC_OVL_CONV_COEF_2(VID3)                        079c0730
-DISPC_OVL_CONV_COEF_3(VID3)                        0000012a
-DISPC_OVL_CONV_COEF_4(VID3)                        00000204
-DISPC_OVL_FIR_COEF_V_0(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_1(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_2(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_3(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_4(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_5(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_6(VID3)                       00000000
-DISPC_OVL_FIR_COEF_V_7(VID3)                       00000000
-DISPC_OVL_FIR_COEF_H2_0(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_1(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_2(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_3(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_4(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_5(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_6(VID3)                      00000000
-DISPC_OVL_FIR_COEF_H2_7(VID3)                      00000000
-DISPC_OVL_FIR_COEF_HV2_0(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_1(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_2(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_3(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_4(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_5(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_6(VID3)                     00000000
-DISPC_OVL_FIR_COEF_HV2_7(VID3)                     00000000
-DISPC_OVL_FIR_COEF_V2_0(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_1(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_2(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_3(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_4(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_5(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_6(VID3)                      00000000
-DISPC_OVL_FIR_COEF_V2_7(VID3)                      00000000
-cat: /sys/kernel/debug/omapdss/dsi1_irqs: No such file or directory
-DSI_REVISION                        00000040
-DSI_SYSCONFIG                       00000015
-DSI_SYSSTATUS                       00000001
-DSI_IRQSTATUS                       00000000
-DSI_IRQENABLE                       0015c000
-DSI_CTRL                            00eaee9f
-DSI_COMPLEXIO_CFG1                  2a0dcba9
-DSI_COMPLEXIO_IRQ_STATUS            00000000
-DSI_COMPLEXIO_IRQ_ENABLE            3ff07fff
-DSI_CLK_CTRL                        a030600b
-DSI_TIMING1                         ffff1000
-DSI_TIMING2                         ffffffff
-DSI_VM_TIMING1                      00005076
-DSI_VM_TIMING2                      043c3232
-DSI_VM_TIMING3                      029a0500
-DSI_CLK_TIMING                      00001b10
-DSI_TX_FIFO_VC_SIZE                 13121110
-DSI_RX_FIFO_VC_SIZE                 13121110
-DSI_COMPLEXIO_CFG2                  00030000
-DSI_RX_FIFO_VC_FULLNESS             00000000
-DSI_VM_TIMING4                      00000000
-DSI_TX_FIFO_VC_EMPTINESS            1f1f1f1f
-DSI_VM_TIMING5                      00000000
-DSI_VM_TIMING6                      01340007
-DSI_VM_TIMING7                      00100010
-DSI_STOPCLK_TIMING                  00000080
-DSI_VC_CTRL(0)                      20808f91
-DSI_VC_TE(0)                        00000000
-DSI_VC_LONG_PACKET_HEADER(0)        00000000
-DSI_VC_LONG_PACKET_PAYLOAD(0)       00000000
-DSI_VC_SHORT_PACKET_HEADER(0)       00000000
-DSI_VC_IRQSTATUS(0)                 00000004
-DSI_VC_IRQENABLE(0)                 000000db
-DSI_VC_CTRL(1)                      20808d81
-DSI_VC_TE(1)                        00000000
-DSI_VC_LONG_PACKET_HEADER(1)        00000000
-DSI_VC_LONG_PACKET_PAYLOAD(1)       00000000
-DSI_VC_SHORT_PACKET_HEADER(1)       00000000
-DSI_VC_IRQSTATUS(1)                 00000004
-DSI_VC_IRQENABLE(1)                 000000db
-DSI_VC_CTRL(2)                      20808d81
-DSI_VC_TE(2)                        00000000
-DSI_VC_LONG_PACKET_HEADER(2)        00000000
-DSI_VC_LONG_PACKET_PAYLOAD(2)       00000000
-DSI_VC_SHORT_PACKET_HEADER(2)       00000000
-DSI_VC_IRQSTATUS(2)                 00000000
-DSI_VC_IRQENABLE(2)                 000000db
-DSI_VC_CTRL(3)                      20808d81
-DSI_VC_TE(3)                        00000000
-DSI_VC_LONG_PACKET_HEADER(3)        00000000
-DSI_VC_LONG_PACKET_PAYLOAD(3)       00000000
-DSI_VC_SHORT_PACKET_HEADER(3)       00000000
-DSI_VC_IRQSTATUS(3)                 00000000
-DSI_VC_IRQENABLE(3)                 000000db
-DSI_DSIPHY_CFG0                     132b1322
-DSI_DSIPHY_CFG1                     42c6103c
-DSI_DSIPHY_CFG2                     b800000f
-DSI_DSIPHY_CFG5                     ff000000
-DSI_PLL_CONTROL                     00000018
-DSI_PLL_STATUS                      00006383
-DSI_PLL_GO                          00000000
-DSI_PLL_CONFIGURATION1              10a03000
-DSI_PLL_CONFIGURATION2              00656004
-root@letux:~# 
---Apple-Mail=_FCE9F26C-63D2-4AEE-8EBB-BDC76342C28B
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain;
-	charset=us-ascii
-
-
-
-
---Apple-Mail=_FCE9F26C-63D2-4AEE-8EBB-BDC76342C28B--
+Laurent Pinchart
