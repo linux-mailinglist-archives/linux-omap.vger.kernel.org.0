@@ -2,102 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BEF92B800B
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Nov 2020 16:04:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35FB92B804D
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Nov 2020 16:23:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726840AbgKRPCj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Nov 2020 10:02:39 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:41712 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726672AbgKRPCj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Nov 2020 10:02:39 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AIF22VO116792;
-        Wed, 18 Nov 2020 09:02:02 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1605711722;
-        bh=rWpMzBY3yWlur1yTtazbVTURw/ATtp1VKkyOXw91Bj4=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=ry8M1VDyb5KRKxRQ2InLF8zUvU1rC4pB8+s3k3adL3TqlsDZj1f6MsU7mwZUrQOzz
-         OmRwd7jsS6WXKBAIObtCoYBB6ub3EhofMxc6WIDoRppJAFsDuU1KiDS7gL3opqSolp
-         xLytG7+/O2SPL+iz2z/xouIa6M56Iq+ohL5qhZ+Q=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AIF229k083984
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 18 Nov 2020 09:02:02 -0600
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 18
- Nov 2020 09:02:01 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 18 Nov 2020 09:02:01 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AIF2170038838;
-        Wed, 18 Nov 2020 09:02:01 -0600
-Date:   Wed, 18 Nov 2020 09:02:01 -0600
-From:   Nishanth Menon <nm@ti.com>
-To:     Arnd Bergmann <arnd@kernel.org>
-CC:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-mm <linux-mm@kvack.org>, <lkft-triage@lists.linaro.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: Re: [arm] BUG: KASAN: slab-out-of-bounds in memcmp+0x30/0x5c
-Message-ID: <20201118150201.7orvzppzd4rikg3m@shrine>
-References: <CA+G9fYuk4imvhyCN7D7T6PMDH6oNp6HDCRiTUKMQ6QXXjBa4ag@mail.gmail.com>
- <CAK8P3a2MmA257e486D2hj_qj9Wk0ybkfg9yk9f5hR=h-KWUHVg@mail.gmail.com>
- <20201117232343.rg37fkacw43matmh@revered>
- <CAK8P3a0+RKdNj4q3GTh26jrwBkF-BgWiEUuFB4xbh8gZj4Q4-g@mail.gmail.com>
+        id S1727164AbgKRPXC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Nov 2020 10:23:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47264 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726374AbgKRPXB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Nov 2020 10:23:01 -0500
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3345C061A4D
+        for <linux-omap@vger.kernel.org>; Wed, 18 Nov 2020 07:22:59 -0800 (PST)
+Received: by mail-qk1-x742.google.com with SMTP id k4so2059075qko.13
+        for <linux-omap@vger.kernel.org>; Wed, 18 Nov 2020 07:22:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GH9Xy8QAdPbukrPXbHMdGuCbNQSmg+d15O0OpK6oPDU=;
+        b=h4TN/jcVvOVqit9i6UFM5UXHAzRVbr+06IwvK4j7baLs601eobWK3ybyjMbrdbYMQf
+         AX+dAZ5qI7pfTTmC76wPgeNmBYoV0CpRZPjq6g6BDLCqtd5hmPnj9GmE/eC6cJsPtzQd
+         boy6lKrCejDjUqOQZ7WP2Z8uUA39a6truy8ZAUhgs7UZ/0AKHFOlXW6wob7FLYNDMOUX
+         zPo7e2O2xtt5vpuJpzyyyiAupzr/DoFUwnX2mLnmRelrTmPDbGddIgS1dZhEMoi0ZZCu
+         FbKO7mTedcHBsOBYDH9tJnDdUkaCnmGWJb5ZQAyE6bUd835SdC2n+q0S+ZmGiZKpEsGx
+         nbxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GH9Xy8QAdPbukrPXbHMdGuCbNQSmg+d15O0OpK6oPDU=;
+        b=O7ggcTElijNhvjrm2ewXP1T5F/qRvMYeV5/R50Ia+IE8onwWgAlGNPMKV6OXqBSgbk
+         Yq0hAncHr7/uPFwWm5yCG5EJW+uqH2KDHAa5Frv5w76Oj7WWxG3vZGhUVqvAEYbO9JIZ
+         cHWz1L48jGfO/0uDyANNQ66juqX0HCAoJcTlluLgyNjPoCfMXyMVXtzbvnZBJeUUnRgH
+         ZqOjQd0rxDpWe2WD48fQEVB7uXo/otq61y+ASTKzNgRAQQWbKBx6QUdsspmtnUsaRQYm
+         hCQWDweePk5fQMtfnHVOdfMOm/AgtwZDQ8V6+5fHjqwY2BFHtQu2oaFGXe23S0rNdgR+
+         jlDA==
+X-Gm-Message-State: AOAM533ZGrL5rSbkVq9G6RRV37xD2ZFUXTFWf/pYu9vqsThQX1fhY5ap
+        G+6j3ZwIqqHKXHYvtckkFPMwdaDzsb+fpZeJ3q4qt7mVzoo=
+X-Google-Smtp-Source: ABdhPJwIC91BDC5Utr8V4WPjI/sBwnHGPwlWEDaBk3pFF3i5hnFhC9cwQPrgbPvO3III8iQXHYaNfWzNGZJQ4M2yTVc=
+X-Received: by 2002:a37:2782:: with SMTP id n124mr5438013qkn.498.1605712979009;
+ Wed, 18 Nov 2020 07:22:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a0+RKdNj4q3GTh26jrwBkF-BgWiEUuFB4xbh8gZj4Q4-g@mail.gmail.com>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20201114084613.13503-1-grzegorz.jaszczyk@linaro.org>
+ <20201114084613.13503-2-grzegorz.jaszczyk@linaro.org> <20201116152804.GA1679588@bogus>
+In-Reply-To: <20201116152804.GA1679588@bogus>
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+Date:   Wed, 18 Nov 2020 16:22:47 +0100
+Message-ID: <CAMxfBF7k9ew1C6VaS8u-u-vr60gUGRYmrEu=ic67Op+udvKu7Q@mail.gmail.com>
+Subject: Re: [PATCH 1/6] dt-bindings: remoteproc: Add binding doc for PRU
+ cores in the PRU-ICSS
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-omap@vger.kernel.org, Ohad Ben Cohen <ohad@wizery.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Roger Quadros <rogerq@ti.com>,
+        "Bajjuri, Praneeth" <praneeth@ti.com>,
+        "Anna, Suman" <s-anna@ti.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+        Lee Jones <lee.jones@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 09:14-20201118, Arnd Bergmann wrote:
-> On Wed, Nov 18, 2020 at 12:24 AM Nishanth Menon <nm@ti.com> wrote:
-> > On 16:25-20201117, Arnd Bergmann wrote:
+Hi Rob
+
+On Mon, 16 Nov 2020 at 16:28, Rob Herring <robh@kernel.org> wrote:
+>
+> On Sat, 14 Nov 2020 09:46:08 +0100, Grzegorz Jaszczyk wrote:
+> > From: Suman Anna <s-anna@ti.com>
 > >
-> > Yes, this was indeed a bug that has been around for some time now :(
+> > The Programmable Real-Time Unit and Industrial Communication Subsystem
+> > (PRU-ICSS or simply PRUSS) on various TI SoCs consists of dual 32-bit
+> > RISC cores (Programmable Real-Time Units, or PRUs) for program execution.
 > >
-> > I tested with a variant of the above (did'nt like that
-> > oinfo was being assigned an invalid address)
-> > Boot log: https://pastebin.ubuntu.com/p/nZfz3HF8N6/ (with the same
-> > config as in the report): Would you prefer to me to send the following
-> > as a formal patch?
-> 
-> Awesome, thanks for the new patch and testing it!
-> 
-> Yes, please send this as a proper patch to have it picked up
-> into the regulator tree as a bugfix.
-> 
-> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> > The K3 AM65x amd J721E SoCs have the next generation of the PRU-ICSS IP,
+> > commonly called ICSSG. The ICSSG IP on AM65x SoCs has two PRU cores,
+> > two auxiliary custom PRU cores called Real Time Units (RTUs). The K3
+> > AM65x SR2.0 and J721E SoCs have a revised version of the ICSSG IP, and
+> > include two additional custom auxiliary PRU cores called Transmit PRUs
+> > (Tx_PRUs).
+> >
+> > This patch adds the bindings for these PRU cores. The binding covers the
+> > OMAP architecture SoCs - AM33xx, AM437x and AM57xx; Keystone 2 architecture
+> > based 66AK2G SoC; and the K3 architecture based SoCs - AM65x and J721E. The
+> > Davinci based OMAPL138 SoCs will be covered in a future patch.
+> >
+> > Co-developed-by: Roger Quadros <rogerq@ti.com>
+> > Signed-off-by: Roger Quadros <rogerq@ti.com>
+> > Signed-off-by: Suman Anna <s-anna@ti.com>
+> > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> > ---
+> >  .../bindings/remoteproc/ti,pru-rproc.yaml     | 214 ++++++++++++++++++
+> >  1 file changed, 214 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
+> >
+>
+>
+> My bot found errors running 'make dt_binding_check' on your patch:
+>
+> yamllint warnings/errors:
+> ./Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml:37:6: [warning] wrong indentation: expected 6 but found 5 (indentation)
+> ./Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml:92:2: [warning] wrong indentation: expected 2 but found 1 (indentation)
+>
+> dtschema/dtc warnings/errors:
+>
+>
+> See https://patchwork.ozlabs.org/patch/1400241
+>
+> The base for the patch is generally the last rc1. Any dependencies
+> should be noted.
+>
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+>
+> pip3 install dtschema --upgrade
+>
+> Please check and re-submit.
 
+Sorry for that - I've run dt_binding_check which completes without any
+warnings/errors but I didn't had yamllint installed. I will fix
+mentioned warnings for v2.
 
-Done. And thanks for the triage, Arnd.
-https://patchwork.kernel.org/project/linux-omap/patch/20201118145009.10492-1-nm@ti.com/
-
-Naresh,
-Thanks for reporting the bug. That was an ancient one.. Glad we
-could find it.
-
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+Best regards,
+Grzegorz
