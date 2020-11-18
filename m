@@ -2,47 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6045A2B7F46
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Nov 2020 15:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BEA72B7F76
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Nov 2020 15:32:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725970AbgKROTL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Nov 2020 09:19:11 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:34470 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725710AbgKROTL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Nov 2020 09:19:11 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AIEJ7dq066074;
-        Wed, 18 Nov 2020 08:19:07 -0600
+        id S1726890AbgKROcB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Nov 2020 09:32:01 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:35394 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726314AbgKROcA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Nov 2020 09:32:00 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AIEVvHv105854;
+        Wed, 18 Nov 2020 08:31:57 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1605709147;
-        bh=KI2Z4UHnxhnILseGS7lyqummupvcLaGAH+tnwbFydjE=;
+        s=ti-com-17Q1; t=1605709917;
+        bh=Ge2t0Q/igfymhtyh+miLyvCJaa9mUFCi6AQqk2DqRPY=;
         h=From:To:CC:Subject:Date;
-        b=YSLN8FHRSD9I47kMCVjUBOq0tt/8T6pgf3oAqJ5bZR2dz6v3eTVxEsYdOcS3J6F5/
-         SsxXY4BMmGoB0Agw5ACfDHQ9NuB79rp28Qu7pQaiZ4KeKX7cOcMiUsTYHKinmQ4yJZ
-         tTkrUZ1J4AudiSDdwo7MGPRNzSjV5jhpQmi57aXQ=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AIEJ7A9006416
+        b=dyZ6L6zno3pphEK7k6qPejnGlXzFHMw0IDGw/s3l1sGHTsr1WhGr/gXEjzhrQL6Yv
+         eERDmgrqAlRYODKqk0XWkTUme2UwP04E9lzdlvcRVVXWFF8LMwDNQXiTbrcRpcvLwB
+         Qd6xdiLZo7p4pTKZuBo0ZdZcQXSbiihjTveI1/kU=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AIEVva5022768
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 18 Nov 2020 08:19:07 -0600
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 18 Nov 2020 08:31:57 -0600
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 18
- Nov 2020 08:19:07 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2020 08:31:56 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 18 Nov 2020 08:19:07 -0600
+ Frontend Transport; Wed, 18 Nov 2020 08:31:56 -0600
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AIEJ6n1037747;
-        Wed, 18 Nov 2020 08:19:07 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AIEVu22079492;
+        Wed, 18 Nov 2020 08:31:56 -0600
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
-To:     Tony Lindgren <tony@atomide.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+CC:     <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
         Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH] bus: ti-sysc: suppress err msg for timers used as clockevent/source
-Date:   Wed, 18 Nov 2020 16:19:00 +0200
-Message-ID: <20201118141900.25063-1-grygorii.strashko@ti.com>
+Subject: [PATCH] gpio: omap: handle deferred probe with dev_err_probe() for gpiochip_add_data()
+Date:   Wed, 18 Nov 2020 16:31:49 +0200
+Message-ID: <20201118143149.26067-1-grygorii.strashko@ti.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -51,33 +54,34 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-GP Timers used as clockevent/source are not available for ti-sysc bus and
-handled by Kernel timekeeping core. Now ti-sysc produces error message
-every time such timer is detected:
+The gpiochip_add_data() may return -EPROBE_DEFER which is not handled
+properly by TI GPIO driver and causes unnecessary boot log messages.
 
- "ti-sysc: probe of 48040000.target-module failed with error -16"
-
-Such messages are not necessary, so suppress them by returning -ENXIO
-instead of -EBUSY.
+Hence, add proper deferred probe handling with new dev_err_probe() API.
 
 Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 ---
- drivers/bus/ti-sysc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-omap.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 792a2878cb16..02186bac1b0b 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2883,7 +2883,7 @@ static int sysc_check_active_timer(struct sysc *ddata)
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index f7ceb2b11afc..41952bb818ad 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -1049,11 +1049,8 @@ static int omap_gpio_chip_init(struct gpio_bank *bank, struct irq_chip *irqc)
+ 	irq->first = irq_base;
  
- 	if ((ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT) &&
- 	    (ddata->cfg.quirks & SYSC_QUIRK_NO_IDLE))
--		return -EBUSY;
-+		return -ENXIO;
+ 	ret = gpiochip_add_data(&bank->chip, bank);
+-	if (ret) {
+-		dev_err(bank->chip.parent,
+-			"Could not register gpio chip %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(bank->chip.parent, ret, "Could not register gpio chip\n");
  
- 	return 0;
- }
+ 	ret = devm_request_irq(bank->chip.parent, bank->irq,
+ 			       omap_gpio_irq_handler,
 -- 
 2.17.1
 
