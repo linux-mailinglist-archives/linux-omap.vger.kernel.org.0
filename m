@@ -2,80 +2,143 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5A642B862E
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Nov 2020 22:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07CBE2B8657
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Nov 2020 22:14:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727496AbgKRVAG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 18 Nov 2020 16:00:06 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55830 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726502AbgKRVAG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 18 Nov 2020 16:00:06 -0500
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 01DB9246CA;
-        Wed, 18 Nov 2020 21:00:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605733205;
-        bh=OiRq5n6pYwtlRHg6S3gu6kn/EVUSMv2UVgnqO2UpdH4=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=RMLhtTmGmk2wGvmHCsPi7tJxbedfqVn0u5moSprReTbj/UoMPWB/GpAV7XRROGkbm
-         YSPOexo3xa90oHw8CD+xjv7U2UVnoV2HOuSRj9w9G2zYDa7c1u0tH4LSSXncAS0fuN
-         GSggAxDgvvmOjAnlnOsDYWukxh9FJ7rD5DjCCHgA=
-Date:   Wed, 18 Nov 2020 20:59:45 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Nishanth Menon <nm@ti.com>, Liam Girdwood <lgirdwood@gmail.com>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        lkft-triage@lists.linaro.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-In-Reply-To: <20201118145009.10492-1-nm@ti.com>
-References: <20201118145009.10492-1-nm@ti.com>
-Subject: Re: [PATCH] regulator: ti-abb: Fix array out of bound read access on the first transition
-Message-Id: <160573318504.46660.3881026259686236737.b4-ty@kernel.org>
+        id S1726374AbgKRVLn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Nov 2020 16:11:43 -0500
+Received: from mail-oo1-f67.google.com ([209.85.161.67]:33848 "EHLO
+        mail-oo1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726098AbgKRVLm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Nov 2020 16:11:42 -0500
+Received: by mail-oo1-f67.google.com with SMTP id q28so809121oof.1;
+        Wed, 18 Nov 2020 13:11:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=uD5r0mgjx4XJefZojTk2Z0WXY+V/wMDo4YKRMEiDeRo=;
+        b=ai8dGM4IEJXeLYTj5uxG78HcCaY3g/mzGYXzmyUE9uwfGykLaWymjACaGlUGK2T9ju
+         949XqnEFlrXBfvDZoL31F+ZdeaNMZGzoLDBJbprUl5xQMcPY5fz28+GK3ap9rtK2W0xC
+         skSR4mB7Q+iMNo6WDZw5ys9PGIe3WwboRMS8ViQYlrxLybJW+y/Wc0lcn3/zqnbvkRGg
+         ypTZiwCkmaZaJYtM3pgeZg5qbSTl5FuXeepeCb8nhNOrAi9d1voLBNNyVSAO84OUv08v
+         xCIUtTLD9PYWHSvqRk2o+jcqIqFlRqJn6mLjTjIMLypfiMVZJQBBeptDREzHhfH8lVVz
+         xLNw==
+X-Gm-Message-State: AOAM5321818luQH4asRKONJC3UPeIa9T5U0aOkm7bJlAyGCfUL6ANEfq
+        8CJ8cULqfw1LmnJVrAr/aNpudm6XlA==
+X-Google-Smtp-Source: ABdhPJxOzK+MobHEv7bORvgn3Y50ldP9mkw/2MAFt5uWRKavbH8N6hGY5gQPftuWziY/LxDkTP4CQg==
+X-Received: by 2002:a05:6820:453:: with SMTP id p19mr7783312oou.28.1605733901532;
+        Wed, 18 Nov 2020 13:11:41 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id m109sm7852560otc.30.2020.11.18.13.11.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2020 13:11:40 -0800 (PST)
+Received: (nullmailer pid 1823762 invoked by uid 1000);
+        Wed, 18 Nov 2020 21:11:39 -0000
+Date:   Wed, 18 Nov 2020 15:11:39 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: pci: ti,j721e: Fix
+ "ti,syscon-pcie-ctrl" to take argument
+Message-ID: <20201118211139.GA1815279@bogus>
+References: <20201116173141.31873-1-kishon@ti.com>
+ <20201116173141.31873-2-kishon@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201116173141.31873-2-kishon@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 18 Nov 2020 08:50:09 -0600, Nishanth Menon wrote:
-> At the start of driver initialization, we do not know what bias
-> setting the bootloader has configured the system for and we only know
-> for certain the very first time we do a transition.
+On Mon, Nov 16, 2020 at 11:01:39PM +0530, Kishon Vijay Abraham I wrote:
+> Fix binding documentation of "ti,syscon-pcie-ctrl" to take phandle with
+> argument. The argument is the register offset within "syscon" used to
+> configure PCIe controller.
 > 
-> However, since the initial value of the comparison index is -EINVAL,
-> this negative value results in an array out of bound access on the
-> very first transition.
+> Link: Link: http://lore.kernel.org/r/CAL_JsqKiUcO76bo1GoepWM1TusJWoty_BRy2hFSgtEVMqtrvvQ@mail.gmail.com
+
+Link: Link: ?
+
+AIUI, 'Link' is supposed to be a link to this patch. I guess more than 1 
+Link would be okay though.
+
+> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> ---
+>  .../devicetree/bindings/pci/ti,j721e-pci-ep.yaml     | 12 ++++++++----
+>  .../devicetree/bindings/pci/ti,j721e-pci-host.yaml   | 12 ++++++++----
+>  2 files changed, 16 insertions(+), 8 deletions(-)
 > 
-> [...]
+> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+> index 3ae3e1a2d4b0..e9685c0bdc3e 100644
+> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+> @@ -29,9 +29,13 @@ properties:
+>        - const: mem
+>  
+>    ti,syscon-pcie-ctrl:
+> -    description: Phandle to the SYSCON entry required for configuring PCIe mode
+> -                 and link speed.
+> -    $ref: /schemas/types.yaml#/definitions/phandle
+> +    allOf:
 
-Applied to
+You no longer need allOf here.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
-
-Thanks!
-
-[1/1] regulator: ti-abb: Fix array out of bound read access on the first transition
-      commit: 2ba546ebe0ce2af47833d8912ced9b4a579f13cb
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+> +      - $ref: /schemas/types.yaml#/definitions/phandle-array
+> +      - items:
+> +          - items:
+> +            - description: Phandle to the SYSCON entry
+> +            - description: pcie_ctrl register offset within SYSCON
+> +    description: Specifier for configuring PCIe mode and link speed.
+>  
+>    power-domains:
+>      maxItems: 1
+> @@ -80,7 +84,7 @@ examples:
+>                   <0x00 0x0d000000 0x00 0x00800000>,
+>                   <0x00 0x10000000 0x00 0x08000000>;
+>             reg-names = "intd_cfg", "user_cfg", "reg", "mem";
+> -           ti,syscon-pcie-ctrl = <&pcie0_ctrl>;
+> +           ti,syscon-pcie-ctrl = <&pcie0_ctrl 0x4070>;
+>             max-link-speed = <3>;
+>             num-lanes = <2>;
+>             power-domains = <&k3_pds 239 TI_SCI_PD_EXCLUSIVE>;
+> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+> index ee7a8eade3f6..a3b82992bcfa 100644
+> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+> @@ -29,9 +29,13 @@ properties:
+>        - const: cfg
+>  
+>    ti,syscon-pcie-ctrl:
+> -    description: Phandle to the SYSCON entry required for configuring PCIe mode
+> -      and link speed.
+> -    $ref: /schemas/types.yaml#/definitions/phandle
+> +    allOf:
+> +      - $ref: /schemas/types.yaml#/definitions/phandle-array
+> +      - items:
+> +          - items:
+> +            - description: Phandle to the SYSCON entry
+> +            - description: pcie_ctrl register offset within SYSCON
+> +    description: Specifier for configuring PCIe mode and link speed.
+>  
+>    power-domains:
+>      maxItems: 1
+> @@ -90,7 +94,7 @@ examples:
+>                    <0x00 0x0d000000 0x00 0x00800000>,
+>                    <0x00 0x10000000 0x00 0x00001000>;
+>              reg-names = "intd_cfg", "user_cfg", "reg", "cfg";
+> -            ti,syscon-pcie-ctrl = <&pcie0_ctrl>;
+> +            ti,syscon-pcie-ctrl = <&pcie0_ctrl 0x4070>;
+>              max-link-speed = <3>;
+>              num-lanes = <2>;
+>              power-domains = <&k3_pds 239 TI_SCI_PD_EXCLUSIVE>;
+> -- 
+> 2.17.1
+> 
