@@ -2,95 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 522052B93C2
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Nov 2020 14:41:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A2F72B941F
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Nov 2020 15:10:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727016AbgKSNlE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Nov 2020 08:41:04 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:46270 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726407AbgKSNlE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Nov 2020 08:41:04 -0500
-Received: by mail-ot1-f68.google.com with SMTP id g19so5244713otp.13;
-        Thu, 19 Nov 2020 05:41:03 -0800 (PST)
+        id S1727356AbgKSOJB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Nov 2020 09:09:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60512 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727363AbgKSOI7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Nov 2020 09:08:59 -0500
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D42EC0613D4
+        for <linux-omap@vger.kernel.org>; Thu, 19 Nov 2020 06:08:58 -0800 (PST)
+Received: by mail-lj1-x243.google.com with SMTP id p12so6346674ljc.9
+        for <linux-omap@vger.kernel.org>; Thu, 19 Nov 2020 06:08:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UF6cB4y26/1x+ilSgxNaVWPYjbbYhd7kb0SvD73E4kU=;
+        b=ui9Fzug9MSbXWblCAU0MDz8kBmjHpPOA+hoxmzbFgaHhog5Uei7ieNNzC17jJC5xXk
+         OgmaTyHT+6hLr5dzjkIyJ+MVA+gMjtMjOPPVwKlsKNdgckM0bXlqwsmnMKwhrBxl939N
+         bWMtMzLSp4CmWBTlibdc83mY3I5xQH1kg5hLJ5Y05IDhp94ygaK5NUvc5ay2VXX5VcEW
+         4mhHwhsr4Wi9rNZw7INdbzqllPp3rpMAfeRBHp8vR9XQLe+KC0PpCSWf/ec2kbsYwVek
+         Y7XJWjtDXAayJ9/h7GrTvJqHMWdz/a8nYd5Jb17bxrUaSvQmseoNUzeHdOhp8XewYOQg
+         SLfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=pWdGWfb4zpjGFZh1QfFXdieL2Mv6UxsoCvWj7emmjHU=;
-        b=pp+D3NH74vAZEOdu7M8Kboz0FZqhhGO9ZPa96X2zvwh+2cAjbIOvO8i4uHvMTKiVE8
-         XENrBXwG82dTCE5hcbvj7WqFdrgNkGVIzv1dENZ8grJDurpZtJomoCBfuJE4zYmXzlya
-         xqVjT0kc30JqBYkYoWQfvThK9P13Tvsc+Pl7gr24OIgxc9gfvw6kxyY8SwRQYkcBtaXV
-         ynJnO0bO/iPdzux75P+5fgzX+sw9iB7RSTYs+YurEwv+QM7OvcH/petpSH56xkovsF6i
-         PYCT0N8X0w9a1s1Pl3+fUybwvCCJBoJ9fLOPxL135jvt5YWK3mDOLoYA/9PwKfWYN4/B
-         erEw==
-X-Gm-Message-State: AOAM531asHOeaRXHTwqyIG+h3lSgSqI2P3oJaaNWUG82SB6l5jEfYZeg
-        Mqi6cD34b1A6gS5fvAJTqg==
-X-Google-Smtp-Source: ABdhPJwY0cOrzBmWr+JQmUb/kibZ8NUexFRKYvq1K3uR9TZzGyI5uyHE1FlS5y39c5cQ+p+HjUB+IQ==
-X-Received: by 2002:a9d:3ef7:: with SMTP id b110mr9685285otc.333.1605793263242;
-        Thu, 19 Nov 2020 05:41:03 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id r3sm8531611otn.67.2020.11.19.05.41.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2020 05:41:02 -0800 (PST)
-Received: (nullmailer pid 3148367 invoked by uid 1000);
-        Thu, 19 Nov 2020 13:41:01 -0000
-Date:   Thu, 19 Nov 2020 07:41:01 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Tero Kristo <t-kristo@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Nishanth Menon <nm@ti.com>, linux-pci@vger.kernel.org,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Subject: Re: [PATCH 1/3] dt-bindings: pci: ti, j721e: Fix "ti,
- syscon-pcie-ctrl" to take argument
-Message-ID: <20201119134101.GA3148079@bogus>
-References: <20201116173141.31873-1-kishon@ti.com>
- <20201116173141.31873-2-kishon@ti.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UF6cB4y26/1x+ilSgxNaVWPYjbbYhd7kb0SvD73E4kU=;
+        b=VbHDh32mi+dZmi1zsHp9kkubftpOlJipcLVz69KPBCyutP/daw8x6tx8DLjSbTqUYw
+         +j8L0DXjyvmOyCvdqHFNodq/sPxzRKzAuJeCC7CibAURBCWHd3iXv+nNmcosmq+rV6Kk
+         XiNRrl3+e8EqtlfdLUV7MhQ627M1Oo5dyPrpTArebewOYFUGEYl3lX1F5VWA+qaaBQ13
+         XBTqHRL2g8hW0WoOmL0HU4nGkkBVYZD5IL62qVInEakWjPW3DSZXgwBnPoEqiIaXa29G
+         MCR82pd6tnHBCj8iv2oHleTidcy9VZpHEMAFXJ6+BnW5NDFRlIAAqOyiRhnZpJaCRaQE
+         /OSQ==
+X-Gm-Message-State: AOAM530RkqSHy/OxbZAf7wuabaS3qgSAhNL930j3zk/BMa5g/g7PMr2N
+        itBdXzbQ9gko0R+PkKAuY82P8A==
+X-Google-Smtp-Source: ABdhPJx0TL5BdSP4dq002vIYpP7fDsQO06jmylq7JLz3JU64d0Gv7AEXiEzyjG8SHTDOmTip9RP+jQ==
+X-Received: by 2002:a2e:90cb:: with SMTP id o11mr6356318ljg.465.1605794936946;
+        Thu, 19 Nov 2020 06:08:56 -0800 (PST)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id h12sm4024706lfl.74.2020.11.19.06.08.55
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 19 Nov 2020 06:08:56 -0800 (PST)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     ohad@wizery.com, bjorn.andersson@linaro.org,
+        mathieu.poirier@linaro.org, s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, linux-remoteproc@vger.kernel.org,
+        robh+dt@kernel.org, lee.jones@linaro.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        praneeth@ti.com, rogerq@ti.com
+Subject: [PATCH v2 0/6] Add a PRU remoteproc driver
+Date:   Thu, 19 Nov 2020 15:08:44 +0100
+Message-Id: <20201119140850.12268-1-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201116173141.31873-2-kishon@ti.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 16 Nov 2020 23:01:39 +0530, Kishon Vijay Abraham I wrote:
-> Fix binding documentation of "ti,syscon-pcie-ctrl" to take phandle with
-> argument. The argument is the register offset within "syscon" used to
-> configure PCIe controller.
-> 
-> Link: Link: http://lore.kernel.org/r/CAL_JsqKiUcO76bo1GoepWM1TusJWoty_BRy2hFSgtEVMqtrvvQ@mail.gmail.com
-> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-> ---
->  .../devicetree/bindings/pci/ti,j721e-pci-ep.yaml     | 12 ++++++++----
->  .../devicetree/bindings/pci/ti,j721e-pci-host.yaml   | 12 ++++++++----
->  2 files changed, 16 insertions(+), 8 deletions(-)
-> 
+Hi All,
 
+The Programmable Real-Time Unit and Industrial Communication Subsystem
+(PRU-ICSS or simply PRUSS) on various TI SoCs consists of dual 32-bit
+RISC cores (Programmable Real-Time Units, or PRUs) for program execution.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+The K3 AM65x amd J721E SoCs have the next generation of the PRU-ICSS IP,
+commonly called ICSSG. The ICSSG IP on AM65x SoCs has two PRU cores,
+two auxiliary custom PRU cores called Real Time Units (RTUs). The K3
+AM65x SR2.0 and J721E SoCs have a revised version of the ICSSG IP, and
+include two additional custom auxiliary PRU cores called Transmit PRUs
+(Tx_PRUs).
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml:36:13: [warning] wrong indentation: expected 14 but found 12 (indentation)
-./Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml:36:13: [warning] wrong indentation: expected 14 but found 12 (indentation)
+This series contains the PRUSS remoteproc driver together with relevant
+dt-binding. This is the 3rd foundation component for PRUSS subsystem, the
+previous two were already merged and can be found under:
+1) drivers/soc/ti/pruss.c
+   Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+2) drivers/irqchip/irq-pruss-intc.c
+   Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
 
-dtschema/dtc warnings/errors:
+The following is a v2 version of the series. Please see the individual patches
+for exact changes in each patch, following are the main changes from v1:
+- Patch #1: fix two yamllint warnings.
+- Patch #2: address Suman comments: minor style improvements and fix for
+	    optional resource table handling (moved from patch #3).
+- Patch #3: address Suman comment: minor style, comments and trace improvements
+	    (no functional changes).
+- Patch #4: No changes.
+- Patch #5: Update documentation of pru_rproc_memcpy() function and is_k3 flag.
+- Patch #6: No changes.
 
+Best regards,
+Grzegorz
 
-See https://patchwork.ozlabs.org/patch/1401067
+Grzegorz Jaszczyk (1):
+  remoteproc/pru: Add support for PRU specific interrupt configuration
 
-The base for the patch is generally the last rc1. Any dependencies
-should be noted.
+Suman Anna (5):
+  dt-bindings: remoteproc: Add binding doc for PRU cores in the PRU-ICSS
+  remoteproc/pru: Add a PRU remoteproc driver
+  remoteproc/pru: Add pru-specific debugfs support
+  remoteproc/pru: Add support for various PRU cores on K3 AM65x SoCs
+  remoteproc/pru: Add support for various PRU cores on K3 J721E SoCs
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+ .../bindings/remoteproc/ti,pru-rproc.yaml     | 214 +++++
+ drivers/remoteproc/Kconfig                    |  12 +
+ drivers/remoteproc/Makefile                   |   1 +
+ drivers/remoteproc/pru_rproc.c                | 877 ++++++++++++++++++
+ drivers/remoteproc/pru_rproc.h                |  46 +
+ 5 files changed, 1150 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
+ create mode 100644 drivers/remoteproc/pru_rproc.c
+ create mode 100644 drivers/remoteproc/pru_rproc.h
 
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+-- 
+2.29.0
 
