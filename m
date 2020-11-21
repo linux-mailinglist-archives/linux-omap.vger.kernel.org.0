@@ -2,103 +2,172 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A32A2BBCB5
-	for <lists+linux-omap@lfdr.de>; Sat, 21 Nov 2020 04:40:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ACB62BBCC6
+	for <lists+linux-omap@lfdr.de>; Sat, 21 Nov 2020 04:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727027AbgKUDjm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 Nov 2020 22:39:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41998 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726431AbgKUDjl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Nov 2020 22:39:41 -0500
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE7EC0613CF
-        for <linux-omap@vger.kernel.org>; Fri, 20 Nov 2020 19:39:41 -0800 (PST)
-Received: by mail-ot1-x342.google.com with SMTP id k3so10711663otp.12
-        for <linux-omap@vger.kernel.org>; Fri, 20 Nov 2020 19:39:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=yt1RKeBAyO/ZvyBjIZKUNXc1EPd/mhgYIE1hAiiHLA4=;
-        b=PrVavSIAKHzqHIrSaafaiiSEVMcgTha2+wFop+AYntc+ri24hKAib3maBrgyHOigIh
-         MnrrGEdpHF7Z8BhBbu6KDVpXkNk0amQzb/LbAWP+J/c2faJjugvReaYUYm1J+elGZKEV
-         AuPkz5bb6mP4B4JcoCORSwh7Y8AzczCaKRPGlWBNS4sSgZnFe1i0PYlauoSKpVGpkMTL
-         vquIr0rNONKvJX3h80pzWrO0LeIAFRC99wsWZlGbbLTywTiC+y6H/RDrHpIfjglcturM
-         AWC15T0g1LxsCcWBXGK23O/N80UkQTU1WniOJFBNvLpHAKaPDhV8UQfWed2sy3VduwHs
-         DHWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=yt1RKeBAyO/ZvyBjIZKUNXc1EPd/mhgYIE1hAiiHLA4=;
-        b=txXbznfE7IPDF9+0DOBtCMkE98UcPRCVTVn8x7Usf579QKoixgtkv1iZht2OTjBNm/
-         8Hhf7Oqd+VjR/A0pAxS23znaOsHkmHLDRqkqWi9XXpPnDgd2b8hefP2koXLTnzk6vJ75
-         B0i9b2J5JyBArbXH1qs2lfIuiXKT4YeVMuj6ck827/DQ3RYmJs4O7aNfKlLuDYKV2REq
-         70rwGqYBJtfdDui1gDhmwMQkT6SuqodAp85Dl+E633hAz68ABxPcbgkAfXEhBWnqS24V
-         7oFAdLakqYV5lLAm8DZntTw/B1kyVcBvtgojVa3Pws2mqBmD2DGLi8WbhD2EiaMxlY+x
-         vwIQ==
-X-Gm-Message-State: AOAM530wfVsc2N3F6opDit83/8C1SSxPgsVG0nWCKtyzQXtUI3dA/2Rl
-        1ahfUhVj8C80P/gvKn0tPUnLKTnSL6kuyQ==
-X-Google-Smtp-Source: ABdhPJzxbDle5d1+EsCC/raEZWSn9K83g5/BDo0MkIhkGm4FiPS6Nb7OUDiHpyUlTov9CDBZCJyi0Q==
-X-Received: by 2002:a9d:27c9:: with SMTP id c67mr15608307otb.301.1605929981238;
-        Fri, 20 Nov 2020 19:39:41 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id w14sm2688442oou.16.2020.11.20.19.39.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2020 19:39:40 -0800 (PST)
-Date:   Fri, 20 Nov 2020 21:39:38 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     Mathieu Poirier <mathieu.poirier@linaro.org>,
+        id S1727316AbgKUDow (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Nov 2020 22:44:52 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:58004 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726189AbgKUDov (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Nov 2020 22:44:51 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AL3ijoY094916;
+        Fri, 20 Nov 2020 21:44:45 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1605930285;
+        bh=mtcGcwe0UhnAjow/hTtbrFuVmQZBu7wLypOdw0kHT5c=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=n6GnvdCea1FI2LQXKeqjYGi7BbpzUPkF+1B6FjWrcIa8r92NHeJ+BWWk2YLI/Xjw7
+         iR3LZmR/PC7qRfEvdG1LmpgZiMrPAMfa2XgmmwcRUqw00fo51el3ViYuSdHaaWUqOs
+         r7CB9gJcf8gQjEZuOIE/u+onZ1dE84XqVaN58QZY=
+Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AL3iiHF068496
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 20 Nov 2020 21:44:44 -0600
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 20
+ Nov 2020 21:44:44 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 20 Nov 2020 21:44:44 -0600
+Received: from [10.250.68.46] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AL3iiBl060339;
+        Fri, 20 Nov 2020 21:44:44 -0600
+Subject: Re: [PATCH v2 2/3] remoteproc: Introduce deny_sysfs_ops flag
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+CC:     Mathieu Poirier <mathieu.poirier@linaro.org>,
         Arnaud Pouliquen <arnaud.pouliquen@st.com>,
         Loic Pallardy <loic.pallardy@st.com>,
         Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
         Tony Lindgren <tony@atomide.com>,
-        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] remoteproc: wkup_m3: Set deny_sysfs_ops flag
-Message-ID: <20201121033938.GH9177@builder.lan>
+        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
 References: <20201121030156.22857-1-s-anna@ti.com>
- <20201121030156.22857-4-s-anna@ti.com>
+ <20201121030156.22857-3-s-anna@ti.com> <20201121033810.GG9177@builder.lan>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <e416b071-5cae-797e-5d15-7e947c99aa55@ti.com>
+Date:   Fri, 20 Nov 2020 21:44:44 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201121030156.22857-4-s-anna@ti.com>
+In-Reply-To: <20201121033810.GG9177@builder.lan>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri 20 Nov 21:01 CST 2020, Suman Anna wrote:
+On 11/20/20 9:38 PM, Bjorn Andersson wrote:
+> On Fri 20 Nov 21:01 CST 2020, Suman Anna wrote:
+> 
+>> The remoteproc framework provides sysfs interfaces for changing
+>> the firmware name and for starting/stopping a remote processor
+>> through the sysfs files 'state' and 'firmware'. The 'recovery'
+>> sysfs file can also be used similarly to control the error recovery
+>> state machine of a remoteproc. These interfaces are currently
+>> allowed irrespective of how the remoteprocs were booted (like
+>> remoteproc self auto-boot, remoteproc client-driven boot etc).
+>> These interfaces can adversely affect a remoteproc and its clients
+>> especially when a remoteproc is being controlled by a remoteproc
+>> client driver(s). Also, not all remoteproc drivers may want to
+>> support the sysfs interfaces by default.
+>>
+>> Add support to deny the sysfs state/firmware/recovery change by
+>> introducing a state flag 'deny_sysfs_ops' that the individual
+>> remoteproc drivers can set based on their usage needs. The default
+>> behavior is to allow the sysfs operations as before.
+>>
+> 
+> This makes sense, but can't we implement attribute_group->is_visible to
+> simply hide these entries from userspace instead of leaving them
+> "broken"?
 
-> The Wakeup M3 remote processor is controlled by the wkup_m3_ipc
-> client driver, so set the newly introduced 'deny_sysfs_ops' flag
-> to not allow any overriding of the remoteproc firmware or state
-> from userspace.
-> 
+I would have to look into that, but can that be changed dynamically?
+Also, note that the enforcement is only on the writes/stores which impact
+the state-machine, but not the reads/shows.
 
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+For PRU usecases, we will be setting this dynamically.
 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> ---
-> v2: rebased version, no code changes, patch title adjusted slightly
-> v1: https://patchwork.kernel.org/project/linux-remoteproc/patch/20180915003725.17549-6-s-anna@ti.com/
+regards
+Suman
+
 > 
->  drivers/remoteproc/wkup_m3_rproc.c | 1 +
->  1 file changed, 1 insertion(+)
+> Regards,
+> Bjorn
 > 
-> diff --git a/drivers/remoteproc/wkup_m3_rproc.c b/drivers/remoteproc/wkup_m3_rproc.c
-> index b9349d684258..d92d7f32ba8d 100644
-> --- a/drivers/remoteproc/wkup_m3_rproc.c
-> +++ b/drivers/remoteproc/wkup_m3_rproc.c
-> @@ -160,6 +160,7 @@ static int wkup_m3_rproc_probe(struct platform_device *pdev)
->  	}
->  
->  	rproc->auto_boot = false;
-> +	rproc->deny_sysfs_ops = true;
->  
->  	wkupm3 = rproc->priv;
->  	wkupm3->rproc = rproc;
-> -- 
-> 2.28.0
-> 
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> ---
+>> v2: revised to account for the 'recovery' sysfs file as well, patch
+>>     description updated accordingly
+>> v1: https://patchwork.kernel.org/project/linux-remoteproc/patch/20180915003725.17549-5-s-anna@ti.com/
+>>
+>>  drivers/remoteproc/remoteproc_sysfs.c | 12 ++++++++++++
+>>  include/linux/remoteproc.h            |  2 ++
+>>  2 files changed, 14 insertions(+)
+>>
+>> diff --git a/drivers/remoteproc/remoteproc_sysfs.c b/drivers/remoteproc/remoteproc_sysfs.c
+>> index bd2950a246c9..3fd18a71c188 100644
+>> --- a/drivers/remoteproc/remoteproc_sysfs.c
+>> +++ b/drivers/remoteproc/remoteproc_sysfs.c
+>> @@ -49,6 +49,10 @@ static ssize_t recovery_store(struct device *dev,
+>>  {
+>>  	struct rproc *rproc = to_rproc(dev);
+>>  
+>> +	/* restrict sysfs operations if not allowed by remoteproc drivers */
+>> +	if (rproc->deny_sysfs_ops)
+>> +		return -EPERM;
+>> +
+>>  	if (sysfs_streq(buf, "enabled")) {
+>>  		/* change the flag and begin the recovery process if needed */
+>>  		rproc->recovery_disabled = false;
+>> @@ -158,6 +162,10 @@ static ssize_t firmware_store(struct device *dev,
+>>  	char *p;
+>>  	int err, len = count;
+>>  
+>> +	/* restrict sysfs operations if not allowed by remoteproc drivers */
+>> +	if (rproc->deny_sysfs_ops)
+>> +		return -EPERM;
+>> +
+>>  	err = mutex_lock_interruptible(&rproc->lock);
+>>  	if (err) {
+>>  		dev_err(dev, "can't lock rproc %s: %d\n", rproc->name, err);
+>> @@ -225,6 +233,10 @@ static ssize_t state_store(struct device *dev,
+>>  	struct rproc *rproc = to_rproc(dev);
+>>  	int ret = 0;
+>>  
+>> +	/* restrict sysfs operations if not allowed by remoteproc drivers */
+>> +	if (rproc->deny_sysfs_ops)
+>> +		return -EPERM;
+>> +
+>>  	if (sysfs_streq(buf, "start")) {
+>>  		if (rproc->state == RPROC_RUNNING)
+>>  			return -EBUSY;
+>> diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
+>> index 3fa3ba6498e8..dbc3767f7d0e 100644
+>> --- a/include/linux/remoteproc.h
+>> +++ b/include/linux/remoteproc.h
+>> @@ -508,6 +508,7 @@ struct rproc_dump_segment {
+>>   * @has_iommu: flag to indicate if remote processor is behind an MMU
+>>   * @auto_boot: flag to indicate if remote processor should be auto-started
+>>   * @autonomous: true if an external entity has booted the remote processor
+>> + * @deny_sysfs_ops: flag to not permit sysfs operations on state, firmware and recovery
+>>   * @dump_segments: list of segments in the firmware
+>>   * @nb_vdev: number of vdev currently handled by rproc
+>>   * @char_dev: character device of the rproc
+>> @@ -545,6 +546,7 @@ struct rproc {
+>>  	bool has_iommu;
+>>  	bool auto_boot;
+>>  	bool autonomous;
+>> +	bool deny_sysfs_ops;
+>>  	struct list_head dump_segments;
+>>  	int nb_vdev;
+>>  	u8 elf_class;
+>> -- 
+>> 2.28.0
+>>
+
