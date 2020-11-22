@@ -2,139 +2,190 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AD8FF2BC746
-	for <lists+linux-omap@lfdr.de>; Sun, 22 Nov 2020 17:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53E3B2BC792
+	for <lists+linux-omap@lfdr.de>; Sun, 22 Nov 2020 18:50:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728032AbgKVQtq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 22 Nov 2020 11:49:46 -0500
-Received: from bedivere.hansenpartnership.com ([96.44.175.130]:55320 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727317AbgKVQtp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 22 Nov 2020 11:49:45 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id AB0CF1280302;
-        Sun, 22 Nov 2020 08:49:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1606063784;
-        bh=17TrMRtvefoo+nGHR97pCnj/lxz5M0xWRk4mlB4j/j4=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=DJQ3WuSCh5ONJkQLvrRDKWjtqFtZT1TAPnAUYm6nnSis8bRSxmxTUdD1PrB7UWicY
-         RxKUvvDgawnlhMMDvZIHrNHIQxzEk4H+L7edJ9WYAgYp3e2Z+uWjpWqDuwMfVruTvK
-         GP/WMd/p5KAU/iZA/nGFhNVXHTmLoWjH8aSdKt9E=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id iwIwMm9lBMHQ; Sun, 22 Nov 2020 08:49:44 -0800 (PST)
-Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id CCD1012802EA;
-        Sun, 22 Nov 2020 08:49:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1606063784;
-        bh=17TrMRtvefoo+nGHR97pCnj/lxz5M0xWRk4mlB4j/j4=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=DJQ3WuSCh5ONJkQLvrRDKWjtqFtZT1TAPnAUYm6nnSis8bRSxmxTUdD1PrB7UWicY
-         RxKUvvDgawnlhMMDvZIHrNHIQxzEk4H+L7edJ9WYAgYp3e2Z+uWjpWqDuwMfVruTvK
-         GP/WMd/p5KAU/iZA/nGFhNVXHTmLoWjH8aSdKt9E=
-Message-ID: <751803306cd957d0e7ef6a4fc3dbf12ebceaba92.camel@HansenPartnership.com>
-Subject: Re: [RFC] MAINTAINERS tag for cleanup robot
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Tom Rix <trix@redhat.com>, Matthew Wilcox <willy@infradead.org>
-Cc:     joe@perches.com, clang-built-linux@googlegroups.com,
-        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-        xen-devel@lists.xenproject.org, tboot-devel@lists.sourceforge.net,
-        kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-acpi@vger.kernel.org, devel@acpica.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, netdev@vger.kernel.org,
-        linux-media@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
-        linux-scsi@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        ecryptfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        cluster-devel@redhat.com, linux-mtd@lists.infradead.org,
-        keyrings@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, alsa-devel@alsa-project.org,
-        bpf@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-nfs@vger.kernel.org, patches@opensource.cirrus.com
-Date:   Sun, 22 Nov 2020 08:49:41 -0800
-In-Reply-To: <0819ce06-c462-d4df-d3d9-14931dc5aefc@redhat.com>
-References: <20201121165058.1644182-1-trix@redhat.com>
-         <20201122032304.GE4327@casper.infradead.org>
-         <ddb08a27-3ca1-fb2e-d51f-4b471f1a56a3@redhat.com>
-         <20201122145635.GG4327@casper.infradead.org>
-         <0819ce06-c462-d4df-d3d9-14931dc5aefc@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+        id S1727972AbgKVRsw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 22 Nov 2020 12:48:52 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:43092 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727567AbgKVRsw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 22 Nov 2020 12:48:52 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AMHmiD4073306;
+        Sun, 22 Nov 2020 11:48:44 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1606067324;
+        bh=egm0vCVcqJrsWJaT4E6pP8bZGHQ8X8UOvlmsF/oNS10=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=uBGArDuzJMG4hrWeaTtmXS35Ui2AA6mk50W2afDjPL21aFoAko57gcoOE6UUYaMWW
+         AnSGQ3GbQDeb6TxeEQ/BiiR0Mz2lfGjvZYww4qKAxIOu4FnE+mIhmfjI7mm+LeqkGl
+         IUlgoiCT+gKhwHl53fWJbkgKYQQJ88QaYqPGmyME=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AMHmilg037864
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sun, 22 Nov 2020 11:48:44 -0600
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Sun, 22
+ Nov 2020 11:48:44 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Sun, 22 Nov 2020 11:48:44 -0600
+Received: from [10.250.68.46] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AMHmh9w018260;
+        Sun, 22 Nov 2020 11:48:44 -0600
+Subject: Re: [PATCH v2 2/3] remoteproc: Introduce deny_sysfs_ops flag
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+CC:     Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
+        Loic Pallardy <loic.pallardy@st.com>,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20201121030156.22857-1-s-anna@ti.com>
+ <20201121030156.22857-3-s-anna@ti.com> <20201121033810.GG9177@builder.lan>
+ <e416b071-5cae-797e-5d15-7e947c99aa55@ti.com> <20201122053317.GJ807@yoga>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <1930fba4-70bd-f602-6dbd-f1cc8071da10@ti.com>
+Date:   Sun, 22 Nov 2020 11:48:43 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <20201122053317.GJ807@yoga>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, 2020-11-22 at 08:10 -0800, Tom Rix wrote:
-> On 11/22/20 6:56 AM, Matthew Wilcox wrote:
-> > On Sun, Nov 22, 2020 at 06:46:46AM -0800, Tom Rix wrote:
-> > > On 11/21/20 7:23 PM, Matthew Wilcox wrote:
-> > > > On Sat, Nov 21, 2020 at 08:50:58AM -0800, trix@redhat.com
-> > > > wrote:
-> > > > > The fixer review is
-> > > > > https://reviews.llvm.org/D91789
-> > > > > 
-> > > > > A run over allyesconfig for x86_64 finds 62 issues, 5 are
-> > > > > false positives. The false positives are caused by macros
-> > > > > passed to other macros and by some macro expansions that did
-> > > > > not have an extra semicolon.
-> > > > > 
-> > > > > This cleans up about 1,000 of the current 10,000 -Wextra-
-> > > > > semi-stmt warnings in linux-next.
-> > > > Are any of them not false-positives?  It's all very well to
-> > > > enable stricter warnings, but if they don't fix any bugs,
-> > > > they're just churn.
-> > > > 
-> > > While enabling additional warnings may be a side effect of this
-> > > effort
-> > > 
-> > > the primary goal is to set up a cleaning robot. After that a
-> > > refactoring robot.
-> > Why do we need such a thing?  Again, it sounds like more churn.
-> > It's really annoying when I'm working on something important that
-> > gets derailed by pointless churn.  Churn also makes it harder to
-> > backport patches to earlier kernels.
-> > 
-> A refactoring example on moving to treewide, consistent use of a new
-> api may help.
+On 11/21/20 11:33 PM, Bjorn Andersson wrote:
+> On Fri 20 Nov 21:44 CST 2020, Suman Anna wrote:
 > 
-> Consider
+>> On 11/20/20 9:38 PM, Bjorn Andersson wrote:
+>>> On Fri 20 Nov 21:01 CST 2020, Suman Anna wrote:
+>>>
+>>>> The remoteproc framework provides sysfs interfaces for changing
+>>>> the firmware name and for starting/stopping a remote processor
+>>>> through the sysfs files 'state' and 'firmware'. The 'recovery'
+>>>> sysfs file can also be used similarly to control the error recovery
+>>>> state machine of a remoteproc. These interfaces are currently
+>>>> allowed irrespective of how the remoteprocs were booted (like
+>>>> remoteproc self auto-boot, remoteproc client-driven boot etc).
+>>>> These interfaces can adversely affect a remoteproc and its clients
+>>>> especially when a remoteproc is being controlled by a remoteproc
+>>>> client driver(s). Also, not all remoteproc drivers may want to
+>>>> support the sysfs interfaces by default.
+>>>>
+>>>> Add support to deny the sysfs state/firmware/recovery change by
+>>>> introducing a state flag 'deny_sysfs_ops' that the individual
+>>>> remoteproc drivers can set based on their usage needs. The default
+>>>> behavior is to allow the sysfs operations as before.
+>>>>
+>>>
+>>> This makes sense, but can't we implement attribute_group->is_visible to
+>>> simply hide these entries from userspace instead of leaving them
+>>> "broken"?
+>>
+>> I would have to look into that, but can that be changed dynamically?
+>> Also, note that the enforcement is only on the writes/stores which impact
+>> the state-machine, but not the reads/shows.
+>>
+>> For PRU usecases, we will be setting this dynamically.
+>>
 > 
-> 2efc459d06f1630001e3984854848a5647086232
-> 
-> sysfs: Add sysfs_emit and sysfs_emit_at to format sysfs output
-> 
-> A new api for printing in the sysfs.  How do we use it treewide ?
-> 
-> Done manually, it would be a heroic effort requiring high level
-> maintainers pushing and likely only get partially done.
-> 
-> If a refactoring programatic fixit is done and validated on a one
-> subsystem, it can run on all the subsystems.
-> 
-> The effort is a couple of weeks to write and validate the fixer,
-> hours to run over the tree.
-> 
-> It won't be perfect but will be better than doing it manually.
+> It looks to be dynamic, but I don't know if there's any "caching"
+> involved. Please have a look and let me know.
 
-Here's a thought: perhaps we don't.  sysfs_emit isn't a "new api" its a
-minor rewrap of existing best practice.  The damage caused by the churn
-of forcing its use everywhere would far outweigh any actual benefit
-because pretty much every bug in this area has already been caught and
-killed by existing tools.  We can enforce sysfs_emit going forwards
-using tools like checkpatch but there's no benefit and a lot of harm to
-be done by trying to churn the entire tree retrofitting it (both in
-terms of review time wasted as well as patch series derailed).
+OK, will do. I can only check the week after though.
 
-James
+regards
+Suman
 
+> 
+> Regards,
+> Bjorn
+> 
+>> regards
+>> Suman
+>>
+>>>
+>>> Regards,
+>>> Bjorn
+>>>
+>>>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>>>> ---
+>>>> v2: revised to account for the 'recovery' sysfs file as well, patch
+>>>>     description updated accordingly
+>>>> v1: https://patchwork.kernel.org/project/linux-remoteproc/patch/20180915003725.17549-5-s-anna@ti.com/
+>>>>
+>>>>  drivers/remoteproc/remoteproc_sysfs.c | 12 ++++++++++++
+>>>>  include/linux/remoteproc.h            |  2 ++
+>>>>  2 files changed, 14 insertions(+)
+>>>>
+>>>> diff --git a/drivers/remoteproc/remoteproc_sysfs.c b/drivers/remoteproc/remoteproc_sysfs.c
+>>>> index bd2950a246c9..3fd18a71c188 100644
+>>>> --- a/drivers/remoteproc/remoteproc_sysfs.c
+>>>> +++ b/drivers/remoteproc/remoteproc_sysfs.c
+>>>> @@ -49,6 +49,10 @@ static ssize_t recovery_store(struct device *dev,
+>>>>  {
+>>>>  	struct rproc *rproc = to_rproc(dev);
+>>>>  
+>>>> +	/* restrict sysfs operations if not allowed by remoteproc drivers */
+>>>> +	if (rproc->deny_sysfs_ops)
+>>>> +		return -EPERM;
+>>>> +
+>>>>  	if (sysfs_streq(buf, "enabled")) {
+>>>>  		/* change the flag and begin the recovery process if needed */
+>>>>  		rproc->recovery_disabled = false;
+>>>> @@ -158,6 +162,10 @@ static ssize_t firmware_store(struct device *dev,
+>>>>  	char *p;
+>>>>  	int err, len = count;
+>>>>  
+>>>> +	/* restrict sysfs operations if not allowed by remoteproc drivers */
+>>>> +	if (rproc->deny_sysfs_ops)
+>>>> +		return -EPERM;
+>>>> +
+>>>>  	err = mutex_lock_interruptible(&rproc->lock);
+>>>>  	if (err) {
+>>>>  		dev_err(dev, "can't lock rproc %s: %d\n", rproc->name, err);
+>>>> @@ -225,6 +233,10 @@ static ssize_t state_store(struct device *dev,
+>>>>  	struct rproc *rproc = to_rproc(dev);
+>>>>  	int ret = 0;
+>>>>  
+>>>> +	/* restrict sysfs operations if not allowed by remoteproc drivers */
+>>>> +	if (rproc->deny_sysfs_ops)
+>>>> +		return -EPERM;
+>>>> +
+>>>>  	if (sysfs_streq(buf, "start")) {
+>>>>  		if (rproc->state == RPROC_RUNNING)
+>>>>  			return -EBUSY;
+>>>> diff --git a/include/linux/remoteproc.h b/include/linux/remoteproc.h
+>>>> index 3fa3ba6498e8..dbc3767f7d0e 100644
+>>>> --- a/include/linux/remoteproc.h
+>>>> +++ b/include/linux/remoteproc.h
+>>>> @@ -508,6 +508,7 @@ struct rproc_dump_segment {
+>>>>   * @has_iommu: flag to indicate if remote processor is behind an MMU
+>>>>   * @auto_boot: flag to indicate if remote processor should be auto-started
+>>>>   * @autonomous: true if an external entity has booted the remote processor
+>>>> + * @deny_sysfs_ops: flag to not permit sysfs operations on state, firmware and recovery
+>>>>   * @dump_segments: list of segments in the firmware
+>>>>   * @nb_vdev: number of vdev currently handled by rproc
+>>>>   * @char_dev: character device of the rproc
+>>>> @@ -545,6 +546,7 @@ struct rproc {
+>>>>  	bool has_iommu;
+>>>>  	bool auto_boot;
+>>>>  	bool autonomous;
+>>>> +	bool deny_sysfs_ops;
+>>>>  	struct list_head dump_segments;
+>>>>  	int nb_vdev;
+>>>>  	u8 elf_class;
+>>>> -- 
+>>>> 2.28.0
+>>>>
+>>
 
