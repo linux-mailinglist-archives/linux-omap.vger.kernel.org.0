@@ -2,123 +2,154 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FCE92C5442
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Nov 2020 13:54:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D91C02C56B8
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Nov 2020 15:12:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389754AbgKZMxi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 26 Nov 2020 07:53:38 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:45496 "EHLO
+        id S2390488AbgKZOML (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 26 Nov 2020 09:12:11 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:36288 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389703AbgKZMxi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Nov 2020 07:53:38 -0500
+        with ESMTP id S2390475AbgKZOML (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Nov 2020 09:12:11 -0500
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AQCrKGM023622;
-        Thu, 26 Nov 2020 06:53:20 -0600
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AQEBpGx052408;
+        Thu, 26 Nov 2020 08:11:51 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1606395200;
-        bh=8/i0PLwLC3PRuf2Girkk7ibqMIDhWokbjMZAt9wBkBQ=;
-        h=Subject:From:To:CC:References:Date:In-Reply-To;
-        b=HqpYXplKRSKhcYglOcByMX66sSMECwWSazz3TavTY8gVsDOzIO7NLcucUzMomuFA1
-         pg8IN7CUEqvbN7LnN5lGcFiXSNy8X0aHbrSRCHG2E9hplmoRk6+yRLcSAZ+iEIfpLO
-         3ZT1Wg+8+zVx6cMjTqw1UCv61J34/c0bee8KYxrU=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AQCrK0e011046
+        s=ti-com-17Q1; t=1606399911;
+        bh=h8FvSlW6MYmLAlmNm/rV0XpPr72kXTVgiwM9oYW4MMM=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=NTOShYdv54TtN9SpqxKPn3Xk4FZdWAjP5Bt6zY9ONfBQzuyZwe0Fqjx6qP+OKvED3
+         rrLec01H3eeQiUOYbyih6iP9D4dTufZYN1av9oSclUmHiESmV9iLqcBiVa68l/9YBI
+         DTzdGNybvLQxRgM0tTd/qgZ4EBBbViycbrxF/aZE=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AQEBpB6002918
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 26 Nov 2020 06:53:20 -0600
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 26 Nov 2020 08:11:51 -0600
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 26
- Nov 2020 06:53:20 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2020 08:11:51 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 26 Nov 2020 06:53:20 -0600
-Received: from [10.250.235.36] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AQCrG9p031373;
-        Thu, 26 Nov 2020 06:53:16 -0600
-Subject: Re: [PATCH 1/3] dt-bindings: pci: ti,j721e: Fix "ti,syscon-pcie-ctrl"
- to take argument
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-To:     Rob Herring <robh@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-CC:     Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ Frontend Transport; Thu, 26 Nov 2020 08:11:51 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AQEBndX044966;
+        Thu, 26 Nov 2020 08:11:49 -0600
+Subject: Re: [REGRESSION] omapdrm/N900 display broken
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        ML dri-devel <dri-devel@lists.freedesktop.org>
+CC:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-References: <20201116173141.31873-1-kishon@ti.com>
- <20201116173141.31873-2-kishon@ti.com> <20201118211139.GA1815279@bogus>
- <1e9b0b56-a42d-bea0-704b-6209532b1abe@ti.com>
-Message-ID: <1ed82ab5-6171-108d-9b92-a18389044174@ti.com>
-Date:   Thu, 26 Nov 2020 18:23:10 +0530
+References: <20200728181412.GA49617@darkstar.musicnaut.iki.fi>
+ <660b2fe1-343d-b83e-11d2-5a5eb530b83f@ti.com>
+ <448c1441-2cac-44ef-95ef-bb28b512297b@ti.com>
+ <20200823162625.GC4313@darkstar.musicnaut.iki.fi>
+ <ac42f7f9-2ac2-246e-69c1-3d56cea7e59b@ti.com>
+ <5072a25d-e885-cdd2-978d-70942406c272@gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <09044fd2-2926-c7b3-826b-52b742e84ff5@ti.com>
+Date:   Thu, 26 Nov 2020 16:11:49 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <1e9b0b56-a42d-bea0-704b-6209532b1abe@ti.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <5072a25d-e885-cdd2-978d-70942406c272@gmail.com>
+Content-Type: multipart/mixed;
+        boundary="------------F4CB996E1B69C173202E7352"
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Rob,
+--------------F4CB996E1B69C173202E7352
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On 20/11/20 10:39 am, Kishon Vijay Abraham I wrote:
-> Hi Rob,
-> 
-> On 19/11/20 2:41 am, Rob Herring wrote:
->> On Mon, Nov 16, 2020 at 11:01:39PM +0530, Kishon Vijay Abraham I wrote:
->>> Fix binding documentation of "ti,syscon-pcie-ctrl" to take phandle with
->>> argument. The argument is the register offset within "syscon" used to
->>> configure PCIe controller.
->>>
->>> Link: Link: http://lore.kernel.org/r/CAL_JsqKiUcO76bo1GoepWM1TusJWoty_BRy2hFSgtEVMqtrvvQ@mail.gmail.com
->>
->> Link: Link: ?
->>
->> AIUI, 'Link' is supposed to be a link to this patch. I guess more than 1 
->> Link would be okay though.
-> 
-> Two Links was a typo, will fix it in the next revision. Nishanth as well
-> was asking about using "Link:" tag for a mailing list discussion.
-> 
-> I started using it after Lorenzo had asked me to use Link tag for
-> mailing list discussion here sometime back.
-> 
-> https://patchwork.kernel.org/project/linux-pci/patch/20171219083627.7904-1-kishon@ti.com/#21350261
-> 
->>
->>> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
->>> ---
->>>  .../devicetree/bindings/pci/ti,j721e-pci-ep.yaml     | 12 ++++++++----
->>>  .../devicetree/bindings/pci/ti,j721e-pci-host.yaml   | 12 ++++++++----
->>>  2 files changed, 16 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
->>> index 3ae3e1a2d4b0..e9685c0bdc3e 100644
->>> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
->>> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
->>> @@ -29,9 +29,13 @@ properties:
->>>        - const: mem
->>>  
->>>    ti,syscon-pcie-ctrl:
->>> -    description: Phandle to the SYSCON entry required for configuring PCIe mode
->>> -                 and link speed.
->>> -    $ref: /schemas/types.yaml#/definitions/phandle
->>> +    allOf:
->>
->> You no longer need allOf here.
-> 
-> hmm, don't we need it for specifying phandle with fixed cells? FWIW, I
-> was referring
-> 
-> https://github.com/devicetree-org/dt-schema/blob/master/test/schemas/good-example.yaml#L187
+Hi Aaro, Ivaylo,
 
-Can you clarify this please?
+On 24/11/2020 23:03, Ivaylo Dimitrov wrote:
 
-Thank You,
-Kishon
+> Is there any progress on the issue? I tried 5.9.1 and still nothing displayed.
+
+Can you test the attached patch?
+
+ Tomi
+
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
+--------------F4CB996E1B69C173202E7352
+Content-Type: text/x-patch; charset="UTF-8";
+	name="0001-drm-omap-sdi-fix-bridge-enable-disable.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename="0001-drm-omap-sdi-fix-bridge-enable-disable.patch"
+
+From 97c55032ac5c44885b0ec219467699af0b6153c1 Mon Sep 17 00:00:00 2001
+From: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Date: Thu, 26 Nov 2020 16:04:24 +0200
+Subject: [PATCH] drm/omap: sdi: fix bridge enable/disable
+
+When the SDI output was converted to DRM bridge, the atomic versions of
+enable and disable funcs were used. This was not intended, as that would
+require implementing other atomic funcs too. This leads to:
+
+WARNING: CPU: 0 PID: 18 at drivers/gpu/drm/drm_bridge.c:708 drm_atomic_helper_commit_modeset_enables+0x134/0x268
+
+and display not working.
+
+Fix this by using the legacy enable/disable funcs.
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Fixes: 8bef8a6d5da81b909a190822b96805a47348146f ("drm/omap: sdi: Register a drm_bridge")
+Cc: stable@vger.kernel.org #v5.7+
+---
+ drivers/gpu/drm/omapdrm/dss/sdi.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/omapdrm/dss/sdi.c b/drivers/gpu/drm/omapdrm/dss/sdi.c
+index 033fd30074b0..282e4c837cd9 100644
+--- a/drivers/gpu/drm/omapdrm/dss/sdi.c
++++ b/drivers/gpu/drm/omapdrm/dss/sdi.c
+@@ -195,8 +195,7 @@ static void sdi_bridge_mode_set(struct drm_bridge *bridge,
+ 	sdi->pixelclock = adjusted_mode->clock * 1000;
+ }
+ 
+-static void sdi_bridge_enable(struct drm_bridge *bridge,
+-			      struct drm_bridge_state *bridge_state)
++static void sdi_bridge_enable(struct drm_bridge *bridge)
+ {
+ 	struct sdi_device *sdi = drm_bridge_to_sdi(bridge);
+ 	struct dispc_clock_info dispc_cinfo;
+@@ -259,8 +258,7 @@ static void sdi_bridge_enable(struct drm_bridge *bridge,
+ 	regulator_disable(sdi->vdds_sdi_reg);
+ }
+ 
+-static void sdi_bridge_disable(struct drm_bridge *bridge,
+-			       struct drm_bridge_state *bridge_state)
++static void sdi_bridge_disable(struct drm_bridge *bridge)
+ {
+ 	struct sdi_device *sdi = drm_bridge_to_sdi(bridge);
+ 
+@@ -278,8 +276,8 @@ static const struct drm_bridge_funcs sdi_bridge_funcs = {
+ 	.mode_valid = sdi_bridge_mode_valid,
+ 	.mode_fixup = sdi_bridge_mode_fixup,
+ 	.mode_set = sdi_bridge_mode_set,
+-	.atomic_enable = sdi_bridge_enable,
+-	.atomic_disable = sdi_bridge_disable,
++	.enable = sdi_bridge_enable,
++	.disable = sdi_bridge_disable,
+ };
+ 
+ static void sdi_bridge_init(struct sdi_device *sdi)
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
+
+--------------F4CB996E1B69C173202E7352--
