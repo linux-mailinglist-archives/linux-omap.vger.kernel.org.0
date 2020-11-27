@@ -2,118 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D828D2C6BBD
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Nov 2020 19:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 113A82C6BFD
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Nov 2020 20:33:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729402AbgK0SvP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Nov 2020 13:51:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45270 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728995AbgK0SrI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Nov 2020 13:47:08 -0500
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 372E2C0613D4;
-        Fri, 27 Nov 2020 10:45:57 -0800 (PST)
-Received: by mail-wr1-x441.google.com with SMTP id u12so6585715wrt.0;
-        Fri, 27 Nov 2020 10:45:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=dSpeTF5dkf6JO4oSmSVL/Gz5HzjVWXT8QGTspkUmOkI=;
-        b=G7EdtkLfVBJcJuQcWz2HUWQ1trPaUW05ND72IDep0c/khHO76cq2cZUJaIZf2mVRNh
-         qOeB8DcZmpVj2v8zvvXE70NunVIaBf5nUdbWwJDBUVT4pM0Zw4GlMJfQZdJkPQ6if3iB
-         GFYyaAaSqXCCmRbVSyh8Vm/bdCDPJB1tXihqK7Y5i+a9dy08P4zMJ9hNVTNFHo0n+4sy
-         7jUOI3bfn8Mv4ScPXHv3pD9enWq4rOSbo2Lz8Vn4iJmenxQt+AvD0FG5+z6Tv4BbeEQN
-         rMgeO0vWw/CKspUlb9TkZVcz5Yp39VjY4TvKNVqHaDfEKHkrBI9kSOWB2RV/ejAekJvH
-         k55Q==
+        id S1729330AbgK0TaO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Nov 2020 14:30:14 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:56728 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730098AbgK0TF6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 27 Nov 2020 14:05:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1606503919;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc; bh=P4J8EBWPnBVFoHBHwgQRXiVw93w2If7dqdzr9ZCw24E=;
+        b=GagEkA9rSJUY+3Kk0NLoDk6fGvYMhc2QV78uZlpYFqu72+prMISH7hclQFyAyziHOwOANW
+        sgCwtqvoqfbBPdT4ekzKjMIBZAd8kv96PkQGRXveuqRvEGwSoZBgTpmmk7DBOLVbt/LSJK
+        00AoW7LeGp3gA1i/kvlcVFzXZNASaLM=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-257-WdH6WSW3M1C1tnJrRFysrQ-1; Fri, 27 Nov 2020 14:05:17 -0500
+X-MC-Unique: WdH6WSW3M1C1tnJrRFysrQ-1
+Received: by mail-qt1-f197.google.com with SMTP id i20so3755120qtr.0
+        for <linux-omap@vger.kernel.org>; Fri, 27 Nov 2020 11:05:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=dSpeTF5dkf6JO4oSmSVL/Gz5HzjVWXT8QGTspkUmOkI=;
-        b=kVDh1mhcTnHShlmBeLxszrWrBEa4j7NlgAlAAny5zpk7WEwJVPCQWF0nLXv9tof+Dc
-         dF80H3z27aKU7NgYv03PzMqv7GaMokfbBcX43sUvRsSu7895mqYe+zO5Zf97GavxRuwq
-         0rtkifCOmgCH+QMBbVtur9jHnMqUaEb75SD+pTV1ZDsGOqrZmAN8+FbsIEaiu5yw0HMx
-         HOiV7RQ7EWbNkds1LswaEq8nHV0fzInk7YltPVuuK97v4U+g5s8w/6zyqu0vza5pfXno
-         Q8YAEs+Y6/t5/37XajqdTe3kMgx1tqZhD+iAcCeCVhWfag9uLlVGf+JF1mbkALyp1DXQ
-         +2eg==
-X-Gm-Message-State: AOAM533Sn+BBlGxma7OAhDbPByr3HU7bBhK1wZ6XUPO0H4OZ9PNZeeOZ
-        98Pqo4vkbeOtf8Tzqtragis=
-X-Google-Smtp-Source: ABdhPJyq0mMI3OCxgBoGVIvjn05MIOGizDE9GVA0/EOIksuKZa3NDm/cWIJWHeHw4h/3/1DdCMX+GA==
-X-Received: by 2002:adf:f8d2:: with SMTP id f18mr12091230wrq.379.1606502756008;
-        Fri, 27 Nov 2020 10:45:56 -0800 (PST)
-Received: from [192.168.1.10] ([46.249.74.23])
-        by smtp.googlemail.com with ESMTPSA id i5sm16384915wrw.45.2020.11.27.10.45.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 27 Nov 2020 10:45:55 -0800 (PST)
-Subject: Re: [REGRESSION] omapdrm/N900 display broken
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        ML dri-devel <dri-devel@lists.freedesktop.org>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Sebastian Reichel <sre@kernel.org>
-References: <20200728181412.GA49617@darkstar.musicnaut.iki.fi>
- <660b2fe1-343d-b83e-11d2-5a5eb530b83f@ti.com>
- <448c1441-2cac-44ef-95ef-bb28b512297b@ti.com>
- <20200823162625.GC4313@darkstar.musicnaut.iki.fi>
- <ac42f7f9-2ac2-246e-69c1-3d56cea7e59b@ti.com>
- <5072a25d-e885-cdd2-978d-70942406c272@gmail.com>
- <09044fd2-2926-c7b3-826b-52b742e84ff5@ti.com>
- <79ad8816-815c-14d3-ebe1-3c5007c81dd1@gmail.com>
- <1fe9fed7-f619-eb6a-6e31-b9eadbf09bad@ti.com>
- <8010e452-745a-ac12-bc02-5537305c70ed@gmail.com>
- <4948a40d-c887-5617-f5bc-1e0aff824ad7@gmail.com>
- <a86e0ef4-0b90-5aec-9632-e78fa4ca6d58@ti.com>
-From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Message-ID: <23e27b7a-d2b9-a0c0-7518-bb5105306a97@gmail.com>
-Date:   Fri, 27 Nov 2020 20:44:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Firefox/60.0 Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <a86e0ef4-0b90-5aec-9632-e78fa4ca6d58@ti.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=P4J8EBWPnBVFoHBHwgQRXiVw93w2If7dqdzr9ZCw24E=;
+        b=rJq8DDLo2JFGIAYol+I2jZIChkPRrFWpkwzkGeZ8nSrsFCtSDyeO8x1rDSaGzCcgcW
+         +R/DydhRZKXzkFq2eRibvzQiZXvMzS4xjsY0O8WsBdFn3F3Ay4R9DW248xRFmIkcYfSN
+         uhDC8mvrdENDhCOw+5i/91cfkfK8kWTW7NGpXHb3G8i5s2A+RBTMP0TiMFc//aU3vVHq
+         iKyxzX9o8j79VdQebrq4lvoFbTy/FE4ACrlNMLZwyj/iCV+MjSjq8N/WEc6yKnGxLJsr
+         zqJxHPTJoWcBs/FX+hW9lbOu9Ogu2iSRNvewUEn1ezulPgsP1yFWoJaGJbSvt60MGW88
+         G+3g==
+X-Gm-Message-State: AOAM533E7/PRo0pcxzU3VWlXLNgYwgh9BrdRTsLYwZ56NGYnBzlHjrq3
+        gBNLQeml/Yk08Hf+jXwBoNw2HY8iiJxdfkOfF1YG6O1vvj+wTtwJiAeDZ52iAPeO8G4XHj7TP9i
+        sueXsoz7tYSvwYpQTB0kvrQ==
+X-Received: by 2002:a05:620a:22eb:: with SMTP id p11mr10254701qki.224.1606503916861;
+        Fri, 27 Nov 2020 11:05:16 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzlHMd5iGgdFcDE7TXlKessUY1X4ETN8EOl5uRxiIteKlzhnCF61nP8e6tAtR4EIGlPYbb+vw==
+X-Received: by 2002:a05:620a:22eb:: with SMTP id p11mr10254684qki.224.1606503916681;
+        Fri, 27 Nov 2020 11:05:16 -0800 (PST)
+Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
+        by smtp.gmail.com with ESMTPSA id k128sm6806898qkd.48.2020.11.27.11.05.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2020 11:05:16 -0800 (PST)
+From:   trix@redhat.com
+To:     b.zolnierkie@samsung.com, pakki001@umn.edu
+Cc:     linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH] omapfb: fbcon: remove trailing semicolon in macro definition
+Date:   Fri, 27 Nov 2020 11:05:08 -0800
+Message-Id: <20201127190508.2842786-1-trix@redhat.com>
+X-Mailer: git-send-email 2.18.4
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+From: Tom Rix <trix@redhat.com>
 
-On 27.11.20 г. 19:30 ч., Tomi Valkeinen wrote:
-> On 27/11/2020 17:37, Ivaylo Dimitrov wrote:
-> 
->> With 5.9.11 and the patch on top, n900 boots fine, albeit display remains blank, could be related to
->> brightness, we're still investigating.
-> 
-> Ok. A DSS regdump for a working version and the latest one would be good too. There's a omapdss
-> debugfs dir, with dss, dispc and clk files which are of interest here.
-> 
+The macro use will already have a semicolon.
 
-It turned out to be a long standing bug in the panel driver, with the 
-bellow fix it works fine:
+Signed-off-by: Tom Rix <trix@redhat.com>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c | 2 +-
+ drivers/video/fbdev/omap2/omapfb/dss/dsi.c          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c
+index 3417618310ff..cc2ad787d493 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c
+@@ -75,7 +75,7 @@ static void dispc_dump_irqs(struct seq_file *s)
+ 
+ 	seq_printf(s, "irqs %d\n", stats.irq_count);
+ #define PIS(x) \
+-	seq_printf(s, "%-20s %10d\n", #x, stats.irqs[ffs(DISPC_IRQ_##x)-1]);
++	seq_printf(s, "%-20s %10d\n", #x, stats.irqs[ffs(DISPC_IRQ_##x)-1])
+ 
+ 	PIS(FRAMEDONE);
+ 	PIS(VSYNC);
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+index 6f9c25fec994..101fa66f9b58 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
+@@ -1554,7 +1554,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
+ 
+ 	seq_printf(s, "irqs %d\n", stats.irq_count);
+ #define PIS(x) \
+-	seq_printf(s, "%-20s %10d\n", #x, stats.dsi_irqs[ffs(DSI_IRQ_##x)-1]);
++	seq_printf(s, "%-20s %10d\n", #x, stats.dsi_irqs[ffs(DSI_IRQ_##x)-1])
+ 
+ 	seq_printf(s, "-- DSI%d interrupts --\n", dsi->module_id + 1);
+ 	PIS(VC0);
+-- 
+2.18.4
 
-diff --git a/drivers/gpu/drm/panel/panel-sony-acx565akm.c 
-b/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-index fc6a7e451abe..304267f7849a
---- a/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-+++ b/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-@@ -629,7 +629,7 @@ static int acx565akm_probe(struct spi_device *spi)
-         lcd->spi = spi;
-         mutex_init(&lcd->mutex);
-
--       lcd->reset_gpio = devm_gpiod_get(&spi->dev, "reset", GPIOD_OUT_LOW);
-+       lcd->reset_gpio = devm_gpiod_get(&spi->dev, "reset", 
-GPIOD_OUT_HIGH);
-         if (IS_ERR(lcd->reset_gpio)) {
-                 dev_err(&spi->dev, "failed to get reset GPIO\n");
-                 return PTR_ERR(lcd->reset_gpio);
-
-Proper patch will follow.
-
-Thanks,
-Ivo
