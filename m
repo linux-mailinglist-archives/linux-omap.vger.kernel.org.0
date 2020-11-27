@@ -2,100 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 113A82C6BFD
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Nov 2020 20:33:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94F672C6DAA
+	for <lists+linux-omap@lfdr.de>; Sat, 28 Nov 2020 00:31:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729330AbgK0TaO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Nov 2020 14:30:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:56728 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730098AbgK0TF6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 27 Nov 2020 14:05:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606503919;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc; bh=P4J8EBWPnBVFoHBHwgQRXiVw93w2If7dqdzr9ZCw24E=;
-        b=GagEkA9rSJUY+3Kk0NLoDk6fGvYMhc2QV78uZlpYFqu72+prMISH7hclQFyAyziHOwOANW
-        sgCwtqvoqfbBPdT4ekzKjMIBZAd8kv96PkQGRXveuqRvEGwSoZBgTpmmk7DBOLVbt/LSJK
-        00AoW7LeGp3gA1i/kvlcVFzXZNASaLM=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-257-WdH6WSW3M1C1tnJrRFysrQ-1; Fri, 27 Nov 2020 14:05:17 -0500
-X-MC-Unique: WdH6WSW3M1C1tnJrRFysrQ-1
-Received: by mail-qt1-f197.google.com with SMTP id i20so3755120qtr.0
-        for <linux-omap@vger.kernel.org>; Fri, 27 Nov 2020 11:05:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=P4J8EBWPnBVFoHBHwgQRXiVw93w2If7dqdzr9ZCw24E=;
-        b=rJq8DDLo2JFGIAYol+I2jZIChkPRrFWpkwzkGeZ8nSrsFCtSDyeO8x1rDSaGzCcgcW
-         +R/DydhRZKXzkFq2eRibvzQiZXvMzS4xjsY0O8WsBdFn3F3Ay4R9DW248xRFmIkcYfSN
-         uhDC8mvrdENDhCOw+5i/91cfkfK8kWTW7NGpXHb3G8i5s2A+RBTMP0TiMFc//aU3vVHq
-         iKyxzX9o8j79VdQebrq4lvoFbTy/FE4ACrlNMLZwyj/iCV+MjSjq8N/WEc6yKnGxLJsr
-         zqJxHPTJoWcBs/FX+hW9lbOu9Ogu2iSRNvewUEn1ezulPgsP1yFWoJaGJbSvt60MGW88
-         G+3g==
-X-Gm-Message-State: AOAM533E7/PRo0pcxzU3VWlXLNgYwgh9BrdRTsLYwZ56NGYnBzlHjrq3
-        gBNLQeml/Yk08Hf+jXwBoNw2HY8iiJxdfkOfF1YG6O1vvj+wTtwJiAeDZ52iAPeO8G4XHj7TP9i
-        sueXsoz7tYSvwYpQTB0kvrQ==
-X-Received: by 2002:a05:620a:22eb:: with SMTP id p11mr10254701qki.224.1606503916861;
-        Fri, 27 Nov 2020 11:05:16 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzlHMd5iGgdFcDE7TXlKessUY1X4ETN8EOl5uRxiIteKlzhnCF61nP8e6tAtR4EIGlPYbb+vw==
-X-Received: by 2002:a05:620a:22eb:: with SMTP id p11mr10254684qki.224.1606503916681;
-        Fri, 27 Nov 2020 11:05:16 -0800 (PST)
-Received: from trix.remote.csb (075-142-250-213.res.spectrum.com. [75.142.250.213])
-        by smtp.gmail.com with ESMTPSA id k128sm6806898qkd.48.2020.11.27.11.05.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2020 11:05:16 -0800 (PST)
-From:   trix@redhat.com
-To:     b.zolnierkie@samsung.com, pakki001@umn.edu
-Cc:     linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Tom Rix <trix@redhat.com>
-Subject: [PATCH] omapfb: fbcon: remove trailing semicolon in macro definition
-Date:   Fri, 27 Nov 2020 11:05:08 -0800
-Message-Id: <20201127190508.2842786-1-trix@redhat.com>
-X-Mailer: git-send-email 2.18.4
+        id S1729330AbgK0X26 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Nov 2020 18:28:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57584 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731430AbgK0UFN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Nov 2020 15:05:13 -0500
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C981C0613D4
+        for <linux-omap@vger.kernel.org>; Fri, 27 Nov 2020 12:05:12 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 13F9A1F465A8
+Received: by jupiter.universe (Postfix, from userid 1000)
+        id C796D4800D9; Fri, 27 Nov 2020 21:05:07 +0100 (CET)
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     dri-devel@lists.freedesktop.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Cc:     linux-omap@vger.kernel.org, kernel@collabora.com,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: [PATCH] drm/panel: sony-acx565akm: Fix race condition in probe
+Date:   Fri, 27 Nov 2020 21:04:29 +0100
+Message-Id: <20201127200429.129868-1-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+The probe routine acquires the reset GPIO using GPIOD_OUT_LOW. Directly
+afterwards it calls acx565akm_detect(), which sets the GPIO value to
+HIGH. If the bootloader initialized the GPIO to HIGH before the probe
+routine was called, there is only a very short time period of a few
+instructions where the reset signal is LOW. Exact time depends on
+compiler optimizations, kernel configuration and alignment of the stars,
+but I expect it to be always way less than 10us. There are no public
+datasheets for the panel, but acx565akm_power_on() has a comment with
+timings and reset period should be at least 10us. So this potentially
+brings the panel into a half-reset state.
 
-The macro use will already have a semicolon.
+The result is, that panel may not work after boot and can get into a
+working state by re-enabling it (e.g. by blanking + unblanking), since
+that does a clean reset cycle. This bug has recently been hit by Ivaylo
+Dimitrov, but there are some older reports which are probably the same
+bug. At least Tony Lindgren, Peter Ujfalusi and Jarkko Nikula have
+experienced it in 2017 describing the blank/unblank procedure as
+possible workaround.
 
-Signed-off-by: Tom Rix <trix@redhat.com>
+Note, that the bug really goes back in time. It has originally been
+introduced in the predecessor of the omapfb driver in 3c45d05be382
+("OMAPDSS: acx565akm panel: handle gpios in panel driver") in 2012.
+That driver eventually got replaced by a newer one, which had the bug
+from the beginning in 84192742d9c2 ("OMAPDSS: Add Sony ACX565AKM panel
+driver") and still exists in fbdev world. That driver has later been
+copied to omapdrm and then was used as a basis for this driver. Last
+but not least the omapdrm specific driver has been removed in
+45f16c82db7e ("drm/omap: displays: Remove unused panel drivers").
+
+Reported-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
+Reported-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Reported-by: Tony Lindgren <tony@atomide.com>
+Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reported-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Fixes: 1c8fc3f0c5d2 ("drm/panel: Add driver for the Sony ACX565AKM panel")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c | 2 +-
- drivers/video/fbdev/omap2/omapfb/dss/dsi.c          | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-sony-acx565akm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c
-index 3417618310ff..cc2ad787d493 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc-compat.c
-@@ -75,7 +75,7 @@ static void dispc_dump_irqs(struct seq_file *s)
+diff --git a/drivers/gpu/drm/panel/panel-sony-acx565akm.c b/drivers/gpu/drm/panel/panel-sony-acx565akm.c
+index e95fdfb16b6c..ba0b3ead150f 100644
+--- a/drivers/gpu/drm/panel/panel-sony-acx565akm.c
++++ b/drivers/gpu/drm/panel/panel-sony-acx565akm.c
+@@ -629,7 +629,7 @@ static int acx565akm_probe(struct spi_device *spi)
+ 	lcd->spi = spi;
+ 	mutex_init(&lcd->mutex);
  
- 	seq_printf(s, "irqs %d\n", stats.irq_count);
- #define PIS(x) \
--	seq_printf(s, "%-20s %10d\n", #x, stats.irqs[ffs(DISPC_IRQ_##x)-1]);
-+	seq_printf(s, "%-20s %10d\n", #x, stats.irqs[ffs(DISPC_IRQ_##x)-1])
- 
- 	PIS(FRAMEDONE);
- 	PIS(VSYNC);
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-index 6f9c25fec994..101fa66f9b58 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dsi.c
-@@ -1554,7 +1554,7 @@ static void dsi_dump_dsidev_irqs(struct platform_device *dsidev,
- 
- 	seq_printf(s, "irqs %d\n", stats.irq_count);
- #define PIS(x) \
--	seq_printf(s, "%-20s %10d\n", #x, stats.dsi_irqs[ffs(DSI_IRQ_##x)-1]);
-+	seq_printf(s, "%-20s %10d\n", #x, stats.dsi_irqs[ffs(DSI_IRQ_##x)-1])
- 
- 	seq_printf(s, "-- DSI%d interrupts --\n", dsi->module_id + 1);
- 	PIS(VC0);
+-	lcd->reset_gpio = devm_gpiod_get(&spi->dev, "reset", GPIOD_OUT_LOW);
++	lcd->reset_gpio = devm_gpiod_get(&spi->dev, "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(lcd->reset_gpio)) {
+ 		dev_err(&spi->dev, "failed to get reset GPIO\n");
+ 		return PTR_ERR(lcd->reset_gpio);
 -- 
-2.18.4
+2.29.2
 
