@@ -2,115 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ACB62C6135
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Nov 2020 09:55:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABD8F2C6413
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Nov 2020 12:48:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726039AbgK0IxH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Nov 2020 03:53:07 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:45524 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725616AbgK0IxG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Nov 2020 03:53:06 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AR8qqFL058771;
-        Fri, 27 Nov 2020 02:52:52 -0600
+        id S1729601AbgK0Lpl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Nov 2020 06:45:41 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:53176 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726014AbgK0Lpk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Nov 2020 06:45:40 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0ARBjP3f092480;
+        Fri, 27 Nov 2020 05:45:25 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1606467173;
-        bh=22qq5cH0rtrp1yoHTvmHzVfEHlHoqWC5Nw0TTNSpnJQ=;
-        h=From:To:CC:Subject:Date;
-        b=x/Td2FQnsw8Ly3YMPNOjHZl65kkDMj2WBTnJ2kcFmUrtj75IlqPej86litB0/L5Ul
-         12NeEaE2U8Xl/dqKtmVqAGGeThrgCB6mjA5xz7GzHt2uo7Dr9aiNGXPn6HkitUe3TU
-         E0IU/lf9RDsW4Q4Mr7GEbZNYLrNE4FeggpqiTyos=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AR8qqPH024773
+        s=ti-com-17Q1; t=1606477525;
+        bh=g6KNlqoIDvu9JY8ZlxhjEAu/FsaRsM0aCN3qUSkC3vg=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=XuRw3A4lfGXTDvCKI5KOX/7jz3wUlJn4Yn1Pg6SnWiowWyH4TAmaOTB955CZ16GDz
+         UUUMBd1VNBT9uJ6b1NAu55VMgyIh8wkmf3TDrC7g2/2Ujdgbq9u20kShDthrSGAkUW
+         Rz48JXDNXA2pJu5fSF/Zzbt5ZqU30xJzkDyOzv28=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0ARBjPCj115056
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 27 Nov 2020 02:52:52 -0600
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 27 Nov 2020 05:45:25 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 27
- Nov 2020 02:52:52 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2020 05:45:24 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 27 Nov 2020 02:52:52 -0600
-Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AR8qom2074793;
-        Fri, 27 Nov 2020 02:52:50 -0600
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-To:     <dri-devel@lists.freedesktop.org>,
+ Frontend Transport; Fri, 27 Nov 2020 05:45:24 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0ARBjMaS001898;
+        Fri, 27 Nov 2020 05:45:23 -0600
+Subject: Re: [REGRESSION] omapdrm/N900 display broken
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>
-CC:     <linux-omap@vger.kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>, <stable@vger.kernel.org>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Subject: [PATCH] drm/omap: sdi: fix bridge enable/disable
-Date:   Fri, 27 Nov 2020 10:52:41 +0200
-Message-ID: <20201127085241.848461-1-tomi.valkeinen@ti.com>
-X-Mailer: git-send-email 2.25.1
+        ML dri-devel <dri-devel@lists.freedesktop.org>
+CC:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20200728181412.GA49617@darkstar.musicnaut.iki.fi>
+ <660b2fe1-343d-b83e-11d2-5a5eb530b83f@ti.com>
+ <448c1441-2cac-44ef-95ef-bb28b512297b@ti.com>
+ <20200823162625.GC4313@darkstar.musicnaut.iki.fi>
+ <ac42f7f9-2ac2-246e-69c1-3d56cea7e59b@ti.com>
+ <5072a25d-e885-cdd2-978d-70942406c272@gmail.com>
+ <09044fd2-2926-c7b3-826b-52b742e84ff5@ti.com>
+ <79ad8816-815c-14d3-ebe1-3c5007c81dd1@gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <1fe9fed7-f619-eb6a-6e31-b9eadbf09bad@ti.com>
+Date:   Fri, 27 Nov 2020 13:45:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <79ad8816-815c-14d3-ebe1-3c5007c81dd1@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-When the SDI output was converted to DRM bridge, the atomic versions of
-enable and disable funcs were used. This was not intended, as that would
-require implementing other atomic funcs too. This leads to:
+On 27/11/2020 01:17, Ivaylo Dimitrov wrote:
+> Hi Tomi,
+> 
+> On 26.11.20 г. 16:11 ч., Tomi Valkeinen wrote:
+>> Hi Aaro, Ivaylo,
+>>
+>> On 24/11/2020 23:03, Ivaylo Dimitrov wrote:
+>>
+>>> Is there any progress on the issue? I tried 5.9.1 and still nothing displayed.
+>>
+>> Can you test the attached patch?
+>>
+> 
+> With this patch I don't see oops that Aaro reported, so:
+> 
+> Tested-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+> 
+> Seems to fix the particular issue, however, now we get another oops. As this is not upstream kernel
+> but one with PVR related patches, I will try again with vanilla 5.9.
+> 
+> Just in case oops rings any bells (the line in question is
+> https://github.com/maemo-leste/droid4-linux/blob/maemo-5.9/drivers/gpu/drm/omapdrm/omap_gem.c#L801)
 
-WARNING: CPU: 0 PID: 18 at drivers/gpu/drm/drm_bridge.c:708 drm_atomic_helper_commit_modeset_enables+0x134/0x268
+Do the PVR patches touch omapdrm? The call stack looks like normal boot time probing stuff, not
+something happening later (possibly from PVR).
 
-and display not working.
+ Tomi
 
-Fix this by using the legacy enable/disable funcs.
-
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Fixes: 8bef8a6d5da81b909a190822b96805a47348146f ("drm/omap: sdi: Register a drm_bridge")
-Cc: stable@vger.kernel.org # v5.7+
-Tested-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
----
- drivers/gpu/drm/omapdrm/dss/sdi.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/gpu/drm/omapdrm/dss/sdi.c b/drivers/gpu/drm/omapdrm/dss/sdi.c
-index 033fd30074b0..282e4c837cd9 100644
---- a/drivers/gpu/drm/omapdrm/dss/sdi.c
-+++ b/drivers/gpu/drm/omapdrm/dss/sdi.c
-@@ -195,8 +195,7 @@ static void sdi_bridge_mode_set(struct drm_bridge *bridge,
- 	sdi->pixelclock = adjusted_mode->clock * 1000;
- }
- 
--static void sdi_bridge_enable(struct drm_bridge *bridge,
--			      struct drm_bridge_state *bridge_state)
-+static void sdi_bridge_enable(struct drm_bridge *bridge)
- {
- 	struct sdi_device *sdi = drm_bridge_to_sdi(bridge);
- 	struct dispc_clock_info dispc_cinfo;
-@@ -259,8 +258,7 @@ static void sdi_bridge_enable(struct drm_bridge *bridge,
- 	regulator_disable(sdi->vdds_sdi_reg);
- }
- 
--static void sdi_bridge_disable(struct drm_bridge *bridge,
--			       struct drm_bridge_state *bridge_state)
-+static void sdi_bridge_disable(struct drm_bridge *bridge)
- {
- 	struct sdi_device *sdi = drm_bridge_to_sdi(bridge);
- 
-@@ -278,8 +276,8 @@ static const struct drm_bridge_funcs sdi_bridge_funcs = {
- 	.mode_valid = sdi_bridge_mode_valid,
- 	.mode_fixup = sdi_bridge_mode_fixup,
- 	.mode_set = sdi_bridge_mode_set,
--	.atomic_enable = sdi_bridge_enable,
--	.atomic_disable = sdi_bridge_disable,
-+	.enable = sdi_bridge_enable,
-+	.disable = sdi_bridge_disable,
- };
- 
- static void sdi_bridge_init(struct sdi_device *sdi)
 -- 
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
 Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
-
