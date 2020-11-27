@@ -2,111 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A99042C6095
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Nov 2020 08:43:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD8ED2C6118
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Nov 2020 09:45:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388343AbgK0Hnj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Nov 2020 02:43:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55254 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388210AbgK0Hni (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Nov 2020 02:43:38 -0500
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83026C0613D4
-        for <linux-omap@vger.kernel.org>; Thu, 26 Nov 2020 23:43:38 -0800 (PST)
-Received: by mail-wr1-x444.google.com with SMTP id u12so4556081wrt.0
-        for <linux-omap@vger.kernel.org>; Thu, 26 Nov 2020 23:43:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=rEnnfAVid4AD+7VYyTlu/4hDcuao08OGFyiRJJS5gHM=;
-        b=mAEP4Up0E8VPIDiHTsetQh/Oq5MJPO4a7fnzIa2B78i+oO6AKfNsWzPBoDYLLwgrQX
-         t02naVresVptmihYObQ9bXLHe8A1rs1P8SLpPYzb7iWyhguefhlLOEvzBoeFP5d8GouD
-         B5F8Vr17OIyFsh9/TjQ4E/N930GNkUr97UKlsEqls3An3dVJ1nARLZKT42GpMey8NEE9
-         tRR6f33bMvDdt99F9zbVsLTUJ4RGGVOHBMB9EmMAYpe/mGoDz0gGyNqqtDbvi7Yil4SD
-         dsoB+5JQDQ46X/Pb1CYTRl+GGkmFJ4zx4xllOcadZ8mLH+vD/swKs8NRijjKv5Mwvhz0
-         u/PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=rEnnfAVid4AD+7VYyTlu/4hDcuao08OGFyiRJJS5gHM=;
-        b=kKR0Eklia9vgajo0PjxgTFGLK20/2yK27598veoKZrKqlrzujnvLYaN9KPzj2/qMbH
-         MAx8tqWiZ9Zy5Knq2gLBs5G06zPADYJwjyqgNqi4gzN5XyYdNKUjH9FtQD0G6Be0WF1N
-         3SYKlffMHDUB9qQ2/ufK/728ylWzSZFULtQYuVwImYXpGXN6zLAR7pHQ+4VQ0arp13vV
-         1mLLIvYvvNq9xjE17zcYREcWHPG9e1WxAOSW67LqzA+d+ZBBJ+1ofDPlUhRNlQpKzdGQ
-         cwPWRdtdcthUc+cosJ/Vpa26cSVO2fW+CpaQ8u6vREs9Jb8JBX7btCBS3gurUzK6NMJF
-         cduw==
-X-Gm-Message-State: AOAM532JTlpfqfpjZqmcpns/zy+bQoi1tUU6OMxizi0J8Q3NQCTl4UHP
-        XkjCIcZ8KteVz5DxWdKLE5Db/w==
-X-Google-Smtp-Source: ABdhPJwNjuZb0tCHUVJNH0+fFMWOxXUcbmUbuJeZf6e0VklNKGWSDJaN44uBOvtnbFNkBCBOwEU/AA==
-X-Received: by 2002:a05:6000:10cd:: with SMTP id b13mr954380wrx.178.1606463017038;
-        Thu, 26 Nov 2020 23:43:37 -0800 (PST)
-Received: from dell ([91.110.221.235])
-        by smtp.gmail.com with ESMTPSA id j65sm5423167wmj.13.2020.11.26.23.43.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2020 23:43:36 -0800 (PST)
-Date:   Fri, 27 Nov 2020 07:43:34 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Zack Pearsall <zpearsall@yahoo.com>,
-        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mfd: tps65910: Correct power-off programming sequence
-Message-ID: <20201127074334.GH2455276@dell>
-References: <20201115204505.18616-1-digetx@gmail.com>
+        id S1728114AbgK0Inl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Nov 2020 03:43:41 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:42812 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727742AbgK0Ink (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 Nov 2020 03:43:40 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AR8hV57029011;
+        Fri, 27 Nov 2020 02:43:31 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1606466611;
+        bh=aMzyk4R1VkVqE8u8Y1gkJ93UmYRtvSDrJWJA3BazLBI=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=eiXc00S9zlRjJ3t94onJsSPWheIemhEs3ZquGJurOy7u+2xZxMdZvVDwcC0+0BbS2
+         9tWMA0iebJ8hkhpP0Gd21eyt3QU5bDfDuRlvjdXGmyINuF6++rk3DzMmp4ib7Q4KER
+         9tkvchaAGWRLc9y9XIg5N1PuEPGD56wlZrT9MdGw=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AR8hVom099118
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 27 Nov 2020 02:43:31 -0600
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 27
+ Nov 2020 02:43:30 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 27 Nov 2020 02:43:30 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AR8hSXW053143;
+        Fri, 27 Nov 2020 02:43:29 -0600
+Subject: Re: [REGRESSION] omapdrm/N900 display broken
+To:     Daniel Vetter <daniel@ffwll.ch>
+CC:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        ML dri-devel <dri-devel@lists.freedesktop.org>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20200728181412.GA49617@darkstar.musicnaut.iki.fi>
+ <660b2fe1-343d-b83e-11d2-5a5eb530b83f@ti.com>
+ <448c1441-2cac-44ef-95ef-bb28b512297b@ti.com>
+ <20200823162625.GC4313@darkstar.musicnaut.iki.fi>
+ <ac42f7f9-2ac2-246e-69c1-3d56cea7e59b@ti.com>
+ <CAKMK7uEAaNhr__aYxWpNmUb1jTruf0FMoPwgn8_so9mGV=yAOQ@mail.gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <6f7e2f5c-3e88-25c1-d46a-8c52c15527ce@ti.com>
+Date:   Fri, 27 Nov 2020 10:43:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201115204505.18616-1-digetx@gmail.com>
+In-Reply-To: <CAKMK7uEAaNhr__aYxWpNmUb1jTruf0FMoPwgn8_so9mGV=yAOQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, 15 Nov 2020, Dmitry Osipenko wrote:
+On 25/11/2020 11:07, Daniel Vetter wrote:
 
-> Correct power-off programming sequence in order to fix shutting down
-> devices which are using TPS65910 PMIC.
+>> Laurent, does this ring any bells? The WARN comes in drm_atomic_bridge_chain_enable() when
+>> drm_atomic_get_old_bridge_state() returns null for (presumably) sdi bridge.
+>>
+>> I'm not sure why the bridge state would not be there.
 > 
-> In accordance to the TPS65910 datasheet, the PMIC's state-machine
-> transitions into the OFF state only when DEV_OFF bit of DEVCTRL_REG is
-> set. The ON / SLEEP states also should be cleared, otherwise PMIC won't
-> get into a proper state on shutdown. Devices like Nexus 7 tablet and Ouya
-> game console are shutting down properly now.
-> 
-> Tested-by: Peter Geis <pgwipeout@gmail.com>
-> Tested-by: Zack Pearsall <zpearsall@yahoo.com>
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
-> 
-> Changelog:
-> 
-> v4: - Rebased on a recent linux-next.
-> 
-> v3: - Removed the DEV_SLP_MASK clearing and adding clarifying comment to
->       the code about why clearing PWR_OFF bit needs to be done, which was
->       suggested by  Michał Mirosław in a review comment to v2.
-> 
->     - Added tested-by from Peter Geis who tested v3 on his Ouya game
->       console.
-> 
-> v2: - Now using a single tps65910_reg_update_bits() instead of set+clear.
->       Thanks to Michał Mirosław for the suggestion.
-> 
->  drivers/mfd/tps65910.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+> Lack of state on first modeset usually means your
+> drm_mode_config_reset didn't create one. Or whatever it is you're
+> using. I didn't look whether you're wiring this up correctly or not.
+> We might even want to add a ->reset function to
+> drm_private_state_funcs to make this work for everyone.
 
-Applied, thanks.
+The bridge driver set atomic_enable and atomic_disable, but no other atomic funcs. It was supposed
+to set the legacy enable & disable.
+
+ Tomi
 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
