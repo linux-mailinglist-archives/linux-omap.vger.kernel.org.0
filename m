@@ -2,26 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 223942C603C
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Nov 2020 07:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BDAD2C608C
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Nov 2020 08:41:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392589AbgK0G6c (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 Nov 2020 01:58:32 -0500
-Received: from muru.com ([72.249.23.125]:49400 "EHLO muru.com"
+        id S2392736AbgK0Hi3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 Nov 2020 02:38:29 -0500
+Received: from muru.com ([72.249.23.125]:49408 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387896AbgK0G6c (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 27 Nov 2020 01:58:32 -0500
+        id S2387909AbgK0Hi2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 27 Nov 2020 02:38:28 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 2F21D8063;
-        Fri, 27 Nov 2020 06:58:38 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id B8FD68063;
+        Fri, 27 Nov 2020 07:38:34 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     soc@kernel.org
 Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] Fixes for omaps for v5.10-rc cycle
-Date:   Fri, 27 Nov 2020 08:58:21 +0200
-Message-Id: <pull-1606460270-864284@atomide.com>
+Subject: [GIT PULL 1/3] SoC changes for omaps for v5.11 merge window
+Date:   Fri, 27 Nov 2020 09:38:19 +0200
+Message-Id: <pull-1606462656-588116@atomide.com>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -38,53 +38,35 @@ The following changes since commit 3650b228f83adda7e5ee532e2b90429c03f7b9ec:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.10/fixes-rc5-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.11/soc-signed
 
-for you to fetch changes up to 05d5de6ba7dbe490dd413b5ca11d0875bd2bc006:
+for you to fetch changes up to 2e023b938048c9857af09b96ce672e9a31dbfb38:
 
-  ARM: dts: dra76x: m_can: fix order of clocks (2020-11-19 11:37:57 +0200)
-
-----------------------------------------------------------------
-Fixes for omaps for various issues noticed during the -rc cycle:
-
-- Earlier omap4 cpuidle fix was incomplete and needs to use a
-  configured idle state instead
-
-- Fix am4 cpsw driver compatible to avoid invalid resource error
-  for the legacy driver
-
-- Two kconfig fixes for genpd support that we added for for v5.10
-  for proper location of the option and adding missing option
-
-- Fix ti-sysc reset status checking on enabling modules to ignore
-  quirky modules with reset status only usable when the quirk is
-  activated during reset. Also fix bogus resetdone warning for
-  cpsw and modules with no sysst register reset status bit
-
-- Suppress a ti-sysc warning for timers reserved as system timers
-
-- Fix the ordering of clocks for dra7 m_can
+  ARM: OMAP1: clock: Use IS_ERR_OR_NULL() to clean code (2020-11-19 11:45:42 +0200)
 
 ----------------------------------------------------------------
-Grygorii Strashko (2):
-      ARM: dts: am437x-l4: fix compatible for cpsw switch dt node
-      bus: ti-sysc: suppress err msg for timers used as clockevent/source
+SoC changes for omaps for v5.11 merge window:
 
-Marc Kleine-Budde (1):
-      ARM: dts: dra76x: m_can: fix order of clocks
+Several non-urgent fixes for various issues found by automated tests.
+So far we have not been hitting any of these so these can wait for the
+merge window no problem.
 
-Tony Lindgren (6):
-      ARM: OMAP2+: Fix location for select PM_GENERIC_DOMAINS
-      ARM: OMAP2+: Fix missing select PM_GENERIC_DOMAINS_OF
-      bus: ti-sysc: Fix reset status check for modules with quirks
-      bus: ti-sysc: Fix bogus resetdone warning on enable for cpsw
-      ARM: OMAP2+: Manage MPU state properly for omap_enter_idle_coupled()
-      Merge tag 'ti-sysc-fixes' into fixes
+----------------------------------------------------------------
+Jing Xiangfeng (1):
+      ARM: OMAP2+: Remove redundant assignment to variable ret
 
- arch/arm/boot/dts/am437x-l4.dtsi      |  2 +-
- arch/arm/boot/dts/dra76x.dtsi         |  4 ++--
- arch/arm/mach-omap2/Kconfig           |  3 ++-
- arch/arm/mach-omap2/cpuidle44xx.c     |  8 +++++---
- drivers/bus/ti-sysc.c                 | 29 +++++++++++++++++++----------
- include/linux/platform_data/ti-sysc.h |  1 +
- 6 files changed, 30 insertions(+), 17 deletions(-)
+Tang Bin (1):
+      ARM: OMAP1: clock: Use IS_ERR_OR_NULL() to clean code
+
+Xu Wang (1):
+      ARM: OMAP2+: Remove redundant null check before clk_prepare_enable/clk_disable_unprepare
+
+Youling Tang (2):
+      ARM: OMAP2+: Fix memleak in omap2xxx_clkt_vps_init
+      ARM: OMAP2+: Fix kfree NULL pointer in omap2xxx_clkt_vps_init
+
+ arch/arm/mach-omap1/clock.c                  | 14 +++++++-------
+ arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c | 11 +++++++----
+ arch/arm/mach-omap2/display.c                |  6 ++----
+ arch/arm/mach-omap2/omap_device.c            |  5 ++---
+ 4 files changed, 18 insertions(+), 18 deletions(-)
