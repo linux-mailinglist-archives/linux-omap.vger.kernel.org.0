@@ -2,170 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 652FF2C7713
-	for <lists+linux-omap@lfdr.de>; Sun, 29 Nov 2020 01:54:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69EE42C78DB
+	for <lists+linux-omap@lfdr.de>; Sun, 29 Nov 2020 12:40:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727116AbgK2AyP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 28 Nov 2020 19:54:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41460 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726604AbgK2AyP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 28 Nov 2020 19:54:15 -0500
-Received: from earth.universe (dyndsl-095-033-158-166.ewe-ip-backbone.de [95.33.158.166])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C2F8920731;
-        Sun, 29 Nov 2020 00:53:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606611213;
-        bh=Mqlc23BXjpuFDfxUUFQMIopOb4FFgOiVvMlt3K7if1A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JJedKlNBHHn0PnayhRps9M3gFaagVEF3bvLAen5e7sRHAkVm/ma5zf0zxB9YEBRp0
-         7q5/RutNC7hZF9CnNnMp7Z0YGFSokooGCmeeepcWYD4oHBgJlBArSIqHEZpP/eeZQD
-         KZVtI73K+SlAgkFQvLN4E3NOQ+lvjyqhK31JO5TY=
-Received: by earth.universe (Postfix, from userid 1000)
-        id EE38D3C0C91; Sun, 29 Nov 2020 01:53:31 +0100 (CET)
-Date:   Sun, 29 Nov 2020 01:53:31 +0100
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>, linux-omap@vger.kernel.org,
-        kernel@collabora.com, Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: Re: [PATCH] drm/panel: sony-acx565akm: Fix race condition in probe
-Message-ID: <20201129005331.z45f5uqjwxki4wwz@earth.universe>
-References: <20201127200429.129868-1-sebastian.reichel@collabora.com>
- <20201128220847.GC3865@pendragon.ideasonboard.com>
+        id S1726014AbgK2Lju convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Sun, 29 Nov 2020 06:39:50 -0500
+Received: from 103-200-210-82.ip4.readyserver.sg ([103.200.210.82]:52169 "EHLO
+        e-server.org" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725852AbgK2Ljt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 29 Nov 2020 06:39:49 -0500
+X-Greylist: delayed 604 seconds by postgrey-1.27 at vger.kernel.org; Sun, 29 Nov 2020 06:39:47 EST
+Received: from [188.206.72.114] (account disnams@e-server.org HELO User)
+  by e-server.org (CommuniGate Pro SMTP 6.1.9 _community_)
+  with ESMTPA id 108950; Sun, 29 Nov 2020 03:28:40 -0800
+Reply-To: <alghafrij13@gmail.com>
+From:   "MR JABER AL-GHAFR" <mrhanialmuhanna@gmx.com>
+Subject: Re.Investment
+Date:   Sun, 29 Nov 2020 12:28:39 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gli55xpyex5xcoqk"
-Content-Disposition: inline
-In-Reply-To: <20201128220847.GC3865@pendragon.ideasonboard.com>
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 8BIT
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+X-Antivirus: AVG (VPS 201128-4, 28/11/2020), Outbound message
+X-Antivirus-Status: Clean
+Message-ID: <auto-000000108950@e-server.org>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Good Day
+I am JABER AL-GHAFRI, Pleasant greetings to you as i seek your indulgence to introduce to you the desire of my principal’s wish, to make huge financial investment in your home country on areas of oil and gas, real estate, tourism and hotel, manufacturing and production company, agriculture, fishing, Mining & Trading of natural resources such as crude oil, coal, graphite, coke, refinery, energy, hospital etc.
 
---gli55xpyex5xcoqk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+He needs a capable, trustworthy and understanding business partner, who can confidently handle and manage his investment funds with utmost care of secrecy without traces or link to him as he is politically exposed at the moment in his country. He has a huge available financial portfolio.
 
-Hi Laurent,
+Please, I will provide more details about the transaction if you are sure you can handle classified information and also let me know your entitlement for the solicited role
+I shall be expecting your quick reply.email  alghafrij13@gmail.com
+Best Regards,
+JABER AL-GHAFR
 
-On Sun, Nov 29, 2020 at 12:08:47AM +0200, Laurent Pinchart wrote:
-> On Fri, Nov 27, 2020 at 09:04:29PM +0100, Sebastian Reichel wrote:
-> > The probe routine acquires the reset GPIO using GPIOD_OUT_LOW. Directly
-> > afterwards it calls acx565akm_detect(), which sets the GPIO value to
-> > HIGH. If the bootloader initialized the GPIO to HIGH before the probe
-> > routine was called, there is only a very short time period of a few
-> > instructions where the reset signal is LOW. Exact time depends on
-> > compiler optimizations, kernel configuration and alignment of the stars,
-> > but I expect it to be always way less than 10us. There are no public
-> > datasheets for the panel, but acx565akm_power_on() has a comment with
-> > timings and reset period should be at least 10us. So this potentially
-> > brings the panel into a half-reset state.
->=20
-> Good catch.
->=20
-> Looks like we got the reset polarity wrong in the driver though.
-> GPIOD_OUT_LOW should mean de-asserted, but the driver expects it to mean
-> low level. We can't fix that as it would require changing the device
-> tree :-(
+-- 
+This email has been checked for viruses by AVG.
+https://www.avg.com
 
-Yes, polarity is wrong unfortunately.
-
-> > The result is, that panel may not work after boot and can get into a
-> > working state by re-enabling it (e.g. by blanking + unblanking), since
-> > that does a clean reset cycle. This bug has recently been hit by Ivaylo
-> > Dimitrov, but there are some older reports which are probably the same
-> > bug. At least Tony Lindgren, Peter Ujfalusi and Jarkko Nikula have
-> > experienced it in 2017 describing the blank/unblank procedure as
-> > possible workaround.
-> >=20
-> > Note, that the bug really goes back in time. It has originally been
-> > introduced in the predecessor of the omapfb driver in 3c45d05be382
-> > ("OMAPDSS: acx565akm panel: handle gpios in panel driver") in 2012.
-> > That driver eventually got replaced by a newer one, which had the bug
-> > from the beginning in 84192742d9c2 ("OMAPDSS: Add Sony ACX565AKM panel
-> > driver") and still exists in fbdev world. That driver has later been
-> > copied to omapdrm and then was used as a basis for this driver. Last
-> > but not least the omapdrm specific driver has been removed in
-> > 45f16c82db7e ("drm/omap: displays: Remove unused panel drivers").
-> >=20
-> > Reported-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
-> > Reported-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> > Reported-by: Tony Lindgren <tony@atomide.com>
-> > Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> > Reported-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-> > Cc: Merlijn Wajer <merlijn@wizzup.org>
-> > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > Fixes: 1c8fc3f0c5d2 ("drm/panel: Add driver for the Sony ACX565AKM pane=
-l")
-> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> > ---
-> >  drivers/gpu/drm/panel/panel-sony-acx565akm.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/panel/panel-sony-acx565akm.c b/drivers/gpu=
-/drm/panel/panel-sony-acx565akm.c
-> > index e95fdfb16b6c..ba0b3ead150f 100644
-> > --- a/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-> > +++ b/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-> > @@ -629,7 +629,7 @@ static int acx565akm_probe(struct spi_device *spi)
-> >  	lcd->spi =3D spi;
-> >  	mutex_init(&lcd->mutex);
-> > =20
-> > -	lcd->reset_gpio =3D devm_gpiod_get(&spi->dev, "reset", GPIOD_OUT_LOW);
-> > +	lcd->reset_gpio =3D devm_gpiod_get(&spi->dev, "reset", GPIOD_OUT_HIGH=
-);
->=20
-> Wouldn't it be better to instead add a delay here (or in
-> acx565akm_detect()) ? If the panel is in a wrong state at
-> boot time, a real reset can help.
-
-acx565akm_detect() reads some registers to detect a previously
-enabled panel and then driver handles this case properly. If we
-reset the panel before the detection code, any detection code
-would be useless (panel is obviously not enabled after a reset).
-
-I think this detection code is only needed to avoid flickering
-when a bootsplash is shown. So by accepting a bit of flickering
-we can simplify the driver by dropping that code and make it a
-bit more robust by doing a reset. It's a tradeoff and I don't
-have strong feelings for either option.
-
-But I think, that this fix should be applied to fixes branch
-(and backported to stable). Removing panel enable detection
-should not be applied as fix IMHO.
-
--- Sebastian
-
---gli55xpyex5xcoqk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/C8QMACgkQ2O7X88g7
-+pq+NA/9HgUHk2AeP9aL5fvpk/dJk8KnlY/uYGq7H0/XhU4lDtrIzK11wwu5qhS1
-ozymZzMJj1edEqB40WHDv4KLsZHyNnvwrRFLG7tYcSz0OMSDL8jioJKclc4f6WV/
-huqKSiVLc7yjyWx0wakvJ6hXAaYhNyr7VF3Fwpofo8ieF8FmUITPzDUa1qa7FZym
-3XBxXo9WLjWbPpdr5GLY5UUTgAv/0YU95emFI40fXVmCIH5tnlfWdV8RRwc5+xLa
-MA+kdi5QraN7Jr3hrim1a94veZiiAhV781RjjINYpJYT7FY5x5TIVN087xzCA1m8
-o1KcQTp/Q3ZoUiFSKWTvvrf5E2fdtwzs0sR9A8tuPzkOVIsp+NtcoSC/CnslZG9+
-1zIryPqtBKZXixkwGBDM+k1PvFue3E944X6xzJJMoolbCFMgzgzV/gLRU+qnqnZt
-Bluor0sKzw5eC0Igtpc9E9Sqpw82IcoZEQMpN19ZEmibo4KfJw4SbiKYRYCCNAn7
-TpPSMOJyZ9JUcthLcrmrD+XGRjZIOXGuncKh1TKIKnX+uwf/likJSXoh6Q4iy/LG
-XU7mjZBJ1CB+h4Ygndon0hYz9cIIqkBH73txSOm30D+jNGHzFnqEMYc5fFfG1iUd
-6LU8i6JzpFvvCzq2px0G2OlDeEj/wW0ucHj7KXAM9WjvmB69yrY=
-=QT6B
------END PGP SIGNATURE-----
-
---gli55xpyex5xcoqk--
