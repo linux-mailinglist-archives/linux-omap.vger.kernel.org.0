@@ -2,101 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DEE92C89C2
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 17:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 595912C8D49
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 19:53:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728818AbgK3QkI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Nov 2020 11:40:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39740 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728683AbgK3QkH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 11:40:07 -0500
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67185C0613D2
-        for <linux-omap@vger.kernel.org>; Mon, 30 Nov 2020 08:39:27 -0800 (PST)
-Received: by mail-ej1-x642.google.com with SMTP id bo9so22913754ejb.13
-        for <linux-omap@vger.kernel.org>; Mon, 30 Nov 2020 08:39:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6tD9ZVZ6gEgHyopRLPxX9gjuGEYfwDbo2GR5pg3Ufw4=;
-        b=glbcz3v23KpKTyAKnx1I60vsVXUyi8fdbsPAkgkSO82ICb8g57m1qTTu7ZzCVZ9Ihc
-         FH5rZ8Ht8MBFuLyHSylml3QywhK9XbmEWYDbOuDsdABb8RFkUldZ1HCYLrPNDdNlxyTp
-         DQYHeaUIJz/6bgu/RYhL7KePVkD+5V03rg+b3NxI3uOc4hXeJ80fHWG9QameyeLyAr5Q
-         qXmCwF85bIyrjijUS9NSSilY3kjYs8ViX4Q9fH9appyTrlusTidi4l8tmBTPvrt932qZ
-         8P27uJXoiWSFSIXKvkt4+prrOLmDRHI73pPWHz5bshntvLIQbbIQ3XZRAPzCk3a61Cs4
-         m6qw==
+        id S1728742AbgK3SxO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Nov 2020 13:53:14 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:33281 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727994AbgK3SxO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 13:53:14 -0500
+Received: by mail-wr1-f68.google.com with SMTP id u12so17644296wrt.0;
+        Mon, 30 Nov 2020 10:52:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6tD9ZVZ6gEgHyopRLPxX9gjuGEYfwDbo2GR5pg3Ufw4=;
-        b=MW8gfLrMZlOJPfwKuhcMFWeCkYvKTYhE18+k5EIsa+aRiJiJcEg7mZnB9Z0CWE28oc
-         E2ADbqVAxeVQlx3F5W1TOHX5lr/UzcQ8ZdpTnpyhQ0vPAOuC8s2m2CzORKTWUbDkSw4h
-         TD++ljD+nf34mykhJQcnRIxXLQVFDwYO61SB6MNfUC/MtHezuyqENMbGUbiJ4s+Idyb/
-         X8dMIweVJyVsV6gbHiaibefz/zKpKh+O2MAY2y5k06K+hjoZIrtK2MsjWlsdPmlYw0dL
-         Sjau/CfuccI8PnaCeDABvgEzEfwOJtK+CKFLopqSBnW/ZbHAgFe4QdtlGt1Am7XVf8HJ
-         gxbg==
-X-Gm-Message-State: AOAM532umRdmu9gVR+9vCWbgKYk4dLXfMWCYToNxhKDQFFPPcoVekjGd
-        xMW1FdXBjJw2u4ivFy3RWDygd1icJLgzp1BLHB0wrFtX4LQ=
-X-Google-Smtp-Source: ABdhPJzoCYimjzh4bEQ9MTo+GD5OKm/5MTWjv3mRz8F3tY/eucztztKkMgUZGD/9LslE8VvXK+DJg6C7YKs8OF0nQ58=
-X-Received: by 2002:a17:907:b09:: with SMTP id h9mr7163881ejl.155.1606754365951;
- Mon, 30 Nov 2020 08:39:25 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=GEH2GiLihB/we0wTKIA4s4JgPz0UXo9ohOBmB1H6nPM=;
+        b=V+rF0pza/okMpu2aZmpaMNubmUnOIFjkhuuyu1XDNgS6rguJEgw5LouLfCTDfBhCc2
+         k5sW/aEZBGG/L9nGxvhY+NLU2bi082eT9b9z5VqKZHrGhEMZd3UByx3dl5alrGd0Xlgr
+         9PKoUPCs5TpFq+bKYMpH1W4OvUi2U1U0e3FFkZ8MB6lKFiYjs8B+EXlVFGCGsdqKeKBC
+         9qp43T7E5PXarXuRVwlcaXtXGZ5LyeTuvp6GSMlLCNxLFHvedUtfEMaIQw3tRBK7cLnz
+         zfYsjSjAEj9LGXl9noORIy79oYyB0sNDdDbQ+L+kIR4tfVSuncns4AkRJiqIvtQ2nYGA
+         Gw3Q==
+X-Gm-Message-State: AOAM532ajNItpPPkE4KoCpgoqvJDnRGmEx3iBtblw9oHmuhKw/R/c3Yc
+        TGzufi6piJZ6byIDgjkjzdo=
+X-Google-Smtp-Source: ABdhPJz821U/zJI64E/s1m2nEjCfNrUEUrLV+rXCVRdKBs+Xe9IzhenHRej5zcolpGNDRBBoo4I2dA==
+X-Received: by 2002:adf:f9c4:: with SMTP id w4mr29689107wrr.64.1606762350398;
+        Mon, 30 Nov 2020 10:52:30 -0800 (PST)
+Received: from kozik-lap (adsl-84-226-167-205.adslplus.ch. [84.226.167.205])
+        by smtp.googlemail.com with ESMTPSA id q25sm258812wmq.37.2020.11.30.10.52.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Nov 2020 10:52:29 -0800 (PST)
+Date:   Mon, 30 Nov 2020 20:52:27 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
+Cc:     linux@armlinux.org.uk, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
+        tony@atomide.com, mripard@kernel.org, wens@csie.org,
+        jernej.skrabec@siol.net, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, catalin.marinas@arm.com, will@kernel.org,
+        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+        paulus@samba.org, lee.jones@linaro.org, sam@ravnborg.org,
+        emil.l.velikov@gmail.com, daniel.thompson@linaro.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, Arnd Bergmann <arnd@arndb.de>,
+        Olof Johansson <olof@lixom.net>
+Subject: Re: [PATCH 1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
+Message-ID: <20201130185227.GA29434@kozik-lap>
+References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
+ <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
 MIME-Version: 1.0
-References: <20201118143149.26067-1-grygorii.strashko@ti.com>
-In-Reply-To: <20201118143149.26067-1-grygorii.strashko@ti.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Mon, 30 Nov 2020 17:39:15 +0100
-Message-ID: <CAMpxmJVm7euifTBKx06mzUw6zD5s2KJHYniGviV=H8Yo6YJMdg@mail.gmail.com>
-Subject: Re: [PATCH] gpio: omap: handle deferred probe with dev_err_probe()
- for gpiochip_add_data()
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio <linux-gpio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Nov 18, 2020 at 3:31 PM Grygorii Strashko
-<grygorii.strashko@ti.com> wrote:
->
-> The gpiochip_add_data() may return -EPROBE_DEFER which is not handled
-> properly by TI GPIO driver and causes unnecessary boot log messages.
->
-> Hence, add proper deferred probe handling with new dev_err_probe() API.
->
-> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+On Mon, Nov 30, 2020 at 03:21:33PM +0000, Andrey Zhizhikin wrote:
+> Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
+> unused") removed geenric_bl driver from the tree, together with
+> corresponding config option.
+> 
+> Remove BACKLIGHT_GENERIC config item from all ARM configurations.
+> 
+> Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
 > ---
->  drivers/gpio/gpio-omap.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-> index f7ceb2b11afc..41952bb818ad 100644
-> --- a/drivers/gpio/gpio-omap.c
-> +++ b/drivers/gpio/gpio-omap.c
-> @@ -1049,11 +1049,8 @@ static int omap_gpio_chip_init(struct gpio_bank *bank, struct irq_chip *irqc)
->         irq->first = irq_base;
->
->         ret = gpiochip_add_data(&bank->chip, bank);
-> -       if (ret) {
-> -               dev_err(bank->chip.parent,
-> -                       "Could not register gpio chip %d\n", ret);
-> -               return ret;
-> -       }
-> +       if (ret)
-> +               return dev_err_probe(bank->chip.parent, ret, "Could not register gpio chip\n");
->
->         ret = devm_request_irq(bank->chip.parent, bank->irq,
->                                omap_gpio_irq_handler,
-> --
-> 2.17.1
->
+>  arch/arm/configs/at91_dt_defconfig        | 1 -
+>  arch/arm/configs/cm_x300_defconfig        | 1 -
+>  arch/arm/configs/colibri_pxa300_defconfig | 1 -
+>  arch/arm/configs/jornada720_defconfig     | 1 -
+>  arch/arm/configs/magician_defconfig       | 1 -
+>  arch/arm/configs/mini2440_defconfig       | 1 -
+>  arch/arm/configs/omap2plus_defconfig      | 1 -
+>  arch/arm/configs/pxa3xx_defconfig         | 1 -
+>  arch/arm/configs/qcom_defconfig           | 1 -
+>  arch/arm/configs/sama5_defconfig          | 1 -
+>  arch/arm/configs/sunxi_defconfig          | 1 -
+>  arch/arm/configs/tegra_defconfig          | 1 -
+>  arch/arm/configs/u8500_defconfig          | 1 -
+>  13 files changed, 13 deletions(-)
 
-Now applied. Thanks!
+You need to send it to arm-soc maintainers, otherwise no one might feel
+responsible enough to pick it up.
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Bartosz
++CC Arnd and Olof,
+
+Dear Arnd and Olof,
+
+Maybe it is worth to add arm-soc entry to the MAINTAINERS file?
+Otherwise how one could get your email address? Not mentioning the
+secret-soc address. :)
+
+Best regards,
+Krzysztof
