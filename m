@@ -2,26 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00BCC2C817C
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 10:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2784D2C817F
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 10:56:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726578AbgK3Jyu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Nov 2020 04:54:50 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:57092 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726337AbgK3Jyu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 04:54:50 -0500
+        id S1726325AbgK3Jzt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Nov 2020 04:55:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33026 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726249AbgK3Jzt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 04:55:49 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40CF3C0613CF
+        for <linux-omap@vger.kernel.org>; Mon, 30 Nov 2020 01:55:09 -0800 (PST)
 Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id EF72297E;
-        Mon, 30 Nov 2020 10:54:07 +0100 (CET)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6C63A97E;
+        Mon, 30 Nov 2020 10:55:06 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1606730048;
-        bh=w3aYJsOXXM7XDf8abBa7779sdieDtO0JkJ6elxgkOQE=;
+        s=mail; t=1606730106;
+        bh=SgPLaAniu/ca8Wzi0b5aQYspmxtkhpGE9sbuYDJNmsU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pxKoPLx9zVB98tdfqR5XqrkuyXwlAI2qCCnhlk65hZppGAttSj5hXCY/PASWOmSz3
-         PFUXP5X9baGJ0kot06Rf37PmyyL8Y1HsT38/owSvOvNFS1NH5x7Qt8le1VS23CNEch
-         92SH8NanK5mV4dcEjX1f02jscS67xvayxXcQGeUI=
-Date:   Mon, 30 Nov 2020 11:53:58 +0200
+        b=guVnAwZFChTxTQrmX/CNDT4wSwO6i/3mWuuY9OWhEmdLliXgYehTut5XQx7bkH1Kv
+         FlUoQOt9SCI3WSvDFRR6jBh555nIB1Vik4rtkGnX1gxSrGIoSpv460cjyjwCKah8vN
+         2kiFagnAAD+MzWMj73QL7hPHbz1M8lK7DjvsZyVI=
+Date:   Mon, 30 Nov 2020 11:54:58 +0200
 From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
 Cc:     Sebastian Reichel <sre@kernel.org>,
@@ -29,15 +32,14 @@ Cc:     Sebastian Reichel <sre@kernel.org>,
         linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
         Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
         hns@goldelico.com
-Subject: Re: [PATCH v4 57/80] ARM: dts: omap5: add address-cells & size-cells
- to dsi
-Message-ID: <20201130095358.GI4141@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v4 58/80] drm/omap: pll: fix iteration loop check
+Message-ID: <20201130095458.GJ4141@pendragon.ideasonboard.com>
 References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-58-tomi.valkeinen@ti.com>
+ <20201124124538.660710-59-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201124124538.660710-58-tomi.valkeinen@ti.com>
+In-Reply-To: <20201124124538.660710-59-tomi.valkeinen@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -46,44 +48,45 @@ Hi Tomi,
 
 Thank you for the patch.
 
-On Tue, Nov 24, 2020 at 02:45:15PM +0200, Tomi Valkeinen wrote:
-> Add address-cells & size-cells to DSI nodes so that board files do not
-> need to define them.
-
-How about adding ports too, while at it ?
-
-It would also be nice to convert the DT bindings to YAML :-)
-
+On Tue, Nov 24, 2020 at 02:45:16PM +0200, Tomi Valkeinen wrote:
+> If the PLL calc function is given bad parameters, n_start/m_start may be
+> higher than n_stop/m_stop, which leads to the loops iterating through
+> the whole u32 number space.
+> 
+> Fix this by failing early on such cases.
+> 
 > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Cc: Tony Lindgren <tony@atomide.com>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
 > ---
->  arch/arm/boot/dts/omap5.dtsi | 6 ++++++
+>  drivers/gpu/drm/omapdrm/dss/pll.c | 6 ++++++
 >  1 file changed, 6 insertions(+)
 > 
-> diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
-> index 2bf2e5839a7f..e6f6947965ef 100644
-> --- a/arch/arm/boot/dts/omap5.dtsi
-> +++ b/arch/arm/boot/dts/omap5.dtsi
-> @@ -517,6 +517,9 @@ dsi1: encoder@0 {
->  						clocks = <&dss_clkctrl OMAP5_DSS_CORE_CLKCTRL 8>,
->  							 <&dss_clkctrl OMAP5_DSS_CORE_CLKCTRL 10>;
->  						clock-names = "fck", "sys_clk";
-> +
-> +						#address-cells = <1>;
-> +						#size-cells = <0>;
->  					};
->  				};
+> diff --git a/drivers/gpu/drm/omapdrm/dss/pll.c b/drivers/gpu/drm/omapdrm/dss/pll.c
+> index 1212f3cc52d1..12926218c436 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/pll.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/pll.c
+> @@ -222,6 +222,9 @@ bool dss_pll_calc_a(const struct dss_pll *pll, unsigned long clkin,
+>  	n_stop = min((unsigned)(clkin / fint_hw_min), hw->n_max);
+>  	n_inc = 1;
 >  
-> @@ -549,6 +552,9 @@ dsi2: encoder@0 {
->  						clocks = <&dss_clkctrl OMAP5_DSS_CORE_CLKCTRL 8>,
->  							 <&dss_clkctrl OMAP5_DSS_CORE_CLKCTRL 10>;
->  						clock-names = "fck", "sys_clk";
+> +	if (n_start > n_stop)
+> +		return false;
 > +
-> +						#address-cells = <1>;
-> +						#size-cells = <0>;
->  					};
->  				};
+>  	if (hw->errata_i886) {
+>  		swap(n_start, n_stop);
+>  		n_inc = -1;
+> @@ -239,6 +242,9 @@ bool dss_pll_calc_a(const struct dss_pll *pll, unsigned long clkin,
+>  				hw->m_max);
+>  		m_inc = 1;
 >  
+> +		if (m_start > m_stop)
+> +			continue;
+> +
+>  		if (hw->errata_i886) {
+>  			swap(m_start, m_stop);
+>  			m_inc = -1;
 
 -- 
 Regards,
