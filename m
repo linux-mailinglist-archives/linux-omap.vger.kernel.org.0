@@ -2,227 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 557042C8140
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 10:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 892882C8165
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 10:51:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727534AbgK3Jl4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Nov 2020 04:41:56 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:46520 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727146AbgK3Jl4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 04:41:56 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AU9eDRB037147;
-        Mon, 30 Nov 2020 03:40:13 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1606729213;
-        bh=PqDRr/7VPYcHII8tDeyh8slU+NbS/EkhmXcXLitOnVw=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Wv3J4MpOywrAq//IYK5Kmu78SXhiSVw1YCCePCStoFqizZNSxx37FBC72bQ/Zi2Oq
-         8MLT6qKG9Oof0nkpv+ghjPPkcA4n2F5vIMnQAHBgpPo51W09S8J9vGGafCZHQqG3Mj
-         C5QTK/jCTXH5KtQ9knA+TSeOPEVqBKxZ9M+eZ3jk=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AU9eD4m001291
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 30 Nov 2020 03:40:13 -0600
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 30
- Nov 2020 03:40:12 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 30 Nov 2020 03:40:12 -0600
-Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AU9eAIj041208;
-        Mon, 30 Nov 2020 03:40:10 -0600
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-To:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        id S1726298AbgK3Jvf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Nov 2020 04:51:35 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:57048 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725902AbgK3Jvf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 04:51:35 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 924F197E;
+        Mon, 30 Nov 2020 10:50:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1606729853;
+        bh=jgGcxDrGgvJfwj7QC6mhQ6E7qBS/ynmMBNEswr5RBiM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jGAwx6bvSAt5aaqXjEgRqm7BUV3XQ5sphFyxcEG6bRySBY/xH2tIql+jPyt+hBxxA
+         VeRSVMxmOmm5jVwOkduDZXZS9RBAyqxkUAw3j2uxmdSQtmGJCOc/fR4i/GdhTZV2Rp
+         xhSSnIJ9QgLBCeukt1Gur039Z1+MsJR3Aj/wWBDI=
+Date:   Mon, 30 Nov 2020 11:50:45 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc:     Sebastian Reichel <sre@kernel.org>,
         Nikhil Devshatwar <nikhil.nd@ti.com>,
-        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-CC:     Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        <hns@goldelico.com>, Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH v4 81/80] drm/omap: dsi: allow DSI commands to be sent early
-Date:   Mon, 30 Nov 2020 11:39:52 +0200
-Message-ID: <20201130093952.133326-1-tomi.valkeinen@ti.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201124124538.660710-1-tomi.valkeinen@ti.com>
+        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
+        hns@goldelico.com
+Subject: Re: [PATCH v4 55/80] drm/panel: panel-dsi-cm: use
+ MIPI_DCS_GET_ERROR_COUNT_ON_DSI
+Message-ID: <20201130095045.GG4141@pendragon.ideasonboard.com>
 References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
+ <20201124124538.660710-56-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20201124124538.660710-56-tomi.valkeinen@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Panel drivers can send DSI commands in panel's prepare(), which happens
-before the bridge's enable() is called. The OMAP DSI driver currently
-only sets up the DSI interface at bridge's enable(), so prepare() cannot
-be used to send DSI commands.
+Hi Tomi,
 
-This patch fixes the issue by making it possible to enable the DSI
-interface any time a command is about to be sent. Disabling the
-interface is be done via delayed work.
+Thank you for the patch.
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
----
+On Tue, Nov 24, 2020 at 02:45:13PM +0200, Tomi Valkeinen wrote:
+> Use the common MIPI_DCS_GET_ERROR_COUNT_ON_DSI define instead of
+> driver's own.
+> 
+> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
 
-One more patch. With this video mode panels seem to work cleanly (tested
-by me on omap5 uevm + custom panel and Nikolaus on pyra).
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
- drivers/gpu/drm/omapdrm/dss/dsi.c | 49 +++++++++++++++++++++++++++----
- drivers/gpu/drm/omapdrm/dss/dsi.h |  3 ++
- 2 files changed, 47 insertions(+), 5 deletions(-)
+> ---
+>  drivers/gpu/drm/panel/panel-dsi-cm.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-dsi-cm.c b/drivers/gpu/drm/panel/panel-dsi-cm.c
+> index 35a0c7da1974..cb0d27a38555 100644
+> --- a/drivers/gpu/drm/panel/panel-dsi-cm.c
+> +++ b/drivers/gpu/drm/panel/panel-dsi-cm.c
+> @@ -27,7 +27,6 @@
+>  #include <video/of_display_timing.h>
+>  #include <video/videomode.h>
+>  
+> -#define DCS_READ_NUM_ERRORS	0x05
+>  #define DCS_GET_ID1		0xda
+>  #define DCS_GET_ID2		0xdb
+>  #define DCS_GET_ID3		0xdc
+> @@ -225,7 +224,7 @@ static ssize_t num_dsi_errors_show(struct device *dev,
+>  	mutex_lock(&ddata->lock);
+>  
+>  	if (ddata->enabled)
+> -		r = dsicm_dcs_read_1(ddata, DCS_READ_NUM_ERRORS, &errors);
+> +		r = dsicm_dcs_read_1(ddata, MIPI_DCS_GET_ERROR_COUNT_ON_DSI, &errors);
+>  
+>  	mutex_unlock(&ddata->lock);
+>  
 
-diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-index d52bef0c7aa2..ae504ab122b4 100644
---- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-+++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-@@ -3498,6 +3498,9 @@ static void dsi_enable(struct dsi_data *dsi)
- 
- 	WARN_ON(!dsi_bus_is_locked(dsi));
- 
-+	if (WARN_ON(dsi->iface_enabled))
-+		return;
-+
- 	mutex_lock(&dsi->lock);
- 
- 	r = dsi_runtime_get(dsi);
-@@ -3510,6 +3513,8 @@ static void dsi_enable(struct dsi_data *dsi)
- 	if (r)
- 		goto err_init_dsi;
- 
-+	dsi->iface_enabled = true;
-+
- 	mutex_unlock(&dsi->lock);
- 
- 	return;
-@@ -3525,6 +3530,9 @@ static void dsi_disable(struct dsi_data *dsi)
- {
- 	WARN_ON(!dsi_bus_is_locked(dsi));
- 
-+	if (WARN_ON(!dsi->iface_enabled))
-+		return;
-+
- 	mutex_lock(&dsi->lock);
- 
- 	dsi_sync_vc(dsi, 0);
-@@ -3536,6 +3544,8 @@ static void dsi_disable(struct dsi_data *dsi)
- 
- 	dsi_runtime_put(dsi);
- 
-+	dsi->iface_enabled = false;
-+
- 	mutex_unlock(&dsi->lock);
- }
- 
-@@ -4224,10 +4234,12 @@ static ssize_t omap_dsi_host_transfer(struct mipi_dsi_host *host,
- 
- 	dsi_bus_lock(dsi);
- 
--	if (dsi->video_enabled)
--		r = _omap_dsi_host_transfer(dsi, vc, msg);
--	else
--		r = -EIO;
-+	if (!dsi->iface_enabled) {
-+		dsi_enable(dsi);
-+		schedule_delayed_work(&dsi->dsi_disable_work, msecs_to_jiffies(2000));
-+	}
-+
-+	r = _omap_dsi_host_transfer(dsi, vc, msg);
- 
- 	dsi_bus_unlock(dsi);
- 
-@@ -4392,6 +4404,14 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
- 	if (WARN_ON(dsi->dsidev != client))
- 		return -EINVAL;
- 
-+	cancel_delayed_work_sync(&dsi->dsi_disable_work);
-+
-+	if (dsi->iface_enabled) {
-+		dsi_bus_lock(dsi);
-+		dsi_disable(dsi);
-+		dsi_bus_unlock(dsi);
-+	}
-+
- 	omap_dsi_unregister_te_irq(dsi);
- 	dsi->dsidev = NULL;
- 	return 0;
-@@ -4627,9 +4647,12 @@ static void dsi_bridge_enable(struct drm_bridge *bridge)
- 	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
- 	struct omap_dss_device *dssdev = &dsi->output;
- 
-+	cancel_delayed_work_sync(&dsi->dsi_disable_work);
-+
- 	dsi_bus_lock(dsi);
- 
--	dsi_enable(dsi);
-+	if (!dsi->iface_enabled)
-+		dsi_enable(dsi);
- 
- 	dsi_enable_video_output(dssdev, VC_VIDEO);
- 
-@@ -4643,6 +4666,8 @@ static void dsi_bridge_disable(struct drm_bridge *bridge)
- 	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
- 	struct omap_dss_device *dssdev = &dsi->output;
- 
-+	cancel_delayed_work_sync(&dsi->dsi_disable_work);
-+
- 	dsi_bus_lock(dsi);
- 
- 	dsi->video_enabled = false;
-@@ -4835,6 +4860,18 @@ static const struct soc_device_attribute dsi_soc_devices[] = {
- 	{ /* sentinel */ }
- };
- 
-+static void omap_dsi_disable_work_callback(struct work_struct *work)
-+{
-+	struct dsi_data *dsi = container_of(work, struct dsi_data, dsi_disable_work.work);
-+
-+	dsi_bus_lock(dsi);
-+
-+	if (dsi->iface_enabled && !dsi->video_enabled)
-+		dsi_disable(dsi);
-+
-+	dsi_bus_unlock(dsi);
-+}
-+
- static int dsi_probe(struct platform_device *pdev)
- {
- 	const struct soc_device_attribute *soc;
-@@ -4868,6 +4905,8 @@ static int dsi_probe(struct platform_device *pdev)
- 	INIT_DEFERRABLE_WORK(&dsi->framedone_timeout_work,
- 			     dsi_framedone_timeout_work_callback);
- 
-+	INIT_DEFERRABLE_WORK(&dsi->dsi_disable_work, omap_dsi_disable_work_callback);
-+
- #ifdef DSI_CATCH_MISSING_TE
- 	timer_setup(&dsi->te_timer, dsi_te_timeout, 0);
- #endif
-diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.h b/drivers/gpu/drm/omapdrm/dss/dsi.h
-index 452cee3279db..805f9073d9a5 100644
---- a/drivers/gpu/drm/omapdrm/dss/dsi.h
-+++ b/drivers/gpu/drm/omapdrm/dss/dsi.h
-@@ -391,6 +391,7 @@ struct dsi_data {
- 	atomic_t do_ext_te_update;
- 
- 	bool te_enabled;
-+	bool iface_enabled;
- 	bool video_enabled;
- 
- 	struct delayed_work framedone_timeout_work;
-@@ -440,6 +441,8 @@ struct dsi_data {
- 
- 	struct omap_dss_device output;
- 	struct drm_bridge bridge;
-+
-+	struct delayed_work dsi_disable_work;
- };
- 
- struct dsi_packet_sent_handler_data {
 -- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Regards,
 
+Laurent Pinchart
