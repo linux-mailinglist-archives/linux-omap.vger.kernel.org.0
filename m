@@ -2,143 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC2582C7BF5
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 00:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C0842C7F8F
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 09:16:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726293AbgK2XQE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 29 Nov 2020 18:16:04 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:52614 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725950AbgK2XQE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 29 Nov 2020 18:16:04 -0500
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id DD2FE97E;
-        Mon, 30 Nov 2020 00:15:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1606691722;
-        bh=1gmJ8FD0rO7A1+h32o5aMZJ6hT0SptCs8bO+zmLJSzo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hp8JEJmCbQEY77m6iLbKfnx6dcPOuZltndcWEXxBLEXInSg0/88o5D5+gn9F92oED
-         wF54OYK686Yr1VGDvEPSEeB6LeCs9c6F1/qB3ytaV6ZYpsvoH6OBP6x/t32HmaZ+W7
-         8ONqPb9DxhJ/yS+5BCyLFnBusktcKNqPQjvKMfRA=
-Date:   Mon, 30 Nov 2020 01:15:13 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Sebastian Reichel <sre@kernel.org>
-Cc:     dri-devel@lists.freedesktop.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>, linux-omap@vger.kernel.org,
-        kernel@collabora.com, Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: Re: [PATCH] drm/panel: sony-acx565akm: Fix race condition in probe
-Message-ID: <20201129231513.GA5893@pendragon.ideasonboard.com>
-References: <20201127200429.129868-1-sebastian.reichel@collabora.com>
- <20201128220847.GC3865@pendragon.ideasonboard.com>
- <20201129005331.z45f5uqjwxki4wwz@earth.universe>
+        id S1726634AbgK3IQt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Nov 2020 03:16:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45928 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725880AbgK3IQs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 03:16:48 -0500
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566B2C0613D3
+        for <linux-omap@vger.kernel.org>; Mon, 30 Nov 2020 00:16:02 -0800 (PST)
+Received: by mail-lf1-x144.google.com with SMTP id u18so19781486lfd.9
+        for <linux-omap@vger.kernel.org>; Mon, 30 Nov 2020 00:16:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1WW7NdGi1sFdQkUxxy6Ct166Jaa/cUFKVp9VOVJXhJY=;
+        b=k498odRkC4CWp5FzcznjTxr/pCBlxIwv/+Y/qvje5oKOjju0LdiGuUZ1lgnB94z0oy
+         FWdK3JzZa5UHdKC63RBkuset2nF2DbNxmPfiyLMlqfjLE02AjSU7aLPPFDutBU1lyOKb
+         BUNlxoa2kVxrLFqvmCALsrTKR3Jl2X8/2EieNgI9128E0mCuXmVL02S+wSLUJgIXPGvW
+         y+FmnaOfNvvVveg6vytmTjZXJdzmeGnsrSvsziSsmhqcP48pE6farYihYXkVtSad14DD
+         n3DogRhll2CSweTE94qOIrzRj58brTwTba+B3/GwxOEaOnqpEGhrbsh+8iRjFmrEhesw
+         hiOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1WW7NdGi1sFdQkUxxy6Ct166Jaa/cUFKVp9VOVJXhJY=;
+        b=QiudS795CxIfw7bBOV/vYOonlbLXbargXF6ufiirAfWhVzxZwb1PBSv0A7JE5aSZlr
+         MbWET2WZVGrdDOhy+HIUiN9rI/rACaGa5/044xb3EhdZYHgF13ESlJgfPJqXOg+rKKjF
+         t10T+VLk6m8IwDw5L4aqASEPiSafHxEqnrdkw65mw1jLvZwPFzAzDcTyjL2KxIUlQBCK
+         ihje+QdZXxs/0lduJ1rYt8DZTGxBYfGz+2jRy7Ob4GfYwHW2tcELMMGO+aeinlRrs7ZU
+         9ywT0NSRchTiiuTrsvF6q2Mbb+qhIcgtpoCY65DhETUqxBXFX5jFbP63c0oGjaxVIfji
+         UtPQ==
+X-Gm-Message-State: AOAM530yOW8kdfVnHOvlWw6feMPrBAcMfd+cUJKd6Qliut7g/GVH2HXs
+        MhbreGWXEsGBK/1fI4UxEdqFBQ9QEULhBr1trKfEQw==
+X-Google-Smtp-Source: ABdhPJwjUDapYSqhwuiyUqMZirMI2fiMMQRIx6Wm/py1dcEIOroSVXyUH1hK62LNIiM7QVZNWhF8/sT6/Qg0Qsrmjyk=
+X-Received: by 2002:ac2:4578:: with SMTP id k24mr8355336lfm.502.1606724160610;
+ Mon, 30 Nov 2020 00:16:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201129005331.z45f5uqjwxki4wwz@earth.universe>
+References: <20201128235154.GF551434@darkstar.musicnaut.iki.fi> <20201129115748.GG551434@darkstar.musicnaut.iki.fi>
+In-Reply-To: <20201129115748.GG551434@darkstar.musicnaut.iki.fi>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 30 Nov 2020 09:15:49 +0100
+Message-ID: <CACRpkdb0+uaRpC7GwWGjPoQMd=re2-BNPY5ritq3HNMJWKOKpg@mail.gmail.com>
+Subject: Re: [BISECTED REGRESSION] Broken USB/GPIO on OMAP1 OSK
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Sebastian,
+On Sun, Nov 29, 2020 at 12:57 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+> On Sun, Nov 29, 2020 at 01:51:54AM +0200, Aaro Koskinen wrote:
 
-On Sun, Nov 29, 2020 at 01:53:31AM +0100, Sebastian Reichel wrote:
-> On Sun, Nov 29, 2020 at 12:08:47AM +0200, Laurent Pinchart wrote:
-> > On Fri, Nov 27, 2020 at 09:04:29PM +0100, Sebastian Reichel wrote:
-> > > The probe routine acquires the reset GPIO using GPIOD_OUT_LOW. Directly
-> > > afterwards it calls acx565akm_detect(), which sets the GPIO value to
-> > > HIGH. If the bootloader initialized the GPIO to HIGH before the probe
-> > > routine was called, there is only a very short time period of a few
-> > > instructions where the reset signal is LOW. Exact time depends on
-> > > compiler optimizations, kernel configuration and alignment of the stars,
-> > > but I expect it to be always way less than 10us. There are no public
-> > > datasheets for the panel, but acx565akm_power_on() has a comment with
-> > > timings and reset period should be at least 10us. So this potentially
-> > > brings the panel into a half-reset state.
-> > 
-> > Good catch.
-> > 
-> > Looks like we got the reset polarity wrong in the driver though.
-> > GPIOD_OUT_LOW should mean de-asserted, but the driver expects it to mean
-> > low level. We can't fix that as it would require changing the device
-> > tree :-(
-> 
-> Yes, polarity is wrong unfortunately.
-> 
-> > > The result is, that panel may not work after boot and can get into a
-> > > working state by re-enabling it (e.g. by blanking + unblanking), since
-> > > that does a clean reset cycle. This bug has recently been hit by Ivaylo
-> > > Dimitrov, but there are some older reports which are probably the same
-> > > bug. At least Tony Lindgren, Peter Ujfalusi and Jarkko Nikula have
-> > > experienced it in 2017 describing the blank/unblank procedure as
-> > > possible workaround.
-> > > 
-> > > Note, that the bug really goes back in time. It has originally been
-> > > introduced in the predecessor of the omapfb driver in 3c45d05be382
-> > > ("OMAPDSS: acx565akm panel: handle gpios in panel driver") in 2012.
-> > > That driver eventually got replaced by a newer one, which had the bug
-> > > from the beginning in 84192742d9c2 ("OMAPDSS: Add Sony ACX565AKM panel
-> > > driver") and still exists in fbdev world. That driver has later been
-> > > copied to omapdrm and then was used as a basis for this driver. Last
-> > > but not least the omapdrm specific driver has been removed in
-> > > 45f16c82db7e ("drm/omap: displays: Remove unused panel drivers").
-> > > 
-> > > Reported-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
-> > > Reported-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> > > Reported-by: Tony Lindgren <tony@atomide.com>
-> > > Reported-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> > > Reported-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-> > > Cc: Merlijn Wajer <merlijn@wizzup.org>
-> > > Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > > Fixes: 1c8fc3f0c5d2 ("drm/panel: Add driver for the Sony ACX565AKM panel")
-> > > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> > > ---
-> > >  drivers/gpu/drm/panel/panel-sony-acx565akm.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/gpu/drm/panel/panel-sony-acx565akm.c b/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-> > > index e95fdfb16b6c..ba0b3ead150f 100644
-> > > --- a/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-> > > +++ b/drivers/gpu/drm/panel/panel-sony-acx565akm.c
-> > > @@ -629,7 +629,7 @@ static int acx565akm_probe(struct spi_device *spi)
-> > >  	lcd->spi = spi;
-> > >  	mutex_init(&lcd->mutex);
-> > >  
-> > > -	lcd->reset_gpio = devm_gpiod_get(&spi->dev, "reset", GPIOD_OUT_LOW);
-> > > +	lcd->reset_gpio = devm_gpiod_get(&spi->dev, "reset", GPIOD_OUT_HIGH);
-> > 
-> > Wouldn't it be better to instead add a delay here (or in
-> > acx565akm_detect()) ? If the panel is in a wrong state at
-> > boot time, a real reset can help.
-> 
-> acx565akm_detect() reads some registers to detect a previously
-> enabled panel and then driver handles this case properly. If we
-> reset the panel before the detection code, any detection code
-> would be useless (panel is obviously not enabled after a reset).
-> 
-> I think this detection code is only needed to avoid flickering
-> when a bootsplash is shown. So by accepting a bit of flickering
-> we can simplify the driver by dropping that code and make it a
-> bit more robust by doing a reset. It's a tradeoff and I don't
-> have strong feelings for either option.
-> 
-> But I think, that this fix should be applied to fixes branch
-> (and backported to stable). Removing panel enable detection
-> should not be applied as fix IMHO.
+> > I tried to upgrade my OMAP1 OSK board to v5.9, but the rootfs cannot
+> > be accessed anymore due to broken USB. It fails to probe with the
+> > following logs:
+> >
+> > [    9.219940] ohci ohci: cannot find GPIO chip i2c-tps65010, deferring
+> > [    9.250366] ohci ohci: cannot find GPIO chip i2c-tps65010, deferring
+> > [    9.731445] ohci ohci: cannot find GPIO chip i2c-tps65010, deferring
+> > [   10.342102] ohci ohci: cannot find GPIO chip i2c-tps65010, deferring
+> > [   10.966430] ohci ohci: cannot find GPIO chip i2c-tps65010, deferring
+> >
+> > Bisected to:
+> >
+> > commit 15d157e874437e381643c37a10922388d6e55b29
+> > Author: Linus Walleij <linus.walleij@linaro.org>
+> > Date:   Mon Jul 20 15:55:24 2020 +0200
+> >
+> >     usb: ohci-omap: Convert to use GPIO descriptors
+> >
+> > I suspect one of the issues is the name "i2c-tps65010" vs "tps65010":
+> >
+> > # cat /sys/devices/platform/omap_i2c.1/i2c-1/i2c-tps65010/gpio/gpiochip208/label
+> > tps65010
+> >
+> > However changing that in the lookup table still doesn't help much; I got rid
+> > of the "deferring" message but the USB still doesn't work. So far the only
+> > workaround I have is to revert the whole commit.
+>
+> GPIO numbering goes wrong... It's now trying to poke GPIO2.
 
-Agreed.
+Hm the old code looked like this:
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+#define GPIO1  1
 
--- 
-Regards,
+tps65010_set_gpio_out_value(GPIO1, LOW);
 
-Laurent Pinchart
+And I missed that the code inside the tps65010 driver subtracts 1 from
+the passed parameter and the standard gpiolib accessors add 1 before
+calling the same function. I missed this.
+
+> Also gpiod_set_value_cansleep() probably should be used as tps65010
+> can sleep.
+
+OK I'll send a combined patch fixing all issues (I hope).
+
+Yours,
+Linus Walleij
