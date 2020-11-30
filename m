@@ -2,240 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED7212C88B9
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 16:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 051E12C891A
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Nov 2020 17:14:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727070AbgK3P5S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Nov 2020 10:57:18 -0500
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:54984 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726651AbgK3P5S (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 10:57:18 -0500
-Received: from relay1-d.mail.gandi.net (unknown [217.70.183.193])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id B961B3E4608;
-        Mon, 30 Nov 2020 15:38:52 +0000 (UTC)
-X-Originating-IP: 86.194.74.19
-Received: from localhost (lfbn-lyo-1-997-19.w86-194.abo.wanadoo.fr [86.194.74.19])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id C9B63240008;
-        Mon, 30 Nov 2020 15:37:43 +0000 (UTC)
-Date:   Mon, 30 Nov 2020 16:37:43 +0100
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Cc:     linux@armlinux.org.uk, nicolas.ferre@microchip.com,
-        ludovic.desroches@microchip.com, tony@atomide.com,
-        mripard@kernel.org, wens@csie.org, jernej.skrabec@siol.net,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, lee.jones@linaro.org, sam@ravnborg.org,
-        emil.l.velikov@gmail.com, daniel.thompson@linaro.org,
-        krzk@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
-Message-ID: <20201130153743.GO1296649@piout.net>
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
- <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
+        id S1726860AbgK3QNo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Nov 2020 11:13:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52224 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726213AbgK3QNo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 30 Nov 2020 11:13:44 -0500
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D8EF22087C;
+        Mon, 30 Nov 2020 16:13:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606752783;
+        bh=wuan7nT2b3j/ysuAroybQAZQ8NB/ed1lLmOF9ZpUHhQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=fdzM643DQwdapNgIL/8Foi9Rmb5HM+BBBgjOdQutwpztsTTQCu5+nxKdiLubyqXEU
+         LW4ZNZFMrTA7AHxizzx8FkkCmdnl7tW+GPI7Obm1Ws6I2qqvd9g/KyoCec44zIarnQ
+         ygy7FGFb53obaRZwHl2I/2tcwjVVFUJnjslrRUwU=
+Received: by mail-ed1-f46.google.com with SMTP id l5so16871281edq.11;
+        Mon, 30 Nov 2020 08:13:02 -0800 (PST)
+X-Gm-Message-State: AOAM5324kHn43P7frKY/qU7i1xkHALflRkV4EXQnvnOj8aa16Imyfj74
+        fzst/tMe+Pu3og+u6jQQ/u7QCyeXF/Ni6Xd65g==
+X-Google-Smtp-Source: ABdhPJylQOreCp8QimYarFnXM0CzQZutwGrXF+ZC9QHOflV9bqRy//RSzC3ueRaJOgroSqkF2n7fEAmlFy9T4oMcBMk=
+X-Received: by 2002:aa7:c816:: with SMTP id a22mr5805431edt.373.1606752781185;
+ Mon, 30 Nov 2020 08:13:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
+References: <20201116173141.31873-1-kishon@ti.com> <20201116173141.31873-2-kishon@ti.com>
+ <20201118211139.GA1815279@bogus> <1e9b0b56-a42d-bea0-704b-6209532b1abe@ti.com>
+ <1ed82ab5-6171-108d-9b92-a18389044174@ti.com>
+In-Reply-To: <1ed82ab5-6171-108d-9b92-a18389044174@ti.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Mon, 30 Nov 2020 09:12:49 -0700
+X-Gmail-Original-Message-ID: <CAL_JsqKWx2qSjEVFEC4vLASLonHhQfDbHnq+rTeEZ3F-g_LRKA@mail.gmail.com>
+Message-ID: <CAL_JsqKWx2qSjEVFEC4vLASLonHhQfDbHnq+rTeEZ3F-g_LRKA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] dt-bindings: pci: ti,j721e: Fix "ti,syscon-pcie-ctrl"
+ to take argument
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        devicetree@vger.kernel.org, PCI <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 30/11/2020 15:21:33+0000, Andrey Zhizhikin wrote:
-> Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> unused") removed geenric_bl driver from the tree, together with
-> corresponding config option.
-> 
-> Remove BACKLIGHT_GENERIC config item from all ARM configurations.
-> 
-> Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+On Thu, Nov 26, 2020 at 5:53 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>
+> Hi Rob,
+>
+> On 20/11/20 10:39 am, Kishon Vijay Abraham I wrote:
+> > Hi Rob,
+> >
+> > On 19/11/20 2:41 am, Rob Herring wrote:
+> >> On Mon, Nov 16, 2020 at 11:01:39PM +0530, Kishon Vijay Abraham I wrote:
+> >>> Fix binding documentation of "ti,syscon-pcie-ctrl" to take phandle with
+> >>> argument. The argument is the register offset within "syscon" used to
+> >>> configure PCIe controller.
+> >>>
+> >>> Link: Link: http://lore.kernel.org/r/CAL_JsqKiUcO76bo1GoepWM1TusJWoty_BRy2hFSgtEVMqtrvvQ@mail.gmail.com
+> >>
+> >> Link: Link: ?
+> >>
+> >> AIUI, 'Link' is supposed to be a link to this patch. I guess more than 1
+> >> Link would be okay though.
+> >
+> > Two Links was a typo, will fix it in the next revision. Nishanth as well
+> > was asking about using "Link:" tag for a mailing list discussion.
+> >
+> > I started using it after Lorenzo had asked me to use Link tag for
+> > mailing list discussion here sometime back.
+> >
+> > https://patchwork.kernel.org/project/linux-pci/patch/20171219083627.7904-1-kishon@ti.com/#21350261
+> >
+> >>
+> >>> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> >>> ---
+> >>>  .../devicetree/bindings/pci/ti,j721e-pci-ep.yaml     | 12 ++++++++----
+> >>>  .../devicetree/bindings/pci/ti,j721e-pci-host.yaml   | 12 ++++++++----
+> >>>  2 files changed, 16 insertions(+), 8 deletions(-)
+> >>>
+> >>> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+> >>> index 3ae3e1a2d4b0..e9685c0bdc3e 100644
+> >>> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+> >>> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-ep.yaml
+> >>> @@ -29,9 +29,13 @@ properties:
+> >>>        - const: mem
+> >>>
+> >>>    ti,syscon-pcie-ctrl:
+> >>> -    description: Phandle to the SYSCON entry required for configuring PCIe mode
+> >>> -                 and link speed.
+> >>> -    $ref: /schemas/types.yaml#/definitions/phandle
+> >>> +    allOf:
+> >>
+> >> You no longer need allOf here.
+> >
+> > hmm, don't we need it for specifying phandle with fixed cells? FWIW, I
+> > was referring
+> >
+> > https://github.com/devicetree-org/dt-schema/blob/master/test/schemas/good-example.yaml#L187
+>
+> Can you clarify this please?
 
-> ---
->  arch/arm/configs/at91_dt_defconfig        | 1 -
->  arch/arm/configs/cm_x300_defconfig        | 1 -
->  arch/arm/configs/colibri_pxa300_defconfig | 1 -
->  arch/arm/configs/jornada720_defconfig     | 1 -
->  arch/arm/configs/magician_defconfig       | 1 -
->  arch/arm/configs/mini2440_defconfig       | 1 -
->  arch/arm/configs/omap2plus_defconfig      | 1 -
->  arch/arm/configs/pxa3xx_defconfig         | 1 -
->  arch/arm/configs/qcom_defconfig           | 1 -
->  arch/arm/configs/sama5_defconfig          | 1 -
->  arch/arm/configs/sunxi_defconfig          | 1 -
->  arch/arm/configs/tegra_defconfig          | 1 -
->  arch/arm/configs/u8500_defconfig          | 1 -
->  13 files changed, 13 deletions(-)
-> 
-> diff --git a/arch/arm/configs/at91_dt_defconfig b/arch/arm/configs/at91_dt_defconfig
-> index 4a0ba2ae1a25..6e52c9c965e6 100644
-> --- a/arch/arm/configs/at91_dt_defconfig
-> +++ b/arch/arm/configs/at91_dt_defconfig
-> @@ -132,7 +132,6 @@ CONFIG_DRM_ATMEL_HLCDC=y
->  CONFIG_DRM_PANEL_SIMPLE=y
->  CONFIG_FB_ATMEL=y
->  CONFIG_BACKLIGHT_ATMEL_LCDC=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  CONFIG_BACKLIGHT_PWM=y
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_LOGO=y
-> diff --git a/arch/arm/configs/cm_x300_defconfig b/arch/arm/configs/cm_x300_defconfig
-> index 2f7acde2d921..502a9d870ca4 100644
-> --- a/arch/arm/configs/cm_x300_defconfig
-> +++ b/arch/arm/configs/cm_x300_defconfig
-> @@ -87,7 +87,6 @@ CONFIG_FB=y
->  CONFIG_FB_PXA=y
->  CONFIG_LCD_CLASS_DEVICE=y
->  CONFIG_LCD_TDO24M=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  CONFIG_BACKLIGHT_DA903X=m
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
-> diff --git a/arch/arm/configs/colibri_pxa300_defconfig b/arch/arm/configs/colibri_pxa300_defconfig
-> index 0dae3b185284..26e5a67f8e2d 100644
-> --- a/arch/arm/configs/colibri_pxa300_defconfig
-> +++ b/arch/arm/configs/colibri_pxa300_defconfig
-> @@ -34,7 +34,6 @@ CONFIG_FB=y
->  CONFIG_FB_PXA=y
->  # CONFIG_LCD_CLASS_DEVICE is not set
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  # CONFIG_VGA_CONSOLE is not set
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_LOGO=y
-> diff --git a/arch/arm/configs/jornada720_defconfig b/arch/arm/configs/jornada720_defconfig
-> index 9f079be2b84b..069f60ffdcd8 100644
-> --- a/arch/arm/configs/jornada720_defconfig
-> +++ b/arch/arm/configs/jornada720_defconfig
-> @@ -48,7 +48,6 @@ CONFIG_FB=y
->  CONFIG_FB_S1D13XXX=y
->  CONFIG_LCD_CLASS_DEVICE=y
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  # CONFIG_VGA_CONSOLE is not set
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
-> diff --git a/arch/arm/configs/magician_defconfig b/arch/arm/configs/magician_defconfig
-> index d2e684f6565a..b4670d42f378 100644
-> --- a/arch/arm/configs/magician_defconfig
-> +++ b/arch/arm/configs/magician_defconfig
-> @@ -95,7 +95,6 @@ CONFIG_FB_PXA_OVERLAY=y
->  CONFIG_FB_W100=y
->  CONFIG_LCD_CLASS_DEVICE=y
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  CONFIG_BACKLIGHT_PWM=y
->  # CONFIG_VGA_CONSOLE is not set
->  CONFIG_FRAMEBUFFER_CONSOLE=y
-> diff --git a/arch/arm/configs/mini2440_defconfig b/arch/arm/configs/mini2440_defconfig
-> index 301f29a1fcc3..898490aaa39e 100644
-> --- a/arch/arm/configs/mini2440_defconfig
-> +++ b/arch/arm/configs/mini2440_defconfig
-> @@ -158,7 +158,6 @@ CONFIG_FB_S3C2410=y
->  CONFIG_LCD_CLASS_DEVICE=y
->  CONFIG_LCD_PLATFORM=y
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  CONFIG_BACKLIGHT_PWM=y
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY=y
-> diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-> index de3b7813a1ce..7eae097a75d2 100644
-> --- a/arch/arm/configs/omap2plus_defconfig
-> +++ b/arch/arm/configs/omap2plus_defconfig
-> @@ -388,7 +388,6 @@ CONFIG_FB_TILEBLITTING=y
->  CONFIG_LCD_CLASS_DEVICE=y
->  CONFIG_LCD_PLATFORM=y
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -CONFIG_BACKLIGHT_GENERIC=m
->  CONFIG_BACKLIGHT_PWM=m
->  CONFIG_BACKLIGHT_PANDORA=m
->  CONFIG_BACKLIGHT_GPIO=m
-> diff --git a/arch/arm/configs/pxa3xx_defconfig b/arch/arm/configs/pxa3xx_defconfig
-> index 06bbc7a59b60..f0c34017f2aa 100644
-> --- a/arch/arm/configs/pxa3xx_defconfig
-> +++ b/arch/arm/configs/pxa3xx_defconfig
-> @@ -74,7 +74,6 @@ CONFIG_FB_PXA=y
->  CONFIG_LCD_CLASS_DEVICE=y
->  CONFIG_LCD_TDO24M=y
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  CONFIG_BACKLIGHT_DA903X=y
->  # CONFIG_VGA_CONSOLE is not set
->  CONFIG_FRAMEBUFFER_CONSOLE=y
-> diff --git a/arch/arm/configs/qcom_defconfig b/arch/arm/configs/qcom_defconfig
-> index c882167e1496..d6733e745b80 100644
-> --- a/arch/arm/configs/qcom_defconfig
-> +++ b/arch/arm/configs/qcom_defconfig
-> @@ -159,7 +159,6 @@ CONFIG_FB=y
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  # CONFIG_LCD_CLASS_DEVICE is not set
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  CONFIG_BACKLIGHT_LM3630A=y
->  CONFIG_BACKLIGHT_LP855X=y
->  CONFIG_SOUND=y
-> diff --git a/arch/arm/configs/sama5_defconfig b/arch/arm/configs/sama5_defconfig
-> index 037d3a718a60..0a167891eb05 100644
-> --- a/arch/arm/configs/sama5_defconfig
-> +++ b/arch/arm/configs/sama5_defconfig
-> @@ -161,7 +161,6 @@ CONFIG_DRM_ATMEL_HLCDC=y
->  CONFIG_DRM_PANEL_SIMPLE=y
->  CONFIG_LCD_CLASS_DEVICE=y
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  CONFIG_BACKLIGHT_PWM=y
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_SOUND=y
-> diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
-> index 244126172fd6..af6e80d1a0f2 100644
-> --- a/arch/arm/configs/sunxi_defconfig
-> +++ b/arch/arm/configs/sunxi_defconfig
-> @@ -111,7 +111,6 @@ CONFIG_DRM_SIMPLE_BRIDGE=y
->  CONFIG_DRM_LIMA=y
->  CONFIG_FB_SIMPLE=y
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  CONFIG_BACKLIGHT_PWM=y
->  CONFIG_SOUND=y
->  CONFIG_SND=y
-> diff --git a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
-> index fff5fae0db30..74739a52a8ad 100644
-> --- a/arch/arm/configs/tegra_defconfig
-> +++ b/arch/arm/configs/tegra_defconfig
-> @@ -205,7 +205,6 @@ CONFIG_DRM_PANEL_SIMPLE=y
->  CONFIG_DRM_LVDS_CODEC=y
->  # CONFIG_LCD_CLASS_DEVICE is not set
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -# CONFIG_BACKLIGHT_GENERIC is not set
->  CONFIG_BACKLIGHT_PWM=y
->  CONFIG_FRAMEBUFFER_CONSOLE=y
->  CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
-> diff --git a/arch/arm/configs/u8500_defconfig b/arch/arm/configs/u8500_defconfig
-> index 28dd7cf56048..24aacc255021 100644
-> --- a/arch/arm/configs/u8500_defconfig
-> +++ b/arch/arm/configs/u8500_defconfig
-> @@ -92,7 +92,6 @@ CONFIG_DRM_PANEL_SONY_ACX424AKP=y
->  CONFIG_DRM_LIMA=y
->  CONFIG_DRM_MCDE=y
->  CONFIG_BACKLIGHT_CLASS_DEVICE=y
-> -CONFIG_BACKLIGHT_GENERIC=m
->  CONFIG_BACKLIGHT_GPIO=y
->  CONFIG_LOGO=y
->  CONFIG_SOUND=y
-> -- 
-> 2.17.1
-> 
+We are now using json-schema v2019.09 syntax which doesn't ignore
+keywords in addition to a $ref as draft7 and earlier did. The old way
+with 'allOf' still works though. I just haven't updated the above test
+cases.
 
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Rob
