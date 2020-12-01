@@ -2,41 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 249E82CA0BD
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 12:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3B272CA111
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 12:19:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730207AbgLALA2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Dec 2020 06:00:28 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:53320 "EHLO
+        id S2388663AbgLALNr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Dec 2020 06:13:47 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:55872 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730205AbgLALA1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Dec 2020 06:00:27 -0500
+        with ESMTP id S1727764AbgLALNq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Dec 2020 06:13:46 -0500
 Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B1AxL0s036578;
-        Tue, 1 Dec 2020 04:59:21 -0600
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B1BC3ww041170;
+        Tue, 1 Dec 2020 05:12:03 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1606820361;
-        bh=i4cgKS/QFFgGqhHZNPCQGPkZq4i4HGbJdagbl5kQUz4=;
+        s=ti-com-17Q1; t=1606821123;
+        bh=mZgPRoz2JXp5Fajh2RT2zFQpgdlWwMfnapaJ6D9j9Ns=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=tNd4/9jnh1F4/div+Bt+uiYiyHGnDt1gq140DI5hQVjvw77oKpg28OZDuowaawKyR
-         Rx8Ix5AxSF7Vsl1yp1Mi/lOJ2LxoxqqnsxisYTliu6TfazkwwWcz/bACfkmm1UhXgS
-         xj42iB7D4nB03X9D8noWGnKgkR2bYRcpy/IhoM/k=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B1AxLRg018252
+        b=y7imEuSmHhclZSaYYxFgcU6FG+Xojy3w/rNstWtJp9Bgct6l57s0rHmkzwTuXVfXR
+         IGSHNH85XvX+3mkGL4blHxqpQ+Zha+CA45JlMzaPcHxaScUWZTEgHdX+2IcAx6tr7C
+         9WjgIp4Jlpm5BpeDZwF1H9y0kK7+JZgW+x9iS6Wo=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B1BC2tp035791
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 1 Dec 2020 04:59:21 -0600
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 1 Dec 2020 05:12:03 -0600
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 1 Dec
- 2020 04:59:21 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 05:12:02 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 1 Dec 2020 04:59:21 -0600
+ Frontend Transport; Tue, 1 Dec 2020 05:12:02 -0600
 Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B1AxJ9W009378;
-        Tue, 1 Dec 2020 04:59:19 -0600
-Subject: Re: [PATCH v4 61/80] drm/omap: dsi: send nop instead of page & column
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B1BC0U5110441;
+        Tue, 1 Dec 2020 05:12:00 -0600
+Subject: Re: [PATCH v4 62/80] drm/omap: dsi: simplify VC handling
 To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 CC:     Sebastian Reichel <sre@kernel.org>,
         Nikhil Devshatwar <nikhil.nd@ti.com>,
@@ -44,15 +44,15 @@ CC:     Sebastian Reichel <sre@kernel.org>,
         Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
         <hns@goldelico.com>
 References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-62-tomi.valkeinen@ti.com>
- <20201130095837.GM4141@pendragon.ideasonboard.com>
+ <20201124124538.660710-63-tomi.valkeinen@ti.com>
+ <20201130100034.GN4141@pendragon.ideasonboard.com>
 From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <5ba290be-8b5f-bf67-6f1a-2bcbbd7a7108@ti.com>
-Date:   Tue, 1 Dec 2020 12:59:18 +0200
+Message-ID: <02c6614c-c667-dfde-427f-0eec1565fab6@ti.com>
+Date:   Tue, 1 Dec 2020 13:11:59 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20201130095837.GM4141@pendragon.ideasonboard.com>
+In-Reply-To: <20201130100034.GN4141@pendragon.ideasonboard.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -61,45 +61,31 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 30/11/2020 11:58, Laurent Pinchart wrote:
+On 30/11/2020 12:00, Laurent Pinchart wrote:
 > Hi Tomi,
 > 
 > Thank you for the patch.
 > 
-> On Tue, Nov 24, 2020 at 02:45:19PM +0200, Tomi Valkeinen wrote:
->> The OMAP DSI command mode panel driver used to send page & column
->> address before each frame update, and this code was moved into the DSI
->> host driver when converting it to the DRM bridge model.
+> On Tue, Nov 24, 2020 at 02:45:20PM +0200, Tomi Valkeinen wrote:
+>> The VC handling has gotten quite tangled up. As the first step to clean
+>> it up, lets define that we only support a single DSI peripheral (which
+>> was really already the case), and we always use VC0 (define VC_DEFAULT
+>> 0) register block to send data to the peripheral.
 >>
->> However, it's not really required to send the page & column address
->> before each frame. It's also something that doesn't really belong to the
->> DSI host driver, so we should drop the code.
->>
->> That said, frame updates break if we don't send _something_ between the
->> frames. A NOP command does the trick.
->>
->> It is not clear if this behavior is as expected from a DSI command mode
->> frame transfer, or is it a feature/issue with OMAP DSI driver, or a
->> feature/issue in the command mode panel used. So this probably needs to
->> be revisited later.
+>> We can thus have a single mipi_dsi_device pointer and remove the for
 > 
-> This is important information, could you capture it in a comment in the
-> code ?
+> s/the for/the need for/ ?
 
-I think this is related to the following (from DSI spec):
+Hmm, no, that's not what I was trying to say. Maybe it's clearer with a dash: "remove the for-loops
+which..."
 
-"To enable PHY synchronization the host processor should  periodically end HS transmission and drive
-the Data Lanes to the LP state. This transition should take place at least once per frame"
-
-And in OMAP TRM:
-
-"Special care must be taken in the case of the last line of the frame. The LPS transition is
-required when the link is in HS mode for the whole frame."
-
-I'm not 100% sure about that, but I'll change the commit description and add a comment to reflect
-the above text.
-
- Tomi
+> 
+>> loops which made passes over all the four VCs (just the first one was
+>> ever used).
+>>
+>> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> 
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
 -- 
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
