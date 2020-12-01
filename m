@@ -2,88 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0EB42C9436
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 01:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 070DD2C9801
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 08:20:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728181AbgLAArx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Nov 2020 19:47:53 -0500
-Received: from ozlabs.org ([203.11.71.1]:38913 "EHLO ozlabs.org"
+        id S1727102AbgLAHT4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Dec 2020 02:19:56 -0500
+Received: from muru.com ([72.249.23.125]:49526 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389163AbgLAArx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 30 Nov 2020 19:47:53 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4ClNj03z8kz9sT6;
-        Tue,  1 Dec 2020 11:47:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1606783630;
-        bh=e10QAc16NaqVN44J1Hr1vgfh7E2SKLFwF1tipzVH8TM=;
-        h=From:To:Subject:In-Reply-To:References:Date:From;
-        b=B7L/JpGsTjzwc1HcKznrIXmRcrxBRIrym7aN8qydKWJFeslXKQQ3S+88dDsBJ3atA
-         ICgQ4xVzl8mS04fa+JitQnIARV+Ch/K5dsJLTcG7CVgL3Fkr+k207+1HkMCbQhJINU
-         VBD4lUo+c3jz+s1yTU151EDkTrnyvsE1RFNs0t5ZmMG99AaYXTeI5CICrmcZ2H6dUl
-         Vvg1ej1Q60nEv0wb6xXsNKSIOd5YbXq/ODo1l/1d14DNsnPPuO2V7pIAsWo4KrPhf6
-         BFI8ddBD7AtJX9OL7JU1IR3erwJiDVWixj6BQJu5e1Q6dF+8vTlAYnp92VgcVQd9LV
-         hM8pxbdtxcAfw==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
-        linux@armlinux.org.uk, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
-        tony@atomide.com, mripard@kernel.org, wens@csie.org,
-        jernej.skrabec@siol.net, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
-        lee.jones@linaro.org, sam@ravnborg.org, emil.l.velikov@gmail.com,
-        daniel.thompson@linaro.org, krzk@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 5/5] powerpc/configs: drop unused BACKLIGHT_GENERIC option
-In-Reply-To: <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com> <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
-Date:   Tue, 01 Dec 2020 11:46:55 +1100
-Message-ID: <87tut6wdxc.fsf@mpe.ellerman.id.au>
+        id S1725859AbgLAHT4 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 1 Dec 2020 02:19:56 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 60AC780A9;
+        Tue,  1 Dec 2020 07:19:21 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Tero Kristo <t-kristo@ti.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL 1/4] Driver changes for omaps for genpd support
+Date:   Tue,  1 Dec 2020 09:18:46 +0200
+Message-Id: <pull-1606806458-694517@atomide.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com> writes:
-> Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> unused") removed geenric_bl driver from the tree, together with
-> corresponding config option.
->
-> Remove BACKLIGHT_GENERIC config item from generic-64bit_defconfig.
-                                            ^
-                                            powernv_defconfig
+From: "Tony Lindgren" <tony@atomide.com>
 
-> Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-> ---
->  arch/powerpc/configs/powernv_defconfig | 1 -
->  1 file changed, 1 deletion(-)
+The following changes since commit e7ae08d398e094e1305dee823435b1f996d39106:
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+  bus: ti-sysc: Fix bogus resetdone warning on enable for cpsw (2020-10-26 10:08:53 +0200)
 
-cheers
+are available in the Git repository at:
 
-> diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
-> index cf30fc24413b..60a30fffeda0 100644
-> --- a/arch/powerpc/configs/powernv_defconfig
-> +++ b/arch/powerpc/configs/powernv_defconfig
-> @@ -208,7 +208,6 @@ CONFIG_FB_MATROX_G=y
->  CONFIG_FB_RADEON=m
->  CONFIG_FB_IBM_GXT4500=m
->  CONFIG_LCD_PLATFORM=m
-> -CONFIG_BACKLIGHT_GENERIC=m
->  # CONFIG_VGA_CONSOLE is not set
->  CONFIG_LOGO=y
->  CONFIG_HID_A4TECH=m
-> -- 
-> 2.17.1
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.11/genpd-drivers-signed
+
+for you to fetch changes up to 57df7e370d2ab83a64c07acd157acfed4169f114:
+
+  remoteproc/wkup_m3: Use reset control driver if available (2020-11-16 12:57:40 +0200)
+
+----------------------------------------------------------------
+Driver changes for omaps for genpd for v5.11 merge window
+
+This series of changes allows booting am335x with genpd and
+device tree data without the legacy platform data. Also at
+least am437x can be booted with gendp with power domain and
+dts data. The SoC specific dts changes will be a separate
+pull request.
+
+We need the following driver changes merged before the dts
+changes can be done:
+
+- platform code needs a few improvments to probe l4_wkup first
+  for clocks, and to bail out when there is no platform data
+
+- ti-sysc driver needs a non-urgent fix for asserting rstctrl
+  reset only after disabling the clocks, to probe modules with
+  no known control registers, and added quirk handling for gpmc
+  devices
+
+- omap-prm driver needs a non-urgent fix for reset status bit,
+  support added for pm_clk, and then we add the rest of am335x
+  power domain data
+
+- clock driver for am335x needs to keep l3_main clock enabled
+  with genpd for suspend and resume to work
+
+- wkup_m3 remoteproc driver needs support added for reset
+  control if available instead of the legacy pdata callbacks
+
+- pm33xx driver needs PM runtime support added for genpd
+
+The am335x specific driver changes for the clock, wkup_m3,
+pm33xx and remoteproc drivers are quite trivial and have not
+caused merge conflicts in Linux next. I did not get acks for
+these changes except from Santosh but had already pushed out
+the branch already at that point. So I've added the related
+driver maintainers to Cc.
+
+----------------------------------------------------------------
+Tero Kristo (1):
+      soc: ti: omap-prm: am3: add genpd support for remaining PRM instances
+
+Tony Lindgren (10):
+      soc: ti: omap-prm: Do not check rstst bit on deassert if already deasserted
+      bus: ti-sysc: Assert reset only after disabling clocks
+      ARM: OMAP2+: Check for inited flag
+      ARM: OMAP2+: Probe PRCM first to probe l4_wkup with simple-pm-bus
+      bus: ti-sysc: Support modules without control registers
+      bus: ti-sysc: Implement GPMC debug quirk to drop platform data
+      clk: ti: am33xx: Keep am3 l3 main clock always on for genpd
+      soc: ti: omap-prm: Add pm_clk for genpd
+      soc: ti: pm33xx: Enable basic PM runtime support for genpd
+      remoteproc/wkup_m3: Use reset control driver if available
+
+ arch/arm/mach-omap2/omap_hwmod.c      |  6 +++
+ arch/arm/mach-omap2/pdata-quirks.c    | 11 +++++
+ drivers/bus/ti-sysc.c                 | 41 ++++++++++++-----
+ drivers/clk/ti/clk-33xx.c             |  2 +
+ drivers/remoteproc/wkup_m3_rproc.c    | 41 +++++++++++------
+ drivers/soc/ti/omap_prm.c             | 84 +++++++++++++++++++++++++++++++++--
+ drivers/soc/ti/pm33xx.c               | 17 ++++++-
+ include/linux/platform_data/ti-sysc.h |  1 +
+ 8 files changed, 174 insertions(+), 29 deletions(-)
