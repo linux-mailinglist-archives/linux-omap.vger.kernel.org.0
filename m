@@ -2,96 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1F992C9EBC
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 11:08:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 252D22CA01D
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 11:41:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729658AbgLAKFw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Dec 2020 05:05:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60818 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729648AbgLAKFv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Dec 2020 05:05:51 -0500
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B62CC0617A6
-        for <linux-omap@vger.kernel.org>; Tue,  1 Dec 2020 02:05:11 -0800 (PST)
-Received: by mail-wm1-x342.google.com with SMTP id c198so1945516wmd.0
-        for <linux-omap@vger.kernel.org>; Tue, 01 Dec 2020 02:05:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=14bf6bn+oj8PMyR0sJXDa7vt6hfR/TzFTELJbHUC7s0=;
-        b=FjLGvvbX1fS+Lzs7Jouwk4Xu5zby+fhb4SU9TD2AE3FCHm8BPNZ/4cQd8SjrL4teyO
-         pIrlUihpdldsh6VzuqjFbQapRtHM/oN3isKB/EtTzfLNwGUKynKjH85fbuEntqzz9l/M
-         zF/SRCOBE4zD/aC/w5Xthj9RhPGPgnmrL1Rz6FLJ5TDvxvdmNo6KDHxdQhrfzeBvtEDD
-         7j2t4XSgW0acxS83X/ur3/Z7Yiq1aV+ISZfBRWfznhvkhv84rEvGPp6dBSgEpeJDwi6p
-         32U1wPJILW50xkF1pYoC8QGnRQPruXD1wlIYhAik+Nvz7XfPhgPfeX4tn2phCkRisXbC
-         h/dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=14bf6bn+oj8PMyR0sJXDa7vt6hfR/TzFTELJbHUC7s0=;
-        b=RpePX/H3tpM25qDsC3wvSPKg1GZvjpk4X/9qPoiuKliH6QpJ7sQTj+d6HCuhSZHp49
-         wWeTrc2s7kgUS5Qfta/2DI1xrB+ibgrsB9PWRKN0tMMR3BtIy3wP3ucvZ1dOqG/1zs+Z
-         SrEWIS1diA0GeFZRDPvOpx6c6MI4HBKon44ZdJHTMp+Efj2E1fVIUge/9iDDrydwYTuz
-         s2phoeh0wdeUqKutHs2ZRD7p6VfSDCGkclxJ3CS9AULh/yWl6t9uUSourKsnHq7SppsU
-         h4BVgN9xYFIYVwfbjOgYIeGSHP1ILpVb3b7OaSETXgUKmWppUHzvhvyC0QR+1ANUbCRx
-         0+Fw==
-X-Gm-Message-State: AOAM532rLs9zoA5g7r1kParVNijbSzSgM4nf3rH+7MYBn4pGhjnnFAL8
-        7lHQ65dWsRhDjBkCbtoTP7ktyw==
-X-Google-Smtp-Source: ABdhPJxZXrE0bS930s4kHxmTujcKxrLUp8mkRl/hRPu1hEArkUtvSLrw9l0edI4pIsEcorzqGoW98g==
-X-Received: by 2002:a05:600c:255:: with SMTP id 21mr1914111wmj.69.1606817109823;
-        Tue, 01 Dec 2020 02:05:09 -0800 (PST)
-Received: from holly.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id p11sm2348078wrj.14.2020.12.01.02.05.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Dec 2020 02:05:07 -0800 (PST)
-Date:   Tue, 1 Dec 2020 10:05:05 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
-Cc:     linux@armlinux.org.uk, nicolas.ferre@microchip.com,
-        alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
-        tony@atomide.com, mripard@kernel.org, wens@csie.org,
-        jernej.skrabec@siol.net, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, lee.jones@linaro.org, sam@ravnborg.org,
-        emil.l.velikov@gmail.com, krzk@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 0/5] drop unused BACKLIGHT_GENERIC option
-Message-ID: <20201201100505.xsocmjf6tmxu4uon@holly.lan>
-References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
+        id S1725962AbgLAKla (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Dec 2020 05:41:30 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:44992 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725918AbgLAKla (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Dec 2020 05:41:30 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B1AddZl051332;
+        Tue, 1 Dec 2020 04:39:39 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1606819179;
+        bh=/2EfTAhkMklMtoJDyYOTXlF61LFVeDz0d2N746kxDHw=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=yUiS+jVBciEoNsdCBm0DBEokkjVRwqehXQLMNzgJn5EI7jdTLW56fHeTdi+C21X72
+         2NxL7PUrt0ENQKTT5XUVH5TIXqiRgJEige94DqYsIjdRYvQ7aD3aWKo+GtJBtzvSKD
+         wVNt8mAtgnGqj1PRP1RnFdBOAIQP0BqlOCXSPqRM=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B1AddZr119247
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 1 Dec 2020 04:39:39 -0600
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 1 Dec
+ 2020 04:39:39 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 1 Dec 2020 04:39:39 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B1AdbeI052277;
+        Tue, 1 Dec 2020 04:39:37 -0600
+Subject: Re: [PATCH v4 57/80] ARM: dts: omap5: add address-cells & size-cells
+ to dsi
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+CC:     Sebastian Reichel <sre@kernel.org>,
+        Nikhil Devshatwar <nikhil.nd@ti.com>,
+        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
+        <hns@goldelico.com>
+References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
+ <20201124124538.660710-58-tomi.valkeinen@ti.com>
+ <20201130095358.GI4141@pendragon.ideasonboard.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+Message-ID: <90a6fc14-78c5-f2c8-edb7-65fccde5fae8@ti.com>
+Date:   Tue, 1 Dec 2020 12:39:36 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
+In-Reply-To: <20201130095358.GI4141@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Nov 30, 2020 at 03:21:32PM +0000, Andrey Zhizhikin wrote:
-> Since the removal of generic_bl driver from the source tree in commit
-> 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> unused") BACKLIGHT_GENERIC config option became obsolete as well and
-> therefore subject to clean-up from all configuration files.
+On 30/11/2020 11:53, Laurent Pinchart wrote:
+> Hi Tomi,
 > 
-> This series introduces patches to address this removal, separated by
-> architectures in the kernel tree.
+> Thank you for the patch.
 > 
-> Andrey Zhizhikin (5):
->   ARM: configs: drop unused BACKLIGHT_GENERIC option
->   arm64: defconfig: drop unused BACKLIGHT_GENERIC option
->   MIPS: configs: drop unused BACKLIGHT_GENERIC option
->   parisc: configs: drop unused BACKLIGHT_GENERIC option
->   powerpc/configs: drop unused BACKLIGHT_GENERIC option
+> On Tue, Nov 24, 2020 at 02:45:15PM +0200, Tomi Valkeinen wrote:
+>> Add address-cells & size-cells to DSI nodes so that board files do not
+>> need to define them.
+> 
+> How about adding ports too, while at it ?
 
-Whole series:
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+We don't have ports for other encoders either. I'm not sure if adding ports helps or not, but I
+think it makes sense to add them consistently to all encoders on all boards if we want to go that way.
 
+> It would also be nice to convert the DT bindings to YAML :-)
 
-Daniel.
+I agree, but not as part of this already 81 patch series. =)
+
+ Tomi
+
+-- 
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
