@@ -2,29 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACE742C93CB
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 01:20:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6A1B2C93D2
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 01:21:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729632AbgLAATg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Nov 2020 19:19:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54946 "EHLO
+        id S1730668AbgLAAVC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Nov 2020 19:21:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729464AbgLAATg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 19:19:36 -0500
+        with ESMTP id S1727373AbgLAAVB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 19:21:01 -0500
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15308C0613D2
-        for <linux-omap@vger.kernel.org>; Mon, 30 Nov 2020 16:18:56 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F250C0613CF
+        for <linux-omap@vger.kernel.org>; Mon, 30 Nov 2020 16:20:21 -0800 (PST)
 Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9ACBB45D;
-        Tue,  1 Dec 2020 01:18:54 +0100 (CET)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0EE1645D;
+        Tue,  1 Dec 2020 01:20:20 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1606781934;
-        bh=34k77f7FdN4H2ZHL3+aEnNGB4NhXZrHet1Y8lbQPGIQ=;
+        s=mail; t=1606782020;
+        bh=EmyZhbpmN7xDql+z/nlN+5tqU9dCcEyFXY+mi6UcLxM=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bRI9xPQ627ONFqEif3d4774IAGZ8ZdSGWBADY+rJnrLpdcKTnwKwhKpf4OAgW+KXD
-         pWumj7NWk9z6TCWHIkoTag/zcTTZZwqExuW2aemuChEcuzxNB1Z0oVt/uSwo5JZCUf
-         MBtZoSbl6kfV/FApsBNEV9omTRyT6vMO16OchczE=
-Date:   Tue, 1 Dec 2020 02:18:46 +0200
+        b=AwYBZdI58ErMUughOnUN0s+jqjFqH1Tq2cHSeh6vpEdr80lA4JqOsIJvaeC7lHSSG
+         BayeZmvolUzP47b0Sy4PpQbbNDhKpbi+ETJd93WcWK7v03/Q3AKn6uC3vBmKMOZXC6
+         YIIpos18LbcKStFV+RqHBCUbipeIwjbYQvuhar6w=
+Date:   Tue, 1 Dec 2020 02:20:11 +0200
 From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
 Cc:     Sebastian Reichel <sre@kernel.org>,
@@ -32,15 +32,14 @@ Cc:     Sebastian Reichel <sre@kernel.org>,
         linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
         Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
         hns@goldelico.com
-Subject: Re: [PATCH v4 65/80] drm/omap: dsi: skip dsi_vc_enable_hs when
- already in correct mode
-Message-ID: <20201201001846.GJ25713@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v4 66/80] drm/omap: dsi: set LP/HS before update
+Message-ID: <20201201002011.GK25713@pendragon.ideasonboard.com>
 References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-66-tomi.valkeinen@ti.com>
+ <20201124124538.660710-67-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201124124538.660710-66-tomi.valkeinen@ti.com>
+In-Reply-To: <20201124124538.660710-67-tomi.valkeinen@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -49,64 +48,36 @@ Hi Tomi,
 
 Thank you for the patch.
 
-On Tue, Nov 24, 2020 at 02:45:23PM +0200, Tomi Valkeinen wrote:
-> Simplify and optimize dsi_vc_enable_hs() so that it can be called
-> without checking the current HS/LP mode. Make dsi_vc_enable_hs() return
-> if the VC is already in the correct mode.
+On Tue, Nov 24, 2020 at 02:45:24PM +0200, Tomi Valkeinen wrote:
+> We currently use a single VC for sending commands and pixel data. The
+> LP/HS mode for pixel data is correct by accident, as we have set the VC
+> to HS already earlier.
+> 
+> However, if we use a different VC for video data, the VC is in LP mode.
+> Fix this by always setting the LP/HS mode before starting a frame
+> update.
 > 
 > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> ---
->  drivers/gpu/drm/omapdrm/dss/dsi.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> index 4ac82166edc3..c3f13226ac26 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> @@ -341,7 +341,6 @@ struct dsi_data {
->  	int irq;
->  
->  	bool is_enabled;
-> -	bool in_lp_mode;
->  
->  	struct clk *dss_clk;
->  	struct regmap *syscon;
-> @@ -2441,6 +2440,9 @@ static void dsi_vc_enable_hs(struct omap_dss_device *dssdev, int vc,
->  
->  	DSSDBG("dsi_vc_enable_hs(%d, %d)\n", vc, enable);
->  
-> +	if (REG_GET(dsi, DSI_VC_CTRL(vc), 9, 9) == enable)
-> +		return;
-> +
-
-I tend to prefer cached state instead of reading it back from the
-hardware, as it's (marginally) more efficient. In either case,
 
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
->  	WARN_ON(!dsi_bus_is_locked(dsi));
+> ---
+>  drivers/gpu/drm/omapdrm/dss/dsi.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> index c3f13226ac26..41d6231d6e31 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> @@ -3918,6 +3918,8 @@ static int dsi_update_channel(struct omap_dss_device *dssdev, int vc)
 >  
->  	dsi_vc_enable(dsi, vc, 0);
-> @@ -2456,8 +2458,6 @@ static void dsi_vc_enable_hs(struct omap_dss_device *dssdev, int vc,
->  	/* start the DDR clock by sending a NULL packet */
->  	if (dsi->vm_timings.ddr_clk_always_on && enable)
->  		dsi_vc_send_null(dsi, vc, dsi->dsidev->channel);
-> -
-> -	dsi->in_lp_mode = !enable;
->  }
+>  	dsi_set_ulps_auto(dsi, false);
 >  
->  static void dsi_vc_flush_long_data(struct dsi_data *dsi, int vc)
-> @@ -4886,9 +4886,7 @@ static ssize_t _omap_dsi_host_transfer(struct dsi_data *dsi, int vc,
->  	struct omap_dss_device *dssdev = &dsi->output;
->  	int r;
->  
-> -	if (!!(msg->flags & MIPI_DSI_MSG_USE_LPM) != dsi->in_lp_mode)
-> -		dsi_vc_enable_hs(dssdev, vc,
-> -				 !(msg->flags & MIPI_DSI_MSG_USE_LPM));
-> +	dsi_vc_enable_hs(dssdev, vc, !(msg->flags & MIPI_DSI_MSG_USE_LPM));
->  
->  	switch (msg->type) {
->  	case MIPI_DSI_GENERIC_SHORT_WRITE_0_PARAM:
+> +	dsi_vc_enable_hs(dssdev, vc, !(dsi->dsidev->mode_flags & MIPI_DSI_MODE_LPM));
+> +
+>  	r = _dsi_send_nop(dsi, vc, dsi->dsidev->channel);
+>  	if (r < 0) {
+>  		DSSWARN("failed to send nop between frames: %d\n", r);
 
 -- 
 Regards,
