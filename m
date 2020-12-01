@@ -2,52 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D01C82C99DE
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 09:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31D532C9BB1
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 10:17:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728753AbgLAIrC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Dec 2020 03:47:02 -0500
-Received: from muru.com ([72.249.23.125]:49670 "EHLO muru.com"
+        id S2389833AbgLAJLU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Dec 2020 04:11:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48134 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727496AbgLAIrC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 1 Dec 2020 03:47:02 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 3868180A9;
-        Tue,  1 Dec 2020 08:46:28 +0000 (UTC)
-Date:   Tue, 1 Dec 2020 10:46:17 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, hns@goldelico.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v4 49/80] ARM: omap2plus_defconfig: Update for moved DSI
- command mode panel
-Message-ID: <20201201084617.GX26857@atomide.com>
-References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-50-tomi.valkeinen@ti.com>
+        id S2389827AbgLAJLS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 1 Dec 2020 04:11:18 -0500
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DA69D2223F;
+        Tue,  1 Dec 2020 09:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1606813863;
+        bh=l/6/TSOPO7fWj6RFG6mgP7piWhupJSRqSCE3om6mm30=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=dy1wfd9g3VwCPcyiyiFHh417C2jPpoC0lWyJAEq3nH0moZ4Ef50F1RUP5ymx/AksB
+         ipNa2yn5t88lH9a+A2qpJbT7kWPduxQElMqWMd+wQLlwdTFBJyayvQGs9BjzFQn47h
+         q46rqPyylyDvS6jmyquaVgNgcZIBYeDZfohYwnTM=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Faiz Abbas <faiz_abbas@ti.com>,
+        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.9 086/152] ARM: dts: dra76x: m_can: fix order of clocks
+Date:   Tue,  1 Dec 2020 09:53:21 +0100
+Message-Id: <20201201084723.141019483@linuxfoundation.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201201084711.707195422@linuxfoundation.org>
+References: <20201201084711.707195422@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201124124538.660710-50-tomi.valkeinen@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tomi Valkeinen <tomi.valkeinen@ti.com> [201124 12:48]:
-> From: Sebastian Reichel <sebastian.reichel@collabora.com>
-> 
-> The DSI command mode panel is no longer specific
-> to OMAP and thus the config option has been renamed
-> slightly.
-> 
-> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-Best to merge this along with the dss patches:
+[ Upstream commit 05d5de6ba7dbe490dd413b5ca11d0875bd2bc006 ]
 
-Acked-by: Tony Lindgren <tony@atomide.com>
+According to the bosch,m_can.yaml bindings the first clock shall be the "hclk",
+while the second clock "cclk".
+
+This patch fixes the order accordingly.
+
+Fixes: 0adbe832f21a ("ARM: dts: dra76x: Add MCAN node")
+Cc: Faiz Abbas <faiz_abbas@ti.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: linux-omap@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/boot/dts/dra76x.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/dra76x.dtsi b/arch/arm/boot/dts/dra76x.dtsi
+index b69c7d40f5d82..2f326151116b7 100644
+--- a/arch/arm/boot/dts/dra76x.dtsi
++++ b/arch/arm/boot/dts/dra76x.dtsi
+@@ -32,8 +32,8 @@
+ 				interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
+ 					     <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-names = "int0", "int1";
+-				clocks = <&mcan_clk>, <&l3_iclk_div>;
+-				clock-names = "cclk", "hclk";
++				clocks = <&l3_iclk_div>, <&mcan_clk>;
++				clock-names = "hclk", "cclk";
+ 				bosch,mram-cfg = <0x0 0 0 32 0 0 1 1>;
+ 			};
+ 		};
+-- 
+2.27.0
+
+
+
