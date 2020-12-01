@@ -2,84 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C82EA2C941D
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 01:41:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0EB42C9436
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 01:49:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728457AbgLAAlZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Nov 2020 19:41:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58350 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726316AbgLAAlZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 30 Nov 2020 19:41:25 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 701B3C0613CF
-        for <linux-omap@vger.kernel.org>; Mon, 30 Nov 2020 16:40:45 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 068FF31D;
-        Tue,  1 Dec 2020 01:40:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1606783244;
-        bh=8sve7zmvqAe3Z+4/N4WQsLh+Z5+v4sFLsIUAEN5CPAo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=slC5TUH+OmcptusG5xfP4G2Gvw69eTzWByIyVAhTOrfuhWUZjYbmoA3LzNPZ+LaEt
-         6kJ1AOgU1hpAXWX4YgTdS7ECxVZrZIH033s44vnO/Hn/N5VVl4IPzGVRtVU8MGubft
-         ff92CEWBtiFmWfVTqsjyVVejEjI+XI0M2IKT8jsE=
-Date:   Tue, 1 Dec 2020 02:40:35 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        hns@goldelico.com
-Subject: Re: [PATCH v4 80/80] drm/omap: dsi: fix DCS_CMD_ENABLE
-Message-ID: <20201201004035.GD4315@pendragon.ideasonboard.com>
-References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-81-tomi.valkeinen@ti.com>
+        id S1728181AbgLAArx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Nov 2020 19:47:53 -0500
+Received: from ozlabs.org ([203.11.71.1]:38913 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389163AbgLAArx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 30 Nov 2020 19:47:53 -0500
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4ClNj03z8kz9sT6;
+        Tue,  1 Dec 2020 11:47:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1606783630;
+        bh=e10QAc16NaqVN44J1Hr1vgfh7E2SKLFwF1tipzVH8TM=;
+        h=From:To:Subject:In-Reply-To:References:Date:From;
+        b=B7L/JpGsTjzwc1HcKznrIXmRcrxBRIrym7aN8qydKWJFeslXKQQ3S+88dDsBJ3atA
+         ICgQ4xVzl8mS04fa+JitQnIARV+Ch/K5dsJLTcG7CVgL3Fkr+k207+1HkMCbQhJINU
+         VBD4lUo+c3jz+s1yTU151EDkTrnyvsE1RFNs0t5ZmMG99AaYXTeI5CICrmcZ2H6dUl
+         Vvg1ej1Q60nEv0wb6xXsNKSIOd5YbXq/ODo1l/1d14DNsnPPuO2V7pIAsWo4KrPhf6
+         BFI8ddBD7AtJX9OL7JU1IR3erwJiDVWixj6BQJu5e1Q6dF+8vTlAYnp92VgcVQd9LV
+         hM8pxbdtxcAfw==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
+        linux@armlinux.org.uk, nicolas.ferre@microchip.com,
+        alexandre.belloni@bootlin.com, ludovic.desroches@microchip.com,
+        tony@atomide.com, mripard@kernel.org, wens@csie.org,
+        jernej.skrabec@siol.net, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, catalin.marinas@arm.com, will@kernel.org,
+        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
+        lee.jones@linaro.org, sam@ravnborg.org, emil.l.velikov@gmail.com,
+        daniel.thompson@linaro.org, krzk@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 5/5] powerpc/configs: drop unused BACKLIGHT_GENERIC option
+In-Reply-To: <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
+References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com> <20201130152137.24909-6-andrey.zhizhikin@leica-geosystems.com>
+Date:   Tue, 01 Dec 2020 11:46:55 +1100
+Message-ID: <87tut6wdxc.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201124124538.660710-81-tomi.valkeinen@ti.com>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tomi,
+Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com> writes:
+> Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
+> unused") removed geenric_bl driver from the tree, together with
+> corresponding config option.
+>
+> Remove BACKLIGHT_GENERIC config item from generic-64bit_defconfig.
+                                            ^
+                                            powernv_defconfig
 
-Thank you for the patch.
-
-On Tue, Nov 24, 2020 at 02:45:38PM +0200, Tomi Valkeinen wrote:
-> We only need to set VC_CTRL:DCS_CMD_ENABLE for command mode panels when
-> the HW has DSI_QUIRK_DCS_CMD_CONFIG_VC quirk. The old code did this
-> right by accident, but now we set DCS_CMD_ENABLE for video mode panels
-> too.
-> 
-> Fix this by skipping the set for video mode.
-> 
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
+> Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is unused")
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
 > ---
->  drivers/gpu/drm/omapdrm/dss/dsi.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> index ffecacd7350a..d52bef0c7aa2 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> @@ -3401,7 +3401,8 @@ static void dsi_setup_dsi_vcs(struct dsi_data *dsi)
->  	REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_VIDEO), 1, 1, 1); /* SOURCE_VP */
->  	dsi->vc[VC_VIDEO].source = DSI_VC_SOURCE_VP;
->  
-> -	if (dsi->data->quirks & DSI_QUIRK_DCS_CMD_CONFIG_VC)
-> +	if ((dsi->data->quirks & DSI_QUIRK_DCS_CMD_CONFIG_VC) &&
-> +	    !(dsi->dsidev->mode_flags & MIPI_DSI_MODE_VIDEO))
->  		REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_VIDEO), 1, 30, 30); /* DCS_CMD_ENABLE */
->  
->  	dsi_vc_enable(dsi, VC_CMD, 1);
+>  arch/powerpc/configs/powernv_defconfig | 1 -
+>  1 file changed, 1 deletion(-)
 
--- 
-Regards,
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Laurent Pinchart
+cheers
+
+> diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
+> index cf30fc24413b..60a30fffeda0 100644
+> --- a/arch/powerpc/configs/powernv_defconfig
+> +++ b/arch/powerpc/configs/powernv_defconfig
+> @@ -208,7 +208,6 @@ CONFIG_FB_MATROX_G=y
+>  CONFIG_FB_RADEON=m
+>  CONFIG_FB_IBM_GXT4500=m
+>  CONFIG_LCD_PLATFORM=m
+> -CONFIG_BACKLIGHT_GENERIC=m
+>  # CONFIG_VGA_CONSOLE is not set
+>  CONFIG_LOGO=y
+>  CONFIG_HID_A4TECH=m
+> -- 
+> 2.17.1
