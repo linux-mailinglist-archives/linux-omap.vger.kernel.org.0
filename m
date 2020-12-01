@@ -2,182 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E66532CA1CB
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 12:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 339552CA5F4
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Dec 2020 15:43:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728331AbgLALwF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Dec 2020 06:52:05 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:34954 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726530AbgLALwF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Dec 2020 06:52:05 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B1Bp6ek052532;
-        Tue, 1 Dec 2020 05:51:06 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1606823466;
-        bh=9W0hK1rpFo4DdhY4YKrSkkcWO4Yj6WnlMmE/FypurwQ=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=d76vLOfrNb4z/1xY5NnaEM1d6RrHwTd4Q9XLUdCoM6M3ba9dF3x2HznDnZ++4v+ps
-         wt5vEBfgWaT2DmgLWsXNqvG6WliXvkHAQe1xXyCqEs7rCwClOOUhYIAFvu5KHcf0BW
-         D1zCEXwNhrUcoGeZNrUoapGM2K+PwXPvpx6PNLMU=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B1Bp5U7070361
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 1 Dec 2020 05:51:06 -0600
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 1 Dec
- 2020 05:51:05 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 1 Dec 2020 05:51:05 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B1Bp3em096756;
-        Tue, 1 Dec 2020 05:51:03 -0600
-Subject: Re: [PATCH v4 76/80] drm/omap: dsi: cleanup initial vc setup
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-CC:     Sebastian Reichel <sre@kernel.org>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        <linux-omap@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        <hns@goldelico.com>
-References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-77-tomi.valkeinen@ti.com>
- <20201201003628.GU25713@pendragon.ideasonboard.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <040c5a51-8c57-68ab-4db5-619774b4ffd6@ti.com>
-Date:   Tue, 1 Dec 2020 13:51:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S2387650AbgLAOlm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Dec 2020 09:41:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57168 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387462AbgLAOlm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 1 Dec 2020 09:41:42 -0500
+Received: from gaia (unknown [95.146.230.165])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9A2B720757;
+        Tue,  1 Dec 2020 14:40:55 +0000 (UTC)
+Date:   Tue, 1 Dec 2020 14:40:53 +0000
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     ZHIZHIKIN Andrey <andrey.zhizhikin@leica-geosystems.com>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "nicolas.ferre@microchip.com" <nicolas.ferre@microchip.com>,
+        "alexandre.belloni@bootlin.com" <alexandre.belloni@bootlin.com>,
+        "ludovic.desroches@microchip.com" <ludovic.desroches@microchip.com>,
+        "tony@atomide.com" <tony@atomide.com>,
+        "mripard@kernel.org" <mripard@kernel.org>,
+        "wens@csie.org" <wens@csie.org>,
+        "jernej.skrabec@siol.net" <jernej.skrabec@siol.net>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        "jonathanh@nvidia.com" <jonathanh@nvidia.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
+        "James.Bottomley@HansenPartnership.com" 
+        <James.Bottomley@HansenPartnership.com>,
+        "deller@gmx.de" <deller@gmx.de>,
+        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
+        "paulus@samba.org" <paulus@samba.org>,
+        "lee.jones@linaro.org" <lee.jones@linaro.org>,
+        "sam@ravnborg.org" <sam@ravnborg.org>,
+        "emil.l.velikov@gmail.com" <emil.l.velikov@gmail.com>,
+        "daniel.thompson@linaro.org" <daniel.thompson@linaro.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        arm@kernel.org
+Subject: Re: [PATCH 1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
+Message-ID: <20201201144052.GE31404@gaia>
+References: <20201130152137.24909-1-andrey.zhizhikin@leica-geosystems.com>
+ <20201130152137.24909-2-andrey.zhizhikin@leica-geosystems.com>
+ <20201130185227.GA29434@kozik-lap>
+ <AM6PR06MB4691EC52BA41B86AB16EE14FA6F50@AM6PR06MB4691.eurprd06.prod.outlook.com>
 MIME-Version: 1.0
-In-Reply-To: <20201201003628.GU25713@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM6PR06MB4691EC52BA41B86AB16EE14FA6F50@AM6PR06MB4691.eurprd06.prod.outlook.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 01/12/2020 02:36, Laurent Pinchart wrote:
-> Hi Tomi,
+On Mon, Nov 30, 2020 at 07:50:25PM +0000, ZHIZHIKIN Andrey wrote:
+> From Krzysztof Kozlowski <krzk@kernel.org>:
+> > On Mon, Nov 30, 2020 at 03:21:33PM +0000, Andrey Zhizhikin wrote:
+> > > Commit 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
+> > > unused") removed geenric_bl driver from the tree, together with
+> > > corresponding config option.
+> > >
+> > > Remove BACKLIGHT_GENERIC config item from all ARM configurations.
+> > >
+> > > Fixes: 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it
+> > > is unused")
+> > > Cc: Sam Ravnborg <sam@ravnborg.org>
+> > > Signed-off-by: Andrey Zhizhikin
+> > > <andrey.zhizhikin@leica-geosystems.com>
+> > > ---
+> > >  arch/arm/configs/at91_dt_defconfig        | 1 -
+> > >  arch/arm/configs/cm_x300_defconfig        | 1 -
+> > >  arch/arm/configs/colibri_pxa300_defconfig | 1 -
+> > >  arch/arm/configs/jornada720_defconfig     | 1 -
+> > >  arch/arm/configs/magician_defconfig       | 1 -
+> > >  arch/arm/configs/mini2440_defconfig       | 1 -
+> > >  arch/arm/configs/omap2plus_defconfig      | 1 -
+> > >  arch/arm/configs/pxa3xx_defconfig         | 1 -
+> > >  arch/arm/configs/qcom_defconfig           | 1 -
+> > >  arch/arm/configs/sama5_defconfig          | 1 -
+> > >  arch/arm/configs/sunxi_defconfig          | 1 -
+> > >  arch/arm/configs/tegra_defconfig          | 1 -
+> > >  arch/arm/configs/u8500_defconfig          | 1 -
+> > >  13 files changed, 13 deletions(-)
+> > 
+> > You need to send it to arm-soc maintainers, otherwise no one might feel
+> > responsible enough to pick it up.
 > 
-> Thank you for the patch.
+> Good point, thanks a lot!
 > 
-> On Tue, Nov 24, 2020 at 02:45:34PM +0200, Tomi Valkeinen wrote:
->> As we now have a fixed setup for VCs (VC0 for video stream, VC1 for
->> commands), we can simplify the VC setup.
->>
->> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
->> ---
->>  drivers/gpu/drm/omapdrm/dss/dsi.c | 85 +++++++++++--------------------
->>  1 file changed, 31 insertions(+), 54 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
->> index ff8ace957291..27d0d119668b 100644
->> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
->> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
->> @@ -2017,40 +2017,6 @@ static void dsi_vc_initial_config(struct dsi_data *dsi, int vc)
->>  	dsi->vc[vc].source = DSI_VC_SOURCE_L4;
->>  }
->>  
->> -static int dsi_vc_config_source(struct dsi_data *dsi, int vc,
->> -				enum dsi_vc_source source)
->> -{
->> -	if (dsi->vc[vc].source == source)
->> -		return 0;
->> -
->> -	DSSDBG("Source config of VC %d", vc);
->> -
->> -	dsi_sync_vc(dsi, vc);
->> -
->> -	dsi_vc_enable(dsi, vc, 0);
->> -
->> -	/* VC_BUSY */
->> -	if (!wait_for_bit_change(dsi, DSI_VC_CTRL(vc), 15, 0)) {
->> -		DSSERR("vc(%d) busy when trying to config for VP\n", vc);
->> -		return -EIO;
->> -	}
->> -
->> -	/* SOURCE, 0 = L4, 1 = video port */
->> -	REG_FLD_MOD(dsi, DSI_VC_CTRL(vc), source, 1, 1);
->> -
->> -	/* DCS_CMD_ENABLE */
->> -	if (dsi->data->quirks & DSI_QUIRK_DCS_CMD_CONFIG_VC) {
->> -		bool enable = source == DSI_VC_SOURCE_VP;
->> -		REG_FLD_MOD(dsi, DSI_VC_CTRL(vc), enable, 30, 30);
->> -	}
->> -
->> -	dsi_vc_enable(dsi, vc, 1);
->> -
->> -	dsi->vc[vc].source = source;
->> -
->> -	return 0;
->> -}
->> -
->>  static void dsi_vc_enable_hs(struct omap_dss_device *dssdev, int vc,
->>  		bool enable)
->>  {
->> @@ -2072,10 +2038,6 @@ static void dsi_vc_enable_hs(struct omap_dss_device *dssdev, int vc,
->>  	dsi_if_enable(dsi, 1);
->>  
->>  	dsi_force_tx_stop_mode_io(dsi);
->> -
->> -	/* start the DDR clock by sending a NULL packet */
->> -	if (dsi->vm_timings.ddr_clk_always_on && enable)
->> -		dsi_vc_send_null(dsi, vc, dsi->dsidev->channel);
->>  }
->>  
->>  static void dsi_vc_flush_long_data(struct dsi_data *dsi, int vc)
->> @@ -2270,8 +2232,6 @@ static int dsi_vc_send_long(struct dsi_data *dsi, int vc,
->>  		return -EINVAL;
->>  	}
->>  
->> -	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_L4);
->> -
->>  	dsi_vc_write_long_header(dsi, vc, msg->channel, msg->type, msg->tx_len, 0);
->>  
->>  	p = msg->tx_buf;
->> @@ -2331,8 +2291,6 @@ static int dsi_vc_send_short(struct dsi_data *dsi, int vc,
->>  		DSSDBG("dsi_vc_send_short(ch%d, dt %#x, b1 %#x, b2 %#x)\n",
->>  		       vc, msg->type, pkt.header[1], pkt.header[2]);
->>  
->> -	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_L4);
->> -
->>  	if (FLD_GET(dsi_read_reg(dsi, DSI_VC_CTRL(vc)), 16, 16)) {
->>  		DSSERR("ERROR FIFO FULL, aborting transfer\n");
->>  		return -EINVAL;
->> @@ -3351,8 +3309,6 @@ static void dsi_update_screen_dispc(struct dsi_data *dsi)
->>  
->>  	DSSDBG("dsi_update_screen_dispc(%dx%d)\n", w, h);
->>  
->> -	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_VP);
->> -
->>  	bytespp	= mipi_dsi_pixel_format_to_bpp(dsi->pix_fmt) / 8;
->>  	bytespl = w * bytespp;
->>  	bytespf = bytespl * h;
->> @@ -3522,9 +3478,7 @@ static int dsi_update_channel(struct omap_dss_device *dssdev, int vc)
->>  
->>  	dsi_set_ulps_auto(dsi, false);
->>  
->> -	dsi_vc_enable_hs(dssdev, vc, !(dsi->dsidev->mode_flags & MIPI_DSI_MODE_LPM));
-> 
-> Why is this not needed anymore ?
+> I was not aware of the fact that there is a separate ML that should
+> receive patches targeted ARM SOCs. Can you (or anyone else) please
+> share it, so I can re-send it there as well?
 
-This is in dsi_update_channel(), so about sending the frame. We always want to send the frame in HS,
-and we set the VC to HS in the dsi_setup_dsi_vcs() in this patch. So there's no longer need to
-configure the speed for each dsi_update_channel invocation.
+It's not a mailing list as such (with archives etc.), just an alias to
+the arm-soc maintainers: arm@kernel.org.
 
-So there's a slight change in behavior, as before this patch you could send frames in LP, but can't
-after this. But who would want to do that...
+> > Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > 
+> > +CC Arnd and Olof,
+> > 
+> > Dear Arnd and Olof,
+> > 
+> > Maybe it is worth to add arm-soc entry to the MAINTAINERS file?
+> > Otherwise how one could get your email address? Not mentioning the
+> > secret-soc address. :)
 
-I think I can clean this up by changing "drm/omap: dsi: set LP/HS before update" to "always enable
-HS before update". And then dropping the line here.
+I tried to convince them before, it didn't work. I guess they don't like
+to be spammed ;). Or rather, SoC-specific patches, even to defconfig,
+should go through the specific SoC maintainers. However, there are
+occasional defconfig patches which are more generic or affecting
+multiple SoCs. I just ignore them as the arm64 defconfig is usually
+handled by the arm-soc folk (when I need a defconfig change, I go for
+arch/arm64/Kconfig directly ;)).
 
- Tomi
+Anyway, I still think that we should add a MAINTAINERS entry for
+arch/arm64/configs/defconfig and arch/arm64/Kconfig.platforms.
 
 -- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+Catalin
