@@ -2,123 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B07992CB443
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Dec 2020 06:17:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC2E2CC080
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Dec 2020 16:14:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728375AbgLBFPI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Dec 2020 00:15:08 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:57590 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728355AbgLBFPH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Dec 2020 00:15:07 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B25Dwg2030870;
-        Tue, 1 Dec 2020 23:13:58 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1606886038;
-        bh=uT8L/6+8iPwegVkljvpLhMiRA7Q/66yaOiKBWToJElQ=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=tv15ECY4kx0Hpu8hsx1cxf/W35myez2y+omwyqLvD3jmUDuNFfkldREoapalah7Qf
-         t7jN/TVhDVG3pD4U250UiyQEVKGDKoiigFliV0ZYuGTcTHPuy/WkculXZtiu1eX3e7
-         CFmIOw98k/04QQ60Rmb2uIytNWjpRwrx1jncFZH4=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B25DwK0115034
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 1 Dec 2020 23:13:58 -0600
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 1 Dec
- 2020 23:13:58 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 1 Dec 2020 23:13:58 -0600
-Received: from [10.250.233.179] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B25Du8X035835;
-        Tue, 1 Dec 2020 23:13:56 -0600
-Subject: Re: [PATCH 5/8] i2c: omap: fix reference leak when
- pm_runtime_get_sync fails
-To:     Qinglang Miao <miaoqinglang@huawei.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        id S1728099AbgLBPNk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Dec 2020 10:13:40 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:22613 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727315AbgLBPNk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Dec 2020 10:13:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1606921848;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=4tuLBquUzhnMPGXmatITflnxZ9VsRPiymqp2Up/v1eU=;
+        b=IEwruCpTy79v7ez1NkdogCVVPo9NmW+1ij3am+qCBZGNz2nJm1gEGHC+9MpTIrMUuq
+        FOEU98B11SfyRSuzglBOgiICrqbCWOhB87dub+eYga28/TK3TqtdvCgqeGvwSaG2yPR2
+        K6gAa4isMFKt1yd1V/7xJtOLych9FOr20JUmlXmMaF2p+EJMKUxBdpWVcmeOmRQJOt2t
+        Bch/dawxcu/FbcsHQ4yEh06YCSZJ32zuL9L6VQ7CgOI/n0PlyJEEnJuj3A+RtDaD9zLx
+        XK+px5yOJTJArPOeeLDnBH2+B9IqIDPhbt0UdH6JZauLLE5j6PfD19/SCOIE8gk/Gnel
+        9Riw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHmMlw4jpZQ=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 47.3.4 DYNA|AUTH)
+        with ESMTPSA id N02faawB2FATa0N
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Wed, 2 Dec 2020 16:10:29 +0100 (CET)
+Subject: Re: Understanding OMAP5 DPLL_ABE and CM_CLKSEL_WKUPAON
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=us-ascii
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20201201073753.GV26857@atomide.com>
+Date:   Wed, 2 Dec 2020 16:10:27 +0100
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        Tero Kristo <t-kristo@ti.com>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        Andreas Kemnade <andreas@kemnade.info>,
         Tony Lindgren <tony@atomide.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20201201092924.112461-1-miaoqinglang@huawei.com>
- <20201201093143.113180-1-miaoqinglang@huawei.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <618aa605-e1a2-9661-441a-a1bd28971438@ti.com>
-Date:   Wed, 2 Dec 2020 10:43:55 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20201201093143.113180-1-miaoqinglang@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9920C431-6841-4813-92B1-8FB1E8BC7833@goldelico.com>
+References: <c077ece056713ad120b3d2fd59916aab1248cd1c.camel@ds0.me> <20200727082833.GB2811@atomide.com> <ac19052a552660c86838709f071cffe0f3e65932.camel@ds0.me> <20200728084257.GF2811@atomide.com> <B66CD988-7339-44C2-B750-9FA2088D86FA@goldelico.com> <20201201073753.GV26857@atomide.com>
+To:     David Shah <dave@ds0.me>
+X-Mailer: Apple Mail (2.3124)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi David,
 
+> Am 01.12.2020 um 08:37 schrieb Tony Lindgren <tony@atomide.com>:
+>=20
+> * H. Nikolaus Schaller <hns@goldelico.com> [201123 20:11]:
+>> Hi David and Tony,
+>>=20
+>>> Am 28.07.2020 um 10:42 schrieb Tony Lindgren <tony@atomide.com>:
+>>>=20
+>>> * David Shah <dave@ds0.me> [200727 08:58]:
+>>>> On Mon, 2020-07-27 at 01:28 -0700, Tony Lindgren wrote:
+>>>>> If it only needs to be configured to 1 for reboot, sounds like it
+>>>>> should
+>>>>> be set in omap44xx_restart(). And we should also set it to 1 for
+>>>>> omap4
+>>>>> too.
+>>>>=20
+>>>> omap44xx_restart doesn't seem like the right place to me, as the =
+bug
+>>>> also affects hard resets (i.e. NRESWARM assertion) and it would be =
+nice
+>>>> to have these working, too.
+>>>=20
+>>> Ah right, the device reboots fine, but the rebooted kernel
+>>> won't initialize properly.
+>>>=20
+>>>> Would a better solution be to set it early during startup (the =
+first
+>>>> part of clock init), and then clear it when the DPLLs are set up =
+and
+>>>> locked?
+>>>=20
+>>> Yes sounds like then the place to configure this is in the
+>>> drivers/clk/ti/clk-54xx.c omap5xxx_dt_clk_init(). Maybe add
+>>> a comment to the patch description that a similar patch may
+>>> be also needed for omap4 on some devices.
+>>=20
+>> It seems as if the conclusion was that the patch is at the right
+>> location omap5xxx_dt_clk_init(). Has it been merged somewhere?
+>>=20
+>> It seems as if we still need it in our 5.10-rc series:
+>>=20
+>> =
+https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dcommit;h=3Daa8eda144e8=
+faa185e154710ca0eef12adb2d29d
+>=20
+> I recall Dave needs to resend it to the clock maintainers as
+> listed with scripts/get_maintainer.pl -f option.
 
-On 12/1/20 3:01 PM, Qinglang Miao wrote:
-> The PM reference count is not expected to be incremented on
-> return in omap_i2c_probe() and omap_i2c_remove().
-> 
-> However, pm_runtime_get_sync will increment the PM reference
-> count even failed. Forgetting to putting operation will result
-> in a reference leak here. I Replace it with pm_runtime_resume_and_get
-> to keep usage counter balanced.
-> 
-> What's more, error path 'err_free_mem' seems not like a proper
-> name any more. So I change the name to err_disable_pm and move
-> pm_runtime_disable below, for pm_runtime of 'pdev->dev' should
-> be disabled when pm_runtime_resume_and_get fails.
-> 
-> Fixes: 3b0fb97c8dc4 ("I2C: OMAP: Handle error check for pm runtime")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Qinglang Miao <miaoqinglang@huawei.com>
-> ---
+Do you think you will find to push this upstream?
 
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+BR and thanks,
+Nikolaus
 
->  drivers/i2c/busses/i2c-omap.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-> index 12ac4212a..d4f6c6d60 100644
-> --- a/drivers/i2c/busses/i2c-omap.c
-> +++ b/drivers/i2c/busses/i2c-omap.c
-> @@ -1404,9 +1404,9 @@ omap_i2c_probe(struct platform_device *pdev)
->  	pm_runtime_set_autosuspend_delay(omap->dev, OMAP_I2C_PM_TIMEOUT);
->  	pm_runtime_use_autosuspend(omap->dev);
->  
-> -	r = pm_runtime_get_sync(omap->dev);
-> +	r = pm_runtime_resume_and_get(omap->dev);
->  	if (r < 0)
-> -		goto err_free_mem;
-> +		goto err_disable_pm;
->  
->  	/*
->  	 * Read the Rev hi bit-[15:14] ie scheme this is 1 indicates ver2.
-> @@ -1513,8 +1513,8 @@ omap_i2c_probe(struct platform_device *pdev)
->  	omap_i2c_write_reg(omap, OMAP_I2C_CON_REG, 0);
->  	pm_runtime_dont_use_autosuspend(omap->dev);
->  	pm_runtime_put_sync(omap->dev);
-> +err_disable_pm:
->  	pm_runtime_disable(&pdev->dev);
-> -err_free_mem:
->  
->  	return r;
->  }
-> @@ -1525,7 +1525,7 @@ static int omap_i2c_remove(struct platform_device *pdev)
->  	int ret;
->  
->  	i2c_del_adapter(&omap->adapter);
-> -	ret = pm_runtime_get_sync(&pdev->dev);
-> +	ret = pm_runtime_resume_and_get(&pdev->dev);
->  	if (ret < 0)
->  		return ret;
->  
-> 
