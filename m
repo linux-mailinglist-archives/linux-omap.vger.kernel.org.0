@@ -2,77 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82FEF2CE551
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Dec 2020 02:47:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 635282CE8DE
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Dec 2020 08:54:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726589AbgLDBpB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Dec 2020 20:45:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56916 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726028AbgLDBpA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 3 Dec 2020 20:45:00 -0500
-Date:   Thu, 3 Dec 2020 17:44:17 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607046260;
-        bh=hesPmy1nwGmsLRTCW6Jx89Xg2zduiUm6o8IB8GX/LsM=;
-        h=From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qkYd/fQKBfLTCGlE/4raBI6GDJ8UPTzsY/eXN430DMOeWmdFnC7P2e8e7oE+Wrzxd
-         ffeo1agq/5kP8Vzsjbq7ZB+Tjt+pYxB9RK1Witez/azllIoJO4gzssaJyZ9PoRR0FP
-         qH0tllmJp9u3+lObh0r6+21V32bS74RyAyZaw90p0DnNglGgeSJeiUFIJm3tAApwjm
-         89xGCn9ASpX0D0lIp9o7Q1q4kWEmSm50piq7J1dShLBrHh10ZH6ZmyVy6Q/1ZRv16o
-         1zRegudG/bMPBRoljwzLEoGFRn3r0e1i7/ui25+KktabljvpLb2+ul0JGh35/kYD18
-         FxDQjjh8+3y4A==
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@redhat.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andriin@fb.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Romain Perier <romain.perier@gmail.com>,
-        Allen Pais <apais@linux.microsoft.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Simon Horman <simon.horman@netronome.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        Jiri Benc <jbenc@redhat.com>, oss-drivers@netronome.com,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Subject: Re: [PATCH bpf 3/7] netdevsim: Add debugfs toggle to reject BPF
- programs in verifier
-Message-ID: <20201203174417.46255de5@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
-In-Reply-To: <160703132036.162669.7719186299991611592.stgit@toke.dk>
-References: <160703131710.162669.9632344967082582016.stgit@toke.dk>
-        <160703132036.162669.7719186299991611592.stgit@toke.dk>
+        id S1728704AbgLDHx1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Dec 2020 02:53:27 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:36452 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726669AbgLDHx1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Dec 2020 02:53:27 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B47pe0R081483;
+        Fri, 4 Dec 2020 01:51:40 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1607068300;
+        bh=7B4Z9V9FJVne7AXPMH64Qu4HHhhon+GsU3KmmNhBkbw=;
+        h=From:To:CC:Subject:Date;
+        b=OTRjZLLXP+HqLLYpiZw9JmRmOj/YPm80KxiwFc66YTOZO6I6m6PUZ1Z0TDOdZ6hou
+         6LXDzpeKfIClg0ZBNeP7wt8m8MfQhZn1vQQr7FJfDQFi8IWK7lSHEcA8+1/cbnj8Rp
+         jt+keN7+C064XR8+j38sx9+qtc7/pXqQwhb1njFQ=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B47peR0113074
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 4 Dec 2020 01:51:40 -0600
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 4 Dec
+ 2020 01:51:40 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 4 Dec 2020 01:51:40 -0600
+Received: from a0393678-ssd.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B47pL6s031834;
+        Fri, 4 Dec 2020 01:51:24 -0600
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tero Kristo <t-kristo@ti.com>, Nishanth Menon <nm@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+CC:     <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>
+Subject: [PATCH v2 0/3] PCI: J721E: Fix Broken DT w.r.t SYSCON DT
+Date:   Fri, 4 Dec 2020 13:21:14 +0530
+Message-ID: <20201204075117.10430-1-kishon@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 03 Dec 2020 22:35:20 +0100 Toke H=C3=B8iland-J=C3=B8rgensen wrote:
-> diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/ne=
-tdevsim.h
-> index 827fc80f50a0..d1d329af3e61 100644
-> --- a/drivers/net/netdevsim/netdevsim.h
-> +++ b/drivers/net/netdevsim/netdevsim.h
-> @@ -190,6 +190,7 @@ struct nsim_dev {
->  	struct bpf_offload_dev *bpf_dev;
->  	bool bpf_bind_accept;
->  	u32 bpf_bind_verifier_delay;
-> +	bool bpf_bind_verifier_accept;
->  	struct dentry *ddir_bpf_bound_progs;
+Previously a subnode to syscon node was added which has the
+exact memory mapped address of pcie_ctrl but based on review comment
+provided by Rob [1], the offset is now being passed as argument to
+"ti,syscon-pcie-ctrl" phandle.
 
-nit: if you respin please reorder the bpf_bind_verifier_* fields so
-that the structure packs better.
+This series has both driver change and DT change. The driver change
+should be merged first and the driver takes care of maintaining old
+DT compatibility.
 
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+Changes frm v1:
+*) Remove use of allOf in schema
+*) Added Fixes tag
+*) Maintain old DT compatibility
 
-Thanks for fixing this test!
+[1] -> http://lore.kernel.org/r/CAL_JsqKiUcO76bo1GoepWM1TusJWoty_BRy2hFSgtEVMqtrvvQ@mail.gmail.com
+
+Kishon Vijay Abraham I (3):
+  dt-bindings: pci: ti,j721e: Fix "ti,syscon-pcie-ctrl" to take argument
+  PCI: j721e: Get offset within "syscon" from "ti,syscon-pcie-ctrl"
+    phandle arg
+  arm64: dts: ti: k3-j721e-main: Remove "syscon" nodes added for
+    pcieX_ctrl
+
+ .../bindings/pci/ti,j721e-pci-ep.yaml         | 11 +++--
+ .../bindings/pci/ti,j721e-pci-host.yaml       | 11 +++--
+ arch/arm64/boot/dts/ti/k3-j721e-main.dtsi     | 48 ++++---------------
+ drivers/pci/controller/cadence/pci-j721e.c    | 28 +++++++----
+ 4 files changed, 41 insertions(+), 57 deletions(-)
+
+-- 
+2.17.1
+
