@@ -2,101 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB6982CF222
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Dec 2020 17:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A3C02CF249
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Dec 2020 17:52:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730888AbgLDQnl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Dec 2020 11:43:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58240 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728382AbgLDQnl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Dec 2020 11:43:41 -0500
-Received: from mail-vs1-xe44.google.com (mail-vs1-xe44.google.com [IPv6:2607:f8b0:4864:20::e44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6AF5C061A4F
-        for <linux-omap@vger.kernel.org>; Fri,  4 Dec 2020 08:43:00 -0800 (PST)
-Received: by mail-vs1-xe44.google.com with SMTP id j140so3592873vsd.4
-        for <linux-omap@vger.kernel.org>; Fri, 04 Dec 2020 08:43:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=L2827Z3XOh+XnEroPsCQccYwh3m7efG10aQgHlA1ySA=;
-        b=JYZU1g+ZlShEvQrrKWBiYO9iBQR9lb1CAooVruB5LFjgcYFN57A0Z5Vyg0QfmpRgPI
-         mWA5CIgBn5zwwntKCAzMxCOKmmTG35klow6QnerENNCPXmnsGiIbKnhelkt6KNA/nELx
-         o9rBEIY32vBcPqkvXGeIcJrpW5gwGxgRRwG2A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=L2827Z3XOh+XnEroPsCQccYwh3m7efG10aQgHlA1ySA=;
-        b=Rr8yz69MktLyWD38+OAqWEXBxzRUV3VGxsvJ68DAEkbnMuYVSTLp910wugAg8Lwq/s
-         1UNATBoYHaDB9K5cSxR4TN88A5CR6LqfwnhcfDIMzIAY6v4hEe///wbizxDcGMccu11N
-         2mRAO7XpEp6qDTgO5ZDXybqlWnoqdeHNQLhX2Kt+6nmmPbPtX1GNP/0MmSj6XvJIA/L9
-         MYPFW7sjKbQvKJKBU+FGh9kJXzhW7zbvKuROtt0WrGj8gsMOWJeSLDZFUfd4Itut1eLZ
-         lBi13CPpgNnoSdg2yvohukJTKfspozOSjlMnZmzD46TpqKQvyoMw5TfFOPjSP5IWYnR0
-         P7VA==
-X-Gm-Message-State: AOAM531bB1AOxXec1lpeExjPFeeDDqmmNCN640mtozlGEObOLNxuA5KT
-        8elOtAPLL6Rr9k3do/zRSDZk0xrJUMxJHw==
-X-Google-Smtp-Source: ABdhPJxbuFphP3DS/6H0s4eEAirtj5JnfekcDcJdLFo1VgPyBaW2idJJwHmSG/mjzfqDQDD3VbURNg==
-X-Received: by 2002:a67:ad0f:: with SMTP id t15mr4197150vsl.24.1607100179961;
-        Fri, 04 Dec 2020 08:42:59 -0800 (PST)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
-        by smtp.gmail.com with ESMTPSA id x71sm400655vsc.2.2020.12.04.08.42.59
-        for <linux-omap@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Dec 2020 08:42:59 -0800 (PST)
-Received: by mail-ua1-f42.google.com with SMTP id y26so2051272uan.5
-        for <linux-omap@vger.kernel.org>; Fri, 04 Dec 2020 08:42:59 -0800 (PST)
-X-Received: by 2002:ab0:35fa:: with SMTP id w26mr4096249uau.90.1607100178761;
- Fri, 04 Dec 2020 08:42:58 -0800 (PST)
+        id S1731028AbgLDQtg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Dec 2020 11:49:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57792 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731021AbgLDQtg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 4 Dec 2020 11:49:36 -0500
+Date:   Fri, 4 Dec 2020 08:48:47 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607100535;
+        bh=JJBc0oKKVKBC674Jsv6D0kDtsMyoYn4CD3dcs+/DWDg=;
+        h=From:To:Cc:Subject:In-Reply-To:References:From;
+        b=jLBS54sEPRvk14T/mMiqbNydMh9J0yoo0Ee6Vu/Y6gsr4iOdUKyauO2bFNuQ4UbBJ
+         ft6jZ4qoNKUlOChRn0WTz9ySvV7l8PnWGXKsSxQU63Lr1uT2iozlrmu0NCxQo123iy
+         RkjhsSxa9nCOkfIlHyhYuinbutkIdPIh49Sd9n5ae7zHWVxemSra/EzENW3/Dtomw7
+         LOcLVIpgMI5/yJ5dtLm0Ear4DFhaNNu66dJb9wY5hMJYARKsiduA6YXvdHHSqf0rKr
+         /ieZvDNwIEt93OpXiaz7V77vOBVKLVXV7MEwfYuG+0r1zHw4RP/4GEKeQ7YaEkHXOz
+         SO8ZVkn6tzpAA==
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@redhat.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andriin@fb.com>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Romain Perier <romain.perier@gmail.com>,
+        Allen Pais <apais@linux.microsoft.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Simon Horman <simon.horman@netronome.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Jiri Benc <jbenc@redhat.com>, oss-drivers@netronome.com,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        bpf@vger.kernel.org
+Subject: Re: [PATCH bpf 1/7] xdp: remove the xdp_attachment_flags_ok()
+ callback
+Message-ID: <20201204084847.04d9dc46@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+In-Reply-To: <87o8j99aip.fsf@toke.dk>
+References: <160703131710.162669.9632344967082582016.stgit@toke.dk>
+        <160703131819.162669.2776807312730670823.stgit@toke.dk>
+        <20201203174217.7717ea84@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+        <87o8j99aip.fsf@toke.dk>
 MIME-Version: 1.0
-References: <20201204095539.31705-1-andreas@kemnade.info> <CAD=FV=WLcEBv7gaA3MOVYmxJ3d2Q+mo+Amkex=0eu_19jMtjrA@mail.gmail.com>
- <20201204171428.0a011188@aktux>
-In-Reply-To: <20201204171428.0a011188@aktux>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 4 Dec 2020 08:42:46 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=Vynttaz00yqbihgK0HxyrPt9b0i0-8Ft6-4NEPc_NkeQ@mail.gmail.com>
-Message-ID: <CAD=FV=Vynttaz00yqbihgK0HxyrPt9b0i0-8Ft6-4NEPc_NkeQ@mail.gmail.com>
-Subject: Re: [PATCH] ARM: OMAP2+: omap_device: fix idling of devices during probe
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-On Fri, Dec 4, 2020 at 8:14 AM Andreas Kemnade <andreas@kemnade.info> wrote:
->
-> > > Fixes: 21b2cec61c04 ("mmc: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in v4.4")
+On Fri, 04 Dec 2020 10:38:06 +0100 Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+> Jakub Kicinski <kuba@kernel.org> writes:
+> > On Thu, 03 Dec 2020 22:35:18 +0100 Toke H=C3=B8iland-J=C3=B8rgensen wro=
+te: =20
+> >> Since we offloaded and non-offloaded programs can co-exist there doesn=
+'t
+> >> really seem to be any reason for the check anyway, and it's only used =
+in
+> >> three drivers so let's just get rid of the callback entirely. =20
 > >
-> > From the description it sounds like this problem has always existed
-> > but the async probe just tickled it reliably.  Seems like it'd make
-> > sense to tag the "Fixes" as some earlier commit so you make sure your
-> > fix gets picked to kernels even if they don't have the async probe
-> > patch?
-> >
->
-> Hmm, maybe
-> Fixes: 04abaf07f6d5 ("ARM: OMAP2+: omap_device: Sync omap_device and
-> pm_runtime after probe defer")
->
-> But on the other hand to stable branches only such patches are applied
-> which solve pratical problems not only theoretical problems. But maybe
-> it solves several random issues where nobody took care to debug them.
->
-> That would be since v4.11.
+> > I don't remember exactly now, but I think the concern was that using=20
+> > the unspecified mode is pretty ambiguous when interface has multiple
+> > programs attached. =20
+>=20
+> Right. I did scratch my head a bit for why the check was there in the
+> first place, but that makes sense, actually :)
+>=20
+> So how about we disallow unload without specifying a mode, but only if
+> more than one program is loaded?
 
-I guess maybe best is to include both.  Then if someone is debugging
-why their async probe is failing they will notice this commit, but
-they also might decide to pick it earlier just to be safe...
+Are you including replacing as a form of unload? :)
 
--Doug
+IMHO the simpler the definition of the API / constraint the better.
+"You must specify the same flags" is pretty simple, as is copying=20
+the old behavior rather than trying to come up with new rules.
+
+But up to you, I don't mind either way, really..
+
+> Since the core code tracks all the programs now, this could just be
+> enforced there and we would avoid all the weird interactions with the
+> drivers trying to enforce it...
+
+Yup, enforcing in the core now would make perfect sense.
