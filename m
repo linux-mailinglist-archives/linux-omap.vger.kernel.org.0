@@ -2,63 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 10C982D13CC
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Dec 2020 15:32:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF6532D13D1
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Dec 2020 15:35:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727409AbgLGOb6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Dec 2020 09:31:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42256 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725917AbgLGOb5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 7 Dec 2020 09:31:57 -0500
-X-Gm-Message-State: AOAM531c+iUJKW3LpnDerJO3ozmy9tziAJeuSilzdlq/HvcfKwKnwpwv
-        aUqCdQO9EevvP2WlMyWjVdw0HQIinfxvjxnJpw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607351477;
-        bh=cqmik7jy/N0+j77CAEYBbsCVlpLDCXBvftlMySKxxnU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=joNQwW4k75s1SI5D4e6g0TztrAHAhKpjiF8Yt+8uhHtm5fg3FoLp8ES+Azq9YpwSk
-         i7BzInVYVGmdTmTCRpL/IPbZL0JtxfUiPpw4zccr8IwMBdY7Bdn8Nxqk2qk9RehAD7
-         FNaTgDthAKfYRw23JVBsQaRbyqHfxhUDEXdVG3F8Gf/EXvjVaT1zU/7T7NjjZ7nfe2
-         fvz9g0U00IPi5uOTJOz0KcjBD+ot2AUisbbInqahxDNSpskyBFmIjkxRkyx0DgtAVj
-         lS1dvwffs5GDNjG0bRTbzfJ0rR5htQzFnom9OuwLLy1bEp5UY+wCjuP472MISQ1udq
-         HzLeRL7Kv5oiw==
-X-Google-Smtp-Source: ABdhPJwmyrtH4XAio3O5k76Jb95ok7SNMUoEBjz5jd8M5vNtApkguuzQTNM9mDekCLe+iZdI+HFg332uIKzofj6eSvM=
-X-Received: by 2002:a50:ab47:: with SMTP id t7mr20559440edc.289.1607351475832;
- Mon, 07 Dec 2020 06:31:15 -0800 (PST)
+        id S1725939AbgLGOep (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Dec 2020 09:34:45 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:58902 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725823AbgLGOeo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Dec 2020 09:34:44 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B7EXh6k125184;
+        Mon, 7 Dec 2020 08:33:43 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1607351623;
+        bh=pprfP1SHyvuyCq84UV+Z11bHi/F0RSQPKkG97XTWBjk=;
+        h=From:To:CC:Subject:Date;
+        b=izzuzv1BJmvOriJ7K/NAh1tj9DKEKMD1dKTRrcdT7CnEmkfXXJsB8lF+7ylClPqnp
+         Ye4GgnKFo+QedGUWFyYR7RvDanDKKvFQOkBXQ4fXJM2qkG52H7skB2gBuwy00sJJHp
+         F15+cLCD+3xHHuCw6lCsy/rezeJIctspWO9U4twE=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B7EXhmm122183
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 7 Dec 2020 08:33:43 -0600
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 7 Dec
+ 2020 08:33:42 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 7 Dec 2020 08:33:43 -0600
+Received: from sokoban.bb.dnainternet.fi (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B7EXfwx071446;
+        Mon, 7 Dec 2020 08:33:42 -0600
+From:   Tero Kristo <t-kristo@ti.com>
+To:     <linux-omap@vger.kernel.org>, <tony@atomide.com>
+CC:     <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH 0/3] ARM: dts: couple of DTS patches for DRA7 boards
+Date:   Mon, 7 Dec 2020 16:33:36 +0200
+Message-ID: <20201207143339.15674-1-t-kristo@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20201204075117.10430-1-kishon@ti.com> <20201204075117.10430-4-kishon@ti.com>
-In-Reply-To: <20201204075117.10430-4-kishon@ti.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 7 Dec 2020 08:31:03 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLkDu_rm1H7OQRxgRdUEKaB4_O8sNOCvAL29Q3Vj-h8qw@mail.gmail.com>
-Message-ID: <CAL_JsqLkDu_rm1H7OQRxgRdUEKaB4_O8sNOCvAL29Q3Vj-h8qw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] arm64: dts: ti: k3-j721e-main: Remove "syscon"
- nodes added for pcieX_ctrl
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>, Tero Kristo <t-kristo@ti.com>,
-        Nishanth Menon <nm@ti.com>, Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        PCI <linux-pci@vger.kernel.org>, devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Dec 4, 2020 at 1:52 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
->
-> Remove "syscon" nodes added for pcieX_ctrl and have the PCIe node
-> point to the parent with an offset argument. This change is as discussed in [1]
->
-> [1] -> http://lore.kernel.org/r/CAL_JsqKiUcO76bo1GoepWM1TusJWoty_BRy2hFSgtEVMqtrvvQ@mail.gmail.com
->
-> Fixes: 4e5833884f66 ("arm64: dts: ti: k3-j721e-main: Add PCIe device tree nodes")
-> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-> ---
->  arch/arm64/boot/dts/ti/k3-j721e-main.dtsi | 48 ++++-------------------
->  1 file changed, 8 insertions(+), 40 deletions(-)
+Hi Tony,
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Here are couple of missing DTS patches for DRA7 family of boards.
+
+-Tero
+
+
+--
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki. Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
