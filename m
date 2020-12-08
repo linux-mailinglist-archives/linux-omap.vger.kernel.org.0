@@ -2,40 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 441BF2D2AF5
+	by mail.lfdr.de (Postfix) with ESMTP id B14942D2AF6
 	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 13:31:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728548AbgLHMbU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Dec 2020 07:31:20 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:33608 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727992AbgLHMbT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 07:31:19 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CUKpE064474;
-        Tue, 8 Dec 2020 06:30:20 -0600
+        id S1728671AbgLHMbW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Dec 2020 07:31:22 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:45328 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727992AbgLHMbW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 07:31:22 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CUMSJ067118;
+        Tue, 8 Dec 2020 06:30:22 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1607430620;
-        bh=1dCEnoODmf/uf86HI8DG1XPvwgsxHhJzTZoSkz0WNb8=;
+        s=ti-com-17Q1; t=1607430622;
+        bh=7qaic8oBzhOGxIzW8dafxwEH0G1wJEv0kwjGjnXYmPE=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=rhboifzp4iI0oGov4ikbejaJtbA644xphHtH6IVDjqj/xonpDK5BOGTn/HA/vEnnV
-         70peldcyexpV5hyr0G0WFvzycW/bMT3wQoYkW35QWLc5D6GSsl48GAh7ZOJ/lw+89v
-         lRBB+RvwRqdZgfoxZl/B5e4KIeeDOfCsib/dM+ro=
+        b=n0LwHDM8/UAB823z63a+lDCFU+B+4yQDr8/VMThj+maS8RNXjO+VZjOfSk3nTdPIu
+         TfOC0C8BZmexQXGDqx/QbW+eL8bB0ST3NaYeSeyXtesZGfUS46uMiYuCJxwrdwMEgV
+         rNTsUwKn6oxY7lLYb6YdL1B1pohD0gUTURMRa1wI=
 Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B8CUKBq038795
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B8CUMxT088302
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 8 Dec 2020 06:30:20 -0600
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE113.ent.ti.com
+        Tue, 8 Dec 2020 06:30:22 -0600
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE113.ent.ti.com
  (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 8 Dec
- 2020 06:30:19 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 06:30:22 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 8 Dec 2020 06:30:19 -0600
+ Frontend Transport; Tue, 8 Dec 2020 06:30:22 -0600
 Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTcjT095068;
-        Tue, 8 Dec 2020 06:30:17 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTcjU095068;
+        Tue, 8 Dec 2020 06:30:20 -0600
 From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
 To:     Sebastian Reichel <sre@kernel.org>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -45,9 +45,9 @@ CC:     <linux-omap@vger.kernel.org>, Sekhar Nori <nsekhar@ti.com>,
         Tony Lindgren <tony@atomide.com>, <hns@goldelico.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH v5 15/29] drm/omap: dsi: use separate VCs for cmd and video
-Date:   Tue, 8 Dec 2020 14:28:41 +0200
-Message-ID: <20201208122855.254819-16-tomi.valkeinen@ti.com>
+Subject: [PATCH v5 16/29] drm/panel: panel-dsi-cm: remove extra 'if'
+Date:   Tue, 8 Dec 2020 14:28:42 +0200
+Message-ID: <20201208122855.254819-17-tomi.valkeinen@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201208122855.254819-1-tomi.valkeinen@ti.com>
 References: <20201208122855.254819-1-tomi.valkeinen@ti.com>
@@ -59,72 +59,33 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-For command mode panels we can use a single VC for sending command and
-video data, even if we have to change the data source for that VC when
-going from command to video or vice versa.
-
-However, with video mode panels we want to keep the pixel data VC
-enabled, and use another VC for command data, and the commands will get
-interleaved into the pixel data.
-
-This patch makes the driver use VC0 for commands and VC1 for video.
+We have a useless 'if' in the dsicm_bl_update_status(), a left over from
+the conversion to DRM model. Drop the if.
 
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 ---
- drivers/gpu/drm/omapdrm/dss/dsi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/panel/panel-dsi-cm.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-index 9d210a020916..0795efdd8902 100644
---- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-+++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-@@ -452,7 +452,9 @@ static bool dsi_perf;
- module_param(dsi_perf, bool, 0644);
- #endif
+diff --git a/drivers/gpu/drm/panel/panel-dsi-cm.c b/drivers/gpu/drm/panel/panel-dsi-cm.c
+index 556f9a2c5c0c..fa564aad7f25 100644
+--- a/drivers/gpu/drm/panel/panel-dsi-cm.c
++++ b/drivers/gpu/drm/panel/panel-dsi-cm.c
+@@ -202,11 +202,9 @@ static int dsicm_bl_update_status(struct backlight_device *dev)
  
--#define VC_DEFAULT 0
-+/* Note: for some reason video mode seems to work only if VC_VIDEO is 0 */
-+#define VC_VIDEO	0
-+#define VC_CMD		1
+ 	mutex_lock(&ddata->lock);
  
- #define drm_bridge_to_dsi(bridge) \
- 	container_of(bridge, struct dsi_data, bridge)
-@@ -3723,7 +3725,7 @@ static void dsi_disable_video_outputs(struct omap_dss_device *dssdev)
- 	dsi_bus_lock(dsi);
- 	dsi->video_enabled = false;
+-	if (ddata->enabled) {
+-		if (!r)
+-			r = dsicm_dcs_write_1(
+-				ddata, MIPI_DCS_SET_DISPLAY_BRIGHTNESS, level);
+-	}
++	if (ddata->enabled)
++		r = dsicm_dcs_write_1(ddata, MIPI_DCS_SET_DISPLAY_BRIGHTNESS,
++				      level);
  
--	dsi_disable_video_output(dssdev, VC_DEFAULT);
-+	dsi_disable_video_output(dssdev, VC_VIDEO);
- 
- 	dsi_display_disable(dssdev);
- 
-@@ -3951,7 +3953,7 @@ static int dsi_update_channel(struct omap_dss_device *dssdev, int vc)
- 
- static int dsi_update_all(struct omap_dss_device *dssdev)
- {
--	return dsi_update_channel(dssdev, VC_DEFAULT);
-+	return dsi_update_channel(dssdev, VC_VIDEO);
- }
- 
- /* Display funcs */
-@@ -4184,7 +4186,7 @@ static void dsi_enable_video_outputs(struct omap_dss_device *dssdev)
- 
- 	dsi_display_enable(dssdev);
- 
--	dsi_enable_video_output(dssdev, VC_DEFAULT);
-+	dsi_enable_video_output(dssdev, VC_VIDEO);
- 
- 	dsi->video_enabled = true;
- 
-@@ -4941,7 +4943,7 @@ static ssize_t omap_dsi_host_transfer(struct mipi_dsi_host *host,
- {
- 	struct dsi_data *dsi = host_to_omap(host);
- 	int r;
--	int vc = VC_DEFAULT;
-+	int vc = VC_CMD;
- 
- 	dsi_bus_lock(dsi);
+ 	mutex_unlock(&ddata->lock);
  
 -- 
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
