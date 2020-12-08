@@ -2,40 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02F3D2D2AF9
+	by mail.lfdr.de (Postfix) with ESMTP id 710C92D2AFA
 	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 13:32:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728842AbgLHMbl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Dec 2020 07:31:41 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:33212 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727998AbgLHMbl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 07:31:41 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTfoQ063994;
-        Tue, 8 Dec 2020 06:29:41 -0600
+        id S1728868AbgLHMbm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Dec 2020 07:31:42 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:44956 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728773AbgLHMbm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 07:31:42 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTigB066606;
+        Tue, 8 Dec 2020 06:29:44 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1607430581;
-        bh=7i5LU6l9rW7Z5+cOxWIafF0t3zpOrqoJf4PzQkxFsKI=;
-        h=From:To:CC:Subject:Date;
-        b=JFCxjZNub72Hj89/m8Xp5J8Ffss85hFOaaXhj4MdnXg4kUtWST5YxeCXhAcF3Oii4
-         o2sejcAKBKpQeDMVS0j8eQUJ4jHZAS8yM+Wzn66Wi1S1dwEAgJKLiusNUpm2vPELYk
-         eMwjgdS8nfEVA/bA5kUh1z6zTTMjOSozdOYp6JYQ=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B8CTfDK103231
+        s=ti-com-17Q1; t=1607430584;
+        bh=yUn5N7xuRZ7wh1GGz0Cy7uuTOcliNJXdPx5b/4Ti4II=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=hpRrSaZLkr2mNJErroeGJuq9452GH8euaMHP9z5ajv1Osnuse6Me5nfhwqRXEWuG6
+         2cqO50Uhu2zrEkv817nhlGmbs90FuwFCnYETNRBuALA3SEVmOECI+2Gp12nhnqkb6N
+         idz2mIrtEI2j+KDYe0fXXbtGgTTzxGjBRLnZuLQI=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B8CTiKh086297
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 8 Dec 2020 06:29:41 -0600
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 8 Dec 2020 06:29:44 -0600
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 8 Dec
- 2020 06:29:41 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 06:29:43 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 8 Dec 2020 06:29:41 -0600
+ Frontend Transport; Tue, 8 Dec 2020 06:29:43 -0600
 Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTcjE095068;
-        Tue, 8 Dec 2020 06:29:39 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTcjF095068;
+        Tue, 8 Dec 2020 06:29:41 -0600
 From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
 To:     Sebastian Reichel <sre@kernel.org>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -45,10 +45,12 @@ CC:     <linux-omap@vger.kernel.org>, Sekhar Nori <nsekhar@ti.com>,
         Tony Lindgren <tony@atomide.com>, <hns@goldelico.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH v5 00/29] Convert DSI code to use drm_mipi_dsi and drm_panel (second half)
-Date:   Tue, 8 Dec 2020 14:28:26 +0200
-Message-ID: <20201208122855.254819-1-tomi.valkeinen@ti.com>
+Subject: [PATCH v5 01/29] drm/panel: panel-dsi-cm: cleanup tear enable
+Date:   Tue, 8 Dec 2020 14:28:27 +0200
+Message-ID: <20201208122855.254819-2-tomi.valkeinen@ti.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201208122855.254819-1-tomi.valkeinen@ti.com>
+References: <20201208122855.254819-1-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -57,70 +59,67 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Simplify the code by moving code from _dsicm_enable_te() into
+dsicm_power_on().
 
-This is version 5 of the series OMAP DSI conversion series. Previous
-version can be found from:
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+---
+ drivers/gpu/drm/panel/panel-dsi-cm.c | 23 ++++-------------------
+ 1 file changed, 4 insertions(+), 19 deletions(-)
 
-https://www.spinics.net/lists/linux-omap/msg157480.html
-
-To lessen the patch spam, I'm sending only patches starting from patch
-56/80. There has been no changes to the patches before 56/80.
-
-Diff between v4 and v5 is not much. There are no functional changes at
-the end of the series (diff between v4 and v5 shows only cosmetic
-changes, except fixing one missing r = 0 initialization).
-
-The biggest change is splitting "drm/omap: dsi: cleanup channel usages"
-into three parts. Also, the last patch is new in this version, although
-I did send it for v4 as 81/80.
-
-Other changes include minor clarifications and cleanups in the
-descriptions, and moving a few changes from one commit to another in
-case the change logically belongs to the other commit.
-
- Tomi
-
-Tomi Valkeinen (29):
-  drm/panel: panel-dsi-cm: cleanup tear enable
-  ARM: dts: omap5: add address-cells & size-cells to dsi
-  drm/omap: pll: fix iteration loop check
-  drm/omap: dsi: set trans_mode according to client mode_flags
-  drm/panel: panel-dsi-cm: set column & page at setup
-  drm/omap: dsi: send nop instead of page & column
-  drm/omap: dsi: simplify VC handling
-  drm/omap: dsi: drop useless channel checks
-  drm/omap: dsi: cleanup dispc channel usage
-  drm/omap: dsi: rename 'channel' to 'vc'
-  drm/omap: dsi: pass vc to various functions
-  drm/omap: dsi: untangle vc & channel
-  drm/omap: dsi: skip dsi_vc_enable_hs when already in correct mode
-  drm/omap: dsi: enable HS before sending the frame
-  drm/omap: dsi: use separate VCs for cmd and video
-  drm/panel: panel-dsi-cm: remove extra 'if'
-  drm/panel: panel-dsi-cm: add panel database to driver
-  drm/panel: panel-dsi-cm: drop unneeded includes
-  drm/omap: dsi: move structs & defines to dsi.h
-  drm/omap: dsi: move enable/disable to bridge enable/disable
-  drm/omap: dsi: display_enable cleanup
-  drm/omap: dsi: display_disable cleanup
-  drm/omap: dsi: rename dsi_display_* functions
-  drm/omap: dsi: cleanup initial vc setup
-  drm/omap: dsi: split video mode enable/disable into separate func
-  drm/omap: dsi: fix and cleanup ddr_clk_always_on
-  drm/omap: dsi: remove ulps support
-  drm/omap: dsi: fix DCS_CMD_ENABLE
-  drm/omap: dsi: allow DSI commands to be sent early
-
- arch/arm/boot/dts/omap5.dtsi          |    6 +
- drivers/gpu/drm/omapdrm/dss/dsi.c     | 1375 ++++++-------------------
- drivers/gpu/drm/omapdrm/dss/dsi.h     |  456 ++++++++
- drivers/gpu/drm/omapdrm/dss/omapdss.h |   64 --
- drivers/gpu/drm/omapdrm/dss/pll.c     |    6 +
- drivers/gpu/drm/panel/panel-dsi-cm.c  |  161 +--
- 6 files changed, 899 insertions(+), 1169 deletions(-)
- create mode 100644 drivers/gpu/drm/omapdrm/dss/dsi.h
-
+diff --git a/drivers/gpu/drm/panel/panel-dsi-cm.c b/drivers/gpu/drm/panel/panel-dsi-cm.c
+index 729b42b4dabd..38f79dca1fd0 100644
+--- a/drivers/gpu/drm/panel/panel-dsi-cm.c
++++ b/drivers/gpu/drm/panel/panel-dsi-cm.c
+@@ -68,8 +68,6 @@ static inline struct panel_drv_data *panel_to_ddata(struct drm_panel *panel)
+ 	return container_of(panel, struct panel_drv_data, panel);
+ }
+ 
+-static int _dsicm_enable_te(struct panel_drv_data *ddata, bool enable);
+-
+ static void dsicm_bl_power(struct panel_drv_data *ddata, bool enable)
+ {
+ 	struct backlight_device *backlight;
+@@ -313,10 +311,13 @@ static int dsicm_power_on(struct panel_drv_data *ddata)
+ 	if (r)
+ 		goto err;
+ 
+-	r = _dsicm_enable_te(ddata, true);
++	r = mipi_dsi_dcs_set_tear_on(ddata->dsi, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
+ 	if (r)
+ 		goto err;
+ 
++	/* possible panel bug */
++	msleep(100);
++
+ 	ddata->enabled = true;
+ 
+ 	if (!ddata->intro_printed) {
+@@ -417,22 +418,6 @@ static int dsicm_disable(struct drm_panel *panel)
+ 	return r;
+ }
+ 
+-static int _dsicm_enable_te(struct panel_drv_data *ddata, bool enable)
+-{
+-	struct mipi_dsi_device *dsi = ddata->dsi;
+-	int r;
+-
+-	if (enable)
+-		r = mipi_dsi_dcs_set_tear_on(dsi, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
+-	else
+-		r = mipi_dsi_dcs_set_tear_off(dsi);
+-
+-	/* possible panel bug */
+-	msleep(100);
+-
+-	return r;
+-}
+-
+ static int dsicm_get_modes(struct drm_panel *panel,
+ 			   struct drm_connector *connector)
+ {
 -- 
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
 Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
