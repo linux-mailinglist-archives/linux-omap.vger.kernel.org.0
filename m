@@ -2,223 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 579522D2E9B
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 16:49:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84CE42D2F51
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 17:20:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729665AbgLHPtb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Dec 2020 10:49:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49910 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729334AbgLHPta (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 10:49:30 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 800E6C0613D6
-        for <linux-omap@vger.kernel.org>; Tue,  8 Dec 2020 07:48:50 -0800 (PST)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id D8876DD;
-        Tue,  8 Dec 2020 16:48:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1607442529;
-        bh=ircV3matoefGm6nqpfoT4DSJsQhG9eBQ8I+vPoFc9dg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GZy7jp5yuQp1GRaGSULZDWzNe17Np/ShICjhK3L8G5AWDL4Mv1MZMPtwTs2GcCJZE
-         oypN8aEYodIDoY5TtqUncIuqtQM/ZVn3TA19mW7oLsA5I68t8LIqPTeuNuwm8O46qJ
-         0X0s396R1pkqtRNakUoCiMrNYhia4tye55QlaZBg=
-Date:   Tue, 8 Dec 2020 17:48:45 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
-        hns@goldelico.com, Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH v5 29/29] drm/omap: dsi: allow DSI commands to be sent
- early
-Message-ID: <X8+gXWBwLItZA7gA@pendragon.ideasonboard.com>
-References: <20201208122855.254819-1-tomi.valkeinen@ti.com>
- <20201208122855.254819-30-tomi.valkeinen@ti.com>
+        id S1729558AbgLHQUU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Dec 2020 11:20:20 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:42592 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728124AbgLHQUU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 11:20:20 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B8GISHL022626;
+        Tue, 8 Dec 2020 10:18:28 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1607444308;
+        bh=f+1zQWX3bzrQvGic9sYZTm9ErEECcOnG3+Kc4bYcx7s=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=O1gySBPJsMVlXOyUd02v0rhD/X5a1ECQ6iqza/EzlFKZxgxRqrNWLc3DmzZEcI+sx
+         mAAe0JWo/bF9nv76rfnMfO4nm3sT1Sxtu1IdzuvQ+7w4g2DduCkK8UYKp/J/8aPdoV
+         Ia3YNkA7WivmCqXNzEV28RBlT1Wo4KYPDr5HiX9Y=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B8GIS5K070027
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 8 Dec 2020 10:18:28 -0600
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 8 Dec
+ 2020 10:18:28 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 8 Dec 2020 10:18:28 -0600
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B8GIMO3054655;
+        Tue, 8 Dec 2020 10:18:22 -0600
+Subject: Re: [RFC PATCH] RFC: drivers: gpio: helper for generic pin IRQ
+ handling
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>
+CC:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        <joyce.ooi@intel.com>, Andrew Jeffery <andrew@aj.id.au>,
+        Hoan Tran <hoan@os.amperecomputing.com>,
+        Serge Semin <fancer.lancer@gmail.com>, <orsonzhai@gmail.com>,
+        <baolin.wang7@gmail.com>, <zhang.lyra@gmail.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
+References: <20201208141429.8836-1-info@metux.net>
+ <CAHp75VfMKmJ074R2-04be0Ag6OuKcY=_xhhbRKsL2D0H8hZZLg@mail.gmail.com>
+ <CAHp75VfOjb4Rfo9yPmwEYUDbaPXNjfGs6goM27ZnLdAMtiU+jA@mail.gmail.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <0c16ab33-f87f-b32d-53d0-a44a5fecd6dc@ti.com>
+Date:   Tue, 8 Dec 2020 18:18:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201208122855.254819-30-tomi.valkeinen@ti.com>
+In-Reply-To: <CAHp75VfOjb4Rfo9yPmwEYUDbaPXNjfGs6goM27ZnLdAMtiU+jA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tomi,
 
-Thank you for the patch.
 
-On Tue, Dec 08, 2020 at 02:28:55PM +0200, Tomi Valkeinen wrote:
-> Panel drivers can send DSI commands in panel's prepare(), which happens
-> before the bridge's enable() is called. The OMAP DSI driver currently
-> only sets up the DSI interface at bridge's enable(), so prepare() cannot
-> be used to send DSI commands.
+On 08/12/2020 16:38, Andy Shevchenko wrote:
+> On Tue, Dec 8, 2020 at 4:19 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+>> On Tue, Dec 8, 2020 at 4:14 PM Enrico Weigelt, metux IT consult
+>> <info@metux.net> wrote:
+>>>
+>>> Many gpio drivers already use gpiolib's builtin irqchip handling
+>>> (CONFIG_GPIOLIB_IRQCHIP), but still has some boilerplate for retrieving
+>>> the actual Linux IRQ number and calling into the generic handler.
+>>> That boilerplate can be reduced by moving that into a helper function.
+>>>
+>>> This is an RFC patch to outline how that could be done. Note: it's
+>>> completely untested yet.
+>>>
+>>> Several drivers still have their completely IRQ own implementation and
+>>> thus can't be converted yet. Some of them perhaps could be changed to
+>>> store their irq domain in the struct gpio, so the new helper could
+>>> also be used for those.
+>>>
+>>> Having all GPIO drivers doing their IRQ management entirely through the
+>>> GPIO subsystem (eg. never calling generic_handle_irq() and using the builtin
+>>> IRQ handling) would also allow a more direct (eg. callback-based) pin change
+>>> notification for GPIO consumers, that doesn't involve registering them as
+>>> generic IRQ handlers.
+
+Above part makes me worry - why?
+
+>>>
+>>> Further reduction of boilerplate could be achieved by additional helpers
+>>> for common patterns like for_each_set_bit() loops on irq masks.
+>>
+>> Have you able to test them all?
+>> As the PCA953x case showed us this is not so simple, besides the name
+>> which sucks — we don't *raise* and IRQ we *handle* it.
+>>
+>> NAK.
 > 
-> This patch fixes the issue by making it possible to enable the DSI
-> interface any time a command is about to be sent. Disabling the
-> interface is be done via delayed work.
+> To be on constructive side what I think can help here:
+> - split patch on per driver basis (and first patch is a simple
+> introduction of new API)
+> - rename function
+> - in each new per-driver patch explain what is the difference in behaviour
+> - test as many as you can and explain in a cover letter what has been
+> done and what are the expectations on the ones that you weren't able
+> to test.
 > 
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> ---
->  drivers/gpu/drm/omapdrm/dss/dsi.c | 49 +++++++++++++++++++++++++++----
->  drivers/gpu/drm/omapdrm/dss/dsi.h |  3 ++
->  2 files changed, 47 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> index 53a64bc91867..34f665aa9a59 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> @@ -3503,6 +3503,9 @@ static void dsi_enable(struct dsi_data *dsi)
->  
->  	WARN_ON(!dsi_bus_is_locked(dsi));
->  
-> +	if (WARN_ON(dsi->iface_enabled))
-> +		return;
-> +
->  	mutex_lock(&dsi->lock);
->  
->  	r = dsi_runtime_get(dsi);
-> @@ -3515,6 +3518,8 @@ static void dsi_enable(struct dsi_data *dsi)
->  	if (r)
->  		goto err_init_dsi;
->  
-> +	dsi->iface_enabled = true;
-> +
->  	mutex_unlock(&dsi->lock);
->  
->  	return;
-> @@ -3530,6 +3535,9 @@ static void dsi_disable(struct dsi_data *dsi)
->  {
->  	WARN_ON(!dsi_bus_is_locked(dsi));
->  
-> +	if (WARN_ON(!dsi->iface_enabled))
-> +		return;
-> +
->  	mutex_lock(&dsi->lock);
->  
->  	dsi_sync_vc(dsi, 0);
-> @@ -3541,6 +3549,8 @@ static void dsi_disable(struct dsi_data *dsi)
->  
->  	dsi_runtime_put(dsi);
->  
-> +	dsi->iface_enabled = false;
-> +
->  	mutex_unlock(&dsi->lock);
->  }
->  
-> @@ -4229,10 +4239,12 @@ static ssize_t omap_dsi_host_transfer(struct mipi_dsi_host *host,
->  
->  	dsi_bus_lock(dsi);
->  
-> -	if (dsi->video_enabled)
-> -		r = _omap_dsi_host_transfer(dsi, vc, msg);
-> -	else
-> -		r = -EIO;
-> +	if (!dsi->iface_enabled) {
-> +		dsi_enable(dsi);
-> +		schedule_delayed_work(&dsi->dsi_disable_work, msecs_to_jiffies(2000));
-> +	}
-> +
-> +	r = _omap_dsi_host_transfer(dsi, vc, msg);
->  
->  	dsi_bus_unlock(dsi);
->  
-> @@ -4397,6 +4409,14 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
->  	if (WARN_ON(dsi->dsidev != client))
->  		return -EINVAL;
->  
-> +	cancel_delayed_work_sync(&dsi->dsi_disable_work);
-> +
-> +	if (dsi->iface_enabled) {
-> +		dsi_bus_lock(dsi);
-> +		dsi_disable(dsi);
-> +		dsi_bus_unlock(dsi);
-> +	}
-> +
->  	omap_dsi_unregister_te_irq(dsi);
->  	dsi->dsidev = NULL;
->  	return 0;
-> @@ -4632,9 +4652,12 @@ static void dsi_bridge_enable(struct drm_bridge *bridge)
->  	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
->  	struct omap_dss_device *dssdev = &dsi->output;
->  
-> +	cancel_delayed_work_sync(&dsi->dsi_disable_work);
-> +
 
-Is there a risk of a race condition if omap_dsi_host_transfer() is
-called right here, before locking the bus ? Or is there a guarantee that
-the two functions can't be executed concurrently ? Same for
-dsi_bridge_disable() below.
-
->  	dsi_bus_lock(dsi);
->  
-> -	dsi_enable(dsi);
-> +	if (!dsi->iface_enabled)
-> +		dsi_enable(dsi);
->  
->  	dsi_enable_video_output(dssdev, VC_VIDEO);
->  
-> @@ -4648,6 +4671,8 @@ static void dsi_bridge_disable(struct drm_bridge *bridge)
->  	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
->  	struct omap_dss_device *dssdev = &dsi->output;
->  
-> +	cancel_delayed_work_sync(&dsi->dsi_disable_work);
-> +
->  	dsi_bus_lock(dsi);
->  
->  	dsi->video_enabled = false;
-> @@ -4840,6 +4865,18 @@ static const struct soc_device_attribute dsi_soc_devices[] = {
->  	{ /* sentinel */ }
->  };
->  
-> +static void omap_dsi_disable_work_callback(struct work_struct *work)
-> +{
-> +	struct dsi_data *dsi = container_of(work, struct dsi_data, dsi_disable_work.work);
-> +
-> +	dsi_bus_lock(dsi);
-> +
-> +	if (dsi->iface_enabled && !dsi->video_enabled)
-> +		dsi_disable(dsi);
-> +
-> +	dsi_bus_unlock(dsi);
-> +}
-> +
->  static int dsi_probe(struct platform_device *pdev)
->  {
->  	const struct soc_device_attribute *soc;
-> @@ -4873,6 +4910,8 @@ static int dsi_probe(struct platform_device *pdev)
->  	INIT_DEFERRABLE_WORK(&dsi->framedone_timeout_work,
->  			     dsi_framedone_timeout_work_callback);
->  
-> +	INIT_DEFERRABLE_WORK(&dsi->dsi_disable_work, omap_dsi_disable_work_callback);
-> +
->  #ifdef DSI_CATCH_MISSING_TE
->  	timer_setup(&dsi->te_timer, dsi_te_timeout, 0);
->  #endif
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.h b/drivers/gpu/drm/omapdrm/dss/dsi.h
-> index de9411067ba2..601707c0ecc4 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dsi.h
-> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.h
-> @@ -394,6 +394,7 @@ struct dsi_data {
->  	atomic_t do_ext_te_update;
->  
->  	bool te_enabled;
-> +	bool iface_enabled;
->  	bool video_enabled;
->  
->  	struct delayed_work framedone_timeout_work;
-> @@ -443,6 +444,8 @@ struct dsi_data {
->  
->  	struct omap_dss_device output;
->  	struct drm_bridge bridge;
-> +
-> +	struct delayed_work dsi_disable_work;
->  };
->  
->  struct dsi_packet_sent_handler_data {
+agree.
 
 -- 
-Regards,
-
-Laurent Pinchart
+Best regards,
+grygorii
