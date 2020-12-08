@@ -2,84 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9B892D306D
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 18:01:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC86E2D307D
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 18:04:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730584AbgLHRBV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Dec 2020 12:01:21 -0500
-Received: from elvis.franken.de ([193.175.24.41]:57395 "EHLO elvis.franken.de"
+        id S1730293AbgLHRD6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Dec 2020 12:03:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47042 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729679AbgLHRBV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 8 Dec 2020 12:01:21 -0500
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1kmgLm-0006Gx-00; Tue, 08 Dec 2020 18:00:30 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id 909BFC0331; Tue,  8 Dec 2020 18:00:21 +0100 (CET)
-Date:   Tue, 8 Dec 2020 18:00:21 +0100
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     jonathanh@nvidia.com, linux-kernel@vger.kernel.org,
-        thierry.reding@gmail.com, krzk@kernel.org, mripard@kernel.org,
-        benh@kernel.crashing.org, emil.l.velikov@gmail.com,
-        alexandre.belloni@bootlin.com, mpe@ellerman.id.au,
-        linux-parisc@vger.kernel.org, paulus@samba.org,
-        nicolas.ferre@microchip.com, tony@atomide.com, sam@ravnborg.org,
-        linux@armlinux.org.uk, ludovic.desroches@microchip.com,
-        soc@kernel.org, James.Bottomley@HansenPartnership.com,
-        will@kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-        daniel.thompson@linaro.org, jernej.skrabec@siol.net,
-        linux-arm-kernel@lists.infradead.org, deller@gmx.de,
-        catalin.marinas@arm.com, wens@csie.org, linux-mips@vger.kernel.org,
-        lee.jones@linaro.org,
-        Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v2 0/5] drop unused BACKLIGHT_GENERIC option
-Message-ID: <20201208170021.GA6168@alpha.franken.de>
-References: <20201201222922.3183-1-andrey.zhizhikin@leica-geosystems.com>
- <160744514229.359082.11487352663734358657.b4-ty@arndb.de>
+        id S1729585AbgLHRD6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 8 Dec 2020 12:03:58 -0500
+Date:   Tue, 8 Dec 2020 09:03:15 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607446998;
+        bh=hOxuE1yQii1MZ5uR5LWDKoL24MnmLt2SEUCCB265/ow=;
+        h=From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Zy2Icuu6Tc/wAPCjg+hlXbwqWtI/np7rvQJKtMOPYjyv4FEfAqW+1AVNsxKCcRl7t
+         TW4Ejn07tpvAdxiHNRWpAZCA8IVmpUG1Pf7MwYnoSL1KKIBqTuzZzPOQnQflPxmNyT
+         cb+fskkE89kZaYau5mk5U/nJCUyr8D/8v2rN9nkxolTXENRB7dTUwVXN6fZxReOjb0
+         yEB5HcrgrNcDF7x5yw4LoxLOEhc2f9KekGiUmWQH3gAwNsf2bDCkK/X9l2WdaZvw9X
+         bcEreRZSpa5G+uVEqztFXnQ0zPN80WapmHRiK7z06NTfWp7bxyCzyAqvFA3Csk8nek
+         ehgqZ3I8dbXfw==
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@redhat.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andriin@fb.com>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Romain Perier <romain.perier@gmail.com>,
+        Allen Pais <apais@linux.microsoft.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Simon Horman <simon.horman@netronome.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Jiri Benc <jbenc@redhat.com>, oss-drivers@netronome.com,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        bpf@vger.kernel.org
+Subject: Re: [PATCH bpf v2 0/7] selftests/bpf: Restore test_offload.py to
+ working order
+Message-ID: <20201208090315.5106c049@kicinski-fedora-pc1c0hjn.DHCP.thefacebook.com>
+In-Reply-To: <87360gidoo.fsf@toke.dk>
+References: <160708272217.192754.14019805999368221369.stgit@toke.dk>
+        <87360gidoo.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <160744514229.359082.11487352663734358657.b4-ty@arndb.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Dec 08, 2020 at 05:34:46PM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> On Tue, 1 Dec 2020 22:29:17 +0000, Andrey Zhizhikin wrote:
-> > Since the removal of generic_bl driver from the source tree in commit
-> > 7ecdea4a0226 ("backlight: generic_bl: Remove this driver as it is
-> > unused") BACKLIGHT_GENERIC config option became obsolete as well and
-> > therefore subject to clean-up from all configuration files.
-> > 
-> > This series introduces patches to address this removal, separated by
-> > architectures in the kernel tree.
-> > 
-> > [...]
-> 
-> While my plan was to only take the arm specific patches, it seems
-> nobody else has applied the other architecture specific ones,
-> but there have been a lot of Acks. Also, b4 makes it easy to
-> merge the entire branch, so I'll just take all of these.
-> 
-> Applied to arm/defconfig, thanks!
-> 
-> [1/5] ARM: configs: drop unused BACKLIGHT_GENERIC option
->       commit: 0437141b4e2233ae0109a9584e7a003cd05b0a20
-> [2/5] arm64: defconfig: drop unused BACKLIGHT_GENERIC option
->       commit: 717c4c8336486781630893508b3347ae18953fae
-> [3/5] MIPS: configs: drop unused BACKLIGHT_GENERIC option
->       commit: 2257682282531de45929c6006152f6e2ee881b42
+On Tue, 08 Dec 2020 15:18:31 +0100 Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+> Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
+>=20
+> > This series restores the test_offload.py selftest to working order. It =
+seems a
+> > number of subtle behavioural changes have crept into various subsystems=
+ which
+> > broke test_offload.py in a number of ways. Most of these are fairly ben=
+ign
+> > changes where small adjustments to the test script seems to be the best=
+ fix, but
+> > one is an actual kernel bug that I've observed in the wild caused by a =
+bad
+> > interaction between xdp_attachment_flags_ok() and the rework of XDP pro=
+gram
+> > handling in the core netdev code.
+> >
+> > Patch 1 fixes the bug by removing xdp_attachment_flags_ok(), and the re=
+minder of
+> > the patches are adjustments to test_offload.py, including a new feature=
+ for
+> > netdevsim to force a BPF verification fail. Please see the individual p=
+atches
+> > for details.
+> >
+> > Changelog:
+> >
+> > v2:
+> > - Replace xdp_attachment_flags_ok() with a check in dev_xdp_attach()
+> > - Better packing of struct nsim_dev =20
+>=20
+> Any feedback on v2? Would be great to get it merged before the final
+> 5.10 release :)
 
-this one is already in mips-next.
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+LGTM but if my opinion mattered this could would not have been changed
+in the first place :)
