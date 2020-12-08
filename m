@@ -2,124 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 567AF2D2CFB
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 15:20:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73ADC2D2CF6
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 15:19:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729469AbgLHOUE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Dec 2020 09:20:04 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:22036 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726738AbgLHOUE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 09:20:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1607437117;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kyi764q7bLFJWD1wlZnYqTKpOBWuYBmNWhVFNKin/4U=;
-        b=EKyLNYWIYirdH5g6RSng8JfZ03W/2ecDeU0VwJxdvoe7n34QH+56MsfEJy7XnEZ/tDI2eH
-        o6WhhRpehkhDy6AAf6DOGijFmIGvAMcfuWZOyXpawd/6CfUbQTNb16sgM+nSheuWhwK2ux
-        6TjwPRW7yZWcIadyd9RCy8ZnUNQh5Mk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-325-jv-bDYx2Pp-bVQReR_s5TA-1; Tue, 08 Dec 2020 09:18:33 -0500
-X-MC-Unique: jv-bDYx2Pp-bVQReR_s5TA-1
-Received: by mail-wm1-f71.google.com with SMTP id f12so933878wmf.6
-        for <linux-omap@vger.kernel.org>; Tue, 08 Dec 2020 06:18:33 -0800 (PST)
+        id S1729524AbgLHOTA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Dec 2020 09:19:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35872 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729469AbgLHOTA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 09:19:00 -0500
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1803C061749;
+        Tue,  8 Dec 2020 06:18:19 -0800 (PST)
+Received: by mail-pg1-x541.google.com with SMTP id e2so3955496pgi.5;
+        Tue, 08 Dec 2020 06:18:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=OMSR+hMzcB4dCy9fVjZAuKPwdWZD1h4rKUe3TPr+HH4=;
+        b=GDEr4M3xeVwCR65XN9Y3PUuP3W0e+4t3cOtl1sUc9mWjM4tK6sK0ZWxYkCWfHLhHAS
+         zsUaAQ8+EKNobiBUsvwIun6fgLNtkufyFJyzL/7yPlBqHSDUQU3PgEYMpYrwj9/ey/9+
+         PYlz4yCWKeKYTT8bVKa/mKeMsqbLKU325nn8hv7+zknczPoSLGI4KgTasMirQYO6tEOV
+         wrcsSW74IzIx875hGUjRcXPt/NqUvNT2/JiTwH5rUVVpHdwE1gOSjBgnvB/mJodGbu85
+         NwEr2YaBoF7NWgaizzR4iG/7Q31XludPpENCMcZNrIXRaqh8+9/dAG+vpydDKFc6Gs+Z
+         lidw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=kyi764q7bLFJWD1wlZnYqTKpOBWuYBmNWhVFNKin/4U=;
-        b=dymdcqI6EiW4OKkB6aHXmRdui3UEGJBSDYCI6FrKOZzBbtYyOf7LLH1DHSJ+eiphya
-         HUiHgFJd/rtqxzFG/+pOki/uwX9vPGwiUD0KHbhTg2nETqvbOMl1g9Ze4tSRrOa5CDdb
-         zO8Uy7JaxZBVIYG2MmXRuVjuN2dXQwzoUTkyknay3MIDvJ/RcIyGHT2oSVrZxMJamr+X
-         gzXEWwZK33/HnMm+kPzZ4MQ42ZTeM6bKrdUaHgXflYMFlIeTqFvIHORDRfE/D8T7s1CW
-         Jp7K9VYe1L4HQ8lKfsIx6Y9u7sCx3v78Nc4BuTegGiYOlwLl5QsVI1joX8Oxx/PXOXgD
-         Y0/w==
-X-Gm-Message-State: AOAM531pkySE6nTAlvpQuYqQkDJiPaIQkNXxF/H1eWjUSkszkbjK41m9
-        tquo1tFdK63oVTHu+PaGUNXfDjS5dCDeeTMlRRx4vrozHWgHEcIHHr7T+I5Sb58c18ZVWthBg8u
-        80AG+4qMlQ6hcteqmmB2lNQ==
-X-Received: by 2002:adf:e452:: with SMTP id t18mr3054wrm.177.1607437112734;
-        Tue, 08 Dec 2020 06:18:32 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzgsLAqTl5hPrd0rf4yZywxhz1s4wTSYc9P/VHbfPy4D+vCv+PxkIwhST2xifkqo5IB69SJvg==
-X-Received: by 2002:adf:e452:: with SMTP id t18mr3028wrm.177.1607437112519;
-        Tue, 08 Dec 2020 06:18:32 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id d8sm20756925wrp.44.2020.12.08.06.18.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Dec 2020 06:18:31 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 7EDAB18060F; Tue,  8 Dec 2020 15:18:31 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andriin@fb.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Romain Perier <romain.perier@gmail.com>,
-        Allen Pais <apais@linux.microsoft.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Simon Horman <simon.horman@netronome.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        Jiri Benc <jbenc@redhat.com>, oss-drivers@netronome.com,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Subject: Re: [PATCH bpf v2 0/7] selftests/bpf: Restore test_offload.py to
- working order
-In-Reply-To: <160708272217.192754.14019805999368221369.stgit@toke.dk>
-References: <160708272217.192754.14019805999368221369.stgit@toke.dk>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 08 Dec 2020 15:18:31 +0100
-Message-ID: <87360gidoo.fsf@toke.dk>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=OMSR+hMzcB4dCy9fVjZAuKPwdWZD1h4rKUe3TPr+HH4=;
+        b=ByGOloImI5rkBxbrwzK0su0PnhsemUDuTeoMPXvLBLoZuQUktHy9tplJOL9tVQEVW6
+         aAiB1UWgIsCfNuXrXDuU9h4kMNWJH9O9JhpCSgEv78KUgHWC37aFe6TMC9ReG4Ue97at
+         FkooQK5RmXdW+kSh0TqPLx1v8rfbZF6Ex0hvYdKw/CXHi2MUz94zCbUO/3mZIBnf777I
+         9Z1mWYVCZ4wSwEd50gkqE8c11SFa3BHrBmnmNzoWDaKobRzA6/XP2dSRYI208Y7CSK/k
+         9uR7ehVeabRearzCePIqneCPLevw/8txKxpqdI/LWZ9xp5kMf5QNzpZFUOlsgJsegXIe
+         tr3w==
+X-Gm-Message-State: AOAM533/zs2o72+qH4f4/tcP3KZ3jXjPBRcaq0Y3jcNHb6vIw0/mAyuf
+        3GG0s7Wy0z1Ae4s+EamRgEzIBceKQX2Brv4T1/Y=
+X-Google-Smtp-Source: ABdhPJzsf8QZY2LQaf818jrjHoTphpxtNI7QUQQZgEjnN8Uga+bBWu9N22EYRNSUQQb8nNpQH61gugM0InXjm0hc5Uc=
+X-Received: by 2002:a17:90a:34cb:: with SMTP id m11mr4542310pjf.181.1607437099448;
+ Tue, 08 Dec 2020 06:18:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20201208141429.8836-1-info@metux.net>
+In-Reply-To: <20201208141429.8836-1-info@metux.net>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 8 Dec 2020 16:19:07 +0200
+Message-ID: <CAHp75VfMKmJ074R2-04be0Ag6OuKcY=_xhhbRKsL2D0H8hZZLg@mail.gmail.com>
+Subject: Re: [RFC PATCH] RFC: drivers: gpio: helper for generic pin IRQ handling
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        joyce.ooi@intel.com, Andrew Jeffery <andrew@aj.id.au>,
+        Hoan Tran <hoan@os.amperecomputing.com>,
+        Serge Semin <fancer.lancer@gmail.com>, orsonzhai@gmail.com,
+        baolin.wang7@gmail.com, zhang.lyra@gmail.com,
+        Andy Shevchenko <andy@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
-
-> This series restores the test_offload.py selftest to working order. It se=
-ems a
-> number of subtle behavioural changes have crept into various subsystems w=
-hich
-> broke test_offload.py in a number of ways. Most of these are fairly benign
-> changes where small adjustments to the test script seems to be the best f=
-ix, but
-> one is an actual kernel bug that I've observed in the wild caused by a bad
-> interaction between xdp_attachment_flags_ok() and the rework of XDP progr=
-am
-> handling in the core netdev code.
+On Tue, Dec 8, 2020 at 4:14 PM Enrico Weigelt, metux IT consult
+<info@metux.net> wrote:
 >
-> Patch 1 fixes the bug by removing xdp_attachment_flags_ok(), and the remi=
-nder of
-> the patches are adjustments to test_offload.py, including a new feature f=
-or
-> netdevsim to force a BPF verification fail. Please see the individual pat=
-ches
-> for details.
+> Many gpio drivers already use gpiolib's builtin irqchip handling
+> (CONFIG_GPIOLIB_IRQCHIP), but still has some boilerplate for retrieving
+> the actual Linux IRQ number and calling into the generic handler.
+> That boilerplate can be reduced by moving that into a helper function.
 >
-> Changelog:
+> This is an RFC patch to outline how that could be done. Note: it's
+> completely untested yet.
 >
-> v2:
-> - Replace xdp_attachment_flags_ok() with a check in dev_xdp_attach()
-> - Better packing of struct nsim_dev
+> Several drivers still have their completely IRQ own implementation and
+> thus can't be converted yet. Some of them perhaps could be changed to
+> store their irq domain in the struct gpio, so the new helper could
+> also be used for those.
+>
+> Having all GPIO drivers doing their IRQ management entirely through the
+> GPIO subsystem (eg. never calling generic_handle_irq() and using the buil=
+tin
+> IRQ handling) would also allow a more direct (eg. callback-based) pin cha=
+nge
+> notification for GPIO consumers, that doesn't involve registering them as
+> generic IRQ handlers.
+>
+> Further reduction of boilerplate could be achieved by additional helpers
+> for common patterns like for_each_set_bit() loops on irq masks.
 
-Hi Jakub
+Have you able to test them all?
+As the PCA953x case showed us this is not so simple, besides the name
+which sucks =E2=80=94 we don't *raise* and IRQ we *handle* it.
 
-Any feedback on v2? Would be great to get it merged before the final
-5.10 release :)
+NAK.
 
--Toke
-
+--=20
+With Best Regards,
+Andy Shevchenko
