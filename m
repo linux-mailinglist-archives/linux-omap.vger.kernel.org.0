@@ -2,40 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1622C2D2B0C
+	by mail.lfdr.de (Postfix) with ESMTP id 83B4F2D2B0D
 	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 13:32:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729086AbgLHMcX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Dec 2020 07:32:23 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:45544 "EHLO
+        id S1729106AbgLHMc0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Dec 2020 07:32:26 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:45568 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726138AbgLHMcX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 07:32:23 -0500
+        with ESMTP id S1726138AbgLHMc0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 07:32:26 -0500
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CUfkt067278;
-        Tue, 8 Dec 2020 06:30:41 -0600
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CUh6U067347;
+        Tue, 8 Dec 2020 06:30:43 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1607430641;
-        bh=zTT9fEZjyCV/0dU2ZX7MN0FPjh4mNRb8KoNtBKfA/LY=;
+        s=ti-com-17Q1; t=1607430643;
+        bh=s8y6wYmG9GO4vi2S9XHeuiDFu4nrYrC0Yp24j5XVhEk=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=mhuYq36zFeTBTaN5BZjwP9QNWfixOiVTc9o62KwgVwSKwDlCIcjaLUK0mntzW/ZRh
-         N0XLxqxLyX7skdSfg4mIZkq7j02khEuTB0H9i6wuVvh4wzzeAt0YzlR14CKAqhcayR
-         vt5btBiM98iIp6z7HyyPnTsBBqHAApu+Skcqlbs8=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B8CUfCo014723
+        b=kvkMDXED/DBFyQWYncUcY4OddI0XczYsLJSWuZJcKtPEOuFhVQtDYuBBoVR2O7sg2
+         AOudp4onPhQbsaWc096bmfhBMaFPsQLnS/IQUWonVxVPn+UOrSu/n4754cuSqar43/
+         Y7EBAzEkeeQVtHG0hoS9VnNkz4OYrKW96/ESsFi4=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B8CUhnB014778
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 8 Dec 2020 06:30:41 -0600
-Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 8 Dec 2020 06:30:43 -0600
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 8 Dec
- 2020 06:30:40 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 06:30:43 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 8 Dec 2020 06:30:40 -0600
+ Frontend Transport; Tue, 8 Dec 2020 06:30:43 -0600
 Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTcjb095068;
-        Tue, 8 Dec 2020 06:30:38 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTcjc095068;
+        Tue, 8 Dec 2020 06:30:41 -0600
 From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
 To:     Sebastian Reichel <sre@kernel.org>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -45,9 +45,9 @@ CC:     <linux-omap@vger.kernel.org>, Sekhar Nori <nsekhar@ti.com>,
         Tony Lindgren <tony@atomide.com>, <hns@goldelico.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH v5 23/29] drm/omap: dsi: rename dsi_display_* functions
-Date:   Tue, 8 Dec 2020 14:28:49 +0200
-Message-ID: <20201208122855.254819-24-tomi.valkeinen@ti.com>
+Subject: [PATCH v5 24/29] drm/omap: dsi: cleanup initial vc setup
+Date:   Tue, 8 Dec 2020 14:28:50 +0200
+Message-ID: <20201208122855.254819-25-tomi.valkeinen@ti.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20201208122855.254819-1-tomi.valkeinen@ti.com>
 References: <20201208122855.254819-1-tomi.valkeinen@ti.com>
@@ -59,171 +59,164 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The function names have evolved to be very confusing, and bunch of them
-have "display" in them even if the function doesn't deal with display as
-such (e.g. dsi_display_enable which just enables the DSI interface).
-Rename them by dropping the "display".
+As we now have a fixed setup for VCs (VC0 for video stream, VC1 for
+commands), we can simplify the VC setup.
 
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 ---
- drivers/gpu/drm/omapdrm/dss/dsi.c | 36 +++++++++++++++----------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/omapdrm/dss/dsi.c | 85 +++++++++++--------------------
+ 1 file changed, 31 insertions(+), 54 deletions(-)
 
 diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
-index d83346812810..d9c2cd849328 100644
+index d9c2cd849328..c32884f167b8 100644
 --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
 +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-@@ -55,8 +55,8 @@
+@@ -2017,40 +2017,6 @@ static void dsi_vc_initial_config(struct dsi_data *dsi, int vc)
+ 	dsi->vc[vc].source = DSI_VC_SOURCE_L4;
+ }
  
- static void dsi_set_ulps_auto(struct dsi_data *dsi, bool enable);
+-static int dsi_vc_config_source(struct dsi_data *dsi, int vc,
+-				enum dsi_vc_source source)
+-{
+-	if (dsi->vc[vc].source == source)
+-		return 0;
+-
+-	DSSDBG("Source config of VC %d", vc);
+-
+-	dsi_sync_vc(dsi, vc);
+-
+-	dsi_vc_enable(dsi, vc, 0);
+-
+-	/* VC_BUSY */
+-	if (!wait_for_bit_change(dsi, DSI_VC_CTRL(vc), 15, 0)) {
+-		DSSERR("vc(%d) busy when trying to config for VP\n", vc);
+-		return -EIO;
+-	}
+-
+-	/* SOURCE, 0 = L4, 1 = video port */
+-	REG_FLD_MOD(dsi, DSI_VC_CTRL(vc), source, 1, 1);
+-
+-	/* DCS_CMD_ENABLE */
+-	if (dsi->data->quirks & DSI_QUIRK_DCS_CMD_CONFIG_VC) {
+-		bool enable = source == DSI_VC_SOURCE_VP;
+-		REG_FLD_MOD(dsi, DSI_VC_CTRL(vc), enable, 30, 30);
+-	}
+-
+-	dsi_vc_enable(dsi, vc, 1);
+-
+-	dsi->vc[vc].source = source;
+-
+-	return 0;
+-}
+-
+ static void dsi_vc_enable_hs(struct omap_dss_device *dssdev, int vc,
+ 		bool enable)
+ {
+@@ -2072,10 +2038,6 @@ static void dsi_vc_enable_hs(struct omap_dss_device *dssdev, int vc,
+ 	dsi_if_enable(dsi, 1);
  
--static int dsi_display_init_dispc(struct dsi_data *dsi);
--static void dsi_display_uninit_dispc(struct dsi_data *dsi);
-+static int dsi_init_dispc(struct dsi_data *dsi);
-+static void dsi_uninit_dispc(struct dsi_data *dsi);
+ 	dsi_force_tx_stop_mode_io(dsi);
+-
+-	/* start the DDR clock by sending a NULL packet */
+-	if (dsi->vm_timings.ddr_clk_always_on && enable)
+-		dsi_vc_send_null(dsi, vc, dsi->dsidev->channel);
+ }
  
- static int dsi_vc_send_null(struct dsi_data *dsi, int vc, int channel);
- 
-@@ -3257,7 +3257,7 @@ static void dsi_enable_video_output(struct omap_dss_device *dssdev, int vc)
- 	u16 word_count;
- 	int r;
- 
--	r = dsi_display_init_dispc(dsi);
-+	r = dsi_init_dispc(dsi);
- 	if (r) {
- 		dev_err(dsi->dev, "failed to init dispc!\n");
- 		return;
-@@ -3309,7 +3309,7 @@ static void dsi_enable_video_output(struct omap_dss_device *dssdev, int vc)
- 		dsi_vc_enable(dsi, vc, false);
+ static void dsi_vc_flush_long_data(struct dsi_data *dsi, int vc)
+@@ -2270,8 +2232,6 @@ static int dsi_vc_send_long(struct dsi_data *dsi, int vc,
+ 		return -EINVAL;
  	}
- err_pix_fmt:
--	dsi_display_uninit_dispc(dsi);
-+	dsi_uninit_dispc(dsi);
- 	dev_err(dsi->dev, "failed to enable DSI encoder!\n");
- 	return;
- }
-@@ -3331,7 +3331,7 @@ static void dsi_disable_video_output(struct omap_dss_device *dssdev, int vc)
  
- 	dss_mgr_disable(&dsi->output);
+-	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_L4);
+-
+ 	dsi_vc_write_long_header(dsi, vc, msg->channel, msg->type, msg->tx_len, 0);
  
--	dsi_display_uninit_dispc(dsi);
-+	dsi_uninit_dispc(dsi);
- }
+ 	p = msg->tx_buf;
+@@ -2331,8 +2291,6 @@ static int dsi_vc_send_short(struct dsi_data *dsi, int vc,
+ 		DSSDBG("dsi_vc_send_short(ch%d, dt %#x, b1 %#x, b2 %#x)\n",
+ 		       vc, msg->type, pkt.header[1], pkt.header[2]);
  
- static void dsi_update_screen_dispc(struct dsi_data *dsi)
-@@ -3582,7 +3582,7 @@ static int dsi_configure_dispc_clocks(struct dsi_data *dsi)
+-	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_L4);
+-
+ 	if (FLD_GET(dsi_read_reg(dsi, DSI_VC_CTRL(vc)), 16, 16)) {
+ 		DSSERR("ERROR FIFO FULL, aborting transfer\n");
+ 		return -EINVAL;
+@@ -3351,8 +3309,6 @@ static void dsi_update_screen_dispc(struct dsi_data *dsi)
+ 
+ 	DSSDBG("dsi_update_screen_dispc(%dx%d)\n", w, h);
+ 
+-	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_VP);
+-
+ 	bytespp	= mipi_dsi_pixel_format_to_bpp(dsi->pix_fmt) / 8;
+ 	bytespl = w * bytespp;
+ 	bytespf = bytespl * h;
+@@ -3522,14 +3478,12 @@ static int dsi_update_channel(struct omap_dss_device *dssdev, int vc)
+ 
+ 	dsi_set_ulps_auto(dsi, false);
+ 
+-	dsi_vc_enable_hs(dssdev, vc, true);
+-
+ 	/*
+ 	 * Send NOP between the frames. If we don't send something here, the
+ 	 * updates stop working. This is probably related to DSI spec stating
+ 	 * that the DSI host should transition to LP at least once per frame.
+ 	 */
+-	r = _dsi_send_nop(dsi, vc, dsi->dsidev->channel);
++	r = _dsi_send_nop(dsi, VC_CMD, dsi->dsidev->channel);
+ 	if (r < 0) {
+ 		DSSWARN("failed to send nop between frames: %d\n", r);
+ 		goto err;
+@@ -3654,6 +3608,35 @@ static int dsi_configure_dsi_clocks(struct dsi_data *dsi)
  	return 0;
  }
  
--static int dsi_display_init_dispc(struct dsi_data *dsi)
-+static int dsi_init_dispc(struct dsi_data *dsi)
- {
- 	enum omap_channel dispc_channel = dsi->output.dispc_channel;
- 	int r;
-@@ -3627,7 +3627,7 @@ static int dsi_display_init_dispc(struct dsi_data *dsi)
- 	return r;
- }
- 
--static void dsi_display_uninit_dispc(struct dsi_data *dsi)
-+static void dsi_uninit_dispc(struct dsi_data *dsi)
- {
- 	enum omap_channel dispc_channel = dsi->output.dispc_channel;
- 
-@@ -3654,7 +3654,7 @@ static int dsi_configure_dsi_clocks(struct dsi_data *dsi)
- 	return 0;
- }
- 
--static int dsi_display_init_dsi(struct dsi_data *dsi)
-+static int dsi_init_dsi(struct dsi_data *dsi)
- {
- 	int r;
- 
-@@ -3718,7 +3718,7 @@ static int dsi_display_init_dsi(struct dsi_data *dsi)
- 	return r;
- }
- 
--static void dsi_display_uninit_dsi(struct dsi_data *dsi, bool disconnect_lanes,
-+static void dsi_uninit_dsi(struct dsi_data *dsi, bool disconnect_lanes,
- 				   bool enter_ulps)
- {
- 	if (enter_ulps && !dsi->ulps_enabled)
-@@ -3741,7 +3741,7 @@ static void dsi_display_uninit_dsi(struct dsi_data *dsi, bool disconnect_lanes,
- 	}
- }
- 
--static void dsi_display_enable(struct dsi_data *dsi)
-+static void dsi_enable(struct dsi_data *dsi)
++static void dsi_setup_dsi_vcs(struct dsi_data *dsi)
++{
++	/* Setup VC_CMD for LP and cpu transfers */
++	REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_CMD), 0, 9, 9); /* LP */
++
++	REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_CMD), 0, 1, 1); /* SOURCE_L4 */
++	dsi->vc[VC_CMD].source = DSI_VC_SOURCE_L4;
++
++	/* Setup VC_VIDEO for HS and dispc transfers */
++	REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_VIDEO), 1, 9, 9); /* HS */
++
++	REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_VIDEO), 1, 1, 1); /* SOURCE_VP */
++	dsi->vc[VC_VIDEO].source = DSI_VC_SOURCE_VP;
++
++	if (dsi->data->quirks & DSI_QUIRK_DCS_CMD_CONFIG_VC)
++		REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_VIDEO), 1, 30, 30); /* DCS_CMD_ENABLE */
++
++	dsi_vc_enable(dsi, VC_CMD, 1);
++	dsi_vc_enable(dsi, VC_VIDEO, 1);
++
++	dsi_if_enable(dsi, 1);
++
++	dsi_force_tx_stop_mode_io(dsi);
++
++	/* start the DDR clock by sending a NULL packet */
++	if (dsi->vm_timings.ddr_clk_always_on)
++		dsi_vc_send_null(dsi, VC_CMD, dsi->dsidev->channel);
++}
++
+ static int dsi_init_dsi(struct dsi_data *dsi)
  {
  	int r;
- 
-@@ -3755,7 +3755,7 @@ static void dsi_display_enable(struct dsi_data *dsi)
- 
- 	_dsi_initialize_irq(dsi);
- 
--	r = dsi_display_init_dsi(dsi);
-+	r = dsi_init_dsi(dsi);
+@@ -3696,13 +3679,7 @@ static int dsi_init_dsi(struct dsi_data *dsi)
  	if (r)
- 		goto err_init_dsi;
+ 		goto err3;
  
-@@ -3767,10 +3767,10 @@ static void dsi_display_enable(struct dsi_data *dsi)
- 	dsi_runtime_put(dsi);
- err_get_dsi:
- 	mutex_unlock(&dsi->lock);
--	DSSDBG("dsi_display_ulps_enable FAILED\n");
-+	DSSDBG("dsi_enable FAILED\n");
- }
+-	/* enable interface */
+-	dsi_vc_enable(dsi, 0, 1);
+-	dsi_vc_enable(dsi, 1, 1);
+-	dsi_vc_enable(dsi, 2, 1);
+-	dsi_vc_enable(dsi, 3, 1);
+-	dsi_if_enable(dsi, 1);
+-	dsi_force_tx_stop_mode_io(dsi);
++	dsi_setup_dsi_vcs(dsi);
  
--static void dsi_display_disable(struct dsi_data *dsi,
-+static void dsi_disable(struct dsi_data *dsi,
- 		bool disconnect_lanes, bool enter_ulps)
- {
- 	WARN_ON(!dsi_bus_is_locked(dsi));
-@@ -3782,7 +3782,7 @@ static void dsi_display_disable(struct dsi_data *dsi,
- 	dsi_sync_vc(dsi, 2);
- 	dsi_sync_vc(dsi, 3);
- 
--	dsi_display_uninit_dsi(dsi, disconnect_lanes, enter_ulps);
-+	dsi_uninit_dsi(dsi, disconnect_lanes, enter_ulps);
- 
- 	dsi_runtime_put(dsi);
- 
-@@ -3812,7 +3812,7 @@ static void omap_dsi_ulps_work_callback(struct work_struct *work)
- 
- 	dsi_enable_te(dsi, false);
- 
--	dsi_display_disable(dsi, false, true);
-+	dsi_disable(dsi, false, true);
- 
- 	dsi_bus_unlock(dsi);
- }
-@@ -3833,7 +3833,7 @@ static void dsi_set_ulps_auto(struct dsi_data *dsi, bool enable)
- 			return;
- 
- 		dsi_bus_lock(dsi);
--		dsi_display_enable(dsi);
-+		dsi_enable(dsi);
- 		dsi_enable_te(dsi, true);
- 		dsi_bus_unlock(dsi);
- 	}
-@@ -4924,7 +4924,7 @@ static void dsi_bridge_enable(struct drm_bridge *bridge)
- 
- 	dsi_bus_lock(dsi);
- 
--	dsi_display_enable(dsi);
-+	dsi_enable(dsi);
- 
- 	dsi_enable_video_output(dssdev, VC_VIDEO);
- 
-@@ -4946,7 +4946,7 @@ static void dsi_bridge_disable(struct drm_bridge *bridge)
- 
- 	dsi_disable_video_output(dssdev, VC_VIDEO);
- 
--	dsi_display_disable(dsi, true, false);
-+	dsi_disable(dsi, true, false);
- 
- 	dsi_bus_unlock(dsi);
- }
+ 	return 0;
+ err3:
 -- 
 Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
 Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
