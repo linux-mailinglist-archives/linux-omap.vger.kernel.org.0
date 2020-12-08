@@ -2,160 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 827952D2986
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 12:06:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02F3D2D2AF9
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Dec 2020 13:32:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728764AbgLHLFP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 8 Dec 2020 06:05:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34238 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727798AbgLHLFO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 06:05:14 -0500
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60F15C061793
-        for <linux-omap@vger.kernel.org>; Tue,  8 Dec 2020 03:04:34 -0800 (PST)
-Received: by mail-wr1-x441.google.com with SMTP id 91so11862111wrj.7
-        for <linux-omap@vger.kernel.org>; Tue, 08 Dec 2020 03:04:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=oVdto4l/iQFOE/jcGLfjaxzoGzq2Ps5a3Ie3KVUxu1I=;
-        b=qb024noJnAcaD4FrKPkd4Ne8IhxPQM8AlFz92r4A6tTwucH6MQXOpPuRiJdwTukbJK
-         J+1ZPm8YX5jCZaEvyjJ6vpn4lAMa7UFXjLoCTOLFc501Hrx1cNiVd+Z8WluLCJc96MuN
-         lG3zsMPbMQ7hm6N6VfWocnn+bbRnLm+Gti9iZ1XUFKkrwPa52L+7FuO98JnyIATsKAvJ
-         zhHBZaGpGCQf8SOU7RWmdoMsg25XwH8LXk3+VNnowPQbs0YR6Fbl8kFUTCijvApbHnRT
-         x/2pY4XAtfUyMd/mC2HSFBNTO0FPeKDCdLVM3JnPGjoXBVpvqs5FD3afdifAdwB7tAmT
-         gSLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=oVdto4l/iQFOE/jcGLfjaxzoGzq2Ps5a3Ie3KVUxu1I=;
-        b=ROfImWdj9w28tI4IypgV1tFea9uKuQNersDu2AvMe/9zzpTNRPwPRh45H3/Z59FfQV
-         DuBqKCGq5qCXI+Z1Rsx8vRJ3fQ3oMqYkREJOpKOlKZ4crerF41tqBv3XcHLQstl6d6Lb
-         mu0l8eifjY7Io+HJmMGV7Oh8z4/hFyNjbXIDOVgbS2axU/bbFXhTy6y0SYSt0s3c4KFP
-         RF3MWV5jZyR4NuqsmVihmWZtZZm+EgzJX4S52QmUOvc5mZtIrW7pdTfl4pG9W425bBGM
-         3eG9eB4zRx9s3a38uiWsGLIhKW0CtSCQ5dshaQs/CkRK4UXd1+GE3m+AgDylIflE0j4X
-         s0eg==
-X-Gm-Message-State: AOAM532485/U8So12rfa9e5wM/kukLBkhIQU/T5ht9BCQhmbhuC8GQZ0
-        ERahpEtHH6XoImyky8n9bp9ExA==
-X-Google-Smtp-Source: ABdhPJxArhPoyEic163xkIJznknOhIaG8ofGldEM/e3Q9Bok2a5xIQOzLIt+OejlKTMEWByALsMqsw==
-X-Received: by 2002:adf:f7c2:: with SMTP id a2mr24125501wrq.11.1607425473108;
-        Tue, 08 Dec 2020 03:04:33 -0800 (PST)
-Received: from dell ([91.110.221.209])
-        by smtp.gmail.com with ESMTPSA id h20sm2925583wmb.29.2020.12.08.03.04.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Dec 2020 03:04:32 -0800 (PST)
-Date:   Tue, 8 Dec 2020 11:04:30 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>, ohad@wizery.com,
-        bjorn.andersson@linaro.org, s-anna@ti.com,
-        linux-remoteproc@vger.kernel.org, robh+dt@kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        praneeth@ti.com, rogerq@ti.com
-Subject: Re: [PATCH v3 3/6] remoteproc: pru: Add support for PRU specific
- interrupt configuration
-Message-ID: <20201208110430.GS4801@dell>
-References: <20201204201807.14716-1-grzegorz.jaszczyk@linaro.org>
- <20201204201807.14716-4-grzegorz.jaszczyk@linaro.org>
- <20201207173731.GA1509079@xps15>
+        id S1728842AbgLHMbl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Dec 2020 07:31:41 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:33212 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727998AbgLHMbl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Dec 2020 07:31:41 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTfoQ063994;
+        Tue, 8 Dec 2020 06:29:41 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1607430581;
+        bh=7i5LU6l9rW7Z5+cOxWIafF0t3zpOrqoJf4PzQkxFsKI=;
+        h=From:To:CC:Subject:Date;
+        b=JFCxjZNub72Hj89/m8Xp5J8Ffss85hFOaaXhj4MdnXg4kUtWST5YxeCXhAcF3Oii4
+         o2sejcAKBKpQeDMVS0j8eQUJ4jHZAS8yM+Wzn66Wi1S1dwEAgJKLiusNUpm2vPELYk
+         eMwjgdS8nfEVA/bA5kUh1z6zTTMjOSozdOYp6JYQ=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B8CTfDK103231
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 8 Dec 2020 06:29:41 -0600
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 8 Dec
+ 2020 06:29:41 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 8 Dec 2020 06:29:41 -0600
+Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B8CTcjE095068;
+        Tue, 8 Dec 2020 06:29:39 -0600
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
+To:     Sebastian Reichel <sre@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Nikhil Devshatwar <nikhil.nd@ti.com>,
+        <dri-devel@lists.freedesktop.org>
+CC:     <linux-omap@vger.kernel.org>, Sekhar Nori <nsekhar@ti.com>,
+        Tony Lindgren <tony@atomide.com>, <hns@goldelico.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: [PATCH v5 00/29] Convert DSI code to use drm_mipi_dsi and drm_panel (second half)
+Date:   Tue, 8 Dec 2020 14:28:26 +0200
+Message-ID: <20201208122855.254819-1-tomi.valkeinen@ti.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20201207173731.GA1509079@xps15>
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 07 Dec 2020, Mathieu Poirier wrote:
+Hi,
 
-> On Fri, Dec 04, 2020 at 09:18:04PM +0100, Grzegorz Jaszczyk wrote:
-> > The firmware blob can contain optional ELF sections: .resource_table
-> > section and .pru_irq_map one. The second one contains the PRUSS
-> > interrupt mapping description, which needs to be setup before powering
-> > on the PRU core. To avoid RAM wastage this ELF section is not mapped to
-> > any ELF segment (by the firmware linker) and therefore is not loaded to
-> > PRU memory.
-> > 
-> > The PRU interrupt configuration is handled within the PRUSS INTC irqchip
-> > driver and leverages the system events to interrupt channels and host
-> > interrupts mapping configuration. Relevant irq routing information is
-> > passed through a special .pru_irq_map ELF section (for interrupts routed
-> > to and used by PRU cores) or via the PRU application's device tree node
-> > (for interrupts routed to and used by the main CPU). The mappings are
-> > currently programmed during the booting/shutdown of the PRU.
-> > 
-> > The interrupt configuration passed through .pru_irq_map ELF section is
-> > optional. It varies on specific firmware functionality and therefore
-> > have to be unwinded during PRU stop and performed again during
-> > PRU start.
-> > 
-> > Co-developed-by: Suman Anna <s-anna@ti.com>
-> > Signed-off-by: Suman Anna <s-anna@ti.com>
-> > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> > ---
+This is version 5 of the series OMAP DSI conversion series. Previous
+version can be found from:
 
-[...]
+https://www.spinics.net/lists/linux-omap/msg157480.html
 
-> >  drivers/remoteproc/pru_rproc.c | 180 +++++++++++++++++++++++++++++++++
-> >  drivers/remoteproc/pru_rproc.h |  46 +++++++++
-> >  2 files changed, 226 insertions(+)
-> >  create mode 100644 drivers/remoteproc/pru_rproc.h
-> > 
-> > diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
-> > index d33392bbd8af..4ef59d15d888 100644
-> > --- a/drivers/remoteproc/pru_rproc.c
-> > +++ b/drivers/remoteproc/pru_rproc.c
-> > @@ -11,13 +11,16 @@
-> >   */
+To lessen the patch spam, I'm sending only patches starting from patch
+56/80. There has been no changes to the patches before 56/80.
 
-[...]
+Diff between v4 and v5 is not much. There are no functional changes at
+the end of the series (diff between v4 and v5 shows only cosmetic
+changes, except fixing one missing r = 0 initialization).
 
-> > +static int pru_handle_intrmap(struct rproc *rproc)
-> > +{
-> > +	struct device *dev = rproc->dev.parent;
-> > +	struct pru_rproc *pru = rproc->priv;
-> > +	struct pru_irq_rsc *rsc = pru->pru_interrupt_map;
-> > +	struct irq_fwspec fwspec;
-> > +	struct device_node *irq_parent;
-> > +	int i, ret = 0;
-> > +
-> > +	/* not having pru_interrupt_map is not an error */
-> > +	if (!rsc)
-> > +		return 0;
-> > +
-> > +	/* currently supporting only type 0 */
-> > +	if (rsc->type != 0) {
-> > +		dev_err(dev, "unsupported rsc type: %d\n", rsc->type);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	if (rsc->num_evts > MAX_PRU_SYS_EVENTS)
-> > +		return -EINVAL;
-> > +
-> > +	if (sizeof(*rsc) + rsc->num_evts * sizeof(struct pruss_int_map) !=
-> > +	    pru->pru_interrupt_map_sz)
-> > +		return -EINVAL;
-> > +
-> > +	pru->evt_count = rsc->num_evts;
-> > +	pru->mapped_irq = kcalloc(pru->evt_count, sizeof(int), GFP_KERNEL);
-> 
-> sizeof(unsigned int)
+The biggest change is splitting "drm/omap: dsi: cleanup channel usages"
+into three parts. Also, the last patch is new in this version, although
+I did send it for v4 as 81/80.
 
-Would you mind trimming your replies please?
+Other changes include minor clarifications and cleanups in the
+descriptions, and moving a few changes from one commit to another in
+case the change logically belongs to the other commit.
 
-Brain grepping through 200+ lines of quote for a one line review
-comment is a little frustrating.
+ Tomi
 
-TIA.
+Tomi Valkeinen (29):
+  drm/panel: panel-dsi-cm: cleanup tear enable
+  ARM: dts: omap5: add address-cells & size-cells to dsi
+  drm/omap: pll: fix iteration loop check
+  drm/omap: dsi: set trans_mode according to client mode_flags
+  drm/panel: panel-dsi-cm: set column & page at setup
+  drm/omap: dsi: send nop instead of page & column
+  drm/omap: dsi: simplify VC handling
+  drm/omap: dsi: drop useless channel checks
+  drm/omap: dsi: cleanup dispc channel usage
+  drm/omap: dsi: rename 'channel' to 'vc'
+  drm/omap: dsi: pass vc to various functions
+  drm/omap: dsi: untangle vc & channel
+  drm/omap: dsi: skip dsi_vc_enable_hs when already in correct mode
+  drm/omap: dsi: enable HS before sending the frame
+  drm/omap: dsi: use separate VCs for cmd and video
+  drm/panel: panel-dsi-cm: remove extra 'if'
+  drm/panel: panel-dsi-cm: add panel database to driver
+  drm/panel: panel-dsi-cm: drop unneeded includes
+  drm/omap: dsi: move structs & defines to dsi.h
+  drm/omap: dsi: move enable/disable to bridge enable/disable
+  drm/omap: dsi: display_enable cleanup
+  drm/omap: dsi: display_disable cleanup
+  drm/omap: dsi: rename dsi_display_* functions
+  drm/omap: dsi: cleanup initial vc setup
+  drm/omap: dsi: split video mode enable/disable into separate func
+  drm/omap: dsi: fix and cleanup ddr_clk_always_on
+  drm/omap: dsi: remove ulps support
+  drm/omap: dsi: fix DCS_CMD_ENABLE
+  drm/omap: dsi: allow DSI commands to be sent early
+
+ arch/arm/boot/dts/omap5.dtsi          |    6 +
+ drivers/gpu/drm/omapdrm/dss/dsi.c     | 1375 ++++++-------------------
+ drivers/gpu/drm/omapdrm/dss/dsi.h     |  456 ++++++++
+ drivers/gpu/drm/omapdrm/dss/omapdss.h |   64 --
+ drivers/gpu/drm/omapdrm/dss/pll.c     |    6 +
+ drivers/gpu/drm/panel/panel-dsi-cm.c  |  161 +--
+ 6 files changed, 899 insertions(+), 1169 deletions(-)
+ create mode 100644 drivers/gpu/drm/omapdrm/dss/dsi.h
 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+
