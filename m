@@ -2,21 +2,22 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 85BB82D3DFA
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Dec 2020 09:55:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EB9E2D3FD4
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Dec 2020 11:26:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726073AbgLIIyP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Dec 2020 03:54:15 -0500
-Received: from mout.kundenserver.de ([217.72.192.74]:53181 "EHLO
+        id S1729840AbgLIK0L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Dec 2020 05:26:11 -0500
+Received: from mout.kundenserver.de ([217.72.192.75]:40611 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725942AbgLIIyP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 03:54:15 -0500
+        with ESMTP id S1729231AbgLIK0L (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 05:26:11 -0500
 Received: from [192.168.1.155] ([77.2.91.93]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MyK9S-1jux8A4AO4-00ykZ1; Wed, 09 Dec 2020 09:51:23 +0100
+ (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MLyzP-1kVgl53LKj-00I0YQ; Wed, 09 Dec 2020 11:23:18 +0100
 Subject: Re: [RFC PATCH] RFC: drivers: gpio: helper for generic pin IRQ
  handling
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+To:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         "Enrico Weigelt, metux IT consult" <info@metux.net>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         William Breathitt Gray <vilhelm.gray@gmail.com>,
@@ -28,7 +29,6 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         baolin.wang7@gmail.com, zhang.lyra@gmail.com,
         Andy Shevchenko <andy@kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
         Santosh Shilimkar <ssantosh@kernel.org>,
         Kevin Hilman <khilman@kernel.org>,
         Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
@@ -38,70 +38,67 @@ Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux OMAP Mailing List <linux-omap@vger.kernel.org>
 References: <20201208141429.8836-1-info@metux.net>
  <CAHp75VfMKmJ074R2-04be0Ag6OuKcY=_xhhbRKsL2D0H8hZZLg@mail.gmail.com>
-From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
-Message-ID: <39d03958-786e-a6c8-a1e9-9b8a751e4c9e@metux.net>
-Date:   Wed, 9 Dec 2020 09:51:18 +0100
+ <CAHp75VfOjb4Rfo9yPmwEYUDbaPXNjfGs6goM27ZnLdAMtiU+jA@mail.gmail.com>
+ <0c16ab33-f87f-b32d-53d0-a44a5fecd6dc@ti.com>
+From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Message-ID: <710efa0f-063e-8a9e-1c3f-49337506b044@metux.net>
+Date:   Wed, 9 Dec 2020 11:23:13 +0100
 User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VfMKmJ074R2-04be0Ag6OuKcY=_xhhbRKsL2D0H8hZZLg@mail.gmail.com>
+In-Reply-To: <0c16ab33-f87f-b32d-53d0-a44a5fecd6dc@ti.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: tl
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:EuKdMo+/U1o5sFyWn2fUeeb59IOsjJ1lKvxlbr6jwLrI3rpvFd4
- nhAYSKUtpDAcHNztBd1k9lK6qbyB1EcO8lUbEIU5JHIuIhzzSdv4XgexxRWXPF00dGCmnbf
- nYQOr067XFqPOQiO8XUmYaHJ4wg6GfRagiQcILR4wwkTZgwJdowyWBZ0VPnXmbiUND2mKf9
- wYeFaMGInmTUtMMfCkfUg==
+X-Provags-ID: V03:K1:EfePztOrymHKfYxNnLFVD8MbCqHmMYcSjnD/zRYzwOVK50PaTDO
+ V16L1ULFXQ8mFROXQORa51saqagaRj87zvo+tqf9TrXBvhhqerIr9nW39zr18JXrhWrrq9F
+ /g4k+ySn0i/LI9LrCSEb14O0Yp1PDmhhhQeUjyekHFqYY4CrmtWz6c0IuepbOjPEU/7wnGU
+ 3g/e8ENQ+K2rHKNG1DWRg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:MzrASONKidU=:2JvqAQMMojOiNOBmF4oVsI
- UjxeFmft5OCgVFjNWuGw9iiMHyWs0gBwNW+1RbqjeGsXuBgPo796Xq4ZZv5+2sfyV+hd12CrE
- EefDT434K7Io5QJGQvg/XvTcEbRA2uQyjC6ENbKlkH57TzhOeQNSqUyEdA46wGS8/1M51hLBZ
- WuV+KrkvIwX06gKHr0UqFsDpHDmFu1o7JC7/YetwlnSjuuEqZwL6Dz+NXFjjiqHVNrAkCQBEv
- zZNwDPdei+yEotyWDlKwnw7Kk3bXhdm4LxWZ+ws8xyqLuvxtsBdFYc6ou+l6WGEZTjIuG/kB8
- QcWRe9NZ74Wl+5CCPfvN6q8dNHVHUmYrh02AfpGJGi8VtWsi08DpWoiqrdD8dD2+smmPlkMNj
- Ip2kWmByQUeGlqnvgP1TuNeyldHDhZ2vtOJj7gfbiuKl5CdhmVjKWS5ZaSE7B
+X-UI-Out-Filterresults: notjunk:1;V03:K0:BNgWdIM3ZTw=:BDjkTcychAye7DhF3ue5DL
+ l5rChA9jUpaOxlxRC2BB4JwAQ25N88VnNyrLsh+VGdOyEfCU7M2weQuQCPg6LLDVG93Z7OrHb
+ JZ2XRMSIRbFXyD8IG1rXnfQrd/fhrYKL8ChQLOofoPXz9ZHD2upIJN3b2k8W2hqtFmzHC0Foy
+ Scv6TPvDXeUQzhH4kAYZh0mQb26QHXX39eUbopKRPptcqETtWd96FGoxaVMOAm7uXoX9qj9RP
+ /XIgNfpv7mOaRachs05+cg5wXTBXnBAhNHlOME5EC1E99V04hWO9aSwlCNYhP0Akf+8pFppwx
+ 1YCljurh8GWwIao/VXO5KiniQtBqqpizxzNd5lZQGmcprKoLQgZ/jBI2ai55wSMsx4lz3aPea
+ GgGTjupmD9KNiKq7DCBQNYi8BIA3lBzq6XYxmZbhA4aPVpSLejLksZdiBOfEO/ABI4EDA7CeX
+ 313QpFPGDZ9byhZo9dycobO/QMLuU2hWJbdTi445uQaejdyafS8I
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08.12.20 15:19, Andy Shevchenko wrote:
+On 08.12.20 17:18, Grygorii Strashko wrote:
 
-Hi,
+>>>> Having all GPIO drivers doing their IRQ management entirely through the
+>>>> GPIO subsystem (eg. never calling generic_handle_irq() and using the
+>>>> builtin
+>>>> IRQ handling) would also allow a more direct (eg. callback-based)
+>>>> pin change
+>>>> notification for GPIO consumers, that doesn't involve registering
+>>>> them as
+>>>> generic IRQ handlers.
+> 
+> Above part makes me worry - why?
 
-> Have you able to test them all?
+Why so ?
 
-Not yet. It's still an *RFC*, I just like to discuss whether the whole
-idea makes sense at all.
+Little clarification, in case i've been a bit confusion - there're two
+separate topics:
 
-In case we come to the consensus that we should do it, I'm going to
-split up the patch and rework everything more carefully (for now,
-it's just a draft for illustrating the general idea)
+a) consolidating repeated patterns (eg. calling the actual irq handling)
+   into gpiolib, (and later possibly use more fields already existing in
+   struct gpio_chip for irq handling)
 
-I'd also like to hear your opinion on whether we can consolidate these
-things even more, eg. using struct gpio_chip's irq data (enabled by
-CONFIG_GPIOLIB_IRQCHIP) instead of own fields.
+b) a direct consumer callback for change, where the consumer doesn't
+   have to care about IRQs at all (some drivers could even do polling,
+   when hw doesn't have IRQs). This is for consumers that don't use
+   GPIOs as interrupt source, but more more like a very raw serial port,
+   eg. bitbanging of other interfaces (maybe an gpio bus type ? ;-))
 
-An interesting question here is how to do that w/o gpiolib assuming
-they've been managed by it - for example gpiochip_remove (which
-cleans up the IRQ stuff) is called by gpiochip_remove(), so we have to
-make sure that the driver clears the corresponding fields before
-gpiochip_remove() is called. So far so good. BUT: gpiochip_remove()
-is also called in error paths, when registration fails in the middle,
-and there the driver cannot act properly.
-
-Maybe introduce a flag for telling gpiolib that it should leave these
-fields alone and let the driver do everything ?
-
-> As the PCA953x case showed us this is not so simple, 
-
-Can you tell me more about it ?
-(BTW haven't touched it in my patch)
-
-> besides the name
-> which sucks — we don't *raise* and IRQ we *handle* it.
-
-right, the naming was bad, forgot to correct that before sending.
-
+The above paragraph just outlines that b) might be much easier to
+implement, once the suggested refactoring is done and no driver would
+call irq handlers directly anymore. But this hasn't much to do with
+the proposal itself, just an idea for future use.
 
 --mtx
 
