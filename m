@@ -2,133 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0972F2D46DF
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Dec 2020 17:37:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C66A52D4754
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Dec 2020 18:01:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730612AbgLIQgz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Dec 2020 11:36:55 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:38741 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730536AbgLIQgt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 11:36:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1607531722;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qKbfQ5NMpepEtLGaIbY4oPWcWPfYiGHOrnLYShZ/gfM=;
-        b=P4Uknr64xLoaQh57YMs9U0OL3RD+3D1o4mkW7E57n4o5r7zToLa8lZA/n1VMmkEvzFcMLf
-        wqi1nnN2O6rNnFw99/LAoGIMh/b5W/hQK0sbl0kGeK9gG6PgWEXtXQPyx2Wc0iFDKjpPfH
-        yyM+SO9TA3JAeF8HuJY7zX1sBCMbGiY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-97-9-BTmNTCMWCEsd-Ppp3x4w-1; Wed, 09 Dec 2020 11:35:20 -0500
-X-MC-Unique: 9-BTmNTCMWCEsd-Ppp3x4w-1
-Received: by mail-wr1-f72.google.com with SMTP id z6so864201wrl.7
-        for <linux-omap@vger.kernel.org>; Wed, 09 Dec 2020 08:35:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=qKbfQ5NMpepEtLGaIbY4oPWcWPfYiGHOrnLYShZ/gfM=;
-        b=nXpfAVUvx0SgCRTyiiy3+obWZQHtO1z9T2jzyQbZyncF2D8AzCFrMqUASRzwGI5tKY
-         qXQU5VJWU7o/a7hiJgEYqW3l3scMHHflolhNNupZHRHH1JXkMaxU9MV1tByq0F77fuvI
-         rotCcAbXWyTnLZDNpkE2nGoLbl3i5914enhbkr5ccvTYFA6zyZr5h74NQkMulQeHKjPP
-         1THCp7fUdci98U5Ye66i149nVvKtHdE7Tlxh97L1OVQ2AWUXvD8Ds00jBpGKzvoRS3bR
-         MAjbmT9Go3mFXJALrbbcWzIyA0MXiBd3/500CI2AO1hI+4R9QyAoOv3mYjxD7fgDP6LZ
-         U0Mw==
-X-Gm-Message-State: AOAM5311MAa+f9sV846NAmMQ/z5+hGaunB8YTK0X7Ckz7tN5bJwlhA2z
-        uRyN6Brwcijfj62TEChflKEjVfX6CFtrcadVuyV24zwg7lOGzajwvW8yx7pLYi0lBo5GXmgGLV8
-        wRc1U6m9DljfVdGYoynVSOg==
-X-Received: by 2002:adf:e64b:: with SMTP id b11mr3557923wrn.257.1607531719277;
-        Wed, 09 Dec 2020 08:35:19 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxOSGetvGWLvNiBbhFZtDNafEkdK0HcIhVsLONLeDTzLG1ZxkKy8fBmAKT54r9JsOK4JA58cQ==
-X-Received: by 2002:adf:e64b:: with SMTP id b11mr3557876wrn.257.1607531718948;
-        Wed, 09 Dec 2020 08:35:18 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id n14sm4415803wmi.1.2020.12.09.08.35.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Dec 2020 08:35:18 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id AF8BF180068; Wed,  9 Dec 2020 17:35:17 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Daniel Borkmann <daniel@iogearbox.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andriin@fb.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Romain Perier <romain.perier@gmail.com>,
-        Allen Pais <apais@linux.microsoft.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Simon Horman <simon.horman@netronome.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        Jiri Benc <jbenc@redhat.com>, oss-drivers@netronome.com,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org
-Subject: Re: [PATCH bpf v4 0/7] selftests/bpf: Restore test_offload.py to
- working order
-In-Reply-To: <2263984f-68b9-c678-5cae-a26b3e96e36b@iogearbox.net>
-References: <160752225643.110217.4104692937165406635.stgit@toke.dk>
- <2263984f-68b9-c678-5cae-a26b3e96e36b@iogearbox.net>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Wed, 09 Dec 2020 17:35:17 +0100
-Message-ID: <87h7ovndiy.fsf@toke.dk>
+        id S1732079AbgLIQ7e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Dec 2020 11:59:34 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:41652 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730407AbgLIQ7c (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 11:59:32 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0B9Gvtnu022117;
+        Wed, 9 Dec 2020 10:57:55 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1607533075;
+        bh=1VU4wf4ji4hch5y5IsBnYvCncSakS4v+KUMFXWHn4ds=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=WombGAPH1UwI9/n4ZzVg5ppEgNIAt6NI/q4/3RP0hu8vwWawI06a/z6Zm5oduMmsF
+         1P9L7CaGbvnxGaGdWPoo+hxd4F7hA1xIUrah6s1HPXX4qMpeBaIlnrFgBa61zr3VtC
+         LDVylIXMCSqYi9BlwZZ55b2qiMEd5f6XWIF8D3jY=
+Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0B9GvtxA089806
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 9 Dec 2020 10:57:55 -0600
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 9 Dec
+ 2020 10:57:55 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 9 Dec 2020 10:57:55 -0600
+Received: from gsaswath-HP-ProBook-640-G5.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0B9Gvd9U090706;
+        Wed, 9 Dec 2020 10:57:51 -0600
+From:   Aswath Govindraju <a-govindraju@ti.com>
+CC:     Sekhar Nori <nsekhar@ti.com>,
+        Aswath Govindraju <a-govindraju@ti.com>,
+        Vignesh R <vigneshr@ti.com>, Rob Herring <robh+dt@kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] dt-bindings: i2c: Add compatible string for AM64 SoC
+Date:   Wed, 9 Dec 2020 22:27:33 +0530
+Message-ID: <20201209165733.8204-3-a-govindraju@ti.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20201209165733.8204-1-a-govindraju@ti.com>
+References: <20201209165733.8204-1-a-govindraju@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Daniel Borkmann <daniel@iogearbox.net> writes:
+Add compatible string for AM64 SoC in device tree binding of OMAP I2C
+modules as the same IP is used.
 
-> On 12/9/20 2:57 PM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> This series restores the test_offload.py selftest to working order. It s=
-eems a
->> number of subtle behavioural changes have crept into various subsystems =
-which
->> broke test_offload.py in a number of ways. Most of these are fairly beni=
-gn
->> changes where small adjustments to the test script seems to be the best =
-fix, but
->> one is an actual kernel bug that I've observed in the wild caused by a b=
-ad
->> interaction between xdp_attachment_flags_ok() and the rework of XDP prog=
-ram
->> handling in the core netdev code.
->>=20
->> Patch 1 fixes the bug by removing xdp_attachment_flags_ok(), and the rem=
-inder of
->> the patches are adjustments to test_offload.py, including a new feature =
-for
->> netdevsim to force a BPF verification fail. Please see the individual pa=
-tches
->> for details.
->>=20
->> Changelog:
->>=20
->> v4:
->> - Accidentally truncated the Fixes: hashes in patches 3/4 to 11 chars
->> v3:
->> - Add Fixes: tags
->> v2:
->> - Replace xdp_attachment_flags_ok() with a check in dev_xdp_attach()
->> - Better packing of struct nsim_dev
->
-> Applied, thanks! I took the liberty to document the prior review with 'LG=
-TM' as
-> an Ack so it's documented in the git log as well.
+Signed-off-by: Aswath Govindraju <a-govindraju@ti.com>
+---
+ Documentation/devicetree/bindings/i2c/i2c-omap.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-SGTM, thanks! :)
-
--Toke
+diff --git a/Documentation/devicetree/bindings/i2c/i2c-omap.txt b/Documentation/devicetree/bindings/i2c/i2c-omap.txt
+index a44573d7c118..a425b91af48f 100644
+--- a/Documentation/devicetree/bindings/i2c/i2c-omap.txt
++++ b/Documentation/devicetree/bindings/i2c/i2c-omap.txt
+@@ -8,6 +8,7 @@ Required properties :
+ 	"ti,omap4-i2c" for OMAP4+ SoCs
+ 	"ti,am654-i2c", "ti,omap4-i2c" for AM654 SoCs
+ 	"ti,j721e-i2c", "ti,omap4-i2c" for J721E SoCs
++	"ti,am64-i2c", "ti,omap4-i2c" for AM64 SoCs
+ - ti,hwmods : Must be "i2c<n>", n being the instance number (1-based)
+ - #address-cells = <1>;
+ - #size-cells = <0>;
+-- 
+2.17.1
 
