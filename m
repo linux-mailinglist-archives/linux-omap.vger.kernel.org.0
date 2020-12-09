@@ -2,112 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EB9E2D3FD4
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Dec 2020 11:26:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BF92D40F1
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Dec 2020 12:22:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729840AbgLIK0L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Dec 2020 05:26:11 -0500
-Received: from mout.kundenserver.de ([217.72.192.75]:40611 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729231AbgLIK0L (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 05:26:11 -0500
-Received: from [192.168.1.155] ([77.2.91.93]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MLyzP-1kVgl53LKj-00I0YQ; Wed, 09 Dec 2020 11:23:18 +0100
-Subject: Re: [RFC PATCH] RFC: drivers: gpio: helper for generic pin IRQ
- handling
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        joyce.ooi@intel.com, Andrew Jeffery <andrew@aj.id.au>,
-        Hoan Tran <hoan@os.amperecomputing.com>,
-        Serge Semin <fancer.lancer@gmail.com>, orsonzhai@gmail.com,
-        baolin.wang7@gmail.com, zhang.lyra@gmail.com,
-        Andy Shevchenko <andy@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
-References: <20201208141429.8836-1-info@metux.net>
- <CAHp75VfMKmJ074R2-04be0Ag6OuKcY=_xhhbRKsL2D0H8hZZLg@mail.gmail.com>
- <CAHp75VfOjb4Rfo9yPmwEYUDbaPXNjfGs6goM27ZnLdAMtiU+jA@mail.gmail.com>
- <0c16ab33-f87f-b32d-53d0-a44a5fecd6dc@ti.com>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Message-ID: <710efa0f-063e-8a9e-1c3f-49337506b044@metux.net>
-Date:   Wed, 9 Dec 2020 11:23:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1730277AbgLILVZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Dec 2020 06:21:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:35741 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728148AbgLILUJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 06:20:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1607512723;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=xSOTlsGZZ/ADfKcdaJ8Ay5xDLSKq4CczFccCePJHcIk=;
+        b=IT7tOjNU/v/A2MwUc+8BWQBfrwgDfAHQrhYC1xLjhp46/eIDZwiyfTixumlD7ymS/9u2Mi
+        0JfrZpfIs1tsFNwGn/QfEK7QM2B0e4X+i0dJe5IKmrOjIxU3WhvpL6ihLtylMTsFBJPPvO
+        fE/y52MCUp+NlvBQ3/cKrbGFLhFiomw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-155-KMFZVB03NXCn7I2tUqpm6A-1; Wed, 09 Dec 2020 06:18:41 -0500
+X-MC-Unique: KMFZVB03NXCn7I2tUqpm6A-1
+Received: by mail-wr1-f71.google.com with SMTP id o4so523075wrw.19
+        for <linux-omap@vger.kernel.org>; Wed, 09 Dec 2020 03:18:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:date:message-id:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=xSOTlsGZZ/ADfKcdaJ8Ay5xDLSKq4CczFccCePJHcIk=;
+        b=gClXlPuBZ+MDlYIAvc87DInQYV8bLxaTaRlp69Eto25jhZ1fmPxgjn85S9N83cBMBX
+         /jbVXLoRwMZsBObO8Q5pel1kZ3J74PytEF2H7AXHYwYZxGLvXAVo8CW1igIu1cKDZz6k
+         hPD082yRKcm7wpedjPQZHL3PLf9BQBDYaKccHb/kZsMREN1hhHPYWz/AS2baQZh6iWsb
+         X8J6HGLGNlzrsM6GQMSniS82clXhITHGIuXZLfdmzlPq5l0vS9h1g9oEx/n7R28ue5lA
+         oHIJyxgYGT7gk8W1HEj+Q2MUf1HQsU7eom8oEFUDmYTS2vAEkhh4dpJ0s9mQa/0w5WeJ
+         ZJzg==
+X-Gm-Message-State: AOAM533p7AMeB6+n1hp3j6b4/MFx9lawAYxGOEthYYH6z4sve1k7mCJY
+        QRNXNpixyrjcjuFDeJPoNVYuc6mfp76DKZng+9JBQXWgZGHAwDh7/YatXFxtIKiCOp6yJAkvhH7
+        leKoWyKXhN6PY7HzLQyd8iw==
+X-Received: by 2002:a5d:4209:: with SMTP id n9mr2104995wrq.128.1607512720464;
+        Wed, 09 Dec 2020 03:18:40 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzm5RxsK1e736lOeUy/K4LoocHFwg4m6StAtUALim1kfo/PoU+Wv+tRPAcTaMmDK/AR8J9m6Q==
+X-Received: by 2002:a5d:4209:: with SMTP id n9mr2104984wrq.128.1607512720296;
+        Wed, 09 Dec 2020 03:18:40 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id m81sm2860764wmf.29.2020.12.09.03.18.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Dec 2020 03:18:39 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 1576A180003; Wed,  9 Dec 2020 12:18:38 +0100 (CET)
+Subject: [PATCH bpf v3 0/7] selftests/bpf: Restore test_offload.py to working
+ order
+From:   =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andriin@fb.com>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Romain Perier <romain.perier@gmail.com>,
+        Allen Pais <apais@linux.microsoft.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Simon Horman <simon.horman@netronome.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Wei Yongjun <weiyongjun1@huawei.com>,
+        Jiri Benc <jbenc@redhat.com>, oss-drivers@netronome.com,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        bpf@vger.kernel.org
+Date:   Wed, 09 Dec 2020 12:18:38 +0100
+Message-ID: <160751271801.104774.5575431902172553440.stgit@toke.dk>
+User-Agent: StGit/0.23
 MIME-Version: 1.0
-In-Reply-To: <0c16ab33-f87f-b32d-53d0-a44a5fecd6dc@ti.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: tl
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:EfePztOrymHKfYxNnLFVD8MbCqHmMYcSjnD/zRYzwOVK50PaTDO
- V16L1ULFXQ8mFROXQORa51saqagaRj87zvo+tqf9TrXBvhhqerIr9nW39zr18JXrhWrrq9F
- /g4k+ySn0i/LI9LrCSEb14O0Yp1PDmhhhQeUjyekHFqYY4CrmtWz6c0IuepbOjPEU/7wnGU
- 3g/e8ENQ+K2rHKNG1DWRg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:BNgWdIM3ZTw=:BDjkTcychAye7DhF3ue5DL
- l5rChA9jUpaOxlxRC2BB4JwAQ25N88VnNyrLsh+VGdOyEfCU7M2weQuQCPg6LLDVG93Z7OrHb
- JZ2XRMSIRbFXyD8IG1rXnfQrd/fhrYKL8ChQLOofoPXz9ZHD2upIJN3b2k8W2hqtFmzHC0Foy
- Scv6TPvDXeUQzhH4kAYZh0mQb26QHXX39eUbopKRPptcqETtWd96FGoxaVMOAm7uXoX9qj9RP
- /XIgNfpv7mOaRachs05+cg5wXTBXnBAhNHlOME5EC1E99V04hWO9aSwlCNYhP0Akf+8pFppwx
- 1YCljurh8GWwIao/VXO5KiniQtBqqpizxzNd5lZQGmcprKoLQgZ/jBI2ai55wSMsx4lz3aPea
- GgGTjupmD9KNiKq7DCBQNYi8BIA3lBzq6XYxmZbhA4aPVpSLejLksZdiBOfEO/ABI4EDA7CeX
- 313QpFPGDZ9byhZo9dycobO/QMLuU2hWJbdTi445uQaejdyafS8I
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08.12.20 17:18, Grygorii Strashko wrote:
+This series restores the test_offload.py selftest to working order. It seems a
+number of subtle behavioural changes have crept into various subsystems which
+broke test_offload.py in a number of ways. Most of these are fairly benign
+changes where small adjustments to the test script seems to be the best fix, but
+one is an actual kernel bug that I've observed in the wild caused by a bad
+interaction between xdp_attachment_flags_ok() and the rework of XDP program
+handling in the core netdev code.
 
->>>> Having all GPIO drivers doing their IRQ management entirely through the
->>>> GPIO subsystem (eg. never calling generic_handle_irq() and using the
->>>> builtin
->>>> IRQ handling) would also allow a more direct (eg. callback-based)
->>>> pin change
->>>> notification for GPIO consumers, that doesn't involve registering
->>>> them as
->>>> generic IRQ handlers.
-> 
-> Above part makes me worry - why?
+Patch 1 fixes the bug by removing xdp_attachment_flags_ok(), and the reminder of
+the patches are adjustments to test_offload.py, including a new feature for
+netdevsim to force a BPF verification fail. Please see the individual patches
+for details.
 
-Why so ?
+Changelog:
 
-Little clarification, in case i've been a bit confusion - there're two
-separate topics:
+v3:
+- Add Fixes: tags
 
-a) consolidating repeated patterns (eg. calling the actual irq handling)
-   into gpiolib, (and later possibly use more fields already existing in
-   struct gpio_chip for irq handling)
+v2:
+- Replace xdp_attachment_flags_ok() with a check in dev_xdp_attach()
+- Better packing of struct nsim_dev
 
-b) a direct consumer callback for change, where the consumer doesn't
-   have to care about IRQs at all (some drivers could even do polling,
-   when hw doesn't have IRQs). This is for consumers that don't use
-   GPIOs as interrupt source, but more more like a very raw serial port,
-   eg. bitbanging of other interfaces (maybe an gpio bus type ? ;-))
-
-The above paragraph just outlines that b) might be much easier to
-implement, once the suggested refactoring is done and no driver would
-call irq handlers directly anymore. But this hasn't much to do with
-the proposal itself, just an idea for future use.
-
---mtx
-
--- 
 ---
-Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
-werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
-GPG/PGP-Schlüssel zu.
----
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+
+Toke Høiland-Jørgensen (7):
+      xdp: remove the xdp_attachment_flags_ok() callback
+      selftests/bpf/test_offload.py: Remove check for program load flags match
+      netdevsim: Add debugfs toggle to reject BPF programs in verifier
+      selftests/bpf/test_offload.py: only check verifier log on verification fails
+      selftests/bpf/test_offload.py: fix expected case of extack messages
+      selftests/bpf/test_offload.py: reset ethtool features after failed setting
+      selftests/bpf/test_offload.py: filter bpftool internal map when counting maps
+
+
+ drivers/net/netdevsim/bpf.c                 | 12 ++++-
+ drivers/net/netdevsim/netdevsim.h           |  1 +
+ tools/testing/selftests/bpf/test_offload.py | 53 +++++++++++----------
+ 3 files changed, 40 insertions(+), 26 deletions(-)
+
