@@ -2,23 +2,22 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4351D2D3A06
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Dec 2020 06:03:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60B522D3D4B
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Dec 2020 09:26:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725769AbgLIFDR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Wed, 9 Dec 2020 00:03:17 -0500
-Received: from vps-ad94741f.vps.ovh.ca ([51.79.157.202]:60711 "EHLO visi.com"
+        id S1725953AbgLIIZE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 9 Dec 2020 03:25:04 -0500
+Received: from vps-ad94741f.vps.ovh.ca ([51.79.157.202]:57932 "EHLO visi.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725765AbgLIFDR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Dec 2020 00:03:17 -0500
-X-Greylist: delayed 3535 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Dec 2020 00:03:14 EST
-Received: from [31.161.230.241] (account juliangath@visi.com HELO User)
+        id S1725765AbgLIIZE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 9 Dec 2020 03:25:04 -0500
+Received: from [89.200.9.204] (account juliangath@visi.com HELO User)
   by visi.com (CommuniGate Pro SMTP 6.1.9 _community_)
-  with ESMTPA id 119162; Wed, 09 Dec 2020 02:51:27 -0800
+  with ESMTPA id 199485; Wed, 09 Dec 2020 07:12:05 -0800
 Reply-To: <jalghafri3@gmail.com>
 From:   "MR JABER AL-GHAFR" <raywandyg@gmail.com>
 Subject: INVESTMENT
-Date:   Wed, 9 Dec 2020 05:03:22 +0100
+Date:   Wed, 9 Dec 2020 09:24:00 +0100
 MIME-Version: 1.0
 Content-Type: text/plain;
         charset="Windows-1251"
@@ -29,7 +28,7 @@ X-Mailer: Microsoft Outlook Express 6.00.2800.1081
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
 X-Antivirus: AVG (VPS 201207-4, 07/12/2020), Outbound message
 X-Antivirus-Status: Clean
-Message-ID: <auto-000000119162@visi.com>
+Message-ID: <auto-000000199485@visi.com>
 To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
