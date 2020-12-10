@@ -2,42 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32ECF2D54B8
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 08:36:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D62AE2D5537
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 09:20:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733064AbgLJHfi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Dec 2020 02:35:38 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:59678 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728974AbgLJHfc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Dec 2020 02:35:32 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BA7YKLI081904;
-        Thu, 10 Dec 2020 01:34:20 -0600
+        id S2387780AbgLJITX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Dec 2020 03:19:23 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:51546 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387781AbgLJITP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Dec 2020 03:19:15 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BA8HJ3g090088;
+        Thu, 10 Dec 2020 02:17:19 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1607585660;
-        bh=4pPRU3Nmx4Nr9OtUB9U1KLuDZZOLhKF8C+S/ahGLZGc=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=da0tFDUVvmompMLN0RlgRbLxOnaen9x3i7dxoBMdlRDolZLc3o4KSPvJDuLZoeVCD
-         5psuUb4OYrLtCJ/O2/oAyzDz2bRiiAYa1bZ7202wPkeDdP7klaFYhcubBV1L4It5Fu
-         /bj1zMsgHx9MH75wzYDEHYkclpj+PdR9dL5crDNw=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BA7YKJ2002681
+        s=ti-com-17Q1; t=1607588239;
+        bh=aq30/Nsk4XW/atnB6va78QseWw7cJP4bpMBbViEyW2Y=;
+        h=Subject:From:To:CC:References:Date:In-Reply-To;
+        b=whAFRW1IfqUovpGNCsxflfJiZdnRCfK3E9oVUZLSN9HH29opk7L4lLcXYkpx+UYvx
+         lU+b6x1TltJQZOgjKIGZYQ/uHrU6ojgVxPhByE+4j30/fGpalbWd13li5iHkYWnA1d
+         L3WqWTDm0Vg3/hUFy3HxlTP0OZQSMyQx1Vp/Uud4=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BA8HJhv053315
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 10 Dec 2020 01:34:20 -0600
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 10 Dec 2020 02:17:19 -0600
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 10
- Dec 2020 01:34:20 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2020 02:17:19 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 10 Dec 2020 01:34:20 -0600
+ Frontend Transport; Thu, 10 Dec 2020 02:17:19 -0600
 Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BA7YIm5015430;
-        Thu, 10 Dec 2020 01:34:18 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BA8HG0F095817;
+        Thu, 10 Dec 2020 02:17:17 -0600
 Subject: Re: [PATCH v5 29/29] drm/omap: dsi: allow DSI commands to be sent
  early
+From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
 To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 CC:     Sebastian Reichel <sre@kernel.org>,
         Nikhil Devshatwar <nikhil.nd@ti.com>,
@@ -47,13 +48,13 @@ CC:     Sebastian Reichel <sre@kernel.org>,
 References: <20201208122855.254819-1-tomi.valkeinen@ti.com>
  <20201208122855.254819-30-tomi.valkeinen@ti.com>
  <X8+gXWBwLItZA7gA@pendragon.ideasonboard.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-Message-ID: <c5139c54-78c1-fe16-7f50-c60efd1f447b@ti.com>
-Date:   Thu, 10 Dec 2020 09:34:17 +0200
+ <c5139c54-78c1-fe16-7f50-c60efd1f447b@ti.com>
+Message-ID: <64bbe541-53fb-2bd0-0069-c0a28a064a17@ti.com>
+Date:   Thu, 10 Dec 2020 10:17:16 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <X8+gXWBwLItZA7gA@pendragon.ideasonboard.com>
+In-Reply-To: <c5139c54-78c1-fe16-7f50-c60efd1f447b@ti.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -62,136 +63,19 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/12/2020 17:48, Laurent Pinchart wrote:
-> Hi Tomi,
+On 10/12/2020 09:34, Tomi Valkeinen wrote:
+
+> But we don't have anything stopping omap_dsi_host_transfer being called after the whole bridge has
+> been detached (or called before attach). So, if we have a guarantee that the panels won't be doing
+> dsi transfers before/during bridge attach or after/during bridge detach, we have no issue. If we
+> don't have such a guarantee, it's broken.
 > 
-> Thank you for the patch.
-> 
-> On Tue, Dec 08, 2020 at 02:28:55PM +0200, Tomi Valkeinen wrote:
->> Panel drivers can send DSI commands in panel's prepare(), which happens
->> before the bridge's enable() is called. The OMAP DSI driver currently
->> only sets up the DSI interface at bridge's enable(), so prepare() cannot
->> be used to send DSI commands.
->>
->> This patch fixes the issue by making it possible to enable the DSI
->> interface any time a command is about to be sent. Disabling the
->> interface is be done via delayed work.
->>
->> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
->> ---
->>  drivers/gpu/drm/omapdrm/dss/dsi.c | 49 +++++++++++++++++++++++++++----
->>  drivers/gpu/drm/omapdrm/dss/dsi.h |  3 ++
->>  2 files changed, 47 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
->> index 53a64bc91867..34f665aa9a59 100644
->> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
->> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
->> @@ -3503,6 +3503,9 @@ static void dsi_enable(struct dsi_data *dsi)
->>  
->>  	WARN_ON(!dsi_bus_is_locked(dsi));
->>  
->> +	if (WARN_ON(dsi->iface_enabled))
->> +		return;
->> +
->>  	mutex_lock(&dsi->lock);
->>  
->>  	r = dsi_runtime_get(dsi);
->> @@ -3515,6 +3518,8 @@ static void dsi_enable(struct dsi_data *dsi)
->>  	if (r)
->>  		goto err_init_dsi;
->>  
->> +	dsi->iface_enabled = true;
->> +
->>  	mutex_unlock(&dsi->lock);
->>  
->>  	return;
->> @@ -3530,6 +3535,9 @@ static void dsi_disable(struct dsi_data *dsi)
->>  {
->>  	WARN_ON(!dsi_bus_is_locked(dsi));
->>  
->> +	if (WARN_ON(!dsi->iface_enabled))
->> +		return;
->> +
->>  	mutex_lock(&dsi->lock);
->>  
->>  	dsi_sync_vc(dsi, 0);
->> @@ -3541,6 +3549,8 @@ static void dsi_disable(struct dsi_data *dsi)
->>  
->>  	dsi_runtime_put(dsi);
->>  
->> +	dsi->iface_enabled = false;
->> +
->>  	mutex_unlock(&dsi->lock);
->>  }
->>  
->> @@ -4229,10 +4239,12 @@ static ssize_t omap_dsi_host_transfer(struct mipi_dsi_host *host,
->>  
->>  	dsi_bus_lock(dsi);
->>  
->> -	if (dsi->video_enabled)
->> -		r = _omap_dsi_host_transfer(dsi, vc, msg);
->> -	else
->> -		r = -EIO;
->> +	if (!dsi->iface_enabled) {
->> +		dsi_enable(dsi);
->> +		schedule_delayed_work(&dsi->dsi_disable_work, msecs_to_jiffies(2000));
->> +	}
->> +
->> +	r = _omap_dsi_host_transfer(dsi, vc, msg);
->>  
->>  	dsi_bus_unlock(dsi);
->>  
->> @@ -4397,6 +4409,14 @@ static int omap_dsi_host_detach(struct mipi_dsi_host *host,
->>  	if (WARN_ON(dsi->dsidev != client))
->>  		return -EINVAL;
->>  
->> +	cancel_delayed_work_sync(&dsi->dsi_disable_work);
->> +
->> +	if (dsi->iface_enabled) {
->> +		dsi_bus_lock(dsi);
->> +		dsi_disable(dsi);
->> +		dsi_bus_unlock(dsi);
->> +	}
->> +
->>  	omap_dsi_unregister_te_irq(dsi);
->>  	dsi->dsidev = NULL;
->>  	return 0;
->> @@ -4632,9 +4652,12 @@ static void dsi_bridge_enable(struct drm_bridge *bridge)
->>  	struct dsi_data *dsi = drm_bridge_to_dsi(bridge);
->>  	struct omap_dss_device *dssdev = &dsi->output;
->>  
->> +	cancel_delayed_work_sync(&dsi->dsi_disable_work);
->> +
-> 
-> Is there a risk of a race condition if omap_dsi_host_transfer() is
-> called right here, before locking the bus ? Or is there a guarantee that
-> the two functions can't be executed concurrently ? Same for
-> dsi_bridge_disable() below.
+> I'll try to figure out if there's such a guarantee, but maybe it's safer to add a flag to indicate
+> if the bridge is available, and check that during omap_dsi_host_transfer.
 
-Yes, there's a possibility for a race, if the panel driver does dsi command transactions via, say, a
-timer, and doesn't take DRM locks that are shared with bridge-enable/disable/detach.
-
-For bridge-enable, it shouldn't matter: If the disable callback is called just before bridge_enable
-takes the dsi_bus_lock, no problem, bridge_enable just enables the interface again. If the callback
-is ran just after bridge_enable's dsi_bus_unlock, no problem, dsi->video_enabled == true so the
-callback does nothing.
-
-Similarly for bridge-disable, the callback won't do anything if video_enabled == true, and after
-bridge-disable has turned the video and the interface off, there's nothing to do for the callback.
-
-The detach is a bit more unclear. Is the panel driver allowed to do "stuff" with bridges while
-bridge detach is going on? If yes, it's probably broken. We should move the bus_locks to cover the
-whole if() so that dsi->iface_enabled is inside the locks. With that change the delayed disable
-itself should work fine.
-
-But we don't have anything stopping omap_dsi_host_transfer being called after the whole bridge has
-been detached (or called before attach). So, if we have a guarantee that the panels won't be doing
-dsi transfers before/during bridge attach or after/during bridge detach, we have no issue. If we
-don't have such a guarantee, it's broken.
-
-I'll try to figure out if there's such a guarantee, but maybe it's safer to add a flag to indicate
-if the bridge is available, and check that during omap_dsi_host_transfer.
+I don't think this can happen. I mixed up the bridge attach/detach and the dsi host attach/detach.
+The cancel_delayed_work_sync happens in omap_dsi_host_detach, and I think it's a sensible
+expectation that the panel won't first do mipi_dsi_detach(), and then try to do DSI transfers.
 
  Tomi
 
