@@ -2,58 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 218472D5FD7
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 16:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E414B2D601F
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 16:43:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391693AbgLJPeX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Dec 2020 10:34:23 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:59356 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391812AbgLJPeT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Dec 2020 10:34:19 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BAFXIAM110543;
-        Thu, 10 Dec 2020 09:33:18 -0600
+        id S2391872AbgLJPmJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Dec 2020 10:42:09 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:51246 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391442AbgLJPmG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Dec 2020 10:42:06 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BAFeD31120985;
+        Thu, 10 Dec 2020 09:40:13 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1607614398;
-        bh=AeyQGxgu/DbIULyND/4supeqkzfg6gDhQeqZq4ZzO/w=;
+        s=ti-com-17Q1; t=1607614813;
+        bh=XO9fpkCxzX/zoFu+ZhwYzR7BVeSXJTzwpURR5r4FuyY=;
         h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=npJW6fejpX1XkkxT8PhGAdoGgg6/U9RCGL7brBEyaSDpooeeqUIWacJWYNSJQXD1h
-         yaTOpODgZaf6YMrd/epYadpgu+D3x85gUDa50TweRctSwdNsevcvXSh36PLyz6pSAp
-         rT46cR0fOikp5ZNh8s2IEGMcKQbZC7FG5NyxVfko=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BAFXIcp080989
+        b=FekUCvFIyna43CWWR4J1FEsApW/8X/X2wb55sCCZVc2HWKgJ6EbXb0Ej4bIRqzEIS
+         jQnrdPqGEIF6dBe46VoAZ8gTa0/ZXF+7NTPub6N05HlBLCr0PJgerKhBgLgOBi2v+L
+         6KYupciPMuf+UG/O3f/2O64yDZcaFhW4UcAj2afw=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BAFeDZ7079260
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 10 Dec 2020 09:33:18 -0600
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 10 Dec 2020 09:40:13 -0600
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 10
- Dec 2020 09:30:58 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2020 09:40:12 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 10 Dec 2020 09:30:58 -0600
-Received: from [10.250.38.244] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BAFUwi2110524;
-        Thu, 10 Dec 2020 09:30:58 -0600
-Subject: Re: [PATCH v4 0/6] Add a PRU remoteproc driver
-To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        <ohad@wizery.com>, <bjorn.andersson@linaro.org>,
-        <mathieu.poirier@linaro.org>, <robh+dt@kernel.org>
-CC:     <linux-remoteproc@vger.kernel.org>, <lee.jones@linaro.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <praneeth@ti.com>,
-        <rogerq@ti.com>
-References: <20201208141002.17777-1-grzegorz.jaszczyk@linaro.org>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <0dc797aa-b938-4a9a-b8cb-ec73508563fd@ti.com>
-Date:   Thu, 10 Dec 2020 09:30:58 -0600
+ Frontend Transport; Thu, 10 Dec 2020 09:40:12 -0600
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BAFe5A3042208;
+        Thu, 10 Dec 2020 09:40:07 -0600
+Subject: Re: [RFC PATCH] RFC: drivers: gpio: helper for generic pin IRQ
+ handling
+To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Enrico Weigelt, metux IT consult" <info@metux.net>
+CC:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        <joyce.ooi@intel.com>, Andrew Jeffery <andrew@aj.id.au>,
+        Hoan Tran <hoan@os.amperecomputing.com>,
+        Serge Semin <fancer.lancer@gmail.com>, <orsonzhai@gmail.com>,
+        <baolin.wang7@gmail.com>, <zhang.lyra@gmail.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
+References: <20201208141429.8836-1-info@metux.net>
+ <CAHp75VfMKmJ074R2-04be0Ag6OuKcY=_xhhbRKsL2D0H8hZZLg@mail.gmail.com>
+ <CAHp75VfOjb4Rfo9yPmwEYUDbaPXNjfGs6goM27ZnLdAMtiU+jA@mail.gmail.com>
+ <0c16ab33-f87f-b32d-53d0-a44a5fecd6dc@ti.com>
+ <710efa0f-063e-8a9e-1c3f-49337506b044@metux.net>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <ff1dcd9a-eb83-2cb5-30d3-b25976a227ab@ti.com>
+Date:   Thu, 10 Dec 2020 17:40:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20201208141002.17777-1-grzegorz.jaszczyk@linaro.org>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <710efa0f-063e-8a9e-1c3f-49337506b044@metux.net>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -61,65 +78,62 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Bjorn,
 
-On 12/8/20 8:09 AM, Grzegorz Jaszczyk wrote:
-> Hi All,
-> 
-> The Programmable Real-Time Unit and Industrial Communication Subsystem
-> (PRU-ICSS or simply PRUSS) on various TI SoCs consists of dual 32-bit
-> RISC cores (Programmable Real-Time Units, or PRUs) for program execution.
-> 
-> The K3 AM65x and J721E SoCs have the next generation of the PRU-ICSS IP,
-> commonly called ICSSG. The ICSSG IP on AM65x SoCs has two PRU cores,
-> two auxiliary custom PRU cores called Real Time Units (RTUs). The K3
-> AM65x SR2.0 and J721E SoCs have a revised version of the ICSSG IP, and
-> include two additional custom auxiliary PRU cores called Transmit PRUs
-> (Tx_PRUs).
-> 
-> This series contains the PRUSS remoteproc driver together with relevant
-> dt-binding. This is the 3rd foundation component for PRUSS subsystem, the
-> previous two were already merged and can be found under:
-> 1) drivers/soc/ti/pruss.c
->    Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
-> 2) drivers/irqchip/irq-pruss-intc.c
->    Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
-> 
-> The following is a v4 version of the series. There is only one change
-> from v3 [1]:
-> - Use sizeof(unsigned int) instead of sizeof(int) for kcalloc in
-> pru_handle_intrmap() in patch #3.
-> 
-> [1] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20201204201807.14716-1-grzegorz.jaszczyk@linaro.org/
-> 
-> Best regards,
-> Grzegorz
-> 
-> Grzegorz Jaszczyk (1):
->   remoteproc: pru: Add support for PRU specific interrupt configuration
-> 
-> Suman Anna (5):
->   dt-bindings: remoteproc: Add binding doc for PRU cores in the PRU-ICSS
->   remoteproc: pru: Add a PRU remoteproc driver
->   remoteproc: pru: Add pru-specific debugfs support
->   remoteproc: pru: Add support for various PRU cores on K3 AM65x SoCs
->   remoteproc: pru: Add support for various PRU cores on K3 J721E SoCs
 
-All patches in this series are Reviewed now and we have got the binding ack as
-well. Can you please pick this series up for 5.11 if it is not too late?
+On 09/12/2020 12:23, Enrico Weigelt, metux IT consult wrote:
+> On 08.12.20 17:18, Grygorii Strashko wrote:
+> 
+>>>>> Having all GPIO drivers doing their IRQ management entirely through the
+>>>>> GPIO subsystem (eg. never calling generic_handle_irq() and using the
+>>>>> builtin
+>>>>> IRQ handling) would also allow a more direct (eg. callback-based)
+>>>>> pin change
+>>>>> notification for GPIO consumers, that doesn't involve registering
+>>>>> them as
+>>>>> generic IRQ handlers.
+>>
+>> Above part makes me worry - why?
+> 
+> Why so ?
+> 
+> Little clarification, in case i've been a bit confusion - there're two
+> separate topics:
+> 
+> a) consolidating repeated patterns (eg. calling the actual irq handling)
+>     into gpiolib, (and later possibly use more fields already existing in
+>     struct gpio_chip for irq handling)
 
-Thank you,
-Suman
+Even if there is some pattern It doesn't mean consolidation is always reasonable.
+one of the things to think about is compiler optimization and will/will not this change
+add additional
 
 > 
->  .../bindings/remoteproc/ti,pru-rproc.yaml     | 214 +++++
->  drivers/remoteproc/Kconfig                    |  12 +
->  drivers/remoteproc/Makefile                   |   1 +
->  drivers/remoteproc/pru_rproc.c                | 875 ++++++++++++++++++
->  drivers/remoteproc/pru_rproc.h                |  46 +
->  5 files changed, 1148 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
->  create mode 100644 drivers/remoteproc/pru_rproc.c
->  create mode 100644 drivers/remoteproc/pru_rproc.h
+> b) a direct consumer callback for change, where the consumer doesn't
+>     have to care about IRQs at all (some drivers could even do polling,
+>     when hw doesn't have IRQs). This is for consumers that don't use
+>     GPIOs as interrupt source, but more more like a very raw serial port,
+>     eg. bitbanging of other interfaces (maybe an gpio bus type ? ;-))
+
+in his case they do polling, so what's the issue with this?
+
+or you want gpio-controller to do polling for you?
+
+Actually there are few types of consumers:
+- gpio users, no irq
+- irq users, no gpio
+- gpio users and irq users
+- and finally (only few) use the same gpio as gpio and as an irq,
+   including dynamic direction change.
+
+> 
+> The above paragraph just outlines that b) might be much easier to
+> implement, once the suggested refactoring is done and no driver would
+> call irq handlers directly anymore. But this hasn't much to do with
+> the proposal itself, just an idea for future use.
+> 
+> --mtx
 > 
 
+-- 
+Best regards,
+grygorii
