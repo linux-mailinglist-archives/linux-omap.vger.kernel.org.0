@@ -2,44 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 187F32D4F91
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 01:39:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA7CB2D510B
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 03:51:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729827AbgLJAhj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Dec 2020 19:37:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45696 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727415AbgLJAhc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 19:37:32 -0500
-Received: from mail.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5D2C061793;
-        Wed,  9 Dec 2020 16:36:52 -0800 (PST)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477:9e51:a893:b0fe:602a])
-        by mail.monkeyblade.net (Postfix) with ESMTPSA id 1BF654D259C1A;
-        Wed,  9 Dec 2020 16:36:52 -0800 (PST)
-Date:   Wed, 09 Dec 2020 16:36:51 -0800 (PST)
-Message-Id: <20201209.163651.1589267041140963271.davem@davemloft.net>
-To:     zhengyongjun3@huawei.com
-Cc:     kuba@kernel.org, linux-afs@lists.infradead.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ethernet: ti: convert comma to semicolon
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20201209133716.1290-1-zhengyongjun3@huawei.com>
-References: <20201209133716.1290-1-zhengyongjun3@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 27.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Wed, 09 Dec 2020 16:36:52 -0800 (PST)
+        id S1727466AbgLJCu0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Dec 2020 21:50:26 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:33421 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727229AbgLJCuT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 21:50:19 -0500
+Received: by mail-oi1-f195.google.com with SMTP id d27so4169067oic.0;
+        Wed, 09 Dec 2020 18:50:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=MFCHvUT5RijyoJxSelJHIr/6zlP6ThwWe8MkcUy0U3Q=;
+        b=kZzMDkCEjlNEXyH5cHd9puTHxtT2bqDsTk/H+ZQC9f707hH1dPRYTDRzg11lo8jlej
+         bz7aw+cKxSFGaYg6LUISwII1Fcu8iftRTq4wAhFUsqjePSA5sBf/r7t9suej7FmYzi5L
+         iXFf6k9oDufAWSULwHObRSJ+FGz4+IRWk3z8SjmslEIMnFz6ZWVxlo79Bwu2/Q5SVN+C
+         aHTq88vJSWeHTuseTr1XqRhFgVT2NMtayPhfMtLfnXLbKRLVVdwPpv8YhEHpnULyDv2d
+         XtSkQ1V75q/LuEwkafpxuIFrFcgXBib1jofI9CKT+khE6ZidxeiDchFhueTsnNizRU+4
+         3W3w==
+X-Gm-Message-State: AOAM532Eah/XEZT/HZkAbOngy5Az/dhTbfhdx9KFQ4qL2kjkHD8X2mtN
+        p7Fnw90aV+aF6/nWbZzcGD6PNFs7Cw==
+X-Google-Smtp-Source: ABdhPJyBPDmknnFMQtG7E+zIQ6Pse6U/HenyEqv/yKu2+DMwqq/ARZ3uWkTjg8gm1gmTTjWZyFOM0g==
+X-Received: by 2002:aca:d54a:: with SMTP id m71mr1305872oig.30.1607568578810;
+        Wed, 09 Dec 2020 18:49:38 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id g3sm726117oif.26.2020.12.09.18.49.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Dec 2020 18:49:37 -0800 (PST)
+Received: (nullmailer pid 1543204 invoked by uid 1000);
+        Thu, 10 Dec 2020 02:49:36 -0000
+Date:   Wed, 9 Dec 2020 20:49:36 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Aswath Govindraju <a-govindraju@ti.com>
+Cc:     linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Vignesh R <vigneshr@ti.com>, linux-omap@vger.kernel.org,
+        Sekhar Nori <nsekhar@ti.com>
+Subject: Re: [PATCH] dt-bindings: i2c: Add compatible string for AM64 SoC
+Message-ID: <20201210024936.GA1543155@robh.at.kernel.org>
+References: <20201209165733.8204-1-a-govindraju@ti.com>
+ <20201209165733.8204-3-a-govindraju@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201209165733.8204-3-a-govindraju@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Zheng Yongjun <zhengyongjun3@huawei.com>
-Date: Wed, 9 Dec 2020 21:37:16 +0800
-
-> Replace a comma between expression statements by a semicolon.
+On Wed, 09 Dec 2020 22:27:33 +0530, Aswath Govindraju wrote:
+> Add compatible string for AM64 SoC in device tree binding of OMAP I2C
+> modules as the same IP is used.
 > 
-> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-Applied.
+> Signed-off-by: Aswath Govindraju <a-govindraju@ti.com>
+> ---
+>  Documentation/devicetree/bindings/i2c/i2c-omap.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+
+Acked-by: Rob Herring <robh@kernel.org>
