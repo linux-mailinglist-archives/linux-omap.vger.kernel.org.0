@@ -2,98 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 412AD2D5EDE
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 16:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77EC92D5FFD
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 16:39:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388107AbgLJPA7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Dec 2020 10:00:59 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:38544 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729816AbgLJPAu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Dec 2020 10:00:50 -0500
-Received: by mail-oi1-f194.google.com with SMTP id o25so6014514oie.5;
-        Thu, 10 Dec 2020 07:00:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=UVsVIe3suYkFEfD50jET/XIrhdhVHmEbSyKr3t3yUpg=;
-        b=MhV6cqzKRcgaBTijnJBo1dE7CEUzr6JsBbJ0x5/xJUssfhiz0F1oe7ONeuzN3bhqYn
-         3UWwMRTv/sHG1Z3klmfX3M0Fk+LGzbZhjl1J1PRpw+zWPMask1PbPrZDbFUgzIxRpk0Y
-         X4SLjdmcVwWqtSiJnPXdpWGWOSLGHX2ICpk3Qgv5SqXnPVT6nt2h0A4roLEI56wkEu2f
-         PWOt+c4dZmVMb4hp2wkzXPc4eiqALu3cxvWM7Vj0zYRfIgkAV/5edMyH2Q7Hhm24aFaE
-         qXClRm7I6X2dwfJhU/UM+xuq2FzQgpxb9yESKPsp6mklHV+AupvioSdGAhGeWxHjlWhF
-         b8Hg==
-X-Gm-Message-State: AOAM530sUN7nWqjAZ//Ga0NbDatBEfbK2rQe1j3bjx2EML2oOo3uL0jZ
-        M60ifA4aiXpH/A17HTOVN0piIVRvBA==
-X-Google-Smtp-Source: ABdhPJxtjxFO5NRE5uDTlGtuOqlTdZ+z6YyXsCpr2sbIMHkfwWL05oCwLJORR97iFJXMyZ7TuC6Xog==
-X-Received: by 2002:a05:6808:685:: with SMTP id k5mr5725138oig.135.1607612409231;
-        Thu, 10 Dec 2020 07:00:09 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id r4sm1030551ooa.29.2020.12.10.07.00.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Dec 2020 07:00:08 -0800 (PST)
-Received: (nullmailer pid 2499159 invoked by uid 1000);
-        Thu, 10 Dec 2020 15:00:07 -0000
-Date:   Thu, 10 Dec 2020 09:00:07 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Cc:     praneeth@ti.com, linux-remoteproc@vger.kernel.org,
-        bjorn.andersson@linaro.org, rogerq@ti.com, s-anna@ti.com,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ohad@wizery.com,
-        lee.jones@linaro.org, linux-arm-kernel@lists.infradead.org,
-        robh+dt@kernel.org, mathieu.poirier@linaro.org
-Subject: Re: [PATCH v4 1/6] dt-bindings: remoteproc: Add binding doc for PRU
- cores in the PRU-ICSS
-Message-ID: <20201210150007.GA2499121@robh.at.kernel.org>
-References: <20201208141002.17777-1-grzegorz.jaszczyk@linaro.org>
- <20201208141002.17777-2-grzegorz.jaszczyk@linaro.org>
+        id S2391364AbgLJOkh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Dec 2020 09:40:37 -0500
+Received: from foss.arm.com ([217.140.110.172]:45726 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2391313AbgLJOka (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 10 Dec 2020 09:40:30 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C563E1FB;
+        Thu, 10 Dec 2020 06:39:44 -0800 (PST)
+Received: from red-moon.arm.com (unknown [10.57.55.73])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C1FD3F718;
+        Thu, 10 Dec 2020 06:39:42 -0800 (PST)
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH 0/4] PCI: J7: J7200/J721E PCIe bindings
+Date:   Thu, 10 Dec 2020 14:39:35 +0000
+Message-Id: <160761114382.21392.11608975856655590224.b4-ty@arm.com>
+X-Mailer: git-send-email 2.26.1
+In-Reply-To: <20201210124917.24185-1-kishon@ti.com>
+References: <20201210124917.24185-1-kishon@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201208141002.17777-2-grzegorz.jaszczyk@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 08 Dec 2020 15:09:57 +0100, Grzegorz Jaszczyk wrote:
-> From: Suman Anna <s-anna@ti.com>
+On Thu, 10 Dec 2020 18:19:13 +0530, Kishon Vijay Abraham I wrote:
+> Patch series adds PCIe binding for J7200 and and fixes
+> "ti,syscon-pcie-ctrl" applicable to both J721E and J7200.
 > 
-> The Programmable Real-Time Unit and Industrial Communication Subsystem
-> (PRU-ICSS or simply PRUSS) on various TI SoCs consists of dual 32-bit
-> RISC cores (Programmable Real-Time Units, or PRUs) for program execution.
+> All the four patches here have got Acks from Rob Herring.
 > 
-> The K3 AM65x amd J721E SoCs have the next generation of the PRU-ICSS IP,
-> commonly called ICSSG. The ICSSG IP on AM65x SoCs has two PRU cores,
-> two auxiliary custom PRU cores called Real Time Units (RTUs). The K3
-> AM65x SR2.0 and J721E SoCs have a revised version of the ICSSG IP, and
-> include two additional custom auxiliary PRU cores called Transmit PRUs
-> (Tx_PRUs).
+> Ack for "dt-bindings: pci: ti,j721e: Fix "ti,syscon-pcie-ctrl" to take
+> argument"
+> lore.kernel.org/r/CAL_JsqJQju8TUZA-wu=WA-5XH4H9s2ifO8Hf4TnT5epa=Gg1ng@mail.gmail.com
 > 
-> This patch adds the bindings for these PRU cores. The binding covers the
-> OMAP architecture SoCs - AM33xx, AM437x and AM57xx; Keystone 2 architecture
-> based 66AK2G SoC; and the K3 architecture based SoCs - AM65x and J721E. The
-> Davinci based OMAPL138 SoCs will be covered in a future patch.
-> 
-> Co-developed-by: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-> ---
-> v3->v4:
-> - no changes
-> 
-> v2->v3:
-> - no changes
-> v1->v2:
-> - fix below yamllint warnings:
-> ./Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml:37:6: [warning] wrong indentation: expected 6 but found 5 (indentation)
-> ./Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml:92:2: [warning] wrong indentation: expected 2 but found 1 (indentation)
-> ---
->  .../bindings/remoteproc/ti,pru-rproc.yaml     | 214 ++++++++++++++++++
->  1 file changed, 214 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
-> 
+> [...]
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Applied to pci/cadence, thanks!
+
+[1/4] dt-bindings: pci: ti,j721e: Fix "ti,syscon-pcie-ctrl" to take argument
+      https://git.kernel.org/lpieralisi/pci/c/b6c81be912
+[2/4] dt-bindings: PCI: Add host mode dt-bindings for TI's J7200 SoC
+      https://git.kernel.org/lpieralisi/pci/c/3f1f870c01
+[3/4] dt-bindings: PCI: Add EP mode dt-bindings for TI's J7200 SoC
+      https://git.kernel.org/lpieralisi/pci/c/17c5b458a9
+[4/4] PCI: j721e: Get offset within "syscon" from "ti,syscon-pcie-ctrl" phandle arg
+      https://git.kernel.org/lpieralisi/pci/c/7aa256234c
+
+Thanks,
+Lorenzo
