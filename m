@@ -2,23 +2,23 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 888062D4F97
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 01:39:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 187F32D4F91
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Dec 2020 01:39:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726757AbgLJAhL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Dec 2020 19:37:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45632 "EHLO
+        id S1729827AbgLJAhj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Dec 2020 19:37:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729748AbgLJAhH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 19:37:07 -0500
+        with ESMTP id S1727415AbgLJAhc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Dec 2020 19:37:32 -0500
 Received: from mail.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D44BCC0613CF;
-        Wed,  9 Dec 2020 16:36:27 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5D2C061793;
+        Wed,  9 Dec 2020 16:36:52 -0800 (PST)
 Received: from localhost (unknown [IPv6:2601:601:9f00:477:9e51:a893:b0fe:602a])
-        by mail.monkeyblade.net (Postfix) with ESMTPSA id B68214D259C19;
-        Wed,  9 Dec 2020 16:36:25 -0800 (PST)
-Date:   Wed, 09 Dec 2020 16:36:25 -0800 (PST)
-Message-Id: <20201209.163625.1798210949270866738.davem@davemloft.net>
+        by mail.monkeyblade.net (Postfix) with ESMTPSA id 1BF654D259C1A;
+        Wed,  9 Dec 2020 16:36:52 -0800 (PST)
+Date:   Wed, 09 Dec 2020 16:36:51 -0800 (PST)
+Message-Id: <20201209.163651.1589267041140963271.davem@davemloft.net>
 To:     zhengyongjun3@huawei.com
 Cc:     kuba@kernel.org, linux-afs@lists.infradead.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -31,7 +31,7 @@ X-Mailer: Mew version 6.8 on Emacs 27.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Wed, 09 Dec 2020 16:36:26 -0800 (PST)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail.monkeyblade.net [0.0.0.0]); Wed, 09 Dec 2020 16:36:52 -0800 (PST)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -42,5 +42,4 @@ Date: Wed, 9 Dec 2020 21:37:16 +0800
 > Replace a comma between expression statements by a semicolon.
 > 
 > Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-
 Applied.
