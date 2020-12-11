@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7EF2D7EB6
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Dec 2020 19:52:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED752D7EDE
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Dec 2020 19:54:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436896AbgLKStt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Dec 2020 13:49:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56392 "EHLO
+        id S2390361AbgLKSw0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Dec 2020 13:52:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436775AbgLKStK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Dec 2020 13:49:10 -0500
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11725C061257
-        for <linux-omap@vger.kernel.org>; Fri, 11 Dec 2020 10:48:36 -0800 (PST)
-Received: by mail-lj1-x231.google.com with SMTP id n11so7213949lji.5
-        for <linux-omap@vger.kernel.org>; Fri, 11 Dec 2020 10:48:35 -0800 (PST)
+        with ESMTP id S2406396AbgLKStS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Dec 2020 13:49:18 -0500
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED2DC0611CD
+        for <linux-omap@vger.kernel.org>; Fri, 11 Dec 2020 10:48:37 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id b10so9738909ljp.6
+        for <linux-omap@vger.kernel.org>; Fri, 11 Dec 2020 10:48:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=8EDSgNyu6IgaeBQKoeFyD6qLBqoz4cEoQmcNe8L/mqU=;
-        b=Xovfjv2eUSzSO44meUSG4hzRoVIBRQkhuv4mNlvZ8xHhln76wJF5HYI9mbOIwOxX4s
-         Svqrn2IdOqCmMHtbOhTzR1htB8j9u1CuVLMQoAL+np9GOa/0EoRBivpwhqtOCvV8t7+A
-         6BxTF9mIANhGnfxLJcQH5AsHMiUR7qJ6R0XnIOW1yYzsW7cuUcimT3PJ+D5aE3esLrFJ
-         kNBkmlkBtQXOZtyw71y3ucfYEVzd0GQY0x88gYGD3aJVFdrKPSxx4xS/rQHoGEXHsa5G
-         jbfiQgqD0QV4+8iPhmzaWcKap6MIrPhbBX4+2RE8n+YyNHjCFF59egFY2pubmQhTEAiS
-         recw==
+        bh=slw9FlW0qv1ca+qHNtWZZr6egc4uA3g+4z4fUtQXfwA=;
+        b=yH9YN3CX1M9ZwQcP1i/VPDSn6CBQQeYWJ6J4iAu8dH/wDVXFGel/wCGQsDQHQANMor
+         TeJtPjOuECCIeyaFvQum4ty3bEZ3psaeaQA/XNhwn3DziOu71yVzWlYfmXQkJMRG1s0S
+         nK1DkXXCN1zjvq9ei9e34hv4kHTDPfV42Drzed/fjdDTz51oIGYD1O4oksGsO7decono
+         UVkU14uGeDyMesT6C/dalGUZAWwL3s5qVXdCaW2NVL92QoPe3WHia3nL9R0ne5mq8qB4
+         tWatL1shAmIHT/ks2cyeP1Za0xUE9INLNMcedXJrBxSlU30/P17qSlzn2LtJx3DGZSfB
+         U31g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=8EDSgNyu6IgaeBQKoeFyD6qLBqoz4cEoQmcNe8L/mqU=;
-        b=azx+AiRCl4OVN47uOlYOBqsuE6cXzBOA0VGIKaj95MclDuGDu6DTIdtDuhflnpceQR
-         uXnMV03XBgIv6l0wT7TQ4A0KoxRqcMczaK0mvDwd9FgLYgBrYit+aTBlFFNKMMVZsjuA
-         qS2TsEFv6am1567OYWqojav+2QQAryn2nqgyxQWiEflcGD5W3BYfU3jMGt1JlTpyVBJQ
-         00V3+H+KArf4TzoeSbmGEMB2Y5+se7nygiJ92EgKMrp6863pGF5DV7iNpJflFiEPjusC
-         GP8ZN94P2tiPWhtZ8MboanjZlXP9s2jU1TYTWiDhz6eHssETKhaEvos6oSQfa6Su4DMW
-         Wz7w==
-X-Gm-Message-State: AOAM533JQ/gK1aymclKLUtwwcYQ6YO+VlON1y3OCN8eGfVZQfZ2B0JVq
-        vk6R0GWruhJcR7vKNHqtGwoycw==
-X-Google-Smtp-Source: ABdhPJxTEkPSi27jlyi0C+c6sKtrMqklycUO84dF5+kpiWcD+P7WpyoCohYUFpJXPFvQtqK1JTgcLQ==
-X-Received: by 2002:a2e:86d1:: with SMTP id n17mr4291920ljj.120.1607712514591;
-        Fri, 11 Dec 2020 10:48:34 -0800 (PST)
+        bh=slw9FlW0qv1ca+qHNtWZZr6egc4uA3g+4z4fUtQXfwA=;
+        b=Q3JCm6TZFMoik4vkPULM+t1tyyWMpaCPuRGwHXEk7IUjNta5uHh5gDTgMD2BQj4PRg
+         Pahdpb7SO6SmBcBfRFIWLR1+/Y/xdHN2DfuWH0oq9jEkm0KqJC/WVBUqNGNttCDIkIow
+         MHuD3QnoY/b6Pth6dShKFwyqLipocDPjp6mjeFtbldK1jQVlyLKxo7EwrG6Y0XKLjAdV
+         JhiJiheZmxkuhduDbLiCDyn3SCS+LHtJDQkzeMRX3DsSkwBEMxDKtHlzJltls74sPSaS
+         a49D89ixkNYeaFwNMnoKXpsHf0HJlJuj6ynWpBdpYvuSKt+Qjl1oP7TEmOtiLMpCf9KG
+         WLkg==
+X-Gm-Message-State: AOAM532zJ2Hb/uBeGXL4xiB23vCy2SfhjhQtFPx6itTuv/+xnC85WZgX
+        So65nTls135ajofh5n1U+nzmnp8pvGa0dQ==
+X-Google-Smtp-Source: ABdhPJwU25aIo1XwzXoLDVdoqhtupRDHxNWYJb+Q3fz5D0yCcYmr0YPL+/BHnvlJZpTJUhqKK7TFmQ==
+X-Received: by 2002:a05:651c:211e:: with SMTP id a30mr6105765ljq.18.1607712515842;
+        Fri, 11 Dec 2020 10:48:35 -0800 (PST)
 Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
-        by smtp.gmail.com with ESMTPSA id b12sm903316lfb.139.2020.12.11.10.48.33
+        by smtp.gmail.com with ESMTPSA id b12sm903316lfb.139.2020.12.11.10.48.34
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 11 Dec 2020 10:48:34 -0800 (PST)
+        Fri, 11 Dec 2020 10:48:35 -0800 (PST)
 From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
 To:     ssantosh@kernel.org, s-anna@ti.com
 Cc:     grzegorz.jaszczyk@linaro.org, santosh.shilimkar@oracle.com,
@@ -54,9 +54,9 @@ Cc:     grzegorz.jaszczyk@linaro.org, santosh.shilimkar@oracle.com,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         praneeth@ti.com, tony@atomide.com,
         linux-remoteproc@vger.kernel.org, mathieu.poirier@linaro.org
-Subject: [PATCH 4/6] soc: ti: pruss: Add helper functions to set GPI mode, MII_RT_event and XFR
-Date:   Fri, 11 Dec 2020 19:48:09 +0100
-Message-Id: <20201211184811.6490-5-grzegorz.jaszczyk@linaro.org>
+Subject: [PATCH 5/6] soc: ti: pruss: Add helper function to enable OCP master ports
+Date:   Fri, 11 Dec 2020 19:48:10 +0100
+Message-Id: <20201211184811.6490-6-grzegorz.jaszczyk@linaro.org>
 X-Mailer: git-send-email 2.29.0
 In-Reply-To: <20201211184811.6490-1-grzegorz.jaszczyk@linaro.org>
 References: <20201211184811.6490-1-grzegorz.jaszczyk@linaro.org>
@@ -68,83 +68,179 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Suman Anna <s-anna@ti.com>
 
-The PRUSS CFG module is represented as a syscon node and is currently
-managed by the PRUSS platform driver. Add easy accessor functions to set
-GPI mode, MII_RT event enable/disable and XFR (XIN XOUT) enable/disable
-to enable the PRUSS Ethernet usecase. These functions reuse the generic
-pruss_cfg_update() API function.
+The PRU-ICSS subsystem on OMAP-architecture based SoCS (AM33xx, AM437x
+and AM57xx SoCs) has a control bit STANDBY_INIT in the PRUSS_CFG register
+to initiate a Standby sequence (when set) and trigger a MStandby request
+to the SoC's PRCM module. This same bit is also used to enable the OCP
+master ports (when cleared). The clearing of the STANDBY_INIT bit requires
+an acknowledgment from PRCM and is done through the monitoring of the
+PRUSS_SYSCFG.SUB_MWAIT bit.
+
+Add a helper function pruss_cfg_ocp_master_ports() to allow the PRU
+client drivers to control this bit and enable or disable the firmware
+running on PRU cores access to any peripherals or memory to achieve
+desired functionality. The access is disabled by default on power-up
+and on any suspend (context is not maintained).
 
 Signed-off-by: Suman Anna <s-anna@ti.com>
 Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
 Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
 ---
- include/linux/pruss.h | 55 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ drivers/soc/ti/pruss.c | 81 ++++++++++++++++++++++++++++++++++++++++--
+ include/linux/pruss.h  |  6 ++++
+ 2 files changed, 85 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/pruss.h b/include/linux/pruss.h
-index 9cef536c6cb5..c8d73cc6baa9 100644
---- a/include/linux/pruss.h
-+++ b/include/linux/pruss.h
-@@ -235,4 +235,59 @@ static inline bool is_pru_rproc(struct device *dev)
- 	return true;
+diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+index 56e0ac948796..b373d5579647 100644
+--- a/drivers/soc/ti/pruss.c
++++ b/drivers/soc/ti/pruss.c
+@@ -22,14 +22,19 @@
+ #include <linux/remoteproc.h>
+ #include <linux/slab.h>
+ 
++#define SYSCFG_STANDBY_INIT	BIT(4)
++#define SYSCFG_SUB_MWAIT_READY	BIT(5)
++
+ /**
+  * struct pruss_private_data - PRUSS driver private data
+  * @has_no_sharedram: flag to indicate the absence of PRUSS Shared Data RAM
+  * @has_core_mux_clock: flag to indicate the presence of PRUSS core clock
++ * @has_ocp_syscfg: flag to indicate if OCP SYSCFG is present
+  */
+ struct pruss_private_data {
+ 	bool has_no_sharedram;
+ 	bool has_core_mux_clock;
++	bool has_ocp_syscfg;
+ };
+ 
+ /**
+@@ -205,6 +210,72 @@ int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
  }
+ EXPORT_SYMBOL_GPL(pruss_cfg_update);
  
 +/**
-+ * pruss_cfg_gpimode() - set the GPI mode of the PRU
++ * pruss_cfg_ocp_master_ports() - configure PRUSS OCP master ports
 + * @pruss: the pruss instance handle
-+ * @pru_id: id of the PRU core within the PRUSS
-+ * @mode: GPI mode to set
++ * @enable: set to true for enabling or false for disabling the OCP master ports
 + *
-+ * Sets the GPI mode for a given PRU by programming the
-+ * corresponding PRUSS_CFG_GPCFGx register
++ * This function programs the PRUSS_SYSCFG.STANDBY_INIT bit either to enable or
++ * disable the OCP master ports (applicable only on SoCs using OCP interconnect
++ * like the OMAP family). Clearing the bit achieves dual functionalities - one
++ * is to deassert the MStandby signal to the device PRCM, and the other is to
++ * enable OCP master ports to allow accesses outside of the PRU-ICSS. The
++ * function has to wait for the PRCM to acknowledge through the monitoring of
++ * the PRUSS_SYSCFG.SUB_MWAIT bit when enabling master ports. Setting the bit
++ * disables the master access, and also signals the PRCM that the PRUSS is ready
++ * for Standby.
 + *
-+ * Return: 0 on success, or an error code otherwise
++ * Return: 0 on success, or an error code otherwise. ETIMEDOUT is returned
++ * when the ready-state fails.
 + */
-+static inline int pruss_cfg_gpimode(struct pruss *pruss,
-+				    enum pruss_pru_id pru_id,
-+				    enum pruss_gpi_mode mode)
++int pruss_cfg_ocp_master_ports(struct pruss *pruss, bool enable)
 +{
-+	if (pru_id < 0 || pru_id >= PRUSS_NUM_PRUS)
++	int ret;
++	u32 syscfg_val, i;
++	const struct pruss_private_data *data;
++
++	if (IS_ERR_OR_NULL(pruss))
 +		return -EINVAL;
 +
-+	return pruss_cfg_update(pruss, PRUSS_CFG_GPCFG(pru_id),
-+				PRUSS_GPCFG_PRU_GPI_MODE_MASK,
-+				mode << PRUSS_GPCFG_PRU_GPI_MODE_SHIFT);
-+}
++	data = of_device_get_match_data(pruss->dev);
 +
-+/**
-+ * pruss_cfg_miirt_enable() - Enable/disable MII RT Events
-+ * @pruss: the pruss instance
-+ * @enable: enable/disable
-+ *
-+ * Enable/disable the MII RT Events for the PRUSS.
-+ *
-+ * Return: 0 on success, or an error code otherwise
-+ */
-+static inline int pruss_cfg_miirt_enable(struct pruss *pruss, bool enable)
++	/* nothing to do on non OMAP-SoCs */
++	if (!data || !data->has_ocp_syscfg)
++		return 0;
++
++	/* assert the MStandby signal during disable path */
++	if (!enable)
++		return pruss_cfg_update(pruss, PRUSS_CFG_SYSCFG,
++					SYSCFG_STANDBY_INIT,
++					SYSCFG_STANDBY_INIT);
++
++	/* enable the OCP master ports and disable MStandby */
++	ret = pruss_cfg_update(pruss, PRUSS_CFG_SYSCFG, SYSCFG_STANDBY_INIT, 0);
++	if (ret)
++		return ret;
++
++	/* wait till we are ready for transactions - delay is arbitrary */
++	for (i = 0; i < 10; i++) {
++		ret = pruss_cfg_read(pruss, PRUSS_CFG_SYSCFG, &syscfg_val);
++		if (ret)
++			goto disable;
++
++		if (!(syscfg_val & SYSCFG_SUB_MWAIT_READY))
++			return 0;
++
++		udelay(5);
++	}
++
++	dev_err(pruss->dev, "timeout waiting for SUB_MWAIT_READY\n");
++	ret = -ETIMEDOUT;
++
++disable:
++	pruss_cfg_update(pruss, PRUSS_CFG_SYSCFG, SYSCFG_STANDBY_INIT,
++			 SYSCFG_STANDBY_INIT);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(pruss_cfg_ocp_master_ports);
++
+ static void pruss_of_free_clk_provider(void *data)
+ {
+ 	struct device_node *clk_mux_np = data;
+@@ -487,10 +558,16 @@ static int pruss_remove(struct platform_device *pdev)
+ /* instance-specific driver private data */
+ static const struct pruss_private_data am437x_pruss1_data = {
+ 	.has_no_sharedram = false,
++	.has_ocp_syscfg = true,
+ };
+ 
+ static const struct pruss_private_data am437x_pruss0_data = {
+ 	.has_no_sharedram = true,
++	.has_ocp_syscfg = false,
++};
++
++static const struct pruss_private_data am33xx_am57xx_data = {
++	.has_ocp_syscfg = true,
+ };
+ 
+ static const struct pruss_private_data am65x_j721e_pruss_data = {
+@@ -498,10 +575,10 @@ static const struct pruss_private_data am65x_j721e_pruss_data = {
+ };
+ 
+ static const struct of_device_id pruss_of_match[] = {
+-	{ .compatible = "ti,am3356-pruss" },
++	{ .compatible = "ti,am3356-pruss", .data = &am33xx_am57xx_data },
+ 	{ .compatible = "ti,am4376-pruss0", .data = &am437x_pruss0_data, },
+ 	{ .compatible = "ti,am4376-pruss1", .data = &am437x_pruss1_data, },
+-	{ .compatible = "ti,am5728-pruss" },
++	{ .compatible = "ti,am5728-pruss", .data = &am33xx_am57xx_data },
+ 	{ .compatible = "ti,k2g-pruss" },
+ 	{ .compatible = "ti,am654-icssg", .data = &am65x_j721e_pruss_data, },
+ 	{ .compatible = "ti,j721e-icssg", .data = &am65x_j721e_pruss_data, },
+diff --git a/include/linux/pruss.h b/include/linux/pruss.h
+index c8d73cc6baa9..b3087dc9730e 100644
+--- a/include/linux/pruss.h
++++ b/include/linux/pruss.h
+@@ -163,6 +163,7 @@ int pruss_release_mem_region(struct pruss *pruss,
+ int pruss_cfg_read(struct pruss *pruss, unsigned int reg, unsigned int *val);
+ int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
+ 		     unsigned int mask, unsigned int val);
++int pruss_cfg_ocp_master_ports(struct pruss *pruss, bool enable);
+ 
+ #else
+ 
+@@ -198,6 +199,11 @@ static inline int pruss_cfg_update(struct pruss *pruss, unsigned int reg,
+ 	return -ENOTSUPP;
+ }
+ 
++static inline int pruss_cfg_ocp_master_ports(struct pruss *pruss, bool enable)
 +{
-+	u32 set = enable ? PRUSS_MII_RT_EVENT_EN : 0;
-+
-+	return pruss_cfg_update(pruss, PRUSS_CFG_MII_RT,
-+				PRUSS_MII_RT_EVENT_EN, set);
++	return -ENOTSUPP;
 +}
 +
-+/**
-+ * pruss_cfg_xfr_enable() - Enable/disable XIN XOUT shift functionality
-+ * @pruss: the pruss instance
-+ * @enable: enable/disable
-+ *
-+ * Return: 0 on success, or an error code otherwise
-+ */
-+static inline int pruss_cfg_xfr_enable(struct pruss *pruss, bool enable)
-+{
-+	u32 set = enable ? PRUSS_SPP_XFER_SHIFT_EN : 0;
-+
-+	return pruss_cfg_update(pruss, PRUSS_CFG_SPP,
-+				PRUSS_SPP_XFER_SHIFT_EN, set);
-+}
-+
- #endif /* __LINUX_PRUSS_H */
+ #endif /* CONFIG_TI_PRUSS */
+ 
+ #if IS_ENABLED(CONFIG_PRU_REMOTEPROC)
 -- 
 2.29.0
 
