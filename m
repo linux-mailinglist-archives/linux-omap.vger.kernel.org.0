@@ -2,63 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 839C12D71EE
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Dec 2020 09:40:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C9F72D7259
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Dec 2020 09:57:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392150AbgLKIix (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Dec 2020 03:38:53 -0500
-Received: from muru.com ([72.249.23.125]:50128 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391494AbgLKIic (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 11 Dec 2020 03:38:32 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 1696980EB;
-        Fri, 11 Dec 2020 08:37:59 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 2/2] Late defconfig changes for omaps for v5.11
-Date:   Fri, 11 Dec 2020 10:37:42 +0200
-Message-Id: <pull-1607675790-251347@atomide.com-2>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <pull-1607675790-251347@atomide.com>
-References: <pull-1607675790-251347@atomide.com>
+        id S2437195AbgLKIyx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Dec 2020 03:54:53 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:9164 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437143AbgLKIyt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Dec 2020 03:54:49 -0500
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Csl1m5K8cz15bBF;
+        Fri, 11 Dec 2020 16:53:32 +0800 (CST)
+Received: from ubuntu.network (10.175.138.68) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.487.0; Fri, 11 Dec 2020 16:53:59 +0800
+From:   Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <balbi@kernel.org>, <gregkh@linuxfoundation.org>,
+        <linux-usb@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Subject: [PATCH -next] usb: phy: convert comma to semicolon
+Date:   Fri, 11 Dec 2020 16:54:28 +0800
+Message-ID: <20201211085428.2871-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.138.68]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+Replace a comma between expression statements by a semicolon.
 
-The following changes since commit eaf7697b6febe2b086503f525f070d8e3ca1ea0f:
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+---
+ drivers/usb/phy/phy-isp1301-omap.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-  ARM: omap2plus_defconfig: Enable TI eQEP counter driver (2020-11-24 11:04:12 +0200)
+diff --git a/drivers/usb/phy/phy-isp1301-omap.c b/drivers/usb/phy/phy-isp1301-omap.c
+index 4a6462c92ef2..6f4f74e6ba51 100644
+--- a/drivers/usb/phy/phy-isp1301-omap.c
++++ b/drivers/usb/phy/phy-isp1301-omap.c
+@@ -1566,13 +1566,13 @@ isp1301_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
+ 
+ 	isp->phy.dev = &i2c->dev;
+ 	isp->phy.label = DRIVER_NAME;
+-	isp->phy.set_power = isp1301_set_power,
++	isp->phy.set_power = isp1301_set_power;
+ 
+ 	isp->phy.otg->usb_phy = &isp->phy;
+-	isp->phy.otg->set_host = isp1301_set_host,
+-	isp->phy.otg->set_peripheral = isp1301_set_peripheral,
+-	isp->phy.otg->start_srp = isp1301_start_srp,
+-	isp->phy.otg->start_hnp = isp1301_start_hnp,
++	isp->phy.otg->set_host = isp1301_set_host;
++	isp->phy.otg->set_peripheral = isp1301_set_peripheral;
++	isp->phy.otg->start_srp = isp1301_start_srp;
++	isp->phy.otg->start_hnp = isp1301_start_hnp;
+ 
+ 	enable_vbus_draw(isp, 0);
+ 	power_down(isp);
+-- 
+2.22.0
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.11/defconfig-late-signed
-
-for you to fetch changes up to 2f6fc9e08bf79f11516edef855283c6212bbe78f:
-
-  ARM: omap2plus_defconfig: enable SPI GPIO (2020-12-07 15:59:41 +0200)
-
-----------------------------------------------------------------
-Late defconfig changes for omaps for v5.11 merge window
-
-Drop drop unused POWER_AVS option, and enable CONFIG_SPI_GPIO as
-a loadable module so gta04 needs it for controlling the td028ttec1
-panel.
-
-----------------------------------------------------------------
-Andreas Kemnade (1):
-      ARM: omap2plus_defconfig: enable SPI GPIO
-
-Andrey Zhizhikin (1):
-      ARM: omap2plus_defconfig: drop unused POWER_AVS option
-
- arch/arm/configs/omap2plus_defconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
