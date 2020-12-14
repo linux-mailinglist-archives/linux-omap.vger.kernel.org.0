@@ -2,327 +2,295 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 206942D9B3F
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Dec 2020 16:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37A502D9B6E
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Dec 2020 16:51:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbgLNPi0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Dec 2020 10:38:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58626 "EHLO mail.kernel.org"
+        id S2439008AbgLNPt1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Dec 2020 10:49:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34116 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729007AbgLNPiV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 14 Dec 2020 10:38:21 -0500
-Date:   Mon, 14 Dec 2020 16:37:36 +0100
+        id S2439078AbgLNPsp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 14 Dec 2020 10:48:45 -0500
+Date:   Mon, 14 Dec 2020 16:47:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607960259;
-        bh=7xrQQsflbVXBCtHso6v6KBJxiVYw5BK6rctMad4t9Iw=;
+        s=k20201202; t=1607960881;
+        bh=Mu/622fOHJOZIhN6LvV/8Bi8E7Bvy2jmbdrkiC43Lkg=;
         h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QUAP/t2AjSy5aICF8T1krfE0jPlcUFBs9kUR/nAvCN1EtFMM2hbNa5IU3uGCzdDgG
-         zNibNg1CNUTB2KDhWLVIlyM5mgKEFCHSu0+dDtisu23WIofYTnxIPswCE923FXKIAM
-         gZC0eRaNpOqEqX0SRAL+WA6IDWjvhPxvlHGJD4O71F9BTS1oX4IV3Ko6syXb0SHX4x
-         lf24Y8HKS/jKCDph+4xxVIkqrv70Dgr3aSGEdOVajRNHg/idLoOzn7kampASgMHo05
-         epePIFCv7jLch/51IEaHJEwx5waerjw7um9yauCAe9L5Rfy5jWRyXdmCIYuMd5hd4/
-         YtDbGrg7wJ0Vw==
+        b=ZwBwEvmEWdDMvIsbNOwTSs9/OEEgW+0TAMKNvcIZQF79j9cTrJc18sh2sHMMuvRdB
+         ewb2K3LrVrC7mMrBg5qXLFpXchTU49qt7RS0rNv4ugV7HBdelKKUl4gdEF4IDELCBV
+         kJPnF2wMEozLreDIasqjzzDuj9nwqIunD/3T29A2AvHSsnD1OvrWB7sjK34V8IjRRC
+         yox7T4Jj225dmbUZVIAkGWGKSd+tegzxL6CXPYvVo8ffO63cNqBwrC8HjoE5lokA7t
+         FYUvsFxMf22Ax0H5pQAGFVarVmn88HtHtv2QD5DzPikJd1dw/CqEqZmNhqHxQaKGM1
+         lKGvCpOEP5zdQ==
 From:   Sebastian Reichel <sre@kernel.org>
-To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
         Nikhil Devshatwar <nikhil.nd@ti.com>,
         dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
         Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
         hns@goldelico.com, Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH v5 11/29] drm/omap: dsi: pass vc to various functions
-Message-ID: <20201214153736.c4tipxwt2aq6eifu@earth.universe>
+Subject: Re: [PATCH v5 12/29] drm/omap: dsi: untangle vc & channel
+Message-ID: <20201214154759.nbe2vrfduahkp7z2@earth.universe>
 References: <20201208122855.254819-1-tomi.valkeinen@ti.com>
- <20201208122855.254819-12-tomi.valkeinen@ti.com>
+ <20201208122855.254819-13-tomi.valkeinen@ti.com>
+ <X8+eo2qJwxZctAAd@pendragon.ideasonboard.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="secuwurx6akade3m"
+        protocol="application/pgp-signature"; boundary="y4vambtgrohnuicd"
 Content-Disposition: inline
-In-Reply-To: <20201208122855.254819-12-tomi.valkeinen@ti.com>
+In-Reply-To: <X8+eo2qJwxZctAAd@pendragon.ideasonboard.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---secuwurx6akade3m
+--y4vambtgrohnuicd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Dec 08, 2020 at 05:41:23PM +0200, Laurent Pinchart wrote:
+> Hi Tomi,
+>=20
+> Thank you for the patch.
+>=20
+> On Tue, Dec 08, 2020 at 02:28:38PM +0200, Tomi Valkeinen wrote:
+> > DSI virtual channel and hardware VC blocks have gotten tangled as
+> > described in the previous commits. This has not caused any issues, as
+> > the value for both is 0, so it happens to work.
+> >=20
+> > To fix the issue, change the code to use the correct one of the two.
+> >=20
+> > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> > ---
+> >  drivers/gpu/drm/omapdrm/dss/dsi.c | 43 +++++++++++++++----------------
+> >  1 file changed, 21 insertions(+), 22 deletions(-)
+> >=20
+> > diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdr=
+m/dss/dsi.c
+> > index 8d8412199693..a1f3623f45b1 100644
+> > --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> > +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> > @@ -2613,7 +2613,7 @@ static inline void dsi_vc_write_long_header(struc=
+t dsi_data *dsi, int vc,
+> > =20
+> >  	WARN_ON(!dsi_bus_is_locked(dsi));
+> > =20
+> > -	data_id =3D data_type | vc << 6;
+> > +	data_id =3D data_type | channel << 6;
+> > =20
+> >  	val =3D FLD_VAL(data_id, 7, 0) | FLD_VAL(len, 23, 8) |
+> >  		FLD_VAL(ecc, 31, 24);
+> > @@ -2647,12 +2647,12 @@ static int dsi_vc_send_long(struct dsi_data *ds=
+i, int vc,
+> >  		DSSDBG("dsi_vc_send_long, %d bytes\n", msg->tx_len);
+> > =20
+> >  	/* len + header */
+> > -	if (dsi->vc[msg->channel].tx_fifo_size * 32 * 4 < msg->tx_len + 4) {
+> > +	if (dsi->vc[vc].tx_fifo_size * 32 * 4 < msg->tx_len + 4) {
+> >  		DSSERR("unable to send long packet: packet too long.\n");
+> >  		return -EINVAL;
+> >  	}
+> > =20
+> > -	dsi_vc_config_source(dsi, msg->channel, DSI_VC_SOURCE_L4);
+> > +	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_L4);
+> > =20
+> >  	dsi_vc_write_long_header(dsi, vc, msg->channel, msg->type, msg->tx_le=
+n, 0);
+> > =20
+> > @@ -2666,7 +2666,7 @@ static int dsi_vc_send_long(struct dsi_data *dsi,=
+ int vc,
+> >  		b3 =3D *p++;
+> >  		b4 =3D *p++;
+> > =20
+> > -		dsi_vc_write_long_payload(dsi, msg->channel, b1, b2, b3, b4);
+> > +		dsi_vc_write_long_payload(dsi, vc, b1, b2, b3, b4);
+> >  	}
+> > =20
+> >  	i =3D msg->tx_len % 4;
+> > @@ -2691,7 +2691,7 @@ static int dsi_vc_send_long(struct dsi_data *dsi,=
+ int vc,
+> >  			break;
+> >  		}
+> > =20
+> > -		dsi_vc_write_long_payload(dsi, msg->channel, b1, b2, b3, 0);
+> > +		dsi_vc_write_long_payload(dsi, vc, b1, b2, b3, 0);
+> >  	}
+> > =20
+> >  	return r;
+> > @@ -2711,11 +2711,11 @@ static int dsi_vc_send_short(struct dsi_data *d=
+si, int vc,
+> > =20
+> >  	if (dsi->debug_write)
+> >  		DSSDBG("dsi_vc_send_short(ch%d, dt %#x, b1 %#x, b2 %#x)\n",
+> > -		       msg->channel, msg->type, pkt.header[1], pkt.header[2]);
+> > +		       vc, msg->type, pkt.header[1], pkt.header[2]);
 
-On Tue, Dec 08, 2020 at 02:28:37PM +0200, Tomi Valkeinen wrote:
-> To start fixing the issues related to channels and vcs described in the
-> previous commit, pass vc to various functions which will need it do
-> properly handle different DSI channels and VCs.
->=20
-> No functional changes.
->=20
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> ---
+There is another "ch%d" filled with vc. With this and Laurent
+findings fixed:
 
 Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
 -- Sebastian
 
->  drivers/gpu/drm/omapdrm/dss/dsi.c | 54 ++++++++++++++++---------------
->  1 file changed, 28 insertions(+), 26 deletions(-)
+> > =20
+> > -	dsi_vc_config_source(dsi, msg->channel, DSI_VC_SOURCE_L4);
+> > +	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_L4);
+> > =20
+> > -	if (FLD_GET(dsi_read_reg(dsi, DSI_VC_CTRL(msg->channel)), 16, 16)) {
+> > +	if (FLD_GET(dsi_read_reg(dsi, DSI_VC_CTRL(vc)), 16, 16)) {
+> >  		DSSERR("ERROR FIFO FULL, aborting transfer\n");
+> >  		return -EINVAL;
+> >  	}
+> > @@ -2723,7 +2723,7 @@ static int dsi_vc_send_short(struct dsi_data *dsi=
+, int vc,
+> >  	r =3D pkt.header[3] << 24 | pkt.header[2] << 16 | pkt.header[1] << 8 |
+> >  	    pkt.header[0];
+> > =20
+> > -	dsi_write_reg(dsi, DSI_VC_SHORT_PACKET_HEADER(msg->channel), r);
+> > +	dsi_write_reg(dsi, DSI_VC_SHORT_PACKET_HEADER(vc), r);
+> > =20
+> >  	return 0;
+> >  }
+> > @@ -2731,7 +2731,7 @@ static int dsi_vc_send_short(struct dsi_data *dsi=
+, int vc,
+> >  static int dsi_vc_send_null(struct dsi_data *dsi, int vc, int channel)
+> >  {
+> >  	const struct mipi_dsi_msg msg =3D {
+> > -		.channel =3D vc,
+> > +		.channel =3D channel,
+> >  		.type =3D MIPI_DSI_NULL_PACKET,
+> >  	};
+> > =20
+> > @@ -2759,16 +2759,16 @@ static int dsi_vc_write_common(struct omap_dss_=
+device *dssdev, int vc,
+> >  	 * In that case we can return early.
+> >  	 */
+> > =20
+> > -	r =3D dsi_vc_send_bta_sync(dssdev, msg->channel);
+> > +	r =3D dsi_vc_send_bta_sync(dssdev, vc);
+> >  	if (r) {
+> >  		DSSERR("bta sync failed\n");
+> >  		return r;
+> >  	}
+> > =20
+> >  	/* RX_FIFO_NOT_EMPTY */
+> > -	if (REG_GET(dsi, DSI_VC_CTRL(msg->channel), 20, 20)) {
+> > +	if (REG_GET(dsi, DSI_VC_CTRL(vc), 20, 20)) {
+> >  		DSSERR("rx fifo not empty after write, dumping data:\n");
+> > -		dsi_vc_flush_receive_data(dsi, msg->channel);
+> > +		dsi_vc_flush_receive_data(dsi, vc);
+> >  		return -EIO;
+> >  	}
+> > =20
+> > @@ -2888,21 +2888,20 @@ static int dsi_vc_dcs_read(struct omap_dss_devi=
+ce *dssdev, int vc,
+> >  {
+> >  	struct dsi_data *dsi =3D to_dsi_data(dssdev);
+> >  	u8 cmd =3D ((u8 *)msg->tx_buf)[0];
+> > -	u8 channel =3D msg->channel;
+> >  	int r;
+> > =20
+> >  	if (dsi->debug_read)
+> > -		DSSDBG("%s(ch %d, cmd %x)\n", __func__, channel, cmd);
+> > +		DSSDBG("%s(ch %d, cmd %x)\n", __func__, vc, cmd);
 >=20
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/=
-dss/dsi.c
-> index 273159e8f992..8d8412199693 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> @@ -214,9 +214,9 @@ static void dsi_set_ulps_auto(struct dsi_data *dsi, b=
-ool enable);
->  static int dsi_display_init_dispc(struct dsi_data *dsi);
->  static void dsi_display_uninit_dispc(struct dsi_data *dsi);
-> =20
-> -static int dsi_vc_send_null(struct dsi_data *dsi, int vc);
-> +static int dsi_vc_send_null(struct dsi_data *dsi, int vc, int channel);
-> =20
-> -static ssize_t _omap_dsi_host_transfer(struct dsi_data *dsi,
-> +static ssize_t _omap_dsi_host_transfer(struct dsi_data *dsi, int vc,
->  				       const struct mipi_dsi_msg *msg);
-> =20
->  static void dsi_display_disable(struct omap_dss_device *dssdev);
-> @@ -2455,7 +2455,7 @@ static void dsi_vc_enable_hs(struct omap_dss_device=
+> How about also renaming ch to vc in the message ?
+>=20
+> > =20
+> >  	r =3D dsi_vc_send_short(dsi, vc, msg);
+> >  	if (r)
+> >  		goto err;
+> > =20
+> > -	r =3D dsi_vc_send_bta_sync(dssdev, channel);
+> > +	r =3D dsi_vc_send_bta_sync(dssdev, vc);
+> >  	if (r)
+> >  		goto err;
+> > =20
+> > -	r =3D dsi_vc_read_rx_fifo(dsi, channel, msg->rx_buf, msg->rx_len,
+> > +	r =3D dsi_vc_read_rx_fifo(dsi, vc, msg->rx_buf, msg->rx_len,
+> >  		DSS_DSI_CONTENT_DCS);
+> >  	if (r < 0)
+> >  		goto err;
+> > @@ -2914,7 +2913,7 @@ static int dsi_vc_dcs_read(struct omap_dss_device=
  *dssdev, int vc,
-> =20
->  	/* start the DDR clock by sending a NULL packet */
->  	if (dsi->vm_timings.ddr_clk_always_on && enable)
-> -		dsi_vc_send_null(dsi, vc);
-> +		dsi_vc_send_null(dsi, vc, dsi->dsidev->channel);
-> =20
->  	dsi->in_lp_mode =3D !enable;
->  }
-> @@ -2605,7 +2605,8 @@ static int dsi_vc_send_bta_sync(struct omap_dss_dev=
-ice *dssdev, int vc)
->  }
-> =20
->  static inline void dsi_vc_write_long_header(struct dsi_data *dsi, int vc,
-> -					    u8 data_type, u16 len, u8 ecc)
-> +					    int channel, u8 data_type, u16 len,
-> +					    u8 ecc)
->  {
->  	u32 val;
->  	u8 data_id;
-> @@ -2633,7 +2634,7 @@ static inline void dsi_vc_write_long_payload(struct=
- dsi_data *dsi, int vc,
->  	dsi_write_reg(dsi, DSI_VC_LONG_PACKET_PAYLOAD(vc), val);
->  }
-> =20
-> -static int dsi_vc_send_long(struct dsi_data *dsi,
-> +static int dsi_vc_send_long(struct dsi_data *dsi, int vc,
->  			    const struct mipi_dsi_msg *msg)
->  {
->  	/*u32 val; */
-> @@ -2653,7 +2654,7 @@ static int dsi_vc_send_long(struct dsi_data *dsi,
-> =20
->  	dsi_vc_config_source(dsi, msg->channel, DSI_VC_SOURCE_L4);
-> =20
-> -	dsi_vc_write_long_header(dsi, msg->channel, msg->type, msg->tx_len, 0);
-> +	dsi_vc_write_long_header(dsi, vc, msg->channel, msg->type, msg->tx_len,=
- 0);
-> =20
->  	p =3D msg->tx_buf;
->  	for (i =3D 0; i < msg->tx_len >> 2; i++) {
-> @@ -2696,7 +2697,7 @@ static int dsi_vc_send_long(struct dsi_data *dsi,
->  	return r;
->  }
-> =20
-> -static int dsi_vc_send_short(struct dsi_data *dsi,
-> +static int dsi_vc_send_short(struct dsi_data *dsi, int vc,
->  			     const struct mipi_dsi_msg *msg)
->  {
->  	struct mipi_dsi_packet pkt;
-> @@ -2727,26 +2728,26 @@ static int dsi_vc_send_short(struct dsi_data *dsi,
->  	return 0;
->  }
-> =20
-> -static int dsi_vc_send_null(struct dsi_data *dsi, int vc)
-> +static int dsi_vc_send_null(struct dsi_data *dsi, int vc, int channel)
->  {
->  	const struct mipi_dsi_msg msg =3D {
->  		.channel =3D vc,
->  		.type =3D MIPI_DSI_NULL_PACKET,
->  	};
-> =20
-> -	return dsi_vc_send_long(dsi, &msg);
-> +	return dsi_vc_send_long(dsi, vc, &msg);
->  }
-> =20
-> -static int dsi_vc_write_common(struct omap_dss_device *dssdev,
-> +static int dsi_vc_write_common(struct omap_dss_device *dssdev, int vc,
->  			       const struct mipi_dsi_msg *msg)
->  {
->  	struct dsi_data *dsi =3D to_dsi_data(dssdev);
->  	int r;
-> =20
->  	if (mipi_dsi_packet_format_is_short(msg->type))
-> -		r =3D dsi_vc_send_short(dsi, msg);
-> +		r =3D dsi_vc_send_short(dsi, vc, msg);
->  	else
-> -		r =3D dsi_vc_send_long(dsi, msg);
-> +		r =3D dsi_vc_send_long(dsi, vc, msg);
-> =20
->  	if (r < 0)
->  		return r;
-> @@ -2882,7 +2883,7 @@ static int dsi_vc_read_rx_fifo(struct dsi_data *dsi=
-, int vc, u8 *buf,
->  	return r;
->  }
-> =20
-> -static int dsi_vc_dcs_read(struct omap_dss_device *dssdev,
-> +static int dsi_vc_dcs_read(struct omap_dss_device *dssdev, int vc,
->  			   const struct mipi_dsi_msg *msg)
->  {
->  	struct dsi_data *dsi =3D to_dsi_data(dssdev);
-> @@ -2893,7 +2894,7 @@ static int dsi_vc_dcs_read(struct omap_dss_device *=
-dssdev,
->  	if (dsi->debug_read)
->  		DSSDBG("%s(ch %d, cmd %x)\n", __func__, channel, cmd);
-> =20
-> -	r =3D dsi_vc_send_short(dsi, msg);
-> +	r =3D dsi_vc_send_short(dsi, vc, msg);
->  	if (r)
->  		goto err;
-> =20
-> @@ -2917,13 +2918,13 @@ static int dsi_vc_dcs_read(struct omap_dss_device=
- *dssdev,
->  	return r;
->  }
-> =20
-> -static int dsi_vc_generic_read(struct omap_dss_device *dssdev,
-> +static int dsi_vc_generic_read(struct omap_dss_device *dssdev, int vc,
->  			       const struct mipi_dsi_msg *msg)
->  {
->  	struct dsi_data *dsi =3D to_dsi_data(dssdev);
->  	int r;
-> =20
-> -	r =3D dsi_vc_send_short(dsi, msg);
-> +	r =3D dsi_vc_send_short(dsi, vc, msg);
->  	if (r)
->  		goto err;
-> =20
-> @@ -3672,7 +3673,7 @@ static void dsi_enable_video_output(struct omap_dss=
-_device *dssdev, int vc)
-> =20
->  		word_count =3D DIV_ROUND_UP(dsi->vm.hactive * bpp, 8);
-> =20
-> -		dsi_vc_write_long_header(dsi, vc, data_type,
-> +		dsi_vc_write_long_header(dsi, vc, dsi->dsidev->channel, data_type,
->  				word_count, 0);
-> =20
->  		dsi_vc_enable(dsi, vc, true);
-> @@ -3770,7 +3771,7 @@ static void dsi_update_screen_dispc(struct dsi_data=
- *dsi)
->  	l =3D FLD_VAL(total_len, 23, 0); /* TE_SIZE */
->  	dsi_write_reg(dsi, DSI_VC_TE(vc), l);
-> =20
-> -	dsi_vc_write_long_header(dsi, vc, MIPI_DSI_DCS_LONG_WRITE,
-> +	dsi_vc_write_long_header(dsi, vc, dsi->dsidev->channel, MIPI_DSI_DCS_LO=
-NG_WRITE,
->  		packet_len, 0);
-> =20
->  	if (dsi->te_enabled)
-> @@ -3882,7 +3883,7 @@ static int _dsi_update(struct dsi_data *dsi)
->  	return 0;
->  }
-> =20
-> -static int _dsi_send_nop(struct dsi_data *dsi, int channel)
-> +static int _dsi_send_nop(struct dsi_data *dsi, int vc, int channel)
->  {
->  	const u8 payload[] =3D { MIPI_DCS_NOP };
->  	const struct mipi_dsi_msg msg =3D {
-> @@ -3894,7 +3895,7 @@ static int _dsi_send_nop(struct dsi_data *dsi, int =
-channel)
-> =20
->  	WARN_ON(!dsi_bus_is_locked(dsi));
-> =20
-> -	return _omap_dsi_host_transfer(dsi, &msg);
-> +	return _omap_dsi_host_transfer(dsi, vc, &msg);
->  }
-> =20
->  static int dsi_update_channel(struct omap_dss_device *dssdev, int vc)
-> @@ -3923,7 +3924,7 @@ static int dsi_update_channel(struct omap_dss_devic=
-e *dssdev, int vc)
->  	 * updates stop working. This is probably related to DSI spec stating
->  	 * that the DSI host should transition to LP at least once per frame.
->  	 */
-> -	r =3D _dsi_send_nop(dsi, vc);
-> +	r =3D _dsi_send_nop(dsi, vc, dsi->dsidev->channel);
->  	if (r < 0) {
->  		DSSWARN("failed to send nop between frames: %d\n", r);
->  		goto err;
-> @@ -4885,7 +4886,7 @@ static enum omap_channel dsi_get_dispc_channel(stru=
-ct dsi_data *dsi)
->  	}
->  }
-> =20
-> -static ssize_t _omap_dsi_host_transfer(struct dsi_data *dsi,
-> +static ssize_t _omap_dsi_host_transfer(struct dsi_data *dsi, int vc,
->  				       const struct mipi_dsi_msg *msg)
->  {
->  	struct omap_dss_device *dssdev =3D &dsi->output;
-> @@ -4905,15 +4906,15 @@ static ssize_t _omap_dsi_host_transfer(struct dsi=
-_data *dsi,
->  	case MIPI_DSI_DCS_LONG_WRITE:
->  	case MIPI_DSI_SET_MAXIMUM_RETURN_PACKET_SIZE:
->  	case MIPI_DSI_NULL_PACKET:
-> -		r =3D dsi_vc_write_common(dssdev, msg);
-> +		r =3D dsi_vc_write_common(dssdev, vc, msg);
->  		break;
->  	case MIPI_DSI_GENERIC_READ_REQUEST_0_PARAM:
->  	case MIPI_DSI_GENERIC_READ_REQUEST_1_PARAM:
->  	case MIPI_DSI_GENERIC_READ_REQUEST_2_PARAM:
-> -		r =3D dsi_vc_generic_read(dssdev, msg);
-> +		r =3D dsi_vc_generic_read(dssdev, vc, msg);
->  		break;
->  	case MIPI_DSI_DCS_READ:
-> -		r =3D dsi_vc_dcs_read(dssdev, msg);
-> +		r =3D dsi_vc_dcs_read(dssdev, vc, msg);
->  		break;
->  	default:
->  		r =3D -EINVAL;
-> @@ -4941,12 +4942,13 @@ static ssize_t omap_dsi_host_transfer(struct mipi=
-_dsi_host *host,
->  {
->  	struct dsi_data *dsi =3D host_to_omap(host);
->  	int r;
-> +	int vc =3D VC_DEFAULT;
-> =20
->  	dsi_bus_lock(dsi);
-> =20
->  	if (dsi->video_enabled) {
->  		dsi_set_ulps_auto(dsi, false);
-> -		r =3D _omap_dsi_host_transfer(dsi, msg);
-> +		r =3D _omap_dsi_host_transfer(dsi, vc, msg);
->  		dsi_set_ulps_auto(dsi, true);
->  	} else {
->  		r =3D -EIO;
-> --=20
-> Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-> Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+> > =20
+> >  	return 0;
+> >  err:
+> > -	DSSERR("%s(ch %d, cmd 0x%02x) failed\n", __func__,  msg->channel, cmd=
+);
+> > +	DSSERR("%s(ch %d, cmd 0x%02x) failed\n", __func__,  vc, cmd);
 >=20
+> Same here.
+>=20
+> >  	return r;
+> >  }
+> > =20
+> > @@ -2928,11 +2927,11 @@ static int dsi_vc_generic_read(struct omap_dss_=
+device *dssdev, int vc,
+> >  	if (r)
+> >  		goto err;
+> > =20
+> > -	r =3D dsi_vc_send_bta_sync(dssdev, msg->channel);
+> > +	r =3D dsi_vc_send_bta_sync(dssdev, vc);
+> >  	if (r)
+> >  		goto err;
+> > =20
+> > -	r =3D dsi_vc_read_rx_fifo(dsi, msg->channel, msg->rx_buf, msg->rx_len,
+> > +	r =3D dsi_vc_read_rx_fifo(dsi, vc, msg->rx_buf, msg->rx_len,
+> >  		DSS_DSI_CONTENT_GENERIC);
+> >  	if (r < 0)
+> >  		goto err;
+> > @@ -2944,7 +2943,7 @@ static int dsi_vc_generic_read(struct omap_dss_de=
+vice *dssdev, int vc,
+> > =20
+> >  	return 0;
+> >  err:
+> > -	DSSERR("%s(ch %d, reqlen %d) failed\n", __func__,  msg->channel, msg-=
+>tx_len);
+> > +	DSSERR("%s(ch %d, reqlen %d) failed\n", __func__,  vc, msg->tx_len);
+>=20
+> And here.
+>=20
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>=20
+> >  	return r;
+> >  }
+> > =20
+> > @@ -4893,7 +4892,7 @@ static ssize_t _omap_dsi_host_transfer(struct dsi=
+_data *dsi, int vc,
+> >  	int r;
+> > =20
+> >  	if (!!(msg->flags & MIPI_DSI_MSG_USE_LPM) !=3D dsi->in_lp_mode)
+> > -		dsi_vc_enable_hs(dssdev, msg->channel,
+> > +		dsi_vc_enable_hs(dssdev, vc,
+> >  				 !(msg->flags & MIPI_DSI_MSG_USE_LPM));
+> > =20
+> >  	switch (msg->type) {
+>=20
+> --=20
+> Regards,
+>=20
+> Laurent Pinchart
 
---secuwurx6akade3m
+--y4vambtgrohnuicd
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/XhrcACgkQ2O7X88g7
-+prKMQ/8CGRFhkDsrxrW3DyzNarQKbXltR1Qth727iMl3wRBlDjL2m/jckv0c544
-CUuQhcG12jTxLIGoh8o78VnssDjhbZes2dpjneUbDgnHhb7/4Z8a/DH1h3Vv5DJd
-R6ZkFuYbMFSiEMgGd6cZlUSA3XaVmTjjZ6wXyv/qiTzk2Nm2uB0DGBKxdangCmtj
-FOA0knCX/LWa5DDtV36Guxf1ZBMR3oH7h4ikSBH967lyHd2Psu7ZjcV+wF7P6BC6
-QCWJeXoN9jcTfUrC53Aae78B03o5g4raOD+7Ya6aiO5xumeHs3bV2voN4oPhaXLV
-sx0T+XJ6TdUw8N8zO0NzBkFdH9mM2wZ98Hkm67arXKkqauUtdZIwyKsCKfURRoaA
-qZPwXj2tIQBo+Cee3pOXqQKLl3qbcVBaA1Ni9OG/w+vjpmscOTKmb34oVgYSVXB0
-59+PH2uHs9L9NCGr3857nkORGHUZEXG/D2L8Wo6mM7n8D66nqrQ2GKhZV0+wnmb1
-M62bhcs+cCabR1Doc1qnwc6MvxFNW6dtEERyP/nPguLLU9L+2SxgRhxsgGcpJRbb
-oy4j7DsueWnV0FQCEYJJy9z3rgsQ1gub+xxwAKll2pbEssWayhskhOt/I+O7bvKv
-Rh2s3qHmmPgp6pZOcLZRNC3KzTfOIFJDwnMG3/7IkD/IIFO7NkM=
-=qB1x
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/XiSsACgkQ2O7X88g7
++pquBw//WyDcMRvsogUjmIDdn/TF0eUPd30+oF9S8COVFGLVCUs7bsLwcYuzVBbE
+yTuUyGz1XmDi/oboY9X2UmujokoRLrdryDxj6yY0X5muNzptiHMlXVeeXWyTyzo5
+s7psu2oaBWMI7hnkrTW0nKY7nrlNIfID86gOGX+E+sWRAUdswW+PAxEBx+LkSFfx
+pJsyXR8ifDNT4KzEZ+F2yJDrWP/33ZbAOHwH7IdBsGuuSIZmSjnENtuz12ItxMLx
+OsqqhNajvqMdnSoMdVDaCwyhJswJByiwbx/8hQmTGyGHz3lTNZDcKtq+MuOuxR2R
+iiGvy6l0bfFrVrOkkaf6PEXNKKX5xV0bLsfQEBULIWmWdtBswmFUJ3MlkFsdAA6S
+bxU/jKBeay2Fy151t80BUAbfsbCFXrS3OZGgA6aThFeJuUDVjRzE5+ScJ7hERB0N
+QWIjzveDj1We15aGwlwrc0JKsTSAkJ83JHT/zSEp0kYHX1mePJbShr9cNz13LIA1
+zVkmqfYp4mA4X9uyV+2xER24TBvYZ4wg1mdXSv3FiN11T4rPjTeCOZ0Rijyy7XC9
+mmdF1lifF8X5Tg7ZT2lMQYu9urH3oWj/gnwt9cx4K87BpBkZ8e5jOtZLWhBcehts
+d+6FAuQ34kua0TO+7mnLDJHg6Sd48Hx6YUUyJQc6yh9gLEx8qsY=
+=qvoe
 -----END PGP SIGNATURE-----
 
---secuwurx6akade3m--
+--y4vambtgrohnuicd--
