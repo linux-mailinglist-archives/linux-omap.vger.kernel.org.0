@@ -2,26 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 002C42D9C7E
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Dec 2020 17:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B242F2D9CC8
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Dec 2020 17:35:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440252AbgLNQW6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Dec 2020 11:22:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57436 "EHLO mail.kernel.org"
+        id S1727886AbgLNQeq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Dec 2020 11:34:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41232 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2440187AbgLNQWw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 14 Dec 2020 11:22:52 -0500
-Date:   Mon, 14 Dec 2020 17:22:09 +0100
+        id S1727024AbgLNQeq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 14 Dec 2020 11:34:46 -0500
+Date:   Mon, 14 Dec 2020 17:34:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607962931;
-        bh=2VWV4C1cD/GCqwVaddEGeoNDPzZFGZWpQYuk1pX1xtg=;
+        s=k20201202; t=1607963645;
+        bh=dZs+5+GYmP+VlZQRcSjjV8OVABBpP/Q+4+Ej0Z0Tkwo=;
         h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WaEh9LHKdE9Su7X6Ds19ZOL8iAlvcYH6DwWUmyuof0Yr5taNvkSYD7tJAqTrjRAxH
-         ZyBZf0OeHkHoudiqZxveuyZrO/raWdvD0a3QTM+4J+foPUSgvEkboVqCrQ/Y2kVT8R
-         5jhecGGaNicq5nqm7c7jBG41QgRyT5uRxYamhi6dGOl/JdiQDwXZ+7dY0RGJYai5ui
-         vXzcT1QVKpjS40dbFZq/8Vt6hMyv2FF+G3PwQwYW75kSkktyJhBpAo7rGSgKJBf5aX
-         4bpj+d6Y5FmQI52n99Be9rPCTRySRl3S4MyhV0umlohnty87WRkNzm0nvP3YP7wljh
-         wpQBNWJxivQww==
+        b=cRGQ69pWXYOroCKEJusMKJDH4pBFae5fFh+epxRf5ZfIwx/TJyWoZQbB4/TySGNm5
+         4EM3htfTrFDAynJmPbUVLbKrYIqGVJ0Hn1jnCNga+02zX1c8ALMVC5P4cC0BlRUuCb
+         zeMPMZH76xRConLSA08giTn8Z8+o0CdvLHzpllm61oQ6NbMBZgkm79bMOnznGqhPdS
+         D2Drcxxt4TDA/RRukyXZJ9O+SjjbTMQQs7SaPmD7Nev9LU9TnjJ50bvX8biQGW2yMz
+         55eBj4zAM9GSq5XAhxLjWokeZ4p5esPElTqxDkrYnDK9CXg7kbXglqhCaraNeahT+z
+         EULA+EkV3uETw==
 From:   Sebastian Reichel <sre@kernel.org>
 To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
 Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -29,237 +29,224 @@ Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
         Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
         hns@goldelico.com, Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH v5 23/29] drm/omap: dsi: rename dsi_display_* functions
-Message-ID: <20201214162209.xzymd2cniox74m4j@earth.universe>
+Subject: Re: [PATCH v5 24/29] drm/omap: dsi: cleanup initial vc setup
+Message-ID: <20201214163403.zs22bydkxfmrz2xh@earth.universe>
 References: <20201208122855.254819-1-tomi.valkeinen@ti.com>
- <20201208122855.254819-24-tomi.valkeinen@ti.com>
+ <20201208122855.254819-25-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="f22uscn3kxw2l2tc"
+        protocol="application/pgp-signature"; boundary="lwn3vm5nlmu7ccg3"
 Content-Disposition: inline
-In-Reply-To: <20201208122855.254819-24-tomi.valkeinen@ti.com>
+In-Reply-To: <20201208122855.254819-25-tomi.valkeinen@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---f22uscn3kxw2l2tc
+--lwn3vm5nlmu7ccg3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Tue, Dec 08, 2020 at 02:28:49PM +0200, Tomi Valkeinen wrote:
-> The function names have evolved to be very confusing, and bunch of them
-> have "display" in them even if the function doesn't deal with display as
-> such (e.g. dsi_display_enable which just enables the DSI interface).
-> Rename them by dropping the "display".
+On Tue, Dec 08, 2020 at 02:28:50PM +0200, Tomi Valkeinen wrote:
+> As we now have a fixed setup for VCs (VC0 for video stream, VC1 for
+> commands), we can simplify the VC setup.
 >=20
 > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 > ---
 
 Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
 -- Sebastian
 
->  drivers/gpu/drm/omapdrm/dss/dsi.c | 36 +++++++++++++++----------------
->  1 file changed, 18 insertions(+), 18 deletions(-)
+>  drivers/gpu/drm/omapdrm/dss/dsi.c | 85 +++++++++++--------------------
+>  1 file changed, 31 insertions(+), 54 deletions(-)
 >=20
 > diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/=
 dss/dsi.c
-> index d83346812810..d9c2cd849328 100644
+> index d9c2cd849328..c32884f167b8 100644
 > --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
 > +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
-> @@ -55,8 +55,8 @@
+> @@ -2017,40 +2017,6 @@ static void dsi_vc_initial_config(struct dsi_data =
+*dsi, int vc)
+>  	dsi->vc[vc].source =3D DSI_VC_SOURCE_L4;
+>  }
 > =20
->  static void dsi_set_ulps_auto(struct dsi_data *dsi, bool enable);
+> -static int dsi_vc_config_source(struct dsi_data *dsi, int vc,
+> -				enum dsi_vc_source source)
+> -{
+> -	if (dsi->vc[vc].source =3D=3D source)
+> -		return 0;
+> -
+> -	DSSDBG("Source config of VC %d", vc);
+> -
+> -	dsi_sync_vc(dsi, vc);
+> -
+> -	dsi_vc_enable(dsi, vc, 0);
+> -
+> -	/* VC_BUSY */
+> -	if (!wait_for_bit_change(dsi, DSI_VC_CTRL(vc), 15, 0)) {
+> -		DSSERR("vc(%d) busy when trying to config for VP\n", vc);
+> -		return -EIO;
+> -	}
+> -
+> -	/* SOURCE, 0 =3D L4, 1 =3D video port */
+> -	REG_FLD_MOD(dsi, DSI_VC_CTRL(vc), source, 1, 1);
+> -
+> -	/* DCS_CMD_ENABLE */
+> -	if (dsi->data->quirks & DSI_QUIRK_DCS_CMD_CONFIG_VC) {
+> -		bool enable =3D source =3D=3D DSI_VC_SOURCE_VP;
+> -		REG_FLD_MOD(dsi, DSI_VC_CTRL(vc), enable, 30, 30);
+> -	}
+> -
+> -	dsi_vc_enable(dsi, vc, 1);
+> -
+> -	dsi->vc[vc].source =3D source;
+> -
+> -	return 0;
+> -}
+> -
+>  static void dsi_vc_enable_hs(struct omap_dss_device *dssdev, int vc,
+>  		bool enable)
+>  {
+> @@ -2072,10 +2038,6 @@ static void dsi_vc_enable_hs(struct omap_dss_devic=
+e *dssdev, int vc,
+>  	dsi_if_enable(dsi, 1);
 > =20
-> -static int dsi_display_init_dispc(struct dsi_data *dsi);
-> -static void dsi_display_uninit_dispc(struct dsi_data *dsi);
-> +static int dsi_init_dispc(struct dsi_data *dsi);
-> +static void dsi_uninit_dispc(struct dsi_data *dsi);
+>  	dsi_force_tx_stop_mode_io(dsi);
+> -
+> -	/* start the DDR clock by sending a NULL packet */
+> -	if (dsi->vm_timings.ddr_clk_always_on && enable)
+> -		dsi_vc_send_null(dsi, vc, dsi->dsidev->channel);
+>  }
 > =20
->  static int dsi_vc_send_null(struct dsi_data *dsi, int vc, int channel);
-> =20
-> @@ -3257,7 +3257,7 @@ static void dsi_enable_video_output(struct omap_dss=
-_device *dssdev, int vc)
->  	u16 word_count;
->  	int r;
-> =20
-> -	r =3D dsi_display_init_dispc(dsi);
-> +	r =3D dsi_init_dispc(dsi);
->  	if (r) {
->  		dev_err(dsi->dev, "failed to init dispc!\n");
->  		return;
-> @@ -3309,7 +3309,7 @@ static void dsi_enable_video_output(struct omap_dss=
-_device *dssdev, int vc)
->  		dsi_vc_enable(dsi, vc, false);
+>  static void dsi_vc_flush_long_data(struct dsi_data *dsi, int vc)
+> @@ -2270,8 +2232,6 @@ static int dsi_vc_send_long(struct dsi_data *dsi, i=
+nt vc,
+>  		return -EINVAL;
 >  	}
->  err_pix_fmt:
-> -	dsi_display_uninit_dispc(dsi);
-> +	dsi_uninit_dispc(dsi);
->  	dev_err(dsi->dev, "failed to enable DSI encoder!\n");
->  	return;
->  }
-> @@ -3331,7 +3331,7 @@ static void dsi_disable_video_output(struct omap_ds=
-s_device *dssdev, int vc)
 > =20
->  	dss_mgr_disable(&dsi->output);
+> -	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_L4);
+> -
+>  	dsi_vc_write_long_header(dsi, vc, msg->channel, msg->type, msg->tx_len,=
+ 0);
 > =20
-> -	dsi_display_uninit_dispc(dsi);
-> +	dsi_uninit_dispc(dsi);
->  }
+>  	p =3D msg->tx_buf;
+> @@ -2331,8 +2291,6 @@ static int dsi_vc_send_short(struct dsi_data *dsi, =
+int vc,
+>  		DSSDBG("dsi_vc_send_short(ch%d, dt %#x, b1 %#x, b2 %#x)\n",
+>  		       vc, msg->type, pkt.header[1], pkt.header[2]);
 > =20
->  static void dsi_update_screen_dispc(struct dsi_data *dsi)
-> @@ -3582,7 +3582,7 @@ static int dsi_configure_dispc_clocks(struct dsi_da=
-ta *dsi)
->  	return 0;
->  }
-> =20
-> -static int dsi_display_init_dispc(struct dsi_data *dsi)
-> +static int dsi_init_dispc(struct dsi_data *dsi)
->  {
->  	enum omap_channel dispc_channel =3D dsi->output.dispc_channel;
->  	int r;
-> @@ -3627,7 +3627,7 @@ static int dsi_display_init_dispc(struct dsi_data *=
-dsi)
->  	return r;
->  }
-> =20
-> -static void dsi_display_uninit_dispc(struct dsi_data *dsi)
-> +static void dsi_uninit_dispc(struct dsi_data *dsi)
->  {
->  	enum omap_channel dispc_channel =3D dsi->output.dispc_channel;
-> =20
-> @@ -3654,7 +3654,7 @@ static int dsi_configure_dsi_clocks(struct dsi_data=
+> -	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_L4);
+> -
+>  	if (FLD_GET(dsi_read_reg(dsi, DSI_VC_CTRL(vc)), 16, 16)) {
+>  		DSSERR("ERROR FIFO FULL, aborting transfer\n");
+>  		return -EINVAL;
+> @@ -3351,8 +3309,6 @@ static void dsi_update_screen_dispc(struct dsi_data=
  *dsi)
+> =20
+>  	DSSDBG("dsi_update_screen_dispc(%dx%d)\n", w, h);
+> =20
+> -	dsi_vc_config_source(dsi, vc, DSI_VC_SOURCE_VP);
+> -
+>  	bytespp	=3D mipi_dsi_pixel_format_to_bpp(dsi->pix_fmt) / 8;
+>  	bytespl =3D w * bytespp;
+>  	bytespf =3D bytespl * h;
+> @@ -3522,14 +3478,12 @@ static int dsi_update_channel(struct omap_dss_dev=
+ice *dssdev, int vc)
+> =20
+>  	dsi_set_ulps_auto(dsi, false);
+> =20
+> -	dsi_vc_enable_hs(dssdev, vc, true);
+> -
+>  	/*
+>  	 * Send NOP between the frames. If we don't send something here, the
+>  	 * updates stop working. This is probably related to DSI spec stating
+>  	 * that the DSI host should transition to LP at least once per frame.
+>  	 */
+> -	r =3D _dsi_send_nop(dsi, vc, dsi->dsidev->channel);
+> +	r =3D _dsi_send_nop(dsi, VC_CMD, dsi->dsidev->channel);
+>  	if (r < 0) {
+>  		DSSWARN("failed to send nop between frames: %d\n", r);
+>  		goto err;
+> @@ -3654,6 +3608,35 @@ static int dsi_configure_dsi_clocks(struct dsi_dat=
+a *dsi)
 >  	return 0;
 >  }
 > =20
-> -static int dsi_display_init_dsi(struct dsi_data *dsi)
-> +static int dsi_init_dsi(struct dsi_data *dsi)
+> +static void dsi_setup_dsi_vcs(struct dsi_data *dsi)
+> +{
+> +	/* Setup VC_CMD for LP and cpu transfers */
+> +	REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_CMD), 0, 9, 9); /* LP */
+> +
+> +	REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_CMD), 0, 1, 1); /* SOURCE_L4 */
+> +	dsi->vc[VC_CMD].source =3D DSI_VC_SOURCE_L4;
+> +
+> +	/* Setup VC_VIDEO for HS and dispc transfers */
+> +	REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_VIDEO), 1, 9, 9); /* HS */
+> +
+> +	REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_VIDEO), 1, 1, 1); /* SOURCE_VP */
+> +	dsi->vc[VC_VIDEO].source =3D DSI_VC_SOURCE_VP;
+> +
+> +	if (dsi->data->quirks & DSI_QUIRK_DCS_CMD_CONFIG_VC)
+> +		REG_FLD_MOD(dsi, DSI_VC_CTRL(VC_VIDEO), 1, 30, 30); /* DCS_CMD_ENABLE =
+*/
+> +
+> +	dsi_vc_enable(dsi, VC_CMD, 1);
+> +	dsi_vc_enable(dsi, VC_VIDEO, 1);
+> +
+> +	dsi_if_enable(dsi, 1);
+> +
+> +	dsi_force_tx_stop_mode_io(dsi);
+> +
+> +	/* start the DDR clock by sending a NULL packet */
+> +	if (dsi->vm_timings.ddr_clk_always_on)
+> +		dsi_vc_send_null(dsi, VC_CMD, dsi->dsidev->channel);
+> +}
+> +
+>  static int dsi_init_dsi(struct dsi_data *dsi)
 >  {
 >  	int r;
-> =20
-> @@ -3718,7 +3718,7 @@ static int dsi_display_init_dsi(struct dsi_data *ds=
-i)
->  	return r;
->  }
-> =20
-> -static void dsi_display_uninit_dsi(struct dsi_data *dsi, bool disconnect=
-_lanes,
-> +static void dsi_uninit_dsi(struct dsi_data *dsi, bool disconnect_lanes,
->  				   bool enter_ulps)
->  {
->  	if (enter_ulps && !dsi->ulps_enabled)
-> @@ -3741,7 +3741,7 @@ static void dsi_display_uninit_dsi(struct dsi_data =
-*dsi, bool disconnect_lanes,
->  	}
->  }
-> =20
-> -static void dsi_display_enable(struct dsi_data *dsi)
-> +static void dsi_enable(struct dsi_data *dsi)
->  {
->  	int r;
-> =20
-> @@ -3755,7 +3755,7 @@ static void dsi_display_enable(struct dsi_data *dsi)
-> =20
->  	_dsi_initialize_irq(dsi);
-> =20
-> -	r =3D dsi_display_init_dsi(dsi);
-> +	r =3D dsi_init_dsi(dsi);
+> @@ -3696,13 +3679,7 @@ static int dsi_init_dsi(struct dsi_data *dsi)
 >  	if (r)
->  		goto err_init_dsi;
+>  		goto err3;
 > =20
-> @@ -3767,10 +3767,10 @@ static void dsi_display_enable(struct dsi_data *d=
-si)
->  	dsi_runtime_put(dsi);
->  err_get_dsi:
->  	mutex_unlock(&dsi->lock);
-> -	DSSDBG("dsi_display_ulps_enable FAILED\n");
-> +	DSSDBG("dsi_enable FAILED\n");
->  }
+> -	/* enable interface */
+> -	dsi_vc_enable(dsi, 0, 1);
+> -	dsi_vc_enable(dsi, 1, 1);
+> -	dsi_vc_enable(dsi, 2, 1);
+> -	dsi_vc_enable(dsi, 3, 1);
+> -	dsi_if_enable(dsi, 1);
+> -	dsi_force_tx_stop_mode_io(dsi);
+> +	dsi_setup_dsi_vcs(dsi);
 > =20
-> -static void dsi_display_disable(struct dsi_data *dsi,
-> +static void dsi_disable(struct dsi_data *dsi,
->  		bool disconnect_lanes, bool enter_ulps)
->  {
->  	WARN_ON(!dsi_bus_is_locked(dsi));
-> @@ -3782,7 +3782,7 @@ static void dsi_display_disable(struct dsi_data *ds=
-i,
->  	dsi_sync_vc(dsi, 2);
->  	dsi_sync_vc(dsi, 3);
-> =20
-> -	dsi_display_uninit_dsi(dsi, disconnect_lanes, enter_ulps);
-> +	dsi_uninit_dsi(dsi, disconnect_lanes, enter_ulps);
-> =20
->  	dsi_runtime_put(dsi);
-> =20
-> @@ -3812,7 +3812,7 @@ static void omap_dsi_ulps_work_callback(struct work=
-_struct *work)
-> =20
->  	dsi_enable_te(dsi, false);
-> =20
-> -	dsi_display_disable(dsi, false, true);
-> +	dsi_disable(dsi, false, true);
-> =20
->  	dsi_bus_unlock(dsi);
->  }
-> @@ -3833,7 +3833,7 @@ static void dsi_set_ulps_auto(struct dsi_data *dsi,=
- bool enable)
->  			return;
-> =20
->  		dsi_bus_lock(dsi);
-> -		dsi_display_enable(dsi);
-> +		dsi_enable(dsi);
->  		dsi_enable_te(dsi, true);
->  		dsi_bus_unlock(dsi);
->  	}
-> @@ -4924,7 +4924,7 @@ static void dsi_bridge_enable(struct drm_bridge *br=
-idge)
-> =20
->  	dsi_bus_lock(dsi);
-> =20
-> -	dsi_display_enable(dsi);
-> +	dsi_enable(dsi);
-> =20
->  	dsi_enable_video_output(dssdev, VC_VIDEO);
-> =20
-> @@ -4946,7 +4946,7 @@ static void dsi_bridge_disable(struct drm_bridge *b=
-ridge)
-> =20
->  	dsi_disable_video_output(dssdev, VC_VIDEO);
-> =20
-> -	dsi_display_disable(dsi, true, false);
-> +	dsi_disable(dsi, true, false);
-> =20
->  	dsi_bus_unlock(dsi);
->  }
+>  	return 0;
+>  err3:
 > --=20
 > Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
 > Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
 >=20
 
---f22uscn3kxw2l2tc
+--lwn3vm5nlmu7ccg3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/XkTEACgkQ2O7X88g7
-+pq6ww/8DaEMgoDeUcfLOjqaK6FYk4PbGw3bCUUsCUp2J1je7gj4Hn+ZNAvRkTch
-BO6MULoKncKH2mnTPao9/xuNJLSV3h0ZxKKHu4v/C7OF4T7EmByKEG0wvKgw2zuE
-gmMe48h/DbFnad6ngdLfqkb2qE2+EAJeGVsQiSY/4c7VRKD+DSlKbc7V97H2Tm6/
-yvrJBMu8UpUMf7ubNS7pLvJdxcq9ddCKKTr7YXzgSVNO7FjTBhRhwrquMElCv8hH
-3wKO6BYvKwhWTYDbFnZh/EEVjV8FidnfhQbqdG2xiPynT8359UV5tX4lmykRfscm
-g4R3jCtp0PgCTxvEeedDOk0mdHr1FDu9HSAqlgPZPON23kn7JnCm1LoWvSjfIoK7
-eqIN1xXzvgQqcQKqgPdQX+0YLXxEDF37AbupiBS2qYjgH424IWzGT8M+ObMqh5ji
-qDhpnPaTDIokJvNskhES3XfbyiRy4A1bhlxExL+yu+iuwzWlJkgk0iR0MFakXK3O
-dlBsfTajsKG8HjFQlnEuSVyxCbisS5naM3mPwi7/ojvg58ce31zQIMa5E4MQwC9B
-2Y/LsdHoGLnEkQnkynrLbp43FgwRhnnh98ExohofR5UGTbIp/sBJLuyV3nuTHqHO
-WIx4mdVhpnf7RDY/MyQKZlOMmI/gFWIerrHiQguZFhR00K9akiQ=
-=/Fo2
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/Xk/cACgkQ2O7X88g7
++ppWHQ//aML6tEi1AaBoPBf3ybMRu0krYFQ6fPTAR/PzzL1kwPO7e5EAqJRqEgUn
+Zj0B6WK9F2D00ILLgwwoLw/hfE1Js2JxyrtUM2jFnPSeQscWUdyZovFS8r9x7Pz3
+F22lAqhhpw3a0IR9hJAJnHLEkO/jTaW7Q0+PFBRhkT+9NTIqbovXWpWHkPKaiJQl
+SPCsJnKoEKQqESIk2MHfNuwUKtMP7flN7OAYkmyKn/yZNUyTHceyO1tEf8xUvPSE
+gPa9PWXhpsH6DMXwDWLLAs8yP78PBXRvi1Tqwgemq9OeAC66zh3TQHUp1GS+Ode+
+fw9RONaXAGuLh9NJVk1bRKruDPNIWIEgShozerANY2zCCtBdgiywOTVTES5Nq7kI
+vA0MS6wEgOHRD7ok0ROdTCKmvuTrT8lrEFXzfnFZfmWbvkkI/WkTPZI8PWapOJ0F
+9eaGVVAf8TpVoO97KW1xfLLvO0Q3j/UtZOtt4T1xAhbff0whYH7Xv0UvThJ2NSdW
+5d/elM2r7hE8ZwMg0UdjMQlbYdHnQAVoubabl+SgT4l6UkTTbOhEfi3AnrF2F6wT
+pak5Z2BubiXy7Q4oursNBjIaYkJO9zDu7IUBXCFZxBMcfJ7LSy6PqwvNln+a4YdP
+yXlUMA8V1HYdJcj0Ge23eOG5hAm/LtX/zzA9aHVd3wjktmCQJpY=
+=THnQ
 -----END PGP SIGNATURE-----
 
---f22uscn3kxw2l2tc--
+--lwn3vm5nlmu7ccg3--
