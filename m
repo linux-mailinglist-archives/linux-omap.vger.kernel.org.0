@@ -2,26 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C31812D9894
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Dec 2020 14:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA6502D99EE
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Dec 2020 15:29:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407693AbgLNNLL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Dec 2020 08:11:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56706 "EHLO mail.kernel.org"
+        id S2405459AbgLNO1N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Dec 2020 09:27:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60514 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725763AbgLNNLL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 14 Dec 2020 08:11:11 -0500
-Date:   Mon, 14 Dec 2020 14:10:28 +0100
+        id S2440144AbgLNOWv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 14 Dec 2020 09:22:51 -0500
+Date:   Mon, 14 Dec 2020 15:22:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607951430;
-        bh=QceA5IOcmvnizvMKaNr51StFZeA9L+mW8EzUZ69co5s=;
+        s=k20201202; t=1607955730;
+        bh=a42FyKxT/hIQb1eguzTqD+Pb8aluOrnPe/aTVYbf7j4=;
         h=From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QWAF/ICcWSVEfl01NevVI/kRoEjgcMNQUpaqwblIB6PYrKvOlHKucniYvVYMCgRo9
-         wfykKCx7liPBLikilZksw3vkASW6rO7Uu1W8e25lENb6cQ1mzZUnK97cP0d+ut1z4V
-         noq4CFOGAOB7hqf4wdvukOAFsabEmHsE0GNVMFFBxt/AQgbUx2xXAMoUKH2E0h0xxw
-         tgho7FkOPobUnbafQ/lh8lKUGUVjMn7SsZSIiF9sjwoAKfWRy7viyc4xbdFqP6rQLQ
-         mLez+jGgthRSNN7fJCibRJZh0NG+HxL2GTCsDr33+DOE6bMY7O4CCVycwo59Fayjc+
-         TQTbyZOK36X8Q==
+        b=dl4CAQA9NVtqYkr7vtUNF+Urafl2nRCOZlzXXjBjSUiCVsm3h7wu1ct0BXcAKk0z0
+         r5mR7DZhZ/qLXb0mn7VfftRYSJp+kgKMllqdx3DD2aUAjsrrihz5/Y2AgSenIdmDx0
+         zgdoApS0j0B2Amgy5fYHPXwboX6nCgP5NSAqgVaRzBtBK8oioJXEOGXsLTGk4cN4OA
+         IA1Uylq1bDqHDeuu4yjqCq/H04kIdMBihdhrggySjJq6ewRx5AO9aPGPmQghPsnsFa
+         D83eIqU8o2IfPlcw1wM5GQM0A4hilWltqcAnqmyS2QvwTeMI60mOB0uMUgqYy9WH78
+         sj+iky6wMrcjg==
 From:   Sebastian Reichel <sre@kernel.org>
 To:     Tomi Valkeinen <tomi.valkeinen@ti.com>
 Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -29,34 +29,50 @@ Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
         Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>,
         hns@goldelico.com, Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH v5 05/29] drm/panel: panel-dsi-cm: set column & page at
- setup
-Message-ID: <20201214131028.hjk4emzip5yyb7el@earth.universe>
+Subject: Re: [PATCH v5 06/29] drm/omap: dsi: send nop instead of page & column
+Message-ID: <20201214142208.2x4yk6ucnhztqted@earth.universe>
 References: <20201208122855.254819-1-tomi.valkeinen@ti.com>
- <20201208122855.254819-6-tomi.valkeinen@ti.com>
+ <20201208122855.254819-7-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="p2e36hh2kbb2ic5q"
+        protocol="application/pgp-signature"; boundary="urlkngycnuhra2ye"
 Content-Disposition: inline
-In-Reply-To: <20201208122855.254819-6-tomi.valkeinen@ti.com>
+In-Reply-To: <20201208122855.254819-7-tomi.valkeinen@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---p2e36hh2kbb2ic5q
+--urlkngycnuhra2ye
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Tue, Dec 08, 2020 at 02:28:31PM +0200, Tomi Valkeinen wrote:
-> Set the column & page address once during setup, instead of relying the
-> DSI host driver to set those.
+On Tue, Dec 08, 2020 at 02:28:32PM +0200, Tomi Valkeinen wrote:
+> The OMAP DSI command mode panel driver used to send page & column
+> address before each frame update, and this code was moved into the DSI
+> host driver when converting it to the DRM bridge model.
+>=20
+> However, it's not really required to send the page & column address
+> before each frame. It's also something that doesn't really belong to the
+> DSI host driver, so we should drop the code.
+>=20
+> That said, frame updates break if we don't send _something_ between the
+> frames. A NOP command does the trick.
+>=20
+> It is not clear if this behavior is as expected from a DSI command mode
+> frame transfer, or is it a feature/issue with OMAP DSI driver, or a
+> feature/issue in the command mode panel used.
+>=20
+> Most likely this is related to the following from the DSI spec:
+>=20
+> "To enable PHY synchronization the host processor should periodically
+> end HS transmission and drive the Data Lanes to the LP state. This
+> transition should take place at least once per frame."
 >=20
 > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 > ---
 
@@ -64,73 +80,103 @@ Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
 -- Sebastian
 
->  drivers/gpu/drm/panel/panel-dsi-cm.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+>  drivers/gpu/drm/omapdrm/dss/dsi.c | 46 ++++++++++++-------------------
+>  1 file changed, 17 insertions(+), 29 deletions(-)
 >=20
-> diff --git a/drivers/gpu/drm/panel/panel-dsi-cm.c b/drivers/gpu/drm/panel=
-/panel-dsi-cm.c
-> index 38f79dca1fd0..556f9a2c5c0c 100644
-> --- a/drivers/gpu/drm/panel/panel-dsi-cm.c
-> +++ b/drivers/gpu/drm/panel/panel-dsi-cm.c
-> @@ -170,6 +170,22 @@ static int dsicm_get_id(struct panel_drv_data *ddata=
-, u8 *id1, u8 *id2, u8 *id3)
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/=
+dss/dsi.c
+> index 7fee9cf8782d..c6e044f8bece 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/dsi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+> @@ -3884,35 +3884,19 @@ static int _dsi_update(struct dsi_data *dsi)
 >  	return 0;
 >  }
 > =20
-> +static int dsicm_set_update_window(struct panel_drv_data *ddata)
+> -static int _dsi_update_window(struct dsi_data *dsi, int channel,
+> -			      int x, int y, int w, int h)
+> -{
+> -	int x1 =3D x, x2 =3D (x + w - 1);
+> -	int y1 =3D y, y2 =3D (y + h - 1);
+> -	u8 payloadX[5] =3D { MIPI_DCS_SET_COLUMN_ADDRESS,
+> -			   x1 >> 8, x1 & 0xff, x2 >> 8, x2 & 0xff };
+> -	u8 payloadY[5] =3D { MIPI_DCS_SET_PAGE_ADDRESS,
+> -			   y1 >> 8, y1 & 0xff, y2 >> 8, y2 & 0xff };
+> -	struct mipi_dsi_msg msgX =3D { 0 }, msgY =3D { 0 };
+> -	int ret;
+> +static int _dsi_send_nop(struct dsi_data *dsi, int channel)
 > +{
-> +	struct mipi_dsi_device *dsi =3D ddata->dsi;
-> +	int r;
-> +
-> +	r =3D mipi_dsi_dcs_set_column_address(dsi, 0, ddata->mode.hdisplay - 1);
-> +	if (r < 0)
-> +		return r;
-> +
-> +	r =3D mipi_dsi_dcs_set_page_address(dsi, 0, ddata->mode.vdisplay - 1);
-> +	if (r < 0)
-> +		return r;
-> +
-> +	return 0;
-> +}
-> +
->  static int dsicm_bl_update_status(struct backlight_device *dev)
->  {
->  	struct panel_drv_data *ddata =3D dev_get_drvdata(&dev->dev);
-> @@ -307,6 +323,10 @@ static int dsicm_power_on(struct panel_drv_data *dda=
-ta)
->  	if (r)
->  		goto err;
+> +	const u8 payload[] =3D { MIPI_DCS_NOP };
+> +	const struct mipi_dsi_msg msg =3D {
+> +		.channel =3D channel,
+> +		.type =3D MIPI_DSI_DCS_SHORT_WRITE,
+> +		.tx_len =3D 1,
+> +		.tx_buf =3D payload,
+> +	};
 > =20
-> +	r =3D dsicm_set_update_window(ddata);
-> +	if (r)
-> +		goto err;
-> +
->  	r =3D mipi_dsi_dcs_set_display_on(ddata->dsi);
->  	if (r)
+>  	WARN_ON(!dsi_bus_is_locked(dsi));
+> =20
+> -	msgX.type =3D MIPI_DSI_DCS_LONG_WRITE;
+> -	msgX.channel =3D channel;
+> -	msgX.tx_buf =3D payloadX;
+> -	msgX.tx_len =3D sizeof(payloadX);
+> -
+> -	msgY.type =3D MIPI_DSI_DCS_LONG_WRITE;
+> -	msgY.channel =3D channel;
+> -	msgY.tx_buf =3D payloadY;
+> -	msgY.tx_len =3D sizeof(payloadY);
+> -
+> -	ret =3D _omap_dsi_host_transfer(dsi, &msgX);
+> -	if (ret !=3D 0)
+> -		return ret;
+> -
+> -	return _omap_dsi_host_transfer(dsi, &msgY);
+> +	return _omap_dsi_host_transfer(dsi, &msg);
+>  }
+> =20
+>  static int dsi_update_channel(struct omap_dss_device *dssdev, int channe=
+l)
+> @@ -3944,10 +3928,14 @@ static int dsi_update_channel(struct omap_dss_dev=
+ice *dssdev, int channel)
+> =20
+>  	dsi_set_ulps_auto(dsi, false);
+> =20
+> -	r =3D _dsi_update_window(dsi, channel, 0, 0, dsi->vm.hactive,
+> -			       dsi->vm.vactive);
+> +	/*
+> +	 * Send NOP between the frames. If we don't send something here, the
+> +	 * updates stop working. This is probably related to DSI spec stating
+> +	 * that the DSI host should transition to LP at least once per frame.
+> +	 */
+> +	r =3D _dsi_send_nop(dsi, channel);
+>  	if (r < 0) {
+> -		DSSWARN("window update error: %d\n", r);
+> +		DSSWARN("failed to send nop between frames: %d\n", r);
 >  		goto err;
+>  	}
+> =20
 > --=20
 > Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
 > Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
 >=20
 
---p2e36hh2kbb2ic5q
+--urlkngycnuhra2ye
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/XZEQACgkQ2O7X88g7
-+poDlhAAoqPyyfYRxY2zrekDSG8SjYPA0ndZqERw8piEu1bej8WxtKG06lv8uHkq
-HN/SYQthn2D0d6GlbGA1vDDiE2auVjfWDIVg2oDu0EnCqTvAfzDmNsE6gKGk8C32
-uhSQTJQ+FDZvmge9fnkuOALzUdfuDs5cC86XtStVz45FdcaT98dLYh+iq+anhMd4
-i+Nor1YikOdMjwOEK1R0sUQd7arYPF0AuFyt8fV0dQqvHztaDasFTc6plTXtc8vd
-dgjSmmWW9H4xDgeI098ln7en2t5TPfmdCyLjibO11ZYfXKw4H6UdQrtjiZQWuVBD
-dzRfuKCEEplkIZrwbvlIExxPeuyqzoEuF/V5sLnJLZ3dqoHCanRf4JUlvdoya2Wu
-TEMuFsf9t3pc2fMSsxDNOG08BTuX/sv1UTe20Muen9Ptv9aLcOj9mMvGR7Vjt214
-qtvioH4IrXRsnVtScV18GcvGGUJbN6+Jjfu8rOdllP4aHBYZfvwRS2XRdn6Rwoj4
-96YcxwiVUvqVZHSWTgCiPAawd0TUrYDDyoR4Mn42xVYSiHa3J0VMUZGVWNTNuAKZ
-zj0TFFRowJ7d2eGsL9RfdwiUQgAmQWWuoF8qI6q/joXMcUTw/SxfovJHTFk0/4oP
-WTSSAMhJYcRtMYf8OCVNps+9SX9g8A6aREI8M7rJYvEsw5sMaCk=
-=gxkl
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/XdQkACgkQ2O7X88g7
++ppgrA/+J0tgWBdDZ351BE02AgdH4fqjMbnkOaWXDkjUKe1jYaogW1Ma4tU87dxe
+fP4Ee5euKYhkYEf1LHOwJ1Hl+3nTCR67KzPiXs+jHtugtiqqotoyu7c4keQUgf+B
+J6djhd3Rs/OmDOxrhHqQITHHCM8GuZkI6BoOhwMV0mbvL0ipFYBKNeSx0tT2S4K+
+w5OipHLDH7IGtFvSRBGcqxGRGMJLuSPEGMGlKEMc4Ac2NoemgZNNvg8j0TEQb1un
+aGMkNu/tY2piWF5uv3eszqlC/mzuMFHr/gg+/L8J2HWEhq/wQHpiaKlCAEKR+ava
+Knq7lX0zyAoKqmKhLBdGUyDs8dyEMftKP/Ql50mvJoB1E0OF72cDle2zwADyy76I
+06xx+SS5xlcG8AQL4arbk87WNDl2xLMOcXC0D27YS0LD/Fr8QTU6KjEbWQAY1uc3
+PgKqSKSI7Ac4+Yr548lkeqg8qDXOPaK77gEox+TNYN9hRRNTIlf3q95Jqj8K0kTg
+z+a33vm6gOqADe2HAytwmFqhNT8qgNQF1PZ5BYrqcL+i4IOc06mSmb6kz2hNhGWa
+59xooZ8LPcmmlc+0SeXHLfEt0hGpb8rtaMB9jo0qsZWDU31SPPSDR2+CH3ipAQl6
+oxkVjXtyyyEnYBoP5YtuIWgumAd+6c4VX6fjpQ226uDeF8izXCA=
+=ow6b
 -----END PGP SIGNATURE-----
 
---p2e36hh2kbb2ic5q--
+--urlkngycnuhra2ye--
