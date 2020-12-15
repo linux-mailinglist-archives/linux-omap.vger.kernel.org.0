@@ -2,99 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F04442DB0D8
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Dec 2020 17:06:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56A9C2DB3E8
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Dec 2020 19:45:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730726AbgLOQDf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Dec 2020 11:03:35 -0500
-Received: from mout.kundenserver.de ([212.227.17.10]:41631 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730564AbgLOQDd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Dec 2020 11:03:33 -0500
-Received: from [192.168.1.155] ([95.118.67.37]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MVNJ3-1kiIDQ2Tvr-00SNys; Tue, 15 Dec 2020 17:00:15 +0100
-Subject: Re: [RFC PATCH] RFC: drivers: gpio: helper for generic pin IRQ
- handling
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        William Breathitt Gray <vilhelm.gray@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        joyce.ooi@intel.com, Andrew Jeffery <andrew@aj.id.au>,
-        Hoan Tran <hoan@os.amperecomputing.com>,
-        Serge Semin <fancer.lancer@gmail.com>, orsonzhai@gmail.com,
-        baolin.wang7@gmail.com, zhang.lyra@gmail.com,
-        Andy Shevchenko <andy@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
-References: <20201208141429.8836-1-info@metux.net>
- <CAHp75VfMKmJ074R2-04be0Ag6OuKcY=_xhhbRKsL2D0H8hZZLg@mail.gmail.com>
- <CAHp75VfOjb4Rfo9yPmwEYUDbaPXNjfGs6goM27ZnLdAMtiU+jA@mail.gmail.com>
- <0c16ab33-f87f-b32d-53d0-a44a5fecd6dc@ti.com>
- <710efa0f-063e-8a9e-1c3f-49337506b044@metux.net>
- <ff1dcd9a-eb83-2cb5-30d3-b25976a227ab@ti.com>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Message-ID: <333a4bab-682c-6f5d-f24e-3f9ebe77f536@metux.net>
-Date:   Tue, 15 Dec 2020 17:00:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        id S1729716AbgLOSmT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Dec 2020 13:42:19 -0500
+Received: from 49-237-179-185.static.tentacle.fi ([185.179.237.49]:54486 "EHLO
+        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728004AbgLOSmS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 15 Dec 2020 13:42:18 -0500
+Received: from 88-114-184-87.elisa-laajakaista.fi ([88.114.184.87] helo=[192.168.1.48])
+        by bitmer.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <jarkko.nikula@bitmer.com>)
+        id 1kpFGK-00044Z-4g; Tue, 15 Dec 2020 20:41:28 +0200
+Subject: Re: [PATCH 1/2] MAINTAINERS: Update email address for TI ASoC and
+ twl4030 codec drivers
+To:     Peter Ujfalusi <peter.ujfalusi@ti.com>, broonie@kernel.org,
+        lgirdwood@gmail.com, robh+dt@kernel.org
+Cc:     alsa-devel@alsa-project.org, perex@perex.cz, tiwai@suse.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        jsarha@ti.com
+References: <20201215130512.8753-1-peter.ujfalusi@ti.com>
+ <20201215130512.8753-2-peter.ujfalusi@ti.com>
+From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
+Message-ID: <563f5961-40e3-3333-b734-75893806cd04@bitmer.com>
+Date:   Tue, 15 Dec 2020 20:41:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-In-Reply-To: <ff1dcd9a-eb83-2cb5-30d3-b25976a227ab@ti.com>
+In-Reply-To: <20201215130512.8753-2-peter.ujfalusi@ti.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: tl
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:KaHnossIs7UrduZo3pjYr+NreicbYF1LWGdn05LD3iLKIC8rpr9
- +SdNCw4pc1hbvsh6MzkKKovEoq5d6zPPHmSC4kMUfQE/Ope6s9pDhsoAZJTSlDZZ2UTIOzQ
- JWmtqwyUGa2Wn0vi/8g40YdLuzqCnknada7G071RteFF9cBizKocLk/0udQ2CZl1BqoDcp3
- ZMh+9d2pJSDDrSTFDmS7A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ZyuPSvaqdx4=:Nliv3YBphcN+6f7I458/jJ
- 2UXxp2WstEI39g22OXPrmkiT1tkd2DUgyCuzJXS/ljoFsSNYHPxrUCa0Ykv05itbb0o6vrPNq
- w8xju8TQzH5YnnPPpIXaHkZU+yOd0QWdSVemXhAodYLFBqv6xiaeR4Ri3U8ZBiHYQzstAbm5U
- m/d/JewQJiJZGg7onSjmZWRPUsS2bMDtqiOfIw8R+RF37E7smKg3JCt0mPvPNZcc1ne8F9xLs
- 272mc135uLUHcr63EVa1+7J5/P2YQ/ErzZj+STUtYBzRgTUbfdlr5+WFw3kYwsSB35xidPCnw
- xzhLJ//lxJC5I6r1qA0DZ44RgpPZNXl0OKhtNhAH5LGJ5BvGHWmXZRFI+NUnwqMtW4g9u5MR9
- X74WJL9U8TPj/yt/Rmd48SVeNLmAWQxCcsscZlzEyQ7huf+/7POner1UJ4q6H
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10.12.20 16:40, Grygorii Strashko wrote:
-
->> a) consolidating repeated patterns (eg. calling the actual irq handling)
->>     into gpiolib, (and later possibly use more fields already existing in
->>     struct gpio_chip for irq handling)
+On 15.12.2020 15.05, Peter Ujfalusi wrote:
+> My employment with TI is coming to an end, it is my intention to look after
+> the drivers I have worked with over the years.
 > 
-> Even if there is some pattern It doesn't mean consolidation is always
-> reasonable.
-> one of the things to think about is compiler optimization and will/will
-> not this change
-> add additional
+> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+> ---
+>  MAINTAINERS | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f6e7162241eb..a091f183b27f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12862,7 +12862,7 @@ F:	include/misc/ocxl*
+>  F:	include/uapi/misc/ocxl.h
+>  
+>  OMAP AUDIO SUPPORT
+> -M:	Peter Ujfalusi <peter.ujfalusi@ti.com>
+> +M:	Peter Ujfalusi <peter.ujfalusi@gmail.com>
+>  M:	Jarkko Nikula <jarkko.nikula@bitmer.com>
+>  L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
+>  L:	linux-omap@vger.kernel.org
+> @@ -17537,7 +17537,7 @@ F:	arch/xtensa/
+>  F:	drivers/irqchip/irq-xtensa-*
+>  
 
-I dont think the compiler could optimize-out much of the replaced code.
-Yes, there's an additional call - but does it really matter so much ?
-
-If we drop the dev_warn() call, the gpiochip_handle_irq() function can
-be made inline, so quite no extra costs.
-
-
---mtx
-
--- 
----
-Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
-werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
-GPG/PGP-Schlüssel zu.
----
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+Acked-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
