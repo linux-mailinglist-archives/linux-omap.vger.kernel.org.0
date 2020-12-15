@@ -2,150 +2,249 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CF2C2DA7AB
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Dec 2020 06:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14C062DA860
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Dec 2020 08:04:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726288AbgLOF02 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Dec 2020 00:26:28 -0500
-Received: from mail-vi1eur05on2055.outbound.protection.outlook.com ([40.107.21.55]:12896
-        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726033AbgLOF0B (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 15 Dec 2020 00:26:01 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MGHJjieUCnlJcUKR0LClIW4lvGSxdBjvl3uSziTcwiIc3/ah2mp+Ud7b7b6C/bWnOU10OVQ/zA30binf8w/TeOTLjiM2QFJ/cpj3qblk/UP36LuHBLubiWxP3Yl/vvXfcdGpv3Ef9AWUO0/6vCvw9nL3nlv460hGCW2JkILihZLG8TczGGCQ60TMuHHG0PotoSe++JwXwMyJCSwikTKkqnutjA5veG3ht5fE6PITzKnrF7nvh5ShoS3gCB0ERMmG27nW4R40fBkbS2fAWy2fDHT50kdJgKXn7Nmqz7SSyhjvZE/FnXYCHYFcnZ9wo0gVVDy4VOlfxCeeoNA2ClMWdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=taU4ld3kQy0C8PRRaFAG1ANgmoL9U4qtqOa27kL/zAg=;
- b=OlwiuoxvxsIB7zIYdkV70qvFlA1ghXtacZr83PGfT8arKSdUnIxnPHqlGIH6zJNwpi5kT3kXH51R7yHosa91KMn3HmTgJ/opDzcz2B6D5+LmmM4otQrkoPbdPQPnrIftmS/MTNSyW9kx/j/aO4bIiPZTP4gtcXKPylU4Kc0gMdGyTrrC2gTY1o+QQeKlYM+3S4C1TDJo3pWYa/mQJAaN1GBz3tzi0EocVlzGUbYggqxl7w2huFaaETTCwrCHJtHwwUbjPV8rjVtm4DIdfjreL0VE8j2F9/avr/ZYBW3d67h/qFYYiZoHUjN18cOTIKoDkuDC0fh3hK3gb9jDlm9UQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=taU4ld3kQy0C8PRRaFAG1ANgmoL9U4qtqOa27kL/zAg=;
- b=QzwLvhNl+0L6kCNSTs2awZ/9v4O8Be+RjkVhwv4spos4BkxeeJ9n9mplfVzgLBhBWfiMORARR4evoKZxjksbtQ3iuPNRNIIkj5C+AXOHVSXoM1wO1HtEK6bavjaRwYsrCNGtLCsLYC1p3GQNWycVYrUqXajuRDFDwgIdJpLepC0=
-Received: from DBBPR04MB7979.eurprd04.prod.outlook.com (2603:10a6:10:1ec::9)
- by DB6PR04MB3013.eurprd04.prod.outlook.com (2603:10a6:6:4::28) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3654.12; Tue, 15 Dec 2020 05:25:08 +0000
-Received: from DBBPR04MB7979.eurprd04.prod.outlook.com
- ([fe80::c8c:888f:3e0c:8d5c]) by DBBPR04MB7979.eurprd04.prod.outlook.com
- ([fe80::c8c:888f:3e0c:8d5c%5]) with mapi id 15.20.3654.026; Tue, 15 Dec 2020
- 05:25:08 +0000
-From:   Peter Chen <peter.chen@nxp.com>
-To:     Zheng Yongjun <zhengyongjun3@huawei.com>
-CC:     "balbi@kernel.org" <balbi@kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH -next] usb: phy: convert comma to semicolon
-Thread-Topic: [PATCH -next] usb: phy: convert comma to semicolon
-Thread-Index: AQHWz5uFmY6Rb+QWJEOEEW8v9JRhUKn3pfSA
-Date:   Tue, 15 Dec 2020 05:25:08 +0000
-Message-ID: <20201215052439.GD2142@b29397-desktop>
-References: <20201211085428.2871-1-zhengyongjun3@huawei.com>
-In-Reply-To: <20201211085428.2871-1-zhengyongjun3@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mutt/1.9.4 (2018-02-28)
-authentication-results: huawei.com; dkim=none (message not signed)
- header.d=none;huawei.com; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [119.31.174.67]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: ef029f60-2762-4c74-36b2-08d8a0b9c9d6
-x-ms-traffictypediagnostic: DB6PR04MB3013:
-x-microsoft-antispam-prvs: <DB6PR04MB3013A5438991D9EBE948BFD08BC60@DB6PR04MB3013.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:449;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MiJlaskQDyQldwtVJQVdHk1HwKG08rCXSWKzva0ypd1BbVlJAjGTuSSNW7rE16X69OmbauHoLiPeyzNU8rKxBisPuM4WtR4kWCtPLMDLL388AVUdpTIL9AvSuV67OkKQaXqeC4EKmQFvPt/M494S6nebyfTT0rScuJT6S3hkB1JUZ0jipiARTc8RUnRxiGL2gTi70jIvCar7tIl24s1c+TXAksT+/8eAG/gtZQE6jbmWdL1/MWBCu7buMOTvP9yB0NFfzN3BrtOFrwq42BpFzyDZygWh8vXx0GQeFRC8Z/DM4Uy8NyOJ4n0mT+9XWQw5vjQgvKm/JL1tx3ekWfTUPQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7979.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(7916004)(346002)(39860400002)(396003)(136003)(366004)(376002)(66476007)(86362001)(33656002)(6512007)(44832011)(9686003)(186003)(76116006)(5660300002)(26005)(83380400001)(8676002)(53546011)(66446008)(316002)(6486002)(6916009)(91956017)(71200400001)(478600001)(4326008)(66946007)(33716001)(1076003)(8936002)(6506007)(64756008)(54906003)(2906002)(66556008);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: =?us-ascii?Q?4sJG53XsunF/Cw8jdd5j218nB2ErVDaubGb4uTaiavCaFABZxLsz8Dsrfjvq?=
- =?us-ascii?Q?tqtQ+cWUSd3XCGu3wMVwzE8C0Uj/eocJc6mIF3F4qMHVSPTkEGXNg/zO2rOC?=
- =?us-ascii?Q?N3CjVmkeoyrbNNtIds4uqZuxif6P1C9DTBNGJbDw3li4nooKU+Y1Pe1RL9ow?=
- =?us-ascii?Q?NkiNEQPUKlIQOtFgudvqC2dAm+k6OmHEXfYqMeATRoQtdipWzOWtBNv0cdZ3?=
- =?us-ascii?Q?n2FlDEyEoKfvl6pKxwcUtOG2XCGgZfcyQL4Y1RzZZDP9s0TlWEw4pAlCsxmU?=
- =?us-ascii?Q?doRxzSmuvK7dKw1usbgtHMHveLWPbZ5GHW5vOjiV40rY2GqzCji3xRklu38c?=
- =?us-ascii?Q?A3JBf8TG1F+oJShOGlJjD8WWQZs5vhl/Kb7dtEISD18Fqd3jazSyIYTCe6iK?=
- =?us-ascii?Q?nnziv+DYq44wPA0MwyxYs3UVCONaKoywQfV6Fmb04q/DN8b1sT5Gs4aqooeq?=
- =?us-ascii?Q?6UAgfHR/yKoHC+NqEtc4vppECKfHSPM4vaw3pXeMOHHoq70m1khhMdYC9f47?=
- =?us-ascii?Q?4JVjkWy5+AAy51cpP1V1ZVTbOgtrIq2SHmvtfyYPpM1oCZSxwQkQERs1S9Ph?=
- =?us-ascii?Q?AvoitrvN/Rovl4JOaSHno+pfm/NBOsgtY/VOSpG2pRKDMTZMH2RpqO0HxxCC?=
- =?us-ascii?Q?HWVHgfBiB70q8+ugwnHDQwCX9SIvpbduP1jkzGDkzNhJwvMPI90R0/J6spFU?=
- =?us-ascii?Q?/jgXr4ZWSr3bMkvkCxYEbWzyByhQtb9yvunX1gtBCSU9VlyeEMDD+9UPL8xg?=
- =?us-ascii?Q?0QMy8KpbVT0PaQE9oEHzE+qRAHUuIftLRJpgE1GUyuWMCGuyfIvkGuhSn0Fs?=
- =?us-ascii?Q?/D+UxCiqGBaSB/A0MhR7k6OAcsKtLVogdfVCmdpbOrGZqIad3DFAChk8maca?=
- =?us-ascii?Q?THoHwlqOMDLQSDFMyysOdLJxfTND7MzeTL+5X3q71nLUKiJjPGuRupT/BBdZ?=
- =?us-ascii?Q?+RBQqwJ8Gr36UBz/Tv3s3AUA2hH+/xyioNCa8JqvAZ352ihQ2W6jFeDSQXX8?=
- =?us-ascii?Q?UIOB?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <D0B590CDC2CBAA43A0437234A2AD98EF@eurprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1726611AbgLOHCS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Dec 2020 02:02:18 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:44902 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726377AbgLOHCM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Dec 2020 02:02:12 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BF70GdC061345;
+        Tue, 15 Dec 2020 01:00:16 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1608015616;
+        bh=iWkY+8bX1O7V/L8hXMtJVE3oSow43PDbAsF0LzeIDlA=;
+        h=From:To:CC:Subject:Date;
+        b=ccZASm4oaGgrAkN2rJJc1NnTkTek3wlBr+GPNIDAB5//stLxKoibo6aRWrMrcS4cE
+         EGNM7cZEbQ3vLk/qVtEqEeu0WfVBIw8YwahGIJ6rFx7/QT48DDoP5HzpTdsKxQOzem
+         F+N08xUEUp5JuUinP2XedUCOkS8JwtM5mLrzpbt0=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BF70G7w051335
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 15 Dec 2020 01:00:16 -0600
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 15
+ Dec 2020 01:00:16 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 15 Dec 2020 01:00:16 -0600
+Received: from a0393678-ssd.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BF70BdN130944;
+        Tue, 15 Dec 2020 01:00:12 -0600
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Nadeem Athani <nadeem@cadence.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mparab@cadence.com>,
+        <sjakhade@cadence.com>, <pthombar@cadence.com>
+Subject: [PATCH v5] PCI: cadence: Retrain Link to work around Gen2 training defect.
+Date:   Tue, 15 Dec 2020 12:30:09 +0530
+Message-ID: <20201215070009.27937-1-kishon@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7979.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef029f60-2762-4c74-36b2-08d8a0b9c9d6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Dec 2020 05:25:08.7692
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EmbuKVOSpXY+WLM1213l/QgjgBcYs4UEDtObO6NaB1BHmSXzNAJOUrCDxqh4xJi2buk1EjSJ5cw7y+bBpsjcog==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR04MB3013
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 20-12-11 16:54:28, Zheng Yongjun wrote:
-> Replace a comma between expression statements by a semicolon.
->=20
-> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+From: Nadeem Athani <nadeem@cadence.com>
 
-Reviewed-by: Peter Chen <peter.chen@nxp.com>
+Cadence controller will not initiate autonomous speed change if strapped as
+Gen2. The Retrain Link bit is set as quirk to enable this speed change.
 
-Peter
-> ---
->  drivers/usb/phy/phy-isp1301-omap.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/usb/phy/phy-isp1301-omap.c b/drivers/usb/phy/phy-isp=
-1301-omap.c
-> index 4a6462c92ef2..6f4f74e6ba51 100644
-> --- a/drivers/usb/phy/phy-isp1301-omap.c
-> +++ b/drivers/usb/phy/phy-isp1301-omap.c
-> @@ -1566,13 +1566,13 @@ isp1301_probe(struct i2c_client *i2c, const struc=
-t i2c_device_id *id)
-> =20
->  	isp->phy.dev =3D &i2c->dev;
->  	isp->phy.label =3D DRIVER_NAME;
-> -	isp->phy.set_power =3D isp1301_set_power,
-> +	isp->phy.set_power =3D isp1301_set_power;
-> =20
->  	isp->phy.otg->usb_phy =3D &isp->phy;
-> -	isp->phy.otg->set_host =3D isp1301_set_host,
-> -	isp->phy.otg->set_peripheral =3D isp1301_set_peripheral,
-> -	isp->phy.otg->start_srp =3D isp1301_start_srp,
-> -	isp->phy.otg->start_hnp =3D isp1301_start_hnp,
-> +	isp->phy.otg->set_host =3D isp1301_set_host;
-> +	isp->phy.otg->set_peripheral =3D isp1301_set_peripheral;
-> +	isp->phy.otg->start_srp =3D isp1301_start_srp;
-> +	isp->phy.otg->start_hnp =3D isp1301_start_hnp;
-> =20
->  	enable_vbus_draw(isp, 0);
->  	power_down(isp);
-> --=20
-> 2.22.0
->=20
+Signed-off-by: Nadeem Athani <nadeem@cadence.com>
+[kishon@ti.com: Enable the workaround for TI's J721E SoC]
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+---
+Hi Lorenzo,
+The previous version of the patch can be found at [1].
+I slightly re-worked the patch from Nadeem
+*) Removed additional Link Up Check
+*) Removed quirk from pcie-cadence-plat.c
+*) Also removed additional compatible
+   "cdns,cdns-pcie-host-quirk-retrain" added in that series
+*) Enabled the quirk for J721E
+[1] -> http://lore.kernel.org/r/20201211144236.3825-1-nadeem@cadence.com
 
---=20
+ drivers/pci/controller/cadence/pci-j721e.c    |  3 +
+ .../controller/cadence/pcie-cadence-host.c    | 67 ++++++++++++++-----
+ drivers/pci/controller/cadence/pcie-cadence.h | 11 ++-
+ 3 files changed, 62 insertions(+), 19 deletions(-)
 
-Thanks,
-Peter Chen=
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index dac1ac8a7615..baf729850cb1 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -64,6 +64,7 @@ enum j721e_pcie_mode {
+ 
+ struct j721e_pcie_data {
+ 	enum j721e_pcie_mode	mode;
++	bool			quirk_retrain_flag;
+ };
+ 
+ static inline u32 j721e_pcie_user_readl(struct j721e_pcie *pcie, u32 offset)
+@@ -280,6 +281,7 @@ static struct pci_ops cdns_ti_pcie_host_ops = {
+ 
+ static const struct j721e_pcie_data j721e_pcie_rc_data = {
+ 	.mode = PCI_MODE_RC,
++	.quirk_retrain_flag = true,
+ };
+ 
+ static const struct j721e_pcie_data j721e_pcie_ep_data = {
+@@ -388,6 +390,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 
+ 		bridge->ops = &cdns_ti_pcie_host_ops;
+ 		rc = pci_host_bridge_priv(bridge);
++		rc->quirk_retrain_flag = data->quirk_retrain_flag;
+ 
+ 		cdns_pcie = &rc->pcie;
+ 		cdns_pcie->dev = dev;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+index 811c1cb2e8de..773c0d1137ed 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-host.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+@@ -77,6 +77,50 @@ static struct pci_ops cdns_pcie_host_ops = {
+ 	.write		= pci_generic_config_write,
+ };
+ 
++static int cdns_pcie_host_wait_for_link(struct cdns_pcie *pcie)
++{
++	struct device *dev = pcie->dev;
++	int retries;
++
++	/* Check if the link is up or not */
++	for (retries = 0; retries < LINK_WAIT_MAX_RETRIES; retries++) {
++		if (cdns_pcie_link_up(pcie)) {
++			dev_info(dev, "Link up\n");
++			return 0;
++		}
++		usleep_range(LINK_WAIT_USLEEP_MIN, LINK_WAIT_USLEEP_MAX);
++	}
++
++	return -ETIMEDOUT;
++}
++
++static void cdns_pcie_retrain(struct cdns_pcie *pcie)
++{
++	u32 lnk_cap_sls, pcie_cap_off = CDNS_PCIE_RP_CAP_OFFSET;
++	u16 lnk_stat, lnk_ctl;
++
++	/*
++	 * Set retrain bit if current speed is 2.5 GB/s,
++	 * but the PCIe root port support is > 2.5 GB/s.
++	 */
++
++	lnk_cap_sls = cdns_pcie_readl(pcie, (CDNS_PCIE_RP_BASE + pcie_cap_off +
++					     PCI_EXP_LNKCAP));
++	if ((lnk_cap_sls & PCI_EXP_LNKCAP_SLS) <= PCI_EXP_LNKCAP_SLS_2_5GB)
++		return;
++
++	lnk_stat = cdns_pcie_rp_readw(pcie, pcie_cap_off + PCI_EXP_LNKSTA);
++	if ((lnk_stat & PCI_EXP_LNKSTA_CLS) == PCI_EXP_LNKSTA_CLS_2_5GB) {
++		lnk_ctl = cdns_pcie_rp_readw(pcie,
++					     pcie_cap_off + PCI_EXP_LNKCTL);
++		lnk_ctl |= PCI_EXP_LNKCTL_RL;
++		cdns_pcie_rp_writew(pcie, pcie_cap_off + PCI_EXP_LNKCTL,
++				    lnk_ctl);
++
++		if (cdns_pcie_host_wait_for_link(pcie))
++			return;
++	}
++}
+ 
+ static int cdns_pcie_host_init_root_port(struct cdns_pcie_rc *rc)
+ {
+@@ -398,23 +442,6 @@ static int cdns_pcie_host_init(struct device *dev,
+ 	return cdns_pcie_host_init_address_translation(rc);
+ }
+ 
+-static int cdns_pcie_host_wait_for_link(struct cdns_pcie *pcie)
+-{
+-	struct device *dev = pcie->dev;
+-	int retries;
+-
+-	/* Check if the link is up or not */
+-	for (retries = 0; retries < LINK_WAIT_MAX_RETRIES; retries++) {
+-		if (cdns_pcie_link_up(pcie)) {
+-			dev_info(dev, "Link up\n");
+-			return 0;
+-		}
+-		usleep_range(LINK_WAIT_USLEEP_MIN, LINK_WAIT_USLEEP_MAX);
+-	}
+-
+-	return -ETIMEDOUT;
+-}
+-
+ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+ {
+ 	struct device *dev = rc->pcie.dev;
+@@ -458,8 +485,12 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+ 	}
+ 
+ 	ret = cdns_pcie_host_wait_for_link(pcie);
+-	if (ret)
++	if (ret) {
+ 		dev_dbg(dev, "PCIe link never came up\n");
++	} else {
++		if (rc->quirk_retrain_flag)
++			cdns_pcie_retrain(pcie);
++	}
+ 
+ 	for (bar = RP_BAR0; bar <= RP_NO_BAR; bar++)
+ 		rc->avail_ib_bar[bar] = true;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 30eba6cafe2c..0f29128a5d0a 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -119,7 +119,7 @@
+  * Root Port Registers (PCI configuration space for the root port function)
+  */
+ #define CDNS_PCIE_RP_BASE	0x00200000
+-
++#define CDNS_PCIE_RP_CAP_OFFSET 0xc0
+ 
+ /*
+  * Address Translation Registers
+@@ -291,6 +291,7 @@ struct cdns_pcie {
+  * @device_id: PCI device ID
+  * @avail_ib_bar: Satus of RP_BAR0, RP_BAR1 and	RP_NO_BAR if it's free or
+  *                available
++ * @quirk_retrain_flag: Retrain link as quirk for PCIe Gen2
+  */
+ struct cdns_pcie_rc {
+ 	struct cdns_pcie	pcie;
+@@ -299,6 +300,7 @@ struct cdns_pcie_rc {
+ 	u32			vendor_id;
+ 	u32			device_id;
+ 	bool			avail_ib_bar[CDNS_PCIE_RP_MAX_IB];
++	bool			quirk_retrain_flag;
+ };
+ 
+ /**
+@@ -414,6 +416,13 @@ static inline void cdns_pcie_rp_writew(struct cdns_pcie *pcie,
+ 	cdns_pcie_write_sz(addr, 0x2, value);
+ }
+ 
++static inline u16 cdns_pcie_rp_readw(struct cdns_pcie *pcie, u32 reg)
++{
++	void __iomem *addr = pcie->reg_base + CDNS_PCIE_RP_BASE + reg;
++
++	return cdns_pcie_read_sz(addr, 0x2);
++}
++
+ /* Endpoint Function register access */
+ static inline void cdns_pcie_ep_fn_writeb(struct cdns_pcie *pcie, u8 fn,
+ 					  u32 reg, u8 value)
+-- 
+2.17.1
+
