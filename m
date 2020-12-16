@@ -2,165 +2,218 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D012DC4F5
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Dec 2020 18:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3987B2DC8B0
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Dec 2020 23:05:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726896AbgLPRCq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Dec 2020 12:02:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58662 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726721AbgLPRCp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 16 Dec 2020 12:02:45 -0500
-X-Gm-Message-State: AOAM533OsBuIwTVqNzlRfibVm9AM5mXA1Jrppwlm6E1QzO+eBrr/DI4J
-        msXruEgaccDdvN19H/j+Gx/1O4evZBLJAFQPVA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608138125;
-        bh=VBS+XyYIAtbNDwU+cmCPanVpoUqZR1mv6ycLNrXxZBY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QFJfJLApbDhJSrONIxuRt4PjNmiDL6K0c+kndXsVsgyCzI5J4+8XWUEoexyeq/n4k
-         UfTp1eVqGT8jp4IuHBj4TteTEwva6qE6FnWaf+60DfU7DLGCZrKr4cxiDd465pWIVB
-         5P/3zBIeprmQ2lj1Zk6nWA3tITRH6cmSeTBQSBwHAeDJUxF/ZQRygfFSVuoQUEVUSz
-         OX5Kis9T8tDsa/Fy3zQ3Au7g52labeOhatCI8pi3uN1w7Fuv5JoQxUoCHh6kAraVyT
-         RLJ9eXlEWKDH8Q9xi9mXA02uUVReDurP0R0hcJkRE7C1qF9m+Gkq/czpUhQsiJ/gZL
-         cGcM+bwv5BMiw==
-X-Google-Smtp-Source: ABdhPJwfBr+Ojyy/rdG7+RXLa3aiN3AHwkzpE4F8CAmQgz+1+Lg0018Kseqh6Fj0+lO1mgh7hvjY43lOg4SpyyYyakI=
-X-Received: by 2002:a17:907:2111:: with SMTP id qn17mr30621135ejb.525.1608138123502;
- Wed, 16 Dec 2020 09:02:03 -0800 (PST)
+        id S1730047AbgLPWEk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Dec 2020 17:04:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54286 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730043AbgLPWEk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Dec 2020 17:04:40 -0500
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8C6C0617B0
+        for <linux-omap@vger.kernel.org>; Wed, 16 Dec 2020 14:03:59 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id t30so6594799wrb.0
+        for <linux-omap@vger.kernel.org>; Wed, 16 Dec 2020 14:03:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=uFgXPJfjD7GeFy7r1aNbCblOGwmVkP2fCvjV5sFWQVs=;
+        b=N//iL0qvMkM0Utn3XGW/DDwZKo1Pqhsxj9g55/jjA6eTsq7OWprE1A+hlwObC3j4YG
+         UKVth+jr8dLa5rF1NxXgceugn+T5E+bQYE7q3D0Mm1Hmm99B4cERmLM2o2OSV3sc5wV9
+         LDl3HsMnQKOtpKfK8kppLwXLSmwTE5gAxfdU9WrwzkAjF8mKC2TC7sUCsjEoNnUmBN6+
+         YQy+oWS256SpX3G2qY9gG+Qu4xLVEOFplbZNmNrPoAatRZsruVky6bdvVZgOFMQnLDlT
+         u0Nnmdrm1W9vfyPS5pkdTjYlmbQ3IQYKUiS6uXdECDYKSzKuJBY9hp/XJ+pAsXPwjmeN
+         X+5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=uFgXPJfjD7GeFy7r1aNbCblOGwmVkP2fCvjV5sFWQVs=;
+        b=jvw32x3Wc9GeTWIz5BErnQY703UlhCwcRsOEjEyAgw+5MsCq0iW7fVf7Rqf/1+nTjH
+         aruDl/j3EZZx4oEGXjOZQcnKzKvOARKxkGgLqSPW8U7rA77F6igASV/0y9AMI/KdCYga
+         ErCRPwaQzA/fM2KX4cglbaLpNTQ3S+VY8q0cGJ5pqTdIPrgedrbCmTvVbQItbrPGGdFu
+         Cy+SFwx79W2Qy0efpyI02OlAuN4UQ+C3799Ri79YWprOLeaWZzH83E1EBhWoKfXkQlsH
+         CYSC2NK0gL1cfs5ISzc6BNbrLg1Dn9GyiV/tOAA7d+P9u0dhfsdOWKHcxFR+MgNARTgO
+         RjBg==
+X-Gm-Message-State: AOAM530ZUieUZ7NmXM3JW4lxBQ7I+ymIvty+3uuqE5oLik6BEePS9IQF
+        Axr+CKY8YMDYQXQSFPeLlL3xFg==
+X-Google-Smtp-Source: ABdhPJzRlBrP1Gt6pfGYHMtTrFWaZBlGy41UgcCO9oorV/UieHGo5rhYF50u8hVIgHR0SKfY8v7o+A==
+X-Received: by 2002:adf:e443:: with SMTP id t3mr4687971wrm.366.1608156238097;
+        Wed, 16 Dec 2020 14:03:58 -0800 (PST)
+Received: from mai.imgcgcw.net ([2a01:e34:ed2f:f020:601a:58a2:ee98:f8a1])
+        by smtp.gmail.com with ESMTPSA id a17sm5277933wrs.20.2020.12.16.14.03.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Dec 2020 14:03:57 -0800 (PST)
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+To:     daniel.lezcano@linaro.org, rui.zhang@intel.com
+Cc:     amitk@kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org,
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Peter Kaestle <peter@piie.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <mgross@linux.intel.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        platform-driver-x86@vger.kernel.org (open list:ACER ASPIRE ONE
+        TEMPERATURE AND FAN DRIVER),
+        linux-omap@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER)
+Subject: [PATCH v2 3/3] thermal/core: Remove ms based delay fields
+Date:   Wed, 16 Dec 2020 23:03:37 +0100
+Message-Id: <20201216220337.839878-3-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201216220337.839878-1-daniel.lezcano@linaro.org>
+References: <20201216220337.839878-1-daniel.lezcano@linaro.org>
 MIME-Version: 1.0
-References: <20201215070009.27937-1-kishon@ti.com> <CAL_JsqJzi7JkMcd4NZewA=w8q6BsCkrhW3JcED63R=EyE3v29Q@mail.gmail.com>
- <1ec78477-dadc-cbef-406f-568f44b6c62d@ti.com>
-In-Reply-To: <1ec78477-dadc-cbef-406f-568f44b6c62d@ti.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Wed, 16 Dec 2020 11:01:51 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLepmopGObX_r+7gtR+keaNtEAA3WA1j697T4jAWP8DHA@mail.gmail.com>
-Message-ID: <CAL_JsqLepmopGObX_r+7gtR+keaNtEAA3WA1j697T4jAWP8DHA@mail.gmail.com>
-Subject: Re: [PATCH v5] PCI: cadence: Retrain Link to work around Gen2
- training defect.
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Tom Joseph <tjoseph@cadence.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Nadeem Athani <nadeem@cadence.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        PCI <linux-pci@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Milind Parab <mparab@cadence.com>,
-        Swapnil Kashinath Jakhade <sjakhade@cadence.com>,
-        Parshuram Raju Thombare <pthombar@cadence.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Dec 16, 2020 at 9:01 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
->
-> Hi Rob,
->
-> On 15/12/20 9:23 pm, Rob Herring wrote:
-> > On Tue, Dec 15, 2020 at 1:00 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
-> >>
-> >> From: Nadeem Athani <nadeem@cadence.com>
-> >>
-> >> Cadence controller will not initiate autonomous speed change if strapped as
-> >> Gen2. The Retrain Link bit is set as quirk to enable this speed change.
-> >>
-> >> Signed-off-by: Nadeem Athani <nadeem@cadence.com>
-> >> [kishon@ti.com: Enable the workaround for TI's J721E SoC]
-> >> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-> >> ---
-> >> Hi Lorenzo,
-> >> The previous version of the patch can be found at [1].
-> >> I slightly re-worked the patch from Nadeem
-> >> *) Removed additional Link Up Check
-> >> *) Removed quirk from pcie-cadence-plat.c
-> >> *) Also removed additional compatible
-> >>    "cdns,cdns-pcie-host-quirk-retrain" added in that series
-> >> *) Enabled the quirk for J721E
-> >> [1] -> http://lore.kernel.org/r/20201211144236.3825-1-nadeem@cadence.com
-> >>
-> >>  drivers/pci/controller/cadence/pci-j721e.c    |  3 +
-> >>  .../controller/cadence/pcie-cadence-host.c    | 67 ++++++++++++++-----
-> >>  drivers/pci/controller/cadence/pcie-cadence.h | 11 ++-
-> >>  3 files changed, 62 insertions(+), 19 deletions(-)
-> >>
-> >> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> >> index dac1ac8a7615..baf729850cb1 100644
-> >> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> >> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> >> @@ -64,6 +64,7 @@ enum j721e_pcie_mode {
-> >>
-> >>  struct j721e_pcie_data {
-> >>         enum j721e_pcie_mode    mode;
-> >> +       bool                    quirk_retrain_flag;
-> >>  };
-> >>
-> >>  static inline u32 j721e_pcie_user_readl(struct j721e_pcie *pcie, u32 offset)
-> >> @@ -280,6 +281,7 @@ static struct pci_ops cdns_ti_pcie_host_ops = {
-> >>
-> >>  static const struct j721e_pcie_data j721e_pcie_rc_data = {
-> >>         .mode = PCI_MODE_RC,
-> >> +       .quirk_retrain_flag = true,
-> >>  };
-> >>
-> >>  static const struct j721e_pcie_data j721e_pcie_ep_data = {
-> >> @@ -388,6 +390,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
-> >>
-> >>                 bridge->ops = &cdns_ti_pcie_host_ops;
-> >>                 rc = pci_host_bridge_priv(bridge);
-> >> +               rc->quirk_retrain_flag = data->quirk_retrain_flag;
-> >>
-> >>                 cdns_pcie = &rc->pcie;
-> >>                 cdns_pcie->dev = dev;
-> >> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-> >> index 811c1cb2e8de..773c0d1137ed 100644
-> >> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-> >> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-> >> @@ -77,6 +77,50 @@ static struct pci_ops cdns_pcie_host_ops = {
-> >>         .write          = pci_generic_config_write,
-> >>  };
-> >>
-> >> +static int cdns_pcie_host_wait_for_link(struct cdns_pcie *pcie)
-> >> +{
-> >> +       struct device *dev = pcie->dev;
-> >> +       int retries;
-> >> +
-> >> +       /* Check if the link is up or not */
-> >> +       for (retries = 0; retries < LINK_WAIT_MAX_RETRIES; retries++) {
-> >> +               if (cdns_pcie_link_up(pcie)) {
-> >> +                       dev_info(dev, "Link up\n");
-> >> +                       return 0;
-> >> +               }
-> >> +               usleep_range(LINK_WAIT_USLEEP_MIN, LINK_WAIT_USLEEP_MAX);
-> >> +       }
-> >> +
-> >> +       return -ETIMEDOUT;
-> >> +}
-> >> +
-> >> +static void cdns_pcie_retrain(struct cdns_pcie *pcie)
-> >> +{
-> >> +       u32 lnk_cap_sls, pcie_cap_off = CDNS_PCIE_RP_CAP_OFFSET;
-> >> +       u16 lnk_stat, lnk_ctl;
-> >> +
-> >> +       /*
-> >> +        * Set retrain bit if current speed is 2.5 GB/s,
-> >> +        * but the PCIe root port support is > 2.5 GB/s.
-> >
-> > If you don't have the retrain quirk, wouldn't this condition never
-> > happen and then the function is just a nop? So this could just be
-> > called unconditionally.
->
-> Yeah, but only for the quirk we have to retrain to go to GEN2 speed
-> mode. Else the HW will automatically retrain and go to GEN2.
+The code does no longer use the ms unit based fields to set the
+delays as they are replaced by the jiffies.
 
-Again, so you don't need a flag for this. Comparing the speed is
-enough. IOW, all you need is:
+Remove them and replace their user to use the jiffies version instead.
 
-if (current speed < advertised speed)
-  do retrain
+Cc: Thara Gopinath <thara.gopinath@linaro.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+---
+ drivers/platform/x86/acerhdf.c                     | 3 ++-
+ drivers/thermal/da9062-thermal.c                   | 4 ++--
+ drivers/thermal/gov_power_allocator.c              | 2 +-
+ drivers/thermal/thermal_core.c                     | 4 +---
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 6 ++++--
+ include/linux/thermal.h                            | 7 -------
+ 6 files changed, 10 insertions(+), 16 deletions(-)
 
-The question is the condition ever true and you don't want to do a
-retrain? I could see higher speeds being unstable or something, but
-then 'advertised speed' would be lowered in that case (to prevent auto
-retraining, right?) and the condition would be false.
+diff --git a/drivers/platform/x86/acerhdf.c b/drivers/platform/x86/acerhdf.c
+index b6aa6e5514f4..6b8b3ab8db48 100644
+--- a/drivers/platform/x86/acerhdf.c
++++ b/drivers/platform/x86/acerhdf.c
+@@ -336,7 +336,8 @@ static void acerhdf_check_param(struct thermal_zone_device *thermal)
+ 			pr_notice("interval changed to: %d\n", interval);
+ 
+ 		if (thermal)
+-			thermal->polling_delay = interval*1000;
++			thermal->polling_delay_jiffies =
++				round_jiffies(msecs_to_jiffies(interval * 1000));
+ 
+ 		prev_interval = interval;
+ 	}
+diff --git a/drivers/thermal/da9062-thermal.c b/drivers/thermal/da9062-thermal.c
+index 4d74994f160a..180edec34e07 100644
+--- a/drivers/thermal/da9062-thermal.c
++++ b/drivers/thermal/da9062-thermal.c
+@@ -95,7 +95,7 @@ static void da9062_thermal_poll_on(struct work_struct *work)
+ 		thermal_zone_device_update(thermal->zone,
+ 					   THERMAL_EVENT_UNSPECIFIED);
+ 
+-		delay = msecs_to_jiffies(thermal->zone->passive_delay);
++		delay = thermal->zone->passive_delay_jiffies;
+ 		queue_delayed_work(system_freezable_wq, &thermal->work, delay);
+ 		return;
+ 	}
+@@ -245,7 +245,7 @@ static int da9062_thermal_probe(struct platform_device *pdev)
+ 
+ 	dev_dbg(&pdev->dev,
+ 		"TJUNC temperature polling period set at %d ms\n",
+-		thermal->zone->passive_delay);
++		jiffies_to_msecs(thermal->zone->passive_delay_jiffies));
+ 
+ 	ret = platform_get_irq_byname(pdev, "THERMAL");
+ 	if (ret < 0) {
+diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
+index 7a4170a0b51f..f8c3d1e40b86 100644
+--- a/drivers/thermal/gov_power_allocator.c
++++ b/drivers/thermal/gov_power_allocator.c
+@@ -258,7 +258,7 @@ static u32 pid_controller(struct thermal_zone_device *tz,
+ 	 * power being applied, slowing down the controller)
+ 	 */
+ 	d = mul_frac(tz->tzp->k_d, err - params->prev_err);
+-	d = div_frac(d, tz->passive_delay);
++	d = div_frac(d, jiffies_to_msecs(tz->passive_delay_jiffies));
+ 	params->prev_err = err;
+ 
+ 	power_range = p + i + d;
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index d96c515af3cb..b2615449b18f 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -313,7 +313,7 @@ static void monitor_thermal_zone(struct thermal_zone_device *tz)
+ 
+ 	if (!stop && tz->passive)
+ 		thermal_zone_device_set_polling(tz, tz->passive_delay_jiffies);
+-	else if (!stop && tz->polling_delay)
++	else if (!stop && tz->polling_delay_jiffies)
+ 		thermal_zone_device_set_polling(tz, tz->polling_delay_jiffies);
+ 	else
+ 		thermal_zone_device_set_polling(tz, 0);
+@@ -1307,8 +1307,6 @@ thermal_zone_device_register(const char *type, int trips, int mask,
+ 	tz->device.class = &thermal_class;
+ 	tz->devdata = devdata;
+ 	tz->trips = trips;
+-	tz->passive_delay = passive_delay;
+-	tz->polling_delay = polling_delay;
+ 
+ 	thermal_set_delay_jiffies(&tz->passive_delay_jiffies, passive_delay);
+ 	thermal_set_delay_jiffies(&tz->polling_delay_jiffies, polling_delay);
+diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+index 2ce4b19f312a..f84375865c97 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
++++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+@@ -166,6 +166,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+ 			     char *domain)
+ {
+ 	struct ti_thermal_data *data;
++	int interval;
+ 
+ 	data = ti_bandgap_get_sensor_data(bgp, id);
+ 
+@@ -183,9 +184,10 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+ 		return PTR_ERR(data->ti_thermal);
+ 	}
+ 
++	interval = jiffies_to_msecs(data->ti_thermal->polling_delay_jiffies);
++
+ 	ti_bandgap_set_sensor_data(bgp, id, data);
+-	ti_bandgap_write_update_interval(bgp, data->sensor_id,
+-					data->ti_thermal->polling_delay);
++	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+index d1b82c70de69..1e686404951b 100644
+--- a/include/linux/thermal.h
++++ b/include/linux/thermal.h
+@@ -115,13 +115,8 @@ struct thermal_cooling_device {
+  * @devdata:	private pointer for device private data
+  * @trips:	number of trip points the thermal zone supports
+  * @trips_disabled;	bitmap for disabled trips
+- * @passive_delay:	number of milliseconds to wait between polls when
+- *			performing passive cooling.
+  * @passive_delay_jiffies: number of jiffies to wait between polls when
+  *			performing passive cooling.
+- * @polling_delay:	number of milliseconds to wait between polls when
+- *			checking whether trip points have been crossed (0 for
+- *			interrupt driven systems)
+  * @polling_delay_jiffies: number of jiffies to wait between polls when
+  *			checking whether trip points have been crossed (0 for
+  *			interrupt driven systems)
+@@ -162,8 +157,6 @@ struct thermal_zone_device {
+ 	unsigned long trips_disabled;	/* bitmap for disabled trips */
+ 	unsigned long passive_delay_jiffies;
+ 	unsigned long polling_delay_jiffies;
+-	int passive_delay;
+-	int polling_delay;
+ 	int temperature;
+ 	int last_temperature;
+ 	int emul_temperature;
+-- 
+2.25.1
 
-Rob
