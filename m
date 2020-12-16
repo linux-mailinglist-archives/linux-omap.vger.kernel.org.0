@@ -2,101 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DB9C2DBC64
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Dec 2020 09:01:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CFC62DC0BB
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Dec 2020 14:08:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725822AbgLPIBf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Dec 2020 03:01:35 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:53010 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725766AbgLPIBf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Dec 2020 03:01:35 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BG7xj9f023354;
-        Wed, 16 Dec 2020 01:59:45 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1608105585;
-        bh=aF/mhEwgmyuoZXdboblpZjH07AibWP+CYku1ROFLWoU=;
-        h=From:To:CC:Subject:Date;
-        b=mrfnFLezTmeWrlKwc/ez7Z/3GDr1JA1WvOeJbHkYQIfs6PQ1D9brCjxvdF5evfFyO
-         BXhbvV6+oCKYMCwFfGDH7qAS4H8XCtD2gZvzTuYsIbRyk5vht0lhE/f647nN/prxCF
-         jWKniTkLi1ED87RltXOVrd2xGBZfhzlZ4H84UeCE=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BG7xjDa102617
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Dec 2020 01:59:45 -0600
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 16
- Dec 2020 01:59:45 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 16 Dec 2020 01:59:45 -0600
-Received: from deskari.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BG7xh22062816;
-        Wed, 16 Dec 2020 01:59:43 -0600
-From:   Tomi Valkeinen <tomi.valkeinen@ti.com>
-To:     <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, Jyri Sarha <jsarha@ti.com>,
-        <jyri.sarha@iki.fi>
-CC:     <tomba@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>
-Subject: [PATCH] MAINTAINERS: Update addresses for TI display drivers
-Date:   Wed, 16 Dec 2020 09:59:17 +0200
-Message-ID: <20201216075917.17481-1-tomi.valkeinen@ti.com>
-X-Mailer: git-send-email 2.25.1
+        id S1725825AbgLPNGK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Dec 2020 08:06:10 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:9213 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725274AbgLPNGK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Dec 2020 08:06:10 -0500
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4CwwM91DJkzkqWN;
+        Wed, 16 Dec 2020 21:04:37 +0800 (CST)
+Received: from ubuntu.network (10.175.138.68) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 16 Dec 2020 21:05:02 +0800
+From:   Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <t-kristo@ti.com>, <mturquette@baylibre.com>, <sboyd@kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Subject: [PATCH -next] ti/fapll: Delete useless kfree code
+Date:   Wed, 16 Dec 2020 21:05:34 +0800
+Message-ID: <20201216130534.13925-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.138.68]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Update the maintainer email addresses for TI display drivers.
+The parameter of kfree function is NULL, so kfree code is useless, delete it.
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 ---
- MAINTAINERS | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/clk/ti/fapll.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 281de213ef47..c21471497a18 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5932,8 +5932,8 @@ F:	Documentation/devicetree/bindings/display/st,stm32-ltdc.yaml
- F:	drivers/gpu/drm/stm
+diff --git a/drivers/clk/ti/fapll.c b/drivers/clk/ti/fapll.c
+index 95e36ba64acc..a61d69159e9a 100644
+--- a/drivers/clk/ti/fapll.c
++++ b/drivers/clk/ti/fapll.c
+@@ -523,7 +523,6 @@ static struct clk * __init ti_fapll_synth_setup(struct fapll_data *fd,
+ 	return clk_register(NULL, &synth->hw);
  
- DRM DRIVERS FOR TI KEYSTONE
--M:	Jyri Sarha <jsarha@ti.com>
--M:	Tomi Valkeinen <tomi.valkeinen@ti.com>
-+M:	Jyri Sarha <jyri.sarha@iki.fi>
-+M:	Tomi Valkeinen <tomba@kernel.org>
- L:	dri-devel@lists.freedesktop.org
- S:	Maintained
- T:	git git://anongit.freedesktop.org/drm/drm-misc
-@@ -5943,15 +5943,15 @@ F:	Documentation/devicetree/bindings/display/ti/ti,k2g-dss.yaml
- F:	drivers/gpu/drm/tidss/
+ free:
+-	kfree(synth);
+ 	kfree(init);
  
- DRM DRIVERS FOR TI LCDC
--M:	Jyri Sarha <jsarha@ti.com>
--R:	Tomi Valkeinen <tomi.valkeinen@ti.com>
-+M:	Jyri Sarha <jyri.sarha@iki.fi>
-+R:	Tomi Valkeinen <tomba@kernel.org>
- L:	dri-devel@lists.freedesktop.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/display/tilcdc/
- F:	drivers/gpu/drm/tilcdc/
- 
- DRM DRIVERS FOR TI OMAP
--M:	Tomi Valkeinen <tomi.valkeinen@ti.com>
-+M:	Tomi Valkeinen <tomba@kernel.org>
- L:	dri-devel@lists.freedesktop.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/display/ti/
+ 	return ERR_PTR(-ENOMEM);
 -- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+2.22.0
 
