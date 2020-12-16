@@ -2,155 +2,165 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D2362DC4C0
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Dec 2020 17:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D012DC4F5
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Dec 2020 18:03:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726878AbgLPQy4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Dec 2020 11:54:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34556 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726883AbgLPQy4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Dec 2020 11:54:56 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783E4C0619D6
-        for <linux-omap@vger.kernel.org>; Wed, 16 Dec 2020 08:53:02 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id s26so15381975lfc.8
-        for <linux-omap@vger.kernel.org>; Wed, 16 Dec 2020 08:53:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=QN2ZDNaFP2aT/ClXBsxAgxKdaK3vIBmK5H4WTk/CkiE=;
-        b=F7PRpDU16rzweD3c39edlX+7YkESCotZA/8lVuw7u0iyFp6lxPyNoIfl0Gmn0GfPRu
-         OCGSXbVPuEVr40Ead0jo3k1yeY70xXijLUCaTjfVxqHvWPzP3fy4QAOjarCRXxazAJe8
-         cBhtLSxLpWkBBdgh1jN4e/08b0qSU+soXhcAIuMBp4olkK69NiLajmjSn24lGN9bQOw9
-         srP1jHf1P3c1pu0FMOabufaANlqPNlridBo3+jdRcJ2s1XvU+OyO+3h0y87Dy//Igqhv
-         ZtRI+fAbOWMuf2iRmbKTalhDEDfkjZwfKtLksMmH330rgoqwGh6ySl5KYrSbBLFiRBDZ
-         8E4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=QN2ZDNaFP2aT/ClXBsxAgxKdaK3vIBmK5H4WTk/CkiE=;
-        b=omW0TH5hihDGkdi8cmlngFS8QfcwGr/QJft57MXRtl0sUKYF/6TZTI8ENSnLdJpt0Q
-         aLBH36QKHbHQ3DkaXdfzPfebJpOA0e+zrbena/bIhzawbqe96T4TX6h8R/nIpx0wbY6B
-         IOkbJ/rTqMq/yKMbEn9xxroUuJDJiuYwiYXxDHbJEVwt/WorECAd5XinJYrS6QO6aVdy
-         jvj5KgWvxxL0uSHBJ/js8ji/W74uLu296DHzvJfwzi2EByQY5eKVsBm0eK+82Vs0WAxG
-         lFhrgPcQv7es1NoWqsegy79nlkum5gu5SZMnePeLXARRTBVmtvS2O78IidNKVAMvwyRF
-         iPyw==
-X-Gm-Message-State: AOAM530cmhvQy7mCAKRC5qzw//RC24Q/1BVJwPQpBjsQTi7AbOlt9lVP
-        0bahfNCcwvrC7iickNZltjhLpg==
-X-Google-Smtp-Source: ABdhPJxXwjufBrBS5p5gGK+QRTNfqS9gpkIv6Yx7cXPGiFdZEIUdxaMtfzMcrRCrrXmj0W3+90mb4A==
-X-Received: by 2002:a2e:9f14:: with SMTP id u20mr5744528ljk.244.1608137579582;
-        Wed, 16 Dec 2020 08:52:59 -0800 (PST)
-Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
-        by smtp.gmail.com with ESMTPSA id t3sm281645lfe.263.2020.12.16.08.52.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 16 Dec 2020 08:52:58 -0800 (PST)
-From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-To:     ohad@wizery.com, bjorn.andersson@linaro.org,
-        mathieu.poirier@linaro.org, robh+dt@kernel.org, s-anna@ti.com,
-        ssantosh@kernel.org
-Cc:     grzegorz.jaszczyk@linaro.org, linux-remoteproc@vger.kernel.org,
-        lee.jones@linaro.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, praneeth@ti.com,
-        rogerq@ti.com, t-kristo@ti.com
-Subject: [PATCH v2 5/5] remoteproc: pru: Configure firmware based on client setup
-Date:   Wed, 16 Dec 2020 17:52:39 +0100
-Message-Id: <20201216165239.2744-6-grzegorz.jaszczyk@linaro.org>
-X-Mailer: git-send-email 2.29.0
-In-Reply-To: <20201216165239.2744-1-grzegorz.jaszczyk@linaro.org>
-References: <20201216165239.2744-1-grzegorz.jaszczyk@linaro.org>
+        id S1726896AbgLPRCq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Dec 2020 12:02:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58662 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726721AbgLPRCp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 16 Dec 2020 12:02:45 -0500
+X-Gm-Message-State: AOAM533OsBuIwTVqNzlRfibVm9AM5mXA1Jrppwlm6E1QzO+eBrr/DI4J
+        msXruEgaccDdvN19H/j+Gx/1O4evZBLJAFQPVA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608138125;
+        bh=VBS+XyYIAtbNDwU+cmCPanVpoUqZR1mv6ycLNrXxZBY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=QFJfJLApbDhJSrONIxuRt4PjNmiDL6K0c+kndXsVsgyCzI5J4+8XWUEoexyeq/n4k
+         UfTp1eVqGT8jp4IuHBj4TteTEwva6qE6FnWaf+60DfU7DLGCZrKr4cxiDd465pWIVB
+         5P/3zBIeprmQ2lj1Zk6nWA3tITRH6cmSeTBQSBwHAeDJUxF/ZQRygfFSVuoQUEVUSz
+         OX5Kis9T8tDsa/Fy3zQ3Au7g52labeOhatCI8pi3uN1w7Fuv5JoQxUoCHh6kAraVyT
+         RLJ9eXlEWKDH8Q9xi9mXA02uUVReDurP0R0hcJkRE7C1qF9m+Gkq/czpUhQsiJ/gZL
+         cGcM+bwv5BMiw==
+X-Google-Smtp-Source: ABdhPJwfBr+Ojyy/rdG7+RXLa3aiN3AHwkzpE4F8CAmQgz+1+Lg0018Kseqh6Fj0+lO1mgh7hvjY43lOg4SpyyYyakI=
+X-Received: by 2002:a17:907:2111:: with SMTP id qn17mr30621135ejb.525.1608138123502;
+ Wed, 16 Dec 2020 09:02:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201215070009.27937-1-kishon@ti.com> <CAL_JsqJzi7JkMcd4NZewA=w8q6BsCkrhW3JcED63R=EyE3v29Q@mail.gmail.com>
+ <1ec78477-dadc-cbef-406f-568f44b6c62d@ti.com>
+In-Reply-To: <1ec78477-dadc-cbef-406f-568f44b6c62d@ti.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 16 Dec 2020 11:01:51 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLepmopGObX_r+7gtR+keaNtEAA3WA1j697T4jAWP8DHA@mail.gmail.com>
+Message-ID: <CAL_JsqLepmopGObX_r+7gtR+keaNtEAA3WA1j697T4jAWP8DHA@mail.gmail.com>
+Subject: Re: [PATCH v5] PCI: cadence: Retrain Link to work around Gen2
+ training defect.
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Tom Joseph <tjoseph@cadence.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Nadeem Athani <nadeem@cadence.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        PCI <linux-pci@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Milind Parab <mparab@cadence.com>,
+        Swapnil Kashinath Jakhade <sjakhade@cadence.com>,
+        Parshuram Raju Thombare <pthombar@cadence.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tero Kristo <t-kristo@ti.com>
+On Wed, Dec 16, 2020 at 9:01 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+>
+> Hi Rob,
+>
+> On 15/12/20 9:23 pm, Rob Herring wrote:
+> > On Tue, Dec 15, 2020 at 1:00 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+> >>
+> >> From: Nadeem Athani <nadeem@cadence.com>
+> >>
+> >> Cadence controller will not initiate autonomous speed change if strapped as
+> >> Gen2. The Retrain Link bit is set as quirk to enable this speed change.
+> >>
+> >> Signed-off-by: Nadeem Athani <nadeem@cadence.com>
+> >> [kishon@ti.com: Enable the workaround for TI's J721E SoC]
+> >> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> >> ---
+> >> Hi Lorenzo,
+> >> The previous version of the patch can be found at [1].
+> >> I slightly re-worked the patch from Nadeem
+> >> *) Removed additional Link Up Check
+> >> *) Removed quirk from pcie-cadence-plat.c
+> >> *) Also removed additional compatible
+> >>    "cdns,cdns-pcie-host-quirk-retrain" added in that series
+> >> *) Enabled the quirk for J721E
+> >> [1] -> http://lore.kernel.org/r/20201211144236.3825-1-nadeem@cadence.com
+> >>
+> >>  drivers/pci/controller/cadence/pci-j721e.c    |  3 +
+> >>  .../controller/cadence/pcie-cadence-host.c    | 67 ++++++++++++++-----
+> >>  drivers/pci/controller/cadence/pcie-cadence.h | 11 ++-
+> >>  3 files changed, 62 insertions(+), 19 deletions(-)
+> >>
+> >> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> >> index dac1ac8a7615..baf729850cb1 100644
+> >> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> >> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> >> @@ -64,6 +64,7 @@ enum j721e_pcie_mode {
+> >>
+> >>  struct j721e_pcie_data {
+> >>         enum j721e_pcie_mode    mode;
+> >> +       bool                    quirk_retrain_flag;
+> >>  };
+> >>
+> >>  static inline u32 j721e_pcie_user_readl(struct j721e_pcie *pcie, u32 offset)
+> >> @@ -280,6 +281,7 @@ static struct pci_ops cdns_ti_pcie_host_ops = {
+> >>
+> >>  static const struct j721e_pcie_data j721e_pcie_rc_data = {
+> >>         .mode = PCI_MODE_RC,
+> >> +       .quirk_retrain_flag = true,
+> >>  };
+> >>
+> >>  static const struct j721e_pcie_data j721e_pcie_ep_data = {
+> >> @@ -388,6 +390,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+> >>
+> >>                 bridge->ops = &cdns_ti_pcie_host_ops;
+> >>                 rc = pci_host_bridge_priv(bridge);
+> >> +               rc->quirk_retrain_flag = data->quirk_retrain_flag;
+> >>
+> >>                 cdns_pcie = &rc->pcie;
+> >>                 cdns_pcie->dev = dev;
+> >> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> >> index 811c1cb2e8de..773c0d1137ed 100644
+> >> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
+> >> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> >> @@ -77,6 +77,50 @@ static struct pci_ops cdns_pcie_host_ops = {
+> >>         .write          = pci_generic_config_write,
+> >>  };
+> >>
+> >> +static int cdns_pcie_host_wait_for_link(struct cdns_pcie *pcie)
+> >> +{
+> >> +       struct device *dev = pcie->dev;
+> >> +       int retries;
+> >> +
+> >> +       /* Check if the link is up or not */
+> >> +       for (retries = 0; retries < LINK_WAIT_MAX_RETRIES; retries++) {
+> >> +               if (cdns_pcie_link_up(pcie)) {
+> >> +                       dev_info(dev, "Link up\n");
+> >> +                       return 0;
+> >> +               }
+> >> +               usleep_range(LINK_WAIT_USLEEP_MIN, LINK_WAIT_USLEEP_MAX);
+> >> +       }
+> >> +
+> >> +       return -ETIMEDOUT;
+> >> +}
+> >> +
+> >> +static void cdns_pcie_retrain(struct cdns_pcie *pcie)
+> >> +{
+> >> +       u32 lnk_cap_sls, pcie_cap_off = CDNS_PCIE_RP_CAP_OFFSET;
+> >> +       u16 lnk_stat, lnk_ctl;
+> >> +
+> >> +       /*
+> >> +        * Set retrain bit if current speed is 2.5 GB/s,
+> >> +        * but the PCIe root port support is > 2.5 GB/s.
+> >
+> > If you don't have the retrain quirk, wouldn't this condition never
+> > happen and then the function is just a nop? So this could just be
+> > called unconditionally.
+>
+> Yeah, but only for the quirk we have to retrain to go to GEN2 speed
+> mode. Else the HW will automatically retrain and go to GEN2.
 
-Client device node property firmware-name is now used to configure
-firmware for the PRU instances. The default firmware is also
-restored once releasing the PRU resource.
+Again, so you don't need a flag for this. Comparing the speed is
+enough. IOW, all you need is:
 
-Co-developed-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
-Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
----
- drivers/remoteproc/pru_rproc.c | 35 ++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+if (current speed < advertised speed)
+  do retrain
 
-diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
-index a37c3f5838ea..4a9c7973bf3a 100644
---- a/drivers/remoteproc/pru_rproc.c
-+++ b/drivers/remoteproc/pru_rproc.c
-@@ -170,6 +170,23 @@ void pru_control_set_reg(struct pru_rproc *pru, unsigned int reg,
- 	spin_unlock_irqrestore(&pru->rmw_lock, flags);
- }
- 
-+/**
-+ * pru_rproc_set_firmware() - set firmware for a pru core
-+ * @rproc: the rproc instance of the PRU
-+ * @fw_name: the new firmware name, or NULL if default is desired
-+ *
-+ * Return: 0 on success, or errno in error case.
-+ */
-+static int pru_rproc_set_firmware(struct rproc *rproc, const char *fw_name)
-+{
-+	struct pru_rproc *pru = rproc->priv;
-+
-+	if (!fw_name)
-+		fw_name = pru->fw_name;
-+
-+	return rproc_set_firmware(rproc, fw_name);
-+}
-+
- static struct rproc *__pru_rproc_get(struct device_node *np, int index)
- {
- 	struct device_node *rproc_np = NULL;
-@@ -230,6 +247,8 @@ struct rproc *pru_rproc_get(struct device_node *np, int index,
- 	struct rproc *rproc;
- 	struct pru_rproc *pru;
- 	struct device *dev;
-+	const char *fw_name;
-+	int ret;
- 
- 	rproc = __pru_rproc_get(np, index);
- 	if (IS_ERR(rproc))
-@@ -254,7 +273,21 @@ struct rproc *pru_rproc_get(struct device_node *np, int index,
- 	if (pru_id)
- 		*pru_id = pru->id;
- 
-+	ret = of_property_read_string_index(np, "firmware-name", index,
-+					    &fw_name);
-+	if (!ret) {
-+		ret = pru_rproc_set_firmware(rproc, fw_name);
-+		if (ret) {
-+			dev_err(dev, "failed to set firmware: %d\n", ret);
-+			goto err;
-+		}
-+	}
-+
- 	return rproc;
-+
-+err:
-+	pru_rproc_put(rproc);
-+	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL_GPL(pru_rproc_get);
- 
-@@ -276,6 +309,8 @@ void pru_rproc_put(struct rproc *rproc)
- 	if (!pru->client_np)
- 		return;
- 
-+	pru_rproc_set_firmware(rproc, NULL);
-+
- 	mutex_lock(&pru->lock);
- 	pru->client_np = NULL;
- 	rproc->deny_sysfs_ops = false;
--- 
-2.29.0
+The question is the condition ever true and you don't want to do a
+retrain? I could see higher speeds being unstable or something, but
+then 'advertised speed' would be lowered in that case (to prevent auto
+retraining, right?) and the condition would be false.
 
+Rob
