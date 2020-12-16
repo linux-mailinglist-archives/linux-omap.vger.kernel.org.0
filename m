@@ -2,193 +2,193 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 483CB2DC934
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Dec 2020 23:46:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBBD02DC941
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Dec 2020 23:53:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727838AbgLPWqY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Wed, 16 Dec 2020 17:46:24 -0500
-Received: from piie.net ([80.82.223.85]:57438 "EHLO piie.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727823AbgLPWqX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 16 Dec 2020 17:46:23 -0500
-X-Greylist: delayed 585 seconds by postgrey-1.27 at vger.kernel.org; Wed, 16 Dec 2020 17:46:22 EST
-Received: from mail.piie.net (_gateway [172.17.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES128-SHA (128/128 bits))
-        (Client did not present a certificate)
-        by piie.net (Postfix) with ESMTPSA id 04BFC3226FC;
-        Wed, 16 Dec 2020 23:35:55 +0100 (CET)
+        id S1730276AbgLPWv6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Dec 2020 17:51:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33330 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730250AbgLPWv6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Dec 2020 17:51:58 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD09C0617A6
+        for <linux-omap@vger.kernel.org>; Wed, 16 Dec 2020 14:51:18 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id x20so33019236lfe.12
+        for <linux-omap@vger.kernel.org>; Wed, 16 Dec 2020 14:51:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ddKTn9Xl8/wZrJAUuoOV/T+vWHELgde5+/AZ3jvIKM8=;
+        b=v7fuy9AXUD9bM/gJSy7sVcn5R6iY+GXNm5Qeplq9xWYNyCJlqllGAaPpCyTSRed4gT
+         aI9+pAPU0ET+GRY3RNqSIGGwFDdi/+0DPMaHyiANwHBrLLY7Zuur6fiSuHyj2W97nK7Q
+         cglIiVAOxyNl3us/xxf6Z1OixDcyKrgFR9V/OP2FJUhNCs5rrgK6yLwizX1IYMj9a2xK
+         jfE4+o/D0Z1DxylIIB91E1AOfhsAF7aeBycOyzdXeFXkfv7h1NOlVNgHMggFsWHDXvhO
+         6qfI2nVMdQzca3d7wiE7mAbLJCeyK+jg/cGcHVtOX0cB9nGnwk9onAzZl8kgK0aRh3o/
+         +Gcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ddKTn9Xl8/wZrJAUuoOV/T+vWHELgde5+/AZ3jvIKM8=;
+        b=N/lVEQCNUVAzjX48NZi9k2D7gpaZBrI4ELZqGaD62qqVbTsYe6ELuKKjQCcmIhjK6u
+         dmLKjK1nJqOFqFZYBcK5sYPf+irPjUHvw8XjKFtgpuT/w7MaLcyTCz5s1QLW1bpE4+rN
+         FalaeKxS7Q7Nohm+ZL16bi0YvqMbnz9YU55ZbaJ9msYldk4CqnNW8C8NzbZgJKis7QND
+         HNhRRDmr+hh4uly4zFaj86ic/M23nXcyofLD1NE5J0iLK4Cv42Kcy1dL/oI+gbgCzT+u
+         Z1MG9zVvVKKQBM50or3r/uVhPlJTJ3/MLKdyFPfS01Ef+8dzTB6ucis8YmVA3D06fD6s
+         OwPw==
+X-Gm-Message-State: AOAM530nf7SnsSzMO8BnI4gHdwR6ixnsp1Wx0c6W2PX1eLr4X+HMb1Yy
+        KjATzmjwCV4fEq1erpkcj3jpWg==
+X-Google-Smtp-Source: ABdhPJx27jni1KGRQhFMz72fraRiUgfdPbegBhHHlXVHzvJhXUFmhLPvdhEoyREDRk5vldOvvd0WXA==
+X-Received: by 2002:ac2:4108:: with SMTP id b8mr9652742lfi.544.1608159076440;
+        Wed, 16 Dec 2020 14:51:16 -0800 (PST)
+Received: from gilgamesh.semihalf.com (193-106-246-138.noc.fibertech.net.pl. [193.106.246.138])
+        by smtp.gmail.com with ESMTPSA id v21sm438160ljk.73.2020.12.16.14.51.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 16 Dec 2020 14:51:15 -0800 (PST)
+From:   Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+To:     ssantosh@kernel.org, robh+dt@kernel.org, s-anna@ti.com
+Cc:     grzegorz.jaszczyk@linaro.org, santosh.shilimkar@oracle.com,
+        lee.jones@linaro.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, praneeth@ti.com,
+        tony@atomide.com
+Subject: [PATCH] dt-bindings: soc: ti: Update TI PRUSS bindings about schemas to include
+Date:   Wed, 16 Dec 2020 23:50:27 +0100
+Message-Id: <20201216225027.2681-1-grzegorz.jaszczyk@linaro.org>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-Date:   Wed, 16 Dec 2020 22:35:55 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Mailer: RainLoop/1.14.0
-From:   "=?utf-8?B?UGV0ZXIgS8Okc3RsZQ==?=" <peter@piie.net>
-Message-ID: <00766bd10b90c0c3bebf25738b782ec9@piie.net>
-Subject: Re: [PATCH v2 3/3] thermal/core: Remove ms based delay fields
-To:     "Daniel Lezcano" <daniel.lezcano@linaro.org>, rui.zhang@intel.com
-Cc:     amitk@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org,
-        "Thara Gopinath" <thara.gopinath@linaro.org>,
-        "Lukasz Luba" <lukasz.luba@arm.com>,
-        "Hans de Goede" <hdegoede@redhat.com>,
-        "Mark Gross" <mgross@linux.intel.com>,
-        "Support Opensource" <support.opensource@diasemi.com>,
-        "Eduardo Valentin" <edubezval@gmail.com>,
-        "Keerthy" <j-keerthy@ti.com>, platform-driver-x86@vger.kernel.org,
-        linux-omap@vger.kernel.org
-In-Reply-To: <20201216220337.839878-3-daniel.lezcano@linaro.org>
-References: <20201216220337.839878-3-daniel.lezcano@linaro.org>
- <20201216220337.839878-1-daniel.lezcano@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-16. Dezember 2020 23:04, "Daniel Lezcano" <daniel.lezcano@linaro.org> schrieb:
+Now after ti,pruss-intc.yaml and ti,pru-rproc.yaml are merged, include
+them in proper property and extend the examples section.
 
-> The code does no longer use the ms unit based fields to set the
-> delays as they are replaced by the jiffies.
-> 
-> Remove them and replace their user to use the jiffies version instead.
-> 
-> Cc: Thara Gopinath <thara.gopinath@linaro.org>
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-> ---
-> drivers/platform/x86/acerhdf.c | 3 ++-
+At the occasion extend the allowed property list about dma-ranges.
 
-Reviewed-by: Peter Kästle <peter@piie.net>
+Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+---
+ .../devicetree/bindings/soc/ti/ti,pruss.yaml  | 76 +++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml b/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+index 037c51b2f972..dbc62821c60b 100644
+--- a/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
++++ b/Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+@@ -81,6 +81,9 @@ properties:
+   ranges:
+     maxItems: 1
+ 
++  dma-ranges:
++    maxItems: 1
++
+   power-domains:
+     description: |
+       This property is as per sci-pm-domain.txt.
+@@ -278,6 +281,9 @@ patternProperties:
+       that is common to all the PRU cores. This should be represented as an
+       interrupt-controller node.
+ 
++    allOf:
++      - $ref: /schemas/interrupt-controller/ti,pruss-intc.yaml#
++
+     type: object
+ 
+   mdio@[a-f0-9]+$:
+@@ -299,6 +305,9 @@ patternProperties:
+       present on K3 SoCs have additional auxiliary PRU cores with slightly
+       different IP integration.
+ 
++    allOf:
++      - $ref: /schemas/remoteproc/ti,pru-rproc.yaml#
++
+     type: object
+ 
+ required:
+@@ -371,6 +380,36 @@ examples:
+             reg = <0x32000 0x58>;
+         };
+ 
++        pruss_intc: interrupt-controller@20000 {
++            compatible = "ti,pruss-intc";
++            reg = <0x20000 0x2000>;
++            interrupt-controller;
++            #interrupt-cells = <3>;
++            interrupts = <20 21 22 23 24 25 26 27>;
++            interrupt-names = "host_intr0", "host_intr1",
++                              "host_intr2", "host_intr3",
++                              "host_intr4", "host_intr5",
++                              "host_intr6", "host_intr7";
++        };
++
++        pru0: pru@34000 {
++            compatible = "ti,am3356-pru";
++            reg = <0x34000 0x2000>,
++                  <0x22000 0x400>,
++                  <0x22400 0x100>;
++            reg-names = "iram", "control", "debug";
++            firmware-name = "am335x-pru0-fw";
++        };
++
++        pru1: pru@38000 {
++            compatible = "ti,am3356-pru";
++            reg = <0x38000 0x2000>,
++                  <0x24000 0x400>,
++                  <0x24400 0x100>;
++            reg-names = "iram", "control", "debug";
++            firmware-name = "am335x-pru1-fw";
++        };
++
+         pruss_mdio: mdio@32400 {
+             compatible = "ti,davinci_mdio";
+             reg = <0x32400 0x90>;
+@@ -425,6 +464,43 @@ examples:
+             reg = <0x32000 0x58>;
+         };
+ 
++        pruss1_intc: interrupt-controller@20000 {
++            compatible = "ti,pruss-intc";
++            reg = <0x20000 0x2000>;
++            interrupt-controller;
++            #interrupt-cells = <3>;
++            interrupts = <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 27 IRQ_TYPE_LEVEL_HIGH>;
++            interrupt-names = "host_intr0", "host_intr1",
++                              "host_intr2", "host_intr3",
++                              "host_intr4",
++                              "host_intr6", "host_intr7";
++            ti,irqs-reserved = /bits/ 8 <0x20>; /* BIT(5) */
++        };
++
++        pru1_0: pru@34000 {
++            compatible = "ti,am4376-pru";
++            reg = <0x34000 0x3000>,
++                  <0x22000 0x400>,
++                  <0x22400 0x100>;
++            reg-names = "iram", "control", "debug";
++            firmware-name = "am437x-pru1_0-fw";
++        };
++
++        pru1_1: pru@38000 {
++            compatible = "ti,am4376-pru";
++            reg = <0x38000 0x3000>,
++                  <0x24000 0x400>,
++                  <0x24400 0x100>;
++            reg-names = "iram", "control", "debug";
++            firmware-name = "am437x-pru1_1-fw";
++        };
++
+         pruss1_mdio: mdio@32400 {
+             compatible = "ti,davinci_mdio";
+             reg = <0x32400 0x90>;
+-- 
+2.29.0
 
-> drivers/thermal/da9062-thermal.c | 4 ++--
-> drivers/thermal/gov_power_allocator.c | 2 +-
-> drivers/thermal/thermal_core.c | 4 +---
-> drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 6 ++++--
-> include/linux/thermal.h | 7 -------
-> 6 files changed, 10 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/platform/x86/acerhdf.c b/drivers/platform/x86/acerhdf.c
-> index b6aa6e5514f4..6b8b3ab8db48 100644
-> --- a/drivers/platform/x86/acerhdf.c
-> +++ b/drivers/platform/x86/acerhdf.c
-> @@ -336,7 +336,8 @@ static void acerhdf_check_param(struct thermal_zone_device *thermal)
-> pr_notice("interval changed to: %d\n", interval);
-> 
-> if (thermal)
-> - thermal->polling_delay = interval*1000;
-> + thermal->polling_delay_jiffies =
-> + round_jiffies(msecs_to_jiffies(interval * 1000));
-> 
-> prev_interval = interval;
-> }
-> diff --git a/drivers/thermal/da9062-thermal.c b/drivers/thermal/da9062-thermal.c
-> index 4d74994f160a..180edec34e07 100644
-> --- a/drivers/thermal/da9062-thermal.c
-> +++ b/drivers/thermal/da9062-thermal.c
-> @@ -95,7 +95,7 @@ static void da9062_thermal_poll_on(struct work_struct *work)
-> thermal_zone_device_update(thermal->zone,
-> THERMAL_EVENT_UNSPECIFIED);
-> 
-> - delay = msecs_to_jiffies(thermal->zone->passive_delay);
-> + delay = thermal->zone->passive_delay_jiffies;
-> queue_delayed_work(system_freezable_wq, &thermal->work, delay);
-> return;
-> }
-> @@ -245,7 +245,7 @@ static int da9062_thermal_probe(struct platform_device *pdev)
-> 
-> dev_dbg(&pdev->dev,
-> "TJUNC temperature polling period set at %d ms\n",
-> - thermal->zone->passive_delay);
-> + jiffies_to_msecs(thermal->zone->passive_delay_jiffies));
-> 
-> ret = platform_get_irq_byname(pdev, "THERMAL");
-> if (ret < 0) {
-> diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
-> index 7a4170a0b51f..f8c3d1e40b86 100644
-> --- a/drivers/thermal/gov_power_allocator.c
-> +++ b/drivers/thermal/gov_power_allocator.c
-> @@ -258,7 +258,7 @@ static u32 pid_controller(struct thermal_zone_device *tz,
-> * power being applied, slowing down the controller)
-> */
-> d = mul_frac(tz->tzp->k_d, err - params->prev_err);
-> - d = div_frac(d, tz->passive_delay);
-> + d = div_frac(d, jiffies_to_msecs(tz->passive_delay_jiffies));
-> params->prev_err = err;
-> 
-> power_range = p + i + d;
-> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-> index d96c515af3cb..b2615449b18f 100644
-> --- a/drivers/thermal/thermal_core.c
-> +++ b/drivers/thermal/thermal_core.c
-> @@ -313,7 +313,7 @@ static void monitor_thermal_zone(struct thermal_zone_device *tz)
-> 
-> if (!stop && tz->passive)
-> thermal_zone_device_set_polling(tz, tz->passive_delay_jiffies);
-> - else if (!stop && tz->polling_delay)
-> + else if (!stop && tz->polling_delay_jiffies)
-> thermal_zone_device_set_polling(tz, tz->polling_delay_jiffies);
-> else
-> thermal_zone_device_set_polling(tz, 0);
-> @@ -1307,8 +1307,6 @@ thermal_zone_device_register(const char *type, int trips, int mask,
-> tz->device.class = &thermal_class;
-> tz->devdata = devdata;
-> tz->trips = trips;
-> - tz->passive_delay = passive_delay;
-> - tz->polling_delay = polling_delay;
-> 
-> thermal_set_delay_jiffies(&tz->passive_delay_jiffies, passive_delay);
-> thermal_set_delay_jiffies(&tz->polling_delay_jiffies, polling_delay);
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> index 2ce4b19f312a..f84375865c97 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> @@ -166,6 +166,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
-> char *domain)
-> {
-> struct ti_thermal_data *data;
-> + int interval;
-> 
-> data = ti_bandgap_get_sensor_data(bgp, id);
-> 
-> @@ -183,9 +184,10 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
-> return PTR_ERR(data->ti_thermal);
-> }
-> 
-> + interval = jiffies_to_msecs(data->ti_thermal->polling_delay_jiffies);
-> +
-> ti_bandgap_set_sensor_data(bgp, id, data);
-> - ti_bandgap_write_update_interval(bgp, data->sensor_id,
-> - data->ti_thermal->polling_delay);
-> + ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
-> 
-> return 0;
-> }
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index d1b82c70de69..1e686404951b 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -115,13 +115,8 @@ struct thermal_cooling_device {
-> * @devdata: private pointer for device private data
-> * @trips: number of trip points the thermal zone supports
-> * @trips_disabled; bitmap for disabled trips
-> - * @passive_delay: number of milliseconds to wait between polls when
-> - * performing passive cooling.
-> * @passive_delay_jiffies: number of jiffies to wait between polls when
-> * performing passive cooling.
-> - * @polling_delay: number of milliseconds to wait between polls when
-> - * checking whether trip points have been crossed (0 for
-> - * interrupt driven systems)
-> * @polling_delay_jiffies: number of jiffies to wait between polls when
-> * checking whether trip points have been crossed (0 for
-> * interrupt driven systems)
-> @@ -162,8 +157,6 @@ struct thermal_zone_device {
-> unsigned long trips_disabled; /* bitmap for disabled trips */
-> unsigned long passive_delay_jiffies;
-> unsigned long polling_delay_jiffies;
-> - int passive_delay;
-> - int polling_delay;
-> int temperature;
-> int last_temperature;
-> int emul_temperature;
-> -- 
-> 2.25.1
