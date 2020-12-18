@@ -2,178 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1902DE806
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Dec 2020 18:32:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F36942DEBC6
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Dec 2020 23:53:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727884AbgLRRcR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Dec 2020 12:32:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37076 "EHLO mail.kernel.org"
+        id S1726305AbgLRWvw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Dec 2020 17:51:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51490 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727787AbgLRRcR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 18 Dec 2020 12:32:17 -0500
-X-Gm-Message-State: AOAM530eYzdjIS03DeU23l1QN0UavYealEGwaEVsaREi6cWhayzQadiG
-        Qq/APuihaVTN2/VnS0yyYq4Xtr6Ws7wgbfp7Mg==
+        id S1725813AbgLRWvw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 18 Dec 2020 17:51:52 -0500
+X-Gm-Message-State: AOAM531JHImXIwhRvS09h2Bn0S5t3870qku8Eqo7Hf5nj36ZyjPqv/SW
+        5SiLfx24H+AlKPBIl8ICUNxOk/grfuvL+5AtfA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608312696;
-        bh=BGGQyU71jC8PHb+t5FSRSX4kcxy5gG40URfePe8J9nU=;
+        s=k20201202; t=1608331871;
+        bh=ZtuDx1g50X2Qj4JjjYFGFSI9wY4HuxKzUzlaD0sdeXc=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cC9AQytUFvAovKozDhlHSzCa40u9b51UDDu9DY6VQsEs2qwlTb7/eZ+duGTl5G1MJ
-         ltk1VO2sg5dTfQ9/rD8rASKJc+I7GyP3U29GCpmR4vNcsvQhuTGV9xRWhbP9HVb3Cr
-         GHcvUq6DPgtaiTnrm90fWn6uZTlOzXGvAz3ugrDpPpOwC9zbdWaT0hryRuRTgrwTal
-         8RHDiRRFV4faBB8B+E/aBqM+Qyr+AtKu47VmmKqT+pQW+ygXcKYgIsnYFKtt1PlFsj
-         2kRsozrN5SM3jDENsG6+VwteAIt6IsjRhBdaQHFUKX3GBUBFmwd3KMIUCI0udLN/Mh
-         Rfjes/c6AAKKA==
-X-Google-Smtp-Source: ABdhPJx+/RIAdMo/5KCMW4U0Xhm+Ecu8VxfrvTtPK9bsliEAA6f3bzT1/rBR+63O/WV/mn7yv7B+sDblEkk6WewuJ5I=
-X-Received: by 2002:a17:906:d87:: with SMTP id m7mr5100609eji.108.1608312694596;
- Fri, 18 Dec 2020 09:31:34 -0800 (PST)
+        b=vEOb/5mlu+GHcROfnlhzYbcIyFc3LRN/ip77eMCj1AYhWCqAmE95QZarZE9mpHqOw
+         jGsZOpvx34sIpz3dxeoDm7KXP1LAjRVCfXU84et96ZrT/IoENkLcCFEGm4EdA8uUEx
+         Z2csh5JehlGunr1yXsV6lt2bFV+pCo6UmlBAAd3uiNPwxgDwodemHLgRCepf7KZYO3
+         7b8xRx8XNQO99l18SrBBMRhVuZNvX9yBJXYW10Atct9HTlQiw4BciSpl5FWcheM/2L
+         VpakrWB4wWnvHX4OHcIwOdIBgGuXWY6JaryZJ0f4QV/WugpXmVnPlMtg998zW2wm99
+         pMJmFIr0lzLbw==
+X-Google-Smtp-Source: ABdhPJxNw/q/XvK7O7ILckQoP3A6uzGGD5xqlFlKtSvsxtUERlGMDiuIoFMxqKvxn6xCWNFl/+pKuZyD1KZkDAc+IKc=
+X-Received: by 2002:a05:6402:ca2:: with SMTP id cn2mr6571892edb.137.1608331869822;
+ Fri, 18 Dec 2020 14:51:09 -0800 (PST)
 MIME-Version: 1.0
-References: <20201215070009.27937-1-kishon@ti.com> <CAL_JsqJzi7JkMcd4NZewA=w8q6BsCkrhW3JcED63R=EyE3v29Q@mail.gmail.com>
- <1ec78477-dadc-cbef-406f-568f44b6c62d@ti.com> <CAL_JsqLepmopGObX_r+7gtR+keaNtEAA3WA1j697T4jAWP8DHA@mail.gmail.com>
- <96ca64cb-ec3a-bb83-2de3-775034ba844b@ti.com>
-In-Reply-To: <96ca64cb-ec3a-bb83-2de3-775034ba844b@ti.com>
+References: <20201211142933.25784-1-grzegorz.jaszczyk@linaro.org>
+ <20201211142933.25784-2-grzegorz.jaszczyk@linaro.org> <20201214225842.GA2537432@robh.at.kernel.org>
+ <CAMxfBF65ve2Pk5Uz5V1V_LfOLFUFKebVE8bzSjLT0nonuH8TDg@mail.gmail.com>
+In-Reply-To: <CAMxfBF65ve2Pk5Uz5V1V_LfOLFUFKebVE8bzSjLT0nonuH8TDg@mail.gmail.com>
 From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 18 Dec 2020 11:31:22 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+fP4CcxVm89YkUYDK9eX2j8Yac97nMCLnxGnMakopc7g@mail.gmail.com>
-Message-ID: <CAL_Jsq+fP4CcxVm89YkUYDK9eX2j8Yac97nMCLnxGnMakopc7g@mail.gmail.com>
-Subject: Re: [PATCH v5] PCI: cadence: Retrain Link to work around Gen2
- training defect.
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Tom Joseph <tjoseph@cadence.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Nadeem Athani <nadeem@cadence.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        PCI <linux-pci@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+Date:   Fri, 18 Dec 2020 16:50:58 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKpzZvdWJodzbqQBLZ-v98n3KaoTaYM-0iQ-_71hCbW8Q@mail.gmail.com>
+Message-ID: <CAL_JsqKpzZvdWJodzbqQBLZ-v98n3KaoTaYM-0iQ-_71hCbW8Q@mail.gmail.com>
+Subject: Re: [PATCH 1/5] dt-bindings: remoteproc: Add PRU consumer bindings
+To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+Cc:     Ohad Ben Cohen <ohad@wizery.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        "Anna, Suman" <s-anna@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        "open list:REMOTE PROCESSOR (REMOTEPROC) SUBSYSTEM" 
+        <linux-remoteproc@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Milind Parab <mparab@cadence.com>,
-        Swapnil Kashinath Jakhade <sjakhade@cadence.com>,
-        Parshuram Raju Thombare <pthombar@cadence.com>
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "Bajjuri, Praneeth" <praneeth@ti.com>,
+        Roger Quadros <rogerq@ti.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 8:42 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+On Wed, Dec 16, 2020 at 9:55 AM Grzegorz Jaszczyk
+<grzegorz.jaszczyk@linaro.org> wrote:
 >
 > Hi Rob,
 >
-> On 16/12/20 10:31 pm, Rob Herring wrote:
-> > On Wed, Dec 16, 2020 at 9:01 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
-> >>
-> >> Hi Rob,
-> >>
-> >> On 15/12/20 9:23 pm, Rob Herring wrote:
-> >>> On Tue, Dec 15, 2020 at 1:00 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
-> >>>>
-> >>>> From: Nadeem Athani <nadeem@cadence.com>
-> >>>>
-> >>>> Cadence controller will not initiate autonomous speed change if strapped as
-> >>>> Gen2. The Retrain Link bit is set as quirk to enable this speed change.
-> >>>>
-> >>>> Signed-off-by: Nadeem Athani <nadeem@cadence.com>
-> >>>> [kishon@ti.com: Enable the workaround for TI's J721E SoC]
-> >>>> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-> >>>> ---
-> >>>> Hi Lorenzo,
-> >>>> The previous version of the patch can be found at [1].
-> >>>> I slightly re-worked the patch from Nadeem
-> >>>> *) Removed additional Link Up Check
-> >>>> *) Removed quirk from pcie-cadence-plat.c
-> >>>> *) Also removed additional compatible
-> >>>>    "cdns,cdns-pcie-host-quirk-retrain" added in that series
-> >>>> *) Enabled the quirk for J721E
-> >>>> [1] -> http://lore.kernel.org/r/20201211144236.3825-1-nadeem@cadence.com
-> >>>>
-> >>>>  drivers/pci/controller/cadence/pci-j721e.c    |  3 +
-> >>>>  .../controller/cadence/pcie-cadence-host.c    | 67 ++++++++++++++-----
-> >>>>  drivers/pci/controller/cadence/pcie-cadence.h | 11 ++-
-> >>>>  3 files changed, 62 insertions(+), 19 deletions(-)
-> >>>>
-> >>>> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> >>>> index dac1ac8a7615..baf729850cb1 100644
-> >>>> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> >>>> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> >>>> @@ -64,6 +64,7 @@ enum j721e_pcie_mode {
-> >>>>
-> >>>>  struct j721e_pcie_data {
-> >>>>         enum j721e_pcie_mode    mode;
-> >>>> +       bool                    quirk_retrain_flag;
-> >>>>  };
-> >>>>
-> >>>>  static inline u32 j721e_pcie_user_readl(struct j721e_pcie *pcie, u32 offset)
-> >>>> @@ -280,6 +281,7 @@ static struct pci_ops cdns_ti_pcie_host_ops = {
-> >>>>
-> >>>>  static const struct j721e_pcie_data j721e_pcie_rc_data = {
-> >>>>         .mode = PCI_MODE_RC,
-> >>>> +       .quirk_retrain_flag = true,
-> >>>>  };
-> >>>>
-> >>>>  static const struct j721e_pcie_data j721e_pcie_ep_data = {
-> >>>> @@ -388,6 +390,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
-> >>>>
-> >>>>                 bridge->ops = &cdns_ti_pcie_host_ops;
-> >>>>                 rc = pci_host_bridge_priv(bridge);
-> >>>> +               rc->quirk_retrain_flag = data->quirk_retrain_flag;
-> >>>>
-> >>>>                 cdns_pcie = &rc->pcie;
-> >>>>                 cdns_pcie->dev = dev;
-> >>>> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-> >>>> index 811c1cb2e8de..773c0d1137ed 100644
-> >>>> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-> >>>> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-> >>>> @@ -77,6 +77,50 @@ static struct pci_ops cdns_pcie_host_ops = {
-> >>>>         .write          = pci_generic_config_write,
-> >>>>  };
-> >>>>
-> >>>> +static int cdns_pcie_host_wait_for_link(struct cdns_pcie *pcie)
-> >>>> +{
-> >>>> +       struct device *dev = pcie->dev;
-> >>>> +       int retries;
-> >>>> +
-> >>>> +       /* Check if the link is up or not */
-> >>>> +       for (retries = 0; retries < LINK_WAIT_MAX_RETRIES; retries++) {
-> >>>> +               if (cdns_pcie_link_up(pcie)) {
-> >>>> +                       dev_info(dev, "Link up\n");
-> >>>> +                       return 0;
-> >>>> +               }
-> >>>> +               usleep_range(LINK_WAIT_USLEEP_MIN, LINK_WAIT_USLEEP_MAX);
-> >>>> +       }
-> >>>> +
-> >>>> +       return -ETIMEDOUT;
-> >>>> +}
-> >>>> +
-> >>>> +static void cdns_pcie_retrain(struct cdns_pcie *pcie)
-> >>>> +{
-> >>>> +       u32 lnk_cap_sls, pcie_cap_off = CDNS_PCIE_RP_CAP_OFFSET;
-> >>>> +       u16 lnk_stat, lnk_ctl;
-> >>>> +
-> >>>> +       /*
-> >>>> +        * Set retrain bit if current speed is 2.5 GB/s,
-> >>>> +        * but the PCIe root port support is > 2.5 GB/s.
-> >>>
-> >>> If you don't have the retrain quirk, wouldn't this condition never
-> >>> happen and then the function is just a nop? So this could just be
-> >>> called unconditionally.
-> >>
-> >> Yeah, but only for the quirk we have to retrain to go to GEN2 speed
-> >> mode. Else the HW will automatically retrain and go to GEN2.
+> On Mon, 14 Dec 2020 at 23:58, Rob Herring <robh@kernel.org> wrote:
 > >
-> > Again, so you don't need a flag for this. Comparing the speed is
-> > enough. IOW, all you need is:
+> > On Fri, Dec 11, 2020 at 03:29:29PM +0100, Grzegorz Jaszczyk wrote:
+> > > From: Suman Anna <s-anna@ti.com>
+> > >
+> > > Add a YAML binding document for PRU consumers. The binding includes
+> > > all the common properties that can be used by different PRU consumer
+> > > or application nodes and supported by the PRU remoteproc driver.
+> > > These are used to configure the PRU hardware for specific user
+> > > applications.
+> > >
+> > > The application nodes themselves should define their own bindings.
+> > >
+> > > Co-developed-by: Tero Kristo <t-kristo@ti.com>
+> > > Signed-off-by: Tero Kristo <t-kristo@ti.com>
+> > > Signed-off-by: Suman Anna <s-anna@ti.com>
+> > > Co-developed-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> > > Signed-off-by: Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+> > > ---
+> > >  .../bindings/remoteproc/ti,pru-consumer.yaml  | 64 +++++++++++++++++++
+> > >  1 file changed, 64 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,pru-consumer.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/remoteproc/ti,pru-consumer.yaml b/Documentation/devicetree/bindings/remoteproc/ti,pru-consumer.yaml
+> > > new file mode 100644
+> > > index 000000000000..2c5c5e2b6159
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/remoteproc/ti,pru-consumer.yaml
+> > > @@ -0,0 +1,64 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/remoteproc/ti,pru-consumer.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Common TI PRU Consumer Binding
+> > > +
+> > > +maintainers:
+> > > +  - Suman Anna <s-anna@ti.com>
+> > > +
+> > > +description: |
+> > > +  A PRU application/consumer/user node typically uses one or more PRU device
+> > > +  nodes to implement a PRU application/functionality. Each application/client
+> > > +  node would need a reference to at least a PRU node, and optionally define
+> > > +  some properties needed for hardware/firmware configuration. The below
+> > > +  properties are a list of common properties supported by the PRU remoteproc
+> > > +  infrastructure.
+> > > +
+> > > +  The application nodes shall define their own bindings like regular platform
+> > > +  devices, so below are in addition to each node's bindings.
+> > > +
+> > > +properties:
+> > > +  prus:
 > >
-> > if (current speed < advertised speed)
-> >   do retrain
-> >
-> > The question is the condition ever true and you don't want to do a
-> > retrain? I could see higher speeds being unstable or something, but
+> > ti,prus
 >
-> For all GEN1 cards there will be re-train (since the Cadence IP RC is
-> GEN2 or more say). This is going to be true for older Cadence IPs and
-> newer Cadence IPs (where Cadence has enabled HW re-training).
+> Thank you - I will change and post v2 but with this I will run into
+> issues when this binding will be referenced by some consumer YAML
+> binding. Running dtbs_check in such case throws:
+> ... k3-am654-base-board.dt.yaml: serial@28000: 'ti,prus' does not
+> match any of the regexes: 'pinctrl-[0-9]+'
+> In the same time if I will remove this property from that node I am getting:
+> ... k3-am654-base-board.dt.yaml: serial@28000: 'ti,prus' is a required property
+> as expected.
+
+Sounds like you didn't update 'ti,prus' in whatever schema you include
+this one from.
+
 >
-> The quirk will prevent SW re-training for newer Cadence IPs when a GEN1
-> card is connected.
+> Getting rid of the comma from this property name workarounds mentioned
+> problem (which is not proper but allows me to correctly test this
+> binding): e.g. s/ti,prus/ti-pruss/ or using the previous name without
+> a comma.
+> It seems to be an issue with dtbs_check itself which we will encounter
+> in the future.
 
-Okay, got it.
+If not, can you point me to a branch having this problem.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Rob
