@@ -2,85 +2,178 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E62BC2DE75F
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Dec 2020 17:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF1902DE806
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Dec 2020 18:32:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725797AbgLRQWg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Dec 2020 11:22:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49186 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728293AbgLRQWg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Dec 2020 11:22:36 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA246C0617B0
-        for <linux-omap@vger.kernel.org>; Fri, 18 Dec 2020 08:21:55 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id x20so6762222lfe.12
-        for <linux-omap@vger.kernel.org>; Fri, 18 Dec 2020 08:21:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rDLpU6fmO9Dc1x1t61R7OfUqiugdNOS6K3qFKa97G3M=;
-        b=RNcrom89+00TLhoqKq5HSfBMQiTcLhLTVqleKDUtotyAUgS9d/nMNw/jGeiCQhM4jS
-         x9MkXG284bkHM8TnLfe9lsXoj0/J8isD4M9/eIiE02ofukBEqa6pmGSp6NUWXjWtfUUI
-         alAsm7chyGHjGOzMufNh4+niTbrfwWDZr1qAr/DCKiF+g1NK1GsVwDuzfUpQyxLvLfDt
-         bw81/eYelpMbjt92ZWTBzWGsI3ceWAxFY5un9rLm8PjM4rF/UJ1gc8WA6udpHCHg/Rtg
-         gIXyFNweAuSiawcTLQjmTNWA4MS0DEWEgZ+64SBtudrKJZpb3IJ7sgzPTlrf679bxakB
-         6WmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rDLpU6fmO9Dc1x1t61R7OfUqiugdNOS6K3qFKa97G3M=;
-        b=tO0y33gqgNsFfk2el+H+KmFev3NmjyLEZs/jsRx8hYz6JKKlcfaSE1DcLU0x+T9oWT
-         L6dD6IgocZMfSKEnjqI9PmFdbZIfLeeGDwBUNEO1jXHNiyrW+XWS09/dcjNDO16EzvLz
-         14r868g1kg9P0YiMMOMJTurAHnwbumZ30uEIQtwCwKxLTn2cPzRSheKIDItEm7v3cO6Z
-         HQLH3O7yASeenOsqUQcEgw9BV7mfZY5O/eA2lfOupsZ288oKbUZzWA8c4MNvLKSLivqv
-         MlyaLz2tWxNP/3lZAfWoCGe5cm0cgGY8zoArdh9eVOl6m7AZ7VhVGkI7G0/GXqGHU7DU
-         MVMA==
-X-Gm-Message-State: AOAM530MBBVLwmtC0haDUvIU9szdT+fGpUytHXjogkPMJuvp/WsiFdT1
-        1Wgg9yGvwBKkFd67h4U2+Fg9kyIyftTGHayV2slcbg==
-X-Google-Smtp-Source: ABdhPJyaI5j2YELD3txTYS+jzFJKX/484b8gFBA7GJ+WBgF/OzCBTjjZXSRym+OOTn9VZPe80LIn4ZlRTbk8tMpwEF0=
-X-Received: by 2002:a2e:586:: with SMTP id 128mr2273552ljf.273.1608308514133;
- Fri, 18 Dec 2020 08:21:54 -0800 (PST)
+        id S1727884AbgLRRcR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Dec 2020 12:32:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37076 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727787AbgLRRcR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 18 Dec 2020 12:32:17 -0500
+X-Gm-Message-State: AOAM530eYzdjIS03DeU23l1QN0UavYealEGwaEVsaREi6cWhayzQadiG
+        Qq/APuihaVTN2/VnS0yyYq4Xtr6Ws7wgbfp7Mg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608312696;
+        bh=BGGQyU71jC8PHb+t5FSRSX4kcxy5gG40URfePe8J9nU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=cC9AQytUFvAovKozDhlHSzCa40u9b51UDDu9DY6VQsEs2qwlTb7/eZ+duGTl5G1MJ
+         ltk1VO2sg5dTfQ9/rD8rASKJc+I7GyP3U29GCpmR4vNcsvQhuTGV9xRWhbP9HVb3Cr
+         GHcvUq6DPgtaiTnrm90fWn6uZTlOzXGvAz3ugrDpPpOwC9zbdWaT0hryRuRTgrwTal
+         8RHDiRRFV4faBB8B+E/aBqM+Qyr+AtKu47VmmKqT+pQW+ygXcKYgIsnYFKtt1PlFsj
+         2kRsozrN5SM3jDENsG6+VwteAIt6IsjRhBdaQHFUKX3GBUBFmwd3KMIUCI0udLN/Mh
+         Rfjes/c6AAKKA==
+X-Google-Smtp-Source: ABdhPJx+/RIAdMo/5KCMW4U0Xhm+Ecu8VxfrvTtPK9bsliEAA6f3bzT1/rBR+63O/WV/mn7yv7B+sDblEkk6WewuJ5I=
+X-Received: by 2002:a17:906:d87:: with SMTP id m7mr5100609eji.108.1608312694596;
+ Fri, 18 Dec 2020 09:31:34 -0800 (PST)
 MIME-Version: 1.0
-References: <20201214210121.22042-1-aaro.koskinen@iki.fi>
-In-Reply-To: <20201214210121.22042-1-aaro.koskinen@iki.fi>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 18 Dec 2020 17:21:42 +0100
-Message-ID: <CACRpkdbayocHXEgvfs9d1YCj2TN=nMpEkpXiF4T95MVuBwHUSw@mail.gmail.com>
-Subject: Re: [PATCH] ARM: OMAP1: OSK: fix ohci-omap breakage
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20201215070009.27937-1-kishon@ti.com> <CAL_JsqJzi7JkMcd4NZewA=w8q6BsCkrhW3JcED63R=EyE3v29Q@mail.gmail.com>
+ <1ec78477-dadc-cbef-406f-568f44b6c62d@ti.com> <CAL_JsqLepmopGObX_r+7gtR+keaNtEAA3WA1j697T4jAWP8DHA@mail.gmail.com>
+ <96ca64cb-ec3a-bb83-2de3-775034ba844b@ti.com>
+In-Reply-To: <96ca64cb-ec3a-bb83-2de3-775034ba844b@ti.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 18 Dec 2020 11:31:22 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+fP4CcxVm89YkUYDK9eX2j8Yac97nMCLnxGnMakopc7g@mail.gmail.com>
+Message-ID: <CAL_Jsq+fP4CcxVm89YkUYDK9eX2j8Yac97nMCLnxGnMakopc7g@mail.gmail.com>
+Subject: Re: [PATCH v5] PCI: cadence: Retrain Link to work around Gen2
+ training defect.
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Tom Joseph <tjoseph@cadence.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Nadeem Athani <nadeem@cadence.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        PCI <linux-pci@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Milind Parab <mparab@cadence.com>,
+        Swapnil Kashinath Jakhade <sjakhade@cadence.com>,
+        Parshuram Raju Thombare <pthombar@cadence.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Dec 14, 2020 at 10:01 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-
-> From: Linus Walleij <linus.walleij@linaro.org>
+On Fri, Dec 18, 2020 at 8:42 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
 >
-> Commit 45c5775460f3 ("usb: ohci-omap: Fix descriptor conversion") tried to
-> fix all issues related to ohci-omap descriptor conversion, but a wrong
-> patch was applied, and one needed change to the OSK board file is still
-> missing. Fix that.
+> Hi Rob,
 >
-> Fixes: 45c5775460f3 ("usb: ohci-omap: Fix descriptor conversion")
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> [aaro.koskinen@iki.fi: rebased and updated the changelog]
-> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> On 16/12/20 10:31 pm, Rob Herring wrote:
+> > On Wed, Dec 16, 2020 at 9:01 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+> >>
+> >> Hi Rob,
+> >>
+> >> On 15/12/20 9:23 pm, Rob Herring wrote:
+> >>> On Tue, Dec 15, 2020 at 1:00 AM Kishon Vijay Abraham I <kishon@ti.com> wrote:
+> >>>>
+> >>>> From: Nadeem Athani <nadeem@cadence.com>
+> >>>>
+> >>>> Cadence controller will not initiate autonomous speed change if strapped as
+> >>>> Gen2. The Retrain Link bit is set as quirk to enable this speed change.
+> >>>>
+> >>>> Signed-off-by: Nadeem Athani <nadeem@cadence.com>
+> >>>> [kishon@ti.com: Enable the workaround for TI's J721E SoC]
+> >>>> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> >>>> ---
+> >>>> Hi Lorenzo,
+> >>>> The previous version of the patch can be found at [1].
+> >>>> I slightly re-worked the patch from Nadeem
+> >>>> *) Removed additional Link Up Check
+> >>>> *) Removed quirk from pcie-cadence-plat.c
+> >>>> *) Also removed additional compatible
+> >>>>    "cdns,cdns-pcie-host-quirk-retrain" added in that series
+> >>>> *) Enabled the quirk for J721E
+> >>>> [1] -> http://lore.kernel.org/r/20201211144236.3825-1-nadeem@cadence.com
+> >>>>
+> >>>>  drivers/pci/controller/cadence/pci-j721e.c    |  3 +
+> >>>>  .../controller/cadence/pcie-cadence-host.c    | 67 ++++++++++++++-----
+> >>>>  drivers/pci/controller/cadence/pcie-cadence.h | 11 ++-
+> >>>>  3 files changed, 62 insertions(+), 19 deletions(-)
+> >>>>
+> >>>> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> >>>> index dac1ac8a7615..baf729850cb1 100644
+> >>>> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> >>>> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> >>>> @@ -64,6 +64,7 @@ enum j721e_pcie_mode {
+> >>>>
+> >>>>  struct j721e_pcie_data {
+> >>>>         enum j721e_pcie_mode    mode;
+> >>>> +       bool                    quirk_retrain_flag;
+> >>>>  };
+> >>>>
+> >>>>  static inline u32 j721e_pcie_user_readl(struct j721e_pcie *pcie, u32 offset)
+> >>>> @@ -280,6 +281,7 @@ static struct pci_ops cdns_ti_pcie_host_ops = {
+> >>>>
+> >>>>  static const struct j721e_pcie_data j721e_pcie_rc_data = {
+> >>>>         .mode = PCI_MODE_RC,
+> >>>> +       .quirk_retrain_flag = true,
+> >>>>  };
+> >>>>
+> >>>>  static const struct j721e_pcie_data j721e_pcie_ep_data = {
+> >>>> @@ -388,6 +390,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+> >>>>
+> >>>>                 bridge->ops = &cdns_ti_pcie_host_ops;
+> >>>>                 rc = pci_host_bridge_priv(bridge);
+> >>>> +               rc->quirk_retrain_flag = data->quirk_retrain_flag;
+> >>>>
+> >>>>                 cdns_pcie = &rc->pcie;
+> >>>>                 cdns_pcie->dev = dev;
+> >>>> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> >>>> index 811c1cb2e8de..773c0d1137ed 100644
+> >>>> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
+> >>>> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> >>>> @@ -77,6 +77,50 @@ static struct pci_ops cdns_pcie_host_ops = {
+> >>>>         .write          = pci_generic_config_write,
+> >>>>  };
+> >>>>
+> >>>> +static int cdns_pcie_host_wait_for_link(struct cdns_pcie *pcie)
+> >>>> +{
+> >>>> +       struct device *dev = pcie->dev;
+> >>>> +       int retries;
+> >>>> +
+> >>>> +       /* Check if the link is up or not */
+> >>>> +       for (retries = 0; retries < LINK_WAIT_MAX_RETRIES; retries++) {
+> >>>> +               if (cdns_pcie_link_up(pcie)) {
+> >>>> +                       dev_info(dev, "Link up\n");
+> >>>> +                       return 0;
+> >>>> +               }
+> >>>> +               usleep_range(LINK_WAIT_USLEEP_MIN, LINK_WAIT_USLEEP_MAX);
+> >>>> +       }
+> >>>> +
+> >>>> +       return -ETIMEDOUT;
+> >>>> +}
+> >>>> +
+> >>>> +static void cdns_pcie_retrain(struct cdns_pcie *pcie)
+> >>>> +{
+> >>>> +       u32 lnk_cap_sls, pcie_cap_off = CDNS_PCIE_RP_CAP_OFFSET;
+> >>>> +       u16 lnk_stat, lnk_ctl;
+> >>>> +
+> >>>> +       /*
+> >>>> +        * Set retrain bit if current speed is 2.5 GB/s,
+> >>>> +        * but the PCIe root port support is > 2.5 GB/s.
+> >>>
+> >>> If you don't have the retrain quirk, wouldn't this condition never
+> >>> happen and then the function is just a nop? So this could just be
+> >>> called unconditionally.
+> >>
+> >> Yeah, but only for the quirk we have to retrain to go to GEN2 speed
+> >> mode. Else the HW will automatically retrain and go to GEN2.
+> >
+> > Again, so you don't need a flag for this. Comparing the speed is
+> > enough. IOW, all you need is:
+> >
+> > if (current speed < advertised speed)
+> >   do retrain
+> >
+> > The question is the condition ever true and you don't want to do a
+> > retrain? I could see higher speeds being unstable or something, but
+>
+> For all GEN1 cards there will be re-train (since the Cadence IP RC is
+> GEN2 or more say). This is going to be true for older Cadence IPs and
+> newer Cadence IPs (where Cadence has enabled HW re-training).
+>
+> The quirk will prevent SW re-training for newer Cadence IPs when a GEN1
+> card is connected.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Okay, got it.
 
-Thanks for sweeping up the mistakes, much appreciated!
-
-I am vaguely feeling it might be lower effort for me to convert
-the OSK board to device tree than fixing all GPIO consumers
-one by one, but I don't think I could procure the hardware :P
-
-Yours,
-Linus Walleij
+Reviewed-by: Rob Herring <robh@kernel.org>
