@@ -2,85 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6758B2E1AFC
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Dec 2020 11:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62E6C2E1D29
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Dec 2020 15:15:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728295AbgLWKdT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Dec 2020 05:33:19 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.164]:28547 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728281AbgLWKdT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Dec 2020 05:33:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1608719426;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=Message-Id:Date:Subject:Cc:To:From:From:Subject:Sender;
-        bh=bY0YzpEUeI+dY4ou93dboe/6Z74HesRpsnfqjYRk2Jk=;
-        b=lL6IgAEXY6I4W8OjCuuX8DdtjeyuS/9rU6uPziOF/j64mmPxxkkiE/cGMd2QNNsYhJ
-        rCNzF2mCu0BazsXVib4w1HS1my9dDIBULF8Qi/h5ZJm6suk4eQgWY+LozQHWiF5iuw8f
-        G40iGfkepAtmxy7+FZts44EdvHOy+ICJWKdSE0zo/3DqFsY6D8V++dbdRaRQz1hUbLjH
-        S5ah4zT/hZnobZJpzF1cIsKBtPXhUwwgrqzV6WB4qTWJU+Xy6GjVmJVWgt0wem5HeHZ3
-        d/vusWL9GS0P03fapanvp/ce3ytcBx6Em3tohwCv8NzkAHLow99/MILIPBl2xgMpy3sc
-        uStw==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXH7FjJ5/fxd"
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-        by smtp.strato.de (RZmta 47.10.7 DYNA|AUTH)
-        with ESMTPSA id y052d6wBNAUM04l
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Wed, 23 Dec 2020 11:30:22 +0100 (CET)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
-        Andreas Kemnade <andreas@kemnade.info>,
-        kernel@pyra-handheld.com,
-        "H. Nikolaus Schaller" <hns@goldelico.com>, stable@vger.kernel.org
-Subject: [PATCH] DTS: ARM: gta04: SPI panel chip select is active low
-Date:   Wed, 23 Dec 2020 11:30:21 +0100
-Message-Id: <a539758e798631b54a85df102a1c6635e1f70b37.1608719420.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.26.2
+        id S1728686AbgLWOOV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Dec 2020 09:14:21 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:9917 "EHLO
+        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728691AbgLWOOV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Dec 2020 09:14:21 -0500
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4D1FXc6Jz9z7Dn5;
+        Wed, 23 Dec 2020 22:12:48 +0800 (CST)
+Received: from ubuntu.network (10.175.138.68) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 23 Dec 2020 22:13:21 +0800
+From:   Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <b.zolnierkie@samsung.com>, <linux-omap@vger.kernel.org>,
+        <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
+Subject: [PATCH -next] video: fbdev: omap2: Use DEFINE_SPINLOCK() for spinlock
+Date:   Wed, 23 Dec 2020 22:13:57 +0800
+Message-ID: <20201223141357.780-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.138.68]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-With the arrival of
+spinlock can be initialized automatically with DEFINE_SPINLOCK()
+rather than explicitly calling spin_lock_init().
 
-commit 2fee9583198eb9 ("spi: dt-bindings: clarify CS behavior for spi-cs-high and gpio descriptors")
-
-it was clarified what the proper state for cs-gpios should be, even if the
-flag is ignored. The driver code is doing the right thing since
-
-766c6b63aa04 ("spi: fix client driver breakages when using GPIO descriptors")
-
-The chip-select of the td028ttec1 panel is active-low, so we must omit spi-cs-high;
-attribute (already removed by separate patch) and should now use GPIO_ACTIVE_LOW for
-the client device description to be fully consistent.
-
-Fixes: 766c6b63aa04 ("spi: fix client driver breakages when using GPIO descriptors")
-CC: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 ---
- arch/arm/boot/dts/omap3-gta04.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/omap2/omapfb/dss/apply.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi b/arch/arm/boot/dts/omap3-gta04.dtsi
-index 003202d129907b..7b8c18e6605e40 100644
---- a/arch/arm/boot/dts/omap3-gta04.dtsi
-+++ b/arch/arm/boot/dts/omap3-gta04.dtsi
-@@ -114,7 +114,7 @@ spi_lcd: spi_lcd {
- 		gpio-sck = <&gpio1 12 GPIO_ACTIVE_HIGH>;
- 		gpio-miso = <&gpio1 18 GPIO_ACTIVE_HIGH>;
- 		gpio-mosi = <&gpio1 20 GPIO_ACTIVE_HIGH>;
--		cs-gpios = <&gpio1 19 GPIO_ACTIVE_HIGH>;
-+		cs-gpios = <&gpio1 19 GPIO_ACTIVE_LOW>;
- 		num-chipselects = <1>;
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/apply.c b/drivers/video/fbdev/omap2/omapfb/dss/apply.c
+index c71021091828..acca991c7540 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/apply.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/apply.c
+@@ -108,7 +108,7 @@ static struct {
+ } dss_data;
  
- 		/* lcd panel */
+ /* protects dss_data */
+-static spinlock_t data_lock;
++static DEFINE_SPINLOCK(data_lock);
+ /* lock for blocking functions */
+ static DEFINE_MUTEX(apply_lock);
+ static DECLARE_COMPLETION(extra_updated_completion);
+@@ -131,8 +131,6 @@ static void apply_init_priv(void)
+ 	struct mgr_priv_data *mp;
+ 	int i;
+ 
+-	spin_lock_init(&data_lock);
+-
+ 	for (i = 0; i < num_ovls; ++i) {
+ 		struct ovl_priv_data *op;
+ 
 -- 
-2.26.2
+2.22.0
 
