@@ -2,78 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E2592E16C2
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Dec 2020 04:10:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6758B2E1AFC
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Dec 2020 11:34:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731347AbgLWDCD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Dec 2020 22:02:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45396 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728729AbgLWCTm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 22 Dec 2020 21:19:42 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D844F229CA;
-        Wed, 23 Dec 2020 02:19:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1608689954;
-        bh=Ny0nvANgIhhU6bTHscWWumHSI7lRAkDxmM5KCedXLDs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Au4Wku9gEgHzhswKaaM2klLl0I7Azuga3aQgGNR6DOPEOJ9QgE3yvJg8YUvYwbWEY
-         79k9p4c0+Ar3+YTu3QsY7Ptpxn1dco6BjQC/b82rg1dtKv3+6smW5MScZZL1AKk1mC
-         4gnC7PjNN8JPw1+6C5/EpOV+RK0dfg4ZgK+WEVMHBfZqIik0VkpEQ05dJx6oIBJaRd
-         8ObpErOz/IA0Q5WzAlojCfnAWwExcis3+R1Jks7zZqfDM1QtseQyb/uNxOcRo+bwKc
-         9Rg7B8KZZYDRJynVbYOPeeNgyq+hgC2oqshOvJygWMl0adWRT6tdKtGzFAFOSHZ2r/
-         PsVjKM8VaECBA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Youling Tang <tangyouling@loongson.cn>,
+        id S1728295AbgLWKdT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 23 Dec 2020 05:33:19 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.164]:28547 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728281AbgLWKdT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Dec 2020 05:33:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1608719426;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=Message-Id:Date:Subject:Cc:To:From:From:Subject:Sender;
+        bh=bY0YzpEUeI+dY4ou93dboe/6Z74HesRpsnfqjYRk2Jk=;
+        b=lL6IgAEXY6I4W8OjCuuX8DdtjeyuS/9rU6uPziOF/j64mmPxxkkiE/cGMd2QNNsYhJ
+        rCNzF2mCu0BazsXVib4w1HS1my9dDIBULF8Qi/h5ZJm6suk4eQgWY+LozQHWiF5iuw8f
+        G40iGfkepAtmxy7+FZts44EdvHOy+ICJWKdSE0zo/3DqFsY6D8V++dbdRaRQz1hUbLjH
+        S5ah4zT/hZnobZJpzF1cIsKBtPXhUwwgrqzV6WB4qTWJU+Xy6GjVmJVWgt0wem5HeHZ3
+        d/vusWL9GS0P03fapanvp/ce3ytcBx6Em3tohwCv8NzkAHLow99/MILIPBl2xgMpy3sc
+        uStw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXH7FjJ5/fxd"
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+        by smtp.strato.de (RZmta 47.10.7 DYNA|AUTH)
+        with ESMTPSA id y052d6wBNAUM04l
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Wed, 23 Dec 2020 11:30:22 +0100 (CET)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 047/130] ARM: OMAP2+: Fix memleak in omap2xxx_clkt_vps_init
-Date:   Tue, 22 Dec 2020 21:16:50 -0500
-Message-Id: <20201223021813.2791612-47-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20201223021813.2791612-1-sashal@kernel.org>
-References: <20201223021813.2791612-1-sashal@kernel.org>
+        Rob Herring <robh+dt@kernel.org>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        Andreas Kemnade <andreas@kemnade.info>,
+        kernel@pyra-handheld.com,
+        "H. Nikolaus Schaller" <hns@goldelico.com>, stable@vger.kernel.org
+Subject: [PATCH] DTS: ARM: gta04: SPI panel chip select is active low
+Date:   Wed, 23 Dec 2020 11:30:21 +0100
+Message-Id: <a539758e798631b54a85df102a1c6635e1f70b37.1608719420.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Youling Tang <tangyouling@loongson.cn>
+With the arrival of
 
-[ Upstream commit 3c5902d270edb6ccc3049acfe5d3e96653c87dcd ]
+commit 2fee9583198eb9 ("spi: dt-bindings: clarify CS behavior for spi-cs-high and gpio descriptors")
 
-If the clk_register fails, we should free hw before function returns to
-prevent memleak.
+it was clarified what the proper state for cs-gpios should be, even if the
+flag is ignored. The driver code is doing the right thing since
 
-Signed-off-by: Youling Tang <tangyouling@loongson.cn>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+766c6b63aa04 ("spi: fix client driver breakages when using GPIO descriptors")
+
+The chip-select of the td028ttec1 panel is active-low, so we must omit spi-cs-high;
+attribute (already removed by separate patch) and should now use GPIO_ACTIVE_LOW for
+the client device description to be fully consistent.
+
+Fixes: 766c6b63aa04 ("spi: fix client driver breakages when using GPIO descriptors")
+CC: stable@vger.kernel.org
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/boot/dts/omap3-gta04.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c b/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
-index 2a3e72286d3ab..70892b3da28d3 100644
---- a/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
-+++ b/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
-@@ -244,6 +244,12 @@ void omap2xxx_clkt_vps_init(void)
- 	hw->hw.init = &init;
+diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi b/arch/arm/boot/dts/omap3-gta04.dtsi
+index 003202d129907b..7b8c18e6605e40 100644
+--- a/arch/arm/boot/dts/omap3-gta04.dtsi
++++ b/arch/arm/boot/dts/omap3-gta04.dtsi
+@@ -114,7 +114,7 @@ spi_lcd: spi_lcd {
+ 		gpio-sck = <&gpio1 12 GPIO_ACTIVE_HIGH>;
+ 		gpio-miso = <&gpio1 18 GPIO_ACTIVE_HIGH>;
+ 		gpio-mosi = <&gpio1 20 GPIO_ACTIVE_HIGH>;
+-		cs-gpios = <&gpio1 19 GPIO_ACTIVE_HIGH>;
++		cs-gpios = <&gpio1 19 GPIO_ACTIVE_LOW>;
+ 		num-chipselects = <1>;
  
- 	clk = clk_register(NULL, &hw->hw);
-+	if (IS_ERR(clk)) {
-+		printk(KERN_ERR "Failed to register clock\n");
-+		kfree(hw);
-+		return;
-+	}
-+
- 	clkdev_create(clk, "cpufreq_ck", NULL);
- 	return;
- cleanup:
+ 		/* lcd panel */
 -- 
-2.27.0
+2.26.2
 
