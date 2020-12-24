@@ -2,69 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62E6C2E1D29
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Dec 2020 15:15:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DEDF2E2561
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Dec 2020 09:04:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728686AbgLWOOV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Dec 2020 09:14:21 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:9917 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728691AbgLWOOV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Dec 2020 09:14:21 -0500
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4D1FXc6Jz9z7Dn5;
-        Wed, 23 Dec 2020 22:12:48 +0800 (CST)
-Received: from ubuntu.network (10.175.138.68) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.498.0; Wed, 23 Dec 2020 22:13:21 +0800
-From:   Zheng Yongjun <zhengyongjun3@huawei.com>
-To:     <b.zolnierkie@samsung.com>, <linux-omap@vger.kernel.org>,
-        <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Zheng Yongjun <zhengyongjun3@huawei.com>
-Subject: [PATCH -next] video: fbdev: omap2: Use DEFINE_SPINLOCK() for spinlock
-Date:   Wed, 23 Dec 2020 22:13:57 +0800
-Message-ID: <20201223141357.780-1-zhengyongjun3@huawei.com>
-X-Mailer: git-send-email 2.22.0
+        id S1727621AbgLXID0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Dec 2020 03:03:26 -0500
+Received: from muru.com ([72.249.23.125]:40270 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726159AbgLXID0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 24 Dec 2020 03:03:26 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 779C580C2;
+        Thu, 24 Dec 2020 08:02:51 +0000 (UTC)
+Date:   Thu, 24 Dec 2020 10:02:39 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Johan Hovold <johan@kernel.org>, phone-devel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCHv6 0/4] n_gsm serdev support and protocol driver for
+ droid4 modem
+Message-ID: <20201224080239.GF26857@atomide.com>
+References: <20200421232752.3070-1-tony@atomide.com>
+ <20200423114326.GQ18608@localhost>
+ <20200423153756.GE37466@atomide.com>
+ <20200528082420.GA10358@localhost>
+ <20201220224816.GA28213@duo.ucw.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.138.68]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201220224816.GA28213@duo.ucw.cz>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-spinlock can be initialized automatically with DEFINE_SPINLOCK()
-rather than explicitly calling spin_lock_init().
+Hi,
 
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
----
- drivers/video/fbdev/omap2/omapfb/dss/apply.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+* Pavel Machek <pavel@ucw.cz> [201220 22:48]:
+> Hi!
+> 
+> > Sorry about the late reply on this.
+> 
+> I'm afraid I'll need some more answers in near future, but for now:
+> 
+> Tony, do you remember / can you figure out what gsmtty GPS is on? I
+> never used it on that interface, and I can't seem to figure it out.
+> 
+> My notes say:
+> 
+> /dev/motmdm1 -- basic support, calls, on/off                                    
+> /dev/motmdm3 -- send sms interface                                              
+> /dev/motmdm9 -- receive sms interface                                           
+>
+> (and gsmtty numbering is same)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/apply.c b/drivers/video/fbdev/omap2/omapfb/dss/apply.c
-index c71021091828..acca991c7540 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/apply.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/apply.c
-@@ -108,7 +108,7 @@ static struct {
- } dss_data;
- 
- /* protects dss_data */
--static spinlock_t data_lock;
-+static DEFINE_SPINLOCK(data_lock);
- /* lock for blocking functions */
- static DEFINE_MUTEX(apply_lock);
- static DECLARE_COMPLETION(extra_updated_completion);
-@@ -131,8 +131,6 @@ static void apply_init_priv(void)
- 	struct mgr_priv_data *mp;
- 	int i;
- 
--	spin_lock_init(&data_lock);
--
- 	for (i = 0; i < num_ovls; ++i) {
- 		struct ovl_priv_data *op;
- 
--- 
-2.22.0
+Yes I have not had a chance to look at these for several months now,
+but have the latest set in droid4-pending-v5.10 branch in my github
+tree.
 
+The gnss device is at /dev/gsmtty6, see the current droid4-agps tool
+to upload the almanac also on github. That's has turned out to be a
+pretty good gsm serdev test too :)
+
+> For now I converted gnss driver to use serdev interface, and n_gsm to
+> provide it... Not yet finished but I believe I'm walking in the right
+> direction.
+
+Great, sounds good to me if you got things working with just serdev
+calls :) I'll try to take a look at this stuff again after I have
+the other pending droid4 issues out of the way like v5.12 charger
+and keyboard stuff.
+
+Regards,
+
+Tony
