@@ -2,125 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14B892E2695
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Dec 2020 12:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDE122E27D4
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Dec 2020 16:00:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728230AbgLXL6Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Dec 2020 06:58:16 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:41600 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726746AbgLXL6Q (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Dec 2020 06:58:16 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BOBvRIA086889;
-        Thu, 24 Dec 2020 05:57:27 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1608811047;
-        bh=wQTq7FhKu7M5hoDmCgbENkxGmB7RVPt1BHM/ptKQwmE=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=r7FACEs8Zjnm425OkXaQfsJUUH1T8nNYXh1Hgho4RW/s4hSSEQ2ZNBKiLMbK+iz8O
-         84dsiv9oxy8FFtqfv0jJjoSVBhD9U09gAf9mwrf7yucbXErUTQgp+oNnIf5tv5YvmH
-         d8GfCgHzGlSdie6PJmguR5NZjevJOnTa3xqA70xY=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BOBvROX117625
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 24 Dec 2020 05:57:27 -0600
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 24
- Dec 2020 05:57:27 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 24 Dec 2020 05:57:27 -0600
-Received: from a0393678-ssd.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BOBv0Hu006549;
-        Thu, 24 Dec 2020 05:57:22 -0600
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-To:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-CC:     <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH 4/4] PCI: j721e: Add support to provide refclk to PCIe connector
-Date:   Thu, 24 Dec 2020 17:26:58 +0530
-Message-ID: <20201224115658.2795-5-kishon@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201224115658.2795-1-kishon@ti.com>
-References: <20201224115658.2795-1-kishon@ti.com>
+        id S1727184AbgLXO7p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Dec 2020 09:59:45 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:35460 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726609AbgLXO7p (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Dec 2020 09:59:45 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 141511C0B96; Thu, 24 Dec 2020 15:59:02 +0100 (CET)
+Date:   Thu, 24 Dec 2020 15:59:01 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Johan Hovold <johan@kernel.org>, phone-devel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCHv6 0/4] n_gsm serdev support and protocol driver for
+ droid4 modem
+Message-ID: <20201224145901.GA13643@duo.ucw.cz>
+References: <20200421232752.3070-1-tony@atomide.com>
+ <20200423114326.GQ18608@localhost>
+ <20200423153756.GE37466@atomide.com>
+ <20200528082420.GA10358@localhost>
+ <20201220224816.GA28213@duo.ucw.cz>
+ <20201224080239.GF26857@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="tKW2IUtsqtDRztdT"
+Content-Disposition: inline
+In-Reply-To: <20201224080239.GF26857@atomide.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add support to provide refclk to PCIe connector.
 
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
----
- drivers/pci/controller/cadence/pci-j721e.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+--tKW2IUtsqtDRztdT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index dac1ac8a7615..8ec6d9c3e164 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -6,6 +6,7 @@
-  * Author: Kishon Vijay Abraham I <kishon@ti.com>
-  */
- 
-+#include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/gpio/consumer.h>
- #include <linux/io.h>
-@@ -50,6 +51,7 @@ enum link_status {
- 
- struct j721e_pcie {
- 	struct device		*dev;
-+	struct clk		*refclk;
- 	u32			mode;
- 	u32			num_lanes;
- 	struct cdns_pcie	*cdns_pcie;
-@@ -310,6 +312,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 	struct cdns_pcie_ep *ep;
- 	struct gpio_desc *gpiod;
- 	void __iomem *base;
-+	struct clk *clk;
- 	u32 num_lanes;
- 	u32 mode;
- 	int ret;
-@@ -408,6 +411,19 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 			goto err_get_sync;
- 		}
- 
-+		clk = devm_clk_get_optional(dev, "pcie_refclk");
-+		if (IS_ERR(clk)) {
-+			dev_err(dev, "failed to get pcie_refclk\n");
-+			goto err_pcie_setup;
-+		}
-+
-+		ret = clk_prepare_enable(clk);
-+		if (ret) {
-+			dev_err(dev, "failed to enable pcie_refclk\n");
-+			goto err_get_sync;
-+		}
-+		pcie->refclk = clk;
-+
- 		/*
- 		 * "Power Sequencing and Reset Signal Timings" table in
- 		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
-@@ -476,6 +492,7 @@ static int j721e_pcie_remove(struct platform_device *pdev)
- 	struct cdns_pcie *cdns_pcie = pcie->cdns_pcie;
- 	struct device *dev = &pdev->dev;
- 
-+	clk_disable_unprepare(pcie->refclk);
- 	cdns_pcie_disable_phy(cdns_pcie);
- 	pm_runtime_put(dev);
- 	pm_runtime_disable(dev);
--- 
-2.17.1
+Hi!
 
+> > My notes say:
+> >=20
+> > /dev/motmdm1 -- basic support, calls, on/off                           =
+        =20
+> > /dev/motmdm3 -- send sms interface                                     =
+        =20
+> > /dev/motmdm9 -- receive sms interface                                  =
+        =20
+> >
+> > (and gsmtty numbering is same)
+>=20
+> Yes I have not had a chance to look at these for several months now,
+> but have the latest set in droid4-pending-v5.10 branch in my github
+> tree.
+>=20
+> The gnss device is at /dev/gsmtty6, see the current droid4-agps tool
+> to upload the almanac also on github. That's has turned out to be a
+> pretty good gsm serdev test too :)
+
+Thanks a lot for the info! Is it this one?
+https://github.com/tmlind/droid4-agps . GPS worked for me even w/o
+AGPS support, but I broke even that, so I need to fix that first.
+
+> > For now I converted gnss driver to use serdev interface, and n_gsm to
+> > provide it... Not yet finished but I believe I'm walking in the right
+> > direction.
+>=20
+> Great, sounds good to me if you got things working with just serdev
+> calls :) I'll try to take a look at this stuff again after I have
+> the other pending droid4 issues out of the way like v5.12 charger
+> and keyboard stuff.
+
+Just ask for latest code :-). I still believe I'm going right
+direction, but now I understand why you did it the way you did. Sound
+code needs to listen on gsmtty1, with the data still being provided
+for userspace.
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--tKW2IUtsqtDRztdT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX+SstQAKCRAw5/Bqldv6
+8q2XAKC32dUkwQADDsKasbqBoLCsPuZZWACeMPhDNUkIk389F+IIFLew3RD5ScE=
+=CsTh
+-----END PGP SIGNATURE-----
+
+--tKW2IUtsqtDRztdT--
