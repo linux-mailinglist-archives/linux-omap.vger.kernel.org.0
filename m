@@ -2,166 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D04F2E3218
-	for <lists+linux-omap@lfdr.de>; Sun, 27 Dec 2020 18:22:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3C2A2E34FD
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Dec 2020 09:18:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726285AbgL0RWK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 27 Dec 2020 12:22:10 -0500
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.20]:23216 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726087AbgL0RWK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Dec 2020 12:22:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1609089496;
-        s=strato-dkim-0002; d=dawncrow.de;
-        h=Message-Id:Date:Subject:Cc:To:From:From:Subject:Sender;
-        bh=AYP9y6KOydXsdhMgYt+y5hc/J9s2ujIb0ELIsjHwReo=;
-        b=B1N4mQyoCQbOtoM4HqloJUM5h5+BJxXJeAKC1SAYeUqU+c5ZdJti9siJ+9jUbuL0lo
-        bxb8lbK1YebPJKSrbdWv4Ae1Hu+tFEsXHmooBLKP9kv5GMpXeScAt3m5DrZHGUl375QB
-        nkylqoPaqLIpfHuxLBCnPQybZengRNCHE0uxXTAhaH1FQGd1fshqt50J7m851OZseUJe
-        LJ8m0nQalCYh6BvxsDf4XPfyLWFiRes6ZfPABoMZifPrQM9fmcgElLf8j6bundhbudth
-        cYu1edndPwMzwD6Chdlt/b8m3qEsSC23QTC1YPxea0KkeBPDFBK/BzLnpu2qlTmaW2ge
-        giKQ==
-X-RZG-AUTH: ":ImkWY2CseuihIZy6ZWWciR6unPhpN+aXzZGGjY6ptdusOaLnXzn3ovD/FrJVNw=="
-X-RZG-CLASS-ID: mo00
-Received: from tesla.fritz.box
-        by smtp.strato.de (RZmta 47.10.7 DYNA|AUTH)
-        with ESMTPSA id L0b32cwBRHEA68j
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Sun, 27 Dec 2020 18:14:10 +0100 (CET)
-From:   =?UTF-8?q?Andr=C3=A9=20Hentschel?= <nerv@dawncrow.de>
-To:     robh+dt@kernel.org, bcousson@baylibre.com, tony@atomide.com,
-        linux-omap@vger.kernel.org
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: omap3-echo: Add speaker sound card support
-Date:   Sun, 27 Dec 2020 18:13:53 +0100
-Message-Id: <20201227171353.2002674-1-nerv@dawncrow.de>
-X-Mailer: git-send-email 2.25.1
+        id S1726486AbgL1IR4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Dec 2020 03:17:56 -0500
+Received: from server28.superhosting.bg ([217.174.156.11]:38724 "EHLO
+        server28.superhosting.bg" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726470AbgL1IR4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Dec 2020 03:17:56 -0500
+X-Greylist: delayed 1644 seconds by postgrey-1.27 at vger.kernel.org; Mon, 28 Dec 2020 03:17:54 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dinux.eu;
+         s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=tZuFaG5joET93VOBoGovQ+P9CJGFAP2C2y5iFf+oEZQ=; b=TKWh38ujgVcC5yELFfnHLdSTc0
+        feeQhH3To9cLhc23aTQvcDAdYgwiSdBGZB5iSuFx6gvm+OfEtW5aTj78W9mjNwp0vZlT1F/G3cJWi
+        Mr3S0okq6S4l0Jdb7J2zAXLzbvrAlJbZTR8ODOW/N0G3/Q9Dd9GT9WkrRP7HRmQ2k2DL/5SAQqflP
+        n+vR8W2ddnTNS+CNGInqeK3FenFYSr7Il903z3AcgkcF79uutotf4PT1Xco6YNYS3VyAbUu2ub3vq
+        2SRJvotSqcsTKGvBhMpYgqZKbABy/+ZeuMjTHp7kLyR/ULAivMZXhNcNYVZL4KLmlMdn75bIK2r97
+        3+kCrOfw==;
+Received: from [95.87.234.74] (port=40156 helo=localhost.localdomain)
+        by server28.superhosting.bg with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <dimitar@dinux.eu>)
+        id 1ktnHl-0000iW-S4; Mon, 28 Dec 2020 09:49:48 +0200
+From:   Dimitar Dimitrov <dimitar@dinux.eu>
+To:     ohad@wizery.com, bjorn.andersson@linaro.org
+Cc:     Dimitar Dimitrov <dimitar@dinux.eu>,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
+        Suman Anna <s-anna@ti.com>
+Subject: [PATCH] remoteproc: pru: Fix loading of GNU Binutils ELF
+Date:   Mon, 28 Dec 2020 09:49:33 +0200
+Message-Id: <20201228074933.22675-1-dimitar@dinux.eu>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-OutGoing-Spam-Status: No, score=-0.2
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server28.superhosting.bg
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - dinux.eu
+X-Get-Message-Sender-Via: server28.superhosting.bg: authenticated_id: dimitar@dinux.eu
+X-Authenticated-Sender: server28.superhosting.bg: dimitar@dinux.eu
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This adds audio playback to the first generation Amazon Echo
+PRU port of GNU Binutils lacks support for separate address spaces.
+PRU IRAM addresses are marked with artificial offset to differentiate
+them from DRAM addresses. Hence remoteproc must mask IRAM addresses
+coming from GNU ELF in order to get the true hardware address.
 
-Signed-off-by: André Hentschel <nerv@dawncrow.de>
+Patch was tested on top of latest linux-remoteproc/for-next branch:
+  commit 4c0943255805 ("Merge branches 'hwspinlock-next', 'rpmsg-next' and 'rproc-next' into for-next")'
+
+PRU firmware used for testing was the example in:
+  https://github.com/dinuxbg/pru-gcc-examples/tree/master/blinking-led/pru
+
+Signed-off-by: Dimitar Dimitrov <dimitar@dinux.eu>
 ---
+ drivers/remoteproc/pru_rproc.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-It took me by far too long to get this working as the codec sets one important bit based on the
-combination of provided supplies. That was just too hidden for me.
-The first generation Amazon Echo was codenamed Misto, so I used that for the sound card name.
-
- arch/arm/boot/dts/omap3-echo.dts | 67 ++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
-
-diff --git a/arch/arm/boot/dts/omap3-echo.dts b/arch/arm/boot/dts/omap3-echo.dts
-index 93ffeddada1e..b9fd113979f2 100644
---- a/arch/arm/boot/dts/omap3-echo.dts
-+++ b/arch/arm/boot/dts/omap3-echo.dts
-@@ -86,6 +86,38 @@ &gpio3 12 GPIO_ACTIVE_HIGH /* GPIO_76 */
- 		linux,axis = <REL_X>;
- 		rotary-encoder,relative-axis;
- 	};
-+
-+	speaker_amp: speaker-amplifier {
-+		compatible = "simple-audio-amplifier";
-+		enable-gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;	/* gpio_129 */
-+		sound-name-prefix = "Speaker Amp";
-+		VCC-supply = <&vcc1v8>;
-+	};
-+
-+	sound {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,name = "Misto Speaker";
-+		simple-audio-card,widgets =
-+			"Speaker", "Speaker";
-+		simple-audio-card,routing =
-+			"Speaker Amp INL", "HPL",
-+			"Speaker Amp INR", "HPR",
-+			"Speaker", "Speaker Amp OUTL",
-+			"Speaker", "Speaker Amp OUTR";
-+		simple-audio-card,format = "i2s";
-+		simple-audio-card,bitclock-master = <&sound_master>;
-+		simple-audio-card,frame-master = <&sound_master>;
-+		simple-audio-card,aux-devs = <&speaker_amp>;
-+
-+		simple-audio-card,cpu {
-+			sound-dai = <&mcbsp2>;
-+		};
-+
-+		sound_master: simple-audio-card,codec {
-+			sound-dai = <&codec0>;
-+			system-clock-frequency = <19200000>;
-+		};
-+	};
- };
+diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+index 2667919d76b3..b03114bbb9ab 100644
+--- a/drivers/remoteproc/pru_rproc.c
++++ b/drivers/remoteproc/pru_rproc.c
+@@ -61,6 +61,18 @@
+ #define PRU_SDRAM_DA	0x2000	/* Secondary Data RAM */
+ #define PRU_SHRDRAM_DA	0x10000 /* Shared Data RAM */
  
- &i2c1 {
-@@ -96,6 +128,13 @@ tps: tps@2d {
- 	};
- };
- 
-+&mcbsp2 {
-+	status = "okay";
-+	#sound-dai-cells = <0>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mcbsp2_pins>;
-+};
++/*
++ * GNU binutils do not support multiple address spaces. The GNU linker's
++ * default linker script places IRAM at an arbitrary high offset, in order
++ * to differentiate it from DRAM. Hence we need to strip the artificial offset
++ * in the IRAM addresses coming from the ELF file.
++ *
++ * The TI proprietary linker would never set those higher IRAM address bits
++ * anyway. PRU architecture limits the program counter to 16 bit word
++ * addresses.
++ */
++#define PRU_IRAM_DA_MASK	0xfffff
 +
- &i2c2 {
- 	clock-frequency = <400000>;
+ #define MAX_PRU_SYS_EVENTS 160
  
-@@ -277,6 +316,22 @@ chan8 {
- 	};
- };
+ /**
+@@ -450,6 +462,8 @@ static void *pru_i_da_to_va(struct pru_rproc *pru, u32 da, size_t len)
+ 	if (len == 0)
+ 		return NULL;
  
-+&i2c3 {
-+	clock-frequency = <400000>;
++	da &= PRU_IRAM_DA_MASK;
 +
-+	codec0: codec@18 {
-+		#sound-dai-cells = <0>;
-+		compatible = "ti,tlv320aic32x4";
-+		reg = <0x18>;
-+		clocks = <&sys_clkout1>;
-+		clock-names = "mclk";
-+		ldoin-supply = <&vcc1v8>;
-+		iov-supply = <&vcc1v8>;
-+		reset-gpios = <&gpio3 10 GPIO_ACTIVE_LOW>;	/* gpio_74 */
-+	};
-+};
-+
-+
- #include "tps65910.dtsi"
- 
- &omap3_pmx_core {
-@@ -290,6 +345,9 @@ button_pins: pinmux_button_pins {
- 		pinctrl-single,pins = <
- 			OMAP3_CORE1_IOPAD(0x20dc, PIN_INPUT | MUX_MODE4)	/* dss_data0.gpio_70 */
- 			OMAP3_CORE1_IOPAD(0x20e0, PIN_INPUT | MUX_MODE4)	/* dss_data2.gpio_72 */
-+			OMAP3_CORE1_IOPAD(0x20e4, PIN_OUTPUT | MUX_MODE4)	/* dss_data4.gpio_74 */
-+			OMAP3_CORE1_IOPAD(0x20fa, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* dss_data15.gpio_85 */
-+			OMAP3_CORE1_IOPAD(0x2a1a, PIN_OUTPUT | MUX_MODE0)	/* sys_clkout1.sys_clkout1 */
- 		>;
- 	};
- 
-@@ -318,6 +376,15 @@ OMAP3_CORE1_IOPAD(0x2168, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat6.sdmmc2_d
- 			OMAP3_CORE1_IOPAD(0x216a, PIN_INPUT_PULLUP | MUX_MODE0)		/* sdmmc2_dat7.sdmmc2_dat7 */
- 		>;
- 	};
-+
-+	mcbsp2_pins: pinmux_mcbsp2_pins {
-+		pinctrl-single,pins = <
-+			OMAP3_CORE1_IOPAD(0x213c, PIN_INPUT | MUX_MODE0)	/* mcbsp2_fsx.mcbsp2_fsx */
-+			OMAP3_CORE1_IOPAD(0x213e, PIN_INPUT | MUX_MODE0)	/* mcbsp2_clkx.mcbsp2_clkx */
-+			OMAP3_CORE1_IOPAD(0x2140, PIN_INPUT | MUX_MODE0)	/* mcbsp2_dr.mcbsp2.dr */
-+			OMAP3_CORE1_IOPAD(0x2142, PIN_OUTPUT | MUX_MODE0)	/* mcbsp2_dx.mcbsp2_dx */
-+		>;
-+	};
- };
- 
- &omap3_pmx_core2 {
+ 	if (da >= PRU_IRAM_DA &&
+ 	    da + len <= PRU_IRAM_DA + pru->mem_regions[PRU_IOMEM_IRAM].size) {
+ 		offset = da - PRU_IRAM_DA;
 -- 
-2.25.1
+2.20.1
 
