@@ -2,104 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09D2E2E77DF
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Dec 2020 11:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 893D82E77FE
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Dec 2020 12:21:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726462AbgL3KvG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Dec 2020 05:51:06 -0500
-Received: from server28.superhosting.bg ([217.174.156.11]:51375 "EHLO
-        server28.superhosting.bg" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726203AbgL3KvG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Dec 2020 05:51:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dinux.eu;
-         s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=5NxjBRTE6Qs/oxwd/tkNyVdQlRb6y3Ipf8TzIAmbsQY=; b=FseKKTYZsUqd8mnS3sYqqxp7rj
-        AkYyTpqFimRwlO1MDHhLzkJjX20SIKelNo9nBj+eHgnRZlhtM/aFWWdN+dQ0gFybjtR654oM/H+zi
-        gZbRb+daF1GvAGs6KHTibH9SPfHAAnR2/Re2KD91zorQDL5v178FOGuv3zeEhWA2t5wBDPl/Kq9pP
-        GWERdnD+Ihc3nSaGttLKiIWcAiR0j0HlxMnwvULrynb34YvsLbh9+LSoO2JukNmTicjo8ilRhGYhs
-        yTMS5m3j5xwK+vXtXL58PdW8AC+z9V+HK7ds/0d9Nkgv81DgKwsM+EmeGHxDBhamSy79jLebUHPrr
-        UI4iaV6A==;
-Received: from [95.87.234.74] (port=55922 helo=localhost.localdomain)
-        by server28.superhosting.bg with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <dimitar@dinux.eu>)
-        id 1kuZ3b-000C3T-Jg; Wed, 30 Dec 2020 12:50:21 +0200
-From:   Dimitar Dimitrov <dimitar@dinux.eu>
-To:     ohad@wizery.com, bjorn.andersson@linaro.org
-Cc:     Dimitar Dimitrov <dimitar@dinux.eu>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
-        Suman Anna <s-anna@ti.com>
-Subject: [PATCH v2] remoteproc: pru: Fix loading of GNU Binutils ELF
-Date:   Wed, 30 Dec 2020 12:50:05 +0200
-Message-Id: <20201230105005.30492-1-dimitar@dinux.eu>
-X-Mailer: git-send-email 2.20.1
+        id S1726348AbgL3LUz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Dec 2020 06:20:55 -0500
+Received: from 46-22-124-5.ip.axbyte.se ([46.22.124.5]:49386 "EHLO
+        mail01.ohdata.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726290AbgL3LUy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Dec 2020 06:20:54 -0500
+X-Greylist: delayed 879 seconds by postgrey-1.27 at vger.kernel.org; Wed, 30 Dec 2020 06:20:54 EST
+Received: from localhost (localhost [127.0.0.1])
+        by mail01.ohdata.se (Postfix) with ESMTP id 489C96188;
+        Wed, 30 Dec 2020 12:02:32 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at mail01.ohdata.se
+Received: from mail01.ohdata.se ([127.0.0.1])
+        by localhost (mail01.ohdata.se [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id zJ7KQ42jE7qt; Wed, 30 Dec 2020 12:02:31 +0100 (CET)
+Received: from webmail.ohdata.se (unknown [10.0.38.61])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mail01.ohdata.se (Postfix) with ESMTPSA id B95C05DD0;
+        Wed, 30 Dec 2020 12:02:31 +0100 (CET)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-X-OutGoing-Spam-Status: No, score=-0.2
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server28.superhosting.bg
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - dinux.eu
-X-Get-Message-Sender-Via: server28.superhosting.bg: authenticated_id: dimitar@dinux.eu
-X-Authenticated-Sender: server28.superhosting.bg: dimitar@dinux.eu
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Date:   Wed, 30 Dec 2020 12:12:20 +0100
+From:   Oskar Holmlund <info@ohdata.se>
+To:     linux-omap@vger.kernel.org
+Cc:     tony@atomide.com
+Subject: [am33xx-clocks.dtsi] move ieee5000 ti,gate-clock to a ti,clkctrl?
+Organization: OH Data
+Message-ID: <f4c28638a0c00d1ae988dbebe88a1884@ohdata.se>
+X-Sender: info@ohdata.se
+User-Agent: Roundcube Webmail/1.3.6
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-PRU port of GNU Binutils lacks support for separate address spaces.
-PRU IRAM addresses are marked with artificial offset to differentiate
-them from DRAM addresses. Hence remoteproc must mask IRAM addresses
-coming from GNU ELF in order to get the true hardware address.
+Hi,
 
-Patch was tested on top of latest linux-remoteproc/for-next branch:
-  commit 4c0943255805 ("Merge branches 'hwspinlock-next', 'rpmsg-next' and 'rproc-next' into for-next")'
+Is it possible to move
+&prcm_clocks {
+...
+	ieee5000_fck: ieee5000_fck@e4 {
+		#clock-cells = <0>;
+		compatible = "ti,gate-clock";
+		clocks = <&dpll_core_m4_div2_ck>;
+		ti,bit-shift = <1>;
+		reg = <0x00e4>;
+	};
 
-PRU firmware used for testing was the example in:
-  https://github.com/dinuxbg/pru-gcc-examples/tree/master/blinking-led/pru
+to something like this to better correlate to the TRM 8.1.12.1.40 
+CM_PER_IEEE5000_CLKCTRL Register(offset= E4h) ?
+Or is there any reason the ieee5000 is a ti,gate-clock?
 
-Signed-off-by: Dimitar Dimitrov <dimitar@dinux.eu>
----
- drivers/remoteproc/pru_rproc.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+&prcm {
+	per_cm: per-cm@0 {
+		compatible = "ti,omap4-cm";
+		reg = <0x0 0x400>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges = <0 0x0 0x400>;
+...
+                 ieee5000_clkctrl: ieee5000_clkctrl@e4 {
+                         compatible = "ti,clkctrl";
+                         reg = <0xe4 0x4>;
+                         #clock-cells = <2>;
+                 };
 
-diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
-index 2667919d76b3..5fad787ba012 100644
---- a/drivers/remoteproc/pru_rproc.c
-+++ b/drivers/remoteproc/pru_rproc.c
-@@ -450,6 +450,24 @@ static void *pru_i_da_to_va(struct pru_rproc *pru, u32 da, size_t len)
- 	if (len == 0)
- 		return NULL;
- 
-+	/*
-+	 * GNU binutils do not support multiple address spaces. The GNU
-+	 * linker's default linker script places IRAM at an arbitrary high
-+	 * offset, in order to differentiate it from DRAM. Hence we need to
-+	 * strip the artificial offset in the IRAM addresses coming from the
-+	 * ELF file.
-+	 *
-+	 * The TI proprietary linker would never set those higher IRAM address
-+	 * bits anyway. PRU architecture limits the program counter to 16-bit
-+	 * word-address range. This in turn corresponds to 18-bit IRAM
-+	 * byte-address range for ELF.
-+	 *
-+	 * Two more bits are added just in case to make the final 20-bit mask.
-+	 * Idea is to have a safeguard in case TI decides to add banking
-+	 * in future SoCs.
-+	 */
-+	da &= 0xfffff;
-+
- 	if (da >= PRU_IRAM_DA &&
- 	    da + len <= PRU_IRAM_DA + pru->mem_regions[PRU_IOMEM_IRAM].size) {
- 		offset = da - PRU_IRAM_DA;
+		pruss_ocp_clkctrl: pruss-ocp-clkctrl@e8 {
+			compatible = "ti,clkctrl";
+			reg = <0xe8 0x4>;
+			#clock-cells = <2>;
+		};
+
 -- 
-2.20.1
-
+Bästa Hälsningar
+Oskar Holmlund
+Tel 070-3220292
