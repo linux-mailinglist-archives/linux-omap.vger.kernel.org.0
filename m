@@ -2,82 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC5CC2E7447
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Dec 2020 22:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8D832E7719
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Dec 2020 09:43:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726144AbgL2Vcc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Dec 2020 16:32:32 -0500
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:52571 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726126AbgL2Vcc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Dec 2020 16:32:32 -0500
-X-Originating-IP: 91.174.235.35
-Received: from windsurf (unknown [91.174.235.35])
-        (Authenticated sender: thomas.petazzoni@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id C8144240005;
-        Tue, 29 Dec 2020 21:31:47 +0000 (UTC)
-Date:   Tue, 29 Dec 2020 22:31:46 +0100
-From:   Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-To:     Nadeem Athani <nadeem@cadence.com>
-Cc:     <tjoseph@cadence.com>, <lorenzo.pieralisi@arm.com>,
-        <robh@kernel.org>, <bhelgaas@google.com>, <kishon@ti.com>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, mparab@cadence.com,
-        pthombar@cadence.com, sjakhade@cadence.com
-Subject: Re: [PATCH v6 2/2] PCI: cadence: Retrain Link to work around Gen2
- training defect.
-Message-ID: <20201229223146.3081aa50@windsurf>
-In-Reply-To: <20201228140510.14641-3-nadeem@cadence.com>
-References: <20201228140510.14641-1-nadeem@cadence.com>
-        <20201228140510.14641-3-nadeem@cadence.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        id S1726197AbgL3InT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Dec 2020 03:43:19 -0500
+Received: from muru.com ([72.249.23.125]:40450 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726161AbgL3InS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 30 Dec 2020 03:43:18 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id D8D6280BA;
+        Wed, 30 Dec 2020 08:42:50 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, Carl Philipp Klemm <philipp@uvos.xyz>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>
+Subject: [PATCH 1/3] ARM: dts: Configure missing thermal interrupt for 4430
+Date:   Wed, 30 Dec 2020 10:42:30 +0200
+Message-Id: <20201230084232.19221-1-tony@atomide.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 28 Dec 2020 15:05:10 +0100
-Nadeem Athani <nadeem@cadence.com> wrote:
+We have gpio_86 wired internally to the bandgap thermal shutdown
+interrupt on 4430 like we have it on 4460 according to the TRM.
+This can be found easily by searching for TSHUT.
 
-> +static void cdns_pcie_retrain(struct cdns_pcie *pcie)
+For some reason the thermal shutdown interrupt was never added
+for 4430, let's add it. I believe this is needed for the thermal
+shutdown interrupt handler ti_bandgap_tshut_irq_handler() to call
+orderly_poweroff().
 
-Shouldn't this propagate a return value ?
+Fixes: aa9bb4bb8878 ("arm: dts: add omap4430 thermal data")
+Cc: Carl Philipp Klemm <philipp@uvos.xyz>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Eduardo Valentin <edubezval@gmail.com>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Cc: Sebastian Reichel <sre@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/omap443x.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> +{
-> +	u32 lnk_cap_sls, pcie_cap_off = CDNS_PCIE_RP_CAP_OFFSET;
-> +	u16 lnk_stat, lnk_ctl;
-> +
-> +	/*
-> +	 * Set retrain bit if current speed is 2.5 GB/s,
-> +	 * but the PCIe root port support is > 2.5 GB/s.
-> +	 */
-> +
-> +	lnk_cap_sls = cdns_pcie_readl(pcie, (CDNS_PCIE_RP_BASE + pcie_cap_off +
-> +					     PCI_EXP_LNKCAP));
-> +	if ((lnk_cap_sls & PCI_EXP_LNKCAP_SLS) <= PCI_EXP_LNKCAP_SLS_2_5GB)
-> +		return;
-> +
-> +	lnk_stat = cdns_pcie_rp_readw(pcie, pcie_cap_off + PCI_EXP_LNKSTA);
-> +	if ((lnk_stat & PCI_EXP_LNKSTA_CLS) == PCI_EXP_LNKSTA_CLS_2_5GB) {
-> +		lnk_ctl = cdns_pcie_rp_readw(pcie,
-> +					     pcie_cap_off + PCI_EXP_LNKCTL);
-> +		lnk_ctl |= PCI_EXP_LNKCTL_RL;
-> +		cdns_pcie_rp_writew(pcie, pcie_cap_off + PCI_EXP_LNKCTL,
-> +				    lnk_ctl);
-> +
-> +		if (cdns_pcie_host_wait_for_link(pcie))
-> +			return;
-
-Here, shouldn't you return the status of
-cdns_pcie_host_wait_for_link(), to propagate whether the PCIe link
-indeed came up after the retrain ?
-
-Thomas
+diff --git a/arch/arm/boot/dts/omap443x.dtsi b/arch/arm/boot/dts/omap443x.dtsi
+--- a/arch/arm/boot/dts/omap443x.dtsi
++++ b/arch/arm/boot/dts/omap443x.dtsi
+@@ -33,10 +33,12 @@ thermal-zones {
+ 	};
+ 
+ 	ocp {
++		/* 4430 has only gpio_86 tshut and no talert interrupt */
+ 		bandgap: bandgap@4a002260 {
+ 			reg = <0x4a002260 0x4
+ 			       0x4a00232C 0x4>;
+ 			compatible = "ti,omap4430-bandgap";
++			gpios = <&gpio3 22 GPIO_ACTIVE_HIGH>;
+ 
+ 			#thermal-sensor-cells = <0>;
+ 		};
 -- 
-Thomas Petazzoni, CTO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.29.2
