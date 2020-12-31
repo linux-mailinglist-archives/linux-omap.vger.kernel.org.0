@@ -2,102 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E2B52E7F0E
-	for <lists+linux-omap@lfdr.de>; Thu, 31 Dec 2020 10:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1776F2E7F2C
+	for <lists+linux-omap@lfdr.de>; Thu, 31 Dec 2020 11:01:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726352AbgLaJoN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 31 Dec 2020 04:44:13 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:54674 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726323AbgLaJoM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Dec 2020 04:44:12 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 2E56C1C0B77; Thu, 31 Dec 2020 10:43:16 +0100 (CET)
-Date:   Thu, 31 Dec 2020 10:43:15 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Subject: Re: [PATCH 3/3] ARM: dts: motorola-mapphone: Add 1.2GHz OPP
-Message-ID: <20201231094315.GB22962@amd>
-References: <20201230084232.19221-1-tony@atomide.com>
- <20201230084232.19221-3-tony@atomide.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="uQr8t48UFsdbeI+V"
-Content-Disposition: inline
-In-Reply-To: <20201230084232.19221-3-tony@atomide.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+        id S1726302AbgLaKBh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 31 Dec 2020 05:01:37 -0500
+Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21134 "EHLO
+        sender11-of-o51.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726155AbgLaKBc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Dec 2020 05:01:32 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1609408843; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=YclOzYvfaHrRxvYfOI8xZcUcZxSB1wBiBwc2xqXVNDu6tuL3ypgiUvVaCSMV+jcdtrTekDLlj6XOrkrJf7IoKAUYxSz2CP7qU0rjyEstpULRjFlkPNXXiSMztPVl5FSDLCgkD7G7nCQukLR3dgPAyNhgDw3gbO9KXbYrgPaOBSI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1609408843; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=C1CwP4UlD2SxrCpielQQ6z+AnG+rM8N/SqUotv+d8/Y=; 
+        b=LyPbjk1lE0c9LNoXbUkkqJf8Q+InqoFZ+hMczU4Nfxi8F5iM6XK2gz9s2P47TuHnK0xjHf8dDIpZSpWPtdIV0zuiiksZHDgwCFMNK6Y3keDXMz9OqL8M8tDIqzC6uNnRY1/80eBD2GplrGfQQM5UoaxXy+BmErIABiHij6WxATY=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
+        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
+Received: from localhost.localdomain (ip-95-222-215-197.hsi15.unitymediagroup.de [95.222.215.197]) by mx.zoho.eu
+        with SMTPS id 1609408841333719.224545946543; Thu, 31 Dec 2020 11:00:41 +0100 (CET)
+Date:   Thu, 31 Dec 2020 11:00:40 +0100
+From:   Carl Philipp Klemm <philipp@uvos.xyz>
+To:     tony@atomide.com, bcousson@baylibre.com
+Cc:     robh+dt@kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH  v2 1/1] ARM: dts: omap443x: Correct sgx clock to 307.2MHz
+ as used on motorola vendor kernel
+Message-Id: <20201231110040.bdbb9788abd1723d68b67df0@uvos.xyz>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+The Android vendor kernel uses 307.2MHz or a devider ratio of /5 while active 
+153600000 or /10 is only used when the sgx core is inactive.
 
---uQr8t48UFsdbeI+V
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
+---
+ arch/arm/boot/dts/omap443x.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Hi!
+diff --git a/arch/arm/boot/dts/omap443x.dtsi b/arch/arm/boot/dts/omap443x.dtsi
+index dd8ef58cbaed..8466161197ae 100644
+--- a/arch/arm/boot/dts/omap443x.dtsi
++++ b/arch/arm/boot/dts/omap443x.dtsi
+@@ -78,11 +78,11 @@ &cpu_thermal {
+ /include/ "omap443x-clocks.dtsi"
+ 
+ /*
+- * Use dpll_per for sgx at 153.6MHz like droid4 stock v3.0.8 Android kernel
++ * Use dpll_per for sgx at 307.2MHz like droid4 stock v3.0.8 Android kernel
+  */
+ &sgx_module {
+ 	assigned-clocks = <&l3_gfx_clkctrl OMAP4_GPU_CLKCTRL 24>,
+ 			  <&dpll_per_m7x2_ck>;
+-	assigned-clock-rates = <0>, <153600000>;
++	assigned-clock-rates = <0>, <307200000>;
+ 	assigned-clock-parents = <&dpll_per_m7x2_ck>;
+ };
+-- 
+2.29.2
 
-> From: Carl Philipp Klemm <philipp@uvos.xyz>
->=20
-> The omap4430 HS HIGH performance devces support 1.2GHz opp, lower speed
-> variants do not. However for mapphone devices Motorola seems to have
-> decided that this does not really matter for the SoC variants they have
-> tested to use, and decided to clock all devices, including the ones with
-> STANDARD performance chips at 1.2GHz upon release of the 3.0.8 vendor
-> kernel shiped with Android 4.0. Therefore it seems safe to do the same,
-> but let's only do it for Motorola devices as the others have not been
-> tested.
->=20
-> Note that we prevent overheating with the passive cooling device
-> cpu_alert0 configured in the dts file that starts lowering the speed as
-> needed.
->=20
-> This also removes the "failed to find current OPP for freq 1200000000"
-> warning.
-
-> +&cpu0 {
-> +        /*
-> +	 * Note that the 1.2GiHz mode is enabled for all SoC variants for
-> +	 * the Motorola Android Linux v3.0.8 based kernel.
-> +	 */
-
-I'm pretty sure it is GHz, not GiHz.
-
-> +        operating-points =3D <
-> +	        /* kHz    uV */
-> +	        300000  1025000
-> +	        600000  1200000
-> +	        800000  1313000
-> +	        1008000 1375000
-> +		1200000 1375000
-> +        >;
-
-Is it intended to be 1.008GHz, or is it a typo?
-
-Best regards,
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---uQr8t48UFsdbeI+V
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl/tnTMACgkQMOfwapXb+vI4qQCgmCEMvL7rgscRnAgMGnWydan+
-fwcAn0qy0m2hMKa4Uriapr8wxFGkhXA1
-=gSni
------END PGP SIGNATURE-----
-
---uQr8t48UFsdbeI+V--
