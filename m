@@ -2,66 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDEDC2E8337
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Jan 2021 07:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B4222E8342
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Jan 2021 08:01:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726525AbhAAGHR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Fri, 1 Jan 2021 01:07:17 -0500
-Received: from muru.com ([72.249.23.125]:40680 "EHLO muru.com"
+        id S1726555AbhAAHAj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Jan 2021 02:00:39 -0500
+Received: from muru.com ([72.249.23.125]:40698 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726322AbhAAGHR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 1 Jan 2021 01:07:17 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 55E9E803A;
-        Fri,  1 Jan 2021 06:06:51 +0000 (UTC)
-Date:   Fri, 1 Jan 2021 08:06:32 +0200
+        id S1726322AbhAAHAj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 1 Jan 2021 02:00:39 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 8E4548057;
+        Fri,  1 Jan 2021 07:00:14 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     linux-omap@vger.kernel.org,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Subject: Re: [PATCH 3/3] ARM: dts: motorola-mapphone: Add 1.2GHz OPP
-Message-ID: <20210101060632.GI26857@atomide.com>
-References: <20201230084232.19221-1-tony@atomide.com>
- <20201230084232.19221-3-tony@atomide.com>
- <20201231094315.GB22962@amd>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        Raz Bouganim <r-bouganim@ti.com>,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH] wlcore: Downgrade exceeded max RX BA sessions to debug
+Date:   Fri,  1 Jan 2021 08:59:55 +0200
+Message-Id: <20210101065955.63386-1-tony@atomide.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20201231094315.GB22962@amd>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Pavel Machek <pavel@ucw.cz> [201231 09:43]:
-> I'm pretty sure it is GHz, not GiHz.
+We can get the following in the logs every few minutes or so:
 
-Oops right, will fix.
+wlcore: ERROR exceeded max RX BA sessions
 
-> > +        operating-points = <
-> > +	        /* kHz    uV */
-> > +	        300000  1025000
-> > +	        600000  1200000
-> > +	        800000  1313000
-> > +	        1008000 1375000
-> > +		1200000 1375000
-> > +        >;
-> 
-> Is it intended to be 1.008GHz, or is it a typo?
+Let's downgrade the message to a debug message as suggested by the TI
+support folks at:
 
-The "1008000 1375000" is already there for 4430 in general, we now
-add also add "1200000 1375000" but only for moto devices that have
-it tested. The voltage used is the same in both cases.
+https://e2e.ti.com/support/wireless-connectivity/wifi/f/968/p/352435/1244754
 
-The rates come from what's available from dpll_mpu_ck without
-reprogramming the dpll.
+"The WL127x firmware supports max of 3 BA sessions. It cannot be increased.
+ I think the problem here is the peer trying to initiate a 4th BA session
+ (ADDBA request)."
 
-Regards,
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/net/wireless/ti/wlcore/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tony
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -5391,7 +5391,7 @@ static int wl1271_op_ampdu_action(struct ieee80211_hw *hw,
+ 
+ 		if (wl->ba_rx_session_count >= wl->ba_rx_session_count_max) {
+ 			ret = -EBUSY;
+-			wl1271_error("exceeded max RX BA sessions");
++			wl1271_debug(DEBUG_RX, "exceeded max RX BA sessions");
+ 			break;
+ 		}
+ 
+-- 
+2.29.2
