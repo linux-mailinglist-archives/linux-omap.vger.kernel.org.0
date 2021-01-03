@@ -2,119 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76B9E2E89F3
-	for <lists+linux-omap@lfdr.de>; Sun,  3 Jan 2021 02:59:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD1172E89F8
+	for <lists+linux-omap@lfdr.de>; Sun,  3 Jan 2021 03:10:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726163AbhACB6g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 2 Jan 2021 20:58:36 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:48484 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725981AbhACB6g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Jan 2021 20:58:36 -0500
+        id S1725827AbhACCIV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 2 Jan 2021 21:08:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35696 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725786AbhACCIV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Jan 2021 21:08:21 -0500
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B78C061573
+        for <linux-omap@vger.kernel.org>; Sat,  2 Jan 2021 18:07:40 -0800 (PST)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: sre)
-        with ESMTPSA id 67E621F410AD
+        with ESMTPSA id 6BB3B1F410BD
 Received: by earth.universe (Postfix, from userid 1000)
-        id 2125E3C0C94; Sun,  3 Jan 2021 02:57:52 +0100 (CET)
-Date:   Sun, 3 Jan 2021 02:57:52 +0100
+        id 47AC53C0C94; Sun,  3 Jan 2021 03:07:36 +0100 (CET)
+Date:   Sun, 3 Jan 2021 03:07:36 +0100
 From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
-        Merlijn Wajer <merlijn@wizzup.org>
-Subject: Re: [PATCH] power: supply: cpcap: Add missing IRQF_ONESHOT to fix
- regression
-Message-ID: <20210103015752.gzonx5h54v4mseye@earth.universe>
-References: <20201230101911.11747-1-tony@atomide.com>
+To:     Carl Philipp Klemm <philipp@uvos.xyz>
+Cc:     tony@atomide.com, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] power: supply: cpcap-charger: Add usleep to cpcap
+ charger to avoid usb plug bounce
+Message-ID: <20210103020736.eznj5v4wlkdgjcuo@earth.universe>
+References: <20201230150218.d5ae76983e6dde68dcebff09@uvos.xyz>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zpuvl2wfhpbvnyzq"
+        protocol="application/pgp-signature"; boundary="lf4kdrsotwzf5q3t"
 Content-Disposition: inline
-In-Reply-To: <20201230101911.11747-1-tony@atomide.com>
+In-Reply-To: <20201230150218.d5ae76983e6dde68dcebff09@uvos.xyz>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---zpuvl2wfhpbvnyzq
+--lf4kdrsotwzf5q3t
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Tony,
+Hi,
 
-On Wed, Dec 30, 2020 at 12:19:11PM +0200, Tony Lindgren wrote:
-> Commit 25d76fed7ffe ("phy: cpcap-usb: Use IRQF_ONESHOT") started causing
-> errors loading phy-cpcap-usb driver:
+On Wed, Dec 30, 2020 at 03:02:18PM +0100, Carl Philipp Klemm wrote:
+> Adds 40000 ms sleep before cpcap_charger_enable to hopfully avoid
+> the bounce on plug in
 >=20
-> cpcap_battery cpcap_battery.0: failed to register power supply
-> genirq: Flags mismatch irq 211. 00002080 (se0conn) vs. 00000080 (se0conn)
-> cpcap-usb-phy cpcap-usb-phy.0: could not get irq se0conn: -16
->=20
-> Let's fix this by adding the missing IRQF_ONESHOT to also cpcap-battery
-> and cpcap-charger drivers.
->=20
-> Fixes: 25d76fed7ffe ("phy: cpcap-usb: Use IRQF_ONESHOT")
-> Reported-by: Merlijn Wajer <merlijn@wizzup.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
 > ---
 
-Thanks, queued.
+This is before cpcap_charger_disable() and I do not follow why you
+want to add a delay in this position. Please add a comment before
+the usleep providing some information which bounce effect is being
+mitigated.
+
+Thanks,
 
 -- Sebastian
 
->  drivers/power/supply/cpcap-battery.c | 2 +-
->  drivers/power/supply/cpcap-charger.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/power/supply/cpcap-charger.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >=20
-> diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/=
-cpcap-battery.c
-> --- a/drivers/power/supply/cpcap-battery.c
-> +++ b/drivers/power/supply/cpcap-battery.c
-> @@ -666,7 +666,7 @@ static int cpcap_battery_init_irq(struct platform_dev=
-ice *pdev,
-> =20
->  	error =3D devm_request_threaded_irq(ddata->dev, irq, NULL,
->  					  cpcap_battery_irq_thread,
-> -					  IRQF_SHARED,
-> +					  IRQF_SHARED | IRQF_ONESHOT,
->  					  name, ddata);
->  	if (error) {
->  		dev_err(ddata->dev, "could not get irq %s: %i\n",
 > diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/=
 cpcap-charger.c
+> index c0d452e3dc8b..130c61a9f267 100644
 > --- a/drivers/power/supply/cpcap-charger.c
 > +++ b/drivers/power/supply/cpcap-charger.c
-> @@ -708,7 +708,7 @@ static int cpcap_usb_init_irq(struct platform_device =
-*pdev,
+> @@ -631,6 +631,8 @@ static void cpcap_usb_detect(struct work_struct *work)
+>  		return;
+>  	}
 > =20
->  	error =3D devm_request_threaded_irq(ddata->dev, irq, NULL,
->  					  cpcap_charger_irq_thread,
-> -					  IRQF_SHARED,
-> +					  IRQF_SHARED | IRQF_ONESHOT,
->  					  name, ddata);
->  	if (error) {
->  		dev_err(ddata->dev, "could not get irq %s: %i\n",
+> +	usleep_range(40000, 60000);
+> +
+>  	/* Throttle chrgcurr2 interrupt for charger done and retry */
+>  	switch (ddata->state) {
+>  	case CPCAP_CHARGER_CHARGING:
 > --=20
 > 2.29.2
 
---zpuvl2wfhpbvnyzq
+--lf4kdrsotwzf5q3t
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/xJJ8ACgkQ2O7X88g7
-+prleQ//R0GUUY+IU+a8e2Rq8GB3xZ2h8WqIZgdfs/Y20DytOseTM3MoHS3aYLDL
-lRuhHrklNRZKYTXAPSE089eejt3S3LcrH99iQ6hpkR/rHo5Sn9vmf0bp9iPOdQql
-CTLLsU5RTD0+7bEZ2KM7LLG+T6WpGJ8TGW+qCmXg6mwL1SO8Nvb2gewmIopANNLu
-EB27UVUgtrzYcvmwAftVXFsxDgJm2cMv1BR6fyFYcwtr5z1zOVGlitkj9PhvZ/uI
-psEjGZB+ufsvW9ZfmmzWRpnygB1yIHRkdmTXA6xKY8u/aEWgcIWu5NUyikk/etl0
-Q22LSB73+3IIXXq4YMlAdvi5j9nNiBDWzQ4yGThnLVhNMw/SB5OgAI8x5E+Iho/W
-b/+Bx3FD0ddgJXp9+5uHj6kH1W0bFy8WxgSV98rPBMZ3AdvjXixXVgt7Q50IaWTM
-cI5l8ij7TpbNri+QHHkxZGpqbEOYLaa73Lk0YDJByX/mOuaJMu+xyP3wvTFSWfVG
-7iLGdwf1Uj81FzarS2aHhZK9WjMPj5OikmWk+DSE+tzVHv8Fs2cAPQuXwliTEyeN
-8dP8yZDc9Y5DCexUGSYcnjwPN8VfkRGyF9L+yHfoDRp+UmdFM2fNkibZfD24Ov3X
-kZjrArMOwbAYtupa1So3g9+VJOfYrV2bx5RbzMk/Ch/ErRJh3ws=
-=aLC9
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/xJugACgkQ2O7X88g7
++prMWhAApMUzoefMY5lkiOR7eHHcQSVlAgm6w7EqOts49AFD1Dp9e/wgsDoz0vh/
+rf4W6giBHlFRmWy3fyW3ykqXRCpaTys/qSFbxqlo69zZc44sG3MTuOQbomTXm/0N
+5OFtFWlwVnruj4SdRR6FDyM0QmRyOLXce7RclLT0tM57rXO9skno8TyyhXCchOjZ
+bSgIwmfus0P9NRNXuPsxNQFHWIC60jHSRIFmlmq/i2B3hoUefXy5pudyu9qYCe11
+AQ5vJVS/NNbmg4fExOFlW+ZmVWDqcjLFK1OX8bvBvmiVYOle5fOwYtqfNyqc1anz
+72LFwOs+oerwSy6Ev269pwfbnTDVaV7OdmocV0KTOjvl+SBePNXFcRbxBArXwHpl
+tf7wSnkgfMoS9jDCBjb1UONcs5jYpiAoeP7YjGgQvBu6f4r99hcUmO9I0sXX2JhZ
+BRRWOYfH7o7I3Jqg7a60gBpw7UCOjPIo9i/0vQnMjzpLa/41mGbVRne/Ecvy/GsW
+U+W6rQNCTV+w03NfRUZCptviLmpLFR4V/8Gi5NRrnHlYT7XN8Bh8lFZu3a0zBOVW
+Pey+u6L/6ogVfpRxXfBJ/FmQhqtUiEe1My7GWCw47zOXakEdRSbN+fiXsczgSP0I
+jyut+JzRaau0Ar+gZji/HsffRa0kXEnp9Rtw5uRzpSWSdG4INPU=
+=5UPo
 -----END PGP SIGNATURE-----
 
---zpuvl2wfhpbvnyzq--
+--lf4kdrsotwzf5q3t--
