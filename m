@@ -2,103 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 593FF2E880E
-	for <lists+linux-omap@lfdr.de>; Sat,  2 Jan 2021 17:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76B9E2E89F3
+	for <lists+linux-omap@lfdr.de>; Sun,  3 Jan 2021 02:59:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726655AbhABQYS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 2 Jan 2021 11:24:18 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:41500 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726598AbhABQYS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Jan 2021 11:24:18 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 8251B1C0B76; Sat,  2 Jan 2021 17:23:34 +0100 (CET)
-Date:   Sat, 2 Jan 2021 17:23:34 +0100
-From:   Pavel Machek <pavel@ucw.cz>
+        id S1726163AbhACB6g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 2 Jan 2021 20:58:36 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:48484 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725981AbhACB6g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Jan 2021 20:58:36 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 67E621F410AD
+Received: by earth.universe (Postfix, from userid 1000)
+        id 2125E3C0C94; Sun,  3 Jan 2021 02:57:52 +0100 (CET)
+Date:   Sun, 3 Jan 2021 02:57:52 +0100
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
 To:     Tony Lindgren <tony@atomide.com>
-Cc:     Johan Hovold <johan@kernel.org>, phone-devel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv6 0/4] n_gsm serdev support and protocol driver for
- droid4 modem
-Message-ID: <20210102162334.GA16186@duo.ucw.cz>
-References: <20200421232752.3070-1-tony@atomide.com>
- <20200423114326.GQ18608@localhost>
- <20200423153756.GE37466@atomide.com>
- <20200528082420.GA10358@localhost>
- <20201220224816.GA28213@duo.ucw.cz>
- <20201224080239.GF26857@atomide.com>
+Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
+        Merlijn Wajer <merlijn@wizzup.org>
+Subject: Re: [PATCH] power: supply: cpcap: Add missing IRQF_ONESHOT to fix
+ regression
+Message-ID: <20210103015752.gzonx5h54v4mseye@earth.universe>
+References: <20201230101911.11747-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="opJtzjQTFsWo+cga"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="zpuvl2wfhpbvnyzq"
 Content-Disposition: inline
-In-Reply-To: <20201224080239.GF26857@atomide.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20201230101911.11747-1-tony@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---opJtzjQTFsWo+cga
+--zpuvl2wfhpbvnyzq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi!
+Hi Tony,
 
-> > I'm afraid I'll need some more answers in near future, but for now:
-> >=20
-> > Tony, do you remember / can you figure out what gsmtty GPS is on? I
-> > never used it on that interface, and I can't seem to figure it out.
-> >=20
-> > My notes say:
-> >=20
-> > /dev/motmdm1 -- basic support, calls, on/off                           =
-        =20
-> > /dev/motmdm3 -- send sms interface                                     =
-        =20
-> > /dev/motmdm9 -- receive sms interface                                  =
-        =20
-> >
-> > (and gsmtty numbering is same)
+On Wed, Dec 30, 2020 at 12:19:11PM +0200, Tony Lindgren wrote:
+> Commit 25d76fed7ffe ("phy: cpcap-usb: Use IRQF_ONESHOT") started causing
+> errors loading phy-cpcap-usb driver:
 >=20
-> Yes I have not had a chance to look at these for several months now,
-> but have the latest set in droid4-pending-v5.10 branch in my github
-> tree.
+> cpcap_battery cpcap_battery.0: failed to register power supply
+> genirq: Flags mismatch irq 211. 00002080 (se0conn) vs. 00000080 (se0conn)
+> cpcap-usb-phy cpcap-usb-phy.0: could not get irq se0conn: -16
 >=20
-> The gnss device is at /dev/gsmtty6, see the current droid4-agps tool
-> to upload the almanac also on github. That's has turned out to be a
-> pretty good gsm serdev test too :)
+> Let's fix this by adding the missing IRQF_ONESHOT to also cpcap-battery
+> and cpcap-charger drivers.
+>=20
+> Fixes: 25d76fed7ffe ("phy: cpcap-usb: Use IRQF_ONESHOT")
+> Reported-by: Merlijn Wajer <merlijn@wizzup.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
 
-Treason uncloaked!
+Thanks, queued.
 
-While A-GPS is at gsmtty6 I guess, NMEA data are on gsmtty4. And I
-could not access that one, due to bitmask reserving it for gnss.
+-- Sebastian
 
-But now I have figured it out, and should have something reviewable
-soon.
+>  drivers/power/supply/cpcap-battery.c | 2 +-
+>  drivers/power/supply/cpcap-charger.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/=
+cpcap-battery.c
+> --- a/drivers/power/supply/cpcap-battery.c
+> +++ b/drivers/power/supply/cpcap-battery.c
+> @@ -666,7 +666,7 @@ static int cpcap_battery_init_irq(struct platform_dev=
+ice *pdev,
+> =20
+>  	error =3D devm_request_threaded_irq(ddata->dev, irq, NULL,
+>  					  cpcap_battery_irq_thread,
+> -					  IRQF_SHARED,
+> +					  IRQF_SHARED | IRQF_ONESHOT,
+>  					  name, ddata);
+>  	if (error) {
+>  		dev_err(ddata->dev, "could not get irq %s: %i\n",
+> diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/=
+cpcap-charger.c
+> --- a/drivers/power/supply/cpcap-charger.c
+> +++ b/drivers/power/supply/cpcap-charger.c
+> @@ -708,7 +708,7 @@ static int cpcap_usb_init_irq(struct platform_device =
+*pdev,
+> =20
+>  	error =3D devm_request_threaded_irq(ddata->dev, irq, NULL,
+>  					  cpcap_charger_irq_thread,
+> -					  IRQF_SHARED,
+> +					  IRQF_SHARED | IRQF_ONESHOT,
+>  					  name, ddata);
+>  	if (error) {
+>  		dev_err(ddata->dev, "could not get irq %s: %i\n",
+> --=20
+> 2.29.2
 
-Thanks for support,
-
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---opJtzjQTFsWo+cga
+--zpuvl2wfhpbvnyzq
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX/CeBgAKCRAw5/Bqldv6
-8mDGAJ4hFqCVNfsoBFMmdNHP0ShhK8RkswCfdxhCfUSA2o0TiLEWex10yiMM7yQ=
-=3byw
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/xJJ8ACgkQ2O7X88g7
++prleQ//R0GUUY+IU+a8e2Rq8GB3xZ2h8WqIZgdfs/Y20DytOseTM3MoHS3aYLDL
+lRuhHrklNRZKYTXAPSE089eejt3S3LcrH99iQ6hpkR/rHo5Sn9vmf0bp9iPOdQql
+CTLLsU5RTD0+7bEZ2KM7LLG+T6WpGJ8TGW+qCmXg6mwL1SO8Nvb2gewmIopANNLu
+EB27UVUgtrzYcvmwAftVXFsxDgJm2cMv1BR6fyFYcwtr5z1zOVGlitkj9PhvZ/uI
+psEjGZB+ufsvW9ZfmmzWRpnygB1yIHRkdmTXA6xKY8u/aEWgcIWu5NUyikk/etl0
+Q22LSB73+3IIXXq4YMlAdvi5j9nNiBDWzQ4yGThnLVhNMw/SB5OgAI8x5E+Iho/W
+b/+Bx3FD0ddgJXp9+5uHj6kH1W0bFy8WxgSV98rPBMZ3AdvjXixXVgt7Q50IaWTM
+cI5l8ij7TpbNri+QHHkxZGpqbEOYLaa73Lk0YDJByX/mOuaJMu+xyP3wvTFSWfVG
+7iLGdwf1Uj81FzarS2aHhZK9WjMPj5OikmWk+DSE+tzVHv8Fs2cAPQuXwliTEyeN
+8dP8yZDc9Y5DCexUGSYcnjwPN8VfkRGyF9L+yHfoDRp+UmdFM2fNkibZfD24Ov3X
+kZjrArMOwbAYtupa1So3g9+VJOfYrV2bx5RbzMk/Ch/ErRJh3ws=
+=aLC9
 -----END PGP SIGNATURE-----
 
---opJtzjQTFsWo+cga--
+--zpuvl2wfhpbvnyzq--
