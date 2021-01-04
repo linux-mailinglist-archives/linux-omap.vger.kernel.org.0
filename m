@@ -2,69 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D37602E9E62
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Jan 2021 20:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BD492E9EC5
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Jan 2021 21:22:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726168AbhADT5a (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 Jan 2021 14:57:30 -0500
-Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21152 "EHLO
-        sender11-of-o51.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727520AbhADT5Y (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Jan 2021 14:57:24 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1609790194; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=LUcWeICb7P3Lffusyw8GRvjFDdkjGaL2xpawtGA3vhh/8VOYfAwDpMgVPD10dTBVC0kJpSWauxQYbAvUzwteNV0UmE8dJQYZ2Tf723MxNeSjZdsBhG9TJwF9sCLvJHPtdUTh9BSmEkF8Nmkn1+Ov3cU4d6iqxJBCvY8NDlvBZ2I=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1609790194; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=HL+4cO3hptPd2j/OGX2u1lxqjVoG1JGQy1mc6uj3aYM=; 
-        b=TEWABq3zvY7qba4Y+dI4y0apvZkh9DSTBssuKeuFdX6CYnKnv6b/w08l8HAHN8CK91B0SXTbn6A/WvD3fxANO0if7Xu1lRs6Hw/rfzq1SD5gLMFYnCSwFMiJkRIIh7UENIqqx1G3JlMRF9TdjvDb2BFWzlZXTIbL1YfN3PVQj4U=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
-        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
-Received: from localhost.localdomain (ip-95-222-213-78.hsi15.unitymediagroup.de [95.222.213.78]) by mx.zoho.eu
-        with SMTPS id 1609790192154642.5039466454091; Mon, 4 Jan 2021 20:56:32 +0100 (CET)
-Date:   Mon, 4 Jan 2021 20:56:31 +0100
-From:   Carl Philipp Klemm <philipp@uvos.xyz>
-To:     tony@atomide.com, bcousson@baylibre.com
-Cc:     robh+dt@kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH  v3 1/1] ARM: dts: omap443x: Correct sgx clock to 307.2MHz
- as used on motorola vendor kernel
-Message-Id: <20210104205631.5db65991237a872b6525ed65@uvos.xyz>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        id S1728056AbhADUVh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 4 Jan 2021 15:21:37 -0500
+Received: from vern.gendns.com ([98.142.107.122]:50040 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727783AbhADUVh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 4 Jan 2021 15:21:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:References:Cc:To:Subject:From:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=bJlwvAcTP6n9JlqTMododdUIqadilk9NCyhFDpB28QM=; b=oejsnWkewMFuL0K3OfU/1ZVdud
+        lHDUUVgj8utlNwF/oaBQQ28cGZGupfAkluRFJd71E2ux0p081glR2WFV3O2JM9Tvo1so8ZdS8CyiD
+        fcKkn75N3GUW08mEzKm/dpbf/pvNuVGcuImrHc4qfrw2kV33ofJznQPFHnTifVfbgd97485j1FFka
+        0xh0ed5I+cw0SZAh1BcPnxPs+/jn62KwkNAtdkilq10Q1MQqpMyaFibef0cTjB0ehy3JuH1/gbqVT
+        RD61ieBYnKDv7BsdLYDEGVWh9Yen4dlh6wfwGUjHTteM7Tz9sSkacC73gv4gtWEg4QbGxRCauHUkY
+        7EYJLm0A==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:53450 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1kwVxT-0008EX-4A; Mon, 04 Jan 2021 14:56:03 -0500
+From:   David Lechner <david@lechnology.com>
+Subject: Re: [PATCH 1/5] dt-bindings: remoteproc: Add PRU consumer bindings
+To:     robh@kernel.org
+Cc:     bjorn.andersson@linaro.org, devicetree@vger.kernel.org,
+        grzegorz.jaszczyk@linaro.org, lee.jones@linaro.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        mathieu.poirier@linaro.org, ohad@wizery.com, praneeth@ti.com,
+        rogerq@ti.com, s-anna@ti.com, ssantosh@kernel.org
+References: <CAL_Jsq+W8GuqKdqSxt7bKcfpK3Wg35V9R-3+UzNi_+3uRqA=AQ@mail.gmail.com>
+Message-ID: <4fd5d68a-830a-83df-fc7a-1070e2619a86@lechnology.com>
+Date:   Mon, 4 Jan 2021 13:56:01 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <CAL_Jsq+W8GuqKdqSxt7bKcfpK3Wg35V9R-3+UzNi_+3uRqA=AQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The Android vendor kernel uses 307.2MHz or a divider ratio of /5 while active 
-153600000 or /10 is only used when the sgx core is inactive.
 
-Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
----
- arch/arm/boot/dts/omap443x.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Also, I think you can get rid of 'ti,pruss-gp-mux-sel'. Can't it just
+> be an arg cell in 'ti,prus' entries?
+> 
+> Rob
 
-diff --git a/arch/arm/boot/dts/omap443x.dtsi b/arch/arm/boot/dts/omap443x.dtsi
-index dd8ef58cbaed..8466161197ae 100644
---- a/arch/arm/boot/dts/omap443x.dtsi
-+++ b/arch/arm/boot/dts/omap443x.dtsi
-@@ -78,11 +78,11 @@ &cpu_thermal {
- /include/ "omap443x-clocks.dtsi"
- 
- /*
-- * Use dpll_per for sgx at 153.6MHz like droid4 stock v3.0.8 Android kernel
-+ * Use dpll_per for sgx at 307.2MHz like droid4 stock v3.0.8 Android kernel
-  */
- &sgx_module {
- 	assigned-clocks = <&l3_gfx_clkctrl OMAP4_GPU_CLKCTRL 24>,
- 			  <&dpll_per_m7x2_ck>;
--	assigned-clock-rates = <0>, <153600000>;
-+	assigned-clock-rates = <0>, <307200000>;
- 	assigned-clock-parents = <&dpll_per_m7x2_ck>;
- };
--- 
-2.29.2
++1 for using cells instead of a separate property.
+
+FYI, we will have a similar issue with the PRUSSEVTSEL signal for the
+interrupt controller on the AM18XX. I am still of the opinion (described
+in more detail at [1]) that using a cell for this makes for both better
+device tree bindings and easier driver implementation. So I am interested
+to see what the resolution is here.
+
+[1]: https://patchwork.kernel.org/project/linux-arm-kernel/patch/20190708035243.12170-5-s-anna@ti.com/
