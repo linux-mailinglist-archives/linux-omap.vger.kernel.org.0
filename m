@@ -2,53 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D3DC2E92DE
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Jan 2021 10:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 838F02E93D9
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Jan 2021 12:02:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726569AbhADJv1 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Mon, 4 Jan 2021 04:51:27 -0500
-Received: from post.dks.ru ([194.226.89.161]:53176 "EHLO post.dks.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725468AbhADJv0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 4 Jan 2021 04:51:26 -0500
-X-Greylist: delayed 1608 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 Jan 2021 04:51:24 EST
-Received: from ksmg.dks.lan (unknown [172.17.112.11])
-        by post.dks.ru (Postfix) with ESMTP id 94328270863;
-        Mon,  4 Jan 2021 12:21:42 +0300 (MSK)
-Received: from [192.168.88.237] (unknown [212.154.23.124])
-        (Authenticated sender: zapros@dks.ru)
-        by post.dks.ru (Postfix) with ESMTP id 955CF26F446;
-        Mon,  4 Jan 2021 12:21:36 +0300 (MSK)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726129AbhADLCQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 4 Jan 2021 06:02:16 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:37542 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725830AbhADLCQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Jan 2021 06:02:16 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 104B0lxi067821;
+        Mon, 4 Jan 2021 05:00:47 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1609758047;
+        bh=nU0QXzcYjxUXyNhlJEPsHs1vQHfjG7/yfEack7+6TUs=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=GCZAMn6W6E9WSGxwUMj4InLxgkUAcf1wlFml6z59Ixk4e2MLou/UKaWdIZaIEJzob
+         8fUgL3JErRFNRl2ktPldoIbSwxAdPGYUtf0jrrTCKIQOmtf9scpNGE6wlKti9DyM0q
+         Qt51T27/JQJwvd4O8CwvhcWQKbri2vfsC6cMocYk=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 104B0lfo081309
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 4 Jan 2021 05:00:47 -0600
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 4 Jan
+ 2021 05:00:47 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 4 Jan 2021 05:00:47 -0600
+Received: from [10.250.235.36] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 104B0hxi030137;
+        Mon, 4 Jan 2021 05:00:44 -0600
+Subject: Re: [PATCH 4/4] PCI: j721e: Add support to provide refclk to PCIe
+ connector
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+CC:     <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20201224115658.2795-1-kishon@ti.com>
+ <20201224115658.2795-5-kishon@ti.com>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <da620ca1-d72a-b086-f8a8-f5aede0d4c56@ti.com>
+Date:   Mon, 4 Jan 2021 16:30:42 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: YOUR URGENT RESPONSE !!!!
-To:     Recipients <zapros@dks.ru>
-From:   "Mr. Kim Leang" <zapros@dks.ru>
-Date:   Mon, 04 Jan 2021 01:22:02 -0800
-Reply-To: kimleang575@yahoo.com
-Message-Id: <20210104092136.955CF26F446@post.dks.ru>
-X-KLMS-Rule-ID: 7
-X-KLMS-Message-Action: clean
-X-KLMS-AntiSpam-Status: not scanned, disabled by settings
-X-KLMS-AntiSpam-Interceptor-Info: not scanned
-X-KLMS-AntiPhishing: Clean, bases: 2021/01/04 08:40:00
-X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2021/01/04 05:34:00 #16008269
-X-KLMS-AntiVirus-Status: Clean, skipped
+In-Reply-To: <20201224115658.2795-5-kishon@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Greeting!
+Hi,
 
-I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
+On 24/12/20 5:26 pm, Kishon Vijay Abraham I wrote:
+> Add support to provide refclk to PCIe connector.
+> 
+> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> ---
+>  drivers/pci/controller/cadence/pci-j721e.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index dac1ac8a7615..8ec6d9c3e164 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -6,6 +6,7 @@
+>   * Author: Kishon Vijay Abraham I <kishon@ti.com>
+>   */
+>  
+> +#include <linux/clk.h>
+>  #include <linux/delay.h>
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/io.h>
+> @@ -50,6 +51,7 @@ enum link_status {
+>  
+>  struct j721e_pcie {
+>  	struct device		*dev;
+> +	struct clk		*refclk;
+>  	u32			mode;
+>  	u32			num_lanes;
+>  	struct cdns_pcie	*cdns_pcie;
+> @@ -310,6 +312,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  	struct cdns_pcie_ep *ep;
+>  	struct gpio_desc *gpiod;
+>  	void __iomem *base;
+> +	struct clk *clk;
+>  	u32 num_lanes;
+>  	u32 mode;
+>  	int ret;
+> @@ -408,6 +411,19 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  			goto err_get_sync;
+>  		}
+>  
+> +		clk = devm_clk_get_optional(dev, "pcie_refclk");
+> +		if (IS_ERR(clk)) {
+> +			dev_err(dev, "failed to get pcie_refclk\n");
 
-I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+missed initializing "ret" here. Will fix this and re-send new version.
 
-The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
-
-Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
-
-Thanks and have a nice day,
-Mr. Kim Leang
+Thanks
+Kishon
