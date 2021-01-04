@@ -2,55 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D874D2E910E
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Jan 2021 08:31:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D3DC2E92DE
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Jan 2021 10:52:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727939AbhADHaw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 Jan 2021 02:30:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56958 "EHLO mail.kernel.org"
+        id S1726569AbhADJv1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Mon, 4 Jan 2021 04:51:27 -0500
+Received: from post.dks.ru ([194.226.89.161]:53176 "EHLO post.dks.ru"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727810AbhADHav (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 4 Jan 2021 02:30:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 37FB4207B7;
-        Mon,  4 Jan 2021 07:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1609745411;
-        bh=kJ7tIx6+r+VyiiZ+ckZqxiWwz7LaTSEHsosRPI74mwg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TvKUHELzK09cVV7YTMf2uNBplAB+TpYL8TZihmmi2JOUd9ed/PCiypfClJThTIJKp
-         TEew1m94iiR99Ok/ewIWmxUBrrl4TxTB8y5XV8TA43wTj8e0Qd00Q8e5WAOIsv3Of5
-         K8kJp1aZEbt24M2WdH8qpZAyhhhjSWACQtV8oDFH1BxRm+2n32s41bxopmvppZ2ufq
-         or/OQ/E2H+AQCsmXRI45GOg4n/s0ntKj6TMmCs/f9+JIVJOYlPRHLrXzYQWNl2Zst0
-         ALtBv8dRNG/7KhE6lHKsktfR8yGbhzeRaJVguBOBXUoZBKMvl3OvHWHvwblmDt8xLl
-         iJtHWH7Z749xA==
-Date:   Mon, 4 Jan 2021 13:00:06 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] phy: cpcap-usb: Fix warning for missing regulator_disable
-Message-ID: <20210104073006.GE120946@vkoul-mobl>
-References: <20201230102105.11826-1-tony@atomide.com>
+        id S1725468AbhADJv0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 4 Jan 2021 04:51:26 -0500
+X-Greylist: delayed 1608 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 Jan 2021 04:51:24 EST
+Received: from ksmg.dks.lan (unknown [172.17.112.11])
+        by post.dks.ru (Postfix) with ESMTP id 94328270863;
+        Mon,  4 Jan 2021 12:21:42 +0300 (MSK)
+Received: from [192.168.88.237] (unknown [212.154.23.124])
+        (Authenticated sender: zapros@dks.ru)
+        by post.dks.ru (Postfix) with ESMTP id 955CF26F446;
+        Mon,  4 Jan 2021 12:21:36 +0300 (MSK)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201230102105.11826-1-tony@atomide.com>
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: YOUR URGENT RESPONSE !!!!
+To:     Recipients <zapros@dks.ru>
+From:   "Mr. Kim Leang" <zapros@dks.ru>
+Date:   Mon, 04 Jan 2021 01:22:02 -0800
+Reply-To: kimleang575@yahoo.com
+Message-Id: <20210104092136.955CF26F446@post.dks.ru>
+X-KLMS-Rule-ID: 7
+X-KLMS-Message-Action: clean
+X-KLMS-AntiSpam-Status: not scanned, disabled by settings
+X-KLMS-AntiSpam-Interceptor-Info: not scanned
+X-KLMS-AntiPhishing: Clean, bases: 2021/01/04 08:40:00
+X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2021/01/04 05:34:00 #16008269
+X-KLMS-AntiVirus-Status: Clean, skipped
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 30-12-20, 12:21, Tony Lindgren wrote:
-> On deferred probe, we will get the following splat:
-> 
-> cpcap-usb-phy cpcap-usb-phy.0: could not initialize VBUS or ID IIO: -517
-> WARNING: CPU: 0 PID: 21 at drivers/regulator/core.c:2123 regulator_put+0x68/0x78
-> ...
-> (regulator_put) from [<c068ebf0>] (release_nodes+0x1b4/0x1fc)
-> (release_nodes) from [<c068a9a4>] (really_probe+0x104/0x4a0)
-> (really_probe) from [<c068b034>] (driver_probe_device+0x58/0xb4)
+Greeting!
 
-Applied, thanks
+I am contacting you to receive and share with me an abandoned fund ( $21,537.000.00 ) left in our bank by a deceased customer. I was going through the Internet search when I found your email address. My name is Mr. Kim Leang.
 
--- 
-~Vinod
+I want to utilize this opportunity and make use of this fund if I should present your name to the bank to stand as his business associate/ trustee for the fund to be released to you via Visa card for easy withdrawals in any VISA ATM machine anywhere in the World.
+
+The bank will also give you international online transfer options. With these you can transfer the funds without any risk.
+
+Should you be interested in working with me in this project? Please reply back and let's benefit from this golden opportunity.You are my first contact. I shall wait a few days and if I do not hear from you, I shall look for another person.
+
+Thanks and have a nice day,
+Mr. Kim Leang
