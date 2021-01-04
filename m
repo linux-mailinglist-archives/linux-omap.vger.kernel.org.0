@@ -2,127 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3008C2E9523
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Jan 2021 13:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D37602E9E62
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Jan 2021 20:58:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726652AbhADMmu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 Jan 2021 07:42:50 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:56502 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726278AbhADMmt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Jan 2021 07:42:49 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 104Cg1Ai098496;
-        Mon, 4 Jan 2021 06:42:01 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1609764121;
-        bh=k3u+AVmoyV8AjjDEAKA55tnZJ8Kv6tWdf0rL6Di5au0=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=rAdjzeiC8CQMcOEpvggErBwS75NZ7TMRGP9V6lb9vef9mNtJDUspxN4fmaS2gZRSC
-         e18ZIt+t8YPfxToVroEkRzXTYJjxfhfCEecaqiMuR7WAo/YuBdvCoK/Aucx7TE3iD9
-         xP3gGfDJhiWqpSVlpCqOuBceYby6d0jMLaAK0YrQ=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 104Cg1mM096157
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 4 Jan 2021 06:42:01 -0600
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 4 Jan
- 2021 06:41:26 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 4 Jan 2021 06:41:26 -0600
-Received: from a0393678-ssd.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 104Cf3bk034579;
-        Mon, 4 Jan 2021 06:41:22 -0600
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Nadeem Athani <nadeem@cadence.com>
-CC:     <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH v2 4/4] PCI: j721e: Add support to provide refclk to PCIe connector
-Date:   Mon, 4 Jan 2021 18:11:03 +0530
-Message-ID: <20210104124103.30930-5-kishon@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210104124103.30930-1-kishon@ti.com>
-References: <20210104124103.30930-1-kishon@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S1726168AbhADT5a (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 4 Jan 2021 14:57:30 -0500
+Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21152 "EHLO
+        sender11-of-o51.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727520AbhADT5Y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Jan 2021 14:57:24 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1609790194; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=LUcWeICb7P3Lffusyw8GRvjFDdkjGaL2xpawtGA3vhh/8VOYfAwDpMgVPD10dTBVC0kJpSWauxQYbAvUzwteNV0UmE8dJQYZ2Tf723MxNeSjZdsBhG9TJwF9sCLvJHPtdUTh9BSmEkF8Nmkn1+Ov3cU4d6iqxJBCvY8NDlvBZ2I=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1609790194; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=HL+4cO3hptPd2j/OGX2u1lxqjVoG1JGQy1mc6uj3aYM=; 
+        b=TEWABq3zvY7qba4Y+dI4y0apvZkh9DSTBssuKeuFdX6CYnKnv6b/w08l8HAHN8CK91B0SXTbn6A/WvD3fxANO0if7Xu1lRs6Hw/rfzq1SD5gLMFYnCSwFMiJkRIIh7UENIqqx1G3JlMRF9TdjvDb2BFWzlZXTIbL1YfN3PVQj4U=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
+        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
+Received: from localhost.localdomain (ip-95-222-213-78.hsi15.unitymediagroup.de [95.222.213.78]) by mx.zoho.eu
+        with SMTPS id 1609790192154642.5039466454091; Mon, 4 Jan 2021 20:56:32 +0100 (CET)
+Date:   Mon, 4 Jan 2021 20:56:31 +0100
+From:   Carl Philipp Klemm <philipp@uvos.xyz>
+To:     tony@atomide.com, bcousson@baylibre.com
+Cc:     robh+dt@kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH  v3 1/1] ARM: dts: omap443x: Correct sgx clock to 307.2MHz
+ as used on motorola vendor kernel
+Message-Id: <20210104205631.5db65991237a872b6525ed65@uvos.xyz>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add support to provide refclk to PCIe connector.
+The Android vendor kernel uses 307.2MHz or a divider ratio of /5 while active 
+153600000 or /10 is only used when the sgx core is inactive.
 
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
 ---
- drivers/pci/controller/cadence/pci-j721e.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/arm/boot/dts/omap443x.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index dac1ac8a7615..2e73729c7388 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -6,6 +6,7 @@
-  * Author: Kishon Vijay Abraham I <kishon@ti.com>
+diff --git a/arch/arm/boot/dts/omap443x.dtsi b/arch/arm/boot/dts/omap443x.dtsi
+index dd8ef58cbaed..8466161197ae 100644
+--- a/arch/arm/boot/dts/omap443x.dtsi
++++ b/arch/arm/boot/dts/omap443x.dtsi
+@@ -78,11 +78,11 @@ &cpu_thermal {
+ /include/ "omap443x-clocks.dtsi"
+ 
+ /*
+- * Use dpll_per for sgx at 153.6MHz like droid4 stock v3.0.8 Android kernel
++ * Use dpll_per for sgx at 307.2MHz like droid4 stock v3.0.8 Android kernel
   */
- 
-+#include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/gpio/consumer.h>
- #include <linux/io.h>
-@@ -50,6 +51,7 @@ enum link_status {
- 
- struct j721e_pcie {
- 	struct device		*dev;
-+	struct clk		*refclk;
- 	u32			mode;
- 	u32			num_lanes;
- 	struct cdns_pcie	*cdns_pcie;
-@@ -310,6 +312,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 	struct cdns_pcie_ep *ep;
- 	struct gpio_desc *gpiod;
- 	void __iomem *base;
-+	struct clk *clk;
- 	u32 num_lanes;
- 	u32 mode;
- 	int ret;
-@@ -408,6 +411,20 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 			goto err_get_sync;
- 		}
- 
-+		clk = devm_clk_get_optional(dev, "pcie_refclk");
-+		if (IS_ERR(clk)) {
-+			dev_err(dev, "failed to get pcie_refclk\n");
-+			ret = PTR_ERR(clk);
-+			goto err_pcie_setup;
-+		}
-+
-+		ret = clk_prepare_enable(clk);
-+		if (ret) {
-+			dev_err(dev, "failed to enable pcie_refclk\n");
-+			goto err_get_sync;
-+		}
-+		pcie->refclk = clk;
-+
- 		/*
- 		 * "Power Sequencing and Reset Signal Timings" table in
- 		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
-@@ -476,6 +493,7 @@ static int j721e_pcie_remove(struct platform_device *pdev)
- 	struct cdns_pcie *cdns_pcie = pcie->cdns_pcie;
- 	struct device *dev = &pdev->dev;
- 
-+	clk_disable_unprepare(pcie->refclk);
- 	cdns_pcie_disable_phy(cdns_pcie);
- 	pm_runtime_put(dev);
- 	pm_runtime_disable(dev);
+ &sgx_module {
+ 	assigned-clocks = <&l3_gfx_clkctrl OMAP4_GPU_CLKCTRL 24>,
+ 			  <&dpll_per_m7x2_ck>;
+-	assigned-clock-rates = <0>, <153600000>;
++	assigned-clock-rates = <0>, <307200000>;
+ 	assigned-clock-parents = <&dpll_per_m7x2_ck>;
+ };
 -- 
-2.17.1
-
+2.29.2
