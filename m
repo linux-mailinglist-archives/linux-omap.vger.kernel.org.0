@@ -2,33 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 948492EC11E
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Jan 2021 17:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AD502EC2E4
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Jan 2021 19:02:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727664AbhAFQXp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Jan 2021 11:23:45 -0500
-Received: from mga04.intel.com ([192.55.52.120]:41715 "EHLO mga04.intel.com"
+        id S1726244AbhAFSBH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Jan 2021 13:01:07 -0500
+Received: from mga01.intel.com ([192.55.52.88]:21763 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727378AbhAFQXn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 6 Jan 2021 11:23:43 -0500
-IronPort-SDR: 0WSKCznx9MNaa9u6WUIGDAn45tck/EEGhS5mNXprFEbCX2UkFibCrngqqdmyksA8b5G0He4PP0
- LAzgrfvTrFLw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9855"; a="174723376"
-X-IronPort-AV: E=Sophos;i="5.79,480,1602572400"; 
-   d="gz'50?scan'50,208,50";a="174723376"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2021 08:23:01 -0800
-IronPort-SDR: mZLbNppkF1v25ZLbBV0HL5y2xnTLYh+oL7YjB4SYAV82L8/J7Lw+rH++eojhZ39SeZgAk22avo
- dQ6ANXBwC+pA==
+        id S1726165AbhAFSBG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 6 Jan 2021 13:01:06 -0500
+IronPort-SDR: Z3zvS8kWHE1x8aPT7BXCSZvW/zFvIV3MfZi2zFFMLGsYnm2xxFT+JgEbhZyxY5WP0Zku7KytdR
+ PoKuYO+4NZyQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9856"; a="195862713"
+X-IronPort-AV: E=Sophos;i="5.79,327,1602572400"; 
+   d="gz'50?scan'50,208,50";a="195862713"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2021 10:00:18 -0800
+IronPort-SDR: IKZPedthLSTJsmPYdwR0BPNVD9sWkMNQi8O7LMJPLs6YGkiZbTGPI9qRROQNqqefpoiosd/h7v
+ DsfXvx30rSIg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,480,1602572400"; 
-   d="gz'50?scan'50,208,50";a="346703499"
+X-IronPort-AV: E=Sophos;i="5.79,327,1602572400"; 
+   d="gz'50?scan'50,208,50";a="387620565"
 Received: from lkp-server02.sh.intel.com (HELO 4242b19f17ef) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 06 Jan 2021 08:22:57 -0800
+  by orsmga007.jf.intel.com with ESMTP; 06 Jan 2021 10:00:04 -0800
 Received: from kbuild by 4242b19f17ef with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1kxBaK-000918-Mx; Wed, 06 Jan 2021 16:22:56 +0000
-Date:   Thu, 7 Jan 2021 00:22:08 +0800
+        id 1kxD6K-00096D-5F; Wed, 06 Jan 2021 18:00:04 +0000
+Date:   Thu, 7 Jan 2021 01:59:15 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Tony Lindgren <tony@atomide.com>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>
@@ -40,30 +40,29 @@ Cc:     kbuild-all@lists.01.org, clang-built-linux@googlegroups.com,
         Merlijn Wajer <merlijn@wizzup.org>,
         Pavel Machek <pavel@ucw.cz>, ruleh <ruleh@gmx.de>,
         Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH 3/4] Input: omap4-keypad - use PM runtime to check keys
- for errata
-Message-ID: <202101070005.gGLhtbyg-lkp@intel.com>
-References: <20210106125822.31315-4-tony@atomide.com>
+Subject: Re: [PATCH 4/4] Input: omap4-keypad - simplify probe with devm
+Message-ID: <202101070146.I2rHlfYZ-lkp@intel.com>
+References: <20210106125822.31315-5-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="mYCpIKhGyMATD0i+"
+Content-Type: multipart/mixed; boundary="pWyiEgJYm5f9v55/"
 Content-Disposition: inline
-In-Reply-To: <20210106125822.31315-4-tony@atomide.com>
+In-Reply-To: <20210106125822.31315-5-tony@atomide.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---mYCpIKhGyMATD0i+
+--pWyiEgJYm5f9v55/
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi Tony,
 
-I love your patch! Perhaps something to improve:
+I love your patch! Yet something to improve:
 
-[auto build test WARNING on input/next]
-[also build test WARNING on linus/master v5.11-rc2 next-20210104]
+[auto build test ERROR on input/next]
+[also build test ERROR on linus/master v5.11-rc2 next-20210104]
 [cannot apply to hid/for-next linux/master]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
@@ -78,122 +77,179 @@ reproduce (this is a W=1 build):
         chmod +x ~/bin/make.cross
         # install s390 cross compiling tool for clang build
         # apt-get install binutils-s390x-linux-gnu
-        # https://github.com/0day-ci/linux/commit/69f44d8d3d1568dd3f330a46f6173a1bfc372ebd
+        # https://github.com/0day-ci/linux/commit/f42e31515b38ac05424768b08a12316f301cfd1a
         git remote add linux-review https://github.com/0day-ci/linux
         git fetch --no-tags linux-review Tony-Lindgren/Lost-key-up-interrupt-handling-for-omap4-keypad/20210106-210045
-        git checkout 69f44d8d3d1568dd3f330a46f6173a1bfc372ebd
+        git checkout f42e31515b38ac05424768b08a12316f301cfd1a
         # save the attached .config to linux build tree
         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=s390 
 
 If you fix the issue, kindly add following tag as appropriate
 Reported-by: kernel test robot <lkp@intel.com>
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
-   In file included from arch/s390/include/asm/io.h:72:
-   include/asm-generic/io.h:490:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/big_endian.h:34:59: note: expanded from macro '__le32_to_cpu'
-   #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
-                                                             ^
-   include/uapi/linux/swab.h:119:21: note: expanded from macro '__swab32'
-           ___constant_swab32(x) :                 \
-                              ^
-   include/uapi/linux/swab.h:19:12: note: expanded from macro '___constant_swab32'
-           (((__u32)(x) & (__u32)0x000000ffUL) << 24) |            \
-                     ^
-   In file included from drivers/input/keyboard/omap4-keypad.c:15:
-   In file included from include/linux/io.h:13:
-   In file included from arch/s390/include/asm/io.h:72:
-   include/asm-generic/io.h:490:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/big_endian.h:34:59: note: expanded from macro '__le32_to_cpu'
-   #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
-                                                             ^
-   include/uapi/linux/swab.h:119:21: note: expanded from macro '__swab32'
-           ___constant_swab32(x) :                 \
-                              ^
-   include/uapi/linux/swab.h:20:12: note: expanded from macro '___constant_swab32'
-           (((__u32)(x) & (__u32)0x0000ff00UL) <<  8) |            \
-                     ^
-   In file included from drivers/input/keyboard/omap4-keypad.c:15:
-   In file included from include/linux/io.h:13:
-   In file included from arch/s390/include/asm/io.h:72:
-   include/asm-generic/io.h:490:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/big_endian.h:34:59: note: expanded from macro '__le32_to_cpu'
-   #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
-                                                             ^
-   include/uapi/linux/swab.h:119:21: note: expanded from macro '__swab32'
-           ___constant_swab32(x) :                 \
-                              ^
-   include/uapi/linux/swab.h:21:12: note: expanded from macro '___constant_swab32'
-           (((__u32)(x) & (__u32)0x00ff0000UL) >>  8) |            \
-                     ^
-   In file included from drivers/input/keyboard/omap4-keypad.c:15:
-   In file included from include/linux/io.h:13:
-   In file included from arch/s390/include/asm/io.h:72:
-   include/asm-generic/io.h:490:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/big_endian.h:34:59: note: expanded from macro '__le32_to_cpu'
-   #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
-                                                             ^
-   include/uapi/linux/swab.h:119:21: note: expanded from macro '__swab32'
-           ___constant_swab32(x) :                 \
-                              ^
-   include/uapi/linux/swab.h:22:12: note: expanded from macro '___constant_swab32'
-           (((__u32)(x) & (__u32)0xff000000UL) >> 24)))
-                     ^
-   In file included from drivers/input/keyboard/omap4-keypad.c:15:
-   In file included from include/linux/io.h:13:
-   In file included from arch/s390/include/asm/io.h:72:
-   include/asm-generic/io.h:490:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/big_endian.h:34:59: note: expanded from macro '__le32_to_cpu'
-   #define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
-                                                             ^
-   include/uapi/linux/swab.h:120:12: note: expanded from macro '__swab32'
-           __fswab32(x))
-                     ^
-   In file included from drivers/input/keyboard/omap4-keypad.c:15:
-   In file included from include/linux/io.h:13:
-   In file included from arch/s390/include/asm/io.h:72:
-   include/asm-generic/io.h:501:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writeb(value, PCI_IOBASE + addr);
-                               ~~~~~~~~~~ ^
-   include/asm-generic/io.h:511:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-                                                         ~~~~~~~~~~ ^
-   include/asm-generic/io.h:521:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-                                                         ~~~~~~~~~~ ^
-   include/asm-generic/io.h:609:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           readsb(PCI_IOBASE + addr, buffer, count);
-                  ~~~~~~~~~~ ^
-   include/asm-generic/io.h:617:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           readsw(PCI_IOBASE + addr, buffer, count);
-                  ~~~~~~~~~~ ^
-   include/asm-generic/io.h:625:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           readsl(PCI_IOBASE + addr, buffer, count);
-                  ~~~~~~~~~~ ^
-   include/asm-generic/io.h:634:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           writesb(PCI_IOBASE + addr, buffer, count);
-                   ~~~~~~~~~~ ^
-   include/asm-generic/io.h:643:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           writesw(PCI_IOBASE + addr, buffer, count);
-                   ~~~~~~~~~~ ^
-   include/asm-generic/io.h:652:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           writesl(PCI_IOBASE + addr, buffer, count);
-                   ~~~~~~~~~~ ^
->> drivers/input/keyboard/omap4-keypad.c:536:32: warning: unused variable 'omap4_keypad_pm_ops' [-Wunused-const-variable]
-   static const struct dev_pm_ops omap4_keypad_pm_ops = {
-                                  ^
-   21 warnings generated.
+   dma-crossbar.c:(.text+0x344): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: dma-crossbar.c:(.text+0x48a): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/dma/xilinx/xilinx_dpdma.o: in function `xilinx_dpdma_probe':
+   xilinx_dpdma.c:(.text+0x6e): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/soc/aspeed/aspeed-lpc-ctrl.o: in function `aspeed_lpc_ctrl_probe':
+   aspeed-lpc-ctrl.c:(.text+0x72): undefined reference to `of_address_to_resource'
+   s390x-linux-gnu-ld: aspeed-lpc-ctrl.c:(.text+0xd6): undefined reference to `of_address_to_resource'
+   s390x-linux-gnu-ld: drivers/soc/fsl/dpaa2-console.o: in function `dpaa2_console_probe':
+   dpaa2-console.c:(.text+0x30): undefined reference to `of_address_to_resource'
+   s390x-linux-gnu-ld: drivers/soc/fsl/dpaa2-console.o: in function `dpaa2_mc_console_open':
+   dpaa2-console.c:(.text+0x34e): undefined reference to `ioremap'
+   s390x-linux-gnu-ld: dpaa2-console.c:(.text+0x37c): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: dpaa2-console.c:(.text+0x394): undefined reference to `ioremap'
+   s390x-linux-gnu-ld: dpaa2-console.c:(.text+0x498): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/soc/fsl/dpaa2-console.o: in function `dpaa2_console_close':
+   dpaa2-console.c:(.text+0x4e8): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/soc/fsl/dpaa2-console.o: in function `dpaa2_aiop_console_open':
+   dpaa2-console.c:(.text+0x56e): undefined reference to `ioremap'
+   s390x-linux-gnu-ld: dpaa2-console.c:(.text+0x59c): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: dpaa2-console.c:(.text+0x5b4): undefined reference to `ioremap'
+   s390x-linux-gnu-ld: dpaa2-console.c:(.text+0x6b2): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/soc/imx/soc-imx8m.o: in function `imx8mq_soc_revision':
+   soc-imx8m.c:(.init.text+0x1f0): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: soc-imx8m.c:(.init.text+0x232): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/soc/imx/soc-imx8m.o: in function `imx8mm_soc_revision':
+   soc-imx8m.c:(.init.text+0x2aa): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: soc-imx8m.c:(.init.text+0x2bc): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/soc/imx/soc-imx8m.o: in function `imx8mm_soc_uid':
+   soc-imx8m.c:(.init.text+0x33a): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: soc-imx8m.c:(.init.text+0x366): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/soc/mediatek/mtk-pmic-wrap.o: in function `pwrap_probe':
+   mtk-pmic-wrap.c:(.text+0xb0): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: mtk-pmic-wrap.c:(.text+0x140): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/soc/amlogic/meson-canvas.o: in function `meson_canvas_probe':
+   meson-canvas.c:(.text+0x42a): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/soc/amlogic/meson-clk-measure.o: in function `meson_msr_probe':
+   meson-clk-measure.c:(.text+0x8e): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/soc/qcom/qcom-geni-se.o: in function `geni_se_probe':
+   qcom-geni-se.c:(.text+0xc90): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/soc/qcom/llcc-qcom.o:llcc-qcom.c:(.text+0x69c): more undefined references to `devm_ioremap_resource' follow
+   s390x-linux-gnu-ld: drivers/soc/renesas/renesas-soc.o: in function `renesas_soc_init':
+   renesas-soc.c:(.init.text+0x70): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: renesas-soc.c:(.init.text+0x9e): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: renesas-soc.c:(.init.text+0xe6): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: renesas-soc.c:(.init.text+0x10a): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: renesas-soc.c:(.init.text+0x18a): undefined reference to `ioremap'
+   s390x-linux-gnu-ld: drivers/soc/renesas/rcar-rst.o: in function `rcar_rst_init':
+   rcar-rst.c:(.init.text+0xa8): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: drivers/soc/renesas/rcar-sysc.o: in function `rcar_sysc_pd_init':
+   rcar-sysc.c:(.init.text+0xa6): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: drivers/regulator/stm32-vrefbuf.o: in function `stm32_vrefbuf_probe':
+   stm32-vrefbuf.c:(.text+0x5a): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/reset/reset-ath79.o: in function `ath79_reset_probe':
+   reset-ath79.c:(.text+0x60): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/reset/reset-brcmstb.o: in function `brcmstb_reset_probe':
+   reset-brcmstb.c:(.text+0x5e): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/reset/reset-lpc18xx.o: in function `lpc18xx_rgu_probe':
+   reset-lpc18xx.c:(.text+0x5a): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/reset/reset-qcom-aoss.o: in function `qcom_aoss_reset_probe':
+   reset-qcom-aoss.c:(.text+0x74): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/reset/reset-qcom-pdc.o: in function `qcom_pdc_reset_probe':
+   reset-qcom-pdc.c:(.text+0x5a): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/reset/reset-simple.o:reset-simple.c:(.text+0x310): more undefined references to `devm_ioremap_resource' follow
+   s390x-linux-gnu-ld: drivers/char/hw_random/exynos-trng.o: in function `exynos_trng_probe':
+   exynos-trng.c:(.text+0xa0): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/char/hw_random/meson-rng.o: in function `meson_rng_probe':
+   meson-rng.c:(.text+0x4e): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/char/hw_random/mtk-rng.o: in function `mtk_rng_probe':
+   mtk-rng.c:(.text+0x84): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/char/hw_random/ks-sa-rng.o: in function `ks_sa_rng_probe':
+   ks-sa-rng.c:(.text+0x96): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/char/hw_random/npcm-rng.o: in function `npcm_rng_probe':
+   npcm-rng.c:(.text+0x48): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/char/xillybus/xillybus_of.o:xillybus_of.c:(.text+0x74): more undefined references to `devm_platform_ioremap_resource' follow
+   s390x-linux-gnu-ld: drivers/mfd/syscon.o: in function `device_node_get_regmap':
+   syscon.c:(.text+0x108): undefined reference to `of_address_to_resource'
+   s390x-linux-gnu-ld: syscon.c:(.text+0x162): undefined reference to `ioremap'
+   s390x-linux-gnu-ld: syscon.c:(.text+0x314): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/mfd/syscon.o: in function `syscon_probe':
+   syscon.c:(.text+0x5d0): undefined reference to `devm_ioremap'
+   s390x-linux-gnu-ld: drivers/mfd/stm32-timers.o: in function `stm32_timers_probe':
+   stm32-timers.c:(.text+0x4de): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/mtd/nand/raw/mxic_nand.o: in function `mxic_nfc_probe':
+   mxic_nand.c:(.text+0x54): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/mtd/nand/raw/stm32_fmc2_nand.o: in function `stm32_fmc2_nfc_probe':
+   stm32_fmc2_nand.c:(.text+0x2bc): undefined reference to `of_address_to_resource'
+   s390x-linux-gnu-ld: stm32_fmc2_nand.c:(.text+0x4a2): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: stm32_fmc2_nand.c:(.text+0x4ee): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: stm32_fmc2_nand.c:(.text+0x52e): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: stm32_fmc2_nand.c:(.text+0x570): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: stm32_fmc2_nand.c:(.text+0x5b6): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/mtd/nand/raw/stm32_fmc2_nand.o:stm32_fmc2_nand.c:(.text+0x5ea): more undefined references to `devm_ioremap_resource' follow
+   s390x-linux-gnu-ld: drivers/input/serio/sun4i-ps2.o: in function `sun4i_ps2_probe':
+   sun4i-ps2.c:(.text+0xb4): undefined reference to `ioremap'
+   s390x-linux-gnu-ld: sun4i-ps2.c:(.text+0x230): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/input/serio/sun4i-ps2.o: in function `sun4i_ps2_remove':
+   sun4i-ps2.c:(.text+0x2b8): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/input/keyboard/goldfish_events.o: in function `events_probe':
+   goldfish_events.c:(.text+0x62): undefined reference to `devm_ioremap'
+   s390x-linux-gnu-ld: drivers/input/keyboard/omap4-keypad.o: in function `omap4_keypad_probe':
+>> omap4-keypad.c:(.text+0x15c): undefined reference to `devm_ioremap'
+   s390x-linux-gnu-ld: drivers/input/keyboard/st-keyscan.o: in function `keyscan_probe':
+   st-keyscan.c:(.text+0x136): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/power/reset/ocelot-reset.o: in function `ocelot_reset_probe':
+   ocelot-reset.c:(.text+0x5a): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/crypto/atmel-sha.o: in function `atmel_sha_probe':
+   atmel-sha.c:(.text+0x17a): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/crypto/atmel-tdes.o: in function `atmel_tdes_probe':
+   atmel-tdes.c:(.text+0x17a): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/crypto/ccree/cc_driver.o: in function `ccree_probe':
+   cc_driver.c:(.text+0x36c): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/crypto/ccree/cc_debugfs.o: in function `cc_debugfs_init':
+   cc_debugfs.c:(.text+0x94): undefined reference to `debugfs_create_regset32'
+   s390x-linux-gnu-ld: cc_debugfs.c:(.text+0x13a): undefined reference to `debugfs_create_regset32'
+   s390x-linux-gnu-ld: drivers/crypto/qcom-rng.o: in function `qcom_rng_probe':
+   qcom-rng.c:(.text+0x60): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/clocksource/timer-of.o: in function `timer_of_init':
+   timer-of.c:(.init.text+0x50): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: timer-of.c:(.init.text+0xec): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/clocksource/timer-of.o: in function `timer_of_cleanup':
+   timer-of.c:(.init.text+0x2e6): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/clocksource/timer-davinci.o: in function `davinci_timer_register':
+   timer-davinci.c:(.init.text+0x78): undefined reference to `ioremap'
+   s390x-linux-gnu-ld: drivers/clocksource/timer-davinci.o: in function `of_davinci_timer_register':
+   timer-davinci.c:(.init.text+0x2ca): undefined reference to `of_address_to_resource'
+   s390x-linux-gnu-ld: drivers/clocksource/mxs_timer.o: in function `mxs_timer_init':
+   mxs_timer.c:(.init.text+0x20): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: drivers/clocksource/timer-zevio.o: in function `zevio_timer_add':
+   timer-zevio.c:(.init.text+0x58): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: timer-zevio.c:(.init.text+0xb8): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/clocksource/armv7m_systick.o: in function `system_timer_of_register':
+   armv7m_systick.c:(.init.text+0x2e): undefined reference to `of_iomap'
+   s390x-linux-gnu-ld: armv7m_systick.c:(.init.text+0xe2): undefined reference to `iounmap'
+   s390x-linux-gnu-ld: drivers/mailbox/armada-37xx-rwtm-mailbox.o: in function `armada_37xx_mbox_probe':
+   armada-37xx-rwtm-mailbox.c:(.text+0x68): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/mailbox/qcom-apcs-ipc-mailbox.o: in function `qcom_apcs_ipc_probe':
+   qcom-apcs-ipc-mailbox.c:(.text+0x5a): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/mailbox/mtk-cmdq-mailbox.o: in function `cmdq_probe':
+   mtk-cmdq-mailbox.c:(.text+0x7e): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/mailbox/sprd-mailbox.o: in function `sprd_mbox_probe':
+   sprd-mailbox.c:(.text+0x4e): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: sprd-mailbox.c:(.text+0x6c): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/iio/adc/adi-axi-adc.o: in function `adi_axi_adc_probe':
+   adi-axi-adc.c:(.text+0x386): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/iio/adc/at91_adc.o: in function `at91_adc_probe':
+   at91_adc.c:(.text+0x112): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/iio/adc/ingenic-adc.o: in function `ingenic_adc_probe':
+   ingenic-adc.c:(.text+0xea): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/iio/adc/rcar-gyroadc.o:rcar-gyroadc.c:(.text+0x50): more undefined references to `devm_platform_ioremap_resource' follow
+   s390x-linux-gnu-ld: drivers/iio/adc/stm32-adc-core.o: in function `stm32_adc_probe':
+   stm32-adc-core.c:(.text+0x9e): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/iio/adc/stm32-dfsdm-core.o: in function `stm32_dfsdm_probe':
+   stm32-dfsdm-core.c:(.text+0x29a): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/iio/dac/stm32-dac-core.o: in function `stm32_dac_probe':
+   stm32-dac-core.c:(.text+0x8a): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/nvmem/imx-iim.o: in function `imx_iim_probe':
+   imx-iim.c:(.text+0x4e): undefined reference to `devm_platform_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/nvmem/meson-mx-efuse.o: in function `meson_mx_efuse_probe':
+   meson-mx-efuse.c:(.text+0x6e): undefined reference to `devm_ioremap_resource'
+   s390x-linux-gnu-ld: drivers/counter/ti-eqep.o: in function `ti_eqep_probe':
+   ti-eqep.c:(.text+0x48): undefined reference to `devm_platform_ioremap_resource'
 
 Kconfig warnings: (for reference only)
    WARNING: unmet direct dependencies detected for MFD_SYSCON
@@ -212,25 +268,16 @@ Kconfig warnings: (for reference only)
    Selected by
    - STM32_ADC_CORE && IIO && (ARCH_STM32 || COMPILE_TEST && OF && REGULATOR
 
-
-vim +/omap4_keypad_pm_ops +536 drivers/input/keyboard/omap4-keypad.c
-
-   535	
- > 536	static const struct dev_pm_ops omap4_keypad_pm_ops = {
-   537		SET_RUNTIME_PM_OPS(omap4_keypad_runtime_suspend, NULL, NULL)
-   538	};
-   539	
-
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---mYCpIKhGyMATD0i+
+--pWyiEgJYm5f9v55/
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICJnY9V8AAy5jb25maWcAnDzbcuM2su/5ClZSdSr7kIwl2R77bPkBBEEJI5LgEKAufkEp
+H4sICL/j9V8AAy5jb25maWcAnDzbcuM2su/5ClZSdSr7kIwl2R77bPkBBEEJI5LgEKAufkEp
 tjzRWflSkpzN7NefBsALQILy1KYqY6u7ATQajb6h5V9++iVA76fX581p97DZ778H37Yv28Pm
 tH0Mnnb77T+DiAUZEwGJqPgdiJPdy/vfn46T24vg6vfb3y+C+fbwst0H+PXlafftHUbuXl9+
 +uUnzLKYTiXGckEKTlkmBVmJu58f9puXb8Ff28MR6ILR+PcLmOPXb7vT/376BP8+7w6H18On
@@ -577,4 +624,4 @@ jfYBStsWbkTQikph05gNw4W2I9B6/rRSHy7SOofr6omKdYQH3hgHECxj1LY5LMIyjvEOJGiq
 DK1TPdJxknnDCodPBMJT5Y62eZp0F5gywwl4BpsCgwSAcxvo+u7xp43n4EeNjJTKIE+lxNUf
 l5HiQMid/g9lIJllMhUBAA==
 
---mYCpIKhGyMATD0i+--
+--pWyiEgJYm5f9v55/--
