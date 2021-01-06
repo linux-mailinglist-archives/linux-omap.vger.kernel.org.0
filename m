@@ -2,33 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 326962EC00A
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Jan 2021 16:02:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89E152EC071
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Jan 2021 16:34:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726298AbhAFPCk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Jan 2021 10:02:40 -0500
-Received: from mga14.intel.com ([192.55.52.115]:32305 "EHLO mga14.intel.com"
+        id S1726551AbhAFPek (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Jan 2021 10:34:40 -0500
+Received: from mga17.intel.com ([192.55.52.151]:6239 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725822AbhAFPCk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 6 Jan 2021 10:02:40 -0500
-IronPort-SDR: xNBYrlcmBghiOce08j2lu7qtsBfdiHjRF4qnB+25dJuWTBauJv5vc+CFnzdRLf5fptfpzcyAfS
- j+s2m/4Hr8OA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9855"; a="176507787"
+        id S1725800AbhAFPek (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 6 Jan 2021 10:34:40 -0500
+IronPort-SDR: ukZm88+ROrllDUVYMtCdPMBBIp3IBjQmQJPBL2Dw19J+33YRm/jNgGYzaEvdEfFXiAucXmkk9u
+ a/h3yQTKbG+A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9855"; a="157076460"
 X-IronPort-AV: E=Sophos;i="5.78,480,1599548400"; 
-   d="gz'50?scan'50,208,50";a="176507787"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2021 07:01:57 -0800
-IronPort-SDR: ujnLDXEawa9QZ2k6O+Q/Oo/hDSjFX3u8+8b4Fq84LIUdjTHhsSovL/tk43VOa56ldUmWav2ubC
- ZRfmescqGK2Q==
+   d="gz'50?scan'50,208,50";a="157076460"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2021 07:33:58 -0800
+IronPort-SDR: TQHUMo5oyI94evnwmi+zduz+4T8yP+HjDPg+kN9iyrIEgSDpUAfOZKy2BMAFHtE6iZ2W2M0lbA
+ 78VA6oYMfXUw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.78,480,1599548400"; 
-   d="gz'50?scan'50,208,50";a="350245587"
+   d="gz'50?scan'50,208,50";a="395657998"
 Received: from lkp-server02.sh.intel.com (HELO 4242b19f17ef) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 06 Jan 2021 07:01:53 -0800
+  by fmsmga004.fm.intel.com with ESMTP; 06 Jan 2021 07:33:55 -0800
 Received: from kbuild by 4242b19f17ef with local (Exim 4.92)
         (envelope-from <lkp@intel.com>)
-        id 1kxAJt-0008zC-AZ; Wed, 06 Jan 2021 15:01:53 +0000
-Date:   Wed, 6 Jan 2021 23:01:40 +0800
+        id 1kxAos-0008zy-PE; Wed, 06 Jan 2021 15:33:54 +0000
+Date:   Wed, 6 Jan 2021 23:33:41 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Tony Lindgren <tony@atomide.com>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>
@@ -39,21 +39,21 @@ Cc:     kbuild-all@lists.01.org, linux-input@vger.kernel.org,
         Merlijn Wajer <merlijn@wizzup.org>,
         Pavel Machek <pavel@ucw.cz>, ruleh <ruleh@gmx.de>,
         Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH 2/4] Input: omap4-keypad - scan keys in two phases and
- simplify with bitmask
-Message-ID: <202101062217.5QmPYNAU-lkp@intel.com>
-References: <20210106125822.31315-3-tony@atomide.com>
+Subject: Re: [PATCH 3/4] Input: omap4-keypad - use PM runtime to check keys
+ for errata
+Message-ID: <202101062355.n4fgUrj2-lkp@intel.com>
+References: <20210106125822.31315-4-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="Q68bSM7Ycu6FN28Q"
+Content-Type: multipart/mixed; boundary="GvXjxJ+pjyke8COw"
 Content-Disposition: inline
-In-Reply-To: <20210106125822.31315-3-tony@atomide.com>
+In-Reply-To: <20210106125822.31315-4-tony@atomide.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---Q68bSM7Ycu6FN28Q
+--GvXjxJ+pjyke8COw
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -62,7 +62,8 @@ Hi Tony,
 I love your patch! Perhaps something to improve:
 
 [auto build test WARNING on input/next]
-[also build test WARNING on hid/for-next linux/master linus/master v5.11-rc2 next-20210104]
+[also build test WARNING on linus/master v5.11-rc2 next-20210104]
+[cannot apply to hid/for-next linux/master]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
 https://git-scm.com/docs/git-format-patch]
@@ -76,10 +77,10 @@ reproduce:
         chmod +x ~/bin/make.cross
         # apt-get install sparse
         # sparse version: v0.6.3-208-g46a52ca4-dirty
-        # https://github.com/0day-ci/linux/commit/6a18714b171daeb44c0418e33cc3e78c7daaa44b
+        # https://github.com/0day-ci/linux/commit/69f44d8d3d1568dd3f330a46f6173a1bfc372ebd
         git remote add linux-review https://github.com/0day-ci/linux
         git fetch --no-tags linux-review Tony-Lindgren/Lost-key-up-interrupt-handling-for-omap4-keypad/20210106-210045
-        git checkout 6a18714b171daeb44c0418e33cc3e78c7daaa44b
+        git checkout 69f44d8d3d1568dd3f330a46f6173a1bfc372ebd
         # save the attached .config to linux build tree
         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=openrisc 
 
@@ -88,58 +89,89 @@ Reported-by: kernel test robot <lkp@intel.com>
 
 All warnings (new ones prefixed by >>):
 
-   drivers/input/keyboard/omap4-keypad.c: In function 'omap4_keypad_irq_thread_fn':
-   drivers/input/keyboard/omap4-keypad.c:161:15: warning: variable 'keys_down' set but not used [-Wunused-but-set-variable]
-     161 |  int keys_up, keys_down;
-         |               ^~~~~~~~~
->> drivers/input/keyboard/omap4-keypad.c:161:6: warning: variable 'keys_up' set but not used [-Wunused-but-set-variable]
-     161 |  int keys_up, keys_down;
+   drivers/input/keyboard/omap4-keypad.c: In function 'omap4_keypad_scan_keys':
+   drivers/input/keyboard/omap4-keypad.c:162:6: warning: variable 'keys_up' set but not used [-Wunused-but-set-variable]
+     162 |  int keys_up, keys_down;
          |      ^~~~~~~
+   drivers/input/keyboard/omap4-keypad.c: In function 'omap4_keypad_irq_thread_fn':
+>> drivers/input/keyboard/omap4-keypad.c:192:7: warning: variable 'down_events' set but not used [-Wunused-but-set-variable]
+     192 |  bool down_events;
+         |       ^~~~~~~~~~~
+   At top level:
+   drivers/input/keyboard/omap4-keypad.c:536:32: warning: 'omap4_keypad_pm_ops' defined but not used [-Wunused-const-variable=]
+     536 | static const struct dev_pm_ops omap4_keypad_pm_ops = {
+         |                                ^~~~~~~~~~~~~~~~~~~
 
 
-vim +/keys_up +161 drivers/input/keyboard/omap4-keypad.c
+vim +/down_events +192 drivers/input/keyboard/omap4-keypad.c
 
-   156	
-   157	static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
-   158	{
-   159		struct omap4_keypad *keypad_data = dev_id;
-   160		struct input_dev *input_dev = keypad_data->input;
- > 161		int keys_up, keys_down;
-   162		u32 low, high;
-   163		u64 keys;
-   164	
-   165		low = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE31_0);
-   166		high = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE63_32);
-   167		keys = low | (u64)high << 32;
-   168	
-   169		/* Scan for key up events for lost key-up interrupts */
-   170		keys_up = omap4_keypad_scan_state(keypad_data, keys, false);
-   171	
-   172		/* Scan for key down events */
-   173		keys_down = omap4_keypad_scan_state(keypad_data, keys, true);
-   174	
-   175		input_sync(input_dev);
-   176	
-   177		keypad_data->keys = keys;
+   158	
+   159	static bool omap4_keypad_scan_keys(struct omap4_keypad *keypad_data, bool clear)
+   160	{
+   161		struct input_dev *input_dev = keypad_data->input;
+ > 162		int keys_up, keys_down;
+   163		u32 low, high;
+   164		u64 keys = 0;
+   165	
+   166		mutex_lock(&keypad_data->lock);
+   167		if (!clear) {
+   168			low = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE31_0);
+   169			high = kbd_readl(keypad_data, OMAP4_KBD_FULLCODE63_32);
+   170			keys = low | (u64)high << 32;
+   171		}
+   172	
+   173		/* Scan for key up events for lost key-up interrupts */
+   174		keys_up = omap4_keypad_scan_state(keypad_data, keys, false);
+   175	
+   176		/* Scan for key down events */
+   177		keys_down = omap4_keypad_scan_state(keypad_data, keys, true);
    178	
-   179		/* clear pending interrupts */
-   180		kbd_write_irqreg(keypad_data, OMAP4_KBD_IRQSTATUS,
-   181				 kbd_read_irqreg(keypad_data, OMAP4_KBD_IRQSTATUS));
+   179		input_sync(input_dev);
+   180	
+   181		keypad_data->keys = keys;
    182	
-   183		return IRQ_HANDLED;
-   184	}
-   185	
+   183		mutex_unlock(&keypad_data->lock);
+   184	
+   185		return keys_down;
+   186	}
+   187	
+   188	static irqreturn_t omap4_keypad_irq_thread_fn(int irq, void *dev_id)
+   189	{
+   190		struct omap4_keypad *keypad_data = dev_id;
+   191		struct device *dev = keypad_data->input->dev.parent;
+ > 192		bool down_events;
+   193		int error;
+   194	
+   195		error = pm_runtime_get_sync(dev);
+   196		if (error < 0) {
+   197			pm_runtime_put_noidle(dev);
+   198	
+   199			return IRQ_NONE;
+   200		}
+   201	
+   202		down_events = omap4_keypad_scan_keys(keypad_data, false);
+   203	
+   204		/* clear pending interrupts */
+   205		kbd_write_irqreg(keypad_data, OMAP4_KBD_IRQSTATUS,
+   206				 kbd_read_irqreg(keypad_data, OMAP4_KBD_IRQSTATUS));
+   207	
+   208		pm_runtime_mark_last_busy(dev);
+   209		pm_runtime_put_autosuspend(dev);
+   210	
+   211		return IRQ_HANDLED;
+   212	}
+   213	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---Q68bSM7Ycu6FN28Q
+--GvXjxJ+pjyke8COw
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICKbI9V8AAy5jb25maWcAnDxbb9s4s+/7K4QucLDfQ1tfEwcHeaAlymYtiqpI2U5fBDdx
+H4sICOzR9V8AAy5jb25maWcAnDxbb9s4s+/7K4QucLDfQ1tfEwcHeaAlymYtiqpI2U5fBDdx
 22AdO7Cd/dp/f2aoi0mJchenQNB4ZkgOZ4ZzI50///jTI2/nw8vm/Py42e1+ed+3++1xc94+
 ed+ed9v/9QLhxUJ5NGDqAxBHz/u3nx8Pr9v98fn06I0/3H3oeYvtcb/def5h/+35+xuMfj7s
 //jzD1/EIZvlvp8vaSqZiHNF1+r+3eHY//v9Did6//3x0ftr5vv/8e4+DD/03hljmMwBcf+r
@@ -552,4 +584,4 @@ fWovm/zBLDIRQMp1FRUN3QiUYx9/VS3vCNdPgwYHxU5AXtQZ1kDOt7D+vNAVyNysmeTapG3J
 chp3ScwiyA1udDBBU8zSYeQ6Y88rZonZRwN4Jb48EMCKU5BpOAVpLASVoKKNxgC+RDhbNOAW
 dZ6j7Dzyz3cG/f8HF3XEoxxNAQA=
 
---Q68bSM7Ycu6FN28Q--
+--GvXjxJ+pjyke8COw--
