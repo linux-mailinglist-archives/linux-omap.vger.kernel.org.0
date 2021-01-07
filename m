@@ -2,265 +2,196 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B0AC72ECC36
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Jan 2021 10:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 331162EE66B
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Jan 2021 20:56:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727474AbhAGJDz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Jan 2021 04:03:55 -0500
-Received: from mail-eopbgr60045.outbound.protection.outlook.com ([40.107.6.45]:21197
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725974AbhAGJDz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 7 Jan 2021 04:03:55 -0500
+        id S1728674AbhAGTzn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Jan 2021 14:55:43 -0500
+Received: from mx0b-0014ca01.pphosted.com ([208.86.201.193]:10662 "EHLO
+        mx0a-0014ca01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726541AbhAGTzm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Jan 2021 14:55:42 -0500
+Received: from pps.filterd (m0042333.ppops.net [127.0.0.1])
+        by mx0b-0014ca01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 107Jn97Z031782;
+        Thu, 7 Jan 2021 11:54:45 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=proofpoint;
+ bh=PhDO97Y0G7meDmao+AF0FphmPJFAq+ve7WNzQu1Sp9s=;
+ b=oPEYgCFBBInOYOjDT9N62Mu+RLKRmnSVNknQyAJ3infWc7HdlgSXMfsEiYpusGrDz8AG
+ 8fEzZAClBO5cCuF8p5+yzxOF/ixfkxio3ocLvqlMLhtLfC8XwWiXhdJ272M4a0cVK51l
+ gaXs+1NVt4aYk+DyiCh1x6pyz4AhpZpPow/1Xl82oOkegNMKM4mhhVkApzNHWUXsu30I
+ f/Io5+ONugYW1x5gl8NsmWsenFMI/c+n58xZn0rlhebZ6zaTVfZ16lbTY4+tUYqfiMcR
+ wIsHYtDCpQhzjsL+mg9GRw1bRwuwT9CBJBj85u4X+yt1kAf0DVy7uQjxEkA4gvMbIsHu UQ== 
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2176.outbound.protection.outlook.com [104.47.55.176])
+        by mx0b-0014ca01.pphosted.com with ESMTP id 35tna3h09d-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 07 Jan 2021 11:54:44 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=btUTveu2aB2KcacHYIHToP5IevIQWh1cl1Q0mQeNjB/Ga4VK9Vl8qAqN4e3zdypXs4zLRuoZWJ4uFXuJUTLfV47x1veaQzGn/gyNpkZocrihF4PSTr8bvYVDv/fI1nsjWidRBL84NI1QiQVT8DCDulKytzYjVqFI58aS3/kRBhATz920YF+YLXsXbppUFW2Jba0pjihPsx8FHuRdUwiRWhgxGSQxgFRAYjNZC9elOFWJ7gOVbkv0Z+VEo2HTqj9acOvoUnZf9TR3iAhwGWQHOxnoghb8h5aEITzjPSaxn2XdyoxSwKpfcpHxeccK86ltBxt7kc8J8tQ78hjY017sbA==
+ b=VvuXFzGb37e9d9kFdvCPNpMIy7Dja5oqY2nFrgoqiDg9pAc9Xj+ezjNJYKodJ11sxiyaXeXmnQ+uh1z0/8wqrIAwLPZy+wtut7EccKw6YrWjhJdJ7kVhRWKfwpDg2HsIdaFMnYFuGfITJ7dcP3buaYB7z9leQg1ya0ZiSr4Xd/Rai2ZJANSYT3BoHRnVfLtjpYirjW2A/mQICEr+K3qDpjavhLpfmY9eGE3NOQnqeJ3V1km7eFbruMMdyXsdso0meG3zuhZEgTriG90jKPLijfk4phe3QQRIUT2VKndv0om4RRnwLU1vBjNPtG6osr8BVD24Yvnqsv0DdIa9Pcyjjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3xiPIgsBGQsk1PW8W4Xz5jofW0uyIXaYgyx8QZ1CJKg=;
- b=E8+1Rw+MLS2DCwTdNpS1Cqu8x4pG7vTIIt+ew6ZYlVirKTACWENynH+kUidioXA2WUPe3oDFD6l+bd1ngdqkQwqlTTXiWH9ww575/yje6aRWDWgaFb4EzIcKCbnTxi811hxUUfh/DDfSZ2Gcyikdc4y+iLPha/xDTpz8+5uX+he1LEjns7E8cvbKDhkEe1TC/GrOPYZpXw3fZBzdvxC/8/Qmb3lS/INlg6hhCkSK3y5NYUyOMV56NaOa8LSCAtLIKlDim94GNnVSA9r4+M3Y691hp2tsjbCIsaN4qbzO+R9kiyXScWASoiVtz/Jrcu0r5n9INO7FEUnJ6rspgoGE9Q==
+ bh=PhDO97Y0G7meDmao+AF0FphmPJFAq+ve7WNzQu1Sp9s=;
+ b=JSU24URgZGo8cLSeYnB8bRehvigoiZrE+EVfWB45OgsLBZwmZmXsWVH6IXgofJ8793QTJOFa3m4hdD+oAMBlFd7qa5hgDYwaP4fBEDZlGP4mzS44StoYMUjcKemF18urkV1NiSTMSX2W3T4w8x1N+JBW7rKs6l9mk68YZaq6FtpK8fTjUj/WvN64/+zyviuazJ95Qu3kIyG6dfIyhX1Y1J6T4MqOax0NJ1wBASq6zMCXje6EprUeCdVhtxUGLNkPIbyaqQ9SShkwbgqT9GqEmn/5+iiOduKh+/pTDW+pkOOAhxaCfA2f40J0jB+qjjMw2c8QrkDmmINFOkeKs3GOug==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
+ dkim=pass header.d=cadence.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3xiPIgsBGQsk1PW8W4Xz5jofW0uyIXaYgyx8QZ1CJKg=;
- b=fyP9qisPLhKtdCDZjYW0BwmygQcXALX+dynvDwYyJ/xCKEeRB1DsNwgcvKhiq3tjUu9+GW1OYo+JmHYm6jULLzhsVwmlAjaTuT/Y+KAzCMOz2wXxRqZDv4AdplF9I63yEIW7fiSvLzhVm67CgBP2EvDpz0qzrUmmINBATN1vh8U=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=nxp.com;
-Received: from HE1PR0402MB3371.eurprd04.prod.outlook.com (2603:10a6:7:85::27)
- by HE1PR0401MB2297.eurprd04.prod.outlook.com (2603:10a6:3:23::25) with
+ bh=PhDO97Y0G7meDmao+AF0FphmPJFAq+ve7WNzQu1Sp9s=;
+ b=DEKBNWj1WOQAgL63r1kHgFAi0w+uJv/hr5iL7r79GuiTW6clqVHPgIChs8OGcjZkDCRHlLJgo4xJv/DRyR7T+1z8WX3kAYQAkGUDpjm18Vy645OLDm1qXx1ws8mbaSrdLm2RFQ4+iCRTwKtdC80xkwWAFlhy0AzWp+e/HvONmro=
+Received: from SN2PR07MB2557.namprd07.prod.outlook.com (2603:10b6:804:12::9)
+ by SN1PR07MB4014.namprd07.prod.outlook.com (2603:10b6:802:22::29) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3721.22; Thu, 7 Jan
- 2021 09:02:59 +0000
-Received: from HE1PR0402MB3371.eurprd04.prod.outlook.com
- ([fe80::3194:64d6:5a70:a91d]) by HE1PR0402MB3371.eurprd04.prod.outlook.com
- ([fe80::3194:64d6:5a70:a91d%4]) with mapi id 15.20.3721.024; Thu, 7 Jan 2021
- 09:02:59 +0000
-From:   Zhiqiang Hou <Zhiqiang.Hou@nxp.com>
-To:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@axis.com, lorenzo.pieralisi@arm.com,
-        robh@kernel.org, bhelgaas@google.com
-Cc:     kishon@ti.com, minghuan.Lian@nxp.com, jesper.nilsson@axis.com,
-        jingoohan1@gmail.com, gustavo.pimentel@synopsys.com,
-        hayashi.kunihiko@socionext.com, Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-Subject: [PATCH 4/4] PCI: dwc: Change the parameter of function dw_pcie_ep_reset_bar()
-Date:   Thu,  7 Jan 2021 17:11:23 +0800
-Message-Id: <20210107091123.8616-5-Zhiqiang.Hou@nxp.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210107091123.8616-1-Zhiqiang.Hou@nxp.com>
-References: <20210107091123.8616-1-Zhiqiang.Hou@nxp.com>
-Content-Type: text/plain
-X-Originating-IP: [119.31.174.73]
-X-ClientProxiedBy: SG2PR06CA0085.apcprd06.prod.outlook.com
- (2603:1096:3:14::11) To HE1PR0402MB3371.eurprd04.prod.outlook.com
- (2603:10a6:7:85::27)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3721.21; Thu, 7 Jan
+ 2021 19:54:43 +0000
+Received: from SN2PR07MB2557.namprd07.prod.outlook.com
+ ([fe80::e164:6aec:aed1:1e2a]) by SN2PR07MB2557.namprd07.prod.outlook.com
+ ([fe80::e164:6aec:aed1:1e2a%8]) with mapi id 15.20.3742.006; Thu, 7 Jan 2021
+ 19:54:43 +0000
+From:   Athani Nadeem Ladkhan <nadeem@cadence.com>
+To:     Athani Nadeem Ladkhan <nadeem@cadence.com>,
+        Tom Joseph <tjoseph@cadence.com>,
+        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "bhelgaas@google.com" <bhelgaas@google.com>,
+        "kishon@ti.com" <kishon@ti.com>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC:     Milind Parab <mparab@cadence.com>,
+        Swapnil Kashinath Jakhade <sjakhade@cadence.com>,
+        Parshuram Raju Thombare <pthombar@cadence.com>
+Subject: RE: [PATCH v7 0/2] PCI: cadence: Retrain Link to work around Gen2
+Thread-Topic: [PATCH v7 0/2] PCI: cadence: Retrain Link to work around Gen2
+Thread-Index: AQHW3qQOEOO3xLnov0GUSEHX9bvYeqocoECg
+Date:   Thu, 7 Jan 2021 19:54:42 +0000
+Message-ID: <SN2PR07MB25579DFA16FFFEFB7B6F61B1D8AF0@SN2PR07MB2557.namprd07.prod.outlook.com>
+References: <20201230120515.2348-1-nadeem@cadence.com>
+In-Reply-To: <20201230120515.2348-1-nadeem@cadence.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbmFkZWVtXGFwcGRhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEyOWUzNWJcbXNnc1xtc2ctMmNkNzk0MzQtNTEyMi0xMWViLWFlOTMtZDQ4MWQ3OWExZmRlXGFtZS10ZXN0XDJjZDc5NDM2LTUxMjItMTFlYi1hZTkzLWQ0ODFkNzlhMWZkZWJvZHkudHh0IiBzej0iMjQzMiIgdD0iMTMyNTQ1MjI4Nzk4MTg1MTk2IiBoPSJWeTZpTmhKckxYZUd1QkFFWGZueENsd0pUcGs9IiBpZD0iIiBibD0iMCIgYm89IjEiLz48L21ldGE+
+x-dg-rorf: true
+x-originating-ip: [59.145.174.78]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 97507f53-84a1-4235-cc37-08d8b346139b
+x-ms-traffictypediagnostic: SN1PR07MB4014:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <SN1PR07MB4014FD47CB03BCFDA3676929D8AF0@SN1PR07MB4014.namprd07.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3968;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: /zFKKyJZ2IPIMeOJz6iuv4e0gMCoaxx53yPztLt6teC4oda66xgDju/nLNfqgYvE8Fo285Dy+sjzIR39RHndmcHol+ifUwspuYDa2qoPocWAR/9f9Ss1n3QawiP4DtHxRQgoQgp4Jc8S9HfUYb9Fw8h4sOA5TBEXg6C0NlO2r0f/+MgQU3hjJslMMz+7aagva/1+7DFObJAJ53grPUG/f0mBLvR1yEnZqXogPKj36pdMRBx2NujjN3z0ICoiCGziHnmPQdetXs7/ryp4Y999hWmrS7J5DVgQ2EfbjII7fKJhWjrep7LtKzwlJXwhJbwRcwR1CCXiFvCg0i65oemVn08c8R9IjIZS3xIrsgnR4YYmhI4sV5q34ZE+GqhUtldZjk1KJV+xSVBX1y1MqWir6TRaIFzssujp7BZ8QWdo6kdjvwIW6HjHTlo1cCSq9QVOLO+uyjFDMS+rw1lnQ7jTNw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN2PR07MB2557.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(136003)(39860400002)(376002)(366004)(346002)(36092001)(5660300002)(2906002)(107886003)(83380400001)(316002)(4326008)(86362001)(53546011)(110136005)(7696005)(33656002)(76116006)(921005)(71200400001)(186003)(66476007)(478600001)(9686003)(55016002)(8936002)(54906003)(26005)(52536014)(66446008)(8676002)(64756008)(66946007)(6506007)(66556008);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: =?us-ascii?Q?qFW9i55nZp7kWCNDyFpPPDzed2bUhj7Es+tDUCEH3OC3Ll1qyqupWGznweIl?=
+ =?us-ascii?Q?alPTa86x/CfPmL20iMwVlWuER72JG1vagzN0HkVlDxAqOqUf2RrDoKDEYqo4?=
+ =?us-ascii?Q?1RsbCEfIP7ArNW/9Ogwm+07yC8i93+u03l2167nJXGjkYJtGjCsCn8BXJ4MI?=
+ =?us-ascii?Q?JU+hwj80RhZ29jtiK5NZ9XIdnj2h8e2VqaqiQjZgDdylhQkbw7NouyGXTiN5?=
+ =?us-ascii?Q?ybFViFhBEzrfHtkPXLO4wA5d8hZU0GxqOy1RksZSfg9RGPEjVbtqgHSOblEd?=
+ =?us-ascii?Q?M70/1g3YJzXfsVteu9uoxYJpzHehMYbCHiTjXar3JKDlD67KIXe97cNanf7E?=
+ =?us-ascii?Q?vP6dYRigDntacxCfAYHLXES/cOYK3A6Kh0esGzCucRGx39saaEjHmwZ7wRul?=
+ =?us-ascii?Q?h77ot7OMD7ksy2cXWEm9K2W5An2ARyzmQmRoSqbE1+GeCC5EWyfrFSZIPmSz?=
+ =?us-ascii?Q?wtYYSWsK3iGirecl0o6kBEPkiabLSQnvo25/evhBec/YsySXMGsZpcjpwLCh?=
+ =?us-ascii?Q?34+aYXaO7YpVKLW2N4pq7UH7rTBJztuCwxJ8Ko0aY7GH/ULQYQhQgs+mCm1C?=
+ =?us-ascii?Q?h1fZLY5l+fkE/HiZMLHAErpxJAeMZq+0J+qokWviqgEkSdrmlX/NHcfY/r1J?=
+ =?us-ascii?Q?ySnd19Pt8IWVqcd4RjQ+6M6KsHG4BSC2I5xDT8r64A8hZscFEQqMGD38x/kG?=
+ =?us-ascii?Q?8ThQHS8y0DHC5gvvtC0+6npPGnXbEjqxemM4/8yNlwIqoPgVF6zK0ngfKItQ?=
+ =?us-ascii?Q?aUjh9Q77SwrupkXf+hjsnOh45eesda3xDz7LxXmfIV2Qx2v9BRfQ0/dXWsws?=
+ =?us-ascii?Q?NP0aP61815Er9hr2bbq9/e4jnmuEZ1dOuNpK16K95G5XWkagFmgIJzGTYT2p?=
+ =?us-ascii?Q?OEOlXjPoevYbUTgcpDMmpcp6iOsMn5iZLuoEmv5Le+H/MzUb5fvqs9sEJXpL?=
+ =?us-ascii?Q?l+ChXT3DysRRC2yoiKsMsfkaDHxFboWwWBgL5V3cae4=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (119.31.174.73) by SG2PR06CA0085.apcprd06.prod.outlook.com (2603:1096:3:14::11) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3742.6 via Frontend Transport; Thu, 7 Jan 2021 09:02:54 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: cbc4fba3-675b-48e1-458b-08d8b2eb0815
-X-MS-TrafficTypeDiagnostic: HE1PR0401MB2297:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <HE1PR0401MB2297F2EE23F4E25F21C4445884AF0@HE1PR0401MB2297.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:369;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: BBwmz8AuVOjhAmdtnvw9184nLvypVFtYDiNNfViIw3jU2dgo3IwkIGkyl4jyKkJg2ja2JrAIpWC3+KuYla0aECRO9+0yJxq3nh502L3I1Jd6YBL+ARuGEzNt4KC98kB5oJ/YVs766vIoj+LbENgLpHFHp4aMhl6bsaehN2oa4yGYjECqLXXwuEyvdsX75g+K1/y6IpRS7kEPjuaww5z/Ad6kJM61mmzhVo+usD4AO2gmYQU/3tT3zSe67zO/uznGWu61AvCC7gS0BniAE4cwrY9gSbUJQGil84L/wHIvq7t/y7d06B6tH7vchGpGtNYs6hmGNcQQyzBlKBkNiIBkB8tzm5BuM1vLHND5t9bsn1gy0ktgm+xQEAK3pRKx4XNBAIkr5e5ymk2krX8tzoM/a3YRVX+JsPdlalGEIh8Hjskmyp0zPBuJBrK7+MkdO1o03y2NM6zcMEZ0wsiTDoFptg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0402MB3371.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(39860400002)(366004)(136003)(346002)(36756003)(956004)(8676002)(86362001)(2616005)(2906002)(6512007)(478600001)(6666004)(4326008)(66556008)(1076003)(26005)(83380400001)(6486002)(66476007)(52116002)(5660300002)(7416002)(316002)(69590400011)(186003)(6506007)(16526019)(66946007)(8936002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?UZ/egG3x5lQlHrJW4+1CDqt8OsE6TnN5zw6LV2CEAh8zmnj1I7LW1OxmjD0m?=
- =?us-ascii?Q?O7u3VVBchEeMFlLy85qdyeZ0IvFI8SKlJzejBei367k51uLEZc1q0q62XQcZ?=
- =?us-ascii?Q?KVkJllO/VuSWuhxnEHAasRCsEz3efF/MDN3zkWDCB4NBDmZSfkNKVtFuQQxm?=
- =?us-ascii?Q?Bgi1UWsUuzz5bxiHEXn0iYvy7jze0/S+PYU35BJeYURBFbBT+4vt+zV8n1SU?=
- =?us-ascii?Q?ktSHGvXGLkc3oEUyWNsqWpR3swwWUw1xeXpcUL3Lciii9F3NdiSufegZw5TX?=
- =?us-ascii?Q?MZvbbyv3NrVsDQhJL7+nZoe/CJObk7ojreR+WnKftEiMToj7Z6Z5NlMPq171?=
- =?us-ascii?Q?RbxPQMkUjK2+2BAmwyQbMnLbi6DXRNKB5zvgcPx/RBWC1hYZ7bAFwXiz0O7+?=
- =?us-ascii?Q?tK97KbRgYYb1dfLLnTvLdJoPMqEGaqftFe2eyDOPcOf42o3RQ2SmUnqQ/Qv8?=
- =?us-ascii?Q?KhdP4zd/ppr1ueQvKaJr+3/uPAoASMsFnFeooBBUSIAfpUGxeijYk1ellhVb?=
- =?us-ascii?Q?1KIAYq3GgP3TuSXJxmnqn6tim1XO4xLHVSPf/1tfqbcJ+fWofyQMz1FuY0t9?=
- =?us-ascii?Q?/GggbGr7i4nvuL/WTEvjlYFfNsrGEi+OcTzSoC9AoWRUvi/v7H2aV9vh+HKb?=
- =?us-ascii?Q?33xcYehBCUBRzpFOxmzOdZeps1/0mpyTNBV0psHIhJJ6wxclA/dC6Xrarbm8?=
- =?us-ascii?Q?CQnxVRHnA3Qm5lzJGUk0ODJHczT9Ft5aWYJslTV9C8M05+AqUjI66iwMa4rY?=
- =?us-ascii?Q?9jKckZudeLrF6d5HXIVprgndDByt/Kg3lxx0IHuXN+n/Q13sZeXr+XjZ4P3j?=
- =?us-ascii?Q?2hwyrgnJsfkQrQ3TTlLacHjYJym/RN8bi4R78aMBxM/ZjvlIA5sqPYm1zr19?=
- =?us-ascii?Q?cm2xSe0O0Q33u+4xT4IxjsJCMN21Hm6cIWA+2iAADkb70cpHsDrE3RlxAEmR?=
- =?us-ascii?Q?2I0P4Y4WzDQqZGkgQOmdGiFJ6QIkz4HrLryNK2912sbuQgorSRzYOiS8+pJO?=
- =?us-ascii?Q?F0S/?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0402MB3371.eurprd04.prod.outlook.com
+X-OriginatorOrg: cadence.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2021 09:02:59.3336
+X-MS-Exchange-CrossTenant-AuthSource: SN2PR07MB2557.namprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97507f53-84a1-4235-cc37-08d8b346139b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jan 2021 19:54:42.4558
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-Network-Message-Id: cbc4fba3-675b-48e1-458b-08d8b2eb0815
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3xO0LTLwCU3pOgqw07eButTHF+zYgTdnIau1LCj7dYWvHWKCMu8m+pfAFexDAad45pn5AvAQ88B2ffhvrp0yUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0401MB2297
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ufcgVIun8BGB8ZiZRgDt/Z4XXJH0MHzK9mPfVKWr5vEGXpTshPaFgcC0WVs+Z1XbH1Nbqvq3qjKCZoN7/5KaZPea0hVYRZRCo+Cgl7D3pxs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR07MB4014
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
+ definitions=2021-01-07_08:2021-01-07,2021-01-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 suspectscore=0
+ spamscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1011 adultscore=0
+ mlxlogscore=999 priorityscore=1501 mlxscore=0 bulkscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101070115
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Hello,
 
-This helper is endpoint mode specific, so change to use a pointer of
-'struct dw_pcie_ep' as the parameter.
+Requesting to provide review comments.
 
-Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
----
- drivers/pci/controller/dwc/pci-dra7xx.c          |  2 +-
- drivers/pci/controller/dwc/pci-layerscape-ep.c   |  2 +-
- drivers/pci/controller/dwc/pcie-artpec6.c        |  2 +-
- drivers/pci/controller/dwc/pcie-designware-ep.c  | 16 +++++++---------
- .../pci/controller/dwc/pcie-designware-plat.c    |  3 +--
- drivers/pci/controller/dwc/pcie-designware.h     |  5 +++--
- drivers/pci/controller/dwc/pcie-uniphier-ep.c    |  3 +--
- 7 files changed, 15 insertions(+), 18 deletions(-)
+Thanks & Regards,
+Nadeem Athani
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index b105af63854a..12726c63366f 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -383,7 +383,7 @@ static void dra7xx_pcie_ep_init(struct dw_pcie_ep *ep)
- 	enum pci_barno bar;
- 
- 	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
--		dw_pcie_ep_reset_bar(pci, bar);
-+		dw_pcie_ep_reset_bar(ep, bar);
- 
- 	dra7xx_pcie_enable_wrapper_interrupts(dra7xx);
- }
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index 0f5e4104c06c..dcee95e16139 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -62,7 +62,7 @@ static void ls_pcie_ep_init(struct dw_pcie_ep *ep)
- 		return;
- 
- 	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
--		dw_pcie_ep_reset_bar(pci, bar);
-+		dw_pcie_ep_reset_bar(ep, bar);
- 
- 	pcie->ls_epc->msi_capable = ep_func->msi_cap ? true : false;
- 	pcie->ls_epc->msix_capable = ep_func->msix_cap ? true : false;
-diff --git a/drivers/pci/controller/dwc/pcie-artpec6.c b/drivers/pci/controller/dwc/pcie-artpec6.c
-index 597c282f586c..f833daf6d422 100644
---- a/drivers/pci/controller/dwc/pcie-artpec6.c
-+++ b/drivers/pci/controller/dwc/pcie-artpec6.c
-@@ -348,7 +348,7 @@ static void artpec6_pcie_ep_init(struct dw_pcie_ep *ep)
- 	artpec6_pcie_wait_for_phy(artpec6_pcie);
- 
- 	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
--		dw_pcie_ep_reset_bar(pci, bar);
-+		dw_pcie_ep_reset_bar(ep, bar);
- }
- 
- static int artpec6_pcie_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index d8eb9a984547..2dc960e74fd0 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -49,11 +49,11 @@ static unsigned int dw_pcie_ep_get_func_cfg_addr(struct dw_pcie_ep *ep,
- 	return 0;
- }
- 
--static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, u8 func_no,
-+static void __dw_pcie_ep_reset_bar(struct dw_pcie_ep *ep, u8 func_no,
- 				   enum pci_barno bar, int flags)
- {
- 	u32 reg;
--	struct dw_pcie_ep *ep = &pci->ep;
-+	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	struct dw_pcie_ep_func *func = dw_pcie_ep_get_func_from_ep(ep, func_no);
- 
- 	if (!func)
-@@ -70,14 +70,12 @@ static void __dw_pcie_ep_reset_bar(struct dw_pcie *pci, u8 func_no,
- 	dw_pcie_dbi_ro_wr_dis(pci);
- }
- 
--void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar)
-+void dw_pcie_ep_reset_bar(struct dw_pcie_ep *ep, enum pci_barno bar)
- {
--	u8 func_no, funcs;
+> -----Original Message-----
+> From: Nadeem Athani <nadeem@cadence.com>
+> Sent: Wednesday, December 30, 2020 5:35 PM
+> To: Tom Joseph <tjoseph@cadence.com>; lorenzo.pieralisi@arm.com;
+> robh@kernel.org; bhelgaas@google.com; kishon@ti.com; linux-
+> omap@vger.kernel.org; linux-pci@vger.kernel.org; linux-arm-
+> kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> Cc: Athani Nadeem Ladkhan <nadeem@cadence.com>; Milind Parab
+> <mparab@cadence.com>; Swapnil Kashinath Jakhade
+> <sjakhade@cadence.com>; Parshuram Raju Thombare
+> <pthombar@cadence.com>
+> Subject: [PATCH v7 0/2] PCI: cadence: Retrain Link to work around Gen2
+>=20
+> Cadence controller will not initiate autonomous speed change if strapped =
+as
+> Gen2. The Retrain Link bit is set as quirk to enable this speed change.
+> Adding a quirk flag for defective IP. In future IP revisions this will no=
+t be
+> applicable.
+>=20
+> Version history:
+> Changes in v7:
+> - Changing the commit title of patch 1 in this series.
+> - Added a return value for function cdns_pcie_retrain().
+> Changes in v6:
+> - Move the position of function cdns_pcie_host_wait_for_link to remove
+>   compilation error. No changes in code. Separate patch for this.
+> Changes in v5:
+> - Remove the compatible string based setting of quirk flag.
+> - Removed additional Link Up Check
+> - Removed quirk from pcie-cadence-plat.c and added in pci-j721e.c Changes
+> in v4:
+> - Added a quirk flag based on a new compatible string.
+> - Change of api for link up: cdns_pcie_host_wait_for_link().
+> Changes in v3:
+> - To set retrain link bit,checking device capability & link status.
+> - 32bit read in place of 8bit.
+> - Minor correction in patch comment.
+> - Change in variable & macro name.
+> Changes in v2:
+> - 16bit read in place of 8bit.
+>=20
+> Nadeem Athani (2):
+>   PCI: cadence: Shifting of a function to support new code.
+>   PCI: cadence: Retrain Link to work around Gen2 training defect.
+>=20
+>  drivers/pci/controller/cadence/pci-j721e.c         |  3 +
+>  drivers/pci/controller/cadence/pcie-cadence-host.c | 70 ++++++++++++++++=
 -
--	funcs = pci->ep.epc->max_functions;
-+	u8 func_no;
- 
--	for (func_no = 0; func_no < funcs; func_no++)
--		__dw_pcie_ep_reset_bar(pci, func_no, bar, 0);
-+	for (func_no = 0; func_no < ep->epc->max_functions; func_no++)
-+		__dw_pcie_ep_reset_bar(ep, func_no, bar, 0);
- }
- 
- static u8 __dw_pcie_ep_find_next_cap(struct dw_pcie_ep *ep, u8 func_no,
-@@ -208,7 +206,7 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no,
- 	enum pci_barno bar = epf_bar->barno;
- 	u32 atu_index = ep->bar_to_atu[bar];
- 
--	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
-+	__dw_pcie_ep_reset_bar(ep, func_no, bar, epf_bar->flags);
- 
- 	dw_pcie_disable_atu(pci, atu_index, DW_PCIE_REGION_INBOUND);
- 	clear_bit(atu_index, ep->ib_window_map);
-diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
-index 9b397c807261..49d51584a547 100644
---- a/drivers/pci/controller/dwc/pcie-designware-plat.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
-@@ -47,11 +47,10 @@ static const struct dw_pcie_ops dw_pcie_ops = {
- 
- static void dw_plat_pcie_ep_init(struct dw_pcie_ep *ep)
- {
--	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	enum pci_barno bar;
- 
- 	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
--		dw_pcie_ep_reset_bar(pci, bar);
-+		dw_pcie_ep_reset_bar(ep, bar);
- }
- 
- static int dw_plat_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index b8cbe266e01c..10ba09237def 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -415,7 +415,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
- 			     u16 interrupt_num);
- int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
- 				       u16 interrupt_num);
--void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar);
-+void dw_pcie_ep_reset_bar(struct dw_pcie_ep *ep, enum pci_barno bar);
- struct dw_pcie_ep_func *
- dw_pcie_ep_get_func_from_ep(struct dw_pcie_ep *ep, u8 func_no);
- #else
-@@ -465,7 +465,8 @@ static inline int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep,
- 	return 0;
- }
- 
--static inline void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar)
-+static inline void dw_pcie_ep_reset_bar(struct dw_pcie_ep *ep,
-+					enum pci_barno bar)
- {
- }
- 
-diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-index 69810c6b0d58..21e185bf90d6 100644
---- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-@@ -134,11 +134,10 @@ static void uniphier_pcie_stop_link(struct dw_pcie *pci)
- 
- static void uniphier_pcie_ep_init(struct dw_pcie_ep *ep)
- {
--	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	enum pci_barno bar;
- 
- 	for (bar = BAR_0; bar <= BAR_5; bar++)
--		dw_pcie_ep_reset_bar(pci, bar);
-+		dw_pcie_ep_reset_bar(ep, bar);
- }
- 
- static int uniphier_pcie_ep_raise_legacy_irq(struct dw_pcie_ep *ep)
--- 
-2.17.1
+> -----
+>  drivers/pci/controller/cadence/pcie-cadence.h      | 11 +++-
+>  3 files changed, 65 insertions(+), 19 deletions(-)
+>=20
+> --
+> 2.15.0
 
