@@ -2,144 +2,136 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA9932EF7DC
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Jan 2021 20:08:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA5922EF7E2
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Jan 2021 20:10:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728061AbhAHTH5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Jan 2021 14:07:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36008 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726844AbhAHTH5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 8 Jan 2021 14:07:57 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8C40B23A9A;
-        Fri,  8 Jan 2021 19:07:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610132836;
-        bh=+QrI2JtEA3n+vjcI+UEkYhJuBS/wATcWaLo+tvGLzuM=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=jiIAhpz5VSXc944qKUUjq75Hh0+YbK1FqaqafAdfmOG3rlhhckq+BY/he6WtLaD6f
-         1q9yasgR3f5eB5PxfpxAqYtR2FxqqTw95j7C2ySLh1EFKRJ4jclhlEomK7zbtNHgmJ
-         N0081APqj2tsWiZqmnshaciMnUV39aA7SncvJEZeQZF22mfLecMhdI0URc4hyBa9ES
-         pYUyaSknGpJFCIms6t9wxKHjMOaqY2Zt092lR7MUdMMomdNjByJ/z7m608t1zXLqhe
-         s/GCF7MYFdvW1ubQF0ZaNEepc7g/R7s0UhWYvXS2zeF/1bZd2FSiz6gl8lQ8P+v3sf
-         l24xT5rIq4Qrg==
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 333BC35226D5; Fri,  8 Jan 2021 11:07:16 -0800 (PST)
-Date:   Fri, 8 Jan 2021 11:07:16 -0800
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Russell King <rmk+kernel@armlinux.org.uk>
-Subject: Re: [PATCH] ARM: OMAP2+: Fix suspcious RCU usage splats for
- omap_enter_idle_coupled
-Message-ID: <20210108190716.GV2743@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <20210108134105.58543-1-tony@atomide.com>
+        id S1728326AbhAHTIb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Jan 2021 14:08:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41910 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728539AbhAHTIb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Jan 2021 14:08:31 -0500
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66303C0612FE;
+        Fri,  8 Jan 2021 11:07:51 -0800 (PST)
+Received: by mail-il1-x136.google.com with SMTP id v3so11306310ilo.5;
+        Fri, 08 Jan 2021 11:07:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NVZl857HB7wVKD8bItyLJ4Yj7dhRp8R9ZtfKjnyuqcs=;
+        b=O+ytVj7LbZoqFGa08BBVzJ/B0ii3s37zGw1KHKdx5KGPPcvByHwleJ17tAcepYm/mx
+         j1XLV3zSJXurQfDF+u4Lg3cpxmOLqOi1cqD7eZkUXvsDUUBvivwWmkEF6BQGyX9xD6VQ
+         J/1nsCTcaknwWb7YogRNWu2DIPLeq/xqtyRCwX9lxclY9SnB5atTutNRJk8I0uoDjVpN
+         yKl0Wwbw+0xJGeXWchMle0ydMyzzzR3AoezR56Ci06D9uklpHs1eB2Rnmn9OMA9ruXBT
+         5Dpl6P0FNXvK40VHsX6YdcBOccppkrFajBlV7OsUqcQLc2A/LeRsimQMEaZO8PcYFSlm
+         RGhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NVZl857HB7wVKD8bItyLJ4Yj7dhRp8R9ZtfKjnyuqcs=;
+        b=sWce5j1jhJiJNpoatx3sTRj92/UFXBt8Liu/8z+q49MQ9/+K87EoccKmNgIzz2OnWx
+         8F/2jo82mLRAheWdfXcuPjzqmgMmDc/fSYzJJ2CQJ+ytAHyqIycOImXZ0W+XzgVUphfp
+         0WT5/gXByxFC90I/5LgaiYC1+IZLFxjW9dOZ/fcBa/FAzy7MpRf0OQdVE8gpCScVUGaC
+         7BYwCLyVyCUVA7tjmVAC3zl7m4TEF4Ho/60qQXixWojz9abgJvdst2JcpihB+LO3TAPD
+         0C9/L0gUtocTparQWxXH/TKs7k9QcK5J6IkdW2hMm94lsDkvrKV8sccQnTfJ1rIAppgy
+         FtLA==
+X-Gm-Message-State: AOAM531OiDrkILQJg19nfn6MYrkH9kOQj5aUZZk4YAbnBNE5GBODNv6i
+        evMM9+DITLDofALySWDTH26Rn9LhH1WoVdQp05zT5hYt83RU7Q==
+X-Google-Smtp-Source: ABdhPJxvKP7bIhCeAO87oEwDpGRxgDp/1U9iSFcDXAZsig2Q2LymelwnjwA4As+/vysaIrieSq414L2+PPnTf8Gyhfo=
+X-Received: by 2002:a92:d2cf:: with SMTP id w15mr5289303ilg.214.1610132870609;
+ Fri, 08 Jan 2021 11:07:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210108134105.58543-1-tony@atomide.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20201201210039.258d3fed@aktux> <20201203224309.5b5e0b50@aktux>
+ <CAD=FV=VucTxW3PxtrN-Dye4h0LravXd-wHLKU91TaKe0eQ4TyA@mail.gmail.com> <20201204092200.0c7894ce@aktux>
+In-Reply-To: <20201204092200.0c7894ce@aktux>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 8 Jan 2021 13:07:39 -0600
+Message-ID: <CAHCN7xKkh-=kjYWyop2f8Tic86NQtUgy0ihm1niVkvKSPeL6EQ@mail.gmail.com>
+Subject: Re: [REGRESSION] mmc: Set PROBE_PREFER_ASYNCHRONOUS for drivers that
+ existed in v4.4
+To:     Andreas Kemnade <andreas@kemnade.info>
+Cc:     Doug Anderson <dianders@chromium.org>,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Tony Lindgren <tony@atomide.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jan 08, 2021 at 03:41:05PM +0200, Tony Lindgren wrote:
-> We get suspcious RCU usage splats with cpuidle in several places in
-> omap_enter_idle_coupled() with the kernel debug options enabled:
-> 
-> RCU used illegally from extended quiescent state!
-> ...
-> (_raw_spin_lock_irqsave)
-> (omap_enter_idle_coupled+0x17c/0x2d8)
-> (omap_enter_idle_coupled)
-> (cpuidle_enter_state)
-> (cpuidle_enter_state_coupled)
-> (cpuidle_enter)
-> 
-> Let's use RCU_NONIDLE to suppress these splats. Things got changed around
-> with commit 1098582a0f6c ("sched,idle,rcu: Push rcu_idle deeper into the
-> idle path") that started triggering these warnings.
-> 
-> For the tick_broadcast related calls, ideally we'd just switch over to
-> using CPUIDLE_FLAG_TIMER_STOP for omap_enter_idle_coupled() to have the
-> generic cpuidle code handle the tick_broadcast related calls for us and
-> then just drop the tick_broadcast calls here.
-> 
-> But we're currently missing the call in the common cpuidle code for
-> tick_broadcast_enable() that CPU1 hotplug needs as described in earlier
-> commit 50d6b3cf9403 ("ARM: OMAP2+: fix lack of timer interrupts on CPU1
-> after hotplug").
-> 
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Paul E. McKenney <paulmck@kernel.org>
-> Cc: Russell King <rmk+kernel@armlinux.org.uk>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+On Fri, Dec 4, 2020 at 2:23 AM Andreas Kemnade <andreas@kemnade.info> wrote:
+>
+> On Thu, 3 Dec 2020 14:03:46 -0800
+> Doug Anderson <dianders@chromium.org> wrote:
+>
+> > Hi,
+> >
+> > On Thu, Dec 3, 2020 at 1:43 PM Andreas Kemnade <andreas@kemnade.info> wrote:
+> > >
+> > > On Tue, 1 Dec 2020 21:00:39 +0100
+> > > Andreas Kemnade <andreas@kemnade.info> wrote:
+> > >
+> > > > Hi,
+> > > >
+> > > > during probing of second mmc host on the GTA04A5 which has a
+> > > > WL1835 wifi chip attached, I get the following oops. From a first glance
+> > > > this seems to be a timing sensitive. Maybe it rings some bells for someone...
+> > > > so I hesitate a bit to start the bisect job.
+> > > Did the bisect job.
+> > > 21b2cec61c04 (mmc: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in v4.4)
+> > >
+> > > is the evil commit. Reverting it on top of v5.10-rc6 solves the problem.
+> > >
+> > > > Wild guessing: bus width is set while mmc module is not active, so registers
+> > > > are not accessible.
+> > > > Kernel configuration is omap2plus_defconfig
+> > > >
+> > > > Regards,
+> > > > Andreas
+> > > >
+> > > >
+> >
+> > ...snip...
+> >
+> > > > [    3.152587]  mmcblk0: p1 p2 p3 p4 < p5 p6 p7 p8 >
+> > > > [    3.159393] 0x000000880000-0x000020000000 : "File System"
+> > > > [    3.179534] omap_hsmmc 480b4000.mmc: omap_device_late_idle: enabled but no driver.  Idling
+> >
+> > I'm guessing that this is the key line.  It seems to come from
+> > omap_device_late_idle().
+> >
+> > I don't know tons about that function, but a quick guess is that it needs a:
+> >
+> > wait_for_device_probe();
+> >
+> > ...at the start of it.  It seems like it's trying to idle devices that
+> > never got probed but not actually waiting for all devices to probe.
+> > It's just assuming that everything is done by late_initcall_sync().
+> >
+> hmm, not sure, we have:
+> if (od->_driver_status != BUS_NOTIFY_BOUND_DRIVER &&
+>             od->_driver_status != BUS_NOTIFY_BIND_DRIVER) {
+>                 if (od->_state == OMAP_DEVICE_STATE_ENABLED) {
+>                         dev_warn(dev, "%s: enabled but no driver.  Idling\n",
+>                                  __func__);
+>                         omap_device_idle(pdev);
+>                 }
+>         }
+>
+> apparently there is no code to set _driver_status to
+> BUS_NOTIFY_BOUND_DRIVER. I think that is the key problem. I will try to
+> create a patch to fix that.
 
-From an RCU viewpoint:
+I am seeing something similar on my DM3730
 
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
-
-> ---
->  arch/arm/mach-omap2/cpuidle44xx.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap2/cpuidle44xx.c b/arch/arm/mach-omap2/cpuidle44xx.c
-> --- a/arch/arm/mach-omap2/cpuidle44xx.c
-> +++ b/arch/arm/mach-omap2/cpuidle44xx.c
-> @@ -151,10 +151,10 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
->  				 (cx->mpu_logic_state == PWRDM_POWER_OFF);
->  
->  	/* Enter broadcast mode for periodic timers */
-> -	tick_broadcast_enable();
-> +	RCU_NONIDLE(tick_broadcast_enable());
->  
->  	/* Enter broadcast mode for one-shot timers */
-> -	tick_broadcast_enter();
-> +	RCU_NONIDLE(tick_broadcast_enter());
->  
->  	/*
->  	 * Call idle CPU PM enter notifier chain so that
-> @@ -166,7 +166,7 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
->  
->  	if (dev->cpu == 0) {
->  		pwrdm_set_logic_retst(mpu_pd, cx->mpu_logic_state);
-> -		omap_set_pwrdm_state(mpu_pd, cx->mpu_state);
-> +		RCU_NONIDLE(omap_set_pwrdm_state(mpu_pd, cx->mpu_state));
->  
->  		/*
->  		 * Call idle CPU cluster PM enter notifier chain
-> @@ -179,7 +179,7 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
->  				index = 1;
->  				cx = state_ptr + index;
->  				pwrdm_set_logic_retst(mpu_pd, cx->mpu_logic_state);
-> -				omap_set_pwrdm_state(mpu_pd, cx->mpu_state);
-> +				RCU_NONIDLE(omap_set_pwrdm_state(mpu_pd, cx->mpu_state));
->  				mpuss_can_lose_context = 0;
->  			}
->  		}
-> @@ -195,9 +195,9 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
->  		    mpuss_can_lose_context)
->  			gic_dist_disable();
->  
-> -		clkdm_deny_idle(cpu_clkdm[1]);
-> -		omap_set_pwrdm_state(cpu_pd[1], PWRDM_POWER_ON);
-> -		clkdm_allow_idle(cpu_clkdm[1]);
-> +		RCU_NONIDLE(clkdm_deny_idle(cpu_clkdm[1]));
-> +		RCU_NONIDLE(omap_set_pwrdm_state(cpu_pd[1], PWRDM_POWER_ON));
-> +		RCU_NONIDLE(clkdm_allow_idle(cpu_clkdm[1]));
->  
->  		if (IS_PM44XX_ERRATUM(PM_OMAP4_ROM_SMP_BOOT_ERRATUM_GICD) &&
->  		    mpuss_can_lose_context) {
-> @@ -225,7 +225,7 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
->  	cpu_pm_exit();
->  
->  cpu_pm_out:
-> -	tick_broadcast_exit();
-> +	RCU_NONIDLE(tick_broadcast_exit());
->  
->  fail:
->  	cpuidle_coupled_parallel_barrier(dev, &abort_barrier);
-> -- 
-> 2.30.0
+>
+> Regards,
+> Andreas
