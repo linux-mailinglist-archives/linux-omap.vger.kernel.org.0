@@ -2,119 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A6E92EFAC9
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Jan 2021 22:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E7F12EFBBC
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Jan 2021 00:35:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726251AbhAHVz3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Jan 2021 16:55:29 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:55248 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725875AbhAHVz3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Jan 2021 16:55:29 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id 2A8EB1F46C99
-Received: by earth.universe (Postfix, from userid 1000)
-        id 1FEB03C0C94; Fri,  8 Jan 2021 22:54:45 +0100 (CET)
-Date:   Fri, 8 Jan 2021 22:54:45 +0100
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Tony Lindgren <tony@atomide.com>, hns@goldelico.com,
-        Sekhar Nori <nsekhar@ti.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: Re: [PATCH v4 39/80] drm/panel: Move OMAP's DSI command mode panel
- driver
-Message-ID: <20210108215445.fijvog4ypv3docun@earth.universe>
-References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-40-tomi.valkeinen@ti.com>
- <87wnwndswl.wl-ashutosh.dixit@intel.com>
+        id S1725890AbhAHXex (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Jan 2021 18:34:53 -0500
+Received: from vern.gendns.com ([98.142.107.122]:34544 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725763AbhAHXex (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 8 Jan 2021 18:34:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=1byDzLX7PLFqYa4MN8gCIY7S5iSbUJGZSpSg/yf9kEg=; b=y8pE8/GEQUWn2abxRzDV1KHl4j
+        r9eS3FOLBwjvtXMrHOdZdeH7ha0Ygt+4UjdQO8d/6J5lsF/X74kpHn2/+jliXSMqMphUwIRNV50Ng
+        xtGVwTxZhoJ/aJ0JsjimuvhwYQfMCj5XmAdzWOGRD88iIsWeOwR8XuyNOYBjugpMOXrFzVJIa98v3
+        g6eojONbw8BAith5kva3wlRF3LXL4NpQ49cBfLPTgPVxqnYtsjwIaupmScp37ZP6DusSg7UPp94bu
+        a2QZxgZ+c/A+74cqd36PtPj626AjNEQhvv4TC6dGrWEGH2q5FVL04RMxHIEAQJ0mW+fhDjVAMwf2K
+        8kDYVHZA==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:55968 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <david@lechnology.com>)
+        id 1ky1Gj-00086l-7O; Fri, 08 Jan 2021 18:34:09 -0500
+Subject: Re: [PATCH] irqchip: Simplify the TI_PRUSS_INTC Kconfig
+To:     Suman Anna <s-anna@ti.com>, Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Santosh Shilimkar <ssantosh@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+References: <20210108162901.6003-1-s-anna@ti.com>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <8a1fc38a-af44-925b-a621-b9da8a0df537@lechnology.com>
+Date:   Fri, 8 Jan 2021 17:34:07 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gl3q7klkjlinonlo"
-Content-Disposition: inline
-In-Reply-To: <87wnwndswl.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <20210108162901.6003-1-s-anna@ti.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 1/8/21 10:29 AM, Suman Anna wrote:
+> The TI PRUSS INTC irqchip driver handles the local interrupt controller
+> which is a child device of it's parent PRUSS/ICSSG device. The driver
+> was upstreamed in parallel with the PRUSS platform driver, and was
+> configurable independently previously. The PRUSS interrupt controller
+> is an integral part of the overall PRUSS software architecture, and is
+> not useful at all by itself.
+> 
+> Simplify the TI_PRUSS_INTC Kconfig dependencies by making it silent and
+> selected automatically when the TI_PRUSS platform driver is enabled.
+> 
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> ---
 
---gl3q7klkjlinonlo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: David Lechner <david@lechnology.com>
 
-Hi,
-
-On Fri, Jan 08, 2021 at 01:23:54PM -0800, Dixit, Ashutosh wrote:
-> On Tue, 24 Nov 2020 04:44:57 -0800, Tomi Valkeinen wrote:
-> >
-> > From: Sebastian Reichel <sebastian.reichel@collabora.com>
-> >
-> > The panel driver is no longer using any OMAP specific APIs, so
-> > let's move it into the generic panel directory.
-> >
-> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> > Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> > Cc: Thierry Reding <thierry.reding@gmail.com>
-> > Cc: Sam Ravnborg <sam@ravnborg.org>
-> > Acked-by: Sam Ravnborg <sam@ravnborg.org>
-> > Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > ---
-> >  drivers/gpu/drm/omapdrm/Kconfig                        |  1 -
-> >  drivers/gpu/drm/omapdrm/Makefile                       |  1 -
-> >  drivers/gpu/drm/omapdrm/displays/Kconfig               | 10 ----------
-> >  drivers/gpu/drm/omapdrm/displays/Makefile              |  2 --
-> >  drivers/gpu/drm/panel/Kconfig                          |  9 +++++++++
-> >  drivers/gpu/drm/panel/Makefile                         |  1 +
-> >  .../gpu/drm/{omapdrm/displays =3D> panel}/panel-dsi-cm.c |  0
->=20
-> Not sure if it's a result of this commit but on drm-tip we see:
->=20
-> $ make allmodconfig
-> $ make modules_check
->   DESCEND  objtool
->   CALL    scripts/atomic/check-atomics.sh
->   CALL    scripts/checksyscalls.sh
->   CHK     include/generated/compile.h
-> error: the following would cause module name conflict:
->   drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.ko
->   drivers/gpu/drm/panel/panel-dsi-cm.ko
-> make: *** [Makefile:1400: modules_check] Error 1
-
-It is a result of this commit and it has already been reported by
-Stephen Rothwell. The thread also contains a patch to fixup the
-problem:
-
-https://lore.kernel.org/linux-next/20210108195839.GA1429715@ravnborg.org/T/=
-#m0eee5e806cc93cf9982620b7b8b9f77df2c37498
-
-Sorry for the inconvenience,
-
--- Sebastian
-
---gl3q7klkjlinonlo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl/41J4ACgkQ2O7X88g7
-+pr6KA//Yn1egelYt8TTu1cegd4nh6zGM7103sbWFizHk14NPBMCzmPiOs8TmPgk
-O5x/BaRGq2G7tyVc65hYj4zhWeQXQp9Z7afjbbI8irUqepZHU2UpNsSYt2B1ZEBx
-nhs722HUl6AgQQd3XCu7emCXPqFqMUeolGFvnnvnwlHb5cX+cbC4kL3orcXPFBDu
-29QQT8PMc3ix7H+kwVrZ6yzMCTXi9/LGAe0ygplgAYF3rqMYBE105WQI6KmcjJFC
-vPorPPlmOC6EMF9VKW8iUrUvyshgTjkyEmTsWH6YNXU3w8aWjUVbKlXLVQm0pbSw
-MLrv4XAZBHlFPuhIF8MzVZxH+25VeDuq3AIixfdkawz+gjK9/GrPjzrZOGeUsbKW
-YRWRmtxa0AwedO1uydQouAcFEopJzHJAKl/N3c/L3txQAytpyoLG5Ku7JW4hF519
-gu2HRml07yMHqvLIKah9qzkETISuUiWF2yF3LReUjua1EkXvc2TO+z+lbdnJWTiA
-zQW/tzwlogX+OJUFts9KyEqdf+hZS4EgJUwQluJRSMeYwGf/mpJf/KPEuPSWJ+lv
-q9YG9gD2VbPilZj41cUmZYPUmxFGL/NST8otY5OwwpTQ/TEEEDL+lrwoUjqXgC10
-fcF/TO5oflY/OBsSRWlQUqmcY1q2rP+SFjWwcwFL26n5XrXifo8=
-=rgoN
------END PGP SIGNATURE-----
-
---gl3q7klkjlinonlo--
