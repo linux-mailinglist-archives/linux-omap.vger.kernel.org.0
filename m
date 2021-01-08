@@ -2,144 +2,144 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 178722EF765
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Jan 2021 19:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA9932EF7DC
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Jan 2021 20:08:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728649AbhAHSbz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Jan 2021 13:31:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36204 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728519AbhAHSbz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Jan 2021 13:31:55 -0500
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C70FC061380;
-        Fri,  8 Jan 2021 10:31:15 -0800 (PST)
-Received: by mail-il1-x12d.google.com with SMTP id 14so9920615ilq.2;
-        Fri, 08 Jan 2021 10:31:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0BlUHgKNMv9YrK7lCvnTL1WUMTl1HZQ3/mwN2WXhlmg=;
-        b=eBuRcMONqftbbi1g47dCr74dSvP5KHK0NxWks6LuFs5U/ceuKUhM8C7TgEg93zGZyh
-         3PozXU6Xwmh02whV9B4IpgtratvfABpTSl+0QAxFVCPTcY4MV3U5hSkEF0LbgG7dX4e7
-         fXkGwWs6wpeLnNZDgmZrMNkWVYtBLAKXcA6FkKYJsvnloiuuNIMstwqTKd9Vo+r949PB
-         tMqIaY4Y4rcPdKkk9HUk2mRoe12WvmamnGvOg+yCTAfF3WHbpPwa7Pqu1qPqdfyE3NOz
-         gaX+RWyj977R8V4Eomsgs4i7LUsKrFye1zwNGN/qXV8RdXBOaHZBlFtnwXHoHgvlWrKN
-         wKuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0BlUHgKNMv9YrK7lCvnTL1WUMTl1HZQ3/mwN2WXhlmg=;
-        b=okRHkhve+pJPMZMYb0HlAXVC+N0K1G9bxacm0BW7QyAbWVxmr6uyEzL1LfOrckD1zP
-         cuOVJ7SSCyvnNQuF+RTvLr4Y46KE6FVQKydnm23kCAOmk7HLlHdCwm6SHdilh8Z6eL1d
-         ImKQVvdj4aN1BNBCg7zMb+X76yoCEN+1Y3D3lL8QmkbCF2XO9ONwGIBqkBeSTdLyM3c5
-         6nvcXkVtZ6aC1p6Ac0cYEycvqzT45Rfo2vOV+3t4bE+wu3pwYVL0XEyA4bFHdsefi+0b
-         xWh8RrHDpBthvooScayc0qpxoMw/pyMfgeisUArcGB12N7bJ5ejVIJ3tHvWJswu0odVH
-         CcNA==
-X-Gm-Message-State: AOAM5318Cbjwt6C1WjObTO3e3FR4o8B+c/mhX9Q8MzVgN1Ff+PkJr+CC
-        sQqWQMjstJ76VHR21Em7bXFv1TupbghIQYuD8UA=
-X-Google-Smtp-Source: ABdhPJyaB63aeNgGOu91EjPTl74K2uAq232U11RiWXlAr5bmFX5ceNPhRX30fIoB8pL8iCXjV2BkFwdQ4Oui1BpHm8E=
-X-Received: by 2002:a92:c081:: with SMTP id h1mr4942286ile.46.1610130674387;
- Fri, 08 Jan 2021 10:31:14 -0800 (PST)
-MIME-Version: 1.0
-References: <20201230084338.19410-1-tony@atomide.com> <CAHCN7xJmwcUOpoza-LNxTAbRNb9ToERnBNuKboP86DSBdtS61A@mail.gmail.com>
- <7C9106E0-FC75-4056-AD5F-16CCFA9C24E5@goldelico.com> <X/gIO9Ta3JPDaeV3@atomide.com>
- <CAHCN7xKzeqabm5YJbNS_jcENnhxdU9tAuhWZv81xJA7VbaW6NA@mail.gmail.com>
-In-Reply-To: <CAHCN7xKzeqabm5YJbNS_jcENnhxdU9tAuhWZv81xJA7VbaW6NA@mail.gmail.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Fri, 8 Jan 2021 12:31:03 -0600
-Message-ID: <CAHCN7xJNk=2_Kx4XS3asxcxVGZXaTZgmCkpoFGFHdOQuM3aKCQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] thermal: ti-soc-thermal: Fix stuck sensor with
- continuous mode for 4430
+        id S1728061AbhAHTH5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Jan 2021 14:07:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36008 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726844AbhAHTH5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 8 Jan 2021 14:07:57 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8C40B23A9A;
+        Fri,  8 Jan 2021 19:07:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610132836;
+        bh=+QrI2JtEA3n+vjcI+UEkYhJuBS/wATcWaLo+tvGLzuM=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=jiIAhpz5VSXc944qKUUjq75Hh0+YbK1FqaqafAdfmOG3rlhhckq+BY/he6WtLaD6f
+         1q9yasgR3f5eB5PxfpxAqYtR2FxqqTw95j7C2ySLh1EFKRJ4jclhlEomK7zbtNHgmJ
+         N0081APqj2tsWiZqmnshaciMnUV39aA7SncvJEZeQZF22mfLecMhdI0URc4hyBa9ES
+         pYUyaSknGpJFCIms6t9wxKHjMOaqY2Zt092lR7MUdMMomdNjByJ/z7m608t1zXLqhe
+         s/GCF7MYFdvW1ubQF0ZaNEepc7g/R7s0UhWYvXS2zeF/1bZd2FSiz6gl8lQ8P+v3sf
+         l24xT5rIq4Qrg==
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+        id 333BC35226D5; Fri,  8 Jan 2021 11:07:16 -0800 (PST)
+Date:   Fri, 8 Jan 2021 11:07:16 -0800
+From:   "Paul E. McKenney" <paulmck@kernel.org>
 To:     Tony Lindgren <tony@atomide.com>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Amit Kucheria <amitk@kernel.org>,
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, linux-pm@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Andreas Kemnade <andreas@kemnade.info>
-Content-Type: text/plain; charset="UTF-8"
+        Russell King <rmk+kernel@armlinux.org.uk>
+Subject: Re: [PATCH] ARM: OMAP2+: Fix suspcious RCU usage splats for
+ omap_enter_idle_coupled
+Message-ID: <20210108190716.GV2743@paulmck-ThinkPad-P72>
+Reply-To: paulmck@kernel.org
+References: <20210108134105.58543-1-tony@atomide.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210108134105.58543-1-tony@atomide.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jan 8, 2021 at 7:45 AM Adam Ford <aford173@gmail.com> wrote:
->
-> On Fri, Jan 8, 2021 at 1:22 AM Tony Lindgren <tony@atomide.com> wrote:
-> >
-> > * H. Nikolaus Schaller <hns@goldelico.com> [201230 13:29]:
-> > > > Am 30.12.2020 um 13:55 schrieb Adam Ford <aford173@gmail.com>:
-> > > > On Wed, Dec 30, 2020 at 2:43 AM Tony Lindgren <tony@atomide.com> wrote:
-> > > >>
-> > > >> At least for 4430, trying to use the single conversion mode eventually
-> > > >> hangs the thermal sensor. This can be quite easily seen with errors:
-> > > >>
-> > > >> thermal thermal_zone0: failed to read out thermal zone (-5)
-> > ...
-> >
-> > > > I don't have an OMAP4, but if you want, I can test a DM3730.
-> > >
-> > > Indeed I remember a similar discussion from the DM3730 [1]. temp values were
-> > > always those from the last measurement. E.g. the first one was done
-> > > during (cold) boot and the first request after 10 minutes did show a
-> > > quite cold system... The next one did show a hot system independent
-> > > of what had been between (suspend or high activity).
-> > >
-> > > It seems as if it was even reproducible with a very old kernel on a BeagleBoard.
-> > > So it is quite fundamental.
-> > >
-> > > We tried to fix it but did not come to a solution [2]. So we opened an issue
-> > > in our tracker [3] and decided to stay with continuous conversion although this
-> > > raises idle mode processor load.
-> >
-> > Hmm so maybe eocz high always times out in single mode since it also
-> > triggers at least on dra7?
-> >
-> > Yes it would be great if you guys can the $subject patch a try at
-> > least on your omap36xx and omap5 boards and see if you see eocz
-> > time out warnings in dmesg.
->
-> I should be able to try it on the dm3730 logicpd-torpedo kit this weekend.
+On Fri, Jan 08, 2021 at 03:41:05PM +0200, Tony Lindgren wrote:
+> We get suspcious RCU usage splats with cpuidle in several places in
+> omap_enter_idle_coupled() with the kernel debug options enabled:
+> 
+> RCU used illegally from extended quiescent state!
+> ...
+> (_raw_spin_lock_irqsave)
+> (omap_enter_idle_coupled+0x17c/0x2d8)
+> (omap_enter_idle_coupled)
+> (cpuidle_enter_state)
+> (cpuidle_enter_state_coupled)
+> (cpuidle_enter)
+> 
+> Let's use RCU_NONIDLE to suppress these splats. Things got changed around
+> with commit 1098582a0f6c ("sched,idle,rcu: Push rcu_idle deeper into the
+> idle path") that started triggering these warnings.
+> 
+> For the tick_broadcast related calls, ideally we'd just switch over to
+> using CPUIDLE_FLAG_TIMER_STOP for omap_enter_idle_coupled() to have the
+> generic cpuidle code handle the tick_broadcast related calls for us and
+> then just drop the tick_broadcast calls here.
+> 
+> But we're currently missing the call in the common cpuidle code for
+> tick_broadcast_enable() that CPU1 hotplug needs as described in earlier
+> commit 50d6b3cf9403 ("ARM: OMAP2+: fix lack of timer interrupts on CPU1
+> after hotplug").
+> 
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Paul E. McKenney <paulmck@kernel.org>
+> Cc: Russell King <rmk+kernel@armlinux.org.uk>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-I am going to be a bit delayed testing this.  I cannot boot omap2plus
-using Linux version 5.11.0-rc2.
+From an RCU viewpoint:
 
-[    2.666748] nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xbc
-[    2.673309] nand: Micron MT29F4G16ABBDA3W
-[    2.677368] nand: 512 MiB, SLC, erase size: 128 KiB, page size:
-2048, OOB size: 64
-[    2.685119] nand: using OMAP_ECC_BCH8_CODE_HW_DETECTION_SW
-[    2.693237] Invalid ECC layout
-[    2.696350] omap2-nand 30000000.nand: unable to use BCH library
-[    2.702575] omap2-nand: probe of 30000000.nand failed with error -22
-[    2.716094] 8<--- cut here ---
-[    2.719207] Unable to handle kernel NULL pointer dereference at
-virtual address 00000018
-[    2.727600] pgd = (ptrval)
-...
-[    3.050933] ---[ end trace 59640c7399a80a07 ]---
-[    3.055603] Kernel panic - not syncing: Attempted to kill init!
-exitcode=0x0000000b
-[    3.063323] ---[ end Kernel panic - not syncing: Attempted to kill
-init! exitcode=0x0000000b ]---
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
 
-Once I get past this, I'll try to test the thermal stuff.
-
-adam
-
->
-> adam
-> >
-> > Regards,
-> >
-> > Tony
+> ---
+>  arch/arm/mach-omap2/cpuidle44xx.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap2/cpuidle44xx.c b/arch/arm/mach-omap2/cpuidle44xx.c
+> --- a/arch/arm/mach-omap2/cpuidle44xx.c
+> +++ b/arch/arm/mach-omap2/cpuidle44xx.c
+> @@ -151,10 +151,10 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
+>  				 (cx->mpu_logic_state == PWRDM_POWER_OFF);
+>  
+>  	/* Enter broadcast mode for periodic timers */
+> -	tick_broadcast_enable();
+> +	RCU_NONIDLE(tick_broadcast_enable());
+>  
+>  	/* Enter broadcast mode for one-shot timers */
+> -	tick_broadcast_enter();
+> +	RCU_NONIDLE(tick_broadcast_enter());
+>  
+>  	/*
+>  	 * Call idle CPU PM enter notifier chain so that
+> @@ -166,7 +166,7 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
+>  
+>  	if (dev->cpu == 0) {
+>  		pwrdm_set_logic_retst(mpu_pd, cx->mpu_logic_state);
+> -		omap_set_pwrdm_state(mpu_pd, cx->mpu_state);
+> +		RCU_NONIDLE(omap_set_pwrdm_state(mpu_pd, cx->mpu_state));
+>  
+>  		/*
+>  		 * Call idle CPU cluster PM enter notifier chain
+> @@ -179,7 +179,7 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
+>  				index = 1;
+>  				cx = state_ptr + index;
+>  				pwrdm_set_logic_retst(mpu_pd, cx->mpu_logic_state);
+> -				omap_set_pwrdm_state(mpu_pd, cx->mpu_state);
+> +				RCU_NONIDLE(omap_set_pwrdm_state(mpu_pd, cx->mpu_state));
+>  				mpuss_can_lose_context = 0;
+>  			}
+>  		}
+> @@ -195,9 +195,9 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
+>  		    mpuss_can_lose_context)
+>  			gic_dist_disable();
+>  
+> -		clkdm_deny_idle(cpu_clkdm[1]);
+> -		omap_set_pwrdm_state(cpu_pd[1], PWRDM_POWER_ON);
+> -		clkdm_allow_idle(cpu_clkdm[1]);
+> +		RCU_NONIDLE(clkdm_deny_idle(cpu_clkdm[1]));
+> +		RCU_NONIDLE(omap_set_pwrdm_state(cpu_pd[1], PWRDM_POWER_ON));
+> +		RCU_NONIDLE(clkdm_allow_idle(cpu_clkdm[1]));
+>  
+>  		if (IS_PM44XX_ERRATUM(PM_OMAP4_ROM_SMP_BOOT_ERRATUM_GICD) &&
+>  		    mpuss_can_lose_context) {
+> @@ -225,7 +225,7 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
+>  	cpu_pm_exit();
+>  
+>  cpu_pm_out:
+> -	tick_broadcast_exit();
+> +	RCU_NONIDLE(tick_broadcast_exit());
+>  
+>  fail:
+>  	cpuidle_coupled_parallel_barrier(dev, &abort_barrier);
+> -- 
+> 2.30.0
