@@ -2,164 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEBDA2EE92E
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Jan 2021 23:51:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E75E2EEDC9
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Jan 2021 08:20:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728173AbhAGWvN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Jan 2021 17:51:13 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:50948 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727722AbhAGWvM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Jan 2021 17:51:12 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 107MnUtN023753;
-        Thu, 7 Jan 2021 16:49:30 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1610059770;
-        bh=51yABxhCeAmEePY6q8Lluk9jwTGYnWzQRyoK2i9Ziv8=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=d/fCjMt0G30a1P6t/yUjo+j0I6KfhUGU3eixrTlkiNrNIdgH8rWlFHP4ir01EDSsM
-         6GJeb2hVM4fw61KS4pSpGcgIM0a1BOWb0v+vZtbbYshESRrq8z99p9TvABzRj5myGQ
-         wQUZ+2R2EB5LGsUPUoVIO3TLbTGUDOBVcoaCj4nQ=
-Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 107MnUDK083642
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 7 Jan 2021 16:49:30 -0600
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 7 Jan
- 2021 16:49:29 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 7 Jan 2021 16:49:29 -0600
-Received: from [10.250.33.36] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 107MnTKk110118;
-        Thu, 7 Jan 2021 16:49:29 -0600
-Subject: Re: [PATCH v2 0/5] Introduce PRU remoteproc consumer API
-To:     Mathieu Poirier <mathieu.poirier@linaro.org>
-CC:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        <ohad@wizery.com>, <bjorn.andersson@linaro.org>,
-        <robh+dt@kernel.org>, <ssantosh@kernel.org>,
-        <linux-remoteproc@vger.kernel.org>, <lee.jones@linaro.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <praneeth@ti.com>,
-        <rogerq@kernel.org>
-References: <20201216165239.2744-1-grzegorz.jaszczyk@linaro.org>
- <20210106232704.GE9149@xps15> <11303a1b-5ab4-def5-77b1-c500894c9c87@ti.com>
- <20210107224448.GB43045@xps15>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <75365443-57e3-e2e0-5865-f78af9d5890b@ti.com>
-Date:   Thu, 7 Jan 2021 16:49:29 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1725965AbhAHHTw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Jan 2021 02:19:52 -0500
+Received: from muru.com ([72.249.23.125]:41154 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725308AbhAHHTw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 8 Jan 2021 02:19:52 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 200AE80B4;
+        Fri,  8 Jan 2021 07:19:31 +0000 (UTC)
+Date:   Fri, 8 Jan 2021 09:19:02 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     =?utf-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>
+Cc:     Amit Kucheria <amitk@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Adam Ford <aford173@gmail.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
+Subject: Re: [PATCH 1/3] thermal: ti-soc-thermal: Fix stuck sensor with
+ continuous mode for 4430
+Message-ID: <X/gHZp9BtXF1N0mT@atomide.com>
+References: <20201230084338.19410-1-tony@atomide.com>
+ <f108ac41-b38f-2d19-97ee-aaa5a7fdd1cc@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20210107224448.GB43045@xps15>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f108ac41-b38f-2d19-97ee-aaa5a7fdd1cc@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 1/7/21 4:44 PM, Mathieu Poirier wrote:
-> On Wed, Jan 06, 2021 at 06:03:25PM -0600, Suman Anna wrote:
->> Hi Mathieu,
->>
->> On 1/6/21 5:27 PM, Mathieu Poirier wrote:
->>> On Wed, Dec 16, 2020 at 05:52:34PM +0100, Grzegorz Jaszczyk wrote:
->>>> Hi All,
->>>>
->>>> The Programmable Real-Time Unit and Industrial Communication Subsystem
->>>> (PRU-ICSS or simply PRUSS) on various TI SoCs consists of dual 32-bit
->>>> RISC cores (Programmable Real-Time Units, or PRUs) for program execution.
->>>>
->>>> There are 3 foundation components for PRUSS subsystem: the PRUSS platform
->>>> driver, the PRUSS INTC driver and the PRUSS remoteproc driver. All were
->>>> already merged and can be found under:
->>>> 1) drivers/soc/ti/pruss.c
->>>>    Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
->>>> 2) drivers/irqchip/irq-pruss-intc.c
->>>>    Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
->>>> 3) drivers/remoteproc/pru_rproc.c
->>>>    Documentation/devicetree/bindings/remoteproc/ti,pru-rproc.yaml
->>>>
->>>> The programmable nature of the PRUs provide flexibility to implement custom
->>>> peripheral interfaces, fast real-time responses, or specialized data handling.
->>>> Example of a PRU consumer drivers will be:
->>>>   - Software UART over PRUSS
->>>>   - PRU-ICSS Ethernet EMAC
->>>>
->>>> In order to make usage of common PRU resources and allow the consumer drivers to
->>>> configure the PRU hardware for specific usage the PRU API is introduced.
->>>>
->>>> Patch #3 of this series depends on one not merged remteproc related patch [1].
->>>>
->>>> Please see the individual patches for exact changes in each patch, following is
->>>> the only change from v1:
->>>>  - Change the 'prus' property name to 'ti,prus' as suggested by Rob Herring,
->>>>  which influences patch #1 and patch #2
->>>>
->>>> [1] https://patchwork.kernel.org/project/linux-remoteproc/patch/20201121030156.22857-3-s-anna@ti.com/
->>>>
->>>> Best regards,
->>>> Grzegorz
->>>>
->>>> Roger Quadros (1):
->>>>   remoteproc: pru: Add pru_rproc_set_ctable() function
->>>>
->>>> Suman Anna (2):
->>>>   dt-bindings: remoteproc: Add PRU consumer bindings
->>>>   remoteproc: pru: Deny rproc sysfs ops for PRU client driven boots
->>>>
->>>> Tero Kristo (2):
->>>>   remoteproc: pru: Add APIs to get and put the PRU cores
->>>>   remoteproc: pru: Configure firmware based on client setup
->>>>
->>>>  .../bindings/remoteproc/ti,pru-consumer.yaml  |  64 +++++
->>>>  drivers/remoteproc/pru_rproc.c                | 221 +++++++++++++++++-
->>>>  include/linux/pruss.h                         |  78 +++++++
->>>
->>> This patchset is giving checkpatch.pl errors and as such will not go further
->>> with this revision.
->>
->> Yeah, I am aware of those. Greg has intentionally skipped the checkpatch
->> warnings around ENOTSUPP, based on some similar discussion on a different patch,
->> https://lkml.org/lkml/2020/11/10/764.
+* Péter Ujfalusi <peter.ujfalusi@gmail.com> [201231 12:55]:
+> On 12/30/20 10:43 AM, Tony Lindgren wrote:
+> > @@ -58,7 +58,8 @@ omap4430_adc_to_temp[OMAP4430_ADC_END_VALUE - OMAP4430_ADC_START_VALUE + 1] = {
+> >  const struct ti_bandgap_data omap4430_data = {
+> >  	.features = TI_BANDGAP_FEATURE_MODE_CONFIG |
+> >  			TI_BANDGAP_FEATURE_CLK_CTRL |
+> > -			TI_BANDGAP_FEATURE_POWER_SWITCH,
+> > +			TI_BANDGAP_FEATURE_POWER_SWITCH |
+> > +			TI_BANDGAP_FEATURE_CONT_MODE_ONLY,
 > 
-> I only see input from Andy and Lars in the thread you point out, nothing from
-> Greg.  I have also taken a look at the patch [1] that made checkpatch complain
-> about ENOTSUPP.  From what I see in that commit log the goal is to prevent new
-> additions of ENOTSUPP to the kernel.
+> Can we add a comment with the observations?
+
+Sure, and I also noticed that the timeout triggers also on dra7
+too. I need to recheck what all are affected.. At least we now
+see warnings on the SoCs affected.
+
+> > @@ -605,8 +606,10 @@ ti_bandgap_force_single_read(struct ti_bandgap *bgp, int id)
+> >  	u32 counter = 1000;
+> >  	struct temp_sensor_registers *tsr;
+> >  
+> > -	/* Select single conversion mode */
+> > -	if (TI_BANDGAP_HAS(bgp, MODE_CONFIG))
+> > +	/* Select continuous or single conversion mode */
+> > +	if (TI_BANDGAP_HAS(bgp, CONT_MODE_ONLY))
+> > +		RMW_BITS(bgp, id, bgap_mode_ctrl, mode_ctrl_mask, 1);
+> > +	else if (TI_BANDGAP_HAS(bgp, MODE_CONFIG))
+> >  		RMW_BITS(bgp, id, bgap_mode_ctrl, mode_ctrl_mask, 0);
 > 
-> Please modify and resend, otherwise I'm sure someone will send another patch to
-> fix it before the end of the cycle.
-
-Yeah ok. I will send out a v3.
-
-regards
-Suman
-
+> Would not be better to:
+> if (TI_BANDGAP_HAS(bgp, MODE_CONFIG)) {
+> 	if (TI_BANDGAP_HAS(bgp, CONT_MODE_ONLY))
+> 		RMW_BITS(bgp, id, bgap_mode_ctrl, mode_ctrl_mask, 1);
+> 	else
+> 		RMW_BITS(bgp, id, bgap_mode_ctrl, mode_ctrl_mask, 0);
+> }
 > 
-> Thanks,
-> Mathieu
-> 
-> [1]. 6b9ea5ff5abd checkpatch: warn about uses of ENOTSUPP
->>
->> Let me know if you prefer that we change these to EOPNOTSUPP.
->>
->> regards
->> Suman
->>
->>>
->>>>  3 files changed, 360 insertions(+), 3 deletions(-)
->>>>  create mode 100644 Documentation/devicetree/bindings/remoteproc/ti,pru-consumer.yaml
->>>>  create mode 100644 include/linux/pruss.h
->>>>
->>>> -- 
->>>> 2.29.0
->>>>
->>
+> One can only switch to cont/single mode if the mode config is possible.
 
+Yup makes sense thanks for spotting that.
+
+Regards,
+
+Tony
