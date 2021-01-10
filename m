@@ -2,97 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72BC72F05B9
-	for <lists+linux-omap@lfdr.de>; Sun, 10 Jan 2021 07:35:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D11992F066F
+	for <lists+linux-omap@lfdr.de>; Sun, 10 Jan 2021 11:25:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725846AbhAJGe6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 10 Jan 2021 01:34:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53170 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725785AbhAJGe6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 10 Jan 2021 01:34:58 -0500
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5A6CC061786;
-        Sat,  9 Jan 2021 22:34:17 -0800 (PST)
-Received: by mail-pg1-x52d.google.com with SMTP id c22so10438694pgg.13;
-        Sat, 09 Jan 2021 22:34:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=0lw4V/PtYGO4Uy5ZvtsYtEZivp3HERWFm8u7jUYXH/I=;
-        b=r1gV53lVhcsPtK04ZQcjlxCjs3PZHpji1sctKE273MrbLOUKsEix9/h7oGUI43UQNq
-         Ju20gqMUM9v4PDWgJ6/67RtVzac0A73uX49slX4GJRTxWKmJpQS4w1d2vZ9cl7J6AZ15
-         CLepj+zVWwoqbghSSJaO/vGUZzNFNexCGR7sbbKdv3LeKLWfWaml7XmFcp/jZufiFWLH
-         YK7yHmKsxUEjcxbFKInNRkCpt0MVTspvmilbcnSu/4ysF7LsqD8tVQujWyQvRAzOozsT
-         /vtikIzZWQLFHve8C7O+WQddjpSAizrq4T8a9P/KlsNot+XY7u+9aFpKTfQDqixZ8ldJ
-         4VNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=0lw4V/PtYGO4Uy5ZvtsYtEZivp3HERWFm8u7jUYXH/I=;
-        b=tgRm1tdMWKezoyuY8ZAKertnfbC/c8TROUkdzTk6vbbzykXKaT9SaEcu8G+yFr3ubq
-         An6YHAKL2B+lcuoHWjxSwN8t4tZ/zQdiME2l669RHvMeJMm3atnrz8SeG/8tK/n7pSNS
-         oBmQMZByjAwA/uT0pdp1hke0ba5weGoA2xPwLdt2gLcFsHAXXpScIhELt4Ff1cSCWLat
-         RXsCDpPP5zkUlsaszTuPmxcD6oVgJhRQXc3/X2YkQfWXr2tercCO8AqEjoHHD5yKMfVw
-         U9eym8jory/rLGgCtN0HIaYDGmKk4j5b26Vn78521uq6ebAIJhWiMFY5aC6z+z62G1NL
-         T84Q==
-X-Gm-Message-State: AOAM531A2yMwaYkOOp9g2esQQuozRdb8Na0g4Qul5V35Uz0+QDTzgDg9
-        iZM/uuucHpUS0cZ6wpZbODfnOavSYL0=
-X-Google-Smtp-Source: ABdhPJw06JaFlwpRSVhAapjHHDqV/DxDJsS++ES8Pjts0sn6IvZXvUtVaA3OntesMvrCrqVBiHH8HA==
-X-Received: by 2002:a63:f111:: with SMTP id f17mr14615515pgi.287.1610260457319;
-        Sat, 09 Jan 2021 22:34:17 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id w63sm14228406pfc.20.2021.01.09.22.34.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Jan 2021 22:34:16 -0800 (PST)
-Date:   Sat, 9 Jan 2021 22:34:14 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Arthur Demchenkov <spinal.by@gmail.com>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, ruleh <ruleh@gmx.de>,
-        Sebastian Reichel <sre@kernel.org>
-Subject: Re: [PATCH 3/4] Input: omap4-keypad - use PM runtime to check keys
- for errata
-Message-ID: <X/qf5rpxjLxSd3iq@google.com>
-References: <20210106125822.31315-1-tony@atomide.com>
- <20210106125822.31315-4-tony@atomide.com>
+        id S1726418AbhAJKZD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 10 Jan 2021 05:25:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38928 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726142AbhAJKZC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 10 Jan 2021 05:25:02 -0500
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C5A70239CF;
+        Sun, 10 Jan 2021 10:24:21 +0000 (UTC)
+Received: from 78.163-31-62.static.virginmediabusiness.co.uk ([62.31.163.78] helo=wait-a-minute.lan)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94)
+        (envelope-from <maz@kernel.org>)
+        id 1kyXtT-006Psw-TX; Sun, 10 Jan 2021 10:24:20 +0000
+From:   Marc Zyngier <maz@kernel.org>
+To:     Mathias Kresin <dev@kresin.me>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Suman Anna <s-anna@ti.com>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        Lokesh Vutla <lokeshvutla@ti.com>, linux-omap@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        David Lechner <david@lechnology.com>
+Subject: Re: [PATCH] irqchip: Simplify the TI_PRUSS_INTC Kconfig
+Date:   Sun, 10 Jan 2021 10:24:15 +0000
+Message-Id: <161027422717.65915.12337837723270334988.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210108162901.6003-1-s-anna@ti.com>
+References: <20210108162901.6003-1-s-anna@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210106125822.31315-4-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 62.31.163.78
+X-SA-Exim-Rcpt-To: dev@kresin.me, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, tsbogend@alpha.franken.de, fancer.lancer@gmail.com, s-anna@ti.com, hauke@hauke-m.de, martin.blumenstingl@googlemail.com, stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org, grzegorz.jaszczyk@linaro.org, lokeshvutla@ti.com, linux-omap@vger.kernel.org, tony@atomide.com, ssantosh@kernel.org, david@lechnology.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+On Fri, 8 Jan 2021 10:29:01 -0600, Suman Anna wrote:
+> The TI PRUSS INTC irqchip driver handles the local interrupt controller
+> which is a child device of it's parent PRUSS/ICSSG device. The driver
+> was upstreamed in parallel with the PRUSS platform driver, and was
+> configurable independently previously. The PRUSS interrupt controller
+> is an integral part of the overall PRUSS software architecture, and is
+> not useful at all by itself.
+> 
+> [...]
 
-On Wed, Jan 06, 2021 at 02:58:21PM +0200, Tony Lindgren wrote:
-> @@ -301,6 +348,7 @@ static int omap4_keypad_probe(struct platform_device *pdev)
->  	}
->  
->  	keypad_data->irq = irq;
-> +	mutex_init(&keypad_data->lock);
->  
->  	error = omap4_keypad_parse_dt(&pdev->dev, keypad_data);
->  	if (error)
-> @@ -320,6 +368,8 @@ static int omap4_keypad_probe(struct platform_device *pdev)
->  		goto err_release_mem;
->  	}
->  
-> +	pm_runtime_use_autosuspend(&pdev->dev);
-> +	pm_runtime_set_autosuspend_delay(&pdev->dev, OMAP4_KEYPAD_AUTOIDLE_MS);
+Applied to irq/irqchip-next, thanks!
 
-This, and corresponding changes in open() and close() seem like a
-separate improvement. Do you mind splitting them into a separate patch,
-and have the missing key release fix go on top of it?
+[1/1] irqchip: Simplify the TI_PRUSS_INTC Kconfig
+      commit: b8e594fa20d2e33d40c7a8c7c106549a35c38972
 
-Thanks.
+Cheers,
 
+	M.
 -- 
-Dmitry
+Without deviation from the norm, progress is not possible.
+
+
