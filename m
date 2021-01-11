@@ -2,139 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E2712F1072
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Jan 2021 11:50:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11B102F1FCE
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Jan 2021 20:50:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729458AbhAKKr6 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Mon, 11 Jan 2021 05:47:58 -0500
-Received: from mslow2.mail.gandi.net ([217.70.178.242]:41938 "EHLO
-        mslow2.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729357AbhAKKr6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Jan 2021 05:47:58 -0500
-Received: from relay2-d.mail.gandi.net (unknown [217.70.183.194])
-        by mslow2.mail.gandi.net (Postfix) with ESMTP id 41FB73A8573
-        for <linux-omap@vger.kernel.org>; Mon, 11 Jan 2021 10:21:33 +0000 (UTC)
-X-Originating-IP: 90.89.98.255
-Received: from xps13 (lfbn-tou-1-1535-bdcst.w90-89.abo.wanadoo.fr [90.89.98.255])
-        (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 6094740006;
-        Mon, 11 Jan 2021 10:20:28 +0000 (UTC)
-Date:   Mon, 11 Jan 2021 11:20:27 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <Tudor.Ambarus@microchip.com>,
-        linux-mtd@lists.infradead.org, Julien Su <juliensu@mxic.com.tw>,
-        ycllin@mxic.com.tw,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH 04/20] mtd: nand: ecc-bch: Stop exporting the private
- structure
-Message-ID: <20210111112027.7cbda0ba@xps13>
-In-Reply-To: <CAHCN7xLHAd8B_OgR2_vPFZZJ95mwNGR29dmqFeKhhSU9_y_imA@mail.gmail.com>
-References: <20200929230124.31491-1-miquel.raynal@bootlin.com>
-        <20200929230124.31491-5-miquel.raynal@bootlin.com>
-        <CAHCN7xLHAd8B_OgR2_vPFZZJ95mwNGR29dmqFeKhhSU9_y_imA@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S2390706AbhAKTuW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Jan 2021 14:50:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50326 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389440AbhAKTuV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Jan 2021 14:50:21 -0500
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1FE6C061786;
+        Mon, 11 Jan 2021 11:49:41 -0800 (PST)
+Received: from lwn.net (unknown [IPv6:2601:281:8300:104d::5f6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id 3237B9A8;
+        Mon, 11 Jan 2021 19:48:59 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 3237B9A8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1610394540; bh=EozPVlZIs3bnnXIKn7dDr0mmHi5XdirNCyxTvjIj9uE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=PALuxSnoS8Zs3fpNgecTI09xiv7NwxbzGbThKLcbZn0OwLfz/f85HMLF4pkH+Bh0S
+         xOCAT8x5kzdjC6DaeAl+tDwZWJD9xczHoB0533HMDlPJTc3LFjs1wjJBzapB8Lj8vJ
+         Crekpj+OtXlgSOZa/iV7V0O2D99K/J+Sc3rIKlU3f3I5IkIAHU0JwkJwUSOAZ7R8bR
+         xYE1zThYgmvHl+zg8I6vfwmqo3HLkwnwq+Y3JYXbY6JXOczglR/+NSPlDSqvH4Hsyv
+         wJFZxlYSB/svsWGzxBKtsMTAuLhtbZdSvPEWmWRO4jXyrd34sKG6RlknO8ACwxc9ue
+         REcwd7vi+LDWg==
+Date:   Mon, 11 Jan 2021 12:48:58 -0700
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Joe Perches <joe@perches.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
+        bhelgaas@google.com, robh+dt@kernel.org, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+        kishon@ti.com, lorenzo.pieralisi@arm.com, hongxing.zhu@nxp.com,
+        l.stach@pengutronix.de, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linux-imx@nxp.com, m-karicheri2@ti.com, songxiaowei@hisilicon.com,
+        wangbinghui@hisilicon.com, amurray@thegoodpenguin.co.uk,
+        sathyanarayanan.kuppuswamy@linux.intel.com, hkallweit1@gmail.com,
+        rafael.j.wysocki@intel.com, rdunlap@infradead.org,
+        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] Documentation: Replace lkml.org links with lore
+Message-ID: <20210111124858.2b35982c@lwn.net>
+In-Reply-To: <77cdb7f32cfb087955bfc3600b86c40bed5d4104.camel@perches.com>
+References: <20200627103050.71712-1-grandmaster@al2klimov.de>
+        <20200630180917.GA3455699@bjorn-Precision-5520>
+        <20200630140417.3a2dba67@lwn.net>
+        <77cdb7f32cfb087955bfc3600b86c40bed5d4104.camel@perches.com>
+Organization: LWN.net
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Adam,
+On Sun, 10 Jan 2021 12:41:44 -0800
+Joe Perches <joe@perches.com> wrote:
 
-Adam Ford <aford173@gmail.com> wrote on Sat, 9 Jan 2021 08:46:44 -0600:
+> Replace the lkml.org links with lore to better use a single source
+> that's more likely to stay available long-term.
 
-> On Tue, Sep 29, 2020 at 6:09 PM Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> >
-> > The NAND BCH control structure has nothing to do outside of this
-> > driver, all users of the nand_bch_init/free() functions just save it
-> > to chip->ecc.priv so do it in this driver directly and return a
-> > regular error code instead.
-> >
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > ---  
-> 
-> Starting with this commit:  3c0fe36abebe, the kernel either doesn't
-> build or returns errors on some omap2plus devices with the following
-> error:
-> 
->     nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xbc
->     nand: Micron MT29F4G16ABBDA3W
->     nand: 512 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
->     nand: using OMAP_ECC_BCH8_CODE_HW_DETECTION_SW
->     Invalid ECC layout
->     omap2-nand 30000000.nand: unable to use BCH library
->     omap2-nand: probe of 30000000.nand failed with error -22
->     8<--- cut here ---
-> 
-> There are few commits using git bisect that have build errors, so it
-> wasn't possible for me to determine the exact commit that broke the
-> ECC.  If the build failed, I marked it as 'bad' to git bisect.
+Makes sense to me...applied, thanks.
 
-I am sorry to hear that, I regularly rebase with a make run between each
-pick and push my branches to a 0-day repository to have robots check
-for such errors, but sometimes I fail.
-
-> Newer commits have remedied the build issue, but the Invalid ECC
-> layout error still exists as of 5.11-RC2.
-
-Ok so let's focus on these.
-
-> Do you have any suggestions on what I can do to remedy this?  I am
-> willing to try and test.
-
-Glad to hear that.
-
-Can you share the NAND controller DT node you are using?
-
-Also, can you please add a few printk's like below and give me the
-output?
-
----8<---
-
-diff --git a/drivers/mtd/nand/ecc-sw-bch.c b/drivers/mtd/nand/ecc-sw-bch.c
-index 0a0ac11d5725..0d3e948d02e9 100644
---- a/drivers/mtd/nand/ecc-sw-bch.c
-+++ b/drivers/mtd/nand/ecc-sw-bch.c
-@@ -205,6 +205,7 @@ int nand_ecc_sw_bch_init_ctx(struct nand_device *nand)
-        }
- 
-        nsteps = mtd->writesize / conf->step_size;
-+       printk("writesize %d, step_size %d, nsteps %d\n", mtd->writesize, conf->step_size, nsteps);
- 
-        /* Maximize */
-        if (nand->ecc.user_conf.flags & NAND_ECC_MAXIMIZE_STRENGTH) {
-@@ -213,11 +214,14 @@ int nand_ecc_sw_bch_init_ctx(struct nand_device *nand)
-                /* Reserve 2 bytes for the BBM */
-                code_size = (mtd->oobsize - 2) / nsteps;
-                conf->strength = code_size * 8 / fls(8 * conf->step_size);
-+               printk("Maximize => nsteps %d, code_size %d\n", nsteps, code_size);
-        }
- 
--       if (!code_size)
-+       if (!code_size) {
-                code_size = DIV_ROUND_UP(conf->strength *
-                                         fls(8 * conf->step_size), 8);
-+               printk("strength %d, step size %d, code_size %d\n", conf->strength, conf->step_size, code_size);
-+       }
- 
-        if (!conf->strength)
-                conf->strength = (code_size * 8) / fls(8 * conf->step_size);
-@@ -252,6 +256,7 @@ int nand_ecc_sw_bch_init_ctx(struct nand_device *nand)
-                goto free_bufs;
- 
-        /* Verify the layout validity */
-+       printk("count eccbytes %d\n", mtd_ooblayout_count_eccbytes(mtd));
-        if (mtd_ooblayout_count_eccbytes(mtd) !=
-            engine_conf->nsteps * engine_conf->code_size) {
-                pr_err("Invalid ECC layout\n");
-
---->8---
-
-Thanks,
-Miquèl
+jon
