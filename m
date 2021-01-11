@@ -2,71 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B102F1FCE
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Jan 2021 20:50:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CB352F20C3
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Jan 2021 21:27:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390706AbhAKTuW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Jan 2021 14:50:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50326 "EHLO
+        id S2387687AbhAKU0e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Jan 2021 15:26:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389440AbhAKTuV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Jan 2021 14:50:21 -0500
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1FE6C061786;
-        Mon, 11 Jan 2021 11:49:41 -0800 (PST)
-Received: from lwn.net (unknown [IPv6:2601:281:8300:104d::5f6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 3237B9A8;
-        Mon, 11 Jan 2021 19:48:59 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 3237B9A8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-        t=1610394540; bh=EozPVlZIs3bnnXIKn7dDr0mmHi5XdirNCyxTvjIj9uE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PALuxSnoS8Zs3fpNgecTI09xiv7NwxbzGbThKLcbZn0OwLfz/f85HMLF4pkH+Bh0S
-         xOCAT8x5kzdjC6DaeAl+tDwZWJD9xczHoB0533HMDlPJTc3LFjs1wjJBzapB8Lj8vJ
-         Crekpj+OtXlgSOZa/iV7V0O2D99K/J+Sc3rIKlU3f3I5IkIAHU0JwkJwUSOAZ7R8bR
-         xYE1zThYgmvHl+zg8I6vfwmqo3HLkwnwq+Y3JYXbY6JXOczglR/+NSPlDSqvH4Hsyv
-         wJFZxlYSB/svsWGzxBKtsMTAuLhtbZdSvPEWmWRO4jXyrd34sKG6RlknO8ACwxc9ue
-         REcwd7vi+LDWg==
-Date:   Mon, 11 Jan 2021 12:48:58 -0700
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Joe Perches <joe@perches.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
-        bhelgaas@google.com, robh+dt@kernel.org, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-        kishon@ti.com, lorenzo.pieralisi@arm.com, hongxing.zhu@nxp.com,
-        l.stach@pengutronix.de, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, m-karicheri2@ti.com, songxiaowei@hisilicon.com,
-        wangbinghui@hisilicon.com, amurray@thegoodpenguin.co.uk,
-        sathyanarayanan.kuppuswamy@linux.intel.com, hkallweit1@gmail.com,
-        rafael.j.wysocki@intel.com, rdunlap@infradead.org,
-        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] Documentation: Replace lkml.org links with lore
-Message-ID: <20210111124858.2b35982c@lwn.net>
-In-Reply-To: <77cdb7f32cfb087955bfc3600b86c40bed5d4104.camel@perches.com>
-References: <20200627103050.71712-1-grandmaster@al2klimov.de>
-        <20200630180917.GA3455699@bjorn-Precision-5520>
-        <20200630140417.3a2dba67@lwn.net>
-        <77cdb7f32cfb087955bfc3600b86c40bed5d4104.camel@perches.com>
-Organization: LWN.net
+        with ESMTP id S2404024AbhAKU0b (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Jan 2021 15:26:31 -0500
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53AABC061795
+        for <linux-omap@vger.kernel.org>; Mon, 11 Jan 2021 12:25:51 -0800 (PST)
+Received: by mail-lf1-x142.google.com with SMTP id a12so1435629lfl.6
+        for <linux-omap@vger.kernel.org>; Mon, 11 Jan 2021 12:25:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=XE7VwTakcUhCepRTXoc3v17PAdoqlceWdddGcl2J/D8=;
+        b=rQhuoElre5HfcwoScvJZweHODR3wt4u0QNx35/+HZGEB6q/lV9TKDOBHT45Cgu46yo
+         S+5G5VVwHLv3Lqcz0UXXR3obZUeucmJ60ue7ulmC1N/WOW6vk4vFuRgULIaXZiFFDh4u
+         6QGfUM5/bUaL47uE6EAWkYpQed0TBWPga9C4aQ4hUso2b4thE7dFoViaUyr2vbieJyio
+         VNF4qj310y7hPvmhQIPhGvOHS/VSN0T0IBaxnPy0GiLntdZl/I6CGICKo3CnIxBi65nn
+         cReKNjyt30AEvrfTW8vQuNCVGAkld0Ctpg4uoLU4ABecL0nB9iqnJAH/lV90GMVXcyXZ
+         xugA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=XE7VwTakcUhCepRTXoc3v17PAdoqlceWdddGcl2J/D8=;
+        b=XlsU5/1elrR6VWEoZ0Cp8FEDafiETifQ8c45KaizDgHhmv/Lp8pyKvzaTEhFwoZtlz
+         UKA4uCDYfzLgg/iS0ZIjmg1FmjPrxzy/iwz/2G2qenbz0UHhnEJH0Jp7oGtY+3ry+v0K
+         Yy/ILa9LZe8DZppkxnzqKNY2Ox+TJJPt99MKBF0RAi6/Fe0w3wypkAGLaXR2mfGlQs//
+         Y/P9+uqxubPvuTVL3AHmbYiCf9Rx7cvBkDzsFAdyqx1Bir1+JUA96DRAzwDjpwiEto2l
+         YlwKdelDtN0u2fys+jk4QnqK8JK+gbF2nZS0ClwSfuRakKMzNnI+8ZiOEJ3YFQEbjSW3
+         5TEQ==
+X-Gm-Message-State: AOAM532OYHfCrb/w3x8O1RtPrUQWXM8an4aKckm8Q21WSSbSSGVjhe48
+        BhcFOFpaTc5xNp9mSSM9yG0fkIhfOlw4m345ESg=
+X-Google-Smtp-Source: ABdhPJwaOb3tYsm41y+S7M8zNZQsNqyBoQKFIVMyNCDLoktQJYC9QHEsLuOQLuoyCuywHuSgoUQpDNOW8/gV4+jG1Qo=
+X-Received: by 2002:a19:600d:: with SMTP id u13mr548136lfb.312.1610396749828;
+ Mon, 11 Jan 2021 12:25:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ab3:70d2:0:0:0:0:0 with HTTP; Mon, 11 Jan 2021 12:25:49
+ -0800 (PST)
+Reply-To: officefile04161956@gmail.com
+From:   "Hon. George Harry" <jennyanderson953@gmail.com>
+Date:   Mon, 11 Jan 2021 21:25:49 +0100
+Message-ID: <CANdBDkwNaXPb65vnG64QzrXmFHH4LsXEHdVUY-vFwBPOCn3E0Q@mail.gmail.com>
+Subject: REPLY FOR MORE DETAILS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, 10 Jan 2021 12:41:44 -0800
-Joe Perches <joe@perches.com> wrote:
+-- 
+Good day to you,
 
-> Replace the lkml.org links with lore to better use a single source
-> that's more likely to stay available long-term.
+I'm a brand ambassador of ( D.C.I ), It's an investment platform for
+people who want to either save money for business purposes or those
+that want to increase their income, whatever you invest you gain
+10.00% of it Daily, 50.00% Weekly, 100.00% Monthly and 5.00% Hourly,
+no referral needed. It's not a scam, and they trade in crypto-currency
+exchange so they share profits with investors. The minimum amount to
+start with is $50.00 and
+above.
 
-Makes sense to me...applied, thanks.
+Get back to me if you are interested for more details.
 
-jon
+Yours Sincerely
+Hon. George Harry
+Email: officefile04161956@gmail.com
