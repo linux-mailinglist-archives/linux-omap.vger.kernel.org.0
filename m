@@ -2,109 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2497F2F22E9
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Jan 2021 23:38:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 242CF2F28D0
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Jan 2021 08:17:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390365AbhAKWif (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Jan 2021 17:38:35 -0500
-Received: from mail-ot1-f44.google.com ([209.85.210.44]:42425 "EHLO
-        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389720AbhAKWie (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Jan 2021 17:38:34 -0500
-Received: by mail-ot1-f44.google.com with SMTP id x5so116705otp.9;
-        Mon, 11 Jan 2021 14:38:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=fLMj84hkUp5+4mSadplRSQZF7rQJLNm76i5JIfHTAL8=;
-        b=i64VkvcIZQKROOie31EaeSBSMkw83z6POeGNxNbo2lfAoW7HhiyPtqG9k8C2T9qC5M
-         DtOPSlHwi5Obdp9fVyHzagnh9kuz516MYVnxSnYpcNbG3GHfafW121hKI5iXv9HwCh3t
-         7dseXeuEXpjMIH+6r72TpY/5hB8m4Yz6hU9rvOBlUlrDd7nkU3cESGeYJSRQbOvVkl6X
-         wC5Kx3lgt3pKFL9upaY4o5biQbwuTh3iNeKIz2Zr4BNYxn4KV70pK4n+UTNNgMXAWCz3
-         nQ9IBEh6foCV0fVYs+cOMGQh0/H9RY8fD+kjbYdjhp8ZECOVkpd89qpJ1jk8ewplTLOu
-         k/lg==
-X-Gm-Message-State: AOAM532rHX3rCRd6IfuOSSbiYylxNJ3/L5gQTNsmBstBwI0OeJzn0ewO
-        N9xtS0JiO23RkgKbBcXoNg==
-X-Google-Smtp-Source: ABdhPJx9xq6P6glabPHmo4SavGc3OTfs/lhS2g2fLFMmAgMDmpH6KWLvkZWD/hqD8l6UME/txyE6zA==
-X-Received: by 2002:a05:6830:2397:: with SMTP id l23mr841766ots.357.1610404672925;
-        Mon, 11 Jan 2021 14:37:52 -0800 (PST)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id e10sm236515otr.73.2021.01.11.14.37.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Jan 2021 14:37:51 -0800 (PST)
-Received: (nullmailer pid 3185487 invoked by uid 1000);
-        Mon, 11 Jan 2021 22:37:50 -0000
-Date:   Mon, 11 Jan 2021 16:37:50 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Tom Joseph <tjoseph@cadence.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Nadeem Athani <nadeem@cadence.com>, linux-pci@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 2/4] dt-bindings: pci: ti,j721e: Add host mode
- dt-bindings for TI's AM64 SoC
-Message-ID: <20210111223750.GA3177728@robh.at.kernel.org>
-References: <20210104124103.30930-1-kishon@ti.com>
- <20210104124103.30930-3-kishon@ti.com>
+        id S2388790AbhALHQu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Jan 2021 02:16:50 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:59914 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388456AbhALHQu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Jan 2021 02:16:50 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10C7Frvf070745;
+        Tue, 12 Jan 2021 01:15:53 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1610435753;
+        bh=g7AbDhQGdVwNlve6TmM+Kxluc6Uu+tgfQyJ92TiNyP8=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=OK6GuZJYMdDho883EdA795tNm7onaXuFb+9spOKggyEOO3UgpT8UMdMwfi+5o+lmM
+         yz1SHeHGFm7YP78sxCVGs4UGC7nSm+OKwz5Cipo8yM2ox2z5td98Id9AO6vdzV1Zx1
+         HwlhoosSez+3n+eTG8w4+qnueqrwn2jaKq8wxOVo=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10C7Frqu113397
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 12 Jan 2021 01:15:53 -0600
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 12
+ Jan 2021 01:15:53 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 12 Jan 2021 01:15:53 -0600
+Received: from [10.250.235.36] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10C7FmkX028581;
+        Tue, 12 Jan 2021 01:15:49 -0600
+Subject: Re: [PATCH v7 0/2] PCI: cadence: Retrain Link to work around Gen2
+To:     Nadeem Athani <nadeem@cadence.com>, <tjoseph@cadence.com>,
+        <lorenzo.pieralisi@arm.com>, <robh@kernel.org>,
+        <bhelgaas@google.com>, <linux-omap@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <mparab@cadence.com>, <sjakhade@cadence.com>,
+        <pthombar@cadence.com>
+References: <20201230120515.2348-1-nadeem@cadence.com>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <15abdca0-d1e1-64b7-4a9a-d7549f035e01@ti.com>
+Date:   Tue, 12 Jan 2021 12:45:47 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210104124103.30930-3-kishon@ti.com>
+In-Reply-To: <20201230120515.2348-1-nadeem@cadence.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jan 04, 2021 at 06:11:01PM +0530, Kishon Vijay Abraham I wrote:
-> Add host mode dt-bindings for TI's AM64 SoC. This is the same IP used in
-> J7200, however AM64 is a non-coherent architecture.
+
+
+On 30/12/20 5:35 pm, Nadeem Athani wrote:
+> Cadence controller will not initiate autonomous speed change if strapped
+> as Gen2. The Retrain Link bit is set as quirk to enable this speed change.
+> Adding a quirk flag for defective IP. In future IP revisions this will not
+> be applicable.
 > 
-> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-> ---
->  .../devicetree/bindings/pci/ti,j721e-pci-host.yaml     | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+> Version history:
+> Changes in v7:
+> - Changing the commit title of patch 1 in this series.
+> - Added a return value for function cdns_pcie_retrain().
+> Changes in v6:
+> - Move the position of function cdns_pcie_host_wait_for_link to remove
+>   compilation error. No changes in code. Separate patch for this.
+> Changes in v5:
+> - Remove the compatible string based setting of quirk flag.
+> - Removed additional Link Up Check
+> - Removed quirk from pcie-cadence-plat.c and added in pci-j721e.c
+> Changes in v4:
+> - Added a quirk flag based on a new compatible string.
+> - Change of api for link up: cdns_pcie_host_wait_for_link().
+> Changes in v3:
+> - To set retrain link bit,checking device capability & link status.
+> - 32bit read in place of 8bit.
+> - Minor correction in patch comment.
+> - Change in variable & macro name.
+> Changes in v2:
+> - 16bit read in place of 8bit.
+
+Could get GEN2 card enumerated in GEN2 mode in J7ES EVM.
+
+Tested-by: Kishon Vijay Abraham I <kishon@ti.com>
+
+Thanks
+Kishon
 > 
-> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
-> index 7607018a115b..77118dba415e 100644
-> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
-> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
-> @@ -16,12 +16,17 @@ allOf:
->  properties:
->    compatible:
->      oneOf:
-> -      - description: PCIe controller in J7200
-> +      - const: ti,am64-pcie-host
-
-No, either you have fallback or you don't. 
-
-> +      - const: ti,j7200-pcie-host
-> +      - const: ti,j721e-pcie-host
-> +      - description: PCIe controller in AM64
->          items:
-> +          - const: ti,am64-pcie-host
->            - const: ti,j7200-pcie-host
->            - const: ti,j721e-pcie-host
-
-2 fallbacks is probably not too useful. Do those really enable 
-anything?
-
-> -      - description: PCIe controller in J721E
-> +      - description: PCIe controller in J7200
->          items:
-> +          - const: ti,j7200-pcie-host
->            - const: ti,j721e-pcie-host
->  
->    reg:
-> @@ -87,7 +92,6 @@ required:
->    - vendor-id
->    - device-id
->    - msi-map
-> -  - dma-coherent
->    - dma-ranges
->    - ranges
->    - reset-gpios
-> -- 
-> 2.17.1
+> Nadeem Athani (2):
+>   PCI: cadence: Shifting of a function to support new code.
+>   PCI: cadence: Retrain Link to work around Gen2 training defect.
+> 
+>  drivers/pci/controller/cadence/pci-j721e.c         |  3 +
+>  drivers/pci/controller/cadence/pcie-cadence-host.c | 70 ++++++++++++++++------
+>  drivers/pci/controller/cadence/pcie-cadence.h      | 11 +++-
+>  3 files changed, 65 insertions(+), 19 deletions(-)
 > 
