@@ -2,66 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B10B2F6EF8
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Jan 2021 00:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FF7E2F7317
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Jan 2021 07:57:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730864AbhANXc5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 14 Jan 2021 18:32:57 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:58112 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727838AbhANXc5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Jan 2021 18:32:57 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B4D631C0B82; Fri, 15 Jan 2021 00:31:59 +0100 (CET)
-Date:   Fri, 15 Jan 2021 00:31:59 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc:     Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org,
-        linux-pm@vger.kernel.org, kernel@collabora.com,
-        Arthur Demchenkov <spinal.by@gmail.com>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH] power: supply: cpcap-battery: constify psy_desc
-Message-ID: <20210114233159.GA18332@duo.ucw.cz>
-References: <20210114223617.313588-1-sebastian.reichel@collabora.com>
+        id S1728215AbhAOG5D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 Jan 2021 01:57:03 -0500
+Received: from muru.com ([72.249.23.125]:44884 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725880AbhAOG5D (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 15 Jan 2021 01:57:03 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 52E32805C;
+        Fri, 15 Jan 2021 06:56:22 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        Raz Bouganim <r-bouganim@ti.com>,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCHv2 ] wlcore: Fix command execute failure 19 for wl12xx
+Date:   Fri, 15 Jan 2021 08:56:13 +0200
+Message-Id: <20210115065613.7731-1-tony@atomide.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="qMm9M+Fa2AknHoGS"
-Content-Disposition: inline
-In-Reply-To: <20210114223617.313588-1-sebastian.reichel@collabora.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+We can currently get a "command execute failure 19" error on beacon loss
+if the signal is weak:
 
---qMm9M+Fa2AknHoGS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+wlcore: Beacon loss detected. roles:0xff
+wlcore: Connection loss work (role_id: 0).
+...
+wlcore: ERROR command execute failure 19
+...
+WARNING: CPU: 0 PID: 1552 at drivers/net/wireless/ti/wlcore/main.c:803
+...
+(wl12xx_queue_recovery_work.part.0 [wlcore])
+(wl12xx_cmd_role_start_sta [wlcore])
+(wl1271_op_bss_info_changed [wlcore])
+(ieee80211_prep_connection [mac80211])
 
-On Thu 2021-01-14 23:36:17, Sebastian Reichel wrote:
-> There is no dynamic information in cpcap-battery's
-> power-supply description struct, so let's make it
-> static const.
->=20
-> Cc: Arthur Demchenkov <spinal.by@gmail.com>
-> Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-> Cc: Merlijn Wajer <merlijn@wizzup.org>
+Error 19 is defined as CMD_STATUS_WRONG_NESTING from the wlcore firmware,
+and seems to mean that the firmware no longer wants to see the quirk
+handling for WLCORE_QUIRK_START_STA_FAILS done.
 
-Acked-by: Pavel Machek <pavel@ucw.cz>
---=20
-http://www.livejournal.com/~pavelmachek
+This quirk got added with commit 18eab430700d ("wlcore: workaround
+start_sta problem in wl12xx fw"), and it seems that this already got fixed
+in the firmware long time ago back in 2012 as wl18xx never had this quirk
+in place to start with.
 
---qMm9M+Fa2AknHoGS
-Content-Type: application/pgp-signature; name="signature.asc"
+As we no longer even support firmware that early, to me it seems that it's
+safe to just drop WLCORE_QUIRK_START_STA_FAILS to fix the error. Looks
+like earlier firmware got disabled back in 2013 with commit 0e284c074ef9
+("wl12xx: increase minimum singlerole firmware version required").
 
------BEGIN PGP SIGNATURE-----
+If it turns out we still need WLCORE_QUIRK_START_STA_FAILS with any
+firmware that the driver works with, we can simply revert this patch and
+add extra checks for firmware version used.
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYADUbwAKCRAw5/Bqldv6
-8svuAJ9rVnPw9RU42KJajlrbY3gOK06PrgCeIpqx53rI19NOZnW20WCbSiw80F4=
-=84wH
------END PGP SIGNATURE-----
+With this fix wlcore reconnects properly after a beacon loss.
 
---qMm9M+Fa2AknHoGS--
+Cc: Raz Bouganim <r-bouganim@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+Changes since v1: Update to apply without fuzz
+---
+ drivers/net/wireless/ti/wl12xx/main.c   |  3 ---
+ drivers/net/wireless/ti/wlcore/main.c   | 15 +--------------
+ drivers/net/wireless/ti/wlcore/wlcore.h |  3 ---
+ 3 files changed, 1 insertion(+), 20 deletions(-)
+
+diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/ti/wl12xx/main.c
+index 3c9c623bb4283..9d7dbfe7fe0c3 100644
+--- a/drivers/net/wireless/ti/wl12xx/main.c
++++ b/drivers/net/wireless/ti/wl12xx/main.c
+@@ -635,7 +635,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
+ 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
+ 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
+ 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
+-			      WLCORE_QUIRK_START_STA_FAILS |
+ 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
+ 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
+ 		wl->mr_fw_name = WL127X_FW_NAME_MULTI;
+@@ -659,7 +658,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
+ 		wl->quirks |= WLCORE_QUIRK_LEGACY_NVS |
+ 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
+ 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
+-			      WLCORE_QUIRK_START_STA_FAILS |
+ 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
+ 		wl->plt_fw_name = WL127X_PLT_FW_NAME;
+ 		wl->sr_fw_name = WL127X_FW_NAME_SINGLE;
+@@ -688,7 +686,6 @@ static int wl12xx_identify_chip(struct wl1271 *wl)
+ 		wl->quirks |= WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN |
+ 			      WLCORE_QUIRK_DUAL_PROBE_TMPL |
+ 			      WLCORE_QUIRK_TKIP_HEADER_SPACE |
+-			      WLCORE_QUIRK_START_STA_FAILS |
+ 			      WLCORE_QUIRK_AP_ZERO_SESSION_ID;
+ 
+ 		wlcore_set_min_fw_ver(wl, WL128X_CHIP_VER,
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index fb0305d075dd3..8509b989940c2 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -2872,21 +2872,8 @@ static int wlcore_join(struct wl1271 *wl, struct wl12xx_vif *wlvif)
+ 
+ 	if (is_ibss)
+ 		ret = wl12xx_cmd_role_start_ibss(wl, wlvif);
+-	else {
+-		if (wl->quirks & WLCORE_QUIRK_START_STA_FAILS) {
+-			/*
+-			 * TODO: this is an ugly workaround for wl12xx fw
+-			 * bug - we are not able to tx/rx after the first
+-			 * start_sta, so make dummy start+stop calls,
+-			 * and then call start_sta again.
+-			 * this should be fixed in the fw.
+-			 */
+-			wl12xx_cmd_role_start_sta(wl, wlvif);
+-			wl12xx_cmd_role_stop_sta(wl, wlvif);
+-		}
+-
++	else
+ 		ret = wl12xx_cmd_role_start_sta(wl, wlvif);
+-	}
+ 
+ 	return ret;
+ }
+diff --git a/drivers/net/wireless/ti/wlcore/wlcore.h b/drivers/net/wireless/ti/wlcore/wlcore.h
+index b7821311ac75b..81c94d390623b 100644
+--- a/drivers/net/wireless/ti/wlcore/wlcore.h
++++ b/drivers/net/wireless/ti/wlcore/wlcore.h
+@@ -547,9 +547,6 @@ wlcore_set_min_fw_ver(struct wl1271 *wl, unsigned int chip,
+ /* Each RX/TX transaction requires an end-of-transaction transfer */
+ #define WLCORE_QUIRK_END_OF_TRANSACTION		BIT(0)
+ 
+-/* the first start_role(sta) sometimes doesn't work on wl12xx */
+-#define WLCORE_QUIRK_START_STA_FAILS		BIT(1)
+-
+ /* wl127x and SPI don't support SDIO block size alignment */
+ #define WLCORE_QUIRK_TX_BLOCKSIZE_ALIGN		BIT(2)
+ 
+-- 
+2.30.0
+
