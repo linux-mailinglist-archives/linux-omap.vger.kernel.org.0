@@ -2,85 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDADE2F75B2
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Jan 2021 10:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D0AA2F75ED
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Jan 2021 10:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726691AbhAOJnS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 15 Jan 2021 04:43:18 -0500
-Received: from muru.com ([72.249.23.125]:44990 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726642AbhAOJnR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 15 Jan 2021 04:43:17 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 9544E805C;
-        Fri, 15 Jan 2021 09:42:46 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH] drivers: bus: simple-pm-bus: Fix compability with simple-bus for auxdata
-Date:   Fri, 15 Jan 2021 11:42:31 +0200
-Message-Id: <20210115094231.62491-1-tony@atomide.com>
-X-Mailer: git-send-email 2.30.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727268AbhAOJxE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 Jan 2021 04:53:04 -0500
+Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:51679 "EHLO
+        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726468AbhAOJxE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 15 Jan 2021 04:53:04 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=abaci-bugfix@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0ULo6iiE_1610704282;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:abaci-bugfix@linux.alibaba.com fp:SMTPD_---0ULo6iiE_1610704282)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 15 Jan 2021 17:51:48 +0800
+From:   Yang Li <abaci-bugfix@linux.alibaba.com>
+To:     ulf.hansson@linaro.org
+Cc:     lgirdwood@gmail.com, broonie@kernel.org, linux-mmc@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Yang Li <abaci-bugfix@linux.alibaba.com>
+Subject: [PATCH v2] host: omap_hsmmc: style: Simplify bool comparison and conversion
+Date:   Fri, 15 Jan 2021 17:51:21 +0800
+Message-Id: <1610704281-11036-1-git-send-email-abaci-bugfix@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-After converting am335x to probe devices with simple-pm-bus I noticed
-that we are not passing auxdata for of_platform_populate() like we do
-with simple-bus.
+Fix the following coccicheck warning:
+./drivers/mmc/host/omap_hsmmc.c:297:6-25: WARNING: Comparison of 0/1 to
+bool variable
 
-While device tree using SoCs should no longer need platform data, there
-are still quite a few drivers that still need it.
+According to the context, vqmmc_enabled is more suitable for bool
+type.
 
-Let's fix the issue by passing auxdata as platform data to simple-pm-bus.
-That way the SoCs needing this can pass the auxdata with OF_DEV_AUXDATA.
-And let's pass the auxdata for omaps to fix the issue for am335x.
-
-Later on we may want to consider handling simple-pm-bus directly in
-drivers/of/platform.c as then we no longer need the platform data for
-simple-pm-bus.
-
-Fixes: 5a230524f879 ("ARM: dts: Use simple-pm-bus for genpd for am3 l4_wkup")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reported-by: Abaci Robot<abaci@linux.alibaba.com>
+Signed-off-by: Yang Li <abaci-bugfix@linux.alibaba.com>
 ---
- arch/arm/mach-omap2/pdata-quirks.c | 1 +
- drivers/bus/simple-pm-bus.c        | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+Changes in v2:
+ -clean up all use of "pbias_enabled", and do the same clean up for
+"vqmmc_enabled".
 
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -532,6 +532,7 @@ static struct of_dev_auxdata omap_auxdata_lookup[] = {
- 		       &dra7_ipu1_dsp_iommu_pdata),
- #endif
- 	/* Common auxdata */
-+	OF_DEV_AUXDATA("simple-pm-bus", 0, NULL, omap_auxdata_lookup),
- 	OF_DEV_AUXDATA("ti,sysc", 0, NULL, &ti_sysc_pdata),
- 	OF_DEV_AUXDATA("pinctrl-single", 0, NULL, &pcs_pdata),
- 	OF_DEV_AUXDATA("ti,omap-prm-inst", 0, NULL, &ti_prm_pdata),
-diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
---- a/drivers/bus/simple-pm-bus.c
-+++ b/drivers/bus/simple-pm-bus.c
-@@ -16,6 +16,7 @@
- 
- static int simple_pm_bus_probe(struct platform_device *pdev)
- {
-+	const struct of_dev_auxdata *lookup = dev_get_platdata(&pdev->dev);
- 	struct device_node *np = pdev->dev.of_node;
- 
- 	dev_dbg(&pdev->dev, "%s\n", __func__);
-@@ -23,7 +24,7 @@ static int simple_pm_bus_probe(struct platform_device *pdev)
- 	pm_runtime_enable(&pdev->dev);
- 
- 	if (np)
--		of_platform_populate(np, NULL, NULL, &pdev->dev);
-+		of_platform_populate(np, NULL, lookup, &pdev->dev);
+ drivers/mmc/host/omap_hsmmc.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+index aa9cc49..2f8038d 100644
+--- a/drivers/mmc/host/omap_hsmmc.c
++++ b/drivers/mmc/host/omap_hsmmc.c
+@@ -177,7 +177,7 @@ struct omap_hsmmc_host {
+ 	struct	regulator	*pbias;
+ 	bool			pbias_enabled;
+ 	void	__iomem		*base;
+-	int			vqmmc_enabled;
++	bool			vqmmc_enabled;
+ 	resource_size_t		mapbase;
+ 	spinlock_t		irq_lock; /* Prevent races with irq handler */
+ 	unsigned int		dma_len;
+@@ -232,7 +232,7 @@ static int omap_hsmmc_enable_supply(struct mmc_host *mmc)
+ 			dev_err(mmc_dev(mmc), "vmmc_aux reg enable failed\n");
+ 			goto err_vqmmc;
+ 		}
+-		host->vqmmc_enabled = 1;
++		host->vqmmc_enabled = true;
+ 	}
  
  	return 0;
- }
+@@ -256,7 +256,7 @@ static int omap_hsmmc_disable_supply(struct mmc_host *mmc)
+ 			dev_err(mmc_dev(mmc), "vmmc_aux reg disable failed\n");
+ 			return ret;
+ 		}
+-		host->vqmmc_enabled = 0;
++		host->vqmmc_enabled = false;
+ 	}
+ 
+ 	if (!IS_ERR(mmc->supply.vmmc)) {
+@@ -285,22 +285,22 @@ static int omap_hsmmc_set_pbias(struct omap_hsmmc_host *host, bool power_on)
+ 		return 0;
+ 
+ 	if (power_on) {
+-		if (host->pbias_enabled == 0) {
++		if (!host->pbias_enabled) {
+ 			ret = regulator_enable(host->pbias);
+ 			if (ret) {
+ 				dev_err(host->dev, "pbias reg enable fail\n");
+ 				return ret;
+ 			}
+-			host->pbias_enabled = 1;
++			host->pbias_enabled = true;
+ 		}
+ 	} else {
+-		if (host->pbias_enabled == 1) {
++		if (host->pbias_enabled) {
+ 			ret = regulator_disable(host->pbias);
+ 			if (ret) {
+ 				dev_err(host->dev, "pbias reg disable fail\n");
+ 				return ret;
+ 			}
+-			host->pbias_enabled = 0;
++			host->pbias_enabled = false;
+ 		}
+ 	}
+ 
+@@ -1861,8 +1861,8 @@ static int omap_hsmmc_probe(struct platform_device *pdev)
+ 	host->base	= base + pdata->reg_offset;
+ 	host->power_mode = MMC_POWER_OFF;
+ 	host->next_data.cookie = 1;
+-	host->pbias_enabled = 0;
+-	host->vqmmc_enabled = 0;
++	host->pbias_enabled = false;
++	host->vqmmc_enabled = false;
+ 
+ 	platform_set_drvdata(pdev, host);
+ 
 -- 
-2.30.0
+1.8.3.1
+
