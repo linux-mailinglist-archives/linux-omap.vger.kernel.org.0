@@ -2,138 +2,151 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B032F8709
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Jan 2021 22:01:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B7902F87C7
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Jan 2021 22:43:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387768AbhAOVBC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 15 Jan 2021 16:01:02 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:59434 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733195AbhAOVBA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 15 Jan 2021 16:01:00 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10FKwSrX040711;
-        Fri, 15 Jan 2021 14:58:28 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1610744308;
-        bh=Sc+E12C0KeMsBR6ZQgAShxwFlyogleIJrGrKpJQw9+I=;
-        h=From:To:CC:Subject:Date;
-        b=hAMQdGnvcb+3/Pvup+bHNMIKe6CD91W4IfLTwa0vehyzv+7A0+jJ3V5ZPwVva9WU0
-         0F59yFvUzIPWjpaXMSBSTPxuwOzMWAgu9bEJLhHBfy7V/EHerB2wsLJZYqnxRfrFIG
-         qcj5rMx0D804of+T5c8Jy29RitVo/nGntMGo5h+U=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10FKwSQs041781
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 15 Jan 2021 14:58:28 -0600
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 15
- Jan 2021 14:58:28 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 15 Jan 2021 14:58:28 -0600
-Received: from fllv0103.dal.design.ti.com (fllv0103.dal.design.ti.com [10.247.120.73])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10FKwSCL042823;
-        Fri, 15 Jan 2021 14:58:28 -0600
-Received: from localhost ([10.250.34.42])
-        by fllv0103.dal.design.ti.com (8.14.7/8.14.7) with ESMTP id 10FKwRS9077904;
-        Fri, 15 Jan 2021 14:58:28 -0600
-From:   Suman Anna <s-anna@ti.com>
-To:     Rob Herring <robh+dt@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-CC:     Nishanth Menon <nm@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        David Lechner <david@lechnology.com>,
-        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        Suman Anna <s-anna@ti.com>
-Subject: [PATCH] dt-bindings: irqchip: Add #address-cells to PRUSS INTC
-Date:   Fri, 15 Jan 2021 14:58:19 -0600
-Message-ID: <20210115205819.19426-1-s-anna@ti.com>
-X-Mailer: git-send-email 2.29.2
+        id S1725878AbhAOVlE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 Jan 2021 16:41:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44590 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725805AbhAOVlD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 15 Jan 2021 16:41:03 -0500
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB48BC0613D3
+        for <linux-omap@vger.kernel.org>; Fri, 15 Jan 2021 13:40:22 -0800 (PST)
+Received: by mail-pl1-x634.google.com with SMTP id b8so5386009plx.0
+        for <linux-omap@vger.kernel.org>; Fri, 15 Jan 2021 13:40:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=n0vrgI0v5AqdqRBlnR2zrY3ADnVU6Fc4aa8ej4oQxWI=;
+        b=ikcuoSYxk+o95pgvXIejJia6Wa7r/h9H62sZs/9Cpe0sUYFhlD4wlTCAyWvkqgnFeR
+         b7uz4pJ+VSk13U7/kgu/HN1fbjzCSiL1Fr0tHbBdEWI44HuPCaufm4EjQCvtNWcFY6+/
+         h95/5c9l7eYKlBEOHbNdaa2yfxd3eC8jF8lwQpuB1SvDRSoI2oxkC+6E8vKloU9c86LN
+         IuNA0+P1JPndHgec5mX3JNo4ycRIS4mRaYQDTuy9Zq2PWmpA0bgKE+73iqWJ1AIXZ/J7
+         6pMr0mOQacx5TQxTFcRF6X8aapFgYLuxV1FzvvJ7e/IztP5mDs0dHeu+8yUz7dw4VE2m
+         TDAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=n0vrgI0v5AqdqRBlnR2zrY3ADnVU6Fc4aa8ej4oQxWI=;
+        b=D8EKpCRKI6n5WStRahJVzn+ddIlbeA1PeoJK/D38ZFUc1Ud6BwirP8K8NQPEXAiQiN
+         GuKlMJQgXKPVXJCe3trIukYxi6cE2qoxzH1cwPvXsCDllATq8qZRyYT/XJlJzG7EahEJ
+         ieZaeb9FcpcnW29RU7TrbVwF5m6iPdR+y+OaVLxvQGosTZa37yxS6hBOODarfcyLuTJ+
+         j6+1BkWte2mxzdoqTaPvhMTwSdjg3ZC8G/w4GAHt59hD68q/+a2hUFTolhxq1p5T2k/E
+         M0hdB82CusVpNhPLn7JOl2cxwCmDE61dh75+uplCA7hwlkfGdTQjDKHDVUSK0eGSoYYb
+         YPCg==
+X-Gm-Message-State: AOAM5313FuqkM9Z48GIporNqHpHRa1AQC3qiTOpQuY9mP9h8UszbRT/k
+        rMN3MgsNJA0wXOwg+SFEKffICg==
+X-Google-Smtp-Source: ABdhPJyON92K2TmcPW2QR85yuolP22tM0R4t7l3u4HZpjfPFf8vlelLyS2GSnGt/ynZIDrLg6P8b7Q==
+X-Received: by 2002:a17:902:8216:b029:dc:1e79:e74c with SMTP id x22-20020a1709028216b02900dc1e79e74cmr14532231pln.5.1610746821003;
+        Fri, 15 Jan 2021 13:40:21 -0800 (PST)
+Received: from x1 ([2601:1c0:4701:ae70:1a90:2b4:7e34:6b31])
+        by smtp.gmail.com with ESMTPSA id e5sm8744463pfc.76.2021.01.15.13.40.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Jan 2021 13:40:20 -0800 (PST)
+Date:   Fri, 15 Jan 2021 13:40:18 -0800
+From:   Drew Fustini <drew@beagleboard.org>
+To:     Emmanuel Vadot <manu@bidouilliste.com>
+Cc:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        devicetree@vger.kernel.org, bcousson@baylibre.com,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@gmail.com>
+Subject: Re: [PATCH v4 2/2] ARM: dts: am33xx-l4: change #pinctrl-cells from 1
+ to 2
+Message-ID: <20210115214018.GA554007@x1>
+References: <20200701013320.130441-1-drew@beagleboard.org>
+ <20200701013320.130441-3-drew@beagleboard.org>
+ <20210115190201.9273b637a7f967e7e55bc740@bidouilliste.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210115190201.9273b637a7f967e7e55bc740@bidouilliste.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The '#address-cells' property looks to be a required property for
-interrupt controller nodes as indicated by a warning message seen
-when building dtbs with W=2. Adding the property to the PRUSS INTC
-dts nodes though fails the dtbs_check. Add this property to the
-PRUSS INTC binding to make it compliant with both dtbs_check and
-building dtbs.
+On Fri, Jan 15, 2021 at 07:02:01PM +0100, Emmanuel Vadot wrote:
+> 
+>  Hello Drew,
+> 
+> On Wed,  1 Jul 2020 03:33:20 +0200
+> Drew Fustini <drew@beagleboard.org> wrote:
+> 
+> > Increase #pinctrl-cells to 2 so that mux and conf be kept separate. This
+> > requires the AM33XX_PADCONF macro in omap.h to also be modified to keep pin
+> > conf and pin mux values separate.
+> > 
+> > Signed-off-by: Drew Fustini <drew@beagleboard.org>
+> > ---
+> >  arch/arm/boot/dts/am33xx-l4.dtsi   | 2 +-
+> >  include/dt-bindings/pinctrl/omap.h | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+> > index a9cbefc80c0c..3141590e5889 100644
+> > --- a/arch/arm/boot/dts/am33xx-l4.dtsi
+> > +++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+> > @@ -278,7 +278,7 @@ scm: scm@0 {
+> >  				am33xx_pinmux: pinmux@800 {
+> >  					compatible = "pinctrl-single";
+> >  					reg = <0x800 0x238>;
+> > -					#pinctrl-cells = <1>;
+> > +					#pinctrl-cells = <2>;
+> >  					pinctrl-single,register-width = <32>;
+> >  					pinctrl-single,function-mask = <0x7f>;
+> >  				};
+> > diff --git a/include/dt-bindings/pinctrl/omap.h b/include/dt-bindings/pinctrl/omap.h
+> > index 625718042413..2d2a8c737822 100644
+> > --- a/include/dt-bindings/pinctrl/omap.h
+> > +++ b/include/dt-bindings/pinctrl/omap.h
+> > @@ -65,7 +65,7 @@
+> >  #define DM814X_IOPAD(pa, val)		OMAP_IOPAD_OFFSET((pa), 0x0800) (val)
+> >  #define DM816X_IOPAD(pa, val)		OMAP_IOPAD_OFFSET((pa), 0x0800) (val)
+> >  #define AM33XX_IOPAD(pa, val)		OMAP_IOPAD_OFFSET((pa), 0x0800) (val)
+> > -#define AM33XX_PADCONF(pa, dir, mux)	OMAP_IOPAD_OFFSET((pa), 0x0800) ((dir) | (mux))
+> > +#define AM33XX_PADCONF(pa, conf, mux)	OMAP_IOPAD_OFFSET((pa), 0x0800) (conf) (mux)
+> >  
+> >  /*
+> >   * Macros to allow using the offset from the padconf physical address
+> > -- 
+> > 2.25.1
+> 
+>  Based on the bindings doc a value of 2 is only acceptable if one uses
+> pinctrl-single,bits but all the am33xx pins still uses
+> pinctrl-single,pins.
+>  I noticed this because this breaks FreeBSD when I tried with 5.9 dts.
+> 
+> -- 
+> Emmanuel Vadot <manu@bidouilliste.com> <manu@freebsd.org>
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
----
-Hi Rob,
+Hello Emmanuel,
 
-This patch is also part of our effort to get rid of the warnings seen
-around interrupt providers on TI K3 dtbs [1]. I needed this in the PRUSS
-INTC bindings to not get a warning with dtbs_check while also ensuring
-no warnings while building dtbs with W=2.
+Sorry to hear about that. This change was made based on discussion with
+Tony Lindgren this past July. Trent Piepho later pointed out issues wtih
+the change including the binding documentation. I had tried to fix
+the documentation in September [1]. However, I notice that it seems I
+missed changing the lines near the top of pinctrl-single.txt [2]:
 
-I would have expected the '#address-cells' requirement to be inherited
-automatically. And looking through the schema files, I actually do not
-see the interrupt-controller.yaml included automatically anywhere. You
-had asked us to drop the inclusion in this binding in our first version
-with YAML [3]. Am I missing something, and how do we ensure that this
-is enforced automatically for everyone?
+- #pinctrl-cells : number of cells in addition to the index, set to 1
+  for pinctrl-single,pins and 2 for pinctrl-single,bits
 
-regards
-Suman
+I am thinking that should be re-written as:
 
-[1] https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210115083003.27387-1-lokeshvutla@ti.com/
-[2] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20210114194805.8231-1-s-anna@ti.com/
-[3] https://patchwork.kernel.org/comment/23484523/
+- #pinctrl-cells : number of cells in addition to the index, this value
+  can be 1 or 2 for pinctrl-single,pins and must be 2 for pinctrl-single,bits
 
- .../bindings/interrupt-controller/ti,pruss-intc.yaml        | 6 ++++++
- 1 file changed, 6 insertions(+)
+Tony - what do you think?
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml b/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
-index c2ce215501a5..dcbfe08e997d 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
-@@ -79,6 +79,9 @@ properties:
-       mapping and channels to host interrupts so through this property entire
-       mapping is provided.
- 
-+  "#address-cells":
-+    const: 0
-+
-   ti,irqs-reserved:
-     $ref: /schemas/types.yaml#/definitions/uint8
-     description: |
-@@ -100,6 +103,7 @@ required:
-   - interrupt-names
-   - interrupt-controller
-   - "#interrupt-cells"
-+  - "#address-cells"
- 
- additionalProperties: false
- 
-@@ -123,6 +127,7 @@ examples:
-                               "host_intr6", "host_intr7";
-             interrupt-controller;
-             #interrupt-cells = <3>;
-+            #address-cells = <0>;
-         };
-     };
- 
-@@ -142,6 +147,7 @@ examples:
-             reg = <0x20000 0x2000>;
-             interrupt-controller;
-             #interrupt-cells = <3>;
-+            #address-cells = <0>;
-             interrupts = <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH>,
-                    <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>,
-                    <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>,
--- 
-2.29.2
 
+Thanks,
+Drew
+
+[1] https://lore.kernel.org/linux-gpio/20200919200836.3218536-1-drew@beagleboard.org/
+[2] https://www.kernel.org/doc/Documentation/devicetree/bindings/pinctrl/pinctrl-single.txt
