@@ -2,36 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAEC22F9596
-	for <lists+linux-omap@lfdr.de>; Sun, 17 Jan 2021 22:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3322F9598
+	for <lists+linux-omap@lfdr.de>; Sun, 17 Jan 2021 22:47:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729350AbhAQVp7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 17 Jan 2021 16:45:59 -0500
-Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21150 "EHLO
+        id S1728859AbhAQVrd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 17 Jan 2021 16:47:33 -0500
+Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21158 "EHLO
         sender11-of-o51.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728042AbhAQVp7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 17 Jan 2021 16:45:59 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1610919905; cv=none; 
+        with ESMTP id S1728042AbhAQVrd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 17 Jan 2021 16:47:33 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1610920000; cv=none; 
         d=zohomail.eu; s=zohoarc; 
-        b=fXg0ZedDL6F5+UCuX8qsi77ZJnh141juaryjFNEgnKLBL0ueaCvVL2tRv8Vyr9CVg0DeMUURzC9VXPApVundBPZImoUB6z67bH4maYnQdh+gzAONusyqqf8lQppezPvu0PXh4cgqy7scXHEbDC1jzLwm8B0NaRC68Ots+/ITxWQ=
+        b=P+H6nnM+FZeWXf0MXvP4oVecdDTXhjY5XD32pfmLSKEzzXf2SblMhA3zoEIVLPaQbi8BsPXE+ZEMM+mc/1GWt3b0MWax0DFWcO0IZxSePYxfkQMOlcIEpwBjK81A77Pfh3jdMFJEyYTek96AHfL1PEjfcUEHyZxgy0GPi5tMiB4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1610919905; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=vmzPpgKfjlYcJGttA/ZWIIRDeigtax0pvHjvYoBwJMw=; 
-        b=e3nlHWJ0LJu6MvTvbTdms2IMU/p/ohIyHZwLwl1iXsbQP/GJ0AheYxgJHQZXHvnELfjGqt9K6aSp2liyeIFHPH67UNwc5DTpLScDz8qXXLX9DHXU67NWcVILN8u6dufU/7x+4J+1Nooqqh8x2EBDVxMcw8wExXHQ2+jKKCg7bZo=
+        t=1610920000; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=Wnte+4AlAVGi6rAOeWTfm7Nsc593X5q+3gShAhPDrqw=; 
+        b=NBVsPC1GiSViiEe790BSbU4Cc0MogeUhrHexpPXHeW1y93bZmeUuERIB4MlP1cY0HZY4ToaNWeVZpFEhmtdVRt2iq5ceQnl/iXOE1dST+OHdJGw4d+fTobW+oudnIU5/cNxYY+A4U151jMENoCNl+EMIy4vqKowTSC/KkXkoL40=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
         spf=pass  smtp.mailfrom=philipp@uvos.xyz;
         dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
 Received: from localhost.localdomain (ip-95-222-215-9.hsi15.unitymediagroup.de [95.222.215.9]) by mx.zoho.eu
-        with SMTPS id 1610919903598607.1558062768164; Sun, 17 Jan 2021 22:45:03 +0100 (CET)
-Date:   Sun, 17 Jan 2021 22:45:02 +0100
+        with SMTPS id 1610919998920388.4063998988232; Sun, 17 Jan 2021 22:46:38 +0100 (CET)
+Date:   Sun, 17 Jan 2021 22:46:38 +0100
 From:   Carl Philipp Klemm <philipp@uvos.xyz>
 To:     Sebastian Reichel <sre@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
         Arthur Demchenkov <spinal.by@gmail.com>,
         Tony Lindgren <tony@atomide.com>,
         Merlijn Wajer <merlijn@wizzup.org>, Pavel Machek <pavel@ucw.cz>
-Subject: [PATCH 2/5] ARM: dts: add battery phandle to cpcap_charger
-Message-Id: <20210117224502.0f9a0e80dfd4841ad26a9914@uvos.xyz>
+Subject: [PATCH 3/5] power: supply: cpcap-battery: invalidate
+ empty->counter_uah and charge_full when they are grossly wrong
+Message-Id: <20210117224638.10c9d9aee7c0144fafd70520@uvos.xyz>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,26 +42,55 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This is required for 
-	power: supply: cpcap-charger: get the battery inserted 
-		infomation from cpcap-battery
+This invalidates empty->counter_uah and charge_full when charge_now indicates
+that they are grossly wrong and adds some tolerance to
+POWER_SUPPLY_PROP_CHARGE_FULL to allow for inaccuracies in the charge counter
+and manufacturing tolerances in the battery.
 
 Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
 ---
- arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/power/supply/cpcap-battery.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
-index 08a7d3ce383f..842eaa7b89e5 100644
---- a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
-+++ b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
-@@ -61,6 +61,7 @@ &cpcap_adc 2 &cpcap_adc 5
- 			io-channel-names = "battdetb", "battp",
- 					   "vbus", "chg_isense",
- 					   "batti";
-+			battery = <&cpcap_battery>;
- 		};
+diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/cpcap-battery.c
+index 86ed41d9627f..8ae0c9c7ebcb 100644
+--- a/drivers/power/supply/cpcap-battery.c
++++ b/drivers/power/supply/cpcap-battery.c
+@@ -667,10 +667,22 @@ static int cpcap_battery_get_property(struct power_supply *psy,
+ 		if (!empty->voltage)
+ 			return -ENODATA;
+ 		val->intval = empty->counter_uah - latest->counter_uah;
+-		if (val->intval < 0)
++		if (val->intval < 0) {
++			if (ddata->charge_full && abs(val->intval) > ddata->charge_full/5) {
++				empty->voltage = 0;
++				ddata->charge_full = 0;
++				return -ENODATA;
++			}
+ 			val->intval = 0;
+-		else if (ddata->charge_full && ddata->charge_full < val->intval)
++		}
++		else if (ddata->charge_full && ddata->charge_full < val->intval) {
++			if (val->intval > (6*ddata->charge_full)/5) {
++				empty->voltage = 0;
++				ddata->charge_full = 0;
++				return -ENODATA;
++			}
+ 			val->intval = ddata->charge_full;
++		}
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL:
+ 		if (!ddata->charge_full)
+@@ -747,7 +759,7 @@ static int cpcap_battery_set_property(struct power_supply *psy,
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL:
+ 		if (val->intval < 0)
+ 			return -EINVAL;
+-		if (val->intval > ddata->config.info.charge_full_design)
++		if (val->intval > (6*ddata->config.info.charge_full_design)/5)
+ 			return -EINVAL;
  
- 		cpcap_regulator: regulator {
+ 		ddata->charge_full = val->intval;
 -- 
 2.29.2
+
+
