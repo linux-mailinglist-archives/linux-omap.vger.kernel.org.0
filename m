@@ -2,179 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE2D2F9B1F
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Jan 2021 09:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA5EF2F9B48
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Jan 2021 09:31:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387685AbhARITc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 Jan 2021 03:19:32 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:27906 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387658AbhARIS6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 18 Jan 2021 03:18:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1610957851;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=8p71lFNP7FXrIuyl6skw0ASk5esBQ6KVEaZUK9bQhEI=;
-        b=AAbRBZsauQFl7qnXmcjnt7/7+0fbrTwBufFkiFs/Jjjy5gacFjNx97d9tA+xX6I1va6mbC
-        o5oAgjhXt2fIZNnue5Wns85tUvfGo5OrN1j1nJrs25yYBKZ1ipHOM0ppE/BCSZwEL9ID+O
-        AJmB0W54l8pQItLRq5qhRX12ZqBDnko=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-288-5N_9-VSgPxqFSxtGsYq0Yg-1; Mon, 18 Jan 2021 03:17:26 -0500
-X-MC-Unique: 5N_9-VSgPxqFSxtGsYq0Yg-1
-Received: by mail-wm1-f72.google.com with SMTP id o79so1818208wme.9
-        for <linux-omap@vger.kernel.org>; Mon, 18 Jan 2021 00:17:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8p71lFNP7FXrIuyl6skw0ASk5esBQ6KVEaZUK9bQhEI=;
-        b=MyCxCZwH9mjYRZTb47FZ3FzgAYIRw+m1q6IzebHtgKvGXfDYoFhhXciiDC/+DInw6U
-         TujCtMhaUyAcTvRXmKQ43tEhuQBFKUxA6gyQhbJy2YZgHc4x7zgHx6ji3Yk1oquIA3wV
-         GKwwnwn7r03lQz3fZ78cXz6bXSCJ/X5D2EKNhTZ2gK6uzgFD2ymviku6Cd/F6Erg+a0N
-         btI0Z/KrTrv5sXu5LPU20oY0VFAnVDBWckm9Ybk8RpoMCDL90lQd6LSwphHCmZoCx7wi
-         nvHkgHDgENGoYUIEkjBMkBF1lfBo6u8XBEk7ngds2B7grktBIlRHM8/APMqZBdzv2RH7
-         viYw==
-X-Gm-Message-State: AOAM530Br1IcIQMAkoJqUf8tNilHyXiDQhefAwIU156gy4F4/kY6cswj
-        OdVqzeM1ydCJCpdhzCdF7KAOBMu2pK7VtREtB7ZdqOMs/Ikc7jrP9Rl6iM4wuNJz/LJqCOn6flw
-        P42JKK58vck4sh9g/xA/nQw==
-X-Received: by 2002:a1c:7d8e:: with SMTP id y136mr19233380wmc.25.1610957844774;
-        Mon, 18 Jan 2021 00:17:24 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwWNpmRpqtOwIwpRwr9ajm9ng9gHciOz2/IHbrBx5b2wdpPFb2jiNCZIdjtb8rJFTA5f1KwGQ==
-X-Received: by 2002:a1c:7d8e:: with SMTP id y136mr19233369wmc.25.1610957844580;
-        Mon, 18 Jan 2021 00:17:24 -0800 (PST)
-Received: from minerva.redhat.com ([92.176.231.106])
-        by smtp.gmail.com with ESMTPSA id l8sm4906002wmi.8.2021.01.18.00.17.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Jan 2021 00:17:23 -0800 (PST)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Javier Martinez Canillas <javierm@redhat.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Enric Balletbo i Serra <eballetbo@gmail.com>,
-        Javier Martinez Canillas <javier@dowhile0.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH] ARM: dts: omap3-igep: Change email address in copyright notice
-Date:   Mon, 18 Jan 2021 09:17:07 +0100
-Message-Id: <20210118081707.160596-1-javierm@redhat.com>
-X-Mailer: git-send-email 2.29.2
+        id S2387659AbhARIbG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 Jan 2021 03:31:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36966 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387762AbhARIbF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 18 Jan 2021 03:31:05 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 12005229C4;
+        Mon, 18 Jan 2021 08:30:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610958624;
+        bh=G3g8ccSLtuvhTl60lHfmT7S7bjEzSTABporbVH6+n+U=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=fkcgMup31XGT1Z5K8zlsvezWWy/jsPz6BxcK4s/s66tfkfD/Y9SdbEDQhBzpdl7gn
+         AP9+4SjGW9r1TcYrwDwPeBleK2VLFEwy0ZXStjoLStGRSonS3kDFuzBRE7JpGmQdyi
+         xu952exggDCV6wlBAMrAPr+mion7WOGY44sCYgdtECGptX1Etfelj0U56ig5ggNTbG
+         eO7uleg21m2AfyeUk2AVOsk9vN6Be0JAV8YPJlTLTmrlrBjBwIjBvQXKwxthwWn7fW
+         ZBEP9rJPV4KX5S0eV/r3L9Qlvdb2vVD9nk9z6L7cw1XEOJ8vJt9vqI3OehCCDLHwyw
+         fAbkyFfcHEy9g==
+Received: by mail-oi1-f180.google.com with SMTP id x71so1144464oia.9;
+        Mon, 18 Jan 2021 00:30:24 -0800 (PST)
+X-Gm-Message-State: AOAM533ydJqGKOtivl0rC84z0lNdbd1JN2WXFmjraFw1Y84PyXswgDDO
+        BfZacL9sH5Et4Unq2ZhgDwssXApB9xfWNockK78=
+X-Google-Smtp-Source: ABdhPJxocP0lzyO5eastZR7W498dSoutGIJLzsAbhLz7NT/RJ0W67cuDPaPOteUii2SmOroZ5Ohy9ddjtnE0FzB0rqU=
+X-Received: by 2002:aca:be54:: with SMTP id o81mr7853744oif.67.1610958623304;
+ Mon, 18 Jan 2021 00:30:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210118073340.62141-1-tony@atomide.com>
+In-Reply-To: <20210118073340.62141-1-tony@atomide.com>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Mon, 18 Jan 2021 09:30:07 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1Eec1cAOdxNQ=8LORop+ESqx_=dg1uhJwpXhknxOydsg@mail.gmail.com>
+Message-ID: <CAK8P3a1Eec1cAOdxNQ=8LORop+ESqx_=dg1uhJwpXhknxOydsg@mail.gmail.com>
+Subject: Re: [PATCHv2] drivers: bus: simple-pm-bus: Fix compatibility with
+ simple-bus for auxdata
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        DTML <devicetree@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I've switched employer a long time ago and the mentioned email address no
-longer exists. Use my personal address to prevent the issue in the future.
+On Mon, Jan 18, 2021 at 8:33 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> After converting am335x to probe devices with simple-pm-bus I noticed
+> that we are not passing auxdata for of_platform_populate() like we do
+> with simple-bus.
+>
+> While device tree using SoCs should no longer need platform data, there
+> are still quite a few drivers that still need it as can be seen with
+> git grep OF_DEV_AUXDATA. We want to have simple-pm-bus be usable as a
+> replacement for simple-bus also for cases where OF_DEV_AUXDATA is still
+> needed.
+>
+> Let's fix the issue by passing auxdata as platform data to simple-pm-bus.
+> That way the SoCs needing this can pass the auxdata with OF_DEV_AUXDATA.
+> And let's pass the auxdata for omaps to fix the issue for am335x.
+>
+> As an alternative solution, adding simple-pm-bus handling directly to
+> drivers/of/platform.c was considered, but we would still need simple-pm-bus
+> device driver. So passing auxdata as platform data seems like the simplest
+> solution.
+>
+> Fixes: 5a230524f879 ("ARM: dts: Use simple-pm-bus for genpd for am3 l4_wkup")
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+> Changes since v1: Updated description, added devicetree list to Cc
 
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
----
+This looks fine to me for now
 
- arch/arm/boot/dts/omap3-igep.dtsi            | 2 +-
- arch/arm/boot/dts/omap3-igep0020-common.dtsi | 2 +-
- arch/arm/boot/dts/omap3-igep0020-rev-f.dts   | 2 +-
- arch/arm/boot/dts/omap3-igep0020.dts         | 2 +-
- arch/arm/boot/dts/omap3-igep0030-common.dtsi | 2 +-
- arch/arm/boot/dts/omap3-igep0030-rev-g.dts   | 2 +-
- arch/arm/boot/dts/omap3-igep0030.dts         | 2 +-
- 7 files changed, 7 insertions(+), 7 deletions(-)
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/arch/arm/boot/dts/omap3-igep.dtsi b/arch/arm/boot/dts/omap3-igep.dtsi
-index 5de2be9bbe6..99f5585097a 100644
---- a/arch/arm/boot/dts/omap3-igep.dtsi
-+++ b/arch/arm/boot/dts/omap3-igep.dtsi
-@@ -2,7 +2,7 @@
- /*
-  * Common device tree for IGEP boards based on AM/DM37x
-  *
-- * Copyright (C) 2012 Javier Martinez Canillas <javier@osg.samsung.com>
-+ * Copyright (C) 2012 Javier Martinez Canillas <javier@dowhile0.org>
-  * Copyright (C) 2012 Enric Balletbo i Serra <eballetbo@gmail.com>
-  */
- /dts-v1/;
-diff --git a/arch/arm/boot/dts/omap3-igep0020-common.dtsi b/arch/arm/boot/dts/omap3-igep0020-common.dtsi
-index af8aa5f0feb..73d8f471b9e 100644
---- a/arch/arm/boot/dts/omap3-igep0020-common.dtsi
-+++ b/arch/arm/boot/dts/omap3-igep0020-common.dtsi
-@@ -2,7 +2,7 @@
- /*
-  * Common Device Tree Source for IGEPv2
-  *
-- * Copyright (C) 2014 Javier Martinez Canillas <javier@osg.samsung.com>
-+ * Copyright (C) 2014 Javier Martinez Canillas <javier@dowhile0.org>
-  * Copyright (C) 2014 Enric Balletbo i Serra <eballetbo@gmail.com>
-  */
- 
-diff --git a/arch/arm/boot/dts/omap3-igep0020-rev-f.dts b/arch/arm/boot/dts/omap3-igep0020-rev-f.dts
-index 567232584f0..9dca5bfc87a 100644
---- a/arch/arm/boot/dts/omap3-igep0020-rev-f.dts
-+++ b/arch/arm/boot/dts/omap3-igep0020-rev-f.dts
-@@ -2,7 +2,7 @@
- /*
-  * Device Tree Source for IGEPv2 Rev. F (TI OMAP AM/DM37x)
-  *
-- * Copyright (C) 2012 Javier Martinez Canillas <javier@osg.samsung.com>
-+ * Copyright (C) Javier Martinez Canillas <javier@dowhile0.org>
-  * Copyright (C) 2012 Enric Balletbo i Serra <eballetbo@gmail.com>
-  */
- 
-diff --git a/arch/arm/boot/dts/omap3-igep0020.dts b/arch/arm/boot/dts/omap3-igep0020.dts
-index e341535a716..c6f863bc03a 100644
---- a/arch/arm/boot/dts/omap3-igep0020.dts
-+++ b/arch/arm/boot/dts/omap3-igep0020.dts
-@@ -2,7 +2,7 @@
- /*
-  * Device Tree Source for IGEPv2 Rev. C (TI OMAP AM/DM37x)
-  *
-- * Copyright (C) 2012 Javier Martinez Canillas <javier@osg.samsung.com>
-+ * Copyright (C) 2012 Javier Martinez Canillas <javier@dowhile0.org>
-  * Copyright (C) 2012 Enric Balletbo i Serra <eballetbo@gmail.com>
-  */
- 
-diff --git a/arch/arm/boot/dts/omap3-igep0030-common.dtsi b/arch/arm/boot/dts/omap3-igep0030-common.dtsi
-index 71b0ae807ec..742e3e14706 100644
---- a/arch/arm/boot/dts/omap3-igep0030-common.dtsi
-+++ b/arch/arm/boot/dts/omap3-igep0030-common.dtsi
-@@ -2,7 +2,7 @@
- /*
-  * Common Device Tree Source for IGEP COM MODULE
-  *
-- * Copyright (C) 2014 Javier Martinez Canillas <javier@osg.samsung.com>
-+ * Copyright (C) 2014 Javier Martinez Canillas <javier@dowhile0.org>
-  * Copyright (C) 2014 Enric Balletbo i Serra <eballetbo@gmail.com>
-  */
- 
-diff --git a/arch/arm/boot/dts/omap3-igep0030-rev-g.dts b/arch/arm/boot/dts/omap3-igep0030-rev-g.dts
-index df6ba121983..8e9c12cf51a 100644
---- a/arch/arm/boot/dts/omap3-igep0030-rev-g.dts
-+++ b/arch/arm/boot/dts/omap3-igep0030-rev-g.dts
-@@ -2,7 +2,7 @@
- /*
-  * Device Tree Source for IGEP COM MODULE Rev. G (TI OMAP AM/DM37x)
-  *
-- * Copyright (C) 2014 Javier Martinez Canillas <javier@osg.samsung.com>
-+ * Copyright (C) 2014 Javier Martinez Canillas <javier@dowhile0.org>
-  * Copyright (C) 2014 Enric Balletbo i Serra <eballetbo@gmail.com>
-  */
- 
-diff --git a/arch/arm/boot/dts/omap3-igep0030.dts b/arch/arm/boot/dts/omap3-igep0030.dts
-index 32f31035daa..5188f96f431 100644
---- a/arch/arm/boot/dts/omap3-igep0030.dts
-+++ b/arch/arm/boot/dts/omap3-igep0030.dts
-@@ -2,7 +2,7 @@
- /*
-  * Device Tree Source for IGEP COM MODULE Rev. E (TI OMAP AM/DM37x)
-  *
-- * Copyright (C) 2012 Javier Martinez Canillas <javier@osg.samsung.com>
-+ * Copyright (C) 2012 Javier Martinez Canillas <javier@dowhile0.org>
-  * Copyright (C) 2012 Enric Balletbo i Serra <eballetbo@gmail.com>
-  */
- 
--- 
-2.29.2
+But I think we should take the time to discuss how to phase out auxdata
+over time. There are still a number of users, but it's not that many in the
+end. For some of them I see a clear solution, for other ones I do not:
 
+lpc32xx: Used only for pl080 DMA data with the old method, needs to
+    be converted to use the proper DT binding that was added a few years
+    ago.
+
+kirkwood: I don't see what this does at all, as there is no pdata, and
+    there is no clkdev lookup for "mvebu-audio"
+
+orion: similar to kirkwood, these seem to have been added for
+    clkdev lookup, but the orion_clkdev_init() function seems to
+    not be called for the orion5x_dt variant.
+
+omap2: I'll leave these for Tony to comment
+
+spear3xx: pl022 and pl080 should just use the normal DT
+   binding, see lpc32xx.
+
+u300: platform is scheduled for removal
+
+integrator_ap: pl010_set_mctrl() needs a callback to
+    integrator_uart_set_mctrl(). I see no good alternative, but
+    a workaround might be to call into syscon directly from the
+    driver on versatile machines. For all I can tell, pl010 is only
+    used on versatile and ep93xx, so that would not harm a
+    commonly used driver.
+
+versatile/integrator_cp: similar problem but for mmci, which is
+    used more widely. Used for card detection, which could
+    theoretically be implemented with a fake gpio driver, but that
+    might be excessive.
+
+mips/pic32: used for setting up DMA for sdhci, could be done
+   in a platform-specific sdhci front-end.
+
+arm-cci: used to pass cci address after ioremap(), avoiding
+   this would revert e9c112c94b01 ("perf/arm-cci: Untangle
+   global cci_ctrl_base").
+
+           Arnd
