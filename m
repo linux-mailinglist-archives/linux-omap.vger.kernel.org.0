@@ -2,121 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 840C63047BB
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 20:12:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F130304E0D
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Jan 2021 01:52:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732886AbhAZF53 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Jan 2021 00:57:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42012 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729771AbhAZCsF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 25 Jan 2021 21:48:05 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 865C322EBF;
-        Tue, 26 Jan 2021 02:47:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611629244;
-        bh=LwqYiU3oRlYo9FShj+CR8F39sEMecoUEsL8JexS7mlk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Ytpa+AJgfdSkPhWvfrCLezbbz355uloVnAK/2fKFQowbfA7lckWbiPn6NoxlBkrnu
-         5lfD+IlN9yrOP5buiZRptqOt56rvqd0mOQyYpSXM4E8NT/ggkTGpHV/0HLoY5D+EiY
-         YMjJhjvEBNl1LKp5ZjV97nYWBX08ak0aS0XtjjaepdSTfopPsNCBTYQcf1qIDrn+29
-         n/wtiPxcTkTFBUmUA7G/gke7Z0eytD8X8ZFXJUM5vLerJnOTKJhj2m6ZWdz7NftPJO
-         jfsrRHCYxJ67dpXzOFr5MBwDARwWlRonY5N0c+V6+6YiCYvJPchobIAFYxH80IznUW
-         dqr3/w0ervbYQ==
-Received: by mail-ej1-f45.google.com with SMTP id ox12so21016791ejb.2;
-        Mon, 25 Jan 2021 18:47:24 -0800 (PST)
-X-Gm-Message-State: AOAM531LUtRKVvxE8UkeGh+nwI1tehCA1EAYu7KK62B8gromemeBM635
-        ktJcCAAwjIbhF7B65Sy/05pKcql9JBih+AXtPg==
-X-Google-Smtp-Source: ABdhPJzhkSY6hKt7+GAS1hDt9h/064YyPtrM+ZOJ1MWC9e2hwRKo3F2kv3CME3814mJk+ka7plMlgXPIv5fl/5/2FYo=
-X-Received: by 2002:a17:906:a94:: with SMTP id y20mr2013640ejf.525.1611629243021;
- Mon, 25 Jan 2021 18:47:23 -0800 (PST)
+        id S1725944AbhAZXrM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jan 2021 18:47:12 -0500
+Received: from ip4d17989f.dynamic.kabel-deutschland.de ([77.23.152.159]:47616
+        "EHLO kolabdeb.mail.riedlb.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728881AbhAZFRY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 26 Jan 2021 00:17:24 -0500
+X-Virus-Scanned: Debian amavisd-new at mail.riedlb.de
+Received: from User (OpenWrt.mail.riedlb.de [192.168.0.1])
+ by kolabdeb.mail.riedlb.de (Postfix) with SMTP id 7A3B324C3B83;
+ Fri, 22 Jan 2021 14:52:13 +0100 (CET)
+Reply-To: <uekunio3@gmail.com>
+From:   "Kunio Uematsu" <admin@gardesh-gar.ir>
+Subject: Dearest Beloved !!!   
+Date:   Fri, 22 Jan 2021 08:52:25 -0800
 MIME-Version: 1.0
-References: <20210115205819.19426-1-s-anna@ti.com> <20210126000443.GA1223706@robh.at.kernel.org>
- <8f4a47f8-18dc-cb73-10db-033e5e5adb25@ti.com>
-In-Reply-To: <8f4a47f8-18dc-cb73-10db-033e5e5adb25@ti.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Mon, 25 Jan 2021 20:47:11 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLYfGvJ=zYbdJp4pUjmmJ_ROu1u_0dVwTj06Cw5+23fGw@mail.gmail.com>
-Message-ID: <CAL_JsqLYfGvJ=zYbdJp4pUjmmJ_ROu1u_0dVwTj06Cw5+23fGw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: irqchip: Add #address-cells to PRUSS INTC
-To:     Suman Anna <s-anna@ti.com>
-Cc:     Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Nishanth Menon <nm@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        David Lechner <david@lechnology.com>,
-        devicetree@vger.kernel.org,
-        linux-omap <linux-omap@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20210122174544.6FADB24D458E@kolabdeb.mail.riedlb.de>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jan 25, 2021 at 6:16 PM Suman Anna <s-anna@ti.com> wrote:
->
-> Hi Rob,
->
-> On 1/25/21 6:04 PM, Rob Herring wrote:
-> > On Fri, Jan 15, 2021 at 02:58:19PM -0600, Suman Anna wrote:
-> >> The '#address-cells' property looks to be a required property for
-> >> interrupt controller nodes as indicated by a warning message seen
-> >> when building dtbs with W=2. Adding the property to the PRUSS INTC
-> >> dts nodes though fails the dtbs_check. Add this property to the
-> >> PRUSS INTC binding to make it compliant with both dtbs_check and
-> >> building dtbs.
-> >>
-> >> Signed-off-by: Suman Anna <s-anna@ti.com>
-> >> ---
-> >> Hi Rob,
-> >>
-> >> This patch is also part of our effort to get rid of the warnings seen
-> >> around interrupt providers on TI K3 dtbs [1]. I needed this in the PRUSS
-> >> INTC bindings to not get a warning with dtbs_check while also ensuring
-> >> no warnings while building dtbs with W=2.
-> >>
-> >> I would have expected the '#address-cells' requirement to be inherited
-> >> automatically. And looking through the schema files, I actually do not
-> >> see the interrupt-controller.yaml included automatically anywhere. You
-> >> had asked us to drop the inclusion in this binding in our first version
-> >> with YAML [3]. Am I missing something, and how do we ensure that this
-> >> is enforced automatically for everyone?
-> >
-> > interrupt-controller.yaml is applied to any node named
-> > 'interrupt-controller'. More generally, if 'compatible' is not present,
-> > then we look at $nodename for the default 'select'. In your case, you
-> > didn't name the node appropriately.
->
-> Thanks for the clarification. Yeah, I didn't add anything specifically, since
-> the expectation is interrupt-controller. Should I be adding that to this binding?
+Dearest Beloved,
 
-No, either interrupt-controller.yaml needs to learn a new node name or
-your node names need to be fixed. I prefer the latter, but if you have
-more than 1 and don't have a unit-address (and in turn a 'reg' prop)
-we'd have to do the former. How are the interrupts controllers
-accessed if there's no way to address them?
+As you read this, I don't want you to feel sorry for
+me.......because......I believe everyone will die someday. I have been
+diagnosed with esophageal cancer. It has defiled all forms of medical
+treatment, and right now I have only about a few months to live,
+according to medical experts. The situation has gotten complicated
+recently with my inability to hear or speak (being deaf and dump now).
+I have not particularly lived my life so well, as I never really cared
+for anyone (not even myself) but my business. Though I am very rich, I
+was never generous, I was always hostile to people and only focused on
+my business as that was the only thing I cared for. But now I regret
+all this as I now know that there is more to life than just wanting to
+have or make all the money in the world.
 
->
-> >
-> > We can't check this in interrupt-controller.yaml because #address-cells
-> > is not always 0. GICv3 is one notable exception.
-> >
-> >>
-> >> regards
-> >> Suman
-> >>
-> >> [1] https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210115083003.27387-1-lokeshvutla@ti.com/
-> >
-> > I've commented on this thread now in regards to #address-cells.
->
-> I suppose I still need this patch to be defined to unblock the ICSSG nodes
-> getting accepted by our dts maintainer. Care to give your Reviewed-by for the
-> change? Or I can spin a v2 with $nodename added as well if that's needed too.
+I have willed and given most of my property and assets to my immediate
+and extended family members as well as a few close friends. I have
+decided to give also to charity organizations, as I want this to be
+one of the last good deeds I do on earth.
 
-No, I don't think you have to add #address-cells. We need to fix the
-warning in dtc.
+So far, I have distributed money to some charity organizations in the U.A.E, Algeria, Malaysia
+and some countries in Africa. Now that my health has deteriorated so
+badly, I cannot do this myself anymore. I once asked members of my
+family to close one of my accounts and distribute the money which I
+have there to charity organization in Europe; they refused and kept
+the money to themselves. Hence, I do not trust them anymore, as they
+seem not to be contended with what I have left for them. The last of
+my money which no one knows of is the huge cash sum of Forty-Five
+Million US Dollars (US$45,000,000.00) that I deposited sometime ago in
+an offshore account as I operated my business there before my
+sickness. I will want you to help me collect these deposited funds and
+use the funds to help the orphans, less privileged, handicapped
+persons, homeless, refugees, other charity organizations and do other
+good humanitarian works. You shall only collect 25% of the funds for
+your reward for your time and also any expenses that you might incur
+during this great task.
 
-Rob
+PLEASE SEND YOUR RESPONSE TO ME WITH YOUR
+DETAILED INFORMATION AND IDENTIFICATION SO THAT I CAN FORWARD TO THE
+BANK WHERE FUND IS DEPOSITED.
+
+Regards,
+Kunio Uematsu
+(Japan)
+Email:uekunio3@gmail.com
