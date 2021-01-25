@@ -2,103 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2984C302137
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Jan 2021 05:38:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 548C8302668
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Jan 2021 15:46:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727108AbhAYEiG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 24 Jan 2021 23:38:06 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:51930 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727068AbhAYEh6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 24 Jan 2021 23:37:58 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P4YmDE139655;
-        Mon, 25 Jan 2021 04:37:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=szoXrV/RFeXwfntAWWK5Bt/AJH3TXlpRkFzpc71lSSA=;
- b=ju0q6P16syKbWSwjYL1i958OzTdIcL9OPeFLr44Xvl7LBmzzf1/w5h86TXES761DLY6U
- h/avO6gWVRbgzsQ6yrDg8f9Rip/J0ZVzPV3EQbQWGUvOCPrIKeuMg+NaTusOHT1PtAat
- lKsdCIAcJI1YienytqboopOxZqMh9jHzB2Me9oFGbv3GptASCysey5LH0Xk3Ugt5SUCw
- yB6mbbDLvPP6W7tZMpbUcu89N0gDis+PU9CRSgvZLQcfyPxZz0rCqmgbzr48lDF5mQdk
- kS6rwpmix9QZObfVgu+fmusRlUNoVEYtSsGcoaXDoyfJuHjaXAJ5RT+tvEreV8Q88lre lg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 368brkbdpb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 25 Jan 2021 04:36:59 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 10P4Yvr4144538;
-        Mon, 25 Jan 2021 04:34:59 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 368wck37gb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 25 Jan 2021 04:34:59 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 10P4Ytjt010237;
-        Mon, 25 Jan 2021 04:34:55 GMT
-Received: from santoshs-mbp-3.lan (/69.181.241.203)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 24 Jan 2021 20:34:54 -0800
-Subject: Re: [PATCH v2 0/5] Introduce PRU remoteproc consumer API
-To:     Suman Anna <s-anna@ti.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>, ohad@wizery.com,
-        bjorn.andersson@linaro.org, robh+dt@kernel.org,
-        ssantosh@kernel.org, linux-remoteproc@vger.kernel.org,
-        lee.jones@linaro.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, praneeth@ti.com,
-        rogerq@kernel.org
-References: <20201216165239.2744-1-grzegorz.jaszczyk@linaro.org>
- <20210106232704.GE9149@xps15> <11303a1b-5ab4-def5-77b1-c500894c9c87@ti.com>
- <20210107224448.GB43045@xps15> <75365443-57e3-e2e0-5865-f78af9d5890b@ti.com>
-From:   "santosh.shilimkar@oracle.com" <santosh.shilimkar@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <b0e32ad0-487f-9d57-7287-835eee836514@oracle.com>
-Date:   Sun, 24 Jan 2021 20:34:38 -0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:78.0)
- Gecko/20100101 Thunderbird/78.5.0
+        id S1729652AbhAYOn3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 25 Jan 2021 09:43:29 -0500
+Received: from m42-8.mailgun.net ([69.72.42.8]:32704 "EHLO m42-8.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729718AbhAYOnW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 25 Jan 2021 09:43:22 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1611585783; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=N1G8HgYx4yjCIsYOGEiep9cAWYxAMa8NN2xd/w9uiZU=;
+ b=FX2PG7ADXA1z2lfAgU5Y51q8QiyvxzkwS9N5D/RP72G+kBXuexu9+YxD9MZ5cXEx/d92IxIu
+ xKvenO6uRVg6CA9z8ihKaBANL+GuMnW7EmB6dWn+JHBUJ9F/wCtZPdRzkg4XOfejoRO5OIsm
+ OAklUsIvyMaWVvvURZwyxK8TnVQ=
+X-Mailgun-Sending-Ip: 69.72.42.8
+X-Mailgun-Sid: WyIwZGJlNiIsICJsaW51eC1vbWFwQHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
+ 600ed8d82c36b2106d087e50 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 25 Jan 2021 14:42:32
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8D884C433ED; Mon, 25 Jan 2021 14:42:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A3FFCC433CA;
+        Mon, 25 Jan 2021 14:42:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A3FFCC433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <75365443-57e3-e2e0-5865-f78af9d5890b@ti.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2101250024
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9874 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
- phishscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
- lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101250024
+Subject: Re: [PATCHv2 ] wlcore: Fix command execute failure 19 for wl12xx
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210115065613.7731-1-tony@atomide.com>
+References: <20210115065613.7731-1-tony@atomide.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
+        Raz Bouganim <r-bouganim@ti.com>,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20210125144231.8D884C433ED@smtp.codeaurora.org>
+Date:   Mon, 25 Jan 2021 14:42:31 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Suman, Mathieu,
+Tony Lindgren <tony@atomide.com> wrote:
 
-On 1/7/21 2:49 PM, Suman Anna wrote:
-> On 1/7/21 4:44 PM, Mathieu Poirier wrote:
->> On Wed, Jan 06, 2021 at 06:03:25PM -0600, Suman Anna wrote:
->>> Hi Mathieu,
->>>
-[...]
->> I only see input from Andy and Lars in the thread you point out, nothing from
->> Greg.  I have also taken a look at the patch [1] that made checkpatch complain
->> about ENOTSUPP.  From what I see in that commit log the goal is to prevent new
->> additions of ENOTSUPP to the kernel.
->>
->> Please modify and resend, otherwise I'm sure someone will send another patch to
->> fix it before the end of the cycle.
+> We can currently get a "command execute failure 19" error on beacon loss
+> if the signal is weak:
 > 
-> Yeah ok. I will send out a v3.
+> wlcore: Beacon loss detected. roles:0xff
+> wlcore: Connection loss work (role_id: 0).
+> ...
+> wlcore: ERROR command execute failure 19
+> ...
+> WARNING: CPU: 0 PID: 1552 at drivers/net/wireless/ti/wlcore/main.c:803
+> ...
+> (wl12xx_queue_recovery_work.part.0 [wlcore])
+> (wl12xx_cmd_role_start_sta [wlcore])
+> (wl1271_op_bss_info_changed [wlcore])
+> (ieee80211_prep_connection [mac80211])
 > 
-I haven't seen v3 of this series yet. Please post it
-if you would like to include it for 5.12.
+> Error 19 is defined as CMD_STATUS_WRONG_NESTING from the wlcore firmware,
+> and seems to mean that the firmware no longer wants to see the quirk
+> handling for WLCORE_QUIRK_START_STA_FAILS done.
+> 
+> This quirk got added with commit 18eab430700d ("wlcore: workaround
+> start_sta problem in wl12xx fw"), and it seems that this already got fixed
+> in the firmware long time ago back in 2012 as wl18xx never had this quirk
+> in place to start with.
+> 
+> As we no longer even support firmware that early, to me it seems that it's
+> safe to just drop WLCORE_QUIRK_START_STA_FAILS to fix the error. Looks
+> like earlier firmware got disabled back in 2013 with commit 0e284c074ef9
+> ("wl12xx: increase minimum singlerole firmware version required").
+> 
+> If it turns out we still need WLCORE_QUIRK_START_STA_FAILS with any
+> firmware that the driver works with, we can simply revert this patch and
+> add extra checks for firmware version used.
+> 
+> With this fix wlcore reconnects properly after a beacon loss.
+> 
+> Cc: Raz Bouganim <r-bouganim@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-Regards,
-Santosh
+Patch applied to wireless-drivers-next.git, thanks.
+
+cb88d01b6738 wlcore: Fix command execute failure 19 for wl12xx
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210115065613.7731-1-tony@atomide.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
