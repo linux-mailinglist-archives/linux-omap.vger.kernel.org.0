@@ -2,67 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 041B8303600
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 06:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2E5A303768
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 08:42:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389044AbhAZF5X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Jan 2021 00:57:23 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:45960 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730878AbhAZCFm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 Jan 2021 21:05:42 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10Q0GdCH124859;
-        Mon, 25 Jan 2021 18:16:39 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1611620199;
-        bh=L+f4ohZrdj488CP3I7uIPQegEJlAgJImjluiVuvJrcA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=SvdgqdQS3ePBAKHWoAKSIOh32WDJ+cxGIFBElawyaWhStFSv569KvJA+sx84x2f6E
-         3yIjZq8TUh857IyO1M0YpXcPcQOOsbr9jG96QKAfogSsDBdF/LoRXFh7Z4psbqqnrx
-         IqrA2p762TzawbT/tnwaamFTLnq/c1nMHi0XQob8=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10Q0Gdcd047151
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 25 Jan 2021 18:16:39 -0600
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 25
- Jan 2021 18:16:38 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 25 Jan 2021 18:16:38 -0600
-Received: from [10.250.69.64] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10Q0GcAE007721;
-        Mon, 25 Jan 2021 18:16:38 -0600
-Subject: Re: [PATCH] dt-bindings: irqchip: Add #address-cells to PRUSS INTC
-To:     Rob Herring <robh@kernel.org>
-CC:     Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Nishanth Menon <nm@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        David Lechner <david@lechnology.com>,
-        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
-References: <20210115205819.19426-1-s-anna@ti.com>
- <20210126000443.GA1223706@robh.at.kernel.org>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <8f4a47f8-18dc-cb73-10db-033e5e5adb25@ti.com>
-Date:   Mon, 25 Jan 2021 18:16:38 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1729435AbhAZHk4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jan 2021 02:40:56 -0500
+Received: from muru.com ([72.249.23.125]:52924 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732915AbhAZHkb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 26 Jan 2021 02:40:31 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id A7B6B81A3;
+        Tue, 26 Jan 2021 07:28:43 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 1/3] bus: ti-sysc: Fix initializing module_pa for modules without sysc register
+Date:   Tue, 26 Jan 2021 09:28:33 +0200
+Message-Id: <20210126072835.26551-2-tony@atomide.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210126072835.26551-1-tony@atomide.com>
+References: <20210126072835.26551-1-tony@atomide.com>
 MIME-Version: 1.0
-In-Reply-To: <20210126000443.GA1223706@robh.at.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-<<< No Message Collected >>>
+We have interconnect target modules with no known registers using only
+clocks and resets, but we still want to detect them based on the module
+IO range. So let's call sysc_parse_and_check_child_range() earlier so we
+have module_pa properly initialized.
+
+Fixes: 2928135c93f8 ("bus: ti-sysc: Support modules without control registers")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/bus/ti-sysc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -856,15 +856,15 @@ static int sysc_map_and_check_registers(struct sysc *ddata)
+ 	struct device_node *np = ddata->dev->of_node;
+ 	int error;
+ 
+-	if (!of_get_property(np, "reg", NULL))
+-		return 0;
+-
+ 	error = sysc_parse_and_check_child_range(ddata);
+ 	if (error)
+ 		return error;
+ 
+ 	sysc_check_children(ddata);
+ 
++	if (!of_get_property(np, "reg", NULL))
++		return 0;
++
+ 	error = sysc_parse_registers(ddata);
+ 	if (error)
+ 		return error;
+-- 
+2.30.0
