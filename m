@@ -2,86 +2,259 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02FA9303DD0
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 13:55:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC897303DAD
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 13:51:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391539AbhAZMyi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Jan 2021 07:54:38 -0500
-Received: from muru.com ([72.249.23.125]:53472 "EHLO muru.com"
+        id S2403913AbhAZMue (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jan 2021 07:50:34 -0500
+Received: from muru.com ([72.249.23.125]:53478 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2403971AbhAZMuY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 26 Jan 2021 07:50:24 -0500
+        id S2403983AbhAZMu0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 26 Jan 2021 07:50:26 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id DE3DB8057;
-        Tue, 26 Jan 2021 12:49:45 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 5F521814C;
+        Tue, 26 Jan 2021 12:49:47 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org, Kishon Vijay Abraham I <kishon@ti.com>,
         Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCHv2 00/12] Drop legacy platform data for dra7
-Date:   Tue, 26 Jan 2021 14:49:25 +0200
-Message-Id: <20210126124937.52994-1-tony@atomide.com>
+Subject: [PATCH 01/12] ARM: OMAP2+: Drop legacy platform data for dra7 pcie
+Date:   Tue, 26 Jan 2021 14:49:26 +0200
+Message-Id: <20210126124937.52994-2-tony@atomide.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210126124937.52994-1-tony@atomide.com>
+References: <20210126124937.52994-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi all,
+We can now probe devices with ti-sysc interconnect driver and dts data.
+Let's drop the related platform data and custom ti,hwmods dts property.
 
-Here's v2 series to update dra7 to probe with ti-sysc and genpd like we've
-already done for am3 and 4. This series depends on the related driver
-and dts changes:
+As we're just dropping data, and the early platform data init is based on
+the custom ti,hwmods property, we want to drop both the platform data and
+ti,hwmods property in a single patch.
 
-[PATCHv2 00/15] Update dra7 devicetree files to probe with genpd
+Cc: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/dra7.dtsi               |   3 -
+ arch/arm/mach-omap2/common.h              |   9 --
+ arch/arm/mach-omap2/omap_hwmod.c          |   8 --
+ arch/arm/mach-omap2/omap_hwmod_7xx_data.c | 114 ----------------------
+ 4 files changed, 134 deletions(-)
 
-Note that the driver and device tree changes series has dependencies
-listed in the cover letter.
-
-Please review and test. I've also pushed out a temporary testing branch
-with all the related patches to make testing easier, the test branch is
-at [0][1] below.
-
-Regards,
-
-Tony
-
-Changes since v1:
-
-- Split the series into two parts, looks like most of the emails did not
-  make it to the lists
-
-- Dropped Balaji from Cc as the email address bounces
-
-[0] git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git tmp-testing-genpd-dra7
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git/log/?h=omap-for-v5.12/tmp-testing-genpd-dra7
-
-Tony Lindgren (12):
-  ARM: OMAP2+: Drop legacy platform data for dra7 pcie
-  ARM: OMAP2+: Drop legacy platform data for dra7 qspi
-  ARM: OMAP2+: Drop legacy platform data for dra7 sata
-  ARM: OMAP2+: Drop legacy platform data for dra7 mpu
-  ARM: OMAP2+: Drop legacy platform data for dra7 dmm
-  ARM: OMAP2+: Drop legacy platform data for dra7 l4_wkup
-  ARM: OMAP2+: Drop legacy platform data for dra7 l4_per1
-  ARM: OMAP2+: Drop legacy platform data for dra7 l4_per2
-  ARM: OMAP2+: Drop legacy platform data for dra7 l4_per3
-  ARM: OMAP2+: Drop legacy platform data for dra7 l4_cfg
-  ARM: OMAP2+: Drop legacy platform data for dra7 l3
-  ARM: OMAP2+: Drop legacy platform data for dra7 hwmod
-
- arch/arm/boot/dts/dra7-l4.dtsi            |   1 -
- arch/arm/boot/dts/dra7.dtsi               |   6 -
- arch/arm/mach-omap2/Kconfig               |   1 -
- arch/arm/mach-omap2/Makefile              |   1 -
- arch/arm/mach-omap2/common.h              |   9 -
- arch/arm/mach-omap2/io.c                  |   2 -
- arch/arm/mach-omap2/omap_hwmod.c          |   8 -
- arch/arm/mach-omap2/omap_hwmod_7xx_data.c | 719 ----------------------
- 8 files changed, 747 deletions(-)
- delete mode 100644 arch/arm/mach-omap2/omap_hwmod_7xx_data.c
-
+diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
+--- a/arch/arm/boot/dts/dra7.dtsi
++++ b/arch/arm/boot/dts/dra7.dtsi
+@@ -215,7 +215,6 @@ pcie1_rc: pcie@51000000 {
+ 				#interrupt-cells = <1>;
+ 				num-lanes = <1>;
+ 				linux,pci-domain = <0>;
+-				ti,hwmods = "pcie1";
+ 				phys = <&pcie1_phy>;
+ 				phy-names = "pcie-phy0";
+ 				ti,syscon-lane-sel = <&scm_conf_pcie 0x18>;
+@@ -243,7 +242,6 @@ pcie1_ep: pcie_ep@51000000 {
+ 				num-lanes = <1>;
+ 				num-ib-windows = <4>;
+ 				num-ob-windows = <16>;
+-				ti,hwmods = "pcie1";
+ 				phys = <&pcie1_phy>;
+ 				phy-names = "pcie-phy0";
+ 				ti,syscon-unaligned-access = <&scm_conf1 0x14 1>;
+@@ -288,7 +286,6 @@ pcie2_rc: pcie@51800000 {
+ 				#interrupt-cells = <1>;
+ 				num-lanes = <1>;
+ 				linux,pci-domain = <1>;
+-				ti,hwmods = "pcie2";
+ 				phys = <&pcie2_phy>;
+ 				phy-names = "pcie-phy0";
+ 				interrupt-map-mask = <0 0 0 7>;
+diff --git a/arch/arm/mach-omap2/common.h b/arch/arm/mach-omap2/common.h
+--- a/arch/arm/mach-omap2/common.h
++++ b/arch/arm/mach-omap2/common.h
+@@ -343,15 +343,6 @@ static inline void omap5_secondary_hyp_startup(void)
+ }
+ #endif
+ 
+-#ifdef CONFIG_SOC_DRA7XX
+-extern int dra7xx_pciess_reset(struct omap_hwmod *oh);
+-#else
+-static inline int dra7xx_pciess_reset(struct omap_hwmod *oh)
+-{
+-	return 0;
+-}
+-#endif
+-
+ struct omap_system_dma_plat_info;
+ 
+ void pdata_quirks_init(const struct of_device_id *);
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -3495,10 +3495,6 @@ static const struct omap_hwmod_reset omap24xx_reset_quirks[] = {
+ 	{ .match = "msdi", .len = 4, .reset = omap_msdi_reset, },
+ };
+ 
+-static const struct omap_hwmod_reset dra7_reset_quirks[] = {
+-	{ .match = "pcie", .len = 4, .reset = dra7xx_pciess_reset, },
+-};
+-
+ static const struct omap_hwmod_reset omap_reset_quirks[] = {
+ 	{ .match = "dss_core", .len = 8, .reset = omap_dss_reset, },
+ 	{ .match = "hdq1w", .len = 5, .reset = omap_hdq1w_reset, },
+@@ -3534,10 +3530,6 @@ omap_hwmod_init_reset_quirks(struct device *dev, struct omap_hwmod *oh,
+ 					    omap24xx_reset_quirks,
+ 					    ARRAY_SIZE(omap24xx_reset_quirks));
+ 
+-	if (soc_is_dra7xx())
+-		omap_hwmod_init_reset_quirk(dev, oh, data, dra7_reset_quirks,
+-					    ARRAY_SIZE(dra7_reset_quirks));
+-
+ 	omap_hwmod_init_reset_quirk(dev, oh, data, omap_reset_quirks,
+ 				    ARRAY_SIZE(omap_reset_quirks));
+ }
+diff --git a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
+--- a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
++++ b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
+@@ -266,84 +266,6 @@ static struct omap_hwmod dra7xx_mpu_hwmod = {
+ 	},
+ };
+ 
+-
+-/*
+- * 'PCIE' class
+- *
+- */
+-
+-/*
+- * As noted in documentation for _reset() in omap_hwmod.c, the stock reset
+- * functionality of OMAP HWMOD layer does not deassert the hardreset lines
+- * associated with an IP automatically leaving the driver to handle that
+- * by itself. This does not work for PCIeSS which needs the reset lines
+- * deasserted for the driver to start accessing registers.
+- *
+- * We use a PCIeSS HWMOD class specific reset handler to deassert the hardreset
+- * lines after asserting them.
+- */
+-int dra7xx_pciess_reset(struct omap_hwmod *oh)
+-{
+-	int i;
+-
+-	for (i = 0; i < oh->rst_lines_cnt; i++) {
+-		omap_hwmod_assert_hardreset(oh, oh->rst_lines[i].name);
+-		omap_hwmod_deassert_hardreset(oh, oh->rst_lines[i].name);
+-	}
+-
+-	return 0;
+-}
+-
+-static struct omap_hwmod_class dra7xx_pciess_hwmod_class = {
+-	.name	= "pcie",
+-	.reset	= dra7xx_pciess_reset,
+-};
+-
+-/* pcie1 */
+-static struct omap_hwmod_rst_info dra7xx_pciess1_resets[] = {
+-	{ .name = "pcie", .rst_shift = 0 },
+-};
+-
+-static struct omap_hwmod dra7xx_pciess1_hwmod = {
+-	.name		= "pcie1",
+-	.class		= &dra7xx_pciess_hwmod_class,
+-	.clkdm_name	= "pcie_clkdm",
+-	.rst_lines	= dra7xx_pciess1_resets,
+-	.rst_lines_cnt	= ARRAY_SIZE(dra7xx_pciess1_resets),
+-	.main_clk	= "l4_root_clk_div",
+-	.prcm = {
+-		.omap4 = {
+-			.clkctrl_offs = DRA7XX_CM_L3INIT_PCIESS1_CLKCTRL_OFFSET,
+-			.rstctrl_offs = DRA7XX_RM_L3INIT_PCIESS_RSTCTRL_OFFSET,
+-			.context_offs = DRA7XX_RM_L3INIT_PCIESS1_CONTEXT_OFFSET,
+-			.modulemode   = MODULEMODE_SWCTRL,
+-		},
+-	},
+-};
+-
+-/* pcie2 */
+-static struct omap_hwmod_rst_info dra7xx_pciess2_resets[] = {
+-	{ .name = "pcie", .rst_shift = 1 },
+-};
+-
+-/* pcie2 */
+-static struct omap_hwmod dra7xx_pciess2_hwmod = {
+-	.name		= "pcie2",
+-	.class		= &dra7xx_pciess_hwmod_class,
+-	.clkdm_name	= "pcie_clkdm",
+-	.rst_lines	= dra7xx_pciess2_resets,
+-	.rst_lines_cnt	= ARRAY_SIZE(dra7xx_pciess2_resets),
+-	.main_clk	= "l4_root_clk_div",
+-	.prcm = {
+-		.omap4 = {
+-			.clkctrl_offs = DRA7XX_CM_L3INIT_PCIESS2_CLKCTRL_OFFSET,
+-			.rstctrl_offs = DRA7XX_RM_L3INIT_PCIESS_RSTCTRL_OFFSET,
+-			.context_offs = DRA7XX_RM_L3INIT_PCIESS2_CONTEXT_OFFSET,
+-			.modulemode   = MODULEMODE_SWCTRL,
+-		},
+-	},
+-};
+-
+ /*
+  * 'qspi' class
+  *
+@@ -579,38 +501,6 @@ static struct omap_hwmod_ocp_if dra7xx_l4_cfg__mpu = {
+ 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+ };
+ 
+-/* l3_main_1 -> pciess1 */
+-static struct omap_hwmod_ocp_if dra7xx_l3_main_1__pciess1 = {
+-	.master		= &dra7xx_l3_main_1_hwmod,
+-	.slave		= &dra7xx_pciess1_hwmod,
+-	.clk		= "l3_iclk_div",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+-/* l4_cfg -> pciess1 */
+-static struct omap_hwmod_ocp_if dra7xx_l4_cfg__pciess1 = {
+-	.master		= &dra7xx_l4_cfg_hwmod,
+-	.slave		= &dra7xx_pciess1_hwmod,
+-	.clk		= "l4_root_clk_div",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+-/* l3_main_1 -> pciess2 */
+-static struct omap_hwmod_ocp_if dra7xx_l3_main_1__pciess2 = {
+-	.master		= &dra7xx_l3_main_1_hwmod,
+-	.slave		= &dra7xx_pciess2_hwmod,
+-	.clk		= "l3_iclk_div",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+-/* l4_cfg -> pciess2 */
+-static struct omap_hwmod_ocp_if dra7xx_l4_cfg__pciess2 = {
+-	.master		= &dra7xx_l4_cfg_hwmod,
+-	.slave		= &dra7xx_pciess2_hwmod,
+-	.clk		= "l4_root_clk_div",
+-	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+-};
+-
+ /* l3_main_1 -> qspi */
+ static struct omap_hwmod_ocp_if dra7xx_l3_main_1__qspi = {
+ 	.master		= &dra7xx_l3_main_1_hwmod,
+@@ -675,10 +565,6 @@ static struct omap_hwmod_ocp_if *dra7xx_hwmod_ocp_ifs[] __initdata = {
+ 	&dra7xx_l3_main_1__bb2d,
+ 	&dra7xx_l4_wkup__ctrl_module_wkup,
+ 	&dra7xx_l4_cfg__mpu,
+-	&dra7xx_l3_main_1__pciess1,
+-	&dra7xx_l4_cfg__pciess1,
+-	&dra7xx_l3_main_1__pciess2,
+-	&dra7xx_l4_cfg__pciess2,
+ 	&dra7xx_l3_main_1__qspi,
+ 	&dra7xx_l4_cfg__sata,
+ 	&dra7xx_l3_main_1__vcp1,
 -- 
 2.30.0
