@@ -2,148 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F21BC303DBC
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 13:54:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95125303E56
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 14:15:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392248AbhAZMvg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Jan 2021 07:51:36 -0500
-Received: from muru.com ([72.249.23.125]:53544 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391930AbhAZMvM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 26 Jan 2021 07:51:12 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 6A77089BE;
-        Tue, 26 Jan 2021 12:50:02 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Kishon Vijay Abraham I <kishon@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 12/12] ARM: OMAP2+: Drop legacy platform data for dra7 hwmod
-Date:   Tue, 26 Jan 2021 14:49:37 +0200
-Message-Id: <20210126124937.52994-13-tony@atomide.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210126124937.52994-1-tony@atomide.com>
-References: <20210126124937.52994-1-tony@atomide.com>
+        id S2403869AbhAZNPP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jan 2021 08:15:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51100 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391898AbhAZMrW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Jan 2021 07:47:22 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E2BC0698C4
+        for <linux-omap@vger.kernel.org>; Tue, 26 Jan 2021 04:45:48 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id y187so2634257wmd.3
+        for <linux-omap@vger.kernel.org>; Tue, 26 Jan 2021 04:45:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=HHkd09sGQoktrv+rkNaMJyxZ3/BBMappx4i1qFyA51o=;
+        b=TnYbFNbQymHArsvv6uMgb5tO3NV5ZnbJxvZzMuj+1YlGF4WEMMgKVeViAGi6q+qoFc
+         rYEHRkr8wrhzIEJ0KYFizjHBZBjPUmAsSX6B5wGaskQglrH5c5UrsbeGazcmS4NCeKZN
+         TSs37HB8TICrWogbEReV4KE2rUwYlSEIGChJJpEOQRJ14zYlsqmuH2ASFKwrrazTfWr8
+         VILbJQ0gzu9SJzW4ozcjvP5X86pRPWJ3yrCL9TdRNXG/eX+lfARbzE0B34srRPyLEGZI
+         hpdL8SOAnlS8c9NJf96iFNX4CEopinC21YSoHPMIAmS1K3vJl9xlXnezvOkzEHpxNqRb
+         N4ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=HHkd09sGQoktrv+rkNaMJyxZ3/BBMappx4i1qFyA51o=;
+        b=PqmL4wDDrT1LBB8Lfew2DtmvNcxiZ8A4/fyZYotswY+akSm2tO+qJR2mmbnPvKv/XZ
+         rRVNVQ4mQgEaEVV3ams8+lQoIHFdgVAnQLnukXvp4rs1N1m2B+6A96DyTLowxFbj8t8H
+         PRZ9lXa/7mOPr+X0i9IMOe75w1HxYBsOqHEAJulfbZ4tb9Vy/Z9eEi59KkEiNQZvNcd4
+         QlRc80s2SLJ50C+yzhmoiOxbx6wPCOVyFEYxj0gCoAeZIK9MtfDbkACO6mUjCKiLJ5IU
+         ZwcZV9LxLRQS38+PPowouTF7RzkZDbn29LxCWw6dUwvmF0uyy+RMPqw27I8gvC/Yde3Y
+         sYWA==
+X-Gm-Message-State: AOAM532ZqSMbbLRNL+LYSxum7GxmPvu1WoAg73ktCSMR4VcYiUxCwYA4
+        XPozGmpp8aPQi0SYUagvrGpECA==
+X-Google-Smtp-Source: ABdhPJznDZLr3xkcd36SC/SloQ9HjiUzc0tkJlFOigVXQd5LVJLP45/rs7+AF+735jAMGyeQsWkaDQ==
+X-Received: by 2002:a1c:9648:: with SMTP id y69mr4463242wmd.40.1611665147239;
+        Tue, 26 Jan 2021 04:45:47 -0800 (PST)
+Received: from dell.default ([91.110.221.188])
+        by smtp.gmail.com with ESMTPSA id i131sm3263073wmi.25.2021.01.26.04.45.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jan 2021 04:45:46 -0800 (PST)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     lee.jones@linaro.org
+Cc:     linux-kernel@vger.kernel.org, Tero Kristo <kristo@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Richard Woodruff <r-woodruff2@ti.com>,
+        linux-omap@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: [PATCH 02/21] clk: ti: clkt_dpll: Fix some kernel-doc misdemeanours
+Date:   Tue, 26 Jan 2021 12:45:21 +0000
+Message-Id: <20210126124540.3320214-3-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210126124540.3320214-1-lee.jones@linaro.org>
+References: <20210126124540.3320214-1-lee.jones@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can now probe interconnects with simple-pm-bus and genpd.
+Fixes the following W=1 kernel build warning(s):
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+ drivers/clk/ti/clkt_dpll.c:284: warning: Function parameter or member 'hw' not described in 'omap2_dpll_round_rate'
+ drivers/clk/ti/clkt_dpll.c:284: warning: Function parameter or member 'parent_rate' not described in 'omap2_dpll_round_rate'
+ drivers/clk/ti/clkt_dpll.c:284: warning: Excess function parameter 'clk' description in 'omap2_dpll_round_rate'
+
+Cc: Tero Kristo <kristo@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Richard Woodruff <r-woodruff2@ti.com>
+Cc: linux-omap@vger.kernel.org
+Cc: linux-clk@vger.kernel.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- arch/arm/mach-omap2/Kconfig               |  1 -
- arch/arm/mach-omap2/Makefile              |  1 -
- arch/arm/mach-omap2/io.c                  |  2 -
- arch/arm/mach-omap2/omap_hwmod_7xx_data.c | 64 -----------------------
- 4 files changed, 68 deletions(-)
- delete mode 100644 arch/arm/mach-omap2/omap_hwmod_7xx_data.c
+ drivers/clk/ti/clkt_dpll.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
---- a/arch/arm/mach-omap2/Kconfig
-+++ b/arch/arm/mach-omap2/Kconfig
-@@ -90,7 +90,6 @@ config SOC_DRA7XX
- 	select HAVE_ARM_ARCH_TIMER
- 	select IRQ_CROSSBAR
- 	select ARM_ERRATA_798181 if SMP
--	select OMAP_HWMOD
- 	select OMAP_INTERCONNECT
- 	select OMAP_INTERCONNECT_BARRIER
- 	select PM_OPP
-diff --git a/arch/arm/mach-omap2/Makefile b/arch/arm/mach-omap2/Makefile
---- a/arch/arm/mach-omap2/Makefile
-+++ b/arch/arm/mach-omap2/Makefile
-@@ -209,7 +209,6 @@ obj-$(CONFIG_ARCH_OMAP3)		+= omap_hwmod_3xxx_data.o
- obj-$(CONFIG_SOC_TI81XX)		+= omap_hwmod_81xx_data.o
- obj-$(CONFIG_ARCH_OMAP4)		+= omap_hwmod_44xx_data.o
- obj-$(CONFIG_SOC_OMAP5)			+= omap_hwmod_54xx_data.o
--obj-$(CONFIG_SOC_DRA7XX)		+= omap_hwmod_7xx_data.o
+diff --git a/drivers/clk/ti/clkt_dpll.c b/drivers/clk/ti/clkt_dpll.c
+index 87ece6cd4226b..dfaa4d1f0b64b 100644
+--- a/drivers/clk/ti/clkt_dpll.c
++++ b/drivers/clk/ti/clkt_dpll.c
+@@ -269,8 +269,9 @@ unsigned long omap2_get_dpll_rate(struct clk_hw_omap *clk)
  
- # OMAP2420 MSDI controller integration support ("MMC")
- obj-$(CONFIG_SOC_OMAP2420)		+= msdi.o
-diff --git a/arch/arm/mach-omap2/io.c b/arch/arm/mach-omap2/io.c
---- a/arch/arm/mach-omap2/io.c
-+++ b/arch/arm/mach-omap2/io.c
-@@ -667,8 +667,6 @@ void __init dra7xx_init_early(void)
- 	dra7xxx_check_revision();
- 	dra7xx_powerdomains_init();
- 	dra7xx_clockdomains_init();
--	dra7xx_hwmod_init();
--	omap_hwmod_init_postsetup();
- 	omap_clk_soc_init = dra7xx_dt_clk_init;
- 	omap_secure_init();
- }
-diff --git a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
-deleted file mode 100644
---- a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
-+++ /dev/null
-@@ -1,64 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Hardware modules present on the DRA7xx chips
-- *
-- * Copyright (C) 2013 Texas Instruments Incorporated - https://www.ti.com
-- *
-- * Paul Walmsley
-- * Benoit Cousson
-- *
-- * This file is automatically generated from the OMAP hardware databases.
-- * We respectfully ask that any modifications to this file be coordinated
-- * with the public linux-omap@vger.kernel.org mailing list and the
-- * authors above to ensure that the autogeneration scripts are kept
-- * up-to-date with the file contents.
-- */
--
--#include <linux/io.h>
--
--#include "omap_hwmod.h"
--#include "omap_hwmod_common_data.h"
--#include "cm1_7xx.h"
--#include "cm2_7xx.h"
--#include "prm7xx.h"
--#include "soc.h"
--
--/* Base offset for all DRA7XX interrupts external to MPUSS */
--#define DRA7XX_IRQ_GIC_START	32
--
--/*
-- * Interfaces
-- */
--static struct omap_hwmod_ocp_if *dra7xx_hwmod_ocp_ifs[] __initdata = {
--	NULL,
--};
--
--/* SoC variant specific hwmod links */
--static struct omap_hwmod_ocp_if *dra72x_hwmod_ocp_ifs[] __initdata = {
--	NULL,
--};
--
--static struct omap_hwmod_ocp_if *rtc_hwmod_ocp_ifs[] __initdata = {
--	NULL,
--};
--
--int __init dra7xx_hwmod_init(void)
--{
--	int ret;
--
--	omap_hwmod_init();
--	ret = omap_hwmod_register_links(dra7xx_hwmod_ocp_ifs);
--
--	if (!ret && soc_is_dra74x()) {
--		ret = omap_hwmod_register_links(rtc_hwmod_ocp_ifs);
--	} else if (!ret && soc_is_dra72x()) {
--		ret = omap_hwmod_register_links(dra72x_hwmod_ocp_ifs);
--		if (!ret && !of_machine_is_compatible("ti,dra718"))
--			ret = omap_hwmod_register_links(rtc_hwmod_ocp_ifs);
--	} else if (!ret && soc_is_dra76x()) {
--		if (!ret && soc_is_dra76x_abz())
--			ret = omap_hwmod_register_links(rtc_hwmod_ocp_ifs);
--	}
--
--	return ret;
--}
+ /**
+  * omap2_dpll_round_rate - round a target rate for an OMAP DPLL
+- * @clk: struct clk * for a DPLL
++ * @hw: struct clk_hw containing the struct clk * for a DPLL
+  * @target_rate: desired DPLL clock rate
++ * @parent_rate: parent's DPLL clock rate
+  *
+  * Given a DPLL and a desired target rate, round the target rate to a
+  * possible, programmable rate for this DPLL.  Attempts to select the
 -- 
-2.30.0
+2.25.1
+
