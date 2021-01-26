@@ -2,279 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6CE304E40
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Jan 2021 02:07:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D3293054C0
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Jan 2021 08:36:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727422AbhA0ATj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Jan 2021 19:19:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57866 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389660AbhA0AGu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Jan 2021 19:06:50 -0500
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD6F6C061356
-        for <linux-omap@vger.kernel.org>; Tue, 26 Jan 2021 16:05:18 -0800 (PST)
-Received: by mail-pg1-x530.google.com with SMTP id b21so329311pgk.7
-        for <linux-omap@vger.kernel.org>; Tue, 26 Jan 2021 16:05:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=u2CFxYIjg6arrEjc41dhVQJWSHe8H+mJoN8546JORc4=;
-        b=bg4Hqcy5ToVXiqQaq8Cjw4rg6lUpvXbcGmxu7yC1mKiD7XSVQIIROwQdOBColzpyd6
-         F3fw7EEQj9tNbs4teaEqiCsfX8DmtXhziwtgvE7eyMIlw3lJYV9cIc0wWXuWV1GtyuV0
-         TdnrpmtWGX5pVcYuMu2NPeYyoxjEEADXvtBpuOz0y7Sow/mKMlk4kJ8LjierVee2lde6
-         7J6m6G7fZH0J84iktd2K9tsA1+D4c76t7L6w3iycEljE0qa/Hjz9IjDFi9ZxIyhEx6u0
-         ktXui8lEM7ph9fEhMnpSygWdd9t57r2YRWPNN89kqcFLbGFHqCtGk17Vf4hek9tEIiFh
-         N4ZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=u2CFxYIjg6arrEjc41dhVQJWSHe8H+mJoN8546JORc4=;
-        b=rLIqdEdC5/Te2IeC4uqB14HT2/BnELDSAqeZURhX+TN0Q7orBuPYyb9H4v8eTlDRO3
-         xBLiu/5HnF6sn4w55YoYaLk+ZmSZaiQ4uHwMrcKDfqf0Ken0tG9nN9qq1oE5yR9UCHXs
-         cxu1EiWH38VoWfqzBM8IDfrrxOqKzg/MNPF4NjZrErXyt0QI9M5zW0U3hLBkGVti5bW2
-         kn+IHsZr/XtpwDaiKH3+4I8f9Y7sHkDH02JPHpNcBKGSseGUinA+kha1LaxTCLqQBWZn
-         tyAqDhw26Fynmf0YRqQBBQxfXUYkUs3w/Kjiya8mjm8ATagDIVRZDy4D0uxp7EYoZyez
-         1KHQ==
-X-Gm-Message-State: AOAM531UD9l5vgbEunyI3o9wb/NzpKniSwNmqNhcRkeHB9bSH0wSl0DC
-        eCrXGTZstF/tZc+IMH2dE6fWeA==
-X-Google-Smtp-Source: ABdhPJyFyWfruZj14k/OS13slAPKs09/xHkOOik47DZmHJRpM/L4mujtjqINHBHc55L6al+3nzeqow==
-X-Received: by 2002:a63:1c09:: with SMTP id c9mr8058931pgc.185.1611705918421;
-        Tue, 26 Jan 2021 16:05:18 -0800 (PST)
-Received: from x1.hsd1.or.comcast.net ([2601:1c0:4701:ae70:515f:b0ad:6302:bbc2])
-        by smtp.gmail.com with ESMTPSA id y5sm213536pfq.96.2021.01.26.16.05.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Jan 2021 16:05:17 -0800 (PST)
-From:   Drew Fustini <drew@beagleboard.org>
-To:     bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio@vger.kernel.org
-Cc:     Drew Fustini <drew@beagleboard.org>
-Subject: [PATCH 2/2] ARM: dts: am335x-boneblack.dts: unique gpio-line-names
-Date:   Tue, 26 Jan 2021 16:03:05 -0800
-Message-Id: <20210127000303.436595-2-drew@beagleboard.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210127000303.436595-1-drew@beagleboard.org>
-References: <20210127000303.436595-1-drew@beagleboard.org>
+        id S316536AbhA0AAi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jan 2021 19:00:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47448 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729073AbhAZSV7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 26 Jan 2021 13:21:59 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7E859207BC;
+        Tue, 26 Jan 2021 18:21:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611685277;
+        bh=MXfhwHib5lhIxe0d2EionO+qD1p7JOcTGIR5T//GcjU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Vyv6zeCgPBGRmLOGE+ZvJN/iEJbaZMbXGNiKs6W7mrLLyXtdvyXRRMjhIUG4flGz0
+         SObPNEWXGHHwcJfUJNuiMDGYMFH/8ozn34f5YEANN+7bqYaurnkm8GG9NwrvNlziq/
+         O+icUTumPpIZFw8RhAofdIEpRpC2YkiAovXOWMQqJg9uQPP3e+v84gtclOugTGmOcV
+         ++aSNFIc4sQpch4zq96vzAnzS+3zaa/mBeaevzYjYP5n9QywZGVOgMQYAiyYmOP+pZ
+         Sq1U3Xwms5ZLaHqaPI4yniW31jcyXpj/T+SM9Ctu5ovfB008PliOds9wV4CCoDyhwc
+         GyVUoh4d1+tyA==
+Received: by mail-ed1-f43.google.com with SMTP id c6so20960185ede.0;
+        Tue, 26 Jan 2021 10:21:17 -0800 (PST)
+X-Gm-Message-State: AOAM531+bSa8/wfSUxTkMkqCWoYP6KAcEK0RB3tUKorghTKbVy0gruDu
+        l16YNSHn7Vbd0RkSMdhlUX5JAJttecisG/5fnw==
+X-Google-Smtp-Source: ABdhPJwqon1vbLCOlmss6J+2GsHVOo4w9BY+GyxQEwzER9kIB9CkFOtLUal0HAuyf9bfo2h5vrYSv5GPYVZbdJOig20=
+X-Received: by 2002:a05:6402:1751:: with SMTP id v17mr5717873edx.289.1611685276124;
+ Tue, 26 Jan 2021 10:21:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210123034428.2841052-1-swboyd@chromium.org>
+In-Reply-To: <20210123034428.2841052-1-swboyd@chromium.org>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 26 Jan 2021 12:21:04 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+voSRnHEEkUZSasdKGrXiBs3yCmzHp6Ua4WNuAgnh4AQ@mail.gmail.com>
+Message-ID: <CAL_Jsq+voSRnHEEkUZSasdKGrXiBs3yCmzHp6Ua4WNuAgnh4AQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] Stop NULLifying match pointer in of_match_device()
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Jean Delvare <jdelvare@suse.com>, Jiri Slaby <jslaby@suse.com>,
+        Linux HWMON List <linux-hwmon@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "open list:MEDIA DRIVERS FOR RENESAS - FCP" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Richard Leitner <richard.leitner@skidata.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Based on linux-gpio discussion [1], it is best practice to make the
-gpio-line-names unique. Generic names like "[ethernet]" are replaced
-with the name of the unique signal on the AM3358 SoC ball corresponding
-to the gpio line. "[NC]" is also renamed to the standard "NC" name to
-represent "not connected".
+On Fri, Jan 22, 2021 at 9:44 PM Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> (This is a continuation of this series[1] per Rob's request. I've picked
+> up the acks, etc. with b4 and compile tested the patches along with an
+> arm64 allmodconfig build. Presumably Rob will pick these up directly.)
+>
+> of_match_device() uses of_match_ptr() to make the match table argument
+> NULL via the pre-processor when CONFIG_OF=n. This makes life harder for
+> compilers who think that match tables are never used and warn about
+> unused variables when CONFIG_OF=n. This series changes various callers
+> to use of_device_get_match_data() instead, which doesn't have this
+> problem, and removes the of_match_ptr() usage from of_match_device() so
+> that the compiler can stop complaining about unused variables. It will
+> do dead code elimination instead and remove the match table if it isn't
+> actually used.
+>
+> [1] https://lore.kernel.org/r/20191004214334.149976-1-swboyd@chromium.org
+>
+> Cc: Alexandre Torgue <alexandre.torgue@st.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Frank Rowand <frowand.list@gmail.com>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Jacopo Mondi <jacopo@jmondi.org>
+> Cc: Jean Delvare <jdelvare@suse.com>
+> Cc: Jiri Slaby <jslaby@suse.com>
+> Cc: <linux-hwmon@vger.kernel.org>
+> Cc: <linux-kernel@vger.kernel.org>,
+> Cc: <linux-media@vger.kernel.org>
+> Cc: <linux-omap@vger.kernel.org>
+> Cc: <linux-renesas-soc@vger.kernel.org>
+> Cc: <linux-serial@vger.kernel.org>
+> Cc: <linux-usb@vger.kernel.org>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Richard Leitner <richard.leitner@skidata.com>
+> Cc: Rob Herring <robh+dt@kernel.org>
+>
+> Stephen Boyd (6):
+>   media: renesas-ceu: Use of_device_get_match_data()
+>   drivers: net: davinci_mdio: Use of_device_get_match_data()
+>   serial: stm32: Use of_device_get_match_data()
+>   usb: usb251xb: Use of_device_get_match_data()
+>   hwmon: (lm70) Avoid undefined reference to match table
+>   of/device: Don't NULLify match table in of_match_device() with
+>     CONFIG_OF=n
+>
+>  drivers/hwmon/lm70.c                   |  2 +-
+>  drivers/media/platform/renesas-ceu.c   |  2 +-
+>  drivers/net/ethernet/ti/davinci_mdio.c | 12 ++---
+>  drivers/tty/serial/stm32-usart.c       | 71 ++++++++++++--------------
+>  drivers/tty/serial/stm32-usart.h       |  2 +-
+>  drivers/usb/misc/usb251xb.c            | 12 ++---
+>  include/linux/of_device.h              |  4 +-
+>  7 files changed, 47 insertions(+), 58 deletions(-)
 
-[1] https://lore.kernel.org/linux-gpio/20201216195357.GA2583366@x1/
+Series applied.
 
-Signed-off-by: Drew Fustini <drew@beagleboard.org>
----
- arch/arm/boot/dts/am335x-boneblack.dts | 130 ++++++++++++-------------
- 1 file changed, 65 insertions(+), 65 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am335x-boneblack.dts b/arch/arm/boot/dts/am335x-boneblack.dts
-index b4feb85e171a..ad9d32c7ec44 100644
---- a/arch/arm/boot/dts/am335x-boneblack.dts
-+++ b/arch/arm/boot/dts/am335x-boneblack.dts
-@@ -26,54 +26,54 @@ oppnitro-1000000000 {
- 
- &gpio0 {
- 	gpio-line-names =
--		"[ethernet]",
--		"[ethernet]",
-+		"[mdio_data]",
-+		"[mdio_clk]",
- 		"P9_22 [spi0_sclk]",
- 		"P9_21 [spi0_d0]",
- 		"P9_18 [spi0_d1]",
- 		"P9_17 [spi0_cs0]",
--		"[sd card]",
-+		"[mmc0_cd]",
- 		"P8_42A [ecappwm0]",
--		"P8_35 [hdmi]",
--		"P8_33 [hdmi]",
--		"P8_31 [hdmi]",
--		"P8_32 [hdmi]",
-+		"P8_35 [lcd d12]",
-+		"P8_33 [lcd d13]",
-+		"P8_31 [lcd d14]",
-+		"P8_32 [lcd d15]",
- 		"P9_20 [i2c2_sda]",
- 		"P9_19 [i2c2_scl]",
- 		"P9_26 [uart1_rxd]",
- 		"P9_24 [uart1_txd]",
--		"[ethernet]",
--		"[ethernet]",
--		"[usb]",
--		"[hdmi]",
-+		"[rmii1_txd3]",
-+		"[rmii1_txd2]",
-+		"[usb0_drvvbus]",
-+		"[hdmi cec]",
- 		"P9_41B",
--		"[ethernet]",
-+		"[rmii1_txd1]",
- 		"P8_19 [ehrpwm2a]",
- 		"P8_13 [ehrpwm2b]",
--		"[NC]",
--		"[NC]",
-+		"NC",
-+		"NC",
- 		"P8_14",
- 		"P8_17",
--		"[ethernet]",
--		"[ethernet]",
-+		"[rmii1_txd0]",
-+		"[rmii1_refclk]",
- 		"P9_11 [uart4_rxd]",
- 		"P9_13 [uart4_txd]";
- };
- 
- &gpio1 {
- 	gpio-line-names =
--		"P8_25 [emmc]",
--		"[emmc]",
--		"P8_5 [emmc]",
--		"P8_6 [emmc]",
--		"P8_23 [emmc]",
--		"P8_22 [emmc]",
--		"P8_3 [emmc]",
--		"P8_4 [emmc]",
--		"[NC]",
--		"[NC]",
--		"[NC]",
--		"[NC]",
-+		"P8_25 [mmc1_dat0]",
-+		"[mmc1_dat1]",
-+		"P8_5 [mmc1_dat2]",
-+		"P8_6 [mmc1_dat3]",
-+		"P8_23 [mmc1_dat4]",
-+		"P8_22 [mmc1_dat5]",
-+		"P8_3 [mmc1_dat6]",
-+		"P8_4 [mmc1_dat7]",
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
- 		"P8_12",
- 		"P8_11",
- 		"P8_16",
-@@ -82,13 +82,13 @@ &gpio1 {
- 		"P9_23",
- 		"P9_14 [ehrpwm1a]",
- 		"P9_16 [ehrpwm1b]",
--		"[emmc]",
-+		"[emmc rst]",
- 		"[usr0 led]",
- 		"[usr1 led]",
- 		"[usr2 led]",
- 		"[usr3 led]",
--		"[hdmi]",
--		"[usb]",
-+		"[hdmi irq]",
-+		"[usb vbus oc]",
- 		"[hdmi audio]",
- 		"P9_12",
- 		"P8_26",
-@@ -116,38 +116,38 @@ &gpio2 {
- 		"P8_38 [hdmi]",
- 		"P8_36 [hdmi]",
- 		"P8_34 [hdmi]",
--		"[ethernet]",
--		"[ethernet]",
--		"[ethernet]",
--		"[ethernet]",
-+		"[rmii1_rxd3]",
-+		"[rmii1_rxd2]",
-+		"[rmii1_rxd1]",
-+		"[rmii1_rxd0]",
- 		"P8_27 [hdmi]",
- 		"P8_29 [hdmi]",
- 		"P8_28 [hdmi]",
- 		"P8_30 [hdmi]",
--		"[emmc]",
--		"[emmc]",
--		"[emmc]",
--		"[emmc]",
--		"[emmc]",
--		"[emmc]";
-+		"[mmc0_dat3]",
-+		"[mmc0_dat2]",
-+		"[mmc0_dat1]",
-+		"[mmc0_dat0]",
-+		"[mmc0_clk]",
-+		"[mmc0_cmd]";
- };
- 
- &gpio3 {
- 	gpio-line-names =
--		"[ethernet]",
--		"[ethernet]",
--		"[ethernet]",
--		"[ethernet]",
--		"[ethernet]",
--		"[i2c0]",
--		"[i2c0]",
--		"[emu]",
--		"[emu]",
--		"[ethernet]",
--		"[ethernet]",
--		"[NC]",
--		"[NC]",
--		"[usb]",
-+		"[mii col]",
-+		"[mii crs]",
-+		"[mii rx err]",
-+		"[mii tx en]",
-+		"[mii rx dv]",
-+		"[i2c0 sda]",
-+		"[i2c0 scl]",
-+		"[jtag emu0]",
-+		"[jtag emu1]",
-+		"[mii tx clk]",
-+		"[mii rx clk]",
-+		"NC",
-+		"NC",
-+		"[usb vbus en]",
- 		"P9_31 [spi1_sclk]",
- 		"P9_29 [spi1_d0]",
- 		"P9_30 [spi1_d1]",
-@@ -156,14 +156,14 @@ &gpio3 {
- 		"P9_27",
- 		"P9_41A",
- 		"P9_25",
--		"[NC]",
--		"[NC]",
--		"[NC]",
--		"[NC]",
--		"[NC]",
--		"[NC]",
--		"[NC]",
--		"[NC]",
--		"[NC]",
--		"[NC]";
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC";
- };
--- 
-2.25.1
-
+Rob
