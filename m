@@ -2,152 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A245030468B
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 19:38:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 887DC304656
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 19:34:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726854AbhAZRYR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Jan 2021 12:24:17 -0500
-Received: from muru.com ([72.249.23.125]:53192 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390153AbhAZIbr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 26 Jan 2021 03:31:47 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 0FED78BF8;
-        Tue, 26 Jan 2021 08:28:19 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Balaji T K <balajitk@ti.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-pci@vger.kernel.org
-Subject: [PATCH 27/27] ARM: OMAP2+: Drop legacy platform data for dra7 hwmod
-Date:   Tue, 26 Jan 2021 10:27:16 +0200
-Message-Id: <20210126082716.54358-28-tony@atomide.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210126082716.54358-1-tony@atomide.com>
-References: <20210126082716.54358-1-tony@atomide.com>
+        id S1730250AbhAZRYw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jan 2021 12:24:52 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:38602 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406000AbhAZQf2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Jan 2021 11:35:28 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10QGWxhX087660;
+        Tue, 26 Jan 2021 10:32:59 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1611678779;
+        bh=zT5rXzi404sanDCD+FhX1p4eVM2SYSfy/bavMPjgsZ4=;
+        h=From:To:CC:Subject:Date;
+        b=cNY76W8khMWDiihJY+w8MLZDKUuaH3lNcFQ2hrFVzOT3LkWgLVJVkV29RAv+hniF2
+         zGTVg5PzHG3AUCBbMo1N6PvrvxxpmfQVCALvx9zoPYa58ImdqQNMoNgck+QUPDWGUA
+         cwgXcGJmus1xbwREQpFqeGuiFxg+UCaMcyLP5j3U=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10QGWxR0082334
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 26 Jan 2021 10:32:59 -0600
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 26
+ Jan 2021 10:32:58 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 26 Jan 2021 10:32:58 -0600
+Received: from lelv0597.itg.ti.com (lelv0597.itg.ti.com [10.181.64.32])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10QGWwpA069669;
+        Tue, 26 Jan 2021 10:32:58 -0600
+Received: from localhost ([10.250.35.71])
+        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 10QGWwbq111807;
+        Tue, 26 Jan 2021 10:32:58 -0600
+From:   Suman Anna <s-anna@ti.com>
+To:     Rob Herring <robh+dt@kernel.org>, Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+CC:     Jan Kiszka <jan.kiszka@siemens.com>,
+        David Lechner <david@lechnology.com>,
+        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        Suman Anna <s-anna@ti.com>
+Subject: [PATCH] dt-bindings: irqchip: Add node name to PRUSS INTC
+Date:   Tue, 26 Jan 2021 10:32:51 -0600
+Message-ID: <20210126163251.29468-1-s-anna@ti.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can now probe interconnects with simple-pm-bus and genpd.
+The current PRUSS Interrupt Controller binding doesn't exactly specify
+the convention for the node name. These interrupt-controllers will always
+have a unit address. Update the binding with the '$nodename' using the
+expected generic name, this shall ensure the interrupt-controller.yaml
+is automatically applied to this binding.
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Suman Anna <s-anna@ti.com>
 ---
- arch/arm/mach-omap2/Kconfig               |  1 -
- arch/arm/mach-omap2/Makefile              |  1 -
- arch/arm/mach-omap2/io.c                  |  2 -
- arch/arm/mach-omap2/omap_hwmod_7xx_data.c | 64 -----------------------
- 4 files changed, 68 deletions(-)
- delete mode 100644 arch/arm/mach-omap2/omap_hwmod_7xx_data.c
+This patch is a result of the previous discussion at
+https://patchwork.kernel.org/comment/23926133/
 
-diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
---- a/arch/arm/mach-omap2/Kconfig
-+++ b/arch/arm/mach-omap2/Kconfig
-@@ -90,7 +90,6 @@ config SOC_DRA7XX
- 	select HAVE_ARM_ARCH_TIMER
- 	select IRQ_CROSSBAR
- 	select ARM_ERRATA_798181 if SMP
--	select OMAP_HWMOD
- 	select OMAP_INTERCONNECT
- 	select OMAP_INTERCONNECT_BARRIER
- 	select PM_OPP
-diff --git a/arch/arm/mach-omap2/Makefile b/arch/arm/mach-omap2/Makefile
---- a/arch/arm/mach-omap2/Makefile
-+++ b/arch/arm/mach-omap2/Makefile
-@@ -209,7 +209,6 @@ obj-$(CONFIG_ARCH_OMAP3)		+= omap_hwmod_3xxx_data.o
- obj-$(CONFIG_SOC_TI81XX)		+= omap_hwmod_81xx_data.o
- obj-$(CONFIG_ARCH_OMAP4)		+= omap_hwmod_44xx_data.o
- obj-$(CONFIG_SOC_OMAP5)			+= omap_hwmod_54xx_data.o
--obj-$(CONFIG_SOC_DRA7XX)		+= omap_hwmod_7xx_data.o
+ .../bindings/interrupt-controller/ti,pruss-intc.yaml           | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml b/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+index c2ce215501a5..9731dd4421a1 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
++++ b/Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+@@ -33,6 +33,9 @@ description: |
+   corresponding PRUSS node. The node should be named "interrupt-controller".
  
- # OMAP2420 MSDI controller integration support ("MMC")
- obj-$(CONFIG_SOC_OMAP2420)		+= msdi.o
-diff --git a/arch/arm/mach-omap2/io.c b/arch/arm/mach-omap2/io.c
---- a/arch/arm/mach-omap2/io.c
-+++ b/arch/arm/mach-omap2/io.c
-@@ -667,8 +667,6 @@ void __init dra7xx_init_early(void)
- 	dra7xxx_check_revision();
- 	dra7xx_powerdomains_init();
- 	dra7xx_clockdomains_init();
--	dra7xx_hwmod_init();
--	omap_hwmod_init_postsetup();
- 	omap_clk_soc_init = dra7xx_dt_clk_init;
- 	omap_secure_init();
- }
-diff --git a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c b/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
-deleted file mode 100644
---- a/arch/arm/mach-omap2/omap_hwmod_7xx_data.c
-+++ /dev/null
-@@ -1,64 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Hardware modules present on the DRA7xx chips
-- *
-- * Copyright (C) 2013 Texas Instruments Incorporated - https://www.ti.com
-- *
-- * Paul Walmsley
-- * Benoit Cousson
-- *
-- * This file is automatically generated from the OMAP hardware databases.
-- * We respectfully ask that any modifications to this file be coordinated
-- * with the public linux-omap@vger.kernel.org mailing list and the
-- * authors above to ensure that the autogeneration scripts are kept
-- * up-to-date with the file contents.
-- */
--
--#include <linux/io.h>
--
--#include "omap_hwmod.h"
--#include "omap_hwmod_common_data.h"
--#include "cm1_7xx.h"
--#include "cm2_7xx.h"
--#include "prm7xx.h"
--#include "soc.h"
--
--/* Base offset for all DRA7XX interrupts external to MPUSS */
--#define DRA7XX_IRQ_GIC_START	32
--
--/*
-- * Interfaces
-- */
--static struct omap_hwmod_ocp_if *dra7xx_hwmod_ocp_ifs[] __initdata = {
--	NULL,
--};
--
--/* SoC variant specific hwmod links */
--static struct omap_hwmod_ocp_if *dra72x_hwmod_ocp_ifs[] __initdata = {
--	NULL,
--};
--
--static struct omap_hwmod_ocp_if *rtc_hwmod_ocp_ifs[] __initdata = {
--	NULL,
--};
--
--int __init dra7xx_hwmod_init(void)
--{
--	int ret;
--
--	omap_hwmod_init();
--	ret = omap_hwmod_register_links(dra7xx_hwmod_ocp_ifs);
--
--	if (!ret && soc_is_dra74x()) {
--		ret = omap_hwmod_register_links(rtc_hwmod_ocp_ifs);
--	} else if (!ret && soc_is_dra72x()) {
--		ret = omap_hwmod_register_links(dra72x_hwmod_ocp_ifs);
--		if (!ret && !of_machine_is_compatible("ti,dra718"))
--			ret = omap_hwmod_register_links(rtc_hwmod_ocp_ifs);
--	} else if (!ret && soc_is_dra76x()) {
--		if (!ret && soc_is_dra76x_abz())
--			ret = omap_hwmod_register_links(rtc_hwmod_ocp_ifs);
--	}
--
--	return ret;
--}
+ properties:
++  $nodename:
++    pattern: "^interrupt-controller@[0-9a-f]+$"
++
+   compatible:
+     enum:
+       - ti,pruss-intc
 -- 
-2.30.0
+2.29.2
+
