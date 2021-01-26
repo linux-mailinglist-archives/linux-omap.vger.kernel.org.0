@@ -2,388 +2,145 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FE43042D4
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 16:46:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B670430432D
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Jan 2021 16:57:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391780AbhAZPpf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Jan 2021 10:45:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45750 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391862AbhAZPnZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 26 Jan 2021 10:43:25 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 097AF2100A;
-        Tue, 26 Jan 2021 15:42:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611675764;
-        bh=yQoMRGi5PdjwxvIyMrxoV2bK3IlRzoWkiHHKm3zY+FI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=NiKDpU7btcGkRCx/S+NoBjcOvv/ZyB46/2G8nBpeBa1hKksq/5/vU+wJtImwbarXu
-         5NN6snx790B3zfcKOgLukDFVnn8nF27CWGIvgN7PVdm7OeXqEfcGc/zllxvuFx/u4h
-         nk9jZQ9GJ7ypS0+haIeSmsbVfcs4X6z1kgOkd1Q9eF73bOCj2ZcjUu2I3NfAQcwjUC
-         z1NBgsVpTERv3taC+gKQoQQ+13HuobfYFuNQdlcmQKnP2jRB1LQtWnzLPdy588YcA4
-         Ly0p445MzdSXmCIA00VCQ+6O5jmId5LNaAxG8bp+aKMFQslDubceaYFh7GBNBZkjGx
-         NFR1tuum32J6g==
-Received: by mail-ej1-f53.google.com with SMTP id kg20so23126440ejc.4;
-        Tue, 26 Jan 2021 07:42:43 -0800 (PST)
-X-Gm-Message-State: AOAM533qIo0YF4aVBm0Wb0759HweC3Ie7Oo7iPooFUMyNj5bd4PaC0Iy
-        krueot7uWNw2uHnXtUhCqg+JZAPaf4xngORcIg==
-X-Google-Smtp-Source: ABdhPJzAO1B6HEQxoXCrUkx7cM5FMklSTeICUd2JeJwy9EL7S31MxkB/KQkUni41DZup9fORFFdpbZJkraVXHkmTi7E=
-X-Received: by 2002:a17:906:ce49:: with SMTP id se9mr3870805ejb.341.1611675762536;
- Tue, 26 Jan 2021 07:42:42 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1611645945.git.mchehab+huawei@kernel.org> <55f479324098b66d7dba89c8f9c3e455731df4f7.1611645945.git.mchehab+huawei@kernel.org>
-In-Reply-To: <55f479324098b66d7dba89c8f9c3e455731df4f7.1611645945.git.mchehab+huawei@kernel.org>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 26 Jan 2021 09:42:30 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLfTxqUtFxbkojaUevCgg5V-StBkhXC4Fwx0Vh9NRougw@mail.gmail.com>
-Message-ID: <CAL_JsqLfTxqUtFxbkojaUevCgg5V-StBkhXC4Fwx0Vh9NRougw@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/2] dt: pci: designware-pcie.txt: convert it to yaml
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Jonathan Chocron <jonnyc@amazon.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        devicetree@vger.kernel.org,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        linux-arm-kernel@axis.com,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        id S2404078AbhAZP44 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jan 2021 10:56:56 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:58642 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404038AbhAZP4s (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Jan 2021 10:56:48 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 10QFsqjg073040;
+        Tue, 26 Jan 2021 09:54:52 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1611676492;
+        bh=hUvKQU0Snwdl605ZoDKkRxVXh6lpILjpBfiJhsZr2Qw=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Oj2q57S32ucPnNxs6Ysppalx9Zu9XTxUeJSAfqb6L+T12VaxJrw/50+VLjNuDOUTa
+         188yVzPdtOJ0M8AG3OzdqB6/LBKtB+ImenDgeKFvvcMr1PvAT8X43d8djLSvdkLc9o
+         52TGOt6vyX/WfhUbRA+G+tIhq6TjULuZx4RRyEVU=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 10QFsqKd055804
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 26 Jan 2021 09:54:52 -0600
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 26
+ Jan 2021 09:54:51 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 26 Jan 2021 09:54:51 -0600
+Received: from [10.250.35.71] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 10QFspg7120927;
+        Tue, 26 Jan 2021 09:54:51 -0600
+Subject: Re: [PATCH] dt-bindings: irqchip: Add #address-cells to PRUSS INTC
+To:     Rob Herring <robh@kernel.org>
+CC:     Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Nishanth Menon <nm@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        David Lechner <david@lechnology.com>,
+        <devicetree@vger.kernel.org>,
         linux-omap <linux-omap@vger.kernel.org>,
-        PCI <linux-pci@vger.kernel.org>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+References: <20210115205819.19426-1-s-anna@ti.com>
+ <20210126000443.GA1223706@robh.at.kernel.org>
+ <8f4a47f8-18dc-cb73-10db-033e5e5adb25@ti.com>
+ <CAL_JsqLYfGvJ=zYbdJp4pUjmmJ_ROu1u_0dVwTj06Cw5+23fGw@mail.gmail.com>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <23225695-57ea-f255-798b-17cf6962e543@ti.com>
+Date:   Tue, 26 Jan 2021 09:54:46 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <CAL_JsqLYfGvJ=zYbdJp4pUjmmJ_ROu1u_0dVwTj06Cw5+23fGw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 1:35 AM Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
->
-> Convert the file into a JSON description at the yaml format.
+Hi Rob,
 
-json-schema, not JSON really. I prefer just 'DT schema' which implies
-json-schema in yaml file format.
+On 1/25/21 8:47 PM, Rob Herring wrote:
+> On Mon, Jan 25, 2021 at 6:16 PM Suman Anna <s-anna@ti.com> wrote:
+>>
+>> Hi Rob,
+>>
+>> On 1/25/21 6:04 PM, Rob Herring wrote:
+>>> On Fri, Jan 15, 2021 at 02:58:19PM -0600, Suman Anna wrote:
+>>>> The '#address-cells' property looks to be a required property for
+>>>> interrupt controller nodes as indicated by a warning message seen
+>>>> when building dtbs with W=2. Adding the property to the PRUSS INTC
+>>>> dts nodes though fails the dtbs_check. Add this property to the
+>>>> PRUSS INTC binding to make it compliant with both dtbs_check and
+>>>> building dtbs.
+>>>>
+>>>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>>>> ---
+>>>> Hi Rob,
+>>>>
+>>>> This patch is also part of our effort to get rid of the warnings seen
+>>>> around interrupt providers on TI K3 dtbs [1]. I needed this in the PRUSS
+>>>> INTC bindings to not get a warning with dtbs_check while also ensuring
+>>>> no warnings while building dtbs with W=2.
+>>>>
+>>>> I would have expected the '#address-cells' requirement to be inherited
+>>>> automatically. And looking through the schema files, I actually do not
+>>>> see the interrupt-controller.yaml included automatically anywhere. You
+>>>> had asked us to drop the inclusion in this binding in our first version
+>>>> with YAML [3]. Am I missing something, and how do we ensure that this
+>>>> is enforced automatically for everyone?
+>>>
+>>> interrupt-controller.yaml is applied to any node named
+>>> 'interrupt-controller'. More generally, if 'compatible' is not present,
+>>> then we look at $nodename for the default 'select'. In your case, you
+>>> didn't name the node appropriately.
+>>
+>> Thanks for the clarification. Yeah, I didn't add anything specifically, since
+>> the expectation is interrupt-controller. Should I be adding that to this binding?
+> 
+> No, either interrupt-controller.yaml needs to learn a new node name or
+> your node names need to be fixed. I prefer the latter, but if you have
+> more than 1 and don't have a unit-address (and in turn a 'reg' prop)
+> we'd have to do the former. How are the interrupts controllers
+> accessed if there's no way to address them?
 
-This one is a bit tricky and suspect it needs a few others converted
-to get right. Not asking for that yet, just keep that in mind.
+The PRUSS INTC will always have a unit-address, so we won't have the issues with
+having to maintain unique names. All my examples already have the nodes in the
+form 'interrupt-controller@<addr>'. Anyway, I will drop this patch, and post a
+new patch adding the $nodename to the binding.
 
->
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  .../bindings/pci/amlogic,meson-pcie.txt       |   4 +-
->  .../bindings/pci/axis,artpec6-pcie.txt        |   2 +-
->  .../bindings/pci/designware,pcie.yaml         | 194 ++++++++++++++++++
+> 
+>>
+>>>
+>>> We can't check this in interrupt-controller.yaml because #address-cells
+>>> is not always 0. GICv3 is one notable exception.
+>>>
+>>>>
+>>>> regards
+>>>> Suman
+>>>>
+>>>> [1] https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210115083003.27387-1-lokeshvutla@ti.com/
+>>>
+>>> I've commented on this thread now in regards to #address-cells.
+>>
+>> I suppose I still need this patch to be defined to unblock the ICSSG nodes
+>> getting accepted by our dts maintainer. Care to give your Reviewed-by for the
+>> change? Or I can spin a v2 with $nodename added as well if that's needed too.
+> 
+> No, I don't think you have to add #address-cells. We need to fix the
+> warning in dtc.
 
-snps,dw-pcie.yaml
+Thank you for clarifying this.
 
->  .../bindings/pci/designware-pcie.txt          |  77 -------
->  .../bindings/pci/fsl,imx6q-pcie.txt           |   2 +-
->  .../bindings/pci/hisilicon-histb-pcie.txt     |   2 +-
->  .../bindings/pci/hisilicon-pcie.txt           |   2 +-
->  .../devicetree/bindings/pci/kirin-pcie.txt    |   2 +-
->  .../bindings/pci/layerscape-pci.txt           |   2 +-
->  .../bindings/pci/nvidia,tegra194-pcie.txt     |   4 +-
->  .../devicetree/bindings/pci/pci-armada8k.txt  |   2 +-
->  .../devicetree/bindings/pci/pci-keystone.txt  |  10 +-
->  .../devicetree/bindings/pci/pcie-al.txt       |   2 +-
->  .../devicetree/bindings/pci/qcom,pcie.txt     |  14 +-
->  .../bindings/pci/samsung,exynos5440-pcie.txt  |   4 +-
->  .../pci/socionext,uniphier-pcie-ep.yaml       |   2 +-
->  .../devicetree/bindings/pci/ti-pci.txt        |   4 +-
->  .../devicetree/bindings/pci/uniphier-pcie.txt |   2 +-
->  MAINTAINERS                                   |   2 +-
->  19 files changed, 225 insertions(+), 108 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/pci/designware,pcie.yaml
->  delete mode 100644 Documentation/devicetree/bindings/pci/designware-pcie.txt
-
-
-> diff --git a/Documentation/devicetree/bindings/pci/designware,pcie.yaml b/Documentation/devicetree/bindings/pci/designware,pcie.yaml
-> new file mode 100644
-> index 000000000000..e610ed073789
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/pci/designware,pcie.yaml
-> @@ -0,0 +1,194 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/pci/designware,pcie.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Synopsys DesignWare PCIe interface
-> +
-> +maintainers:
-> +  - Jingoo Han <jingoohan1@gmail.com>
-> +  - Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-> +
-> +description: |
-> +  Synopsys DesignWare PCIe host controller
-> +
-> +properties:
-> +  compatible:
-> +    description: |
-> +      The compatible can be either:
-> +      - snps,dw-pcie       # for RC mode
-> +      - snps,dw-pcie-ep    # For EP mode
-> +      or some other value, when there's a host-specific driver
-
-Needs to be a schema. This is complicated because sometimes it's used
-and sometimes not. So we need something like this:
-
-anyOf:
-  - {}
-  - items:
-      contains:
-        enum:
-          - snps,dw-pcie
-          - snps,dw-pcie-ep
-
-This will always be true, but at least documents the strings in a
-parseable form.
-
-> +
-> +  reg:
-> +    description: |
-> +      For designware cores version < 4.80 contains the configuration
-> +      address space. For designware core version >= 4.80, contains
-> +      the configuration and ATU address space
-
-And DBI for all versions.
-
-
-> +    maxItems: 4
-
-minItems: 2
-
-(dbi and config must always be there)
-
-> +
-> +  reg-names:
-> +    description: |
-> +      Must be "config" for the PCIe configuration space and "atu" for
-> +      the ATU address space.
-> +      (The old way of getting the configuration address space from
-> +      "ranges" is deprecated and should be avoided.)
-
-This is getting dropped from the driver and can be dropped here. This
-only existed for a few months back in 2013.
-
-> +    maxItems: 4
-
-minItems: 2
-items:
-  contains:
-    enum: [ dbi, dbi2, config, atu ]
-
-> +
-> +  num-lanes:
-> +    description: |
-> +      number of lanes to use (this property should be specified unless
-> +      the link is brought already up in BIOS)
-> +    maxItems: 1
-
-Not an array. IIRC, pci-bus.yaml covers this. If not, needs a type ref
-and min/max (1-16).
-
-> +
-> +  reset-gpio:
-> +    description: GPIO pin number of power good signal
-
-Isn't this the PERST# signal?
-
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    description: |
-> +      Must contain an entry for each entry in clock-names.
-> +      See Documentation/devicetree/bindings/clock/clock-bindings.txt for
-> +      details.
-
-This is every 'clocks', drop.
-
-> +    minItems: 2
-> +    maxItems: 8
-> +
-> +  clock-names:
-> +    description: |
-> +      Must include the following entries:
-> +      - "pcie"
-> +      - "pcie_bus"
-
-Need to be in a schema.
-
-> +    minItems: 2
-> +    maxItems: 8
-> +
-> +  "snps,enable-cdm-check":
-> +    $ref: /schemas/types.yaml#definitions/flag
-> +    description: |
-> +      This is a boolean property and if present enables
-> +      automatic checking of CDM (Configuration Dependent Module) registers
-> +      for data corruption. CDM registers include standard PCIe configuration
-> +      space registers, Port Logic registers, DMA and iATU (internal Address
-> +      Translation Unit) registers.
-> +
-
-> +  # The following are mandatory properties for RC Mode
-> +
-> +  "#address-cells":
-> +    const: 3
-> +
-> +  "#size-cells":
-> +    const: 2
-> +
-> +  device_type:
-> +    const: pci
-> +
-> +  ranges:
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    description: |
-> +      ranges for the PCI memory and I/O regions
-> +    minItems: 1
-> +    maxItems: 8
-> +
-> +  "#interrupt-cells":
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    const: 1
-> +
-> +  interrupt-map-mask:
-> +    description: |
-> +      Standard PCI properties to define the mapping of the PCIe
-> +      interface to interrupt numbers.
-> +
-> +  interrupt-map:
-> +    description: |
-> +      Standard PCI properties to define the mapping of the PCIe
-> +      interface to interrupt numbers.
-
-pci-bus.yaml already covers these. Drop and reference pci-bus.yaml
-
-> +
-> +  # The following are optional properties for RC mode
-> +
-> +  num-viewport:
-> +    description: |
-> +      number of view ports configured in hardware. If a platform
-> +      does not specify it, the driver assumes 2.
-
-This is detected now and can be marked 'deprecated'.
-
-> +
-> +  bus-range:
-> +    description: |
-> +      PCI bus numbers covered (it is recommended for new devicetrees
-> +      to specify this property, to keep backwards compatibility a range of
-> +      0x00-0xff is assumed if not present)
-
-Covered by pci-bus.yaml.
-
-> +
-> +  # The following are mandatory properties for EP Mode
-> +
-> +  num-ib-windows:
-> +    description: number of inbound address translation windows
-> +    maxItems: 1
-> +
-> +  num-ob-windows:
-> +    description: number of outbound address translation windows
-> +    maxItems: 1
-
-These 2 are detected now and can be marked 'deprecated'.
-
-> +
-> +  # The following are optional properties for EP mode
-> +
-> +  max-functions:
-> +    description: maximum number of functions that can be configured
-> +    maxItems: 1
-
-Not an array.
-
-> +
-> +required:
-> +  - reg
-> +  - reg-names
-> +  - compatible
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: snps,dw-pcie
-> +    then:
-> +      required:
-> +        - compatible
-> +        - "#address-cells"
-> +        - "#size-cells"
-> +        - device_type
-> +        - ranges
-> +        - "#interrupt-cells"
-> +        - interrupt-map-mask
-> +        - interrupt-map
-
-All these are required for all pci hosts.
-
-
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: snps,dw-pcie-ep
-> +    then:
-> +      required:
-> +        - compatible
-> +        - num-ib-windows
-> +        - num-ob-windows
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    pcie: pcie@dfc00000 {
-> +      compatible = "snps,dw-pcie";
-> +      reg = <0xdfc00000 0x0001000>, /* IP registers */
-> +            <0xd0000000 0x0002000>; /* Configuration space */
-> +      reg-names = "dbi", "config";
-> +      #address-cells = <3>;
-> +      #size-cells = <2>;
-> +      device_type = "pci";
-> +      ranges = <0x81000000 0 0x00000000 0xde000000 0 0x00010000
-> +          0x82000000 0 0xd0400000 0xd0400000 0 0x0d000000>;
-> +      interrupts = <25>, <24>;
-> +      #interrupt-cells = <1>;
-> +      num-lanes = <1>;
-> +    };
-> +    pcie_ep: pcie_ep@dfd00000 {
-> +      compatible = "snps,dw-pcie-ep";
-> +      reg = <0xdfc00000 0x0001000>, /* IP registers 1 */
-> +            <0xdfc01000 0x0001000>, /* IP registers 2 */
-> +            <0xd0000000 0x2000000>; /* Configuration space */
-> +      reg-names = "dbi", "dbi2", "addr_space";
-> +      num-ib-windows = <6>;
-> +      num-ob-windows = <2>;
-> +      num-lanes = <1>;
-> +    };
+regards
+Suman
