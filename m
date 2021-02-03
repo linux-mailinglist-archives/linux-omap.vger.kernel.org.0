@@ -2,41 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9099C30C855
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Feb 2021 18:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3FA830D380
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Feb 2021 07:51:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237883AbhBBRrz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Feb 2021 12:47:55 -0500
-Received: from mail-ot1-f45.google.com ([209.85.210.45]:45119 "EHLO
-        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237849AbhBBRpm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 Feb 2021 12:45:42 -0500
-Received: by mail-ot1-f45.google.com with SMTP id n42so20625703ota.12;
-        Tue, 02 Feb 2021 09:45:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=dXcV2lusAKjpXaSjnWl/fIkigGZVjdMH0wGYu3s5F9U=;
-        b=rEWf50QU9nJKa9FiBZqL558aMY84huNuzE7Xo4Mh1cOQi6tKdzXwPOuBF/gVNBsTzu
-         Fv6y7eKK93cJ6KQe7xzgLP3sIbBWZXifO5xHFtSiO0hIRLkZY32bU5244isZdzQWLHJn
-         GoqIWzfJBSjY4do1ryn05Xj+oLK9wpIYiU6lFDXUZHCEEcPx3G9uQBEaONlgU1UNCG9Q
-         ZmH6XNrE2ptnpihGu8UZMpBsmoOiAOd0UTyn6lWmRuqHSou3jGNgnU5XTTkWCm7eZdk0
-         2FODmQ3MWgq/Slhqk3jNEBpmwf1SKWqOSIjB+ZxoB8z5U/Tb6e8+IZbcnNdM58bku7i3
-         St/A==
-X-Gm-Message-State: AOAM531I5qDEF8RrqSpSpuyrQH6ZlqFKFap8qtgEktvnIzvYDqSbFH3E
-        rU22CIVvuM4Jholl0+MhPg==
-X-Google-Smtp-Source: ABdhPJwFA1zAuUMqn+6HziXpCsNLVDtNJm8XRkxO4ss2xfBlEqm8gKWEdsb6buTK11ZNUr94TWTkaQ==
-X-Received: by 2002:a9d:6c9a:: with SMTP id c26mr15987302otr.96.1612287900437;
-        Tue, 02 Feb 2021 09:45:00 -0800 (PST)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id a71sm4919072oob.48.2021.02.02.09.44.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Feb 2021 09:44:59 -0800 (PST)
-Received: (nullmailer pid 3887348 invoked by uid 1000);
-        Tue, 02 Feb 2021 17:44:55 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+        id S231624AbhBCGty (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 3 Feb 2021 01:49:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41294 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231186AbhBCGty (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 3 Feb 2021 01:49:54 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A9CFC64F5D;
+        Wed,  3 Feb 2021 06:49:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612334952;
+        bh=TbVrfhRWcP0NLWkcKrc9dypvQJV2iCyeSCaii6eG9Ro=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=k4bNSi5Yrb/h0nIFSc5i07chfgyRveavNrYx6tXmNY4YUVo71kjXoj58WpoS26hCk
+         uCrxhKvd/JINpBt6xI4aRXzjzz0q2z0b4Jpzn88TxH1VbIs3gYWdkh1niFtlVTB1kX
+         1CopGTwzJ5CvVY/GK5gLvjC7egUIna+Cj+SOrhEItOX6sdcbHz1w+Nh+oBPKLN80iR
+         MAuh85U3/Rg8T1TN+INLzWRfCb3TxylBCkTR64tAC9G6v3tO+CoRnnf+ZhwJu7Jcg/
+         G4h6hht8I6O6OBd5bMopuYFgBepcOY61dAfTEygpm5fHjmekUW6Se249HLVv84fyTP
+         /oH1Bp1Y1nkKg==
+Date:   Wed, 3 Feb 2021 07:49:00 +0100
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Rob Herring <robh@kernel.org>
 Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
         linux-kernel@vger.kernel.org,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
@@ -71,69 +60,90 @@ Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
         Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <706e684f571e142362d7be74eb1dcee2c8558052.1612271903.git.mchehab+huawei@kernel.org>
-References: <cover.1612271903.git.mchehab+huawei@kernel.org> <706e684f571e142362d7be74eb1dcee2c8558052.1612271903.git.mchehab+huawei@kernel.org>
-Subject: Re: [PATCH 01/13] doc: bindings: pci: designware-pcie.txt: convert it to yaml
-Date:   Tue, 02 Feb 2021 11:44:54 -0600
-Message-Id: <1612287895.001149.3887347.nullmailer@robh.at.kernel.org>
+Subject: Re: [PATCH 01/13] doc: bindings: pci: designware-pcie.txt: convert
+ it to yaml
+Message-ID: <20210203074900.6d581153@coco.lan>
+In-Reply-To: <1612287895.001149.3887347.nullmailer@robh.at.kernel.org>
+References: <cover.1612271903.git.mchehab+huawei@kernel.org>
+        <706e684f571e142362d7be74eb1dcee2c8558052.1612271903.git.mchehab+huawei@kernel.org>
+        <1612287895.001149.3887347.nullmailer@robh.at.kernel.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 02 Feb 2021 14:29:46 +0100, Mauro Carvalho Chehab wrote:
-> Convert the file into a DT schema.
+Hi Rob,
+
+Em Tue, 02 Feb 2021 11:44:54 -0600
+Rob Herring <robh@kernel.org> escreveu:
+
+> My bot found errors running 'make dt_binding_check' on your patch:
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  .../bindings/pci/amlogic,meson-pcie.txt       |   4 +-
->  .../bindings/pci/axis,artpec6-pcie.txt        |   2 +-
->  .../bindings/pci/designware-pcie.txt          |  77 ----------
->  .../bindings/pci/fsl,imx6q-pcie.txt           |   2 +-
->  .../bindings/pci/hisilicon-histb-pcie.txt     |   2 +-
->  .../bindings/pci/hisilicon-pcie.txt           |   2 +-
->  .../devicetree/bindings/pci/kirin-pcie.txt    |   2 +-
->  .../bindings/pci/layerscape-pci.txt           |   2 +-
->  .../bindings/pci/nvidia,tegra194-pcie.txt     |   4 +-
->  .../devicetree/bindings/pci/pci-armada8k.txt  |   2 +-
->  .../devicetree/bindings/pci/pci-keystone.txt  |  10 +-
->  .../devicetree/bindings/pci/pcie-al.txt       |   2 +-
->  .../devicetree/bindings/pci/qcom,pcie.txt     |  14 +-
->  .../bindings/pci/samsung,exynos-pcie.yaml     |   2 +-
->  .../devicetree/bindings/pci/snps,pcie.yaml    | 139 ++++++++++++++++++
->  .../pci/socionext,uniphier-pcie-ep.yaml       |   2 +-
->  .../devicetree/bindings/pci/ti-pci.txt        |   4 +-
->  .../devicetree/bindings/pci/uniphier-pcie.txt |   2 +-
->  MAINTAINERS                                   |   2 +-
->  19 files changed, 169 insertions(+), 107 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/pci/designware-pcie.txt
->  create mode 100644 Documentation/devicetree/bindings/pci/snps,pcie.yaml
+> yamllint warnings/errors:
 > 
+> dtschema/dtc warnings/errors:
+> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: properties:snps,enable-cdm-check: 'oneOf' conditional failed, one must be fixed:
+> 	'type' is a required property
+> 	Additional properties are not allowed ('$ref' was unexpected)
+> 	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: properties:snps,enable-cdm-check: 'oneOf' conditional failed, one must be fixed:
+> 		'enum' is a required property
+> 		'const' is a required property
+> 	'/schemas/types.yaml#definitions/flag' does not match 'types.yaml#/definitions/'
+> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: ignoring, error in schema: properties: snps,enable-cdm-check
+> warning: no schema found in file: ./Documentation/devicetree/bindings/pci/snps,pcie.yaml
+> 
+> See https://patchwork.ozlabs.org/patch/1434686
+> 
+> This check can fail if there are any dependencies. The base for a patch
+> series is generally the most recent rc1.
+> 
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+> 
+> pip3 install dtschema --upgrade
+> 
+> Please check and re-submit.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+I've no idea why the bot is hitting those. My tree is based on
+staging-testing[1], as I need the regulator patches merged there.
+Such tree is based on v5.11-rc5.
 
-yamllint warnings/errors:
+There, dt_binding_check doesn't get any warnings on this schema:
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: properties:snps,enable-cdm-check: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-	Additional properties are not allowed ('$ref' was unexpected)
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: properties:snps,enable-cdm-check: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-	'/schemas/types.yaml#definitions/flag' does not match 'types.yaml#/definitions/'
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: ignoring, error in schema: properties: snps,enable-cdm-check
-warning: no schema found in file: ./Documentation/devicetree/bindings/pci/snps,pcie.yaml
+$ pip3 install dtschema --upgrade --user
+Requirement already up-to-date: dtschema in /home/mchehab/.local/lib/python3.9/site-packages (2020.12)
+Requirement already satisfied, skipping upgrade: ruamel.yaml>0.15.69 in /usr/lib/python3.9/site-packages (from dtschema) (0.16.6)
+Requirement already satisfied, skipping upgrade: jsonschema>=3.0.1 in /usr/lib/python3.9/site-packages (from dtschema) (3.2.0)
+Requirement already satisfied, skipping upgrade: rfc3987 in /home/mchehab/.local/lib/python3.9/site-packages (from dtschema) (1.3.8)
+Requirement already satisfied, skipping upgrade: attrs>=17.4.0 in /usr/lib/python3.9/site-packages (from jsonschema>=3.0.1->dtschema) (19.3.0)
+Requirement already satisfied, skipping upgrade: pyrsistent>=0.14.0 in /usr/lib64/python3.9/site-packages (from jsonschema>=3.0.1->dtschema) (0.16.0)
+Requirement already satisfied, skipping upgrade: setuptools in /usr/lib/python3.9/site-packages (from jsonschema>=3.0.1->dtschema) (49.1.3)
+Requirement already satisfied, skipping upgrade: six>=1.11.0 in /usr/lib/python3.9/site-packages (from jsonschema>=3.0.1->dtschema) (1.15.0)
 
-See https://patchwork.ozlabs.org/patch/1434686
+$ make CROSS_COMPILE=aarch64-linux-gnu- ARCH=arm64 DT_SCHEMA_FILES=Documentation/devicetree/bindings/pci/snps,pcie.yaml dt_binding_check
+  LINT    Documentation/devicetree/bindings
+  DTEX    Documentation/devicetree/bindings/pci/snps,pcie.example.dts
+./Documentation/devicetree/bindings/sound/mt8192-mt6359-rt1015-rt5682.yaml:10:4: [warning] wrong indentation: expected 2 but found 3 (indentation)
+./Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml:102:10: [warning] wrong indentation: expected 10 but found 9 (indentation)
+  CHKDT   Documentation/devicetree/bindings/processed-schema-examples.json
+  SCHEMA  Documentation/devicetree/bindings/processed-schema-examples.json
+  DTC     Documentation/devicetree/bindings/pci/snps,pcie.example.dt.yaml
+  CHECK   Documentation/devicetree/bindings/pci/snps,pcie.example.dt.yaml
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+$ git merge v5.11-rc6
+Merge made by the 'recursive' strategy.
+...
+$ make CROSS_COMPILE=aarch64-linux-gnu- dt_binding_check DT_SCHEMA_FILES=Documentation/devicetree/bindings/pci/snps,pcie.yaml 
+  LINT    Documentation/devicetree/bindings
+./Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml:102:10: [warning] wrong indentation: expected 10 but found 9 (indentation)
+  CHKDT   Documentation/devicetree/bindings/processed-schema-examples.json
+  SCHEMA  Documentation/devicetree/bindings/processed-schema-examples.json
+  DTC     Documentation/devicetree/bindings/pci/snps,pcie.example.dt.yaml
+  CHECK   Documentation/devicetree/bindings/pci/snps,pcie.example.dt.yaml
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Thanks,
+Mauro
