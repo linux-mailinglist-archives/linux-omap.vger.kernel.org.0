@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A68C930F60F
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Feb 2021 16:21:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCA3230F620
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Feb 2021 16:23:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237177AbhBDPUg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 4 Feb 2021 10:20:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36666 "EHLO
+        id S237275AbhBDPWR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 4 Feb 2021 10:22:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237223AbhBDPTt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Feb 2021 10:19:49 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAD41C061788;
-        Thu,  4 Feb 2021 07:19:09 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id y18so4522479edw.13;
-        Thu, 04 Feb 2021 07:19:09 -0800 (PST)
+        with ESMTP id S237196AbhBDPVA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Feb 2021 10:21:00 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5393C06178C;
+        Thu,  4 Feb 2021 07:19:15 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id c6so4637393ede.0;
+        Thu, 04 Feb 2021 07:19:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=kA7iM6G+tHsHX5qw3wt51wVo7E+zCJZCLkoKnrDKq4Y=;
-        b=W4cfV5/0dL0av9SOsoeYkRGZsmBPL2hqK42EOZerpGQsi95XPA4dnspkZkdpAAMxSV
-         pkb1zX3XZmCCxKcJYAZ2QT8iUpEbAXozdkFoXAcgvC9vCHP4mWtSdBjYteMEQnpxQ+M9
-         4ZT7Rg5fFI+ziKmlcRx3AE9wuiTaZhQWlslkBkfz1JdfvwAbG7AQI2EHg/hs1LRkYx2u
-         9QZF+bsyZ8HOUIeZ/32EINf43pmwMmIJgv6ilOFsU4JRaLTuQn2Dt2b5AgSzB9U0aKUy
-         +lMc95NaqxZwzHg/4lAZl7JAeQQeoXe7gxLfXRs2NfoDKGIMeqn5fXKbcBHPfZRRvmQ5
-         jTAA==
+        bh=LhxDawnboy/GOphLJPpwmu1nF8PhAWga8yWTDRyj8XA=;
+        b=HHM0tu+en/eiYDTTVtlaIPgY73OWrtR8jXN3A7v8VdCMFu1WCO03MK1uu37ltdUyrA
+         baMzWM5FUOYzCHmVv1foThsw0iwyok9Di2vg8TVPZCSoYgIZ/OOfY4v/goTOE4Uwyowt
+         1/H6erNXJWEtOO51eDB/c5tk8X71qffK22OUmXK6QpB06rQZaRPWikOqL7+GfFrb2kTw
+         0DJAtUb2WywdQwU6wsik3h4AGOQsCgMXUGK0a/W9woFfU3o81A7ZA6pFdC0B4vo6yRnR
+         rSd5+O35CW3dhOpbtztWWKHdc7kPaqFC1MgvlOrF6Yut0roaByCX79cLY6SPZ/Z63tsr
+         26mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=kA7iM6G+tHsHX5qw3wt51wVo7E+zCJZCLkoKnrDKq4Y=;
-        b=cwLATTB/HNGus3jX8HnhtK7QSpeTlVw2TrfjC5SiLcOeFUKfaliKb6RuMUWuvl50Nk
-         nHGPrp4e1i5SbF97osWvrprGL1Fc/FITTyvjlGO4EuA5qG7HR0PKnZActLC5SfMLRZsn
-         BwJY69lAKrpqD8HD6OKBFhSU84PMucmRHU65d0BuA5LeIMU2oVuKaa1q22Ww9T+egh9y
-         fQ+AHRwtT3+TJBjAejI8pAtm0nLuLH1VjCOFujoT4IT7IBZVL1DhVZWAopOj3CGptbWG
-         mdIzKYEIUDTXvAJlfuuz1dtT3QhLU7hpkLWDDx4Fxn7zxa7+bLxn2rDD2PvtUea72q2y
-         fn6Q==
-X-Gm-Message-State: AOAM530nt6kpuXA3+oUw6D5JOiEWn+OI5RS7DINnRWA9pIZulbVPhXrc
-        Fp63U0SCwL9R/iH0yhTLrrMsKiRhYAhPu+Kn
-X-Google-Smtp-Source: ABdhPJwfG3Ce99XsaCXs91f6lfYXHfdV7XQFeKGSYxh2mMSowdr1KYmIsT98CTsuVcyOQJJGG9coHQ==
-X-Received: by 2002:a05:6402:3487:: with SMTP id v7mr8562518edc.68.1612451948549;
-        Thu, 04 Feb 2021 07:19:08 -0800 (PST)
+        bh=LhxDawnboy/GOphLJPpwmu1nF8PhAWga8yWTDRyj8XA=;
+        b=V5Cpn8w4a2yL+WYvsqhwQ4GQe+uQk5ovqTr7qpB9I8rKEcL6l3y8wjUYDlfyg+6rjz
+         46t0ZmZEwmurc1OFohLmXZWW+dEYdm2ax3rC8HSLzEnsSlupBalkij09ZF15Nd7pxhq+
+         LLsmu9O0eUA++kxpDGS4j/1I0j3ZmUyKS30VXYZL+EKwPhSweuB01CpCCWz8YoXSMmWA
+         hcKbwu/i6KUSDBvJ05IhxvWJDzeJ8dyIXAWNOamvZ9ZLH1CR22zvFypd8IaQsXBarCHW
+         cqxygr/06OTObHkmICDSVY6xN/bh1bZRY1LbcmdXG8aA+GnD+w1HMG7Mva3Qe1yDldhY
+         F3+w==
+X-Gm-Message-State: AOAM533aVo3ivKn/cP+izMUthOoQM7zpKskwTuL0ZNydudhYRQzQBL/L
+        1xnaKDhi0haa6qCyCRfCBSUjCjwZc74J81BJ
+X-Google-Smtp-Source: ABdhPJwKity2jdws4yrIx+7J7mgQzjqxjDjle4kCJ+oulDjfv3k5nDcDMydPchdLcweT589z7HQq1Q==
+X-Received: by 2002:a05:6402:1484:: with SMTP id e4mr1079509edv.104.1612451954704;
+        Thu, 04 Feb 2021 07:19:14 -0800 (PST)
 Received: from stitch.. ([80.71.140.73])
-        by smtp.gmail.com with ESMTPSA id a6sm2600001ejs.79.2021.02.04.07.19.07
+        by smtp.gmail.com with ESMTPSA id a6sm2600001ejs.79.2021.02.04.07.19.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Feb 2021 07:19:08 -0800 (PST)
+        Thu, 04 Feb 2021 07:19:14 -0800 (PST)
 Sender: Emil Renner Berthing <emil.renner.berthing@gmail.com>
 From:   Emil Renner Berthing <kernel@esmil.dk>
 To:     linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org
@@ -63,9 +63,9 @@ Cc:     Emil Renner Berthing <kernel@esmil.dk>,
         Harald Welte <HaraldWelte@viatech.com>,
         Pierre Ossman <pierre@ossman.eu>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/9] mmc: au1xmmc: Use new tasklet API
-Date:   Thu,  4 Feb 2021 16:18:40 +0100
-Message-Id: <20210204151847.91353-3-kernel@esmil.dk>
+Subject: [PATCH 5/9] mmc: s3cmci: Use new tasklet API
+Date:   Thu,  4 Feb 2021 16:18:43 +0100
+Message-Id: <20210204151847.91353-6-kernel@esmil.dk>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210204151847.91353-1-kernel@esmil.dk>
 References: <20210204151847.91353-1-kernel@esmil.dk>
@@ -80,51 +80,34 @@ commit 12cc923f1ccc ("tasklet: Introduce new initialization API")
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 ---
- drivers/mmc/host/au1xmmc.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/mmc/host/s3cmci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/au1xmmc.c b/drivers/mmc/host/au1xmmc.c
-index bd00515fbaba..0acc237843f7 100644
---- a/drivers/mmc/host/au1xmmc.c
-+++ b/drivers/mmc/host/au1xmmc.c
-@@ -253,9 +253,9 @@ static void au1xmmc_finish_request(struct au1xmmc_host *host)
- 	mmc_request_done(host->mmc, mrq);
+diff --git a/drivers/mmc/host/s3cmci.c b/drivers/mmc/host/s3cmci.c
+index a33a7823c265..0ca6f6d30b75 100644
+--- a/drivers/mmc/host/s3cmci.c
++++ b/drivers/mmc/host/s3cmci.c
+@@ -540,9 +540,9 @@ static void do_pio_write(struct s3cmci_host *host)
+ 	enable_imask(host, S3C2410_SDIIMSK_TXFIFOHALF);
  }
  
--static void au1xmmc_tasklet_finish(unsigned long param)
-+static void au1xmmc_tasklet_finish(struct tasklet_struct *t)
+-static void pio_tasklet(unsigned long data)
++static void pio_tasklet(struct tasklet_struct *t)
  {
--	struct au1xmmc_host *host = (struct au1xmmc_host *) param;
-+	struct au1xmmc_host *host = from_tasklet(host, t, finish_task);
- 	au1xmmc_finish_request(host);
- }
+-	struct s3cmci_host *host = (struct s3cmci_host *) data;
++	struct s3cmci_host *host = from_tasklet(host, t, pio_tasklet);
  
-@@ -363,9 +363,9 @@ static void au1xmmc_data_complete(struct au1xmmc_host *host, u32 status)
- 	au1xmmc_finish_request(host);
- }
+ 	s3cmci_disable_irq(host, true);
  
--static void au1xmmc_tasklet_data(unsigned long param)
-+static void au1xmmc_tasklet_data(struct tasklet_struct *t)
- {
--	struct au1xmmc_host *host = (struct au1xmmc_host *)param;
-+	struct au1xmmc_host *host = from_tasklet(host, t, data_task);
+@@ -1532,7 +1532,7 @@ static int s3cmci_probe(struct platform_device *pdev)
+ 	host->pdata = pdev->dev.platform_data;
  
- 	u32 status = __raw_readl(HOST_STATUS(host));
- 	au1xmmc_data_complete(host, status);
-@@ -1037,11 +1037,9 @@ static int au1xmmc_probe(struct platform_device *pdev)
- 	if (host->platdata)
- 		mmc->caps &= ~(host->platdata->mask_host_caps);
+ 	spin_lock_init(&host->complete_lock);
+-	tasklet_init(&host->pio_tasklet, pio_tasklet, (unsigned long) host);
++	tasklet_setup(&host->pio_tasklet, pio_tasklet);
  
--	tasklet_init(&host->data_task, au1xmmc_tasklet_data,
--			(unsigned long)host);
-+	tasklet_setup(&host->data_task, au1xmmc_tasklet_data);
- 
--	tasklet_init(&host->finish_task, au1xmmc_tasklet_finish,
--			(unsigned long)host);
-+	tasklet_setup(&host->finish_task, au1xmmc_tasklet_finish);
- 
- 	if (has_dbdma()) {
- 		ret = au1xmmc_dbdma_init(host);
+ 	if (host->is2440) {
+ 		host->sdiimsk	= S3C2440_SDIIMSK;
 -- 
 2.30.0
 
