@@ -2,136 +2,145 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B751430F710
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Feb 2021 17:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2120730F9C0
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Feb 2021 18:33:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237278AbhBDPdE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 4 Feb 2021 10:33:04 -0500
-Received: from mail-oo1-f44.google.com ([209.85.161.44]:44999 "EHLO
-        mail-oo1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237250AbhBDPVs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Feb 2021 10:21:48 -0500
-Received: by mail-oo1-f44.google.com with SMTP id n19so827328ooj.11;
-        Thu, 04 Feb 2021 07:21:26 -0800 (PST)
+        id S238553AbhBDRbw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 4 Feb 2021 12:31:52 -0500
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:44648 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238484AbhBDRab (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Feb 2021 12:30:31 -0500
+Received: by mail-ot1-f44.google.com with SMTP id e70so4132402ote.11;
+        Thu, 04 Feb 2021 09:30:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=P7JarkNG0Jr4x/lj1itZ7BSEgkDgo9dz5ORdHCgfdk8=;
-        b=Zo0NmWhlaKEdDnz60vg4clm2uM+qfG+TmAsZm9uWAvERLScDh4aCBssmqQmhsnkvXV
-         /KQr2iMRTO/5k7QcFS6a7Wmgc4frscHFgJ/Z49Spim8GruSrTb3q5oGm2o/AthpH6U6a
-         Hu06U+3yLqV/fGfYkgWDEzNGkzrRZ2k7YNkUb1CaIGUEPIbiLPMfQiaG+1mVl7CznLH+
-         QrWpqhtMpGgkBss750HPJDA9UsMCWfSHsT7A+ekoJqIA2Y595xd9RyZeA/ApKwpiy8dD
-         0JqJCXvBMJ75aDILVkggF62iWKAVWqWt34UGrPUQU4e9F4fypVNbtyAqqtT5sFmgLdAs
-         6EXQ==
-X-Gm-Message-State: AOAM533IhD3MzlLMZgW2JJ2jxZvgpOGejP280jVFylV82VZMS/tWJ7Ax
-        3At+zr8vNQY/6C3jFuEKlw==
-X-Google-Smtp-Source: ABdhPJzM3kHORViPede34wMD/uUSw98pduiPbhxgxRYTa/nSc0pWIAtPIW3tqD1eZiyu3WZiHYs1VA==
-X-Received: by 2002:a4a:d50d:: with SMTP id m13mr52826oos.2.1612452060739;
-        Thu, 04 Feb 2021 07:21:00 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=VABDqQO4SCCxw9n6VdMjP3tpI9MOBd0XV0ilXTl4TqU=;
+        b=bXZsNUSAr9FCbeJcIlPQ3E82Ruq35nNAKUkkToEQlsWSGZmyEy24aI6FZXVfkZmY+G
+         TF64rW4JYqJAajQypMzpzuxFvGkH4UakP7wEiHaKO7fQ+LPvUFbBO10X2nVwuDFt9jDU
+         WpWAUdKvKSk2cJL1POhx0EL5NA+qJcCkdxz389/pT9YODDrZXxM2r9HMeXiwPaF9cRh3
+         HhdM7swoTdodw0GT3qbA0Gcs9fU6TyT0fuvqVJSxRa7kiM1Q00vKUKCQRmtFjwe+nDfp
+         xhgZPRp1tT+Hc2oyZ7fz/6ZhMb/FRyzu2e5MyxixLIia+jHSg27SFf2bcn00RLu4Aayd
+         OSiw==
+X-Gm-Message-State: AOAM532L9rSKQC/tT7al+O6vDAOpNpIJ+0wGtsDOismZW9B3mOXzT7cF
+        gZzIrfwKSvohs7mLbRi3qA==
+X-Google-Smtp-Source: ABdhPJyRucRa6WFuTvsk3abTvCXMHWztBy5ONKR24Bi/EstX7fiI57+Du8n2gQUyyz1NuIk23MVq1Q==
+X-Received: by 2002:a9d:1c9a:: with SMTP id l26mr331207ota.316.1612459788720;
+        Thu, 04 Feb 2021 09:29:48 -0800 (PST)
 Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 33sm1139125ota.69.2021.02.04.07.20.58
+        by smtp.gmail.com with ESMTPSA id z10sm1238418otk.8.2021.02.04.09.29.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Feb 2021 07:20:59 -0800 (PST)
-Received: (nullmailer pid 452035 invoked by uid 1000);
-        Thu, 04 Feb 2021 15:20:57 -0000
+        Thu, 04 Feb 2021 09:29:47 -0800 (PST)
+Received: (nullmailer pid 682797 invoked by uid 1000);
+        Thu, 04 Feb 2021 17:29:45 -0000
+Date:   Thu, 4 Feb 2021 11:29:45 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-arm-kernel@axis.com, Kevin Hilman <khilman@baylibre.com>,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-kernel@vger.kernel.org,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Jonathan Chocron <jonnyc@amazon.com>,
-        devicetree@vger.kernel.org, Jaehoon Chung <jh80.chung@samsung.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-tegra@vger.kernel.org, linux-pci@vger.kernel.org,
+        Jaehoon Chung <jh80.chung@samsung.com>,
         Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Andy Gross <agross@kernel.org>,
         Jesper Nilsson <jesper.nilsson@axis.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-omap@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
         linux-amlogic@lists.infradead.org,
-        Zhou Wang <wangzhou1@hisilicon.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
+        Lucas Stach <l.stach@pengutronix.de>,
+        linux-samsung-soc@vger.kernel.org,
+        Kevin Hilman <khilman@baylibre.com>,
+        devicetree@vger.kernel.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-arm-kernel@axis.com, Richard Zhu <hongxing.zhu@nxp.com>,
+        linux-arm-msm@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>,
         Fabio Estevam <festevam@gmail.com>,
-        Richard Zhu <hongxing.zhu@nxp.com>
-In-Reply-To: <bf3d0a5683c50062a55182922daeec5cfdbe00cc.1612335031.git.mchehab+huawei@kernel.org>
-References: <cover.1612335031.git.mchehab+huawei@kernel.org> <bf3d0a5683c50062a55182922daeec5cfdbe00cc.1612335031.git.mchehab+huawei@kernel.org>
-Subject: Re: [PATCH v2 01/11] doc: bindings: PCI: designware-pcie.txt: convert it to YAML
-Date:   Thu, 04 Feb 2021 09:20:57 -0600
-Message-Id: <1612452057.699681.452034.nullmailer@robh.at.kernel.org>
+        Shawn Guo <shawnguo@kernel.org>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-pci@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
+        linux-tegra@vger.kernel.org, Jonathan Chocron <jonnyc@amazon.com>,
+        Zhou Wang <wangzhou1@hisilicon.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: Re: [PATCH 01/13] doc: bindings: pci: designware-pcie.txt: convert
+ it to yaml
+Message-ID: <20210204172945.GA662023@robh.at.kernel.org>
+References: <cover.1612271903.git.mchehab+huawei@kernel.org>
+ <706e684f571e142362d7be74eb1dcee2c8558052.1612271903.git.mchehab+huawei@kernel.org>
+ <1612287895.001149.3887347.nullmailer@robh.at.kernel.org>
+ <20210203074900.6d581153@coco.lan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210203074900.6d581153@coco.lan>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 03 Feb 2021 08:01:45 +0100, Mauro Carvalho Chehab wrote:
-> Convert the file into a DT schema.
+On Wed, Feb 03, 2021 at 07:49:00AM +0100, Mauro Carvalho Chehab wrote:
+> Hi Rob,
 > 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  .../bindings/pci/amlogic,meson-pcie.txt       |   4 +-
->  .../bindings/pci/axis,artpec6-pcie.txt        |   2 +-
->  .../bindings/pci/designware-pcie.txt          |  77 ----------
->  .../bindings/pci/fsl,imx6q-pcie.txt           |   2 +-
->  .../bindings/pci/hisilicon-histb-pcie.txt     |   2 +-
->  .../bindings/pci/hisilicon-pcie.txt           |   2 +-
->  .../devicetree/bindings/pci/kirin-pcie.txt    |   2 +-
->  .../bindings/pci/layerscape-pci.txt           |   2 +-
->  .../bindings/pci/nvidia,tegra194-pcie.txt     |   4 +-
->  .../devicetree/bindings/pci/pci-armada8k.txt  |   2 +-
->  .../devicetree/bindings/pci/pci-keystone.txt  |  10 +-
->  .../devicetree/bindings/pci/pcie-al.txt       |   2 +-
->  .../devicetree/bindings/pci/qcom,pcie.txt     |  14 +-
->  .../bindings/pci/samsung,exynos-pcie.yaml     |   2 +-
->  .../devicetree/bindings/pci/snps,pcie.yaml    | 139 ++++++++++++++++++
->  .../pci/socionext,uniphier-pcie-ep.yaml       |   2 +-
->  .../devicetree/bindings/pci/ti-pci.txt        |   4 +-
->  .../devicetree/bindings/pci/uniphier-pcie.txt |   2 +-
->  MAINTAINERS                                   |   2 +-
->  19 files changed, 169 insertions(+), 107 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/pci/designware-pcie.txt
->  create mode 100644 Documentation/devicetree/bindings/pci/snps,pcie.yaml
+> Em Tue, 02 Feb 2021 11:44:54 -0600
+> Rob Herring <robh@kernel.org> escreveu:
 > 
+> > My bot found errors running 'make dt_binding_check' on your patch:
+> > 
+> > yamllint warnings/errors:
+> > 
+> > dtschema/dtc warnings/errors:
+> > /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: properties:snps,enable-cdm-check: 'oneOf' conditional failed, one must be fixed:
+> > 	'type' is a required property
+> > 	Additional properties are not allowed ('$ref' was unexpected)
+> > 	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: properties:snps,enable-cdm-check: 'oneOf' conditional failed, one must be fixed:
+> > 		'enum' is a required property
+> > 		'const' is a required property
+> > 	'/schemas/types.yaml#definitions/flag' does not match 'types.yaml#/definitions/'
 
-My bot found errors running 'make dt_binding_check' on your patch:
+You need a '/' between '#' and 'definitions'.
 
-yamllint warnings/errors:
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: properties:snps,enable-cdm-check: 'oneOf' conditional failed, one must be fixed:
-	'type' is a required property
-	Additional properties are not allowed ('$ref' was unexpected)
-	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: properties:snps,enable-cdm-check: 'oneOf' conditional failed, one must be fixed:
-		'enum' is a required property
-		'const' is a required property
-	'/schemas/types.yaml#definitions/flag' does not match 'types.yaml#/definitions/'
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: ignoring, error in schema: properties: snps,enable-cdm-check
-warning: no schema found in file: ./Documentation/devicetree/bindings/pci/snps,pcie.yaml
+> > /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/pci/snps,pcie.yaml: ignoring, error in schema: properties: snps,enable-cdm-check
+> > warning: no schema found in file: ./Documentation/devicetree/bindings/pci/snps,pcie.yaml
+> > 
+> > See https://patchwork.ozlabs.org/patch/1434686
+> > 
+> > This check can fail if there are any dependencies. The base for a patch
+> > series is generally the most recent rc1.
+> > 
+> > If you already ran 'make dt_binding_check' and didn't see the above
+> > error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> > date:
+> > 
+> > pip3 install dtschema --upgrade
+> > 
+> > Please check and re-submit.
+> 
+> I've no idea why the bot is hitting those. My tree is based on
+> staging-testing[1], as I need the regulator patches merged there.
+> Such tree is based on v5.11-rc5.
+> 
+> There, dt_binding_check doesn't get any warnings on this schema:
+> 
+> $ pip3 install dtschema --upgrade --user
+> Requirement already up-to-date: dtschema in /home/mchehab/.local/lib/python3.9/site-packages (2020.12)
 
-See https://patchwork.ozlabs.org/patch/1435145
+This particular check is in master, but not yet a release on pypi. I'll 
+be tagging a release soon.
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+I've got this problem that adding new meta-schema checks like this one 
+requires fixing up all the existing in tree schemas first. So I give 
+some amount of time before adding them to a tagged release. However, I 
+want to start testing new schemas right away. I haven't come up with a 
+better solution short of importing the meta-schema into the kernel tree 
+or separately versioning them.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Rob
