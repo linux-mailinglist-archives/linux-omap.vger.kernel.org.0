@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2F2630F736
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Feb 2021 17:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A69C30F72E
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Feb 2021 17:08:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237724AbhBDQF7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 4 Feb 2021 11:05:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36674 "EHLO
+        id S237627AbhBDQD6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 4 Feb 2021 11:03:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237218AbhBDPTv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Feb 2021 10:19:51 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA26C06178A;
-        Thu,  4 Feb 2021 07:19:11 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id sa23so6008768ejb.0;
-        Thu, 04 Feb 2021 07:19:11 -0800 (PST)
+        with ESMTP id S236966AbhBDPTy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Feb 2021 10:19:54 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99B92C06178B;
+        Thu,  4 Feb 2021 07:19:14 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id t5so4531753eds.12;
+        Thu, 04 Feb 2021 07:19:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=4Ztwrmsm6gQAgLIEitmcEoJqCpEXF+Q5ciHAZ3tgDxw=;
-        b=mRQ5xqodp26jOz8LqunuNzwLU0YL/YgEsvxJ+8kuNGzv1/OpnND4QdHXcQNNDxcw9o
-         bEZEdkHyFB5+BpvmAYasq/PQT18rC5R+kJzCWUJcOaldouyP1Mdei0NoNgBcXTDURzBm
-         2fcHnfwWQqTX66Bq7FOuhVJzdy2xul+opPhrhjhnTCfW57yGCfU8ivQfj1/X6xXlc3pr
-         k0P4ci138hfwrSgoD+ZI7mx1cimo5n03oWhPKfsLDxlsiPQRXVqzHAemYdiSGWZH7n5I
-         ZA1Bog1w1xuqeP+POAgwULTiLa/aCibA1g0GT4Xupxe4i1CrNZ8vDOcaKrjJUfhjBNNM
-         PXjQ==
+        bh=MXxWaP3OMD24RnZ/OSVIIbiGQ1wOqMXQ3YDzBvlfZKc=;
+        b=Y9ukjEkFtjspHv5gHEuPAtYlxRPD5EcQz/cPxJRYXU/NRBX67UiJU5GQZr03n9ZZ6e
+         OR3+LT9H5tAY7svvli7sOSAIQttxbqbYnxgPNG4uXWN41N/2uzVwv0PRfk/eGdFT/iVV
+         Dhuyv/lB2naVSMm2OgKyCBEUzzlmPj/726yvckg6V7Yo2pB646XbBBQu1DUnSS6p/Nrx
+         CxgGIfCQ8zmqp0qBvlPf8nvIuzIoxmM9wEML2s5TtE30SW5tZVzuakVPAJF/ZO/irGzD
+         YaEVCAJ0HvEB3dRMmugCdgLSN+rsab8QoclToeqBkUQcEnv1Yko17CQRNZuN8KMklPZR
+         Rvqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=4Ztwrmsm6gQAgLIEitmcEoJqCpEXF+Q5ciHAZ3tgDxw=;
-        b=XkwFS3w6Llg4vntQkSFY2SvXWyqQyilYnA4RNfRNEqG0fCb6+b2y0e0KF1wYR/HD+2
-         22E3Uj9OejlbL0jpJjYvFs5Ct4+kvpdK46beWH6kh2Pd5h5qvMoa2HV/gu7+hI+G1CJ3
-         TW+VuhB5znY6cytcIWTL/m8WgjegggyE4OVTaL7EDLRmGDnSnEh9AP5tTo2uWpFDUXOq
-         +ITov45AHmj5DFUe13S6d9olhYyYuZzis0Gv0iWjUr3grK7nBnPeDEW9utOEqngD8SoL
-         NOVdAhdqXs9rMiTQy0Mue1u26gmP8LuIZtnuHK4QgCXzRuYM1ly17uJvZHNTnlghBnlz
-         /4bw==
-X-Gm-Message-State: AOAM532gbS2DPn6UH/r9fI21fdUGYfuMfv78XdQRrNUBE7w2UlYMlVT2
-        IG7pEsKCozPDvOHrnppVh+fQ2uiGQoPVK/Lq
-X-Google-Smtp-Source: ABdhPJwIDsLfmE8dMsrsBsSwNtKWXrU7ViHCPtARzRsAkMyD6j9j9GkqDwtVUArnOtFintcqgVRILw==
-X-Received: by 2002:a17:906:6dc6:: with SMTP id j6mr8261860ejt.88.1612451950067;
-        Thu, 04 Feb 2021 07:19:10 -0800 (PST)
+        bh=MXxWaP3OMD24RnZ/OSVIIbiGQ1wOqMXQ3YDzBvlfZKc=;
+        b=C4r84de4kvcZ1wD0aqAoEoyDSRzK/enHfObdeTub2ciEWiG5B7w+ZxD/UtTO9qcmpM
+         EXCVdXPysqfUA9T6p6t2TJDvSJjLQpT9RcVdaxSQJE1Z8kgiM0M7JWVF/1XadHN7c60V
+         1BB2A4xoYha3xOuEhtMUh66ZgfGgXhT+xviMuxCDZzPKUBGQfezkUOzkly2Ok9qpm/91
+         tBBsBrakXYQrEXNJRrOC+jcPuvUWAw3DzvSpOhBxIbkgTmkx3rgslaj4wUKhC9cDfv2w
+         cPJzK3hcs7t0AoKJw3sE7gzBDnKVWjq86Iv2oXU2Svly3n2VICiO4bkkh9wdn01PkXIY
+         Y3YQ==
+X-Gm-Message-State: AOAM532PEGMXny1TTVdelF/GCehL8u+u6vI5lK8SfNZY5ABwpgtMo/Ko
+        jdNN+AyQrtMyqZhKla48bLZlglnYNafdKoDX
+X-Google-Smtp-Source: ABdhPJyPq3p6MXw+NKWx1K05eqiXDRYZGsAJgrrr++6DtWr4V3jzMLDk8+xPLi3Fi+f7Z1ImdeULrA==
+X-Received: by 2002:a50:8466:: with SMTP id 93mr8342762edp.55.1612451951546;
+        Thu, 04 Feb 2021 07:19:11 -0800 (PST)
 Received: from stitch.. ([80.71.140.73])
-        by smtp.gmail.com with ESMTPSA id a6sm2600001ejs.79.2021.02.04.07.19.08
+        by smtp.gmail.com with ESMTPSA id a6sm2600001ejs.79.2021.02.04.07.19.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Feb 2021 07:19:09 -0800 (PST)
+        Thu, 04 Feb 2021 07:19:10 -0800 (PST)
 Sender: Emil Renner Berthing <emil.renner.berthing@gmail.com>
 From:   Emil Renner Berthing <kernel@esmil.dk>
 To:     linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org
@@ -63,9 +63,9 @@ Cc:     Emil Renner Berthing <kernel@esmil.dk>,
         Harald Welte <HaraldWelte@viatech.com>,
         Pierre Ossman <pierre@ossman.eu>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/9] mmc: dw_mmc: Use new tasklet API
-Date:   Thu,  4 Feb 2021 16:18:41 +0100
-Message-Id: <20210204151847.91353-4-kernel@esmil.dk>
+Subject: [PATCH 4/9] mmc: omap: Use new tasklet API
+Date:   Thu,  4 Feb 2021 16:18:42 +0100
+Message-Id: <20210204151847.91353-5-kernel@esmil.dk>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210204151847.91353-1-kernel@esmil.dk>
 References: <20210204151847.91353-1-kernel@esmil.dk>
@@ -80,34 +80,35 @@ commit 12cc923f1ccc ("tasklet: Introduce new initialization API")
 
 Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 ---
- drivers/mmc/host/dw_mmc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mmc/host/omap.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-index a5244435556b..2f4de30f650b 100644
---- a/drivers/mmc/host/dw_mmc.c
-+++ b/drivers/mmc/host/dw_mmc.c
-@@ -1952,9 +1952,9 @@ static bool dw_mci_clear_pending_data_complete(struct dw_mci *host)
- 	return true;
+diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
+index 6aa0537f1f84..5e5af34090f1 100644
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -878,9 +878,9 @@ static void mmc_omap_cover_timer(struct timer_list *t)
+ 	tasklet_schedule(&slot->cover_tasklet);
  }
  
--static void dw_mci_tasklet_func(unsigned long priv)
-+static void dw_mci_tasklet_func(struct tasklet_struct *t)
+-static void mmc_omap_cover_handler(unsigned long param)
++static void mmc_omap_cover_handler(struct tasklet_struct *t)
  {
--	struct dw_mci *host = (struct dw_mci *)priv;
-+	struct dw_mci *host = from_tasklet(host, t, tasklet);
- 	struct mmc_data	*data;
- 	struct mmc_command *cmd;
- 	struct mmc_request *mrq;
-@@ -3308,7 +3308,7 @@ int dw_mci_probe(struct dw_mci *host)
- 	else
- 		host->fifo_reg = host->regs + DATA_240A_OFFSET;
+-	struct mmc_omap_slot *slot = (struct mmc_omap_slot *)param;
++	struct mmc_omap_slot *slot = from_tasklet(slot, t, cover_tasklet);
+ 	int cover_open = mmc_omap_cover_is_open(slot);
  
--	tasklet_init(&host->tasklet, dw_mci_tasklet_func, (unsigned long)host);
-+	tasklet_setup(&host->tasklet, dw_mci_tasklet_func);
- 	ret = devm_request_irq(host->dev, host->irq, dw_mci_interrupt,
- 			       host->irq_flags, "dw-mci", host);
- 	if (ret)
+ 	mmc_detect_change(slot->mmc, 0);
+@@ -1269,8 +1269,7 @@ static int mmc_omap_new_slot(struct mmc_omap_host *host, int id)
+ 
+ 	if (slot->pdata->get_cover_state != NULL) {
+ 		timer_setup(&slot->cover_timer, mmc_omap_cover_timer, 0);
+-		tasklet_init(&slot->cover_tasklet, mmc_omap_cover_handler,
+-			     (unsigned long)slot);
++		tasklet_setup(&slot->cover_tasklet, mmc_omap_cover_handler);
+ 	}
+ 
+ 	r = mmc_add_host(mmc);
 -- 
 2.30.0
 
