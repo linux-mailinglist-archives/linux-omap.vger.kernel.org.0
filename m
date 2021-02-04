@@ -2,71 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D192A30D900
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Feb 2021 12:43:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67A7030ECAC
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Feb 2021 07:47:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234416AbhBCLmc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 3 Feb 2021 06:42:32 -0500
-Received: from vm6.ganeti.dyne.org ([195.169.149.119]:57762 "EHLO
-        vm6.ganeti.dyne.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234410AbhBCLmQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 3 Feb 2021 06:42:16 -0500
-X-Greylist: delayed 383 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 06:42:16 EST
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: parazyd@dyne.org)
-        with ESMTPSA id 16073F60C45
-From:   Ivan Jelincic <parazyd@dyne.org>
-To:     linux-omap@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Ivan Jelincic <parazyd@dyne.org>,
-        Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 2/2] ARM: omap2plus_defconfig: Update for dropped options.
-Date:   Wed,  3 Feb 2021 12:34:26 +0100
-Message-Id: <20210203113426.18964-2-parazyd@dyne.org>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210203113426.18964-1-parazyd@dyne.org>
-References: <20210203113426.18964-1-parazyd@dyne.org>
+        id S232845AbhBDGq1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 4 Feb 2021 01:46:27 -0500
+Received: from muru.com ([72.249.23.125]:56938 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232796AbhBDGq1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 4 Feb 2021 01:46:27 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 99D6280B3;
+        Thu,  4 Feb 2021 06:45:57 +0000 (UTC)
+Date:   Thu, 4 Feb 2021 08:45:42 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     =?utf-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: am33xx: add aliases for mmc interfaces
+Message-ID: <YBuYFkNFxH8Ngtny@atomide.com>
+References: <20210128155644.6553-1-mans@mansr.com>
+ <YBPGyuNQhSypIf1y@atomide.com>
+ <yw1xczxoas3l.fsf@mansr.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.0 required=5.0 tests=ALL_TRUSTED
-        autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on tupac3.dyne.org
+In-Reply-To: <yw1xczxoas3l.fsf@mansr.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Update omap2plus_defconfig for options that have been dropped:
+* Måns Rullgård <mans@mansr.com> [210129 11:40]:
+> Tony Lindgren <tony@atomide.com> writes:
+> 
+> > * Mans Rullgard <mans@mansr.com> [210128 18:09]:
+> >> Without DT aliases, the numbering of mmc interfaces is unpredictable.
+> >> Adding them makes it possible to refer to devices consistently.  The
+> >> popular suggestion to use UUIDs obviously doesn't work with a blank
+> >> device fresh from the factory.
+> >> 
+> >> See fa2d0aa96941 "mmc: core: Allow setting slot index via device tree
+> >> alias" for more discussion.
+> >
+> > Sounds good to me, but will wait a few days before applying to make sure
+> > this is still what we have agreed on :)
+> 
+> If it helps the decision, my existing systems fail to boot without
+> something like this due to the eMMC moving from /dev/mmcblk1 to mmcblk0,
+> at least sometimes.  I guess the kernel cares deeply about not breaking
+> userspace, except when it doesn't give a damn.
+> 
+> I've been fighting this problem in various forms for the last 10 years
+> or so, and I was hoping it would finally be over.
 
-- SIMPLE_PM_BUS no longer selected.
-- MICREL_PHY no longer selected.
+Yes this issue has been bugging folks for long time. Applying into fixes
+thanks.
 
-Signed-off-by: Ivan Jelincic <parazyd@dyne.org>
-Cc: Tony Lindgren <tony@atomide.com>
-Signed-off-by: parazyd <parazyd@dyne.org>
----
- arch/arm/configs/omap2plus_defconfig | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 9847502d2c97..ac13cab9f69d 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -286,7 +286,6 @@ CONFIG_PCI_EPF_TEST=m
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
- CONFIG_OMAP_OCP2SCP=y
--CONFIG_SIMPLE_PM_BUS=y
- CONFIG_CONNECTOR=m
- CONFIG_MTD=y
- CONFIG_MTD_CMDLINE_PARTS=y
-@@ -344,7 +343,6 @@ CONFIG_TI_CPSW_SWITCHDEV=y
- CONFIG_TI_CPTS=y
- # CONFIG_NET_VENDOR_VIA is not set
- # CONFIG_NET_VENDOR_WIZNET is not set
--CONFIG_MICREL_PHY=y
- CONFIG_AT803X_PHY=y
- CONFIG_SMSC_PHY=y
- CONFIG_DP83848_PHY=y
--- 
-2.30.0
-
+Tony
