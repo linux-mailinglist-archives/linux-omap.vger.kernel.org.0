@@ -2,107 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 446F8310EB2
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Feb 2021 18:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8F531107B
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Feb 2021 19:59:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233231AbhBEPqh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 5 Feb 2021 10:46:37 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:41646 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233343AbhBEPoW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 5 Feb 2021 10:44:22 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 115F49g7009021;
-        Fri, 5 Feb 2021 09:04:09 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1612537449;
-        bh=tgXH0jDlzSuMvnwwTfnKlyIjhADidsODFnKRxzXzEik=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=LBeps3WPW3s/+y9bQeHBU93RH0dev6IU4YhvQrfO9y3Snopf3nm89bFwVpNZ7ImFO
-         7f+exNeDR+Ytmm+k/wSz91gPC2rNXhs3KWnImq108y1VBp1I9KxAkFgd6aFDqe9oLx
-         pxTwy/9TAbynWF3+P6LdVjG9de5IqcHz7z87kGTE=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 115F49Lh044774
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 5 Feb 2021 09:04:09 -0600
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 5 Feb
- 2021 09:04:09 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 5 Feb 2021 09:04:09 -0600
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 115F479B085244;
-        Fri, 5 Feb 2021 09:04:07 -0600
-Subject: Re: [PATCH 2/2] ARM: omap2plus_defconfig: Update for dropped options.
-To:     Tony Lindgren <tony@atomide.com>
-CC:     "Ivan J." <parazyd@dyne.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20210203113426.18964-1-parazyd@dyne.org>
- <20210203113426.18964-2-parazyd@dyne.org> <YBuankYwwMsG4MN9@atomide.com>
- <4b32f566-92ad-3c49-0453-b44df23f1384@ti.com>
- <20210205131736.3jivrc5lln4t2onr@fq> <YB1Ib41trny2JFDv@atomide.com>
- <8ab86ccf-7568-c173-75f6-0d572fd43fec@ti.com> <YB1aS4Tn76hKM5NC@atomide.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <8daa6fce-bfad-ea28-e8dd-f3083bf43b01@ti.com>
-Date:   Fri, 5 Feb 2021 17:04:08 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S233606AbhBERPW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 5 Feb 2021 12:15:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49990 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233121AbhBERN2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 5 Feb 2021 12:13:28 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8D95764EFE;
+        Fri,  5 Feb 2021 18:55:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612551306;
+        bh=l2A8CAgF/G7BGZq7431N93An0up6jDTvpRHYH8cBfG8=;
+        h=In-Reply-To:References:Subject:From:To:Date:From;
+        b=RPOj45dXJLj+vuNI8ahjCDXbfaAmoG+k7jRNp9Mp4pxf/xI3v4qYPHjTR0eZjUonW
+         SIkvXTlfrM4M5V1csQXDB3KtpyaetGu3A6NSZYiVjly/E1FtXUuVDnKKj90+hT7kga
+         72GNn9IGjtdxL9hhA7OKuQ0JoS0oaz+FFxGgl8kX1jZmqqDFq/kLas956fzVQg3+Tp
+         cgoCrwd84QWZpwzQ6Ju8Ml1ADw81R8AIzyyJMcL7KtTYIWcDxWum6dtU8ejQXc+zPm
+         cCC61w8Y3422l2yvWjt7AzjbIe5Cj51B0BEhUV+uecnjDzzoWzG0vHppylMCNsvTKj
+         IHO260731sTEw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <YB1aS4Tn76hKM5NC@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210203083155.GA2329016@dell>
+References: <20210126124540.3320214-1-lee.jones@linaro.org> <20210203083155.GA2329016@dell>
+Subject: Re: [PATCH 00/21] [Set 2] Rid W=1 warnings from Clock
+From:   Stephen Boyd <sboyd@kernel.org>
+To:     Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Andy Gross <agross@kernel.org>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Boris BREZILLON <boris.brezillon@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Emilio =?utf-8?q?L=C3=B3pez?= <emilio@elopez.com.ar>,
+        Fabio Estevam <festevam@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jan Kotas <jank@cadence.com>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Lee Jones <lee.jones@linaro.org>, Loc Ho <lho@apm.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Nuvoton Technologies <tali.perry@nuvoton.com>,
+        Patrick Venture <venture@google.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        P rashant Gaikwad <pgaikwad@nvidia.com>,
+        Rajan Vaja <rajan.vaja@xilinx.com>,
+        Rajeev Kumar <rajeev-dlh.kumar@st.com>,
+        Richard Woodruff <r-woodruff2@ti.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        =?utf-8?q?S=C3=B6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Viresh Kumar <vireshk@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        openbmc@lists.ozlabs.org
+Date:   Fri, 05 Feb 2021 10:55:05 -0800
+Message-ID: <161255130506.76967.8682382463883809207@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Quoting Lee Jones (2021-02-03 00:31:55)
+> On Tue, 26 Jan 2021, Lee Jones wrote:
+>=20
+> > This set is part of a larger effort attempting to clean-up W=3D1
+> > kernel builds, which are currently overwhelmingly riddled with
+> > niggly little warnings.
+> >=20
+> > This is the last set.  Clock is clean after this.
+>=20
+> Out of interest, what normally happens to the patches which aren't
+> picked up by individual driver Maintainers?
+>=20
 
-
-On 05/02/2021 16:46, Tony Lindgren wrote:
-> * Grygorii Strashko <grygorii.strashko@ti.com> [210205 14:25]:
->> On 05/02/2021 15:30, Tony Lindgren wrote:
->>> Grgorii, maybe send a patch selecting MICREL_PHY in the Kconfig
->>> for the other cases that do not use KS8851?
->>
->> The KS8851 config was added like 10years ago and is used on some omap4 platforms,
->> it does select MICREL_PHY.
->>
->>  From other side, *some* am57x, am437 platforms uses MICREL PHYs with no dependency from KS8851.
->>
->> The omap2plus_defconfig is also used as base for custom configs and first thing people are doing -
->> remove not needed options. As result, removal of KS8851 plus this patch will immediately
->> cause MICREL_PHY=n and so breakage on existing and custom platforms.
->>
->> I do not see how it can be resolved by using Kconfig changes within much-omap2.
->>
->> So, sry, but NACK for this patch as it is.
-> 
-> We can wait on this patch no problem while we figure this out.
-> But certainly we need to fix things so make savedefconfig
-> produces valid configs that don't need to be manually edited.
-> 
->> if some Kconfig dependencies need to be sorted out - probably the best way might be
->> to get rid of select MICREL_PHY in KS8851/KS8851_MLL.
-> 
-> That will potentially break things too as the configs now expect
-> it to be selected :) Looks like that got changed with commit
-> f0791b92d2b6 ("net: ks8851: Select PHYLIB and MICREL_PHY in
-> Kconfig").
-
-Yah. It's really has to be "depends on".
-
-> 
-> So why can't we do similar patches to select MICREL_PHY for
-> the other non-ks8851 configurations in drivers/net/ethernet
-> Kconfig files as needed?
-
-because there is no dependency between Ethernet controller (CPSW) and
-Ethernet PHY - any MII capable PHY can be used with CPSW.
-
--- 
-Best regards,
-grygorii
+I have to go in and figure it out! :)
