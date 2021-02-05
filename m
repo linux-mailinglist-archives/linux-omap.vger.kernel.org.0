@@ -2,67 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12C4D310343
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Feb 2021 04:11:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8FDD310BB5
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Feb 2021 14:21:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbhBEDJd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 4 Feb 2021 22:09:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48538 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229742AbhBEDJ0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 4 Feb 2021 22:09:26 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCB8C061794;
-        Thu,  4 Feb 2021 19:08:36 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id m13so5939408wro.12;
-        Thu, 04 Feb 2021 19:08:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:sender:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=fhPHySbut4dTAWvmnaTXTJM+XUEQ8MW2l8njFAAthh188LYbdzoPC8kI7eWPY/CxiS
-         jsMvnipBXfgyxdX/NSpMo/EW66E+55qlp7OM493EMYVvkq7b3CyzJBwevr8vY6w3zBQG
-         mM6s5ndcQV3U8sMPnieGuwTn5CET3I/BhAHhxZAmpT9+/guwWCYf4o6wMt6FVaC1/Mz+
-         /KT/eiEWNDQjqbKuqil3YCUvKHrBZBPNwmWtUcMAIqzf5K7ZFEv+LCpqZY0dzxf279nm
-         mYOfMs5c8QvmKEFEE6q7gA2zSHyIhwXqoh+U8bHlA/w+eJWdZbzbyx3GZZukk2oIVY+4
-         yjdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:sender:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=PMn5+7DeVG2YJOUDhVnv8M4TS2JYa13vsHSRYwNLtQMFNzJv+MxbvoHaw/V/51Kjlg
-         HQ7Coq/PvOqP0vGmpL5koiC8WJdg527e5FL+ST46QDhCT7ebWAXKcw6BCrUYCpxymZBb
-         Mo8hrWV1D+igd75MgSXQ1ICeOHNSHtol1QXbCw6M6b4DLl/P0iE6XiBu34dgo7Tpjoqn
-         GtzXH1inTMnmvlugY4I+99RqDSm2r4WwHdV2BMfgvYPlmKqTcj9mVqWfwboXSmz2nhXM
-         vdPd9SRaVk5aufnq9DxGJyrHr2MSFgzM92N+DqmCbkwoShqwTI21/stIW1CGN/gUVx+8
-         /90Q==
-X-Gm-Message-State: AOAM533kCSoyAk56AW4A3YPIqoAgF38mggiXQN8PeuoV1O+50PW1bnor
-        Aoo7dykE6B8S/il4JrwpokzN8WjUjwHzuA==
-X-Google-Smtp-Source: ABdhPJwVSDyzwcKSIGphbs26ptRVznnc9HY+sJTAWfILOOdiRayxAO7YreNbxMj83QPwrMluTti4tg==
-X-Received: by 2002:a5d:5502:: with SMTP id b2mr2426293wrv.245.1612494514742;
-        Thu, 04 Feb 2021 19:08:34 -0800 (PST)
-Received: from [192.168.1.6] ([154.124.28.35])
-        by smtp.gmail.com with ESMTPSA id n9sm10836813wrq.41.2021.02.04.19.08.31
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 04 Feb 2021 19:08:34 -0800 (PST)
-Message-ID: <601cb6b2.1c69fb81.5ea54.2eab@mx.google.com>
-Sender: Skylar Anderson <barr.markimmbayie@gmail.com>
-From:   calantha camara <sgt.andersonskylar0@gmail.com>
-X-Google-Original-From: calantha camara
-Content-Type: text/plain; charset="iso-8859-1"
+        id S229581AbhBENUU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 5 Feb 2021 08:20:20 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:35906 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229621AbhBENRC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 5 Feb 2021 08:17:02 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 115DF1YD096948;
+        Fri, 5 Feb 2021 07:15:01 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1612530901;
+        bh=GNcw8k0dfEBZTgTsrzpXl0t8YB0oVkDzbvtyH9eAguo=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=IEs0yOnlyyl2U+m6WIhvmROtIwG8KhWEO8xAwWVurmJkzYqpq1qfcMnzH/1jrJyQd
+         KDWohB2AGJELzkZCGVvzwYwp7MXBJB356lcREHp6mgVfm+dbf/PYoNRnfTZzDtjFLF
+         ptgrrbrbzMosZaggeQSkeV/xcBa+4JJxuoWINSxM=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 115DF1Ur116294
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 5 Feb 2021 07:15:01 -0600
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 5 Feb
+ 2021 07:15:00 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 5 Feb 2021 07:15:00 -0600
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 115DExLL123408;
+        Fri, 5 Feb 2021 07:14:59 -0600
+Subject: Re: [PATCH 2/2] ARM: omap2plus_defconfig: Update for dropped options.
+To:     Tony Lindgren <tony@atomide.com>, Ivan Jelincic <parazyd@dyne.org>
+CC:     <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20210203113426.18964-1-parazyd@dyne.org>
+ <20210203113426.18964-2-parazyd@dyne.org> <YBuankYwwMsG4MN9@atomide.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <4b32f566-92ad-3c49-0453-b44df23f1384@ti.com>
+Date:   Fri, 5 Feb 2021 15:15:00 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: hi dear
-To:     Recipients <calantha@vger.kernel.org>
-Date:   Fri, 05 Feb 2021 03:08:28 +0000
-Reply-To: calanthac20@gmail.com
-X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
+In-Reply-To: <YBuankYwwMsG4MN9@atomide.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-do you speak Eglish
+
+
+On 04/02/2021 08:56, Tony Lindgren wrote:
+> * Ivan Jelincic <parazyd@dyne.org> [210203 13:35]:
+>> Update omap2plus_defconfig for options that have been dropped:
+>>
+>> - SIMPLE_PM_BUS no longer selected.
+> 
+> Oh right, we now need to always select it. Will queue this for
+> fixes after the merge window. The other one I'll be queueing
+> for v5.13 as the merge window is about to open and I'll only
+> queue fixes for the next few weeks :)
+
+"- MICREL_PHY no longer selected."
+
+I do not agree with above as MICREL_PHY is selected by KS8851, but on many boards there is no
+explicit dependency from KS8851, but MICREL PHYs are in use.
+So, I'd prefer to have it enabled explicitly in omap2plus_defconfig.
+
+And not sure what exactly "no longer selected" means.
+
+-- 
+Best regards,
+grygorii
