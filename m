@@ -2,98 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E84B310BBD
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Feb 2021 14:24:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB2DC310C1E
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Feb 2021 14:48:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbhBENX5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 5 Feb 2021 08:23:57 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:39948 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbhBENUa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 5 Feb 2021 08:20:30 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 115DIZJb082333;
-        Fri, 5 Feb 2021 07:18:35 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1612531115;
-        bh=MSI8Tfmy6cMRCwFK52Cq1JoCb65H8futlZ6Zq21zzRY=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=RAlm4Xx3ODLCDdkJkDun1ZGcpLSyR4PtGrih27CnyJx7sK1YhfzPdyA8RZ7rstMNr
-         j04f8yzXTuHR/VNXqnQT67bUMSLCGepz39HQBadjqgdONM6MA10nWlFOzLM+TUsAG2
-         VszrWyHqG6PYD5miP8I8BrwpuGhYiOHqcgTwRTa8=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 115DIZg4123613
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 5 Feb 2021 07:18:35 -0600
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 5 Feb
- 2021 07:18:35 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 5 Feb 2021 07:18:35 -0600
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 115DIWFn001579;
-        Fri, 5 Feb 2021 07:18:34 -0600
-Subject: Re: [PATCH 1/2] ARM: omap2plus_defconfig: Enable Netfilter components
- as modules.
-To:     Ivan Jelincic <parazyd@dyne.org>, <linux-omap@vger.kernel.org>
-CC:     Tony Lindgren <tony@atomide.com>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20210203113426.18964-1-parazyd@dyne.org>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <72a4133f-db13-db12-0949-017054bc8265@ti.com>
-Date:   Fri, 5 Feb 2021 15:18:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S231406AbhBENsZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 5 Feb 2021 08:48:25 -0500
+Received: from muru.com ([72.249.23.125]:57602 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231408AbhBENqU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 5 Feb 2021 08:46:20 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 8457E8061;
+        Fri,  5 Feb 2021 13:45:50 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Amit Kucheria <amitk@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Cc:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCHv2 0/4] Thermal fixes for omaps for single mode read
+Date:   Fri,  5 Feb 2021 15:45:30 +0200
+Message-Id: <20210205134534.49200-1-tony@atomide.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-In-Reply-To: <20210203113426.18964-1-parazyd@dyne.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony, Ivan
+Hi all,
 
-On 03/02/2021 13:34, Ivan Jelincic wrote:
-> Enable the majority of the Netfilter components as loadable modules
-> in the omap2plus_defconfig file.
-> 
-> Signed-off-by: Ivan Jelincic <parazyd@dyne.org>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Signed-off-by: parazyd <parazyd@dyne.org>
-> ---
->   arch/arm/configs/omap2plus_defconfig | 149 +++++++++++++++++++++++++++
->   1 file changed, 149 insertions(+)
-> 
-> diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-> index f250bf1cc022..9847502d2c97 100644
-> --- a/arch/arm/configs/omap2plus_defconfig
-> +++ b/arch/arm/configs/omap2plus_defconfig
-> @@ -87,6 +87,155 @@ CONFIG_IP_PNP_DHCP=y
->   CONFIG_IP_PNP_BOOTP=y
->   CONFIG_IP_PNP_RARP=y
->   CONFIG_NETFILTER=y
-> +CONFIG_NF_CONNTRACK=m
-> +CONFIG_NF_LOG_NETDEV=m
-> +CONFIG_NF_CONNTRACK_ZONES=y
-> +CONFIG_NF_CONNTRACK_EVENTS=y
-> +CONFIG_NF_CONNTRACK_TIMEOUT=y
-> +CONFIG_NF_CONNTRACK_TIMESTAMP=y
-> +CONFIG_NF_CT_NETLINK=m
+Here's v2 set of thermal fixes for single mode read. Turns out the
+EOCZ and SOC bit handling is quite different between the various
+SoCs.
 
-[..]
+With these changes we fix the following issues for reading a
+single sample:
 
-Do we really want to enable all these not TI specific configs?
-The main purpose of omap2plus_defconfig is to enable TI specific HW and HW features and
-config options required to tests/demonstrate these features - like support for some networking
-HW offloads.
+- Get rid of pointless register access and loops for dra7
 
+- Fix omap3 to use proper timeouts, the current looping is
+  way too short and always times out probably leading to
+  bogus values as folks have reported
+
+- Fix omap4430 where EOCZ only seems to work for continuous
+  mode
+
+Regards,
+
+Tony
+
+Changes since v1:
+- Use better MODE_CONFIG checks as suggested by Peter
+- Fix issues for omap3 as noted by Adam
+- Fix handling for dra7
+
+Tony Lindgren (4):
+  thermal: ti-soc-thermal: Skip pointless register access for dra7
+  thermal: ti-soc-thermal: Fix stuck sensor with continuous mode for
+    4430
+  thermal: ti-soc-thermal: Simplify polling with iopoll
+  thermal: ti-soc-thermal: Use non-inverted define for omap4
+
+ .../ti-soc-thermal/omap4-thermal-data.c       |  7 +--
+ .../thermal/ti-soc-thermal/omap4xxx-bandgap.h |  4 +-
+ drivers/thermal/ti-soc-thermal/ti-bandgap.c   | 54 ++++++++++---------
+ drivers/thermal/ti-soc-thermal/ti-bandgap.h   |  2 +
+ 4 files changed, 38 insertions(+), 29 deletions(-)
 
 -- 
-Best regards,
-grygorii
+2.30.0
