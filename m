@@ -2,115 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8417D312044
-	for <lists+linux-omap@lfdr.de>; Sat,  6 Feb 2021 23:22:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F01931245A
+	for <lists+linux-omap@lfdr.de>; Sun,  7 Feb 2021 13:47:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229566AbhBFWVu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 6 Feb 2021 17:21:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37436 "EHLO
+        id S229548AbhBGMrU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 7 Feb 2021 07:47:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbhBFWVt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 6 Feb 2021 17:21:49 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CABEC06174A
-        for <linux-omap@vger.kernel.org>; Sat,  6 Feb 2021 14:21:09 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id y10so5399201plk.7
-        for <linux-omap@vger.kernel.org>; Sat, 06 Feb 2021 14:21:09 -0800 (PST)
+        with ESMTP id S229510AbhBGMrU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 7 Feb 2021 07:47:20 -0500
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E84C06174A
+        for <linux-omap@vger.kernel.org>; Sun,  7 Feb 2021 04:46:39 -0800 (PST)
+Received: by mail-il1-x134.google.com with SMTP id y15so10242648ilj.11
+        for <linux-omap@vger.kernel.org>; Sun, 07 Feb 2021 04:46:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=4bvVgwtWVRLet4/Fktf8R/vrkt3LRINWCBwZLyzrPPo=;
-        b=RxIIVXJrEMcq8L4vt4EhIjd5KglflaSZYEAVjm7OPjzjnTNZImC6YYR8uYy7Cn39bQ
-         TmAhRyC9bAd+mfDxcMrxmy7+t0odpFSSV2XfDcm8jy0FBzSA8F4f/XJHnIQVhAC+OJm7
-         VXhdr8gaSBky2soBOZFiLvk/IrVIkopPHwl9/8XJ8OnLquWlONTMfvNjGP91Nd4HjUsN
-         T1NPc7fqBfcPppojrrtyXn/wUdwxaKWpklpEYOzlW4eY2itZLHwFk55fEpUhyjxluDrQ
-         yoL29WxLO9JjJTyo785Nmj0wjntOAlQYIQvVeq4DZjDh1EST2wfiB4S+ufyRg8HtFvyx
-         U5FA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=M6JtxFaDbr5yFq01/iSQg9Vsjhs2sztxHlsRHpPrPJw=;
+        b=YsBAY3GcX2BVf7qapnuOCnboIrR3zoKHo/aUsa46+Ya4d/6J3kCTqQpgGnAYj0Y+fc
+         jjRkbmsVMrY3oZ7BhLw9bKLror/4f87efny1uZ8Ac5/Kn7I+a0t7KI3pUrEI+3nUojSa
+         faVNz9HnyP3d/0BSRVZtnDkMgzQsrrzjo3H+Y7cI6F2Xh3RiqMpGfrpqxaCPUeXfwycI
+         yH7abONCh7VOdGFsSsaHxPsRti/7mCIHCTxQoaTXcLaLgo4fR6dVVwtE+xWX9GzzDUm9
+         VXQruuDksyh/96DktOJUfZK4k/o4FYURPaf3hPINGDB+Rc9vZ7lN+i4eiEZa7NjzGC9b
+         8OPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=4bvVgwtWVRLet4/Fktf8R/vrkt3LRINWCBwZLyzrPPo=;
-        b=ILyY1gyvUSQOvKjF8KT/YcVcydFyYQdpqebHo8IpBR2bCCC+GHwLiUmcUACDFyfPs9
-         SqQod+zbFoBlI0BGHmB2pam4Fr0JrcdPEUfV18yAFfw8gZx+CPfj+EZ9sLrBlMu1GnUw
-         Ku4uEwEv7U28GUy7YTX8+DbizzQRwiM/oYCEAOQQGFUMm01WllYmOhgmwv9AAIAI0PuC
-         n63Ow53XCOgjTpRBUYzhC0qapycwug6oz3xoQT/Ocmqxb89XZKyUNV51wvDJHk+Ia4MC
-         3uD7VovOxwCCmZ0hJ2LFv1WUpWs5Jb0HEmlDi+we8j+pKL7TAOPKQ9ND1NvuHOtTQhGD
-         EF3w==
-X-Gm-Message-State: AOAM533yexw3jjmpxSNYe1v8WHDHvOC9BcfJ5YygabzzUn06UIdfF+j+
-        XimyIXrlPJ1Ixlzh8UHFlitmxeModJxv5d9hA9S8nxTtyx5gBg==
-X-Google-Smtp-Source: ABdhPJwaYfz+tW3u+JIchP4FvdZMNt+AHfJZMd3/kZ8FxwPl+S/Ku9LY3sczllBnANS1Dk5hhhkYJjhqeYgr18mjjRg=
-X-Received: by 2002:a17:902:ed8d:b029:e2:b3fb:ca95 with SMTP id
- e13-20020a170902ed8db02900e2b3fbca95mr7982402plj.17.1612650068292; Sat, 06
- Feb 2021 14:21:08 -0800 (PST)
-MIME-Version: 1.0
-References: <CAHCN7xLXK774FTKVXPM1LQbg0KQm+7ASFxtiaYZsUbGKnwYfDQ@mail.gmail.com>
-In-Reply-To: <CAHCN7xLXK774FTKVXPM1LQbg0KQm+7ASFxtiaYZsUbGKnwYfDQ@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=M6JtxFaDbr5yFq01/iSQg9Vsjhs2sztxHlsRHpPrPJw=;
+        b=plHBdOk6sYGjMHAUcCK9YbFEy+iyTQDHQTdtVL7h/L6h89T/EKbSJ/6TkxsCWLF0+X
+         +FobrcD4xLM+fSVeKyr/7uJmoBTFcRdagZXY9Y1TsqvfAAvX0Ttotnn7EX6Sa9XwSt35
+         ylXJTgKHwcN2QStEV+KMkyGdbN2IHGoQ8EoZmU2Crn6jDP5RhvKE8AEPrV9us6qNSMx8
+         M5k3r9Q3kMgurmTa0zveUvr6HngC3pXIA2nALmd2Nsw8SWZzeoRX4ZhUGipq26HSSt8B
+         Vc3mVtJdk6PziLXJvqFXLdrYoKRvcgBZ6SidQyTPik47kiG0AVwsdWg7lY90jM8LKauF
+         XV6w==
+X-Gm-Message-State: AOAM533Emzo7p9boXBuVP6HztR3B3ryaxVWL4CC4RSZNyGMcK3DRDluD
+        Vg9L5jRRtkoZWmWuY0rZ0G7d9MaGkTxEvg==
+X-Google-Smtp-Source: ABdhPJy8H5R7Q/7pdVhJSv59giWz7l9py72GXMcMwIRE7InXy8vy1/N7mjFPTUphv7w9w+JgjkEJQQ==
+X-Received: by 2002:a92:730a:: with SMTP id o10mr11690760ilc.160.1612701998832;
+        Sun, 07 Feb 2021 04:46:38 -0800 (PST)
+Received: from aford-IdeaCentre-A730.lan ([2601:448:8400:9e8:b621:f06c:d5c7:b550])
+        by smtp.gmail.com with ESMTPSA id f14sm7296778ilr.14.2021.02.07.04.46.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Feb 2021 04:46:38 -0800 (PST)
 From:   Adam Ford <aford173@gmail.com>
-Date:   Sat, 6 Feb 2021 16:20:57 -0600
-Message-ID: <CAHCN7xKvUx7q0GL+JV8O7MEYo1zb8g2ePbHKQg8SxRmmsj+b6g@mail.gmail.com>
-Subject: Re: DM3730 Suspend-Resume with 5.11-rc6
-To:     Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-omap@vger.kernel.org
+Cc:     tony@atomide.com, aford@beaconembedded.com,
+        Adam Ford <aford173@gmail.com>
+Subject: [PATCH] ARM: omap2plus_defconfig: Add AT25 EEPROM module
+Date:   Sun,  7 Feb 2021 06:46:32 -0600
+Message-Id: <20210207124632.3486194-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Feb 6, 2021 at 3:57 PM Adam Ford <aford173@gmail.com> wrote:
->
-> I am having issues with suspend on a DM3730 running 5.11-rc6, and it
-> seems like core_pwrdm may be the issue.
->
-> # echo mem > /sys/power/state
-> [   82.024963] PM: suspend entry (deep)
-> [   82.053283] Filesystems sync: 0.024 seconds
-> [   82.059600] Freezing user space processes ... (elapsed 0.001 seconds) done.
-> [   82.068511] OOM killer disabled.
-> [   82.071777] Freezing remaining freezable tasks ... (elapsed 0.001
-> seconds) done.
-> [   82.647033] Disabling non-boot CPUs ...
-> [   82.651000] Powerdomain (core_pwrdm) didn't enter target state 0
-> [   82.651000] Could not enter target state in pm_suspend
-> [   82.896881] omap-iommu 480bd400.mmu: 480bd400.mmu: version 1.1
->  [   83.049072] musb-hdrc musb-hdrc.2.auto: musb_set_peripheral:
-> already in peripheral mode: 80
-> [   83.519439] OOM killer enabled.
-> [   83.522674] Restarting tasks ... done.
-> [   83.589050] PM: suspend exit
-> sh: write error: Operation not permitted
-> #
->
-> I am not that versed with the power management stuff and the
-> references on elinux.org are outdated, and I was hoping someone might
-> have some suggestions.
->
-> Does anyone else have any issues?
+The Torpedo development kit has an at25 SPI EEPROM on the baseboard.
+Enable it as a module in the omap2plus defconfig.
 
-I forgot to include some debug stuff
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-#  cat /sys/kernel/debug/pm_debug/count
-usbhost_pwrdm (ON),OFF:293,RET:1,INA:0,ON:295,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-sgx_pwrdm (OFF),OFF:1,RET:0,INA:1,ON:2,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-core_pwrdm (ON),OFF:0,RET:0,INA:0,ON:1,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0,RET-MEMBANK2-OFF:0
-per_pwrdm (ON),OFF:2,RET:1,INA:0,ON:4,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-dss_pwrdm (ON),OFF:293,RET:1,INA:0,ON:295,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-cam_pwrdm (ON),OFF:5,RET:1,INA:0,ON:7,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-neon_pwrdm (ON),OFF:13,RET:173,INA:109,ON:296,RET-LOGIC-OFF:0
-mpu_pwrdm (ON),OFF:12,RET:173,INA:109,ON:295,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0
-iva2_pwrdm (OFF),OFF:3,RET:2,INA:0,ON:5,RET-LOGIC-OFF:0,RET-MEMBANK1-OFF:0,RET-MEMBANK2-OFF:0,RET-MEMBANK3-OFF:0,RET-MEMBANK4-OFF:0
-usbhost_clkdm->usbhost_pwrdm (1)
-sgx_clkdm->sgx_pwrdm (0)
-per_clkdm->per_pwrdm (18)
-cam_clkdm->cam_pwrdm (1)
-dss_clkdm->dss_pwrdm (2)
-d2d_clkdm->core_pwrdm (0)
-iva2_clkdm->iva2_pwrdm (0)
-mpu_clkdm->mpu_pwrdm (0)
-core_l4_clkdm->core_pwrdm (22)
-core_l3_clkdm->core_pwrdm (1)
-neon_clkdm->neon_pwrdm (0)
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index f250bf1cc022..6d387a9b0d90 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -165,6 +165,7 @@ CONFIG_SENSORS_TSL2550=m
+ CONFIG_SRAM=y
+ CONFIG_PCI_ENDPOINT_TEST=m
+ CONFIG_EEPROM_AT24=m
++CONFIG_EEPROM_AT25=m
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_SCSI_SCAN_ASYNC=y
+ CONFIG_ATA=y
+-- 
+2.25.1
 
-
-
->
-> adam
