@@ -2,148 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FDF3313D9B
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 19:34:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AE23314319
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 23:39:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231283AbhBHSdF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Feb 2021 13:33:05 -0500
-Received: from foss.arm.com ([217.140.110.172]:39996 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235654AbhBHSck (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Feb 2021 13:32:40 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3FEA11042;
-        Mon,  8 Feb 2021 10:31:54 -0800 (PST)
-Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AD1503F73D;
-        Mon,  8 Feb 2021 10:31:52 -0800 (PST)
-Date:   Mon, 8 Feb 2021 18:31:47 +0000
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Nadeem Athani <nadeem@cadence.com>
-Cc:     tjoseph@cadence.com, robh@kernel.org, bhelgaas@google.com,
-        kishon@ti.com, linux-omap@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, mparab@cadence.com,
-        sjakhade@cadence.com, pthombar@cadence.com
-Subject: Re: [PATCH v7 2/2] PCI: cadence: Retrain Link to work around Gen2
- training defect.
-Message-ID: <20210208183147.GA12258@e121166-lin.cambridge.arm.com>
-References: <20201230120515.2348-1-nadeem@cadence.com>
- <20201230120515.2348-3-nadeem@cadence.com>
+        id S230027AbhBHWjC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Feb 2021 17:39:02 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:39686 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229742AbhBHWjB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Feb 2021 17:39:01 -0500
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1612823899;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=oYlVExh8VX0pz57F6MiWUgOYPKOwByipvE/Q5oPx108=;
+        b=r/s6nsTHQ6t3RiQrvC0zXyHPJTUafSzZ8l5wSBKSD5yjYCloH1SScX73LgwR6M8abp0rMT
+        cI6wDVU3Ba6EFU5Od/SuU0k2hbKuGNnRgrRsqDuFZm7SvCnME2V2hNL3aJ88MGRlMua60q
+        nbQY1675P2AAypIJi+jyxP9lVxnEeJ5detWOJztsWyocVDmZNyOqFQgWnN88XoV8egCKCR
+        LF731RFD40cB89r5ycA4tGg1p5OuVpP17S1SBL3bzfZNuq2S76b5E856BC2HErdFw2ygGp
+        280bF9YDEpEg+B+/Pns3WZf/bQ0I7ND7CkJfpDq53nuu96xkFHgYuHz5RfzBoA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1612823899;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=oYlVExh8VX0pz57F6MiWUgOYPKOwByipvE/Q5oPx108=;
+        b=mfCp0LBMuvAQS037Wg1z0a7lWj9nJ5aw64jFNQuZxdmpZz/SQDjUzP5m2Ar12sYFCoAT8s
+        2TYnfGJlJ3JpZWBw==
+To:     linux-fbdev@vger.kernel.org
+Cc:     dri-devel@lists.freedesktop.org,
+        Russell King <linux@armlinux.org.uk>,
+        linux-omap@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 0/3] video: Remove in_interrupt() usage.
+Date:   Mon,  8 Feb 2021 23:38:07 +0100
+Message-Id: <20210208223810.388502-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201230120515.2348-3-nadeem@cadence.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Dec 30, 2020 at 01:05:15PM +0100, Nadeem Athani wrote:
-> Cadence controller will not initiate autonomous speed change if strapped
-> as Gen2. The Retrain Link bit is set as quirk to enable this speed change.
-> 
-> Signed-off-by: Nadeem Athani <nadeem@cadence.com>
-> ---
->  drivers/pci/controller/cadence/pci-j721e.c         |  3 ++
->  drivers/pci/controller/cadence/pcie-cadence-host.c | 37 +++++++++++++++++++++-
->  drivers/pci/controller/cadence/pcie-cadence.h      | 11 ++++++-
->  3 files changed, 49 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> index dac1ac8a7615..849f1e416ea5 100644
-> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> @@ -64,6 +64,7 @@ enum j721e_pcie_mode {
->  
->  struct j721e_pcie_data {
->  	enum j721e_pcie_mode	mode;
-> +	bool quirk_retrain_flag;
->  };
->  
->  static inline u32 j721e_pcie_user_readl(struct j721e_pcie *pcie, u32 offset)
-> @@ -280,6 +281,7 @@ static struct pci_ops cdns_ti_pcie_host_ops = {
->  
->  static const struct j721e_pcie_data j721e_pcie_rc_data = {
->  	.mode = PCI_MODE_RC,
-> +	.quirk_retrain_flag = true,
->  };
->  
->  static const struct j721e_pcie_data j721e_pcie_ep_data = {
-> @@ -388,6 +390,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
->  
->  		bridge->ops = &cdns_ti_pcie_host_ops;
->  		rc = pci_host_bridge_priv(bridge);
-> +		rc->quirk_retrain_flag = data->quirk_retrain_flag;
->  
->  		cdns_pcie = &rc->pcie;
->  		cdns_pcie->dev = dev;
-> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-> index 9f7aa718c8d4..f3496588862d 100644
-> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-> @@ -94,6 +94,35 @@ static int cdns_pcie_host_wait_for_link(struct cdns_pcie *pcie)
->  	return -ETIMEDOUT;
->  }
->  
-> +static int cdns_pcie_retrain(struct cdns_pcie *pcie)
-> +{
-> +	u32 lnk_cap_sls, pcie_cap_off = CDNS_PCIE_RP_CAP_OFFSET;
-> +	u16 lnk_stat, lnk_ctl;
-> +	int ret = 0;
-> +
-> +	/*
-> +	 * Set retrain bit if current speed is 2.5 GB/s,
-> +	 * but the PCIe root port support is > 2.5 GB/s.
-> +	 */
-> +
-> +	lnk_cap_sls = cdns_pcie_readl(pcie, (CDNS_PCIE_RP_BASE + pcie_cap_off +
-> +					     PCI_EXP_LNKCAP));
-> +	if ((lnk_cap_sls & PCI_EXP_LNKCAP_SLS) <= PCI_EXP_LNKCAP_SLS_2_5GB)
-> +		return ret;
-> +
-> +	lnk_stat = cdns_pcie_rp_readw(pcie, pcie_cap_off + PCI_EXP_LNKSTA);
-> +	if ((lnk_stat & PCI_EXP_LNKSTA_CLS) == PCI_EXP_LNKSTA_CLS_2_5GB) {
-> +		lnk_ctl = cdns_pcie_rp_readw(pcie,
-> +					     pcie_cap_off + PCI_EXP_LNKCTL);
-> +		lnk_ctl |= PCI_EXP_LNKCTL_RL;
-> +		cdns_pcie_rp_writew(pcie, pcie_cap_off + PCI_EXP_LNKCTL,
-> +				    lnk_ctl);
-> +
-> +		ret = cdns_pcie_host_wait_for_link(pcie);
-> +	}
-> +	return ret;
-> +}
-> +
->  static int cdns_pcie_host_init_root_port(struct cdns_pcie_rc *rc)
->  {
->  	struct cdns_pcie *pcie = &rc->pcie;
-> @@ -457,8 +486,14 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
->  	}
->  
->  	ret = cdns_pcie_host_wait_for_link(pcie);
-> -	if (ret)
-> +	if (ret) {
->  		dev_dbg(dev, "PCIe link never came up\n");
-> +	} else {
-> +		if (rc->quirk_retrain_flag) {
-> +			if (cdns_pcie_retrain(pcie))
-> +				dev_dbg(dev, "PCIe link never came up\n");
+Folks,
 
-I'd move this whole if/else in a function cdns_pcie_host_start_link(),
-IMO that's cleaner.
+in the discussion about preempt count consistency across kernel
+configurations:
 
-static int cdns_pcie_host_start_link(struct cdns_pcie_rc *rc)
-{
-	struct cdns_pcie *pcie = &rc->pcie;
-	int ret;
+ https://lore.kernel.org/r/20200914204209.256266093@linutronix.de/
 
-	ret = cdns_pcie_host_wait_for_link(pcie);
-	/*
-	 * PLS ADD A COMMENT HERE
-	 */
-	if (!ret && rc->quirk_retrain_flag)
-		ret = cdns_pcie_retrain(pcie);
+it was concluded that the usage of in_interrupt() and related context
+checks should be removed from non-core code.
 
-	return ret;
-}
+In the long run, usage of 'preemptible, in_*irq etc.' should be banned from
+driver code completely.
+
+This series targets the video subsystem. The omap patches are a repost
+of [0], the amba-clcd is new after I received no feedback on my analysis
+[1].
+
+[0] https://lkml.kernel.org/r/20210127172902.145335-1-bigeasy@linutronix.de
+[1] https://lkml.kernel.org/r/20210127174408.ududpwfrbg3dhyxj@linutronix.de
+
+Sebastian
+
+
