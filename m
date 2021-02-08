@@ -2,101 +2,156 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B22313159
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 12:49:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D25AC3131D7
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 13:11:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233162AbhBHLtA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Feb 2021 06:49:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35786 "EHLO
+        id S230208AbhBHMKb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Feb 2021 07:10:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233397AbhBHLp4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Feb 2021 06:45:56 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7475CC06174A;
-        Mon,  8 Feb 2021 03:45:15 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id df22so17720222edb.1;
-        Mon, 08 Feb 2021 03:45:15 -0800 (PST)
+        with ESMTP id S233572AbhBHMIj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Feb 2021 07:08:39 -0500
+Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D515C0617A9
+        for <linux-omap@vger.kernel.org>; Mon,  8 Feb 2021 04:07:38 -0800 (PST)
+Received: by mail-vs1-xe33.google.com with SMTP id u7so2649084vsp.12
+        for <linux-omap@vger.kernel.org>; Mon, 08 Feb 2021 04:07:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=9pa9egMr6HuhpySJFZ922xtVve+4BTGS+NR78QDKpmA=;
-        b=seQRViNZMkrvWnMY2i5wu0KjU3Wfsa+YhEAmbH7bVQjptTdGrXj0iOCqBY5XKau/lF
-         Fs6TSVcEXddjrKILQYYbay7a9toHDoY9DBU+TLWLtsuVkuCdg6JViiburY0hin1OAEmU
-         1MiOtEiCM2VWB7DT+mIUqRAoLLJXtDyBXAZr3ZXgzYTn3iIX4yDV/W1YfaNuawtMsEbT
-         vpTQmnP6PafDQm+rcOeJ9sR870pMYmcrCx/NjxVJcXADl1+xXNjxX753OYJfdC1vXYrd
-         C8u4HzVz7JmTKuyDdNNPjy1XV8pOqXmXrfRz/Tq/CIpYvkwIDGo1ASNYEtjLBc32+u5K
-         Kw+A==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Q+j5o1c0su2L6YdF71vWuSQLkAAyzmVika0Z7We4Rac=;
+        b=fGVWBffzUrOIaO3OE9oqhO2bDHkyUt6xA45dv+PjB3q6C2+dLEpXekxAyisHfGOK+K
+         ykgs+JcdTimpWykmP6LCmsZIUB8GrEmDWzU/hg7gooX8xJWFXUZMNORu/vPtadQUMdR4
+         1Om4gc4kgRhtpIllX9VLrQxhtdQKBd9LSk92ZhbA8B22mG00N9T+VjOIAKztk0/F57k1
+         ESTec0UJjqRtFNbSEWwqm6dJFxzWDjgrBfnRX9IS8A1tAtfWhjWG5Ocz9ProgoozNGHR
+         RN2ww2Ey2y0zLA7/edPES5Jf0PRSTh0lN0adOf5qc5lMY8M3+CFTgUVzIED9TKqP7TpX
+         +qUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9pa9egMr6HuhpySJFZ922xtVve+4BTGS+NR78QDKpmA=;
-        b=NayejDsT3xqhn2bfcYzYIutaye25IsCVA4+L6UvRW+SXzduGilTqqMsFH87I1BXwgJ
-         3BqZ4Sxt4puQWvlPP+xISoAy/70lYM2VV/XzG38XVQTlGqZWPlCkEq9oSz5+XV1AjxhK
-         baZ7DyZH1OZ7Q+gBiafeVMkAxoyWutHCSJrugBwaOt5SP74M0NIhw50xr6qTw/IOcUcu
-         EuzrY5rjAs/UYz+G75jAzDM5TCN1QWaKu3nw6CV81zAJ44PJSd64UuyzvnWzEGSm7Iut
-         l9BsoDB3yjghzqoRfslRuIzBAiK02zrqeA1BYj9aFkU1Rj/fmYOn2HncZjvXclDu5psJ
-         OzbA==
-X-Gm-Message-State: AOAM532kb6rj4LqSWTDpXu/pcOgTqSHbqmmrxCKK32xw3Uk6ztxA4CEl
-        edK76yfXdJsL52qXbGMIEzc=
-X-Google-Smtp-Source: ABdhPJx6eGBesZL3QRG6VDx3qwW880GGzzgdxNQvaQ8IPb48/VTGhgJQZMuC4y1f5IqUAo/uMr0ZAw==
-X-Received: by 2002:a05:6402:149a:: with SMTP id e26mr17017083edv.254.1612784714113;
-        Mon, 08 Feb 2021 03:45:14 -0800 (PST)
-Received: from skbuf (5-12-227-87.residential.rdsnet.ro. [5.12.227.87])
-        by smtp.gmail.com with ESMTPSA id b3sm9426102edw.14.2021.02.08.03.45.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Feb 2021 03:45:13 -0800 (PST)
-Date:   Mon, 8 Feb 2021 13:45:11 +0200
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Nikolay Aleksandrov <nikolay@nvidia.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Ido Schimmel <idosch@idosch.org>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
-Subject: Re: [PATCH net-next 2/9] net: bridge: offload initial and final port
- flags through switchdev
-Message-ID: <20210208114511.xtzma5byrdnr5s7r@skbuf>
-References: <20210207232141.2142678-1-olteanv@gmail.com>
- <20210207232141.2142678-3-olteanv@gmail.com>
- <95dede91-56aa-1852-8fbf-71d446fa7ede@nvidia.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Q+j5o1c0su2L6YdF71vWuSQLkAAyzmVika0Z7We4Rac=;
+        b=XlbqJHVF9hDBU+i6TC/fxo0HG7mtoxMewKqSzOdGuSQ9nd2j6hlAdbCY6MtUWDWUIu
+         rl/0pOhGTP0obCr1FBkOFYKUvneOBY0cSAdkKnyv4R9TXTlYXvWvMv6r0Jfgcfbwpgul
+         9sO+QBSMITFg55NbZ/aMsl8xZugge1jzqQFI/dAdoumbFPzQkQK4O/egQovRxpN9y3N4
+         OowOLRKHmxzb4l5gyjJPNIuaifePui3Yql7QjJveaHr8efloyUB6QlLVT6/WUkw2jg7O
+         QfEQjWkZ2gMEGAVnGLE59mZcJNS0SufX2d6I/72u9ZmfLkGtyeJxGBQlARqP4V/itLeF
+         9fRw==
+X-Gm-Message-State: AOAM531zoJWEhfQ8Kn+py1Liauy0wYTJJ8rlSkKzmP0ro0b9pKDcYmdC
+        MaE6H+2gcDJX0hP6ckTUPVclC+7/aJXbBehMBdfo+w==
+X-Google-Smtp-Source: ABdhPJzdeJt7cR2Lci0/u43eiwTMDXryQjeAQX7GjhkgnwIUBZrkUU985x0DMiJvS4aJ2y06E5DIneLyvogQpFyKpI4=
+X-Received: by 2002:a67:c787:: with SMTP id t7mr10392016vsk.48.1612786057397;
+ Mon, 08 Feb 2021 04:07:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <95dede91-56aa-1852-8fbf-71d446fa7ede@nvidia.com>
+References: <20210204151847.91353-1-kernel@esmil.dk>
+In-Reply-To: <20210204151847.91353-1-kernel@esmil.dk>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 8 Feb 2021 13:07:00 +0100
+Message-ID: <CAPDyKFrFPWu-mb+krWBYAC=DPpWDqYDseACRRFHyscKbG7yHaA@mail.gmail.com>
+Subject: Re: [PATCH 0/9] drivers: mmc: Update trivial tasklet_init() callers
+To:     Emil Renner Berthing <kernel@esmil.dk>
+Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Jaehoon Chung <jh80.chung@samsung.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Ben Dooks <ben-linux@fluff.org>, Alex Dubov <oakad@yahoo.com>,
+        Bruce Chang <brucechang@via.com.tw>,
+        Harald Welte <HaraldWelte@viatech.com>,
+        Pierre Ossman <pierre@ossman.eu>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Feb 08, 2021 at 01:37:03PM +0200, Nikolay Aleksandrov wrote:
-> Hi Vladimir,
-> I think this patch potentially breaks some use cases. There are a few problems, I'll
-> start with the more serious one: before the ports would have a set of flags that were
-> always set when joining, now due to how nbp_flags_change() handles flag setting some might
-> not be set which would immediately change behaviour w.r.t software fwding. I'll use your
-> example of BR_BCAST_FLOOD: a lot of drivers will return an error for it and any broadcast
-> towards these ports will be dropped, we have mixed environments with software ports that
-> sometimes have traffic (e.g. decapped ARP requests) software forwarded which will stop working.
+On Thu, 4 Feb 2021 at 16:19, Emil Renner Berthing <kernel@esmil.dk> wrote:
+>
+> This updates callers of tasklet_init() in drivers/mmc to the new API
+> in commit 12cc923f1ccc ("tasklet: Introduce new initialization API")
+>
+> All changes are made by coccinelle using the following semantic patch:
+>
+> @ match @
+> type T;
+> T *container;
+> identifier tasklet;
+> identifier callback;
+> @@
+>         tasklet_init(&container->tasklet, callback, (unsigned long)container);
+>
+> @ patch1 depends on match @
+> type match.T;
+> identifier match.tasklet;
+> identifier match.callback;
+> identifier data;
+> identifier container;
+> @@
+> -void callback(unsigned long data)
+> +void callback(struct tasklet_struct *t)
+> {
+>         ...
+> -       T *container = \( (T *)data \| (void *)data \);
+> +       T *container = from_tasklet(container, t, tasklet);
+>         ...
+> }
+>
+> @ patch2 depends on match @
+> type match.T;
+> identifier match.tasklet;
+> identifier match.callback;
+> identifier data;
+> identifier container;
+> @@
+> -void callback(unsigned long data)
+> +void callback(struct tasklet_struct *t)
+> {
+>         ...
+> -       T *container;
+> +       T *container = from_tasklet(container, t, tasklet);
+>         ...
+> -       container = \( (T *)data \| (void *)data \);
+>         ...
+> }
+>
+> @ depends on (patch1 || patch2) @
+> match.T *container;
+> identifier match.tasklet;
+> identifier match.callback;
+> @@
+> -       tasklet_init(&container->tasklet, callback, (unsigned long)container);
+> +       tasklet_setup(&container->tasklet, callback);
+>
+>
+> Emil Renner Berthing (9):
+>   mmc: atmel-mci: Use new tasklet API
+>   mmc: au1xmmc: Use new tasklet API
+>   mmc: dw_mmc: Use new tasklet API
+>   mmc: omap: Use new tasklet API
+>   mmc: s3cmci: Use new tasklet API
+>   mmc: tifm_sd: Use new tasklet API
+>   mmc: uniphier-sd: Use new tasklet API
+>   mmc: via-sdmmc: Use new tasklet API
+>   mmc: wbsd: Use new tasklet API
+>
+>  drivers/mmc/host/atmel-mci.c   |  6 +++---
+>  drivers/mmc/host/au1xmmc.c     | 14 ++++++--------
+>  drivers/mmc/host/dw_mmc.c      |  6 +++---
+>  drivers/mmc/host/omap.c        |  7 +++----
+>  drivers/mmc/host/s3cmci.c      |  6 +++---
+>  drivers/mmc/host/tifm_sd.c     |  7 +++----
+>  drivers/mmc/host/uniphier-sd.c | 14 ++++++--------
+>  drivers/mmc/host/via-sdmmc.c   |  9 +++------
+>  drivers/mmc/host/wbsd.c        | 35 +++++++++++++++-------------------
+>  9 files changed, 45 insertions(+), 59 deletions(-)
+>
 
-Yes, you're right. The only solution I can think of is to add a "bool ignore_errors"
-to nbp_flags_change, set to true from new_nbp and del_nbp, and to false from the
-netlink code.
+Applied for next, thanks!
 
-> The other lesser issue is with the style below, I mean these three calls for each flag are
-> just ugly and look weird as you've also noted, since these APIs are internal can we do better?
-
-Doing better would mean allowing nbp_flags_change() to have a bit mask with
-potentially more brport flags set, and to call br_switchdev_set_port_flag in
-a for_each_set_bit() loop?
+Kind regards
+Uffe
