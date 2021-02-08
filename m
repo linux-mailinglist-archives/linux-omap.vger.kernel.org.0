@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B1EB313BF8
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 18:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66AC3313C56
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 19:07:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233954AbhBHR72 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Feb 2021 12:59:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45810 "EHLO mail.kernel.org"
+        id S235410AbhBHSFq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Feb 2021 13:05:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46600 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235040AbhBHR6z (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Feb 2021 12:58:55 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6BD8164E28;
-        Mon,  8 Feb 2021 17:58:13 +0000 (UTC)
+        id S235208AbhBHSCk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Feb 2021 13:02:40 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CEF5F64E88;
+        Mon,  8 Feb 2021 17:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612807094;
+        s=k20201202; t=1612807143;
         bh=efafAd6WaDg8SGnlqP87Caf8A64qt4Co/sdcXkCnQTM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DosRm37s8FU8PriQT/DRVGR/NeYaEdJ9jf/QIifcewRPe9xShmQJ2a3AwztDLtxs9
-         2QEJ7kfvusCUZadtjnN+pJ0+K5wskhp8/pTzoGOYj0fdvajiMXRilwtvOgcdHvg7ZC
-         wad0Q2BHxmURK7dMo6leBxPC8B+0hIks9B1tmLZR8CTxZkpLzr8JtDmVW6Quo8RvV7
-         oOl1oKBYV9xGsdzmCcEDkBNi8LcEsd2KpHev3l0EulrwVG/Tv5W98B0+7mT2oCF3mJ
-         aWrpkreXbySLUWVciarA/QeOdhnmU81xiPHchZJrjjTsrCPOaKvEa6GhslYN0GExz8
-         K7vz61hThdVpQ==
+        b=S9gsuqtN0ur4DxIjQ4nIhrsojtJHUnhl5DeyHP0AykjzniXwnKNplaTDuvXEIMCuV
+         h4VPCYZxP5eEsRn4jZBuFgYJVeGqedTB/93DoUFVVTMUpH3E8ulhtnlzaYAIs2GeR5
+         cQnX3UJPisjMtZ+piber/UPl1M8j/noZPtrpRqMBHiWoGyubZ1BCH54wcZ0Jk2HuoU
+         eWMtnjn/EVJkRfyCt9wmhhz5KreJSamf5GTW2Baz/8Gl5cNdhzwEBPBHitxODU7/18
+         W59R33yeh5Eip5VTPtdB1XuHKinv+xv4g9u7KawjitQfzDdUS8shv37ajAXaJmvsRN
+         wmAO+S4wUrtLg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>,
@@ -31,12 +31,12 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Russell King <rmk+kernel@armlinux.org.uk>,
         Sasha Levin <sashal@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 05/36] ARM: OMAP2+: Fix suspcious RCU usage splats for omap_enter_idle_coupled
-Date:   Mon,  8 Feb 2021 12:57:35 -0500
-Message-Id: <20210208175806.2091668-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 03/19] ARM: OMAP2+: Fix suspcious RCU usage splats for omap_enter_idle_coupled
+Date:   Mon,  8 Feb 2021 12:58:42 -0500
+Message-Id: <20210208175858.2092008-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210208175806.2091668-1-sashal@kernel.org>
-References: <20210208175806.2091668-1-sashal@kernel.org>
+In-Reply-To: <20210208175858.2092008-1-sashal@kernel.org>
+References: <20210208175858.2092008-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
