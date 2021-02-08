@@ -2,146 +2,148 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 66AC3313C56
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 19:07:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FDF3313D9B
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 19:34:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235410AbhBHSFq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Feb 2021 13:05:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46600 "EHLO mail.kernel.org"
+        id S231283AbhBHSdF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Feb 2021 13:33:05 -0500
+Received: from foss.arm.com ([217.140.110.172]:39996 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235208AbhBHSCk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Feb 2021 13:02:40 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CEF5F64E88;
-        Mon,  8 Feb 2021 17:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612807143;
-        bh=efafAd6WaDg8SGnlqP87Caf8A64qt4Co/sdcXkCnQTM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S9gsuqtN0ur4DxIjQ4nIhrsojtJHUnhl5DeyHP0AykjzniXwnKNplaTDuvXEIMCuV
-         h4VPCYZxP5eEsRn4jZBuFgYJVeGqedTB/93DoUFVVTMUpH3E8ulhtnlzaYAIs2GeR5
-         cQnX3UJPisjMtZ+piber/UPl1M8j/noZPtrpRqMBHiWoGyubZ1BCH54wcZ0Jk2HuoU
-         eWMtnjn/EVJkRfyCt9wmhhz5KreJSamf5GTW2Baz/8Gl5cNdhzwEBPBHitxODU7/18
-         W59R33yeh5Eip5VTPtdB1XuHKinv+xv4g9u7KawjitQfzDdUS8shv37ajAXaJmvsRN
-         wmAO+S4wUrtLg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Russell King <rmk+kernel@armlinux.org.uk>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 03/19] ARM: OMAP2+: Fix suspcious RCU usage splats for omap_enter_idle_coupled
-Date:   Mon,  8 Feb 2021 12:58:42 -0500
-Message-Id: <20210208175858.2092008-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210208175858.2092008-1-sashal@kernel.org>
-References: <20210208175858.2092008-1-sashal@kernel.org>
+        id S235654AbhBHSck (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Feb 2021 13:32:40 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3FEA11042;
+        Mon,  8 Feb 2021 10:31:54 -0800 (PST)
+Received: from e121166-lin.cambridge.arm.com (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AD1503F73D;
+        Mon,  8 Feb 2021 10:31:52 -0800 (PST)
+Date:   Mon, 8 Feb 2021 18:31:47 +0000
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Nadeem Athani <nadeem@cadence.com>
+Cc:     tjoseph@cadence.com, robh@kernel.org, bhelgaas@google.com,
+        kishon@ti.com, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, mparab@cadence.com,
+        sjakhade@cadence.com, pthombar@cadence.com
+Subject: Re: [PATCH v7 2/2] PCI: cadence: Retrain Link to work around Gen2
+ training defect.
+Message-ID: <20210208183147.GA12258@e121166-lin.cambridge.arm.com>
+References: <20201230120515.2348-1-nadeem@cadence.com>
+ <20201230120515.2348-3-nadeem@cadence.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201230120515.2348-3-nadeem@cadence.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+On Wed, Dec 30, 2020 at 01:05:15PM +0100, Nadeem Athani wrote:
+> Cadence controller will not initiate autonomous speed change if strapped
+> as Gen2. The Retrain Link bit is set as quirk to enable this speed change.
+> 
+> Signed-off-by: Nadeem Athani <nadeem@cadence.com>
+> ---
+>  drivers/pci/controller/cadence/pci-j721e.c         |  3 ++
+>  drivers/pci/controller/cadence/pcie-cadence-host.c | 37 +++++++++++++++++++++-
+>  drivers/pci/controller/cadence/pcie-cadence.h      | 11 ++++++-
+>  3 files changed, 49 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index dac1ac8a7615..849f1e416ea5 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -64,6 +64,7 @@ enum j721e_pcie_mode {
+>  
+>  struct j721e_pcie_data {
+>  	enum j721e_pcie_mode	mode;
+> +	bool quirk_retrain_flag;
+>  };
+>  
+>  static inline u32 j721e_pcie_user_readl(struct j721e_pcie *pcie, u32 offset)
+> @@ -280,6 +281,7 @@ static struct pci_ops cdns_ti_pcie_host_ops = {
+>  
+>  static const struct j721e_pcie_data j721e_pcie_rc_data = {
+>  	.mode = PCI_MODE_RC,
+> +	.quirk_retrain_flag = true,
+>  };
+>  
+>  static const struct j721e_pcie_data j721e_pcie_ep_data = {
+> @@ -388,6 +390,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  
+>  		bridge->ops = &cdns_ti_pcie_host_ops;
+>  		rc = pci_host_bridge_priv(bridge);
+> +		rc->quirk_retrain_flag = data->quirk_retrain_flag;
+>  
+>  		cdns_pcie = &rc->pcie;
+>  		cdns_pcie->dev = dev;
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> index 9f7aa718c8d4..f3496588862d 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> @@ -94,6 +94,35 @@ static int cdns_pcie_host_wait_for_link(struct cdns_pcie *pcie)
+>  	return -ETIMEDOUT;
+>  }
+>  
+> +static int cdns_pcie_retrain(struct cdns_pcie *pcie)
+> +{
+> +	u32 lnk_cap_sls, pcie_cap_off = CDNS_PCIE_RP_CAP_OFFSET;
+> +	u16 lnk_stat, lnk_ctl;
+> +	int ret = 0;
+> +
+> +	/*
+> +	 * Set retrain bit if current speed is 2.5 GB/s,
+> +	 * but the PCIe root port support is > 2.5 GB/s.
+> +	 */
+> +
+> +	lnk_cap_sls = cdns_pcie_readl(pcie, (CDNS_PCIE_RP_BASE + pcie_cap_off +
+> +					     PCI_EXP_LNKCAP));
+> +	if ((lnk_cap_sls & PCI_EXP_LNKCAP_SLS) <= PCI_EXP_LNKCAP_SLS_2_5GB)
+> +		return ret;
+> +
+> +	lnk_stat = cdns_pcie_rp_readw(pcie, pcie_cap_off + PCI_EXP_LNKSTA);
+> +	if ((lnk_stat & PCI_EXP_LNKSTA_CLS) == PCI_EXP_LNKSTA_CLS_2_5GB) {
+> +		lnk_ctl = cdns_pcie_rp_readw(pcie,
+> +					     pcie_cap_off + PCI_EXP_LNKCTL);
+> +		lnk_ctl |= PCI_EXP_LNKCTL_RL;
+> +		cdns_pcie_rp_writew(pcie, pcie_cap_off + PCI_EXP_LNKCTL,
+> +				    lnk_ctl);
+> +
+> +		ret = cdns_pcie_host_wait_for_link(pcie);
+> +	}
+> +	return ret;
+> +}
+> +
+>  static int cdns_pcie_host_init_root_port(struct cdns_pcie_rc *rc)
+>  {
+>  	struct cdns_pcie *pcie = &rc->pcie;
+> @@ -457,8 +486,14 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+>  	}
+>  
+>  	ret = cdns_pcie_host_wait_for_link(pcie);
+> -	if (ret)
+> +	if (ret) {
+>  		dev_dbg(dev, "PCIe link never came up\n");
+> +	} else {
+> +		if (rc->quirk_retrain_flag) {
+> +			if (cdns_pcie_retrain(pcie))
+> +				dev_dbg(dev, "PCIe link never came up\n");
 
-[ Upstream commit 06862d789ddde8a99c1e579e934ca17c15a84755 ]
+I'd move this whole if/else in a function cdns_pcie_host_start_link(),
+IMO that's cleaner.
 
-We get suspcious RCU usage splats with cpuidle in several places in
-omap_enter_idle_coupled() with the kernel debug options enabled:
+static int cdns_pcie_host_start_link(struct cdns_pcie_rc *rc)
+{
+	struct cdns_pcie *pcie = &rc->pcie;
+	int ret;
 
-RCU used illegally from extended quiescent state!
-...
-(_raw_spin_lock_irqsave)
-(omap_enter_idle_coupled+0x17c/0x2d8)
-(omap_enter_idle_coupled)
-(cpuidle_enter_state)
-(cpuidle_enter_state_coupled)
-(cpuidle_enter)
+	ret = cdns_pcie_host_wait_for_link(pcie);
+	/*
+	 * PLS ADD A COMMENT HERE
+	 */
+	if (!ret && rc->quirk_retrain_flag)
+		ret = cdns_pcie_retrain(pcie);
 
-Let's use RCU_NONIDLE to suppress these splats. Things got changed around
-with commit 1098582a0f6c ("sched,idle,rcu: Push rcu_idle deeper into the
-idle path") that started triggering these warnings.
-
-For the tick_broadcast related calls, ideally we'd just switch over to
-using CPUIDLE_FLAG_TIMER_STOP for omap_enter_idle_coupled() to have the
-generic cpuidle code handle the tick_broadcast related calls for us and
-then just drop the tick_broadcast calls here.
-
-But we're currently missing the call in the common cpuidle code for
-tick_broadcast_enable() that CPU1 hotplug needs as described in earlier
-commit 50d6b3cf9403 ("ARM: OMAP2+: fix lack of timer interrupts on CPU1
-after hotplug").
-
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Russell King <rmk+kernel@armlinux.org.uk>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/mach-omap2/cpuidle44xx.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/arch/arm/mach-omap2/cpuidle44xx.c b/arch/arm/mach-omap2/cpuidle44xx.c
-index c8d317fafe2ea..de37027ad7587 100644
---- a/arch/arm/mach-omap2/cpuidle44xx.c
-+++ b/arch/arm/mach-omap2/cpuidle44xx.c
-@@ -151,10 +151,10 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
- 				 (cx->mpu_logic_state == PWRDM_POWER_OFF);
- 
- 	/* Enter broadcast mode for periodic timers */
--	tick_broadcast_enable();
-+	RCU_NONIDLE(tick_broadcast_enable());
- 
- 	/* Enter broadcast mode for one-shot timers */
--	tick_broadcast_enter();
-+	RCU_NONIDLE(tick_broadcast_enter());
- 
- 	/*
- 	 * Call idle CPU PM enter notifier chain so that
-@@ -166,7 +166,7 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
- 
- 	if (dev->cpu == 0) {
- 		pwrdm_set_logic_retst(mpu_pd, cx->mpu_logic_state);
--		omap_set_pwrdm_state(mpu_pd, cx->mpu_state);
-+		RCU_NONIDLE(omap_set_pwrdm_state(mpu_pd, cx->mpu_state));
- 
- 		/*
- 		 * Call idle CPU cluster PM enter notifier chain
-@@ -178,7 +178,7 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
- 				index = 0;
- 				cx = state_ptr + index;
- 				pwrdm_set_logic_retst(mpu_pd, cx->mpu_logic_state);
--				omap_set_pwrdm_state(mpu_pd, cx->mpu_state);
-+				RCU_NONIDLE(omap_set_pwrdm_state(mpu_pd, cx->mpu_state));
- 				mpuss_can_lose_context = 0;
- 			}
- 		}
-@@ -194,9 +194,9 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
- 		    mpuss_can_lose_context)
- 			gic_dist_disable();
- 
--		clkdm_deny_idle(cpu_clkdm[1]);
--		omap_set_pwrdm_state(cpu_pd[1], PWRDM_POWER_ON);
--		clkdm_allow_idle(cpu_clkdm[1]);
-+		RCU_NONIDLE(clkdm_deny_idle(cpu_clkdm[1]));
-+		RCU_NONIDLE(omap_set_pwrdm_state(cpu_pd[1], PWRDM_POWER_ON));
-+		RCU_NONIDLE(clkdm_allow_idle(cpu_clkdm[1]));
- 
- 		if (IS_PM44XX_ERRATUM(PM_OMAP4_ROM_SMP_BOOT_ERRATUM_GICD) &&
- 		    mpuss_can_lose_context) {
-@@ -222,7 +222,7 @@ static int omap_enter_idle_coupled(struct cpuidle_device *dev,
- 	cpu_pm_exit();
- 
- cpu_pm_out:
--	tick_broadcast_exit();
-+	RCU_NONIDLE(tick_broadcast_exit());
- 
- fail:
- 	cpuidle_coupled_parallel_barrier(dev, &abort_barrier);
--- 
-2.27.0
-
+	return ret;
+}
