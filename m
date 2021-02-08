@@ -2,195 +2,242 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 611C631321A
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 13:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9DEF3133CA
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 14:53:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231439AbhBHMTH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Feb 2021 07:19:07 -0500
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:12047 "EHLO
-        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232699AbhBHMSJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Feb 2021 07:18:09 -0500
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B60212bd80001>; Mon, 08 Feb 2021 04:17:28 -0800
-Received: from HQMAIL111.nvidia.com (172.20.187.18) by HQMAIL111.nvidia.com
- (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 8 Feb
- 2021 12:17:16 +0000
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.106)
- by HQMAIL111.nvidia.com (172.20.187.18) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3 via Frontend Transport; Mon, 8 Feb 2021 12:17:16 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q3OGPyWeTcP2h6ZLASQJWbWlD1++A9ESvmurC7kQoYh4cFivFePGGif+E53rib/FFYwmmqTv7fuawn2LvbkQl40zO+tLeFThRdi9BKY0d7nQBl8++/1V355soyUfJVnxgn0j0GrYmMZwtAOjLSgvtIILmUd9XuohERjUIE+5dBizJiGtxUqmpYXeIC8F9aaVMifsgpcrJiCm5QIPKMxJCUffHJHgXyHN0cMVX+MKyV7TuhFyp3OiMnmy2AcjR6I3B0v2d0fEfjgBJrx7FMJ/AJ02KX+tEoDKqclbUr4TPdqLxC9kXPOUm7rhH8svVmzymO9eQfY5ZRnikHjv/1dHew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w4RVkI/iNokwmnEOhVMllUSsNW4Mj3EHC1/ddDrha9w=;
- b=ZzG9Hun8BvvcVmABUnr4427Modxn+xlQXR6w2X7U8U96XJxV4XO7G9BiSg2hMpd0QDKzFawODX85D6BEbMBG9ODlxk4rZmjnIirqD5V0GdcNdrgO4FzcL/pee1BHFHiWBVJo8q4cJgw6FXkr2v1P0Iz/j1SZND1kidIDNoM+KpAV+fdCsBYAvSJN7zGlBqoFqTS2e3Ts71gnLxnbv5/s66ZV/PWE5myFZJZw8PYRCv9Lz+7wNeV4GDsiseByRUTpiGGen6+uyn6fC3RYeCg2yExiuzPYYcLXgg713HplIsqKeprfUOMRu+HhjIulAuiupa4yC+w+zl9X3QL/LicWaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB4403.namprd12.prod.outlook.com (2603:10b6:5:2ab::24)
- by DM5PR1201MB0058.namprd12.prod.outlook.com (2603:10b6:4:50::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.19; Mon, 8 Feb
- 2021 12:17:14 +0000
-Received: from DM6PR12MB4403.namprd12.prod.outlook.com
- ([fe80::5c42:cbe:fe28:3a9b]) by DM6PR12MB4403.namprd12.prod.outlook.com
- ([fe80::5c42:cbe:fe28:3a9b%5]) with mapi id 15.20.3825.030; Mon, 8 Feb 2021
- 12:17:14 +0000
-Subject: Re: [PATCH net-next 2/9] net: bridge: offload initial and final port
- flags through switchdev
-To:     Vladimir Oltean <olteanv@gmail.com>
-CC:     Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
+        id S231380AbhBHNxF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Feb 2021 08:53:05 -0500
+Received: from mail.baikalelectronics.com ([87.245.175.226]:56524 "EHLO
+        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230382AbhBHNw7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Feb 2021 08:52:59 -0500
+From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
+To:     Felipe Balbi <balbi@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <bridge@lists.linux-foundation.org>,
-        "Roopa Prabhu" <roopa@nvidia.com>, Jiri Pirko <jiri@resnulli.us>,
-        Ido Schimmel <idosch@idosch.org>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
-        <UNGLinuxDriver@microchip.com>, Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Ivan Vecera <ivecera@redhat.com>, <linux-omap@vger.kernel.org>
-References: <20210207232141.2142678-1-olteanv@gmail.com>
- <20210207232141.2142678-3-olteanv@gmail.com>
- <95dede91-56aa-1852-8fbf-71d446fa7ede@nvidia.com>
- <20210208114511.xtzma5byrdnr5s7r@skbuf>
-From:   Nikolay Aleksandrov <nikolay@nvidia.com>
-Message-ID: <a22fee65-9cb5-bdd5-fd40-cdd57dc072f3@nvidia.com>
-Date:   Mon, 8 Feb 2021 14:17:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
-In-Reply-To: <20210208114511.xtzma5byrdnr5s7r@skbuf>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [213.179.129.39]
-X-ClientProxiedBy: GV0P278CA0026.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:710:28::13) To DM6PR12MB4403.namprd12.prod.outlook.com
- (2603:10b6:5:2ab::24)
+        Rob Herring <robh+dt@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Rafal Milecki <zajec5@gmail.com>,
+        Wei Xu <xuwei5@hisilicon.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Benoit Cousson <bcousson@baylibre.com>,
+        Patrice Chotard <patrice.chotard@st.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Andy Gross <agross@kernel.org>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Kukjin Kim <kgene@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+        Tony Lindgren <tony@atomide.com>, Chen-Yu Tsai <wens@csie.org>,
+        Jun Li <lijun.kernel@gmail.com>,
+        <linux-snps-arc@lists.infradead.org>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mips@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        <linux-samsung-soc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v5 00/10] dt-bindings: usb: Harmonize xHCI/EHCI/OHCI/DWC3 nodes name
+Date:   Mon, 8 Feb 2021 16:51:44 +0300
+Message-ID: <20210208135154.6645-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.21.241.121] (213.179.129.39) by GV0P278CA0026.CHEP278.PROD.OUTLOOK.COM (2603:10a6:710:28::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.19 via Frontend Transport; Mon, 8 Feb 2021 12:17:09 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 80234db6-1b5e-4d43-de76-08d8cc2b77f7
-X-MS-TrafficTypeDiagnostic: DM5PR1201MB0058:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM5PR1201MB00580D36B2726C510DBC16C4DF8F9@DM5PR1201MB0058.namprd12.prod.outlook.com>
-X-Header: ProcessedBy-CMR-outbound
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vilbzdC8uIYWJ3k+dkjyxa0yXCSdXHLaUsVc2u4NXWQSB+XhmsbqYVlSm2x7C4kfBkobHtiXjVY0M/X8BIXFnKYQJ8t+9iyVztMLxCAWN9aYb9JbKTtOMq1yRH4y6nhJl4f/Z3UlYt9kd+8jVinIl2KUM4n+nBkpPyM+e49K8uxUuHqmILl4h+boCeb0LTf6a51DOQWkMNG8kjwizfsh6ROcI/ZEfcu/VWDj6N2DHRwREQvoJ6ykfMlScTdcym5VV3p7uyXJjEC8xK9tiEYnZEdUJXiqm6NauUGQO9BzSBrf8OV95IDa+dqrZuGA/JrwTTl91yWZpLgwrPsHk37MwN+ZYlDQDgfEJEedaa27iNYmiM2sMH4EYGkQB2Eci43OExBygtn2YQaPPJkzslbYi2uJfuEi5+uN7VC4bNnkMJM4bSdu8sIsXR8HpyTsql/dZBcUTRkJ4A/h7gmU8upqlwJGVCbfo8liuMYS6YQ+lzv+3sJBD9ikaFduRprFZOV/9fQp7MLm7p3jhYEONg/8NXAD/1gySpk2UYZ4GN96PvBL+15HVZwyKMk6AsG0RJrZcG0CiXw4NVWPHcS4/ooMS+B1esbovYMrKddGK2aR96g=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4403.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(346002)(396003)(136003)(366004)(39860400002)(186003)(6666004)(26005)(8936002)(16526019)(316002)(16576012)(478600001)(83380400001)(4326008)(31686004)(6486002)(66946007)(7416002)(36756003)(2906002)(54906003)(8676002)(2616005)(6916009)(5660300002)(86362001)(956004)(66556008)(31696002)(53546011)(66476007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?NkxqN1lMRm1XQ2tiSzdndjFEQU1qM2dCQzJMTS9xeFFyV3dJZEhYYlJqY3Ra?=
- =?utf-8?B?WVRrVTNzbG9OQnhySTdGZUpnY0NNTHFIK2lPTmE4NjB6dTh0dHBzZWVVU01K?=
- =?utf-8?B?Z3lIdk81c2w0WnpMWG5YNHFOS2FUcld4YStZMUMxNTQvaVhrZmxXbC9ST3A5?=
- =?utf-8?B?K1MxRk5DZVdYLzVkQ2dyUHhQVnJVYlhmTUdGOWFXUEZKakdmYzV2eVJsZDRZ?=
- =?utf-8?B?Q3NEeU1FaWhvNVZxQWRQYTJWeVYyaDI3ZE9xZ2RDcEJGY1MwK1ZheEFHNlpK?=
- =?utf-8?B?S3Y1aHR1NDVMVWV3TUloR2ZQL0JqMTZEY1BOd1VPY3hmWEYrNFZhUC9BcHFL?=
- =?utf-8?B?TEhYQnBjMU1jUTdRcWQxN2g2TlFCeEJ5M3VmSC9ZME9DRXppUUk3VUVWeUVi?=
- =?utf-8?B?WVlJT0k2RldjbFBVZHM1WXhXS2FYbnBNYTZUbEhhczBNTjIzN2dDMnczWHF0?=
- =?utf-8?B?YVA0NmJjTXVpc3NCZEJaWDFPek0vd3lBVkF0UFZRQ2VBeDJIOVcwc2dCT3RS?=
- =?utf-8?B?QktXazlqZWl3WlFYVGVlUk9FVE9PT0docUdxSU9ZcC9xU2NGa3NqckFzRUhM?=
- =?utf-8?B?OUZtelJhVUx2SEVKT29yUWwwVm9qRmphQzJtM1lhc09SRTFaM2p0cEt6Q2NP?=
- =?utf-8?B?dVRZRUtOZE1PeDlHcGZXUHp0cTh0aU9BMkt3UElJN2ViM1JORlRHR09MWDJB?=
- =?utf-8?B?ZWdTWk9tU1ZVRmV5SDl0eEhxTjJxYXd6Skw0WjVxcHAzc1R5T2lKUXpmbnI2?=
- =?utf-8?B?U1pDanAvT0ZwMEJyRUhxTkdQeXJFaDAzd2FlUXA4YUkzZ0pCeWZydWxuSEpI?=
- =?utf-8?B?Slh3Y012a2xwTG5hYkwrS1hoVUo2Y1NPNTEwRGdUNFJlTEdGUHhSZkVNbmtv?=
- =?utf-8?B?ZFdYeUd5T0tqK0x2OC9WenAzRFZJYTBPYnVjTUkycVh3R1lkbndBS1BnZ2xN?=
- =?utf-8?B?bDdITTg5dzdlM0NyUHloVzRSZVhId2xad0hnL1lnY0FpcHphYzlIZU5xcnVI?=
- =?utf-8?B?YkJFNXV2dFlVdFlQanZUYkxrSTBjYVdCWHFidlhvbXZhblpkQ1A0RmZvVUdz?=
- =?utf-8?B?STRtYzBodVdXeWl6VjN3RTQ5cWpQRk51dVI0N1NSL2VFOUNxVG5CODNBZ2g2?=
- =?utf-8?B?L3VOSWFoWjhNcTZNWG0vV2ZoNjU3RWhMQk01TWV1bGFMSjZLNDQ0L0p0Y3JH?=
- =?utf-8?B?S01YQVc2Z1MwVm4zbElPT2lsbk51RHZVYXhFMlBWZWw5Nlk2eWRobk1BYWRy?=
- =?utf-8?B?UHR3M1B0a1hiL0NzaTRwT1Z5RkxuRlNiN2lWZm9ONGhtbEZLYVJLTi9OcVpT?=
- =?utf-8?B?RGNmZ2VaeFBuR1hmcXVvREpUWFIyWHNHVGdQYnB3M1gxTFBNVzFhWmtkcDFD?=
- =?utf-8?B?QWQ2SVBrNmtmdEEvMHRCWk10ZG93SFZFNk5RRCtlQ3Jmc0ViWVlBc3BJTEtY?=
- =?utf-8?B?Q0NKVVkrUk52aCs0Q2JoTUxkODZURnBwd2tNaVhzaWRIS04yRk9jd0RMZGwy?=
- =?utf-8?B?OHZZT3MrR2c1TUxSWGVmdjZMUkhGYmxFMXJ6ZlNaNEx1SkIvZExrUTdidmVy?=
- =?utf-8?B?QmlJeTVYZFVEQUxEQkE4UVlDMTIzNGczR0c1Q3R6RHFPWGxRcXRUUDdJVTFN?=
- =?utf-8?B?NDVUaHd2RGlUNXVOZzFkU0FYYlozUXdCY2x0NVgvb3JBcHQxWHJOcnIyMWo4?=
- =?utf-8?B?b3VvWHhwWGM0MGtxWUdkdFEvSjMwT09xSVVsVlh1L3NHWURzWUJMS3FTaStt?=
- =?utf-8?Q?18gpUlsY9NNll/V6Dww49n8J0HFE2nIwjlhN6kI?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 80234db6-1b5e-4d43-de76-08d8cc2b77f7
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4403.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2021 12:17:14.3030
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m7kChxbalxkPeeN+jpBMVGVlcS4e5B0BayxEksD7jfLkkOgnsret+/iytFPCbisil9CEFkZkHfEabhfqS5BXHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR1201MB0058
-X-OriginatorOrg: Nvidia.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1612786648; bh=w4RVkI/iNokwmnEOhVMllUSsNW4Mj3EHC1/ddDrha9w=;
-        h=ARC-Seal:ARC-Message-Signature:ARC-Authentication-Results:
-         Authentication-Results:Subject:To:CC:References:From:Message-ID:
-         Date:User-Agent:In-Reply-To:Content-Type:Content-Language:
-         Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy:
-         MIME-Version:X-MS-Exchange-MessageSentRepresentingType:
-         X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id:
-         X-MS-TrafficTypeDiagnostic:X-MS-Exchange-Transport-Forked:
-         X-Microsoft-Antispam-PRVS:X-Header:X-MS-Oob-TLC-OOBClassifiers:
-         X-MS-Exchange-SenderADCheck:X-Microsoft-Antispam:
-         X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-         X-MS-Exchange-AntiSpam-MessageData:
-         X-MS-Exchange-CrossTenant-Network-Message-Id:
-         X-MS-Exchange-CrossTenant-AuthSource:
-         X-MS-Exchange-CrossTenant-AuthAs:
-         X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-         X-MS-Exchange-CrossTenant-FromEntityHeader:
-         X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-         X-MS-Exchange-CrossTenant-UserPrincipalName:
-         X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-        b=a1323N8eXC5BFt04xRqsY0wFjsSB/GSz/ZlxgT2JgCdT4xUb01/y/z/ySCaJptdsa
-         vo7dPiX8tlzULxmMqsH/PUvlE+yh6CIObDqHS/M5VMXvkvPcT3Ktkg3qZ3r3XYIUhO
-         Jd/Q1k/9hZ5oF8Pi9FegJZ/9J2ufBcrDlL4a2NCZiFYlGeZYWx8W3zncMSX/JC2iEa
-         zn6RICXRf3syJ95M0feHekq+VpUe86mz5qHotGKPO8meeekP0DQXSe3vSzHmidNQNZ
-         /EwLbLeqfgqJIOGva2M3GDbHjFXD8ROlSMW9hnPYV24fOM2iQE4jSlpGJM8jY/MZRI
-         AiDh+8BLVyuIw==
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/02/2021 13:45, Vladimir Oltean wrote:
-> On Mon, Feb 08, 2021 at 01:37:03PM +0200, Nikolay Aleksandrov wrote:
->> Hi Vladimir,
->> I think this patch potentially breaks some use cases. There are a few problems, I'll
->> start with the more serious one: before the ports would have a set of flags that were
->> always set when joining, now due to how nbp_flags_change() handles flag setting some might
->> not be set which would immediately change behaviour w.r.t software fwding. I'll use your
->> example of BR_BCAST_FLOOD: a lot of drivers will return an error for it and any broadcast
->> towards these ports will be dropped, we have mixed environments with software ports that
->> sometimes have traffic (e.g. decapped ARP requests) software forwarded which will stop working.
-> 
-> Yes, you're right. The only solution I can think of is to add a "bool ignore_errors"
-> to nbp_flags_change, set to true from new_nbp and del_nbp, and to false from the
-> netlink code.
-> 
+As the subject states this series is an attempt to harmonize the xHCI,
+EHCI, OHCI and DWC USB3 DT nodes with the DT schema introduced in the
+framework of the patchset [1].
 
-Indeed, I can't think of any better solution right now, but that would make it more or less
-equal to the current situation where the flags are just set. You can read/restore them on add/del
-of bridge port, but I guess that's what you'd like to avoid. :)
-I don't mind adding the add/del_nbp() notifications, but both of them seem redundant with
-the port add/del notifications which you can handle in the driver.
+Firstly as Krzysztof suggested we've deprecated a support of DWC USB3
+controllers with "synopsys,"-vendor prefix compatible string in favor of
+the ones with valid "snps,"-prefix. It's done in all the DTS files,
+which have been unfortunate to define such nodes.
 
->> The other lesser issue is with the style below, I mean these three calls for each flag are
->> just ugly and look weird as you've also noted, since these APIs are internal can we do better?
-> 
-> Doing better would mean allowing nbp_flags_change() to have a bit mask with
-> potentially more brport flags set, and to call br_switchdev_set_port_flag in
-> a for_each_set_bit() loop?
-> 
+Secondly we suggest to fix the snps,quirk-frame-length-adjustment property
+declaration in the Amlogic meson-g12-common.dtsi DTS file, since it has
+been erroneously declared as boolean while having uint32 type. Neil said
+it was ok to init that property with 0x20 value.
 
-Sure, that sounds better for now. I think you've described the ideal case in your
-commit message.
+Thirdly the main part of the patchset concern fixing the xHCI, EHCI/OHCI
+and DWC USB3 DT nodes name as in accordance with their DT schema the
+corresponding node name is suppose to comply with the Generic USB HCD DT
+schema, which requires the USB nodes to have the name acceptable by the
+regexp: "^usb(@.*)?". Such requirement had been applicable even before we
+introduced the new DT schema in [1], but as we can see it hasn't been
+strictly implemented for a lot the DTS files. Since DT schema is now
+available the automated DTS validation shall make sure that the rule isn't
+violated.
+
+Note most of these patches have been a part of the last three patches of
+[1]. But since there is no way to have them merged in in a combined
+manner, I had to move them to the dedicated series and split them up so to
+be accepted by the corresponding subsystem maintainers one-by-one.
+
+[1] Link: https://lore.kernel.org/linux-usb/20201014101402.18271-1-Sergey.Semin@baikalelectronics.ru/
+Changelog v1:
+- As Krzysztof suggested I've created a script which checked whether the
+  node names had been also updated in all the depended dts files. As a
+  result I found two more files which should have been also modified:
+  arch/arc/boot/dts/{axc003.dtsi,axc003_idu.dtsi}
+- Correct the USB DWC3 nodes name found in
+  arch/arm64/boot/dts/apm/{apm-storm.dtsi,apm-shadowcat.dtsi} too.
+
+Link: https://lore.kernel.org/linux-usb/20201020115959.2658-1-Sergey.Semin@baikalelectronics.ru
+Changelog v2:
+- Drop the patch:
+  [PATCH 01/29] usb: dwc3: Discard synopsys,dwc3 compatibility string
+  and get back the one which marks the "synopsys,dwc3" compatible string
+  as deprecated into the DT schema related series.
+- Drop the patches:
+  [PATCH 03/29] arm: dts: am437x: Correct DWC USB3 compatible string
+  [PATCH 04/29] arm: dts: exynos: Correct DWC USB3 compatible string
+  [PATCH 07/29] arm: dts: bcm53x: Harmonize EHCI/OHCI DT nodes name
+  [PATCH 08/29] arm: dts: stm32: Harmonize EHCI/OHCI DT nodes name
+  [PATCH 16/29] arm: dts: bcm5301x: Harmonize xHCI DT nodes name
+  [PATCH 19/29] arm: dts: exynos: Harmonize DWC USB3 DT nodes name
+  [PATCH 21/29] arm: dts: ls1021a: Harmonize DWC USB3 DT nodes name
+  [PATCH 22/29] arm: dts: omap5: Harmonize DWC USB3 DT nodes name
+  [PATCH 24/29] arm64: dts: allwinner: h6: Harmonize DWC USB3 DT nodes name
+  [PATCH 26/29] arm64: dts: exynos: Harmonize DWC USB3 DT nodes name
+  [PATCH 27/29] arm64: dts: layerscape: Harmonize DWC USB3 DT nodes name
+  since they have been applied to the corresponding maintainers repos.
+- Fix drivers/usb/dwc3/dwc3-qcom.c to be looking for the "usb@"-prefixed
+  sub-node and falling back to the "dwc3@"-prefixed one on failure.
+
+Link: https://lore.kernel.org/linux-usb/20201111091552.15593-1-Sergey.Semin@baikalelectronics.ru
+Changelog v3:
+- Drop the patches:
+  [PATCH v2 04/18] arm: dts: hisi-x5hd2: Harmonize EHCI/OHCI DT nodes name
+  [PATCH v2 06/18] arm64: dts: hisi: Harmonize EHCI/OHCI DT nodes name
+  [PATCH v2 07/18] mips: dts: jz47x: Harmonize EHCI/OHCI DT nodes name
+  [PATCH v2 08/18] mips: dts: sead3: Harmonize EHCI/OHCI DT nodes name
+  [PATCH v2 09/18] mips: dts: ralink: mt7628a: Harmonize EHCI/OHCI DT nodes name
+  [PATCH v2 11/18] arm64: dts: marvell: cp11x: Harmonize xHCI DT nodes name
+  [PATCH v2 12/18] arm: dts: marvell: armada-375: Harmonize DWC USB3 DT nodes name
+  [PATCH v2 16/18] arm64: dts: hi3660: Harmonize DWC USB3 DT nodes name
+  since they have been applied to the corresponding maintainers repos.
+
+Link: https://lore.kernel.org/linux-usb/20201205155621.3045-1-Sergey.Semin@baikalelectronics.ru
+Changelog v4:
+- Just resend.
+
+Link: https://lore.kernel.org/linux-usb/20201210091756.18057-1-Sergey.Semin@baikalelectronics.ru/
+Changelog v5:
+- Drop the patch:
+  [PATCH v4 02/10] arm64: dts: amlogic: meson-g12: Set FL-adj property value
+  since it has been applied to the corresponding maintainers repos.
+- Get back the patch:
+  [PATCH 21/29] arm: dts: ls1021a: Harmonize DWC USB3 DT nodes name
+  as it has been missing in the kernel 5.11-rc7
+- Rebase onto the kernel 5.11-rc7
+
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: Rafal Milecki <zajec5@gmail.com>
+Cc: Wei Xu <xuwei5@hisilicon.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Santosh Shilimkar <ssantosh@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Benoit Cousson <bcousson@baylibre.com>
+Cc: Patrice Chotard <patrice.chotard@st.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Khuong Dinh <khuong@os.amperecomputing.com>
+Cc: Andy Gross <agross@kernel.org>
+Cc: Alexey Brodkin <abrodkin@synopsys.com>
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@st.com>
+Cc: Amelie Delaunay <amelie.delaunay@st.com>
+Cc: Vladimir Zapolskiy <vz@mleia.com>
+Cc: Paul Cercueil <paul@crapouillou.net>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Gregory Clement <gregory.clement@bootlin.com>
+Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Kukjin Kim <kgene@kernel.org>
+Cc: Li Yang <leoyang.li@nxp.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc: Jun Li <lijun.kernel@gmail.com>
+Cc: linux-snps-arc@lists.infradead.org
+Cc: bcm-kernel-feedback-list@broadcom.com
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-mediatek@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Serge Semin (10):
+  arm: dts: ls1021a: Harmonize DWC USB3 DT nodes name
+  arm: dts: keystone: Correct DWC USB3 compatible string
+  arc: dts: Harmonize EHCI/OHCI DT nodes name
+  arm: dts: lpc18xx: Harmonize EHCI/OHCI DT nodes name
+  powerpc: dts: akebono: Harmonize EHCI/OHCI DT nodes name
+  arm: dts: keystone: Harmonize DWC USB3 DT nodes name
+  arm: dts: stih407-family: Harmonize DWC USB3 DT nodes name
+  arm64: dts: apm: Harmonize DWC USB3 DT nodes name
+  usb: dwc3: qcom: Detect DWC3 DT-nodes with "usb"-prefixed names
+  arm64: dts: qcom: Harmonize DWC USB3 DT nodes name
+
+ arch/arc/boot/dts/axc003.dtsi                | 4 ++--
+ arch/arc/boot/dts/axc003_idu.dtsi            | 4 ++--
+ arch/arc/boot/dts/axs10x_mb.dtsi             | 4 ++--
+ arch/arc/boot/dts/hsdk.dts                   | 4 ++--
+ arch/arc/boot/dts/vdk_axs10x_mb.dtsi         | 2 +-
+ arch/arm/boot/dts/keystone-k2e.dtsi          | 6 +++---
+ arch/arm/boot/dts/keystone.dtsi              | 4 ++--
+ arch/arm/boot/dts/lpc18xx.dtsi               | 4 ++--
+ arch/arm/boot/dts/ls1021a.dtsi               | 2 +-
+ arch/arm/boot/dts/stih407-family.dtsi        | 2 +-
+ arch/arm64/boot/dts/apm/apm-shadowcat.dtsi   | 4 ++--
+ arch/arm64/boot/dts/apm/apm-storm.dtsi       | 6 +++---
+ arch/arm64/boot/dts/qcom/apq8096-db820c.dtsi | 4 ++--
+ arch/arm64/boot/dts/qcom/ipq8074.dtsi        | 4 ++--
+ arch/arm64/boot/dts/qcom/msm8996.dtsi        | 4 ++--
+ arch/arm64/boot/dts/qcom/msm8998.dtsi        | 2 +-
+ arch/arm64/boot/dts/qcom/qcs404-evb.dtsi     | 2 +-
+ arch/arm64/boot/dts/qcom/qcs404.dtsi         | 4 ++--
+ arch/arm64/boot/dts/qcom/sc7180.dtsi         | 2 +-
+ arch/arm64/boot/dts/qcom/sdm845.dtsi         | 4 ++--
+ arch/arm64/boot/dts/qcom/sm8150.dtsi         | 2 +-
+ arch/powerpc/boot/dts/akebono.dts            | 6 +++---
+ drivers/usb/dwc3/dwc3-qcom.c                 | 3 ++-
+ 23 files changed, 42 insertions(+), 41 deletions(-)
+
+-- 
+2.29.2
+
