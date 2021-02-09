@@ -2,103 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39EB33157CC
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Feb 2021 21:39:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3171315826
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Feb 2021 22:01:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233423AbhBIUh3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Feb 2021 15:37:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35104 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233471AbhBIUd6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 15:33:58 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C219C0698C6;
-        Tue,  9 Feb 2021 12:20:49 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id y18so25566246edw.13;
-        Tue, 09 Feb 2021 12:20:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=OJBJZoWtqasITVYW+Sh00YF0phZ4lq1R3a/gcaU0ls4=;
-        b=o/AxlQl0i/wUD4989dM3BQ9Gi/UH+Je6cbHNhA84lwvzRqeUwuhW4S4haRyZI0GgPd
-         Ej/r7H/wM6R3hOXnDtJJF14SNOLs40Wvo4qGFTwwD4QlpUsFij206pVp+GJb4kxAsY3F
-         z65T8HrcYQbcL8vFhr2HcbobpEEWPUvqncsAmlpky62S2x5+q3vCbm2JTJId8ZDe3J8n
-         VrW5z3qLoSpLdUyM43J9QjBj6MqZJ7WdU6UztgN2EideHqQQZevsC6BV7EoRN6w051Hr
-         G2lyfCoI3UgEmrYW+DhPm9tOlmz3duWY6/FQFMvZd6sjKzVuJ0rn7BFROqc83Ob/Wvtd
-         hRVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=OJBJZoWtqasITVYW+Sh00YF0phZ4lq1R3a/gcaU0ls4=;
-        b=hboDIpr1xEDoRJI8vKesysCEHxlZ2mA8OWGIS7/Y4dLxD20cEWssq++tvtjE9eQFOE
-         1dEQNgbpoTTWHjmla2I6ipRzaMuwzNP+3h8DWBwZSdZha7GvzQNhhdbfKk1xaaBRN5cs
-         gS7rrsbRqexZe7eu7aU4Ebi9VEmREeUO4D3eaedFjBkFeXCWIZcbrZBxwDBSDV1Ynd/2
-         6juWbk5FkIyBN4xvuOZO/uAg48eQ3mfVLJvv5yacAJ74PnNjVdL7nsKrqO02+5tVjKxo
-         +LGZj2dNuM53cBlJKrNHatwhuMKP2G6kQi24Sj3cXkfFgu1iPJ09dfqN9hAimaDfx/DZ
-         2z6w==
-X-Gm-Message-State: AOAM532AYppR1xhJ4m/+VBfSrfdfPrqCM7a3SWdCLbWZr1A0Ry1Ph3lj
-        DY3/Uojv1mAcLK3G9LpdPOY=
-X-Google-Smtp-Source: ABdhPJwJtHUiJJW8tLUk73YO+ec8lbnMpR7egGqbTCfnV7RroIzrPKEhDhjC2bnmohYOtx/S8OFm6A==
-X-Received: by 2002:a50:cd8c:: with SMTP id p12mr25052831edi.114.1612902048344;
-        Tue, 09 Feb 2021 12:20:48 -0800 (PST)
-Received: from skbuf (5-12-227-87.residential.rdsnet.ro. [5.12.227.87])
-        by smtp.gmail.com with ESMTPSA id q14sm12228756edw.52.2021.02.09.12.20.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Feb 2021 12:20:47 -0800 (PST)
-Date:   Tue, 9 Feb 2021 22:20:45 +0200
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Ido Schimmel <idosch@idosch.org>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
-        Nikolay Aleksandrov <nikolay@nvidia.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v2 net-next 04/11] net: bridge: offload initial and final
- port flags through switchdev
-Message-ID: <20210209202045.obayorcud4fg2qqb@skbuf>
-References: <20210209151936.97382-1-olteanv@gmail.com>
- <20210209151936.97382-5-olteanv@gmail.com>
- <20210209185100.GA266253@shredder.lan>
+        id S233806AbhBIUzD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Feb 2021 15:55:03 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:49664 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233708AbhBIUqB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 15:46:01 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 119JQFiB127294;
+        Tue, 9 Feb 2021 13:26:15 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1612898775;
+        bh=Kn2NQi9sF+VnGztMC5VkN80zeqYjnmSH3dKOmRJUBU4=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=W5uAU91+EqbgCvVkUiFlWIkIPG3J0vQknlbGynfQZBMocJtg6+5VYXQcP/abL2Px5
+         DQ1FSg8zgUDSAWzzZMe5GvDZeGtNH8d1zXURLyXNrNBCeNkw/gU0w05WC80rUNu3qw
+         /02/3F2I8PAf5hqs9TFq/yqpnvWxNyjuz8fiZlbo=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 119JQF61100131
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 9 Feb 2021 13:26:15 -0600
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 9 Feb
+ 2021 13:26:15 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 9 Feb 2021 13:26:15 -0600
+Received: from [10.250.35.110] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 119JQFhb005466;
+        Tue, 9 Feb 2021 13:26:15 -0600
+Subject: Re: [PATCH 1/2] dt-bindings: mailbox: omap: Update binding for AM64x
+ SoCs
+To:     Rob Herring <robh@kernel.org>
+CC:     Jassi Brar <jassisinghbrar@gmail.com>,
+        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20210127195600.23501-1-s-anna@ti.com>
+ <20210127195600.23501-2-s-anna@ti.com>
+ <20210209192443.GA4192418@robh.at.kernel.org>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <dd0c9946-06fd-2c61-b8a4-67b72287ab90@ti.com>
+Date:   Tue, 9 Feb 2021 13:26:10 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210209185100.GA266253@shredder.lan>
+In-Reply-To: <20210209192443.GA4192418@robh.at.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Feb 09, 2021 at 08:51:00PM +0200, Ido Schimmel wrote:
-> On Tue, Feb 09, 2021 at 05:19:29PM +0200, Vladimir Oltean wrote:
-> > So switchdev drivers operating in standalone mode should disable address
-> > learning. As a matter of practicality, we can reduce code duplication in
-> > drivers by having the bridge notify through switchdev of the initial and
-> > final brport flags. Then, drivers can simply start up hardcoded for no
-> > address learning (similar to how they already start up hardcoded for no
-> > forwarding), then they only need to listen for
-> > SWITCHDEV_ATTR_ID_PORT_BRIDGE_FLAGS and their job is basically done, no
-> > need for special cases when the port joins or leaves the bridge etc.
+On 2/9/21 1:24 PM, Rob Herring wrote:
+> On Wed, Jan 27, 2021 at 01:55:59PM -0600, Suman Anna wrote:
+>> Update the existing OMAP Mailbox binding to include the info for
+>> AM64x SoCs. There are some minor IP integration differences between
+>> the AM64x SoCs and the previous AM65x and J721E SoC families.
+>>
+>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>> ---
+>>  .../bindings/mailbox/omap-mailbox.txt         | 22 +++++++++++++++++++
+>>  1 file changed, 22 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/mailbox/omap-mailbox.txt b/Documentation/devicetree/bindings/mailbox/omap-mailbox.txt
+>> index 5fe80c1c19fc..c993d1a5c14a 100644
+>> --- a/Documentation/devicetree/bindings/mailbox/omap-mailbox.txt
+>> +++ b/Documentation/devicetree/bindings/mailbox/omap-mailbox.txt
+>> @@ -28,6 +28,9 @@ SoCs has each of these instances form a cluster and combine multiple clusters
+>>  into a single IP block present within the Main NavSS. The interrupt lines from
+>>  all these clusters are multiplexed and routed to different processor subsystems
+>>  over a limited number of common interrupt output lines of an Interrupt Router.
+>> +The AM64x SoCS also uses a single IP block comprising of multiple clusters,
+>> +but the number of clusters are smaller, and the interrupt output lines are
+>> +connected directly to various processors.
+>>  
+>>  Mailbox Device Node:
+>>  ====================
+>> @@ -42,6 +45,7 @@ Required properties:
+>>  			    "ti,omap4-mailbox" for OMAP44xx, OMAP54xx, AM33xx,
+>>  						   AM43xx and DRA7xx SoCs
+>>  			    "ti,am654-mailbox" for K3 AM65x and J721E SoCs
+>> +			    "ti,am64-mailbox" for K3 AM64x SoCs
+>>  - reg:			Contains the mailbox register address range (base
+>>  			address and length)
+>>  - interrupts:		Contains the interrupt information for the mailbox
+>> @@ -178,3 +182,21 @@ mailbox: mailbox@480c8000 {
+>>  		};
+>>  	};
+>>  };
+>> +
+>> +4. /* AM64x */
+>> +&cbass_main {
 > 
-> How are you handling the case where a port leaves a LAG that is linked
-> to a bridge? In this case the port becomes a standalone port, but will
-> not get this notification.
+> Please don't add examples for just a new compatible.
 
-Apparently the answer to that question is "I delete the code that makes
-this use case work", how smart of me. Thanks.
+Thanks, will keep this in mind for the future and drop this as well just like on
+the HwSpinlock binding update.
 
-Unless you have any idea how I could move the logic into the bridge, I
-guess I'm stuck with DSA and all the other switchdev drivers having this
-forest of corner cases to deal with. At least I can add a comment so I'm
-not tempted to delete it next time.
+regards
+Suman
+
+> 
+>> +	mailbox0_cluster2: mailbox@29020000 {
+>> +		compatible = "ti,am64-mailbox";
+>> +		reg = <0x00 0x29020000 0x00 0x200>;
+>> +		interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>,
+>> +		             <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>;
+>> +		#mbox-cells = <1>;
+>> +		ti,mbox-num-users = <4>;
+>> +		ti,mbox-num-fifos = <16>;
+>> +
+>> +		mbox_main_r5fss0_core0: mbox-main-r5fss0-core0 {
+>> +			ti,mbox-rx = <0 0 2>;
+>> +			ti,mbox-tx = <1 0 2>;
+>> +		};
+>> +	};
+>> +};
+>> -- 
+>> 2.29.2
+>>
+
