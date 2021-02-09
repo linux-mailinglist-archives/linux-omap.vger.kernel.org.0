@@ -2,104 +2,159 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 063773154F9
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Feb 2021 18:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C50E9315508
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Feb 2021 18:27:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233076AbhBIRYu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Feb 2021 12:24:50 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:37882 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233056AbhBIRYg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 12:24:36 -0500
+        id S233158AbhBIR0f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Feb 2021 12:26:35 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:40962 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233171AbhBIR0R (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 12:26:17 -0500
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 119HMwJp085912;
-        Tue, 9 Feb 2021 11:22:58 -0600
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 119HPN1a107403;
+        Tue, 9 Feb 2021 11:25:23 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1612891378;
-        bh=ORR1qWbzGKPhFb6nJeQy4m4jrPKcnKzbMF0SL3bn+OY=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=UfatRChCyUh8gNTI/1xMI6ph/aAE/4AjyMuaYcI75ctaX8r7MU0g1YFq/JOFA736k
-         JWpkLFvwUgRD7SoHLq7EL/NgOfPIbzu6ekc5KKb5AkVvmXQkhOZfhSVh9hrWrnrZ1H
-         fdDCqun+4jlTAt8ZftTeOITFfXlycPZja7ANnKW8=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 119HMwGb047703
+        s=ti-com-17Q1; t=1612891523;
+        bh=PGiBVj7ZxxSOBH41lp1gwM+UHXCB9lUOWvJ8/ZxLbZM=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=s17ebFsx4Sfm/dum1LUWorTTm5FTlnEJaEvjD7kDXhpJ35S2/VnIuw965HBy184ho
+         eHT3V7D/Aif3hDSobi1Q/zpx78NU6PvfGHb+y1DBYF4OoBmLfU3EcUdXyb47iVXPpG
+         hf8tvpreKYB6NXDikSrYy0uvT0fQH3mTOnPWQkR8=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 119HPNP1051330
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 9 Feb 2021 11:22:58 -0600
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 9 Feb 2021 11:25:23 -0600
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 9 Feb
- 2021 11:22:58 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ 2021 11:25:23 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 9 Feb 2021 11:22:58 -0600
-Received: from lelv0597.itg.ti.com (lelv0597.itg.ti.com [10.181.64.32])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 119HMwWH091746;
-        Tue, 9 Feb 2021 11:22:58 -0600
-Received: from localhost ([10.250.35.110])
-        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 119HMv93007541;
-        Tue, 9 Feb 2021 11:22:57 -0600
-From:   Suman Anna <s-anna@ti.com>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     <devicetree@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
+ Frontend Transport; Tue, 9 Feb 2021 11:25:23 -0600
+Received: from [10.250.35.110] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 119HPMjV037592;
+        Tue, 9 Feb 2021 11:25:22 -0600
+Subject: Re: [PATCH 1/2] dt-bindings: hwlock: Update OMAP HwSpinlock binding
+ for AM64x SoCs
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+CC:     Rob Herring <robh@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-remoteproc@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, Suman Anna <s-anna@ti.com>
-Subject: [PATCH v2 2/2] hwspinlock: omap: Add support for K3 AM64x SoCs
-Date:   Tue, 9 Feb 2021 11:22:40 -0600
-Message-ID: <20210209172240.2305-3-s-anna@ti.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210209172240.2305-1-s-anna@ti.com>
-References: <20210209172240.2305-1-s-anna@ti.com>
+        <linux-omap@vger.kernel.org>
+References: <20210125235653.24385-1-s-anna@ti.com>
+ <20210125235653.24385-2-s-anna@ti.com>
+ <20210209170025.GA3927023@robh.at.kernel.org>
+ <48f25fc0-5131-9821-d50d-7f4f7ef5815e@ti.com> <YCLELGkpWBPgud1Y@builder.lan>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <d258f875-c11b-fd3d-ba5f-247a94888cd7@ti.com>
+Date:   Tue, 9 Feb 2021 11:25:17 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+In-Reply-To: <YCLELGkpWBPgud1Y@builder.lan>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The AM64x SoC contains a HwSpinlock IP instance in the MAIN domain,
-and is a minor variant of the IP on the current TI K3 SoCs such as
-AM64x, J721E or J7200 SoCs. The IP is not built with the K3 safety
-feature in hardware, and has slightly different integration into
-the overall SoC.
+On 2/9/21 11:19 AM, Bjorn Andersson wrote:
+> On Tue 09 Feb 11:09 CST 2021, Suman Anna wrote:
+> 
+>> Hi Rob,
+>>
+>> On 2/9/21 11:00 AM, Rob Herring wrote:
+>>> On Mon, Jan 25, 2021 at 05:56:52PM -0600, Suman Anna wrote:
+>>>> Update the existing OMAP HwSpinlock binding to include the info for
+>>>> AM64x SoCs. There are some minor IP integration differences between
+>>>> the AM64x SoCs and the previous AM65x and J721E SoC families. A new
+>>>> example is also added showcasing the difference in the IP's presence
+>>>> on the interconnect.
+>>>>
+>>>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>>>> ---
+>>>>  .../bindings/hwlock/ti,omap-hwspinlock.yaml   | 26 +++++++++++++++++++
+>>>>  1 file changed, 26 insertions(+)
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/hwlock/ti,omap-hwspinlock.yaml b/Documentation/devicetree/bindings/hwlock/ti,omap-hwspinlock.yaml
+>>>> index ac35491a6f65..ac146c0d628f 100644
+>>>> --- a/Documentation/devicetree/bindings/hwlock/ti,omap-hwspinlock.yaml
+>>>> +++ b/Documentation/devicetree/bindings/hwlock/ti,omap-hwspinlock.yaml
+>>>> @@ -14,6 +14,7 @@ properties:
+>>>>      enum:
+>>>>        - ti,omap4-hwspinlock  # for OMAP44xx, OMAP54xx, AM33xx, AM43xx, DRA7xx SoCs
+>>>>        - ti,am654-hwspinlock  # for K3 AM65x, J721E and J7200 SoCs
+>>>> +      - ti,am64-hwspinlock   # for K3 AM64x SoCs
+>>>>  
+>>>>    reg:
+>>>>      maxItems: 1
+>>>> @@ -74,3 +75,28 @@ examples:
+>>>>              };
+>>>>          };
+>>>>      };
+>>>> +
+>>>> +  - |
+>>>> +    / {
+>>>> +        /* K3 AM64x SoCs */
+>>>> +        model = "Texas Instruments K3 AM642 SoC";
+>>>> +        compatible = "ti,am642-evm", "ti,am642";
+>>>> +        #address-cells = <2>;
+>>>> +        #size-cells = <2>;
+>>>> +
+>>>> +        bus@f4000 {
+>>>> +            compatible = "simple-bus";
+>>>> +            #address-cells = <2>;
+>>>> +            #size-cells = <2>;
+>>>> +            ranges = <0x00 0x000f4000 0x00 0x000f4000 0x00 0x000002d0>, /* PINCTRL */
+>>>> +                     <0x00 0x01000000 0x00 0x01000000 0x00 0x02330400>, /* First peripheral window */
+>>>> +                     <0x00 0x0f000000 0x00 0x0f000000 0x00 0x00c44200>, /* Second peripheral window */
+>>>> +                     <0x00 0x20000000 0x00 0x20000000 0x00 0x0a008000>; /* Third peripheral window */
+>>>> +
+>>>> +            spinlock@2a000000 {
+>>>
+>>> Why are you doing the whole hierarchy here? Don't do that.
+>>
+>> I added it because it's integration is slightly different and to help our
+>> downstream consumers.
+>>
+>>>
+>>> In any case, a new compatible doesn't warrant a whole new example, so 
+>>> drop the example.
+>>
+>> Yeah ok, will drop the example.
+>>
+> 
+> I was just waiting for my build test to pass before pushing this and a
+> few other patches out, will drop the example from the patch here.  No
+> need to resend.
 
-Add the support for this IP through a new compatible.
+Oops, didn't see this message in time. I have just posted my v2, and you can
+pick that up directly as I had to remove the last line from the patch
+description too.
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
----
-v2: No changes
+Thanks,
+Suman
 
- drivers/hwspinlock/omap_hwspinlock.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/hwspinlock/omap_hwspinlock.c b/drivers/hwspinlock/omap_hwspinlock.c
-index 3b05560456ea..65dbf1ae3aa7 100644
---- a/drivers/hwspinlock/omap_hwspinlock.c
-+++ b/drivers/hwspinlock/omap_hwspinlock.c
-@@ -2,11 +2,12 @@
- /*
-  * OMAP hardware spinlock driver
-  *
-- * Copyright (C) 2010-2015 Texas Instruments Incorporated - http://www.ti.com
-+ * Copyright (C) 2010-2021 Texas Instruments Incorporated - https://www.ti.com
-  *
-  * Contact: Simon Que <sque@ti.com>
-  *          Hari Kanigeri <h-kanigeri2@ti.com>
-  *          Ohad Ben-Cohen <ohad@wizery.com>
-+ *          Suman Anna <s-anna@ti.com>
-  */
- 
- #include <linux/kernel.h>
-@@ -165,6 +166,7 @@ static int omap_hwspinlock_remove(struct platform_device *pdev)
- static const struct of_device_id omap_hwspinlock_of_match[] = {
- 	{ .compatible = "ti,omap4-hwspinlock", },
- 	{ .compatible = "ti,am654-hwspinlock", },
-+	{ .compatible = "ti,am64-hwspinlock", },
- 	{ /* end */ },
- };
- MODULE_DEVICE_TABLE(of, omap_hwspinlock_of_match);
--- 
-2.29.2
+> 
+> Thanks,
+> Bjorn
+> 
+>> regards
+>> Suman
+>>
+>>>
+>>>> +                compatible = "ti,am64-hwspinlock";
+>>>> +                reg = <0x00 0x2a000000 0x00 0x1000>;
+>>>> +                #hwlock-cells = <1>;
+>>>> +            };
+>>>> +        };
+>>>> +    };
+>>>> -- 
+>>>> 2.29.2
+>>>>
+>>
 
