@@ -2,91 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC126315E5A
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Feb 2021 05:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D605F315FD8
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Feb 2021 08:05:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230353AbhBJEwL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Feb 2021 23:52:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58888 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbhBJEwL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 23:52:11 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFC20C061574
-        for <linux-omap@vger.kernel.org>; Tue,  9 Feb 2021 20:51:30 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id a9so1651986ejr.2
-        for <linux-omap@vger.kernel.org>; Tue, 09 Feb 2021 20:51:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=XaN/0XOML5ISGne77tosJ/UMQ+VNnecYRI0zkEqsHfQ=;
-        b=wRxhh7aw3E28nJI/1G9scXLgbWxiPPrTA9EIBBogeqS2OH09opamaOKvvyD5f75vok
-         y/buCtLML1AcX3LylM8xdR2kna+DvS6idJ9Qo56F0p0CNw7YMbYZ+1ZFZNqomcKq4JAg
-         DZHi/j0b5VftZB7BD4Fd1T8K+nnX2PwdVRghrWeEDK5+DoiHRTwD9zQu6DeBN89bmDIt
-         QDNJlUKGxRw10xKsVKUmv1vsA8/IzPzaI0znuis1cJApEOWP3tWJhNltn88LmwiORcs+
-         8G/PqVwfSu2iLngLvqJp+yogmMFXtr7NNWMoVc0y0riaeP/ioMvqX9ig8GD6zMw7tUZH
-         Z94Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=XaN/0XOML5ISGne77tosJ/UMQ+VNnecYRI0zkEqsHfQ=;
-        b=OcIKwCuZYISnw96kaIN7xXoKSH/XEoYac8ZFG5d/5cvRD+tDb95xYaLrZQdIeU9VX9
-         qfzoZD7WTOf8KRkgVz6nQtfTtVQPtyk1/X6dXFWSGSheV8fNzn/zjcEy34wczNGW0Iwy
-         /DhwNeqFfcwD7jLxDrQlMpMjDccemi/nkmkfqxuNSBv4pR7HyzK7B+qVg201LwqqZjsp
-         JGCTBqhg05k0C4PAbPpQOxZQyw2LVdURr3G4DRLGTr+mYeHu2hKbZ3Y2TTflzB6aCALn
-         WFtlq4rw5Q8mW12AT9Yz7L4WKbZER0lA8Lfib8WUec3oHNB5Tm+qLfJdB0fqc2yB84gw
-         zeiA==
-X-Gm-Message-State: AOAM530Ms5LD5XbBTVaAPupd6ppBhHhjcMA8b4zEI/CU4O6Wvd4LZsSC
-        VsJGFXrnwOMZG98PsacOWMNtRu8aSC5pNtL5IL9u6g==
-X-Google-Smtp-Source: ABdhPJwIZvBOETdhaNiVYBcViLC8njG0hErwOb+CC7WimPqDDwrqyJGXRcDVM7UyWidbxWeJ+u73Y1LgiHXNFkYWoEo=
-X-Received: by 2002:a17:906:4c85:: with SMTP id q5mr1086056eju.375.1612932689516;
- Tue, 09 Feb 2021 20:51:29 -0800 (PST)
+        id S231987AbhBJHEX convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 10 Feb 2021 02:04:23 -0500
+Received: from spam.auroraoh.com ([24.56.89.101]:51474 "EHLO
+        barracuda.auroraoh.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232069AbhBJHEP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 10 Feb 2021 02:04:15 -0500
+X-ASG-Debug-ID: 1612940587-112c0d6a799c950002-g9IbbW
+Received: from COASRV-MAIL2.auroraoh.loc (coasrv-mail2.auroraoh.loc [10.3.1.15]) by barracuda.auroraoh.com with ESMTP id 7mA8j449GEhrgtbG; Wed, 10 Feb 2021 02:03:08 -0500 (EST)
+X-Barracuda-Envelope-From: JanuskaD@auroraoh.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.3.1.15
+Received: from [172.20.10.5] (197.210.29.8) by COASRV-MAIL2.auroraoh.loc
+ (10.3.1.15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 9 Feb 2021
+ 02:41:50 -0500
+Content-Type: text/plain; charset="iso-8859-1"
+X-Barracuda-RBL-Trusted-Forwarder: 172.20.10.5
 MIME-Version: 1.0
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 10 Feb 2021 10:21:18 +0530
-Message-ID: <CA+G9fYvUst_2scufRYP-qOTr22oAO5LEyH-yu0MrXj4S-TVWPQ@mail.gmail.com>
-Subject: [next] [arm] ERROR: modpost: "udp_sock_create6" [net/rxrpc/rxrpc.ko] undefined!
-To:     Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-afs@lists.infradead.org, Arnd Bergmann <arnd@arndb.de>,
-        Tony Lindgren <tony@atomide.com>,
-        David Howells <dhowells@redhat.com>,
-        Xin Long <lucien.xin@gmail.com>, Rolf Eike Beer <eb@emlix.com>,
-        eric.snowberg@oracle.com, Masahiro Yamada <masahiroy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+To:     Recipients <januskad@auroraoh.com>
+X-ASG-Orig-Subj: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+From:   <januskad@auroraoh.com>
+Date:   Tue, 9 Feb 2021 15:41:03 +0800
+Reply-To: <cfolimiited@gmail.com>
+X-Priority: 1 (High)
+X-Antivirus: Avast (VPS 210207-2, 02/07/2021), Outbound message
+X-Antivirus-Status: Clean
+Message-ID: <19476914-06ef-4e05-b16e-afe6693abdc0@COASRV-MAIL2.auroraoh.loc>
+X-Originating-IP: [197.210.29.8]
+X-ClientProxiedBy: COASRV-MAIL3.auroraoh.loc (10.3.1.13) To
+ COASRV-MAIL2.auroraoh.loc (10.3.1.15)
+X-Barracuda-Connect: coasrv-mail2.auroraoh.loc[10.3.1.15]
+X-Barracuda-Start-Time: 1612940587
+X-Barracuda-URL: https://10.3.1.12:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at auroraoh.com
+X-Barracuda-Scan-Msg-Size: 755
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Spam-Score: 1.61
+X-Barracuda-Spam-Status: No, SCORE=1.61 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=5.0 tests=BSF_SC0_SA609_NRN, BSF_SC0_SA912_RP_FR, BSF_SC0_SA_TO_FROM_ADDR_MATCH, NO_REAL_NAME
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.87879
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+        0.00 NO_REAL_NAME           From: does not include a real name
+        0.01 BSF_SC0_SA912_RP_FR    Custom Rule BSF_SC0_SA912_RP_FR
+        0.50 BSF_SC0_SA_TO_FROM_ADDR_MATCH Sender Address Matches Recipient
+                                   Address
+        1.10 BSF_SC0_SA609_NRN      Custom Rule SA609_NRN
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Linux next tag 20210209 arm omap2plus_defconfig make modules failed.
-   - arm (omap2plus_defconfig) with gcc-10 - FAILED
-   - arm (omap2plus_defconfig) with gcc-9 - FAILED
-   - arm (omap2plus_defconfig) with gcc-8 - FAILED
+We are seeking for beneficiaries who source for fund to expand/relocating their business interest abroad. We are ready to fund projects outside Turkey and United Kingdom in the form of Soft Loan. We grant loans to both corporate and private entities at a low interest rate of 2% R.O.I per annul.
 
-make --silent --keep-going --jobs=8
-O=/home/tuxbuild/.cache/tuxmake/builds/1/tmp ARCH=arm
-CROSS_COMPILE=arm-linux-gnueabihf- 'CC=sccache
-arm-linux-gnueabihf-gcc' 'HOSTCC=sccache gcc'
+We like to grant loan in the following sectors: oil/Gas, banking, real estate, stock speculation and mining, transportation, health sector and tobacco, Communication Services, Agriculture Forestry & Fishing, thus any sector. The terms are very flexible and interesting.
 
-ERROR: modpost: "udp_sock_create6" [net/rxrpc/rxrpc.ko] undefined!
-ERROR: modpost: "setup_udp_tunnel_sock" [net/rxrpc/rxrpc.ko] undefined!
-ERROR: modpost: "udp_sock_create4" [net/rxrpc/rxrpc.ko] undefined!
-make[2]: *** [scripts/Makefile.modpost:132: Module.symvers] Error 1
-make[2]: *** Deleting file 'Module.symvers'
-make[2]: Target '__modpost' not remade because of errors.
+Please contact us for more details;
 
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
 
-build log link,
-https://builds.tuxbuild.com/1oF9lZzseBXx1Dl1IkVLgB4nvhM/
+Kind regards,
+
+Paul McCann
 
 -- 
-Linaro LKFT
-https://lkft.linaro.org
+This email has been checked for viruses by Avast antivirus software.
+https://www.avast.com/antivirus
+
