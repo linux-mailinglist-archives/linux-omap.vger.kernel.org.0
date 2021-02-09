@@ -2,128 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F31B3314317
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Feb 2021 23:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D17D931528D
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Feb 2021 16:20:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229927AbhBHWjE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Feb 2021 17:39:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35128 "EHLO
+        id S232279AbhBIPU3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Feb 2021 10:20:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbhBHWjB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Feb 2021 17:39:01 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF644C061788;
-        Mon,  8 Feb 2021 14:38:21 -0800 (PST)
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1612823899;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=v0cq3WK986SUH+YkubdosVAvIMlSY7yYpl0TWaVW1sQ=;
-        b=wuwra8SrIErSfUEvj46Wmh4CpVPpBAnZBmNF4wCyT1u4UhvfrSvb2NW9wYUfSXi37IkEoU
-        oEYNHL9bgB/n1/yZoBInp+B7RDD2KizFqPICjE94ofmycg9xKsq+id3Gwb4UrmpJ+XKor1
-        H3gzYfc0VtkE6GEgHj8+rkWpLQ74HzbkYKjlhFUnaV+00Zhy09oB9EHnBdzPWKysFARZpA
-        NfbbXmFxJ3C6uhUrJ6EUlpx9Wq9o0UEdmwjER8hh+yXmU2QAoHQc25caGgFns27M7PJuH7
-        bRUBGrl4d7LTJpiBUwuZI7wFto4EX4RYfaNxHHzf9x3nDiOlg0DxNa76bODtcg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1612823899;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=v0cq3WK986SUH+YkubdosVAvIMlSY7yYpl0TWaVW1sQ=;
-        b=x8XMjFq1YWqgn/3UQwkMOZ42YQcUoy9EzkqPUkf3l/Y2t3VRpF2H5ckJPaIuOMFQxuFOgI
-        z1/Q+GJSz87c8kCA==
-To:     linux-fbdev@vger.kernel.org
-Cc:     dri-devel@lists.freedesktop.org,
-        Russell King <linux@armlinux.org.uk>,
-        linux-omap@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Peter Collingbourne <pcc@google.com>
-Subject: [PATCH 3/3] video: fbdev: amba-clcd: Always use msleep() for waiting
-Date:   Mon,  8 Feb 2021 23:38:10 +0100
-Message-Id: <20210208223810.388502-4-bigeasy@linutronix.de>
-In-Reply-To: <20210208223810.388502-1-bigeasy@linutronix.de>
-References: <20210208223810.388502-1-bigeasy@linutronix.de>
+        with ESMTP id S232010AbhBIPU2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 10:20:28 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE0D5C061786;
+        Tue,  9 Feb 2021 07:19:47 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id q2so21088299eds.11;
+        Tue, 09 Feb 2021 07:19:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yDRspLtelsFoyIiE67CZ331AeQ0bTafkmpJeD+VF4pk=;
+        b=JC4s8djGQOzrTzuHwrVoADW5gtCbGscI01OdB+nb3cGLnM1OnabpHsTB4VGRUVRdga
+         JNMJ8mq3YA4XkJA+tzZaKBd1xO3+Lbi+FFhrCB7IEaBArX9vrRQKkeFh/TJ23+zE9Qtd
+         6D8lEGRdcKZUc5cquC8tNOrm2wI2clWRQi+tNFnlOSCZG45E9v2okcr4ziS9yPT9swq6
+         /mnw0hQt6ez8JD0vMx+6/bMAe3nS27x74d+1dtcaDY1y71L9NLYyBN/nwX7MGwLyj+Q6
+         n08dKeGS6KK7WKwNjPCnFgPvYlerVxg2jrayPTvULWk584aWaVxW0Jd16m7/7jUZVbxL
+         xsYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yDRspLtelsFoyIiE67CZ331AeQ0bTafkmpJeD+VF4pk=;
+        b=NReClCNWLC0YvDmM2F1NcSi/t4t8bsQ3bcfB36PzvV2oxW0jYEenap/DHbGTuwxalL
+         SX5+BM0FvOPD5gM4Qsgi5MMGO/S1LcXuabDJKMKz8BitiCNqiL9DSmD65eS4vnnN6fp9
+         wGsRcduLPZZpV6k0Y77xwnMp1Exapn3uQETF4EuJOy1tMyUZEQeWMbCWG1fxQquDHTjI
+         drdSV/7Fwan4BNr83CAzRMD44Qo/KNGHRB+mDbE1SRBl6BTqAgVD5bAtxNQ7rS6XXqKM
+         lf8BeD8pxZyqTwyVdQyS/0qgka6mt0lrUzVvybnTinDQ4MX0HZjPSEDgBYZqBzzpN31D
+         RgCA==
+X-Gm-Message-State: AOAM531S7vO3AVl7EenwwB3gFXSODiMwWaxr3T43jpQFCqctlzWyZjDD
+        ImkZ3/b4+0I8GepJUW7GqGQ=
+X-Google-Smtp-Source: ABdhPJwzLundh0R6SURzETYbLmh0kFOoqfJRsXMB3w/pZ7Zwn+UIs+6xV2v2qd7WGvgRpczdct2WAw==
+X-Received: by 2002:a50:9d0b:: with SMTP id v11mr23859395ede.308.1612883986717;
+        Tue, 09 Feb 2021 07:19:46 -0800 (PST)
+Received: from localhost.localdomain (5-12-227-87.residential.rdsnet.ro. [5.12.227.87])
+        by smtp.gmail.com with ESMTPSA id q2sm11686108edv.93.2021.02.09.07.19.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Feb 2021 07:19:45 -0800 (PST)
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
+        Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Ido Schimmel <idosch@idosch.org>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
+Subject: [PATCH v2 net-next 00/11] Cleanup in brport flags switchdev offload for DSA
+Date:   Tue,  9 Feb 2021 17:19:25 +0200
+Message-Id: <20210209151936.97382-1-olteanv@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The driver uses in_atomic() to distinguish between mdelay() and msleep().
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-The usage of in_interrupt() in drivers is phased out and Linus clearly
-requested that code which changes behaviour depending on context should
-either be separated or the context be conveyed in an argument passed by the
-caller, which usually knows the context.
+The initial goal of this series was to have better support for
+standalone ports mode and multiple bridges on the DSA drivers like
+ocelot/felix and sja1105. Proper support for standalone mode requires
+disabling address learning, which in turn requires interaction with the
+switchdev notifier, which is actually where most of the patches are.
 
-I traced the usage of in_interrupt() back to its initial merge:
-    bfe694f833643 ("[ARM] Add ARM AMBA CLCD framebuffer driver.")
-    https://git.kernel.org/history/history/c/bfe694f833643
+I also noticed that most of the drivers are actually talking either to
+firmware or SPI/MDIO connected devices from the brport flags switchdev
+attribute handler, so it makes sense to actually make it sleepable
+instead of atomic.
 
-The driver has been removed and added back in the meantime.
-I've been looking for the IRQ context as described in the comment and
-couldn't find it. The functions calling clcdfb_sleep() also call
-conditionally backlight_update_status() which acquires a mutex. If it is
-okay to acquire a mutex then it is okay to use msleep() since both
-functions must be used in preemptible context.
+Vladimir Oltean (11):
+  net: switchdev: propagate extack to port attributes
+  net: bridge: offload all port flags at once in br_setport
+  net: bridge: don't print in br_switchdev_set_port_flag
+  net: bridge: offload initial and final port flags through switchdev
+  net: dsa: stop setting initial and final brport flags
+  net: squash switchdev attributes PRE_BRIDGE_FLAGS and BRIDGE_FLAGS
+  net: dsa: kill .port_egress_floods overengineering
+  net: bridge: put SWITCHDEV_ATTR_ID_PORT_BRIDGE_FLAGS on the blocking
+    call chain
+  net: mscc: ocelot: use separate flooding PGID for broadcast
+  net: mscc: ocelot: offload bridge port flags to device
+  net: dsa: sja1105: offload bridge port flags to device
 
-Replace clcdfb_sleep() with msleep().
+ drivers/net/dsa/b53/b53_common.c              |  20 +-
+ drivers/net/dsa/mv88e6xxx/chip.c              |  21 +-
+ drivers/net/dsa/ocelot/felix.c                |  10 +
+ drivers/net/dsa/sja1105/sja1105.h             |   2 +
+ drivers/net/dsa/sja1105/sja1105_main.c        | 212 +++++++++++++++++-
+ drivers/net/dsa/sja1105/sja1105_spi.c         |   6 +
+ .../marvell/prestera/prestera_switchdev.c     |  32 +--
+ .../mellanox/mlxsw/spectrum_switchdev.c       |  31 +--
+ drivers/net/ethernet/mscc/ocelot.c            |  72 +++++-
+ drivers/net/ethernet/mscc/ocelot_net.c        |   7 +-
+ drivers/net/ethernet/rocker/rocker_main.c     |  24 +-
+ drivers/net/ethernet/ti/cpsw_switchdev.c      |  35 ++-
+ drivers/staging/fsl-dpaa2/ethsw/ethsw.c       |  43 ++--
+ include/linux/if_bridge.h                     |   3 +
+ include/net/dsa.h                             |   7 +-
+ include/net/switchdev.h                       |  14 +-
+ include/soc/mscc/ocelot.h                     |  18 +-
+ net/bridge/br_if.c                            |  21 +-
+ net/bridge/br_netlink.c                       | 160 ++++++-------
+ net/bridge/br_private.h                       |   6 +-
+ net/bridge/br_switchdev.c                     |  37 ++-
+ net/dsa/dsa_priv.h                            |   8 +-
+ net/dsa/port.c                                |  42 +---
+ net/dsa/slave.c                               |  10 +-
+ net/switchdev/switchdev.c                     |  11 +-
+ 25 files changed, 556 insertions(+), 296 deletions(-)
 
-Cc: Peter Collingbourne <pcc@google.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- drivers/video/fbdev/amba-clcd.c | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/video/fbdev/amba-clcd.c b/drivers/video/fbdev/amba-clc=
-d.c
-index 33595cc4778e9..9ec969e136bfd 100644
---- a/drivers/video/fbdev/amba-clcd.c
-+++ b/drivers/video/fbdev/amba-clcd.c
-@@ -35,19 +35,6 @@
- /* This is limited to 16 characters when displayed by X startup */
- static const char *clcd_name =3D "CLCD FB";
-=20
--/*
-- * Unfortunately, the enable/disable functions may be called either from
-- * process or IRQ context, and we _need_ to delay.  This is _not_ good.
-- */
--static inline void clcdfb_sleep(unsigned int ms)
--{
--	if (in_atomic()) {
--		mdelay(ms);
--	} else {
--		msleep(ms);
--	}
--}
--
- static inline void clcdfb_set_start(struct clcd_fb *fb)
- {
- 	unsigned long ustart =3D fb->fb.fix.smem_start;
-@@ -77,7 +64,7 @@ static void clcdfb_disable(struct clcd_fb *fb)
- 		val &=3D ~CNTL_LCDPWR;
- 		writel(val, fb->regs + fb->off_cntl);
-=20
--		clcdfb_sleep(20);
-+		msleep(20);
- 	}
- 	if (val & CNTL_LCDEN) {
- 		val &=3D ~CNTL_LCDEN;
-@@ -109,7 +96,7 @@ static void clcdfb_enable(struct clcd_fb *fb, u32 cntl)
- 	cntl |=3D CNTL_LCDEN;
- 	writel(cntl, fb->regs + fb->off_cntl);
-=20
--	clcdfb_sleep(20);
-+	msleep(20);
-=20
- 	/*
- 	 * and now apply power.
---=20
-2.30.0
+-- 
+2.25.1
 
