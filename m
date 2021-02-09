@@ -2,50 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A11E3155DF
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Feb 2021 19:28:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3250F31562E
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Feb 2021 19:43:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233337AbhBISZK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Feb 2021 13:25:10 -0500
-Received: from new3-smtp.messagingengine.com ([66.111.4.229]:55427 "EHLO
+        id S233571AbhBISlW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Feb 2021 13:41:22 -0500
+Received: from new3-smtp.messagingengine.com ([66.111.4.229]:33465 "EHLO
         new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233340AbhBISW7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 13:22:59 -0500
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 5660C5802DA;
-        Tue,  9 Feb 2021 13:00:27 -0500 (EST)
+        by vger.kernel.org with ESMTP id S233471AbhBIS25 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 13:28:57 -0500
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
+        by mailnew.nyi.internal (Postfix) with ESMTP id C2BC9580171;
+        Tue,  9 Feb 2021 13:26:24 -0500 (EST)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Tue, 09 Feb 2021 13:00:27 -0500
+  by compute7.internal (MEProxy); Tue, 09 Feb 2021 13:26:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:content-type:date:from:in-reply-to
         :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=apMIh8
-        1zHTwrdiLkYm/FdsFavFVD8+FsPBR4HWhPa2U=; b=TeOeHWpIBlLMsdNiMMUs19
-        cQ52jAyJcvO/gFYpHT4LKstRXjXlP+KZTXE2jmEJulRJBm2G+kWiuiXiC0GPoTjV
-        V7b+MMxWxtC8nGDsNXAr7LXOsKJ3/Y96SxktYrBKxLf4PQ1PZU/QQxRc8OYsRHzi
-        t1HfCb9Z5A+XmCLkJkD5iQX9ITZjSKCCroI4Z/kz/AEnphvke8KffOmt7izQDX9H
-        kyl2/WitQ9QmObM+Y/PLEly5PHhKtvteG8Zt29HJRFrrbHZcHncbecpRTQNLHNBk
-        pdqJMm4onota2IWfcztPN3tXcRoMUttvgPlUJ3cY4Zrlr38oQ+3MDcRYqqO6nVmA
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=jbTXSE
+        kHbtCMu+f135EDu0ufO51m7hO7fIyJQPnw2cM=; b=Av5rWJhyVsredRqpbe+/Uz
+        F6LRuAWYNgnYiqjcioKGv21NJd19zUqh8Yz62DRSZbvWqOEATjoeCug2VAQND4o3
+        rSu7q7pXakLyzIaBI89YmdmqqKNzd9PhP4WqX04efbSc5lGj193sXRzM2g4Gd6/z
+        pwrWh8hiX4DvPGJat9nzP4a2GPMF5KgWu3vYqg0IW/xV6cKuPD50OP2+FSJIMK3x
+        G7lOEM4+dZWPDWW0F69f1QqzHpN0r+mvCTEHNUAjFT6lJdiOqr7wyCC/VrXdbKJ9
+        L9y+7Q7imyAVmXrCRAw42xW2hVQWj9u4dYh6Q/QxgFHcLo5YGsB1PLeUb6e2ee+Q
         ==
-X-ME-Sender: <xms:uM0iYLn2jAXoGYPTRNtJxwXdF5KM8bwb4Yq12fwbCU2k-L3rKh7YMw>
-    <xme:uM0iYO1eMSvDiETvzYTmrwwV8XJH99ACpQpwo5OXQgmvMKT0hL3vlwo0uCOP5z3QM
-    HKEXB-HkJrBO38>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrheehgddutdelucetufdoteggodetrfdotf
+X-ME-Sender: <xms:zNMiYP3haaEoL0jF1iJoVGmPbWsCguNeDd3w4o9KskECGTpZpLSPHA>
+    <xme:zNMiYAHyfBICO7zxoJq3Neb4Iesy3u5ZBbegiXQngD2R7g2SUZF_cXccjZ77viGHQ
+    sinNXDrmuG1Kp8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrheehgdduudegucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefkughoucfu
     tghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorhhgqeenucggtffrrghtth
-    gvrhhnpedtffekkeefudffveegueejffejhfetgfeuuefgvedtieehudeuueekhfduheel
-    teenucfkphepkeegrddvvdelrdduheefrdeggeenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhg
-X-ME-Proxy: <xmx:uM0iYBqxKr_eSnGWqXgOaJRGutiEJpBmkSdXEOA8g00Wf6MbAZIC3w>
-    <xmx:uM0iYDkwJtWJIxnFCfVjC-W0okkmy7xMvQCOfCBxMIu2SGwaBZK3Sg>
-    <xmx:uM0iYJ2CZS-2sh4j4gcXrzlri7P0xINrHGgiUW8IPZUCpE17pX2-YQ>
-    <xmx:u80iYF6YKAbIP052gotWsGfb737pdMzYpkzg7Ya66r1ik1RKes7roQ>
+    gvrhhnpefgvefgveeuudeuffeiffehieffgfejleevtdetueetueffkeevgffgtddugfek
+    veenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeekgedrvddvledrudehfe
+    drgeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhep
+    ihguohhstghhsehiughoshgthhdrohhrgh
+X-ME-Proxy: <xmx:zNMiYJRxAYDMnRHOHA0WoUtVVEdSj4mQobBjnoJDI802tand7mi_ig>
+    <xmx:zNMiYHBJPXqqxcD7RB1HHiMbeQ_FD8QPLOIR4h0qr45TGGM98Zcx0g>
+    <xmx:zNMiYJ3R_bCNPZscbk0g_qj79gAW3SkLz16iJu5fXQJgffjtxFYFeQ>
+    <xmx:0NMiYMg3AiQ6JXmNSLpUYMQXU4uLmtnHQHR6f5u-HFBvBDdB-sXH9w>
 Received: from localhost (igld-84-229-153-44.inter.net.il [84.229.153.44])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 766FF24005C;
-        Tue,  9 Feb 2021 13:00:24 -0500 (EST)
-Date:   Tue, 9 Feb 2021 20:00:20 +0200
+        by mail.messagingengine.com (Postfix) with ESMTPA id 7364424005D;
+        Tue,  9 Feb 2021 13:26:20 -0500 (EST)
+Date:   Tue, 9 Feb 2021 20:26:17 +0200
 From:   Ido Schimmel <idosch@idosch.org>
 To:     Vladimir Oltean <olteanv@gmail.com>
 Cc:     Jakub Kicinski <kuba@kernel.org>,
@@ -64,25 +65,52 @@ Cc:     Jakub Kicinski <kuba@kernel.org>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
         Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v2 net-next 01/11] net: switchdev: propagate extack to
- port attributes
-Message-ID: <20210209180020.GA262892@shredder.lan>
+Subject: Re: [PATCH v2 net-next 03/11] net: bridge: don't print in
+ br_switchdev_set_port_flag
+Message-ID: <20210209182617.GB262892@shredder.lan>
 References: <20210209151936.97382-1-olteanv@gmail.com>
- <20210209151936.97382-2-olteanv@gmail.com>
+ <20210209151936.97382-4-olteanv@gmail.com>
+ <20210209173631.c75cdjxphwzipeg5@skbuf>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210209151936.97382-2-olteanv@gmail.com>
+In-Reply-To: <20210209173631.c75cdjxphwzipeg5@skbuf>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Feb 09, 2021 at 05:19:26PM +0200, Vladimir Oltean wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+On Tue, Feb 09, 2021 at 07:36:31PM +0200, Vladimir Oltean wrote:
+> On Tue, Feb 09, 2021 at 05:19:28PM +0200, Vladimir Oltean wrote:
+> > From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> >
+> > Currently br_switchdev_set_port_flag has two options for error handling
+> > and neither is good:
+> > - The driver returns -EOPNOTSUPP in PRE_BRIDGE_FLAGS if it doesn't
+> >   support offloading that flag, and this gets silently ignored and
+> >   converted to an errno of 0. Nobody does this.
+> > - The driver returns some other error code, like -EINVAL, in
+> >   PRE_BRIDGE_FLAGS, and br_switchdev_set_port_flag shouts loudly.
+> >
+> > The problem is that we'd like to offload some port flags during bridge
+> > join and leave, but also not have the bridge shout at us if those fail.
+> > But on the other hand we'd like the user to know that we can't offload
+> > something when they set that through netlink. And since we can't have
+> > the driver return -EOPNOTSUPP or -EINVAL depending on whether it's
+> > called by the user or internally by the bridge, let's just add an extack
+> > argument to br_switchdev_set_port_flag and propagate it to its callers.
+> > Then, when we need offloading to really fail silently, this can simply
+> > be passed a NULL argument.
+> >
+> > Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> > ---
 > 
-> When a struct switchdev_attr is notified through switchdev, there is no
-> way to report informational messages, unlike for struct switchdev_obj.
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> The build fails because since I started working on v2 and until I sent
+> it, Jakub merged net into net-next which contained this fix:
+> https://patchwork.kernel.org/project/netdevbpf/patch/20210207194733.1811529-1-olteanv@gmail.com/
+> for which I couldn't change prototype due to it missing in net-next.
+> I think I would like to rather wait to gather some feedback first before
+> respinning v3, if possible.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+It seems that in the sysfs call path br_switchdev_set_port_flag() will
+be called with the bridge lock held, which is going to be a problem
+given that patch #8 allows this function to block.
