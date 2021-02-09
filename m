@@ -2,105 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD8A31570F
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Feb 2021 20:47:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39EB33157CC
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Feb 2021 21:39:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233035AbhBITpH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Feb 2021 14:45:07 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:38610 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233722AbhBITkK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 14:40:10 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 119Jb6fX021023;
-        Tue, 9 Feb 2021 13:37:06 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1612899427;
-        bh=L9YNORugLibqxGGcKUb7I7kHap34krhtwxZBPRsk79I=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=A8FoptXT3H0vp39VQ0D4plELeFt6ZT38OLGqyM0GcgoCP2faAwuDMTExeAHDGdu2Y
-         58OENQU/gh9e/HqteVyj7m+UgBbiyK60KvJJTNEUcsRpyqrraLweaIttrrrn7vgf7F
-         0pEUzoDudHd855vMXQgfUyJon1bL5Fm0JYnayjCk=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 119Jb6Jo115654
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 9 Feb 2021 13:37:06 -0600
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 9 Feb
- 2021 13:37:06 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 9 Feb 2021 13:37:06 -0600
-Received: from lelv0597.itg.ti.com (lelv0597.itg.ti.com [10.181.64.32])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 119Jb6Q1080251;
-        Tue, 9 Feb 2021 13:37:06 -0600
-Received: from localhost ([10.250.35.110])
-        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 119Jb6Ah082592;
-        Tue, 9 Feb 2021 13:37:06 -0600
-From:   Suman Anna <s-anna@ti.com>
-To:     Jassi Brar <jassisinghbrar@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>
-CC:     <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Suman Anna <s-anna@ti.com>
-Subject: [PATCH v2 2/2] mailbox: omap: Add support for K3 AM64x SoCs
-Date:   Tue, 9 Feb 2021 13:36:43 -0600
-Message-ID: <20210209193643.24824-3-s-anna@ti.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210209193643.24824-1-s-anna@ti.com>
-References: <20210209193643.24824-1-s-anna@ti.com>
+        id S233423AbhBIUh3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Feb 2021 15:37:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35104 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233471AbhBIUd6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Feb 2021 15:33:58 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C219C0698C6;
+        Tue,  9 Feb 2021 12:20:49 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id y18so25566246edw.13;
+        Tue, 09 Feb 2021 12:20:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=OJBJZoWtqasITVYW+Sh00YF0phZ4lq1R3a/gcaU0ls4=;
+        b=o/AxlQl0i/wUD4989dM3BQ9Gi/UH+Je6cbHNhA84lwvzRqeUwuhW4S4haRyZI0GgPd
+         Ej/r7H/wM6R3hOXnDtJJF14SNOLs40Wvo4qGFTwwD4QlpUsFij206pVp+GJb4kxAsY3F
+         z65T8HrcYQbcL8vFhr2HcbobpEEWPUvqncsAmlpky62S2x5+q3vCbm2JTJId8ZDe3J8n
+         VrW5z3qLoSpLdUyM43J9QjBj6MqZJ7WdU6UztgN2EideHqQQZevsC6BV7EoRN6w051Hr
+         G2lyfCoI3UgEmrYW+DhPm9tOlmz3duWY6/FQFMvZd6sjKzVuJ0rn7BFROqc83Ob/Wvtd
+         hRVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=OJBJZoWtqasITVYW+Sh00YF0phZ4lq1R3a/gcaU0ls4=;
+        b=hboDIpr1xEDoRJI8vKesysCEHxlZ2mA8OWGIS7/Y4dLxD20cEWssq++tvtjE9eQFOE
+         1dEQNgbpoTTWHjmla2I6ipRzaMuwzNP+3h8DWBwZSdZha7GvzQNhhdbfKk1xaaBRN5cs
+         gS7rrsbRqexZe7eu7aU4Ebi9VEmREeUO4D3eaedFjBkFeXCWIZcbrZBxwDBSDV1Ynd/2
+         6juWbk5FkIyBN4xvuOZO/uAg48eQ3mfVLJvv5yacAJ74PnNjVdL7nsKrqO02+5tVjKxo
+         +LGZj2dNuM53cBlJKrNHatwhuMKP2G6kQi24Sj3cXkfFgu1iPJ09dfqN9hAimaDfx/DZ
+         2z6w==
+X-Gm-Message-State: AOAM532AYppR1xhJ4m/+VBfSrfdfPrqCM7a3SWdCLbWZr1A0Ry1Ph3lj
+        DY3/Uojv1mAcLK3G9LpdPOY=
+X-Google-Smtp-Source: ABdhPJwJtHUiJJW8tLUk73YO+ec8lbnMpR7egGqbTCfnV7RroIzrPKEhDhjC2bnmohYOtx/S8OFm6A==
+X-Received: by 2002:a50:cd8c:: with SMTP id p12mr25052831edi.114.1612902048344;
+        Tue, 09 Feb 2021 12:20:48 -0800 (PST)
+Received: from skbuf (5-12-227-87.residential.rdsnet.ro. [5.12.227.87])
+        by smtp.gmail.com with ESMTPSA id q14sm12228756edw.52.2021.02.09.12.20.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Feb 2021 12:20:47 -0800 (PST)
+Date:   Tue, 9 Feb 2021 22:20:45 +0200
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     Ido Schimmel <idosch@idosch.org>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
+        Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 04/11] net: bridge: offload initial and final
+ port flags through switchdev
+Message-ID: <20210209202045.obayorcud4fg2qqb@skbuf>
+References: <20210209151936.97382-1-olteanv@gmail.com>
+ <20210209151936.97382-5-olteanv@gmail.com>
+ <20210209185100.GA266253@shredder.lan>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210209185100.GA266253@shredder.lan>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The AM64x SoC contains a Mailbox IP instance with multiple clusters
-in the MAIN domain, and is a variant of the IP on current AM65x and
-J721E SoCs. The AM64x SoC has only 8 clusters with no interrupts
-routed to the A53 core on the first 2 clusters. The interrupt outputs
-from the IP do not go through any Interrupt Routers and are hard-wired
-to each processor, with only couple of interrupts from each cluster
-reaching the A53 core. The IP is also not built with the K3 safety
-feature in hardware.
+On Tue, Feb 09, 2021 at 08:51:00PM +0200, Ido Schimmel wrote:
+> On Tue, Feb 09, 2021 at 05:19:29PM +0200, Vladimir Oltean wrote:
+> > So switchdev drivers operating in standalone mode should disable address
+> > learning. As a matter of practicality, we can reduce code duplication in
+> > drivers by having the bridge notify through switchdev of the initial and
+> > final brport flags. Then, drivers can simply start up hardcoded for no
+> > address learning (similar to how they already start up hardcoded for no
+> > forwarding), then they only need to listen for
+> > SWITCHDEV_ATTR_ID_PORT_BRIDGE_FLAGS and their job is basically done, no
+> > need for special cases when the port joins or leaves the bridge etc.
+> 
+> How are you handling the case where a port leaves a LAG that is linked
+> to a bridge? In this case the port becomes a standalone port, but will
+> not get this notification.
 
-Add the support for this IP through a new compatible.
+Apparently the answer to that question is "I delete the code that makes
+this use case work", how smart of me. Thanks.
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
----
-v2: No changes
-
- drivers/mailbox/omap-mailbox.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mailbox/omap-mailbox.c b/drivers/mailbox/omap-mailbox.c
-index 93fe08aef3ca..7295e3835e30 100644
---- a/drivers/mailbox/omap-mailbox.c
-+++ b/drivers/mailbox/omap-mailbox.c
-@@ -3,7 +3,7 @@
-  * OMAP mailbox driver
-  *
-  * Copyright (C) 2006-2009 Nokia Corporation. All rights reserved.
-- * Copyright (C) 2013-2019 Texas Instruments Incorporated - https://www.ti.com
-+ * Copyright (C) 2013-2021 Texas Instruments Incorporated - https://www.ti.com
-  *
-  * Contact: Hiroshi DOYU <Hiroshi.DOYU@nokia.com>
-  *          Suman Anna <s-anna@ti.com>
-@@ -663,6 +663,10 @@ static const struct of_device_id omap_mailbox_of_match[] = {
- 		.compatible	= "ti,am654-mailbox",
- 		.data		= &omap4_data,
- 	},
-+	{
-+		.compatible	= "ti,am64-mailbox",
-+		.data		= &omap4_data,
-+	},
- 	{
- 		/* end */
- 	},
--- 
-2.29.2
-
+Unless you have any idea how I could move the logic into the bridge, I
+guess I'm stuck with DSA and all the other switchdev drivers having this
+forest of corner cases to deal with. At least I can add a comment so I'm
+not tempted to delete it next time.
