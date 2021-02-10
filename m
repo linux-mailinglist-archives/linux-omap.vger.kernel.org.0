@@ -2,219 +2,160 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 509B0316764
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Feb 2021 14:03:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 812693167A3
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Feb 2021 14:14:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231559AbhBJNCg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 10 Feb 2021 08:02:36 -0500
-Received: from new1-smtp.messagingengine.com ([66.111.4.221]:38547 "EHLO
-        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231380AbhBJNAm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 10 Feb 2021 08:00:42 -0500
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 0B54D580356;
-        Wed, 10 Feb 2021 07:59:30 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Wed, 10 Feb 2021 07:59:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=1B/sKQ
-        jlwEtwpk2UdHGgq7mXlzq0dYqdXHdjMHRt2+k=; b=ewA68Ps9HP4jaIXNHCJuE/
-        CUff6LhOMsg2TPN9CLD1rvABjM3I6ricpFlYmEdcfXD0at5Hc722W1RX8u6GLLOY
-        7g1ur8flzEp9HPPi0fd54GGgs9NyYkMnE5NKybnYBa/mSzU0eXd4RF5DZbcaaSbm
-        gRP78YpFxcACO/wTWlt0D4vUE2dEiSEKM2tHUBttzoSCWFdRO9PCCxa8uFdlICmX
-        abgfYTrBADmpChKymSYgbeRhUZTgTRmrrQfjKNgqYwg80ZJdQ08iMGdw1/Tj2ASq
-        XCCp9a5Y4zXqZeBspdMH0k0pYhKkxZIQCRBeztMI+mkIylvKFt3yxYXPK7cp0lZw
-        ==
-X-ME-Sender: <xms:r9gjYMehOkfcj8t8teb8blIOi10_4ko7u5a02N0nAd-78dHbiPAVrw>
-    <xme:r9gjYOPHuf6O5uuy1OZL9ykI2XWvc-C9Ay1Ojj1OosxTdAxnFhTT1Japx3V3lgCH2
-    mcZVv5FAqyeJmc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrheejgdegjecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcuufgt
-    hhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrthhtvg
-    hrnheptdffkeekfeduffevgeeujeffjefhtefgueeugfevtdeiheduueeukefhudehleet
-    necukfhppeekgedrvddvledrudehfedrgeegnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepihguohhstghhsehiughoshgthhdrohhrgh
-X-ME-Proxy: <xmx:r9gjYNhlVHWH2-NZapw36EG67GtrzSQk8T_5YiHDCbxSJ3z1k_245A>
-    <xmx:r9gjYB_ZckBsv7R-XPnEXtmYJ2OYps_2L1p7JWqSVuS3YtJO_Xq6Og>
-    <xmx:r9gjYIsQ0OaHS5frQv3POxhBkDcmusgmXehTEEry6mIqafMhJ0N8FA>
-    <xmx:stgjYIRtTqGUB2CzokbvCmVX9dzunG4H49xy4UMn7UTHtrwn8ZfAnA>
-Received: from localhost (igld-84-229-153-44.inter.net.il [84.229.153.44])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 96E57108005B;
-        Wed, 10 Feb 2021 07:59:26 -0500 (EST)
-Date:   Wed, 10 Feb 2021 14:59:23 +0200
-From:   Ido Schimmel <idosch@idosch.org>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Nikolay Aleksandrov <nikolay@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 00/11] Cleanup in brport flags switchdev
- offload for DSA
-Message-ID: <20210210125923.GA296172@shredder.lan>
-References: <a8e9284b-f0a6-0343-175d-8c323371ef8d@nvidia.com>
- <20210210104549.ga3lgjafn5x3htwj@skbuf>
- <a58e9615-036c-0431-4ea6-004af4988b27@nvidia.com>
- <20210210110125.rw6fvjtsqmmuglcg@skbuf>
- <90b255e6-efd2-b234-7bfc-4285331e56b1@nvidia.com>
- <20210210120106.g7blqje3wq4j5l6j@skbuf>
- <20210210122105.GA294287@shredder.lan>
- <20210210122936.rpvdh7ksjfh2ee6b@skbuf>
- <20210210123823.GA294900@shredder.lan>
- <20210210125501.f6lbfv5y5zj4qrmi@skbuf>
+        id S231337AbhBJNN0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 10 Feb 2021 08:13:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53360 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229977AbhBJNNW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 10 Feb 2021 08:13:22 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A92C0613D6
+        for <linux-omap@vger.kernel.org>; Wed, 10 Feb 2021 05:12:41 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id w4so1791245wmi.4
+        for <linux-omap@vger.kernel.org>; Wed, 10 Feb 2021 05:12:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=06TLiUMrg/gK1BCnrYazHzAso9O/vviLp5XeKWLC8Nc=;
+        b=TcF3i2gwx5Tmi229Lswr8tHwSUp4FnGe8selhPmEPLFiHGwzECmsrru4FPqmpaOiXn
+         wEWmtRqKhpxLqH1/SA7hB9H8LmOxmMCIoeyx5No97BLmyBg+mUPvPgK5qScOYkzG8Hjm
+         LPMMTACRlQpSKp5yoKEl1ljjux4prEN58bKsQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to;
+        bh=06TLiUMrg/gK1BCnrYazHzAso9O/vviLp5XeKWLC8Nc=;
+        b=H7uQ5uyZpougtFJlXKTnQdlBvsM6ne8781Jlkioh0B/dSEzaks2zIZT/myqBQVbLia
+         gh+eP2/MUN9pPPWNE8gs8uJ8co0wYsbgTQwsbsWGNlxVPinRyaIGcFy25fmmjUUKCUAR
+         7QCtIravN2ZQe3uFMu6GmQ+TqXoN5j0v833j1cpFbdrtGoN4HdiuHUd7sIqfOiZ9AERA
+         hWClZFYK0LoB3BCphPlf0LWN2uhE836Yw68WWT2ckU3VIyyM7p5MeA4nnTwp1E5Ft0mD
+         bBIOKs91R70zzqGdcw22yVTvthzwi2xZ07CZSCNzMuBxKEvAN6AOjL/udF0qHQ2I1uF0
+         e+4Q==
+X-Gm-Message-State: AOAM531RBcSJ7FNMtcsiDodI6tQnPtwaoZYWtAQvBmnWKIeU3fMewxyQ
+        goRBcdfJkyJ+mgG/NTKLkrryjg==
+X-Google-Smtp-Source: ABdhPJy4ZuPo59mA1wIBRKapj8He5a/779Cqw/Hlzs8kQbtN9+Z+zVO8u1tp1fHi0Wh5ZYDbsodCMQ==
+X-Received: by 2002:a1c:49d7:: with SMTP id w206mr2842211wma.63.1612962760064;
+        Wed, 10 Feb 2021 05:12:40 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id z15sm2907980wrt.8.2021.02.10.05.12.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Feb 2021 05:12:39 -0800 (PST)
+Date:   Wed, 10 Feb 2021 14:12:37 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Julia Lawall <Julia.Lawall@inria.fr>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel-janitors@vger.kernel.org,
+        Michal Simek <michal.simek@xilinx.com>,
+        dri-devel@lists.freedesktop.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-fbdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Shawn Guo <shawnguo@kernel.org>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] video: use getter/setter functions
+Message-ID: <YCPbxSHWMipTz+mB@phenom.ffwll.local>
+Mail-Followup-To: Lee Jones <lee.jones@linaro.org>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        linux-kernel@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel-janitors@vger.kernel.org,
+        Michal Simek <michal.simek@xilinx.com>,
+        dri-devel@lists.freedesktop.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>, NXP Linux Team <linux-imx@nxp.com>,
+        linux-fbdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Shawn Guo <shawnguo@kernel.org>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+References: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
+ <20210210082341.GH220368@dell>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210210125501.f6lbfv5y5zj4qrmi@skbuf>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210210082341.GH220368@dell>
+X-Operating-System: Linux phenom 5.7.0-1-amd64 
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Feb 10, 2021 at 02:55:01PM +0200, Vladimir Oltean wrote:
-> On Wed, Feb 10, 2021 at 02:38:23PM +0200, Ido Schimmel wrote:
-> > On Wed, Feb 10, 2021 at 02:29:36PM +0200, Vladimir Oltean wrote:
-> > > On Wed, Feb 10, 2021 at 02:21:05PM +0200, Ido Schimmel wrote:
-> > > > On Wed, Feb 10, 2021 at 02:01:06PM +0200, Vladimir Oltean wrote:
-> > > > > On Wed, Feb 10, 2021 at 01:05:57PM +0200, Nikolay Aleksandrov wrote:
-> > > > > > On 10/02/2021 13:01, Vladimir Oltean wrote:
-> > > > > > > On Wed, Feb 10, 2021 at 12:52:33PM +0200, Nikolay Aleksandrov wrote:
-> > > > > > >> On 10/02/2021 12:45, Vladimir Oltean wrote:
-> > > > > > >>> Hi Nikolay,
-> > > > > > >>>
-> > > > > > >>> On Wed, Feb 10, 2021 at 12:31:43PM +0200, Nikolay Aleksandrov wrote:
-> > > > > > >>>> Hi Vladimir,
-> > > > > > >>>> Let's take a step back for a moment and discuss the bridge unlock/lock sequences
-> > > > > > >>>> that come with this set. I'd really like to avoid those as they're a recipe
-> > > > > > >>>> for future problems. The only good way to achieve that currently is to keep
-> > > > > > >>>> the PRE_FLAGS call and do that in unsleepable context but move the FLAGS call
-> > > > > > >>>> after the flags have been changed (if they have changed obviously). That would
-> > > > > > >>>> make the code read much easier since we'll have all our lock/unlock sequences
-> > > > > > >>>> in the same code blocks and won't play games to get sleepable context.
-> > > > > > >>>> Please let's think and work in that direction, rather than having:
-> > > > > > >>>> +	spin_lock_bh(&p->br->lock);
-> > > > > > >>>> +	if (err) {
-> > > > > > >>>> +		netdev_err(p->dev, "%s\n", extack._msg);
-> > > > > > >>>> +		return err;
-> > > > > > >>>>  	}
-> > > > > > >>>> +
-> > > > > > >>>>
-> > > > > > >>>> which immediately looks like a bug even though after some code checking we can
-> > > > > > >>>> verify it's ok. WDYT?
-> > > > > > >>>>
-> > > > > > >>>> I plan to get rid of most of the br->lock since it's been abused for a very long
-> > > > > > >>>> time because it's essentially STP lock, but people have started using it for other
-> > > > > > >>>> things and I plan to fix that when I get more time.
-> > > > > > >>>
-> > > > > > >>> This won't make the sysfs codepath any nicer, will it?
-> > > > > > >>>
-> > > > > > >>
-> > > > > > >> Currently we'll have to live with a hack that checks if the flags have changed. I agree
-> > > > > > >> it won't be pretty, but we won't have to unlock and lock again in the middle of the
-> > > > > > >> called function and we'll have all our locking in the same place, easier to verify and
-> > > > > > >> later easier to remove. Once I get rid of most of the br->lock usage we can revisit
-> > > > > > >> the drop of PRE_FLAGS if it's a problem. The alternative is to change the flags, then
-> > > > > > >> send the switchdev notification outside of the lock and revert the flags if it doesn't
-> > > > > > >> go through which doesn't sound much better.
-> > > > > > >> I'm open to any other suggestions, but definitely would like to avoid playing locking games.
-> > > > > > >> Even if it means casing out flag setting from all other store_ functions for sysfs.
-> > > > > > >
-> > > > > > > By casing out flag settings you mean something like this?
-> > > > > > >
-> > > > > > >
-> > > > > > > #define BRPORT_ATTR(_name, _mode, _show, _store)		\
-> > > > > > > const struct brport_attribute brport_attr_##_name = { 	        \
-> > > > > > > 	.attr = {.name = __stringify(_name), 			\
-> > > > > > > 		 .mode = _mode },				\
-> > > > > > > 	.show	= _show,					\
-> > > > > > > 	.store_unlocked	= _store,				\
-> > > > > > > };
-> > > > > > >
-> > > > > > > #define BRPORT_ATTR_FLAG(_name, _mask)				\
-> > > > > > > static ssize_t show_##_name(struct net_bridge_port *p, char *buf) \
-> > > > > > > {								\
-> > > > > > > 	return sprintf(buf, "%d\n", !!(p->flags & _mask));	\
-> > > > > > > }								\
-> > > > > > > static int store_##_name(struct net_bridge_port *p, unsigned long v) \
-> > > > > > > {								\
-> > > > > > > 	return store_flag(p, v, _mask);				\
-> > > > > > > }								\
-> > > > > > > static BRPORT_ATTR(_name, 0644,					\
-> > > > > > > 		   show_##_name, store_##_name)
-> > > > > > >
-> > > > > > > static ssize_t brport_store(struct kobject *kobj,
-> > > > > > > 			    struct attribute *attr,
-> > > > > > > 			    const char *buf, size_t count)
-> > > > > > > {
-> > > > > > > 	...
-> > > > > > >
-> > > > > > > 	} else if (brport_attr->store_unlocked) {
-> > > > > > > 		val = simple_strtoul(buf, &endp, 0);
-> > > > > > > 		if (endp == buf)
-> > > > > > > 			goto out_unlock;
-> > > > > > > 		ret = brport_attr->store_unlocked(p, val);
-> > > > > > > 	}
-> > > > > > >
-> > > > > >
-> > > > > > Yes, this can work but will need a bit more changes because of br_port_flags_change().
-> > > > > > Then the netlink side can be modeled in a similar way.
-> > > > >
-> > > > > What I just don't understand is how others can get away with doing
-> > > > > sleepable work in atomic context but I can't make the notifier blocking
-> > > > > by dropping a spinlock which isn't needed there, because it looks ugly :D
-> > > >
-> > > > Can you please point to the bug? I'm not following
-> > >
-> > > For example, mlxsw eventually calls mlxsw_sp_fid_flood_set from the
-> > > SWITCHDEV_ATTR_ID_PORT_BRIDGE_FLAGS handling data path, and this
-> > > function allocates memory with GFP_KERNEL.
-> > >
-> > > Another example is prestera which eventually calls prestera_fw_send_req
-> > > which takes a mutex_lock.
-> > >
-> > > Yet another example are mv88e6xxx and b53 which use MDIO and SPI
-> > > from their .port_egress_floods implementation, buses which have
-> > > might_sleep() in them.
-> >
-> > Right, but see the code:
-> >
-> > ```
-> > 	attr.id = SWITCHDEV_ATTR_ID_PORT_BRIDGE_FLAGS;
-> > 	attr.flags = SWITCHDEV_F_DEFER;
-> > 	attr.u.brport_flags = flags;
-> >
-> > 	err = switchdev_port_attr_set(p->dev, &attr);
-> > ```
-> >
-> > And check how SWITCHDEV_F_DEFER is used.
-> >
-> > We can squash SWITCHDEV_ATTR_ID_PORT_BRIDGE_FLAGS and
-> > SWITCHDEV_ATTR_ID_PORT_PRE_BRIDGE_FLAGS into one blocking notification
-> > by reducing the scope of the bridge lock like Nik suggested. Currently
-> > it's just blindly taken around br_setport().
+On Wed, Feb 10, 2021 at 08:23:41AM +0000, Lee Jones wrote:
+> On Tue, 09 Feb 2021, Julia Lawall wrote:
 > 
-> Okay, so the deferred attr_set propagates just a possible ENOMEM from
-> the deferred work enqueue, not the actual failure if that occurred.
+> > Use getter and setter functions, for platform_device structures and a
+> > spi_device structure.
+> > 
+> > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> > 
+> > ---
+> >  drivers/video/backlight/qcom-wled.c                                  |    2 +-
 > 
-> I can leave alone the piece that sends two notifications for now, but I
-> would still need to deliver the full struct switchdev_brport_flags with
-> both the flags and the mask to both the PRE_BRIDGE_FLAGS and the
-> BRIDGE_FLAGS, because I need to deliver an extack from the sja1105 driver
-> that BR_FLOOD should always have the same value as BR_MCAST_FLOOD.
+> This patch is fine.
+> 
+> Could you please split it out and submit it separately though please.
 
-OK
+Or just apply the entire patch through backlight tree, there's nothing
+going on in fbdev anyway I think.
+
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+
+> 
+> >  drivers/video/fbdev/amifb.c                                          |    4 ++--
+> >  drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
+> >  drivers/video/fbdev/imxfb.c                                          |    2 +-
+> >  drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
+> >  drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
+> >  drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
+> >  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
+> >  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
+> >  drivers/video/fbdev/xilinxfb.c                                       |    2 +-
+> >  10 files changed, 16 insertions(+), 16 deletions(-)
+> 
+> ...]
+> 
+> > diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+> > index 3bc7800eb0a9..091f07e7c145 100644
+> > --- a/drivers/video/backlight/qcom-wled.c
+> > +++ b/drivers/video/backlight/qcom-wled.c
+> > @@ -1692,7 +1692,7 @@ static int wled_probe(struct platform_device *pdev)
+> >  
+> >  static int wled_remove(struct platform_device *pdev)
+> >  {
+> > -	struct wled *wled = dev_get_drvdata(&pdev->dev);
+> > +	struct wled *wled = platform_get_drvdata(pdev);
+> >  
+> >  	mutex_destroy(&wled->lock);
+> >  	cancel_delayed_work_sync(&wled->ovp_work);
+> 
+> For my own reference (apply this as-is to your sign-off block):
+> 
+>   Acked-for-Backlight-by: Lee Jones <lee.jones@linaro.org>
+> 
+> -- 
+> Lee Jones [李琼斯]
+> Senior Technical Lead - Developer Services
+> Linaro.org │ Open source software for Arm SoCs
+> Follow Linaro: Facebook | Twitter | Blog
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
