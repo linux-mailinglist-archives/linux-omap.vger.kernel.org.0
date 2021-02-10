@@ -2,29 +2,24 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80B79316138
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Feb 2021 09:46:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74E15316195
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Feb 2021 09:57:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229738AbhBJIjC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 10 Feb 2021 03:39:02 -0500
-Received: from muru.com ([72.249.23.125]:59702 "EHLO muru.com"
+        id S229867AbhBJI4g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 10 Feb 2021 03:56:36 -0500
+Received: from muru.com ([72.249.23.125]:59734 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230166AbhBJIii (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 10 Feb 2021 03:38:38 -0500
+        id S229818AbhBJIyf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 10 Feb 2021 03:54:35 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id B185D80EB;
-        Wed, 10 Feb 2021 08:38:13 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 3571380EB;
+        Wed, 10 Feb 2021 08:54:12 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Suman Anna <s-anna@ti.com>, Tero Kristo <kristo@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Yongqin Liu <yongqin.liu@linaro.org>
-Subject: [PATCH] soc: ti: omap-prm: Fix reboot issue with invalid pcie reset map for dra7
-Date:   Wed, 10 Feb 2021 10:37:51 +0200
-Message-Id: <20210210083751.19202-1-tony@atomide.com>
+Cc:     linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] ARM: OMAP2+: Fix smartreflex init regression after dropping legacy data
+Date:   Wed, 10 Feb 2021 10:53:48 +0200
+Message-Id: <20210210085348.28528-1-tony@atomide.com>
 X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,39 +27,152 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Yongqin Liu <yongqin.liu@linaro.org> reported an issue where reboot hangs
-on beagleboard-x15. This started happening after commit 7078a5ba7a58
-("soc: ti: omap-prm: Fix boot time errors for rst_map_012 bits 0 and 1").
+When I dropped legacy data for omap4 and dra7 smartreflex in favor of
+device tree based data, it seems I only testd for the "SmartReflex Class3
+initialized" line in dmesg. I missed the fact that there is also
+omap_devinit_smartreflex() that happens later, and now it produces an
+error on boot for "No Voltage table for the corresponding vdd. Cannot
+create debugfs entries for n-values".
 
-We now assert any 012 type resets on init to prevent unconfigured
-accelerator MMUs getting enabled on init depending on the bootloader or
-kexec configured state.
+This happens as we no longer have the smartreflex instance legacy data,
+and have not yet moved completely to device tree based booting for the
+driver. Let's fix the issue by changing the smartreflex init to use names.
+This should all eventually go away in favor of doing the init in the
+driver based on devicetree compatible value.
 
-Turns out that we now also wrongly assert dra7 l3init domain PCIe reset
-bits causing a hang during reboot. Let's fix the l3init reset bits to
-use a 01 map instead of 012 map. There are only two rstctrl bits and not
-three. This is documented in TRM "Table 3-1647. RM_PCIESS_RSTCTRL".
+Note that dra7xx_init_early() is not calling any voltage domain init like
+omap54xx_voltagedomains_init(), or a dra7 specific voltagedomains init.
+This means that on dra7 smartreflex is still not fully initialized, and
+also seems to be missing the related devicetree nodes.
 
-Fixes: 5a68c87afde0 ("soc: ti: omap-prm: dra7: add genpd support for remaining PRM instances")
-Fixes: 7078a5ba7a58 ("soc: ti: omap-prm: Fix boot time errors for rst_map_012 bits 0 and 1")
-Cc: Kishon Vijay Abraham I <kishon@ti.com>
-Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
+Fixes: a6b1e717e942 ("ARM: OMAP2+: Drop legacy platform data for omap4 smartreflex")
+Fixes: e54740b4afe8 ("ARM: OMAP2+: Drop legacy platform data for dra7 smartreflex")
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/soc/ti/omap_prm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-omap2/sr_device.c | 75 +++++++++++++++++++++++++--------
+ 1 file changed, 58 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
---- a/drivers/soc/ti/omap_prm.c
-+++ b/drivers/soc/ti/omap_prm.c
-@@ -332,7 +332,7 @@ static const struct omap_prm_data dra7_prm_data[] = {
- 	{
- 		.name = "l3init", .base = 0x4ae07300,
- 		.pwrstctrl = 0x0, .pwrstst = 0x4, .dmap = &omap_prm_alwon,
--		.rstctrl = 0x10, .rstst = 0x14, .rstmap = rst_map_012,
-+		.rstctrl = 0x10, .rstst = 0x14, .rstmap = rst_map_01,
- 		.clkdm_name = "pcie"
- 	},
- 	{
+diff --git a/arch/arm/mach-omap2/sr_device.c b/arch/arm/mach-omap2/sr_device.c
+--- a/arch/arm/mach-omap2/sr_device.c
++++ b/arch/arm/mach-omap2/sr_device.c
+@@ -88,34 +88,26 @@ static void __init sr_set_nvalues(struct omap_volt_data *volt_data,
+ 
+ extern struct omap_sr_data omap_sr_pdata[];
+ 
+-static int __init sr_dev_init(struct omap_hwmod *oh, void *user)
++static int __init sr_init_by_name(const char *name, const char *voltdm)
+ {
+ 	struct omap_sr_data *sr_data = NULL;
+ 	struct omap_volt_data *volt_data;
+-	struct omap_smartreflex_dev_attr *sr_dev_attr;
+ 	static int i;
+ 
+-	if (!strncmp(oh->name, "smartreflex_mpu_iva", 20) ||
+-	    !strncmp(oh->name, "smartreflex_mpu", 16))
++	if (!strncmp(name, "smartreflex_mpu_iva", 20) ||
++	    !strncmp(name, "smartreflex_mpu", 16))
+ 		sr_data = &omap_sr_pdata[OMAP_SR_MPU];
+-	else if (!strncmp(oh->name, "smartreflex_core", 17))
++	else if (!strncmp(name, "smartreflex_core", 17))
+ 		sr_data = &omap_sr_pdata[OMAP_SR_CORE];
+-	else if (!strncmp(oh->name, "smartreflex_iva", 16))
++	else if (!strncmp(name, "smartreflex_iva", 16))
+ 		sr_data = &omap_sr_pdata[OMAP_SR_IVA];
+ 
+ 	if (!sr_data) {
+-		pr_err("%s: Unknown instance %s\n", __func__, oh->name);
++		pr_err("%s: Unknown instance %s\n", __func__, name);
+ 		return -EINVAL;
+ 	}
+ 
+-	sr_dev_attr = (struct omap_smartreflex_dev_attr *)oh->dev_attr;
+-	if (!sr_dev_attr || !sr_dev_attr->sensor_voltdm_name) {
+-		pr_err("%s: No voltage domain specified for %s. Cannot initialize\n",
+-		       __func__, oh->name);
+-		goto exit;
+-	}
+-
+-	sr_data->name = oh->name;
++	sr_data->name = name;
+ 	if (cpu_is_omap343x())
+ 		sr_data->ip_type = 1;
+ 	else
+@@ -136,10 +128,10 @@ static int __init sr_dev_init(struct omap_hwmod *oh, void *user)
+ 		}
+ 	}
+ 
+-	sr_data->voltdm = voltdm_lookup(sr_dev_attr->sensor_voltdm_name);
++	sr_data->voltdm = voltdm_lookup(voltdm);
+ 	if (!sr_data->voltdm) {
+ 		pr_err("%s: Unable to get voltage domain pointer for VDD %s\n",
+-			__func__, sr_dev_attr->sensor_voltdm_name);
++			__func__, voltdm);
+ 		goto exit;
+ 	}
+ 
+@@ -160,6 +152,20 @@ static int __init sr_dev_init(struct omap_hwmod *oh, void *user)
+ 	return 0;
+ }
+ 
++static int __init sr_dev_init(struct omap_hwmod *oh, void *user)
++{
++	struct omap_smartreflex_dev_attr *sr_dev_attr;
++
++	sr_dev_attr = (struct omap_smartreflex_dev_attr *)oh->dev_attr;
++	if (!sr_dev_attr || !sr_dev_attr->sensor_voltdm_name) {
++		pr_err("%s: No voltage domain specified for %s. Cannot initialize\n",
++		       __func__, oh->name);
++		return 0;
++	}
++
++	return sr_init_by_name(oh->name, sr_dev_attr->sensor_voltdm_name);
++}
++
+ /*
+  * API to be called from board files to enable smartreflex
+  * autocompensation at init.
+@@ -169,7 +175,42 @@ void __init omap_enable_smartreflex_on_init(void)
+ 	sr_enable_on_init = true;
+ }
+ 
++static const char * const omap4_sr_instances[] = {
++	"mpu",
++	"iva",
++	"core",
++};
++
++static const char * const dra7_sr_instances[] = {
++	"mpu",
++	"core",
++};
++
+ int __init omap_devinit_smartreflex(void)
+ {
++	const char * const *sr_inst;
++	int i, nr_sr = 0;
++
++	if (soc_is_omap44xx()) {
++		sr_inst = omap4_sr_instances;
++		nr_sr = ARRAY_SIZE(omap4_sr_instances);
++
++	} else if (soc_is_dra7xx()) {
++		sr_inst = dra7_sr_instances;
++		nr_sr = ARRAY_SIZE(dra7_sr_instances);
++	}
++
++	if (nr_sr) {
++		const char *name, *voltdm;
++
++		for (i = 0; i < nr_sr; i++) {
++			name = kasprintf(GFP_KERNEL, "smartreflex_%s", sr_inst[i]);
++			voltdm = sr_inst[i];
++			sr_init_by_name(name, voltdm);
++		}
++
++		return 0;
++	}
++
+ 	return omap_hwmod_for_each_by_class("smartreflex", sr_dev_init, NULL);
+ }
 -- 
 2.30.1
