@@ -2,34 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B1B03194B3
-	for <lists+linux-omap@lfdr.de>; Thu, 11 Feb 2021 21:48:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 022693194DF
+	for <lists+linux-omap@lfdr.de>; Thu, 11 Feb 2021 22:12:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230476AbhBKUry (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 11 Feb 2021 15:47:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50166 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230450AbhBKUrx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 11 Feb 2021 15:47:53 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D6FD864E3B;
-        Thu, 11 Feb 2021 20:47:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613076432;
-        bh=vG0YvE0JNwxsy3Hevz/Y83+mEgLMI6DUHbIarDb9OXE=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=PVxo1LcX30rdtmFh6xUTj0kdmeNXam0jtuw6i0BLJQDVuKWEDUq9DsCKxKe5cZ7j1
-         75/Mjac7W7cQpPmKJWeJ29DNvE8fjxy3nKld2+4lQpBanSpgWJPv4/VETRy6/iVUXD
-         YLffOrahpYQWiA4lqBppMqKoxm6/rN83EQZJ5dnLQqqLrX1/UxngHD0L11G42nD4xd
-         qvjtqSD9WCW+CnL5eGFhL75f7lIx+A81XawEnKMMXzZNi7lT9lmmZYGnIfE2z3+1iD
-         UQ+OsCH6IuHmlXyDe7uIqmrktnI8W8QvKTviHz47x2lPSsVy5PWxgrUX3iMD7uVGnZ
-         E90e1uh8zSx2A==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210126124540.3320214-1-lee.jones@linaro.org>
-References: <20210126124540.3320214-1-lee.jones@linaro.org>
-Subject: Re: [PATCH 00/21] [Set 2] Rid W=1 warnings from Clock
-From:   Stephen Boyd <sboyd@kernel.org>
+        id S229707AbhBKVLl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 11 Feb 2021 16:11:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41656 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229737AbhBKVLj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 Feb 2021 16:11:39 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0982C061756
+        for <linux-omap@vger.kernel.org>; Thu, 11 Feb 2021 13:10:58 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id l17so5193783wmq.2
+        for <linux-omap@vger.kernel.org>; Thu, 11 Feb 2021 13:10:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=jS8uFEKJN3Q7z1nnFUZphS+85VjJXUxSu7oHf1ltyB0=;
+        b=pGXBmhZfxNzpUj3DU9XcdDqUsNIvFlQva7eCXTEz7Joxs93CRthvAWsMPl1oWP2n/g
+         8zadPY+2YOwrErplgbDWZMFrWbWBL1XjQLxrj4iEs/eGplAth/DV6vHCTvETe0cKQcmS
+         DnNyvgOUd31g2Xs9O206WfLVjzQQpI/elwoisiJlmKGo0sihidiD+QOJZAeX0aWHphz+
+         q/aK/ZU+IID6tZ1cciI7dFecLh3LfdynBqW/QIuhGGLDLfCXBY+FsmX9jpdUs1GJsG7D
+         ZlymHM76hmC80hAggXMs4oaui/l/NiVXXlXes79L1BHNy9rGno3L8PVIKwoydaGf9Ra+
+         qDGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=jS8uFEKJN3Q7z1nnFUZphS+85VjJXUxSu7oHf1ltyB0=;
+        b=oMJBdlc3ZQpPkULgRf9WxrMoDadCBLGwgonM69T914wpsv8BLLBw7W00DdwhEwmyA7
+         tmUaKXLIfNvqZaoUsbAkbZsEsFaXZGMXZ7y/8kjXyMQlSgWIJ/sf7c0G0OwvPdAHQLEd
+         5DIBSihm+0pg2UTzwm/rAZ4NXaYVS6e8YMwaLnQ2f/GJeSUvRtnQPG4kaBJG+r274P0F
+         Zzf8jJxliZtFos2Yr6a8dxxL4FALlANXwKluhnUDW4VMcmCHdDjvznjnKgD6SAPhXaUY
+         mwQNbg96El5sxRA5/EwNo7BRYJoxmpsV5W3ptHKJWdEnf95N+fKp9WpIN/Maa6srX5nx
+         WggQ==
+X-Gm-Message-State: AOAM530nu3CJWtoRLbm4pJwWObHDjvBRavJb/kt41oyKwJ8l/jfQ68uF
+        dufX49TSLkrt2FP1dvA4ssd6zQ==
+X-Google-Smtp-Source: ABdhPJw8JfvQOF+sCQO0uk/DNBEk4iFr6tFX4elV5/TCX1Zcujns/8wiUYi2u3IgXDuQprbG6IFt5Q==
+X-Received: by 2002:a7b:c010:: with SMTP id c16mr1885311wmb.134.1613077857539;
+        Thu, 11 Feb 2021 13:10:57 -0800 (PST)
+Received: from dell ([91.110.221.187])
+        by smtp.gmail.com with ESMTPSA id f7sm6932559wrm.92.2021.02.11.13.10.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Feb 2021 13:10:56 -0800 (PST)
+Date:   Thu, 11 Feb 2021 21:10:54 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Stephen Boyd <sboyd@kernel.org>
 Cc:     linux-kernel@vger.kernel.org,
         Ahmad Fatoum <a.fatoum@pengutronix.de>,
         Andy Gross <agross@kernel.org>,
@@ -38,7 +59,7 @@ Cc:     linux-kernel@vger.kernel.org,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Boris BREZILLON <boris.brezillon@free-electrons.com>,
         Chen-Yu Tsai <wens@csie.org>,
-        Emilio =?utf-8?q?L=C3=B3pez?= <emilio@elopez.com.ar>,
+        Emilio =?iso-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
         Fabio Estevam <festevam@gmail.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Jan Kotas <jank@cadence.com>,
@@ -66,26 +87,46 @@ Cc:     linux-kernel@vger.kernel.org,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Shawn Guo <shawnguo@kernel.org>,
         Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        =?utf-8?q?S=C3=B6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+        =?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
         Tali Perry <tali.perry1@gmail.com>,
         Tero Kristo <kristo@kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         Tomer Maimon <tmaimon77@gmail.com>,
         Viresh Kumar <vireshk@kernel.org>
-To:     lee.jones@linaro.org
-Date:   Thu, 11 Feb 2021 12:47:11 -0800
-Message-ID: <161307643148.1254594.6590013599999468609@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+Subject: Re: [PATCH 00/21] [Set 2] Rid W=1 warnings from Clock
+Message-ID: <20210211211054.GD4572@dell>
+References: <20210126124540.3320214-1-lee.jones@linaro.org>
+ <161307643148.1254594.6590013599999468609@swboyd.mtv.corp.google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <161307643148.1254594.6590013599999468609@swboyd.mtv.corp.google.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Lee Jones (2021-01-26 04:45:19)
-> This set is part of a larger effort attempting to clean-up W=3D1
-> kernel builds, which are currently overwhelmingly riddled with
-> niggly little warnings.
->=20
-> This is the last set.  Clock is clean after this.
+On Thu, 11 Feb 2021, Stephen Boyd wrote:
 
-Is it possible to slam in some patch that makes W=3D1 the default for the
-clk directory? I'm trying to avoid seeing this patch series again.
+> Quoting Lee Jones (2021-01-26 04:45:19)
+> > This set is part of a larger effort attempting to clean-up W=1
+> > kernel builds, which are currently overwhelmingly riddled with
+> > niggly little warnings.
+> > 
+> > This is the last set.  Clock is clean after this.
+> 
+> Is it possible to slam in some patch that makes W=1 the default for the
+> clk directory? I'm trying to avoid seeing this patch series again.
+
+One of my main goals of this project is that everyone (contributors,
+maintainers auto-builder robots etc) will be enabling W=1 builds
+*locally*.
+
+This isn't something you'll want to do at a global (i.e. in Mainline)
+level.  That's kinda the point of W=1.
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
