@@ -2,80 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3870931844B
-	for <lists+linux-omap@lfdr.de>; Thu, 11 Feb 2021 05:22:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C3F03185BC
+	for <lists+linux-omap@lfdr.de>; Thu, 11 Feb 2021 08:37:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbhBKEVM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 10 Feb 2021 23:21:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51292 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbhBKEVG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 10 Feb 2021 23:21:06 -0500
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E75C061574;
-        Wed, 10 Feb 2021 20:20:26 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id d13so2645050plg.0;
-        Wed, 10 Feb 2021 20:20:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ofWIvbul8lUQjDjEqyhG2qv/DpTdeTq9suCAukT4VnE=;
-        b=cJkf+VIciLaXv1lixjdR8iXxDvJD4ZVrqUo9pLZZOczna0nt6lXw+gvOZNbOiFr9Ax
-         xXLtvTJtKB5ICTmJeynxBdn39We/Qj+tzybWJLI+YpQpya8NbF7CEqhU7uDvPD9/+aOb
-         X0MP9xdLMPmQZ1cdXlY2M8wEiztJgbsc+o3R1enU36K44psdbuPcp0FECGfnmjGLvkEl
-         pbmJ/ca9FeGs5zLyGfHWDyiQ2R41jRN6favzNvY7kfjbXs7nx57QxGt5Mgrp1a/IBocm
-         NkcfcU38GSec03drey6h7xPphlkEwIMZIn88AfGtDhxqRP3qliCqabex9N/PNUJs9bvl
-         9l8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ofWIvbul8lUQjDjEqyhG2qv/DpTdeTq9suCAukT4VnE=;
-        b=LK7MAF56gcTYHmG9U9VDdUJMKYlNzcxhecNFu5Nau7DdctBPY0+fJWs8+UUKeT+rb2
-         8626HbSRRtv3N9iCCI91t9DNYNEFoj4dTMc/wE5f3G+6BYGMk0dY9OxmNgjliCNbPiib
-         gjFNWdgj/3PMkDtK5FrkRP9KAq//6H+zuU2M3n0V2th2yPMnmHONuXcDTWjKjM4m/FEP
-         9JNyRjQbiv7WvcWR2sBvJ7VeZ9f/z2vlsfn7WIdk1dAdXRLNMd/uK9Jgdp7lEc44W+7l
-         emDhvJbUj7CI5kkzez92/chx7Evwb+B59R4O/PjFtpN4b+tOX+AG0YpCWYi8LbFHOEJc
-         QdGg==
-X-Gm-Message-State: AOAM530w/szf/FU96G24tdTjbNd2+rKXZ/VAuih91bxSO+MF4eDgWZpI
-        MWd/WyU1RAPyBWcB7+w7pzySRQ3rfWM=
-X-Google-Smtp-Source: ABdhPJxywamPXOiUFuBiMJGeS5MBf6KcEI2wQhgt6ksWCRY9UWhZ7BoITqmymMwz37b/iZ4sU43/7g==
-X-Received: by 2002:a17:902:7847:b029:df:d889:252c with SMTP id e7-20020a1709027847b02900dfd889252cmr5985974pln.76.1613017225380;
-        Wed, 10 Feb 2021 20:20:25 -0800 (PST)
-Received: from [10.230.29.30] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 68sm3644935pfe.33.2021.02.10.20.20.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Feb 2021 20:20:24 -0800 (PST)
-Subject: Re: [PATCH v3 net-next 10/11] net: mscc: ocelot: offload bridge port
- flags to device
-To:     Vladimir Oltean <olteanv@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
-        Nikolay Aleksandrov <nikolay@nvidia.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Ido Schimmel <idosch@idosch.org>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
-References: <20210210091445.741269-1-olteanv@gmail.com>
- <20210210091445.741269-11-olteanv@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <a5a4e1e8-8370-954f-ab4e-20a52f54d468@gmail.com>
-Date:   Wed, 10 Feb 2021 20:20:21 -0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.7.1
+        id S229733AbhBKHfd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 11 Feb 2021 02:35:33 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:47984 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229648AbhBKHfa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 Feb 2021 02:35:30 -0500
+Received: from [192.168.1.111] (91-157-208-71.elisa-laajakaista.fi [91.157.208.71])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id BE6A841;
+        Thu, 11 Feb 2021 08:34:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1613028887;
+        bh=zlKjcZLJjNhF77GJgJ5DVoFtSooLxCjmZfR1weIf3Ho=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=Vcwzp2gDpicFeAWlLC1iFs4VYhJIVmWOetW+z49zRKH3wiZUhvt6Rt/3/QB+pMDY9
+         7olyN0qdbzvLGI6golmfGlhnIpbM7ml22jHg7eZ8hjNEmSOwbRMoTBGEkkgSzPHbPC
+         afoniPMde04hF7eSb4Cjgj4bxqDLoZr8N6SvqVHY=
+Subject: Re: [PATCH v4 24/80] drm/omap: dsi: move TE GPIO handling into core
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Nikhil Devshatwar <nikhil.nd@ti.com>,
+        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sekhar Nori <nsekhar@ti.com>, hns@goldelico.com,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
+ <20201124124538.660710-25-tomi.valkeinen@ti.com>
+ <YCF7ARchcMKvWa4s@atomide.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+Message-ID: <5b469566-c926-7e1f-8872-84774b96f389@ideasonboard.com>
+Date:   Thu, 11 Feb 2021 09:34:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210210091445.741269-11-olteanv@gmail.com>
+In-Reply-To: <YCF7ARchcMKvWa4s@atomide.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -83,28 +89,39 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 2/10/2021 1:14 AM, Vladimir Oltean wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+On 08/02/2021 19:55, Tony Lindgren wrote:
+> Hi,
 > 
-> We should not be unconditionally enabling address learning, since doing
-> that is actively detrimential when a port is standalone and not offloading
-> a bridge. Namely, if a port in the switch is standalone and others are
-> offloading the bridge, then we could enter a situation where we learn an
-> address towards the standalone port, but the bridged ports could not
-> forward the packet there, because the CPU is the only path between the
-> standalone and the bridged ports. The solution of course is to not
-> enable address learning unless the bridge asks for it.
+> * Tomi Valkeinen <tomi.valkeinen@ti.com> [201124 12:47]:
+>> From: Sebastian Reichel <sebastian.reichel@collabora.com>
+>>
+>> In preparation for removing custom DSS calls from the DSI
+>> panel driver, this moves support for external tearing event
+>> GPIOs into the DSI host driver. This way tearing events are
+>> always handled in the core resulting in simplification of
+>> the panel drivers.
+>>
+>> The TE GPIO acquisition follows works in the same way as the
+>> exynos DSI implementation.
 > 
-> We need to set up the initial port flags for no learning and flooding
-> everything, then the bridge takes over. The flood configuration was
-> already configured ok in ocelot_init, we just need to disable learning
-> in ocelot_init_port.
+> Looks like this patch causes the following warnings:
 > 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> DSI: omapdss DSI error: Failed to receive BTA
+> DSI: omapdss DSI error: bta sync failed
+> DSI: omapdss DSI error: vc(0) busy when trying to config for VP
+> DSI: omapdss DSI error: Failed to receive BTA
+> DSI: omapdss DSI error: bta sync failed
+> DSI: omapdss DSI error: vc(0) busy when trying to config for VP
+> DSI: omapdss DSI error: Failed to receive BTA
+> DSI: omapdss DSI error: bta sync failed
+> DSI: omapdss DSI error: vc(0) busy when trying to config for VP
+> ...
+> 
+> Any ideas? The display works for me despite the constant
+> warnings.
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+Which board is that? Do the errors start right from the boot, or only
+after running something in userspace?
+
+ Tomi
+
