@@ -2,126 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C3F03185BC
-	for <lists+linux-omap@lfdr.de>; Thu, 11 Feb 2021 08:37:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A72683185F9
+	for <lists+linux-omap@lfdr.de>; Thu, 11 Feb 2021 09:00:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229733AbhBKHfd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 11 Feb 2021 02:35:33 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:47984 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbhBKHfa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 Feb 2021 02:35:30 -0500
-Received: from [192.168.1.111] (91-157-208-71.elisa-laajakaista.fi [91.157.208.71])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id BE6A841;
-        Thu, 11 Feb 2021 08:34:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1613028887;
-        bh=zlKjcZLJjNhF77GJgJ5DVoFtSooLxCjmZfR1weIf3Ho=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Vcwzp2gDpicFeAWlLC1iFs4VYhJIVmWOetW+z49zRKH3wiZUhvt6Rt/3/QB+pMDY9
-         7olyN0qdbzvLGI6golmfGlhnIpbM7ml22jHg7eZ8hjNEmSOwbRMoTBGEkkgSzPHbPC
-         afoniPMde04hF7eSb4Cjgj4bxqDLoZr8N6SvqVHY=
-Subject: Re: [PATCH v4 24/80] drm/omap: dsi: move TE GPIO handling into core
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, hns@goldelico.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-25-tomi.valkeinen@ti.com>
- <YCF7ARchcMKvWa4s@atomide.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-Message-ID: <5b469566-c926-7e1f-8872-84774b96f389@ideasonboard.com>
-Date:   Thu, 11 Feb 2021 09:34:46 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S229985AbhBKH6B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 11 Feb 2021 02:58:01 -0500
+Received: from new3-smtp.messagingengine.com ([66.111.4.229]:40983 "EHLO
+        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229923AbhBKH4c (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 11 Feb 2021 02:56:32 -0500
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailnew.nyi.internal (Postfix) with ESMTP id C578758030D;
+        Thu, 11 Feb 2021 02:44:49 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Thu, 11 Feb 2021 02:44:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=Jhw14S
+        7gzUfxDfXY3MFGd9GM2K8HzhgZoqO1xwIOyI8=; b=XSA4aEVKrOLqFVMFHen/+J
+        U6nQ81UiLHi0PhCffPAtMnqtR1/rCMIfmRJbmPNSy8se+SAE7G63ax9MF9SFqpLT
+        sn6CTKZuxpKMPXvQMoPn9vLkdFxjX60R1z/i3pdTXMjwpH42p+qul+A3SnieudiI
+        3itCJCzG0MqIt7OE4kxR/Jqdh6wFdoSv/T6CL9s7YadNkQnZQAfHOyqSB2e3zJeX
+        QWhcFKvqeRm6q2U4LWmaZI/w8QL65WN1jFdXcgh4DrM36gdF356OUxm1Q89jmnET
+        x6z8U6R5h2Zn+S5a3Q++JIgjf4qXQBea/V9daTppn5u1VtuXNtwJWWZd/vOGRpyg
+        ==
+X-ME-Sender: <xms:b-AkYAMT1j4HNRQ-BurfrnoTDv70mzZxO5Ud5his7QQvby5VT91u5g>
+    <xme:b-AkYJiqsmkOHwMT_KQrMja17-n7M7OPxKF7PAt_PAVAxU4zr9PIBRUTou9sT51-M
+    y1UZbML_7caRRM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrheekgdduudduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefkughoucfu
+    tghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorhhgqeenucggtffrrghtth
+    gvrhhnpedtffekkeefudffveegueejffejhfetgfeuuefgvedtieehudeuueekhfduheel
+    teenucfkphepkeegrddvvdelrdduheefrdeggeenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhg
+X-ME-Proxy: <xmx:b-AkYK4HlSG3at4b4cix3E1iR-_7guQgfUiGUVYxOensYBobT8fGQA>
+    <xmx:b-AkYI1OTzd3KB2adCAPQ4fRkUdagHg8g-TaKwd7AO5sECOfhpcwYw>
+    <xmx:b-AkYNtP0_531KU-LKWbvRAtq2lKgAn-71cyZT4PFyfdlyPQ_fYFCw>
+    <xmx:ceAkYHfZxfFxLmfOSYd3z20Ju2JoE1bgRrE6DyOzRoIuhY1ilU2AeA>
+Received: from localhost (igld-84-229-153-44.inter.net.il [84.229.153.44])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 2CE6324005D;
+        Thu, 11 Feb 2021 02:44:46 -0500 (EST)
+Date:   Thu, 11 Feb 2021 09:44:43 +0200
+From:   Ido Schimmel <idosch@idosch.org>
+To:     Vladimir Oltean <olteanv@gmail.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
+        Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 04/11] net: bridge: offload initial and final
+ port flags through switchdev
+Message-ID: <20210211074443.GB324421@shredder.lan>
+References: <20210209151936.97382-1-olteanv@gmail.com>
+ <20210209151936.97382-5-olteanv@gmail.com>
+ <20210209185100.GA266253@shredder.lan>
+ <20210209202045.obayorcud4fg2qqb@skbuf>
+ <20210209220124.GA271860@shredder.lan>
+ <20210209225153.j7u6zwnpdgskvr2v@skbuf>
+ <20210210105949.GB287766@shredder.lan>
+ <20210210232352.m7nqzvs2g4i74rx4@skbuf>
 MIME-Version: 1.0
-In-Reply-To: <YCF7ARchcMKvWa4s@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210210232352.m7nqzvs2g4i74rx4@skbuf>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/02/2021 19:55, Tony Lindgren wrote:
-> Hi,
+On Thu, Feb 11, 2021 at 01:23:52AM +0200, Vladimir Oltean wrote:
+> On Wed, Feb 10, 2021 at 12:59:49PM +0200, Ido Schimmel wrote:
+> > > > The reverse, during unlinking, would be to refuse unlinking if the upper
+> > > > has uppers of its own. netdev_upper_dev_unlink() needs to learn to
+> > > > return an error and callers such as team/bond need to learn to handle
+> > > > it, but it seems patchable.
+> > >
+> > > Again, this was treated prior to my deletion in this series and not by
+> > > erroring out, I just really didn't think it through.
+> > >
+> > > So you're saying that if we impose that all switchdev drivers restrict
+> > > the house of cards to be constructed from the bottom up, and destructed
+> > > from the top down, then the notification of bridge port flags can stay
+> > > in the bridge layer?
+> >
+> > I actually don't think it's a good idea to have this in the bridge in
+> > any case. I understand that it makes sense for some devices where
+> > learning, flooding, etc are port attributes, but in other devices these
+> > can be {port,vlan} attributes and then you need to take care of them
+> > when a vlan is added / deleted and not only when a port is removed from
+> > the bridge. So for such devices this really won't save anything. I would
+> > thus leave it to the lower levels to decide.
 > 
-> * Tomi Valkeinen <tomi.valkeinen@ti.com> [201124 12:47]:
->> From: Sebastian Reichel <sebastian.reichel@collabora.com>
->>
->> In preparation for removing custom DSS calls from the DSI
->> panel driver, this moves support for external tearing event
->> GPIOs into the DSI host driver. This way tearing events are
->> always handled in the core resulting in simplification of
->> the panel drivers.
->>
->> The TE GPIO acquisition follows works in the same way as the
->> exynos DSI implementation.
-> 
-> Looks like this patch causes the following warnings:
-> 
-> DSI: omapdss DSI error: Failed to receive BTA
-> DSI: omapdss DSI error: bta sync failed
-> DSI: omapdss DSI error: vc(0) busy when trying to config for VP
-> DSI: omapdss DSI error: Failed to receive BTA
-> DSI: omapdss DSI error: bta sync failed
-> DSI: omapdss DSI error: vc(0) busy when trying to config for VP
-> DSI: omapdss DSI error: Failed to receive BTA
-> DSI: omapdss DSI error: bta sync failed
-> DSI: omapdss DSI error: vc(0) busy when trying to config for VP
-> ...
-> 
-> Any ideas? The display works for me despite the constant
-> warnings.
+> Just for my understanding, how are per-{port,vlan} attributes such as
+> learning and flooding managed by the Linux bridge? How can I disable
+> flooding only in a certain VLAN?
 
-Which board is that? Do the errors start right from the boot, or only
-after running something in userspace?
-
- Tomi
-
+You can't (currently). But it does not change the fact that in some
+devices these are {port,vlan} attributes and we are talking here about
+the interface towards these devices. Having these as {port,vlan}
+attributes allows you to support use cases such as a port being enslaved
+to a VLAN-aware bridge and its VLAN upper(s) enslaved to VLAN unaware
+bridge(s). Obviously you need to ensure there is no conflict between the
+VLANs used by the VLAN-aware bridge and the VLAN device(s).
