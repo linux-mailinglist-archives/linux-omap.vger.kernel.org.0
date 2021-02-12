@@ -2,54 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA88C31A43D
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 19:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B66BE31A44C
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 19:11:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231236AbhBLSIA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 Feb 2021 13:08:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56458 "EHLO
+        id S229832AbhBLSLX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Feb 2021 13:11:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231317AbhBLSH6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 13:07:58 -0500
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0A5C061574;
-        Fri, 12 Feb 2021 10:07:18 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id m6so9044pfk.1;
-        Fri, 12 Feb 2021 10:07:18 -0800 (PST)
+        with ESMTP id S229451AbhBLSLV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 13:11:21 -0500
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 994A7C061756;
+        Fri, 12 Feb 2021 10:10:41 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id m6so14824pfk.1;
+        Fri, 12 Feb 2021 10:10:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=jzL26zkMdAnOD2IACVtEn2EhF+H59r0z5RTwLn52Y3M=;
-        b=GGYIq9OqvYpdw/0qjHnAVD0LJTXFfZcF0KciroJWpaauQnVLdTBpp/glr+Vy5rULBz
-         9VQOkY+RSQu4SXh0pD54mneZPEI8+KptrYQxXK2wDgIv7dRYwDkvBbXidHT29ddo2i9u
-         QMWmiWE3Clmpx/3DFGzuaaDPXA8xVqFM8kqIKuoDLbSdppwy39dQhLw6H33A/7tjNqRf
-         0rrqJegRUUHMsrSQu0qKnuVbRY376nmZlbdGeyrM4WjUol11Z91O6oXU8BJKwaOIkEeT
-         IhbGpgQV/Ev8g2EZ5l6XtPPUyZU1vOrrxCilIU3WEk6hoi9TFj5Gs0+sBMLGJyD7GuOM
-         9pEg==
+        bh=bytmtoINOEdkBtL4V2XAs15+q8GmAS7yZKBoJvhkgLk=;
+        b=akE2ozj4n+Syf78UgJqCInvzuDDz+8VmFwiwu0NVDiPEtd9yuZancJkUYDsXQzYUbp
+         ObndXxrSoodxkK60wJ6CouUlchzBZ3QP8k4bGVwfdMaQGNShPX5gMyLHokdta2A9EPEP
+         DEApGNbbS247uAc79ayPDzMVwo1pC/QOSoxC2xFMT3tSTWuPrGkZqDtrKvfi0c+4YG1v
+         kKxdMB4aFm280e4uW/KM2G4eO3f0iQkqyTYgX5pdNZKGS+IqNofZo2HkZD+KsnCZs9kZ
+         RaHYXbRaeC1CMggg6p0Lw0mzj7wAvEO/tfwHENqV3oJSpWqbcOcPesH9LsuuO+2V3Sd2
+         SRuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=jzL26zkMdAnOD2IACVtEn2EhF+H59r0z5RTwLn52Y3M=;
-        b=pyndGLkzRYUFjGWiYmcO1t/RthGX9uadM0M8VBYQue9aPDVGPoz3oFRA9j+8/ECG76
-         nFiC2sd022yPVMdgwyYMJcUdwmhn3Fp7o0UvLWInNNJqZvdekew2z/cgG/Sc8b7Mc6Dk
-         JK8rXtA4ErB4Z8osaCwk4/cGkAdtTmrlNmuA2oo4RjhSOj61kt6ZmmmNGulFApvOwQMz
-         iesEkidxiROPr6JJtDKycaICqiwh2ghjnME+C6OB5Fe2nd6MYTvhPiYDeRfzzcaIOt80
-         o0hTQuCT/4+KghiqUb7zQTlzI+RwSDQgccQNsChQsClE/qxw0MKN42ibdnaNyAUZSmk1
-         Y8pw==
-X-Gm-Message-State: AOAM532RJMPw2Eio/Ol0byTBHkd5SXMC6NWVFn9ITHNPJZv3zpieV8XN
-        kjYv3nRzZn5A9Cx9uWeD46EuKv2tHT8=
-X-Google-Smtp-Source: ABdhPJwEtkuYl4IEjrY3K94aY/JomFbslkQgXIBduPK1tbo89twwiU07e/yZ3gbwrmhbKdxwSu/FAw==
-X-Received: by 2002:a63:4405:: with SMTP id r5mr4272320pga.168.1613153237967;
-        Fri, 12 Feb 2021 10:07:17 -0800 (PST)
+        bh=bytmtoINOEdkBtL4V2XAs15+q8GmAS7yZKBoJvhkgLk=;
+        b=hLkyK2Nkt+F7PwhobC49LUXUnQnWeIvlS+PS4shq/+pIJdjTRDyo3/Gvb44W9PDvUc
+         x1Oc9dpLDyRQLt+mH4qEKQvXSfsq+niHHfuO5Qq5/hvqeVrUPIdTiIC3ayiIiQbECyr/
+         bhwgD4bvLBpxvkGBx0QgMyYO7uQzudVCpethFYjYVchOIHtDVsOhU+GrLp0Rea0Ik/hw
+         bxyC37Ya33+Juom7vbwmmQ6UydaOOU80/vVOXKoS+qIV6L0sGQPHsKO6FCYtYmnwpKAC
+         /L979FRUeX6Pgsl2X08iMHg+Qzu6JdoTtlELwDbS6p7FxQG1aNyqwLHS0+6lUddBuM01
+         Wx+w==
+X-Gm-Message-State: AOAM533UWkoffOWTVKdrER8EAI+zKPFcVUlQMN0+JWG/BaQV2QQrVI7D
+        YXlVyz5hSFNJKBnpEiO8F7XeK9h7Ydg=
+X-Google-Smtp-Source: ABdhPJz/Ti9d44Rv75w/tdspUxsn1D7i/I0j1GsylUmhWNr5eKXVF+yfHYMhqeLr+UkmhJ5ihnkcTQ==
+X-Received: by 2002:a63:4e09:: with SMTP id c9mr4365562pgb.107.1613153440776;
+        Fri, 12 Feb 2021 10:10:40 -0800 (PST)
 Received: from [10.230.29.30] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id e21sm9422315pgv.74.2021.02.12.10.07.15
+        by smtp.gmail.com with ESMTPSA id e15sm11325899pgr.81.2021.02.12.10.10.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Feb 2021 10:07:17 -0800 (PST)
-Subject: Re: [PATCH v5 net-next 03/10] net: bridge: don't print in
- br_switchdev_set_port_flag
+        Fri, 12 Feb 2021 10:10:40 -0800 (PST)
+Subject: Re: [PATCH v5 net-next 05/10] net: switchdev: pass flags and mask to
+ both {PRE_,}BRIDGE_FLAGS attributes
 To:     Vladimir Oltean <olteanv@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>,
         "David S. Miller" <davem@davemloft.net>
@@ -69,14 +69,14 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
         Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
 References: <20210212151600.3357121-1-olteanv@gmail.com>
- <20210212151600.3357121-4-olteanv@gmail.com>
+ <20210212151600.3357121-6-olteanv@gmail.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <6097810e-9b74-df81-ccc4-3a4b47b94b67@gmail.com>
-Date:   Fri, 12 Feb 2021 10:07:14 -0800
+Message-ID: <9a1efd0d-9930-cbc7-5450-ffb47a0034e4@gmail.com>
+Date:   Fri, 12 Feb 2021 10:10:37 -0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Firefox/78.0 Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <20210212151600.3357121-4-olteanv@gmail.com>
+In-Reply-To: <20210212151600.3357121-6-olteanv@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -89,18 +89,25 @@ X-Mailing-List: linux-omap@vger.kernel.org
 On 2/12/2021 7:15 AM, Vladimir Oltean wrote:
 > From: Vladimir Oltean <vladimir.oltean@nxp.com>
 > 
-> For the netlink interface, propagate errors through extack rather than
-> simply printing them to the console. For the sysfs interface, we still
-> print to the console, but at least that's one layer higher than in
-> switchdev, which also allows us to silently ignore the offloading of
-> flags if that is ever needed in the future.
+> This switchdev attribute offers a counterproductive API for a driver
+> writer, because although br_switchdev_set_port_flag gets passed a
+> "flags" and a "mask", those are passed piecemeal to the driver, so while
+> the PRE_BRIDGE_FLAGS listener knows what changed because it has the
+> "mask", the BRIDGE_FLAGS listener doesn't, because it only has the final
+> value. But certain drivers can offload only certain combinations of
+> settings, like for example they cannot change unicast flooding
+> independently of multicast flooding - they must be both on or both off.
+> The way the information is passed to switchdev makes drivers not
+> expressive enough, and unable to reject this request ahead of time, in
+> the PRE_BRIDGE_FLAGS notifier, so they are forced to reject it during
+> the deferred BRIDGE_FLAGS attribute, where the rejection is currently
+> ignored.
+> 
+> This patch also changes drivers to make use of the "mask" field for edge
+> detection when possible.
 > 
 > Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
 Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-
-I suppose the slight "loss" of information on which port failed the
-operation is okay since it was implied by either the path (sysfs) or the
-bridge command.
 -- 
 Florian
