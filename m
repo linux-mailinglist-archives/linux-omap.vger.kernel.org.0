@@ -2,104 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F9BF31989A
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 04:09:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14F793198AC
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 04:21:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229895AbhBLDIO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 11 Feb 2021 22:08:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53670 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229573AbhBLDIM (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 11 Feb 2021 22:08:12 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7AB7164DE9;
-        Fri, 12 Feb 2021 03:07:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1613099251;
-        bh=JzVhC9UdJJv6ZQYoxZTHOXMBUYZPfGjZSYy10m7haaw=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=SYmvPCI5iLDLklNsYLfXsKhdIGU0kxMM/XaL2DlnmiZraToGSaET422RLhim0mkKG
-         RoiGu0ntDl6hHLODMR8ALSW7kpifw5WjKBjNjhs4fdpyAOJVVnJbYvtF6Mpb9ve000
-         0Zrh9JsUqA1ekIBdiTfFZEXtSJmxsXcUcYw80epyZtLr/HcY/wJGMs2NjqqbTrpiKG
-         vSfka5Bd8hbU28plm6Y7njg9koYzROBKyfm+v1ULHhsyN2yv2NsFrjDeJjGvieHg4f
-         ZWDDNV7z8uS/Vg9ApuUuSt3gkxZIgeXFrAnz+7xsEPBw/7+nv2P4FnwnaFYnSH8Nof
-         thlWWB5HE1I8Q==
-Content-Type: text/plain; charset="utf-8"
+        id S229499AbhBLDVT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 11 Feb 2021 22:21:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36158 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229457AbhBLDVS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 Feb 2021 22:21:18 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D14C061574;
+        Thu, 11 Feb 2021 19:20:37 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id u11so4393865plg.13;
+        Thu, 11 Feb 2021 19:20:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=KX9BczQ7HP081Zb6fQayQzqKfWFTa3oP2nKnpxD0UUU=;
+        b=dobcntpA4hP7ES4I7J3tbO+Dq/F2O2WJKrVGbRVjnR+nJkpwvHXlG5hFMOfyDKoLj6
+         bQ51oQqQRYgJW+y00/jFsqUqSc+dYvdqM2Al1jDQxxYhv7mxHDb/OOaHiVpie75VlH/j
+         giYQvWVZx9vsnBCC0g8f96MRmsPPJ+X4JIUCxvbg0RkTR/7CGjsSdU4U4ChmzspeFt3t
+         BbebdtgH31J6iTgcWIzke6pj4RT3+x57OPpJxCLi3NDZ3LEEHJ3m5YN7FFK8aull5xiW
+         ugo241axW1+tn5MHnPbI4ti49BIoNxgCa9c36t3P0naug02hrgeyS0sKSWiav0rAYfTR
+         qFBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=KX9BczQ7HP081Zb6fQayQzqKfWFTa3oP2nKnpxD0UUU=;
+        b=YKKK2LbrjBiib+zlMN9o3B4bnaFFnkvaIqd0o9oCW4dwzzgEYDeEgaSDfK2z1gWxAh
+         Iuk3LRlQxvWYrHOI3WpbwZIrVQCdlD63k/aeEFFTBI1kkhQbDGdQYW5qCyssAwWUIuZN
+         CQsab+QFQnlXeif0NGxiFoWlYt7ZmU39CY7Ez5ghI3qGyC6JVYMkLsg7l7BRetkoTsiR
+         Tvx2lfUdeP15wIAs399zv1Gd6LtuKWWz3MCDpaMK26Oo17GJ9/BLvYCz0yvXIEG4Hcx5
+         CQlm+xsWR0Fa1ZNRF9kWbNVi53Ccg0VcwTlM64azXQnLvVjflhTRQHfCs+b1CTbcrYEN
+         KLVA==
+X-Gm-Message-State: AOAM532g4icqnEIzWHsoFbHUK+2XZup/yDBSXOUZ1s5l02fxW92UxPxH
+        aupyJcKCKLGg4n0e54Ezvzajk+Bb5xY=
+X-Google-Smtp-Source: ABdhPJzNneNORHrgdUQm8rKm5aRrrnkJf1b/jkUvfdeWboyI7AvVfit3Z4uc9I9P3zJ8TNUQY+bymQ==
+X-Received: by 2002:a17:90a:da01:: with SMTP id e1mr910471pjv.22.1613100036860;
+        Thu, 11 Feb 2021 19:20:36 -0800 (PST)
+Received: from [10.230.29.30] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id u20sm6701624pjy.36.2021.02.11.19.20.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Feb 2021 19:20:36 -0800 (PST)
+Subject: Re: [PATCH v4 net-next 1/9] net: switchdev: propagate extack to port
+ attributes
+To:     Vladimir Oltean <olteanv@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
+        Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Ido Schimmel <idosch@idosch.org>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
+References: <20210212010531.2722925-1-olteanv@gmail.com>
+ <20210212010531.2722925-2-olteanv@gmail.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <c559a6fc-b436-fc6f-7226-76490033d94c@gmail.com>
+Date:   Thu, 11 Feb 2021 19:20:33 -0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210211211054.GD4572@dell>
-References: <20210126124540.3320214-1-lee.jones@linaro.org> <161307643148.1254594.6590013599999468609@swboyd.mtv.corp.google.com> <20210211211054.GD4572@dell>
-Subject: Re: [PATCH 00/21] [Set 2] Rid W=1 warnings from Clock
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Andy Gross <agross@kernel.org>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Boris BREZILLON <boris.brezillon@free-electrons.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Emilio =?utf-8?q?L=C3=B3pez?= <emilio@elopez.com.ar>,
-        Fabio Estevam <festevam@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Jan Kotas <jank@cadence.com>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-tegra@vger.kernel.org, Loc Ho <lho@apm.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Nuvoton Technologies <tali.perry@nuvoton.com>,
-        NXP Linux Team <linux-imx@nxp.com>, openbmc@lists.ozlabs.org,
-        Patrick Venture <venture@google.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Rajan Vaja <rajan.vaja@xilinx.com>,
-        Rajeev Kumar <rajeev-dlh.kumar@st.com>,
-        Richard Woodruff <r-woodruff2@ti.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        =?utf-8?q?S=C3=B6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Viresh Kumar <vireshk@kernel.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Date:   Thu, 11 Feb 2021 19:07:30 -0800
-Message-ID: <161309925025.1254594.6210738031889810500@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+In-Reply-To: <20210212010531.2722925-2-olteanv@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Lee Jones (2021-02-11 13:10:54)
-> On Thu, 11 Feb 2021, Stephen Boyd wrote:
->=20
-> > Quoting Lee Jones (2021-01-26 04:45:19)
-> > > This set is part of a larger effort attempting to clean-up W=3D1
-> > > kernel builds, which are currently overwhelmingly riddled with
-> > > niggly little warnings.
-> > >=20
-> > > This is the last set.  Clock is clean after this.
-> >=20
-> > Is it possible to slam in some patch that makes W=3D1 the default for t=
-he
-> > clk directory? I'm trying to avoid seeing this patch series again.
->=20
-> One of my main goals of this project is that everyone (contributors,
-> maintainers auto-builder robots etc) will be enabling W=3D1 builds
-> *locally*.
->=20
-> This isn't something you'll want to do at a global (i.e. in Mainline)
-> level.  That's kinda the point of W=3D1.
->=20
 
-Agreed, but is it possible to pass W=3D1 in the drivers/clk/Makefile?
+
+On 2/11/2021 5:05 PM, Vladimir Oltean wrote:
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> 
+> When a struct switchdev_attr is notified through switchdev, there is no
+> way to report informational messages, unlike for struct switchdev_obj.
+> 
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian
