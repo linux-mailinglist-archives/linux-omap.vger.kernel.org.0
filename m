@@ -2,119 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DF61319E4C
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 13:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7A8E319E5C
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 13:27:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231355AbhBLMXf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 Feb 2021 07:23:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38742 "EHLO
+        id S231496AbhBLMZd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Feb 2021 07:25:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231433AbhBLMVe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 07:21:34 -0500
-Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E93C0613D6
-        for <linux-omap@vger.kernel.org>; Fri, 12 Feb 2021 04:20:52 -0800 (PST)
-Received: by mail-vs1-xe34.google.com with SMTP id x13so4693002vsl.8
-        for <linux-omap@vger.kernel.org>; Fri, 12 Feb 2021 04:20:52 -0800 (PST)
+        with ESMTP id S230332AbhBLMXy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 07:23:54 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E853C061574;
+        Fri, 12 Feb 2021 04:23:13 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id hs11so15233230ejc.1;
+        Fri, 12 Feb 2021 04:23:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nGSxB232htee79ty8IT/JBCRoBtyeUyGTY01WAjnJho=;
-        b=XXAQCAz/miOufeHcc6m1vMcmO5KeCOhVK8931mMk9BLvJlaMbyR/G/cUCTzKtJ2/VK
-         6yT+Pnm83dBHNqZVkrJHaHlXqh4CwMICvoqZFNdCI13pSbeLo5WJVL0SYo2Zb+ypYknW
-         V7PjyI0G8Af8BmyGdksrLgIng2bgVoxiuubYlAdZib52GP0SDBsqxbq/pdXqWjUmXcMn
-         qwNuKPAuOmPA3KZRhhJTbT+jY5QH7OA/6h0wwI4aZ/HXtigyE9Kt8lq+DYzJTom5VzMV
-         sj1WJqrnrj30xBKAKP/0tRr7oKbCyq5EoFe5ZHuk5D3zEciMSdlmQKZ+oPNTPM8Lbdom
-         8i0g==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=oAkh6JJVyX7ngecxDdQvglBOLyHNnX0FyZZLG8idRao=;
+        b=UNezosfMr9+hm0SI9j2bJhhnYuMnPZDZ7UXSFalWY20RPpK4uA+3gwLA+agW5jDe0o
+         eXwRsUHVsu6fiFM/z9zkRbkk0qZKWuQTaJzA3McH6mSAgk1C2whm7x2pbcXYOA7ozgNE
+         BD40S3X4M56Zry8V7WdWrV7gn1Nd8dE+Lp8t2dwuPr3iw3LqSiLVqNR4jiJbj3d+9A4f
+         SOI7PWSpK7o3CDevo7JIWOSIcBtWpsJxciXYan3BS6GytZxqWvyg3ce1xxDoVh5q8Pg6
+         kdg3mvRzsawZ+MX3PXBpiGi2HZ51TkHeTx46j86WTzPsaPsRs/H+c2dORSJjRvi1Q81q
+         jFNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nGSxB232htee79ty8IT/JBCRoBtyeUyGTY01WAjnJho=;
-        b=BZ7LiqcuqTZ/1MlfMLU5q9REJkIM+BW/qbkEiXjVhJn5b6A1n0+wovHNaNtSMo4PS2
-         QQpU+xNIz5O1Em0szeqmJMVYu/KhfHLBPFjU327c0FBewq+qKb9ojQSL1mOzt39Pm7/7
-         SewMzr/PHoOZjdaTKnlcs4ZI82J7X5faS/qqb769k1v6WQeYIQ3ptLVQsGr02/hv6fR4
-         gOxde4haog/+mpSON7zpIaeK0R9K4nSZL3dZz7W4KzcwHJDe6RUG/BfV/71xFD5I2osZ
-         s/e7u+pDM8ZgzeOEY9lA++38Z7SEUxeA2yin/BabxvbIF6UQHKD9pv9trH5TlSEWlfYf
-         be1g==
-X-Gm-Message-State: AOAM530g/jydRL+q+AtvRkX6+bVIRF62LFFsuD0DXj/z8X9cZjoMLRFN
-        7UpUv8H278YZ5S30wI/SxCxh5plCoJjTf8ghVKzuYg==
-X-Google-Smtp-Source: ABdhPJyiT486cqMDFuWTXYxqLnKEmulgJBr9Cwe8Gmv9m5GnzeEzaRWLIBFXXVRlVTblssbDykU9rxhy6//DQs3ht1Y=
-X-Received: by 2002:a67:8c6:: with SMTP id 189mr1069366vsi.55.1613132451887;
- Fri, 12 Feb 2021 04:20:51 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=oAkh6JJVyX7ngecxDdQvglBOLyHNnX0FyZZLG8idRao=;
+        b=MbXbwBGGf3L1Jya32e2ZePAzj5Gz6AXRFicYyPyjn3ihtxOADQPdhZhJUCnE7m5o7c
+         3jypCPhAb/xu/wt/Gr2NHL7Sv6a+Qy5JC0Hj9a2zsBWYlp+fEMKt8z/ctYqKIwLB0ovA
+         q/bAHgbhpgE9ZbTpnno0OTtDPECdpsjTinvKkdkC5tQZ87hy2AiV9hMLgIk3TIWRereV
+         dy02zNdJPJFXvlTXr1qTey97ORSYPOQP12ZDs4vGsvmaVIj08YR2iFklMOi4RdWFl74n
+         zD66yZ6KwgYniun4upX9Faz2vFpqEE4TlqspvKFLLGMc8O43d0OYWxly1uri4NANLL+8
+         HuyQ==
+X-Gm-Message-State: AOAM5316RTFdJiN+Ozpme0pDodLhdz997azgWUZ80MzM9nrbaqW9GKfQ
+        aEmUGwxQ25o2Wfr6Tu917E0=
+X-Google-Smtp-Source: ABdhPJxCV/uDu+B1aZTDEIW0K0r5Aqr9vysmDwZG09Mi9VVfNGYjX2uN5Vt6fOUAEG8Dybn0iNzzbw==
+X-Received: by 2002:a17:906:755:: with SMTP id z21mr2810355ejb.514.1613132592317;
+        Fri, 12 Feb 2021 04:23:12 -0800 (PST)
+Received: from skbuf (5-12-227-87.residential.rdsnet.ro. [5.12.227.87])
+        by smtp.gmail.com with ESMTPSA id l25sm464065eja.82.2021.02.12.04.23.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Feb 2021 04:23:10 -0800 (PST)
+Date:   Fri, 12 Feb 2021 14:23:09 +0200
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
+        Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Ido Schimmel <idosch@idosch.org>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v4 net-next 7/9] net: mscc: ocelot: use separate flooding
+ PGID for broadcast
+Message-ID: <20210212122309.ffv6zuhscwtvrhjk@skbuf>
+References: <20210212010531.2722925-1-olteanv@gmail.com>
+ <20210212010531.2722925-8-olteanv@gmail.com>
 MIME-Version: 1.0
-References: <1612777943-43609-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-In-Reply-To: <1612777943-43609-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 12 Feb 2021 13:20:15 +0100
-Message-ID: <CAPDyKFrEXv6YqCVWSP90K+6bFwXyuEhpXPf3DDA3FdWeo9Gr+Q@mail.gmail.com>
-Subject: Re: [PATCH] mmc: omap-hsmmc: Simplify bool comparison
-To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210212010531.2722925-8-olteanv@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 8 Feb 2021 at 10:52, Jiapeng Chong
-<jiapeng.chong@linux.alibaba.com> wrote:
->
-> Fix the following coccicheck warning:
->
-> ./drivers/mmc/host/omap_hsmmc.c:297:6-25: WARNING: Comparison of 0/1 to
-> bool variable.
->
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-
-I already have a patch for this:
-
-https://patchwork.kernel.org/project/linux-mmc/patch/1610704281-11036-1-git-send-email-abaci-bugfix@linux.alibaba.com/
-
-Kind regards
-Uffe
-
-
+On Fri, Feb 12, 2021 at 03:05:29AM +0200, Vladimir Oltean wrote:
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> 
+> In preparation of offloading the bridge port flags which have
+> independent settings for unknown multicast and for broadcast, we should
+> also start reserving one destination Port Group ID for the flooding of
+> broadcast packets, to allow configuring it individually.
+> 
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 > ---
->  drivers/mmc/host/omap_hsmmc.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
-> index aa9cc49..a59e9c3 100644
-> --- a/drivers/mmc/host/omap_hsmmc.c
-> +++ b/drivers/mmc/host/omap_hsmmc.c
-> @@ -285,22 +285,22 @@ static int omap_hsmmc_set_pbias(struct omap_hsmmc_host *host, bool power_on)
->                 return 0;
->
->         if (power_on) {
-> -               if (host->pbias_enabled == 0) {
-> +               if (!host->pbias_enabled) {
->                         ret = regulator_enable(host->pbias);
->                         if (ret) {
->                                 dev_err(host->dev, "pbias reg enable fail\n");
->                                 return ret;
->                         }
-> -                       host->pbias_enabled = 1;
-> +                       host->pbias_enabled = true;
->                 }
->         } else {
-> -               if (host->pbias_enabled == 1) {
-> +               if (host->pbias_enabled) {
->                         ret = regulator_disable(host->pbias);
->                         if (ret) {
->                                 dev_err(host->dev, "pbias reg disable fail\n");
->                                 return ret;
->                         }
-> -                       host->pbias_enabled = 0;
-> +                       host->pbias_enabled = false;
->                 }
->         }
->
-> --
-> 1.8.3.1
->
+
+After more testing with the ocelot-8021q tagger too, not just the
+default NPI-based one, I noticed that I introduced a regression.
+
+devlink-sb tells me that broadcast packets remain stuck in the ingress
+queues of the front-panel ports instead of being forwarded to the CPU.
+This is because I forgot this:
+
+-----------------------------[cut here]-----------------------------
+ drivers/net/dsa/ocelot/felix.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
+index 96d9d13c5ae0..2771560cef61 100644
+--- a/drivers/net/dsa/ocelot/felix.c
++++ b/drivers/net/dsa/ocelot/felix.c
+@@ -299,6 +299,7 @@ static int felix_setup_tag_8021q(struct dsa_switch *ds, int cpu)
+ 	cpu_flood = ANA_PGID_PGID_PGID(BIT(ocelot->num_phys_ports));
+ 	ocelot_rmw_rix(ocelot, 0, cpu_flood, ANA_PGID_PGID, PGID_UC);
+ 	ocelot_rmw_rix(ocelot, 0, cpu_flood, ANA_PGID_PGID, PGID_MC);
++	ocelot_rmw_rix(ocelot, 0, cpu_flood, ANA_PGID_PGID, PGID_BC);
+ 
+ 	felix->dsa_8021q_ctx = kzalloc(sizeof(*felix->dsa_8021q_ctx),
+ 				       GFP_KERNEL);
+-----------------------------[cut here]-----------------------------
+
+If there is no other feedback on this series, can I send this as a
+follow-up fixup? Thanks.
