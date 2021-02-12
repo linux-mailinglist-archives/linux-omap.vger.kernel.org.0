@@ -2,107 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48047319C4D
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 11:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DF61319E4C
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 13:26:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230314AbhBLKDu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 Feb 2021 05:03:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37416 "EHLO
+        id S231355AbhBLMXf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Feb 2021 07:23:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229674AbhBLKDk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 05:03:40 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF9CC061756
-        for <linux-omap@vger.kernel.org>; Fri, 12 Feb 2021 02:03:00 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id n10so436172wmq.0
-        for <linux-omap@vger.kernel.org>; Fri, 12 Feb 2021 02:03:00 -0800 (PST)
+        with ESMTP id S231433AbhBLMVe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 07:21:34 -0500
+Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E93C0613D6
+        for <linux-omap@vger.kernel.org>; Fri, 12 Feb 2021 04:20:52 -0800 (PST)
+Received: by mail-vs1-xe34.google.com with SMTP id x13so4693002vsl.8
+        for <linux-omap@vger.kernel.org>; Fri, 12 Feb 2021 04:20:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=6QG81ZJM4e0Z54tok2YgM5IGXnuCS+PLSTvaXCs4Z2g=;
-        b=E49ErNQfQ4F7JxhwHQzgTeuC30dIMojbTZRbamSdRwdB3czRTqDszNo7Sn28rJt8uz
-         pSHlux1bTy4D8YSk1yTP8mIijFRDhlzYmH2FHRhXwzEYCsl3lb/DVyLWpaQjnD3rifEe
-         AcPp6Pv/KAcjhfVAMxvUUaTfgr+4ih/AK6xnkbQewosmXjyliD9D132vlCeyqD0iCIB6
-         07Tdh35P84eeMy37RQ39pXsCdHM8NNLteZHW3YplNJwEPGBYAn7fFj1nGDXSmQmW7Wtm
-         rVvVYkGhsS7vplIxHyOpOTwh4QmNkwNUokld7BmA+QRJE6qRJc6PYSUmA0+yAENfJZhB
-         1+oQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=nGSxB232htee79ty8IT/JBCRoBtyeUyGTY01WAjnJho=;
+        b=XXAQCAz/miOufeHcc6m1vMcmO5KeCOhVK8931mMk9BLvJlaMbyR/G/cUCTzKtJ2/VK
+         6yT+Pnm83dBHNqZVkrJHaHlXqh4CwMICvoqZFNdCI13pSbeLo5WJVL0SYo2Zb+ypYknW
+         V7PjyI0G8Af8BmyGdksrLgIng2bgVoxiuubYlAdZib52GP0SDBsqxbq/pdXqWjUmXcMn
+         qwNuKPAuOmPA3KZRhhJTbT+jY5QH7OA/6h0wwI4aZ/HXtigyE9Kt8lq+DYzJTom5VzMV
+         sj1WJqrnrj30xBKAKP/0tRr7oKbCyq5EoFe5ZHuk5D3zEciMSdlmQKZ+oPNTPM8Lbdom
+         8i0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=6QG81ZJM4e0Z54tok2YgM5IGXnuCS+PLSTvaXCs4Z2g=;
-        b=QWiHx3iRjS67xerzktUTECdCwljhv/eV0mnsFrNlVDym8jULkNrUgEs4VrdHV1Ei4p
-         3zbmeLHRIehIHzmuBy83yBN8oeMZNjKffFPhquAI+Trb0CRFlvt7z89FaANXFCmoisF2
-         G+9OMQaspUkscO/zfAbZQXOiTp0MffEyrMXIuV5/CBZYEJhfTC/FPL0Rv05PcGiq0GoL
-         bvBSJ6/WZoUvUTfrXPcWEUygiPXXENVOPyzxEHxlqLm7TE3VevYuNA0gyAjyrSYoRRA5
-         2kGN7U3jaKdBoQ4jlA4T1zD8kDP639hgC1LkkY9HlY3V7ZOARsUOqUtAO6rKHyrtZhtQ
-         Q8pQ==
-X-Gm-Message-State: AOAM530L7neg0hS2tiE4byDul67a8EBz8Y7KzTa8wjZRrge4ozx1yzPB
-        tH+fb+XwIcAxrpQf0oqJMlGRvg==
-X-Google-Smtp-Source: ABdhPJwSdOB4cVf8xwsazH54/QT4EC/+//VnZHLp3grjPTZFnxNJeQp+4pBdBM3/PFw9nPHrQYh9LQ==
-X-Received: by 2002:a1c:6487:: with SMTP id y129mr1865928wmb.106.1613124178877;
-        Fri, 12 Feb 2021 02:02:58 -0800 (PST)
-Received: from dell ([91.110.221.187])
-        by smtp.gmail.com with ESMTPSA id u14sm9972510wro.10.2021.02.12.02.02.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Feb 2021 02:02:58 -0800 (PST)
-Date:   Fri, 12 Feb 2021 10:02:56 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Fabio Estevam <festevam@gmail.com>,
-        kernel-janitors@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>
-Subject: Re: [PATCH] video: use getter/setter functions
-Message-ID: <20210212100256.GB179940@dell>
-References: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nGSxB232htee79ty8IT/JBCRoBtyeUyGTY01WAjnJho=;
+        b=BZ7LiqcuqTZ/1MlfMLU5q9REJkIM+BW/qbkEiXjVhJn5b6A1n0+wovHNaNtSMo4PS2
+         QQpU+xNIz5O1Em0szeqmJMVYu/KhfHLBPFjU327c0FBewq+qKb9ojQSL1mOzt39Pm7/7
+         SewMzr/PHoOZjdaTKnlcs4ZI82J7X5faS/qqb769k1v6WQeYIQ3ptLVQsGr02/hv6fR4
+         gOxde4haog/+mpSON7zpIaeK0R9K4nSZL3dZz7W4KzcwHJDe6RUG/BfV/71xFD5I2osZ
+         s/e7u+pDM8ZgzeOEY9lA++38Z7SEUxeA2yin/BabxvbIF6UQHKD9pv9trH5TlSEWlfYf
+         be1g==
+X-Gm-Message-State: AOAM530g/jydRL+q+AtvRkX6+bVIRF62LFFsuD0DXj/z8X9cZjoMLRFN
+        7UpUv8H278YZ5S30wI/SxCxh5plCoJjTf8ghVKzuYg==
+X-Google-Smtp-Source: ABdhPJyiT486cqMDFuWTXYxqLnKEmulgJBr9Cwe8Gmv9m5GnzeEzaRWLIBFXXVRlVTblssbDykU9rxhy6//DQs3ht1Y=
+X-Received: by 2002:a67:8c6:: with SMTP id 189mr1069366vsi.55.1613132451887;
+ Fri, 12 Feb 2021 04:20:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210209211325.1261842-1-Julia.Lawall@inria.fr>
+References: <1612777943-43609-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+In-Reply-To: <1612777943-43609-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 12 Feb 2021 13:20:15 +0100
+Message-ID: <CAPDyKFrEXv6YqCVWSP90K+6bFwXyuEhpXPf3DDA3FdWeo9Gr+Q@mail.gmail.com>
+Subject: Re: [PATCH] mmc: omap-hsmmc: Simplify bool comparison
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 09 Feb 2021, Julia Lawall wrote:
+On Mon, 8 Feb 2021 at 10:52, Jiapeng Chong
+<jiapeng.chong@linux.alibaba.com> wrote:
+>
+> Fix the following coccicheck warning:
+>
+> ./drivers/mmc/host/omap_hsmmc.c:297:6-25: WARNING: Comparison of 0/1 to
+> bool variable.
+>
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-> Use getter and setter functions, for platform_device structures and a
-> spi_device structure.
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> 
+I already have a patch for this:
+
+https://patchwork.kernel.org/project/linux-mmc/patch/1610704281-11036-1-git-send-email-abaci-bugfix@linux.alibaba.com/
+
+Kind regards
+Uffe
+
+
 > ---
->  drivers/video/backlight/qcom-wled.c                                  |    2 +-
->  drivers/video/fbdev/amifb.c                                          |    4 ++--
->  drivers/video/fbdev/da8xx-fb.c                                       |    4 ++--
->  drivers/video/fbdev/imxfb.c                                          |    2 +-
->  drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c |    6 +++---
->  drivers/video/fbdev/omap2/omapfb/dss/dpi.c                           |    4 ++--
->  drivers/video/fbdev/omap2/omapfb/dss/dsi.c                           |    4 ++--
->  drivers/video/fbdev/omap2/omapfb/dss/hdmi4.c                         |    2 +-
->  drivers/video/fbdev/omap2/omapfb/dss/hdmi5.c                         |    2 +-
->  drivers/video/fbdev/xilinxfb.c                                       |    2 +-
->  10 files changed, 16 insertions(+), 16 deletions(-)
-
-I fixed-up the subject line and commit message a bit and applied.
-
-Thanks.
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+>  drivers/mmc/host/omap_hsmmc.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+> index aa9cc49..a59e9c3 100644
+> --- a/drivers/mmc/host/omap_hsmmc.c
+> +++ b/drivers/mmc/host/omap_hsmmc.c
+> @@ -285,22 +285,22 @@ static int omap_hsmmc_set_pbias(struct omap_hsmmc_host *host, bool power_on)
+>                 return 0;
+>
+>         if (power_on) {
+> -               if (host->pbias_enabled == 0) {
+> +               if (!host->pbias_enabled) {
+>                         ret = regulator_enable(host->pbias);
+>                         if (ret) {
+>                                 dev_err(host->dev, "pbias reg enable fail\n");
+>                                 return ret;
+>                         }
+> -                       host->pbias_enabled = 1;
+> +                       host->pbias_enabled = true;
+>                 }
+>         } else {
+> -               if (host->pbias_enabled == 1) {
+> +               if (host->pbias_enabled) {
+>                         ret = regulator_disable(host->pbias);
+>                         if (ret) {
+>                                 dev_err(host->dev, "pbias reg disable fail\n");
+>                                 return ret;
+>                         }
+> -                       host->pbias_enabled = 0;
+> +                       host->pbias_enabled = false;
+>                 }
+>         }
+>
+> --
+> 1.8.3.1
+>
