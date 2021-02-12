@@ -2,54 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BEC531A437
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 19:08:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA88C31A43D
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 19:08:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229731AbhBLSGA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 Feb 2021 13:06:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56032 "EHLO
+        id S231236AbhBLSIA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Feb 2021 13:08:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230240AbhBLSF7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 13:05:59 -0500
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2DC2C061574;
-        Fri, 12 Feb 2021 10:05:20 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id a24so245379plm.11;
-        Fri, 12 Feb 2021 10:05:20 -0800 (PST)
+        with ESMTP id S231317AbhBLSH6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 13:07:58 -0500
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0A5C061574;
+        Fri, 12 Feb 2021 10:07:18 -0800 (PST)
+Received: by mail-pf1-x42e.google.com with SMTP id m6so9044pfk.1;
+        Fri, 12 Feb 2021 10:07:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=e7FvX3805mVbi8rUejyIm26agQLfcgUZJrMWSiLjNGs=;
-        b=lNMCouqv+fTjmMB6cirFrl9lgwfiYme91mERyye0MrSQwDCWRBAA8nxOyadU0JP1GM
-         2+78codzGdNu57tEuXnoFu7IobxUP2aYirkbJr28Dm7BWbmrvwUwjBcmrPiAYh+qBgtO
-         2oi4c6DHF22Kn9p7hWKmzSLq3BrbDfp1snMMHl4gbxbz70OOyBegaRybHK+9kTsuJelI
-         sX9n3adDZpn2lvnhNC9ZnBin4UlcBYC1LTzYqPV9XqtyKQVe7EUeGDgd/KTQlJ0iZiLp
-         fwm/Zs1QqxP+LnnLT9T4qzF2MEyxwZGEGwECPkLtovPlelRmrQOiI2Cl779Kna3slRjJ
-         PNBA==
+        bh=jzL26zkMdAnOD2IACVtEn2EhF+H59r0z5RTwLn52Y3M=;
+        b=GGYIq9OqvYpdw/0qjHnAVD0LJTXFfZcF0KciroJWpaauQnVLdTBpp/glr+Vy5rULBz
+         9VQOkY+RSQu4SXh0pD54mneZPEI8+KptrYQxXK2wDgIv7dRYwDkvBbXidHT29ddo2i9u
+         QMWmiWE3Clmpx/3DFGzuaaDPXA8xVqFM8kqIKuoDLbSdppwy39dQhLw6H33A/7tjNqRf
+         0rrqJegRUUHMsrSQu0qKnuVbRY376nmZlbdGeyrM4WjUol11Z91O6oXU8BJKwaOIkEeT
+         IhbGpgQV/Ev8g2EZ5l6XtPPUyZU1vOrrxCilIU3WEk6hoi9TFj5Gs0+sBMLGJyD7GuOM
+         9pEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=e7FvX3805mVbi8rUejyIm26agQLfcgUZJrMWSiLjNGs=;
-        b=h88VgQjiww7lonaGjvTneYaRQ1whgucgiy2sUobkOJBatsodP57ggqhLTvIriZbaMI
-         FgiOjOWh7ZEZ1Rnjg+weFBseQGvocmrXoX5892Pm9eTbYHXTXptG9sg+UAPO/T+oG0op
-         n/3MvrZUYscvRndUTnhjWV0BphhsLCJyPmfvhter5zOqDnxl99GmKNyI9o4CNq7Rtxsf
-         7ll8HmlgibQjS92QYewBgpgWIumAC1PPL9xunmn34XcESagtZjkc6zvR2lt+9EQ1TurB
-         MNihg0UUkviyNKWwJnyxcOLMVyawQsbrxmc9X+ElRiAKUpciauJYepqez1TJ10nvlHV9
-         oxkg==
-X-Gm-Message-State: AOAM533HHK29Pu3wFAjGm8RVgtC3l1IXl7E+BgEISnEdN6hQE7d2rMXF
-        jzOr9Oe7o5GxDFfmywu7ibCdZmy5bGs=
-X-Google-Smtp-Source: ABdhPJxbX9H47ViGLWUpCf4ZDXGVxxJ2XlKtdlv42d9ua1WR5Bsy0WUcnV+kUq8ziygwgtpEbfgKww==
-X-Received: by 2002:a17:90a:ad09:: with SMTP id r9mr3793493pjq.51.1613153119543;
-        Fri, 12 Feb 2021 10:05:19 -0800 (PST)
+        bh=jzL26zkMdAnOD2IACVtEn2EhF+H59r0z5RTwLn52Y3M=;
+        b=pyndGLkzRYUFjGWiYmcO1t/RthGX9uadM0M8VBYQue9aPDVGPoz3oFRA9j+8/ECG76
+         nFiC2sd022yPVMdgwyYMJcUdwmhn3Fp7o0UvLWInNNJqZvdekew2z/cgG/Sc8b7Mc6Dk
+         JK8rXtA4ErB4Z8osaCwk4/cGkAdtTmrlNmuA2oo4RjhSOj61kt6ZmmmNGulFApvOwQMz
+         iesEkidxiROPr6JJtDKycaICqiwh2ghjnME+C6OB5Fe2nd6MYTvhPiYDeRfzzcaIOt80
+         o0hTQuCT/4+KghiqUb7zQTlzI+RwSDQgccQNsChQsClE/qxw0MKN42ibdnaNyAUZSmk1
+         Y8pw==
+X-Gm-Message-State: AOAM532RJMPw2Eio/Ol0byTBHkd5SXMC6NWVFn9ITHNPJZv3zpieV8XN
+        kjYv3nRzZn5A9Cx9uWeD46EuKv2tHT8=
+X-Google-Smtp-Source: ABdhPJwEtkuYl4IEjrY3K94aY/JomFbslkQgXIBduPK1tbo89twwiU07e/yZ3gbwrmhbKdxwSu/FAw==
+X-Received: by 2002:a63:4405:: with SMTP id r5mr4272320pga.168.1613153237967;
+        Fri, 12 Feb 2021 10:07:17 -0800 (PST)
 Received: from [10.230.29.30] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id r13sm10104082pfc.198.2021.02.12.10.05.16
+        by smtp.gmail.com with ESMTPSA id e21sm9422315pgv.74.2021.02.12.10.07.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Feb 2021 10:05:19 -0800 (PST)
-Subject: Re: [PATCH v5 net-next 02/10] net: bridge: offload all port flags at
- once in br_setport
+        Fri, 12 Feb 2021 10:07:17 -0800 (PST)
+Subject: Re: [PATCH v5 net-next 03/10] net: bridge: don't print in
+ br_switchdev_set_port_flag
 To:     Vladimir Oltean <olteanv@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>,
         "David S. Miller" <davem@davemloft.net>
@@ -69,14 +69,14 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
         Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
 References: <20210212151600.3357121-1-olteanv@gmail.com>
- <20210212151600.3357121-3-olteanv@gmail.com>
+ <20210212151600.3357121-4-olteanv@gmail.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <ce3cd74e-2f58-e368-e108-fd148d69d4cb@gmail.com>
-Date:   Fri, 12 Feb 2021 10:05:15 -0800
+Message-ID: <6097810e-9b74-df81-ccc4-3a4b47b94b67@gmail.com>
+Date:   Fri, 12 Feb 2021 10:07:14 -0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Firefox/78.0 Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <20210212151600.3357121-3-olteanv@gmail.com>
+In-Reply-To: <20210212151600.3357121-4-olteanv@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -89,18 +89,18 @@ X-Mailing-List: linux-omap@vger.kernel.org
 On 2/12/2021 7:15 AM, Vladimir Oltean wrote:
 > From: Vladimir Oltean <vladimir.oltean@nxp.com>
 > 
-> If for example this command:
-> 
-> ip link set swp0 type bridge_slave flood off mcast_flood off learning off
-> 
-> succeeded at configuring BR_FLOOD and BR_MCAST_FLOOD but not at
-> BR_LEARNING, there would be no attempt to revert the partial state in
-> any way. Arguably, if the user changes more than one flag through the
-> same netlink command, this one _should_ be all or nothing, which means
-> it should be passed through switchdev as all or nothing.
+> For the netlink interface, propagate errors through extack rather than
+> simply printing them to the console. For the sysfs interface, we still
+> print to the console, but at least that's one layer higher than in
+> switchdev, which also allows us to silently ignore the offloading of
+> flags if that is ever needed in the future.
 > 
 > Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
 Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+
+I suppose the slight "loss" of information on which port failed the
+operation is okay since it was implied by either the path (sysfs) or the
+bridge command.
 -- 
 Florian
