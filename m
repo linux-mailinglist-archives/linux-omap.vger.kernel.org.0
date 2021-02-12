@@ -2,158 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81CCA31A470
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 19:20:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A020D31A676
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 22:03:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230390AbhBLSUP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 Feb 2021 13:20:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59042 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbhBLSUG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 13:20:06 -0500
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30336C061574;
-        Fri, 12 Feb 2021 10:19:26 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id u143so9590pfc.7;
-        Fri, 12 Feb 2021 10:19:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=LjggpD0ZH/Pqu3nkvvYgvuE8A11ApMPMgPJmvgr5AOc=;
-        b=hCYlf9Bd/xukRXSaj9KNSXuGNpdT3LKCCM8afVgruvN/IgilhYlrbApS/H5kvBac9C
-         f20TZYDRynrncNa2dFQbzpnaMyHHr+xWjKtv9FDQlZmfm2C/Wltc7IRtcYTi2miEGQy6
-         Yv93I3W90ML3E6FnkeThqAXXjA/jE9X1vEXaS1B+Q6NBKCU/tYWkg9qfXr4um3LOUMpj
-         DZjUxQhM77V1uxArxyyFeuAQICGDypJmtORkXElLLX3Fs+JsOJsRDbSNoA9m9W92quiu
-         gyzKcoG7JFOuySRWQrtnxJMAKARgb1I6Mt+AIhAb32l3YXdwLGkJNNfZo/YnnoptZAfT
-         1hjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=LjggpD0ZH/Pqu3nkvvYgvuE8A11ApMPMgPJmvgr5AOc=;
-        b=uCz6TpwtOEyoIcM2XmfEb5vnrnxgz6BbgAW/hZy1sUJAWYVGp2Webc5FQa9ZLoeciE
-         wCnjuBNwbBjQeJsAMxss9UvhAL16160Y/0hYOHeMbi+0BYit2IOZJlfLz2LUKdOCDlNw
-         KLmbTdn7JHDINEzUVjbdmY4oVzd6Dyxar8B/ixhzZOSGMO6br4rRcoNWDrGczgHulq0d
-         Cx3AoiwcO/KTWfX2zuSfsdmGN/QiQw3inYYtKPo0zqbdC9eJFq8mZAQk9MGMtPw0NxJK
-         g6bT+GmORpP99qqsw2pmP39RCGXsx5WYlvtoum6mNyNNcUliUygtQd6GUTLbTRaLa4H2
-         qQtA==
-X-Gm-Message-State: AOAM533o0/d5z4CfbZfPOsWUqs5w1Jf4smpaLMh1dxDfXQ5nZd0OlAbA
-        aa56fkPAQZgz8x1yizjNkkRUVVvZSQs=
-X-Google-Smtp-Source: ABdhPJwUWkZNP1RymSaYKEK/YXsJ7CqqjBW+nAYgg7/2jvH1y7TsgdRhr0Er2w7QRW4OaHMs+VCEHA==
-X-Received: by 2002:aa7:8f0a:0:b029:1de:4d20:8346 with SMTP id x10-20020aa78f0a0000b02901de4d208346mr4255553pfr.15.1613153965260;
-        Fri, 12 Feb 2021 10:19:25 -0800 (PST)
-Received: from [10.230.29.30] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id w19sm9842592pgf.23.2021.02.12.10.19.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Feb 2021 10:19:24 -0800 (PST)
-Subject: Re: [PATCH v5 net-next 06/10] net: dsa: act as passthrough for bridge
- port flags
-To:     Vladimir Oltean <olteanv@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
-        Nikolay Aleksandrov <nikolay@nvidia.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Ido Schimmel <idosch@idosch.org>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
-References: <20210212151600.3357121-1-olteanv@gmail.com>
- <20210212151600.3357121-7-olteanv@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <77072163-86e3-a6a5-350c-22bdab10d890@gmail.com>
-Date:   Fri, 12 Feb 2021 10:19:21 -0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.7.1
+        id S231200AbhBLVDI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Feb 2021 16:03:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58032 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231289AbhBLVDD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 12 Feb 2021 16:03:03 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 77F8864E05;
+        Fri, 12 Feb 2021 21:02:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1613163742;
+        bh=W+5rNCA1AtqnGKfforyDrX1jEmPAq1AoeUYShAARidk=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=L8vv2t4t8eAuoCqn8NxiLKXPHOLn2qbZG/rTldBEck1qE3UJ9ZQgBMmDyAS+LCWPW
+         EzmQrYymjIjWzdM9L/7FXHZGGuj4mL3xtQEcEf8CqaYplO6L5RYs8XX06VCEcsrfdR
+         DnZefkSwJ3C/7GBHqDkPzplqR/1x05jRlJKJ6qT2qfEMeI8gZgeYtGj7iTUFb1gaWJ
+         0ewKJtGcnZgMY3nAWLZLIyhSM+nXjoN/Oz5tcLNPp2ONVxpr8E+MxgzJz7ExgeG7/5
+         lQhWIt1CShxke8FA18oo80Hy1k04ysgkM9gd+JOi/WRC9EeZrRZTWgw/1ZKPKae8Jz
+         RI+6N32IPbIKg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20210212151600.3357121-7-olteanv@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210212092016.GF4572@dell>
+References: <20210126124540.3320214-1-lee.jones@linaro.org> <161307643148.1254594.6590013599999468609@swboyd.mtv.corp.google.com> <20210211211054.GD4572@dell> <161309925025.1254594.6210738031889810500@swboyd.mtv.corp.google.com> <20210212092016.GF4572@dell>
+Subject: Re: [PATCH 00/21] [Set 2] Rid W=1 warnings from Clock
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Andy Gross <agross@kernel.org>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Boris BREZILLON <boris.brezillon@free-electrons.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Emilio =?utf-8?q?L=C3=B3pez?= <emilio@elopez.com.ar>,
+        Fabio Estevam <festevam@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Jan Kotas <jank@cadence.com>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-tegra@vger.kernel.org, Loc Ho <lho@apm.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Nuvoton Technologies <tali.perry@nuvoton.com>,
+        NXP Linux Team <linux-imx@nxp.com>, openbmc@lists.ozlabs.org,
+        Patrick Venture <venture@google.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Rajan Vaja <rajan.vaja@xilinx.com>,
+        Rajeev Kumar <rajeev-dlh.kumar@st.com>,
+        Richard Woodruff <r-woodruff2@ti.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        =?utf-8?q?S=C3=B6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Viresh Kumar <vireshk@kernel.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Date:   Fri, 12 Feb 2021 13:02:21 -0800
+Message-ID: <161316374113.1254594.14156657225822268891@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Quoting Lee Jones (2021-02-12 01:20:16)
+> On Thu, 11 Feb 2021, Stephen Boyd wrote:
+>=20
+> > Quoting Lee Jones (2021-02-11 13:10:54)
+> > > On Thu, 11 Feb 2021, Stephen Boyd wrote:
+> > >=20
+> > > > Quoting Lee Jones (2021-01-26 04:45:19)
+> > > > > This set is part of a larger effort attempting to clean-up W=3D1
+> > > > > kernel builds, which are currently overwhelmingly riddled with
+> > > > > niggly little warnings.
+> > > > >=20
+> > > > > This is the last set.  Clock is clean after this.
+> > > >=20
+> > > > Is it possible to slam in some patch that makes W=3D1 the default f=
+or the
+> > > > clk directory? I'm trying to avoid seeing this patch series again.
+> > >=20
+> > > One of my main goals of this project is that everyone (contributors,
+> > > maintainers auto-builder robots etc) will be enabling W=3D1 builds
+> > > *locally*.
+> > >=20
+> > > This isn't something you'll want to do at a global (i.e. in Mainline)
+> > > level.  That's kinda the point of W=3D1.
+> > >=20
+> >=20
+> > Agreed, but is it possible to pass W=3D1 in the drivers/clk/Makefile?
+>=20
+> That would circumvent the point of W=3D1.  Level-1 warnings are deemed,
+> and I'm paraphrasing/making this up "not worth rejecting pull-requests
+> over".  In contrast, if Linus catches any W=3D0 warnings at pull-time,
+> he will reject the pull-request as 'untested'.
+>=20
+> W=3D1 is defiantly something you'll want to enable locally though, and
+> subsequently push back on contributors submitting code adding new
+> ones.
+>=20
 
-
-On 2/12/2021 7:15 AM, Vladimir Oltean wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> 
-> There are multiple ways in which a PORT_BRIDGE_FLAGS attribute can be
-> expressed by the bridge through switchdev, and not all of them can be
-> emulated by DSA mid-layer API at the same time.
-> 
-> One possible configuration is when the bridge offloads the port flags
-> using a mask that has a single bit set - therefore only one feature
-> should change. However, DSA currently groups together unicast and
-> multicast flooding in the .port_egress_floods method, which limits our
-> options when we try to add support for turning off broadcast flooding:
-> do we extend .port_egress_floods with a third parameter which b53 and
-> mv88e6xxx will ignore? But that means that the DSA layer, which
-> currently implements the PRE_BRIDGE_FLAGS attribute all by itself, will
-> see that .port_egress_floods is implemented, and will report that all 3
-> types of flooding are supported - not necessarily true.
-> 
-> Another configuration is when the user specifies more than one flag at
-> the same time, in the same netlink message. If we were to create one
-> individual function per offloadable bridge port flag, we would limit the
-> expressiveness of the switch driver of refusing certain combinations of
-> flag values. For example, a switch may not have an explicit knob for
-> flooding of unknown multicast, just for flooding in general. In that
-> case, the only correct thing to do is to allow changes to BR_FLOOD and
-> BR_MCAST_FLOOD in tandem, and never allow mismatched values. But having
-> a separate .port_set_unicast_flood and .port_set_multicast_flood would
-> not allow the driver to possibly reject that.
-> 
-> Also, DSA doesn't consider it necessary to inform the driver that a
-> SWITCHDEV_ATTR_ID_BRIDGE_MROUTER attribute was offloaded, because it
-> just calls .port_egress_floods for the CPU port. When we'll add support
-> for the plain SWITCHDEV_ATTR_ID_PORT_MROUTER, that will become a real
-> problem because the flood settings will need to be held statefully in
-> the DSA middle layer, otherwise changing the mrouter port attribute will
-> impact the flooding attribute. And that's _assuming_ that the underlying
-> hardware doesn't have anything else to do when a multicast router
-> attaches to a port than flood unknown traffic to it.  If it does, there
-> will need to be a dedicated .port_set_mrouter anyway.
-> 
-> So we need to let the DSA drivers see the exact form that the bridge
-> passes this switchdev attribute in, otherwise we are standing in the
-> way. Therefore we also need to use this form of language when
-> communicating to the driver that it needs to configure its initial
-> (before bridge join) and final (after bridge leave) port flags.
-> 
-> The b53 and mv88e6xxx drivers are converted to the passthrough API and
-> their implementation of .port_egress_floods is split into two: a
-> function that configures unicast flooding and another for multicast.
-> The mv88e6xxx implementation is quite hairy, and it turns out that
-> the implementations of unknown unicast flooding are actually the same
-> for 6185 and for 6352:
-> 
-> behind the confusing names actually lie two individual bits:
-> NO_UNKNOWN_MC -> FLOOD_UC = 0x4 = BIT(2)
-> NO_UNKNOWN_UC -> FLOOD_MC = 0x8 = BIT(3)
-> 
-> so there was no reason to entangle them in the first place.
-> 
-> Whereas the 6185 writes to MV88E6185_PORT_CTL0_FORWARD_UNKNOWN of
-> PORT_CTL0, which has the exact same bit index. I have left the
-> implementations separate though, for the only reason that the names are
-> different enough to confuse me, since I am not able to double-check with
-> a user manual. The multicast flooding setting for 6185 is in a different
-> register than for 6352 though.
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> ---
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+Why should I install a land mine for others to trip over? Won't that
+just take them more time because they won't know to compile with W=3D1 and
+then will have to go for another round of review while I push back on
+them submitting new warnings?
