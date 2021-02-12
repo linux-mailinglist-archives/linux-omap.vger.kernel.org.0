@@ -2,54 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B66BE31A44C
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 19:11:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07F6A31A456
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 19:13:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229832AbhBLSLX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 Feb 2021 13:11:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57178 "EHLO
+        id S231649AbhBLSN1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Feb 2021 13:13:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbhBLSLV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 13:11:21 -0500
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 994A7C061756;
-        Fri, 12 Feb 2021 10:10:41 -0800 (PST)
-Received: by mail-pf1-x436.google.com with SMTP id m6so14824pfk.1;
-        Fri, 12 Feb 2021 10:10:41 -0800 (PST)
+        with ESMTP id S231518AbhBLSNV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 13:13:21 -0500
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC085C0613D6;
+        Fri, 12 Feb 2021 10:12:40 -0800 (PST)
+Received: by mail-pg1-x533.google.com with SMTP id o38so166178pgm.9;
+        Fri, 12 Feb 2021 10:12:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=bytmtoINOEdkBtL4V2XAs15+q8GmAS7yZKBoJvhkgLk=;
-        b=akE2ozj4n+Syf78UgJqCInvzuDDz+8VmFwiwu0NVDiPEtd9yuZancJkUYDsXQzYUbp
-         ObndXxrSoodxkK60wJ6CouUlchzBZ3QP8k4bGVwfdMaQGNShPX5gMyLHokdta2A9EPEP
-         DEApGNbbS247uAc79ayPDzMVwo1pC/QOSoxC2xFMT3tSTWuPrGkZqDtrKvfi0c+4YG1v
-         kKxdMB4aFm280e4uW/KM2G4eO3f0iQkqyTYgX5pdNZKGS+IqNofZo2HkZD+KsnCZs9kZ
-         RaHYXbRaeC1CMggg6p0Lw0mzj7wAvEO/tfwHENqV3oJSpWqbcOcPesH9LsuuO+2V3Sd2
-         SRuQ==
+        bh=DYSCyXslW7JpprNOrHc5FjADncBRkdDqs3PWphAwNEU=;
+        b=rSedlesAGjgO7MengPEN38iUKrRFhSnQ9IDS57b7dEzmhPwvLXpm4PNrLLqaLDDWGS
+         t/bek5mE5JocEFy2hDyqKsNBZ2HCm7vdjEUWKHIkuEsfjaug3X2zFKE1z1uQX7BgqDh9
+         TSyV16NxdPZkBIWcjgFH5a5pqLm/LVbULSIs3cD9oaqMfL0gLc3nh/2+2SkAcg7N4tdW
+         3vh3jyeQaCtNfInJMcufkK6qZ7z9DHhAYOU60lj9P30xtEjbMkwnQrvpm/CC/LvpzAKW
+         IrOHNxRFtakhbjWHauelHwN6T50yg5AWQ8CaK2dr7uBQQRjCJ5qLIF9QvzigTgkd0QlS
+         o6Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=bytmtoINOEdkBtL4V2XAs15+q8GmAS7yZKBoJvhkgLk=;
-        b=hLkyK2Nkt+F7PwhobC49LUXUnQnWeIvlS+PS4shq/+pIJdjTRDyo3/Gvb44W9PDvUc
-         x1Oc9dpLDyRQLt+mH4qEKQvXSfsq+niHHfuO5Qq5/hvqeVrUPIdTiIC3ayiIiQbECyr/
-         bhwgD4bvLBpxvkGBx0QgMyYO7uQzudVCpethFYjYVchOIHtDVsOhU+GrLp0Rea0Ik/hw
-         bxyC37Ya33+Juom7vbwmmQ6UydaOOU80/vVOXKoS+qIV6L0sGQPHsKO6FCYtYmnwpKAC
-         /L979FRUeX6Pgsl2X08iMHg+Qzu6JdoTtlELwDbS6p7FxQG1aNyqwLHS0+6lUddBuM01
-         Wx+w==
-X-Gm-Message-State: AOAM533UWkoffOWTVKdrER8EAI+zKPFcVUlQMN0+JWG/BaQV2QQrVI7D
-        YXlVyz5hSFNJKBnpEiO8F7XeK9h7Ydg=
-X-Google-Smtp-Source: ABdhPJz/Ti9d44Rv75w/tdspUxsn1D7i/I0j1GsylUmhWNr5eKXVF+yfHYMhqeLr+UkmhJ5ihnkcTQ==
-X-Received: by 2002:a63:4e09:: with SMTP id c9mr4365562pgb.107.1613153440776;
-        Fri, 12 Feb 2021 10:10:40 -0800 (PST)
+        bh=DYSCyXslW7JpprNOrHc5FjADncBRkdDqs3PWphAwNEU=;
+        b=G4SRO6FatNd9s4V7+cxY0wdN7HHSJtu13YjjTLGC72YQVJT6Ey/Hx0Gc4ude0ex1C7
+         ouKlm+Ly3jRgSWYaPYPtbUGybsxt4Krbdmh9wCEKksOkeuJBudtGx48pChLr0uvbj9Lz
+         pKdHfmrIQ3Pb2Jbtq3nzIlJY3IQp0qTlNPv9WnBHd7lUGFm+CNwa9AmTvovG2uidNNIg
+         AbBVJpIIrNu+rarbkoVaUMqPIo0svk0biI3uDwAZdqGiJuwV6Z3NZO4OcEHRs5yjy0u4
+         KRT/Ty/p2ZfLup4fFv0kbOSPDi8Q1tzeBWF4/lRQZDxGOiOUz93yCaAmaXyu7KQhwFUG
+         Nsww==
+X-Gm-Message-State: AOAM533teZbFpReqZQqUN1h6NRfxMVLf5FSkY4snBT+m5c5SgnR6aU4H
+        6J+JBsPPm/GLA+Pc7WYnKwg6mq2OKD4=
+X-Google-Smtp-Source: ABdhPJwoYsp4Sp8t8amuimKE7kIoREpqi1nx3kEihL4zIPUsG3WNrKMB+WDhg+WkOwjCceHdCPg41w==
+X-Received: by 2002:a63:4084:: with SMTP id n126mr4349051pga.80.1613153559952;
+        Fri, 12 Feb 2021 10:12:39 -0800 (PST)
 Received: from [10.230.29.30] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id e15sm11325899pgr.81.2021.02.12.10.10.37
+        by smtp.gmail.com with ESMTPSA id e185sm10042337pfe.117.2021.02.12.10.12.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Feb 2021 10:10:40 -0800 (PST)
-Subject: Re: [PATCH v5 net-next 05/10] net: switchdev: pass flags and mask to
- both {PRE_,}BRIDGE_FLAGS attributes
+        Fri, 12 Feb 2021 10:12:39 -0800 (PST)
+Subject: Re: [PATCH v5 net-next 07/10] net: dsa: felix: restore multicast
+ flood to CPU when NPI tagger reinitializes
 To:     Vladimir Oltean <olteanv@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>,
         "David S. Miller" <davem@davemloft.net>
@@ -69,14 +69,14 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
         Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
 References: <20210212151600.3357121-1-olteanv@gmail.com>
- <20210212151600.3357121-6-olteanv@gmail.com>
+ <20210212151600.3357121-8-olteanv@gmail.com>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <9a1efd0d-9930-cbc7-5450-ffb47a0034e4@gmail.com>
-Date:   Fri, 12 Feb 2021 10:10:37 -0800
+Message-ID: <05a93c4b-2180-afea-d077-3b1c91312b41@gmail.com>
+Date:   Fri, 12 Feb 2021 10:12:34 -0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Firefox/78.0 Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <20210212151600.3357121-6-olteanv@gmail.com>
+In-Reply-To: <20210212151600.3357121-8-olteanv@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -89,23 +89,13 @@ X-Mailing-List: linux-omap@vger.kernel.org
 On 2/12/2021 7:15 AM, Vladimir Oltean wrote:
 > From: Vladimir Oltean <vladimir.oltean@nxp.com>
 > 
-> This switchdev attribute offers a counterproductive API for a driver
-> writer, because although br_switchdev_set_port_flag gets passed a
-> "flags" and a "mask", those are passed piecemeal to the driver, so while
-> the PRE_BRIDGE_FLAGS listener knows what changed because it has the
-> "mask", the BRIDGE_FLAGS listener doesn't, because it only has the final
-> value. But certain drivers can offload only certain combinations of
-> settings, like for example they cannot change unicast flooding
-> independently of multicast flooding - they must be both on or both off.
-> The way the information is passed to switchdev makes drivers not
-> expressive enough, and unable to reject this request ahead of time, in
-> the PRE_BRIDGE_FLAGS notifier, so they are forced to reject it during
-> the deferred BRIDGE_FLAGS attribute, where the rejection is currently
-> ignored.
+> ocelot_init sets up PGID_MC to include the CPU port module, and that is
+> fine, but the ocelot-8021q tagger removes the CPU port module from the
+> unknown multicast replicator. So after a transition from the default
+> ocelot tagger towards ocelot-8021q and then again towards ocelot,
+> multicast flooding towards the CPU port module will be disabled.
 > 
-> This patch also changes drivers to make use of the "mask" field for edge
-> detection when possible.
-> 
+> Fixes: e21268efbe26 ("net: dsa: felix: perform switch setup for tag_8021q")
 > Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
 Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
