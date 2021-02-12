@@ -2,98 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14F793198AC
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 04:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7728A319B40
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Feb 2021 09:36:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229499AbhBLDVT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 11 Feb 2021 22:21:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36158 "EHLO
+        id S229521AbhBLIcw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Feb 2021 03:32:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbhBLDVS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 Feb 2021 22:21:18 -0500
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D14C061574;
-        Thu, 11 Feb 2021 19:20:37 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id u11so4393865plg.13;
-        Thu, 11 Feb 2021 19:20:37 -0800 (PST)
+        with ESMTP id S229719AbhBLIcs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Feb 2021 03:32:48 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83ED7C061788
+        for <linux-omap@vger.kernel.org>; Fri, 12 Feb 2021 00:32:07 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id f1so11990910lfu.3
+        for <linux-omap@vger.kernel.org>; Fri, 12 Feb 2021 00:32:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=KX9BczQ7HP081Zb6fQayQzqKfWFTa3oP2nKnpxD0UUU=;
-        b=dobcntpA4hP7ES4I7J3tbO+Dq/F2O2WJKrVGbRVjnR+nJkpwvHXlG5hFMOfyDKoLj6
-         bQ51oQqQRYgJW+y00/jFsqUqSc+dYvdqM2Al1jDQxxYhv7mxHDb/OOaHiVpie75VlH/j
-         giYQvWVZx9vsnBCC0g8f96MRmsPPJ+X4JIUCxvbg0RkTR/7CGjsSdU4U4ChmzspeFt3t
-         BbebdtgH31J6iTgcWIzke6pj4RT3+x57OPpJxCLi3NDZ3LEEHJ3m5YN7FFK8aull5xiW
-         ugo241axW1+tn5MHnPbI4ti49BIoNxgCa9c36t3P0naug02hrgeyS0sKSWiav0rAYfTR
-         qFBA==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hyslWWiTvci465Koa7xfon0gMi1z5RLHZfOG18JU7cc=;
+        b=IRgwFVlCCOQ5uqf/YVamdpdVEzvDmFn3sSw6RdHiXyoh93ZFUgO/deQuaLdeXVgba9
+         v+mvA4dVyOelmp/8ceXo8VVjUrpMD/T5xC3EclHjSGECURN1iVHz+lGKWuePZv6CMxRt
+         R8oAa5EQOW3TJBl6OELuNfojjK7mBt7opyA4mzxTuC03gfB67lMpYyUwGiz43Q723yng
+         sgTDeE1TBC7GbrWhbbY2Q+sdaK0syZD4KXruFTIfnILJhlbrOdYWgaJmEUike8DCt7CB
+         T2l/gO9hJn5I1ZRQyRRdB5kI24trbUPjr12wuCmG0TcpZWr7uXVjqkEbcslM6olvjbYK
+         boIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=KX9BczQ7HP081Zb6fQayQzqKfWFTa3oP2nKnpxD0UUU=;
-        b=YKKK2LbrjBiib+zlMN9o3B4bnaFFnkvaIqd0o9oCW4dwzzgEYDeEgaSDfK2z1gWxAh
-         Iuk3LRlQxvWYrHOI3WpbwZIrVQCdlD63k/aeEFFTBI1kkhQbDGdQYW5qCyssAwWUIuZN
-         CQsab+QFQnlXeif0NGxiFoWlYt7ZmU39CY7Ez5ghI3qGyC6JVYMkLsg7l7BRetkoTsiR
-         Tvx2lfUdeP15wIAs399zv1Gd6LtuKWWz3MCDpaMK26Oo17GJ9/BLvYCz0yvXIEG4Hcx5
-         CQlm+xsWR0Fa1ZNRF9kWbNVi53Ccg0VcwTlM64azXQnLvVjflhTRQHfCs+b1CTbcrYEN
-         KLVA==
-X-Gm-Message-State: AOAM532g4icqnEIzWHsoFbHUK+2XZup/yDBSXOUZ1s5l02fxW92UxPxH
-        aupyJcKCKLGg4n0e54Ezvzajk+Bb5xY=
-X-Google-Smtp-Source: ABdhPJzNneNORHrgdUQm8rKm5aRrrnkJf1b/jkUvfdeWboyI7AvVfit3Z4uc9I9P3zJ8TNUQY+bymQ==
-X-Received: by 2002:a17:90a:da01:: with SMTP id e1mr910471pjv.22.1613100036860;
-        Thu, 11 Feb 2021 19:20:36 -0800 (PST)
-Received: from [10.230.29.30] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id u20sm6701624pjy.36.2021.02.11.19.20.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Feb 2021 19:20:36 -0800 (PST)
-Subject: Re: [PATCH v4 net-next 1/9] net: switchdev: propagate extack to port
- attributes
-To:     Vladimir Oltean <olteanv@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bridge@lists.linux-foundation.org, Roopa Prabhu <roopa@nvidia.com>,
-        Nikolay Aleksandrov <nikolay@nvidia.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Ido Schimmel <idosch@idosch.org>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org
-References: <20210212010531.2722925-1-olteanv@gmail.com>
- <20210212010531.2722925-2-olteanv@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <c559a6fc-b436-fc6f-7226-76490033d94c@gmail.com>
-Date:   Thu, 11 Feb 2021 19:20:33 -0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.7.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hyslWWiTvci465Koa7xfon0gMi1z5RLHZfOG18JU7cc=;
+        b=lFBPmoVQLFkZ4GivrcttYd3C54ppon/vEaeXl/O5XenVphlH7rx3IR4HNcuQ1GXq0B
+         t0rxC8EmvMccLewERx3zL1LgIzOlujJYEddVaC+rV98lrXw7+MMtpFUOg8w0Tbjn8RjH
+         3iDruCn23tWbplFDucS0OOc/icR1/l91/C8DCHxcfPx5xeuJ4j76ZL4Aj+EnWSnUjtvw
+         DDlKpQM5PxosKeS6TVyCs4QL80D6ZtCz7J9PTxFLzEmhTR66O+7WXyvKbZamYcI5eKmQ
+         u1Si8ruYIoLWzx8D7gCOzlP+gs75SPEevwiVz9MC8jKPIQ64bAfgfEAq1Pusyomhmada
+         r0rQ==
+X-Gm-Message-State: AOAM532oVhwzMPRb2T0mzuKcgnqFrTACEd/I/NJ3ceSmYMgc5DKpxZKJ
+        /nesjVg/SIn06vvr4D/5aQRrIchZtrV0z3qRZFXT1Q==
+X-Google-Smtp-Source: ABdhPJymP53EmmQdv4O6ZSqB6sTRScfeEAE7CyOPBeEyDkLGYfMldAHByLhb4sQwv+aeMF1tY69nVpNY4ZuChk0BdP4=
+X-Received: by 2002:a19:6b06:: with SMTP id d6mr1084443lfa.29.1613118725940;
+ Fri, 12 Feb 2021 00:32:05 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20210212010531.2722925-2-olteanv@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210127000303.436595-1-drew@beagleboard.org> <YBubDME90umkF9aQ@atomide.com>
+ <20210204074658.GA271881@x1>
+In-Reply-To: <20210204074658.GA271881@x1>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 12 Feb 2021 09:31:54 +0100
+Message-ID: <CACRpkdaLeO9+=kz2ZwMiPkazuNFmjL-329zoYXnjOo-pGmVHMg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ARM: dts: am335x-pocketbeagle: unique gpio-line-names
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jason Kridner <jkridner@beagleboard.org>,
+        Robert Nelson <robertcnelson@beagleboard.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, Feb 4, 2021 at 8:47 AM Drew Fustini <drew@beagleboard.org> wrote:
+> On Thu, Feb 04, 2021 at 08:58:20AM +0200, Tony Lindgren wrote:
+> > * Drew Fustini <drew@beagleboard.org> [210127 02:04]:
+> > > Based on linux-gpio discussion [1], it is best practice to make the
+> > > gpio-line-names unique. Generic names like "[ethernet]" are replaced
+> > > with the name of the unique signal on the AM3358 SoC ball corresponding
+> > > to the gpio line. "[NC]" is also renamed to the standard "NC" name to
+> > > represent "not connected".
+> > >
+> > > [1] https://lore.kernel.org/linux-gpio/20201216195357.GA2583366@x1/
+> >
+> > So are these needed for v5.12 as fixes, or can these wait until after
+> > the merge window for v5.13?
+> >
+> > Regards,
+> >
+> > Tony
+>
+> I suppose it depends on if/when the patches to make gpio lines unique
+> go in.  I believe the last response from Linus W. was in mid-December
+> and indicated he holding off merging as it was immature [1]
 
+There is no hurry with that plus I hold that patch back indefinately
+as it seems. I want to make line names unique for devices not
+probing from DT but DT devices, I dunno.
 
-On 2/11/2021 5:05 PM, Vladimir Oltean wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> 
-> When a struct switchdev_attr is notified through switchdev, there is no
-> way to report informational messages, unlike for struct switchdev_obj.
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+Yours,
+Linus Walleij
