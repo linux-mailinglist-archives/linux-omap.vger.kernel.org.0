@@ -2,101 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83C5031B08F
-	for <lists+linux-omap@lfdr.de>; Sun, 14 Feb 2021 14:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AFD731B29F
+	for <lists+linux-omap@lfdr.de>; Sun, 14 Feb 2021 22:05:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229740AbhBNNhl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 14 Feb 2021 08:37:41 -0500
-Received: from smtp-17.italiaonline.it ([213.209.10.17]:42182 "EHLO libero.it"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229642AbhBNNhk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 14 Feb 2021 08:37:40 -0500
-X-Greylist: delayed 381 seconds by postgrey-1.27 at vger.kernel.org; Sun, 14 Feb 2021 08:37:39 EST
-Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
- ([87.20.116.197])
-        by smtp-17.iol.local with ESMTPA
-        id BHTnlH3C4lChfBHTtlSRDk; Sun, 14 Feb 2021 14:30:38 +0100
-x-libjamoibt: 1601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2014;
-        t=1613309438; bh=qkWp20AtpEuGNqbGNTXPOIoWBZsHRc1VmZLJjjdccCM=;
-        h=From;
-        b=XVsEKVyyYAbYU9CDwJwEr+FHvB2BJfOQo73SesfUCYaSvT24CYHNKPrjsmzlfHcCQ
-         x6I/5u2b7x5i8Y+WfmIvrnrf37YzZMQ3/cbJNMMPrhBzArhS2Fh2eNp1ZC0hPTCnlD
-         LD9ig1IXU1bQOomzizIvK+cIrzLCOpkojIqflAd6bgJRU0v9s+3xSFL4sSDa37GvLg
-         gEP/72awy9pZLDgiUZpUwK1i2sUw1JvRrNtn9bOAast6CcRJNICxXycspNfH1tqC0U
-         3pV5+HYIQNt97D/SxXxCP2xRERXB6CdbwN2qrCp0lRh5JoOUbLZvVd0vrSQAYYAbbA
-         4tBdpQmtv+CVA==
-X-CNFS-Analysis: v=2.4 cv=S6McfKgP c=1 sm=1 tr=0 ts=602925fe cx=a_exe
- a=AVqmXbCQpuNSdJmApS5GbQ==:117 a=AVqmXbCQpuNSdJmApS5GbQ==:17
- a=hN1Y6PlX_eMEyabRrE4A:9
-From:   Dario Binacchi <dariobin@libero.it>
-To:     linux-kernel@vger.kernel.org
-Cc:     Dario Binacchi <dariobin@libero.it>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH] ARM: dts: am33xx-l4: fix tscadc@0 node indentation
-Date:   Sun, 14 Feb 2021 14:30:20 +0100
-Message-Id: <20210214133020.10766-1-dariobin@libero.it>
-X-Mailer: git-send-email 2.17.1
-X-CMAE-Envelope: MS4xfGRUyz5EcWl8espVBbAuyJvbtjfyN4d/vmBdG5u7dVSesdkJ5jVuuTqypRY98NQr81Cxk9LQYWBMloEipwPyL9sF4jHk3Eq2bmtVrvuu7Z166WRDyI/l
- 5NFmXwl36vu4b/uevefFott5Grrppzu7dynghN8xm+8TiTQ1HradeGIgDp7yRyAydyExVYz41xCrl39fdBqax784emFBvlhqZTZBxAuAr7MPi1xI/5ix4FyT
- +7wSgclfCl/o1iE5lFIP5BCqSkX9uxKBig+YCB8DCVIRdt/bw+idrllDfvpBZW+siKY1+gVeSA45fphaeEDYhnbLBhWRz45KvAZXxFnNpPfSLEFNOK3D02U1
- ugVdCcXSVhtmm0WgKNc2qIvJXWhXEclkHPzapKrnd2PXCgsXOMd56PiwLwA3vzQzYNNve9onW0xABQwh+rnzWaUggU1OTA==
+        id S229818AbhBNVFv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 14 Feb 2021 16:05:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57188 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229642AbhBNVFr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 14 Feb 2021 16:05:47 -0500
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A0DDC061574
+        for <linux-omap@vger.kernel.org>; Sun, 14 Feb 2021 13:05:07 -0800 (PST)
+Received: by mail-yb1-xb2a.google.com with SMTP id m9so3167783ybk.8
+        for <linux-omap@vger.kernel.org>; Sun, 14 Feb 2021 13:05:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=J0NWatg2CnEm93y+dsZC2nDOO41g2cTZ6mNodiIJS8I=;
+        b=qJUImH9f3cD+IXZjTExmAftcfDSLQ/B/+BVj8CJZ5ue7R/nLYvhcu8MGAQx33rwrPR
+         98BMHjMBHWI6lfr3ENmEdtSMfyWSiJQ17UAfeX5Q1Xl/HzVNm4/Qjll9IsgE3nZbER2n
+         j/aNpS49dIhTeTwaNQgjrLctJYHc81uDf+MGrfU/iP9ciBXwIQN2RbjMWK737/YnCb2T
+         v8rEA1lsrDD376hd1SOugHwHRKLZloJ87EmurTeqtJyZ+IOvvXhiGszeN3p/YOSGbRJo
+         oKzHgLJlcQ3e7rZixs02deUT7F2zbVGeJYQF2GN6RPakN5JNcItwwpmt2S6ZRLtK0oXn
+         RMPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=J0NWatg2CnEm93y+dsZC2nDOO41g2cTZ6mNodiIJS8I=;
+        b=QpxejZfUAjKJY7d6f9waTAyf+2NLRB9iaK87heHQEITM2cMHikReSIspm69sDLTH65
+         2FVqZXrV/4fJ+QuIoV7sp9pNTpu+Jy9KA+DmdqUnrWUnxBkV3koy7yMbFk+/UF+tcyom
+         hPzxnfs/nO/NUtZLmfX4CCkRNIe2s/F8AkOOUNm73zJ0eCoyRi1Igi2fvmml552buw8p
+         AxVWBxZISDEKuILkUDPdPPySUg298HcCIAq8TQcCYqzInCpLcSJAOOm6R88IzKf6U3Mx
+         h+OO+cd3Ogtib9/vtJDsSln19i8WtVoykvFt8SmxG9h/9Z+9PwPLPlsOrQywa5jkfQLL
+         +FAg==
+X-Gm-Message-State: AOAM531Pud71Qn/Vg311lQprbP1ZYWEgSu+xcFG68f416+pdzxLaJ7Nj
+        A+RTioAzRcMuAbWkj1jgVYD/lqZ4tAroBAzGIcs=
+X-Google-Smtp-Source: ABdhPJwmnNy7ttjNAa+HMGWOx07R/gbdKqdY8dbvJtHrGZS1Rnssa9hh52kWuhQRMQwhxnbXdizOpXKZiMV1/yD+FOI=
+X-Received: by 2002:a25:50e:: with SMTP id 14mr17965603ybf.287.1613336705828;
+ Sun, 14 Feb 2021 13:05:05 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a26:5e53:0:0:0:0:0 with HTTP; Sun, 14 Feb 2021 13:05:05
+ -0800 (PST)
+Reply-To: kipkalyariahnna@gmail.com
+From:   Riahnna Kipkalya <kubasimranthony@gmail.com>
+Date:   Sun, 14 Feb 2021 13:05:05 -0800
+Message-ID: <CAM74mzQ1qRtUFrf3HqyUr7VsRi4=aAO7GvgwDcKAwn6BB2w2TQ@mail.gmail.com>
+Subject: REPLY URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix the broken indentation of tscadc@0 node.
+My dearest,
 
-Signed-off-by: Dario Binacchi <dariobin@libero.it>
----
+I am writing this mail to you with tears and sorrow from my heart.
+With due respect, trust and humanity, i appeal to you to exercise a
+little patience and read through my letter i feel quite safe dealing
+with you in this important business having gone through your
+remarkable profile, honestly i am writing this email to you with
+pains, tears and sorrow from my heart, i will really like to have good
+relationship with you and i have a special reason why I decided to
+contact you. I decided to contact you due to the urgency of my
+situation.
 
- arch/arm/boot/dts/am33xx-l4.dtsi | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+My name is Miss. Riahnna Kipkalya, 19yrs old female and i am from
+Kenya in East Africa. Light in complexion, single (never married) but
+presently i am residing here in Ouagadougou, Burkina Faso refugee
+camp. My father Late Dr. Kipkalya Kones was the former Kenyan road
+Minister. He and Assistant Minister of Home Affairs Lorna Laboso had
+been on board the Cessna 210, which was headed to Kericho and crashed
+in a remote area called Kajong'a, in western Kenya. The plane crashed
+on the Tuesday 10th, June, 2008. You can read more about the crash
+through the below site:
+http://edition.cnn.com/2008/WORLD/africa/06/10/kenya.crash/index.html?iref=
+=3Dnextin
 
-diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
-index 78088506d25b..9963eeb57f69 100644
---- a/arch/arm/boot/dts/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/am33xx-l4.dtsi
-@@ -259,22 +259,22 @@
- 			ranges = <0x00000000 0x0000d000 0x00001000>,
- 				 <0x00001000 0x0000e000 0x00001000>;
- 
--				tscadc: tscadc@0 {
--					compatible = "ti,am3359-tscadc";
--					reg = <0x0 0x1000>;
--					interrupts = <16>;
--					status = "disabled";
--					dmas = <&edma 53 0>, <&edma 57 0>;
--					dma-names = "fifo0", "fifo1";
-+			tscadc: tscadc@0 {
-+				compatible = "ti,am3359-tscadc";
-+				reg = <0x0 0x1000>;
-+				interrupts = <16>;
-+				status = "disabled";
-+				dmas = <&edma 53 0>, <&edma 57 0>;
-+				dma-names = "fifo0", "fifo1";
- 
--					tsc {
--						compatible = "ti,am3359-tsc";
--					};
--					am335x_adc: adc {
--						#io-channel-cells = <1>;
--						compatible = "ti,am3359-adc";
--					};
-+				tsc {
-+					compatible = "ti,am3359-tsc";
-+				};
-+				am335x_adc: adc {
-+					#io-channel-cells = <1>;
-+					compatible = "ti,am3359-adc";
- 				};
-+			};
- 		};
- 
- 		target-module@10000 {			/* 0x44e10000, ap 22 0c.0 */
--- 
-2.17.1
+After the burial of my father, my Father Brothers conspired and sold
+my father' s property to an Italian Expatriate which they shared the
+money among themselves and left nothing for me. One faithful morning I
+opened my father's briefcase and found out the documents which he have
+deposited huge amount of money to the tune of us$18.7 million with 150
+kilogram of gold dust in one bank in Burkina Faso with my name as the
+next of kin.
 
+I have informed the bank about claiming this deposit and the only
+thing they told me is that I am still underage to claim the deposit. I
+told them that I have already contacted my father=E2=80=99s foreign partner
+who will assist me in the transfer. My mind told me that you are the
+honest and reliable person who will help me and stand as my trustee so
+that I will present you to the Bank for transferring of my father=E2=80=99s
+gold and money to your bank account in overseas. I have chosen to
+contact you after my prayers and I believe that you will not betray my
+trust. But rather take me as your own biological sister or daughter
+which I will be coming to your country as soon as this money and gold
+is transferred to you.
+
+My dearest, things are very bad for me here in the refugee camp, Even
+one of us died last night and was buried this morning. I am afraid of
+what i am seeing here. I don't know who it will be her turn tomorrow;
+I was planning to read law in my life before the ugly incident that
+killed my parents that put me in this horrible place i found myself
+today. This place is like a prison as we are only allowed to go out on
+Monday and Friday of the week as given by the united nation rules and
+regulation here in Burkina Faso.I hope by Gods grace I will come out
+here soon.
+
+I don' t have any relatives now whom i can go to and the only person I
+have now is Rev. Isaac Ambrose who is the reverend father of the
+Catholic church here in the refugee camp, he has been very nice to me
+since i came here but i am not living with him rather i am leaving in
+the women's hostel because the refugee have two hostels one for men
+the other for women, Please if you want to help me out of this
+situation respond back so that I will tell you more about me.
+
+
+Thanks.
+Miss. Riahnna Kipkalya
