@@ -2,108 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98E2A31C7D7
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Feb 2021 10:13:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B752531C99C
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Feb 2021 12:25:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229916AbhBPJKe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Feb 2021 04:10:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39688 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbhBPJKU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Feb 2021 04:10:20 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E33C5C0613D6
-        for <linux-omap@vger.kernel.org>; Tue, 16 Feb 2021 01:09:39 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id l12so12080546wry.2
-        for <linux-omap@vger.kernel.org>; Tue, 16 Feb 2021 01:09:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=K5zC5Y1zvesaXwk7zKrXE6Sqg4y3GDAfdw86rtI8m6o=;
-        b=apOi8qqe7jYCfTsdg9jYa8ZrUBRJbUmEArshiR1i9FfkUoecNLS9KkVJcm/QJRL5DL
-         /9T3XDBGoBqCDzbr8zdH/7xPgZh8a/WcCs6TA+IjXaisFenEZ2KaMvQBJ5CSClTzVoot
-         0g6vceEQPdrP5n158Jz2msejzcc589GAAqUtU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=K5zC5Y1zvesaXwk7zKrXE6Sqg4y3GDAfdw86rtI8m6o=;
-        b=pKIO/ujldfsznvXiTwLDSXUb/RO5nozYPc/Y/1CGXIEmtNtjIh3S7YviCkXazr2T9c
-         tR16oi3IcW++LcrEsJXbyU+aiIookfkXU/UcXRo1hbK+ahr/KTRll0SqcIy8DjkFbtyW
-         3VHVpOB1smBriKzaeGBCJZ/kO/bTL3OVqn1SWWvdy8qIHZ/36POvBZD4L8/AlgLaxiEf
-         mAjgagJ/hjdRKmc6UKTQQz4LQu44Pyjhs2Dp95WYc/HG/3FiIpNaK8d8y7kuAK+ZPFQo
-         z9BI14DkDbng6mrCGCq5zDRw9ajTmhKELd8CEGWRAJI/ruOdKdGTtHjP3AScdwgnHZNS
-         I45g==
-X-Gm-Message-State: AOAM532DMghExMT4+42g6RWLgXp2Tpe7IYTBxQmrsBKKSQUWkVF+shDM
-        L64e3GUToV8JsKlfzMHPNR3ZFFEBFWv0F+N+
-X-Google-Smtp-Source: ABdhPJzdZcOoTuCKynHice6z5PD8IYy6n4mOt3kwBaTsySFHj1AcBgs/+6shoAJ1fW4RiLQTiIgn/Q==
-X-Received: by 2002:a5d:6602:: with SMTP id n2mr22288886wru.150.1613466578573;
-        Tue, 16 Feb 2021 01:09:38 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id z1sm221367wmi.22.2021.02.16.01.09.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Feb 2021 01:09:38 -0800 (PST)
-Date:   Tue, 16 Feb 2021 10:09:36 +0100
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        dri-devel@lists.freedesktop.org,
-        Russell King <linux@armlinux.org.uk>
-Subject: Re: [PATCH 0/3] video: Remove in_interrupt() usage.
-Message-ID: <YCuL0DR8CQXEKTjP@phenom.ffwll.local>
-References: <20210208223810.388502-1-bigeasy@linutronix.de>
- <20210216083500.brcafu6mo2yiz3cg@linutronix.de>
- <YCuFli/TEl6gysTb@kroah.com>
+        id S229790AbhBPLZA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Feb 2021 06:25:00 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:39076 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229761AbhBPLZA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Feb 2021 06:25:00 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 11GBMvuo017469;
+        Tue, 16 Feb 2021 05:22:57 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1613474577;
+        bh=tQ1UDP5cdCJOnIdIDk0m4x6l7OoqNMl/eT40Lh0UPR0=;
+        h=From:Subject:To:CC:References:Date:In-Reply-To;
+        b=TcTmnU3UwG3wfWNIH9hQ3dCW3wwMUOxH1in80hi5Bck485afl/lScXQdPnAnCSRGB
+         d8uFIqiKwV6ojpH0TeoQscv89GTYCFGCqyahiOVm7ddLJYEugZzSA5qZNtpIEyh9Jq
+         EkJ72X2hu7tc8hKjQCnUA6FS5rQZyCBNu212IhJc=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 11GBMveR043990
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 16 Feb 2021 05:22:57 -0600
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 16
+ Feb 2021 05:22:57 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 16 Feb 2021 05:22:57 -0600
+Received: from [10.250.234.120] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 11GBMobA107909;
+        Tue, 16 Feb 2021 05:22:51 -0600
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH v4 net-next 0/9] Cleanup in brport flags switchdev offload
+ for DSA
+To:     Vladimir Oltean <olteanv@gmail.com>
+CC:     "Strashko, Grygorii" <grygorii.strashko@ti.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "bridge@lists.linux-foundation.org" 
+        <bridge@lists.linux-foundation.org>,
+        Roopa Prabhu <roopa@nvidia.com>,
+        Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Ido Schimmel <idosch@idosch.org>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Ivan Vecera <ivecera@redhat.com>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+References: <20210212010531.2722925-1-olteanv@gmail.com>
+ <97ae293a-f59d-cc7c-21a6-f83880c69c71@ti.com>
+ <ba7350f1-f9ff-b77e-65c9-cd5a4ae652d8@ti.com>
+ <20210212144053.2pumwc6mlt4l2gcj@skbuf>
+Message-ID: <adcbe8ce-60b3-551a-941b-f8de52a134d7@ti.com>
+Date:   Tue, 16 Feb 2021 16:52:50 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YCuFli/TEl6gysTb@kroah.com>
-X-Operating-System: Linux phenom 5.7.0-1-amd64 
+In-Reply-To: <20210212144053.2pumwc6mlt4l2gcj@skbuf>
+Content-Type: text/plain; charset="windows-1252"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Feb 16, 2021 at 09:43:02AM +0100, Greg Kroah-Hartman wrote:
-> On Tue, Feb 16, 2021 at 09:35:00AM +0100, Sebastian Andrzej Siewior wrote:
-> > On 2021-02-08 23:38:07 [+0100], To linux-fbdev@vger.kernel.org wrote:
-> > > Folks,
-> > > 
-> > > in the discussion about preempt count consistency across kernel
-> > > configurations:
-> > > 
-> > >  https://lore.kernel.org/r/20200914204209.256266093@linutronix.de/
-> > > 
-> > > it was concluded that the usage of in_interrupt() and related context
-> > > checks should be removed from non-core code.
-> > > 
-> > > In the long run, usage of 'preemptible, in_*irq etc.' should be banned from
-> > > driver code completely.
-> > > 
-> > > This series targets the video subsystem. The omap patches are a repost
-> > > of [0], the amba-clcd is new after I received no feedback on my analysis
-> > > [1].
-> > > 
-> > > [0] https://lkml.kernel.org/r/20210127172902.145335-1-bigeasy@linutronix.de
-> > > [1] https://lkml.kernel.org/r/20210127174408.ududpwfrbg3dhyxj@linutronix.de
-> > 
-> > Could someone please apply the series? Video seems unmaintained.
+Hi,
+
+On 2/12/21 8:10 PM, Vladimir Oltean wrote:
+> On Fri, Feb 12, 2021 at 08:01:33PM +0530, Vignesh Raghavendra wrote:
+>> Hi Vladimir,
+>>
+>> On 2/12/21 7:47 PM, Grygorii Strashko wrote:
+>>>
+>>>
+>>> On 12/02/2021 03:05, Vladimir Oltean wrote:
+>>>> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+>> [...]
+>>>
+>>> Sorry, but we seems just added more work for you.
+>>> https://lore.kernel.org/patchwork/cover/1379380/
+>>>
+>>
+>> Could you squash these when you post new version:
+>> Sorry for not noticing earlier.
 > 
-> It's the merge window, no one can apply the series...
+> Hey, thanks for the fixup patch and congrats on the new driver support
+> for the AM65 NUSS! What's functionally different compared to the other
+> CPSW instantiations?
 > 
-> Please resend once 5.12-rc1 is out.
 
-drm trees are always open, to avoid the merge window blackout lol :-)
+CPSW is mostly present on older TI's 32 bit SoCs and can support upto 2
+external ports.
 
-Reason I didn't merge anything is that I'm intentionally letting fbdev
-hang in there, in the hopes someone picks up review&patch apply duties. It
-already worked a few times but then people move on again ...
+AM65 NUSS is next generation multi port switch IP (up to 8 external
+ports) present on TI's newer 64 bit platform. It also has different DMA integration and has native HW support to work as both Multi Mac and Switch mode.
 
-Anyway patches queued up in drm-misc-next for 5.13.
--Daniel
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+> Also, do I get it right that you also tested the bridge port flags
+> passed in the new format and that they still work ok? May I add your
+> Tested-by tag?
+> 
+
+Sorry, I have not done extensive testing but tried couple of cmds. Those worked as expected:
+
+root@evm:~# ip link set eth0 type bridge_slave flood off mcast_flood off learning off                                                  
+Error: bridge: bridge flag offload is not supported.
+
+root@evm:~# ip link set eth0 type bridge_slave  mcast_flood off
+[ 65.025285] am65-cpsw-nuss 8000000.ethernet eth0: BR_MCAST_FLOOD: 0 port 1
+
+Regards
+Vignesh
