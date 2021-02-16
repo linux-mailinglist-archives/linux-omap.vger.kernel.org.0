@@ -2,135 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F097F31C742
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Feb 2021 09:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3309B31C76E
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Feb 2021 09:38:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbhBPIVk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Feb 2021 03:21:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57448 "EHLO
+        id S229912AbhBPIgk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Feb 2021 03:36:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbhBPIVb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Feb 2021 03:21:31 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B6CC061574
-        for <linux-omap@vger.kernel.org>; Tue, 16 Feb 2021 00:20:50 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id b3so11908258wrj.5
-        for <linux-omap@vger.kernel.org>; Tue, 16 Feb 2021 00:20:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=KKS3mm60WVea5SPhQi4hdtnoG3z+A2HjNVoJZwC0MIY=;
-        b=V+USs4SNTFDKkTKblk5EQSbgBy9+OQlZ7dMb5/oxFQ8yc930tIWzrfZeEYnXoEuEUX
-         8KyzcXaqo9XY2Pj2wNoXPdWT68qxIxf2c8fhkc9H3Sas+S+8ZEm+VLVTzO0LDz5bk9EF
-         rwGKBdpgyBRzhSD762tKTqJ5UwrKtFMj6udokMjDGhrDyuRqSYgyNbyk/xMr0kYHofjD
-         rQHOw5KHcQSff1rpA2z+dTbcTpfiPuuwWY9HPH6qq9Rowd/Jw4y5OHSicLNzs27EKLV8
-         8cRO/HOFzG3l4CvsDtG8VsV8EVbgs9ikc7BCqoX4peqYpnb9w4ktGh1DH6xiH54NlRCB
-         RrZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=KKS3mm60WVea5SPhQi4hdtnoG3z+A2HjNVoJZwC0MIY=;
-        b=B9B2Z8QD2nux3fu9zGZxUbtwaNqVJ3SEeGOn+GfeGaOCQJk9210S3c6o+lZl+5MPkt
-         fbgLdBNbtswXQPk4PUV4o/4FnpNOENcfn3BnpdiABMeydvKiKnA8eW27BytonY4el23R
-         HQT/k90udjhOwxSwvPsLgDPzoWT5R9gEtsdeqp+OSU1PXCqp1badzNmDcUeYCBPNJM3g
-         rX3gpz9cX8cCkuhca46+kF2B+4qOEoiKoLerW0Icrankvq7uQEdijGmntq1di3WnqPbp
-         GVqvA3tf9JCQpjqlRi8AzUFJdVcHVLxjs+zUHY6Ipk04pV/AHXbCXSVh1dwAXR9/3hL/
-         Bj5w==
-X-Gm-Message-State: AOAM531uiMzI9K5voSr0me5u6JCKhRXwsMlnzX9E74dJO4+YzZXYSCd/
-        uhA/7cTe1/Ad72Gawj3baIEsrg==
-X-Google-Smtp-Source: ABdhPJzmArPGlwjG+vZMBP5b+78FxkLwYjxyYaijAK0x7nUBtsPckPTKlS5li+Bv3M/6zI/ofh8kxw==
-X-Received: by 2002:adf:ab11:: with SMTP id q17mr22837604wrc.192.1613463649320;
-        Tue, 16 Feb 2021 00:20:49 -0800 (PST)
-Received: from dell ([91.110.221.165])
-        by smtp.gmail.com with ESMTPSA id c22sm29673333wrb.91.2021.02.16.00.20.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Feb 2021 00:20:48 -0800 (PST)
-Date:   Tue, 16 Feb 2021 08:20:46 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     Andrew Lunn <andrew@lunn.ch>, Stephen Boyd <sboyd@kernel.org>,
-        Prashant Gaikwad <pgaikwad@nvidia.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rajeev Kumar <rajeev-dlh.kumar@st.com>,
-        Jan Kotas <jank@cadence.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
-        Boris BREZILLON <boris.brezillon@free-electrons.com>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Emilio =?iso-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>,
-        Viresh Kumar <vireshk@kernel.org>, openbmc@lists.ozlabs.org,
-        Michal Simek <michal.simek@xilinx.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Nancy Yuen <yuenn@google.com>, Chen-Yu Tsai <wens@csie.org>,
-        Andy Gross <agross@kernel.org>, Loc Ho <lho@apm.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Richard Woodruff <r-woodruff2@ti.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-arm-msm@vger.kernel.org,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Maxime Ripard <mripard@kernel.org>,
-        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        =?iso-8859-1?Q?S=F6ren?= Brinkmann <soren.brinkmann@xilinx.com>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Tero Kristo <kristo@kernel.org>,
-        Rajan Vaja <rajan.vaja@xilinx.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Peter De Schrijver <pdeschrijver@nvidia.com>,
-        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Nuvoton Technologies <tali.perry@nuvoton.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH 00/21] [Set 2] Rid W=1 warnings from Clock
-Message-ID: <20210216082046.GA4803@dell>
-References: <20210212212503.GC179940@dell>
- <20210212212630.GD179940@dell>
- <161316754567.1254594.9542583200097699504@swboyd.mtv.corp.google.com>
- <20210212223739.GE179940@dell>
- <161317480301.1254594.16648868282165823277@swboyd.mtv.corp.google.com>
- <YCf4kkMsX+Ymgy6N@lunn.ch>
- <161333644244.1254594.4498059850307971318@swboyd.mtv.corp.google.com>
- <YCmUOHTtc+j4eLkO@lunn.ch>
- <20210215084952.GF179940@dell>
- <20210215094509.0b1f0bbf@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        with ESMTP id S229771AbhBPIfp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Feb 2021 03:35:45 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0FEC061574;
+        Tue, 16 Feb 2021 00:35:03 -0800 (PST)
+Date:   Tue, 16 Feb 2021 09:35:00 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1613464501;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=70lHKWgGoo6VhWpcJ2+NWE0z9250K2X/fg1wAF15xQY=;
+        b=VWc85enQJ61K6OOs/SQq/iNUmiLwb6Dc7J87qef8XIH6433NQrGrEMuKkiEYLAYZMM96oy
+        uJlPxQUzSmZQKMngJzvDvL6a7KsiaYHX41TZYeBCPqtTueGstCWopPnpjEGyFsQbI+ZGvc
+        mEXLCwAmHQRWEJ48O/t+Bt4vMVSJ0XYpjq5n5+4j///Nfe+zlzrYDVJB2ZuxnaYpAqaVdy
+        aaI17acCV7Abk6lSRHvS1vjpnEg5frbhKHGEzkOjPVAlAnsJCDK0oI4yZjF5jLKTDmF/om
+        Gif4fHEo43ATe7RUIAHTsp0YhK8XFrMlHsxobTrFi1jmjMl+DpQ4NHk72kItKA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1613464501;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=70lHKWgGoo6VhWpcJ2+NWE0z9250K2X/fg1wAF15xQY=;
+        b=EZQfdGrnk0Aq3GZa/wBny+XqOkAwEcFy9iNQ/ifeGFwHfm/cRGj5wOklP6k2A5mh6MTDIb
+        MMaqq/EVDJgDZECw==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     linux-fbdev@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-omap@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 0/3] video: Remove in_interrupt() usage.
+Message-ID: <20210216083500.brcafu6mo2yiz3cg@linutronix.de>
+References: <20210208223810.388502-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210215094509.0b1f0bbf@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20210208223810.388502-1-bigeasy@linutronix.de>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 15 Feb 2021, Jakub Kicinski wrote:
-
-> On Mon, 15 Feb 2021 08:49:52 +0000 Lee Jones wrote:
-> > > Jakub can explain how he added these checks.  
-> > 
-> > Yes, please share.
+On 2021-02-08 23:38:07 [+0100], To linux-fbdev@vger.kernel.org wrote:
+> Folks,
 > 
-> https://github.com/kuba-moo/nipa
+> in the discussion about preempt count consistency across kernel
+> configurations:
+> 
+>  https://lore.kernel.org/r/20200914204209.256266093@linutronix.de/
+> 
+> it was concluded that the usage of in_interrupt() and related context
+> checks should be removed from non-core code.
+> 
+> In the long run, usage of 'preemptible, in_*irq etc.' should be banned from
+> driver code completely.
+> 
+> This series targets the video subsystem. The omap patches are a repost
+> of [0], the amba-clcd is new after I received no feedback on my analysis
+> [1].
+> 
+> [0] https://lkml.kernel.org/r/20210127172902.145335-1-bigeasy@linutronix.de
+> [1] https://lkml.kernel.org/r/20210127174408.ududpwfrbg3dhyxj@linutronix.de
 
-Thanks for this.
+Could someone please apply the series? Video seems unmaintained.
 
-Oh, I see.  So you conduct tests locally, then post them up in a
-section called 'Checks' using the provided API.  I assume that
-Patchwork does not alert the user when something has gone awry?  Is
-this something Nipa does?
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Sebastian
