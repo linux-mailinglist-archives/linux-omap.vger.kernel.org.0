@@ -2,144 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6694C31D5D8
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Feb 2021 08:43:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11A5531DED5
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Feb 2021 19:10:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231239AbhBQHn3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Feb 2021 02:43:29 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:43240 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229659AbhBQHnQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Feb 2021 02:43:16 -0500
-Received: from [192.168.1.111] (91-157-208-71.elisa-laajakaista.fi [91.157.208.71])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id D7EBD8C4;
-        Wed, 17 Feb 2021 08:42:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1613547746;
-        bh=gLxLY7MkEr2qMg/fdrv6dtXzf+28O3A6JagdQ2koFQM=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=ZM+5JghVAT0h8+JH8kZXWWVOj1BiGFS8BMdDX2U+lq7dFLCNF6tocWjXJHlOmWZY2
-         +EG6iOSWgWLpot+ukjuHoInosO27xlzaCprdJvU3PpeeqOGKOcwsMT5QfyUft4FKyx
-         5uqxZOUcXqrWyk7ZLvwAkrOsbzJ75U7NgBigj0s0=
-Subject: Re: [PATCH v4 24/80] drm/omap: dsi: move TE GPIO handling into core
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, hns@goldelico.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-25-tomi.valkeinen@ti.com>
- <YCF7ARchcMKvWa4s@atomide.com>
- <5b469566-c926-7e1f-8872-84774b96f389@ideasonboard.com>
- <YCVq8JnuMLQq6FEc@atomide.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-Message-ID: <4432cf2c-fe15-dab0-3034-789f6d711396@ideasonboard.com>
-Date:   Wed, 17 Feb 2021 09:42:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S233125AbhBQSJQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Feb 2021 13:09:16 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43030 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233065AbhBQSJN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 17 Feb 2021 13:09:13 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 254BD64E42;
+        Wed, 17 Feb 2021 18:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1613585312;
+        bh=mlVck3mitGbq4KsjHsg+Yp+wLuiTRge4SmXhwvupCJA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=pcpUB+bwniLXzIs+cBvLaPRAEjbhPwkCX4VK8YS1MQe3zULOCs4fJgwHYw7Uqo6We
+         gu5Z5Ji2v15gLmkbSOWs4bsN2PwW/6RAAYgicliuB3fHgpcP1Jx2XlrROvRpUS/F9H
+         bhmT6TbKs8+Lgqkb7Y4K5hcHMtuMsAjkmyGZ7XUfcVBaV9aKRFeEwI2wh4hXgPQ/yO
+         xfUcGFLc3bRSqJBkHyzgX53Ubi4iYZOrJk6iQfSHxMloXEsRah/REjZYCj0738UQ2E
+         eIURxqB8vya/y3sxmy0UoW4jXclmaE9h0FL1XeXDlv/1K2Ce7f3Il6dYkUHs7ri+Tc
+         slowUVQ5DxHkA==
+Date:   Wed, 17 Feb 2021 10:08:30 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Andrew Lunn <andrew@lunn.ch>, Stephen Boyd <sboyd@kernel.org>,
+        Prashant Gaikwad <pgaikwad@nvidia.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rajeev Kumar <rajeev-dlh.kumar@st.com>,
+        Jan Kotas <jank@cadence.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+        Boris BREZILLON <boris.brezillon@free-electrons.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>,
+        Viresh Kumar <vireshk@kernel.org>, openbmc@lists.ozlabs.org,
+        Michal Simek <michal.simek@xilinx.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Nancy Yuen <yuenn@google.com>, Chen-Yu Tsai <wens@csie.org>,
+        Andy Gross <agross@kernel.org>, Loc Ho <lho@apm.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Richard Woodruff <r-woodruff2@ti.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        linux-arm-msm@vger.kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Maxime Ripard <mripard@kernel.org>,
+        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        =?UTF-8?B?U8O2cmVu?= Brinkmann <soren.brinkmann@xilinx.com>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Tero Kristo <kristo@kernel.org>,
+        Rajan Vaja <rajan.vaja@xilinx.com>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Peter De Schrijver <pdeschrijver@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Nuvoton Technologies <tali.perry@nuvoton.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH 00/21] [Set 2] Rid W=1 warnings from Clock
+Message-ID: <20210217100830.50db2195@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20210216082046.GA4803@dell>
+References: <20210212212503.GC179940@dell>
+        <20210212212630.GD179940@dell>
+        <161316754567.1254594.9542583200097699504@swboyd.mtv.corp.google.com>
+        <20210212223739.GE179940@dell>
+        <161317480301.1254594.16648868282165823277@swboyd.mtv.corp.google.com>
+        <YCf4kkMsX+Ymgy6N@lunn.ch>
+        <161333644244.1254594.4498059850307971318@swboyd.mtv.corp.google.com>
+        <YCmUOHTtc+j4eLkO@lunn.ch>
+        <20210215084952.GF179940@dell>
+        <20210215094509.0b1f0bbf@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <20210216082046.GA4803@dell>
 MIME-Version: 1.0
-In-Reply-To: <YCVq8JnuMLQq6FEc@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 11/02/2021 19:35, Tony Lindgren wrote:
-> * Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> [210211 07:35]:
->> On 08/02/2021 19:55, Tony Lindgren wrote:
->>> Hi,
->>>
->>> * Tomi Valkeinen <tomi.valkeinen@ti.com> [201124 12:47]:
->>>> From: Sebastian Reichel <sebastian.reichel@collabora.com>
->>>>
->>>> In preparation for removing custom DSS calls from the DSI
->>>> panel driver, this moves support for external tearing event
->>>> GPIOs into the DSI host driver. This way tearing events are
->>>> always handled in the core resulting in simplification of
->>>> the panel drivers.
->>>>
->>>> The TE GPIO acquisition follows works in the same way as the
->>>> exynos DSI implementation.
->>>
->>> Looks like this patch causes the following warnings:
->>>
->>> DSI: omapdss DSI error: Failed to receive BTA
->>> DSI: omapdss DSI error: bta sync failed
->>> DSI: omapdss DSI error: vc(0) busy when trying to config for VP
->>> DSI: omapdss DSI error: Failed to receive BTA
->>> DSI: omapdss DSI error: bta sync failed
->>> DSI: omapdss DSI error: vc(0) busy when trying to config for VP
->>> DSI: omapdss DSI error: Failed to receive BTA
->>> DSI: omapdss DSI error: bta sync failed
->>> DSI: omapdss DSI error: vc(0) busy when trying to config for VP
->>> ...
->>>
->>> Any ideas? The display works for me despite the constant
->>> warnings.
->>
->> Which board is that? Do the errors start right from the boot, or only
->> after running something in userspace?
+On Tue, 16 Feb 2021 08:20:46 +0000 Lee Jones wrote:
+> On Mon, 15 Feb 2021, Jakub Kicinski wrote:
+> > On Mon, 15 Feb 2021 08:49:52 +0000 Lee Jones wrote:  
+> > > Yes, please share.  
+> > 
+> > https://github.com/kuba-moo/nipa  
 > 
-> This is with droid4, that's about the only device I use with a display
-> on regular basis. I'm pretty sure some earlier version of Sebastian's
-> patches worked fine.
+> Thanks for this.
+> 
+> Oh, I see.  So you conduct tests locally, then post them up in a
+> section called 'Checks' using the provided API.  
 
-OMAP4 SDP doesn't produce these errors and the HW looks rather
-identical. Although I noticed something odd there, running kmstest
---flip on the first display works fine, but running on the second
-display gets a bit erratic fps. Which is a bit odd as everything should
-be identical.
+For some definition of "locally" - NIPA runs on a rented VM.
 
-So these errors start from the boot? Or only when running something
-specific?
+> I assume that Patchwork does not alert the user when something has
+> gone awry?  Is this something Nipa does?
 
-Is there a bootloader that initializes the display?
-
- Tomi
+The way we run it on netdev is maintainer-centric, IOW we see 
+the failures in patchwork and complain to people manually.
+The netdev mailing list gets too many messages as is, if NIPA 
+responded with results automatically (which is not that hard
+technically) my concern is that people would be more likely to
+send untested patches to the mailing list and rely on the bot.
