@@ -2,38 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D60831F801
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Feb 2021 12:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3546B31F86C
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Feb 2021 12:30:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229985AbhBSLN6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Feb 2021 06:13:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57690 "EHLO
+        id S230071AbhBSL3K (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Feb 2021 06:29:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229720AbhBSLN5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Feb 2021 06:13:57 -0500
+        with ESMTP id S230481AbhBSL17 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Feb 2021 06:27:59 -0500
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF75BC061786;
-        Fri, 19 Feb 2021 03:13:16 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50D85C061756;
+        Fri, 19 Feb 2021 03:27:19 -0800 (PST)
 Received: from [192.168.1.111] (91-157-208-71.elisa-laajakaista.fi [91.157.208.71])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1C8AC596;
-        Fri, 19 Feb 2021 12:13:15 +0100 (CET)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 26A4C344;
+        Fri, 19 Feb 2021 12:27:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1613733195;
-        bh=uH3WAvIbdap0nVIkn2NT9xWZKicFksWQb07aXoR2q/k=;
+        s=mail; t=1613734037;
+        bh=63v3hkQ8ctgSomwFjXznmeE4wyt+s3el53pzPd2zWQE=;
         h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=EhI3XQiP1TnpmacoNwwfpMIaFNOAQJMWn4++TZFAk2WctpUhBUC7o7bIhqPpd5Rfs
-         9ZEwVja/A/kdk2rF1gav6rQzJZ3AWnUboDz6XcwlMMtpYPEh3AYH/K2Hwzo1rN+emV
-         owtrrpTHLhsdq2aMQbrV2kCzTqZ6Y3RfyFlG+xYQ=
-Subject: Re: [PATCH 3/5] drm/omap: hdmi4: simplify CEC Phys Addr handling
-To:     Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        linux-media@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
-        dri-devel@lists.freedesktop.org,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        b=Orov59dB0znKHFbOsKqwSl6vPLdz9k36Zgc8rUnmskVq6bf2Lfvk3QqQzjH6qFEH8
+         U1eKAH/qrNm6H0EWKg5GojrKmFtYV8pFmMFdLf5dg2FD+Ntki8tmTFN+YvYA7QcyOg
+         7Pxfwmq70kKOKya5IMXzyoleL4PoCm+FotjOxd30=
+Subject: Re: [PATCH 0/5] drm/omap: hdmi: improve hdmi4 CEC, add CEC for hdmi5
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
+        ML dri-devel <dri-devel@lists.freedesktop.org>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-omap@vger.kernel.org
+        kernel@pyra-handheld.com, Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-media@vger.kernel.org
 References: <20210211103703.444625-1-hverkuil-cisco@xs4all.nl>
- <20210211103703.444625-4-hverkuil-cisco@xs4all.nl>
+ <1707AE88-75E5-4B61-B336-09757674B6A1@goldelico.com>
 From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
  mQINBE6ms0cBEACyizowecZqXfMZtnBniOieTuFdErHAUyxVgtmr0f5ZfIi9Z4l+uUN4Zdw2
@@ -78,12 +79,12 @@ Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
  ueeIlwJl5CpT5l8RpoZXEOVtXYn8zzOJ7oGZYINRV9Pf8qKGLf3Dft7zKBP832I3PQjeok7F
  yjt+9S+KgSFSHP3Pa4E7lsSdWhSlHYNdG/czhoUkSCN09C0rEK93wxACx3vtxPLjXu6RptBw
  3dRq7n+mQChEB1am0BueV1JZaBboIL0AGlSJkm23kw==
-Message-ID: <0cb48dce-7878-fbd4-016b-ea9dca7ab9d3@ideasonboard.com>
-Date:   Fri, 19 Feb 2021 13:13:14 +0200
+Message-ID: <b1938b23-751d-6ba6-35f4-da1016a41c93@ideasonboard.com>
+Date:   Fri, 19 Feb 2021 13:27:16 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210211103703.444625-4-hverkuil-cisco@xs4all.nl>
+In-Reply-To: <1707AE88-75E5-4B61-B336-09757674B6A1@goldelico.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -91,17 +92,56 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 11/02/2021 12:37, Hans Verkuil wrote:
-> Switch to using cec_s_phys_addr_from_edid() instead of a two-step process
-> of calling cec_get_edid_phys_addr() followed by cec_s_phys_addr().
+On 15/02/2021 13:11, H. Nikolaus Schaller wrote:
+> Hi,
 > 
-> Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-> ---
->  drivers/gpu/drm/omapdrm/dss/hdmi4.c     | 13 ++-----------
->  drivers/gpu/drm/omapdrm/dss/hdmi4_cec.c |  4 ++--
->  drivers/gpu/drm/omapdrm/dss/hdmi4_cec.h |  5 +++--
->  3 files changed, 7 insertions(+), 15 deletions(-)
+>> Am 11.02.2021 um 11:36 schrieb Hans Verkuil <hverkuil-cisco@xs4all.nl>:
+>>
+>> This series improves the drm_bridge support for CEC by introducing two
+>> new bridge ops in the first patch, and using those in the second patch.
+>>
+>> This makes it possible to call cec_s_conn_info() and set
+>> CEC_CAP_CONNECTOR_INFO for the CEC adapter, so userspace can associate
+>> the CEC adapter with the corresponding DRM connector.
+>>
+>> The third patch simplifies CEC physical address handling by using the
+>> cec_s_phys_addr_from_edid helper function that didn't exist when this
+>> code was originally written.
+>>
+>> The fourth patch adds CEC support to the OMAP5 driver and the last
+>> patch adds the missing cec clock to the dra7 and omap5 device tree.
+>>
+>> Tested with a Pandaboard and a Beagle X15 board.
+> 
+> Tested to have no adverse effect on Pyra (omap5432).
+> But I have not tested if CEC itself is working.
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+I tested on DRA76 EVM, but I don't have a CEC peripheral either.
+
+> 
+>>
+>> Regards,
+>>
+>> 	Hans
+>>
+>> Hans Verkuil (5):
+>>  drm: drm_bridge: add cec_init/exit bridge ops
+>>  drm/omap: hdmi4: switch to the cec bridge ops
+>>  drm/omap: hdmi4: simplify CEC Phys Addr handling
+>>  drm/omap: hdmi5: add CEC support
+>>  ARM: dts: dra7/omap5: add cec clock
+>>
+>> arch/arm/boot/dts/dra7.dtsi              |   5 +-
+>> arch/arm/boot/dts/omap5.dtsi             |   5 +-
+>> drivers/gpu/drm/drm_bridge_connector.c   |  23 +++
+>> drivers/gpu/drm/omapdrm/dss/Kconfig      |   8 +
+>> drivers/gpu/drm/omapdrm/dss/Makefile     |   1 +
+> 
+> Merging with patch series by Tomi Valkeinen and Sebastian Reichel
+> for omapdrm/dsi will need to move the Kconfig and Makefile one level
+> up.
+
+Yes, this conflicts with drm-next due to the Kconfig and Makefile
+changes. Should be trivial to fix.
 
  Tomi
