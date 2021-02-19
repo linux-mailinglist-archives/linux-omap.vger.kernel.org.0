@@ -2,146 +2,170 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3546B31F86C
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Feb 2021 12:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7849531F904
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Feb 2021 13:07:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230071AbhBSL3K (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Feb 2021 06:29:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60672 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230481AbhBSL17 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Feb 2021 06:27:59 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50D85C061756;
-        Fri, 19 Feb 2021 03:27:19 -0800 (PST)
-Received: from [192.168.1.111] (91-157-208-71.elisa-laajakaista.fi [91.157.208.71])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 26A4C344;
-        Fri, 19 Feb 2021 12:27:17 +0100 (CET)
+        id S230241AbhBSMFc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Feb 2021 07:05:32 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:47354 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230177AbhBSMD1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Feb 2021 07:03:27 -0500
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7C3C0344;
+        Fri, 19 Feb 2021 13:02:43 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1613734037;
-        bh=63v3hkQ8ctgSomwFjXznmeE4wyt+s3el53pzPd2zWQE=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Orov59dB0znKHFbOsKqwSl6vPLdz9k36Zgc8rUnmskVq6bf2Lfvk3QqQzjH6qFEH8
-         U1eKAH/qrNm6H0EWKg5GojrKmFtYV8pFmMFdLf5dg2FD+Ntki8tmTFN+YvYA7QcyOg
-         7Pxfwmq70kKOKya5IMXzyoleL4PoCm+FotjOxd30=
-Subject: Re: [PATCH 0/5] drm/omap: hdmi: improve hdmi4 CEC, add CEC for hdmi5
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
-        ML dri-devel <dri-devel@lists.freedesktop.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        kernel@pyra-handheld.com, Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-media@vger.kernel.org
+        s=mail; t=1613736163;
+        bh=5U/ZjUnFiUHnvU43maG2e5VgUk5poNHV5/Gra6oXEEM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Bvjcf2S88BzayBWdoCDIQ3qOHZBNYX1TNUzwOnYQZmOT8zLJtnkLVjEsrs0dHkBOd
+         uDDHLklv8bU3HS+c4h0tt54YSRKqc36iGY5Lm2w2YxwnE99dMNU0hPUdtk0ogcDscy
+         hLrXvvNEPl6vP5oxKgdGFYkxBRIvPDuyzNk6kIOQ=
+Date:   Fri, 19 Feb 2021 14:02:17 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc:     linux-media@vger.kernel.org,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH 1/5] drm: drm_bridge: add cec_init/exit bridge ops
+Message-ID: <YC+oyavcOV0uFJUb@pendragon.ideasonboard.com>
 References: <20210211103703.444625-1-hverkuil-cisco@xs4all.nl>
- <1707AE88-75E5-4B61-B336-09757674B6A1@goldelico.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- mQINBE6ms0cBEACyizowecZqXfMZtnBniOieTuFdErHAUyxVgtmr0f5ZfIi9Z4l+uUN4Zdw2
- wCEZjx3o0Z34diXBaMRJ3rAk9yB90UJAnLtb8A97Oq64DskLF81GCYB2P1i0qrG7UjpASgCA
- Ru0lVvxsWyIwSfoYoLrazbT1wkWRs8YBkkXQFfL7Mn3ZMoGPcpfwYH9O7bV1NslbmyJzRCMO
- eYV258gjCcwYlrkyIratlHCek4GrwV8Z9NQcjD5iLzrONjfafrWPwj6yn2RlL0mQEwt1lOvn
- LnI7QRtB3zxA3yB+FLsT1hx0va6xCHpX3QO2gBsyHCyVafFMrg3c/7IIWkDLngJxFgz6DLiA
- G4ld1QK/jsYqfP2GIMH1mFdjY+iagG4DqOsjip479HCWAptpNxSOCL6z3qxCU8MCz8iNOtZk
- DYXQWVscM5qgYSn+fmMM2qN+eoWlnCGVURZZLDjg387S2E1jT/dNTOsM/IqQj+ZROUZuRcF7
- 0RTtuU5q1HnbRNwy+23xeoSGuwmLQ2UsUk7Q5CnrjYfiPo3wHze8avK95JBoSd+WIRmV3uoO
- rXCoYOIRlDhg9XJTrbnQ3Ot5zOa0Y9c4IpyAlut6mDtxtKXr4+8OzjSVFww7tIwadTK3wDQv
- Bus4jxHjS6dz1g2ypT65qnHen6mUUH63lhzewqO9peAHJ0SLrQARAQABtDBUb21pIFZhbGtl
- aW5lbiA8dG9taS52YWxrZWluZW5AaWRlYXNvbmJvYXJkLmNvbT6JAk4EEwEIADgWIQTEOAw+
- ll79gQef86f6PaqMvJYe9QUCX/HruAIbAwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRD6
- PaqMvJYe9WmFD/99NGoD5lBJhlFDHMZvO+Op8vCwnIRZdTsyrtGl72rVh9xRfcSgYPZUvBuT
- VDxE53mY9HaZyu1eGMccYRBaTLJSfCXl/g317CrMNdY0k40b9YeIX10feiRYEWoDIPQ3tMmA
- 0nHDygzcnuPiPT68JYZ6tUOvAt7r6OX/litM+m2/E9mtp8xCoWOo/kYO4mOAIoMNvLB8vufi
- uBB4e/AvAjtny4ScuNV5c5q8MkfNIiOyag9QCiQ/JfoAqzXRjVb4VZG72AKaElwipiKCWEcU
- R4+Bu5Qbaxj7Cd36M/bI54OrbWWETJkVVSV1i0tghCd6HHyquTdFl7wYcz6cL1hn/6byVnD+
- sR3BLvSBHYp8WSwv0TCuf6tLiNgHAO1hWiQ1pOoXyMEsxZlgPXT+wb4dbNVunckwqFjGxRbl
- Rz7apFT/ZRwbazEzEzNyrBOfB55xdipG/2+SmFn0oMFqFOBEszXLQVslh64lI0CMJm2OYYe3
- PxHqYaztyeXsx13Bfnq9+bUynAQ4uW1P5DJ3OIRZWKmbQd/Me3Fq6TU57LsvwRgE0Le9PFQs
- dcP2071rMTpqTUteEgODJS4VDf4lXJfY91u32BJkiqM7/62Cqatcz5UWWHq5xeF03MIUTqdE
- qHWk3RJEoWHWQRzQfcx6Fn2fDAUKhAddvoopfcjAHfpAWJ+ENbkCDQROprNHARAAx0aat8GU
- hsusCLc4MIxOQwidecCTRc9Dz/7U2goUwhw2O5j9TPqLtp57VITmHILnvZf6q3QAho2QMQyE
- DDvHubrdtEoqaaSKxKkFie1uhWNNvXPhwkKLYieyL9m2JdU+b88HaDnpzdyTTR4uH7wk0bBa
- KbTSgIFDDe5lXInypewPO30TmYNkFSexnnM3n1PBCqiJXsJahE4ZQ+WnV5FbPUj8T2zXS2xk
- 0LZ0+DwKmZ0ZDovvdEWRWrz3UzJ8DLHb7blPpGhmqj3ANXQXC7mb9qJ6J/VSl61GbxIO2Dwb
- xPNkHk8fwnxlUBCOyBti/uD2uSTgKHNdabhVm2dgFNVuS1y3bBHbI/qjC3J7rWE0WiaHWEqy
- UVPk8rsph4rqITsj2RiY70vEW0SKePrChvET7D8P1UPqmveBNNtSS7In+DdZ5kUqLV7rJnM9
- /4cwy+uZUt8cuCZlcA5u8IsBCNJudxEqBG10GHg1B6h1RZIz9Q9XfiBdaqa5+CjyFs8ua01c
- 9HmyfkuhXG2OLjfQuK+Ygd56mV3lq0aFdwbaX16DG22c6flkkBSjyWXYepFtHz9KsBS0DaZb
- 4IkLmZwEXpZcIOQjQ71fqlpiXkXSIaQ6YMEs8WjBbpP81h7QxWIfWtp+VnwNGc6nq5IQDESH
- mvQcsFS7d3eGVI6eyjCFdcAO8eMAEQEAAYkCHwQYAQIACQUCTqazRwIbDAAKCRD6PaqMvJYe
- 9fA7EACS6exUedsBKmt4pT7nqXBcRsqm6YzT6DeCM8PWMTeaVGHiR4TnNFiT3otD5UpYQI7S
- suYxoTdHrrrBzdlKe5rUWpzoZkVK6p0s9OIvGzLT0lrb0HC9iNDWT3JgpYDnk4Z2mFi6tTbq
- xKMtpVFRA6FjviGDRsfkfoURZI51nf2RSAk/A8BEDDZ7lgJHskYoklSpwyrXhkp9FHGMaYII
- m9EKuUTX9JPDG2FTthCBrdsgWYPdJQvM+zscq09vFMQ9Fykbx5N8z/oFEUy3ACyPqW2oyfvU
- CH5WDpWBG0s5BALp1gBJPytIAd/pY/5ZdNoi0Cx3+Z7jaBFEyYJdWy1hGddpkgnMjyOfLI7B
- CFrdecTZbR5upjNSDvQ7RG85SnpYJTIin+SAUazAeA2nS6gTZzumgtdw8XmVXZwdBfF+ICof
- 92UkbYcYNbzWO/GHgsNT1WnM4sa9lwCSWH8Fw1o/3bX1VVPEsnESOfxkNdu+gAF5S6+I6n3a
- ueeIlwJl5CpT5l8RpoZXEOVtXYn8zzOJ7oGZYINRV9Pf8qKGLf3Dft7zKBP832I3PQjeok7F
- yjt+9S+KgSFSHP3Pa4E7lsSdWhSlHYNdG/czhoUkSCN09C0rEK93wxACx3vtxPLjXu6RptBw
- 3dRq7n+mQChEB1am0BueV1JZaBboIL0AGlSJkm23kw==
-Message-ID: <b1938b23-751d-6ba6-35f4-da1016a41c93@ideasonboard.com>
-Date:   Fri, 19 Feb 2021 13:27:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <20210211103703.444625-2-hverkuil-cisco@xs4all.nl>
 MIME-Version: 1.0
-In-Reply-To: <1707AE88-75E5-4B61-B336-09757674B6A1@goldelico.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20210211103703.444625-2-hverkuil-cisco@xs4all.nl>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 15/02/2021 13:11, H. Nikolaus Schaller wrote:
-> Hi,
-> 
->> Am 11.02.2021 um 11:36 schrieb Hans Verkuil <hverkuil-cisco@xs4all.nl>:
->>
->> This series improves the drm_bridge support for CEC by introducing two
->> new bridge ops in the first patch, and using those in the second patch.
->>
->> This makes it possible to call cec_s_conn_info() and set
->> CEC_CAP_CONNECTOR_INFO for the CEC adapter, so userspace can associate
->> the CEC adapter with the corresponding DRM connector.
->>
->> The third patch simplifies CEC physical address handling by using the
->> cec_s_phys_addr_from_edid helper function that didn't exist when this
->> code was originally written.
->>
->> The fourth patch adds CEC support to the OMAP5 driver and the last
->> patch adds the missing cec clock to the dra7 and omap5 device tree.
->>
->> Tested with a Pandaboard and a Beagle X15 board.
-> 
-> Tested to have no adverse effect on Pyra (omap5432).
-> But I have not tested if CEC itself is working.
+Hi Hans,
 
-I tested on DRA76 EVM, but I don't have a CEC peripheral either.
+Thank you for the patch.
 
+On Thu, Feb 11, 2021 at 11:36:59AM +0100, Hans Verkuil wrote:
+> Add bridge cec_init/exit ops. These ops will be responsible for
+> creating and destroying the CEC adapter for the bridge that supports
+> CEC.
 > 
->>
->> Regards,
->>
->> 	Hans
->>
->> Hans Verkuil (5):
->>  drm: drm_bridge: add cec_init/exit bridge ops
->>  drm/omap: hdmi4: switch to the cec bridge ops
->>  drm/omap: hdmi4: simplify CEC Phys Addr handling
->>  drm/omap: hdmi5: add CEC support
->>  ARM: dts: dra7/omap5: add cec clock
->>
->> arch/arm/boot/dts/dra7.dtsi              |   5 +-
->> arch/arm/boot/dts/omap5.dtsi             |   5 +-
->> drivers/gpu/drm/drm_bridge_connector.c   |  23 +++
->> drivers/gpu/drm/omapdrm/dss/Kconfig      |   8 +
->> drivers/gpu/drm/omapdrm/dss/Makefile     |   1 +
+> Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+> ---
+>  drivers/gpu/drm/drm_bridge_connector.c | 23 +++++++++++++++++++
+>  include/drm/drm_bridge.h               | 31 ++++++++++++++++++++++++++
+>  2 files changed, 54 insertions(+)
 > 
-> Merging with patch series by Tomi Valkeinen and Sebastian Reichel
-> for omapdrm/dsi will need to move the Kconfig and Makefile one level
-> up.
+> diff --git a/drivers/gpu/drm/drm_bridge_connector.c b/drivers/gpu/drm/drm_bridge_connector.c
+> index 791379816837..2ff90f5e468c 100644
+> --- a/drivers/gpu/drm/drm_bridge_connector.c
+> +++ b/drivers/gpu/drm/drm_bridge_connector.c
+> @@ -84,6 +84,13 @@ struct drm_bridge_connector {
+>  	 * connector modes detection, if any (see &DRM_BRIDGE_OP_MODES).
+>  	 */
+>  	struct drm_bridge *bridge_modes;
+> +	/**
+> +	 * @bridge_cec:
+> +	 *
+> +	 * The last bridge in the chain (closest to the connector) that provides
+> +	 * cec adapter support, if any (see &DRM_BRIDGE_OP_CEC).
+> +	 */
+> +	struct drm_bridge *bridge_cec;
+>  };
+>  
+>  #define to_drm_bridge_connector(x) \
+> @@ -204,6 +211,11 @@ static void drm_bridge_connector_destroy(struct drm_connector *connector)
+>  	struct drm_bridge_connector *bridge_connector =
+>  		to_drm_bridge_connector(connector);
+>  
+> +	if (bridge_connector->bridge_cec) {
+> +		struct drm_bridge *cec = bridge_connector->bridge_cec;
+> +
+> +		cec->funcs->cec_exit(cec);
+> +	}
+>  	if (bridge_connector->bridge_hpd) {
+>  		struct drm_bridge *hpd = bridge_connector->bridge_hpd;
+>  
+> @@ -352,6 +364,8 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>  			bridge_connector->bridge_detect = bridge;
+>  		if (bridge->ops & DRM_BRIDGE_OP_MODES)
+>  			bridge_connector->bridge_modes = bridge;
+> +		if (bridge->ops & DRM_BRIDGE_OP_CEC)
+> +			bridge_connector->bridge_cec = bridge;
+>  
+>  		if (!drm_bridge_get_next_bridge(bridge))
+>  			connector_type = bridge->type;
+> @@ -374,6 +388,15 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>  	else if (bridge_connector->bridge_detect)
+>  		connector->polled = DRM_CONNECTOR_POLL_CONNECT
+>  				  | DRM_CONNECTOR_POLL_DISCONNECT;
+> +	if (bridge_connector->bridge_cec) {
+> +		struct drm_bridge *bridge = bridge_connector->bridge_cec;
+> +		int ret = bridge->funcs->cec_init(bridge, connector);
+> +
+> +		if (ret) {
+> +			drm_bridge_connector_destroy(connector);
+> +			return ERR_PTR(ret);
+> +		}
+> +	}
+>  
+>  	return connector;
+>  }
+> diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
+> index 2195daa289d2..4c83c2657e87 100644
+> --- a/include/drm/drm_bridge.h
+> +++ b/include/drm/drm_bridge.h
+> @@ -629,6 +629,30 @@ struct drm_bridge_funcs {
+>  	 * the DRM_BRIDGE_OP_HPD flag in their &drm_bridge->ops.
+>  	 */
+>  	void (*hpd_disable)(struct drm_bridge *bridge);
+> +
+> +	/**
+> +	 * @cec_init:
+> +	 *
+> +	 * Initialize the CEC adapter.
+> +	 *
+> +	 * This callback is optional and shall only be implemented by bridges
+> +	 * that support a CEC adapter. Bridges that implement it shall also
+> +	 * implement the @cec_exit callback and set the DRM_BRIDGE_OP_CEC flag
+> +	 * in their &drm_bridge->ops.
+> +	 */
+> +	int (*cec_init)(struct drm_bridge *bridge, struct drm_connector *conn);
+> +
+> +	/**
+> +	 * @cec_exit:
+> +	 *
+> +	 * Terminate the CEC adapter.
+> +	 *
+> +	 * This callback is optional and shall only be implemented by bridges
+> +	 * that support a CEC adapter. Bridges that implement it shall also
+> +	 * implement the @cec_init callback and set the DRM_BRIDGE_OP_CEC flag
+> +	 * in their &drm_bridge->ops.
+> +	 */
+> +	void (*cec_exit)(struct drm_bridge *bridge);
 
-Yes, this conflicts with drm-next due to the Kconfig and Makefile
-changes. Should be trivial to fix.
+These are very ad-hoc operations. Would it make sense to have something
+that could also be reused for other type of intiialization and cleanup
+that require access to the drm_connector ?
 
- Tomi
+>  };
+>  
+>  /**
+> @@ -698,6 +722,13 @@ enum drm_bridge_ops {
+>  	 * this flag shall implement the &drm_bridge_funcs->get_modes callback.
+>  	 */
+>  	DRM_BRIDGE_OP_MODES = BIT(3),
+> +	/**
+> +	 * @DRM_BRIDGE_OP_CEC: The bridge supports a CEC adapter.
+> +	 * Bridges that set this flag shall implement the
+> +	 * &drm_bridge_funcs->cec_init and &drm_bridge_funcs->cec_exit
+> +	 * callbacks.
+> +	 */
+> +	DRM_BRIDGE_OP_CEC = BIT(4),
+>  };
+>  
+>  /**
+
+-- 
+Regards,
+
+Laurent Pinchart
