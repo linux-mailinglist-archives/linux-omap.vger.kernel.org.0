@@ -2,197 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5712C31F912
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Feb 2021 13:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64BA032010B
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Feb 2021 22:59:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbhBSMJD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Feb 2021 07:09:03 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:47456 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbhBSMJB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Feb 2021 07:09:01 -0500
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 19B51344;
-        Fri, 19 Feb 2021 13:08:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1613736497;
-        bh=tlI//Ej4fhmYGZTgpYwteSSrKyyubZTtBivS0HmOKIY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dLXXyrK4cFBLtXTedLwxlmT/eu267UAIdRjknI4SwXKwy1YIFq5mNX14MIl3GmsL5
-         XHwN3hUTmueyCVXog+DPCz9EwV55PkaAvl5VA6akPTWf6D5w7gcRBa+PWCg759FhJ2
-         n+ZvhHV1yIQkJBPgqf0Jeyct/u81LQJIf0JzKyM4=
-Date:   Fri, 19 Feb 2021 14:07:50 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc:     linux-media@vger.kernel.org,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
-        Sekhar Nori <nsekhar@ti.com>, Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 2/5] drm/omap: hdmi4: switch to the cec bridge ops
-Message-ID: <YC+qFsroJl8+Oy3q@pendragon.ideasonboard.com>
-References: <20210211103703.444625-1-hverkuil-cisco@xs4all.nl>
- <20210211103703.444625-3-hverkuil-cisco@xs4all.nl>
+        id S229959AbhBSV7g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Feb 2021 16:59:36 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:53186 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229767AbhBSV6y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Feb 2021 16:58:54 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id B64A01C0BC2; Fri, 19 Feb 2021 22:57:53 +0100 (CET)
+Date:   Fri, 19 Feb 2021 22:57:53 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
+        Carl Philipp Klemm <philipp@uvos.xyz>
+Subject: Re: Droid 4 charging
+Message-ID: <20210219215752.GA31435@amd>
+References: <20210206131415.GA4499@amd>
+ <YCn5+ZPdPojwCz8g@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="qMm9M+Fa2AknHoGS"
 Content-Disposition: inline
-In-Reply-To: <20210211103703.444625-3-hverkuil-cisco@xs4all.nl>
+In-Reply-To: <YCn5+ZPdPojwCz8g@atomide.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Hans,
 
-Thank you for the patch.
+--qMm9M+Fa2AknHoGS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 11, 2021 at 11:37:00AM +0100, Hans Verkuil wrote:
-> Implement the new CEC bridge ops. This makes it possible to associate
-> a CEC adapter with a drm connector, which helps userspace determine
-> with cec device node belongs to which drm connector.
-> 
-> Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-> ---
->  drivers/gpu/drm/omapdrm/dss/hdmi4.c     | 28 +++++++++++++++++--------
->  drivers/gpu/drm/omapdrm/dss/hdmi4_cec.c |  8 ++++---
->  drivers/gpu/drm/omapdrm/dss/hdmi4_cec.h |  7 ++++---
->  3 files changed, 28 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/hdmi4.c b/drivers/gpu/drm/omapdrm/dss/hdmi4.c
-> index 8de41e74e8f8..765379380d4b 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/hdmi4.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/hdmi4.c
-> @@ -482,6 +482,21 @@ static struct edid *hdmi4_bridge_get_edid(struct drm_bridge *bridge,
->  	return edid;
->  }
->  
-> +static int hdmi4_bridge_cec_init(struct drm_bridge *bridge,
-> +				 struct drm_connector *conn)
-> +{
-> +	struct omap_hdmi *hdmi = drm_bridge_to_hdmi(bridge);
-> +
-> +	return hdmi4_cec_init(hdmi->pdev, &hdmi->core, &hdmi->wp, conn);
-> +}
-> +
-> +static void hdmi4_bridge_cec_exit(struct drm_bridge *bridge)
-> +{
-> +	struct omap_hdmi *hdmi = drm_bridge_to_hdmi(bridge);
-> +
-> +	hdmi4_cec_uninit(&hdmi->core);
-> +}
-> +
->  static const struct drm_bridge_funcs hdmi4_bridge_funcs = {
->  	.attach = hdmi4_bridge_attach,
->  	.mode_set = hdmi4_bridge_mode_set,
-> @@ -492,13 +507,15 @@ static const struct drm_bridge_funcs hdmi4_bridge_funcs = {
->  	.atomic_disable = hdmi4_bridge_disable,
->  	.hpd_notify = hdmi4_bridge_hpd_notify,
->  	.get_edid = hdmi4_bridge_get_edid,
-> +	.cec_init = hdmi4_bridge_cec_init,
-> +	.cec_exit = hdmi4_bridge_cec_exit,
->  };
->  
->  static void hdmi4_bridge_init(struct omap_hdmi *hdmi)
->  {
->  	hdmi->bridge.funcs = &hdmi4_bridge_funcs;
->  	hdmi->bridge.of_node = hdmi->pdev->dev.of_node;
-> -	hdmi->bridge.ops = DRM_BRIDGE_OP_EDID;
-> +	hdmi->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_CEC;
->  	hdmi->bridge.type = DRM_MODE_CONNECTOR_HDMIA;
->  
->  	drm_bridge_add(&hdmi->bridge);
-> @@ -647,14 +664,10 @@ static int hdmi4_bind(struct device *dev, struct device *master, void *data)
->  	if (r)
->  		goto err_runtime_put;
->  
-> -	r = hdmi4_cec_init(hdmi->pdev, &hdmi->core, &hdmi->wp);
-> -	if (r)
-> -		goto err_pll_uninit;
+Hi!
 
-I'm wondering ifwe need to delay the creation of the CEC adapter until
-the DRM connector is ready, or if we could only delay its registration ?
-Catching errors related to adapter creation early could be nice, the
-more error we have to handle at DRM bridge connector creation time, the
-more complex the error handling will be for bridge support.
+> > (I'm using Leste 5.10 kernel here).
+> >=20
+> > When battery is full, green light is off and 0.00A being drawn from
+> > USB.
+> >=20
+> > But that means that phone is now powered from battery, discharging
+> > it... And soon charging starts again. (Pretty much immediately, for me)
+> >=20
+> > That's bad ... right? It wears the battery out.
+>=20
+> Well maintenance charging at 4.2V sure is better for the battery than
+> what android is doing charging it at 4.31V contantly..
 
-> -
->  	r = hdmi_audio_register(hdmi);
->  	if (r) {
->  		DSSERR("Registering HDMI audio failed\n");
-> -		goto err_cec_uninit;
-> +		goto err_pll_uninit;
->  	}
->  
->  	hdmi->debugfs = dss_debugfs_create_file(dss, "hdmi", hdmi_dump_regs,
-> @@ -664,8 +677,6 @@ static int hdmi4_bind(struct device *dev, struct device *master, void *data)
->  
->  	return 0;
->  
-> -err_cec_uninit:
-> -	hdmi4_cec_uninit(&hdmi->core);
->  err_pll_uninit:
->  	hdmi_pll_uninit(&hdmi->pll);
->  err_runtime_put:
-> @@ -682,7 +693,6 @@ static void hdmi4_unbind(struct device *dev, struct device *master, void *data)
->  	if (hdmi->audio_pdev)
->  		platform_device_unregister(hdmi->audio_pdev);
->  
-> -	hdmi4_cec_uninit(&hdmi->core);
->  	hdmi_pll_uninit(&hdmi->pll);
->  }
->  
-> diff --git a/drivers/gpu/drm/omapdrm/dss/hdmi4_cec.c b/drivers/gpu/drm/omapdrm/dss/hdmi4_cec.c
-> index 43592c1cf081..64f5ccd0f11b 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/hdmi4_cec.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/hdmi4_cec.c
-> @@ -335,10 +335,10 @@ void hdmi4_cec_set_phys_addr(struct hdmi_core_data *core, u16 pa)
->  }
->  
->  int hdmi4_cec_init(struct platform_device *pdev, struct hdmi_core_data *core,
-> -		  struct hdmi_wp_data *wp)
-> +		   struct hdmi_wp_data *wp, struct drm_connector *conn)
->  {
-> -	const u32 caps = CEC_CAP_TRANSMIT | CEC_CAP_LOG_ADDRS |
-> -			 CEC_CAP_PASSTHROUGH | CEC_CAP_RC;
-> +	const u32 caps = CEC_CAP_DEFAULTS | CEC_CAP_CONNECTOR_INFO;
-> +	struct cec_connector_info conn_info;
->  	int ret;
->  
->  	core->adap = cec_allocate_adapter(&hdmi_cec_adap_ops, core,
-> @@ -346,6 +346,8 @@ int hdmi4_cec_init(struct platform_device *pdev, struct hdmi_core_data *core,
->  	ret = PTR_ERR_OR_ZERO(core->adap);
->  	if (ret < 0)
->  		return ret;
-> +	cec_fill_conn_info_from_drm(&conn_info, conn);
-> +	cec_s_conn_info(core->adap, &conn_info);
->  	core->wp = wp;
->  
->  	/* Disable clock initially, hdmi_cec_adap_enable() manages it */
-> diff --git a/drivers/gpu/drm/omapdrm/dss/hdmi4_cec.h b/drivers/gpu/drm/omapdrm/dss/hdmi4_cec.h
-> index 0292337c97cc..b59a54c3040e 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/hdmi4_cec.h
-> +++ b/drivers/gpu/drm/omapdrm/dss/hdmi4_cec.h
-> @@ -29,7 +29,7 @@ struct platform_device;
->  void hdmi4_cec_set_phys_addr(struct hdmi_core_data *core, u16 pa);
->  void hdmi4_cec_irq(struct hdmi_core_data *core);
->  int hdmi4_cec_init(struct platform_device *pdev, struct hdmi_core_data *core,
-> -		  struct hdmi_wp_data *wp);
-> +		   struct hdmi_wp_data *wp, struct drm_connector *conn);
->  void hdmi4_cec_uninit(struct hdmi_core_data *core);
->  #else
->  static inline void hdmi4_cec_set_phys_addr(struct hdmi_core_data *core, u16 pa)
-> @@ -41,8 +41,9 @@ static inline void hdmi4_cec_irq(struct hdmi_core_data *core)
->  }
->  
->  static inline int hdmi4_cec_init(struct platform_device *pdev,
-> -				struct hdmi_core_data *core,
-> -				struct hdmi_wp_data *wp)
-> +				 struct hdmi_core_data *core,
-> +				 struct hdmi_wp_data *wp,
-> +				 struct drm_connector *conn)
->  {
->  	return 0;
->  }
+Well, 4.2 is better than 4.3, but I'm not sure about the rest.
 
--- 
-Regards,
+> > If I turn off charging with echo 0 > input_current_limit, 0.2 to 0.4A
+> > is drawn from USB, and battery is not discharged:
+> >=20
+> > root@devuan-droid4:/sys/class/power_supply/usb# echo 0 >  input_current=
+_limit
+> > root@devuan-droid4:/sys/class/power_supply/usb# cat current_now
+> > 0
+>=20
+> Hmm so have you measured that setting the current limit to 0 actually
+> draws something from the USB?
 
-Laurent Pinchart
+Yes, it does, if I do the echo when charge is done. (I have small USB
+passthrough with volt and amp meters). It has been behaving weirdly in
+other cases.p
+
+> I recall clearing the ichrgr bits stops the vbus draw completely, but
+> I could be wrong.
+>=20
+> > Is that a better way to handle full battery?
+>=20
+> We could experiment with switching over to usb power when the battery is
+> full. Looking at the docs for mc1378 it might be possible that setting
+> CPCAP_REG_CRM_FET_OVRD and clearing CPCAP_REG_CRM_FET_CTRL after the
+> battery is full disables charging but still keep drawing power from
+> the usb. I'd assume the current limit still needs to be nonzero there
+> too? Totally untested..
+
+I may be able to test patches...
+
+> And switching back to battery power on usb disconnect will potentially
+> only give us very little time based on the different line length for
+> vbus and ground pins compared to data pins on the usb connector.. And
+> uvos had some concerns about the battery capacity putting it back online,
+> so adding him to Cc also.
+
+You mean, we'd have to take interrupt and switch registers in order to
+switch back to battery power, and system would crash if we did not
+make it in time?
+
+> Maybe just clearing ichrgr does all this already though and is enough.
+> It should be measured on the vbus line.
+
+It works for me... measuring current at the usb connector.
+
+> And then we still need to restart the charger at some point, but that
+> could happen based on much longer timeouts that what we currently have.
+
+Li-ion batteries are very slow to self-discharge. This could timeout
+could be week... or maybe a year.
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--qMm9M+Fa2AknHoGS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAmAwNGAACgkQMOfwapXb+vLZhACggmJ4K5ld7AzSt/1ows58as6s
+FKoAn3gFfGas6Mpw6BnpPiX/jRUU1ROZ
+=sZv1
+-----END PGP SIGNATURE-----
+
+--qMm9M+Fa2AknHoGS--
