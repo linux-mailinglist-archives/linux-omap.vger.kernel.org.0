@@ -2,29 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E3B431F7FD
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Feb 2021 12:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBB9431F802
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Feb 2021 12:14:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbhBSLNd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Feb 2021 06:13:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57532 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230260AbhBSLNO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Feb 2021 06:13:14 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4915C061756;
-        Fri, 19 Feb 2021 03:12:33 -0800 (PST)
+        id S230257AbhBSLNk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Feb 2021 06:13:40 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:46790 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229985AbhBSLNi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Feb 2021 06:13:38 -0500
 Received: from [192.168.1.111] (91-157-208-71.elisa-laajakaista.fi [91.157.208.71])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 01BE6344;
-        Fri, 19 Feb 2021 12:12:31 +0100 (CET)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id D0F7D344;
+        Fri, 19 Feb 2021 12:12:54 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1613733152;
-        bh=zSqnprN9syMsq26nUav1NelvsVyL604Z08KY4o55J+g=;
+        s=mail; t=1613733175;
+        bh=dR+4n28CUDnxq3iBCzXnNIjvUHkCtumjivd8v1kFkWg=;
         h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=XTBTTRftg4PdblLJMur8etDvPTVkjSr7juHUS0505BtZL/xwefVNV4mN15VQraqvz
-         F/4e/ySaA5ZVrbupeR7jSvb1+HdjAnxLlrK0HdSlkuR5CZKKxfXXEyT/sYQC52PcQy
-         h04ghc5X85Evd43wmoxi1dCPQ2e5UF6+Ox5w2iqw=
-Subject: Re: [PATCH 1/5] drm: drm_bridge: add cec_init/exit bridge ops
+        b=JA/lTV4Gn4jK92B42MPucoE7AjB8/hr2XMZqmksm5lHQREOcy9hofdlAziCddlOnc
+         gbXz3BAvkq91BxmiEhJ/Sbwj78oe7jqQiZTuVTCZxdgyFeJjUVSukDtwMwgODSD/aa
+         OUtoeMrTIgLVjfXwXfMiVu0SzK5pJlbs2tCu490E=
+Subject: Re: [PATCH 2/5] drm/omap: hdmi4: switch to the cec bridge ops
 To:     Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         linux-media@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
@@ -32,7 +29,7 @@ Cc:     Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
         Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
         linux-omap@vger.kernel.org
 References: <20210211103703.444625-1-hverkuil-cisco@xs4all.nl>
- <20210211103703.444625-2-hverkuil-cisco@xs4all.nl>
+ <20210211103703.444625-3-hverkuil-cisco@xs4all.nl>
 From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
  mQINBE6ms0cBEACyizowecZqXfMZtnBniOieTuFdErHAUyxVgtmr0f5ZfIi9Z4l+uUN4Zdw2
@@ -77,12 +74,12 @@ Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
  ueeIlwJl5CpT5l8RpoZXEOVtXYn8zzOJ7oGZYINRV9Pf8qKGLf3Dft7zKBP832I3PQjeok7F
  yjt+9S+KgSFSHP3Pa4E7lsSdWhSlHYNdG/czhoUkSCN09C0rEK93wxACx3vtxPLjXu6RptBw
  3dRq7n+mQChEB1am0BueV1JZaBboIL0AGlSJkm23kw==
-Message-ID: <c067aae4-0886-12c3-6d3d-232559fa6fc4@ideasonboard.com>
-Date:   Fri, 19 Feb 2021 13:12:31 +0200
+Message-ID: <429021f9-3f28-1150-e241-7529842f539b@ideasonboard.com>
+Date:   Fri, 19 Feb 2021 13:12:54 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210211103703.444625-2-hverkuil-cisco@xs4all.nl>
+In-Reply-To: <20210211103703.444625-3-hverkuil-cisco@xs4all.nl>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -90,16 +87,17 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 11/02/2021 12:36, Hans Verkuil wrote:
-> Add bridge cec_init/exit ops. These ops will be responsible for
-> creating and destroying the CEC adapter for the bridge that supports
-> CEC.
+On 11/02/2021 12:37, Hans Verkuil wrote:
+> Implement the new CEC bridge ops. This makes it possible to associate
+> a CEC adapter with a drm connector, which helps userspace determine
+> with cec device node belongs to which drm connector.
 > 
 > Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 > ---
->  drivers/gpu/drm/drm_bridge_connector.c | 23 +++++++++++++++++++
->  include/drm/drm_bridge.h               | 31 ++++++++++++++++++++++++++
->  2 files changed, 54 insertions(+)
+>  drivers/gpu/drm/omapdrm/dss/hdmi4.c     | 28 +++++++++++++++++--------
+>  drivers/gpu/drm/omapdrm/dss/hdmi4_cec.c |  8 ++++---
+>  drivers/gpu/drm/omapdrm/dss/hdmi4_cec.h |  7 ++++---
+>  3 files changed, 28 insertions(+), 15 deletions(-)
 
 Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
