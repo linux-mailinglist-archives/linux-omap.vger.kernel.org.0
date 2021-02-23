@@ -2,60 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 322203229FF
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Feb 2021 13:01:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E3CD323189
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Feb 2021 20:40:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232557AbhBWL5J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Feb 2021 06:57:09 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232501AbhBWLyb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Feb 2021 06:54:31 -0500
-Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
- RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
-Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
- 03:52:20 -0800
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <johnpinto@jvpinto.com>
-Subject: Hello okay
-Date:   Tue, 23 Feb 2021 11:52:34 +0000
+        id S232600AbhBWTjG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Feb 2021 14:39:06 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:55698 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231795AbhBWTjG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Feb 2021 14:39:06 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1lEdVm-0001MK-3Z; Tue, 23 Feb 2021 19:38:22 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Roger Quadros <rogerq@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-omap@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] memory: gpmc: fix out of bounds read and dereference on gpmc_cs[]
+Date:   Tue, 23 Feb 2021 19:38:21 +0000
+Message-Id: <20210223193821.17232-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
-To:     Undisclosed recipients:;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
+From: Colin Ian King <colin.king@canonical.com>
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+Currently the array gpmc_cs is indexed by cs before it cs is range checked
+and the pointer read from this out-of-index read is dereferenced. Fix this
+by performing the range check on cs before the read and the following
+pointer dereference.
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+Addresses-Coverity: ("Negative array index read")
+Fixes: 186401937927 ("memory: gpmc: Move omap gpmc code to live under drivers")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/memory/omap-gpmc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
+diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+index cfa730cfd145..f80c2ea39ca4 100644
+--- a/drivers/memory/omap-gpmc.c
++++ b/drivers/memory/omap-gpmc.c
+@@ -1009,8 +1009,8 @@ EXPORT_SYMBOL(gpmc_cs_request);
+ 
+ void gpmc_cs_free(int cs)
+ {
+-	struct gpmc_cs_data *gpmc = &gpmc_cs[cs];
+-	struct resource *res = &gpmc->mem;
++	struct gpmc_cs_data *gpmc;
++	struct resource *res;
+ 
+ 	spin_lock(&gpmc_mem_lock);
+ 	if (cs >= gpmc_cs_num || cs < 0 || !gpmc_cs_reserved(cs)) {
+@@ -1018,6 +1018,9 @@ void gpmc_cs_free(int cs)
+ 		spin_unlock(&gpmc_mem_lock);
+ 		return;
+ 	}
++	gpmc = &gpmc_cs[cs];
++	res = &gpmc->mem;
++
+ 	gpmc_cs_disable_mem(cs);
+ 	if (res->flags)
+ 		release_resource(res);
+-- 
+2.30.0
 
-Regards,
-Ms. Reem.
