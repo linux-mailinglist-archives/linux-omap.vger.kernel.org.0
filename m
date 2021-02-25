@@ -2,79 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EFD03238F5
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Feb 2021 09:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C5E7324C48
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Feb 2021 09:57:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233108AbhBXIsS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Feb 2021 03:48:18 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:45495 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234039AbhBXIrW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Feb 2021 03:47:22 -0500
-Received: from cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net ([80.193.200.194] helo=[192.168.0.210])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1lEpoa-0002NZ-1G; Wed, 24 Feb 2021 08:46:36 +0000
-Subject: Re: [PATCH] memory: gpmc: fix out of bounds read and dereference on
- gpmc_cs[]
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Roger Quadros <rogerq@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-omap@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210223193821.17232-1-colin.king@canonical.com>
- <20210224075552.GS2087@kadam>
-From:   Colin Ian King <colin.king@canonical.com>
-Message-ID: <eba7420b-80e3-6f4d-7f19-06b068bc5977@canonical.com>
-Date:   Wed, 24 Feb 2021 08:46:35 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
-MIME-Version: 1.0
-In-Reply-To: <20210224075552.GS2087@kadam>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S229952AbhBYIzk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Feb 2021 03:55:40 -0500
+Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:51532 "EHLO
+        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230091AbhBYIzf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 25 Feb 2021 03:55:35 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R661e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0UPX1XWK_1614243292;
+Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0UPX1XWK_1614243292)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Thu, 25 Feb 2021 16:54:52 +0800
+From:   Yang Li <yang.lee@linux.alibaba.com>
+To:     bcousson@baylibre.com
+Cc:     paul@pwsan.com, tony@atomide.com, linux@armlinux.org.uk,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>
+Subject: [PATCH] ARM: OMAP2+: add missing call to of_node_put()
+Date:   Thu, 25 Feb 2021 16:54:50 +0800
+Message-Id: <1614243290-47105-1-git-send-email-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 24/02/2021 07:55, Dan Carpenter wrote:
-> On Tue, Feb 23, 2021 at 07:38:21PM +0000, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Currently the array gpmc_cs is indexed by cs before it cs is range checked
->> and the pointer read from this out-of-index read is dereferenced. Fix this
->> by performing the range check on cs before the read and the following
->> pointer dereference.
->>
->> Addresses-Coverity: ("Negative array index read")
->> Fixes: 186401937927 ("memory: gpmc: Move omap gpmc code to live under drivers")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/memory/omap-gpmc.c | 7 +++++--
->>  1 file changed, 5 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
->> index cfa730cfd145..f80c2ea39ca4 100644
->> --- a/drivers/memory/omap-gpmc.c
->> +++ b/drivers/memory/omap-gpmc.c
->> @@ -1009,8 +1009,8 @@ EXPORT_SYMBOL(gpmc_cs_request);
->>  
->>  void gpmc_cs_free(int cs)
->>  {
->> -	struct gpmc_cs_data *gpmc = &gpmc_cs[cs];
->> -	struct resource *res = &gpmc->mem;
-> > There is no actual dereferencing going on here, it just taking the
-> addresses.  But the patch is also harmless and improves readability.
+In one of the error paths of the for_each_child_of_node() loop,
+add missing call to of_node_put().
 
-Plus compilers are getting smarter with static analysis so some day in
-the future they will warn about this.
+Fix the following coccicheck warning:
+./arch/arm/mach-omap2/omap_hwmod.c:2132:1-23: WARNING: Function
+"for_each_child_of_node" should have of_node_put() before return around
+line 2140.
 
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
+ arch/arm/mach-omap2/omap_hwmod.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
-> regards,
-> dan carpenter
-> 
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+index 2310cd5..007e91e 100644
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -2137,6 +2137,7 @@ static int of_dev_hwmod_lookup(struct device_node *np,
+ 		if (res == 0) {
+ 			*found = fc;
+ 			*index = i;
++			of_node_put(np0);
+ 			return 0;
+ 		}
+ 	}
+-- 
+1.8.3.1
 
