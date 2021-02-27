@@ -2,69 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF7BE326C16
-	for <lists+linux-omap@lfdr.de>; Sat, 27 Feb 2021 08:19:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80DA1326F56
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Feb 2021 23:36:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229752AbhB0HTe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 27 Feb 2021 02:19:34 -0500
-Received: from muru.com ([72.249.23.125]:37738 "EHLO muru.com"
+        id S230215AbhB0WfI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 27 Feb 2021 17:35:08 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:42077 "EHLO mail.JVPinto.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229751AbhB0HTe (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 27 Feb 2021 02:19:34 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D60AA80CE;
-        Sat, 27 Feb 2021 07:19:25 +0000 (UTC)
-Date:   Sat, 27 Feb 2021 09:18:45 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Nikhil Devshatwar <nikhil.nd@ti.com>,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sekhar Nori <nsekhar@ti.com>, hns@goldelico.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v4 24/80] drm/omap: dsi: move TE GPIO handling into core
-Message-ID: <YDnyVV/O78sQjtWb@atomide.com>
-References: <20201124124538.660710-1-tomi.valkeinen@ti.com>
- <20201124124538.660710-25-tomi.valkeinen@ti.com>
- <YCF7ARchcMKvWa4s@atomide.com>
- <5b469566-c926-7e1f-8872-84774b96f389@ideasonboard.com>
- <YCVq8JnuMLQq6FEc@atomide.com>
- <4432cf2c-fe15-dab0-3034-789f6d711396@ideasonboard.com>
- <YC4Bte47SFKVgrqX@atomide.com>
- <7c852efd-560a-4dbb-ed04-e4812b343a33@ideasonboard.com>
- <YDecMzuPaXGS/n5l@atomide.com>
- <0eb62659-041d-d3bd-3803-4d562677dfbf@ideasonboard.com>
+        id S230001AbhB0We7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 27 Feb 2021 17:34:59 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Sat, 27 Feb 2021 14:33:46 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Sat, 27 Feb 2021
+ 14:33:32 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Sat, 27 Feb 2021 22:33:46 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0eb62659-041d-d3bd-3803-4d562677dfbf@ideasonboard.com>
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <837a988e66554c5d95b18ae85648d3d7@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> [210226 09:04]:
-> Hmm, if I read the code right, TE was not enabled at all before this patch.
-> And this patch enables it. So maybe TE has never worked with that panel?
-> 
-> You could try changing the enable_te calls to pass false.
-> 
-> Or with the upstream driver, comment out
-> 
-> mipi_dsi_dcs_set_tear_on(ddata->dsi, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
+Hello,
 
-Yup you're right that's it.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Commenting it out in drivers/gpu/drm/panel/panel-dsi-cm.c makes the
-warnings go away.
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-There are some BTA related comments in the old v3.0.8 based Android
-kernel for droid4 panel at [0], but I don't really follow what they
-mean. Maybe it's some ordering issue?
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
 
 Regards,
-
-Tony
-
-
-[0] https://github.com/NotKit/android_kernel_motorola_omap4-common/blob/hybris-11.0/drivers/video/omap2/displays/panel-mapphone.c
+Ms. Reem.
