@@ -2,108 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DC3F32B1C8
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Mar 2021 04:47:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EEB632B19B
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Mar 2021 04:46:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240687AbhCCAsD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Mar 2021 19:48:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36014 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347855AbhCBQc0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 Mar 2021 11:32:26 -0500
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41FF0C06178B
-        for <linux-omap@vger.kernel.org>; Tue,  2 Mar 2021 08:21:36 -0800 (PST)
-Received: by mail-lj1-x235.google.com with SMTP id a17so24691685ljq.2
-        for <linux-omap@vger.kernel.org>; Tue, 02 Mar 2021 08:21:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dDtVuAUG8eYI5Eln5QS/TclUSCWz1TjGe2OhWQ2Hzok=;
-        b=if3nP/oZALnybjJAUkUtzqsvs3YK7lJTKnmGNAKAtkwkVzIB8mFHuhnw39Age4qxUS
-         UXw4iYbDW54LVkGsJpSlpCufhFpXSXWrspZnZVQvzvmbL4hoMK6k1yEd5RN5BV+l0zKp
-         tXtWk5HPWV2fweqJVtX8sHIWvuZWbxVoSpCFOUKgPtdFaCV2kH7EuRSveUN20qcFG1og
-         wyrqlkSN21mX7hX7xxtgzoot8V4HzSFxwkYFb/OJ+vf7aE1D4NJTbKYunNSiNEI9kP9y
-         s+wCBi42PEGQZkVQoauPMQTxxO1r/MHtP+jvcnpmfUsTbIdbT4RlvrpKFT5uBgM18SPw
-         Mw9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dDtVuAUG8eYI5Eln5QS/TclUSCWz1TjGe2OhWQ2Hzok=;
-        b=DWY406Zq0g1B6Pbi1ONtINuAunRQWuZBTBG6SGxEfXZxJPdIiTqINiZOV8Bx9+zIKR
-         M2Rd8Ac1qbjPuJwGTTT/Mb0C9B03ytW+9odqHs7L9tMJfuwZdzv061w/e79+9SXaRzUU
-         0q7PUSzA1c4cnFQuEzsAA63pFPAXFHT7KEk1EMPOnqOzGNa0RIDAfPzR9pZVPzQjPB/S
-         ekumR4L5M+eDbiTcD4TObxioC6JTYqANmNx6oD1jUOosLkoCNwMz8021kkCtcLos+7YV
-         2PX8Ppk3NWnrYbD0sZbJfGJaZZQct2JA8m1KwZZ8z5WExBXLjUEiKWQN57klF1qmtr0R
-         zQYQ==
-X-Gm-Message-State: AOAM532RhSS62QiKUNB4R2TPIgglDnejFV3q+3fQKuyvaiHNDRTPenjo
-        tHMsS8YFL/g/++702T5UYP2PVeGALDNB3fPXF6A9Sg==
-X-Google-Smtp-Source: ABdhPJzXqrYBkkHlZel98Kbs7UOBikTi+iuddAEEWTpHvvJw+VnT+XciCztoznAVqXpZN+sKledBjpv4CVaTd6nqOkQ=
-X-Received: by 2002:a2e:9041:: with SMTP id n1mr12550220ljg.273.1614702094699;
- Tue, 02 Mar 2021 08:21:34 -0800 (PST)
+        id S239110AbhCCAq2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 2 Mar 2021 19:46:28 -0500
+Received: from lb2-smtp-cloud7.xs4all.net ([194.109.24.28]:53527 "EHLO
+        lb2-smtp-cloud7.xs4all.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1449287AbhCBQ1h (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 Mar 2021 11:27:37 -0500
+Received: from cust-b5b5937f ([IPv6:fc0c:c16d:66b8:757f:c639:739b:9d66:799d])
+        by smtp-cloud7.xs4all.net with ESMTPA
+        id H7oZlNjwSOruFH7odlAWMi; Tue, 02 Mar 2021 17:24:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s2;
+        t=1614702253; bh=VtC7GTkBG2WhDcVnnTw3UXgMnGhDtHHBmjRC4T4mQZs=;
+        h=From:To:Subject:Date:Message-Id:MIME-Version:From:Subject;
+        b=MwPqEHaOvO8LUVDYUtfvZX7yRfbAnP5emQqHkX1hwxOb7UKKUK6vUfnQLGXg4v8xu
+         kLszxJUEHtEDyFWMJA+CKRWHOAG2cWuBpHSTl7rKj+1r2fW9KGgGyyOTJ3pfLE1EDz
+         8/6v/UvknmHfuMSUqqfWZekMvBC3nXe49ABVhUFrCHXczCsu9G83xp4CQkNHa/Ea05
+         EXfCfnussBW8aE5GakYi6vhXCrtlwtbMwthW/xOnTYGnZGCxGpCkFZr2Wii0/JkCGk
+         nWDZi2BeBgvNLcTNSoX2I5AcLBHTa0nl3/o7I5Ry/p/NAd+6MF78kzhJ0OXR+x/uYO
+         uqrqPmHpyDy1w==
+From:   Hans Verkuil <hverkuil-cisco@xs4all.nl>
+To:     linux-media@vger.kernel.org
+Cc:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
+        dri-devel@lists.freedesktop.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCHv2 0/6] drm/omap: hdmi: improve hdmi4 CEC, add CEC for hdmi5
+Date:   Tue,  2 Mar 2021 17:23:57 +0100
+Message-Id: <20210302162403.983585-1-hverkuil-cisco@xs4all.nl>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-References: <20210302011813.2331879-1-alexander.sverdlin@gmail.com>
-In-Reply-To: <20210302011813.2331879-1-alexander.sverdlin@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 2 Mar 2021 17:21:23 +0100
-Message-ID: <CACRpkdYErJH5RUjL+jPC5vnaqGiOqBwHsr0E42wOWrpBGrpS3w@mail.gmail.com>
-Subject: Re: [PATCH] gpio: omap: Honor "aliases" node
-To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfH1WztQd5puTGwx9jr7Qnb4a6LSVKsuJG9LXZaF/19eoi/zr0o+zEmykIrlunj4rGbDj3oLAAcpap3fmA4yi700pShKgsJ36UmKM8zK0vFiMwowA0McA
+ p0X7zcRF1f0Bt80pqq+QxNP57ZdF+6DcZteipsPrtf0MpRJWmg/YoAtzPfTOAtJbMi9ani09XzV3DhPqjwDjUJ9Ny2cjHca34nTE+1WsZq4beI45Eo6w9OCt
+ 9fSguGiPru6OyPrqXedv9aWlX0N3USTGqyKQ647NmJhgfzNy13cTErdyRkDoWTSkL3p57FxtrK55siVAeJHapfEg+gIkxBTNL/7MKSX9ghml2NNoO+QI/a3K
+ cendEyr9bcjZCKYo5f12N0igPjrLxTdaTWVzTO8SilIuNEXLP3Q45V8Db5rvnAdmebZ2s2ERm0IBbL3dLgKJPW0rAnwOfMKkQf9d9h9lF4h1CuBPrCteunAh
+ SizYOiESX0NgPN7i
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Mar 2, 2021 at 2:18 AM Alexander Sverdlin
-<alexander.sverdlin@gmail.com> wrote:
+This series improves the drm_bridge support for CEC by introducing two
+new bridge ops in the first patch, and using those in the second patch.
 
-> Currently the naming of the GPIO chips depends on their order in the DT,
-> but also on the kernel version (I've noticed the change from v5.10.x to
-> v5.11). Honor the persistent enumeration in the "aliases" node like other
-> GPIO drivers do.
->
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-> ---
-> Yes, I noticed checkpatch "WARNING: DT binding docs and includes should be
-> a separate patch."
-> However, the parts below are tiny and barely make sense separately.
+This makes it possible to call cec_s_conn_info() and set
+CEC_CAP_CONNECTOR_INFO for the CEC adapter, so userspace can associate
+the CEC adapter with the corresponding DRM connector.
 
-I've shut it down in the past because the instance ordering is a
-linuxism and the needs are in the Linux userspace somehow.
-It is different from a UART for example, which always need to
-be at the same place on any operating system, hence it has an
-alias.
+The third patch simplifies CEC physical address handling by using the
+cec_s_phys_addr_from_edid helper function that didn't exist when this
+code was originally written.
 
-For kernelspace the instance order should not matter, since
-all resources are obtained from the device tree anyway
-by phandle.
+The fourth patch adds the cec clock to ti,omap5-dss.txt.
 
-For userspace:
-The way to determine topology in Linux userspace is to use sysfs,
-and combined with the GPIO character device this provides a
-unique ID for each GPIO chip and line on the system.
+The fifth patch the missing cec clock to the dra7 and omap5 device tree,
+and the last patch adds CEC support to the OMAP5 driver.
 
-/sys/bus/gpio/devices/gpiochip0/
-/sys/bus/gpio/devices/gpiochip1/
+Tested with a Pandaboard and a Beagle X15 board.
 
-etc can change, but these appear as PCI, I2C, SPI, platform
-etc nodes as well. On my PC:
+Regards,
 
-/sys/devices/pci0000:00/0000:00:1a.0/usb1/1-1/1-1.5/1-1.5:1.0/gpiochip0
+	Hans
 
-It's pretty clear where that gpiochip sits.
+Changes since v1:
 
-Yours,
-Linus Walleij
+- as per suggestion from Laurent, changed cec_init/exit to
+  connector_attach/_detach which are just called for all
+  bridges. The DRM_BRIDGE_OP_CEC was dropped.
+
+- added patch to add the cec clock to ti,omap5-dss.txt
+
+- swapped the order of the last two patches
+
+- incorporated Tomi's suggestions for the hdmi5 CEC support.
+
+Hans Verkuil (6):
+  drm: drm_bridge: add connector_attach/detach bridge ops
+  drm/omapdrm/dss/hdmi4: switch to the connector bridge ops
+  drm/omapdrm/dss/hdmi4: simplify CEC Phys Addr handling
+  dt-bindings: display: ti: ti,omap5-dss.txt: add cec clock
+  dra7.dtsi/omap5.dtsi: add cec clock
+  drm/omapdrm/dss/hdmi5: add CEC support
+
+ .../bindings/display/ti/ti,omap5-dss.txt      |   4 +-
+ arch/arm/boot/dts/dra7.dtsi                   |   5 +-
+ arch/arm/boot/dts/omap5.dtsi                  |   5 +-
+ drivers/gpu/drm/drm_bridge_connector.c        |   9 +
+ drivers/gpu/drm/omapdrm/Kconfig               |   8 +
+ drivers/gpu/drm/omapdrm/Makefile              |   1 +
+ drivers/gpu/drm/omapdrm/dss/hdmi.h            |   1 +
+ drivers/gpu/drm/omapdrm/dss/hdmi4.c           |  40 ++--
+ drivers/gpu/drm/omapdrm/dss/hdmi4_cec.c       |  13 +-
+ drivers/gpu/drm/omapdrm/dss/hdmi4_cec.h       |  12 +-
+ drivers/gpu/drm/omapdrm/dss/hdmi5.c           |  63 +++++-
+ drivers/gpu/drm/omapdrm/dss/hdmi5_cec.c       | 209 ++++++++++++++++++
+ drivers/gpu/drm/omapdrm/dss/hdmi5_cec.h       |  42 ++++
+ drivers/gpu/drm/omapdrm/dss/hdmi5_core.c      |  35 ++-
+ drivers/gpu/drm/omapdrm/dss/hdmi5_core.h      |  33 ++-
+ include/drm/drm_bridge.h                      |  27 +++
+ 16 files changed, 453 insertions(+), 54 deletions(-)
+ create mode 100644 drivers/gpu/drm/omapdrm/dss/hdmi5_cec.c
+ create mode 100644 drivers/gpu/drm/omapdrm/dss/hdmi5_cec.h
+
+-- 
+2.30.1
+
