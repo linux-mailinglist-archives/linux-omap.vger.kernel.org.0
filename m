@@ -2,125 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7DC832B113
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Mar 2021 04:46:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DC3F32B1C8
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Mar 2021 04:47:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234969AbhCCAm5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Mar 2021 19:42:57 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:55848 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1838142AbhCBJ3P (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 Mar 2021 04:29:15 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1229RZbM117601;
-        Tue, 2 Mar 2021 03:27:35 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1614677255;
-        bh=VKa9ZLInAy2XzS1IUg7DGYoE6OxMM/zNE7tI2sgufOA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=nBxjVUfBlRsYk2MpVi97OJS/jowTlC6jCid6bRscRLGZNrHe9wRt63lIkr+MNtN2/
-         mqpHAEBGhvoT+ATAls/rEJsUrJKGrwFzUwUkHVVPQ772inAhNxvcin5ohos0G17bEg
-         fCGWJqE0kk3NsU8vEwXtP+cQ/zMx7skQSzb/+OpU=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1229RZtZ004151
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 2 Mar 2021 03:27:35 -0600
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 2 Mar
- 2021 03:27:34 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 2 Mar 2021 03:27:34 -0600
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1229RVZf054243;
-        Tue, 2 Mar 2021 03:27:32 -0600
-Subject: Re: [PATCH] gpio: omap: Honor "aliases" node
-To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        <linux-omap@vger.kernel.org>
-CC:     Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-gpio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20210302011813.2331879-1-alexander.sverdlin@gmail.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <eb34f303-4d05-4fcd-fb18-e304d06e6e2d@ti.com>
-Date:   Tue, 2 Mar 2021 11:27:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S240687AbhCCAsD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 2 Mar 2021 19:48:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36014 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347855AbhCBQc0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 2 Mar 2021 11:32:26 -0500
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41FF0C06178B
+        for <linux-omap@vger.kernel.org>; Tue,  2 Mar 2021 08:21:36 -0800 (PST)
+Received: by mail-lj1-x235.google.com with SMTP id a17so24691685ljq.2
+        for <linux-omap@vger.kernel.org>; Tue, 02 Mar 2021 08:21:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dDtVuAUG8eYI5Eln5QS/TclUSCWz1TjGe2OhWQ2Hzok=;
+        b=if3nP/oZALnybjJAUkUtzqsvs3YK7lJTKnmGNAKAtkwkVzIB8mFHuhnw39Age4qxUS
+         UXw4iYbDW54LVkGsJpSlpCufhFpXSXWrspZnZVQvzvmbL4hoMK6k1yEd5RN5BV+l0zKp
+         tXtWk5HPWV2fweqJVtX8sHIWvuZWbxVoSpCFOUKgPtdFaCV2kH7EuRSveUN20qcFG1og
+         wyrqlkSN21mX7hX7xxtgzoot8V4HzSFxwkYFb/OJ+vf7aE1D4NJTbKYunNSiNEI9kP9y
+         s+wCBi42PEGQZkVQoauPMQTxxO1r/MHtP+jvcnpmfUsTbIdbT4RlvrpKFT5uBgM18SPw
+         Mw9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dDtVuAUG8eYI5Eln5QS/TclUSCWz1TjGe2OhWQ2Hzok=;
+        b=DWY406Zq0g1B6Pbi1ONtINuAunRQWuZBTBG6SGxEfXZxJPdIiTqINiZOV8Bx9+zIKR
+         M2Rd8Ac1qbjPuJwGTTT/Mb0C9B03ytW+9odqHs7L9tMJfuwZdzv061w/e79+9SXaRzUU
+         0q7PUSzA1c4cnFQuEzsAA63pFPAXFHT7KEk1EMPOnqOzGNa0RIDAfPzR9pZVPzQjPB/S
+         ekumR4L5M+eDbiTcD4TObxioC6JTYqANmNx6oD1jUOosLkoCNwMz8021kkCtcLos+7YV
+         2PX8Ppk3NWnrYbD0sZbJfGJaZZQct2JA8m1KwZZ8z5WExBXLjUEiKWQN57klF1qmtr0R
+         zQYQ==
+X-Gm-Message-State: AOAM532RhSS62QiKUNB4R2TPIgglDnejFV3q+3fQKuyvaiHNDRTPenjo
+        tHMsS8YFL/g/++702T5UYP2PVeGALDNB3fPXF6A9Sg==
+X-Google-Smtp-Source: ABdhPJzXqrYBkkHlZel98Kbs7UOBikTi+iuddAEEWTpHvvJw+VnT+XciCztoznAVqXpZN+sKledBjpv4CVaTd6nqOkQ=
+X-Received: by 2002:a2e:9041:: with SMTP id n1mr12550220ljg.273.1614702094699;
+ Tue, 02 Mar 2021 08:21:34 -0800 (PST)
 MIME-Version: 1.0
+References: <20210302011813.2331879-1-alexander.sverdlin@gmail.com>
 In-Reply-To: <20210302011813.2331879-1-alexander.sverdlin@gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 2 Mar 2021 17:21:23 +0100
+Message-ID: <CACRpkdYErJH5RUjL+jPC5vnaqGiOqBwHsr0E42wOWrpBGrpS3w@mail.gmail.com>
+Subject: Re: [PATCH] gpio: omap: Honor "aliases" node
+To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Tue, Mar 2, 2021 at 2:18 AM Alexander Sverdlin
+<alexander.sverdlin@gmail.com> wrote:
 
-
-On 02/03/2021 03:18, Alexander Sverdlin wrote:
 > Currently the naming of the GPIO chips depends on their order in the DT,
 > but also on the kernel version (I've noticed the change from v5.10.x to
 > v5.11). Honor the persistent enumeration in the "aliases" node like other
 > GPIO drivers do.
-> 
+>
 > Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
 > ---
 > Yes, I noticed checkpatch "WARNING: DT binding docs and includes should be
 > a separate patch."
 > However, the parts below are tiny and barely make sense separately.
-> 
->   Documentation/devicetree/bindings/gpio/gpio-omap.txt | 6 ++++++
->   drivers/gpio/gpio-omap.c                             | 5 +++++
->   2 files changed, 11 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-omap.txt b/Documentation/devicetree/bindings/gpio/gpio-omap.txt
-> index e57b2cb28f6c..6050db3fd84e 100644
-> --- a/Documentation/devicetree/bindings/gpio/gpio-omap.txt
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-omap.txt
-> @@ -30,9 +30,15 @@ OMAP specific properties:
->   - ti,gpio-always-on: 	Indicates if a GPIO bank is always powered and
->   			so will never lose its logic state.
->   
-> +Note: GPIO ports can have an alias correctly numbered in "aliases" node for
-> +persistent enumeration.
->   
->   Example:
->   
-> +aliases {
-> +	gpio0 = &gpio0;
-> +};
-> +
->   gpio0: gpio@44e07000 {
->       compatible = "ti,omap4-gpio";
->       reg = <0x44e07000 0x1000>;
-> diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-> index 41952bb818ad..dd2a8f6d920f 100644
-> --- a/drivers/gpio/gpio-omap.c
-> +++ b/drivers/gpio/gpio-omap.c
-> @@ -1014,6 +1014,11 @@ static int omap_gpio_chip_init(struct gpio_bank *bank, struct irq_chip *irqc)
->   			bank->chip.parent = &omap_mpuio_device.dev;
->   		bank->chip.base = OMAP_MPUIO(0);
->   	} else {
-> +#ifdef CONFIG_OF_GPIO
-> +		ret = of_alias_get_id(bank->chip.of_node, "gpio");
-> +		if (ret >= 0)
-> +			gpio = ret * bank->width;
-> +#endif
->   		label = devm_kasprintf(bank->chip.parent, GFP_KERNEL, "gpio-%d-%d",
->   				       gpio, gpio + bank->width - 1);
->   		if (!label)
-> 
 
-You're not the first one, this was not accepted. See [1]
-[1] https://patchwork.kernel.org/project/linux-omap/patch/1465898604-16294-1-git-send-email-u.kleine-koenig@pengutronix.de/
+I've shut it down in the past because the instance ordering is a
+linuxism and the needs are in the Linux userspace somehow.
+It is different from a UART for example, which always need to
+be at the same place on any operating system, hence it has an
+alias.
 
+For kernelspace the instance order should not matter, since
+all resources are obtained from the device tree anyway
+by phandle.
 
--- 
-Best regards,
-grygorii
+For userspace:
+The way to determine topology in Linux userspace is to use sysfs,
+and combined with the GPIO character device this provides a
+unique ID for each GPIO chip and line on the system.
+
+/sys/bus/gpio/devices/gpiochip0/
+/sys/bus/gpio/devices/gpiochip1/
+
+etc can change, but these appear as PCI, I2C, SPI, platform
+etc nodes as well. On my PC:
+
+/sys/devices/pci0000:00/0000:00:1a.0/usb1/1-1/1-1.5/1-1.5:1.0/gpiochip0
+
+It's pretty clear where that gpiochip sits.
+
+Yours,
+Linus Walleij
