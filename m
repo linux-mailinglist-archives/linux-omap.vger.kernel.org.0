@@ -2,98 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 403C232E5CE
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Mar 2021 11:10:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAFCB32E6A7
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Mar 2021 11:47:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbhCEKKZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 5 Mar 2021 05:10:25 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:54532 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229940AbhCEKKO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 5 Mar 2021 05:10:14 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 125A9wKE110650;
-        Fri, 5 Mar 2021 04:09:59 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1614938999;
-        bh=YBLvYThaKVg7tURgnRZwl586okBWQyFp0lWLZANmnaA=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=V2D85JCcwkwMHsADSiw9UBzYUTHANxXu1uOys/sDHPxHjxdtbO/9ypDK43E2NQQkW
-         mKvBf7Gq4XWknqNTg8rRH7MIFWjVf/bRLVEpwK0Q5vmhuOJkfCGUBEluTEGhCquksO
-         my4CEY3Mrjz8XTQ9hhLhatGF2wybFswF/HHk5qCU=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 125A9wMl106232
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 5 Mar 2021 04:09:58 -0600
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 5 Mar
- 2021 04:09:58 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 5 Mar 2021 04:09:58 -0600
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 125A9uvd115311;
-        Fri, 5 Mar 2021 04:09:57 -0600
-Subject: Re: [PATCH 1/3] clocksource/drivers/timer-ti-dm: Fix posted mode
- status check order
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Keerthy <j-keerthy@ti.com>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-References: <20210304072135.52712-1-tony@atomide.com>
- <20210304072135.52712-2-tony@atomide.com>
- <bd551701-da42-8f9f-ad49-5d87baa9beec@ti.com> <YEHjf6dcTByVvwBX@atomide.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <4f6212f7-824b-450e-b605-fcc8dc50a8fb@ti.com>
-Date:   Fri, 5 Mar 2021 12:09:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S229592AbhCEKrB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 5 Mar 2021 05:47:01 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:45984 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229558AbhCEKqk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 5 Mar 2021 05:46:40 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 57AFC1C0B7D; Fri,  5 Mar 2021 11:46:35 +0100 (CET)
+Date:   Fri, 5 Mar 2021 11:46:35 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 3/6] dt-bindings: serdev: ngsm: Add binding for GNSS
+ child node
+Message-ID: <20210305104635.GA16695@duo.ucw.cz>
+References: <20200512214713.40501-1-tony@atomide.com>
+ <20200512214713.40501-4-tony@atomide.com>
+ <20200527192817.GA2587830@bogus>
+ <20200528095151.GE10358@localhost>
 MIME-Version: 1.0
-In-Reply-To: <YEHjf6dcTByVvwBX@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="CE+1k2dSO48ffgeK"
+Content-Disposition: inline
+In-Reply-To: <20200528095151.GE10358@localhost>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
+--CE+1k2dSO48ffgeK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 05/03/2021 09:53, Tony Lindgren wrote:
-> * Grygorii Strashko <grygorii.strashko@ti.com> [210304 20:58]:
->> On 04/03/2021 09:21, Tony Lindgren wrote:
->>> When the timer is configured in posted mode, we need to check the write-
->>> posted status register (TWPS) before writing to the register.
-> ...
-> 
->>> --- a/drivers/clocksource/timer-ti-dm-systimer.c
->>> +++ b/drivers/clocksource/timer-ti-dm-systimer.c
->>> @@ -449,13 +449,13 @@ static int dmtimer_set_next_event(unsigned long cycles,
->>>    	struct dmtimer_systimer *t = &clkevt->t;
->>>    	void __iomem *pend = t->base + t->pend;
->>> -	writel_relaxed(0xffffffff - cycles, t->base + t->counter);
->>>    	while (readl_relaxed(pend) & WP_TCRR)
->>>    		cpu_relax();
->>> +	writel_relaxed(0xffffffff - cycles, t->base + t->counter);
->>> -	writel_relaxed(OMAP_TIMER_CTRL_ST, t->base + t->ctrl);
->>>    	while (readl_relaxed(pend) & WP_TCLR)
->>>    		cpu_relax();
->>> +	writel_relaxed(OMAP_TIMER_CTRL_ST, t->base + t->ctrl);
->>
->> It seems static [and inline] helper here could be better solution. no?
-> 
-> Well we wanted to get rid of the confusing macros. And in this case I
-> suspect we can eventually do just one read of the pending register for
-> the registers used mask rather than check the status separately multiple
-> times. But that needs to be carefully tested and is not a fix :)
+Hi!
 
-Might work.
+> > > For motorola modem case, we may have a GNSS device on channel 4.
+> > > Let's add that to the binding and example.
+> > >=20
+> > > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > > ---
+> > >  .../devicetree/bindings/serdev/serdev-ngsm.yaml          | 9 +++++++=
+++
+> > >  1 file changed, 9 insertions(+)
 
--- 
+>=20
+> And since we're describing a mux, I think you need nodes for the virtual
+> ports rather than a reg property in what should be a serial client. That
+> is something like
+>=20
+> 	serial@nnn {
+> 		modem {
+> 			compatible =3D "etsi,ts27001-mux";
+>=20
+> 			serial@4 {
+> 				compatible =3D "etsi,ts27001-serial";
+> 				reg =3D <4>;
+>=20
+> 				gnss {
+> 					compatible =3D "motorola,motmdm-gnss";
+> 				};
+> 			};
+> 		};
+> 	};
+>=20
+> This way you can actually use serdev for the client drivers (e.g. for
+> gnss), and those drivers also be used for non-muxed ports if needed
+> (e.g. over USB).
+
+I have done changes you requested, and then hit "serdev is busy
+because it can have at most one child" limit in the code. You have
+pretty clean driver in your inbox, and no reply. No help with serdev
+core limitations, either. Can you start to communicate?
+
 Best regards,
-grygorii
+								Pavel
+
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--CE+1k2dSO48ffgeK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYEIMCwAKCRAw5/Bqldv6
+8vX6AKDEZXZzQRsFq96/zZjnwyH4M5OK9ACgvXWJAfROdL/PovAeI57QNdO1xfY=
+=nOBS
+-----END PGP SIGNATURE-----
+
+--CE+1k2dSO48ffgeK--
