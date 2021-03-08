@@ -2,57 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A203311D6
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 16:13:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AB243311FD
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 16:20:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230458AbhCHPMb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Mar 2021 10:12:31 -0500
-Received: from muru.com ([72.249.23.125]:41026 "EHLO muru.com"
+        id S229813AbhCHPTc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Mar 2021 10:19:32 -0500
+Received: from muru.com ([72.249.23.125]:41032 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231512AbhCHPMA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Mar 2021 10:12:00 -0500
+        id S231303AbhCHPTZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Mar 2021 10:19:25 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 255158117;
-        Mon,  8 Mar 2021 15:12:41 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 63E5B80D4;
+        Mon,  8 Mar 2021 15:20:07 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org
-Subject: [PATCH 11/11] ARM: dts: Configure simple-pm-bus for omap5 l3
-Date:   Mon,  8 Mar 2021 17:11:43 +0200
-Message-Id: <20210308151143.27793-12-tony@atomide.com>
+Cc:     linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/9] Drop legacy data for omap5
+Date:   Mon,  8 Mar 2021 17:19:02 +0200
+Message-Id: <20210308151911.43203-1-tony@atomide.com>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210308151143.27793-1-tony@atomide.com>
-References: <20210308151143.27793-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can now probe interconnects with device tree only configuration using
-simple-pm-bus and genpd.
+Hi all,
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/omap5.dtsi | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Here are the changes to drop legacy data for omap5 as we can now boot with
+devicetree data using genpd and simple-pm-bus.
 
-diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
---- a/arch/arm/boot/dts/omap5.dtsi
-+++ b/arch/arm/boot/dts/omap5.dtsi
-@@ -142,7 +142,11 @@ wakeupgen: interrupt-controller@48281000 {
- 	 * hierarchy.
- 	 */
- 	ocp {
--		compatible = "simple-bus";
-+		compatible = "simple-pm-bus";
-+		power-domains = <&prm_core>;
-+		clocks = <&l3main1_clkctrl OMAP5_L3_MAIN_1_CLKCTRL 0>,
-+			 <&l3main2_clkctrl OMAP5_L3_MAIN_2_CLKCTRL 0>,
-+			 <&l3instr_clkctrl OMAP5_L3_MAIN_3_CLKCTRL 0>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		ranges = <0 0 0 0xc0000000>;
+These patches are against v5.12-rc2, and depend on the following series of
+patches:
+
+[PATCH 00/11] Update omap5 dts files to probe with genpd
+
+Regards,
+
+Tony
+
+Tony Lindgren (9):
+  ARM: OMAP2+: Drop legacy platform data for omap5 dmm
+  ARM: OMAP2+: Drop legacy platform data for omap5 emif
+  ARM: OMAP2+: Drop legacy platform data for omap5 mpu
+  ARM: OMAP2+: Drop legacy platform data for omap5 sata
+  ARM: OMAP2+: Drop legacy platform data for omap5 l4_wkup
+  ARM: OMAP2+: Drop legacy platform data for omap5 l4_per
+  ARM: OMAP2+: Drop legacy platform data for omap5 l4_cfg
+  ARM: OMAP2+: Drop legacy platform data for omap5 l3
+  ARM: OMAP2+: Drop legacy platform data for omap5 hwmod
+
+ arch/arm/boot/dts/omap5.dtsi               |   4 -
+ arch/arm/mach-omap2/Kconfig                |   1 -
+ arch/arm/mach-omap2/Makefile               |   1 -
+ arch/arm/mach-omap2/io.c                   |   2 -
+ arch/arm/mach-omap2/omap_hwmod.h           |   1 -
+ arch/arm/mach-omap2/omap_hwmod_54xx_data.c | 467 ---------------------
+ 6 files changed, 476 deletions(-)
+ delete mode 100644 arch/arm/mach-omap2/omap_hwmod_54xx_data.c
+
 -- 
 2.30.1
