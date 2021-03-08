@@ -2,131 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE15C331209
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 16:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF24933121D
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 16:27:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230246AbhCHPUE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Mar 2021 10:20:04 -0500
-Received: from muru.com ([72.249.23.125]:41068 "EHLO muru.com"
+        id S231417AbhCHP0g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Mar 2021 10:26:36 -0500
+Received: from muru.com ([72.249.23.125]:41082 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231325AbhCHPTd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Mar 2021 10:19:33 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 55990894C;
-        Mon,  8 Mar 2021 15:20:15 +0000 (UTC)
+        id S231486AbhCHP0S (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Mar 2021 10:26:18 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 5EC8880D4;
+        Mon,  8 Mar 2021 15:26:59 +0000 (UTC)
+Date:   Mon, 8 Mar 2021 17:26:14 +0200
 From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 9/9] ARM: OMAP2+: Drop legacy platform data for omap5 hwmod
-Date:   Mon,  8 Mar 2021 17:19:11 +0200
-Message-Id: <20210308151911.43203-10-tony@atomide.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210308151911.43203-1-tony@atomide.com>
-References: <20210308151911.43203-1-tony@atomide.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Keerthy <j-keerthy@ti.com>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/3] clocksource/drivers/timer-ti-dm: Remove extra
+ of_node_put()
+Message-ID: <YEZCFgFEKTaxJTpG@atomide.com>
+References: <20210304072135.52712-1-tony@atomide.com>
+ <20210304072135.52712-3-tony@atomide.com>
+ <4c23ce3e-3304-b10d-5054-f421822b5dc2@ti.com>
+ <YEHiojjAj4YLWGxA@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YEHiojjAj4YLWGxA@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can now probe interconnects with simple-pm-bus and genpd.
+Hi,
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/mach-omap2/Kconfig                |  1 -
- arch/arm/mach-omap2/Makefile               |  1 -
- arch/arm/mach-omap2/io.c                   |  2 --
- arch/arm/mach-omap2/omap_hwmod.h           |  1 -
- arch/arm/mach-omap2/omap_hwmod_54xx_data.c | 37 ----------------------
- 5 files changed, 42 deletions(-)
- delete mode 100644 arch/arm/mach-omap2/omap_hwmod_54xx_data.c
+* Tony Lindgren <tony@atomide.com> [210305 07:58]:
+> * Grygorii Strashko <grygorii.strashko@ti.com> [210304 20:56]:
+> > 
+> > 
+> > On 04/03/2021 09:21, Tony Lindgren wrote:
+> > > We have of_translate_address() already do of_node_put() as needed.
+> > > I probably looked at __of_translate_address() earlier by accident
+> > > that of_translate_address() uses.
+> > 
+> > I do not see of_node_put() in of_translate_address() and
+> >  __of_translate_address() is doing of_node_get(dev);
+> > ?
+> 
+> Oh right.. this is confusing.. Yeah we can ignore this patch.
+> We should have the use count set for only the system timer(s)
+> we claim.
 
-diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
---- a/arch/arm/mach-omap2/Kconfig
-+++ b/arch/arm/mach-omap2/Kconfig
-@@ -54,7 +54,6 @@ config SOC_OMAP5
- 	select HAVE_ARM_SCU if SMP
- 	select HAVE_ARM_ARCH_TIMER
- 	select ARM_ERRATA_798181 if SMP
--	select OMAP_HWMOD
- 	select OMAP_INTERCONNECT
- 	select OMAP_INTERCONNECT_BARRIER
- 	select PM_OPP
-diff --git a/arch/arm/mach-omap2/Makefile b/arch/arm/mach-omap2/Makefile
---- a/arch/arm/mach-omap2/Makefile
-+++ b/arch/arm/mach-omap2/Makefile
-@@ -208,7 +208,6 @@ obj-$(CONFIG_ARCH_OMAP3)		+= omap_hwmod_2xxx_3xxx_ipblock_data.o
- obj-$(CONFIG_ARCH_OMAP3)		+= omap_hwmod_3xxx_data.o
- obj-$(CONFIG_SOC_TI81XX)		+= omap_hwmod_81xx_data.o
- obj-$(CONFIG_ARCH_OMAP4)		+= omap_hwmod_44xx_data.o
--obj-$(CONFIG_SOC_OMAP5)			+= omap_hwmod_54xx_data.o
- obj-$(CONFIG_SOC_DRA7XX)		+= omap_hwmod_7xx_data.o
- 
- # OMAP2420 MSDI controller integration support ("MMC")
-diff --git a/arch/arm/mach-omap2/io.c b/arch/arm/mach-omap2/io.c
---- a/arch/arm/mach-omap2/io.c
-+++ b/arch/arm/mach-omap2/io.c
-@@ -643,8 +643,6 @@ void __init omap5_init_early(void)
- 	omap54xx_voltagedomains_init();
- 	omap54xx_powerdomains_init();
- 	omap54xx_clockdomains_init();
--	omap54xx_hwmod_init();
--	omap_hwmod_init_postsetup();
- 	omap_clk_soc_init = omap5xxx_dt_clk_init;
- 	omap_secure_init();
- }
-diff --git a/arch/arm/mach-omap2/omap_hwmod.h b/arch/arm/mach-omap2/omap_hwmod.h
---- a/arch/arm/mach-omap2/omap_hwmod.h
-+++ b/arch/arm/mach-omap2/omap_hwmod.h
-@@ -671,7 +671,6 @@ extern int omap2420_hwmod_init(void);
- extern int omap2430_hwmod_init(void);
- extern int omap3xxx_hwmod_init(void);
- extern int omap44xx_hwmod_init(void);
--extern int omap54xx_hwmod_init(void);
- extern int am33xx_hwmod_init(void);
- extern int dm814x_hwmod_init(void);
- extern int dm816x_hwmod_init(void);
-diff --git a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c b/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
-deleted file mode 100644
---- a/arch/arm/mach-omap2/omap_hwmod_54xx_data.c
-+++ /dev/null
-@@ -1,37 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Hardware modules present on the OMAP54xx chips
-- *
-- * Copyright (C) 2013 Texas Instruments Incorporated - https://www.ti.com
-- *
-- * Paul Walmsley
-- * Benoit Cousson
-- *
-- * This file is automatically generated from the OMAP hardware databases.
-- * We respectfully ask that any modifications to this file be coordinated
-- * with the public linux-omap@vger.kernel.org mailing list and the
-- * authors above to ensure that the autogeneration scripts are kept
-- * up-to-date with the file contents.
-- */
--
--#include <linux/io.h>
--#include <linux/power/smartreflex.h>
--
--#include "omap_hwmod.h"
--#include "omap_hwmod_common_data.h"
--#include "cm1_54xx.h"
--#include "cm2_54xx.h"
--#include "prm54xx.h"
--
--/* Base offset for all OMAP5 interrupts external to MPUSS */
--#define OMAP54XX_IRQ_GIC_START	32
--
--static struct omap_hwmod_ocp_if *omap54xx_hwmod_ocp_ifs[] __initdata = {
--	NULL,
--};
--
--int __init omap54xx_hwmod_init(void)
--{
--	omap_hwmod_init();
--	return omap_hwmod_register_links(omap54xx_hwmod_ocp_ifs);
--}
--- 
-2.30.1
+Daniel, would you like me to repost this series with this patch dropped?
+
+Regards,
+
+Tony
