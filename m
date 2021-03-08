@@ -2,73 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C340330CDB
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 12:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07817330D59
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 13:22:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbhCHL5S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Mar 2021 06:57:18 -0500
-Received: from muru.com ([72.249.23.125]:40752 "EHLO muru.com"
+        id S231638AbhCHMVz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Mar 2021 07:21:55 -0500
+Received: from muru.com ([72.249.23.125]:40768 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231633AbhCHL4v (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Mar 2021 06:56:51 -0500
+        id S231286AbhCHMV3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Mar 2021 07:21:29 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 8A13F80D4;
-        Mon,  8 Mar 2021 11:57:33 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id E7FE580D4;
+        Mon,  8 Mar 2021 12:22:08 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org
-Subject: [PATCH 2/2] ARM: dts: Fix moving mmc devices with aliases for omap4 & 5
-Date:   Mon,  8 Mar 2021 13:56:31 +0200
-Message-Id: <20210308115631.44270-3-tony@atomide.com>
+Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <kristo@kernel.org>
+Subject: [PATCH 0/4] ti-sysc changes for dropping omap4/5 legacy data
+Date:   Mon,  8 Mar 2021 14:21:14 +0200
+Message-Id: <20210308122118.62460-1-tony@atomide.com>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210308115631.44270-1-tony@atomide.com>
-References: <20210308115631.44270-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix moving mmc devices with dts aliases as discussed on the lists.
-Without this we now have internal eMMC mmc1 show up as mmc2 compared
-to the earlier order of devices.
+Hi all,
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/omap4.dtsi | 5 +++++
- arch/arm/boot/dts/omap5.dtsi | 5 +++++
- 2 files changed, 10 insertions(+)
+Here are few ti-sysc related changes that are needed to drop legacy data
+for omap4/5. The last patch also starts warning users about old incomplete
+dtb, we do that initially only for am3/4 that no longer have the legacy
+data.
 
-diff --git a/arch/arm/boot/dts/omap4.dtsi b/arch/arm/boot/dts/omap4.dtsi
---- a/arch/arm/boot/dts/omap4.dtsi
-+++ b/arch/arm/boot/dts/omap4.dtsi
-@@ -22,6 +22,11 @@ aliases {
- 		i2c1 = &i2c2;
- 		i2c2 = &i2c3;
- 		i2c3 = &i2c4;
-+		mmc0 = &mmc1;
-+		mmc1 = &mmc2;
-+		mmc2 = &mmc3;
-+		mmc3 = &mmc4;
-+		mmc4 = &mmc5;
- 		serial0 = &uart1;
- 		serial1 = &uart2;
- 		serial2 = &uart3;
-diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
---- a/arch/arm/boot/dts/omap5.dtsi
-+++ b/arch/arm/boot/dts/omap5.dtsi
-@@ -25,6 +25,11 @@ aliases {
- 		i2c2 = &i2c3;
- 		i2c3 = &i2c4;
- 		i2c4 = &i2c5;
-+		mmc0 = &mmc1;
-+		mmc1 = &mmc2;
-+		mmc2 = &mmc3;
-+		mmc3 = &mmc4;
-+		mmc4 = &mmc5;
- 		serial0 = &uart1;
- 		serial1 = &uart2;
- 		serial2 = &uart3;
+Regards,
+
+Tony
+
+
+Tony Lindgren (4):
+  ARM: OMAP2+: Init both prm and prcm nodes early for clocks
+  soc: ti: omap-prm: Allow hardware supported retention when idle
+  clk: ti: omap5: Add missing gpmc and ocmc clkctrl
+  bus: ti-sysc: Check for old incomplete dtb
+
+ arch/arm/mach-omap2/pdata-quirks.c | 29 +++++++++++++++++++++--------
+ drivers/bus/ti-sysc.c              | 16 ++++++++++++++++
+ drivers/clk/ti/clk-54xx.c          |  2 ++
+ drivers/soc/ti/omap_prm.c          | 16 ++++++++++++----
+ include/dt-bindings/clock/omap5.h  |  2 ++
+ 5 files changed, 53 insertions(+), 12 deletions(-)
+
 -- 
 2.30.1
