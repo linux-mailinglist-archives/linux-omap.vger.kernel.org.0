@@ -2,70 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B76253311BF
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 16:12:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 701F63311C6
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 16:12:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbhCHPL6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Mar 2021 10:11:58 -0500
-Received: from muru.com ([72.249.23.125]:40982 "EHLO muru.com"
+        id S231406AbhCHPL7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Mar 2021 10:11:59 -0500
+Received: from muru.com ([72.249.23.125]:40984 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230453AbhCHPLt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Mar 2021 10:11:49 -0500
+        id S231266AbhCHPLu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Mar 2021 10:11:50 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id CE8D980D4;
-        Mon,  8 Mar 2021 15:12:30 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 02B0D8117;
+        Mon,  8 Mar 2021 15:12:31 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org
-Subject: [PATCH 00/11] Update omap5 dts files to probe with genpd
-Date:   Mon,  8 Mar 2021 17:11:32 +0200
-Message-Id: <20210308151143.27793-1-tony@atomide.com>
+Subject: [PATCH 01/11] ARM: dts: Configure interconnect target module for omap5 dmm
+Date:   Mon,  8 Mar 2021 17:11:33 +0200
+Message-Id: <20210308151143.27793-2-tony@atomide.com>
 X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210308151143.27793-1-tony@atomide.com>
+References: <20210308151143.27793-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi all,
+We can now probe devices with device tree only configuration using
+ti-sysc interconnect target module driver. Let's configure the
+module, but keep the legacy "ti,hwmods" property to avoid new boot
+time warnings. The legacy property will be removed in later patches
+together with the legacy platform data.
 
-Here are the devicetree changes to update omap5 to probe with genpd and
-simple-pm-bus.
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/omap5.dtsi | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-These patches are against v5.12-rc2, and depend on the following preparatory
-patches posted earlier:
-
-"clk: ti: omap5: Add missing gpmc and ocmc clkctrl"
-"ARM: dts: Fix moving mmc devices with aliases for omap4 & 5"
-"ARM: OMAP2+: Init both prm and prcm nodes early for clocks"
-"bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first"
-"bus: ti-sysc: Fix initializing module_pa for modules without sysc register"
-"bus: ti-sysc: Fix warning on unbind if reset is not deasserted"
-
-I will post another series to drop the legacy data.
-
-Regards,
-
-Tony
-
-
-Tony Lindgren (11):
-  ARM: dts: Configure interconnect target module for omap5 dmm
-  ARM: dts: Configure interconnect target module for omap5 emif
-  ARM: dts: Configure interconnect target module for omap5 mpu
-  ARM: dts: Configure interconnect target module for omap5 gpmc
-  ARM: dts: Configure interconnect target module for omap5 sata
-  ARM: dts: Move omap5 mmio-sram out of l3 interconnect
-  ARM: dts: Move omap5 l3-noc to a separate node
-  ARM: dts: Configure simple-pm-bus for omap5 l4_wkup
-  ARM: dts: Configure simple-pm-bus for omap5 l4_per
-  ARM: dts: Configure simple-pm-bus for omap5 l4_cfg
-  ARM: dts: Configure simple-pm-bus for omap5 l3
-
- arch/arm/boot/dts/omap5-l4.dtsi |  67 ++++++++---
- arch/arm/boot/dts/omap5.dtsi    | 204 ++++++++++++++++++++------------
- 2 files changed, 178 insertions(+), 93 deletions(-)
-
+diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
+--- a/arch/arm/boot/dts/omap5.dtsi
++++ b/arch/arm/boot/dts/omap5.dtsi
+@@ -246,11 +246,24 @@ ipu: ipu@55020000 {
+ 			status = "disabled";
+ 		};
+ 
+-		dmm@4e000000 {
+-			compatible = "ti,omap5-dmm";
+-			reg = <0x4e000000 0x800>;
+-			interrupts = <0 113 0x4>;
++		target-module@4e000000 {
++			compatible = "ti,sysc-omap2", "ti,sysc";
+ 			ti,hwmods = "dmm";
++			reg = <0x4e000000 0x4>,
++			      <0x4e000010 0x4>;
++			reg-names = "rev", "sysc";
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ranges = <0x0 0x4e000000 0x2000000>;
++			#size-cells = <1>;
++			#address-cells = <1>;
++
++			dmm@0 {
++				compatible = "ti,omap5-dmm";
++				reg = <0 0x800>;
++				interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
++			};
+ 		};
+ 
+ 		emif1: emif@4c000000 {
 -- 
 2.30.1
