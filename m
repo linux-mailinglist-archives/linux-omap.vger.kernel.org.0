@@ -2,110 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A2323304ED
-	for <lists+linux-omap@lfdr.de>; Sun,  7 Mar 2021 23:11:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE2F330825
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 07:37:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233184AbhCGWKp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 7 Mar 2021 17:10:45 -0500
-Received: from mail-wr1-f48.google.com ([209.85.221.48]:36297 "EHLO
-        mail-wr1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233169AbhCGWKQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 7 Mar 2021 17:10:16 -0500
-Received: by mail-wr1-f48.google.com with SMTP id u14so9436489wri.3;
-        Sun, 07 Mar 2021 14:10:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=w0FBb8CnoCr7tqR94rY/v8Qic5qKjXRNMAaFBeahA3I=;
-        b=Vk3g/KrWqq6McpeFshG5xJjZBAIetpzZKsAz8iYGNa9JkXgW1VuO3CZR8c+D84XWey
-         HZB0Ns7/vRhWZqVvrm30u1DJxAe+3rpoig/zgGGx4UwV2S8FFWvf3Pc9C6m4LxtGBhN5
-         u8YtqfY2p3DarXmtvoytreNfJ+3J3hf4ZQPbez2KYfBRhsLj8mpQCTFAdHgGrX2is9Xw
-         cGKzBfHIInJzWO0Zwk+InO7S3bql0vw/9M7Xej2gTsrHTbQCdXOxQS6vfYowF1Kydv4e
-         IN40PizAcxHksWrd73Cvhs5VAnKx5wHDaRfz0csCsFNaYSTtEI3g8d4tG/Gwng57FdX5
-         ec4w==
-X-Gm-Message-State: AOAM532wZlQg92ouPni/5ngYrMV+zPs++CvuBHolzbTq9FHpZdGB7VMS
-        gBje/wCWoEMhPHYL5t1Qu9w=
-X-Google-Smtp-Source: ABdhPJz1EuAgHQbWUMttHlGdzXLBLuK8NfZzUmdIXnw5+kar1/RkTecBM2iv5KBusGCU6NdnIeRj6g==
-X-Received: by 2002:adf:a2d3:: with SMTP id t19mr19655343wra.299.1615155014465;
-        Sun, 07 Mar 2021 14:10:14 -0800 (PST)
-Received: from rocinante ([95.155.85.46])
-        by smtp.gmail.com with ESMTPSA id m14sm16525603wmi.27.2021.03.07.14.10.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Mar 2021 14:10:14 -0800 (PST)
-Date:   Sun, 7 Mar 2021 23:10:12 +0100
-From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To:     Jisheng Zhang <Jisheng.Zhang@synaptics.com>
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        id S234903AbhCHGgu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Mar 2021 01:36:50 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:55844 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233961AbhCHGgT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Mar 2021 01:36:19 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1286a3SY110124;
+        Mon, 8 Mar 2021 00:36:03 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1615185363;
+        bh=Oqgiy062oERwqX+R9eU5hIC/GSFaSqKW8euiNn4SusI=;
+        h=From:To:CC:Subject:Date;
+        b=xBySieFtiwuutlFMCE90M5Ay3VODEH0SSqL8eAXcrB8DKCLZJKGiPxnS9Xi7oa17X
+         pGZSi1Rw0woGZzLFeGYbvYHjvp4Oa9tY/Rn+jDRCRBOqy0rv8vbmOozTrU3YhZjhoE
+         y5yVGGBjIMQiMunVOTEqNMVE6IbAmRrT0L/M7h74=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1286a2OQ016646
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 8 Mar 2021 00:36:02 -0600
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 8 Mar
+ 2021 00:36:01 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 8 Mar 2021 00:36:01 -0600
+Received: from a0393678-ssd.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1286ZuTS117458;
+        Mon, 8 Mar 2021 00:35:57 -0600
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tom Joseph <tjoseph@cadence.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Yue Wang <yue.wang@Amlogic.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Pratyush Anand <pratyush.anand@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] PCI: dwc: Move dw_pcie_msi_init() from each users
- to designware host
-Message-ID: <YEVPRDt1By8TG9O5@rocinante>
-References: <20200924190421.549cb8fc@xhacker.debian>
- <20200924190742.76939458@xhacker.debian>
+        Nadeem Athani <nadeem@cadence.com>
+CC:     <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Lokesh Vutla <lokeshvutla@ti.com>
+Subject: [PATCH v4 0/4] AM64: Add PCIe bindings and driver support
+Date:   Mon, 8 Mar 2021 12:05:46 +0530
+Message-ID: <20210308063550.6227-1-kishon@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200924190742.76939458@xhacker.debian>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+AM64 uses the same PCIe controller as in J7200, however AM642 EVM
+doesn't have a clock generator (unlike J7200 base board). Here
+the clock from the SERDES has to be routed to the PCIE connector.
+This series provides an option for the pci-j721e.c driver to
+drive reference clock output to the connector.
 
-> Currently, dw_pcie_msi_init() allocates and maps page for msi, then
-> program the PCIE_MSI_ADDR_LO and PCIE_MSI_ADDR_HI. The Root Complex
-> may lose power during suspend-to-RAM, so when we resume, we want to
-> redo the latter but not the former. If designware based driver (for
-> example, pcie-tegra194.c) calls dw_pcie_msi_init() in resume path, the
-> previous msi page will be leaked. From another side, except
-> pci-dra7xx.c we can move the dw_pcie_msi_init() from each users to
-> designware host, I.E move the msi page allocation and mapping to
-> dw_pcie_host_init() and move the PCIE_MSI_ADDR_* programming to
-> dw_pcie_setup_rc(). After this moving, we solve the msi page leakage
-> as well.
-[...]
+v1 of the patch series can be found @ [1]
+v2 of the patch series can be found @ [2]
+v3 of the patch series can be found @ [3]
 
-A small nitpick.  All the "designware" should be "DesignWare" both in
-the commit message and the subject.  Similarly, "msi" would be "MSI",
-and "I.E" would become "i.e.,".  If you ever sent another version of the
-patch, that is.
+Changes from v3:
+*) Added Reviewed by from Rob
+*) Incorporated Krzysztof Wilczyński comment on DT binding documentation
+*) Fixed "warn: missing error code 'ret'"
 
-See the following for reference:
-  https://lore.kernel.org/linux-pci/20171026223701.GA25649@bhelgaas-glaptop.roam.corp.google.com/
+Changes from v2:
+*) Fix DT binding documentation suggested by Rob
 
-Krzysztof
+Changes from v1:
+*) Fixed missing initialization of "ret" variable in the error path.
+
+[1] -> http://lore.kernel.org/r/20201224115658.2795-1-kishon@ti.com
+[2] -> https://lore.kernel.org/r/20210104124103.30930-1-kishon@ti.com
+[3] -> https://lore.kernel.org/r/20210222114030.26445-1-kishon@ti.com
+
+Kishon Vijay Abraham I (4):
+  dt-bindings: PCI: ti,j721e: Add binding to represent refclk to the
+    connector
+  dt-bindings: PCI: ti,j721e: Add host mode dt-bindings for TI's AM64
+    SoC
+  dt-bindings: PCI: ti,j721e: Add endpoint mode dt-bindings for TI's
+    AM64 SoC
+  PCI: j721e: Add support to provide refclk to PCIe connector
+
+ .../bindings/pci/ti,j721e-pci-ep.yaml         |  9 ++++----
+ .../bindings/pci/ti,j721e-pci-host.yaml       | 20 ++++++++++++-----
+ drivers/pci/controller/cadence/pci-j721e.c    | 22 ++++++++++++++++++-
+ 3 files changed, 40 insertions(+), 11 deletions(-)
+
+-- 
+2.17.1
+
