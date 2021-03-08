@@ -2,82 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74910330D5F
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 13:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAB59330EAB
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 13:52:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231719AbhCHMV5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Mar 2021 07:21:57 -0500
-Received: from muru.com ([72.249.23.125]:40814 "EHLO muru.com"
+        id S229790AbhCHMvd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Mar 2021 07:51:33 -0500
+Received: from muru.com ([72.249.23.125]:40832 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231834AbhCHMVj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Mar 2021 07:21:39 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 83E11819C;
-        Mon,  8 Mar 2021 12:22:19 +0000 (UTC)
+        id S229754AbhCHMvZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Mar 2021 07:51:25 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 93F7A80D4;
+        Mon,  8 Mar 2021 12:52:05 +0000 (UTC)
+Date:   Mon, 8 Mar 2021 14:51:20 +0200
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <kristo@kernel.org>
-Subject: [PATCH 4/4] bus: ti-sysc: Check for old incomplete dtb
-Date:   Mon,  8 Mar 2021 14:21:18 +0200
-Message-Id: <20210308122118.62460-5-tony@atomide.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210308122118.62460-1-tony@atomide.com>
-References: <20210308122118.62460-1-tony@atomide.com>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-pci@vger.kernel.org
+Subject: Re: [PATCH 09/15] ARM: dts: Configure interconnect target module for
+ dra7 dmm
+Message-ID: <YEYdyFShtqq1uXes@atomide.com>
+References: <20210126124004.52550-1-tony@atomide.com>
+ <20210126124004.52550-10-tony@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210126124004.52550-10-tony@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Let's be nice and show an error on the SoCs about old imcomplete devicetree
-if the dtb is still using "simple-bus" instead of "simple-pm-bus" for the
-root OCP node.
+* Tony Lindgren <tony@atomide.com> [210126 12:43]:
+> --- a/arch/arm/boot/dts/dra7.dtsi
+> +++ b/arch/arm/boot/dts/dra7.dtsi
+...
 
+> +		target-module@4e000000 {
+> +			compatible = "ti,sysc-omap2", "ti,sysc";
+>  			ti,hwmods = "dmm";
+> +			reg = <0x4e000000 0x4>,
+> +			      <0x4e000010 0x4>;
+> +			reg-names = "rev", "sysc";
+> +			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+> +					<SYSC_IDLE_NO>,
+> +					<SYSC_IDLE_SMART>;
+> +			ranges = <0x0 0x4e000000 0x2000000>;
+> +			#size-cells = <1>;
+> +			#address-cells = <1>;
+> +
+> +			dmm@0 {
+> +				compatible = "ti,omap5-dmm";
+> +				reg = <0x4e000000 0x800>;
+> +				interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
+> +			};
+>  		};
+
+
+The dmm@0 reg property above should be zero instead of 0x4e000000 now that
+we're using ranges. Looks like I did not test with omapdrm loaded earlier,
+updated patch below.
+
+Regards,
+
+Tony
+
+8< ---------------------------
+From tony Mon Sep 17 00:00:00 2001
+From: Tony Lindgren <tony@atomide.com>
+Date: Mon, 8 Mar 2021 14:22:49 +0200
+Subject: [PATCH] ARM: dts: Configure interconnect target module for dra7
+ dmm
+
+We can now probe devices with device tree only configuration using
+ti-sysc interconnect target module driver. Let's configure the
+module, but keep the legacy "ti,hwmods" peroperty to avoid new boot
+time warnings. The legacy property will be removed in later patches
+together with the legacy platform data.
+
+Tested-by: Kishon Vijay Abraham I <kishon@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/bus/ti-sysc.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/arm/boot/dts/dra7.dtsi | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2858,6 +2858,7 @@ static int sysc_init_soc(struct sysc *ddata)
- 	const struct soc_device_attribute *match;
- 	struct ti_sysc_platform_data *pdata;
- 	unsigned long features = 0;
-+	struct device_node *np;
+diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
+--- a/arch/arm/boot/dts/dra7.dtsi
++++ b/arch/arm/boot/dts/dra7.dtsi
+@@ -464,11 +464,24 @@ edma_tptc1: dma@0 {
+ 			};
+ 		};
  
- 	if (sysc_soc)
- 		return 0;
-@@ -2878,6 +2879,21 @@ static int sysc_init_soc(struct sysc *ddata)
- 	if (match && match->data)
- 		sysc_soc->soc = (int)match->data;
- 
-+	/*
-+	 * Check and warn about possible old incomplete dtb. We now want to see
-+	 * simple-pm-bus instead of simple-bus in the dtb for genpd using SoCs.
-+	 */
-+	switch (sysc_soc->soc) {
-+	case SOC_AM3:
-+	case SOC_AM4:
-+		np = of_find_node_by_path("/ocp");
-+		WARN_ONCE(np && of_device_is_compatible(np, "simple-bus"),
-+			  "ti-sysc: Incomplete old dtb, please update\n");
-+		break;
-+	default:
-+		break;
-+	}
+-		dmm@4e000000 {
+-			compatible = "ti,omap5-dmm";
+-			reg = <0x4e000000 0x800>;
+-			interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
++		target-module@4e000000 {
++			compatible = "ti,sysc-omap2", "ti,sysc";
+ 			ti,hwmods = "dmm";
++			reg = <0x4e000000 0x4>,
++			      <0x4e000010 0x4>;
++			reg-names = "rev", "sysc";
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			ranges = <0x0 0x4e000000 0x2000000>;
++			#size-cells = <1>;
++			#address-cells = <1>;
 +
- 	/* Ignore devices that are not available on HS and EMU SoCs */
- 	if (!sysc_soc->general_purpose) {
- 		switch (sysc_soc->soc) {
++			dmm@0 {
++				compatible = "ti,omap5-dmm";
++				reg = <0 0x800>;
++				interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
++			};
+ 		};
+ 
+ 		ipu1: ipu@58820000 {
 -- 
 2.30.1
