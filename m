@@ -2,124 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAB59330EAB
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 13:52:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 538A2330F93
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 14:39:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbhCHMvd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Mar 2021 07:51:33 -0500
-Received: from muru.com ([72.249.23.125]:40832 "EHLO muru.com"
+        id S231129AbhCHNjW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Mar 2021 08:39:22 -0500
+Received: from muru.com ([72.249.23.125]:40850 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229754AbhCHMvZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 8 Mar 2021 07:51:25 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 93F7A80D4;
-        Mon,  8 Mar 2021 12:52:05 +0000 (UTC)
-Date:   Mon, 8 Mar 2021 14:51:20 +0200
+        id S230194AbhCHNjN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 8 Mar 2021 08:39:13 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id E9D2080D4;
+        Mon,  8 Mar 2021 13:39:54 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-pci@vger.kernel.org
-Subject: Re: [PATCH 09/15] ARM: dts: Configure interconnect target module for
- dra7 dmm
-Message-ID: <YEYdyFShtqq1uXes@atomide.com>
-References: <20210126124004.52550-1-tony@atomide.com>
- <20210126124004.52550-10-tony@atomide.com>
+Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org
+Subject: [PATCH 00/12] Update omap4 devicetree files to probe with genpd
+Date:   Mon,  8 Mar 2021 15:38:58 +0200
+Message-Id: <20210308133910.12454-1-tony@atomide.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210126124004.52550-10-tony@atomide.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [210126 12:43]:
-> --- a/arch/arm/boot/dts/dra7.dtsi
-> +++ b/arch/arm/boot/dts/dra7.dtsi
-...
+Hi all,
 
-> +		target-module@4e000000 {
-> +			compatible = "ti,sysc-omap2", "ti,sysc";
->  			ti,hwmods = "dmm";
-> +			reg = <0x4e000000 0x4>,
-> +			      <0x4e000010 0x4>;
-> +			reg-names = "rev", "sysc";
-> +			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-> +					<SYSC_IDLE_NO>,
-> +					<SYSC_IDLE_SMART>;
-> +			ranges = <0x0 0x4e000000 0x2000000>;
-> +			#size-cells = <1>;
-> +			#address-cells = <1>;
-> +
-> +			dmm@0 {
-> +				compatible = "ti,omap5-dmm";
-> +				reg = <0x4e000000 0x800>;
-> +				interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
-> +			};
->  		};
+Here are the devicetree changes to update omap4 to probe with genpd and
+simple-pm-bus.
 
+These patches are against v5.12-rc2, and depend on the following preparatory
+patches posted earlier:
 
-The dmm@0 reg property above should be zero instead of 0x4e000000 now that
-we're using ranges. Looks like I did not test with omapdrm loaded earlier,
-updated patch below.
+"ARM: OMAP2+: Init both prm and prcm nodes early for clocks"
+"bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first"
+"ARM: dts: Drop duplicate sha2md5_fck to fix clk_disable race"
+"ARM: dts: Fix moving mmc devices with aliases for omap4 & 5"
+"bus: ti-sysc: Fix initializing module_pa for modules without sysc register"
+"soc: ti: omap-prm: Allow hardware supported retention when idle"
+
+I will post another series to drop the legacy data.
 
 Regards,
 
 Tony
 
-8< ---------------------------
-From tony Mon Sep 17 00:00:00 2001
-From: Tony Lindgren <tony@atomide.com>
-Date: Mon, 8 Mar 2021 14:22:49 +0200
-Subject: [PATCH] ARM: dts: Configure interconnect target module for dra7
- dmm
 
-We can now probe devices with device tree only configuration using
-ti-sysc interconnect target module driver. Let's configure the
-module, but keep the legacy "ti,hwmods" peroperty to avoid new boot
-time warnings. The legacy property will be removed in later patches
-together with the legacy platform data.
+Tony Lindgren (12):
+  ARM: dts: Configure power-domain for omap4 gfx
+  ARM: dts: Configure power-domain for omap4 dts iss
+  ARM: dts: Configure interconnect target module for omap4 dmm
+  ARM: dts: Configure interconnect target module for omap4 emif
+  ARM: dts: Configure interconnect target module for omap4 debugss
+  ARM: dts: Configure interconnect target module for omap4 mpu
+  ARM: dts: Move omap4 mmio-sram out of l3 interconnect
+  ARM: dts: Move omap4 l3-noc to a separate node
+  ARM: dts: Configure simple-pm-bus for omap4 l4_wkup
+  ARM: dts: Configure simple-pm-bus for omap4 l4_per
+  ARM: dts: Configure simple-pm-bus for omap4 l4_cfg
+  ARM: dts: Prepare for simple-pm-bus for omap4 l3
 
-Tested-by: Kishon Vijay Abraham I <kishon@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/dra7.dtsi | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/omap4-l4.dtsi |  39 +++++---
+ arch/arm/boot/dts/omap4.dtsi    | 165 ++++++++++++++++++++++----------
+ arch/arm/boot/dts/omap4460.dtsi |  13 ++-
+ 3 files changed, 143 insertions(+), 74 deletions(-)
 
-diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
---- a/arch/arm/boot/dts/dra7.dtsi
-+++ b/arch/arm/boot/dts/dra7.dtsi
-@@ -464,11 +464,24 @@ edma_tptc1: dma@0 {
- 			};
- 		};
- 
--		dmm@4e000000 {
--			compatible = "ti,omap5-dmm";
--			reg = <0x4e000000 0x800>;
--			interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
-+		target-module@4e000000 {
-+			compatible = "ti,sysc-omap2", "ti,sysc";
- 			ti,hwmods = "dmm";
-+			reg = <0x4e000000 0x4>,
-+			      <0x4e000010 0x4>;
-+			reg-names = "rev", "sysc";
-+			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
-+					<SYSC_IDLE_NO>,
-+					<SYSC_IDLE_SMART>;
-+			ranges = <0x0 0x4e000000 0x2000000>;
-+			#size-cells = <1>;
-+			#address-cells = <1>;
-+
-+			dmm@0 {
-+				compatible = "ti,omap5-dmm";
-+				reg = <0 0x800>;
-+				interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
-+			};
- 		};
- 
- 		ipu1: ipu@58820000 {
 -- 
 2.30.1
