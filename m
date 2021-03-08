@@ -2,140 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D859330831
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 07:37:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB694330C27
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Mar 2021 12:21:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234920AbhCHGgw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Mar 2021 01:36:52 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:55912 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234885AbhCHGgi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Mar 2021 01:36:38 -0500
+        id S231205AbhCHLUq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Mar 2021 06:20:46 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:37314 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231807AbhCHLUV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Mar 2021 06:20:21 -0500
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1286aKYH110190;
-        Mon, 8 Mar 2021 00:36:20 -0600
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 128BKA6m034469;
+        Mon, 8 Mar 2021 05:20:10 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1615185380;
-        bh=RuH1XyFPlD2/xUnAbgo3c6Sl0V2SC3r4WGxGh2uZNc8=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Yosq7WEROYMiwO5WYdQCKxSPFbB5wBZOqj5aFd8uqPawsoc38DdGULVdseFS45BSG
-         Vvd4MrLkLcwK/QBHNDWnjdAFmgD8Fypi7iQnSA5K9EpECQzIwJW6nsMiWyuP1EyxCp
-         r82XbC4hq/rjyPGcYW4QCVX2T556YyqzPhp+MinI=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1286aKZ7017883
+        s=ti-com-17Q1; t=1615202410;
+        bh=X0skZyXiurW0+yZ7uQrkXMAbd3onpmzCMjNgAfTUnDo=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=GG8gDZrRlDziKcYILS44riX7TAOeb4oC8ruOrOXz5TMe6qw5IkjZQhDthtQLm5FZA
+         hlK+ExkKwBKm3hMBYSpl+yMgtcQErM0rxuMh2TvVQ49ltKlxIO2/eiFaQhcmv/4FMx
+         O1b5h4X1CUOeSRSFI3UK3wg+nYj+uN5hvJWacfnk=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 128BKAL6084081
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 8 Mar 2021 00:36:20 -0600
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 8 Mar 2021 05:20:10 -0600
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 8 Mar
- 2021 00:36:20 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ 2021 05:20:09 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Mon, 8 Mar 2021 00:36:20 -0600
-Received: from a0393678-ssd.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1286ZuTW117458;
-        Mon, 8 Mar 2021 00:36:16 -0600
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-To:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tom Joseph <tjoseph@cadence.com>,
+ Frontend Transport; Mon, 8 Mar 2021 05:20:09 -0600
+Received: from [10.250.234.4] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 128BK6UM050767;
+        Mon, 8 Mar 2021 05:20:07 -0600
+Subject: Re: [PATCHv2 00/15] Update dra7 devicetree files to probe with genpd
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        <devicetree@vger.kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Nadeem Athani <nadeem@cadence.com>
-CC:     <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Lokesh Vutla <lokeshvutla@ti.com>
-Subject: [PATCH v4 4/4] PCI: j721e: Add support to provide refclk to PCIe connector
-Date:   Mon, 8 Mar 2021 12:05:50 +0530
-Message-ID: <20210308063550.6227-5-kishon@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210308063550.6227-1-kishon@ti.com>
-References: <20210308063550.6227-1-kishon@ti.com>
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-pci@vger.kernel.org>
+References: <20210126124004.52550-1-tony@atomide.com>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <09bf6c8c-2a89-82ac-923b-6329759cfcdd@ti.com>
+Date:   Mon, 8 Mar 2021 16:50:03 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20210126124004.52550-1-tony@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add support to provide refclk to PCIe connector.
 
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
----
- drivers/pci/controller/cadence/pci-j721e.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index dac1ac8a7615..7f9dd34b98a9 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -6,6 +6,7 @@
-  * Author: Kishon Vijay Abraham I <kishon@ti.com>
-  */
- 
-+#include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/gpio/consumer.h>
- #include <linux/io.h>
-@@ -50,6 +51,7 @@ enum link_status {
- 
- struct j721e_pcie {
- 	struct device		*dev;
-+	struct clk		*refclk;
- 	u32			mode;
- 	u32			num_lanes;
- 	struct cdns_pcie	*cdns_pcie;
-@@ -310,6 +312,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 	struct cdns_pcie_ep *ep;
- 	struct gpio_desc *gpiod;
- 	void __iomem *base;
-+	struct clk *clk;
- 	u32 num_lanes;
- 	u32 mode;
- 	int ret;
-@@ -408,6 +411,20 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 			goto err_get_sync;
- 		}
- 
-+		clk = devm_clk_get_optional(dev, "pcie_refclk");
-+		if (IS_ERR(clk)) {
-+			ret = PTR_ERR(clk);
-+			dev_err(dev, "failed to get pcie_refclk\n");
-+			goto err_pcie_setup;
-+		}
-+
-+		ret = clk_prepare_enable(clk);
-+		if (ret) {
-+			dev_err(dev, "failed to enable pcie_refclk\n");
-+			goto err_get_sync;
-+		}
-+		pcie->refclk = clk;
-+
- 		/*
- 		 * "Power Sequencing and Reset Signal Timings" table in
- 		 * PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION, REV. 3.0
-@@ -422,8 +439,10 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 		}
- 
- 		ret = cdns_pcie_host_setup(rc);
--		if (ret < 0)
-+		if (ret < 0) {
-+			clk_disable_unprepare(pcie->refclk);
- 			goto err_pcie_setup;
-+		}
- 
- 		break;
- 	case PCI_MODE_EP:
-@@ -476,6 +495,7 @@ static int j721e_pcie_remove(struct platform_device *pdev)
- 	struct cdns_pcie *cdns_pcie = pcie->cdns_pcie;
- 	struct device *dev = &pdev->dev;
- 
-+	clk_disable_unprepare(pcie->refclk);
- 	cdns_pcie_disable_phy(cdns_pcie);
- 	pm_runtime_put(dev);
- 	pm_runtime_disable(dev);
--- 
-2.17.1
+On 26/01/21 6:09 pm, Tony Lindgren wrote:
+> Hi all,
+> 
+> Here's v2 series to update dra7 to probe with ti-sysc and genpd like we've
+> already done for am3 and 4.
+> 
+> These patches are against v5.11-rc1, and depend on the following commits
+> in my fixes branch:
+> 
+> 7078a5ba7a58 ("soc: ti: omap-prm: Fix boot time errors for rst_map_012 bits 0 and 1")
+> 2a39af3870e9 ("ARM: OMAP2+: Fix booting for am335x after moving to simple-pm-bus")
+> 
+> These patches also depend on the series:
+> 
+> [PATCH 0/3] Few ti-sysc changes for v5.12 merge window
+> 
+> Please review and test, I've also pushed out a temporary testing branch to
+> make testing easier to [0][1].
 
+Looks good to me and didn't observe any issues in my testing.
+
+Tested-by: Kishon Vijay Abraham I <kishon@ti.com>
+> 
+> Regards,
+> 
+> Tony
+> 
+> Changes since v1:
+> 
+> - Split the series into two parts, looks like most of the emails did not
+>   make it to the lists
+> 
+> - Dropped Balaji from Cc as the email address bounces
+> 
+> [0] git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git tmp-testing-genpd-dra7
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git/log/?h=omap-for-v5.12/tmp-testing-genpd-dra7
+> 
+> Tony Lindgren (15):
+>   PCI: pci-dra7xx: Prepare for deferred probe with
+>     module_platform_driver
+>   ARM: dts: Update pcie ranges for dra7
+>   ARM: dts: Configure interconnect target module for dra7 pcie
+>   ARM: dts: Properly configure dra7 edma sysconfig registers
+>   ARM: dts: Move dra7 l3 noc to a separate node
+>   ARM: dts: Configure interconnect target module for dra7 qspi
+>   ARM: dts: Configure interconnect target module for dra7 sata
+>   ARM: dts: Configure interconnect target module for dra7 mpu
+>   ARM: dts: Configure interconnect target module for dra7 dmm
+>   ARM: dts: Configure simple-pm-bus for dra7 l4_wkup
+>   ARM: dts: Configure simple-pm-bus for dra7 l4_per1
+>   ARM: dts: Configure simple-pm-bus for dra7 l4_per2
+>   ARM: dts: Configure simple-pm-bus for dra7 l4_per3
+>   ARM: dts: Configure simple-pm-bus for dra7 l4_cfg
+>   ARM: dts: Configure simple-pm-bus for dra7 l3
+> 
+>  arch/arm/boot/dts/dra7-l4.dtsi          |  76 ++++++---
+>  arch/arm/boot/dts/dra7.dtsi             | 216 ++++++++++++++++--------
+>  drivers/pci/controller/dwc/pci-dra7xx.c |  13 +-
+>  3 files changed, 213 insertions(+), 92 deletions(-)
+> 
