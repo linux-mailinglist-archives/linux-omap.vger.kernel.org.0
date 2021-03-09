@@ -2,79 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 322A3332278
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Mar 2021 11:00:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A87BF332763
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Mar 2021 14:41:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbhCIKAS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Mar 2021 05:00:18 -0500
-Received: from muru.com ([72.249.23.125]:41384 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230033AbhCIJ7r (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 9 Mar 2021 04:59:47 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 649D2802C;
-        Tue,  9 Mar 2021 10:00:29 +0000 (UTC)
-Date:   Tue, 9 Mar 2021 11:59:43 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     kernel test robot <rong.a.chen@intel.com>
-Cc:     linux-omap@vger.kernel.org, kbuild-all@01.org,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 04/11] ARM: dts: Configure interconnect target module for
- omap5 gpmc
-Message-ID: <YEdHD5ZvXjkVHUL2@atomide.com>
-References: <20210308151143.27793-5-tony@atomide.com>
- <20210309065812.GI219708@shao2-debian>
+        id S231139AbhCINlT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Mar 2021 08:41:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47948 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231308AbhCINk5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Mar 2021 08:40:57 -0500
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE68EC06175F
+        for <linux-omap@vger.kernel.org>; Tue,  9 Mar 2021 05:40:56 -0800 (PST)
+Received: by mail-lj1-x229.google.com with SMTP id r25so20623306ljk.11
+        for <linux-omap@vger.kernel.org>; Tue, 09 Mar 2021 05:40:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=M2PVFTJad13/HHdNzwN8/vmlKlKOh1dKDhYFEC+sxbs=;
+        b=oCa2SWgwfdjgNjhmNjTTUyxncE1srgWbgq4n1tk+YicLak1fz2d0Ocha/HJoao7WS4
+         ijbw64tDUrTAHzwHknKJW5AWPQKLFKb9IYDL4Qsofhy5Zym6TQryG8BBvl1YlDiaM1Wx
+         PzK6QjxGbq6GglgWkaZRgJwFDjNDCYoFLs7xqyx5sZav6TvYbzLRsIbSF6k5iYuOBTmk
+         MuGvUGklfu2vmHSLGHJKvH0szrB7f5LB0aK8Bd9d4LWpxQXqhcHjW0+clsfA6zcFiXPZ
+         QJEOtQF+8u7WccHrdPD389iZjrOIP+sR/aSMvqPTn8OA/LFDOkOn1URA6ZDzGTykGwjc
+         d1Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=M2PVFTJad13/HHdNzwN8/vmlKlKOh1dKDhYFEC+sxbs=;
+        b=sCXmhUFjqhd/ob7WHSEvE24xqGaSDf53FiYe04yNCN4b/UsyLJMfGTauNhfwgpSulS
+         83ImZ6yTBgIk1dThKBB3jRd2X3g1eb6GIr6ixZgxJo6SSWsouk+kWhy5jp7Dd1n0hZZY
+         9grwrPN3CXVcMnaDaZL+OC0fxtKcG+fVyjsDDRSI2aE4sxEOT6KxTwA7zJnxc34E3/Ul
+         +XvVry6lze5wAObENbBvqbU0NLM6lv5iYUehnQjDb0fweJhymuRTVelX23oBE+3+wfp5
+         N0Gkd2HpVc+htCsjvknbtQZr/mgP/Dk8lK4vQpCJqUt8x/PmnMsT1ZmdyToSablqfAA/
+         as2g==
+X-Gm-Message-State: AOAM533xsOkvopqabXitDCc9MsDIXFKs/flgNUPRws5uiZlWgPr/p5P5
+        PJaRsoakn/RNRWQDq42kEkFLWeToIIe5oggwYF/EeA==
+X-Google-Smtp-Source: ABdhPJybzyO6ZNZPaRk+OvWdcYfIHCWIpj+B9KZrup6oxp1HHl3PlLebHYEChGoROoICQaGOC6ZyrFwRYceCJuRDs0w=
+X-Received: by 2002:a05:651c:103a:: with SMTP id w26mr14436853ljm.273.1615297255364;
+ Tue, 09 Mar 2021 05:40:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210309065812.GI219708@shao2-debian>
+References: <20210302011813.2331879-1-alexander.sverdlin@gmail.com>
+ <CACRpkdYErJH5RUjL+jPC5vnaqGiOqBwHsr0E42wOWrpBGrpS3w@mail.gmail.com> <20210308183704.GA2747088@robh.at.kernel.org>
+In-Reply-To: <20210308183704.GA2747088@robh.at.kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 9 Mar 2021 14:40:44 +0100
+Message-ID: <CACRpkda8+Lvz+c=ohXsEDkNSQ63hPo613P4p_90fvKyC_kQ_GA@mail.gmail.com>
+Subject: Re: [PATCH] gpio: omap: Honor "aliases" node
+To:     Rob Herring <robh@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
+Cc:     Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* kernel test robot <rong.a.chen@intel.com> [210309 06:59]:
-> Hi Tony,
-> 
-> I love your patch! Yet something to improve:
-> 
-> [auto build test ERROR on robh/for-next]
-> [also build test ERROR on omap/for-next balbi-usb/testing/next v5.12-rc2 next-20210305]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
-> 
-> url:    https://github.com/0day-ci/linux/commits/Tony-Lindgren/Update-omap5-dts-files-to-probe-with-genpd/20210308-231425
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-> config: arm-defconfig (attached as .config)
-> compiler: arm-linux-gnueabi-gcc (GCC) 9.3.0
-> reproduce: make ARCH=arm dtbs_check
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
-> >> Error: arch/arm/boot/dts/omap5.dtsi:186.31-32 syntax error
->    FATAL ERROR: Unable to parse input tree
-> 
-> 
-> "dtcheck warnings: (new ones prefixed by >>)"
->    make[2]: *** [scripts/Makefile.lib:336: arch/arm/boot/dts/omap5-cm-t54.dtb] Error 1
->    make[2]: *** [scripts/Makefile.lib:336: arch/arm/boot/dts/omap5-igep0050.dtb] Error 1
->    make[2]: *** [scripts/Makefile.lib:336: arch/arm/boot/dts/omap5-uevm.dtb] Error 1
->    make[2]: *** [scripts/Makefile.lib:336: arch/arm/boot/dts/omap5-sbc-t54.dtb] Error 1
-> >> make[2]: *** [scripts/Makefile.lib:355: arch/arm/boot/dts/omap5-cm-t54.dt.yaml] Error 1
-> >> make[2]: *** [scripts/Makefile.lib:355: arch/arm/boot/dts/omap5-igep0050.dt.yaml] Error 1
->    make[2]: *** [scripts/Makefile.lib:355: arch/arm/boot/dts/omap5-sbc-t54.dt.yaml] Error 1
->    make[2]: *** [scripts/Makefile.lib:355: arch/arm/boot/dts/omap5-uevm.dt.yaml] Error 1
->    make[2]: Target '__build' not remade because of errors.
+On Mon, Mar 8, 2021 at 7:37 PM Rob Herring <robh@kernel.org> wrote:
 
+> Can we remove the ones we have already for GPIO?
 
-I think we can ignore this error, this patch depends on patch:
+I think we would get pretty hard pushback if we attempt that.
+We have all these drivers that utilize it:
 
-"[PATCH 3/4] clk: ti: omap5: Add missing gpmc and ocmc clkctrl"
+gpio-clps711x.c:        id = of_alias_get_id(np, "gpio");
+gpio-mvebu.c:   id = of_alias_get_id(pdev->dev.of_node, "gpio");
+gpio-mxc.c:     port->gc.base = (pdev->id < 0) ? of_alias_get_id(np,
+"gpio") * 32 :
+gpio-mxs.c:     port->id = of_alias_get_id(np, "gpio");
+gpio-vf610.c:   gc->base = of_alias_get_id(np, "gpio") * VF610_GPIO_PER_PORT;
+gpio-zynq.c:    chip->base = of_alias_get_id(pdev->dev.of_node, "gpio");
+pinctrl-at91.c: int alias_idx = of_alias_get_id(np, "gpio");
+pinctrl-st.c:   int bank_num = of_alias_get_id(np, "gpio");
+samsung/pinctrl-samsung.c:      id = of_alias_get_id(node, "pinctrl");
 
-Regards,
+Predictably it is so many bad examples that new driver authors will claim
+something along the line of
+"why can't I have a lollipop when all other kids got one".
 
-Tony
+Several of those have this by a claim one way or another that
+the DT boot need to look like the boardfile boot. Some of these
+have been migrated from board files so could possible drop
+this id/base coding.
+
+I don't know what the maintainers would say, should we send
+attack patches? :D At least some kind of motivation would come
+out of it.
+
+Yours,
+Linus Walleij
