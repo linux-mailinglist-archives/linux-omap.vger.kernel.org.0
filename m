@@ -2,65 +2,150 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 992E3338B7E
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Mar 2021 12:31:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F03A3391BF
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Mar 2021 16:45:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbhCLLa4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 Mar 2021 06:30:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48618 "EHLO
+        id S232270AbhCLPog (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Mar 2021 10:44:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231834AbhCLLa1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Mar 2021 06:30:27 -0500
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3B4C061574
-        for <linux-omap@vger.kernel.org>; Fri, 12 Mar 2021 03:30:27 -0800 (PST)
-Received: by mail-il1-x12e.google.com with SMTP id r7so2277625ilb.0
-        for <linux-omap@vger.kernel.org>; Fri, 12 Mar 2021 03:30:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=tPMUAkO5fEyDRMfSYEoGzyPERJ9UKukzyVGkX/CWlDw=;
-        b=D8B/Djl7kpEn6bhw+gt5UheCScWT4oRnMR3lzJOE7oq+59rFd9QnfDRpFHDWf8STkv
-         1p4A/XHWkOFuIuL54Fq3GiXA2GF3elwILjB3KIuThQpdRdNACzLqOoCoAJfvBXdFvo12
-         In+EAYkzUvT9P6+6yLvgZS1miWqJWryeZ3f33VPpnyvijz2+upoSkW3LMvM1tnY1Sp+1
-         +FUEGWNhYPuQ6cq/E32tqyA5dF7TOmejdhQ0q9d/C8SosTdPr21ifYJqqAun5zpaiomV
-         DsiJIJrL3FuDV1zd1Fvos7OV3EUg3YOR27yPAcL/lV3w7FDf5/W6CBM13LSA8NRSkLbR
-         RNlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=tPMUAkO5fEyDRMfSYEoGzyPERJ9UKukzyVGkX/CWlDw=;
-        b=WcO4i9rtT2B/jBrcCqq5EuLDed/VarS9HqeeIemy22OgW3INvDQjRBxJLOe2PUHLEG
-         Tiqlnk97NFiO7DMz/ZxPi1mdp8lplat5V6mqrIR6eW5iZ9nJIHEADWwB1C08imfl3xot
-         SlJ65Xpbetpm6W4HtUgtFFhh3JAwEXCgKHv/gSmvlDfSND2/pYmoPRItBkg+9RqRR4JY
-         U55blO8+teb4JejLYsxNvkptnJOjd1nhjti6vVcXuPMeFwfMVjJ2mzf+vXT0cErCHN1N
-         fUEDlXfiChhbIWVP8Evh6pz1r4pPANENqGiyYgjq2f87v9jCdN4al9TFd5oZeiNbGgr4
-         /TpQ==
-X-Gm-Message-State: AOAM533/IzjVHowo/ccOO0qhoeHBH1qqJEZzrpfWs9SwEq48VbCXAW9W
-        zNpP6w6IRiT9I4hShDHpoXx2BjkzOIp0aPExy5DoH7/tyoHGLskElcI=
-X-Google-Smtp-Source: ABdhPJzqI+ziyT36aqlZVYM6t2sGvGhaY0LEhpoOK3YlEeYHJR87asPERDXIRgWj3lRogFTzLwioCeD/Mn1Q43KNkpI=
-X-Received: by 2002:a92:7d0d:: with SMTP id y13mr2030220ilc.269.1615548626080;
- Fri, 12 Mar 2021 03:30:26 -0800 (PST)
+        with ESMTP id S232502AbhCLPoM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Mar 2021 10:44:12 -0500
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A3BDC061574;
+        Fri, 12 Mar 2021 07:44:12 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 610AB1F46E6B
+Received: by jupiter.universe (Postfix, from userid 1000)
+        id 298764800C7; Fri, 12 Mar 2021 16:44:08 +0100 (CET)
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        kernel@collabora.com, Tony Lindgren <tony@atomide.com>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH 01/38] ARM: dts: motorola-cpcap-mapphone: Prepare for dtbs_check parsing
+Date:   Fri, 12 Mar 2021 16:43:20 +0100
+Message-Id: <20210312154357.1561730-2-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210312154357.1561730-1-sebastian.reichel@collabora.com>
+References: <20210312154357.1561730-1-sebastian.reichel@collabora.com>
 MIME-Version: 1.0
-References: <CACLAQJGnXvd2Pk_BWH9n2ZZdWNC0FeTDwvHZ91wAJ=rTMQHc5w@mail.gmail.com>
-In-Reply-To: <CACLAQJGnXvd2Pk_BWH9n2ZZdWNC0FeTDwvHZ91wAJ=rTMQHc5w@mail.gmail.com>
-From:   Mighty M <mightymb17@gmail.com>
-Date:   Fri, 12 Mar 2021 17:00:13 +0530
-Message-ID: <CACLAQJFhwu_r4BuG4TscCV+FkF_cSG0RONNJW+_OwKP4_LOhPg@mail.gmail.com>
-Subject: Re: Display not working on omap4430
-To:     linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The full dmesg https://pastebin.ubuntu.com/p/KdBZyHzS7t/ i am running 5.11 rc3.
+'<&gpio1 parameters &gpio2 parameters>' and '<&gpio1 parameters>,
+<&gpio2 parameters>' result in the same DTB, but second format has
+better source code readability. Also 'dtbs_check' currently uses
+this format to determine the amount of items specified, so using
+this syntax is needed to successfully verify the devicetree source
+against a DT schema format.
 
-On Thu, Mar 11, 2021 at 6:22 PM Mighty M <mightymb17@gmail.com> wrote:
->
-> I have been working on Samsung Galaxy Tab 2 mainline, it uses omap4430
-> processor. But the display doesnt seem to be working, backlight is
-> fine but the screen is blank. Here is the dmesg
-> https://pastebin.ubuntu.com/p/SY9kdPY9Rd/. The error seems to be clk
-> mismatch, but i have no clue on how to fix it. Regards
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: linux-omap@vger.kernel.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+---
+ .../arm/boot/dts/motorola-cpcap-mapphone.dtsi | 59 +++++++++----------
+ 1 file changed, 28 insertions(+), 31 deletions(-)
+
+diff --git a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
+index 08a7d3ce383f..ea02fd403a9b 100644
+--- a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
++++ b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
+@@ -27,16 +27,14 @@ cpcap_adc: adc {
+ 
+ 		cpcap_battery: battery {
+ 			compatible = "motorola,cpcap-battery";
+-			interrupts-extended = <
+-				&cpcap 6 0 &cpcap 5 0 &cpcap 3 0
+-				&cpcap 20 0 &cpcap 54 0 &cpcap 57 0
+-			>;
++			interrupts-extended =
++				<&cpcap 6 0>, <&cpcap 5 0>, <&cpcap 3 0>,
++				<&cpcap 20 0>, <&cpcap 54 0>, <&cpcap 57 0>;
+ 			interrupt-names =
+ 				"eol", "lowbph", "lowbpl",
+-				"chrgcurr1", "battdetb",
+-				"cccal";
+-			io-channels = <&cpcap_adc 0 &cpcap_adc 1
+-				       &cpcap_adc 5 &cpcap_adc 6>;
++				"chrgcurr1", "battdetb", "cccal";
++			io-channels = <&cpcap_adc 0>, <&cpcap_adc 1>,
++				      <&cpcap_adc 5>, <&cpcap_adc 6>;
+ 			io-channel-names = "battdetb", "battp",
+ 					   "chg_isense", "batti";
+ 			power-supplies = <&cpcap_charger>;
+@@ -44,20 +42,19 @@ &cpcap 20 0 &cpcap 54 0 &cpcap 57 0
+ 
+ 		cpcap_charger: charger {
+ 			compatible = "motorola,mapphone-cpcap-charger";
+-			interrupts-extended = <
+-				&cpcap 13 0 &cpcap 12 0 &cpcap 29 0 &cpcap 28 0
+-				&cpcap 22 0 &cpcap 21 0 &cpcap 20 0 &cpcap 19 0
+-				&cpcap 54 0
+-			>;
++			interrupts-extended =
++				<&cpcap 13 0>, <&cpcap 12 0>, <&cpcap 29 0>,
++				<&cpcap 28 0>, <&cpcap 22 0>, <&cpcap 21 0>,
++				<&cpcap 20 0>, <&cpcap 19 0>, <&cpcap 54 0>;
+ 			interrupt-names =
+-				"chrg_det", "rvrs_chrg", "chrg_se1b", "se0conn",
+-				"rvrs_mode", "chrgcurr2", "chrgcurr1", "vbusvld",
+-				"battdetb";
+-			mode-gpios = <&gpio3 29 GPIO_ACTIVE_LOW
+-				      &gpio3 23 GPIO_ACTIVE_LOW>;
+-			io-channels = <&cpcap_adc 0 &cpcap_adc 1
+-				       &cpcap_adc 2 &cpcap_adc 5
+-				       &cpcap_adc 6>;
++				"chrg_det", "rvrs_chrg", "chrg_se1b",
++				"se0conn", "rvrs_mode", "chrgcurr2",
++				"chrgcurr1", "vbusvld", "battdetb";
++			mode-gpios = <&gpio3 29 GPIO_ACTIVE_LOW>,
++				     <&gpio3 23 GPIO_ACTIVE_LOW>;
++			io-channels = <&cpcap_adc 0>, <&cpcap_adc 1>,
++				      <&cpcap_adc 2>, <&cpcap_adc 5>,
++				      <&cpcap_adc 6>;
+ 			io-channel-names = "battdetb", "battp",
+ 					   "vbus", "chg_isense",
+ 					   "batti";
+@@ -98,22 +95,22 @@ power_button: button {
+ 
+ 		cpcap_usb2_phy: phy {
+ 			compatible = "motorola,mapphone-cpcap-usb-phy";
+-			pinctrl-0 = <&usb_gpio_mux_sel1 &usb_gpio_mux_sel2>;
++			pinctrl-0 = <&usb_gpio_mux_sel1>, <&usb_gpio_mux_sel2>;
+ 			pinctrl-1 = <&usb_ulpi_pins>;
+ 			pinctrl-2 = <&usb_utmi_pins>;
+ 			pinctrl-3 = <&uart3_pins>;
+ 			pinctrl-names = "default", "ulpi", "utmi", "uart";
+ 			#phy-cells = <0>;
+-			interrupts-extended = <
+-				&cpcap 15 0 &cpcap 14 0 &cpcap 28 0 &cpcap 19 0
+-				&cpcap 18 0 &cpcap 17 0 &cpcap 16 0 &cpcap 49 0
+-				&cpcap 48 0
+-			>;
++			interrupts-extended =
++				<&cpcap 15 0>, <&cpcap 14 0>, <&cpcap 28 0>,
++				<&cpcap 19 0>, <&cpcap 18 0>, <&cpcap 17 0>,
++				<&cpcap 16 0>, <&cpcap 49 0>, <&cpcap 48 0>;
+ 			interrupt-names =
+-				"id_ground", "id_float", "se0conn", "vbusvld",
+-				"sessvld", "sessend", "se1", "dm", "dp";
+-			mode-gpios = <&gpio2 28 GPIO_ACTIVE_HIGH
+-				      &gpio1 0 GPIO_ACTIVE_HIGH>;
++				"id_ground", "id_float", "se0conn",
++				"vbusvld", "sessvld", "sessend",
++				"se1", "dm", "dp";
++			mode-gpios = <&gpio2 28 GPIO_ACTIVE_HIGH>,
++				     <&gpio1 0 GPIO_ACTIVE_HIGH>;
+ 			io-channels = <&cpcap_adc 2>, <&cpcap_adc 7>;
+ 			io-channel-names = "vbus", "id";
+ 			vusb-supply = <&vusb>;
+-- 
+2.30.1
+
