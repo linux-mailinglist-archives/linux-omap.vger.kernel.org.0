@@ -2,58 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C853133731A
-	for <lists+linux-omap@lfdr.de>; Thu, 11 Mar 2021 13:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C3C338895
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Mar 2021 10:26:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232996AbhCKMw0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 11 Mar 2021 07:52:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38544 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232940AbhCKMwZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 Mar 2021 07:52:25 -0500
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C567CC061574
-        for <linux-omap@vger.kernel.org>; Thu, 11 Mar 2021 04:52:25 -0800 (PST)
-Received: by mail-yb1-xb29.google.com with SMTP id h82so21546537ybc.13
-        for <linux-omap@vger.kernel.org>; Thu, 11 Mar 2021 04:52:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=d6lLZUUWVDy12UEvMhTaozfmARby8mesCbzTyHNxBJw=;
-        b=bTb55ln8zKdzA/YJce+LgkUMmSlpu0kGY85dhVCf9qkvl60LqciASKGLeDcmPyRt6P
-         f9dyBYc2GKa1gwsuWTM4vXLy/gV7Oeskxjbonu7LomjCJ8Z32xD84BWcx1MzbZEzg2L2
-         JeXiXbLtKGApFJmu4TophQ6uLdu5qOonyHVYprJilDYvG843FUt/rM8z5rmhNRshV/U/
-         i0lazTVY9rjqIaS0hjbO8IYBWGxFeQj8FE0d3gkNcagFPgyihXJIOllkOhMGHlpoSsiz
-         TQ8xSeGnjiT91AYLJDrfoLHEPcwe0CGJHKrWK4O148bHc5bTjjQ/QRWvhavKpF+hC0EN
-         1bhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=d6lLZUUWVDy12UEvMhTaozfmARby8mesCbzTyHNxBJw=;
-        b=LsdK5W5T0KakNzMv3v7N4W72DNEVymvDCOmz+g+IA/qw0BdNU205k+NiGRGnhUO3p4
-         jYhUeLabetUe84vxwdrdcv7d5XGlviQyzEH25zYBn16XowZ3h29QFPJtcvluQ5rW5SRW
-         uPH68t/gZ+H73YAMfAhYIkcL5MEm+f1k+RFI2BfpjQPe9ClHAgkOwG6Pbe+XTcb2AvR5
-         7Bn/8SzVx7cwaCDOYRaibnYn3mHCu1zOBhwdWBX7AG0NJ6/VPtn1L4YOgaJRhMFCGRTF
-         l3c1A1G5pfTyILVRtxHVcUh/t7Z8iNDpxElCBxyfqBrQC3+NpPsVwrw7nzXCAjAhHL7w
-         drZA==
-X-Gm-Message-State: AOAM530SOyABuEc4cczXe9DoenpaRHXSY6mInP22JYHRIhpAxAWiSW3a
-        3uNdq8alFxJ9qKdr8cv3dabk97yEp0dIwdlFVntcR3n6LzolCPMVf3yvOg==
-X-Google-Smtp-Source: ABdhPJz/VvbqlrJq/fb7K2tkUcWkcA3Rk6GcO/YDQnOqQGfEnmzneE/XV3uafqv1qHjhnZJM4CZiyoIZ0vBuG3ISm6Q=
-X-Received: by 2002:a25:e74f:: with SMTP id e76mr10834281ybh.421.1615467145005;
- Thu, 11 Mar 2021 04:52:25 -0800 (PST)
-MIME-Version: 1.0
-From:   Mighty M <mightymb17@gmail.com>
-Date:   Thu, 11 Mar 2021 18:22:14 +0530
-Message-ID: <CACLAQJGnXvd2Pk_BWH9n2ZZdWNC0FeTDwvHZ91wAJ=rTMQHc5w@mail.gmail.com>
-Subject: Display not working on omap4430
+        id S232880AbhCLJZq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Mar 2021 04:25:46 -0500
+Received: from muru.com ([72.249.23.125]:42294 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232840AbhCLJZa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 12 Mar 2021 04:25:30 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 78BCC8057;
+        Fri, 12 Mar 2021 09:26:10 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/2] Few clean-up patches after dropping legacy data
+Date:   Fri, 12 Mar 2021 11:25:14 +0200
+Message-Id: <20210312092516.42884-1-tony@atomide.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I have been working on Samsung Galaxy Tab 2 mainline, it uses omap4430
-processor. But the display doesnt seem to be working, backlight is
-fine but the screen is blank. Here is the dmesg
-https://pastebin.ubuntu.com/p/SY9kdPY9Rd/. The error seems to be clk
-mismatch, but i have no clue on how to fix it. Regards
+Hi all,
+
+Here are few clean-up patches after we are dropping the legacy data for
+omap4/5 and dra7. These are against my omap-for-v5.13/genpd-drop-legacy
+branch at [0].
+
+Regards,
+
+Tony
+
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap.git/log/?h=omap-for-v5.13/genpd-drop-legacy
+
+Tony Lindgren (2):
+  ARM: OMAP2+: Stop building legacy code for dra7 and omap4/5
+  bus: ti-sysc: Warn about old dtb for dra7 and omap4/5
+
+ arch/arm/mach-omap2/Makefile       |  8 ++++----
+ arch/arm/mach-omap2/io.c           |  7 ++++++-
+ arch/arm/mach-omap2/omap_hwmod.h   | 13 +++++++++++++
+ arch/arm/mach-omap2/pdata-quirks.c |  2 +-
+ arch/arm/mach-omap2/sr_device.c    |  7 +++++++
+ drivers/bus/ti-sysc.c              |  3 +++
+ 6 files changed, 34 insertions(+), 6 deletions(-)
+
+-- 
+2.30.2
