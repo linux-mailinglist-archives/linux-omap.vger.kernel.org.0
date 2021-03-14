@@ -2,150 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F03A3391BF
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Mar 2021 16:45:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5432D33A54F
+	for <lists+linux-omap@lfdr.de>; Sun, 14 Mar 2021 16:13:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232270AbhCLPog (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 Mar 2021 10:44:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47020 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232502AbhCLPoM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Mar 2021 10:44:12 -0500
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A3BDC061574;
-        Fri, 12 Mar 2021 07:44:12 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id 610AB1F46E6B
-Received: by jupiter.universe (Postfix, from userid 1000)
-        id 298764800C7; Fri, 12 Mar 2021 16:44:08 +0100 (CET)
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Sebastian Reichel <sre@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        kernel@collabora.com, Tony Lindgren <tony@atomide.com>,
-        linux-omap@vger.kernel.org
-Subject: [PATCH 01/38] ARM: dts: motorola-cpcap-mapphone: Prepare for dtbs_check parsing
-Date:   Fri, 12 Mar 2021 16:43:20 +0100
-Message-Id: <20210312154357.1561730-2-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210312154357.1561730-1-sebastian.reichel@collabora.com>
-References: <20210312154357.1561730-1-sebastian.reichel@collabora.com>
+        id S233103AbhCNPMp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 14 Mar 2021 11:12:45 -0400
+Received: from smtp-17.italiaonline.it ([213.209.10.17]:40445 "EHLO libero.it"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S232662AbhCNPMn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 14 Mar 2021 11:12:43 -0400
+Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
+ ([87.20.116.197])
+        by smtp-17.iol.local with ESMTPA
+        id LSPzlDn2etpGHLSQ4lAQ7n; Sun, 14 Mar 2021 16:12:41 +0100
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+        t=1615734762; bh=vK2OqpNKI0QYjQGKvHcbMxiP1d3Brqyh44o5DIEI8Ow=;
+        h=From;
+        b=HBuaLkW/tose/cwtAbyUkyv/BwmNKTCFUpz/t0pW5LntaoxhS7pYaJd4iK6crhPnx
+         Gnnm10R9BEVELbcy3kaPiiKNtnOj3iJgnTgmzOwn1NdsM8dp98P6fynv6Okp14GRjk
+         ykYO/WlB22GiyN8zN5AT6Gnigc9Hh4rHHE0QV+nO+qVmOc9qytmCCy01hvqbXda/sb
+         5auNgN9+nMzon2zMmnwuyvEWRjas1v1k2+W3J3NoEYnqtu6F4J1N1cppK7B/Y7v9eG
+         M6IgWNiINO5cN0rmk0mRkVkmw3lqEIe+BLhIl3lDP+DPGCPsf+6ifQ6xLiWksl0fXb
+         Yxh71mssG1Bgw==
+X-CNFS-Analysis: v=2.4 cv=Q7IXX66a c=1 sm=1 tr=0 ts=604e27ea cx=a_exe
+ a=AVqmXbCQpuNSdJmApS5GbQ==:117 a=AVqmXbCQpuNSdJmApS5GbQ==:17
+ a=IkcTkHD0fZMA:10 a=wWb8P1eRJa4rfLIeBvsA:9 a=QEXdDO2ut3YA:10
+From:   Dario Binacchi <dariobin@libero.it>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dario Binacchi <dariobin@libero.it>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <kristo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH 0/4] clk: ti: add am33xx spread spectrum clock support
+Date:   Sun, 14 Mar 2021 16:12:29 +0100
+Message-Id: <20210314151233.23243-1-dariobin@libero.it>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfN6fGTPEh5gLyghbn1eIfsPmGzVXQ4yPJN4J8eWOvCIqGJParrQEOl8NkmMBDQDwIa5sOlkRZdxhbuiSdvWALn0NBqdWNbqUZuJxJVP0MMsp+m4E+4Wc
+ CeD8l4VH6m1a3BGwbhZC7iqzILXBK1q5/pDivY/mY0Ro1L+r3vZDd6UdtyGwj5pvDa9o4H4vF2vCrf7SpAl+6g4I1OXjLuIcAz9mGP4taXb+ZkQwR3bYUdup
+ DZFmjLf1oUYmGjFXnsdo+gnTIPN9XOVrBIgH7DvNfRRmmenTZFXqf3BXosfMCupq4jo+s6w8oKV4RyJ/xcmIgkJBEuUlTn5q4WbrWkWyyanUZ7n88Lh5n5c4
+ vf6cV028umxKbqGlMoipxq7Gb6F7PzW+ODp7e4lY9vdKLy4nOnir8DATD8VCjImW1QEE/pUV0EbhPXLPCV69I5NnYAMrWRLPAX7qdvmObls/RzAb19U+5i6+
+ GH2H76QExocE3e+of+uekXOjn7e3+kFZL3coNGGKcdPqRr52/kkDJKYKw0bcGDG8AezcAEZRo42N/oB3famMb5X2HGLxuxSiRaRncSbfbWp3PKHWJcICNMoX
+ +t285rYK11v/UEZrNK7UovBQ
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-'<&gpio1 parameters &gpio2 parameters>' and '<&gpio1 parameters>,
-<&gpio2 parameters>' result in the same DTB, but second format has
-better source code readability. Also 'dtbs_check' currently uses
-this format to determine the amount of items specified, so using
-this syntax is needed to successfully verify the devicetree source
-against a DT schema format.
 
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: linux-omap@vger.kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
----
- .../arm/boot/dts/motorola-cpcap-mapphone.dtsi | 59 +++++++++----------
- 1 file changed, 28 insertions(+), 31 deletions(-)
+As reported by the TI spruh73x RM, MPU and LCD modules support spread
+spectrum clocking (SSC) on their output clocks. SSC is used to spread
+the spectral peaking of the clock to reduce any electromagnetic
+interference (EMI) that may be caused due to the clock’s fundamental
+or any of its harmonics.
+The series allows you to enable and adjust the spread spectrum clocking
+for all am33xx PLLs for which it is supported.
 
-diff --git a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
-index 08a7d3ce383f..ea02fd403a9b 100644
---- a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
-+++ b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
-@@ -27,16 +27,14 @@ cpcap_adc: adc {
- 
- 		cpcap_battery: battery {
- 			compatible = "motorola,cpcap-battery";
--			interrupts-extended = <
--				&cpcap 6 0 &cpcap 5 0 &cpcap 3 0
--				&cpcap 20 0 &cpcap 54 0 &cpcap 57 0
--			>;
-+			interrupts-extended =
-+				<&cpcap 6 0>, <&cpcap 5 0>, <&cpcap 3 0>,
-+				<&cpcap 20 0>, <&cpcap 54 0>, <&cpcap 57 0>;
- 			interrupt-names =
- 				"eol", "lowbph", "lowbpl",
--				"chrgcurr1", "battdetb",
--				"cccal";
--			io-channels = <&cpcap_adc 0 &cpcap_adc 1
--				       &cpcap_adc 5 &cpcap_adc 6>;
-+				"chrgcurr1", "battdetb", "cccal";
-+			io-channels = <&cpcap_adc 0>, <&cpcap_adc 1>,
-+				      <&cpcap_adc 5>, <&cpcap_adc 6>;
- 			io-channel-names = "battdetb", "battp",
- 					   "chg_isense", "batti";
- 			power-supplies = <&cpcap_charger>;
-@@ -44,20 +42,19 @@ &cpcap 20 0 &cpcap 54 0 &cpcap 57 0
- 
- 		cpcap_charger: charger {
- 			compatible = "motorola,mapphone-cpcap-charger";
--			interrupts-extended = <
--				&cpcap 13 0 &cpcap 12 0 &cpcap 29 0 &cpcap 28 0
--				&cpcap 22 0 &cpcap 21 0 &cpcap 20 0 &cpcap 19 0
--				&cpcap 54 0
--			>;
-+			interrupts-extended =
-+				<&cpcap 13 0>, <&cpcap 12 0>, <&cpcap 29 0>,
-+				<&cpcap 28 0>, <&cpcap 22 0>, <&cpcap 21 0>,
-+				<&cpcap 20 0>, <&cpcap 19 0>, <&cpcap 54 0>;
- 			interrupt-names =
--				"chrg_det", "rvrs_chrg", "chrg_se1b", "se0conn",
--				"rvrs_mode", "chrgcurr2", "chrgcurr1", "vbusvld",
--				"battdetb";
--			mode-gpios = <&gpio3 29 GPIO_ACTIVE_LOW
--				      &gpio3 23 GPIO_ACTIVE_LOW>;
--			io-channels = <&cpcap_adc 0 &cpcap_adc 1
--				       &cpcap_adc 2 &cpcap_adc 5
--				       &cpcap_adc 6>;
-+				"chrg_det", "rvrs_chrg", "chrg_se1b",
-+				"se0conn", "rvrs_mode", "chrgcurr2",
-+				"chrgcurr1", "vbusvld", "battdetb";
-+			mode-gpios = <&gpio3 29 GPIO_ACTIVE_LOW>,
-+				     <&gpio3 23 GPIO_ACTIVE_LOW>;
-+			io-channels = <&cpcap_adc 0>, <&cpcap_adc 1>,
-+				      <&cpcap_adc 2>, <&cpcap_adc 5>,
-+				      <&cpcap_adc 6>;
- 			io-channel-names = "battdetb", "battp",
- 					   "vbus", "chg_isense",
- 					   "batti";
-@@ -98,22 +95,22 @@ power_button: button {
- 
- 		cpcap_usb2_phy: phy {
- 			compatible = "motorola,mapphone-cpcap-usb-phy";
--			pinctrl-0 = <&usb_gpio_mux_sel1 &usb_gpio_mux_sel2>;
-+			pinctrl-0 = <&usb_gpio_mux_sel1>, <&usb_gpio_mux_sel2>;
- 			pinctrl-1 = <&usb_ulpi_pins>;
- 			pinctrl-2 = <&usb_utmi_pins>;
- 			pinctrl-3 = <&uart3_pins>;
- 			pinctrl-names = "default", "ulpi", "utmi", "uart";
- 			#phy-cells = <0>;
--			interrupts-extended = <
--				&cpcap 15 0 &cpcap 14 0 &cpcap 28 0 &cpcap 19 0
--				&cpcap 18 0 &cpcap 17 0 &cpcap 16 0 &cpcap 49 0
--				&cpcap 48 0
--			>;
-+			interrupts-extended =
-+				<&cpcap 15 0>, <&cpcap 14 0>, <&cpcap 28 0>,
-+				<&cpcap 19 0>, <&cpcap 18 0>, <&cpcap 17 0>,
-+				<&cpcap 16 0>, <&cpcap 49 0>, <&cpcap 48 0>;
- 			interrupt-names =
--				"id_ground", "id_float", "se0conn", "vbusvld",
--				"sessvld", "sessend", "se1", "dm", "dp";
--			mode-gpios = <&gpio2 28 GPIO_ACTIVE_HIGH
--				      &gpio1 0 GPIO_ACTIVE_HIGH>;
-+				"id_ground", "id_float", "se0conn",
-+				"vbusvld", "sessvld", "sessend",
-+				"se1", "dm", "dp";
-+			mode-gpios = <&gpio2 28 GPIO_ACTIVE_HIGH>,
-+				     <&gpio1 0 GPIO_ACTIVE_HIGH>;
- 			io-channels = <&cpcap_adc 2>, <&cpcap_adc 7>;
- 			io-channel-names = "vbus", "id";
- 			vusb-supply = <&vusb>;
+
+
+Dario Binacchi (4):
+  clk: ti: fix typo in routine description
+  dt-bindings: ti: dpll: add spread spectrum support
+  ARM: dts: am33xx-clocks: add spread spectrum support
+  clk: ti: add am33xx spread spectrum clock support
+
+ .../devicetree/bindings/clock/ti/dpll.txt     | 20 +++++
+ arch/arm/boot/dts/am33xx-clocks.dtsi          |  4 +-
+ drivers/clk/ti/dpll.c                         | 41 +++++++++
+ drivers/clk/ti/dpll3xxx.c                     | 87 ++++++++++++++++++-
+ include/linux/clk/ti.h                        | 24 +++++
+ 5 files changed, 173 insertions(+), 3 deletions(-)
+
 -- 
-2.30.1
+2.17.1
 
