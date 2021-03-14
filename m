@@ -2,102 +2,150 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA21533A562
-	for <lists+linux-omap@lfdr.de>; Sun, 14 Mar 2021 16:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42B6A33A6BA
+	for <lists+linux-omap@lfdr.de>; Sun, 14 Mar 2021 17:41:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230342AbhCNPVa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 14 Mar 2021 11:21:30 -0400
-Received: from smtp-17-i2.italiaonline.it ([213.209.12.17]:53204 "EHLO
-        libero.it" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231892AbhCNPVU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 14 Mar 2021 11:21:20 -0400
-X-Greylist: delayed 343 seconds by postgrey-1.27 at vger.kernel.org; Sun, 14 Mar 2021 11:20:58 EDT
-Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
- ([87.20.116.197])
-        by smtp-17.iol.local with ESMTPA
-        id LSTmlDnzqtpGHLSTplAQtq; Sun, 14 Mar 2021 16:16:33 +0100
-x-libjamoibt: 1601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
-        t=1615734994; bh=wnjplnLdFDkHsfAUHmWTFQwLX0oNy1/Ru7raheFYmvw=;
-        h=From;
-        b=T5iYKy4Qdw1yFbqjt2iWO9y8qEAx/Ivi1TjhMj4g8oFErjLOs2uvZaBJGav5+37AE
-         X8FDB7hRPLWhIhz34wxxvS8wdpptvbjqbe13yxqPOb8c/98K9v++m7S363IOBWpNUH
-         RU5k97fQkQxmGFhqBERRAkNv25PxLvejBySEv+CLE7KCpwG31n9IrV1uZYUNq4FXtW
-         mKekY2HpG2HsR+aipOnFTfC/wZfSsFfqyoiG5bfFU/IqL8DVko6RxyH9cSsmNGBu8v
-         MSOuD+xMmCgx9D8k3y/fRzPFXU17V/1tf+yHdmGsBA46XB6kJlbaB9ITctYfrpaNi9
-         J/Y16YR6Jv6Ig==
-X-CNFS-Analysis: v=2.4 cv=Q7IXX66a c=1 sm=1 tr=0 ts=604e28d2 cx=a_exe
- a=AVqmXbCQpuNSdJmApS5GbQ==:117 a=AVqmXbCQpuNSdJmApS5GbQ==:17
- a=hN1Y6PlX_eMEyabRrE4A:9
-From:   Dario Binacchi <dariobin@libero.it>
-To:     linux-kernel@vger.kernel.org
-Cc:     Dario Binacchi <dariobin@libero.it>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [RESEND PATCH] ARM: dts: am33xx-l4: fix tscadc@0 node indentation
-Date:   Sun, 14 Mar 2021 16:16:28 +0100
-Message-Id: <20210314151629.23921-1-dariobin@libero.it>
-X-Mailer: git-send-email 2.17.1
-X-CMAE-Envelope: MS4xfPsAJ64dxFd6GoGwuXh/hzuC6FohTjpOmOEZznpnv2nVI8hiAFZNIWDQZ2vCYjxxONpwZrv6RnSFFDZ7FFcsit0MIBGaKfuZux0SJb80Fa4dNlPt05RN
- rvJXXaDKkoCkO40aZDbC+3SZTuHuUHPw76UcDlXOLSw6TsuubqjBRYbiHLh23Dq6evDcD1+ldL3fd3/iC75AozqRVmp7CUUy12jmrSGoBMgyxTuj4MLLqtrS
- aM/2wbbreAHk2WvlCp1tsSdNjNbAQaKz87AVy0E2wEsTnvLV2kPWG7Yg/KoBFOrZA0MYUgUJZa7B6V1F27cR6fFlzTw+aEPd7tnZHmQpYwom0ijTm8xa328Y
- 2vovDzklLkd9F9g7z1nkmp/PDviLO4PfSgC7YbtssaA6k8RPAvvU8Myhb7yPcogPbgywKJauNzUqhEi7+/lc2qLw7KTOfg==
+        id S233977AbhCNQkm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 14 Mar 2021 12:40:42 -0400
+Received: from muru.com ([72.249.23.125]:43104 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233369AbhCNQkP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 14 Mar 2021 12:40:15 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id C927F80B4;
+        Sun, 14 Mar 2021 16:40:56 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Carlos Leija <cileija@ti.com>,
+        Praneeth Bajjuri <praneeth@ti.com>,
+        Bryan Buckley <bryan.buckley@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Ivan Jelincic <parazyd@dyne.org>, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Tero Kristo <kristo@kernel.org>
+Subject: [PATCH] ARM: OMAP4: PM: update ROM return address for OSWR and OFF
+Date:   Sun, 14 Mar 2021 18:39:43 +0200
+Message-Id: <20210314163943.6252-1-tony@atomide.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix the broken indentation of tscadc@0 node.
+From: Carlos Leija <cileija@ti.com>
 
-Signed-off-by: Dario Binacchi <dariobin@libero.it>
+We need to add a dummy smc call to the cpuidle wakeup path to force the
+ROM code to save the return address after MMU is enabled again. This is
+needed to prevent random hangs on secure devices like droid4.
 
+Otherwise the system will eventually hang when entering deeper SoC idle
+states with the core and mpu domains in open-switch retention (OSWR).
+The hang happens as the ROM code tries to use the earlier physical return
+address set by omap-headsmp.S with MMU off while waking up CPU1 again.
+
+The hangs started happening in theory already with commit caf8c87d7ff2
+("ARM: OMAP2+: Allow core oswr for omap4"), but in practise the issue went
+unnoticed as various drivers were often blocking any deeper idle states
+with hardware autoidle features.
+
+This patch is based on an earlier TI Linux kernel tree commit 92f0b3028d9e
+("OMAP4: PM: update ROM return address for OSWR and OFF") written by
+Carlos Leija <cileija@ti.com>, Praneeth Bajjuri <praneeth@ti.com>, and
+Bryan Buckley <bryan.buckley@ti.com>. A later version of the patch was
+updated to use CPU_PM notifiers by Tero Kristo <t-kristo@ti.com>.
+
+Signed-off-by: Carlos Leija <cileija@ti.com>
+Signed-off-by: Praneeth Bajjuri <praneeth@ti.com>
+Signed-off-by: Bryan Buckley <bryan.buckley@ti.com>
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
+Fixes: caf8c87d7ff2 ("ARM: OMAP2+: Allow core oswr for omap4")
+Reported-by: Carl Philipp Klemm <philipp@uvos.xyz>
+Reported-by: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Ivan Jelincic <parazyd@dyne.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Tero Kristo <kristo@kernel.org>
+[tony@atomide.com: updated to apply, updated description]
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
+ arch/arm/mach-omap2/omap-secure.c | 39 +++++++++++++++++++++++++++++++
+ arch/arm/mach-omap2/omap-secure.h |  1 +
+ 2 files changed, 40 insertions(+)
 
- arch/arm/boot/dts/am33xx-l4.dtsi | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
-index 1fb22088caeb..039a9ab4c7ea 100644
---- a/arch/arm/boot/dts/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/am33xx-l4.dtsi
-@@ -259,22 +259,22 @@
- 			ranges = <0x00000000 0x0000d000 0x00001000>,
- 				 <0x00001000 0x0000e000 0x00001000>;
+diff --git a/arch/arm/mach-omap2/omap-secure.c b/arch/arm/mach-omap2/omap-secure.c
+--- a/arch/arm/mach-omap2/omap-secure.c
++++ b/arch/arm/mach-omap2/omap-secure.c
+@@ -9,6 +9,7 @@
+  */
  
--				tscadc: tscadc@0 {
--					compatible = "ti,am3359-tscadc";
--					reg = <0x0 0x1000>;
--					interrupts = <16>;
--					status = "disabled";
--					dmas = <&edma 53 0>, <&edma 57 0>;
--					dma-names = "fifo0", "fifo1";
-+			tscadc: tscadc@0 {
-+				compatible = "ti,am3359-tscadc";
-+				reg = <0x0 0x1000>;
-+				interrupts = <16>;
-+				status = "disabled";
-+				dmas = <&edma 53 0>, <&edma 57 0>;
-+				dma-names = "fifo0", "fifo1";
+ #include <linux/arm-smccc.h>
++#include <linux/cpu_pm.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+@@ -20,6 +21,7 @@
  
--					tsc {
--						compatible = "ti,am3359-tsc";
--					};
--					am335x_adc: adc {
--						#io-channel-cells = <1>;
--						compatible = "ti,am3359-adc";
--					};
-+				tsc {
-+					compatible = "ti,am3359-tsc";
-+				};
-+				am335x_adc: adc {
-+					#io-channel-cells = <1>;
-+					compatible = "ti,am3359-adc";
- 				};
-+			};
- 		};
+ #include "common.h"
+ #include "omap-secure.h"
++#include "soc.h"
  
- 		target-module@10000 {			/* 0x44e10000, ap 22 0c.0 */
+ static phys_addr_t omap_secure_memblock_base;
+ 
+@@ -213,3 +215,40 @@ void __init omap_secure_init(void)
+ {
+ 	omap_optee_init_check();
+ }
++
++/*
++ * Dummy dispatcher call after core OSWR and MPU off. Updates the ROM return
++ * address after MMU has been re-enabled after CPU1 has been woken up again.
++ * Otherwise the ROM code will attempt to use the earlier physical return
++ * address that got set with MMU off when waking up CPU1. Only used on secure
++ * devices.
++ */
++static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
++{
++	switch (cmd) {
++	case CPU_CLUSTER_PM_EXIT:
++		omap_secure_dispatcher(OMAP4_PPA_SERVICE_0,
++				       FLAG_START_CRITICAL,
++				       0, 0, 0, 0, 0);
++		break;
++	default:
++		break;
++	}
++
++	return NOTIFY_OK;
++}
++
++static struct notifier_block secure_notifier_block = {
++	.notifier_call = cpu_notifier,
++};
++
++static int __init secure_pm_init(void)
++{
++	if (omap_type() == OMAP2_DEVICE_TYPE_GP)
++		return 0;
++
++	cpu_pm_register_notifier(&secure_notifier_block);
++
++	return 0;
++}
++omap_arch_initcall(secure_pm_init);
+diff --git a/arch/arm/mach-omap2/omap-secure.h b/arch/arm/mach-omap2/omap-secure.h
+--- a/arch/arm/mach-omap2/omap-secure.h
++++ b/arch/arm/mach-omap2/omap-secure.h
+@@ -50,6 +50,7 @@
+ #define OMAP5_DRA7_MON_SET_ACR_INDEX	0x107
+ 
+ /* Secure PPA(Primary Protected Application) APIs */
++#define OMAP4_PPA_SERVICE_0		0x21
+ #define OMAP4_PPA_L2_POR_INDEX		0x23
+ #define OMAP4_PPA_CPU_ACTRL_SMP_INDEX	0x25
+ 
 -- 
-2.17.1
-
+2.30.2
