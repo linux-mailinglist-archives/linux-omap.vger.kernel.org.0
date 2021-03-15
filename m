@@ -2,196 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B6F33BF4C
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Mar 2021 16:01:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0B1933C305
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Mar 2021 18:00:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237871AbhCOPAc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 Mar 2021 11:00:32 -0400
-Received: from smtp-fw-6002.amazon.com ([52.95.49.90]:43129 "EHLO
-        smtp-fw-6002.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231939AbhCOPAX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Mar 2021 11:00:23 -0400
+        id S234678AbhCOQ7S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Mar 2021 12:59:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55744 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234973AbhCOQ7B (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Mar 2021 12:59:01 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C856C061763
+        for <linux-omap@vger.kernel.org>; Mon, 15 Mar 2021 09:59:00 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id x4so51277223lfu.7
+        for <linux-omap@vger.kernel.org>; Mon, 15 Mar 2021 09:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1615820423; x=1647356423;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version;
-  bh=vz8bh1TIcb8YUPIQ707G/A5kNUPOqo9Buwx7hhjsjfk=;
-  b=qFQThFgX71IhWzkTAGBSKlDbs3843PGPTf4raUk+rR70gT/QSTwvYs4V
-   hgprsu09gzC8HHiCgUgM9xZm1mZilAGCxweihQnPS914FzilPIqz41Bd/
-   XpZlK6C8ZnxN/jylx84eXlGz9REFfLcjDoTON2Zr2w8ugDiD0/CeHvGnx
-   A=;
-IronPort-HdrOrdr: A9a23:WObm/qwYfTeu5U7EMhOkKrPw1r1zdoIgy1knxilNYDZSddGVkN
- 3roeQD2XbP+VUscVwphNzoAsO9aFzG85od2+QsFJODeCWjh2eyNoFl6uLZowHIPyHl7OZS2e
- NBXsFFZuHYK0N1hcH78wGkE9AmqeP3lZyAvuvVw3dzQQwCUcgJhDtRMQqDF10zeQ8uP/YEPa
- CB7clKrSfIQxUqR/m8b0NrY8Hz4+TRlJT8YQMXbiRXijWzsQ==
-X-IronPort-AV: E=Sophos;i="5.81,249,1610409600"; 
-   d="scan'208";a="97431294"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-2b-c300ac87.us-west-2.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-out-6002.iad6.amazon.com with ESMTP; 15 Mar 2021 15:00:22 +0000
-Received: from EX13D19EUB003.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-        by email-inbound-relay-2b-c300ac87.us-west-2.amazon.com (Postfix) with ESMTPS id 87D9DA069E;
-        Mon, 15 Mar 2021 15:00:19 +0000 (UTC)
-Received: from u8a88181e7b2355.ant.amazon.com (10.43.160.180) by
- EX13D19EUB003.ant.amazon.com (10.43.166.69) with Microsoft SMTP Server (TLS)
- id 15.0.1497.2; Mon, 15 Mar 2021 15:00:12 +0000
-From:   Hanna Hawa <hhhawa@amazon.com>
-To:     <tony@atomide.com>, <haojian.zhuang@linaro.org>,
-        <linus.walleij@linaro.org>
-CC:     <dwmw@amazon.co.uk>, <benh@amazon.com>, <ronenk@amazon.com>,
-        <talel@amazon.com>, <jonnyc@amazon.com>, <hanochu@amazon.com>,
-        <tgershi@amazon.com>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <hhhawa@amazon.com>
-Subject: [PATCH 2/2] pinctrl: pinctrl-single: fix pcs_pin_dbg_show() when bits_per_mux != 0
-Date:   Mon, 15 Mar 2021 16:59:44 +0200
-Message-ID: <20210315145944.20412-3-hhhawa@amazon.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210315145944.20412-1-hhhawa@amazon.com>
-References: <20210315145944.20412-1-hhhawa@amazon.com>
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
+        b=bL2/J9ZXSj/seYZ4Yt/7xPJEUbrxkxkdBDA6LnkwlqM4B8UivxD38dABgszhIrmEYr
+         UhGjDGSgsEvVP1XNKN1ENwlFj3aC6J8YcQMN+KSz87MImeLvcmoa2WrxaLN/1gtDYyy6
+         HNMeMWCpVFtTuc4Wdcg2Gf3vHj9I7ijcrPWq/6k90SJj1PTtdIp2NOyhMIA7goX293nj
+         7eJi2vVtathVfMs1VtKqTa32KM6YhAKiR3rZg10ur8mJbHWEL13X0KoDzX9ucfq/oU7l
+         VVHj6HOcFTM90ZYBTtvpAwBuDvm30fUbSxjwYV4w7Fk+y6G8KcUW5H9tabzs2o80RBgI
+         psRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
+        b=KzPzkrJijTwKHi4C7tzDhGmkX8oGsmejJd9qLvJMENMTgvXMhe4MNMBIUzawE9shhQ
+         fE/9r2DSIRyfluSQOlxUt5tZO8/RKAprwXMfy5qZ9of/QXu0ooON4BRyTZTr9QkOz+aY
+         w5Zbu9DHsbe8ZEv5UUdZK7pr2suJZ8MPWBE6kRe7RXNnX25Kcv0T5zzbJsYPD77nJ3DS
+         mtxF2DpAmaJ47BYqW6bwGZE59YMKZaS+MxgwA+Xp9vsurxQ/yDb1sGm7UjnvAQcNSmDy
+         7anfk5mXY4FfFJzsePgb15/3SjEuBVaE5jdYDpK3YtSid0QcPgWkrg6RDtZzitLY5fxB
+         V5fg==
+X-Gm-Message-State: AOAM533YLB0/lqrxmEQRRrteylZkhAlXOuF0d+ItZZ1pZ0ZkLY4gma1b
+        6sbBCmGoFc9Jx6vmWTV9K78NdcT4chbCvsfKizI=
+X-Google-Smtp-Source: ABdhPJzt1AJjOpfQyJCQnDNMzR0c2P65vmHMOU6UyOjVUogBQWRQM8Dneq7uviGgQb7oNrf1WSYEmJuc6DEymOnu2W8=
+X-Received: by 2002:a05:6512:ce:: with SMTP id c14mr8700564lfp.64.1615827539089;
+ Mon, 15 Mar 2021 09:58:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.43.160.180]
-X-ClientProxiedBy: EX13D32UWB002.ant.amazon.com (10.43.161.139) To
- EX13D19EUB003.ant.amazon.com (10.43.166.69)
+Received: by 2002:a05:651c:1382:0:0:0:0 with HTTP; Mon, 15 Mar 2021 09:58:58
+ -0700 (PDT)
+Reply-To: ezbtg22@gmail.com
+From:   "Mrs.Glenn" <mrganuserge@gmail.com>
+Date:   Mon, 15 Mar 2021 09:58:58 -0700
+Message-ID: <CA+Wfa7bCFA+SzD6=YYUq8WDmT1xTGZFP_SSGjVZA7UPJTfDOXg@mail.gmail.com>
+Subject: From Mrs.Glenn
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-An SError was detected when trying to print the supported pins in a
-pinctrl device which supports multiple pins per register. This change
-fixes the pcs_pin_dbg_show() in pinctrl-single driver when
-bits_per_mux != 0. In addition move offset calculation and pin offset in
-register to common function.
-
-Signed-off-by: Hanna Hawa <hhhawa@amazon.com>
----
- drivers/pinctrl/pinctrl-single.c | 66 ++++++++++++++++++++++----------
- 1 file changed, 45 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 8a7922459896..0288bf430916 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -270,20 +270,53 @@ static void __maybe_unused pcs_writel(unsigned val, void __iomem *reg)
- 	writel(val, reg);
- }
- 
-+static unsigned int pcs_pin_reg_offset_get(struct pcs_device *pcs,
-+					   unsigned int pin)
-+{
-+	unsigned int offset, mux_bytes;
-+
-+	mux_bytes = pcs->width / BITS_PER_BYTE;
-+
-+	if (pcs->bits_per_mux) {
-+		unsigned int pin_offset_bytes;
-+
-+		pin_offset_bytes = (pcs->bits_per_pin * pin) / BITS_PER_BYTE;
-+		offset = (pin_offset_bytes / mux_bytes) * mux_bytes;
-+	} else {
-+		offset = pin * mux_bytes;
-+	}
-+
-+	return offset;
-+}
-+
-+static unsigned int pcs_pin_shift_reg_get(struct pcs_device *pcs,
-+					  unsigned int pin)
-+{
-+	return ((pin % (pcs->width / pcs->bits_per_pin)) * pcs->bits_per_pin);
-+}
-+
- static void pcs_pin_dbg_show(struct pinctrl_dev *pctldev,
- 					struct seq_file *s,
- 					unsigned pin)
- {
- 	struct pcs_device *pcs;
--	unsigned val, mux_bytes;
-+	unsigned int val;
- 	unsigned long offset;
- 	size_t pa;
- 
- 	pcs = pinctrl_dev_get_drvdata(pctldev);
- 
--	mux_bytes = pcs->width / BITS_PER_BYTE;
--	offset = pin * mux_bytes;
--	val = pcs->read(pcs->base + offset);
-+	offset = pcs_pin_reg_offset_get(pcs, pin);
-+
-+	if (pcs->bits_per_mux) {
-+		unsigned int pin_shift_in_reg = pcs_pin_shift_reg_get(pcs, pin);
-+
-+		val = pcs->read(pcs->base + offset)
-+			& (pcs->fmask << pin_shift_in_reg);
-+	} else {
-+		val = pcs->read(pcs->base + offset);
-+	}
-+
- 	pa = pcs->res->start + offset;
- 
- 	seq_printf(s, "%zx %08x %s ", pa, val, DRIVER_NAME);
-@@ -384,7 +417,6 @@ static int pcs_request_gpio(struct pinctrl_dev *pctldev,
- 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
- 	struct pcs_gpiofunc_range *frange = NULL;
- 	struct list_head *pos, *tmp;
--	int mux_bytes = 0;
- 	unsigned data;
- 
- 	/* If function mask is null, return directly. */
-@@ -392,29 +424,27 @@ static int pcs_request_gpio(struct pinctrl_dev *pctldev,
- 		return -ENOTSUPP;
- 
- 	list_for_each_safe(pos, tmp, &pcs->gpiofuncs) {
-+		u32 offset;
-+
- 		frange = list_entry(pos, struct pcs_gpiofunc_range, node);
- 		if (pin >= frange->offset + frange->npins
- 			|| pin < frange->offset)
- 			continue;
--		mux_bytes = pcs->width / BITS_PER_BYTE;
- 
--		if (pcs->bits_per_mux) {
--			int byte_num, offset, pin_shift;
-+		offset = pcs_pin_reg_offset_get(pcs, pin);
- 
--			byte_num = (pcs->bits_per_pin * pin) / BITS_PER_BYTE;
--			offset = (byte_num / mux_bytes) * mux_bytes;
--			pin_shift = pin % (pcs->width / pcs->bits_per_pin) *
--				    pcs->bits_per_pin;
-+		if (pcs->bits_per_mux) {
-+			int pin_shift = pcs_pin_shift_reg_get(pcs, pin);
- 
- 			data = pcs->read(pcs->base + offset);
- 			data &= ~(pcs->fmask << pin_shift);
- 			data |= frange->gpiofunc << pin_shift;
- 			pcs->write(data, pcs->base + offset);
- 		} else {
--			data = pcs->read(pcs->base + pin * mux_bytes);
-+			data = pcs->read(pcs->base + offset);
- 			data &= ~pcs->fmask;
- 			data |= frange->gpiofunc;
--			pcs->write(data, pcs->base + pin * mux_bytes);
-+			pcs->write(data, pcs->base + offset);
- 		}
- 		break;
- 	}
-@@ -726,14 +756,8 @@ static int pcs_allocate_pin_table(struct pcs_device *pcs)
- 	for (i = 0; i < pcs->desc.npins; i++) {
- 		unsigned offset;
- 		int res;
--		int byte_num;
- 
--		if (pcs->bits_per_mux) {
--			byte_num = (pcs->bits_per_pin * i) / BITS_PER_BYTE;
--			offset = (byte_num / mux_bytes) * mux_bytes;
--		} else {
--			offset = i * mux_bytes;
--		}
-+		offset = pcs_pin_reg_offset_get(pcs, i);
- 		res = pcs_add_pin(pcs, offset);
- 		if (res < 0) {
- 			dev_err(pcs->dev, "error adding pins: %i\n", res);
 -- 
-2.17.1
+Dear Beloved,
 
+I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
+in a hospital bed in Israel. I am 59 years and childless; my husband
+is dead. I was diagnosed with terminal cancer. And my doctor just
+predicted that I have but very limited time to live due to damages in
+my system and as a result of that I decided to dispose my 10.5 million
+US dollars to a God-fearing one for the continuation of charitable
+work. This is why I located you.My guess about you may not be accurate
+because I came across your contact at the humanitarian calendar event
+of the year but I believe in God who  divinely directed me to you for
+this solemn proposal of charitable work. I wholeheartedly wish to
+bequeath my fortune to you as a God-fearing person for the
+continuation of charitable work anywhere around the world.
+
+I shall be going in for a surgery operations soonest and desire this
+money to be transferred to you as I do not wish to leave this money in
+the bank because bankers might misuse it for their own interest after
+my death. As soon as I receive your quick reply assuring me that you
+will utilize the money as I instructed you for the benefit of the less
+privilege, I shall give you more details and also instruct my bank to
+release the money to you for the charity project. I hope you receive
+this mail in good health.
+
+Because I don t know what will be my situation in next minute,
+
+I am waiting for your reply.
+
+Yours sincerely,
+Mrs Elizabet Glenn.
