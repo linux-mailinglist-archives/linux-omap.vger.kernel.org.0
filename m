@@ -2,88 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0B1933C305
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Mar 2021 18:00:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC48733C812
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Mar 2021 22:00:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234678AbhCOQ7S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 Mar 2021 12:59:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55744 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234973AbhCOQ7B (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Mar 2021 12:59:01 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C856C061763
-        for <linux-omap@vger.kernel.org>; Mon, 15 Mar 2021 09:59:00 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id x4so51277223lfu.7
-        for <linux-omap@vger.kernel.org>; Mon, 15 Mar 2021 09:59:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
-        b=bL2/J9ZXSj/seYZ4Yt/7xPJEUbrxkxkdBDA6LnkwlqM4B8UivxD38dABgszhIrmEYr
-         UhGjDGSgsEvVP1XNKN1ENwlFj3aC6J8YcQMN+KSz87MImeLvcmoa2WrxaLN/1gtDYyy6
-         HNMeMWCpVFtTuc4Wdcg2Gf3vHj9I7ijcrPWq/6k90SJj1PTtdIp2NOyhMIA7goX293nj
-         7eJi2vVtathVfMs1VtKqTa32KM6YhAKiR3rZg10ur8mJbHWEL13X0KoDzX9ucfq/oU7l
-         VVHj6HOcFTM90ZYBTtvpAwBuDvm30fUbSxjwYV4w7Fk+y6G8KcUW5H9tabzs2o80RBgI
-         psRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
-        b=KzPzkrJijTwKHi4C7tzDhGmkX8oGsmejJd9qLvJMENMTgvXMhe4MNMBIUzawE9shhQ
-         fE/9r2DSIRyfluSQOlxUt5tZO8/RKAprwXMfy5qZ9of/QXu0ooON4BRyTZTr9QkOz+aY
-         w5Zbu9DHsbe8ZEv5UUdZK7pr2suJZ8MPWBE6kRe7RXNnX25Kcv0T5zzbJsYPD77nJ3DS
-         mtxF2DpAmaJ47BYqW6bwGZE59YMKZaS+MxgwA+Xp9vsurxQ/yDb1sGm7UjnvAQcNSmDy
-         7anfk5mXY4FfFJzsePgb15/3SjEuBVaE5jdYDpK3YtSid0QcPgWkrg6RDtZzitLY5fxB
-         V5fg==
-X-Gm-Message-State: AOAM533YLB0/lqrxmEQRRrteylZkhAlXOuF0d+ItZZ1pZ0ZkLY4gma1b
-        6sbBCmGoFc9Jx6vmWTV9K78NdcT4chbCvsfKizI=
-X-Google-Smtp-Source: ABdhPJzt1AJjOpfQyJCQnDNMzR0c2P65vmHMOU6UyOjVUogBQWRQM8Dneq7uviGgQb7oNrf1WSYEmJuc6DEymOnu2W8=
-X-Received: by 2002:a05:6512:ce:: with SMTP id c14mr8700564lfp.64.1615827539089;
- Mon, 15 Mar 2021 09:58:59 -0700 (PDT)
+        id S232741AbhCOU7n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Mar 2021 16:59:43 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:42438 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232240AbhCOU7O (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Mar 2021 16:59:14 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 12FKx5F3115937;
+        Mon, 15 Mar 2021 15:59:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1615841945;
+        bh=UoF3cldJyikro6utsBYNtr1jTBmig21JZkMN3IlKsys=;
+        h=From:To:CC:Subject:Date;
+        b=hK+xJkiURaN2Fv5+HlpWoMqYp6FagUS0NmqR82+0z1jMWDMZYApr9+hU8V6CwtwLK
+         U0XRIHgilJ0TjG5C0HPSx2kwulF8pJfu5uPODoqZzIzcqMF0gm4RofGnYwwiOJ7XiH
+         1nGJMleUmySctvvScF7ht/tnNE0+MXlSPRmTy7yg=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 12FKx4b7118738
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 15 Mar 2021 15:59:04 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Mon, 15
+ Mar 2021 15:59:04 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Mon, 15 Mar 2021 15:59:04 -0500
+Received: from fllv0103.dal.design.ti.com (fllv0103.dal.design.ti.com [10.247.120.73])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 12FKx4dR098491;
+        Mon, 15 Mar 2021 15:59:04 -0500
+Received: from localhost ([10.250.34.48])
+        by fllv0103.dal.design.ti.com (8.14.7/8.14.7) with ESMTP id 12FKx42r064830;
+        Mon, 15 Mar 2021 15:59:04 -0500
+From:   Suman Anna <s-anna@ti.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+CC:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] remoteproc: pru: Fix firmware loading crashes on K3 SoCs
+Date:   Mon, 15 Mar 2021 15:58:59 -0500
+Message-ID: <20210315205859.19590-1-s-anna@ti.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Received: by 2002:a05:651c:1382:0:0:0:0 with HTTP; Mon, 15 Mar 2021 09:58:58
- -0700 (PDT)
-Reply-To: ezbtg22@gmail.com
-From:   "Mrs.Glenn" <mrganuserge@gmail.com>
-Date:   Mon, 15 Mar 2021 09:58:58 -0700
-Message-ID: <CA+Wfa7bCFA+SzD6=YYUq8WDmT1xTGZFP_SSGjVZA7UPJTfDOXg@mail.gmail.com>
-Subject: From Mrs.Glenn
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+The K3 PRUs are 32-bit processors and in general have some limitations
+in using the standard ARMv8 memcpy function for loading firmware segments,
+so the driver already uses a custom memcpy implementation. This added
+logic however is limited to only IRAMs at the moment, but the loading
+into Data RAMs is not completely ok either and does generate a kernel
+crash for unaligned accesses.
+
+Fix these crashes by removing the existing IRAM logic limitation and
+extending the custom memcpy usage to Data RAMs as well for all K3 SoCs.
+
+Fixes: 1d39f4d19921 ("remoteproc: pru: Add support for various PRU cores on K3 AM65x SoCs")
+Signed-off-by: Suman Anna <s-anna@ti.com>
+---
+ drivers/remoteproc/pru_rproc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+index 2667919d76b3..16979c1cd2f4 100644
+--- a/drivers/remoteproc/pru_rproc.c
++++ b/drivers/remoteproc/pru_rproc.c
+@@ -585,7 +585,7 @@ pru_rproc_load_elf_segments(struct rproc *rproc, const struct firmware *fw)
+ 			break;
+ 		}
+ 
+-		if (pru->data->is_k3 && is_iram) {
++		if (pru->data->is_k3) {
+ 			ret = pru_rproc_memcpy(ptr, elf_data + phdr->p_offset,
+ 					       filesz);
+ 			if (ret) {
 -- 
-Dear Beloved,
+2.30.1
 
-I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
-in a hospital bed in Israel. I am 59 years and childless; my husband
-is dead. I was diagnosed with terminal cancer. And my doctor just
-predicted that I have but very limited time to live due to damages in
-my system and as a result of that I decided to dispose my 10.5 million
-US dollars to a God-fearing one for the continuation of charitable
-work. This is why I located you.My guess about you may not be accurate
-because I came across your contact at the humanitarian calendar event
-of the year but I believe in God who  divinely directed me to you for
-this solemn proposal of charitable work. I wholeheartedly wish to
-bequeath my fortune to you as a God-fearing person for the
-continuation of charitable work anywhere around the world.
-
-I shall be going in for a surgery operations soonest and desire this
-money to be transferred to you as I do not wish to leave this money in
-the bank because bankers might misuse it for their own interest after
-my death. As soon as I receive your quick reply assuring me that you
-will utilize the money as I instructed you for the benefit of the less
-privilege, I shall give you more details and also instruct my bank to
-release the money to you for the charity project. I hope you receive
-this mail in good health.
-
-Because I don t know what will be my situation in next minute,
-
-I am waiting for your reply.
-
-Yours sincerely,
-Mrs Elizabet Glenn.
