@@ -2,79 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7619033ABF6
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Mar 2021 08:06:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D43A933AE19
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Mar 2021 09:59:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229742AbhCOHGN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 Mar 2021 03:06:13 -0400
-Received: from out30-132.freemail.mail.aliyun.com ([115.124.30.132]:44538 "EHLO
-        out30-132.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229607AbhCOHFq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 15 Mar 2021 03:05:46 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R991e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0URunCVN_1615791943;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0URunCVN_1615791943)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 15 Mar 2021 15:05:44 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     tony@atomide.com
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH] ARM: OMAP2+: use true and false for bool variable
-Date:   Mon, 15 Mar 2021 15:05:41 +0800
-Message-Id: <1615791941-62388-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S229519AbhCOI6m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Mar 2021 04:58:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36112 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229588AbhCOI60 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Mar 2021 04:58:26 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08619C061764
+        for <linux-omap@vger.kernel.org>; Mon, 15 Mar 2021 01:58:26 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id s21so8410656pjq.1
+        for <linux-omap@vger.kernel.org>; Mon, 15 Mar 2021 01:58:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=LbXdRz8hPnZqXslejUsgqIR1UD+ZWrpimEiaxIRNV2xNX9e7brdrBT+330tAZDGZ76
+         Z44Aj1/yyzeGeEkcMYIH//MrHNptNc2k8UMVVIbEobpJRFQZA5XUdWQqiNvRvLYVAtMv
+         xoKQqrZLhKUh1J45nJIpEkqDSvu1Tr5FBCilwjOhp0zEm3xGoD9/vG7Dh8s+ZnaHk+U5
+         aC4U8SAWGye+HmhE2PCrqjaznbIw1afwdXDR2ixAMyaUV9dRzZFQUIU2zeRr2wSRJLp7
+         p1AlF+JfxodPPIujXbeP44SJwrB9ufhws/ELF19RzCKTBjiq4R1k6O0qwSqq/Q2I9TSg
+         kWVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=Nv7idgrhXwmJBSg9V3s4xTMjWLnDzeKujjpm60+AGP+Kp5ZeHrbK+upXRXHhgCUB+y
+         1okl9bYjfWppyLBEA1++YBKyOn1+NEX612qpQDRgxQWDJutY+Md9+9pJZDiEjVzCQBCO
+         7N3YxpOM5Wzh5s/YiMaffAAfJm7q11xBFk0FP06zklzsr8KhfR78llNeBLVE/Ov41c5Z
+         fsjV1uOojfon4ok+hjrbd1W5nh+fwSudYirluRkX+6QU5GFmQFF+7JYmJDr8gYcA2dVD
+         TcKxQlEhyQKlsGcK7fTmp5Cp/pMtIwWzp0XiO4Mf0Obi6YMKTewpdsF05lCmQaKzQw7q
+         ytBA==
+X-Gm-Message-State: AOAM530PNlL9t0wNrpJikrOyS0Wr0wKEnjKIlI5mqQtjBcMPxPQ0MQE3
+        ccrcG8cEJ1r29KLDYb6lVBKpaQWDWDbZU0CkKB0=
+X-Google-Smtp-Source: ABdhPJzM3716DwOVGJCGkipl2s83y6Vr9QPdVnYrrkkfjWixAG+vz2jlo87ubzFNH0zawvhQR6gAd9jVx3Jr5JWxmEQ=
+X-Received: by 2002:a17:902:da91:b029:e5:e7cf:d737 with SMTP id
+ j17-20020a170902da91b02900e5e7cfd737mr10466389plx.24.1615798705311; Mon, 15
+ Mar 2021 01:58:25 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:6a10:b086:0:0:0:0 with HTTP; Mon, 15 Mar 2021 01:58:24
+ -0700 (PDT)
+From:   Kevin Roberts <kossietenou@gmail.com>
+Date:   Mon, 15 Mar 2021 08:58:24 +0000
+Message-ID: <CAG0ufbSHz-LVYuzP1751truEWnrY1BuqX3DX+9fBeaRHrW_inQ@mail.gmail.com>
+Subject: I sent you a mail earlier but not sure if you received it, kindly
+ check your email and get back to me for I have very urgent information to
+ pass to you.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-fixed the following coccicheck:
-./arch/arm/mach-omap2/powerdomain.c:1205:9-10: WARNING: return of 0/1 in
-function 'pwrdm_can_ever_lose_context' with return type bool
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- arch/arm/mach-omap2/powerdomain.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm/mach-omap2/powerdomain.c b/arch/arm/mach-omap2/powerdomain.c
-index 1cbac76..0a5b87e 100644
---- a/arch/arm/mach-omap2/powerdomain.c
-+++ b/arch/arm/mach-omap2/powerdomain.c
-@@ -1202,26 +1202,26 @@ bool pwrdm_can_ever_lose_context(struct powerdomain *pwrdm)
- 	if (!pwrdm) {
- 		pr_debug("powerdomain: %s: invalid powerdomain pointer\n",
- 			 __func__);
--		return 1;
-+		return true;
- 	}
- 
- 	if (pwrdm->pwrsts & PWRSTS_OFF)
--		return 1;
-+		return true;
- 
- 	if (pwrdm->pwrsts & PWRSTS_RET) {
- 		if (pwrdm->pwrsts_logic_ret & PWRSTS_OFF)
--			return 1;
-+			return true;
- 
- 		for (i = 0; i < pwrdm->banks; i++)
- 			if (pwrdm->pwrsts_mem_ret[i] & PWRSTS_OFF)
--				return 1;
-+				return true;
- 	}
- 
- 	for (i = 0; i < pwrdm->banks; i++)
- 		if (pwrdm->pwrsts_mem_on[i] & PWRSTS_OFF)
--			return 1;
-+			return true;
- 
--	return 0;
-+	return false;
- }
- 
- /**
--- 
-1.8.3.1
 
