@@ -2,107 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF67633D4DA
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Mar 2021 14:29:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2D3A33DE9E
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Mar 2021 21:26:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232938AbhCPN2g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Mar 2021 09:28:36 -0400
-Received: from mail-ej1-f41.google.com ([209.85.218.41]:40978 "EHLO
-        mail-ej1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232908AbhCPN2W (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Mar 2021 09:28:22 -0400
-Received: by mail-ej1-f41.google.com with SMTP id lr13so72194307ejb.8;
-        Tue, 16 Mar 2021 06:28:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=bwzBKawa8QrzF0WVxsZqARsh6y5l0ULdbTOzlAVvjf8=;
-        b=c6FcqB/BMTGnio5EhqINUa6dr81ZOtBHnGTha8ev9PzAm1BCjpA4gE/s9dkhkPMUjE
-         VByO1AV+LKyJhAcmRyxthP5XJTt3J+ObZn7nsIBoq4IrRbCfmdHHaQJ16sMKXf/sfBKp
-         DF2evqBibK0DPylLazoO9Zi8/hECakJ3Ll+Ij86uZ3G0E13tXyqgtRZPsMjdn5JX0GA8
-         KJuwaOpfmHQOZua/wNk59rAFs3ApyoO+RKq2AgZE4GPCrJpi3g8dwE+1UtaGwUFpTMBG
-         TosodGLku0CFvUyFhjiUIqLMlG2WCLGXukcxUjlQBURIEznXvppmpdI1BwuS0r7IWki3
-         02xg==
-X-Gm-Message-State: AOAM533uATYPWa0Nf12jJk/vicK6TKLvAF+0c7TZ2jSTECK3+yuiorVR
-        w0Lm28AmhLVWwUFKE7AHADK6CtWCUu8=
-X-Google-Smtp-Source: ABdhPJzNg7/QZMDxSK8P598pTy7ITIHHfnxE3zgDqUEJxHNVIRtOoSDXPTVAWjgwwKFx39he+ZbJ8A==
-X-Received: by 2002:a17:906:a44f:: with SMTP id cb15mr29191920ejb.420.1615901300059;
-        Tue, 16 Mar 2021 06:28:20 -0700 (PDT)
-Received: from [192.168.1.116] (adsl-84-226-167-205.adslplus.ch. [84.226.167.205])
-        by smtp.googlemail.com with ESMTPSA id r4sm9463218ejd.125.2021.03.16.06.28.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Mar 2021 06:28:19 -0700 (PDT)
-Subject: Re: [RESEND PATCH 01/42] mfd: arizona: use PLATFORM_DEVID_NONE
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Andy Shevchenko <andy@kernel.org>, Milo Kim <milo.kim@ti.com>,
-        Tony Lindgren <tony@atomide.com>, Ray Jui <rjui@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Chen-Yu Tsai <wens@csie.org>, patches@opensource.cirrus.com,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20201028223009.369824-1-krzk@kernel.org>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Message-ID: <fcee4721-1d91-d909-8a03-1c1b0b0ad83b@kernel.org>
-Date:   Tue, 16 Mar 2021 14:28:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S229879AbhCPUZf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Mar 2021 16:25:35 -0400
+Received: from smtp-fw-4101.amazon.com ([72.21.198.25]:4863 "EHLO
+        smtp-fw-4101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230031AbhCPUZF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Mar 2021 16:25:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1615926306; x=1647462306;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=ofrf9Zc8AZw06urF/eFU5kkSyWWDSEJNxkl1iNmVrPY=;
+  b=hJcgcZMg7gLsq8tvZlnbqqS/rOAohuFkZP7Ymq1g99Zn3ZPngJVHnneb
+   iwz/isFMy8YLIR/vKaj9Gt1qdYnml9oK3k5U1N8yjpb52wDdiSg1S/BJ0
+   sx6qt7cAKgnV0WneVoOuw3pfGKJSDNu48vO9+1YfrOnPtGHQmzY7H9620
+   8=;
+X-IronPort-AV: E=Sophos;i="5.81,254,1610409600"; 
+   d="scan'208";a="93586867"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-2b-baacba05.us-west-2.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-out-4101.iad4.amazon.com with ESMTP; 16 Mar 2021 20:24:58 +0000
+Received: from EX13D19EUB003.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-2b-baacba05.us-west-2.amazon.com (Postfix) with ESMTPS id 9590AA188C;
+        Tue, 16 Mar 2021 20:24:56 +0000 (UTC)
+Received: from u8a88181e7b2355.ant.amazon.com (10.43.160.48) by
+ EX13D19EUB003.ant.amazon.com (10.43.166.69) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.2; Tue, 16 Mar 2021 20:24:49 +0000
+From:   Hanna Hawa <hhhawa@amazon.com>
+To:     <tony@atomide.com>, <haojian.zhuang@linaro.org>,
+        <linus.walleij@linaro.org>
+CC:     <dwmw@amazon.co.uk>, <benh@amazon.com>, <ronenk@amazon.com>,
+        <talel@amazon.com>, <jonnyc@amazon.com>, <hanochu@amazon.com>,
+        <tgershi@amazon.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <hhhawa@amazon.com>
+Subject: [PATCH v2 0/3] Fix pinctrl-single pcs_pin_dbg_show()
+Date:   Tue, 16 Mar 2021 22:24:31 +0200
+Message-ID: <20210316202434.27555-1-hhhawa@amazon.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20201028223009.369824-1-krzk@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.43.160.48]
+X-ClientProxiedBy: EX13D02UWB003.ant.amazon.com (10.43.161.48) To
+ EX13D19EUB003.ant.amazon.com (10.43.166.69)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 28/10/2020 23:29, Krzysztof Kozlowski wrote:
-> Use PLATFORM_DEVID_NONE define instead of "-1" value because:
->  - it brings some meaning,
->  - it might point attention why auto device ID was not used.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+These patches fix the pcs_pin_dbg_show() function for the scenario where
+a single register controls multiple pins (i.e. bits_per_mux != 0).
+Additionally, the common formula is moved to a separate function to
+allow reuse.
 
-Hi Lee,
+Changes since v1:
+-----------------
+- remove unused variable in In function 'pcs_allocate_pin_table'
+  (Reported-by: kernel test robot <lkp@intel.com>)
 
-I sent this patchset some time ago, then made a resend. I did not get
-any feedback from you so I just wonder - are you still considering this
-patchset and shall I resend?
+Hanna Hawa (3):
+  pinctrl: pinctrl-single: remove unused variable
+  pinctrl: pinctrl-single: remove unused parameter
+  pinctrl: pinctrl-single: fix pcs_pin_dbg_show() when bits_per_mux != 0
 
-Best regards,
-Krzysztof
+ drivers/pinctrl/pinctrl-single.c | 76 ++++++++++++++++++++------------
+ 1 file changed, 47 insertions(+), 29 deletions(-)
 
-> ---
->  drivers/mfd/arizona-core.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mfd/arizona-core.c b/drivers/mfd/arizona-core.c
-> index 000cb82023e3..bf48372db605 100644
-> --- a/drivers/mfd/arizona-core.c
-> +++ b/drivers/mfd/arizona-core.c
-> @@ -1043,8 +1043,9 @@ int arizona_dev_init(struct arizona *arizona)
->  	case CS47L24:
->  		break; /* No LDO1 regulator */
->  	default:
-> -		ret = mfd_add_devices(arizona->dev, -1, early_devs,
-> -				      ARRAY_SIZE(early_devs), NULL, 0, NULL);
-> +		ret = mfd_add_devices(arizona->dev, PLATFORM_DEVID_NONE,
-> +				      early_devs, ARRAY_SIZE(early_devs),
-> +				      NULL, 0, NULL);
->  		if (ret != 0) {
->  			dev_err(dev, "Failed to add early children: %d\n", ret);
->  			return ret;
-> 
+-- 
+2.17.1
+
