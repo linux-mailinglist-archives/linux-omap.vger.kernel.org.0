@@ -2,238 +2,177 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 571F233F055
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Mar 2021 13:29:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E7EC33F0F9
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Mar 2021 14:17:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbhCQM2o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Mar 2021 08:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57188 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbhCQM2S (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Mar 2021 08:28:18 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84356C06174A;
-        Wed, 17 Mar 2021 05:28:18 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id z5so711680plg.3;
-        Wed, 17 Mar 2021 05:28:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bvI9v1pKTWSB+Q5D+4FcitJi47hzIZ/zGTWvTz5RA5o=;
-        b=NmLe9K+UAmrek3W+rU4Nzr/U4SN72r5In4gcb7wYCfg/Efxv2L4AvWqlxRBvIRlCZn
-         g1soPaqS2Ow/tT+7FLaPtqhp39LUOI77S8ZB6+3KdSL1Dlk2JIHkTJ5A830D1GngTwgo
-         VqkVlcqyHITcA7wI0VvDMY0jux8p32/sQg6Yl59n86w+StOHcsX7DSVhEUPDIkXkKaCW
-         yEf+mzbfxq9G9HCZ3ayMoEPqyzLcmFzhRyNSnuP9NS1m9tpRkrdC5zXwNt7UOFoTAZYn
-         y/LNU+DFB+mBfrgXDo5nn8680IaEtbuBNzsr4dmAmNvXf6NVGzFQ1rFPPhNqFfLayra/
-         Pu7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bvI9v1pKTWSB+Q5D+4FcitJi47hzIZ/zGTWvTz5RA5o=;
-        b=Rkm5QLlLGLWtFI1iaaFDyNe0pKx3pJIjJGwbqKqMcZuBeIzkZ0UKeuBZtSkLD1rGsc
-         UeI3t+HIin5jme2zi8NvDcD18Csk5rVKWZ6ci2K1TJIN/iE00Coamrs8YUDQPV54Yv+Z
-         IeBFigv1yPr3hGCVqpZcwbRUzj6ErAQPZc2hKeaMGkfUIp8rxJURfuBqefFrlhTdwod7
-         bok58fBGv5+qrHijvlfl+lLNt/dJoAISLQ6BIGSDeZPN+BrgJMVcN8iOi1hcsx3clUh4
-         uWZjA8rbhnvp1zX0XTzo0qKUlYT5//rKoDmdB51F4ywjRGX4F7ZXhSvFT06u3baEFHi/
-         dotg==
-X-Gm-Message-State: AOAM530z/ZQSqpHaJPDTLC5I+UE4lmQzZfi9rMidkkIgSel2Ax2H8BDn
-        XqCOocorqvvb55ujXrVyzAAv4+e1yysulSp3XRSNtTldVoSorg==
-X-Google-Smtp-Source: ABdhPJytMHuglf4+K2gGDKo1Eqmm/u9dzCbrGssky5mSD+PT9vdbsLusidWo2LllMrSBdmIzl8K0EfqmNtXvE292eXw=
-X-Received: by 2002:a17:90a:e454:: with SMTP id jp20mr4644470pjb.129.1615984097947;
- Wed, 17 Mar 2021 05:28:17 -0700 (PDT)
+        id S229967AbhCQNRS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Mar 2021 09:17:18 -0400
+Received: from muru.com ([72.249.23.125]:44094 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230492AbhCQNRR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 17 Mar 2021 09:17:17 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id A140980BA;
+        Wed, 17 Mar 2021 13:18:01 +0000 (UTC)
+Date:   Wed, 17 Mar 2021 15:17:04 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Carlos Leija <cileija@ti.com>,
+        Praneeth Bajjuri <praneeth@ti.com>,
+        Bryan Buckley <bryan.buckley@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Ivan Jelincic <parazyd@dyne.org>, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Tero Kristo <kristo@kernel.org>
+Subject: Re: [PATCH] ARM: OMAP4: PM: update ROM return address for OSWR and
+ OFF
+Message-ID: <YFIBUPmiPfDA0SCU@atomide.com>
+References: <20210314163943.6252-1-tony@atomide.com>
 MIME-Version: 1.0
-References: <20210316202434.27555-1-hhhawa@amazon.com> <20210316202434.27555-4-hhhawa@amazon.com>
-In-Reply-To: <20210316202434.27555-4-hhhawa@amazon.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 17 Mar 2021 14:27:53 +0200
-Message-ID: <CAHp75VdVnFn+DuO54PsUVGk4ZWWCJpYKsSQVsaUkiDzZki2QRQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] pinctrl: pinctrl-single: fix pcs_pin_dbg_show()
- when bits_per_mux != 0
-To:     Hanna Hawa <hhhawa@amazon.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        David Woodhouse <dwmw@amazon.co.uk>, benh@amazon.com,
-        ronenk@amazon.com, talel@amazon.com, jonnyc@amazon.com,
-        hanochu@amazon.com, tgershi@amazon.com,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210314163943.6252-1-tony@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Mar 16, 2021 at 11:24 PM Hanna Hawa <hhhawa@amazon.com> wrote:
->
-> An SError was detected when trying to print the supported pins in a
-
-What SError is?
-
-> pinctrl device which supports multiple pins per register. This change
-> fixes the pcs_pin_dbg_show() in pinctrl-single driver when
-> bits_per_mux != 0. In addition move offset calculation and pin offset in
-
-'!= 0' -> 'is not zero'
-
-> register to common function.
-
-Fixes tag?
-
-> Signed-off-by: Hanna Hawa <hhhawa@amazon.com>
-> ---
->  drivers/pinctrl/pinctrl-single.c | 66 ++++++++++++++++++++++----------
->  1 file changed, 45 insertions(+), 21 deletions(-)
->
-> diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-> index f3394517cb2e..434f90c8b1b3 100644
-> --- a/drivers/pinctrl/pinctrl-single.c
-> +++ b/drivers/pinctrl/pinctrl-single.c
-> @@ -270,20 +270,53 @@ static void __maybe_unused pcs_writel(unsigned val, void __iomem *reg)
->         writel(val, reg);
->  }
->
-> +static unsigned int pcs_pin_reg_offset_get(struct pcs_device *pcs,
-> +                                          unsigned int pin)
+* Tony Lindgren <tony@atomide.com> [210314 18:42]:
+> +static int __init secure_pm_init(void)
 > +{
-> +       unsigned int offset, mux_bytes;
-
-Offset can be replaced by direct return statements.
-
-> +       mux_bytes = pcs->width / BITS_PER_BYTE;
+> +	if (omap_type() == OMAP2_DEVICE_TYPE_GP)
+> +		return 0;
 > +
-> +       if (pcs->bits_per_mux) {
-> +               unsigned int pin_offset_bytes;
+> +	cpu_pm_register_notifier(&secure_notifier_block);
 > +
-> +               pin_offset_bytes = (pcs->bits_per_pin * pin) / BITS_PER_BYTE;
-> +               offset = (pin_offset_bytes / mux_bytes) * mux_bytes;
-> +       } else {
-> +               offset = pin * mux_bytes;
-> +       }
-> +
-> +       return offset;
+> +	return 0;
 > +}
-> +
-> +static unsigned int pcs_pin_shift_reg_get(struct pcs_device *pcs,
-> +                                         unsigned int pin)
-> +{
-> +       return ((pin % (pcs->width / pcs->bits_per_pin)) * pcs->bits_per_pin);
+> +omap_arch_initcall(secure_pm_init);
 
-Too many parentheses.
+Testing my branches on various boards shows that n900 does not like this, it
+needs to be limited to omap4 only. Using updated patch below instead.
 
-> +}
-> +
->  static void pcs_pin_dbg_show(struct pinctrl_dev *pctldev,
->                                         struct seq_file *s,
->                                         unsigned pin)
->  {
->         struct pcs_device *pcs;
-> -       unsigned val, mux_bytes;
-> +       unsigned int val;
->         unsigned long offset;
->         size_t pa;
->
->         pcs = pinctrl_dev_get_drvdata(pctldev);
->
-> -       mux_bytes = pcs->width / BITS_PER_BYTE;
-> -       offset = pin * mux_bytes;
-> -       val = pcs->read(pcs->base + offset);
-> +       offset = pcs_pin_reg_offset_get(pcs, pin);
-> +
-> +       if (pcs->bits_per_mux) {
-> +               unsigned int pin_shift_in_reg = pcs_pin_shift_reg_get(pcs, pin);
+Regards,
 
-> +               val = pcs->read(pcs->base + offset)
-> +                       & (pcs->fmask << pin_shift_in_reg);
+Tony
 
-One line?
-At least move & to the upper line.
+8< ------------------------------
+From tony Mon Sep 17 00:00:00 2001
+From: Carlos Leija <cileija@ti.com>
+Date: Sun, 14 Mar 2021 18:35:44 +0200
+Subject: [PATCH] ARM: OMAP4: PM: update ROM return address for OSWR and
+ OFF
 
-> +       } else {
-> +               val = pcs->read(pcs->base + offset);
+We need to add a dummy smc call to the cpuidle wakeup path to force the
+ROM code to save the return address after MMU is enabled again. This is
+needed to prevent random hangs on secure devices like droid4.
 
-It's the same as in above branch, why not
+Otherwise the system will eventually hang when entering deeper SoC idle
+states with the core and mpu domains in open-switch retention (OSWR).
+The hang happens as the ROM code tries to use the earlier physical return
+address set by omap-headsmp.S with MMU off while waking up CPU1 again.
 
-val = read();
-if ()
- val &= fmask << _reg_get(...);
+The hangs started happening in theory already with commit caf8c87d7ff2
+("ARM: OMAP2+: Allow core oswr for omap4"), but in practise the issue went
+unnoticed as various drivers were often blocking any deeper idle states
+with hardware autoidle features.
 
-?
+This patch is based on an earlier TI Linux kernel tree commit 92f0b3028d9e
+("OMAP4: PM: update ROM return address for OSWR and OFF") written by
+Carlos Leija <cileija@ti.com>, Praneeth Bajjuri <praneeth@ti.com>, and
+Bryan Buckley <bryan.buckley@ti.com>. A later version of the patch was
+updated to use CPU_PM notifiers by Tero Kristo <t-kristo@ti.com>.
 
-> +       }
-> +
->         pa = pcs->res->start + offset;
->
->         seq_printf(s, "%zx %08x %s ", pa, val, DRIVER_NAME);
-> @@ -384,7 +417,6 @@ static int pcs_request_gpio(struct pinctrl_dev *pctldev,
->         struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
->         struct pcs_gpiofunc_range *frange = NULL;
->         struct list_head *pos, *tmp;
-> -       int mux_bytes = 0;
->         unsigned data;
->
->         /* If function mask is null, return directly. */
-> @@ -392,29 +424,27 @@ static int pcs_request_gpio(struct pinctrl_dev *pctldev,
->                 return -ENOTSUPP;
->
->         list_for_each_safe(pos, tmp, &pcs->gpiofuncs) {
-> +               u32 offset;
-> +
->                 frange = list_entry(pos, struct pcs_gpiofunc_range, node);
->                 if (pin >= frange->offset + frange->npins
->                         || pin < frange->offset)
->                         continue;
-> -               mux_bytes = pcs->width / BITS_PER_BYTE;
->
-> -               if (pcs->bits_per_mux) {
-> -                       int byte_num, offset, pin_shift;
-> +               offset = pcs_pin_reg_offset_get(pcs, pin);
->
-> -                       byte_num = (pcs->bits_per_pin * pin) / BITS_PER_BYTE;
-> -                       offset = (byte_num / mux_bytes) * mux_bytes;
-> -                       pin_shift = pin % (pcs->width / pcs->bits_per_pin) *
-> -                                   pcs->bits_per_pin;
-> +               if (pcs->bits_per_mux) {
-> +                       int pin_shift = pcs_pin_shift_reg_get(pcs, pin);
->
->                         data = pcs->read(pcs->base + offset);
->                         data &= ~(pcs->fmask << pin_shift);
->                         data |= frange->gpiofunc << pin_shift;
->                         pcs->write(data, pcs->base + offset);
->                 } else {
-> -                       data = pcs->read(pcs->base + pin * mux_bytes);
-> +                       data = pcs->read(pcs->base + offset);
->                         data &= ~pcs->fmask;
->                         data |= frange->gpiofunc;
-> -                       pcs->write(data, pcs->base + pin * mux_bytes);
-> +                       pcs->write(data, pcs->base + offset);
->                 }
->                 break;
->         }
-> @@ -724,14 +754,8 @@ static int pcs_allocate_pin_table(struct pcs_device *pcs)
->         for (i = 0; i < pcs->desc.npins; i++) {
->                 unsigned offset;
->                 int res;
-> -               int byte_num;
->
-> -               if (pcs->bits_per_mux) {
-> -                       byte_num = (pcs->bits_per_pin * i) / BITS_PER_BYTE;
-> -                       offset = (byte_num / mux_bytes) * mux_bytes;
-> -               } else {
-> -                       offset = i * mux_bytes;
-> -               }
-> +               offset = pcs_pin_reg_offset_get(pcs, i);
->                 res = pcs_add_pin(pcs, offset);
->                 if (res < 0) {
->                         dev_err(pcs->dev, "error adding pins: %i\n", res);
-> --
-> 2.17.1
->
+Signed-off-by: Carlos Leija <cileija@ti.com>
+Signed-off-by: Praneeth Bajjuri <praneeth@ti.com>
+Signed-off-by: Bryan Buckley <bryan.buckley@ti.com>
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
+Fixes: caf8c87d7ff2 ("ARM: OMAP2+: Allow core oswr for omap4")
+Reported-by: Carl Philipp Klemm <philipp@uvos.xyz>
+Reported-by: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Ivan Jelincic <parazyd@dyne.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Tero Kristo <kristo@kernel.org>
+[tony@atomide.com: updated to apply, updated description]
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/mach-omap2/omap-secure.c | 39 +++++++++++++++++++++++++++++++
+ arch/arm/mach-omap2/omap-secure.h |  1 +
+ 2 files changed, 40 insertions(+)
 
-
+diff --git a/arch/arm/mach-omap2/omap-secure.c b/arch/arm/mach-omap2/omap-secure.c
+--- a/arch/arm/mach-omap2/omap-secure.c
++++ b/arch/arm/mach-omap2/omap-secure.c
+@@ -9,6 +9,7 @@
+  */
+ 
+ #include <linux/arm-smccc.h>
++#include <linux/cpu_pm.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+@@ -20,6 +21,7 @@
+ 
+ #include "common.h"
+ #include "omap-secure.h"
++#include "soc.h"
+ 
+ static phys_addr_t omap_secure_memblock_base;
+ 
+@@ -213,3 +215,40 @@ void __init omap_secure_init(void)
+ {
+ 	omap_optee_init_check();
+ }
++
++/*
++ * Dummy dispatcher call after core OSWR and MPU off. Updates the ROM return
++ * address after MMU has been re-enabled after CPU1 has been woken up again.
++ * Otherwise the ROM code will attempt to use the earlier physical return
++ * address that got set with MMU off when waking up CPU1. Only used on secure
++ * devices.
++ */
++static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
++{
++	switch (cmd) {
++	case CPU_CLUSTER_PM_EXIT:
++		omap_secure_dispatcher(OMAP4_PPA_SERVICE_0,
++				       FLAG_START_CRITICAL,
++				       0, 0, 0, 0, 0);
++		break;
++	default:
++		break;
++	}
++
++	return NOTIFY_OK;
++}
++
++static struct notifier_block secure_notifier_block = {
++	.notifier_call = cpu_notifier,
++};
++
++static int __init secure_pm_init(void)
++{
++	if (omap_type() == OMAP2_DEVICE_TYPE_GP || !soc_is_omap44xx())
++		return 0;
++
++	cpu_pm_register_notifier(&secure_notifier_block);
++
++	return 0;
++}
++omap_arch_initcall(secure_pm_init);
+diff --git a/arch/arm/mach-omap2/omap-secure.h b/arch/arm/mach-omap2/omap-secure.h
+--- a/arch/arm/mach-omap2/omap-secure.h
++++ b/arch/arm/mach-omap2/omap-secure.h
+@@ -50,6 +50,7 @@
+ #define OMAP5_DRA7_MON_SET_ACR_INDEX	0x107
+ 
+ /* Secure PPA(Primary Protected Application) APIs */
++#define OMAP4_PPA_SERVICE_0		0x21
+ #define OMAP4_PPA_L2_POR_INDEX		0x23
+ #define OMAP4_PPA_CPU_ACTRL_SMP_INDEX	0x25
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.30.2
