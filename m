@@ -2,181 +2,225 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F12C340538
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Mar 2021 13:11:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ABC8340546
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Mar 2021 13:17:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230204AbhCRMK2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 18 Mar 2021 08:10:28 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:48852 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230408AbhCRMKS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Mar 2021 08:10:18 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 12ICACtI064381;
-        Thu, 18 Mar 2021 07:10:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1616069412;
-        bh=V55Fqi93WhICRWF6k7K7rR1gLR73q2SA61LmnQTRQKM=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=hEIkECQhKK9Uri7GuzN66hQ75ct6ucFuxvgLH+Zc7/meHfMCrI51CuALpW6DXEXar
-         3EDlt3EyNJX5bgMkErdrpKYOW2NK0CCLoYdD/1y7kKdYPEssmTgxjEajwX0yTjyhaN
-         WRFO2B7jMMgyYE7k/Jyk6pgU65G78qU+q/6eq/sw=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 12ICABqK015215
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 18 Mar 2021 07:10:12 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 18
- Mar 2021 07:10:11 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Thu, 18 Mar 2021 07:10:11 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 12ICA8Tm116376;
-        Thu, 18 Mar 2021 07:10:08 -0500
-Subject: Re: [PATCH 4/4] clk: ti: add am33xx spread spectrum clock support
-To:     Dario Binacchi <dariobin@libero.it>,
-        <linux-kernel@vger.kernel.org>,
-        "Vutla, Lokesh" <lokeshvutla@ti.com>, "Menon, Nishanth" <nm@ti.com>
-CC:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <kristo@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, <devicetree@vger.kernel.org>,
-        <linux-clk@vger.kernel.org>, <linux-omap@vger.kernel.org>
-References: <20210314151233.23243-1-dariobin@libero.it>
- <20210314151233.23243-5-dariobin@libero.it>
- <6dc0d2c6-570a-3fbf-77e1-6731a6c8d558@ti.com>
- <2069482516.552063.1616053134087@mail1.libero.it>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <64771168-1222-cfb5-f79c-31a945b713a5@ti.com>
-Date:   Thu, 18 Mar 2021 14:08:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S230489AbhCRMQa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 18 Mar 2021 08:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230473AbhCRMQH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Mar 2021 08:16:07 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70864C06174A;
+        Thu, 18 Mar 2021 05:16:07 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id gb6so2842259pjb.0;
+        Thu, 18 Mar 2021 05:16:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=q4sV6DKYtTchSAlvek9WgOLwv2yXCQyX4WUNYJQUt6U=;
+        b=q6K0Ehmnucne2FlF77MU7fLBc/Qp2dly7iOe/u96Fred+R8fok8UMsvdiZl5GL7yg4
+         qrRu3rkGLXfMlQORs8eSFqrqBSO6JmhgbpNFQNkoWeNFSx5ioE7SOuaS2ZP5yNBAdidl
+         lMdMn8ndxPp20Ss9Xw3/txZzumU3tr/Q3YKjypyPyDAjtQU+QnRxON7iqNDMMAbMImeW
+         VhI3vkMVkvO8xDd7FblS0VMdib0BjMc5YDG6rFRCRoIy1Hp5As4e2YS78HquzdGivcNZ
+         mIGF3W5TO8MYuc6824GiuAagJ3J35GKDM5F/SxzA26cFRV85fXZxn47TPHDNxIp3ohol
+         x81g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=q4sV6DKYtTchSAlvek9WgOLwv2yXCQyX4WUNYJQUt6U=;
+        b=k9sgM40HbzwxEEg+W7tkq4O+Xm0K0cwpmJ3gA5UglQT6sIrfjrcw5c5SX+4fQ195Kg
+         LdGGgOU6a0Tp3phU5EMSDjZ4fSgF584qQuYYygWADsKUMt2duRirW//V168CDz54RlT/
+         Hn2dJx94rERqFfHSvCqJf7699NoEzWt0eMT4rJ3LFN2wVkhhxzOadplkXbULOggm90mX
+         1XnHTQfWFwBy6HHPiEL+jfHNFS+fg+UFZsxAraZRPUxqgH1MwZKit6+2anPeKzOoCun0
+         CIquNfgyjsNQDRWPA21OAX1toj3k8eLe3PuZEiCqNFSXyl+enS2isUHu2gVlCGAIRZQ0
+         WzZQ==
+X-Gm-Message-State: AOAM533tLaX8IyKSflyGziS5d5HxsPu71wduqh4F4VM3lcFnsD7HZdzk
+        5+7jah67Ya5bzckTUucdu8yRMu9zBImy7ZSff/0=
+X-Google-Smtp-Source: ABdhPJx9CynEv9MyWrBPlTnnvHMW/9FuiSkz+dtjqaQE7YaaLdDEg2W+F3kf5WbbNCHQsX6lLMLuXgn4KHN6t8saUNQ=
+X-Received: by 2002:a17:90a:b311:: with SMTP id d17mr4194138pjr.228.1616069766877;
+ Thu, 18 Mar 2021 05:16:06 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <2069482516.552063.1616053134087@mail1.libero.it>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20210317214149.20833-1-hhhawa@amazon.com> <20210317214149.20833-4-hhhawa@amazon.com>
+In-Reply-To: <20210317214149.20833-4-hhhawa@amazon.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 18 Mar 2021 14:15:50 +0200
+Message-ID: <CAHp75VdYeVOHu5T37EBEjL5xfgjevzb-ErZb2QMy7defXDS5fg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] pinctrl: pinctrl-single: fix pcs_pin_dbg_show()
+ when bits_per_mux is not zero
+To:     Hanna Hawa <hhhawa@amazon.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        David Woodhouse <dwmw@amazon.co.uk>, benh@amazon.com,
+        ronenk@amazon.com, talel@amazon.com, jonnyc@amazon.com,
+        hanochu@amazon.com, tgershi@amazon.com,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, Mar 17, 2021 at 11:42 PM Hanna Hawa <hhhawa@amazon.com> wrote:
+>
 
+> An SError was detected when trying to print the supported pins in a
 
-On 18/03/2021 09:38, Dario Binacchi wrote:
-> Hi Grygorii,
-> 
->> Il 16/03/2021 12:52 Grygorii Strashko <grygorii.strashko@ti.com> ha scritto:
->>
->>   
->> On 14/03/2021 17:12, Dario Binacchi wrote:
->>> The patch enables spread spectrum clocking (SSC) for MPU and LCD PLLs.
->>> As reported by the TI spruh73x RM, SSC is only supported for the
->>> DISP/LCD and MPU PLLs on am33xx device. SSC is not supported for DDR,
->>> PER, and CORE PLLs.
->>>
->>> Calculating the required values and setting the registers accordingly
->>> was taken from the set_mpu_spreadspectrum routine contained in the
->>> arch/arm/mach-omap2/am33xx/clock_am33xx.c file of the u-boot project.
->>>
->>> In locked condition, DPLL output clock = CLKINP *[M/N]. In case of
->>> SSC enabled, the AM335x reference manual explains that there is a
->>> restriction of range of M values. Since the omap2_dpll_round_rate
->>> routine attempts to select the minimum possible N, the value of M
->>> obtained is not guaranteed to be within the range required. With the new
->>> "ti,min-div" parameter it is possible to increase N and consequently M
->>> to satisfy the constraint imposed by SSC.
->>>
->>> Signed-off-by: Dario Binacchi <dariobin@libero.it>
->>>
->>> ---
->>>
->>>    arch/arm/boot/dts/am33xx-clocks.dtsi |  4 +-
->>>    drivers/clk/ti/dpll.c                | 41 ++++++++++++++
->>>    drivers/clk/ti/dpll3xxx.c            | 85 ++++++++++++++++++++++++++++
->>>    include/linux/clk/ti.h               | 24 ++++++++
->>>    4 files changed, 152 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/arm/boot/dts/am33xx-clocks.dtsi b/arch/arm/boot/dts/am33xx-clocks.dtsi
->>> index e7bbbf536a8c..a02e0b1229a4 100644
->>> --- a/arch/arm/boot/dts/am33xx-clocks.dtsi
->>> +++ b/arch/arm/boot/dts/am33xx-clocks.dtsi
->>> @@ -164,7 +164,7 @@
->>>    		#clock-cells = <0>;
->>>    		compatible = "ti,am3-dpll-core-clock";
->>>    		clocks = <&sys_clkin_ck>, <&sys_clkin_ck>;
->>> -		reg = <0x0490>, <0x045c>, <0x0468>, <0x0460>, <0x0464>;
->>> +		reg = <0x0490>, <0x045c>, <0x0468>;
->>>    	};
->>>    
->>>    	dpll_core_x2_ck: dpll_core_x2_ck {
->>> @@ -204,7 +204,7 @@
->>>    		#clock-cells = <0>;
->>>    		compatible = "ti,am3-dpll-clock";
->>>    		clocks = <&sys_clkin_ck>, <&sys_clkin_ck>;
->>> -		reg = <0x0488>, <0x0420>, <0x042c>;
->>> +		reg = <0x0488>, <0x0420>, <0x042c>, <0x0424>, <0x0428>;
->>>    	};
->>
->> You can't mix DT vs code.
-> 
-> Right, I forgot to remove it during a rebase of the series.
-> 
->>
->>>    
->>>    	dpll_mpu_m2_ck: dpll_mpu_m2_ck@4a8 {
->>> diff --git a/drivers/clk/ti/dpll.c b/drivers/clk/ti/dpll.c
->>> index d6f1ac5b53e1..2738417a47b7 100644
->>> --- a/drivers/clk/ti/dpll.c
->>> +++ b/drivers/clk/ti/dpll.c
->>> @@ -290,7 +290,9 @@ static void __init of_ti_dpll_setup(struct device_node *node,
->>>    	struct clk_init_data *init = NULL;
->>>    	const char **parent_names = NULL;
->>>    	struct dpll_data *dd = NULL;
->>> +	int ssc_clk_index;
->>>    	u8 dpll_mode = 0;
->>> +	u32 min_div;
->>>    
->>>    	dd = kmemdup(ddt, sizeof(*dd), GFP_KERNEL);
->>>    	clk_hw = kzalloc(sizeof(*clk_hw), GFP_KERNEL);
->>> @@ -345,6 +347,27 @@ static void __init of_ti_dpll_setup(struct device_node *node,
->>>    	if (dd->autoidle_mask) {
->>>    		if (ti_clk_get_reg_addr(node, 3, &dd->autoidle_reg))
->>>    			goto cleanup;
->>> +
->>> +		ssc_clk_index = 4;
->>> +	} else {
->>> +		ssc_clk_index = 3;
->>> +	}
->>> +
->>> +	if (dd->ssc_deltam_int_mask && dd->ssc_deltam_frac_mask &&
->>> +	    dd->ssc_modfreq_mant_mask && dd->ssc_modfreq_exp_mask) {
->>> +		if (ti_clk_get_reg_addr(node, ssc_clk_index++,
->>> +					&dd->ssc_deltam_reg))
->>> +			goto cleanup;
->>> +
->>> +		if (ti_clk_get_reg_addr(node, ssc_clk_index++,
->>> +					&dd->ssc_modfreq_reg))
->>> +			goto cleanup;
->>> +
->>> +		of_property_read_u32(node, "ti,ssc-modfreq", &dd->ssc_modfreq);
->>> +		of_property_read_u32(node, "ti,ssc-deltam", &dd->ssc_deltam);
->>> +		if (of_property_read_bool(node, "ti,ssc-downspread"))
->>> +			dd->ssc_downspread = 1;
->>
->> New bindings.
-> 
-> I added the bindings documentation in another patch of the series.
-> 
+What is SError? Yes, I have read a discussion, but here is the hint:
+if a person sees this as a first text due to, for example, bisecting
+an issue, what she/he can get from this cryptic name?
 
-oh. sorry I've not received it for some reasons :(
+> pinctrl device which supports multiple pins per register. This change
+> fixes the pcs_pin_dbg_show() in pinctrl-single driver when bits_per_mux
+> is not zero. In addition move offset calculation and pin offset in
+> register to common function.
+
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Fixes: 4e7e8017a80e ("pinctrl: pinctrl-single: enhance to configure multiple pins of different modules")
+> Signed-off-by: Hanna Hawa <hhhawa@amazon.com>
+> ---
+>  drivers/pinctrl/pinctrl-single.c | 57 +++++++++++++++++++++-----------
+>  1 file changed, 37 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+> index f3394517cb2e..4595acf6545e 100644
+> --- a/drivers/pinctrl/pinctrl-single.c
+> +++ b/drivers/pinctrl/pinctrl-single.c
+> @@ -270,20 +270,46 @@ static void __maybe_unused pcs_writel(unsigned val, void __iomem *reg)
+>         writel(val, reg);
+>  }
+>
+> +static unsigned int pcs_pin_reg_offset_get(struct pcs_device *pcs,
+> +                                          unsigned int pin)
+> +{
+
+> +       unsigned int mux_bytes;
+> +
+> +       mux_bytes = pcs->width / BITS_PER_BYTE;
+
+Can be folded to one line.
+
+> +       if (pcs->bits_per_mux) {
+> +               unsigned int pin_offset_bytes;
+> +
+> +               pin_offset_bytes = (pcs->bits_per_pin * pin) / BITS_PER_BYTE;
+> +               return (pin_offset_bytes / mux_bytes) * mux_bytes;
+
+Side note for the further improvements (in a separate change, because
+I see that you just copied an original code, and after all this is
+just a fix patch): this can be replaced by round down APIs (one which
+works for arbitrary divisors).
+
+> +       }
+> +
+> +       return pin * mux_bytes;
+> +}
+> +
+> +static unsigned int pcs_pin_shift_reg_get(struct pcs_device *pcs,
+> +                                         unsigned int pin)
+> +{
+> +       return (pin % (pcs->width / pcs->bits_per_pin)) * pcs->bits_per_pin;
+
+Also a side note: I'm wondering if this can be optimized to have less divisions.
+
+> +}
+> +
+>  static void pcs_pin_dbg_show(struct pinctrl_dev *pctldev,
+>                                         struct seq_file *s,
+>                                         unsigned pin)
+>  {
+>         struct pcs_device *pcs;
+> -       unsigned val, mux_bytes;
+> +       unsigned int val;
+>         unsigned long offset;
+>         size_t pa;
+>
+>         pcs = pinctrl_dev_get_drvdata(pctldev);
+>
+> -       mux_bytes = pcs->width / BITS_PER_BYTE;
+> -       offset = pin * mux_bytes;
+> +       offset = pcs_pin_reg_offset_get(pcs, pin);
+>         val = pcs->read(pcs->base + offset);
+> +
+> +       if (pcs->bits_per_mux)
+> +               val &= pcs->fmask << pcs_pin_shift_reg_get(pcs, pin);
+> +
+>         pa = pcs->res->start + offset;
+>
+>         seq_printf(s, "%zx %08x %s ", pa, val, DRIVER_NAME);
+> @@ -384,7 +410,6 @@ static int pcs_request_gpio(struct pinctrl_dev *pctldev,
+>         struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
+>         struct pcs_gpiofunc_range *frange = NULL;
+>         struct list_head *pos, *tmp;
+> -       int mux_bytes = 0;
+>         unsigned data;
+>
+>         /* If function mask is null, return directly. */
+> @@ -392,29 +417,27 @@ static int pcs_request_gpio(struct pinctrl_dev *pctldev,
+>                 return -ENOTSUPP;
+>
+>         list_for_each_safe(pos, tmp, &pcs->gpiofuncs) {
+> +               u32 offset;
+> +
+>                 frange = list_entry(pos, struct pcs_gpiofunc_range, node);
+>                 if (pin >= frange->offset + frange->npins
+>                         || pin < frange->offset)
+>                         continue;
+> -               mux_bytes = pcs->width / BITS_PER_BYTE;
+>
+> -               if (pcs->bits_per_mux) {
+> -                       int byte_num, offset, pin_shift;
+> +               offset = pcs_pin_reg_offset_get(pcs, pin);
+>
+> -                       byte_num = (pcs->bits_per_pin * pin) / BITS_PER_BYTE;
+> -                       offset = (byte_num / mux_bytes) * mux_bytes;
+> -                       pin_shift = pin % (pcs->width / pcs->bits_per_pin) *
+> -                                   pcs->bits_per_pin;
+> +               if (pcs->bits_per_mux) {
+> +                       int pin_shift = pcs_pin_shift_reg_get(pcs, pin);
+>
+>                         data = pcs->read(pcs->base + offset);
+>                         data &= ~(pcs->fmask << pin_shift);
+>                         data |= frange->gpiofunc << pin_shift;
+>                         pcs->write(data, pcs->base + offset);
+>                 } else {
+> -                       data = pcs->read(pcs->base + pin * mux_bytes);
+> +                       data = pcs->read(pcs->base + offset);
+>                         data &= ~pcs->fmask;
+>                         data |= frange->gpiofunc;
+> -                       pcs->write(data, pcs->base + pin * mux_bytes);
+> +                       pcs->write(data, pcs->base + offset);
+>                 }
+>                 break;
+>         }
+> @@ -724,14 +747,8 @@ static int pcs_allocate_pin_table(struct pcs_device *pcs)
+>         for (i = 0; i < pcs->desc.npins; i++) {
+>                 unsigned offset;
+>                 int res;
+> -               int byte_num;
+>
+> -               if (pcs->bits_per_mux) {
+> -                       byte_num = (pcs->bits_per_pin * i) / BITS_PER_BYTE;
+> -                       offset = (byte_num / mux_bytes) * mux_bytes;
+> -               } else {
+> -                       offset = i * mux_bytes;
+> -               }
+> +               offset = pcs_pin_reg_offset_get(pcs, i);
+>                 res = pcs_add_pin(pcs, offset);
+>                 if (res < 0) {
+>                         dev_err(pcs->dev, "error adding pins: %i\n", res);
+> --
+> 2.17.1
+>
+
 
 -- 
-Best regards,
-grygorii
+With Best Regards,
+Andy Shevchenko
