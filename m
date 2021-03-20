@@ -2,109 +2,191 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C4A6C342FCD
-	for <lists+linux-omap@lfdr.de>; Sat, 20 Mar 2021 23:14:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3600B342FEA
+	for <lists+linux-omap@lfdr.de>; Sat, 20 Mar 2021 23:36:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbhCTWN3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 20 Mar 2021 18:13:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39312 "EHLO
+        id S229854AbhCTWf0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 20 Mar 2021 18:35:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbhCTWNO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 20 Mar 2021 18:13:14 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 847FDC061574
-        for <linux-omap@vger.kernel.org>; Sat, 20 Mar 2021 15:13:13 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id e9so12727241wrw.10
-        for <linux-omap@vger.kernel.org>; Sat, 20 Mar 2021 15:13:13 -0700 (PDT)
+        with ESMTP id S229780AbhCTWfV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 20 Mar 2021 18:35:21 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7FE9C061574;
+        Sat, 20 Mar 2021 15:35:20 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id k10so15306752ejg.0;
+        Sat, 20 Mar 2021 15:35:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=+k6slClDpNP9SV+PQNJ75LS2okQYo2MttA9wZhjFk8c=;
-        b=vlZgIlC5LmJbiG/QvGeAhR4JUA1FWFlTK3ApXq5EDjmW0uG3G6OgheFnknF18tG1ZZ
-         vroKHJOLfENoAaa0ZNeavMc64uubyijyU/rzbMTEgimnMM27owovvbmhGvTTcx3LtVt5
-         khRFwi9ScUBKd1V7HbbLUwmLHNecR0XI9WaY9a16SYUJVtxtgFm9ZR6BWsSYMKmy1WzO
-         WZljhbtKlCE9zJUKn2ukbH3HdSO4H+gsq2gCRyMd3nUP5x+NeZL3Aim4zj8THzvGnohy
-         ksQcy91A1pde/+wH2ObObeg4+7YE9saT0ux9Zbn5DHxDz+Xivh82RDljQGI3mpO+xQKu
-         dz6Q==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=56MFAA25ScjspCNXUgesPKP9J74UMp/NV1soUeZ2qzA=;
+        b=Dub9neJlKkrqY40yvd7djwqjMc5CB0p/vR06C4zo/4a+dsVToVO3hJlUMjSMvMk1gA
+         6swhR+nc1+ohZdhjP01QtmZ3e+RyU+AH3SfXYL44BA0ljwNN0BOJtafe1GVv5+sNOoA2
+         BuObSQmUBhMyIY7AjXbutE5dvZxWYwMsRcgHWRjI8aF3d0bkUsvA9u2qeDnnMAinlo61
+         jQkjPrLhAB11NSn4psuP6g0tZkSKbFuoPyYs5BlL/Yf5P1dct8Tc2E01BBs+UOODctKs
+         9Ud6K0GDTrSo8lI6AUx9GShdNsslUKUvQ0JVn7XZxFUpDg7ly6Dt+FLKG4/7ls+YwCAS
+         RxGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=+k6slClDpNP9SV+PQNJ75LS2okQYo2MttA9wZhjFk8c=;
-        b=c37x4alsIJ1NBlDJCBaQ2KpqlKfdRq7MH6VMfqhJDOaUf3Q54inA7VzEGKoAnGMYhv
-         622yf2x8Gy3FDctf71W2BgTP/TJsluPDHCG5a870gL7gDo7WdOLQngvAByd+3wRlTAZ0
-         TUKgfF5tJToABF4Pwir9p4pcmaFJjoAEDJp0Vvzy7klKf3Boa3qfK33yFOJe4kcWR2yh
-         bPyVhBI4xWOWaRqmzgBvy/qKsktEHNXLD0djT0TkUBeIVOhWivxSt3QYT0lw6qObnCje
-         S0Nj8nrYmo5MEoMppp+JdeQSSn335LHAt71UGfmZdRVPqHcXWirn7x1kLc8mXjIsAVEi
-         TQwg==
-X-Gm-Message-State: AOAM532V0L0c5ZhYxhAlywhBzxPi/ChoZoS8jPGbORdSOrFrw/Mwtqls
-        Pq8uCDPmWd6whkkCQ/RIEta2dg==
-X-Google-Smtp-Source: ABdhPJxX7/WCTOFk/0ieWM8Eqh8N2Saf6ltSUbuzPpWDhAoktf5akzEodFrUsRa3VvH4BkQhA37uqQ==
-X-Received: by 2002:a5d:5411:: with SMTP id g17mr11032665wrv.194.1616278390691;
-        Sat, 20 Mar 2021 15:13:10 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:2452:bc69:af94:a0d8? ([2a01:e34:ed2f:f020:2452:bc69:af94:a0d8])
-        by smtp.googlemail.com with ESMTPSA id x23sm12021891wmi.33.2021.03.20.15.13.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 20 Mar 2021 15:13:10 -0700 (PDT)
-Subject: Re: [PATCH 2/3] clocksource/drivers/timer-ti-dm: Remove extra
- of_node_put()
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Keerthy <j-keerthy@ti.com>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20210304072135.52712-1-tony@atomide.com>
- <20210304072135.52712-3-tony@atomide.com>
- <4c23ce3e-3304-b10d-5054-f421822b5dc2@ti.com> <YEHiojjAj4YLWGxA@atomide.com>
- <YEZCFgFEKTaxJTpG@atomide.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <ee7cb91f-5fc1-d852-f109-db3c189e45a1@linaro.org>
-Date:   Sat, 20 Mar 2021 23:13:08 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        bh=56MFAA25ScjspCNXUgesPKP9J74UMp/NV1soUeZ2qzA=;
+        b=sYUUfegUsh/URgDoptT4x2xsxrREyiJslNNBOqvhOVBfIvg7vQlepPgU1OiKR0K54b
+         L+Yo/HFVz9kqHrs+ccYJV9RBI1BExMhO0pgYVbjRAsBNiq9ecXggpOx86+7X+2r3P44I
+         Zk6KQSdUJ0BU60J6Wci5x3po7Q7MREUGjisglhuh977Iu4KlCgKXg/UzwWCnYASOMHF8
+         qS1YFfIeq8KJgIdH44kB65VWQpBMmH7eauWTMboTgsOC3zCpR++kSZSCBzl50Ed/+sZk
+         0GJ5AQiPt1KgYdCdqBs3TiNHTihsKYGboGiF719O5rDR3Os/6hNVVw/65pgyqkIa9LeA
+         4Rig==
+X-Gm-Message-State: AOAM5321E/emc4Q9/Oo+ztof2xBf1WSVPkLoBV+geZgd5UJbbky//hKs
+        xgTJXFWrURcpntMpP5KyIqg=
+X-Google-Smtp-Source: ABdhPJwdldMmqcKHRSR7afSL+pynmpegElbrYiqcCjoWWp8Dx+DQBY/q99jA12DGsC+5v+Eozvk/OA==
+X-Received: by 2002:a17:906:6bd1:: with SMTP id t17mr11798865ejs.319.1616279719480;
+        Sat, 20 Mar 2021 15:35:19 -0700 (PDT)
+Received: from localhost.localdomain (5-12-16-165.residential.rdsnet.ro. [5.12.16.165])
+        by smtp.gmail.com with ESMTPSA id n2sm6090850ejl.1.2021.03.20.15.35.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Mar 2021 15:35:18 -0700 (PDT)
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Tobias Waldekranz <tobias@waldekranz.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Roopa Prabhu <roopa@nvidia.com>,
+        Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Ido Schimmel <idosch@idosch.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Ivan Vecera <ivecera@redhat.com>,
+        linux-omap@vger.kernel.org,
+        Vladimir Oltean <vladimir.oltean@nxp.com>
+Subject: [PATCH v3 net-next 00/12] Better support for sandwiched LAGs with bridge and DSA
+Date:   Sun, 21 Mar 2021 00:34:36 +0200
+Message-Id: <20210320223448.2452869-1-olteanv@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <YEZCFgFEKTaxJTpG@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/03/2021 16:26, Tony Lindgren wrote:
-> Hi,
-> 
-> * Tony Lindgren <tony@atomide.com> [210305 07:58]:
->> * Grygorii Strashko <grygorii.strashko@ti.com> [210304 20:56]:
->>>
->>>
->>> On 04/03/2021 09:21, Tony Lindgren wrote:
->>>> We have of_translate_address() already do of_node_put() as needed.
->>>> I probably looked at __of_translate_address() earlier by accident
->>>> that of_translate_address() uses.
->>>
->>> I do not see of_node_put() in of_translate_address() and
->>>  __of_translate_address() is doing of_node_get(dev);
->>> ?
->>
->> Oh right.. this is confusing.. Yeah we can ignore this patch.
->> We should have the use count set for only the system timer(s)
->> we claim.
-> 
-> Daniel, would you like me to repost this series with this patch dropped?
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-No, it is ok. I will take care of not picking it.
+The objective of this series is to make LAG uppers on top of switchdev
+ports work regardless of which order we link interfaces to their masters
+(first make the port join the LAG, then the LAG join the bridge, or the
+other way around).
 
-Thanks
-  -- Daniel
+There was a design decision to be made in patches 2-4 on whether we
+should adopt the "push" model (which attempts to solve the problem
+centrally, in the bridge layer) where the driver just calls:
+
+  switchdev_bridge_port_offloaded(brport_dev,
+                                  &atomic_notifier_block,
+                                  &blocking_notifier_block,
+                                  extack);
+
+and the bridge just replays the entire collection of switchdev port
+attributes and objects that it has, in some predefined order and with
+some predefined error handling logic;
 
 
+or the "pull" model (which attempts to solve the problem by giving the
+driver the rope to hang itself), where the driver, apart from calling:
+
+  switchdev_bridge_port_offloaded(brport_dev, extack);
+
+has the task of "dumpster diving" (as Tobias puts it) through the bridge
+attributes and objects by itself, by calling:
+
+  - br_vlan_replay
+  - br_fdb_replay
+  - br_mdb_replay
+  - br_vlan_enabled
+  - br_port_flag_is_set
+  - br_port_get_stp_state
+  - br_multicast_router
+  - br_get_ageing_time
+
+(not necessarily all of them, and not necessarily in this order, and
+with driver-defined error handling).
+
+Even though I'm not in love myself with the "pull" model, I chose it
+because there is a fundamental trick with replaying switchdev events
+like this:
+
+ip link add br0 type bridge
+ip link add bond0 type bond
+ip link set bond0 master br0
+ip link set swp0 master bond0 <- this will replay the objects once for
+                                 the bond0 bridge port, and the swp0
+                                 switchdev port will process them
+ip link set swp1 master bond0 <- this will replay the objects again for
+                                 the bond0 bridge port, and the swp1
+                                 switchdev port will see them, but swp0
+                                 will see them for the second time now
+
+Basically I believe that it is implementation defined whether the driver
+wants to error out on switchdev objects seen twice on a port, and the
+bridge should not enforce a certain model for that. For example, for FDB
+entries added to a bonding interface, the underling switchdev driver
+might have an abstraction for just that: an FDB entry pointing towards a
+logical (as opposed to physical) port. So when the second port joins the
+bridge, it doesn't realy need to replay FDB entries, since there is
+already at least one hardware port which has been receiving those
+events, and the FDB entries don't need to be added a second time to the
+same logical port.
+In the other corner, we have the drivers that handle switchdev port
+attributes on a LAG as individual switchdev port attributes on physical
+ports (example: VLAN filtering). In fact, the switchdev_handle_port_attr_set
+helper facilitates this: it is a fan-out from a single orig_dev towards
+multiple lowers that pass the check_cb().
+But that's the point: switchdev_handle_port_attr_set is just a helper
+which the driver _opts_ to use. The bridge can't enforce the "push"
+model, because that would assume that all drivers handle port attributes
+in the same way, which is probably false.
+
+For this reason, I preferred to go with the "pull" mode for this patch
+set. Just to see how bad it is for other switchdev drivers to copy-paste
+this logic, I added the pull support to ocelot too, and I think it's
+pretty manageable.
+
+Vladimir Oltean (12):
+  net: dsa: call dsa_port_bridge_join when joining a LAG that is already
+    in a bridge
+  net: dsa: pass extack to dsa_port_{bridge,lag}_join
+  net: dsa: inherit the actual bridge port flags at join time
+  net: dsa: sync up with bridge port's STP state when joining
+  net: dsa: sync up VLAN filtering state when joining the bridge
+  net: dsa: sync multicast router state when joining the bridge
+  net: dsa: sync ageing time when joining the bridge
+  net: dsa: replay port and host-joined mdb entries when joining the
+    bridge
+  net: dsa: replay port and local fdb entries when joining the bridge
+  net: dsa: replay VLANs installed on port when joining the bridge
+  net: ocelot: call ocelot_netdevice_bridge_join when joining a bridged
+    LAG
+  net: ocelot: replay switchdev events when joining bridge
+
+ drivers/net/dsa/ocelot/felix.c         |   4 +-
+ drivers/net/ethernet/mscc/ocelot.c     |  18 +--
+ drivers/net/ethernet/mscc/ocelot_net.c | 208 +++++++++++++++++++++----
+ include/linux/if_bridge.h              |  40 +++++
+ include/net/switchdev.h                |   1 +
+ include/soc/mscc/ocelot.h              |   6 +-
+ net/bridge/br_fdb.c                    |  52 +++++++
+ net/bridge/br_mdb.c                    |  84 ++++++++++
+ net/bridge/br_stp.c                    |  27 ++++
+ net/bridge/br_vlan.c                   |  71 +++++++++
+ net/dsa/dsa_priv.h                     |   9 +-
+ net/dsa/port.c                         | 203 ++++++++++++++++++------
+ net/dsa/slave.c                        |  11 +-
+ 13 files changed, 631 insertions(+), 103 deletions(-)
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+2.25.1
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
