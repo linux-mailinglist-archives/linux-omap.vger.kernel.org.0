@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D32F343DB5
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Mar 2021 11:26:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 758F4343DE1
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Mar 2021 11:31:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230146AbhCVK0K (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Mar 2021 06:26:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52850 "EHLO
+        id S230227AbhCVKaa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Mar 2021 06:30:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229822AbhCVKZj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Mar 2021 06:25:39 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C14D9C061574
-        for <linux-omap@vger.kernel.org>; Mon, 22 Mar 2021 03:25:38 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id y1so20301487ljm.10
-        for <linux-omap@vger.kernel.org>; Mon, 22 Mar 2021 03:25:38 -0700 (PDT)
+        with ESMTP id S230189AbhCVK37 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Mar 2021 06:29:59 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1D13C061763
+        for <linux-omap@vger.kernel.org>; Mon, 22 Mar 2021 03:29:56 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id z8so20296612ljm.12
+        for <linux-omap@vger.kernel.org>; Mon, 22 Mar 2021 03:29:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=waldekranz-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:in-reply-to:references:date:message-id
          :mime-version;
-        bh=BNpbhkpWxvRD4s0rKc0kS/zu20HOAYLd5FaU7tpZIbY=;
-        b=H7Bw476kMpokOGMbl0/mhGOypjDnqSOFvkPi4XbOtdGlU5scaVM8w9SZvd8a3dh4Fe
-         a6EU2uwpm08C9NMnG9IVPzdlj8Gw+cvXLHzZp6rHNn527NQc1ksDbxtF9txdafq27AY5
-         Hi0/PwFoxnf5pOZ7uzn9jvz6RxUfZH91cUJNj8zJ3uCEXu2Km9RUwaFtIQoIZ/m06CP6
-         6Tt6PVjbzdih5S7RLP1pBiAHZdZos9CXJtWBAKatyCI88wdDqItzTyFNdSTdLEQkrsO5
-         E3y1OY0MiKnC69TwtAqL9n7AwT/zX7azJJhy68brXGZUGzWWUHDhzNXZnpIFIs/6LsCW
-         xlKA==
+        bh=yU+qIvBWk1kJvqdslxYHWF/zXGgpGkmRQmk9Yu+vJtA=;
+        b=r0ghP52A1I0uK8WlxBsk21Vewm9OLJClR44DhKlfZKCXyrioNxYpwjBM7kKeXabHOE
+         I5C6O4n+XNx3CuKswcA5ftZ6Hqn9T/5QhtdRjAPf+bC9FNnLWMtangd4u3Y3KJsgOYJ+
+         Kl5w5c8BhfGncbU0z6dj4xCwwOVAQa/DAFZm7BFTLXVXyWeaJ/M0aANZMFYoC/Su8TVH
+         xEDaW7XV88B1kWZozNEfHJIvq4q7m5/4Un/HibUUkkirt+2tKs6yjFvI0rGcTHErUNYA
+         jM0ZeoCcRgtQ0OsCs62/8HBCxxkwUbvKYbSAhyBb1nMQ5GMG32almrLZwu2ZxLTYuTk7
+         AlRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
          :message-id:mime-version;
-        bh=BNpbhkpWxvRD4s0rKc0kS/zu20HOAYLd5FaU7tpZIbY=;
-        b=n/dhNp+Xd/u1EwocPNi9lJdOekzXJli7tLSZmt5jegM7WU6SyYPW6yjqKT8rmyA3Du
-         H2oUXq6rUQf90+6tIbMxUqCzMZ/IXC5VIv48UAA2EykqyyRISn6Kzp9e3+6/eAwJglML
-         l1t2e8Iaq8+dFwqkOobtw0yeYdbOpBNklcZ8rzgB16a9WzLhAb8+bI0L/BY3ZBoZNcRL
-         o9kMQoPusl5mHIujK1mz3U45mgNwj+Z/+3Nryt+Snc3LZVUnwirdu2cPL1mbB5PZAfrL
-         UJmxHb2afZn2FXjMZ6TJvw+BRYR02BWLSYkhja2ZRNECh6UOzwFkoaLjCePFfymK4Rzv
-         KGSA==
-X-Gm-Message-State: AOAM531WJ695Jj6CYwdDqXz/c8Lxz9RH1/ndhHYO0QFzkEKuSPwhdA7Q
-        r7Hdq494eimulIU/MYFqd4vhqQ==
-X-Google-Smtp-Source: ABdhPJzF9i6/20cRJAGueFcYXoDG+YjASeeOEKPSmi0jwcQJLAxxOXXseHWIrLmeQE4pQuy6eifDig==
-X-Received: by 2002:a2e:b17b:: with SMTP id a27mr9437202ljm.62.1616408737317;
-        Mon, 22 Mar 2021 03:25:37 -0700 (PDT)
+        bh=yU+qIvBWk1kJvqdslxYHWF/zXGgpGkmRQmk9Yu+vJtA=;
+        b=HpFCpXlYvSBxQjHxTyIW6ItT/bdGkBlIEfG7vmmRFN3JddyIsqMGKjPSU1IXcCWlh9
+         5mo7aRdtBfS9eUMjGc+BWaQVhVqAS0WROjOydvV+GXBOuClt+jcL6Zh7/Qgviowlr/uT
+         +eeA82qON46MjjgDjRt/DDP7zmIt3yl5uCaWY5jd2bcS1a7t5bKoXVaVvxvi6T5MW9Sj
+         ezrGA3guzLpGia4VEf7OMx+QM4eyJcb2bc6d5R+VDpYgo14aD/oc1SaZ136q8qfHouL2
+         lW6Zv2+alRZh3LDlngfQ2D9EYr8ju+1j+zUCsi7u3tCLpqghzCJOuQhbtf5qK6jWmhK/
+         WvOQ==
+X-Gm-Message-State: AOAM530eSno/P/U18HmNEhEGQizFg8+j2eE4hRxZ5Yti56z7GK09Y5Ly
+        ml9Ls//xQlsOjZrv6T/gSSOQGQ==
+X-Google-Smtp-Source: ABdhPJyT8YpHeks7w6/UwXq2lpPnHww4i0cs8C5c3gqi0y5gdESK5JvKAMLWbbzgWY74pBougy9feQ==
+X-Received: by 2002:a2e:9a98:: with SMTP id p24mr9379943lji.265.1616408995470;
+        Mon, 22 Mar 2021 03:29:55 -0700 (PDT)
 Received: from wkz-x280 (static-193-12-47-89.cust.tele2.se. [193.12.47.89])
-        by smtp.gmail.com with ESMTPSA id j15sm1522505lfm.138.2021.03.22.03.25.36
+        by smtp.gmail.com with ESMTPSA id x8sm1530380lfc.8.2021.03.22.03.29.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Mar 2021 03:25:37 -0700 (PDT)
+        Mon, 22 Mar 2021 03:29:55 -0700 (PDT)
 From:   Tobias Waldekranz <tobias@waldekranz.com>
 To:     Vladimir Oltean <olteanv@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>,
@@ -67,11 +67,11 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
         Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org,
         Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [RFC PATCH v2 net-next 02/16] net: dsa: pass extack to dsa_port_{bridge,lag}_join
-In-Reply-To: <20210318231829.3892920-3-olteanv@gmail.com>
-References: <20210318231829.3892920-1-olteanv@gmail.com> <20210318231829.3892920-3-olteanv@gmail.com>
-Date:   Mon, 22 Mar 2021 11:25:36 +0100
-Message-ID: <87blbbo57j.fsf@waldekranz.com>
+Subject: Re: [RFC PATCH v2 net-next 04/16] net: dsa: sync up with bridge port's STP state when joining
+In-Reply-To: <20210318231829.3892920-5-olteanv@gmail.com>
+References: <20210318231829.3892920-1-olteanv@gmail.com> <20210318231829.3892920-5-olteanv@gmail.com>
+Date:   Mon, 22 Mar 2021 11:29:54 +0100
+Message-ID: <878s6fo50d.fsf@waldekranz.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
@@ -81,9 +81,33 @@ X-Mailing-List: linux-omap@vger.kernel.org
 On Fri, Mar 19, 2021 at 01:18, Vladimir Oltean <olteanv@gmail.com> wrote:
 > From: Vladimir Oltean <vladimir.oltean@nxp.com>
 >
-> This is a pretty noisy change that was broken out of the larger change
-> for replaying switchdev attributes and objects at bridge join time,
-> which is when these extack objects are actually used.
+> It may happen that we have the following topology:
+>
+> ip link add br0 type bridge stp_state 1
+> ip link add bond0 type bond
+> ip link set bond0 master br0
+> ip link set swp0 master bond0
+> ip link set swp1 master bond0
+>
+> STP decides that it should put bond0 into the BLOCKING state, and
+> that's that. The ports that are actively listening for the switchdev
+> port attributes emitted for the bond0 bridge port (because they are
+> offloading it) and have the honor of seeing that switchdev port
+> attribute can react to it, so we can program swp0 and swp1 into the
+> BLOCKING state.
+>
+> But if then we do:
+>
+> ip link set swp2 master bond0
+>
+> then as far as the bridge is concerned, nothing has changed: it still
+> has one bridge port. But this new bridge port will not see any STP state
+> change notification and will remain FORWARDING, which is how the
+> standalone code leaves it in.
+>
+> Add a function to the bridge which retrieves the current STP state, such
+> that drivers can synchronize to it when they may have missed switchdev
+> events.
 >
 > Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 > ---
