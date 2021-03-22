@@ -2,124 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 383BE344E70
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Mar 2021 19:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D44E34525F
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Mar 2021 23:24:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231840AbhCVSX7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Mar 2021 14:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
+        id S229995AbhCVWXh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Mar 2021 18:23:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231527AbhCVSXk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Mar 2021 14:23:40 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 739DAC061756
-        for <linux-omap@vger.kernel.org>; Mon, 22 Mar 2021 11:23:39 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id w203-20020a1c49d40000b029010c706d0642so11414722wma.0
-        for <linux-omap@vger.kernel.org>; Mon, 22 Mar 2021 11:23:39 -0700 (PDT)
+        with ESMTP id S229930AbhCVWXI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Mar 2021 18:23:08 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4A4EC061574;
+        Mon, 22 Mar 2021 15:23:07 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id l18so13066611edc.9;
+        Mon, 22 Mar 2021 15:23:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ySJvyA1Vk+WlWIAVpdaEw/cb8TtbtV3XIc6h1+nRJT4=;
-        b=EYEwtse8Tfbhei4D4G24ggUMmPdbnWhNGAn/uaCsHWSGN1xHWkp8XNQsZBlU0rmqPP
-         OF5bevWmwR8En6oyPXRetZsPWZS2pqtMWpVZU0rN7Z4CfBTvhLuQBoLRN1KI1SIfpNcu
-         i79FSRJldWPSD8A5W8PK9kTpgwuvDKYmEb7SV8ptL+u2AXXZV4TkSCE04HukddGcgQNo
-         kF0G3Pu5VkORcwFIlTNVoT9NDMmQp4iip/TgsIeMS8Xe8WXyC4IRrr6pLUTnNWkEBCum
-         GZlsN8VzA/eTXih8JSucA3+ld59QNXphmZL2KPaPOwywrrBFjFlgAZYZIVd6KkfzpcNy
-         04pw==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=+UmWQ8kPJJXqVddNG8LsP4AVzZRu2CDgrd9TtFHN7bg=;
+        b=XKLX57dAd4p2hdUkJzhJ1MGrcYz2dPIyVoib8MVIEPfoabZ8/fzCJPmD7kMfq3qVFj
+         g66vGdMwHp9lXjQ7hcgACDo71VL1MBitXIquRKHh28uIfQBb6xeeTifcLZRob+SSE4EA
+         a1gfvUA8g54Jr4YIukATSxseE2Rdyhb1CysE+uLG3nFChLKL5ISVBMa3UlAsZ2JCrroJ
+         abz7edLSSVUhJLYzFOZFYsPpYtKN+vv5x0uy8MnaDxvsubA7rXOR+gA2dpEuoAqpCzvI
+         zRjj1BXzkUoML9P8NW3rGg2+gJSvqSDu7pgWipxhJY51zSvoB3p5yEMb4AOh4ELe/J62
+         BdKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ySJvyA1Vk+WlWIAVpdaEw/cb8TtbtV3XIc6h1+nRJT4=;
-        b=H4ausGdMIUa0rmauubSapKLVtyNIRs5HC9JYXAcRSmRTKKYdZqnpaJGlF2VJkoi0ZK
-         Ws1r75t9iAjYzWATab7szq+dg43eT2FR4Xg1engJZE9oSvuJY0UBxAA3q5XAS+wvT3As
-         QzML2C5eBX/etEQ1ff5//z7QHfmEwHeYJrYn65sKKPA5M2pf1aw3RqhBHCuI+0tcXY5W
-         XWsL99KD3uh2pFnlj7doX0sBXfa69a8h0rjnCq9vL61Nj3P9om5k/AcQXNoRipVO7vf0
-         AWL0E9IR3ZKqb+z76O4xEDERIX3+poZn3NEbiRQGzUQV8OlNLcctMCVpfd0TmAFhSOWM
-         0GtA==
-X-Gm-Message-State: AOAM531dkUU19aAAAFbwi1W59aOUEiqL8WOmu+/vKXmrIijinBmzk1qx
-        4NUlypAj9Lckien2gnxXbs4Qbw==
-X-Google-Smtp-Source: ABdhPJzb0KUsvmwF89Q6JC250XZHI3aXVw0gduj1cm4ArG5yoim7NODhbWWeHGHzQJUQSGKsRhJfBw==
-X-Received: by 2002:a1c:771a:: with SMTP id t26mr317022wmi.60.1616437417956;
-        Mon, 22 Mar 2021 11:23:37 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:2091:71d6:3ab2:37f2? ([2a01:e34:ed2f:f020:2091:71d6:3ab2:37f2])
-        by smtp.googlemail.com with ESMTPSA id v18sm21863898wrf.41.2021.03.22.11.23.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Mar 2021 11:23:37 -0700 (PDT)
-Subject: Re: [PATCH 1/2] clocksource/drivers/timer-ti-dm: Prepare to handle
- dra7 timer wrap issue
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>, Keerthy <j-keerthy@ti.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Tero Kristo <kristo@kernel.org>
-References: <20210304073737.15810-1-tony@atomide.com>
- <20210304073737.15810-2-tony@atomide.com>
- <556d55af-0b30-8751-6aef-2e1bb9db1a76@linaro.org>
- <YFjG5IsHExuaixN9@atomide.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <5c3c2447-3f8c-160c-8761-e43c1b4ebbf9@linaro.org>
-Date:   Mon, 22 Mar 2021 19:23:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=+UmWQ8kPJJXqVddNG8LsP4AVzZRu2CDgrd9TtFHN7bg=;
+        b=GsnIxuD8P4urSt6aFXSWsVo0kg1yIEprkEGVCNPVx+h2ZjDtOcK2rcAIxOFsONTpa4
+         jtO74MYkmCYFDx3im9RgPvhCMejMnzTl0VequLsOdWep1QSzZPprKumDgl1YU/GgKnF6
+         bJArCZTuncEvodbbBhjMdOxjB/zhH5PQX1rc2nLZS//R64ZYFpb++ICVW4tuzqkQ0MG/
+         2du4HQIE452MnAfSDa8mOiDo4g84/Znmn4Ws2ejFpf0nM/Wdi6tblkMzA2/OBxJZ8XFr
+         /MZRTp0vzn+j8zQGFDCwurnvRrU2Cc+BsaTqpdbRljhMVNsAPpOvJadscoMNOo6eJ6dV
+         p+7Q==
+X-Gm-Message-State: AOAM531yqJOVb9lzQycPjJNktWQQL8WwDRYgNh4a82ElxLgpLPw3jKrd
+        IslajqwgYHZS2LlHBCS6F3A=
+X-Google-Smtp-Source: ABdhPJzz1jbJGrBOXeWUZI/wu28WPNMFVa7h68kFTv0cjOsgf0MdkNg/7oDJK6QCTZpspGQdZ/ZMRw==
+X-Received: by 2002:aa7:db53:: with SMTP id n19mr1820956edt.330.1616451786574;
+        Mon, 22 Mar 2021 15:23:06 -0700 (PDT)
+Received: from skbuf (5-12-16-165.residential.rdsnet.ro. [5.12.16.165])
+        by smtp.gmail.com with ESMTPSA id ga28sm5732805ejc.82.2021.03.22.15.23.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Mar 2021 15:23:06 -0700 (PDT)
+Date:   Tue, 23 Mar 2021 00:23:04 +0200
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     DENG Qingfang <dqfext@gmail.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Tobias Waldekranz <tobias@waldekranz.com>,
+        netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
+        Roopa Prabhu <roopa@nvidia.com>,
+        Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Ido Schimmel <idosch@idosch.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org,
+        Vladimir Oltean <vladimir.oltean@nxp.com>
+Subject: Re: [RFC PATCH v2 net-next 14/16] net: dsa: don't set
+ skb->offload_fwd_mark when not offloading the bridge
+Message-ID: <20210322222304.ehinqbq67ikpubqx@skbuf>
+References: <20210318231829.3892920-1-olteanv@gmail.com>
+ <20210318231829.3892920-15-olteanv@gmail.com>
+ <20210319084025.GA2152639@haswell-ubuntu20>
+ <20210319090642.bzmtlzc5im6xtbkh@skbuf>
+ <CALW65janF_yztk7hH5n8wZFpWXxbCwQu3m4W=B-n2mcNG+W=Mw@mail.gmail.com>
+ <20210319104924.gcdobjxmqcf6s4wq@skbuf>
+ <CALW65jYc6DFoUiF55Q3KrhamPf75tFRSAkSA6ONrF3KMf9z+7g@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <YFjG5IsHExuaixN9@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALW65jYc6DFoUiF55Q3KrhamPf75tFRSAkSA6ONrF3KMf9z+7g@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 22/03/2021 17:33, Tony Lindgren wrote:
-> Hi,
+On Mon, Mar 22, 2021 at 04:04:01PM +0800, DENG Qingfang wrote:
+> On Fri, Mar 19, 2021 at 6:49 PM Vladimir Oltean <olteanv@gmail.com> wrote:
+> > Why would you even want to look at the source net device for forwarding?
+> > I'd say that if dp->bridge_dev is NULL in the xmit function, you certainly
+> > want to bypass address learning if you can. Maybe also for link-local traffic.
 > 
-> * Daniel Lezcano <daniel.lezcano@linaro.org> [210322 15:56]:
->> On 04/03/2021 08:37, Tony Lindgren wrote:
->>> There is a timer wrap issue on dra7 for the ARM architected timer.
->>> In a typical clock configuration the timer fails to wrap after 388 days.
->>>
->>> To work around the issue, we need to use timer-ti-dm timers instead.
->>>
->>> Let's prepare for adding support for percpu timers by adding a common
->>> dmtimer_clkevt_init_common() and call it from dmtimer_clockevent_init().
->>> This patch makes no intentional functional changes.
->>>
->>> Signed-off-by: Tony Lindgren <tony@atomide.com>
->>> ---
->>
->> [ ... ]
->>
->>> @@ -575,33 +574,60 @@ static int __init dmtimer_clockevent_init(struct device_node *np)
->>>  	 */
->>>  	writel_relaxed(OMAP_TIMER_CTRL_POSTED, t->base + t->ifctrl);
->>>  
->>> +	if (dev->cpumask == cpu_possible_mask)
->>> +		irqflags = IRQF_TIMER;
->>> +	else
->>> +		irqflags = IRQF_TIMER | IRQF_NOBALANCING;
->>
->> Can you explain the reasoning behind the test above ?
-> 
-> In the per cpu case we assign one dmtimer per cpu, and we want the
-> interrupt handling on the assigned CPU. In the per cpu case we have
-> the cpu specified with dev->cpumask unlike for the normal clockevent
-> case.
-> 
-> In the per cpu dmtimer case the interrupt line is not wired per cpu
-> though, so I don't think we want to add IRQF_PERCPU here.
+> Also for trapped traffic (snooping, tc-flower trap action) if the CPU
+> sends them back.
 
-If it is per cpu, then the parameter will be cpumask_of(cpu). If there
-is one cpu, no balancing can happen and then the IRQF_NOBALANCING is not
-needed, neither this test and the irqflags, right?
-
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+This sounds line an interesting use case, please tell me more about what
+commands I could run to reinject trapped packets into the hardware data
+path.
