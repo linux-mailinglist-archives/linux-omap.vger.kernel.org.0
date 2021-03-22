@@ -2,60 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61BA1344A9D
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Mar 2021 17:08:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06ED5344B10
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Mar 2021 17:20:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231700AbhCVQH7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Mar 2021 12:07:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42284 "EHLO
+        id S231799AbhCVQUX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Mar 2021 12:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231559AbhCVQGW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Mar 2021 12:06:22 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60C49C061574;
-        Mon, 22 Mar 2021 09:06:21 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id x7-20020a17090a2b07b02900c0ea793940so10828014pjc.2;
-        Mon, 22 Mar 2021 09:06:21 -0700 (PDT)
+        with ESMTP id S231785AbhCVQUA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Mar 2021 12:20:00 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A89E7C061574;
+        Mon, 22 Mar 2021 09:19:59 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id jy13so22239504ejc.2;
+        Mon, 22 Mar 2021 09:19:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=SowZIcaJZhEed7YjVk5JGDpUaVc5E1KpdjlopzLh6mI=;
-        b=Vf2RpsLhJ81z4wgKHc/itHt04mg45ujrA6xkjcJEecBUQdcXt5Or36E7aHif2FLaDd
-         0HSw61pk9edeaJwgIQmixB/dGv/ffqFFludF+eBXtH+npHcCGnl4KqiJ5H+UbRyprrKo
-         QXwKSj9460S7sjOtLi0EP+ZZvXH7YcD7cesk6sq+9xLzuce321T7f39UnWMEqnrg8uT8
-         wAqNTR4NhRJVgrL3h1hKHdfUYdoZ96RARj+etL4ZcYY556aRlaoSM8zZ9KIMmGPEX2u3
-         E3rPnyUP9wa8Fot6hu48Av7UB2VbXDR8dj8NtlXZZiw8LdzgXbVTawNha2q6CJp5vYYx
-         /v0w==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=M2qJujAvQn4a05nBn1hE9oaaQsAdwEJ2YaUJEOPRz10=;
+        b=puag+iLGmGsMChji5EvUsfWZZYZlRtN6KZ6s9XtgvXIbn0zkB8zQpZkfBraPcKme00
+         KJXh9/5dntT0/lASwlNa9N2tZEoRCho4+aB5ohASUOOKiy5NHnZ0JC/rKX+HEVXHHCdq
+         fbQjLeVwLZqiJZQ45Fhc2dA3+qsmkhfXc86ka8bL74NixHDEBhXTCTuB76jOalo9Auf0
+         yC94P6Dxd1HOp8+z/v+Cd8cGA54lGLEryhuZdRI8eciCAov9ZmYaV/N1sH+CUWyn5f6X
+         V8IVfdvn2KDLaJd2JkYkHzNtnrryhurBSN7on0xoGY6tFjh8JW7+xcYKHJ7y3yiZPYox
+         3HgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=SowZIcaJZhEed7YjVk5JGDpUaVc5E1KpdjlopzLh6mI=;
-        b=l4rcbj2j2qYZxxm2tm2yA4wJOUPrNVln8lcmMXJVMRkAuePKH/WyWKTIrz2PTCDB+j
-         rpL2czdkZA8qF/c0Qh6ohPb6qDOqLLjd3qWOJQooNtMvVCV+0lzbO0lpvWgaWjP/JxD2
-         vBtlRYfUGPEbSeNlyz/7vZsUF5mwWUBi+UqYaXg9g/jp/0UmnWQ0Hs2zGLer3luy01Ys
-         YSRsPm3rdOwKUyiDRVau1p8s8VyPA+ZeSS9V89OrXQvNK6E6dOl0m80XBtJevv/Qmj9Q
-         XtqbXVYH55xFt9XCKfMI0tSQJDgGKOZ9rgyo6kEuXdxqtSNdJXzWQguwn9Ax3vjrYvMx
-         3pZA==
-X-Gm-Message-State: AOAM530IzDSzGl4Bc9uwTAe9Ma9VUgzjPNCP9GPl69PGy4dDbRntI/fW
-        dDYN81m1e9eLApCOj1Dk20o=
-X-Google-Smtp-Source: ABdhPJws+kSzU6djYSD76v4UsDTW83oAB/M1MEpcsMaHwqscU4XhPIidErY6653b/bu/+Vz/CIIZdg==
-X-Received: by 2002:a17:902:70c5:b029:e6:cba1:5d94 with SMTP id l5-20020a17090270c5b02900e6cba15d94mr274867plt.84.1616429180778;
-        Mon, 22 Mar 2021 09:06:20 -0700 (PDT)
-Received: from [10.230.29.202] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id i13sm294731pgi.3.2021.03.22.09.06.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Mar 2021 09:06:20 -0700 (PDT)
-Subject: Re: [RFC PATCH v2 net-next 14/16] net: dsa: don't set
- skb->offload_fwd_mark when not offloading the bridge
-To:     Vladimir Oltean <olteanv@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=M2qJujAvQn4a05nBn1hE9oaaQsAdwEJ2YaUJEOPRz10=;
+        b=sRNRKpWYgkogUe3mefUVUHj/f95LL6MCIqd5SBdJuAg/Dm65rqRJSuNV64r+UEZySg
+         Ca51HdoQpiPx77mIGpjNvYNDyePrchd1pVpP9cyMaUjtzjJq6w786+d5aJThACq1hlos
+         75AXp0RSraavQekjYppIDuLa5VAOL4RpvrDErXSVLGi1TvOVcZGpbCjubhYJ8g8S37lB
+         LdTeSBkzYTSb22yQcCZRNjxehk1Fnu12gsxEdu6ofk/qGTN9qq14EI9iUjz3uIlfDgbh
+         gHMOrLU6L3KWmFxG4J+QwhbOxZ3pG9t71aoDOpT7O40fw9jSdLKRc0E2jU942bxI3bfi
+         AazA==
+X-Gm-Message-State: AOAM5324BAT5FI7ozygL6iAozIhfdU5PmQTOT8rQagYZZsDpqn54hX1v
+        Ck4ag//vNMicAo8AbviUI0c=
+X-Google-Smtp-Source: ABdhPJzFxfToTXlkbA2OiWFgmebyVaHb5IFCzmrKPNggnZ2tsSeTen7AN5pgak718yanRFaH0NArUw==
+X-Received: by 2002:a17:906:f6ce:: with SMTP id jo14mr602315ejb.476.1616429998414;
+        Mon, 22 Mar 2021 09:19:58 -0700 (PDT)
+Received: from skbuf (5-12-16-165.residential.rdsnet.ro. [5.12.16.165])
+        by smtp.gmail.com with ESMTPSA id e16sm9848456ejc.63.2021.03.22.09.19.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Mar 2021 09:19:57 -0700 (PDT)
+Date:   Mon, 22 Mar 2021 18:19:55 +0200
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     Tobias Waldekranz <tobias@waldekranz.com>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew@lunn.ch>,
         Vivien Didelot <vivien.didelot@gmail.com>,
-        Tobias Waldekranz <tobias@waldekranz.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         Roopa Prabhu <roopa@nvidia.com>,
         Nikolay Aleksandrov <nikolay@nvidia.com>,
@@ -69,58 +68,56 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
         Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org,
         Vladimir Oltean <vladimir.oltean@nxp.com>
+Subject: Re: [RFC PATCH v2 net-next 09/16] net: dsa: replay port and local
+ fdb entries when joining the bridge
+Message-ID: <20210322161955.c3slrmbtofswrqiz@skbuf>
 References: <20210318231829.3892920-1-olteanv@gmail.com>
- <20210318231829.3892920-15-olteanv@gmail.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <0856e923-fdca-93cb-4fe3-4f5c5d811c3c@gmail.com>
-Date:   Mon, 22 Mar 2021 09:06:16 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.8.1
+ <20210318231829.3892920-10-olteanv@gmail.com>
+ <87wntzmbva.fsf@waldekranz.com>
 MIME-Version: 1.0
-In-Reply-To: <20210318231829.3892920-15-olteanv@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wntzmbva.fsf@waldekranz.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, Mar 22, 2021 at 04:44:41PM +0100, Tobias Waldekranz wrote:
+> I do not know if it is a problem or not, more of an observation: This is
+> not guaranteed to be an exact replay of the events that the bridge port
+> (i.e. bond0 or whatever) has received since, in fdb_insert, we exit
+> early when adding local entries if that address is already in the
+> database.
+> 
+> Do we have to guard against this somehow? Or maybe we should consider
+> the current behavior a bug and make sure to always send the event in the
+> first place?
 
+I don't really understand what you're saying.
+fdb_insert has:
 
-On 3/18/2021 4:18 PM, Vladimir Oltean wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> 
-> DSA has gained the recent ability to deal gracefully with upper
-> interfaces it cannot offload, such as the bridge, bonding or team
-> drivers. When such uppers exist, the ports are still in standalone mode
-> as far as the hardware is concerned.
-> 
-> But when we deliver packets to the software bridge in order for that to
-> do the forwarding, there is an unpleasant surprise in that the bridge
-> will refuse to forward them. This is because we unconditionally set
-> skb->offload_fwd_mark = true, meaning that the bridge thinks the frames
-> were already forwarded in hardware by us.
-> 
-> Since dp->bridge_dev is populated only when there is hardware offload
-> for it, but not in the software fallback case, let's introduce a new
-> helper that can be called from the tagger data path which sets the
-> skb->offload_fwd_mark accordingly to zero when there is no hardware
-> offload for bridging. This lets the bridge forward packets back to other
-> interfaces of our switch, if needed.
-> 
-> Without this change, sending a packet to the CPU for an unoffloaded
-> interface triggers this WARN_ON:
-> 
-> void nbp_switchdev_frame_mark(const struct net_bridge_port *p,
-> 			      struct sk_buff *skb)
-> {
-> 	if (skb->offload_fwd_mark && !WARN_ON_ONCE(!p->offload_fwd_mark))
-> 		BR_INPUT_SKB_CB(skb)->offload_fwd_mark = p->offload_fwd_mark;
-> }
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Reviewed-by: Tobias Waldekranz <tobias@waldekranz.com>
+	fdb = br_fdb_find(br, addr, vid);
+	if (fdb) {
+		/* it is okay to have multiple ports with same
+		 * address, just use the first one.
+		 */
+		if (test_bit(BR_FDB_LOCAL, &fdb->flags))
+			return 0;
+		br_warn(br, "adding interface %s with same address as a received packet (addr:%pM, vlan:%u)\n",
+		       source ? source->dev->name : br->dev->name, addr, vid);
+		fdb_delete(br, fdb, true);
+	}
 
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+	fdb = fdb_create(br, source, addr, vid,
+			 BIT(BR_FDB_LOCAL) | BIT(BR_FDB_STATIC));
+
+Basically, if the {addr, vid} pair already exists in the fdb, and it
+points to a local entry, fdb_create is bypassed.
+
+Whereas my br_fdb_replay() function iterates over br->fdb_list, which is
+exactly where fdb_create() also lays its eggs. That is to say, unless
+I'm missing something, that duplicate local FDB entries that skipped the
+fdb_create() call in fdb_insert() because they were for already-existing
+local FDB entries will also be skipped by br_fdb_replay(), because it
+iterates over a br->fdb_list which contains unique local addresses.
+Where am I wrong?
