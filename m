@@ -2,99 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC8D63449F9
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Mar 2021 16:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0030344A22
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Mar 2021 17:02:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230188AbhCVP6j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Mar 2021 11:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40566 "EHLO
+        id S230078AbhCVQC0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Mar 2021 12:02:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230324AbhCVP6g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Mar 2021 11:58:36 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5737BC061762
-        for <linux-omap@vger.kernel.org>; Mon, 22 Mar 2021 08:58:35 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 15so21785260ljj.0
-        for <linux-omap@vger.kernel.org>; Mon, 22 Mar 2021 08:58:35 -0700 (PDT)
+        with ESMTP id S231757AbhCVQCO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Mar 2021 12:02:14 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663FBC061574;
+        Mon, 22 Mar 2021 09:02:14 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id h3so11234826pfr.12;
+        Mon, 22 Mar 2021 09:02:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=GZRr9jbufQ2tgNzlMNa/gP7G4K2WltzYEPBk861waJk=;
-        b=jVR0sTkiVcqaZRx+UXHzi8dHe+SKO0rtuDL24tK9m6dlT+xYdpD/ZI1H6FHD8aNpl1
-         5Oeo0dtdsXZ32Oblvv27BGRIK4YFjMq33zF4046Ub9wid9WIxFaV+Cz2XpqFLQ5qnDos
-         F/9/FzE32bWgNXcNTcOGumxN3Nun0N0NCXTlORpKUBQbTXSGDXmUnNu+QfecT6Wb/d0k
-         o2tcDK/xsEAhJqm8q56HWpXVNZ96d4ODSdtEm3X9kBPS2zeUN2/QjfUyQfqoDII/rEUE
-         PO8S/j18zEGKAgmfndKPccSo5DY3nyLc1VQYQsbYs/4xgkAyvaTCsT9uaoPubzeoZd4t
-         sn2Q==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=TxgbwfvEeZkYrurUbnEsv0ASlZPTTYngpuV8wfALc4E=;
+        b=K1sZxYsl1lU9BZnL153NgkXJqBOxZrUtg3mgKt/7sAcVRAAN/TuR2zX57IlYKJ6BZp
+         iBGwMhtjLaM0XNb5yH7/AucltIiZ9jrlCduhYQXHGbOC8UXP68jS3Gwvz0lxgo1/rTse
+         9s2NUYOR+HTrLHQdDKZsl6met+Fz2OKZEnPZ2vEcv6k1mJiDALM/tJNig3MvWJNHS/m3
+         99IZMPUtocx7RAvcKXoYLLH1CEvLeAWu+2+A5p9cfFIMzOa6GYu4LjNIpkFtKOuwuF76
+         x5W4Vvc4p+0TfsxEYGCQNHS28lpsLVjScUZl37T92ygyVrmh57MSZqtkX64xpK5x097/
+         BLTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=GZRr9jbufQ2tgNzlMNa/gP7G4K2WltzYEPBk861waJk=;
-        b=DLIB/ngKVnhp6NebE57gJvDoLL+kQ2dm1Ny/qweRLs7J4EtLOj8hNkQJbtfYfh/YWp
-         aX2tBe8DDvWkltsyYCi973LMrwuJySCf7e8GOZUgJPkimU7GqMIQFQGUPwRDC/F3MlDS
-         g6PWt36s+iajnm/3hGJNsNghL3YXbmDQi1yWKfFz9yVa+t6ywWInc2BOSgNVSXIl+pyu
-         1a+I+1/iXdu4x1G4lTHxxafoTOXziU3YhrLhgMJIRC/9oiZD6WaovLW0/MquOD6Cd0qw
-         2eCOmXteDUD+NyV0h60+QQ0Xt+ZYF8OtJH6xmV4I3EQBwZUU9lzp01/CuzpcwYSjeif9
-         TgZg==
-X-Gm-Message-State: AOAM532oopW3KsqEfJMCqDk7SBSbvBtqvMFFbBlfR2ZQ9DeBu2hlrRXT
-        r+rBfBf/oDYTvgxkTiFqivcWww==
-X-Google-Smtp-Source: ABdhPJzcynmtRN64W8T6iFzfVhW8EJA/FfnkdIzyMTQMViP+DIpTp5jzwa4IQF0SoXBc66IlchtItg==
-X-Received: by 2002:a2e:22c6:: with SMTP id i189mr183085lji.346.1616428713695;
-        Mon, 22 Mar 2021 08:58:33 -0700 (PDT)
-Received: from wkz-x280 (static-193-12-47-89.cust.tele2.se. [193.12.47.89])
-        by smtp.gmail.com with ESMTPSA id t142sm1597443lff.255.2021.03.22.08.58.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Mar 2021 08:58:33 -0700 (PDT)
-From:   Tobias Waldekranz <tobias@waldekranz.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=TxgbwfvEeZkYrurUbnEsv0ASlZPTTYngpuV8wfALc4E=;
+        b=nFl919tUgSUfaxIEz3Vglh7zRXYFgR3R6yP5EHj+0sFZF7DQuWLX0g/SBX8gZ/PjHi
+         H6qqm5P76o/47MmWIm1PxBe6uNK7YvNP20v4sBRsA5bmlj5Gn9idfK4BIip6lrYJxkwa
+         qR2IBi2xldUqyAQ7ax+URLUhOBHkho05VaYihxmV8E575pDtunBVvKExe/uFjW23L5w7
+         M93cadw+CvZjfeiLazmQNIRfSgm12/T1OPSbYMPz9bAY4sPCncCdRlE5WTSWPg7fxGKp
+         1MNQiLe5PqV4NODD0WyXBLK4om0fRpFqRSvw3aZhnXr4ZUrZEvrh7RKlNsa7UtE902SA
+         13Bg==
+X-Gm-Message-State: AOAM531sM8vX8R/iI1YzUBjOayZkrnLPe6QrnC52dLsF2IYd5+xTIuDj
+        c9eI2wIbZnI06n05B2h/Khk=
+X-Google-Smtp-Source: ABdhPJxxqffz5n4czoiK7aqYkClImLDnROA9GCY8UTQlt9OEAEiaLgjXTLmAGDdx8HTCtvPd7/qfXA==
+X-Received: by 2002:a62:83c6:0:b029:21b:b0e5:4560 with SMTP id h189-20020a6283c60000b029021bb0e54560mr474188pfe.69.1616428933847;
+        Mon, 22 Mar 2021 09:02:13 -0700 (PDT)
+Received: from [10.230.29.202] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id i14sm14646584pjh.17.2021.03.22.09.02.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Mar 2021 09:02:13 -0700 (PDT)
+Subject: Re: [PATCH v3 net-next 07/12] net: dsa: sync ageing time when joining
+ the bridge
 To:     Vladimir Oltean <olteanv@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>,
         "David S. Miller" <davem@davemloft.net>
 Cc:     Andrew Lunn <andrew@lunn.ch>,
         Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        Tobias Waldekranz <tobias@waldekranz.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         Roopa Prabhu <roopa@nvidia.com>,
         Nikolay Aleksandrov <nikolay@nvidia.com>,
         Jiri Pirko <jiri@resnulli.us>,
         Ido Schimmel <idosch@idosch.org>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Ivan Vecera <ivecera@redhat.com>, linux-omap@vger.kernel.org,
+        UNGLinuxDriver@microchip.com, Ivan Vecera <ivecera@redhat.com>,
+        linux-omap@vger.kernel.org,
         Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [RFC PATCH v2 net-next 15/16] net: dsa: return -EOPNOTSUPP when driver does not implement .port_lag_join
-In-Reply-To: <20210318231829.3892920-16-olteanv@gmail.com>
-References: <20210318231829.3892920-1-olteanv@gmail.com> <20210318231829.3892920-16-olteanv@gmail.com>
-Date:   Mon, 22 Mar 2021 16:58:32 +0100
-Message-ID: <87tup3mb87.fsf@waldekranz.com>
+References: <20210320223448.2452869-1-olteanv@gmail.com>
+ <20210320223448.2452869-8-olteanv@gmail.com>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <4c481471-debb-f2ce-8368-ee0241efc53f@gmail.com>
+Date:   Mon, 22 Mar 2021 09:02:09 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20210320223448.2452869-8-olteanv@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Mar 19, 2021 at 01:18, Vladimir Oltean <olteanv@gmail.com> wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
->
-> The DSA core has a layered structure, and even though we end up
-> returning 0 (success) to user space when setting a bonding/team upper
-> that can't be offloaded, some parts of the framework actually need to
-> know that we couldn't offload that.
->
-> For example, if dsa_switch_lag_join returns 0 as it currently does,
-> dsa_port_lag_join has no way to tell a successful offload from a
-> software fallback, and it will call dsa_port_bridge_join afterwards.
-> Then we'll think we're offloading the bridge master of the LAG, when in
-> fact we're not even offloading the LAG. In turn, this will make us set
-> skb->offload_fwd_mark = true, which is incorrect and the bridge doesn't
-> like it.
->
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> ---
 
-Reviewed-by: Tobias Waldekranz <tobias@waldekranz.com>
+
+On 3/20/2021 3:34 PM, Vladimir Oltean wrote:
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> 
+> The SWITCHDEV_ATTR_ID_BRIDGE_AGEING_TIME attribute is only emitted from:
+> 
+> sysfs/ioctl/netlink
+> -> br_set_ageing_time
+>    -> __set_ageing_time
+> 
+> therefore not at bridge port creation time, so:
+> (a) drivers had to hardcode the initial value for the address ageing time,
+>     because they didn't get any notification
+> (b) that hardcoded value can be out of sync, if the user changes the
+>     ageing time before enslaving the port to the bridge
+> 
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian
