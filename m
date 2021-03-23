@@ -2,102 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30F10346B8D
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Mar 2021 23:01:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57E92346D59
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Mar 2021 23:40:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233710AbhCWWAZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Mar 2021 18:00:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35292 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233752AbhCWWAK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Mar 2021 18:00:10 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 52EFF619D1;
-        Tue, 23 Mar 2021 22:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616536810;
-        bh=UqdmPjzkBMkGpEoz/xGIJUyvpKm2m45avXdl9Jp2vSk=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=mlwSNPAUJTFuPsY7PValXn+yvPkCN+0HkTqdOan4G6j/twKRFiGdf5GCSzc/u+wHG
-         iaZtKMazQPYDLzYtCRbVAWxhTkSMb4GoMzQEAJVXkro1knq6FYIH0uIA9fGrebNQBr
-         rMd0/p43xIAx2Lb65SisDaP/c81+eeb5YyUzuU97ZVYmkBi2n60qei7bAkqvCgHvEr
-         Nf9PkyhXkQZOSYnW3Td3NHwsYKwojfw4gu3EpDk/uo4PHh1SvDg3eS89ZVDxpyjuns
-         773or6irkjcEgtXyfleCBOhbVqVmrwYILVwdTEqpocghstUUqk69Wa9Y3MpJatzD29
-         ixEZEyAgjaDvw==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 429CB60A0E;
-        Tue, 23 Mar 2021 22:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S234007AbhCWWj2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Mar 2021 18:39:28 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:44578 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233738AbhCWWi4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Mar 2021 18:38:56 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 12NMce1b129789;
+        Tue, 23 Mar 2021 17:38:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1616539120;
+        bh=TvscpToZMQACxUA/dOzxJjIy1byQa47pq+p1H55TNi8=;
+        h=From:To:CC:Subject:Date;
+        b=Wc8eJbE1OLP2lGt/6l+ILJAaz44jaqQfI9kBhbGAgPBVIjbOJ/DWLu3ABUGxLZk4D
+         EC7WIO7WfY1eC/j7DOx+xsw61lR15QrBSTN3zYxYVhqfB0T3wv3ufAlDTKp1PC4GAI
+         7DGHdeIVwZTTg2dSUG8w71UEYjOEk1On/0KD+qf8=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 12NMceEU034124
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 23 Mar 2021 17:38:40 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 23
+ Mar 2021 17:38:40 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Tue, 23 Mar 2021 17:38:40 -0500
+Received: from lelv0597.itg.ti.com (lelv0597.itg.ti.com [10.181.64.32])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 12NMcewV058842;
+        Tue, 23 Mar 2021 17:38:40 -0500
+Received: from localhost ([10.250.221.195])
+        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 12NMcdSS102209;
+        Tue, 23 Mar 2021 17:38:39 -0500
+From:   Suman Anna <s-anna@ti.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+CC:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 0/3] PRU firmware event/interrupt mapping fixes
+Date:   Tue, 23 Mar 2021 17:38:36 -0500
+Message-ID: <20210323223839.17464-1-s-anna@ti.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v4 net-next 00/11] Better support for sandwiched LAGs with
- bridge and DSA
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <161653681026.23298.16920654325980262719.git-patchwork-notify@kernel.org>
-Date:   Tue, 23 Mar 2021 22:00:10 +0000
-References: <20210322235152.268695-1-olteanv@gmail.com>
-In-Reply-To: <20210322235152.268695-1-olteanv@gmail.com>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     kuba@kernel.org, davem@davemloft.net, andrew@lunn.ch,
-        vivien.didelot@gmail.com, f.fainelli@gmail.com,
-        tobias@waldekranz.com, claudiu.manoil@nxp.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        roopa@nvidia.com, nikolay@nvidia.com, jiri@resnulli.us,
-        idosch@idosch.org, alexandre.belloni@bootlin.com,
-        UNGLinuxDriver@microchip.com, ivecera@redhat.com,
-        linux-omap@vger.kernel.org, vladimir.oltean@nxp.com
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
+Hi,
 
-This series was applied to netdev/net-next.git (refs/heads/master):
+The following series includes fixes for various different issues
+associated with the PRU firmware event/interrupt mapping configuration
+logic added in the same commit c75c9fdac66e ("remoteproc: pru: Add
+support for PRU specific interrupt configuration"). The fixes are
+agnostic of SoC family.
 
-On Tue, 23 Mar 2021 01:51:41 +0200 you wrote:
-> From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> 
-> Changes in v4:
-> - Added missing EXPORT_SYMBOL_GPL
-> - Using READ_ONCE(fdb->dst)
-> - Split patches into (a) adding the bridge helpers (b) making DSA use them
-> - br_mdb_replay went back to the v1 approach where it allocated memory
->   in atomic context
-> - Created a br_switchdev_mdb_populate which reduces some of the code
->   duplication
-> - Fixed the error message in dsa_port_clear_brport_flags
-> - Replaced "dsa_port_vlan_filtering(dp, br, extack)" with
->   "dsa_port_vlan_filtering(dp, br_vlan_enabled(br), extack)" (duh)
-> - Added review tags (sorry if I missed any)
-> 
-> [...]
+Following is the summary of issues and fixes:
+ - Patch #1 fixes the interrupt node finding logic to always use the
+   inherent sibling relationship between a PRU/RTU/Tx_PRU node and its
+   corresponding PRUSS INTC node. This fixes the firmware event mappings
+   for cases when the PRU nodes do not have an 'interrupt-parent' property
+   (this is the norm, the property is neither required nor added in the DT
+   nodes normally).
+ - Patch #2 fixes a minor issue with returning a success value to the
+   caller on a fw event mapping failure.
+ - Patch #3 fixes a kernel crash due to switching of firmwares between
+   consecutive runs, the first one with events and the second one without
+   events. There are no issues when the same firmwares are run or if they
+   are run in reverse order.
 
-Here is the summary with links:
-  - [v4,net-next,01/11] net: bridge: add helper for retrieving the current bridge port STP state
-    https://git.kernel.org/netdev/net-next/c/c0e715bbd50e
-  - [v4,net-next,02/11] net: bridge: add helper to retrieve the current ageing time
-    https://git.kernel.org/netdev/net-next/c/f1d42ea10056
-  - [v4,net-next,03/11] net: bridge: add helper to replay port and host-joined mdb entries
-    https://git.kernel.org/netdev/net-next/c/4f2673b3a2b6
-  - [v4,net-next,04/11] net: bridge: add helper to replay port and local fdb entries
-    https://git.kernel.org/netdev/net-next/c/04846f903b53
-  - [v4,net-next,05/11] net: bridge: add helper to replay VLANs installed on port
-    https://git.kernel.org/netdev/net-next/c/22f67cdfae6a
-  - [v4,net-next,06/11] net: dsa: call dsa_port_bridge_join when joining a LAG that is already in a bridge
-    https://git.kernel.org/netdev/net-next/c/185c9a760a61
-  - [v4,net-next,07/11] net: dsa: pass extack to dsa_port_{bridge,lag}_join
-    https://git.kernel.org/netdev/net-next/c/2afc526ab342
-  - [v4,net-next,08/11] net: dsa: inherit the actual bridge port flags at join time
-    https://git.kernel.org/netdev/net-next/c/5961d6a12c13
-  - [v4,net-next,09/11] net: dsa: sync up switchdev objects and port attributes when joining the bridge
-    https://git.kernel.org/netdev/net-next/c/010e269f91be
-  - [v4,net-next,10/11] net: ocelot: call ocelot_netdevice_bridge_join when joining a bridged LAG
-    https://git.kernel.org/netdev/net-next/c/81ef35e7619a
-  - [v4,net-next,11/11] net: ocelot: replay switchdev events when joining bridge
-    https://git.kernel.org/netdev/net-next/c/e4bd44e89dcf
+Patches should apply cleanly on top of the current rproc-fixes branch
+commit 9afeefcf06fc ("remoteproc: pru: Fix firmware loading crashes on K3 SoCs")
 
-You are awesome, thank you!
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+regards
+Suman
 
+Suman Anna (3):
+  remoteproc: pru: Fixup interrupt-parent logic for fw events
+  remoteproc: pru: Fix wrong success return value for fw events
+  remoteproc: pru: Fix and cleanup firmware interrupt mapping logic
+
+ drivers/remoteproc/pru_rproc.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
+
+-- 
+2.30.1
 
