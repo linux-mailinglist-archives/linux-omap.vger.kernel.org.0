@@ -2,44 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A93E1345C88
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Mar 2021 12:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CFBA345D89
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Mar 2021 13:01:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230417AbhCWLNK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Mar 2021 07:13:10 -0400
-Received: from mail-eopbgr680065.outbound.protection.outlook.com ([40.107.68.65]:36864
-        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
+        id S230011AbhCWMA1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Mar 2021 08:00:27 -0400
+Received: from mail-dm6nam10on2072.outbound.protection.outlook.com ([40.107.93.72]:44992
+        "EHLO NAM10-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230406AbhCWLMr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Mar 2021 07:12:47 -0400
+        id S229866AbhCWMAU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 23 Mar 2021 08:00:20 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lmIlQtGyrHRWSeYPG8xrEhdxrqVeegxwuweufKSSBTcRGmg/hxwqwLTJUzU9q6eQJah6vPQ++zF4ReStlpUkPkDLTN5bpVL74Kf7sUE/LXjiCEE5SX9J0xPIrp5vSedTLxMQnUfQk53w7cC2Ke3KbnQUJeQvf12ei9QIcEjvWSYbiZSxDgbu8GQuu7AaOnZWAxIdz869APVu22cSyZ3pzK8/gvoodYuDr5Z/O4pnCSI7HB7kA9pSZ6GfJ4yEpBVxFuQRicIreKuPsWALNiWKqK8ODBt9lu+fV2TGAR30dlhxfsfgEP2uN3S9xjos255qoF3PHEWNHiytGFzC7KdiPg==
+ b=OJ4Zi8sHGFyLtSA5pJ4bs891TixAlPlWLmMIC5WuCIUT9pvCIu67pODPFhm5K0ZevF1fwMHtUqUKxymxlAiznHCu2CC2PFvC2HjvNaj0tb+T277ZHgpP70YZbEOO0KLSb+KkDkteNOPvKonTAGuzIruRyQKaL6lHBXV6Fzq9EEzuJicSFA7Zpn7LykRc8LR7tyChPrNzPIO6swUbOZLkdMuFVx0gkpkrIgvbNIOug07nm4cJoDZxC9gfxenWRlafNnccuj9N1jKLCKCSrFYCGZR9+JWJz5DxV0IDQ6Mgp1PSUK6WV7yPwWDfSLBHprNQprqiPfBhKrg4ds/kJcC0WQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4rbAjwI0goBbosAjM1w8woMAocgKIMpJchcv3Pg8OFc=;
- b=Q0cKfZYZRKnwvODvOaIGoPd4HCUT1lbl+6QHCOO0uebdvuKzoFJZvIJ1plEtFMEWQugX0nxh27E+xatUZto9fGqC/wFpiKgEkkNGu2S7UyyvFV/G2FllceajoMOXFglA2nmsTGVOaM8aOItALpthDQrIbeiqhMcuhAzORIoqsnmHMkbBGyn418LYw7QVCuoRapyM9xlrrDcn1ugHORYIkUBUGaGGTVKZqf8BE/mCBUwMuw3ms4XBLGieOloH1amkvAJmf9wl+QxhBog1UrFqgHQ3EWoG0c9mJJMe3T+chgC/ydCJWb9eVKoBYvCFbAXXCW0/xvuIlMX6GU2igTfkVg==
+ bh=+tpJ7+qOIYXVZHXzyvfJ2PFw3q8kSsvWHvidtOhqXT0=;
+ b=gnf1ndEpksJi7cjjb8mcW0yHmuh1Oo3KI06hAYly/rIdSSYAUP6pu6h0r7fWNE4pqUHpdwiwfsxjYxAAn6fj3wmCf3x7FQioWuhZrLXpqCN5ZGcpA9IDS8gxGR6panLmU6rRuuOS4S4Y8sQN//zfvo3kVF+/ilLtR6x+6JJ1gIB3H3BWLrfq03tf9IfcPV8XRP0f/7DLmShfdIsTQsPlCFBVh+WqypjSt/GGcVezxpFSeKp/vWkCYunw88OLOSQaKwIZd3tpZohrYPHYyTxC0DuPz0kKQErDb7yDS4L1ybRD/JkkJXUHBspdAx5LqpkyXvGLCAv2XokzPx8AsSW64g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4rbAjwI0goBbosAjM1w8woMAocgKIMpJchcv3Pg8OFc=;
- b=HW7EAANUneqaEiTJyjMxf6wQcmeRVtevf+RWUaJV4Rm0TbhUozpwGqrDZ30ydZP5JrxkbswagOk7SOR9gDc7n+0V3nVKRS3MQ+JyMaPn5ILyl44jfq/rlbhh3mae4x0Z9RYbGYdwzdjRRfKG4d56+MNx56gSCmiWqHtJ/+j9aH0LNx3f9AOxJaDhXFuexiUnlW7uwRncUsoK3XrpdCCt3s0XyNbuU85YugE1zazJeNOWXBg9zKslHL572SKy+n/k9vjIkm3ZO6WH8Wy+w2Sp04HsEFVl3C7UFUrlFB9CZ/ZEECcq0Gjc3ynmGfKoolnqF1lL1g4uvYgmchhootX47g==
+ bh=+tpJ7+qOIYXVZHXzyvfJ2PFw3q8kSsvWHvidtOhqXT0=;
+ b=ORNWxf/VCvrTBNkoxDYkuzkhI+Yj+95wztYwA87tfpiwrMiodtvfs2T6ja2XJ+0o+qaq/KIoHFzlCuVOOIqh53CmzArZLm7u22aWy5WzbeXE9F7iVBMY/+h9Wiz5cbgFdKm27ZlQmpKztdfHw6drhWrlwT8edUTRRvYUx3bRGyU9Ky8u7/hzkE/fBwK0vnbAO0V6RTSkXrlkwJyw6K//FNvKpr9SqNaEMlMBIUChY5xUB/zHlDVrlyC2zEn8Ss7Yh0SCLHNxvUC7YuQhRMD2zMVls/DL82Gr0+QUR+IurWbJqifcIViPmZZXP6YlAzPup404uI4gH0ie4lp2+pvYsg==
 Authentication-Results: nxp.com; dkim=none (message not signed)
  header.d=none;nxp.com; dmarc=none action=none header.from=nvidia.com;
 Received: from DM6PR12MB4403.namprd12.prod.outlook.com (2603:10b6:5:2ab::24)
- by DM6PR12MB4548.namprd12.prod.outlook.com (2603:10b6:5:2a1::11) with
+ by DM5PR1201MB0155.namprd12.prod.outlook.com (2603:10b6:4:55::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.25; Tue, 23 Mar
- 2021 11:12:44 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.24; Tue, 23 Mar
+ 2021 12:00:19 +0000
 Received: from DM6PR12MB4403.namprd12.prod.outlook.com
  ([fe80::5c42:cbe:fe28:3a9b]) by DM6PR12MB4403.namprd12.prod.outlook.com
  ([fe80::5c42:cbe:fe28:3a9b%5]) with mapi id 15.20.3955.027; Tue, 23 Mar 2021
- 11:12:44 +0000
-Subject: Re: [PATCH v4 net-next 04/11] net: bridge: add helper to replay port
- and local fdb entries
+ 12:00:19 +0000
+Subject: Re: [PATCH v4 net-next 03/11] net: bridge: add helper to replay port
+ and host-joined mdb entries
 To:     Vladimir Oltean <olteanv@gmail.com>,
         Jakub Kicinski <kuba@kernel.org>,
         "David S. Miller" <davem@davemloft.net>
@@ -56,74 +56,45 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         linux-omap@vger.kernel.org,
         Vladimir Oltean <vladimir.oltean@nxp.com>
 References: <20210322235152.268695-1-olteanv@gmail.com>
- <20210322235152.268695-5-olteanv@gmail.com>
+ <20210322235152.268695-4-olteanv@gmail.com>
 From:   Nikolay Aleksandrov <nikolay@nvidia.com>
-Message-ID: <f9076daf-7479-8c49-5e7c-ea20d86214c4@nvidia.com>
-Date:   Tue, 23 Mar 2021 13:12:33 +0200
+Message-ID: <e73b5c1e-2d8a-2f86-32e2-85e93f774d0c@nvidia.com>
+Date:   Tue, 23 Mar 2021 14:00:07 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
-In-Reply-To: <20210322235152.268695-5-olteanv@gmail.com>
+In-Reply-To: <20210322235152.268695-4-olteanv@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [213.179.129.39]
-X-ClientProxiedBy: ZRAP278CA0014.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:10::24) To DM6PR12MB4403.namprd12.prod.outlook.com
+X-ClientProxiedBy: ZR0P278CA0130.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:40::9) To DM6PR12MB4403.namprd12.prod.outlook.com
  (2603:10b6:5:2ab::24)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.21.240.137] (213.179.129.39) by ZRAP278CA0014.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:10::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18 via Frontend Transport; Tue, 23 Mar 2021 11:12:39 +0000
+Received: from [10.21.240.137] (213.179.129.39) by ZR0P278CA0130.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:40::9) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18 via Frontend Transport; Tue, 23 Mar 2021 12:00:14 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 86045ec6-e134-4540-bb06-08d8edec9515
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4548:
+X-MS-Office365-Filtering-Correlation-Id: 9050d82c-d536-4492-f274-08d8edf33a8f
+X-MS-TrafficTypeDiagnostic: DM5PR1201MB0155:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM6PR12MB45481AFDE64AA471581B1AD5DF649@DM6PR12MB4548.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-Microsoft-Antispam-PRVS: <DM5PR1201MB0155182BA82F72A805561E95DF649@DM5PR1201MB0155.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rGq018lnJ+Os9lQvyuGW/6zuxx3nox5/DGRz20oVXiGq5iJ0pJ/9K8HRg+QprfzawTS9UUSCp06vjk9PTNDEk8R2ne+Z/Ln4s3wSQr2269G4DD2QMZb2NsKj2tIQYRcBhT2JyoI1sDeBwHQ8Jxe948qH8YqH7lxTe1+SI6gB5Io1KkX9THijJnpBrEbeDjpOEEbef2f2sjXfcTM6XPuK8gRXpqdPLS9UppdsnbppqpasuzADRAv06Gz5HnNAfTPYjAU/5kcb/s9QvCHEqUPA4Mrjm1ADeOwBO0+LFePKbJTlhtmp/P7AfJYmzwtVc5AZwMz7hggevazESWufWmIJnJLudNH8b2+/ZNBpwWx7GYsIPBqQj85iMquiNX0YVE3kfRr1iyYxIVHGGVVfbYtaR15mWC3EGZ2zS4IcOOIx/ZsdgyZdYzJqvdBo4gBtT3ha1Y9ZUybgURt02JE5nmbQTxP55drlgH5qi2YS9NbWEEXpaEn8zOr1wb2kbhrNBSx8GzS8DiecTw8RoYY7CYW2rEaJTb6NTKAWEDX+czhjKrziWBTmzc8TyoRsioNC2PUfl5qD7vmoDfVPZAyv+zMbm13/5CglRpiT2CbhSk2KoPdXDyFapI7ds4+ya+6/hIPdmgAJ5Uxa/bhCp5NKVFvpyYDpzVq3+fPr2IpCt1aKDPTL4oGUrSQQ2JLUfBFYny1kKe6qd4FIxU6Kn20xsfJya7z9g3Clt77Yp8LoYwMdOqR/EumFQ/baMsF3y8bDLCUfedPH1Nd4q5kW099qEGkaPmXGVVLpTlibEljkWKFwoNE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4403.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(366004)(396003)(346002)(39860400002)(136003)(36756003)(186003)(8936002)(16526019)(4326008)(7416002)(26005)(66946007)(31686004)(31696002)(53546011)(86362001)(6666004)(478600001)(966005)(8676002)(5660300002)(956004)(83380400001)(38100700001)(54906003)(16576012)(110136005)(66556008)(66476007)(2616005)(6486002)(316002)(2906002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?WmRJTEdWb0Q3NzFmeWRONzI2S1gyYlFvb3lIU0ZZSE5Ra3V4UzlXalJLVGt0?=
- =?utf-8?B?M20yZnU0TWtpazlrSlJ3Qjd0RGZ2cjN0ZmNaWFg2TWJYcEZDREN0d0lPZ2JN?=
- =?utf-8?B?bkNYZ3h4cG9LK015T1NZS1IvT1F2azBCTU16VURyZE1Yc0hvc1JvT2dzMUdM?=
- =?utf-8?B?WmFGWlZrVGVicG1CejhnU1NOT05jK0RMSWw1NitXT2tWNVFrNXQxNSswRzZa?=
- =?utf-8?B?M3BDamlxeThNdStVSVhvaU9Ma0JnVEFVcEpKenFKN1dsbWNZdTNkNmhzV09p?=
- =?utf-8?B?eEN0bnhzYlkrcnJxWmk4d1hGU0FNOHZiRXhXdE1SaUtweUV1QmtDWVJKeE9u?=
- =?utf-8?B?T3hEczkxWTEwUXFEV0RGMXFJOGtSbmMxRHlSeGRXM282MWZLYTkwWUVmbHY4?=
- =?utf-8?B?b3NRNDBDL09UaVc3STRhL3VIZkQ4MUF2OGpha1hMZzJpcndoQ3hYWldxbTU3?=
- =?utf-8?B?Z2EzbllWMnVUN2VyUHpMZ1dDM2thOGZSeEMwemJ2WHAzMER3UUlqZE1laU9p?=
- =?utf-8?B?bnpxdGRZTENhMFJPMFBocmhtQjZvSURXVHdVTlk2VnpXZEpDbmxxQzNKa3Bw?=
- =?utf-8?B?b0t5blA5eWVoWTBpQjZjRnUxYjBCSHMrdDFRZHZwTkFvRTEydzhYam16OFlC?=
- =?utf-8?B?RWNQVUVrd0RLYVNqS1BpWTNRNTdnS2tLSDFVUVRLRHlsSFhFbTJRZ3FZak5I?=
- =?utf-8?B?OERoR0VUbVh1eFNIU0hZMVlWenFqWHpzcnA5ZWtpTVVJdmNPRktVMHIveE41?=
- =?utf-8?B?QVNobFlZTU10c2s0U2dNaG1vZjdkVmRkK0ExQ1NBSHVQK1lxcVVFS2wrdkZl?=
- =?utf-8?B?Tzh2VjZaKzc0bHVFTU9jcUdhQzBUZWI3WmpIaXZNcmZYU0ZadWVLVlo0dUxP?=
- =?utf-8?B?Rk5VaUtaZlVXN1FkYkc1MENYRXRpTjBBbEsySEdNbldmM1J6dGJvajZaeUQw?=
- =?utf-8?B?cHVDNGpzM29oRy85bjFjdC9JZGN2dUVCek9JcEIzRUhVUk1HeWVJNlFVS0xJ?=
- =?utf-8?B?ZFpDY09EZHRQUStjTzJvN25ZZWdjZzR4Q1Zwd1lGMjZWNWRzLzBiRGVuYS9n?=
- =?utf-8?B?bENzU3o4dG43VFpyamZrTEFObXAwYzBhcWpoS2RJbnRnZmduV0d1eCs1UmdZ?=
- =?utf-8?B?SzM3a20xWUdzZkFKT21Mbnc2REpLN0Nyd2hrZTdrZHdCUU1sekNOd0d5UXVi?=
- =?utf-8?B?K3d0VkhTOVo1eDQvZDBXRnM2TWVlSnA2Z1FLUU52TWs5UDVKclRPdnNZTjNN?=
- =?utf-8?B?Ny9ob3UyWW5tQ3hDbmltN3RmUXVDT3lpRUt0ZC9LRllyOUNscVJTWjhVTnpr?=
- =?utf-8?B?Z1Y0S0lDclcvYzRJaUpHdElXOUwxaW1jVVJFZ3ROWjIxajEvZXNXV2tSZDZ6?=
- =?utf-8?B?Snk3ZDhsUWhiTlR1dm5TOWxYRHVNaUFIQ0FqMzJCdEtNNWtjemg2bGJ6ek5z?=
- =?utf-8?B?TnFzbVpVZ0hnbWZJSmVxRzd6d0Z0M1dtbEJJUHE1Z3p1S29VRVY5dWJET21o?=
- =?utf-8?B?THpyTWpHRXZkb2xOT093NFR2bS9sRy9ueFpxaE5BL0VUMjd4MXV1VGVySjYr?=
- =?utf-8?B?ZDJaSUxUcnF3TUdmNm95ODZDUDYyMHFWbjVUajUvUVlFWUdrMitkSkE1bnQy?=
- =?utf-8?B?Yk5IYkxNSWZza2dqVXhJbzdBUGJKUE9VcndPbTVVM3pwNGNkZWs2ZXZGRUwr?=
- =?utf-8?B?L2U4NWp6TGM3VkJWZVZHVUF1YVhXU1MzMkxIZDR4ci9rcjNGcysrT1Q2RWRk?=
- =?utf-8?Q?DpqhRe5PlvcGjVS1EPmJ9kryd1a7RfY8yCaKhuf?=
+X-Microsoft-Antispam-Message-Info: nqjpis1RBwtfhJ2D7N9nmhx4gpOUYxThk8HV3mRdhaHvd/Npm+znpn0pTYoHf07riwPu0Mdzi3R6fM+hSZbLLQF+0bCGZHTeG6QX4SW5p2aIcPTHmVheIZ8yAzuHP1R0A3gwc1ZkhYeCYXfKnTRv3qHRImVzmjodcBBW57MQ9cVC8d7B51r50pSS9BXbYxdivBnDGQOSkY76yDxWod8Yl/ASgZtlJ5NKkC1khGhNZEH9kmUmSUanDAw2xNZ9XLgSyJQl4v/+E7AjkOvEGYXXH17QOlbwbJ5zvTFlcb2TtGK1iXHa0AWl98UKVPqlkk46pkwJX1IKN3wmgVDA9+MUgpjdCumOXh9bcE9C2SSvysRVPOefPtI0SmIlkJ1+/4VEKYu50rz5c3BF/a/ymzBNBm/x1dwIrPzfewiYUxB8xoD51JWtqxp0Bu1HkmCecwwKJLyea/yxqWOU62zSVvnaICZK7wq6ZAehJfNdK1eIRmpEqgn/L00Iwbxv8WXC1H9spdmT6rrSNh9gvV80Ys1VG7al5cSek4KNz3Nu31L07Y221bSh38hCrXyQXfDgzE2UiPM9R/G+XsFN0t3C/Rdfjnb+qJvKgxq84jS0Y5Mu09PtqfH7OHPPsl5r4KHeGQ2Nvmou2Jpafp9n0wzAxfClZG/ulIhwbmYyFKn/UihzAfOY//p9+xp2hwtMk4in+y05dyLrbUBw6iQiu53WsFTfV7AzrDWK7yM7rMzOGYm9ZK0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4403.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(396003)(136003)(346002)(376002)(366004)(478600001)(66556008)(86362001)(66476007)(26005)(38100700001)(2906002)(7416002)(16576012)(54906003)(110136005)(4326008)(186003)(36756003)(316002)(31696002)(16526019)(6486002)(83380400001)(8676002)(53546011)(956004)(6666004)(66574015)(8936002)(66946007)(2616005)(5660300002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: Ak8x6D1XtHWBmevbc/qtBejHbjX3NYXeqWBaGeSqmZTzQ5VPYwrcPRxjswlrE/K/bxvRwvLRATpLAHS5kr7CJ6ULmqTTn0mzqhEu0DRjfL/Mt+RSBcTtZ43obT0x/9OZNiB5C0tG20C1lmmFjcdVK5VpF1yTIlyaG738lZ1tMJh6udUSRGh3rSDK6+JnOghepwuo1mZKlwhF2VsXFv1e9i1bY9ZtVqYl0ilhCvnRLSPLIh5jwvJBM6NB/WdImzMLl/o7Wn7wXreiDtSJgygyk04scVyF3z6D/wK7dbBI9UeN2CSspo3XKkTY1UchTCmcFYb3s+jSem0Pa1I7guN2c352d2Y7EJaHqfvp5Ytq66caNA7UYNio0tTe1yCZMMBTRXIGZuVfvGgHffzHB0GuK1/tCOAGJfnyVWuFeJGB2BdveC05lT5ple035LBaVDnyPGuzkUfT5n+D72ps27EODupswk212481RVYUFJL9urPqNk09St3LYSYuH8qti6yIAMxUbyHsc/3jP13n9GEU2xsJ5XkgRAV9WKOBsYHUf2CFGVSTAUbYeFtngFXaHBL9GCcWdVI4Poc8WsHQ3il6eU5BDbrRob3m79ghW3v0ITVRaLcmYxgTXsWfGFyq7le+HfxE0o2AW9vMb1BuIm0JIYfivjO4pXEdJtN7sGt7P0b3tlYrnmhJg4iIRJlsgrEVSQzsserA9nQMCx0Vp3IvrzzqvAUlm9H/Og7FGOyc7POnEx+8EeJVJH13GNueJHxY
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86045ec6-e134-4540-bb06-08d8edec9515
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9050d82c-d536-4492-f274-08d8edf33a8f
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4403.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2021 11:12:44.3752
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2021 12:00:19.0364
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +oKGq+HuQe9og6L0bPvKz+9waFpcfm3pPa6Sk35Gyh+aPsBdHEJPNRstUImouBZag/DGUHJu1hNpQ+zGOcFChQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4548
+X-MS-Exchange-CrossTenant-UserPrincipalName: hzj6Vca1/1qZAXMvli6yvO+31FWfcAss7xED82XpKHTsBByF32UEHyjSphAN59iWnH9xVA8BMRj4Kv2JJfNvnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR1201MB0155
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -131,146 +102,304 @@ X-Mailing-List: linux-omap@vger.kernel.org
 On 23/03/2021 01:51, Vladimir Oltean wrote:
 > From: Vladimir Oltean <vladimir.oltean@nxp.com>
 > 
-> When a switchdev port starts offloading a LAG that is already in a
-> bridge and has an FDB entry pointing to it:
+> I have a system with DSA ports, and udhcpcd is configured to bring
+> interfaces up as soon as they are created.
 > 
-> ip link set bond0 master br0
-> bridge fdb add dev bond0 00:01:02:03:04:05 master static
-> ip link set swp0 master bond0
+> I create a bridge as follows:
 > 
-> the switchdev driver will have no idea that this FDB entry is there,
-> because it missed the switchdev event emitted at its creation.
+> ip link add br0 type bridge
 > 
-> Ido Schimmel pointed this out during a discussion about challenges with
-> switchdev offloading of stacked interfaces between the physical port and
-> the bridge, and recommended to just catch that condition and deny the
-> CHANGEUPPER event:
-> https://lore.kernel.org/netdev/20210210105949.GB287766@shredder.lan/
+> As soon as I create the bridge and udhcpcd brings it up, I also have
+> avahi which automatically starts sending IPv6 packets to advertise some
+> local services, and because of that, the br0 bridge joins the following
+> IPv6 groups due to the code path detailed below:
 > 
-> But in fact, we might need to deal with the hard thing anyway, which is
-> to replay all FDB addresses relevant to this port, because it isn't just
-> static FDB entries, but also local addresses (ones that are not
-> forwarded but terminated by the bridge). There, we can't just say 'oh
-> yeah, there was an upper already so I'm not joining that'.
+> 33:33:ff:6d:c1:9c vid 0
+> 33:33:00:00:00:6a vid 0
+> 33:33:00:00:00:fb vid 0
 > 
-> So, similar to the logic for replaying MDB entries, add a function that
-> must be called by individual switchdev drivers and replays local FDB
-> entries as well as ones pointing towards a bridge port. This time, we
-> use the atomic switchdev notifier block, since that's what FDB entries
-> expect for some reason.
+> br_dev_xmit
+> -> br_multicast_rcv
+>    -> br_ip6_multicast_add_group
+>       -> __br_multicast_add_group
+>          -> br_multicast_host_join
+>             -> br_mdb_notify
+> 
+> This is all fine, but inside br_mdb_notify we have br_mdb_switchdev_host
+> hooked up, and switchdev will attempt to offload the host joined groups
+> to an empty list of ports. Of course nobody offloads them.
+> 
+> Then when we add a port to br0:
+> 
+> ip link set swp0 master br0
+> 
+> the bridge doesn't replay the host-joined MDB entries from br_add_if,
+> and eventually the host joined addresses expire, and a switchdev
+> notification for deleting it is emitted, but surprise, the original
+> addition was already completely missed.
+> 
+> The strategy to address this problem is to replay the MDB entries (both
+> the port ones and the host joined ones) when the new port joins the
+> bridge, similar to what vxlan_fdb_replay does (in that case, its FDB can
+> be populated and only then attached to a bridge that you offload).
+> However there are 2 possibilities: the addresses can be 'pushed' by the
+> bridge into the port, or the port can 'pull' them from the bridge.
+> 
+> Considering that in the general case, the new port can be really late to
+> the party, and there may have been many other switchdev ports that
+> already received the initial notification, we would like to avoid
+> delivering duplicate events to them, since they might misbehave. And
+> currently, the bridge calls the entire switchdev notifier chain, whereas
+> for replaying it should just call the notifier block of the new guy.
+> But the bridge doesn't know what is the new guy's notifier block, it
+> just knows where the switchdev notifier chain is. So for simplification,
+> we make this a driver-initiated pull for now, and the notifier block is
+> passed as an argument.
+> 
+> To emulate the calling context for mdb objects (deferred and put on the
+> blocking notifier chain), we must iterate under RCU protection through
+> the bridge's mdb entries, queue them, and only call them once we're out
+> of the RCU read-side critical section.
+> 
+> There was some opportunity for reuse between br_mdb_switchdev_host_port,
+> br_mdb_notify and the newly added br_mdb_queue_one in how the switchdev
+> mdb object is created, so a helper was created.
+> 
+> Suggested-by: Ido Schimmel <idosch@idosch.org>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> ---
+>  include/linux/if_bridge.h |   9 +++
+>  include/net/switchdev.h   |   1 +
+>  net/bridge/br_mdb.c       | 148 +++++++++++++++++++++++++++++++++-----
+>  3 files changed, 141 insertions(+), 17 deletions(-)
 > 
 
-I get the reason to have both bridge and bridge port devices (although the bridge
-is really unnecessary as it can be inferred from the port), but it looks kind of
-weird at first glance, I mean we get all of the port's fdbs and all of the bridge
-fdbs every time (dst == NULL). The code itself is correct and the alternative
-to take only 1 net_device and act based on its type would add another
-step to the process per-port which also doesn't sound good...
-There are a few minor const nits below too, again if there is another version
-please take care of them, for the patch:
+Absolutely the same comments here as for the fdb version.
+The code looks correct.
 
 Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>
 
-> Reported-by: Ido Schimmel <idosch@idosch.org>
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> ---
->  include/linux/if_bridge.h |  9 +++++++
->  net/bridge/br_fdb.c       | 50 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 59 insertions(+)
-> 
 > diff --git a/include/linux/if_bridge.h b/include/linux/if_bridge.h
-> index f6472969bb44..b564c4486a45 100644
+> index ebd16495459c..f6472969bb44 100644
 > --- a/include/linux/if_bridge.h
 > +++ b/include/linux/if_bridge.h
-> @@ -147,6 +147,8 @@ void br_fdb_clear_offload(const struct net_device *dev, u16 vid);
->  bool br_port_flag_is_set(const struct net_device *dev, unsigned long flag);
->  u8 br_port_get_stp_state(const struct net_device *dev);
->  clock_t br_get_ageing_time(struct net_device *br_dev);
-> +int br_fdb_replay(struct net_device *br_dev, struct net_device *dev,
-> +		  struct notifier_block *nb);
+> @@ -69,6 +69,8 @@ bool br_multicast_has_querier_anywhere(struct net_device *dev, int proto);
+>  bool br_multicast_has_querier_adjacent(struct net_device *dev, int proto);
+>  bool br_multicast_enabled(const struct net_device *dev);
+>  bool br_multicast_router(const struct net_device *dev);
+> +int br_mdb_replay(struct net_device *br_dev, struct net_device *dev,
+> +		  struct notifier_block *nb, struct netlink_ext_ack *extack);
 >  #else
->  static inline struct net_device *
->  br_fdb_find_port(const struct net_device *br_dev,
-> @@ -175,6 +177,13 @@ static inline clock_t br_get_ageing_time(struct net_device *br_dev)
+>  static inline int br_multicast_list_adjacent(struct net_device *dev,
+>  					     struct list_head *br_ip_list)
+> @@ -93,6 +95,13 @@ static inline bool br_multicast_router(const struct net_device *dev)
 >  {
->  	return 0;
+>  	return false;
 >  }
-> +
-> +static inline int br_fdb_replay(struct net_device *br_dev,
+> +static inline int br_mdb_replay(struct net_device *br_dev,
 > +				struct net_device *dev,
-> +				struct notifier_block *nb)
+> +				struct notifier_block *nb,
+> +				struct netlink_ext_ack *extack)
 > +{
 > +	return -EOPNOTSUPP;
 > +}
 >  #endif
 >  
->  #endif
-> diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-> index b7490237f3fc..698b79747d32 100644
-> --- a/net/bridge/br_fdb.c
-> +++ b/net/bridge/br_fdb.c
-> @@ -726,6 +726,56 @@ static inline size_t fdb_nlmsg_size(void)
->  		+ nla_total_size(sizeof(u8)); /* NFEA_ACTIVITY_NOTIFY */
+>  #if IS_ENABLED(CONFIG_BRIDGE) && IS_ENABLED(CONFIG_BRIDGE_VLAN_FILTERING)
+> diff --git a/include/net/switchdev.h b/include/net/switchdev.h
+> index b7fc7d0f54e2..8c3218177136 100644
+> --- a/include/net/switchdev.h
+> +++ b/include/net/switchdev.h
+> @@ -68,6 +68,7 @@ enum switchdev_obj_id {
+>  };
+>  
+>  struct switchdev_obj {
+> +	struct list_head list;
+>  	struct net_device *orig_dev;
+>  	enum switchdev_obj_id id;
+>  	u32 flags;
+> diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
+> index 8846c5bcd075..95fa4af0e8dd 100644
+> --- a/net/bridge/br_mdb.c
+> +++ b/net/bridge/br_mdb.c
+> @@ -506,6 +506,134 @@ static void br_mdb_complete(struct net_device *dev, int err, void *priv)
+>  	kfree(priv);
 >  }
 >  
-> +static int br_fdb_replay_one(struct notifier_block *nb,
-> +			     struct net_bridge_fdb_entry *fdb,
-> +			     struct net_device *dev)
+> +static void br_switchdev_mdb_populate(struct switchdev_obj_port_mdb *mdb,
+> +				      const struct net_bridge_mdb_entry *mp)
 > +{
-> +	struct switchdev_notifier_fdb_info item;
+> +	if (mp->addr.proto == htons(ETH_P_IP))
+> +		ip_eth_mc_map(mp->addr.dst.ip4, mdb->addr);
+> +#if IS_ENABLED(CONFIG_IPV6)
+> +	else if (mp->addr.proto == htons(ETH_P_IPV6))
+> +		ipv6_eth_mc_map(&mp->addr.dst.ip6, mdb->addr);
+> +#endif
+> +	else
+> +		ether_addr_copy(mdb->addr, mp->addr.dst.mac_addr);
+> +
+> +	mdb->vid = mp->addr.vid;
+> +}
+> +
+> +static int br_mdb_replay_one(struct notifier_block *nb, struct net_device *dev,
+> +			     struct switchdev_obj_port_mdb *mdb,
+> +			     struct netlink_ext_ack *extack)
+> +{
+> +	struct switchdev_notifier_port_obj_info obj_info = {
+> +		.info = {
+> +			.dev = dev,
+> +			.extack = extack,
+> +		},
+> +		.obj = &mdb->obj,
+> +	};
 > +	int err;
 > +
-> +	item.addr = fdb->key.addr.addr;
-> +	item.vid = fdb->key.vlan_id;
-> +	item.added_by_user = test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
-> +	item.offloaded = test_bit(BR_FDB_OFFLOADED, &fdb->flags);
-> +	item.info.dev = dev;
-> +
-> +	err = nb->notifier_call(nb, SWITCHDEV_FDB_ADD_TO_DEVICE, &item);
+> +	err = nb->notifier_call(nb, SWITCHDEV_PORT_OBJ_ADD, &obj_info);
 > +	return notifier_to_errno(err);
 > +}
 > +
-> +int br_fdb_replay(struct net_device *br_dev, struct net_device *dev,
-> +		  struct notifier_block *nb)
-
-The devices can be const
-
+> +static int br_mdb_queue_one(struct list_head *mdb_list,
+> +			    enum switchdev_obj_id id,
+> +			    const struct net_bridge_mdb_entry *mp,
+> +			    struct net_device *orig_dev)
 > +{
-> +	struct net_bridge_fdb_entry *fdb;
+> +	struct switchdev_obj_port_mdb *mdb;
+> +
+> +	mdb = kzalloc(sizeof(*mdb), GFP_ATOMIC);
+> +	if (!mdb)
+> +		return -ENOMEM;
+> +
+> +	mdb->obj.id = id;
+> +	mdb->obj.orig_dev = orig_dev;
+> +	br_switchdev_mdb_populate(mdb, mp);
+> +	list_add_tail(&mdb->obj.list, mdb_list);
+> +
+> +	return 0;
+> +}
+> +
+> +int br_mdb_replay(struct net_device *br_dev, struct net_device *dev,
+> +		  struct notifier_block *nb, struct netlink_ext_ack *extack)
+> +{
+> +	struct net_bridge_mdb_entry *mp;
+> +	struct switchdev_obj *obj, *tmp;
 > +	struct net_bridge *br;
+> +	LIST_HEAD(mdb_list);
 > +	int err = 0;
+> +
+> +	ASSERT_RTNL();
 > +
 > +	if (!netif_is_bridge_master(br_dev) || !netif_is_bridge_port(dev))
 > +		return -EINVAL;
 > +
 > +	br = netdev_priv(br_dev);
 > +
+> +	if (!br_opt_get(br, BROPT_MULTICAST_ENABLED))
+> +		return 0;
+> +
+> +	/* We cannot walk over br->mdb_list protected just by the rtnl_mutex,
+> +	 * because the write-side protection is br->multicast_lock. But we
+> +	 * need to emulate the [ blocking ] calling context of a regular
+> +	 * switchdev event, so since both br->multicast_lock and RCU read side
+> +	 * critical sections are atomic, we have no choice but to pick the RCU
+> +	 * read side lock, queue up all our events, leave the critical section
+> +	 * and notify switchdev from blocking context.
+> +	 */
 > +	rcu_read_lock();
 > +
-> +	hlist_for_each_entry_rcu(fdb, &br->fdb_list, fdb_node) {
-> +		struct net_bridge_port *dst = READ_ONCE(fdb->dst);
-
-const
-
-> +		struct net_device *dst_dev;
+> +	hlist_for_each_entry_rcu(mp, &br->mdb_list, mdb_node) {
+> +		struct net_bridge_port_group __rcu **pp;
+> +		struct net_bridge_port_group *p;
 > +
-> +		dst_dev = dst ? dst->dev : br->dev;
-> +		if (dst_dev != br_dev && dst_dev != dev)
-> +			continue;
+> +		if (mp->host_joined) {
+> +			err = br_mdb_queue_one(&mdb_list,
+> +					       SWITCHDEV_OBJ_ID_HOST_MDB,
+> +					       mp, br_dev);
+> +			if (err) {
+> +				rcu_read_unlock();
+> +				goto out_free_mdb;
+> +			}
+> +		}
 > +
-> +		err = br_fdb_replay_one(nb, fdb, dst_dev);
-> +		if (err)
-> +			break;
+> +		for (pp = &mp->ports; (p = rcu_dereference(*pp)) != NULL;
+> +		     pp = &p->next) {
+> +			if (p->key.port->dev != dev)
+> +				continue;
+> +
+> +			err = br_mdb_queue_one(&mdb_list,
+> +					       SWITCHDEV_OBJ_ID_PORT_MDB,
+> +					       mp, dev);
+> +			if (err) {
+> +				rcu_read_unlock();
+> +				goto out_free_mdb;
+> +			}
+> +		}
 > +	}
 > +
 > +	rcu_read_unlock();
 > +
+> +	list_for_each_entry(obj, &mdb_list, list) {
+> +		err = br_mdb_replay_one(nb, dev, SWITCHDEV_OBJ_PORT_MDB(obj),
+> +					extack);
+> +		if (err)
+> +			goto out_free_mdb;
+> +	}
+> +
+> +out_free_mdb:
+> +	list_for_each_entry_safe(obj, tmp, &mdb_list, list) {
+> +		list_del(&obj->list);
+> +		kfree(SWITCHDEV_OBJ_PORT_MDB(obj));
+> +	}
+> +
 > +	return err;
 > +}
-> +EXPORT_SYMBOL_GPL(br_fdb_replay);
+> +EXPORT_SYMBOL_GPL(br_mdb_replay);
 > +
->  static void fdb_notify(struct net_bridge *br,
->  		       const struct net_bridge_fdb_entry *fdb, int type,
->  		       bool swdev_notify)
+>  static void br_mdb_switchdev_host_port(struct net_device *dev,
+>  				       struct net_device *lower_dev,
+>  				       struct net_bridge_mdb_entry *mp,
+> @@ -515,18 +643,12 @@ static void br_mdb_switchdev_host_port(struct net_device *dev,
+>  		.obj = {
+>  			.id = SWITCHDEV_OBJ_ID_HOST_MDB,
+>  			.flags = SWITCHDEV_F_DEFER,
+> +			.orig_dev = dev,
+>  		},
+> -		.vid = mp->addr.vid,
+>  	};
+>  
+> -	if (mp->addr.proto == htons(ETH_P_IP))
+> -		ip_eth_mc_map(mp->addr.dst.ip4, mdb.addr);
+> -#if IS_ENABLED(CONFIG_IPV6)
+> -	else
+> -		ipv6_eth_mc_map(&mp->addr.dst.ip6, mdb.addr);
+> -#endif
+> +	br_switchdev_mdb_populate(&mdb, mp);
+>  
+> -	mdb.obj.orig_dev = dev;
+>  	switch (type) {
+>  	case RTM_NEWMDB:
+>  		switchdev_port_obj_add(lower_dev, &mdb.obj, NULL);
+> @@ -558,21 +680,13 @@ void br_mdb_notify(struct net_device *dev,
+>  			.id = SWITCHDEV_OBJ_ID_PORT_MDB,
+>  			.flags = SWITCHDEV_F_DEFER,
+>  		},
+> -		.vid = mp->addr.vid,
+>  	};
+>  	struct net *net = dev_net(dev);
+>  	struct sk_buff *skb;
+>  	int err = -ENOBUFS;
+>  
+>  	if (pg) {
+> -		if (mp->addr.proto == htons(ETH_P_IP))
+> -			ip_eth_mc_map(mp->addr.dst.ip4, mdb.addr);
+> -#if IS_ENABLED(CONFIG_IPV6)
+> -		else if (mp->addr.proto == htons(ETH_P_IPV6))
+> -			ipv6_eth_mc_map(&mp->addr.dst.ip6, mdb.addr);
+> -#endif
+> -		else
+> -			ether_addr_copy(mdb.addr, mp->addr.dst.mac_addr);
+> +		br_switchdev_mdb_populate(&mdb, mp);
+>  
+>  		mdb.obj.orig_dev = pg->key.port->dev;
+>  		switch (type) {
 > 
-
+n
