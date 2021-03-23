@@ -2,61 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77D1B346987
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Mar 2021 21:04:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30F10346B8D
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Mar 2021 23:01:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231244AbhCWUEY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Mar 2021 16:04:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37202 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231281AbhCWUEM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Mar 2021 16:04:12 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A335EC0613D9
-        for <linux-omap@vger.kernel.org>; Tue, 23 Mar 2021 13:04:11 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id b4so4565001lfi.6
-        for <linux-omap@vger.kernel.org>; Tue, 23 Mar 2021 13:04:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=mdmEkoGQF7pB+x5oJsizFBzso7j8fVmxmRkAViY7ai0=;
-        b=GmAgGkotu5ybZAfMo4f5CUcgdMF0JIc+qpO/FCOv9wCevKJov1gfladr0REXORxxiY
-         Fnx5aA1Cw9QaKlGAy6wroIC5s4KC/JPvj29z5lmTgM2w/sz+nXro6AeK38xzK9ATciTW
-         cSIWWyzoy/RnBTr9zgEPBcvXUHsNRyrZ15+itUKxajpV3HEEhudHRhiVHsGYNkdyMULB
-         32T4yRWYvj3azcK/5JOJY4r4llkyZH5imogR6JHcfMu9jZnAd1pbju/N+6Z8Rd7+++t4
-         6spkBq0V7SBiDL4CJxN1WUbCNFaWQun79U2BTYIgILgQLNDQfwoFbHfCPl9fEk9qlZ0u
-         MDtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=mdmEkoGQF7pB+x5oJsizFBzso7j8fVmxmRkAViY7ai0=;
-        b=OngzqzBi2/8GoY95yJpLnwRHg515MP0nuD9AkmsDO/6ARjeojcYq1cuJYJlWL3H0ru
-         TGCmtQSF8n30QjbUvKb0TmQ+DqbRvN0uwS+NM0Vwuuh61vm2JoD7g/wQflyDRrC9jz62
-         cmoFFso715lxazlV1tLgBvz+4eFxYnigSpdUMCDEv0TOV7rg2Mp94k+FNjHWwgNTSacg
-         wvpLyno/ESh4toVXy94Zeucm+3UjxO4islN8r0jlNDSVMeYZOJY2vUyZkucMyMwJUW6u
-         iD8/9CpQEhhSU5OJufn2Nbvu3DdX7bzMlR3+kBIqJUn7xXhVioyfrXkPlF1+8uTC/J5z
-         as3A==
-X-Gm-Message-State: AOAM533smt7VUFMUB1xzaM+l28XzfllFICmdzD6MHhs+5S/9Lh5jkPUd
-        +kvj/Wpfk6uYuwWsXMx4dXDjxKNuUiyTghxBjlA=
-X-Google-Smtp-Source: ABdhPJxZkwExOY6OvzL5b8wFiNxCLUWfMk/h/hVyCwhN7tlM5dwr1xLemaKTod9x0GvWq6ID/yXIUt9RAq74yf8Rbmg=
-X-Received: by 2002:a19:c14c:: with SMTP id r73mr3532512lff.581.1616529849727;
- Tue, 23 Mar 2021 13:04:09 -0700 (PDT)
+        id S233710AbhCWWAZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Mar 2021 18:00:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35292 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233752AbhCWWAK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 23 Mar 2021 18:00:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 52EFF619D1;
+        Tue, 23 Mar 2021 22:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616536810;
+        bh=UqdmPjzkBMkGpEoz/xGIJUyvpKm2m45avXdl9Jp2vSk=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=mlwSNPAUJTFuPsY7PValXn+yvPkCN+0HkTqdOan4G6j/twKRFiGdf5GCSzc/u+wHG
+         iaZtKMazQPYDLzYtCRbVAWxhTkSMb4GoMzQEAJVXkro1knq6FYIH0uIA9fGrebNQBr
+         rMd0/p43xIAx2Lb65SisDaP/c81+eeb5YyUzuU97ZVYmkBi2n60qei7bAkqvCgHvEr
+         Nf9PkyhXkQZOSYnW3Td3NHwsYKwojfw4gu3EpDk/uo4PHh1SvDg3eS89ZVDxpyjuns
+         773or6irkjcEgtXyfleCBOhbVqVmrwYILVwdTEqpocghstUUqk69Wa9Y3MpJatzD29
+         ixEZEyAgjaDvw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 429CB60A0E;
+        Tue, 23 Mar 2021 22:00:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a2e:b524:0:0:0:0:0 with HTTP; Tue, 23 Mar 2021 13:04:09
- -0700 (PDT)
-Reply-To: owusup021@gmail.com
-From:   Marcus <jofred883@gmail.com>
-Date:   Tue, 23 Mar 2021 20:04:09 +0000
-Message-ID: <CADdSqdMAJOiYXK7i9V0z32d7U-D+ZO54EBz=9LJ5mfpAjtza1w@mail.gmail.com>
-Subject: I have sent you several emails no responds.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v4 net-next 00/11] Better support for sandwiched LAGs with
+ bridge and DSA
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161653681026.23298.16920654325980262719.git-patchwork-notify@kernel.org>
+Date:   Tue, 23 Mar 2021 22:00:10 +0000
+References: <20210322235152.268695-1-olteanv@gmail.com>
+In-Reply-To: <20210322235152.268695-1-olteanv@gmail.com>
+To:     Vladimir Oltean <olteanv@gmail.com>
+Cc:     kuba@kernel.org, davem@davemloft.net, andrew@lunn.ch,
+        vivien.didelot@gmail.com, f.fainelli@gmail.com,
+        tobias@waldekranz.com, claudiu.manoil@nxp.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        roopa@nvidia.com, nikolay@nvidia.com, jiri@resnulli.us,
+        idosch@idosch.org, alexandre.belloni@bootlin.com,
+        UNGLinuxDriver@microchip.com, ivecera@redhat.com,
+        linux-omap@vger.kernel.org, vladimir.oltean@nxp.com
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I need you to confirm the information i sent to you so i can be rest
-assured you received it.
-Regards.
-Marcus.
+Hello:
+
+This series was applied to netdev/net-next.git (refs/heads/master):
+
+On Tue, 23 Mar 2021 01:51:41 +0200 you wrote:
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> 
+> Changes in v4:
+> - Added missing EXPORT_SYMBOL_GPL
+> - Using READ_ONCE(fdb->dst)
+> - Split patches into (a) adding the bridge helpers (b) making DSA use them
+> - br_mdb_replay went back to the v1 approach where it allocated memory
+>   in atomic context
+> - Created a br_switchdev_mdb_populate which reduces some of the code
+>   duplication
+> - Fixed the error message in dsa_port_clear_brport_flags
+> - Replaced "dsa_port_vlan_filtering(dp, br, extack)" with
+>   "dsa_port_vlan_filtering(dp, br_vlan_enabled(br), extack)" (duh)
+> - Added review tags (sorry if I missed any)
+> 
+> [...]
+
+Here is the summary with links:
+  - [v4,net-next,01/11] net: bridge: add helper for retrieving the current bridge port STP state
+    https://git.kernel.org/netdev/net-next/c/c0e715bbd50e
+  - [v4,net-next,02/11] net: bridge: add helper to retrieve the current ageing time
+    https://git.kernel.org/netdev/net-next/c/f1d42ea10056
+  - [v4,net-next,03/11] net: bridge: add helper to replay port and host-joined mdb entries
+    https://git.kernel.org/netdev/net-next/c/4f2673b3a2b6
+  - [v4,net-next,04/11] net: bridge: add helper to replay port and local fdb entries
+    https://git.kernel.org/netdev/net-next/c/04846f903b53
+  - [v4,net-next,05/11] net: bridge: add helper to replay VLANs installed on port
+    https://git.kernel.org/netdev/net-next/c/22f67cdfae6a
+  - [v4,net-next,06/11] net: dsa: call dsa_port_bridge_join when joining a LAG that is already in a bridge
+    https://git.kernel.org/netdev/net-next/c/185c9a760a61
+  - [v4,net-next,07/11] net: dsa: pass extack to dsa_port_{bridge,lag}_join
+    https://git.kernel.org/netdev/net-next/c/2afc526ab342
+  - [v4,net-next,08/11] net: dsa: inherit the actual bridge port flags at join time
+    https://git.kernel.org/netdev/net-next/c/5961d6a12c13
+  - [v4,net-next,09/11] net: dsa: sync up switchdev objects and port attributes when joining the bridge
+    https://git.kernel.org/netdev/net-next/c/010e269f91be
+  - [v4,net-next,10/11] net: ocelot: call ocelot_netdevice_bridge_join when joining a bridged LAG
+    https://git.kernel.org/netdev/net-next/c/81ef35e7619a
+  - [v4,net-next,11/11] net: ocelot: replay switchdev events when joining bridge
+    https://git.kernel.org/netdev/net-next/c/e4bd44e89dcf
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
