@@ -2,232 +2,174 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEA4B345900
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Mar 2021 08:44:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5CA1345BFB
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Mar 2021 11:34:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbhCWHni (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Mar 2021 03:43:38 -0400
-Received: from muru.com ([72.249.23.125]:45946 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229576AbhCWHne (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Mar 2021 03:43:34 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id A9B4281CB;
-        Tue, 23 Mar 2021 07:44:29 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Keerthy <j-keerthy@ti.com>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Tero Kristo <kristo@kernel.org>
-Subject: [PATCH 2/2] clocksource/drivers/timer-ti-dm: Handle dra7 timer wrap errata i940
-Date:   Tue, 23 Mar 2021 09:43:26 +0200
-Message-Id: <20210323074326.28302-3-tony@atomide.com>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20210323074326.28302-1-tony@atomide.com>
-References: <20210323074326.28302-1-tony@atomide.com>
+        id S230236AbhCWKdk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Mar 2021 06:33:40 -0400
+Received: from mail-eopbgr690056.outbound.protection.outlook.com ([40.107.69.56]:31645
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230299AbhCWKdZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 23 Mar 2021 06:33:25 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C+wW0WhIHnuyYJN30VzJWRYbdKRDmA2680sLD2Kylvpln7bO7VFEL0Azu9WMuwymt+Q+h08EJSQwIZWnvaJIdmKG97lnGMWnz2zmwrJYLmKf+zhEVsm3WFyeKRaIrgIlsJ4Sy/1f3xtR34nO8oIwSzFBseZToemNOnt8FVf0plJPVM/nCtPVgqOPh/+J42o2AwPxUuNWtqhZdY6UZ36tARfkffJzMEJgGxRqEiJaDtG4gy/28KCacB9PngBU3lES92KIB1P2s7f1xpKrdfs3PSBR7UjnjUGtWocgsw4GvxGT1q2pone//epRFICp/OIEo4dIO7kVFsPD43+AvUN6+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=59bdNzAwt5ZnN90XontxmC0qShXePt3P91IGq/OqWq0=;
+ b=eW6V/88aT5LnYCjXw6fROaOPyOno2s8yvjpiBj0E7nnXaJ3K3Xmxqkc+HWSiFIUcssS3y/ce5GxCNSNnVFuxpgKrzO7F8z0IXfB40gTcIM7hvaqjX+XiOi3QoR7N5wA6J76M+w8IT9KPhDGOWa776eB/hpatUqvbyQVNWJjtMZhT/JWexPknxuSybFWhlXqeUDS/LwXF0Z8M4VZBExyBuxoIetGyK5zKFM+TQrobq9kHLqLqxQudXbQ4atyRcsdavdUI7hOKOLVDu71hn/t7e/Pkw11EW4NhHc1+w9He873rn/Q43Ntqgmwtj+vPImi7+mBcsgYaJLKaVVLT4qexrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=59bdNzAwt5ZnN90XontxmC0qShXePt3P91IGq/OqWq0=;
+ b=UR/Ap4OOEECP7EHer4RLU0OHM8RgLtatny49SRhrm+WEyW+NT0dk9pv/Khvp2GeB9bQPkCqY5H1zMJIjFMcXQ8QVW2vPo7gRcZw8/OYPZ3ZUirYDzPUlf/IVD7oZpyiHCA6sUHSZZKqhoKj02Wzy1fewXeM4J3YjG7NN6GkPY3ZzrjG0RvQpo9Ld7nbfy+o2JVNzorRYtgRhYdMgqIuQUSvGP5r/Iqt+NITBe9TJujAzIvTYtn+KlEIhIk2O+qHOE5sAd1H+FewfCCbZl5ijwxtBUmcwVlEkJkVh8WATdNEBhaOdqUVtT84qucGDRdVn86bLv1LQS42FHGiMOvjTPQ==
+Authentication-Results: nxp.com; dkim=none (message not signed)
+ header.d=none;nxp.com; dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB4403.namprd12.prod.outlook.com (2603:10b6:5:2ab::24)
+ by DM5PR12MB4663.namprd12.prod.outlook.com (2603:10b6:4:a9::26) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18; Tue, 23 Mar
+ 2021 10:33:22 +0000
+Received: from DM6PR12MB4403.namprd12.prod.outlook.com
+ ([fe80::5c42:cbe:fe28:3a9b]) by DM6PR12MB4403.namprd12.prod.outlook.com
+ ([fe80::5c42:cbe:fe28:3a9b%5]) with mapi id 15.20.3955.027; Tue, 23 Mar 2021
+ 10:33:22 +0000
+Subject: Re: [PATCH v4 net-next 01/11] net: bridge: add helper for retrieving
+ the current bridge port STP state
+To:     Vladimir Oltean <olteanv@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Tobias Waldekranz <tobias@waldekranz.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Roopa Prabhu <roopa@nvidia.com>, Jiri Pirko <jiri@resnulli.us>,
+        Ido Schimmel <idosch@idosch.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        UNGLinuxDriver@microchip.com, Ivan Vecera <ivecera@redhat.com>,
+        linux-omap@vger.kernel.org,
+        Vladimir Oltean <vladimir.oltean@nxp.com>
+References: <20210322235152.268695-1-olteanv@gmail.com>
+ <20210322235152.268695-2-olteanv@gmail.com>
+From:   Nikolay Aleksandrov <nikolay@nvidia.com>
+Message-ID: <2d6ee47b-3fc5-4884-11d3-99544a95219c@nvidia.com>
+Date:   Tue, 23 Mar 2021 12:33:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+In-Reply-To: <20210322235152.268695-2-olteanv@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [213.179.129.39]
+X-ClientProxiedBy: ZR0P278CA0080.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:22::13) To DM6PR12MB4403.namprd12.prod.outlook.com
+ (2603:10b6:5:2ab::24)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.21.240.137] (213.179.129.39) by ZR0P278CA0080.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:22::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18 via Frontend Transport; Tue, 23 Mar 2021 10:33:17 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: e69c4687-3ed3-4509-ab54-08d8ede7150b
+X-MS-TrafficTypeDiagnostic: DM5PR12MB4663:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM5PR12MB4663F0B375F4CD429B83F165DF649@DM5PR12MB4663.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: z8+lItdhYk7gXA0jgBGAU5xeKRaNiq9PRfAygxuPFKOivtAOKMWIncG1r5b4c9UuwsBxcYVUE6+tPWH5dkdroCe5jM28mgoYC5uSUThVqlTb/JiJf7QqqrtoXiMNQHsf62fX+5eXXBo2tvk9wHQ6c2VrTCmf0PloYELRLxFyinz+bzB+zwMejRl4n5LYMaS+4oIonYGgr9frgQCSy6l2dUMlbc9ffM4zbniE5NecEHEWz8B2ZN9VLU5JERXblKaRhSCFkrN5Cm7VKUoANY+5GJRd34dK33sC3Ge6glVsFWm6xoMbllDOQiVbMDQwXnaeRGvESdwWC/Hea635RhwFrKDW27y6tocF1jkE+SWg9wvQ5mEhuAieMRG5qGY0weoIQlCQUES0C7k6TnoG2/fHqVoXwANHLNprjr2vVKtB38z19QVrKiX6SjsSqfX4L9jvehk+vVTYk8ZNOtWQJLeTcAkFyg/Zl9dgYxAez9t3sPBC2i7WyGqJOfu62DIeyWWgLL8AyhsEGYd0oyfhxZymaxPCvG59qyRWSyi6LZB5+fApNkDEhjUBC+BH5xMh4TdC9+rktqfcGh3TLphdkGLZ2mx/r5cbDaAPYk66wHhxVXwPuEXuQfIkoF4FNBRZQunH6ws3lXitcx1ewKO8dl3FQqRS2hxNnDptYns5xYJ2wiJvb64mdKYQEGcO8TnLFaPkkOqZLkn12eZnxiP4Y6l82A==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4403.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(346002)(136003)(366004)(376002)(39860400002)(956004)(8676002)(8936002)(54906003)(2906002)(2616005)(83380400001)(5660300002)(66556008)(4326008)(31696002)(66476007)(31686004)(36756003)(53546011)(6486002)(66946007)(316002)(38100700001)(16526019)(86362001)(7416002)(478600001)(26005)(6666004)(186003)(110136005)(16576012)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?RE9GNlJtdldEM0RZLzVpYTBXdEw4NXZ6V1BpVk5KamovVVFSVUNqWXROSnRk?=
+ =?utf-8?B?U2ZUbTBIUjFwZlR5YnUrazNMK1dHSXN3dWZuL3BaMHArWk5iTm8vWStHWmpS?=
+ =?utf-8?B?QWJvK2tnK1RCTjQ2d2NKN09QL2FVcVp2QVc5bi80Ykd4UU15VjhGV1Nnb3F6?=
+ =?utf-8?B?MGZIZU0vVGR3enJkV1pCTkhYTnp5Z25CSTZxelRkYXZYRGxDOGRFNDNybFRO?=
+ =?utf-8?B?S3QxaHhHR3diNXcwTmJ1akkxbHE3NENyb0Zwd0RJT2RlOVBYeWo5NCtUVXV2?=
+ =?utf-8?B?TUdxYmxBbWNSaVBOeWlaMDJIUEljdmdnNEtwTjBiQm4zQnNTdWpSSENSbFJY?=
+ =?utf-8?B?OUQ0bFUzZDZoLzd4TEk4RmRZR3RueGxrSWdaUGpYUjB4blFMWkpzNHVzVGZB?=
+ =?utf-8?B?TWVoZFQwN2tsalFFRlVheVhJUXQ0VHhJMU5odE02RUpneWtXbEFMWEk0Tk80?=
+ =?utf-8?B?SnE4bjF2VTFnbFJFL1J1OWJ4cVllVjBBMzJKTFFxZ0tjYW9PeXlyWFdwNThq?=
+ =?utf-8?B?K1lQZVJIQ3VrN1V1K2FOK0M0c3lDemlUZVdzcnFYZzgzRy9xakpRbk03MHAv?=
+ =?utf-8?B?NnJqVkNLbVZIT1M5ZVluWXhVc3d1R2hWeU1PeDZXNnFNaUUwaFpTS25DVXNU?=
+ =?utf-8?B?dFV0S24rM2s3NTB3cjJrdGh0U1pwYUIxd2t5T21sREdYLzExOVVZUGJiaEIz?=
+ =?utf-8?B?YTU2SytrS0Q0WUl3MjVCL0MzZkVHSWN3SERteDRqclhKNG1mOTcwcmE2QmZl?=
+ =?utf-8?B?UGZzVCt6b1IveGlPVitkTXVuRm1QVjZnbWk5bFh6Q3MyTUY4cGZ5eW9Lb1gx?=
+ =?utf-8?B?MndkZndnaHVGczd0WWluSUd6aHpZY0lnMVQ0MXBqY1MxMnVCUTREeG1qWXpk?=
+ =?utf-8?B?YVA4RzJlUmRXaXVlbHVWanVZdUM1dXJHVDBRVTBZUDhJV0doS3FDYlZyaStY?=
+ =?utf-8?B?Q2hWNVhIU2kzQXRQRTgyT1hRSVJSK1VkT1pJNEhadWxuWEJCSURWZnp6VExs?=
+ =?utf-8?B?UFB3Z25yMFRGRi9Vb21Jcms3cjlwczV4cWZDZzkzNGpnMTA2emRnWHdnTkFq?=
+ =?utf-8?B?THVtSm5nLzd0dWdxNFhGMU9UODBOUjFJZ0tqcjVwOXkyaHVmSmFPdHhHNEVs?=
+ =?utf-8?B?UTdJNDlncjczckZia0dzUzFUWVVNRjBLd0JKK3BPWVJlaFg4bHc1cmdBUDBp?=
+ =?utf-8?B?Ujl0Y2YwRzdNMmtXVFlBenlRcEgzVHMzMUlZZlhwaGJFcGlEeDA4UkRYL2Y0?=
+ =?utf-8?B?TEZ1dmMxWFV2S1NoVENhZEVjZW5KbUh0RkFmLzhIM2Z6WnlsUnFyYWdMRDZk?=
+ =?utf-8?B?MEZBMWVrTmx3aVhxMWVUTVY2WjdmNnBFNGlPRzJmNVlnRnFmN0c0RVo1T3Ji?=
+ =?utf-8?B?VTZnQWJtMEtCM2FjZG1jWkplNU4rdXJzdE92cnBKMWNUc2lkMUNxRVdYS0s4?=
+ =?utf-8?B?eTRjeDRiazMxem1pSjFpR25RcHVTKzhzUEFueENnMWQ4UURmcW95UU9PY0RQ?=
+ =?utf-8?B?ZDM2YnpIVmZteXpQeDZ0NnJKUzNQODJuaTFpd2RpVnVlQnovRzZKWldFR0Vi?=
+ =?utf-8?B?aUE0eFZVdnhkbUFMSklrQ3BXM1hvSXhjSWFFSUVadTNwMWt0eWhzUHJyY1NE?=
+ =?utf-8?B?T2NOMFVycU1SN3JGTWVDaEo2NjU1YThpQ2FucStya0gxaFhjVXp0VTFDdVpB?=
+ =?utf-8?B?TGVOTE5BQTZ0azF5QVorQ1VBckhrd1lDQkVhN1FXVEJCZTRSUVJPRU51YUVS?=
+ =?utf-8?Q?3+geEyMDlvoN0hlFvPGl6H1SUwwc/yRFosEIGwW?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e69c4687-3ed3-4509-ab54-08d8ede7150b
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4403.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2021 10:33:22.1868
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8lqr3+K31ncd9xl+Qd0VbckEurq0DvhyCab/IzA+TNDZ0+Sa2lovVPGdpKa1RdTOgHVXfG23mzbS+eGJmHrW+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB4663
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There is a timer wrap issue on dra7 for the ARM architected timer.
-In a typical clock configuration the timer fails to wrap after 388 days.
+On 23/03/2021 01:51, Vladimir Oltean wrote:
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> 
+> It may happen that we have the following topology with DSA or any other
+> switchdev driver with LAG offload:
+> 
+> ip link add br0 type bridge stp_state 1
+> ip link add bond0 type bond
+> ip link set bond0 master br0
+> ip link set swp0 master bond0
+> ip link set swp1 master bond0
+> 
+> STP decides that it should put bond0 into the BLOCKING state, and
+> that's that. The ports that are actively listening for the switchdev
+> port attributes emitted for the bond0 bridge port (because they are
+> offloading it) and have the honor of seeing that switchdev port
+> attribute can react to it, so we can program swp0 and swp1 into the
+> BLOCKING state.
+> 
+> But if then we do:
+> 
+> ip link set swp2 master bond0
+> 
+> then as far as the bridge is concerned, nothing has changed: it still
+> has one bridge port. But this new bridge port will not see any STP state
+> change notification and will remain FORWARDING, which is how the
+> standalone code leaves it in.
+> 
+> We need a function in the bridge driver which retrieves the current STP
+> state, such that drivers can synchronize to it when they may have missed
+> switchdev events.
+> 
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+> Reviewed-by: Tobias Waldekranz <tobias@waldekranz.com>
+> ---
+>  include/linux/if_bridge.h |  6 ++++++
+>  net/bridge/br_stp.c       | 14 ++++++++++++++
+>  2 files changed, 20 insertions(+)
+> 
 
-To work around the issue, we need to use timer-ti-dm percpu timers instead.
+Acked-by: Nikolay Aleksandrov <nikolay@nvidia.com>
 
-Let's configure dmtimer3 and 4 as percpu timers by default, and warn about
-the issue if the dtb is not configured properly.
 
-Let's do this as a single patch so it can be backported to v5.8 and later
-kernels easily. Note that this patch depends on earlier timer-ti-dm
-systimer posted mode fixes, and a preparatory clockevent patch
-"clocksource/drivers/timer-ti-dm: Prepare to handle dra7 timer wrap issue".
 
-For more information, please see the errata for "AM572x Sitara Processors
-Silicon Revisions 1.1, 2.0":
-
-https://www.ti.com/lit/er/sprz429m/sprz429m.pdf
-
-The concept is based on earlier reference patches done by Tero Kristo and
-Keerthy.
-
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Tero Kristo <kristo@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/dra7-l4.dtsi             |  4 +-
- arch/arm/boot/dts/dra7.dtsi                | 20 ++++++
- drivers/clocksource/timer-ti-dm-systimer.c | 76 ++++++++++++++++++++++
- include/linux/cpuhotplug.h                 |  1 +
- 4 files changed, 99 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
---- a/arch/arm/boot/dts/dra7-l4.dtsi
-+++ b/arch/arm/boot/dts/dra7-l4.dtsi
-@@ -1168,7 +1168,7 @@ timer2: timer@0 {
- 			};
- 		};
- 
--		target-module@34000 {			/* 0x48034000, ap 7 46.0 */
-+		timer3_target: target-module@34000 {	/* 0x48034000, ap 7 46.0 */
- 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
- 			reg = <0x34000 0x4>,
- 			      <0x34010 0x4>;
-@@ -1195,7 +1195,7 @@ timer3: timer@0 {
- 			};
- 		};
- 
--		target-module@36000 {			/* 0x48036000, ap 9 4e.0 */
-+		timer4_target: target-module@36000 {	/* 0x48036000, ap 9 4e.0 */
- 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
- 			reg = <0x36000 0x4>,
- 			      <0x36010 0x4>;
-diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
---- a/arch/arm/boot/dts/dra7.dtsi
-+++ b/arch/arm/boot/dts/dra7.dtsi
-@@ -46,6 +46,7 @@ aliases {
- 
- 	timer {
- 		compatible = "arm,armv7-timer";
-+		status = "disabled";	/* See ARM architected timer wrap erratum i940 */
- 		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_LEVEL_LOW)>,
-@@ -1241,3 +1242,22 @@ timer@0 {
- 		assigned-clock-parents = <&sys_32k_ck>;
- 	};
- };
-+
-+/* Local timers, see ARM architected timer wrap erratum i940 */
-+&timer3_target {
-+	ti,no-reset-on-init;
-+	ti,no-idle;
-+	timer@0 {
-+		assigned-clocks = <&l4per_clkctrl DRA7_L4PER_TIMER3_CLKCTRL 24>;
-+		assigned-clock-parents = <&timer_sys_clk_div>;
-+	};
-+};
-+
-+&timer4_target {
-+	ti,no-reset-on-init;
-+	ti,no-idle;
-+	timer@0 {
-+		assigned-clocks = <&l4per_clkctrl DRA7_L4PER_TIMER4_CLKCTRL 24>;
-+		assigned-clock-parents = <&timer_sys_clk_div>;
-+	};
-+};
-diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
---- a/drivers/clocksource/timer-ti-dm-systimer.c
-+++ b/drivers/clocksource/timer-ti-dm-systimer.c
-@@ -2,6 +2,7 @@
- #include <linux/clk.h>
- #include <linux/clocksource.h>
- #include <linux/clockchips.h>
-+#include <linux/cpuhotplug.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-@@ -630,6 +631,78 @@ static int __init dmtimer_clockevent_init(struct device_node *np)
- 	return error;
- }
- 
-+/* Dmtimer as percpu timer. See dra7 ARM architected timer wrap erratum i940 */
-+static DEFINE_PER_CPU(struct dmtimer_clockevent, dmtimer_percpu_timer);
-+
-+static int __init dmtimer_percpu_timer_init(struct device_node *np, int cpu)
-+{
-+	struct dmtimer_clockevent *clkevt;
-+	int error;
-+
-+	if (!cpu_possible(cpu))
-+		return -EINVAL;
-+
-+	if (!of_property_read_bool(np->parent, "ti,no-reset-on-init") ||
-+	    !of_property_read_bool(np->parent, "ti,no-idle"))
-+		pr_warn("Incomplete dtb for percpu dmtimer %pOF\n", np->parent);
-+
-+	clkevt = per_cpu_ptr(&dmtimer_percpu_timer, cpu);
-+
-+	error = dmtimer_clkevt_init_common(clkevt, np, CLOCK_EVT_FEAT_ONESHOT,
-+					   cpumask_of(cpu), "percpu-dmtimer",
-+					   500);
-+	if (error)
-+		return error;
-+
-+	return 0;
-+}
-+
-+/* See TRM for timer internal resynch latency */
-+static int omap_dmtimer_starting_cpu(unsigned int cpu)
-+{
-+	struct dmtimer_clockevent *clkevt = per_cpu_ptr(&dmtimer_percpu_timer, cpu);
-+	struct clock_event_device *dev = &clkevt->dev;
-+	struct dmtimer_systimer *t = &clkevt->t;
-+
-+	clockevents_config_and_register(dev, t->rate, 3, ULONG_MAX);
-+	irq_force_affinity(dev->irq, cpumask_of(cpu));
-+
-+	return 0;
-+}
-+
-+static int __init dmtimer_percpu_timer_startup(void)
-+{
-+	struct dmtimer_clockevent *clkevt = per_cpu_ptr(&dmtimer_percpu_timer, 0);
-+	struct dmtimer_systimer *t = &clkevt->t;
-+
-+	if (t->sysc) {
-+		cpuhp_setup_state(CPUHP_AP_TI_GP_TIMER_STARTING,
-+				  "clockevents/omap/gptimer:starting",
-+				  omap_dmtimer_starting_cpu, NULL);
-+	}
-+
-+	return 0;
-+}
-+subsys_initcall(dmtimer_percpu_timer_startup);
-+
-+static int __init dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
-+{
-+	struct device_node *arm_timer;
-+
-+	arm_timer = of_find_compatible_node(NULL, NULL, "arm,armv7-timer");
-+	if (of_device_is_available(arm_timer)) {
-+		pr_warn_once("ARM architected timer wrap issue i940 detected\n");
-+		return 0;
-+	}
-+
-+	if (pa == 0x48034000)		/* dra7 dmtimer3 */
-+		return dmtimer_percpu_timer_init(np, 0);
-+	else if (pa == 0x48036000)	/* dra7 dmtimer4 */
-+		return dmtimer_percpu_timer_init(np, 1);
-+
-+	return 0;
-+}
-+
- /* Clocksource */
- static struct dmtimer_clocksource *
- to_dmtimer_clocksource(struct clocksource *cs)
-@@ -763,6 +836,9 @@ static int __init dmtimer_systimer_init(struct device_node *np)
- 	if (clockevent == pa)
- 		return dmtimer_clockevent_init(np);
- 
-+	if (of_machine_is_compatible("ti,dra7"))
-+		return dmtimer_percpu_quirk_init(np, pa);
-+
- 	return 0;
- }
- 
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -135,6 +135,7 @@ enum cpuhp_state {
- 	CPUHP_AP_RISCV_TIMER_STARTING,
- 	CPUHP_AP_CLINT_TIMER_STARTING,
- 	CPUHP_AP_CSKY_TIMER_STARTING,
-+	CPUHP_AP_TI_GP_TIMER_STARTING,
- 	CPUHP_AP_HYPERV_TIMER_STARTING,
- 	CPUHP_AP_KVM_STARTING,
- 	CPUHP_AP_KVM_ARM_VGIC_INIT_STARTING,
--- 
-2.31.0
