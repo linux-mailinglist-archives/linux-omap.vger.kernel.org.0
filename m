@@ -2,117 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29F63346E7E
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Mar 2021 02:10:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3154734721D
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Mar 2021 08:12:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231477AbhCXBJv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Mar 2021 21:09:51 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:51064 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230011AbhCXBJc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Mar 2021 21:09:32 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 3E6581C0B7D; Wed, 24 Mar 2021 02:09:29 +0100 (CET)
-Date:   Wed, 24 Mar 2021 02:09:27 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Rob Herring <robh@kernel.org>, Tony Lindgren <tony@atomide.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 3/6] dt-bindings: serdev: ngsm: Add binding for GNSS
- child node
-Message-ID: <20210324010927.GA12937@amd>
-References: <20200512214713.40501-1-tony@atomide.com>
- <20200512214713.40501-4-tony@atomide.com>
- <20200527192817.GA2587830@bogus>
- <20200528095151.GE10358@localhost>
- <20210305104635.GA16695@duo.ucw.cz>
- <YEINdpPgud99a7qm@hovoldconsulting.com>
+        id S235681AbhCXHMH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Mar 2021 03:12:07 -0400
+Received: from muru.com ([72.249.23.125]:46272 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235727AbhCXHLt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 24 Mar 2021 03:11:49 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 6196B8057;
+        Wed, 24 Mar 2021 07:12:44 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        Bhushan Shah <bshah@kde.org>
+Subject: [PATCH RESEND] usb: musb: Fix suspend with devices connected for a64
+Date:   Wed, 24 Mar 2021 09:11:41 +0200
+Message-Id: <20210324071142.42264-1-tony@atomide.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="gBBFr7Ir9EOA20Yy"
-Content-Disposition: inline
-In-Reply-To: <YEINdpPgud99a7qm@hovoldconsulting.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Pinephone running on Allwinner A64 fails to suspend with USB devices
+connected as reported by Bhushan Shah <bshah@kde.org>. Reverting
+commit 5fbf7a253470 ("usb: musb: fix idling for suspend after
+disconnect interrupt") fixes the issue.
 
---gBBFr7Ir9EOA20Yy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Let's add suspend checks also for suspend after disconnect interrupt
+quirk handling like we already do elsewhere.
 
+Fixes: 5fbf7a253470 ("usb: musb: fix idling for suspend after disconnect interrupt")
+Reported-by: Bhushan Shah <bshah@kde.org>
+Tested-by: Bhushan Shah <bshah@kde.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-On Fri 2021-03-05 11:52:38, Johan Hovold wrote:
-> On Fri, Mar 05, 2021 at 11:46:35AM +0100, Pavel Machek wrote:
-> > Hi!
-> >=20
-> > > > > For motorola modem case, we may have a GNSS device on channel 4.
-> > > > > Let's add that to the binding and example.
-> > > > >=20
-> > > > > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > > > > ---
-> > > > >  .../devicetree/bindings/serdev/serdev-ngsm.yaml          | 9 +++=
-++++++
-> > > > >  1 file changed, 9 insertions(+)
-> >=20
-> > >=20
-> > > And since we're describing a mux, I think you need nodes for the virt=
-ual
-> > > ports rather than a reg property in what should be a serial client. T=
-hat
-> > > is something like
-> > >=20
-> > > 	serial@nnn {
-> > > 		modem {
-> > > 			compatible =3D "etsi,ts27001-mux";
-> > >=20
-> > > 			serial@4 {
-> > > 				compatible =3D "etsi,ts27001-serial";
-> > > 				reg =3D <4>;
-> > >=20
-> > > 				gnss {
-> > > 					compatible =3D "motorola,motmdm-gnss";
-> > > 				};
-> > > 			};
-> > > 		};
-> > > 	};
-> > >=20
-> > > This way you can actually use serdev for the client drivers (e.g. for
-> > > gnss), and those drivers also be used for non-muxed ports if needed
-> > > (e.g. over USB).
-> >=20
-> > I have done changes you requested, and then hit "serdev is busy
-> > because it can have at most one child" limit in the code. You have
-> > pretty clean driver in your inbox, and no reply. No help with serdev
-> > core limitations, either. Can you start to communicate?
->=20
-> It's on my list, but time is limited.
+---
 
-Everyone's time is limited. Do you have any time estimates?
-								Pavel
+Looks like this fix is still pending, can you guys please apply? This is also
+needed on am335x to suspend with devices connected in addition to a64
 
---=20
-http://www.livejournal.com/~pavelmachek
+---
+ drivers/usb/musb/musb_core.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---gBBFr7Ir9EOA20Yy
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmBakUcACgkQMOfwapXb+vKILgCguk02XmGCGT45kaSLl4YMEI8t
-Pg8Anj3W57z1I+Jd1ss9/yNRWNRJKPwT
-=lAtf
------END PGP SIGNATURE-----
-
---gBBFr7Ir9EOA20Yy--
+diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
+--- a/drivers/usb/musb/musb_core.c
++++ b/drivers/usb/musb/musb_core.c
+@@ -2004,10 +2004,14 @@ static void musb_pm_runtime_check_session(struct musb *musb)
+ 		MUSB_DEVCTL_HR;
+ 	switch (devctl & ~s) {
+ 	case MUSB_QUIRK_B_DISCONNECT_99:
+-		musb_dbg(musb, "Poll devctl in case of suspend after disconnect\n");
+-		schedule_delayed_work(&musb->irq_work,
+-				      msecs_to_jiffies(1000));
+-		break;
++		if (musb->quirk_retries && !musb->flush_irq_work) {
++			musb_dbg(musb, "Poll devctl in case of suspend after disconnect\n");
++			schedule_delayed_work(&musb->irq_work,
++					      msecs_to_jiffies(1000));
++			musb->quirk_retries--;
++			break;
++		}
++		fallthrough;
+ 	case MUSB_QUIRK_B_INVALID_VBUS_91:
+ 		if (musb->quirk_retries && !musb->flush_irq_work) {
+ 			musb_dbg(musb,
+-- 
+2.31.0
