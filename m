@@ -2,96 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D6F3484A9
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Mar 2021 23:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C79A8348531
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Mar 2021 00:20:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235292AbhCXWdk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Mar 2021 18:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42364 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233007AbhCXWdZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Mar 2021 18:33:25 -0400
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87730C061763
-        for <linux-omap@vger.kernel.org>; Wed, 24 Mar 2021 15:33:24 -0700 (PDT)
-Received: by mail-pg1-x52c.google.com with SMTP id l1so15759791pgb.5
-        for <linux-omap@vger.kernel.org>; Wed, 24 Mar 2021 15:33:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=gMuqnDgSpNCh2h8C7b5QZCwmk0iyduRMzQro9wOXU88=;
-        b=xWKncwZP5sLJs7JuH2peX+2wKQH5R54M3+ruEprqyEZofEtfngksh39/G4dG8DRMfh
-         EBE04QiioMqqgGuW2qTH5X8osgkk/3BlcBVABuTsytTYLrsv91X4NrKygA3WkLGF8YOU
-         b4vHOrfh3pAK+DG/ObX7+aDNtaIWfFLUvuMvzkUSQOhDlSeGtyG0dmRBovD0WttCqFWB
-         rFfDvTdy2W6zIuv6aoIvwtWaB98RELlWNwacCO5oxYpU3F/nJKEW6owFTWzjRRyJo2si
-         /1KzQcKOaMiLhN2W2lGUbzErv749BMd9hrOM/aJcgHLKp7361EUmBvQirU8/r14mOUq8
-         nWNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=gMuqnDgSpNCh2h8C7b5QZCwmk0iyduRMzQro9wOXU88=;
-        b=VKmFwtLaovf4df07Q4DacHx30+yNKpk4WF3Km7VHdR2zEKMad6fH6jA1pzl2jdkZOd
-         4iPjRtiQq5LJJMFz49A/wJWfKFR6I4hw5XoD8/7EAtiRRHNnMukjIzTCkQPDG7WkVE1t
-         nFl8Hv+13f9QHwaXHlKy/kg/7uX859OezYnqw75Gb8XaIAZ6thkygqY5PlIS/6SZ+0Ol
-         /UP2nehuImxul8vBI7EIEfuh/qMIPDJi4RdBzUlS4LFt7/wCJZzUB6XRJgyR4p5griYA
-         zE0T5eHcs83MpMT9QfjtYXhkPYNQGuejduYZm9MQ9mafX9rF9LNROhX3XfhOkN++p4d/
-         rCBQ==
-X-Gm-Message-State: AOAM5319CJMFnTx60xndWToVQN8pj3FhN/jHa0db0s36TIwPWxklNwmY
-        h6stpWcBdAAWZqXzwn6DkvxYSg==
-X-Google-Smtp-Source: ABdhPJxGqI1cC2uhinIMyQb37k1dVPRqSxTOQieitXf9RFUWKhjN7wx7BtEHARrjgqBLNAqFyupn7g==
-X-Received: by 2002:a17:903:31c6:b029:e5:d0a4:97cc with SMTP id v6-20020a17090331c6b02900e5d0a497ccmr5876204ple.52.1616625203829;
-        Wed, 24 Mar 2021 15:33:23 -0700 (PDT)
-Received: from x1 ([2601:1c0:4701:ae70:2535:883:67bb:5fbf])
-        by smtp.gmail.com with ESMTPSA id j26sm3488615pfa.35.2021.03.24.15.33.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Mar 2021 15:33:22 -0700 (PDT)
-Date:   Wed, 24 Mar 2021 15:33:20 -0700
-From:   Drew Fustini <drew@beagleboard.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     bcousson@baylibre.com, Rob Herring <robh+dt@kernel.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio@vger.kernel.org
-Subject: Re: [PATCH 1/2] ARM: dts: am335x-pocketbeagle: unique gpio-line-names
-Message-ID: <20210324223320.GA672059@x1>
-References: <20210127000303.436595-1-drew@beagleboard.org>
- <YFsp9B8Vo/Jr8nif@atomide.com>
+        id S234008AbhCXXUJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Mar 2021 19:20:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34184 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230204AbhCXXTy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 24 Mar 2021 19:19:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A73C061A17;
+        Wed, 24 Mar 2021 23:19:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616627993;
+        bh=M+caePj/MaM8hZubVUh6n+2kPk37gkKDLFCHXlHjACU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=d+qYPJZYPtaueW+o5rc+h3xs6JLW5R+JSocU4XzxbVHherOTJsno4vVcnLpReHodh
+         Hpptdrbl1Jg7+tRmKllnOA1q6AMhVQdaP7iJjiq40GaQLp4Pio7dlSm/cJ25Z6Gy/O
+         OdH0/IbVYj3l62Z/i+NcOB4gWEWnH//b66msZX/fAHPNIfC5hBx3QPnB+94jR2oHk8
+         lgneSCCjV/zm/siE5uIh0kRoLRNvnvkrZY0P3At5qkiLtLF1GEijC0G2qflAY6NZ4X
+         lg+sVKSu/vMCeWNEGYrck9P4orj019sjeZ+OuI4bSZ/vXBkgUSSE3ryBcxNXfSR1CF
+         bIurcKaLgTxpA==
+Received: by earth.universe (Postfix, from userid 1000)
+        id 711B93C0C96; Thu, 25 Mar 2021 00:19:50 +0100 (CET)
+Date:   Thu, 25 Mar 2021 00:19:50 +0100
+From:   Sebastian Reichel <sre@kernel.org>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-omap@vger.kernel.org,
+        Arthur Demchenkov <spinal.by@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>, Pavel Machek <pavel@ucw.cz>
+Subject: Re: [PATCH 2/5] ARM: dts: add battery phandle to cpcap_charger
+Message-ID: <20210324231950.fntsn5hhvewio2vb@earth.universe>
+References: <20210117224502.0f9a0e80dfd4841ad26a9914@uvos.xyz>
+ <YFsoWjUYhhzo5Tdo@atomide.com>
+ <20210324154219.m4xwm3bayzlele6e@earth.universe>
+ <C2FC7740-006A-430F-AA29-67572473D18B@goldelico.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="g3fkg7gdcld4ogfn"
 Content-Disposition: inline
-In-Reply-To: <YFsp9B8Vo/Jr8nif@atomide.com>
+In-Reply-To: <C2FC7740-006A-430F-AA29-67572473D18B@goldelico.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Mar 24, 2021 at 02:00:52PM +0200, Tony Lindgren wrote:
-> Hi,
-> 
-> * Drew Fustini <drew@beagleboard.org> [210127 02:04]:
-> > Based on linux-gpio discussion [1], it is best practice to make the
-> > gpio-line-names unique. Generic names like "[ethernet]" are replaced
-> > with the name of the unique signal on the AM3358 SoC ball corresponding
-> > to the gpio line. "[NC]" is also renamed to the standard "NC" name to
-> > represent "not connected".
-> 
-> Applying this one into omap-for-v5.13/dt thanks. However the second patch
-> does not apply against v5.12-rc2, Drew can you please repost the second
-> patch?
-> 
-> Regards,
-> 
-> Tony
 
-Hi Tony, I have posted a new patch that applies okay to mainline.
+--g3fkg7gdcld4ogfn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
-Drew
+Hi,
 
-[1] https://lore.kernel.org/linux-gpio/20210324222201.674905-1-drew@beagleboard.org/T/#u
+On Wed, Mar 24, 2021 at 05:21:52PM +0100, H. Nikolaus Schaller wrote:
+> > Am 24.03.2021 um 16:42 schrieb Sebastian Reichel <sre@kernel.org>:
+> > I think the patch is also wrong, since the information is already
+> > described in DT - just the other way around: The battery references
+> > the charger.
+>=20
+> Just curious for other devices to be properly defined:
+>=20
+> Does a battery have its own driver?
+> Can it be addressed (through I2C or similar mechanisms)?
+
+Linux power-supply subsystem expects chargers and batteries
+with battery being smart battery. I guess this has been
+designed following the ACPI specs. On embedded devices this
+usually means battery =3D fuel gauge.
+
+> Is it closer to the processor (being the root node of DTS) or
+> farther away than the chargers?
+
+It depends? :) There are systems with smart batteries reachable
+via I2C and gpio-charger device, which cannot be controlled and
+just having an enable gpio (and thus being in the root node).
+OTOH there are systems, that lack a proper fuel gauge and have
+advanced I2C chargers.
+
+> My observations is that usually chargers have drivers and need to
+> reference battery information to adapt their behaviour.
+
+I believe you are talking about chemistry information e.t.c.
+that's available from the simple-battery node?
+
+> So IMHO it would be more natural to have a charger reference the
+> battery.
+
+Direction was not something I came up with. I took over the
+subsystem years ago when this was already in place. It's a
+core thing in the subsystem and definetly cannot be changed
+anymore:
+
+Documentation/devicetree/bindings/power/supply/power-supply.yaml
+
+In general sometimes the battery needs charger info and sometimes
+charger needs fuel gauge info. The thing is, that this does not
+mean we need phandles in both directions. One phandle is enough
+to have the required information, everything else can be handled
+by kernel frameworks. That's preferred, since it does not create
+ABI.
+
+-- Sebastian
+
+--g3fkg7gdcld4ogfn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmBbyRAACgkQ2O7X88g7
++ppABhAAmGFxDxqe7RNFMEeIUPrP34Rt+/FhZ6ET2WYHiWRl8vm3VavrKC2YbMlc
++ZLevP0EsztTH3IPpUkgBiH1y33Wjl2dbtGQobusBz6Un9MzAyr0IJ/Fg19WtHqp
+jiPd8EDlIqb7BG9orD9jnK7OtRYYtOZEvuElHXq5JnmJ7BIUEn677rywdVggBfTV
+z3Z+JczfOFbkcDpG6uZCN39JDTmBQzWD27otiPvpaxohkUUCwWjiEPDOKolUYq4K
+Nn53ivuF/veHZQ6TiNFnMSBg+Vhf6HV96ZfTEjV4LXnxaQCXFlYNKZn8dJ+3zExk
+OkXUb2UkpE1WkwgMkGuTQeHmI21RlhM6gRZiHjLyEXA1PuufXYQukfkMP99SallS
+k/ywd7mOGLrHw3/9qQAgMpsUH0J8gq5UnG14ZV5ovNDO6Nc2oQ2TMMCdjcnuK5ET
+5CVh3wrc8tYER6+/FmaGWV+higOJZMoGcZgDJyoUK6irkG8HUDZlRrhopWE/3p9S
+bYkWuuwA2VbfAxCdxusmM51TOf2HDBz/JZQFt6yaT2ktjCXYgGOdTq53aVYVm+Nk
+qO0Cu4PcOijMSPB+Q//+9SXhZpGMNIgsMYqBXBfTwa0kJJHHfVwscusQc20f4Wgk
+vWQ4uVgeQHVsvX+mAzIGlt5xMYqay/ueeuObneB38yIX/EPMDH4=
+=cyNr
+-----END PGP SIGNATURE-----
+
+--g3fkg7gdcld4ogfn--
