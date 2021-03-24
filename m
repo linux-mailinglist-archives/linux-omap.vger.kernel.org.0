@@ -2,107 +2,117 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2D2F346DD5
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Mar 2021 00:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29F63346E7E
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Mar 2021 02:10:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234216AbhCWXUs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Mar 2021 19:20:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51262 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbhCWXUT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Mar 2021 19:20:19 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25FAFC061763
-        for <linux-omap@vger.kernel.org>; Tue, 23 Mar 2021 16:20:18 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id l3so15941791pfc.7
-        for <linux-omap@vger.kernel.org>; Tue, 23 Mar 2021 16:20:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=2mPqZ8T3s6ATLiDuP1AsIgNdhiWZsvEH4M6lDW4cfTI=;
-        b=FkYfaAkO0Z6/s4JItNqmcW1gokGmTqNJc9DB36xytboCFozRTY5w7JdrA4JFNrrqUc
-         PScrQdfFxWrPte+4sTO//YvN7fQwHcV4zIOKvLkNX+zkTewbGEUrY0GEDOiEQUF4vYuU
-         aFAGddHODC9RZFrFAz47xwrt5Rc5jXEikRcLR5EzlVCiEtalcSZHIkFUV2dR22EvrkrX
-         0xQkfBA3CaMmqYlEvQNU41R3KeX7PtTHWJztwsyq20bzwZz7nyLoXhDTLGfFphS2wpwu
-         5p3iYee6HWfEVuxS+9Mfdy0BB3mLXec96LfugcFuNmiAtUKDyBgTj9/PwhGHdbLPB8XF
-         4C/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2mPqZ8T3s6ATLiDuP1AsIgNdhiWZsvEH4M6lDW4cfTI=;
-        b=VHJUtcCIAiRRi8f70AAn6adQMZn+FpU7A3MItI0+TrkrJvGYvacG8ixwVx9cTUB7a5
-         C3xtgi7NXDl0W34rxgTZv9gHgcGITZhsyPR8BNBZQp98kWAk+IuE/CrV/emDn9Que11X
-         2rKhZotxk28cQqQvGTVX4wNsy7Q9B6gtWsg+pw4UBuwT7a8OJCw5KCPU+VXAYW+4unE4
-         XL/IDJpMUNzRYQixklv9ENclZj6o9TMOecO1PFc4K11zM8ZWDVO/+PS6hkYjkgbknauy
-         mhEApgFTSuteY+1xF3qsNgIsv2nK402CLhVBdxZYcKn2gjbHxmJLdH+j8HU0j/j3NgEy
-         z0yQ==
-X-Gm-Message-State: AOAM530Ui+zt3q/TWP2Lg1sScAZrZs6HIrPrfv6zIunbjTQz0nbDG4s8
-        uQArL+PVwOnTBbrwViPtYAG0XQ==
-X-Google-Smtp-Source: ABdhPJxNQ1MKjV1GEOTfkga2yU4EzySf+ImHzG//t/vH8JyfFvC/Ow4Oj+kKSp7Y3MjTm9kaPF1qEw==
-X-Received: by 2002:a17:902:8e89:b029:e6:ef44:6a54 with SMTP id bg9-20020a1709028e89b02900e6ef446a54mr756979plb.7.1616541617252;
-        Tue, 23 Mar 2021 16:20:17 -0700 (PDT)
-Received: from xps15 (S0106889e681aac74.cg.shawcable.net. [68.147.0.187])
-        by smtp.gmail.com with ESMTPSA id 22sm230405pjl.31.2021.03.23.16.20.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Mar 2021 16:20:16 -0700 (PDT)
-Date:   Tue, 23 Mar 2021 17:20:14 -0600
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] remoteproc: pru: Fix firmware loading crashes on K3 SoCs
-Message-ID: <20210323232014.GA1782475@xps15>
-References: <20210315205859.19590-1-s-anna@ti.com>
+        id S231477AbhCXBJv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Mar 2021 21:09:51 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:51064 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230011AbhCXBJc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Mar 2021 21:09:32 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 3E6581C0B7D; Wed, 24 Mar 2021 02:09:29 +0100 (CET)
+Date:   Wed, 24 Mar 2021 02:09:27 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 3/6] dt-bindings: serdev: ngsm: Add binding for GNSS
+ child node
+Message-ID: <20210324010927.GA12937@amd>
+References: <20200512214713.40501-1-tony@atomide.com>
+ <20200512214713.40501-4-tony@atomide.com>
+ <20200527192817.GA2587830@bogus>
+ <20200528095151.GE10358@localhost>
+ <20210305104635.GA16695@duo.ucw.cz>
+ <YEINdpPgud99a7qm@hovoldconsulting.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="gBBFr7Ir9EOA20Yy"
 Content-Disposition: inline
-In-Reply-To: <20210315205859.19590-1-s-anna@ti.com>
+In-Reply-To: <YEINdpPgud99a7qm@hovoldconsulting.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Mar 15, 2021 at 03:58:59PM -0500, Suman Anna wrote:
-> The K3 PRUs are 32-bit processors and in general have some limitations
-> in using the standard ARMv8 memcpy function for loading firmware segments,
-> so the driver already uses a custom memcpy implementation. This added
-> logic however is limited to only IRAMs at the moment, but the loading
-> into Data RAMs is not completely ok either and does generate a kernel
-> crash for unaligned accesses.
-> 
-> Fix these crashes by removing the existing IRAM logic limitation and
-> extending the custom memcpy usage to Data RAMs as well for all K3 SoCs.
-> 
-> Fixes: 1d39f4d19921 ("remoteproc: pru: Add support for various PRU cores on K3 AM65x SoCs")
-> Signed-off-by: Suman Anna <s-anna@ti.com>
 
-Probably a good idea to CC stable as well...
+--gBBFr7Ir9EOA20Yy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-> ---
->  drivers/remoteproc/pru_rproc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
-> index 2667919d76b3..16979c1cd2f4 100644
-> --- a/drivers/remoteproc/pru_rproc.c
-> +++ b/drivers/remoteproc/pru_rproc.c
-> @@ -585,7 +585,7 @@ pru_rproc_load_elf_segments(struct rproc *rproc, const struct firmware *fw)
->  			break;
->  		}
->  
-> -		if (pru->data->is_k3 && is_iram) {
-> +		if (pru->data->is_k3) {
->  			ret = pru_rproc_memcpy(ptr, elf_data + phdr->p_offset,
->  					       filesz);
->  			if (ret) {
-> -- 
-> 2.30.1
-> 
+On Fri 2021-03-05 11:52:38, Johan Hovold wrote:
+> On Fri, Mar 05, 2021 at 11:46:35AM +0100, Pavel Machek wrote:
+> > Hi!
+> >=20
+> > > > > For motorola modem case, we may have a GNSS device on channel 4.
+> > > > > Let's add that to the binding and example.
+> > > > >=20
+> > > > > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > > > > ---
+> > > > >  .../devicetree/bindings/serdev/serdev-ngsm.yaml          | 9 +++=
+++++++
+> > > > >  1 file changed, 9 insertions(+)
+> >=20
+> > >=20
+> > > And since we're describing a mux, I think you need nodes for the virt=
+ual
+> > > ports rather than a reg property in what should be a serial client. T=
+hat
+> > > is something like
+> > >=20
+> > > 	serial@nnn {
+> > > 		modem {
+> > > 			compatible =3D "etsi,ts27001-mux";
+> > >=20
+> > > 			serial@4 {
+> > > 				compatible =3D "etsi,ts27001-serial";
+> > > 				reg =3D <4>;
+> > >=20
+> > > 				gnss {
+> > > 					compatible =3D "motorola,motmdm-gnss";
+> > > 				};
+> > > 			};
+> > > 		};
+> > > 	};
+> > >=20
+> > > This way you can actually use serdev for the client drivers (e.g. for
+> > > gnss), and those drivers also be used for non-muxed ports if needed
+> > > (e.g. over USB).
+> >=20
+> > I have done changes you requested, and then hit "serdev is busy
+> > because it can have at most one child" limit in the code. You have
+> > pretty clean driver in your inbox, and no reply. No help with serdev
+> > core limitations, either. Can you start to communicate?
+>=20
+> It's on my list, but time is limited.
+
+Everyone's time is limited. Do you have any time estimates?
+								Pavel
+
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--gBBFr7Ir9EOA20Yy
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAmBakUcACgkQMOfwapXb+vKILgCguk02XmGCGT45kaSLl4YMEI8t
+Pg8Anj3W57z1I+Jd1ss9/yNRWNRJKPwT
+=lAtf
+-----END PGP SIGNATURE-----
+
+--gBBFr7Ir9EOA20Yy--
