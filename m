@@ -2,88 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1BD034975E
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Mar 2021 17:57:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1675F349834
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Mar 2021 18:37:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbhCYQ4f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Mar 2021 12:56:35 -0400
-Received: from mail-io1-f42.google.com ([209.85.166.42]:45034 "EHLO
-        mail-io1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbhCYQ4O (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Mar 2021 12:56:14 -0400
-Received: by mail-io1-f42.google.com with SMTP id v26so2558963iox.11;
-        Thu, 25 Mar 2021 09:56:14 -0700 (PDT)
+        id S230115AbhCYRgb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Mar 2021 13:36:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35790 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230041AbhCYRg0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Mar 2021 13:36:26 -0400
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050DAC06174A
+        for <linux-omap@vger.kernel.org>; Thu, 25 Mar 2021 10:36:26 -0700 (PDT)
+Received: by mail-io1-xd34.google.com with SMTP id e8so2703496iok.5
+        for <linux-omap@vger.kernel.org>; Thu, 25 Mar 2021 10:36:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VdRMge6sdV5ktctESiFYyHXwrU2yYoKNxmrhqMmsgLI=;
+        b=sxIVW0xGPaqdod1D5xroR1WaBxP6OVj9rIkErpr3i1SoDZENmnhlvZzq3jBCFNT+du
+         HkDwWD3SXwKChk39ZH01ZvDu5VGSb1YaV1XXprk/p92QQrAK1ntI9v/Mf9Dd4xqsf2wT
+         8IRuW4X9P+9zKsllBMJwznAg6rVzyMmm/mv7PdZISYVep20GNxBLJ+3H9Gk9PGgCIopm
+         rn4ud13+0IAg8JwmMftLbo76hCNEBk7JwcXxnLhehQopFoJRJmy7I9vo0oJBCDQJ1jjM
+         Yn7Q5S7C6IIP0sTWmXZz0qIuNdwK9V1hiHtTFfxCafZipgbC6/I+hh7LKw2gG32ZLgXc
+         1AZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=+Byms4pK4Tr8p9R8BbBdKHq/oMBldoupWVsIn9Ftc2U=;
-        b=DkAZn/8PB6QpGcfGryvjMVDp9WjScHfECraFXPAtkNLAZlaZmWSQXI/aXXoPl5R7Xs
-         pOVN1RXS2in3NkE794/1AGLYjsofORC3ZZWj9b3No5Piao7B3YTBlJQd45ERwYUFMHIS
-         ZUB+EYJQu0tIS2Ly970kjj01rvkZDNzMopsdXKDqrr4RYRv4s6U72yoft/dezDHYL4bl
-         59AP/rjb6jahA5RxSJWtDopfu6oZbHxHVqpGMd4TSDbQauQP5ZB0xCR+h6ieQvyBSZWr
-         2QFevOf49I9Yo1Ct1KRhWK9TiP0k5UsoyS9jW+X2mV9HBgtpwV3eryUaO6kCwifudntb
-         Vj/Q==
-X-Gm-Message-State: AOAM531s6IAULgOycODLWwLuW8XQ9u826TZcjtsfx7ebhVML2Hv6RcfG
-        C6nlOfDYLmPRoLuOUCT3CQIhJyMN+g==
-X-Google-Smtp-Source: ABdhPJxyw7HD5gin3k4/HN2QE7YpG8aa4kqpYdKljz5sArazZpNs7Hl/KxaTDan9f5FMYUtPEI2+jw==
-X-Received: by 2002:a05:6602:2018:: with SMTP id y24mr7304821iod.74.1616691373920;
-        Thu, 25 Mar 2021 09:56:13 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id o23sm2994475ioo.24.2021.03.25.09.56.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Mar 2021 09:56:12 -0700 (PDT)
-Received: (nullmailer pid 1321893 invoked by uid 1000);
-        Thu, 25 Mar 2021 16:56:01 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-omap@vger.kernel.org, Tom Joseph <tjoseph@cadence.com>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lokesh Vutla <lokeshvutla@ti.com>
-In-Reply-To: <20210325090936.9306-2-kishon@ti.com>
-References: <20210325090936.9306-1-kishon@ti.com> <20210325090936.9306-2-kishon@ti.com>
-Subject: Re: [PATCH 1/4] dt-bindings: PCI: ti, j721e: Add bindings to specify legacy interrupts
-Date:   Thu, 25 Mar 2021 10:56:01 -0600
-Message-Id: <1616691361.062216.1321892.nullmailer@robh.at.kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VdRMge6sdV5ktctESiFYyHXwrU2yYoKNxmrhqMmsgLI=;
+        b=OINyAiRlKBgGU6veeRfqPdAmfJVOQrO3ni+kmDEFtLC2PouuAS8tkDhXFskSmhva35
+         n7BJk8lGFQwcBL0DUelchNcUOGeDP5UnrVM/GLyU8f/mNYPlRpqbB7/pMGLv0PExyEDf
+         P4lDEE/CmR4bTQW4nXRcyzDmHTKxf6M6KIyKsVDkvo6nxRuMdQOAzMrWDd3sXBnc+KRg
+         IYVuJwrobpGo/yUkosOXnjwdXx2DMUW3SdOim4ULU58VZsOwEee6oK8YymoNgmb6Ukuo
+         j+8c4OX/YNjF6soxl8+/DJTKlkdX2PXsKFr/LbxkuixHzaqv9OyEs1q2t2DQ4JURkYEz
+         tYig==
+X-Gm-Message-State: AOAM531wpE+0O4sZpN9oOW4Lt9jBH3Re7DqKV6j8YM6T18A5GXxfMRKt
+        l/Nwk8K92NDa4PWK0bXNEnOT+7LPliBi2QQWbeTHSg==
+X-Google-Smtp-Source: ABdhPJwYh/LvLq5CzlRSuR5Ap+0Jdp6R+ZxP6fBfPH97VRXkhW6qBS/78XiXeEl1k1fe8eV+JXKIWx5cq7xtnMnU5Ms=
+X-Received: by 2002:a05:6638:1390:: with SMTP id w16mr8544589jad.83.1616693785388;
+ Thu, 25 Mar 2021 10:36:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210315205859.19590-1-s-anna@ti.com> <20210323232014.GA1782475@xps15>
+ <2f8bfc4f-e43d-5e38-fc6d-7045c69af364@ti.com>
+In-Reply-To: <2f8bfc4f-e43d-5e38-fc6d-7045c69af364@ti.com>
+From:   Mathieu Poirier <mathieu.poirier@linaro.org>
+Date:   Thu, 25 Mar 2021 11:36:14 -0600
+Message-ID: <CANLsYkw75yTfzXBOV4u03XETYH4zfOPUozKRxp=RroYvzfXR9Q@mail.gmail.com>
+Subject: Re: [PATCH] remoteproc: pru: Fix firmware loading crashes on K3 SoCs
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-remoteproc <linux-remoteproc@vger.kernel.org>,
+        linux-omap@vger.kernel.org,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 25 Mar 2021 14:39:33 +0530, Kishon Vijay Abraham I wrote:
-> Add bindings to specify interrupt controller for legacy interrupts.
-> 
-> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-> ---
->  .../devicetree/bindings/pci/ti,j721e-pci-host.yaml  | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
+On Wed, 24 Mar 2021 at 11:09, Suman Anna <s-anna@ti.com> wrote:
+>
+> On 3/23/21 6:20 PM, Mathieu Poirier wrote:
+> > On Mon, Mar 15, 2021 at 03:58:59PM -0500, Suman Anna wrote:
+> >> The K3 PRUs are 32-bit processors and in general have some limitations
+> >> in using the standard ARMv8 memcpy function for loading firmware segments,
+> >> so the driver already uses a custom memcpy implementation. This added
+> >> logic however is limited to only IRAMs at the moment, but the loading
+> >> into Data RAMs is not completely ok either and does generate a kernel
+> >> crash for unaligned accesses.
+> >>
+> >> Fix these crashes by removing the existing IRAM logic limitation and
+> >> extending the custom memcpy usage to Data RAMs as well for all K3 SoCs.
+> >>
+> >> Fixes: 1d39f4d19921 ("remoteproc: pru: Add support for various PRU cores on K3 AM65x SoCs")
+> >> Signed-off-by: Suman Anna <s-anna@ti.com>
+> >
+> > Probably a good idea to CC stable as well...
+> >
+> > Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+>
+> Thanks Mathieu. This patch is already staged on Bjorn's rproc-fixes branch
+> though and part of linux-next since next-20210319. I have posted an additional
+> 3-patch series for some more PRU fixes. Do you want me to post a v2 for those
+> with stable Cc'd?
 
-My bot found errors running 'make dt_binding_check' on your patch:
+I didn't notice Bjorn had already picked it up.  Since the object is
+now public there is no need to send a V2 for this one.  I haven't
+looked at your other 3-patch series but if you think it is stable
+material then yes, please send a new revision that CC stable.
 
-yamllint warnings/errors:
+Mathieu
 
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/pci/ti,j721e-pci-host.example.dts:59.39-40 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:349: Documentation/devicetree/bindings/pci/ti,j721e-pci-host.example.dt.yaml] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1380: dt_binding_check] Error 2
-
-See https://patchwork.ozlabs.org/patch/1458255
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+>
+> regards
+> Suman
+>
+> >
+> >> ---
+> >>  drivers/remoteproc/pru_rproc.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+> >> index 2667919d76b3..16979c1cd2f4 100644
+> >> --- a/drivers/remoteproc/pru_rproc.c
+> >> +++ b/drivers/remoteproc/pru_rproc.c
+> >> @@ -585,7 +585,7 @@ pru_rproc_load_elf_segments(struct rproc *rproc, const struct firmware *fw)
+> >>                      break;
+> >>              }
+> >>
+> >> -            if (pru->data->is_k3 && is_iram) {
+> >> +            if (pru->data->is_k3) {
+> >>                      ret = pru_rproc_memcpy(ptr, elf_data + phdr->p_offset,
+> >>                                             filesz);
+> >>                      if (ret) {
+> >> --
+> >> 2.30.1
+> >>
+>
