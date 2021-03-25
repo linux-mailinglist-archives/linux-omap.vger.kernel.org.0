@@ -2,126 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1675F349834
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Mar 2021 18:37:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70A4D349AD5
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Mar 2021 21:10:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230115AbhCYRgb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Mar 2021 13:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35790 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230041AbhCYRg0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Mar 2021 13:36:26 -0400
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050DAC06174A
-        for <linux-omap@vger.kernel.org>; Thu, 25 Mar 2021 10:36:26 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id e8so2703496iok.5
-        for <linux-omap@vger.kernel.org>; Thu, 25 Mar 2021 10:36:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VdRMge6sdV5ktctESiFYyHXwrU2yYoKNxmrhqMmsgLI=;
-        b=sxIVW0xGPaqdod1D5xroR1WaBxP6OVj9rIkErpr3i1SoDZENmnhlvZzq3jBCFNT+du
-         HkDwWD3SXwKChk39ZH01ZvDu5VGSb1YaV1XXprk/p92QQrAK1ntI9v/Mf9Dd4xqsf2wT
-         8IRuW4X9P+9zKsllBMJwznAg6rVzyMmm/mv7PdZISYVep20GNxBLJ+3H9Gk9PGgCIopm
-         rn4ud13+0IAg8JwmMftLbo76hCNEBk7JwcXxnLhehQopFoJRJmy7I9vo0oJBCDQJ1jjM
-         Yn7Q5S7C6IIP0sTWmXZz0qIuNdwK9V1hiHtTFfxCafZipgbC6/I+hh7LKw2gG32ZLgXc
-         1AZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VdRMge6sdV5ktctESiFYyHXwrU2yYoKNxmrhqMmsgLI=;
-        b=OINyAiRlKBgGU6veeRfqPdAmfJVOQrO3ni+kmDEFtLC2PouuAS8tkDhXFskSmhva35
-         n7BJk8lGFQwcBL0DUelchNcUOGeDP5UnrVM/GLyU8f/mNYPlRpqbB7/pMGLv0PExyEDf
-         P4lDEE/CmR4bTQW4nXRcyzDmHTKxf6M6KIyKsVDkvo6nxRuMdQOAzMrWDd3sXBnc+KRg
-         IYVuJwrobpGo/yUkosOXnjwdXx2DMUW3SdOim4ULU58VZsOwEee6oK8YymoNgmb6Ukuo
-         j+8c4OX/YNjF6soxl8+/DJTKlkdX2PXsKFr/LbxkuixHzaqv9OyEs1q2t2DQ4JURkYEz
-         tYig==
-X-Gm-Message-State: AOAM531wpE+0O4sZpN9oOW4Lt9jBH3Re7DqKV6j8YM6T18A5GXxfMRKt
-        l/Nwk8K92NDa4PWK0bXNEnOT+7LPliBi2QQWbeTHSg==
-X-Google-Smtp-Source: ABdhPJwYh/LvLq5CzlRSuR5Ap+0Jdp6R+ZxP6fBfPH97VRXkhW6qBS/78XiXeEl1k1fe8eV+JXKIWx5cq7xtnMnU5Ms=
-X-Received: by 2002:a05:6638:1390:: with SMTP id w16mr8544589jad.83.1616693785388;
- Thu, 25 Mar 2021 10:36:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210315205859.19590-1-s-anna@ti.com> <20210323232014.GA1782475@xps15>
- <2f8bfc4f-e43d-5e38-fc6d-7045c69af364@ti.com>
-In-Reply-To: <2f8bfc4f-e43d-5e38-fc6d-7045c69af364@ti.com>
-From:   Mathieu Poirier <mathieu.poirier@linaro.org>
-Date:   Thu, 25 Mar 2021 11:36:14 -0600
-Message-ID: <CANLsYkw75yTfzXBOV4u03XETYH4zfOPUozKRxp=RroYvzfXR9Q@mail.gmail.com>
+        id S230263AbhCYUKH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Mar 2021 16:10:07 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:55352 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229977AbhCYUJ4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Mar 2021 16:09:56 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 12PK9e9X093749;
+        Thu, 25 Mar 2021 15:09:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1616702980;
+        bh=D2vku1A4QvBUs3er+RFyi03Y9hQGsZzmhfOh4GWoyxg=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=RcFJXNF8iaDsCYT1UNDl3ibmGk5VNUk8KVlZ9Qcv6NrVvMmaNH5kbMcZnQI1sYYOd
+         vkG7+x/LbuKOCTBDlNDrCZChOxPdESbJSocAQy4FEcgIguibpDVp6/y0VUc/AqxfDP
+         ezhynDXb/du9Okgv+ztHYJC9cm0wni7UPFENFyr8=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 12PK9eIe001197
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 25 Mar 2021 15:09:40 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 25
+ Mar 2021 15:09:40 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Thu, 25 Mar 2021 15:09:40 -0500
+Received: from [10.250.33.213] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 12PK9edB130879;
+        Thu, 25 Mar 2021 15:09:40 -0500
 Subject: Re: [PATCH] remoteproc: pru: Fix firmware loading crashes on K3 SoCs
-To:     Suman Anna <s-anna@ti.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+To:     Mathieu Poirier <mathieu.poirier@linaro.org>
+CC:     Bjorn Andersson <bjorn.andersson@linaro.org>,
         Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
         Jan Kiszka <jan.kiszka@siemens.com>,
         Lokesh Vutla <lokeshvutla@ti.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-remoteproc <linux-remoteproc@vger.kernel.org>,
-        linux-omap@vger.kernel.org,
+        <linux-omap@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20210315205859.19590-1-s-anna@ti.com>
+ <20210323232014.GA1782475@xps15>
+ <2f8bfc4f-e43d-5e38-fc6d-7045c69af364@ti.com>
+ <CANLsYkw75yTfzXBOV4u03XETYH4zfOPUozKRxp=RroYvzfXR9Q@mail.gmail.com>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <eac64cf8-79bf-692d-8884-2cb340598e04@ti.com>
+Date:   Thu, 25 Mar 2021 15:09:40 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <CANLsYkw75yTfzXBOV4u03XETYH4zfOPUozKRxp=RroYvzfXR9Q@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 24 Mar 2021 at 11:09, Suman Anna <s-anna@ti.com> wrote:
->
-> On 3/23/21 6:20 PM, Mathieu Poirier wrote:
-> > On Mon, Mar 15, 2021 at 03:58:59PM -0500, Suman Anna wrote:
-> >> The K3 PRUs are 32-bit processors and in general have some limitations
-> >> in using the standard ARMv8 memcpy function for loading firmware segments,
-> >> so the driver already uses a custom memcpy implementation. This added
-> >> logic however is limited to only IRAMs at the moment, but the loading
-> >> into Data RAMs is not completely ok either and does generate a kernel
-> >> crash for unaligned accesses.
-> >>
-> >> Fix these crashes by removing the existing IRAM logic limitation and
-> >> extending the custom memcpy usage to Data RAMs as well for all K3 SoCs.
-> >>
-> >> Fixes: 1d39f4d19921 ("remoteproc: pru: Add support for various PRU cores on K3 AM65x SoCs")
-> >> Signed-off-by: Suman Anna <s-anna@ti.com>
-> >
-> > Probably a good idea to CC stable as well...
-> >
-> > Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
->
-> Thanks Mathieu. This patch is already staged on Bjorn's rproc-fixes branch
-> though and part of linux-next since next-20210319. I have posted an additional
-> 3-patch series for some more PRU fixes. Do you want me to post a v2 for those
-> with stable Cc'd?
+On 3/25/21 12:36 PM, Mathieu Poirier wrote:
+> On Wed, 24 Mar 2021 at 11:09, Suman Anna <s-anna@ti.com> wrote:
+>>
+>> On 3/23/21 6:20 PM, Mathieu Poirier wrote:
+>>> On Mon, Mar 15, 2021 at 03:58:59PM -0500, Suman Anna wrote:
+>>>> The K3 PRUs are 32-bit processors and in general have some limitations
+>>>> in using the standard ARMv8 memcpy function for loading firmware segments,
+>>>> so the driver already uses a custom memcpy implementation. This added
+>>>> logic however is limited to only IRAMs at the moment, but the loading
+>>>> into Data RAMs is not completely ok either and does generate a kernel
+>>>> crash for unaligned accesses.
+>>>>
+>>>> Fix these crashes by removing the existing IRAM logic limitation and
+>>>> extending the custom memcpy usage to Data RAMs as well for all K3 SoCs.
+>>>>
+>>>> Fixes: 1d39f4d19921 ("remoteproc: pru: Add support for various PRU cores on K3 AM65x SoCs")
+>>>> Signed-off-by: Suman Anna <s-anna@ti.com>
+>>>
+>>> Probably a good idea to CC stable as well...
+>>>
+>>> Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+>>
+>> Thanks Mathieu. This patch is already staged on Bjorn's rproc-fixes branch
+>> though and part of linux-next since next-20210319. I have posted an additional
+>> 3-patch series for some more PRU fixes. Do you want me to post a v2 for those
+>> with stable Cc'd?
+> 
+> I didn't notice Bjorn had already picked it up.  Since the object is
+> now public there is no need to send a V2 for this one.  I haven't
+> looked at your other 3-patch series but if you think it is stable
+> material then yes, please send a new revision that CC stable.
 
-I didn't notice Bjorn had already picked it up.  Since the object is
-now public there is no need to send a V2 for this one.  I haven't
-looked at your other 3-patch series but if you think it is stable
-material then yes, please send a new revision that CC stable.
+Alright, will do.
 
-Mathieu
+regards
+Suman
 
->
-> regards
-> Suman
->
-> >
-> >> ---
-> >>  drivers/remoteproc/pru_rproc.c | 2 +-
-> >>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
-> >> index 2667919d76b3..16979c1cd2f4 100644
-> >> --- a/drivers/remoteproc/pru_rproc.c
-> >> +++ b/drivers/remoteproc/pru_rproc.c
-> >> @@ -585,7 +585,7 @@ pru_rproc_load_elf_segments(struct rproc *rproc, const struct firmware *fw)
-> >>                      break;
-> >>              }
-> >>
-> >> -            if (pru->data->is_k3 && is_iram) {
-> >> +            if (pru->data->is_k3) {
-> >>                      ret = pru_rproc_memcpy(ptr, elf_data + phdr->p_offset,
-> >>                                             filesz);
-> >>                      if (ret) {
-> >> --
-> >> 2.30.1
-> >>
->
+> 
+> Mathieu
+> 
+>>
+>> regards
+>> Suman
+>>
+>>>
+>>>> ---
+>>>>  drivers/remoteproc/pru_rproc.c | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+>>>> index 2667919d76b3..16979c1cd2f4 100644
+>>>> --- a/drivers/remoteproc/pru_rproc.c
+>>>> +++ b/drivers/remoteproc/pru_rproc.c
+>>>> @@ -585,7 +585,7 @@ pru_rproc_load_elf_segments(struct rproc *rproc, const struct firmware *fw)
+>>>>                      break;
+>>>>              }
+>>>>
+>>>> -            if (pru->data->is_k3 && is_iram) {
+>>>> +            if (pru->data->is_k3) {
+>>>>                      ret = pru_rproc_memcpy(ptr, elf_data + phdr->p_offset,
+>>>>                                             filesz);
+>>>>                      if (ret) {
+>>>> --
+>>>> 2.30.1
+>>>>
+>>
+
