@@ -2,60 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F5C034A901
-	for <lists+linux-omap@lfdr.de>; Fri, 26 Mar 2021 14:52:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9628634B1AF
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Mar 2021 23:01:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230108AbhCZNvg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 26 Mar 2021 09:51:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41114 "EHLO mail.kernel.org"
+        id S230436AbhCZWAh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 26 Mar 2021 18:00:37 -0400
+Received: from mga04.intel.com ([192.55.52.120]:61331 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230203AbhCZNvR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 26 Mar 2021 09:51:17 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0AE1E61971;
-        Fri, 26 Mar 2021 13:51:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1616766676;
-        bh=3yxu25BCyXJuNRSnfqli1QuGuzszCOUzkRm5a7AUprg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pLD8TjjGbcl1RYgn2bQ81BR4ivofFupKbksBNMoMTvZbkKJzgJMng9etNxZ9RYaeS
-         rcWEc1LSn6aYeDUod3OqbxbWGPSWE1nb2Sj2+VNJNOLSgjIC1mPVKWdh9c73bSmopN
-         lbps7/eiVuEhVFpFW+QoIMzFEBPY9z3lKP5G1SzU=
-Date:   Fri, 26 Mar 2021 14:51:14 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Bin Liu <b-liu@ti.com>, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org, Bhushan Shah <bshah@kde.org>
-Subject: Re: [PATCH RESEND] usb: musb: Fix suspend with devices connected for
- a64
-Message-ID: <YF3m0jAOfIT/ounG@kroah.com>
-References: <20210324071142.42264-1-tony@atomide.com>
+        id S230076AbhCZWAS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 26 Mar 2021 18:00:18 -0400
+IronPort-SDR: tgDjlUKxqiWb+UA/Za2tn9Xm31NjnKHx0ZO+i5qvKogGzoSAleCrp0WCibgZFT/kmB3clMjtK1
+ vCLqPx+rNH2Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9935"; a="188957161"
+X-IronPort-AV: E=Sophos;i="5.81,281,1610438400"; 
+   d="scan'208";a="188957161"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2021 15:00:17 -0700
+IronPort-SDR: L69N9VpMxxYFEMXkpmZM/AoW24ukbCE7ajCVSK54wsNGlrbfNhw4hIsTWntdYiyBR1RF8VVD1d
+ SfVNsZVn7PwQ==
+X-IronPort-AV: E=Sophos;i="5.81,281,1610438400"; 
+   d="scan'208";a="416706915"
+Received: from zcmahone-mobl1.amr.corp.intel.com (HELO pbossart-mobl3.intel.com) ([10.255.231.203])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2021 15:00:16 -0700
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+To:     alsa-devel@alsa-project.org
+Cc:     tiwai@suse.de, broonie@kernel.org, linux-kernel@vger.kernel.org,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        linux-omap@vger.kernel.org (open list:OMAP AUDIO SUPPORT)
+Subject: [PATCH 14/17] ASoC: ti: omap-abe-twl6040: remove useless assignment
+Date:   Fri, 26 Mar 2021 16:59:24 -0500
+Message-Id: <20210326215927.936377-15-pierre-louis.bossart@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210326215927.936377-1-pierre-louis.bossart@linux.intel.com>
+References: <20210326215927.936377-1-pierre-louis.bossart@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210324071142.42264-1-tony@atomide.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Mar 24, 2021 at 09:11:41AM +0200, Tony Lindgren wrote:
-> Pinephone running on Allwinner A64 fails to suspend with USB devices
-> connected as reported by Bhushan Shah <bshah@kde.org>. Reverting
-> commit 5fbf7a253470 ("usb: musb: fix idling for suspend after
-> disconnect interrupt") fixes the issue.
-> 
-> Let's add suspend checks also for suspend after disconnect interrupt
-> quirk handling like we already do elsewhere.
-> 
-> Fixes: 5fbf7a253470 ("usb: musb: fix idling for suspend after disconnect interrupt")
-> Reported-by: Bhushan Shah <bshah@kde.org>
-> Tested-by: Bhushan Shah <bshah@kde.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> 
-> ---
-> 
-> Looks like this fix is still pending, can you guys please apply? This is also
-> needed on am335x to suspend with devices connected in addition to a64
+cppcheck warning:
 
-Now queued up, thanks.
+sound/soc/ti/omap-abe-twl6040.c:173:10: style: Variable 'ret' is
+assigned a value that is never used. [unreadVariable]
+ int ret = 0;
+         ^
 
-greg k-h
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+---
+ sound/soc/ti/omap-abe-twl6040.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/soc/ti/omap-abe-twl6040.c b/sound/soc/ti/omap-abe-twl6040.c
+index 16ea039ff865..91cc9a4f44d7 100644
+--- a/sound/soc/ti/omap-abe-twl6040.c
++++ b/sound/soc/ti/omap-abe-twl6040.c
+@@ -170,7 +170,7 @@ static int omap_abe_twl6040_init(struct snd_soc_pcm_runtime *rtd)
+ 	struct snd_soc_card *card = rtd->card;
+ 	struct abe_twl6040 *priv = snd_soc_card_get_drvdata(card);
+ 	int hs_trim;
+-	int ret = 0;
++	int ret;
+ 
+ 	/*
+ 	 * Configure McPDM offset cancellation based on the HSOTRIM value from
+-- 
+2.25.1
+
