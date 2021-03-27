@@ -2,89 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 986AF34B1AD
-	for <lists+linux-omap@lfdr.de>; Fri, 26 Mar 2021 23:01:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D1234B38E
+	for <lists+linux-omap@lfdr.de>; Sat, 27 Mar 2021 02:38:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230449AbhCZWAh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 26 Mar 2021 18:00:37 -0400
-Received: from mga04.intel.com ([192.55.52.120]:61331 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230416AbhCZWAT (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 26 Mar 2021 18:00:19 -0400
-IronPort-SDR: NIURe4pAK8sVOlm6nK+bg7e2KehHkYVENbnSXyGgOFC022Ne8zyCvBtnI7Gk8YlRK1+U6hl/xS
- nYC0f3YLQWhw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9935"; a="188957164"
-X-IronPort-AV: E=Sophos;i="5.81,281,1610438400"; 
-   d="scan'208";a="188957164"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2021 15:00:18 -0700
-IronPort-SDR: ASrSkSy8ZzswgpddkfExnkweIrF0cmWYNKVfEIkWOgDZgL5x4QQMuVTx979VYSanpiBWsvpsoE
- oMy7OKeqDUbw==
-X-IronPort-AV: E=Sophos;i="5.81,281,1610438400"; 
-   d="scan'208";a="416706935"
-Received: from zcmahone-mobl1.amr.corp.intel.com (HELO pbossart-mobl3.intel.com) ([10.255.231.203])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2021 15:00:17 -0700
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-To:     alsa-devel@alsa-project.org
-Cc:     tiwai@suse.de, broonie@kernel.org, linux-kernel@vger.kernel.org,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        linux-omap@vger.kernel.org (open list:OMAP AUDIO SUPPORT)
-Subject: [PATCH 15/17] ASoC: ti: omap-mcsp: remove duplicate test
-Date:   Fri, 26 Mar 2021 16:59:25 -0500
-Message-Id: <20210326215927.936377-16-pierre-louis.bossart@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210326215927.936377-1-pierre-louis.bossart@linux.intel.com>
-References: <20210326215927.936377-1-pierre-louis.bossart@linux.intel.com>
+        id S230131AbhC0BiU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 26 Mar 2021 21:38:20 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:14493 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230114AbhC0BiG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 26 Mar 2021 21:38:06 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F6hJ30czdzySC3;
+        Sat, 27 Mar 2021 09:36:03 +0800 (CST)
+Received: from thunder-town.china.huawei.com (10.174.179.202) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.498.0; Sat, 27 Mar 2021 09:37:57 +0800
+From:   Zhen Lei <thunder.leizhen@huawei.com>
+To:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+        "Zhang Rui" <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "Amit Kucheria" <amitk@kernel.org>,
+        linux-pm <linux-pm@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+CC:     Zhen Lei <thunder.leizhen@huawei.com>
+Subject: [PATCH 1/1] thermal: ti-soc-thermal: Remove duplicated header file inclusion
+Date:   Sat, 27 Mar 2021 09:37:48 +0800
+Message-ID: <20210327013749.1765-1-thunder.leizhen@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.174.179.202]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-cppcheck warning:
+The header file <linux/of_device.h> is already included above and can be
+removed here.
 
-sound/soc/ti/omap-mcbsp.c:379:11: style: The if condition is the same
-as the previous if condition [duplicateCondition]
-
- if (mcbsp->irq) {
-          ^
-sound/soc/ti/omap-mcbsp.c:376:11: note: First condition
- if (mcbsp->irq)
-          ^
-sound/soc/ti/omap-mcbsp.c:379:11: note: Second condition
- if (mcbsp->irq) {
-          ^
-
-Keeping two separate tests was probably intentional for clarity, but
-since this generates warnings we might as well make cppcheck happy so
-that we have fewer warnings.
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
 ---
- sound/soc/ti/omap-mcbsp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/thermal/ti-soc-thermal/ti-bandgap.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index 6025b30bbe77..db47981768c5 100644
---- a/sound/soc/ti/omap-mcbsp.c
-+++ b/sound/soc/ti/omap-mcbsp.c
-@@ -373,10 +373,9 @@ static void omap_mcbsp_free(struct omap_mcbsp *mcbsp)
- 		MCBSP_WRITE(mcbsp, WAKEUPEN, 0);
+diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
+index 8a3646e26ddd208..d81af89166d2360 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
++++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
+@@ -32,7 +32,6 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/pm.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
  
- 	/* Disable interrupt requests */
--	if (mcbsp->irq)
-+	if (mcbsp->irq) {
- 		MCBSP_WRITE(mcbsp, IRQEN, 0);
+ #include "ti-bandgap.h"
  
--	if (mcbsp->irq) {
- 		free_irq(mcbsp->irq, (void *)mcbsp);
- 	} else {
- 		free_irq(mcbsp->rx_irq, (void *)mcbsp);
 -- 
-2.25.1
+1.8.3
+
 
