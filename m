@@ -2,54 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F36CE34C351
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Mar 2021 07:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E74D34C35D
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Mar 2021 07:56:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229910AbhC2FwU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Mar 2021 01:52:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44340 "EHLO
+        id S229709AbhC2Fzc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Mar 2021 01:55:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230420AbhC2Fvz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Mar 2021 01:51:55 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58CBDC061574;
-        Sun, 28 Mar 2021 22:51:55 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id b83so16585929lfd.11;
-        Sun, 28 Mar 2021 22:51:55 -0700 (PDT)
+        with ESMTP id S229483AbhC2FzN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Mar 2021 01:55:13 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45C06C061574;
+        Sun, 28 Mar 2021 22:55:13 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id a1so14551824ljp.2;
+        Sun, 28 Mar 2021 22:55:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RTLEyGYV7yZnyiywVX1eOKOUOm0dlrQWocBPAeC79ME=;
-        b=hNAHBojYISzngalmZZEPtvRBfhgwq4l7m6YkXQek8/1QFA2rul3OVIBvlStI01aBHC
-         hxo9w3v7g05OYpns2vmFULGfBkX3dE1exCo6nX+P4Qc4/JSzgT2VPVSjSUQ2NonW2GYW
-         YDj0OUyKAwGXNc08nvbkhEu/8Xu6D0YL9enJTsggteQnKCOrjK2Onvb8rjCRt4boYdPX
-         Madcp2QIdCcHzrR+lrF9eEtm+54C6WoNmW808AtKEZWFvHGAfrcs6KB+XZdLzL/B45QS
-         0ETnX78rbx3ECTEcNkAsP9sTRdBRwWD7ARh5htEPboxnb4juYxjT9TiQCv8RqcS77diM
-         bULQ==
+        bh=AFwBwKQmaZvAfek2ylzBqiy9Pmq25T+2fBHpaiUkdFo=;
+        b=ZbwEUR9JiKBgSN5xGYMSv85NfiSzlVg2dL14PH4e7nqVuN6qo7uIt5SmS972nqkDcu
+         9IgSQaYwfdWjeiqmBwgBnSz7YO7l5UaLDXYmJrsw7AHjJ3G6CVezmRFq913T3XfU1ghR
+         g+64Y9UyuuJ6Qyvm+IcNbLtCrceI3QSWjzvOT24AiBoQa9gQJy1WK70xyUVHDlQ3P9r2
+         XkNI5MzdfrBaKISfHjpEK4h+PXdELvnrKTesw2QDKe/LNDKIjuWArxntQjqyDOvtJSCB
+         Ddtg7GRh7ofETihb9mbi8mlceZe7Zw7ejPPS/HLtO8sdCirnrnI3no/dhGY0xWEprIPP
+         MaBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=RTLEyGYV7yZnyiywVX1eOKOUOm0dlrQWocBPAeC79ME=;
-        b=hP4rHLicsaiQlU+IRZYmVi/2UEunNLVZUXJW9g5mKBF8Svf8d1EGR+fjrcV/s8ZIXi
-         YJr/ozkJ0qbkZRh/2v6WSjZVjgkf0JExswjcctFP5ATND/5IgOhP1UBcHqC7JRNdTJle
-         MTWMIew8Y7mKKUU77sQ+q4nx0EcFI1cZSDpbJLFZSTNI3XCU5C3H4/IEaalBrvTHuyvV
-         rrWHsAvxKLyC6NJipNzO4r8hCl5ig9nHT1PuJCTbb6A8FIwQdKsfw3DpEbwI45+S7tOE
-         mZVokSjpikQwPz3il02d/E0XeOtd3wSFaUqEiWb4XD8lpct3iI/HJFtGZWRgOgkUZAO6
-         OX/w==
-X-Gm-Message-State: AOAM5311LU49dQjF4PPE82G5ZzSm3QUED69tl1fRDbarK9gS3/g1XSB7
-        dHIQtHNd6aZdtSmhg/XcyAEhZbkeWYc=
-X-Google-Smtp-Source: ABdhPJzUmHX+nuyzaEP26EJ10aru8aZC9ARy5zb2nWO8j/0CzMhFhLBvwpv8cuYyGvkhN9urB6hxlg==
-X-Received: by 2002:a05:6512:36c8:: with SMTP id e8mr14779024lfs.635.1616997113586;
-        Sun, 28 Mar 2021 22:51:53 -0700 (PDT)
+        bh=AFwBwKQmaZvAfek2ylzBqiy9Pmq25T+2fBHpaiUkdFo=;
+        b=I8BhtGcGIQ6ktGXOvgguLboCvwUio224ejl9BGvLzhXCECdRIRKs0giCXGN9vzxMDN
+         zgHbU+BUIP0bPbG0rkIlhcHfFMv2UioY30+O4twT7o0XWcJfo5iWSmAvtolCoa5++e9u
+         t/8iQ75VRJIC60v/PJ5gOjghpCqMcyRoPZMu/NK7VHKGqjO4aVFA889ucj1o11cdwGx6
+         3PUw8doUdXNgpaweKAMCTtgIkj7hDx9XsEjOmzsFxB8S/KIjPGaC3YEvhjG204uWhJP8
+         pubm3yAg0C+1zhT9B2YRuyweaCQU3K2NyXIeYf2v9CZmeTnbA7CBktH32jl9dbNPFpP3
+         sIiQ==
+X-Gm-Message-State: AOAM533wYI4WCs5VDIAKGSqy5q2vVl7kYaVJaQUELscuTfcEOmY13OQX
+        yCfUbLGCmuMVaVLQRAS2Hc/AqcnZPyr08w==
+X-Google-Smtp-Source: ABdhPJzpmYL7y4TlZmnpGM1IV/tUVOJPf//OV0otEsKWBQkvYtfnUG5H++Svfy/AiLhizNJHdlSy0A==
+X-Received: by 2002:a2e:974d:: with SMTP id f13mr16880816ljj.210.1616997311512;
+        Sun, 28 Mar 2021 22:55:11 -0700 (PDT)
 Received: from [10.0.0.42] (91-157-86-200.elisa-laajakaista.fi. [91.157.86.200])
-        by smtp.gmail.com with ESMTPSA id n18sm1360128lfl.148.2021.03.28.22.51.52
+        by smtp.gmail.com with ESMTPSA id i22sm2311894ljn.56.2021.03.28.22.55.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 28 Mar 2021 22:51:53 -0700 (PDT)
-Subject: Re: [PATCH 14/17] ASoC: ti: omap-abe-twl6040: remove useless
- assignment
+        Sun, 28 Mar 2021 22:55:10 -0700 (PDT)
+Subject: Re: [PATCH 15/17] ASoC: ti: omap-mcsp: remove duplicate test
 To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
         alsa-devel@alsa-project.org
 Cc:     tiwai@suse.de, broonie@kernel.org, linux-kernel@vger.kernel.org,
@@ -59,14 +58,14 @@ Cc:     tiwai@suse.de, broonie@kernel.org, linux-kernel@vger.kernel.org,
         Takashi Iwai <tiwai@suse.com>,
         "open list:OMAP AUDIO SUPPORT" <linux-omap@vger.kernel.org>
 References: <20210326215927.936377-1-pierre-louis.bossart@linux.intel.com>
- <20210326215927.936377-15-pierre-louis.bossart@linux.intel.com>
+ <20210326215927.936377-16-pierre-louis.bossart@linux.intel.com>
 From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
-Message-ID: <c21d4306-4219-009c-289a-14aa5bb7f241@gmail.com>
-Date:   Mon, 29 Mar 2021 08:52:45 +0300
+Message-ID: <38488f20-a155-607d-464e-9461e50bc765@gmail.com>
+Date:   Mon, 29 Mar 2021 08:56:03 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.9.0
 MIME-Version: 1.0
-In-Reply-To: <20210326215927.936377-15-pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <20210326215927.936377-16-pierre-louis.bossart@linux.intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -74,38 +73,53 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
+Hi Pierre,
 
 On 3/26/21 11:59 PM, Pierre-Louis Bossart wrote:
 > cppcheck warning:
 > 
-> sound/soc/ti/omap-abe-twl6040.c:173:10: style: Variable 'ret' is
-> assigned a value that is never used. [unreadVariable]
->  int ret = 0;
->          ^
+> sound/soc/ti/omap-mcbsp.c:379:11: style: The if condition is the same
+> as the previous if condition [duplicateCondition]
+> 
+>  if (mcbsp->irq) {
+>           ^
+> sound/soc/ti/omap-mcbsp.c:376:11: note: First condition
+>  if (mcbsp->irq)
+>           ^
+> sound/soc/ti/omap-mcbsp.c:379:11: note: Second condition
+>  if (mcbsp->irq) {
+>           ^
+> 
+> Keeping two separate tests was probably intentional for clarity, but
+> since this generates warnings we might as well make cppcheck happy so
+> that we have fewer warnings.
 
-Thanks,
+There might be other historical reasons why it ended up like this but
+merging them does not make it less cleaner.
+
 Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
 
-> 
 > Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 > ---
->  sound/soc/ti/omap-abe-twl6040.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  sound/soc/ti/omap-mcbsp.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/sound/soc/ti/omap-abe-twl6040.c b/sound/soc/ti/omap-abe-twl6040.c
-> index 16ea039ff865..91cc9a4f44d7 100644
-> --- a/sound/soc/ti/omap-abe-twl6040.c
-> +++ b/sound/soc/ti/omap-abe-twl6040.c
-> @@ -170,7 +170,7 @@ static int omap_abe_twl6040_init(struct snd_soc_pcm_runtime *rtd)
->  	struct snd_soc_card *card = rtd->card;
->  	struct abe_twl6040 *priv = snd_soc_card_get_drvdata(card);
->  	int hs_trim;
-> -	int ret = 0;
-> +	int ret;
+> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+> index 6025b30bbe77..db47981768c5 100644
+> --- a/sound/soc/ti/omap-mcbsp.c
+> +++ b/sound/soc/ti/omap-mcbsp.c
+> @@ -373,10 +373,9 @@ static void omap_mcbsp_free(struct omap_mcbsp *mcbsp)
+>  		MCBSP_WRITE(mcbsp, WAKEUPEN, 0);
 >  
->  	/*
->  	 * Configure McPDM offset cancellation based on the HSOTRIM value from
+>  	/* Disable interrupt requests */
+> -	if (mcbsp->irq)
+> +	if (mcbsp->irq) {
+>  		MCBSP_WRITE(mcbsp, IRQEN, 0);
+>  
+> -	if (mcbsp->irq) {
+>  		free_irq(mcbsp->irq, (void *)mcbsp);
+>  	} else {
+>  		free_irq(mcbsp->rx_irq, (void *)mcbsp);
 > 
 
 -- 
