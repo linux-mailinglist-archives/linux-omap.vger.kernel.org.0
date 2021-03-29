@@ -2,26 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2F1A34C55B
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Mar 2021 09:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C5D734C55E
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Mar 2021 09:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229441AbhC2Hzz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S229762AbhC2Hzz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Mon, 29 Mar 2021 03:55:55 -0400
-Received: from muru.com ([72.249.23.125]:48346 "EHLO muru.com"
+Received: from muru.com ([72.249.23.125]:48356 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229762AbhC2Hzg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 29 Mar 2021 03:55:36 -0400
+        id S230319AbhC2Hzk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 29 Mar 2021 03:55:40 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 2D7418111;
-        Mon, 29 Mar 2021 07:56:37 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 304CA811B;
+        Mon, 29 Mar 2021 07:56:41 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     soc@kernel.org
 Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 2/3] Devicetree changes for omaps for genpd support
-Date:   Mon, 29 Mar 2021 10:55:21 +0300
-Message-Id: <pull-1617004205-537424@atomide.com-2>
+Subject: [GIT PULL 3/3] Drop legacy data for dra7 and omap4/5 and clean-up
+Date:   Mon, 29 Mar 2021 10:55:22 +0300
+Message-Id: <pull-1617004205-537424@atomide.com-3>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <pull-1617004205-537424@atomide.com>
 References: <pull-1617004205-537424@atomide.com>
@@ -34,82 +34,96 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: "Tony Lindgren" <tony@atomide.com>
 
-The following changes since commit e259c2926c016dd815e5547412356d378fc1f589:
-
-  PCI: pci-dra7xx: Prepare for deferred probe with module_platform_driver (2021-03-10 14:01:00 +0200)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.13/dts-genpd-signed
-
-for you to fetch changes up to 083516ad540a1104a0ae5ae7e83f2a2d8e39d2bc:
+The following changes since commit 083516ad540a1104a0ae5ae7e83f2a2d8e39d2bc:
 
   Merge tags 'genpd-dts-dra7', 'genpd-dts-omap4' and 'genpd-dts-omap5' into omap-for-v5.13/dts-genpd (2021-03-10 14:16:34 +0200)
 
-----------------------------------------------------------------
-Devicetree changes for omaps for genpd support for v5.13
+are available in the Git repository at:
 
-In order to move omap4/5 and dra7 to probe with devicetree data and genpd,
-we need to add the missing interconnect target module configuration for
-the drivers that do not still have it. This is similar to what we have
-already done earlier for am3 and 4 earlier.
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.13/genpd-cleanup-signed
 
-These patches are very much similar for all the three SoCs here. The dra7
-changes were already available for v5.12 merge window, but were considered
-too late to add for v5.12. The patches for omap4 and 5 follow the same
-pattern, except for PCIe that is available only on dra7.
+for you to fetch changes up to 4adcf4c28f6dc191187359bfceee5ab5fe91a50e:
 
-We do the changes one driver at a time, and still keep the legacy property
-for "ti,hwmods" mostly around, except for cases when already not needed.
-We will be dropping the custom property and related legacy data in a
-follow-up series.
+  bus: ti-sysc: Warn about old dtb for dra7 and omap4/5 (2021-03-12 10:23:48 +0200)
 
 ----------------------------------------------------------------
-Tony Lindgren (38):
-      ARM: dts: Update pcie ranges for dra7
-      ARM: dts: Configure interconnect target module for dra7 pcie
-      ARM: dts: Properly configure dra7 edma sysconfig registers
-      ARM: dts: Move dra7 l3 noc to a separate node
-      ARM: dts: Configure interconnect target module for dra7 qspi
-      ARM: dts: Configure interconnect target module for dra7 sata
-      ARM: dts: Configure interconnect target module for dra7 mpu
-      ARM: dts: Configure interconnect target module for dra7 dmm
-      ARM: dts: Configure simple-pm-bus for dra7 l4_wkup
-      ARM: dts: Configure simple-pm-bus for dra7 l4_per1
-      ARM: dts: Configure simple-pm-bus for dra7 l4_per2
-      ARM: dts: Configure simple-pm-bus for dra7 l4_per3
-      ARM: dts: Configure simple-pm-bus for dra7 l4_cfg
-      ARM: dts: Configure simple-pm-bus for dra7 l3
-      ARM: dts: Configure power-domain for omap4 gfx
-      ARM: dts: Configure power-domain for omap4 dts iss
-      ARM: dts: Configure interconnect target module for omap4 dmm
-      ARM: dts: Configure interconnect target module for omap4 emif
-      ARM: dts: Configure interconnect target module for omap4 debugss
-      ARM: dts: Configure interconnect target module for omap4 mpu
-      ARM: dts: Move omap4 mmio-sram out of l3 interconnect
-      ARM: dts: Move omap4 l3-noc to a separate node
-      ARM: dts: Configure simple-pm-bus for omap4 l4_wkup
-      ARM: dts: Configure simple-pm-bus for omap4 l4_per
-      ARM: dts: Configure simple-pm-bus for omap4 l4_cfg
-      ARM: dts: Prepare for simple-pm-bus for omap4 l3
-      ARM: dts: Configure interconnect target module for omap5 dmm
-      ARM: dts: Configure interconnect target module for omap5 emif
-      ARM: dts: Configure interconnect target module for omap5 mpu
-      ARM: dts: Configure interconnect target module for omap5 gpmc
-      ARM: dts: Configure interconnect target module for omap5 sata
-      ARM: dts: Move omap5 mmio-sram out of l3 interconnect
-      ARM: dts: Move omap5 l3-noc to a separate node
-      ARM: dts: Configure simple-pm-bus for omap5 l4_wkup
-      ARM: dts: Configure simple-pm-bus for omap5 l4_per
-      ARM: dts: Configure simple-pm-bus for omap5 l4_cfg
-      ARM: dts: Configure simple-pm-bus for omap5 l3
-      Merge tags 'genpd-dts-dra7', 'genpd-dts-omap4' and 'genpd-dts-omap5' into omap-for-v5.13/dts-genpd
+Drop legacy data for dra7 and omap4/5 for genpd support for v5.13
 
- arch/arm/boot/dts/dra7-l4.dtsi  |  76 ++++++++++----
- arch/arm/boot/dts/dra7.dtsi     | 215 +++++++++++++++++++++++++++-------------
- arch/arm/boot/dts/omap4-l4.dtsi |  39 +++++---
- arch/arm/boot/dts/omap4.dtsi    | 165 ++++++++++++++++++++----------
- arch/arm/boot/dts/omap4460.dtsi |  13 ++-
- arch/arm/boot/dts/omap5-l4.dtsi |  67 +++++++++----
- arch/arm/boot/dts/omap5.dtsi    | 204 ++++++++++++++++++++++++--------------
- 7 files changed, 526 insertions(+), 253 deletions(-)
+Similar to what we have already done for am3 and 4, we can now boot dra7,
+omap4, and omap5 with devicetree data and genpd without legacy SoC specific
+built-in data.
+
+Let's drop the legacy data for these SoCs, and the related "ti,hwmods"
+custom devicetree property. As with these changes we now expect to have
+complete devicetree data, let's also warn in the case if an old devicetree
+data is noticed. And with the warning provided, there should not be any
+need to delay dropping the legacy data as it just unnecessarily complicates
+things.
+
+The main reasons for dropping the legacy data is to avoid the burden of
+maintaining a mixed boot process where both legacy built-in data and
+devicetree data are needed. And we can now use standard reset driver,
+genpd, and simple-pm-bus features.
+
+These patches are based on the related devicetree changes to add the
+missing interconnect target module configuration for these SoCs.
+
+----------------------------------------------------------------
+Tony Lindgren (35):
+      ARM: OMAP2+: Drop legacy platform data for dra7 pcie
+      ARM: OMAP2+: Drop legacy platform data for dra7 qspi
+      ARM: OMAP2+: Drop legacy platform data for dra7 sata
+      ARM: OMAP2+: Drop legacy platform data for dra7 mpu
+      ARM: OMAP2+: Drop legacy platform data for dra7 dmm
+      ARM: OMAP2+: Drop legacy platform data for dra7 l4_wkup
+      ARM: OMAP2+: Drop legacy platform data for dra7 l4_per1
+      ARM: OMAP2+: Drop legacy platform data for dra7 l4_per2
+      ARM: OMAP2+: Drop legacy platform data for dra7 l4_per3
+      ARM: OMAP2+: Drop legacy platform data for dra7 l4_cfg
+      ARM: OMAP2+: Drop legacy platform data for dra7 l3
+      ARM: OMAP2+: Drop legacy platform data for dra7 hwmod
+      ARM: OMAP2+: Drop legacy platform data for omap4 iss
+      ARM: OMAP2+: Drop legacy platform data for omap4 control modules
+      ARM: OMAP2+: Drop legacy platform data for omap4 dmm
+      ARM: OMAP2+: Drop legacy platform data for omap4 emif
+      ARM: OMAP2+: Drop legacy platform data for omap4 debugss
+      ARM: OMAP2+: Drop legacy platform data for omap4 mpu
+      ARM: OMAP2+: Drop legacy platform data for omap4 l4_wkup
+      ARM: OMAP2+: Drop legacy platform data for omap4 l4_per
+      ARM: OMAP2+: Drop legacy platform data for omap4 l4_cfg
+      ARM: OMAP2+: Drop legacy platform data for omap4 l3
+      ARM: OMAP2+: Drop legacy platform data for omap4 hwmod
+      ARM: OMAP2+: Drop legacy platform data for omap5 dmm
+      ARM: OMAP2+: Drop legacy platform data for omap5 emif
+      ARM: OMAP2+: Drop legacy platform data for omap5 mpu
+      ARM: OMAP2+: Drop legacy platform data for omap5 sata
+      ARM: OMAP2+: Drop legacy platform data for omap5 l4_wkup
+      ARM: OMAP2+: Drop legacy platform data for omap5 l4_per
+      ARM: OMAP2+: Drop legacy platform data for omap5 l4_cfg
+      ARM: OMAP2+: Drop legacy platform data for omap5 l3
+      ARM: OMAP2+: Drop legacy platform data for omap5 hwmod
+      Merge branches 'omap-for-v5.13/genpd-dra7', 'omap-for-v5.13/genpd-omap4' and 'omap-for-v5.13/genpd-omap5' into omap-for-v5.13/genpd-drop-legacy
+      ARM: OMAP2+: Stop building legacy code for dra7 and omap4/5
+      bus: ti-sysc: Warn about old dtb for dra7 and omap4/5
+
+ arch/arm/boot/dts/dra7-l4.dtsi             |   1 -
+ arch/arm/boot/dts/dra7.dtsi                |   5 -
+ arch/arm/boot/dts/omap4-l4.dtsi            |   4 -
+ arch/arm/boot/dts/omap4.dtsi               |   8 +-
+ arch/arm/boot/dts/omap5.dtsi               |   4 -
+ arch/arm/mach-omap2/Kconfig                |   3 -
+ arch/arm/mach-omap2/Makefile               |  11 +-
+ arch/arm/mach-omap2/common.h               |   9 -
+ arch/arm/mach-omap2/io.c                   |  12 +-
+ arch/arm/mach-omap2/omap_hwmod.c           |   8 -
+ arch/arm/mach-omap2/omap_hwmod.h           |  14 +-
+ arch/arm/mach-omap2/omap_hwmod_44xx_data.c | 877 -----------------------------
+ arch/arm/mach-omap2/omap_hwmod_54xx_data.c | 467 ---------------
+ arch/arm/mach-omap2/omap_hwmod_7xx_data.c  | 719 -----------------------
+ arch/arm/mach-omap2/pdata-quirks.c         |   2 +-
+ arch/arm/mach-omap2/sr_device.c            |   7 +
+ drivers/bus/ti-sysc.c                      |   3 +
+ 17 files changed, 35 insertions(+), 2119 deletions(-)
+ delete mode 100644 arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+ delete mode 100644 arch/arm/mach-omap2/omap_hwmod_54xx_data.c
+ delete mode 100644 arch/arm/mach-omap2/omap_hwmod_7xx_data.c
