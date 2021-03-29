@@ -2,125 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E74D34C35D
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Mar 2021 07:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC93634C55C
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Mar 2021 09:56:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbhC2Fzc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Mar 2021 01:55:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45086 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbhC2FzN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Mar 2021 01:55:13 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45C06C061574;
-        Sun, 28 Mar 2021 22:55:13 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id a1so14551824ljp.2;
-        Sun, 28 Mar 2021 22:55:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=AFwBwKQmaZvAfek2ylzBqiy9Pmq25T+2fBHpaiUkdFo=;
-        b=ZbwEUR9JiKBgSN5xGYMSv85NfiSzlVg2dL14PH4e7nqVuN6qo7uIt5SmS972nqkDcu
-         9IgSQaYwfdWjeiqmBwgBnSz7YO7l5UaLDXYmJrsw7AHjJ3G6CVezmRFq913T3XfU1ghR
-         g+64Y9UyuuJ6Qyvm+IcNbLtCrceI3QSWjzvOT24AiBoQa9gQJy1WK70xyUVHDlQ3P9r2
-         XkNI5MzdfrBaKISfHjpEK4h+PXdELvnrKTesw2QDKe/LNDKIjuWArxntQjqyDOvtJSCB
-         Ddtg7GRh7ofETihb9mbi8mlceZe7Zw7ejPPS/HLtO8sdCirnrnI3no/dhGY0xWEprIPP
-         MaBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=AFwBwKQmaZvAfek2ylzBqiy9Pmq25T+2fBHpaiUkdFo=;
-        b=I8BhtGcGIQ6ktGXOvgguLboCvwUio224ejl9BGvLzhXCECdRIRKs0giCXGN9vzxMDN
-         zgHbU+BUIP0bPbG0rkIlhcHfFMv2UioY30+O4twT7o0XWcJfo5iWSmAvtolCoa5++e9u
-         t/8iQ75VRJIC60v/PJ5gOjghpCqMcyRoPZMu/NK7VHKGqjO4aVFA889ucj1o11cdwGx6
-         3PUw8doUdXNgpaweKAMCTtgIkj7hDx9XsEjOmzsFxB8S/KIjPGaC3YEvhjG204uWhJP8
-         pubm3yAg0C+1zhT9B2YRuyweaCQU3K2NyXIeYf2v9CZmeTnbA7CBktH32jl9dbNPFpP3
-         sIiQ==
-X-Gm-Message-State: AOAM533wYI4WCs5VDIAKGSqy5q2vVl7kYaVJaQUELscuTfcEOmY13OQX
-        yCfUbLGCmuMVaVLQRAS2Hc/AqcnZPyr08w==
-X-Google-Smtp-Source: ABdhPJzpmYL7y4TlZmnpGM1IV/tUVOJPf//OV0otEsKWBQkvYtfnUG5H++Svfy/AiLhizNJHdlSy0A==
-X-Received: by 2002:a2e:974d:: with SMTP id f13mr16880816ljj.210.1616997311512;
-        Sun, 28 Mar 2021 22:55:11 -0700 (PDT)
-Received: from [10.0.0.42] (91-157-86-200.elisa-laajakaista.fi. [91.157.86.200])
-        by smtp.gmail.com with ESMTPSA id i22sm2311894ljn.56.2021.03.28.22.55.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 28 Mar 2021 22:55:10 -0700 (PDT)
-Subject: Re: [PATCH 15/17] ASoC: ti: omap-mcsp: remove duplicate test
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        alsa-devel@alsa-project.org
-Cc:     tiwai@suse.de, broonie@kernel.org, linux-kernel@vger.kernel.org,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "open list:OMAP AUDIO SUPPORT" <linux-omap@vger.kernel.org>
-References: <20210326215927.936377-1-pierre-louis.bossart@linux.intel.com>
- <20210326215927.936377-16-pierre-louis.bossart@linux.intel.com>
-From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
-Message-ID: <38488f20-a155-607d-464e-9461e50bc765@gmail.com>
-Date:   Mon, 29 Mar 2021 08:56:03 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        id S231128AbhC2Hzz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Mar 2021 03:55:55 -0400
+Received: from muru.com ([72.249.23.125]:48338 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229441AbhC2Hzd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 29 Mar 2021 03:55:33 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id ABACE80AF;
+        Mon, 29 Mar 2021 07:56:32 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>
+Subject: [GIT PULL 1/3] Driver changes for omaps for genpd support
+Date:   Mon, 29 Mar 2021 10:55:20 +0300
+Message-Id: <pull-1617004205-537424@atomide.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-In-Reply-To: <20210326215927.936377-16-pierre-louis.bossart@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Pierre,
+From: "Tony Lindgren" <tony@atomide.com>
 
-On 3/26/21 11:59 PM, Pierre-Louis Bossart wrote:
-> cppcheck warning:
-> 
-> sound/soc/ti/omap-mcbsp.c:379:11: style: The if condition is the same
-> as the previous if condition [duplicateCondition]
-> 
->  if (mcbsp->irq) {
->           ^
-> sound/soc/ti/omap-mcbsp.c:376:11: note: First condition
->  if (mcbsp->irq)
->           ^
-> sound/soc/ti/omap-mcbsp.c:379:11: note: Second condition
->  if (mcbsp->irq) {
->           ^
-> 
-> Keeping two separate tests was probably intentional for clarity, but
-> since this generates warnings we might as well make cppcheck happy so
-> that we have fewer warnings.
+The following changes since commit 4c9f4865f4604744d4f1a43db22ac6ec9dc8e587:
 
-There might be other historical reasons why it ended up like this but
-merging them does not make it less cleaner.
+  Merge branch 'fixes-rc2' into fixes (2021-03-08 11:34:12 +0200)
 
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+are available in the Git repository at:
 
-> Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> ---
->  sound/soc/ti/omap-mcbsp.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-> index 6025b30bbe77..db47981768c5 100644
-> --- a/sound/soc/ti/omap-mcbsp.c
-> +++ b/sound/soc/ti/omap-mcbsp.c
-> @@ -373,10 +373,9 @@ static void omap_mcbsp_free(struct omap_mcbsp *mcbsp)
->  		MCBSP_WRITE(mcbsp, WAKEUPEN, 0);
->  
->  	/* Disable interrupt requests */
-> -	if (mcbsp->irq)
-> +	if (mcbsp->irq) {
->  		MCBSP_WRITE(mcbsp, IRQEN, 0);
->  
-> -	if (mcbsp->irq) {
->  		free_irq(mcbsp->irq, (void *)mcbsp);
->  	} else {
->  		free_irq(mcbsp->rx_irq, (void *)mcbsp);
-> 
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.13/ti-sysc-signed
 
--- 
-Péter
+for you to fetch changes up to d995d3d025bbd2d89abf12418f20d19bc0cb0130:
+
+  bus: ti-sysc: Use kzalloc for allocating only one thing (2021-03-24 13:44:04 +0200)
+
+----------------------------------------------------------------
+Driver changes for omaps for genpd support for v5.13
+
+In order to move omap4/5 and dra7 to probe with devicetree data and genpd,
+we need to patch the related drivers to prepare.
+
+These are mostly ti-sysc interconnect target module driver changes and soc
+init changes. However, there are minor changes to other drivers too. There
+are changes for pci-dra7xx probe, omap-prm idle configuration, and a omap5
+clock change:
+
+- ti-sysc needs iorange check improved when the interconnect target module
+  has no control registers listed
+
+- ti-sysc needs to probe l4_wkup and l4_cfg interconnects first to avoid
+  issues with missing resources and unnecessary deferred probe
+
+- ti-sysc debug option can now detect more devices
+
+- ti-sysc now warns if an old incomplete devicetree data is found as we
+  now rely on it being complete for am3 and 4
+
+- soc init code needs to check for prcm and prm nodes for omap4/5 and
+  dra7
+
+- omap-prm driver needs to enable autoidle retention support for omap4
+
+- omap5 clocks are missing gpmc and ocmc clock registers
+
+- pci-dra7xx now needs to use builtin_platform_driver instead of using
+  builtin_platform_driver_probe for deferred probe to work
+
+There are also few minor non-urgent fixes:
+
+- soc init code pdata_quirks_init_clocks should be static
+
+- ti-sysc has few unneeded semiconon typos
+
+- ti-sysc can use kzalloc instead of kcalloc for a single element
+
+----------------------------------------------------------------
+Tony Lindgren (8):
+      bus: ti-sysc: Fix initializing module_pa for modules without sysc register
+      bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first
+      bus: ti-sysc: Detect more modules for debugging
+      bus: ti-sysc: Check for old incomplete dtb
+      ARM: OMAP2+: Init both prm and prcm nodes early for clocks
+      soc: ti: omap-prm: Allow hardware supported retention when idle
+      clk: ti: omap5: Add missing gpmc and ocmc clkctrl
+      PCI: pci-dra7xx: Prepare for deferred probe with module_platform_driver
+
+Wei Yongjun (1):
+      ARM: OMAP2+: Make symbol 'pdata_quirks_init_clocks' static
+
+Yang Li (1):
+      bus: ti-sysc: remove unneeded semicolon
+
+Zheng Yongjun (1):
+      bus: ti-sysc: Use kzalloc for allocating only one thing
+
+ arch/arm/mach-omap2/pdata-quirks.c      | 29 ++++++++----
+ drivers/bus/ti-sysc.c                   | 84 ++++++++++++++++++++++++++++++---
+ drivers/clk/ti/clk-54xx.c               |  2 +
+ drivers/pci/controller/dwc/pci-dra7xx.c | 13 ++---
+ drivers/soc/ti/omap_prm.c               | 16 +++++--
+ include/dt-bindings/clock/omap5.h       |  2 +
+ 6 files changed, 122 insertions(+), 24 deletions(-)
