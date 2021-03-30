@@ -2,62 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E35534E0B4
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Mar 2021 07:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4698734DE42
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Mar 2021 04:23:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229891AbhC3FeT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Mar 2021 01:34:19 -0400
-Received: from mail.hanoi.gov.vn ([113.160.32.33]:16309 "EHLO
-        mx01.hanoi.gov.vn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbhC3FeL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Mar 2021 01:34:11 -0400
-X-Greylist: delayed 1279 seconds by postgrey-1.27 at vger.kernel.org; Tue, 30 Mar 2021 01:34:11 EDT
-Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id ACB76ECD96;
-        Tue, 30 Mar 2021 12:09:43 +0700 (+07)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hanoi.gov.vn;
-        s=default; t=1617080985;
-        bh=HSni2auv+XuQ3OfVgTAk/C1+mLE2NnvNQALZuZA/kx4=; h=Date:From:To;
-        b=jLIFWkvQlNtwymoAKEzSJRvWOU9FW66pL28by0RJwV8QeMNI56544lGxb83dHZ9k+
-         79HDY7EDmQFp+twvouG3iBlX5YmnYMXzRZrKL3DFt5qsA7OAEfbi70ydsOQv/UTvGV
-         SVrflGOhG6V1HGUaR6LoGNxD2aY0Wyvled4e6E4c=
-X-IMSS-DKIM-Authentication-Result: mx01.hanoi.gov.vn; sigcount=0
-Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id AB397ECD93;
-        Tue, 30 Mar 2021 12:09:41 +0700 (+07)
-Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
-        by mx01.hanoi.gov.vn (Postfix) with ESMTPS;
-        Tue, 30 Mar 2021 12:09:41 +0700 (+07)
-Received: from mail.hanoi.gov.vn (localhost [127.0.0.1])
-        by mail.hanoi.gov.vn (Postfix) with ESMTPS id A6B45BD07BE7;
-        Tue, 30 Mar 2021 06:11:03 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hanoi.gov.vn (Postfix) with ESMTP id 426C1BD07912;
-        Tue, 30 Mar 2021 06:08:45 +0700 (+07)
-Received: from mail.hanoi.gov.vn ([127.0.0.1])
-        by localhost (mail.hanoi.gov.vn [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id MoWU0-_qKYrx; Tue, 30 Mar 2021 06:08:40 +0700 (+07)
-Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
-        by mail.hanoi.gov.vn (Postfix) with ESMTP id 37BF1BD075EA;
-        Tue, 30 Mar 2021 06:03:03 +0700 (+07)
-Date:   Tue, 30 Mar 2021 06:03:03 +0700 (ICT)
-From:   Tom Crist <truongphong_ldtbxh_caugiay@hanoi.gov.vn>
-Reply-To: Tom Crist <tomcrist1113@gmail.com>
-Message-ID: <1931067101.26879956.1617058983147.JavaMail.zimbra@hanoi.gov.vn>
-Subject: Donation
+        id S230482AbhC3CXV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Mar 2021 22:23:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52734 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230122AbhC3CXT (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 29 Mar 2021 22:23:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0FB8F61989;
+        Tue, 30 Mar 2021 02:23:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617070999;
+        bh=Cohu/2cxN+tEHFYMMs+yo/4uX8ZIfwZVuwWi3CEctjg=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=IfCM2kN5SV3cPW8NVJ54qVpbJoOyswsjKsIhS7lPXUc/n5ey7mz7MoB5QnZMX1d3l
+         eAU0p3Dq9SfLssaHRwZVqkXGLdZs7JfFjJZP3XNXhnABbg+RHIjEdmkg8QrUyPhhN9
+         /KcBV1qFle2j1AhKLonOTkWjyPE6T2yZPpGHLSYWo9EBkxoQgwL7oOdAUzFts5G9Oi
+         dSSJ3KWYIblRtXZT/phK+Th9tN1NisJQGHQB6dbdvE61M8DDrobM+2Oi9p7o9c1Maz
+         un9w602H3kZZPHH2iRWL5Ygy59QJOEfZhWTNPjhfxxEhbWNJuBEdB+cJdskId9YbIJ
+         LH9ubvQ2ab6yA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [102.22.246.13]
-X-Mailer: Zimbra 8.8.15_GA_3894 (zclient/8.8.15_GA_3894)
-Thread-Index: 8tLnb+3S6aCBoYTYJFvHz7ilN44Hsg==
-Thread-Topic: Donation
-To:     undisclosed-recipients:;
-X-TM-AS-GCONF: 00
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210318172627.12173-2-dariobin@libero.it>
+References: <20210318172627.12173-1-dariobin@libero.it> <20210318172627.12173-2-dariobin@libero.it>
+Subject: Re: [PATCH v2 1/4] clk: ti: fix typo in routine description
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Dario Binacchi <dariobin@libero.it>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Tero Kristo <kristo@kernel.org>, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+To:     Dario Binacchi <dariobin@libero.it>, linux-kernel@vger.kernel.org
+Date:   Mon, 29 Mar 2021 19:23:17 -0700
+Message-ID: <161707099768.3012082.16934007943600501374@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Quoting Dario Binacchi (2021-03-18 10:26:23)
+> Replace _omap3_noncore_dpll_program with omap3_noncore_dpll_program.
+>=20
+> Signed-off-by: Dario Binacchi <dariobin@libero.it>
+> ---
 
-
-Hello, I have a donation worth $ 4,800,000.00 US Dollars for you, I won the America lottery worth $ 40 million USD and I donated a part of it to charities in memory of my deceased wife, who died of cancer. you can contact me for further information.I Await Your Response.
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
