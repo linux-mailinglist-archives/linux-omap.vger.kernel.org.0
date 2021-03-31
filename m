@@ -2,94 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C71313504BF
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Mar 2021 18:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD233350502
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Mar 2021 18:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234038AbhCaQhL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 31 Mar 2021 12:37:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45216 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234040AbhCaQhH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 Mar 2021 12:37:07 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D07C061574
-        for <linux-omap@vger.kernel.org>; Wed, 31 Mar 2021 09:37:06 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id d191so10459009wmd.2
-        for <linux-omap@vger.kernel.org>; Wed, 31 Mar 2021 09:37:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=TnvnZxOACqCq+A8twXUOuSk4g7qmxy4JPsXlvzDSCsc=;
-        b=rVpz048TIOhPnZDI0bFHdGqg55LctDMZMTVOT50l44L5oV4G7tLmigNzUYIXcdhhpd
-         Oyz//g08P72Um05QQaR18j89EZ11DwdlpvhfuZRQXC8BofyTZjos8+s4a0fds6WCfKu3
-         wGxpnvsF1hHt/yJ2vz6haC53ujxLVDfC7iif46SeiDVhbcUdO0gOGKb6KMs6ln3EQSZk
-         DV2RzlGaguhQ+Y3irWAffBKKphz1FiPRMdsK0muP8RwChE/EsZPA+JL+S6YPua6hvhSR
-         viCRJJlsG9OkYuTObmyLtCUv3lh6V0pVmG7fpk9gNkpSGICsZTGhwwqfF0dpiRVb+ktm
-         Tblg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=TnvnZxOACqCq+A8twXUOuSk4g7qmxy4JPsXlvzDSCsc=;
-        b=CIdC606wNTNq+7vFpxJkqjkATjb1bc3x1podDWNjFYHMSvVYpujtNEmU9XpjJs+DWE
-         yKeqQusVkZjxo/1j6Is3nuFrSo0v9RTlGXn4oFGLhhXjMIjQcQC0npBb+HqD1n0y+c0F
-         swxY1r3sw1s73Mv/G6AwNREYt4U6pFvtNxRh2eNJbeo2TfBMdrVOfb6eLba68noePLp+
-         TnZ+aEIn2xEu4jpydQuMy5E8944pKSa33meplKpKKJoUOZ+XDVfvqBe5Q2ZeS0bDgQGF
-         cnthgihfuFzDCbdGa9XQJbxjU2ib4mp0uhsyek8yClBG5ZmLre/Dg+fmq5cbX7G4H5/P
-         vvQQ==
-X-Gm-Message-State: AOAM532FH/3LYtkDgzCfjwtaXbd627APhLxLKG9qFqya1KrrieqI+YCG
-        gf+cYQfjja/4t4pntDbVid72qQ==
-X-Google-Smtp-Source: ABdhPJz10HL+5/BOj1Bk7HPn6MnV8AJUkitxTA4JqmwUj3KT9mJHDIeqkbfrMVp0zqjv6uSNDkz5Wg==
-X-Received: by 2002:a1c:3c8a:: with SMTP id j132mr3861932wma.127.1617208625431;
-        Wed, 31 Mar 2021 09:37:05 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:1573:1dd5:899d:6362? ([2a01:e34:ed2f:f020:1573:1dd5:899d:6362])
-        by smtp.googlemail.com with ESMTPSA id q207sm6798719wme.36.2021.03.31.09.37.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Mar 2021 09:37:04 -0700 (PDT)
-Subject: Re: [PATCH] thermal: ti-soc-thermal: of_device.h is included twice
-To:     Wan Jiabing <wanjiabing@vivo.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, Zhang Rui <rui.zhang@intel.com>,
-        Amit Kucheria <amitk@kernel.org>, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     kael_w@yeah.net
-References: <20210323021430.141218-1-wanjiabing@vivo.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <9d835b9f-e687-ff6a-89d3-3e15f95b0f83@linaro.org>
-Date:   Wed, 31 Mar 2021 18:37:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S229787AbhCaQtB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 31 Mar 2021 12:49:01 -0400
+Received: from smtp-34-i2.italiaonline.it ([213.209.12.34]:38195 "EHLO
+        libero.it" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S234119AbhCaQsk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 31 Mar 2021 12:48:40 -0400
+Received: from oxapps-30-132.iol.local ([10.101.8.178])
+        by smtp-34.iol.local with ESMTPA
+        id Re1ElwntK5WrZRe1ElgaZ8; Wed, 31 Mar 2021 18:48:38 +0200
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+        t=1617209318; bh=Of8HOIFaFMIakwrrvMX5k+cnZfAxOALZ7VG6BH9w3tM=;
+        h=From;
+        b=UFpNZMB0o878+Sdcv+0gOWek0RvnjpiOZNiokvvhnZ/9YTzLzgjs3pqSmc8modp0V
+         zW6X0vtmIFnUBMNwQqlcfWHNkspL+4ee9UEm9Un+vxzWtQNTMfAxiG6JdxdcW0VBVW
+         5cswqdqBqcgqMJGMiVD33/rMn+sPbtmNE3HWAah1f2Z+Qm5sHA3sGiDolNaG/hNY2t
+         V9RY8DRQDgoIWX2nIEmieiAg1Qy/alLN0MfMtUtbxuMUzNcyj+WMVP9ycyTmi9bugZ
+         ixtp6Dnn1lLlfdeO7zaC0r6xJLPcL/uHW/olo1ME9h0urT6jL3xnCizOv8uPFyWb1c
+         ruvOAZcDL3W4Q==
+X-CNFS-Analysis: v=2.4 cv=W4/96Tak c=1 sm=1 tr=0 ts=6064a7e6 cx=a_exe
+ a=iUxb6lXnTT1s429i9ALYXg==:117 a=UPWQtH3J-JgA:10 a=IkcTkHD0fZMA:10
+ a=_gZzKa99_6AA:10 a=2KMo9-giAAAA:8 a=VwQbUJbxAAAA:8 a=3UXsuAmxLgeg-JLg2n4A:9
+ a=QEXdDO2ut3YA:10 a=jpCfQFe7a20IPbtE3JEv:22 a=UeCTMeHK7YUBiLmz_SX7:22
+ a=AjGcO6oz07-iQ99wixmX:22
+Date:   Wed, 31 Mar 2021 18:48:36 +0200 (CEST)
+From:   Dario Binacchi <dariobin@libero.it>
+To:     Tony Lindgren <tony@atomide.com>, Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tero Kristo <kristo@kernel.org>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
+Message-ID: <1766999502.215268.1617209316614@mail1.libero.it>
+In-Reply-To: <YGQNyGDkAbUXRYtA@atomide.com>
+References: <20210329164222.26794-1-dariobin@libero.it>
+ <161707108197.3012082.13148389244272034996@swboyd.mtv.corp.google.com>
+ <YGQNyGDkAbUXRYtA@atomide.com>
+Subject: Re: [PATCH v3 0/4] clk: ti: add am33xx spread spectrum clock
+ support
 MIME-Version: 1.0
-In-Reply-To: <20210323021430.141218-1-wanjiabing@vivo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 3
+Importance: Normal
+X-Mailer: Open-Xchange Mailer v7.10.3-Rev34
+X-Originating-IP: 87.20.116.197
+X-Originating-Client: open-xchange-appsuite
+x-libjamsun: hnVdgKDLVYJ/y6bXwAkWv/iDAPJj0RoS
+x-libjamv: XJO1Mu8mf/8=
+X-CMAE-Envelope: MS4xfN81xeT9ObTSWwajh635DSRU2jTmBrUkcigubVWEJ+IwPVQ/Ygt8kqQAW+qK1LeT6WpbBNhHjtJW9N04ieC1Xn+TSsMO9W+DiFCEpy05BwRKdWJOY5kn
+ /1ZdTc6fYO/qGQbp38/2XqT+23lHsNHm+oK2DN049bR2uyxOYlF/JL0gld5FekTaMXoF/ud1QHlVjL2h7RoDwwkRxPQ3ZKl/V2pdgT1TwxK0oBk3pEc9IJug
+ H7ah7Oman9zOExhb22W8Y/4Wdw1lpP5K96fXiHOZOJ3uNeBad87R9lqiiEMGKOdDhHbmMwMzbM2BsUbR/9P2CC8syI+fcNI0B6dRM+PhRZPDJ2Ov2KnKuVjr
+ yFDYHFZ2CLPxefmYcsOgNCY2tHf3sDSFF4kySmzJwpzUO3DFLL8vTyYyv3wsp2WXxKCZWitKNck5XJTgcM/3jb+S+n4w+DKfiCMgpU6MmZzRM/AFI4/IuXSM
+ 8K0OMztguybu0+e74lT50zwKSgZSdAIzuFGTJSS2dOeLd2ysatueJ1YpxeapZRXAI7LZsaFeWvy65JxV9L7o7VAqye5rVFKfzYyHjg==
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 23/03/2021 03:14, Wan Jiabing wrote:
-> linux/of_device.h has been included at line 25, so remove 
-> the duplicate one at line 35.
-> 
-> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
-> ---
 
-Thanks for your patch.
+> Il 31/03/2021 07:51 Tony Lindgren <tony@atomide.com> ha scritto:
+>=20
+> =20
+> * Stephen Boyd <sboyd@kernel.org> [210330 02:25]:
+> > Quoting Dario Binacchi (2021-03-29 09:42:17)
+> > >=20
+> > > As reported by the TI spruh73x RM, MPU and LCD modules support spread
+> > > spectrum clocking (SSC) on their output clocks. SSC is used to spread
+> > > the spectral peaking of the clock to reduce any electromagnetic
+> > > interference (EMI) that may be caused due to the clock=E2=80=99s fund=
+amental
+> > > or any of its harmonics.
+> > > The series allows you to enable and adjust the spread spectrum clocki=
+ng
+> > > for all am33xx PLLs for which it is supported.
+> > >=20
+> >=20
+> > What is your merge strategy? Should all the patches go through clk tree=
+?
+> > Or you'll send via arm-soc?
+>=20
+> Probably best to just merge all via the clk tree as that's where most of
+> the changes are.
+>=20
 
-It was actually already fixed [1].
+This means that I no longer have to send patches to TI / OMAP maintainers, =
+commiters=20
+and fixers, as well as at linux-omap@vger.kernel.org ?
+Even if the a1e980789b06 ("am335x-spread-spectrum) clk: ti: add am33xx spre=
+ad spectrum clock support")=20
+patch is basically related to the AM33xx/AM43xx SOCs?
 
-   -- D.
+Thanks and regards,
+Dario
 
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/thermal/linux.git/commit/?h=thermal/next&id=7440e912b0fe755d80b958a65859ebabb5338cf8
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+> Regards,
+>=20
+> Tony
