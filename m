@@ -2,106 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD233350502
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Mar 2021 18:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A3FA350684
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Mar 2021 20:39:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbhCaQtB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 31 Mar 2021 12:49:01 -0400
-Received: from smtp-34-i2.italiaonline.it ([213.209.12.34]:38195 "EHLO
-        libero.it" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234119AbhCaQsk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 31 Mar 2021 12:48:40 -0400
-Received: from oxapps-30-132.iol.local ([10.101.8.178])
-        by smtp-34.iol.local with ESMTPA
-        id Re1ElwntK5WrZRe1ElgaZ8; Wed, 31 Mar 2021 18:48:38 +0200
-x-libjamoibt: 1601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
-        t=1617209318; bh=Of8HOIFaFMIakwrrvMX5k+cnZfAxOALZ7VG6BH9w3tM=;
-        h=From;
-        b=UFpNZMB0o878+Sdcv+0gOWek0RvnjpiOZNiokvvhnZ/9YTzLzgjs3pqSmc8modp0V
-         zW6X0vtmIFnUBMNwQqlcfWHNkspL+4ee9UEm9Un+vxzWtQNTMfAxiG6JdxdcW0VBVW
-         5cswqdqBqcgqMJGMiVD33/rMn+sPbtmNE3HWAah1f2Z+Qm5sHA3sGiDolNaG/hNY2t
-         V9RY8DRQDgoIWX2nIEmieiAg1Qy/alLN0MfMtUtbxuMUzNcyj+WMVP9ycyTmi9bugZ
-         ixtp6Dnn1lLlfdeO7zaC0r6xJLPcL/uHW/olo1ME9h0urT6jL3xnCizOv8uPFyWb1c
-         ruvOAZcDL3W4Q==
-X-CNFS-Analysis: v=2.4 cv=W4/96Tak c=1 sm=1 tr=0 ts=6064a7e6 cx=a_exe
- a=iUxb6lXnTT1s429i9ALYXg==:117 a=UPWQtH3J-JgA:10 a=IkcTkHD0fZMA:10
- a=_gZzKa99_6AA:10 a=2KMo9-giAAAA:8 a=VwQbUJbxAAAA:8 a=3UXsuAmxLgeg-JLg2n4A:9
- a=QEXdDO2ut3YA:10 a=jpCfQFe7a20IPbtE3JEv:22 a=UeCTMeHK7YUBiLmz_SX7:22
- a=AjGcO6oz07-iQ99wixmX:22
-Date:   Wed, 31 Mar 2021 18:48:36 +0200 (CEST)
-From:   Dario Binacchi <dariobin@libero.it>
-To:     Tony Lindgren <tony@atomide.com>, Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tero Kristo <kristo@kernel.org>, devicetree@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
-Message-ID: <1766999502.215268.1617209316614@mail1.libero.it>
-In-Reply-To: <YGQNyGDkAbUXRYtA@atomide.com>
-References: <20210329164222.26794-1-dariobin@libero.it>
- <161707108197.3012082.13148389244272034996@swboyd.mtv.corp.google.com>
- <YGQNyGDkAbUXRYtA@atomide.com>
-Subject: Re: [PATCH v3 0/4] clk: ti: add am33xx spread spectrum clock
- support
+        id S235082AbhCaSjB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 31 Mar 2021 14:39:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43238 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234954AbhCaSig (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 Mar 2021 14:38:36 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4BF6C061574
+        for <linux-omap@vger.kernel.org>; Wed, 31 Mar 2021 11:38:35 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id a143so22204335ybg.7
+        for <linux-omap@vger.kernel.org>; Wed, 31 Mar 2021 11:38:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RWY5Pe06zt2bU2jfR3W/PawxYm+jRibge/Goph/Z0xs=;
+        b=ud1HW0WQ3vUh38PWJL8PyMGpjBIGGa/ZguPjhdkbzDXLZE74jh9K0xBN22kHs7psgk
+         j+lDbddU88SP9/fgVL3M3+ixFkubuxrXLEZxAX3vo8fR/Q4bGRIH2E159f+e4siYp0Dp
+         TD2YuZcjPfP1/OlBsrdMT5g5WKI7IZbjPkV8X/OyyaebkyZJPH1uTlMBkstGJVh1Saur
+         w0CRiCWjERInRLSGxsulIcXnbCqgxScEzIbuJyzIZYiCppBkNV5Wgq8soRQw5JqGA4sm
+         CZtCXbq663UlJhbmclRR5eqzpWRapuHg5Po5iYyqV6+isVI4PuNsl6BPQXYdeRNWRSTQ
+         D7ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RWY5Pe06zt2bU2jfR3W/PawxYm+jRibge/Goph/Z0xs=;
+        b=mD12GA5XAuIcdfiKK3DUzUZWwed1dtPH+ubHu5NHxO2EB1X+fqqpPTdTS8SuZPngTq
+         s44c462OHLWlPn5Pq/AVOst2MMlx5L2pDdRLd7h23sM8uOXtIhjYAzF6aRxpawa5i7cc
+         9p1rPsWUvU3eWAMF3sPH6v2iltVQ6w5OljI7FQnHv//ejeAW0jCP9bkNGk/ZPiczLm8Y
+         QUNEJOGgYvGCAEa7XCfNPU4gzK5EJkMyKa4iphtbs2Eav1uSkoNIjAJcH4zqdFA5OAKO
+         1zqHibZGONrVQDXFBSnEEKVgPkiVhAWJ/VRRZXOHN3p+BPIPxy4HemgNHCFTHM7qoKA4
+         V+Fg==
+X-Gm-Message-State: AOAM531H4qUft8Z+i8960oEV8JJwY5C4T5rEGrmxBnUxS+m1zugwheut
+        W8ZMirEEPqQrnqVq4cINhvAzZz1a4M6STsmYg81i+g==
+X-Google-Smtp-Source: ABdhPJxJ2cvrf4j6fkPrKxlYe8FbVw14ABDzGRChRLHDLEfcPpZap+TuKWL3vFDdxySIaNCzr2pENpUgcaCBgmSDVBY=
+X-Received: by 2002:a25:d10b:: with SMTP id i11mr7124969ybg.0.1617215915309;
+ Wed, 31 Mar 2021 11:38:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Priority: 3
-Importance: Normal
-X-Mailer: Open-Xchange Mailer v7.10.3-Rev34
-X-Originating-IP: 87.20.116.197
-X-Originating-Client: open-xchange-appsuite
-x-libjamsun: hnVdgKDLVYJ/y6bXwAkWv/iDAPJj0RoS
-x-libjamv: XJO1Mu8mf/8=
-X-CMAE-Envelope: MS4xfN81xeT9ObTSWwajh635DSRU2jTmBrUkcigubVWEJ+IwPVQ/Ygt8kqQAW+qK1LeT6WpbBNhHjtJW9N04ieC1Xn+TSsMO9W+DiFCEpy05BwRKdWJOY5kn
- /1ZdTc6fYO/qGQbp38/2XqT+23lHsNHm+oK2DN049bR2uyxOYlF/JL0gld5FekTaMXoF/ud1QHlVjL2h7RoDwwkRxPQ3ZKl/V2pdgT1TwxK0oBk3pEc9IJug
- H7ah7Oman9zOExhb22W8Y/4Wdw1lpP5K96fXiHOZOJ3uNeBad87R9lqiiEMGKOdDhHbmMwMzbM2BsUbR/9P2CC8syI+fcNI0B6dRM+PhRZPDJ2Ov2KnKuVjr
- yFDYHFZ2CLPxefmYcsOgNCY2tHf3sDSFF4kySmzJwpzUO3DFLL8vTyYyv3wsp2WXxKCZWitKNck5XJTgcM/3jb+S+n4w+DKfiCMgpU6MmZzRM/AFI4/IuXSM
- 8K0OMztguybu0+e74lT50zwKSgZSdAIzuFGTJSS2dOeLd2ysatueJ1YpxeapZRXAI7LZsaFeWvy65JxV9L7o7VAqye5rVFKfzYyHjg==
+References: <1617178751-18937-1-git-send-email-tiantao6@hisilicon.com>
+In-Reply-To: <1617178751-18937-1-git-send-email-tiantao6@hisilicon.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Wed, 31 Mar 2021 20:38:24 +0200
+Message-ID: <CAMpxmJXxgh_YuHUmJUTBQJTYUdw54y2E+R+UxqsV56Ouj+eF3g@mail.gmail.com>
+Subject: Re: [PATCH v2] gpio: omap: Use device_get_match_data() helper
+To:     Tian Tao <tiantao6@hisilicon.com>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-gpio <linux-gpio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, Mar 31, 2021 at 10:18 AM Tian Tao <tiantao6@hisilicon.com> wrote:
+>
+> Use the device_get_match_data() helper instead of open coding.
+>
+> Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+> ---
+>
+> v2: drop the space between ? and :.
+> ---
+>  drivers/gpio/gpio-omap.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+> index 41952bb..f4df555 100644
+> --- a/drivers/gpio/gpio-omap.c
+> +++ b/drivers/gpio/gpio-omap.c
+> @@ -1364,15 +1364,14 @@ static int omap_gpio_probe(struct platform_device *pdev)
+>  {
+>         struct device *dev = &pdev->dev;
+>         struct device_node *node = dev->of_node;
+> -       const struct of_device_id *match;
+>         const struct omap_gpio_platform_data *pdata;
+>         struct gpio_bank *bank;
+>         struct irq_chip *irqc;
+>         int ret;
+>
+> -       match = of_match_device(of_match_ptr(omap_gpio_match), dev);
+> +       pdata = device_get_match_data(dev);
+>
+> -       pdata = match ? match->data : dev_get_platdata(dev);
+> +       pdata = pdata ?: dev_get_platdata(dev);
+>         if (!pdata)
+>                 return -EINVAL;
+>
+> --
+> 2.7.4
+>
 
-> Il 31/03/2021 07:51 Tony Lindgren <tony@atomide.com> ha scritto:
->=20
-> =20
-> * Stephen Boyd <sboyd@kernel.org> [210330 02:25]:
-> > Quoting Dario Binacchi (2021-03-29 09:42:17)
-> > >=20
-> > > As reported by the TI spruh73x RM, MPU and LCD modules support spread
-> > > spectrum clocking (SSC) on their output clocks. SSC is used to spread
-> > > the spectral peaking of the clock to reduce any electromagnetic
-> > > interference (EMI) that may be caused due to the clock=E2=80=99s fund=
-amental
-> > > or any of its harmonics.
-> > > The series allows you to enable and adjust the spread spectrum clocki=
-ng
-> > > for all am33xx PLLs for which it is supported.
-> > >=20
-> >=20
-> > What is your merge strategy? Should all the patches go through clk tree=
-?
-> > Or you'll send via arm-soc?
->=20
-> Probably best to just merge all via the clk tree as that's where most of
-> the changes are.
->=20
+Applied, thanks!
 
-This means that I no longer have to send patches to TI / OMAP maintainers, =
-commiters=20
-and fixers, as well as at linux-omap@vger.kernel.org ?
-Even if the a1e980789b06 ("am335x-spread-spectrum) clk: ti: add am33xx spre=
-ad spectrum clock support")=20
-patch is basically related to the AM33xx/AM43xx SOCs?
-
-Thanks and regards,
-Dario
-
-> Regards,
->=20
-> Tony
+Bartosz
