@@ -2,48 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 700F134F868
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Mar 2021 07:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3A2F34F86D
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Mar 2021 08:00:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233478AbhCaF4e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 31 Mar 2021 01:56:34 -0400
-Received: from muru.com ([72.249.23.125]:49068 "EHLO muru.com"
+        id S232805AbhCaF7u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 31 Mar 2021 01:59:50 -0400
+Received: from muru.com ([72.249.23.125]:49076 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233473AbhCaF4S (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 31 Mar 2021 01:56:18 -0400
+        id S233690AbhCaF7k (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 31 Mar 2021 01:59:40 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 6F13D80C3;
-        Wed, 31 Mar 2021 05:57:19 +0000 (UTC)
-Date:   Wed, 31 Mar 2021 08:56:13 +0300
+        by muru.com (Postfix) with ESMTPS id C98AB80C3;
+        Wed, 31 Mar 2021 06:00:41 +0000 (UTC)
+Date:   Wed, 31 Mar 2021 08:59:35 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Drew Fustini <drew@beagleboard.org>
-Cc:     bcousson@baylibre.com, Rob Herring <robh+dt@kernel.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jason Kridner <jkridner@beagleboard.org>,
-        Robert Nelson <robertcnelson@beagleboard.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-gpio@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: am335x-boneblack.dts: unique gpio-line-names
-Message-ID: <YGQO/YdTGLiMBXKh@atomide.com>
-References: <20210324222201.674905-1-drew@beagleboard.org>
+To:     Chen Lifu <chenlifu@huawei.com>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Russell King <linux@armlinux.org.uk>, heying24@huawei.com,
+        yuehaibing@huawei.com, weiyongjun1@huawei.com,
+        johnny.chenyi@huawei.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] ARM: OMAP: Use DEFINE_SPINLOCK() for spinlock
+Message-ID: <YGQPx5UMmHnFoJi+@atomide.com>
+References: <20210327095227.105081-1-chenlifu@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210324222201.674905-1-drew@beagleboard.org>
+In-Reply-To: <20210327095227.105081-1-chenlifu@huawei.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Drew Fustini <drew@beagleboard.org> [210325 00:25]:
-> Based on linux-gpio discussion [1], it is best practice to make the
-> gpio-line-names unique. Generic names like "[ethernet]" are replaced
-> with the name of the unique signal on the AM3358 SoC ball corresponding
-> to the gpio line. "[NC]" is also renamed to the standard "NC" name to
-> represent "not connected".
+* Chen Lifu <chenlifu@huawei.com> [210327 11:53]:
+> From: Lifu Chen <chenlifu@huawei.com>
+> 
+> spinlock can be initialized automatically with DEFINE_SPINLOCK()
+> rather than explicitly calling spin_lock_init().
 
-Thanks applying into omap-for-v5.13/dt-v2.
+Thanks applying into omap-for-v5.13/soc.
 
 Tony
