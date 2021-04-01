@@ -2,104 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A3FA350684
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Mar 2021 20:39:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86FF9350C13
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Apr 2021 03:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235082AbhCaSjB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 31 Mar 2021 14:39:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43238 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234954AbhCaSig (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 Mar 2021 14:38:36 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4BF6C061574
-        for <linux-omap@vger.kernel.org>; Wed, 31 Mar 2021 11:38:35 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id a143so22204335ybg.7
-        for <linux-omap@vger.kernel.org>; Wed, 31 Mar 2021 11:38:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RWY5Pe06zt2bU2jfR3W/PawxYm+jRibge/Goph/Z0xs=;
-        b=ud1HW0WQ3vUh38PWJL8PyMGpjBIGGa/ZguPjhdkbzDXLZE74jh9K0xBN22kHs7psgk
-         j+lDbddU88SP9/fgVL3M3+ixFkubuxrXLEZxAX3vo8fR/Q4bGRIH2E159f+e4siYp0Dp
-         TD2YuZcjPfP1/OlBsrdMT5g5WKI7IZbjPkV8X/OyyaebkyZJPH1uTlMBkstGJVh1Saur
-         w0CRiCWjERInRLSGxsulIcXnbCqgxScEzIbuJyzIZYiCppBkNV5Wgq8soRQw5JqGA4sm
-         CZtCXbq663UlJhbmclRR5eqzpWRapuHg5Po5iYyqV6+isVI4PuNsl6BPQXYdeRNWRSTQ
-         D7ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RWY5Pe06zt2bU2jfR3W/PawxYm+jRibge/Goph/Z0xs=;
-        b=mD12GA5XAuIcdfiKK3DUzUZWwed1dtPH+ubHu5NHxO2EB1X+fqqpPTdTS8SuZPngTq
-         s44c462OHLWlPn5Pq/AVOst2MMlx5L2pDdRLd7h23sM8uOXtIhjYAzF6aRxpawa5i7cc
-         9p1rPsWUvU3eWAMF3sPH6v2iltVQ6w5OljI7FQnHv//ejeAW0jCP9bkNGk/ZPiczLm8Y
-         QUNEJOGgYvGCAEa7XCfNPU4gzK5EJkMyKa4iphtbs2Eav1uSkoNIjAJcH4zqdFA5OAKO
-         1zqHibZGONrVQDXFBSnEEKVgPkiVhAWJ/VRRZXOHN3p+BPIPxy4HemgNHCFTHM7qoKA4
-         V+Fg==
-X-Gm-Message-State: AOAM531H4qUft8Z+i8960oEV8JJwY5C4T5rEGrmxBnUxS+m1zugwheut
-        W8ZMirEEPqQrnqVq4cINhvAzZz1a4M6STsmYg81i+g==
-X-Google-Smtp-Source: ABdhPJxJ2cvrf4j6fkPrKxlYe8FbVw14ABDzGRChRLHDLEfcPpZap+TuKWL3vFDdxySIaNCzr2pENpUgcaCBgmSDVBY=
-X-Received: by 2002:a25:d10b:: with SMTP id i11mr7124969ybg.0.1617215915309;
- Wed, 31 Mar 2021 11:38:35 -0700 (PDT)
+        id S232207AbhDABsN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 31 Mar 2021 21:48:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50182 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229497AbhDABrw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 31 Mar 2021 21:47:52 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E06006105A;
+        Thu,  1 Apr 2021 01:47:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617241672;
+        bh=G2yJZdijShzF6Eiq4JKJhqU3MQLiI4jRpJuwzIzshZ0=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=AKswf+F8LN3LqcMldQgErtoNOnRl5HRmeuT6m5JJ2RlEejiC5x4NryC2d72ZSdNpW
+         WkqIgNFZq8QlEU++4L55a9FVfCBRRNpZ3P4dgb7LgIPZgMHx+HC39KJsGNcWLJfEAP
+         /50rDwXXy3MxlmVL0bwpwouIp9+H4wKvpLse2WmB2SbEw4cqOdxxaLmVFhQ1VoTCVO
+         GVrvGnEss/3CQ65qnkw9cDAwo56Xn/xvGUX0dNazHWp1z/5fM3kjgskEnR8DM3OSKG
+         rbIaE5ldq7kqQwtIqnWiK0SI1/mjRAvne9ep2pd0kcXdlN0AZaQa058z3fEbz2Fy/z
+         PFQe25hMcGSxA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <1617178751-18937-1-git-send-email-tiantao6@hisilicon.com>
-In-Reply-To: <1617178751-18937-1-git-send-email-tiantao6@hisilicon.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Wed, 31 Mar 2021 20:38:24 +0200
-Message-ID: <CAMpxmJXxgh_YuHUmJUTBQJTYUdw54y2E+R+UxqsV56Ouj+eF3g@mail.gmail.com>
-Subject: Re: [PATCH v2] gpio: omap: Use device_get_match_data() helper
-To:     Tian Tao <tiantao6@hisilicon.com>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-gpio <linux-gpio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <YGQNyGDkAbUXRYtA@atomide.com>
+References: <20210329164222.26794-1-dariobin@libero.it> <161707108197.3012082.13148389244272034996@swboyd.mtv.corp.google.com> <YGQNyGDkAbUXRYtA@atomide.com>
+Subject: Re: [PATCH v3 0/4] clk: ti: add am33xx spread spectrum clock support
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Dario Binacchi <dariobin@libero.it>, linux-kernel@vger.kernel.org,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        =?utf-8?q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tero Kristo <kristo@kernel.org>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
+To:     Tony Lindgren <tony@atomide.com>
+Date:   Wed, 31 Mar 2021 18:47:50 -0700
+Message-ID: <161724167065.2260335.15543151418752525635@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Mar 31, 2021 at 10:18 AM Tian Tao <tiantao6@hisilicon.com> wrote:
->
-> Use the device_get_match_data() helper instead of open coding.
->
-> Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
-> ---
->
-> v2: drop the space between ? and :.
-> ---
->  drivers/gpio/gpio-omap.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-> index 41952bb..f4df555 100644
-> --- a/drivers/gpio/gpio-omap.c
-> +++ b/drivers/gpio/gpio-omap.c
-> @@ -1364,15 +1364,14 @@ static int omap_gpio_probe(struct platform_device *pdev)
->  {
->         struct device *dev = &pdev->dev;
->         struct device_node *node = dev->of_node;
-> -       const struct of_device_id *match;
->         const struct omap_gpio_platform_data *pdata;
->         struct gpio_bank *bank;
->         struct irq_chip *irqc;
->         int ret;
->
-> -       match = of_match_device(of_match_ptr(omap_gpio_match), dev);
-> +       pdata = device_get_match_data(dev);
->
-> -       pdata = match ? match->data : dev_get_platdata(dev);
-> +       pdata = pdata ?: dev_get_platdata(dev);
->         if (!pdata)
->                 return -EINVAL;
->
-> --
-> 2.7.4
->
+Quoting Tony Lindgren (2021-03-30 22:51:04)
+> * Stephen Boyd <sboyd@kernel.org> [210330 02:25]:
+> > Quoting Dario Binacchi (2021-03-29 09:42:17)
+> > >=20
+> > > As reported by the TI spruh73x RM, MPU and LCD modules support spread
+> > > spectrum clocking (SSC) on their output clocks. SSC is used to spread
+> > > the spectral peaking of the clock to reduce any electromagnetic
+> > > interference (EMI) that may be caused due to the clock=E2=80=99s fund=
+amental
+> > > or any of its harmonics.
+> > > The series allows you to enable and adjust the spread spectrum clocki=
+ng
+> > > for all am33xx PLLs for which it is supported.
+> > >=20
+> >=20
+> > What is your merge strategy? Should all the patches go through clk tree?
+> > Or you'll send via arm-soc?
+>=20
+> Probably best to just merge all via the clk tree as that's where most of
+> the changes are.
+>=20
 
-Applied, thanks!
-
-Bartosz
+Ok. If nobody reviews/acks the last patch in a few days I'll merge the
+pile through clk tree.
