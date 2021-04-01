@@ -2,105 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FD90351DBC
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Apr 2021 20:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2060D351FC0
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Apr 2021 21:27:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233817AbhDASbs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Apr 2021 14:31:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38180 "EHLO
+        id S234663AbhDAT1i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Apr 2021 15:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236787AbhDASSd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Apr 2021 14:18:33 -0400
+        with ESMTP id S234689AbhDAT1W (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Apr 2021 15:27:22 -0400
 Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC8BC02FEAD;
-        Thu,  1 Apr 2021 09:20:59 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id b14so3656101lfv.8;
-        Thu, 01 Apr 2021 09:20:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C784CC00F7F5
+        for <linux-omap@vger.kernel.org>; Thu,  1 Apr 2021 11:56:01 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id g8so4302707lfv.12
+        for <linux-omap@vger.kernel.org>; Thu, 01 Apr 2021 11:56:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TsIThPytQbw/FRN51LQr5onPfH3wKs5FFxL6HpmuigI=;
-        b=Hw1BPIfiyZ7aUDBzT39/2jsbMvbTf8HPb2QUwf4hI0XKP192wn4EzGN+L3hQqgPanp
-         sX0QFytMKOpSTZeYkoxOHx/HUjdFps6AWMPfj1t4EfwqJl5qUwEcW6IpDKTS28ip/wg/
-         sc0fPXTQcsw75VnbeOx4HZeM08wymM5mH7cETSGlHqnXJzv9IpDiOgYK2TvH5dxY3SNM
-         GibA/Vd79u+cdoFNSEMcxV1lkDlm2euUERmWrClfWVCePXf1R8leC14xY88tZCixYVXt
-         hKlqKS2tDojiF8nzKh1NmPOT7u57Uv+m0HJe7ystjpQiwCoV63Fj2dzQcFcwJ5oytX+W
-         Ox0A==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=C6RnQY5m7m3ncSxYtoqki2XanY7LHf9+m0qLfxHwJv8=;
+        b=n6CdqStVJIHXrG1K2XEgTZs5XJtVlF4KxqJ/2p5uH8S49o6LC3QEXBEYwB7egMRYND
+         vTfn1naYORnX8ZPNCeyVseCkaEwQMNn/B7bFnxQ1fvF3VPhWVYhhJdtWVL+JSL8bZeOx
+         ilJVORp5HL/C8LgOdpHsaG45249b9QL0E0LMQvOmqcgLSEmonpNtyJpei6lK1I1NE/KY
+         nNmMK+gzLZ1rFTqEByDv0HHhkdKkpFUm7y9eM81DQZTFMtaj6wmfxmEBHvwMfyVWb/Hz
+         olec1ZXzDkr1i/gaduOnxYSd3X+/tHx0XBk8PHkkdzWmp9IAlnatubmw0ZlNXpxBk738
+         m9rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TsIThPytQbw/FRN51LQr5onPfH3wKs5FFxL6HpmuigI=;
-        b=YKkf26N5TZ6jH/XycuwyvWAUvUvjOEXtQq1S+SfpZrhgz0tslbjvev6lGBMfB3GMtp
-         +pfJWDeNA2Qk27cKHzMfJ+cpzMOOY34TgAvwPgsDDIIrI3vDuHEc0bRQBlaqeEsvov5m
-         Jgd3Ct/aNDWF+dF+ZQuPqeyx1kIyTcL9vdbpKNJUUIL7saCrdaOj+vSVNgJSzrTOUNFc
-         az0tJZmurvEaZXV5i1rwEFCMjn9eqTt85SFoC/vJqgG0UgUCfpEpaYR5wun9vaHclzzv
-         swPXN3Io7BpgFb52TzIVY3hKCXznnLdrcsoWzlVeQ5/6ewpBqGBkllROQJJoImQKia41
-         QLSQ==
-X-Gm-Message-State: AOAM531md4X7sF6XM3S/NI29nUk2yJaxRteTDFxe/1LMUJXF+UbqRHvG
-        hmF0SLaI8Qst41naujjcL/LOopjsyjQnFx++AV8=
-X-Google-Smtp-Source: ABdhPJz6rLKvbNN33cNOyRe6Bkzr8oEKoNLyjT7Ra6rDxJqkBGZUxfyPim7i3mmJn0j4lNpaQNwB3Q==
-X-Received: by 2002:a05:6512:4c4:: with SMTP id w4mr6080047lfq.91.1617294058343;
-        Thu, 01 Apr 2021 09:20:58 -0700 (PDT)
-Received: from 192.168.1.8 ([212.59.242.58])
-        by smtp.gmail.com with ESMTPSA id n22sm660215ljc.23.2021.04.01.09.20.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Apr 2021 09:20:57 -0700 (PDT)
-From:   Maciej Falkowski <maciej.falkowski9@gmail.com>
-To:     aaro.koskinen@iki.fi, tony@atomide.com, linux@armlinux.org.uk
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
-        maciej.falkowski9@gmail.com
-Subject: [PATCH] usb: isp1301-omap: Add missing gpiod_add_lookup_table function
-Date:   Thu,  1 Apr 2021 18:20:32 +0200
-Message-Id: <20210401162032.10150-1-maciej.falkowski9@gmail.com>
-X-Mailer: git-send-email 2.26.3
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=C6RnQY5m7m3ncSxYtoqki2XanY7LHf9+m0qLfxHwJv8=;
+        b=g5yNqhPH5jgwT5wnVadNl3GNk5f0VIQY4rx9FcgVkLEf3eLu8DJ4iPsU3JtOcQI6d+
+         Y2pnkl1CVmq+bOOtAkW65z/2VAzQync6ir0nuPnVPROY/t6CRunTHaiFnlp6qSIbgRwn
+         KQRyimzXy5RJFd0Ez0orvv2W7U0BSu19XNio7s29MauYitrIAEr5o/U2c/nkDp4fJ5YF
+         xWqgGHiZonGQX0U8yzFXebuaa8EpqoGKmt3XuMvLC02pxFaGtYT0rMKUz7nx427bsdm3
+         VX5WzdPCwL1b613ziHbSJkt1vo2OlpfilMLIjbsNqF1Jh5/VTv5lmvoBVvR31dI5Y8ht
+         0IDg==
+X-Gm-Message-State: AOAM5330RtzFALSFUKjh99d9fA4byVH+MwY9QIt0ttuSZGYGhQYLi2TC
+        N8Ot57DQSDViMJfZIHHm8/plaCVyYG6h4ZK7NKAcaA==
+X-Google-Smtp-Source: ABdhPJyYCJgriopjHXug9mhzm3srWjL1GEuqin+19LcZQ/zBxqJQuLESsIXP0n2PRb5JlWQi3tLvN5cZJPesy1Vx6NM=
+X-Received: by 2002:a19:430e:: with SMTP id q14mr6743083lfa.374.1617303360081;
+ Thu, 01 Apr 2021 11:56:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210401160434.7655-1-maciej.falkowski9@gmail.com>
+In-Reply-To: <20210401160434.7655-1-maciej.falkowski9@gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Thu, 1 Apr 2021 11:55:49 -0700
+Message-ID: <CAKwvOdmSCz7awnjuDWKSd8n+x1E2ziN9F4xLOX0RG5F1yYOFQg@mail.gmail.com>
+Subject: Re: [PATCH] ARM: OMAP1: ams-delta: remove unused function ams_delta_camera_power
+To:     Maciej Falkowski <maciej.falkowski9@gmail.com>
+Cc:     aaro.koskinen@iki.fi, tony@atomide.com,
+        Russell King <linux@armlinux.org.uk>,
+        linux-omap@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The gpiod table was added without any usage making it unused
-as reported by Clang compilation from omap1_defconfig on linux-next:
+On Thu, Apr 1, 2021 at 9:05 AM Maciej Falkowski
+<maciej.falkowski9@gmail.com> wrote:
+>
+> The ams_delta_camera_power() function is unused as reports
+> Clang compilation with omap1_defconfig on linux-next:
+>
+> arch/arm/mach-omap1/board-ams-delta.c:462:12: warning: unused function 'ams_delta_camera_power' [-Wunused-function]
+> static int ams_delta_camera_power(struct device *dev, int power)
+>            ^
+> 1 warning generated.
+>
+> The soc_camera support was dropped without removing
+> ams_delta_camera_power() function, making it unused.
+>
+> Signed-off-by: Maciej Falkowski <maciej.falkowski9@gmail.com>
 
-arch/arm/mach-omap1/board-h2.c:347:34: warning: unused variable 'isp1301_gpiod_table' [-Wunused-variable]
-static struct gpiod_lookup_table isp1301_gpiod_table = {
-                                 ^
-1 warning generated.
+Thanks for the patch!
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-The patch adds the missing gpiod_add_lookup_table() function.
+> Fixes: ce548396a433 ("media: mach-omap1: board-ams-delta.c: remove soc_camera dependencies")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1326
+> ---
+>  arch/arm/mach-omap1/board-ams-delta.c | 14 --------------
+>  1 file changed, 14 deletions(-)
+>
+> diff --git a/arch/arm/mach-omap1/board-ams-delta.c b/arch/arm/mach-omap1/board-ams-delta.c
+> index 2ee527c00284..1026a816dcc0 100644
+> --- a/arch/arm/mach-omap1/board-ams-delta.c
+> +++ b/arch/arm/mach-omap1/board-ams-delta.c
+> @@ -458,20 +458,6 @@ static struct gpiod_lookup_table leds_gpio_table = {
+>
+>  #ifdef CONFIG_LEDS_TRIGGERS
+>  DEFINE_LED_TRIGGER(ams_delta_camera_led_trigger);
+> -
+> -static int ams_delta_camera_power(struct device *dev, int power)
+> -{
+> -       /*
+> -        * turn on camera LED
+> -        */
+> -       if (power)
+> -               led_trigger_event(ams_delta_camera_led_trigger, LED_FULL);
+> -       else
+> -               led_trigger_event(ams_delta_camera_led_trigger, LED_OFF);
+> -       return 0;
+> -}
+> -#else
+> -#define ams_delta_camera_power NULL
+>  #endif
+>
+>  static struct platform_device ams_delta_audio_device = {
+> --
+> 2.26.3
+>
+> --
+> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20210401160434.7655-1-maciej.falkowski9%40gmail.com.
 
-Signed-off-by: Maciej Falkowski <maciej.falkowski9@gmail.com>
-Fixes: f3ef38160e3d ("usb: isp1301-omap: Convert to use GPIO descriptors")
-Link: https://github.com/ClangBuiltLinux/linux/issues/1325
----
- arch/arm/mach-omap1/board-h2.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap1/board-h2.c b/arch/arm/mach-omap1/board-h2.c
-index c40cf5ef8607..977b0b744c22 100644
---- a/arch/arm/mach-omap1/board-h2.c
-+++ b/arch/arm/mach-omap1/board-h2.c
-@@ -320,7 +320,7 @@ static int tps_setup(struct i2c_client *client, void *context)
- {
- 	if (!IS_BUILTIN(CONFIG_TPS65010))
- 		return -ENOSYS;
--	
-+
- 	tps65010_config_vregs1(TPS_LDO2_ENABLE | TPS_VLDO2_3_0V |
- 				TPS_LDO1_ENABLE | TPS_VLDO1_3_0V);
- 
-@@ -394,6 +394,8 @@ static void __init h2_init(void)
- 	BUG_ON(gpio_request(H2_NAND_RB_GPIO_PIN, "NAND ready") < 0);
- 	gpio_direction_input(H2_NAND_RB_GPIO_PIN);
- 
-+	gpiod_add_lookup_table(&isp1301_gpiod_table);
-+
- 	omap_cfg_reg(L3_1610_FLASH_CS2B_OE);
- 	omap_cfg_reg(M8_1610_FLASH_CS2B_WE);
- 
+
 -- 
-2.26.3
-
+Thanks,
+~Nick Desaulniers
