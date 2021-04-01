@@ -2,116 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C9E351FDD
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Apr 2021 21:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A90351FE9
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Apr 2021 21:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234613AbhDATau (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Apr 2021 15:30:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53286 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235382AbhDAT3L (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Apr 2021 15:29:11 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7CFC04848B
-        for <linux-omap@vger.kernel.org>; Thu,  1 Apr 2021 12:20:20 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id b14so4408845lfv.8
-        for <linux-omap@vger.kernel.org>; Thu, 01 Apr 2021 12:20:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2MKyzSSqO2qBztJ2FSmZOVAwJM0w+9zEU56Q2e/9BLo=;
-        b=QmqdxyzPlgQR+Zqr5E+57ZgfcnnooW6TIuqChuQIG3XCdRXgOIrRBLnlda758VgeZN
-         TFCZ/8j+QF+8hGVZ8bnucq8oJV3mwqwzdrWdu9mCDRa+UpXKhqlqlC5OE3r+vXrd1ZU8
-         in8n2ASP2u2akttMBOHpqmNF+Gnomi3f/YCVJ6MY6Q/njfd/NO9fHwBBIgQF1ckIk3BS
-         Z9lHxLk1JSOPgKbk7X5PI3T/JoHdNGMa+wX8dQTYGXLv0SAfGzOhTwr8KJG3uyhd2QiC
-         mmT7VPAoe0Of40eE5ky9qPH1g0B6HqtijZZva/KN0wpShh5gv8spLG2gxRWdcBvZ1wfp
-         FQcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2MKyzSSqO2qBztJ2FSmZOVAwJM0w+9zEU56Q2e/9BLo=;
-        b=jE9xS7FkaPM7BkC473g28Uu5n7GM21hciKCEP7FnqRQKJp3wDM9SOmQVejyijtzVt6
-         kelejROyjbKs7NeZgv16bLBRHOeK06hKKwE4f43C9X1MdZrfyvvEbgPo7j73KBnNh2oN
-         Rt7giNOj+KzoMAzeTuU03ZR812WmvjL5w5XPt5ZGp/l7LEhpmxvCgWqOZxYM/rek+ds5
-         AFV1Hxpw8sVepp9D+ebdkWUjVrFMfmnFliL0HsEXIzadhmkf026W/AU8+g143wrTUbCB
-         CHoYsJUHoSWwNIwQGljefouwKLcRR1Mqp8wObbCEWeCxMeTEopXkdqKj5L3sVVLiLAPH
-         leow==
-X-Gm-Message-State: AOAM533ls2bqLDWb9r2tC3pc8sPYwJhGPqXyCFgVNp3XZp3d3pi+xXq9
-        k5dVy6xNSobWox5xPA1KSnUDfk/1EvOtEOtpnsAdVQ==
-X-Google-Smtp-Source: ABdhPJzDV5WB7YGUc9TbkLadDo7jSVCJrogWmp05PU4e3LhZKYQqorPhrVGv91oemEIqhtj8HL7J8+tf9kXGvezwHvY=
-X-Received: by 2002:a19:5055:: with SMTP id z21mr6348381lfj.297.1617304818735;
- Thu, 01 Apr 2021 12:20:18 -0700 (PDT)
+        id S234613AbhDAThw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Apr 2021 15:37:52 -0400
+Received: from smtp-17.italiaonline.it ([213.209.10.17]:37368 "EHLO libero.it"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S234453AbhDAThw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 1 Apr 2021 15:37:52 -0400
+Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
+ ([87.20.116.197])
+        by smtp-17.iol.local with ESMTPA
+        id S38SlkFJgtpGHS38Wly34z; Thu, 01 Apr 2021 21:37:50 +0200
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+        t=1617305870; bh=YQB7g1tisjsO2/drdzJfID05HXMNLmMVG06wPqjwn88=;
+        h=From;
+        b=bqHrWqGHQHCwRxWwIwip8RK7Moc2HaHTTEil/uUqh+ipY0d43VmtwGRzQoAENdjXf
+         cvIKiXFiZfJhxf/GlhkLU1qCB/Lnun1pB9HugdgWawQZSr9siJg45Lilo7wWJ6KE9x
+         TX8TvzGOGFaO2PmC8TIY5hP0lqvXp7rdwWnQRc+Y1Gh3BGxfckF7hcJL+kbJYvbRYw
+         hf0+1h0cpxDtyDyPHiTrbQj6DRh+UKsGyPmtNT5QVNJkctmieynMTxbOXk90cdo9Tk
+         fPPWlGWot4+3kuAfBqBEG28uQVCOrLSUGvj2mET1xFe/mOCEIXJo9J5ubZ39DCEbDd
+         x2QSS3kfeNVYg==
+X-CNFS-Analysis: v=2.4 cv=Q7IXX66a c=1 sm=1 tr=0 ts=6066210e cx=a_exe
+ a=AVqmXbCQpuNSdJmApS5GbQ==:117 a=AVqmXbCQpuNSdJmApS5GbQ==:17
+ a=IkcTkHD0fZMA:10 a=1Ew--PDDX9GlwpKbZyQA:9 a=QEXdDO2ut3YA:10
+From:   Dario Binacchi <dariobin@libero.it>
+To:     linux-kernel@vger.kernel.org
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Dario Binacchi <dariobin@libero.it>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <kristo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH v4 0/5] clk: ti: add am33xx spread spectrum clock support
+Date:   Thu,  1 Apr 2021 21:37:36 +0200
+Message-Id: <20210401193741.24639-1-dariobin@libero.it>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20210401162032.10150-1-maciej.falkowski9@gmail.com>
-In-Reply-To: <20210401162032.10150-1-maciej.falkowski9@gmail.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Thu, 1 Apr 2021 12:20:07 -0700
-Message-ID: <CAKwvOdkqExnM=HpPDoj+40MDA3Wyv+oMGDD5MQq3Si2ehfT=6w@mail.gmail.com>
-Subject: Re: [PATCH] usb: isp1301-omap: Add missing gpiod_add_lookup_table function
-To:     Maciej Falkowski <maciej.falkowski9@gmail.com>
-Cc:     aaro.koskinen@iki.fi, tony@atomide.com,
-        Russell King <linux@armlinux.org.uk>,
-        linux-omap@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfDiLzMti9f+2PiHEAAsu6xn+rVDM+lPnGENoR6zBoMCDhuA17etv25hLQb5jrSKjuAcMphCH4j+8tg/G5wT4AC9Exakc0HQKI9oab86fVstoTZdlfS6G
+ 9WoiF3Qx5zZx1dyZ07esTdm9XgZdhVG4puKiW+Rg8HcJg84o7ivevZa6Juoj9t7AVQFtkHok8+4O+SJ+B9bMjxJqC/q2bIePtlFAMN/z/nIem8dtpiFv2Lcy
+ pjFZJg98+FtwBAxf6cao3tiraGuo3pQ/vY63V4TsYHC8OVVYyVwRaUVx3XDmcWsQTcICWrC6oWN+TssYh9LdJMI2x5YbucWIEUw2LaDU6bN04ADkMGkocuTr
+ athPYBqo3jlp48xTGV+0Q67qnFPghdwkAeEAfQkeWZZhkSQRWJEREoMea1XJjyR9p7fuZFYBp/wP/0SdlnMjGGWnp3kHisPO+Rf6WmNNqs4WO31Kcxo1Xy7k
+ NFWPETc5yBfr5bOguHIJJrCLUU4PKymgrYJzW0ryrs+Sk7YE1JjUBZRvT050XUWfjINrHJMlV2BpS/6x9/daF/KNYdKzTe73lfASYrj6op7Hwe9wqmS1WYge
+ zzlcXVQHbvFX+6zqXpBCyrWXWfSmO6NuGErygIrguoISIA==
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Apr 1, 2021 at 9:21 AM Maciej Falkowski
-<maciej.falkowski9@gmail.com> wrote:
->
-> The gpiod table was added without any usage making it unused
-> as reported by Clang compilation from omap1_defconfig on linux-next:
->
-> arch/arm/mach-omap1/board-h2.c:347:34: warning: unused variable 'isp1301_gpiod_table' [-Wunused-variable]
-> static struct gpiod_lookup_table isp1301_gpiod_table = {
->                                  ^
-> 1 warning generated.
->
-> The patch adds the missing gpiod_add_lookup_table() function.
->
-> Signed-off-by: Maciej Falkowski <maciej.falkowski9@gmail.com>
-> Fixes: f3ef38160e3d ("usb: isp1301-omap: Convert to use GPIO descriptors")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1325
+As reported by the TI spruh73x/spruhl7x RM, MPU and LCD modules support
+spread spectrum clocking (SSC) on their output clocks. SSC is used to
+spread the spectral peaking of the clock to reduce any electromagnetic
+interference (EMI) that may be caused due to the clock’s fundamental
+or any of its harmonics.
+The series allows you to enable and adjust the spread spectrum clocking
+for all am33xx/am43xx PLLs for which it is supported. All these issues
+have been fixed.
 
-Looks consistent to me with other callers of gpiod_add_lookup_table
-from .init_machine callbacks.
+Previous versions of the series did not supported SSC for am43xx SOCs,
+causing clock registration failure for DPLLs. Furthermore, for am33xx
+SOCs, clock registration failed for DPLLs for which SSC is not supported.
 
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Changes in v4:
+- Add Stephen Boyd review tag.
+- Add Rob Herring review tag.
+- Add SSC registers for CORE, DDR and PER PLLs.
+- Update commit message.
+- Update commit message.
 
-> ---
->  arch/arm/mach-omap1/board-h2.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm/mach-omap1/board-h2.c b/arch/arm/mach-omap1/board-h2.c
-> index c40cf5ef8607..977b0b744c22 100644
-> --- a/arch/arm/mach-omap1/board-h2.c
-> +++ b/arch/arm/mach-omap1/board-h2.c
-> @@ -320,7 +320,7 @@ static int tps_setup(struct i2c_client *client, void *context)
->  {
->         if (!IS_BUILTIN(CONFIG_TPS65010))
->                 return -ENOSYS;
-> -
-> +
->         tps65010_config_vregs1(TPS_LDO2_ENABLE | TPS_VLDO2_3_0V |
->                                 TPS_LDO1_ENABLE | TPS_VLDO1_3_0V);
->
-> @@ -394,6 +394,8 @@ static void __init h2_init(void)
->         BUG_ON(gpio_request(H2_NAND_RB_GPIO_PIN, "NAND ready") < 0);
->         gpio_direction_input(H2_NAND_RB_GPIO_PIN);
->
-> +       gpiod_add_lookup_table(&isp1301_gpiod_table);
-> +
->         omap_cfg_reg(L3_1610_FLASH_CS2B_OE);
->         omap_cfg_reg(M8_1610_FLASH_CS2B_WE);
->
-> --
+Changes in v3:
+- Add '-hz' suffix to "ti,ssc-modfreq" binding.
+- Add Tony Lindgren acked tag.
+- Use "ti,ssc-modfreq-hz" binding instead of "ti,ssc-modfreq".
+
+Changes in v2:
+- Remove SSC registers from dpll_core_ck@490 node (SSC is not supported)
+- Add SSC registers to dpll_mpu_ck@488 node.
+- Move the DT changes to the previous patch in the series.
+
+Dario Binacchi (5):
+  clk: ti: fix typo in routine description
+  dt-bindings: ti: dpll: add spread spectrum support
+  ARM: dts: am33xx-clocks: add spread spectrum support
+  ARM: dts: am43xx-clocks: add spread spectrum support
+  clk: ti: add am33xx/am43xx spread spectrum clock support
+
+ .../devicetree/bindings/clock/ti/dpll.txt     | 20 +++++
+ arch/arm/boot/dts/am33xx-clocks.dtsi          | 10 +--
+ arch/arm/boot/dts/am43xx-clocks.dtsi          | 12 +--
+ drivers/clk/ti/dpll.c                         | 42 +++++++++
+ drivers/clk/ti/dpll3xxx.c                     | 87 ++++++++++++++++++-
+ include/linux/clk/ti.h                        | 24 +++++
+ 6 files changed, 183 insertions(+), 12 deletions(-)
 
 -- 
-Thanks,
-~Nick Desaulniers
+2.17.1
+
