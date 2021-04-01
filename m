@@ -2,56 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2060D351FC0
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Apr 2021 21:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E58A2351FC5
+	for <lists+linux-omap@lfdr.de>; Thu,  1 Apr 2021 21:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234663AbhDAT1i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Apr 2021 15:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52490 "EHLO
+        id S234781AbhDAT1q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 1 Apr 2021 15:27:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234689AbhDAT1W (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Apr 2021 15:27:22 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C784CC00F7F5
-        for <linux-omap@vger.kernel.org>; Thu,  1 Apr 2021 11:56:01 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id g8so4302707lfv.12
-        for <linux-omap@vger.kernel.org>; Thu, 01 Apr 2021 11:56:01 -0700 (PDT)
+        with ESMTP id S234428AbhDAT1k (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Apr 2021 15:27:40 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BCAC03D205
+        for <linux-omap@vger.kernel.org>; Thu,  1 Apr 2021 12:06:06 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id o10so4356385lfb.9
+        for <linux-omap@vger.kernel.org>; Thu, 01 Apr 2021 12:06:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=C6RnQY5m7m3ncSxYtoqki2XanY7LHf9+m0qLfxHwJv8=;
-        b=n6CdqStVJIHXrG1K2XEgTZs5XJtVlF4KxqJ/2p5uH8S49o6LC3QEXBEYwB7egMRYND
-         vTfn1naYORnX8ZPNCeyVseCkaEwQMNn/B7bFnxQ1fvF3VPhWVYhhJdtWVL+JSL8bZeOx
-         ilJVORp5HL/C8LgOdpHsaG45249b9QL0E0LMQvOmqcgLSEmonpNtyJpei6lK1I1NE/KY
-         nNmMK+gzLZ1rFTqEByDv0HHhkdKkpFUm7y9eM81DQZTFMtaj6wmfxmEBHvwMfyVWb/Hz
-         olec1ZXzDkr1i/gaduOnxYSd3X+/tHx0XBk8PHkkdzWmp9IAlnatubmw0ZlNXpxBk738
-         m9rg==
+        bh=DNNEGx7A8yGFZ03tYjwr9iyeGvfeQ20XIzLEait0s70=;
+        b=QdVoyrhhfbDEFqnPYd9w4ehNfmf+FjnOe9vuh1ECpZjh4u8A2geVILkm+LOXR76MUv
+         aDaWPbbdGQ8as9RLCzdBMzdKAeAQuy+QYSFlptzE/7GSNNVav3REeTmGSvCShaDkCPe1
+         xaphaeO+zk4yx/WziudmaNHwePNXdkuDzaXK8ndzAgOm4C9AyxGC7TJ3lcyMlPjy4lnT
+         9WXKXl2eOZO3IaTGztvDWDLj83XhhoZOacpxEmjDDmRitjLzaSvwyI4efC8kW5yeZY2t
+         +1+33vm/80LAw8q18kME3zeGlQX1uVhaOSWWcPi3+R/0lVOt9fmMrWz31MzYH25uo9nj
+         2O+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=C6RnQY5m7m3ncSxYtoqki2XanY7LHf9+m0qLfxHwJv8=;
-        b=g5yNqhPH5jgwT5wnVadNl3GNk5f0VIQY4rx9FcgVkLEf3eLu8DJ4iPsU3JtOcQI6d+
-         Y2pnkl1CVmq+bOOtAkW65z/2VAzQync6ir0nuPnVPROY/t6CRunTHaiFnlp6qSIbgRwn
-         KQRyimzXy5RJFd0Ez0orvv2W7U0BSu19XNio7s29MauYitrIAEr5o/U2c/nkDp4fJ5YF
-         xWqgGHiZonGQX0U8yzFXebuaa8EpqoGKmt3XuMvLC02pxFaGtYT0rMKUz7nx427bsdm3
-         VX5WzdPCwL1b613ziHbSJkt1vo2OlpfilMLIjbsNqF1Jh5/VTv5lmvoBVvR31dI5Y8ht
-         0IDg==
-X-Gm-Message-State: AOAM5330RtzFALSFUKjh99d9fA4byVH+MwY9QIt0ttuSZGYGhQYLi2TC
-        N8Ot57DQSDViMJfZIHHm8/plaCVyYG6h4ZK7NKAcaA==
-X-Google-Smtp-Source: ABdhPJyYCJgriopjHXug9mhzm3srWjL1GEuqin+19LcZQ/zBxqJQuLESsIXP0n2PRb5JlWQi3tLvN5cZJPesy1Vx6NM=
-X-Received: by 2002:a19:430e:: with SMTP id q14mr6743083lfa.374.1617303360081;
- Thu, 01 Apr 2021 11:56:00 -0700 (PDT)
+        bh=DNNEGx7A8yGFZ03tYjwr9iyeGvfeQ20XIzLEait0s70=;
+        b=jzO1TbUU9v+6ILd7JACoZDge+9nXDl5rinC75NbGGBxEtMhZrO61qidNDQu8ly4aJ/
+         HdnkF8JxGDKx8XvhUmoEJOijdhLPsWTEyziPXd5ozLGtSqOuF/dJNDZpJsicMSHpJpE8
+         i6tIxGxRok+0WedqVZAb7yTPTMzAJKTLHGV3lXXI7yQRFS9LQo2wFxDbuxFrg9HPL3CX
+         f+1pSFegVgvPfGY+T+cpb9dY7/YtOKstnXkossD6iD31XWICfG7PtwrUq1ThuGSF/M2Z
+         YqZGAAMwuk+c8QrCU1A3PjIA0DkK/s0rg21LBCtKkViPSzh0x0cX8U6eh95BPylPKI1v
+         otIA==
+X-Gm-Message-State: AOAM531S+HQBs0CJbLvPItCqDcR06EHwjguNjqCcLrmHPQxiT47W6+Fg
+        FFRWr+CmHyDAWtbQHBk8OdusBopH7oLHxEPsMDw9NA==
+X-Google-Smtp-Source: ABdhPJz5ZHtEXsDY5GLsqYFc5mT6sVAzavQNzfR0vjCD8kxtCmVEUswcjEz41xlCccQI7rIOFft+pHHoX7YVkqcyFTs=
+X-Received: by 2002:ac2:538e:: with SMTP id g14mr6217538lfh.543.1617303965137;
+ Thu, 01 Apr 2021 12:06:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210401160434.7655-1-maciej.falkowski9@gmail.com>
-In-Reply-To: <20210401160434.7655-1-maciej.falkowski9@gmail.com>
+References: <20210401161127.8942-1-maciej.falkowski9@gmail.com>
+In-Reply-To: <20210401161127.8942-1-maciej.falkowski9@gmail.com>
 From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Thu, 1 Apr 2021 11:55:49 -0700
-Message-ID: <CAKwvOdmSCz7awnjuDWKSd8n+x1E2ziN9F4xLOX0RG5F1yYOFQg@mail.gmail.com>
-Subject: Re: [PATCH] ARM: OMAP1: ams-delta: remove unused function ams_delta_camera_power
+Date:   Thu, 1 Apr 2021 12:05:53 -0700
+Message-ID: <CAKwvOdkCe1OkPetLzFTO+f-dp8=kD3OKX8mfEnw2GBRkU_cBnw@mail.gmail.com>
+Subject: Re: [PATCH] ARM: OMAP: Fix use of possibly uninitialized irq variable
 To:     Maciej Falkowski <maciej.falkowski9@gmail.com>
-Cc:     aaro.koskinen@iki.fi, tony@atomide.com,
+Cc:     khilman@kernel.org, aaro.koskinen@iki.fi, tony@atomide.com,
         Russell King <linux@armlinux.org.uk>,
         linux-omap@vger.kernel.org,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
@@ -62,66 +62,73 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Apr 1, 2021 at 9:05 AM Maciej Falkowski
+On Thu, Apr 1, 2021 at 9:12 AM Maciej Falkowski
 <maciej.falkowski9@gmail.com> wrote:
 >
-> The ams_delta_camera_power() function is unused as reports
-> Clang compilation with omap1_defconfig on linux-next:
+> The current control flow of IRQ number assignment to `irq` variable
+> allows a request of IRQ of unspecified value,
+> generating a warning under Clang compilation with omap1_defconfig on linux-next:
 >
-> arch/arm/mach-omap1/board-ams-delta.c:462:12: warning: unused function 'ams_delta_camera_power' [-Wunused-function]
-> static int ams_delta_camera_power(struct device *dev, int power)
->            ^
+> arch/arm/mach-omap1/pm.c:656:11: warning: variable 'irq' is used uninitialized whenever
+> 'if' condition is false [-Wsometimes-uninitialized]
+>         else if (cpu_is_omap16xx())
+>                  ^~~~~~~~~~~~~~~~~
+> ./arch/arm/mach-omap1/include/mach/soc.h:123:30: note: expanded from macro 'cpu_is_omap16xx'
+>                                         ^~~~~~~~~~~~~
+> arch/arm/mach-omap1/pm.c:658:18: note: uninitialized use occurs here
+>         if (request_irq(irq, omap_wakeup_interrupt, 0, "peripheral wakeup",
+>                         ^~~
+> arch/arm/mach-omap1/pm.c:656:7: note: remove the 'if' if its condition is always true
+>         else if (cpu_is_omap16xx())
+>              ^~~~~~~~~~~~~~~~~~~~~~
+> arch/arm/mach-omap1/pm.c:611:9: note: initialize the variable 'irq' to silence this warning
+>         int irq;
+>                ^
+>                 = 0
 > 1 warning generated.
->
-> The soc_camera support was dropped without removing
-> ams_delta_camera_power() function, making it unused.
->
-> Signed-off-by: Maciej Falkowski <maciej.falkowski9@gmail.com>
 
-Thanks for the patch!
+Ooh, yeah if cpu_is_omap15xx() then irq is unused uninitialized; I
+don't see any INT_1610_WAKE_UP_REQ-equlivalent for
+INT_15XX_WAKE_UP_REQ.
+
+Ok, LGTM.
+
 Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-> Fixes: ce548396a433 ("media: mach-omap1: board-ams-delta.c: remove soc_camera dependencies")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1326
+I agree with Nathan on the Fixes tag.
+
+>
+> The patch provides a default value to the `irq` variable
+> along with a validity check.
+>
+> Signed-off-by: Maciej Falkowski <maciej.falkowski9@gmail.com>
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1324
 > ---
->  arch/arm/mach-omap1/board-ams-delta.c | 14 --------------
->  1 file changed, 14 deletions(-)
+>  arch/arm/mach-omap1/pm.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
 >
-> diff --git a/arch/arm/mach-omap1/board-ams-delta.c b/arch/arm/mach-omap1/board-ams-delta.c
-> index 2ee527c00284..1026a816dcc0 100644
-> --- a/arch/arm/mach-omap1/board-ams-delta.c
-> +++ b/arch/arm/mach-omap1/board-ams-delta.c
-> @@ -458,20 +458,6 @@ static struct gpiod_lookup_table leds_gpio_table = {
+> diff --git a/arch/arm/mach-omap1/pm.c b/arch/arm/mach-omap1/pm.c
+> index 2c1e2b32b9b3..a745d64d4699 100644
+> --- a/arch/arm/mach-omap1/pm.c
+> +++ b/arch/arm/mach-omap1/pm.c
+> @@ -655,9 +655,13 @@ static int __init omap_pm_init(void)
+>                 irq = INT_7XX_WAKE_UP_REQ;
+>         else if (cpu_is_omap16xx())
+>                 irq = INT_1610_WAKE_UP_REQ;
+> -       if (request_irq(irq, omap_wakeup_interrupt, 0, "peripheral wakeup",
+> -                       NULL))
+> -               pr_err("Failed to request irq %d (peripheral wakeup)\n", irq);
+> +       else
+> +               irq = -1;
+> +
+> +       if (irq >= 0) {
+> +               if (request_irq(irq, omap_wakeup_interrupt, 0, "peripheral wakeup", NULL))
+> +                       pr_err("Failed to request irq %d (peripheral wakeup)\n", irq);
+> +       }
 >
->  #ifdef CONFIG_LEDS_TRIGGERS
->  DEFINE_LED_TRIGGER(ams_delta_camera_led_trigger);
-> -
-> -static int ams_delta_camera_power(struct device *dev, int power)
-> -{
-> -       /*
-> -        * turn on camera LED
-> -        */
-> -       if (power)
-> -               led_trigger_event(ams_delta_camera_led_trigger, LED_FULL);
-> -       else
-> -               led_trigger_event(ams_delta_camera_led_trigger, LED_OFF);
-> -       return 0;
-> -}
-> -#else
-> -#define ams_delta_camera_power NULL
->  #endif
->
->  static struct platform_device ams_delta_audio_device = {
+>         /* Program new power ramp-up time
+>          * (0 for most boards since we don't lower voltage when in deep sleep)
 > --
-> 2.26.3
->
-> --
-> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20210401160434.7655-1-maciej.falkowski9%40gmail.com.
-
-
-
 -- 
 Thanks,
 ~Nick Desaulniers
