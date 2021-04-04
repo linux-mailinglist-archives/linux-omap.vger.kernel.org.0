@@ -2,88 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5EDC352FBC
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Apr 2021 21:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B787235372B
+	for <lists+linux-omap@lfdr.de>; Sun,  4 Apr 2021 09:21:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236547AbhDBT1d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 2 Apr 2021 15:27:33 -0400
-Received: from smtp-17.italiaonline.it ([213.209.10.17]:58457 "EHLO libero.it"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S236540AbhDBT1c (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 2 Apr 2021 15:27:32 -0400
-Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
- ([87.20.116.197])
-        by smtp-17.iol.local with ESMTPA
-        id SPS2lt01JtpGHSPS6l2Gm5; Fri, 02 Apr 2021 21:27:30 +0200
-x-libjamoibt: 1601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
-        t=1617391650; bh=grgL9Q3sGgmvPCTIgfN2e1WV0FqyEFUkPw1kyuvyjF4=;
-        h=From;
-        b=O501lndXdlvNNIKljJKIInkfMTpkDAuiHdRjJhiS4o04qCMm9DP3dC/c0KCD5O4s0
-         AojE0wkkq+viWAXxhw6LYze23S5MogN7g5QeTDbhP7NVfhkF8BdlWoXWUsOUpZDaul
-         xPG5kwbh84SmRz9JCMrPQa5b+MVq4oy0idvgC91dFT7eCgMuVaQNzfC3NOXnoitqJK
-         K7LMj/6pZwXVzLLjK2MorMBPHKtK7Li+L+pZgbJ7I94eMsbPrILEAKr0tXdS8G+Pxp
-         84deQu5pi6TeC0FSyOeQaVyRlkyLNV1U/vgKrUtG659hiy6rq3NEgG44dN6QP6D2g2
-         9ZUDeVx3Jw6Jw==
-X-CNFS-Analysis: v=2.4 cv=Q7IXX66a c=1 sm=1 tr=0 ts=60677022 cx=a_exe
- a=AVqmXbCQpuNSdJmApS5GbQ==:117 a=AVqmXbCQpuNSdJmApS5GbQ==:17
- a=E4scLkpOueEFzuNnOYYA:9
-From:   Dario Binacchi <dariobin@libero.it>
-To:     linux-kernel@vger.kernel.org
-Cc:     Dario Binacchi <dariobin@libero.it>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH] ARM: OMAP2+: remove omap2_set_globals_control()
-Date:   Fri,  2 Apr 2021 21:27:20 +0200
-Message-Id: <20210402192720.9487-1-dariobin@libero.it>
-X-Mailer: git-send-email 2.17.1
-X-CMAE-Envelope: MS4xfPdwWTgt9achL+oyckcuJPiqYMERnZwnjydcfAahTZdXnDjqr8pjgUJ4Pmhl9/1IsI7VYCS7lcI++Xff2bx0BSKezdWuCjx2kujAuaLKR0cVAZtu5eZI
- JLwUTqh0ppEjcEDzB3RaBxczd6bphSr4cnIdj4+GNRwQqEBl1bzorzjrXhJ18aMZyORlIsS34mVro2Bf4MLvtalDTOdZ/QVhfntKj20l6UD/05FUZPwOJ60w
- 8bXicVA3Qm2nUPx0sckh2EHVeZZeRgRyG/fswhOCkT9Wzt90givqwN0TayuPEUp06GrNatNn1nZZvFwRndzLDoRvQWP4pvp9xTkplt+ehFZRU1177xWmbUO4
- OhZBed8clmBbqUHnUMhvQwk2xNp4casRfhFN3YUna0HrKUozKgWUsBrFFd2zyLPei/V8MPFH
+        id S229656AbhDDHVz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 4 Apr 2021 03:21:55 -0400
+Received: from muru.com ([72.249.23.125]:50606 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229479AbhDDHVy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 4 Apr 2021 03:21:54 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 54A6B804D;
+        Sun,  4 Apr 2021 07:22:56 +0000 (UTC)
+Date:   Sun, 4 Apr 2021 10:21:46 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Carl Philipp Klemm <philipp@uvos.xyz>
+Cc:     Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Arthur Demchenkov <spinal.by@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>, Pavel Machek <pavel@ucw.cz>
+Subject: Re: [PATCH 5/5] power: supply: cpcap-charger: Add usleep to cpcap
+ charger to avoid usb plug bounce
+Message-ID: <YGlpCr26qU6F/Uwl@atomide.com>
+References: <20210117224853.3602368391c9785e74748239@uvos.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210117224853.3602368391c9785e74748239@uvos.xyz>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The function is no longer used, so let's remove it.
+* Carl Philipp Klemm <philipp@uvos.xyz> [210117 23:48]:
+> Adds 80000 us sleep when the usb cable is plugged in to hopefully avoid
+> bouncing contacts.
+> 
+> Upon pluging in the usb cable vbus will bounce for some time, causing cpcap to
+> dissconnect charging due to detecting an undervoltage condition. This is a
+> scope of vbus on xt894 while quickly inserting the usb cable with firm force,
+> probed at the far side of the usb socket and vbus loaded with approx 1k:
+> http://uvos.xyz/maserati/usbplug.jpg.
+> 
+> As can clearly be seen, vbus is all over the place for the first 15 ms or so
+> with a small blip at ~40 ms this causes the cpcap to trip up and disable
+> charging again.
+> 
+> The delay helps cpcap_usb_detect avoid the worst of this. It is, however, still
+> not ideal as strong vibrations can cause the issue to reapear any time during
+> charging. I have however not been able to cause the device to stop charging due
+> to this in practice as it is hard to vibrate the device such that the vbus pins
+> start bouncing again but cpcap_usb_detect is not called again due to a detected
+> disconnect/reconnect event.
+> 
+> Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
 
-Signed-off-by: Dario Binacchi <dariobin@libero.it>
+This patch fixes an issue where connecting a charger often fails for me:
 
----
+Tested-by: Tony Lindgren <tony@atomide.com>
 
- arch/arm/mach-omap2/control.c | 5 -----
- arch/arm/mach-omap2/control.h | 1 -
- 2 files changed, 6 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/control.c b/arch/arm/mach-omap2/control.c
-index 73338cf80d76..062d431fc33a 100644
---- a/arch/arm/mach-omap2/control.c
-+++ b/arch/arm/mach-omap2/control.c
-@@ -136,11 +136,6 @@ struct omap3_control_regs {
- static struct omap3_control_regs control_context;
- #endif /* CONFIG_ARCH_OMAP3 && CONFIG_PM */
- 
--void __init omap2_set_globals_control(void __iomem *ctrl)
--{
--	omap2_ctrl_base = ctrl;
--}
--
- u8 omap_ctrl_readb(u16 offset)
- {
- 	u32 val;
-diff --git a/arch/arm/mach-omap2/control.h b/arch/arm/mach-omap2/control.h
-index eceb4b09adb2..c4ca30ba1790 100644
---- a/arch/arm/mach-omap2/control.h
-+++ b/arch/arm/mach-omap2/control.h
-@@ -528,7 +528,6 @@ extern int omap3_ctrl_save_padconf(void);
- void omap3_ctrl_init(void);
- int omap2_control_base_init(void);
- int omap_control_init(void);
--void omap2_set_globals_control(void __iomem *ctrl);
- void __init omap3_control_legacy_iomap_init(void);
- #else
- #define omap_ctrl_readb(x)		0
--- 
-2.17.1
-
+> ---
+>  drivers/power/supply/cpcap-charger.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+> index be7d1da7a5a5..3e5fbdbdd645 100644
+> --- a/drivers/power/supply/cpcap-charger.c
+> +++ b/drivers/power/supply/cpcap-charger.c
+> @@ -650,6 +650,9 @@ static void cpcap_usb_detect(struct work_struct *work)
+>  		return;
+>  	}
+>  
+> +	/* Delay for 80ms to avoid vbus bouncing when usb cable is plugged in */
+> +	usleep_range(80000, 120000);
+> +
+>  	/* Throttle chrgcurr2 interrupt for charger done and retry */
+>  	switch (ddata->status) {
+>  	case POWER_SUPPLY_STATUS_CHARGING:
+> -- 
+> 2.29.2
+> 
