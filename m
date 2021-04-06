@@ -2,212 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 042CB355834
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Apr 2021 17:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 862B2355E57
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Apr 2021 00:02:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345822AbhDFPh6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Apr 2021 11:37:58 -0400
-Received: from ssl.serverraum.org ([176.9.125.105]:58707 "EHLO
-        ssl.serverraum.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243939AbhDFPhy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Apr 2021 11:37:54 -0400
-Received: from mwalle01.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:fa59:71ff:fe9b:b851])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 1165E22253;
-        Tue,  6 Apr 2021 17:37:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1617723464;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=lACUh6+pO6Mh+0/uWp/aTCFDfW7S2kCGechEIv6LxiY=;
-        b=BzCGx5SN0jEHC8+qmmZDOwoUgfLCkVr2Bh3VdVahuCWxROBxMtqgptKfIa6bJEmq/EtSNw
-        xbTAmCcHgGRkO6HOTDaNFGM66muyr5PV40PdpKWguXRFitmNaJGctJFf2VWVACHE8N7ZeX
-        sP/zgBXVPofopSD6ybGoDe+vesSQZOk=
-From:   Michael Walle <michael@walle.cc>
-To:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Byungho An <bh74.an@samsung.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S233507AbhDFWCv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Apr 2021 18:02:51 -0400
+Received: from smtp-16-i2.italiaonline.it ([213.209.12.16]:38006 "EHLO
+        libero.it" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S239677AbhDFWCt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 6 Apr 2021 18:02:49 -0400
+Received: from oxapps-32-144.iol.local ([10.101.8.190])
+        by smtp-16.iol.local with ESMTPA
+        id TtmMlF7I2f2ANTtmMl5syE; Wed, 07 Apr 2021 00:02:34 +0200
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+        t=1617746554; bh=akIOS2LFU8AbnXeSKX/lN7kLwCQ59toKE6VoSYcU7p4=;
+        h=From;
+        b=BBHr4D4cYuWFL1NfC8JTa9C2WGMjscDa/CfrMMvK7A6woSjzh84OV2DcgKLxL3sM/
+         +3YMv34N3NV6csEv/fQ7WjHjS1i/4oVxITUXoa4Ad1tzRxGZ6hu2T7X8P3Im9dYIH1
+         QQu8S0xY6y8KC38FEQU6Sq34LXDywwpVGNz217OeCUbVGGnWmvyAmEjtpT0Y5ij64j
+         wk7vz5dOvW6cMo+PFLX9Kv/nPSwX2KKbrProes+dNgnyGz70HKkA2+V18bleDPj+aI
+         uJ857pBimg5qiEAwgeoSPOX0Ewby1NcoAKWPx09h6qGO56l5xjgR+CGVRxPQpi1/SB
+         7TDT2CkOTNIoA==
+X-CNFS-Analysis: v=2.4 cv=Adt0o1bG c=1 sm=1 tr=0 ts=606cda7a cx=a_exe
+ a=+LyvvGPX93CApvOVpnXrdQ==:117 a=UPWQtH3J-JgA:10 a=IkcTkHD0fZMA:10
+ a=_gZzKa99_6AA:10 a=VwQbUJbxAAAA:8 a=voM4FWlXAAAA:8 a=pGLkceISAAAA:8
+ a=aW_EbgM9uDbL71VJ2OAA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+ a=IC2XNlieTeVoXbcui8wp:22
+Date:   Wed, 7 Apr 2021 00:02:34 +0200 (CEST)
+From:   Dario Binacchi <dariobin@libero.it>
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bin Meng <bmeng.cn@gmail.com>,
         Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Michael Walle <michael@walle.cc>
-Subject: [PATCH net-next v2 2/2] of: net: fix of_get_mac_addr_nvmem() for PCI and DSA nodes
-Date:   Tue,  6 Apr 2021 17:37:25 +0200
-Message-Id: <20210406153725.10059-3-michael@walle.cc>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210406153725.10059-1-michael@walle.cc>
-References: <20210406153725.10059-1-michael@walle.cc>
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <kristo@kernel.org>, devicetree@vger.kernel.org,
+        linux-clk <linux-clk@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>
+Message-ID: <1727466283.11523.1617746554330@mail1.libero.it>
+In-Reply-To: <CAL_JsqKkpZw_BmcCXUzahF-FkQ=vb7mb_s95Lm2G7pWo0=dqNA@mail.gmail.com>
+References: <20210402192054.7934-1-dariobin@libero.it>
+ <CAL_JsqKkpZw_BmcCXUzahF-FkQ=vb7mb_s95Lm2G7pWo0=dqNA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] fdt: translate address if #size-cells = <0>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+Importance: Normal
+X-Mailer: Open-Xchange Mailer v7.10.3-Rev34
+X-Originating-IP: 87.20.116.197
+X-Originating-Client: open-xchange-appsuite
+x-libjamsun: 0kJUj9J8+FPQ/YxkwJqhiHCIFaYs727T
+x-libjamv: J5mKezAXc6M=
+X-CMAE-Envelope: MS4xfLhjxEr/Kp9gu70nyFP13JwXaIfRPj46VyjgR1MpMlp1MPqhqnicFn3XKmrgI2HHVMBkQrAnRDtuhTp+X7ZB9C+nElMvNkK/Roo+m6hQd5Q9kbYDgKvy
+ 6Ib7IWoJecJ0Ca+PzBVKZVAyAiPDq7SgF/tHh3iqZvy4VNQTsgsJeo42wLLyr64ND0bVofM9/EYEDxe+ZXPTBtmf9pzVkzOe/VrBiHPCgNCJNg64NEXzGyGG
+ YFt8rQ/8nF0d7F8kFMkPFeA8VJ2EPSKAi6Qih4/c7I8RL9Fr5YhiW0idb40hvnM1mckqpfvKyZrK78Z9MT49XWg4jbPsLO8GKSi4kU4eQ5X72Xz8DW4mDgYO
+ rULeuWi9FhAZCbSWV4XYJxEQBQcIb4KL198/rG98gpFnvERGD5PKlAuISxfSxKjUc6iIfZSOuMufo98WwNGc2GMa0DYEREP72cuDQRg2u6hjOUvstlWcRusP
+ ZUgDgjF/JUUaOsXlp7b/3WVRrVogfshs71oTrg==
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-of_get_mac_address() already supports fetching the MAC address by an
-nvmem provider. But until now, it was just working for platform devices.
-Esp. it was not working for DSA ports and PCI devices. It gets more
-common that PCI devices have a device tree binding since SoCs contain
-integrated root complexes.
 
-Use the nvmem of_* binding to fetch the nvmem cells by a struct
-device_node. We still have to try to read the cell by device first
-because there might be a nvmem_cell_lookup associated with that device.
+> Il 06/04/2021 16:06 Rob Herring <robh+dt@kernel.org> ha scritto:
+> 
+>  
+> On Fri, Apr 2, 2021 at 2:21 PM Dario Binacchi <dariobin@libero.it> wrote:
+> >
+> >
+> > The series comes from my commit in U-boot
+> > d64b9cdcd4 ("fdt: translate address if #size-cells = <0>")
+> > and from the subsequent exchange of emails at the end of which I was
+> > suggested to send the patch to the linux kernel
+> > (https://patchwork.ozlabs.org/project/uboot/patch/1614324949-61314-1-git-send-email-bmeng.cn@gmail.com/).
+> 
+> It's 'ranges' that determines translatable which is missing from the
+> DT. This should have not had a 0 size either though maybe we could
+> support that.
 
-Signed-off-by: Michael Walle <michael@walle.cc>
----
-Please note, that I've kept the nvmem_get_mac_address() which operates
-on a device. The new of_get_mac_addr_nvmem() is almost identical and
-there are no users of the former function right now, but it seems to be
-the "newer" version to get the MAC address for a "struct device". Thus
-I've kept it. Please advise, if I should kill it though.
+I have replied to the email you sent to the u-boot mailing list
 
- drivers/of/of_net.c | 37 +++++++++++++++++++++++++++++++------
- 1 file changed, 31 insertions(+), 6 deletions(-)
+> 
+> Does the DT have to be updated anyways for your spread spectrum support?
 
-diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
-index 2344ad7fff5e..2323c6063eaf 100644
---- a/drivers/of/of_net.c
-+++ b/drivers/of/of_net.c
-@@ -11,6 +11,7 @@
- #include <linux/phy.h>
- #include <linux/export.h>
- #include <linux/device.h>
-+#include <linux/nvmem-consumer.h>
- 
- /**
-  * of_get_phy_mode - Get phy mode for given device_node
-@@ -56,18 +57,42 @@ static int of_get_mac_addr(struct device_node *np, const char *name, u8 *addr)
- 	return -ENODEV;
- }
- 
--static int of_get_mac_addr_nvmem(struct device_node *np, u8 addr)
-+static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
- {
- 	struct platform_device *pdev = of_find_device_by_node(np);
-+	struct nvmem_cell *cell;
-+	const void *mac;
-+	size_t len;
- 	int ret;
- 
--	if (!pdev)
--		return -ENODEV;
-+	/* Try lookup by device first, there might be a nvmem_cell_lookup
-+	 * associated with a given device.
-+	 */
-+	if (pdev) {
-+		ret = nvmem_get_mac_address(&pdev->dev, addr);
-+		put_device(&pdev->dev);
-+		return ret;
-+	}
-+
-+	cell = of_nvmem_cell_get(np, "mac-address");
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
-+
-+	mac = nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
-+
-+	if (IS_ERR(mac))
-+		return PTR_ERR(mac);
-+
-+	if (len != ETH_ALEN || !is_valid_ether_addr(mac)) {
-+		kfree(mac);
-+		return -EINVAL;
-+	}
- 
--	ret = nvmem_get_mac_address(&pdev->dev, addr);
--	put_device(&pdev->dev);
-+	ether_addr_copy(addr, mac);
-+	kfree(mac);
- 
--	return ret;
-+	return 0;
- }
- 
- /**
--- 
-2.20.1
+The spread spectrum support patch does not need this patch to work. They belong 
+to two different series.
 
+> 
+> > The second patch of the series aims to demonstrate that the first one, which
+> > enables the translation of addresses also for crossings of DT nodes
+> > with #size-cells = <0>, it really works.
+> 
+> I don't seem to have the 2nd patch... In any case, you should handle
+> the special case for this platform in code for the platform.
+> 
+
+the 2nd patch:
+https://lore.kernel.org/patchwork/patch/1407108/
+
+Thanks and regards,
+Dario
+
+> Rob
