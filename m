@@ -2,67 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4900535466C
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Apr 2021 19:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC7E354C7D
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Apr 2021 08:02:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239931AbhDER7u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 5 Apr 2021 13:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58396 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239855AbhDER7r (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Apr 2021 13:59:47 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD35DC061756;
-        Mon,  5 Apr 2021 10:59:40 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id f12so5627013wro.0;
-        Mon, 05 Apr 2021 10:59:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=V+ZL6IBlYhDhqaW2K8qSQL0I2+furW7I5Lbh2PK3hX0=;
-        b=l2T+1pjPiqS4z2wLYCYOTUrk/0QICHmKh2+VkM/gV4oPNIQLjnL+2NaC+fHOKyfdMN
-         ZbRoPOU5ffCLYx5j1BOqEVcmdj16/FUPpdHQ19Q/Zdpt9ILWi+Sd5Pcwo9nujYxUwXSP
-         vC37pDY2/56RuAwnYL+eghBQh7V40w0etvIimwgZvfo1Wtbh5H4T1mouRkEZarDzmgED
-         YMY6AROjBpNru2Q3n3eoHqgkWgjbr83KzGqESm+YW893AvI79Blbit3z0vN/c2z/0VZN
-         /PdZI88hhk6d2StkIoz9iJuMfXx07z2E8MO45TDo09y/g7MM0e3KLVBqvMZfm5IdIu7f
-         kqag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=V+ZL6IBlYhDhqaW2K8qSQL0I2+furW7I5Lbh2PK3hX0=;
-        b=o+9dP/CSFkzB388yuCwlHK2dIoTVRtiDjkHUa6GLlJ8v8Qt13WMgWe+P6bdh7nlDO3
-         8iwF5aF3wkPUpe4gPARuJO9oAmfsbiHJOG7v++13+qoTiGUaPCVKoqPzObaq3ZXzW919
-         AH5G7nCCS3Zuzmn9mf+Gtfj/jJ3XepnajJyOi48+3YBdmt7yGc8feggbTO9gVkP7hFve
-         uTLepaPxtAdvfUMuUTqXXA5m0tuKWE3c8q3F70jzvptrhRAnh354X+GAYmI5dmJcRZs0
-         6A4U47pdt4w/qktNQM2zYm5ToPYB7xfroMWqeZvHI/AYodcuNOf264hsDS3bK+FJA8us
-         BzJQ==
-X-Gm-Message-State: AOAM532MlI5gTIkcyWpWEclAQ6cRB02FPi4I6h7vtMzMXSChRGxnxa0v
-        I1Sl+YdQmPAo+AlxXUHYrgEbNlzgiy4=
-X-Google-Smtp-Source: ABdhPJz6MDxMzw9xvqjmXw2WBnI3TqceWj5UG8FNzqpQVqz06QmJ2o5xcCpd9qEanZromdmo2x8LkA==
-X-Received: by 2002:a05:6000:2a7:: with SMTP id l7mr30216361wry.30.1617645579514;
-        Mon, 05 Apr 2021 10:59:39 -0700 (PDT)
-Received: from [192.168.1.152] ([102.64.185.200])
-        by smtp.gmail.com with ESMTPSA id j23sm248553wmo.33.2021.04.05.10.59.33
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 05 Apr 2021 10:59:36 -0700 (PDT)
-Message-ID: <606b5008.1c69fb81.d28d1.0ad5@mx.google.com>
-From:   Vanina curt <mahamadousalissou094@gmail.com>
-X-Google-Original-From: Vanina curt
-Content-Type: text/plain; charset="iso-8859-1"
+        id S243912AbhDFGCY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Apr 2021 02:02:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38712 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243934AbhDFGCV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 6 Apr 2021 02:02:21 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C64E3613C8;
+        Tue,  6 Apr 2021 06:02:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617688934;
+        bh=vsBChbY5+LVkujpH9gbQlIQG3kRuiu5IdEM2SWqQFPQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=MZ1CxFVWIewiqkef0s0fsT8o07mW1EtcauFEY+QOvfQhPQzgmtUSR6G4rgUJsdLJq
+         j3mfoRsXvoWUJmjDMVDRQWde4DPbrzO6we3YAxlKwIagW/EeGZt/kiB6x2i7mKEToD
+         LWf9Q+B7HJaVRyLgnbb10d5q7Xh7GKPclRiQ3c9tzk/r9DyT9yjjXtvUXKqMhyE1/x
+         p4nn10JEHw6ctw8UmjHElg5WyOyZRDn3gEr/7RRbdDw/4XQFhpTbmyqVLjez6t3xjd
+         u7Rhuud/4KkIYmPqZms796Db8fmA2GTpc/iZB6g4a4sR4cT6V+TO+s4O1LdyLfGBPJ
+         FhkDJwB1Yn6fQ==
+Subject: Re: [PATCH 2/2] clk: ti: get register address from device tree
+To:     Dario Binacchi <dariobin@libero.it>, linux-kernel@vger.kernel.org
+Cc:     Bin Meng <bmeng.cn@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+References: <20210402192054.7934-1-dariobin@libero.it>
+ <20210402192054.7934-3-dariobin@libero.it>
+From:   Tero Kristo <kristo@kernel.org>
+Message-ID: <12964099-7d74-57f3-e517-79c8b14c9b94@kernel.org>
+Date:   Tue, 6 Apr 2021 09:02:10 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: HI,
-To:     Recipients <Vanina@vger.kernel.org>
-Date:   Mon, 05 Apr 2021 17:59:27 +0000
-Reply-To: curtisvani9008@gmail.com
+In-Reply-To: <20210402192054.7934-3-dariobin@libero.it>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-How are you? I'm Vanina. I picked interest in you and I would like to know =
-more about you and establish relationship with you. i will wait for your re=
-sponse. thank you.
+On 02/04/2021 22:20, Dario Binacchi wrote:
+> Until now, only the register offset was retrieved from the device tree
+> to be added, during access, to a common base address for the clocks.
+> If possible, we try to retrieve the physical address of the register
+> directly from the device tree.
+
+The physical address is derived from the base address of the clock 
+provider, it is not derived from the clock node itself.
+
+Doing what this patch does may actually break things, as you end up 
+creating an individual ioremap for every single clock register, and they 
+are typically a word apart from each other. In the TI clock driver case, 
+the ioremap is done only once for the whole clock register space.
+
+-Tero
+
+> 
+> Signed-off-by: Dario Binacchi <dariobin@libero.it>
+> 
+> ---
+> 
+>   drivers/clk/ti/clk.c | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/clk/ti/clk.c b/drivers/clk/ti/clk.c
+> index 3da33c786d77..938f5a2cb425 100644
+> --- a/drivers/clk/ti/clk.c
+> +++ b/drivers/clk/ti/clk.c
+> @@ -265,9 +265,21 @@ int __init ti_clk_retry_init(struct device_node *node, void *user,
+>   int ti_clk_get_reg_addr(struct device_node *node, int index,
+>   			struct clk_omap_reg *reg)
+>   {
+> +	const __be32 *addrp;
+> +	u64 size, addr = OF_BAD_ADDR;
+> +	unsigned int flags;
+>   	u32 val;
+>   	int i;
+>   
+> +	addrp = of_get_address(node, index, &size, &flags);
+> +	if (addrp)
+> +		addr = of_translate_address(node, addrp);
+> +
+> +	if (addr != OF_BAD_ADDR) {
+> +		reg->ptr = ioremap(addr, sizeof(u32));
+> +		return 0;
+> +	}
+> +
+>   	for (i = 0; i < CLK_MAX_MEMMAPS; i++) {
+>   		if (clocks_node_ptr[i] == node->parent)
+>   			break;
+> @@ -287,7 +299,6 @@ int ti_clk_get_reg_addr(struct device_node *node, int index,
+>   
+>   	reg->offset = val;
+>   	reg->ptr = NULL;
+> -
+>   	return 0;
+>   }
+>   
+> 
+
