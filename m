@@ -2,211 +2,148 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8655355E8A
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Apr 2021 00:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E35C2355F69
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Apr 2021 01:28:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242486AbhDFWKG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Apr 2021 18:10:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59634 "EHLO
+        id S236168AbhDFX2u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Apr 2021 19:28:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343952AbhDFWKC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Apr 2021 18:10:02 -0400
-Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D845EC06175F;
-        Tue,  6 Apr 2021 15:09:53 -0700 (PDT)
-Received: from mwalle01.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:fa59:71ff:fe9b:b851])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 5A4362224F;
-        Wed,  7 Apr 2021 00:09:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1617746989;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=q+28b1zyD0ipnp7X7qaRNoB7yZQlbx9y5m7NwMvG7cM=;
-        b=VpG+SaxCrsqgK5AJ1uhvjqYL1Iz1HzqgMpALtpVAFdxlIxmlhhlsMp0jMDGwL6tEuMwcYt
-        gqCojAcZb5LTi3qRkB2cRnKgQoGxBEBC4LAyNNK/cZJSH10jI46hzGor743DDIpxqYvtuU
-        vzVbTRLjt5LlEXPfhBM/l7+qzAuqI30=
-From:   Michael Walle <michael@walle.cc>
-To:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Byungho An <bh74.an@samsung.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Michael Walle <michael@walle.cc>
-Subject: [PATCH net-next v3 2/2] of: net: fix of_get_mac_addr_nvmem() for PCI and DSA nodes
-Date:   Wed,  7 Apr 2021 00:09:21 +0200
-Message-Id: <20210406220921.24313-3-michael@walle.cc>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210406220921.24313-1-michael@walle.cc>
-References: <20210406220921.24313-1-michael@walle.cc>
+        with ESMTP id S232728AbhDFX2u (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Apr 2021 19:28:50 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C942BC06175F
+        for <linux-omap@vger.kernel.org>; Tue,  6 Apr 2021 16:28:41 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id d10so6744617pgf.12
+        for <linux-omap@vger.kernel.org>; Tue, 06 Apr 2021 16:28:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=RGNhW1SeCdXrMq4z6mrbdFRDIylhAsC1seorfL6HTAM=;
+        b=rpNRun9/6wtnfL2CPb/ElToTlTr/MBgUJSi1HaaTdIjFLJ7NW6EesGp29IN/KMoscW
+         m+uRBzeLMM5hqXsUG3zTVi0PyJgeraCxz6BaOPjV8pxQeAZG1xGRWNB3aJbCRYnV7czB
+         ZyhF02592EHIhj3tSaET9sXEyyi/ChMhraptbYj57PuyV9gV/ZRRmALEl8ocMuhzf4P4
+         +WJl23P2ObKObCZDRg1lKGYrwZ+dF0q3RhXWA+xwTcRJsuy9IzAi2sujuMr0jPxA9AtP
+         16TYdP4orK+eF9R/pTH9+ST9Vd6RV3oGdCxfBTEa/UBITVVLSiaHInF9X4BQxgMxqtNs
+         pWXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RGNhW1SeCdXrMq4z6mrbdFRDIylhAsC1seorfL6HTAM=;
+        b=WK7FhP3ccvNIZzIP7KoKbmY6IqY4TPoPESr0FLUBCDcJwh9Bxhes/JGdJepXTwTOpj
+         7oO68MuJTLeQBI31j4GJUjTLRZ+6Rp/mId6b5K1qhbROPnVlkJeq7RYMh6wxBD+MUcUj
+         uPwzuvM0FJJQKvkBI/oibX9q3UVBoGHcEC3zjTdbsuCUqNLktKJ/mCXZeXYko3p6Btxc
+         1XH6GCfgLTPA9zCQEJO5l4l08TIkGKQlPp9mbtvbBwPi7DzJFVvVDAbf0q7j3WxSkRGE
+         fGqiq3JZD5ClweKlvKrN9um5IsXo4DvSt3Zff5LMPOFb+g780yaqV+3PcsMsNGUBqgLx
+         7org==
+X-Gm-Message-State: AOAM533MWIuYJsp8dvvOOD07tBleDGzgKvbff4FBvT8fFz+9W2a6fuYV
+        EiIXMxp0gfRTwgNYu9q3Vt4IAQ==
+X-Google-Smtp-Source: ABdhPJwBU6hVyjyLMzyH1bXdT1/Ghkt/24x5WKhTlDwW92zY37reeKFNWQzZR6scrzDv0JVqW74bSw==
+X-Received: by 2002:a65:68d3:: with SMTP id k19mr580276pgt.44.1617751721163;
+        Tue, 06 Apr 2021 16:28:41 -0700 (PDT)
+Received: from xps15 (S0106889e681aac74.cg.shawcable.net. [68.147.0.187])
+        by smtp.gmail.com with ESMTPSA id j16sm19188529pfa.213.2021.04.06.16.28.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Apr 2021 16:28:40 -0700 (PDT)
+Date:   Tue, 6 Apr 2021 17:28:37 -0600
+From:   Mathieu Poirier <mathieu.poirier@linaro.org>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] remoteproc: pru: Fixup interrupt-parent logic for fw
+ events
+Message-ID: <20210406232837.GA330882@xps15>
+References: <20210323223839.17464-1-s-anna@ti.com>
+ <20210323223839.17464-2-s-anna@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210323223839.17464-2-s-anna@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-of_get_mac_address() already supports fetching the MAC address by an
-nvmem provider. But until now, it was just working for platform devices.
-Esp. it was not working for DSA ports and PCI devices. It gets more
-common that PCI devices have a device tree binding since SoCs contain
-integrated root complexes.
+On Tue, Mar 23, 2021 at 05:38:37PM -0500, Suman Anna wrote:
+> The PRU firmware interrupt mapping logic in pru_handle_intrmap() uses
+> of_irq_find_parent() with PRU device node to get a handle to the PRUSS
+> Interrupt Controller at present. This logic however requires that the
+> PRU nodes always define a interrupt-parent property. This property is
+> neither a required/defined property as per the PRU remoteproc binding,
+> nor is relevant from a DT node point of view without any associated
+> interrupts. The curret logic finds a wrong interrupt controller and
+> fails to perform proper mapping without any interrupt-parent property
+> in the PRU nodes.
+> 
+> Fix this logic to always find and use the sibling interrupt controller.
+> Also, while at this, fix the acquired interrupt controller device node
+> reference properly.
+> 
+> Fixes: c75c9fdac66e ("remoteproc: pru: Add support for PRU specific interrupt configuration")
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> ---
+>  drivers/remoteproc/pru_rproc.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+> index 16979c1cd2f4..a9d07c0751be 100644
+> --- a/drivers/remoteproc/pru_rproc.c
+> +++ b/drivers/remoteproc/pru_rproc.c
+> @@ -284,7 +284,7 @@ static int pru_handle_intrmap(struct rproc *rproc)
+>  	struct pru_rproc *pru = rproc->priv;
+>  	struct pru_irq_rsc *rsc = pru->pru_interrupt_map;
+>  	struct irq_fwspec fwspec;
+> -	struct device_node *irq_parent;
+> +	struct device_node *parent, *irq_parent;
+>  	int i, ret = 0;
+>  
+>  	/* not having pru_interrupt_map is not an error */
+> @@ -312,9 +312,16 @@ static int pru_handle_intrmap(struct rproc *rproc)
+>  
+>  	/*
+>  	 * parse and fill in system event to interrupt channel and
+> -	 * channel-to-host mapping
+> +	 * channel-to-host mapping. The interrupt controller to be used
+> +	 * for these mappings for a given PRU remoteproc is always its
+> +	 * corresponding sibling PRUSS INTC node.
+>  	 */
+> -	irq_parent = of_irq_find_parent(pru->dev->of_node);
 
-Use the nvmem of_* binding to fetch the nvmem cells by a struct
-device_node. We still have to try to read the cell by device first
-because there might be a nvmem_cell_lookup associated with that device.
+If I understand correctly when an interrupt controller node wasn't speficied in
+the parent this was unwinding until it found one...
 
-Signed-off-by: Michael Walle <michael@walle.cc>
----
-Please note, that I've kept the nvmem_get_mac_address() which operates
-on a device. The new of_get_mac_addr_nvmem() is almost identical and
-there are no users of the former function right now, but it seems to be
-the "newer" version to get the MAC address for a "struct device". Thus
-I've kept it. Please advise, if I should kill it though.
+> +	parent = of_get_parent(dev_of_node(pru->dev));
+> +	if (!parent)
+> +		return -ENODEV;
+> +
+> +	irq_parent = of_get_child_by_name(parent, "interrupt-controller");
+> +	of_node_put(parent);
+>  	if (!irq_parent) {
+>  		kfree(pru->mapped_irq);
+>  		return -ENODEV;
+> @@ -337,11 +344,13 @@ static int pru_handle_intrmap(struct rproc *rproc)
+>  			goto map_fail;
+>  		}
+>  	}
+> +	of_node_put(irq_parent);
+>  
+>  	return ret;
+>  
+>  map_fail:
+>  	pru_dispose_irq_mapping(pru);
+> +	of_node_put(irq_parent);
 
- drivers/of/of_net.c | 35 ++++++++++++++++++++++++++++++-----
- 1 file changed, 30 insertions(+), 5 deletions(-)
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 
-diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
-index 2d5d5e59aea5..2323c6063eaf 100644
---- a/drivers/of/of_net.c
-+++ b/drivers/of/of_net.c
-@@ -11,6 +11,7 @@
- #include <linux/phy.h>
- #include <linux/export.h>
- #include <linux/device.h>
-+#include <linux/nvmem-consumer.h>
- 
- /**
-  * of_get_phy_mode - Get phy mode for given device_node
-@@ -59,15 +60,39 @@ static int of_get_mac_addr(struct device_node *np, const char *name, u8 *addr)
- static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
- {
- 	struct platform_device *pdev = of_find_device_by_node(np);
-+	struct nvmem_cell *cell;
-+	const void *mac;
-+	size_t len;
- 	int ret;
- 
--	if (!pdev)
--		return -ENODEV;
-+	/* Try lookup by device first, there might be a nvmem_cell_lookup
-+	 * associated with a given device.
-+	 */
-+	if (pdev) {
-+		ret = nvmem_get_mac_address(&pdev->dev, addr);
-+		put_device(&pdev->dev);
-+		return ret;
-+	}
-+
-+	cell = of_nvmem_cell_get(np, "mac-address");
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
-+
-+	mac = nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
-+
-+	if (IS_ERR(mac))
-+		return PTR_ERR(mac);
-+
-+	if (len != ETH_ALEN || !is_valid_ether_addr(mac)) {
-+		kfree(mac);
-+		return -EINVAL;
-+	}
- 
--	ret = nvmem_get_mac_address(&pdev->dev, addr);
--	put_device(&pdev->dev);
-+	ether_addr_copy(addr, mac);
-+	kfree(mac);
- 
--	return ret;
-+	return 0;
- }
- 
- /**
--- 
-2.20.1
-
+>  
+>  	return ret;
+>  }
+> -- 
+> 2.30.1
+> 
