@@ -2,131 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 598F135510B
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Apr 2021 12:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99ADE35560C
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Apr 2021 16:06:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242851AbhDFKiY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 6 Apr 2021 06:38:24 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:37952 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229787AbhDFKiX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 6 Apr 2021 06:38:23 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 136Ac6bf078390;
-        Tue, 6 Apr 2021 05:38:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1617705486;
-        bh=cDx/BwVmTsGaf5kP1m/T9FAofm5zp1u5vU0B5W3CTHs=;
-        h=Subject:To:References:From:Date:In-Reply-To;
-        b=ABkS/SKlqsRcbCliGG7T9RnRYUkShhDqgYSm9NfXTWValsqPvPUxwdwweFQBhKTk9
-         UIhLx1GwLtQPCvhqKMz7FEaYE0bKoMgaaNLKmr4lHc7XZRXHx3NK9/1tn49oeXU8dk
-         gqdJKPq8ci4lu2S5zdZhZg0KSVuk1oAxFUEfLJPM=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 136Ac5Be026725
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 6 Apr 2021 05:38:06 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 6 Apr
- 2021 05:38:05 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Tue, 6 Apr 2021 05:38:05 -0500
-Received: from [10.250.232.146] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 136Ac1k7038264;
-        Tue, 6 Apr 2021 05:38:02 -0500
-Subject: Re: [PATCH v2 1/1] thermal: ti-soc-thermal: Remove duplicated header
- file inclusion
-To:     Zhen Lei <thunder.leizhen@huawei.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        linux-pm <linux-pm@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-References: <20210406091912.2583-1-thunder.leizhen@huawei.com>
- <20210406091912.2583-2-thunder.leizhen@huawei.com>
-From:   "J, KEERTHY" <j-keerthy@ti.com>
-Message-ID: <a8471ca7-461d-2b78-1d95-cda8e384bd9e@ti.com>
-Date:   Tue, 6 Apr 2021 16:08:01 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        id S235945AbhDFOGw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 6 Apr 2021 10:06:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39086 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233227AbhDFOGv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 6 Apr 2021 10:06:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 10E3C613C4;
+        Tue,  6 Apr 2021 14:06:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1617718003;
+        bh=CQkqAyjhsoQFZIyIYvLUOhXpo7lnAR7GuZPZMplquU0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=C2gAYBhAs4KkkWQaRjE9U8Y8opCsV8drwkxrNX6Aicy/E4paHRHrkgbpS7N9ad8ul
+         hVEsKdiu8n3Fef9tB3mZjp/PH7lfSi2QrwnHkek2MviUmPg0VF7QxCdPXuQkZLenM1
+         cLQyPhweEDz9EKjtKXqrSAurIsrYz8DWyri4XE62SQ1gl1ncRTL3m3hZpTspgzemiO
+         UcytOZqB7J3MVcm1Lt/0umdE86aHK0OF31Y3rs4oSbyfjUDtf4weMARGo15b8SBpww
+         TeyLqCkT09bFfe+HhNU5zYG7IkRQvjkVnawjcJdyL9rbvGOAnxzx9Q9i1cJTEMCD4D
+         nnZyIVkPaertw==
+Received: by mail-ej1-f42.google.com with SMTP id a7so22181489ejs.3;
+        Tue, 06 Apr 2021 07:06:42 -0700 (PDT)
+X-Gm-Message-State: AOAM530EleuybtP1Ik/QFHu8jvbry3NFGgOhJXcaVem1jZevaxCaXD+s
+        u2bEC5su7vM0uGMQbGRSKse0+ROkk/6MA+Tmow==
+X-Google-Smtp-Source: ABdhPJx8rAyWkSOqiax6jgSsYlFFrVm8RG6wg33J9TbZWbMXhlJ12SFzPZSuwcTnZoc2ePClOpJGjMXyyDYnvArg+3A=
+X-Received: by 2002:a17:906:813:: with SMTP id e19mr7792178ejd.359.1617718001625;
+ Tue, 06 Apr 2021 07:06:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210406091912.2583-2-thunder.leizhen@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20210402192054.7934-1-dariobin@libero.it>
+In-Reply-To: <20210402192054.7934-1-dariobin@libero.it>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 6 Apr 2021 09:06:29 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKkpZw_BmcCXUzahF-FkQ=vb7mb_s95Lm2G7pWo0=dqNA@mail.gmail.com>
+Message-ID: <CAL_JsqKkpZw_BmcCXUzahF-FkQ=vb7mb_s95Lm2G7pWo0=dqNA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] fdt: translate address if #size-cells = <0>
+To:     Dario Binacchi <dariobin@libero.it>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bin Meng <bmeng.cn@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <kristo@kernel.org>, devicetree@vger.kernel.org,
+        linux-clk <linux-clk@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Fri, Apr 2, 2021 at 2:21 PM Dario Binacchi <dariobin@libero.it> wrote:
+>
+>
+> The series comes from my commit in U-boot
+> d64b9cdcd4 ("fdt: translate address if #size-cells = <0>")
+> and from the subsequent exchange of emails at the end of which I was
+> suggested to send the patch to the linux kernel
+> (https://patchwork.ozlabs.org/project/uboot/patch/1614324949-61314-1-git-send-email-bmeng.cn@gmail.com/).
 
+It's 'ranges' that determines translatable which is missing from the
+DT. This should have not had a 0 size either though maybe we could
+support that.
 
-On 4/6/2021 2:49 PM, Zhen Lei wrote:
-> Delete one of the header files <linux/of_device.h> that are included
-> twice, all included header files are then rearranged alphabetically.
+Does the DT have to be updated anyways for your spread spectrum support?
 
-Reviewed-by: Keerthy <j-keerthy@ti.com>
+> The second patch of the series aims to demonstrate that the first one, which
+> enables the translation of addresses also for crossings of DT nodes
+> with #size-cells = <0>, it really works.
 
-> 
-> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-> ---
->   drivers/thermal/ti-soc-thermal/ti-bandgap.c | 35 ++++++++++++++---------------
->   1 file changed, 17 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-> index 8a3646e26ddd208..5e7e80b4a8171c4 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-> +++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-> @@ -9,30 +9,29 @@
->    *   Eduardo Valentin <eduardo.valentin@ti.com>
->    */
->   
-> -#include <linux/module.h>
-> +#include <linux/clk.h>
-> +#include <linux/cpu_pm.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
->   #include <linux/export.h>
-> +#include <linux/gpio/consumer.h>
->   #include <linux/init.h>
-> -#include <linux/kernel.h>
->   #include <linux/interrupt.h>
-> -#include <linux/clk.h>
-> -#include <linux/gpio/consumer.h>
-> -#include <linux/platform_device.h>
-> -#include <linux/err.h>
-> -#include <linux/types.h>
-> -#include <linux/spinlock.h>
-> -#include <linux/sys_soc.h>
-> -#include <linux/reboot.h>
-> -#include <linux/of_device.h>
-> -#include <linux/of_platform.h>
-> -#include <linux/of_irq.h>
->   #include <linux/io.h>
->   #include <linux/iopoll.h>
-> -#include <linux/cpu_pm.h>
-> -#include <linux/device.h>
-> -#include <linux/pm_runtime.h>
-> -#include <linux/pm.h>
-> -#include <linux/of.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
->   #include <linux/of_device.h>
-> +#include <linux/of.h>
-> +#include <linux/of_irq.h>
-> +#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/reboot.h>
-> +#include <linux/spinlock.h>
-> +#include <linux/sys_soc.h>
-> +#include <linux/types.h>
->   
->   #include "ti-bandgap.h"
->   
-> 
+I don't seem to have the 2nd patch... In any case, you should handle
+the special case for this platform in code for the platform.
+
+Rob
