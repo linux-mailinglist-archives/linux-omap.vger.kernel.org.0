@@ -2,43 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A075D35712D
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Apr 2021 17:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2400357130
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Apr 2021 17:57:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245455AbhDGP5H (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Apr 2021 11:57:07 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:52368 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233852AbhDGP5G (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Apr 2021 11:57:06 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 137Fulpo116650;
-        Wed, 7 Apr 2021 10:56:47 -0500
+        id S1353939AbhDGP5M (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Apr 2021 11:57:12 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:60916 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233852AbhDGP5L (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Apr 2021 11:57:11 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 137FuqL4071603;
+        Wed, 7 Apr 2021 10:56:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1617811007;
-        bh=r78S7ZI4t8HWx+zggh+zIGvWwlMtHHDtztUrnZCJObU=;
-        h=From:To:CC:Subject:Date;
-        b=tGbYaKvDiKH9NIF54rSuMN58mRR1ezK3lCaXY0Thb8N0zgo1d/MhStsmWIf6OVnHU
-         w4brV5JM1C+cslX76fKGDmIa9Ipr9bg7M5JFXIIN1XYVW68+TC7ASTFL/E7U0VDwuM
-         Z3PHCae2DNk2kkJb7eRAWm+TnPppBsT5iDn3NNVg=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 137FulfA047396
+        s=ti-com-17Q1; t=1617811012;
+        bh=Jgds5zewRhcnEp12jeYpJsxNje/XJJuE5lRZxJltew0=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=MVag6pSDYAkWmwLCMGTlHLHrkeTE6WROGpAM7AlzQgDa6t0I10i2mUgs1c3jp+eZe
+         ZierZZrHcetUgm2dHY87u4Qkn9DWwApiWp2eDjXvfsl/F+NagN1kAhk7fx7szATioi
+         AcyA3kuONytxtfyXFy6ONYW717OxZdnvv+YUHbAY=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 137Fuqgq071567
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 7 Apr 2021 10:56:47 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 7 Apr 2021 10:56:52 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 7 Apr
- 2021 10:56:47 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ 2021 10:56:52 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Wed, 7 Apr 2021 10:56:47 -0500
+ Frontend Transport; Wed, 7 Apr 2021 10:56:52 -0500
 Received: from lelv0597.itg.ti.com (lelv0597.itg.ti.com [10.181.64.32])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 137Ful3U112645;
-        Wed, 7 Apr 2021 10:56:47 -0500
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 137FuqKZ041650;
+        Wed, 7 Apr 2021 10:56:52 -0500
 Received: from localhost ([10.250.37.105])
-        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 137Fuk5C075236;
-        Wed, 7 Apr 2021 10:56:47 -0500
+        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 137Fuq6o075244;
+        Wed, 7 Apr 2021 10:56:52 -0500
 From:   Suman Anna <s-anna@ti.com>
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
         Mathieu Poirier <mathieu.poirier@linaro.org>
@@ -49,10 +49,12 @@ CC:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
         <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 0/3] PRU firmware event/interrupt mapping fixes
-Date:   Wed, 7 Apr 2021 10:56:38 -0500
-Message-ID: <20210407155641.5501-1-s-anna@ti.com>
+Subject: [PATCH v2 1/3] remoteproc: pru: Fixup interrupt-parent logic for fw events
+Date:   Wed, 7 Apr 2021 10:56:39 -0500
+Message-ID: <20210407155641.5501-2-s-anna@ti.com>
 X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210407155641.5501-1-s-anna@ti.com>
+References: <20210407155641.5501-1-s-anna@ti.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -61,35 +63,78 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi All,
+The PRU firmware interrupt mapping logic in pru_handle_intrmap() uses
+of_irq_find_parent() with PRU device node to get a handle to the PRUSS
+Interrupt Controller at present. This logic however requires that the
+PRU nodes always define a interrupt-parent property. This property is
+neither a required/defined property as per the PRU remoteproc binding,
+nor is relevant from a DT node point of view without any associated
+interrupts. The current logic finds a wrong interrupt controller and
+fails to perform proper mapping without any interrupt-parent property
+in the PRU nodes.
 
-The following is a minor revised version of the series [1] that includes fixes
-for various different issues associated with the PRU firmware event/interrupt
-mapping configuration logic. Please see the v1 cover-letter [1] for additional
-details. 
+Fix this logic to always find and use the sibling interrupt controller.
+Also, while at this, fix the acquired interrupt controller device node
+reference properly.
 
-There are currently no in-kernel dts nodes yet in mainline kernel (first
-nodes will appear in v5.13-rc1) so these can be picked up for either v5.13
-merge window or the current -rc cycle.
+Fixes: c75c9fdac66e ("remoteproc: pru: Add support for PRU specific interrupt configuration")
+Signed-off-by: Suman Anna <s-anna@ti.com>
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+---
+v2:
+ - Fixed one minor typo ((%s/curret/current) in patch description 
+ - Picked up Reviewed-by tag
+v1: https://patchwork.kernel.org/project/linux-remoteproc/patch/20210323223839.17464-2-s-anna@ti.com/
 
-Changes in v2:
- - Picked up Reviewed-by tags on Patches 1 and 2
- - Revised Patch 3 to address additional error cleanup paths as
-   pointed out by Mathieu.
+ drivers/remoteproc/pru_rproc.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-regards
-Suman
-
-[1] https://patchwork.kernel.org/project/linux-remoteproc/cover/20210323223839.17464-1-s-anna@ti.com/
-
-Suman Anna (3):
-  remoteproc: pru: Fixup interrupt-parent logic for fw events
-  remoteproc: pru: Fix wrong success return value for fw events
-  remoteproc: pru: Fix and cleanup firmware interrupt mapping logic
-
- drivers/remoteproc/pru_rproc.c | 41 ++++++++++++++++++++++++++--------
- 1 file changed, 32 insertions(+), 9 deletions(-)
-
+diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
+index 16979c1cd2f4..a9d07c0751be 100644
+--- a/drivers/remoteproc/pru_rproc.c
++++ b/drivers/remoteproc/pru_rproc.c
+@@ -284,7 +284,7 @@ static int pru_handle_intrmap(struct rproc *rproc)
+ 	struct pru_rproc *pru = rproc->priv;
+ 	struct pru_irq_rsc *rsc = pru->pru_interrupt_map;
+ 	struct irq_fwspec fwspec;
+-	struct device_node *irq_parent;
++	struct device_node *parent, *irq_parent;
+ 	int i, ret = 0;
+ 
+ 	/* not having pru_interrupt_map is not an error */
+@@ -312,9 +312,16 @@ static int pru_handle_intrmap(struct rproc *rproc)
+ 
+ 	/*
+ 	 * parse and fill in system event to interrupt channel and
+-	 * channel-to-host mapping
++	 * channel-to-host mapping. The interrupt controller to be used
++	 * for these mappings for a given PRU remoteproc is always its
++	 * corresponding sibling PRUSS INTC node.
+ 	 */
+-	irq_parent = of_irq_find_parent(pru->dev->of_node);
++	parent = of_get_parent(dev_of_node(pru->dev));
++	if (!parent)
++		return -ENODEV;
++
++	irq_parent = of_get_child_by_name(parent, "interrupt-controller");
++	of_node_put(parent);
+ 	if (!irq_parent) {
+ 		kfree(pru->mapped_irq);
+ 		return -ENODEV;
+@@ -337,11 +344,13 @@ static int pru_handle_intrmap(struct rproc *rproc)
+ 			goto map_fail;
+ 		}
+ 	}
++	of_node_put(irq_parent);
+ 
+ 	return ret;
+ 
+ map_fail:
+ 	pru_dispose_irq_mapping(pru);
++	of_node_put(irq_parent);
+ 
+ 	return ret;
+ }
 -- 
 2.30.1
 
