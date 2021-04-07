@@ -2,159 +2,162 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27E1A357134
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Apr 2021 17:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2443571E6
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Apr 2021 18:11:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353937AbhDGP5P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Apr 2021 11:57:15 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:52410 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353962AbhDGP5O (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Apr 2021 11:57:14 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 137Fuvgw116698;
-        Wed, 7 Apr 2021 10:56:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1617811017;
-        bh=D1uTZ8PJxXWfw+lIGtWEx/obgfLqJBnOltn3mYjLZdk=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=XwZLGecHafCwwNMnfItyXJhrDyeHD1ZtobH01R+bwc2Lk6/sMd6JjHMTCtZja5xnt
-         JuVR+YUxLK8tcgDWp219YKBt2G/sJ9qBLekmXVB/HINerOkG+fawySBgTzIqtrZWAq
-         54yslWZeInxJK/iGsMByc4CriQeHTaPbcIcegKaA=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 137FuvMX047528
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 7 Apr 2021 10:56:57 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 7 Apr
- 2021 10:56:57 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Wed, 7 Apr 2021 10:56:57 -0500
-Received: from fllv0103.dal.design.ti.com (fllv0103.dal.design.ti.com [10.247.120.73])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 137FuvTT041737;
-        Wed, 7 Apr 2021 10:56:57 -0500
-Received: from localhost ([10.250.37.105])
-        by fllv0103.dal.design.ti.com (8.14.7/8.14.7) with ESMTP id 137FuvKb101693;
-        Wed, 7 Apr 2021 10:56:57 -0500
-From:   Suman Anna <s-anna@ti.com>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>
-CC:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 3/3] remoteproc: pru: Fix and cleanup firmware interrupt mapping logic
-Date:   Wed, 7 Apr 2021 10:56:41 -0500
-Message-ID: <20210407155641.5501-4-s-anna@ti.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210407155641.5501-1-s-anna@ti.com>
-References: <20210407155641.5501-1-s-anna@ti.com>
+        id S235169AbhDGQK5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Apr 2021 12:10:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42402 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232069AbhDGQKy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Apr 2021 12:10:54 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED212C061760;
+        Wed,  7 Apr 2021 09:10:38 -0700 (PDT)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 18A9F22236;
+        Wed,  7 Apr 2021 18:10:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1617811836;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gjuAN9QqCnWD77UCettma95Ojaeyk86+8J2wmtLYYZo=;
+        b=i99BezLwmPOE6w4/hGL0FvjE3br7uwuw9VGO9aRg8uJTlzeGu8Ac4FIxGX9vOQ8oMVP/r/
+        vE3I00R508lGU6R1pfNebHfFNtH5wO92z1+kMGfRRoMcmLezfBux9iSvegup2fWrGU4qza
+        5flIWUW4ulzNHWTXNBqNWa8WPLM3Izs=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 07 Apr 2021 18:10:30 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
+        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Andreas Larsson <andreas@gaisler.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Joyce Ooi <joyce.ooi@intel.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Fugang Duan <fugang.duan@nxp.com>,
+        Madalin Bucur <madalin.bucur@nxp.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Li Yang <leoyang.li@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Mark Lee <Mark-MC.Lee@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Bryan Whitehead <bryan.whitehead@microchip.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        Byungho An <bh74.an@samsung.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Wingman Kwok <w-kwok2@ti.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?J=C3=A9r=C3=B4me?= =?UTF-8?Q?_Pouiller?= 
+        <jerome.pouiller@silabs.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH net-next v3 1/2] of: net: pass the dst buffer to
+ of_get_mac_address()
+In-Reply-To: <20210406220921.24313-2-michael@walle.cc>
+References: <20210406220921.24313-1-michael@walle.cc>
+ <20210406220921.24313-2-michael@walle.cc>
+User-Agent: Roundcube Webmail/1.4.11
+Message-ID: <50f474611ecf0f5e61c9a14a24b28773@walle.cc>
+X-Sender: michael@walle.cc
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The PRU firmware interrupt mappings are configured and unconfigured in
-.start() and .stop() callbacks respectively using the variables 'evt_count'
-and a 'mapped_irq' pointer. These variables are modified only during these
-callbacks but are not re-initialized/reset properly during unwind or
-failure paths. These stale values caused a kernel crash while stopping a
-PRU remoteproc running a different firmware with no events on a subsequent
-run after a previous run that was running a firmware with events.
+Am 2021-04-07 00:09, schrieb Michael Walle:
+[..]
+> diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
+> index bc0a27de69d4..2d5d5e59aea5 100644
+> --- a/drivers/of/of_net.c
+> +++ b/drivers/of/of_net.c
+> @@ -45,42 +45,35 @@ int of_get_phy_mode(struct device_node *np,
+> phy_interface_t *interface)
+>  }
+>  EXPORT_SYMBOL_GPL(of_get_phy_mode);
+> 
+> -static const void *of_get_mac_addr(struct device_node *np, const char 
+> *name)
+> +static int of_get_mac_addr(struct device_node *np, const char *name, 
+> u8 *addr)
+>  {
+>  	struct property *pp = of_find_property(np, name, NULL);
+> 
+> -	if (pp && pp->length == ETH_ALEN && is_valid_ether_addr(pp->value))
+> -		return pp->value;
+> -	return NULL;
+> +	if (pp && pp->length == ETH_ALEN && is_valid_ether_addr(pp->value)) {
+> +		ether_addr_copy(addr, pp->value);
 
-Fix this crash by ensuring that the evt_count is 0 and the mapped_irq
-pointer is set to NULL in pru_dispose_irq_mapping(). Also, reset these
-variables properly during any failures in the .start() callback. While
-at this, the pru_dispose_irq_mapping() callsites are all made to look
-the same, moving any conditional logic to inside the function.
+Mh, I guess this should rather be memcpy(addr, pp->value, ETH_ALEN) 
+because
+ether_addr_copy() needs 2 byte aligned source and destination buffers.
 
-Fixes: c75c9fdac66e ("remoteproc: pru: Add support for PRU specific interrupt configuration")
-Reported-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Suman Anna <s-anna@ti.com>
----
-v2:
- - Fixed two additional cleanup paths in pru_handle_intrmap()
-   addressing Mathieu's review comment
-v1: https://patchwork.kernel.org/project/linux-remoteproc/patch/20210323223839.17464-4-s-anna@ti.com/
-
- drivers/remoteproc/pru_rproc.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/remoteproc/pru_rproc.c b/drivers/remoteproc/pru_rproc.c
-index 87b43976c51b..04863bf23db8 100644
---- a/drivers/remoteproc/pru_rproc.c
-+++ b/drivers/remoteproc/pru_rproc.c
-@@ -266,12 +266,17 @@ static void pru_rproc_create_debug_entries(struct rproc *rproc)
- 
- static void pru_dispose_irq_mapping(struct pru_rproc *pru)
- {
--	while (pru->evt_count--) {
-+	if (!pru->mapped_irq)
-+		return;
-+
-+	while (pru->evt_count) {
-+		pru->evt_count--;
- 		if (pru->mapped_irq[pru->evt_count] > 0)
- 			irq_dispose_mapping(pru->mapped_irq[pru->evt_count]);
- 	}
- 
- 	kfree(pru->mapped_irq);
-+	pru->mapped_irq = NULL;
- }
- 
- /*
-@@ -307,8 +312,10 @@ static int pru_handle_intrmap(struct rproc *rproc)
- 	pru->evt_count = rsc->num_evts;
- 	pru->mapped_irq = kcalloc(pru->evt_count, sizeof(unsigned int),
- 				  GFP_KERNEL);
--	if (!pru->mapped_irq)
-+	if (!pru->mapped_irq) {
-+		pru->evt_count = 0;
- 		return -ENOMEM;
-+	}
- 
- 	/*
- 	 * parse and fill in system event to interrupt channel and
-@@ -317,13 +324,19 @@ static int pru_handle_intrmap(struct rproc *rproc)
- 	 * corresponding sibling PRUSS INTC node.
- 	 */
- 	parent = of_get_parent(dev_of_node(pru->dev));
--	if (!parent)
-+	if (!parent) {
-+		kfree(pru->mapped_irq);
-+		pru->mapped_irq = NULL;
-+		pru->evt_count = 0;
- 		return -ENODEV;
-+	}
- 
- 	irq_parent = of_get_child_by_name(parent, "interrupt-controller");
- 	of_node_put(parent);
- 	if (!irq_parent) {
- 		kfree(pru->mapped_irq);
-+		pru->mapped_irq = NULL;
-+		pru->evt_count = 0;
- 		return -ENODEV;
- 	}
- 
-@@ -398,8 +411,7 @@ static int pru_rproc_stop(struct rproc *rproc)
- 	pru_control_write_reg(pru, PRU_CTRL_CTRL, val);
- 
- 	/* dispose irq mapping - new firmware can provide new mapping */
--	if (pru->mapped_irq)
--		pru_dispose_irq_mapping(pru);
-+	pru_dispose_irq_mapping(pru);
- 
- 	return 0;
- }
--- 
-2.30.1
-
+-michael
