@@ -2,89 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E02AE3565AB
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Apr 2021 09:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EACE5356895
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Apr 2021 11:59:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244750AbhDGHqC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 7 Apr 2021 03:46:02 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:51680 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240787AbhDGHqB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 7 Apr 2021 03:46:01 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1377jaR1054304;
-        Wed, 7 Apr 2021 02:45:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1617781536;
-        bh=xJ+7JHvMKy97Iq5jhZv0GDQP4glZmSZPs3NNd9WqIz4=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=ckOZwBH2lAxhmYfiaQMvHZvGCMcCXLo6tVH2Rw46LA510qJ9FYLYcY8sCgk3FE1nx
-         RBRzB3ryvmyrmSBksXNusl5ugom/5swL/M12vVCCphlpXwWs8aQK9QpCJh0pBvMWoi
-         8eRCoAENZz3zWSenfUeoo81MWgdYHNmcPgzNAyKA=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1377jas6013696
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 7 Apr 2021 02:45:36 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 7 Apr
- 2021 02:45:36 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Wed, 7 Apr 2021 02:45:36 -0500
-Received: from [10.250.234.120] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1377jXEN005249;
-        Wed, 7 Apr 2021 02:45:34 -0500
-Subject: Re: [PATCH] i2c: omap: Fix rumtime PM imbalance on error
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Dinghao Liu <dinghao.liu@zju.edu.cn>, <kjlu@umn.edu>,
+        id S233362AbhDGJ73 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 7 Apr 2021 05:59:29 -0400
+Received: from muru.com ([72.249.23.125]:51862 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230220AbhDGJ73 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 7 Apr 2021 05:59:29 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 64C2880A7;
+        Wed,  7 Apr 2021 10:00:28 +0000 (UTC)
+Date:   Wed, 7 Apr 2021 12:59:15 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Dinghao Liu <dinghao.liu@zju.edu.cn>, kjlu@umn.edu,
         Aaro Koskinen <aaro.koskinen@iki.fi>,
-        <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+        linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i2c: omap: Fix rumtime PM imbalance on error
+Message-ID: <YG2Cc+0rl4ndtGX4@atomide.com>
 References: <20210407033030.13419-1-dinghao.liu@zju.edu.cn>
- <e2b5dc55-e084-c4e5-4eb0-749e2922a602@ti.com> <YG1Qt56QSjyFqZxd@atomide.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <30ed0224-fba3-75c6-c4aa-e2d0724c291b@ti.com>
-Date:   Wed, 7 Apr 2021 13:15:32 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <e2b5dc55-e084-c4e5-4eb0-749e2922a602@ti.com>
+ <YG1Qt56QSjyFqZxd@atomide.com>
+ <30ed0224-fba3-75c6-c4aa-e2d0724c291b@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <YG1Qt56QSjyFqZxd@atomide.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <30ed0224-fba3-75c6-c4aa-e2d0724c291b@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-On 4/7/21 11:57 AM, Tony Lindgren wrote:
-> * Vignesh Raghavendra <vigneshr@ti.com> [210407 06:20]:
->> Do we need a Fixes: tag to enable stable backports?
+* Vignesh Raghavendra <vigneshr@ti.com> [210407 07:46]:
+> Hi,
 > 
-> Well pm_runtime_resume_and_get() was introduced quite recently, and
-> we already handle the error and bail out. And likely after an error
-> not much works anyways :) So it might be better to add just a stable
-> tag v5.10 and later as further backports are not likely needed.
+> On 4/7/21 11:57 AM, Tony Lindgren wrote:
+> > * Vignesh Raghavendra <vigneshr@ti.com> [210407 06:20]:
+> >> Do we need a Fixes: tag to enable stable backports?
+> > 
+> > Well pm_runtime_resume_and_get() was introduced quite recently, and
+> > we already handle the error and bail out. And likely after an error
+> > not much works anyways :) So it might be better to add just a stable
+> > tag v5.10 and later as further backports are not likely needed.
+> > 
 > 
+> Agree this is not a critical patch for backport. But I do know that
+> pm_runtime_resume_and_get() is backported to v5.4 stable kernel at least
+> [1]. So stable tag with v5.4 perhaps would probably help tools looking
+> for patches to backport.
 
-Agree this is not a critical patch for backport. But I do know that
-pm_runtime_resume_and_get() is backported to v5.4 stable kernel at least
-[1]. So stable tag with v5.4 perhaps would probably help tools looking
-for patches to backport.
+OK no objections to adding a fixes tag.
 
-[1] https://lkml.org/lkml/2020/12/28/588
+Regards,
 
-> Naturally nothing stopping doing separate backports if really needed
-> though.
-> 
-> Regards,
-> 
-> Tony
-> 
+Tony
 
-Regards
-Vignesh
+> [1] https://lkml.org/lkml/2020/12/28/588
