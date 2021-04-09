@@ -2,223 +2,326 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6933358E4A
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Apr 2021 22:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A42C3594C2
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Apr 2021 07:39:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232380AbhDHUYR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Apr 2021 16:24:17 -0400
-Received: from smtp-32-i2.italiaonline.it ([213.209.12.32]:52205 "EHLO
-        libero.it" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232041AbhDHUYQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 8 Apr 2021 16:24:16 -0400
-Received: from oxapps-32-144.iol.local ([10.101.8.190])
-        by smtp-32.iol.local with ESMTPA
-        id UbC6lu1MTBc6YUbC6lVgnb; Thu, 08 Apr 2021 22:24:03 +0200
-x-libjamoibt: 1601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
-        t=1617913443; bh=S3BIXQfpQo++zDln2EF8ZcTp8LoMYd8zAJ9p8/j1cB8=;
-        h=From;
-        b=xFdHjz4S1+eWsKxVH3uJuNwgtBvw9EcOO20hrm1MIspoCCg3GfBB7N5j8VGtWkCem
-         gJq5hTeePzqgK/U5Ls7MCznyROAF+MNR3K3sbd3XLohYbsw8385TC++JQp0g69Ztmh
-         gkc5WcGuH+28B4mKc0v3FcGuGizjHK3W7+EGXQkB5JEQjxraf6mlyASGI3jX/VRKoL
-         fzBLqK5onoeNusHMyob/frpIem+qh70A4dRX8zW7mXnNDoKI0VNCtYfO0nSGeHAce5
-         skLOcWdSpa3ZmmwiMlvhZUa/SYQatGcPTFY1FnfsC4BomcGKZ9uyuqVCQbZal7B1es
-         oh+cqr19skVcQ==
-X-CNFS-Analysis: v=2.4 cv=B6l8bMhM c=1 sm=1 tr=0 ts=606f6663 cx=a_exe
- a=+LyvvGPX93CApvOVpnXrdQ==:117 a=UPWQtH3J-JgA:10 a=IkcTkHD0fZMA:10
- a=_gZzKa99_6AA:10 a=VwQbUJbxAAAA:8 a=voM4FWlXAAAA:8 a=pGLkceISAAAA:8
- a=8LTHUb3NTGMUmE2BBAMA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
- a=IC2XNlieTeVoXbcui8wp:22
-Date:   Thu, 8 Apr 2021 22:24:02 +0200 (CEST)
-From:   Dario Binacchi <dariobin@libero.it>
-To:     Tero Kristo <kristo@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Bin Meng <bmeng.cn@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
-        linux-clk <linux-clk@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>
-Message-ID: <116337570.107804.1617913442196@mail1.libero.it>
-In-Reply-To: <a197b5d8-621b-6655-e571-2877d007cd4c@kernel.org>
-References: <20210402192054.7934-1-dariobin@libero.it>
- <CAL_JsqKkpZw_BmcCXUzahF-FkQ=vb7mb_s95Lm2G7pWo0=dqNA@mail.gmail.com>
- <1727466283.11523.1617746554330@mail1.libero.it>
- <CAL_JsqLd+BxW9T99Sx9vgEkxdbMFe+tL7X_nZ7ExvRxVd_9GNQ@mail.gmail.com>
- <1044574275.383115.1617779265390@mail1.libero.it>
- <CAL_JsqLcus=Y5nOuV1wiAiVb1mTq9N8xqJpGJD6ip+Ec_6YDyw@mail.gmail.com>
- <a197b5d8-621b-6655-e571-2877d007cd4c@kernel.org>
-Subject: Re: [PATCH 0/2] fdt: translate address if #size-cells = <0>
+        id S233287AbhDIFj0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 9 Apr 2021 01:39:26 -0400
+Received: from mx0b-0014ca01.pphosted.com ([208.86.201.193]:1978 "EHLO
+        mx0a-0014ca01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S233282AbhDIFjV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 9 Apr 2021 01:39:21 -0400
+Received: from pps.filterd (m0042333.ppops.net [127.0.0.1])
+        by mx0b-0014ca01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1395Zcne013343;
+        Thu, 8 Apr 2021 22:38:39 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=proofpoint;
+ bh=L0KvZBRLxFRLslZaffXIa15K98XhvoreYRzt3SkpK58=;
+ b=MEgmmE94lTQFqX7Eoy+0adW95SgF+w4OemyFrcfHUgn0Bdq7KxNTItr9UCq3TJXSaX59
+ gwgfvOruoKLpfG5XwOEIpniNp/5BUTHh6/Fsmq+Bp0FWzJHxju9ab0OSX5L7VoVQCUTm
+ PUopFmzY9qh6jENqCXlo7/XlU5RL98K+oJ2NzZsQ9XoIQI3kAYsOnY7KDFlvHlxm2Tla
+ NlEdnBUoQJOTJoFlZblIad1ZGpUkwTWQJpZDkuHeRMxKil2oA/8lmWPWB2O33Jd4QMGn
+ VQ535a5z6gB/eV0YAS8HeLE+aQIizjQZCvdXZGKZAMjbvKQtIdf4TvPPblnd+H+UYSZq Jw== 
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
+        by mx0b-0014ca01.pphosted.com with ESMTP id 37rvb4ttvm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 08 Apr 2021 22:38:38 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SX/gps9xPdmeQ7aeNKC1XfVqZcagJyuHlkDkeJTzFyIoDFIepbe9a50i8CyTVhanEoiEi/Lg/UJQM1lRVzAdNt8vJUaVyVcuxtzkkKJIZGSvx+8CtNx/7mx2R9wFyCmcx/J3MN93y2Dy/piF+AiMrO95clkM9ITEHnhOu8+tmYjVf/iqGo/Qn1D0LCn3WudtuAIxn43VHE+w7kifqmozFmH61Rbco6KQ54U8SqXlP4YK151EaZ3Gcit+lwBiWWsP3ZrUBEf72QGfLKatpR1lu+sbQ6j6g6txqzyD5kyxj44lULmz+v1S4aLWJSJncd/i3jjj38zjsMOtzHB/spsqOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L0KvZBRLxFRLslZaffXIa15K98XhvoreYRzt3SkpK58=;
+ b=LtSHsj+zdb5IpGr2+uTRYUL2wcXq0vBBzqWEB7y8LsOgMNYgu4FboHGEg1wcRyGLiTeoNkDNe04uimYAIaNlJSgCKiiQDfkO0afvhJ/F1jWA7deeBuwR7ltlWRt3ZBXu7L+GMyiok7McanQVrxmMZGUBh3eIL7sDqe54akp02WiFYiwIYLmxSE0+cdrlE0cmDugUh2dF1MGX0q19QFHIpvElw/X2NTTqijqK+hfPEznK7cOZfssOTXrq6J2hnZBMWW+qaTC51wYnqPtIzZaQZDrqs+aCe0cyhGZfWZpxhntU+12RtksC7ySsTzF3W7jklYRQk+00a8cKz90KPwEIyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 199.43.4.23) smtp.rcpttodomain=google.com smtp.mailfrom=cadence.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=cadence.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L0KvZBRLxFRLslZaffXIa15K98XhvoreYRzt3SkpK58=;
+ b=kcuV0tYhvtCy/7llJRQZlTxHshn8uUp44WQoH5+gqUruAIxmN4VoYIXqteZzFPh0dJI3cRZR4Jgt/v/24zPq6UPmd289k0HD/Su4IPEntrxyeTlZGUiiktWwwfclU4clhOchuyH3cJmdN2Q+55UfYZMUaUT/+G6Us2uQNGRIO04=
+Received: from BN0PR02CA0043.namprd02.prod.outlook.com (2603:10b6:408:e5::18)
+ by DM5PR0701MB3637.namprd07.prod.outlook.com (2603:10b6:4:7d::38) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.33; Fri, 9 Apr
+ 2021 05:38:36 +0000
+Received: from BN8NAM12FT068.eop-nam12.prod.protection.outlook.com
+ (2603:10b6:408:e5:cafe::b9) by BN0PR02CA0043.outlook.office365.com
+ (2603:10b6:408:e5::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4020.16 via Frontend
+ Transport; Fri, 9 Apr 2021 05:38:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 199.43.4.23)
+ smtp.mailfrom=cadence.com; google.com; dkim=none (message not signed)
+ header.d=none;google.com; dmarc=pass action=none header.from=cadence.com;
+Received-SPF: Pass (protection.outlook.com: domain of cadence.com designates
+ 199.43.4.23 as permitted sender) receiver=protection.outlook.com;
+ client-ip=199.43.4.23; helo=rmmaillnx1.cadence.com;
+Received: from rmmaillnx1.cadence.com (199.43.4.23) by
+ BN8NAM12FT068.mail.protection.outlook.com (10.13.182.160) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4042.6 via Frontend Transport; Fri, 9 Apr 2021 05:38:36 +0000
+Received: from maileu3.global.cadence.com (maileu3.cadence.com [10.160.88.99])
+        by rmmaillnx1.cadence.com (8.14.4/8.14.4) with ESMTP id 1395cYkF030194
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 9 Apr 2021 01:38:35 -0400
+X-CrossPremisesHeadersFilteredBySendConnector: maileu3.global.cadence.com
+Received: from maileu3.global.cadence.com (10.160.88.99) by
+ maileu3.global.cadence.com (10.160.88.99) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 9 Apr 2021 07:38:34 +0200
+Received: from vleu-orange.cadence.com (10.160.88.83) by
+ maileu3.global.cadence.com (10.160.88.99) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2 via Frontend Transport; Fri, 9 Apr 2021 07:38:34 +0200
+Received: from vleu-orange.cadence.com (localhost.localdomain [127.0.0.1])
+        by vleu-orange.cadence.com (8.14.4/8.14.4) with ESMTP id 1395cYGU029570;
+        Fri, 9 Apr 2021 07:38:34 +0200
+Received: (from nadeem@localhost)
+        by vleu-orange.cadence.com (8.14.4/8.14.4/Submit) id 1395cYnB029569;
+        Fri, 9 Apr 2021 07:38:34 +0200
+From:   Nadeem Athani <nadeem@cadence.com>
+To:     <tjoseph@cadence.com>, <lorenzo.pieralisi@arm.com>,
+        <robh@kernel.org>, <bhelgaas@google.com>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kishon@ti.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>
+CC:     <nadeem@cadence.com>, <mparab@cadence.com>, <sjakhade@cadence.com>,
+        <pthombar@cadence.com>
+Subject: [PATCH] PCI: cadence: LTSSM Detect Quiet state minimum delay setting.
+Date:   Fri, 9 Apr 2021 07:38:32 +0200
+Message-ID: <20210409053832.29512-1-nadeem@cadence.com>
+X-Mailer: git-send-email 2.15.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
-X-Mailer: Open-Xchange Mailer v7.10.3-Rev34
-X-Originating-IP: 87.20.116.197
-X-Originating-Client: open-xchange-appsuite
-x-libjamsun: TFQtKds0nbk74TFIzoCUz9lR1gEridzg
-x-libjamv: fydCTFSi3F8=
-X-CMAE-Envelope: MS4xfClDELyJojz8n+Kd3LDLNRqiGELfp97d0xdF/Xm+4PL05Az1h56U0o7sWpEBqTfnU5tN/T+tmmOeQvfH5TQ42zWNDNcIQ5loYIRzrs/6VZbMnSsyEKXV
- 0Dj5BY813FOaXezdFBcrW4MXuJMAvulsWEse2THai0cXw2NNaNs15Wir/Pgg/6GW91o28GkUfbHrYXaFUc31qrQxH1fsQMDSD8qdgqfIEu8s9Sau2VV6zeCJ
- 4g3fp+lZuq8bWFDM0tBLhlDQ9CtK8yJWGBFULcT6YL7y68Wu+0bUWBuFp4iSzo4omxiIRqkdlZ/pvJNEv6llHjbHessKIvU5JcY9Gjq/Ees5mdfye3ngl0z3
- ilYC7ZNve8Hh9ZhmjrkTN0bB0k4+ovaoKpqlZK783mltfY2r0j4asYRiCEWC/lP/FiV/X+SCvHXtvXMYIRCllH4aJjnFd8KzxMpfoGgFXDOM3M6259Yf/IW/
- iQs2gTKxaxDwyUvV9J6fF8b4yAAPcR3hmVDUsj6J1Dxi8XwIKQMqx7XVZdy7OwUDcMsoeOlIR3xL/2x7
+Content-Type: text/plain
+X-OrganizationHeadersPreserved: maileu3.global.cadence.com
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 5eb969d9-4af8-44fd-09f3-08d8fb19b8e5
+X-MS-TrafficTypeDiagnostic: DM5PR0701MB3637:
+X-Microsoft-Antispam-PRVS: <DM5PR0701MB3637C0ACEC3BA151B8295E3AD8739@DM5PR0701MB3637.namprd07.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2089;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: cwl6Fdi5JnPRwRcx/L+0oau9G9DV31yruYvXzDJQqnyO1P2jEUzp1nAa3WEJ193czWpgHYMblr1lFtr8IxZSh7PCnnHzBnHBNbDg+wHonmcf6XiH3LTG5WBhzQnE6gL+8WQ7vqu9jwGs8tWg5Q/6Pl3jkeYAhCn2+uIjk9UiPmMUeadzwlbJHTxd3UOIiSQpiG4C0QnT3Ux+x4kx6hXuAZz37l2MRsMp5XYzGxBaHaSys1cT93A3bphaeE8QzM32sWwulILvG+Mo1D8XjtqxMjxTWQk00PuEiJz8IIP68IPoandw6g2dLv/Z6s7sdZ0BO1fQkbx+U4nJYR245n4kQ8o3HAacx+7Hbw03WeXsnHznKkwMI5XVi2i6dRpfWYKFuqibf7meHaMWXsk5hRBoSuUfNcJ7z1pjL+9/990sKbmt/sL+wkzoB+74thhni66wnBoR4pC8JY3LRB/ERsbhWKRJp4C4/6gd1b9HQG83H0v8LF+cmp4vebMn4R/8ncFJpoyZNz38dLR1PJHlSZCdawCHvmaATipHBKck1zl1FGNFCGwXedvYkNjJs6B9jgg3tI8YTFaG/T1AFvm6CDDAjZ8K6ahguQu8F82xVigeCNEoayDHdvIEDCFVgHo9UpM8qUV0+UcixN8QK7qeoBKIKnugZ3g3Sv3bz9pZyJasXRVrYACstOEJV9wyxtC4GVo6Qs29DNNH3XsmcQla111gcnxdHAYzDuZoUN2ynyHQe7g=
+X-Forefront-Antispam-Report: CIP:199.43.4.23;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:rmmaillnx1.cadence.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(396003)(376002)(346002)(136003)(39860400002)(36092001)(36840700001)(46966006)(82310400003)(356005)(82740400003)(110136005)(70586007)(478600001)(2906002)(316002)(2616005)(86362001)(36860700001)(81166007)(54906003)(26005)(4326008)(8676002)(36906005)(42186006)(107886003)(336012)(8936002)(186003)(5660300002)(83380400001)(36756003)(47076005)(426003)(70206006)(1076003)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: cadence.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2021 05:38:36.7437
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5eb969d9-4af8-44fd-09f3-08d8fb19b8e5
+X-MS-Exchange-CrossTenant-Id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=d36035c5-6ce6-4662-a3dc-e762e61ae4c9;Ip=[199.43.4.23];Helo=[rmmaillnx1.cadence.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM12FT068.eop-nam12.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR0701MB3637
+X-Proofpoint-ORIG-GUID: zM8DN_eXVmqD1N9ngvK5bMTycTjear3X
+X-Proofpoint-GUID: zM8DN_eXVmqD1N9ngvK5bMTycTjear3X
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-09_03:2021-04-08,2021-04-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 bulkscore=0
+ malwarescore=0 impostorscore=0 mlxscore=0 lowpriorityscore=0
+ mlxlogscore=999 clxscore=1011 suspectscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104060000 definitions=main-2104090041
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Adding a quirk flag "quirk_detect_quiet_flag" to program the minimum time
+that LTSSM waits on entering Detect.Quiet state.
+Setting this to 2ms for TI j721e SOC as a workaround to resolve a bug in
+IP.
+In future revisions this setting will not be required.
 
-> Il 07/04/2021 15:21 Tero Kristo <kristo@kernel.org> ha scritto:
-> 
->  
-> On 07/04/2021 15:52, Rob Herring wrote:
-> > On Wed, Apr 7, 2021 at 2:07 AM Dario Binacchi <dariobin@libero.it> wrote:
-> >>
-> >>
-> >>> Il 07/04/2021 03:16 Rob Herring <robh+dt@kernel.org> ha scritto:
-> >>>
-> >>>
-> >>> On Tue, Apr 6, 2021 at 5:02 PM Dario Binacchi <dariobin@libero.it> wrote:
-> >>>>
-> >>>>
-> >>>>> Il 06/04/2021 16:06 Rob Herring <robh+dt@kernel.org> ha scritto:
-> >>>>>
-> >>>>>
-> >>>>> On Fri, Apr 2, 2021 at 2:21 PM Dario Binacchi <dariobin@libero.it> wrote:
-> >>>>>>
-> >>>>>>
-> >>>>>> The series comes from my commit in U-boot
-> >>>>>> d64b9cdcd4 ("fdt: translate address if #size-cells = <0>")
-> >>>>>> and from the subsequent exchange of emails at the end of which I was
-> >>>>>> suggested to send the patch to the linux kernel
-> >>>>>> (https://patchwork.ozlabs.org/project/uboot/patch/1614324949-61314-1-git-send-email-bmeng.cn@gmail.com/).
-> >>>>>
-> >>>>> It's 'ranges' that determines translatable which is missing from the
-> >>>>> DT. This should have not had a 0 size either though maybe we could
-> >>>>> support that.
-> >>>>
-> >>>> I have replied to the email you sent to the u-boot mailing list
-> >>>>
-> >>>>>
-> >>>>> Does the DT have to be updated anyways for your spread spectrum support?
-> >>>>
-> >>>> The spread spectrum support patch does not need this patch to work. They belong
-> >>>> to two different series.
-> >>>
-> >>> That's not what I asked. Is the spread spectrum support forcing a DT
-> >>> update for users?
-> >>
-> >> Yes, the deltam and modfreq registers must be added to the DPLL clocks.
-> > 
-> > That's a shame given this dts has been mostly untouched since 2013.
-> > 
-> 
-> I think technically it would be possible to map these registers within 
-> the driver also, seeing there are like a handful of the DPLLs for both 
-> am3/am4 which are impacted. Just add a new compatible or something, or 
-> alternatively parse the register addresses and populate the 
-> deltam/modfreq registers based on that.
+As per PCIe specification, all Receivers must meet the Z-RX-DC
+specification for 2.5 GT/s within 1ms of entering Detect.Quiet LTSSM
+substate. The LTSSM must stay in this substate until the ZRXDC
+specification for 2.5 GT/s is met.
 
-I have not added new compatibles, but I have added the offset of the delta and modfreq 
-registers to the data structures used by the DPLL drivers and I have set them in the 
-related setup functions.
-https://lore.kernel.org/patchwork/patch/1406590/
+00 : 0us minimum wait time in Detect.Quiet state.
+01 : 100us minimum wait time in Detect.Quiet state.
+10 : 1ms minimum wait time in Detect.Quiet state.
+11 : 2ms minimum wait time in Detect.Quiet state.
 
-> 
-> >>> If the DT has to be changed anyways (not really
-> >>> great policy), then you could fix this in the DT at the same time.
-> >>
-> >> I could put the fix to the device tree in that series, although I wouldn't
-> >> create a single patch to fix and add the SSC registers. First the size-cells = <0>
-> >> fix patch and then the SSC patch.
-> >> Do you agree?
-> > 
-> > By at the same time, I really just meant within 1 release.
-> > 
-> > But I'd like to hear TI maintainers' thoughts on this.
-> 
-> I did post a comment on patch #1 questioning the approach from TI clock 
-> driver perspective, imho I can't see why these two patches would be 
-> needed right now.
+Signed-off-by: Nadeem Athani <nadeem@cadence.com>
+---
+ drivers/pci/controller/cadence/pci-j721e.c         |  6 ++++++
+ drivers/pci/controller/cadence/pcie-cadence-ep.c   | 21 +++++++++++++++++++++
+ drivers/pci/controller/cadence/pcie-cadence-host.c | 21 +++++++++++++++++++++
+ drivers/pci/controller/cadence/pcie-cadence.h      | 12 ++++++++++++
+ 4 files changed, 60 insertions(+)
 
-Because U-boot maintainers asked me after I sent them my patch on this issue. 
-I believe that the email exchange that took place in the U-boot (https://patchwork.ozlabs.org/project/uboot/patch/1614324949-61314-1-git-send-email-bmeng.cn@gmail.com/)
-and Linux kernel mailing lists showed that:
-- The patch 'fdt: translate address if # size-cells = <0>' is wrong (U-boot has accepted 
-  it, and it will have to be reverted).
-- However, the same patch highlighted that it is wrong to use the size-cells = <0> property 
-  in the prcm_clocks and scm_clocks nodes of device tree.
-- Rob agrees that in the case of the am3xx this is the right choice:
-diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
-index 1fb22088caeb..59b0a0cf211e 100644
---- a/arch/arm/boot/dts/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/am33xx-l4.dtsi
-@@ -110,7 +110,8 @@
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 35e61048e133..40ebe698e179 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -67,6 +67,7 @@ enum j721e_pcie_mode {
+ struct j721e_pcie_data {
+ 	enum j721e_pcie_mode	mode;
+ 	bool quirk_retrain_flag;
++	bool quirk_detect_quiet_flag;
+ };
  
-                                prcm_clocks: clocks {
-                                        #address-cells = <1>;
--                                       #size-cells = <0>;
-+                                       #size-cells = <1>;
-+                                       ranges = <0 0 0x2000>;
-                                };
+ static inline u32 j721e_pcie_user_readl(struct j721e_pcie *pcie, u32 offset)
+@@ -284,10 +285,12 @@ static struct pci_ops cdns_ti_pcie_host_ops = {
+ static const struct j721e_pcie_data j721e_pcie_rc_data = {
+ 	.mode = PCI_MODE_RC,
+ 	.quirk_retrain_flag = true,
++	.quirk_detect_quiet_flag = true,
+ };
  
-                                prcm_clockdomains: clockdomains {
-@@ -320,7 +321,8 @@
+ static const struct j721e_pcie_data j721e_pcie_ep_data = {
+ 	.mode = PCI_MODE_EP,
++	.quirk_detect_quiet_flag = true,
+ };
  
-                                        scm_clocks: clocks {
-                                                #address-cells = <1>;
--                                               #size-cells = <0>;
-+                                               #size-cells = <1>;
-+                                               ranges = <0 0 0x800>;
-                                        };
-                                };
-
---- a/arch/arm/boot/dts/am33xx-clocks.dtsi
-+++ b/arch/arm/boot/dts/am33xx-clocks.dtsi
-@@ -10,7 +10,7 @@
-                compatible = "ti,mux-clock";
-                clocks = <&virt_19200000_ck>, <&virt_24000000_ck>, <&virt_25000000_ck>, <&virt_26000000_ck>;
-                ti,bit-shift = <22>;
--               reg = <0x0040>;
-+               reg = <0x0040 0x4>;
-        };
+ static const struct of_device_id of_j721e_pcie_match[] = {
+@@ -394,6 +397,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 		bridge->ops = &cdns_ti_pcie_host_ops;
+ 		rc = pci_host_bridge_priv(bridge);
+ 		rc->quirk_retrain_flag = data->quirk_retrain_flag;
++		rc->quirk_detect_quiet_flag = data->quirk_detect_quiet_flag;
  
-        adc_tsc_fck: adc_tsc_fck {
-@@ -98,7 +98,7 @@
-                compatible = "ti,gate-clock";
-                clocks = <&l4ls_gclk>;
-                ti,bit-shift = <0>;
--               reg = <0x0664>;
-+               reg = <0x0664 0x04>;
-        };
-[...]
+ 		cdns_pcie = &rc->pcie;
+ 		cdns_pcie->dev = dev;
+@@ -460,6 +464,8 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 			goto err_get_sync;
+ 		}
+ 
++		ep->quirk_detect_quiet_flag = data->quirk_detect_quiet_flag;
++
+ 		cdns_pcie = &ep->pcie;
+ 		cdns_pcie->dev = dev;
+ 		cdns_pcie->ops = &j721e_pcie_ops;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+index 897cdde02bd8..245771f03c21 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+@@ -552,6 +552,23 @@ static const struct pci_epc_ops cdns_pcie_epc_ops = {
+ 	.get_features	= cdns_pcie_ep_get_features,
+ };
+ 
++static void cdns_pcie_detect_quiet_min_delay_set(struct cdns_pcie_ep *ep)
++{
++	struct cdns_pcie *pcie = &ep->pcie;
++	u32 delay = 0x3;
++	u32 ltssm_control_cap;
++
++	/*
++	 * Set the LTSSM Detect Quiet state min. delay to 2ms.
++	 */
++
++	ltssm_control_cap = cdns_pcie_readl(pcie, CDNS_PCIE_LTSSM_CONTROL_CAP);
++	ltssm_control_cap = ((ltssm_control_cap &
++			    ~CDNS_PCIE_DETECT_QUIET_MIN_DELAY_MASK) |
++			    CDNS_PCIE_DETECT_QUIET_MIN_DELAY(delay));
++
++	cdns_pcie_writel(pcie, CDNS_PCIE_LTSSM_CONTROL_CAP, ltssm_control_cap);
++}
+ 
+ int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
+ {
+@@ -623,6 +640,10 @@ int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
+ 	ep->irq_pci_addr = CDNS_PCIE_EP_IRQ_PCI_ADDR_NONE;
+ 	/* Reserve region 0 for IRQs */
+ 	set_bit(0, &ep->ob_region_map);
++
++	if (ep->quirk_detect_quiet_flag)
++		cdns_pcie_detect_quiet_min_delay_set(ep);
++
+ 	spin_lock_init(&ep->lock);
+ 
+ 	return 0;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+index 73dcf8cf98fb..0ed2bfac4855 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-host.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+@@ -461,6 +461,24 @@ static int cdns_pcie_host_init(struct device *dev,
+ 	return cdns_pcie_host_init_address_translation(rc);
+ }
+ 
++static void cdns_pcie_detect_quiet_min_delay_set(struct cdns_pcie_rc *rc)
++{
++	struct cdns_pcie *pcie = &rc->pcie;
++	u32 delay = 0x3;
++	u32 ltssm_control_cap;
++
++	/*
++	 * Set the LTSSM Detect Quiet state min. delay to 2ms.
++	 */
++
++	ltssm_control_cap = cdns_pcie_readl(pcie, CDNS_PCIE_LTSSM_CONTROL_CAP);
++	ltssm_control_cap = ((ltssm_control_cap &
++			    ~CDNS_PCIE_DETECT_QUIET_MIN_DELAY_MASK) |
++			    CDNS_PCIE_DETECT_QUIET_MIN_DELAY(delay));
++
++	cdns_pcie_writel(pcie, CDNS_PCIE_LTSSM_CONTROL_CAP, ltssm_control_cap);
++}
++
+ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+ {
+ 	struct device *dev = rc->pcie.dev;
+@@ -497,6 +515,9 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+ 		return PTR_ERR(rc->cfg_base);
+ 	rc->cfg_res = res;
+ 
++	if (rc->quirk_detect_quiet_flag)
++		cdns_pcie_detect_quiet_min_delay_set(rc);
++
+ 	ret = cdns_pcie_start_link(pcie);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to start link\n");
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 254d2570f8c9..d074475fe887 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -189,6 +189,14 @@
+ /* AXI link down register */
+ #define CDNS_PCIE_AT_LINKDOWN (CDNS_PCIE_AT_BASE + 0x0824)
+ 
++/* LTSSM Capabilities register */
++#define CDNS_PCIE_LTSSM_CONTROL_CAP             (CDNS_PCIE_LM_BASE + 0x0054)
++#define  CDNS_PCIE_DETECT_QUIET_MIN_DELAY_MASK  GENMASK(2, 1)
++#define  CDNS_PCIE_DETECT_QUIET_MIN_DELAY_SHIFT 1
++#define  CDNS_PCIE_DETECT_QUIET_MIN_DELAY(delay) \
++	 (((delay) << CDNS_PCIE_DETECT_QUIET_MIN_DELAY_SHIFT) & \
++	 CDNS_PCIE_DETECT_QUIET_MIN_DELAY_MASK)
++
+ enum cdns_pcie_rp_bar {
+ 	RP_BAR_UNDEFINED = -1,
+ 	RP_BAR0,
+@@ -292,6 +300,7 @@ struct cdns_pcie {
+  * @avail_ib_bar: Satus of RP_BAR0, RP_BAR1 and	RP_NO_BAR if it's free or
+  *                available
+  * @quirk_retrain_flag: Retrain link as quirk for PCIe Gen2
++ * @quirk_detect_quiet_flag: LTSSM Detect Quiet min delay set as quirk
+  */
+ struct cdns_pcie_rc {
+ 	struct cdns_pcie	pcie;
+@@ -301,6 +310,7 @@ struct cdns_pcie_rc {
+ 	u32			device_id;
+ 	bool			avail_ib_bar[CDNS_PCIE_RP_MAX_IB];
+ 	bool                    quirk_retrain_flag;
++	bool			quirk_detect_quiet_flag;
+ };
+ 
+ /**
+@@ -331,6 +341,7 @@ struct cdns_pcie_epf {
+  *        registers fields (RMW) accessible by both remote RC and EP to
+  *        minimize time between read and write
+  * @epf: Structure to hold info about endpoint function
++ * @quirk_detect_quiet_flag: LTSSM Detect Quiet min delay set as quirk
+  */
+ struct cdns_pcie_ep {
+ 	struct cdns_pcie	pcie;
+@@ -345,6 +356,7 @@ struct cdns_pcie_ep {
+ 	/* protect writing to PCI_STATUS while raising legacy interrupts */
+ 	spinlock_t		lock;
+ 	struct cdns_pcie_epf	*epf;
++	bool                    quirk_detect_quiet_flag;
+ };
+ 
+ 
+-- 
+2.15.0
 
-- U-boot rightly wants to use the same device tree as the Kernel.
-- IMHO, if I'm not missing something, I think using a #size-cells = <1>; for clocks 
-  it requires only one code change in the ti_clk_get_reg_addr():
-
---- a/drivers/clk/ti/clk.c
-+++ b/drivers/clk/ti/clk.c
-@@ -265,9 +265,27 @@ int __init ti_clk_retry_init(struct device_node *node, void *user,
- int ti_clk_get_reg_addr(struct device_node *node, int index,
-                        struct clk_omap_reg *reg)
-
--       if (of_property_read_u32_index(node, "reg", index, &val)) {
-+       if (of_property_read_u32_index(node, "reg", index * 2, &val)) {
-
-   The other changes to develop affect device trees of architectures which, like am3, currently
-   use #size-cells = <0>.
-
-IMHO, all this would lead to an improvement of the device trees with minimal impact on the code. 
-It would benefit U-boot, which would not have to develop special platform code and any new 
-architectures that would inherit from these DTs.
-
-If you think it might be worth it, I am available to develop this patch.
-
-Thanks and regards,
-Dario
-
-> 
-> -Tero
