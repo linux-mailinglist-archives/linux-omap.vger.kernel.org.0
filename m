@@ -2,37 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B219135CE14
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Apr 2021 18:53:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA34535CE16
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Apr 2021 18:53:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244075AbhDLQl6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Apr 2021 12:41:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37268 "EHLO mail.kernel.org"
+        id S243949AbhDLQmA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Apr 2021 12:42:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37286 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244970AbhDLQdj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 12 Apr 2021 12:33:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 60096613A5;
-        Mon, 12 Apr 2021 16:26:33 +0000 (UTC)
+        id S1343702AbhDLQfo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 12 Apr 2021 12:35:44 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2805E613DB;
+        Mon, 12 Apr 2021 16:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618244794;
-        bh=K9RanCnk2ZwkiU+3xp6tejSt6VNs554RuvFienr+NBw=;
+        s=k20201202; t=1618244827;
+        bh=9b2V3+CRrNAQut/L4vZTItfFISREdW2EYAAO7ZLvY7w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XSmRG0Yg41CGkdlv4da8vR1TIh1G8j5i48ex8mUIPRfDn33gRe0XKBCUbzkJKYXsq
-         orvPeyyi98nmehfBQc0rg4XH6ORMB5cHNismoU4KDeXt3MPAQJ/SxzeNvObADnF7VU
-         inNaX4ju3WBNxeImCk0E2B+MxxEsbkcJqSRnumeOibZFGn3jHMThaAA0DpFtqbGMRV
-         2ZpEcheQGeu0Yx7Q6ciqP0G33t7MqMR5dp0MI/urqKqDZGDQCHWN5DeS8doFAJg4Kl
-         qX3q/BVO53MWOijpmWwG4OofAh7cdmImG9Ql1hMeIlJSVC9afGHEwmL+xVdrklZWaD
-         J53JAGCrCUwQA==
+        b=dHcSiexQ4PubOHbSZo3pUEzMoqTbK4rSF5JYiQPCmbnIp7lUwknAvWQA+wBkYeHrM
+         CvE1oASrn6m0lIquOnI2zbSuybYprgC5NX8UaOJEAgUhjVSCev4gCaCP1mhN1wO5/o
+         uAU7clLoZkPl65ONd8DngFxRVjjRWmMz9WJ+l6AwRfYxCcIh+EVg4c6znFREPhdu11
+         E4Ytm2GScMiXZHGvb8eR+ODQRzMyKyaTd1ZDTw+Z86+d+R/62pXFMVeZHiN5baH4JD
+         hW43kcGyHgR0BnFki7Lh+dYi4xsv1k0rAWdW0k1ez8JVHSlZ++9xqEf94p76V8xYxj
+         BiaB/32wwRQRg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
         linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 02/25] ARM: dts: Fix moving mmc devices with aliases for omap4 & 5
-Date:   Mon, 12 Apr 2021 12:26:07 -0400
-Message-Id: <20210412162630.315526-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 02/23] ARM: dts: Fix moving mmc devices with aliases for omap4 & 5
+Date:   Mon, 12 Apr 2021 12:26:43 -0400
+Message-Id: <20210412162704.315783-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210412162630.315526-1-sashal@kernel.org>
-References: <20210412162630.315526-1-sashal@kernel.org>
+In-Reply-To: <20210412162704.315783-1-sashal@kernel.org>
+References: <20210412162704.315783-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -57,7 +57,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 10 insertions(+)
 
 diff --git a/arch/arm/boot/dts/omap4.dtsi b/arch/arm/boot/dts/omap4.dtsi
-index 28d10abd8b04..09129365c0e1 100644
+index 4d6584f15b17..7e5a09c3d2a6 100644
 --- a/arch/arm/boot/dts/omap4.dtsi
 +++ b/arch/arm/boot/dts/omap4.dtsi
 @@ -22,6 +22,11 @@ aliases {
@@ -73,7 +73,7 @@ index 28d10abd8b04..09129365c0e1 100644
  		serial1 = &uart2;
  		serial2 = &uart3;
 diff --git a/arch/arm/boot/dts/omap5.dtsi b/arch/arm/boot/dts/omap5.dtsi
-index bc3f53c79e9d..9786baf7f9c4 100644
+index a76266f242a1..586fe60b9921 100644
 --- a/arch/arm/boot/dts/omap5.dtsi
 +++ b/arch/arm/boot/dts/omap5.dtsi
 @@ -25,6 +25,11 @@ aliases {
