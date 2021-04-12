@@ -2,93 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D8F335C851
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Apr 2021 16:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9026135CB0E
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Apr 2021 18:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242158AbhDLOII (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Apr 2021 10:08:08 -0400
-Received: from mga14.intel.com ([192.55.52.115]:40962 "EHLO mga14.intel.com"
+        id S243346AbhDLQX3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Apr 2021 12:23:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54798 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242140AbhDLOIH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 12 Apr 2021 10:08:07 -0400
-IronPort-SDR: mygq9Ag+MqqtGbnrypqnBzeTS2xrgZIsqP9mNq0OPJu+uFNlEyXIFsT1uSo/oxiX5tAPVd4NDu
- w2xl26uhKXOw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9952"; a="193760847"
-X-IronPort-AV: E=Sophos;i="5.82,216,1613462400"; 
-   d="scan'208";a="193760847"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2021 07:07:48 -0700
-IronPort-SDR: BGhmllKTW9Z6NxJaTifkLifZqnSkdcO9scHaBTB25wRZoe5QphRb0LEbp2FL3UNZKlNiKHbYCP
- nPUCxGNhF57w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,216,1613462400"; 
-   d="scan'208";a="599997938"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 12 Apr 2021 07:07:44 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 8AF161D2; Mon, 12 Apr 2021 17:08:00 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Drew Fustini <drew@beagleboard.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Thierry Reding <treding@nvidia.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Cc:     Vladimir Zapolskiy <vz@mleia.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>
-Subject: [PATCH v1 3/3] pinctrl: Add PIN_CONFIG_MODE_PWM to enum pin_config_param
-Date:   Mon, 12 Apr 2021 17:07:41 +0300
-Message-Id: <20210412140741.39946-3-andriy.shevchenko@linux.intel.com>
+        id S243291AbhDLQXX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 12 Apr 2021 12:23:23 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7822961289;
+        Mon, 12 Apr 2021 16:23:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1618244585;
+        bh=08saPRykXgVBm3qGNlVbF5oPH9Hn4UhPEzwU3vJzLjI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=l9BCrT5Tl58TyleZ5/w2cds4h3vvLMP0Dv/zlMjo0CGSs3OSCa00vgX2cGqEtMvgN
+         NkuFhSt0k717/ghvS6mEUMM+uXYJfGgoFs9Bsz5IjFDnU8wBgWRiMWexMR+X76iUru
+         UzgNSTPPF1doC/z8UzGVkDN4wSOE5B1BQx6xZpfTgRQCMxAHip2UP1CEvCjWEfn8/h
+         yICBMPi0tvRdXItz/FH+ZbzgAljmd/yqUmWKx3EoKNOb+54yePzbQLRYAB8MPuf3V8
+         O7nr8Is95AEMfSAEjoTPczFAtP7MfEdFIxiPwc6kTWbGQGmReKeIWmHUq/leg1zH9B
+         v+z2NyYSt5RnQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.11 06/51] ARM: dts: Drop duplicate sha2md5_fck to fix clk_disable race
+Date:   Mon, 12 Apr 2021 12:22:11 -0400
+Message-Id: <20210412162256.313524-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210412140741.39946-1-andriy.shevchenko@linux.intel.com>
-References: <20210412140741.39946-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210412162256.313524-1-sashal@kernel.org>
+References: <20210412162256.313524-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-It seems that we will have more and more pin controllers that support
-PWM function on the (selected) pins. Due to it being a part of pin
-controller IP the idea is to have some code that will switch the mode
-and attach the corresponding driver, for example, via using it as
-a library. Meanwhile, put a corresponding item to the pin_config_param
-enumerator.
+From: Tony Lindgren <tony@atomide.com>
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+[ Upstream commit 140a776833957539c84301dbdb4c3013876de118 ]
+
+We have a duplicate legacy clock defined for sha2md5_fck that can
+sometimes race with clk_disable() with the dts configured clock
+for OMAP4_SHA2MD5_CLKCTRL when unused clocks are disabled during
+boot causing an "Unhandled fault: imprecise external abort".
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pinctrl/pinconf-generic.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/omap44xx-clocks.dtsi | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/include/linux/pinctrl/pinconf-generic.h b/include/linux/pinctrl/pinconf-generic.h
-index 189e701832ea..e18ab3d5908f 100644
---- a/include/linux/pinctrl/pinconf-generic.h
-+++ b/include/linux/pinctrl/pinconf-generic.h
-@@ -80,6 +80,7 @@ struct pinctrl_map;
-  *	operation, if several modes of operation are supported these can be
-  *	passed in the argument on a custom form, else just use argument 1
-  *	to indicate low power mode, argument 0 turns low power mode off.
-+ * @PIN_CONFIG_MODE_PWM: this will configure the pin for PWM
-  * @PIN_CONFIG_OUTPUT_ENABLE: this will enable the pin's output mode
-  * 	without driving a value there. For most platforms this reduces to
-  * 	enable the output buffers and then let the pin controller current
-@@ -125,6 +126,7 @@ enum pin_config_param {
- 	PIN_CONFIG_INPUT_SCHMITT,
- 	PIN_CONFIG_INPUT_SCHMITT_ENABLE,
- 	PIN_CONFIG_MODE_LOW_POWER,
-+	PIN_CONFIG_MODE_PWM,
- 	PIN_CONFIG_OUTPUT_ENABLE,
- 	PIN_CONFIG_OUTPUT,
- 	PIN_CONFIG_PERSIST_STATE,
+diff --git a/arch/arm/boot/dts/omap44xx-clocks.dtsi b/arch/arm/boot/dts/omap44xx-clocks.dtsi
+index 532868591107..1f1c04d8f472 100644
+--- a/arch/arm/boot/dts/omap44xx-clocks.dtsi
++++ b/arch/arm/boot/dts/omap44xx-clocks.dtsi
+@@ -770,14 +770,6 @@ per_abe_nc_fclk: per_abe_nc_fclk@108 {
+ 		ti,max-div = <2>;
+ 	};
+ 
+-	sha2md5_fck: sha2md5_fck@15c8 {
+-		#clock-cells = <0>;
+-		compatible = "ti,gate-clock";
+-		clocks = <&l3_div_ck>;
+-		ti,bit-shift = <1>;
+-		reg = <0x15c8>;
+-	};
+-
+ 	usb_phy_cm_clk32k: usb_phy_cm_clk32k@640 {
+ 		#clock-cells = <0>;
+ 		compatible = "ti,gate-clock";
 -- 
 2.30.2
 
