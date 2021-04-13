@@ -2,33 +2,22 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C26A35CFBF
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Apr 2021 19:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD67735D48C
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Apr 2021 02:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244627AbhDLRsL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Apr 2021 13:48:11 -0400
-Received: from ssl.serverraum.org ([176.9.125.105]:60029 "EHLO
-        ssl.serverraum.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244535AbhDLRsH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Apr 2021 13:48:07 -0400
-Received: from mwalle01.fritz.box (unknown [IPv6:2a02:810c:c200:2e91:fa59:71ff:fe9b:b851])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id B82E42224F;
-        Mon, 12 Apr 2021 19:47:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1618249667;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=c+yRIxX6YaLNAHOU45LRTNERm8zuPZ6Nr6ms7o1jHdY=;
-        b=SzFeahlu14nK6lzpcdcdqIds+W3bdnvfv8MDl2HwNG72reKqItDuqKfd2OefWkj0+CCjLu
-        2i6/lT9RccSxY32Z2fkRRrsYiFeNlYFm4RHTcR+Ber1W7+h4Vr2FjH+T2K9LZ+QYJnbzGg
-        fdP0WDJWD66X0dJG0cIeWKdSs2V/dPc=
-From:   Michael Walle <michael@walle.cc>
-To:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
+        id S238858AbhDMA4u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Apr 2021 20:56:50 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:47030 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238450AbhDMA4u (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 12 Apr 2021 20:56:50 -0400
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
+        (envelope-from <andrew@lunn.ch>)
+        id 1lW7LN-00GOEl-SK; Tue, 13 Apr 2021 02:55:53 +0200
+Date:   Tue, 13 Apr 2021 02:55:53 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Michael Walle <michael@walle.cc>
+Cc:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
         linux-mediatek@lists.infradead.org,
@@ -36,8 +25,7 @@ To:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
         linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     Andrew Lunn <andrew@lunn.ch>,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
         Gregory Clement <gregory.clement@bootlin.com>,
         Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
@@ -52,7 +40,7 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Jernej Skrabec <jernej.skrabec@siol.net>,
         Joyce Ooi <joyce.ooi@intel.com>,
         Chris Snook <chris.snook@gmail.com>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
         bcm-kernel-feedback-list@broadcom.com,
         Florian Fainelli <f.fainelli@gmail.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -109,95 +97,114 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>,
+        =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
         Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Michael Walle <michael@walle.cc>
-Subject: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for non-platform devices
-Date:   Mon, 12 Apr 2021 19:47:18 +0200
-Message-Id: <20210412174718.17382-3-michael@walle.cc>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210412174718.17382-1-michael@walle.cc>
+        Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH net-next v4 1/2] of: net: pass the dst buffer to
+ of_get_mac_address()
+Message-ID: <YHTsGXbbr8mkifDo@lunn.ch>
 References: <20210412174718.17382-1-michael@walle.cc>
+ <20210412174718.17382-2-michael@walle.cc>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210412174718.17382-2-michael@walle.cc>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-of_get_mac_address() already supports fetching the MAC address by an
-nvmem provider. But until now, it was just working for platform devices.
-Esp. it was not working for DSA ports and PCI devices. It gets more
-common that PCI devices have a device tree binding since SoCs contain
-integrated root complexes.
+On Mon, Apr 12, 2021 at 07:47:17PM +0200, Michael Walle wrote:
+> of_get_mac_address() returns a "const void*" pointer to a MAC address.
+> Lately, support to fetch the MAC address by an NVMEM provider was added.
+> But this will only work with platform devices. It will not work with
+> PCI devices (e.g. of an integrated root complex) and esp. not with DSA
+> ports.
+> 
+> There is an of_* variant of the nvmem binding which works without
+> devices. The returned data of a nvmem_cell_read() has to be freed after
+> use. On the other hand the return of_get_mac_address() points to some
+> static data without a lifetime. The trick for now, was to allocate a
+> device resource managed buffer which is then returned. This will only
+> work if we have an actual device.
+> 
+> Change it, so that the caller of of_get_mac_address() has to supply a
+> buffer where the MAC address is written to. Unfortunately, this will
+> touch all drivers which use the of_get_mac_address().
+> 
+> Usually the code looks like:
+> 
+>   const char *addr;
+>   addr = of_get_mac_address(np);
+>   if (!IS_ERR(addr))
+>     ether_addr_copy(ndev->dev_addr, addr);
+> 
+> This can then be simply rewritten as:
+> 
+>   of_get_mac_address(np, ndev->dev_addr);
+> 
+> Sometimes is_valid_ether_addr() is used to test the MAC address.
+> of_get_mac_address() already makes sure, it just returns a valid MAC
+> address. Thus we can just test its return code. But we have to be
+> careful if there are still other sources for the MAC address before the
+> of_get_mac_address(). In this case we have to keep the
+> is_valid_ether_addr() call.
+> 
+> The following coccinelle patch was used to convert common cases to the
+> new style. Afterwards, I've manually gone over the drivers and fixed the
+> return code variable: either used a new one or if one was already
+> available use that. Mansour Moufid, thanks for that coccinelle patch!
+> 
+> <spml>
+> @a@
+> identifier x;
+> expression y, z;
+> @@
+> - x = of_get_mac_address(y);
+> + x = of_get_mac_address(y, z);
+>   <...
+> - ether_addr_copy(z, x);
+>   ...>
+> 
+> @@
+> identifier a.x;
+> @@
+> - if (<+... x ...+>) {}
+> 
+> @@
+> identifier a.x;
+> @@
+>   if (<+... x ...+>) {
+>       ...
+>   }
+> - else {}
+> 
+> @@
+> identifier a.x;
+> expression e;
+> @@
+> - if (<+... x ...+>@e)
+> -     {}
+> - else
+> + if (!(e))
+>       {...}
+> 
+> @@
+> expression x, y, z;
+> @@
+> - x = of_get_mac_address(y, z);
+> + of_get_mac_address(y, z);
+>   ... when != x
+> </spml>
+> 
+> All drivers, except drivers/net/ethernet/aeroflex/greth.c, were
+> compile-time tested.
+> 
+> Suggested-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Michael Walle <michael@walle.cc>
 
-Use the nvmem of_* binding to fetch the nvmem cells by a struct
-device_node. We still have to try to read the cell by device first
-because there might be a nvmem_cell_lookup associated with that device.
+I cannot say i looked at all the changes, but the ones i did exam
+seemed O.K.
 
-Signed-off-by: Michael Walle <michael@walle.cc>
----
- drivers/of/of_net.c | 35 ++++++++++++++++++++++++++++++-----
- 1 file changed, 30 insertions(+), 5 deletions(-)
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
-index cb77b774bf76..dbac3a172a11 100644
---- a/drivers/of/of_net.c
-+++ b/drivers/of/of_net.c
-@@ -11,6 +11,7 @@
- #include <linux/phy.h>
- #include <linux/export.h>
- #include <linux/device.h>
-+#include <linux/nvmem-consumer.h>
- 
- /**
-  * of_get_phy_mode - Get phy mode for given device_node
-@@ -59,15 +60,39 @@ static int of_get_mac_addr(struct device_node *np, const char *name, u8 *addr)
- static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
- {
- 	struct platform_device *pdev = of_find_device_by_node(np);
-+	struct nvmem_cell *cell;
-+	const void *mac;
-+	size_t len;
- 	int ret;
- 
--	if (!pdev)
--		return -ENODEV;
-+	/* Try lookup by device first, there might be a nvmem_cell_lookup
-+	 * associated with a given device.
-+	 */
-+	if (pdev) {
-+		ret = nvmem_get_mac_address(&pdev->dev, addr);
-+		put_device(&pdev->dev);
-+		return ret;
-+	}
-+
-+	cell = of_nvmem_cell_get(np, "mac-address");
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
-+
-+	mac = nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
-+
-+	if (IS_ERR(mac))
-+		return PTR_ERR(mac);
-+
-+	if (len != ETH_ALEN || !is_valid_ether_addr(mac)) {
-+		kfree(mac);
-+		return -EINVAL;
-+	}
- 
--	ret = nvmem_get_mac_address(&pdev->dev, addr);
--	put_device(&pdev->dev);
-+	memcpy(addr, mac, ETH_ALEN);
-+	kfree(mac);
- 
--	return ret;
-+	return 0;
- }
- 
- /**
--- 
-2.20.1
-
+    Andrew
