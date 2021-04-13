@@ -2,103 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 982C135E602
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Apr 2021 20:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8BFC35E86C
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Apr 2021 23:40:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232723AbhDMSLP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Apr 2021 14:11:15 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:47938 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232787AbhDMSLO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Apr 2021 14:11:14 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 13DIAiJe052808;
-        Tue, 13 Apr 2021 13:10:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1618337444;
-        bh=KoiDK2KidPgCteZ/uBTBPBdbjAxSy9tKGfetUPIXR1M=;
-        h=Subject:From:To:CC:References:Date:In-Reply-To;
-        b=Za8qvdQ5/KBaFQVxpiBcb72084jvMh6zqgk9AHfA987QcYzOiT2rfsoU93IEovrps
-         DGRXUJTVYYTqK4ed6UqrUMybf9IBRJfIdnNQ7IECRbwTNlv3G0NzlKELE7rdOYdoii
-         yuMxWkKZXXaNvb2anGpI5xB7bgkO0ipBOV9DkDTA=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 13DIAi0L052195
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Apr 2021 13:10:44 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 13
- Apr 2021 13:10:44 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Tue, 13 Apr 2021 13:10:44 -0500
-Received: from [10.250.68.143] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 13DIAh0j055635;
-        Tue, 13 Apr 2021 13:10:43 -0500
-Subject: Re: [PATCH v2 0/3] PRU firmware event/interrupt mapping fixes
-From:   Suman Anna <s-anna@ti.com>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>
-CC:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20210407155641.5501-1-s-anna@ti.com>
-Message-ID: <52942a19-c0f8-c376-9103-2e5020c49c3a@ti.com>
-Date:   Tue, 13 Apr 2021 13:10:43 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <20210407155641.5501-1-s-anna@ti.com>
+        id S1344399AbhDMVkd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Apr 2021 17:40:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43730 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232542AbhDMVkd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 13 Apr 2021 17:40:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id B20D2613B6;
+        Tue, 13 Apr 2021 21:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1618350012;
+        bh=toVub+slEHyxpan1zl2EKjAs+n9L+DqJjmVyXdpSda8=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=pRV3XRV88aPlnwLClx5LDM21mdefxIbRGFcsOMAWKDGAPSf1o7HWMcUJArQ3XXTo2
+         omQ7Z2UBYmJ/4VEgdmDWMtz3nLyeoWfPZMbM/epzVuNn/dfLkNcaqGX/sQ3OpMjUBS
+         bAKgZugFWBnTeaINp8LqtfjdEpx90+cwvi+asWJoSAi80GbrFagrnhafBEMs9d/q64
+         V1GuK22jWWyeImHuDUYrsXisI7HOHaVrq3GZpA1n6OF84dCG4EQ57enrHgZGDRNpgk
+         +wx2yJOLG9rxC5gEKrr9mBBot2pLRQqzLRJSzYPRKCwgwQuIOp0m7AJtIXo8z3kOIr
+         TcOoK6hf+PaXg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 9A519609B9;
+        Tue, 13 Apr 2021 21:40:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4 0/2] of: net: support non-platform devices in
+ of_get_mac_address()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <161835001262.18297.4500601910911096840.git-patchwork-notify@kernel.org>
+Date:   Tue, 13 Apr 2021 21:40:12 +0000
+References: <20210412174718.17382-1-michael@walle.cc>
+In-Reply-To: <20210412174718.17382-1-michael@walle.cc>
+To:     Michael Walle <michael@walle.cc>
+Cc:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
+        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
+        andrew@lunn.ch, gregory.clement@bootlin.com,
+        sebastian.hesselbarth@gmail.com, linux@armlinux.org.uk,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        andreas@gaisler.com, davem@davemloft.net, kuba@kernel.org,
+        mripard@kernel.org, wens@csie.org, jernej.skrabec@siol.net,
+        joyce.ooi@intel.com, chris.snook@gmail.com, rafal@milecki.pl,
+        bcm-kernel-feedback-list@broadcom.com, f.fainelli@gmail.com,
+        nicolas.ferre@microchip.com, claudiu.beznea@microchip.com,
+        sgoutham@marvell.com, fugang.duan@nxp.com, madalin.bucur@nxp.com,
+        pantelis.antoniou@gmail.com, claudiu.manoil@nxp.com,
+        leoyang.li@nxp.com, yisen.zhuang@huawei.com,
+        salil.mehta@huawei.com, hauke@hauke-m.de,
+        thomas.petazzoni@bootlin.com, vkochan@marvell.com,
+        tchornyi@marvell.com, mlindner@marvell.com,
+        stephen@networkplumber.org, nbd@nbd.name, john@phrozen.org,
+        sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
+        matthias.bgg@gmail.com, bryan.whitehead@microchip.com,
+        vz@mleia.com, sergei.shtylyov@gmail.com, bh74.an@samsung.com,
+        hayashi.kunihiko@socionext.com, peppe.cavallaro@st.com,
+        alexandre.torgue@st.com, joabreu@synopsys.com,
+        mcoquelin.stm32@gmail.com, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linux-imx@nxp.com, khilman@baylibre.com, narmstrong@baylibre.com,
+        jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+        vkoul@kernel.org, nobuhiro1.iwamatsu@toshiba.co.jp,
+        grygorii.strashko@ti.com, w-kwok2@ti.com, m-karicheri2@ti.com,
+        michal.simek@xilinx.com, radhey.shyam.pandey@xilinx.com,
+        kvalo@codeaurora.org, lorenzo.bianconi83@gmail.com,
+        ryder.lee@mediatek.com, stf_xl@wp.pl, helmut.schaa@googlemail.com,
+        hkallweit1@gmail.com, robh+dt@kernel.org, frowand.list@gmail.com,
+        gregkh@linuxfoundation.org, jerome.pouiller@silabs.com,
+        vivien.didelot@gmail.com, olteanv@gmail.com
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Bjorn,
+Hello:
 
-On 4/7/21 10:56 AM, Suman Anna wrote:
-> Hi All,
-> 
-> The following is a minor revised version of the series [1] that includes fixes
-> for various different issues associated with the PRU firmware event/interrupt
-> mapping configuration logic. Please see the v1 cover-letter [1] for additional
-> details. 
-> 
-> There are currently no in-kernel dts nodes yet in mainline kernel (first
-> nodes will appear in v5.13-rc1) so these can be picked up for either v5.13
-> merge window or the current -rc cycle.
-> 
-> Changes in v2:
->  - Picked up Reviewed-by tags on Patches 1 and 2
->  - Revised Patch 3 to address additional error cleanup paths as
->    pointed out by Mathieu.
+This series was applied to netdev/net-next.git (refs/heads/master):
 
-All patches are reviewed now, so can you please pick these up for the next merge
-window if not already in your queue.
+On Mon, 12 Apr 2021 19:47:16 +0200 you wrote:
+> of_get_mac_address() is commonly used to fetch the MAC address
+> from the device tree. It also supports reading it from a NVMEM
+> provider. But the latter is only possible for platform devices,
+> because only platform devices are searched for a matching device
+> node.
+> 
+> Add a second method to fetch the NVMEM cell by a device tree node
+> instead of a "struct device".
+> 
+> [...]
 
-regards
-Suman
+Here is the summary with links:
+  - [net-next,v4,1/2] of: net: pass the dst buffer to of_get_mac_address()
+    https://git.kernel.org/netdev/net-next/c/83216e3988cd
+  - [net-next,v4,2/2] of: net: fix of_get_mac_addr_nvmem() for non-platform devices
+    https://git.kernel.org/netdev/net-next/c/f10843e04a07
 
-> 
-> regards
-> Suman
-> 
-> [1] https://patchwork.kernel.org/project/linux-remoteproc/cover/20210323223839.17464-1-s-anna@ti.com/
-> 
-> Suman Anna (3):
->   remoteproc: pru: Fixup interrupt-parent logic for fw events
->   remoteproc: pru: Fix wrong success return value for fw events
->   remoteproc: pru: Fix and cleanup firmware interrupt mapping logic
-> 
->  drivers/remoteproc/pru_rproc.c | 41 ++++++++++++++++++++++++++--------
->  1 file changed, 32 insertions(+), 9 deletions(-)
-> 
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
