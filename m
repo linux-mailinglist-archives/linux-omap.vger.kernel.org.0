@@ -2,130 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0854A35D494
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Apr 2021 02:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 982C135E602
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Apr 2021 20:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238450AbhDMA5k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Apr 2021 20:57:40 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:47112 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237775AbhDMA5k (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 12 Apr 2021 20:57:40 -0400
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1lW7Md-00GOFr-9U; Tue, 13 Apr 2021 02:57:11 +0200
-Date:   Tue, 13 Apr 2021 02:57:11 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Michael Walle <michael@walle.cc>
-Cc:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Byungho An <bh74.an@samsung.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for
- non-platform devices
-Message-ID: <YHTsZ+EKdx0faXXQ@lunn.ch>
-References: <20210412174718.17382-1-michael@walle.cc>
- <20210412174718.17382-3-michael@walle.cc>
+        id S232723AbhDMSLP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Apr 2021 14:11:15 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:47938 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232787AbhDMSLO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Apr 2021 14:11:14 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 13DIAiJe052808;
+        Tue, 13 Apr 2021 13:10:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1618337444;
+        bh=KoiDK2KidPgCteZ/uBTBPBdbjAxSy9tKGfetUPIXR1M=;
+        h=Subject:From:To:CC:References:Date:In-Reply-To;
+        b=Za8qvdQ5/KBaFQVxpiBcb72084jvMh6zqgk9AHfA987QcYzOiT2rfsoU93IEovrps
+         DGRXUJTVYYTqK4ed6UqrUMybf9IBRJfIdnNQ7IECRbwTNlv3G0NzlKELE7rdOYdoii
+         yuMxWkKZXXaNvb2anGpI5xB7bgkO0ipBOV9DkDTA=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 13DIAi0L052195
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 13 Apr 2021 13:10:44 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 13
+ Apr 2021 13:10:44 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Tue, 13 Apr 2021 13:10:44 -0500
+Received: from [10.250.68.143] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 13DIAh0j055635;
+        Tue, 13 Apr 2021 13:10:43 -0500
+Subject: Re: [PATCH v2 0/3] PRU firmware event/interrupt mapping fixes
+From:   Suman Anna <s-anna@ti.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+CC:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        <linux-remoteproc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20210407155641.5501-1-s-anna@ti.com>
+Message-ID: <52942a19-c0f8-c376-9103-2e5020c49c3a@ti.com>
+Date:   Tue, 13 Apr 2021 13:10:43 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210412174718.17382-3-michael@walle.cc>
+In-Reply-To: <20210407155641.5501-1-s-anna@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Apr 12, 2021 at 07:47:18PM +0200, Michael Walle wrote:
-> of_get_mac_address() already supports fetching the MAC address by an
-> nvmem provider. But until now, it was just working for platform devices.
-> Esp. it was not working for DSA ports and PCI devices. It gets more
-> common that PCI devices have a device tree binding since SoCs contain
-> integrated root complexes.
-> 
-> Use the nvmem of_* binding to fetch the nvmem cells by a struct
-> device_node. We still have to try to read the cell by device first
-> because there might be a nvmem_cell_lookup associated with that device.
-> 
-> Signed-off-by: Michael Walle <michael@walle.cc>
+Hi Bjorn,
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+On 4/7/21 10:56 AM, Suman Anna wrote:
+> Hi All,
+> 
+> The following is a minor revised version of the series [1] that includes fixes
+> for various different issues associated with the PRU firmware event/interrupt
+> mapping configuration logic. Please see the v1 cover-letter [1] for additional
+> details. 
+> 
+> There are currently no in-kernel dts nodes yet in mainline kernel (first
+> nodes will appear in v5.13-rc1) so these can be picked up for either v5.13
+> merge window or the current -rc cycle.
+> 
+> Changes in v2:
+>  - Picked up Reviewed-by tags on Patches 1 and 2
+>  - Revised Patch 3 to address additional error cleanup paths as
+>    pointed out by Mathieu.
 
-    Andrew
+All patches are reviewed now, so can you please pick these up for the next merge
+window if not already in your queue.
+
+regards
+Suman
+
+> 
+> regards
+> Suman
+> 
+> [1] https://patchwork.kernel.org/project/linux-remoteproc/cover/20210323223839.17464-1-s-anna@ti.com/
+> 
+> Suman Anna (3):
+>   remoteproc: pru: Fixup interrupt-parent logic for fw events
+>   remoteproc: pru: Fix wrong success return value for fw events
+>   remoteproc: pru: Fix and cleanup firmware interrupt mapping logic
+> 
+>  drivers/remoteproc/pru_rproc.c | 41 ++++++++++++++++++++++++++--------
+>  1 file changed, 32 insertions(+), 9 deletions(-)
+> 
+
