@@ -2,279 +2,334 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A07B035F94D
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Apr 2021 18:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A503135FCCB
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Apr 2021 22:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233978AbhDNQzL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Apr 2021 12:55:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37888 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352056AbhDNQyH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Apr 2021 12:54:07 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61F3C061574;
-        Wed, 14 Apr 2021 09:53:45 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id z22-20020a17090a0156b029014d4056663fso11165126pje.0;
-        Wed, 14 Apr 2021 09:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ko3bUK7S4NHBgCYpUzotMNEttB/eBU1sooQBiQa0jQI=;
-        b=eOCebZ1nHz2u0lkrBFpIIQIYPpGn3UPdUfl3vYueBRxLjwmp6cSzC3TIHseEnM/p/Z
-         pISZWWfFrTiixnWtlb6yF+hF/MMOY91K95pkCf+6P8tMhMwbGFMA8H2pwiPmm0oLSTvu
-         K9+d4dwTU/QC4AG/YnpnRucWRR1j94w6mGwawEVrPOztpe3xXf7K3V7FFQ9YPo3AQYwf
-         lx7JjvVDBsPIY5TTUx1zZ9Hqujby9HNMT6SFnF2e9Qr8M/UOW5GC540wgGpUlKY+NspS
-         +w3APzTR2gW4dbYfGPZmI28OidJUVIjLVq2YBTw+TXqit4k0vg/CgwcqKpXu68cSls5K
-         oXLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ko3bUK7S4NHBgCYpUzotMNEttB/eBU1sooQBiQa0jQI=;
-        b=CZIPoGkynub0u+zyu86X1Tkog/oD9pS8rXbmEMaUbUVLPZOlZdiEFtcfX4t8kZiT+V
-         wB0hoan1T6tiQYSsOGKkP2j8JcbSnAKs24BBa17cX+drOdlBVixMbrRxxerCLPkP26wp
-         Ex4Q6VS09xl+mXwNs0U4JvmUjA5rI4XBXe/ZPktBfck826kJe419DMpHG5l16n/Txmpm
-         6n1jpErlL6UkokNrYICmFbJVOXu2lHcUTV+uAMRx0Bc0+j7Kh94+0733WcyqUrsDgryu
-         jhRrgLEtlG/6xgVAtaNfO2HsoB0/CJn3a+fdYuIt08AFZ4AR8kdIX9j/xudpsXvCLU/p
-         Ef3A==
-X-Gm-Message-State: AOAM5306uJ6ZYv6eUk3l7tdIKgd3AOns8B9ZW54GVRCl/gKb9TjY25o6
-        Yq0tzhvWpN5dinhBPbpV+Sw=
-X-Google-Smtp-Source: ABdhPJy0aQtRAUthRaD/dBYHQfb4aRRNVYvyk2DeuWTkIlUaPCJGagXpcdFAQGi5pbMfDWma7Y61mg==
-X-Received: by 2002:a17:902:361:b029:e9:8392:7abd with SMTP id 88-20020a1709020361b02900e983927abdmr35717498pld.8.1618419225373;
-        Wed, 14 Apr 2021 09:53:45 -0700 (PDT)
-Received: from localhost.localdomain (5-12-16-165.residential.rdsnet.ro. [5.12.16.165])
-        by smtp.gmail.com with ESMTPSA id t65sm31427pfd.5.2021.04.14.09.53.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Apr 2021 09:53:44 -0700 (PDT)
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Ivan Vecera <ivecera@redhat.com>,
-        Roopa Prabhu <roopa@nvidia.com>,
-        Nikolay Aleksandrov <nikolay@nvidia.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-omap@vger.kernel.org,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Tobias Waldekranz <tobias@waldekranz.com>
-Subject: [PATCH resend net-next 2/2] net: bridge: switchdev: include local flag in FDB notifications
-Date:   Wed, 14 Apr 2021 19:52:56 +0300
-Message-Id: <20210414165256.1837753-3-olteanv@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210414165256.1837753-1-olteanv@gmail.com>
-References: <20210414165256.1837753-1-olteanv@gmail.com>
+        id S234190AbhDNUkA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Apr 2021 16:40:00 -0400
+Received: from smtp-18-i2.italiaonline.it ([213.209.12.18]:38540 "EHLO
+        libero.it" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230227AbhDNUj7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Apr 2021 16:39:59 -0400
+Received: from oxapps-34-156.iol.local ([10.101.8.202])
+        by smtp-18.iol.local with ESMTPA
+        id WmIPlnPejgCmjWmIPlCVJG; Wed, 14 Apr 2021 22:39:35 +0200
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+        t=1618432775; bh=pgQRWWiXnAjv1OPeRW7Xqhv+VM7S98hxJ5GVUijdjp0=;
+        h=From;
+        b=MiLRLk2yeg1s/iJwOvQNab2QDAtuuL5tE1HOQQyobFkVRfBf6F7O9ueezMGu6oknk
+         h3ctMKPnz5GbjZlnSt0DYckwmeNWK3oA527qQNPTUtgvHOu/QilzuZrckf2mjUHLfi
+         jJGZKR9A5HGox4ipXSuXCXtJiLygeb417HkB0kAqsacsH+ps5JPORl2hHcfq/qBE18
+         dS+uuzUYLd6UoeDXQ6qEPieVNYoN+WGwC7pZKkZN0j+eZOFlI+6gGEr701JAkzIf1z
+         2ZThRK4c1ScMQtzuUqw+5ORM1jp4aRvjto4R8K8ETptWwLYMoDLOCsV0ZFafRiDEu9
+         MqDc7lsQtZLww==
+X-CNFS-Analysis: v=2.4 cv=X5uXlEfe c=1 sm=1 tr=0 ts=60775307 cx=a_exe
+ a=8VG+hfycQzUmEcMvOp8bLQ==:117 a=VYA5D5F8Gk0A:10 a=IkcTkHD0fZMA:10
+ a=4ehuGOvBq5EA:10 a=VwQbUJbxAAAA:8 a=voM4FWlXAAAA:8 a=pGLkceISAAAA:8
+ a=vt_3zZcFIEjTfUP8xDMA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+ a=IC2XNlieTeVoXbcui8wp:22
+Date:   Wed, 14 Apr 2021 22:39:33 +0200 (CEST)
+From:   Dario Binacchi <dariobin@libero.it>
+To:     Tero Kristo <kristo@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Bin Meng <bmeng.cn@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
+        linux-clk <linux-clk@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>
+Message-ID: <1627640615.696710.1618432773724@mail1.libero.it>
+In-Reply-To: <a17dec03-d98c-0aac-0bbb-eeaa11f156f3@kernel.org>
+References: <20210402192054.7934-1-dariobin@libero.it>
+ <CAL_JsqKkpZw_BmcCXUzahF-FkQ=vb7mb_s95Lm2G7pWo0=dqNA@mail.gmail.com>
+ <1727466283.11523.1617746554330@mail1.libero.it>
+ <CAL_JsqLd+BxW9T99Sx9vgEkxdbMFe+tL7X_nZ7ExvRxVd_9GNQ@mail.gmail.com>
+ <1044574275.383115.1617779265390@mail1.libero.it>
+ <CAL_JsqLcus=Y5nOuV1wiAiVb1mTq9N8xqJpGJD6ip+Ec_6YDyw@mail.gmail.com>
+ <a197b5d8-621b-6655-e571-2877d007cd4c@kernel.org>
+ <116337570.107804.1617913442196@mail1.libero.it>
+ <8f232b81-4c83-54db-bcbd-2cae78ede814@kernel.org>
+ <333530206.539702.1618169440615@mail1.libero.it>
+ <a17dec03-d98c-0aac-0bbb-eeaa11f156f3@kernel.org>
+Subject: Re: [PATCH 0/2] fdt: translate address if #size-cells = <0>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+Importance: Normal
+X-Mailer: Open-Xchange Mailer v7.10.3-Rev34
+X-Originating-IP: 95.244.94.151
+X-Originating-Client: open-xchange-appsuite
+x-libjamsun: tUXThDJCE87j9GPIGDtFSooe5aKIrLIy
+x-libjamv: 0q95EGFlCl0=
+X-CMAE-Envelope: MS4xfFBFs8oZhE+XtrWE7XdCVsupGI1Nhkqe83YBO7wZn4m6lClG68kahfrlapumIZTsh6oPmvbBcgZI8SsFdheliVYP7hFxM9l8RmsOVI/Zx71o5R48RXnf
+ IzHix+lJvmqNC0k/NwteWjTMMdBThcSLJBS7ATVkzPPJG46wTIfHZILk3RGGBbZpI5kpFIFwb8NqRRNM3f7pqOtASxkAOiG6OHA49hB/cmxOiqhO7FxpW6Hy
+ I/w+e2Dohvr4O7zX7ccvPSAVFuI/xSNxznjNS+OIIh67/kXezlZH9fRIz1PTokcZFJDUPMCM89zWP2WIzs/D3rQ1uaDcJMIF5DLEXNt97Pltgak9yqLJ0KkY
+ gE0LCTF2PKwmhrBrHSvGOZpLSIBtnidup0nYwI8DCeLlC+LqjuM8DVCkiM0WLDW2sOqmD+YpE79WRQdknH1wr+IOUrZhpU7YdQSHO0kLojb5+YIbek0nblgu
+ BnGg16iyTJgkjJstkvuTHSl4iEE0orBxgqjy90fhCdAA1lfe8/zu2ARBsKHBK8MgGgo007s3BAWVDLBo
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Hi Tero,
 
-As explained in bugfix commit 6ab4c3117aec ("net: bridge: don't notify
-switchdev for local FDB addresses") as well as in this discussion:
-https://lore.kernel.org/netdev/20210117193009.io3nungdwuzmo5f7@skbuf/
+> Il 12/04/2021 09:41 Tero Kristo <kristo@kernel.org> ha scritto:
+> 
+>  
+> On 11/04/2021 22:30, Dario Binacchi wrote:
+> > 
+> >> Il 09/04/2021 12:32 Tero Kristo <kristo@kernel.org> ha scritto:
+> >>
+> >>   
+> >> On 08/04/2021 23:24, Dario Binacchi wrote:
+> >>>
+> >>>> Il 07/04/2021 15:21 Tero Kristo <kristo@kernel.org> ha scritto:
+> >>>>
+> >>>>    
+> >>>> On 07/04/2021 15:52, Rob Herring wrote:
+> >>>>> On Wed, Apr 7, 2021 at 2:07 AM Dario Binacchi <dariobin@libero.it> wrote:
+> >>>>>>
+> >>>>>>
+> >>>>>>> Il 07/04/2021 03:16 Rob Herring <robh+dt@kernel.org> ha scritto:
+> >>>>>>>
+> >>>>>>>
+> >>>>>>> On Tue, Apr 6, 2021 at 5:02 PM Dario Binacchi <dariobin@libero.it> wrote:
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>>> Il 06/04/2021 16:06 Rob Herring <robh+dt@kernel.org> ha scritto:
+> >>>>>>>>>
+> >>>>>>>>>
+> >>>>>>>>> On Fri, Apr 2, 2021 at 2:21 PM Dario Binacchi <dariobin@libero.it> wrote:
+> >>>>>>>>>>
+> >>>>>>>>>>
+> >>>>>>>>>> The series comes from my commit in U-boot
+> >>>>>>>>>> d64b9cdcd4 ("fdt: translate address if #size-cells = <0>")
+> >>>>>>>>>> and from the subsequent exchange of emails at the end of which I was
+> >>>>>>>>>> suggested to send the patch to the linux kernel
+> >>>>>>>>>> (https://patchwork.ozlabs.org/project/uboot/patch/1614324949-61314-1-git-send-email-bmeng.cn@gmail.com/).
+> >>>>>>>>>
+> >>>>>>>>> It's 'ranges' that determines translatable which is missing from the
+> >>>>>>>>> DT. This should have not had a 0 size either though maybe we could
+> >>>>>>>>> support that.
+> >>>>>>>>
+> >>>>>>>> I have replied to the email you sent to the u-boot mailing list
+> >>>>>>>>
+> >>>>>>>>>
+> >>>>>>>>> Does the DT have to be updated anyways for your spread spectrum support?
+> >>>>>>>>
+> >>>>>>>> The spread spectrum support patch does not need this patch to work. They belong
+> >>>>>>>> to two different series.
+> >>>>>>>
+> >>>>>>> That's not what I asked. Is the spread spectrum support forcing a DT
+> >>>>>>> update for users?
+> >>>>>>
+> >>>>>> Yes, the deltam and modfreq registers must be added to the DPLL clocks.
+> >>>>>
+> >>>>> That's a shame given this dts has been mostly untouched since 2013.
+> >>>>>
+> >>>>
+> >>>> I think technically it would be possible to map these registers within
+> >>>> the driver also, seeing there are like a handful of the DPLLs for both
+> >>>> am3/am4 which are impacted. Just add a new compatible or something, or
+> >>>> alternatively parse the register addresses and populate the
+> >>>> deltam/modfreq registers based on that.
+> >>>
+> >>> I have not added new compatibles, but I have added the offset of the delta and modfreq
+> >>> registers to the data structures used by the DPLL drivers and I have set them in the
+> >>> related setup functions.
+> >>> https://lore.kernel.org/patchwork/patch/1406590/
+> >>
+> >> True, I just said that technically it would be possible to add this data
+> >> within the driver itself to avoid modifying DT if that would be preferred.
+> > 
+> > In the review of the series no one asked not to change the device tree but it is also true
+> > that no review has been made on the patch 'clk: ti: add am33xx / am43xx spread spectrum clock support',
+> > the one to be applied on the drivers that support the SSC.
+> > I take this opportunity to ask you if you can kindly review that patch.
+> 
+> The clock driver patch itself seems fine, the devil is on the DT side, 
+> and how we are going to re-arrange the DT data to accommodate it.
+> 
+> > 
+> >>
+> >>>
+> >>>>
+> >>>>>>> If the DT has to be changed anyways (not really
+> >>>>>>> great policy), then you could fix this in the DT at the same time.
+> >>>>>>
+> >>>>>> I could put the fix to the device tree in that series, although I wouldn't
+> >>>>>> create a single patch to fix and add the SSC registers. First the size-cells = <0>
+> >>>>>> fix patch and then the SSC patch.
+> >>>>>> Do you agree?
+> >>>>>
+> >>>>> By at the same time, I really just meant within 1 release.
+> >>>>>
+> >>>>> But I'd like to hear TI maintainers' thoughts on this.
+> >>>>
+> >>>> I did post a comment on patch #1 questioning the approach from TI clock
+> >>>> driver perspective, imho I can't see why these two patches would be
+> >>>> needed right now.
+> >>
+> >> Fix to above, it was patch #2 I was referring to.
+> >>
+> >>>
+> >>> Because U-boot maintainers asked me after I sent them my patch on this issue.
+> >>> I believe that the email exchange that took place in the U-boot (https://patchwork.ozlabs.org/project/uboot/patch/1614324949-61314-1-git-send-email-bmeng.cn@gmail.com/)
+> >>> and Linux kernel mailing lists showed that:
+> >>> - The patch 'fdt: translate address if # size-cells = <0>' is wrong (U-boot has accepted
+> >>>     it, and it will have to be reverted).
+> >>> - However, the same patch highlighted that it is wrong to use the size-cells = <0> property
+> >>>     in the prcm_clocks and scm_clocks nodes of device tree.
+> >>> - Rob agrees that in the case of the am3xx this is the right choice:
+> >>
+> >> Well, I don't quite like where this is ending at. Basically you are just
+> >> modifying the am3/am4 DTs adding a size spec for every clock node. This
+> >> leaves the omap3/omap4/omap5/dra7 in the old format. Should someone
+> >> convert those also? Has anybody tested what happens with the u-boot
+> >> change on those platforms? Or with the kernel change proposed for the TI
+> >> clock driver?
+> >>
+> >> Also, none of this changes the fact that imho patch #2 in this series is
+> >> wrong and should be fixed. Doing ioremap for every clock node is at
+> >> least costly (dra7xx has some 180 clock nodes based on quick grep) and
+> >> also potentially breaks things (you get extremely fragmented iomappings,
+> >> and some of them might even get rejected because you end up in the same
+> >> 4K page), and should be avoided.
+> > 
+> > You are right, and in fact in my previous email, I proposed only to change the
+> > ti_clk_get_reg_addr() from:
+> > - if (of_property_read_u32_index (node, "reg", index, & val)) {
+> > + if (of_property_read_u32_index (node, "reg", index * 2, & val)) {
+> > following the change of size-cells from 0 to 1 in the DTS, without ioremap.
+> 
+> Yep that would be ok, assuming we change the DT in the manner proposed.
+> 
+> > 
+> >> If things would be fixed properly, we would get rid of the clock nodes
+> >> from the DT completely and just leave the clock providers in place;
+> >> clocks would be specified via something like 'clocks = <&prcm
+> >> AM3_ADC_TSC_FCK>;'
+> > 
+> > In which node of the device tree should the 'clocks = <&prcm AM3_ADC_TSC_FCK>;'
+> > property be found?
+> 
+> This would be used to replace the device nodes, e.g. currently we have 
+> clocks = <&adc_tsc_fck> under the tscadc node under am4, this would 
+> change to <&prcm AM3_ADC_TSC_FCK>. Similar to any other clock entry 
+> under every device on the platform.
+> 
+> > Could you please briefly describe how the device tree would change?
+> > The clock nodes would be removed but I am not clear how the rest of the device
+> > tree would change.
+> > Would this solution only impact the device trees and the code of the am3 / am4
+> > architectures?
+> 
+> The change on the DT itself would be pretty large, removing all clock 
+> nodes and modifying any existing handles towards the clock nodes, and 
+> this would impact all OMAP architectures.
+> 
+> Anyways, it is mostly up-to Tony how he wants to see the DT change, as 
+> he is the maintainer for the OMAP family DT data.
+> 
+> I am just raising the opinion here that from kernel point of view, 
+> adding the missing size cells seems unnecessary, and I can't see why 
+> u-boot can't be changed to support the existing broken DT. It is broken 
+> now, and it will be broken with the addition of the size cells in place, 
+> and the actual "neat" end result would be to get rid of the clock nodes 
+> completely.
 
-the switchdev notifiers for FDB entries managed to have a zero-day bug,
-which was that drivers would not know what to do with local FDB entries,
-because they were not told that they are local. The bug fix was to
-simply not notify them of those addresses.
+I'll fix U-boot.
+Thanks for your explanations.
+Hope for SSC patch review from you and/or some TI MAINTAINER.
 
-Let us now add the 'is_local' bit to bridge FDB entries, and make all
-drivers ignore these entries by their own choice.
+Thanks and regards,
+Dario
 
-Co-developed-by: Tobias Waldekranz <tobias@waldekranz.com>
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c        | 4 ++--
- drivers/net/ethernet/marvell/prestera/prestera_switchdev.c | 2 +-
- drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c   | 5 +++--
- drivers/net/ethernet/rocker/rocker_main.c                  | 4 ++--
- drivers/net/ethernet/ti/am65-cpsw-switchdev.c              | 4 ++--
- drivers/net/ethernet/ti/cpsw_switchdev.c                   | 4 ++--
- include/net/switchdev.h                                    | 1 +
- net/bridge/br_switchdev.c                                  | 3 +--
- net/dsa/slave.c                                            | 2 +-
- 9 files changed, 15 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index 80efc8116963..d7c0e11b16f7 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -1832,7 +1832,7 @@ static void dpaa2_switch_event_work(struct work_struct *work)
- 
- 	switch (switchdev_work->event) {
- 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		if (is_unicast_ether_addr(fdb_info->addr))
- 			err = dpaa2_switch_port_fdb_add_uc(netdev_priv(dev),
-@@ -1847,7 +1847,7 @@ static void dpaa2_switch_event_work(struct work_struct *work)
- 					 &fdb_info->info, NULL);
- 		break;
- 	case SWITCHDEV_FDB_DEL_TO_DEVICE:
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		if (is_unicast_ether_addr(fdb_info->addr))
- 			dpaa2_switch_port_fdb_del_uc(netdev_priv(dev), fdb_info->addr);
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_switchdev.c b/drivers/net/ethernet/marvell/prestera/prestera_switchdev.c
-index 49e052273f30..cb564890a3dc 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_switchdev.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_switchdev.c
-@@ -798,7 +798,7 @@ static void prestera_fdb_event_work(struct work_struct *work)
- 	switch (swdev_work->event) {
- 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
- 		fdb_info = &swdev_work->fdb_info;
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 
- 		err = prestera_port_fdb_set(port, fdb_info, true);
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-index c1f05c17557d..eeccd586e781 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-@@ -2916,7 +2916,8 @@ mlxsw_sp_switchdev_bridge_nve_fdb_event(struct mlxsw_sp_switchdev_event_work *
- 		return;
- 
- 	if (switchdev_work->event == SWITCHDEV_FDB_ADD_TO_DEVICE &&
--	    !switchdev_work->fdb_info.added_by_user)
-+	    (!switchdev_work->fdb_info.added_by_user ||
-+	     switchdev_work->fdb_info.is_local))
- 		return;
- 
- 	if (!netif_running(dev))
-@@ -2971,7 +2972,7 @@ static void mlxsw_sp_switchdev_bridge_fdb_event_work(struct work_struct *work)
- 	switch (switchdev_work->event) {
- 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
- 		fdb_info = &switchdev_work->fdb_info;
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		err = mlxsw_sp_port_fdb_set(mlxsw_sp_port, fdb_info, true);
- 		if (err)
-diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
-index 3473d296b2e2..a46633606cae 100644
---- a/drivers/net/ethernet/rocker/rocker_main.c
-+++ b/drivers/net/ethernet/rocker/rocker_main.c
-@@ -2736,7 +2736,7 @@ static void rocker_switchdev_event_work(struct work_struct *work)
- 	switch (switchdev_work->event) {
- 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
- 		fdb_info = &switchdev_work->fdb_info;
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		err = rocker_world_port_fdb_add(rocker_port, fdb_info);
- 		if (err) {
-@@ -2747,7 +2747,7 @@ static void rocker_switchdev_event_work(struct work_struct *work)
- 		break;
- 	case SWITCHDEV_FDB_DEL_TO_DEVICE:
- 		fdb_info = &switchdev_work->fdb_info;
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		err = rocker_world_port_fdb_del(rocker_port, fdb_info);
- 		if (err)
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
-index d93ffd8a08b0..23cfb91e9c4d 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
-@@ -385,7 +385,7 @@ static void am65_cpsw_switchdev_event_work(struct work_struct *work)
- 			   fdb->addr, fdb->vid, fdb->added_by_user,
- 			   fdb->offloaded, port_id);
- 
--		if (!fdb->added_by_user)
-+		if (!fdb->added_by_user || fdb->is_local)
- 			break;
- 		if (memcmp(port->slave.mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
- 			port_id = HOST_PORT_NUM;
-@@ -401,7 +401,7 @@ static void am65_cpsw_switchdev_event_work(struct work_struct *work)
- 			   fdb->addr, fdb->vid, fdb->added_by_user,
- 			   fdb->offloaded, port_id);
- 
--		if (!fdb->added_by_user)
-+		if (!fdb->added_by_user || fdb->is_local)
- 			break;
- 		if (memcmp(port->slave.mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
- 			port_id = HOST_PORT_NUM;
-diff --git a/drivers/net/ethernet/ti/cpsw_switchdev.c b/drivers/net/ethernet/ti/cpsw_switchdev.c
-index a72bb570756f..05a64fb7a04f 100644
---- a/drivers/net/ethernet/ti/cpsw_switchdev.c
-+++ b/drivers/net/ethernet/ti/cpsw_switchdev.c
-@@ -395,7 +395,7 @@ static void cpsw_switchdev_event_work(struct work_struct *work)
- 			fdb->addr, fdb->vid, fdb->added_by_user,
- 			fdb->offloaded, port);
- 
--		if (!fdb->added_by_user)
-+		if (!fdb->added_by_user || fdb->is_local)
- 			break;
- 		if (memcmp(priv->mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
- 			port = HOST_PORT_NUM;
-@@ -411,7 +411,7 @@ static void cpsw_switchdev_event_work(struct work_struct *work)
- 			fdb->addr, fdb->vid, fdb->added_by_user,
- 			fdb->offloaded, port);
- 
--		if (!fdb->added_by_user)
-+		if (!fdb->added_by_user || fdb->is_local)
- 			break;
- 		if (memcmp(priv->mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
- 			port = HOST_PORT_NUM;
-diff --git a/include/net/switchdev.h b/include/net/switchdev.h
-index 8c3218177136..f1a5a9a3634d 100644
---- a/include/net/switchdev.h
-+++ b/include/net/switchdev.h
-@@ -209,6 +209,7 @@ struct switchdev_notifier_fdb_info {
- 	const unsigned char *addr;
- 	u16 vid;
- 	u8 added_by_user:1,
-+	   is_local:1,
- 	   offloaded:1;
- };
- 
-diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-index c390f84adea2..a5e601e41cb9 100644
---- a/net/bridge/br_switchdev.c
-+++ b/net/bridge/br_switchdev.c
-@@ -114,13 +114,12 @@ br_switchdev_fdb_notify(const struct net_bridge_fdb_entry *fdb, int type)
- 		.addr = fdb->key.addr.addr,
- 		.vid = fdb->key.vlan_id,
- 		.added_by_user = test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags),
-+		.is_local = test_bit(BR_FDB_LOCAL, &fdb->flags),
- 		.offloaded = test_bit(BR_FDB_OFFLOADED, &fdb->flags),
- 	};
- 
- 	if (!fdb->dst)
- 		return;
--	if (test_bit(BR_FDB_LOCAL, &fdb->flags))
--		return;
- 
- 	switch (type) {
- 	case RTM_DELNEIGH:
-diff --git a/net/dsa/slave.c b/net/dsa/slave.c
-index 995e0e16f295..6e348d2222a9 100644
---- a/net/dsa/slave.c
-+++ b/net/dsa/slave.c
-@@ -2329,7 +2329,7 @@ static int dsa_slave_switchdev_event(struct notifier_block *unused,
- 		fdb_info = ptr;
- 
- 		if (dsa_slave_dev_check(dev)) {
--			if (!fdb_info->added_by_user)
-+			if (!fdb_info->added_by_user || fdb_info->is_local)
- 				return NOTIFY_OK;
- 
- 			dp = dsa_slave_to_port(dev);
--- 
-2.25.1
-
+> 
+> -Tero
+> 
+> > 
+> > Thanks and regards,
+> > Dario
+> > 
+> >> similar to what is done with the clkctrl entries, and
+> >> rest of the clock data would be built-in to the clock driver. This would
+> >> completely get rid of any future compatibility issues and the need to
+> >> tweak the DT if some clock driver would need modifications to support
+> >> some new feature.
+> >>
+> >> -Tero
+> >>
+> >>> diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+> >>> index 1fb22088caeb..59b0a0cf211e 100644
+> >>> --- a/arch/arm/boot/dts/am33xx-l4.dtsi
+> >>> +++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+> >>> @@ -110,7 +110,8 @@
+> >>>    
+> >>>                                   prcm_clocks: clocks {
+> >>>                                           #address-cells = <1>;
+> >>> -                                       #size-cells = <0>;
+> >>> +                                       #size-cells = <1>;
+> >>> +                                       ranges = <0 0 0x2000>;
+> >>>                                   };
+> >>>    
+> >>>                                   prcm_clockdomains: clockdomains {
+> >>> @@ -320,7 +321,8 @@
+> >>>    
+> >>>                                           scm_clocks: clocks {
+> >>>                                                   #address-cells = <1>;
+> >>> -                                               #size-cells = <0>;
+> >>> +                                               #size-cells = <1>;
+> >>> +                                               ranges = <0 0 0x800>;
+> >>>                                           };
+> >>>                                   };
+> >>>
+> >>> --- a/arch/arm/boot/dts/am33xx-clocks.dtsi
+> >>> +++ b/arch/arm/boot/dts/am33xx-clocks.dtsi
+> >>> @@ -10,7 +10,7 @@
+> >>>                   compatible = "ti,mux-clock";
+> >>>                   clocks = <&virt_19200000_ck>, <&virt_24000000_ck>, <&virt_25000000_ck>, <&virt_26000000_ck>;
+> >>>                   ti,bit-shift = <22>;
+> >>> -               reg = <0x0040>;
+> >>> +               reg = <0x0040 0x4>;
+> >>>           };
+> >>>    
+> >>>           adc_tsc_fck: adc_tsc_fck {
+> >>> @@ -98,7 +98,7 @@
+> >>>                   compatible = "ti,gate-clock";
+> >>>                   clocks = <&l4ls_gclk>;
+> >>>                   ti,bit-shift = <0>;
+> >>> -               reg = <0x0664>;
+> >>> +               reg = <0x0664 0x04>;
+> >>>           };
+> >>> [...]
+> >>>
+> >>> - U-boot rightly wants to use the same device tree as the Kernel.
+> >>> - IMHO, if I'm not missing something, I think using a #size-cells = <1>; for clocks
+> >>>     it requires only one code change in the ti_clk_get_reg_addr():
+> >>>
+> >>> --- a/drivers/clk/ti/clk.c
+> >>> +++ b/drivers/clk/ti/clk.c
+> >>> @@ -265,9 +265,27 @@ int __init ti_clk_retry_init(struct device_node *node, void *user,
+> >>>    int ti_clk_get_reg_addr(struct device_node *node, int index,
+> >>>                           struct clk_omap_reg *reg)
+> >>>
+> >>> -       if (of_property_read_u32_index(node, "reg", index, &val)) {
+> >>> +       if (of_property_read_u32_index(node, "reg", index * 2, &val)) {
+> >>>
+> >>>      The other changes to develop affect device trees of architectures which, like am3, currently
+> >>>      use #size-cells = <0>.
+> >>>
+> >>> IMHO, all this would lead to an improvement of the device trees with minimal impact on the code.
+> >>> It would benefit U-boot, which would not have to develop special platform code and any new
+> >>> architectures that would inherit from these DTs.
+> >>>
+> >>> If you think it might be worth it, I am available to develop this patch.
+> >>>
+> >>> Thanks and regards,
+> >>> Dario
+> >>>
+> >>>>
+> >>>> -Tero
