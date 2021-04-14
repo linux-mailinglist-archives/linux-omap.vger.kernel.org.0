@@ -2,24 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3756135F912
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Apr 2021 18:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A469C35F948
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Apr 2021 18:56:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231816AbhDNQku (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Apr 2021 12:40:50 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:50928 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234251AbhDNQit (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Apr 2021 12:38:49 -0400
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1lWiWr-00GisB-N9; Wed, 14 Apr 2021 18:38:13 +0200
-Date:   Wed, 14 Apr 2021 18:38:13 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        id S1351991AbhDNQyA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Apr 2021 12:54:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37814 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237784AbhDNQxs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Apr 2021 12:53:48 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13626C061574;
+        Wed, 14 Apr 2021 09:53:25 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id cu16so8571092pjb.4;
+        Wed, 14 Apr 2021 09:53:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LA3Hvk3FicZ+MjdfGJJpEK7ZTKeROc3LH/SX5NslzB4=;
+        b=c0bppo/gSuPVIyLbuL8goqiY1mzxeds09ylJcziR5iVVPPb1izfi5YhU/qK7KzjXWA
+         hz+8WbtMG3NrMmvoQ5CBPx+cvmrhTMYAup+bLdlEwGE9eZ+5Won6nX/7sxBToLQRgn5e
+         eRWyaM3vavLdRlXtjNS+Ic7nG8GVqLoDLanPHETMr5tNmzLsyJNe7KuITLi5rbyV1KdV
+         xVF4ZtIMbPAeJU2gv28fcRoKwQ7krfOU2bQ0/seJxTJoFmvs7gu1ezB1SgTsBwkSjsBe
+         KNBT6gmiW6Um+Bi+Jsslb/vgb6vu1aleI39MWYFgw2PO/W67mfXts4jY8FkM0geJElSG
+         Fd3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LA3Hvk3FicZ+MjdfGJJpEK7ZTKeROc3LH/SX5NslzB4=;
+        b=myJinZ6RZ++wIdGWSF5YvjQgdcwUF1AAfeMRmjL21KW6ra2n5ManXcbPLRliKOKwzF
+         rA9bFQNB1iiAirsfnnLJI+IZlzWKDEF8bjVY+UA/EyWftlbriBXe5IBrFmC5DXshkroI
+         +HQFO3u6nuqFJx7e/8PiAA0Jg1I95JSRc8XsIzPAMTXZNCefa3pHw3N+vKqgpt6ekzY/
+         K8EIyTQCFzG/FjU0Be9WTA3ShhDl7FnNYLa3gMxA8EpDWy4aw9u3iM75ZR8VMo/TGgRb
+         xQxlgT+Ihcu9xGJjuT6k2hMUTjdLt3MS/lsQxN/OTJJkYgG/EqEHqz3pf3oJWmBv+jUs
+         XGIQ==
+X-Gm-Message-State: AOAM5330TBnofmI7ymUsr1TId6BspRJjJqKT5vXUXsZjekClWt09OPzn
+        rrQdvX0Ke8hrUbGG9aTH7mM=
+X-Google-Smtp-Source: ABdhPJwgvrSU05LL7g0Hdq14kZRnmHFAcLOtv4CTrR/Pz1Fz1siUxhwo3oiPmL1LrEylAhAD3QHq1A==
+X-Received: by 2002:a17:90b:1118:: with SMTP id gi24mr4504148pjb.30.1618419204613;
+        Wed, 14 Apr 2021 09:53:24 -0700 (PDT)
+Received: from localhost.localdomain (5-12-16-165.residential.rdsnet.ro. [5.12.16.165])
+        by smtp.gmail.com with ESMTPSA id t65sm31427pfd.5.2021.04.14.09.53.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Apr 2021 09:53:24 -0700 (PDT)
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     Ioana Ciornei <ioana.ciornei@nxp.com>,
         Vadym Kochan <vkochan@marvell.com>,
         Taras Chornyi <tchornyi@marvell.com>,
         Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
@@ -27,61 +58,63 @@ Cc:     Jakub Kicinski <kuba@kernel.org>,
         Ivan Vecera <ivecera@redhat.com>,
         Roopa Prabhu <roopa@nvidia.com>,
         Nikolay Aleksandrov <nikolay@nvidia.com>,
+        Andrew Lunn <andrew@lunn.ch>,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         linux-omap@vger.kernel.org,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Tobias Waldekranz <tobias@waldekranz.com>
-Subject: Re: [PATCH net-next 2/2] net: bridge: switchdev: include local flag
- in FDB notifications
-Message-ID: <YHcadT4XhBq7g61Y@lunn.ch>
-References: <20210414151540.1808871-1-olteanv@gmail.com>
- <20210414151540.1808871-2-olteanv@gmail.com>
- <YHcRNIgI9lVs6MDj@lunn.ch>
- <20210414160510.zcif6liazjltd2cz@skbuf>
+        Vladimir Oltean <vladimir.oltean@nxp.com>
+Subject: [PATCH resend net-next 0/2] Pass the BR_FDB_LOCAL information to switchdev drivers
+Date:   Wed, 14 Apr 2021 19:52:54 +0300
+Message-Id: <20210414165256.1837753-1-olteanv@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210414160510.zcif6liazjltd2cz@skbuf>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Apr 14, 2021 at 07:05:10PM +0300, Vladimir Oltean wrote:
-> On Wed, Apr 14, 2021 at 05:58:44PM +0200, Andrew Lunn wrote:
-> > > Let us now add the 'is_local' bit to bridge FDB entries, and make all
-> > > drivers ignore these entries by their own choice.
-> > 
-> > Hi Vladimir
-> > 
-> > This goes to the question about the missing cover letter. Why should
-> > drivers get to ignore them, rather than the core? It feels like there
-> > should be another patch in the series, where a driver does not
-> > actually ignore them, but does something?
-> 
-> Hi Andrew,
-> 
-> Bridge fdb entries with the is_local flag are entries which are
-> terminated locally and not forwarded. Switchdev drivers might want to be
-> notified of these addresses so they can trap them (otherwise, if they
-> don't program these entries to hardware, there is no guarantee that they
-> will do the right thing with these entries, and they won't be, let's
-> say, flooded). Of course, ideally none of the switchdev drivers should
-> ignore them, but having access to the is_local bit is the bare minimum
-> change that should be done in the bridge layer, before this is even
-> possible.
-> 
-> These 2 changes are actually part of a larger group of changes that
-> together form the "RX filtering for DSA" series. I haven't had a lot of
-> success with that, so I thought a better approach would be to take it
-> step by step. DSA will need to be notified of local FDB entries. For
-> now, it ignores them like everybody else. This is supposed to be a
-> non-functional patch series because I don't want to spam every switchdev
-> maintainer with 15+ DSA RX filtering patches.
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-This is the sort of information which goes into 0/2. It explains the
-big picture 'Why' of the change.
+Bridge FDB entries with the is_local flag are entries which are
+terminated locally and not forwarded. Switchdev drivers might want to be
+notified of these addresses so they can trap them. If they don't program
+these entries to hardware, there is no guarantee that they will do the
+right thing with these entries, and they won't be, let's say, flooded.
 
-    Andrew
+Ideally none of the switchdev drivers should ignore these entries, but
+having access to the is_local bit is the bare minimum change that should
+be done in the bridge layer, before this is even possible.
+
+These 2 changes are extracted from the larger "RX filtering in DSA"
+series:
+https://patchwork.kernel.org/project/netdevbpf/patch/20210224114350.2791260-8-olteanv@gmail.com/
+https://patchwork.kernel.org/project/netdevbpf/patch/20210224114350.2791260-9-olteanv@gmail.com/
+and submitted separately, because they touch all switchdev drivers,
+while the rest is mostly specific to DSA.
+
+This change is not a functional one, in the sense that everybody still
+ignores the local FDB entries, but this will be changed by further
+patches at least for DSA.
+
+Tobias Waldekranz (1):
+  net: bridge: switchdev: refactor br_switchdev_fdb_notify
+
+Vladimir Oltean (1):
+  net: bridge: switchdev: include local flag in FDB notifications
+
+ .../ethernet/freescale/dpaa2/dpaa2-switch.c   |  4 +-
+ .../marvell/prestera/prestera_switchdev.c     |  2 +-
+ .../mellanox/mlxsw/spectrum_switchdev.c       |  5 ++-
+ drivers/net/ethernet/rocker/rocker_main.c     |  4 +-
+ drivers/net/ethernet/ti/am65-cpsw-switchdev.c |  4 +-
+ drivers/net/ethernet/ti/cpsw_switchdev.c      |  4 +-
+ include/net/switchdev.h                       |  1 +
+ net/bridge/br_switchdev.c                     | 44 +++++--------------
+ net/dsa/slave.c                               |  2 +-
+ 9 files changed, 26 insertions(+), 44 deletions(-)
+
+-- 
+2.25.1
+
