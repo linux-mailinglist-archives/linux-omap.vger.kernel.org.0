@@ -2,53 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00B8E35F775
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Apr 2021 17:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D367C35F78D
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Apr 2021 17:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350326AbhDNPQk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Apr 2021 11:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44582 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350311AbhDNPQi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Apr 2021 11:16:38 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21FB7C061574;
-        Wed, 14 Apr 2021 08:16:17 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id s14so5587534pjl.5;
-        Wed, 14 Apr 2021 08:16:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ko3bUK7S4NHBgCYpUzotMNEttB/eBU1sooQBiQa0jQI=;
-        b=i+M/udkpSt1Ep0D0LRLW3uT3HFmaPRMTVVzScognXnObIwbywJmG8r/J8S4AvEXOGW
-         09NZ/lZjR4ogDM86jx7TI7E6J4h9FqNKBiqw3F5Duq2SiwHtxtHLFtwgW0ACZ67WIqPY
-         UcXmaIlTz0IUJlPyfZs/B1SgievLs6H8qzrQ9d96VjyYrB7HLkein+2Z97QIVnJ0R9CP
-         RUYfeycrMew648tWzNag+DP2qlPnbJiFfoxPGQI70a6s4/xS6TnydbJq0LiXhGDQYqF9
-         kfWGTmWNYUDUPePDMLuCLHDNz4Dbhp7ygR0xTgEH+tswb03icfrAXfFDZD1OMDqk4DtH
-         4CwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ko3bUK7S4NHBgCYpUzotMNEttB/eBU1sooQBiQa0jQI=;
-        b=AL6KLts7XNQiJieAIYZy4shV9P/chxblffUpbBaSN7yKE7XibhEO3+CXa92694XS4X
-         4w8HUxilC0QqzCvXCYsD4Y8P6pO82AR5+Sn26qi37mHjOZBJ8LUfHKFmXnzfq9y1ZXGY
-         SOD8k47tnT/KyaCi5hmR6vTDKbUT4ufa9yJHTYba8DyDrnmUCi19L7UbhRVOlgu9Cb+u
-         AGfioyd2B6kPhQASQ4TgdINav8/s7/x6VxXWjWVGi+DyhwL1jx8xxWqiuV7TooUbk+nJ
-         dbTvouCH5Xp5MPXcVCKWr1e+aYNr2F1ygswqXCVwxXcPAM6k9WOG1Exj2dGtATjJwq2L
-         ze6g==
-X-Gm-Message-State: AOAM532OYdTxFWruCOQm6aFFk/G/aqKk+RBi+Iy4p9jxCenQ83LNXs9f
-        7LbQ5PNZeg5lD2R8ky9eKpU=
-X-Google-Smtp-Source: ABdhPJxkllp11zWkMcJCvPXxjXLriLhBCsT9pyX9hmq2ceLKmwBdk0thXC2zrIrUztX2jmZ7hTLrAg==
-X-Received: by 2002:a17:90b:30c6:: with SMTP id hi6mr4111961pjb.26.1618413376712;
-        Wed, 14 Apr 2021 08:16:16 -0700 (PDT)
-Received: from localhost.localdomain (5-12-16-165.residential.rdsnet.ro. [5.12.16.165])
-        by smtp.gmail.com with ESMTPSA id s40sm12241146pfw.133.2021.04.14.08.16.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Apr 2021 08:16:16 -0700 (PDT)
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Jakub Kicinski <kuba@kernel.org>,
+        id S1351995AbhDNPZi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Apr 2021 11:25:38 -0400
+Received: from mail-eopbgr750075.outbound.protection.outlook.com ([40.107.75.75]:24224
+        "EHLO NAM02-BL2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1346177AbhDNPZg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Apr 2021 11:25:36 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Az14kABFMozncgbJlFFiDWsW6NWkqWDrpV/XPbj3L3r3ecUb7xRqsCnIi5LdkURHsLwhBVlCY+EAz73xZxAr4NRFYAF2bDSB6NrO8+pQFgsn1MGx6uJ3HE7tTfXlQkLbwiS4sGLc4ku+SEYHupO7LOfFNXFwB+IYRUw0gVB9ngJoAzm6Rjn2rjJ2TTgfXRqiJI3LZI0Ypd2e04dbi0ODyFes+X7zOlh3ij5Waglyx+mIdtbEat8pWCsYmRC/A1d07Ni8jAM7lS79VeYV3ogH3I4eq1t9zdCf6se5ozfoJYYnjTK1xegboCypEkrnBi+uC/41DYYg7Y0SAXgZdnAy1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5e14ZpX8Lr6jv8REnzt6Tqeh3gMaEDtbMKpwIyGKS0E=;
+ b=M2Cdak3BNb7pWEqY3iBfKtil+Ee8m7HuHAhw0XxsUzrV9G1okPGJik/5woq101ita8EMyTHh6mhZwJODL2lEpWcT/QHJfi5+awGTDLAv2OZ0ZN+HUgaRGy0egZnMbxQdEtEDpFO44WWZNjUpdA3Rr+kQMaaHzX26GzWU9J2WbpEp0t7t6bJuIdH18CNqk9JbSlL5UYaDOyA1cdMN6zUx30Q6+5eoeWJ1lxWJ1agSgEBpj9ZGJvdEJft0YkQk7ykgRj24x2aKals9uEGlg1R0QbPbhp2TrJNhhfyQ/x1Nlb+HIwnXQWeYLnUF28QgTwRudokTIFozoi54Os/RSFsDTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5e14ZpX8Lr6jv8REnzt6Tqeh3gMaEDtbMKpwIyGKS0E=;
+ b=V3uIrXStKi22kpyo1sieYpemjkTJWUQAahKZoMV0J7QSpX9PHpgE+F+6KH30bevmkwxTjy4b/ezyITwkpMjX0ERziiLX49Hy1BLbAz4xoKdEADuytCBVEvOGbP86kErp7/0GqPh/+fy669U7C8OXj0QOt9lZiq970DLPPbGd6Xij80DqMVY9tnKLyIYUJCBhseRNZovCJn72GOTEX0N0jIdPS7Ktfo2g9eQxQBL0knotfNKssWC36gjBhHlX3ipdWC5P/UMFgxPsw0hllGbHajgD4er1js+jNCbLSm84fSPp0rp3AKLGcpHTFa8d4jEiyi0TC7qL2jJYO9ulKf9r3A==
+Authentication-Results: nxp.com; dkim=none (message not signed)
+ header.d=none;nxp.com; dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB4403.namprd12.prod.outlook.com (2603:10b6:5:2ab::24)
+ by DM6PR12MB4354.namprd12.prod.outlook.com (2603:10b6:5:28f::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4020.16; Wed, 14 Apr
+ 2021 15:25:14 +0000
+Received: from DM6PR12MB4403.namprd12.prod.outlook.com
+ ([fe80::a1a4:912e:61ce:e393]) by DM6PR12MB4403.namprd12.prod.outlook.com
+ ([fe80::a1a4:912e:61ce:e393%7]) with mapi id 15.20.4020.023; Wed, 14 Apr 2021
+ 15:25:13 +0000
+Subject: Re: [PATCH net-next 1/2] net: bridge: switchdev: refactor
+ br_switchdev_fdb_notify
+To:     Vladimir Oltean <olteanv@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
 Cc:     Ioana Ciornei <ioana.ciornei@nxp.com>,
         Vadym Kochan <vkochan@marvell.com>,
@@ -56,225 +49,171 @@ Cc:     Ioana Ciornei <ioana.ciornei@nxp.com>,
         Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         Ivan Vecera <ivecera@redhat.com>,
-        Roopa Prabhu <roopa@nvidia.com>,
-        Nikolay Aleksandrov <nikolay@nvidia.com>,
-        Andrew Lunn <andrew@lunn.ch>,
+        Roopa Prabhu <roopa@nvidia.com>, Andrew Lunn <andrew@lunn.ch>,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         linux-omap@vger.kernel.org,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Tobias Waldekranz <tobias@waldekranz.com>
-Subject: [PATCH net-next 2/2] net: bridge: switchdev: include local flag in FDB notifications
-Date:   Wed, 14 Apr 2021 18:15:40 +0300
-Message-Id: <20210414151540.1808871-2-olteanv@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210414151540.1808871-1-olteanv@gmail.com>
+        Tobias Waldekranz <tobias@waldekranz.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>
 References: <20210414151540.1808871-1-olteanv@gmail.com>
+From:   Nikolay Aleksandrov <nikolay@nvidia.com>
+Message-ID: <b541c88e-879e-ee9d-90d8-2cd37690f7e6@nvidia.com>
+Date:   Wed, 14 Apr 2021 18:25:03 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+In-Reply-To: <20210414151540.1808871-1-olteanv@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [213.179.129.39]
+X-ClientProxiedBy: ZR0P278CA0129.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:40::8) To DM6PR12MB4403.namprd12.prod.outlook.com
+ (2603:10b6:5:2ab::24)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.21.241.177] (213.179.129.39) by ZR0P278CA0129.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:40::8) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4042.16 via Frontend Transport; Wed, 14 Apr 2021 15:25:09 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 28830f3c-fd1b-4fee-1921-08d8ff597fde
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4354:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR12MB43549010DD198AF55EF312ACDF4E9@DM6PR12MB4354.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 1XptdJ3BGnLkeSFOR9SZ6eYupUjL6AleqcNfptM38dF9NB6+b4wZDrG03tv+qb90WcXoX6Y1tZ/Gf81d1S4PU6Io0VSSmy05gjisHmfqO14d4KhGU+xMH3VTIhQAOsIfssnrGdpHYyyIixQsHnKbXRBpNuxcRQTHnHNOk3zVmOI62aZdmKflEva1hkTUu36zCogVqi3IHrZW5HE3PdXMnBQfFvl+vVJvAPwpm2tvR8onUbvlK7oVMp82BUgasQ5H6AWjuJmaCNFa+7p+o+GmUubanspRnlWrU26mPZy6+zx1Uw1AdHvwk2lU+tyMvRF5+thYhAMfMzE8OsE42mgBH5DJQY+bHwf5tlA9Bk1mDHvhxkJNcgkgZCY7VoC0Vh0Bx7AjCbfV7mevJbUnK0XOHk8zwdFG8R4UfupCRcJ6d/Js4fQfgtcr9QoReAXwzjWc+RTIHm/a+S8gX442T19MWKBdToI4WwKu5nbxJjZ0WaP3OqAAZ8x1E/Baf7xg0BXUIznMdJITXAoMT5S/NrJiuLsPTdwFs3gRL4Hm29zi33CWEl9kf8glG9p6PghBUrl5pcvUJ3ctVF7bOYgY0M9Kt4FN8UDs6rcnc92LGySula/HLctkRL/PsFO094QDQx5b5Nb0KqnUtpdEyF100EQpf4rtEJIm2kmb6hRduXEa83rJljK9QLkGJgWXN2J76WDy
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4403.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(376002)(136003)(346002)(366004)(39860400002)(53546011)(2616005)(83380400001)(956004)(86362001)(36756003)(6486002)(31696002)(2906002)(186003)(110136005)(31686004)(6666004)(16576012)(66556008)(8936002)(316002)(26005)(16526019)(66946007)(5660300002)(7416002)(38100700002)(4326008)(66476007)(54906003)(478600001)(8676002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?Q2pTWHV5T1JEMnlyZGtjMVZmVjBHY3VlanFlR2dCZEswdnB4ckg3QVJteEFK?=
+ =?utf-8?B?ZEpNUzhMWHh6WnQxUUU2WWRJTFpPb0hnMStManNLNVM2c1BEa3VGK3ZPQmJo?=
+ =?utf-8?B?Wmo3ZTk5bWF6ZWR4YW11bzhyeFZWZmVrbjdQdEZGZFJ6R21TTUtvcU82RmFr?=
+ =?utf-8?B?M0RRTmdkVkp1WGkxeUI2U1dOUVZtbHVhYWdLQ1FVTkt1dmNFOFByaFJoM0Vy?=
+ =?utf-8?B?M0FETDNhdllGeWJVeC9xSE8wY0lFNFdlQm5saFAvQ0tGRE45Q3VLeWloZjJD?=
+ =?utf-8?B?RGtnK2xpeE10YXFkeDNTRENxdk9VbnUyM0RnSU16dXY3cTlOVmZ4a1pBeXhT?=
+ =?utf-8?B?MHhkK0pMQjN0cXVvQTZMQ3B5MXJNbHFsdko3QklvbWFSWVpyS2NidkZhTzdv?=
+ =?utf-8?B?aUhpVWN0KzVSemUrdk1Bd0pENjE2ajFiL24xU0pwczU2c0tmejdaME1yMDdT?=
+ =?utf-8?B?SXhCaTZqSFlyZStaWkNNVlJwRmk2NE1KRk5SVlkwN3F2ZE85eFl5QXVnS0wy?=
+ =?utf-8?B?WjRDL0UwTTM3c3NtOVBjT1g0VFBCdWdkaksrSkZLSldWc0RaRkNVWmJ6M1RF?=
+ =?utf-8?B?SFlvakdyd0J5WXh3MUxBRVc4QlFKRm9kZGd0ZnJYbllqNFZ4WjJ1V0ZnNHZq?=
+ =?utf-8?B?bHJYc002NEtNVTZKMVhMbnJESFBsSDkwZVhMSUQwSCtCUExQTWlBRGljN2Zt?=
+ =?utf-8?B?Z1Iyc2pBL280UUlJS0ovR1hHWjUveTZWWHlHM0J0S3RaSk1ybG5YclVLSTZY?=
+ =?utf-8?B?VlNwZVU3ZmtQeEE1MEFxOS8zSXBxVVozSWZBVm5ZMlV0S0YxUHdHV3FCWVdh?=
+ =?utf-8?B?K1VSMjlQblBBL3dWY3A3NHJvQkZLMlc1bFdTWks0cTdwYXhrU2FNcFp5RTBy?=
+ =?utf-8?B?cFYvZkgvTFhOOWtVUEdFdGNDdG5HYndaaEtuRW1kOHBVNUxsbU9aaUNKOEhB?=
+ =?utf-8?B?ZzRPcWlDU2hkOTVPTkZBN0dkajhrUCswWkc1YkljTFAxa2MvL3dwSXc2OE1q?=
+ =?utf-8?B?VnZJOXRvbmV5Ny9rSFg2VFI4R1BndnBTMk05d0kybWJSR29Sa28vV3k1SXlu?=
+ =?utf-8?B?NTJUVWxTWllnQW1qOURqN29xbXlrRGN3V09raWRzWjRqWnVRM2NvMDV1aTZh?=
+ =?utf-8?B?R2xBS01qOFVrb2FrclAwM0c5OTdRdG5zWlZBNVhjVWpWWG13bURDY1R6S21a?=
+ =?utf-8?B?em1rWWF4WlFuUjVzbE9XeWtaRlFKaktUSUN6dEFRdXhuTnZLVUN5eEwybFRx?=
+ =?utf-8?B?dTF6dnlhaEJiUEhNSEhITlZPOUZNOXhDTVM5RWZwTVZkRGZqNm1IK0EyMWo2?=
+ =?utf-8?B?QzBWUUwyNEJ5WjFkeEFoR1pxRXNWVXdCVk1TUnI5cW5zSnlkTXFldEx0bHgv?=
+ =?utf-8?B?QlVjVUJ4eHAwVVJ1V0FrblFPTkxzRTJrQ1ZiYmIzTnlHbzd6Lyt6ZGQwTm5u?=
+ =?utf-8?B?YW1pNmo5U0hDd3JSNkhGVGhERmZrMTVCbFBaaEY5R3plbGxiQnczQXROajNM?=
+ =?utf-8?B?OTZ6NUM5UFlPZFh6VmltSjVzMys4aWtQTTlvV3Nwd0lRc3Bzd2UzL1Noemxt?=
+ =?utf-8?B?MUMvQWppY0syV0dUYS9oUVk1WG0wR0ExT1oweldnL0d1cmt2ejMyZUhKclNV?=
+ =?utf-8?B?Slc3dVZEbzJ6R0ZvMnJjaDFkQTVySmpHenZqUDAySnJHaC9sblpvRGJ2UmND?=
+ =?utf-8?B?blVlNWRidjJMcmxqbm5hbllMVGhXSUJNVmdqWTUyNzAwTVJXZlpBZUYwY2VY?=
+ =?utf-8?Q?T/Q00lPiYsEtzSXNmy1SD9Ke3jHJU7vSFhfpEiS?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 28830f3c-fd1b-4fee-1921-08d8ff597fde
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4403.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2021 15:25:13.7937
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UORNLwZ1JiS0Lup0pscb6CdmmGsOAYv6VW6P7A1o0hU3ZBC+1ZWOnzUtn1qwknHramZIttNTlzlIP3M1RMoC3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4354
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+On 14/04/2021 18:15, Vladimir Oltean wrote:
+> From: Tobias Waldekranz <tobias@waldekranz.com>
+> 
+> Instead of having to add more and more arguments to
+> br_switchdev_fdb_call_notifiers, get rid of it and build the info
+> struct directly in br_switchdev_fdb_notify.
+> 
+> Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+> Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> ---
+>  net/bridge/br_switchdev.c | 41 +++++++++++----------------------------
+>  1 file changed, 11 insertions(+), 30 deletions(-)
+> 
 
-As explained in bugfix commit 6ab4c3117aec ("net: bridge: don't notify
-switchdev for local FDB addresses") as well as in this discussion:
-https://lore.kernel.org/netdev/20210117193009.io3nungdwuzmo5f7@skbuf/
+Hi,
+Is there a PATCH 0/2 with overview and explanation of what's happening in this set ?
+If there isn't one please add it and explain the motivation and the change.
 
-the switchdev notifiers for FDB entries managed to have a zero-day bug,
-which was that drivers would not know what to do with local FDB entries,
-because they were not told that they are local. The bug fix was to
-simply not notify them of those addresses.
+Thanks,
+ Nik
 
-Let us now add the 'is_local' bit to bridge FDB entries, and make all
-drivers ignore these entries by their own choice.
-
-Co-developed-by: Tobias Waldekranz <tobias@waldekranz.com>
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c        | 4 ++--
- drivers/net/ethernet/marvell/prestera/prestera_switchdev.c | 2 +-
- drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c   | 5 +++--
- drivers/net/ethernet/rocker/rocker_main.c                  | 4 ++--
- drivers/net/ethernet/ti/am65-cpsw-switchdev.c              | 4 ++--
- drivers/net/ethernet/ti/cpsw_switchdev.c                   | 4 ++--
- include/net/switchdev.h                                    | 1 +
- net/bridge/br_switchdev.c                                  | 3 +--
- net/dsa/slave.c                                            | 2 +-
- 9 files changed, 15 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index 80efc8116963..d7c0e11b16f7 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -1832,7 +1832,7 @@ static void dpaa2_switch_event_work(struct work_struct *work)
- 
- 	switch (switchdev_work->event) {
- 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		if (is_unicast_ether_addr(fdb_info->addr))
- 			err = dpaa2_switch_port_fdb_add_uc(netdev_priv(dev),
-@@ -1847,7 +1847,7 @@ static void dpaa2_switch_event_work(struct work_struct *work)
- 					 &fdb_info->info, NULL);
- 		break;
- 	case SWITCHDEV_FDB_DEL_TO_DEVICE:
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		if (is_unicast_ether_addr(fdb_info->addr))
- 			dpaa2_switch_port_fdb_del_uc(netdev_priv(dev), fdb_info->addr);
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_switchdev.c b/drivers/net/ethernet/marvell/prestera/prestera_switchdev.c
-index 49e052273f30..cb564890a3dc 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_switchdev.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_switchdev.c
-@@ -798,7 +798,7 @@ static void prestera_fdb_event_work(struct work_struct *work)
- 	switch (swdev_work->event) {
- 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
- 		fdb_info = &swdev_work->fdb_info;
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 
- 		err = prestera_port_fdb_set(port, fdb_info, true);
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-index c1f05c17557d..eeccd586e781 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-@@ -2916,7 +2916,8 @@ mlxsw_sp_switchdev_bridge_nve_fdb_event(struct mlxsw_sp_switchdev_event_work *
- 		return;
- 
- 	if (switchdev_work->event == SWITCHDEV_FDB_ADD_TO_DEVICE &&
--	    !switchdev_work->fdb_info.added_by_user)
-+	    (!switchdev_work->fdb_info.added_by_user ||
-+	     switchdev_work->fdb_info.is_local))
- 		return;
- 
- 	if (!netif_running(dev))
-@@ -2971,7 +2972,7 @@ static void mlxsw_sp_switchdev_bridge_fdb_event_work(struct work_struct *work)
- 	switch (switchdev_work->event) {
- 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
- 		fdb_info = &switchdev_work->fdb_info;
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		err = mlxsw_sp_port_fdb_set(mlxsw_sp_port, fdb_info, true);
- 		if (err)
-diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
-index 3473d296b2e2..a46633606cae 100644
---- a/drivers/net/ethernet/rocker/rocker_main.c
-+++ b/drivers/net/ethernet/rocker/rocker_main.c
-@@ -2736,7 +2736,7 @@ static void rocker_switchdev_event_work(struct work_struct *work)
- 	switch (switchdev_work->event) {
- 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
- 		fdb_info = &switchdev_work->fdb_info;
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		err = rocker_world_port_fdb_add(rocker_port, fdb_info);
- 		if (err) {
-@@ -2747,7 +2747,7 @@ static void rocker_switchdev_event_work(struct work_struct *work)
- 		break;
- 	case SWITCHDEV_FDB_DEL_TO_DEVICE:
- 		fdb_info = &switchdev_work->fdb_info;
--		if (!fdb_info->added_by_user)
-+		if (!fdb_info->added_by_user || fdb_info->is_local)
- 			break;
- 		err = rocker_world_port_fdb_del(rocker_port, fdb_info);
- 		if (err)
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
-index d93ffd8a08b0..23cfb91e9c4d 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
-@@ -385,7 +385,7 @@ static void am65_cpsw_switchdev_event_work(struct work_struct *work)
- 			   fdb->addr, fdb->vid, fdb->added_by_user,
- 			   fdb->offloaded, port_id);
- 
--		if (!fdb->added_by_user)
-+		if (!fdb->added_by_user || fdb->is_local)
- 			break;
- 		if (memcmp(port->slave.mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
- 			port_id = HOST_PORT_NUM;
-@@ -401,7 +401,7 @@ static void am65_cpsw_switchdev_event_work(struct work_struct *work)
- 			   fdb->addr, fdb->vid, fdb->added_by_user,
- 			   fdb->offloaded, port_id);
- 
--		if (!fdb->added_by_user)
-+		if (!fdb->added_by_user || fdb->is_local)
- 			break;
- 		if (memcmp(port->slave.mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
- 			port_id = HOST_PORT_NUM;
-diff --git a/drivers/net/ethernet/ti/cpsw_switchdev.c b/drivers/net/ethernet/ti/cpsw_switchdev.c
-index a72bb570756f..05a64fb7a04f 100644
---- a/drivers/net/ethernet/ti/cpsw_switchdev.c
-+++ b/drivers/net/ethernet/ti/cpsw_switchdev.c
-@@ -395,7 +395,7 @@ static void cpsw_switchdev_event_work(struct work_struct *work)
- 			fdb->addr, fdb->vid, fdb->added_by_user,
- 			fdb->offloaded, port);
- 
--		if (!fdb->added_by_user)
-+		if (!fdb->added_by_user || fdb->is_local)
- 			break;
- 		if (memcmp(priv->mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
- 			port = HOST_PORT_NUM;
-@@ -411,7 +411,7 @@ static void cpsw_switchdev_event_work(struct work_struct *work)
- 			fdb->addr, fdb->vid, fdb->added_by_user,
- 			fdb->offloaded, port);
- 
--		if (!fdb->added_by_user)
-+		if (!fdb->added_by_user || fdb->is_local)
- 			break;
- 		if (memcmp(priv->mac_addr, (u8 *)fdb->addr, ETH_ALEN) == 0)
- 			port = HOST_PORT_NUM;
-diff --git a/include/net/switchdev.h b/include/net/switchdev.h
-index 8c3218177136..f1a5a9a3634d 100644
---- a/include/net/switchdev.h
-+++ b/include/net/switchdev.h
-@@ -209,6 +209,7 @@ struct switchdev_notifier_fdb_info {
- 	const unsigned char *addr;
- 	u16 vid;
- 	u8 added_by_user:1,
-+	   is_local:1,
- 	   offloaded:1;
- };
- 
-diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-index c390f84adea2..a5e601e41cb9 100644
---- a/net/bridge/br_switchdev.c
-+++ b/net/bridge/br_switchdev.c
-@@ -114,13 +114,12 @@ br_switchdev_fdb_notify(const struct net_bridge_fdb_entry *fdb, int type)
- 		.addr = fdb->key.addr.addr,
- 		.vid = fdb->key.vlan_id,
- 		.added_by_user = test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags),
-+		.is_local = test_bit(BR_FDB_LOCAL, &fdb->flags),
- 		.offloaded = test_bit(BR_FDB_OFFLOADED, &fdb->flags),
- 	};
- 
- 	if (!fdb->dst)
- 		return;
--	if (test_bit(BR_FDB_LOCAL, &fdb->flags))
--		return;
- 
- 	switch (type) {
- 	case RTM_DELNEIGH:
-diff --git a/net/dsa/slave.c b/net/dsa/slave.c
-index 995e0e16f295..6e348d2222a9 100644
---- a/net/dsa/slave.c
-+++ b/net/dsa/slave.c
-@@ -2329,7 +2329,7 @@ static int dsa_slave_switchdev_event(struct notifier_block *unused,
- 		fdb_info = ptr;
- 
- 		if (dsa_slave_dev_check(dev)) {
--			if (!fdb_info->added_by_user)
-+			if (!fdb_info->added_by_user || fdb_info->is_local)
- 				return NOTIFY_OK;
- 
- 			dp = dsa_slave_to_port(dev);
--- 
-2.25.1
+> diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
+> index 1e24d9a2c9a7..c390f84adea2 100644
+> --- a/net/bridge/br_switchdev.c
+> +++ b/net/bridge/br_switchdev.c
+> @@ -107,25 +107,16 @@ int br_switchdev_set_port_flag(struct net_bridge_port *p,
+>  	return 0;
+>  }
+>  
+> -static void
+> -br_switchdev_fdb_call_notifiers(bool adding, const unsigned char *mac,
+> -				u16 vid, struct net_device *dev,
+> -				bool added_by_user, bool offloaded)
+> -{
+> -	struct switchdev_notifier_fdb_info info;
+> -	unsigned long notifier_type;
+> -
+> -	info.addr = mac;
+> -	info.vid = vid;
+> -	info.added_by_user = added_by_user;
+> -	info.offloaded = offloaded;
+> -	notifier_type = adding ? SWITCHDEV_FDB_ADD_TO_DEVICE : SWITCHDEV_FDB_DEL_TO_DEVICE;
+> -	call_switchdev_notifiers(notifier_type, dev, &info.info, NULL);
+> -}
+> -
+>  void
+>  br_switchdev_fdb_notify(const struct net_bridge_fdb_entry *fdb, int type)
+>  {
+> +	struct switchdev_notifier_fdb_info info = {
+> +		.addr = fdb->key.addr.addr,
+> +		.vid = fdb->key.vlan_id,
+> +		.added_by_user = test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags),
+> +		.offloaded = test_bit(BR_FDB_OFFLOADED, &fdb->flags),
+> +	};
+> +
+>  	if (!fdb->dst)
+>  		return;
+>  	if (test_bit(BR_FDB_LOCAL, &fdb->flags))
+> @@ -133,22 +124,12 @@ br_switchdev_fdb_notify(const struct net_bridge_fdb_entry *fdb, int type)
+>  
+>  	switch (type) {
+>  	case RTM_DELNEIGH:
+> -		br_switchdev_fdb_call_notifiers(false, fdb->key.addr.addr,
+> -						fdb->key.vlan_id,
+> -						fdb->dst->dev,
+> -						test_bit(BR_FDB_ADDED_BY_USER,
+> -							 &fdb->flags),
+> -						test_bit(BR_FDB_OFFLOADED,
+> -							 &fdb->flags));
+> +		call_switchdev_notifiers(SWITCHDEV_FDB_DEL_TO_DEVICE,
+> +					 fdb->dst->dev, &info.info, NULL);
+>  		break;
+>  	case RTM_NEWNEIGH:
+> -		br_switchdev_fdb_call_notifiers(true, fdb->key.addr.addr,
+> -						fdb->key.vlan_id,
+> -						fdb->dst->dev,
+> -						test_bit(BR_FDB_ADDED_BY_USER,
+> -							 &fdb->flags),
+> -						test_bit(BR_FDB_OFFLOADED,
+> -							 &fdb->flags));
+> +		call_switchdev_notifiers(SWITCHDEV_FDB_ADD_TO_DEVICE,
+> +					 fdb->dst->dev, &info.info, NULL);
+>  		break;
+>  	}
+>  }
+> 
 
