@@ -2,32 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2458536184E
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Apr 2021 05:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CE82361A9F
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Apr 2021 09:40:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237134AbhDPDr0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Apr 2021 23:47:26 -0400
-Received: from gate.crashing.org ([63.228.1.57]:56655 "EHLO gate.crashing.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234662AbhDPDrZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 15 Apr 2021 23:47:25 -0400
-Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 13G3Onft032125;
-        Thu, 15 Apr 2021 22:24:50 -0500
-Message-ID: <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
-Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem()
- for non-platform devices
-From:   Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:     Michael Walle <michael@walle.cc>, ath9k-devel@qca.qualcomm.com,
-        UNGLinuxDriver@microchip.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        netdev@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        id S235012AbhDPHan (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Apr 2021 03:30:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34764 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231666AbhDPHam (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Apr 2021 03:30:42 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F0BC061574;
+        Fri, 16 Apr 2021 00:30:18 -0700 (PDT)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id 49EE022172;
+        Fri, 16 Apr 2021 09:29:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1618558211;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=PbMduC+y8U2TnYB1yFy6DIbM598uMx2+jq28dZXHweQ=;
+        b=EUtjzMP9GqVLqpUQjKAWkwn0o1sw8EWtxSv8YMRSVD0469vqt05Io1/SVJgobjz7HB/r6y
+        Vjk/Jn7gR9cbQkm/qxqSnOY+yQWCWcha3iHS/TQBkEhMmvcdPKJxGg9UyvHCIIkZANcb/g
+        63rLgVagJ+mEmiydqQVNecyvEgF/m50=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 16 Apr 2021 09:29:59 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc:     ath9k-devel@qca.qualcomm.com, UNGLinuxDriver@microchip.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
         linux-renesas-soc@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-amlogic@lists.infradead.org, linux-oxnas@groups.io,
         linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev
-Cc:     Andrew Lunn <andrew@lunn.ch>,
+        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
+        Andrew Lunn <andrew@lunn.ch>,
         Gregory Clement <gregory.clement@bootlin.com>,
         Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
@@ -98,63 +116,86 @@ Cc:     Andrew Lunn <andrew@lunn.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>,
+        =?UTF-8?Q?J=C3=A9r=C3=B4me?= =?UTF-8?Q?_Pouiller?= 
+        <jerome.pouiller@silabs.com>,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Vladimir Oltean <olteanv@gmail.com>
-Date:   Fri, 16 Apr 2021 13:24:49 +1000
-In-Reply-To: <20210412174718.17382-3-michael@walle.cc>
+Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for
+ non-platform devices
+In-Reply-To: <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
 References: <20210412174718.17382-1-michael@walle.cc>
-         <20210412174718.17382-3-michael@walle.cc>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.4-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ <20210412174718.17382-3-michael@walle.cc>
+ <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
+User-Agent: Roundcube Webmail/1.4.11
+Message-ID: <8157eba9317609294da80472622deb28@walle.cc>
+X-Sender: michael@walle.cc
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 2021-04-12 at 19:47 +0200, Michael Walle wrote:
+Am 2021-04-16 05:24, schrieb Benjamin Herrenschmidt:
+> On Mon, 2021-04-12 at 19:47 +0200, Michael Walle wrote:
+>> 
+>>  /**
+>>   * of_get_phy_mode - Get phy mode for given device_node
+>> @@ -59,15 +60,39 @@ static int of_get_mac_addr(struct device_node *np, 
+>> const char *name, u8 *addr)
+>>  static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
+>>  {
+>>         struct platform_device *pdev = of_find_device_by_node(np);
+>> +       struct nvmem_cell *cell;
+>> +       const void *mac;
+>> +       size_t len;
+>>         int ret;
+>> 
+>> -       if (!pdev)
+>> -               return -ENODEV;
+>> +       /* Try lookup by device first, there might be a 
+>> nvmem_cell_lookup
+>> +        * associated with a given device.
+>> +        */
+>> +       if (pdev) {
+>> +               ret = nvmem_get_mac_address(&pdev->dev, addr);
+>> +               put_device(&pdev->dev);
+>> +               return ret;
+>> +       }
+>> +
 > 
->  /**
->   * of_get_phy_mode - Get phy mode for given device_node
-> @@ -59,15 +60,39 @@ static int of_get_mac_addr(struct device_node *np, const char *name, u8 *addr)
->  static int of_get_mac_addr_nvmem(struct device_node *np, u8 *addr)
->  {
->         struct platform_device *pdev = of_find_device_by_node(np);
-> +       struct nvmem_cell *cell;
-> +       const void *mac;
-> +       size_t len;
->         int ret;
->  
-> -       if (!pdev)
-> -               return -ENODEV;
-> +       /* Try lookup by device first, there might be a nvmem_cell_lookup
-> +        * associated with a given device.
-> +        */
-> +       if (pdev) {
-> +               ret = nvmem_get_mac_address(&pdev->dev, addr);
-> +               put_device(&pdev->dev);
-> +               return ret;
-> +       }
-> +
+> This smells like the wrong band aid :)
+> 
+> Any struct device can contain an OF node pointer these days.
 
-This smells like the wrong band aid :)
+But not all nodes might have an associated device, see DSA for example.
+And as the name suggests of_get_mac_address() operates on a node. So
+if a driver calls of_get_mac_address() it should work on the node. What
+is wrong IMHO, is that the ethernet drivers where the corresponding 
+board
+has a nvmem_cell_lookup registered is calling of_get_mac_address(node).
+It should rather call eth_get_mac_address(dev) in the first place.
 
-Any struct device can contain an OF node pointer these days.
+One would need to figure out if there is an actual device (with an
+assiciated of_node), then call eth_get_mac_address(dev) and if there
+isn't a device call of_get_mac_address(node).
 
-This seems all backwards. I think we are dealing with bad evolution.
+But I don't know if that is easy to figure out. Well, one could start
+with just the device where nvmem_cell_lookup is used. Then we could
+drop the workaround above.
 
-We need to do a lookup for the device because we get passed an of_node.
-We should just get passed a device here... or rather stop calling
-of_get_mac_addr() from all those drivers and instead call
-eth_platform_get_mac_address() which in turns calls of_get_mac_addr().
+> This seems all backwards. I think we are dealing with bad evolution.
+> 
+> We need to do a lookup for the device because we get passed an of_node.
+> We should just get passed a device here... or rather stop calling
+> of_get_mac_addr() from all those drivers and instead call
+> eth_platform_get_mac_address() which in turns calls of_get_mac_addr().
+> 
+> Then the nvmem stuff gets put in eth_platform_get_mac_address().
+> 
+> of_get_mac_addr() becomes a low-level thingy that most drivers don't
+> care about.
 
-Then the nvmem stuff gets put in eth_platform_get_mac_address().
+The NVMEM thing is just another (optional) way how the MAC address
+is fetched from the device tree. Thus, if the drivers have the
+of_get_mac_address() call they should automatically get the NVMEM
+method, too.
 
-of_get_mac_addr() becomes a low-level thingy that most drivers don't
-care about.
-
-Cheers,
-Ben.
-
-
+-michael
