@@ -2,56 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 283A5363237
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Apr 2021 22:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECD08363239
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Apr 2021 22:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236772AbhDQU1e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 17 Apr 2021 16:27:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39602 "EHLO
+        id S236755AbhDQU2t (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 17 Apr 2021 16:28:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236718AbhDQU1d (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Apr 2021 16:27:33 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B0FC061574
-        for <linux-omap@vger.kernel.org>; Sat, 17 Apr 2021 13:27:06 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id q123-20020a1c43810000b029012c7d852459so6620367wma.0
-        for <linux-omap@vger.kernel.org>; Sat, 17 Apr 2021 13:27:06 -0700 (PDT)
+        with ESMTP id S236718AbhDQU2t (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Apr 2021 16:28:49 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31AD3C061574
+        for <linux-omap@vger.kernel.org>; Sat, 17 Apr 2021 13:28:22 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id n4-20020a05600c4f84b029013151278decso4773800wmq.4
+        for <linux-omap@vger.kernel.org>; Sat, 17 Apr 2021 13:28:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
-        bh=AdYOtsymQBe0dfr3b8Id4us8oWt9C5nKhfs9IDFjSEo=;
-        b=rMrfs14pmY8OEWkvXP8jeOW6TJx6dxXO3sHP4a2arhfalxgestvDV7QMd+t1szSoM/
-         G0J9Fe+xrwFZzbzaXZ04KX3TRaKXAx7xiM3VMYFU/DmHNKtc+Kvshk1pGMLKEARsEG9v
-         iAYepUqE3IxUxQkbdRiiPdplmBKI3w248pfD1+YZSMVc1+kOHfsv11GghXxpS2Spgbul
-         SSVOhZFT9HMMvxvlg5DrZnSM3fOtRCC3/Olh+c0PuUSjxq+iXF597FqHtk9lDFPsd/Ti
-         zmHLt9Iv54UKFObupO3Sih8gVCrurY3snFbhvZfSM6Eg0K0AkryucGiJzfYekRTMvR+l
-         jq2w==
+        bh=PDoeLW1JlEi5g/BMOfPJ+0TbY3SFPny86cv5WjDX+HA=;
+        b=H10IAqQHDjdKtfOhZaNmXPr+We2Cnt8V4dEffiI0N+MchKuU05pzoM7lkaRRQKf3oG
+         em34WBatSK7Sw2coYljQP/jVNKC1x8lxtJN6a6lBXM/y1ju9htHILhWpofkW7SSMP6Gl
+         6ScmAi5o5aRpllGJhhJ2okND8Na1Qz1Cyz/EbxjlOVvSufCsj9K0PxJ/LEZ3y47406py
+         DDBCvbyd/oZ+H2+EoI6aAaw2NMrhtrdl7YZ1l4gObpSy2dpjQxtmSojapFffAoXeivs8
+         knVidSvmZjqh2NftZI6BRclmCRKiayPBO9cwetHM1ZYpylEmGUMxASHaVFtGVUh8sTa8
+         vjNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
          :content-disposition;
-        bh=AdYOtsymQBe0dfr3b8Id4us8oWt9C5nKhfs9IDFjSEo=;
-        b=LjvVIjEtLix2jMEvTwPbikVP0yI+WK2JaeeOu7DcOrahNkJJHlIVRKPJeHNJZF4x/o
-         43mnN5tNGn5+TRTwH4Wy/vXrukDczB+EcgVzujuxgihGyurpJ0DsTn8woiO6lCw+gK6S
-         MTUOLhvMcFWjoPOPrQUI5wZzzlC0Ie2AUl0J2Koef9EfCXz2w1CM3k65maQPHg3hXeff
-         WnAuKaDs6HqmtgbcnfyrfCj3bT4qDry2vCd22eoGyaqJU2kWe7+zLJqHd2pM4uBVO7gM
-         U1xfoufIE7gQ402JGvGZI3f34UdWeOrZs2wcnfekH50voctCYDbifSK09BJMsKlwjYn8
-         mJ/Q==
-X-Gm-Message-State: AOAM533VFuUpzqDu8J4WXlNdNjMKMMIEsnmVMjNDbMSSy85zhJFSmtSq
-        lFFb5UnLZHwSMYRbDAQfQfXfSXbbDk4=
-X-Google-Smtp-Source: ABdhPJwr+HQ5/ODHzLK6jPDy+4OyHbeq9eTL9vEa6J2QpDxgGo2IaJ9R6dZs6kWjMsiybrjuU0N9oA==
-X-Received: by 2002:a1c:bb46:: with SMTP id l67mr13805151wmf.103.1618691225589;
-        Sat, 17 Apr 2021 13:27:05 -0700 (PDT)
+        bh=PDoeLW1JlEi5g/BMOfPJ+0TbY3SFPny86cv5WjDX+HA=;
+        b=C17Q0s+2hbJmlD1XKm2qoHm7a3uiXPdAv9elZXqhVeprM4vOF5uQcMlI/B3CcLG8ry
+         u8/YyduIs6DvA4J52geZS7tvfl0o8cfbdHobsRJ4HNrxYMArnBum9pRa80ZjIMneo/jw
+         Bc//2KPgd3pRvqc6fEZpMBhXr0UfY6ZxKZts0wexRzCSVyLRg+NhhSt0SrV2ff1Zhf95
+         ZAIW1zxfncVDwaiyNF2pUt7HPUQ6p2s1nv2/a0bw19otFxrpab4YjAZrq9v8B4zHKS1K
+         XQBouFawvw6pfmEQ8DJ1cJJTEMlYIKic6IYFWpwWqMX+uaV5JWJYPydNwU0HxgUNa+u1
+         Q8Xg==
+X-Gm-Message-State: AOAM533Gj2MDGBoFxXJma4VXHT8SVV2HyEPJNy+hzUq4SAPMaDxt1tuN
+        tRe7/mQMubqWZFViwazB83MrMnLexXo=
+X-Google-Smtp-Source: ABdhPJwXxpnQjTDuM4yrmi3blOmKe8D9+lCc1ByvqKJT2hnUfggkKfi5uDCYQbtqQ+5p2PByvrDeEA==
+X-Received: by 2002:a1c:6a01:: with SMTP id f1mr13957425wmc.144.1618691301047;
+        Sat, 17 Apr 2021 13:28:21 -0700 (PDT)
 Received: from tp440p.steeds.sam ([41.84.246.164])
-        by smtp.gmail.com with ESMTPSA id a72sm13623905wme.29.2021.04.17.13.27.03
+        by smtp.gmail.com with ESMTPSA id q126sm3723124wma.6.2021.04.17.13.28.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Apr 2021 13:27:04 -0700 (PDT)
-Date:   Sat, 17 Apr 2021 22:27:00 +0200
+        Sat, 17 Apr 2021 13:28:20 -0700 (PDT)
+Date:   Sat, 17 Apr 2021 22:28:16 +0200
 From:   "Sicelo A. Mhlongo" <absicsz@gmail.com>
 To:     linux-omap@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 1/2] ARM: omap2plus_defconfig: Add WL1251 and WEXT modules
-Message-ID: <YHtElA8dbBqMKCMg@tp440p.steeds.sam>
+Subject: [PATCH 2/2] ARM: omap2plus_defconfig: Add LP5523 LED driver
+Message-ID: <YHtE4KSuack3R31o@tp440p.steeds.sam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -59,38 +59,27 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The Nokia N900 uses a TI WL1251 chip for WiFi. Enable support for it
-as a loadable module.
-
-In order to be usable and connect to networks, it needs wireless
-extensions, so enable WEXT support in the kernel.
+The Nokia N900 has an LP5523 driving the RGB LED and the 6 keyboard LEDS.
+Enable support for it in omap2plus_defconfig.
 
 Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
 ---
- arch/arm/configs/omap2plus_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/configs/omap2plus_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index f250bf1cc022..a0249e06104a 100644
+index a0249e06104a..c0bc0f30637e 100644
 --- a/arch/arm/configs/omap2plus_defconfig
 +++ b/arch/arm/configs/omap2plus_defconfig
-@@ -127,6 +127,7 @@ CONFIG_BT_MRVL_SDIO=m
- CONFIG_AF_RXRPC=m
- CONFIG_RXKAD=y
- CONFIG_CFG80211=m
-+CONFIG_CFG80211_WEXT=y
- CONFIG_MAC80211=m
- CONFIG_PCI=y
- CONFIG_PCI_MSI=y
-@@ -225,6 +226,8 @@ CONFIG_LIBERTAS_DEBUG=y
- CONFIG_MWIFIEX=m
- CONFIG_MWIFIEX_SDIO=m
- CONFIG_MWIFIEX_USB=m
-+CONFIG_WL1251=m
-+CONFIG_WL1251_SPI=m
- CONFIG_WL12XX=m
- CONFIG_WL18XX=m
- CONFIG_WLCORE_SPI=m
+@@ -471,6 +471,8 @@ CONFIG_LEDS_CLASS=m
+ CONFIG_LEDS_CPCAP=m
+ CONFIG_LEDS_LM3532=m
+ CONFIG_LEDS_GPIO=m
++CONFIG_LEDS_LP55XX_COMMON=m
++CONFIG_LEDS_LP5523=m
+ CONFIG_LEDS_PCA963X=m
+ CONFIG_LEDS_PWM=m
+ CONFIG_LEDS_TRIGGERS=y
 -- 
 2.31.0
 
