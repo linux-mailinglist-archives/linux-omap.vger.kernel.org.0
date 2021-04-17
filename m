@@ -2,138 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9570362E92
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Apr 2021 10:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 283A5363237
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Apr 2021 22:27:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229870AbhDQIjM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 17 Apr 2021 04:39:12 -0400
-Received: from muru.com ([72.249.23.125]:55482 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229631AbhDQIjL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 17 Apr 2021 04:39:11 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 411D980CD;
-        Sat, 17 Apr 2021 08:40:03 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Adam Ford <aford173@gmail.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Subject: [PATCHv2] gpio: omap: Save and restore sysconfig
-Date:   Sat, 17 Apr 2021 11:38:39 +0300
-Message-Id: <20210417083839.46985-1-tony@atomide.com>
-X-Mailer: git-send-email 2.31.1
+        id S236772AbhDQU1e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 17 Apr 2021 16:27:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39602 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236718AbhDQU1d (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Apr 2021 16:27:33 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B0FC061574
+        for <linux-omap@vger.kernel.org>; Sat, 17 Apr 2021 13:27:06 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id q123-20020a1c43810000b029012c7d852459so6620367wma.0
+        for <linux-omap@vger.kernel.org>; Sat, 17 Apr 2021 13:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=AdYOtsymQBe0dfr3b8Id4us8oWt9C5nKhfs9IDFjSEo=;
+        b=rMrfs14pmY8OEWkvXP8jeOW6TJx6dxXO3sHP4a2arhfalxgestvDV7QMd+t1szSoM/
+         G0J9Fe+xrwFZzbzaXZ04KX3TRaKXAx7xiM3VMYFU/DmHNKtc+Kvshk1pGMLKEARsEG9v
+         iAYepUqE3IxUxQkbdRiiPdplmBKI3w248pfD1+YZSMVc1+kOHfsv11GghXxpS2Spgbul
+         SSVOhZFT9HMMvxvlg5DrZnSM3fOtRCC3/Olh+c0PuUSjxq+iXF597FqHtk9lDFPsd/Ti
+         zmHLt9Iv54UKFObupO3Sih8gVCrurY3snFbhvZfSM6Eg0K0AkryucGiJzfYekRTMvR+l
+         jq2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=AdYOtsymQBe0dfr3b8Id4us8oWt9C5nKhfs9IDFjSEo=;
+        b=LjvVIjEtLix2jMEvTwPbikVP0yI+WK2JaeeOu7DcOrahNkJJHlIVRKPJeHNJZF4x/o
+         43mnN5tNGn5+TRTwH4Wy/vXrukDczB+EcgVzujuxgihGyurpJ0DsTn8woiO6lCw+gK6S
+         MTUOLhvMcFWjoPOPrQUI5wZzzlC0Ie2AUl0J2Koef9EfCXz2w1CM3k65maQPHg3hXeff
+         WnAuKaDs6HqmtgbcnfyrfCj3bT4qDry2vCd22eoGyaqJU2kWe7+zLJqHd2pM4uBVO7gM
+         U1xfoufIE7gQ402JGvGZI3f34UdWeOrZs2wcnfekH50voctCYDbifSK09BJMsKlwjYn8
+         mJ/Q==
+X-Gm-Message-State: AOAM533VFuUpzqDu8J4WXlNdNjMKMMIEsnmVMjNDbMSSy85zhJFSmtSq
+        lFFb5UnLZHwSMYRbDAQfQfXfSXbbDk4=
+X-Google-Smtp-Source: ABdhPJwr+HQ5/ODHzLK6jPDy+4OyHbeq9eTL9vEa6J2QpDxgGo2IaJ9R6dZs6kWjMsiybrjuU0N9oA==
+X-Received: by 2002:a1c:bb46:: with SMTP id l67mr13805151wmf.103.1618691225589;
+        Sat, 17 Apr 2021 13:27:05 -0700 (PDT)
+Received: from tp440p.steeds.sam ([41.84.246.164])
+        by smtp.gmail.com with ESMTPSA id a72sm13623905wme.29.2021.04.17.13.27.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Apr 2021 13:27:04 -0700 (PDT)
+Date:   Sat, 17 Apr 2021 22:27:00 +0200
+From:   "Sicelo A. Mhlongo" <absicsz@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 1/2] ARM: omap2plus_defconfig: Add WL1251 and WEXT modules
+Message-ID: <YHtElA8dbBqMKCMg@tp440p.steeds.sam>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-As we are using cpu_pm to save and restore context, we must also save and
-restore the GPIO sysconfig register. This is needed because we are not
-calling PM runtime functions at all with cpu_pm.
+The Nokia N900 uses a TI WL1251 chip for WiFi. Enable support for it
+as a loadable module.
 
-We need to save the sysconfig on idle as it's value can get reconfigured by
-PM runtime and can be different from the init time value. Device specific
-flags like "ti,no-idle-on-init" can affect the init value.
+In order to be usable and connect to networks, it needs wireless
+extensions, so enable WEXT support in the kernel.
 
-Fixes: b764a5863fd8 ("gpio: omap: Remove custom PM calls and use cpu_pm instead")
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Adam Ford <aford173@gmail.com>
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
 ---
- drivers/gpio/gpio-omap.c                | 9 +++++++++
- include/linux/platform_data/gpio-omap.h | 3 +++
- 2 files changed, 12 insertions(+)
+ arch/arm/configs/omap2plus_defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
---- a/drivers/gpio/gpio-omap.c
-+++ b/drivers/gpio/gpio-omap.c
-@@ -29,6 +29,7 @@
- #define OMAP4_GPIO_DEBOUNCINGTIME_MASK 0xFF
- 
- struct gpio_regs {
-+	u32 sysconfig;
- 	u32 irqenable1;
- 	u32 irqenable2;
- 	u32 wake_en;
-@@ -1069,6 +1070,7 @@ static void omap_gpio_init_context(struct gpio_bank *p)
- 	const struct omap_gpio_reg_offs *regs = p->regs;
- 	void __iomem *base = p->base;
- 
-+	p->context.sysconfig	= readl_relaxed(base + regs->sysconfig);
- 	p->context.ctrl		= readl_relaxed(base + regs->ctrl);
- 	p->context.oe		= readl_relaxed(base + regs->direction);
- 	p->context.wake_en	= readl_relaxed(base + regs->wkup_en);
-@@ -1088,6 +1090,7 @@ static void omap_gpio_restore_context(struct gpio_bank *bank)
- 	const struct omap_gpio_reg_offs *regs = bank->regs;
- 	void __iomem *base = bank->base;
- 
-+	writel_relaxed(bank->context.sysconfig, base + regs->sysconfig);
- 	writel_relaxed(bank->context.wake_en, base + regs->wkup_en);
- 	writel_relaxed(bank->context.ctrl, base + regs->ctrl);
- 	writel_relaxed(bank->context.leveldetect0, base + regs->leveldetect0);
-@@ -1115,6 +1118,10 @@ static void omap_gpio_idle(struct gpio_bank *bank, bool may_lose_context)
- 
- 	bank->saved_datain = readl_relaxed(base + bank->regs->datain);
- 
-+	/* Save syconfig, it's runtime value can be different from init value */
-+	if (bank->loses_context)
-+		bank->context.sysconfig = readl_relaxed(base + bank->regs->sysconfig);
-+
- 	if (!bank->enabled_non_wakeup_gpios)
- 		goto update_gpio_context_count;
- 
-@@ -1279,6 +1286,7 @@ static int gpio_omap_cpu_notifier(struct notifier_block *nb,
- 
- static const struct omap_gpio_reg_offs omap2_gpio_regs = {
- 	.revision =		OMAP24XX_GPIO_REVISION,
-+	.sysconfig =		OMAP24XX_GPIO_SYSCONFIG,
- 	.direction =		OMAP24XX_GPIO_OE,
- 	.datain =		OMAP24XX_GPIO_DATAIN,
- 	.dataout =		OMAP24XX_GPIO_DATAOUT,
-@@ -1302,6 +1310,7 @@ static const struct omap_gpio_reg_offs omap2_gpio_regs = {
- 
- static const struct omap_gpio_reg_offs omap4_gpio_regs = {
- 	.revision =		OMAP4_GPIO_REVISION,
-+	.sysconfig =		OMAP4_GPIO_SYSCONFIG,
- 	.direction =		OMAP4_GPIO_OE,
- 	.datain =		OMAP4_GPIO_DATAIN,
- 	.dataout =		OMAP4_GPIO_DATAOUT,
-diff --git a/include/linux/platform_data/gpio-omap.h b/include/linux/platform_data/gpio-omap.h
---- a/include/linux/platform_data/gpio-omap.h
-+++ b/include/linux/platform_data/gpio-omap.h
-@@ -85,6 +85,7 @@
-  * omap2+ specific GPIO registers
-  */
- #define OMAP24XX_GPIO_REVISION		0x0000
-+#define OMAP24XX_GPIO_SYSCONFIG		0x0010
- #define OMAP24XX_GPIO_IRQSTATUS1	0x0018
- #define OMAP24XX_GPIO_IRQSTATUS2	0x0028
- #define OMAP24XX_GPIO_IRQENABLE2	0x002c
-@@ -108,6 +109,7 @@
- #define OMAP24XX_GPIO_SETDATAOUT	0x0094
- 
- #define OMAP4_GPIO_REVISION		0x0000
-+#define OMAP4_GPIO_SYSCONFIG		0x0010
- #define OMAP4_GPIO_EOI			0x0020
- #define OMAP4_GPIO_IRQSTATUSRAW0	0x0024
- #define OMAP4_GPIO_IRQSTATUSRAW1	0x0028
-@@ -148,6 +150,7 @@
- #ifndef __ASSEMBLER__
- struct omap_gpio_reg_offs {
- 	u16 revision;
-+	u16 sysconfig;
- 	u16 direction;
- 	u16 datain;
- 	u16 dataout;
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index f250bf1cc022..a0249e06104a 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -127,6 +127,7 @@ CONFIG_BT_MRVL_SDIO=m
+ CONFIG_AF_RXRPC=m
+ CONFIG_RXKAD=y
+ CONFIG_CFG80211=m
++CONFIG_CFG80211_WEXT=y
+ CONFIG_MAC80211=m
+ CONFIG_PCI=y
+ CONFIG_PCI_MSI=y
+@@ -225,6 +226,8 @@ CONFIG_LIBERTAS_DEBUG=y
+ CONFIG_MWIFIEX=m
+ CONFIG_MWIFIEX_SDIO=m
+ CONFIG_MWIFIEX_USB=m
++CONFIG_WL1251=m
++CONFIG_WL1251_SPI=m
+ CONFIG_WL12XX=m
+ CONFIG_WL18XX=m
+ CONFIG_WLCORE_SPI=m
 -- 
-2.31.1
+2.31.0
+
