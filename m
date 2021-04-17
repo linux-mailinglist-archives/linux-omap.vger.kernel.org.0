@@ -2,54 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D7283628CD
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Apr 2021 21:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CBD6362E88
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Apr 2021 10:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244081AbhDPTlG convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Fri, 16 Apr 2021 15:41:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56782 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236021AbhDPTlE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Apr 2021 15:41:04 -0400
-X-Greylist: delayed 10585 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 16 Apr 2021 12:40:38 PDT
-Received: from server.anaxus.com.au (unknown [IPv6:2a01:4f8:10b:4585::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D017DC061756;
-        Fri, 16 Apr 2021 12:40:38 -0700 (PDT)
-Received: from [193.56.28.106] (unknown [193.56.28.106])
-        by server.anaxus.com.au (Postfix) with ESMTPA id 8C9BC6EA668E;
-        Sat, 17 Apr 2021 01:46:30 +1000 (AEST)
-Authentication-Results: server.anaxus.com.au;
-        spf=pass (sender IP is 193.56.28.106) smtp.mailfrom=cqukesq6@gmail.com smtp.helo=[193.56.28.106]
-Received-SPF: pass (server.anaxus.com.au: connection is authenticated)
-Date:   Fri, 16 Apr 2021 08:46:59 -0700
-Mime-version: 1.0
-Subject: Compliments
-From:   Christopher Quinlan QC <cqukesq6@gmail.com>
-To:     Undisclosed-Recipients:;
-Message-Id: <20210416084659.LDAOMSGFVRINMN@gmail.com>
-Reply-To: cqukesq6@gmail.com
-Content-type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-transfer-encoding: 8BIT
+        id S229972AbhDQI27 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 17 Apr 2021 04:28:59 -0400
+Received: from muru.com ([72.249.23.125]:55438 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229870AbhDQI27 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 17 Apr 2021 04:28:59 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 1FB7F80CD;
+        Sat, 17 Apr 2021 08:29:49 +0000 (UTC)
+Date:   Sat, 17 Apr 2021 11:28:28 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Adam Ford <aford173@gmail.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Subject: Re: [PATCH] gpio: omap: Save and restore sysconfig
+Message-ID: <YHqcLHxnCDfcd+6s@atomide.com>
+References: <20210415085305.56413-1-tony@atomide.com>
+ <67113b0b-5e5f-b2f4-1b1c-b58a1055f0ed@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <67113b0b-5e5f-b2f4-1b1c-b58a1055f0ed@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-My name is Christopher Quinlan QC I am a solicitor at law / investment adviser to your late relative. Your late relative left behind Cash deposit in capital and investment security account along with properties, I will like to discuss with you regarding making this claim since he is related to you going by the lineage, surname and country of origin.
+* Grygorii Strashko <grygorii.strashko@ti.com> [210415 23:48]:
+> On 15/04/2021 11:53, Tony Lindgren wrote:
+> > As we are using cpu_pm to save and restore context, we must also save and
+> > restore the timer sysconfig register TIOCP_CFG. This is needed because
+> > we are not calling PM runtime functions at all with cpu_pm.
+> 
+> Smth. is wrong with description.
 
-Please get back to me on my private email cqukesq6@gmail.com for further details.
+Oops yeah sorry about that. Both timer-ti-dm and gpio-omap suffer from
+the same issue since the cpu_pm conversion. Will post v2.
 
-To facilitate the process of this transaction, urgently forward to me
-Your full names,
-Telephone and fax numbers,
-Address,
-Age,
-Marital status,
-Occupation
+Regards,
 
-I will be expecting to hear from you.
-
-Regards
-
-Christopher Quinlan QC
-Private email cqukesq6@gmail.com
-
+Tony
