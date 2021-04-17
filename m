@@ -2,79 +2,138 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB4BE362E8E
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Apr 2021 10:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9570362E92
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Apr 2021 10:38:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235455AbhDQIhc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 17 Apr 2021 04:37:32 -0400
-Received: from muru.com ([72.249.23.125]:55464 "EHLO muru.com"
+        id S229870AbhDQIjM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 17 Apr 2021 04:39:12 -0400
+Received: from muru.com ([72.249.23.125]:55482 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229631AbhDQIhb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 17 Apr 2021 04:37:31 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 050CA80CD;
-        Sat, 17 Apr 2021 08:38:22 +0000 (UTC)
-Date:   Sat, 17 Apr 2021 11:37:01 +0300
+        id S229631AbhDQIjL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 17 Apr 2021 04:39:11 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 411D980CD;
+        Sat, 17 Apr 2021 08:40:03 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Dario Binacchi <dariobin@libero.it>
-Cc:     Tero Kristo <kristo@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Bin Meng <bmeng.cn@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
-        linux-clk <linux-clk@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH 0/2] fdt: translate address if #size-cells = <0>
-Message-ID: <YHqeLe/mqzu5OZpg@atomide.com>
-References: <1727466283.11523.1617746554330@mail1.libero.it>
- <CAL_JsqLd+BxW9T99Sx9vgEkxdbMFe+tL7X_nZ7ExvRxVd_9GNQ@mail.gmail.com>
- <1044574275.383115.1617779265390@mail1.libero.it>
- <CAL_JsqLcus=Y5nOuV1wiAiVb1mTq9N8xqJpGJD6ip+Ec_6YDyw@mail.gmail.com>
- <a197b5d8-621b-6655-e571-2877d007cd4c@kernel.org>
- <116337570.107804.1617913442196@mail1.libero.it>
- <8f232b81-4c83-54db-bcbd-2cae78ede814@kernel.org>
- <333530206.539702.1618169440615@mail1.libero.it>
- <a17dec03-d98c-0aac-0bbb-eeaa11f156f3@kernel.org>
- <1627640615.696710.1618432773724@mail1.libero.it>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Adam Ford <aford173@gmail.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Subject: [PATCHv2] gpio: omap: Save and restore sysconfig
+Date:   Sat, 17 Apr 2021 11:38:39 +0300
+Message-Id: <20210417083839.46985-1-tony@atomide.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1627640615.696710.1618432773724@mail1.libero.it>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Dario Binacchi <dariobin@libero.it> [210414 20:40]:
-> > Il 12/04/2021 09:41 Tero Kristo <kristo@kernel.org> ha scritto:
-> > The change on the DT itself would be pretty large, removing all clock 
-> > nodes and modifying any existing handles towards the clock nodes, and 
-> > this would impact all OMAP architectures.
-> > 
-> > Anyways, it is mostly up-to Tony how he wants to see the DT change, as 
-> > he is the maintainer for the OMAP family DT data.
+As we are using cpu_pm to save and restore context, we must also save and
+restore the GPIO sysconfig register. This is needed because we are not
+calling PM runtime functions at all with cpu_pm.
 
-While I think all the clocks should use a similar binding to the clkctrl
-binding, I don't know if it makes sense to start changing things around
-at such a large scale.
+We need to save the sysconfig on idle as it's value can get reconfigured by
+PM runtime and can be different from the init time value. Device specific
+flags like "ti,no-idle-on-init" can affect the init value.
 
-Certainly if somebody does the patches and they can be tested to not cause
-regressions, sure why not :)
+Fixes: b764a5863fd8 ("gpio: omap: Remove custom PM calls and use cpu_pm instead")
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Adam Ford <aford173@gmail.com>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/gpio/gpio-omap.c                | 9 +++++++++
+ include/linux/platform_data/gpio-omap.h | 3 +++
+ 2 files changed, 12 insertions(+)
 
-> > I am just raising the opinion here that from kernel point of view, 
-> > adding the missing size cells seems unnecessary, and I can't see why 
-> > u-boot can't be changed to support the existing broken DT. It is broken 
-> > now, and it will be broken with the addition of the size cells in place, 
-> > and the actual "neat" end result would be to get rid of the clock nodes 
-> > completely.
-> 
-> I'll fix U-boot.
-> Thanks for your explanations.
-> Hope for SSC patch review from you and/or some TI MAINTAINER.
-
-Best to fix the issues first, then make any clean-up patches a separate
-series.
-
-Regards,
-
-Tony
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -29,6 +29,7 @@
+ #define OMAP4_GPIO_DEBOUNCINGTIME_MASK 0xFF
+ 
+ struct gpio_regs {
++	u32 sysconfig;
+ 	u32 irqenable1;
+ 	u32 irqenable2;
+ 	u32 wake_en;
+@@ -1069,6 +1070,7 @@ static void omap_gpio_init_context(struct gpio_bank *p)
+ 	const struct omap_gpio_reg_offs *regs = p->regs;
+ 	void __iomem *base = p->base;
+ 
++	p->context.sysconfig	= readl_relaxed(base + regs->sysconfig);
+ 	p->context.ctrl		= readl_relaxed(base + regs->ctrl);
+ 	p->context.oe		= readl_relaxed(base + regs->direction);
+ 	p->context.wake_en	= readl_relaxed(base + regs->wkup_en);
+@@ -1088,6 +1090,7 @@ static void omap_gpio_restore_context(struct gpio_bank *bank)
+ 	const struct omap_gpio_reg_offs *regs = bank->regs;
+ 	void __iomem *base = bank->base;
+ 
++	writel_relaxed(bank->context.sysconfig, base + regs->sysconfig);
+ 	writel_relaxed(bank->context.wake_en, base + regs->wkup_en);
+ 	writel_relaxed(bank->context.ctrl, base + regs->ctrl);
+ 	writel_relaxed(bank->context.leveldetect0, base + regs->leveldetect0);
+@@ -1115,6 +1118,10 @@ static void omap_gpio_idle(struct gpio_bank *bank, bool may_lose_context)
+ 
+ 	bank->saved_datain = readl_relaxed(base + bank->regs->datain);
+ 
++	/* Save syconfig, it's runtime value can be different from init value */
++	if (bank->loses_context)
++		bank->context.sysconfig = readl_relaxed(base + bank->regs->sysconfig);
++
+ 	if (!bank->enabled_non_wakeup_gpios)
+ 		goto update_gpio_context_count;
+ 
+@@ -1279,6 +1286,7 @@ static int gpio_omap_cpu_notifier(struct notifier_block *nb,
+ 
+ static const struct omap_gpio_reg_offs omap2_gpio_regs = {
+ 	.revision =		OMAP24XX_GPIO_REVISION,
++	.sysconfig =		OMAP24XX_GPIO_SYSCONFIG,
+ 	.direction =		OMAP24XX_GPIO_OE,
+ 	.datain =		OMAP24XX_GPIO_DATAIN,
+ 	.dataout =		OMAP24XX_GPIO_DATAOUT,
+@@ -1302,6 +1310,7 @@ static const struct omap_gpio_reg_offs omap2_gpio_regs = {
+ 
+ static const struct omap_gpio_reg_offs omap4_gpio_regs = {
+ 	.revision =		OMAP4_GPIO_REVISION,
++	.sysconfig =		OMAP4_GPIO_SYSCONFIG,
+ 	.direction =		OMAP4_GPIO_OE,
+ 	.datain =		OMAP4_GPIO_DATAIN,
+ 	.dataout =		OMAP4_GPIO_DATAOUT,
+diff --git a/include/linux/platform_data/gpio-omap.h b/include/linux/platform_data/gpio-omap.h
+--- a/include/linux/platform_data/gpio-omap.h
++++ b/include/linux/platform_data/gpio-omap.h
+@@ -85,6 +85,7 @@
+  * omap2+ specific GPIO registers
+  */
+ #define OMAP24XX_GPIO_REVISION		0x0000
++#define OMAP24XX_GPIO_SYSCONFIG		0x0010
+ #define OMAP24XX_GPIO_IRQSTATUS1	0x0018
+ #define OMAP24XX_GPIO_IRQSTATUS2	0x0028
+ #define OMAP24XX_GPIO_IRQENABLE2	0x002c
+@@ -108,6 +109,7 @@
+ #define OMAP24XX_GPIO_SETDATAOUT	0x0094
+ 
+ #define OMAP4_GPIO_REVISION		0x0000
++#define OMAP4_GPIO_SYSCONFIG		0x0010
+ #define OMAP4_GPIO_EOI			0x0020
+ #define OMAP4_GPIO_IRQSTATUSRAW0	0x0024
+ #define OMAP4_GPIO_IRQSTATUSRAW1	0x0028
+@@ -148,6 +150,7 @@
+ #ifndef __ASSEMBLER__
+ struct omap_gpio_reg_offs {
+ 	u16 revision;
++	u16 sysconfig;
+ 	u16 direction;
+ 	u16 datain;
+ 	u16 dataout;
+-- 
+2.31.1
