@@ -2,168 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9011363629
-	for <lists+linux-omap@lfdr.de>; Sun, 18 Apr 2021 16:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C90DF36362D
+	for <lists+linux-omap@lfdr.de>; Sun, 18 Apr 2021 16:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbhDROue (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 18 Apr 2021 10:50:34 -0400
-Received: from smtp-32-i2.italiaonline.it ([213.209.12.32]:35205 "EHLO
-        libero.it" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229986AbhDROud (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 18 Apr 2021 10:50:33 -0400
-Received: from oxapps-37-174.iol.local ([10.101.8.220])
-        by smtp-32.iol.local with ESMTPA
-        id Y8kNlST74Bc6YY8kNlhE8V; Sun, 18 Apr 2021 16:50:04 +0200
+        id S231341AbhDRO5g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 18 Apr 2021 10:57:36 -0400
+Received: from smtp-35.italiaonline.it ([213.209.10.35]:43400 "EHLO libero.it"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229691AbhDRO5f (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 18 Apr 2021 10:57:35 -0400
+Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
+ ([95.244.94.151])
+        by smtp-35.iol.local with ESMTPA
+        id Y8r3lCRdYpK9wY8rBla5VB; Sun, 18 Apr 2021 16:57:06 +0200
 x-libjamoibt: 1601
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
-        t=1618757404; bh=Z+gqUTa/4gMQqPDDlTPJPLQ3NTLR8D+V8mUSlwYrWVk=;
+        t=1618757826; bh=olZ0wz76vMXLsV08flCc5AVxfd/v9Jixr/3NXTZsFCw=;
         h=From;
-        b=TuUA58nLdKA6aeYyxRYJF11P1yqmwNKyB7l58BePnanSjKgVdg1UTnCQ9wBjzbtD+
-         +9bsNHy4CZiI2jrLOAHjaEcChsOQrgp9yhGauu7NFd30SmcU0tCR/+iPuQYFmNEFgR
-         M/Vdq2cX77HkwjqGYLoX96YOPXnz2tk1nMBZ06ndybnZCbKZz5X/qnnK200Ttzd99D
-         mHMx/z0/d5DXizd9/TLfPAfErMUsNRfr7NgCh+e5KFV4N1NWxjbjQlYD5pQVc8bOYx
-         l0b3Y1X1d8iSpLmytO9pK2eqlkWhvYxSaO+/f5AbZEuB5LV06rYigxoUIUiIxeTjD4
-         xyARp7CalOKig==
-X-CNFS-Analysis: v=2.4 cv=B6l8bMhM c=1 sm=1 tr=0 ts=607c471c cx=a_exe
- a=C8U9wQxWOnS4tgU1BwpF/g==:117 a=VYA5D5F8Gk0A:10 a=IkcTkHD0fZMA:10
- a=4ehuGOvBq5EA:10 a=VwQbUJbxAAAA:8 a=GAHydID9G1J-QwgOjSYA:9 a=QEXdDO2ut3YA:10
- a=5yUOnwQy5QICz8m5uxDm:22 a=AjGcO6oz07-iQ99wixmX:22
-Date:   Sun, 18 Apr 2021 16:50:03 +0200 (CEST)
+        b=RdGd4yErLWJgm+vPMucdoHLq2R9gV6+eI7QD76x6MVIyx71ZvCh9dLY0Hg7nfTMc1
+         HEBPVNTaAxFiKRppHRYtZd8XIkunnXReUAEvYoYBLihMU4yJe2oYVRjj4nWc8/cDm+
+         7XZ/ejndk8hQpL6GbTN0M+73UGEv5TDrKu0kJq94rMKd35HxObkXuE7crYAoygtYHK
+         NhXmR7b+1mbMZSD+jXlSRrkV1I6UOtPmeJ0gCT92O17/Etk2QP+gFOaSSGw9V5+47S
+         3uthKTVbH6EaIMZxLis5MjFbBb6wv1Bp7ehZR5BZdhWEMvsMlTH8J+JLQfL0a3HcK0
+         5F+p4GCgCQSIA==
+X-CNFS-Analysis: v=2.4 cv=A9ipg4aG c=1 sm=1 tr=0 ts=607c48c2 cx=a_exe
+ a=ugxisoNCKEotYwafST++Mw==:117 a=ugxisoNCKEotYwafST++Mw==:17
+ a=IkcTkHD0fZMA:10 a=7lJUY2J14ryrXklOE8AA:9 a=QEXdDO2ut3YA:10
 From:   Dario Binacchi <dariobin@libero.it>
-To:     Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+To:     linux-kernel@vger.kernel.org
+Cc:     Dario Binacchi <dariobin@libero.it>,
+        Tero Kristo <kristo@kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Lee Jones <lee.jones@linaro.org>,
         Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Message-ID: <2042188966.804761.1618757403843@mail1.libero.it>
-In-Reply-To: <b88d012a-b74c-6bd6-7465-3391921c9092@kernel.org>
-References: <20210401193741.24639-1-dariobin@libero.it>
- <20210401193741.24639-6-dariobin@libero.it>
- <b88d012a-b74c-6bd6-7465-3391921c9092@kernel.org>
-Subject: Re: [PATCH v4 5/5] clk: ti: add am33xx/am43xx spread spectrum clock
- support
+        Rob Herring <robh+dt@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH v5 0/5] clk: ti: add am33xx spread spectrum clock support
+Date:   Sun, 18 Apr 2021 16:56:50 +0200
+Message-Id: <20210418145655.10415-1-dariobin@libero.it>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
-X-Mailer: Open-Xchange Mailer v7.10.3-Rev34
-X-Originating-IP: 95.244.94.151
-X-Originating-Client: open-xchange-appsuite
-x-libjamsun: nKteNHKRVC0JswLz36FlhNqfco92qKV/
-x-libjamv: oBRXhknxPSs=
-X-CMAE-Envelope: MS4xfFdXTR9TX9SiBogFiIYPJz86nwESpkvlJtlOCFuX94yAjXSHV4ixugTVuxLMTsc1tFJksLu/QbUxmyfYMUawK2nFVe0FvAn0crfgtUHny6ElAdhmlhNg
- iR0KGr5ot/8efd5KQPcUGo0k28rbTfQitrdx6KdeV0s7xVXPkwgfUJP32VW4TBu0Lp9cMYRo3B8sjjsn77zmjH57mPmtQz3Yb3q50Xf8RqPx/FplxqOXpOEE
- KDoaVjxWzRxG8vqskjEt9sUYAldUZ7VssVJRJjQvOm4lRevapvrh01ewro3VbSMHT7t18OI/DgF1YsDsXrLElhBOCwdR0Oi2NB+GQE6xcs6CbKeDFGVqmRIn
- AoAdYM2N9x1u2TR9OXKJjanidu+rVwOOgNddQppmdAFWeHLKpcEUB9qGOzDbDBSws4S1fTVPblGUDps80SgwzvbLX8QFoA==
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfLJ32xryx0zJbSv/pCGIcH5UmtmnokARk/xsaPBFowp6UztyiGOVUTDn3mEyJIJIRdrgRjlEXJj5lsxBZWVTZpbOq4B/5/vwDnCgjTWsQgpM+VVTpESe
+ Oo43KFHKLo0W2BHTDTc1WoXA96gYEf4ybTwGXu2vB8hmUUcdt9YaePpvog0BdqZiQiqD41/ZODMoLDZE0l3VaIvHZbRF8Fs5eL8VY0ryKe1OAYRGbY1EK8ST
+ wT3bN5phQD2nLR9IgI2RONQ5JrPTWRQksrZ5ngoKVMJaS2Pdq8iFAvJ8fXqLlXJa5LGkxXraz0q7knCS2jk9OSsWheIPt1IQr9Yoz60MYoaid9LJlNortOXH
+ XiYdH8DrbazRnDytulyAfmEPhro7nB43ZcmDs6cBBa3c3ULNasp3Gz9xQxwCT7Mbh0PHberYgrPQ3ACAU7mDIPGHOOngh2x/wFpoW8BssqV9c2KtL5wDCKgA
+ f4kDy0H+70Se2OVaDlZjSKuE3KsTnsZHoBZMY3N0RWdr4TXnxfccibkcyowH+cHoSNb7K1yeqj0lxwokRWw87jzl6OZM5F6DaB42XKOj4Dw6GasghAp0WWVG
+ rZ/fih0jrFb2kDnhAOAxe0DwN+AIuOBGk3z0XH2OV6gm8Q==
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tero,
 
-> Il 16/04/2021 14:43 Tero Kristo <kristo@kernel.org> ha scritto:
-> 
->  
-> Hi Dario,
-> 
-> Spent some time looking at this, had to read through the TRM chapter of 
-> it also in quite detailed level to figure out how this is supposed to 
-> work out.
-> 
-> Other than couple of minor nits below, the code seems ok to me. What is 
-> the testing that has been done with this?
+As reported by the TI spruh73x/spruhl7x RM, MPU and LCD modules support
+spread spectrum clocking (SSC) on their output clocks. SSC is used to
+spread the spectral peaking of the clock to reduce any electromagnetic
+interference (EMI) that may be caused due to the clock’s fundamental
+or any of its harmonics.
+The series allows you to enable and adjust the spread spectrum clocking
+for all am33xx/am43xx PLLs for which it is supported. All these issues
+have been fixed.
 
-The patch has been tested with laboratory instrumentation and is currently 
-used on a custom board based on a AM335x SOC with a TI 4.1.6 kernel. It was born 
-from the need to reduce the electromagnetic emissions of the display to pass the
-EMI certifications. The current patch is a port of that to the mainline kernel. 
-The corrections to be made were minimal and not significant. I'm testing it on a 
-beaglebone black board, verifying with devmem that the DPLL registers are correctly 
-set.
 
-> 
-> On 01/04/2021 22:37, Dario Binacchi wrote:
-> > The patch enables spread spectrum clocking (SSC) for MPU and LCD PLLs.
-> > As reported by the TI spruh73x/spruhl7x RM, SSC is only supported for
-> > the DISP/LCD and MPU PLLs on am33xx/am43xx. SSC is not supported for
-> > DDR, PER, and CORE PLLs.
-> > 
-> > Calculating the required values and setting the registers accordingly
-> > was taken from the set_mpu_spreadspectrum routine contained in the
-> > arch/arm/mach-omap2/am33xx/clock_am33xx.c file of the u-boot project.
-> > 
-> > In locked condition, DPLL output clock = CLKINP *[M/N]. In case of
-> > SSC enabled, the reference manual explains that there is a restriction
-> > of range of M values. Since the omap2_dpll_round_rate routine attempts
-> > to select the minimum possible N, the value of M obtained is not
-> > guaranteed to be within the range required. With the new "ti,min-div"
-> > parameter it is possible to increase N and consequently M to satisfy the
-> > constraint imposed by SSC.
-> > 
-> > Signed-off-by: Dario Binacchi <dariobin@libero.it>
-> > 
-> > ---
-> 
-> <snip>
-> 
-> >   	/* REVISIT: Set ramp-up delay? */
-> > diff --git a/include/linux/clk/ti.h b/include/linux/clk/ti.h
-> > index c62f6fa6763d..cba093de62d8 100644
-> > --- a/include/linux/clk/ti.h
-> > +++ b/include/linux/clk/ti.h
-> > @@ -63,6 +63,18 @@ struct clk_omap_reg {
-> >    * @auto_recal_bit: bitshift of the driftguard enable bit in @control_reg
-> >    * @recal_en_bit: bitshift of the PRM_IRQENABLE_* bit for recalibration IRQs
-> >    * @recal_st_bit: bitshift of the PRM_IRQSTATUS_* bit for recalibration IRQs
-> > + * @ssc_deltam_reg: register containing the DPLL SSC frequency spreading
-> > + * @ssc_modfreq_reg: register containing the DPLL SSC modulation frequency
-> > + * @ssc_modfreq_mant_mask: mask of the mantissa component in @ssc_modfreq_reg
-> > + * @ssc_modfreq_exp_mask: mask of the exponent component in @ssc_modfreq_reg
-> > + * @ssc_enable_mask: mask of the DPLL SSC enable bit in @control_reg
-> > + * @ssc_ack_mask: mask of the DPLL SSC turned on/off bit in @control_reg
-> > + * @ssc_downspread_mask: mask of the DPLL SSC low frequency only bit in
-> > + *                       @control_reg
-> > + * @ssc_modfreq: the DPLL SSC frequency modulation in kHz
-> > + * @ssc_deltam: the DPLL SSC frequency spreading in permille (10th of percent)
-> > + * @ssc_downspread: require the only low frequency spread of the DPLL in SSC
-> > + *                   mode
-> >    * @flags: DPLL type/features (see below)
-> >    *
-> >    * Possible values for @flags:
-> > @@ -110,6 +122,18 @@ struct dpll_data {
-> >   	u8			auto_recal_bit;
-> >   	u8			recal_en_bit;
-> >   	u8			recal_st_bit;
-> > +	struct clk_omap_reg	ssc_deltam_reg;
-> > +	struct clk_omap_reg	ssc_modfreq_reg;
-> > +	u32			ssc_deltam_int_mask;
-> > +	u32			ssc_deltam_frac_mask;
-> > +	u32			ssc_modfreq_mant_mask;
-> > +	u32			ssc_modfreq_exp_mask;
-> > +	u32                     ssc_enable_mask;
-> > +	u32                     ssc_ack_mask;
-> 
-> ssc_ack_mask is not used for anything in the code.
+Previous versions of the series did not supported SSC for am43xx SOCs,
+causing clock registration failure for DPLLs. Furthermore, for am33xx
+SOCs, clock registration failed for DPLLs for which SSC is not supported.
 
-Ok, I will remove it.
+Changes in v5:
+- Remove ssc_ack_mask field from dpll_data structure. It was not used.
+- Change ssc_downspread type from u8 to bool in dpll_data structure.
 
-> 
-> > +	u32                     ssc_downspread_mask;
-> > +	u32                     ssc_modfreq;
-> > +	u32                     ssc_deltam;
-> > +	u8                      ssc_downspread;
-> 
-> ssc_downspread should be boolean?
+Changes in v4:
+- Add Stephen Boyd review tag.
+- Add Rob Herring review tag.
+- Add SSC registers for CORE, DDR and PER PLLs.
+- Update commit message.
+- Update commit message.
 
-Yes.
+Changes in v3:
+- Add '-hz' suffix to "ti,ssc-modfreq" binding.
+- Add Tony Lindgren acked tag.
+- Use "ti,ssc-modfreq-hz" binding instead of "ti,ssc-modfreq".
 
-Thanks and regards,
-Dario
+Changes in v2:
+- Remove SSC registers from dpll_core_ck@490 node (SSC is not supported)
+- Add SSC registers to dpll_mpu_ck@488 node.
+- Move the DT changes to the previous patch in the series.
 
-> 
-> >   	u8			flags;
-> >   };
-> >   
-> >
+Dario Binacchi (5):
+  clk: ti: fix typo in routine description
+  dt-bindings: ti: dpll: add spread spectrum support
+  ARM: dts: am33xx-clocks: add spread spectrum support
+  ARM: dts: am43xx-clocks: add spread spectrum support
+  clk: ti: add am33xx/am43xx spread spectrum clock support
+
+ .../devicetree/bindings/clock/ti/dpll.txt     | 20 +++++
+ arch/arm/boot/dts/am33xx-clocks.dtsi          | 10 +--
+ arch/arm/boot/dts/am43xx-clocks.dtsi          | 12 +--
+ drivers/clk/ti/dpll.c                         | 39 +++++++++
+ drivers/clk/ti/dpll3xxx.c                     | 87 ++++++++++++++++++-
+ include/linux/clk/ti.h                        | 22 +++++
+ 6 files changed, 178 insertions(+), 12 deletions(-)
+
+-- 
+2.17.1
+
