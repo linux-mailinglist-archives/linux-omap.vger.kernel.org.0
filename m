@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA1C6363D36
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Apr 2021 10:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BBCF363D38
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Apr 2021 10:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234906AbhDSISG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S235023AbhDSISG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Mon, 19 Apr 2021 04:18:06 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50418 "EHLO
+Received: from youngberry.canonical.com ([91.189.89.112]:50428 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233219AbhDSISD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Apr 2021 04:18:03 -0400
-Received: from mail-ed1-f70.google.com ([209.85.208.70])
+        with ESMTP id S233313AbhDSISE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Apr 2021 04:18:04 -0400
+Received: from mail-ej1-f71.google.com ([209.85.218.71])
         by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <krzysztof.kozlowski@canonical.com>)
-        id 1lYP64-0007tG-NT
-        for linux-omap@vger.kernel.org; Mon, 19 Apr 2021 08:17:32 +0000
-Received: by mail-ed1-f70.google.com with SMTP id w15-20020a056402268fb02903828f878ec5so10755864edd.5
-        for <linux-omap@vger.kernel.org>; Mon, 19 Apr 2021 01:17:32 -0700 (PDT)
+        id 1lYP65-0007ts-NF
+        for linux-omap@vger.kernel.org; Mon, 19 Apr 2021 08:17:33 +0000
+Received: by mail-ej1-f71.google.com with SMTP id 16-20020a1709063010b029037417ca2d43so3353106ejz.5
+        for <linux-omap@vger.kernel.org>; Mon, 19 Apr 2021 01:17:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=52l2YOdVJgJFgazG9TczP/a1+Vn2GICqhmwoQ1rMqI8=;
-        b=FFM3AH9JAsCDBFrZOOOmRjAFANY1DNyPp4hA8MNBQvRMTfXe6w7x/5o2PBAqspjCII
-         AUOZHymFcJd3o9G6kTjlenQrWPZ0OyJLh3M7SpN+6EHNjCqyUCu2o0xNe0S79zzVPQ+c
-         VQnmixl+BboUuria+LnLtEe41IzRDTJSnIgxAPevBcZZ21FRaPQOY2MKc6TCTZ3/HTcx
-         fjuZED217xdSC4CXD4Ucto3UUwY6sZBmwqj5RvgNLkDZCzX7tX3wzxxwWGXJS27VsGDM
-         WDxqt+7fD0hGzs8oKYODcHz1+M8hkEoANGFwA5zfEui7Yq7WVl52LT283qCdkhk24Mio
-         8ugA==
-X-Gm-Message-State: AOAM532UvWdVjcI2l7ggXkeVOoNbbtQVt6OwJxGun2Ib5yj6DFIKYIZg
-        OqdSR5/HGZu2/OR4ceAslwIGn847ITkNJN6J9F81YxkgmYM/wwsuHxaENDiZ0DcgtR69YxBX+oE
-        D0oTSgi958WWrgm/p2eqE3CK4h0EqvUSx+tcnqxA=
-X-Received: by 2002:a17:906:4881:: with SMTP id v1mr1683067ejq.383.1618820252485;
-        Mon, 19 Apr 2021 01:17:32 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwJYZH0QZa+sRVeO2DjuzsgUYgTnfcyHw6NR/d953cZ/+ohVHYxVqiEhAjo9vStCBaYnVmhfw==
-X-Received: by 2002:a17:906:4881:: with SMTP id v1mr1683050ejq.383.1618820252362;
-        Mon, 19 Apr 2021 01:17:32 -0700 (PDT)
+        bh=qBlSlGEgsRYkWadTEY1QTDX93GegaXkwf2V4Jg/WsDg=;
+        b=osWP921UHGVnZhFcwXGir5pbbLThS/Qxf4mBRFgJsi5gb78MQ+/p1BBxLioFxeIPo3
+         DMmzM6pwGs9TCc3GeCfS4Lq0uM19is/uko+Oh6ZsP7PbWrsbqUS474E/5VBpAApfWJ+m
+         gEnH/DtpOvyqXm47nHIg8fEZ3f1LMSFvZd8dqrCP1IfkUmONd1ENm1fp9omMJDPLH1wF
+         hQ9YvpLbBc66gXIhkVrFCUHDXsTFPeSm6kFUb8WJVWTISWzEHeFyWD8rZ/N0tPeI3NgL
+         rlBLFs2q1FLPixWOZMTXh9cpj9Q3Ls2wMr+7S3D1Wka0uxv9tVrT7eB6dRDebJ7ygf5Z
+         LHmQ==
+X-Gm-Message-State: AOAM530GGm1TVr8e20PKcIm0H+TlC9XR7rlRi07CE0SwvlJZ5Jj7kzjA
+        i/UzkVLi5lDa/fD//uvNKU5cCAQJxKfiX7fC7IxpubxKy7M9+3t5psjCqveuw4QQWYVLI4jgCqd
+        cnelIenHMZwAZhy8WwRF8ueO7fZZt+YcNkTfUPcU=
+X-Received: by 2002:a17:906:5e15:: with SMTP id n21mr20554430eju.57.1618820253487;
+        Mon, 19 Apr 2021 01:17:33 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzg+swdgj8EuewfKecTej+k1qH/AS1lZ95oqPWPHenRPBZ4PUCtQ7xGMn+3SRt0O+PhuF3UZw==
+X-Received: by 2002:a17:906:5e15:: with SMTP id n21mr20554419eju.57.1618820253361;
+        Mon, 19 Apr 2021 01:17:33 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-192-147.adslplus.ch. [188.155.192.147])
-        by smtp.gmail.com with ESMTPSA id da13sm12384781edb.6.2021.04.19.01.17.31
+        by smtp.gmail.com with ESMTPSA id da13sm12384781edb.6.2021.04.19.01.17.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Apr 2021 01:17:32 -0700 (PDT)
+        Mon, 19 Apr 2021 01:17:33 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Support Opensource <support.opensource@diasemi.com>,
         Lee Jones <lee.jones@linaro.org>,
@@ -50,9 +50,9 @@ To:     Support Opensource <support.opensource@diasemi.com>,
         Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
         patches@opensource.cirrus.com
-Subject: [PATCH 2/7] mfd: max8998: Simplify getting of_device_id match data
-Date:   Mon, 19 Apr 2021 10:17:21 +0200
-Message-Id: <20210419081726.67867-2-krzysztof.kozlowski@canonical.com>
+Subject: [PATCH 3/7] mfd: da9052: Simplify getting of_device_id match data
+Date:   Mon, 19 Apr 2021 10:17:22 +0200
+Message-Id: <20210419081726.67867-3-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210419081726.67867-1-krzysztof.kozlowski@canonical.com>
 References: <20210419081726.67867-1-krzysztof.kozlowski@canonical.com>
@@ -66,35 +66,29 @@ Use of_device_get_match_data() to make the code slightly smaller.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 ---
- drivers/mfd/max8998.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/mfd/da9052-i2c.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mfd/max8998.c b/drivers/mfd/max8998.c
-index 785f8e9841b7..42c60d4d97fb 100644
---- a/drivers/mfd/max8998.c
-+++ b/drivers/mfd/max8998.c
-@@ -12,6 +12,7 @@
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/of.h>
-+#include <linux/of_device.h>
- #include <linux/of_irq.h>
- #include <linux/pm_runtime.h>
- #include <linux/mutex.h>
-@@ -155,11 +156,8 @@ static struct max8998_platform_data *max8998_i2c_parse_dt_pdata(
- static inline unsigned long max8998_i2c_get_driver_data(struct i2c_client *i2c,
- 						const struct i2c_device_id *id)
- {
--	if (IS_ENABLED(CONFIG_OF) && i2c->dev.of_node) {
--		const struct of_device_id *match;
--		match = of_match_node(max8998_dt_match, i2c->dev.of_node);
--		return (unsigned long)match->data;
--	}
-+	if (IS_ENABLED(CONFIG_OF) && i2c->dev.of_node)
-+		return (unsigned long)of_device_get_match_data(&i2c->dev);
+diff --git a/drivers/mfd/da9052-i2c.c b/drivers/mfd/da9052-i2c.c
+index 47556d2d9abe..5d8ce8dca3fc 100644
+--- a/drivers/mfd/da9052-i2c.c
++++ b/drivers/mfd/da9052-i2c.c
+@@ -154,13 +154,8 @@ static int da9052_i2c_probe(struct i2c_client *client,
+ 		return ret;
  
- 	return id->driver_data;
- }
+ #ifdef CONFIG_OF
+-	if (!id) {
+-		struct device_node *np = client->dev.of_node;
+-		const struct of_device_id *deviceid;
+-
+-		deviceid = of_match_node(dialog_dt_ids, np);
+-		id = deviceid->data;
+-	}
++	if (!id)
++		id = of_device_get_match_data(&client->dev);
+ #endif
+ 
+ 	if (!id) {
 -- 
 2.25.1
 
