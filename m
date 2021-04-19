@@ -2,137 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62A79363D62
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Apr 2021 10:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2649363DD5
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Apr 2021 10:41:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236845AbhDSIU6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Apr 2021 04:20:58 -0400
-Received: from mail-vs1-f51.google.com ([209.85.217.51]:38652 "EHLO
-        mail-vs1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbhDSIU4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Apr 2021 04:20:56 -0400
-Received: by mail-vs1-f51.google.com with SMTP id s184so6761409vss.5;
-        Mon, 19 Apr 2021 01:20:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ltv54OOOgcKhPoH7oRaigoXMRi+Z2QqH7bQ4dTNkEvU=;
-        b=Ms0SsPF9J+tPj990DTLxJSvXO3Pmul5WCyeOMIDCVJ6fXcWAb6uJsC52eqzmbxUtMJ
-         Ul7GxKCbZ7tvkEEqDB5miyVfuIPIZ6Wf2fLEOnYrnyzAq9BFRVgE5tawuQnZZ1KvmiLL
-         EF/Qi81vkqZN75KRE3I2Ub033NMXNbhyaWlBPnaDUI/smGHJ8UPy9vAoTfFqPZVmpcjG
-         u+1xfNjeAWaCtnBNzLs677wnayVF3agzAGavKRFiZLiJM0DQwfElLwqOkGkNXKPR+lsq
-         TJLnDZHeX994hG8+Gw6qi4xtQrZg2dB0UisZo4zpBSW648ZZkTOPfDD7+avHhtZh59RH
-         iISg==
-X-Gm-Message-State: AOAM531bR0AI7GyosdsIXdtavR8bqUCmY3mDWUO7awITMHICVomqNNgB
-        TnOox77RR3JpNHchfmmIyY7YFvqX5Aujc9OIMxU=
-X-Google-Smtp-Source: ABdhPJw0QI7XOFx1TPnFrXWAlR/QW1v6zaWS/KnYbAtB/CEX2DsVVO2yNBv9r1VAA3kWmuOXuQwF2fQGH/J1go6B4oc=
-X-Received: by 2002:a67:f503:: with SMTP id u3mr12373252vsn.3.1618820424835;
- Mon, 19 Apr 2021 01:20:24 -0700 (PDT)
+        id S236613AbhDSImB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Apr 2021 04:42:01 -0400
+Received: from mx0b-001ae601.pphosted.com ([67.231.152.168]:51664 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232457AbhDSImA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 19 Apr 2021 04:42:00 -0400
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13J8bA9C030765;
+        Mon, 19 Apr 2021 03:41:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=PODMain02222019;
+ bh=l5+6B7yLlGexdRNqulfmrk7QUU3NakJuFOXcvZvkBzw=;
+ b=lKkgp2f4Bx/jYE6E5x6+YZ6VPzXBZwHpvsj7Rpa5OoJZKvi0JZg0pq9SKgZX3hXzgwSM
+ wgagARAsGwPZKn8DwY3aV0UgfNRIrpNNnpE13HI3cUCgzxpD3C8sdJrDkibwDquXKGil
+ j6HXT1wT798AqDlwyhZlZotZgmn2xj0MoOuaKhNw2H5QCiM8Cw4LXYJLen4kRnykG3SS
+ gSZk2SBsVS4QXV9GrIxHP/8F5IgI+ajspKtkQU6ZCCeohjKUqaLTjqYpkgs71QC4EoHP
+ ghhdyQnBQ+Zju/b+1EPHr+Q3w4DLIWv7lsYw+vcvovRPRxVCi41ruPL7KldLTfgys2xG Gw== 
+Received: from ediex01.ad.cirrus.com ([87.246.76.36])
+        by mx0b-001ae601.pphosted.com with ESMTP id 37yv3p1rvb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 19 Apr 2021 03:41:21 -0500
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Mon, 19 Apr
+ 2021 09:41:19 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.2242.4 via Frontend
+ Transport; Mon, 19 Apr 2021 09:41:19 +0100
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id B2A9711D1;
+        Mon, 19 Apr 2021 08:41:19 +0000 (UTC)
+Date:   Mon, 19 Apr 2021 08:41:19 +0000
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+CC:     Support Opensource <support.opensource@diasemi.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-samsung-soc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <patches@opensource.cirrus.com>
+Subject: Re: [PATCH 6/7] mfd: wm831x: Correct kerneldoc
+Message-ID: <20210419084119.GA64205@ediswmail.ad.cirrus.com>
+References: <20210419081726.67867-1-krzysztof.kozlowski@canonical.com>
+ <20210419081726.67867-6-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
-References: <20210419042722.27554-1-alice.guo@oss.nxp.com> <20210419042722.27554-2-alice.guo@oss.nxp.com>
-In-Reply-To: <20210419042722.27554-2-alice.guo@oss.nxp.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 19 Apr 2021 10:20:13 +0200
-Message-ID: <CAMuHMdUbrPxtJ9DCP0_nFrReuuO4vFY2J79LrKY82D7bCOfzRw@mail.gmail.com>
-Subject: Re: [RFC v1 PATCH 1/3] drivers: soc: add support for soc_device_match
- returning -EPROBE_DEFER
-To:     "Alice Guo (OSS)" <alice.guo@oss.nxp.com>
-Cc:     gregkh@linuxfoundation.org, rafael@kernel.org,
-        horia.geanta@nxp.com, aymen.sghaier@nxp.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net, tony@atomide.com,
-        geert+renesas@glider.be, mturquette@baylibre.com, sboyd@kernel.org,
-        vkoul@kernel.org, peter.ujfalusi@gmail.com, a.hajda@samsung.com,
-        narmstrong@baylibre.com, robert.foss@linaro.org, airlied@linux.ie,
-        daniel@ffwll.ch, khilman@baylibre.com, tomba@kernel.org,
-        jyri.sarha@iki.fi, joro@8bytes.org, will@kernel.org,
-        mchehab@kernel.org, ulf.hansson@linaro.org,
-        adrian.hunter@intel.com, kishon@ti.com, kuba@kernel.org,
-        linus.walleij@linaro.org, Roy.Pledge@nxp.com, leoyang.li@nxp.com,
-        ssantosh@kernel.org, matthias.bgg@gmail.com, edubezval@gmail.com,
-        j-keerthy@ti.com, balbi@kernel.org, linux@prisktech.co.nz,
-        stern@rowland.harvard.edu, wim@linux-watchdog.org,
-        linux@roeck-us.net, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
-        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        iommu@lists.linux-foundation.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-staging@lists.linux.dev,
-        linux-mediatek@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20210419081726.67867-6-krzysztof.kozlowski@canonical.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-GUID: Q2RF33ynHf2NJvfCE9DdZTH4wK4FrB7U
+X-Proofpoint-ORIG-GUID: Q2RF33ynHf2NJvfCE9DdZTH4wK4FrB7U
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 clxscore=1011
+ lowpriorityscore=0 spamscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 mlxlogscore=870 mlxscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104190060
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Alice,
+On Mon, Apr 19, 2021 at 10:17:25AM +0200, Krzysztof Kozlowski wrote:
+> Correct kerneldoc function name to fix W=1 warning:
+> 
+>   drivers/mfd/wm831x-core.c:121: warning:
+>     expecting prototype for wm831x_reg_unlock(). Prototype was for wm831x_reg_lock() instead
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> ---
 
-CC Arnd (soc_device_match() author)
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-On Mon, Apr 19, 2021 at 6:28 AM Alice Guo (OSS) <alice.guo@oss.nxp.com> wrote:
-> From: Alice Guo <alice.guo@nxp.com>
->
-> In i.MX8M boards, the registration of SoC device is later than caam
-> driver which needs it. Caam driver needs soc_device_match to provide
-> -EPROBE_DEFER when no SoC device is registered and no
-> early_soc_dev_attr.
-
-I'm wondering if this is really a good idea: soc_device_match() is a
-last-resort low-level check, and IMHO should be made available early on,
-so there is no need for -EPROBE_DEFER.
-
->
-> Signed-off-by: Alice Guo <alice.guo@nxp.com>
-
-Thanks for your patch!
-
-> --- a/drivers/base/soc.c
-> +++ b/drivers/base/soc.c
-> @@ -110,6 +110,7 @@ static void soc_release(struct device *dev)
->  }
->
->  static struct soc_device_attribute *early_soc_dev_attr;
-> +static bool soc_dev_attr_init_done = false;
-
-Do you need this variable?
-
->
->  struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr)
->  {
-> @@ -157,6 +158,7 @@ struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr
->                 return ERR_PTR(ret);
->         }
->
-> +       soc_dev_attr_init_done = true;
->         return soc_dev;
->
->  out3:
-> @@ -246,6 +248,9 @@ const struct soc_device_attribute *soc_device_match(
->         if (!matches)
->                 return NULL;
->
-> +       if (!soc_dev_attr_init_done && !early_soc_dev_attr)
-
-if (!soc_bus_type.p && !early_soc_dev_attr)
-
-> +               return ERR_PTR(-EPROBE_DEFER);
-> +
->         while (!ret) {
->                 if (!(matches->machine || matches->family ||
->                       matches->revision || matches->soc_id))
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks,
+Charles
