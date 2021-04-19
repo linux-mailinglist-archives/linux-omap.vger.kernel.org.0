@@ -2,91 +2,137 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79356363D46
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Apr 2021 10:19:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62A79363D62
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Apr 2021 10:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238080AbhDSISM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Apr 2021 04:18:12 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50464 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236767AbhDSISI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Apr 2021 04:18:08 -0400
-Received: from mail-ej1-f71.google.com ([209.85.218.71])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <krzysztof.kozlowski@canonical.com>)
-        id 1lYP69-0007wJ-To
-        for linux-omap@vger.kernel.org; Mon, 19 Apr 2021 08:17:38 +0000
-Received: by mail-ej1-f71.google.com with SMTP id ne22-20020a1709077b96b02903803a047edeso2039029ejc.3
-        for <linux-omap@vger.kernel.org>; Mon, 19 Apr 2021 01:17:37 -0700 (PDT)
+        id S236845AbhDSIU6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Apr 2021 04:20:58 -0400
+Received: from mail-vs1-f51.google.com ([209.85.217.51]:38652 "EHLO
+        mail-vs1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229635AbhDSIU4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Apr 2021 04:20:56 -0400
+Received: by mail-vs1-f51.google.com with SMTP id s184so6761409vss.5;
+        Mon, 19 Apr 2021 01:20:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=xk3WBnA32t2m4Myce9cZ0YQ9ZIjnwr2MU+dccRhDaEQ=;
-        b=fKg3wAU4TruFDN0H+f4PIohSlrddPUCsG8q+A6OrjQhNq1khml3gxjvfYwa4By60nz
-         S3rvhUvhn52f9Vp0m7kHR9peRrUfY01dbYo9KYPuNz6TRiv+O1qDbh9vWmg5OxDyggyB
-         7VO78Tcf6ePFuLTbDeZA5kNI1Ac92GZyl3WgSqH1hIUQou/64B28yjE5EKfqDxnP2xuw
-         Z86eSLrLiMIxMu7o7MMenbBdM+oAizg07CLXe5qRnIvQ88ZfJv16eqKZia9UErD0hkok
-         OgAbbFmWfrknB24Tz5c4lGWua0rLG4vaxCMzkOnzIqN/sriX7ST8jMQW96f3gNQ/yoRs
-         Xk+A==
-X-Gm-Message-State: AOAM532DtHV72CkABNq74LykV6neuRruwOnV25LFYpqEORAXl5gZ2AAz
-        0X4Q0QRlwYG9HKEj30xHNClzjQlvQIX0dnQKcziHoCItQ5Ri1IabIPHnMEzmi1urAkJV/8AWzRb
-        aRTpPlXJQ9Kbm6W4mFtyOh4dY/iJXUXlPr62kBTw=
-X-Received: by 2002:aa7:c78a:: with SMTP id n10mr16235098eds.239.1618820257642;
-        Mon, 19 Apr 2021 01:17:37 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyEC1eWVQTu9LMVgr/ILKMxwUXo5jz/WdoxqL0Yi4g29Y+yv0xfxfv1+lWwr2RseWz0zqylAQ==
-X-Received: by 2002:aa7:c78a:: with SMTP id n10mr16235083eds.239.1618820257512;
-        Mon, 19 Apr 2021 01:17:37 -0700 (PDT)
-Received: from localhost.localdomain (xdsl-188-155-192-147.adslplus.ch. [188.155.192.147])
-        by smtp.gmail.com with ESMTPSA id da13sm12384781edb.6.2021.04.19.01.17.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Apr 2021 01:17:37 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     Support Opensource <support.opensource@diasemi.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        patches@opensource.cirrus.com
-Subject: [PATCH 7/7] mfd: twl: Correct kerneldoc
-Date:   Mon, 19 Apr 2021 10:17:26 +0200
-Message-Id: <20210419081726.67867-7-krzysztof.kozlowski@canonical.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210419081726.67867-1-krzysztof.kozlowski@canonical.com>
-References: <20210419081726.67867-1-krzysztof.kozlowski@canonical.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ltv54OOOgcKhPoH7oRaigoXMRi+Z2QqH7bQ4dTNkEvU=;
+        b=Ms0SsPF9J+tPj990DTLxJSvXO3Pmul5WCyeOMIDCVJ6fXcWAb6uJsC52eqzmbxUtMJ
+         Ul7GxKCbZ7tvkEEqDB5miyVfuIPIZ6Wf2fLEOnYrnyzAq9BFRVgE5tawuQnZZ1KvmiLL
+         EF/Qi81vkqZN75KRE3I2Ub033NMXNbhyaWlBPnaDUI/smGHJ8UPy9vAoTfFqPZVmpcjG
+         u+1xfNjeAWaCtnBNzLs677wnayVF3agzAGavKRFiZLiJM0DQwfElLwqOkGkNXKPR+lsq
+         TJLnDZHeX994hG8+Gw6qi4xtQrZg2dB0UisZo4zpBSW648ZZkTOPfDD7+avHhtZh59RH
+         iISg==
+X-Gm-Message-State: AOAM531bR0AI7GyosdsIXdtavR8bqUCmY3mDWUO7awITMHICVomqNNgB
+        TnOox77RR3JpNHchfmmIyY7YFvqX5Aujc9OIMxU=
+X-Google-Smtp-Source: ABdhPJw0QI7XOFx1TPnFrXWAlR/QW1v6zaWS/KnYbAtB/CEX2DsVVO2yNBv9r1VAA3kWmuOXuQwF2fQGH/J1go6B4oc=
+X-Received: by 2002:a67:f503:: with SMTP id u3mr12373252vsn.3.1618820424835;
+ Mon, 19 Apr 2021 01:20:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210419042722.27554-1-alice.guo@oss.nxp.com> <20210419042722.27554-2-alice.guo@oss.nxp.com>
+In-Reply-To: <20210419042722.27554-2-alice.guo@oss.nxp.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 19 Apr 2021 10:20:13 +0200
+Message-ID: <CAMuHMdUbrPxtJ9DCP0_nFrReuuO4vFY2J79LrKY82D7bCOfzRw@mail.gmail.com>
+Subject: Re: [RFC v1 PATCH 1/3] drivers: soc: add support for soc_device_match
+ returning -EPROBE_DEFER
+To:     "Alice Guo (OSS)" <alice.guo@oss.nxp.com>
+Cc:     gregkh@linuxfoundation.org, rafael@kernel.org,
+        horia.geanta@nxp.com, aymen.sghaier@nxp.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net, tony@atomide.com,
+        geert+renesas@glider.be, mturquette@baylibre.com, sboyd@kernel.org,
+        vkoul@kernel.org, peter.ujfalusi@gmail.com, a.hajda@samsung.com,
+        narmstrong@baylibre.com, robert.foss@linaro.org, airlied@linux.ie,
+        daniel@ffwll.ch, khilman@baylibre.com, tomba@kernel.org,
+        jyri.sarha@iki.fi, joro@8bytes.org, will@kernel.org,
+        mchehab@kernel.org, ulf.hansson@linaro.org,
+        adrian.hunter@intel.com, kishon@ti.com, kuba@kernel.org,
+        linus.walleij@linaro.org, Roy.Pledge@nxp.com, leoyang.li@nxp.com,
+        ssantosh@kernel.org, matthias.bgg@gmail.com, edubezval@gmail.com,
+        j-keerthy@ti.com, balbi@kernel.org, linux@prisktech.co.nz,
+        stern@rowland.harvard.edu, wim@linux-watchdog.org,
+        linux@roeck-us.net, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+        dmaengine@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        iommu@lists.linux-foundation.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-staging@lists.linux.dev,
+        linux-mediatek@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Correct kerneldoc function name to fix W=1 warning:
+Hi Alice,
 
-  drivers/mfd/twl-core.c:496: warning:
-    expecting prototype for twl_regcache_bypass(). Prototype was for twl_set_regcache_bypass() instead
+CC Arnd (soc_device_match() author)
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
----
- drivers/mfd/twl-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon, Apr 19, 2021 at 6:28 AM Alice Guo (OSS) <alice.guo@oss.nxp.com> wrote:
+> From: Alice Guo <alice.guo@nxp.com>
+>
+> In i.MX8M boards, the registration of SoC device is later than caam
+> driver which needs it. Caam driver needs soc_device_match to provide
+> -EPROBE_DEFER when no SoC device is registered and no
+> early_soc_dev_attr.
 
-diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
-index 20cf8cfe4f3b..24b77b18b725 100644
---- a/drivers/mfd/twl-core.c
-+++ b/drivers/mfd/twl-core.c
-@@ -485,8 +485,8 @@ int twl_i2c_read(u8 mod_no, u8 *value, u8 reg, unsigned num_bytes)
- EXPORT_SYMBOL(twl_i2c_read);
- 
- /**
-- * twl_regcache_bypass - Configure the regcache bypass for the regmap associated
-- *			 with the module
-+ * twl_set_regcache_bypass - Configure the regcache bypass for the regmap
-+ *			     associated with the module
-  * @mod_no: module number
-  * @enable: Regcache bypass state
-  *
+I'm wondering if this is really a good idea: soc_device_match() is a
+last-resort low-level check, and IMHO should be made available early on,
+so there is no need for -EPROBE_DEFER.
+
+>
+> Signed-off-by: Alice Guo <alice.guo@nxp.com>
+
+Thanks for your patch!
+
+> --- a/drivers/base/soc.c
+> +++ b/drivers/base/soc.c
+> @@ -110,6 +110,7 @@ static void soc_release(struct device *dev)
+>  }
+>
+>  static struct soc_device_attribute *early_soc_dev_attr;
+> +static bool soc_dev_attr_init_done = false;
+
+Do you need this variable?
+
+>
+>  struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr)
+>  {
+> @@ -157,6 +158,7 @@ struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr
+>                 return ERR_PTR(ret);
+>         }
+>
+> +       soc_dev_attr_init_done = true;
+>         return soc_dev;
+>
+>  out3:
+> @@ -246,6 +248,9 @@ const struct soc_device_attribute *soc_device_match(
+>         if (!matches)
+>                 return NULL;
+>
+> +       if (!soc_dev_attr_init_done && !early_soc_dev_attr)
+
+if (!soc_bus_type.p && !early_soc_dev_attr)
+
+> +               return ERR_PTR(-EPROBE_DEFER);
+> +
+>         while (!ret) {
+>                 if (!(matches->machine || matches->family ||
+>                       matches->revision || matches->soc_id))
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.25.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
