@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 347D6364BB0
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Apr 2021 22:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DD16364BE3
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Apr 2021 22:46:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240156AbhDSUp5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Apr 2021 16:45:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54790 "EHLO mail.kernel.org"
+        id S240167AbhDSUrA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Apr 2021 16:47:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54402 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242654AbhDSUpH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 19 Apr 2021 16:45:07 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7282A613D2;
-        Mon, 19 Apr 2021 20:44:31 +0000 (UTC)
+        id S242788AbhDSUph (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 19 Apr 2021 16:45:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 550B5613D7;
+        Mon, 19 Apr 2021 20:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618865072;
-        bh=bgHmZ1/6TCRbtxpJQ8LOZf/6+RiYTG7ymWzx81OFBtg=;
+        s=k20201202; t=1618865101;
+        bh=g/eXUpVLDWn4ZrQfKGHLQWDA56ui5qqB1PXgWsHwueE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YyCnsTweqAuIOaxs3St694wua1dkVhL1ibu+o81oZ4pMdTQXVkTlSQzhJR3sBZKeh
-         eTBhWM1aGpS5LFs8dccETTt0Xy/RbeLZLasQ29Ko06+PRpBomOAT2O97qEFW6bEhzx
-         SzlNf+WEC57uDSsr3a7e3kbrrbfzLaAiKu4TLyZ2yPuaFC5MJqrmd/glBuvFV8Eqjj
-         u6BiQbO7H0l4Tu6aNrvTGOoWzTvJ5TIFRuUVgoiKLWKKgtQhIiw02Kx0RIghdfxoQr
-         /fTLa6uaLU2TZl1mR4OxW3z8ZTCYTVmPTc0orrwyYZRoHTKiKgUo9l9HCL3qE6p2Lm
-         B/LhjW77ZE0wQ==
+        b=D2D3C/9zfroeJ1Pl+ifI1pAxP/0vmwwLzcyNfwSvz25wtyw0+K4EZBQPmzxjk8Sc2
+         KSVHqE/1iyCtP79MiaUqbt3TsXO09mMtw2W2A1monLQNVlJfZV+nZPFnaG1B+RrWE4
+         zh3sJGpagNwNvfWYuLPhah6tK7h84sg4VZiPwUl+cVRF70bK3S7G7NbWed20P9PZLy
+         rPwpCYqkrhRzMzCv+bF2h2U23/Tn962JqP8oNgY9uOr0TIeo6tyvwpW+rFSavS344G
+         Syh4PLedQrphmT9+uSp9fee8pUCJa4PDuOoEI3/HrxiE/ejNAyLTuPnMKqu9wYZ4x7
+         pHanMurvPOTBQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>,
@@ -30,12 +30,12 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Peter Ujfalusi <peter.ujfalusi@gmail.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 08/21] ARM: dts: Fix swapped mmc order for omap3
-Date:   Mon, 19 Apr 2021 16:44:06 -0400
-Message-Id: <20210419204420.6375-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 04/14] ARM: dts: Fix swapped mmc order for omap3
+Date:   Mon, 19 Apr 2021 16:44:44 -0400
+Message-Id: <20210419204454.6601-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210419204420.6375-1-sashal@kernel.org>
-References: <20210419204420.6375-1-sashal@kernel.org>
+In-Reply-To: <20210419204454.6601-1-sashal@kernel.org>
+References: <20210419204454.6601-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,10 +65,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/arch/arm/boot/dts/omap3.dtsi b/arch/arm/boot/dts/omap3.dtsi
-index 9dcae1f2bc99..c5b9da0d7e6c 100644
+index 4043ecb38016..0c8fcfb292bf 100644
 --- a/arch/arm/boot/dts/omap3.dtsi
 +++ b/arch/arm/boot/dts/omap3.dtsi
-@@ -24,6 +24,9 @@ aliases {
+@@ -23,6 +23,9 @@ aliases {
  		i2c0 = &i2c1;
  		i2c1 = &i2c2;
  		i2c2 = &i2c3;
