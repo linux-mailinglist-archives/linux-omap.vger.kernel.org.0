@@ -2,162 +2,156 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D04364ECA
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Apr 2021 01:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDA323651CF
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Apr 2021 07:25:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232568AbhDSXnm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Apr 2021 19:43:42 -0400
-Received: from gw.atmark-techno.com ([13.115.124.170]:42708 "EHLO
-        gw.atmark-techno.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232147AbhDSXnk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Apr 2021 19:43:40 -0400
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-        by gw.atmark-techno.com (Postfix) with ESMTPS id A2F558048E
-        for <linux-omap@vger.kernel.org>; Tue, 20 Apr 2021 08:43:08 +0900 (JST)
-Received: by mail-ot1-f72.google.com with SMTP id f19-20020a9d5f130000b0290289bfcbd479so10709842oti.16
-        for <linux-omap@vger.kernel.org>; Mon, 19 Apr 2021 16:43:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=YfTDNxUjME1kzwn4ONpBlmaWp5uEs0PGjlewRbiJ8O0=;
-        b=ifUDSK5TWarMzltUBGPyK8TCndEYBR7cE64WpzqvoRlhV7K/SXBmZjRX/OueMHEyQO
-         9nZ7CkGN+t1PuqLr62glasjgTfENyynvuL1y+GZn2IU2+Xuvy5xi8RJ+rruLV2a1CxRf
-         aW5RysOS8qVjIz6slW6Rw7FePx4JcPFkV/B8ybbyPYtg6Gztu9P9YmoGiJ3vKi1itQz3
-         0EHB6Maa6N4nh9Hl1SW2cKiTrEVDGLjwY4JYTcM1g/E+fb44elfAZJ1CuXg1Rn0Y+zKa
-         YZqfMHm/KAky5iGMPGtIvXIpXTzOyI1clri6VrtHcBqG/PuT/Iyk92HrFoAQebu++tKa
-         lWTw==
-X-Gm-Message-State: AOAM533mWN9N/LU6Lva1HE30kZpsDC5B7GbsHxWO6OMTI0fSF7CuFuww
-        WOPYz9O6YvJdemJIAo7ALoB3IT48xr3hP3K7iWJ19EPdMnmgKULeN1IsBJBulMsQMK//sp7pUhr
-        TPw2wK709l0n+Ak74unh9060ajw==
-X-Received: by 2002:a17:90a:1c1:: with SMTP id 1mr1708200pjd.190.1618875776935;
-        Mon, 19 Apr 2021 16:42:56 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzRGNIqy2AO5m9iOwuC4N09BxordE8LmUXYTIIeyniOtbCQKfA0MKaQl391n1ZLV3YIJOra8w==
-X-Received: by 2002:a17:90a:1c1:: with SMTP id 1mr1708139pjd.190.1618875776711;
-        Mon, 19 Apr 2021 16:42:56 -0700 (PDT)
-Received: from pc-0115 (76.125.194.35.bc.googleusercontent.com. [35.194.125.76])
-        by smtp.gmail.com with ESMTPSA id r3sm8384971pgn.82.2021.04.19.16.42.55
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 Apr 2021 16:42:55 -0700 (PDT)
-Received: from martinet by pc-0115 with local (Exim 4.94)
-        (envelope-from <martinet@pc-0115>)
-        id 1lYdXa-002mPj-58; Tue, 20 Apr 2021 08:42:54 +0900
-Date:   Tue, 20 Apr 2021 08:42:44 +0900
-From:   Dominique MARTINET <dominique.martinet@atmark-techno.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Alice Guo (OSS)" <alice.guo@oss.nxp.com>,
-        gregkh <gregkh@linuxfoundation.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
-        aymen.sghaier@nxp.com, Herbert Xu <herbert@gondor.apana.org.au>,
-        David Miller <davem@davemloft.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        peter.ujfalusi@gmail.com, Andrzej Hajda <a.hajda@samsung.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Robert Foss <robert.foss@linaro.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Kevin Hilman <khilman@baylibre.com>, tomba@kernel.org,
-        jyri.sarha@iki.fi, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon <will@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Kishon <kishon@ti.com>, Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Roy Pledge <Roy.Pledge@nxp.com>, Leo Li <leoyang.li@nxp.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, Felipe Balbi <balbi@kernel.org>,
-        Tony Prisk <linux@prisktech.co.nz>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
-        <linux-crypto@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>, dmaengine@vger.kernel.org,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        "open list:ARM/Amlogic Meson SoC support" 
-        <linux-amlogic@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        linux-phy@lists.infradead.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-staging@lists.linux.dev,
-        "moderated list:ARM/Mediatek SoC..." 
-        <linux-mediatek@lists.infradead.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>
-Subject: Re: [RFC v1 PATCH 3/3] driver: update all the code that use
- soc_device_match
-Message-ID: <YH4VdPNO9cdzc5MD@atmark-techno.com>
-References: <20210419042722.27554-1-alice.guo@oss.nxp.com>
- <20210419042722.27554-4-alice.guo@oss.nxp.com>
- <YH0O907dfGY9jQRZ@atmark-techno.com>
- <CAMuHMdVY1SLZ0K30T2pimyrR6Mm=VoSTO=L-xxCy2Bj7_kostw@mail.gmail.com>
- <YH1OeFy+SepIYYG0@atmark-techno.com>
- <CAK8P3a1Mu2F0irDDCL-50HiHth29iYFL5b7WHZ=UX6W7zzoxAg@mail.gmail.com>
+        id S229593AbhDTF0E (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Apr 2021 01:26:04 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:20327 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229563AbhDTF0D (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Apr 2021 01:26:03 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20210420052530euoutp0109ee3906fa8f459055a61e959bf6618e~3eaKxr0w_1026610266euoutp01o
+        for <linux-omap@vger.kernel.org>; Tue, 20 Apr 2021 05:25:30 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20210420052530euoutp0109ee3906fa8f459055a61e959bf6618e~3eaKxr0w_1026610266euoutp01o
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1618896330;
+        bh=UfpEbtndIqnK+BTtgcqFamqwVazXAKYd9pZ8/utwLmM=;
+        h=Subject:To:From:Date:In-Reply-To:References:From;
+        b=BFhHDzqaMEBJPsx3xTcHeVBkH3uRuLBaEZLu9OUwA640YJPD0+VomnBvAU2vwx4XL
+         ZFK7RLs2Lk30QHXZ0aMM4Ym7Zut5V4nz/cPz0SSmou500QIdEEtfLeab60X30HY+JR
+         3yqHSkHki6KuZYtNcQLVwxpNDmaMftssqtIG5KJY=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20210420052529eucas1p24b9a0ad7cd84b9873fd8d4e40be11fa5~3eaKAyLOQ2232422324eucas1p2l;
+        Tue, 20 Apr 2021 05:25:29 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id E4.82.09439.9C56E706; Tue, 20
+        Apr 2021 06:25:29 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20210420052529eucas1p19219c49d2568e79976927c8ebc3978ae~3eaJkCk1-0361303613eucas1p1j;
+        Tue, 20 Apr 2021 05:25:29 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20210420052529eusmtrp2a93094881e384f31c662594343399dfb~3eaJiy8Bo0528005280eusmtrp20;
+        Tue, 20 Apr 2021 05:25:29 +0000 (GMT)
+X-AuditID: cbfec7f5-c1bff700000024df-b5-607e65c9941b
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 8B.B9.08696.9C56E706; Tue, 20
+        Apr 2021 06:25:29 +0100 (BST)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20210420052528eusmtip19fe36ef724185ceff481a996e1219ded~3eaI_al6E1953419534eusmtip1U;
+        Tue, 20 Apr 2021 05:25:28 +0000 (GMT)
+Subject: Re: [PATCH 5/7] mfd: sec: Simplify getting of_device_id match data
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        patches@opensource.cirrus.com
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Message-ID: <64fb91ae-c754-fb25-0ef7-17b2f1b8a1e4@samsung.com>
+Date:   Tue, 20 Apr 2021 07:25:28 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0)
+        Gecko/20100101 Thunderbird/78.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a1Mu2F0irDDCL-50HiHth29iYFL5b7WHZ=UX6W7zzoxAg@mail.gmail.com>
+In-Reply-To: <20210419081726.67867-5-krzysztof.kozlowski@canonical.com>
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrLKsWRmVeSWpSXmKPExsWy7djP87onU+sSDFqe61lsnLGe1WLj2x9M
+        Fve/HmW0uLxrDpvF7CX9LBYzzu9jsvj8fj+rxd7Wi8wW+694OXB6fPs6icVjVkMvm8eKT/oe
+        d67tYfOYPuc/o0ffllWMHp83yQWwR3HZpKTmZJalFunbJXBlHL30m6XgJHdF89XbjA2Muzi7
+        GDk4JARMJDZdtOpi5OIQEljBKPHmfC8jhPOFUeLu1mPsEM5nRomGH4uZYTqu74rvYuQEii9n
+        lFh8mRPC/sgo0b09D6REWMBb4kWvOkiriMAHJoklZ+azg9SwCRhKdL3tYgOxeQXsJLo/PGUE
+        sVkEVCXe/OoGqxEVSJK4eek/M0SNoMTJmU9YQGxOAXeJwycfg/UyC8hLbH87hxnCFpe49WQ+
+        E8gyCYEPHBL/fiwFa5AQcJH4v209K4QtLPHq+BZ2CFtG4v9OmIZmRomH59ayQzg9jBKXm2Yw
+        QlRZS9w594sN5B1mAU2J9bv0IcKOEjv3d7FBAoJP4sZbQYgj+CQmbZsODR9eiY42IYhqNYlZ
+        x9fBrT144RIzhO0hMfvxZLYJjIqzkLw5C8lrs5C8NgvhhgWMLKsYxVNLi3PTU4uN81LL9YoT
+        c4tL89L1kvNzNzECU9Tpf8e/7mBc8eqj3iFGJg7GQ4wSHMxKIrz3a2sShHhTEiurUovy44tK
+        c1KLDzFKc7AoifPu2romXkggPbEkNTs1tSC1CCbLxMEp1cAUFnHguHb+AQd+/rNH19lt/5kZ
+        adRyr5a9YdOlhs0bv3nvvOATuPbGa/0/u0S8kuR1F3brdVyqs3g2f6fS98Df9rdur5DZcWFe
+        G7NhfOQJOZEHf9fNmzvn9E6z2hj2nR9UMzgd0iomNCxkN761a3at8a3L/3hydYJ2bxCckHBe
+        XPdO7fyuno/tzta6V6fYaj1XzIgQXfAy89a1PzoTXvJKVi2/31j+LWRGiHp1Vd+uwIPLTk9V
+        XLeFoWCt0yb1uMcnAg1Mde8smPkqZI9Gk9CPY9uCpyvMPOlT92KaulH6ivyE+F277qs8Wu27
+        JpkzaP1NwxUz1Crux/Ba2jVtc9xyWDX6l+WqZ9I/8uWzl/74qsRSnJFoqMVcVJwIAPFHZr3A
+        AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrCIsWRmVeSWpSXmKPExsVy+t/xu7onU+sSDG7OE7bYOGM9q8XGtz+Y
+        LO5/PcpocXnXHDaL2Uv6WSxmnN/HZPH5/X5Wi72tF5kt9l/xcuD0+PZ1EovHrIZeNo8Vn/Q9
+        7lzbw+Yxfc5/Ro++LasYPT5vkgtgj9KzKcovLUlVyMgvLrFVija0MNIztLTQMzKx1DM0No+1
+        MjJV0rezSUnNySxLLdK3S9DLOHrpN0vBSe6K5qu3GRsYd3F2MXJwSAiYSFzfFd/FyMkhJLCU
+        UaL5Ay+ILSEgI3FyWgMrhC0s8edaF1sXIxdQzXtGiXn9L9hBeoUFvCVe9KqD1IgIfGKS2NyR
+        A1FznVFi0ZzpzCAJNgFDia63IM2cHLwCdhLdH54ygtgsAqoSb351s4PYogJJEvcur2SGqBGU
+        ODnzCQuIzSngLnH45GOwXmYBM4l5mx8yQ9jyEtvfzoGyxSVuPZnPNIFRcBaS9llIWmYhaZmF
+        pGUBI8sqRpHU0uLc9NxiI73ixNzi0rx0veT83E2MwOjbduznlh2MK1991DvEyMTBeIhRgoNZ
+        SYT3fm1NghBvSmJlVWpRfnxRaU5q8SFGU6B/JjJLiSbnA+M/ryTe0MzA1NDEzNLA1NLMWEmc
+        1+TImnghgfTEktTs1NSC1CKYPiYOTqkGJvZpjR90JA0Tr2zRmhf65llKxjbla7Ou7uC6JmCe
+        u7opg3l/24TVKX1bZA4nzOprmpmbEnXi3Z4IoZwFekH39HsWvTmy7+mb11+vpllu3/R45bQd
+        0w+ZTpmgqRAyuZBD8f+Phe+833MbXK2fMGOrFMOlXptjfpI/JknvyGIz79wXwWW/omKVxR2V
+        Ld3zLdtMX3NM/aJ6LPjK6TP/+/M4v1i0NPy0vcG05hzTnKwsftELundelgo9OhvDft3u8/xO
+        kfDti9wv9ea/C1u7zkJPcZGs8oWtmX4ya7X3Jzz9UCq5rUR6qZl0m05E2X65zecOO265LWVy
+        vuQ6V+YPVxXnn/8Nbx+XndG2eIIpp7r8hnQlluKMREMt5qLiRACkHu8iRwMAAA==
+X-CMS-MailID: 20210420052529eucas1p19219c49d2568e79976927c8ebc3978ae
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20210419081852eucas1p29d7904aa73d6621feb03cb24a91ed95d
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20210419081852eucas1p29d7904aa73d6621feb03cb24a91ed95d
+References: <20210419081726.67867-1-krzysztof.kozlowski@canonical.com>
+        <CGME20210419081852eucas1p29d7904aa73d6621feb03cb24a91ed95d@eucas1p2.samsung.com>
+        <20210419081726.67867-5-krzysztof.kozlowski@canonical.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Arnd Bergmann wrote on Mon, Apr 19, 2021 at 02:16:36PM +0200:
-> In some cases, you can use the device_link infrastructure to deal
-> with dependencies between devices. Not sure if this would help
-> in your case, but have a look at device_link_add() etc in drivers/base/core.c
 
-I'll need to actually try to convince myself but if creating the link
-forces driver registration then it should be workable.
+On 19.04.2021 10:17, Krzysztof Kozlowski wrote:
+> Use of_device_get_match_data() to make the code slightly smaller.
+>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> ---
+>   drivers/mfd/sec-core.c | 9 +++------
+>   1 file changed, 3 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/mfd/sec-core.c b/drivers/mfd/sec-core.c
+> index 8d55992da19e..3126c39f3203 100644
+> --- a/drivers/mfd/sec-core.c
+> +++ b/drivers/mfd/sec-core.c
+> @@ -10,6 +10,7 @@
+>   #include <linux/slab.h>
+>   #include <linux/i2c.h>
+>   #include <linux/of.h>
+> +#include <linux/of_device.h>
+>   #include <linux/of_irq.h>
+>   #include <linux/interrupt.h>
+>   #include <linux/pm_runtime.h>
+> @@ -324,12 +325,8 @@ static inline unsigned long sec_i2c_get_driver_data(struct i2c_client *i2c,
+>   						const struct i2c_device_id *id)
+>   {
+>   #ifdef CONFIG_OF
+> -	if (i2c->dev.of_node) {
+> -		const struct of_device_id *match;
+> -
+> -		match = of_match_node(sec_dt_match, i2c->dev.of_node);
+> -		return (unsigned long)match->data;
+> -	}
+> +	if (i2c->dev.of_node)
+> +		return (unsigned long)of_device_get_match_data(&i2c->dev);
+>   #endif
 
-> > In this particular case the problem is that since 7d981405d0fd ("soc:
-> > imx8m: change to use platform driver") the soc probe tries to use the
-> > nvmem driver for ocotp fuses for imx8m devices, which isn't ready yet.
-> > So soc loading gets pushed back to the end of the list because it gets
-> > defered and other drivers relying on soc_device_match get confused
-> > because they wrongly think a device doesn't match a quirk when it
-> > actually does.
-> >
-> > If there is a way to ensure the nvmem driver gets loaded before the soc,
-> > that would also solve the problem nicely, and avoid the need to mess
-> > with all the ~50 drivers which use it.
-> >
-> > Is there a way to control in what order drivers get loaded? Something in
-> > the dtb perhaps?
-> 
-> For built-in drivers, load order depends on the initcall level and
-> link order (how things are lined listed in the Makefile hierarchy).
-> 
-> For loadable modules, this is up to user space in the end.
-> 
-> Which of the drivers in this scenario are loadable modules?
+Does it make any sense to keep the #ifdef CONFIG_OF after this change? I 
+would also skip (i2c->dev.of_node) check, because 
+of_device_get_match_data() already does that (although indirectly).
 
-All the drivers involved in my case are built-in (nvmem, soc and final
-soc_device_match consumer e.g. caam_jr that crashes the kernel if soc is
-not identified properly).
+>   	return id->driver_data;
+>   }
 
-I frankly don't like the idea of moving nvmem/ above soc/ in
-drivers/Makefile as a "solution" to this (especially as there is one
-that seems to care about what soc they run on...), so I'll have a look
-at links first, hopefully that will work out.
-
-
-Thanks,
+Best regards
 -- 
-Dominique
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
