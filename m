@@ -2,135 +2,152 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C0836533A
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Apr 2021 09:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C870E3654CE
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Apr 2021 11:07:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229504AbhDTHZe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 20 Apr 2021 03:25:34 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:60289 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbhDTHZd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Apr 2021 03:25:33 -0400
-Received: from mail-ed1-f70.google.com ([209.85.208.70])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <krzysztof.kozlowski@canonical.com>)
-        id 1lYkkn-00071k-Ee
-        for linux-omap@vger.kernel.org; Tue, 20 Apr 2021 07:25:01 +0000
-Received: by mail-ed1-f70.google.com with SMTP id l22-20020a0564021256b0290384ebfba68cso8778515edw.2
-        for <linux-omap@vger.kernel.org>; Tue, 20 Apr 2021 00:25:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=QlkzODqs3de/2r7bFY21pvtdX8g0owN/7v3UKLodqFM=;
-        b=kNTC4gpZIiRxY6slNiYeEA8g81PfYQlwkpJy+idlSLQC5dw88OzXhoQz/sM1Kq03Vl
-         I9QAFmt8+2nQkZ9yLbPPxbD3xq7smCJhpM/1aqON8wZd/dB7UxJkkQGB17rbhVR7Krjb
-         2NHrXuV6q6idz6fKwLxzJTGdX3L74yMSNyDwt9gdNk8Ahcp9GOyrnfffeoZE07FREZ12
-         U8LirvvJShgucY0efuqimv+FckWUWdVbV/0RfYkgcVbTSdoI5jdFdRo2s08/Lr6OidHw
-         rh+lrdMhF7ngpdwdzUBbOD4B6LWVnm5W7/rRXUBcczuLN/lInijsmnehZniih+5OHJHg
-         Pjuw==
-X-Gm-Message-State: AOAM532szpudajkg897r7H/AGv7vpB3mTlTn7LokVo0yoJ3FtFADbJxy
-        4J+Rwn8bIL1rn2GSs0ZsYUCwSV+ni0G+8CxPF/JNJucv7UN+zpTGoBhg3gKSKVyoPkIdRE+Fq46
-        gOXq43bRoTi8Fj6IIvvD49GfQ9J5cEIYOXQ73Dcg=
-X-Received: by 2002:a05:6402:4242:: with SMTP id g2mr30143967edb.329.1618903501149;
-        Tue, 20 Apr 2021 00:25:01 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxR0xQR3SxmpcZ02bhOq0nxAtZaxu1UiEvZpH8gjyloyiAJbhjG9+cavdaccyCaffHvyXDN5g==
-X-Received: by 2002:a05:6402:4242:: with SMTP id g2mr30143954edb.329.1618903501005;
-        Tue, 20 Apr 2021 00:25:01 -0700 (PDT)
-Received: from [192.168.1.115] (xdsl-188-155-180-75.adslplus.ch. [188.155.180.75])
-        by smtp.gmail.com with ESMTPSA id ca1sm15147826edb.76.2021.04.20.00.25.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Apr 2021 00:25:00 -0700 (PDT)
-Subject: Re: [PATCH 5/7] mfd: sec: Simplify getting of_device_id match data
-To:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        patches@opensource.cirrus.com
-References: <20210419081726.67867-1-krzysztof.kozlowski@canonical.com>
- <CGME20210419081852eucas1p29d7904aa73d6621feb03cb24a91ed95d@eucas1p2.samsung.com>
- <20210419081726.67867-5-krzysztof.kozlowski@canonical.com>
- <64fb91ae-c754-fb25-0ef7-17b2f1b8a1e4@samsung.com>
- <4a5e80c0-653e-a4d6-630e-0d75e3779f6d@canonical.com>
- <a65318f6-1465-a35c-a987-8b833311ef3a@samsung.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Message-ID: <cb24912d-1d5d-089b-2cfa-d0c3c3a8b2b6@canonical.com>
-Date:   Tue, 20 Apr 2021 09:25:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        id S231265AbhDTJIT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Apr 2021 05:08:19 -0400
+Received: from mout.kundenserver.de ([217.72.192.73]:42069 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231250AbhDTJIS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Apr 2021 05:08:18 -0400
+Received: from mail-wr1-f47.google.com ([209.85.221.47]) by
+ mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1M3lLh-1lYVNL03GN-000snS; Tue, 20 Apr 2021 11:07:44 +0200
+Received: by mail-wr1-f47.google.com with SMTP id e7so27820771wrs.11;
+        Tue, 20 Apr 2021 02:07:43 -0700 (PDT)
+X-Gm-Message-State: AOAM530bK2/Zhpk5hISNbBeQuJc8bwXLZL3Op5+Z3jB4wVxrjl+Sao6S
+        C+gjr8AN0THF/N2eQjocMKwjVco4O5LSgtigO90=
+X-Google-Smtp-Source: ABdhPJwSiNwlZ27l6d0oeVOJMjBIBpaEf6fV+Kr02yQOCGa6DdHdokE+eIs4+TiyDD+ybgS8jO4hGYikHl0QAhmuRDs=
+X-Received: by 2002:adf:db4f:: with SMTP id f15mr19571156wrj.99.1618909652608;
+ Tue, 20 Apr 2021 02:07:32 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <a65318f6-1465-a35c-a987-8b833311ef3a@samsung.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210419042722.27554-1-alice.guo@oss.nxp.com> <20210419042722.27554-4-alice.guo@oss.nxp.com>
+ <YH0O907dfGY9jQRZ@atmark-techno.com> <CAMuHMdVY1SLZ0K30T2pimyrR6Mm=VoSTO=L-xxCy2Bj7_kostw@mail.gmail.com>
+ <YH1OeFy+SepIYYG0@atmark-techno.com> <CAK8P3a1Mu2F0irDDCL-50HiHth29iYFL5b7WHZ=UX6W7zzoxAg@mail.gmail.com>
+ <YH4VdPNO9cdzc5MD@atmark-techno.com>
+In-Reply-To: <YH4VdPNO9cdzc5MD@atmark-techno.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 20 Apr 2021 11:07:16 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1GjeHyMCworQYVtp5U0uu2B9VBHmf9y0hGn-o8aKSJZw@mail.gmail.com>
+Message-ID: <CAK8P3a1GjeHyMCworQYVtp5U0uu2B9VBHmf9y0hGn-o8aKSJZw@mail.gmail.com>
+Subject: Re: [RFC v1 PATCH 3/3] driver: update all the code that use soc_device_match
+To:     Dominique MARTINET <dominique.martinet@atmark-techno.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        "Alice Guo (OSS)" <alice.guo@oss.nxp.com>,
+        gregkh <gregkh@linuxfoundation.org>,
+        Rafael Wysocki <rafael@kernel.org>,
+        =?UTF-8?Q?Horia_Geant=C4=83?= <horia.geanta@nxp.com>,
+        aymen.sghaier@nxp.com, Herbert Xu <herbert@gondor.apana.org.au>,
+        David Miller <davem@davemloft.net>,
+        Tony Lindgren <tony@atomide.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        peter.ujfalusi@gmail.com, Andrzej Hajda <a.hajda@samsung.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Robert Foss <robert.foss@linaro.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Kevin Hilman <khilman@baylibre.com>, tomba@kernel.org,
+        jyri.sarha@iki.fi, Joerg Roedel <joro@8bytes.org>,
+        Will Deacon <will@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Kishon <kishon@ti.com>, Jakub Kicinski <kuba@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Roy Pledge <Roy.Pledge@nxp.com>, Leo Li <leoyang.li@nxp.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>, Felipe Balbi <balbi@kernel.org>,
+        Tony Prisk <linux@prisktech.co.nz>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:HARDWARE RANDOM NUMBER GENERATOR CORE" 
+        <linux-crypto@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>, dmaengine@vger.kernel.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        "open list:ARM/Amlogic Meson SoC support" 
+        <linux-amlogic@lists.infradead.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>,
+        linux-phy@lists.infradead.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-staging@lists.linux.dev,
+        "moderated list:ARM/Mediatek SoC..." 
+        <linux-mediatek@lists.infradead.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:ltcVWPzbOzdUu0wQVBbKGnNxKoc98HAW0duSMZcYgv925OTLSOo
+ ZELSDbcdcLSNH6jcDj67BsKk30EPrQcQ8Efw82x799k6bMj9s2S+m69ZiBVlhuvUlnJi1KE
+ D7RnoNvLskVAUP5tUpp+AzAQkOM4ikGI/bBCnIU1DkH5GwBwAgWr5giBTyb98Y4I7MSVa9V
+ glR/dmIR70ry9QtHaxTJQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:m62Jwkt4Q9A=:KANWiBROdRHMBQ5xLHe3U2
+ hzC4pqyCkSOIDCpwHHpdfePw/DSVMWP11cjA9UAjvJaYaBXCZ5ZviOUZuds+WAtiQuHxsqgvG
+ nZi4yzXKiBDbdqpDmqSnJSLdXBr5QaacWl8ByR2QA/IPJEKeZxqlFpXmUIRvvw9yILmSAgAwm
+ kTxiSk1xsoLYt4eUP9X1BKjgUadX4/EsohQRwshD6awFocrh/vn5To8p+UeSEy9M6vG6ayoc3
+ KzloVi0GVUYRFc1NPbKUAVnYQJMIhG77x+Cm3slvPquhclTau9xa2jEDlsYf9AmTY1xTPSiJr
+ /g5TniSnhP8grlfVciwqdoi923h7Wd+xuUOomDfXdzWsGmOnj0YXIDpS+jnskS4OcxhO+FRMn
+ FzZZ9kkBvKQlYDBBlVJSIXMDuM+k11tV7v8z5yaqgg7dlymVRjd+HCL64OR8G/W0vIDw4rPr2
+ pp7HSGeYD00x82SkyzleiGe82V3CUweY4dnSbInIp/X4AIhFXsZWIlACLNsg0WEDBBic9FOVB
+ pe4HnvYTumVgpgOpu+WBCL4nBvUWvDUeLp2H0ZtwDqDlJhW2cPSYgGYmEkc9JgZOSAjBhucWB
+ ySMJnPpH3XQziDvSrylbWsiz0S5V3jaD6fnbfN05zGkdzDFwrWIH2hlbOI7PqXh7Y+r9HScxY
+ jsF4=
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 20/04/2021 09:12, Marek Szyprowski wrote:
-> On 20.04.2021 09:03, Krzysztof Kozlowski wrote:
->> On 20/04/2021 07:25, Marek Szyprowski wrote:
->>> On 19.04.2021 10:17, Krzysztof Kozlowski wrote:
->>>> Use of_device_get_match_data() to make the code slightly smaller.
->>>>
->>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
->>>> ---
->>>>    drivers/mfd/sec-core.c | 9 +++------
->>>>    1 file changed, 3 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/drivers/mfd/sec-core.c b/drivers/mfd/sec-core.c
->>>> index 8d55992da19e..3126c39f3203 100644
->>>> --- a/drivers/mfd/sec-core.c
->>>> +++ b/drivers/mfd/sec-core.c
->>>> @@ -10,6 +10,7 @@
->>>>    #include <linux/slab.h>
->>>>    #include <linux/i2c.h>
->>>>    #include <linux/of.h>
->>>> +#include <linux/of_device.h>
->>>>    #include <linux/of_irq.h>
->>>>    #include <linux/interrupt.h>
->>>>    #include <linux/pm_runtime.h>
->>>> @@ -324,12 +325,8 @@ static inline unsigned long sec_i2c_get_driver_data(struct i2c_client *i2c,
->>>>    						const struct i2c_device_id *id)
->>>>    {
->>>>    #ifdef CONFIG_OF
->>>> -	if (i2c->dev.of_node) {
->>>> -		const struct of_device_id *match;
->>>> -
->>>> -		match = of_match_node(sec_dt_match, i2c->dev.of_node);
->>>> -		return (unsigned long)match->data;
->>>> -	}
->>>> +	if (i2c->dev.of_node)
->>>> +		return (unsigned long)of_device_get_match_data(&i2c->dev);
->>>>    #endif
->>> Does it make any sense to keep the #ifdef CONFIG_OF after this change?
->> Good point, it was only to hide usage of of_device_id table.
->>
->>> I would also skip (i2c->dev.of_node) check, because
->>> of_device_get_match_data() already does that (although indirectly).
->> First, the enum sec_device_type would need to be changed so it starts
->> from 1, not 0. It's because the value returned by this function is later
->> assigned to that enum and there is no way currently to differentiate
->> between NULL and S5M8767X.
->>
->> Second, it wouldn't make the code smaller;
->>
->> unsigned long data;
->> data = of_device_get_match_data(&i2c->dev);
->> if (data)
->> 	return data;
-> 
-> Then maybe one should go further and remove legacy, non-of based 
-> initialization, because it is not used at all. This will simplify it 
-> even more.
+On Tue, Apr 20, 2021 at 1:44 AM Dominique MARTINET
+<dominique.martinet@atmark-techno.com> wrote:
+> Arnd Bergmann wrote on Mon, Apr 19, 2021 at 02:16:36PM +0200:
+> > For built-in drivers, load order depends on the initcall level and
+> > link order (how things are lined listed in the Makefile hierarchy).
+> >
+> > For loadable modules, this is up to user space in the end.
+> >
+> > Which of the drivers in this scenario are loadable modules?
+>
+> All the drivers involved in my case are built-in (nvmem, soc and final
+> soc_device_match consumer e.g. caam_jr that crashes the kernel if soc is
+> not identified properly).
 
-Indeed maybe it's the time to get rid of board-file support...
+Ok, in that case you may have a chance to just adapt the initcall
+levels. This is somewhat fragile if someone else already relies
+on a particular order, but it's an easy one-line change to change
+a driver e.g. from module_init() or device_initcall() to arch_initcall().
 
-Thanks for the feedback!
+> I frankly don't like the idea of moving nvmem/ above soc/ in
+> drivers/Makefile as a "solution" to this (especially as there is one
+> that seems to care about what soc they run on...), so I'll have a look
+> at links first, hopefully that will work out.
 
-Best regards,
-Krzysztof
+Right, that would be way more fragile.
+
+I think the main problem in this case is the caam driver that really
+should not look into the particular SoC type or even machine
+compatible string. This is something we can do as a last resort
+for compatibility with busted devicetree files, but it appears that
+this driver does it as the primary method for identifying different
+hardware revisions. I would suggest fixing the binding so that
+each SoC that includes one of these devices has a soc specific
+compatible string associated with the device that the driver can
+use as the primary way of identifying the device.
+
+We probably need to keep the old logic around for old dtb files,
+but there can at least be a comment next to that table that
+discourages people from adding more entries there.
+
+      Arnd
