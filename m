@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C19303657B6
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Apr 2021 13:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A60A23657B8
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Apr 2021 13:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231918AbhDTLkI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 20 Apr 2021 07:40:08 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39091 "EHLO
+        id S231954AbhDTLkJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Apr 2021 07:40:09 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39112 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231817AbhDTLkH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Apr 2021 07:40:07 -0400
-Received: from mail-ej1-f72.google.com ([209.85.218.72])
+        with ESMTP id S231894AbhDTLkI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Apr 2021 07:40:08 -0400
+Received: from mail-ed1-f70.google.com ([209.85.208.70])
         by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <krzysztof.kozlowski@canonical.com>)
-        id 1lYoj8-0005TT-Oh
-        for linux-omap@vger.kernel.org; Tue, 20 Apr 2021 11:39:34 +0000
-Received: by mail-ej1-f72.google.com with SMTP id j25-20020a1709060519b029037cb8ca241aso4647338eja.19
-        for <linux-omap@vger.kernel.org>; Tue, 20 Apr 2021 04:39:34 -0700 (PDT)
+        id 1lYojA-0005UN-BY
+        for linux-omap@vger.kernel.org; Tue, 20 Apr 2021 11:39:36 +0000
+Received: by mail-ed1-f70.google.com with SMTP id z3-20020a05640240c3b029037fb0c2bd3bso13054465edb.23
+        for <linux-omap@vger.kernel.org>; Tue, 20 Apr 2021 04:39:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wuB2/tI9xcQwhhNMwxEVaEgHMJT+b83uq8pd/UhDHWg=;
-        b=TXyOK3E6DdcVThpb7w1np1hZR8jVO0UryN7G2dWhp2DuVaPx4y3za9lXWrIUBWItqH
-         WEkK4mCqpj2TcGMETmbDgbefSd6+nQuargAtEBovECBFh3etCqndjx9XNpdv6bic3xeQ
-         nKKEWCtb6hBKi6RTIAPJlc9LlnY0sH4BMIHspi/ONCh2alS3Zc9ZTZC5Yz1cv2/XyS/M
-         3ldijeBJ8GKIBuSo/h5gjkyXyzpBbTcGxlkx2MX8HZINzUOaJvhoLGKesz3BIDO91p6S
-         9R9QZuBvhlADsEEB3/xzHfpZpuWKm2p/YhhNgnwLnR1TeQmilrxCRI0NgEX9IfDJIGGM
-         D+Jw==
-X-Gm-Message-State: AOAM533CtiqSse3LICo145YG65MCgWxTN+l0Ne2YAogTTHGD+dNsql2+
-        nWG3wOHbRzXgTX371GapRyd8cloIj2KlpqJhVidTmXKBcHcrjVT7ZCx31KkzEH5cqu9y08R4uaj
-        XyiTGyFZnoFPG/0gQWGZHPTWV0TeRnbcONuK/4HM=
-X-Received: by 2002:a50:fe01:: with SMTP id f1mr32499234edt.272.1618918774490;
-        Tue, 20 Apr 2021 04:39:34 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw7Xuk25grH3NsIgvMGGGwnXop0ZMYNrJctTBWfujHm1kJVpv/I1QXZELdTEgMAyJL7wTYErA==
-X-Received: by 2002:a50:fe01:: with SMTP id f1mr32499223edt.272.1618918774374;
-        Tue, 20 Apr 2021 04:39:34 -0700 (PDT)
+        bh=1QRQo+xpUYHPCxTbJPvKb59/XsQMOAX0KEXbrpjY1cc=;
+        b=XFfC0HKtbqqv23s1LNoKdwSs42kO2QeDTfIpfTFu7Mrx36qdaZeAowlLLFkkrFtH9Y
+         ZmxIGpCY0oy5/2DZevhJhn92VRk6rmdBu7dFIBeI430nhLSCHoSC8A/8az8EsghONGmR
+         JTAX8b0U9Y62R+gGbWJFmZ0tAatH/DTmITNpnc06KewsRBtpTW8xsU+memhRqYU69vS+
+         EznvH0YDEAJm0EA6DN2LSFidwzB9n7c7Fp47Stzm8uSghlr8PGNTVIbackEy9fnQCAQZ
+         I7ufyv+z59/UZI1gJyHQymmyJtVusJj+ZDSLKJSOlpvoaI/wAjn2RC0ANSCRDTyiwmeY
+         kFPg==
+X-Gm-Message-State: AOAM532AYyMGyuXbzk0CtWEN+NOrN/34vGMmIyW5fbRUnupOZ+/Oo6et
+        NZvQtEQ3JwEIpCjAprtNFay1p45QHKBSdkHfuUvM6/dImSZ8b6m+qz7YL6Tedn+boGBiSBNo9Z3
+        hUIidOV8vOc79cZPicq5cpkw+8PLREkzE9MgmwWg=
+X-Received: by 2002:aa7:c9cb:: with SMTP id i11mr6030781edt.331.1618918775748;
+        Tue, 20 Apr 2021 04:39:35 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxenHfop9KAauFCZtv5V4COrg2sAveJWXuaem0SSGfvEBrhcrropUIwjQVfyJ44In3y9caFVA==
+X-Received: by 2002:aa7:c9cb:: with SMTP id i11mr6030762edt.331.1618918775613;
+        Tue, 20 Apr 2021 04:39:35 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-180-75.adslplus.ch. [188.155.180.75])
-        by smtp.gmail.com with ESMTPSA id bw26sm10109007ejb.119.2021.04.20.04.39.33
+        by smtp.gmail.com with ESMTPSA id bw26sm10109007ejb.119.2021.04.20.04.39.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Apr 2021 04:39:34 -0700 (PDT)
+        Tue, 20 Apr 2021 04:39:35 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 To:     Support Opensource <support.opensource@diasemi.com>,
         Lee Jones <lee.jones@linaro.org>,
@@ -51,10 +51,11 @@ To:     Support Opensource <support.opensource@diasemi.com>,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
         patches@opensource.cirrus.com
 Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Sylwester Nawrocki <snawrocki@kernel.org>
-Subject: [PATCH v2 2/7] mfd: max8998: Simplify getting of_device_id match data
-Date:   Tue, 20 Apr 2021 13:39:24 +0200
-Message-Id: <20210420113929.278082-2-krzysztof.kozlowski@canonical.com>
+        Sylwester Nawrocki <snawrocki@kernel.org>,
+        Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
+Subject: [PATCH v2 3/7] mfd: da9052: Simplify getting of_device_id match data
+Date:   Tue, 20 Apr 2021 13:39:25 +0200
+Message-Id: <20210420113929.278082-3-krzysztof.kozlowski@canonical.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210420113929.278082-1-krzysztof.kozlowski@canonical.com>
 References: <20210420113929.278082-1-krzysztof.kozlowski@canonical.com>
@@ -64,46 +65,39 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use of_device_get_match_data() to make the code slightly smaller.  There
-is also no need to wrap it in a check for CONFIG_OF, because dev.of_node
-will be set only with OF support.
+Use of_device_get_match_data() to make the code slightly smaller.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Acked-by: Adam Thomson <Adam.Thomson.Opensource@diasemi.com>
 
 ---
 
 Changes since v1:
-1. Remove check for CONFIG_OF
+1. Add Ack
 ---
- drivers/mfd/max8998.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/mfd/da9052-i2c.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mfd/max8998.c b/drivers/mfd/max8998.c
-index 785f8e9841b7..0eb15e611b67 100644
---- a/drivers/mfd/max8998.c
-+++ b/drivers/mfd/max8998.c
-@@ -12,6 +12,7 @@
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/of.h>
-+#include <linux/of_device.h>
- #include <linux/of_irq.h>
- #include <linux/pm_runtime.h>
- #include <linux/mutex.h>
-@@ -155,11 +156,8 @@ static struct max8998_platform_data *max8998_i2c_parse_dt_pdata(
- static inline unsigned long max8998_i2c_get_driver_data(struct i2c_client *i2c,
- 						const struct i2c_device_id *id)
- {
--	if (IS_ENABLED(CONFIG_OF) && i2c->dev.of_node) {
--		const struct of_device_id *match;
--		match = of_match_node(max8998_dt_match, i2c->dev.of_node);
--		return (unsigned long)match->data;
--	}
-+	if (i2c->dev.of_node)
-+		return (unsigned long)of_device_get_match_data(&i2c->dev);
+diff --git a/drivers/mfd/da9052-i2c.c b/drivers/mfd/da9052-i2c.c
+index 47556d2d9abe..5d8ce8dca3fc 100644
+--- a/drivers/mfd/da9052-i2c.c
++++ b/drivers/mfd/da9052-i2c.c
+@@ -154,13 +154,8 @@ static int da9052_i2c_probe(struct i2c_client *client,
+ 		return ret;
  
- 	return id->driver_data;
- }
+ #ifdef CONFIG_OF
+-	if (!id) {
+-		struct device_node *np = client->dev.of_node;
+-		const struct of_device_id *deviceid;
+-
+-		deviceid = of_match_node(dialog_dt_ids, np);
+-		id = deviceid->data;
+-	}
++	if (!id)
++		id = of_device_get_match_data(&client->dev);
+ #endif
+ 
+ 	if (!id) {
 -- 
 2.25.1
 
