@@ -2,153 +2,176 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EB533669F8
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Apr 2021 13:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CDB4366E6A
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Apr 2021 16:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237511AbhDULhI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 21 Apr 2021 07:37:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47090 "EHLO
+        id S241573AbhDUOpH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 21 Apr 2021 10:45:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237440AbhDULhH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Apr 2021 07:37:07 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADAE7C06138B
-        for <linux-omap@vger.kernel.org>; Wed, 21 Apr 2021 04:36:33 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id f195-20020a1c1fcc0000b029012eb88126d7so1060267wmf.3
-        for <linux-omap@vger.kernel.org>; Wed, 21 Apr 2021 04:36:33 -0700 (PDT)
+        with ESMTP id S235292AbhDUOpH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Apr 2021 10:45:07 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89FDC06138A
+        for <linux-omap@vger.kernel.org>; Wed, 21 Apr 2021 07:44:32 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id v6so62584426ejo.6
+        for <linux-omap@vger.kernel.org>; Wed, 21 Apr 2021 07:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=3U1xeifc4RYATXIaOPm+gVuOiogsqdmpZYnrWwH4mgQ=;
-        b=ZCyo4Lvm/KnWehZdix7AShEog4Tc6zanQV0JB2RIAFSrtiTTBaIlyDy8+ZUdFSezQ6
-         +KbK+TWWkzZESzM4vM3yAKR1/GXsAssfOs/IycMS1pr2LBsPoirx6p8TK2PVEXdwPipp
-         Yz40G+ks8Sc9NTDjekTumF+0YPt5hbeiaZO7NiGaHDeW9Uk9JdRevBoyzCa1+4wbpueO
-         TgZq4GC6w17coiCRMNqqmKORqJmTEPRJPJ9lpmYHY1wciQvqg7qcji/1M/PWhBAkDivZ
-         UuyuLKSwPXxaS4BXRQu7YhNXr6sYusYwex0AehNkhRftOaKR0CEzhzpJYEKd4LE49G5l
-         unfQ==
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jE/4nGUnR/yV9x7hWyZ3juNzY2oHb9OWyxlMwjbE9yU=;
+        b=ja7ztZ8yRHWJyA8FqEzwjciyhLW/G7rcdIYdq4+NAhgQMF9xXZhfBgTHgQ9Y5Ny3Gh
+         OcZQODfW7oHAnCi0tB/gBU4bLriGIAeQgBo4/IWn5cQyKUejsSj49u9AWVg8ERuT/xl/
+         +5zkrUdRzug3waTTYvuRcz07XqXH2E++47A3vrFbPQkATJ7cW5KO+0A8hZGT8sl4iatx
+         IeZ/3Qlxyjl+49WM+l29wxlfvAaLg0Nm1+9hSMJ7cxhwiKVW/jacFARypjtBzQS/Zr7z
+         a64XI1Pd7lzcRWA9KqjCfnJJRNG44NC2YPl+Zd7hUJK5qUEpD71RHliDlM7AUR4c0m6V
+         Xc4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=3U1xeifc4RYATXIaOPm+gVuOiogsqdmpZYnrWwH4mgQ=;
-        b=Ynt197xK05FQZze2DxW70YxkZXQpERbG9L88G+CfGWynCNSbUOqBvbeC5Ik9NEH1EK
-         5TtGkpEIPbpWq+AVeE1l0Fh9Eq8zvOD/B/EKRcWP4FDpyYfCF4DiF4/55W3+dDZ0pdRF
-         P6KnKOspcGXixi7Y8q+I9Y7UcbnHdwrbZreQRBMOH7YWPW/gH5uu3L8i4UZS+Icgfu6+
-         NLAabcO/Qu+LsRwBghWsIzJ3lRtKBfM2LkTUppzNaIfFc+go5EznZOxlJYC9Yh/T9d1Z
-         QpIGTEt9nb9D83UA/KNnITmx8JqmqP/Pokzil49HnxM/8NS0DLhlZkZE7zY131/KzUf2
-         2ZFw==
-X-Gm-Message-State: AOAM531inyBtTmpFkdwQ7E00af6mIo3Jdfu6P6Y/jiS23AUqWT82+bZv
-        vVm8sFvWvO50IXs8GmKvgPv79UOVBiQeLk7I
-X-Google-Smtp-Source: ABdhPJyOX4FqLp9SQoeu19y0eMvJflSoeUyXcc2fWopIy9J+Fj4eXzzG4ll+AZRlHZl3JEwcMKaHRQ==
-X-Received: by 2002:a1c:9850:: with SMTP id a77mr9163790wme.174.1619004992118;
-        Wed, 21 Apr 2021 04:36:32 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:d985:3a3b:ec32:bdfe? ([2a01:e34:ed2f:f020:d985:3a3b:ec32:bdfe])
-        by smtp.googlemail.com with ESMTPSA id q5sm2162741wmj.20.2021.04.21.04.36.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Apr 2021 04:36:31 -0700 (PDT)
-Subject: Re: [PATCH v3] thermal: ti-soc-thermal: Remove unused variable 'val'
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Lin Ruizhe <linruizhe@huawei.com>, rui.zhang@intel.com,
-        edubezval@gmail.com, j-keerthy@ti.com, amitk@kernel.org,
-        eballetbo@gmail.com, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210421084256.57591-1-linruizhe@huawei.com>
- <YH/nK6xshH+lW7e0@kroah.com>
- <8e66040e-4330-d4f0-afbb-8cae62a5082e@linaro.org>
- <YH/yQ5Hd+30DH4p/@atomide.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <3116672d-4ff3-a065-f76c-1ae820e1ff95@linaro.org>
-Date:   Wed, 21 Apr 2021 13:36:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jE/4nGUnR/yV9x7hWyZ3juNzY2oHb9OWyxlMwjbE9yU=;
+        b=QwWo3aXg9MmS3nOhXrfnTE394yPqPv67n0InxQhYOzRMNA30Y5mhhvLlUVTg/43qeN
+         2EhWbMv7eA5wom3HWVPzdBd6hwTKVGQdSQpXLihRHkRCMdObli0FC8vgF8SIHKAOEute
+         XqHU/8prnUgPfALjiLmbZR2XfbBcBYHYDfd0bTEa06Lm1EOST7dYII0CfZAEp+28f5or
+         88uePfnLu6qcmhUWLcI52Oi8t2KbXgm+YV2qt/KxpVlBnhxu14G53Zmqn2nte7SVreXM
+         ifQ5LNhIeAIaeQwAsHyrgyYYs9AeUZxSuiiKduJI4RD6H351DKYExOWN2T4H/y6W1n3S
+         Hcuw==
+X-Gm-Message-State: AOAM531KnGOfskBGfqlFYG3FdMaI/sGhbCVCpXdXLrbBIPJsxGx1ti4X
+        /2QIqSkf5WXVX1eA3nPzGWHWgVrAODn6ngsh+mVtpw==
+X-Google-Smtp-Source: ABdhPJx4E+igdTsybK+rUiBs/GNRmWSAdvYptk03yufQ4/PPlIZF3jEklrM0ifKX5skEQsWtyoPx74v8XJD1abqCu8Q=
+X-Received: by 2002:a17:906:1d10:: with SMTP id n16mr32670039ejh.445.1619016271598;
+ Wed, 21 Apr 2021 07:44:31 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YH/yQ5Hd+30DH4p/@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20210417083839.46985-1-tony@atomide.com>
+In-Reply-To: <20210417083839.46985-1-tony@atomide.com>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Wed, 21 Apr 2021 16:44:20 +0200
+Message-ID: <CAMRc=McY+D-Ev95+nZ5mvwg=YxwJtC65a+5BY2Rvm9g8ec_d7w@mail.gmail.com>
+Subject: Re: [PATCHv2] gpio: omap: Save and restore sysconfig
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Adam Ford <aford173@gmail.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Sat, Apr 17, 2021 at 10:38 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> As we are using cpu_pm to save and restore context, we must also save and
+> restore the GPIO sysconfig register. This is needed because we are not
+> calling PM runtime functions at all with cpu_pm.
+>
+> We need to save the sysconfig on idle as it's value can get reconfigured by
+> PM runtime and can be different from the init time value. Device specific
+> flags like "ti,no-idle-on-init" can affect the init value.
+>
+> Fixes: b764a5863fd8 ("gpio: omap: Remove custom PM calls and use cpu_pm instead")
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Adam Ford <aford173@gmail.com>
+> Cc: Andreas Kemnade <andreas@kemnade.info>
+> Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+> Cc: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/gpio/gpio-omap.c                | 9 +++++++++
+>  include/linux/platform_data/gpio-omap.h | 3 +++
+>  2 files changed, 12 insertions(+)
+>
+> diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+> --- a/drivers/gpio/gpio-omap.c
+> +++ b/drivers/gpio/gpio-omap.c
+> @@ -29,6 +29,7 @@
+>  #define OMAP4_GPIO_DEBOUNCINGTIME_MASK 0xFF
+>
+>  struct gpio_regs {
+> +       u32 sysconfig;
+>         u32 irqenable1;
+>         u32 irqenable2;
+>         u32 wake_en;
+> @@ -1069,6 +1070,7 @@ static void omap_gpio_init_context(struct gpio_bank *p)
+>         const struct omap_gpio_reg_offs *regs = p->regs;
+>         void __iomem *base = p->base;
+>
+> +       p->context.sysconfig    = readl_relaxed(base + regs->sysconfig);
+>         p->context.ctrl         = readl_relaxed(base + regs->ctrl);
+>         p->context.oe           = readl_relaxed(base + regs->direction);
+>         p->context.wake_en      = readl_relaxed(base + regs->wkup_en);
+> @@ -1088,6 +1090,7 @@ static void omap_gpio_restore_context(struct gpio_bank *bank)
+>         const struct omap_gpio_reg_offs *regs = bank->regs;
+>         void __iomem *base = bank->base;
+>
+> +       writel_relaxed(bank->context.sysconfig, base + regs->sysconfig);
+>         writel_relaxed(bank->context.wake_en, base + regs->wkup_en);
+>         writel_relaxed(bank->context.ctrl, base + regs->ctrl);
+>         writel_relaxed(bank->context.leveldetect0, base + regs->leveldetect0);
+> @@ -1115,6 +1118,10 @@ static void omap_gpio_idle(struct gpio_bank *bank, bool may_lose_context)
+>
+>         bank->saved_datain = readl_relaxed(base + bank->regs->datain);
+>
+> +       /* Save syconfig, it's runtime value can be different from init value */
+> +       if (bank->loses_context)
+> +               bank->context.sysconfig = readl_relaxed(base + bank->regs->sysconfig);
+> +
+>         if (!bank->enabled_non_wakeup_gpios)
+>                 goto update_gpio_context_count;
+>
+> @@ -1279,6 +1286,7 @@ static int gpio_omap_cpu_notifier(struct notifier_block *nb,
+>
+>  static const struct omap_gpio_reg_offs omap2_gpio_regs = {
+>         .revision =             OMAP24XX_GPIO_REVISION,
+> +       .sysconfig =            OMAP24XX_GPIO_SYSCONFIG,
+>         .direction =            OMAP24XX_GPIO_OE,
+>         .datain =               OMAP24XX_GPIO_DATAIN,
+>         .dataout =              OMAP24XX_GPIO_DATAOUT,
+> @@ -1302,6 +1310,7 @@ static const struct omap_gpio_reg_offs omap2_gpio_regs = {
+>
+>  static const struct omap_gpio_reg_offs omap4_gpio_regs = {
+>         .revision =             OMAP4_GPIO_REVISION,
+> +       .sysconfig =            OMAP4_GPIO_SYSCONFIG,
+>         .direction =            OMAP4_GPIO_OE,
+>         .datain =               OMAP4_GPIO_DATAIN,
+>         .dataout =              OMAP4_GPIO_DATAOUT,
+> diff --git a/include/linux/platform_data/gpio-omap.h b/include/linux/platform_data/gpio-omap.h
+> --- a/include/linux/platform_data/gpio-omap.h
+> +++ b/include/linux/platform_data/gpio-omap.h
+> @@ -85,6 +85,7 @@
+>   * omap2+ specific GPIO registers
+>   */
+>  #define OMAP24XX_GPIO_REVISION         0x0000
+> +#define OMAP24XX_GPIO_SYSCONFIG                0x0010
+>  #define OMAP24XX_GPIO_IRQSTATUS1       0x0018
+>  #define OMAP24XX_GPIO_IRQSTATUS2       0x0028
+>  #define OMAP24XX_GPIO_IRQENABLE2       0x002c
+> @@ -108,6 +109,7 @@
+>  #define OMAP24XX_GPIO_SETDATAOUT       0x0094
+>
+>  #define OMAP4_GPIO_REVISION            0x0000
+> +#define OMAP4_GPIO_SYSCONFIG           0x0010
+>  #define OMAP4_GPIO_EOI                 0x0020
+>  #define OMAP4_GPIO_IRQSTATUSRAW0       0x0024
+>  #define OMAP4_GPIO_IRQSTATUSRAW1       0x0028
+> @@ -148,6 +150,7 @@
+>  #ifndef __ASSEMBLER__
+>  struct omap_gpio_reg_offs {
+>         u16 revision;
+> +       u16 sysconfig;
+>         u16 direction;
+>         u16 datain;
+>         u16 dataout;
+> --
+> 2.31.1
 
-Hi Tony,
+Applied for fixes, thanks!
 
-thanks for testing
-
-  -- Daniel
-
-On 21/04/2021 11:37, Tony Lindgren wrote:
-> * Daniel Lezcano <daniel.lezcano@linaro.org> [210421 09:07]:
->> On 21/04/2021 10:49, Greg KH wrote:
->>> On Wed, Apr 21, 2021 at 04:42:56PM +0800, Lin Ruizhe wrote:
->>>> The variable 'val'in function ti_bandgap_restore_ctxt is
->>>> the register value of read bandgap registers. This function is to
->>>> restore the context. But there is no operation on the return value
->>>> of this register, so this block is redundant. Hulk robot scans this
->>>> warning.This commit remove the dead code.
->>>>
->>>> Reported-by: Hulk Robot <hulkci@huawei.com>
->>>> Fixes: b87ea759a4cc ("staging: omap-thermal: fix context restore function")
->>>> Signed-off-by: Lin Ruizhe <linruizhe@huawei.com>
->>>> ---
->>>> v3:
->>>> -Add Fixes tag and more accurate commit message in this patch.
->>>> v2:
->>>> -As suggest remove the whole unuesed block in fuction
->>>>  ti_bandgap_restore_ctxt
->>>>
->>>>  drivers/thermal/ti-soc-thermal/ti-bandgap.c | 4 ----
->>>>  1 file changed, 4 deletions(-)
->>>>
->>>> diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
->>>> index d81af89166d2..684ffb645aa9 100644
->>>> --- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
->>>> +++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
->>>> @@ -1142,14 +1142,10 @@ static int ti_bandgap_restore_ctxt(struct ti_bandgap *bgp)
->>>>  	for (i = 0; i < bgp->conf->sensor_count; i++) {
->>>>  		struct temp_sensor_registers *tsr;
->>>>  		struct temp_sensor_regval *rval;
->>>> -		u32 val = 0;
->>>>  
->>>>  		rval = &bgp->regval[i];
->>>>  		tsr = bgp->conf->sensors[i].registers;
->>>>  
->>>> -		if (TI_BANDGAP_HAS(bgp, COUNTER))
->>>> -			val = ti_bandgap_readl(bgp, tsr->bgap_counter);
->>>
->>> Are you sure that this hardware does not require this read to happen in
->>> order for it to work properly?
->>
->> Yes, initially we had the same concern but we were unable to find
->> anything specific in the history. The commit mentioned above removed the
->> user of the 'val' code but without removing this block of code.
->>
->> When looking at the current code, it really looks like an oversight.
-> 
-> Yes so it seems.
-> 
->> There is nothing in the commit's changelog referring to a need of
->> reading the counter register but perhaps I'm wrong because I'm not sure
->> to understand correctly the changelog.
->>
->>> Lots of hardware does need this, have you tested this?
-> 
-> I just tested this on omap3 logicpd torpedo devkit that can do off during
-> idle and reading /sys/class/thermal/thermal_zone0/temp works. So feel
-> free to add:
-> 
-> Reviewed-by: Tony Lindgren <tony@atomide.com>
-> Tested-by: Tony Lindgren <tony@atomide.com>
-
-Thanks for testing
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Bartosz
