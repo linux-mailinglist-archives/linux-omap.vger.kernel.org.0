@@ -2,196 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 178F33681D5
-	for <lists+linux-omap@lfdr.de>; Thu, 22 Apr 2021 15:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66C37368E6B
+	for <lists+linux-omap@lfdr.de>; Fri, 23 Apr 2021 10:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236582AbhDVNvE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 22 Apr 2021 09:51:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56236 "EHLO
+        id S241398AbhDWIFP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 23 Apr 2021 04:05:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230005AbhDVNvD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 22 Apr 2021 09:51:03 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9CC3C06174A
-        for <linux-omap@vger.kernel.org>; Thu, 22 Apr 2021 06:50:28 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id p6so38209423wrn.9
-        for <linux-omap@vger.kernel.org>; Thu, 22 Apr 2021 06:50:28 -0700 (PDT)
+        with ESMTP id S241368AbhDWIFO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Apr 2021 04:05:14 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62ED8C06174A
+        for <linux-omap@vger.kernel.org>; Fri, 23 Apr 2021 01:04:38 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id u187so5995926wmb.0
+        for <linux-omap@vger.kernel.org>; Fri, 23 Apr 2021 01:04:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=oHHIrNwlKJzcfE+FQHO0ug1i1bvvW4iwkAqPABTWDx8=;
-        b=zM0XDyuSfWKqk8T2mOWATqJLBD9+YMYFOM50SXN/r8AChLMjV5otaPIEX3GoTpDd/6
-         /P8O3EyBFs3BnjevYogqHiA404amx6PnyXGOusV0IwoOyvBfVdt3cW3by0wyodERpQb9
-         0RYY0fhp3UYGR4mvofHhPyr9e9l9Wn+u7Ze9wzafF09BN0lLEH8WtALjQ6xF/mYvxHUG
-         zFXVyb91Ty7DC+k4Eo9Se025Zgbk23QACt58LWvRy/SR6Xr/2ej1v3Fr4QqfA19iaWuX
-         CAa2hgzpgaBFcOQ0gnPV9ZvNlV4COA0QiJOdeYks/HrT2Hd28JlAlLUhNv8sXkxI+v0n
-         bhvA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=BbAlfrwo2WRXERUJtU5zYuJ3Z63HTo/B8XlPZIzMJFc=;
+        b=na1Jxk6XNOFLChzn9la6USRZvv3sr8FCcw5vCRdYVPYBcVAd7F4pdUMPDz5CE659Sm
+         3AOE4eehE295iYSdW3ERnPASjw9jPJL7Zn4YN1APnXLMjuwmsBBcYezrIQzaE6larHaj
+         n2UweGZY7IMVrXGCgXQSyYDOCLr0X2LC/RoU934VnmkV4COREVnRjJfFsbCNDACB4UJm
+         +4fdYNfi76MM7akXx/uusqiCpV+l9qNztoHxarBW49winzZk9VlAzTj/EYDZ7NyiqOrZ
+         f8NxzHxExwo7RZwYA8g06llCivvrzWb2p7lSZcWyfI27dpN/hcpZNhZ45L3Ut/XTqzpv
+         8SIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=oHHIrNwlKJzcfE+FQHO0ug1i1bvvW4iwkAqPABTWDx8=;
-        b=jXnT7O+36L+GMOjd3Sp8wAthqActVCLaRr3lASMPQNIDVCjPiBr6TpVCzlXtwWkbcg
-         xPgvEsyGsMFhbTK8w8o45E3ZTecOPXEuM2kF7GhavYq3zzWb1b6ysZDL3b61XLsDbQzt
-         OQL3f8YTz8AkDz+86VIGn0KUf6bRmnAasBz1VaeeO9rLFpwGODk7A33Zk+IRluUGE5RD
-         4NuSWcas2u1odosXck2YvyGfUBXSlV7GYURRdtQI8tdeF8jRbiDZW3Wo7cbBARzeNIRT
-         LiK67JjaU9gR0rtZCSE5m1p0+C/y7XzyeRvVMxOjBqEZ9Vv46cjZjVLzlkgMYDqRPhkq
-         ms+A==
-X-Gm-Message-State: AOAM533vZzwaRM5dA8lBZ3F1RpFPHus7f/AlWIQkC4J2phRDY2GSfpLI
-        P2+q1EBU5fOu0tXTHSB/sM3ZVA==
-X-Google-Smtp-Source: ABdhPJz25Rlr80wY378JDir9MgjKiQXY7Ns4Ol4LX7W8HILcAyeWDo+USHtF9Fp2Uoxukt/6AnIdNw==
-X-Received: by 2002:a5d:4251:: with SMTP id s17mr4298450wrr.174.1619099427307;
-        Thu, 22 Apr 2021 06:50:27 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:e88d:2580:c20:b786? ([2a01:e34:ed2f:f020:e88d:2580:c20:b786])
-        by smtp.googlemail.com with ESMTPSA id h2sm3623846wmc.24.2021.04.22.06.50.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Apr 2021 06:50:26 -0700 (PDT)
-Subject: =?UTF-8?B?UmU6IOetlOWkjTogW1BBVENIIHYzXSB0aGVybWFsOiB0aS1zb2MtdGhl?=
- =?UTF-8?Q?rmal=3a_Remove_unused_variable_=27val=27?=
-To:     linruizhe <linruizhe@huawei.com>, Tony Lindgren <tony@atomide.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        "rui.zhang@intel.com" <rui.zhang@intel.com>,
-        "edubezval@gmail.com" <edubezval@gmail.com>,
-        "j-keerthy@ti.com" <j-keerthy@ti.com>,
-        "amitk@kernel.org" <amitk@kernel.org>,
-        "eballetbo@gmail.com" <eballetbo@gmail.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20210421084256.57591-1-linruizhe@huawei.com>
- <YH/nK6xshH+lW7e0@kroah.com>
- <8e66040e-4330-d4f0-afbb-8cae62a5082e@linaro.org>
- <YH/yQ5Hd+30DH4p/@atomide.com>
- <3116672d-4ff3-a065-f76c-1ae820e1ff95@linaro.org>
- <7871516e6f824f35929c4ed87cbc08c4@huawei.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <c7d67490-06cd-f15a-3972-3db4d5812a69@linaro.org>
-Date:   Thu, 22 Apr 2021 15:50:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=BbAlfrwo2WRXERUJtU5zYuJ3Z63HTo/B8XlPZIzMJFc=;
+        b=JqlO5bmQ9kn2c4f33zlTmxj24B6OGqo3QS3pzK6YznlxrQ/Ar2l/D4kfOe6EhzAsjk
+         yn6eV2XVdpN7fnb+wC8zOAjcv4GDQ29b+iP93YAsqQGdeO1wUnHeGadkjF8AvZAjUV8s
+         OrcZYwlOv1TFJA908nXQevFaja8ejHaIYCISagnR1xytL/1bOvAC+1rbqlq+/8OUTeie
+         v2m6adZXzQz7x1y047OxB/uBHsaxE+1FVQP/MGkQgyx3zfdzqYnfZE9gvqwbWeJDsUEk
+         iOH4MWKbW+DkukKabZwKBLok7L6NYxdodCxi/mJpG1OjnVmz5uBnjiH8Tpiax+V/EZs1
+         vsrA==
+X-Gm-Message-State: AOAM5326tHgA2Oi4vwEwfMjJE1HRUOm1iPhSVwte8XT18evhAggXMQWU
+        09YDKOPgOka50NS+YX/EfRkagA==
+X-Google-Smtp-Source: ABdhPJxOlhfTTDO2kZbt4t7jcd53CauCFDvLwi+o18lwhWG31178YTGd3jxTUmB1SaLsSOh0gmSRMQ==
+X-Received: by 2002:a1c:f701:: with SMTP id v1mr4168778wmh.69.1619165077043;
+        Fri, 23 Apr 2021 01:04:37 -0700 (PDT)
+Received: from dell ([91.110.221.215])
+        by smtp.gmail.com with ESMTPSA id c16sm7801320wrm.93.2021.04.23.01.04.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Apr 2021 01:04:36 -0700 (PDT)
+Date:   Fri, 23 Apr 2021 09:04:34 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Support Opensource <support.opensource@diasemi.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Sylwester Nawrocki <snawrocki@kernel.org>
+Subject: Re: [PATCH v2 7/7] mfd: twl: Correct kerneldoc
+Message-ID: <20210423080434.GA6446@dell>
+References: <20210420113929.278082-1-krzysztof.kozlowski@canonical.com>
+ <20210420113929.278082-7-krzysztof.kozlowski@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <7871516e6f824f35929c4ed87cbc08c4@huawei.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210420113929.278082-7-krzysztof.kozlowski@canonical.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Tue, 20 Apr 2021, Krzysztof Kozlowski wrote:
 
-Hi Lin,
-
-
-On 22/04/2021 14:39, linruizhe wrote:
-> Hi Daniel,
+> Correct kerneldoc function name to fix W=1 warning:
 > 
-> Do I need to make more changes to this patch?
+>   drivers/mfd/twl-core.c:496: warning:
+>     expecting prototype for twl_regcache_bypass(). Prototype was for twl_set_regcache_bypass() instead
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> ---
+>  drivers/mfd/twl-core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-No, it is fine. I've applied it.
+FYI, a patch already exists for fixing this.
 
-Thanks
-
-  -- Daniel
-
-
-> Thanks
+> diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
+> index 20cf8cfe4f3b..24b77b18b725 100644
+> --- a/drivers/mfd/twl-core.c
+> +++ b/drivers/mfd/twl-core.c
+> @@ -485,8 +485,8 @@ int twl_i2c_read(u8 mod_no, u8 *value, u8 reg, unsigned num_bytes)
+>  EXPORT_SYMBOL(twl_i2c_read);
 >  
->   -Lin Ruizhe
-> 
-> -----邮件原件-----
-> 发件人: Daniel Lezcano [mailto:daniel.lezcano@linaro.org] 
-> 发送时间: 2021年4月21日 19:37
-> 收件人: Tony Lindgren <tony@atomide.com>
-> 抄送: Greg KH <gregkh@linuxfoundation.org>; linruizhe <linruizhe@huawei.com>; rui.zhang@intel.com; edubezval@gmail.com; j-keerthy@ti.com; amitk@kernel.org; eballetbo@gmail.com; linux-pm@vger.kernel.org; linux-omap@vger.kernel.org; linux-kernel@vger.kernel.org
-> 主题: Re: [PATCH v3] thermal: ti-soc-thermal: Remove unused variable 'val'
-> 
-> 
-> Hi Tony,
-> 
-> thanks for testing
-> 
->   -- Daniel
-> 
-> On 21/04/2021 11:37, Tony Lindgren wrote:
->> * Daniel Lezcano <daniel.lezcano@linaro.org> [210421 09:07]:
->>> On 21/04/2021 10:49, Greg KH wrote:
->>>> On Wed, Apr 21, 2021 at 04:42:56PM +0800, Lin Ruizhe wrote:
->>>>> The variable 'val'in function ti_bandgap_restore_ctxt is the 
->>>>> register value of read bandgap registers. This function is to 
->>>>> restore the context. But there is no operation on the return value 
->>>>> of this register, so this block is redundant. Hulk robot scans this 
->>>>> warning.This commit remove the dead code.
->>>>>
->>>>> Reported-by: Hulk Robot <hulkci@huawei.com>
->>>>> Fixes: b87ea759a4cc ("staging: omap-thermal: fix context restore 
->>>>> function")
->>>>> Signed-off-by: Lin Ruizhe <linruizhe@huawei.com>
->>>>> ---
->>>>> v3:
->>>>> -Add Fixes tag and more accurate commit message in this patch.
->>>>> v2:
->>>>> -As suggest remove the whole unuesed block in fuction  
->>>>> ti_bandgap_restore_ctxt
->>>>>
->>>>>  drivers/thermal/ti-soc-thermal/ti-bandgap.c | 4 ----
->>>>>  1 file changed, 4 deletions(-)
->>>>>
->>>>> diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c 
->>>>> b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
->>>>> index d81af89166d2..684ffb645aa9 100644
->>>>> --- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
->>>>> +++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
->>>>> @@ -1142,14 +1142,10 @@ static int ti_bandgap_restore_ctxt(struct ti_bandgap *bgp)
->>>>>  	for (i = 0; i < bgp->conf->sensor_count; i++) {
->>>>>  		struct temp_sensor_registers *tsr;
->>>>>  		struct temp_sensor_regval *rval;
->>>>> -		u32 val = 0;
->>>>>  
->>>>>  		rval = &bgp->regval[i];
->>>>>  		tsr = bgp->conf->sensors[i].registers;
->>>>>  
->>>>> -		if (TI_BANDGAP_HAS(bgp, COUNTER))
->>>>> -			val = ti_bandgap_readl(bgp, tsr->bgap_counter);
->>>>
->>>> Are you sure that this hardware does not require this read to happen 
->>>> in order for it to work properly?
->>>
->>> Yes, initially we had the same concern but we were unable to find 
->>> anything specific in the history. The commit mentioned above removed 
->>> the user of the 'val' code but without removing this block of code.
->>>
->>> When looking at the current code, it really looks like an oversight.
->>
->> Yes so it seems.
->>
->>> There is nothing in the commit's changelog referring to a need of 
->>> reading the counter register but perhaps I'm wrong because I'm not 
->>> sure to understand correctly the changelog.
->>>
->>>> Lots of hardware does need this, have you tested this?
->>
->> I just tested this on omap3 logicpd torpedo devkit that can do off 
->> during idle and reading /sys/class/thermal/thermal_zone0/temp works. 
->> So feel free to add:
->>
->> Reviewed-by: Tony Lindgren <tony@atomide.com>
->> Tested-by: Tony Lindgren <tony@atomide.com>
-> 
-> Thanks for testing
-> 
-> 
-> --
-> <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-> 
-> Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook | <http://twitter.com/#!/linaroorg> Twitter | <http://www.linaro.org/linaro-blog/> Blog
-> 
-
+>  /**
+> - * twl_regcache_bypass - Configure the regcache bypass for the regmap associated
+> - *			 with the module
+> + * twl_set_regcache_bypass - Configure the regcache bypass for the regmap
+> + *			     associated with the module
+>   * @mod_no: module number
+>   * @enable: Regcache bypass state
+>   *
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
