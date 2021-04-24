@@ -2,73 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5AEE369FE9
-	for <lists+linux-omap@lfdr.de>; Sat, 24 Apr 2021 09:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88AEC36A081
+	for <lists+linux-omap@lfdr.de>; Sat, 24 Apr 2021 11:17:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231433AbhDXHBI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 24 Apr 2021 03:01:08 -0400
-Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21171 "EHLO
+        id S231203AbhDXJSQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 24 Apr 2021 05:18:16 -0400
+Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21165 "EHLO
         sender11-of-o51.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbhDXHBH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 24 Apr 2021 03:01:07 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1619247615; cv=none; 
+        with ESMTP id S229850AbhDXJSQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 24 Apr 2021 05:18:16 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1619255844; cv=none; 
         d=zohomail.eu; s=zohoarc; 
-        b=VTzYT/CDkeExDzut6C1/3PY9x1CaADhUaKky2tKVLSoEn3gNiBaIf9a29RRWy3jXCb84P3YwP7zL/YRWwz0XB46GSY/Jp8wXQbD38ahpFllLw/PKi4p9xAfdeq36+FGbS8YiBDaHDv5Rhwl20mFzODOAu2U6z4TDF1nyCQE2qno=
+        b=JhwujuQ+D6ZLmOJ5A0WkalK9EgvvQU1p0nCEytCzSAWjlYMk1YKXQXeFN7TPpyNfOvaKuO8pDx02fwLpNwgjq5K+/uabtzpI/PgyR7azVc74PHEMoftXjdtiXA8PB/q0SEOMTMI4hbTLXl05k8nhW09HTRFeOHS8wSB5osLcBgk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1619247615; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=PpmKQct8T7SE+9HTjvr+Kcy/6X66BoTXVEZdN5kjPdY=; 
-        b=j64CG/8W5yNGrNx/BcFUpNiovAIjQQ61vKaYnuIW4Q058piQz/gq+MdHcBXSCDZWLqBCYhRxHGFoPuLeoBMc9kTJtJxigX8YSLQI6xIJMoAz5f1Ttfrn7DV6HsZ8NGzirYULmysUsDinHHu5Q/1nnxC7HkTswkcAD1ahdTOpHNY=
+        t=1619255844; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=MG9e1kFuIb53D0cUOfIstKRGH6wKvCIsKbrL880RlEg=; 
+        b=d829v0BjKM6Rs8Zf5p+dpuzpHvA8gk+DN0FOzMSeFIPPCB+tOKy0O7lyWdQmWZXbhNOHmjgrSH4Sfy1nffA2V5QBlDxHBHVyKBUuzZMFJnzhpY+xQ6mbtolgWntUA52ZW+PmQ5mqoX6XMHqLhv6f4CKsH0/FjnttMVPVn9oS0cc=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=carl@uvos.xyz;
-        dmarc=pass header.from=<carl@uvos.xyz> header.from=<carl@uvos.xyz>
-Received: from [100.99.127.58] (ip-109-40-128-234.web.vodafone.de [109.40.128.234]) by mx.zoho.eu
-        with SMTPS id 1619247614335511.7873946835115; Sat, 24 Apr 2021 09:00:14 +0200 (CEST)
-Date:   Sat, 24 Apr 2021 09:00:13 +0200
-Subject: Re: [PATCH v2 1/2] power: supply: cpcap-battery: Add battery type
- auto detection for mapphone devices
-From:   carl@uvos.xyz
+        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
+        dmarc=pass header.from=<philipp@uvos.xyz> header.from=<philipp@uvos.xyz>
+Received: from UVOSLinux (ip-95-222-212-190.hsi15.unitymediagroup.de [95.222.212.190]) by mx.zoho.eu
+        with SMTPS id 1619255842634493.17175410863695; Sat, 24 Apr 2021 11:17:22 +0200 (CEST)
+Date:   Sat, 24 Apr 2021 11:17:22 +0200
+From:   Carl Philipp Klemm <philipp@uvos.xyz>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     Pavel Machek <pavel@ucw.cz>,
         Arthur Demchenkov <spinal.by@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        linux-omap@vger.kernel.org, Sebastian Reichel <sre@kernel.org>
-Message-ID: <17902adc982.11f94042187264621.8712932018769506839@zoho.eu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
+        Merlijn Wajer <merlijn@wizzup.org>, linux-omap@vger.kernel.org,
+        Sebastian Reichel <sre@kernel.org>
+Subject: Re: [PATCH v2 1/2] power: supply: cpcap-battery: Add battery type
+ auto detection for mapphone devices
+Message-Id: <20210424111722.5defa3b4bab246143ca2c0ae@uvos.xyz>
+In-Reply-To: <17902adc982.11f94042187264621.8712932018769506839@zoho.eu>
+References: <17902adc982.11f94042187264621.8712932018769506839@zoho.eu>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-T24gQXByIDI0LCAyMDIxIDA4OjQ3LCBUb255IExpbmRncmVuIDx0b255QGF0b21pZGUuY29tPiB3
-cm90ZToKPgo+IEhpLCAKPgo+ICogQ2FybCBQaGlsaXBwIEtsZW1tIDxwaGlsaXBwQHV2b3MueHl6
-PiBbMjEwNDIzIDEyOjU1XTogCj4gPiArc3RhdGljIHZvaWQgY3BjYXBfYmF0dGVyeV9kZXRlY3Rf
-YmF0dGVyeV90eXBlKHN0cnVjdCBjcGNhcF9iYXR0ZXJ5X2RkYXRhICpkZGF0YSkgCj4gPiAreyAK
-PiA+ICsgc3RydWN0IG52bWVtX2RldmljZSAqbnZtZW07IAo+ID4gKyB1OCBiYXR0ZXJ5X2lkID0g
-MDsgCj4gPiArIAo+ID4gKyBkZGF0YS0+Y2hlY2tfbnZtZW0gPSBmYWxzZTsgCj4gPiArIAo+ID4g
-KyBudm1lbSA9IG52bWVtX2RldmljZV9maW5kKE5VTEwsICZjcGNhcF9iYXR0ZXJ5X21hdGNoX252
-bWVtKTsgCj4gPiArIGlmIChJU19FUlJfT1JfTlVMTChudm1lbSkpIHsgCj4gPiArIGRkYXRhLT5j
-aGVja19udm1lbSA9IHRydWU7IAo+ID4gKyBpZiAoIWRkYXRhLT5ub19udm1lbV93YXJuZWQpIHsg
-Cj4gPiArIGRldl9pbmZvKGRkYXRhLT5kZXYsICJDYW4gbm90IGZpbmQgYmF0dGVyeSBudm1lbSBk
-ZXZpY2UuIEFzc3VtaW5nIGdlbmVyaWMgbGlwbyBiYXR0ZXJ5XG4iKTsgCj4gPiArIGRkYXRhLT5u
-b19udm1lbV93YXJuZWQgPSB0cnVlOyAKPiA+ICsgfSAKPgo+IEZvbGtzIGFyZSBhbHNvIHVzaW5n
-IHRoZSBkZXZpY2Ugd2l0aCBubyBiYXR0ZXJ5IGF0IGFsbCB0byBoYXZlIGl0IGRpcmVjdGx5IAo+
-IGNvbm5lY3RlZCB0byB0aGUgcG93ZXIgc3VwcGx5LiBUaGlzIGlzIGhhbmR5IGZvciByZW1vdGVs
-eSBwb3dlciBjeWNsaW5nIAo+IHRoZSBkZXZpY2UsIGFuZCBhbHNvIGZvciBtZWFzdXJpbmcgcG93
-ZXIgY29uc3VtcHRpb24gd2l0aCBhIGJlbmNoIHBvd2VyIAo+IHN1cHBseS4gU28gYnkgZGVmYXVs
-dCBJIHRoaW5rIHdlIHNob3VsZCBjb250aW51ZSBhc3N1bWluZyBubyBiYXR0ZXJ5IGlzIAo+IGlu
-c2VydGVkIHJhdGhlciB0aGFuIGFzc3VtZSBhIGdlbmVyaWMgYmF0dGVyeSBpcyBpbnNlcnRlZC4g
-Cj4KPiBIb3cgYWJvdXQgcmVxdWlyZSBjb25maWd1cmluZyB0aGUgdW5kZXRlY3RlZCBiYXR0ZXJ5
-IHBhcmFtZXRlcnMgdmlhIAo+IC9zeXMvY2xhc3MvcG93ZXJfc3VwcGx5IHRvIGluZGljYXRlIGEg
-bm9uLXN0YW5kYXJkIGJhdHRlcnkgaXMgaW5zZXJ0ZWQ/IAo+Cj4gQXQgbGVhc3QgYmF0dGVyeSB0
-eXBlLCBjYXBhY2l0eSwgYW5kIHZvbHRhZ2UgY2FuIGRlcGVuZCBvbiB0aGUgZ2VuZXJpYyAKPiBi
-YXR0ZXJ5IGluc2VydGVkLiAKPgo+IE90aGVyIHRoYW4gdGhhdCwgdGhlIE5WUkFNIGNoYW5nZXMg
-bG9vayBuaWNlIHRvIG1lLiAKPgo+IFJlZ2FyZHMsIAo+Cj4gVG9ueSAKClRoZSBiYXR0ZXJ5IGlu
-c2VydGVkIHByb3BlcnR5IGlzIHN0aWxsIGJhc2VkIG9uIHRoZSBwcmVzZW5jZSBvZiBhIHRoZXJt
-aXN0b3IsIHNvIEkgZG9uJ3Qgc2VlIGhvdyB0aGlzIHBhdGNoIGNoYW5nZXMgdGhlIGJldmlvciB3
-aXRoIHJlZ2FyZHMgdG8gdGhpcyB1c2UgY2FzZSBhdCBhbGwgZXhjZXB0IGZvciB0aGF0IGluZm8g
-cHJpbnQuIFByZXZpb3VzbHkgdGhlIGJhdHRlcnkgaW5mb3JtYXRpb24gc3RydWN0IHdhcyBzaW1w
-bHkgc2V0IHRvIHRoZSB2YWx1ZXMgZXhwZWN0ZWQgZnJvbSBlYjQxIG5vIG1hdHRlciB3aGF0Lg==
+> On Apr 24, 2021 08:47, Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > Hi, 
+> >
+> > * Carl Philipp Klemm <philipp@uvos.xyz> [210423 12:55]: 
+> > > +static void cpcap_battery_detect_battery_type(struct cpcap_battery_ddata *ddata) 
+> > > +{ 
+> > > + struct nvmem_device *nvmem; 
+> > > + u8 battery_id = 0; 
+> > > + 
+> > > + ddata->check_nvmem = false; 
+> > > + 
+> > > + nvmem = nvmem_device_find(NULL, &cpcap_battery_match_nvmem); 
+> > > + if (IS_ERR_OR_NULL(nvmem)) { 
+> > > + ddata->check_nvmem = true; 
+> > > + if (!ddata->no_nvmem_warned) { 
+> > > + dev_info(ddata->dev, "Can not find battery nvmem device. Assuming generic lipo battery\n"); 
+> > > + ddata->no_nvmem_warned = true; 
+> > > + } 
+> >
+> > Folks are also using the device with no battery at all to have it directly 
+> > connected to the power supply. This is handy for remotely power cycling 
+> > the device, and also for measuring power consumption with a bench power 
+> > supply. So by default I think we should continue assuming no battery is 
+> > inserted rather than assume a generic battery is inserted. 
+> >
+> > How about require configuring the undetected battery parameters via 
+> > /sys/class/power_supply to indicate a non-standard battery is inserted? 
+> >
+> > At least battery type, capacity, and voltage can depend on the generic 
+> > battery inserted. 
+> >
+> > Other than that, the NVRAM changes look nice to me. 
+> >
+> > Regards, 
+> >
+> > Tony 
+> 
+> The battery inserted property is still based on the presence of a thermistor, so I don't see how this patch changes the bevior with regards to this use case at all except for that info print. Previously the battery information struct was simply set to the values expected from eb41 no matter what.
 
+Vefore writing this patch i did use the below on my xt875, which dose what you ask. maybe this is something you would like to see included in addition to the above? if so i can submitt it aswell:
+
+[PATCH] power: supply: cpcap-battery: make charge_full_design writeable, so that different/custom batteries can be used.
+
+Especially usfull on XTT875 where both HW4X and BW8X exsist
+
+---
+ drivers/power/supply/cpcap-battery.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/cpcap-battery.c
+index be8d8b746f24..6465cb1b084c 100644
+--- a/drivers/power/supply/cpcap-battery.c
++++ b/drivers/power/supply/cpcap-battery.c
+@@ -769,6 +769,13 @@ static int cpcap_battery_set_property(struct power_supply *psy,
+ 
+ 		ddata->charge_full = val->intval;
+ 
++		return 0;
++			case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
++		if (val->intval < 0)
++			return -EINVAL;
++
++		ddata->config.info.charge_full_design = val->intval;
++
+ 		return 0;
+ 	default:
+ 		return -EINVAL;
+@@ -783,6 +790,7 @@ static int cpcap_battery_property_is_writeable(struct power_supply *psy,
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL:
++	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+ 		return 1;
+ 	default:
+ 		return 0;
+-- 
+2.31.0
