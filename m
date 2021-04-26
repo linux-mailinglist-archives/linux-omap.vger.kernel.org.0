@@ -2,110 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC95436B48D
-	for <lists+linux-omap@lfdr.de>; Mon, 26 Apr 2021 16:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C36936BB0C
+	for <lists+linux-omap@lfdr.de>; Mon, 26 Apr 2021 23:11:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233717AbhDZONf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 26 Apr 2021 10:13:35 -0400
-Received: from muru.com ([72.249.23.125]:48822 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233637AbhDZONf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 26 Apr 2021 10:13:35 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id E448A80C0;
-        Mon, 26 Apr 2021 14:12:52 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org
-Subject: [PATCH] drm/omap: Fix issue with clocks left on after resume
-Date:   Mon, 26 Apr 2021 17:12:41 +0300
-Message-Id: <20210426141241.51985-1-tony@atomide.com>
-X-Mailer: git-send-email 2.31.1
+        id S234858AbhDZVMV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 26 Apr 2021 17:12:21 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:51208 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234275AbhDZVMU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 26 Apr 2021 17:12:20 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 7FCBF1C0B79; Mon, 26 Apr 2021 23:11:37 +0200 (CEST)
+Date:   Mon, 26 Apr 2021 23:11:36 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.4 1/7] ARM: dts: Fix swapped mmc order for omap3
+Message-ID: <20210426211136.GA31646@amd>
+References: <20210419204608.7191-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="3V7upXqbjpZ4EhLz"
+Content-Disposition: inline
+In-Reply-To: <20210419204608.7191-1-sashal@kernel.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On resume, dispc pm_runtime_force_resume() is not enabling the hardware
-as we pass the pm_runtime_need_not_resume() test as the device is suspended
-with no child devices.
 
-As the resume continues, omap_atomic_comit_tail() calls dispc_runtime_get()
-that calls rpm_resume() enabling the hardware, and increasing child_count
-for it's parent device.
+--3V7upXqbjpZ4EhLz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-But at this point device_complete() has not yet been called for dispc. So
-when omap_atomic_comit_tail() calls dispc_runtime_get(), it won't idle
-the hardware, and the clocks are left on after resume.
+Hi!
 
-This can be easily seen for example after suspending Beagleboard-X15 with
-no displays connected, and by reading the CM_DSS_DSS_CLKCTRL register at
-0x4a009120 after resume. After a suspend and resume cycle, it shows a
-value of 0x00040102 instead of 0x00070000 like it should.
+> From: Tony Lindgren <tony@atomide.com>
+>=20
+> [ Upstream commit a1ebdb3741993f853865d1bd8f77881916ad53a7 ]
+>=20
+> Also some omap3 devices like n900 seem to have eMMC and micro-sd swapped
+> around with commit 21b2cec61c04 ("mmc: Set PROBE_PREFER_ASYNCHRONOUS for
+> drivers that existed in v4.4").
+>=20
+> Let's fix the issue with aliases as discussed on the mailing lists. While
+> the mmc aliases should be board specific, let's first fix the issue with
+> minimal changes.
 
-Let's fix the issue by calling dispc_runtime_suspend() and
-dispc_runtime_resume() directly from dispc_suspend() and dispc_resume().
-This leaves out the PM runtime related issues for system suspend.
+21b2cec61c04 tries to make newer kernels compatible with 4.4, and this
+is fixup for 21b2cec61c04. 21b2cec61c04 is not in 4.4 (obviously) so i
+don't believe we need this for 4.4.
 
-See also earlier commit 88d26136a256 ("PM: Prevent runtime suspend during
-system resume") and commit ca8199f13498 ("drm/msm/dpu: ensure device
-suspend happens during PM sleep") for more information.
+As this claims to "making it compatible with 4.4", I believe we should
+leave 4.4 alone.
 
-Fixes: ecfdedd7da5d ("drm/omap: force runtime PM suspend on system suspend")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/gpu/drm/omapdrm/dss/dispc.c | 27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+21b2cec61c04 is not present in v4.19, either, but what needs to be
+done there is less clear.
 
-diff --git a/drivers/gpu/drm/omapdrm/dss/dispc.c b/drivers/gpu/drm/omapdrm/dss/dispc.c
---- a/drivers/gpu/drm/omapdrm/dss/dispc.c
-+++ b/drivers/gpu/drm/omapdrm/dss/dispc.c
-@@ -182,6 +182,7 @@ struct dispc_device {
- 	const struct dispc_features *feat;
- 
- 	bool is_enabled;
-+	bool needs_resume;
- 
- 	struct regmap *syscon_pol;
- 	u32 syscon_pol_offset;
-@@ -4887,10 +4888,34 @@ static int dispc_runtime_resume(struct device *dev)
- 	return 0;
- }
- 
-+static int dispc_suspend(struct device *dev)
-+{
-+	struct dispc_device *dispc = dev_get_drvdata(dev);
-+
-+	if (!dispc->is_enabled)
-+		return 0;
-+
-+	dispc->needs_resume = true;
-+
-+	return dispc_runtime_suspend(dev);
-+}
-+
-+static int dispc_resume(struct device *dev)
-+{
-+	struct dispc_device *dispc = dev_get_drvdata(dev);
-+
-+	if (!dispc->needs_resume)
-+		return 0;
-+
-+	dispc->needs_resume = false;
-+
-+	return dispc_runtime_resume(dev);
-+}
-+
- static const struct dev_pm_ops dispc_pm_ops = {
- 	.runtime_suspend = dispc_runtime_suspend,
- 	.runtime_resume = dispc_runtime_resume,
--	SET_LATE_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-+	SET_LATE_SYSTEM_SLEEP_PM_OPS(dispc_suspend, dispc_resume)
- };
- 
- struct platform_driver omap_dispchw_driver = {
--- 
-2.31.1
+21b2cec61c04 is in v5.10, so a1ebdb3741993f853865d1bd8f77881916ad53a7
+makes sense there, too.
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--3V7upXqbjpZ4EhLz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAmCHLIgACgkQMOfwapXb+vL79wCgs2jx6N45TMeX+TDZerFINSqJ
+EIMAnjD8EduuGN8g5U6/iKTjK4vuJZ57
+=DuMi
+-----END PGP SIGNATURE-----
+
+--3V7upXqbjpZ4EhLz--
