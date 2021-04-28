@@ -2,143 +2,65 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4237B36D71E
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Apr 2021 14:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A0A436D836
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Apr 2021 15:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234365AbhD1MSE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Apr 2021 08:18:04 -0400
-Received: from lb3-smtp-cloud9.xs4all.net ([194.109.24.30]:34269 "EHLO
-        lb3-smtp-cloud9.xs4all.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234356AbhD1MSD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 28 Apr 2021 08:18:03 -0400
-X-Greylist: delayed 426 seconds by postgrey-1.27 at vger.kernel.org; Wed, 28 Apr 2021 08:18:03 EDT
-Received: from cust-b5b5937f ([IPv6:fc0c:c16d:66b8:757f:c639:739b:9d66:799d])
-        by smtp-cloud9.xs4all.net with ESMTPA
-        id bj15lVL7Qk1MGbj18lOFMe; Wed, 28 Apr 2021 14:10:11 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s2;
-        t=1619611811; bh=x8Q25aX+Npb9ZR8tRbOZJxa+MhNaTu40hM9OtaCYssg=;
-        h=Subject:To:From:Message-ID:Date:MIME-Version:Content-Type:From:
-         Subject;
-        b=eNz4QqzcSAda6vxjk/7qNSjswamv/yOLVFyudswPyl1GNjWnmpXIL3w1tt6YHG/4x
-         +0cID/6v1gvzidor8BANi3Lk5MXZ/JDaVlotN252re2wT6rc/15VkUnSDcQKe0qD3Y
-         bnitUSwpcKmoeqi3DQeL1mJK3KRMuj9SXrZu6RCfyCroGH8JUjHHNgczD6DgejiU00
-         TF56qIeVKRKmem3nXlr5plkku4Wiq3xNmE38YE8yVQlL0aznHrAA4Ddmc5P3j+4Qma
-         jtJh4t44tRhn+Q56e+oLbyCCCncXpV7tBz15klrIgAN+cpCCCnFSqo3cxzzyTloXl6
-         u4U1v55XIa0xQ==
-Subject: Re: [PATCHv2 1/6] drm: drm_bridge: add connector_attach/detach bridge
- ops
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        linux-media@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
-        dri-devel@lists.freedesktop.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-References: <20210302162403.983585-1-hverkuil-cisco@xs4all.nl>
- <20210302162403.983585-2-hverkuil-cisco@xs4all.nl>
- <3ba8c7c3-2e86-964d-2e5b-5cdd805def5c@ideasonboard.com>
-From:   Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Message-ID: <54c88a9f-6b80-4d4d-c0e6-c6c7b2a32050@xs4all.nl>
-Date:   Wed, 28 Apr 2021 14:10:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.9.0
+        id S239644AbhD1NYG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Apr 2021 09:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47228 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239634AbhD1NYG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Apr 2021 09:24:06 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3961AC061574
+        for <linux-omap@vger.kernel.org>; Wed, 28 Apr 2021 06:23:20 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id k14so13122150wrv.5
+        for <linux-omap@vger.kernel.org>; Wed, 28 Apr 2021 06:23:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=DaONZtluKa9peXu6ZwDKNmt2MpZsmruapSIC/LqcI2Q=;
+        b=bi52SFLdhMCZWfbJxZ72p3ytPwGaRqwwrj/piOhXxQYN4by0N2cRG6bn5kpWzH88Bd
+         TBPsh5I6+GANwJu022rAvEolq6dwgEWZEd5qDqXTLHiEJMYDCo51Kb4WV82vihl2mOt3
+         F3txzapYUs0aIfIMcrixfLkV5MrKsv/wm02ilg+DALWRRMt7Q4zLtAjoQYCejMU9/skL
+         eet3W4uxsKp/cOcKzChde7qMpwud1KVQSk5cF4MGkOxk3tnP0e3DO06rGpyuJ1j7/be7
+         x46YECrDNR6Nhm2x0PtJt9pk3jDQpqgTYNcE3LWAmU+VWw/KebGveGqqUS1PI4hDDzSw
+         zb9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=DaONZtluKa9peXu6ZwDKNmt2MpZsmruapSIC/LqcI2Q=;
+        b=rqYF1hJJ1Cjet9GT1Y+/NHcoWBgcZ9TeZ2TPbpPFlt0Z2/nNr6xqB+dBzPlQhmNaw5
+         Y/HYzVxOcZQmVIR1JvM7obrokqz2EAV4eXd8ziTQ38VxgRjjAw1e1vOCvJ9YzWKLZoxc
+         hPrOyrZWiBOSZ/FiHP+nHqaJMvbeKSMbdHGcauE0Zmov6BDAxfIDBxmAQKgX00OgBW+O
+         mSYHAlhG1TrNaFY8U6TVjOzzDyMrgTw6m/A4cAX19mTODmBHY93Uy+ocwv8c6onJfFbt
+         myMIYNhCLZCi1bY3tYMLH9KAoQdtKEJTLxg9S3yYpLEhtBmJH8ANybBi3I4BJDO7sFJE
+         xp4w==
+X-Gm-Message-State: AOAM532Ck0Nioz4VKm/tvJ8ewM3s4KHpTo72oiZbLGh6sOIkjBzJxV1B
+        Si3ck4C/hcsAf74OrUj2Rctv9XvuU9Ams84/eV0=
+X-Google-Smtp-Source: ABdhPJxOW9rwMK3IQOp+Ggjj4yeexqPkfpZ4Pnrz0z6G8imDzdqaG1U4U7TWg9q5PIodVUq4C4aikbBUqvsEUUWcti4=
+X-Received: by 2002:adf:e846:: with SMTP id d6mr16187880wrn.356.1619616198987;
+ Wed, 28 Apr 2021 06:23:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <3ba8c7c3-2e86-964d-2e5b-5cdd805def5c@ideasonboard.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfLOpfNdVLh3mub3CUnLZYyIn+eAqJ0VAgSEG3mgVP49fHYthJ2LubIw3gJiuc+UsfJpR8DtVTIrEYR5+EAB0jS04uyeMqPgw5+L8zUnLpeNCKEHWgTKr
- Ja6Ad9WtE+wTY+5cO0xSwWi/abxtYsuaeHJvcgk3NrN49wLJUl6gnvPx/SruANEDOY+b3xrD/mch1S0sPAE+DF6+fPOtV0uVGPMW6Hatnofa+yRkfFiPqmX1
- b7XqdJpQZHw5nBpuQ7gwzW20P6BcvV5toqYdAIo+WKP7L65FvrBT+ywN03VEdtml4bRtDC/3zX86e0e793P7Ja4yo+B+eYG2tHDT+mYNNp3FHtXX+7OrT3AR
- Q9MfGwT2GqvO+LAB2+O2s1VZ7wKyOQTaVG0YRMEb+HjhXzrtSjk0EHXuYyMi2G71xUQG+i5Jndju8IR5/ovxECWWKJqI/LmM+V8/b62yEBxCi8JW3yM7FqcP
- /8G2l0quIUC2R0LW
+Received: by 2002:adf:ca0f:0:0:0:0:0 with HTTP; Wed, 28 Apr 2021 06:23:18
+ -0700 (PDT)
+Reply-To: barristerdinkarim09@gmail.com
+From:   Din Karim <john.wood4543@gmail.com>
+Date:   Wed, 28 Apr 2021 13:23:18 +0000
+Message-ID: <CAMogBwcnnSG1a_4cndd4snvRxzN_OVEj9OrVBeH9mW6gTh=u3Q@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 16/04/2021 09:46, Tomi Valkeinen wrote:
-> Hi Hans,
-> 
-> On 02/03/2021 18:23, Hans Verkuil wrote:
->> Add bridge connector_attach/detach ops. These ops are called when a
->> bridge is attached or detached to a drm_connector. These ops can be
->> used to register and unregister an HDMI CEC adapter for a bridge that
->> supports CEC.
->>
->> Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
->> ---
->>   drivers/gpu/drm/drm_bridge_connector.c |  9 +++++++++
->>   include/drm/drm_bridge.h               | 27 ++++++++++++++++++++++++++
->>   2 files changed, 36 insertions(+)
->>
->> diff --git a/drivers/gpu/drm/drm_bridge_connector.c b/drivers/gpu/drm/drm_bridge_connector.c
->> index 791379816837..07db71d4f5b3 100644
->> --- a/drivers/gpu/drm/drm_bridge_connector.c
->> +++ b/drivers/gpu/drm/drm_bridge_connector.c
->> @@ -203,6 +203,11 @@ static void drm_bridge_connector_destroy(struct drm_connector *connector)
->>   {
->>   	struct drm_bridge_connector *bridge_connector =
->>   		to_drm_bridge_connector(connector);
->> +	struct drm_bridge *bridge;
->> +
->> +	drm_for_each_bridge_in_chain(bridge_connector->encoder, bridge)
->> +		if (bridge->funcs->connector_detach)
->> +			bridge->funcs->connector_detach(bridge, connector);
->>   
->>   	if (bridge_connector->bridge_hpd) {
->>   		struct drm_bridge *hpd = bridge_connector->bridge_hpd;
->> @@ -375,6 +380,10 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
->>   		connector->polled = DRM_CONNECTOR_POLL_CONNECT
->>   				  | DRM_CONNECTOR_POLL_DISCONNECT;
->>   
->> +	drm_for_each_bridge_in_chain(encoder, bridge)
->> +		if (bridge->funcs->connector_attach)
->> +			bridge->funcs->connector_attach(bridge, connector);
->> +
->>   	return connector;
->>   }
->>   EXPORT_SYMBOL_GPL(drm_bridge_connector_init);
->> diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
->> index 2195daa289d2..3320a6ebd253 100644
->> --- a/include/drm/drm_bridge.h
->> +++ b/include/drm/drm_bridge.h
->> @@ -629,6 +629,33 @@ struct drm_bridge_funcs {
->>   	 * the DRM_BRIDGE_OP_HPD flag in their &drm_bridge->ops.
->>   	 */
->>   	void (*hpd_disable)(struct drm_bridge *bridge);
->> +
->> +	/**
->> +	 * @connector_attach:
->> +	 *
->> +	 * This callback is invoked whenever our bridge is being attached to a
->> +	 * &drm_connector. This is where an HDMI CEC adapter can be registered.
->> +	 * Note that this callback expects that this op always succeeds. Since
->> +	 * HDMI CEC support is an optional feature, any failure to register a
->> +	 * CEC adapter must be ignored since video output will still work
->> +	 * without CEC.
->> +	 *
-> 
-> Even if CEC support is optional, the callback itself is generic. 
-> Wouldn't it be better to make this function return an error, and for 
-> CEC, just return 0 if CEC won't get registered correctly?
+Hello dear,
 
-I'll do that.
+I'm Barr Din Karim from Republic of Ghana please i wish to have a
+communication with you.
 
-> 
-> Also, I personally like things to fail if something doesn't go right, 
-> instead of continuing, if that thing is never supposed to happen in 
-> normal situations. E.g. if CEC registration fails because we're out of 
-> memory, I think the op should fail too.
+I wait for your response.
 
-If that happens you have no video output. And that's a lot more important
-than CEC! As you suggested, I'll have the cec connector_attach just return
-0.
-
-Regards,
-
-	Hans
-
-> 
->   Tomi
-> 
-
+Barr Din Karim(Esq)
