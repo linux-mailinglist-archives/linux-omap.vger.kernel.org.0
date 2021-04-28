@@ -2,164 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D5BDB36D3AD
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Apr 2021 10:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5600A36D4B4
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Apr 2021 11:25:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237049AbhD1IKU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Apr 2021 04:10:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33690 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236805AbhD1IKT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Apr 2021 04:10:19 -0400
-Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03C7C061574;
-        Wed, 28 Apr 2021 01:09:34 -0700 (PDT)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 3392E2224F;
-        Wed, 28 Apr 2021 10:09:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1619597371;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=M9NlOCpW1MZNsl/vA/TRzY5PiytDAsgS7p11KntpwDc=;
-        b=TeuOHOIozerVUFBEq+kXl+E4fsEw1MWqgROl2oA8Sc/xKOT0oXpynCQIkw1papfFwz22RM
-        ZqopdTbGj/RRv3+sDFrM+3v84W6DRuM04o8XbE5Tyx09iWpSYtyaTodlAwmk1PVwQpm/hS
-        zB6aEh6Z4dXpMFJB4kyQVt3Zk/Jvibs=
+        id S230113AbhD1JZz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Apr 2021 05:25:55 -0400
+Received: from muru.com ([72.249.23.125]:49464 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230041AbhD1JZy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 28 Apr 2021 05:25:54 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id B608B80AA;
+        Wed, 28 Apr 2021 09:25:09 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org
+Subject: [PATCHv2] drm/omap: Fix issue with clocks left on after resume
+Date:   Wed, 28 Apr 2021 12:25:00 +0300
+Message-Id: <20210428092500.23521-1-tony@atomide.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 28 Apr 2021 10:09:17 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        netdev <netdev@vger.kernel.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        "open list:MEDIA DRIVERS FOR RENESAS - FCP" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "moderated list:ARM/STM32 ARCHITECTURE" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
-        linux-oxnas@groups.io, linux-omap <linux-omap@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Andreas Larsson <andreas@gaisler.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Joyce Ooi <joyce.ooi@intel.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
-        "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Fugang Duan <fugang.duan@nxp.com>,
-        Madalin Bucur <madalin.bucur@nxp.com>,
-        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Li Yang <leoyang.li@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Byungho An <bh74.an@samsung.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Wingman Kwok <w-kwok2@ti.com>,
-        Murali Karicheri <m-karicheri2@ti.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Helmut Schaa <helmut.schaa@googlemail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?Q?J=C3=A9r=C3=B4me_Pouiller?= <jerome.pouiller@silabs.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH net-next v4 2/2] of: net: fix of_get_mac_addr_nvmem() for
- non-platform devices
-In-Reply-To: <3677398ebb77f334abb4899770db633d9658fe82.camel@kernel.crashing.org>
-References: <20210412174718.17382-1-michael@walle.cc>
- <20210412174718.17382-3-michael@walle.cc>
- <730d603b12e590c56770309b4df2bd668f7afbe3.camel@kernel.crashing.org>
- <8157eba9317609294da80472622deb28@walle.cc>
- <CAL_JsqLrx6nFZrKiEtm2a1vDvQGG+FkpGtJCG2osM8hhGo3P=Q@mail.gmail.com>
- <108f268a35843368466004f7fe5f9f88@walle.cc>
- <3677398ebb77f334abb4899770db633d9658fe82.camel@kernel.crashing.org>
-User-Agent: Roundcube Webmail/1.4.11
-Message-ID: <452795c5254b65cfba6e52cfc94d92bd@walle.cc>
-X-Sender: michael@walle.cc
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Am 2021-04-27 01:44, schrieb Benjamin Herrenschmidt:
-> On Mon, 2021-04-26 at 12:54 +0200, Michael Walle wrote:
->> (2) What do you think of eth_get_mac_address(ndev). That is, the
-> 
-> Not sure what you mean, eth_platform_get_mac_address() takes the
-> address as an argument. I think what you want is a consolidated
-> nvmem_get_mac_address + eth_platform_get_mac_address that takes a
-> device, which would have no requirement of the bus_type at all.
+On resume, dispc pm_runtime_force_resume() is not enabling the hardware
+as we pass the pm_runtime_need_not_resume() test as the device is suspended
+with no child devices.
 
-Sure. What I meant was the following:
+As the resume continues, omap_atomic_comit_tail() calls dispc_runtime_get()
+that calls rpm_resume() enabling the hardware, and increasing child_count
+for it's parent device.
 
-  eth_get_mac_address(struct net_device *ndev)
-vs.
-  eth_get_mac_address(struct device *dev, u8 *mac_buf)
+But at this point device_complete() has not yet been called for dispc. So
+when omap_atomic_comit_tail() calls dispc_runtime_put(), it won't idle
+the hardware as rpm_suspend() returns -EBUSY, and the clocks are left on
+after resume. The parent child count is not decremented as the -EBUSY
+cannot be easily handled until later on after device_complete().
 
-The first would assume the destination is ndev->dev_addr (which
-is true for most of the calls, but not all).
+This can be easily seen for example after suspending Beagleboard-X15 with
+no displays connected, and by reading the CM_DSS_DSS_CLKCTRL register at
+0x4a009120 after resume. After a suspend and resume cycle, it shows a
+value of 0x00040102 instead of 0x00070000 like it should.
 
--michael
+Let's fix the issue by calling dispc_runtime_suspend() and
+dispc_runtime_resume() directly from dispc_suspend() and dispc_resume().
+This leaves out the PM runtime related issues for system suspend.
+
+We could handle the issue by adding more calls to dispc_runtime_get()
+and dispc_runtime_put() from omap_drm_suspend() and omap_drm_resume()
+as suggested by Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>.
+But that would just add more inter-component calls and more dependencies
+to PM runtime for system suspend and does not make things easier in the
+long.
+
+See also earlier commit 88d26136a256 ("PM: Prevent runtime suspend during
+system resume") and commit ca8199f13498 ("drm/msm/dpu: ensure device
+suspend happens during PM sleep") for more information.
+
+Fixes: ecfdedd7da5d ("drm/omap: force runtime PM suspend on system suspend")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+
+Changes since v1:
+- Updated the description for a typo noticed by Tomi
+- Added more info about what all goes wrong
+
+---
+ drivers/gpu/drm/omapdrm/dss/dispc.c | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/omapdrm/dss/dispc.c b/drivers/gpu/drm/omapdrm/dss/dispc.c
+--- a/drivers/gpu/drm/omapdrm/dss/dispc.c
++++ b/drivers/gpu/drm/omapdrm/dss/dispc.c
+@@ -182,6 +182,7 @@ struct dispc_device {
+ 	const struct dispc_features *feat;
+ 
+ 	bool is_enabled;
++	bool needs_resume;
+ 
+ 	struct regmap *syscon_pol;
+ 	u32 syscon_pol_offset;
+@@ -4887,10 +4888,34 @@ static int dispc_runtime_resume(struct device *dev)
+ 	return 0;
+ }
+ 
++static int dispc_suspend(struct device *dev)
++{
++	struct dispc_device *dispc = dev_get_drvdata(dev);
++
++	if (!dispc->is_enabled)
++		return 0;
++
++	dispc->needs_resume = true;
++
++	return dispc_runtime_suspend(dev);
++}
++
++static int dispc_resume(struct device *dev)
++{
++	struct dispc_device *dispc = dev_get_drvdata(dev);
++
++	if (!dispc->needs_resume)
++		return 0;
++
++	dispc->needs_resume = false;
++
++	return dispc_runtime_resume(dev);
++}
++
+ static const struct dev_pm_ops dispc_pm_ops = {
+ 	.runtime_suspend = dispc_runtime_suspend,
+ 	.runtime_resume = dispc_runtime_resume,
+-	SET_LATE_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
++	SET_LATE_SYSTEM_SLEEP_PM_OPS(dispc_suspend, dispc_resume)
+ };
+ 
+ struct platform_driver omap_dispchw_driver = {
+-- 
+2.31.1
