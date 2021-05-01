@@ -2,113 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26B993708E0
-	for <lists+linux-omap@lfdr.de>; Sat,  1 May 2021 22:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C583708F6
+	for <lists+linux-omap@lfdr.de>; Sat,  1 May 2021 22:55:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbhEAUNr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 1 May 2021 16:13:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229912AbhEAUNr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 1 May 2021 16:13:47 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD4AAC06174A
-        for <linux-omap@vger.kernel.org>; Sat,  1 May 2021 13:12:56 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id A510DA46;
-        Sat,  1 May 2021 22:12:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1619899972;
-        bh=afs17JqfG99KjURG9n8/XjP5JPlXG/Ts/WyS/teFV0E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EM5GBZ00F6z0TlemqMVkixs6Ey6eMrJxUMaoWqr7N9Lva1v0mLzUsKEUmwFgrSqAq
-         kB4OLtlztg4p4G5M50lXcHvAm/LmZ6LAYGW2kod3B/cqxqwqdf2tOdPGgIKantA+Nd
-         K3MbiKtJKofg7zaHj3auKdxFQVBcO3F5LkpBpnwA=
-Date:   Sat, 1 May 2021 23:12:50 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>, linux-omap@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, kernel@collabora.com,
-        Carl Philipp Klemm <philipp@uvos.xyz>
-Subject: Re: [PATCHv1] drm/omap: get fbdev working for manually updated
- display
-Message-ID: <YI22QjS3M15Pu10i@pendragon.ideasonboard.com>
-References: <20210501200050.410704-1-sebastian.reichel@collabora.com>
+        id S231724AbhEAU4p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 1 May 2021 16:56:45 -0400
+Received: from out2-92.antispamcloud.com ([185.201.17.92]:41600 "EHLO
+        out2-92.antispamcloud.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231547AbhEAU4o (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 1 May 2021 16:56:44 -0400
+X-Greylist: delayed 1510 seconds by postgrey-1.27 at vger.kernel.org; Sat, 01 May 2021 16:56:44 EDT
+Received: from master12.serverwl.com ([89.40.227.248])
+        by mx53.antispamcloud.com with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <info@orologi-gioielli.net>)
+        id 1lcwGB-0006tY-Bg
+        for linux-omap@vger.kernel.org; Sat, 01 May 2021 22:30:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=orologi-gioielli.net; s=default; h=Content-Type:Content-Transfer-Encoding:
+        MIME-Version:Message-ID:Reply-To:From:Date:Subject:To:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=UvFJ2y5AuYLOFEv2BDXVVvj1CLPKtMoyvpvgwasbZ08=; b=Bhe6FNjuQoltKO0TuRE38Kf+r4
+        zFTSpGHxFjP8ClJNrL2WMHn9HDYRv0lnWnmwOpmLi+C6JNzyiTeyHWJTZ18OQt8GlvghgytJHaLfr
+        FlOzqgX4HcGGdZhj3fgIhNDqaHeiIiU46XOtpYGjDndqm2bYrukU8DdfN5H6dJRpyHkg=;
+Received: from orologigioielli by master12.serverwl.com with local (Exim 4.94)
+        (envelope-from <info@orologi-gioielli.net>)
+        id 1lcw1t-00BH6i-5q
+        for linux-omap@vger.kernel.org; Sat, 01 May 2021 22:15:57 +0200
+To:     linux-omap@vger.kernel.org
+Subject: Dettagli account per Make your payment today! Enjoy the YEAR! - viewing the report http://depmakaganquiven.tk?K19ikYb  7537301 Make your payment today! Enjoy the YEAR! - viewing the report http://depmakaganquiven.tk?K19ikYb  7537301 su Orologi-gioielli
+X-PHP-Script: orologi-gioielli.net/index.php for 77.222.109.213
+X-PHP-Originating-Script: 1274:phpmailer.php
+Date:   Sat, 1 May 2021 20:15:56 +0000
+From:   Gioielli D'Ercole <info@orologi-gioielli.net>
+Reply-To: Gioielli D'Ercole <info@orologi-gioielli.net>
+Message-ID: <ea153dfcba683265f021a3fcb3d2066b@orologi-gioielli.net>
+X-Priority: 3
+X-Mailer: PHPMailer 5.2.1 (http://code.google.com/a/apache-extras.org/p/phpmailer/)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210501200050.410704-1-sebastian.reichel@collabora.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - master12.serverwl.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [1274 995] / [47 12]
+X-AntiAbuse: Sender Address Domain - orologi-gioielli.net
+X-Get-Message-Sender-Via: master12.serverwl.com: authenticated_id: orologigioielli/from_h
+X-Authenticated-Sender: master12.serverwl.com: info@orologi-gioielli.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: orologi-gioielli.net:/public_html
+X-Originating-IP: 89.40.227.248
+X-VirtualSolution-Domain: 89.40.227.248
+X-VirtualSolution-Username: 89.40.227.248
+Authentication-Results: antispamcloud.com; auth=pass smtp.auth=89.40.227.248@89.40.227.248
+X-VirtualSolution-Outgoing-Class: unsure
+X-VirtualSolution-Outgoing-Evidence: Combined (0.78)
+X-Recommended-Action: accept
+X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT9mTjMOLiYsd/Y8AHOqQiThPUtbdvnXkggZ
+ 3YnVId/Y5jcf0yeVQAvfjHznO7+bT5wGgERXQeehIgZ2We2qZfrKt8C9mOBdONdnsxgsk1D2pw/C
+ h5SE4jAyhe1COeASyU/Vs4n5zZOoT2F92mQBfuKN4ld5rdi2ZxohSIq+dqifZt5o/TdFlZzuamb7
+ UdGvFL4ZmG0x6899nnrfHS1cnoSjwBXLEvPJ94cBwYzQYU6GOE70UU5YRtdsbp5eHN8IpDyIUp8P
+ WMqBh8f7pLmoNVig3/sqS8sT38oWBQ1bB0SlKVkGmkkmkXBUxcWkbwA4DrhXQFOX0czP0M0FvfyK
+ B99wrcqvpsjBn5Sn1bTSk5BNXyYqM9ObjmCo3xKKR0HB0Y53iLlH9D5kZlWtBtbSECn84hJ877w3
+ BrOappvVwxNqXWVmZiDFiRtg8zYnq8FneOb9qNV/dgp+FFPSSde3UJEu4sw4+FXyxmIVea1OKVqa
+ VhEWYzL8H724WTq8vrfAU1P+If6LSStWM+DiPz1lnI7uY3sCdadijThrZ7LiHH92/6a5zn3o6MtK
+ 8pf0hPbAkeCZME8HeiOTBXPmeRcbGamAcxw3qqhc+N6cuEg4XWh5Fsd7O1f8zBmysr6xnN8wcWKE
+ AIyXUWeyUuAbvh9XxbL6+WaOQRInspaoY5FHN2G2iWLvAuZiee2RvYPUH2waSBeoaSXw9d33CUIW
+ 4/2FBqsIQ1T0OnzHr9QTD70ParuHFtM+m4WpRRDP6YzwkAPgQJYx+TAvs/Uuq+fGUNYVLh8ft80c
+ 3qQV+ynAEAU5sAKy/egEmb5UloYMWkWBKz2SoGA49TmXkI0oAg+rxG6woL3wZuM7jUXIESohoO51
+ xWmU8Ud6S2O1qnN3qDty1ebGROSyJ2duc4GVz3I17tJapCAjajzzoKLFwteB1h7+wyq5PtqQDdPA
+ SfOEv0q2tBR+8B0r8l1a+B3b8WJsR0wzQmfG79VwBFEkmDQI9UZcVgDvELHtJZkGl0BQCuf9K3TR
+ oZoyps3/ybxKA0veqhtTl9Z2ZAd5rTM8EwC058NNOGZx9DEvuGslKTrRIXcXpFg5ivY=
+X-Report-Abuse-To: spam@quarantine10.antispamcloud.com
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, May 01, 2021 at 10:00:50PM +0200, Sebastian Reichel wrote:
-> Running a legacy application, which directly uses /dev/fb0
-> currently results in display not being refreshed when the
-> application mmaps the memory instead of calling write().
-> 
-> Deferred IO support will also schedule dirty_work with the
-> damage collected from the mmap page writes and thus gets
-> some more legacy applications working.
-> 
-> Delay frequency settings have been taken over from
-> drm_fb_helper_generic_probe().
-> 
-> Reported-by: Carl Philipp Klemm <philipp@uvos.xyz>
-> Tested-by: Carl Philipp Klemm <philipp@uvos.xyz>
-> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> ---
-> Hi,
-> 
-> I still need to fix my Droid 4, so I only compile tested this
-> myself.
-> 
-> -- Sebastian
-> ---
->  drivers/gpu/drm/omapdrm/omap_fbdev.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/omapdrm/omap_fbdev.c b/drivers/gpu/drm/omapdrm/omap_fbdev.c
-> index 42eac6ad12bd..fc3897d2d7cc 100644
-> --- a/drivers/gpu/drm/omapdrm/omap_fbdev.c
-> +++ b/drivers/gpu/drm/omapdrm/omap_fbdev.c
-> @@ -87,6 +87,11 @@ static const struct fb_ops omap_fb_ops = {
->  	.fb_imageblit = drm_fb_helper_sys_imageblit,
->  };
->  
-> +static struct fb_deferred_io omap_fb_defio = {
-> +	.delay		= HZ / 20,
-> +	.deferred_io	= drm_fb_helper_deferred_io,
-> +};
+Salve Make your payment today! Enjoy the YEAR! - viewing the report
+ http://depmakaganquiven.tk?K19ikYb
+  7537301 Make your payment today! Enjoy the YEAR! - viewing the report
+ http://depmakaganquiven.tk?K19ikYb
+  7537301,
 
-Wish this could be const :-S
+Grazie per esserti registrato su Orologi-gioielli. Il tuo account è stato creato e deve essere verificato prima che tu possa utilizzarlo.
+Per verificare l'account clicca sul link seguente o fai copia e incolla sul browser:
+ https://orologi-gioielli.net/index.php?option=com_jshopping&controller=user&task=activate&token=caa77b1eb999cfeaf805c459c896f3cf 
 
-> +
->  static int omap_fbdev_create(struct drm_fb_helper *helper,
->  		struct drm_fb_helper_surface_size *sizes)
->  {
-> @@ -176,6 +181,9 @@ static int omap_fbdev_create(struct drm_fb_helper *helper,
->  
->  	drm_fb_helper_fill_info(fbi, helper, sizes);
->  
-> +	fbi->fbdefio = &omap_fb_defio;
-> +	fb_deferred_io_init(fbi);
-> +
+Dopo la verifica, verrà inviata una notifica ad un amministratore perchè attivi il tuo account. Riceverai una conferma quando sarà fatto.
+Una volta attivato il tuo account, potrai effettuare il login su https://orologi-gioielli.net/ utilizzando i seguenti nome utente e password:
 
-This looks good to me. Trusting the Tested-by,
+Nome utente: Make your payment today! Enjoy the YEAR! - viewing the report
+ http://depmakaganquiven.tk?K19ikYb
+  7537301
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
->  	dev->mode_config.fb_base = dma_addr;
->  
->  	fbi->screen_buffer = omap_gem_vaddr(fbdev->bo);
-
--- 
-Regards,
-
-Laurent Pinchart
