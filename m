@@ -2,66 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C9D0370AB5
-	for <lists+linux-omap@lfdr.de>; Sun,  2 May 2021 09:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A30BE370BEB
+	for <lists+linux-omap@lfdr.de>; Sun,  2 May 2021 16:04:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbhEBHZC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 2 May 2021 03:25:02 -0400
-Received: from ns1.agromah.pw ([128.199.116.49]:52562 "EHLO ns1.agromah.pw"
+        id S232267AbhEBOEb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 2 May 2021 10:04:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49132 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229545AbhEBHZC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 2 May 2021 03:25:02 -0400
-X-Greylist: delayed 125834 seconds by postgrey-1.27 at vger.kernel.org; Sun, 02 May 2021 03:25:02 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=agromah.pw;
-         s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
-        Date:Subject:To:From:Sender:Reply-To:Cc:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=bW97hWzM7KX2+sSXFK6KXgIc7Z6WN9lqfAuC6cOgCoU=; b=rV10jPJ0fxC6601Pj7KLi7jWWX
-        BJ1a+GE94VVZjA32wDeJ8YyiGBpqAPbNZDU0rNXZzESxmuOvNDAM3Q7Xt1t5DfZROAL1XUMxyOvn5
-        px2pbj1peapstgDoVYWwSCrQxcrB3TbaEgqize7iEui7yXKOvXWNlaSrDVzVQNCz4yOc=;
-Received: from [185.245.86.55] (helo=agromah.pw)
-        by ns1.agromah.pw with esmtpa (Exim 4.90_1)
-        (envelope-from <admin@agromah.pw>)
-        id 1lcZiy-000469-JE
-        for linux-omap@vger.kernel.org; Fri, 30 Apr 2021 20:26:58 +0000
-From:   admin@agromah.pw
-To:     linux-omap@vger.kernel.org
-Subject: Crypto Currency Investment !!
-Date:   01 May 2021 04:26:55 +0800
-Message-ID: <20210501042654.1FB14C3FD973EE1C@agromah.pw>
+        id S231964AbhEBOEa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 2 May 2021 10:04:30 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 54B176102A;
+        Sun,  2 May 2021 14:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1619964199;
+        bh=9rBdmnqcNBYq4mulLLtVltQzh9zTOIB56p2i5oS17/I=;
+        h=From:To:Cc:Subject:Date:From;
+        b=XVIXdqBVxIn8B0y0By1BryoBOwQl5GVper6y4RZlbtzKJaP3jcT758JRiyWANV892
+         JzC6AnV82f+qsWHoRXu2uIFkkgkWQgOWJdqopw9xRzRTCenPa3z/IBAYPUl41jqQ8X
+         XE9pd5+nJkak+BOo8z0bonBZbkuW0cbzgCRNXkQkYu86Wz8AQfBEjSTiNzjXRrNq/J
+         0EYld+vrxlT/kwCU5tBi21Mu6GKgC7BIKZj//ms41YPF4XipfJ3LeREV4hzvt0E+Lp
+         PBcBfgLvEcKDtPM4zjsuIxCJb+uY/XUeMbu/JYMGpKIPIRyx7JEwvf/P7bhdRjFVh/
+         lZNh4pgxi8j2w==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.12 01/79] bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first
+Date:   Sun,  2 May 2021 10:01:58 -0400
+Message-Id: <20210502140316.2718705-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dear sir/Madam
-We are Professional Traders & Portfolio Managers who return=20
-profit to investors, guaranteed and Regulated by the Securities=20
-and Exchange Commission. We offer optimum trading service that is=20
-capable of delivering profit of up to 120% of invested funds=20
-every week. We Trade on a Wide Range of Assets, Cryptos, Forex=20
-Options & Commodities.
-=20=20
-We are BTC Trade Group , a Forex and Crypto Trading Team. Are you=20
-interested in earning consistent income with forex and crypto=20
-trading like Bitcoins (BTC), Ethereum (ETH), Litecoin (LTC),=20
-Cardano (ADA), Polkadot (DOT), Bitcoin Cash (BCH), Stellar (XLM),=20
-Chainlink, Binance Coin (BNB), Tether (USDT), Monero (XMR) and=20
-other coins?
+From: Tony Lindgren <tony@atomide.com>
 
- We manage accounts for individuals and cooperate. We generate=20
-daily and weekly profit. We offer investment plans for traders=20
-and non traders with almost zero risk and formidable profit=20
-weekly and monthly depending on what investment plans you need.=20
-Please Reply us if you are interested and we will enlighten you=20
-more about it and how it works.
-Thanks for your understanding.
+[ Upstream commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6 ]
 
-BTC TRADE GROUP TEAM
-Website: btctradegroup.com
-Email: support@btctradegroup.com
+We want to probe l4_wkup and l4_cfg interconnect devices first to avoid
+issues with missing resources. Otherwise we attempt to probe l4_per
+devices first causing pointless deferred probe and also annoyingh
+renumbering of the MMC devices for example.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/bus/ti-sysc.c | 49 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 3d74f237f005..9e535336689f 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -635,6 +635,51 @@ static int sysc_parse_and_check_child_range(struct sysc *ddata)
+ 	return 0;
+ }
+ 
++/* Interconnect instances to probe before l4_per instances */
++static struct resource early_bus_ranges[] = {
++	/* am3/4 l4_wkup */
++	{ .start = 0x44c00000, .end = 0x44c00000 + 0x300000, },
++	/* omap4/5 and dra7 l4_cfg */
++	{ .start = 0x4a000000, .end = 0x4a000000 + 0x300000, },
++	/* omap4 l4_wkup */
++	{ .start = 0x4a300000, .end = 0x4a300000 + 0x30000,  },
++	/* omap5 and dra7 l4_wkup without dra7 dcan segment */
++	{ .start = 0x4ae00000, .end = 0x4ae00000 + 0x30000,  },
++};
++
++static atomic_t sysc_defer = ATOMIC_INIT(10);
++
++/**
++ * sysc_defer_non_critical - defer non_critical interconnect probing
++ * @ddata: device driver data
++ *
++ * We want to probe l4_cfg and l4_wkup interconnect instances before any
++ * l4_per instances as l4_per instances depend on resources on l4_cfg and
++ * l4_wkup interconnects.
++ */
++static int sysc_defer_non_critical(struct sysc *ddata)
++{
++	struct resource *res;
++	int i;
++
++	if (!atomic_read(&sysc_defer))
++		return 0;
++
++	for (i = 0; i < ARRAY_SIZE(early_bus_ranges); i++) {
++		res = &early_bus_ranges[i];
++		if (ddata->module_pa >= res->start &&
++		    ddata->module_pa <= res->end) {
++			atomic_set(&sysc_defer, 0);
++
++			return 0;
++		}
++	}
++
++	atomic_dec_if_positive(&sysc_defer);
++
++	return -EPROBE_DEFER;
++}
++
+ static struct device_node *stdout_path;
+ 
+ static void sysc_init_stdout_path(struct sysc *ddata)
+@@ -863,6 +908,10 @@ static int sysc_map_and_check_registers(struct sysc *ddata)
+ 	if (error)
+ 		return error;
+ 
++	error = sysc_defer_non_critical(ddata);
++	if (error)
++		return error;
++
+ 	sysc_check_children(ddata);
+ 
+ 	error = sysc_parse_registers(ddata);
+-- 
+2.30.2
+
