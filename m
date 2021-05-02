@@ -2,34 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A30BE370BEB
-	for <lists+linux-omap@lfdr.de>; Sun,  2 May 2021 16:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B62E370BE0
+	for <lists+linux-omap@lfdr.de>; Sun,  2 May 2021 16:03:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232267AbhEBOEb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 2 May 2021 10:04:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49132 "EHLO mail.kernel.org"
+        id S232420AbhEBOEk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 2 May 2021 10:04:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49656 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231964AbhEBOEa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 2 May 2021 10:04:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 54B176102A;
-        Sun,  2 May 2021 14:03:18 +0000 (UTC)
+        id S232410AbhEBOEj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 2 May 2021 10:04:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 117176135D;
+        Sun,  2 May 2021 14:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619964199;
+        s=k20201202; t=1619964227;
         bh=9rBdmnqcNBYq4mulLLtVltQzh9zTOIB56p2i5oS17/I=;
         h=From:To:Cc:Subject:Date:From;
-        b=XVIXdqBVxIn8B0y0By1BryoBOwQl5GVper6y4RZlbtzKJaP3jcT758JRiyWANV892
-         JzC6AnV82f+qsWHoRXu2uIFkkgkWQgOWJdqopw9xRzRTCenPa3z/IBAYPUl41jqQ8X
-         XE9pd5+nJkak+BOo8z0bonBZbkuW0cbzgCRNXkQkYu86Wz8AQfBEjSTiNzjXRrNq/J
-         0EYld+vrxlT/kwCU5tBi21Mu6GKgC7BIKZj//ms41YPF4XipfJ3LeREV4hzvt0E+Lp
-         PBcBfgLvEcKDtPM4zjsuIxCJb+uY/XUeMbu/JYMGpKIPIRyx7JEwvf/P7bhdRjFVh/
-         lZNh4pgxi8j2w==
+        b=Vnv0BLpnKhCv6b+g7MHN5W405uURlIbvG5UVkthUM4+4BePwRpk4rPId/XpojQU3C
+         lGPsEjwYcN9xfJXbXoXOdca2MV8e3sebQzQsr7mSQ2A806bv1CRHT03vv9k3VNqQWj
+         /gXyg3HDkp0mA5Cu2Rwt2BoAl05nNQLK1rKHEKeizZeI01bOJTV3DrA+7n8p7RksT3
+         Ra/NjBMUlsq3yFiFi6uyPYtN4I7VnKEOBZXGU1aM23o9Zn0TPribGuFyyUnQk9F795
+         27hihn48Tkc8QfFNZ9T5J0QrNdJ83DxF+Hh53U1lo4gzAig6XwGNRlVzSlejasB/Kq
+         cGyQJFwN8Kz6w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, Sasha Levin <sashal@kernel.org>,
         linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 01/79] bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first
-Date:   Sun,  2 May 2021 10:01:58 -0400
-Message-Id: <20210502140316.2718705-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.11 01/70] bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first
+Date:   Sun,  2 May 2021 10:02:35 -0400
+Message-Id: <20210502140344.2719040-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 X-stable: review
