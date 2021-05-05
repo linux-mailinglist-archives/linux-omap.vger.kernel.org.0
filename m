@@ -2,198 +2,190 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 14B5737351D
-	for <lists+linux-omap@lfdr.de>; Wed,  5 May 2021 08:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77A81373541
+	for <lists+linux-omap@lfdr.de>; Wed,  5 May 2021 08:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231408AbhEEG4Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 May 2021 02:56:16 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:58842 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbhEEG4P (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 May 2021 02:56:15 -0400
+        id S229765AbhEEG76 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 May 2021 02:59:58 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:53832 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229647AbhEEG75 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 May 2021 02:59:57 -0400
 Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1456tIeJ057059;
-        Wed, 5 May 2021 01:55:18 -0500
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1456wkTX074114;
+        Wed, 5 May 2021 01:58:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1620197718;
-        bh=Y5UWzWg7x0wMfAnQMe8QYtS0K1vtF29Yvy6lzPK7r0o=;
-        h=From:To:CC:Subject:Date;
-        b=ZL9EqW0jlRkn8ieNsym2eHBvGft0Ui7ulxi8tZwCcfIRNFszWo4FLM8XHyYPgGLM0
-         bw50C6zwX2wxx5LIy0xk6Ii+itpg4TGm96rEjunD2WqRfGUSzcQq2fXotiftGCkhnL
-         s6tKmtUz5kd2Q+Jcy2riaPhy3V6xRPSUA4OowgKo=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1456tIZh035151
+        s=ti-com-17Q1; t=1620197926;
+        bh=0j77LyqtTpjLqDfexeSMu4rG5MJRswU/vC8VHqp4Cx0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=uskr3cn/Fst+OifpPmtFyRcd2mXaTGrszLUDzWQ9gCQE9XbfpKlmse4bsll9AmlSU
+         EYzSC1PeoGOKriP+yKG2MzZ4FdjTbiMGJZ4/gnUTs4MNvVnazbTqYOw/J3w0jrtDkd
+         U45B/9tjAi68FiqsW1aKrNS7NYCEgbxjLKO9fA40=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1456wkxq040183
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 5 May 2021 01:55:18 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 5 May 2021 01:58:46 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 5 May
- 2021 01:55:18 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ 2021 01:58:46 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Wed, 5 May 2021 01:55:18 -0500
-Received: from ula0132425.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1456tDFT066833;
-        Wed, 5 May 2021 01:55:15 -0500
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-To:     Rob Herring <robh+dt@kernel.org>
-CC:     <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Nishanth Menon <nm@ti.com>
-Subject: [PATCH] dt-bindings: i2c: Move i2c-omap.txt to YAML format
-Date:   Wed, 5 May 2021 12:25:11 +0530
-Message-ID: <20210505065511.918-1-vigneshr@ti.com>
-X-Mailer: git-send-email 2.31.1
+ Frontend Transport; Wed, 5 May 2021 01:58:46 -0500
+Received: from [10.250.235.7] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1456we3U032185;
+        Wed, 5 May 2021 01:58:41 -0500
+Subject: Re: [PATCH] PCI: cadence: Set LTSSM Detect Quiet state minimum delay
+ as workaround for training defect.
+To:     Nadeem Athani <nadeem@cadence.com>, <tjoseph@cadence.com>,
+        <lorenzo.pieralisi@arm.com>, <robh@kernel.org>,
+        <bhelgaas@google.com>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-omap@vger.kernel.org>
+CC:     <mparab@cadence.com>, <sjakhade@cadence.com>,
+        <pthombar@cadence.com>, Milind Parab <mparab@cadence.com>
+References: <20210426051427.15945-1-nadeem@cadence.com>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <152cc214-630f-3d66-9cd5-12909c161dec@ti.com>
+Date:   Wed, 5 May 2021 12:28:39 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+In-Reply-To: <20210426051427.15945-1-nadeem@cadence.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert i2c-omap.txt to YAML schema for better checks and documentation.
+Hi Nadeem,
 
-Following properties were used in DT but were not documented in txt
-bindings and has been included in YAML schema:
-1. Include ti,am4372-i2c compatible
-2. Include dmas property used in few OMAP dts files
-3. Document clocks property
+On 26/04/21 10:44 am, Nadeem Athani wrote:
 
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
----
- .../devicetree/bindings/i2c/i2c-omap.txt      | 37 ---------
- .../devicetree/bindings/i2c/ti,omap4-i2c.yaml | 75 +++++++++++++++++++
- 2 files changed, 75 insertions(+), 37 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/i2c/i2c-omap.txt
- create mode 100644 Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
+How about $subject to "PCI: cadence: Add quirk to set maximum possible
+wait time in Detect.Quiet state."?
+> Adding a quirk flag "quirk_detect_quiet_flag" to program the minimum
+> time that LTSSM waits on entering Detect.Quiet state.
+> Setting this to 2ms for specific TI j7200 SOC as a workaround to resolve
+> a link training issue in IP.
 
-diff --git a/Documentation/devicetree/bindings/i2c/i2c-omap.txt b/Documentation/devicetree/bindings/i2c/i2c-omap.txt
-deleted file mode 100644
-index a425b91af48f..000000000000
---- a/Documentation/devicetree/bindings/i2c/i2c-omap.txt
-+++ /dev/null
-@@ -1,37 +0,0 @@
--I2C for OMAP platforms
--
--Required properties :
--- compatible : Must be
--	"ti,omap2420-i2c" for OMAP2420 SoCs
--	"ti,omap2430-i2c" for OMAP2430 SoCs
--	"ti,omap3-i2c" for OMAP3 SoCs
--	"ti,omap4-i2c" for OMAP4+ SoCs
--	"ti,am654-i2c", "ti,omap4-i2c" for AM654 SoCs
--	"ti,j721e-i2c", "ti,omap4-i2c" for J721E SoCs
--	"ti,am64-i2c", "ti,omap4-i2c" for AM64 SoCs
--- ti,hwmods : Must be "i2c<n>", n being the instance number (1-based)
--- #address-cells = <1>;
--- #size-cells = <0>;
--
--Recommended properties :
--- clock-frequency : Desired I2C bus clock frequency in Hz. Otherwise
--  the default 100 kHz frequency will be used.
--
--Optional properties:
--- Child nodes conforming to i2c bus binding
--
--Note: Current implementation will fetch base address, irq and dma
--from omap hwmod data base during device registration.
--Future plan is to migrate hwmod data base contents into device tree
--blob so that, all the required data will be used from device tree dts
--file.
--
--Examples :
--
--i2c1: i2c@0 {
--    compatible = "ti,omap3-i2c";
--    #address-cells = <1>;
--    #size-cells = <0>;
--    ti,hwmods = "i2c1";
--    clock-frequency = <400000>;
--};
-diff --git a/Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml b/Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
-new file mode 100644
-index 000000000000..acf8872a7a7d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
-@@ -0,0 +1,75 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/i2c/ti,omap4-i2c.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Bindings for I2C controllers on TI's OMAP and K3 SoCs
-+
-+maintainers:
-+  - Vignesh Raghavendra <vigneshr@ti.com>
-+
-+allOf:
-+  - $ref: /schemas/i2c/i2c-controller.yaml#
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - const: ti,omap2420-i2c
-+      - const: ti,omap2430-i2c
-+      - const: ti,omap3-i2c
-+      - const: ti,omap4-i2c
-+      - items:
-+          - enum:
-+              - ti,am4372-i2c
-+              - ti,am64-i2c
-+              - ti,am654-i2c
-+              - ti,j721e-i2c
-+          - const: ti,omap4-i2c
-+
-+  ti,hwmods:
-+    description:
-+      Must be "i2c<n>", n being the instance number (1-based)
-+    $ref: /schemas/types.yaml#/definitions/string
-+    items:
-+      - pattern: "^i2c([1-9])$"
-+
-+  dmas:
-+    minItems: 1
-+    maxItems: 2
-+
-+  dma-names:
-+    items:
-+      - const: tx
-+      - const: rx
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    const: fck
-+
-+  clock-frequency: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+     main_i2c0: i2c@2000000 {
-+             compatible = "ti,j721e-i2c", "ti,omap4-i2c";
-+             reg = <0x00 0x2000000 0x00 0x100>;
-+             interrupts = <GIC_SPI 200 IRQ_TYPE_LEVEL_HIGH>;
-+             #address-cells = <1>;
-+             #size-cells = <0>;
-+       };
--- 
-2.31.1
+Please add a more detailed description of the issue here. Something like
+below.
 
+PCIe fails to link up if SERDES lanes not used by PCIe are assigned to
+another protocol. For example, link training fails if lanes 2 and 3 are
+assigned to another protocol while lanes 0 and 1 are used for PCIe to
+form a two lane link. This failure is due to an incorrect tie-off on an
+internal status signal indicating electrical idle.
+
+Status signals going from SERDES to PCIe Controller are tied-off when a
+lane is not assigned to PCIe. Signal indicating electrical idle is
+incorrectly tied-off to a state that indicates non-idle. As a result,
+PCIe sees unused lanes to be out of electrical idle and this causes
+LTSSM to exit Detect.Quiet state without waiting for 12ms timeout to
+occur. If a receiver is not detected on the first receiver detection
+attempt in Detect.Active state, LTSSM goes back to Detect.Quiet and
+again moves forward to Detect.Active state without waiting for 12ms as
+required by PCIe base specification. Since wait time in Detect.Quiet is
+skipped, multiple receiver detect operations are performed back-to-back
+without allowing time for capacitance on the transmit lines to
+discharge. This causes subsequent receiver detection to always fail even
+if a receiver gets connected eventually.
+> In future revisions this setting will not be required.
+> 
+> As per PCIe specification, all Receivers must meet the Z-RX-DC
+> specification for 2.5 GT/s within 1ms of entering Detect.Quiet LTSSM
+> substate. The LTSSM must stay in this substate until the ZRXDC
+> specification for 2.5 GT/s is met.
+> 
+> 00 : 0 minimum wait time in Detect.Quiet state.
+> 01 : 100us minimum wait time in Detect.Quiet state.
+> 10 : 1ms minimum wait time in Detect.Quiet state.
+> 11 : 2ms minimum wait time in Detect.Quiet state.
+> 
+> Signed-off-by: Nadeem Athani <nadeem@cadence.com>
+> ---
+
+Please note the previous version of the patch here and what changed.
+http://lore.kernel.org/r/20210409053832.29512-1-nadeem@cadence.com
+
+>  drivers/pci/controller/cadence/pcie-cadence-ep.c   | 21 +++++++++++++++++++++
+>  drivers/pci/controller/cadence/pcie-cadence-host.c | 21 +++++++++++++++++++++
+>  drivers/pci/controller/cadence/pcie-cadence.h      | 12 ++++++++++++
+>  3 files changed, 54 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> index 897cdde02bd8..245771f03c21 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> @@ -552,6 +552,23 @@ static const struct pci_epc_ops cdns_pcie_epc_ops = {
+>  	.get_features	= cdns_pcie_ep_get_features,
+>  };
+>  
+> +static void cdns_pcie_detect_quiet_min_delay_set(struct cdns_pcie_ep *ep)
+> +{
+> +	struct cdns_pcie *pcie = &ep->pcie;
+> +	u32 delay = 0x3;
+> +	u32 ltssm_control_cap;
+> +
+> +	/*
+> +	 * Set the LTSSM Detect Quiet state min. delay to 2ms.
+> +	 */
+> +
+> +	ltssm_control_cap = cdns_pcie_readl(pcie, CDNS_PCIE_LTSSM_CONTROL_CAP);
+> +	ltssm_control_cap = ((ltssm_control_cap &
+> +			    ~CDNS_PCIE_DETECT_QUIET_MIN_DELAY_MASK) |
+> +			    CDNS_PCIE_DETECT_QUIET_MIN_DELAY(delay));
+> +
+> +	cdns_pcie_writel(pcie, CDNS_PCIE_LTSSM_CONTROL_CAP, ltssm_control_cap);
+> +}
+>  
+>  int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
+>  {
+> @@ -623,6 +640,10 @@ int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
+>  	ep->irq_pci_addr = CDNS_PCIE_EP_IRQ_PCI_ADDR_NONE;
+>  	/* Reserve region 0 for IRQs */
+>  	set_bit(0, &ep->ob_region_map);
+> +
+> +	if (ep->quirk_detect_quiet_flag)
+> +		cdns_pcie_detect_quiet_min_delay_set(ep);
+> +
+>  	spin_lock_init(&ep->lock);
+>  
+>  	return 0;
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> index ae1c55503513..ffc2dbeb1240 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> @@ -462,6 +462,24 @@ static int cdns_pcie_host_init(struct device *dev,
+>  	return cdns_pcie_host_init_address_translation(rc);
+>  }
+>  
+> +static void cdns_pcie_detect_quiet_min_delay_set(struct cdns_pcie_rc *rc)
+> +{
+> +	struct cdns_pcie *pcie = &rc->pcie;
+> +	u32 delay = 0x3;
+> +	u32 ltssm_control_cap;
+> +
+> +	/*
+> +	 * Set the LTSSM Detect Quiet state min. delay to 2ms.
+> +	 */
+> +
+> +	ltssm_control_cap = cdns_pcie_readl(pcie, CDNS_PCIE_LTSSM_CONTROL_CAP);
+> +	ltssm_control_cap = ((ltssm_control_cap &
+> +			    ~CDNS_PCIE_DETECT_QUIET_MIN_DELAY_MASK) |
+> +			    CDNS_PCIE_DETECT_QUIET_MIN_DELAY(delay));
+> +
+> +	cdns_pcie_writel(pcie, CDNS_PCIE_LTSSM_CONTROL_CAP, ltssm_control_cap);
+> +}
+> +
+
+Don't repeat this function once for host and once for device. Add this
+function pcie-cadence.c and invoked from host and endpoint.
+
+Thanks
+Kishon
