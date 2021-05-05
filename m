@@ -2,92 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63A273739CE
-	for <lists+linux-omap@lfdr.de>; Wed,  5 May 2021 14:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73008373CF8
+	for <lists+linux-omap@lfdr.de>; Wed,  5 May 2021 16:03:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229606AbhEEMFL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 May 2021 08:05:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232911AbhEEMFJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 May 2021 08:05:09 -0400
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D612C061574
-        for <linux-omap@vger.kernel.org>; Wed,  5 May 2021 05:04:13 -0700 (PDT)
-Received: by mail-io1-xd2f.google.com with SMTP id p11so1383124iob.9
-        for <linux-omap@vger.kernel.org>; Wed, 05 May 2021 05:04:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sa4gGnatpFPgFeIeFOrEjuxWwi1DtsuBKQhEsi8llps=;
-        b=ukaWmJJImwBK8f5EL+j/w1/I2a40hZVNUyhAh2Jasnw9+xp8O97pekgWBtdnLmf7j9
-         Utl3X3x/1jQ+vlmk0WeBos82y5T4lOOJmw9bYIf8hTJA7uGIETSccDtXH9lZ4cTIahSp
-         E574XsDu4yb0UTo2T/7TjVHfeTSELFRkB9/qJHmjXN2dwe9RVmouuZd6rgXucbyHf4lW
-         OQZoS0jLYVZd3aVaFLG1HgXcpDI5stcFlGkP1i5Ii8Osv/nSFh7JWDpto1aPJ1bRJvm3
-         SBi+MYe73TkPRdzIMKEtrNawTyf6tqJoBCYvph9zeg+A9F+j6R/p6TpYdc8sLRLydMA+
-         waJA==
+        id S233576AbhEEOEM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 May 2021 10:04:12 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54883 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233702AbhEEOEM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 May 2021 10:04:12 -0400
+Received: from mail-qv1-f72.google.com ([209.85.219.72])
+        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <krzysztof.kozlowski@canonical.com>)
+        id 1leI7O-000085-UJ
+        for linux-omap@vger.kernel.org; Wed, 05 May 2021 14:03:15 +0000
+Received: by mail-qv1-f72.google.com with SMTP id 99-20020a0c80ec0000b029017de514d56fso1696505qvb.17
+        for <linux-omap@vger.kernel.org>; Wed, 05 May 2021 07:03:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sa4gGnatpFPgFeIeFOrEjuxWwi1DtsuBKQhEsi8llps=;
-        b=IHu3zMbDuOnvYJXdLUbY4I+Td18p1tx2r/qW4Ov/fG4wpimhibMm92eswMpB3OqqMG
-         Qwh21DhrkLLAyCgXIluZEfgMAOHqK2Z4lq10m7JCwIqsHFIS0Bv3Ncgw0Ia1lawMK+/6
-         SIWMloF0T9IEJj0C0DQ34C/arI1x6LDJDJ2px3KLRUiP+v16uzT5XzQAc3iSvLQfREpC
-         O6bqPiyVaYP+wKDp4us1RrRBTJL57uiuAybXWY+Vou2B6LbqMiHToWaHsiTnncXruI75
-         izKD0KPDjPuTVBx2Yr6L1zsaDsO+bp0MOQ4BlfJK4mtrH9pc9M6slamV0e5Y09LGDNOd
-         6Qzw==
-X-Gm-Message-State: AOAM533rJjqOOAV7T0E0Vmqp+op8aAX03IalsnV0N4LaPQYOd/YY/xkd
-        WtFUUJQHz4iWfo367xpwADbtpWxTbQ3ZyJOpKE81Yvw0xhg=
-X-Google-Smtp-Source: ABdhPJypHhANRqosLNk2yGZ+DKTmUMtZohGiDJGTtfO5LQCDSLAd9dz9GAN/SvhUk9UrwwvB6vyl290QIIwxDRCx43I=
-X-Received: by 2002:a05:6638:3010:: with SMTP id r16mr29236338jak.126.1620216252644;
- Wed, 05 May 2021 05:04:12 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gHlNQxBMJJJPApy8J9ScRibX6GAiaOm1NP7zfEL0aKw=;
+        b=QYlINe26FtZ4eVXHEB9M9QYFpetOiOsRN46vT/lT7pES/oOGWX/1c9kvEVb7XGouX7
+         k9Y7sEnbRUXQVzvgwn17KM/aUHarx4PHET78cxrK8/xbIJBIR/JNfvGoSrR0PJX4Oj3A
+         Jl1WQXygpbszozntZ7PpPOh+cwDLOuqkho+0QGiGECJ5B+uIJLWFPoxBvmwXb4xUcS/m
+         joBbFijq6k86vi7LExnRcUQbGvMzd+UAxW8W8vaY+lJTrVFU6T4jI8dKyWIly0chn1SA
+         3qFZdzlKGt2uiGgIkiJAzqwe7hLRFaHy5g1NN+pEuAs8AptCN/tQSlsS2+YD88lbT+Qz
+         6lig==
+X-Gm-Message-State: AOAM531vv+AMyDV1rBxf1ao2OMn3uSlw4mmwI7W4xfdC1PvGmgimk8Hb
+        YLHfFzIL1TbY+nxGqAqcW3O8pPGL5/tdu1ITHU5C/nlqInKS3ru7gl47I36ovb8m9GvVF37ThB5
+        th14uOvmEbyv2eWK75dsyFCF00fe0x8+LXcJPy0s=
+X-Received: by 2002:ac8:118d:: with SMTP id d13mr26914115qtj.294.1620223394007;
+        Wed, 05 May 2021 07:03:14 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxx77jKyRL1IlHqhDJ4GD0HwdRxVnhzwQKiw5Ri5Ut4bvfEkDj1ezNgIO6TQsyv10c+hqq6OQ==
+X-Received: by 2002:ac8:118d:: with SMTP id d13mr26914106qtj.294.1620223393830;
+        Wed, 05 May 2021 07:03:13 -0700 (PDT)
+Received: from localhost.localdomain ([45.237.49.2])
+        by smtp.gmail.com with ESMTPSA id l8sm4956754qtv.18.2021.05.05.07.03.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 May 2021 07:03:13 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Subject: [PATCH] ARM: dts: am5729-beagleboneai: drop unused Broadcom WiFi properties
+Date:   Wed,  5 May 2021 10:00:15 -0400
+Message-Id: <20210505140015.60013-1-krzysztof.kozlowski@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <CACLAQJFHyYESWO0_N8Qin8eY2moswN-eeWi5bHcRWhCJpjsjjg@mail.gmail.com>
- <YI/ONvCE4RuUV6SC@atomide.com> <CACLAQJH6tgaSqH=hs-=WEOWmD6ozkkRkL_dm0MBNV5qiPHFveg@mail.gmail.com>
- <YJFDHfRc1Q02gh/k@atomide.com> <20210504184824.d24a29c4fdb4c807b54f3d33@uvos.xyz>
-In-Reply-To: <20210504184824.d24a29c4fdb4c807b54f3d33@uvos.xyz>
-From:   Mighty M <mightymb17@gmail.com>
-Date:   Wed, 5 May 2021 17:34:01 +0530
-Message-ID: <CACLAQJG0pb5vRqig96Lks-dv6Ju7ykAXWGb2ZogeerMFUEtFsQ@mail.gmail.com>
-Subject: Re: Performance difference in mainline and downstream
-To:     Dev Null <devnull@uvos.xyz>
-Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 4, 2021 at 10:18 PM Dev Null <devnull@uvos.xyz> wrote:
->
-> armv7h in general also has some of the secuity mitigations around
-> speculative execution / branch prediction.
->
-> no clue what the cumulative inpact of these is on omap4 but the vendor
-> kernel very likely dosent have any
->
-> On Tue, 4 May 2021 15:50:37 +0300
-> Tony Lindgren <tony@atomide.com> wrote:
->
-> > * Mighty M <mightymb17@gmail.com> [210504 06:02]:
-> > > Hello, CONFIG_ARCH_OMAP2 is already disabled in my .config and I
-> > > couldnt find CONFIG_DEBUG.
-> >
-> > Sorry I meant CONFIG_DEBUG_KERNEL :)
-> >
-> > Try first dropping these lines from your .config:
-> >
-> > CONFIG_EXPERT=y
-> > CONFIG_DEBUG_KERNEL=y
-> >
-> > Regards,
-> >
-> > Tony
->
->
-> --
-> Dev Null <devnull@uvos.xyz>
+The brcm,sd-head-align, brcm,sd_head_align and brcm,sd_sgentry_align are
+not used by the driver and not present in dtschema:
 
-Well that might be a proper reason, also its running on 1GB /system
-partition which might be a factor as well
+  arch/arm/boot/dts/am5729-beagleboneai.dt.yaml: wifi@1:
+    'brcm,sd-head-align', 'brcm,sd_head_align', 'brcm,sd_sgentry_align' do not match any of the regexes: 'pinctrl-[0-9]+'
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+---
+ arch/arm/boot/dts/am5729-beagleboneai.dts | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am5729-beagleboneai.dts b/arch/arm/boot/dts/am5729-beagleboneai.dts
+index 149cfafb90bf..d3b2e87a6266 100644
+--- a/arch/arm/boot/dts/am5729-beagleboneai.dts
++++ b/arch/arm/boot/dts/am5729-beagleboneai.dts
+@@ -582,10 +582,6 @@ brcmf: wifi@1 {
+ 		reg = <1>;
+ 		compatible = "brcm,bcm4329-fmac";
+ 
+-		brcm,sd-head-align = <4>;
+-		brcm,sd_head_align = <4>;
+-		brcm,sd_sgentry_align = <512>;
+-
+ 		interrupt-parent = <&gpio3>;
+ 		interrupts = <23 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-names = "host-wake";
+-- 
+2.25.1
+
