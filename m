@@ -2,93 +2,148 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC53937499C
-	for <lists+linux-omap@lfdr.de>; Wed,  5 May 2021 22:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 398573752BA
+	for <lists+linux-omap@lfdr.de>; Thu,  6 May 2021 13:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229894AbhEEUrF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 May 2021 16:47:05 -0400
-Received: from mail-ot1-f41.google.com ([209.85.210.41]:46900 "EHLO
-        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229575AbhEEUrE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 May 2021 16:47:04 -0400
-Received: by mail-ot1-f41.google.com with SMTP id d3-20020a9d29030000b029027e8019067fso2911910otb.13;
-        Wed, 05 May 2021 13:46:07 -0700 (PDT)
+        id S234639AbhEFLBu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 May 2021 07:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56764 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234580AbhEFLBt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 May 2021 07:01:49 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91E84C061574
+        for <linux-omap@vger.kernel.org>; Thu,  6 May 2021 04:00:49 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id u13so5657164edd.3
+        for <linux-omap@vger.kernel.org>; Thu, 06 May 2021 04:00:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=AdJUhkXJ0RE0gA8rQiRatnY1RC7xIq+gLRVNuKyv4zk=;
+        b=yXjsWw1RP+V7P8yFV+MEP4lidWXgt92J0/EgUmwODNiDWT5hNfkKXlaz7BDy82Femm
+         q7oPTyidG6yskxN7dWTknGA+EoV9kqqlTpEPBaFY08ipld2nllpUlurIroxUUIUr/myE
+         OoDl2EbLkwXGuhcQIIDrUD9ImV/TbYq5RaRbjJlZoRfOfZ+VdH+X4UwZ0dRAJ17/wH5I
+         PVKsPTQeMEoChpQtVFkuxqKd8mHkUk48K0FmmaLUmD/Q8NDjleJ8tEuRJm3Yxd5DmHp4
+         H3YWLWzK+SDqjZEFL1m54h5uxGeZFier1anJL+dlNokMzwCDecPGpg5HIHu8VFxTWxIe
+         DwTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=uZEiv6HhKLNAH9Vt/Wy6pfuXYHRwYyJTO0WuIw2tkrw=;
-        b=sVA6FMNeIPoqJivSfQtVHFPlSNTXAWW96kr2nkxc+QEmCLT4Lej7FGfX4bC6gzK8fC
-         Vm6ACVwGoVvbZ4IYO1RkQ5WsVmJ1/JLHKKKsFdtIOb1TbuzAA7mXa+rs07lij0kIIFRA
-         hpWMPEOL2hj5X3v6dhg4xp41mcpuAK844fPkzk8qfi0nPXvBVyrlFvrCQcwaFdzKo2ft
-         T51ECE4/VLkKSRSyt6R1uPVcB/b6xVtlfZsLiEeq8Hs57VNDHoIYNb+pA3MN56YxpBg7
-         o9eJC/SSeY4ch3qhdDb4PGqY8AtmXLq3lrYcN4qu5yXrBwcyYGgNY7HtagM+3mSNHEhA
-         d8cA==
-X-Gm-Message-State: AOAM5316dnrf9OlSA5t91oZXDMTR9NktCOaVuTbOWy2hTeYk2QFO8L/I
-        nTW7vCqaFI444aAaikmQ5Q==
-X-Google-Smtp-Source: ABdhPJwYwQ8Hlr8qqvXdBp8FirB3rHUuf1rsEjTkWzeI3cLmeoa11IrsotcWMA9VweyaQWNxoyU2qg==
-X-Received: by 2002:a9d:479a:: with SMTP id b26mr488275otf.180.1620247567209;
-        Wed, 05 May 2021 13:46:07 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 88sm133743otx.2.2021.05.05.13.46.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 May 2021 13:46:06 -0700 (PDT)
-Received: (nullmailer pid 2773322 invoked by uid 1000);
-        Wed, 05 May 2021 20:46:05 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, Nishanth Menon <nm@ti.com>,
-        devicetree@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210505065511.918-1-vigneshr@ti.com>
-References: <20210505065511.918-1-vigneshr@ti.com>
-Subject: Re: [PATCH] dt-bindings: i2c: Move i2c-omap.txt to YAML format
-Date:   Wed, 05 May 2021 15:46:05 -0500
-Message-Id: <1620247565.552433.2773321.nullmailer@robh.at.kernel.org>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=AdJUhkXJ0RE0gA8rQiRatnY1RC7xIq+gLRVNuKyv4zk=;
+        b=Zu4gnIhzLIu/FArBa/9hxDbdDZUdOziVC9Afbqg5vTz1T/YTbCpDp0BEWkufRa0wNl
+         xaFDKksd/EjfVD9L6cbPDSoLgwoQzNTgx8Rxajb8mvRSVef082wQYnkmQYgUzoYgpYoV
+         virF+v5AMfkG4kP9vfHTGOJsVDpSo+nnKI791+vMRiQkqF9HSmGD8irHdNIeRLcgPRp6
+         ZAznlNwBhaFSJwFrAO9PqzeGatlzbCg30uTrlFtq/UwxUGTAJMcJxlO/CeSIEJVGg+al
+         inhXrqpGNhAXYK1EQueqHr46PaZ5YMCyZGdB9wVuBRGcgOREHXM/bTlS2NTt+DbqMAFR
+         S91g==
+X-Gm-Message-State: AOAM531uECFgoB47VFMhowM3HA9MT4UKTIq+PwBwCM4MPR/BioeSBG9S
+        GhEQH0UCozsi5a+XFYOcBcd63CNxGshmfEym7bAc0A==
+X-Google-Smtp-Source: ABdhPJzzg1f47/TCh4naYuf/+uyutWrGXzwqvmRLBN7VgJa8XfcE9nK2c7vpAmPWbkrDepZWGynD3NM+DXnxO/NUm/Y=
+X-Received: by 2002:a05:6402:145:: with SMTP id s5mr4338384edu.221.1620298848045;
+ Thu, 06 May 2021 04:00:48 -0700 (PDT)
+MIME-Version: 1.0
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 6 May 2021 16:30:36 +0530
+Message-ID: <CA+G9fYtTN6ug3eBAW3wMcDeESUo+ebj7L5HBe5_fj4uqDExFQg@mail.gmail.com>
+Subject: #regzb introduced: 98feab31ac49 ("ARM: OMAP2+: Drop legacy platform
+ data for dra7 sata")
+To:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Tony Lindgren <tony@atomide.com>,
+        lkft-triage@lists.linaro.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        regressions@lists.linux.dev
+Cc:     Benoit Cousson <bcousson@baylibre.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 05 May 2021 12:25:11 +0530, Vignesh Raghavendra wrote:
-> Convert i2c-omap.txt to YAML schema for better checks and documentation.
-> 
-> Following properties were used in DT but were not documented in txt
-> bindings and has been included in YAML schema:
-> 1. Include ti,am4372-i2c compatible
-> 2. Include dmas property used in few OMAP dts files
-> 3. Document clocks property
-> 
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> ---
->  .../devicetree/bindings/i2c/i2c-omap.txt      | 37 ---------
->  .../devicetree/bindings/i2c/ti,omap4-i2c.yaml | 75 +++++++++++++++++++
->  2 files changed, 75 insertions(+), 37 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/i2c/i2c-omap.txt
->  create mode 100644 Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
-> 
+[If it is already reported please ignore]
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+LKFT test reported regression on TI BeagleBoard-X15 arm32 bit platform as
+The device was not able to detect SATA drive.
 
-yamllint warnings/errors:
+dmesg short log:
+----------------------
+jitterentropy: Initialization failed with host not compliant with
+requirements: 2
+ata1: SATA max UDMA/133 mmio [mem 0x4a140000-0x4a1410ff] port 0x100 irq 101
+wkupaon-clkctrl:0068:0: failed to disable
+ata1: SATA link down (SStatus 0 SControl 300)
+ata1: softreset failed (1st FIS failed)
 
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/i2c/ti,omap4-i2c.example.dts:22.31-32 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:377: Documentation/devicetree/bindings/i2c/ti,omap4-i2c.example.dt.yaml] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1414: dt_binding_check] Error 2
+Our bisect script pointed this as the first bad commit on linux
+mainline master branch.
 
-See https://patchwork.ozlabs.org/patch/1474101
+Full test log:
+----------------
+SATA detection failed log link,
+https://lkft.validation.linaro.org/scheduler/job/2580998#L1973
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+--
+commit 98feab31ac491400f28b76a04dabd18ce21e91ba
+Author: Tony Lindgren <tony@atomide.com>
+Date:   Wed Mar 10 14:03:51 2021 +0200
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+    ARM: OMAP2+: Drop legacy platform data for dra7 sata
 
-pip3 install dtschema --upgrade
+    We can now probe devices with ti-sysc interconnect driver and dts data.
+    Let's drop the related platform data and custom ti,hwmods dts property.
 
-Please check and re-submit.
+    As we're just dropping data, and the early platform data init is based on
+    the custom ti,hwmods property, we want to drop both the platform data and
+    ti,hwmods property in a single patch.
 
+    Signed-off-by: Tony Lindgren <tony@atomide.com>
+-- 
+
+steps to reproduce:
+-------------------------
+- Build arm zImage/dtb/modules on mainline tree and configs
+- connect SATA drive and boot x15 device
+- check the dmesg for failed logs
+ - check to find /dev/sda
+
+metadata:
+  git branch: master
+  git repo: https://gitlab.com/Linaro/lkft/mirrors/torvalds/linux-mainline
+  git commit: f0728bfeb21a24bbb7d5ad1828b67a359550fa17
+  kernel-config: https://builds.tuxbuild.com/1rjBx0LdvYwlWdINXaDPvIigvcC/config
+  build-url: https://gitlab.com/Linaro/lkft/mirrors/torvalds/linux-mainline/-/pipelines/292686420
+
+Steps to build:
+--------------------
+# TuxMake is a command line tool and Python library that provides
+# portable and repeatable Linux kernel builds across a variety of
+# architectures, toolchains, kernel configurations, and make targets.
+#
+# TuxMake supports the concept of runtimes.
+# See https://docs.tuxmake.org/runtimes/, for that to work it requires
+# that you install podman or docker on your system.
+#
+# To install tuxmake on your system globally:
+# sudo pip3 install -U tuxmake
+#
+# See https://docs.tuxmake.org/ for complete documentation.
+
+
+tuxmake --runtime podman --target-arch arm --toolchain gcc-9 --kconfig
+defconfig --kconfig-add
+https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/lkft.config
+--kconfig-add https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/lkft-crypto.config
+--kconfig-add https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/distro-overrides.config
+--kconfig-add https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/systemd.config
+--kconfig-add https://raw.githubusercontent.com/Linaro/meta-lkft/sumo/recipes-kernel/linux/files/virtio.config
+--kconfig-add CONFIG_ARM_TI_CPUFREQ=y --kconfig-add
+CONFIG_SERIAL_8250_OMAP=y --kconfig-add CONFIG_POSIX_MQUEUE=y
+--kconfig-add CONFIG_OF=y --kconfig-add CONFIG_SYN_COOKIES=y
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
