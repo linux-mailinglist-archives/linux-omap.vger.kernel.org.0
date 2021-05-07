@@ -2,107 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6356237697C
-	for <lists+linux-omap@lfdr.de>; Fri,  7 May 2021 19:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50AD4376B96
+	for <lists+linux-omap@lfdr.de>; Fri,  7 May 2021 23:19:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233756AbhEGR0V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 7 May 2021 13:26:21 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:45282 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232915AbhEGR0T (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 May 2021 13:26:19 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 147HPA4M066732;
-        Fri, 7 May 2021 12:25:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1620408310;
-        bh=Mfe3VzxO5eVTgpcrjkbuWFbFY3AOvc+A6TkDDBQODfw=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=wxkOJ9i3ToJ/P/tUmQgTIBndTsX7BGuoRHm4aSOLU+yK2W8nJ4qHCB3Z4w3SHGjFB
-         0QSBLPalZP6KnIZyQ/qHWY/8vl2ZPezMEGJ65dJtpqQuwphIBOQrWcTbk6VqXqSRc2
-         rWc8kFZ+sULQooEDGjtm3FepemCYpNf7wVlRKckU=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 147HPAlJ042114
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 7 May 2021 12:25:10 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 7 May
- 2021 12:25:10 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Fri, 7 May 2021 12:25:09 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 147HP62T106353;
-        Fri, 7 May 2021 12:25:06 -0500
-Subject: Re: [PATCH v2] dt-bindings: i2c: Move i2c-omap.txt to YAML format
-To:     Andreas Kemnade <andreas@kemnade.info>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-CC:     Rob Herring <robh+dt@kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
+        id S229652AbhEGVUj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 7 May 2021 17:20:39 -0400
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:33499 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229482AbhEGVUi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 May 2021 17:20:38 -0400
+Received: by mail-ot1-f44.google.com with SMTP id i23-20020a9d68d70000b02902dc19ed4c15so5100372oto.0;
+        Fri, 07 May 2021 14:19:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=YpC5Y9ntxdycovl95eo8Nefxaj8tIQRjfe1QWhL3IJc=;
+        b=fRU1JIkTH7bTEaTOpb+wxNqJYHkJXF0RUEAiDHEae53E0CcXEW+vV2aWsB5Mc49O1t
+         tIJF2UV5AiUJrU3l+pFq9L72zGErKy2rNQX8Pi8k4pbatFZEVnS1XwWxX82fEZzJMDqQ
+         3Lhp2M0omJWaokWKtZkC1WHOF7rPwcrs9ZcncS/A7Fvnwkc8lyXrwikae1oVuOtSiuyR
+         IwVDtEUp9LXsONzTZjAURvMfIBQhCfCUFlQdIgt8TVSPUOy8PYesnUoCOXBivXq692++
+         S7fCsVKkvL9GxFPsNYCp2kfQ2uFM5h6291FBrlyt6D0xVCoxfcNEDogGWktkvK33aBEJ
+         IWwA==
+X-Gm-Message-State: AOAM531sL4U7Vms9n7GH/KwCCELdW3JCcB/9hj7Rn3Lzgt6ujubOCuN8
+        3rMV1lGFoqP3b0uBQmKD6sckozp50g==
+X-Google-Smtp-Source: ABdhPJz2LvKwbUN4rajPoBOXWPa2bMhCzQXXERdDf6QsPEKAdmFldkzsjUS1VU0IEA26gQqUrb61Dg==
+X-Received: by 2002:a9d:491:: with SMTP id 17mr10053622otm.184.1620422377966;
+        Fri, 07 May 2021 14:19:37 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id m67sm1396432otm.69.2021.05.07.14.19.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 May 2021 14:19:36 -0700 (PDT)
+Received: (nullmailer pid 2905952 invoked by uid 1000);
+        Fri, 07 May 2021 21:19:36 -0000
+Date:   Fri, 7 May 2021 16:19:36 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
         Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>
+Subject: Re: [PATCH v2] dt-bindings: i2c: Move i2c-omap.txt to YAML format
+Message-ID: <20210507211936.GA2902038@robh.at.kernel.org>
 References: <20210506140026.31254-1-vigneshr@ti.com>
- <f7570cb4-8c21-2fa5-bd26-1388f2a4bd6b@ti.com>
- <429a740a-c2b9-1cf8-ed2b-0fb7b1bea422@ti.com> <20210507163602.219894f4@aktux>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <1ef076ac-e0de-a0df-a918-aeb8ed6c5956@ti.com>
-Date:   Fri, 7 May 2021 20:24:59 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210507163602.219894f4@aktux>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210506140026.31254-1-vigneshr@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 07/05/2021 17:36, Andreas Kemnade wrote:
-> On Fri, 7 May 2021 19:45:45 +0530
-> Vignesh Raghavendra <vigneshr@ti.com> wrote:
+On Thu, May 06, 2021 at 07:30:26PM +0530, Vignesh Raghavendra wrote:
+> Convert i2c-omap.txt to YAML schema for better checks and documentation.
 > 
->> On 5/7/21 12:24 PM, Grygorii Strashko wrote:
->>>
->>>
->>> On 06/05/2021 17:00, Vignesh Raghavendra wrote:
->>>> Convert i2c-omap.txt to YAML schema for better checks and documentation.
->>>>
->>>> Following properties were used in DT but were not documented in txt
->>>> bindings and has been included in YAML schema:
->>>> 1. Include ti,am4372-i2c compatible
->>>> 2. Include dmas property used in few OMAP dts files
->>>
->>> The DMA is not supported by i2c-omap driver, so wouldn't be better to
->>> just drop dmas from DTBs to avoid confusions?
->>> It can be added later.
->>>    
->>
->> Will do.. I will also send patches dropping dmas from dts that currently
->> have them populated.
->>
-> hmm, we have
-> - DO attempt to make bindings complete even if a driver doesn't support some
->    features. For example, if a device has an interrupt, then include the
->    'interrupts' property even if the driver is only polled mode.
+> Following properties were used in DT but were not documented in txt
+> bindings and has been included in YAML schema:
+> 1. Include ti,am4372-i2c compatible
+> 2. Include dmas property used in few OMAP dts files
+> 3. Document clocks property
 > 
-> in Documentation/devicetree/bindings/writing-bindings.rst
-> Shouln't the dma stay there if the hardware supports it? Devicetree
-> should describe the hardware not the driver if I understood things
-> right.
+> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+> ---
+> v2:
+> Fix issues with make dt_bindings_check
+> Add description on usage of ti,hwmods
+> 
+>  .../devicetree/bindings/i2c/i2c-omap.txt      | 37 ---------
+>  .../devicetree/bindings/i2c/ti,omap4-i2c.yaml | 80 +++++++++++++++++++
+>  2 files changed, 80 insertions(+), 37 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/i2c/i2c-omap.txt
+>  create mode 100644 Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
 
-True.  But my above statement is also valid - it introduces confusion from user point of view.
-More over, 'dmas' is not part of original binding and were randomly added to some SoCs.
-And it's much more easy to extend binding (in the future) then remove something after.
 
-I leave it to Vignesh, Tony to decide.
+> diff --git a/Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml b/Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
+> new file mode 100644
+> index 000000000000..eb11e3025b37
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
+> @@ -0,0 +1,80 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/i2c/ti,omap4-i2c.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bindings for I2C controllers on TI's OMAP and K3 SoCs
+> +
+> +maintainers:
+> +  - Vignesh Raghavendra <vigneshr@ti.com>
+> +
+> +allOf:
+> +  - $ref: /schemas/i2c/i2c-controller.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: ti,omap2420-i2c
+> +      - const: ti,omap2430-i2c
+> +      - const: ti,omap3-i2c
+> +      - const: ti,omap4-i2c
 
--- 
-Best regards,
-grygorii
+These 4 can be a single 'enum'.
+
+> +      - items:
+> +          - enum:
+> +              - ti,am4372-i2c
+> +              - ti,am64-i2c
+> +              - ti,am654-i2c
+> +              - ti,j721e-i2c
+> +          - const: ti,omap4-i2c
+> +
+> +  ti,hwmods:
+> +    description:
+> +      (DEPRECATED) Must be "i2c<n>", n being the instance number (1-based).
+
+There's a keyword to mark things deprecated. It's 'deprecated'.
+
+> +      This property is applicable only on legacy platforms mainly omap2/3
+> +      and ti81xx and should not be used on other platforms.
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    items:
+> +      - pattern: "^i2c([1-9])$"
+> +
+> +  dmas:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  dma-names:
+> +    items:
+> +      - const: tx
+> +      - const: rx
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: fck
+> +
+> +  clock-frequency: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    main_i2c0: i2c@2000000 {
+> +            compatible = "ti,j721e-i2c", "ti,omap4-i2c";
+> +            reg = <0x2000000 0x100>;
+> +            interrupts = <GIC_SPI 200 IRQ_TYPE_LEVEL_HIGH>;
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +         };
+> -- 
+> 2.31.1
+> 
