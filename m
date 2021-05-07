@@ -2,221 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D493760B4
-	for <lists+linux-omap@lfdr.de>; Fri,  7 May 2021 08:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3392F37619B
+	for <lists+linux-omap@lfdr.de>; Fri,  7 May 2021 10:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234078AbhEGG4A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 7 May 2021 02:56:00 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:33892 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232974AbhEGG4A (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 May 2021 02:56:00 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1476sq6p096425;
-        Fri, 7 May 2021 01:54:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1620370492;
-        bh=VAN1Vd/sK3NjIpKhnp9GxcBNEoE+IcjghrLeUIAM22M=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=NI6H9pIWmfofQTdit3zQxH910Cyw1ZRmneucEaGOiUWpOuMCoO9ns1WCQ6XmHlh5A
-         4K5ZVlhwVOGzx3ykPZPvYGMFode1bZhxPYoUNfd3gqhwvtGPxQ+ECGlOCgiQuA20N4
-         hLV/xiKx5Wo6jafGUH4IRhlhbKOQyFhVria6B1PA=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1476sqP1098397
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 7 May 2021 01:54:52 -0500
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 7 May
- 2021 01:54:52 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Fri, 7 May 2021 01:54:51 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1476smS2045388;
-        Fri, 7 May 2021 01:54:49 -0500
-Subject: Re: [PATCH v2] dt-bindings: i2c: Move i2c-omap.txt to YAML format
-To:     Vignesh Raghavendra <vigneshr@ti.com>,
+        id S233115AbhEGIDK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 7 May 2021 04:03:10 -0400
+Received: from muru.com ([72.249.23.125]:52608 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232729AbhEGIDK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 7 May 2021 04:03:10 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 1A4F180E0;
+        Fri,  7 May 2021 08:02:05 +0000 (UTC)
+Date:   Fri, 7 May 2021 11:02:00 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, lkft-triage@lists.linaro.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        regressions@lists.linux.dev,
+        Benoit Cousson <bcousson@baylibre.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Rob Herring <robh+dt@kernel.org>
-CC:     <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>
-References: <20210506140026.31254-1-vigneshr@ti.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <f7570cb4-8c21-2fa5-bd26-1388f2a4bd6b@ti.com>
-Date:   Fri, 7 May 2021 09:54:49 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Subject: Re: #regzb introduced: 98feab31ac49 ("ARM: OMAP2+: Drop legacy
+ platform data for dra7 sata")
+Message-ID: <YJTz+D9Sp8Eyp+iw@atomide.com>
+References: <CA+G9fYtTN6ug3eBAW3wMcDeESUo+ebj7L5HBe5_fj4uqDExFQg@mail.gmail.com>
+ <YJPYvsdkfx4JD4vT@atomide.com>
+ <CA+G9fYv48aJ6tmSaf_HtRKHse4yN40hEYSPR5=A3W6HRoJ8p_g@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20210506140026.31254-1-vigneshr@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYv48aJ6tmSaf_HtRKHse4yN40hEYSPR5=A3W6HRoJ8p_g@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 06/05/2021 17:00, Vignesh Raghavendra wrote:
-> Convert i2c-omap.txt to YAML schema for better checks and documentation.
+* Naresh Kamboju <naresh.kamboju@linaro.org> [210506 15:19]:
+> On Thu, 6 May 2021 at 17:23, Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > Hi,
+> >
+> > * Naresh Kamboju <naresh.kamboju@linaro.org> [210506 11:00]:
+> > > Our bisect script pointed this as the first bad commit on linux
+> > > mainline master branch.
+> > >
+> > > Full test log:
+> > > ----------------
+> > > SATA detection failed log link,
+> > > https://lkft.validation.linaro.org/scheduler/job/2580998#L1973
+> > >
+> > > --
+> > > commit 98feab31ac491400f28b76a04dabd18ce21e91ba
+> > > Author: Tony Lindgren <tony@atomide.com>
+> > > Date:   Wed Mar 10 14:03:51 2021 +0200
+> > >
+> > >     ARM: OMAP2+: Drop legacy platform data for dra7 sata
+> >
+> > Thanks for the report, looks like we are now missing the sata related
+> > quirk flags compared to the patch above.
+> >
+> > Below is a quick patch to add the missing quirk flags that might help
+> > if you can give it a try.
 > 
-> Following properties were used in DT but were not documented in txt
-> bindings and has been included in YAML schema:
-> 1. Include ti,am4372-i2c compatible
-> 2. Include dmas property used in few OMAP dts files
+> The reported problem was solved by this patch. Thank you.
+> Please add reported and tested by tags.
+> 
+> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
 
-The DMA is not supported by i2c-omap driver, so wouldn't be better to just drop dmas from DTBs to avoid confusions?
-It can be added later.
+OK good to hear and thanks for testing. Will send out a proper patch.
 
-> 3. Document clocks property
-> 
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> ---
-> v2:
-> Fix issues with make dt_bindings_check
-> Add description on usage of ti,hwmods
-> 
->   .../devicetree/bindings/i2c/i2c-omap.txt      | 37 ---------
->   .../devicetree/bindings/i2c/ti,omap4-i2c.yaml | 80 +++++++++++++++++++
->   2 files changed, 80 insertions(+), 37 deletions(-)
->   delete mode 100644 Documentation/devicetree/bindings/i2c/i2c-omap.txt
->   create mode 100644 Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/i2c/i2c-omap.txt b/Documentation/devicetree/bindings/i2c/i2c-omap.txt
-> deleted file mode 100644
-> index a425b91af48f..000000000000
-> --- a/Documentation/devicetree/bindings/i2c/i2c-omap.txt
-> +++ /dev/null
-> @@ -1,37 +0,0 @@
-> -I2C for OMAP platforms
-> -
-> -Required properties :
-> -- compatible : Must be
-> -	"ti,omap2420-i2c" for OMAP2420 SoCs
-> -	"ti,omap2430-i2c" for OMAP2430 SoCs
-> -	"ti,omap3-i2c" for OMAP3 SoCs
-> -	"ti,omap4-i2c" for OMAP4+ SoCs
-> -	"ti,am654-i2c", "ti,omap4-i2c" for AM654 SoCs
-> -	"ti,j721e-i2c", "ti,omap4-i2c" for J721E SoCs
-> -	"ti,am64-i2c", "ti,omap4-i2c" for AM64 SoCs
-> -- ti,hwmods : Must be "i2c<n>", n being the instance number (1-based)
-> -- #address-cells = <1>;
-> -- #size-cells = <0>;
-> -
-> -Recommended properties :
-> -- clock-frequency : Desired I2C bus clock frequency in Hz. Otherwise
-> -  the default 100 kHz frequency will be used.
-> -
-> -Optional properties:
-> -- Child nodes conforming to i2c bus binding
-> -
-> -Note: Current implementation will fetch base address, irq and dma
-> -from omap hwmod data base during device registration.
-> -Future plan is to migrate hwmod data base contents into device tree
-> -blob so that, all the required data will be used from device tree dts
-> -file.
-> -
-> -Examples :
-> -
-> -i2c1: i2c@0 {
-> -    compatible = "ti,omap3-i2c";
-> -    #address-cells = <1>;
-> -    #size-cells = <0>;
-> -    ti,hwmods = "i2c1";
-> -    clock-frequency = <400000>;
-> -};
-> diff --git a/Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml b/Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
-> new file mode 100644
-> index 000000000000..eb11e3025b37
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml
-> @@ -0,0 +1,80 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/i2c/ti,omap4-i2c.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Bindings for I2C controllers on TI's OMAP and K3 SoCs
-> +
-> +maintainers:
-> +  - Vignesh Raghavendra <vigneshr@ti.com>
-> +
-> +allOf:
-> +  - $ref: /schemas/i2c/i2c-controller.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - const: ti,omap2420-i2c
-> +      - const: ti,omap2430-i2c
-> +      - const: ti,omap3-i2c
-> +      - const: ti,omap4-i2c
-> +      - items:
-> +          - enum:
-> +              - ti,am4372-i2c
-> +              - ti,am64-i2c
-> +              - ti,am654-i2c
-> +              - ti,j721e-i2c
-> +          - const: ti,omap4-i2c
-> +
-> +  ti,hwmods:
-> +    description:
-> +      (DEPRECATED) Must be "i2c<n>", n being the instance number (1-based).
-> +      This property is applicable only on legacy platforms mainly omap2/3
-> +      and ti81xx and should not be used on other platforms.
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    items:
-> +      - pattern: "^i2c([1-9])$"
-> +
-> +  dmas:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  dma-names:
-> +    items:
-> +      - const: tx
-> +      - const: rx
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    const: fck
-> +
-> +  clock-frequency: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    main_i2c0: i2c@2000000 {
-> +            compatible = "ti,j721e-i2c", "ti,omap4-i2c";
-> +            reg = <0x2000000 0x100>;
-> +            interrupts = <GIC_SPI 200 IRQ_TYPE_LEVEL_HIGH>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +         };
-> 
+Regards,
 
--- 
-Best regards,
-grygorii
+Tony
+
+> > 8< --------------------------
+> > diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> > --- a/drivers/bus/ti-sysc.c
+> > +++ b/drivers/bus/ti-sysc.c
+> > @@ -1459,6 +1459,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+> >                    SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
+> >         SYSC_QUIRK("tptc", 0, 0, -ENODEV, -ENODEV, 0x40007c00, 0xffffffff,
+> >                    SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
+> > +       SYSC_QUIRK("sata", 0, 0xfc, 0x1100, -ENODEV, 0x5e412000, 0xffffffff,
+> > +                  SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
+> >         SYSC_QUIRK("usb_host_hs", 0, 0, 0x10, 0x14, 0x50700100, 0xffffffff,
+> >                    SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
+> >         SYSC_QUIRK("usb_host_hs", 0, 0, 0x10, -ENODEV, 0x50700101, 0xffffffff,
+> > @@ -1524,7 +1526,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
+> >         SYSC_QUIRK("prcm", 0, 0, -ENODEV, -ENODEV, 0x40000400, 0xffffffff, 0),
+> >         SYSC_QUIRK("rfbi", 0x4832a800, 0, 0x10, 0x14, 0x00000010, 0xffffffff, 0),
+> >         SYSC_QUIRK("rfbi", 0x58002000, 0, 0x10, 0x14, 0x00000010, 0xffffffff, 0),
+> > -       SYSC_QUIRK("sata", 0, 0xfc, 0x1100, -ENODEV, 0x5e412000, 0xffffffff, 0),
+> >         SYSC_QUIRK("scm", 0, 0, 0x10, -ENODEV, 0x40000900, 0xffffffff, 0),
+> >         SYSC_QUIRK("scm", 0, 0, -ENODEV, -ENODEV, 0x4e8b0100, 0xffffffff, 0),
+> >         SYSC_QUIRK("scm", 0, 0, -ENODEV, -ENODEV, 0x4f000100, 0xffffffff, 0),
+> > --
+> > 2.31.1
+> 
+> 
+> Tested full log,
+> https://lkft.validation.linaro.org/scheduler/job/2641881#L1940
+> 
+> - Naresh
