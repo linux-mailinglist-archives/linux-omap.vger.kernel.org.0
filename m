@@ -2,77 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 17C2C376478
-	for <lists+linux-omap@lfdr.de>; Fri,  7 May 2021 13:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4375A376622
+	for <lists+linux-omap@lfdr.de>; Fri,  7 May 2021 15:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234247AbhEGLag (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 7 May 2021 07:30:36 -0400
-Received: from muru.com ([72.249.23.125]:52780 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232519AbhEGLaR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 7 May 2021 07:30:17 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 7289680E0;
-        Fri,  7 May 2021 11:29:18 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: [PATCHv2] bus: ti-sysc: Fix missing quirk flags for sata
-Date:   Fri,  7 May 2021 14:28:57 +0300
-Message-Id: <20210507112857.12753-1-tony@atomide.com>
-X-Mailer: git-send-email 2.31.1
+        id S236752AbhEGN1n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 7 May 2021 09:27:43 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:60322 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230499AbhEGN1l (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 7 May 2021 09:27:41 -0400
+Received: from [192.168.1.111] (91-157-208-71.elisa-laajakaista.fi [91.157.208.71])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5CDA3EF;
+        Fri,  7 May 2021 15:26:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1620394000;
+        bh=Y4ZVCz504AX3zFCTILayJKZwb9oWengQbtFqgQe03Ks=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=g4cMR6R+Vzrds2ZDhFTz8PI5fkdtNX98/tJzBPmCIAECKyDC3Pulm6aWC6aZ5M+Ze
+         Y/Uaj0Zehit+f1HZn9nFk7DmxYIG2E4tFqQB7+YP+tDSGHc5WlRx4IisQhzSdcwbdh
+         q185JnEk+E54ws9an2BIWpA+B50D296UqUbTJnUQ=
+Subject: Re: [PATCHv2] drm/omap: Fix issue with clocks left on after resume
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org
+References: <20210428092500.23521-1-tony@atomide.com>
+ <YIlsy4mOkLcbMKwr@pendragon.ideasonboard.com> <YIo6CzsU4JRvAdpb@atomide.com>
+ <79bea9b8-b2d2-11ec-87a3-34626347e122@ideasonboard.com>
+ <YI/UXqQbvdtC2HqI@atomide.com> <YI/bdLkwtUNFKHyW@atomide.com>
+ <YI/p9Trr5tphov6q@atomide.com> <YJJ9twsxdw2Mi0F6@atomide.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Message-ID: <e2181257-4714-e306-1ba8-6b8c9d09807c@ideasonboard.com>
+Date:   Fri, 7 May 2021 16:26:39 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <YJJ9twsxdw2Mi0F6@atomide.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Naresh Kamboju <naresh.kamboju@linaro.org> reported that Beaglebone-X15
-does not detect sata drives any longer after dra7 was flipped to boot with
-device tree data only. Turns out we are now missing the sata related quirk
-flags in ti-sysc that we used to have earlier.
+On 05/05/2021 14:12, Tony Lindgren wrote:
+> * Tony Lindgren <tony@atomide.com> [210503 12:18]:
+>> I think we still fix the dispc related issue too, otherwise the parent
+>> child_count will just keep increasing on each suspend. I check that
+>> again though.
+> 
+> After tons more debugging, I found the root cause for the parent child_count
+> increasing and posted a patch for it at [0] below.
+> 
+> This means the $subject patch here can be done later on as clean-up to
+> leave out lots of unnecessary PM runtime calls and simplify the system
+> suspend :)
 
-Fixes: 98feab31ac49 ("ARM: OMAP2+: Drop legacy platform data for dra7 sata")
-Fixes: 21206c8f2cb5 ("ARM: OMAP2+: Drop legacy platform data for omap5 sata")
-Link: https://lore.kernel.org/regressions/CA+G9fYtTN6ug3eBAW3wMcDeESUo+ebj7L5HBe5_fj4uqDExFQg@mail.gmail.com/
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
+Great work, thanks! It's always nice when someone else does the tons of 
+debugging ;).
 
-Changes since v1:
-- Added back the missing part of the patch I hosed after applying on
-  wrong kernel version
+I tested the patch you sent, works fine for me.
 
----
- drivers/bus/ti-sysc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+While testing I noticed another problem, which happens also without your 
+fix: go to suspend with HDMI connected, remove the cable, resume the 
+board -> boom. I didn't debug that yet.
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1459,6 +1459,8 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
- 	SYSC_QUIRK("tptc", 0, 0, -ENODEV, -ENODEV, 0x40007c00, 0xffffffff,
- 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
-+	SYSC_QUIRK("sata", 0, 0xfc, 0x1100, -ENODEV, 0x5e412000, 0xffffffff,
-+		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
- 	SYSC_QUIRK("usb_host_hs", 0, 0, 0x10, 0x14, 0x50700100, 0xffffffff,
- 		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_SWSUP_MSTANDBY),
- 	SYSC_QUIRK("usb_host_hs", 0, 0, 0x10, -ENODEV, 0x50700101, 0xffffffff,
-@@ -1524,7 +1526,6 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 	SYSC_QUIRK("prcm", 0, 0, -ENODEV, -ENODEV, 0x40000400, 0xffffffff, 0),
- 	SYSC_QUIRK("rfbi", 0x4832a800, 0, 0x10, 0x14, 0x00000010, 0xffffffff, 0),
- 	SYSC_QUIRK("rfbi", 0x58002000, 0, 0x10, 0x14, 0x00000010, 0xffffffff, 0),
--	SYSC_QUIRK("sata", 0, 0xfc, 0x1100, -ENODEV, 0x5e412000, 0xffffffff, 0),
- 	SYSC_QUIRK("scm", 0, 0, 0x10, -ENODEV, 0x40000900, 0xffffffff, 0),
- 	SYSC_QUIRK("scm", 0, 0, -ENODEV, -ENODEV, 0x4e8b0100, 0xffffffff, 0),
- 	SYSC_QUIRK("scm", 0, 0, -ENODEV, -ENODEV, 0x4f000100, 0xffffffff, 0),
--- 
-2.31.1
+  Tomi
