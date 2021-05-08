@@ -2,96 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E0E7376BFD
-	for <lists+linux-omap@lfdr.de>; Sat,  8 May 2021 00:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 891C43773F5
+	for <lists+linux-omap@lfdr.de>; Sat,  8 May 2021 22:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229778AbhEGWEN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 7 May 2021 18:04:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50848 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229470AbhEGWEL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 7 May 2021 18:04:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 89DA061057;
-        Fri,  7 May 2021 22:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620424991;
-        bh=sA09KIpzJKWdrqUAHqp2pecsUq/VpgCkrBtpk2n2z5k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qfZaF/u/tDgFEvGNxz8ZgmCCa7/RHm5wUtmr64NFEwsmyJUzqbztWeyD+UPe6rVEn
-         01+wFrnzLSUP0HmyDD+yJOGY6AZ+hqwKO4ESfOLt2p8noqH5sUNSBcWzxkK1CgEgPp
-         pRXm131EczNg3m6D5sh6bTYKJ2Idodf+tC17Tk7F2Lu26TEQL/ASJn/ORJIpC//N4p
-         U1bFs84qmAY2OFJYdMpR1RLN7e62p6LTNbR70Wl54+g9FOpak4Y6sRUd5Ci+LS1dMa
-         ZEJ+AYXX0OTdPftT7F1yvjmqvfiQGNFbhTvuAt4m9ZG0PfxP72Adgid0pnMtPIDNgm
-         klFvmEACdyi4w==
-Date:   Sat, 8 May 2021 00:02:57 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>
-Subject: Re: [PATCH v2] dt-bindings: i2c: Move i2c-omap.txt to YAML format
-Message-ID: <20210507220257.GA1612@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Vignesh Raghavendra <vigneshr@ti.com>, linux-omap@vger.kernel.org,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>
-References: <20210506140026.31254-1-vigneshr@ti.com>
- <f7570cb4-8c21-2fa5-bd26-1388f2a4bd6b@ti.com>
- <429a740a-c2b9-1cf8-ed2b-0fb7b1bea422@ti.com>
- <20210507163602.219894f4@aktux>
- <1ef076ac-e0de-a0df-a918-aeb8ed6c5956@ti.com>
- <20210507214323.GB2902038@robh.at.kernel.org>
+        id S229647AbhEHUYj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 8 May 2021 16:24:39 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:33485 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229615AbhEHUYj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 8 May 2021 16:24:39 -0400
+Received: from localhost.localdomain ([86.243.172.93])
+        by mwinf5d65 with ME
+        id 2LPa2500521Fzsu03LPaNR; Sat, 08 May 2021 22:23:36 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 08 May 2021 22:23:36 +0200
+X-ME-IP: 86.243.172.93
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     krzysztof.h1@wp.pl, akpm@linux-foundation.org, imre.deak@nokia.com,
+        juha.yrjola@solidboot.com
+Cc:     linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] video: fbdev: lcd_mipid: Fix a memory leak in an error handling path
+Date:   Sat,  8 May 2021 22:23:33 +0200
+Message-Id: <8b82e34724755b69f34f15dddb288cd373080390.1620505229.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="OgqxwSJOaUobr8KG"
-Content-Disposition: inline
-In-Reply-To: <20210507214323.GB2902038@robh.at.kernel.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+If 'mipid_detect()' fails, we must free 'md' to avoid a memory leak.
 
---OgqxwSJOaUobr8KG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+While at it, modernize the function:
+   - remove a useless message in case of memory allocation failure
+   - change a '== NULL' into a '!'
 
+Fixes: 66d2f99d0bb5 ("omapfb: add support for MIPI-DCS compatible LCDs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/video/fbdev/omap/lcd_mipid.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-> Actually, for DMA with I2C I'd like to see someone show a usecase=20
-> and data where it's actually beneficial.=20
+diff --git a/drivers/video/fbdev/omap/lcd_mipid.c b/drivers/video/fbdev/omap/lcd_mipid.c
+index a75ae0c9b14c..b4b93ff4b41a 100644
+--- a/drivers/video/fbdev/omap/lcd_mipid.c
++++ b/drivers/video/fbdev/omap/lcd_mipid.c
+@@ -551,10 +551,8 @@ static int mipid_spi_probe(struct spi_device *spi)
+ 	int r;
+ 
+ 	md = kzalloc(sizeof(*md), GFP_KERNEL);
+-	if (md == NULL) {
+-		dev_err(&spi->dev, "out of memory\n");
++	if (!md)
+ 		return -ENOMEM;
+-	}
+ 
+ 	spi->mode = SPI_MODE_0;
+ 	md->spi = spi;
+@@ -563,11 +561,15 @@ static int mipid_spi_probe(struct spi_device *spi)
+ 
+ 	r = mipid_detect(md);
+ 	if (r < 0)
+-		return r;
++		goto free_md;
+ 
+ 	omapfb_register_panel(&md->panel);
+ 
+ 	return 0;
++
++free_md:
++	kfree(md);
++	return r;
+ }
+ 
+ static int mipid_spi_remove(struct spi_device *spi)
+-- 
+2.30.2
 
-The usecase I mostly hear is transferring firmware from/to the i2c
-client. Something up to 1MB sent in 64KB chunks. Haven't had this myself
-on the desk, though.
-
-
---OgqxwSJOaUobr8KG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmCVuQ0ACgkQFA3kzBSg
-Kbba4A/5AfdaUQZPGIpeBJPNSHBbtu2x9jxNjT5pOpFqTvuykgjLisJKu648RXZd
-fd76I6c4D24T1ja4q0yc0Kh7CGh/xvCduubH0QKrVCaUeB4BX0RVcaPwjE2FEUhg
-Ba6xyo2oo8uuQgGmp0VxyroH2l4X9IKTq6zgtnO3Z9gDfsLw0AFVDephvQpxPve+
-dFE7wgIcmf5tDk/JwlT6o8z9Rxu0UXWcRX96dni0B4vbQx9QdiORhaz8TRROQ5nY
-h15gqfLbaXvTft7qukXey3/obSMXN88bWz68LIrxnyB4NOON0nveOgBApkGTazp3
-p9knylPF80vdxSJn6tf+p9RwEEHaNnsR4hUPss0F9Elr6sP5udyFPX5QQ4xDZIg1
-5JXRKC3xpuvpuSZXmkbpVyTJ8prACg32lGcPyPnP1TSmxd6jKbWoeC7Q4JHh8Lvi
-2QqLBCHTD32XQyd5IHmqQgq1wOKMJ3PyuExqgz+/JY2Mp3LR/sPlXWRA1YNr5+ow
-e5aZuzyK3HaN1h+xyeeL1BCeybX+bYc9WbyEu6tWcZLHfGebdUFTckuxPVsUnM8l
-fmCXn8A7Z6NFephRBwE1DIaT+fJ53HpvpV8vefJH5DW7Sr+3TACl9OIrR8ZnZB4A
-n4WUHN3nn5mlWvyJysmxiADWliCGcZQxCuOc5QMey3z8u0q6mU0=
-=w0SW
------END PGP SIGNATURE-----
-
---OgqxwSJOaUobr8KG--
