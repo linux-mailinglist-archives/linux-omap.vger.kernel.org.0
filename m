@@ -2,123 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77CB33789E6
-	for <lists+linux-omap@lfdr.de>; Mon, 10 May 2021 13:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1212C3789E8
+	for <lists+linux-omap@lfdr.de>; Mon, 10 May 2021 13:52:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236074AbhEJLd0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 10 May 2021 07:33:26 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:54176 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236419AbhEJLIF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 May 2021 07:08:05 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14AB6OKS091598;
-        Mon, 10 May 2021 06:06:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1620644785;
-        bh=kgaF/3mUI0XqQwl5gHvSVaucptcT977BMjdyeZjV5Lk=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=sf4ia7RyjblXhg7Bf0hjzbRO0wFizxmPD7/1FSwmMDSAipAbfLIJecmO67YX2Xtgk
-         LWVAKi/eTFVM0fIv1I7R7i6gAxbvkjzeixqrhZYHBMnhuSrfc4vmIh4hWUesLaE6WJ
-         +eVOnFgmKu7q8GI3ZxPDI61j0bk3aqoNtGXpLTKw=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14AB6OAO079251
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 10 May 2021 06:06:24 -0500
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Mon, 10
- May 2021 06:06:24 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Mon, 10 May 2021 06:06:24 -0500
-Received: from [10.250.234.148] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14AB6LHt121770;
-        Mon, 10 May 2021 06:06:21 -0500
-Subject: Re: [PATCH v2] dt-bindings: i2c: Move i2c-omap.txt to YAML format
+        id S236087AbhEJLda (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 10 May 2021 07:33:30 -0400
+Received: from mail.kernelconcepts.de ([188.40.83.200]:38246 "EHLO
+        mail.kernelconcepts.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237329AbhEJLOk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 May 2021 07:14:40 -0400
+Received: from [93.132.150.56] (helo=[192.168.1.98])
+        by mail.kernelconcepts.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <florian.boor@kernelconcepts.de>)
+        id 1lg3qu-0006oM-Sw; Mon, 10 May 2021 13:13:33 +0200
 To:     Tony Lindgren <tony@atomide.com>
-CC:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Rob Herring <robh+dt@kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Nishanth Menon <nm@ti.com>
-References: <20210506140026.31254-1-vigneshr@ti.com>
- <f7570cb4-8c21-2fa5-bd26-1388f2a4bd6b@ti.com>
- <429a740a-c2b9-1cf8-ed2b-0fb7b1bea422@ti.com> <20210507163602.219894f4@aktux>
- <1ef076ac-e0de-a0df-a918-aeb8ed6c5956@ti.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <e4fbdf7b-6556-eeba-c1b8-9d48f718437a@ti.com>
-Date:   Mon, 10 May 2021 16:36:20 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Cc:     linux-omap@vger.kernel.org
+References: <38229f0a-85e8-680f-f561-5fc59ac84c6b@kernelconcepts.de>
+ <YJTUWaPWSmvwaZMb@atomide.com>
+From:   Florian Boor <florian.boor@kernelconcepts.de>
+Subject: Re: OMAP4460 cpufreq crashes
+Message-ID: <22081c83-0f7f-cef2-6075-79346abf6e9e@kernelconcepts.de>
+Date:   Mon, 10 May 2021 13:13:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <1ef076ac-e0de-a0df-a918-aeb8ed6c5956@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+In-Reply-To: <YJTUWaPWSmvwaZMb@atomide.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+Hi,
 
-On 5/7/21 10:54 PM, Grygorii Strashko wrote:
-> 
-> 
-> On 07/05/2021 17:36, Andreas Kemnade wrote:
->> On Fri, 7 May 2021 19:45:45 +0530
->> Vignesh Raghavendra <vigneshr@ti.com> wrote:
->>
->>> On 5/7/21 12:24 PM, Grygorii Strashko wrote:
->>>>
->>>>
->>>> On 06/05/2021 17:00, Vignesh Raghavendra wrote:
->>>>> Convert i2c-omap.txt to YAML schema for better checks and
->>>>> documentation.
->>>>>
->>>>> Following properties were used in DT but were not documented in txt
->>>>> bindings and has been included in YAML schema:
->>>>> 1. Include ti,am4372-i2c compatible
->>>>> 2. Include dmas property used in few OMAP dts files
->>>>
->>>> The DMA is not supported by i2c-omap driver, so wouldn't be better to
->>>> just drop dmas from DTBs to avoid confusions?
->>>> It can be added later.
->>>>    
->>>
->>> Will do.. I will also send patches dropping dmas from dts that currently
->>> have them populated.
->>>
->> hmm, we have
->> - DO attempt to make bindings complete even if a driver doesn't
->> support some
->>    features. For example, if a device has an interrupt, then include the
->>    'interrupts' property even if the driver is only polled mode.
->>
->> in Documentation/devicetree/bindings/writing-bindings.rst
->> Shouln't the dma stay there if the hardware supports it? Devicetree
->> should describe the hardware not the driver if I understood things
->> right.
-> 
-> True.  But my above statement is also valid - it introduces confusion
-> from user point of view.
-> More over, 'dmas' is not part of original binding and were randomly
-> added to some SoCs.
-> And it's much more easy to extend binding (in the future) then remove
-> something after.
-> 
-> I leave it to Vignesh, Tony to decide.
-> 
+Am 07.05.21 um 07:47 schrieb Tony Lindgren:
+> Hmm OK, sounds like the voltages might be wrong.
 
-What do you prefer here? Removing dmas from schema would mean I would
-have to delete dmas property from omap2/3 dtsi files that list dmas
-property today? Note that driver does not support DMA mode today.
+sounds like my guess wasn't that wrong.
 
+> I don't have one of these boards, but would be glad to add one to my rack
+> though if it can boot with NFSroot. If somebody happens to have a spare
+> evaluation kit around in the corner to send me, please let me know :)
 
-Regards
-Vignesh
+I have only one currently but I'll keep it in mind any my eyes open.
 
+> The experimental patch below makes the warnings go away, but I'm not sure if
+> it's the right fix. Maybe give it a try and see if at least the warnings go away?
+
+The range warnings go away on the 4460 as well. The warning 'twl: not
+initialized' of course is still there. Still need add the patch for it again and
+test.
+
+Another effect I have noticed is that the system seems to be a little bit more
+'stable' now. Which means it does get a little bit further before crashing. I
+even managed to get to the login prompt one time...
+
+>> There is a little patch around that changes the initialisation order which makes
+>> this messages go away but does not fix the odd behaviour. So maybe this is just
+>> a cosmetic issue and the actual problem is somewhere else.
+> 
+> Sorry I recall some discussion on the twl init problems, but don't remember the
+> details. Do you have some link for the patch and discussion?
+
+Here it is:
+https://marc.info/?l=linux-omap&m=156462292406719&w=2
+
+Greetings
+
+Florian
+
+-- 
+The dream of yesterday                  Florian Boor
+is the hope of today                    Tel: +49(0) 271-338857-15
+and the reality of tomorrow.		Fax: +49(0) 271-338857-29
+[Robert Hutchings Goddard, 1904]        florian.boor@kernelconcepts.de
+                                        http://www.kernelconcepts.de/en
+
+kernel concepts GmbH
+Hauptstraße 16
+57074 Siegen
+Deutschland
+Geschäftsführer: Ole Reinhardt
+HR Siegen, HR B 9613
