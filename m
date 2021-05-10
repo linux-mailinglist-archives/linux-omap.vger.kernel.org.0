@@ -2,87 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1212C3789E8
-	for <lists+linux-omap@lfdr.de>; Mon, 10 May 2021 13:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59250379493
+	for <lists+linux-omap@lfdr.de>; Mon, 10 May 2021 18:52:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236087AbhEJLda (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 10 May 2021 07:33:30 -0400
-Received: from mail.kernelconcepts.de ([188.40.83.200]:38246 "EHLO
-        mail.kernelconcepts.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237329AbhEJLOk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 May 2021 07:14:40 -0400
-Received: from [93.132.150.56] (helo=[192.168.1.98])
-        by mail.kernelconcepts.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <florian.boor@kernelconcepts.de>)
-        id 1lg3qu-0006oM-Sw; Mon, 10 May 2021 13:13:33 +0200
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org
-References: <38229f0a-85e8-680f-f561-5fc59ac84c6b@kernelconcepts.de>
- <YJTUWaPWSmvwaZMb@atomide.com>
-From:   Florian Boor <florian.boor@kernelconcepts.de>
-Subject: Re: OMAP4460 cpufreq crashes
-Message-ID: <22081c83-0f7f-cef2-6075-79346abf6e9e@kernelconcepts.de>
-Date:   Mon, 10 May 2021 13:13:32 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
-MIME-Version: 1.0
-In-Reply-To: <YJTUWaPWSmvwaZMb@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+        id S231915AbhEJQxl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 10 May 2021 12:53:41 -0400
+Received: from flippiebeckerswealth.xyz ([62.173.147.206]:43884 "EHLO
+        host.flippiebeckerswealth.xyz" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229566AbhEJQxk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 10 May 2021 12:53:40 -0400
+X-Greylist: delayed 7511 seconds by postgrey-1.27 at vger.kernel.org; Mon, 10 May 2021 12:53:40 EDT
+Received: from flippiebeckerswealth.xyz (ec2-3-142-218-249.us-east-2.compute.amazonaws.com [3.142.218.249])
+        by host.flippiebeckerswealth.xyz (Postfix) with ESMTPA id A7A5D1E0497
+        for <linux-omap@vger.kernel.org>; Mon, 10 May 2021 17:06:50 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippiebeckerswealth.xyz A7A5D1E0497
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flippiebeckerswealth.xyz; s=default; t=1620655611;
+        bh=Lxx5rGQCX/MQzrwE9epz1Mb5yPYRqDyEupWj6GReobo=;
+        h=Reply-To:From:To:Subject:Date:From;
+        b=rScisYqJ7G4gBoNLxsaBzzkMP2LAGuqBtaSBTDbUQ8lagwZQ0iduWVsg9R1vhdKEA
+         B8mRPwl5F7wlLY5rZYyLzv6ySCvFYjEDEwKsubkILxpTL0HQDkbekdXQ4vsnxQnePL
+         Wc/8QMCX5ct/MYF0z08YHlKEQ+10O9sestTfIKFo=
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippiebeckerswealth.xyz A7A5D1E0497
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flippiebeckerswealth.xyz; s=default; t=1620655611;
+        bh=Lxx5rGQCX/MQzrwE9epz1Mb5yPYRqDyEupWj6GReobo=;
+        h=Reply-To:From:To:Subject:Date:From;
+        b=rScisYqJ7G4gBoNLxsaBzzkMP2LAGuqBtaSBTDbUQ8lagwZQ0iduWVsg9R1vhdKEA
+         B8mRPwl5F7wlLY5rZYyLzv6ySCvFYjEDEwKsubkILxpTL0HQDkbekdXQ4vsnxQnePL
+         Wc/8QMCX5ct/MYF0z08YHlKEQ+10O9sestTfIKFo=
+Reply-To: cpavlides@flippiebeckerwealthservices.com
+From:   Chris Pavlides <cpavlides@flippiebeckerswealth.xyz>
+To:     linux-omap@vger.kernel.org
+Subject: Personal
+Date:   10 May 2021 14:06:50 +0000
+Message-ID: <20210510140650.61B73BDCF85DCCC6@flippiebeckerswealth.xyz>
+Mime-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hello there,
 
-Am 07.05.21 um 07:47 schrieb Tony Lindgren:
-> Hmm OK, sounds like the voltages might be wrong.
+I hope this message finds you in good spirits especially during=20
+this challenging time of coronavirus pandemic. I hope you and=20
+your family are well and keeping safe. Anyway, I am Chris=20
+Pavlides, a broker working with Flippiebecker Wealth. I got your=20
+contact (along with few other contacts) through an online=20
+business directory and I thought I should contact you to see if=20
+you are interested in this opportunity. I am contacting you=20
+because one of my high profile clients is interested in investing=20
+abroad and has asked me to look for individuals and companies=20
+with interesting business ideas and projects that he can invest=20
+in. He wants to invest a substantial amount of asset abroad.
 
-sounds like my guess wasn't that wrong.
+Please kindly respond back to this email if you are interested in=20
+this opportunity. Once I receive your response, I will give you=20
+more details and we can plan a strategy that will be beneficial=20
+to all parties.
 
-> I don't have one of these boards, but would be glad to add one to my rack
-> though if it can boot with NFSroot. If somebody happens to have a spare
-> evaluation kit around in the corner to send me, please let me know :)
+Best regards
 
-I have only one currently but I'll keep it in mind any my eyes open.
-
-> The experimental patch below makes the warnings go away, but I'm not sure if
-> it's the right fix. Maybe give it a try and see if at least the warnings go away?
-
-The range warnings go away on the 4460 as well. The warning 'twl: not
-initialized' of course is still there. Still need add the patch for it again and
-test.
-
-Another effect I have noticed is that the system seems to be a little bit more
-'stable' now. Which means it does get a little bit further before crashing. I
-even managed to get to the login prompt one time...
-
->> There is a little patch around that changes the initialisation order which makes
->> this messages go away but does not fix the odd behaviour. So maybe this is just
->> a cosmetic issue and the actual problem is somewhere else.
-> 
-> Sorry I recall some discussion on the twl init problems, but don't remember the
-> details. Do you have some link for the patch and discussion?
-
-Here it is:
-https://marc.info/?l=linux-omap&m=156462292406719&w=2
-
-Greetings
-
-Florian
-
--- 
-The dream of yesterday                  Florian Boor
-is the hope of today                    Tel: +49(0) 271-338857-15
-and the reality of tomorrow.		Fax: +49(0) 271-338857-29
-[Robert Hutchings Goddard, 1904]        florian.boor@kernelconcepts.de
-                                        http://www.kernelconcepts.de/en
-
-kernel concepts GmbH
-Hauptstraße 16
-57074 Siegen
-Deutschland
-Geschäftsführer: Ole Reinhardt
-HR Siegen, HR B 9613
+C Pavlides
+Flippiebecker Wealth
