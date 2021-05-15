@@ -2,91 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13831380E4F
-	for <lists+linux-omap@lfdr.de>; Fri, 14 May 2021 18:38:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68A27381927
+	for <lists+linux-omap@lfdr.de>; Sat, 15 May 2021 15:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231644AbhENQjm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 May 2021 12:39:42 -0400
-Received: from smtp-35.italiaonline.it ([213.209.10.35]:45075 "EHLO libero.it"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232029AbhENQjl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 14 May 2021 12:39:41 -0400
-Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
- ([95.244.94.151])
-        by smtp-35.iol.local with ESMTPA
-        id hapRlnFGlpK9whapVlGQyv; Fri, 14 May 2021 18:38:28 +0200
-x-libjamoibt: 1601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
-        t=1621010308; bh=8nQDG6vC1szipD11G21qDci50418cKRMFqznBJX7giw=;
-        h=From;
-        b=ykxeE09f2pnfajedVkeEknAh+2ERHKba9xIcIYS09mHLPCrYNstMnRz/AXrKg98iZ
-         6/6y3djlwQ17+0A5xbtNznFYdx/oUQX991f1IPH2suI7aU88khKIBOPmXTIMWRKJLm
-         9uqjyIGHLwo+eVwFR6bWQ0fZUn9PtYjj4y3Hm1a/yORjb1xN9e3N+hP8oTgjOzAQ0Y
-         qHswCPwpGQPQ2QLeFaRL0dr5QJ0l5vAnxmKc5WmU7JpTIyUigZZ1+bUdEXRGMK50eU
-         4ExODJgYZ9ghVsxS49GB34IK95gSbXxMpqP4xPmIAchRKJ/b/6sikU4ZCL5XQVk9tA
-         UUe7bmiFhHMlw==
-X-CNFS-Analysis: v=2.4 cv=A9ipg4aG c=1 sm=1 tr=0 ts=609ea784 cx=a_exe
- a=ugxisoNCKEotYwafST++Mw==:117 a=ugxisoNCKEotYwafST++Mw==:17
- a=KfjgPZeWCF2tvFJtEhQA:9
-From:   Dario Binacchi <dariobin@libero.it>
-To:     linux-kernel@vger.kernel.org
-Cc:     Dario Binacchi <dariobin@libero.it>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH] pinctrl: single: config: enable the pin's input
-Date:   Fri, 14 May 2021 18:38:18 +0200
-Message-Id: <20210514163818.12178-1-dariobin@libero.it>
-X-Mailer: git-send-email 2.17.1
-X-CMAE-Envelope: MS4xfJOb6TVjy4+GHqUGueOCUInhWSrMa1UIYRCaQkM6RJIgqh0evmhrQiliElV71tOev98m2PJgBz7IJ2r+fPWZ3yLh2Q0eUZP1Rbeu3MRw1ZyOuO1XfXGi
- LFEt4kryXhnVWVxrq8Ykh52Xd2zIoTGrhNpgcr/TYbVP58SbV7weAefcv5O/e3ZJVQg2wF4wfkdL1JxvwlJYQLJAtrFC0cXeqfZ+YhW0CsOB7Xv+NVb6w3RV
- fGm5LgDCd/sP13goFzGVSLcV8ZPoQF3EfRr33LDEeanALIuJNEHwfUc5ftC+3we0uWFfEPZSWwGnDTK5FiF7nRp7R/amNyC+uw+r11w1+ZUMnr22LHluzIvl
- wAKXzUfwxEUlP2Gl1Nv9kXvjR1XgQGhu9iga8syZni7VJfcPfZzqnZfU1fJk02zLIBuTBT23x9x3eI+Z1Fe+G0dcZwu6ZZN8cQzr9Ab4CefbUJE6o3jxCsmm
- 3zM8Dyd9R4eexHMJJnMT9MJKJ0KG5jEXatCtrg==
+        id S231218AbhEONtQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 15 May 2021 09:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49248 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229571AbhEONtP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 May 2021 09:49:15 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85E11C061573
+        for <linux-omap@vger.kernel.org>; Sat, 15 May 2021 06:48:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=anKBymgnV/tODd0u/4/IiAF/ib1DIenWzaQ34RWuUi0=; b=kM/YC6hp9VVB+B2JTbc3qaL+xw
+        0jZ907Bn6rAq+VTXx9RWqTeP6p3MfQHVCDA0AFzdYdyvH0iQet93NPOIVA69o1b9XQTbvZkJITWQV
+        s/zejWz9w3l+qOJQQdj+N8uRC/PjDUB23dK1a20xck9vXOVBg3KGEaJ3RgKtoVtgkxQY=;
+Received: from p200300ccff3902001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff39:200:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1lhue7-0000kq-7B; Sat, 15 May 2021 15:47:59 +0200
+Date:   Sat, 15 May 2021 15:47:58 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Luca Ceresoli <luca@lucaceresoli.net>
+Cc:     linux-omap@vger.kernel.org
+Subject: Re: Status of ti/ti-linux-5.10.y development
+Message-ID: <20210515154758.5b1b4fc5@aktux>
+In-Reply-To: <78852763-4bc3-dc59-02c4-b3b07584c0ed@lucaceresoli.net>
+References: <78852763-4bc3-dc59-02c4-b3b07584c0ed@lucaceresoli.net>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-It enables / disables the input buffer. As explained in the description
-of 'enum pin_config_param' this does not affect the pin's ability to
-drive output.
+Hi,
 
-Signed-off-by: Dario Binacchi <dariobin@libero.it>
----
+On Fri, 14 May 2021 10:30:50 +0200
+Luca Ceresoli <luca@lucaceresoli.net> wrote:
 
- drivers/pinctrl/pinctrl-single.c | 3 +++
- 1 file changed, 3 insertions(+)
+> Hi,
+> 
+> I hope this is the proper place for this question. If it isn't: my
+> apologies, and I'd be glad to be redirected where appropriate.
+> 
+> I currently have a prototype board based on AM5728 that is mostly
+> working, using branch ti/ti-linux-4.19.y of the TI kernel [0].
+> 
+> Now I need some non-TI-specific kernel features that appeared in
+> mainline 5.10, so I tried to move to branch ti/ti-linux-5.10.y. But many
+> components that I am using on the 4.19 branch seem absent on the 5.10
+> branch, including VIDEO_TI_VIP, DRM_OMAP_WB and DRM_OMAP_CONNECTOR_HDMI.
+> 
+Wasn't the DRM_OMAP_CONNECTOR_HDMI replaced with something generic when
+also omapdrm started to use the generic panel support, was it? So HDMI
+connectors should work with mainline.
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 2c9c9835f375..4e7cdb9ee855 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -534,6 +534,7 @@ static int pcs_pinconf_get(struct pinctrl_dev *pctldev,
- 		case PIN_CONFIG_DRIVE_STRENGTH:
- 		case PIN_CONFIG_SLEW_RATE:
- 		case PIN_CONFIG_MODE_LOW_POWER:
-+		case PIN_CONFIG_INPUT_ENABLE:
- 		default:
- 			*config = data;
- 			break;
-@@ -572,6 +573,7 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
- 			case PIN_CONFIG_DRIVE_STRENGTH:
- 			case PIN_CONFIG_SLEW_RATE:
- 			case PIN_CONFIG_MODE_LOW_POWER:
-+			case PIN_CONFIG_INPUT_ENABLE:
- 				shift = ffs(func->conf[i].mask) - 1;
- 				data &= ~func->conf[i].mask;
- 				data |= (arg << shift) & func->conf[i].mask;
-@@ -918,6 +920,7 @@ static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
- 	static const struct pcs_conf_type prop2[] = {
- 		{ "pinctrl-single,drive-strength", PIN_CONFIG_DRIVE_STRENGTH, },
- 		{ "pinctrl-single,slew-rate", PIN_CONFIG_SLEW_RATE, },
-+		{ "pinctrl-single,input-enable", PIN_CONFIG_INPUT_ENABLE, },
- 		{ "pinctrl-single,input-schmitt", PIN_CONFIG_INPUT_SCHMITT, },
- 		{ "pinctrl-single,low-power-mode", PIN_CONFIG_MODE_LOW_POWER, },
- 	};
--- 
-2.17.1
-
+Regards,
+Andreas
