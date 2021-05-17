@@ -2,103 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9870383A13
-	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 18:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5116386198
+	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 22:00:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245384AbhEQQhx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 May 2021 12:37:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55942 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245137AbhEQQhl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 17 May 2021 12:37:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 648FF611BD;
-        Mon, 17 May 2021 16:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621269384;
-        bh=+X4+bVfzpXfIBWRjakB4ifMEjfwf5eB74K2ooB0BvKs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=mrYMtv1M6tHlqyA6CqYBWaIneywFJ8hwyUoaWmJWO1aBoBlYRnCcmyhZMKC0yLyaR
-         L7mvWpGdybVWGaENMBE6mq9gjH0sfYPnaY1+eRq8R+ZOHeLGqZceQDDNgUAU0f4Jvq
-         MmibiOMYL5cSc1+YOUeDBcM1IQIsyMe4+riNcK3g3bdQyJCSbq3WIx37g6RM4islnV
-         tptmI49809/uRmboehthxjM3H/6kET4bnLxDOynWRLSYv7o0+atkGxN/ZW5CMwwhYq
-         3vMKLyMt36Uaghsjc+qHPKSjyJnedWRE4+zCKZq6d1L1tfMgKtHkfBDF39YZXot178
-         zFp+kV+EOkf3A==
-Date:   Mon, 17 May 2021 11:36:23 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Luca Ceresoli <luca@lucaceresoli.net>
-Cc:     linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-Subject: Re: [PATCH 0/5] PCI: dwc: pci-dra7xx: miscellaneous improvements
-Message-ID: <20210517163623.GA21579@bjorn-Precision-5520>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210517154122.430544-1-luca@lucaceresoli.net>
+        id S237099AbhEQUB3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 May 2021 16:01:29 -0400
+Received: from smtp-35.italiaonline.it ([213.209.10.35]:49125 "EHLO libero.it"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S236512AbhEQUB2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 17 May 2021 16:01:28 -0400
+Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
+ ([95.244.94.151])
+        by smtp-35.iol.local with ESMTPA
+        id ijPJlPskepK9wijPNlg8J9; Mon, 17 May 2021 22:00:10 +0200
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+        t=1621281610; bh=asrIPUdSzvBL6ovQpCIYIxVAs/NrCAs02e5wyOQrjFk=;
+        h=From;
+        b=m5xE/wgC6kHPhXkDreh4Ghf0XfsVwzudo3YbWsVaEGQfIkiIyFOa12qrUfKqW1A47
+         Xw1EVp31Dh4P3+PRWNfn5onAKFN2FG0AEbtOHtc4ZJLCPfiYIMHrm5r391U5wSuqs0
+         mBC0J9Duf+sznMfxtDPkasis/9PLQ7RF7p+rn7n75SLijG4probWaysXa7HsBKOdjN
+         /kankolc/m84XHOHmHn7tnD/dizvAmyHyYWuE+QQBHgOxOLVEdDVThn8HpYmIMgDFH
+         +BDauxGaN813ZQWlfEdeHP0i0es6/kZKZtBVTuWXELn4BMNF8cHbXc+emrln5mutBg
+         PziXUmlB7e8Og==
+X-CNFS-Analysis: v=2.4 cv=A9ipg4aG c=1 sm=1 tr=0 ts=60a2cb4a cx=a_exe
+ a=ugxisoNCKEotYwafST++Mw==:117 a=ugxisoNCKEotYwafST++Mw==:17 a=sozttTNsAAAA:8
+ a=GWagjzjhKccDtmdoy8IA:9 a=aeg5Gbbo78KNqacMgKqU:22
+From:   Dario Binacchi <dariobin@libero.it>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dario Binacchi <dariobin@libero.it>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v2 0/2] am335x: set pinmux registers from pins debug file
+Date:   Mon, 17 May 2021 22:00:00 +0200
+Message-Id: <20210517200002.6316-1-dariobin@libero.it>
+X-Mailer: git-send-email 2.17.1
+X-CMAE-Envelope: MS4xfLx0TcvsHrcNzWtXVUq2wnkrd0xhmWrjEbSoW6Ku1Z8AF22pM/q3NjEFbkV2TsjpISAkxXAtRiSkOL2CLimlcchLMAld5RvLTAWjmgu41doM+ugAko0U
+ Pf0V2GaozQMdFjBk+I0BEY75PO6EApb0dptS1qg5PBHWnivCmaQRHoHLRgfaJKr5HxKO1sFEz82wQwv5xJ/yjwJvOasOqEwCip2/shV8BEHTsVIAGPjMveOF
+ Gmx0V2ZkniKk7iY8+Pnxyz0UiSPusxWaNbmt1/SM+pkDPquRqVBGjaEzNYzp4ML78p1fCG7cHuzaQV3wYJ2BlJ7CvQEG4wK3mgZgZ+csqODCzFJQV6jdhIOp
+ 0Furwn9CGS6F05Rcz9Ae5+XskrftFBKxGwVHUaU44kuZOLLvZ2hoZ8t1lDE2feFPdWBWpeX5KeAQWeZipmHLmGgqdaIkwgd3DA3c/r8Eg/W9yf07gvGWo5XT
+ OXdUzb1W5B4tzKBnyE11q2hbi/LLyOcz0O6kDA==
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, May 17, 2021 at 05:41:17PM +0200, Luca Ceresoli wrote:
-> This is an series of mixed improvements to the DRA7 PCI controller driver:
-> allow building as a loadabel module, allow to get and enable a clock and a
-> small cleanup.
-> 
-> Luca
-> 
-> Luca Ceresoli (5):
->   PCI: dwc: export more symbols to allow modular drivers
->   PCI: dwc: pci-dra7xx: make it a kernel module
->   PCI: dwc: pci-dra7xx: allow to build as a loadable module
->   PCI: dwc: pci-dra7xx: remove unused include
->   PCI: dwc: pci-dra7xx: get an optional clock
 
-This driver has a poor record of subject lines:
+The patch was born from the need to change the slew rate of the LCD pins
+of a custom AM335x board during EMC tests. The AM335x, as described in a
+note in section 9.1 of its reference manual [1], is unable to write
+pinmux registers from user space. The series now makes it possible to
+write these registers from the pins debug file.
 
-  PCI: pci-dra7xx: Prepare for deferred probe with module_platform_driver
-  PCI: dwc: Move dw_pcie_setup_rc() to DWC common code
-  PCI: dwc/dra7xx: Use the common MSI irq_chip
-  PCI: dwc: pci-dra7xx: Fix runtime PM imbalance on error
+[1] https://www.ti.com/lit/ug/spruh73q/spruh73q.pdf
 
-The "PCI: dwc:" ones are fine -- they apply to the shared dwc core,
-not specifically to dra7xx.
 
-The driver-specific ones:
+Changes in v2:
+- Remove CONFIG_SOC_AM33XX dependency.
 
-  PCI: pci-dra7xx:
-  PCI: dwc/dra7xx:
-  PCI: dwc: pci-dra7xx:
+Dario Binacchi (2):
+  pinctrl: core: configure pinmux from pins debug file
+  pinctrl: single: set pinmux from pins debug file
 
-are redundant and waste space.  There's no need to mention "dwc" for
-dra7xx-specific things, and no need to mention "PCI" twice.
+ drivers/pinctrl/core.c           | 56 ++++++++++++++++++++++++++++++--
+ drivers/pinctrl/pinctrl-single.c | 20 ++++++++++++
+ include/linux/pinctrl/pinctrl.h  |  2 ++
+ 3 files changed, 76 insertions(+), 2 deletions(-)
 
-We should use the "PCI: dra7xx:" prefix for things specific to this
-driver.
+-- 
+2.17.1
 
-The rest of the subject line should start with a capital letter.  The
-subject line should contain specific information when practical.  For
-example,
-
-  PCI: dwc: Export dw_pcie_link_up(), dw_pcie_ep_reset_bar() for modular drivers
-  PCI: dra7xx: Allow building as module
-  PCI: dra7xx: Remove unused linux/init.h include
-  PCI: dra7xx: Get optional external clock
-
-I would squash 2/5 and 3/5, similar to a98d2187efd9 ("PCI: meson:
-Build as module by default") and 526a76991b7b ("PCI: aardvark:
-Implement driver 'remove' function and allow to build it as module").
-
->  drivers/pci/controller/dwc/Kconfig            |  6 +++---
->  drivers/pci/controller/dwc/pci-dra7xx.c       | 21 +++++++++++++++++--
->  .../pci/controller/dwc/pcie-designware-ep.c   |  1 +
->  drivers/pci/controller/dwc/pcie-designware.c  |  1 +
->  4 files changed, 24 insertions(+), 5 deletions(-)
-> 
-> -- 
-> 2.25.1
-> 
