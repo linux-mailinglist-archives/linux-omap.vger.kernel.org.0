@@ -2,97 +2,176 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D22B53826AA
-	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 10:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0B133826C7
+	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 10:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbhEQIUH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 May 2021 04:20:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52542 "EHLO mail.kernel.org"
+        id S235413AbhEQIYT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 May 2021 04:24:19 -0400
+Received: from muru.com ([72.249.23.125]:56520 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235640AbhEQIT7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 17 May 2021 04:19:59 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 787E960C3D;
-        Mon, 17 May 2021 08:17:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1621239459;
-        bh=BZxAEIkbSW7MbE/cKpN6ELnrkkO5GDgcmYWBCq1E9oE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=xe+a+SfspvvC4YFLbvfFGou5Jh4ZaOJhNkVXbtGzQzDaw9YtnD2k5/AYJRH37GLz1
-         HarCPEyiCvtPLqqvURKmUeKluy77qdfGcIrJi/isWCrMZQ6A5QP/7rtzd2dmdK2J0A
-         3SHQ8E4iKKDOiX1B7oZK1lgB1PjMHYvnVe3bZMP0=
-Date:   Mon, 17 May 2021 10:17:38 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Juerg Haefliger <juerg.haefliger@canonical.com>
-Cc:     aaro.koskinen@iki.fi, tony@atomide.com, linux@prisktech.co.nz,
-        David Miller <davem@davemloft.net>, kuba@kernel.org,
-        jejb@linux.ibm.com, martin.petersen@oracle.com,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        jingoohan1@gmail.com, mst@redhat.com, jasowang@redhat.com,
-        zbr@ioremap.net, pablo@netfilter.org, kadlec@netfilter.org,
-        fw@strlen.de, horms@verge.net.au, ja@ssi.bg,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-crypto@vger.kernel.org, linux-usb@vger.kernel.org,
-        netdev <netdev@vger.kernel.org>, linux-scsi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-fsdevel@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Juerg Haefliger <juergh@canonical.com>
-Subject: Re: [PATCH] treewide: Remove leading spaces in Kconfig files
-Message-ID: <YKImotylLR7D4mQW@kroah.com>
-References: <20210516132209.59229-1-juergh@canonical.com>
- <YKIDJIfuufBrTQ4f@kroah.com>
- <CAB2i3ZgszsUVDuK2fkUXtD72tPSgrycnDawM4VAuGGPJiA9+cA@mail.gmail.com>
+        id S235286AbhEQIYT (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 17 May 2021 04:24:19 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 45BA380BA;
+        Mon, 17 May 2021 08:23:06 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [Backport for linux-5.10.y PATCH 1/2] clocksource/drivers/timer-ti-dm: Prepare to handle dra7 timer wrap issue
+Date:   Mon, 17 May 2021 11:22:43 +0300
+Message-Id: <20210517082244.17447-1-tony@atomide.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAB2i3ZgszsUVDuK2fkUXtD72tPSgrycnDawM4VAuGGPJiA9+cA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, May 17, 2021 at 10:07:43AM +0200, Juerg Haefliger wrote:
-> On Mon, May 17, 2021 at 7:46 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sun, May 16, 2021 at 03:22:09PM +0200, Juerg Haefliger wrote:
-> > > There are a few occurences of leading spaces before tabs in a couple of
-> > > Kconfig files. Remove them by running the following command:
-> > >
-> > >   $ find . -name 'Kconfig*' | xargs sed -r -i 's/^[ ]+\t/\t/'
-> > >
-> > > Signed-off-by: Juerg Haefliger <juergh@canonical.com>
-> > > ---
-> > >  arch/arm/mach-omap1/Kconfig     | 12 ++++++------
-> > >  arch/arm/mach-vt8500/Kconfig    |  6 +++---
-> > >  arch/arm/mm/Kconfig             | 10 +++++-----
-> > >  drivers/char/hw_random/Kconfig  |  8 ++++----
-> > >  drivers/net/usb/Kconfig         | 10 +++++-----
-> > >  drivers/net/wan/Kconfig         |  4 ++--
-> > >  drivers/scsi/Kconfig            |  2 +-
-> > >  drivers/uio/Kconfig             |  2 +-
-> > >  drivers/video/backlight/Kconfig | 10 +++++-----
-> > >  drivers/virtio/Kconfig          |  2 +-
-> > >  drivers/w1/masters/Kconfig      |  6 +++---
-> > >  fs/proc/Kconfig                 |  4 ++--
-> > >  init/Kconfig                    |  2 +-
-> > >  net/netfilter/Kconfig           |  2 +-
-> > >  net/netfilter/ipvs/Kconfig      |  2 +-
-> > >  15 files changed, 41 insertions(+), 41 deletions(-)
-> >
-> > Please break this up into one patch per subsystem and resend to the
-> > proper maintainers that way.
-> 
-> Hmm... How is my patch different from other treewide Kconfig cleanup
-> patches like:
-> a7f7f6248d97 ("treewide: replace '---help---' in Kconfig files with 'help'")
-> 8636a1f9677d ("treewide: surround Kconfig file paths with double quotes")
-> 83fc61a563cb ("treewide: Fix typos in Kconfig")
-> 769a12a9c760 ("treewide: Kconfig: fix wording / spelling")
-> f54619f28fb6 ("treewide: Fix typos in Kconfig")
+Upstream commit 3efe7a878a11c13b5297057bfc1e5639ce1241ce. Updated to
+apply to stable linux-5.10.y without need for upstream typo fix commit
+4bf07f6562a01a488877e05267808da7147f44a5. Needed to avoid duplicate
+code for upstream commit 25de4ce5ed02994aea8bc111d133308f6fd62566.
 
-Ok, I'll just ignore this and not try to suggest a way for you to get
-your change accepted...
+There is a timer wrap issue on dra7 for the ARM architected timer.
+In a typical clock configuration the timer fails to wrap after 388 days.
 
-greg k-h
+To work around the issue, we need to use timer-ti-dm timers instead.
+
+Let's prepare for adding support for percpu timers by adding a common
+dmtimer_clkevt_init_common() and call it from dmtimer_clockevent_init().
+This patch makes no intentional functional changes.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20210323074326.28302-2-tony@atomide.com
+---
+ drivers/clocksource/timer-ti-dm-systimer.c | 68 ++++++++++++++--------
+ 1 file changed, 44 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -530,17 +530,17 @@ static void omap_clockevent_unidle(struct clock_event_device *evt)
+ 	writel_relaxed(OMAP_TIMER_INT_OVERFLOW, t->base + t->wakeup);
+ }
+ 
+-static int __init dmtimer_clockevent_init(struct device_node *np)
++static int __init dmtimer_clkevt_init_common(struct dmtimer_clockevent *clkevt,
++					     struct device_node *np,
++					     unsigned int features,
++					     const struct cpumask *cpumask,
++					     const char *name,
++					     int rating)
+ {
+-	struct dmtimer_clockevent *clkevt;
+ 	struct clock_event_device *dev;
+ 	struct dmtimer_systimer *t;
+ 	int error;
+ 
+-	clkevt = kzalloc(sizeof(*clkevt), GFP_KERNEL);
+-	if (!clkevt)
+-		return -ENOMEM;
+-
+ 	t = &clkevt->t;
+ 	dev = &clkevt->dev;
+ 
+@@ -548,25 +548,23 @@ static int __init dmtimer_clockevent_init(struct device_node *np)
+ 	 * We mostly use cpuidle_coupled with ARM local timers for runtime,
+ 	 * so there's probably no use for CLOCK_EVT_FEAT_DYNIRQ here.
+ 	 */
+-	dev->features = CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT;
+-	dev->rating = 300;
++	dev->features = features;
++	dev->rating = rating;
+ 	dev->set_next_event = dmtimer_set_next_event;
+ 	dev->set_state_shutdown = dmtimer_clockevent_shutdown;
+ 	dev->set_state_periodic = dmtimer_set_periodic;
+ 	dev->set_state_oneshot = dmtimer_clockevent_shutdown;
+ 	dev->set_state_oneshot_stopped = dmtimer_clockevent_shutdown;
+ 	dev->tick_resume = dmtimer_clockevent_shutdown;
+-	dev->cpumask = cpu_possible_mask;
++	dev->cpumask = cpumask;
+ 
+ 	dev->irq = irq_of_parse_and_map(np, 0);
+-	if (!dev->irq) {
+-		error = -ENXIO;
+-		goto err_out_free;
+-	}
++	if (!dev->irq)
++		return -ENXIO;
+ 
+ 	error = dmtimer_systimer_setup(np, &clkevt->t);
+ 	if (error)
+-		goto err_out_free;
++		return error;
+ 
+ 	clkevt->period = 0xffffffff - DIV_ROUND_CLOSEST(t->rate, HZ);
+ 
+@@ -578,32 +576,54 @@ static int __init dmtimer_clockevent_init(struct device_node *np)
+ 	writel_relaxed(OMAP_TIMER_CTRL_POSTED, t->base + t->ifctrl);
+ 
+ 	error = request_irq(dev->irq, dmtimer_clockevent_interrupt,
+-			    IRQF_TIMER, "clockevent", clkevt);
++			    IRQF_TIMER, name, clkevt);
+ 	if (error)
+ 		goto err_out_unmap;
+ 
+ 	writel_relaxed(OMAP_TIMER_INT_OVERFLOW, t->base + t->irq_ena);
+ 	writel_relaxed(OMAP_TIMER_INT_OVERFLOW, t->base + t->wakeup);
+ 
+-	pr_info("TI gptimer clockevent: %s%lu Hz at %pOF\n",
+-		of_find_property(np, "ti,timer-alwon", NULL) ?
++	pr_info("TI gptimer %s: %s%lu Hz at %pOF\n",
++		name, of_find_property(np, "ti,timer-alwon", NULL) ?
+ 		"always-on " : "", t->rate, np->parent);
+ 
+-	clockevents_config_and_register(dev, t->rate,
+-					3, /* Timer internal resynch latency */
++	return 0;
++
++err_out_unmap:
++	iounmap(t->base);
++
++	return error;
++}
++
++static int __init dmtimer_clockevent_init(struct device_node *np)
++{
++	struct dmtimer_clockevent *clkevt;
++	int error;
++
++	clkevt = kzalloc(sizeof(*clkevt), GFP_KERNEL);
++	if (!clkevt)
++		return -ENOMEM;
++
++	error = dmtimer_clkevt_init_common(clkevt, np,
++					   CLOCK_EVT_FEAT_PERIODIC |
++					   CLOCK_EVT_FEAT_ONESHOT,
++					   cpu_possible_mask, "clockevent",
++					   300);
++	if (error)
++		goto err_out_free;
++
++	clockevents_config_and_register(&clkevt->dev, clkevt->t.rate,
++					3, /* Timer internal resync latency */
+ 					0xffffffff);
+ 
+ 	if (of_machine_is_compatible("ti,am33xx") ||
+ 	    of_machine_is_compatible("ti,am43")) {
+-		dev->suspend = omap_clockevent_idle;
+-		dev->resume = omap_clockevent_unidle;
++		clkevt->dev.suspend = omap_clockevent_idle;
++		clkevt->dev.resume = omap_clockevent_unidle;
+ 	}
+ 
+ 	return 0;
+ 
+-err_out_unmap:
+-	iounmap(t->base);
+-
+ err_out_free:
+ 	kfree(clkevt);
+ 
+-- 
+2.31.1
