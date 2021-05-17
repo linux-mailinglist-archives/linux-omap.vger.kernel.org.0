@@ -2,127 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52D2838291B
-	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 11:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BF3E3829D6
+	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 12:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236306AbhEQKAK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 May 2021 06:00:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34557 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236483AbhEQJ7o (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 May 2021 05:59:44 -0400
-Received: from mail-ej1-f69.google.com ([209.85.218.69])
-        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <juerg.haefliger@canonical.com>)
-        id 1lia14-0002Ps-K3
-        for linux-omap@vger.kernel.org; Mon, 17 May 2021 09:58:26 +0000
-Received: by mail-ej1-f69.google.com with SMTP id z15-20020a170906074fb029038ca4d43d48so821188ejb.17
-        for <linux-omap@vger.kernel.org>; Mon, 17 May 2021 02:58:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=AlaCxcqDCOiBRDYPEaHdHoe0OPHtgCA7z30qB1fR2/Q=;
-        b=q6mbG2QpLYXYCpsdCH9WstqmNiHCDaitUPR++sJIoWxRScjvTT/TUGsx55UOgpXrNy
-         vKc5qPWRtStT/3ksDg0aNTepYZhKNWuOzDgtUlW0YriNYhyUMPbbGxWkE5OkepWRsN7a
-         Dml5f95bPlG8jqfuDxi81T8DtMnlRLfVMMvjnuc6yFa2AZuQvplsV7M3meIVVPfo0zF8
-         /ILQzAD3H3grxpYjPvvB7TS5BAbI86RyMVRJAYkbcW7IkT9LqkQ/tAF7GNZWgLiAYQt2
-         8SMu6hIMjPYiaumB9rZ65g+NfbD35IZcTuYcqEy2hHaRGJijzCIQ+GA9uZrUCX3s0XSj
-         FNGQ==
-X-Gm-Message-State: AOAM5329W/CMxcq8mD0d+iKOsoF/d0QCUPSEN5J5kgV2qkE7iJ7Na54Y
-        JiMheU34NoWORxYA4mwu77HYd3s8yjDzl/ONhdgR/XX48HTBB1loxElJOEaJcrvZRWsUTfp9Qll
-        QrNj40iSDhAi/dz/DURIpeu9eofBm0HXeL5dANXU=
-X-Received: by 2002:a17:907:76fa:: with SMTP id kg26mr2934920ejc.192.1621245506320;
-        Mon, 17 May 2021 02:58:26 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyNjgq8NT1v+mGWipzQ4yu9FYHNSktSHh/6XfZPOPFUi3ONbsmTb7bORdBnH2aAdPL7i0S3cg==
-X-Received: by 2002:a17:907:76fa:: with SMTP id kg26mr2934911ejc.192.1621245506125;
-        Mon, 17 May 2021 02:58:26 -0700 (PDT)
-Received: from gollum.fritz.box ([194.191.244.86])
-        by smtp.gmail.com with ESMTPSA id gx23sm350667ejb.125.2021.05.17.02.58.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 May 2021 02:58:25 -0700 (PDT)
-From:   Juerg Haefliger <juerg.haefliger@canonical.com>
-X-Google-Original-From: Juerg Haefliger <juergh@canonical.com>
-To:     aaro.koskinen@iki.fi, tony@atomide.com,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, juergh@canonical.com
-Subject: [PATCH] ARM: OMAP1: Remove leading spaces in Kconfig
-Date:   Mon, 17 May 2021 11:58:09 +0200
-Message-Id: <20210517095809.81478-1-juergh@canonical.com>
-X-Mailer: git-send-email 2.27.0
+        id S236231AbhEQKd3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 May 2021 06:33:29 -0400
+Received: from wnew4-smtp.messagingengine.com ([64.147.123.18]:54817 "EHLO
+        wnew4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230248AbhEQKd2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 17 May 2021 06:33:28 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailnew.west.internal (Postfix) with ESMTP id EBD36B2C;
+        Mon, 17 May 2021 06:32:10 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Mon, 17 May 2021 06:32:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm3; bh=YaPN4L1dtV8Of4WdWwzIZAL0PBh
+        1OCG8f7LH45YDgkU=; b=LXulyIIE1zsxRAifFExzIbVuCQbIeD/dka0fBGHsmhr
+        A2kEelDKXuEO4GmbSXBJSuZTmcuZkfcdGSA3cPRMzIMnxTNcr6vFclVB91bv08mY
+        iKUA+LLHrDySlAsbxa8AAt6j5uGatefa95dACLbCCTWL/i5uR4MJLg7u3Dr1zYIu
+        G9tm155cx92exQ1einb9Q+qNvV4hxlwX6taWIXV0uhAa3L2JHhzSQVXRCUs2+XDn
+        mi0BFTbLaXPb/1Bx+ThL6ynRYPK1kZwHprK7Z09XHjWa7n0ZtOf1hSRRlPaDoFOs
+        ykS12+NMzgxMQQrIgo3b23jv/m/NK0c4U6kb0REkTYg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=YaPN4L
+        1dtV8Of4WdWwzIZAL0PBh1OCG8f7LH45YDgkU=; b=G6PKJCLGuMEKHHPY6L6ow2
+        6GgT18yyhVil2kB5gGNr/cJeY2NHiKJSVwCyHNp9IVMaLEPHfriFM+1EPMgZwwdo
+        s3693Qq5FxsJ3GKXi8iG5ikiajePLuKIWtrCnKNgaV272oFJBQF7NP+ZN7DE0M+M
+        cdsRCzGQTmSCxbGFYsBJumt7/HateeVqRPs/Jh2mu58yTRHjjB1u6FuXKOQMy/n3
+        F0+UgvOAsk4W1qHks2qcymEernD03VLPxRH5OAVFGGpJpRTEn2h3O6fusFY069jr
+        Qiz+VhmD+emqq9zS9/CZzXp3pCz38P3E/Cc/qgB4MsHgsbTHHQw0kV4CwlBaubOQ
+        ==
+X-ME-Sender: <xms:KkaiYNW_QlJRqrTWJLxQFZdkdycrTPlJuKw3GcCPGYhA_IfdrT1Q9g>
+    <xme:KkaiYNknF9V6tl5K0F3evFnMfkc6jfovfVqF1MjPCF2C3p56wX3yrpnKjWRXjUPRA
+    Nl4CGtCBEYkmg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdeihedgfedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeevueehje
+    fgfffgiedvudekvdektdelleelgefhleejieeugeegveeuuddukedvteenucfkphepkeef
+    rdekiedrjeegrdeigeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:KkaiYJZFFWpuwyLryKwIidNy82z9Q6H9ZE1Xs7Y-XbWsLZtJOoeNvQ>
+    <xmx:KkaiYAXRvsZ0P1wZIdK_a53xstW5X2O07C3N3Vyk81fdGrcf5ighPA>
+    <xmx:KkaiYHlB6VEoHnJ1m3zW8d2-IxHF0gFTF9qHGhd4oxfLKvg89p29wg>
+    <xmx:KkaiYFepijXNBz_7PlzMtNdMocMflVqTxw38CmsM4Kl1GEVGak8pUzq8ZNk>
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        by mail.messagingengine.com (Postfix) with ESMTPA;
+        Mon, 17 May 2021 06:32:09 -0400 (EDT)
+Date:   Mon, 17 May 2021 12:32:07 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, Keerthy <j-keerthy@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: Re: [Backport for linux-5.10.y PATCH 2/2]
+ clocksource/drivers/timer-ti-dm: Handle dra7 timer wrap errata i940
+Message-ID: <YKJGJ+0XwK+7oowD@kroah.com>
+References: <20210517082244.17447-1-tony@atomide.com>
+ <20210517082244.17447-2-tony@atomide.com>
+ <YKIsckQwullhruX+@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YKIsckQwullhruX+@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Remove leading spaces before tabs in Kconfig file(s) by running the
-following command:
+On Mon, May 17, 2021 at 11:42:26AM +0300, Tony Lindgren wrote:
+> * Tony Lindgren <tony@atomide.com> [210517 08:23]:
+> > Upstream commit 25de4ce5ed02994aea8bc111d133308f6fd62566 for stable
+> > linux-5.10.y. Depends on backported upstream commit
+> > 3efe7a878a11c13b5297057bfc1e5639ce1241ce.
+> > 
+> > There is a timer wrap issue on dra7 for the ARM architected timer.
+> > In a typical clock configuration the timer fails to wrap after 388 days.
+> 
+> FYI, these patches also apply to linux-5.11.y and linux-5.12.y. This
+> patch applies with fuzz to the related device tree changes though,
+> so please let me know if separate patches are needed.
 
-  $ find arch/arm/mach-omap1 -name 'Kconfig*' | \
-    xargs sed -r -i 's/^[ ]+\t/\t/'
+All now queued up, thanks.
 
-Signed-off-by: Juerg Haefliger <juergh@canonical.com>
----
- arch/arm/mach-omap1/Kconfig | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
-index 9536b8f3c07d..208c700c2455 100644
---- a/arch/arm/mach-omap1/Kconfig
-+++ b/arch/arm/mach-omap1/Kconfig
-@@ -65,14 +65,14 @@ config MACH_OMAP_INNOVATOR
- config MACH_OMAP_H2
- 	bool "TI H2 Support"
- 	depends on ARCH_OMAP16XX
--    	help
-+	help
- 	  TI OMAP 1610/1611B H2 board support. Say Y here if you have such
- 	  a board.
- 
- config MACH_OMAP_H3
- 	bool "TI H3 Support"
- 	depends on ARCH_OMAP16XX
--    	help
-+	help
- 	  TI OMAP 1710 H3 board support. Say Y here if you have such
- 	  a board.
- 
-@@ -85,14 +85,14 @@ config MACH_HERALD
- config MACH_OMAP_OSK
- 	bool "TI OSK Support"
- 	depends on ARCH_OMAP16XX
--    	help
-+	help
- 	  TI OMAP 5912 OSK (OMAP Starter Kit) board support. Say Y here
-           if you have such a board.
- 
- config OMAP_OSK_MISTRAL
- 	bool "Mistral QVGA board Support"
- 	depends on MACH_OMAP_OSK
--    	help
-+	help
- 	  The OSK supports an optional add-on board with a Quarter-VGA
- 	  touchscreen, PDA-ish buttons, a resume button, bicolor LED,
- 	  and camera connector.  Say Y here if you have this board.
-@@ -100,14 +100,14 @@ config OMAP_OSK_MISTRAL
- config MACH_OMAP_PERSEUS2
- 	bool "TI Perseus2"
- 	depends on ARCH_OMAP730
--    	help
-+	help
- 	  Support for TI OMAP 730 Perseus2 board. Say Y here if you have such
- 	  a board.
- 
- config MACH_OMAP_FSAMPLE
- 	bool "TI F-Sample"
- 	depends on ARCH_OMAP730
--    	help
-+	help
- 	  Support for TI OMAP 850 F-Sample board. Say Y here if you have such
- 	  a board.
- 
--- 
-2.27.0
-
+greg k-h
