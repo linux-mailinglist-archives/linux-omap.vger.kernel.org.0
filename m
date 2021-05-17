@@ -2,111 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E9015381F2B
-	for <lists+linux-omap@lfdr.de>; Sun, 16 May 2021 15:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A783823C6
+	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 07:46:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233993AbhEPN54 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 16 May 2021 09:57:56 -0400
-Received: from smtp-35.italiaonline.it ([213.209.10.35]:42616 "EHLO libero.it"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S233870AbhEPN5z (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 16 May 2021 09:57:55 -0400
-Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
- ([95.244.94.151])
-        by smtp-35.iol.local with ESMTPA
-        id iHEzl2tgYpK9wiHF6lOWlZ; Sun, 16 May 2021 15:55:41 +0200
-x-libjamoibt: 1601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
-        t=1621173341; bh=zZLQBLl9wixM7xxtZD+7yOPbluTczTOuH82A39eRwh8=;
-        h=From;
-        b=YW5enN5amP39PC+aP1tW2smXXvsDSBoFeX5O+8IL2EoEi6ZbB15HvlLptBx575g5K
-         irlACxdTpZYmGCeEWUtpDAn+JAuqHfTrmMehRROecnTpHUdmFnpuxw4pC0RMSH/grP
-         1TZq8Fnxj/sQAHcugz/ADZCcBirg7Qg4vbzreYLr5MduhD/kmzca4/z4Ed3kMIXCB1
-         RPiRnweLLJtPdkkZvqEZvbdbdpH37m/qiqSkJU3NaEndxL8kogoVxVGTsp34SyHivF
-         H8+JogyONt2mqkYfEZJGMwrYoW3cNaUwtLj0iT2jU11KnUFXRiJqcCO3qqXwCZgyRW
-         s7jCQcRbxppuw==
-X-CNFS-Analysis: v=2.4 cv=A9ipg4aG c=1 sm=1 tr=0 ts=60a1245d cx=a_exe
- a=ugxisoNCKEotYwafST++Mw==:117 a=ugxisoNCKEotYwafST++Mw==:17 a=sozttTNsAAAA:8
- a=hlofsd_XEJyvNm5uEDwA:9 a=aeg5Gbbo78KNqacMgKqU:22
-From:   Dario Binacchi <dariobin@libero.it>
-To:     linux-kernel@vger.kernel.org
-Cc:     Dario Binacchi <dariobin@libero.it>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH 2/2] pinctrl: single: set pinmux from pins debug file
-Date:   Sun, 16 May 2021 15:55:31 +0200
-Message-Id: <20210516135531.2203-3-dariobin@libero.it>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210516135531.2203-1-dariobin@libero.it>
-References: <20210516135531.2203-1-dariobin@libero.it>
-X-CMAE-Envelope: MS4xfJitAJ0M4XIXYHKFsdVSSJT/tz+2fn1XZyqRVv7cNGLeIY1LDkdsgw1cB9KctyKn3zYTLQ3J2o9S3lpE23G/fdUnSu6oIzDYCconWScoLDRvewSB93jK
- +adOMGnuKAiZD1fbVuhdaCd7yGWve3r5v4if3aGJvw+HFikj9rRLvD5sGm+rZARsa3bBpCMbA089B99Bz1mQUVg9kRajMStiHcVfG4eZE/TMiHlhqclh3G82
- OUaKF7qKSMSefEDISPS8cxucIndJC5exNSBZb+oSw7T1+HWTON6GY3va5Ki4871D5wtW3QLD8nmcWV1tAQ6wfa+IwX6khJ/mwbtYXd3dxzJRyhtvHxlqpNoA
- 6WMWOlyXZRUMw1Z5/BHpmf6eswgdvVM1vCOTSfYKe8EerB1tnI1nKBo4EXt92QunELD2IHMdHdyOeI2Dm+QdOasSN+sXKyRm3f2Lf8F4/VkAyW5kLsF8SqY4
- BzES+3DmXSMrLGbOcym3p2W4CupnRGT8YBEsZA==
+        id S234489AbhEQFsB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 May 2021 01:48:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54670 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234462AbhEQFry (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 17 May 2021 01:47:54 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 21CCF6108D;
+        Mon, 17 May 2021 05:46:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1621230378;
+        bh=UssYIYbkL3qu2UXuoT41PmlhMhpzovvV5hj4VqQqw6c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Vna6C9/eXr0rr9wnsxamGgP6HY53+rapHkKqAnJK3sSoY631+u0j3cZ/Xjleivf8U
+         lDAxln7hHa19MzfzYmHSkNzIK1K5pI/K/AyFyyommMzJ/FNr5UiqNJi1b78GTzBNCc
+         OvydG874aqfpppXC7D0nP3i8lBieHyXygMg/IfKE=
+Date:   Mon, 17 May 2021 07:46:12 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Juerg Haefliger <juerg.haefliger@canonical.com>
+Cc:     aaro.koskinen@iki.fi, tony@atomide.com, linux@prisktech.co.nz,
+        davem@davemloft.net, kuba@kernel.org, jejb@linux.ibm.com,
+        martin.petersen@oracle.com, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, mst@redhat.com,
+        jasowang@redhat.com, zbr@ioremap.net, pablo@netfilter.org,
+        kadlec@netfilter.org, fw@strlen.de, horms@verge.net.au, ja@ssi.bg,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-crypto@vger.kernel.org, linux-usb@vger.kernel.org,
+        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-fsdevel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Juerg Haefliger <juergh@canonical.com>
+Subject: Re: [PATCH] treewide: Remove leading spaces in Kconfig files
+Message-ID: <YKIDJIfuufBrTQ4f@kroah.com>
+References: <20210516132209.59229-1-juergh@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210516132209.59229-1-juergh@canonical.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-As described in section 9.1 of the TI reference manual for AM335x [1],
-"For writing to the control module registers, the MPU will need to be in
-privileged mode of operation and writes will not work from user mode".
-By adding the pin_dbg_set helper to pcs_pinctrl_ops it will be possible
-to write these registers from the pins debug:
+On Sun, May 16, 2021 at 03:22:09PM +0200, Juerg Haefliger wrote:
+> There are a few occurences of leading spaces before tabs in a couple of
+> Kconfig files. Remove them by running the following command:
+> 
+>   $ find . -name 'Kconfig*' | xargs sed -r -i 's/^[ ]+\t/\t/'
+> 
+> Signed-off-by: Juerg Haefliger <juergh@canonical.com>
+> ---
+>  arch/arm/mach-omap1/Kconfig     | 12 ++++++------
+>  arch/arm/mach-vt8500/Kconfig    |  6 +++---
+>  arch/arm/mm/Kconfig             | 10 +++++-----
+>  drivers/char/hw_random/Kconfig  |  8 ++++----
+>  drivers/net/usb/Kconfig         | 10 +++++-----
+>  drivers/net/wan/Kconfig         |  4 ++--
+>  drivers/scsi/Kconfig            |  2 +-
+>  drivers/uio/Kconfig             |  2 +-
+>  drivers/video/backlight/Kconfig | 10 +++++-----
+>  drivers/virtio/Kconfig          |  2 +-
+>  drivers/w1/masters/Kconfig      |  6 +++---
+>  fs/proc/Kconfig                 |  4 ++--
+>  init/Kconfig                    |  2 +-
+>  net/netfilter/Kconfig           |  2 +-
+>  net/netfilter/ipvs/Kconfig      |  2 +-
+>  15 files changed, 41 insertions(+), 41 deletions(-)
 
-cd /sys/kernel/debug/pinctrl/44e10800.pinmux-pinctrl-single/
-echo <pin-number> <reg-value> >pins
+Please break this up into one patch per subsystem and resend to the
+proper maintainers that way.
 
-[1] https://www.ti.com/lit/ug/spruh73q/spruh73q.pdf
+thanks,
 
-Signed-off-by: Dario Binacchi <dariobin@libero.it>
-
----
-
- drivers/pinctrl/pinctrl-single.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 2c9c9835f375..cdbc2298360d 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -313,6 +313,23 @@ static void pcs_pin_dbg_show(struct pinctrl_dev *pctldev,
- 	seq_printf(s, "%zx %08x %s ", pa, val, DRIVER_NAME);
- }
- 
-+static int pcs_pin_dbg_set(struct pinctrl_dev *pctldev, unsigned int pin,
-+			   char *buf)
-+{
-+	struct pcs_device *pcs;
-+	unsigned int val, mux_bytes;
-+
-+	buf = skip_spaces(buf);
-+	if (kstrtouint(buf, 0, &val))
-+		return -EINVAL;
-+
-+	pcs = pinctrl_dev_get_drvdata(pctldev);
-+
-+	mux_bytes = pcs->width / BITS_PER_BYTE;
-+	pcs->write(val, pcs->base + pin * mux_bytes);
-+	return 0;
-+}
-+
- static void pcs_dt_free_map(struct pinctrl_dev *pctldev,
- 				struct pinctrl_map *map, unsigned num_maps)
- {
-@@ -331,6 +348,9 @@ static const struct pinctrl_ops pcs_pinctrl_ops = {
- 	.get_group_name = pinctrl_generic_get_group_name,
- 	.get_group_pins = pinctrl_generic_get_group_pins,
- 	.pin_dbg_show = pcs_pin_dbg_show,
-+#if IS_ENABLED(CONFIG_DEVMEM) && IS_ENABLED(CONFIG_SOC_AM33XX)
-+	.pin_dbg_set = pcs_pin_dbg_set,
-+#endif
- 	.dt_node_to_map = pcs_dt_node_to_map,
- 	.dt_free_map = pcs_dt_free_map,
- };
--- 
-2.17.1
-
+greg k-h
