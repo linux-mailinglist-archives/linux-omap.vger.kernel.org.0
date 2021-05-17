@@ -2,237 +2,162 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C6083826CB
-	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 10:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3E3382708
+	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 10:29:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235451AbhEQIYW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 May 2021 04:24:22 -0400
-Received: from muru.com ([72.249.23.125]:56528 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233689AbhEQIYW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 17 May 2021 04:24:22 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id EB3F180BA;
-        Mon, 17 May 2021 08:23:09 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Keerthy <j-keerthy@ti.com>, Tero Kristo <kristo@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [Backport for linux-5.10.y PATCH 2/2] clocksource/drivers/timer-ti-dm: Handle dra7 timer wrap errata i940
-Date:   Mon, 17 May 2021 11:22:44 +0300
-Message-Id: <20210517082244.17447-2-tony@atomide.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210517082244.17447-1-tony@atomide.com>
-References: <20210517082244.17447-1-tony@atomide.com>
+        id S235555AbhEQIaq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 May 2021 04:30:46 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60539 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235286AbhEQIap (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 May 2021 04:30:45 -0400
+Received: from mail-lj1-f199.google.com ([209.85.208.199])
+        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <juerg.haefliger@canonical.com>)
+        id 1liYcy-0004SL-Ul
+        for linux-omap@vger.kernel.org; Mon, 17 May 2021 08:29:28 +0000
+Received: by mail-lj1-f199.google.com with SMTP id b13-20020a05651c032db02900cf5cc3941eso2798490ljp.0
+        for <linux-omap@vger.kernel.org>; Mon, 17 May 2021 01:29:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version;
+        bh=T/k1Hfbl0QWX7BgUNKlB2kMgvZHjTQfbPANeoy85SUc=;
+        b=Hh1yXcRFZFzV6L07/zhKKER7gFtCd2+IFVONsrUXVWGxD56OoEgwf6QNOrJ0PkBGuW
+         QfhH1Q30Rb+D+1PvEdDHJeyeASUzSDCQNWX24m4ySTNTUMVESIEMuEZ0przZqqWmhfhZ
+         pzb2n8HLahnLdg/5U3JTbOxAschk9SFY+HM44Zr8tr/uGAo3T/azauqtibFMZXArSez3
+         EDb2ixgJU+cRLELuk/vAHzLtTtbuNAbq/tbH8uSBXa9hn0EhPIBZtCrKrudQD/IO+a0K
+         sJEbWukgEJatDYMaZSyODIxFE/GIQT8qOqIwnLEKWQC8YGyuuYjUiGwlJ5quTsKAiOnT
+         1V0g==
+X-Gm-Message-State: AOAM5308qwIaBw9btZMXQLVlOMwoKvmWGari95JHri4kSJYKmvs4oGkk
+        YQUFzRWyIo2PdRCAWNRQGPZ2WQZd9Y0dOQ4Cw4mXxgeCMsmHY5HfGOiLSaa98fIoF2L6WbAL/J+
+        lvDKm9u7W5qM+Mhcn2B8J9XviziTsqaGvmBgUVHI=
+X-Received: by 2002:a05:6402:12d3:: with SMTP id k19mr69882833edx.52.1621240158132;
+        Mon, 17 May 2021 01:29:18 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwzfvlH5EzvwOwvjZrfGS/mgdWYRGeWBuLqXSaxf59eSojt+fwGp2Tv4PXBiEmsWL6Vcbb4nQ==
+X-Received: by 2002:a05:6402:12d3:: with SMTP id k19mr69882802edx.52.1621240157962;
+        Mon, 17 May 2021 01:29:17 -0700 (PDT)
+Received: from gollum ([194.191.244.86])
+        by smtp.gmail.com with ESMTPSA id ho32sm8220626ejc.82.2021.05.17.01.29.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 May 2021 01:29:17 -0700 (PDT)
+From:   Juerg Haefliger <juerg.haefliger@canonical.com>
+X-Google-Original-From: Juerg Haefliger <juergh@canonical.com>
+Date:   Mon, 17 May 2021 10:29:15 +0200
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Juerg Haefliger <juerg.haefliger@canonical.com>,
+        aaro.koskinen@iki.fi, tony@atomide.com, linux@prisktech.co.nz,
+        David Miller <davem@davemloft.net>, kuba@kernel.org,
+        jejb@linux.ibm.com, martin.petersen@oracle.com,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        jingoohan1@gmail.com, mst@redhat.com, jasowang@redhat.com,
+        zbr@ioremap.net, pablo@netfilter.org, kadlec@netfilter.org,
+        fw@strlen.de, horms@verge.net.au, ja@ssi.bg,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-crypto@vger.kernel.org, linux-usb@vger.kernel.org,
+        netdev <netdev@vger.kernel.org>, linux-scsi@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-fsdevel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] treewide: Remove leading spaces in Kconfig files
+Message-ID: <20210517102915.072b8665@gollum>
+In-Reply-To: <YKImotylLR7D4mQW@kroah.com>
+References: <20210516132209.59229-1-juergh@canonical.com>
+        <YKIDJIfuufBrTQ4f@kroah.com>
+        <CAB2i3ZgszsUVDuK2fkUXtD72tPSgrycnDawM4VAuGGPJiA9+cA@mail.gmail.com>
+        <YKImotylLR7D4mQW@kroah.com>
+Organization: Canonical Ltd
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/D7AKy83dA=gk+i5Iqn9=k5c";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Upstream commit 25de4ce5ed02994aea8bc111d133308f6fd62566 for stable
-linux-5.10.y. Depends on backported upstream commit
-3efe7a878a11c13b5297057bfc1e5639ce1241ce.
+--Sig_/D7AKy83dA=gk+i5Iqn9=k5c
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-There is a timer wrap issue on dra7 for the ARM architected timer.
-In a typical clock configuration the timer fails to wrap after 388 days.
+On Mon, 17 May 2021 10:17:38 +0200
+Greg KH <gregkh@linuxfoundation.org> wrote:
 
-To work around the issue, we need to use timer-ti-dm percpu timers instead.
+> On Mon, May 17, 2021 at 10:07:43AM +0200, Juerg Haefliger wrote:
+> > On Mon, May 17, 2021 at 7:46 AM Greg KH <gregkh@linuxfoundation.org> wr=
+ote: =20
+> > >
+> > > On Sun, May 16, 2021 at 03:22:09PM +0200, Juerg Haefliger wrote: =20
+> > > > There are a few occurences of leading spaces before tabs in a coupl=
+e of
+> > > > Kconfig files. Remove them by running the following command:
+> > > >
+> > > >   $ find . -name 'Kconfig*' | xargs sed -r -i 's/^[ ]+\t/\t/'
+> > > >
+> > > > Signed-off-by: Juerg Haefliger <juergh@canonical.com>
+> > > > ---
+> > > >  arch/arm/mach-omap1/Kconfig     | 12 ++++++------
+> > > >  arch/arm/mach-vt8500/Kconfig    |  6 +++---
+> > > >  arch/arm/mm/Kconfig             | 10 +++++-----
+> > > >  drivers/char/hw_random/Kconfig  |  8 ++++----
+> > > >  drivers/net/usb/Kconfig         | 10 +++++-----
+> > > >  drivers/net/wan/Kconfig         |  4 ++--
+> > > >  drivers/scsi/Kconfig            |  2 +-
+> > > >  drivers/uio/Kconfig             |  2 +-
+> > > >  drivers/video/backlight/Kconfig | 10 +++++-----
+> > > >  drivers/virtio/Kconfig          |  2 +-
+> > > >  drivers/w1/masters/Kconfig      |  6 +++---
+> > > >  fs/proc/Kconfig                 |  4 ++--
+> > > >  init/Kconfig                    |  2 +-
+> > > >  net/netfilter/Kconfig           |  2 +-
+> > > >  net/netfilter/ipvs/Kconfig      |  2 +-
+> > > >  15 files changed, 41 insertions(+), 41 deletions(-) =20
+> > >
+> > > Please break this up into one patch per subsystem and resend to the
+> > > proper maintainers that way. =20
+> >=20
+> > Hmm... How is my patch different from other treewide Kconfig cleanup
+> > patches like:
+> > a7f7f6248d97 ("treewide: replace '---help---' in Kconfig files with 'he=
+lp'")
+> > 8636a1f9677d ("treewide: surround Kconfig file paths with double quotes=
+")
+> > 83fc61a563cb ("treewide: Fix typos in Kconfig")
+> > 769a12a9c760 ("treewide: Kconfig: fix wording / spelling")
+> > f54619f28fb6 ("treewide: Fix typos in Kconfig") =20
+>=20
+> Ok, I'll just ignore this and not try to suggest a way for you to get
+> your change accepted...
 
-Let's configure dmtimer3 and 4 as percpu timers by default, and warn about
-the issue if the dtb is not configured properly.
+No worries. I can make the change, was just wondering...
 
-Let's do this as a single patch so it can be backported to v5.8 and later
-kernels easily. Note that this patch depends on earlier timer-ti-dm
-systimer posted mode fixes, and a preparatory clockevent patch
-"clocksource/drivers/timer-ti-dm: Prepare to handle dra7 timer wrap issue".
+...Juerg
+=20
+> greg k-h
 
-For more information, please see the errata for "AM572x Sitara Processors
-Silicon Revisions 1.1, 2.0":
 
-https://www.ti.com/lit/er/sprz429m/sprz429m.pdf
+--Sig_/D7AKy83dA=gk+i5Iqn9=k5c
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-The concept is based on earlier reference patches done by Tero Kristo and
-Keerthy.
+-----BEGIN PGP SIGNATURE-----
 
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Tero Kristo <kristo@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20210323074326.28302-3-tony@atomide.com
----
- arch/arm/boot/dts/dra7-l4.dtsi             |  4 +-
- arch/arm/boot/dts/dra7.dtsi                | 20 ++++++
- drivers/clocksource/timer-ti-dm-systimer.c | 76 ++++++++++++++++++++++
- include/linux/cpuhotplug.h                 |  1 +
- 4 files changed, 99 insertions(+), 2 deletions(-)
+iQIzBAEBCgAdFiEEhZfU96IuprviLdeLD9OLCQumQrcFAmCiKVsACgkQD9OLCQum
+QrePLw//Ykimz2jPT7e6QtcgGI7q3Z9YELDFMiqk+ujC4vzVJBFi+WZekZa+tti2
+7T5x1ci+i2mPSr/sNSIuKfQcvBH7SBdcckdjSdD55wGKV7GWUMNDkJR1x7aW5Pzo
+eEhHCY0hTkEq76S1wegRvD2HxXpsW4aH6rZjB/uNo9V/lRaJJNuouXrxs1zI/6zr
+UtYRTLVqVCsTxv0C+XF/C0T+gdbhYaU/68B/+zUSLVo83JQBo9rXrPfNmRWGo5hO
+SnFkkcfMuosZZ9RQqmpdR1y4D+1x7OrROghRJT8gy9LBF5c/0yTimblVifcoNXi0
+fUZmNRzYvteApmm8m0SBbOEE3mHiKDVIJ7MHDdjtPweaNNJrH+CkXztENtzb+AJr
+h6hlvQklXSI2/h+PaCLMPGxUnYDj5xhXVWwmiIy/0Hk466jeuPz4od5EQSe607ZB
+dw8oX5/MCHtJhdsgSUB3BHiwWPD7zBuUouHOBGsyFJBsCFcU5MIiQVFe2fiNRbkA
+nlmkOuBT2+LKK+2AU/nQ1IGkcP1b8a3Az8g6+ywxyjMHv1+7FafEMrFgJUGIeXNl
+z80JfoWhqqI4UcRltEhJE44NfdVqDqHMomAwI2qHuSSZAWLKEjIPQkFtDlWDAlB4
+d2q4e+YbdD1XE5/fFDYMOvZk31+d9GLtO0SQeZyuQo8r3MAkpR0=
+=CrpS
+-----END PGP SIGNATURE-----
 
-diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
---- a/arch/arm/boot/dts/dra7-l4.dtsi
-+++ b/arch/arm/boot/dts/dra7-l4.dtsi
-@@ -1168,7 +1168,7 @@ timer2: timer@0 {
- 			};
- 		};
- 
--		target-module@34000 {			/* 0x48034000, ap 7 46.0 */
-+		timer3_target: target-module@34000 {	/* 0x48034000, ap 7 46.0 */
- 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
- 			reg = <0x34000 0x4>,
- 			      <0x34010 0x4>;
-@@ -1195,7 +1195,7 @@ timer3: timer@0 {
- 			};
- 		};
- 
--		target-module@36000 {			/* 0x48036000, ap 9 4e.0 */
-+		timer4_target: target-module@36000 {	/* 0x48036000, ap 9 4e.0 */
- 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
- 			reg = <0x36000 0x4>,
- 			      <0x36010 0x4>;
-diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
---- a/arch/arm/boot/dts/dra7.dtsi
-+++ b/arch/arm/boot/dts/dra7.dtsi
-@@ -46,6 +46,7 @@ aliases {
- 
- 	timer {
- 		compatible = "arm,armv7-timer";
-+		status = "disabled";	/* See ARM architected timer wrap erratum i940 */
- 		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_LEVEL_LOW)>,
-@@ -1090,3 +1091,22 @@ timer@0 {
- 		assigned-clock-parents = <&sys_32k_ck>;
- 	};
- };
-+
-+/* Local timers, see ARM architected timer wrap erratum i940 */
-+&timer3_target {
-+	ti,no-reset-on-init;
-+	ti,no-idle;
-+	timer@0 {
-+		assigned-clocks = <&l4per_clkctrl DRA7_L4PER_TIMER3_CLKCTRL 24>;
-+		assigned-clock-parents = <&timer_sys_clk_div>;
-+	};
-+};
-+
-+&timer4_target {
-+	ti,no-reset-on-init;
-+	ti,no-idle;
-+	timer@0 {
-+		assigned-clocks = <&l4per_clkctrl DRA7_L4PER_TIMER4_CLKCTRL 24>;
-+		assigned-clock-parents = <&timer_sys_clk_div>;
-+	};
-+};
-diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
---- a/drivers/clocksource/timer-ti-dm-systimer.c
-+++ b/drivers/clocksource/timer-ti-dm-systimer.c
-@@ -2,6 +2,7 @@
- #include <linux/clk.h>
- #include <linux/clocksource.h>
- #include <linux/clockchips.h>
-+#include <linux/cpuhotplug.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-@@ -630,6 +631,78 @@ static int __init dmtimer_clockevent_init(struct device_node *np)
- 	return error;
- }
- 
-+/* Dmtimer as percpu timer. See dra7 ARM architected timer wrap erratum i940 */
-+static DEFINE_PER_CPU(struct dmtimer_clockevent, dmtimer_percpu_timer);
-+
-+static int __init dmtimer_percpu_timer_init(struct device_node *np, int cpu)
-+{
-+	struct dmtimer_clockevent *clkevt;
-+	int error;
-+
-+	if (!cpu_possible(cpu))
-+		return -EINVAL;
-+
-+	if (!of_property_read_bool(np->parent, "ti,no-reset-on-init") ||
-+	    !of_property_read_bool(np->parent, "ti,no-idle"))
-+		pr_warn("Incomplete dtb for percpu dmtimer %pOF\n", np->parent);
-+
-+	clkevt = per_cpu_ptr(&dmtimer_percpu_timer, cpu);
-+
-+	error = dmtimer_clkevt_init_common(clkevt, np, CLOCK_EVT_FEAT_ONESHOT,
-+					   cpumask_of(cpu), "percpu-dmtimer",
-+					   500);
-+	if (error)
-+		return error;
-+
-+	return 0;
-+}
-+
-+/* See TRM for timer internal resynch latency */
-+static int omap_dmtimer_starting_cpu(unsigned int cpu)
-+{
-+	struct dmtimer_clockevent *clkevt = per_cpu_ptr(&dmtimer_percpu_timer, cpu);
-+	struct clock_event_device *dev = &clkevt->dev;
-+	struct dmtimer_systimer *t = &clkevt->t;
-+
-+	clockevents_config_and_register(dev, t->rate, 3, ULONG_MAX);
-+	irq_force_affinity(dev->irq, cpumask_of(cpu));
-+
-+	return 0;
-+}
-+
-+static int __init dmtimer_percpu_timer_startup(void)
-+{
-+	struct dmtimer_clockevent *clkevt = per_cpu_ptr(&dmtimer_percpu_timer, 0);
-+	struct dmtimer_systimer *t = &clkevt->t;
-+
-+	if (t->sysc) {
-+		cpuhp_setup_state(CPUHP_AP_TI_GP_TIMER_STARTING,
-+				  "clockevents/omap/gptimer:starting",
-+				  omap_dmtimer_starting_cpu, NULL);
-+	}
-+
-+	return 0;
-+}
-+subsys_initcall(dmtimer_percpu_timer_startup);
-+
-+static int __init dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
-+{
-+	struct device_node *arm_timer;
-+
-+	arm_timer = of_find_compatible_node(NULL, NULL, "arm,armv7-timer");
-+	if (of_device_is_available(arm_timer)) {
-+		pr_warn_once("ARM architected timer wrap issue i940 detected\n");
-+		return 0;
-+	}
-+
-+	if (pa == 0x48034000)		/* dra7 dmtimer3 */
-+		return dmtimer_percpu_timer_init(np, 0);
-+	else if (pa == 0x48036000)	/* dra7 dmtimer4 */
-+		return dmtimer_percpu_timer_init(np, 1);
-+
-+	return 0;
-+}
-+
- /* Clocksource */
- static struct dmtimer_clocksource *
- to_dmtimer_clocksource(struct clocksource *cs)
-@@ -763,6 +836,9 @@ static int __init dmtimer_systimer_init(struct device_node *np)
- 	if (clockevent == pa)
- 		return dmtimer_clockevent_init(np);
- 
-+	if (of_machine_is_compatible("ti,dra7"))
-+		return dmtimer_percpu_quirk_init(np, pa);
-+
- 	return 0;
- }
- 
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -135,6 +135,7 @@ enum cpuhp_state {
- 	CPUHP_AP_RISCV_TIMER_STARTING,
- 	CPUHP_AP_CLINT_TIMER_STARTING,
- 	CPUHP_AP_CSKY_TIMER_STARTING,
-+	CPUHP_AP_TI_GP_TIMER_STARTING,
- 	CPUHP_AP_HYPERV_TIMER_STARTING,
- 	CPUHP_AP_KVM_STARTING,
- 	CPUHP_AP_KVM_ARM_VGIC_INIT_STARTING,
--- 
-2.31.1
+--Sig_/D7AKy83dA=gk+i5Iqn9=k5c--
