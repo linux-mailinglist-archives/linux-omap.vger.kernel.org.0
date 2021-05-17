@@ -2,81 +2,54 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2A783823C6
-	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 07:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 038C73823DF
+	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 07:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234489AbhEQFsB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 May 2021 01:48:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54670 "EHLO mail.kernel.org"
+        id S230260AbhEQF6v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 May 2021 01:58:51 -0400
+Received: from muru.com ([72.249.23.125]:56466 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234462AbhEQFry (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 17 May 2021 01:47:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 21CCF6108D;
-        Mon, 17 May 2021 05:46:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1621230378;
-        bh=UssYIYbkL3qu2UXuoT41PmlhMhpzovvV5hj4VqQqw6c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Vna6C9/eXr0rr9wnsxamGgP6HY53+rapHkKqAnJK3sSoY631+u0j3cZ/Xjleivf8U
-         lDAxln7hHa19MzfzYmHSkNzIK1K5pI/K/AyFyyommMzJ/FNr5UiqNJi1b78GTzBNCc
-         OvydG874aqfpppXC7D0nP3i8lBieHyXygMg/IfKE=
-Date:   Mon, 17 May 2021 07:46:12 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Juerg Haefliger <juerg.haefliger@canonical.com>
-Cc:     aaro.koskinen@iki.fi, tony@atomide.com, linux@prisktech.co.nz,
-        davem@davemloft.net, kuba@kernel.org, jejb@linux.ibm.com,
-        martin.petersen@oracle.com, lee.jones@linaro.org,
-        daniel.thompson@linaro.org, jingoohan1@gmail.com, mst@redhat.com,
-        jasowang@redhat.com, zbr@ioremap.net, pablo@netfilter.org,
-        kadlec@netfilter.org, fw@strlen.de, horms@verge.net.au, ja@ssi.bg,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-crypto@vger.kernel.org, linux-usb@vger.kernel.org,
-        netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-fsdevel@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, lvs-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Juerg Haefliger <juergh@canonical.com>
-Subject: Re: [PATCH] treewide: Remove leading spaces in Kconfig files
-Message-ID: <YKIDJIfuufBrTQ4f@kroah.com>
-References: <20210516132209.59229-1-juergh@canonical.com>
+        id S229948AbhEQF6u (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 17 May 2021 01:58:50 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id C7C8980CE;
+        Mon, 17 May 2021 05:57:37 +0000 (UTC)
+Date:   Mon, 17 May 2021 08:57:30 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Dario Binacchi <dariobin@libero.it>
+Cc:     linux-kernel@vger.kernel.org,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: Re: [PATCH 2/2] pinctrl: single: set pinmux from pins debug file
+Message-ID: <YKIFygbbMxqXON8W@atomide.com>
+References: <20210516135531.2203-1-dariobin@libero.it>
+ <20210516135531.2203-3-dariobin@libero.it>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210516132209.59229-1-juergh@canonical.com>
+In-Reply-To: <20210516135531.2203-3-dariobin@libero.it>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, May 16, 2021 at 03:22:09PM +0200, Juerg Haefliger wrote:
-> There are a few occurences of leading spaces before tabs in a couple of
-> Kconfig files. Remove them by running the following command:
-> 
->   $ find . -name 'Kconfig*' | xargs sed -r -i 's/^[ ]+\t/\t/'
-> 
-> Signed-off-by: Juerg Haefliger <juergh@canonical.com>
-> ---
->  arch/arm/mach-omap1/Kconfig     | 12 ++++++------
->  arch/arm/mach-vt8500/Kconfig    |  6 +++---
->  arch/arm/mm/Kconfig             | 10 +++++-----
->  drivers/char/hw_random/Kconfig  |  8 ++++----
->  drivers/net/usb/Kconfig         | 10 +++++-----
->  drivers/net/wan/Kconfig         |  4 ++--
->  drivers/scsi/Kconfig            |  2 +-
->  drivers/uio/Kconfig             |  2 +-
->  drivers/video/backlight/Kconfig | 10 +++++-----
->  drivers/virtio/Kconfig          |  2 +-
->  drivers/w1/masters/Kconfig      |  6 +++---
->  fs/proc/Kconfig                 |  4 ++--
->  init/Kconfig                    |  2 +-
->  net/netfilter/Kconfig           |  2 +-
->  net/netfilter/ipvs/Kconfig      |  2 +-
->  15 files changed, 41 insertions(+), 41 deletions(-)
+Hi,
 
-Please break this up into one patch per subsystem and resend to the
-proper maintainers that way.
+* Dario Binacchi <dariobin@libero.it> [210516 13:55]:
+> @@ -331,6 +348,9 @@ static const struct pinctrl_ops pcs_pinctrl_ops = {
+>  	.get_group_name = pinctrl_generic_get_group_name,
+>  	.get_group_pins = pinctrl_generic_get_group_pins,
+>  	.pin_dbg_show = pcs_pin_dbg_show,
+> +#if IS_ENABLED(CONFIG_DEVMEM) && IS_ENABLED(CONFIG_SOC_AM33XX)
+> +	.pin_dbg_set = pcs_pin_dbg_set,
+> +#endif
+>  	.dt_node_to_map = pcs_dt_node_to_map,
+>  	.dt_free_map = pcs_dt_free_map,
+>  };
 
-thanks,
+I don't think there should be any CONFIG_SOC_AM33XX dependency here?
 
-greg k-h
+Regards,
+
+Tony
