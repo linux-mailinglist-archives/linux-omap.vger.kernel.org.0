@@ -2,23 +2,31 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 788AB3837D7
-	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 17:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9870383A13
+	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 18:36:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244541AbhEQPrN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 May 2021 11:47:13 -0400
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:47636 "EHLO
-        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344190AbhEQPm4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 17 May 2021 11:42:56 -0400
-Received: from [77.244.183.192] (port=64722 helo=melee.fritz.box)
-        by hostingweb31.netsons.net with esmtpa (Exim 4.94.2)
-        (envelope-from <luca@lucaceresoli.net>)
-        id 1lifNC-000Exi-Ly; Mon, 17 May 2021 17:41:38 +0200
-From:   Luca Ceresoli <luca@lucaceresoli.net>
-To:     linux-pci@vger.kernel.org
-Cc:     Luca Ceresoli <luca@lucaceresoli.net>, linux-omap@vger.kernel.org,
+        id S245384AbhEQQhx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 May 2021 12:37:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55942 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245137AbhEQQhl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 17 May 2021 12:37:41 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 648FF611BD;
+        Mon, 17 May 2021 16:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621269384;
+        bh=+X4+bVfzpXfIBWRjakB4ifMEjfwf5eB74K2ooB0BvKs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=mrYMtv1M6tHlqyA6CqYBWaIneywFJ8hwyUoaWmJWO1aBoBlYRnCcmyhZMKC0yLyaR
+         L7mvWpGdybVWGaENMBE6mq9gjH0sfYPnaY1+eRq8R+ZOHeLGqZceQDDNgUAU0f4Jvq
+         MmibiOMYL5cSc1+YOUeDBcM1IQIsyMe4+riNcK3g3bdQyJCSbq3WIx37g6RM4islnV
+         tptmI49809/uRmboehthxjM3H/6kET4bnLxDOynWRLSYv7o0+atkGxN/ZW5CMwwhYq
+         3vMKLyMt36Uaghsjc+qHPKSjyJnedWRE4+zCKZq6d1L1tfMgKtHkfBDF39YZXot178
+         zFp+kV+EOkf3A==
+Date:   Mon, 17 May 2021 11:36:23 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Luca Ceresoli <luca@lucaceresoli.net>
+Cc:     linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         Kishon Vijay Abraham I <kishon@ti.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
@@ -26,81 +34,71 @@ Cc:     Luca Ceresoli <luca@lucaceresoli.net>, linux-omap@vger.kernel.org,
         Bjorn Helgaas <bhelgaas@google.com>,
         Jingoo Han <jingoohan1@gmail.com>,
         Gustavo Pimentel <gustavo.pimentel@synopsys.com>
-Subject: [PATCH 5/5] PCI: dwc: pci-dra7xx: get an optional clock
-Date:   Mon, 17 May 2021 17:41:22 +0200
-Message-Id: <20210517154122.430544-6-luca@lucaceresoli.net>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210517154122.430544-1-luca@lucaceresoli.net>
-References: <20210517154122.430544-1-luca@lucaceresoli.net>
+Subject: Re: [PATCH 0/5] PCI: dwc: pci-dra7xx: miscellaneous improvements
+Message-ID: <20210517163623.GA21579@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca+lucaceresoli.net/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210517154122.430544-1-luca@lucaceresoli.net>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If the clock is provided externally we need to make sure it is enabled
-before starting PCI scan.
+On Mon, May 17, 2021 at 05:41:17PM +0200, Luca Ceresoli wrote:
+> This is an series of mixed improvements to the DRA7 PCI controller driver:
+> allow building as a loadabel module, allow to get and enable a clock and a
+> small cleanup.
+> 
+> Luca
+> 
+> Luca Ceresoli (5):
+>   PCI: dwc: export more symbols to allow modular drivers
+>   PCI: dwc: pci-dra7xx: make it a kernel module
+>   PCI: dwc: pci-dra7xx: allow to build as a loadable module
+>   PCI: dwc: pci-dra7xx: remove unused include
+>   PCI: dwc: pci-dra7xx: get an optional clock
 
-Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
----
- drivers/pci/controller/dwc/pci-dra7xx.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+This driver has a poor record of subject lines:
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 05d06806c300..8dd20b394d0c 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -7,6 +7,7 @@
-  * Authors: Kishon Vijay Abraham I <kishon@ti.com>
-  */
- 
-+#include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/err.h>
-@@ -90,6 +91,7 @@ struct dra7xx_pcie {
- 	int			phy_count;	/* DT phy-names count */
- 	struct phy		**phy;
- 	struct irq_domain	*irq_domain;
-+	struct clk              *clk;
- 	enum dw_pcie_device_mode mode;
- };
- 
-@@ -744,6 +746,15 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
- 	if (!link)
- 		return -ENOMEM;
- 
-+	dra7xx->clk = devm_clk_get_optional(dev, NULL);
-+	if (IS_ERR(dra7xx->clk))
-+		return dev_err_probe(dev, PTR_ERR(dra7xx->clk),
-+				     "clock request failed");
-+
-+	ret = clk_prepare_enable(dra7xx->clk);
-+	if (ret)
-+		return ret;
-+
- 	for (i = 0; i < phy_count; i++) {
- 		snprintf(name, sizeof(name), "pcie-phy%d", i);
- 		phy[i] = devm_phy_get(dev, name);
-@@ -931,6 +942,8 @@ static void dra7xx_pcie_shutdown(struct platform_device *pdev)
- 
- 	pm_runtime_disable(dev);
- 	dra7xx_pcie_disable_phy(dra7xx);
-+
-+	clk_disable_unprepare(dra7xx->clk);
- }
- 
- static const struct dev_pm_ops dra7xx_pcie_pm_ops = {
--- 
-2.25.1
+  PCI: pci-dra7xx: Prepare for deferred probe with module_platform_driver
+  PCI: dwc: Move dw_pcie_setup_rc() to DWC common code
+  PCI: dwc/dra7xx: Use the common MSI irq_chip
+  PCI: dwc: pci-dra7xx: Fix runtime PM imbalance on error
 
+The "PCI: dwc:" ones are fine -- they apply to the shared dwc core,
+not specifically to dra7xx.
+
+The driver-specific ones:
+
+  PCI: pci-dra7xx:
+  PCI: dwc/dra7xx:
+  PCI: dwc: pci-dra7xx:
+
+are redundant and waste space.  There's no need to mention "dwc" for
+dra7xx-specific things, and no need to mention "PCI" twice.
+
+We should use the "PCI: dra7xx:" prefix for things specific to this
+driver.
+
+The rest of the subject line should start with a capital letter.  The
+subject line should contain specific information when practical.  For
+example,
+
+  PCI: dwc: Export dw_pcie_link_up(), dw_pcie_ep_reset_bar() for modular drivers
+  PCI: dra7xx: Allow building as module
+  PCI: dra7xx: Remove unused linux/init.h include
+  PCI: dra7xx: Get optional external clock
+
+I would squash 2/5 and 3/5, similar to a98d2187efd9 ("PCI: meson:
+Build as module by default") and 526a76991b7b ("PCI: aardvark:
+Implement driver 'remove' function and allow to build it as module").
+
+>  drivers/pci/controller/dwc/Kconfig            |  6 +++---
+>  drivers/pci/controller/dwc/pci-dra7xx.c       | 21 +++++++++++++++++--
+>  .../pci/controller/dwc/pcie-designware-ep.c   |  1 +
+>  drivers/pci/controller/dwc/pcie-designware.c  |  1 +
+>  4 files changed, 24 insertions(+), 5 deletions(-)
+> 
+> -- 
+> 2.25.1
+> 
