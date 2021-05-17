@@ -2,32 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5116386198
-	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 22:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A70533864B7
+	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 22:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237099AbhEQUB3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 May 2021 16:01:29 -0400
-Received: from smtp-35.italiaonline.it ([213.209.10.35]:49125 "EHLO libero.it"
+        id S237236AbhEQUC2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 May 2021 16:02:28 -0400
+Received: from smtp-35.italiaonline.it ([213.209.10.35]:49516 "EHLO libero.it"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S236512AbhEQUB2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 17 May 2021 16:01:28 -0400
+        id S236983AbhEQUC2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 17 May 2021 16:02:28 -0400
 Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
  ([95.244.94.151])
         by smtp-35.iol.local with ESMTPA
-        id ijPJlPskepK9wijPNlg8J9; Mon, 17 May 2021 22:00:10 +0200
+        id ijPJlPskepK9wijPOlg8KC; Mon, 17 May 2021 22:00:11 +0200
 x-libjamoibt: 1601
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
-        t=1621281610; bh=asrIPUdSzvBL6ovQpCIYIxVAs/NrCAs02e5wyOQrjFk=;
+        t=1621281611; bh=CpKSAgnDhnImU3h7WHVy/pL3FGdxgW6Xn2Btiu3BZtk=;
         h=From;
-        b=m5xE/wgC6kHPhXkDreh4Ghf0XfsVwzudo3YbWsVaEGQfIkiIyFOa12qrUfKqW1A47
-         Xw1EVp31Dh4P3+PRWNfn5onAKFN2FG0AEbtOHtc4ZJLCPfiYIMHrm5r391U5wSuqs0
-         mBC0J9Duf+sznMfxtDPkasis/9PLQ7RF7p+rn7n75SLijG4probWaysXa7HsBKOdjN
-         /kankolc/m84XHOHmHn7tnD/dizvAmyHyYWuE+QQBHgOxOLVEdDVThn8HpYmIMgDFH
-         +BDauxGaN813ZQWlfEdeHP0i0es6/kZKZtBVTuWXELn4BMNF8cHbXc+emrln5mutBg
-         PziXUmlB7e8Og==
-X-CNFS-Analysis: v=2.4 cv=A9ipg4aG c=1 sm=1 tr=0 ts=60a2cb4a cx=a_exe
+        b=JstouEqnutiKDR803YxYAyHmN1QcDjFD28nyfBRLhD4HIv11sSRrbXO8JFC+HLDiG
+         kzOMrBtUQUQYbVCFtYG+lo+zh9vCWgVLnXMC7RE2qOpVSpglVKnwA1xxye5H7s2lsh
+         Gzt1bw6QwHbkq7LPytGMiIaJ76/fevk6C2dzPezaGIieExsDVdIzVHnK8HpeYjkMq/
+         iujd2wPVGespr7S1Y78IkdkMhjm+vA3KkCxDBxfbUT9hxdpEN17xe1zz2ITFptYbYR
+         ymrJu9B33Xtw7R1XswDh1abg6ExmukMsBrkEXwpowis+Kc5D7NgzGdmDqY+n63VeBO
+         bNDbL7YLsUOnA==
+X-CNFS-Analysis: v=2.4 cv=A9ipg4aG c=1 sm=1 tr=0 ts=60a2cb4b cx=a_exe
  a=ugxisoNCKEotYwafST++Mw==:117 a=ugxisoNCKEotYwafST++Mw==:17 a=sozttTNsAAAA:8
- a=GWagjzjhKccDtmdoy8IA:9 a=aeg5Gbbo78KNqacMgKqU:22
+ a=hlofsd_XEJyvNm5uEDwA:9 a=aeg5Gbbo78KNqacMgKqU:22
 From:   Dario Binacchi <dariobin@libero.it>
 To:     linux-kernel@vger.kernel.org
 Cc:     Dario Binacchi <dariobin@libero.it>,
@@ -36,41 +36,80 @@ Cc:     Dario Binacchi <dariobin@libero.it>,
         Tony Lindgren <tony@atomide.com>,
         linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
         linux-omap@vger.kernel.org
-Subject: [PATCH v2 0/2] am335x: set pinmux registers from pins debug file
-Date:   Mon, 17 May 2021 22:00:00 +0200
-Message-Id: <20210517200002.6316-1-dariobin@libero.it>
+Subject: [PATCH v2 2/2] pinctrl: single: set pinmux from pins debug file
+Date:   Mon, 17 May 2021 22:00:02 +0200
+Message-Id: <20210517200002.6316-3-dariobin@libero.it>
 X-Mailer: git-send-email 2.17.1
-X-CMAE-Envelope: MS4xfLx0TcvsHrcNzWtXVUq2wnkrd0xhmWrjEbSoW6Ku1Z8AF22pM/q3NjEFbkV2TsjpISAkxXAtRiSkOL2CLimlcchLMAld5RvLTAWjmgu41doM+ugAko0U
- Pf0V2GaozQMdFjBk+I0BEY75PO6EApb0dptS1qg5PBHWnivCmaQRHoHLRgfaJKr5HxKO1sFEz82wQwv5xJ/yjwJvOasOqEwCip2/shV8BEHTsVIAGPjMveOF
- Gmx0V2ZkniKk7iY8+Pnxyz0UiSPusxWaNbmt1/SM+pkDPquRqVBGjaEzNYzp4ML78p1fCG7cHuzaQV3wYJ2BlJ7CvQEG4wK3mgZgZ+csqODCzFJQV6jdhIOp
- 0Furwn9CGS6F05Rcz9Ae5+XskrftFBKxGwVHUaU44kuZOLLvZ2hoZ8t1lDE2feFPdWBWpeX5KeAQWeZipmHLmGgqdaIkwgd3DA3c/r8Eg/W9yf07gvGWo5XT
- OXdUzb1W5B4tzKBnyE11q2hbi/LLyOcz0O6kDA==
+In-Reply-To: <20210517200002.6316-1-dariobin@libero.it>
+References: <20210517200002.6316-1-dariobin@libero.it>
+X-CMAE-Envelope: MS4xfFli/etZ/wE7L2UP5E0I4DUHCnc++t8yiL/HFQ5l9ZzB5Qp1dwXk3nPydVRszxe3HqI18CFV6eVjElNdcJNRGkbW3hCuntRHl0xDKuN4yDC2oN2ir9Iz
+ a/KM8ZQG0CHvsyeSDoJ/+56aqClDlrfEAyrQ5dTojO3Px4iYzRGCaXpUYgbyE294IHWdFzVWWotJlqIXkYb2U7rmY904C9UUA1FGhKRriK/IM40TKyjDA1PM
+ yhcCsm7yO6j9g79WQLEBmXsnu0pFz9kxKzY2lPRhLdBV6kG02utv8/KqgKszOYoNobWgBu2X2ZB+2tKXbKHbKOK0pY+cKeF2jhc1DnOO7g8XuTdQBqZ9AkIa
+ WBcoztwBg/oXWhK3+lOPrrw6lVXX93O8u7ozYEsI8B1xWUyHX061TPTEy4ZNQpZ/3D84Mmf6FcioPkMluKM3ybuL+Qq56mdy/su6P1XmEWMvY4mLBBVmNjc6
+ q6wzQTqXcY0h+ZL1QXifRDXnMmja5UEz7LjLCw==
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+As described in section 9.1 of the TI reference manual for AM335x [1],
+"For writing to the control module registers, the MPU will need to be in
+privileged mode of operation and writes will not work from user mode".
+By adding the pin_dbg_set helper to pcs_pinctrl_ops it will be possible
+to write these registers from the pins debug:
 
-The patch was born from the need to change the slew rate of the LCD pins
-of a custom AM335x board during EMC tests. The AM335x, as described in a
-note in section 9.1 of its reference manual [1], is unable to write
-pinmux registers from user space. The series now makes it possible to
-write these registers from the pins debug file.
+cd /sys/kernel/debug/pinctrl/44e10800.pinmux-pinctrl-single/
+echo <pin-number> <reg-value> >pins
 
 [1] https://www.ti.com/lit/ug/spruh73q/spruh73q.pdf
 
+Signed-off-by: Dario Binacchi <dariobin@libero.it>
+
+---
 
 Changes in v2:
 - Remove CONFIG_SOC_AM33XX dependency.
 
-Dario Binacchi (2):
-  pinctrl: core: configure pinmux from pins debug file
-  pinctrl: single: set pinmux from pins debug file
+ drivers/pinctrl/pinctrl-single.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
- drivers/pinctrl/core.c           | 56 ++++++++++++++++++++++++++++++--
- drivers/pinctrl/pinctrl-single.c | 20 ++++++++++++
- include/linux/pinctrl/pinctrl.h  |  2 ++
- 3 files changed, 76 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 2c9c9835f375..8497414e3384 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -313,6 +313,23 @@ static void pcs_pin_dbg_show(struct pinctrl_dev *pctldev,
+ 	seq_printf(s, "%zx %08x %s ", pa, val, DRIVER_NAME);
+ }
+ 
++static int pcs_pin_dbg_set(struct pinctrl_dev *pctldev, unsigned int pin,
++			   char *buf)
++{
++	struct pcs_device *pcs;
++	unsigned int val, mux_bytes;
++
++	buf = skip_spaces(buf);
++	if (kstrtouint(buf, 0, &val))
++		return -EINVAL;
++
++	pcs = pinctrl_dev_get_drvdata(pctldev);
++
++	mux_bytes = pcs->width / BITS_PER_BYTE;
++	pcs->write(val, pcs->base + pin * mux_bytes);
++	return 0;
++}
++
+ static void pcs_dt_free_map(struct pinctrl_dev *pctldev,
+ 				struct pinctrl_map *map, unsigned num_maps)
+ {
+@@ -331,6 +348,9 @@ static const struct pinctrl_ops pcs_pinctrl_ops = {
+ 	.get_group_name = pinctrl_generic_get_group_name,
+ 	.get_group_pins = pinctrl_generic_get_group_pins,
+ 	.pin_dbg_show = pcs_pin_dbg_show,
++#if IS_ENABLED(CONFIG_DEVMEM)
++	.pin_dbg_set = pcs_pin_dbg_set,
++#endif
+ 	.dt_node_to_map = pcs_dt_node_to_map,
+ 	.dt_free_map = pcs_dt_free_map,
+ };
 -- 
 2.17.1
 
