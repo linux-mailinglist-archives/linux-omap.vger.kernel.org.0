@@ -2,93 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BF3E3829D6
-	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 12:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0229B38373D
+	for <lists+linux-omap@lfdr.de>; Mon, 17 May 2021 17:39:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236231AbhEQKd3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 May 2021 06:33:29 -0400
-Received: from wnew4-smtp.messagingengine.com ([64.147.123.18]:54817 "EHLO
-        wnew4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230248AbhEQKd2 (ORCPT
+        id S243132AbhEQPkt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 May 2021 11:40:49 -0400
+Received: from hostingweb31-40.netsons.net ([89.40.174.40]:60079 "EHLO
+        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S245089AbhEQPh1 (ORCPT
         <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 17 May 2021 06:33:28 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailnew.west.internal (Postfix) with ESMTP id EBD36B2C;
-        Mon, 17 May 2021 06:32:10 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Mon, 17 May 2021 06:32:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm3; bh=YaPN4L1dtV8Of4WdWwzIZAL0PBh
-        1OCG8f7LH45YDgkU=; b=LXulyIIE1zsxRAifFExzIbVuCQbIeD/dka0fBGHsmhr
-        A2kEelDKXuEO4GmbSXBJSuZTmcuZkfcdGSA3cPRMzIMnxTNcr6vFclVB91bv08mY
-        iKUA+LLHrDySlAsbxa8AAt6j5uGatefa95dACLbCCTWL/i5uR4MJLg7u3Dr1zYIu
-        G9tm155cx92exQ1einb9Q+qNvV4hxlwX6taWIXV0uhAa3L2JHhzSQVXRCUs2+XDn
-        mi0BFTbLaXPb/1Bx+ThL6ynRYPK1kZwHprK7Z09XHjWa7n0ZtOf1hSRRlPaDoFOs
-        ykS12+NMzgxMQQrIgo3b23jv/m/NK0c4U6kb0REkTYg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=YaPN4L
-        1dtV8Of4WdWwzIZAL0PBh1OCG8f7LH45YDgkU=; b=G6PKJCLGuMEKHHPY6L6ow2
-        6GgT18yyhVil2kB5gGNr/cJeY2NHiKJSVwCyHNp9IVMaLEPHfriFM+1EPMgZwwdo
-        s3693Qq5FxsJ3GKXi8iG5ikiajePLuKIWtrCnKNgaV272oFJBQF7NP+ZN7DE0M+M
-        cdsRCzGQTmSCxbGFYsBJumt7/HateeVqRPs/Jh2mu58yTRHjjB1u6FuXKOQMy/n3
-        F0+UgvOAsk4W1qHks2qcymEernD03VLPxRH5OAVFGGpJpRTEn2h3O6fusFY069jr
-        Qiz+VhmD+emqq9zS9/CZzXp3pCz38P3E/Cc/qgB4MsHgsbTHHQw0kV4CwlBaubOQ
-        ==
-X-ME-Sender: <xms:KkaiYNW_QlJRqrTWJLxQFZdkdycrTPlJuKw3GcCPGYhA_IfdrT1Q9g>
-    <xme:KkaiYNknF9V6tl5K0F3evFnMfkc6jfovfVqF1MjPCF2C3p56wX3yrpnKjWRXjUPRA
-    Nl4CGtCBEYkmg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdeihedgfedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeevueehje
-    fgfffgiedvudekvdektdelleelgefhleejieeugeegveeuuddukedvteenucfkphepkeef
-    rdekiedrjeegrdeigeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
-    hlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:KkaiYJZFFWpuwyLryKwIidNy82z9Q6H9ZE1Xs7Y-XbWsLZtJOoeNvQ>
-    <xmx:KkaiYAXRvsZ0P1wZIdK_a53xstW5X2O07C3N3Vyk81fdGrcf5ighPA>
-    <xmx:KkaiYHlB6VEoHnJ1m3zW8d2-IxHF0gFTF9qHGhd4oxfLKvg89p29wg>
-    <xmx:KkaiYFepijXNBz_7PlzMtNdMocMflVqTxw38CmsM4Kl1GEVGak8pUzq8ZNk>
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        by mail.messagingengine.com (Postfix) with ESMTPA;
-        Mon, 17 May 2021 06:32:09 -0400 (EDT)
-Date:   Mon, 17 May 2021 12:32:07 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, Keerthy <j-keerthy@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: Re: [Backport for linux-5.10.y PATCH 2/2]
- clocksource/drivers/timer-ti-dm: Handle dra7 timer wrap errata i940
-Message-ID: <YKJGJ+0XwK+7oowD@kroah.com>
-References: <20210517082244.17447-1-tony@atomide.com>
- <20210517082244.17447-2-tony@atomide.com>
- <YKIsckQwullhruX+@atomide.com>
+        Mon, 17 May 2021 11:37:27 -0400
+Received: from [77.244.183.192] (port=64716 helo=melee.fritz.box)
+        by hostingweb31.netsons.net with esmtpa (Exim 4.94.2)
+        (envelope-from <luca@lucaceresoli.net>)
+        id 1lifHt-000CDv-67; Mon, 17 May 2021 17:36:09 +0200
+From:   Luca Ceresoli <luca@lucaceresoli.net>
+To:     linux-pci@vger.kernel.org
+Cc:     Luca Ceresoli <luca@lucaceresoli.net>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH] PCI: dwc: pci-dra7xx: fix reset behaviour
+Date:   Mon, 17 May 2021 17:35:57 +0200
+Message-Id: <20210517153557.429623-1-luca@lucaceresoli.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YKIsckQwullhruX+@atomide.com>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lucaceresoli.net
+X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca+lucaceresoli.net/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, May 17, 2021 at 11:42:26AM +0300, Tony Lindgren wrote:
-> * Tony Lindgren <tony@atomide.com> [210517 08:23]:
-> > Upstream commit 25de4ce5ed02994aea8bc111d133308f6fd62566 for stable
-> > linux-5.10.y. Depends on backported upstream commit
-> > 3efe7a878a11c13b5297057bfc1e5639ce1241ce.
-> > 
-> > There is a timer wrap issue on dra7 for the ARM architected timer.
-> > In a typical clock configuration the timer fails to wrap after 388 days.
-> 
-> FYI, these patches also apply to linux-5.11.y and linux-5.12.y. This
-> patch applies with fuzz to the related device tree changes though,
-> so please let me know if separate patches are needed.
+The PCIe PERSTn reset pin is active low and should be asserted, then
+deasserted.
 
-All now queued up, thanks.
+The current implementation only drives the pin once in "HIGH" position,
+thus presumably it was intended to deassert the pin. This has two problems:
 
-greg k-h
+  1) it assumes the pin was asserted by other means before loading the
+     driver
+  2) it has the wrong polarity, since "HIGH" means "active", and the pin is
+     presumably configured as active low coherently with the PCIe
+     convention, thus it is driven physically to 0, keeping the device
+     under reset unless the pin is configured as active high.
+
+Fix both problems by:
+
+  1) keeping devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH) as is, but
+     assuming the pin is correctly configured as "active low" this now
+     becomes a reset assertion
+  2) adding gpiod_set_value(reset, 0) after a delay to deassert reset
+
+Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+---
+ drivers/pci/controller/dwc/pci-dra7xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index dacd6da70c35..8dd20b394d0c 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -800,6 +800,8 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
+ 		dev_err(&pdev->dev, "gpio request failed, ret %d\n", ret);
+ 		goto err_gpio;
+ 	}
++	usleep_range(1000, 2000);
++	gpiod_set_value(reset, 0);
+ 
+ 	reg = dra7xx_pcie_readl(dra7xx, PCIECTRL_DRA7XX_CONF_DEVICE_CMD);
+ 	reg &= ~LTSSM_EN;
+-- 
+2.25.1
+
