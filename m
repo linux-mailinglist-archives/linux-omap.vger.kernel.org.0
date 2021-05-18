@@ -2,84 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E3038719D
-	for <lists+linux-omap@lfdr.de>; Tue, 18 May 2021 08:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FE5C3871E0
+	for <lists+linux-omap@lfdr.de>; Tue, 18 May 2021 08:28:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344637AbhERGJi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 May 2021 02:09:38 -0400
-Received: from muru.com ([72.249.23.125]:56942 "EHLO muru.com"
+        id S241557AbhERG3N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 May 2021 02:29:13 -0400
+Received: from muru.com ([72.249.23.125]:56960 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1343548AbhERGJi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 18 May 2021 02:09:38 -0400
+        id S1346631AbhERG3M (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 18 May 2021 02:29:12 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id E2B6C80BA;
-        Tue, 18 May 2021 06:08:23 +0000 (UTC)
-Date:   Tue, 18 May 2021 09:08:16 +0300
+        by muru.com (Postfix) with ESMTPS id A42A280BA;
+        Tue, 18 May 2021 06:27:58 +0000 (UTC)
+Date:   Tue, 18 May 2021 09:27:51 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Dario Binacchi <dariobin@libero.it>
-Cc:     linux-kernel@vger.kernel.org,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: single: config: enable the pin's input
-Message-ID: <YKNZ0A7umnk4LwKU@atomide.com>
-References: <20210514163818.12178-1-dariobin@libero.it>
+To:     Yongqiang Liu <liuyongqiang13@huawei.com>
+Cc:     linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] ARM: OMAP2+: Fix build warning when mmc_omap is
+ not built
+Message-ID: <YKNeZ/uZ7fOgTE8d@atomide.com>
+References: <20210401131533.998767-1-liuyongqiang13@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210514163818.12178-1-dariobin@libero.it>
+In-Reply-To: <20210401131533.998767-1-liuyongqiang13@huawei.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Dario Binacchi <dariobin@libero.it> [210514 16:38]:
-> It enables / disables the input buffer. As explained in the description
-> of 'enum pin_config_param' this does not affect the pin's ability to
-> drive output.
+* Yongqiang Liu <liuyongqiang13@huawei.com> [210401 16:09]:
+> GCC reports the following warning with W=1:
 > 
-> Signed-off-by: Dario Binacchi <dariobin@libero.it>
-> ---
+> arch/arm/mach-omap2/board-n8x0.c:325:19: warning:
+> variable 'index' set but not used [-Wunused-but-set-variable]
+> 325 |  int bit, *openp, index;
+>     |                   ^~~~~
 > 
->  drivers/pinctrl/pinctrl-single.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-> index 2c9c9835f375..4e7cdb9ee855 100644
-> --- a/drivers/pinctrl/pinctrl-single.c
-> +++ b/drivers/pinctrl/pinctrl-single.c
-> @@ -534,6 +534,7 @@ static int pcs_pinconf_get(struct pinctrl_dev *pctldev,
->  		case PIN_CONFIG_DRIVE_STRENGTH:
->  		case PIN_CONFIG_SLEW_RATE:
->  		case PIN_CONFIG_MODE_LOW_POWER:
-> +		case PIN_CONFIG_INPUT_ENABLE:
->  		default:
->  			*config = data;
->  			break;
-> @@ -572,6 +573,7 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
->  			case PIN_CONFIG_DRIVE_STRENGTH:
->  			case PIN_CONFIG_SLEW_RATE:
->  			case PIN_CONFIG_MODE_LOW_POWER:
-> +			case PIN_CONFIG_INPUT_ENABLE:
->  				shift = ffs(func->conf[i].mask) - 1;
->  				data &= ~func->conf[i].mask;
->  				data |= (arg << shift) & func->conf[i].mask;
-> @@ -918,6 +920,7 @@ static int pcs_parse_pinconf(struct pcs_device *pcs, struct device_node *np,
->  	static const struct pcs_conf_type prop2[] = {
->  		{ "pinctrl-single,drive-strength", PIN_CONFIG_DRIVE_STRENGTH, },
->  		{ "pinctrl-single,slew-rate", PIN_CONFIG_SLEW_RATE, },
-> +		{ "pinctrl-single,input-enable", PIN_CONFIG_INPUT_ENABLE, },
->  		{ "pinctrl-single,input-schmitt", PIN_CONFIG_INPUT_SCHMITT, },
->  		{ "pinctrl-single,low-power-mode", PIN_CONFIG_MODE_LOW_POWER, },
->  	};
+> Fix this by moving CONFIG_MMC_OMAP to cover the rest codes
+> in the n8x0_mmc_callback().
 
-Looks OK to me if this works for Linus W. You need another patch to
-update the binding though:
-
-Documentation/devicetree/bindings/pinctrl/pincfg-node.yaml
-
-Or if there is such a patch floating around, I was not in Cc :)
-
-Regards,
+Thanks applying into fixes.
 
 Tony
