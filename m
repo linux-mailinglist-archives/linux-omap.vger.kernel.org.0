@@ -2,260 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D445D387E96
-	for <lists+linux-omap@lfdr.de>; Tue, 18 May 2021 19:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 682F2388005
+	for <lists+linux-omap@lfdr.de>; Tue, 18 May 2021 20:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344033AbhERRii (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 May 2021 13:38:38 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:57928 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245210AbhERRih (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 May 2021 13:38:37 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14IHbGaf058030;
-        Tue, 18 May 2021 12:37:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1621359436;
-        bh=IeqgRMbIKCozvn4vzChEDUGiPGvLqWhYDyJm8OxOlPU=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=oOKQvjbltwd4ZOMuu24rvvxUi82ZsJl12Npx/XGbGfP+zReG41gfd6TnvW+dRjPfk
-         SfDPjPMjZJNBIbYo4kKvCA3/ZqnI3bWVPC3SuN3KaKydKR/iu4iUxvXt/QHBMVC+yR
-         QJpG7sMU3Md9i3q+K0nAt+l8YkdGCAjdo/pTZ+Ls=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14IHbGlW004413
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 18 May 2021 12:37:16 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 18
- May 2021 12:37:15 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Tue, 18 May 2021 12:37:15 -0500
-Received: from fllv0103.dal.design.ti.com (fllv0103.dal.design.ti.com [10.247.120.73])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14IHbF9J096529;
-        Tue, 18 May 2021 12:37:15 -0500
-Received: from localhost ([10.250.32.40])
-        by fllv0103.dal.design.ti.com (8.14.7/8.14.7) with ESMTP id 14IHbF5Y127028;
-        Tue, 18 May 2021 12:37:15 -0500
-From:   Suman Anna <s-anna@ti.com>
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Jassi Brar <jaswinder.singh@linaro.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, Suman Anna <s-anna@ti.com>
-Subject: [PATCH 4/4] ARM: dts: OMAP2+: Replace underscores in sub-mailbox node names
-Date:   Tue, 18 May 2021 12:36:45 -0500
-Message-ID: <20210518173645.12270-5-s-anna@ti.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210518173645.12270-1-s-anna@ti.com>
-References: <20210518173645.12270-1-s-anna@ti.com>
+        id S1351707AbhERS4j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 May 2021 14:56:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47946 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242777AbhERS4j (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 18 May 2021 14:56:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C2C3561244;
+        Tue, 18 May 2021 18:55:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621364120;
+        bh=Gq6+G6e3i2Ms24omsDIsJQnK29VyKsn4YPUQlxYxo5g=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=EB3vXGyTe4teZuEMEHABqJACvT+AinqfmoTBJF1FNmwrZC42m36fXHoVg8+zst8bK
+         zSwX055pvmXx5DiQsGgEns6MjKFsxcnQPB+J+PQw+PAggIkyZYTeojntxrF54QjrQt
+         FWkiRSkI48siWy+7apCe+M81W8l3PSsF+Fo3+FUWXXzhGuRZhPWPRAm9mdVV6vUxWK
+         nIfS2xdGW8CHkLtlcVoJ8hm8/uQxQmFZn96+O2s2nYZQVkPzKKlzoo3kSaYbeh8uGs
+         /2o4zCsYvNfuobiHeAIVQSqoLUPNwm/XhZS93GqYrxpAlz5iyE8lfORahVkBDeXQZD
+         SQMfIPIBffLUg==
+Received: by mail-ej1-f44.google.com with SMTP id u21so16157284ejo.13;
+        Tue, 18 May 2021 11:55:20 -0700 (PDT)
+X-Gm-Message-State: AOAM5315KAQF4G95n/rj1peSU4knjGzkUd5PsLgLt093Z9pO6oHVI3W6
+        6zA4Poxx+W/P/6BOmCrgyGwLGUDVIgzLNl2UHA==
+X-Google-Smtp-Source: ABdhPJyxajv5UtGMl1EFwIaGvutY3i2/3fsdYjBx8Ewx4abWwLZF/4iBxPP+b1tXggVG4H4bO8GpXBl2kdPOu2SR9PE=
+X-Received: by 2002:a17:906:f211:: with SMTP id gt17mr1129660ejb.360.1621364119332;
+ Tue, 18 May 2021 11:55:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20210517154122.430544-1-luca@lucaceresoli.net> <20210517154122.430544-3-luca@lucaceresoli.net>
+In-Reply-To: <20210517154122.430544-3-luca@lucaceresoli.net>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 18 May 2021 13:55:07 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKcD7iw85X1be20kZxDsHY7F3J0TQTTgeZYiMMX3O3S4w@mail.gmail.com>
+Message-ID: <CAL_JsqKcD7iw85X1be20kZxDsHY7F3J0TQTTgeZYiMMX3O3S4w@mail.gmail.com>
+Subject: Re: [PATCH 2/5] PCI: dwc: pci-dra7xx: make it a kernel module
+To:     Luca Ceresoli <luca@lucaceresoli.net>
+Cc:     PCI <linux-pci@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-A number of sub-mailbox node names in various OMAP2+ dts files are
-currently using underscores. This is not adhering to the node name
-convention, fix all of these to use hiphens.
+On Mon, May 17, 2021 at 10:41 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
+>
+> This allows to build the driver as a loadable kernel module.
 
-These nodes are already using the prefix mbox, so they will be in
-compliance with the sub-mailbox node name convention being added in
-the OMAP Mailbox YAML binding as well.
+Enable building the driver as a loadable kernel module.
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
----
- arch/arm/boot/dts/am57xx-cl-som-am57x.dts   | 8 ++++----
- arch/arm/boot/dts/dm816x.dtsi               | 2 +-
- arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi  | 6 +++---
- arch/arm/boot/dts/dra72x.dtsi               | 6 +++---
- arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi | 2 +-
- arch/arm/boot/dts/dra74x.dtsi               | 8 ++++----
- arch/arm/boot/dts/omap4-l4.dtsi             | 4 ++--
- arch/arm/boot/dts/omap5-l4.dtsi             | 4 ++--
- 8 files changed, 20 insertions(+), 20 deletions(-)
+>
+> Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+> ---
+>  drivers/pci/controller/dwc/pci-dra7xx.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 6457695df00c..fe11b96fe9a5 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/irqdomain.h>
+>  #include <linux/kernel.h>
+>  #include <linux/init.h>
+> +#include <linux/module.h>
+>  #include <linux/of_device.h>
+>  #include <linux/of_gpio.h>
+>  #include <linux/of_pci.h>
+> @@ -949,4 +950,8 @@ static struct platform_driver dra7xx_pcie_driver = {
+>         },
+>         .shutdown = dra7xx_pcie_shutdown,
+>  };
+> -builtin_platform_driver(dra7xx_pcie_driver);
+> +module_platform_driver(dra7xx_pcie_driver);
 
-diff --git a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-index 0d5fe2bfb683..e7b037b8a6dc 100644
---- a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-+++ b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-@@ -454,20 +454,20 @@ &sata {
- 
- &mailbox5 {
- 	status = "okay";
--	mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {
-+	mbox_ipu1_ipc3x: mbox-ipu1-ipc3x {
- 		status = "okay";
- 	};
--	mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
-+	mbox_dsp1_ipc3x: mbox-dsp1-ipc3x {
- 		status = "okay";
- 	};
- };
- 
- &mailbox6 {
- 	status = "okay";
--	mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {
-+	mbox_ipu2_ipc3x: mbox-ipu2-ipc3x {
- 		status = "okay";
- 	};
--	mbox_dsp2_ipc3x: mbox_dsp2_ipc3x {
-+	mbox_dsp2_ipc3x: mbox-dsp2-ipc3x {
- 		status = "okay";
- 	};
- };
-diff --git a/arch/arm/boot/dts/dm816x.dtsi b/arch/arm/boot/dts/dm816x.dtsi
-index 3551a64963f8..1825d912b8ab 100644
---- a/arch/arm/boot/dts/dm816x.dtsi
-+++ b/arch/arm/boot/dts/dm816x.dtsi
-@@ -351,7 +351,7 @@ mailbox: mailbox@480c8000 {
- 			#mbox-cells = <1>;
- 			ti,mbox-num-users = <4>;
- 			ti,mbox-num-fifos = <12>;
--			mbox_dsp: mbox_dsp {
-+			mbox_dsp: mbox-dsp {
- 				ti,mbox-tx = <3 0 0>;
- 				ti,mbox-rx = <0 0 0>;
- 			};
-diff --git a/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi b/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi
-index a25749a1c365..a5bdc6431d8d 100644
---- a/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi
-+++ b/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi
-@@ -5,17 +5,17 @@
- 
- &mailbox5 {
- 	status = "okay";
--	mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {
-+	mbox_ipu1_ipc3x: mbox-ipu1-ipc3x {
- 		status = "okay";
- 	};
--	mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
-+	mbox_dsp1_ipc3x: mbox-dsp1-ipc3x {
- 		status = "okay";
- 	};
- };
- 
- &mailbox6 {
- 	status = "okay";
--	mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {
-+	mbox_ipu2_ipc3x: mbox-ipu2-ipc3x {
- 		status = "okay";
- 	};
- };
-diff --git a/arch/arm/boot/dts/dra72x.dtsi b/arch/arm/boot/dts/dra72x.dtsi
-index d403acc754b6..85ab1f46e56b 100644
---- a/arch/arm/boot/dts/dra72x.dtsi
-+++ b/arch/arm/boot/dts/dra72x.dtsi
-@@ -77,12 +77,12 @@ &dss {
- };
- 
- &mailbox5 {
--	mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {
-+	mbox_ipu1_ipc3x: mbox-ipu1-ipc3x {
- 		ti,mbox-tx = <6 2 2>;
- 		ti,mbox-rx = <4 2 2>;
- 		status = "disabled";
- 	};
--	mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
-+	mbox_dsp1_ipc3x: mbox-dsp1-ipc3x {
- 		ti,mbox-tx = <5 2 2>;
- 		ti,mbox-rx = <1 2 2>;
- 		status = "disabled";
-@@ -90,7 +90,7 @@ mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
- };
- 
- &mailbox6 {
--	mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {
-+	mbox_ipu2_ipc3x: mbox-ipu2-ipc3x {
- 		ti,mbox-tx = <6 2 2>;
- 		ti,mbox-rx = <4 2 2>;
- 		status = "disabled";
-diff --git a/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi b/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi
-index b1147a4b77f9..3256631510c5 100644
---- a/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi
-+++ b/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi
-@@ -6,7 +6,7 @@
- #include "dra7-ipu-dsp-common.dtsi"
- 
- &mailbox6 {
--	mbox_dsp2_ipc3x: mbox_dsp2_ipc3x {
-+	mbox_dsp2_ipc3x: mbox-dsp2-ipc3x {
- 		status = "okay";
- 	};
- };
-diff --git a/arch/arm/boot/dts/dra74x.dtsi b/arch/arm/boot/dts/dra74x.dtsi
-index e1850d6c841a..411ad295c201 100644
---- a/arch/arm/boot/dts/dra74x.dtsi
-+++ b/arch/arm/boot/dts/dra74x.dtsi
-@@ -188,12 +188,12 @@ &dss {
- };
- 
- &mailbox5 {
--	mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {
-+	mbox_ipu1_ipc3x: mbox-ipu1-ipc3x {
- 		ti,mbox-tx = <6 2 2>;
- 		ti,mbox-rx = <4 2 2>;
- 		status = "disabled";
- 	};
--	mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
-+	mbox_dsp1_ipc3x: mbox-dsp1-ipc3x {
- 		ti,mbox-tx = <5 2 2>;
- 		ti,mbox-rx = <1 2 2>;
- 		status = "disabled";
-@@ -201,12 +201,12 @@ mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
- };
- 
- &mailbox6 {
--	mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {
-+	mbox_ipu2_ipc3x: mbox-ipu2-ipc3x {
- 		ti,mbox-tx = <6 2 2>;
- 		ti,mbox-rx = <4 2 2>;
- 		status = "disabled";
- 	};
--	mbox_dsp2_ipc3x: mbox_dsp2_ipc3x {
-+	mbox_dsp2_ipc3x: mbox-dsp2-ipc3x {
- 		ti,mbox-tx = <5 2 2>;
- 		ti,mbox-rx = <1 2 2>;
- 		status = "disabled";
-diff --git a/arch/arm/boot/dts/omap4-l4.dtsi b/arch/arm/boot/dts/omap4-l4.dtsi
-index 99721673d7af..46b8f9efd413 100644
---- a/arch/arm/boot/dts/omap4-l4.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4.dtsi
-@@ -600,11 +600,11 @@ mailbox: mailbox@0 {
- 				#mbox-cells = <1>;
- 				ti,mbox-num-users = <3>;
- 				ti,mbox-num-fifos = <8>;
--				mbox_ipu: mbox_ipu {
-+				mbox_ipu: mbox-ipu {
- 					ti,mbox-tx = <0 0 0>;
- 					ti,mbox-rx = <1 0 0>;
- 				};
--				mbox_dsp: mbox_dsp {
-+				mbox_dsp: mbox-dsp {
- 					ti,mbox-tx = <3 0 0>;
- 					ti,mbox-rx = <2 0 0>;
- 				};
-diff --git a/arch/arm/boot/dts/omap5-l4.dtsi b/arch/arm/boot/dts/omap5-l4.dtsi
-index b148b289e830..06cc3a19ddaa 100644
---- a/arch/arm/boot/dts/omap5-l4.dtsi
-+++ b/arch/arm/boot/dts/omap5-l4.dtsi
-@@ -616,11 +616,11 @@ mailbox: mailbox@0 {
- 				#mbox-cells = <1>;
- 				ti,mbox-num-users = <3>;
- 				ti,mbox-num-fifos = <8>;
--				mbox_ipu: mbox_ipu {
-+				mbox_ipu: mbox-ipu {
- 					ti,mbox-tx = <0 0 0>;
- 					ti,mbox-rx = <1 0 0>;
- 				};
--				mbox_dsp: mbox_dsp {
-+				mbox_dsp: mbox-dsp {
- 					ti,mbox-tx = <3 0 0>;
- 					ti,mbox-rx = <2 0 0>;
- 				};
--- 
-2.30.1
+You need MODULE_DEVICE_TABLE() too for autoloading.
 
+> +
+> +MODULE_AUTHOR("Kishon Vijay Abraham I <kishon@ti.com>");
+> +MODULE_DESCRIPTION("PCIe controller driver for TI DRA7xx SoCs");
+> +MODULE_LICENSE("GPL v2");
+> --
+> 2.25.1
+>
