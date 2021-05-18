@@ -2,35 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF52838821F
-	for <lists+linux-omap@lfdr.de>; Tue, 18 May 2021 23:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB1C388240
+	for <lists+linux-omap@lfdr.de>; Tue, 18 May 2021 23:39:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229610AbhERVaW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 May 2021 17:30:22 -0400
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:43500 "EHLO
+        id S1352533AbhERVkY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 May 2021 17:40:24 -0400
+Received: from hostingweb31-40.netsons.net ([89.40.174.40]:49748 "EHLO
         hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236860AbhERVaV (ORCPT
+        by vger.kernel.org with ESMTP id S233448AbhERVkY (ORCPT
         <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 18 May 2021 17:30:21 -0400
-Received: from [77.244.183.192] (port=62972 helo=[192.168.178.41])
+        Tue, 18 May 2021 17:40:24 -0400
+Received: from [77.244.183.192] (port=63068 helo=[192.168.178.41])
         by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.94.2)
         (envelope-from <luca@lucaceresoli.net>)
-        id 1lj7Gv-0003Wx-Im; Tue, 18 May 2021 23:29:01 +0200
-Subject: Re: Status of ti/ti-linux-5.10.y development
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Andreas Kemnade <andreas@kemnade.info>, linux-omap@vger.kernel.org
-References: <78852763-4bc3-dc59-02c4-b3b07584c0ed@lucaceresoli.net>
- <20210515154758.5b1b4fc5@aktux>
- <7879604b-467f-7363-8294-7164238032d0@lucaceresoli.net>
- <YKNM2jJTMqNBfVLt@atomide.com>
+        id 1lj7Qd-00080V-Du; Tue, 18 May 2021 23:39:03 +0200
+Subject: Re: [PATCH 2/5] PCI: dwc: pci-dra7xx: make it a kernel module
+To:     Rob Herring <robh@kernel.org>
+Cc:     PCI <linux-pci@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+References: <20210517154122.430544-1-luca@lucaceresoli.net>
+ <20210517154122.430544-3-luca@lucaceresoli.net>
+ <CAL_JsqKcD7iw85X1be20kZxDsHY7F3J0TQTTgeZYiMMX3O3S4w@mail.gmail.com>
 From:   Luca Ceresoli <luca@lucaceresoli.net>
-Message-ID: <033e1cda-1889-eda1-06a4-222999c7bdc7@lucaceresoli.net>
-Date:   Tue, 18 May 2021 23:29:01 +0200
+Message-ID: <593829a9-b560-2a87-3f56-48a791201f39@lucaceresoli.net>
+Date:   Tue, 18 May 2021 23:39:01 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <YKNM2jJTMqNBfVLt@atomide.com>
+In-Reply-To: <CAL_JsqKcD7iw85X1be20kZxDsHY7F3J0TQTTgeZYiMMX3O3S4w@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -48,25 +55,44 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+Hi Rob,
 
-On 18/05/21 07:12, Tony Lindgren wrote:
-> * Luca Ceresoli <luca@lucaceresoli.net> [210517 08:43]:
->> Actually I still haven't tackled HDMI on ti-linux-5.10.y, I only found
->> it by comparing the .config from the working 4.19 branch and from 5.10
->> and noticed the config option has disappeared.
+On 18/05/21 20:55, Rob Herring wrote:
+> On Mon, May 17, 2021 at 10:41 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
 >>
->> My current problem is that omapdrm does not populate /dev/fb0 (perhaps
->> due to a similar reason) and the VIP driver apparently just not present
->> on the 5.10.y branch.
+>> This allows to build the driver as a loadable kernel module.
 > 
-> Well HDMI should be working, at least it was when I last tested with
-> omap2plus_defconfig. Maybe you're missing CONFIG_FB=y ?
+> Enable building the driver as a loadable kernel module.
+> 
+>>
+>> Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+>> ---
+>>  drivers/pci/controller/dwc/pci-dra7xx.c | 7 ++++++-
+>>  1 file changed, 6 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+>> index 6457695df00c..fe11b96fe9a5 100644
+>> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+>> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+>> @@ -15,6 +15,7 @@
+>>  #include <linux/irqdomain.h>
+>>  #include <linux/kernel.h>
+>>  #include <linux/init.h>
+>> +#include <linux/module.h>
+>>  #include <linux/of_device.h>
+>>  #include <linux/of_gpio.h>
+>>  #include <linux/of_pci.h>
+>> @@ -949,4 +950,8 @@ static struct platform_driver dra7xx_pcie_driver = {
+>>         },
+>>         .shutdown = dra7xx_pcie_shutdown,
+>>  };
+>> -builtin_platform_driver(dra7xx_pcie_driver);
+>> +module_platform_driver(dra7xx_pcie_driver);
+> 
+> You need MODULE_DEVICE_TABLE() too for autoloading.
 
-Thanks for the hints!
+Good catch! Will be fixed in v2.
 
-CONFIG_FB is y, so it must be something else. Maybe I have to update my
-DT? I'll check that when I resume working on the 5.10 branch.
-
+Thanks.
 -- 
 Luca
