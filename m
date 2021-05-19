@@ -2,94 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE310388D2E
-	for <lists+linux-omap@lfdr.de>; Wed, 19 May 2021 13:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7ED8389257
+	for <lists+linux-omap@lfdr.de>; Wed, 19 May 2021 17:14:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238463AbhESLrQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 May 2021 07:47:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60426 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235384AbhESLrP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 May 2021 07:47:15 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C1A9C06175F
-        for <linux-omap@vger.kernel.org>; Wed, 19 May 2021 04:45:55 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id q15so9247394pgg.12
-        for <linux-omap@vger.kernel.org>; Wed, 19 May 2021 04:45:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=psPAB9NqHofPPQuOtyDnz2jywzmWciM0sLALrIheAbI=;
-        b=YSsaj4RuCj4xdLaoZrv4Hy19FJclDVGq6v1aLICin3N9nnI4ZBxtv+gZeAPKSHlTkH
-         sXBaexRDJYDUPOtUqTWUSTeSpaVYCmUH7RaWMJTEyffOWxC07qsf4YxNcXQBu/1VROOE
-         dShcqmKbCqQsdgMQX4lf4rX5ZBDzxrq1evn8AqXj7no64U6lJBrIa7iYkdB2/1KN/CBx
-         AtNPzeMyyd/NBaveXVIYmZfn3bRCJBGBQsPsX+iGo588/Rvp7u0pCaNGzRVKPYlWHm6X
-         Fxg6OuH1c5uUppIpenufbRTJ6sJnvJWEIcyPJM0MQmkqKXE3OzHCqZ4yTU5Z3xTHPFrB
-         q+tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=psPAB9NqHofPPQuOtyDnz2jywzmWciM0sLALrIheAbI=;
-        b=LvR/t3kmAXrTrOTuAbTGGsGPVBoKAbvu2MPXmFOh9URFwP89i3E/CVQROI/Vbwfave
-         g7QtQLnp7iEnbx+kVj3VdIarIRv4MdOhIUNfZH20vCbUhz8/f2q80BVITfQ+IIjM91b5
-         m38DqEzxSAAco9v8ZwoPa0OV0+FKZaOBOykDuD+T4aJPLuC++S0eEKCGSoGh0FV2Zhdw
-         tA603c3jTG+prTigWsB+cftqsckmhKxX6EqkL3hAU23Q2V+ot2TcpzVQEGBR7QcUV1T4
-         vfNZ3Nm62HqK4bGHSrmWo+k4VPMULVvGStWKM4cLsC7bql5qlD6svNQ7Y5xAKd97jZ9U
-         4Ahg==
-X-Gm-Message-State: AOAM533IqXumyxZuFUbuwlsMgA8kzsO2hxr1hMvC2wvBZQAj15YCfek8
-        rBYr4D/M9BxQMWVLv8uekgR8lI9ZUdvLi6M25/g=
-X-Google-Smtp-Source: ABdhPJy7d5m7ulhh7Yiwm/attZZPTqbXgkw6YbV3B6krraerHH2TkHqVwnrshoIyfCrOs5/shVH50zjLsTFPfH0xvxo=
-X-Received: by 2002:aa7:8809:0:b029:2de:3b94:487e with SMTP id
- c9-20020aa788090000b02902de3b94487emr8727854pfo.33.1621424755071; Wed, 19 May
- 2021 04:45:55 -0700 (PDT)
+        id S240858AbhESPPp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 May 2021 11:15:45 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:53550 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233577AbhESPPo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 May 2021 11:15:44 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14JFEEhZ107727;
+        Wed, 19 May 2021 10:14:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1621437254;
+        bh=JLprp5Wyndl+zIrf2Vm1yh2awJx90eNQiNKEDp5mqt0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=rUotHyVawT2S/Vg0zGFaqNEt1igJm0hiHu0q8V6HGufhFMBaTGwTQUx/4SC8LiCuV
+         dUs05FVcE0qzdsJfeQLp7Xuy0PKXqDeUPd+omHAWeDgAxMd9vMOaBvnon3w3E7P/jy
+         PiCCMkLnxpVP7lpAy6/dQ+KbZ1ZIkYj6n+jgoKMU=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14JFEE7q030202
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 19 May 2021 10:14:14 -0500
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 19
+ May 2021 10:14:14 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Wed, 19 May 2021 10:14:14 -0500
+Received: from [10.250.32.40] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14JFEEBI018990;
+        Wed, 19 May 2021 10:14:14 -0500
+Subject: Re: [PATCH] dt-bindings: mailbox: Convert omap-mailbox.txt binding to
+ YAML
+To:     Rob Herring <robh+dt@kernel.org>,
+        Jassi Brar <jaswinder.singh@linaro.org>
+CC:     Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20210518172022.10562-1-s-anna@ti.com>
+From:   Suman Anna <s-anna@ti.com>
+Message-ID: <c666919f-cc10-3ca5-a1e3-5062c260e827@ti.com>
+Date:   Wed, 19 May 2021 10:14:14 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Reply-To: patzengu@outlook.com
-Sender: aminukabore774@gmail.com
-Received: by 2002:a17:90a:928a:0:0:0:0 with HTTP; Wed, 19 May 2021 04:45:54
- -0700 (PDT)
-From:   "P. Zengu" <rm2568590@gmail.com>
-Date:   Wed, 19 May 2021 13:45:54 +0200
-X-Google-Sender-Auth: Jy7R4Ze5mF9vaZYHDhAqXiyi89k
-Message-ID: <CANm+=4djzWwq7MQA9Ss3yrC00Lk0VSKfzoqXExi=x57+Gu7-cw@mail.gmail.com>
-Subject: Please co-operate with me
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210518172022.10562-1-s-anna@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Dear Friend,
+On 5/18/21 12:20 PM, Suman Anna wrote:
+> Convert the current OMAP Mailbox binding from text format to YAML
+> format/DT schema, and delete the legacy text binding file.
+> 
+> The new YAML binding conversion is an updated version compared to
+> the original. The descriptions for certain properties have been
+> improved to provide more clarity. Constraints are added to the
+> properties 'ti,mbox-num-users', 'ti,mbox-num-fifos' and 'interrupts'.
+> The 'ti,hwmods' is a legacy property and is retained only to reflect
+> the existing usage on some older OMAP2 and OMAP3 platforms.
+> 
+> All the existing examples have also been updated to reflect the
+> latest dts nodes (ti,hwmods removed from OMAP4 and AM33xx examples,
+> and interrupts value updated for AM65x SoCs).
+> 
+> Signed-off-by: Suman Anna <s-anna@ti.com>
+> ---
+> Hi,
+> 
+> This patch does fix a number of dtbs_check warnings seen around OMAP Mailbox
+> nodes with the latest kernel. There are few left-over warnings when just
+> this patch is used on v5.13-rc1 or next-20210518. I have posted a separate
+> fix for a warning on TI K3 SoCs [1], and will be posting a separate cleanup
+> series for OMAP2+ SoCs. The dts patches can be picked up independently
+> of this patch.
 
-I am Mr.Patrice Zengu ,from Burkina Faso and i am the new bank telex
-manager of our bank here in Africa.
+FYI, All the dtbs_check warnings will be gone with [1] and the OMAP2+ cleanup
+series [2].
 
-I have the opportunity to transfer the sum of US$ 10.5Million to your
-bank account which i personally placed on an Escrow account without a
-name.
+> 
+> regards
+> Suman
+> 
+> [1] https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210514212016.3153-1-s-anna@ti.com/
 
-I must tell you that after revision of files both old and new as the
-new telex manager ,i discovered that if these funds remains here
-without transferring it offshore,it will be lawfully recovered
-andmoved to the  Government of Burkina Faso treasury as an abandoned
-funds without any name.
+[2] https://patchwork.kernel.org/project/linux-omap/list/?series=484489
 
-I want to let you know that a Burkinabe cannot stand as the depositor
-of these US dollars  since we are not allowed to operate on foreign
-currrency.I do not intend to work  and stay in Africa till the rest of
-my life.
+[snip]
 
-Moreso,i will not want my bank to know about these funds and if they
-happens to know probably,the funds will be moved to the Burkina Faso
-Government public treasury as an abandoned funds.
-
-I will furnish you with more details of this transfer and how it ca
-nbe perfectly and legally executed without any hitch since i am now in
-control.
-
-I am waiting to hear from you urgently to proceed.
-
-
-Yours sincerely,
-Mr.Patrice Zengu.
+regards
+Suman
