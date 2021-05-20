@@ -2,102 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7ED8389257
-	for <lists+linux-omap@lfdr.de>; Wed, 19 May 2021 17:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 816DA389A54
+	for <lists+linux-omap@lfdr.de>; Thu, 20 May 2021 02:08:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240858AbhESPPp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 May 2021 11:15:45 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:53550 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233577AbhESPPo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 May 2021 11:15:44 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14JFEEhZ107727;
-        Wed, 19 May 2021 10:14:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1621437254;
-        bh=JLprp5Wyndl+zIrf2Vm1yh2awJx90eNQiNKEDp5mqt0=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=rUotHyVawT2S/Vg0zGFaqNEt1igJm0hiHu0q8V6HGufhFMBaTGwTQUx/4SC8LiCuV
-         dUs05FVcE0qzdsJfeQLp7Xuy0PKXqDeUPd+omHAWeDgAxMd9vMOaBvnon3w3E7P/jy
-         PiCCMkLnxpVP7lpAy6/dQ+KbZ1ZIkYj6n+jgoKMU=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14JFEE7q030202
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 19 May 2021 10:14:14 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 19
- May 2021 10:14:14 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Wed, 19 May 2021 10:14:14 -0500
-Received: from [10.250.32.40] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14JFEEBI018990;
-        Wed, 19 May 2021 10:14:14 -0500
-Subject: Re: [PATCH] dt-bindings: mailbox: Convert omap-mailbox.txt binding to
- YAML
-To:     Rob Herring <robh+dt@kernel.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>
-CC:     Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
+        id S229955AbhETAJy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 May 2021 20:09:54 -0400
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:37648 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229498AbhETAJy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 May 2021 20:09:54 -0400
+Received: by mail-oi1-f178.google.com with SMTP id h9so14802629oih.4;
+        Wed, 19 May 2021 17:08:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=LA4RgeyD3HBeU9haOJcHqZbHzNulNwVKdsYPjskFaXI=;
+        b=P1ohxCDIQdi9TlfS5aJKUlRR4cvw+pPVw9tc54mGScgfnk2oeS2PT+eQ8rzLkawBEV
+         ux02KTVSomRAIZ0Phr8Ak5EsmvG5UFMUlYZNEGgeahQvGBIYj59aRFsGyOOtOKMkUQ1g
+         n8BRD3qjmU5vK7v21rWzg2wB/A7oFtHKewRUuRViHc9tQp875QeNmqTAeTx0en6eC7tX
+         kCjq5SFvJWdhfT0cltraos+xytqier/X2exymHQHPgfOLU/w1D1zwQS7/FAkTnWtx7ZY
+         ps99+1CZlxAQBsL5SFydUVqdApr+ikkn4Eno+tWQVIw8iMsRcVAwK2ZIVHjVS7aWXG4H
+         jRog==
+X-Gm-Message-State: AOAM530icYAJHGkM2d7LRslCG2ZAGJa0yfpeGfhQ2/Psw/wWBrM1ZmLe
+        zFDJskTCYvXzl4JbCp9jjw==
+X-Google-Smtp-Source: ABdhPJwo9+35nzzqwNWun7jp8klMbqnND6YGdhcLUbjnrU4T1+etIuW7axuQ8uah2B1e9vHTdZ/AKw==
+X-Received: by 2002:aca:1e0c:: with SMTP id m12mr1470259oic.100.1621469313361;
+        Wed, 19 May 2021 17:08:33 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id x5sm261513otg.76.2021.05.19.17.08.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 May 2021 17:08:32 -0700 (PDT)
+Received: (nullmailer pid 3931357 invoked by uid 1000);
+        Thu, 20 May 2021 00:08:31 -0000
+Date:   Wed, 19 May 2021 19:08:31 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Suman Anna <s-anna@ti.com>
+Cc:     Jassi Brar <jaswinder.singh@linaro.org>,
+        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
         Jan Kiszka <jan.kiszka@siemens.com>,
-        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: mailbox: Convert omap-mailbox.txt binding
+ to YAML
+Message-ID: <20210520000831.GA3927464@robh.at.kernel.org>
 References: <20210518172022.10562-1-s-anna@ti.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <c666919f-cc10-3ca5-a1e3-5062c260e827@ti.com>
-Date:   Wed, 19 May 2021 10:14:14 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <c666919f-cc10-3ca5-a1e3-5062c260e827@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20210518172022.10562-1-s-anna@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c666919f-cc10-3ca5-a1e3-5062c260e827@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 5/18/21 12:20 PM, Suman Anna wrote:
-> Convert the current OMAP Mailbox binding from text format to YAML
-> format/DT schema, and delete the legacy text binding file.
+On Wed, May 19, 2021 at 10:14:14AM -0500, Suman Anna wrote:
+> On 5/18/21 12:20 PM, Suman Anna wrote:
+> > Convert the current OMAP Mailbox binding from text format to YAML
+> > format/DT schema, and delete the legacy text binding file.
+> > 
+> > The new YAML binding conversion is an updated version compared to
+> > the original. The descriptions for certain properties have been
+> > improved to provide more clarity. Constraints are added to the
+> > properties 'ti,mbox-num-users', 'ti,mbox-num-fifos' and 'interrupts'.
+> > The 'ti,hwmods' is a legacy property and is retained only to reflect
+> > the existing usage on some older OMAP2 and OMAP3 platforms.
+> > 
+> > All the existing examples have also been updated to reflect the
+> > latest dts nodes (ti,hwmods removed from OMAP4 and AM33xx examples,
+> > and interrupts value updated for AM65x SoCs).
+> > 
+> > Signed-off-by: Suman Anna <s-anna@ti.com>
+> > ---
+> > Hi,
+> > 
+> > This patch does fix a number of dtbs_check warnings seen around OMAP Mailbox
+> > nodes with the latest kernel. There are few left-over warnings when just
+> > this patch is used on v5.13-rc1 or next-20210518. I have posted a separate
+> > fix for a warning on TI K3 SoCs [1], and will be posting a separate cleanup
+> > series for OMAP2+ SoCs. The dts patches can be picked up independently
+> > of this patch.
 > 
-> The new YAML binding conversion is an updated version compared to
-> the original. The descriptions for certain properties have been
-> improved to provide more clarity. Constraints are added to the
-> properties 'ti,mbox-num-users', 'ti,mbox-num-fifos' and 'interrupts'.
-> The 'ti,hwmods' is a legacy property and is retained only to reflect
-> the existing usage on some older OMAP2 and OMAP3 platforms.
-> 
-> All the existing examples have also been updated to reflect the
-> latest dts nodes (ti,hwmods removed from OMAP4 and AM33xx examples,
-> and interrupts value updated for AM65x SoCs).
-> 
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> ---
-> Hi,
-> 
-> This patch does fix a number of dtbs_check warnings seen around OMAP Mailbox
-> nodes with the latest kernel. There are few left-over warnings when just
-> this patch is used on v5.13-rc1 or next-20210518. I have posted a separate
-> fix for a warning on TI K3 SoCs [1], and will be posting a separate cleanup
-> series for OMAP2+ SoCs. The dts patches can be picked up independently
-> of this patch.
+> FYI, All the dtbs_check warnings will be gone with [1] and the OMAP2+ cleanup
+> series [2].
 
-FYI, All the dtbs_check warnings will be gone with [1] and the OMAP2+ cleanup
-series [2].
+Nice, though it is a moving target. :) Is that still true with the 
+undocumented compatible checks that's been added? 
 
-> 
-> regards
-> Suman
-> 
-> [1] https://patchwork.kernel.org/project/linux-arm-kernel/patch/20210514212016.3153-1-s-anna@ti.com/
-
-[2] https://patchwork.kernel.org/project/linux-omap/list/?series=484489
-
-[snip]
-
-regards
-Suman
+Rob
