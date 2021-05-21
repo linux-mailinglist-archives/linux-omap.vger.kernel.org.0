@@ -2,152 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B453D38C488
-	for <lists+linux-omap@lfdr.de>; Fri, 21 May 2021 12:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAF5A38C4FC
+	for <lists+linux-omap@lfdr.de>; Fri, 21 May 2021 12:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbhEUKZY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 May 2021 06:25:24 -0400
-Received: from mail-vs1-f52.google.com ([209.85.217.52]:42537 "EHLO
-        mail-vs1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbhEUKZX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 May 2021 06:25:23 -0400
-Received: by mail-vs1-f52.google.com with SMTP id j12so5049654vsq.9;
-        Fri, 21 May 2021 03:23:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=07JcO3CRBM1HaXZjYTRFNn1m7ZvE1K/0YDoSBc48cOA=;
-        b=DCR55WXLVvbEc2gYXHvo216Z7lt4UsQ5SqxlA1beSinb3WoIzabDzXfUyzWw7kYZyi
-         6dgls0Vy9ebfJNDl4XQHzUwy8zxpNiMtQscsnRsFpDdYrmGxvuYbKqVGE4m8vi4dUQN4
-         DnzA5jKxOHefpY5yL8pD2JoUDbZKR2eic70gRYbgbnoeE/p2JfKOryH9sgI4Wj3/FFwt
-         3eOOeMKhlAXwcbD98c4CnqcChSLtG7YE28hrcZ+2CmlETsNpV1OupnLXEfKkfD7XENTE
-         FB3KeZtTzu4xK9TNwVzAZFVwl+vdAlNxIJlHliOfadqkFsTlg19RogEbgBJ2BzqcW7Wo
-         9wfQ==
-X-Gm-Message-State: AOAM530SL8hFXYQwqyUQkBfrY3Se9HrTxpxEivxY4y99e77peRMvMp8g
-        HX8i9KO7go1HC9YKGoBSke4ZttpYe0Q0ioh0o6trfRrM+4M=
-X-Google-Smtp-Source: ABdhPJyT4gwI8EtwVgoM5wwCrEysIqEoC18HpnH5bpZlayQihXs9cyrp/kDJFN3CX1Upp0Aj9A5c3Ip+YMLH51kO8wk=
-X-Received: by 2002:a05:6102:392:: with SMTP id m18mr9583479vsq.40.1621592638872;
- Fri, 21 May 2021 03:23:58 -0700 (PDT)
+        id S230414AbhEUKdu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 May 2021 06:33:50 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:48932 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232694AbhEUKcX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 May 2021 06:32:23 -0400
+Received: from [192.168.1.111] (91-157-208-71.elisa-laajakaista.fi [91.157.208.71])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 648918D8;
+        Fri, 21 May 2021 12:30:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1621593059;
+        bh=6p0bVg/UmK+uYev1JVeL9BVbX3w24rY/vkcEb+2tA2I=;
+        h=To:Cc:References:From:Subject:Date:In-Reply-To:From;
+        b=Adv1enw3bO1mvH5CDCPxa/OtFUqjlUbiWx7aVfdlAbPliCbvm40phH4R/8iFA7Dd/
+         LTp9jXBwAor2flclwiPnQ4ZFKIWs1IY0W/UYk+vdZ7dpJbf2RhFlGwRTLZNGOO3yrc
+         bOgYQ+zxWnNZCkLhcFUg0dvXadCe65fbiImItMz4=
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-arm-kernel@lists.infradead.org, Nishanth Menon <nm@ti.com>,
+        "Bajjuri, Praneeth" <praneeth@ti.com>, linux-omap@vger.kernel.org
+References: <0f48c7e5-6acd-1143-35ef-3dea2255bec6@ideasonboard.com>
+ <YKdG5rsNCRYVLDpj@atomide.com>
+ <f71c2b05-9d11-f8a4-a0ff-c2c179eda7f0@ideasonboard.com>
+ <YKdjyAYY1s8BXLAz@atomide.com>
+ <064a9324-cfcf-47b9-6ae3-a29085a52683@ideasonboard.com>
+ <YKd56/KAnIUIm7K5@atomide.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: Re: Random stack corruption on v5.13 with dra76
+Message-ID: <9e2e544d-4e3c-4171-9a37-fb582861e368@ideasonboard.com>
+Date:   Fri, 21 May 2021 13:30:58 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-References: <cover.1621583562.git.geert+renesas@glider.be> <52df0592c81ac000d3f486a9ba5a4d84b0f42c47.1621583562.git.geert+renesas@glider.be>
- <CACRpkdbQE1-WgD_BBkHx9DvJ=GfW7-PCoF-73TKGpgh4c6Epxw@mail.gmail.com>
-In-Reply-To: <CACRpkdbQE1-WgD_BBkHx9DvJ=GfW7-PCoF-73TKGpgh4c6Epxw@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 21 May 2021 12:23:47 +0200
-Message-ID: <CAMuHMdUqAwTSJuPXxJWgXGX1Hb=WLR3QtEm+RuhbyivFA5fUKA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] dt-bindings: gpio: pcf857x: Convert to json-schema
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Jan Tuerk <jan.tuerk@emtrion.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <YKd56/KAnIUIm7K5@atomide.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Linus,
+On 21/05/2021 12:14, Tony Lindgren wrote:
+> * Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> [210521 08:45]:
+>> On 21/05/2021 10:39, Tony Lindgren wrote:
+>>> * Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> [210521 07:05]:
+>>>> On 21/05/2021 08:36, Tony Lindgren wrote:
+>>>>> * Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> [210520 08:27]:
+>>>>>> Hi,
+>>>>>>
+>>>>>> I've noticed that the v5.13 rcs crash randomly (but quite often) on dra76 evm
+>>>>>> (I haven't tested other boards). Anyone else seen this problem?
+>>>>>
+>>>>> I have not seen this so far and beagle-x15 is behaving for me.
+>>>>>
+>>>>> Does it always happen on boot?
+>>>>
+>>>> No, but quite often. I can't really say how often, as it's annoyingly random.
+>>>> I tried to bisect, but that proved to be difficult as sometimes I get multiple (5+)
+>>>> successful boots before the crash.
+>>>>
+>>>> I tested with x15, same issue (below). So... Something in my kernel config? Or compiler?
+>>>> Looks like the crash happens always very soon after (or during) probing palmas.
+>>>
+>>> After about 10 reboots with your .config I'm seeing it now too on
+>>> beagle-x15. So far no luck reproducing it with omap2plus_defconfig.
+>>
+>> I think I have an easy way to see if a kernel is good or bad, by printing
+>> stack_not_used(current) in the first call to omap_i2c_xfer_irq(). There's a
+>> huge drop between v5.12 and v5.13-rc1.
+>>
+>> And interestingly, sometimes a simple printk seems to use hundreds of bytes
+>> of stack (i.e. compare stack usage before and after the print). But not
+>> always. So maybe the issue is somehow related to printk.
+>>
+>> I'm bisecting.
+> 
+> OK sounds good to me.
 
-On Fri, May 21, 2021 at 12:04 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> On Fri, May 21, 2021 at 9:54 AM Geert Uytterhoeven
-> <geert+renesas@glider.be> wrote:
-> > Convert the PCF857x-compatible I/O expanders Device Tree binding
-> > documentation to json-schema.
-> >
-> > Document missing compatible values, properties, and gpio hogs.
-> >
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
->
-> (...)
-> > Perhaps the "ti,pcf8575" construct should be removed, and the few users
-> > fixed instead?
->
-> You would rather list it as deprecated I think?
-> It is ABI...
+Well, I found the bad commit but unfortunately it doesn't exactly point 
+where the issue is.
 
-All DTS files use the "nxp,pcf8575" fallback, except for
-arch/x86/platform/ce4100/falconfalls.dts.
-The latter ain't working with Linux, as the Linux driver doesn't
-match against "ti,pcf8575"...
+f483a3e123410bd1c78af295bf65feffb6769a98 is the first bad commit
+commit f483a3e123410bd1c78af295bf65feffb6769a98
+Author: Tony Lindgren <tony@atomide.com>
+Date:   Wed Mar 10 14:03:48 2021 +0200
 
-> > +  gpio-controller: true
->
-> So this is implicitly using the generic schema in
-> /dtschema/schemas/gpio/gpio.yaml
+     ARM: dts: Configure simple-pm-bus for dra7 l4_per1
 
-if you leave it out:
+     We can now probe interconnects with device tree only configuration 
+using
+     simple-pm-bus and genpd.
 
-    Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml: ignoring,
-error in schema: properties
-    warning: no schema found in file:
-Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
-    Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml:
-properties: 'gpio-controller' is a dependency of '#gpio-cells'
-    from schema $id: http://devicetree.org/meta-schemas/gpios.yaml#
+     Tested-by: Kishon Vijay Abraham I <kishon@ti.com>
+     Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-> > +  lines-initial-states:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    description:
-> > +      Bitmask that specifies the initial state of each line.
-> > +      When a bit is set to zero, the corresponding line will be initialized to
-> > +      the input (pulled-up) state.
-> > +      When the  bit is set to one, the line will be initialized to the
-> > +      low-level output state.
-> > +      If the property is not specified all lines will be initialized to the
-> > +      input state.
->
-> Is this something we standardized or something that should
-> actually be a custom "nxp," property we just missed it?
-> (Looks like the latter... oh well, now it is there.)
+  arch/arm/boot/dts/dra7-l4.dtsi | 9 ++++++---
+  1 file changed, 6 insertions(+), 3 deletions(-)
 
-Too late for an "nxp," prefix.
-See the NOTE in drivers/gpio/gpio-pcf857x.c:
 
-        /* NOTE:  these chips have strange "quasi-bidirectional" I/O pins.
-         * We can't actually know whether a pin is configured (a) as output
-         * and driving the signal low, or (b) as input and reporting a low
-         * value ... without knowing the last value written since the chip
-         * came out of reset (if any).  We can't read the latched output.
-         *
-         * In short, the only reliable solution for setting up pin direction
-         * is to do it explicitly.  The setup() method can do that, but it
-         * may cause transient glitching since it can't know the last value
-         * written (some pins may need to be driven low).
-         *
-         * Using n_latch avoids that trouble.  When left initialized to zero,
-         * our software copy of the "latch" then matches the chip's all-ones
-         * reset state.  Otherwise it flags pins to be driven low.
-         */
+The difference is clear, though. With 
+9a75368b6426739e8b798592f084cb682d760568, which is the last good commit, 
+when I print the stack usage with stack_not_used() in three different 
+places in omap_i2c_xfer_irq(), I get always prints roughly like:
 
-> > +patternProperties:
-> > +  "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
-> > +    type: object
->
-> But this is already in
-> /dtschema/schemas/gpio/gpio-hog.yaml
-> for nodename, isn't that where it properly belongs?
->
-> I'm however confused here Rob will know what to do.
+STACK FREE omap_i2c_xfer_irq: 2972, 2972, 2972
 
-If we leave this out, something still has to refer to it?
-I see no other binding doing that...
+And these repeat exactly the same for each call to omap_i2c_xfer_irq (at 
+least during palmas probe).
 
-Gr{oetje,eeting}s,
+With the bad commit the situation is different. The first call to 
+omap_i2c_xfer_irq prints:
 
-                        Geert
+STACK FREE omap_i2c_xfer_irq: 2024, 2024, 2024
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+so we're already using 1k more. But then, instead of the stack usage 
+staying the same, consecutive calls show increased stack usage. It 
+doesn't increase for each xfer call, but after about 10 calls, I'm 
+getting ~1800, ten calls more I see ~800, and going down to ~500.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+However, with this bad commit, I don't see the empty stack going below 
+~500, so I don't get crashes. But going to a more recent commit, like 
+01d7136894410a71932096e0fb9f1d301b6ccf07, the situation is much worse. 
+The first print shows:
+
+STACK FREE omap_i2c_xfer_irq: 1164, 1164, 1164
+
+and it quickly goes to stack overflow.
+
+  Tomi
