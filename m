@@ -2,57 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAA2B38D928
-	for <lists+linux-omap@lfdr.de>; Sun, 23 May 2021 07:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C70838DE07
+	for <lists+linux-omap@lfdr.de>; Mon, 24 May 2021 01:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231559AbhEWFnt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 23 May 2021 01:43:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38700 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229895AbhEWFnt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 23 May 2021 01:43:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EA8F4611CB;
-        Sun, 23 May 2021 05:42:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621748543;
-        bh=addO/W7zGFpJqIz6D31aDifsIcltUXG1VfcyZkyOm+Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=r+rmQfz72kNXSLghJNf7MAQPeF3TaS+2jQ30gsLipXFz3p89mWtI9bap40GlEQFgq
-         VSYunLmLiGWd8w1bLXPJglKWUOosIdmR9C2PqqY/lDWOLgaIWc52W8Mtft/xhTIOGI
-         2ea3Yg0Odor5bcn/4+9iP+cR81ctOqc/NtSGPszy5WOdj1ked1O476BNFD5tDTbmfT
-         U9X4nMbc9Gh6/AUcAwFTxfTxRMA2iNIQiOU49afii+mdTzS5CR0nDxMtiNe4Pgt3Wi
-         zmaoAAjdu0ctYUkOuSHw+OwovdbG8JZ656I8jlp6fYdtZyfHNNQjOrdCl8byvS9Hw2
-         Gj9u93XLySftg==
-Date:   Sun, 23 May 2021 13:42:17 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        id S232021AbhEWX1e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 23 May 2021 19:27:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56874 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231982AbhEWX1d (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 23 May 2021 19:27:33 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BEE8C061574;
+        Sun, 23 May 2021 16:26:05 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id b12so23929979ljp.1;
+        Sun, 23 May 2021 16:26:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pPiK1DfUxZZrTBI/5iz69l7qULP78LHErLsYFXd4x9o=;
+        b=Wh4IAnNxXo994rOpcpBG1uHjyJm1icPsdNE7/2cIz+9OcmAv8x5QRPsjauEGrPNXiW
+         RQkuH5Bx1P5mQmEgcSIo+dbZENJWfm+ttnjxO+s92XMY+RPBJ2+nun7R4NtaOHRkojvQ
+         W5cyhqxNL775x1J4LWzOqkZigA/1vrCffMUNYpOkXrHm5cFJmaSSfTKIr13MI9bCY/Nq
+         LR2+mcOUhyQTrJmbrtHh4CssW4Gvgsl5T+cpjBpF4kz2QpQPMu12h5jDZ0hMpEJyjgTp
+         0ruHCtRGDigp05ZBlZJ/ZsD0UV5aaUlUx5toHznF4RKhugLSlHIIAWqhOg4k8RZwG5Gm
+         lDow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pPiK1DfUxZZrTBI/5iz69l7qULP78LHErLsYFXd4x9o=;
+        b=jhWIjkhX2KaEO3WTXIqdibrHMOxSzM8s9SLXzZKmdrV/A3PCU6al9QfdugiZwy9mlN
+         lhCel3t9yKV1V+diDuQiBlTOSYuIcSYbw3MSDZ6bzhxCJ/8aWfVBNCadDfGhnWhCvT9P
+         MwXZXRnitNsTbpQ8FTCVoZN/idVqIkAB5wqmpNf04LN1CwvZ1YsERImnOblBxnVqE5je
+         Y5T2CsxSubh2JSAWuh+fJhybVKa+tTykpdwYtHBNt4QwJIl2mH160FqFyGhjyq3fX1aJ
+         yFKrdemv+KYfKo2QTNxJ7jm+6Tx4fsWjWhYpIM+uXgLbNeK99VvoRljb10tQsqA234aA
+         safg==
+X-Gm-Message-State: AOAM5325oMpCA4l1MeupAONgBuU40P4cn2SCQQxOmRX+6L/IJbJ3E4k+
+        vCY65+A9PTgl24Qykw2B5gs=
+X-Google-Smtp-Source: ABdhPJzn0nkTvNJ4/y5/7O9Cpdv0X5iyxFW9w+e888CSbB1VKcAijfzu9imoGp+TgHIWvgjlKrqffQ==
+X-Received: by 2002:a05:651c:1043:: with SMTP id x3mr14722134ljm.130.1621812363346;
+        Sun, 23 May 2021 16:26:03 -0700 (PDT)
+Received: from localhost.localdomain (109-252-193-110.dynamic.spd-mgts.ru. [109.252.193.110])
+        by smtp.gmail.com with ESMTPSA id p7sm1489329ljg.61.2021.05.23.16.26.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 May 2021 16:26:02 -0700 (PDT)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Tony Lindgren <tony@atomide.com>,
-        Jan Tuerk <jan.tuerk@emtrion.com>, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM: dts: imx: emcon-avari: Fix nxp,pca8574
- #gpio-cells
-Message-ID: <20210523054217.GB8194@dragon>
-References: <cover.1621583562.git.geert+renesas@glider.be>
- <6cd916fc8c0a133cd216eee06cac86716b66eff4.1621583562.git.geert+renesas@glider.be>
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Burton <paul.burton@mips.com>,
+        John Crispin <john@phrozen.org>
+Cc:     linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v1] kbuild: Disable compile testing if HAVE_LEGACY_CLK enabled
+Date:   Mon, 24 May 2021 02:25:56 +0300
+Message-Id: <20210523232556.15017-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6cd916fc8c0a133cd216eee06cac86716b66eff4.1621583562.git.geert+renesas@glider.be>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, May 21, 2021 at 09:54:07AM +0200, Geert Uytterhoeven wrote:
-> According to the DT bindings, #gpio-cells must be two.
-> 
-> Fixes: 63e71fedc07c4ece ("ARM: dts: Add support for emtrion emCON-MX6 series")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+There are couple older platforms that can't be compile-tested because they
+partially implement CLK API. It causes build failure of kernel drivers due
+to the missing symbols of the unimplemented part of CLK API.
 
-Applied, thanks.
+These platforms are: ARM EP93XX, ARM OMAP1, m68k ColdFire, MIPS AR7,
+                     MIPS Ralink.
+
+Disable compile-testing for HAVE_LEGACY_CLK=y.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+---
+ init/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 173a474012d7..42701b04be00 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -131,7 +131,7 @@ config INIT_ENV_ARG_LIMIT
+ 
+ config COMPILE_TEST
+ 	bool "Compile also drivers which will not load"
+-	depends on HAS_IOMEM
++	depends on HAS_IOMEM && !HAVE_LEGACY_CLK
+ 	help
+ 	  Some drivers can be compiled on a different platform than they are
+ 	  intended to be run on. Despite they cannot be loaded there (or even
+-- 
+2.30.2
+
