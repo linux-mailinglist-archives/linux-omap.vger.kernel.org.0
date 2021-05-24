@@ -2,103 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C70838DE07
-	for <lists+linux-omap@lfdr.de>; Mon, 24 May 2021 01:26:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CA3E38E2CD
+	for <lists+linux-omap@lfdr.de>; Mon, 24 May 2021 10:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232021AbhEWX1e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 23 May 2021 19:27:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56874 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231982AbhEWX1d (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 23 May 2021 19:27:33 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BEE8C061574;
-        Sun, 23 May 2021 16:26:05 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id b12so23929979ljp.1;
-        Sun, 23 May 2021 16:26:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pPiK1DfUxZZrTBI/5iz69l7qULP78LHErLsYFXd4x9o=;
-        b=Wh4IAnNxXo994rOpcpBG1uHjyJm1icPsdNE7/2cIz+9OcmAv8x5QRPsjauEGrPNXiW
-         RQkuH5Bx1P5mQmEgcSIo+dbZENJWfm+ttnjxO+s92XMY+RPBJ2+nun7R4NtaOHRkojvQ
-         W5cyhqxNL775x1J4LWzOqkZigA/1vrCffMUNYpOkXrHm5cFJmaSSfTKIr13MI9bCY/Nq
-         LR2+mcOUhyQTrJmbrtHh4CssW4Gvgsl5T+cpjBpF4kz2QpQPMu12h5jDZ0hMpEJyjgTp
-         0ruHCtRGDigp05ZBlZJ/ZsD0UV5aaUlUx5toHznF4RKhugLSlHIIAWqhOg4k8RZwG5Gm
-         lDow==
+        id S232478AbhEXI4i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 May 2021 04:56:38 -0400
+Received: from mail-ua1-f51.google.com ([209.85.222.51]:42496 "EHLO
+        mail-ua1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232362AbhEXI4g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 May 2021 04:56:36 -0400
+Received: by mail-ua1-f51.google.com with SMTP id 14so9083664uac.9;
+        Mon, 24 May 2021 01:55:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=pPiK1DfUxZZrTBI/5iz69l7qULP78LHErLsYFXd4x9o=;
-        b=jhWIjkhX2KaEO3WTXIqdibrHMOxSzM8s9SLXzZKmdrV/A3PCU6al9QfdugiZwy9mlN
-         lhCel3t9yKV1V+diDuQiBlTOSYuIcSYbw3MSDZ6bzhxCJ/8aWfVBNCadDfGhnWhCvT9P
-         MwXZXRnitNsTbpQ8FTCVoZN/idVqIkAB5wqmpNf04LN1CwvZ1YsERImnOblBxnVqE5je
-         Y5T2CsxSubh2JSAWuh+fJhybVKa+tTykpdwYtHBNt4QwJIl2mH160FqFyGhjyq3fX1aJ
-         yFKrdemv+KYfKo2QTNxJ7jm+6Tx4fsWjWhYpIM+uXgLbNeK99VvoRljb10tQsqA234aA
-         safg==
-X-Gm-Message-State: AOAM5325oMpCA4l1MeupAONgBuU40P4cn2SCQQxOmRX+6L/IJbJ3E4k+
-        vCY65+A9PTgl24Qykw2B5gs=
-X-Google-Smtp-Source: ABdhPJzn0nkTvNJ4/y5/7O9Cpdv0X5iyxFW9w+e888CSbB1VKcAijfzu9imoGp+TgHIWvgjlKrqffQ==
-X-Received: by 2002:a05:651c:1043:: with SMTP id x3mr14722134ljm.130.1621812363346;
-        Sun, 23 May 2021 16:26:03 -0700 (PDT)
-Received: from localhost.localdomain (109-252-193-110.dynamic.spd-mgts.ru. [109.252.193.110])
-        by smtp.gmail.com with ESMTPSA id p7sm1489329ljg.61.2021.05.23.16.26.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 May 2021 16:26:02 -0700 (PDT)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5H0qZkzumrdkYcAyVjQDQA6Hje2p2FxbSu2Plzs94Cg=;
+        b=Bn/c6Kw7q0MNLCbshYdbAYgS97X7nKSJGRbi6LfqPjQuE8DXHOElGQnZ5C3wKeIgcy
+         4KkM51ueXOpt1GLBYOfYiUylUogOKUgzWQLvNYK9gmnBPRLAPq5/vg1YblRRFhYqlETi
+         oejDUHfGr+TTCKy/8RkHw8U639RPilcjlMeJRFkv9UJk3j6BlpbJT1SS5NsyttGttx54
+         VoiIW5IeABFkIEIEb6x9K37WzXB+Max8o5z9nBwyXvPuOSNl8uGK2lul+dTRbFr4E3d8
+         9Ak4hbkPX4bWQXLg8KIyOOj0lZJn+OyE3NgXUoVAYLeqC5e5fR+ZViFlgZSo7X+rvQCU
+         yJ8Q==
+X-Gm-Message-State: AOAM5311EDvujXylHpzfASl67Hhlo2oCu5I2vwwRODy8IjlTmaGwMlVy
+        oBQaOAua/sxGfVg4R77llrw4sf7V/VGQhC3Znig=
+X-Google-Smtp-Source: ABdhPJxxyosYrdj1GqNypPiBnYRArw2E3/38homNMO1Av1PFu0RXXr0Dh8t9Utur9chqZtb0X55m4PfZQwmS3BcBlZQ=
+X-Received: by 2002:ab0:7705:: with SMTP id z5mr20481974uaq.2.1621846508208;
+ Mon, 24 May 2021 01:55:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210523232556.15017-1-digetx@gmail.com>
+In-Reply-To: <20210523232556.15017-1-digetx@gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 24 May 2021 10:54:57 +0200
+Message-ID: <CAMuHMdWqNngrDQOut1r5aD1Nk5BMXEV4m8+OBix4DXOV6OSpNg@mail.gmail.com>
+Subject: Re: [PATCH v1] kbuild: Disable compile testing if HAVE_LEGACY_CLK enabled
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Tony Lindgren <tony@atomide.com>,
         Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
         Paul Burton <paul.burton@mips.com>,
-        John Crispin <john@phrozen.org>
-Cc:     linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v1] kbuild: Disable compile testing if HAVE_LEGACY_CLK enabled
-Date:   Mon, 24 May 2021 02:25:56 +0300
-Message-Id: <20210523232556.15017-1-digetx@gmail.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        John Crispin <john@phrozen.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There are couple older platforms that can't be compile-tested because they
-partially implement CLK API. It causes build failure of kernel drivers due
-to the missing symbols of the unimplemented part of CLK API.
+Hi Dmitry,
 
-These platforms are: ARM EP93XX, ARM OMAP1, m68k ColdFire, MIPS AR7,
-                     MIPS Ralink.
+On Mon, May 24, 2021 at 1:26 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+> There are couple older platforms that can't be compile-tested because they
+> partially implement CLK API. It causes build failure of kernel drivers due
+> to the missing symbols of the unimplemented part of CLK API.
+>
+> These platforms are: ARM EP93XX, ARM OMAP1, m68k ColdFire, MIPS AR7,
+>                      MIPS Ralink.
+>
+> Disable compile-testing for HAVE_LEGACY_CLK=y.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 
-Disable compile-testing for HAVE_LEGACY_CLK=y.
+Thanks for your patch!
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -131,7 +131,7 @@ config INIT_ENV_ARG_LIMIT
+>
+>  config COMPILE_TEST
+>         bool "Compile also drivers which will not load"
+> -       depends on HAS_IOMEM
+> +       depends on HAS_IOMEM && !HAVE_LEGACY_CLK
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 173a474012d7..42701b04be00 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -131,7 +131,7 @@ config INIT_ENV_ARG_LIMIT
- 
- config COMPILE_TEST
- 	bool "Compile also drivers which will not load"
--	depends on HAS_IOMEM
-+	depends on HAS_IOMEM && !HAVE_LEGACY_CLK
- 	help
- 	  Some drivers can be compiled on a different platform than they are
- 	  intended to be run on. Despite they cannot be loaded there (or even
+That sounds a bit drastic to me.  Usually we just try to implement the
+missing functionality, or provide stubs.
+Which functions are missing?
+
+>         help
+>           Some drivers can be compiled on a different platform than they are
+>           intended to be run on. Despite they cannot be loaded there (or even
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.30.2
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
