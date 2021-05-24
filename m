@@ -2,58 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53EA638F1E3
-	for <lists+linux-omap@lfdr.de>; Mon, 24 May 2021 18:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B998F38F5E1
+	for <lists+linux-omap@lfdr.de>; Tue, 25 May 2021 00:52:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233096AbhEXRBC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 May 2021 13:01:02 -0400
-Received: from mail-ot1-f49.google.com ([209.85.210.49]:38467 "EHLO
-        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232543AbhEXRBC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 May 2021 13:01:02 -0400
-Received: by mail-ot1-f49.google.com with SMTP id i14-20020a9d624e0000b029033683c71999so14675486otk.5;
-        Mon, 24 May 2021 09:59:33 -0700 (PDT)
+        id S229568AbhEXWyN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 May 2021 18:54:13 -0400
+Received: from mail-ot1-f46.google.com ([209.85.210.46]:34751 "EHLO
+        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229503AbhEXWyM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 May 2021 18:54:12 -0400
+Received: by mail-ot1-f46.google.com with SMTP id u25-20020a0568302319b02902ac3d54c25eso26811261ote.1;
+        Mon, 24 May 2021 15:52:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=TOA3bDdEMMFRDP4kZXTONZi/Xy6SI79VL7CIlLaKLO0=;
-        b=Ykd/iWa3QcAcjrENV2SCrtJzebcF9vyoB9ujTbLBLjC6mC62ZkPiDR8TqfDtz+3s+2
-         fHZCVwkNubfRDNPvn8hFYL2dtMN2BrpVnel6B6zI0wX9QUTpKojgvcqJbsjN0+bwgSk0
-         p+H58GDTcAf/HyzvDA5X0887QrBwXRP0Oyxbg4pTGo6rVuModdDIy3bOWJaFzuCA/y58
-         f5Y8bY6MoVVHjbZisNZjgKqF7dVwatDJq6j3suBlhsDnDtixVvLEcttdhaoRc5B8FWwK
-         mFu7b7V2bolQaHLX+FdYqWyeqsTeidXnxcBw+lGxOFKcge6Q0dQijQncQaleaSZsXzj7
-         jFMQ==
-X-Gm-Message-State: AOAM533+t3Mnn3DRdiANCTobJf0CjaAZTDgd8XdZcoD4cKeZ44Ia2lCH
-        d6yo7Yh3X2N5+EcKQdvG6w==
-X-Google-Smtp-Source: ABdhPJzCF1AjIDiFvsfcB85y4/1aKWchPZ+c8mSUgYDUel9fJ26poawYgLDrsZQX8maOVfC8yC7mPw==
-X-Received: by 2002:a9d:c64:: with SMTP id 91mr19392039otr.130.1621875572585;
-        Mon, 24 May 2021 09:59:32 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=P62xUqJ5CP78WJwgJVtNm8/Wb7e85Qi9HRBgUg+ou5o=;
+        b=FumNzdYT7SLyZGF6Jz08WKgiO8EmoyFwp5FnYjPUarJmwds+ovoc1NCsSZEtk+DJbq
+         qe2S21BV/XnbtG0Mp0mvYFaAUbpahzVMG0pVL+edSlKBauquZinKEkkZ+18JHM9NDq1o
+         mSMZHsOlwoEiKC+iPGyts0TKOSRr5j+JKl0oGEkKwskFYjyUtX0H278BDcXABYwf/sSe
+         T8MX5d8Yxi8KfQYQkiv9wHICGfCk06yMz7L2Cequge04jY0F9m642LnmrK6eyMb1GIXJ
+         GY/YXOGIUnGqWjnrC2D/dQ8E4BVeFJ6vyYYrpLgkmFLNaPtHBV+s0LIPMcODaeKsPn3G
+         J7tQ==
+X-Gm-Message-State: AOAM530kRamYBymZFQNacWKMuQPsCUCZykOxGXQJjNhUCzl2gY7mx5HQ
+        +8bETJhRB1/TkYM868LfAA==
+X-Google-Smtp-Source: ABdhPJxQzyud8LXXP3ohLaDtGNiEUzNllPix6rvYk5xlABI4dxlh8sO6GqbosKyCgmEm/A8mlrnXDg==
+X-Received: by 2002:a9d:7419:: with SMTP id n25mr20205706otk.1.1621896763681;
+        Mon, 24 May 2021 15:52:43 -0700 (PDT)
 Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id q5sm2472868oia.31.2021.05.24.09.59.30
+        by smtp.gmail.com with ESMTPSA id k21sm3304017otr.3.2021.05.24.15.52.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 May 2021 09:59:31 -0700 (PDT)
-Received: (nullmailer pid 20323 invoked by uid 1000);
-        Mon, 24 May 2021 16:59:30 -0000
+        Mon, 24 May 2021 15:52:43 -0700 (PDT)
+Received: (nullmailer pid 1322542 invoked by uid 1000);
+        Mon, 24 May 2021 22:52:42 -0000
+Date:   Mon, 24 May 2021 17:52:42 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     Grygorii Strashko <grygorii.strashko@ti.com>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        linux-kernel@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Santosh Shilimkar <ssantosh@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
-In-Reply-To: <20210521223236.18324-6-grygorii.strashko@ti.com>
-References: <20210521223236.18324-1-grygorii.strashko@ti.com> <20210521223236.18324-6-grygorii.strashko@ti.com>
+        Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, Aswath Govindraju <a-govindraju@ti.com>
 Subject: Re: [PATCH 5/5] dt-bindings: gpio: omap: Convert to json-schema
-Date:   Mon, 24 May 2021 11:59:30 -0500
-Message-Id: <1621875570.377768.20322.nullmailer@robh.at.kernel.org>
+Message-ID: <20210524225242.GA1319212@robh.at.kernel.org>
+References: <20210521223236.18324-1-grygorii.strashko@ti.com>
+ <20210521223236.18324-6-grygorii.strashko@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210521223236.18324-6-grygorii.strashko@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 22 May 2021 01:32:36 +0300, Grygorii Strashko wrote:
+On Sat, May 22, 2021 at 01:32:36AM +0300, Grygorii Strashko wrote:
 > Convert the OMAP GPIO Device Tree binding documentation to json-schema.
 > The GPIO hogs node names defined to end with a 'hog' suffix.
 > 
@@ -64,26 +67,7 @@ On Sat, 22 May 2021 01:32:36 +0300, Grygorii Strashko wrote:
 >  2 files changed, 108 insertions(+), 45 deletions(-)
 >  delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-omap.txt
 >  create mode 100644 Documentation/devicetree/bindings/gpio/ti,omap-gpio.yaml
-> 
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Other than the indentation,
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/gpio/ti,omap-gpio.yaml:22:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
-
-dtschema/dtc warnings/errors:
-
-See https://patchwork.ozlabs.org/patch/1482351
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Reviewed-by: Rob Herring <robh@kernel.org>
