@@ -2,116 +2,155 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 752C338FDEC
-	for <lists+linux-omap@lfdr.de>; Tue, 25 May 2021 11:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 135AC390088
+	for <lists+linux-omap@lfdr.de>; Tue, 25 May 2021 14:04:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232617AbhEYJex (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 May 2021 05:34:53 -0400
-Received: from muru.com ([72.249.23.125]:60144 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231921AbhEYJes (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 25 May 2021 05:34:48 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 9734080A7;
-        Tue, 25 May 2021 09:33:22 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Dave Gerlach <d-gerlach@ti.com>, Suman Anna <s-anna@ti.com>
-Subject: [PATCH] ARM: OMAP2+: Block suspend for am3 and am4 if PM is not configured
-Date:   Tue, 25 May 2021 12:33:11 +0300
-Message-Id: <20210525093311.15510-1-tony@atomide.com>
-X-Mailer: git-send-email 2.31.1
+        id S232302AbhEYMFf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 May 2021 08:05:35 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49370 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232304AbhEYMFe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 May 2021 08:05:34 -0400
+Received: from mail-ua1-f71.google.com ([209.85.222.71])
+        by youngberry.canonical.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <krzysztof.kozlowski@canonical.com>)
+        id 1llVn1-000863-Vs
+        for linux-omap@vger.kernel.org; Tue, 25 May 2021 12:04:04 +0000
+Received: by mail-ua1-f71.google.com with SMTP id x11-20020a9f2f0b0000b029020331a0ba74so12958302uaj.15
+        for <linux-omap@vger.kernel.org>; Tue, 25 May 2021 05:04:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ov2aOGWwe13sRFaggK9ebqlQkrTYdvNCRKExlndHI9g=;
+        b=TtJ6ToMYG+gRNMo5foNj1XFHFX2x0TJXgXRahTJa5G3Qw2V0Did4GcDvEZY4yz8HQ8
+         feMTkzltbz9je5IsLcza0TOfaXUHVTzSdYq11RyfAdckvATY5eYV1oZx2znKQhPi8j/H
+         RTV5BtmIdQM9YhXvUzaYO8L7cuDKARg/cQBZsA0yTOnor6dojHNoUfyrghMEaBiJUmrz
+         433NarNZgDnJCHef2EbuGO8IyguCoQf02bPEbdi76Crzfp/CInfACrMZE/yjF1e+OwbZ
+         lISeWtDfV8Od/pxJ6aL07kWRB0uCAvPderBU3SPqjIElfWh1W/+BxSoM/wJmzXODP8Kk
+         ebJg==
+X-Gm-Message-State: AOAM5322uxTICxMmU2wiXBNbDOANLytgQjnTg5KNwOuBWMf3Yu1azdJn
+        hXhUBpTZdNeRg3Nj8iE5ylNVYTRCeHwAaGg456eeJ83I6CpEwk0Zfi1jLrkTUc2chiFi2DHMnpL
+        3k2xGvUCtgzaPMsGozlgq2EDVj1/7ynTm2Kvu4uc=
+X-Received: by 2002:a05:6122:a16:: with SMTP id 22mr24550326vkn.18.1621944242240;
+        Tue, 25 May 2021 05:04:02 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw/dj3Oduy8Xo23it+mIa7HBuI+j2VM7Wl2RfwLkeKdxRH0+SiUcz9Gmlw4vhVOBjjBWTrS3w==
+X-Received: by 2002:a05:6122:a16:: with SMTP id 22mr24550298vkn.18.1621944241996;
+        Tue, 25 May 2021 05:04:01 -0700 (PDT)
+Received: from [192.168.1.4] ([45.237.48.1])
+        by smtp.gmail.com with ESMTPSA id b81sm1247160vke.8.2021.05.25.05.03.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 May 2021 05:04:01 -0700 (PDT)
+Subject: Re: [PATCH v1] kbuild: Disable compile testing if HAVE_LEGACY_CLK
+ enabled
+To:     Dmitry Osipenko <digetx@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Paul Burton <paul.burton@mips.com>,
+        John Crispin <john@phrozen.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>
+References: <20210523232556.15017-1-digetx@gmail.com>
+ <CAMuHMdWqNngrDQOut1r5aD1Nk5BMXEV4m8+OBix4DXOV6OSpNg@mail.gmail.com>
+ <8b6af8c0-6f01-193f-1eb4-4e230871f0cd@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Message-ID: <f12b4622-6cea-ac65-2d94-f50a85c29215@canonical.com>
+Date:   Tue, 25 May 2021 08:03:56 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
+In-Reply-To: <8b6af8c0-6f01-193f-1eb4-4e230871f0cd@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If the PM related modules are not loaded and PM firmware not configured,
-the system suspend fails to resume. Let's fix this by adding initial
-platform_suspend_ops to block suspend and warn about missing modules.
+On 24/05/2021 08:39, Dmitry Osipenko wrote:
+> 24.05.2021 11:54, Geert Uytterhoeven пишет:
+>> Hi Dmitry,
+>>
+>> On Mon, May 24, 2021 at 1:26 AM Dmitry Osipenko <digetx@gmail.com> wrote:
+>>> There are couple older platforms that can't be compile-tested because they
+>>> partially implement CLK API. It causes build failure of kernel drivers due
+>>> to the missing symbols of the unimplemented part of CLK API.
+>>>
+>>> These platforms are: ARM EP93XX, ARM OMAP1, m68k ColdFire, MIPS AR7,
+>>>                      MIPS Ralink.
+>>>
+>>> Disable compile-testing for HAVE_LEGACY_CLK=y.
+>>>
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+>>
+>> Thanks for your patch!
+>>
+>>> --- a/init/Kconfig
+>>> +++ b/init/Kconfig
+>>> @@ -131,7 +131,7 @@ config INIT_ENV_ARG_LIMIT
+>>>
+>>>  config COMPILE_TEST
+>>>         bool "Compile also drivers which will not load"
+>>> -       depends on HAS_IOMEM
+>>> +       depends on HAS_IOMEM && !HAVE_LEGACY_CLK
+>>
+>> That sounds a bit drastic to me.  Usually we just try to implement the
+>> missing functionality, or provide stubs.
+>> Which functions are missing?
+> 
+> Everything that belongs to CONFIG_COMMON_CLK needs stubs.
+> 
+> That is everything under CONFIG_HAVE_CLK [1], excluding functions
+> belonging to clk-devres.o and clk-bulk.o [2]. The HAVE_LEGACY_CLK
+> selects HAVE_CLK, but the COMMON_CLK is under HAVE_CLK too.
+> 
+> [1]
+> https://elixir.bootlin.com/linux/v5.13-rc3/source/include/linux/clk.h#L786
+> [2]
+> https://elixir.bootlin.com/linux/v5.13-rc3/source/drivers/clk/Makefile#L3
+> 
+> This problem is repeated over and over again for the past years. Some
+> maintainers are adding "depends on COMMON_CLK" for COMPILE_TEST of each
+> driver, but this doesn't solve the root of the problem, and thus, it's
+> constantly reoccurring.
+> 
+> Recently Krzysztof Kozlowski added couple more clk stubs for MIPS, but
+> still lots of stubs are missing. Some platforms don't have any stubs at
+> all and apparently nobody cares to fix them.
+> 
+> There 3 possible solutions:
+> 
+> 1. Factor out COMMON_CLK from HAVE_LEGACY_CLK, if this is possible
+> 2. Build stubs universally, maybe using weak functions.
 
-When pm33xx and wkup_m3_ipc have been loaded and m3 coprocessor booted
-with it's firmware, pm33xx sets up working platform_suspend_ops. Note
-that we need to configure at least PM_SUSPEND_STANDBY to have
-suspend_set_ops().
+I vote for this one - global stubs.
 
-Cc: Dave Gerlach <d-gerlach@ti.com>
-Cc: Suman Anna <s-anna@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
+Or for a new one:
+4. Disable COMPILE_TEST for specific platforms (mentioned in commit
+msg). Eventually could be like:
+config RALINK
+	depends !COMPILE_TEST || (COMPILE_TEST && COMMON_CLK)
 
-Dave, this prevents system suspend if pm33xx or IPC or firmware is not
-configured as otherwise resume will hang. Do you have any better ideas?
+Why? Because it is expected that a driver requiring/using missing clock
+stubs won't run on such legacy platform. Currently it cannot run because
+simply missing stubs will break build. Option (2) would make them
+compileable but not runnable, which is fine. However having a build time
+failure is better, so maybe let's just isolate platforms which are very
+poor in compile testing and don't enable them for most of the configs.
 
----
- arch/arm/mach-omap2/pm33xx-core.c | 40 +++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
 
-diff --git a/arch/arm/mach-omap2/pm33xx-core.c b/arch/arm/mach-omap2/pm33xx-core.c
---- a/arch/arm/mach-omap2/pm33xx-core.c
-+++ b/arch/arm/mach-omap2/pm33xx-core.c
-@@ -8,6 +8,7 @@
- 
- #include <linux/cpuidle.h>
- #include <linux/platform_data/pm33xx.h>
-+#include <linux/suspend.h>
- #include <asm/cpuidle.h>
- #include <asm/smp_scu.h>
- #include <asm/suspend.h>
-@@ -324,6 +325,44 @@ static struct am33xx_pm_platform_data *am33xx_pm_get_pdata(void)
- 		return NULL;
- }
- 
-+#ifdef CONFIG_SUSPEND
-+/*
-+ * Block system suspend initially. Later on pm33xx sets up it's own
-+ * platform_suspend_ops after probe. That depends also on loaded
-+ * wkup_m3_ipc and booted am335x-pm-firmware.elf.
-+ */
-+static int amx3_suspend_block(suspend_state_t state)
-+{
-+	pr_warn("PM not initialized for pm33xx, wkup_m3_ipc, or am335x-pm-firmware.elf\n");
-+
-+	return -EINVAL;
-+}
-+
-+static int amx3_pm_valid(suspend_state_t state)
-+{
-+	switch (state) {
-+	case PM_SUSPEND_STANDBY:
-+		return 1;
-+	default:
-+		return 0;
-+	}
-+}
-+
-+static const struct platform_suspend_ops amx3_blocked_pm_ops = {
-+	.begin = amx3_suspend_block,
-+	.valid = amx3_pm_valid,
-+};
-+
-+static void __init amx3_block_suspend(void)
-+{
-+	suspend_set_ops(&amx3_blocked_pm_ops);
-+}
-+#else
-+static inline void amx3_block_suspend(void)
-+{
-+}
-+#endif	/* CONFIG_SUSPEND */
-+
- int __init amx3_common_pm_init(void)
- {
- 	struct am33xx_pm_platform_data *pdata;
-@@ -337,6 +376,7 @@ int __init amx3_common_pm_init(void)
- 	devinfo.size_data = sizeof(*pdata);
- 	devinfo.id = -1;
- 	platform_device_register_full(&devinfo);
-+	amx3_block_suspend();
- 
- 	return 0;
- }
--- 
-2.31.1
+Best regards,
+Krzysztof
