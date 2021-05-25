@@ -2,239 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 906C139084A
-	for <lists+linux-omap@lfdr.de>; Tue, 25 May 2021 19:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C320390B77
+	for <lists+linux-omap@lfdr.de>; Tue, 25 May 2021 23:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234097AbhEYSBO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 May 2021 14:01:14 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:51416 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234253AbhEYSBH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 May 2021 14:01:07 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14PHxZ4F086297;
-        Tue, 25 May 2021 12:59:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1621965575;
-        bh=8yL3j70w9qqYCkpQuAtJvWM+t7tZDs8FYZuNKkMB7Qo=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=P93nW0Jt5fG4Jwqlb0ZXpj32T96rio/n+IpZZGC3Sl80UyyyCFcMxBA0FO95YtJDH
-         yiUCq4BjRNmKZwUULBWFxkZnkZ7xBlBrGbhZtr2QZ1lSAyFISrI0QksmtkGPXHqYDg
-         SN32sRXNhT3BhySJwLIi0I6lUfPreoNyVqKWP1aQ=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14PHxZv1072541
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 25 May 2021 12:59:35 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 25
- May 2021 12:59:35 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Tue, 25 May 2021 12:59:35 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14PHxYX8124533;
-        Tue, 25 May 2021 12:59:35 -0500
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, <devicetree@vger.kernel.org>
-CC:     <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH v2 5/5] dt-bindings: gpio: omap: Convert to json-schema
-Date:   Tue, 25 May 2021 20:58:58 +0300
-Message-ID: <20210525175858.11611-6-grygorii.strashko@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210525175858.11611-1-grygorii.strashko@ti.com>
-References: <20210525175858.11611-1-grygorii.strashko@ti.com>
+        id S231423AbhEYVbM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 May 2021 17:31:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57908 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229819AbhEYVbM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 May 2021 17:31:12 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 065FCC061756;
+        Tue, 25 May 2021 14:29:40 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id q1so5801255lfo.3;
+        Tue, 25 May 2021 14:29:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=yn3fl1fZB0VOpwc1b4wth7TBINMg9VY7zs7B0HHCpNE=;
+        b=Jr5XAZqP7SiSwza7IIsoYX/ZNbF3/7pLq+iT9XGpywM350Tooz+97LFyTDYZyrVxeW
+         1jouhV3u7LOyQxPDg/C3ufISP5D350ZyxfTOdmR+1FCrq+s4QhJs0to/xosjEiOCGHXP
+         tq4Ffi3dktnrbiA3M8DmJxdnQjigeZpYhDotuJLK0a6CiMF7jwhJy55icNy4sqraUxeX
+         K73kL+XWPWn4++6qjdsflr0pmcu8obWS8TEK2QaJYElV/vyj+buNgD3YSkrB7FiG0NL7
+         g7BOpaZ+Yo63i+6VeA6qMNRnLRQpXS6YA6xc8pbf8yR3sE33sqOViQoyUXdZHC3zeu0t
+         9eGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=yn3fl1fZB0VOpwc1b4wth7TBINMg9VY7zs7B0HHCpNE=;
+        b=sMpcXCrUcB7skBm71oeYfsqKKD8V5pluRBqlzdgNGyODgEj/so15p62rmhEjGBvEER
+         sNSvJjizqXbgwTSTsBtb550rhJdF3l3rncCjjVt3kqzfWZWqRaeIfFCgGOdMLdtCYo9e
+         rIsz9x1XnuHMfOKjcmYz3P4OoHAIH+onOpc5LBf2g4yg2jmuL751GJY1w6+IiMSwU3lC
+         n/oHs6zhotVyP6T/LjoUozl49TyASoVXO9F10Rj9m63krQzz9niswMwjwwXouEStzHDq
+         Vl7+0QlQT2IM3UTUcsgwWdVg18dieN4/H6BiZJgsKBPL/tK8aSrsWn878LkBcU1aNSkx
+         QKOQ==
+X-Gm-Message-State: AOAM532JOaUwJ2eiEoiShRoKq67tvyeYZl760WTYafw5Iko7pUpSlNmd
+        lSfcA/HB004J/drc4vQ/TaH829wo8xc=
+X-Google-Smtp-Source: ABdhPJyz9+7HTvrltQyjbzWHNILgCza4grBtexvZEuKDFSl3fCl0S1elsmUVsZdsNhR9dOu/iicCOQ==
+X-Received: by 2002:ac2:5f48:: with SMTP id 8mr14819793lfz.340.1621978179080;
+        Tue, 25 May 2021 14:29:39 -0700 (PDT)
+Received: from [192.168.2.145] (46-138-180-236.dynamic.spd-mgts.ru. [46.138.180.236])
+        by smtp.googlemail.com with ESMTPSA id x12sm2221450ljc.70.2021.05.25.14.29.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 May 2021 14:29:38 -0700 (PDT)
+Subject: Re: [PATCH v1] kbuild: Disable compile testing if HAVE_LEGACY_CLK
+ enabled
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Paul Burton <paul.burton@mips.com>,
+        John Crispin <john@phrozen.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>
+References: <20210523232556.15017-1-digetx@gmail.com>
+ <CAMuHMdWqNngrDQOut1r5aD1Nk5BMXEV4m8+OBix4DXOV6OSpNg@mail.gmail.com>
+ <8b6af8c0-6f01-193f-1eb4-4e230871f0cd@gmail.com>
+ <f12b4622-6cea-ac65-2d94-f50a85c29215@canonical.com>
+ <CAMuHMdW_G259Nwx1EEf38h0AcVH8yjmjqp9Mh-vQ4LJJMzD8Dg@mail.gmail.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <2e5bb7c2-62d9-b1f7-7f35-2b379d3692d5@gmail.com>
+Date:   Wed, 26 May 2021 00:29:37 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <CAMuHMdW_G259Nwx1EEf38h0AcVH8yjmjqp9Mh-vQ4LJJMzD8Dg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert the OMAP GPIO Device Tree binding documentation to json-schema.
-The GPIO hogs node names defined to end with a 'hog' suffix.
+25.05.2021 15:19, Geert Uytterhoeven пишет:
+...
+>>> There 3 possible solutions:
+>>>
+>>> 1. Factor out COMMON_CLK from HAVE_LEGACY_CLK, if this is possible
+>>> 2. Build stubs universally, maybe using weak functions.
+>>
+>> I vote for this one - global stubs.
+> 
+> Yep.
+> 
+>> Or for a new one:
+>> 4. Disable COMPILE_TEST for specific platforms (mentioned in commit
+>> msg). Eventually could be like:
+>> config RALINK
+>>         depends !COMPILE_TEST || (COMPILE_TEST && COMMON_CLK)
+> 
+> That's a neat idea!
+> 
+> Of course there's a fifth option:
+> 
+> 5. Convert legacy platforms to COMMON_CLK.
+> 
+> Which is already happening for ARM EP93XX.
 
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
----
- .../devicetree/bindings/gpio/gpio-omap.txt    |  45 --------
- .../bindings/gpio/ti,omap-gpio.yaml           | 108 ++++++++++++++++++
- 2 files changed, 108 insertions(+), 45 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-omap.txt
- create mode 100644 Documentation/devicetree/bindings/gpio/ti,omap-gpio.yaml
-
-diff --git a/Documentation/devicetree/bindings/gpio/gpio-omap.txt b/Documentation/devicetree/bindings/gpio/gpio-omap.txt
-deleted file mode 100644
-index e57b2cb28f6c..000000000000
---- a/Documentation/devicetree/bindings/gpio/gpio-omap.txt
-+++ /dev/null
-@@ -1,45 +0,0 @@
--OMAP GPIO controller bindings
--
--Required properties:
--- compatible:
--  - "ti,omap2-gpio" for OMAP2 controllers
--  - "ti,omap3-gpio" for OMAP3 controllers
--  - "ti,omap4-gpio" for OMAP4 controllers
--- reg : Physical base address of the controller and length of memory mapped
--  region.
--- gpio-controller : Marks the device node as a GPIO controller.
--- #gpio-cells : Should be two.
--  - first cell is the pin number
--  - second cell is used to specify optional parameters (unused)
--- interrupt-controller: Mark the device node as an interrupt controller.
--- #interrupt-cells : Should be 2.
--  The first cell is the GPIO number.
--  The second cell is used to specify flags:
--    bits[3:0] trigger type and level flags:
--      1 = low-to-high edge triggered.
--      2 = high-to-low edge triggered.
--      4 = active high level-sensitive.
--      8 = active low level-sensitive.
--- interrupts : The interrupt the controller is rising as output when an
--  interrupt occures
--
--OMAP specific properties:
--- ti,hwmods:		Name of the hwmod associated to the GPIO:
--			"gpio<X>", <X> being the 1-based instance number
--			from the HW spec.
--- ti,gpio-always-on: 	Indicates if a GPIO bank is always powered and
--			so will never lose its logic state.
--
--
--Example:
--
--gpio0: gpio@44e07000 {
--    compatible = "ti,omap4-gpio";
--    reg = <0x44e07000 0x1000>;
--    ti,hwmods = "gpio1";
--    gpio-controller;
--    #gpio-cells = <2>;
--    interrupt-controller;
--    #interrupt-cells = <2>;
--    interrupts = <96>;
--};
-diff --git a/Documentation/devicetree/bindings/gpio/ti,omap-gpio.yaml b/Documentation/devicetree/bindings/gpio/ti,omap-gpio.yaml
-new file mode 100644
-index 000000000000..7087e4a5013f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/ti,omap-gpio.yaml
-@@ -0,0 +1,108 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/gpio/ti,omap-gpio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: OMAP GPIO controller bindings
-+
-+maintainers:
-+  - Grygorii Strashko <grygorii.strashko@ti.com>
-+
-+description: |
-+  The general-purpose interface combines general-purpose input/output (GPIO) banks.
-+  Each GPIO banks provides up to 32 dedicated general-purpose pins with input
-+  and output capabilities; interrupt generation in active mode and wake-up
-+  request generation in idle mode upon the detection of external events.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - enum:
-+          - ti,omap2-gpio
-+          - ti,omap3-gpio
-+          - ti,omap4-gpio
-+      - items:
-+          - const: ti,am4372-gpio
-+          - const: ti,omap4-gpio
-+
-+  reg:
-+    maxItems: 1
-+
-+  gpio-controller: true
-+
-+  '#gpio-cells':
-+    const: 2
-+
-+  interrupt-controller: true
-+
-+  '#interrupt-cells':
-+    const: 2
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  gpio-ranges: true
-+
-+  gpio-line-names:
-+    minItems: 1
-+    maxItems: 32
-+
-+  ti,gpio-always-on:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Indicates if a GPIO bank is always powered and will never lose its logic state.
-+
-+  ti,hwmods:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    deprecated: true
-+    description:
-+      Name of the hwmod associated with the GPIO. Needed on some legacy OMAP
-+      SoCs which have not been converted to the ti,sysc interconnect hierarachy.
-+
-+  ti,no-reset-on-init:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    deprecated: true
-+    description:
-+      Do not reset on init. Used with ti,hwmods on some legacy OMAP SoCs which
-+      have not been converted to the ti,sysc interconnect hierarachy.
-+
-+patternProperties:
-+  "^(.+-hog(-[0-9]+)?)$":
-+    type: object
-+
-+    required:
-+      - gpio-hog
-+
-+required:
-+  - compatible
-+  - reg
-+  - gpio-controller
-+  - "#gpio-cells"
-+  - interrupt-controller
-+  - "#interrupt-cells"
-+  - interrupts
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    gpio0: gpio@0 {
-+        compatible = "ti,omap4-gpio";
-+        reg = <0x0 0x1000>;
-+        gpio-controller;
-+        #gpio-cells = <2>;
-+        interrupt-controller;
-+        #interrupt-cells = <2>;
-+        interrupts = <96>;
-+        ti,gpio-always-on;
-+
-+        ls-buf-en-hog {
-+            gpio-hog;
-+            gpios = <10 GPIO_ACTIVE_HIGH>;
-+            output-high;
-+            line-name = "LS_BUF_EN";
-+        };
-+    };
--- 
-2.17.1
-
+I'll try to take a closer look at alternative options, thank you for
+yours input.
