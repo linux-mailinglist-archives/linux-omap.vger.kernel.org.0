@@ -2,59 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F1C390EAB
-	for <lists+linux-omap@lfdr.de>; Wed, 26 May 2021 05:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7337A391102
+	for <lists+linux-omap@lfdr.de>; Wed, 26 May 2021 08:52:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230288AbhEZDJY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 May 2021 23:09:24 -0400
-Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:34766 "EHLO
-        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229750AbhEZDJX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 25 May 2021 23:09:23 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R471e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0Ua7zwQJ_1621998469;
-Received: from j63c13417.sqa.eu95.tbsite.net(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0Ua7zwQJ_1621998469)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 26 May 2021 11:07:50 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     tony@atomide.com
-Cc:     haojian.zhuang@linaro.org, linus.walleij@linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH] pinctrl: Fix kernel-doc
-Date:   Wed, 26 May 2021 11:07:44 +0800
-Message-Id: <1621998464-10918-1-git-send-email-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+        id S232995AbhEZGyQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 May 2021 02:54:16 -0400
+Received: from muru.com ([72.249.23.125]:60546 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233035AbhEZGyG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 26 May 2021 02:54:06 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 0D2C080AE;
+        Wed, 26 May 2021 06:52:38 +0000 (UTC)
+Date:   Wed, 26 May 2021 09:52:30 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Nishanth Menon <nm@ti.com>
+Subject: Re: [PATCH v2] dt-bindings: i2c: Move i2c-omap.txt to YAML format
+Message-ID: <YK3wLgJSy0sVUn51@atomide.com>
+References: <20210506140026.31254-1-vigneshr@ti.com>
+ <f7570cb4-8c21-2fa5-bd26-1388f2a4bd6b@ti.com>
+ <429a740a-c2b9-1cf8-ed2b-0fb7b1bea422@ti.com>
+ <20210507163602.219894f4@aktux>
+ <1ef076ac-e0de-a0df-a918-aeb8ed6c5956@ti.com>
+ <e4fbdf7b-6556-eeba-c1b8-9d48f718437a@ti.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e4fbdf7b-6556-eeba-c1b8-9d48f718437a@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix function name in pinctrl-single.c kernel-doc comment
-to remove a warning found by clang_w1.
+* Vignesh Raghavendra <vigneshr@ti.com> [210510 11:06]:
+> What do you prefer here? Removing dmas from schema would mean I would
+> have to delete dmas property from omap2/3 dtsi files that list dmas
+> property today? Note that driver does not support DMA mode today.
 
-drivers/pinctrl/pinctrl-single.c:1523: warning: expecting prototype for
-pcs_irq_handle(). Prototype was for pcs_irq_chain_handler() instead.
+If the dma channels are not used by the driver, and not in the binding,
+it's unlikely they will ever get used. Sure the dma channels describe
+the hardware, and there's a slim chance some other OS needs them, but I
+doubt it.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- drivers/pinctrl/pinctrl-single.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It seems weird we stop describing hardware in the devicetree to avoid
+binding check warnings though. Up to you to figure out what you want
+to do as far as I'm concerned.
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 2c9c983..7834d5d 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -1513,7 +1513,7 @@ static irqreturn_t pcs_irq_handler(int irq, void *d)
- }
- 
- /**
-- * pcs_irq_handle() - handler for the dedicated chained interrupt case
-+ * pcs_irq_chain_handler() - handler for the dedicated chained interrupt case
-  * @desc: interrupt descriptor
-  *
-  * Use this if you have a separate interrupt for each
--- 
-1.8.3.1
+Regards,
 
+Tony
