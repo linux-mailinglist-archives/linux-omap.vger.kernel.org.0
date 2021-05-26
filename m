@@ -2,107 +2,185 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 652A4391ABD
-	for <lists+linux-omap@lfdr.de>; Wed, 26 May 2021 16:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EF98391DD6
+	for <lists+linux-omap@lfdr.de>; Wed, 26 May 2021 19:21:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235102AbhEZOva (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 May 2021 10:51:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37778 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235097AbhEZOv3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 May 2021 10:51:29 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 193ADC061756
-        for <linux-omap@vger.kernel.org>; Wed, 26 May 2021 07:49:58 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id f20-20020a05600c4e94b0290181f6edda88so691237wmq.2
-        for <linux-omap@vger.kernel.org>; Wed, 26 May 2021 07:49:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=gcMCAthuFh62A6JYOWw0YWI1O6qLr+rKFrqkC6c0AMk=;
-        b=Qa43uI7LnoStSZI9viG4grGPSEhQcUN8zgCbxNB6zg4rPnNXk2lAvXGX7ve6qpK/0H
-         zUp9BrNY+86JRj+VZlZXZ2+Iy4UjUc84trCxQhoJhIjXBsU8XoIwKC+nhXrTXVBq4acN
-         IxJmG/n3CLG0drs5dpprf54k05NaNDMcvu0YuPCTh1m11Htjf05zhNDVA1slesPOU/2f
-         EzXp6JQ4lZhrUj70tTI3ErEZJ2L9h89c5fZkUGWSJ/QCjQMRHjmmSlboQHjkUG+vkSXy
-         uj1RJt6REp0XsyOn5LV6GcBhqtsQYExuABsGHx3Z1kINe2R1yd2f362Pywhjk1HaKLw2
-         Skpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=gcMCAthuFh62A6JYOWw0YWI1O6qLr+rKFrqkC6c0AMk=;
-        b=oxQ/vt7rs07bpKrSgrr5ZEr8T+z3NX7TW2eqSXPC5G2kAbkVvvXr6rIwfWq9f3DHM4
-         bdKKSRl6AhqxTWz9OSQ+4/I4SV2AoWZx4W4zzCCAiktOorzCyxF7mD2q7alFxQKjG55d
-         EtNVLMP0hHfPADyrThQ31HLj7HC7Hpj2BbukLd81HTwFzWjs7V2+qakc7tNrmXhvlka9
-         pyl0f5CocaYgZ6978j4cerMfj2rzYbvAcwczowJomgbTrJMRWtoGeJx2Wn94wJ9PDGgE
-         kTFoVr8h6Xc5xKXBs2x9lWThPnFM2lhDLhx60FU4+6HR5Kql5CGYJorZqqoPOZJFUBGs
-         TOjw==
-X-Gm-Message-State: AOAM533XeCz6HU67d3XlCExaM/owk9sUMVXK7xju+J2Foe5kbfwMnJYt
-        nw+xX5m8e0WpGZVLAy3AKY2alQ==
-X-Google-Smtp-Source: ABdhPJzReZ4i69M5bjQdNoUNLgaUJfw2dEG4GS9p4HgjlKexmYMimNG44GaES+uW6pV/9Di4wo3aiw==
-X-Received: by 2002:a05:600c:4f8b:: with SMTP id n11mr29441004wmq.180.1622040596660;
-        Wed, 26 May 2021 07:49:56 -0700 (PDT)
-Received: from dell ([91.110.221.223])
-        by smtp.gmail.com with ESMTPSA id q27sm20658094wrz.79.2021.05.26.07.49.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 May 2021 07:49:56 -0700 (PDT)
-Date:   Wed, 26 May 2021 15:49:54 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Support Opensource <support.opensource@diasemi.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        patches@opensource.cirrus.com
-Subject: Re: [RESEND PATCH v2 07/13] mfd: twl: Correct kerneldoc
-Message-ID: <20210526144954.GD543307@dell>
-References: <20210526124711.33223-1-krzysztof.kozlowski@canonical.com>
- <20210526124711.33223-8-krzysztof.kozlowski@canonical.com>
+        id S234453AbhEZRWe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 May 2021 13:22:34 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:57326 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234489AbhEZRW1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 May 2021 13:22:27 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14QHKnV3045129;
+        Wed, 26 May 2021 12:20:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1622049649;
+        bh=DOzpQie/mGWTTenkXEi80ULFXld6+uPVu0nfBLM42BU=;
+        h=From:To:CC:Subject:Date;
+        b=LYtumEw42av7RPsqlvvkQ586rh+IRdKHX0lUVSYM1FfdCaSRS6wCJ/Lw6LU17rFHL
+         OKlWxZXzwe32xnaB/42w8j88nnTo0+NKQrYBTnTdVv4bQOMyned7en//uFruW4HkHM
+         Zcm04sePONzijIbc4jcuHF9pSOmGLgyZf76jbO9c=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14QHKnrT102834
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 26 May 2021 12:20:49 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 26
+ May 2021 12:20:49 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Wed, 26 May 2021 12:20:49 -0500
+Received: from lelv0597.itg.ti.com (lelv0597.itg.ti.com [10.181.64.32])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14QHKnle011356;
+        Wed, 26 May 2021 12:20:49 -0500
+Received: from uda0271916b.dhcp.ti.com (uda0271916b.dhcp.ti.com [128.247.81.224] (may be forged))
+        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 14QHKnK3007817;
+        Wed, 26 May 2021 12:20:49 -0500
+From:   Gowtham Tammana <g-tammana@ti.com>
+To:     <tony@atomide.com>, <bcousson@baylibre.com>,
+        Suman Anna <s-anna@ti.com>
+CC:     <robh+dt@kernel.org>, <linux-omap@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Nisanth Menon <nm@ti.com>, Gowtham Tammana <g-tammana@ti.com>
+Subject: [PATCH v2] ARM: dts: dra7: Fix duplicate USB4 device node
+Date:   Wed, 26 May 2021 12:20:38 -0500
+Message-ID: <20210526172038.17542-1-g-tammana@ti.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210526124711.33223-8-krzysztof.kozlowski@canonical.com>
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 26 May 2021, Krzysztof Kozlowski wrote:
+With [1] USB4 device node got defined in dra74x.dtsi file. However,
+there was a prior defintion of the same in [2] which didn't get removed
+causing boot failures. USB4 node is present only in DRA74x variants so
+keeping the entry in dra74x.dtsi and removing it from the top level
+interconnect hierarchy dra7-l4.dtsi file.
 
-> Correct kerneldoc function name to fix W=1 warning:
-> 
->   drivers/mfd/twl-core.c:496: warning:
->     expecting prototype for twl_regcache_bypass(). Prototype was for twl_set_regcache_bypass() instead
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-> ---
->  drivers/mfd/twl-core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Since USB4 is only included in DRA74x variants, remove its reference
+for AM5718, DRA71x and DR72x boards.
 
-And this:
+[1]: commit 549fce068a311 ("ARM: dts: dra7: Add l4 interconnect
+hierarchy and ti-sysc data")
+[2]: commit c7b72abca61ec ("ARM: OMAP2+: Drop legacy platform data for
+dra7 dwc3")
 
-https://lore.kernel.org/lkml/20210520120820.3465562-3-lee.jones@linaro.org/
+Fixes: c7b72abca61ec ("ARM: OMAP2+: Drop legacy platform data for dra7 dwc3")
+Signed-off-by: Gowtham Tammana <g-tammana@ti.com>
+---
+v2:
+  - changed reference to commit sha instead of line numbers
+  - added Fixes: tag
+  - moved the definition to dra74.dtsi as per Suman and Tony review comments
 
-> diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
-> index 20cf8cfe4f3b..24b77b18b725 100644
-> --- a/drivers/mfd/twl-core.c
-> +++ b/drivers/mfd/twl-core.c
-> @@ -485,8 +485,8 @@ int twl_i2c_read(u8 mod_no, u8 *value, u8 reg, unsigned num_bytes)
->  EXPORT_SYMBOL(twl_i2c_read);
->  
->  /**
-> - * twl_regcache_bypass - Configure the regcache bypass for the regmap associated
-> - *			 with the module
-> + * twl_set_regcache_bypass - Configure the regcache bypass for the regmap
-> + *			     associated with the module
->   * @mod_no: module number
->   * @enable: Regcache bypass state
->   *
+ arch/arm/boot/dts/am5718.dtsi  |  6 +-----
+ arch/arm/boot/dts/dra7-l4.dtsi | 22 ----------------------
+ arch/arm/boot/dts/dra71x.dtsi  |  4 ----
+ arch/arm/boot/dts/dra72x.dtsi  |  4 ----
+ arch/arm/boot/dts/dra74x.dtsi  |  2 +-
+ 5 files changed, 2 insertions(+), 36 deletions(-)
 
+diff --git a/arch/arm/boot/dts/am5718.dtsi b/arch/arm/boot/dts/am5718.dtsi
+index ebf4d3cc1cfb..6d7530a48c73 100644
+--- a/arch/arm/boot/dts/am5718.dtsi
++++ b/arch/arm/boot/dts/am5718.dtsi
+@@ -17,17 +17,13 @@ / {
+  * VCP1, VCP2
+  * MLB
+  * ISS
+- * USB3, USB4
++ * USB3
+  */
+ 
+ &usb3_tm {
+ 	status = "disabled";
+ };
+ 
+-&usb4_tm {
+-	status = "disabled";
+-};
+-
+ &atl_tm {
+ 	status = "disabled";
+ };
+diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
+index 149144cdff35..648d23f7f748 100644
+--- a/arch/arm/boot/dts/dra7-l4.dtsi
++++ b/arch/arm/boot/dts/dra7-l4.dtsi
+@@ -4129,28 +4129,6 @@ usb3: usb@10000 {
+ 			};
+ 		};
+ 
+-		usb4_tm: target-module@140000 {		/* 0x48940000, ap 75 3c.0 */
+-			compatible = "ti,sysc-omap4", "ti,sysc";
+-			reg = <0x140000 0x4>,
+-			      <0x140010 0x4>;
+-			reg-names = "rev", "sysc";
+-			ti,sysc-mask = <SYSC_OMAP4_DMADISABLE>;
+-			ti,sysc-midle = <SYSC_IDLE_FORCE>,
+-					<SYSC_IDLE_NO>,
+-					<SYSC_IDLE_SMART>,
+-					<SYSC_IDLE_SMART_WKUP>;
+-			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+-					<SYSC_IDLE_NO>,
+-					<SYSC_IDLE_SMART>,
+-					<SYSC_IDLE_SMART_WKUP>;
+-			/* Domains (P, C): l3init_pwrdm, l3init_clkdm */
+-			clocks = <&l3init_clkctrl DRA7_L3INIT_USB_OTG_SS4_CLKCTRL 0>;
+-			clock-names = "fck";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			ranges = <0x0 0x140000 0x20000>;
+-		};
+-
+ 		target-module@170000 {			/* 0x48970000, ap 21 0a.0 */
+ 			compatible = "ti,sysc-omap4", "ti,sysc";
+ 			reg = <0x170010 0x4>;
+diff --git a/arch/arm/boot/dts/dra71x.dtsi b/arch/arm/boot/dts/dra71x.dtsi
+index cad0e4a2bd8d..9c270d8f75d5 100644
+--- a/arch/arm/boot/dts/dra71x.dtsi
++++ b/arch/arm/boot/dts/dra71x.dtsi
+@@ -11,7 +11,3 @@
+ &rtctarget {
+ 	status = "disabled";
+ };
+-
+-&usb4_tm {
+-	status = "disabled";
+-};
+diff --git a/arch/arm/boot/dts/dra72x.dtsi b/arch/arm/boot/dts/dra72x.dtsi
+index d403acc754b6..f3e934ef7d3e 100644
+--- a/arch/arm/boot/dts/dra72x.dtsi
++++ b/arch/arm/boot/dts/dra72x.dtsi
+@@ -108,7 +108,3 @@ &pcie1_ep {
+ &pcie2_rc {
+ 	compatible = "ti,dra726-pcie-rc", "ti,dra7-pcie";
+ };
+-
+-&usb4_tm {
+-	status = "disabled";
+-};
+diff --git a/arch/arm/boot/dts/dra74x.dtsi b/arch/arm/boot/dts/dra74x.dtsi
+index e1850d6c841a..60f2ab8d34d5 100644
+--- a/arch/arm/boot/dts/dra74x.dtsi
++++ b/arch/arm/boot/dts/dra74x.dtsi
+@@ -49,7 +49,7 @@ dsp2_system: dsp_system@41500000 {
+ 			reg = <0x41500000 0x100>;
+ 		};
+ 
+-		target-module@48940000 {
++		usb4_tm: target-module@48940000 {
+ 			compatible = "ti,sysc-omap4", "ti,sysc";
+ 			reg = <0x48940000 0x4>,
+ 			      <0x48940010 0x4>;
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.31.1
+
