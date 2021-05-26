@@ -2,96 +2,194 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 593CF39211B
-	for <lists+linux-omap@lfdr.de>; Wed, 26 May 2021 21:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A102392218
+	for <lists+linux-omap@lfdr.de>; Wed, 26 May 2021 23:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234394AbhEZTuE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 May 2021 15:50:04 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:33176 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231924AbhEZTuA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 May 2021 15:50:00 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14QJmNEi098993;
-        Wed, 26 May 2021 14:48:23 -0500
+        id S233801AbhEZVcu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 May 2021 17:32:50 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:57990 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233550AbhEZVcs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 May 2021 17:32:48 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14QLUjWo083494;
+        Wed, 26 May 2021 16:30:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1622058503;
-        bh=jmGUOiH5Kh5C55VfKeVNPLm81ACiT20v+T/oKoj/f74=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To;
-        b=Ja/RAjoOSeiNG3rPH4u+iH3Pt3VA5OC4eiWFHsX+e3JUcb5k0A478zAvu7t0ygKO9
-         0d7XTHHejXa52GnxLOVxquWdjwcr+9nrq+CBqe8FBgOyLWuskuJfRxHfnFh4yrKiBh
-         ApZGtZ8+bBF4xJydSRHcwu4kl7dwBnSvHja5QODk=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14QJmN1v031454
+        s=ti-com-17Q1; t=1622064645;
+        bh=FTvZVkn8ZE6UMqlEKzTShsRaAPM+cK0ORtQaLO6Zh7E=;
+        h=From:To:CC:Subject:Date;
+        b=g36iNksh8nH71yVLAFJwXpxLGKh79F50cfgR4c78hruW4KxIXWCLLwuik2iTj1TuX
+         iHksgtdK47wxYK19RonrwXu+Lc/oKXGb1YApBUTBXHRa3cLLF5jk9c5Z+G+JMuO9cT
+         sedC8lnF1Z2SVNFe+B0ECSEJfrp05TdEj9SU+iWQ=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14QLUjJG097632
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 26 May 2021 14:48:23 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 26 May 2021 16:30:45 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 26
- May 2021 14:48:23 -0500
-Received: from DLEE111.ent.ti.com ([fe80::a4a2:21d4:3321:ad11]) by
- DLEE111.ent.ti.com ([fe80::a4a2:21d4:3321:ad11%17]) with mapi id
- 15.01.2176.012; Wed, 26 May 2021 14:48:23 -0500
-From:   "Tammana, Gowtham" <g-tammana@ti.com>
-To:     "Anna, Suman" <s-anna@ti.com>,
-        "tony@atomide.com" <tony@atomide.com>,
-        "bcousson@baylibre.com" <bcousson@baylibre.com>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
+ May 2021 16:30:45 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Wed, 26 May 2021 16:30:45 -0500
+Received: from fllv0103.dal.design.ti.com (fllv0103.dal.design.ti.com [10.247.120.73])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14QLUjGc118939;
+        Wed, 26 May 2021 16:30:45 -0500
+Received: from uda0271916b.dhcp.ti.com (uda0271916b.dhcp.ti.com [128.247.81.224] (may be forged))
+        by fllv0103.dal.design.ti.com (8.14.7/8.14.7) with ESMTP id 14QLUjXE073919;
+        Wed, 26 May 2021 16:30:45 -0500
+From:   Gowtham Tammana <g-tammana@ti.com>
+To:     Suman Anna <s-anna@ti.com>, <tony@atomide.com>,
+        <bcousson@baylibre.com>
+CC:     <robh+dt@kernel.org>, <linux-omap@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        "Strashko, Grygorii" <grygorii.strashko@ti.com>,
-        "Menon, Nishanth" <nm@ti.com>
-Subject: RE: [PATCH v2] ARM: dts: dra7: Fix duplicate USB4 device node
-Thread-Topic: [PATCH v2] ARM: dts: dra7: Fix duplicate USB4 device node
-Thread-Index: AQHXUlN5Jk6XvXlbc0C/UV9VMQLecKr2YXOA///ASFA=
-Date:   Wed, 26 May 2021 19:48:23 +0000
-Message-ID: <555c768263cc48499b299c0b595fcb94@ti.com>
-References: <20210526172038.17542-1-g-tammana@ti.com>
- <64bb0e71-dc6d-e21d-cfc0-cfeb787ca7c2@ti.com>
-In-Reply-To: <64bb0e71-dc6d-e21d-cfc0-cfeb787ca7c2@ti.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.250.43.171]
-x-exclaimer-md-config: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Nisanth Menon <nm@ti.com>, Gowtham Tammana <g-tammana@ti.com>
+Subject: [PATCH v3] ARM: dts: dra7: Fix duplicate USB4 target module node
+Date:   Wed, 26 May 2021 16:30:35 -0500
+Message-ID: <20210526213035.15448-1-g-tammana@ti.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEFubmEsIFN1bWFuDQo+U2Vu
-dDogV2VkbmVzZGF5LCBNYXkgMjYsIDIwMjEgMTowMSBQTQ0KPg0KPkhpIEdvd3RoYW0sDQo+DQo+
-T24gNS8yNi8yMSAxMjoyMCBQTSwgR293dGhhbSBUYW1tYW5hIHdyb3RlOg0KPj4gV2l0aCBbMV0g
-VVNCNCBkZXZpY2Ugbm9kZSBnb3QgZGVmaW5lZCBpbiBkcmE3NHguZHRzaSBmaWxlLiBIb3dldmVy
-LA0KPj4gdGhlcmUgd2FzIGEgcHJpb3IgZGVmaW50aW9uIG9mIHRoZSBzYW1lIGluIFsyXSB3aGlj
-aCBkaWRuJ3QgZ2V0IHJlbW92ZWQNCj4NCj5JIGxpa2UgdGhpcyBhcHByb2FjaCBhbmQgaXMgbW9y
-ZSBpbiBsaW5lIHdpdGggdGhlIG9yaWdpbmFsIG1vdmUgb2YgVVNCNA0KPm5vZGUNCj5pbnRvIGRy
-YTc0eC5kdHNpIGZpbGUuDQo+DQo+TG9va3MgbGlrZSB5b3UgbWl4ZWQgdXAgWzFdIGFuZCBbMl0g
-b3IgSSBtaXN1bmRlcnN0YW5kIHlvdXIgdGVybWlub2xvZ3kuDQoNClllcywgMSBhbmQgMiBnb3Qg
-bWl4ZWQgdXAgaGVyZS4gV2lsbCBwb3N0IGEgdjMuDQoNCj5BbHNvLA0KPmxldCdzIGJlIHByZWNp
-c2UsIGl0IGlzIHRoZSBVU0I0IHRhcmdldC1tb2R1bGUgbm9kZSB0aGF0IGdvdCBkdXBsaWNhdGVk
-IGluDQo+WzJdLA0KPlVTQjQgbm9kZSBhbHdheXMgZXhpc3RlZCBidXQgb3V0c2lkZSBvZiB0aS1z
-eXNjIGNvbnRyb2wgYmVmb3JlIFsyXSBhbmQgZGlkDQo+bm90DQo+Y29uZmxpY3Qgd2l0aCB0aGUg
-dGFyZ2V0LW1vZHVsZSBub2RlIGFkZGVkIGluIFsxXS4NCj4NCj4+IGNhdXNpbmcgYm9vdCBmYWls
-dXJlcy4NCj4NCj5vbiB3aGF0IGJvYXJkcz8gSXMgaXQgYWZmZWN0aW5nIGFsbCBvZiB0aGVtPw0K
-DQpJIGhhdmUgYSBkcmE3LWV2bSBib2FyZCBhbmQgc2VlIGZhaWx1cmUgb24gaXQuIFRoaXMgc2hv
-dWxkIGFsc28gYWZmZWN0DQpEcmE3Ni1ldm0sIGFtNTcyeCBiZWFnbGUgYm9hcmRzLCBhbTU3NHgg
-YXMgdGhleSBhbGwgcHVsbCBpbiBkcmE3NHguZHRzaS4NCldpbGwgbWVudGlvbiB0aGVzZSBpbiB0
-aGUgdjMgdXBkYXRlLg0KDQpUaGFua3MsDQpHb3d0aGFtIA0KDQo+IFVTQjQgbm9kZSBpcyBwcmVz
-ZW50IG9ubHkgaW4gRFJBNzR4IHZhcmlhbnRzIHNvDQo+PiBrZWVwaW5nIHRoZSBlbnRyeSBpbiBk
-cmE3NHguZHRzaSBhbmQgcmVtb3ZpbmcgaXQgZnJvbSB0aGUgdG9wIGxldmVsDQo+PiBpbnRlcmNv
-bm5lY3QgaGllcmFyY2h5IGRyYTctbDQuZHRzaSBmaWxlLg0KPj4NCj4+IFNpbmNlIFVTQjQgaXMg
-b25seSBpbmNsdWRlZCBpbiBEUkE3NHggdmFyaWFudHMsIHJlbW92ZSBpdHMgcmVmZXJlbmNlDQo+
-PiBmb3IgQU01NzE4LCBEUkE3MXggYW5kIERSNzJ4IGJvYXJkcy4NCj4+DQo+PiBbMV06IGNvbW1p
-dCA1NDlmY2UwNjhhMzExICgiQVJNOiBkdHM6IGRyYTc6IEFkZCBsNCBpbnRlcmNvbm5lY3QNCj4+
-IGhpZXJhcmNoeSBhbmQgdGktc3lzYyBkYXRhIikNCj4+IFsyXTogY29tbWl0IGM3YjcyYWJjYTYx
-ZWMgKCJBUk06IE9NQVAyKzogRHJvcCBsZWdhY3kgcGxhdGZvcm0gZGF0YSBmb3INCj4+IGRyYTcg
-ZHdjMyIpDQo+Pg0KPj4gRml4ZXM6IGM3YjcyYWJjYTYxZWMgKCJBUk06IE9NQVAyKzogRHJvcCBs
-ZWdhY3kgcGxhdGZvcm0gZGF0YSBmb3IgZHJhNw0KPmR3YzMiKQ0KPj4gU2lnbmVkLW9mZi1ieTog
-R293dGhhbSBUYW1tYW5hIDxnLXRhbW1hbmFAdGkuY29tPg0KPj4gLS0tDQo+PiB2MjoNCg==
+With [1] USB4 target-module node got defined in dra74x.dtsi file.
+However, the earlier definition in [2] was not removed, and this
+duplication of the target module is causing boot failure on dra74
+variant boards - dra7-evm, beagleboard-x15, beaglebone-ai, dra76-evm,
+am574x-idk.
+
+USB4 is only present in DRA74x variants, so keeping the entry in
+dra74x.dtsi and removing it from the top level interconnect hierarchy
+dra7-l4.dtsi file. This change makes the USB4 target module no longer
+visible to AM5718, DRA71x and DRA72x so removing references to it in
+their respective dts files.
+
+[1]: commit c7b72abca61ec ("ARM: OMAP2+: Drop legacy platform data for
+dra7 dwc3")
+[2]: commit 549fce068a311 ("ARM: dts: dra7: Add l4 interconnect
+hierarchy and ti-sysc data")
+
+Fixes: c7b72abca61ec ("ARM: OMAP2+: Drop legacy platform data for dra7 dwc3")
+Signed-off-by: Gowtham Tammana <g-tammana@ti.com>
+---
+v3:
+  - fixed error in references to the commits
+  - mentioned the boards that failed
+v2:
+  - https://lore.kernel.org/linux-arm-kernel/20210526172038.17542-1-g-tammana@ti.com/
+  - changed reference to commit sha instead of line numbers
+  - added Fixes: tag
+  - moved the defintion to dra74.dtsi as per Suman and Tony review comments
+v1:
+  - https://lore.kernel.org/linux-arm-kernel/20210521211851.14674-1-g-tammana@ti.com/
+
+ arch/arm/boot/dts/am5718.dtsi  |  6 +-----
+ arch/arm/boot/dts/dra7-l4.dtsi | 22 ----------------------
+ arch/arm/boot/dts/dra71x.dtsi  |  4 ----
+ arch/arm/boot/dts/dra72x.dtsi  |  4 ----
+ arch/arm/boot/dts/dra74x.dtsi  |  2 +-
+ 5 files changed, 2 insertions(+), 36 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am5718.dtsi b/arch/arm/boot/dts/am5718.dtsi
+index ebf4d3cc1cfb..6d7530a48c73 100644
+--- a/arch/arm/boot/dts/am5718.dtsi
++++ b/arch/arm/boot/dts/am5718.dtsi
+@@ -17,17 +17,13 @@ / {
+  * VCP1, VCP2
+  * MLB
+  * ISS
+- * USB3, USB4
++ * USB3
+  */
+ 
+ &usb3_tm {
+ 	status = "disabled";
+ };
+ 
+-&usb4_tm {
+-	status = "disabled";
+-};
+-
+ &atl_tm {
+ 	status = "disabled";
+ };
+diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
+index 149144cdff35..648d23f7f748 100644
+--- a/arch/arm/boot/dts/dra7-l4.dtsi
++++ b/arch/arm/boot/dts/dra7-l4.dtsi
+@@ -4129,28 +4129,6 @@ usb3: usb@10000 {
+ 			};
+ 		};
+ 
+-		usb4_tm: target-module@140000 {		/* 0x48940000, ap 75 3c.0 */
+-			compatible = "ti,sysc-omap4", "ti,sysc";
+-			reg = <0x140000 0x4>,
+-			      <0x140010 0x4>;
+-			reg-names = "rev", "sysc";
+-			ti,sysc-mask = <SYSC_OMAP4_DMADISABLE>;
+-			ti,sysc-midle = <SYSC_IDLE_FORCE>,
+-					<SYSC_IDLE_NO>,
+-					<SYSC_IDLE_SMART>,
+-					<SYSC_IDLE_SMART_WKUP>;
+-			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
+-					<SYSC_IDLE_NO>,
+-					<SYSC_IDLE_SMART>,
+-					<SYSC_IDLE_SMART_WKUP>;
+-			/* Domains (P, C): l3init_pwrdm, l3init_clkdm */
+-			clocks = <&l3init_clkctrl DRA7_L3INIT_USB_OTG_SS4_CLKCTRL 0>;
+-			clock-names = "fck";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			ranges = <0x0 0x140000 0x20000>;
+-		};
+-
+ 		target-module@170000 {			/* 0x48970000, ap 21 0a.0 */
+ 			compatible = "ti,sysc-omap4", "ti,sysc";
+ 			reg = <0x170010 0x4>;
+diff --git a/arch/arm/boot/dts/dra71x.dtsi b/arch/arm/boot/dts/dra71x.dtsi
+index cad0e4a2bd8d..9c270d8f75d5 100644
+--- a/arch/arm/boot/dts/dra71x.dtsi
++++ b/arch/arm/boot/dts/dra71x.dtsi
+@@ -11,7 +11,3 @@
+ &rtctarget {
+ 	status = "disabled";
+ };
+-
+-&usb4_tm {
+-	status = "disabled";
+-};
+diff --git a/arch/arm/boot/dts/dra72x.dtsi b/arch/arm/boot/dts/dra72x.dtsi
+index d403acc754b6..f3e934ef7d3e 100644
+--- a/arch/arm/boot/dts/dra72x.dtsi
++++ b/arch/arm/boot/dts/dra72x.dtsi
+@@ -108,7 +108,3 @@ &pcie1_ep {
+ &pcie2_rc {
+ 	compatible = "ti,dra726-pcie-rc", "ti,dra7-pcie";
+ };
+-
+-&usb4_tm {
+-	status = "disabled";
+-};
+diff --git a/arch/arm/boot/dts/dra74x.dtsi b/arch/arm/boot/dts/dra74x.dtsi
+index e1850d6c841a..60f2ab8d34d5 100644
+--- a/arch/arm/boot/dts/dra74x.dtsi
++++ b/arch/arm/boot/dts/dra74x.dtsi
+@@ -49,7 +49,7 @@ dsp2_system: dsp_system@41500000 {
+ 			reg = <0x41500000 0x100>;
+ 		};
+ 
+-		target-module@48940000 {
++		usb4_tm: target-module@48940000 {
+ 			compatible = "ti,sysc-omap4", "ti,sysc";
+ 			reg = <0x48940000 0x4>,
+ 			      <0x48940010 0x4>;
+-- 
+2.31.1
+
