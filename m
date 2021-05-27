@@ -2,44 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B480393130
-	for <lists+linux-omap@lfdr.de>; Thu, 27 May 2021 16:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 889F93931B0
+	for <lists+linux-omap@lfdr.de>; Thu, 27 May 2021 17:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234514AbhE0Op2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Thu, 27 May 2021 10:45:28 -0400
-Received: from mail-ua1-f50.google.com ([209.85.222.50]:39920 "EHLO
+        id S236739AbhE0PGI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 May 2021 11:06:08 -0400
+Received: from mail-ua1-f50.google.com ([209.85.222.50]:40930 "EHLO
         mail-ua1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234476AbhE0Op1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 May 2021 10:45:27 -0400
-Received: by mail-ua1-f50.google.com with SMTP id f20so330512uax.6;
-        Thu, 27 May 2021 07:43:53 -0700 (PDT)
+        with ESMTP id S236752AbhE0PGF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 May 2021 11:06:05 -0400
+Received: by mail-ua1-f50.google.com with SMTP id j2so366363uak.7;
+        Thu, 27 May 2021 08:04:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=mrubqU354Bw50F6NhJan1ixpgJfHonbN1b5m4Qiwgio=;
-        b=dEJ6rhKBTaObD7d0Lo828vL5ojAKRBNhjvScfDvspKbdVeLBneqDmhIr4SNz9Cy2Y8
-         qBH24780dG5saxyDxrw7Q/OCY1H7Dxix9k8Vh1l22+z2Rig/4EStOR1yoYjW8iwQQ4le
-         oDMGk3RC/LMaZ222y4D3cSKmFEKGYE2p0hG9ZEPslB2wfJ4Wvr3n8MLBrjcHPx64kso+
-         hXbtEzT4tt6CsihbWVaOBuaVty/JH0MDcryuziqwdzfYtlLTCmX6JsHWkximY2pgqRxQ
-         ubjHP65tUFUY4O4c1IBOh8Q0w4PRjX3BzPXhk5InCSdJi5RGL/m9VE9+W7sxtSr5Fuui
-         v+cw==
-X-Gm-Message-State: AOAM5326N2mI2ydwLoj1NCropEHGe9g8RvIDk3g4Zf8YF6QgjUuD419i
-        zREW9qB/PpOrNq4KaZMdDsPd4nIxc89nEGOvIow=
-X-Google-Smtp-Source: ABdhPJxbQEybwWGbInGZt3HUnlN6JAN7z8azG8ldl9Rc665+8ANZ8MQfrKZ9bI9VbY2xg+l//EvVWH257GMEDN8MfPs=
-X-Received: by 2002:a05:6122:3c:: with SMTP id q28mr2430647vkd.5.1622126632870;
- Thu, 27 May 2021 07:43:52 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=3u3wWCo2lZGWRYWR5pjnSvnC6obG/x9fym7jnlVxBcM=;
+        b=Sc/vgWF+lrjo11x3BduoHAVSi0bsJNjDff17iQWzJa+qVOhm1uy6+IU5BsPffJRjo1
+         IvoIJkM1xrD61vXLD25AWFSbmSrBxXRboepZAYExcvSu0iZXtT3pBf6ZC7FZKesyzmNQ
+         6CPuK48gLMYu/7IyNk2VB5SIerokpLN3UuxnODQHY7DMVeYpcpcLL6+QaEDPRrGt58g1
+         PsgpYRN8ZtZt4jX04mz9MF0fxl2FJ9QOmo6FRguJMXbbxDzBM5hAur6D2ZytHTMMhdNs
+         6ioxOATVS2pT9ee8qKVqbYKRno85GoGNgCjCwazB0HEFhXabspCHgGZmuz+P2DCNMHRc
+         RS/g==
+X-Gm-Message-State: AOAM531Jw9gbiUjn7aJrjPOHFSxFe9YuM1wX2YLfCk5NoNS5tTq0x1MG
+        pq+KTx5sS+TKwy30TooTGe/UzURo52pkqcnLlxz/4sklMtE=
+X-Google-Smtp-Source: ABdhPJzHaOLJBSw3gQx+wVzMZyw1XojcblD4dymCtSozCyRiE6ryYMrpQjtlVbuuU6nXtCljn2TrB5YZmEsVQ/NaFAQ=
+X-Received: by 2002:ab0:7705:: with SMTP id z5mr2806791uaq.2.1622127871092;
+ Thu, 27 May 2021 08:04:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1621583562.git.geert+renesas@glider.be> <52df0592c81ac000d3f486a9ba5a4d84b0f42c47.1621583562.git.geert+renesas@glider.be>
- <YKm1Z4/xULSzuoVV@pendragon.ideasonboard.com>
-In-Reply-To: <YKm1Z4/xULSzuoVV@pendragon.ideasonboard.com>
+ <CACRpkdbQE1-WgD_BBkHx9DvJ=GfW7-PCoF-73TKGpgh4c6Epxw@mail.gmail.com>
+ <CAMuHMdUqAwTSJuPXxJWgXGX1Hb=WLR3QtEm+RuhbyivFA5fUKA@mail.gmail.com> <20210521182403.GA50332@robh.at.kernel.org>
+In-Reply-To: <20210521182403.GA50332@robh.at.kernel.org>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 27 May 2021 16:43:41 +0200
-Message-ID: <CAMuHMdWwj7rwxmBX5CC+Qjnmkp1W+imXm1q5PXRZrm7ZB7jtMg@mail.gmail.com>
+Date:   Thu, 27 May 2021 17:04:19 +0200
+Message-ID: <CAMuHMdWvK6+GybGKc0MBn3qxJk_JQ8dOe1-3vfiezeZmNmzkxQ@mail.gmail.com>
 Subject: Re: [PATCH 3/3] dt-bindings: gpio: pcf857x: Convert to json-schema
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+To:     Rob Herring <robh@kernel.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
@@ -48,60 +49,71 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
-        <linux-omap@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Laurent,
+Hi Rob,
 
-On Sun, May 23, 2021 at 3:52 AM Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
-> On Fri, May 21, 2021 at 09:54:08AM +0200, Geert Uytterhoeven wrote:
-> > Convert the PCF857x-compatible I/O expanders Device Tree binding
-> > documentation to json-schema.
+On Fri, May 21, 2021 at 8:24 PM Rob Herring <robh@kernel.org> wrote:
+> On Fri, May 21, 2021 at 12:23:47PM +0200, Geert Uytterhoeven wrote:
+> > On Fri, May 21, 2021 at 12:04 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+> > > On Fri, May 21, 2021 at 9:54 AM Geert Uytterhoeven
+> > > <geert+renesas@glider.be> wrote:
+> > > > Convert the PCF857x-compatible I/O expanders Device Tree binding
+> > > > documentation to json-schema.
+> > > >
+> > > > Document missing compatible values, properties, and gpio hogs.
+> > > >
+> > > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> > >
+> > > (...)
+> > > > Perhaps the "ti,pcf8575" construct should be removed, and the few users
+> > > > fixed instead?
+> > >
+> > > You would rather list it as deprecated I think?
+> > > It is ABI...
 > >
-> > Document missing compatible values, properties, and gpio hogs.
-> >
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > ---
-> > Perhaps the "ti,pcf8575" construct should be removed, and the few users
-> > fixed instead?
+> > All DTS files use the "nxp,pcf8575" fallback, except for
+> > arch/x86/platform/ce4100/falconfalls.dts.
+> > The latter ain't working with Linux, as the Linux driver doesn't
+> > match against "ti,pcf8575"...
+
+Correction: i2c_device_id-based matching ignores the vendor part
+of the compatible value.  One day this is gonna bite us...
+
+> Perhaps can it just be removed?
+
+I think so.  All other users of similar I2C GPIO expanders just
+use the compatible values of the original NXP parts.
+
+> > > > +patternProperties:
+> > > > +  "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
+> > > > +    type: object
+> > >
+> > > But this is already in
+> > > /dtschema/schemas/gpio/gpio-hog.yaml
+> > > for nodename, isn't that where it properly belongs?
+> > >
+> > > I'm however confused here Rob will know what to do.
 >
-> Given that the driver doesn't match against it, that could be done, if
-> you're confident enough that there's no difference between the TI and
-> NXP versions that would need to be taken into account.
-
-I've just checked the datasheets, and they're identical modulo
-shuffling.  Probably TI is the mandatory second source for the NXP
-(née Philips) part.
-
-> > I have listed Laurent as the maintainer, as he wrote the original
-> > bindings.  Laurent: Please scream if this is inappropriate ;-)
+> This one is a bit odd.
 >
-> I'm sure I'll regret it later, but I don't mind :-)
-
-Thanks!
-
-> > +  lines-initial-states:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    description:
-> > +      Bitmask that specifies the initial state of each line.
-> > +      When a bit is set to zero, the corresponding line will be initialized to
-> > +      the input (pulled-up) state.
-> > +      When the  bit is set to one, the line will be initialized to the
-> > +      low-level output state.
-> > +      If the property is not specified all lines will be initialized to the
-> > +      input state.
+> > If we leave this out, something still has to refer to it?
+> > I see no other binding doing that...
 >
-> The line wrapping is weird.
+> It's selected by 'gpio-hog' being present, but here you need to make
+> sure that's the case.
 
-Is it? The different cases just start on a new line.  Which makes no
-difference, as there's no "|".
+OK. Fixed.
+
+> And I would hope you could define the node name to be just 1 of the 2
+> cases.
+
+Yep, the latter is fine.
 
 Gr{oetje,eeting}s,
 
