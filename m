@@ -2,126 +2,237 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 889F93931B0
-	for <lists+linux-omap@lfdr.de>; Thu, 27 May 2021 17:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59733393463
+	for <lists+linux-omap@lfdr.de>; Thu, 27 May 2021 18:56:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236739AbhE0PGI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 May 2021 11:06:08 -0400
-Received: from mail-ua1-f50.google.com ([209.85.222.50]:40930 "EHLO
-        mail-ua1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236752AbhE0PGF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 May 2021 11:06:05 -0400
-Received: by mail-ua1-f50.google.com with SMTP id j2so366363uak.7;
-        Thu, 27 May 2021 08:04:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3u3wWCo2lZGWRYWR5pjnSvnC6obG/x9fym7jnlVxBcM=;
-        b=Sc/vgWF+lrjo11x3BduoHAVSi0bsJNjDff17iQWzJa+qVOhm1uy6+IU5BsPffJRjo1
-         IvoIJkM1xrD61vXLD25AWFSbmSrBxXRboepZAYExcvSu0iZXtT3pBf6ZC7FZKesyzmNQ
-         6CPuK48gLMYu/7IyNk2VB5SIerokpLN3UuxnODQHY7DMVeYpcpcLL6+QaEDPRrGt58g1
-         PsgpYRN8ZtZt4jX04mz9MF0fxl2FJ9QOmo6FRguJMXbbxDzBM5hAur6D2ZytHTMMhdNs
-         6ioxOATVS2pT9ee8qKVqbYKRno85GoGNgCjCwazB0HEFhXabspCHgGZmuz+P2DCNMHRc
-         RS/g==
-X-Gm-Message-State: AOAM531Jw9gbiUjn7aJrjPOHFSxFe9YuM1wX2YLfCk5NoNS5tTq0x1MG
-        pq+KTx5sS+TKwy30TooTGe/UzURo52pkqcnLlxz/4sklMtE=
-X-Google-Smtp-Source: ABdhPJzHaOLJBSw3gQx+wVzMZyw1XojcblD4dymCtSozCyRiE6ryYMrpQjtlVbuuU6nXtCljn2TrB5YZmEsVQ/NaFAQ=
-X-Received: by 2002:ab0:7705:: with SMTP id z5mr2806791uaq.2.1622127871092;
- Thu, 27 May 2021 08:04:31 -0700 (PDT)
+        id S236500AbhE0Q63 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 May 2021 12:58:29 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:48182 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235252AbhE0Q62 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 May 2021 12:58:28 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14RGunnm039819;
+        Thu, 27 May 2021 11:56:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1622134609;
+        bh=lcTg9deYB/xQWjoJPZRw96kkkinGFibiZo91LJI62bk=;
+        h=From:To:CC:Subject:Date;
+        b=tzUz1WT/NODfAUaO7N+fVjBbRP+t6iyPG9QsKFuoOGpsKkrVyIAg4KrPc6+k7B4Hd
+         DJfXuOP2cIh1/gpb1V7Ej1j+g7UWMMaunJvoHazleSuK94a3GqjK9En+C9NNIYQwqY
+         CPITYP8PDZUzlVMA+f00+riSAb8tSNIFcf8oSYM8=
+Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14RGun9D041573
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 27 May 2021 11:56:49 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 27
+ May 2021 11:56:49 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Thu, 27 May 2021 11:56:49 -0500
+Received: from ula0132425.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14RGujix038568;
+        Thu, 27 May 2021 11:56:46 -0500
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-serial@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH] dt-bindings: serial: Move omap-serial.txt to YAML schema
+Date:   Thu, 27 May 2021 22:26:36 +0530
+Message-ID: <20210527165636.939-1-vigneshr@ti.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <cover.1621583562.git.geert+renesas@glider.be> <52df0592c81ac000d3f486a9ba5a4d84b0f42c47.1621583562.git.geert+renesas@glider.be>
- <CACRpkdbQE1-WgD_BBkHx9DvJ=GfW7-PCoF-73TKGpgh4c6Epxw@mail.gmail.com>
- <CAMuHMdUqAwTSJuPXxJWgXGX1Hb=WLR3QtEm+RuhbyivFA5fUKA@mail.gmail.com> <20210521182403.GA50332@robh.at.kernel.org>
-In-Reply-To: <20210521182403.GA50332@robh.at.kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 27 May 2021 17:04:19 +0200
-Message-ID: <CAMuHMdWvK6+GybGKc0MBn3qxJk_JQ8dOe1-3vfiezeZmNmzkxQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] dt-bindings: gpio: pcf857x: Convert to json-schema
-To:     Rob Herring <robh@kernel.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Jan Tuerk <jan.tuerk@emtrion.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Rob,
+Convert serial-omap.txt to YAML schema for better checks and documentation.
 
-On Fri, May 21, 2021 at 8:24 PM Rob Herring <robh@kernel.org> wrote:
-> On Fri, May 21, 2021 at 12:23:47PM +0200, Geert Uytterhoeven wrote:
-> > On Fri, May 21, 2021 at 12:04 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> > > On Fri, May 21, 2021 at 9:54 AM Geert Uytterhoeven
-> > > <geert+renesas@glider.be> wrote:
-> > > > Convert the PCF857x-compatible I/O expanders Device Tree binding
-> > > > documentation to json-schema.
-> > > >
-> > > > Document missing compatible values, properties, and gpio hogs.
-> > > >
-> > > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > >
-> > > (...)
-> > > > Perhaps the "ti,pcf8575" construct should be removed, and the few users
-> > > > fixed instead?
-> > >
-> > > You would rather list it as deprecated I think?
-> > > It is ABI...
-> >
-> > All DTS files use the "nxp,pcf8575" fallback, except for
-> > arch/x86/platform/ce4100/falconfalls.dts.
-> > The latter ain't working with Linux, as the Linux driver doesn't
-> > match against "ti,pcf8575"...
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+---
+ .../bindings/serial/omap_serial.txt           |  40 ------
+ .../bindings/serial/ti,omap4-uart.yaml        | 116 ++++++++++++++++++
+ 2 files changed, 116 insertions(+), 40 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/serial/omap_serial.txt
+ create mode 100644 Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml
 
-Correction: i2c_device_id-based matching ignores the vendor part
-of the compatible value.  One day this is gonna bite us...
-
-> Perhaps can it just be removed?
-
-I think so.  All other users of similar I2C GPIO expanders just
-use the compatible values of the original NXP parts.
-
-> > > > +patternProperties:
-> > > > +  "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
-> > > > +    type: object
-> > >
-> > > But this is already in
-> > > /dtschema/schemas/gpio/gpio-hog.yaml
-> > > for nodename, isn't that where it properly belongs?
-> > >
-> > > I'm however confused here Rob will know what to do.
->
-> This one is a bit odd.
->
-> > If we leave this out, something still has to refer to it?
-> > I see no other binding doing that...
->
-> It's selected by 'gpio-hog' being present, but here you need to make
-> sure that's the case.
-
-OK. Fixed.
-
-> And I would hope you could define the node name to be just 1 of the 2
-> cases.
-
-Yep, the latter is fine.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/Documentation/devicetree/bindings/serial/omap_serial.txt b/Documentation/devicetree/bindings/serial/omap_serial.txt
+deleted file mode 100644
+index c2db8cabf2ab..000000000000
+--- a/Documentation/devicetree/bindings/serial/omap_serial.txt
++++ /dev/null
+@@ -1,40 +0,0 @@
+-OMAP UART controller
+-
+-Required properties:
+-- compatible : should be "ti,am64-uart", "ti,am654-uart" for AM64 controllers
+-- compatible : should be "ti,j721e-uart", "ti,am654-uart" for J721E controllers
+-- compatible : should be "ti,am654-uart" for AM654 controllers
+-- compatible : should be "ti,omap2-uart" for OMAP2 controllers
+-- compatible : should be "ti,omap3-uart" for OMAP3 controllers
+-- compatible : should be "ti,omap4-uart" for OMAP4 controllers
+-- compatible : should be "ti,am4372-uart" for AM437x controllers
+-- compatible : should be "ti,am3352-uart" for AM335x controllers
+-- compatible : should be "ti,dra742-uart" for DRA7x controllers
+-- reg : address and length of the register space
+-- interrupts or interrupts-extended : Should contain the uart interrupt
+-                                      specifier or both the interrupt
+-                                      controller phandle and interrupt
+-                                      specifier.
+-- ti,hwmods : Must be "uart<n>", n being the instance number (1-based)
+-
+-Optional properties:
+-- clock-frequency : frequency of the clock input to the UART
+-- dmas : DMA specifier, consisting of a phandle to the DMA controller
+-         node and a DMA channel number.
+-- dma-names : "rx" for receive channel, "tx" for transmit channel.
+-- rs485-rts-delay, rs485-rx-during-tx, linux,rs485-enabled-at-boot-time: see rs485.txt
+-- rs485-rts-active-high: drive RTS high when sending (default is low).
+-- clocks: phandle to the functional clock as per
+-  Documentation/devicetree/bindings/clock/clock-bindings.txt
+-
+-Example:
+-
+-                uart4: serial@49042000 {
+-                        compatible = "ti,omap3-uart";
+-                        reg = <0x49042000 0x400>;
+-                        interrupts = <80>;
+-                        dmas = <&sdma 81 &sdma 82>;
+-                        dma-names = "tx", "rx";
+-                        ti,hwmods = "uart4";
+-                        clock-frequency = <48000000>;
+-                };
+diff --git a/Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml b/Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml
+new file mode 100644
+index 000000000000..b3e426c24a9e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml
+@@ -0,0 +1,116 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/serial/ti,omap4-uart.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Bindings for 8250 compliant UARTs on TI's OMAP and K3 SoCs
++
++maintainers:
++  - Vignesh Raghavendra <vigneshr@ti.com>
++
++allOf:
++  - $ref: /schemas/serial/serial.yaml#
++  - $ref: /schemas/serial/rs485.yaml#
++
++properties:
++  compatible:
++    oneOf:
++      - enum:
++          - ti,am3352-uart
++          - ti,am4372-uart
++          - ti,am654-uart
++          - ti,dra742-uart
++          - ti,omap2-uart
++          - ti,omap3-uart
++          - ti,omap4-uart
++      - items:
++          - enum:
++              - ti,am64-uart
++              - ti,j721e-uart
++          - const: ti,am654-uart
++
++  ti,hwmods:
++    description:
++      Must be "uart<n>", n being the instance number (1-based)
++      This property is applicable only on legacy platforms mainly omap2/3
++      and ti81xx and should not be used on other platforms.
++    $ref: /schemas/types.yaml#/definitions/string
++    deprecated: true
++
++  dmas:
++    minItems: 1
++    maxItems: 2
++
++  dma-names:
++    items:
++      - const: tx
++      - const: rx
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    minItems: 1
++    maxItems: 2
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    const: fclk
++
++  reg-shift:
++    const: 2
++  reg-io-width:
++    const: 4
++
++  rts-gpios: true
++  cts-gpios: true
++  dtr-gpios: true
++  dsr-gpios: true
++  rng-gpios: true
++  dcd-gpios: true
++  rs485-rts-delay: true
++  rs485-rts-active-low: true
++  rs485-rx-during-tx: true
++  rs485-rts-active-high: true
++  linux,rs485-enabled-at-boot-time: true
++  rts-gpio: true
++  power-domains: true
++  clock-frequency: true
++  current-speed: true
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++if:
++  properties:
++    compatible:
++      oneOf:
++        - const: ti,omap2-uart
++        - const: ti,omap3-uart
++        - const: ti,omap4-uart
++
++then:
++  properties:
++    ti,hwmods:
++      items:
++        - pattern: "^uart([1-9])$"
++
++else:
++  properties:
++    ti,hwmods: false
++
++examples:
++  - |
++          uart4: serial@49042000 {
++                  compatible = "ti,omap3-uart";
++                  reg = <0x49042000 0x400>;
++                  interrupts = <80>;
++                  clock-frequency = <48000000>;
++          };
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.31.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
