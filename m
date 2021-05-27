@@ -2,74 +2,217 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F1703934A0
-	for <lists+linux-omap@lfdr.de>; Thu, 27 May 2021 19:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0694D393523
+	for <lists+linux-omap@lfdr.de>; Thu, 27 May 2021 19:49:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236748AbhE0RVM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 27 May 2021 13:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59646 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234277AbhE0RVH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 May 2021 13:21:07 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9118C061574
-        for <linux-omap@vger.kernel.org>; Thu, 27 May 2021 10:19:21 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id g11so945698ilq.3
-        for <linux-omap@vger.kernel.org>; Thu, 27 May 2021 10:19:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=f8Lz0tnoM7rtU7X49eHqNYm93CEqb/Fw5Ht2VL188Lc=;
-        b=RrR1zdhkjcPhGL8OrJDjRxdrLajTAKlDSKii4g6CFg+vTcHrWkUrgP2ONYv03LDQ8c
-         +83Vptoufb8pKEEnARnzSmTI9xCQLlO3Ib11p28cQNcgT27divGPsiXgpyg5DF42/FbQ
-         /qFpW97gloJxJJeqvZxWRIDYKXWhRDRP6yOrwNJ65v4dcHPApeNTjbcagSSvL4kFx8h7
-         OluBn40KThjq7exszrvU8a6vJzU1Kq9GyY/d4Hmt9JW6n/+Gz11Xo3qSmYUdm769Mqln
-         eoE2+F9Sezu0EmUJ1Zf8s8iMqoymXUvcZ0cO/jhiPPMfJY0Ax55JF8qXlwDXSRHl84WB
-         5lNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=f8Lz0tnoM7rtU7X49eHqNYm93CEqb/Fw5Ht2VL188Lc=;
-        b=V2flJV7riAsyTnupDv6n5Y7t3TENY77VNuo1lBRnf8M916JNTbvT+SxLG8Yil5ftHu
-         7GVi1e3iGedDDfwpTwmE2iHeL1a9+wzWu2MxW70/xFBbONA36ybpmV6YaTE077fa099u
-         M172v1vEcvuGfHEdUGi+gjvU2hOebuQLNl9S0ep9PugRWP2dWd0xpW5ui6M2auExE7zi
-         WLd/WqVLEUcktpnqou+UEiv0O9v5gbMGev4aHC9fblQ+jrmIOB4raDuMbWMvpI7WytJx
-         AoWZ+MxjnScCr+nIOwkHMnHTLTSh7jiSnC826dhq0jbEjpbwUTU/p2L/B+3A8dYQU+Ic
-         tyTQ==
-X-Gm-Message-State: AOAM530Wps5cToaX0I7dYerUBzTn3mOH4U1xRvaQBIJwNsIMf/XDyrQR
-        z8NHynxy3Gj+89/SKGPmuiOobNkH4BAbsEO9wM4QxZiTHzmphg==
-X-Google-Smtp-Source: ABdhPJwIkfgIqm+s41KHLFBP84YI/pHC/Zrb3EhFFyST/y1C8CTT2QTV00jF+ZFVyBlDev9xtR+GXim/0Tk7H6icu9o=
-X-Received: by 2002:a05:6e02:504:: with SMTP id d4mr3900017ils.178.1622135961038;
- Thu, 27 May 2021 10:19:21 -0700 (PDT)
+        id S233941AbhE0RvW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 May 2021 13:51:22 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:59928 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229791AbhE0RvT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 May 2021 13:51:19 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14RHnf5v060411;
+        Thu, 27 May 2021 12:49:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1622137781;
+        bh=sy+bdMzmRE6ELJAGc0+jRguaGKhobAm0nHlog7cKFhY=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=Cm/qmHfRoB9xyrzs/vEAk/pV4L1bDRwkB1X6etgxtG8GgxEL24UFAeHLgja+UYcO3
+         ajCApWId2+l6HlPq3XtYz4bGVXvY313dIfiUYaZyalJxN5tb0+0IedKf32be8r+8Jv
+         EYe/AETFbif+8TykzpKljpz1XRJhX8i9YvEfmrYk=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14RHnfE1094266
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 27 May 2021 12:49:41 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 27
+ May 2021 12:49:40 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Thu, 27 May 2021 12:49:40 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14RHnbUu058802;
+        Thu, 27 May 2021 12:49:38 -0500
+Subject: Re: [PATCH] dt-bindings: serial: Move omap-serial.txt to YAML schema
+To:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     <linux-serial@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>
+References: <20210527165636.939-1-vigneshr@ti.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <3760d1e6-2121-323b-d962-60e8291d0bb7@ti.com>
+Date:   Thu, 27 May 2021 20:49:38 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-From:   Mighty M <mightymb17@gmail.com>
-Date:   Thu, 27 May 2021 22:49:10 +0530
-Message-ID: <CACLAQJFXr2PeuV9rJtyVTB0ib9QgsHC7W14qA_aCm9qKh81JOA@mail.gmail.com>
-Subject: Regulators not working
-To:     linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210527165636.939-1-vigneshr@ti.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-My device has twl6032 regulator, and the regulators are always
-disabled and off, even after putting regulator-always-on in my dts
-they are off. Only the twl regulators are affected, the ones i added
-manually (ie fixed reg with gpio) are working fine. Here is my dts
-https://pastebin.ubuntu.com/p/pYGG2pTSjB/, my .config
-https://pastebin.ubuntu.com/p/vVFrbZ4773/  , my dmesg
-https://pastebin.ubuntu.com/p/tqCXGnPZmF/ it says
 
-[    4.330841] VAUX2_6030: 2800 mV, disabled
-[    4.334533] twl6030_reg 48070000.i2c:twl@48:regulator-vaux2: always-on 1
 
-and checking the /sys/class/regulator
-samsung-espresso10:/sys/devices/platform/44000000.ocp/48000000.interconnect/48000000.interconnect:segment@0/48070000.target-module/48070000.i2c/i2c-0/0-0048/48070000.i2c:twl@48:regulator-vaux2/regulator/regulator.8#
-cat state
-disabled
-samsung-espresso10:/sys/devices/platform/44000000.ocp/48000000.interconnect/48000000.interconnect:segment@0/48070000.target-module/48070000.i2c/i2c-0/0-0048/48070000.i2c:twl@48:regulator-vaux2/regulator/regulator.8#
-cat status
-off
-the regulator_summary https://pastebin.ubuntu.com/p/3DH6h9bkGY/
+On 27/05/2021 19:56, Vignesh Raghavendra wrote:
+> Convert serial-omap.txt to YAML schema for better checks and documentation.
+> 
+> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+> ---
+>   .../bindings/serial/omap_serial.txt           |  40 ------
+>   .../bindings/serial/ti,omap4-uart.yaml        | 116 ++++++++++++++++++
+>   2 files changed, 116 insertions(+), 40 deletions(-)
+>   delete mode 100644 Documentation/devicetree/bindings/serial/omap_serial.txt
+>   create mode 100644 Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml
 
-I cannot understand why the twl pmic isnt working, any help?
+Why omap4? Seems ti,omap-uart.yaml is more suitable.
+
+> 
+> diff --git a/Documentation/devicetree/bindings/serial/omap_serial.txt b/Documentation/devicetree/bindings/serial/omap_serial.txt
+> deleted file mode 100644
+> index c2db8cabf2ab..000000000000
+> --- a/Documentation/devicetree/bindings/serial/omap_serial.txt
+> +++ /dev/null
+> @@ -1,40 +0,0 @@
+> -OMAP UART controller
+> -
+
+[...]
+
+> diff --git a/Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml b/Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml
+> new file mode 100644
+> index 000000000000..b3e426c24a9e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml
+> @@ -0,0 +1,116 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/serial/ti,omap4-uart.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bindings for 8250 compliant UARTs on TI's OMAP and K3 SoCs
+> +
+> +maintainers:
+> +  - Vignesh Raghavendra <vigneshr@ti.com>
+> +
+> +allOf:
+> +  - $ref: /schemas/serial/serial.yaml#
+> +  - $ref: /schemas/serial/rs485.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - enum:
+> +          - ti,am3352-uart
+> +          - ti,am4372-uart
+> +          - ti,am654-uart
+> +          - ti,dra742-uart
+> +          - ti,omap2-uart
+> +          - ti,omap3-uart
+> +          - ti,omap4-uart
+> +      - items:
+> +          - enum:
+> +              - ti,am64-uart
+> +              - ti,j721e-uart
+> +          - const: ti,am654-uart
+> +
+> +  ti,hwmods:
+> +    description:
+> +      Must be "uart<n>", n being the instance number (1-based)
+> +      This property is applicable only on legacy platforms mainly omap2/3
+> +      and ti81xx and should not be used on other platforms.
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    deprecated: true
+> +
+> +  dmas:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  dma-names:
+> +    items:
+> +      - const: tx
+> +      - const: rx
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 2
+
+Could you add description for interrupts, pls?
+
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: fclk
+> +
+> +  reg-shift:
+> +    const: 2
+> +  reg-io-width:
+> +    const: 4
+> +
+> +  rts-gpios: true
+> +  cts-gpios: true
+> +  dtr-gpios: true
+> +  dsr-gpios: true
+> +  rng-gpios: true
+> +  dcd-gpios: true
+> +  rs485-rts-delay: true
+> +  rs485-rts-active-low: true
+> +  rs485-rx-during-tx: true
+> +  rs485-rts-active-high: true
+> +  linux,rs485-enabled-at-boot-time: true
+> +  rts-gpio: true
+> +  power-domains: true
+> +  clock-frequency: true
+> +  current-speed: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +if:
+> +  properties:
+> +    compatible:
+> +      oneOf:
+> +        - const: ti,omap2-uart
+> +        - const: ti,omap3-uart
+> +        - const: ti,omap4-uart
+> +
+> +then:
+> +  properties:
+> +    ti,hwmods:
+> +      items:
+> +        - pattern: "^uart([1-9])$"
+> +
+> +else:
+> +  properties:
+> +    ti,hwmods: false
+> +
+> +examples:
+> +  - |
+> +          uart4: serial@49042000 {
+> +                  compatible = "ti,omap3-uart";
+> +                  reg = <0x49042000 0x400>;
+> +                  interrupts = <80>;
+> +                  clock-frequency = <48000000>;
+> +          };
+> 
+
+-- 
+Best regards,
+grygorii
