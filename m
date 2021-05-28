@@ -2,83 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C140393D72
-	for <lists+linux-omap@lfdr.de>; Fri, 28 May 2021 09:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABED6393F1B
+	for <lists+linux-omap@lfdr.de>; Fri, 28 May 2021 11:00:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234727AbhE1HH0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 May 2021 03:07:26 -0400
-Received: from muru.com ([72.249.23.125]:33154 "EHLO muru.com"
+        id S234608AbhE1JCI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 May 2021 05:02:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57206 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229574AbhE1HH0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 28 May 2021 03:07:26 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 6A6D4809F;
-        Fri, 28 May 2021 07:05:56 +0000 (UTC)
-Date:   Fri, 28 May 2021 10:05:47 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-serial@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
+        id S229911AbhE1JCH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 28 May 2021 05:02:07 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 972266124B;
+        Fri, 28 May 2021 09:00:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1622192433;
+        bh=5utpBUWZl30sjRPFYC2tWtUU3o2Hk1kNkbbqmvyXDQ4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wV1V6JJkzHScqdoKBqatYtK/jnXG1G2X9vDHC9UwSazaAvae9ZPt2bqKdM6oZjcRD
+         R/iI74zyIxz503oY/Ba8BFO/cR5N5M5zSbF+Lb8rqH2PisIiiGaod80jfThD30XHe+
+         pRSeoXrBKAOnM4M3zwrw3YkxLXztBwjeVl4iXIAQ=
+Date:   Fri, 28 May 2021 11:00:30 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
         Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Dario Binacchi <dariobin@libero.it>
-Subject: Re: [PATCH] dt-bindings: serial: Move omap-serial.txt to YAML schema
-Message-ID: <YLCWS/+TwSs8HhRG@atomide.com>
-References: <20210527165636.939-1-vigneshr@ti.com>
- <3760d1e6-2121-323b-d962-60e8291d0bb7@ti.com>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] serial: 8250: 8250_omap: Fix possible interrupt storm
+Message-ID: <YLCxLvcm/yG9+GE3@kroah.com>
+References: <20210511151955.28071-1-vigneshr@ti.com>
+ <YJ008MjjewRUTn9Z@kroah.com>
+ <YLCCJzkkB4N7LTQS@atomide.com>
+ <e5b35370-bf2d-7295-e2fd-9aee5bbc3296@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3760d1e6-2121-323b-d962-60e8291d0bb7@ti.com>
+In-Reply-To: <e5b35370-bf2d-7295-e2fd-9aee5bbc3296@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Grygorii Strashko <grygorii.strashko@ti.com> [210527 17:49]:
+On Fri, May 28, 2021 at 11:41:36AM +0530, Vignesh Raghavendra wrote:
+> Hi,
 > 
-> 
-> On 27/05/2021 19:56, Vignesh Raghavendra wrote:
-> > Convert serial-omap.txt to YAML schema for better checks and documentation.
+> On 5/28/21 11:09 AM, Tony Lindgren wrote:
+> > Hi Greg, Vignesh & Jan,
 > > 
-> > Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-> > ---
-> >   .../bindings/serial/omap_serial.txt           |  40 ------
-> >   .../bindings/serial/ti,omap4-uart.yaml        | 116 ++++++++++++++++++
-> >   2 files changed, 116 insertions(+), 40 deletions(-)
-> >   delete mode 100644 Documentation/devicetree/bindings/serial/omap_serial.txt
-> >   create mode 100644 Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml
+> > * Greg Kroah-Hartman <gregkh@linuxfoundation.org> [210513 14:17]:
+> >> On Tue, May 11, 2021 at 08:49:55PM +0530, Vignesh Raghavendra wrote:
+> >>> It is possible that RX TIMEOUT is signalled after RX FIFO has been
+> >>> drained, in which case a dummy read of RX FIFO is required to clear RX
+> >>> TIMEOUT condition. Otherwise, RX TIMEOUT condition is not cleared
+> >>> leading to an interrupt storm
+> >>>
+> >>> Cc: stable@vger.kernel.org
+> >>
+> >> How far back does this need to go?  What commit id does this fix?  What
+> >> caused this to just show up now vs. previously?
 > 
-> Why omap4? Seems ti,omap-uart.yaml is more suitable.
+> Sorry, I missed this reply. Issue was reported on AM65x SoC with custom
+> test case from Jan Kiszka that stressed UART with rapid baudrate changes
+> from 9600 to 4M along with data transfer.
+> 
+> Based on the condition that led to interrupt storm, I inferred it to
+> affect all SoCs with 8250 OMAP UARTs. But that seems thats not the best
+> idea as seen from OMAP3 regression.
+> 
+> Greg,
+> 
+> Could you please drop the patch? Very sorry for the inconvenience..
 
-Additionally omap-serial should be deprecated in favor of 8250_omap and
-omap-serial not used at all in general.
+Now reverted, thanks.
 
-It seems some folks still stick to omap-serial for legacy reasons when
-using an old .config. That's easy to fix by just changing inittab to
-use ttyS instead of ttyO, the kernel cmdline is already fixed up on
-init to use ttyS, but might as well update the bootloader cmdline too.
-
-But why do we even allow using this driver on newer SoCs when we have
-already planned to deprecate omap-serial.c years before the new SoCs?
-
-I suggest we make omap-serial deprecated for all SoCs, and not even
-allow it for am6, omap-serial.c only lists these:
-
-        { .compatible = "ti,omap2-uart" },
-        { .compatible = "ti,omap3-uart" },
-        { .compatible = "ti,omap4-uart" },
-
-And folks are also using it for some rs485 cases that should just be
-really fixed for 8250_omap instead.. Adding Dario to Cc because of
-these omap-serial patches:
-
-e2a5e8448e73 ("serial: omap: fix rs485 half-duplex filtering")
-45f6b6db53c8 ("serial: omap: don't disable rs485 if rts gpio is missing")
-
-Dario, why not use 8250_omap instead?
-
-Regards,
-
-Tony
+greg k-h
