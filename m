@@ -2,96 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7B7E393CCC
-	for <lists+linux-omap@lfdr.de>; Fri, 28 May 2021 07:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 493D5393CFD
+	for <lists+linux-omap@lfdr.de>; Fri, 28 May 2021 08:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235116AbhE1F7f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 May 2021 01:59:35 -0400
-Received: from muru.com ([72.249.23.125]:33120 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234811AbhE1F7e (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 28 May 2021 01:59:34 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id B363C80A8;
-        Fri, 28 May 2021 05:58:05 +0000 (UTC)
-Date:   Fri, 28 May 2021 08:57:56 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        letux-kernel@openphoenux.org
-Subject: Re: [PATCH] usb: musb: Check devctl status again for a spurious
- session request
-Message-ID: <YLCGZEan87yp9Eeq@atomide.com>
-References: <20210518150615.53464-1-tony@atomide.com>
- <20210527211501.70d176b4@aktux>
+        id S235513AbhE1GN0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 May 2021 02:13:26 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:40334 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235714AbhE1GNX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 May 2021 02:13:23 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14S6BfaD098715;
+        Fri, 28 May 2021 01:11:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1622182301;
+        bh=ZPNt70vGnHpxcw1dROUYgn0d1ja4wBQquthubECy0dY=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=G/LfpDB3ltUyIYYInJyNPNIWH/HgiM/sp/vKaOkGq4ObByVu7g9ZTDPoudru29jXG
+         FVzQqZihcG2d8sFGfkZ9mXoSJ36McCw+vB00hB1wajUp22xhH4TODAEmrofwUac1NR
+         UW1e9Zw/2Ert/AbsnKFIFA9qHyNkUslu/mduAvm4=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14S6BfET037027
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 28 May 2021 01:11:41 -0500
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 28
+ May 2021 01:11:40 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Fri, 28 May 2021 01:11:40 -0500
+Received: from [10.250.234.148] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14S6Bb8E120489;
+        Fri, 28 May 2021 01:11:38 -0500
+Subject: Re: [PATCH] serial: 8250: 8250_omap: Fix possible interrupt storm
+To:     Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Jiri Slaby <jirislaby@kernel.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        <linux-serial@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20210511151955.28071-1-vigneshr@ti.com>
+ <YJ008MjjewRUTn9Z@kroah.com> <YLCCJzkkB4N7LTQS@atomide.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <e5b35370-bf2d-7295-e2fd-9aee5bbc3296@ti.com>
+Date:   Fri, 28 May 2021 11:41:36 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210527211501.70d176b4@aktux>
+In-Reply-To: <YLCCJzkkB4N7LTQS@atomide.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi,
 
-* Andreas Kemnade <andreas@kemnade.info> [210527 19:15]:
-> Hi,
+On 5/28/21 11:09 AM, Tony Lindgren wrote:
+> Hi Greg, Vignesh & Jan,
 > 
-> On Tue, 18 May 2021 18:06:15 +0300
-> Tony Lindgren <tony@atomide.com> wrote:
+> * Greg Kroah-Hartman <gregkh@linuxfoundation.org> [210513 14:17]:
+>> On Tue, May 11, 2021 at 08:49:55PM +0530, Vignesh Raghavendra wrote:
+>>> It is possible that RX TIMEOUT is signalled after RX FIFO has been
+>>> drained, in which case a dummy read of RX FIFO is required to clear RX
+>>> TIMEOUT condition. Otherwise, RX TIMEOUT condition is not cleared
+>>> leading to an interrupt storm
+>>>
+>>> Cc: stable@vger.kernel.org
+>>
+>> How far back does this need to go?  What commit id does this fix?  What
+>> caused this to just show up now vs. previously?
+
+Sorry, I missed this reply. Issue was reported on AM65x SoC with custom
+test case from Jan Kiszka that stressed UART with rapid baudrate changes
+from 9600 to 4M along with data transfer.
+
+Based on the condition that led to interrupt storm, I inferred it to
+affect all SoCs with 8250 OMAP UARTs. But that seems thats not the best
+idea as seen from OMAP3 regression.
+
+Greg,
+
+Could you please drop the patch? Very sorry for the inconvenience..
+
 > 
-> > On start-up, we can get a spurious session request interrupt with nothing
-> > connected. After that the devctl session bit will silently clear, but the
-> > musb hardware is never idled until a cable is plugged in, or the glue
-> > layer module is reloaded.
-> > 
-> > Let's just check the session bit again in 3 seconds in peripheral mode
-> > to catch the issue.
-> > 
-> Tested this together with the other musb patch you sent on gta04.
-> This has some interesting side effects.
+> I just noticed this causes the following regression in Linux next when
+> pressing a key on uart console after boot at least on omap3. This seems
+> to happen on serial_port_in(port, UART_RX) in the quirk handling.
 > 
-> Test done:
-> - loading kernel+ramdisk via usb-dfu
-> - disconnecting usb cable
-> - loading omap_hdq (to see battery status)
-> - idling serial ports
-> - checking battery current 1.
-> - loading omap2430, phy-twl4030-usb, g_ether
-> - checking battery current 2 (again with idled serial ports).
-> - rtcwake -s 20 -m mem
-> - checking current during suspend (3)
+> Vignesh, it seems this quirk needs some soc specific flag added to
+> it maybe? Or maybe UART_OMAP_RX_LVL register is not available for
+> all the SoCs?
 > 
-> Without your patches: current 2 is current 1 + approx 15 mA, current 3
-> is near current 1.
-> With your patches: current 2 is near current 1, current 3 is approx
-> 15mA higher.
 
-Interesting, so power consumption is now better for runtime with cable
-disconnected, and after booting, but now somehow is now worse for
-suspended state. I'll try to reproduce.
+Yes indeed :(
 
-> Another strange thing I have hit (I have not done this test before, no
-> idea yet if it is related, but it is also about musb):
-> Connecting a usb cable while serial ports are idle (not in system
-> supend), console serial port does not wake up by input, it reacts again
-> if I unplug usb. If I give usb0 an IP address, I can ping it. No
-> intensive debugging done there yet. Just stumbled across it.
+> I think it's best to drop this patch until the issues are resolved,
+> also there are some open comments above that might be answered by
+> limiting this quirk to a specific range of SoCs :)
+> 
 
-Hmm so if you have a usb cable connected and gta04 is a b-device, and
-there is vbus, musb should not currently idle at all.
+Oops, I did test patch AM33xx assuming its equivalent to OMAP3, but UART
+IP is quite different. I will respin the patch making sure, workaround
+applies only to AM65x and K3 SoCs.
 
-Maybe your uart3 wakeirq is not using the uart3_rx.uart3_rx
-pad but uses some alternative pad and the wakeirq is not working?
-
-Or the twl4030 usb phy is somehow interfering with the uart3 pins
-when usb is in use. Worth checking the schematics again for the
-uart3 rx pin used? Sorry I don't remember if omap3 has multiple
-alternative pins for uart3, but I think it does.
-
-Regards,
-
-Tony
-
+Regards
+Vignesh
