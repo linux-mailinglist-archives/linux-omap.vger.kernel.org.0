@@ -2,153 +2,183 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA207396404
-	for <lists+linux-omap@lfdr.de>; Mon, 31 May 2021 17:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6C43966A2
+	for <lists+linux-omap@lfdr.de>; Mon, 31 May 2021 19:14:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233106AbhEaPny (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 31 May 2021 11:43:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59456 "EHLO
+        id S233708AbhEaRPp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 31 May 2021 13:15:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233024AbhEaPlx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 May 2021 11:41:53 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6059C08E9AC;
-        Mon, 31 May 2021 07:29:17 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id b9so16901120ejc.13;
-        Mon, 31 May 2021 07:29:17 -0700 (PDT)
+        with ESMTP id S233852AbhEaRNy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 31 May 2021 13:13:54 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5094C0431DC;
+        Mon, 31 May 2021 08:22:06 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id 22-20020a17090a0c16b0290164a5354ad0so1488407pjs.2;
+        Mon, 31 May 2021 08:22:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=qNjqZ5zd2V40yN4Zg4sWv5pTo9qBY5VHb+FiIliKXlQ=;
-        b=RfzreTFwv7GzzZL2BeFwL70PpxPupd5vxJ6j6yTfPHtV636uy1Qb8ycfBgYRRiMz6V
-         1QDhtIQokdhY6SS5DkDxRQXWQHuqVzAlB7+v9QmyrOsriJRWIYbhVEAf7OASAnUAz3Tg
-         R/Nw4ap6hT8Ekl/1dEp0GYgjjXyyrqzQyEOWelDf3GIUuUXqsOqxBpZsBhNSTG6CYYKy
-         smk2hiOGcMO2fB8B2tYXlMYTFYNfgFQIK1/l+gYcg2IbfAi9/d6PwcMLS/Y4lSTTKyo3
-         1l1Xhpq4FuiSM6W/KJ54uDjICcviWnlKUKbIFZG3E04hWYGCD7Vg/5BFls4Fu6hOG7/f
-         MBFA==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=E/nsoegynA0NxQg1GYgvxu0633H8HmQGqO4a4h40Vrs=;
+        b=io7rMBM/BpXIrLooSN5ZmWTDIy8m4xnHFuzzSYxQc5JYEE4I8f0DKG79Vyj9CC74nq
+         1CZs6Ie+s3Pr4WVULFjr2S0GHvnAztxCX9TRrurmhhwkHMubsj8ZVpn4foE/3GmSla8Q
+         BpAuAYKBm8XJHQ8smIybRfC+TH161xzYLi+mCuTr3FqC9n36T2U/Oq3KrN1pMnsj8MlU
+         0XPK0Wn1+mThvjwPlqMg0jDYdpP9Rlo+a0q87UkJTAviFjMkhGsNizQOETq9vRUsuPC2
+         9Tp1kJZnEyCtMScONCFbsYO/mARS8AIxYYIK0Tn+DFrsO0XIy5ADyy2Yads+vm3lOl5M
+         Av5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=qNjqZ5zd2V40yN4Zg4sWv5pTo9qBY5VHb+FiIliKXlQ=;
-        b=Tubry8l/VMrBZlmKeG2r+00WM0HGQZOHE5i82UDRjAhor1BPIsyjBZcG/tqVC2EiZr
-         LTRlzDlF9pssX00i+kNOnGt9UaqdxUh2d4XOZSN+cFfI9eBf03ryQQXEsVUrAprZJ0Qh
-         hakMBuVUDIYsLaX/XHjZAlyCNgskGRVHz3ksjbwDzv8BRgKSVrFze4XqKcxcpt8Hod7V
-         pV4GoGzH4IqKU9QGvLcyaI1onoiNMDbkNlXOuQn5J7+H0DRfLldicYaYAvKVKe3fHSth
-         5I/wVUoPyax31kcuQxIsg6W8iycQ9HyTZA7kxZ4VQ9Pp5tXt9b/qi+dmdfoYNoK9CqvR
-         rl2g==
-X-Gm-Message-State: AOAM531EuZhMr5ByMZX1QTC28PB1xCid3UaVsvaTHa80jFFtxrBd2GQU
-        IdEyW96WLhlGhgwUFqx1kDE=
-X-Google-Smtp-Source: ABdhPJyxfWuqNyBrWukySA+Pv7Eu8C+/LWEiJmrzZkXj1dqR35uMeIMS8NCjnFFsE2PAd7ML1rCA9A==
-X-Received: by 2002:a17:906:3f86:: with SMTP id b6mr23407366ejj.530.1622471356280;
-        Mon, 31 May 2021 07:29:16 -0700 (PDT)
-Received: from skbuf ([188.26.52.84])
-        by smtp.gmail.com with ESMTPSA id kj1sm2804057ejc.10.2021.05.31.07.29.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 May 2021 07:29:15 -0700 (PDT)
-Date:   Mon, 31 May 2021 17:29:14 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Ben Hutchings <ben.hutchings@essensium.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=E/nsoegynA0NxQg1GYgvxu0633H8HmQGqO4a4h40Vrs=;
+        b=eimkLXtidNWLlbCThHGk+x2IvJHskH9aOezAe4RfmCDZjwZVOpYvY2jqYPFKGWIcaE
+         Gt+hbYGnkWIX+/mpwbeEHUl0y9+369WRt0T1Itts1BfCl3csMAHw/PleYa2q0O7zLS+7
+         L0g4TeysxG7ABvjW7m1icVN6pTt8SdurfjPN7bsywLldF6TOjNJ0cXQQ5zybtKgr4X6J
+         HJRyd2H70pJAonUrOeUo0rkUC5MTrwEZU26h8wQnugffi/utqAdYTXtM1hd4rgrrQwt6
+         nAngI2Hhvl3xYxKDgREHOVAXrUzIRC48K/XovhO50lrQPaRintfeX7D9TQhqgZ0C0cP/
+         EXPg==
+X-Gm-Message-State: AOAM533Z8uE56eGbxfawU7jYkDGMKFFklkR2YbfRA6BCgTInRXZJeU1C
+        q/p2ioBM71t427JR8Fbcmss=
+X-Google-Smtp-Source: ABdhPJyNi4I3yqF6G0P2FwAnt5dHjxqfjdJxnyvT4DlnNqIlwQHOyrX2w4rRtSRr4PQKzE3141t0nA==
+X-Received: by 2002:a17:902:dac3:b029:105:66fc:8ed7 with SMTP id q3-20020a170902dac3b029010566fc8ed7mr4138063plx.6.1622474526131;
+        Mon, 31 May 2021 08:22:06 -0700 (PDT)
+Received: from [192.168.1.67] (99-44-17-11.lightspeed.irvnca.sbcglobal.net. [99.44.17.11])
+        by smtp.gmail.com with ESMTPSA id np1sm10880007pjb.13.2021.05.31.08.22.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 May 2021 08:22:05 -0700 (PDT)
+Subject: Re: Ethernet padding - ti_cpsw vs DSA tail tag
+To:     Vladimir Oltean <olteanv@gmail.com>,
+        Ben Hutchings <ben.hutchings@essensium.com>
 Cc:     netdev@vger.kernel.org,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         linux-omap@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: Ethernet padding - ti_cpsw vs DSA tail tag
-Message-ID: <20210531142914.bfvcbhglqz55us6s@skbuf>
+        Vivien Didelot <vivien.didelot@gmail.com>
 References: <20210531124051.GA15218@cephalopod>
+ <20210531142914.bfvcbhglqz55us6s@skbuf>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <cfa6494d-0d7c-a260-6f9f-d7b8d74b287e@gmail.com>
+Date:   Mon, 31 May 2021 08:22:03 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.10.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210531124051.GA15218@cephalopod>
+In-Reply-To: <20210531142914.bfvcbhglqz55us6s@skbuf>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Ben,
 
-On Mon, May 31, 2021 at 02:40:52PM +0200, Ben Hutchings wrote:
-> I'm working on a system that uses a TI Sitara SoC with one of its
-> Ethernet ports connected to the host port of a Microchip KSZ8795
-> switch.  I'm updating the kernel from 4.14.y to 5.10.y.  Currently I
-> am using the ti_cpsw driver, but it looks like the ti_cpsw_new driver
-> has the same issue.
+
+On 5/31/2021 7:29 AM, Vladimir Oltean wrote:
+> Hi Ben,
 > 
-> The Microchip switch expects a tail tag on ingress from the host port
-> to control which external port(s) to forward to.  This must appear
-> immediately before the frame checksum.  The DSA core correctly pads
-> outgoing skbs to at least 60 bytes before tag_ksz appends the tag.
+> On Mon, May 31, 2021 at 02:40:52PM +0200, Ben Hutchings wrote:
+>> I'm working on a system that uses a TI Sitara SoC with one of its
+>> Ethernet ports connected to the host port of a Microchip KSZ8795
+>> switch.  I'm updating the kernel from 4.14.y to 5.10.y.  Currently I
+>> am using the ti_cpsw driver, but it looks like the ti_cpsw_new driver
+>> has the same issue.
+>>
+>> The Microchip switch expects a tail tag on ingress from the host port
+>> to control which external port(s) to forward to.  This must appear
+>> immediately before the frame checksum.  The DSA core correctly pads
+>> outgoing skbs to at least 60 bytes before tag_ksz appends the tag.
+>>
+>> However, since commit 9421c9015047 ("net: ethernet: ti: cpsw: fix min
+>> eth packet size"), the cpsw driver pads outgoing skbs to at least 64
+>> bytes.  This means that in smaller packets the tag byte is no longer
+>> at the tail.
+>>
+>> It's not obvious to me where this should be fixed.  Should drivers
+>> that pad in ndo_start_xmit be aware of any tail tag that needs to be
+>> moved?  Should DSA be aware that a lower driver has a minimum size >
+>> 60 bytes?
 > 
-> However, since commit 9421c9015047 ("net: ethernet: ti: cpsw: fix min
-> eth packet size"), the cpsw driver pads outgoing skbs to at least 64
-> bytes.  This means that in smaller packets the tag byte is no longer
-> at the tail.
+> These are good questions.
 > 
-> It's not obvious to me where this should be fixed.  Should drivers
-> that pad in ndo_start_xmit be aware of any tail tag that needs to be
-> moved?  Should DSA be aware that a lower driver has a minimum size >
-> 60 bytes?
+> In principle, DSA needs a hint from the master driver for tail taggers
+> to work properly. We should pad to ETH_ZLEN + <the hint value> before
+> inserting the tail tag. This is for correctness, to ensure we do not
+> operate in marginal conditions which are not guaranteed to work.
+> 
+> A naive approach would be to take the hint from master->min_mtu.
+> However, the first issue that appears is that the dev->min_mtu value is
+> not always set quite correctly.
+> 
+> The MTU in general measures the number of bytes in the L2 payload (i.e.
+> not counting the Ethernet + VLAN header, nor FCS). The DSA tag is
+> considered to be a part of the L2 payload from the perspective of a
+> DSA-unaware master.
+> 
+> But ether_setup() sets up dev->min_mtu by default to ETH_MIN_MTU (68),
+> which cites RFC791. This says:
+> 
+>     Every internet module must be able to forward a datagram of 68
+>     octets without further fragmentation.  This is because an internet
+>     header may be up to 60 octets, and the minimum fragment is 8 octets.
+> 
+> But many drivers simply don't set dev->min_mtu = 0, even if they support
+> sending minimum-sized Ethernet frames. Many set dev->min_mtu to ETH_ZLEN,
+> proving nothing except the fact that they don't understand that the
+> Ethernet header should not be counted by the MTU anyway.
+> 
+> So to work with these drivers which leave dev->min_mtu = ETH_MIN_MTU, we
+> would have to pad the packets in DSA to ETH_ZLEN + ETH_MIN_MTU. This is
+> not quite ideal, so even if it would be the correct approach, a large
+> amount of drivers would have to be converted to set dev->min_mtu = 0
+> before we could consider switching to that and not have too many
+> regressions.
+> 
+> Also, dev->min_mtu does not appear to have a very strict definition
+> anywhere other than "Interface Minimum MTU value". My hopes were some
+> guarantees along the lines of "if you try to send a packet with a
+> smaller L2 payload than dev->mtu, the controller might pad the packet".
+> But no luck with that, it seems.
+> 
+> Going to commit 9421c9015047, it looks like that took a shortcut for
+> performance reasons, and omitted to check whether the skb is actually
+> VLAN-tagged or not, and if egress untagging was requested or not.
+> My understanding is that packets smaller than CPSW_MIN_PACKET_SIZE _can_
+> be sent, it's only that the value was chosen (too) conservatively as
+> VLAN_ETH_ZLEN. The cpsw driver might be able to check whether the packet
+> is a VLAN tagged one by looking at skb->protocol, and choose the pad
+> size dynamically. Although I can understand why Grygorii might not want
+> to do that.
 
-These are good questions.
+Agree, that specific commit seems to be possibly by off by 4 in most cases.
 
-In principle, DSA needs a hint from the master driver for tail taggers
-to work properly. We should pad to ETH_ZLEN + <the hint value> before
-inserting the tail tag. This is for correctness, to ensure we do not
-operate in marginal conditions which are not guaranteed to work.
+> 
+> The pitfall is that even if we declare the proper min_mtu value for
+> every master driver, it would still not avoid padding in the cpsw case.
+> This is because the reason cpsw pads is due to VLAN, but VLAN is not
+> part of the L2 payload, so cpsw would still declare dev->min_mtu = 0 in
+> spite of needing to pad.
+> 
+> The only honest solution might be to extend struct net_device and add a
+> pad_size value somewhere in there. You might be able to find a hole with
+> pahole or something, and it doesn't need to be larger than an u8 (for up
+> to 255 bytes of padding). Then cpsw can set master->pad_size, and DSA
+> can look at it for tail taggers.
 
-A naive approach would be to take the hint from master->min_mtu.
-However, the first issue that appears is that the dev->min_mtu value is
-not always set quite correctly.
+Do we need another way for drivers to be left a chance to be wrong? Even
+if we document the semantics of net_device::pad_size correctly this
+probably won't cut it.
 
-The MTU in general measures the number of bytes in the L2 payload (i.e.
-not counting the Ethernet + VLAN header, nor FCS). The DSA tag is
-considered to be a part of the L2 payload from the perspective of a
-DSA-unaware master.
-
-But ether_setup() sets up dev->min_mtu by default to ETH_MIN_MTU (68),
-which cites RFC791. This says:
-
-    Every internet module must be able to forward a datagram of 68
-    octets without further fragmentation.  This is because an internet
-    header may be up to 60 octets, and the minimum fragment is 8 octets.
-
-But many drivers simply don't set dev->min_mtu = 0, even if they support
-sending minimum-sized Ethernet frames. Many set dev->min_mtu to ETH_ZLEN,
-proving nothing except the fact that they don't understand that the
-Ethernet header should not be counted by the MTU anyway.
-
-So to work with these drivers which leave dev->min_mtu = ETH_MIN_MTU, we
-would have to pad the packets in DSA to ETH_ZLEN + ETH_MIN_MTU. This is
-not quite ideal, so even if it would be the correct approach, a large
-amount of drivers would have to be converted to set dev->min_mtu = 0
-before we could consider switching to that and not have too many
-regressions.
-
-Also, dev->min_mtu does not appear to have a very strict definition
-anywhere other than "Interface Minimum MTU value". My hopes were some
-guarantees along the lines of "if you try to send a packet with a
-smaller L2 payload than dev->mtu, the controller might pad the packet".
-But no luck with that, it seems.
-
-Going to commit 9421c9015047, it looks like that took a shortcut for
-performance reasons, and omitted to check whether the skb is actually
-VLAN-tagged or not, and if egress untagging was requested or not.
-My understanding is that packets smaller than CPSW_MIN_PACKET_SIZE _can_
-be sent, it's only that the value was chosen (too) conservatively as
-VLAN_ETH_ZLEN. The cpsw driver might be able to check whether the packet
-is a VLAN tagged one by looking at skb->protocol, and choose the pad
-size dynamically. Although I can understand why Grygorii might not want
-to do that.
-
-The pitfall is that even if we declare the proper min_mtu value for
-every master driver, it would still not avoid padding in the cpsw case.
-This is because the reason cpsw pads is due to VLAN, but VLAN is not
-part of the L2 payload, so cpsw would still declare dev->min_mtu = 0 in
-spite of needing to pad.
-
-The only honest solution might be to extend struct net_device and add a
-pad_size value somewhere in there. You might be able to find a hole with
-pahole or something, and it doesn't need to be larger than an u8 (for up
-to 255 bytes of padding). Then cpsw can set master->pad_size, and DSA
-can look at it for tail taggers.
+TBH, I don't fully understand why the network stack has left so much
+leeway for Ethernet drivers to do their own padding as opposed to making
+sure that non-tagged (VLAN, DSA, whatever) frames are guaranteed to be
+at least 60 bytes when they reach ndo_start_xmit() and then just leave
+the stacking of devices to add their bytes where they need them, with
+the special trailer case that is a tiny bit harder to figure out. Maybe
+back in the days most Ethernet NICs would hardware pad and this only
+became a concern with newer/cheaper/embedded SoCs NICs that can no
+longer hardware pad by default? I can understand the argument about raw
+sockets which should permit an application to have full control over the
+minimum packet length, but again, in general we have a real link partner
+on the other side that is not going to be very tolerant.
+-- 
+Florian
