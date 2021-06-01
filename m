@@ -2,264 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 07EC23976BE
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Jun 2021 17:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9198239793E
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Jun 2021 19:39:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234420AbhFAPdW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Jun 2021 11:33:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40576 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234260AbhFAPdT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Jun 2021 11:33:19 -0400
-X-Greylist: delayed 334 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 01 Jun 2021 08:31:36 PDT
-Received: from leibniz.telenet-ops.be (leibniz.telenet-ops.be [IPv6:2a02:1800:110:4::f00:d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8129C061756
-        for <linux-omap@vger.kernel.org>; Tue,  1 Jun 2021 08:31:36 -0700 (PDT)
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-        by leibniz.telenet-ops.be (Postfix) with ESMTPS id 4FvbbC4G5LzMqvNF
-        for <linux-omap@vger.kernel.org>; Tue,  1 Jun 2021 17:25:59 +0200 (CEST)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:555:bf00:6951:b6ab])
-        by baptiste.telenet-ops.be with bizsmtp
-        id BrRp2500b35oben01rRpyb; Tue, 01 Jun 2021 17:25:59 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1lo6H7-00BuxR-7b; Tue, 01 Jun 2021 17:25:49 +0200
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1lo6H6-000JYT-N5; Tue, 01 Jun 2021 17:25:48 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>
-Cc:     devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
-        x86@kernel.org, linux-omap@vger.kernel.org,
-        linux-i2c@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 4/4] dt-bindings: gpio: pcf857x: Convert to json-schema
-Date:   Tue,  1 Jun 2021 17:25:47 +0200
-Message-Id: <7caa954add90255fc177e5dbabe17d62e0242861.1622560799.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1622560799.git.geert+renesas@glider.be>
-References: <cover.1622560799.git.geert+renesas@glider.be>
+        id S234624AbhFARkl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Jun 2021 13:40:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60992 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234684AbhFARke (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 1 Jun 2021 13:40:34 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BA8AE613D1;
+        Tue,  1 Jun 2021 17:38:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622569132;
+        bh=dAtxZOy1vRvHAbbRbK/qBv+43wjWQ0+17BwlinOpq4s=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=V5K+MU+E8r8RLJtvkb2wbKyLDXWTxj5VGJ+xsGStLbL9GGI3dHtupY3M4JG4d5fVU
+         2sFB/xkNe4jDFCUaRb+Z2mim35bODFuO8XI83N464YGgGWp9oHNfElMGowE4DES5CY
+         PgfXWwRczf+1iyznnUz7FMb5eYcvj02lTmqMiYnBaawwkR3Eb3edGGCCNHF/5dnLtU
+         YGmG05CK6TWgCjUU4GBrc8FkTgHFx0q8tFXQ4CC1aWYCaMsqgr9zCzllcv/d3s+sFc
+         O3oFMhsOgw1dJ9Qds+U+Vuy0S8QG9uiQRd9LhKEW1Z+INiYLoXX4gJ7cu60NhllvfN
+         bm/3xkVlpxvVA==
+From:   Mark Brown <broonie@kernel.org>
+To:     tiwai@suse.com, YueHaibing <yuehaibing@huawei.com>,
+        lgirdwood@gmail.com, perex@perex.cz, jarkko.nikula@bitmer.com,
+        peter.ujfalusi@gmail.com
+Cc:     Mark Brown <broonie@kernel.org>, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] ASoC: ti: omap-mcbsp: use DEVICE_ATTR_RW macro
+Date:   Tue,  1 Jun 2021 18:38:09 +0100
+Message-Id: <162256892743.19919.2315027944025849805.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210528063033.19904-1-yuehaibing@huawei.com>
+References: <20210528063033.19904-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert the PCF857x-compatible I/O expanders Device Tree binding
-documentation to json-schema.
+On Fri, 28 May 2021 14:30:33 +0800, YueHaibing wrote:
+> Use DEVICE_ATTR_RW() helper instead of plain DEVICE_ATTR(),
+> which makes the code a bit shorter and easier to read.
 
-Document missing compatible values, properties, and gpio hogs.
+Applied to
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-v2:
-  - Drop support for "ti,pcf8575", as it's 100% compatible with
-    "nxp,pcf8575",
-  - Drop "hog-[0-9]+" from hog names,
-  - Rely on dt-schema/schemas/gpio/gpio-hog.yaml for hog properties.
----
- .../devicetree/bindings/gpio/gpio-pcf857x.txt |  69 ------------
- .../devicetree/bindings/gpio/nxp,pcf8575.yaml | 103 ++++++++++++++++++
- 2 files changed, 103 insertions(+), 69 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/gpio/gpio-pcf857x.txt
- create mode 100644 Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-diff --git a/Documentation/devicetree/bindings/gpio/gpio-pcf857x.txt b/Documentation/devicetree/bindings/gpio/gpio-pcf857x.txt
-deleted file mode 100644
-index a482455a205b0855..0000000000000000
---- a/Documentation/devicetree/bindings/gpio/gpio-pcf857x.txt
-+++ /dev/null
-@@ -1,69 +0,0 @@
--* PCF857x-compatible I/O expanders
--
--The PCF857x-compatible chips have "quasi-bidirectional" I/O lines that can be
--driven high by a pull-up current source or driven low to ground. This combines
--the direction and output level into a single bit per line, which can't be read
--back. We can't actually know at initialization time whether a line is configured
--(a) as output and driving the signal low/high, or (b) as input and reporting a
--low/high value, without knowing the last value written since the chip came out
--of reset (if any). The only reliable solution for setting up line direction is
--thus to do it explicitly.
--
--Required Properties:
--
--  - compatible: should be one of the following.
--    - "maxim,max7328": For the Maxim MAX7378
--    - "maxim,max7329": For the Maxim MAX7329
--    - "nxp,pca8574": For the NXP PCA8574
--    - "nxp,pca8575": For the NXP PCA8575
--    - "nxp,pca9670": For the NXP PCA9670
--    - "nxp,pca9671": For the NXP PCA9671
--    - "nxp,pca9672": For the NXP PCA9672
--    - "nxp,pca9673": For the NXP PCA9673
--    - "nxp,pca9674": For the NXP PCA9674
--    - "nxp,pca9675": For the NXP PCA9675
--    - "nxp,pcf8574": For the NXP PCF8574
--    - "nxp,pcf8574a": For the NXP PCF8574A
--    - "nxp,pcf8575": For the NXP PCF8575
--
--  - reg: I2C slave address.
--
--  - gpio-controller: Marks the device node as a gpio controller.
--  - #gpio-cells: Should be 2. The first cell is the GPIO number and the second
--    cell specifies GPIO flags, as defined in <dt-bindings/gpio/gpio.h>. Only the
--    GPIO_ACTIVE_HIGH and GPIO_ACTIVE_LOW flags are supported.
--
--Optional Properties:
--
--  - lines-initial-states: Bitmask that specifies the initial state of each
--  line. When a bit is set to zero, the corresponding line will be initialized to
--  the input (pulled-up) state. When the  bit is set to one, the line will be
--  initialized the low-level output state. If the property is not specified
--  all lines will be initialized to the input state.
--
--  The I/O expander can detect input state changes, and thus optionally act as
--  an interrupt controller. When the expander interrupt line is connected all the
--  following properties must be set. For more information please see the
--  interrupt controller device tree bindings documentation available at
--  Documentation/devicetree/bindings/interrupt-controller/interrupts.txt.
--
--  - interrupt-controller: Identifies the node as an interrupt controller.
--  - #interrupt-cells: Number of cells to encode an interrupt source, shall be 2.
--  - interrupts: Interrupt specifier for the controllers interrupt.
--
--
--Please refer to gpio.txt in this directory for details of the common GPIO
--bindings used by client devices.
--
--Example: PCF8575 I/O expander node
--
--	pcf8575: gpio@20 {
--		compatible = "nxp,pcf8575";
--		reg = <0x20>;
--		interrupt-parent = <&irqpin2>;
--		interrupts = <3 0>;
--		gpio-controller;
--		#gpio-cells = <2>;
--		interrupt-controller;
--		#interrupt-cells = <2>;
--	};
-diff --git a/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml b/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
-new file mode 100644
-index 0000000000000000..f0ff66c4c74e252d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/nxp,pcf8575.yaml
-@@ -0,0 +1,103 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/gpio/nxp,pcf8575.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: PCF857x-compatible I/O expanders
-+
-+maintainers:
-+  - Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-+
-+description:
-+  The PCF857x-compatible chips have "quasi-bidirectional" I/O lines that can be
-+  driven high by a pull-up current source or driven low to ground. This
-+  combines the direction and output level into a single bit per line, which
-+  can't be read back. We can't actually know at initialization time whether a
-+  line is configured (a) as output and driving the signal low/high, or (b) as
-+  input and reporting a low/high value, without knowing the last value written
-+  since the chip came out of reset (if any). The only reliable solution for
-+  setting up line direction is thus to do it explicitly.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - maxim,max7328
-+      - maxim,max7329
-+      - nxp,pca8574
-+      - nxp,pca8575
-+      - nxp,pca9670
-+      - nxp,pca9671
-+      - nxp,pca9672
-+      - nxp,pca9673
-+      - nxp,pca9674
-+      - nxp,pca9675
-+      - nxp,pcf8574
-+      - nxp,pcf8574a
-+      - nxp,pcf8575
-+
-+  reg:
-+    maxItems: 1
-+
-+  gpio-controller: true
-+
-+  '#gpio-cells':
-+    const: 2
-+    description:
-+      The first cell is the GPIO number and the second cell specifies GPIO
-+      flags, as defined in <dt-bindings/gpio/gpio.h>. Only the GPIO_ACTIVE_HIGH
-+      and GPIO_ACTIVE_LOW flags are supported.
-+
-+  lines-initial-states:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Bitmask that specifies the initial state of each line.
-+      When a bit is set to zero, the corresponding line will be initialized to
-+      the input (pulled-up) state.
-+      When the  bit is set to one, the line will be initialized to the
-+      low-level output state.
-+      If the property is not specified all lines will be initialized to the
-+      input state.
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  interrupt-controller: true
-+
-+  '#interrupt-cells':
-+    const: 2
-+
-+  wakeup-source: true
-+
-+patternProperties:
-+  "^(.+-hog(-[0-9]+)?)$":
-+    type: object
-+
-+    required:
-+      - gpio-hog
-+
-+required:
-+  - compatible
-+  - reg
-+  - gpio-controller
-+  - '#gpio-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            pcf8575: gpio@20 {
-+                    compatible = "nxp,pcf8575";
-+                    reg = <0x20>;
-+                    interrupt-parent = <&irqpin2>;
-+                    interrupts = <3 0>;
-+                    gpio-controller;
-+                    #gpio-cells = <2>;
-+                    interrupt-controller;
-+                    #interrupt-cells = <2>;
-+            };
-+    };
--- 
-2.25.1
+Thanks!
 
+[1/1] ASoC: ti: omap-mcbsp: use DEVICE_ATTR_RW macro
+      commit: b1b384de0a9be2d2913c8a308f381da0b9184e91
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
