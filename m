@@ -2,128 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 234673976A5
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Jun 2021 17:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E60273976AD
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Jun 2021 17:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231918AbhFAPap (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 1 Jun 2021 11:30:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39982 "EHLO
+        id S234072AbhFAPcR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 1 Jun 2021 11:32:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230288AbhFAPap (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Jun 2021 11:30:45 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB20C061574
-        for <linux-omap@vger.kernel.org>; Tue,  1 Jun 2021 08:29:03 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id j14so14786541wrq.5
-        for <linux-omap@vger.kernel.org>; Tue, 01 Jun 2021 08:29:03 -0700 (PDT)
+        with ESMTP id S230288AbhFAPcP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 1 Jun 2021 11:32:15 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 552D6C061574;
+        Tue,  1 Jun 2021 08:30:33 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id 29so10969224pgu.11;
+        Tue, 01 Jun 2021 08:30:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=4Fw9dpKXbERV/dKFcemxtYQKsc73Y6U63vbXSE3Oibo=;
-        b=MTbzdsjNuV883Tx57hU16YOhd3i7RXIpP8zs8pv0uD50ckDIlzXxIKzXYGr/NNkvot
-         rAkly4+qadmOVQKTiYMwLUAc7wS1kBGx6V9seHLHMOocxZIizZE+tUKRoU9/Zy3V4Lxv
-         DZ0mRqVgRW60G9feA7VVScu+cle+Jb8WE0PpghvVmneKLpX1tILOaIswrLDS7Hyq/Pb2
-         U1PDcaULLVjtvL8e0ih8mmOQwcV0ohxaa1KgjQ4PplyoT67uF3SiXxtyFy/gPo4QAik8
-         k2vS6lXxDALL3CnYj2IkklTPL8KVdSvyiDrGXTCji8rWOsMnIUaWByBXXDgxxY+nBvwz
-         kHRg==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VnnHRqo8lMttVmccO6dDOJIhxdSoTbCnFNxdSa23m9k=;
+        b=dCR8//k4wzUAjpi9CXrOlOGW78AqYU0DLmcuoADpnt6kuTWB3oHKuR7kWGoNKjZBWk
+         nT2Rf2kG8xA+4s/ch+027w4gMNPGw3+66LOETR1sDmkPj13R9fBSUETXyVbtPHnJmd2f
+         PtRDXAvsYeiT1cxgUfYXZU/y5+zuGe/Opz4rCqFp/5LtqBof6Bnvbj4TaNNIQgRmUT1V
+         vkqcROBf8OhtXQRbH8HFfDOmQhmYOhvAX6+Xa9jMjKsAjQAMQtGUc3zmcIcM1V9L1kng
+         q1S0R6oPQ4sZ++iRBLt9EPk/m8nJfrg5NtQwx0y+zEwCui0MWljDKvYaUznGYqpngATq
+         dXTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=4Fw9dpKXbERV/dKFcemxtYQKsc73Y6U63vbXSE3Oibo=;
-        b=BPK+4Y6DRXanSeEdthstofE192rpzWDRQ6FsPR3VhpHTtSqE4SjLvLubRMLTV0XQ8F
-         6dBED9u5/Y4wUUNgcBOYDiWlQnjh539BisEGf4sVPrMC46tSIh/CvB+ZMyb8KjStb7Ad
-         VeitocWOIS6WfAaU/2W+9me4g9FAXrkd8N2XIKHFc4BwtRF+J399tkxlp+Xgd/RMyvLt
-         ORa74Dp7GqmYKEVFFAAmXNbBF+DCE5AqWAN1PE7eynrE3j8iezVlmGBt8ZkuFYjUAH8I
-         lVAQCiio+G/mt0rCEjIwuj0anmnxToQKyI8Y5tTyP1OdPXgSf3REkhOti2x8dkuBtwJp
-         NFxg==
-X-Gm-Message-State: AOAM530ufLaqL+6BILFfDijeGpekOQeMw3K8rWNq2cQTR0zriUoFlb5M
-        eho70OXR1vFmGlw1YrsS3Nd0Lg==
-X-Google-Smtp-Source: ABdhPJwlEHUfYNe8eojetGb5Wl0PUicjjf8/xWeiO5HFCYB0h6dHGOk4lwEoOx8pmGanLLNRuWgvwQ==
-X-Received: by 2002:adf:f7d1:: with SMTP id a17mr10628419wrq.84.1622561342123;
-        Tue, 01 Jun 2021 08:29:02 -0700 (PDT)
-Received: from dell ([91.110.221.249])
-        by smtp.gmail.com with ESMTPSA id m132sm2195135wmf.10.2021.06.01.08.29.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jun 2021 08:29:01 -0700 (PDT)
-Date:   Tue, 1 Jun 2021 16:28:59 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Support Opensource <support.opensource@diasemi.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        patches@opensource.cirrus.com
-Subject: Re: [RESEND PATCH v2 00/13] Simplify + drop board file support for
- Samsung PMIC
-Message-ID: <20210601152859.GB2159518@dell>
-References: <20210526124711.33223-1-krzysztof.kozlowski@canonical.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VnnHRqo8lMttVmccO6dDOJIhxdSoTbCnFNxdSa23m9k=;
+        b=EwstsPO6AVLP9OhUR57dF6alYONy/DgvOXCdCisJilYNPto/Fb6LCPzTj++ACLxxrd
+         LDngHKpKKUhamdaKWEeQ+zkqGdgpq12EzKITHowD5GdSbtx+YNi4zUUhR4Hs436qDyjV
+         Rr7AZGNj0vOHqZRz/A3KWYiG+Jwtq2aYQQyZMftL4CBKCpGzcmh+6pDYTmc92u7mqY+b
+         DsW/4mKYHn4vPO77S2knBFP/0Pa22LpTIzu9U0M869uHQix7P/szL1MN65qCIgjjXirX
+         s6Sa9N0KDoWPRZC2HOptfJYmRTTLJmc+WDRegOmmAtWvwnQT3S5j/IXOmpFsecSGj3zY
+         DFHA==
+X-Gm-Message-State: AOAM533sGhJqRe0YY3A5roXLl6Yy4NTFvuOC0je29J6X673eiEOs3GN5
+        5AFFYA25c+K7Jovojqr2jQT+JNSN+kmLj/pru2Y=
+X-Google-Smtp-Source: ABdhPJz+uV9kcio77l5lJR0eVJQmCv5st7BUfAlx30tj1gMMnCl7/JZQhPRxzzwqf3GGtFQ+rGQJPv07o5D52t1a9FY=
+X-Received: by 2002:a63:4145:: with SMTP id o66mr28745022pga.4.1622561432782;
+ Tue, 01 Jun 2021 08:30:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210526124711.33223-1-krzysztof.kozlowski@canonical.com>
+References: <cover.1622560799.git.geert+renesas@glider.be> <5236cf71d467bec862c4fa7849705caac195b23a.1622560799.git.geert+renesas@glider.be>
+In-Reply-To: <5236cf71d467bec862c4fa7849705caac195b23a.1622560799.git.geert+renesas@glider.be>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 1 Jun 2021 18:30:17 +0300
+Message-ID: <CAHp75VerXNJdecZKLUU1uex6-J9TC+9+yLkZqxc5UFtnZcT5mA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] x86: ce4100: Replace "ti,pcf8575" by "nxp,pcf8575"
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 26 May 2021, Krzysztof Kozlowski wrote:
+On Tue, Jun 1, 2021 at 6:26 PM Geert Uytterhoeven
+<geert+renesas@glider.be> wrote:
+>
+> The TI part is equivalent to the NXP part, and its compatible value is
+> not documented in the DT bindings.
+>
+> Note that while the Linux driver DT match table does not contain the
+> compatible value of the TI part, it could still match to this part, as
+> i2c_device_id-based matching ignores the vendor part of the compatible
+> value.
 
-> Hi Lee,
-> 
-> This is the resend of two previous series, combined together as the
-> latter depends on the first:
-> https://lore.kernel.org/lkml/20210420113929.278082-1-krzysztof.kozlowski@canonical.com/
-> https://lore.kernel.org/lkml/20210420170118.12788-1-krzysztof.kozlowski@canonical.com/
-> 
-> Everything rebased on latest next.
-> 
-> This also includes two MFD "Correct kerneldoc" patches which seems to be
-> still valid, even though you mentioned they were fixed.
-> 
-> 
-> The Samsung PMIC drivers since long time are used only on devicetree
-> platforms (Samsung Exynos) and there are no users with board files.
-> 
-> Drop the support for board files entirely and depend on OF for matching.
-> This makes the code smaller and simpler.
-> 
-> Best regards,
-> Krzysztof
-> 
-> Krzysztof Kozlowski (13):
->   mfd: max8997: Simplify getting of_device_id match data
->   mfd: max8998: Simplify getting of_device_id match data
->   mfd: da9052: Simplify getting of_device_id match data
->   mfd: da9062: Simplify getting of_device_id match data
->   mfd: sec: Simplify getting of_device_id match data
->   mfd: wm831x: Correct kerneldoc
->   mfd: twl: Correct kerneldoc
->   mfd: sec: Drop support for board files and require devicetree
->   mfd: sec: Remove unused cfg_pmic_irq in platform data
->   mfd: sec: Remove unused device_type in platform data
->   mfd: sec: Remove unused irq_base in platform data
->   mfd: sec: Enable wakeup from suspend via devicetree property
->   mfd: sec: Remove unused platform data members
-> 
->  drivers/mfd/Kconfig              |  1 +
->  drivers/mfd/da9052-i2c.c         |  9 +---
->  drivers/mfd/da9062-core.c        | 13 ++----
->  drivers/mfd/max8997.c            |  9 ++--
->  drivers/mfd/max8998.c            |  8 ++--
->  drivers/mfd/sec-core.c           | 70 +++++---------------------------
->  drivers/mfd/sec-irq.c            |  4 +-
->  drivers/mfd/twl-core.c           |  4 +-
->  drivers/mfd/wm831x-core.c        |  2 +-
->  include/linux/mfd/samsung/core.h | 33 ---------------
->  10 files changed, 29 insertions(+), 124 deletions(-)
+LGTM!
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Applied all except patches 6 and 7, thanks.
+Maybe at some point I will find the time to resurrect the CE4100 based
+device that collects dirt on my desk...
+
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> v2:
+>   - New.
+> ---
+>  arch/x86/platform/ce4100/falconfalls.dts | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/x86/platform/ce4100/falconfalls.dts b/arch/x86/platform/ce4100/falconfalls.dts
+> index 0ac3d43571361112..65fa3d866226ce97 100644
+> --- a/arch/x86/platform/ce4100/falconfalls.dts
+> +++ b/arch/x86/platform/ce4100/falconfalls.dts
+> @@ -249,7 +249,7 @@ i2c@1 {
+>
+>                                                 gpio@26 {
+>                                                         #gpio-cells = <2>;
+> -                                                       compatible = "ti,pcf8575";
+> +                                                       compatible = "nxp,pcf8575";
+>                                                         reg = <0x26>;
+>                                                         gpio-controller;
+>                                                 };
+> @@ -263,7 +263,7 @@ i2c@2 {
+>
+>                                                 gpio@26 {
+>                                                         #gpio-cells = <2>;
+> -                                                       compatible = "ti,pcf8575";
+> +                                                       compatible = "nxp,pcf8575";
+>                                                         reg = <0x26>;
+>                                                         gpio-controller;
+>                                                 };
+> --
+> 2.25.1
+>
+
 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+With Best Regards,
+Andy Shevchenko
