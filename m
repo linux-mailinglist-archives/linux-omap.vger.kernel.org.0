@@ -2,264 +2,117 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAB813989BD
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Jun 2021 14:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84860398DA0
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Jun 2021 17:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230104AbhFBMhU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Jun 2021 08:37:20 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:40460 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbhFBMhT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Jun 2021 08:37:19 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 152CZU3f027790;
-        Wed, 2 Jun 2021 07:35:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1622637330;
-        bh=i3QEOXysvQImmF/O6Ym6rYgSqMjCwg+DVqqgsbiucz0=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=igsTvpECG/fACRSRdt4rZ4stR2ODEgnUMzo1QVLhun8vKf7wQDYy0ggpuzyTiMq/6
-         LVT02p/4Xy6h/cIJKqckDifoO0UZlG9Ot4hTKKSFM7LMc9y2A5Eri/n/TdBegWDU07
-         oksylvqnezk32+ApQZqWF/84Mm0ZwSkF+n3ExXds=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 152CZUo2015822
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 2 Jun 2021 07:35:30 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 2 Jun
- 2021 07:35:29 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Wed, 2 Jun 2021 07:35:29 -0500
-Received: from gsaswath-HP-ProBook-640-G5.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 152CYKN8023646;
-        Wed, 2 Jun 2021 07:35:20 -0500
-From:   Aswath Govindraju <a-govindraju@ti.com>
-CC:     Lokesh Vutla <lokeshvutla@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        id S231424AbhFBPCA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Jun 2021 11:02:00 -0400
+Received: from smtp-35.italiaonline.it ([213.209.10.35]:48024 "EHLO libero.it"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231693AbhFBPCA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 2 Jun 2021 11:02:00 -0400
+Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
+ ([79.17.119.101])
+        by smtp-35.iol.local with ESMTPA
+        id oSLqlJ7WDsptioSLulKArE; Wed, 02 Jun 2021 17:00:15 +0200
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+        t=1622646015; bh=+sVRheN2hxOIVCCNCGrpAYU/okLJ8F4OSpSvvK3/KsY=;
+        h=From;
+        b=tGoF00FbrlZ94mpZbYxrPChYpyrsSI9dnHmyV2s02ZWDv/qc5mtzGj2NoQCK+5p80
+         MvVoFKlpcQkt0NG42KG9PYfZhWNkQTo2pEPHuZcZ0RKXYy6IUKOmYBiDwZZc2ZnPq/
+         P7Nj3QJd0vNa98D7Uo4XG3O/tbD5iLlaOQLE4KpCLCrV4U246JMFGW/XhBYpgrfV7g
+         34U4qhEa1whfUgK8gFh/G9VYbNLF87AJMBgil7fXF3Gvx0IhmdDugvWx2KCOyr+G6d
+         5S2yh3w93MhGe9G2pWxEUzRZ6ho4ifbonUbAkrU159rbskF2hiNczxBq1F18oLhkkU
+         sSHtEBPDWZt4g==
+X-CNFS-Analysis: v=2.4 cv=Bo1Yfab5 c=1 sm=1 tr=0 ts=60b79cff cx=a_exe
+ a=do1bHx4A/kh2kuTIUQHSxQ==:117 a=do1bHx4A/kh2kuTIUQHSxQ==:17
+ a=IkcTkHD0fZMA:10 a=7lJUY2J14ryrXklOE8AA:9 a=QEXdDO2ut3YA:10
+From:   Dario Binacchi <dariobin@libero.it>
+To:     linux-kernel@vger.kernel.org
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
         =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
-        Tero Kristo <kristo@kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH 5/5] dt-bindings: spi: omap-spi: Convert to json-schema
-Date:   Wed, 2 Jun 2021 18:04:15 +0530
-Message-ID: <20210602123416.20378-6-a-govindraju@ti.com>
+        Dario Binacchi <dariobin@libero.it>,
+        Tero Kristo <kristo@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Rob Herring <robh@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH v7 0/5] clk: ti: add am33xx spread spectrum clock support
+Date:   Wed,  2 Jun 2021 17:00:03 +0200
+Message-Id: <20210602150009.17531-1-dariobin@libero.it>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210602123416.20378-1-a-govindraju@ti.com>
-References: <20210602123416.20378-1-a-govindraju@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfGSQLGD2pWymgAK0rBD2YU7Pmmqecdc8EA0H+cr0HKkjs9HfADN3eADfap6TRxYHBIbhKd9eXqeZtHIS20R6+v0eMxJCTRZSVuaqp4JVPXQJ6OdewlFI
+ ABOERsbywLgYSX0G+03OqMPOATnIxcwqFgLnUGpsI+5uUogRNtDvgkMPSasI7zfoK6dvtH39TRoKzu010ZViCmqec+ob6GtCNnq7GCk4dJV6YwG5pggMd1Kj
+ BjH9NcreRIqrjczcG0vAAHDBhbofRlV2NSryFSHNJ3nko+m306Gj4M0MZzeZZ7fsVgJswlsSJeWF6f0BF/fJ3yNZhSpiu6XaaGlqEpSI9wEowOE0qDUGXErQ
+ CorkcFMgUKANb8ag4iEltEdfDawX0312vpQtVsPyW8p0CprHyq6PKIzK0q8z15bkBG8eLB5UdkhzVQ8Sx3hKjrzXAm0/5HYBd8tQk54U3iX5e2SHsDBVANzz
+ pzfjcbb+iH38Z/kso3vaLk38hvYqVIK79WCrTsbP5jvXka36d0CqOdKJA991srhT98tfj3Bv99pDGXxmT/p29JCQI6ptjTkk1vYaTosJaErWeaEYN002WoeM
+ se1HVQLGYbtuxQCHiZdRXxd9P7I7nbYOKSURkcm3dn63sA==
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert omap-spi dt-binding documentation from txt to yaml format.
 
-Signed-off-by: Aswath Govindraju <a-govindraju@ti.com>
----
- .../devicetree/bindings/spi/omap-spi.txt      |  48 -------
- .../devicetree/bindings/spi/omap-spi.yaml     | 126 ++++++++++++++++++
- 2 files changed, 126 insertions(+), 48 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/spi/omap-spi.txt
- create mode 100644 Documentation/devicetree/bindings/spi/omap-spi.yaml
+As reported by the TI spruh73x/spruhl7x RM, MPU and LCD modules support
+spread spectrum clocking (SSC) on their output clocks. SSC is used to
+spread the spectral peaking of the clock to reduce any electromagnetic
+interference (EMI) that may be caused due to the clock’s fundamental
+or any of its harmonics.
+The series allows you to enable and adjust the spread spectrum clocking
+for all am33xx/am43xx PLLs for which it is supported. All these issues
+have been fixed.
 
-diff --git a/Documentation/devicetree/bindings/spi/omap-spi.txt b/Documentation/devicetree/bindings/spi/omap-spi.txt
-deleted file mode 100644
-index 487208c256c0..000000000000
---- a/Documentation/devicetree/bindings/spi/omap-spi.txt
-+++ /dev/null
-@@ -1,48 +0,0 @@
--OMAP2+ McSPI device
--
--Required properties:
--- compatible :
--  - "ti,am654-mcspi" for AM654.
--  - "ti,omap2-mcspi" for OMAP2 & OMAP3.
--  - "ti,omap4-mcspi" for OMAP4+.
--- ti,spi-num-cs : Number of chipselect supported  by the instance.
--- ti,hwmods: Name of the hwmod associated to the McSPI
--- ti,pindir-d0-out-d1-in: Select the D0 pin as output and D1 as
--			  input. The default is D0 as input and
--			  D1 as output.
--
--Optional properties:
--- dmas: List of DMA specifiers with the controller specific format
--	as described in the generic DMA client binding. A tx and rx
--	specifier is required for each chip select.
--- dma-names: List of DMA request names. These strings correspond
--	1:1 with the DMA specifiers listed in dmas. The string naming
--	is to be "rxN" and "txN" for RX and TX requests,
--	respectively, where N equals the chip select number.
--
--Examples:
--
--[hwmod populated DMA resources]
--
--mcspi1: mcspi@1 {
--    #address-cells = <1>;
--    #size-cells = <0>;
--    compatible = "ti,omap4-mcspi";
--    ti,hwmods = "mcspi1";
--    ti,spi-num-cs = <4>;
--};
--
--[generic DMA request binding]
--
--mcspi1: mcspi@1 {
--    #address-cells = <1>;
--    #size-cells = <0>;
--    compatible = "ti,omap4-mcspi";
--    ti,hwmods = "mcspi1";
--    ti,spi-num-cs = <2>;
--    dmas = <&edma 42
--	    &edma 43
--	    &edma 44
--	    &edma 45>;
--    dma-names = "tx0", "rx0", "tx1", "rx1";
--};
-diff --git a/Documentation/devicetree/bindings/spi/omap-spi.yaml b/Documentation/devicetree/bindings/spi/omap-spi.yaml
-new file mode 100644
-index 000000000000..cd20704f2edc
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/omap-spi.yaml
-@@ -0,0 +1,126 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/omap-spi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SPI controller bindings for OMAP and K3 SoCs
-+
-+maintainers:
-+  - Mark Brown <broonie@kernel.org>
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - ti,am654-mcspi
-+              - ti,am4372-mcspi
-+          - const: ti,omap4-mcspi
-+      - items:
-+          - enum:
-+              - ti,omap2-mcspi
-+              - ti,omap4-mcspi
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  power-domains:
-+    maxItems: 1
-+
-+  ti,spi-num-cs:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: Number of chipselect supported  by the instance.
-+    minimum: 1
-+    maximum: 4
-+
-+  ti,hwmods:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description:
-+      Must be "mcspi<n>", n being the instance number (1-based).
-+      This property is applicable only on legacy platforms mainly omap2/3
-+      and ti81xx and should not be used on other platforms.
-+    deprecated: true
-+
-+  ti,pindir-d0-out-d1-in:
-+    description:
-+      Select the D0 pin as output and D1 as input. The default is D0
-+      as input and D1 as output.
-+    type: boolean
-+
-+  dmas:
-+    description:
-+      List of DMA specifiers with the controller specific format as
-+      described in the generic DMA client binding. A tx and rx
-+      specifier is required for each chip select.
-+    minItems: 1
-+    maxItems: 8
-+
-+  dma-names:
-+    description:
-+      List of DMA request names. These strings correspond 1:1 with
-+      the DMA sepecifiers listed in dmas. The string names is to be
-+      "rxN" and "txN" for RX and TX requests, respectively. Where N
-+      is the chip select number.
-+    minItems: 1
-+    maxItems: 8
-+
-+patternProperties:
-+  "@[0-9a-f]+$":
-+    type: object
-+    description:
-+      Flash devices are defined as a sub-node of the spi controller
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+additionalProperties: false
-+
-+if:
-+  properties:
-+    compatible:
-+      oneOf:
-+        - const: ti,omap2-mcspi
-+        - const: ti,omap4-mcspi
-+
-+then:
-+  properties:
-+    ti,hwmods:
-+      items:
-+        - pattern: "^mcspi([1-9])$"
-+
-+else:
-+  properties:
-+    ti,hwmods: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/soc/ti,sci_pm_domain.h>
-+
-+    main_spi0: spi@2100000 {
-+      compatible = "ti,am654-mcspi","ti,omap4-mcspi";
-+      reg = <0x2100000 0x400>;
-+      interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
-+      clocks = <&k3_clks 137 1>;
-+      power-domains = <&k3_pds 137 TI_SCI_PD_EXCLUSIVE>;
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      dmas = <&main_udmap 0xc500>, <&main_udmap 0x4500>;
-+      dma-names = "tx0", "rx0";
-+    };
+
+Previous versions of the series did not supported SSC for am43xx SOCs,
+causing clock registration failure for DPLLs. Furthermore, for am33xx
+SOCs, clock registration failed for DPLLs for which SSC is not supported.
+
+Changes in v7:
+- Add Tony Lindgren acked tag.
+
+Changes in v6:
+- Add Tero Kristo review tag.
+
+Changes in v5:
+- Remove ssc_ack_mask field from dpll_data structure. It was not used.
+- Change ssc_downspread type from u8 to bool in dpll_data structure.
+
+Changes in v4:
+- Add Stephen Boyd review tag.
+- Add Rob Herring review tag.
+- Add SSC registers for CORE, DDR and PER PLLs.
+- Update commit message.
+- Update commit message.
+
+Changes in v3:
+- Add '-hz' suffix to "ti,ssc-modfreq" binding.
+- Add Tony Lindgren acked tag.
+- Use "ti,ssc-modfreq-hz" binding instead of "ti,ssc-modfreq".
+
+Changes in v2:
+- Remove SSC registers from dpll_core_ck@490 node (SSC is not supported)
+- Add SSC registers to dpll_mpu_ck@488 node.
+- Move the DT changes to the previous patch in the series.
+
+Dario Binacchi (5):
+  clk: ti: fix typo in routine description
+  dt-bindings: ti: dpll: add spread spectrum support
+  ARM: dts: am33xx-clocks: add spread spectrum support
+  ARM: dts: am43xx-clocks: add spread spectrum support
+  clk: ti: add am33xx/am43xx spread spectrum clock support
+
+ .../devicetree/bindings/clock/ti/dpll.txt     | 20 +++++
+ arch/arm/boot/dts/am33xx-clocks.dtsi          | 10 +--
+ arch/arm/boot/dts/am43xx-clocks.dtsi          | 12 +--
+ drivers/clk/ti/dpll.c                         | 39 +++++++++
+ drivers/clk/ti/dpll3xxx.c                     | 87 ++++++++++++++++++-
+ include/linux/clk/ti.h                        | 22 +++++
+ 6 files changed, 178 insertions(+), 12 deletions(-)
+
 -- 
 2.17.1
 
