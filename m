@@ -2,26 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BA543980DD
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Jun 2021 08:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D8C1398109
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Jun 2021 08:20:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230322AbhFBGBy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Jun 2021 02:01:54 -0400
-Received: from muru.com ([72.249.23.125]:35214 "EHLO muru.com"
+        id S231180AbhFBGWF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Jun 2021 02:22:05 -0400
+Received: from muru.com ([72.249.23.125]:35230 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230319AbhFBGBx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 2 Jun 2021 02:01:53 -0400
+        id S231175AbhFBGWF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 2 Jun 2021 02:22:05 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 93D1B80E0;
-        Wed,  2 Jun 2021 06:00:17 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 5737A80E0;
+        Wed,  2 Jun 2021 06:20:28 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     soc@kernel.org
 Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] SATA regresion fix for TI dra7 for v5.13
-Date:   Wed,  2 Jun 2021 09:00:05 +0300
-Message-Id: <pull-1622613578-121536@atomide.com>
+Subject: [GIT PULL] PM and build warning fixes for omaps
+Date:   Wed,  2 Jun 2021 09:20:17 +0300
+Message-Id: <pull-1622614772-543196@atomide.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -32,27 +32,55 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: "Tony Lindgren" <tony@atomide.com>
 
-The following changes since commit d995d3d025bbd2d89abf12418f20d19bc0cb0130:
+The following changes since commit 6efb943b8616ec53a5e444193dccf1af9ad627b5:
 
-  bus: ti-sysc: Use kzalloc for allocating only one thing (2021-03-24 13:44:04 +0200)
+  Linux 5.13-rc1 (2021-05-09 14:17:44 -0700)
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.13/fixes-sata
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.13/fixes-pm
 
-for you to fetch changes up to db8e712e06874e37a1fdb9bb011618811fc96dbd:
+for you to fetch changes up to bae989c4bc53f861cc1b706aab0194703e9907a8:
 
-  bus: ti-sysc: Fix missing quirk flags for sata (2021-05-07 14:21:32 +0300)
-
-----------------------------------------------------------------
-Regression fix for TI dra7 SATA not detecting drives
-
-The SATA quirk flags are no missing With recent removal of legacy
-platform data and we need to add the quirk flags to detect drives.
+  ARM: OMAP1: ams-delta: remove unused function ams_delta_camera_power (2021-05-26 14:01:27 +0300)
 
 ----------------------------------------------------------------
-Tony Lindgren (1):
+PM and build warning fixes for omaps
+
+While chasing system suspend related regressions, I noticed few other
+issues related to PM would be good to have fixed:
+
+- UART idling does not always work for hardware autoidle features
+- am335x resume works only the first time unless musb module is loaded
+
+Then there are three patches for omap1 related warnings caused by the gpio
+changes, and one build warning fix for legacy mmc platform code when mmc
+is built as a loadable module.
+
+These can all be merged whenever suitable naturally. I've sent the more
+urgent SATA regression fix separately although it appears in this pull
+request too because of the branches merged.
+
+----------------------------------------------------------------
+Maciej Falkowski (3):
+      ARM: OMAP1: Fix use of possibly uninitialized irq variable
+      ARM: OMAP1: isp1301-omap: Add missing gpiod_add_lookup_table function
+      ARM: OMAP1: ams-delta: remove unused function ams_delta_camera_power
+
+Tony Lindgren (5):
       bus: ti-sysc: Fix missing quirk flags for sata
+      Merge branch 'omap-for-v5.13/ti-sysc' into fixes
+      Merge branch 'fixes-rc1' into fixes
+      bus: ti-sysc: Fix am335x resume hang for usb otg module
+      bus: ti-sysc: Fix flakey idling of uarts and stop using swsup_sidle_act
 
- drivers/bus/ti-sysc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Yongqiang Liu (1):
+      ARM: OMAP2+: Fix build warning when mmc_omap is not built
+
+ arch/arm/mach-omap1/board-ams-delta.c | 14 --------
+ arch/arm/mach-omap1/board-h2.c        |  4 ++-
+ arch/arm/mach-omap1/pm.c              | 10 ++++--
+ arch/arm/mach-omap2/board-n8x0.c      |  2 +-
+ drivers/bus/ti-sysc.c                 | 60 +++++++++++++++++++++++++++++++----
+ include/linux/platform_data/ti-sysc.h |  1 +
+ 6 files changed, 66 insertions(+), 25 deletions(-)
