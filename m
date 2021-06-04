@@ -2,127 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27FDE39B6E3
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Jun 2021 12:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3AD839B91C
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Jun 2021 14:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbhFDKWB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Jun 2021 06:22:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49550 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229964AbhFDKWA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Jun 2021 06:22:00 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4470C06174A;
-        Fri,  4 Jun 2021 03:20:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=okjnHa33EVd0nOoSUBI5N5mmLepB90O/9QSWXiOPWQc=; b=SYTm3ghcp/cNd2LE3jrR0lDY07
-        PCbCtG1iAn1YD2t1MzlPKFJfy0jM42rUEfpSGs8hg1BgS46G1ReXFu7kEXsIqyDn7dU9cNYrk6ur3
-        XASYDswnkxwcZela3ruPdFfXwM6YOzIAoUvdmEST80eNkm2znvXQ3pFPW7nAJp3JfV2s=;
-Received: from p200300ccff0b2a001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0b:2a00:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1lp6vu-0006E4-Ln; Fri, 04 Jun 2021 12:20:11 +0200
-Date:   Fri, 4 Jun 2021 12:20:05 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        letux-kernel@openphoenux.org
-Subject: Re: [PATCH] usb: musb: Check devctl status again for a spurious
- session request
-Message-ID: <20210604122005.72f9fac7@aktux>
-In-Reply-To: <YLn7lOueRj3JDkkA@atomide.com>
-References: <20210518150615.53464-1-tony@atomide.com>
-        <20210527211501.70d176b4@aktux>
-        <YLCGZEan87yp9Eeq@atomide.com>
-        <20210604103533.6392beeb@aktux>
-        <YLn06uuntThMlaTQ@atomide.com>
-        <20210604115949.4c74d4af@aktux>
-        <YLn7lOueRj3JDkkA@atomide.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S230039AbhFDMjO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Jun 2021 08:39:14 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:34938 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229718AbhFDMjO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Jun 2021 08:39:14 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 851FB1F439B4
+Received: by earth.universe (Postfix, from userid 1000)
+        id 40E933C0C95; Fri,  4 Jun 2021 14:37:25 +0200 (CEST)
+Date:   Fri, 4 Jun 2021 14:37:25 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Carl Philipp Klemm <philipp@uvos.xyz>
+Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
+        Arthur Demchenkov <spinal.by@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Merlijn Wajer <merlijn@wizzup.org>, Pavel Machek <pavel@ucw.cz>
+Subject: Re: [PATCH v2] power: supply: cpcap-battery: invalidate
+ empty->counter_uah and charge_full when charge_now indicates that they are
+ grossly wrong
+Message-ID: <20210604123725.skvntgzvmbidyrau@earth.universe>
+References: <20210423145831.a8f0ba37baa211353cdf43b8@uvos.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="edgwsfgidhpbf44q"
+Content-Disposition: inline
+In-Reply-To: <20210423145831.a8f0ba37baa211353cdf43b8@uvos.xyz>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 4 Jun 2021 13:08:20 +0300
-Tony Lindgren <tony@atomide.com> wrote:
 
-> * Andreas Kemnade <andreas@kemnade.info> [210604 10:00]:
-> > On Fri, 4 Jun 2021 12:39:54 +0300
-> > Tony Lindgren <tony@atomide.com> wrote:
-> >   
-> > > * Andreas Kemnade <andreas@kemnade.info> [210604 08:35]:  
-> > > > I inserted some more dev-dbg
-> > > > [   60.241790] PM: suspend entry (deep)
-> > > > [   60.245513] Filesystems sync: 0.000 seconds
-> > > > [   60.251312] Freezing user space processes ... (elapsed 0.001 seconds) done.
-> > > > [   60.260040] OOM killer disabled.
-> > > > [   60.263275] Freezing remaining freezable tasks ... (elapsed 0.001 seconds) done.
-> > > > [   60.272338] printk: Suspending console(s) (use no_console_suspend to debug)
-> > > > [   60.281311] musb-omap2430 480ab000.usb_otg_hs: omap2430 runtime_resume    
-> > > > -> this is triggered by what?    
-> > > 
-> > > I think that comes from the pm_runtime_get_sync() in musb_suspend().
-> > >   
-> > @@ -2825,6 +2826,7 @@ static int musb_suspend(struct device *dev)
-> >         struct musb     *musb = dev_to_musb(dev);
-> >         unsigned long   flags;
-> >         int ret;
-> > +       dev_dbg(musb->controller, "musb_suspend begin\n");
-> >  
-> >         ret = pm_runtime_get_sync(dev);
-> >         if (ret < 0) {
-> > 
-> > my dev_dbg comes before that.  
-> 
-> Hmm maybe try adding dump_stack() call there to see where it comes from?
-> 
-> > > > [   60.281341] twl4030_usb 48070000.i2c:twl@48:twl4030-usb: twl4030_usb_runtime_resume    
-> > > > -> and here something stays on...    
-> > > > 
-> > > > [   60.346374] twl4030_usb 48070000.i2c:twl@48:twl4030-usb: twl4030_phy_power_on
-> > > > [   60.796630] musb-hdrc musb-hdrc.0.auto: musb_suspend begin
-> > > > [   60.796722] musb-hdrc musb-hdrc.0.auto: musb_suspend end
-> > > > [   60.796752] musb-omap2430 480ab000.usb_otg_hs: omap2430 suspend
-> > > > [   60.796783] musb-omap2430 480ab000.usb_otg_hs: omap2430 runtime_suspend
-> > > > [   60.796783] twl4030_usb 48070000.i2c:twl@48:twl4030-usb: twl4030_phy_power_off
-> > > > [   60.796813] twl4030_usb 48070000.i2c:twl@48:twl4030-usb: twl4030_usb_suspend
-> > > > [   60.806549] Disabling non-boot CPUs ...
-> > > > [   60.806579] Successfully put all powerdomains to target state    
-> > > 
-> > > Well since commit 88d26136a256 ("PM: Prevent runtime suspend during system resume")
-> > > nothing gets runtime idled during suspend with the extra pm_runtime_get_noresume()
-> > > call in device_prepare() that does not get released until in device_complete().
-> > >   
-> > well, the result is that the phy stays powered on. And that is the
-> > problem.
-> > static int twl4030_phy_power_off(struct phy *phy)
-> > and 
-> > static int __maybe_unused twl4030_usb_suspend(struct device *dev)
-> > do not turn off the phy. I think the solution is to turn the phy off if
-> > no cable is connected.   
-> 
-> I recall there's some errata where the phy needs to be always enabled to avoid
-> PMIC damage when a charger is connected. But if the phy wakes up the glue layer
-> then that should be ignored for the glue layer maybe with .prepare and .complete
-> suspend calls..
-> 
-yes, phy needs to be enabled when a charger is connected. That was the
-reason why we do not use phy_power_off() for turning it off. But if
-no charger is connected, the phy does not need to be turned on.
+--edgwsfgidhpbf44q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I will test your patch at some time in the afternoon.
+Hi,
 
-Regards,
-Andreas
+On Fri, Apr 23, 2021 at 02:58:31PM +0200, Carl Philipp Klemm wrote:
+> This invalidates empty->counter_uah and charge_full when charge_now indic=
+ates
+> that they are grossly wrong and adds some tolerance to
+> POWER_SUPPLY_PROP_CHARGE_FULL to allow for inaccuracies in the charge cou=
+nter
+> and manufacturing tolerances in the battery.
+>=20
+> Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
+> ---
+
+Thanks, queued.
+
+-- Sebastian
+
+>  drivers/power/supply/cpcap-battery.c | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/=
+cpcap-battery.c
+> index 386d269e699f..9d9453231ea7 100644
+> --- a/drivers/power/supply/cpcap-battery.c
+> +++ b/drivers/power/supply/cpcap-battery.c
+> @@ -762,10 +762,23 @@ static int cpcap_battery_get_property(struct power_=
+supply *psy,
+>  		if (!empty->voltage)
+>  			return -ENODATA;
+>  		val->intval =3D empty->counter_uah - latest->counter_uah;
+> -		if (val->intval < 0)
+> +		if (val->intval < 0) {
+> +			/* Assume invalid config if CHARGE_NOW is -20% */
+> +			if (ddata->charge_full && abs(val->intval) > ddata->charge_full/5) {
+> +				empty->voltage =3D 0;
+> +				ddata->charge_full =3D 0;
+> +				return -ENODATA;
+> +			}
+>  			val->intval =3D 0;
+> -		else if (ddata->charge_full && ddata->charge_full < val->intval)
+> +		} else if (ddata->charge_full && ddata->charge_full < val->intval) {
+> +			/* Assume invalid config if CHARGE_NOW exceeds CHARGE_FULL by 20% */
+> +			if (val->intval > (6*ddata->charge_full)/5) {
+> +				empty->voltage =3D 0;
+> +				ddata->charge_full =3D 0;
+> +				return -ENODATA;
+> +			}
+>  			val->intval =3D ddata->charge_full;
+> +		}
+>  		break;
+>  	case POWER_SUPPLY_PROP_CHARGE_FULL:
+>  		if (!ddata->charge_full)
+> @@ -842,7 +855,7 @@ static int cpcap_battery_set_property(struct power_su=
+pply *psy,
+>  	case POWER_SUPPLY_PROP_CHARGE_FULL:
+>  		if (val->intval < 0)
+>  			return -EINVAL;
+> -		if (val->intval > ddata->config.info.charge_full_design)
+> +		if (val->intval > (6*ddata->config.info.charge_full_design)/5)
+>  			return -EINVAL;
+> =20
+>  		ddata->charge_full =3D val->intval;
+> --=20
+> 2.31.0
+>=20
+>=20
+
+--edgwsfgidhpbf44q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmC6Hn4ACgkQ2O7X88g7
++pq9cRAAp5tyNwfHuqkaqbULXgd4luGLpB2c1KMYzkO2m7L+gL3mDAivNcoc1AzA
+4704i+a2vadbFOKVBFHkNDiWMxjLvhTHzEqX3+KUU7zIcXbEcPBGQU3MYbD7hzYd
+QJyr2rjlEyJwdj4sKjT7X3Wj5d+lTYjldXpBOQySI1kSlTXDfrpdxbAGdWvABD39
+UqF9NgwSkgRqPjT3fVhVARjoCTPNYBjwX9TaR+jQqONAL1A7Itvck9TCP7480I+0
+u2Pn/QQZXh1lYs8x3kFdMsy4j6RptMTpvau6Ov56PW9vyrQ+FzzcFN9zY+PjXjCc
+DapH0fdi5IpnPudRDqe/fvM4R2aM9ka35ioyZsrFbgE9Eu/zTIPUKNLFu0RCXcrp
+rSZYRwUhUilNVqnqUrpDRdiedCHupp8+mG9hXsyFBS12tuRM+pMH7fTHhGBWTK71
+W3ZyhMrt133lc1R5kkXeLbT3v5ixm0ZQUTX8n/VP48MPjX4D+PesDVeT1zI2U+35
+NMsjzMua3lzXq0NRgpVUxzHBztVXD/cf2S+Lv8ijTU5vlJQsh48Ds2mbG8nN6bkD
+Z2F03i6HkPQN3BjSmfeueAmfurLYSAZiBo5HvjaOLjd7+zGbdkM768IZHQgWd3OL
+7jRCiCfOvkfh6XwYWqs16RstG+XZm3m2XVEd2dH1BE5i49lESPs=
+=frO6
+-----END PGP SIGNATURE-----
+
+--edgwsfgidhpbf44q--
