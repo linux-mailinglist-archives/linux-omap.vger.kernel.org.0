@@ -2,128 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F201C39BDD6
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Jun 2021 18:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DABF739C150
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Jun 2021 22:27:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbhFDRBl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Jun 2021 13:01:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52724 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbhFDRBk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Jun 2021 13:01:40 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F37BC061766;
-        Fri,  4 Jun 2021 09:59:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=fyoH9XSGLFwuTw5EZijjPB3huxIWStyfrRD0HZEDmpk=; b=lz8Wh0F0dlMv0vNhTtN3f39VWo
-        nfsa+X01BHqfr4S1aKb0G0Otac73ejlkoQno40L8Yehul7b/+b8esPpkT2mAVJGHQOlK6NlCbVw+y
-        0UDrCGqp6F3qpN7FniKJk3CgUoD29/OxHWMwbzf5oPbaaNMuzAem42aGLiP0imhwHu+Q=;
-Received: from p200300ccff0b2a001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0b:2a00:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1lpDAe-0000uR-L8; Fri, 04 Jun 2021 18:59:49 +0200
-Date:   Fri, 4 Jun 2021 18:59:43 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        letux-kernel@openphoenux.org
-Subject: Re: [PATCH] usb: musb: Check devctl status again for a spurious
- session request
-Message-ID: <20210604185943.3efa2a19@aktux>
-In-Reply-To: <YLn06uuntThMlaTQ@atomide.com>
-References: <20210518150615.53464-1-tony@atomide.com>
-        <20210527211501.70d176b4@aktux>
-        <YLCGZEan87yp9Eeq@atomide.com>
-        <20210604103533.6392beeb@aktux>
-        <YLn06uuntThMlaTQ@atomide.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S230214AbhFDU3S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Jun 2021 16:29:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33920 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229854AbhFDU3S (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 4 Jun 2021 16:29:18 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C3E97613B3;
+        Fri,  4 Jun 2021 20:27:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622838451;
+        bh=tp7EhaUIA7dhDqX73gUiMeFFSwmwo5qsAN0c2GLR7/8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J495APYqeMvGak7VjrnfXTx+O0ofgIzrHbyPJ+K5eDQGpv0IfD586Ub0mUgRKUdZm
+         QcgNb+5o90ApgmlCFc1Q7KGqa6lwLRlbadNabGKYC2gYmf5PA/ypxf5duJ6TsqhmTS
+         wO+lIPQ+eZ/sgsIVJgtZZObY2oHNQAf3Y69zERxDPzneJ2qoq2/ztUChMXbJ0Lhlkr
+         o9jjNcfjrXzh64tYGYr8m6uy88tLY4YQFupsFZU0rS2b6eBlWyeTGTQzZwp0/ZyOrm
+         K0anXq+trFoxq3HvQcW7xm+ZZdMmvKCrEOWwq50cv6k5R89yXNKRQtleBo/o5mL0gN
+         G2S30JmqCG/lg==
+Date:   Fri, 4 Jun 2021 22:27:28 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org, x86@kernel.org,
+        linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: i2c: ce4100: Replace "ti,pcf8575" by
+ "nxp,pcf8575"
+Message-ID: <YLqMsCPSCvisGyGF@kunai>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh+dt@kernel.org>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, devicetree@vger.kernel.org,
+        linux-gpio@vger.kernel.org, x86@kernel.org,
+        linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org
+References: <cover.1622560799.git.geert+renesas@glider.be>
+ <9b560b7f5ded90430c989a211f2aee009aefc595.1622560799.git.geert+renesas@glider.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="a1L18+0qYibZ0Ie5"
+Content-Disposition: inline
+In-Reply-To: <9b560b7f5ded90430c989a211f2aee009aefc595.1622560799.git.geert+renesas@glider.be>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 4 Jun 2021 12:39:54 +0300
-Tony Lindgren <tony@atomide.com> wrote:
 
-> * Andreas Kemnade <andreas@kemnade.info> [210604 08:35]:
-> > I inserted some more dev-dbg
-> > [   60.241790] PM: suspend entry (deep)
-> > [   60.245513] Filesystems sync: 0.000 seconds
-> > [   60.251312] Freezing user space processes ... (elapsed 0.001 seconds) done.
-> > [   60.260040] OOM killer disabled.
-> > [   60.263275] Freezing remaining freezable tasks ... (elapsed 0.001 seconds) done.
-> > [   60.272338] printk: Suspending console(s) (use no_console_suspend to debug)
-> > [   60.281311] musb-omap2430 480ab000.usb_otg_hs: omap2430 runtime_resume  
-> > -> this is triggered by what?  
-> 
-> I think that comes from the pm_runtime_get_sync() in musb_suspend().
-> 
-> > [   60.281341] twl4030_usb 48070000.i2c:twl@48:twl4030-usb: twl4030_usb_runtime_resume  
-> > -> and here something stays on...  
-> > 
-> > [   60.346374] twl4030_usb 48070000.i2c:twl@48:twl4030-usb: twl4030_phy_power_on
-> > [   60.796630] musb-hdrc musb-hdrc.0.auto: musb_suspend begin
-> > [   60.796722] musb-hdrc musb-hdrc.0.auto: musb_suspend end
-> > [   60.796752] musb-omap2430 480ab000.usb_otg_hs: omap2430 suspend
-> > [   60.796783] musb-omap2430 480ab000.usb_otg_hs: omap2430 runtime_suspend
-> > [   60.796783] twl4030_usb 48070000.i2c:twl@48:twl4030-usb: twl4030_phy_power_off
-> > [   60.796813] twl4030_usb 48070000.i2c:twl@48:twl4030-usb: twl4030_usb_suspend
-> > [   60.806549] Disabling non-boot CPUs ...
-> > [   60.806579] Successfully put all powerdomains to target state  
-> 
-> Well since commit 88d26136a256 ("PM: Prevent runtime suspend during system resume")
-> nothing gets runtime idled during suspend with the extra pm_runtime_get_noresume()
-> call in device_prepare() that does not get released until in device_complete().
-> 
-> > forcing omap2430 runtime on before suspend:
-> > [  160.467742] musb-omap2430 480ab000.usb_otg_hs: omap2430 runtime_resume
-> > [  165.001495] PM: suspend entry (deep)
-> > [  165.005218] Filesystems sync: 0.000 seconds
-> > [  165.010284] Freezing user space processes ... (elapsed 0.001 seconds) done.
-> > [  165.018981] OOM killer disabled.
-> > [  165.022247] Freezing remaining freezable tasks ... (elapsed 0.001 seconds) done.
-> > [  165.031311] printk: Suspending console(s) (use no_console_suspend to debug)
-> > [  165.040496] musb-hdrc musb-hdrc.0.auto: musb_suspend begin
-> > [  165.040618] musb-hdrc musb-hdrc.0.auto: musb_suspend end
-> > [  165.040618] musb-omap2430 480ab000.usb_otg_hs: omap2430 suspend
-> > [  165.040649] musb-omap2430 480ab000.usb_otg_hs: omap2430 runtime_suspend
-> > [  165.040679] twl4030_usb 48070000.i2c:twl@48:twl4030-usb: twl4030_usb_suspend
-> > [  165.050506] Disabling non-boot CPUs ...
-> > [  165.050537] Successfully put all powerdomains to target state  
-> 
-> That's interesting. Hmm so we bail out early based on glue->is_runtime_suspended,
-> and omap3 is still probing devices with omap_device.c instead of ti-sysc.c, so
-> sounds like the duplicate calls you noticed might cause the issue.
-> 
-> Does the following patch fix things for you or does something else break again? :)
-> 
-sigh,..
-ok, it breaks something. gadget (at least ecm) only works if
-musb/phy stuff is loaded, ecm configured via configfs
-rmmod omap2430
-modprube 2430
+--a1L18+0qYibZ0Ie5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-until the next usb disconnect
-and another rmmod/modprobe is required.
+On Tue, Jun 01, 2021 at 05:25:44PM +0200, Geert Uytterhoeven wrote:
+> The TI part is equivalent to the NXP part, and its compatible value is
+> not documented in the DT bindings.
+>=20
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-The following musb patches were applied additional to that one you
-added to this mail on top of 5.13-rc4.
-
-usb: musb: fix MUSB_QUIRK_B_DISCONNECT_99 handling
-usb: musb: Add missing PM suspend and resume functions for 2430 glue
-usb: musb: Check devctl status again for a spurious session request
+I'd think I pick this individually? Or shall it all go via some tree?
 
 
-Regards,
-Andreas
+--a1L18+0qYibZ0Ie5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmC6jLAACgkQFA3kzBSg
+KbZdLg//fOeXpGmmYSRKOE1z3+qSZbfwj/LBOY9Attl8FsAI1y38e8bXXHP3kaEs
+pIaBx0M+gFM3HPb9effIwDAkxPVzuWxTDHq3Ux9EJdbPA4ZIopF5k+7CNQmr93an
+JamaH5NzzCJy/gRDtq1oGMs58RIEkuLw59XmTIhI1ZlZsACf/FlVuU1jn6hBKe6G
+/AYC9+mwqIaZnFhQGCUpf4k2S5fG8yo0cm1h/YHJHlvceIYixH6aR+7DHtgurXqP
+s0hGiAOrGnTTShOL055kg9USVL+84Nhauih9k/E74weXUkiN9tiF7wJU1KVqmGnI
+Jnne2N6Kk5kG7pT2EgeWDKQWH5TUjZbRPziN/k+N4a2aItFN84crBZOFxBlIsS5P
++8g0dVK2tUfzOkAiXI7kV9Z878vNzfrXCH0epsgJ8Eayw1ZDq98qKsi9AdpdGzTw
+BVDPrI3kyG/RYGuAfJ8Jb67aR75v9+7pytQRlhy1NvKJ4dkoeV8E41LI3Yj/Gr17
+I+12ME5xXMQPYJQscRz5L8m0mUgbvEb0sNABUwgiiaenDUtWAPCMMwGNYLkNo17Q
+Hdh/ZTHbNpDKzqUQe2HpAeNEwu8/DCrKJS8n9g8+Nf2Rn3yaUQ3KxbuGdbhDWb3k
+9hIaOgdvuDcp1xqfP7HQz+QqI9064vN9KQGpb/IFFqDmP5XiE/E=
+=a4Z4
+-----END PGP SIGNATURE-----
+
+--a1L18+0qYibZ0Ie5--
