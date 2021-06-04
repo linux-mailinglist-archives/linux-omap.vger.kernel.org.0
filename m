@@ -2,92 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C120A39C157
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Jun 2021 22:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D1739C197
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Jun 2021 22:49:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231343AbhFDUbO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Jun 2021 16:31:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34934 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229982AbhFDUbO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 4 Jun 2021 16:31:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F86A613D8;
-        Fri,  4 Jun 2021 20:29:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622838567;
-        bh=qnzSacT15nQlHs+WP3CvQZcAvYJW2aDiphcqTcOrOps=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SFsa27IJlvYI15OzZ78hiUJRSKpx4pZNoXw0B/rmgHvLTueTUq3JmoNz/1COfjEgA
-         3zY6DN5zlVw6+jDDE8yrdA+6euNgv9G4rR5A9zUusO0iXWOny76yQMMXdh11bMCNTW
-         5BkriR39nfHovgz97S5flEdjDApNKKBJ/Ygqoom1oOvqNnSnE8vqVxgu6LZRIn2P69
-         jnZNhREcShltHqRceJWZouTRsssjq7guUhfTJBR13Iw/5mG3ihcKvGwe6vqzZ8I2Wi
-         nsi7wv6XmpcqFvZQ5XOOgBdEZof2FJCPQxadiTlZ1g3EuOgDkGUdVWSk+141lTXa5T
-         8XGcSZCMK5c3Q==
-Date:   Fri, 4 Jun 2021 22:29:24 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-i2c@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Nishanth Menon <nm@ti.com>,
-        Andreas Kemnade <andreas@kemnade.info>
-Subject: Re: [PATCH v3] dt-bindings: i2c: Move i2c-omap.txt to YAML format
-Message-ID: <YLqNJLK7jylURwcP@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        id S231263AbhFDUus (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Jun 2021 16:50:48 -0400
+Received: from mail-oo1-f46.google.com ([209.85.161.46]:39816 "EHLO
+        mail-oo1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229906AbhFDUus (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Jun 2021 16:50:48 -0400
+Received: by mail-oo1-f46.google.com with SMTP id 67-20020a4a01460000b0290245b81f6261so2540164oor.6;
+        Fri, 04 Jun 2021 13:49:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=inQ8sGC2NnMUBhvlMb91EK9RNezu3zjD1rcyMjgrMfs=;
+        b=WkHZFlqZ2X56npyI3hFSOH7GkVzrXzgXV5fj4R9gckkSveZVp9hZjhRVOzgKR5JIro
+         bs177zfiOcXzRIbdDaYJWKecTkIEQ0xtkArrlUACWwdznJu/58Jki2BwPlEW7+B624qx
+         WhUWgxhFBD3LJz8qmBDrdIWZx/HIERXJv+i0jIbZmKfT8M28hMLyPPny9wWZhmFVQyx0
+         Q9Bz2hVOJoYGHOUIOn/nrvood/d027J/h2SGjJ+R6EH+FyeVjcgo+/YbOAFX+AKtYeVl
+         aOsb9srvZS0GRz8mR3Z8qEcu9kxJgcHOubwM+dfUGMSygueBPcYaHWLaPetMeLwkQ/F3
+         8+mQ==
+X-Gm-Message-State: AOAM5317b8cpL0xEskWqR8Z60h6Ag6JmXA5c+4pLR5i2O7Efq9Lcf+uu
+        qli3+Tyagx4+3bNkeGNdiw==
+X-Google-Smtp-Source: ABdhPJwmNx3aEeXnxqvNge056ldw9HcSTNO856AbtLXPdb1q59H2fkElHBNbNWz/GlnUtgJWJpmqRQ==
+X-Received: by 2002:a4a:ac04:: with SMTP id p4mr5094271oon.70.1622839741112;
+        Fri, 04 Jun 2021 13:49:01 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id i9sm667872oog.17.2021.06.04.13.48.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Jun 2021 13:49:00 -0700 (PDT)
+Received: (nullmailer pid 3890117 invoked by uid 1000);
+        Fri, 04 Jun 2021 20:48:59 -0000
+Date:   Fri, 4 Jun 2021 15:48:59 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-i2c@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Nishanth Menon <nm@ti.com>, Andreas Kemnade <andreas@kemnade.info>
-References: <20210526100412.484-1-vigneshr@ti.com>
+        Dario Binacchi <dariobin@libero.it>
+Subject: Re: [PATCH] dt-bindings: serial: Move omap-serial.txt to YAML schema
+Message-ID: <20210604204859.GA3885095@robh.at.kernel.org>
+References: <20210527165636.939-1-vigneshr@ti.com>
+ <3760d1e6-2121-323b-d962-60e8291d0bb7@ti.com>
+ <YLCWS/+TwSs8HhRG@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0UX+kpr+/tK4vv8M"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210526100412.484-1-vigneshr@ti.com>
+In-Reply-To: <YLCWS/+TwSs8HhRG@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Fri, May 28, 2021 at 10:05:47AM +0300, Tony Lindgren wrote:
+> * Grygorii Strashko <grygorii.strashko@ti.com> [210527 17:49]:
+> > 
+> > 
+> > On 27/05/2021 19:56, Vignesh Raghavendra wrote:
+> > > Convert serial-omap.txt to YAML schema for better checks and documentation.
+> > > 
+> > > Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+> > > ---
+> > >   .../bindings/serial/omap_serial.txt           |  40 ------
+> > >   .../bindings/serial/ti,omap4-uart.yaml        | 116 ++++++++++++++++++
+> > >   2 files changed, 116 insertions(+), 40 deletions(-)
+> > >   delete mode 100644 Documentation/devicetree/bindings/serial/omap_serial.txt
+> > >   create mode 100644 Documentation/devicetree/bindings/serial/ti,omap4-uart.yaml
+> > 
+> > Why omap4? Seems ti,omap-uart.yaml is more suitable.
+> 
+> Additionally omap-serial should be deprecated in favor of 8250_omap and
+> omap-serial not used at all in general.
 
---0UX+kpr+/tK4vv8M
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, May 26, 2021 at 03:34:12PM +0530, Vignesh Raghavendra wrote:
-> Convert i2c-omap.txt to YAML schema for better checks and documentation.
->=20
-> Following properties were used in DT but were not documented in txt
-> bindings and has been included in YAML schema:
-> 1. Include ti,am4372-i2c compatible
-> 2. Document clocks property
->=20
-> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-
-Applied to for-next, thanks!
-
-
---0UX+kpr+/tK4vv8M
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmC6jSQACgkQFA3kzBSg
-KbYQUg//XT3Ihccz7UK/XxV6lnn4SW5r7+ESHYDVvhYh0rSO46aPEhM+5PEiDu/F
-SvYUXcCSM4Cl0v/7j7xVdW8ycHsKrFfS+9abQRHD3Ehc0vu1FgD/7vXi1IwdRJBG
-mSxmuHIXos086PCF3NIpOPAiFuQn0O6Z3H1yIAUnv2gf3lGZ7RYovK1MrwqChlOE
-Jr5IIOWrIXqZZvUGSQoQK2ByLRYM/wKix9A88TA8b3kDojTzWlNhjrZK0dEutt/8
-Wx0fMEZfVAb3Hchnz0Qe9piXHL/5NicvNHvFXf5N2D5neCeiUvH6nBCZFYAysJu9
-LrwxvsvM/tSoW9YagfApMg5smNymH7ChaoSliiblK7+7orvfdO9HmoE3Rx6W7oaE
-W1eaqjvZOj6lPlf9N6GBaqwIx6k6UCjdfiLoruQfhTDM+etrW3qkSqBK6X+0n61K
-/vUQpZzggL3SFFpdVd6uGU58kXfbZNthD9aBb6mL7/5GxbseSKfzjakje50PssPL
-NwQgMFGNOzve56fmzx8UYoV6OQBVTVqGlPBkTxxTi0oQqyRA1ghcGX2uQnZlfc08
-5Qxh3AsinIvGkBBP0b8dq5T00PQr8fsyVgLkyMVAqYCYNgr7j4llHIYtU2GpHDYt
-FLqDxp/eNPgdufm6ov2ndfDdYOk/RASicWYQ09W5ku8Sasgnuuo=
-=CzDI
------END PGP SIGNATURE-----
-
---0UX+kpr+/tK4vv8M--
+That's the driver, I assume the binding works with either?
