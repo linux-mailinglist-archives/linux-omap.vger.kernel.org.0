@@ -2,108 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B10D239BB12
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Jun 2021 16:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0960F39BC1F
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Jun 2021 17:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbhFDOq6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Jun 2021 10:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbhFDOq6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Jun 2021 10:46:58 -0400
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C46C061766;
-        Fri,  4 Jun 2021 07:45:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=dffAPnLk2EQKt/idtjOQOBBmEYeqTi/iMTS2rYi5YIE=; b=R69m74SviFE5CBFZZatkGxasxK
-        psfrxq7jvjgeBDxR7p7CMD27Wyvqf6br892wxFXcVNlkOD7lpbavqZr0wymseoj7oEfsd7pliD+Uk
-        lXkAml6U5cBX+/vo1Px/QLZlIkBqBJ/k5Wevz3ULCuYlE3yTCVhTcoOFbs/Njqx4dKdc=;
-Received: from p200300ccff0b2a001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0b:2a00:1a3d:a2ff:febf:d33a] helo=aktux)
-        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        id S229925AbhFDPnL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Jun 2021 11:43:11 -0400
+Received: from 49-237-179-185.static.tentacle.fi ([185.179.237.49]:54782 "EHLO
+        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229809AbhFDPnK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 4 Jun 2021 11:43:10 -0400
+Received: from 88-114-184-142.elisa-laajakaista.fi ([88.114.184.142] helo=[192.168.1.48])
+        by bitmer.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.89)
-        (envelope-from <andreas@kemnade.info>)
-        id 1lpB4I-0008JE-Cn; Fri, 04 Jun 2021 16:45:06 +0200
-Date:   Fri, 4 Jun 2021 16:45:01 +0200
-From:   Andreas Kemnade <andreas@kemnade.info>
+        (envelope-from <jarkko.nikula@bitmer.com>)
+        id 1lpBwo-0005eF-VB; Fri, 04 Jun 2021 18:41:23 +0300
+Subject: Re: Regression with 6cfcd5563b4f on BeagleBoard Rev C2
 To:     Tony Lindgren <tony@atomide.com>
-Cc:     Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        letux-kernel@openphoenux.org
-Subject: Re: [PATCH] usb: musb: Check devctl status again for a spurious
- session request
-Message-ID: <20210604164501.5d2f3ce8@aktux>
-In-Reply-To: <YLn06uuntThMlaTQ@atomide.com>
-References: <20210518150615.53464-1-tony@atomide.com>
-        <20210527211501.70d176b4@aktux>
-        <YLCGZEan87yp9Eeq@atomide.com>
-        <20210604103533.6392beeb@aktux>
-        <YLn06uuntThMlaTQ@atomide.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Cc:     linux-omap@vger.kernel.org
+References: <68f28473-a196-b106-b4ae-e9162b7002e6@bitmer.com>
+ <YLcXicwDxue0a52/@atomide.com>
+ <5037cd3e-9c4f-0028-ceef-8315d297f2bc@bitmer.com>
+ <YLnJowBaoJPyZWOk@atomide.com>
+From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
+Message-ID: <3d73f5b4-dfb3-682e-e1dc-cf5feba69121@bitmer.com>
+Date:   Fri, 4 Jun 2021 18:41:16 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <YLnJowBaoJPyZWOk@atomide.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
-
-On Fri, 4 Jun 2021 12:39:54 +0300
-Tony Lindgren <tony@atomide.com> wrote:
-
-[...]
-> Does the following patch fix things for you or does something else break again? :)
+On 4.6.2021 9.35, Tony Lindgren wrote:
+> Hi,
 > 
-It fixes things mostly. If I quickly enter suspend after usb
-disconnect, current is still high in suspend (limit approx 2-3 seconds).
-But I think this is the right track and these two patches are clearly an
-improvement if applied together.
-
-Regards,
-Andreas
-
-
-> Regards,
+> * Jarkko Nikula <jarkko.nikula@bitmer.com> [210602 18:21]:
+>> Hi
+>>
+>> On 6/2/21 8:30 AM, Tony Lindgren wrote:
+>>> Sounds like the beagleboard timer errata handling is either picking
+>>> a wrong clockevent timer, or later on ti-sysc misdetects the active
+>>> timer for clockevent and idles it.
+>>>
+>>> What does dmesg say in the beginning for clockevent and clocksource
+>>> timers?
+>>>
+>> I attached logs from commit 6cfcd5563b4f and commit 30c66fc30ee7 before
+>> it. Perhaps this is relevant difference between them?
+>>
+>> +ti-sysc: probe of 49032000.target-module failed with error -16
+>> +ti-sysc: probe of 48304000.target-module failed with error -16
 > 
-> Tony
+> Yeah so it seems. We now attempt to ignore the system timer instances
+> while it seems we need also block idling at least for timer12 that is
+> used for the beagle timer.
 > 
-> 8< --------------
-> diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
-> --- a/drivers/usb/musb/omap2430.c
-> +++ b/drivers/usb/musb/omap2430.c
-> @@ -332,6 +332,7 @@ static int omap2430_probe(struct platform_device *pdev)
->  	glue->musb			= musb;
->  	glue->status			= MUSB_UNKNOWN;
->  	glue->control_otghs = ERR_PTR(-ENODEV);
-> +	glue->is_runtime_suspended	= 1;
->  
->  	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
->  	if (!pdata)
-> @@ -453,6 +454,9 @@ static int omap2430_runtime_suspend(struct device *dev)
->  	if (!musb)
->  		return 0;
->  
-> +	if (glue->is_runtime_suspended)
-> +		return 0;
-> +
->  	musb->context.otg_interfsel = musb_readl(musb->mregs,
->  						 OTG_INTERFSEL);
->  
-> @@ -474,6 +478,9 @@ static int omap2430_runtime_resume(struct device *dev)
->  	if (!musb)
->  		return 0;
->  
-> +	if (!glue->is_runtime_suspended)
-> +		return 0;
-> +
->  	phy_init(musb->phy);
->  	phy_power_on(musb->phy);
->  
+> Can you test the following patch and see if it helps?
+> 
+It works! I tested on top of both regressing commit and the most recent one:
+6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend and resume
+for am3 and am4")
+and
+f88cd3fb9df2 ("Merge tag 'vfio-v5.13-rc5' of
+git://github.com/awilliam/linux-vfio")
 
+You may add:
+Tested-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
