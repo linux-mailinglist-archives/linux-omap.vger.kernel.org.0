@@ -2,85 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F8F39C33B
-	for <lists+linux-omap@lfdr.de>; Sat,  5 Jun 2021 00:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CE3E39C5F6
+	for <lists+linux-omap@lfdr.de>; Sat,  5 Jun 2021 07:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231558AbhFDWIV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Jun 2021 18:08:21 -0400
-Received: from mail-lj1-f170.google.com ([209.85.208.170]:44710 "EHLO
-        mail-lj1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230041AbhFDWIU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Jun 2021 18:08:20 -0400
-Received: by mail-lj1-f170.google.com with SMTP id d2so9264418ljj.11
-        for <linux-omap@vger.kernel.org>; Fri, 04 Jun 2021 15:06:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Lm6qjNOSd7S3ElmBGLAdz/ltzncXw/D1BuDORLixUOY=;
-        b=RpZRBAvNmlvbMhdcUNBT1IRUNettfyipNir/0qTLXWWLR9kdY0t6lKvAuh/oaTO45F
-         5VYqft+IFQlJmmdwTQoAEFOwopCsUIMwZQlgODEkvQU8f/iH2vIB9Vv95mrSlCqO65kl
-         w3P8QlnkZgOEDDR8ulaMR/x/vWmMO0QXEzB2uFKqpthjGimkeTBdq6IOsgSHFlBfFdNV
-         afIVLhvu1AVawb5Ojf3Wd+4G2lTKMotrRitIkml6wxZ4ma3jZdfN6BNOWHtSBcSLtjL1
-         7ZyK2RFaieTful8M/iFLhhAu+Vmhy6kX2GC1MGVLHjNe8RzhdcF32ZuwkectC9wXalaG
-         0Trw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Lm6qjNOSd7S3ElmBGLAdz/ltzncXw/D1BuDORLixUOY=;
-        b=uXzr5mj47IdXMbYwNHEuk7ZR40w4YlrVL3vNOFJclY/pygMceOm9z9HjM9q0oew7nJ
-         k+ONanUNojz4zoVAXU/Ob5GQV5EvxzT5P7BbluA0M80atagvV1Y3Vgkgw7R1LF5B0KtI
-         3Kx6PUeXe/giHRtT3p6FziqEW1l0xL1h10gMnzIXkicNlm7jDkSTjsUau8QDsB0c51oN
-         0qqVEYJn6DU7FOJZuXt/domi3bnD2MVPcs+rc7O2NYM2lyuOUXrphItO0lm+2k7DMv35
-         E351GONdJQaUqhVQcBNGp21JydtrGQ7BO8iOGy38+4BkJY4yralzw8BiBM911Ls3CDZR
-         Lwqw==
-X-Gm-Message-State: AOAM531hY2wpi8sIj+VzVgOITmxxyuVWoS9JbKt+MyK9DMrWgy50gKL2
-        UiVnZoWU7f1znIhDq1NJGJ7qWxdt909jvEJ1C4OOQA==
-X-Google-Smtp-Source: ABdhPJxIEjo220o67L1taBJY3zqlit/QriVesKs4aC6pDmACw4lPvVzV8qVmU/R+jsc82jo3VZQGH3X9ojeu+ohPLmw=
-X-Received: by 2002:a2e:22c3:: with SMTP id i186mr5091495lji.273.1622844333120;
- Fri, 04 Jun 2021 15:05:33 -0700 (PDT)
+        id S229665AbhFEFNR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 5 Jun 2021 01:13:17 -0400
+Received: from muru.com ([72.249.23.125]:36538 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229544AbhFEFNR (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 5 Jun 2021 01:13:17 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id DF4388167;
+        Sat,  5 Jun 2021 05:11:36 +0000 (UTC)
+Date:   Sat, 5 Jun 2021 08:11:26 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Florian Boor <florian.boor@kernelconcepts.de>
+Cc:     linux-omap@vger.kernel.org
+Subject: Re: OMAP4460 cpufreq crashes
+Message-ID: <YLsHfpbm8plSez2z@atomide.com>
+References: <38229f0a-85e8-680f-f561-5fc59ac84c6b@kernelconcepts.de>
+ <YJTUWaPWSmvwaZMb@atomide.com>
+ <22081c83-0f7f-cef2-6075-79346abf6e9e@kernelconcepts.de>
+ <fe821e16-7232-2324-0b4e-1a4013f30e38@kernelconcepts.de>
 MIME-Version: 1.0
-References: <cover.1622560799.git.geert+renesas@glider.be> <7caa954add90255fc177e5dbabe17d62e0242861.1622560799.git.geert+renesas@glider.be>
-In-Reply-To: <7caa954add90255fc177e5dbabe17d62e0242861.1622560799.git.geert+renesas@glider.be>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 5 Jun 2021 00:05:22 +0200
-Message-ID: <CACRpkdbSP2FEkfY74HxSUDse57iRf3MY+-i5ZDk1AeUxd=FSug@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] dt-bindings: gpio: pcf857x: Convert to json-schema
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        platform-driver-x86 <platform-driver-x86@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fe821e16-7232-2324-0b4e-1a4013f30e38@kernelconcepts.de>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 1, 2021 at 5:25 PM Geert Uytterhoeven
-<geert+renesas@glider.be> wrote:
+Hi,
 
-> Convert the PCF857x-compatible I/O expanders Device Tree binding
-> documentation to json-schema.
->
-> Document missing compatible values, properties, and gpio hogs.
->
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+* Florian Boor <florian.boor@kernelconcepts.de> [210604 13:31]:
+> Hi,
+> 
+> Am 10.05.21 um 13:13 schrieb Florian Boor:
+> > Am 07.05.21 um 07:47 schrieb Tony Lindgren:
+> >> Hmm OK, sounds like the voltages might be wrong.
+> > 
+> > sounds like my guess wasn't that wrong.
+> 
+> I did some more research and for me it more and more looks like we are missing
+> the voltage transitions on frequency change completely.
+> 
+> I added some debug output in omap_vp_forceupdate_scale() and
+> omap_vc_bypass_scale() and enabled debug output that shows the CPU clock
+> requency changes. Patch and log are attached.
+> 
+> The interesting stuff starts in line 123 where the first frequency change happens.
+> 
+> Maybe I'm missing something and looking in the wrong place, but if voltage
+> really never gets adapted on some devices then in the best case the device only
+> wastes power...
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Yup.. Sounds like the Variscite board boots at some lower opp than
+what is configured for the kernel in dts. So the immediate fix would
+be to either limit the max speed, or ensure voltdm_scale() gets
+called on init.
 
-Yours,
-Linus Walleij
+> I wonder if this affects all OMAP4460 or the Variscite one only.
+
+This affects all omap4/5 at least as we're missing the cpufreq-dt to
+voltage domain support like you pointed out. See the last effort to add
+kernel support for voltage domains at [0] below for more details.
+
+I think the way to proceed here would be initially add a regulator
+usable as cpu-supply for cpufreq-dt that gets the voltdm_scale() as
+a platform_data pointer and parses the device tree provides opps
+for supported voltages. Then eventually the legacy platform code
+for voltage domains can be moved to device drivers.
+
+Regards,
+
+Tony
+
+[0] https://lore.kernel.org/lkml/1392755543-28335-1-git-send-email-nm@ti.com/
