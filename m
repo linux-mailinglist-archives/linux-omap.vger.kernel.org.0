@@ -2,85 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E7E139CD8D
-	for <lists+linux-omap@lfdr.de>; Sun,  6 Jun 2021 08:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65FC439D15A
+	for <lists+linux-omap@lfdr.de>; Sun,  6 Jun 2021 22:23:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229504AbhFFGDB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 6 Jun 2021 02:03:01 -0400
-Received: from muru.com ([72.249.23.125]:36974 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229508AbhFFGDB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 6 Jun 2021 02:03:01 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 5D2C080E5;
-        Sun,  6 Jun 2021 06:01:19 +0000 (UTC)
-Date:   Sun, 6 Jun 2021 09:01:08 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        letux-kernel@openphoenux.org
-Subject: Re: [PATCH] usb: musb: Check devctl status again for a spurious
- session request
-Message-ID: <YLxkpNdKei2Dc9qV@atomide.com>
-References: <20210518150615.53464-1-tony@atomide.com>
- <20210527211501.70d176b4@aktux>
- <YLCGZEan87yp9Eeq@atomide.com>
- <20210604103533.6392beeb@aktux>
- <YLn06uuntThMlaTQ@atomide.com>
- <20210604185943.3efa2a19@aktux>
- <YLsJFqYQQ9e233QQ@atomide.com>
- <20210605162046.7362a05e@aktux>
+        id S229885AbhFFUZH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 6 Jun 2021 16:25:07 -0400
+Received: from smtp-35-i2.italiaonline.it ([213.209.12.35]:40281 "EHLO
+        libero.it" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229944AbhFFUZG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 6 Jun 2021 16:25:06 -0400
+Received: from passgat-Modern-14-A10M.homenet.telecomitalia.it
+ ([79.17.119.101])
+        by smtp-35.iol.local with ESMTPA
+        id pzIbl3WgQsptipzIflrvS7; Sun, 06 Jun 2021 22:23:15 +0200
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+        t=1623010995; bh=GKqzetWt/dv1cWgZZ2u8XQZHK90wz4LVNGLm9kxGPI0=;
+        h=From;
+        b=nuc9NxlcA2SDwhLoD0OKb+e8jyK159P0Zi9CVsY2UIjuvzw4LKwBTNnTGuXJ9gt8P
+         TTp30CdwibI6JLbHnDtzQk7nSo/BxnExDfKjPGPdJ/da2uNqfFO76XBcnun1qoVatc
+         2fL4pah/jU07dTeXjLRGfgORufdeO2cx+ykRwNteV+E/G83VVDozfxYfF2kiNMu3B3
+         NaJPT7ufcIfpDI7lLTP8icYz5Riboct5IFmipbI+AZwo1496qVrB7nDUFQM/hgnR+u
+         xlowurPq/IDv/KQ9fq+YPj5Xw6UNh5UG6XWYhCZMILVgBB4VWvKXsQJkfio1qg7fu/
+         ypFq/DauE4FAQ==
+X-CNFS-Analysis: v=2.4 cv=Bo1Yfab5 c=1 sm=1 tr=0 ts=60bd2eb3 cx=a_exe
+ a=do1bHx4A/kh2kuTIUQHSxQ==:117 a=do1bHx4A/kh2kuTIUQHSxQ==:17
+ a=IkcTkHD0fZMA:10 a=7lJUY2J14ryrXklOE8AA:9 a=QEXdDO2ut3YA:10
+From:   Dario Binacchi <dariobin@libero.it>
+To:     linux-clk@vger.kernel.org
+Cc:     Rob Herring <robh@kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Dario Binacchi <dariobin@libero.it>,
+        linux-omap@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: [RESEND PATCH v7 0/5] clk: ti: add am33xx spread spectrum clock support
+Date:   Sun,  6 Jun 2021 22:22:48 +0200
+Message-Id: <20210606202253.31649-1-dariobin@libero.it>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210605162046.7362a05e@aktux>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfI5nRvbbCZ0v19Bu7kLVeQHrArqdPErUgcd8LsmC4639LarUVB95QxaVsA+rN0o9Ten43Cf5fO/jOoc7x+hcvpTtlqmao8mOS1AtV7TYGlivK72Rz37x
+ BuhRgFbQXlkD6hhfH372yu9dpXVpigy1teVlHOJjkDL0czL354Qh23b1WetGol1AsetVdNZxsyQg9DZYSuraTBbMTfjibMAqHkAPGhYJcmbk5sKBVe5Bgggg
+ vAYWd9NAmbgMhDpIHr4PRfBoidzzBHI2n+IzubLrJWu+EZB/XpX29PJzorDggQpVb3NRIpVpDr1uWeOsvTepMePC8+HMqfzGsIgo1PNM8tCalxDyDooTsVzp
+ pM5UyRJZT/d7ot7NzduYudeH7x24rEzoatf9k7/TMCz0vzJCXU6S6V5SYrv1EKLWwgDZINWZEAiaU4TeiEa14g1T1H6PgsYXKr/A+9qNYgiPqS7jF4ENZCgs
+ j+s7Y8JYDsEjrKo81x/NEZWM6uN1+5ScEglmVcBzbtHdZMLIwPlU4mKCv66M/TksG+ch3IM+OTEowyWYa1tQS/9uN7+B1kbFW0qT5Or0rL4nD5M39IqKlS51
+ Mlg+mJMn/MgEHerj9yti5ubO7YErYv4okrel4VGWNu/LSg==
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Andreas Kemnade <andreas@kemnade.info> [210605 14:21]:
-> On Sat, 5 Jun 2021 08:18:14 +0300
-> Tony Lindgren <tony@atomide.com> wrote:
-> 
-> > * Andreas Kemnade <andreas@kemnade.info> [210604 17:00]:
-> > > On Fri, 4 Jun 2021 12:39:54 +0300
-> > > Tony Lindgren <tony@atomide.com> wrote:  
-> > > > Does the following patch fix things for you or does something else break again? :)
-> > > >   
-> > > sigh,..
-> > > ok, it breaks something. gadget (at least ecm) only works if
-> > > musb/phy stuff is loaded, ecm configured via configfs
-> > > rmmod omap2430
-> > > modprube 2430
-> > > 
-> > > until the next usb disconnect
-> > > and another rmmod/modprobe is required.  
-> > 
-> > Hmm I don't follow, do you mean there's now another issue after a
-> > system suspend? Or is this issue not related to system suspend and
-> > resume?
-> > 
-> independently of suspend.
 
-OK
+As reported by the TI spruh73x/spruhl7x RM, MPU and LCD modules support
+spread spectrum clocking (SSC) on their output clocks. SSC is used to
+spread the spectral peaking of the clock to reduce any electromagnetic
+interference (EMI) that may be caused due to the clock’s fundamental
+or any of its harmonics.
+The series allows you to enable and adjust the spread spectrum clocking
+for all am33xx/am43xx PLLs for which it is supported.
 
-> > > The following musb patches were applied additional to that one you
-> > > added to this mail on top of 5.13-rc4.
-> > > 
-> > > usb: musb: fix MUSB_QUIRK_B_DISCONNECT_99 handling
-> > > usb: musb: Add missing PM suspend and resume functions for 2430 glue
-> > > usb: musb: Check devctl status again for a spurious session request  
-> > 
-> > Does one of the above cause some additional usb gadget issue?
-> > 
-> I do not see any additional gadget issue just with them. It just starts
-> with the small patch you proposed to fix suspend power consumption in
-> this thread.
+As suggested by Tony Lindgren I resend the whole series to the clk tree.
+For Tony the series is ok.
 
-Oh OK, so some more mystery hardware debugging still left to do then.
+Changes in v7:
+- Add Tony Lindgren acked tag.
 
-Regards,
+Changes in v6:
+- Add Tero Kristo review tag.
 
-Tony
+Changes in v5:
+- Remove ssc_ack_mask field from dpll_data structure. It was not used.
+- Change ssc_downspread type from u8 to bool in dpll_data structure.
+
+Changes in v4:
+- Add Stephen Boyd review tag.
+- Add Rob Herring review tag.
+- Add SSC registers for CORE, DDR and PER PLLs.
+- Update commit message.
+- Update commit message.
+
+Changes in v3:
+- Add '-hz' suffix to "ti,ssc-modfreq" binding.
+- Add Tony Lindgren acked tag.
+- Use "ti,ssc-modfreq-hz" binding instead of "ti,ssc-modfreq".
+
+Changes in v2:
+- Remove SSC registers from dpll_core_ck@490 node (SSC is not supported)
+- Add SSC registers to dpll_mpu_ck@488 node.
+- Move the DT changes to the previous patch in the series.
+
+Dario Binacchi (5):
+  clk: ti: fix typo in routine description
+  dt-bindings: ti: dpll: add spread spectrum support
+  ARM: dts: am33xx-clocks: add spread spectrum support
+  ARM: dts: am43xx-clocks: add spread spectrum support
+  clk: ti: add am33xx/am43xx spread spectrum clock support
+
+ .../devicetree/bindings/clock/ti/dpll.txt     | 20 +++++
+ arch/arm/boot/dts/am33xx-clocks.dtsi          | 10 +--
+ arch/arm/boot/dts/am43xx-clocks.dtsi          | 12 +--
+ drivers/clk/ti/dpll.c                         | 39 +++++++++
+ drivers/clk/ti/dpll3xxx.c                     | 87 ++++++++++++++++++-
+ include/linux/clk/ti.h                        | 22 +++++
+ 6 files changed, 178 insertions(+), 12 deletions(-)
+
+-- 
+2.17.1
+
