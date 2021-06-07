@@ -2,39 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DFBF39E26C
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Jun 2021 18:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D288739E2FA
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Jun 2021 18:38:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230443AbhFGQQm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Jun 2021 12:16:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49390 "EHLO mail.kernel.org"
+        id S232809AbhFGQU0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Jun 2021 12:20:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47834 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232164AbhFGQPr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 7 Jun 2021 12:15:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8C1146140C;
-        Mon,  7 Jun 2021 16:13:36 +0000 (UTC)
+        id S232377AbhFGQS3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 7 Jun 2021 12:18:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0C0C06147F;
+        Mon,  7 Jun 2021 16:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623082417;
+        s=k20201202; t=1623082463;
         bh=uU3E+HpHiuf4G518xekdhVkqedtIxnVtoN6FngjHGNs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CC/4ooSPTbi5h+o9wQ4vVoLfil4qWb5NPdrmPGqpwWBpbnPt/57EnNi+ydhl0PA6U
-         KdpZSjPFf7Gi9piSCz5+b9uqiAWGxQ07u7UmwulhNDaAyCV8lVMGIyOWpiP26AP56V
-         LTtbeMgBwvytAOD6Oz8yPSedJkMcyk2BX7EFS+/LLJT2U/Vow3DP8LY2nDINw0Cx56
-         onDjycqOEK/4m3g4DT6+IOZjrpeuCxS0dEqV3cTX/ngnMur1TY6BW7LiSJAIHGH5NG
-         egEe+JqU6PuIuEoyzvurttDmOfGzPE2ynPp0Vigd0BTKSDmdkJ5UtwH3p0hDJ8M3Ep
-         8KrHnNP6fyrYw==
+        b=mZOQypSszSoxiAAxI6TO/VdsI31JXmGOI27ea1fc8iVnf1h6dN5wvnYz6vmyczyAW
+         7APHBi5u/I+jolKwJY2tuKoDec2PCBBFCRbsY0ByZmptoCj5BOW5LNAKOh9TShsn9O
+         47cSLpFR2i+Yg32cMpC++DbY4WlDxa87qjNM+3u4FHNXqN0d2qLsuPbbqs2BENfGjo
+         UsDPchhDdVJYoGXfSP0GzcbJuxGFL2QRQJ979DHeOvy+jLNWAEBHkVjbNocSvsXlcV
+         uOPKGlzfZTf1oqHoWb6Uz45UX+V/WRrUp7Jc/SP6kRMH1fxkkXqef2EwNKkZ9Yt3G9
+         j+n+yLkg60L5g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Yongqiang Liu <liuyongqiang13@huawei.com>,
         Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 14/39] ARM: OMAP2+: Fix build warning when mmc_omap is not built
-Date:   Mon,  7 Jun 2021 12:12:53 -0400
-Message-Id: <20210607161318.3583636-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 10/29] ARM: OMAP2+: Fix build warning when mmc_omap is not built
+Date:   Mon,  7 Jun 2021 12:13:51 -0400
+Message-Id: <20210607161410.3584036-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210607161318.3583636-1-sashal@kernel.org>
-References: <20210607161318.3583636-1-sashal@kernel.org>
+In-Reply-To: <20210607161410.3584036-1-sashal@kernel.org>
+References: <20210607161410.3584036-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
