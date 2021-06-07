@@ -2,39 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 920A139E347
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Jun 2021 18:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F00839E3E3
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Jun 2021 18:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232852AbhFGQWk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Jun 2021 12:22:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60286 "EHLO mail.kernel.org"
+        id S233540AbhFGQ2N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Jun 2021 12:28:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60368 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232853AbhFGQUm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 7 Jun 2021 12:20:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1BD3261432;
-        Mon,  7 Jun 2021 16:14:56 +0000 (UTC)
+        id S232554AbhFGQWq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 7 Jun 2021 12:22:46 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 433F3617C9;
+        Mon,  7 Jun 2021 16:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623082496;
-        bh=jHRM/4R/pQFCnYN0/rrh37kCWN38OC6C0X+sP8BxSxk=;
+        s=k20201202; t=1623082525;
+        bh=6M14J6CtFD8EwL8AVyh0xyO2/A8lHu9pqqHuxDwPjv0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GNdJHwjKumxuVoTJvLwn2FKaGLczrRVpRTWQ8FfGOil4vvVASv5MQJPfYWwTDS9Yk
-         xotarzQRE70z7jm0sDdX+Rzx5PRQl3YRb+FgJu95kktBoKayl5F2meD6S1btuC6ZXs
-         FTq8Qgfz0Uh4dfROMm5clkd0EJ/JJ2xG5J48un3iXszqc0HS1Nksszd/cpWyDdSXQb
-         YcFfvI9irt463/3jEV/54EfW0mfxWg31YtPpSAMF0uAi6H+aJs7Eolfmb8/oyY63qs
-         1GCACjNxmzE50qfQ2iwYqoH/uiYfQuEjkcC9YITnP7MAwpLka0gArkPbnIX6kDH35p
-         gV8AZLVSBOnpQ==
+        b=ccZcUlFzht6giexNrf9KduYyvG8XYFyQ6T4N1Jx6CTB+XYH589Q3XLA2J2VDjN8VV
+         XE5Cp7BTYKabokbzCOk7uuYE8Zv+GNCfJbQAXE9fmyihZQqPq88ImmnIoB17FvoqPT
+         hWYg29uErYriw05EhiLwqICgVxsjqBsLhL2fhIf+eFfA05JWIWCEdIhvXNhiY2y6pP
+         j5AFTU6clOZBxvv8LViMOUKOApz/VFe3V2prv+XqapltZzaENdvaIYl7jYTBu6tfKs
+         VkEn4o0fMazojXzsIefaBDQtDTxhjkTOMvzOLvakBNZgVk9bnz8e5LnINYUNZLQJz6
+         aHJobr7+oN4WA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Yongqiang Liu <liuyongqiang13@huawei.com>,
         Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 06/21] ARM: OMAP2+: Fix build warning when mmc_omap is not built
-Date:   Mon,  7 Jun 2021 12:14:33 -0400
-Message-Id: <20210607161448.3584332-6-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 4.14 05/18] ARM: OMAP2+: Fix build warning when mmc_omap is not built
+Date:   Mon,  7 Jun 2021 12:15:03 -0400
+Message-Id: <20210607161517.3584577-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210607161448.3584332-1-sashal@kernel.org>
-References: <20210607161448.3584332-1-sashal@kernel.org>
+In-Reply-To: <20210607161517.3584577-1-sashal@kernel.org>
+References: <20210607161517.3584577-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,7 +65,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/mach-omap2/board-n8x0.c b/arch/arm/mach-omap2/board-n8x0.c
-index 75bc18646df6..902e9df9b8bb 100644
+index 20f25539d572..47abea1475d4 100644
 --- a/arch/arm/mach-omap2/board-n8x0.c
 +++ b/arch/arm/mach-omap2/board-n8x0.c
 @@ -325,6 +325,7 @@ static int n8x0_mmc_get_cover_state(struct device *dev, int slot)
