@@ -2,75 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3018E3A0EED
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Jun 2021 10:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 161633A0F98
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Jun 2021 11:26:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231626AbhFIIwN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Jun 2021 04:52:13 -0400
-Received: from muru.com ([72.249.23.125]:39892 "EHLO muru.com"
+        id S237997AbhFIJ2Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Jun 2021 05:28:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58812 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229740AbhFIIwN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Jun 2021 04:52:13 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id C759780F5;
-        Wed,  9 Jun 2021 08:50:24 +0000 (UTC)
-Date:   Wed, 9 Jun 2021 11:50:13 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Greg KH <greg@kroah.com>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        id S233736AbhFIJ2P (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 9 Jun 2021 05:28:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 344ED6124B;
+        Wed,  9 Jun 2021 09:26:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1623230769;
+        bh=1EUr41rKGkCM5/wBbgTiWRS0jD4vY04IL1RUBmNla7U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=o2YHMP1GmPI4I03++anWVSQlpSJW1rOn5+8Y0wO/u+GoK4mAPn2yYHW3mNMFE12Y2
+         pRvOue8aTv5YziNxmi4pwO1BYYJhJ9KcEzo5qe7hXHzr0Un3LQzr7JoVzHDB98O6l0
+         nMEbOc9VT3BuWFVUsB9gbNQAXbkBktA6IAwDWueo=
+Date:   Wed, 9 Jun 2021 11:26:07 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Bin Liu <b-liu@ti.com>, linux-usb@vger.kernel.org,
         linux-omap@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Keerthy <j-keerthy@ti.com>, Tero Kristo <kristo@kernel.org>
-Subject: Re: [Backport for linux-5.4.y PATCH 2/4] ARM: OMAP2+: Prepare timer
- code to backport dra7 timer wrap errata i940
-Message-ID: <YMCAxXPUkSR1yxK3@atomide.com>
-References: <20210602104625.6079-1-tony@atomide.com>
- <20210602104625.6079-2-tony@atomide.com>
- <YL+lOumPYQ1fNoYw@kroah.com>
- <YMBcIbBPfr6W19j5@atomide.com>
- <YMBeI4aOMmWMRsu/@kroah.com>
- <YMBmpAY04FRKOLMT@atomide.com>
- <YMBuVJBzGjm+aVbV@kroah.com>
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Bhushan Shah <bshah@kde.org>,
+        Drew Fustini <drew@beagleboard.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 1/2] usb: musb: Simplify cable state handling
+Message-ID: <YMCJL7KXI1GxwQBl@kroah.com>
+References: <20210604080536.12185-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YMBuVJBzGjm+aVbV@kroah.com>
+In-Reply-To: <20210604080536.12185-1-tony@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Greg KH <greg@kroah.com> [210609 07:31]:
-> On Wed, Jun 09, 2021 at 09:58:44AM +0300, Tony Lindgren wrote:
-> > * Greg KH <greg@kroah.com> [210609 06:22]:
-> > > On Wed, Jun 09, 2021 at 09:13:53AM +0300, Tony Lindgren wrote:
-> > > > How about the following for the description:
-> > > > 
-> > > > Upstream commit 52762fbd1c4778ac9b173624ca0faacd22ef4724 usage of
-> > > > struct dmtimer_clockevent backported to the platform timer code
-> > > > still used in linux-5.4.y stable kernel. Needed to backport upstream
-> > > > commit 3efe7a878a11c13b5297057bfc1e5639ce1241ce and commit
-> > > > 25de4ce5ed02994aea8bc111d133308f6fd62566. Earlier kernels use
-> > > > mach-omap2/timer instead of drivers/clocksource as these kernels still
-> > > > depend on legacy platform code for booting.
-> > > 
-> > > Why are you combining 2 commits into one here?
-> > 
-> > OK so still too confusing, how about let's just have:
-> > 
-> > Upstream commit 52762fbd1c4778ac9b173624ca0faacd22ef4724 usage of
-> > struct dmtimer_clockevent backported to the platform timer code
-> > still used in linux-5.4.y stable kernel.
+On Fri, Jun 04, 2021 at 11:05:35AM +0300, Tony Lindgren wrote:
+> Simplify cable state handling a bit to leave out duplicated code.
+> We are just scheduling work and showing state info if a recheck is
+> needed. No intended functional changes.
 > 
-> Why not just use the normal commit message with the "upstream commit..."
-> message as the first line, and then in the s-o-b area add
-> [backported to 5.4.y - tony]
-> 
-> That's the normal thing we do here for backporting.
+> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Cc: Andreas Kemnade <andreas@kemnade.info>
+> Cc: Bhushan Shah <bshah@kde.org>
+> Cc: Drew Fustini <drew@beagleboard.org>
+> Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/usb/musb/musb_core.c | 40 ++++++++++++++++++------------------
+>  1 file changed, 20 insertions(+), 20 deletions(-)
 
-OK sure works for me thanks. I will repost the series with
-updated patch descriptions.
+Does not apply to my usb-next branch, what tree/branch did you make this
+against?
 
-Regards,
+thanks,
 
-Tony
-
+greg k-h
