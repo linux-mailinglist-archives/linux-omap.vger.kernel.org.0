@@ -2,69 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C743A1756
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Jun 2021 16:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F6693A1B73
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Jun 2021 19:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235355AbhFIOgH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Jun 2021 10:36:07 -0400
-Received: from flippie-beckerswealth-sa.xyz ([62.173.147.2]:37274 "EHLO
-        host.flippie-beckerswealth-sa.xyz" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236549AbhFIOgG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Jun 2021 10:36:06 -0400
-X-Greylist: delayed 7548 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Jun 2021 10:36:06 EDT
-Received: from flippie-beckerswealth-sa.xyz (ec2-3-131-99-163.us-east-2.compute.amazonaws.com [3.131.99.163])
-        by host.flippie-beckerswealth-sa.xyz (Postfix) with ESMTPA id 9F6AE30572EE
-        for <linux-omap@vger.kernel.org>; Wed,  9 Jun 2021 15:10:28 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz 9F6AE30572EE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240630;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=lAwfVVLVx72xohtlHBcM7GWOx3uBTbjB1pI7ymjq6gd7lRGY9J4ahvXxOyDnulj6f
-         yIdXhelKja7vLHuox28/BujgQVbxECiLKW+UGlI8U78BNwrZ1pKvqm6DJ8jDfKbe1L
-         zlzxWy6Z45xuCr+UIjuApwZzTBzFPBZbp51pakYE=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz 9F6AE30572EE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240630;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=lAwfVVLVx72xohtlHBcM7GWOx3uBTbjB1pI7ymjq6gd7lRGY9J4ahvXxOyDnulj6f
-         yIdXhelKja7vLHuox28/BujgQVbxECiLKW+UGlI8U78BNwrZ1pKvqm6DJ8jDfKbe1L
-         zlzxWy6Z45xuCr+UIjuApwZzTBzFPBZbp51pakYE=
-Reply-To: jmasuku40@flippiebeckerwealthservices.com
-From:   Jotham Masuku <jmasuku40@flippie-beckerswealth-sa.xyz>
-To:     linux-omap@vger.kernel.org
-Subject: Proposal
-Date:   09 Jun 2021 12:10:28 +0000
-Message-ID: <20210609121028.1400D8F5E037F8A3@flippie-beckerswealth-sa.xyz>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        id S231265AbhFIRG3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Jun 2021 13:06:29 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:56518 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231225AbhFIRG2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Jun 2021 13:06:28 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 159H4Trl121716;
+        Wed, 9 Jun 2021 12:04:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1623258269;
+        bh=s/MwSlFHOLVCNUFd2xamkY0eTx7OKtxYJQXO4fJst6s=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=OAHDIsut/vOI9fl/jfVx7yb1Vyuq8QUk9Bu7XLLJP69Raql6SORFJ5R7KF1kj8ceW
+         02MPO3dBVWBowpp/xA/Gl3TvfLUyf/0Oxw4lbhdIXXHZPpzaDvCYOGYJR3oigKAo4m
+         wImbodcbKt2LCa6hixqsdDwPXFLsgDe0tHPS/oLo=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 159H4TWU043300
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 9 Jun 2021 12:04:29 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 9 Jun
+ 2021 12:04:28 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Wed, 9 Jun 2021 12:04:28 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 159H4QON031321;
+        Wed, 9 Jun 2021 12:04:27 -0500
+Subject: Re: [PATCH bpf-next 17/17] net: ti: remove rcu_read_lock() around XDP
+ program invocation
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
+        <bpf@vger.kernel.org>, <netdev@vger.kernel.org>
+CC:     Martin KaFai Lau <kafai@fb.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Jesper Dangaard Brouer <brouer@redhat.com>,
+        Magnus Karlsson <magnus.karlsson@gmail.com>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        <linux-omap@vger.kernel.org>
+References: <20210609103326.278782-1-toke@redhat.com>
+ <20210609103326.278782-18-toke@redhat.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <667a26bb-f414-0694-f0c6-299451fd8f2e@ti.com>
+Date:   Wed, 9 Jun 2021 20:04:24 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+MIME-Version: 1.0
+In-Reply-To: <20210609103326.278782-18-toke@redhat.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello there,
 
-I hope this message finds you in good spirits especially during=20
-this challenging time of coronavirus pandemic. I hope you and=20
-your family are well and keeping safe. Anyway, I am Jotham=20
-Masuku, a broker working with Flippiebecker Wealth. I got your=20
-contact (along with few other contacts) through an online=20
-business directory and I thought I should contact you to see if=20
-you are interested in this opportunity. I am contacting you=20
-because one of my high profile clients is interested in investing=20
-abroad and has asked me to look for individuals and companies=20
-with interesting business ideas and projects that he can invest=20
-in. He wants to invest a substantial amount of asset abroad.
 
-Please kindly respond back to this email if you are interested in=20
-this opportunity. Once I receive your response, I will give you=20
-more details and we can plan a strategy that will be beneficial=20
-to all parties.
+On 09/06/2021 13:33, Toke Høiland-Jørgensen wrote:
+> The cpsw driver has rcu_read_lock()/rcu_read_unlock() pairs around XDP
+> program invocations. However, the actual lifetime of the objects referred
+> by the XDP program invocation is longer, all the way through to the call to
+> xdp_do_flush(), making the scope of the rcu_read_lock() too small. This
+> turns out to be harmless because it all happens in a single NAPI poll
+> cycle (and thus under local_bh_disable()), but it makes the rcu_read_lock()
+> misleading.
+> 
+> Rather than extend the scope of the rcu_read_lock(), just get rid of it
+> entirely. With the addition of RCU annotations to the XDP_REDIRECT map
+> types that take bh execution into account, lockdep even understands this to
+> be safe, so there's really no reason to keep it around.
+> 
+> Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+> Cc: linux-omap@vger.kernel.org
+> Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+> ---
+>   drivers/net/ethernet/ti/cpsw_priv.c | 10 ++--------
+>   1 file changed, 2 insertions(+), 8 deletions(-)
 
-Best regards
+Tested-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
 
-J Masuku
-Flippiebecker Wealth
+-- 
+Best regards,
+grygorii
