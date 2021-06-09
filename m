@@ -2,80 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AF2E3A0C3A
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Jun 2021 08:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B0593A0C4F
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Jun 2021 08:20:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233716AbhFIGPw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Jun 2021 02:15:52 -0400
-Received: from muru.com ([72.249.23.125]:39756 "EHLO muru.com"
+        id S236749AbhFIGWg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Jun 2021 02:22:36 -0400
+Received: from muru.com ([72.249.23.125]:39774 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232973AbhFIGPv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Jun 2021 02:15:51 -0400
+        id S231685AbhFIGWg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 9 Jun 2021 02:22:36 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id EB3628061;
-        Wed,  9 Jun 2021 06:14:04 +0000 (UTC)
-Date:   Wed, 9 Jun 2021 09:13:53 +0300
+        by muru.com (Postfix) with ESMTPS id 4CFF08061;
+        Wed,  9 Jun 2021 06:20:50 +0000 (UTC)
+Date:   Wed, 9 Jun 2021 09:20:39 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Greg KH <greg@kroah.com>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Keerthy <j-keerthy@ti.com>, Tero Kristo <kristo@kernel.org>
-Subject: Re: [Backport for linux-5.4.y PATCH 2/4] ARM: OMAP2+: Prepare timer
- code to backport dra7 timer wrap errata i940
-Message-ID: <YMBcIbBPfr6W19j5@atomide.com>
-References: <20210602104625.6079-1-tony@atomide.com>
- <20210602104625.6079-2-tony@atomide.com>
- <YL+lOumPYQ1fNoYw@kroah.com>
+To:     "Woodruff, Richard" <r-woodruff2@ti.com>
+Cc:     David Russell <david.russell73@gmail.com>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Subject: Re: [EXTERNAL] OMAP2430 kernel hangs on ioremap of IVA2.1 addresses
+Message-ID: <YMBdt8dDdvySofuC@atomide.com>
+References: <E26ACA77-0F54-41BC-BA45-29B641A6BEA9@gmail.com>
+ <cb562f9f798d4431a09f19e8efd24727@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YL+lOumPYQ1fNoYw@kroah.com>
+In-Reply-To: <cb562f9f798d4431a09f19e8efd24727@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi,
 
-* Greg KH <greg@kroah.com> [210608 17:13]:
-> On Wed, Jun 02, 2021 at 01:46:23PM +0300, Tony Lindgren wrote:
-> > Prepare linux-5.4.y to backport upstream timer wrap errata commit
-> > 3efe7a878a11c13b5297057bfc1e5639ce1241ce and commit
-> > 25de4ce5ed02994aea8bc111d133308f6fd62566. Earlier kernels still use
-> > mach-omap2/timer instead of drivers/clocksource as these kernels still
-> > depend on legacy platform code for timers. Note that earlier stable
-> > kernels need also additional patches and will be posted separately.
+* Woodruff, Richard <r-woodruff2@ti.com> [210607 15:40]:
+> Guess: this bit in JTAG script used for IVA tests probably is missing and needs to be worked in.  The generic linux-omap clock code probably handles the IVA clock but maybe not the resets.
 > 
-> I do not understand this paragraph.
+>    /*  Enable IVA-ss functional clock (set bit 0) */
+>    (*(int*)0x49006800) |= 0x1;
 > 
-> What upstream commit is this?  And "posted separately" shouldn't show up
-> in a changelog text, right?
+>    /* Release l3s_idle_req  */
+>    (*(int*)0x49006810) |= (1 << 1);
+> 
+>    /* Release L3S reset and power-on reset (clear bit 1) at the same time */
+>    (*(int*)0x49006850) &= ~(( 1 << 1));
 
-This would be a partial backport to add struct dmtimer_clockevent from
-commit 52762fbd1c4778ac9b173624ca0faacd22ef4724 to the platform timer
-code used in the older kernels.
+Heh and I thought nobody is using 2430 any longer :)
 
-How about the following for the description:
+FYI, the current mainline kernel actually can deal with all that using
+reset driver and genpd, see for example commits:
 
-Upstream commit 52762fbd1c4778ac9b173624ca0faacd22ef4724 usage of
-struct dmtimer_clockevent backported to the platform timer code
-still used in linux-5.4.y stable kernel. Needed to backport upstream
-commit 3efe7a878a11c13b5297057bfc1e5639ce1241ce and commit
-25de4ce5ed02994aea8bc111d133308f6fd62566. Earlier kernels use
-mach-omap2/timer instead of drivers/clocksource as these kernels still
-depend on legacy platform code for booting.
+ae57d1558908 ("ARM: dts: Configure interconnect target module for dra7 iva")
+effe89e40037 ("soc: ti: omap-prm: Fix occasional abort on reset deassert for dra7 iva")
 
-> Can you fix this up to make this obvious what is happening here and make
-> a patch series that I can take without editing changelog text?
+Similar setup should also work for 2430 but needs the power domains
+configured for drivers/soc/ti/omap_prm.c at least for iva.
 
-Sure I'll repost the series, assuming the above is OK for description :)
-Please let me know if you need further details added.
-
-Hmm so what's the correct way to prevent automatically applying these
-into the earlier stable kernels?
-
-For earlier stable kernels, these changes depend on at least some
-additional clock related changes.
+David, I think what you're seeing is iva getting released from reset with
+an unconfigured MMU, and then the system will hang.
 
 Regards,
 
