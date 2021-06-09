@@ -2,63 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B0593A0C4F
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Jun 2021 08:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE7D83A0C54
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Jun 2021 08:22:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236749AbhFIGWg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Jun 2021 02:22:36 -0400
-Received: from muru.com ([72.249.23.125]:39774 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231685AbhFIGWg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 9 Jun 2021 02:22:36 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4CFF08061;
-        Wed,  9 Jun 2021 06:20:50 +0000 (UTC)
-Date:   Wed, 9 Jun 2021 09:20:39 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     "Woodruff, Richard" <r-woodruff2@ti.com>
-Cc:     David Russell <david.russell73@gmail.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Subject: Re: [EXTERNAL] OMAP2430 kernel hangs on ioremap of IVA2.1 addresses
-Message-ID: <YMBdt8dDdvySofuC@atomide.com>
-References: <E26ACA77-0F54-41BC-BA45-29B641A6BEA9@gmail.com>
- <cb562f9f798d4431a09f19e8efd24727@ti.com>
+        id S236672AbhFIGY1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Jun 2021 02:24:27 -0400
+Received: from wnew2-smtp.messagingengine.com ([64.147.123.27]:59699 "EHLO
+        wnew2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231503AbhFIGY0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Jun 2021 02:24:26 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.west.internal (Postfix) with ESMTP id 8F07D23F1;
+        Wed,  9 Jun 2021 02:22:31 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 09 Jun 2021 02:22:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=VzIpShIJ81NOtKGbsMynymINOsO
+        4efkrr8lJ3dk3FnU=; b=Fbi14MWF94I86eQgClspdOz1uCkG1dcNvIrlprR6VMq
+        t7d9CqYuBCPsgtc0vwiut1ZI6yFTRTyE7sGk3OcB7m5tqmHF+5f2XB2Mvmr0nmC+
+        fjWV4pR4XhDnvTul8fUq5g7Vx7E+QvzsgNfpm4W9FGlSl8v8ypn23WyKGNihH6vH
+        5PHm9aSw5iDORtOcYbjFJyyFlt9Esz3c6n+KEU0j90IZEt+dWN4Woshg+EG9da5B
+        r+oCduWl4Hvn8YKbNb+NonXpVTbRY7I57GGllJ2iYKcBRaFj7Z9tSc1KIqqyl6i1
+        t6f9dUKQeg0nMBnH4UwxRdC0VizsjMTpSRg/5jUF3CQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=VzIpSh
+        IJ81NOtKGbsMynymINOsO4efkrr8lJ3dk3FnU=; b=WWYkMfWKrIQBb8ib5FpzKw
+        HYTzBAznu061oi9zcT7JGEKs4Epfb6xrUef9iRB7TX0zZ4LJXS0EcAUEXaKZi5r6
+        bgRwDvqvqS7tW5vf7Pe0M6oKw8koeGeQoxjaLBKpSXoqHOLB1CjHcm0rfrftgPvO
+        nIFNUvCRSWoO6aCxzZIWsyppAy2xgrjlsV5vP3m0lp7TYNGkS0CdGRLXAz1IEkeW
+        vhSD8fISa+T/QDTFjaCY2/cc64+Ra94QTzz76s61Gq8dKQqJkfLKxU4mzJNT0urp
+        FHAfzVJ3x/t5KFJ5z2Hx5MFXZT2qR9hlhMG4eMW0XT1FUZFznXnvsTLAIs0yyqRw
+        ==
+X-ME-Sender: <xms:Jl7AYIMkOvRzJ-IQYJ4RgRt9wFyaa99BLqoGemBtXdBXp8qcXNrQEA>
+    <xme:Jl7AYO9ZScQkCUIfOENu90htseSS0_vnfOJZBep_QT-RQu7aLru75dlUEniUrt3-S
+    G1kvEaLFqOUHg>
+X-ME-Received: <xmr:Jl7AYPRcvJua6YDS8Q26jMU2rBpMcQ6nlcftLqRHKzPI-mRiZ1Th-3c-z_aKAwMQ2yFa4IpqBnq73zQ1XBp3-CklgrdF0Jtt>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrfedutddgleekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeevueehje
+    fgfffgiedvudekvdektdelleelgefhleejieeugeegveeuuddukedvteenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomh
+X-ME-Proxy: <xmx:Jl7AYAs4ihgvXLkQb1rXV7YG-NHyc8scMymRd1LAufhVs8uwFz832g>
+    <xmx:Jl7AYAeDmxF5Vv1hJOejgnKYS0q6zE_RyxnFRCS8fK9qUauf0CPiSw>
+    <xmx:Jl7AYE2wSZS1-cJrJjRY97_TIjOef1ogTS1CVVZVSO00UOUf5tLdyA>
+    <xmx:J17AYG2CK1e6oJViqSD_yNdcyHSQtA0jIJQ9yDoA42Yonxtg7_75RWv-Puo>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 9 Jun 2021 02:22:29 -0400 (EDT)
+Date:   Wed, 9 Jun 2021 08:22:27 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Keerthy <j-keerthy@ti.com>, Tero Kristo <kristo@kernel.org>
+Subject: Re: [Backport for linux-5.4.y PATCH 2/4] ARM: OMAP2+: Prepare timer
+ code to backport dra7 timer wrap errata i940
+Message-ID: <YMBeI4aOMmWMRsu/@kroah.com>
+References: <20210602104625.6079-1-tony@atomide.com>
+ <20210602104625.6079-2-tony@atomide.com>
+ <YL+lOumPYQ1fNoYw@kroah.com>
+ <YMBcIbBPfr6W19j5@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cb562f9f798d4431a09f19e8efd24727@ti.com>
+In-Reply-To: <YMBcIbBPfr6W19j5@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Woodruff, Richard <r-woodruff2@ti.com> [210607 15:40]:
-> Guess: this bit in JTAG script used for IVA tests probably is missing and needs to be worked in.  The generic linux-omap clock code probably handles the IVA clock but maybe not the resets.
+On Wed, Jun 09, 2021 at 09:13:53AM +0300, Tony Lindgren wrote:
+> Hi,
 > 
->    /*  Enable IVA-ss functional clock (set bit 0) */
->    (*(int*)0x49006800) |= 0x1;
+> * Greg KH <greg@kroah.com> [210608 17:13]:
+> > On Wed, Jun 02, 2021 at 01:46:23PM +0300, Tony Lindgren wrote:
+> > > Prepare linux-5.4.y to backport upstream timer wrap errata commit
+> > > 3efe7a878a11c13b5297057bfc1e5639ce1241ce and commit
+> > > 25de4ce5ed02994aea8bc111d133308f6fd62566. Earlier kernels still use
+> > > mach-omap2/timer instead of drivers/clocksource as these kernels still
+> > > depend on legacy platform code for timers. Note that earlier stable
+> > > kernels need also additional patches and will be posted separately.
+> > 
+> > I do not understand this paragraph.
+> > 
+> > What upstream commit is this?  And "posted separately" shouldn't show up
+> > in a changelog text, right?
 > 
->    /* Release l3s_idle_req  */
->    (*(int*)0x49006810) |= (1 << 1);
+> This would be a partial backport to add struct dmtimer_clockevent from
+> commit 52762fbd1c4778ac9b173624ca0faacd22ef4724 to the platform timer
+> code used in the older kernels.
 > 
->    /* Release L3S reset and power-on reset (clear bit 1) at the same time */
->    (*(int*)0x49006850) &= ~(( 1 << 1));
+> How about the following for the description:
+> 
+> Upstream commit 52762fbd1c4778ac9b173624ca0faacd22ef4724 usage of
+> struct dmtimer_clockevent backported to the platform timer code
+> still used in linux-5.4.y stable kernel. Needed to backport upstream
+> commit 3efe7a878a11c13b5297057bfc1e5639ce1241ce and commit
+> 25de4ce5ed02994aea8bc111d133308f6fd62566. Earlier kernels use
+> mach-omap2/timer instead of drivers/clocksource as these kernels still
+> depend on legacy platform code for booting.
 
-Heh and I thought nobody is using 2430 any longer :)
+Why are you combining 2 commits into one here?
 
-FYI, the current mainline kernel actually can deal with all that using
-reset driver and genpd, see for example commits:
+I do not understand what this commit really is at all still, sorry.
 
-ae57d1558908 ("ARM: dts: Configure interconnect target module for dra7 iva")
-effe89e40037 ("soc: ti: omap-prm: Fix occasional abort on reset deassert for dra7 iva")
+How about just providing backports for the individual commits, do not
+combine them as that just is a mess.
 
-Similar setup should also work for 2430 but needs the power domains
-configured for drivers/soc/ti/omap_prm.c at least for iva.
+> > Can you fix this up to make this obvious what is happening here and make
+> > a patch series that I can take without editing changelog text?
+> 
+> Sure I'll repost the series, assuming the above is OK for description :)
+> Please let me know if you need further details added.
+> 
+> Hmm so what's the correct way to prevent automatically applying these
+> into the earlier stable kernels?
 
-David, I think what you're seeing is iva getting released from reset with
-an unconfigured MMU, and then the system will hang.
+What would cause them to be automatically applied?  You need to let us
+know what kernel(s) they should go to.
 
-Regards,
+thanks,
 
-Tony
+greg k-h
