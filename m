@@ -2,55 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 831D93A3D18
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 09:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D903A3D1F
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 09:29:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231150AbhFKH3Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Jun 2021 03:29:16 -0400
-Received: from muru.com ([72.249.23.125]:41782 "EHLO muru.com"
+        id S230233AbhFKHbn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Jun 2021 03:31:43 -0400
+Received: from muru.com ([72.249.23.125]:41800 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231645AbhFKH3K (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 11 Jun 2021 03:29:10 -0400
+        id S230035AbhFKHbm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 11 Jun 2021 03:31:42 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AED8380BA;
-        Fri, 11 Jun 2021 07:27:19 +0000 (UTC)
-Date:   Fri, 11 Jun 2021 10:27:08 +0300
+        by muru.com (Postfix) with ESMTPS id 4565680BA;
+        Fri, 11 Jun 2021 07:29:53 +0000 (UTC)
+Date:   Fri, 11 Jun 2021 10:29:41 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Lokesh Vutla <lokeshvutla@ti.com>,
-        Rob Herring <robh+dt@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
+To:     Lokesh Vutla <lokeshvutla@ti.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, Sekhar Nori <nsekhar@ti.com>,
         Vignesh R <vigneshr@ti.com>, Nishanth Menon <nm@ti.com>,
-        linux-pwm@vger.kernel.org,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
         Device Tree Mailing List <devicetree@vger.kernel.org>,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH v3] arm: dts: ti: drop usage of redundant compatible
-Message-ID: <YMMQTIIGneDZfArl@atomide.com>
-References: <20210601054029.1839-1-lokeshvutla@ti.com>
- <b6b1277c-916f-49b9-cc63-1235a0c35b02@ti.com>
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 0/3] ARM: dts: ti: Fix DT warnings for ecap nodes
+Message-ID: <YMMQ5eo8K/JwFZ64@atomide.com>
+References: <20210601092457.5039-1-lokeshvutla@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b6b1277c-916f-49b9-cc63-1235a0c35b02@ti.com>
+In-Reply-To: <20210601092457.5039-1-lokeshvutla@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Grygorii Strashko <grygorii.strashko@ti.com> [210601 13:05]:
-> On 01/06/2021 08:40, Lokesh Vutla wrote:
-> > Commit 229110c1aa691 ("ARM: dts: am437x/am33xx/da850: Add new ECAP and
-> > EPWM bindings") added ti,am3352-ehrpwm compatible which is similar to
-> > ti,am33xx-ehrpwm but without out t,hwmod properties. But with commit
-> > 58bfbea5b1c68 ("ARM: dts: am437x/am33xx: Remove hwmod entries for ECAP
-> > and EPWM nodes") dropped support for all ti,hwmod for ehrpwm, but
-> > missed deprecating ti,am33xx-ehrpwm compatible. So drop ti,am33xx-ehrpwm
-> > from DT as it is no longer needed.
-> > 
-> > ti-ehrpwn driver still support ti,am33xx-ehrpwm in order to maintain
-> > backward compatibility.
-...
-
-> Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
+* Lokesh Vutla <lokeshvutla@ti.com> [210601 12:25]:
+> Fix DT warnings for all the ecap nodes on TI platforms. This is in
+> preparation for converting pwm-tiecap documentation to YAML.
 
 Applying into omap-for-v5.14/dt thanks.
 
