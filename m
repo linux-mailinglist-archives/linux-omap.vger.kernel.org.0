@@ -2,51 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8053D3A3D30
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 09:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9824A3A3D4D
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 09:36:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231303AbhFKHf1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Jun 2021 03:35:27 -0400
-Received: from muru.com ([72.249.23.125]:41814 "EHLO muru.com"
+        id S230307AbhFKHiT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Jun 2021 03:38:19 -0400
+Received: from muru.com ([72.249.23.125]:41844 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231289AbhFKHf0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 11 Jun 2021 03:35:26 -0400
+        id S230188AbhFKHiT (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 11 Jun 2021 03:38:19 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4DF2580BA;
-        Fri, 11 Jun 2021 07:33:35 +0000 (UTC)
-Date:   Fri, 11 Jun 2021 10:33:23 +0300
+        by muru.com (Postfix) with ESMTPS id E8742813E;
+        Fri, 11 Jun 2021 07:36:28 +0000 (UTC)
+Date:   Fri, 11 Jun 2021 10:36:17 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+To:     Aswath Govindraju <a-govindraju@ti.com>
+Cc:     Lokesh Vutla <lokeshvutla@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
         =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org, x86@kernel.org,
-        linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] ARM: dts: dra7x-evm: Drop "ti,pcf8575"
-Message-ID: <YMMRw43TKtXsDoLL@atomide.com>
-References: <cover.1622560799.git.geert+renesas@glider.be>
- <f499a261e0b39daca2d761bd600fe362cddab653.1622560799.git.geert+renesas@glider.be>
+        Rob Herring <robh+dt@kernel.org>,
+        Uri Mashiach <uri.mashiach@compulab.co.il>,
+        Raag Jadav <raagjadav@gmail.com>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] arm: am335x/am437x: Fix ti,pindir-d0-out-d1-in
+ property to boolean
+Message-ID: <YMMScdxfmBVFpOL2@atomide.com>
+References: <20210608050952.14204-1-a-govindraju@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f499a261e0b39daca2d761bd600fe362cddab653.1622560799.git.geert+renesas@glider.be>
+In-Reply-To: <20210608050952.14204-1-a-govindraju@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Geert Uytterhoeven <geert+renesas@glider.be> [210601 18:26]:
-> The TI part is equivalent to the NXP part and its compatible value is
-> not documented in the DT bindings.  All other users of similar I2C GPIO
-> expanders just use the compatible values of the original NXP parts.
+* Aswath Govindraju <a-govindraju@ti.com> [210608 08:10]:
+> The following series of patches fix "ti,pindir-d0-out-d1-in" property to
+> boolean.
 
-Picking this patch into omap-for-v5.14/dt thanks.
+Thanks applying into omap-for-v5.14/dt.
 
 Tony
