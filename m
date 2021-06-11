@@ -2,45 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FB4F3A3B40
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 07:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA04A3A3B49
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 07:17:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229582AbhFKFMc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Jun 2021 01:12:32 -0400
-Received: from 126991.cloudwaysapps.com ([104.131.119.179]:21702 "EHLO
-        126991.cloudwaysapps.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229562AbhFKFMb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 11 Jun 2021 01:12:31 -0400
-X-Greylist: delayed 42884 seconds by postgrey-1.27 at vger.kernel.org; Fri, 11 Jun 2021 01:12:31 EDT
-Received: from 127.0.0.1 (126991.cloudwaysapps.com [127.0.0.1])
-        by 126991.cloudwaysapps.com (Postfix) with SMTP id D5EFB2F994;
-        Thu, 10 Jun 2021 20:37:52 +0000 (UTC)
-Received: from [23.199.88.207] by 127.0.0.1; Fri, 11 Jun 2021 02:32:15 +0500
-Message-ID: <87q$$oa16c-$l-auow$$m5$7r06o@e74y.6.fc.wxg>
-From:   "HOFFMA" <hgredmuller@emailn.de>
-Reply-To: "HOFFMA" <hgredmuller@emailn.de>
-To:     nico@linaro.org
-Subject: "" WHY I WRITE YOU""
-Date:   Fri, 11 Jun 21 02:32:15 GMT
-X-Mailer: Microsoft Outlook, Build 10.0.2627
+        id S230405AbhFKFTm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Jun 2021 01:19:42 -0400
+Received: from muru.com ([72.249.23.125]:41580 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230361AbhFKFTl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 11 Jun 2021 01:19:41 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id F405580E1;
+        Fri, 11 Jun 2021 05:17:51 +0000 (UTC)
+Date:   Fri, 11 Jun 2021 08:17:40 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Bin Liu <b-liu@ti.com>, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Bhushan Shah <bshah@kde.org>,
+        Drew Fustini <drew@beagleboard.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 1/2] usb: musb: Simplify cable state handling
+Message-ID: <YMLx9O0DnWc1umPo@atomide.com>
+References: <20210604080536.12185-1-tony@atomide.com>
+ <YMCJL7KXI1GxwQBl@kroah.com>
+ <YMCtQRbTIjNViMVB@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="_..0A3__2_"
-X-Priority: 3
-X-MSMail-Priority: Normal
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YMCtQRbTIjNViMVB@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+* Tony Lindgren <tony@atomide.com> [210609 12:00]:
+> * Greg Kroah-Hartman <gregkh@linuxfoundation.org> [210609 09:26]:
+> > On Fri, Jun 04, 2021 at 11:05:35AM +0300, Tony Lindgren wrote:
+> > > Simplify cable state handling a bit to leave out duplicated code.
+> > > We are just scheduling work and showing state info if a recheck is
+> > > needed. No intended functional changes.
+> > > 
+> > > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> > > Cc: Andreas Kemnade <andreas@kemnade.info>
+> > > Cc: Bhushan Shah <bshah@kde.org>
+> > > Cc: Drew Fustini <drew@beagleboard.org>
+> > > Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+> > > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > > ---
+> > >  drivers/usb/musb/musb_core.c | 40 ++++++++++++++++++------------------
+> > >  1 file changed, 20 insertions(+), 20 deletions(-)
+> > 
+> > Does not apply to my usb-next branch, what tree/branch did you make this
+> > against?
+> 
+> This was against Linux next last week, I'll take a look and
+> repost.
 
---_..0A3__2_
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+Looks like the issue applying these patches is caused by commit
+b65ba0c362be ("usb: musb: fix MUSB_QUIRK_B_DISCONNECT_99 handling")
+that is in usb-linus but not in usb-next.
 
-Hello, you have been chosen to distribute a Palliative to those who lost t=
-heir jobs or business during the pandemic period to establish them back ag=
-ain within your community. Reply Mr. Rein Hoffman
+Probably best to merge usb-linus to usb-next and then these patches
+apply no problem and a merge conflict is avoided?
 
---_..0A3__2_--
+Let me know if you still want me to repost against usb-next, I can
+do that no problem if you prefer that :)
 
+Regards,
+
+Tony
