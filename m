@@ -2,173 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 000C23A4303
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 15:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4935C3A432D
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 15:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbhFKN3p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Jun 2021 09:29:45 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:37720 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbhFKN3p (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Jun 2021 09:29:45 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 15BDRhsj053019;
-        Fri, 11 Jun 2021 08:27:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1623418063;
-        bh=kCNd5UQ6OfFdSiYnFuwzAogCcAMzU3mcN6YcXGRBPyE=;
-        h=From:To:CC:Subject:Date;
-        b=uPfMM3BV83X7p9MeFtMHqSyVbyAMDm3SLK8BSqvosr2RJobHfFPSs6UQF80QqxVxt
-         OMAnXBa7ti3VVa9k+uCh/lYijJvol9/a04qY824vNXUYEVhiZHG3m58q3jqLza1glO
-         B+psAtWdujhrh1Ic59RPU2yq++CcyWQd0iklbAHQ=
-Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 15BDRgYw023175
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 11 Jun 2021 08:27:43 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 11
- Jun 2021 08:27:42 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Fri, 11 Jun 2021 08:27:42 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 15BDRf3h116489;
-        Fri, 11 Jun 2021 08:27:41 -0500
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ben Hutchings <ben.hutchings@essensium.com>
-CC:     <linux-kernel@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        <linux-omap@vger.kernel.org>, Lokesh Vutla <lokeshvutla@ti.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH net] net: ethernet: ti: cpsw: fix min eth packet size for non-switch use-cases
-Date:   Fri, 11 Jun 2021 16:27:32 +0300
-Message-ID: <20210611132732.10690-1-grygorii.strashko@ti.com>
-X-Mailer: git-send-email 2.17.1
+        id S229517AbhFKNsJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Jun 2021 09:48:09 -0400
+Received: from 49-237-179-185.static.tentacle.fi ([185.179.237.49]:55322 "EHLO
+        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229722AbhFKNsJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 11 Jun 2021 09:48:09 -0400
+Received: from 88-114-184-142.elisa-laajakaista.fi ([88.114.184.142] helo=[192.168.1.48])
+        by bitmer.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <jarkko.nikula@bitmer.com>)
+        id 1lrhU2-0005UL-Tt; Fri, 11 Jun 2021 16:46:02 +0300
+Subject: Re: [PATCH] bus: ti-sysc: Fix gpt12 system timer issue with reserved
+ status
+To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+References: <20210611060224.36769-1-tony@atomide.com>
+From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
+Message-ID: <0444bf45-2b6d-5200-6967-736263e75819@bitmer.com>
+Date:   Fri, 11 Jun 2021 16:45:54 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20210611060224.36769-1-tony@atomide.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The CPSW switchdev driver inherited fix from commit 9421c9015047 ("net:
-ethernet: ti: cpsw: fix min eth packet size") which changes min TX packet
-size to 64bytes (VLAN_ETH_ZLEN, excluding ETH_FCS). It was done to fix HW
-packed drop issue when packets are sent from Host to the port with PVID and
-un-tagging enabled. Unfortunately this breaks some other non-switch
-specific use-cases, like:
-- [1] CPSW port as DSA CPU port with DSA-tag applied at the end of the
-packet
-- [2] Some industrial protocols, which expects min TX packet size 60Bytes
-(excluding FCS).
+On 11.6.2021 9.02, Tony Lindgren wrote:
+> Jarkko Nikula <jarkko.nikula@bitmer.com> reported that Beagleboard
+> revision c2 stopped booting. Jarkko bisected the issue down to
+> commit 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend
+> and resume for am3 and am4").
+> 
+> Let's fix the issue by tagging system timers as reserved rather than
+> ignoring them. And let's not probe any interconnect target module child
+> devices for reserved modules.
+> 
+> This allows PM runtime to keep track of clocks and clockdomains for
+> the interconnect target module, and prevent the system timer from idling
+> as we already have SYSC_QUIRK_NO_IDLE and SYSC_QUIRK_NO_IDLE_ON_INIT
+> flags set for system timers.
+> 
+> Fixes: 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend and resume for am3 and am4")
+> Reported-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/bus/ti-sysc.c | 20 +++++++++++++-------
+>  1 file changed, 13 insertions(+), 7 deletions(-)
+> 
+I tested this on top of 06af8679449d ("coredump: Limit what can
+interrupt coredumps"). I tested Tony's earlier test diff which does the
+same that this actual patch also on top of 6cfcd5563b4f.
 
-Fix it by configuring min TX packet size depending driver mode
- - 60Bytes (ETH_ZLEN) for multi mac (dual-mac) mode
- - 64Bytes (VLAN_ETH_ZLEN) for switch mode
-
-[1] https://lore.kernel.org/netdev/20210531124051.GA15218@cephalopod/
-[2] https://e2e.ti.com/support/arm/sitara_arm/f/791/t/701669
-
-Cc: Ben Hutchings <ben.hutchings@essensium.com>
-Cc: stable@vger.kernel.org
-Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
----
- drivers/net/ethernet/ti/cpsw_new.c  | 12 +++++++++---
- drivers/net/ethernet/ti/cpsw_priv.h |  4 +++-
- 2 files changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 11f536138495..401909bff319 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -918,14 +918,17 @@ static netdev_tx_t cpsw_ndo_start_xmit(struct sk_buff *skb,
- 	struct cpts *cpts = cpsw->cpts;
- 	struct netdev_queue *txq;
- 	struct cpdma_chan *txch;
-+	unsigned int len;
- 	int ret, q_idx;
- 
--	if (skb_padto(skb, CPSW_MIN_PACKET_SIZE)) {
-+	if (skb_padto(skb, priv->tx_packet_min)) {
- 		cpsw_err(priv, tx_err, "packet pad failed\n");
- 		ndev->stats.tx_dropped++;
- 		return NET_XMIT_DROP;
- 	}
- 
-+	len = skb->len < priv->tx_packet_min ? priv->tx_packet_min : skb->len;
-+
- 	if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP &&
- 	    priv->tx_ts_enabled && cpts_can_timestamp(cpts, skb))
- 		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
-@@ -937,7 +940,7 @@ static netdev_tx_t cpsw_ndo_start_xmit(struct sk_buff *skb,
- 	txch = cpsw->txv[q_idx].ch;
- 	txq = netdev_get_tx_queue(ndev, q_idx);
- 	skb_tx_timestamp(skb);
--	ret = cpdma_chan_submit(txch, skb, skb->data, skb->len,
-+	ret = cpdma_chan_submit(txch, skb, skb->data, len,
- 				priv->emac_port);
- 	if (unlikely(ret != 0)) {
- 		cpsw_err(priv, tx_err, "desc submit failed\n");
-@@ -1100,7 +1103,7 @@ static int cpsw_ndo_xdp_xmit(struct net_device *ndev, int n,
- 
- 	for (i = 0; i < n; i++) {
- 		xdpf = frames[i];
--		if (xdpf->len < CPSW_MIN_PACKET_SIZE)
-+		if (xdpf->len < priv->tx_packet_min)
- 			break;
- 
- 		if (cpsw_xdp_tx_frame(priv, xdpf, NULL, priv->emac_port))
-@@ -1389,6 +1392,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
- 		priv->dev  = dev;
- 		priv->msg_enable = netif_msg_init(debug_level, CPSW_DEBUG);
- 		priv->emac_port = i + 1;
-+		priv->tx_packet_min = CPSW_MIN_PACKET_SIZE;
- 
- 		if (is_valid_ether_addr(slave_data->mac_addr)) {
- 			ether_addr_copy(priv->mac_addr, slave_data->mac_addr);
-@@ -1686,6 +1690,7 @@ static int cpsw_dl_switch_mode_set(struct devlink *dl, u32 id,
- 
- 			priv = netdev_priv(sl_ndev);
- 			slave->port_vlan = vlan;
-+			priv->tx_packet_min = CPSW_MIN_PACKET_SIZE_VLAN;
- 			if (netif_running(sl_ndev))
- 				cpsw_port_add_switch_def_ale_entries(priv,
- 								     slave);
-@@ -1714,6 +1719,7 @@ static int cpsw_dl_switch_mode_set(struct devlink *dl, u32 id,
- 
- 			priv = netdev_priv(slave->ndev);
- 			slave->port_vlan = slave->data->dual_emac_res_vlan;
-+			priv->tx_packet_min = CPSW_MIN_PACKET_SIZE;
- 			cpsw_port_add_dual_emac_def_ale_entries(priv, slave);
- 		}
- 
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
-index a323bea54faa..2951fb7b9dae 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.h
-+++ b/drivers/net/ethernet/ti/cpsw_priv.h
-@@ -89,7 +89,8 @@ do {								\
- 
- #define CPSW_POLL_WEIGHT	64
- #define CPSW_RX_VLAN_ENCAP_HDR_SIZE		4
--#define CPSW_MIN_PACKET_SIZE	(VLAN_ETH_ZLEN)
-+#define CPSW_MIN_PACKET_SIZE_VLAN	(VLAN_ETH_ZLEN)
-+#define CPSW_MIN_PACKET_SIZE	(ETH_ZLEN)
- #define CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN +\
- 				 ETH_FCS_LEN +\
- 				 CPSW_RX_VLAN_ENCAP_HDR_SIZE)
-@@ -380,6 +381,7 @@ struct cpsw_priv {
- 	u32 emac_port;
- 	struct cpsw_common *cpsw;
- 	int offload_fwd_mark;
-+	u32 tx_packet_min;
- };
- 
- #define ndev_to_cpsw(ndev) (((struct cpsw_priv *)netdev_priv(ndev))->cpsw)
--- 
-2.17.1
-
+Tested-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
