@@ -2,74 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA04A3A3B49
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 07:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E7E63A3B4D
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Jun 2021 07:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230405AbhFKFTm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Jun 2021 01:19:42 -0400
-Received: from muru.com ([72.249.23.125]:41580 "EHLO muru.com"
+        id S230393AbhFKFVE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Jun 2021 01:21:04 -0400
+Received: from muru.com ([72.249.23.125]:41598 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230361AbhFKFTl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 11 Jun 2021 01:19:41 -0400
+        id S230212AbhFKFVD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 11 Jun 2021 01:21:03 -0400
 Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id F405580E1;
-        Fri, 11 Jun 2021 05:17:51 +0000 (UTC)
-Date:   Fri, 11 Jun 2021 08:17:40 +0300
+        by muru.com (Postfix) with ESMTPS id E627A80E1;
+        Fri, 11 Jun 2021 05:19:13 +0000 (UTC)
+Date:   Fri, 11 Jun 2021 08:19:02 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Bin Liu <b-liu@ti.com>, linux-usb@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Bhushan Shah <bshah@kde.org>,
-        Drew Fustini <drew@beagleboard.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 1/2] usb: musb: Simplify cable state handling
-Message-ID: <YMLx9O0DnWc1umPo@atomide.com>
-References: <20210604080536.12185-1-tony@atomide.com>
- <YMCJL7KXI1GxwQBl@kroah.com>
- <YMCtQRbTIjNViMVB@atomide.com>
+To:     Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-serial@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, Nishanth Menon <nm@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: Re: [PATCH v2] dt-bindings: serial: Move omap-serial.txt to YAML
+ schema
+Message-ID: <YMLyRoHWgGAy2lXh@atomide.com>
+References: <20210610182227.2480-1-vigneshr@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YMCtQRbTIjNViMVB@atomide.com>
+In-Reply-To: <20210610182227.2480-1-vigneshr@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [210609 12:00]:
-> * Greg Kroah-Hartman <gregkh@linuxfoundation.org> [210609 09:26]:
-> > On Fri, Jun 04, 2021 at 11:05:35AM +0300, Tony Lindgren wrote:
-> > > Simplify cable state handling a bit to leave out duplicated code.
-> > > We are just scheduling work and showing state info if a recheck is
-> > > needed. No intended functional changes.
-> > > 
-> > > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> > > Cc: Andreas Kemnade <andreas@kemnade.info>
-> > > Cc: Bhushan Shah <bshah@kde.org>
-> > > Cc: Drew Fustini <drew@beagleboard.org>
-> > > Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-> > > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > > ---
-> > >  drivers/usb/musb/musb_core.c | 40 ++++++++++++++++++------------------
-> > >  1 file changed, 20 insertions(+), 20 deletions(-)
-> > 
-> > Does not apply to my usb-next branch, what tree/branch did you make this
-> > against?
-> 
-> This was against Linux next last week, I'll take a look and
-> repost.
+* Vignesh Raghavendra <vigneshr@ti.com> [210610 18:22]:
+> Convert serial-omap.txt to YAML schema for better checks and documentation.
 
-Looks like the issue applying these patches is caused by commit
-b65ba0c362be ("usb: musb: fix MUSB_QUIRK_B_DISCONNECT_99 handling")
-that is in usb-linus but not in usb-next.
+Looks good to me thanks:
 
-Probably best to merge usb-linus to usb-next and then these patches
-apply no problem and a merge conflict is avoided?
-
-Let me know if you still want me to repost against usb-next, I can
-do that no problem if you prefer that :)
-
-Regards,
-
-Tony
+Acked-by: Tony Lindgren <tony@atomide.com>
