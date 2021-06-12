@@ -2,49 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5C353A4BD4
-	for <lists+linux-omap@lfdr.de>; Sat, 12 Jun 2021 03:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 646823A4BE5
+	for <lists+linux-omap@lfdr.de>; Sat, 12 Jun 2021 03:14:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230269AbhFLBDS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Jun 2021 21:03:18 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:48782 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbhFLBDS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Jun 2021 21:03:18 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 15C11IoQ053113;
-        Fri, 11 Jun 2021 20:01:18 -0500
+        id S229753AbhFLBQu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Jun 2021 21:16:50 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:60644 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229622AbhFLBQu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Jun 2021 21:16:50 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 15C1Emqs093591;
+        Fri, 11 Jun 2021 20:14:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1623459678;
-        bh=O+z6rxDk43Xhjtwb3FQLdhrotsk/08Dn822tfzEbcTo=;
+        s=ti-com-17Q1; t=1623460488;
+        bh=YhfzaOgplXxGDdxcfrU93rDby0wlyVyx6fZXeEstpsM=;
         h=From:To:CC:Subject:Date;
-        b=Fh2Xh5JkIbhVjAxwE0ozQM3AVkLC0X4gqUOVqs/Ql82BjtN5FUraaKs8IOnaFbRDH
-         FTE3HvdLrPwfLRJn7KOQr7VDmw/cZgspwKxc2/qhmss6UxL1ciWPSThduqkbNi0uA4
-         Wf4LEx825Jil9fi/Pa++BD7t3bfleAt1Dr2E4Qm0=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 15C11IRL071950
+        b=rmLDNcHcSyZy8O0dS4D8rkqfOQjYJ075Jmc2ln0ycLca5i1ODn8LNTf2rcY/YFvwQ
+         aihLH3yAGMETHoRvrLuen2hGG75Gc4q1ia4SqEe6xPagxJIcWS0Q3mywtHZPULI6wN
+         x5zxNGRo4L0+APOjTKzi68qt3jX+d77uT5zQ8k8s=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 15C1EmNP056785
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 11 Jun 2021 20:01:18 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 11 Jun 2021 20:14:48 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 11
- Jun 2021 20:01:18 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ Jun 2021 20:14:48 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Fri, 11 Jun 2021 20:01:18 -0500
+ Frontend Transport; Fri, 11 Jun 2021 20:14:48 -0500
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 15C11GI9080530;
-        Fri, 11 Jun 2021 20:01:17 -0500
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 15C1Ek8H100010;
+        Fri, 11 Jun 2021 20:14:47 -0500
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
 To:     Tony Lindgren <tony@atomide.com>
-CC:     Lokesh Vutla <lokeshvutla@ti.com>, <linux-kernel@vger.kernel.org>,
+CC:     Lokesh Vutla <lokeshvutla@ti.com>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         <linux-omap@vger.kernel.org>,
         Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH next] ARM: dts: am335x-bone: switch to new cpsw switch drv
-Date:   Sat, 12 Jun 2021 04:01:06 +0300
-Message-ID: <20210612010106.9970-1-grygorii.strashko@ti.com>
+Subject: [PATCH next 00/15] ARM: dts: am335x: switch rest boards to new cpsw switch drv
+Date:   Sat, 12 Jun 2021 04:14:21 +0300
+Message-ID: <20210612011436.10437-1-grygorii.strashko@ti.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -53,140 +54,59 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The dual_mac mode has been preserved the same way between legacy and new
-driver, and one port devices works the same as 1 dual_mac port - it's safe
-to switch drivers.
+Hi Tony,
 
-So, Switch BeagleBone boards to use new cpsw switch driver. Those boards
-have or 2 Ext. port wired and configured in dual_mac mode by default, or
-only 1 Ext. port.
+This series converts rest of am335x boards to use new CPSW switchdev driver.
+Only build tested.
 
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
----
- arch/arm/boot/dts/am335x-bone-common.dtsi     | 13 +++++---
- .../boot/dts/am335x-boneblack-wireless.dts    |  2 +-
- .../boot/dts/am335x-bonegreen-wireless.dts    |  2 +-
- arch/arm/boot/dts/am335x-sancloud-bbe.dts     | 33 ++-----------------
- 4 files changed, 12 insertions(+), 38 deletions(-)
+After this only dm814x.dtsi related part left.
 
-diff --git a/arch/arm/boot/dts/am335x-bone-common.dtsi b/arch/arm/boot/dts/am335x-bone-common.dtsi
-index 2d51d4bba6d4..37e1539f0211 100644
---- a/arch/arm/boot/dts/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
-@@ -353,24 +353,27 @@
- 	};
- };
- 
--&cpsw_emac0 {
-+&cpsw_port1 {
- 	phy-handle = <&ethphy0>;
- 	phy-mode = "mii";
-+	ti,dual-emac-pvid = <1>;
- };
- 
--&mac {
--	slaves = <1>;
-+&cpsw_port2 {
-+	status = "disabled";
-+};
-+
-+&mac_sw {
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&cpsw_default>;
- 	pinctrl-1 = <&cpsw_sleep>;
- 	status = "okay";
- };
- 
--&davinci_mdio {
-+&davinci_mdio_sw {
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&davinci_mdio_default>;
- 	pinctrl-1 = <&davinci_mdio_sleep>;
--	status = "okay";
- 
- 	ethphy0: ethernet-phy@0 {
- 		reg = <0>;
-diff --git a/arch/arm/boot/dts/am335x-boneblack-wireless.dts b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
-index 80116646a3fe..5a4d5d4ab7b8 100644
---- a/arch/arm/boot/dts/am335x-boneblack-wireless.dts
-+++ b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
-@@ -62,7 +62,7 @@
- 	};
- };
- 
--&mac {
-+&mac_sw {
- 	status = "disabled";
- };
- 
-diff --git a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
-index 74db0fc39397..215f279e476b 100644
---- a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
-+++ b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
-@@ -62,7 +62,7 @@
- 	};
- };
- 
--&mac {
-+&mac_sw {
- 	status = "disabled";
- };
- 
-diff --git a/arch/arm/boot/dts/am335x-sancloud-bbe.dts b/arch/arm/boot/dts/am335x-sancloud-bbe.dts
-index 275ba339adf4..86dcd1144db4 100644
---- a/arch/arm/boot/dts/am335x-sancloud-bbe.dts
-+++ b/arch/arm/boot/dts/am335x-sancloud-bbe.dts
-@@ -53,22 +53,6 @@
- 		>;
- 	};
- 
--	davinci_mdio_default: davinci_mdio_default {
--		pinctrl-single,pins = <
--			/* MDIO */
--			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLUP | SLEWCTRL_FAST, MUX_MODE0)
--			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_OUTPUT_PULLUP, MUX_MODE0)
--		>;
--	};
--
--	davinci_mdio_sleep: davinci_mdio_sleep {
--		pinctrl-single,pins = <
--			/* MDIO reset value */
--			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLDOWN, MUX_MODE7)
--			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_INPUT_PULLDOWN, MUX_MODE7)
--		>;
--	};
--
- 	usb_hub_ctrl: usb_hub_ctrl {
- 		pinctrl-single,pins = <
- 			AM33XX_PADCONF(AM335X_PIN_RMII1_REF_CLK, PIN_OUTPUT_PULLUP, MUX_MODE7)     /* rmii1_refclk.gpio0_29 */
-@@ -88,25 +72,12 @@
- 	};
- };
- 
--&mac {
--	pinctrl-names = "default", "sleep";
-+&mac_sw {
- 	pinctrl-0 = <&cpsw_default>;
- 	pinctrl-1 = <&cpsw_sleep>;
--	status = "okay";
--};
--
--&davinci_mdio {
--	pinctrl-names = "default", "sleep";
--	pinctrl-0 = <&davinci_mdio_default>;
--	pinctrl-1 = <&davinci_mdio_sleep>;
--	status = "okay";
--
--	ethphy0: ethernet-phy@0 {
--		reg = <0>;
--	};
- };
- 
--&cpsw_emac0 {
-+&cpsw_port1 {
- 	phy-handle = <&ethphy0>;
- 	phy-mode = "rgmii-id";
- };
+Grygorii Strashko (15):
+  ARM: dts: am335x-baltos: switch to new cpsw switch drv
+  ARM: dts: am335x-nano: switch to new cpsw switch drv
+  ARM: dts: am335x-chiliboard: switch to new cpsw switch drv
+  ARM: dts: am335x-cm-t335: switch to new cpsw switch drv
+  ARM: dts: am335x-igep0033: switch to new cpsw switch drv
+  ARM: dts: am335x-lxm: switch to new cpsw switch drv
+  ARM: dts: am335x-moxa-uc: switch to new cpsw switch drv
+  ARM: dts: am335x-myirtech: switch to new cpsw switch drv
+  ARM: dts: am335x-osd3358-sm-red: switch to new cpsw switch drv
+  ARM: dts: am335x-pdu001: switch to new cpsw switch drv
+  ARM: dts: am335x-pepper: switch to new cpsw switch drv
+  ARM: dts: am335x-phycore: switch to new cpsw switch drv
+  ARM: dts: am335x-shc: switch to new cpsw switch drv
+  ARM: dts: am335x-sl50: switch to new cpsw switch drv
+  ARM: dts: am33xx: update ethernet aliases
+
+ arch/arm/boot/dts/am335x-baltos-ir2110.dts    | 10 ++---
+ arch/arm/boot/dts/am335x-baltos-ir3220.dts    |  8 ++--
+ arch/arm/boot/dts/am335x-baltos-ir5221.dts    |  8 ++--
+ arch/arm/boot/dts/am335x-baltos.dtsi          |  5 +--
+ arch/arm/boot/dts/am335x-chiliboard.dts       | 13 ++++---
+ arch/arm/boot/dts/am335x-cm-t335.dts          | 13 ++++---
+ arch/arm/boot/dts/am335x-igep0033.dtsi        | 12 +++---
+ arch/arm/boot/dts/am335x-lxm.dts              | 14 +++----
+ .../boot/dts/am335x-moxa-uc-2100-common.dtsi  | 12 +++---
+ arch/arm/boot/dts/am335x-moxa-uc-2101.dts     |  7 ++--
+ .../boot/dts/am335x-moxa-uc-8100-common.dtsi  | 16 +++-----
+ arch/arm/boot/dts/am335x-myirtech-myc.dtsi    | 25 ++++++------
+ arch/arm/boot/dts/am335x-myirtech-myd.dts     | 18 +++++----
+ arch/arm/boot/dts/am335x-nano.dts             | 13 +++----
+ arch/arm/boot/dts/am335x-netcan-plus-1xx.dts  | 10 ++---
+ arch/arm/boot/dts/am335x-netcom-plus-2xx.dts  | 10 ++---
+ arch/arm/boot/dts/am335x-netcom-plus-8xx.dts  | 10 ++---
+ arch/arm/boot/dts/am335x-osd3358-sm-red.dts   | 13 ++++---
+ arch/arm/boot/dts/am335x-pcm-953.dtsi         | 10 ++---
+ arch/arm/boot/dts/am335x-pdu001.dts           | 14 +++----
+ arch/arm/boot/dts/am335x-pepper.dts           | 14 +++----
+ arch/arm/boot/dts/am335x-phycore-som.dtsi     | 14 ++++---
+ arch/arm/boot/dts/am335x-regor.dtsi           | 11 +++---
+ arch/arm/boot/dts/am335x-shc.dts              | 38 ++++++++++---------
+ arch/arm/boot/dts/am335x-sl50.dts             | 12 ++++--
+ arch/arm/boot/dts/am335x-wega.dtsi            | 11 +++---
+ arch/arm/boot/dts/am33xx.dtsi                 |  4 +-
+ 27 files changed, 176 insertions(+), 169 deletions(-)
+
 -- 
 2.17.1
 
