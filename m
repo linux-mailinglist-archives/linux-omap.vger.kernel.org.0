@@ -2,82 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94E673A4C11
-	for <lists+linux-omap@lfdr.de>; Sat, 12 Jun 2021 03:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40B383A5880
+	for <lists+linux-omap@lfdr.de>; Sun, 13 Jun 2021 14:52:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230297AbhFLBSZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Jun 2021 21:18:25 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:51834 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231309AbhFLBSX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Jun 2021 21:18:23 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 15C1GOZU058370;
-        Fri, 11 Jun 2021 20:16:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1623460584;
-        bh=R02At5jb7d62HubeuxmBOXhEPCthQrWxd+9gDmHKuJs=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=qIT/wIS8/0zir9JYTtUcZvXpgbEuv2RgwH6ojpVLlQuSnWTUSQFl/hFdaNnbAGL7a
-         9jvyCe+t2B3maDzo4GDD9tkbpGUJy1Ishhc6YJN0HExqvLSd7ibRRCCcQFkyQ8muQw
-         A5Gtpin2aJoBtGjPh8MyO6doqta+0G6LJxbSTkuo=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 15C1GOvb090426
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 11 Jun 2021 20:16:24 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 11
- Jun 2021 20:16:23 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Fri, 11 Jun 2021 20:16:23 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 15C1GN46009230;
-        Fri, 11 Jun 2021 20:16:23 -0500
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Lokesh Vutla <lokeshvutla@ti.com>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        <linux-omap@vger.kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: [PATCH next 15/15] ARM: dts: am33xx: update ethernet aliases
-Date:   Sat, 12 Jun 2021 04:14:36 +0300
-Message-ID: <20210612011436.10437-16-grygorii.strashko@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210612011436.10437-1-grygorii.strashko@ti.com>
-References: <20210612011436.10437-1-grygorii.strashko@ti.com>
+        id S231799AbhFMMyM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 13 Jun 2021 08:54:12 -0400
+Received: from mail-wr1-f47.google.com ([209.85.221.47]:44940 "EHLO
+        mail-wr1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231767AbhFMMyK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Jun 2021 08:54:10 -0400
+Received: by mail-wr1-f47.google.com with SMTP id f2so11276369wri.11
+        for <linux-omap@vger.kernel.org>; Sun, 13 Jun 2021 05:52:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=S7x0yXgSGt2oHbuYIah2pjK0DDqOWTD6n400T1HqOzU=;
+        b=tdJpFMIzHihbIuQu9Ze+gKgTR7REdWI4SpzLT1u4MCukJI/wVaSBllECShRlWXGN0u
+         bam75NJCGb7pS7MZD1zC24zpbcni+fp9ZXnXJ9yND3KBpfJuBETm+q6kPBnvu1luSP6W
+         hXSWNP2zOlm3kuGnMuDb4iwdZTNbecrrtqCKRFtxhSqP1ElEZ/QY5wLzDKURMPqT8AHe
+         j/Z9CKButmiXMt9nfnxrudPXJW+BIkEQC75CBAixHjUsclkEdOg40XRjNYq3VICbe8se
+         3qdpP2HT7Gnoiij0psJeVZCq7u8sKVnDzsxXI0bpDkinwIomdUlD73Fo2DoaWPZrDcYR
+         FW9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=S7x0yXgSGt2oHbuYIah2pjK0DDqOWTD6n400T1HqOzU=;
+        b=f1ZOP9nnBpl1Slr8a/sZhBXUD6agOMnRTyNJbfM9/DAuxIZxtZVV0nT2+PQgnRj1CM
+         soc/ktP9f3hKGdDHFidWwGfTIutjWThYey+ZGpvKHGERzH0VILNN/Uew6/tbOGujk+lK
+         2myD4fn5ppuWEHSTMNXXevr9NK11zYIzKklwRCgLVNGUa6NerbRJNmacoCBFZ07544to
+         EiXDggOYUKbqTMK8zlWzYT4fiHswtq9wZ94vs+wBLeuXSfrvtkHlSXIKE4QmS7v+NP04
+         Zxi9PU0dyyEF5ookDqdEaUXaxW9hlBKRREcpXTCL/9Ll26lHyhH7isv0+VbVmOPZ4uud
+         TJ8w==
+X-Gm-Message-State: AOAM530EonZtcFRxeF29x0v4pHFr7uY2P128p8KJ65t+UG5LxFBe+4Jr
+        PpUfJk1/PkRGa9nd9NwHGsw=
+X-Google-Smtp-Source: ABdhPJwbRGdb6lgN7xAfV1+cx4pw+I/LtrX1W5khWvTpxIgpoKo5FgYIxDXmnoAY1Xx2Y5Hdt2xMZQ==
+X-Received: by 2002:a05:6000:1864:: with SMTP id d4mr13418803wri.369.1623588668852;
+        Sun, 13 Jun 2021 05:51:08 -0700 (PDT)
+Received: from morpheus.home.roving-it.com (f.c.9.1.f.e.c.d.1.e.0.0.2.b.5.5.1.8.6.2.1.1.b.f.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:fb11:2681:55b2:e1:dcef:19cf])
+        by smtp.googlemail.com with ESMTPSA id 4sm12879500wry.74.2021.06.13.05.51.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Jun 2021 05:51:08 -0700 (PDT)
+From:   Peter Robinson <pbrobinson@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Cc:     Peter Robinson <pbrobinson@gmail.com>
+Subject: [PATCH 1/3] arm: omap2: Drop MACH_OMAP3517EVM entry
+Date:   Sun, 13 Jun 2021 13:51:03 +0100
+Message-Id: <20210613125105.786984-1-pbrobinson@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Update ethernet aliases to point at CPSW switchdev driver.
+The MACH_OMAP3517EVM was added back in commit 549f95ed2016 due to
+being used by the ASoC driver, but this driver was dropped in
+commit 2c2596f3ab25 as the audio for this board had been moved to
+a simple-audio-card configuration so MACH_OMAP3517EVM is now
+properly unuused and can be dropped.
 
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
 ---
- arch/arm/boot/dts/am33xx.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap2/Kconfig | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-index 5e33d0e88f5b..f6ec85d58dd1 100644
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -36,8 +36,8 @@
- 		usb1 = &usb1;
- 		phy0 = &usb0_phy;
- 		phy1 = &usb1_phy;
--		ethernet0 = &cpsw_emac0;
--		ethernet1 = &cpsw_emac1;
-+		ethernet0 = &cpsw_port1;
-+		ethernet1 = &cpsw_port2;
- 		spi0 = &spi0;
- 		spi1 = &spi1;
- 		mmc0 = &mmc1;
+diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
+index 7df8f5276ddf..dbe7fa6e8232 100644
+--- a/arch/arm/mach-omap2/Kconfig
++++ b/arch/arm/mach-omap2/Kconfig
+@@ -204,11 +204,6 @@ config MACH_OMAP2_TUSB6010
+ 	depends on ARCH_OMAP2 && SOC_OMAP2420
+ 	default y if MACH_NOKIA_N8X0
+ 
+-config MACH_OMAP3517EVM
+-	bool "OMAP3517/ AM3517 EVM board"
+-	depends on ARCH_OMAP3
+-	default y
+-
+ config MACH_OMAP3_PANDORA
+ 	bool "OMAP3 Pandora"
+ 	depends on ARCH_OMAP3
 -- 
-2.17.1
+2.31.1
 
