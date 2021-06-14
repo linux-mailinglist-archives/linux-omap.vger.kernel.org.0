@@ -2,70 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B553A59ED
-	for <lists+linux-omap@lfdr.de>; Sun, 13 Jun 2021 20:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57F113A5E5A
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Jun 2021 10:26:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232000AbhFMSFc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 13 Jun 2021 14:05:32 -0400
-Received: from 49-237-179-185.static.tentacle.fi ([185.179.237.49]:55372 "EHLO
-        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231997AbhFMSFc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 13 Jun 2021 14:05:32 -0400
-Received: from 88-114-184-142.elisa-laajakaista.fi ([88.114.184.142] helo=[192.168.1.42])
-        by bitmer.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <jarkko.nikula@bitmer.com>)
-        id 1lsUSE-0005HD-Cs; Sun, 13 Jun 2021 21:03:26 +0300
-From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
-Subject: Regression? omap2plus_defconfig bloat due drivers/media/Kconfig
- changes
-To:     linux-media@vger.kernel.org
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>
-Message-ID: <2d389925-db9d-58f5-7928-0baa5f187afb@bitmer.com>
-Date:   Sun, 13 Jun 2021 21:03:21 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        id S232606AbhFNI23 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Jun 2021 04:28:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40672 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232528AbhFNI21 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 14 Jun 2021 04:28:27 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ED03161370;
+        Mon, 14 Jun 2021 08:26:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1623659184;
+        bh=W2RPS+Z+VUaNMKPxturxYJggYGMg7qaXHXxoHbT6lAI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=0Sl/ImlClxlRVKEwpreoJ3XSHheoMQTh17BvObmk04CSvAz0T0HiTJFZgUZViJCFe
+         /tJ20LYsR7gKuQYBRieRNhgXuV9YBChTZkfxo0wl+U2ZDn+MBTBfzQbDfezwSn+Fm2
+         zQw4BU26b4ELGpnqo6a7lQkyQkC+7w/z6epLYjhc=
+Date:   Mon, 14 Jun 2021 10:26:21 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Bin Liu <b-liu@ti.com>, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Bhushan Shah <bshah@kde.org>,
+        Drew Fustini <drew@beagleboard.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 1/2] usb: musb: Simplify cable state handling
+Message-ID: <YMcSrUXLZxaQM6St@kroah.com>
+References: <20210604080536.12185-1-tony@atomide.com>
+ <YMCJL7KXI1GxwQBl@kroah.com>
+ <YMCtQRbTIjNViMVB@atomide.com>
+ <YMLx9O0DnWc1umPo@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YMLx9O0DnWc1umPo@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi
+On Fri, Jun 11, 2021 at 08:17:40AM +0300, Tony Lindgren wrote:
+> * Tony Lindgren <tony@atomide.com> [210609 12:00]:
+> > * Greg Kroah-Hartman <gregkh@linuxfoundation.org> [210609 09:26]:
+> > > On Fri, Jun 04, 2021 at 11:05:35AM +0300, Tony Lindgren wrote:
+> > > > Simplify cable state handling a bit to leave out duplicated code.
+> > > > We are just scheduling work and showing state info if a recheck is
+> > > > needed. No intended functional changes.
+> > > > 
+> > > > Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> > > > Cc: Andreas Kemnade <andreas@kemnade.info>
+> > > > Cc: Bhushan Shah <bshah@kde.org>
+> > > > Cc: Drew Fustini <drew@beagleboard.org>
+> > > > Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+> > > > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > > > ---
+> > > >  drivers/usb/musb/musb_core.c | 40 ++++++++++++++++++------------------
+> > > >  1 file changed, 20 insertions(+), 20 deletions(-)
+> > > 
+> > > Does not apply to my usb-next branch, what tree/branch did you make this
+> > > against?
+> > 
+> > This was against Linux next last week, I'll take a look and
+> > repost.
+> 
+> Looks like the issue applying these patches is caused by commit
+> b65ba0c362be ("usb: musb: fix MUSB_QUIRK_B_DISCONNECT_99 handling")
+> that is in usb-linus but not in usb-next.
+> 
+> Probably best to merge usb-linus to usb-next and then these patches
+> apply no problem and a merge conflict is avoided?
+> 
+> Let me know if you still want me to repost against usb-next, I can
+> do that no problem if you prefer that :)
 
-I noticed omap2plus_defconfig build is much slower than before and I saw
-during build many DVB drivers were compiled. Which made me thinking it
-doesn't look right especially there are no changes in
-arch/arm/configs/omap2plus_defconfig related to DVB.
+Now that I have merged usb-linus into usb-next, I can take these,
+thanks.
 
-I tracked manually last good and first bad
-arch/arm/configs/omap2plus_defconfig change.
-
-This was tested by "make ARCH=arm omap2plus_defconfig" and grepping is
-CONFIG_DVB_CORE set in .config.
-
-good: 8b136018da7b ("mm: rename CONFIG_PGTABLE_MAPPING to
-CONFIG_ZSMALLOC_PGTABLE_MAPPING")
-bad: 8aa6361f7251 ("ARM: omap2plus_defconfig: enable twl4030_madc as a
-loadable module")
-
-Then I started bisecting which commit adds CONFIG_DVB_CORE and found
-commit 8e5b5d75e9d0 ("media: Kconfig: DVB support should be enabled for
-Digital TV").
-
-That alone didn't look the answer so bisected then commit adding
-MEDIA_DIGITAL_TV_SUPPORT and found c6774ee035dc ("media: Kconfig: make
-filtering devices optional").
-
-I'm not familiar with media subsystem but after that commit bunch of
-media drivers will get enabled when CONFIG_MEDIA_SUPPORT is set but not
-CONFIG_MEDIA_SUPPORT_FILTER.
-
-I don't know is that best to fix in omap2plus_defconfig or
-drivers/media/Kconfig. Just thinking if there are other minimal
-defconfigs with the same issue?
-
-Jarkko
+greg k-h
