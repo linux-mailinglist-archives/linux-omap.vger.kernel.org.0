@@ -2,97 +2,158 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 663BF3A6AE2
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Jun 2021 17:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 820D83A82FE
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Jun 2021 16:35:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233670AbhFNPuS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Jun 2021 11:50:18 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:61661 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233950AbhFNPuP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Jun 2021 11:50:15 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1623685692; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=I+vZpbpKLEzGLLxZf9Yk3xMUZoRm0OPY8oqK1zrBVKE=;
- b=DiTG+RTKgnetJcUaSOvLMvrvmDhJQT7Y3rH6ZoqftxY+5FPM2Xu6QP0rcGOsu1q6CPD6Czsm
- YJI0qYXqGG36R49mt3rgRvglFvERbY1hKQ/TWjkDtro7/R+iGAhzRocO6LxmyVbOrJhMBs4N
- 1PPEj/1vfb/up9SxB3nvqLyWsDA=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyIwZGJlNiIsICJsaW51eC1vbWFwQHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 60c77a262eaeb98b5ec0b787 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 14 Jun 2021 15:47:50
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 21551C4323A; Mon, 14 Jun 2021 15:47:50 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        MISSING_DATE,MISSING_MID,SPF_FAIL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 92522C43460;
-        Mon, 14 Jun 2021 15:47:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 92522C43460
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S230208AbhFOOiC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Jun 2021 10:38:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230076AbhFOOiB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Jun 2021 10:38:01 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D02C06175F
+        for <linux-omap@vger.kernel.org>; Tue, 15 Jun 2021 07:35:57 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id x14so25324701ljp.7
+        for <linux-omap@vger.kernel.org>; Tue, 15 Jun 2021 07:35:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=telliq.com; s=google;
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=GbBjUIoFxvaBNvRzYWx5ZKwYntRTHGOfw5r31RdP6mA=;
+        b=IMJSq8e5A+lG5eMcFWdHiHrDuLuqhIVnGW0T71EplYsa4Lur3IH8gUjOPcu9BHSbOj
+         XOeed467PU2KrYTmMhj6ondu2QLwzwJgyUTSipsYXcmyA+7gM7XgRyzq/TGOYa/7Ktc+
+         L7mVSftetjKU2ZmW+VilAwIMA0yj2t1lRGlJ8gpuSEQ7dC6+D1GayrR6FojZOFKWXplb
+         wcZaKzZ8gB816jMkaNfn4+wFGf3w7TjerNTGMTZGj1mPO/lW0NaANLJlZ8zoJ8UL8FWY
+         zxRSYfrNXVVkWw+vlAaHQcJBW1/BlE2MH1t6ed6AqZtP3HqD2AHgjVT1XxVwwWwSjEFO
+         NwUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=GbBjUIoFxvaBNvRzYWx5ZKwYntRTHGOfw5r31RdP6mA=;
+        b=J6584K6+In3hvFYPEFEQUw6XYfx7/j1cfd8Zs++ElTyjLrzgmAASAUw3SD80DmTKEm
+         b8vCyTvG8bVst3AoAUEypQB5GIhbDFcsefTcrYBM7pdmvIfs2r9og744upuS4ZUOds7c
+         gutRZVGz0+jWo4e5nXWwU5p8fXEMkdHpwPpA7FVTgnZztja+kpdDF7Glwj03BrxC5/7x
+         z2yhj60N4E+yIy3zaWPN1IHJkVTWu20zBYtrSgEJkHwsJNJCK1aDz3GxNae723UuCJM6
+         BeMZIYHwSmtMiQx10EL24331tIkXxSk3T9TDYlPsR40wdA0sitF9wAP7PU8gdHX9pogt
+         un3w==
+X-Gm-Message-State: AOAM532qGmQ4nnNUrVNdVwO/KqaeC55rLjFavgVigv5r44nYOr0GD9BZ
+        FruCYjkPmngLKTk0r6F3MO5+Sg==
+X-Google-Smtp-Source: ABdhPJyqTukCl34ZxxTUg+/JaHiogEsKb1WJUYNUJVIPVwBfYteGIrktkGf6WTUoEXJiOj01+8Gt8w==
+X-Received: by 2002:a2e:b0e7:: with SMTP id h7mr18808677ljl.2.1623767753954;
+        Tue, 15 Jun 2021 07:35:53 -0700 (PDT)
+Received: from polera.kvasta (h77-53-209-86.cust.a3fiber.se. [77.53.209.86])
+        by smtp.gmail.com with ESMTPSA id s21sm1824786lfc.269.2021.06.15.07.35.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Jun 2021 07:35:53 -0700 (PDT)
+Subject: Re: [PATCH] arm: Define arch_is_kernel_initmem_freed() for lockdep
+From:   Jan Kardell <jan.kardell@telliq.com>
+To:     Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc:     linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        linux-omap@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+References: <20210329175318.21393-1-jan.kardell@telliq.com>
+Message-ID: <754bde27-df3b-d98e-2ca8-5b16ccdc5345@telliq.com>
+Date:   Tue, 15 Jun 2021 16:35:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Firefox/60.0 SeaMonkey/2.53.7.1
 MIME-Version: 1.0
+In-Reply-To: <20210329175318.21393-1-jan.kardell@telliq.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wlcore/wl12xx: Fix wl12xx get_mac error if device is in
- ELP
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210603062814.19464-1-tony@atomide.com>
-References: <20210603062814.19464-1-tony@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Eyal Reizer <eyalr@ti.com>, Guy Mishol <guym@ti.com>,
-        Raz Bouganim <r-bouganim@ti.com>,
-        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org,
-        Carl Philipp Klemm <philipp@uvos.xyz>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-Id: <20210614154750.21551C4323A@smtp.codeaurora.org>
-Date:   Mon, 14 Jun 2021 15:47:50 +0000 (UTC)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Tony Lindgren <tony@atomide.com> wrote:
+A ping on this as there is no reply yet. I'm not entirely sure who 
+should be on the CC list, or maybe this patch is just forgotten for some 
+reason, maybe I should have written a better subject? I don't mean to 
+complain, I do know that core developers are very busy!
 
-> At least on wl12xx, reading the MAC after boot can fail with a warning
-> at drivers/net/wireless/ti/wlcore/sdio.c:78 wl12xx_sdio_raw_read.
-> The failed call comes from wl12xx_get_mac() that wlcore_nvs_cb() calls
-> after request_firmware_work_func().
-> 
-> After the error, no wireless interface is created. Reloading the wl12xx
-> module makes the interface work.
-> 
-> Turns out the wlan controller can be in a low-power ELP state after the
-> boot from the bootloader or kexec, and needs to be woken up first.
-> 
-> Let's wake the hardware and add a sleep after that similar to
-> wl12xx_pre_boot() is already doing.
-> 
-> Note that a similar issue could exist for wl18xx, but I have not seen it
-> so far. And a search for wl18xx_get_mac and wl12xx_sdio_raw_read did not
-> produce similar errors.
-> 
-> Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+//Jan
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-11ef6bc846dc wlcore/wl12xx: Fix wl12xx get_mac error if device is in ELP
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210603062814.19464-1-tony@atomide.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Jan Kardell skrev:
+> This fixes the warning:
+>
+> WARNING: CPU: 0 PID: 1994 at kernel/locking/lockdep.c:1119 alloc_netdev_mqs+0xb4/0x3b0
+>
+> This warning is because the check in static_obj() assumes that all
+> memory within [_stext, _end] belongs to static objects. The init
+> section is also part of this range, and freeing it allows the buddy
+> allocator to allocate memory from it.
+>
+> To fix this, define arch_is_kernel_initmem_freed() for arm, it will
+> return 1 if initmem has been freed and the address is in the range
+> [__init_begin, __init_end], and this function is called by the
+> static_obj() function in lockdep.
+>
+> Tested on TI am3352 (Cortex A8).
+>
+> This change is modelled after commit 7a5da02de8d6eafba995
+> ("locking/lockdep: check for freed initmem in static_obj()") for s390 by
+> Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+>
+> Signed-off-by: Jan Kardell <jan.kardell@telliq.com>
+> ---
+>   arch/arm/include/asm/sections.h | 13 +++++++++++++
+>   arch/arm/mm/init.c              |  6 +++++-
+>   2 files changed, 18 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/include/asm/sections.h b/arch/arm/include/asm/sections.h
+> index 700b8bcdf9bd..1dd64c90c1ac 100644
+> --- a/arch/arm/include/asm/sections.h
+> +++ b/arch/arm/include/asm/sections.h
+> @@ -2,6 +2,8 @@
+>   #ifndef _ASM_ARM_SECTIONS_H
+>   #define _ASM_ARM_SECTIONS_H
+>   
+> +#define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
+> +
+>   #include <asm-generic/sections.h>
+>   
+>   extern char _exiprom[];
+> @@ -11,6 +13,17 @@ extern char __idmap_text_end[];
+>   extern char __entry_text_start[];
+>   extern char __entry_text_end[];
+>   
+> +extern bool initmem_freed;
+> +
+> +static inline int arch_is_kernel_initmem_freed(unsigned long addr)
+> +{
+> +	if (!initmem_freed)
+> +		return 0;
+> +	return addr >= (unsigned long)__init_begin &&
+> +	       addr < (unsigned long)__init_end;
+> +}
+> +
+> +
+>   static inline bool in_entry_text(unsigned long addr)
+>   {
+>   	return memory_contains(__entry_text_start, __entry_text_end,
+> diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
+> index 828a2561b229..cd7a4273797a 100644
+> --- a/arch/arm/mm/init.c
+> +++ b/arch/arm/mm/init.c
+> @@ -41,6 +41,8 @@
+>   
+>   #include "mm.h"
+>   
+> +bool initmem_freed;
+> +
+>   #ifdef CONFIG_CPU_CP15_MMU
+>   unsigned long __init __clear_cr(unsigned long mask)
+>   {
+> @@ -523,8 +525,10 @@ void free_initmem(void)
+>   	fix_kernmem_perms();
+>   
+>   	poison_init_mem(__init_begin, __init_end - __init_begin);
+> -	if (!machine_is_integrator() && !machine_is_cintegrator())
+> +	if (!machine_is_integrator() && !machine_is_cintegrator()) {
+> +		initmem_freed = true;
+>   		free_initmem_default(-1);
+> +	}
+>   }
+>   
+>   #ifdef CONFIG_BLK_DEV_INITRD
 
