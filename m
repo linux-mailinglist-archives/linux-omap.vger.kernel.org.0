@@ -2,158 +2,138 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 820D83A82FE
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Jun 2021 16:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F89B3A8360
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Jun 2021 16:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230208AbhFOOiC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Jun 2021 10:38:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41826 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230076AbhFOOiB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Jun 2021 10:38:01 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D02C06175F
-        for <linux-omap@vger.kernel.org>; Tue, 15 Jun 2021 07:35:57 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id x14so25324701ljp.7
-        for <linux-omap@vger.kernel.org>; Tue, 15 Jun 2021 07:35:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=telliq.com; s=google;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=GbBjUIoFxvaBNvRzYWx5ZKwYntRTHGOfw5r31RdP6mA=;
-        b=IMJSq8e5A+lG5eMcFWdHiHrDuLuqhIVnGW0T71EplYsa4Lur3IH8gUjOPcu9BHSbOj
-         XOeed467PU2KrYTmMhj6ondu2QLwzwJgyUTSipsYXcmyA+7gM7XgRyzq/TGOYa/7Ktc+
-         L7mVSftetjKU2ZmW+VilAwIMA0yj2t1lRGlJ8gpuSEQ7dC6+D1GayrR6FojZOFKWXplb
-         wcZaKzZ8gB816jMkaNfn4+wFGf3w7TjerNTGMTZGj1mPO/lW0NaANLJlZ8zoJ8UL8FWY
-         zxRSYfrNXVVkWw+vlAaHQcJBW1/BlE2MH1t6ed6AqZtP3HqD2AHgjVT1XxVwwWwSjEFO
-         NwUw==
+        id S231442AbhFOO5W (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Jun 2021 10:57:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:32382 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231499AbhFOO5R (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 15 Jun 2021 10:57:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1623768912;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7zXHSL7RwyAJWnz3yfpZ7/QXhLd143qN0GShu6MwfqY=;
+        b=LPswY7UYynegOESnKAbFuPpsILOcZgOA8gFR0cfxhWy3/NSlVmoIzZMpPPI3dkSCvgnoiz
+        q8+3V3Fy8YJfeg5xP+ZZWlXin85Tw1EeTPIqcoyW8doVRlC0QRQVSkEAOazuB1wHMZWlmu
+        aHcxAHrA/d2dgI2mdRZwGZ29yYX5pKA=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-3-XFdZ41mZM-qZ-Ojx4R0mDw-1; Tue, 15 Jun 2021 10:55:09 -0400
+X-MC-Unique: XFdZ41mZM-qZ-Ojx4R0mDw-1
+Received: by mail-ed1-f69.google.com with SMTP id g13-20020a056402090db02903935a4cb74fso16619035edz.1
+        for <linux-omap@vger.kernel.org>; Tue, 15 Jun 2021 07:55:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=GbBjUIoFxvaBNvRzYWx5ZKwYntRTHGOfw5r31RdP6mA=;
-        b=J6584K6+In3hvFYPEFEQUw6XYfx7/j1cfd8Zs++ElTyjLrzgmAASAUw3SD80DmTKEm
-         b8vCyTvG8bVst3AoAUEypQB5GIhbDFcsefTcrYBM7pdmvIfs2r9og744upuS4ZUOds7c
-         gutRZVGz0+jWo4e5nXWwU5p8fXEMkdHpwPpA7FVTgnZztja+kpdDF7Glwj03BrxC5/7x
-         z2yhj60N4E+yIy3zaWPN1IHJkVTWu20zBYtrSgEJkHwsJNJCK1aDz3GxNae723UuCJM6
-         BeMZIYHwSmtMiQx10EL24331tIkXxSk3T9TDYlPsR40wdA0sitF9wAP7PU8gdHX9pogt
-         un3w==
-X-Gm-Message-State: AOAM532qGmQ4nnNUrVNdVwO/KqaeC55rLjFavgVigv5r44nYOr0GD9BZ
-        FruCYjkPmngLKTk0r6F3MO5+Sg==
-X-Google-Smtp-Source: ABdhPJyqTukCl34ZxxTUg+/JaHiogEsKb1WJUYNUJVIPVwBfYteGIrktkGf6WTUoEXJiOj01+8Gt8w==
-X-Received: by 2002:a2e:b0e7:: with SMTP id h7mr18808677ljl.2.1623767753954;
-        Tue, 15 Jun 2021 07:35:53 -0700 (PDT)
-Received: from polera.kvasta (h77-53-209-86.cust.a3fiber.se. [77.53.209.86])
-        by smtp.gmail.com with ESMTPSA id s21sm1824786lfc.269.2021.06.15.07.35.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Jun 2021 07:35:53 -0700 (PDT)
-Subject: Re: [PATCH] arm: Define arch_is_kernel_initmem_freed() for lockdep
-From:   Jan Kardell <jan.kardell@telliq.com>
-To:     Linux ARM <linux-arm-kernel@lists.infradead.org>
-Cc:     linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-        linux-omap@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-References: <20210329175318.21393-1-jan.kardell@telliq.com>
-Message-ID: <754bde27-df3b-d98e-2ca8-5b16ccdc5345@telliq.com>
-Date:   Tue, 15 Jun 2021 16:35:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Firefox/60.0 SeaMonkey/2.53.7.1
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=7zXHSL7RwyAJWnz3yfpZ7/QXhLd143qN0GShu6MwfqY=;
+        b=hXlLhhW0EXPt47Rc/9vEOpFzuWoo70MjBoZxXLAuihGVOJISLL8YN+5A2+0i/Obaym
+         niKMy1FI44WUhhKX6F/5POL8O0t+kUiakZC5AaF3Ccl/RcX+yOg9GgWptlpm/+YtNA/z
+         BxMaDJoA6QK78oUM/bakLMi2n1QODDPmHQ19rgntqlagNHp2GXAgLcmkP93s/Npmk/Ud
+         wmkQrNg7DWOWpvl5ajG7ZzTvZwT+3pXNavrFVBSAvSR93YkcqEftLi1A9oxQBa3THQKW
+         RF1wiSdKAm3+MyIDN87N4/T/t6QePJwJyU63dx2JOJwYrx3W2wvzpZiQ3JTeSVKQERy7
+         CKqA==
+X-Gm-Message-State: AOAM531Fl7lN65XdFsokTlR9Gff4zLzxvaUznbMsORcThe7VX8G39tY+
+        gMXHhsVFW49HZ1oqegmF7uHhlVzTMG1SqIMdUyI6bmDctCqj/e9Zj6FchUkSat3s3X7zO5SSzto
+        v7unrCUeRDP5o5yvuDx1QKQ==
+X-Received: by 2002:a05:6402:1652:: with SMTP id s18mr23048016edx.131.1623768908124;
+        Tue, 15 Jun 2021 07:55:08 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzAy/n5Es33Uj8+GjOWq3YRmuEbjhuD5rzEEzzfpqUH7cASDVtLd3bVhCfFDT4UAd0JjxkZnQ==
+X-Received: by 2002:a05:6402:1652:: with SMTP id s18mr23047988edx.131.1623768907804;
+        Tue, 15 Jun 2021 07:55:07 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id f8sm9985632ejw.75.2021.06.15.07.55.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Jun 2021 07:55:05 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 354DC180739; Tue, 15 Jun 2021 16:54:59 +0200 (CEST)
+From:   =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     bpf@vger.kernel.org, netdev@vger.kernel.org
+Cc:     Martin KaFai Lau <kafai@fb.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Jesper Dangaard Brouer <brouer@redhat.com>,
+        Magnus Karlsson <magnus.karlsson@gmail.com>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH bpf-next v2 16/16] net: ti: remove rcu_read_lock() around XDP program invocation
+Date:   Tue, 15 Jun 2021 16:54:55 +0200
+Message-Id: <20210615145455.564037-17-toke@redhat.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210615145455.564037-1-toke@redhat.com>
+References: <20210615145455.564037-1-toke@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20210329175318.21393-1-jan.kardell@telliq.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-A ping on this as there is no reply yet. I'm not entirely sure who 
-should be on the CC list, or maybe this patch is just forgotten for some 
-reason, maybe I should have written a better subject? I don't mean to 
-complain, I do know that core developers are very busy!
+The cpsw driver has rcu_read_lock()/rcu_read_unlock() pairs around XDP
+program invocations. However, the actual lifetime of the objects referred
+by the XDP program invocation is longer, all the way through to the call to
+xdp_do_flush(), making the scope of the rcu_read_lock() too small. This
+turns out to be harmless because it all happens in a single NAPI poll
+cycle (and thus under local_bh_disable()), but it makes the rcu_read_lock()
+misleading.
 
-//Jan
+Rather than extend the scope of the rcu_read_lock(), just get rid of it
+entirely. With the addition of RCU annotations to the XDP_REDIRECT map
+types that take bh execution into account, lockdep even understands this to
+be safe, so there's really no reason to keep it around.
 
-Jan Kardell skrev:
-> This fixes the warning:
->
-> WARNING: CPU: 0 PID: 1994 at kernel/locking/lockdep.c:1119 alloc_netdev_mqs+0xb4/0x3b0
->
-> This warning is because the check in static_obj() assumes that all
-> memory within [_stext, _end] belongs to static objects. The init
-> section is also part of this range, and freeing it allows the buddy
-> allocator to allocate memory from it.
->
-> To fix this, define arch_is_kernel_initmem_freed() for arm, it will
-> return 1 if initmem has been freed and the address is in the range
-> [__init_begin, __init_end], and this function is called by the
-> static_obj() function in lockdep.
->
-> Tested on TI am3352 (Cortex A8).
->
-> This change is modelled after commit 7a5da02de8d6eafba995
-> ("locking/lockdep: check for freed initmem in static_obj()") for s390 by
-> Gerald Schaefer <gerald.schaefer@linux.ibm.com>
->
-> Signed-off-by: Jan Kardell <jan.kardell@telliq.com>
-> ---
->   arch/arm/include/asm/sections.h | 13 +++++++++++++
->   arch/arm/mm/init.c              |  6 +++++-
->   2 files changed, 18 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm/include/asm/sections.h b/arch/arm/include/asm/sections.h
-> index 700b8bcdf9bd..1dd64c90c1ac 100644
-> --- a/arch/arm/include/asm/sections.h
-> +++ b/arch/arm/include/asm/sections.h
-> @@ -2,6 +2,8 @@
->   #ifndef _ASM_ARM_SECTIONS_H
->   #define _ASM_ARM_SECTIONS_H
->   
-> +#define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
-> +
->   #include <asm-generic/sections.h>
->   
->   extern char _exiprom[];
-> @@ -11,6 +13,17 @@ extern char __idmap_text_end[];
->   extern char __entry_text_start[];
->   extern char __entry_text_end[];
->   
-> +extern bool initmem_freed;
-> +
-> +static inline int arch_is_kernel_initmem_freed(unsigned long addr)
-> +{
-> +	if (!initmem_freed)
-> +		return 0;
-> +	return addr >= (unsigned long)__init_begin &&
-> +	       addr < (unsigned long)__init_end;
-> +}
-> +
-> +
->   static inline bool in_entry_text(unsigned long addr)
->   {
->   	return memory_contains(__entry_text_start, __entry_text_end,
-> diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-> index 828a2561b229..cd7a4273797a 100644
-> --- a/arch/arm/mm/init.c
-> +++ b/arch/arm/mm/init.c
-> @@ -41,6 +41,8 @@
->   
->   #include "mm.h"
->   
-> +bool initmem_freed;
-> +
->   #ifdef CONFIG_CPU_CP15_MMU
->   unsigned long __init __clear_cr(unsigned long mask)
->   {
-> @@ -523,8 +525,10 @@ void free_initmem(void)
->   	fix_kernmem_perms();
->   
->   	poison_init_mem(__init_begin, __init_end - __init_begin);
-> -	if (!machine_is_integrator() && !machine_is_cintegrator())
-> +	if (!machine_is_integrator() && !machine_is_cintegrator()) {
-> +		initmem_freed = true;
->   		free_initmem_default(-1);
-> +	}
->   }
->   
->   #ifdef CONFIG_BLK_DEV_INITRD
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: linux-omap@vger.kernel.org
+Tested-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+---
+ drivers/net/ethernet/ti/cpsw_priv.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/cpsw_priv.c b/drivers/net/ethernet/ti/cpsw_priv.c
+index 5862f0a4a975..25fa7304a542 100644
+--- a/drivers/net/ethernet/ti/cpsw_priv.c
++++ b/drivers/net/ethernet/ti/cpsw_priv.c
+@@ -1328,14 +1328,13 @@ int cpsw_run_xdp(struct cpsw_priv *priv, int ch, struct xdp_buff *xdp,
+ 	struct bpf_prog *prog;
+ 	u32 act;
+ 
+-	rcu_read_lock();
+-
+ 	prog = READ_ONCE(priv->xdp_prog);
+-	if (!prog) {
+-		ret = CPSW_XDP_PASS;
+-		goto out;
+-	}
++	if (!prog)
++		return CPSW_XDP_PASS;
+ 
++	/* This code is invoked within a single NAPI poll cycle and thus under
++	 * local_bh_disable(), which provides the needed RCU protection.
++	 */
+ 	act = bpf_prog_run_xdp(prog, xdp);
+ 	/* XDP prog might have changed packet data and boundaries */
+ 	*len = xdp->data_end - xdp->data;
+@@ -1378,10 +1377,8 @@ int cpsw_run_xdp(struct cpsw_priv *priv, int ch, struct xdp_buff *xdp,
+ 	ndev->stats.rx_bytes += *len;
+ 	ndev->stats.rx_packets++;
+ out:
+-	rcu_read_unlock();
+ 	return ret;
+ drop:
+-	rcu_read_unlock();
+ 	page_pool_recycle_direct(cpsw->page_pool[ch], page);
+ 	return ret;
+ }
+-- 
+2.31.1
 
