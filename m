@@ -2,69 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E7573B507D
-	for <lists+linux-omap@lfdr.de>; Sun, 27 Jun 2021 01:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 197A03B50E4
+	for <lists+linux-omap@lfdr.de>; Sun, 27 Jun 2021 05:03:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230367AbhFZXcy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 26 Jun 2021 19:32:54 -0400
-Received: from fgw20-4.mail.saunalahti.fi ([62.142.5.107]:13785 "EHLO
-        fgw20-4.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230151AbhFZXcy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 26 Jun 2021 19:32:54 -0400
-X-Greylist: delayed 965 seconds by postgrey-1.27 at vger.kernel.org; Sat, 26 Jun 2021 19:32:54 EDT
-Received: from macbook.musicnaut.iki.fi (85-76-11-157-nat.elisa-mobile.fi [85.76.11.157])
-        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
-        id 3ec9cd77-d6d4-11eb-ba24-005056bd6ce9;
-        Sun, 27 Jun 2021 02:14:25 +0300 (EEST)
-Date:   Sun, 27 Jun 2021 02:14:23 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Pavel Skripkin <paskripkin@gmail.com>
-Cc:     gustavoars@kernel.org, sam@ravnborg.org, tomi.valkeinen@ti.com,
-        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org
-Subject: Re: [PATCH] OMAP: DSS2: OMAPFB: fix potential GPF
-Message-ID: <20210626231423.GA38365@macbook.musicnaut.iki.fi>
-References: <20210625223323.13930-1-paskripkin@gmail.com>
+        id S230404AbhF0DGE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Sat, 26 Jun 2021 23:06:04 -0400
+Received: from [210.180.118.67] ([210.180.118.67]:44830 "EHLO blank.cafe24.com"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230318AbhF0DGC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 26 Jun 2021 23:06:02 -0400
+Received: from IP-130-143.dataclub.eu (ip-130-143.dataclub.info [84.38.130.143] (may be forged))
+        (authenticated bits=0)
+        by blank.cafe24.com (8.14.7/8.14.7) with ESMTP id 15H5YEJh002115
+        for <linux-omap@vger.kernel.org>; Thu, 17 Jun 2021 14:34:50 +0900
+Message-Id: <202106170534.15H5YEJh002115@blank.cafe24.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210625223323.13930-1-paskripkin@gmail.com>
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: BUSINESS LOAN/PROJECT FUNDING...67
+To:     linux-omap@vger.kernel.org
+From:   "Smith Green" <ssbinvestmentsllc@citromail.hu>
+Date:   Thu, 17 Jun 2021 08:34:43 +0300
+Reply-To: ssbinvestmentsllc@citromail.hu
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Dear Sir/Madam,
 
-On Sat, Jun 26, 2021 at 01:33:23AM +0300, Pavel Skripkin wrote:
-> In case of allocation failures, all code paths was jumping
-> to this code:
-> 
-> err:
-> 	kfree(fbi);
-> 	kfree(var);
-> 	kfree(fbops);
-> 
-> 	return r;
-> 
-> Since all 3 pointers placed on stack and don't initialized, they
-> will be filled with some random values, which leads to
-> deferencing random pointers in kfree(). Fix it by rewriting
-> error handling path.
+Our Investors are based in the middle east with a profound track record. We invite you to take advantage of our investment loan program to fund your existing or intending projects. We offer a straight or convertible loan investment program for projects with high-returns and payback prospects without the usual rigid procedures of conventional lenders.
+ 
+Kindly forward a copy of your Executive business summary for our review: info@ssbinvestmentsllc.us
 
-They are initialized before the first goto:
-
-[...]
-	fbi = NULL;
-	var = NULL;
-	fbops = NULL;
-
-	fbi = kzalloc(sizeof(*fbi), GFP_KERNEL);
-	if (fbi == NULL) {
-		r = -ENOMEM;
-		goto err;
-	}
-[...]
-
-A.
+ 
+Best Regards.
+Smith Green
+E:info@ssbinvestmentsllc.us
+International investment broker
