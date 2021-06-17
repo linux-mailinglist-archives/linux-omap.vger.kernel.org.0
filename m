@@ -2,103 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D48C23AB1B7
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Jun 2021 12:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CB6C3ABAC5
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Jun 2021 19:43:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232094AbhFQK7f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Jun 2021 06:59:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49232 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231279AbhFQK7f (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 17 Jun 2021 06:59:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5136961027;
-        Thu, 17 Jun 2021 10:57:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1623927447;
-        bh=IOLXRmg80R/OU5e3aquf/aBP/w6TFTssC0a1ZsufaBE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TPlg5Wc/RxKgHEl1up2Fz/iVJ91x7qOxxX4mM+GJ16SvC4RMKwYnw4X3ChgWjl2Fs
-         Uaj6YIViwFXCBIBAlKiNr2D1D/huDd7WzT8lHAV0tMAoJWGyxumolOoDVIMr6xIZUd
-         hmKopnh6JO/rofkgakPk+guzigeSt6MK5BaQ1dC0=
-Date:   Thu, 17 Jun 2021 12:57:24 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        German Rivera <German.Rivera@freescale.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Stuart Yoder <stuyoder@gmail.com>,
-        Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 00/10] Rid W=1 warnings from Bus
-Message-ID: <YMsqlAywR2toXd+3@kroah.com>
-References: <20210526081038.544942-1-lee.jones@linaro.org>
- <74eb170b-348b-1bba-432c-52c9541b05fe@nxp.com>
- <YMsajH2uxw4RHPeF@dell>
- <1711c37d-19d3-b923-d02a-433586c951ee@nxp.com>
+        id S232535AbhFQRpy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Jun 2021 13:45:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51784 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230334AbhFQRpx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Jun 2021 13:45:53 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6B9BC061760
+        for <linux-omap@vger.kernel.org>; Thu, 17 Jun 2021 10:43:44 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id d11so5334295wrm.0
+        for <linux-omap@vger.kernel.org>; Thu, 17 Jun 2021 10:43:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=lwAc1yJsU7uwawBw0jrP48508Sb+GisUBuf8mUw0CSQ=;
+        b=GHO/YGfyYyqABj7MtIl2Wu+QGpEAaK9gSOyMEBLNUmZuKIoPtNcNpaudIKwcLpYNwq
+         v9yErUT7CVuhhu7WS69FNtnv6SfOcLPFdEPbOuwWHMX3IkFPjoPqlR+nw3M+e8XdPImB
+         fyvTLKdD9PlteoBOzvL3i7bIoZXW972HX8tfE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=lwAc1yJsU7uwawBw0jrP48508Sb+GisUBuf8mUw0CSQ=;
+        b=t0vte+XxfU1O1nFDkKvRWmkSnfogNr77VoXWem/wemdAmTUAxb/pPghdCBKmLacB6r
+         boassF7iv72D+zbdzXKDfpsF8IxJwspWgDEd4yudBjqmIvvvEQ/amDEdZpvzZgYm1d6E
+         vhAyak6Q4Xz3imws169c3otjsNzpSxvXyM+5E2OGgvpD6nfUsZemq8cxG9WBNzFT+1bW
+         IOBDN9O/cQ9BLK8AMh3AlI5z2QKBVDkQq2wKiqwZYCIXxtZR9RmW/UAMJRPA1kzia9mh
+         BhqvAayB9wUPqJHDMGawN5/aEklHSOq992YgMnogyolvtTTqRyvrc7IqG9TEx6rRWDRj
+         zsgA==
+X-Gm-Message-State: AOAM532/sMxfk8Y5YNYq6rO/zRIabZ4tHGyrsTYe9ii63A9QzMQO4sW0
+        U2pGGAXuOMnVp31f1+BG0ulVFw==
+X-Google-Smtp-Source: ABdhPJy8rMAYADtfeD34I2hGI8dldj1XQ3SPJhezGzk35Mij40UgqvDBe673mzz+rNw00QZ0B4G+Cg==
+X-Received: by 2002:a5d:6443:: with SMTP id d3mr7390981wrw.389.1623951823445;
+        Thu, 17 Jun 2021 10:43:43 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id z18sm3195872wmf.18.2021.06.17.10.43.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jun 2021 10:43:42 -0700 (PDT)
+Date:   Thu, 17 Jun 2021 19:43:40 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Yu Jiahua <yujiahua1@huawei.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] apply: use DEFINE_SPINLOCK() instead of
+ spin_lock_init().
+Message-ID: <YMuJzDxblPNkpFjH@phenom.ffwll.local>
+Mail-Followup-To: Yu Jiahua <yujiahua1@huawei.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210616031713.24959-1-yujiahua1@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1711c37d-19d3-b923-d02a-433586c951ee@nxp.com>
+In-Reply-To: <20210616031713.24959-1-yujiahua1@huawei.com>
+X-Operating-System: Linux phenom 5.10.0-7-amd64 
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jun 17, 2021 at 01:11:39PM +0300, Laurentiu Tudor wrote:
+On Tue, Jun 15, 2021 at 07:17:13PM -0800, Yu Jiahua wrote:
+> From: Jiahua Yu <yujiahua1@huawei.com>
 > 
+> spinlock can be initialized automatically with DEFINE_SPINLOCK()
+> rather than explicitly calling spin_lock_init().
 > 
-> On 6/17/2021 12:49 PM, Lee Jones wrote:
-> > On Wed, 26 May 2021, Laurentiu Tudor wrote:
-> > 
-> >> Hi Lee,
-> >>
-> >> On 5/26/2021 11:10 AM, Lee Jones wrote:
-> >>> This set is part of a larger effort attempting to clean-up W=1
-> >>> kernel builds, which are currently overwhelmingly riddled with
-> >>> niggly little warnings.
-> >>>
-> >>> Lee Jones (10):
-> >>>   bus: fsl-mc: mc-io: Supply function names for 'fsl_create_mc_io()' and
-> >>>     'fsl_destroy_mc_io()'
-> >>>   bus: fsl-mc: mc-sys: Supply missing function names in kernel-doc
-> >>>     headers
-> >>>   bus: fsl-mc: fsl-mc-bus: Demote a bunch of non-conformant kernel-doc
-> >>>     headers and help others
-> >>>   bus: fsl-mc: dprc: Fix a couple of misspelling and formatting issues
-> >>>   bus: fsl-mc: dprc-driver: Fix some missing/incorrect function
-> >>>     parameter descriptions
-> >>>   bus: fsl-mc: fsl-mc-allocator: Fix misspelling of 'new_mc_adev' and
-> >>>     demote non-kernel-doc headers
-> >>>   bus: qcom-ebi2: Fix incorrect documentation for '{slow,fast}_cfg'
-> >>>   bus: fsl-mc-msi: Fix a little doc-rot pertaining to 'np' to 'fwnode'
-> >>>     conversion
-> >>>   bus: ti-sysc: Correct misdocumentation of 'sysc_ioremap()'
-> >>>   bus: fsl-mc: mc-io: Correct misdocumentation of 'dpmcp_dev' param
-> >>>
-> >>>  drivers/bus/fsl-mc/dprc-driver.c      |  8 +++++---
-> >>>  drivers/bus/fsl-mc/dprc.c             |  4 ++--
-> >>>  drivers/bus/fsl-mc/fsl-mc-allocator.c | 10 +++++-----
-> >>>  drivers/bus/fsl-mc/fsl-mc-bus.c       | 19 ++++++++++---------
-> >>>  drivers/bus/fsl-mc/fsl-mc-msi.c       |  2 +-
-> >>>  drivers/bus/fsl-mc/mc-io.c            |  6 +++---
-> >>>  drivers/bus/fsl-mc/mc-sys.c           | 19 ++++++++++---------
-> >>
-> >> Thanks for this. For drivers/bus/fsl-mc/*:
-> >>
-> >> Reviewed-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> > 
-> > Any idea who will take the 'fsl-mc' patches please?
-> > 
+> Signed-off-by: Jiahua Yu <yujiahua1@huawei.com>
+
+Stuffed into drm-misc-next. The subject looked a bit strange, so I fixed
+that up.
+-Daniel
+
+> ---
+>  drivers/video/fbdev/omap2/omapfb/dss/apply.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> Usually GregKH (added in the thread) picks them up through his char-misc
-> tree.
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/apply.c b/drivers/video/fbdev/omap2/omapfb/dss/apply.c
+> index c71021091828..acca991c7540 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/apply.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/apply.c
+> @@ -108,7 +108,7 @@ static struct {
+>  } dss_data;
+>  
+>  /* protects dss_data */
+> -static spinlock_t data_lock;
+> +static DEFINE_SPINLOCK(data_lock);
+>  /* lock for blocking functions */
+>  static DEFINE_MUTEX(apply_lock);
+>  static DECLARE_COMPLETION(extra_updated_completion);
+> @@ -131,8 +131,6 @@ static void apply_init_priv(void)
+>  	struct mgr_priv_data *mp;
+>  	int i;
+>  
+> -	spin_lock_init(&data_lock);
+> -
+>  	for (i = 0; i < num_ovls; ++i) {
+>  		struct ovl_priv_data *op;
+>  
+> -- 
+> 2.17.1
+> 
 
-If you resend just the fsl-mc patches as a series, I can pick them up
-that way.  Otherwise trying to pick out individual ones here is pretty
-much impossible...
-
-thanks,
-
-greg k-h
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
