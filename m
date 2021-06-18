@@ -2,59 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DFD73ABF95
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Jun 2021 01:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95F143AC483
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Jun 2021 09:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231809AbhFQXgm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Thu, 17 Jun 2021 19:36:42 -0400
-Received: from 6-200-5-45.rpnnetprovedor.com.br ([45.5.200.6]:59595 "EHLO
-        srv01.rpnnetprovedor.com.br" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S231727AbhFQXgm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 17 Jun 2021 19:36:42 -0400
-Received: from [84.38.130.143] (helo=IP-130-143.dataclub.eu)
-        by srv01.rpnnetprovedor.com.br with esmtpa (Exim 4.92.2)
-        (envelope-from <robertnellsona@citromail.hu>)
-        id 1ltkuO-00014w-4M
-        for linux-omap@vger.kernel.org; Thu, 17 Jun 2021 02:49:44 -0300
-Content-Type: text/plain; charset="iso-8859-1"
+        id S232359AbhFRHHS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Jun 2021 03:07:18 -0400
+Received: from muru.com ([72.249.23.125]:48220 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229580AbhFRHHS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 18 Jun 2021 03:07:18 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id E3F56807E;
+        Fri, 18 Jun 2021 07:05:18 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL] USB4 regression fix for TI DRA74X
+Date:   Fri, 18 Jun 2021 10:05:05 +0300
+Message-Id: <pull-1623999845-180025@atomide.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: CAN YOU INVEST WITH ME?...6
-To:     linux-omap@vger.kernel.org
-From:   "Mr.  Robert" <robertnellsona@citromail.hu>
-Date:   Thu, 17 Jun 2021 08:49:37 +0300
-Reply-To: robertnellsona@citromail.hu
-Message-Id: <E1ltkuO-00014w-4M@srv01.rpnnetprovedor.com.br>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: "Tony Lindgren" <tony@atomide.com>
 
-ATTENTION; linux-omap@vger.kernel.org,
+The following changes since commit bae989c4bc53f861cc1b706aab0194703e9907a8:
 
-IMPORTANT INVESTMENT INFORMATION
+  ARM: OMAP1: ams-delta: remove unused function ams_delta_camera_power (2021-05-26 14:01:27 +0300)
 
-We have a good investment program going on now.
-We have $95m USD for Investment in your Country.
-We use this opportunity to invest you to join the investment program and you will never regret it.
-Please kindly invest with us and you will be receiving monthly income/return/profit every month.
-We can also give you Loan, 
+are available in the Git repository at:
 
-We have: 
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.13/fixes-rc6-signed
 
-1. Short Term Loan, 
+for you to fetch changes up to 78b4b165280d3d70e7a217599f0c06a4c0bb11f9:
 
-2. Medium Term Loan 
+  ARM: dts: dra7: Fix duplicate USB4 target module node (2021-06-11 08:30:42 +0300)
 
-3. and Long Term Loan, 
+----------------------------------------------------------------
+Fix duplicate usb4 regression for dra74 variants
 
-There is no need of collateral security. We will use our company to sign agreement and guarantee on your behalf and our Lawyer will sign on your behalf.
+USB4 is only present in DRA74x variants, and I managed to add it for the
+other variants too with the recent legacy platform data removal.
 
-Reply for more detail.
+----------------------------------------------------------------
+Gowtham Tammana (1):
+      ARM: dts: dra7: Fix duplicate USB4 target module node
 
-Thank you Sir.
-
-Robert Nellson.
-INVESTMENT MANAGER.
+ arch/arm/boot/dts/am5718.dtsi  |  6 +--
+ arch/arm/boot/dts/dra7-l4.dtsi | 22 ----------
+ arch/arm/boot/dts/dra71x.dtsi  |  4 --
+ arch/arm/boot/dts/dra72x.dtsi  |  4 --
+ arch/arm/boot/dts/dra74x.dtsi  | 92 ++++++++++++++++++++++--------------------
+ 5 files changed, 50 insertions(+), 78 deletions(-)
