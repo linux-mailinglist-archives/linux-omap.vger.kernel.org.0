@@ -2,210 +2,155 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4FBD3ACECA
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Jun 2021 17:24:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13D7F3ACFA5
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Jun 2021 18:02:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234945AbhFRP0w (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Jun 2021 11:26:52 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:42886 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234405AbhFRPYq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Jun 2021 11:24:46 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 15IFMVIS104643;
-        Fri, 18 Jun 2021 10:22:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1624029751;
-        bh=LJeWp9ecNco3an3cJzx2tQNMcRP7TVNUhvlcf24+KVM=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=dWG9X/Cd2o9hP1recwShzxzCDJAdaznv30T/L/j/R7n+Q2Le7RUimmAcN/ymOnXlz
-         xaOlAS2WW5lqag/2PZeP5Xuwbbpino/rTj5hyW1wjVjQp0PiDfhUeJMw78mXiFN1Ca
-         6bS0XF2wAP0XzkkAhDCfImU3GqaKS00NrU5rR7qo=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 15IFMUCq029401
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 18 Jun 2021 10:22:30 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 18
- Jun 2021 10:22:30 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Fri, 18 Jun 2021 10:22:30 -0500
-Received: from [10.250.234.148] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 15IFMRVK027988;
-        Fri, 18 Jun 2021 10:22:27 -0500
-Subject: Re: [PATCH v2] dt-bindings: serial: Move omap-serial.txt to YAML
- schema
-To:     Rob Herring <robh+dt@kernel.org>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        id S230430AbhFRQEu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Jun 2021 12:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230340AbhFRQEu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Jun 2021 12:04:50 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CE1C061574;
+        Fri, 18 Jun 2021 09:02:40 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id z12so9368008edc.1;
+        Fri, 18 Jun 2021 09:02:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FeMZkRKu8I2r+KYH6VOSJibXy1W5BhFH+qkTYQAet8Y=;
+        b=sNSc/wZA6DmbhwyM4CkUU7yJakpjTZIkuQp1YDLnjhqsmGOZsDH46jPfudG+4FV+dP
+         szsKW+IE9CJr7hW9udjKxrJsO2eE/nGvhfqzFkFtQ7tcdrr3vFIfoDAqvM6f8Iczl4uY
+         e115xA0YJlr6GngzNFOvPTB12oAsCp/jZVQ6syGNo+XwZiQiQRK2XjvtEfsCF8xDFHHb
+         NAX1BUZ+k0eldKPEwzfGDok84QCdAA/SFjBiDfP3rk41q0rwPX46fEyjjn902jH9O2va
+         35wuLRcUJNIIeX4XCU06P15aXDtrRm84ouKFAm8fIK2OBqptgHbnt0FPfClBK5R390Vq
+         fltA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FeMZkRKu8I2r+KYH6VOSJibXy1W5BhFH+qkTYQAet8Y=;
+        b=FGOM8nrK6i1vouwWwAedHi5j5CUJ+70TydpP4T3d0xQKzVukJrXdp1h3E2OaWTBFIW
+         uvByN8rfgNmd+b6cULOPaW0Ab/Wu9/qPJdVPR3h/xIOBKU/3C+jqS2J2ljARH1aD5LxY
+         WhZv05FyspsI59FJnUmE6Si/STBbtyMfY/eXs4hi+747IJdeZg6r+0WQUa2wN2TrbRF3
+         9Ri3+VMmfgTTE96VQ6LtCjIe5jFbKPL/SB7tbG5VrGmnhbgrnlH3e1wuueevvtDg+BYI
+         I5HfjmmJZwKNRW/eLAH5aij3W3Y++x266KPhwGnHmXX+Vw9iDHRB0FO6vuee4TSBiBT6
+         ZyBg==
+X-Gm-Message-State: AOAM533qMIIdzCUxPBXdDtv3TLzWxZFVDtgnKgpetUflMWxROvH2Bop/
+        Bd/5WW5YKd597AKj+xrssxSkPZrt0ZqC6rb+Gh4=
+X-Google-Smtp-Source: ABdhPJyObSdlRTyvAUv6DlfwyKzuLyz0w1veDZeaI9nH49gN+3gAji451IYtR9ou1VtmQx29+xPR4YwfD9sMPMGXBxQ=
+X-Received: by 2002:aa7:dccb:: with SMTP id w11mr5862932edu.96.1624032158864;
+ Fri, 18 Jun 2021 09:02:38 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210617093330.9179-1-paul.barker@sancloud.com> <20210617093330.9179-4-paul.barker@sancloud.com>
+In-Reply-To: <20210617093330.9179-4-paul.barker@sancloud.com>
+From:   Robert Nelson <robertcnelson@gmail.com>
+Date:   Fri, 18 Jun 2021 11:02:12 -0500
+Message-ID: <CAOCHtYjEn+F+_chyMQ0cppA0y=ZeHrme3c66A2Z5U6pJf9a8_w@mail.gmail.com>
+Subject: Re: [PATCH 3/4] ARM: dts: am335x-sancloud-bbe-lite: New devicetree
+To:     Paul Barker <paul.barker@sancloud.com>
+Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
         linux-omap <linux-omap@vger.kernel.org>,
-        Nishanth Menon <nm@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-References: <20210610182227.2480-1-vigneshr@ti.com>
- <CAL_JsqLjqtUapkr6ARyaeTduhSghJL-q7hBWGFPm7ubbvqCmJw@mail.gmail.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <5ef04ae5-e07e-5162-7dad-ace3e2fdeb0d@ti.com>
-Date:   Fri, 18 Jun 2021 20:52:26 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-MIME-Version: 1.0
-In-Reply-To: <CAL_JsqLjqtUapkr6ARyaeTduhSghJL-q7hBWGFPm7ubbvqCmJw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        devicetree <devicetree@vger.kernel.org>,
+        Marc Murphy <marc.murphy@sancloud.com>,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Paul,
 
+On Thu, Jun 17, 2021 at 4:35 AM Paul Barker <paul.barker@sancloud.com> wrote:
+>
+> This adds support for the Sancloud BBE Lite which shares a common
+> hardware base with the non-Lite version of the BBE.
+>
+> Signed-off-by: Paul Barker <paul.barker@sancloud.com>
+> ---
+>  arch/arm/boot/dts/Makefile                    |  1 +
+>  .../arm/boot/dts/am335x-sancloud-bbe-lite.dts | 51 +++++++++++++++++++
+>  2 files changed, 52 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/am335x-sancloud-bbe-lite.dts
+>
+> diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+> index f8f09c5066e7..8629c941f573 100644
+> --- a/arch/arm/boot/dts/Makefile
+> +++ b/arch/arm/boot/dts/Makefile
+> @@ -834,6 +834,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
+>         am335x-pocketbeagle.dtb \
+>         am335x-regor-rdk.dtb \
+>         am335x-sancloud-bbe.dtb \
+> +       am335x-sancloud-bbe-lite.dtb \
+>         am335x-shc.dtb \
+>         am335x-sbc-t335.dtb \
+>         am335x-sl50.dtb \
+> diff --git a/arch/arm/boot/dts/am335x-sancloud-bbe-lite.dts b/arch/arm/boot/dts/am335x-sancloud-bbe-lite.dts
+> new file mode 100644
+> index 000000000000..9c311bd106f6
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/am335x-sancloud-bbe-lite.dts
+> @@ -0,0 +1,51 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+> + * Copyright (C) 2021 SanCloud Ltd
+> + */
+> +/dts-v1/;
+> +
+> +#include "am33xx.dtsi"
+> +#include "am335x-bone-common.dtsi"
+> +#include "am335x-boneblack-common.dtsi"
+> +#include "am335x-sancloud-bbe-common.dtsi"
+> +
+> +/ {
+> +       model = "SanCloud BeagleBone Enhanced Lite";
+> +       compatible = "sancloud,am335x-boneenhanced",
+> +                    "ti,am335x-bone-black",
+> +                    "ti,am335x-bone",
+> +                    "ti,am33xx";
+> +};
+> +
+> +&am33xx_pinmux {
+> +       bb_spi0_pins: pinmux_bb_spi0_pins {
+> +               pinctrl-single,pins = <
+> +                       AM33XX_PADCONF(AM335X_PIN_SPI0_SCLK, PIN_INPUT, MUX_MODE0)
+> +                       AM33XX_PADCONF(AM335X_PIN_SPI0_D0, PIN_INPUT, MUX_MODE0)
+> +                       AM33XX_PADCONF(AM335X_PIN_SPI0_D1, PIN_INPUT, MUX_MODE0)
+> +                       AM33XX_PADCONF(AM335X_PIN_SPI0_CS0, PIN_INPUT, MUX_MODE0)
+> +               >;
+> +       };
+> +};
+> +
+> +&spi0 {
+> +       #address-cells = <1>;
+> +       #size-cells = <0>;
+> +
+> +       status = "okay";
+> +       pinctrl-names = "default";
+> +       pinctrl-0 = <&bb_spi0_pins>;
+> +
+> +       channel@0 {
+> +               #address-cells = <1>;
+> +               #size-cells = <0>;
+> +
+> +               compatible = "micron,spi-authenta";
+> +               symlink = "spi/0.0";
 
-On 6/18/21 8:28 PM, Rob Herring wrote:
-> On Thu, Jun 10, 2021 at 12:22 PM Vignesh Raghavendra <vigneshr@ti.com> wrote:
->>
->> Convert serial-omap.txt to YAML schema for better checks and documentation.
->>
->> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
->> ---
->>
->> v2:
->> *Drop reg-io-width and reg-shift as they are constant and documented in
->>  txt bindings (also not used by driver).
->> *Drop unused label in example.
->> *Rename file to 8250_omap.yaml to be more generic as IP is present in
->> varies families of TI SoCs.
->> *Add description for interrupt entries
->>
->>  .../devicetree/bindings/serial/8250_omap.yaml | 118 ++++++++++++++++++
->>  .../bindings/serial/omap_serial.txt           |  40 ------
->>  2 files changed, 118 insertions(+), 40 deletions(-)
->>  create mode 100644 Documentation/devicetree/bindings/serial/8250_omap.yaml
->>  delete mode 100644 Documentation/devicetree/bindings/serial/omap_serial.txt
->>
->> diff --git a/Documentation/devicetree/bindings/serial/8250_omap.yaml b/Documentation/devicetree/bindings/serial/8250_omap.yaml
->> new file mode 100644
->> index 000000000000..1c826fcf5828
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/serial/8250_omap.yaml
->> @@ -0,0 +1,118 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/serial/8250_omap.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Bindings for 8250 compliant UARTs on TI's OMAP2+ and K3 SoCs
->> +
->> +maintainers:
->> +  - Vignesh Raghavendra <vigneshr@ti.com>
->> +
->> +allOf:
->> +  - $ref: /schemas/serial/serial.yaml#
->> +  - $ref: /schemas/serial/rs485.yaml#
->> +
->> +properties:
->> +  compatible:
->> +    oneOf:
->> +      - enum:
->> +          - ti,am3352-uart
->> +          - ti,am4372-uart
->> +          - ti,am654-uart
->> +          - ti,dra742-uart
->> +          - ti,omap2-uart
->> +          - ti,omap3-uart
->> +          - ti,omap4-uart
->> +      - items:
->> +          - enum:
->> +              - ti,am64-uart
->> +              - ti,j721e-uart
->> +          - const: ti,am654-uart
->> +
->> +  ti,hwmods:
->> +    description:
->> +      Must be "uart<n>", n being the instance number (1-based)
->> +      This property is applicable only on legacy platforms mainly omap2/3
->> +      and ti81xx and should not be used on other platforms.
->> +    $ref: /schemas/types.yaml#/definitions/string
->> +    deprecated: true
->> +
->> +  dmas:
->> +    minItems: 1
->> +    maxItems: 2
->> +
->> +  dma-names:
->> +    items:
->> +      - const: tx
->> +      - const: rx
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    minItems: 1
->> +    maxItems: 2
->> +    description:
->> +      First entry is module IRQ required for normal IO operation.
->> +      Second entry is optional and corresponds to system wakeup IRQ
->> +      where supported.
-> 
-> interrupts:
->   minItems: 1
->   items:
->     - description: module IRQ required for normal IO operation
->     - description: system wakeup IRQ
-> 
+Sorry, this "symlink" is an undocumented "feature" of the
+BeagleBoard.org tree.. We use it to help "identity" spi/usart/i2c
+nodes names when they dynamically change node numbers based on kernel
+versions or even 'drivers'....
 
-OK, will send a follow up fix as the patch is already queued.
+https://github.com/beagleboard/customizations/blob/master/etc/udev/rules.d/10-of-symlink.rules
 
->> +
->> +  clocks:
->> +    maxItems: 1
->> +
->> +  clock-names:
->> +    const: fclk
->> +
->> +  rts-gpios: true
->> +  cts-gpios: true
->> +  dtr-gpios: true
->> +  dsr-gpios: true
->> +  rng-gpios: true
->> +  dcd-gpios: true
->> +  rs485-rts-delay: true
->> +  rs485-rts-active-low: true
->> +  rs485-rx-during-tx: true
->> +  rs485-rts-active-high: true
->> +  linux,rs485-enabled-at-boot-time: true
->> +  rts-gpio: true
->> +  power-domains: true
->> +  clock-frequency: true
->> +  current-speed: true
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - interrupts
->> +
->> +additionalProperties: false
-> 
-> Do you want to support serial attached devices? If so, you need:
-> 
-> unevaluatedProperties: false
-> 
+For 'mainline' we need to remove it..
 
-Yes, support for serial client devices is desired, but I see that with
-"unevaluatedProperties: false" there are no warnings if DT has a
-property not documented in the schema? Did I miss something?
+Regards,
 
-> You can also drop listing all the inherited properties from the
-> included schemas.
-
-Yes, this can be done with "unevaluatedProperties: false".
-
-Regards
-Vignesh
+-- 
+Robert Nelson
+https://rcn-ee.com/
