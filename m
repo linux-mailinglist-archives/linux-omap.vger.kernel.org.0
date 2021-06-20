@@ -2,43 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF4373AD689
-	for <lists+linux-omap@lfdr.de>; Sat, 19 Jun 2021 03:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FF983ADDA0
+	for <lists+linux-omap@lfdr.de>; Sun, 20 Jun 2021 10:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235312AbhFSBzr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Fri, 18 Jun 2021 21:55:47 -0400
-Received: from mail.al.ce.gov.br ([200.150.134.10]:48231 "EHLO
-        mta.al.ce.gov.br" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S233167AbhFSBzq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Jun 2021 21:55:46 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mta.al.ce.gov.br (Postfix) with ESMTP id AD62140C15A;
-        Fri, 18 Jun 2021 22:44:05 -0300 (-03)
-Received: from mta.al.ce.gov.br ([127.0.0.1])
-        by localhost (mta.al.ce.gov.br [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id FZLyjasOiG_A; Fri, 18 Jun 2021 22:44:05 -0300 (-03)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mta.al.ce.gov.br (Postfix) with ESMTP id 0D6D040C149;
-        Fri, 18 Jun 2021 22:44:05 -0300 (-03)
-X-Virus-Scanned: amavisd-new at mta.al.ce.gov.br
-Received: from mta.al.ce.gov.br ([127.0.0.1])
-        by localhost (mta.al.ce.gov.br [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 1JOd8ygDrbHk; Fri, 18 Jun 2021 22:44:04 -0300 (-03)
-Received: from [100.101.221.217] (unknown [106.202.51.53])
-        by mta.al.ce.gov.br (Postfix) with ESMTPSA id 4BAFF40959D;
-        Fri, 18 Jun 2021 22:43:44 -0300 (-03)
+        id S229708AbhFTIIA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Sun, 20 Jun 2021 04:08:00 -0400
+Received: from 6-200-5-45.rpnnetprovedor.com.br ([45.5.200.6]:59382 "EHLO
+        srv01.rpnnetprovedor.com.br" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229711AbhFTIHu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 20 Jun 2021 04:07:50 -0400
+Received: from [84.38.130.143] (helo=IP-130-143.dataclub.eu)
+        by srv01.rpnnetprovedor.com.br with esmtpa (Exim 4.92.2)
+        (envelope-from <robertnellsona@citromail.hu>)
+        id 1lusSV-00068r-6A
+        for linux-omap@vger.kernel.org; Sun, 20 Jun 2021 05:05:35 -0300
 Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
 Content-Description: Mail message body
-Subject: URGENT ATTENTION NEEDED
-To:     Recipients <info@hsbc.org>
-From:   "Albert Robert" <info@hsbc.org>
-Date:   Sat, 19 Jun 2021 07:13:20 +0530
-Reply-To: albertrobert0080@gmail.com
-Message-Id: <20210619014345.4BAFF40959D@mta.al.ce.gov.br>
+Subject: CAN YOU INVEST WITH ME?...6
+To:     linux-omap@vger.kernel.org
+From:   "Mr.  Robert" <robertnellsona@citromail.hu>
+Date:   Sun, 20 Jun 2021 11:05:33 +0300
+Reply-To: robertnellsona@citromail.hu
+Message-Id: <E1lusSV-00068r-6A@srv01.rpnnetprovedor.com.br>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We are in urgent need of your partnership to handle a business transaction with us in your country. Reply us for more details and financial benefit
+
+ATTENTION; linux-omap@vger.kernel.org,
+
+IMPORTANT INVESTMENT INFORMATION
+
+We have a good investment program going on now.
+We have $95m USD for Investment in your Country.
+We use this opportunity to invest you to join the investment program and you will never regret it.
+Please kindly invest with us and you will be receiving monthly income/return/profit every month.
+We can also give you Loan, 
+
+We have: 
+
+1. Short Term Loan, 
+
+2. Medium Term Loan 
+
+3. and Long Term Loan, 
+
+There is no need of collateral security. We will use our company to sign agreement and guarantee on your behalf and our Lawyer will sign on your behalf.
+
+Reply for more detail.
+
+Thank you Sir.
+
+Robert Nellson.
+INVESTMENT MANAGER.
