@@ -2,107 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D46C83AE093
-	for <lists+linux-omap@lfdr.de>; Sun, 20 Jun 2021 23:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 763BE3AE86A
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Jun 2021 13:53:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230291AbhFTVK5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 20 Jun 2021 17:10:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33506 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230211AbhFTVK5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 20 Jun 2021 17:10:57 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8CF3C610EA;
-        Sun, 20 Jun 2021 21:08:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624223324;
-        bh=RV1dRe0q665rCNfncnH89ttrqFNtElN2unqX84acxys=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vCmKbaXvanXPec+PW1+BZooyGCUSyt4KNHWz5AQ/cxQrd8zooIkSvV3NVjDcVy1M0
-         lev8GonTnS6dA5tZcayI4PxkXuJhnhljHIVpA/itbL6f3Hy3rM1srP/s0yFR9mn71h
-         sOSjfQcEtX2rtb29fvtC0W7he5nriw5NU4S2j9lLX8OvqFWdfH4XpfMRbiVpmk7wb0
-         HS4RbaWpQMLswvjL3fLh9kmIKF0YfQcdAbDM97gN/oDe1GVh7/nT2WozhPr1wJb486
-         zORZrhVcBf5n1i4hJzCl6xrqGOTily1gQrpBUnIfn+Oamgvj6keBnnso+aDJA9lK6X
-         D5Sd9fuYoMXiw==
-Date:   Sun, 20 Jun 2021 23:08:41 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org, x86@kernel.org,
-        linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: i2c: ce4100: Replace "ti,pcf8575" by
- "nxp,pcf8575"
-Message-ID: <YM+uWXoCvi7Y/s24@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh+dt@kernel.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, devicetree@vger.kernel.org,
-        linux-gpio@vger.kernel.org, x86@kernel.org,
-        linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-References: <cover.1622560799.git.geert+renesas@glider.be>
- <9b560b7f5ded90430c989a211f2aee009aefc595.1622560799.git.geert+renesas@glider.be>
+        id S229610AbhFUL4I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Jun 2021 07:56:08 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:34544 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229576AbhFUL4I (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Jun 2021 07:56:08 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 15LBrhKW059771;
+        Mon, 21 Jun 2021 06:53:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1624276423;
+        bh=5nHxsBQDy/Mqy9USBF2x599r8UPBoh7zt5PsD3t1noc=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=JyPQS0WmUIN/kJyxrN8beSAIN6FIcJRcYrh7UVd53T2p6hrvlRtHyIQwrbZEseTQI
+         WioROAxiUrnFnH/FF34FdOT19yzhK1rPwHkPC3WDhJKFg7nbS/iB3vM5riVn5bmP3i
+         N41kI4NltTLoLXEnCl2qYRlCznl+BvJUZIqFtukI=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 15LBrhQD127220
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 21 Jun 2021 06:53:43 -0500
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Mon, 21
+ Jun 2021 06:53:42 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Mon, 21 Jun 2021 06:53:42 -0500
+Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 15LBrYSx040876;
+        Mon, 21 Jun 2021 06:53:37 -0500
+Subject: Re: [PATCH 0/2] dt-bindings: pwm: pwm-tiecap: Convert to json schema
+To:     <thierry.reding@gmail.com>, <u.kleine-koenig@pengutronix.de>,
+        <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>
+CC:     <tony@atomide.com>, Vignesh R <vigneshr@ti.com>,
+        Nishanth Menon <nm@ti.com>, <linux-pwm@vger.kernel.org>,
+        Device Tree Mailing List <devicetree@vger.kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+References: <20210601102804.22152-1-lokeshvutla@ti.com>
+From:   Lokesh Vutla <lokeshvutla@ti.com>
+Message-ID: <a84a1fcb-b85d-975f-1763-03cd533855f1@ti.com>
+Date:   Mon, 21 Jun 2021 17:23:33 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="yGK4jxv6o8Tg62fU"
-Content-Disposition: inline
-In-Reply-To: <9b560b7f5ded90430c989a211f2aee009aefc595.1622560799.git.geert+renesas@glider.be>
+In-Reply-To: <20210601102804.22152-1-lokeshvutla@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Thierry,
 
---yGK4jxv6o8Tg62fU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 01/06/21 3:58 pm, Lokesh Vutla wrote:
+> This series:
+> - converts tiecap to DT schema format using json-schema
+> - Add new compatible for AM64 SoC.
 
-On Tue, Jun 01, 2021 at 05:25:44PM +0200, Geert Uytterhoeven wrote:
-> The TI part is equivalent to the NXP part, and its compatible value is
-> not documented in the DT bindings.
->=20
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+If there are no objections, can we merge this series?
 
-Applied to for-next, thanks!
+Thanks and regards,
+Lokesh
 
-
---yGK4jxv6o8Tg62fU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmDPrlkACgkQFA3kzBSg
-KbZFSRAAlvHQWYn7WuznFBAm3WzUAuqHEpUbbz32vQiJxtrX+3RgQ2ylWfaEi30P
-LwMnfIUuQxQYUhNF5f+Q/zYIdcHyscL8YdYlbMl2grtmKa68Lm1SeUZj0kJbBZ6c
-0hv7k4yT0/2wRFc3pNOi2E5fnU9oKKKdXEB+7J5zrfotCIcyOfMSmekVfcg7e/Lc
-dPm3MxH4Aixm2eNxuPRiXAXRvn4WXaf42EEdwERYx/OTIEe+ndm+OmhoQFB4PsqP
-7aglnSl+5mCrlGw3mU6/qt9gE+zXd36c1Y1DOMdu6ArMOc0zRugPon57oBSWrAA1
-IwvTDnrCAtY2Z8MnDFyYT+BCrxeWHs6y66nFT1M/w9m2t6YBB0r2ZsbstRkYHzK6
-4YE3UcZc6bvulO2ds+LZPSdLD6U0CqWjMi/Wv/1tsIz1eHuwl54J/SSneY4R+fU1
-k7pzOZF6sVk1MwvZ7iGKIxXakQ0q5YLgTFHrX1XTSAmO9tKFWwaz5tP1qrP7psnY
-p6BBWNdxYDqYnyGyzV/ujdoLT/OOHWizJceV+afJNL24fj5NDJU0ERpEH+HnwA0U
-vdubHHZN7Feqm059L3EFEA/B5f9yNSpfc359yCR4jE7HbIRiFz5fgVwIF78Q8RUf
-Dbf03mWpY2Z4GKdcxPxS7D3Pmq9qtxoLF1tK+ENHSbY1mZ9QvS8=
-=fIsi
------END PGP SIGNATURE-----
-
---yGK4jxv6o8Tg62fU--
+> 
+> Lokesh Vutla (2):
+>   dt-bindings: pwm: pwm-tiecap: Convert to json schema
+>   dt-bindings: pwm: pwm-tiecap: Add compatible string for AM64 SoC
+> 
+>  .../devicetree/bindings/pwm/pwm-tiecap.txt    | 51 ---------------
+>  .../devicetree/bindings/pwm/pwm-tiecap.yaml   | 64 +++++++++++++++++++
+>  2 files changed, 64 insertions(+), 51 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/pwm/pwm-tiecap.txt
+>  create mode 100644 Documentation/devicetree/bindings/pwm/pwm-tiecap.yaml
+> 
