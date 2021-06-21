@@ -2,85 +2,65 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 763BE3AE86A
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Jun 2021 13:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 828893AEB92
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Jun 2021 16:41:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229610AbhFUL4I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Jun 2021 07:56:08 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:34544 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbhFUL4I (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Jun 2021 07:56:08 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 15LBrhKW059771;
-        Mon, 21 Jun 2021 06:53:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1624276423;
-        bh=5nHxsBQDy/Mqy9USBF2x599r8UPBoh7zt5PsD3t1noc=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=JyPQS0WmUIN/kJyxrN8beSAIN6FIcJRcYrh7UVd53T2p6hrvlRtHyIQwrbZEseTQI
-         WioROAxiUrnFnH/FF34FdOT19yzhK1rPwHkPC3WDhJKFg7nbS/iB3vM5riVn5bmP3i
-         N41kI4NltTLoLXEnCl2qYRlCznl+BvJUZIqFtukI=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 15LBrhQD127220
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 21 Jun 2021 06:53:43 -0500
-Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Mon, 21
- Jun 2021 06:53:42 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Mon, 21 Jun 2021 06:53:42 -0500
-Received: from [10.24.69.20] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 15LBrYSx040876;
-        Mon, 21 Jun 2021 06:53:37 -0500
-Subject: Re: [PATCH 0/2] dt-bindings: pwm: pwm-tiecap: Convert to json schema
-To:     <thierry.reding@gmail.com>, <u.kleine-koenig@pengutronix.de>,
-        <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>
-CC:     <tony@atomide.com>, Vignesh R <vigneshr@ti.com>,
-        Nishanth Menon <nm@ti.com>, <linux-pwm@vger.kernel.org>,
-        Device Tree Mailing List <devicetree@vger.kernel.org>,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-References: <20210601102804.22152-1-lokeshvutla@ti.com>
-From:   Lokesh Vutla <lokeshvutla@ti.com>
-Message-ID: <a84a1fcb-b85d-975f-1763-03cd533855f1@ti.com>
-Date:   Mon, 21 Jun 2021 17:23:33 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S229790AbhFUOn1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Jun 2021 10:43:27 -0400
+Received: from foss.arm.com ([217.140.110.172]:35668 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229765AbhFUOn1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 21 Jun 2021 10:43:27 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE10CD6E;
+        Mon, 21 Jun 2021 07:41:12 -0700 (PDT)
+Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C7883F694;
+        Mon, 21 Jun 2021 07:41:11 -0700 (PDT)
+Date:   Mon, 21 Jun 2021 15:41:09 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Luca Ceresoli <luca@lucaceresoli.net>, kishon@ti.com
+Cc:     linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+Subject: Re: [PATCH v2 0/4] PCI: dwc: pci-dra7xx: miscellaneous improvements
+Message-ID: <20210621144109.GC27516@lpieralisi>
+References: <20210531085934.2662457-1-luca@lucaceresoli.net>
 MIME-Version: 1.0
-In-Reply-To: <20210601102804.22152-1-lokeshvutla@ti.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210531085934.2662457-1-luca@lucaceresoli.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Thierry,
-
-On 01/06/21 3:58 pm, Lokesh Vutla wrote:
-> This series:
-> - converts tiecap to DT schema format using json-schema
-> - Add new compatible for AM64 SoC.
-
-If there are no objections, can we merge this series?
-
-Thanks and regards,
-Lokesh
-
+On Mon, May 31, 2021 at 10:59:30AM +0200, Luca Ceresoli wrote:
+> This is an series of mixed improvements to the DRA7 PCI controller driver:
+> allow building as a loadabel module, allow to get and enable a clock and a
+> small cleanup.
 > 
-> Lokesh Vutla (2):
->   dt-bindings: pwm: pwm-tiecap: Convert to json schema
->   dt-bindings: pwm: pwm-tiecap: Add compatible string for AM64 SoC
+> Luca
 > 
->  .../devicetree/bindings/pwm/pwm-tiecap.txt    | 51 ---------------
->  .../devicetree/bindings/pwm/pwm-tiecap.yaml   | 64 +++++++++++++++++++
->  2 files changed, 64 insertions(+), 51 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/pwm/pwm-tiecap.txt
->  create mode 100644 Documentation/devicetree/bindings/pwm/pwm-tiecap.yaml
+> Luca Ceresoli (4):
+>   PCI: dwc: Export more symbols to allow modular drivers
+>   PCI: dra7xx: Make it a kernel module
+>   PCI: dra7xx: Remove unused include
+>   PCI: dra7xx: Get an optional clock
 > 
+>  drivers/pci/controller/dwc/Kconfig            |  6 ++---
+>  drivers/pci/controller/dwc/pci-dra7xx.c       | 22 +++++++++++++++++--
+>  .../pci/controller/dwc/pcie-designware-ep.c   |  1 +
+>  drivers/pci/controller/dwc/pcie-designware.c  |  1 +
+>  4 files changed, 25 insertions(+), 5 deletions(-)
+
+Hi Kishon,
+
+I'd need your ACK to proceed with this series that looks like it
+is ready to go, please let me know.
+
+Thanks,
+Lorenzo
