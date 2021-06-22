@@ -2,209 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ACB63B1004
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Jun 2021 00:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C14AC3B109B
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Jun 2021 01:29:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230185AbhFVWZs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Jun 2021 18:25:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59130 "EHLO mail.kernel.org"
+        id S229849AbhFVXbz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Jun 2021 19:31:55 -0400
+Received: from thoth.sbs.de ([192.35.17.2]:42196 "EHLO thoth.sbs.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229718AbhFVWZr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 22 Jun 2021 18:25:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3429E60FF1;
-        Tue, 22 Jun 2021 22:23:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1624400611;
-        bh=iqnw0H7/UtpoNSuitDlm9IHI3TDZqcMqMbO9123dzWQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pa7scjEPYzKwbh7np3cUhrvPriM37WrzN11qm2Srew1d7KnnsCWgA4hdD5GVb3DgQ
-         KfOEqLnt7urnwUkHkCuKnV5i8PxhFlbzmwGGV+Nddp+4hYLfiQtnL5LXA2ecMnQ07b
-         Z/dgTFgXACjbfs2NQuemNiAVks2UQSj7Y7u04AuuQilaeL4Dw6EjeQRcIFwGdCVXmw
-         WY6R+3K3KG1d/y0+S2v/Z5cN+/sGDMQQruTAUVjbizNv9vDWMDILPLrCTYBVakCfK5
-         JPshTG1s45nYuu1gtd+e2ty49bkwUoiWSNR4D1X6sib9X1PHlREDxUgyIKxtIIgQnJ
-         Zwwh7zGuG6W9g==
-Received: by pali.im (Postfix)
-        id C1726CBA; Wed, 23 Jun 2021 00:23:28 +0200 (CEST)
-Date:   Wed, 23 Jun 2021 00:23:28 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Luca Ceresoli <luca@lucaceresoli.net>
-Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linus.walleij@linaro.org, linux-pci@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v2] PCI: dra7xx: Fix reset behaviour
-Message-ID: <20210622222328.3lfgkrhsdy6izedv@pali>
-References: <8207a53c-4de9-d0e5-295a-c165e7237e36@lucaceresoli.net>
- <20210622110627.aqzxxtf2j3uxfeyl@pali>
- <20210622115604.GA25503@lpieralisi>
- <20210622121649.ouiaecdvwutgdyy5@pali>
- <18a104a9-2cb8-7535-a5b2-f5f049adff47@lucaceresoli.net>
- <4d4c0d4d-41b4-4756-5189-bffa15f88406@ti.com>
- <20210622205220.ypu22tuxhpdn2jwz@pali>
- <2873969e-ac56-a41f-0cc9-38e387542aa1@lucaceresoli.net>
- <20210622211901.ikulpy32d6qlr4yw@pali>
- <588741e4-b085-8ae2-3311-27037c040a57@lucaceresoli.net>
+        id S229501AbhFVXbz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 22 Jun 2021 19:31:55 -0400
+X-Greylist: delayed 1951 seconds by postgrey-1.27 at vger.kernel.org; Tue, 22 Jun 2021 19:31:54 EDT
+Received: from mail2.sbs.de (mail2.sbs.de [192.129.41.66])
+        by thoth.sbs.de (8.15.2/8.15.2) with ESMTPS id 15MMuVSg027778
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 23 Jun 2021 00:56:31 +0200
+Received: from [167.87.93.200] ([167.87.93.200])
+        by mail2.sbs.de (8.15.2/8.15.2) with ESMTP id 15MMuQ3p002566;
+        Wed, 23 Jun 2021 00:56:27 +0200
+Subject: Re: [PATCH v2] serial: 8250: 8250_omap: Fix possible interrupt storm
+ on K3 SoCs
+To:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-serial@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>
+References: <20210622145704.11168-1-vigneshr@ti.com>
+From:   Jan Kiszka <jan.kiszka@siemens.com>
+Message-ID: <d55fc5bb-b56d-bed6-0753-574b12e2ee92@siemens.com>
+Date:   Wed, 23 Jun 2021 00:56:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
+In-Reply-To: <20210622145704.11168-1-vigneshr@ti.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <588741e4-b085-8ae2-3311-27037c040a57@lucaceresoli.net>
-User-Agent: NeoMutt/20180716
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tuesday 22 June 2021 23:36:35 Luca Ceresoli wrote:
-> Hi Pali,
+On 22.06.21 16:57, Vignesh Raghavendra wrote:
+> On K3 family of SoCs (which includes AM654 SoC), it is observed that RX
+> TIMEOUT is signalled after RX FIFO has been drained, in which case a
+> dummy read of RX FIFO is required to clear RX TIMEOUT condition.
+> Otherwise, this would lead to an interrupt storm.
 > 
-> On 22/06/21 23:19, Pali Rohár wrote:
-> > On Tuesday 22 June 2021 23:08:07 Luca Ceresoli wrote:
-> >> On 22/06/21 22:52, Pali Rohár wrote:
-> >>> On Tuesday 22 June 2021 19:27:37 Kishon Vijay Abraham I wrote:
-> >>>> Hi Luca, Pali,
-> >>>>
-> >>>> On 22/06/21 7:01 pm, Luca Ceresoli wrote:
-> >>>>> Hi,
-> >>>>>
-> >>>>> On 22/06/21 14:16, Pali Rohár wrote:
-> >>>>>> On Tuesday 22 June 2021 12:56:04 Lorenzo Pieralisi wrote:
-> >>>>>>> [Adding Linus for GPIO discussion, thread:
-> >>>>>>> https://lore.kernel.org/linux-pci/20210531090540.2663171-1-luca@lucaceresoli.net]
-> >>>>>>>
-> >>>>>>> On Tue, Jun 22, 2021 at 01:06:27PM +0200, Pali Rohár wrote:
-> >>>>>>>> Hello!
-> >>>>>>>>
-> >>>>>>>> On Tuesday 22 June 2021 12:57:22 Luca Ceresoli wrote:
-> >>>>>>>>> Nothing happened after a few weeks... I understand that knowing the
-> >>>>>>>>> correct reset timings is relevant, but unfortunately I cannot help much
-> >>>>>>>>> in finding out the correct values.
-> >>>>>>>>>
-> >>>>>>>>> However I'm wondering what should happen to this patch. It *does* fix a
-> >>>>>>>>> real bug, but potentially with an incorrect or non-optimal usleep range.
-> >>>>>>>>> Do we really want to ignore a bugfix because we are not sure about how
-> >>>>>>>>> long this delay should be?
-> >>>>>>>>
-> >>>>>>>> As there is no better solution right now, I'm fine with your patch. But
-> >>>>>>>> patch needs to be approved by Lorenzo, so please wait for his final
-> >>>>>>>> answer.
-> >>>>>>>
-> >>>>>>> I am not a GPIO expert and I have a feeling this is platform specific
-> >>>>>>> beyond what the PCI specification can actually define architecturally.
-> >>>>>>
-> >>>>>> In my opinion timeout is not platform specific as I wrote in email:
-> >>>>>> https://lore.kernel.org/linux-pci/20210310110535.zh4pnn4vpmvzwl5q@pali/
-> >>>>>>
-> >>>>>> My experiments already proved that some PCIe cards needs to be in reset
-> >>>>>> state for some minimal time otherwise they cannot be enumerated. And it
-> >>>>>> does not matter to which platform you connect those (endpoint) cards.
-> >>>>>>
-> >>>>>> I do not think that timeout itself is platform specific. GPIO controls
-> >>>>>> PERST# pin and therefore specified sleep value directly drives how long
-> >>>>>> is card on the other end of PCIe slot in Warm Reset state. PCIe CEM spec
-> >>>>>> directly says that PERST# signal controls PCIe Warm Reset.
-> >>>>>>
-> >>>>>> What is here platform specific thing is that PERST# signal is controlled
-> >>>>>> by GPIO. But value of signal (high / low) and how long is in signal in
-> >>>>>> which state for me sounds like not an platform specific thing, but as
-> >>>>>> PCIe / CEM related.
-> >>>>>
-> >>>>> That's exactly my understanding of this matter. At least for the dra7xx
-> >>>>> controller it works exactly like this, PERSTn# is nothing but a GPIO
-> >>>>> output from the SoC that drives the PERSTn# input of the external chip
-> >>>>> without affecting the controller directly.
-> >>>>>
-> >>>>
-> >>>> While the patch itself is correct, this kind-of changes the behavior on
-> >>>> already upstreamed platforms. Previously the driver expected #PERST to
-> >>>> be asserted be external means (or default power-up state) and only takes
-> >>>> care of de-asserting the #PERST line.
-> >>>>
-> >>>> There are 2 platforms that will be impacted due to this change
-> >>>> 1) arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi (has an inverter on
-> >>>> GPIO line)
-> >>>> 2) arch/arm/boot/dts/am571x-idk.dts (directly connected to #PERST)
-> >>>>
-> >>>> For 1), gpiod_set_value(reset, 0) will assert the PERST line due to the
-> >>>> inverter (and GPIO_ACTIVE_LOW)
-> >>>> For 2), gpiod_set_value(reset, 0) will assert the PERST line because we
-> >>>> have GPIO_ACTIVE_HIGH
-> >>>
-> >>> Ou! This is a problem in DT. It needs to be defined in a way that state
-> >>> is same for every DTS device which uses this driver.
-> >>
-> >> Why?
-> > 
-> > I'm starting to be confused by triple or more negations (asserting,
-> > signal inverter, active low)...
-> > 
-> > In your patch is GPIO set value to 0 and Kishon wrote that GPIO set
-> > value to 0 for those two boards assert PERST# line. Asserting PERST#
-> > line cause endpoint PCIe card to be in reset state. And in pci-dra7xx.c
-> > driver there is no other code which de-asserts PERST# line.
-> > 
-> > So based on all this information I deduced that your patch will cause
-> > putting PCIe cards into reset state (forever) and therefore they would
-> > not work.
-> > 
-> > Or do I have here some mistake?
+> Fix this by introducing UART_RX_TIMEOUT_QUIRK flag and doing a dummy
+> read in IRQ handler when RX TIMEOUT is reported with no data in RX FIFO.
 > 
-> Uhm, at time time in the night I'm not sure I can do much more than
-> adding a few notes on top of the commit message. I hope it helps anyway.
+> Fixes: be70874498f3 ("serial: 8250_omap: Add support for AM654 UART controller")
+> Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
+> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+> ---
+> v2:
+> Restrict workaround to K3 family of devices only (ti,am654-uart) where
+> issue was reported.
 > 
-> The PCIe PERSTn reset pin is active low and should be asserted, then
-> deasserted.
+> v1: https://lore.kernel.org/r/20210511151955.28071-1-vigneshr@ti.com
 > 
-> The current implementation only drives the pin once in "HIGH" position,
-> thus presumably it was intended to deassert the pin. This has two problems:
+>  drivers/tty/serial/8250/8250_omap.c | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
 > 
->   1) it assumes the pin was asserted by other means before loading the
->      driver [Note: Kishon confirmed so far]
-
-This is easily solvable. Just assert PERST# pin explicitly via
-gpiod_set_value() call prior calling that sleep function. And it would
-work whatever state that pin has at init time. This has advantage that
-reader of that code does not need to do too much investigation to check
-at which state is GPIO at probe time and what implication it has...
-
-Some other driver are doing it too, e.g. pci-aardvark.c.
-
-Due to fact that also bootloader may use PCIe bus (maybe not now, but in
-future; like it happened with pci-aardvark after introducing boot
-support from NVMe disks), initial state may change.
-
->   2) it has the wrong polarity, since "HIGH" means "active", and the pin is
->      presumably configured as active low coherently with the PCIe
->      convention, thus it is driven physically to 0, keeping the device
->      under reset unless the pin is configured as active high.
->      [Note: the curren 2 DTS files pointed to by Kishon have different
->       polarities]
+> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+> index c06631ced414..79418d4beb48 100644
+> --- a/drivers/tty/serial/8250/8250_omap.c
+> +++ b/drivers/tty/serial/8250/8250_omap.c
+> @@ -43,6 +43,7 @@
+>  #define UART_ERRATA_CLOCK_DISABLE	(1 << 3)
+>  #define	UART_HAS_EFR2			BIT(4)
+>  #define UART_HAS_RHR_IT_DIS		BIT(5)
+> +#define UART_RX_TIMEOUT_QUIRK		BIT(6)
+>  
+>  #define OMAP_UART_FCR_RX_TRIG		6
+>  #define OMAP_UART_FCR_TX_TRIG		4
+> @@ -104,6 +105,9 @@
+>  #define UART_OMAP_EFR2			0x23
+>  #define UART_OMAP_EFR2_TIMEOUT_BEHAVE	BIT(6)
+>  
+> +/* RX FIFO occupancy indicator */
+> +#define UART_OMAP_RX_LVL		0x64
+> +
+>  struct omap8250_priv {
+>  	int line;
+>  	u8 habit;
+> @@ -611,6 +615,7 @@ static int omap_8250_dma_handle_irq(struct uart_port *port);
+>  static irqreturn_t omap8250_irq(int irq, void *dev_id)
+>  {
+>  	struct uart_port *port = dev_id;
+> +	struct omap8250_priv *priv = port->private_data;
+>  	struct uart_8250_port *up = up_to_u8250p(port);
+>  	unsigned int iir;
+>  	int ret;
+> @@ -625,6 +630,18 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
+>  	serial8250_rpm_get(up);
+>  	iir = serial_port_in(port, UART_IIR);
+>  	ret = serial8250_handle_irq(port, iir);
+> +
+> +	/*
+> +	 * On K3 SoCs, it is observed that RX TIMEOUT is signalled after
+> +	 * FIFO has been drained, in which case a dummy read of RX FIFO
+> +	 * is required to clear RX TIMEOUT condition.
+> +	 */
+> +	if (priv->habit & UART_RX_TIMEOUT_QUIRK &&
+> +	    (iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT &&
+> +	    serial_port_in(port, UART_OMAP_RX_LVL) == 0) {
+> +		serial_port_in(port, UART_RX);
+> +	}
+> +
+>  	serial8250_rpm_put(up);
+>  
+>  	return IRQ_RETVAL(ret);
+> @@ -1218,7 +1235,8 @@ static struct omap8250_dma_params am33xx_dma = {
+>  
+>  static struct omap8250_platdata am654_platdata = {
+>  	.dma_params	= &am654_dma,
+> -	.habit		= UART_HAS_EFR2 | UART_HAS_RHR_IT_DIS,
+> +	.habit		= UART_HAS_EFR2 | UART_HAS_RHR_IT_DIS |
+> +			  UART_RX_TIMEOUT_QUIRK,
+>  };
+>  
+>  static struct omap8250_platdata am33xx_platdata = {
 > 
-> Fix both problems by:
-> 
->   1) keeping devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH) as is, but
->      assuming the pin is correctly configured as "active low" this now
->      becomes a reset assertion
->   2) adding gpiod_set_value(reset, 0) after a delay to deassert reset
-> [Note: this is exactly the current idea, but with the additional need to
-> fix (=invert) the current polarities in DT]
 
-Lorenzo asked a good question how GPIO drives PERST#. And maybe it would
-be a good idea to unify all pci controller drivers to use same GPIO
-value for asserting PERST# pin. If it is possible. As we can see it is a
-big mess.
+Tested-by: Jan Kiszka <jan.kiszka@siemens.com>
 
-Personally I would like to a see two helper functions like
+Thanks,
+Jan
 
-  void pcie_assert_perst(struct gpio_desc *gpio);
-  void pcie_deassert_perst(struct gpio_desc *gpio);
-
-which pci controller driver will use and we will not more handle active
-high / low state or polarity inversion and meditate if gpio set to zero
-means assert or de-assert.
-
-> 
-> -- 
-> Luca
-> 
+-- 
+Siemens AG, T RDA IOT
+Corporate Competence Center Embedded Linux
