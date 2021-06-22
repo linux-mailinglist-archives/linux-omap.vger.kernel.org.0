@@ -2,92 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 784A63AFD09
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Jun 2021 08:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B0D73B01EB
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Jun 2021 12:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbhFVG0I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Jun 2021 02:26:08 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:56208 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbhFVG0I (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Jun 2021 02:26:08 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 15M6Ngw2049717;
-        Tue, 22 Jun 2021 01:23:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1624343022;
-        bh=16dyKQhx2LAbfWpFqCWteOP+DDKt943mCwSHZR5zwMw=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=x+87vCL18em4bUsUjIxqnIjO2vclOGUTYxrxV+lVwk6BF8a6YX2qNUC1X/9waozE7
-         JVC+t+d2VtzSFdFLUJwJDvebnAACbnFremHSWMbGjE87Ctd1NGhaKRb5lNc9k/JDjQ
-         PGpI7425JTWoCtQ5D9jB7cNQjfH4PZ40lrCYNbYM=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 15M6NgQk039767
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Jun 2021 01:23:42 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 22
- Jun 2021 01:23:42 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Tue, 22 Jun 2021 01:23:41 -0500
-Received: from [10.250.234.148] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 15M6NdKD077534;
-        Tue, 22 Jun 2021 01:23:39 -0500
-Subject: Re: [PATCH] serial: 8250: 8250_omap: Fix possible interrupt storm
-To:     Jan Kiszka <jan.kiszka@siemens.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Jiri Slaby <jirislaby@kernel.org>, <linux-serial@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20210511151955.28071-1-vigneshr@ti.com>
- <YJ008MjjewRUTn9Z@kroah.com> <YLCCJzkkB4N7LTQS@atomide.com>
- <e5b35370-bf2d-7295-e2fd-9aee5bbc3296@ti.com>
- <0ad948ac-f669-3d6d-5eca-4ca48d47d6a3@siemens.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <56c5d73f-741c-2643-1c79-6dc13ebb05c7@ti.com>
-Date:   Tue, 22 Jun 2021 11:53:38 +0530
+        id S229900AbhFVK7n convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Tue, 22 Jun 2021 06:59:43 -0400
+Received: from hostingweb31-40.netsons.net ([89.40.174.40]:53049 "EHLO
+        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230002AbhFVK7m (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 22 Jun 2021 06:59:42 -0400
+Received: from [77.244.183.192] (port=61762 helo=[192.168.178.41])
+        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <luca@lucaceresoli.net>)
+        id 1lve5s-000E1s-5i; Tue, 22 Jun 2021 12:57:24 +0200
+Subject: Re: [PATCH v2] PCI: dra7xx: Fix reset behaviour
+To:     =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+References: <20210531090540.2663171-1-luca@lucaceresoli.net>
+ <20210531133211.llyiq3jcfy25tmz4@pali>
+ <8ff1c54f-bb29-1e40-8342-905e34361e1c@lucaceresoli.net>
+ <9fdbada4-4902-cec1-f283-0d12e1d4ac64@ti.com>
+ <20210531162242.jm73yzntzmilsvbg@pali>
+From:   Luca Ceresoli <luca@lucaceresoli.net>
+Message-ID: <8207a53c-4de9-d0e5-295a-c165e7237e36@lucaceresoli.net>
+Date:   Tue, 22 Jun 2021 12:57:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <0ad948ac-f669-3d6d-5eca-4ca48d47d6a3@siemens.com>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20210531162242.jm73yzntzmilsvbg@pali>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8BIT
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lucaceresoli.net
+X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
+X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi,
 
-
-On 6/22/21 11:45 AM, Jan Kiszka wrote:
->>> Vignesh, it seems this quirk needs some soc specific flag added to
->>> it maybe? Or maybe UART_OMAP_RX_LVL register is not available for
->>> all the SoCs?
->>>
->> Yes indeed :(
->>
->>> I think it's best to drop this patch until the issues are resolved,
->>> also there are some open comments above that might be answered by
->>> limiting this quirk to a specific range of SoCs :)
->>>
->> Oops, I did test patch AM33xx assuming its equivalent to OMAP3, but UART
->> IP is quite different. I will respin the patch making sure, workaround
->> applies only to AM65x and K3 SoCs.
->>
->> Regards
->> Vignesh
->>
-> What's the status here for AM65x? The issue remains present on that
-> platform, and I was hoping to see a quick follow up that limit the fix
-> to that target.
+On 31/05/21 18:22, Pali Rohár wrote:
+> Hello Kishon!
 > 
+> On Monday 31 May 2021 21:30:30 Kishon Vijay Abraham I wrote:
+>> I had given the timing mentioned in the specification here
+>> https://lore.kernel.org/r/023c9b59-70bb-ed8d-a4c0-76eae726b574@ti.com
+>>
+>> The PCI EXPRESS CARD ELECTROMECHANICAL SPECIFICATION defines the Power
+>> Sequencing and Reset Signal Timings in Table 2-4. Please also refer Figure
+>> 2-10: Power Up of the CEM.
+>>
+>> ╔═════════════╤══════════════════════════════════════╤═════╤═════╤═══════╗
+>> ║ Symbol      │ Parameter                            │ Min │ Max │ Units ║
+>> ╠═════════════╪══════════════════════════════════════╪═════╪═════╪═══════╣
+>> ║ T PVPERL    │ Power stable to PERST# inactive      │ 100 │     │ ms    ║
+>> ╟─────────────┼──────────────────────────────────────┼─────┼─────┼───────╢
+>> ║ T PERST-CLK │ REFCLK stable before PERST# inactive │ 100 │     │ μs    ║
+>> ╟─────────────┼──────────────────────────────────────┼─────┼─────┼───────╢
+>> ║ T PERST     │ PERST# active time                   │ 100 │     │ μs    ║
+>> ╟─────────────┼──────────────────────────────────────┼─────┼─────┼───────╢
+>> ║ T FAIL      │ Power level invalid to PERST# active │     │ 500 │ ns    ║
+>> ╟─────────────┼──────────────────────────────────────┼─────┼─────┼───────╢
+>> ║ T WKRF      │ WAKE# rise – fall time               │     │ 100 │ ns    ║
+>> ╚═════════════╧══════════════════════════════════════╧═════╧═════╧═══════╝
+>>
+>> The de-assertion of #PERST is w.r.t both power stable and refclk stable.
+> 
+> I think this does not fully answer this problematic question. One thing
+> is initial power on and second thing is warm reset (when both power and
+> clock is stable).
+> 
+> On more ARM boards, power is not SW controllable and is automatically
+> enabled when powering board on. So Tₚᵥₚₑᵣₗ is calculated since
+> bootloader and therefore not needed to take into account in kernel.
+> 
+> Tₚₑᵣₛₜ₋cₗₖ is only 100 µs and experiments proved that 100 µs not enough
+> for toggling PERST# GPIO. At least one 1 ms is needed and for some cards
+> at least 10 ms. Otherwise cards are not detected.
+> 
+> So when you have both power and clock stable and you want to reset card
+> via PERST# signal, above table does not say how long it is needed to
+> have PERST# in reset state.
 
-Sorry for the delay, I am trying to find which other TI SoCs are
-affected by this issue. But that exercise will need a bit more time.
-Will send a fix to address K3 SoCs like AM65x today/tomo.
+Nothing happened after a few weeks... I understand that knowing the
+correct reset timings is relevant, but unfortunately I cannot help much
+in finding out the correct values.
+
+However I'm wondering what should happen to this patch. It *does* fix a
+real bug, but potentially with an incorrect or non-optimal usleep range.
+Do we really want to ignore a bugfix because we are not sure about how
+long this delay should be?
+
+-- 
+Luca
+
