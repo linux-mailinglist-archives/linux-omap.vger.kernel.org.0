@@ -2,131 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E541A3B0754
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Jun 2021 16:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A4113B07FC
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Jun 2021 16:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230331AbhFVOZu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Jun 2021 10:25:50 -0400
-Received: from foss.arm.com ([217.140.110.172]:50244 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230047AbhFVOZt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 22 Jun 2021 10:25:49 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A0CC31B;
-        Tue, 22 Jun 2021 07:23:33 -0700 (PDT)
-Received: from lpieralisi (e121166-lin.cambridge.arm.com [10.1.196.255])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1C1923F694;
-        Tue, 22 Jun 2021 07:23:32 -0700 (PDT)
-Date:   Tue, 22 Jun 2021 15:23:25 +0100
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Cc:     linus.walleij@linaro.org, kishon@ti.com,
-        Luca Ceresoli <luca@lucaceresoli.net>,
-        linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v2] PCI: dra7xx: Fix reset behaviour
-Message-ID: <20210622142325.GA27099@lpieralisi>
-References: <20210531090540.2663171-1-luca@lucaceresoli.net>
- <20210531133211.llyiq3jcfy25tmz4@pali>
- <8ff1c54f-bb29-1e40-8342-905e34361e1c@lucaceresoli.net>
- <9fdbada4-4902-cec1-f283-0d12e1d4ac64@ti.com>
- <20210531162242.jm73yzntzmilsvbg@pali>
- <8207a53c-4de9-d0e5-295a-c165e7237e36@lucaceresoli.net>
- <20210622110627.aqzxxtf2j3uxfeyl@pali>
- <20210622115604.GA25503@lpieralisi>
- <20210622121649.ouiaecdvwutgdyy5@pali>
+        id S229988AbhFVO77 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Jun 2021 10:59:59 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:34164 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230433AbhFVO77 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Jun 2021 10:59:59 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 15MEvYkH122897;
+        Tue, 22 Jun 2021 09:57:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1624373854;
+        bh=3RpZBa2MozVuA4vNzmdoop9q6l8luMuPvhHJNcpIVOY=;
+        h=From:To:CC:Subject:Date;
+        b=M2niN1GF2zQIWTBZxXyjNUUb6ARGuV0yritwGhbX9sr+JuDBUYQiUOdmr5DGjFkIC
+         HAmn+Ew/3yG630nZZrl6/W8qgQDQ3TInLeshjpYt8iDK238y5YXXI7azKeevVT7Efs
+         NL1pn9KjXu7wW+bOMMRf/n88uBBnkHLKFRM4i3f8=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 15MEvYDH022236
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 22 Jun 2021 09:57:34 -0500
+Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 22
+ Jun 2021 09:57:34 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Tue, 22 Jun 2021 09:57:34 -0500
+Received: from ula0132425.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 15MEvVAd036396;
+        Tue, 22 Jun 2021 09:57:31 -0500
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+CC:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        <linux-serial@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>
+Subject: [PATCH v2] serial: 8250: 8250_omap: Fix possible interrupt storm on K3 SoCs
+Date:   Tue, 22 Jun 2021 20:27:04 +0530
+Message-ID: <20210622145704.11168-1-vigneshr@ti.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210622121649.ouiaecdvwutgdyy5@pali>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 22, 2021 at 02:16:49PM +0200, Pali Rohár wrote:
-> On Tuesday 22 June 2021 12:56:04 Lorenzo Pieralisi wrote:
-> > [Adding Linus for GPIO discussion, thread:
-> > https://lore.kernel.org/linux-pci/20210531090540.2663171-1-luca@lucaceresoli.net]
-> > 
-> > On Tue, Jun 22, 2021 at 01:06:27PM +0200, Pali Rohár wrote:
-> > > Hello!
-> > > 
-> > > On Tuesday 22 June 2021 12:57:22 Luca Ceresoli wrote:
-> > > > Nothing happened after a few weeks... I understand that knowing the
-> > > > correct reset timings is relevant, but unfortunately I cannot help much
-> > > > in finding out the correct values.
-> > > > 
-> > > > However I'm wondering what should happen to this patch. It *does* fix a
-> > > > real bug, but potentially with an incorrect or non-optimal usleep range.
-> > > > Do we really want to ignore a bugfix because we are not sure about how
-> > > > long this delay should be?
-> > > 
-> > > As there is no better solution right now, I'm fine with your patch. But
-> > > patch needs to be approved by Lorenzo, so please wait for his final
-> > > answer.
-> > 
-> > I am not a GPIO expert and I have a feeling this is platform specific
-> > beyond what the PCI specification can actually define architecturally.
-> 
-> In my opinion timeout is not platform specific as I wrote in email:
-> https://lore.kernel.org/linux-pci/20210310110535.zh4pnn4vpmvzwl5q@pali/
-> 
-> My experiments already proved that some PCIe cards needs to be in reset
-> state for some minimal time otherwise they cannot be enumerated. And it
-> does not matter to which platform you connect those (endpoint) cards.
-> 
-> I do not think that timeout itself is platform specific. GPIO controls
-> PERST# pin and therefore specified sleep value directly drives how long
-> is card on the other end of PCIe slot in Warm Reset state. PCIe CEM spec
-> directly says that PERST# signal controls PCIe Warm Reset.
+On K3 family of SoCs (which includes AM654 SoC), it is observed that RX
+TIMEOUT is signalled after RX FIFO has been drained, in which case a
+dummy read of RX FIFO is required to clear RX TIMEOUT condition.
+Otherwise, this would lead to an interrupt storm.
 
-Point taken but regardless this deviates from the PCI electromechanical
-specifications (ie T-PERST-CLK), does not it ? I misused "platform" to
-define something that apparently is not contemplated by the PCI
-specifications (and I would like to understand why).
+Fix this by introducing UART_RX_TIMEOUT_QUIRK flag and doing a dummy
+read in IRQ handler when RX TIMEOUT is reported with no data in RX FIFO.
+
+Fixes: be70874498f3 ("serial: 8250_omap: Add support for AM654 UART controller")
+Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+---
+v2:
+Restrict workaround to K3 family of devices only (ti,am654-uart) where
+issue was reported.
+
+v1: https://lore.kernel.org/r/20210511151955.28071-1-vigneshr@ti.com
+
+ drivers/tty/serial/8250/8250_omap.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index c06631ced414..79418d4beb48 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -43,6 +43,7 @@
+ #define UART_ERRATA_CLOCK_DISABLE	(1 << 3)
+ #define	UART_HAS_EFR2			BIT(4)
+ #define UART_HAS_RHR_IT_DIS		BIT(5)
++#define UART_RX_TIMEOUT_QUIRK		BIT(6)
  
-I guess on ACPI systems (ie where the PERST# handling is implemented in
-FW) this is handled in BIOS/UEFI - need to peruse the code to check how
-PERST# is handled and whether the delay is per host controller driver.
+ #define OMAP_UART_FCR_RX_TRIG		6
+ #define OMAP_UART_FCR_TX_TRIG		4
+@@ -104,6 +105,9 @@
+ #define UART_OMAP_EFR2			0x23
+ #define UART_OMAP_EFR2_TIMEOUT_BEHAVE	BIT(6)
+ 
++/* RX FIFO occupancy indicator */
++#define UART_OMAP_RX_LVL		0x64
++
+ struct omap8250_priv {
+ 	int line;
+ 	u8 habit;
+@@ -611,6 +615,7 @@ static int omap_8250_dma_handle_irq(struct uart_port *port);
+ static irqreturn_t omap8250_irq(int irq, void *dev_id)
+ {
+ 	struct uart_port *port = dev_id;
++	struct omap8250_priv *priv = port->private_data;
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	unsigned int iir;
+ 	int ret;
+@@ -625,6 +630,18 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
+ 	serial8250_rpm_get(up);
+ 	iir = serial_port_in(port, UART_IIR);
+ 	ret = serial8250_handle_irq(port, iir);
++
++	/*
++	 * On K3 SoCs, it is observed that RX TIMEOUT is signalled after
++	 * FIFO has been drained, in which case a dummy read of RX FIFO
++	 * is required to clear RX TIMEOUT condition.
++	 */
++	if (priv->habit & UART_RX_TIMEOUT_QUIRK &&
++	    (iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT &&
++	    serial_port_in(port, UART_OMAP_RX_LVL) == 0) {
++		serial_port_in(port, UART_RX);
++	}
++
+ 	serial8250_rpm_put(up);
+ 
+ 	return IRQ_RETVAL(ret);
+@@ -1218,7 +1235,8 @@ static struct omap8250_dma_params am33xx_dma = {
+ 
+ static struct omap8250_platdata am654_platdata = {
+ 	.dma_params	= &am654_dma,
+-	.habit		= UART_HAS_EFR2 | UART_HAS_RHR_IT_DIS,
++	.habit		= UART_HAS_EFR2 | UART_HAS_RHR_IT_DIS |
++			  UART_RX_TIMEOUT_QUIRK,
+ };
+ 
+ static struct omap8250_platdata am33xx_platdata = {
+-- 
+2.32.0
 
-> 
-> What is here platform specific thing is that PERST# signal is controlled
-> by GPIO. But value of signal (high / low) and how long is in signal in
-> which state for me sounds like not an platform specific thing, but as
-> PCIe / CEM related.
-
-There are two different things to agree on this patch 1) how GPIO drives
-PERST# 2) the PERST# de-assertion delay.
-
-I appreciate they are related and that Luca had to handle them together
-but logically they are separated "issues", it'd be great if we manage
-to nail down how they should be handled before we merge this code.
-
-Lorenzo
-
-> 
-> > There are two things I'd like to see:
-> > 
-> > 1) If Linus can have a look at the GPIO bits in this thread that would
-> >    definitely help clarify any pending controversy
-> > 2) Kishon to test on *existing* platforms and confirm there are no
-> >    regressions triggered
-> > 
-> > > I would suggest to add a comment for call "usleep_range(1000, 2000);"
-> > > that you have chosen some "random" values which worked fine on your
-> > > setup and that they fix mentioned bug. Comment just to mark this sleep
-> > > code that is suboptimal / not-so-correct and to prevent other people to
-> > > copy+paste this code into other (new) drivers...
-> > 
-> > Yes a comment would help but as I say above I am afraid this is
-> > a platform specific set-up, ie that delay is somewhat tied to
-> > a platform, not sure there is anything we can do.
-> > 
-> > If Linus and Kishon are happy with the approach we can merge this
-> > patch.
-> > 
-> > Lorenzo
