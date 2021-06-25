@@ -2,86 +2,144 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD9133B41C4
-	for <lists+linux-omap@lfdr.de>; Fri, 25 Jun 2021 12:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C08903B4A95
+	for <lists+linux-omap@lfdr.de>; Sat, 26 Jun 2021 00:33:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231491AbhFYKiD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 25 Jun 2021 06:38:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33108 "EHLO
+        id S229816AbhFYWgE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 25 Jun 2021 18:36:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231386AbhFYKiB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Jun 2021 06:38:01 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A45C061767
-        for <linux-omap@vger.kernel.org>; Fri, 25 Jun 2021 03:35:41 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id m9so3900885ybp.8
-        for <linux-omap@vger.kernel.org>; Fri, 25 Jun 2021 03:35:41 -0700 (PDT)
+        with ESMTP id S229776AbhFYWgE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Jun 2021 18:36:04 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17707C061574;
+        Fri, 25 Jun 2021 15:33:42 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id k10so18730086lfv.13;
+        Fri, 25 Jun 2021 15:33:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XuyawgNRHN+GNy+ExSdldcw4VdYfoXPvkpdvbIVsf8g=;
-        b=kGLbpMdoeDkgYTJUKqEss8DtNEoyFnxR+aqHyX0q/hvfhKa4w/LBH9IwCrfwSup8Ib
-         u0lipAxDRstRHB8jm0B07kTb9CBpvatmPgypyx6nBi1424R2pW9BvQm+bBgN/nDK6JTq
-         LoTLj9TBsa+0gl8+CFrpizeHQGqiqUZ5Ec/4BPrD4YyrSqzU368UivvpKg1pbrPUOFdm
-         M0mH5k53iYR4HBX5VYq41YiaduH+6x7ECMC3l5hpcohzz2MgJjeV6+qmeADhHAxcrKsT
-         Lw3A8vRbIuIalO5TbhTohFHpzdKUiKiqtdHEFbbwN8pyL2S705tBsxJ4upPOwmVDyYTa
-         OdhA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9NMDPaGNwo9dp++pt7dEDvz6yBvTGcBoymI++g12NOc=;
+        b=XxeooSIoZSkGhXTTLzsaf8YXlV0sKShLzgUbVXnUr+3uwjIxtVEAvtn/nLYxqjjS+E
+         645gOFtwDu27Q2bAAHc1zQcxXFbXxzSxfIZhsikD9NAkQtowjvqVchR1yrMRrcr3yaGc
+         oG89m+lOmnnzs6JW0urF1QbP5OqI5hZg/9Jnz9Zs7O8csPTsI0+1T/sF8vRN4F34ulaO
+         jN0E5IiFX+v3fHdTikeXUT+tPYBiENiOPFZ5MEntFVJJ1mx9Fin/wN/atCa6UNVG1s34
+         HbD7SNrvdHKSxq1DP43W6eGaSw8NRSBhDXqdrJpu6uhntRQPxAqupsG5Ep8oRmof/4P4
+         qiPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XuyawgNRHN+GNy+ExSdldcw4VdYfoXPvkpdvbIVsf8g=;
-        b=UM3Lj8ong+VXNrb5p9b198ymH8QbDxsqZV18JOzDIcGWtXvtJXuF34KamgTfokVkmH
-         daOW2kYdmOUzfSpPl8iHV9hWO3OLAywsfARFKpbYai30EKKc727ytK+6adEXZZq5SvJt
-         hzvHdfo1kE4WAmGDupBIGaCx2Gq7Gpp+gEfdISRMi40pDi8SBFwv3QEdP5BAz1CiP3WF
-         TmIYiaRZ10iSUoNQEa290gpBP51YqZGKUMdGwljIikBJymRfJY/BP6atYk8NCINH+e4K
-         965fYcIRSTi43FFIk9ilYcOnqaMdIXAcpbIkXej7xiuNLtkhx6PdVi1bhCbRpwBROK0x
-         I1wg==
-X-Gm-Message-State: AOAM531TpWreGfiqiCjpAhU22BWNlxnjmt0grwmQOHW22UXIfWLEQDlA
-        UcmQLlzYcNR8CiYulDhV/i/W5iSh8LvPjkqSKdkexg==
-X-Google-Smtp-Source: ABdhPJxJT+QqliI2OJ1I6zfOUsy81qiwuujuaFIKa8tlrDFM9WKhADyT6txKHYMiDlQe21lr+h/nKAmhvA54nYdcrE0=
-X-Received: by 2002:a25:d68e:: with SMTP id n136mr11403632ybg.302.1624617340272;
- Fri, 25 Jun 2021 03:35:40 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9NMDPaGNwo9dp++pt7dEDvz6yBvTGcBoymI++g12NOc=;
+        b=FVvAq50/xWj9AEb5hCPIjXw70LZG6VULZNqlmkcg5Bp17gbqAeCONM2kmS3mhDZuB8
+         YC9zUUOnPRg2nwaj6FL4XUyeGBdSRPZ/MEscLGL1/YRuh3Z/+OXFByINxRjZ8jzdfHdC
+         wMH/TB/iGge95cpmP99oZSspjM0OuKYFexkN+kV0nbAa3KZ++WQzE/lx28WRDfG9HxDe
+         CCo+GpJsoHpHMf6L9hqgqSu5T9jzomrU/wj7HyWntKDtJcG0rLSG7JoPFAUKuni/3yyI
+         XazgQpE/jVwA3hQjcSHHuAoRqJET4rjdCqW6BthsOupIWZtiUkpKddNws/1ALNvUmclp
+         MraQ==
+X-Gm-Message-State: AOAM532B8OwUB7Px7clKTjYM3ZH0ucKvxoD8rmbqBsFGvUyXtYYPoXP+
+        ZNSiHsUdmufcu++qx//hlUM=
+X-Google-Smtp-Source: ABdhPJxw0w49mOJH8eZ2E+fmYpRltbdOf6mNxIn28I5KywQCjMRXPg6FGSFpgOtx0JdQRn+GFIukdA==
+X-Received: by 2002:ac2:4281:: with SMTP id m1mr9344466lfh.164.1624660420338;
+        Fri, 25 Jun 2021 15:33:40 -0700 (PDT)
+Received: from localhost.localdomain ([94.103.225.155])
+        by smtp.gmail.com with ESMTPSA id p26sm707610ljn.94.2021.06.25.15.33.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jun 2021 15:33:39 -0700 (PDT)
+From:   Pavel Skripkin <paskripkin@gmail.com>
+To:     gustavoars@kernel.org, sam@ravnborg.org, tomi.valkeinen@ti.com
+Cc:     linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Pavel Skripkin <paskripkin@gmail.com>
+Subject: [PATCH] OMAP: DSS2: OMAPFB: fix potential GPF
+Date:   Sat, 26 Jun 2021 01:33:23 +0300
+Message-Id: <20210625223323.13930-1-paskripkin@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-References: <cover.1622560799.git.geert+renesas@glider.be> <7caa954add90255fc177e5dbabe17d62e0242861.1622560799.git.geert+renesas@glider.be>
-In-Reply-To: <7caa954add90255fc177e5dbabe17d62e0242861.1622560799.git.geert+renesas@glider.be>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Fri, 25 Jun 2021 12:35:29 +0200
-Message-ID: <CAMpxmJWpPQZczvhEfzyjef9on1Lr-3zduxwmcEzdq__C3-kb4A@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] dt-bindings: gpio: pcf857x: Convert to json-schema
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        linux-devicetree <devicetree@vger.kernel.org>,
-        linux-gpio <linux-gpio@vger.kernel.org>, x86@kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 1, 2021 at 5:25 PM Geert Uytterhoeven
-<geert+renesas@glider.be> wrote:
->
-> Convert the PCF857x-compatible I/O expanders Device Tree binding
-> documentation to json-schema.
->
-> Document missing compatible values, properties, and gpio hogs.
->
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
+In case of allocation failures, all code paths was jumping
+to this code:
 
-Applied with Linus' and Rob's tags.
+err:
+	kfree(fbi);
+	kfree(var);
+	kfree(fbops);
 
-Bart
+	return r;
+
+Since all 3 pointers placed on stack and don't initialized, they
+will be filled with some random values, which leads to
+deferencing random pointers in kfree(). Fix it by rewriting
+error handling path.
+
+Fixes: 897044e99e43 ("OMAP: DSS2: OMAPFB: Reduce stack usage")
+Signed-off-by: Pavel Skripkin <paskripkin@gmail.com>
+---
+ .../video/fbdev/omap2/omapfb/omapfb-main.c    | 21 +++++++++----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+index a3decc7fadde..6a302138ebeb 100644
+--- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
++++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+@@ -2025,21 +2025,19 @@ static int omapfb_mode_to_timings(const char *mode_str,
+ 	fbops = NULL;
+ 
+ 	fbi = kzalloc(sizeof(*fbi), GFP_KERNEL);
+-	if (fbi == NULL) {
+-		r = -ENOMEM;
+-		goto err;
+-	}
++	if (fbi == NULL)
++		return -ENOMEM;
+ 
+ 	var = kzalloc(sizeof(*var), GFP_KERNEL);
+ 	if (var == NULL) {
+ 		r = -ENOMEM;
+-		goto err;
++		goto err_var;
+ 	}
+ 
+ 	fbops = kzalloc(sizeof(*fbops), GFP_KERNEL);
+ 	if (fbops == NULL) {
+ 		r = -ENOMEM;
+-		goto err;
++		goto err_fbops;
+ 	}
+ 
+ 	fbi->fbops = fbops;
+@@ -2047,7 +2045,7 @@ static int omapfb_mode_to_timings(const char *mode_str,
+ 	r = fb_find_mode(var, fbi, mode_str, NULL, 0, NULL, 24);
+ 	if (r == 0) {
+ 		r = -EINVAL;
+-		goto err;
++		goto err_find;
+ 	}
+ 
+ 	if (display->driver->get_timings) {
+@@ -2088,11 +2086,12 @@ static int omapfb_mode_to_timings(const char *mode_str,
+ 
+ 	r = 0;
+ 
+-err:
+-	kfree(fbi);
+-	kfree(var);
++err_find:
+ 	kfree(fbops);
+-
++err_fbops:
++	kfree(var);
++err_var:
++	kfree(fbi);
+ 	return r;
+ }
+ 
+-- 
+2.32.0
+
