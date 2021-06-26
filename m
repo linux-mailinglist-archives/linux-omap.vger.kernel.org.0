@@ -2,70 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE863B504B
-	for <lists+linux-omap@lfdr.de>; Sat, 26 Jun 2021 23:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E7573B507D
+	for <lists+linux-omap@lfdr.de>; Sun, 27 Jun 2021 01:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230161AbhFZVhD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 26 Jun 2021 17:37:03 -0400
-Received: from rere.qmqm.pl ([91.227.64.183]:36052 "EHLO rere.qmqm.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230151AbhFZVhD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 26 Jun 2021 17:37:03 -0400
-X-Greylist: delayed 393 seconds by postgrey-1.27 at vger.kernel.org; Sat, 26 Jun 2021 17:37:02 EDT
-Received: from remote.user (localhost [127.0.0.1])
-        by rere.qmqm.pl (Postfix) with ESMTPSA id 4GC6RS169Gz9Y;
-        Sat, 26 Jun 2021 23:28:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
-        t=1624742886; bh=dWImk9HkBNe+ekrV1q/6KaJflIfNimOeYdfY4Tj38xI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LKk9nIcEmjV5Nq+benxCQN+lYrKITijaeNnuNK0IUsPJU3DvfyEDg7I/yzUs9S5BY
-         p3aNJD0zCYme2nf8TS10+wYBd10cJ6EPm1YBLSG/AnNvnyp7eCiL1qxM+87dOwVi/3
-         4ENk1Dn2NVShk5z90uslVBLNL2h0syepGaYMKtzNwumKdwG11Iad+B52upuLMn7iZG
-         XlM5yqZNYNLphntLWTWmX525dYh9qJS7XrwioXjLR2qPaZHJcuHMbbgB8GiqPSfpOR
-         12y5T1uZ5vwffbd1qcQJocow5KrdipPgIhuf6PuYt0FVaye5wjhhYVgc55Aao2U31z
-         idlPWKnV6ofcw==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.103.2 at mail
-Date:   Sat, 26 Jun 2021 23:28:02 +0200
-From:   =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To:     Jinchao Wang <wjc@cdjrlc.com>
-Cc:     ulf.hansson@linaro.org, udovic.desroches@microchip.com,
-        nicolas.ferre@microchip.com, s.hauer@pengutronix.de,
-        shawnguo@kernel.org, linux-kernel@vger.kernel.org,
-        inux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH] mmc: Prefer unsigned int to bare use of unsigned
-Message-ID: <YNeb4rJizAyr4y5y@qmqm.qmqm.pl>
-References: <20210626083657.49475-1-wjc@cdjrlc.com>
+        id S230367AbhFZXcy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 26 Jun 2021 19:32:54 -0400
+Received: from fgw20-4.mail.saunalahti.fi ([62.142.5.107]:13785 "EHLO
+        fgw20-4.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230151AbhFZXcy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 26 Jun 2021 19:32:54 -0400
+X-Greylist: delayed 965 seconds by postgrey-1.27 at vger.kernel.org; Sat, 26 Jun 2021 19:32:54 EDT
+Received: from macbook.musicnaut.iki.fi (85-76-11-157-nat.elisa-mobile.fi [85.76.11.157])
+        by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+        id 3ec9cd77-d6d4-11eb-ba24-005056bd6ce9;
+        Sun, 27 Jun 2021 02:14:25 +0300 (EEST)
+Date:   Sun, 27 Jun 2021 02:14:23 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Pavel Skripkin <paskripkin@gmail.com>
+Cc:     gustavoars@kernel.org, sam@ravnborg.org, tomi.valkeinen@ti.com,
+        linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org
+Subject: Re: [PATCH] OMAP: DSS2: OMAPFB: fix potential GPF
+Message-ID: <20210626231423.GA38365@macbook.musicnaut.iki.fi>
+References: <20210625223323.13930-1-paskripkin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210626083657.49475-1-wjc@cdjrlc.com>
+In-Reply-To: <20210625223323.13930-1-paskripkin@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Jun 26, 2021 at 04:36:57PM +0800, Jinchao Wang wrote:
-> Fix checkpatch warnings:
->     WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
+Hi,
+
+On Sat, Jun 26, 2021 at 01:33:23AM +0300, Pavel Skripkin wrote:
+> In case of allocation failures, all code paths was jumping
+> to this code:
+> 
+> err:
+> 	kfree(fbi);
+> 	kfree(var);
+> 	kfree(fbops);
+> 
+> 	return r;
+> 
+> Since all 3 pointers placed on stack and don't initialized, they
+> will be filled with some random values, which leads to
+> deferencing random pointers in kfree(). Fix it by rewriting
+> error handling path.
+
+They are initialized before the first goto:
+
 [...]
->  int mmc_send_adtc_data(struct mmc_card *card, struct mmc_host *host, u32 opcode,
-> -		       u32 args, void *buf, unsigned len)
-> +		       u32 args, void *buf, unsigned int len)
+	fbi = NULL;
+	var = NULL;
+	fbops = NULL;
 
-I'd suggest size_t for the 'size' and 'len' arguments while at it.
-
-> --- a/drivers/mmc/host/cb710-mmc.c
+	fbi = kzalloc(sizeof(*fbi), GFP_KERNEL);
+	if (fbi == NULL) {
+		r = -ENOMEM;
+		goto err;
+	}
 [...]
 
-For cb710 part:
-
-Acked-by: Micha³ Miros³aw <mirq-linux@rere.qmqm.pl>
-
-BTW, I think you should directly Cc: driver maintainers with each driver
-having its separate patch. I noticed code for cb710 in this patch purely
-by chance.
-
-Best Regards
-Micha³ Miros³aw
+A.
