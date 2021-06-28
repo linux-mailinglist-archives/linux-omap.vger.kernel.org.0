@@ -2,65 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F7BF3B531A
-	for <lists+linux-omap@lfdr.de>; Sun, 27 Jun 2021 13:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DFC53B578F
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Jun 2021 04:56:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229840AbhF0Ls7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 27 Jun 2021 07:48:59 -0400
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:33070 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229880AbhF0Ls6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Jun 2021 07:48:58 -0400
-Received: from localhost.localdomain ([86.243.172.93])
-        by mwinf5d79 with ME
-        id NBmT2500921Fzsu03BmToT; Sun, 27 Jun 2021 13:46:33 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 27 Jun 2021 13:46:33 +0200
-X-ME-IP: 86.243.172.93
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kishon@ti.com, tjoseph@cadence.com, lorenzo.pieralisi@arm.com,
-        robh@kernel.org, kw@linux.com, bhelgaas@google.com
-Cc:     linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] PCI: j721e: Fix an error handling path in 'j721e_pcie_probe()'
-Date:   Sun, 27 Jun 2021 13:46:24 +0200
-Message-Id: <db477b0cb444891a17c4bb424467667dc30d0bab.1624794264.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.30.2
+        id S231881AbhF1C7P (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 27 Jun 2021 22:59:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59610 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231678AbhF1C7P (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 27 Jun 2021 22:59:15 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3442861C29;
+        Mon, 28 Jun 2021 02:56:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624849010;
+        bh=JBdyWUe8fIp4N8uV6oiSpRPqgIGp9L3w0kNa6OeYPj8=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=GyM7vzGuxsuZfe1r/YCiP72PJHe7nenx6wd1d2PyEQXBOgv/4wznl5FirkDIC7fjj
+         Ca5tburTvEZ+sGqKmLHXXzlfMRyZsE5WemYqudfVS3xRE+DgqA4tbkyu2gvQjamF0j
+         OajiykP+z493861a1/BTpEMm8f/J2CA7vcRmYaWRWS0ukxg+LYYU2HQ7A+IfalTIN1
+         4j6bwHiJQcCkRf4vDraXxMoEvjuqZZSh00sNmBiCuhu4nRx8Tvv0Q1/uJc9LMeozzs
+         TYFgat9Ysd4kmIZ5jvmQ8yLnM8+1RPBisRitYPKTLdKHupCgjLC63IssJY7M/Is7hP
+         xoCb7KwYS4kHA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210616034826.37276-1-yujiahua1@huawei.com>
+References: <20210616034826.37276-1-yujiahua1@huawei.com>
+Subject: Re: [PATCH -next] drivers: ti: remove redundant error message in adpll.c
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yu Jiahua <yujiahua1@huawei.com>
+To:     Yu Jiahua <yujiahua1@huawei.com>, kristo@kernel.org,
+        mturquette@baylibre.com
+Date:   Sun, 27 Jun 2021 19:56:48 -0700
+Message-ID: <162484900892.2516444.13735398844442302580@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If an error occurs after a successful 'cdns_pcie_init_phy()' call, it must
-be undone by a 'cdns_pcie_disable_phy()' call, as already done above and
-below.
+Quoting Yu Jiahua (2021-06-15 20:48:26)
+> There is a error message within devm_ioremap_resource
+> already, so remove the dev_err call to avoid redundant
+> error message.
+>=20
+> Signed-off-by: Yu Jiahua <yujiahua1@huawei.com>
+> ---
 
-Update the 'goto' to branch at the correct place of the error handling
-path.
-
-Fixes: 49e0efdce791 ("PCI: j721e: Add support to provide refclk to PCIe connector")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/pci/controller/cadence/pci-j721e.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 35e61048e133..8933db6ab1af 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -424,7 +424,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 		ret = clk_prepare_enable(clk);
- 		if (ret) {
- 			dev_err(dev, "failed to enable pcie_refclk\n");
--			goto err_get_sync;
-+			goto err_pcie_setup;
- 		}
- 		pcie->refclk = clk;
- 
--- 
-2.30.2
-
+Applied to clk-next
