@@ -2,30 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FFE73B81D1
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Jun 2021 14:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 060F93B823F
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Jun 2021 14:35:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234529AbhF3MQH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Jun 2021 08:16:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39482 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234574AbhF3MQE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 30 Jun 2021 08:16:04 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D566361997;
-        Wed, 30 Jun 2021 12:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625055215;
-        bh=OyCw+ikwvw8c7rChwbi6jaEqfCROeE3MhtEECfeyTIM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vEjPdFRc4feX/UKaUUeBvt8QePG+KmBsFh2aCQK0eYlgoUDnjL497sgbnkgr4EQwe
-         egD1tS/iMFEqkp/UB+FYZvqAfMFxKPJ/utN/Osc+S42fBry9SoNaNkfnIx8khiP8Ii
-         WVO4z4WPfzQWFLBiXt7l985tw9kYVjV1aQCI2bPUrX3evm9kcpVARtQGCD8Gfgn3B+
-         iq4Im8aPpYEAHEwNpe6WACDec/7yE2buDcl1OLlJ+0IIPLADIRqAcv4aHVbfm5O1L/
-         j83v2w0R13fYLQcvYLp8eeE+4Tct784yMK9PuAZdjePEesckt0TeXvp7RZUcrJKNpS
-         LgIRRVmqOBpGw==
-Date:   Wed, 30 Jun 2021 13:13:07 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+        id S234645AbhF3Mhs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Jun 2021 08:37:48 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:14736 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234510AbhF3Mho (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Jun 2021 08:37:44 -0400
+X-Greylist: delayed 335 seconds by postgrey-1.27 at vger.kernel.org; Wed, 30 Jun 2021 08:37:43 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1625056165;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=bZsMABrIP30hs37+nedxyh4eEvRphAwrH1bbzL0H7+Q=;
+    b=BJl9LKYQMGKbxWfKkUCA4+FlI/pDKvslD8BZp8TVzf3sLyy/oOmBvPxx+iaDCgQpjB
+    Wn77NtJezyHUzdrF1CGWoEln77Q8LpZ/8p4kqoY5rqZNLyPA5CrU4dHyr1aha6QlQHWA
+    j2aNTnbNwGfvUqB8SCChHeKk/ZUFvGvLuHTFGwEaWl29eiKVdrokYJv8NrF2FHZzGRN8
+    2dFlNheDawYDBRx+uivp1f07aLXbSvgGW0Wh6wDVP9hxDlhDbPUwvosfHe0VHdSo0z2w
+    DYk4xR/6Zz1AaRat30Rl6+hT8pPYSrq/9XpPJkB4rlF6tqIQqccMjoJpliLOL+B7Hn4W
+    jbNA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBp5hRw/qOxWRk4dCym3NQGSmPRBNE1Ujq6xQREsTid4kuKCecl97Y="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2001:16b8:263a:bd00:d7b:6d54:c5bb:5950]
+    by smtp.strato.de (RZmta 47.28.1 AUTH)
+    with ESMTPSA id h06665x5UCTF0Sq
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Wed, 30 Jun 2021 14:29:15 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
+Subject: Re: [PATCH] regulator: palmas: set supply_name after registering the
+ regulator
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20210630121307.GA5106@sirena.org.uk>
+Date:   Wed, 30 Jun 2021 14:29:02 +0200
 Cc:     Tony Lindgren <tony@atomide.com>,
         Graeme Gregory <gg@slimlogic.co.uk>,
         Liam Girdwood <lgirdwood@gmail.com>,
@@ -35,77 +50,90 @@ Cc:     Tony Lindgren <tony@atomide.com>,
         Discussions about the Letux Kernel 
         <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
         Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Subject: Re: [PATCH] regulator: palmas: set supply_name after registering the
- regulator
-Message-ID: <20210630121307.GA5106@sirena.org.uk>
-Mail-Followup-To: "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Graeme Gregory <gg@slimlogic.co.uk>,
-        Liam Girdwood <lgirdwood@gmail.com>, Nishanth Menon <nm@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        kernel@pyra-handheld.com, Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <02EE05C2-588F-4D50-8A37-46CC3B0C302C@goldelico.com>
 References: <4ed67090bc048442567931ede8f1298a0b312b28.1624980242.git.hns@goldelico.com>
  <20210629155922.GD4613@sirena.org.uk>
  <2C7C3A47-4A5B-4052-98FC-7A96E2F138CA@goldelico.com>
  <20210629185638.GG4613@sirena.org.uk>
  <7B58B1BF-9D65-4CEC-B7D1-4EFDB2C0CB4E@goldelico.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mP3DRpeJDSE+ciuQ"
-Content-Disposition: inline
-In-Reply-To: <7B58B1BF-9D65-4CEC-B7D1-4EFDB2C0CB4E@goldelico.com>
-X-Cookie: Use at own risk.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ <20210630121307.GA5106@sirena.org.uk>
+To:     Mark Brown <broonie@kernel.org>
+X-Mailer: Apple Mail (2.3445.104.21)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---mP3DRpeJDSE+ciuQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Tue, Jun 29, 2021 at 10:21:45PM +0200, H. Nikolaus Schaller wrote:
+> Am 30.06.2021 um 14:13 schrieb Mark Brown <broonie@kernel.org>:
+>=20
+> On Tue, Jun 29, 2021 at 10:21:45PM +0200, H. Nikolaus Schaller wrote:
+>=20
+>> There seems to be a deadlock in probing:
+>=20
+>> 	e.g. ldo3_reg depends on vdds_1v8_main supply
+>> 	vdds_1v8_main depends on smps7_reg supply
+>> 	smps7_reg depends on vsys_cobra supply
+>> 	vsys_cobra depends on nothing
+>=20
+>> This would normally lead to a simple chain as you described above. =
+But
+>> ldo3_reg and smps7_reg share the same driver and can probe =
+successfully or
+>> fail only in common.
+>=20
+> I don't see any deadlock there?  Just a straightforward set of
+> dependencies.  Anything circular would clearly be a driver bug.
 
-> There seems to be a deadlock in probing:
+I think it could be indirectly circular since ldo3_reg does not find =
+smps3
+registered. But I have to run more tests with printk inserted.
 
-> 	e.g. ldo3_reg depends on vdds_1v8_main supply
-> 	vdds_1v8_main depends on smps7_reg supply
-> 	smps7_reg depends on vsys_cobra supply
-> 	vsys_cobra depends on nothing
+So I am not sure if that is the issue but the best hypothesis I =
+currently know of.
 
-> This would normally lead to a simple chain as you described above. But
-> ldo3_reg and smps7_reg share the same driver and can probe successfully or
-> fail only in common.
+>=20
+>> Now if ldo3_reg defers probe through the new rule, smps7_reg is never
+>> probed successfully because it is the same driver. Hence =
+vdds_1v8_main can
+>> not become available. And the Palmas continues to run in boot =
+initialization
+>> until some driver (MMC) wants to switch voltages or whatever.
+>=20
+> The driver should just register all the DCDCs before the LDOs, then
+> everything will sort itself out.
 
-I don't see any deadlock there?  Just a straightforward set of
-dependencies.  Anything circular would clearly be a driver bug.
+Basically the driver code does it that way. But fails. Probing seems to =
+defer
+until deferral limits (AFAIR there is a timer or counter in the probe =
+deferral
+queue) an does not succeed.
 
-> Now if ldo3_reg defers probe through the new rule, smps7_reg is never
-> probed successfully because it is the same driver. Hence vdds_1v8_main can
-> not become available. And the Palmas continues to run in boot initialization
-> until some driver (MMC) wants to switch voltages or whatever.
+It only works if I disable the new condition - but apparently it =
+suffices
+to do so for the LDOs because I noticed that the smps initialization =
+also
+defines supply_name and there it is no problem to have it before
+devm_regulator_register(). Every simple problem becomes complex if you =
+look
+deeper :)
 
-The driver should just register all the DCDCs before the LDOs, then
-everything will sort itself out.  It's *possible* you might see a system
-trying to link things together regulators of the same type but that's
-very unusual as it makes the system less efficient.
+Which I interpret (without additional tests) that the smps7_reg is =
+registered
+but does not pass the (new) test when asked by ldo3_reg.
 
---mP3DRpeJDSE+ciuQ
-Content-Type: application/pgp-signature; name="signature.asc"
+>  It's *possible* you might see a system
+> trying to link things together regulators of the same type but that's
+> very unusual as it makes the system less efficient.
 
------BEGIN PGP SIGNATURE-----
+I can check that - and there may be other LDOs in the Palmas
+chained (as described by device tree).
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmDcX9IACgkQJNaLcl1U
-h9COXwf/caYZXMc4O3Gw4MusQCx6GuJHZ6aEdMBbGsvxVBMUZeL6hJk3wLjJmrR0
-oYOmtcsdcrg+JkHAmqCi9FCVhW9a/0+lfXORD43C5p0fzbvWhshu0ttopy5YaJWk
-hE7PnW/UhHxnAZudCZY2aSb8hhbCxyLPmt9wv65+1ebFkiZYjN7SbgJ50HMWE+sz
-piVqtpBGqZYBYbDFQfiFPjJoylkbH3l5t/2g9LxrdHcJ9PdI0pi9OTAVMarJfiTU
-h6v7XWIDp4M7lv/EvWI+3NGX+n1YKAhg32FLeh8Z7ywp1kzEG0S4VnvgYT/xNd25
-wP9QkpT3FfR1YxcHCd4vp5TO2cZyDQ==
-=LGB7
------END PGP SIGNATURE-----
+It will need some test time to get more factual information about this
+issue besides that reverting the new rule or adding a trick to make
+the Palmas driver initialize properly again.
 
---mP3DRpeJDSE+ciuQ--
+BR and thanks,
+Nikolaus
+
