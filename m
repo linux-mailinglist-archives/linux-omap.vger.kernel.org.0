@@ -2,117 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6783A3B829E
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Jun 2021 15:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74B203B84A7
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Jun 2021 16:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234641AbhF3NHX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Jun 2021 09:07:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53002 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234481AbhF3NHW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 30 Jun 2021 09:07:22 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 52A2561466;
-        Wed, 30 Jun 2021 13:04:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625058293;
-        bh=XYyMCuD458bwTC7T3sQcwA4+8SNLInw36EFRAxRUql4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SFa1+Mb4jKyfLIvjSkmUbtmjwxJi0vbNV3cEcwXdM8aA/GtwgHJvCP6leRzYUMbtE
-         RirCBUjh5ciPPWyo8qfeCYGFTIxKXwT3dvQ/Hes+3ItxUP2lx0X6avD7y9J08z8Agr
-         o42HSg2s4PhXB9SPDHdztESBji+v5qPGUS+ysWq1zFfpldf27SeccM539Ie93AgzjW
-         dAjnmu+BVbRAjm+drsKbqh00Zjr0ZyP2+q0SZs1b7BxOqdh64YXftsVzZmeOwlGno/
-         vGFQkbyHeRIKlAMD8gP+q8uKqRuVpeBsWFpWxu/dgl9DE3e+sC5U8/LEZQ0bBT+JsJ
-         Op8tDI/j+As7g==
-Date:   Wed, 30 Jun 2021 14:04:25 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Graeme Gregory <gg@slimlogic.co.uk>,
+        id S235851AbhF3OH7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Jun 2021 10:07:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49426 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235420AbhF3OHJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Jun 2021 10:07:09 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5C1C0617A8;
+        Wed, 30 Jun 2021 07:04:16 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id k21so3476965ljh.2;
+        Wed, 30 Jun 2021 07:04:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=57vYDWtaiAc9fCqO279XfLyvE20qvnTCvRyRXxlPmgg=;
+        b=jAyYP64udX37D3pFHoVvKXOKf/Y4VbO6LowSd9VeDV6VfPWc+bXfUK+PMkpepVH3Bp
+         jVP2gRZf2Etdvgc31YlomCyMWCnGxFQqN381nKXatw/zG9cdB/VZF7UxPXCQt2Zy0ZQ2
+         zXjeyK2E6OPn6xA4ohdg6vNymxpwtmHysVtPdu4WI45CTbsBG23WuuftbEJ9tQuqWplj
+         m728AUXnnlOTYzIseByCBXoJyXipeyZpjyOGaKTMuO2KDfEB8ssAp1NqsuZFyw4n1qGa
+         z4vbfOKitKRrO0sHtBNWVaZe6vvpGGWjZPy4Rb/OdWXCdcn2lMKlzygG4JSC6Aq3L3Rg
+         wT7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=57vYDWtaiAc9fCqO279XfLyvE20qvnTCvRyRXxlPmgg=;
+        b=po6iAWbTGhvZA6GszK5PlRAMJ7uyqWu404CNd3NERYJaMKP/R6p/2yA/st5FAqv4Q+
+         TJMKNPnZxH9LM0pxNyAKON/7CxtNkZPsiBmEJcBoz6oS+moUxAwH5yPBrUQ7uW9KnizE
+         qyJeFT2TRHyq9fLJzyPzry3jLCxc0f+koVyo7vy5vmIzk4rvDm6sS7NsMQJjdsMEwXcN
+         aOQzRAvotsXkoU+ZGWOObqEEUDciiF5GltWOVtO9JgYytNqc7RLhXybzUkU4WgLSeZZo
+         tckIUPCkV+DoViPH5vroO8BTcfaec3LKXI7znY9FjROiy9vx3dlzjVZFWLhT80kaf0C6
+         28vA==
+X-Gm-Message-State: AOAM531erhv/HBheqgz+funzK0Qdn8iMZTFg3OhUyjUJQ/eAa5mxJ3a/
+        V3K5RgxBkjF3qwbjW3kCWyoQ84WNeZp7CQRn
+X-Google-Smtp-Source: ABdhPJy/2s9U8czt+fFFdv6oHM3g32XncInGR8IEojZ5SGHDCn98TDgZkw4S+KzOn64r++ck2UAYNg==
+X-Received: by 2002:a2e:9c18:: with SMTP id s24mr2330139lji.249.1625061854376;
+        Wed, 30 Jun 2021 07:04:14 -0700 (PDT)
+Received: from [10.0.0.40] (91-155-111-71.elisa-laajakaista.fi. [91.155.111.71])
+        by smtp.gmail.com with ESMTPSA id o15sm1565990lfu.134.2021.06.30.07.04.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jun 2021 07:04:13 -0700 (PDT)
+Subject: Re: [PATCH] ASoC: ti: delete some dead code in omap_abe_probe()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jarkko Nikula <jarkko.nikula@bitmer.com>,
         Liam Girdwood <lgirdwood@gmail.com>,
-        Nishanth Menon <nm@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Subject: Re: [PATCH] regulator: palmas: set supply_name after registering the
- regulator
-Message-ID: <20210630130425.GF5106@sirena.org.uk>
-Mail-Followup-To: "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Graeme Gregory <gg@slimlogic.co.uk>,
-        Liam Girdwood <lgirdwood@gmail.com>, Nishanth Menon <nm@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        kernel@pyra-handheld.com, Peter Ujfalusi <peter.ujfalusi@gmail.com>
-References: <4ed67090bc048442567931ede8f1298a0b312b28.1624980242.git.hns@goldelico.com>
- <20210629155922.GD4613@sirena.org.uk>
- <2C7C3A47-4A5B-4052-98FC-7A96E2F138CA@goldelico.com>
- <20210629185638.GG4613@sirena.org.uk>
- <7B58B1BF-9D65-4CEC-B7D1-4EFDB2C0CB4E@goldelico.com>
- <20210630121307.GA5106@sirena.org.uk>
- <02EE05C2-588F-4D50-8A37-46CC3B0C302C@goldelico.com>
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <YNxTHXz58dhgbFtG@mwanda>
+From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+Message-ID: <24479ba7-6fc3-fce1-735d-b611d056412e@gmail.com>
+Date:   Wed, 30 Jun 2021 17:04:15 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="C94crkcyjafcjHxo"
-Content-Disposition: inline
-In-Reply-To: <02EE05C2-588F-4D50-8A37-46CC3B0C302C@goldelico.com>
-X-Cookie: Use at own risk.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <YNxTHXz58dhgbFtG@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---C94crkcyjafcjHxo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Jun 30, 2021 at 02:29:02PM +0200, H. Nikolaus Schaller wrote:
-> > Am 30.06.2021 um 14:13 schrieb Mark Brown <broonie@kernel.org>:
+On 30/06/2021 14:18, Dan Carpenter wrote:
+> This code checks "priv->mclk_freq" twice and the second check is not
+> required.  The code is left over from when removed support for legacy
+> boot.
 
-> >> 	e.g. ldo3_reg depends on vdds_1v8_main supply
-> >> 	vdds_1v8_main depends on smps7_reg supply
-> >> 	smps7_reg depends on vsys_cobra supply
-> >> 	vsys_cobra depends on nothing
+Good find, thank you!
 
-> > I don't see any deadlock there?  Just a straightforward set of
-> > dependencies.  Anything circular would clearly be a driver bug.
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
 
-> I think it could be indirectly circular since ldo3_reg does not find smps3
-> registered. But I have to run more tests with printk inserted.
+> Fixes: 8fe120b5a665 ("ASoC: omap-abe-twl6040: Remove support for pdata (legacy boot)")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  sound/soc/ti/omap-abe-twl6040.c | 5 -----
+>  1 file changed, 5 deletions(-)
+> 
+> diff --git a/sound/soc/ti/omap-abe-twl6040.c b/sound/soc/ti/omap-abe-twl6040.c
+> index 91cc9a4f44d7..2e3d1eea77c1 100644
+> --- a/sound/soc/ti/omap-abe-twl6040.c
+> +++ b/sound/soc/ti/omap-abe-twl6040.c
+> @@ -292,11 +292,6 @@ static int omap_abe_probe(struct platform_device *pdev)
+>  
+>  	card->fully_routed = 1;
+>  
+> -	if (!priv->mclk_freq) {
+> -		dev_err(&pdev->dev, "MCLK frequency missing\n");
+> -		return -ENODEV;
+> -	}
+> -
+>  	card->dai_link = priv->dai_links;
+>  	card->num_links = num_links;
+>  
+> 
 
-Why would LDO3 have a dependency on SPMS3 given what's written above and
-how would that be circular?
-
-> > The driver should just register all the DCDCs before the LDOs, then
-> > everything will sort itself out.
-
-> Basically the driver code does it that way. But fails. Probing seems to defer
-> until deferral limits (AFAIR there is a timer or counter in the probe deferral
-> queue) an does not succeed.
-
-Ah, I see - the issue is the intervening 1.8V regulator.  That's not a
-circularity, that's the callout to a separate device in the middle of
-the chain.  It's a super weird hardware design if the DT is accurate,
-it's hard to see how it's not going to be hurting efficiency.  In any
-case simplest thing would be to have separate MFD subdevices in Palmas
-for the LDOs and DCDCs, that'll do the right thing.
-
---C94crkcyjafcjHxo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmDca9gACgkQJNaLcl1U
-h9CEJwf+MzANyYqTy1Ax8OA8o2JDkeKZ0oYwW2X3m8eldybyGSxOmF9xXOwrs7f/
-XN4HdXaetqMbtaKezXqHFMDa/ENCramaXjVL5UJXdm0UDQ/htsdQsJjyqEgfAJ0V
-vg4t6D3pr1TMV6cQMZ9FdrY+f39irJc7hiHzKi2hiec52ZrUbj/t4kO4WlhAtNe2
-ZHzCx27jCj5TyrEn0mntf6ZBGfKCYrmdOSX4kcv5zsLGxpUbtkYceVjLOprR2pWD
-4Nm5L60ewMS8FbBCBwqZXqnV3nPMFi6L+RvEEVMfj6K71X7K/VvYjT09VOf4bAIs
-M4lqjYntESZWVklIfA2SNjjRxgUWKA==
-=DhC6
------END PGP SIGNATURE-----
-
---C94crkcyjafcjHxo--
+-- 
+Péter
