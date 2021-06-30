@@ -2,169 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72CB13B7949
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Jun 2021 22:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F1D43B7DF3
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Jun 2021 09:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235154AbhF2U3Y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Jun 2021 16:29:24 -0400
-Received: from out2-smtp.messagingengine.com ([66.111.4.26]:42131 "EHLO
-        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233801AbhF2U3X (ORCPT
+        id S232806AbhF3HXW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Jun 2021 03:23:22 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:4744 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232785AbhF3HXW (ORCPT
         <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 29 Jun 2021 16:29:23 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 88B235C00C1;
-        Tue, 29 Jun 2021 16:26:55 -0400 (EDT)
-Received: from imap44 ([10.202.2.94])
-  by compute4.internal (MEProxy); Tue, 29 Jun 2021 16:26:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=slimlogic.co.uk;
-         h=mime-version:message-id:in-reply-to:references:date:from:to
-        :cc:subject:content-type; s=fm3; bh=Gz8V+dIp5N5rhQ8cVOeVw5jdR00H
-        xQygA8dIoUoQs6g=; b=PaYuPOYh39dt0sMmJ5tXNylSiX5VLbYaxQGHLRYfvI58
-        A9XlfLn3uwWWeoUaZfRmuAcVuhcnBAHPfabJsH5Wi8Srcn5viuzKsGwBdfmeU2VE
-        tucIpGIMd8Kq98gR8hErbykSsEf1/SDxo6Qc5dEqz8GIEQrJZxGZcDjiTFAdoIZv
-        JAttZyScEm1C1z5VPxVgXWG+9kFKE8lUL6FvtQmfCv7uSEF1/XAlK85JV21geo+p
-        iaxhmynXSLW+U/CIUnSBLyYFd8wEoM08m44W7g65XJYLNXDVFeaZShcgZWNMGdQg
-        Df4lBSY6JUUwx7LKGAKAJ+Qcyo0yrZKU7a7BWCfnRw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=Gz8V+d
-        Ip5N5rhQ8cVOeVw5jdR00HxQygA8dIoUoQs6g=; b=NuZi6K7W7ooi0unaI2vyQx
-        qNLHEau5yUq/482vwiFhyVIdqTnDCKqsJPFhy5AmCNFNe+b6pIhfs9g1SxnT846o
-        eRxENyGtLn75gNJ8PuK25rwAURfQkU/ZHXDe3MxZ6e/RklmyxIpgqYMcSmhrDBgR
-        ZkIkFVnTMy2yQn7hcgkXD2EN8U6IC1oz1wQ354vCRSWbVoQxDioHRtWL8E0ZipX4
-        C9TY6Fooh9vn+/AMXB8fkrseY97zuyUbK5N2VxVkoXtiLnwrSciOHO++YcSWnUsr
-        7GFBC28+ATCBwygnW9PijZJUDh0rBNBheRIPNKftrlDBDsO+zlJ6CMfOCs8zPj2g
-        ==
-X-ME-Sender: <xms:DoLbYD0jpnuVNhRIh4aBQk27E8B8aQFf9KicWlT8ATU4bEkAXhxGwg>
-    <xme:DoLbYCHrl5MXhZP5zxIT3su8SzdeTLExOMfMyhw-VxqbTwQIy1rx8bkkbYKIvTEKx
-    vMI770qtI_y6oCP-Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrfeeitddguddugecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvufgtsehttdertderreejnecuhfhrohhmpedfifhr
-    rggvmhgvucfirhgvghhorhihfdcuoehgghesshhlihhmlhhoghhitgdrtghordhukheqne
-    cuggftrfgrthhtvghrnhepgedtkefhieekteffgfetkeeftdehveekheelhfevhfegvedu
-    vddvhffhieekieelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepghhgsehslhhimhhlohhgihgtrdgtohdruhhk
-X-ME-Proxy: <xmx:DoLbYD4bu6xXaxrnRIBRjohrRiBvU6LQSYFhg2ZsTxYuDoBP5dFBxA>
-    <xmx:DoLbYI25L8xxIZOAwCFR_uPsytko_zVPbAGeq5Ei5Ws_aQRLNAyFMQ>
-    <xmx:DoLbYGFzRmE981qiDwaUZV_S11uYUDqMYfdx9QwL9J5MEQ692Tx88A>
-    <xmx:D4LbYL7RhjQajwrzsGYA0CJy5Z5IdVuKI3f_OnQJ32bP_VbEzg9XYA>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 13953FA0063; Tue, 29 Jun 2021 16:26:53 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.5.0-alpha0-530-gd0c265785f-fm-20210616.002-gd0c26578
-Mime-Version: 1.0
-Message-Id: <4269dfb2-dd38-4b13-94e7-8c6afe0ab22e@www.fastmail.com>
-In-Reply-To: <7B58B1BF-9D65-4CEC-B7D1-4EFDB2C0CB4E@goldelico.com>
-References: <4ed67090bc048442567931ede8f1298a0b312b28.1624980242.git.hns@goldelico.com>
- <20210629155922.GD4613@sirena.org.uk>
- <2C7C3A47-4A5B-4052-98FC-7A96E2F138CA@goldelico.com>
- <20210629185638.GG4613@sirena.org.uk>
- <7B58B1BF-9D65-4CEC-B7D1-4EFDB2C0CB4E@goldelico.com>
-Date:   Tue, 29 Jun 2021 21:26:33 +0100
-From:   "Graeme Gregory" <gg@slimlogic.co.uk>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        "Mark Brown" <broonie@kernel.org>,
-        "Tony Lindgren" <tony@atomide.com>
-Cc:     "Liam Girdwood" <lgirdwood@gmail.com>,
-        "Nishanth Menon" <nm@ti.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        "Discussions about the Letux Kernel" <letux-kernel@openphoenux.org>,
-        kernel@pyra-handheld.com,
-        "Peter Ujfalusi" <peter.ujfalusi@gmail.com>
-Subject: =?UTF-8?Q?Re:_[PATCH]_regulator:_palmas:_set_supply=5Fname_after_registe?=
- =?UTF-8?Q?ring_the_regulator?=
-Content-Type: text/plain
+        Wed, 30 Jun 2021 03:23:22 -0400
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15U72h5B048508;
+        Wed, 30 Jun 2021 03:20:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=973EgiF50mXgJhpr6evy6DSCnIvYAM1+Him4gsa37N0=;
+ b=DYHls9J7VDS4TuDrPst0cZROzjEDEmQlt3LyuBLnAjWFbtzsPxmjP5RFyhsnpnKltizH
+ HVShX7HG6dzrBOOn0TzACr+etLXVmda5PWLPr7VPfd+0hl70d6lYIg5XdsIrWYdCDmWS
+ Pfd8moMG5YTwu8sjyfR8hAgwO7ggsY3YcfNLFR67vXH2Ii7mNvaV2tV0ehnWhVVuwaTM
+ it0yOvrQ26jFGJmlAzUJYes7u8dXAJ8gQsvD+OuEanYoQ+1gLXiGZkOm1AC1gGrxhji1
+ +Jr1owPew/GdB+rQZzguLWtQg/GBM7FlEZ3/2IHVnlvkTD70qkZhTaHzfHMNrJFzZF8R gQ== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 39gk5d1jup-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 30 Jun 2021 03:20:30 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15U7Cd5D024447;
+        Wed, 30 Jun 2021 07:20:28 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma04ams.nl.ibm.com with ESMTP id 39duv8hmm3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 30 Jun 2021 07:20:28 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 15U7KQg420775172
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 30 Jun 2021 07:20:26 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 00AA5A4092;
+        Wed, 30 Jun 2021 07:20:25 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E2F7FA40A1;
+        Wed, 30 Jun 2021 07:20:23 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.145.56.105])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Wed, 30 Jun 2021 07:20:23 +0000 (GMT)
+Date:   Wed, 30 Jun 2021 10:20:21 +0300
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Mike Rapoport <rppt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-omap@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: [PATCH v2 3/3] arm: extend pfn_valid to take into accound freed
+ memory map alignment
+Message-ID: <YNwbNX7oyosZAuEJ@linux.ibm.com>
+References: <20210519141436.11961-1-rppt@kernel.org>
+ <20210519141436.11961-4-rppt@kernel.org>
+ <YNmiW6CYzy9lG8ks@atomide.com>
+ <YNnLxFM4ZeQ5epX3@linux.ibm.com>
+ <YNnqIv3PApHFZMgp@atomide.com>
+ <YNqwl8EPVYZJV0EF@linux.ibm.com>
+ <YNrfqtBpKsNj033w@atomide.com>
+ <YNr6+wOiR7/Yx9M1@linux.ibm.com>
+ <YNsJh7trg4up5l26@atomide.com>
+ <YNsXDEgreCpshZxb@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YNsXDEgreCpshZxb@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: rvs5R5nyoEt68OsbalfVyq0zwKsMmEvN
+X-Proofpoint-GUID: rvs5R5nyoEt68OsbalfVyq0zwKsMmEvN
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-06-30_01:2021-06-29,2021-06-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 phishscore=0 clxscore=1015 bulkscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 adultscore=0 mlxlogscore=487
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2106300045
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Tue, Jun 29, 2021 at 03:50:23PM +0300, Mike Rapoport wrote:
+> On Tue, Jun 29, 2021 at 02:52:39PM +0300, Tony Lindgren wrote:
+> > * Mike Rapoport <rppt@linux.ibm.com> [210629 10:51]:
+> > > As it seems, the new version of pfn_valid() decides that last pages are not
+> > > valid because of the overflow in memblock_overlaps_region(). As the result,
+> > > __sync_icache_dcache() skips flushing these pages.
+> > > 
+> > > The patch below should fix this. I've left the prints for now, hopefully
+> > > they will not appear anymore. 
+> > 
+> > Yes this allows the system to boot for me :)
+> > 
+> > I'm still seeing these three prints though:
+> > 
+> > ...
+> > smp: Brought up 1 node, 2 CPUs
+> > SMP: Total of 2 processors activated (3994.41 BogoMIPS).
+> > CPU: All CPU(s) started in SVC mode.
+> > pfn_valid(__pageblock_pfn_to_page+0x14/0xa8): pfn: afe00: is_map: 0 overlaps: 1
+> > pfn_valid(__pageblock_pfn_to_page+0x28/0xa8): pfn: affff: is_map: 0 overlaps: 1
+> > pfn_valid(__pageblock_pfn_to_page+0x38/0xa8): pfn: afe00: is_map: 0 overlaps: 1
+> 
+> These pfns do have memory map despite they are stolen in
+> arm_memblock_steal():
+> 
+> memblock_free: [0xaff00000-0xafffffff] arm_memblock_steal+0x50/0x70
+> memblock_remove: [0xaff00000-0xafffffff] arm_memblock_steal+0x5c/0x70
+> ...
+> memblock_free: [0xafe00000-0xafefffff] arm_memblock_steal+0x50/0x70
+> memblock_remove: [0xafe00000-0xafefffff] arm_memblock_steal+0x5c/0x70
+> 
+> But the struct pages there are never initialized.
 
+Actually, with FLATMEM these struct pages will be always set to 0 because
+we don't do memory map poisoning with FLATMEM.
 
-On Tue, 29 Jun 2021, at 9:21 PM, H. Nikolaus Schaller wrote:
-> Hi Mark,
-> 
-> > Am 29.06.2021 um 20:56 schrieb Mark Brown <broonie@kernel.org>:
-> > 
-> > On Tue, Jun 29, 2021 at 08:34:55PM +0200, H. Nikolaus Schaller wrote:
-> >>> Am 29.06.2021 um 17:59 schrieb Mark Brown <broonie@kernel.org>:
-> > 
-> > 
-> >> So it was working fine without having the supplying regulator resolved. AFAIK they
-> >> just serve as fixed regulators in the device tree and have no physical equivalent.
-> > 
-> > No, not at all - it's representing whatever provides input power to the
-> > regulator.  There may be no physical control of it at runtime on your
-> > system but that may not be true on other systems.  It's quite common for
-> > there to be a chain of regulators (eg, DCDCs supplying LDOs) and then
-> > they all need to get get power managed appropriately and you don't end
-> > up thinking a regulator is enabled when the input regulator is disabled.  
-> 
-> Yes, that is how it is chained in other cases.
-> 
-> > 
-> >> My proposal just moves setting the supply_name behind devm_regulator_register() and
-> >> by that restores the old behaviour.
-> > 
-> > This means that we won't actually map the supply and any system that
-> > relies on software handling the supply regulator will be broken.
-> 
-> Well, it seems as if the supply regulators are only vsys_cobra and 
-> vdds_1v8_main.
-> At least in omap5-board-common.dtsi which is what I can test.
-> 
-> Both are fixed regulators where calling enable or not doesn't become
-> physically visible. The hardware still supplies the 5V and 1.8V to the palmas
-> chip.
-> 
-> Maybe the new rule by commit 98e48cd9283dreveals a design issue inside of
-> the Palmas driver which assumes that there is no need to control its supply
-> regulators. And does not handle probe deferral.
-> 
-> Then of course my patch is just a work-around for a bug but not a solution.
-> 
-> > 
-> >> Well, unless...
-> > 
-> >> ... devm_regulator_register() does something differently if desc->supply_name
-> >> is not set before and changed afterwards. It may miss that change.
-> > 
-> > We resolve supplies during regulator registration, this would
-> > effectively just skip mapping of the supply.
-> > 
-> >> So I hope for guidance if my approach is good or needs a different solution.
-> > 
-> > What I would expect to happen here would be that once vsys_cobra is
-> > registered the regulators supplied by it can register and then all their
-> > consumers would in turn be able to register.  You should look into why
-> > that supply regulator isn't appearing and resolve that, or if a consumer
-> > isn't handling deferral then that would need to be addressed.
-> 
-> Ah, I think I get an idea what may be going wrong.
-> 
-> There seems to be a deadlock in probing:
-> 
-> 	e.g. ldo3_reg depends on vdds_1v8_main supply
-> 	vdds_1v8_main depends on smps7_reg supply
-> 	smps7_reg depends on vsys_cobra supply
-> 	vsys_cobra depends on nothing
-> 
-> This would normally lead to a simple chain as you described above. But
-> ldo3_reg and smps7_reg share the same driver and can probe successfully or
-> fail only in common.
-> 
-> Now if ldo3_reg defers probe through the new rule, smps7_reg is never
-> probed successfully because it is the same driver. Hence vdds_1v8_main can
-> not become available. And the Palmas continues to run in boot initialization
-> until some driver (MMC) wants to switch voltages or whatever.
-> 
-> Maybe Tony or Graeme has an idea how to do it right...
-> 
-Sorry after almost 10 years I have forgotten all about this driver.
+I could not find a case where zeroed struct page would cause real trouble,
+so I'd say it is more theoretical issue and it can be addressed unrelated
+to these changes.
 
-Graeme
-
+-- 
+Sincerely yours,
+Mike.
