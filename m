@@ -2,121 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16A7A3B9297
-	for <lists+linux-omap@lfdr.de>; Thu,  1 Jul 2021 16:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FA3D3BA649
+	for <lists+linux-omap@lfdr.de>; Sat,  3 Jul 2021 01:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232422AbhGAODQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 1 Jul 2021 10:03:16 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:9317 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231342AbhGAODQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 1 Jul 2021 10:03:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1625148030;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=jdajgCtb8y8FBueJJb4PCu1MS3sUAvqVQcmmtwiQ4ug=;
-    b=gcansIWQTjqc6gmrNeOZs+66+/NogM4f4GQaBp4cbqd8X2/zV0RgJIClWznE1pKz4b
-    kdS9cJCdP1DSLg/YzZrn6Zg3kWARrKMVq+HdnKATfTXXRkPaKCYzkd1LMDtbimHLdjMp
-    ktzcwGvchwnz25Yrx4nxzwGLlWQz6IV53oOZnjnOmMFNNnzLtwg0r9qCqsaUNh6BY+X9
-    gqu8SuCWaogGucQEo3LGVNVI1l4G+4yCetQNVf+fSgJZt0kX1BIGu3q7tdcVq2LXSWfI
-    vVoH05kMF7exnkFDdOoPkmRgOzxWoUigvq2leuJDUvPMIndOrZeMtk9Yh5Q0GKcxkJK7
-    SaqA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXH7F/39n3sa"
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-    by smtp.strato.de (RZmta 47.28.1 DYNA|AUTH)
-    with ESMTPSA id h06665x61E0U64w
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 1 Jul 2021 16:00:30 +0200 (CEST)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     Tony Lindgren <tony@atomide.com>, gg@slimlogic.co.uk,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Nishanth Menon <nm@ti.com>,
-        peter.ujfalusi@gmail.com,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        devicetree@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v2] omap5-board-common: remove not physically existing vdds_1v8_main fixed-regulator
-Date:   Thu,  1 Jul 2021 16:00:22 +0200
-Message-Id: <e836d5d98b028bdbb8805bcf79489e0df28add6c.1625148021.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.31.1
+        id S230017AbhGBX1D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 2 Jul 2021 19:27:03 -0400
+Received: from pujrelay1.mygovuc.gov.my ([103.156.82.33]:45476 "EHLO
+        pujrelay1.mygovuc.gov.my" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229847AbhGBX1D (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Jul 2021 19:27:03 -0400
+X-Greylist: delayed 590 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Jul 2021 19:27:02 EDT
+Received: from node03.icewarp10.mygovuc.gov.my
+        by pujrelay1.mygovuc.gov.my (13.0.1 (2021-02-23) RHEL7 x64) with ESMTP (SSL) id 01202107030504343671
+        for <linux-omap@vger.kernel.org>; Sat, 03 Jul 2021 05:04:34 +0800
+DKIM-Signature: a=rsa-sha256; t=1625259872; x=1625864672; s=mygovuc; d=kpkt.gov.my; c=relaxed/relaxed; v=1; bh=g1CYZjnAGFh9OypHerxb3YSgmr07c5QwNH5cBRlGN+Q=; h=From:Sender:Reply-To:Subject:Date:Message-ID:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+   b=vK/kBbohXrgabIByRF8mT8OIXy/0eJcs2W1fEpqsQv9PfhaDyd+oeSSO4boGxkHe7R1eeizaUhkCGyMdDtAOcNLht30kam5F9eQKm60G3hhd96LGYR9XLXp2m+Eqy/p/mP9EUKWCxXHPNBLEp0ZYuN6mj97mpqjb3M8mUlhq41g=
+Received: from [192.168.8.100]
+        by node03.icewarp10.mygovuc.gov.my (13.0.0 build 4 (2021-03-26) RHEL7 x64) with ASMTP (SSL) id 03202107030504320978
+        for <linux-omap@vger.kernel.org>; Sat, 03 Jul 2021 05:04:32 +0800
+From:   "aideal.fadhirul@kpkt.gov.my" <aideal.fadhirul@kpkt.gov.my>
+Date:   Fri, 02 Jul 2021 22:04:31 +0100
+Subject: Refinanzierung *Heimwerkerdarlehen *Erfinderdarlehen
+Message-Id: <HWE2HDWD5EU4.ZQI4A0SB88EW@kpkt.mygovuc.gov.my>
+To:     linux-omap@vger.kernel.org
+Sender: "aideal.fadhirul@kpkt.gov.my" <aideal.fadhirul@kpkt.gov.my>
+Reply-To: icapital fs <info@icapitalf.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This device tree include file describes a fixed-regulator
-connecting smps7_reg output (1.8V) to some 1.8V rail and
-consumers (vdds_1v8_main).
+Hallo linux-omap,
 
-This regulator does not physically exist.
+Interessieren Sie sich für ein Darlehen? Wir bieten verschiedene Kreditpakete zu günstigen Zinsen an.
 
-I assume it was introduced as a wrapper around smps7_reg
-to provide a speaking signal name "vdds_1v8_main" as label.
+Wir können Ihnen helfen, Ihr Projekt zu finanzieren, Investitionskapital verfügbar. Sie können alles von € 5.000 - € 10.000.000,00 über einen Zeitraum von 1 bis 30 Jahren ausleihen.
 
-This fixed-regulator without real function was not an issue
-in driver code until
+Für weitere Details, E-mail- info@icapitalf.com
 
-  Commit 98e48cd9283d ("regulator: core: resolve supply for boot-on/always-on regulators")
-
-introduced a new check for regulator initialization which
-makes Palmas regulator registration fail:
-
-[    5.407712] ldo1: supplied by vsys_cobra
-[    5.412748] ldo2: supplied by vsys_cobra
-[    5.417603] palmas-pmic 48070000.i2c:palmas@48:palmas_pmic: failed to register 48070000.i2c:palmas@48:palmas_pmic regulator
-
-The reason is that the supply-chain of regulators is too
-long and goes from ldo3 through the virtual vdds_1v8_main
-regulator and then back to smps7. This adds a cross-dependency
-of probing Palmas regulators and the fixed-regulator which
-leads to probe deferral by the new check and is no longer
-resolved.
-
-Since we do not control what device tree files including this
-one reference (either &vdds_1v8_main or &smps7_reg or both)
-we keep both labels for smps7 for compatibility.
-
-Fixes: 98e48cd9283d ("regulator: core: resolve supply for boot-on/always-on regulators")
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
----
- arch/arm/boot/dts/omap5-board-common.dtsi | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
-
-diff --git a/arch/arm/boot/dts/omap5-board-common.dtsi b/arch/arm/boot/dts/omap5-board-common.dtsi
-index d8f13626cfd1..3a8f10231475 100644
---- a/arch/arm/boot/dts/omap5-board-common.dtsi
-+++ b/arch/arm/boot/dts/omap5-board-common.dtsi
-@@ -30,14 +30,6 @@ vsys_cobra: fixedregulator-vsys_cobra {
- 		regulator-max-microvolt = <5000000>;
- 	};
- 
--	vdds_1v8_main: fixedregulator-vdds_1v8_main {
--		compatible = "regulator-fixed";
--		regulator-name = "vdds_1v8_main";
--		vin-supply = <&smps7_reg>;
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <1800000>;
--	};
--
- 	vmmcsd_fixed: fixedregulator-mmcsd {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vmmcsd_fixed";
-@@ -487,6 +479,7 @@ smps6_reg: smps6 {
- 					regulator-boot-on;
- 				};
- 
-+				vdds_1v8_main:
- 				smps7_reg: smps7 {
- 					/* VDDS_1v8_OMAP over VDDS_1v8_MAIN */
- 					regulator-name = "smps7";
--- 
-2.31.1
-
+Vielen Dank.
+linux-omap@vger.kernel.org
