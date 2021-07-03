@@ -2,144 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4274B3BAD93
-	for <lists+linux-omap@lfdr.de>; Sun,  4 Jul 2021 17:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDA9C3BB697
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jul 2021 07:05:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbhGDPFT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 4 Jul 2021 11:05:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53166 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbhGDPFT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 4 Jul 2021 11:05:19 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2DA1C061574
-        for <linux-omap@vger.kernel.org>; Sun,  4 Jul 2021 08:02:42 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id b40so1158470ljf.12
-        for <linux-omap@vger.kernel.org>; Sun, 04 Jul 2021 08:02:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=rG8Wa9DCPn+LJLpCJ8agJSEaH0afH0syVdCVNBofvlc=;
-        b=YocJjm6n9bM4Z2Y+D1N1nCcOZKsPF8y7tfeprCgumybmWRfVWqIS75Bq/NmZbdjIyh
-         8HskQqleK77e03XhE+Rv0Hoh/05IWd4i+l6zioD56vE+iom+XA5gZn27hpSoHda8s6vi
-         VCgTrpVumPjXTxLvnaWYD1CdzPmVHi/LDmAtohu4f32L7KX1Zx8J/0eFl+DzjfaiwHaD
-         fZW026LXabirhhW+pmK8M2BvQ6OubZeHmtUVgZXaRJWYNs7FVQsYoVfF0EAIsuiozk+d
-         SYBCoT5482YWbt291Bx8FSrwO3HtSLzLqPGK3a2u9is1P83VqGErm7Qqmb7t6vdznDHl
-         swcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=rG8Wa9DCPn+LJLpCJ8agJSEaH0afH0syVdCVNBofvlc=;
-        b=if9RY3ZMOcUDSpkwh+Z8vGtPiUNUvfLiZ1ePd4S69cLtL7NFA9X3CiuqHqoIPlAniH
-         YZbp1gHaf7sPlM40heE7Q2gRaUIgGxzEDoMYrCqhQ0Vtvfg+jMiBDiUduGr6mbX/1noP
-         8GPKPREFNHtgz/DXfZUszMuze0CTbPi4NlQLQGfuuXNqQqJWIxyy1hAeWub3KZHRNBhY
-         veD35mBXyCCM0depYRBItzkuVuggcBYTM/Ylam2H80yYiPrYLvdjcPrMhPqHyORttoT8
-         M75RNjb8gKokzn3LmDYI0gEEac+X3YNL0ss6J3yUSrCzqqIaPPxCRbbPvYyCrYpcvIBN
-         zJBg==
-X-Gm-Message-State: AOAM533ESAremtYT7dDu3ILIJiAiVuYazIUP0SG6Gj46BrsV68S82ywI
-        SS7gFbdCrCbqPfXsGMiKENc=
-X-Google-Smtp-Source: ABdhPJxGdC/Z3S2H8slU0FlpXoe5lliGF7ERtRDubU533St6/KeGCY1zYnihEdV4TTnw5GlrBcXocg==
-X-Received: by 2002:a2e:2a85:: with SMTP id q127mr7396552ljq.77.1625410961018;
-        Sun, 04 Jul 2021 08:02:41 -0700 (PDT)
-Received: from localhost.localdomain (91-155-111-71.elisa-laajakaista.fi. [91.155.111.71])
-        by smtp.gmail.com with ESMTPSA id k11sm268826lfc.272.2021.07.04.08.02.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Jul 2021 08:02:40 -0700 (PDT)
-From:   Peter Ujfalusi <peter.ujfalusi@gmail.com>
-To:     broonie@kernel.org, tony@atomide.com
-Cc:     alsa-devel@alsa-project.org, lgirdwood@gmail.com,
-        linux-omap@vger.kernel.org, hns@goldelico.com
-Subject: [PATCH 5/5] ARM: dts: omap4-l4-abe: Add McASP configuration
-Date:   Sun,  4 Jul 2021 18:04:50 +0300
-Message-Id: <20210704150450.20106-6-peter.ujfalusi@gmail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210704150450.20106-1-peter.ujfalusi@gmail.com>
-References: <20210704150450.20106-1-peter.ujfalusi@gmail.com>
+        id S229700AbhGEFHl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 5 Jul 2021 01:07:41 -0400
+Received: from static-190-25-223-138.static.etb.net.co ([190.25.223.138]:46300
+        "EHLO correo.hdv.gov.co" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229793AbhGEFHl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 5 Jul 2021 01:07:41 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by correo.hdv.gov.co (Postfix) with ESMTP id A2E921DC03E2;
+        Sat,  3 Jul 2021 08:11:18 -0500 (-05)
+Received: from correo.hdv.gov.co ([127.0.0.1])
+        by localhost (correo.hdv.gov.co [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id j02enleyQ4wW; Sat,  3 Jul 2021 08:11:18 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.hdv.gov.co (Postfix) with ESMTP id BD1E2187B6A4;
+        Sat,  3 Jul 2021 07:28:48 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 correo.hdv.gov.co BD1E2187B6A4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hdv.gov.co;
+        s=11DF984A-9D1F-11E6-B193-F2669FC4C452; t=1625315328;
+        bh=YlrueNvYvQTA/rsidM4wE66HE6f1WhuqcZM/LO2K65o=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=DpGwrbOBOZ6pUe1MEC4WlcjJHm0fZjYDFp6vdrU+HzvMLvJ89nGBFwzcZrp5FOIoX
+         n/mWY6C016+zL1ZVgeIpstGEcGiLuulge7nt+RH+xhmWYTq/2lSBk5fwui64QaitnG
+         5X7qHUR/nyo89MxrgJ3q1hUxJyZJOTsq/mxdrkWk=
+X-Virus-Scanned: amavisd-new at correo.hdv.gov.co
+Received: from correo.hdv.gov.co ([127.0.0.1])
+        by localhost (correo.hdv.gov.co [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 5HPvRXDPuSrn; Sat,  3 Jul 2021 07:28:48 -0500 (-05)
+Received: from [172.20.10.6] (unknown [41.147.1.129])
+        by correo.hdv.gov.co (Postfix) with ESMTPSA id 1313E1875542;
+        Sat,  3 Jul 2021 06:52:11 -0500 (-05)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: my subject
+To:     Recipients <planeacion.arquitecto@hdv.gov.co>
+From:   planeacion.arquitecto@hdv.gov.co
+Date:   Sat, 03 Jul 2021 04:52:01 -0700
+Reply-To: callumfoundation001@gmail.com
+Message-Id: <20210703115212.1313E1875542@correo.hdv.gov.co>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-OMAP4 has a single McASP instance with single serializer and locked for DIT
-mode.
-To be able to enable the support the following fixes needed:
-- Add the DAT port ranges to the target module's ranges
-- SIDLE mode must be disabled as it is not working with McASP
- most likely module integration issue with McASP
+Hallo,
 
-We can already fill in the op-mode and serial-dir  for McASP as it only
-supports this configuration, but keep the module disabled as there is no
-known device available where it is used.
+ Sie haben eine Spende von 2.800.000,00 USD. Ich gewann die amerikanische L=
+otterie im Wert von 343 Millionen US-Dollar in Amerika und spendete einen T=
+eil davon an f=FCnf gl=FCckliche Menschen und Wohlt=E4tigkeitsorganisatione=
+n, die sich an meinen verstorbenen Enkel erinnern, der Anfang April vorzeit=
+ig geboren wurde und nur einen Tag lebte. F=FCr weitere Informationen wende=
+n Sie sich bitte an: callumfoundation001@gmail.com
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
----
- arch/arm/boot/dts/omap4-l4-abe.dtsi | 38 +++++++++++++++--------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
+ =
 
-diff --git a/arch/arm/boot/dts/omap4-l4-abe.dtsi b/arch/arm/boot/dts/omap4-l4-abe.dtsi
-index 8287fdaa526e..a8d66240d17d 100644
---- a/arch/arm/boot/dts/omap4-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4-abe.dtsi
-@@ -186,36 +186,38 @@ mcbsp3: mcbsp@0 {
- 		};
- 
- 		target-module@28000 {			/* 0x40128000, ap 8 08.0 */
-+							/* 0x4012a000, ap 10 0a.0 */
- 			compatible = "ti,sysc-mcasp", "ti,sysc";
- 			reg = <0x28000 0x4>,
- 			      <0x28004 0x4>;
- 			reg-names = "rev", "sysc";
- 			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
--					<SYSC_IDLE_NO>,
--					<SYSC_IDLE_SMART>;
-+					<SYSC_IDLE_NO>;
- 			/* Domains (V, P, C): iva, abe_pwrdm, abe_clkdm */
- 			clocks = <&abe_clkctrl OMAP4_MCASP_CLKCTRL 0>;
- 			clock-names = "fck";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x28000 0x1000>,
--				 <0x49028000 0x49028000 0x1000>;
--
--			/*
--			 * Child device unsupported by davinci-mcasp. At least
--			 * RX path is disabled for omap4, and only DIT mode
--			 * works with no I2S. See also old Android kernel
--			 * omap-mcasp driver for more information.
--			 */
--		};
--
--		target-module@2a000 {			/* 0x4012a000, ap 10 0a.0 */
--			compatible = "ti,sysc";
--			status = "disabled";
--			#address-cells = <1>;
--			#size-cells = <1>;
--			ranges = <0x0 0x2a000 0x1000>,
-+				 <0x49028000 0x49028000 0x1000>,
-+				 <0x2000 0x2a000 0x1000>,
- 				 <0x4902a000 0x4902a000 0x1000>;
-+
-+			mcasp0: mcasp@0 {
-+				compatible = "ti,omap4-mcasp-audio";
-+				reg = <0x0 0x2000>,
-+				      <0x4902a000 0x1000>;	/* L3 data port */
-+				reg-names = "mpu","dat";
-+				interrupts = <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupt-names = "tx";
-+				dmas = <&sdma 8>;
-+				dma-names = "tx";
-+				clocks = <&abe_clkctrl OMAP4_MCASP_CLKCTRL 0>;
-+				clock-names = "fck";
-+				op-mode = <1>;	/* MCASP_DIT_MODE */
-+				serial-dir = < 1 >; /* 1 TX serializers */
-+				status = "disabled";
-+			};
- 		};
- 
- 		target-module@2e000 {			/* 0x4012e000, ap 12 0c.0 */
--- 
-2.32.0
 
+Mit freundlichen Gr=FC=DFen
+Frau Lerynne West
