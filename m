@@ -2,92 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 895123C23DC
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Jul 2021 14:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E08953C2400
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Jul 2021 15:08:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231285AbhGINCl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 9 Jul 2021 09:02:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39262 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231252AbhGINCl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 9 Jul 2021 09:02:41 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D500BC0613DD
-        for <linux-omap@vger.kernel.org>; Fri,  9 Jul 2021 05:59:56 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id n14so23080860lfu.8
-        for <linux-omap@vger.kernel.org>; Fri, 09 Jul 2021 05:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=SWmHBZLdC5NZNQ2ScKEe+hKqBEvH9WBA7y1IwIcat+U=;
-        b=SHs4ajRZPu2SAknqb5pOh0a0zu4Lp06WJUSpv7ADlKwmF7m/CptwMMYT9xq04oL566
-         VoGvhT0fw2oLBzGQwRAnhOsze61h0MZAvfFecMaLVnksj1+a5P3v6S6lvvONxb+H5GoP
-         265yXNX+KL+xDk9KuFZM7WRBZq6OZ2bnt2pvyhuMrmXFa0LRB3yImNeRw7rSFCfCNZA7
-         ydtOjPBLyYR5Lcvxuu1gzQZ3OTC2PygNq7uQC8cmVZdB1KmBMe4icTZDVddn3fBOZw8k
-         O16hf501P1n34XxWHvXp+BpjLsCd+A7IWDdYE5WFjXKpwpk4jlNPO6AuzbDymCnqWF3k
-         U6xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=SWmHBZLdC5NZNQ2ScKEe+hKqBEvH9WBA7y1IwIcat+U=;
-        b=HVtcXhEZQrZ39Yl01DkGZIhnS6fs2FL/rihc8w/ZPJuPDk+G33DCJJoTTzxQUsWhnN
-         62CgpEMYtVwt+Via0fcm/9+BfKj6fZFQ2Ad9qdXuR+cEBSa9apY9hoGgbIeDORHKY5+Q
-         L8DiOCqFTFnKIm3arSEz2ymgdddmjjPEr7g+ddUzYnnGt2quY5VirRA8CeAv4wKJSzA6
-         GJkUsTBC7ogHSCtMbLEpDik7iuAi/7uWuJyujmxGvfUPurJLGC7s5OKyUa7+q0HvrdVm
-         Oa0qBh+iwKogAixi17NTXB2mUs5yOAd9Ua5Jr6ODs2PeFqYKiOQQ9LYSfc+2drpAFLm2
-         nv9w==
-X-Gm-Message-State: AOAM533nv9eBKwOfe38B/gWUFw9H62ljzOUWWuKR1l3b5rKa6D3UmsUj
-        fFHCKp93j441EAgQ1DM3lA4=
-X-Google-Smtp-Source: ABdhPJxgALEChnkxIOwqkPMPhicimI9FDt604TMi871X8mCspd86mTWsO5netvQY66sQRvBUiNMgMA==
-X-Received: by 2002:a05:6512:1327:: with SMTP id x39mr29651277lfu.37.1625835595239;
-        Fri, 09 Jul 2021 05:59:55 -0700 (PDT)
-Received: from [10.0.0.40] (91-155-111-71.elisa-laajakaista.fi. [91.155.111.71])
-        by smtp.gmail.com with ESMTPSA id a26sm463370lfr.58.2021.07.09.05.59.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Jul 2021 05:59:54 -0700 (PDT)
-Subject: Re: [PATCH v2 0/5] ASoC: ti: davinci-mcasp: Fix the DIT mode and
- OMAP4 support
-To:     Mark Brown <broonie@kernel.org>, Tony Lindgren <tony@atomide.com>
-Cc:     alsa-devel@alsa-project.org, lgirdwood@gmail.com,
-        linux-omap@vger.kernel.org, hns@goldelico.com
-References: <20210705194249.2385-1-peter.ujfalusi@gmail.com>
- <20210707173245.GK4394@sirena.org.uk>
- <b800e9ff-c8dc-ca09-8b2d-a750f05edb12@gmail.com>
- <YOftKVAsRaxtEY8n@atomide.com> <20210709124004.GB4112@sirena.org.uk>
-From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
-Message-ID: <50098bbb-089c-298c-1370-07179103706b@gmail.com>
-Date:   Fri, 9 Jul 2021 15:59:57 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S231572AbhGINLI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 9 Jul 2021 09:11:08 -0400
+Received: from new1-smtp.messagingengine.com ([66.111.4.221]:44841 "EHLO
+        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231383AbhGINLG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 9 Jul 2021 09:11:06 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 0CA31580370;
+        Fri,  9 Jul 2021 09:08:23 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Fri, 09 Jul 2021 09:08:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=JqsHIrzFyqFsXpqukbb6fnHV71l
+        LicR7frv2ksoQz6s=; b=Ml8PAQBlhRItczTpS07ta+GO0TJ1x4l5hpnx4MoSnB2
+        SA70l+1ZQQODEs/HuDADnD3+O2jqv8NZK0BcGAOGr16ITUCtgNdY4pm0OYxn/KHZ
+        qfwuwAGpsIihv4joY3Lkgqe4kfLLB9reU5yy38sPHQHPlIQZ0TxZ8goC/8PHIf9X
+        e6CVJRdQkgSNZthHNbQetQygGdL49heGGzY2K1Qr9GKOgqa5+VqeradeoAUMoBdL
+        9Cv78zO7lbdvs2redPBzAWFvxnEJVkfs4B3eUfZB5rzmjLRxgwHnsG3NkieowclO
+        qw4Pc3XMbOHTmqlv/qV+QQBDFRe/rR3DisrYxxwxzug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=JqsHIr
+        zFyqFsXpqukbb6fnHV71lLicR7frv2ksoQz6s=; b=GDeE7tatxjM4dJP+WlQadO
+        EcYjsuNA3vWeaObPbHthaevM9memLtWGgZwSqXhJtqu3zN0izFp9DC56IXSX+0Ft
+        9U4MRVdd82c2amujiVDpEYs3PDEYI1WVspYpj0DpUcxMJj6a9X+PpsUmY2YwXxbi
+        7Tp48/Rf2I/+8FZo3aDCJSb+Zj0a5HkRRqNu9MnnVU/51k4UW2QfWFJNMFta2G3L
+        g+2bQQ+PGF0xQl9LWWXa4Qlvv7YH5L4Yz7smXpjQnLeVxwBLPpBRLeBjFPoZqTbp
+        FmLVo5d5kIn9AQxTUQ9d+QHUjEohqUai+bL7Wb0nnrLBfD3bnJ5e1ZRjOrc6wv2w
+        ==
+X-ME-Sender: <xms:RkroYJEKL_aKFQewa8wNFIVZVpuIhBFuRWdXsvAAn0CZQXtVYh-esQ>
+    <xme:RkroYOXhJ9mwfQ_xMel0uuX6xsGIH2AIu9V_ol9ZLy1LXQvwW6Buv1G4032ha0vIc
+    kPIAmPd3WXq7w>
+X-ME-Received: <xmr:RkroYLJEaxdSlIlgV1c6YC8qDMXLfCNjcU4iz2w-VdLScMTtHuPqn_1AnjoMcftvwEJs1YH8lmydfp4kdWsDm9LLGQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrtdeigdehkecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepueelledthe
+    ekleethfeludduvdfhffeuvdffudevgeehkeegieffveehgeeftefgnecuffhomhgrihhn
+    pehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:RkroYPGXX03oNednvqiq4BVHNNxBRflIA-rrEyvEAKAlbGunb8tWXg>
+    <xmx:RkroYPX7pSAPWYI-sGzsufbeL82O6ZvJpFYtvTwwmGbWcM3sKeJTVA>
+    <xmx:RkroYKMBzUNgYMNyM7HC1N9uri_22UtuptlGC04iLPDSCPsUcfugBw>
+    <xmx:R0roYAsOUYCdY_8geHZUCQmwhE9_rgSRpostuVL6hoy98SE_hcD01w>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 9 Jul 2021 09:08:22 -0400 (EDT)
+Date:   Fri, 9 Jul 2021 15:08:19 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        afzal mohammed <afzal.mohd.ma@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Keerthy <j-keerthy@ti.com>, Tero Kristo <kristo@kernel.org>
+Subject: Re: [Backport for 4.19.y PATCH 1/4] ARM: OMAP: replace setup_irq()
+ by request_irq()
+Message-ID: <YOhKQ3khlGlf/5D6@kroah.com>
+References: <20210709073745.13916-1-tony@atomide.com>
 MIME-Version: 1.0
-In-Reply-To: <20210709124004.GB4112@sirena.org.uk>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210709073745.13916-1-tony@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 09/07/2021 15:40, Mark Brown wrote:
-> On Fri, Jul 09, 2021 at 09:31:05AM +0300, Tony Lindgren wrote:
+On Fri, Jul 09, 2021 at 10:37:42AM +0300, Tony Lindgren wrote:
+> From: afzal mohammed <afzal.mohd.ma@gmail.com>
 > 
->>> The ASoC patches are not affected by this, it is just that we need to
->>> block SIDLE mode in a different way than how I did it in the last patch.
+> commit b75ca5217743e4d7076cf65e044e88389e44318d upstream.
 > 
->>> I'll take a look on how to implement the needed quirk for the McASP
->>> module, then I can send the dts+ti-sysc patch to linux-omap.
+> request_irq() is preferred over setup_irq(). Invocations of setup_irq()
+> occur after memory allocators are ready.
 > 
->> OK sounds good to me.
+> Per tglx[1], setup_irq() existed in olden days when allocators were not
+> ready by the time early interrupts were initialized.
 > 
-> So should I queue the ASoC patches and then let the DT patches go via
-> Tony's tree?
+> Hence replace setup_irq() by request_irq().
+> 
+> [1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
+> 
 
-Yes, please. I don't know when I will have time to revisit the DT part.
+ALl now queued up, thanks.
 
--- 
-Péter
+greg k-h
