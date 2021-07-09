@@ -2,66 +2,169 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B8563C1F5A
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Jul 2021 08:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FE1E3C2012
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Jul 2021 09:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229954AbhGIGdw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 9 Jul 2021 02:33:52 -0400
-Received: from muru.com ([72.249.23.125]:39238 "EHLO muru.com"
+        id S231233AbhGIHkf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 9 Jul 2021 03:40:35 -0400
+Received: from muru.com ([72.249.23.125]:39292 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229887AbhGIGdw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 9 Jul 2021 02:33:52 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 5E2BC80AF;
-        Fri,  9 Jul 2021 06:31:22 +0000 (UTC)
-Date:   Fri, 9 Jul 2021 09:31:05 +0300
+        id S230121AbhGIHke (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 9 Jul 2021 03:40:34 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 6928F8050;
+        Fri,  9 Jul 2021 07:38:04 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     =?utf-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>
-Cc:     Mark Brown <broonie@kernel.org>, alsa-devel@alsa-project.org,
-        lgirdwood@gmail.com, linux-omap@vger.kernel.org, hns@goldelico.com
-Subject: Re: [PATCH v2 0/5] ASoC: ti: davinci-mcasp: Fix the DIT mode and
- OMAP4 support
-Message-ID: <YOftKVAsRaxtEY8n@atomide.com>
-References: <20210705194249.2385-1-peter.ujfalusi@gmail.com>
- <20210707173245.GK4394@sirena.org.uk>
- <b800e9ff-c8dc-ca09-8b2d-a750f05edb12@gmail.com>
+To:     stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        afzal mohammed <afzal.mohd.ma@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Keerthy <j-keerthy@ti.com>, Tero Kristo <kristo@kernel.org>
+Subject: [Backport for 4.19.y PATCH 1/4] ARM: OMAP: replace setup_irq() by request_irq()
+Date:   Fri,  9 Jul 2021 10:37:42 +0300
+Message-Id: <20210709073745.13916-1-tony@atomide.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b800e9ff-c8dc-ca09-8b2d-a750f05edb12@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Péter Ujfalusi <peter.ujfalusi@gmail.com> [210708 18:44]:
-> Hi Mark, Tony,
-> 
-> On 07/07/2021 20:32, Mark Brown wrote:
-> > On Mon, Jul 05, 2021 at 10:42:44PM +0300, Peter Ujfalusi wrote:
-> > 
-> >> Mark, Tony:
-> >> The ASoC and dts patches can go via separate tree I felt that it is better if
-> >> they are together, at least initially.
-> > 
-> > I'm happy to take both through ASoC?  The patches look fine to me.
-> 
-> Tony prefers if I leave the TRM documented (but not working) Smart-idle
-> mode intact in DT for the McASP and add some quirk via
-> drivers/bus/ti-sysc.c.
-> Tony, can you confirm it?
+From: afzal mohammed <afzal.mohd.ma@gmail.com>
 
-Yes let's keep the smart-idle in dts if it's documented in the TRM. And
-let's just add a line to drivers/bus/ti-sysc.c for a McASP quirk.
+commit b75ca5217743e4d7076cf65e044e88389e44318d upstream.
 
-> The ASoC patches are not affected by this, it is just that we need to
-> block SIDLE mode in a different way than how I did it in the last patch.
-> 
-> I'll take a look on how to implement the needed quirk for the McASP
-> module, then I can send the dts+ti-sysc patch to linux-omap.
+request_irq() is preferred over setup_irq(). Invocations of setup_irq()
+occur after memory allocators are ready.
 
-OK sounds good to me.
+Per tglx[1], setup_irq() existed in olden days when allocators were not
+ready by the time early interrupts were initialized.
 
-Regards,
+Hence replace setup_irq() by request_irq().
 
-Tony
+[1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
+
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Tero Kristo <kristo@kernel.org>
+Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/mach-omap1/pm.c       | 13 ++++++-------
+ arch/arm/mach-omap1/time.c     | 10 +++-------
+ arch/arm/mach-omap1/timer32k.c | 10 +++-------
+ arch/arm/mach-omap2/timer.c    | 11 +++--------
+ 4 files changed, 15 insertions(+), 29 deletions(-)
+
+diff --git a/arch/arm/mach-omap1/pm.c b/arch/arm/mach-omap1/pm.c
+--- a/arch/arm/mach-omap1/pm.c
++++ b/arch/arm/mach-omap1/pm.c
+@@ -610,11 +610,6 @@ static irqreturn_t omap_wakeup_interrupt(int irq, void *dev)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static struct irqaction omap_wakeup_irq = {
+-	.name		= "peripheral wakeup",
+-	.handler	= omap_wakeup_interrupt
+-};
+-
+ 
+ 
+ static const struct platform_suspend_ops omap_pm_ops = {
+@@ -627,6 +622,7 @@ static const struct platform_suspend_ops omap_pm_ops = {
+ static int __init omap_pm_init(void)
+ {
+ 	int error = 0;
++	int irq;
+ 
+ 	if (!cpu_class_is_omap1())
+ 		return -ENODEV;
+@@ -670,9 +666,12 @@ static int __init omap_pm_init(void)
+ 	arm_pm_idle = omap1_pm_idle;
+ 
+ 	if (cpu_is_omap7xx())
+-		setup_irq(INT_7XX_WAKE_UP_REQ, &omap_wakeup_irq);
++		irq = INT_7XX_WAKE_UP_REQ;
+ 	else if (cpu_is_omap16xx())
+-		setup_irq(INT_1610_WAKE_UP_REQ, &omap_wakeup_irq);
++		irq = INT_1610_WAKE_UP_REQ;
++	if (request_irq(irq, omap_wakeup_interrupt, 0, "peripheral wakeup",
++			NULL))
++		pr_err("Failed to request irq %d (peripheral wakeup)\n", irq);
+ 
+ 	/* Program new power ramp-up time
+ 	 * (0 for most boards since we don't lower voltage when in deep sleep)
+diff --git a/arch/arm/mach-omap1/time.c b/arch/arm/mach-omap1/time.c
+--- a/arch/arm/mach-omap1/time.c
++++ b/arch/arm/mach-omap1/time.c
+@@ -155,15 +155,11 @@ static irqreturn_t omap_mpu_timer1_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static struct irqaction omap_mpu_timer1_irq = {
+-	.name		= "mpu_timer1",
+-	.flags		= IRQF_TIMER | IRQF_IRQPOLL,
+-	.handler	= omap_mpu_timer1_interrupt,
+-};
+-
+ static __init void omap_init_mpu_timer(unsigned long rate)
+ {
+-	setup_irq(INT_TIMER1, &omap_mpu_timer1_irq);
++	if (request_irq(INT_TIMER1, omap_mpu_timer1_interrupt,
++			IRQF_TIMER | IRQF_IRQPOLL, "mpu_timer1", NULL))
++		pr_err("Failed to request irq %d (mpu_timer1)\n", INT_TIMER1);
+ 	omap_mpu_timer_start(0, (rate / HZ) - 1, 1);
+ 
+ 	clockevent_mpu_timer1.cpumask = cpumask_of(0);
+diff --git a/arch/arm/mach-omap1/timer32k.c b/arch/arm/mach-omap1/timer32k.c
+--- a/arch/arm/mach-omap1/timer32k.c
++++ b/arch/arm/mach-omap1/timer32k.c
+@@ -148,15 +148,11 @@ static irqreturn_t omap_32k_timer_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static struct irqaction omap_32k_timer_irq = {
+-	.name		= "32KHz timer",
+-	.flags		= IRQF_TIMER | IRQF_IRQPOLL,
+-	.handler	= omap_32k_timer_interrupt,
+-};
+-
+ static __init void omap_init_32k_timer(void)
+ {
+-	setup_irq(INT_OS_TIMER, &omap_32k_timer_irq);
++	if (request_irq(INT_OS_TIMER, omap_32k_timer_interrupt,
++			IRQF_TIMER | IRQF_IRQPOLL, "32KHz timer", NULL))
++		pr_err("Failed to request irq %d(32KHz timer)\n", INT_OS_TIMER);
+ 
+ 	clockevent_32k_timer.cpumask = cpumask_of(0);
+ 	clockevents_config_and_register(&clockevent_32k_timer,
+diff --git a/arch/arm/mach-omap2/timer.c b/arch/arm/mach-omap2/timer.c
+--- a/arch/arm/mach-omap2/timer.c
++++ b/arch/arm/mach-omap2/timer.c
+@@ -92,12 +92,6 @@ static irqreturn_t omap2_gp_timer_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static struct irqaction omap2_gp_timer_irq = {
+-	.name		= "gp_timer",
+-	.flags		= IRQF_TIMER | IRQF_IRQPOLL,
+-	.handler	= omap2_gp_timer_interrupt,
+-};
+-
+ static int omap2_gp_timer_set_next_event(unsigned long cycles,
+ 					 struct clock_event_device *evt)
+ {
+@@ -383,8 +377,9 @@ static void __init omap2_gp_clockevent_init(int gptimer_id,
+ 				     &clockevent_gpt.name, OMAP_TIMER_POSTED);
+ 	BUG_ON(res);
+ 
+-	omap2_gp_timer_irq.dev_id = &clkev;
+-	setup_irq(clkev.irq, &omap2_gp_timer_irq);
++	if (request_irq(clkev.irq, omap2_gp_timer_interrupt,
++			IRQF_TIMER | IRQF_IRQPOLL, "gp_timer", &clkev))
++		pr_err("Failed to request irq %d (gp_timer)\n", clkev.irq);
+ 
+ 	__omap_dm_timer_int_enable(&clkev, OMAP_TIMER_INT_OVERFLOW);
+ 
+-- 
+2.32.0
