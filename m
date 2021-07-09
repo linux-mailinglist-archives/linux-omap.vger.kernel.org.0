@@ -2,32 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C25CB3C2B03
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Jul 2021 23:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCCD93C2AFB
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Jul 2021 23:48:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229960AbhGIV5E (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 9 Jul 2021 17:57:04 -0400
-Received: from vern.gendns.com ([98.142.107.122]:33554 "EHLO vern.gendns.com"
+        id S230432AbhGIVv3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 9 Jul 2021 17:51:29 -0400
+Received: from vern.gendns.com ([98.142.107.122]:32986 "EHLO vern.gendns.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229506AbhGIV5D (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 9 Jul 2021 17:57:03 -0400
+        id S230406AbhGIVv3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 9 Jul 2021 17:51:29 -0400
+X-Greylist: delayed 318 seconds by postgrey-1.27 at vger.kernel.org; Fri, 09 Jul 2021 17:51:29 EDT
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=lechnology.com; s=default; h=Content-Transfer-Encoding:MIME-Version:
         Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=XJWUPiVu14BdcQnJM6HOPzBQv2p19vYifjCqryUhk2s=; b=SoJli1E7BQgpI0HetpTUEtjL6P
-        gVsxLxEb2jQpN685dPPWQh118wwkaTgKe+r2BckwDrFcQCC0GV1VyS9vMcPNUTyPUqyByMFVk66hv
-        Mvsfq5r+6rcjnsye/yoOEZPdnBMWKl2c1KcuqVxSk8PPtCMeKY9rGg+iN8cR8WDPoCLri9GU/DpgC
-        McrBs9olyME6ks2foD6AN8FKtSd8i9C4Zp828tKefwO3HGBKbMXJqCUh0cd2LweQLcsvErEVmi/hT
-        nFqxeJZLXrW/xYbbjnrLMigWwFheJZ1CF1l/zd7gLErFl2Noo+wMYNDl0M6RfbFHe0qWs4xNk+4GI
-        nu0RIvpA==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:57664 helo=freyr.lechnology.com)
+        bh=m32zTXa/LG8Zd+u71jVaC79OxQRSBRvFS6uyuE7XYfo=; b=b0Hnpb2X0Re17ckyNzq9cBKEVb
+        2nnHpwQFIgH/6r+LtJ/atvp6e5vV635ED8gjH+HYN3cZPvTt6xhXla0Uv1SBA+suBErrKbfs1na3P
+        2yrshxYd20tPBG5gLlacmxW8ZkYFjXPAK2XFzubhI1l3ED7z48bpCU0Wi8BGPR71Q+tcCfy3E4T/j
+        xLw/lUVpgq1Oozy5TNfToKeL6Nw2ohYMY7ZupJiqdtA1Xgf3A4D/yWoUPqxeg5BEw21pIcs0dguqU
+        PhtZA2rJDpEc0iwzU/MERG91bsc6R1Ji16mrISskqOaHR1qMZK/k/eNcwhXoBWjNignPoRXQ3vX8f
+        +qMhK0qA==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:57892 helo=freyr.lechnology.com)
         by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         (Exim 4.94.2)
         (envelope-from <david@lechnology.com>)
-        id 1m1yH9-00C91x-NQ; Fri, 09 Jul 2021 17:43:25 -0400
+        id 1m1yMI-00CA0i-Fo; Fri, 09 Jul 2021 17:48:44 -0400
 From:   David Lechner <david@lechnology.com>
 To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>
@@ -36,9 +37,9 @@ Cc:     David Lechner <david@lechnology.com>,
         Robert Nelson <robertcnelson@gmail.com>,
         Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH] ARM: dts: am335x-boneblue: add gpio-line-names
-Date:   Fri,  9 Jul 2021 16:42:30 -0500
-Message-Id: <20210709214230.1581808-1-david@lechnology.com>
+Subject: [PATCH v2] ARM: dts: am335x-boneblue: add gpio-line-names
+Date:   Fri,  9 Jul 2021 16:47:06 -0500
+Message-Id: <20210709214706.1583984-1-david@lechnology.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -61,6 +62,10 @@ are based on the BeagleBone Blue rev A2 schematic.
 
 Signed-off-by: David Lechner <david@lechnology.com>
 ---
+
+v2 changes:
+- fixed typo in EQEP numbering
+
  arch/arm/boot/dts/am335x-boneblue.dts | 143 +++++++++++++++++++++++++-
  1 file changed, 142 insertions(+), 1 deletion(-)
 
@@ -82,8 +87,8 @@ index 69acaf4ea0f3..90e8b7d63f79 100644
 +		"I2C1_SCL", /* A16 */
 +		"MMC0_CD", /* C15 */
 +		"SPI1_SS2", /* C18 */
-+		"EQEP_2A", /* V2 */
-+		"EQEP_2B", /* V3 */
++		"EQEP_1A", /* V2 */
++		"EQEP_1B", /* V3 */
 +		"MDIR_2B", /* V4 */
 +		"BATT_LED_2", /* T5 */
 +		"I2C2_SDA", /* D18 */
@@ -122,8 +127,8 @@ index 69acaf4ea0f3..90e8b7d63f79 100644
 +		"DCAN1_RX", /* E17 */
 +		"UART0_RX", /* E15 */
 +		"UART0_TX", /* E16 */
-+		"EQEP_3A", /* T12 */
-+		"EQEP_3B", /* R12 */
++		"EQEP_2A", /* T12 */
++		"EQEP_2B", /* R12 */
 +		"PRU_E_A", /* V13 */
 +		"PRU_E_B", /* U13 */
 +		"MDIR_2A", /* R13 */
