@@ -2,92 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6053C2B01
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Jul 2021 23:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C365B3C5AFD
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jul 2021 13:05:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229792AbhGIV4i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 9 Jul 2021 17:56:38 -0400
-Received: from vern.gendns.com ([98.142.107.122]:33480 "EHLO vern.gendns.com"
+        id S234631AbhGLKuj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Jul 2021 06:50:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35480 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229506AbhGIV4i (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 9 Jul 2021 17:56:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=/Dddjv2tUyk98nV/3b27ic8yk/7On4PwpqZUZRCFkA8=; b=q6MPWvT4nG5euNmPZ64fqBiwRm
-        7tc1FZonw+5/4MB19dnQtEf4VoUtT7PHO4YDxWqfucBxoIWksndCXvTTR+mwilGlhke6rW7mRKavp
-        /qU3QOL8Q/gdneAp33DYn0mrYMwsTOpJol5uHwgo00sBNi8Bda3nzA9wFf92E9UyfXInYP/fSMV8K
-        M6djUOthxdm+CodZamR13DVmizxv2vHSudAr6h1UMkWfPkf6AjVdEIkq7/tWSAn62+bX2rlgPoA18
-        m9WccSa5kDBb5JNCA3jlJ/416dXrI8YN63oE0ObH2pQBKFIwyZMZp/8i1WTVjg/pNcoJZ+KnTCfXu
-        X8BPLrzg==;
-Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:57830 helo=[192.168.0.134])
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <david@lechnology.com>)
-        id 1m1yLv-00C9xh-37; Fri, 09 Jul 2021 17:48:20 -0400
-Subject: Re: [PATCH] ARM: dts: am335x-boneblue: add gpio-line-names
-To:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     Drew Fustini <drew@beagleboard.org>,
-        Robert Nelson <robertcnelson@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <20210709214230.1581808-1-david@lechnology.com>
-From:   David Lechner <david@lechnology.com>
-Message-ID: <ee0e8beb-e128-7d6f-de34-f0adabe3c7b9@lechnology.com>
-Date:   Fri, 9 Jul 2021 16:48:19 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S234561AbhGLKu0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 12 Jul 2021 06:50:26 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4374561156;
+        Mon, 12 Jul 2021 10:47:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626086857;
+        bh=5PffPv5m03zjdC6dKPsQKTxZb3xwC3EG8J4GrquSg/4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=TFJeMjffarDB8EMjr4V5bym8i3Qv3YX433R8f5mlPxa9/1fpjhLDELX0n2/uVdgAw
+         VIKghoFvKIabOKzsKUZ9FuAEqGERaxq/ZBH7giyCCCX4Yjs4opr93Gv7h7pW+q1fpn
+         FktncyLWGIlSVywjMfEuJVXi48k+6hz9cFof1X4YoJe6h54w7ModDD1KVybWibhFz+
+         ktVOnNL3GVfN8hkqGmBvFZcg2nZrF7LUSo6MPB9YtbLmzuq7fUZjckmJQKKkOZM/gi
+         JfMb5HS5xJkKU02Yyfi7IhdJd4W7xDMGFLnI8VEzlxQfCtBXA4qKnqPpo8azvmxmtw
+         4E5to9MyWAvIQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] ASoC: ti: delete some dead code in omap_abe_probe()
+Date:   Mon, 12 Jul 2021 11:45:56 +0100
+Message-Id: <162608623151.3192.14557258432919824298.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <YNxTHXz58dhgbFtG@mwanda>
+References: <YNxTHXz58dhgbFtG@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20210709214230.1581808-1-david@lechnology.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 7/9/21 4:42 PM, David Lechner wrote:
-> This adds gpio-line-names to the BeagleBone Blue DTS. The line names
-> are based on the BeagleBone Blue rev A2 schematic.
-> 
-> Signed-off-by: David Lechner <david@lechnology.com>
-> ---
->   arch/arm/boot/dts/am335x-boneblue.dts | 143 +++++++++++++++++++++++++-
->   1 file changed, 142 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/am335x-boneblue.dts b/arch/arm/boot/dts/am335x-boneblue.dts
-> index 69acaf4ea0f3..90e8b7d63f79 100644
-> --- a/arch/arm/boot/dts/am335x-boneblue.dts
-> +++ b/arch/arm/boot/dts/am335x-boneblue.dts
-> @@ -435,12 +435,153 @@ &dcan1 {
->   	status = "okay";
->   };
->   
-> +&gpio0 {
-> +	gpio-line-names =
-> +		"UART3_CTS", /* M17 */
-> +		"UART3_RTS", /* M18 */
-> +		"UART2_RX", /* A17 */
-> +		"UART2_TX", /* B17 */
-> +		"I2C1_SDA", /* B16 */
-> +		"I2C1_SCL", /* A16 */
-> +		"MMC0_CD", /* C15 */
-> +		"SPI1_SS2", /* C18 */
-> +		"EQEP_2A", /* V2 */
-> +		"EQEP_2B", /* V3 */
+On Wed, 30 Jun 2021 14:18:53 +0300, Dan Carpenter wrote:
+> This code checks "priv->mclk_freq" twice and the second check is not
+> required.  The code is left over from when removed support for legacy
+> boot.
 
-Found a typo already. Sending v2 patch...
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: ti: delete some dead code in omap_abe_probe()
+      commit: 3666a8f820075e99539ab50687e80fadf997822f
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
