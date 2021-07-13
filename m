@@ -2,205 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 639453C6C04
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Jul 2021 10:31:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 030EB3C6CB5
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Jul 2021 10:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234595AbhGMIea (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Jul 2021 04:34:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45674 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234157AbhGMIea (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 13 Jul 2021 04:34:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 108EE6127C;
-        Tue, 13 Jul 2021 08:31:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626165100;
-        bh=vCzKuNoKiBxSGIGRN6demDaGtX6onzKhSozcN6yvzxI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=WTpIf7OCkrQI0Psl1TQDpx3ah/ff9bEvdnD8KZIITUb16hNuzoLtLaJkLz0Zgq78I
-         voQW9beo0TC1xcjrumCclhy8bHBiVv27eGbKg31yKydTrD1DV7HzI2Q+NEev5je2AP
-         fjfKpS3lHv0de56cycngELdDiVNqelcEwZIXctkIiRCE6k5j/BBDVh2DVZPgAJldJq
-         D+p/nT9gLxqaLG76VvUN/2CgiSdy/v1WYe+ZJk9wsYJyTKEJHR/Q0Bke7fGB86ztxC
-         Ik1mIgthNrw8SyAuJJWVt3DoKfiy3OMr7NnGjrlN6xLbXcejghwiIZYDzrkkQXRFUi
-         SY8TbsdogwJJw==
-Date:   Tue, 13 Jul 2021 10:31:27 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     linuxarm@huawei.com, mauro.chehab@huawei.com,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Greentime Hu <greentime.hu@sifive.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Jaehoon Chung <jh80.chung@samsung.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Jonathan Chocron <jonnyc@amazon.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        devicetree@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: PCI: designware-pcie.txt: convert
- it to yaml
-Message-ID: <20210713103127.3891c8e9@coco.lan>
-In-Reply-To: <20210712174504.GA2158814@robh.at.kernel.org>
-References: <cover.1625838920.git.mchehab+huawei@kernel.org>
-        <fa846c83165894accdac1715c3fddfbdcb060958.1625838920.git.mchehab+huawei@kernel.org>
-        <20210712174504.GA2158814@robh.at.kernel.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+        id S234728AbhGMI5X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Jul 2021 04:57:23 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:43876 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234599AbhGMI5X (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Jul 2021 04:57:23 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 16D8sMRh020569;
+        Tue, 13 Jul 2021 03:54:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1626166462;
+        bh=VdegMj0ebwhk+tdoHioq3OJiHwcoi55JYHegIa/B9Ao=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=BSzKhFmzc3zBjcRF5UvE/hgTvawI4K0ES2gKNcRkMPVTGZVjcv/jIAODFe3sC4HJZ
+         UBcDi2if8Bvu1GNPePFMwvUWR23pz++c9IZEQEaFJUU4VOKMI2+LN5BJ1YsEUiZTEa
+         Ernnn9JCaB7Cgs6ZyU0Hczwm6cACj94SoiPASV88=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 16D8sMC9018419
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 13 Jul 2021 03:54:22 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 13
+ Jul 2021 03:54:22 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Tue, 13 Jul 2021 03:54:22 -0500
+Received: from [10.250.234.148] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 16D8sJWf050564;
+        Tue, 13 Jul 2021 03:54:19 -0500
+Subject: Re: [PATCH] serial: 8250: 8250_omap: Fix possible interrupt storm
+To:     <linux-serial@vger.kernel.org>
+CC:     Jan Kiszka <jan.kiszka@siemens.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20210511151955.28071-1-vigneshr@ti.com>
+ <YJ008MjjewRUTn9Z@kroah.com> <YLCCJzkkB4N7LTQS@atomide.com>
+ <e5b35370-bf2d-7295-e2fd-9aee5bbc3296@ti.com>
+ <0ad948ac-f669-3d6d-5eca-4ca48d47d6a3@siemens.com>
+ <56c5d73f-741c-2643-1c79-6dc13ebb05c7@ti.com>
+ <YOylnHudkwcHHEeZ@surfacebook.localdomain>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <0ae7e313-1ed7-f1be-e8a7-edd1286277a5@ti.com>
+Date:   Tue, 13 Jul 2021 14:24:18 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <YOylnHudkwcHHEeZ@surfacebook.localdomain>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Em Mon, 12 Jul 2021 11:45:04 -0600
-Rob Herring <robh@kernel.org> escreveu:
-
-> On Fri, Jul 09, 2021 at 03:57:42PM +0200, Mauro Carvalho Chehab wrote:
-> > Convert the file to DT schema.
-> > 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
 
-> > diff --git a/Documentation/devicetree/bindings/pci/samsung,exynos-pcie.yaml b/Documentation/devicetree/bindings/pci/samsung,exynos-pcie.yaml
-> > index 1810bf722350..3f49c8017c7a 100644
-> > --- a/Documentation/devicetree/bindings/pci/samsung,exynos-pcie.yaml
-> > +++ b/Documentation/devicetree/bindings/pci/samsung,exynos-pcie.yaml
-
-
-> > +  reg:
-> > +    description: |
-> > +      It should contain Data Bus Interface (dbi, dbi2) registers for all
-> > +      versions.
+On 7/13/21 1:57 AM, andy@surfacebook.localdomain wrote:
+> Tue, Jun 22, 2021 at 11:53:38AM +0530, Vignesh Raghavendra kirjoitti:
+>> On 6/22/21 11:45 AM, Jan Kiszka wrote:
+>>>>> Vignesh, it seems this quirk needs some soc specific flag added to
+>>>>> it maybe? Or maybe UART_OMAP_RX_LVL register is not available for
+>>>>> all the SoCs?
+>>>>>
+>>>> Yes indeed :(
+>>>>
+>>>>> I think it's best to drop this patch until the issues are resolved,
+>>>>> also there are some open comments above that might be answered by
+>>>>> limiting this quirk to a specific range of SoCs :)
+>>>>>
+>>>> Oops, I did test patch AM33xx assuming its equivalent to OMAP3, but UART
+>>>> IP is quite different. I will respin the patch making sure, workaround
+>>>> applies only to AM65x and K3 SoCs.
+>>>>
+>>>> Regards
+>>>> Vignesh
+>>>>
+>>> What's the status here for AM65x? The issue remains present on that
+>>> platform, and I was hoping to see a quick follow up that limit the fix
+>>> to that target.
+>>
+>> Sorry for the delay, I am trying to find which other TI SoCs are
+>> affected by this issue. But that exercise will need a bit more time.
+>> Will send a fix to address K3 SoCs like AM65x today/tomo.
 > 
-> Not all versions have dbi2.
+> This all reminds me the very similar issue one found on Intel integrated
+> (Synopsys DesignWare based) UARTs:
 > 
-> > +      For designware cores version < 4.80, contains the configuration
-> > +      address space. For designware core version >= 4.80,
-> > +      contains the configuration and ATU address space.
+
+Hmm, yes, seems like common problem with some 8250 UARTs although not
+all TI SoCs show this behavior even though they all claim 8250 compatible.
+
+> https://lore.kernel.org/linux-serial/20170206233000.3021-1-dianders@chromium.org/
+
+I am not sure if reading UART_LSR is a good idea in the above patch.
+Some flags in LSR register are cleared on read (at least that's the case
+for UARTs on TI SoCs) and thus can result in loss of error/FIFO status
+information.
+
+> https://lore.kernel.org/linux-serial/1440015124-28393-1-git-send-email-california.l.sullivan@intel.com/
 > 
-> config space should always be present. For a brief time (around 2014), 
-> it was not required but has been since. For purposes of the schema, we 
-> can say always required.
-> 
-> ATU is optional in 4.80 or later. 
-> 
-> > +    minItems: 2
-> > +    maxItems: 4
-> > +
-> > +  reg-names:
-> > +    minItems: 2
-> > +    maxItems: 4
-> > +    items:
-> > +      contains:
-> 
-> Drop contains.
-> 
-> > +        enum: [dbi, dbi2, config, atu, addr_space]
 
-This actually generated a warning:
+Looks like this never made it.
 
-/new_devel/v4l/hikey970/Documentation/devicetree/bindings/pci/intel-gw-pcie.example.dt.yaml: pcie@d0e00000: reg-names:2: 'app' is not one of ['dbi', 'dbi2', 'config', 'atu', 'addr_space']
+Given the quirks associated with 8250 UARTs, workarounds would need to
+be tied to specific variants, so I don't know if its possible to
+implement the fix in 8250 core IRQ handler.
 
-I guess it needs to be changed to:
+PS: v2 of $patch is already merged.
 
-	enum: [dbi, dbi2, config, atu, addr_space, app]
-
-or intel-gw-pcie.yaml would require an extra change.
-
-That's said, I didn't find any DTS using compatible = "intel,lgm-pcie",
-but looking at drivers/pci/controller/dwc/pcie-intel-gw.c, it seems
-that this is a mandatory register on such hardware.
-
-> > +
-> > +  num-lanes:
-> > +    $ref: '/schemas/types.yaml#/definitions/uint32'
-> > +    description: |
-> > +      number of lanes to use (this property should be specified unless
-> > +      the link is brought already up in BIOS)
-> > +    maxItems: 1
-> 
-> Drop. Not an array. 'maximum: 16' is needed though pci-bus.yaml may 
-> cover that already.
-
-It seems that num-lanes is not there at pci-bus.yaml - at least not
-at the version I'm using here (2021.7.dev1+ge5f58d415b1d).
-
-
-> > +patternProperties:
-> > +  "pcie?_ep@[0-9a-f]+$":
-> > +    type: object
-> > +    properties:
-> > +      compatible:
-> > +        contains:
-> > +          const: snps,dw-pcie-ep
-> 
-> This doesn't make sense. This is defining a child node of the DW 
-> controller with 'snps,dw-pcie-ep'.
-
-This was an attempt to silence those warnings:
-
-	From schema: /new_devel/v4l/hikey970/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
-/new_devel/v4l/hikey970/Documentation/devicetree/bindings/pci/intel-gw-pcie.example.dt.yaml: pcie@d0e00000: '#address-cells', '#interrupt-cells', '#size-cells', 'bus-range', 'clocks', 'device_type', 'interrupt-map', 'interrupt-map-mask', 'linux,pci-domain', 'max-link-speed', 'phy-names', 'phys', 'ranges', 'reset-assert-ms', 'resets' do not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /new_devel/v4l/hikey970/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
-/new_devel/v4l/hikey970/Documentation/devicetree/bindings/pci/snps,dw-pcie.example.dt.yaml: pcie@dfc00000: '#address-cells', '#interrupt-cells', '#size-cells', 'device_type', 'interrupts', 'ranges' do not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /new_devel/v4l/hikey970/Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
-
-Somehow, dtschema is only accepting 'pinctrl-[0-9]+' regex when parsing 
-examples on this file. I've no idea how to fix it.
-
-As a reference, this is how the examples are now declared:
-
-<snip>
-examples:
-  - |
-    pcie@dfc00000 {
-      compatible = "snps,dw-pcie";
-      reg = <0xdfc00000 0x0001000>, /* IP registers */
-            <0xd0000000 0x0002000>; /* Configuration space */
-      reg-names = "dbi", "config";
-      #address-cells = <3>;
-      #size-cells = <2>;
-      device_type = "pci";
-      ranges = <0x81000000 0 0x00000000 0xde000000 0 0x00010000>,
-               <0x82000000 0 0xd0400000 0xd0400000 0 0x0d000000>;
-      interrupts = <25>, <24>;
-      #interrupt-cells = <1>;
-      num-lanes = <1>;
-    };
-    pcie-ep@dfd00000 {
-      compatible = "snps,dw-pcie-ep";
-      reg = <0xdfc00000 0x0001000>, /* IP registers 1 */
-            <0xdfc01000 0x0001000>, /* IP registers 2 */
-            <0xd0000000 0x2000000>; /* Configuration space */
-      reg-names = "dbi", "dbi2", "addr_space";
-    };
-</snip>
-
-Thanks,
-Mauro
+Regards
+Vignesh
