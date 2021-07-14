@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A80B3C9034
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jul 2021 22:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A15D93C903B
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Jul 2021 22:00:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237138AbhGNTyE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Jul 2021 15:54:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46244 "EHLO mail.kernel.org"
+        id S241014AbhGNTyI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Jul 2021 15:54:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45124 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239120AbhGNTtL (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Jul 2021 15:49:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 963576044F;
-        Wed, 14 Jul 2021 19:44:05 +0000 (UTC)
+        id S240063AbhGNTta (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Jul 2021 15:49:30 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A466A6141A;
+        Wed, 14 Jul 2021 19:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626291846;
-        bh=ZP72MNIhNjEqgn3lAWKRauimmu/FfYaKtcaJ48nayNc=;
+        s=k20201202; t=1626291883;
+        bh=iZXOwNIqvRVUKE7MeSSXOxAuhXS62VInPViWbCCromQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aNjloTgC/S5IuQnUqd1D50zRMW5sArRb/gif9jUnVHTi4SEQ9blpQtukfhreAMO6k
-         oFCnjzZrT4NiJXWYzH+f0oDcLYAUpum+LEtLvLQmYSVGUSzlfbmAOUevZ+90DFhTlu
-         n1tfnJ2SdLtPFkCj3rTcGPPM4p7ZSBL+BecaG1aLVpRFj2ptKGH74RG8KrzKnhgjyO
-         TMnAoPESlmYGi+v4IdXaEiUTrb41hOBZfwE5FDIGBiSDipBz7/qNNJYRBLLphj9GtU
-         IFe9qsSXI2Hy2l8Ten0FTUAYyQTIR3LgvKXdf14f64dG0V114HaMoy340DUZXUkf+d
-         lauI6wXaSZ32A==
+        b=RqsJbgp2xI55gsawECLdmfyUrx9Xw3bcKUjt82wmCz8yDNcPcoG5g7vGb5kP6vFc8
+         dyJsnbzV0yaoOW9rjYPL/wLsup366GctGDOEvGJ6YiVD38swZ70ERk7GPix6TbIMDP
+         wsXD31a//AQrieQqyoBoifZdX8mY22R3LJUlmRFHQqaBXPFpaICeTafmioyt1/bpmt
+         dlTm7Uyh6YzgiTnsGS7E81ZDYXNeVX3GN2g68PulI1zq9YFhPYbdJMmrxCCiBPkM4V
+         JHYSfbA0a2YVUYXN1Uyu0XAZeQ7PcuNGkAgD/sEan3C+d2pChzWlMApkrvGtEcIzzu
+         UZEkJV/O8suNA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Suman Anna <s-anna@ti.com>, Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 41/88] ARM: dts: OMAP2+: Replace underscores in sub-mailbox node names
-Date:   Wed, 14 Jul 2021 15:42:16 -0400
-Message-Id: <20210714194303.54028-41-sashal@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Suman Anna <s-anna@ti.com>, Sasha Levin <sashal@kernel.org>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 66/88] ARM: OMAP2+: Block suspend for am3 and am4 if PM is not configured
+Date:   Wed, 14 Jul 2021 15:42:41 -0400
+Message-Id: <20210714194303.54028-66-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210714194303.54028-1-sashal@kernel.org>
 References: <20210714194303.54028-1-sashal@kernel.org>
@@ -42,210 +42,92 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Suman Anna <s-anna@ti.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 9e7f5ee1137397def6580461e27e5efcb68183ee ]
+[ Upstream commit 093a474ce10d8ea3db3ef2922aca5a38f34bab1b ]
 
-A number of sub-mailbox node names in various OMAP2+ dts files are
-currently using underscores. This is not adhering to the node name
-convention, fix all of these to use hiphens.
+If the PM related modules are not loaded and PM firmware not configured,
+the system suspend fails to resume. Let's fix this by adding initial
+platform_suspend_ops to block suspend and warn about missing modules.
 
-These nodes are already using the prefix mbox, so they will be in
-compliance with the sub-mailbox node name convention being added in
-the OMAP Mailbox YAML binding as well.
+When pm33xx and wkup_m3_ipc have been loaded and m3 coprocessor booted
+with it's firmware, pm33xx sets up working platform_suspend_ops. Note
+that we need to configure at least PM_SUSPEND_STANDBY to have
+suspend_set_ops().
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
+Cc: Dave Gerlach <d-gerlach@ti.com>
+Cc: Suman Anna <s-anna@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am57xx-cl-som-am57x.dts   | 8 ++++----
- arch/arm/boot/dts/dm816x.dtsi               | 2 +-
- arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi  | 6 +++---
- arch/arm/boot/dts/dra72x.dtsi               | 6 +++---
- arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi | 2 +-
- arch/arm/boot/dts/dra74x.dtsi               | 8 ++++----
- arch/arm/boot/dts/omap4-l4.dtsi             | 4 ++--
- arch/arm/boot/dts/omap5-l4.dtsi             | 4 ++--
- 8 files changed, 20 insertions(+), 20 deletions(-)
+ arch/arm/mach-omap2/pm33xx-core.c | 40 +++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-index 39eba2bc36dd..aed81568a297 100644
---- a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-+++ b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-@@ -454,20 +454,20 @@ &sata {
+diff --git a/arch/arm/mach-omap2/pm33xx-core.c b/arch/arm/mach-omap2/pm33xx-core.c
+index 56f2c0bcae5a..bf0d25fd2cea 100644
+--- a/arch/arm/mach-omap2/pm33xx-core.c
++++ b/arch/arm/mach-omap2/pm33xx-core.c
+@@ -8,6 +8,7 @@
  
- &mailbox5 {
- 	status = "okay";
--	mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {
-+	mbox_ipu1_ipc3x: mbox-ipu1-ipc3x {
- 		status = "okay";
- 	};
--	mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
-+	mbox_dsp1_ipc3x: mbox-dsp1-ipc3x {
- 		status = "okay";
- 	};
- };
+ #include <linux/cpuidle.h>
+ #include <linux/platform_data/pm33xx.h>
++#include <linux/suspend.h>
+ #include <asm/cpuidle.h>
+ #include <asm/smp_scu.h>
+ #include <asm/suspend.h>
+@@ -324,6 +325,44 @@ static struct am33xx_pm_platform_data *am33xx_pm_get_pdata(void)
+ 		return NULL;
+ }
  
- &mailbox6 {
- 	status = "okay";
--	mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {
-+	mbox_ipu2_ipc3x: mbox-ipu2-ipc3x {
- 		status = "okay";
- 	};
--	mbox_dsp2_ipc3x: mbox_dsp2_ipc3x {
-+	mbox_dsp2_ipc3x: mbox-dsp2-ipc3x {
- 		status = "okay";
- 	};
- };
-diff --git a/arch/arm/boot/dts/dm816x.dtsi b/arch/arm/boot/dts/dm816x.dtsi
-index 3551a64963f8..1825d912b8ab 100644
---- a/arch/arm/boot/dts/dm816x.dtsi
-+++ b/arch/arm/boot/dts/dm816x.dtsi
-@@ -351,7 +351,7 @@ mailbox: mailbox@480c8000 {
- 			#mbox-cells = <1>;
- 			ti,mbox-num-users = <4>;
- 			ti,mbox-num-fifos = <12>;
--			mbox_dsp: mbox_dsp {
-+			mbox_dsp: mbox-dsp {
- 				ti,mbox-tx = <3 0 0>;
- 				ti,mbox-rx = <0 0 0>;
- 			};
-diff --git a/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi b/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi
-index a25749a1c365..a5bdc6431d8d 100644
---- a/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi
-+++ b/arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi
-@@ -5,17 +5,17 @@
++#ifdef CONFIG_SUSPEND
++/*
++ * Block system suspend initially. Later on pm33xx sets up it's own
++ * platform_suspend_ops after probe. That depends also on loaded
++ * wkup_m3_ipc and booted am335x-pm-firmware.elf.
++ */
++static int amx3_suspend_block(suspend_state_t state)
++{
++	pr_warn("PM not initialized for pm33xx, wkup_m3_ipc, or am335x-pm-firmware.elf\n");
++
++	return -EINVAL;
++}
++
++static int amx3_pm_valid(suspend_state_t state)
++{
++	switch (state) {
++	case PM_SUSPEND_STANDBY:
++		return 1;
++	default:
++		return 0;
++	}
++}
++
++static const struct platform_suspend_ops amx3_blocked_pm_ops = {
++	.begin = amx3_suspend_block,
++	.valid = amx3_pm_valid,
++};
++
++static void __init amx3_block_suspend(void)
++{
++	suspend_set_ops(&amx3_blocked_pm_ops);
++}
++#else
++static inline void amx3_block_suspend(void)
++{
++}
++#endif	/* CONFIG_SUSPEND */
++
+ int __init amx3_common_pm_init(void)
+ {
+ 	struct am33xx_pm_platform_data *pdata;
+@@ -337,6 +376,7 @@ int __init amx3_common_pm_init(void)
+ 	devinfo.size_data = sizeof(*pdata);
+ 	devinfo.id = -1;
+ 	platform_device_register_full(&devinfo);
++	amx3_block_suspend();
  
- &mailbox5 {
- 	status = "okay";
--	mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {
-+	mbox_ipu1_ipc3x: mbox-ipu1-ipc3x {
- 		status = "okay";
- 	};
--	mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
-+	mbox_dsp1_ipc3x: mbox-dsp1-ipc3x {
- 		status = "okay";
- 	};
- };
- 
- &mailbox6 {
- 	status = "okay";
--	mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {
-+	mbox_ipu2_ipc3x: mbox-ipu2-ipc3x {
- 		status = "okay";
- 	};
- };
-diff --git a/arch/arm/boot/dts/dra72x.dtsi b/arch/arm/boot/dts/dra72x.dtsi
-index d403acc754b6..85ab1f46e56b 100644
---- a/arch/arm/boot/dts/dra72x.dtsi
-+++ b/arch/arm/boot/dts/dra72x.dtsi
-@@ -77,12 +77,12 @@ &dss {
- };
- 
- &mailbox5 {
--	mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {
-+	mbox_ipu1_ipc3x: mbox-ipu1-ipc3x {
- 		ti,mbox-tx = <6 2 2>;
- 		ti,mbox-rx = <4 2 2>;
- 		status = "disabled";
- 	};
--	mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
-+	mbox_dsp1_ipc3x: mbox-dsp1-ipc3x {
- 		ti,mbox-tx = <5 2 2>;
- 		ti,mbox-rx = <1 2 2>;
- 		status = "disabled";
-@@ -90,7 +90,7 @@ mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
- };
- 
- &mailbox6 {
--	mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {
-+	mbox_ipu2_ipc3x: mbox-ipu2-ipc3x {
- 		ti,mbox-tx = <6 2 2>;
- 		ti,mbox-rx = <4 2 2>;
- 		status = "disabled";
-diff --git a/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi b/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi
-index b1147a4b77f9..3256631510c5 100644
---- a/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi
-+++ b/arch/arm/boot/dts/dra74-ipu-dsp-common.dtsi
-@@ -6,7 +6,7 @@
- #include "dra7-ipu-dsp-common.dtsi"
- 
- &mailbox6 {
--	mbox_dsp2_ipc3x: mbox_dsp2_ipc3x {
-+	mbox_dsp2_ipc3x: mbox-dsp2-ipc3x {
- 		status = "okay";
- 	};
- };
-diff --git a/arch/arm/boot/dts/dra74x.dtsi b/arch/arm/boot/dts/dra74x.dtsi
-index e1850d6c841a..411ad295c201 100644
---- a/arch/arm/boot/dts/dra74x.dtsi
-+++ b/arch/arm/boot/dts/dra74x.dtsi
-@@ -188,12 +188,12 @@ &dss {
- };
- 
- &mailbox5 {
--	mbox_ipu1_ipc3x: mbox_ipu1_ipc3x {
-+	mbox_ipu1_ipc3x: mbox-ipu1-ipc3x {
- 		ti,mbox-tx = <6 2 2>;
- 		ti,mbox-rx = <4 2 2>;
- 		status = "disabled";
- 	};
--	mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
-+	mbox_dsp1_ipc3x: mbox-dsp1-ipc3x {
- 		ti,mbox-tx = <5 2 2>;
- 		ti,mbox-rx = <1 2 2>;
- 		status = "disabled";
-@@ -201,12 +201,12 @@ mbox_dsp1_ipc3x: mbox_dsp1_ipc3x {
- };
- 
- &mailbox6 {
--	mbox_ipu2_ipc3x: mbox_ipu2_ipc3x {
-+	mbox_ipu2_ipc3x: mbox-ipu2-ipc3x {
- 		ti,mbox-tx = <6 2 2>;
- 		ti,mbox-rx = <4 2 2>;
- 		status = "disabled";
- 	};
--	mbox_dsp2_ipc3x: mbox_dsp2_ipc3x {
-+	mbox_dsp2_ipc3x: mbox-dsp2-ipc3x {
- 		ti,mbox-tx = <5 2 2>;
- 		ti,mbox-rx = <1 2 2>;
- 		status = "disabled";
-diff --git a/arch/arm/boot/dts/omap4-l4.dtsi b/arch/arm/boot/dts/omap4-l4.dtsi
-index de742bf84efb..5015df4d876c 100644
---- a/arch/arm/boot/dts/omap4-l4.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4.dtsi
-@@ -597,11 +597,11 @@ mailbox: mailbox@0 {
- 				#mbox-cells = <1>;
- 				ti,mbox-num-users = <3>;
- 				ti,mbox-num-fifos = <8>;
--				mbox_ipu: mbox_ipu {
-+				mbox_ipu: mbox-ipu {
- 					ti,mbox-tx = <0 0 0>;
- 					ti,mbox-rx = <1 0 0>;
- 				};
--				mbox_dsp: mbox_dsp {
-+				mbox_dsp: mbox-dsp {
- 					ti,mbox-tx = <3 0 0>;
- 					ti,mbox-rx = <2 0 0>;
- 				};
-diff --git a/arch/arm/boot/dts/omap5-l4.dtsi b/arch/arm/boot/dts/omap5-l4.dtsi
-index f3d3a16b7c64..c67c8698cc30 100644
---- a/arch/arm/boot/dts/omap5-l4.dtsi
-+++ b/arch/arm/boot/dts/omap5-l4.dtsi
-@@ -613,11 +613,11 @@ mailbox: mailbox@0 {
- 				#mbox-cells = <1>;
- 				ti,mbox-num-users = <3>;
- 				ti,mbox-num-fifos = <8>;
--				mbox_ipu: mbox_ipu {
-+				mbox_ipu: mbox-ipu {
- 					ti,mbox-tx = <0 0 0>;
- 					ti,mbox-rx = <1 0 0>;
- 				};
--				mbox_dsp: mbox_dsp {
-+				mbox_dsp: mbox-dsp {
- 					ti,mbox-tx = <3 0 0>;
- 					ti,mbox-rx = <2 0 0>;
- 				};
+ 	return 0;
+ }
 -- 
 2.30.2
 
