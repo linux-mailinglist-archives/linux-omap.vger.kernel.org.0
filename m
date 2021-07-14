@@ -2,138 +2,172 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5100B3C7F68
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jul 2021 09:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 849DC3C8C6E
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Jul 2021 21:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238163AbhGNHgH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Jul 2021 03:36:07 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:11483 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238139AbhGNHgG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Jul 2021 03:36:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1626247974;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=frxvPn/3DRth+yPvylduwkc8X0PJDf65B+98vS/70Xg=;
-    b=ZndagKNz7g4Gi0NcO/UrgxtqKefxPP9S8RAAUKLfpUQ1qDIIpQI8szpFftUGPjCDsp
-    Pr9EYfECFXE/XRgvIRFMewg1dBoWCNffoCGqD/6hq3snA4wPEGWZjZ8+uz5pkQS79ewN
-    dwWPCj1rTGBPozSlBihN1My9VTtNobvjMJpP2z30ZgNLXDlcoaiXHDNhUhn3t44ghcBG
-    1OAJl5+kFDFCMBcCT4RYfLrr1VfWgAoVfF8bFEHWi5C7RcV9jg1ShcuuVu3OYHB8VdlO
-    +TkDN4/KQuWTGWQm9ZMeOJjdj3ZoSAKzzJjHk6aj1jbzdWSBXuZrIvEppy6NEGuU3i0B
-    vZww==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw43tlAA="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.28.1 DYNA|AUTH)
-    with ESMTPSA id h06665x6E7WszQZ
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Wed, 14 Jul 2021 09:32:54 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: [PATCH v2] omap5-board-common: remove not physically existing
- vdds_1v8_main fixed-regulator
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <e836d5d98b028bdbb8805bcf79489e0df28add6c.1625148021.git.hns@goldelico.com>
-Date:   Wed, 14 Jul 2021 09:32:52 +0200
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
+        id S234364AbhGNTmC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Jul 2021 15:42:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36632 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234060AbhGNTlv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Jul 2021 15:41:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C34E9613D7;
+        Wed, 14 Jul 2021 19:38:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626291538;
+        bh=JvSXnC2gAX+lzZsmF2MthPE7lxewKYt2nWZkSbN4Gb8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=l3nmXPRh7WSRarG8mzvgeZS6FkdE8ItWHnjDZer842Pu3WvFOpCJ/6eLcX7McNA2h
+         hUz3FedTol3jUhK6FtDvq6p0MFtejinvFrixU+jl2NByByquNC9ywTxnELoGFmkNdq
+         MAqwdlS0cEqG7KvZmNoW03Yc7s1Bk/ePkLxR+qxQEGF/GrwqGB0uGykKNqDooJsT+x
+         7vD4BCqmtBidYhOHeJ3wiVzARXT8EglBTye+aL+ipXEaBM2fLNCTRGDJnB6PZRHVGH
+         9LGE6ohsRB5A8dcby48CqC4ViEr0KqakNgEIDLYcgTXFtXY9oqC9nfV7gKyJPBRb5J
+         GuCnhLMj0c2yQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <27948BF2-82E3-4140-A194-F938F3A64863@goldelico.com>
-References: <e836d5d98b028bdbb8805bcf79489e0df28add6c.1625148021.git.hns@goldelico.com>
-To:     Tony Lindgren <tony@atomide.com>,
-        Graeme Gregory <gg@slimlogic.co.uk>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Nishanth Menon <nm@ti.com>,
-        peter.ujfalusi@gmail.com,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>
-X-Mailer: Apple Mail (2.3445.104.21)
+Subject: [PATCH AUTOSEL 5.13 040/108] ARM: dts: am335x: align GPIO hog names with dt-schema
+Date:   Wed, 14 Jul 2021 15:36:52 -0400
+Message-Id: <20210714193800.52097-40-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210714193800.52097-1-sashal@kernel.org>
+References: <20210714193800.52097-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Any comments?
+From: Grygorii Strashko <grygorii.strashko@ti.com>
 
-> Am 01.07.2021 um 16:00 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->=20
-> This device tree include file describes a fixed-regulator
-> connecting smps7_reg output (1.8V) to some 1.8V rail and
-> consumers (vdds_1v8_main).
->=20
-> This regulator does not physically exist.
->=20
-> I assume it was introduced as a wrapper around smps7_reg
-> to provide a speaking signal name "vdds_1v8_main" as label.
->=20
-> This fixed-regulator without real function was not an issue
-> in driver code until
->=20
->  Commit 98e48cd9283d ("regulator: core: resolve supply for =
-boot-on/always-on regulators")
->=20
-> introduced a new check for regulator initialization which
-> makes Palmas regulator registration fail:
->=20
-> [    5.407712] ldo1: supplied by vsys_cobra
-> [    5.412748] ldo2: supplied by vsys_cobra
-> [    5.417603] palmas-pmic 48070000.i2c:palmas@48:palmas_pmic: failed =
-to register 48070000.i2c:palmas@48:palmas_pmic regulator
->=20
-> The reason is that the supply-chain of regulators is too
-> long and goes from ldo3 through the virtual vdds_1v8_main
-> regulator and then back to smps7. This adds a cross-dependency
-> of probing Palmas regulators and the fixed-regulator which
-> leads to probe deferral by the new check and is no longer
-> resolved.
->=20
-> Since we do not control what device tree files including this
-> one reference (either &vdds_1v8_main or &smps7_reg or both)
-> we keep both labels for smps7 for compatibility.
->=20
-> Fixes: 98e48cd9283d ("regulator: core: resolve supply for =
-boot-on/always-on regulators")
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
-> arch/arm/boot/dts/omap5-board-common.dtsi | 9 +--------
-> 1 file changed, 1 insertion(+), 8 deletions(-)
->=20
-> diff --git a/arch/arm/boot/dts/omap5-board-common.dtsi =
-b/arch/arm/boot/dts/omap5-board-common.dtsi
-> index d8f13626cfd1..3a8f10231475 100644
-> --- a/arch/arm/boot/dts/omap5-board-common.dtsi
-> +++ b/arch/arm/boot/dts/omap5-board-common.dtsi
-> @@ -30,14 +30,6 @@ vsys_cobra: fixedregulator-vsys_cobra {
-> 		regulator-max-microvolt =3D <5000000>;
-> 	};
->=20
-> -	vdds_1v8_main: fixedregulator-vdds_1v8_main {
-> -		compatible =3D "regulator-fixed";
-> -		regulator-name =3D "vdds_1v8_main";
-> -		vin-supply =3D <&smps7_reg>;
-> -		regulator-min-microvolt =3D <1800000>;
-> -		regulator-max-microvolt =3D <1800000>;
-> -	};
-> -
-> 	vmmcsd_fixed: fixedregulator-mmcsd {
-> 		compatible =3D "regulator-fixed";
-> 		regulator-name =3D "vmmcsd_fixed";
-> @@ -487,6 +479,7 @@ smps6_reg: smps6 {
-> 					regulator-boot-on;
-> 				};
->=20
-> +				vdds_1v8_main:
-> 				smps7_reg: smps7 {
-> 					/* VDDS_1v8_OMAP over =
-VDDS_1v8_MAIN */
-> 					regulator-name =3D "smps7";
-> --=20
-> 2.31.1
->=20
+[ Upstream commit fb97f63106f3174992a22fe5e42dda96a0810750 ]
+
+The GPIO Hog dt-schema node naming convention expect GPIO hogs node names
+to end with a 'hog' suffix.
+
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/boot/dts/am335x-boneblack-wireless.dts | 2 +-
+ arch/arm/boot/dts/am335x-boneblue.dts           | 2 +-
+ arch/arm/boot/dts/am335x-bonegreen-wireless.dts | 4 ++--
+ arch/arm/boot/dts/am335x-icev2.dts              | 4 ++--
+ arch/arm/boot/dts/am335x-shc.dts                | 8 ++++----
+ 5 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am335x-boneblack-wireless.dts b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+index 86cad9912906..80116646a3fe 100644
+--- a/arch/arm/boot/dts/am335x-boneblack-wireless.dts
++++ b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+@@ -101,7 +101,7 @@ bluetooth {
+ };
+ 
+ &gpio3 {
+-	ls_buf_en {
++	ls-buf-en-hog {
+ 		gpio-hog;
+ 		gpios = <10 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+diff --git a/arch/arm/boot/dts/am335x-boneblue.dts b/arch/arm/boot/dts/am335x-boneblue.dts
+index 69acaf4ea0f3..0afcc2ee0b63 100644
+--- a/arch/arm/boot/dts/am335x-boneblue.dts
++++ b/arch/arm/boot/dts/am335x-boneblue.dts
+@@ -436,7 +436,7 @@ &dcan1 {
+ };
+ 
+ &gpio3 {
+-	ls_buf_en {
++	ls-buf-en-hog {
+ 		gpio-hog;
+ 		gpios = <10 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+diff --git a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+index 7615327d906a..74db0fc39397 100644
+--- a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
++++ b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+@@ -101,7 +101,7 @@ bluetooth {
+ };
+ 
+ &gpio1 {
+-	ls_buf_en {
++	ls-buf-en-hog {
+ 		gpio-hog;
+ 		gpios = <29 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+@@ -118,7 +118,7 @@ ls_buf_en {
+ /* an external pulldown on U21 pin 4.                                  */
+ 
+ &gpio3 {
+-	bt_aud_in {
++	bt-aud-in-hog {
+ 		gpio-hog;
+ 		gpios = <16 GPIO_ACTIVE_HIGH>;
+ 		output-low;
+diff --git a/arch/arm/boot/dts/am335x-icev2.dts b/arch/arm/boot/dts/am335x-icev2.dts
+index e923d065304d..5e598ac96dcc 100644
+--- a/arch/arm/boot/dts/am335x-icev2.dts
++++ b/arch/arm/boot/dts/am335x-icev2.dts
+@@ -458,14 +458,14 @@ &uart3 {
+ };
+ 
+ &gpio3 {
+-	p4 {
++	pr1-mii-ctl-hog {
+ 		gpio-hog;
+ 		gpios = <4 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+ 		line-name = "PR1_MII_CTRL";
+ 	};
+ 
+-	p10 {
++	mux-mii-hog {
+ 		gpio-hog;
+ 		gpios = <10 GPIO_ACTIVE_HIGH>;
+ 		/* ETH1 mux: Low for MII-PRU, high for RMII-CPSW */
+diff --git a/arch/arm/boot/dts/am335x-shc.dts b/arch/arm/boot/dts/am335x-shc.dts
+index 1eaa26533466..2bfe60d32783 100644
+--- a/arch/arm/boot/dts/am335x-shc.dts
++++ b/arch/arm/boot/dts/am335x-shc.dts
+@@ -140,14 +140,14 @@ ehrpwm1: pwm@200 {
+ };
+ 
+ &gpio1 {
+-	hmtc_rst {
++	hmtc-rst-hog {
+ 		gpio-hog;
+ 		gpios = <24 GPIO_ACTIVE_LOW>;
+ 		output-high;
+ 		line-name = "homematic_reset";
+ 	};
+ 
+-	hmtc_prog {
++	hmtc-prog-hog {
+ 		gpio-hog;
+ 		gpios = <27 GPIO_ACTIVE_LOW>;
+ 		output-high;
+@@ -156,14 +156,14 @@ hmtc_prog {
+ };
+ 
+ &gpio3 {
+-	zgb_rst {
++	zgb-rst-hog {
+ 		gpio-hog;
+ 		gpios = <18 GPIO_ACTIVE_LOW>;
+ 		output-low;
+ 		line-name = "zigbee_reset";
+ 	};
+ 
+-	zgb_boot {
++	zgb-boot-hog {
+ 		gpio-hog;
+ 		gpios = <19 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+-- 
+2.30.2
 
