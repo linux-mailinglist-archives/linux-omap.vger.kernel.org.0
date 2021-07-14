@@ -2,39 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 510043C904B
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jul 2021 22:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 766433C904F
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Jul 2021 22:00:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241269AbhGNTyP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Jul 2021 15:54:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46238 "EHLO mail.kernel.org"
+        id S241324AbhGNTyS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Jul 2021 15:54:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46242 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240741AbhGNTuD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Jul 2021 15:50:03 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 52C4F613FC;
-        Wed, 14 Jul 2021 19:45:54 +0000 (UTC)
+        id S241113AbhGNTuY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Jul 2021 15:50:24 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 55AA5613D3;
+        Wed, 14 Jul 2021 19:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626291955;
-        bh=MvvbXelBNcWthf9LAxQYVUWx8cQ0rhCKwLY3mwg7nug=;
+        s=k20201202; t=1626292012;
+        bh=OK8bWUprBv6Z3OB1VmNxruIQpI3AHXCnbnXL+M4sLsI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VlHyalq/aa0+/chyVORP8zZVtzG3stubEeu0nKQ1a7rkQNN/ODt33XLuW0xadNEVJ
-         Uof9v8cAEf7jbdNdgmv6KTJ/qKrFanXk14amKjrDUY7qLmnLWLtkdBPPE+nrH42L8w
-         4l2Fr+I7d13FxxRYYnDh8jATIIDv/1thcgH8xtr9mk0jsK9CH3USMe2b9b/Vu2RZKN
-         AteuZUv5JBD07R/o4cmfD5cbuf27QK4AGYgHZcBoFEaUrxCl7/EywCuu34y/LHuFlh
-         3z/nfmOVZ1EtzM6KgFN+3Jgr931y1nAmHOglfvTB77Y3+slGBXdTq2ASHyZJ399o0W
-         vMPrBxSoip5wg==
+        b=e1M/XCQwrTljc5MCRs5xJf+jHsTGC4fcSdeahEax+IBj2crsF3MuTilPReh+lBo3o
+         aG5Q0FS2zrW4UF0v/+nNf5/hACJ+Ku3V5wuypDnPCAZLt7OPt4TYFuN3M4ty6wOP8e
+         GtwT0gekj/fL3PirOWFf61VMIEKJfvi9dLkny39exXqY1N0w4AFYJN2bzcxWm2OwDB
+         kF4dekbTd4MYqJfJdgaTCqrSOkTlnqUfjXbT2fjV3spHo4j9FrNFVCdrPZitQ2obkP
+         h1r8d7uuBbFPGXkMKV6+AvZEcIuA2YEPZIhFbbswbJCewqF42UsTHVsBrcEo7b6MT6
+         sbhquNAQozrKA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
         Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 29/51] ARM: dts: am437x-gp-evm: fix ti,no-reset-on-init flag for gpios
-Date:   Wed, 14 Jul 2021 15:44:51 -0400
-Message-Id: <20210714194513.54827-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 19/39] ARM: dts: am335x: align GPIO hog names with dt-schema
+Date:   Wed, 14 Jul 2021 15:46:04 -0400
+Message-Id: <20210714194625.55303-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210714194513.54827-1-sashal@kernel.org>
-References: <20210714194513.54827-1-sashal@kernel.org>
+In-Reply-To: <20210714194625.55303-1-sashal@kernel.org>
+References: <20210714194625.55303-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -45,54 +45,129 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Grygorii Strashko <grygorii.strashko@ti.com>
 
-[ Upstream commit 2566d5b8c1670f7d7a44cc1426d254147ec5c421 ]
+[ Upstream commit fb97f63106f3174992a22fe5e42dda96a0810750 ]
 
-The ti,no-reset-on-init flag need to be at the interconnect target module
-level for the modules that have it defined.
-The ti-sysc driver handles this case, but produces warning, not a critical
-issue.
+The GPIO Hog dt-schema node naming convention expect GPIO hogs node names
+to end with a 'hog' suffix.
 
 Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am437x-gp-evm.dts | 5 ++++-
- arch/arm/boot/dts/am437x-l4.dtsi    | 2 +-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/am335x-boneblack-wireless.dts | 2 +-
+ arch/arm/boot/dts/am335x-boneblue.dts           | 2 +-
+ arch/arm/boot/dts/am335x-bonegreen-wireless.dts | 4 ++--
+ arch/arm/boot/dts/am335x-icev2.dts              | 4 ++--
+ arch/arm/boot/dts/am335x-shc.dts                | 8 ++++----
+ 5 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
-index acc4c2760f46..537c9eb8b748 100644
---- a/arch/arm/boot/dts/am437x-gp-evm.dts
-+++ b/arch/arm/boot/dts/am437x-gp-evm.dts
-@@ -829,11 +829,14 @@ &gpio4 {
- 	status = "okay";
+diff --git a/arch/arm/boot/dts/am335x-boneblack-wireless.dts b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+index 83f49f616b19..d8a712938a70 100644
+--- a/arch/arm/boot/dts/am335x-boneblack-wireless.dts
++++ b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+@@ -105,7 +105,7 @@ bluetooth {
  };
  
-+&gpio5_target {
-+	ti,no-reset-on-init;
-+};
-+
- &gpio5 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&display_mux_pins>;
- 	status = "okay";
--	ti,no-reset-on-init;
+ &gpio3 {
+-	ls_buf_en {
++	ls-buf-en-hog {
+ 		gpio-hog;
+ 		gpios = <10 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+diff --git a/arch/arm/boot/dts/am335x-boneblue.dts b/arch/arm/boot/dts/am335x-boneblue.dts
+index 7bcd72691f06..f71dac2b72d9 100644
+--- a/arch/arm/boot/dts/am335x-boneblue.dts
++++ b/arch/arm/boot/dts/am335x-boneblue.dts
+@@ -526,7 +526,7 @@ &dcan1 {
+ };
  
- 	sel-lcd-hdmi-hog {
- 		/*
-diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
-index bbe15775fccd..6c2949991e29 100644
---- a/arch/arm/boot/dts/am437x-l4.dtsi
-+++ b/arch/arm/boot/dts/am437x-l4.dtsi
-@@ -2077,7 +2077,7 @@ gpio4: gpio@0 {
- 			};
- 		};
+ &gpio3 {
+-	ls_buf_en {
++	ls-buf-en-hog {
+ 		gpio-hog;
+ 		gpios = <10 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+diff --git a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+index 57731f0daf10..04c52194fa91 100644
+--- a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
++++ b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+@@ -105,7 +105,7 @@ bluetooth {
+ };
  
--		target-module@22000 {			/* 0x48322000, ap 116 64.0 */
-+		gpio5_target: target-module@22000 {		/* 0x48322000, ap 116 64.0 */
- 			compatible = "ti,sysc-omap2", "ti,sysc";
- 			ti,hwmods = "gpio6";
- 			reg = <0x22000 0x4>,
+ &gpio1 {
+-	ls_buf_en {
++	ls-buf-en-hog {
+ 		gpio-hog;
+ 		gpios = <29 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+@@ -122,7 +122,7 @@ ls_buf_en {
+ /* an external pulldown on U21 pin 4.                                  */
+ 
+ &gpio3 {
+-	bt_aud_in {
++	bt-aud-in-hog {
+ 		gpio-hog;
+ 		gpios = <16 GPIO_ACTIVE_HIGH>;
+ 		output-low;
+diff --git a/arch/arm/boot/dts/am335x-icev2.dts b/arch/arm/boot/dts/am335x-icev2.dts
+index f2005ecca74f..be81b98da71e 100644
+--- a/arch/arm/boot/dts/am335x-icev2.dts
++++ b/arch/arm/boot/dts/am335x-icev2.dts
+@@ -448,14 +448,14 @@ &uart3 {
+ };
+ 
+ &gpio3 {
+-	p4 {
++	pr1-mii-ctl-hog {
+ 		gpio-hog;
+ 		gpios = <4 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+ 		line-name = "PR1_MII_CTRL";
+ 	};
+ 
+-	p10 {
++	mux-mii-hog {
+ 		gpio-hog;
+ 		gpios = <10 GPIO_ACTIVE_HIGH>;
+ 		/* ETH1 mux: Low for MII-PRU, high for RMII-CPSW */
+diff --git a/arch/arm/boot/dts/am335x-shc.dts b/arch/arm/boot/dts/am335x-shc.dts
+index 4f6a286ea293..961a422256cf 100644
+--- a/arch/arm/boot/dts/am335x-shc.dts
++++ b/arch/arm/boot/dts/am335x-shc.dts
+@@ -146,14 +146,14 @@ ehrpwm1: pwm@48302200 {
+ };
+ 
+ &gpio1 {
+-	hmtc_rst {
++	hmtc-rst-hog {
+ 		gpio-hog;
+ 		gpios = <24 GPIO_ACTIVE_LOW>;
+ 		output-high;
+ 		line-name = "homematic_reset";
+ 	};
+ 
+-	hmtc_prog {
++	hmtc-prog-hog {
+ 		gpio-hog;
+ 		gpios = <27 GPIO_ACTIVE_LOW>;
+ 		output-high;
+@@ -162,14 +162,14 @@ hmtc_prog {
+ };
+ 
+ &gpio3 {
+-	zgb_rst {
++	zgb-rst-hog {
+ 		gpio-hog;
+ 		gpios = <18 GPIO_ACTIVE_LOW>;
+ 		output-low;
+ 		line-name = "zigbee_reset";
+ 	};
+ 
+-	zgb_boot {
++	zgb-boot-hog {
+ 		gpio-hog;
+ 		gpios = <19 GPIO_ACTIVE_HIGH>;
+ 		output-high;
 -- 
 2.30.2
 
