@@ -2,38 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A15D93C903B
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jul 2021 22:00:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D20103C9040
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Jul 2021 22:00:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241014AbhGNTyI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Jul 2021 15:54:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45124 "EHLO mail.kernel.org"
+        id S241040AbhGNTyJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Jul 2021 15:54:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47012 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240063AbhGNTta (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Jul 2021 15:49:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A466A6141A;
-        Wed, 14 Jul 2021 19:44:42 +0000 (UTC)
+        id S240651AbhGNTt7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 14 Jul 2021 15:49:59 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D2D236143D;
+        Wed, 14 Jul 2021 19:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626291883;
-        bh=iZXOwNIqvRVUKE7MeSSXOxAuhXS62VInPViWbCCromQ=;
+        s=k20201202; t=1626291946;
+        bh=Zk6TdY4OBTNzN3hkr90jIgLtff7IykMudgWbaa+DDkE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RqsJbgp2xI55gsawECLdmfyUrx9Xw3bcKUjt82wmCz8yDNcPcoG5g7vGb5kP6vFc8
-         dyJsnbzV0yaoOW9rjYPL/wLsup366GctGDOEvGJ6YiVD38swZ70ERk7GPix6TbIMDP
-         wsXD31a//AQrieQqyoBoifZdX8mY22R3LJUlmRFHQqaBXPFpaICeTafmioyt1/bpmt
-         dlTm7Uyh6YzgiTnsGS7E81ZDYXNeVX3GN2g68PulI1zq9YFhPYbdJMmrxCCiBPkM4V
-         JHYSfbA0a2YVUYXN1Uyu0XAZeQ7PcuNGkAgD/sEan3C+d2pChzWlMApkrvGtEcIzzu
-         UZEkJV/O8suNA==
+        b=JcNvLrW5YFJ40JMqzKIz09LvUg6zYtZGG0pMqomjkWz7s/eTwLddC4ld9X75UgP15
+         FJb1Dl7nY9PyeeN+1m45fzlheOv+3C2lsE/LvSUlguKYuYqcyJjQAhP9CycSNXWg1I
+         xNOZw9IuN6+CWSRUtxH3X7jVNZloIr3EqpkmKGIBnRlIIQAw2ySf8wXm6FLgvAVH6k
+         xekddJjrChLgK+UHC97eAj6YH/4tX/ec3amN66cjaVOX56eLWMBeikoPSDsBYoi5LX
+         Zj85yxsxVhvjN2RKaIrr/ZY07kboqSVzgFIGpjpTv08/d+AjJaf9W0KqDLGAsjPBx+
+         cxc3DM2ERxmWg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Dave Gerlach <d-gerlach@ti.com>,
-        Suman Anna <s-anna@ti.com>, Sasha Levin <sashal@kernel.org>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 66/88] ARM: OMAP2+: Block suspend for am3 and am4 if PM is not configured
-Date:   Wed, 14 Jul 2021 15:42:41 -0400
-Message-Id: <20210714194303.54028-66-sashal@kernel.org>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 23/51] ARM: dts: am335x: align GPIO hog names with dt-schema
+Date:   Wed, 14 Jul 2021 15:44:45 -0400
+Message-Id: <20210714194513.54827-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210714194303.54028-1-sashal@kernel.org>
-References: <20210714194303.54028-1-sashal@kernel.org>
+In-Reply-To: <20210714194513.54827-1-sashal@kernel.org>
+References: <20210714194513.54827-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -42,92 +43,131 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Grygorii Strashko <grygorii.strashko@ti.com>
 
-[ Upstream commit 093a474ce10d8ea3db3ef2922aca5a38f34bab1b ]
+[ Upstream commit fb97f63106f3174992a22fe5e42dda96a0810750 ]
 
-If the PM related modules are not loaded and PM firmware not configured,
-the system suspend fails to resume. Let's fix this by adding initial
-platform_suspend_ops to block suspend and warn about missing modules.
+The GPIO Hog dt-schema node naming convention expect GPIO hogs node names
+to end with a 'hog' suffix.
 
-When pm33xx and wkup_m3_ipc have been loaded and m3 coprocessor booted
-with it's firmware, pm33xx sets up working platform_suspend_ops. Note
-that we need to configure at least PM_SUSPEND_STANDBY to have
-suspend_set_ops().
-
-Cc: Dave Gerlach <d-gerlach@ti.com>
-Cc: Suman Anna <s-anna@ti.com>
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/pm33xx-core.c | 40 +++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ arch/arm/boot/dts/am335x-boneblack-wireless.dts | 2 +-
+ arch/arm/boot/dts/am335x-boneblue.dts           | 2 +-
+ arch/arm/boot/dts/am335x-bonegreen-wireless.dts | 4 ++--
+ arch/arm/boot/dts/am335x-icev2.dts              | 4 ++--
+ arch/arm/boot/dts/am335x-shc.dts                | 8 ++++----
+ 5 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/pm33xx-core.c b/arch/arm/mach-omap2/pm33xx-core.c
-index 56f2c0bcae5a..bf0d25fd2cea 100644
---- a/arch/arm/mach-omap2/pm33xx-core.c
-+++ b/arch/arm/mach-omap2/pm33xx-core.c
-@@ -8,6 +8,7 @@
+diff --git a/arch/arm/boot/dts/am335x-boneblack-wireless.dts b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+index 3124d94c0b3c..3056c3e3e312 100644
+--- a/arch/arm/boot/dts/am335x-boneblack-wireless.dts
++++ b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+@@ -102,7 +102,7 @@ bluetooth {
+ };
  
- #include <linux/cpuidle.h>
- #include <linux/platform_data/pm33xx.h>
-+#include <linux/suspend.h>
- #include <asm/cpuidle.h>
- #include <asm/smp_scu.h>
- #include <asm/suspend.h>
-@@ -324,6 +325,44 @@ static struct am33xx_pm_platform_data *am33xx_pm_get_pdata(void)
- 		return NULL;
- }
+ &gpio3 {
+-	ls_buf_en {
++	ls-buf-en-hog {
+ 		gpio-hog;
+ 		gpios = <10 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+diff --git a/arch/arm/boot/dts/am335x-boneblue.dts b/arch/arm/boot/dts/am335x-boneblue.dts
+index 2f6652ef9a15..8b98aa2d9588 100644
+--- a/arch/arm/boot/dts/am335x-boneblue.dts
++++ b/arch/arm/boot/dts/am335x-boneblue.dts
+@@ -435,7 +435,7 @@ &dcan1 {
+ };
  
-+#ifdef CONFIG_SUSPEND
-+/*
-+ * Block system suspend initially. Later on pm33xx sets up it's own
-+ * platform_suspend_ops after probe. That depends also on loaded
-+ * wkup_m3_ipc and booted am335x-pm-firmware.elf.
-+ */
-+static int amx3_suspend_block(suspend_state_t state)
-+{
-+	pr_warn("PM not initialized for pm33xx, wkup_m3_ipc, or am335x-pm-firmware.elf\n");
-+
-+	return -EINVAL;
-+}
-+
-+static int amx3_pm_valid(suspend_state_t state)
-+{
-+	switch (state) {
-+	case PM_SUSPEND_STANDBY:
-+		return 1;
-+	default:
-+		return 0;
-+	}
-+}
-+
-+static const struct platform_suspend_ops amx3_blocked_pm_ops = {
-+	.begin = amx3_suspend_block,
-+	.valid = amx3_pm_valid,
-+};
-+
-+static void __init amx3_block_suspend(void)
-+{
-+	suspend_set_ops(&amx3_blocked_pm_ops);
-+}
-+#else
-+static inline void amx3_block_suspend(void)
-+{
-+}
-+#endif	/* CONFIG_SUSPEND */
-+
- int __init amx3_common_pm_init(void)
- {
- 	struct am33xx_pm_platform_data *pdata;
-@@ -337,6 +376,7 @@ int __init amx3_common_pm_init(void)
- 	devinfo.size_data = sizeof(*pdata);
- 	devinfo.id = -1;
- 	platform_device_register_full(&devinfo);
-+	amx3_block_suspend();
+ &gpio3 {
+-	ls_buf_en {
++	ls-buf-en-hog {
+ 		gpio-hog;
+ 		gpios = <10 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+diff --git a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+index 4092cd193b8a..8d85c6a851c3 100644
+--- a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
++++ b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+@@ -102,7 +102,7 @@ bluetooth {
+ };
  
- 	return 0;
- }
+ &gpio1 {
+-	ls_buf_en {
++	ls-buf-en-hog {
+ 		gpio-hog;
+ 		gpios = <29 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+@@ -119,7 +119,7 @@ ls_buf_en {
+ /* an external pulldown on U21 pin 4.                                  */
+ 
+ &gpio3 {
+-	bt_aud_in {
++	bt-aud-in-hog {
+ 		gpio-hog;
+ 		gpios = <16 GPIO_ACTIVE_HIGH>;
+ 		output-low;
+diff --git a/arch/arm/boot/dts/am335x-icev2.dts b/arch/arm/boot/dts/am335x-icev2.dts
+index 204bccfcc110..1e52dfe4f2d3 100644
+--- a/arch/arm/boot/dts/am335x-icev2.dts
++++ b/arch/arm/boot/dts/am335x-icev2.dts
+@@ -445,14 +445,14 @@ &uart3 {
+ };
+ 
+ &gpio3 {
+-	p4 {
++	pr1-mii-ctl-hog {
+ 		gpio-hog;
+ 		gpios = <4 GPIO_ACTIVE_HIGH>;
+ 		output-high;
+ 		line-name = "PR1_MII_CTRL";
+ 	};
+ 
+-	p10 {
++	mux-mii-hog {
+ 		gpio-hog;
+ 		gpios = <10 GPIO_ACTIVE_HIGH>;
+ 		/* ETH1 mux: Low for MII-PRU, high for RMII-CPSW */
+diff --git a/arch/arm/boot/dts/am335x-shc.dts b/arch/arm/boot/dts/am335x-shc.dts
+index 5b0368504015..852cf61478e6 100644
+--- a/arch/arm/boot/dts/am335x-shc.dts
++++ b/arch/arm/boot/dts/am335x-shc.dts
+@@ -144,14 +144,14 @@ ehrpwm1: pwm@200 {
+ };
+ 
+ &gpio1 {
+-	hmtc_rst {
++	hmtc-rst-hog {
+ 		gpio-hog;
+ 		gpios = <24 GPIO_ACTIVE_LOW>;
+ 		output-high;
+ 		line-name = "homematic_reset";
+ 	};
+ 
+-	hmtc_prog {
++	hmtc-prog-hog {
+ 		gpio-hog;
+ 		gpios = <27 GPIO_ACTIVE_LOW>;
+ 		output-high;
+@@ -160,14 +160,14 @@ hmtc_prog {
+ };
+ 
+ &gpio3 {
+-	zgb_rst {
++	zgb-rst-hog {
+ 		gpio-hog;
+ 		gpios = <18 GPIO_ACTIVE_LOW>;
+ 		output-low;
+ 		line-name = "zigbee_reset";
+ 	};
+ 
+-	zgb_boot {
++	zgb-boot-hog {
+ 		gpio-hog;
+ 		gpios = <19 GPIO_ACTIVE_HIGH>;
+ 		output-high;
 -- 
 2.30.2
 
