@@ -2,74 +2,123 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0D033C915E
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jul 2021 22:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 239903C98DE
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Jul 2021 08:42:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239896AbhGNUB0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Jul 2021 16:01:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49182 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241366AbhGNTwS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 14 Jul 2021 15:52:18 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CB81061408;
-        Wed, 14 Jul 2021 19:48:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626292122;
-        bh=hlH8BbQ65qD6St2GHLj3WZH2zz2r3k/1PkdScImkti8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q+PEnQn5F4frtYwARcXX1AJGlmXJf0zFvkFGMR+o/PHDaqyelCrUuklutXGqEnsFE
-         riCjk6b0zQX9LOmVW9+5nIcQnGo08hwM8Al4OJly4SpP8RTrud6kCH+1v/ED3BABAy
-         tLygNvyIY/Ns+5NmJdJMd1mZ4HMoR9mkmFsPHgFrZek57XO06My3A0AO9IbavvGDZB
-         y1teI4A1GVjJ1dNNNGVZKJ11Ac1EevLvSZwhiXC38aoWMZwCAGp/3ZVkgk5CbqeNDV
-         +47g/jMBaD5lw2chOpnHvbOak7QTrZgtHOiXf1iiAcY1EuzoGWtHCn8JQGntDBix7S
-         PSr+S7eI1PBcw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 06/10] ARM: dts: omap5-board-common: align gpio hog names with dt-schema
-Date:   Wed, 14 Jul 2021 15:48:29 -0400
-Message-Id: <20210714194833.56197-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210714194833.56197-1-sashal@kernel.org>
-References: <20210714194833.56197-1-sashal@kernel.org>
+        id S231673AbhGOGpr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Jul 2021 02:45:47 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:6933 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231579AbhGOGpq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Jul 2021 02:45:46 -0400
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.53])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GQPq92KGLz7v0p;
+        Thu, 15 Jul 2021 14:39:17 +0800 (CST)
+Received: from dggpemm500006.china.huawei.com (7.185.36.236) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Thu, 15 Jul 2021 14:42:37 +0800
+Received: from thunder-town.china.huawei.com (10.174.179.0) by
+ dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Thu, 15 Jul 2021 14:42:37 +0800
+From:   Zhen Lei <thunder.leizhen@huawei.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Manjunathappa Prakash <prakash.pm@ti.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+CC:     Zhen Lei <thunder.leizhen@huawei.com>
+Subject: [PATCH] pinctrl: single: Fix error return code in pcs_parse_bits_in_pinctrl_entry()
+Date:   Thu, 15 Jul 2021 14:42:06 +0800
+Message-ID: <20210715064206.3193-1-thunder.leizhen@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.174.179.0]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemm500006.china.huawei.com (7.185.36.236)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Grygorii Strashko <grygorii.strashko@ti.com>
+Fix to return -ENOTSUPP instead of 0 when PCS_HAS_PINCONF is true, which
+is the same as that returned in pcs_parse_pinconf().
 
-[ Upstream commit 4823117cb80eedf31ddbc126b9bd92e707bd9a26 ]
+In addition, I found the value of pcs->flags is not overwritten in
+pcs_parse_bits_in_pinctrl_entry() and its subfunctions, so moving this
+check to the beginning of the function eliminates unnecessary rollback
+operations.
 
-The GPIO Hog dt-schema node naming convention expect GPIO hogs node names
-to end with a 'hog' suffix.
-
-Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4e7e8017a80e ("pinctrl: pinctrl-single: enhance to configure multiple pins of different modules")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
 ---
- arch/arm/boot/dts/omap5-board-common.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap5-board-common.dtsi b/arch/arm/boot/dts/omap5-board-common.dtsi
-index 41e80e7f20be..282d393b63b6 100644
---- a/arch/arm/boot/dts/omap5-board-common.dtsi
-+++ b/arch/arm/boot/dts/omap5-board-common.dtsi
-@@ -132,7 +132,7 @@ sound: sound {
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index e3aa64798f7d..d8b4dc40f3c6 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -1115,7 +1115,7 @@ static int pcs_parse_bits_in_pinctrl_entry(struct pcs_device *pcs,
+ {
+ 	const char *name = "pinctrl-single,bits";
+ 	struct pcs_func_vals *vals;
+-	int rows, *pins, found = 0, res = -ENOMEM, i, fsel, gsel;
++	int rows, *pins, found = 0, res = -ENOMEM, i, fsel;
+ 	int npins_in_row;
+ 	struct pcs_function *function = NULL;
  
- &gpio8 {
- 	/* TI trees use GPIO instead of msecure, see also muxing */
--	p234 {
-+	msecure-hog {
- 		gpio-hog;
- 		gpios = <10 GPIO_ACTIVE_HIGH>;
- 		output-high;
+@@ -1125,6 +1125,11 @@ static int pcs_parse_bits_in_pinctrl_entry(struct pcs_device *pcs,
+ 		return -EINVAL;
+ 	}
+ 
++	if (PCS_HAS_PINCONF) {
++		dev_err(pcs->dev, "pinconf not supported\n");
++		return -ENOTSUPP;
++	}
++
+ 	npins_in_row = pcs->width / pcs->bits_per_pin;
+ 
+ 	vals = devm_kzalloc(pcs->dev,
+@@ -1212,29 +1217,19 @@ static int pcs_parse_bits_in_pinctrl_entry(struct pcs_device *pcs,
+ 		goto free_pins;
+ 	}
+ 
+-	gsel = pinctrl_generic_add_group(pcs->pctl, np->name, pins, found, pcs);
+-	if (gsel < 0) {
+-		res = gsel;
++	res = pinctrl_generic_add_group(pcs->pctl, np->name, pins, found, pcs);
++	if (res < 0)
+ 		goto free_function;
+-	}
+ 
+ 	(*map)->type = PIN_MAP_TYPE_MUX_GROUP;
+ 	(*map)->data.mux.group = np->name;
+ 	(*map)->data.mux.function = np->name;
+ 
+-	if (PCS_HAS_PINCONF) {
+-		dev_err(pcs->dev, "pinconf not supported\n");
+-		goto free_pingroups;
+-	}
+-
+ 	*num_maps = 1;
+ 	mutex_unlock(&pcs->mutex);
+ 
+ 	return 0;
+ 
+-free_pingroups:
+-	pinctrl_generic_remove_group(pcs->pctl, gsel);
+-	*num_maps = 1;
+ free_function:
+ 	pinmux_generic_remove_function(pcs->pctl, fsel);
+ free_pins:
 -- 
-2.30.2
+2.25.1
 
