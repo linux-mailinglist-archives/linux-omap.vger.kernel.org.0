@@ -2,136 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F523CC2E8
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Jul 2021 14:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA6BD3CC594
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Jul 2021 20:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233378AbhGQMKT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 17 Jul 2021 08:10:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46264 "EHLO
+        id S234634AbhGQTAx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 17 Jul 2021 15:00:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233361AbhGQMJ7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Jul 2021 08:09:59 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCA0DC061762;
-        Sat, 17 Jul 2021 05:07:01 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id u14so17971701ljh.0;
-        Sat, 17 Jul 2021 05:07:01 -0700 (PDT)
+        with ESMTP id S234308AbhGQTAw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Jul 2021 15:00:52 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07939C061762;
+        Sat, 17 Jul 2021 11:57:54 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id e20so18904460ljn.8;
+        Sat, 17 Jul 2021 11:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=VbgDDzHJ7sDQiuRaoRWaCyhnkU1zVU77wEAjR1S7/Os=;
-        b=V+TIrlBmU/P/DdrTWFd3h3OZT/PhwMktc2Y2KbA6i4ReHBVCDTMbHfeaqB7HQQu7R2
-         9B/YRbvDk3qRe58NgT/0qYXX0GXDiMnmV68pExPelASEqKU200ZQLwTBDOaI3ZaHS8Wu
-         uAHpsZkodfbpA0me/WsjqMn/tVkiZ29vKxW7BUEgmZRttaXCMpOsPuAQ1geb79wjpQzg
-         LUdvMHbGFV8KVssmWtiSTMGLET+qiiYH45I+A4QJZseU0MiztQ66UmiYFZrH9u/iEoGC
-         V2PowSwmCKK0OcLy9LgGRY756WRJuwEtcNf2DX5PatNpH3L4IPq9ux9ZWk4hFL6eUiPC
-         DApQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=G7SgY/YkC3Ua+jZHJBroQqKVwZij5nIyA73xwLEzGtY=;
+        b=azpXn0L6T/BYABVMVJEUJotU+wwq+cL167r2uYNQs+8UylC9M3oqcSAxr2mo67Aiqj
+         tHKWmFZwluW9IhlIIJL5jh5LRr4YBkzEcnieZ+VTe4kSlt3Huuf6xJ16bHB62qJC945w
+         zamxsXltj95M9is/WUEgPH8TP4VQ5pqV8/xNdS92qjtuxjhWUWvKzT41Bw6r0D1M0+of
+         jFqspNyjhZp1rqj8rucQuNi3d+p03jm8dvFevosce9nVAzeFLSxIlxeViXN/KrYz08RY
+         36QHs6rm5KX+G6XacgBrvXAbhWizYtEIeGMLAAgFn+rWsQnZ7adJ8+JIRU3VIn3XOFkS
+         FP0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=VbgDDzHJ7sDQiuRaoRWaCyhnkU1zVU77wEAjR1S7/Os=;
-        b=SlcrA3HZRrDeFHidwTk+CHTJtA5UuuukkXCyyQLhbdEVvvHnj7icgPYWnHtIH7h839
-         UJwIP8y4C4Kaz2HNx1KtxNQ+ym0HlKBjD3TcxZGsBUUUiOu31v/84E3rLKdPDpblHMDb
-         oHFPZCxddx/GKnYq3+T24+YwBlkIHfZObQ5JzjfhP36g2S8V3oeQtn6GIXyFVqCsF/90
-         s94D/FcEE++Z2CHtyyx+VBwuJAmLprE6T4QxufP+ovPYF20ioKQ57n9AMNO0/9K/peAg
-         rcpSI+8khu4W0GPmk6JNpQfOgMWh0rq2m58Y4uajR6k6QeyOzwmYVpzGwkokSw5cE8mY
-         32yQ==
-X-Gm-Message-State: AOAM532iJrOsIkiQffs6K44fe8n8xAyh8jbLuVkB1pNaCVUBFe3VleKY
-        r4Ox5VfSg7/zBPCL4d9NqLk=
-X-Google-Smtp-Source: ABdhPJxMtw0EvtdBfkSRgyJVfZB5jFRSJb4tsAtLLPU+GMI9Al9MrjY3ormEYv2pXhDKPZBpg/VITQ==
-X-Received: by 2002:a2e:503:: with SMTP id 3mr13391598ljf.234.1626523620100;
-        Sat, 17 Jul 2021 05:07:00 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=G7SgY/YkC3Ua+jZHJBroQqKVwZij5nIyA73xwLEzGtY=;
+        b=NJKHcBMwwx7xclaS3DP26u5EW3WG4raPRJpkD6Ol5+9IK7fsBcl5hY3zNAAmGKGmny
+         7r6LZe+61syHiL27sMslIhscYmK341dg4NfyR2bTl/7+66yP3VLPZpeYU7TJ7/f91hfX
+         VhuqzG+swvCYxxjZ60F67+nbf6aHZ8wZenWPl6Alznyvc4oLF6SetriuiYkvDc4sbA6L
+         iSc7mqfQ1vAsfDPxltAxTZ0IxCzlyXfxzyNt7IeTaDpfJVaxXq8+8pwBnguv/2jTFLSB
+         ICo2qzSPuwXZEU1MFvVA5uheQLidCjwotTFyks3I+qKf+mXuSjQTF8XpmfecjDuJCJ8N
+         uzYw==
+X-Gm-Message-State: AOAM531L9TaiX4Yl7f6D3H93vd2Hr6lerjaqxUHNLiIPblTXbcmgXZ9J
+        A9TBDAKzQ0BybC8GxuIUZKU=
+X-Google-Smtp-Source: ABdhPJytwHKWFIxg2qCR2S1vk1mrAMA0owY0ottAGsurh4pfMKr5eVxPEAWChikE6waQ2Fpnvz1WzQ==
+X-Received: by 2002:a05:651c:882:: with SMTP id d2mr5538178ljq.370.1626548273245;
+        Sat, 17 Jul 2021 11:57:53 -0700 (PDT)
 Received: from localhost.localdomain (91-155-111-71.elisa-laajakaista.fi. [91.155.111.71])
-        by smtp.gmail.com with ESMTPSA id e5sm155334ljn.72.2021.07.17.05.06.59
+        by smtp.gmail.com with ESMTPSA id a26sm1406319ljq.120.2021.07.17.11.57.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Jul 2021 05:06:59 -0700 (PDT)
+        Sat, 17 Jul 2021 11:57:52 -0700 (PDT)
 From:   Peter Ujfalusi <peter.ujfalusi@gmail.com>
-To:     tony@atomide.com, bcousson@baylibre.com
-Cc:     robh+dt@kernel.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        hns@goldelico.com
-Subject: [PATCH 3/3] ARM: dts: omap4-l4-abe: Add McASP configuration
-Date:   Sat, 17 Jul 2021 15:09:25 +0300
-Message-Id: <20210717120925.24505-4-peter.ujfalusi@gmail.com>
+To:     vkoul@kernel.org
+Cc:     dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, tony@atomide.com, nm@ti.com
+Subject: [PATCH] dmaengine: of-dma: router_xlate to return -EPROBE_DEFER if controller is not yet available
+Date:   Sat, 17 Jul 2021 22:00:21 +0300
+Message-Id: <20210717190021.21897-1-peter.ujfalusi@gmail.com>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210717120925.24505-1-peter.ujfalusi@gmail.com>
-References: <20210717120925.24505-1-peter.ujfalusi@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-OMAP4 has a single McASP instance with single serializer and locked for DIT
-mode.
-To be able to enable the support the following fixes needed:
-- Add the DAT port ranges to the target module's ranges
+If the router_xlate can not find the controller in the available DMA
+devices then it should return with -EPORBE_DEFER in a same way as the
+of_dma_request_slave_channel() does.
 
-We can already fill in the op-mode and serial-dir  for McASP as it only
-supports this configuration, but keep the module disabled as there is no
-known device available where it is used.
+The issue can be reproduced if the event router is registered before the
+DMA controller itself and a driver would request for a channel before the
+controller is registered.
+In of_dma_request_slave_channel():
+1. of_dma_find_controller() would find the dma_router
+2. ofdma->of_dma_xlate() would fail and returned NULL
+3. -ENODEV is returned as error code
+
+with this patch we would return in this case the correct -EPROBE_DEFER and
+the client can try to request the channel later.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
 ---
- arch/arm/boot/dts/omap4-l4-abe.dtsi | 35 ++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 16 deletions(-)
+Hi,
 
-diff --git a/arch/arm/boot/dts/omap4-l4-abe.dtsi b/arch/arm/boot/dts/omap4-l4-abe.dtsi
-index 8287fdaa526e..7ae8b620515c 100644
---- a/arch/arm/boot/dts/omap4-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4-abe.dtsi
-@@ -186,6 +186,7 @@ mcbsp3: mcbsp@0 {
- 		};
+I have noticed the descibed failure sequence on Beagle-x15 board (McASP fails to
+probe). It must have been broken for some time, I have not booted the board for
+about a year or so...
+
+Regards,
+Peter
+
+ drivers/dma/of-dma.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/dma/of-dma.c b/drivers/dma/of-dma.c
+index ec00b20ae8e4..ac61ecda2926 100644
+--- a/drivers/dma/of-dma.c
++++ b/drivers/dma/of-dma.c
+@@ -67,8 +67,12 @@ static struct dma_chan *of_dma_router_xlate(struct of_phandle_args *dma_spec,
+ 		return NULL;
  
- 		target-module@28000 {			/* 0x40128000, ap 8 08.0 */
-+							/* 0x4012a000, ap 10 0a.0 */
- 			compatible = "ti,sysc-mcasp", "ti,sysc";
- 			reg = <0x28000 0x4>,
- 			      <0x28004 0x4>;
-@@ -199,23 +200,25 @@ target-module@28000 {			/* 0x40128000, ap 8 08.0 */
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges = <0x0 0x28000 0x1000>,
--				 <0x49028000 0x49028000 0x1000>;
--
--			/*
--			 * Child device unsupported by davinci-mcasp. At least
--			 * RX path is disabled for omap4, and only DIT mode
--			 * works with no I2S. See also old Android kernel
--			 * omap-mcasp driver for more information.
--			 */
--		};
--
--		target-module@2a000 {			/* 0x4012a000, ap 10 0a.0 */
--			compatible = "ti,sysc";
--			status = "disabled";
--			#address-cells = <1>;
--			#size-cells = <1>;
--			ranges = <0x0 0x2a000 0x1000>,
-+				 <0x49028000 0x49028000 0x1000>,
-+				 <0x2000 0x2a000 0x1000>,
- 				 <0x4902a000 0x4902a000 0x1000>;
-+
-+			mcasp0: mcasp@0 {
-+				compatible = "ti,omap4-mcasp-audio";
-+				reg = <0x0 0x2000>,
-+				      <0x4902a000 0x1000>;	/* L3 data port */
-+				reg-names = "mpu","dat";
-+				interrupts = <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupt-names = "tx";
-+				dmas = <&sdma 8>;
-+				dma-names = "tx";
-+				clocks = <&abe_clkctrl OMAP4_MCASP_CLKCTRL 0>;
-+				clock-names = "fck";
-+				op-mode = <1>;	/* MCASP_DIT_MODE */
-+				serial-dir = < 1 >; /* 1 TX serializers */
-+				status = "disabled";
-+			};
- 		};
+ 	ofdma_target = of_dma_find_controller(&dma_spec_target);
+-	if (!ofdma_target)
+-		return NULL;
++	if (!ofdma_target) {
++		ofdma->dma_router->route_free(ofdma->dma_router->dev,
++					      route_data);
++		chan = ERR_PTR(-EPROBE_DEFER);
++		goto err;
++	}
  
- 		target-module@2e000 {			/* 0x4012e000, ap 12 0c.0 */
+ 	chan = ofdma_target->of_dma_xlate(&dma_spec_target, ofdma_target);
+ 	if (IS_ERR_OR_NULL(chan)) {
+@@ -89,6 +93,7 @@ static struct dma_chan *of_dma_router_xlate(struct of_phandle_args *dma_spec,
+ 		}
+ 	}
+ 
++err:
+ 	/*
+ 	 * Need to put the node back since the ofdma->of_dma_route_allocate
+ 	 * has taken it for generating the new, translated dma_spec
 -- 
 2.32.0
 
