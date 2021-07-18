@@ -2,121 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6BD3CC594
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Jul 2021 20:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C4F43CC8D2
+	for <lists+linux-omap@lfdr.de>; Sun, 18 Jul 2021 13:41:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234634AbhGQTAx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 17 Jul 2021 15:00:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51930 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234308AbhGQTAw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 17 Jul 2021 15:00:52 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07939C061762;
-        Sat, 17 Jul 2021 11:57:54 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id e20so18904460ljn.8;
-        Sat, 17 Jul 2021 11:57:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=G7SgY/YkC3Ua+jZHJBroQqKVwZij5nIyA73xwLEzGtY=;
-        b=azpXn0L6T/BYABVMVJEUJotU+wwq+cL167r2uYNQs+8UylC9M3oqcSAxr2mo67Aiqj
-         tHKWmFZwluW9IhlIIJL5jh5LRr4YBkzEcnieZ+VTe4kSlt3Huuf6xJ16bHB62qJC945w
-         zamxsXltj95M9is/WUEgPH8TP4VQ5pqV8/xNdS92qjtuxjhWUWvKzT41Bw6r0D1M0+of
-         jFqspNyjhZp1rqj8rucQuNi3d+p03jm8dvFevosce9nVAzeFLSxIlxeViXN/KrYz08RY
-         36QHs6rm5KX+G6XacgBrvXAbhWizYtEIeGMLAAgFn+rWsQnZ7adJ8+JIRU3VIn3XOFkS
-         FP0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=G7SgY/YkC3Ua+jZHJBroQqKVwZij5nIyA73xwLEzGtY=;
-        b=NJKHcBMwwx7xclaS3DP26u5EW3WG4raPRJpkD6Ol5+9IK7fsBcl5hY3zNAAmGKGmny
-         7r6LZe+61syHiL27sMslIhscYmK341dg4NfyR2bTl/7+66yP3VLPZpeYU7TJ7/f91hfX
-         VhuqzG+swvCYxxjZ60F67+nbf6aHZ8wZenWPl6Alznyvc4oLF6SetriuiYkvDc4sbA6L
-         iSc7mqfQ1vAsfDPxltAxTZ0IxCzlyXfxzyNt7IeTaDpfJVaxXq8+8pwBnguv/2jTFLSB
-         ICo2qzSPuwXZEU1MFvVA5uheQLidCjwotTFyks3I+qKf+mXuSjQTF8XpmfecjDuJCJ8N
-         uzYw==
-X-Gm-Message-State: AOAM531L9TaiX4Yl7f6D3H93vd2Hr6lerjaqxUHNLiIPblTXbcmgXZ9J
-        A9TBDAKzQ0BybC8GxuIUZKU=
-X-Google-Smtp-Source: ABdhPJytwHKWFIxg2qCR2S1vk1mrAMA0owY0ottAGsurh4pfMKr5eVxPEAWChikE6waQ2Fpnvz1WzQ==
-X-Received: by 2002:a05:651c:882:: with SMTP id d2mr5538178ljq.370.1626548273245;
-        Sat, 17 Jul 2021 11:57:53 -0700 (PDT)
-Received: from localhost.localdomain (91-155-111-71.elisa-laajakaista.fi. [91.155.111.71])
-        by smtp.gmail.com with ESMTPSA id a26sm1406319ljq.120.2021.07.17.11.57.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Jul 2021 11:57:52 -0700 (PDT)
-From:   Peter Ujfalusi <peter.ujfalusi@gmail.com>
-To:     vkoul@kernel.org
-Cc:     dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, tony@atomide.com, nm@ti.com
-Subject: [PATCH] dmaengine: of-dma: router_xlate to return -EPROBE_DEFER if controller is not yet available
-Date:   Sat, 17 Jul 2021 22:00:21 +0300
-Message-Id: <20210717190021.21897-1-peter.ujfalusi@gmail.com>
-X-Mailer: git-send-email 2.32.0
+        id S233156AbhGRLn7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 18 Jul 2021 07:43:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60854 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232859AbhGRLn4 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 18 Jul 2021 07:43:56 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B843161184;
+        Sun, 18 Jul 2021 11:40:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626608458;
+        bh=Vegbn4flDicHKXx7lHf5cMiwPfbQHkr1Aa8q19WmyQ0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=RsF3O5tv/+spITV5IChI+SHmK6QckQ44Cc0MdYNjtYTxu80psQ69MUn023cJmSHgm
+         OBg0ciYlxEN5/qLqn7XOuzcGbqrSq4n1vvyCHnSIekBu2qyloR65GksFjNoUeqIkud
+         MyG7U7eZ+XIMxGyvlQknkUq30rb1rnPNEKegK6HXX2MU6+gCoqq988RPrMkvw1QdXy
+         dTo7ac9m5MPCSVSOyiiqBsAqvAE3xAx3rgS45g6CYDowPu6dxp0/9ufSAoBQXFdK9q
+         EwUbQuX+1rhWK3jRSs8PXiD8T94MTiMYAov3GBUi7xWFilnXnPdpNSjk3y2Dsn8gDl
+         sK+IPF/mc+iXg==
+Received: by mail.kernel.org with local (Exim 4.94.2)
+        (envelope-from <mchehab@kernel.org>)
+        id 1m55AE-001Dvt-5w; Sun, 18 Jul 2021 13:40:54 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linuxarm@huawei.com, mauro.chehab@huawei.com,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Greentime Hu <greentime.hu@sifive.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        devicetree@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Subject: [PATCH v5 0/5] convert designware-pcie.txt to yaml
+Date:   Sun, 18 Jul 2021 13:40:47 +0200
+Message-Id: <cover.1626608375.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If the router_xlate can not find the controller in the available DMA
-devices then it should return with -EPORBE_DEFER in a same way as the
-of_dma_request_slave_channel() does.
+This series convert designware-pcie.txt to DT schema.
 
-The issue can be reproduced if the event router is registered before the
-DMA controller itself and a driver would request for a channel before the
-controller is registered.
-In of_dma_request_slave_channel():
-1. of_dma_find_controller() would find the dma_router
-2. ofdma->of_dma_xlate() would fail and returned NULL
-3. -ENODEV is returned as error code
+I opted to move the pcie-kirin.txt changes out of this series. I'll submit
+it in separate, as they should come after some changes I'm doing at
+pcie-kirin.c driver.
 
-with this patch we would return in this case the correct -EPROBE_DEFER and
-the client can try to request the channel later.
+v5:
+- Addressed some issues pointed by Rob Herring:
+  Added interrupts and interrupt-cells to DT;
+  Addressed warnings generated with make dbs-check on existing
+  *.dts* files.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
----
-Hi,
+Mauro Carvalho Chehab (5):
+  dt-bindings: PCI: add snps,dw-pcie.yaml
+  dt-bindings: PCI: add snps,dw-pcie-ep.yaml
+  dt-bindings: PCI: update references to Designware schema
+  dt-bindings: PCI: remove designware-pcie.txt
+  dt-bindings: arm64: tegra: fix pcie-ep DT nodes
 
-I have noticed the descibed failure sequence on Beagle-x15 board (McASP fails to
-probe). It must have been broken for some time, I have not booted the board for
-about a year or so...
+ .../bindings/pci/amlogic,meson-pcie.txt       |   4 +-
+ .../bindings/pci/axis,artpec6-pcie.txt        |   2 +-
+ .../bindings/pci/designware-pcie.txt          |  77 -------------
+ .../bindings/pci/fsl,imx6q-pcie.txt           |   2 +-
+ .../bindings/pci/hisilicon-histb-pcie.txt     |   2 +-
+ .../devicetree/bindings/pci/kirin-pcie.txt    |   2 +-
+ .../bindings/pci/layerscape-pci.txt           |   2 +-
+ .../bindings/pci/nvidia,tegra194-pcie.txt     |   7 +-
+ .../devicetree/bindings/pci/pci-armada8k.txt  |   2 +-
+ .../devicetree/bindings/pci/pcie-al.txt       |   2 +-
+ .../devicetree/bindings/pci/qcom,pcie.txt     |  14 +--
+ .../bindings/pci/samsung,exynos-pcie.yaml     |   4 +-
+ .../bindings/pci/sifive,fu740-pcie.yaml       |   4 +-
+ .../bindings/pci/snps,dw-pcie-ep.yaml         |  90 ++++++++++++++++
+ .../devicetree/bindings/pci/snps,dw-pcie.yaml | 102 ++++++++++++++++++
+ .../pci/socionext,uniphier-pcie-ep.yaml       |   4 +-
+ .../devicetree/bindings/pci/ti-pci.txt        |   4 +-
+ .../devicetree/bindings/pci/uniphier-pcie.txt |   2 +-
+ MAINTAINERS                                   |   3 +-
+ .../boot/dts/nvidia/tegra194-p2972-0000.dts   |   2 +-
+ .../boot/dts/nvidia/tegra194-p3509-0000.dtsi  |   2 +-
+ arch/arm64/boot/dts/nvidia/tegra194.dtsi      |   6 +-
+ 22 files changed, 228 insertions(+), 111 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/pci/designware-pcie.txt
+ create mode 100644 Documentation/devicetree/bindings/pci/snps,dw-pcie-ep.yaml
+ create mode 100644 Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml
 
-Regards,
-Peter
-
- drivers/dma/of-dma.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/dma/of-dma.c b/drivers/dma/of-dma.c
-index ec00b20ae8e4..ac61ecda2926 100644
---- a/drivers/dma/of-dma.c
-+++ b/drivers/dma/of-dma.c
-@@ -67,8 +67,12 @@ static struct dma_chan *of_dma_router_xlate(struct of_phandle_args *dma_spec,
- 		return NULL;
- 
- 	ofdma_target = of_dma_find_controller(&dma_spec_target);
--	if (!ofdma_target)
--		return NULL;
-+	if (!ofdma_target) {
-+		ofdma->dma_router->route_free(ofdma->dma_router->dev,
-+					      route_data);
-+		chan = ERR_PTR(-EPROBE_DEFER);
-+		goto err;
-+	}
- 
- 	chan = ofdma_target->of_dma_xlate(&dma_spec_target, ofdma_target);
- 	if (IS_ERR_OR_NULL(chan)) {
-@@ -89,6 +93,7 @@ static struct dma_chan *of_dma_router_xlate(struct of_phandle_args *dma_spec,
- 		}
- 	}
- 
-+err:
- 	/*
- 	 * Need to put the node back since the ofdma->of_dma_route_allocate
- 	 * has taken it for generating the new, translated dma_spec
 -- 
-2.32.0
+2.31.1
+
 
