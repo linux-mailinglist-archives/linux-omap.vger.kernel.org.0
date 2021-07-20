@@ -2,91 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3A853CFD1F
+	by mail.lfdr.de (Postfix) with ESMTP id 6AB2E3CFD1E
 	for <lists+linux-omap@lfdr.de>; Tue, 20 Jul 2021 17:12:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237295AbhGTOcK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 20 Jul 2021 10:32:10 -0400
-Received: from mail-io1-f48.google.com ([209.85.166.48]:45797 "EHLO
-        mail-io1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240062AbhGTOBD (ORCPT
+        id S234411AbhGTOcG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Jul 2021 10:32:06 -0400
+Received: from mail-io1-f42.google.com ([209.85.166.42]:43711 "EHLO
+        mail-io1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240090AbhGTOBD (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Jul 2021 10:01:03 -0400
-Received: by mail-io1-f48.google.com with SMTP id z17so17588491iog.12;
-        Tue, 20 Jul 2021 07:41:25 -0700 (PDT)
+Received: by mail-io1-f42.google.com with SMTP id k16so24188632ios.10;
+        Tue, 20 Jul 2021 07:41:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=In2GK4BxVSXJR0G130bXVhwb0ZRtK2Xg1pZUaR2Rkhw=;
-        b=JUNMygylc7btrek/cYakoVG0IvI1X/YBHGjCnz8H7WM2PgiU33KNOC7Qq7xJc0ldEb
-         MYweXHPdmgHjZhjDdeAVw4XMOHLrKNyJy3oodNYAgwHzmyVyDkTjd0mKljQgEsgshDsL
-         m5ABp72fJjyuxTgAhjAMI7GUJwTrJE1UHaY5Le/+/Jy/HjXx5tXXchQzkXTx9KU9WOPv
-         ItCMmYYyEzAA5WhDgsBU6jec4Tj0QB6aAWfQK3Sfbji3ykwTem5RPC6Mtt1FEY475KQo
-         crHtvZchGR24NhPZiWsQOqJCXq12HlgMMB0B5qy8+l2+cCknfyx/tBq3+V8V5n43gXYD
-         0TYQ==
-X-Gm-Message-State: AOAM531KgQO8/alBfQPozzciVXbzS5qO4QIt/NdHTDVamxMllOU6o2kC
-        6J3TWuXOe3cp/eEl+No54w==
-X-Google-Smtp-Source: ABdhPJxk5X0o3xzuhm3cRt+07VqKHazcPxgi4roaqr/BN8khWbAjpu3jyJn74HzrfKV96K5418RpQw==
-X-Received: by 2002:a6b:e016:: with SMTP id z22mr22726636iog.187.1626792084568;
-        Tue, 20 Jul 2021 07:41:24 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=XBmEtxGuro5AHDRV4MlIOBSIJE60xpP6Q488vaMtT4w=;
+        b=SYHWdQMfROgL2XdFLoubttcvqJqQqijLuVEaeXh8WtEZCr5jBxI3vpOkNLgauSMtC8
+         yl8HMsv2zoEm8DDR4aMd+xYclgJGTiSQAsvCutpfgrmASX4bJVUrfI/ZsGT3nYn/h/XF
+         Swl5INsOOBpB3JBovVmmhu85Q2mamzJT8/0MGnHWXYzu9gpU1MrkQJSNSGXMJcMpvUTv
+         YlMbIAhbRVSfID7LY7Ay/jl4gWhe7270TNcpjFN8tWeaXfhH+kwguPGjOZ6zVZil82b+
+         NSZ/8pE4K67Dku7i0Ib7XN2EpgfV6W6i8qbE5JSW129Xy+xASwGcDsZS0JFY54jdPkuf
+         f4jA==
+X-Gm-Message-State: AOAM531z+WIVjZiVmfsBOVpZXvxk4lIbvUxi+9z7yVB2xDNkYE5/a3Uy
+        O/JgYMIbAAfA2mnQjoEBGg==
+X-Google-Smtp-Source: ABdhPJxooJfH/EtsqVVp9aWaE7jnvJiJKvu2tMzpZa406I+JYIozF7V3Rmk+KzkVPfszh9YcgMuFVA==
+X-Received: by 2002:a6b:e60f:: with SMTP id g15mr22562813ioh.48.1626792086375;
+        Tue, 20 Jul 2021 07:41:26 -0700 (PDT)
 Received: from xps15.herring.priv ([64.188.179.248])
-        by smtp.googlemail.com with ESMTPSA id 10sm2091407iln.39.2021.07.20.07.41.22
+        by smtp.googlemail.com with ESMTPSA id 10sm2091407iln.39.2021.07.20.07.41.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 07:41:24 -0700 (PDT)
+        Tue, 20 Jul 2021 07:41:25 -0700 (PDT)
 From:   Rob Herring <robh@kernel.org>
 To:     Viresh Kumar <viresh.kumar@linaro.org>,
         Tony Lindgren <tony@atomide.com>
 Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v3 1/3] ARM: dts: omap: Drop references to opp.txt
-Date:   Tue, 20 Jul 2021 08:41:19 -0600
-Message-Id: <20210720144121.66713-1-robh@kernel.org>
+        linux-omap@vger.kernel.org, Georgi Djakov <djakov@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Leonard Crestez <leonard.crestez@nxp.com>,
+        dri-devel@lists.freedesktop.org, linux-pm@vger.kernel.org
+Subject: [PATCH v3 2/3] dt-bindings: Clean-up OPP binding node names in examples
+Date:   Tue, 20 Jul 2021 08:41:20 -0600
+Message-Id: <20210720144121.66713-2-robh@kernel.org>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20210720144121.66713-1-robh@kernel.org>
+References: <20210720144121.66713-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-opp.txt is getting removed with the OPP binding converted to DT schema.
-As it is unusual to reference a binding doc from a dts file, let's just
-remove the reference.
+In preparation to convert OPP bindings to DT schema, clean-up a few OPP
+binding node names in the binding examples.
 
-Cc: "Benoît Cousson" <bcousson@baylibre.com>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: linux-omap@vger.kernel.org
+Cc: Georgi Djakov <djakov@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Leonard Crestez <leonard.crestez@nxp.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-pm@vger.kernel.org
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- arch/arm/boot/dts/omap34xx.dtsi | 1 -
- arch/arm/boot/dts/omap36xx.dtsi | 1 -
- 2 files changed, 2 deletions(-)
+ Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml   | 2 +-
+ Documentation/devicetree/bindings/gpu/arm,mali-midgard.yaml   | 2 +-
+ .../devicetree/bindings/interconnect/fsl,imx8m-noc.yaml       | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap34xx.dtsi b/arch/arm/boot/dts/omap34xx.dtsi
-index feaa43b78535..8b8451399784 100644
---- a/arch/arm/boot/dts/omap34xx.dtsi
-+++ b/arch/arm/boot/dts/omap34xx.dtsi
-@@ -24,7 +24,6 @@ cpu: cpu@0 {
- 		};
- 	};
+diff --git a/Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml b/Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml
+index 0f73f436bea7..4bea51d1e7ea 100644
+--- a/Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml
++++ b/Documentation/devicetree/bindings/gpu/arm,mali-bifrost.yaml
+@@ -136,7 +136,7 @@ examples:
+       resets = <&reset 0>, <&reset 1>;
+     };
  
--	/* see Documentation/devicetree/bindings/opp/opp.txt */
- 	cpu0_opp_table: opp-table {
- 		compatible = "operating-points-v2-ti-cpu";
- 		syscon = <&scm_conf>;
-diff --git a/arch/arm/boot/dts/omap36xx.dtsi b/arch/arm/boot/dts/omap36xx.dtsi
-index 20844dbc002e..22b33098b1a2 100644
---- a/arch/arm/boot/dts/omap36xx.dtsi
-+++ b/arch/arm/boot/dts/omap36xx.dtsi
-@@ -29,7 +29,6 @@ cpu: cpu@0 {
- 		};
- 	};
+-    gpu_opp_table: opp_table0 {
++    gpu_opp_table: opp-table {
+       compatible = "operating-points-v2";
  
--	/* see Documentation/devicetree/bindings/opp/opp.txt */
- 	cpu0_opp_table: opp-table {
- 		compatible = "operating-points-v2-ti-cpu";
- 		syscon = <&scm_conf>;
+       opp-533000000 {
+diff --git a/Documentation/devicetree/bindings/gpu/arm,mali-midgard.yaml b/Documentation/devicetree/bindings/gpu/arm,mali-midgard.yaml
+index 696c17aedbbe..d209f272625d 100644
+--- a/Documentation/devicetree/bindings/gpu/arm,mali-midgard.yaml
++++ b/Documentation/devicetree/bindings/gpu/arm,mali-midgard.yaml
+@@ -160,7 +160,7 @@ examples:
+       #cooling-cells = <2>;
+     };
+ 
+-    gpu_opp_table: opp_table0 {
++    gpu_opp_table: opp-table {
+       compatible = "operating-points-v2";
+ 
+       opp-533000000 {
+diff --git a/Documentation/devicetree/bindings/interconnect/fsl,imx8m-noc.yaml b/Documentation/devicetree/bindings/interconnect/fsl,imx8m-noc.yaml
+index a8873739d61a..b8204ed22dd5 100644
+--- a/Documentation/devicetree/bindings/interconnect/fsl,imx8m-noc.yaml
++++ b/Documentation/devicetree/bindings/interconnect/fsl,imx8m-noc.yaml
+@@ -81,10 +81,10 @@ examples:
+         noc_opp_table: opp-table {
+             compatible = "operating-points-v2";
+ 
+-            opp-133M {
++            opp-133333333 {
+                 opp-hz = /bits/ 64 <133333333>;
+             };
+-            opp-800M {
++            opp-800000000 {
+                 opp-hz = /bits/ 64 <800000000>;
+             };
+         };
 -- 
 2.27.0
 
