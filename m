@@ -2,57 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8493D01AF
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Jul 2021 20:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 313F13D01DE
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Jul 2021 20:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234708AbhGTRrS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 20 Jul 2021 13:47:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40606 "EHLO
+        id S229782AbhGTSGi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Jul 2021 14:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234558AbhGTRqk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Jul 2021 13:46:40 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B745C061762
-        for <linux-omap@vger.kernel.org>; Tue, 20 Jul 2021 11:27:18 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id b12so239640pfv.6
-        for <linux-omap@vger.kernel.org>; Tue, 20 Jul 2021 11:27:18 -0700 (PDT)
+        with ESMTP id S229650AbhGTSGg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Jul 2021 14:06:36 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4972AC061574
+        for <linux-omap@vger.kernel.org>; Tue, 20 Jul 2021 11:47:12 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id t9so23376662pgn.4
+        for <linux-omap@vger.kernel.org>; Tue, 20 Jul 2021 11:47:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:subject:date:message-id:mime-version
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=hq/i2vXf3m6zhthn176Fg2DW/Jroc/Qu+GUHpugOqdA=;
-        b=XY3Q/Uh+QedmxbjpZ6uEHIzsoDmBwo8ukoW56iYkjEA/MBCd4j9EMNjE8D6KE1uv7A
-         Ulyp28Vk2AT8zfUa6JE+bJYoJV02Wjv4PzEhenNrBGX74SeuEUKk7SYcm/v06aRIfQp/
-         6xNeQq9if+Tja40Jwy/UZ9OATux7SUVYewMuSTfyANpOkthpUE1HtFHNOFvcYiFO1+gV
-         IqnXQUXPoiaNg1+i3L8CQmnwSY2j+bZO1Fi9HVz92MiVvMNtBH9dMwq9WkAAe1Qb2AYV
-         aeLiLZBeKrFxJbWN3L05x2d0X2f3WG0oRvqxoSb3AyCURRiM0e8Q/KGSNUstXbwWqD2B
-         eCBg==
+        bh=2rxEs1C/QmakaiGNm8e0gee+gcdOkuo6zyDBpsMxd+M=;
+        b=sh1FoIp7AQtCBs7N3hT+zWJXrqviLsOyahCfBz0hvOlVjxUikwFcYTcV3cH1v1PE9j
+         BxXJUQXrzAp152htbrBHmOpb/7xYnYmRmyndZqUrgR6iz7W4BbmUTa9TfVGw1IOYsZfj
+         uHJqVIwvZylfspcBiyrSrLrY/rfv88vZdNc/9nLa2w7LottHbHM1Y1GTmowEqrc5B9i6
+         g1pFsQJ9kFwS/9oxOEwrnLQtRhb4/4AUwoDkuWq1jEpud8S+z1q8T8VUmektIUPlagJ2
+         FYvjsDZA3ycw+gzck3EpjAIAp003+ryJ3KjUp6fKjxsMR+DwE2pfxIteDPR7wTPatYz7
+         DKAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=hq/i2vXf3m6zhthn176Fg2DW/Jroc/Qu+GUHpugOqdA=;
-        b=KKlS05I1gtmdfihyMT4GTsKcjMYotnqvXo040/NdaOMsNcYQRdy1F1+az+yOGB0oib
-         K9VbtQE99GrRYi/Mr4VcXbgbVgualoy7SycXiO1quFY4atx4wzAjXUYfvhnFygCJp7dv
-         HK7xwDO4mwCWjsTQ8WArhmlILO9gzOU4yv+H7g44vXfLV+VYHNIqzIsoxh/ikIhnD/5b
-         qakXNF2Ibv9D+Dks+PdS9w2xoVKKNyMXbYQInZyGWNh6g0yXUvS95KyYziGXZRTAB78J
-         iGktdY8nZaYzQGCm7Xb/Lwmukbw/iX8A4ok/VLV+ooRauKwmX4jm53TKEADbUTjemCEt
-         XRpg==
-X-Gm-Message-State: AOAM5329XOjp9ce0my/EehdTVafSyOphrNIRckqY5EOedn30qQwekCRa
-        mCr5aqjy4trC3yeSUc00D/JXvErCJmoiAQ==
-X-Google-Smtp-Source: ABdhPJzKemP3fhkpt5b2ReiI1hf6UPbDsLuED7tu47DHpCTSc2NrubMrb2jXcT7xfxfTAghgKGQCFg==
-X-Received: by 2002:a65:6187:: with SMTP id c7mr31729095pgv.349.1626805637535;
-        Tue, 20 Jul 2021 11:27:17 -0700 (PDT)
+        bh=2rxEs1C/QmakaiGNm8e0gee+gcdOkuo6zyDBpsMxd+M=;
+        b=ldq1jNaTVpvj5HrvdZlzdWSAm6iQoOMva10yaLGxej7lzRk3v7ShamwslXUaH+FmFd
+         wm4qDzeEwmFgqlTAIho8DSkFqqHIGxCEi6atKNt55GsOT/WswsAgk3m5Qcv8pfnsFNlp
+         4a5Jcxg+l8mG/risHuV9CS7hxFK/2cCwCU5G15GpztN+3CwUwr3fE1j2zOBvAVmUZM3K
+         Dtaoq9hrTFVdIfGVbRS3ENeuLJsdkpXQHADexg7tzRiL++qgDCTLp+vOPPfcqzphsCpG
+         mD0KHt/woOO2wQhIn05ILq6KdCe/FFLdmNDYFFXvYrDY/R8M7aYUtBX1S+yCFwvXucYW
+         nAfw==
+X-Gm-Message-State: AOAM532n/4cLrC1fXlxozajg0zNU5X6kVMDGY4OTSZk5xkzy0d9fC17v
+        cASQJvl8tszeNYZPFtstxTOIP3yNcNDewg==
+X-Google-Smtp-Source: ABdhPJyTWDmNsFp2oU8OQgIedicBgNmTSyiFCO+sAlphkGnG0Ngvw8cxeBnFbmdT7tZF2jmXCIbHfA==
+X-Received: by 2002:a63:d44f:: with SMTP id i15mr32248403pgj.391.1626806831600;
+        Tue, 20 Jul 2021 11:47:11 -0700 (PDT)
 Received: from localhost ([2601:602:9200:1465:da9d:67ff:fec6:ee6b])
-        by smtp.gmail.com with ESMTPSA id u15sm26943643pgf.77.2021.07.20.11.27.16
-        for <linux-omap@vger.kernel.org>
+        by smtp.gmail.com with ESMTPSA id pj3sm19438410pjb.35.2021.07.20.11.47.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 11:27:17 -0700 (PDT)
+        Tue, 20 Jul 2021 11:47:10 -0700 (PDT)
 From:   Kevin Hilman <khilman@baylibre.com>
-To:     linux-omap@vger.kernel.org
-Subject: [PATCH] bus: ti-sysc: AM3: RNG is GP only
-Date:   Tue, 20 Jul 2021 11:27:16 -0700
-Message-Id: <20210720182716.13269-1-khilman@baylibre.com>
+To:     linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>
+Cc:     Tero Kristo <kristo@kernel.org>
+Subject: [PATCH] ARM: omap2+: hwmod: fix potential NULL pointer access
+Date:   Tue, 20 Jul 2021 11:47:10 -0700
+Message-Id: <20210720184710.17726-1-khilman@baylibre.com>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -60,39 +60,47 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Make the RNG on AM3 GP only.
+From: Tero Kristo <t-kristo@ti.com>
 
-Based on this patch from TI v5.4 tree which is based on hwmod data
-which are now removed:
+omap_hwmod_get_pwrdm() may access a NULL clk_hw pointer in some failure
+cases. Add a check for the case and bail out gracely if this happens.
 
-| ARM: AM43xx: hwmod: Move RNG to a GP only links table
-|
-| On non-GP devices the RNG is controlled by the secure-side software,
-| like in DRA7xx hwmod we should not control this IP when we are not
-| a GP device.
-|
-| Signed-off-by: Andrew F. Davis <afd@ti.com>
-
+Reported-by: Dan Murphy <dmurphy@ti.com>
+Signed-off-by: Tero Kristo <t-kristo@ti.com>
+Cc: stable@vger.kernel.org # v5.10+
 Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 ---
-If this is merged, it should be flagged for stable v5.10+. 
+ arch/arm/mach-omap2/omap_hwmod.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
- drivers/bus/ti-sysc.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 38cb116ed433..2587ed43ee8a 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2951,6 +2951,8 @@ static int sysc_init_soc(struct sysc *ddata)
- 		case SOC_3430 ... SOC_3630:
- 			sysc_add_disabled(0x48304000);	/* timer12 */
- 			break;
-+		case SOC_AM3:
-+			sysc_add_disabled(0x48310000);  /* rng */
- 		default:
- 			break;
- 		}
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+index 65934b2924fb..12b26e04686f 100644
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -3776,6 +3776,7 @@ struct powerdomain *omap_hwmod_get_pwrdm(struct omap_hwmod *oh)
+ 	struct omap_hwmod_ocp_if *oi;
+ 	struct clockdomain *clkdm;
+ 	struct clk_hw_omap *clk;
++	struct clk_hw *hw;
+ 
+ 	if (!oh)
+ 		return NULL;
+@@ -3792,7 +3793,14 @@ struct powerdomain *omap_hwmod_get_pwrdm(struct omap_hwmod *oh)
+ 		c = oi->_clk;
+ 	}
+ 
+-	clk = to_clk_hw_omap(__clk_get_hw(c));
++	hw = __clk_get_hw(c);
++	if (!hw)
++		return NULL;
++
++	clk = to_clk_hw_omap(hw);
++	if (!clk)
++		return NULL;
++
+ 	clkdm = clk->clkdm;
+ 	if (!clkdm)
+ 		return NULL;
 -- 
 2.31.1
 
