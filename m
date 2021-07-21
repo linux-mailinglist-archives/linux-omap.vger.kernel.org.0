@@ -2,105 +2,142 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 313F13D01DE
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Jul 2021 20:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC8C3D18A1
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Jul 2021 23:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbhGTSGi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 20 Jul 2021 14:06:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45028 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbhGTSGg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Jul 2021 14:06:36 -0400
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4972AC061574
-        for <linux-omap@vger.kernel.org>; Tue, 20 Jul 2021 11:47:12 -0700 (PDT)
-Received: by mail-pg1-x534.google.com with SMTP id t9so23376662pgn.4
-        for <linux-omap@vger.kernel.org>; Tue, 20 Jul 2021 11:47:12 -0700 (PDT)
+        id S230013AbhGUUZV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 21 Jul 2021 16:25:21 -0400
+Received: from mail-sn1anam02on2096.outbound.protection.outlook.com ([40.107.96.96]:53294
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229553AbhGUUZU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 21 Jul 2021 16:25:20 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ccdnwFQ9sN4HgMZ8HJkBbzohQScWYyMrgFqjaDIupPVwIJbKo2+ayh4XCj+UyoD0W1AuFWmuReye4yVpESGC9pZH50DTYQ5NpxjFJNAisNTuiDvjmVbSnUINq8sJHD4byfA4p5TUcJ56dUsozN+OEzBETplimukd1bzoUVVrwrNiFsIytJDm+MTrD9JyxJ0FOoimWkN9NfgnuosCjM4wmRy4UtySi52vIWtzDt4xBWnmRPJIrj5QRArRoDqJHnif8GHlbplgC+vtutiAXZZyRI5M7PqMXOl5pIqO0SQj+yXOd4cjGPEzl1owny/Djvqd55V37+Wf1s5Cmm9JEFdJvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W35GdinijwmZVnYTo+diF2CEeDFrcpUAibySQPZF14k=;
+ b=CSlRsQdVgVoyNUwgYLStyCuBEPuc2RgFBn/DSC7cTJ/mHZ6Hv5rnubyn1QX7hZLxd2+cUvwHdU3fdSO42CaRoTFaP7Ez8aJPx25B6gEI82L3HWZiHnwzra+46K1vAO8uvQx8+zkujdW7wP8BSAzVZ6G2vV4wZ9R9SvFOgLdVLRRhYGtQjpRN2nOG7Xns/Kabs6TdzTLTCQZrHnM/IKugGEETnUmvqVxcFDH2/p+9T7ZnUh5qejSf9d0UHlM3eV/feFDYeN/SdD/ERPNZT6wBu5CV2xepRAIvNGIPn3TzxG+Oe0bYiqHK8YZRReI6bwvnpYTek7lK4seInAxsojS75w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=in-advantage.com; dmarc=pass action=none
+ header.from=in-advantage.com; dkim=pass header.d=in-advantage.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2rxEs1C/QmakaiGNm8e0gee+gcdOkuo6zyDBpsMxd+M=;
-        b=sh1FoIp7AQtCBs7N3hT+zWJXrqviLsOyahCfBz0hvOlVjxUikwFcYTcV3cH1v1PE9j
-         BxXJUQXrzAp152htbrBHmOpb/7xYnYmRmyndZqUrgR6iz7W4BbmUTa9TfVGw1IOYsZfj
-         uHJqVIwvZylfspcBiyrSrLrY/rfv88vZdNc/9nLa2w7LottHbHM1Y1GTmowEqrc5B9i6
-         g1pFsQJ9kFwS/9oxOEwrnLQtRhb4/4AUwoDkuWq1jEpud8S+z1q8T8VUmektIUPlagJ2
-         FYvjsDZA3ycw+gzck3EpjAIAp003+ryJ3KjUp6fKjxsMR+DwE2pfxIteDPR7wTPatYz7
-         DKAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2rxEs1C/QmakaiGNm8e0gee+gcdOkuo6zyDBpsMxd+M=;
-        b=ldq1jNaTVpvj5HrvdZlzdWSAm6iQoOMva10yaLGxej7lzRk3v7ShamwslXUaH+FmFd
-         wm4qDzeEwmFgqlTAIho8DSkFqqHIGxCEi6atKNt55GsOT/WswsAgk3m5Qcv8pfnsFNlp
-         4a5Jcxg+l8mG/risHuV9CS7hxFK/2cCwCU5G15GpztN+3CwUwr3fE1j2zOBvAVmUZM3K
-         Dtaoq9hrTFVdIfGVbRS3ENeuLJsdkpXQHADexg7tzRiL++qgDCTLp+vOPPfcqzphsCpG
-         mD0KHt/woOO2wQhIn05ILq6KdCe/FFLdmNDYFFXvYrDY/R8M7aYUtBX1S+yCFwvXucYW
-         nAfw==
-X-Gm-Message-State: AOAM532n/4cLrC1fXlxozajg0zNU5X6kVMDGY4OTSZk5xkzy0d9fC17v
-        cASQJvl8tszeNYZPFtstxTOIP3yNcNDewg==
-X-Google-Smtp-Source: ABdhPJyTWDmNsFp2oU8OQgIedicBgNmTSyiFCO+sAlphkGnG0Ngvw8cxeBnFbmdT7tZF2jmXCIbHfA==
-X-Received: by 2002:a63:d44f:: with SMTP id i15mr32248403pgj.391.1626806831600;
-        Tue, 20 Jul 2021 11:47:11 -0700 (PDT)
-Received: from localhost ([2601:602:9200:1465:da9d:67ff:fec6:ee6b])
-        by smtp.gmail.com with ESMTPSA id pj3sm19438410pjb.35.2021.07.20.11.47.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 11:47:10 -0700 (PDT)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>
-Cc:     Tero Kristo <kristo@kernel.org>
-Subject: [PATCH] ARM: omap2+: hwmod: fix potential NULL pointer access
-Date:   Tue, 20 Jul 2021 11:47:10 -0700
-Message-Id: <20210720184710.17726-1-khilman@baylibre.com>
-X-Mailer: git-send-email 2.31.1
-MIME-Version: 1.0
+ d=inadvantage.onmicrosoft.com; s=selector2-inadvantage-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W35GdinijwmZVnYTo+diF2CEeDFrcpUAibySQPZF14k=;
+ b=TuVT3/XUzD8B7qhkuZJ3TjBwv68CPzk4SBDF3azMgSpgEbSBZSU5xnQxE5ecBu3gcy2TULGgAvcnUk1s7SgqsceerKEPB/WPsrU5B41/h4PPEo++EWG82vGpdPLnTwiTyzKZLQy59jSrjQzHLbXv/CdCHueKFVA/keeYlK7eb8M=
+Authentication-Results: ti.com; dkim=none (message not signed)
+ header.d=none;ti.com; dmarc=none action=none header.from=in-advantage.com;
+Received: from MWHPR1001MB2351.namprd10.prod.outlook.com
+ (2603:10b6:301:35::37) by MWHPR10MB1454.namprd10.prod.outlook.com
+ (2603:10b6:300:23::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4352.24; Wed, 21 Jul
+ 2021 21:05:52 +0000
+Received: from MWHPR1001MB2351.namprd10.prod.outlook.com
+ ([fe80::e81f:cf8e:6ad6:d24d]) by MWHPR1001MB2351.namprd10.prod.outlook.com
+ ([fe80::e81f:cf8e:6ad6:d24d%3]) with mapi id 15.20.4331.034; Wed, 21 Jul 2021
+ 21:05:52 +0000
+From:   Colin Foster <colin.foster@in-advantage.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [RFC PATCH v1 net-next 1/1] net: ethernet: ti: cpsw: allow MTU > 1500 when overridden by module parameter
+Date:   Wed, 21 Jul 2021 14:05:38 -0700
+Message-Id: <20210721210538.22394-1-colin.foster@in-advantage.com>
+X-Mailer: git-send-email 2.25.1
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MWHPR14CA0046.namprd14.prod.outlook.com
+ (2603:10b6:300:12b::32) To MWHPR1001MB2351.namprd10.prod.outlook.com
+ (2603:10b6:301:35::37)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from MSI.localdomain (96.93.101.165) by MWHPR14CA0046.namprd14.prod.outlook.com (2603:10b6:300:12b::32) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.22 via Frontend Transport; Wed, 21 Jul 2021 21:05:51 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 3664e91e-2c83-4f49-dc80-08d94c8b529d
+X-MS-TrafficTypeDiagnostic: MWHPR10MB1454:
+X-Microsoft-Antispam-PRVS: <MWHPR10MB1454BE706A2686C017FABC5CA4E39@MWHPR10MB1454.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: M37NpeaKPTwFaTl7N6d6oOym3KlXIpvDZkvrYydJPeolWPDdVuLU3xZjVyXEuoJCCnILpHVCnB1pKDoY8KEgiEoa9s3YRJ0xagOBkOz1uNaOhp3MLan5WBZP8zeH8diTNDGhYwzZcSpOsBlCCk3m2T4IFWlsthdE4HX8cOdQh0NKyJrEbMjiqUUUQXQ+hU68VgMQxoENOxYml2TvFC0n6KbFToNyNNk6GbO//u3tYqhW6HvyhIeLW1cqHk68ED2pr5mqdMACm9QYv7ulwIxdDxyrW7XQ62GlTA0uxK/Fg8q2wiJTc+nPMz4zoBK9RURQ8T8522zTS5qyU5dqEcT30Qq5rnSrdUb5WPsYvhSxbanSZrubHkpAqAuTWRDkgJUgfkMCsJrgtXcwWFYN6+k+raMMFqGdSH2In7xWPj3YLV/A/skPxq2oPVdu49roW89mqKMxcw/MMZPjQk2ojIGrYU0MCQiKdOdKnymqsIP9a8XO+zQaCHlmb/7pZ4ZJ6MSZr/pnGiCa2IADlT6lN6R+k6/gsHn27FhM9WfcwUlDT3Sdv3QL0bHcmSY2ytg/Uxu/z2yKVY3vGoRcqMZTswhJtWOcOq2d73hQaBTThuuWQhrnSzGdc6cvJuyVkZy1e5tio2I2QPMV+VgiNkPKeAvyElifasNCDWUaeCY7ST3+kBwW4Z4MrNrwChdQJ0KlRXg89anrG6Wvi7pncWmLaZML6V6D8+PeI2NpVYz3bebVPng=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2351.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(136003)(396003)(366004)(376002)(39830400003)(316002)(86362001)(6486002)(956004)(44832011)(66946007)(6506007)(508600001)(66556008)(186003)(26005)(2616005)(66476007)(83380400001)(52116002)(2906002)(6512007)(8936002)(6666004)(5660300002)(4326008)(38100700002)(110136005)(1076003)(38350700002)(8676002)(36756003)(221023002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DEw7lsEKewmpJzcUoY0p8r1FI4SELkKZEBerU1KN1jMW+74vQuMAgztOAMUm?=
+ =?us-ascii?Q?h5XmvzzbV5mm7d539dduUjbxvhaPVTv4YUrUOZLn52ts/6JoNQi9X3r35luF?=
+ =?us-ascii?Q?rd0fy0i33URWtnjNIh1c2nX1ut5xQ7jY8XmgOS1oZevoQMvJ0x7enC5xyf7M?=
+ =?us-ascii?Q?E0Nmd6x+FrmKUWj+tETLXqh82ixkDkrdTLaZ3WUNacBZiaem1qdLXRwXwn3C?=
+ =?us-ascii?Q?JOoMcjM9m2Mc8MKrF1LqQ13iFCEg+hisXCfTGHIzqPa/Dy2fGos/NUaQ+Cn9?=
+ =?us-ascii?Q?QZQwn6jEJfJ87Mf8yj5IAVQp44kLiRaMtl58hMT+dIwBtVEuzqitqQHCPrK+?=
+ =?us-ascii?Q?cEiVTrZ+hGuO97Chd/MDEKZCSpobw+IdhiF8flmKiXgCr9+IuGKwEVQxvqNB?=
+ =?us-ascii?Q?IE5T4uBpSlUR78pc11DX3mrDFrBcOanRenYmyNpXzsCUHV3gIdEzvt+PxGBk?=
+ =?us-ascii?Q?2nBaYpMapKZirxuNbTx6f/SOfAEAcnw6MzMqWmzvUajndZwxCarihpAPPkbF?=
+ =?us-ascii?Q?iOvJj1K5whPFImjBFrgjd9j/p1ohxk3pQM4Nh+hmdjfvfGl3gs8TAONLeUv5?=
+ =?us-ascii?Q?Iti2/CMEiC3fOWHook8NVVV8EceL+m+ofYsQb5t2ZIy8M0nAeIxtcFwHhM76?=
+ =?us-ascii?Q?S+5YUSQgFIRBQeagX2UEqWNiVuIGlfMp8NlxfLScDNNALdCBhon0C9i7Kcc3?=
+ =?us-ascii?Q?ZhKxgS84O6Mt0KL1BFceZLSww/SLermmi6677E35vYGr13eiNf4ezMuZH9QE?=
+ =?us-ascii?Q?I01C1/C0y6G0tkqm8g83GJk1m2VV7x0d/72ezHOtMpCl55jKJL3IBLvrs58z?=
+ =?us-ascii?Q?FOGOCa75BNF1XLV/aWUlcn/JgE8oUeyvSPab/gGDXm5CQZCf3giernEWZRjl?=
+ =?us-ascii?Q?uc2QrqT9rB9aXzK0VoW0A/Td/0yzFU7n96qBYtzE9x6Vw1KJ47kybYXqT5XV?=
+ =?us-ascii?Q?4YU36qXvh+mJ2h2LTwbVv6hB+3xNyTzHzn4J62153x+5yL4/S5s/+23hroqO?=
+ =?us-ascii?Q?fSe3Yioc5FucsRlJrIAFO2zOGpfZvWG8FOSCk3IQoJD1oxwCx5s+J9NjHYGa?=
+ =?us-ascii?Q?8yHYyk4JyfIAJ0bhVZkQCYGeebnP27z6cN33+vweTxt87WGMDotezQ4wLdBa?=
+ =?us-ascii?Q?GU1EKrcGgOi8KM00kgAXFAiThvp1Zf9bCREt8I9AOuyQG4C+80XoIyILVUdl?=
+ =?us-ascii?Q?j13iekCFDIn9gHpdPhf9FyWOzOl6fOCd/PG9YGwNNPKmUB4nPTmow5r3yXGJ?=
+ =?us-ascii?Q?5TasilokcgvDFn3asqUbMD+Fxgu76uZyZNqqiBHNbWfsm9JEwRog8B7jwmjq?=
+ =?us-ascii?Q?4CYAkhEMetNIkQz5D6tb3lVJ?=
+X-OriginatorOrg: in-advantage.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3664e91e-2c83-4f49-dc80-08d94c8b529d
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2351.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2021 21:05:52.2236
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 48e842ca-fbd8-4633-a79d-0c955a7d3aae
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yeY5HOKlqOm5WAteF4SmpAcPQAc+o9/Qmwmq3PYz/rCgS6PS6AHII9K8k04z6Ziyc1KkUiSzru8Dr4AHL4L0Yh/M2my0OeJQiMZYR79XPJQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR10MB1454
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Tero Kristo <t-kristo@ti.com>
+The module parameter rx_packet_max can be overridden at module load or
+boot args. But it doesn't adjust the max_mtu for the device accordingly.
 
-omap_hwmod_get_pwrdm() may access a NULL clk_hw pointer in some failure
-cases. Add a check for the case and bail out gracely if this happens.
+If a CPSW device is to be used in a DSA architecture, increasing the
+MTU by small amounts to account for switch overhead becomes necessary.
+This way, a boot arg of cpsw.rx_packet_max=1600 should allow the MTU
+to be increased to values of 1520, which is necessary for DSA tagging
+protocols like "ocelot" and "seville".
 
-Reported-by: Dan Murphy <dmurphy@ti.com>
-Signed-off-by: Tero Kristo <t-kristo@ti.com>
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
 ---
- arch/arm/mach-omap2/omap_hwmod.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/cpsw.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
-index 65934b2924fb..12b26e04686f 100644
---- a/arch/arm/mach-omap2/omap_hwmod.c
-+++ b/arch/arm/mach-omap2/omap_hwmod.c
-@@ -3776,6 +3776,7 @@ struct powerdomain *omap_hwmod_get_pwrdm(struct omap_hwmod *oh)
- 	struct omap_hwmod_ocp_if *oi;
- 	struct clockdomain *clkdm;
- 	struct clk_hw_omap *clk;
-+	struct clk_hw *hw;
- 
- 	if (!oh)
- 		return NULL;
-@@ -3792,7 +3793,14 @@ struct powerdomain *omap_hwmod_get_pwrdm(struct omap_hwmod *oh)
- 		c = oi->_clk;
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index c0cd7de88316..d400163c4ef2 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -1625,6 +1625,14 @@ static int cpsw_probe(struct platform_device *pdev)
+ 		goto clean_cpts;
  	}
  
--	clk = to_clk_hw_omap(__clk_get_hw(c));
-+	hw = __clk_get_hw(c);
-+	if (!hw)
-+		return NULL;
++	/* adjust max_mtu to match module parameter rx_packet_max */
++	if (cpsw->rx_packet_max > CPSW_MAX_PACKET_SIZE) {
++		ndev->max_mtu = ETH_DATA_LEN + (cpsw->rx_packet_max -
++				CPSW_MAX_PACKET_SIZE);
++		dev_info(dev, "overriding default MTU to %d\n\n",
++			 ndev->max_mtu);
++	}
 +
-+	clk = to_clk_hw_omap(hw);
-+	if (!clk)
-+		return NULL;
-+
- 	clkdm = clk->clkdm;
- 	if (!clkdm)
- 		return NULL;
+ 	priv = netdev_priv(ndev);
+ 	priv->cpsw = cpsw;
+ 	priv->ndev = ndev;
 -- 
-2.31.1
+2.25.1
 
