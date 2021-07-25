@@ -2,59 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 070803D4669
-	for <lists+linux-omap@lfdr.de>; Sat, 24 Jul 2021 10:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6ACF3D4D3F
+	for <lists+linux-omap@lfdr.de>; Sun, 25 Jul 2021 13:54:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234623AbhGXIMc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 24 Jul 2021 04:12:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55184 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbhGXIMb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 24 Jul 2021 04:12:31 -0400
-Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42F67C061575
-        for <linux-omap@vger.kernel.org>; Sat, 24 Jul 2021 01:53:03 -0700 (PDT)
-Received: by mail-ua1-x934.google.com with SMTP id o10so1449114uaj.0
-        for <linux-omap@vger.kernel.org>; Sat, 24 Jul 2021 01:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=etDsOsklTFhdv20/ihPgdxxbpxkX/HMYSlW+AO+gqjs=;
-        b=B4J04rLYZAkPTjcTd1AkXvBatveAVz/4FBFAz0Kfodu0+HZa3sKtagGrhB1PRGzasQ
-         HWGUM8rUKWhTSRLTpRANmys10D01W7VPKGdT82nKu72CAV9WROzZypUqgy1s8Q84l+vz
-         0NMI+MxHUZRaTWJlD5RzZrAO42PpAUwf2RMv2tcK8eV+ZlBbuDeghyiyYJP4yyewu5fs
-         e8Xn3cneVxEmmXXUkdpiGF+l+VvuOp7iL0O9BUaOKcDZrMWGaFm8HNYVkPfXbpjSWUyV
-         /G0MswgEWDb/ux+TfUpFGC7ba/r9djINkt16mOYZGCITuc4gceFYv38rs4NIION6Aby1
-         DsKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=etDsOsklTFhdv20/ihPgdxxbpxkX/HMYSlW+AO+gqjs=;
-        b=HfnCEAkTMiJ1yrC0PpujgimfT4zhVD52bc8U9FuQX8iRWNJ6v1Azycw1eirsNRwKpa
-         aftG98lNwnQeWyi+F7YB+tDTm01qkcB0GXNmOsMki5l1oY8upy9x3xs8O2PLRHPD8W6K
-         Gwdub5zDwvs83R3KIy/iFOWuyJmBIsKJiQNJGMVGPAOvWZpMp+W0plZYZSHTjPkiUcQj
-         sbvO2UGEPsZ6DErtGf6ZF0hE8A5DB675pCU79971Ae/I+gQS6Keq/fcEj2t8snQWntmc
-         +VibgJTyfbUBh7uiAh0FzSeWGEHZDtD/fow+fuXhJ9xzzRLIMF8WsE+yl6CDWXx3n/LT
-         xIJQ==
-X-Gm-Message-State: AOAM531lBykhkjRDeTNzuVqjN98DsnXxAsKgSILyUS3QV2T9Jl6OABl3
-        onJ2QbixB2afpr86KrmwyE3snadF0U8kGdtMqeU=
-X-Google-Smtp-Source: ABdhPJw+qyX4h6mV/aRZVdu6ttKce7HFkwQjULL/SdH0Z0IyhmMtqetZCxdqE+za0dg8Nv4kS60u0NyIcRhAUYaiy/4=
-X-Received: by 2002:ab0:45ab:: with SMTP id u40mr7503719uau.84.1627116781984;
- Sat, 24 Jul 2021 01:53:01 -0700 (PDT)
+        id S229545AbhGYLNa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 25 Jul 2021 07:13:30 -0400
+Received: from mail30c0.megamailservers.com ([216.251.36.41]:58434 "EHLO
+        mail30c0.megamailservers.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230029AbhGYLN1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 25 Jul 2021 07:13:27 -0400
+X-Greylist: delayed 2698 seconds by postgrey-1.27 at vger.kernel.org; Sun, 25 Jul 2021 07:13:27 EDT
+X-Authenticated-User: festejos@rcemx.mx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=megamailservers.com;
+        s=mailtor; t=1627211339;
+        bh=Q2Hrqo8ktNmbNKUaExV2IrRNp/hDB652ABbfruuRaj4=;
+        h=Subject:To:From:Date:Reply-To:From;
+        b=pS3Jgdu9irHZpcQ5gEXTo7dZ4EK8vPr06n6s2mtiJ8GqDHN1bOR6ZZmrznJpMwEv5
+         KgXEEEo90mXC9F59iSnxWeEisDR3o3nWmNRBk/P/WefGF8Y4upjx4xGBHOmtPvCA/4
+         PseKH0OvW1UAXKunEKCAQS7brbtz1XpQ7FwPAhS8=
+Feedback-ID: generale@trinit
+Received: from [192.168.1.4] ([154.124.230.81])
+        (authenticated bits=0)
+        by mail30c0.megamailservers.com (8.14.9/8.13.1) with ESMTP id 16PB8r0s016176
+        (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=NO)
+        for <linux-omap@vger.kernel.org>; Sun, 25 Jul 2021 07:08:59 -0400
+Message-Id: <202107251108.16PB8r0s016176@mail30c0.megamailservers.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Received: by 2002:a67:ef4f:0:0:0:0:0 with HTTP; Sat, 24 Jul 2021 01:53:01
- -0700 (PDT)
-Reply-To: info.cherrykona@gmail.com
-From:   Cherry kona <tonyelumelu67@gmail.com>
-Date:   Sat, 24 Jul 2021 01:53:01 -0700
-Message-ID: <CAAVnhx+zuMXp7r2jESVp1bJ9x9WR43fgzqeMSGvsa_=QCBxh=w@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Hello
+To:     linux-omap@vger.kernel.org
+From:   "Olivia Jorge" <generale@trinitari.org>
+Date:   Sun, 25 Jul 2021 03:08:55 -0800
+Reply-To: oliviajorge206@gmail.com
+X-CTCH-RefID: str=0001.0A742F1C.60FD464B.0025,ss=2,re=0.000,recu=0.000,reip=0.000,cl=2,cld=1,fgs=64
+X-CTCH-VOD: Unknown
+X-CTCH-Spam: Suspect
+X-CTCH-Score: 0.000
+X-CTCH-Rules: 
+X-CTCH-Flags: 64
+X-CTCH-ScoreCust: 0.000
+X-CSC:  0
+X-CHA:  v=2.3 cv=aKSOVo1m c=1 sm=1 tr=0 a=1QIxana2jGglsihQw5lWfw==:117
+        a=1QIxana2jGglsihQw5lWfw==:17 a=HpEJnUlJZJkA:10 a=gR7a7wziWA4A:10
+        a=8nJEP1OIZ-IA:10 a=x7bEGLp0ZPQA:10 a=BwwTYiHyHazLYfunlqQA:9
+        a=wPNLvfGTeEIA:10 a=xo5jKAKm-U-Zyk2_beg_:22 a=3aOP5KuCSnT6yqF4hAMB:22
+X-Origin-Country: SN
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Hello did you see my message i send to you?
+Hello How are you doing today. There is an international conference
+which i will be privileged to visit Africa. In my organization
+(British Heart Foundation) We've been selected to attend in USA and
+West Africa. I might recommend you to attend if you wish. It's not a
+general conference anyways. I can give you the coordinators email so
+you can go ahead and contact them if you wish as a friend. It could
+have been easier for you if you were a volunteer under BHF org cos
+it's a free sponsorship conference. i will see what i can do about it
+if you are interested.
