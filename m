@@ -2,43 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 096433D70BB
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Jul 2021 10:00:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8215D3D70CE
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Jul 2021 10:07:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235746AbhG0IAi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Jul 2021 04:00:38 -0400
-Received: from muru.com ([72.249.23.125]:55516 "EHLO muru.com"
+        id S235679AbhG0IGS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Jul 2021 04:06:18 -0400
+Received: from muru.com ([72.249.23.125]:55542 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235675AbhG0IAh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 27 Jul 2021 04:00:37 -0400
+        id S235918AbhG0IGA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 27 Jul 2021 04:06:00 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 5691780F0;
-        Tue, 27 Jul 2021 08:00:54 +0000 (UTC)
-Date:   Tue, 27 Jul 2021 11:00:35 +0300
+        by muru.com (Postfix) with ESMTPS id 79CA780F0;
+        Tue, 27 Jul 2021 08:06:18 +0000 (UTC)
+Date:   Tue, 27 Jul 2021 11:05:59 +0300
 From:   Tony Lindgren <tony@atomide.com>
 To:     Kevin Hilman <khilman@baylibre.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Dave Gerlach <d-gerlach@ti.com>
-Subject: Re: [PATCH] ARM: dts: am43x-epos-evm: Reduce i2c0 bus speed for
- tps65218
-Message-ID: <YP+87A0TSkpFGkI/@atomide.com>
-References: <20210716160730.30547-1-khilman@baylibre.com>
+Cc:     linux-omap@vger.kernel.org
+Subject: Re: [PATCH] bus: ti-sysc: AM3: RNG is GP only
+Message-ID: <YP++Z/AJ2qFG+GUF@atomide.com>
+References: <20210720182716.13269-1-khilman@baylibre.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210716160730.30547-1-khilman@baylibre.com>
+In-Reply-To: <20210720182716.13269-1-khilman@baylibre.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Kevin Hilman <khilman@baylibre.com> [210716 19:07]:
-> From: Dave Gerlach <d-gerlach@ti.com>
-> Without this patch occasionally a voltage set operation from the kernel
-> will appear to have worked but the actual voltage reflected on the PMIC
-> will not have updated, causing problems especially with cpufreq that may
-> update to a higher OPP without actually raising the voltage on DCDC2,
-> leading to a hang.
+* Kevin Hilman <khilman@baylibre.com> [210720 21:28]:
+> Make the RNG on AM3 GP only.
+> 
+> Based on this patch from TI v5.4 tree which is based on hwmod data
+> which are now removed:
+> 
+> | ARM: AM43xx: hwmod: Move RNG to a GP only links table
+> |
+> | On non-GP devices the RNG is controlled by the secure-side software,
+> | like in DRA7xx hwmod we should not control this IP when we are not
+> | a GP device.
+> |
+> | Signed-off-by: Andrew F. Davis <afd@ti.com>
+> 
+> Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+> ---
+> If this is merged, it should be flagged for stable v5.10+. 
 
-Applying into fixes thanks.
+Applying into fixes with a stable tag thanks.
 
 Tony
