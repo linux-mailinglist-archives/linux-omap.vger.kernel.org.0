@@ -2,68 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3BE83D7345
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Jul 2021 12:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBD023D7358
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Jul 2021 12:35:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236310AbhG0Kb5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Jul 2021 06:31:57 -0400
-Received: from muru.com ([72.249.23.125]:55880 "EHLO muru.com"
+        id S236328AbhG0Kfj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Jul 2021 06:35:39 -0400
+Received: from muru.com ([72.249.23.125]:55896 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231745AbhG0Kb4 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 27 Jul 2021 06:31:56 -0400
+        id S236104AbhG0Kfi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 27 Jul 2021 06:35:38 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 24BED8106;
-        Tue, 27 Jul 2021 10:32:12 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 1506B80F0;
+        Tue, 27 Jul 2021 10:35:54 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
         linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Dario Binacchi <dariobin@libero.it>
-Subject: [PATCH 2/2] serial: omap: Only allow if 8250_omap is not selected
-Date:   Tue, 27 Jul 2021 13:31:49 +0300
-Message-Id: <20210727103149.51175-2-tony@atomide.com>
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>
+Subject: [PATCH 1/2] dt-bindings: serial: 8250: Update for standard overrun-throttle property
+Date:   Tue, 27 Jul 2021 13:35:32 +0300
+Message-Id: <20210727103533.51547-1-tony@atomide.com>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210727103149.51175-1-tony@atomide.com>
-References: <20210727103149.51175-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-For years we've been carrying legacy omap-serial in addition to
-8250_omap driver and 8250_omap should be used instead.
+In some cases we want to specify overrun-throttle like other 8250 drivers
+are doing.
 
-Let's finally start planning on removing omap-serial by first not
-building it if 8250_omap is selected to save some memory.
-
-The defconfigs have switched over to using 8250_omap, and we have
-a fixup in place for the the serial console since commit 00648d0282dc
-("tty: serial: 8250: omap: add ttySx console if the user didn't").
-So people updating their systems without omap-serial will see
-boot time warnings on what is going on.
-
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Dario Binacchi <dariobin@libero.it>
+Cc: devicetree@vger.kernel.org
+Cc: Rob Herring <robh+dt@kernel.org>
 Cc: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/tty/serial/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/serial/8250_omap.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -959,7 +959,7 @@ config SERIAL_VT8500_CONSOLE
+diff --git a/Documentation/devicetree/bindings/serial/8250_omap.yaml b/Documentation/devicetree/bindings/serial/8250_omap.yaml
+--- a/Documentation/devicetree/bindings/serial/8250_omap.yaml
++++ b/Documentation/devicetree/bindings/serial/8250_omap.yaml
+@@ -79,6 +79,7 @@ properties:
+   power-domains: true
+   clock-frequency: true
+   current-speed: true
++  overrun-throttle-ms: true
  
- config SERIAL_OMAP
- 	tristate "OMAP serial port support"
--	depends on ARCH_OMAP2PLUS || COMPILE_TEST
-+	depends on (ARCH_OMAP2PLUS && !SERIAL_8250_OMAP) || COMPILE_TEST
- 	select SERIAL_CORE
- 	help
- 	  If you have a machine based on an Texas Instruments OMAP CPU you
+ required:
+   - compatible
 -- 
 2.32.0
