@@ -2,118 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3BB93D735D
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Jul 2021 12:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B631C3D7371
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Jul 2021 12:39:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236365AbhG0Kfm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Jul 2021 06:35:42 -0400
-Received: from muru.com ([72.249.23.125]:55904 "EHLO muru.com"
+        id S236356AbhG0KjJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Jul 2021 06:39:09 -0400
+Received: from muru.com ([72.249.23.125]:55926 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236104AbhG0Kfm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 27 Jul 2021 06:35:42 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 127B98106;
-        Tue, 27 Jul 2021 10:35:57 +0000 (UTC)
+        id S236104AbhG0KjG (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 27 Jul 2021 06:39:06 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 3600D80F0;
+        Tue, 27 Jul 2021 10:39:24 +0000 (UTC)
+Date:   Tue, 27 Jul 2021 13:39:05 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>, Sebastian Reichel <sre@kernel.org>
-Subject: [PATCH 2/2] serial: 8250_omap: Handle optional overrun-throttle-ms property
-Date:   Tue, 27 Jul 2021 13:35:33 +0300
-Message-Id: <20210727103533.51547-2-tony@atomide.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210727103533.51547-1-tony@atomide.com>
-References: <20210727103533.51547-1-tony@atomide.com>
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] serial: 8250: 8250_omap: Fix possible interrupt storm
+Message-ID: <YP/iSZpJ5AIJV70Z@atomide.com>
+References: <20210511151955.28071-1-vigneshr@ti.com>
+ <YJ008MjjewRUTn9Z@kroah.com>
+ <YLCCJzkkB4N7LTQS@atomide.com>
+ <e5b35370-bf2d-7295-e2fd-9aee5bbc3296@ti.com>
+ <0ad948ac-f669-3d6d-5eca-4ca48d47d6a3@siemens.com>
+ <56c5d73f-741c-2643-1c79-6dc13ebb05c7@ti.com>
+ <YOylnHudkwcHHEeZ@surfacebook.localdomain>
+ <0ae7e313-1ed7-f1be-e8a7-edd1286277a5@ti.com>
+ <CAHp75Vcxtk0f2KRSL8gh2mz-AYE7Kav6co8N8XMbsvtyLohG5w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vcxtk0f2KRSL8gh2mz-AYE7Kav6co8N8XMbsvtyLohG5w@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Handle optional overrun-throttle-ms property as done for 8250_fsl in commit
-6d7f677a2afa ("serial: 8250: Rate limit serial port rx interrupts during
-input overruns"). This can be used to rate limit the UART interrupts on
-noisy lines that end up producing messages like the following:
+* Andy Shevchenko <andy.shevchenko@gmail.com> [210713 09:14]:
+> On Tue, Jul 13, 2021 at 11:54 AM Vignesh Raghavendra <vigneshr@ti.com> wrote:
+> > On 7/13/21 1:57 AM, andy@surfacebook.localdomain wrote:
+> > > Tue, Jun 22, 2021 at 11:53:38AM +0530, Vignesh Raghavendra kirjoitti:
+> 
+> ...
+> 
+> > > https://lore.kernel.org/linux-serial/20170206233000.3021-1-dianders@chromium.org/
+> >
+> > I am not sure if reading UART_LSR is a good idea in the above patch.
+> > Some flags in LSR register are cleared on read (at least that's the case
+> > for UARTs on TI SoCs) and thus can result in loss of error/FIFO status
+> > information.
+> >
+> > > https://lore.kernel.org/linux-serial/1440015124-28393-1-git-send-email-california.l.sullivan@intel.com/
+> >
+> > Looks like this never made it.
+> 
+> Forgot to react to the above. Yes, they never made it because I
+> believe due to the exact reason you mentioned above. Also California
+> set up different experiments IIRC and it shows that the problem didn;t
+> fully disappear with his approach. But maybe yours will work better
+> (at least it's not the first time I have seen it on different hardware
+> according to people's contributions).
 
-ttyS ttyS2: 4 input overrun(s)
+Not sure if this is the same issue with noisy lines, but see also the
+following in case it's related:
 
-At least on droid4, the multiplexed USB and UART port is left to UART mode
-by the bootloader for a debug console, and if a USB charger is connected
-on boot, we get noise on the UART until the PMIC related drivers for PHY
-and charger are loaded.
+[PATCH 2/2] serial: 8250_omap: Handle optional overrun-throttle-ms property
 
-With this patch and overrun-throttle-ms = <500> we avoid the extra rx
-interrupts.
+Also available at [0] below.
 
-Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/tty/serial/8250/8250_omap.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+Regards,
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -617,7 +617,7 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
- 	struct uart_port *port = dev_id;
- 	struct omap8250_priv *priv = port->private_data;
- 	struct uart_8250_port *up = up_to_u8250p(port);
--	unsigned int iir;
-+	unsigned int iir, lsr;
- 	int ret;
- 
- #ifdef CONFIG_SERIAL_8250_DMA
-@@ -628,6 +628,7 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
- #endif
- 
- 	serial8250_rpm_get(up);
-+	lsr = serial_port_in(port, UART_LSR);
- 	iir = serial_port_in(port, UART_IIR);
- 	ret = serial8250_handle_irq(port, iir);
- 
-@@ -642,6 +643,24 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
- 		serial_port_in(port, UART_RX);
- 	}
- 
-+	/* Stop processing interrupts on input overrun */
-+	if ((lsr & UART_LSR_OE) && up->overrun_backoff_time_ms > 0) {
-+		unsigned long delay;
-+
-+		up->ier = port->serial_in(port, UART_IER);
-+		if (up->ier & (UART_IER_RLSI | UART_IER_RDI)) {
-+			port->ops->stop_rx(port);
-+		} else {
-+			/* Keep restarting the timer until
-+			 * the input overrun subsides.
-+			 */
-+			cancel_delayed_work(&up->overrun_backoff);
-+		}
-+
-+		delay = msecs_to_jiffies(up->overrun_backoff_time_ms);
-+		schedule_delayed_work(&up->overrun_backoff, delay);
-+	}
-+
- 	serial8250_rpm_put(up);
- 
- 	return IRQ_RETVAL(ret);
-@@ -1353,6 +1372,10 @@ static int omap8250_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	if (of_property_read_u32(np, "overrun-throttle-ms",
-+				 &up.overrun_backoff_time_ms) != 0)
-+		up.overrun_backoff_time_ms = 0;
-+
- 	priv->wakeirq = irq_of_parse_and_map(np, 1);
- 
- 	pdata = of_device_get_match_data(&pdev->dev);
--- 
-2.32.0
+Tony
+
+[0] https://lore.kernel.org/linux-omap/20210727103533.51547-1-tony@atomide.com/T/#m5f9da26c32503f2937d3d5977310ca337fa0cb5a
