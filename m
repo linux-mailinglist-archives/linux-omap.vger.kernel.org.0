@@ -2,209 +2,453 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 284EA3DAF60
-	for <lists+linux-omap@lfdr.de>; Fri, 30 Jul 2021 00:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B33353DAFE0
+	for <lists+linux-omap@lfdr.de>; Fri, 30 Jul 2021 01:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233660AbhG2Wqi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Jul 2021 18:46:38 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:60426 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233286AbhG2Wqg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Jul 2021 18:46:36 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 16TMkMJk036096;
-        Thu, 29 Jul 2021 17:46:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1627598782;
-        bh=Chl8srlAMyp3nmt6HWWf9y1ZvmcjU37q7T7fu/6EFMA=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=MS6er1A27ReU2RIfyCE4+ZxmH21Ai/Xk+Fw+8p6SWAqD7SndM/Bw1LU+uHOTOYfyl
-         1k+omrgYhgLFv/fx7QjarVjn4Lc5/WvlSfGae3F0Xln8yELibcZgC2Nq3bXnvKUxDt
-         o37rxPP4mlrxP6VwRDzIh8dPPMejH3rNxZVv5m6s=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 16TMkMMW125312
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 29 Jul 2021 17:46:22 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 29
- Jul 2021 17:46:22 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Thu, 29 Jul 2021 17:46:22 -0500
-Received: from lelv0597.itg.ti.com (lelv0597.itg.ti.com [10.181.64.32])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 16TMkMm7076805;
-        Thu, 29 Jul 2021 17:46:22 -0500
-Received: from localhost ([10.250.38.176])
-        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 16TMkMOB016283;
-        Thu, 29 Jul 2021 17:46:22 -0500
-From:   Suman Anna <s-anna@ti.com>
-To:     Tony Lindgren <tony@atomide.com>
-CC:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, Suman Anna <s-anna@ti.com>
-Subject: [PATCH 11/11] ARM: dts: am57xx: Add PRUSS MDIO controller nodes
-Date:   Thu, 29 Jul 2021 17:46:21 -0500
-Message-ID: <20210729224621.2295-12-s-anna@ti.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210729224621.2295-1-s-anna@ti.com>
-References: <20210729224621.2295-1-s-anna@ti.com>
+        id S234737AbhG2XfS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Jul 2021 19:35:18 -0400
+Received: from mail-il1-f176.google.com ([209.85.166.176]:41798 "EHLO
+        mail-il1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229982AbhG2XfS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Jul 2021 19:35:18 -0400
+Received: by mail-il1-f176.google.com with SMTP id j18so4578263ile.8;
+        Thu, 29 Jul 2021 16:35:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=qN6sb3aX7hRui1omUtuCA3OEQ1VLaGH1+abq0moxMrw=;
+        b=XIabBh9EBuQtKm4buCw+JrSikTH6W6J4lxOro1ReqK1QUsLfK0kPfWTwv7mEc5R4I3
+         1VAYs6M8ZB4ajPV555Zjho5LC+s5gOmC593KTUdmYbJSiB+fJlNQlsn3OxTISjKPJ3Vy
+         X4q9j1Pj5omkkMyMo7ql/sO7YP9L4cODtfI7qbanK3s5nPKTQiZAgbZ4Iv1g1ctE+KFE
+         YsMy+IEQtbgwfyVUUrIhrp1HXZh+si0nAViduLa3SHoCHDAGIIZ9LG9YMzGktyt2XSZe
+         fYKhwyDPt08KNl0fqM4KwBdC/lM/TOUy8e4TdGumkPao75OUjHjapP8E9sWhAQcGU9Jk
+         iSIQ==
+X-Gm-Message-State: AOAM5331dYvvUK05GuQA9eEp4IrRn3WbabMAsoZOB59IxNb5p33pzbBc
+        GtF0S6e+hk2N13itDn3I1A==
+X-Google-Smtp-Source: ABdhPJxszO+1UEg2TfA93Ai2Nl2H3bpeb+E+iXGBzOAXoT+qg9CJPPzRLK1ufpv3DRws+faFTVTtLA==
+X-Received: by 2002:a92:d8cf:: with SMTP id l15mr5356394ilo.227.1627601712769;
+        Thu, 29 Jul 2021 16:35:12 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id y14sm2412589ilv.76.2021.07.29.16.35.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jul 2021 16:35:11 -0700 (PDT)
+Received: (nullmailer pid 1121501 invoked by uid 1000);
+        Thu, 29 Jul 2021 23:35:10 -0000
+Date:   Thu, 29 Jul 2021 17:35:10 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: mfd: Convert ti-tsc-adc bindings to YAML
+ schema
+Message-ID: <YQM7Lm+KD7C5P6i+@robh.at.kernel.org>
+References: <20210726104958.8631-1-vigneshr@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210726104958.8631-1-vigneshr@ti.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The PRUSSs on AM57xx SoCs contain an MDIO controller that can
-be used to control external PHYs associated with the Industrial
-Ethernet peripherals within each PRUSS. The MDIO module used
-within the PRU-ICSS is an instance of the MDIO Controller used
-in TI Davinci SoCs. The same bus frequency of 1 MHz is chosen as
-the regular MDIO node.
+On Mon, Jul 26, 2021 at 04:19:58PM +0530, Vignesh Raghavendra wrote:
+> Convert ti-tsc-adc binding to YAML schema. This is MFD device with
+> support for resistive touchscreen and ADC. But the txt binding file for
+> MFD and ADC has been incorrectly been under input/touchscreen directory,
+> so split the bindings across subsystems as appropriate.
+> 
+> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+> ---
+>  .../bindings/iio/adc/ti,am3359-adc.yaml       | 74 +++++++++++++++
+>  .../input/touchscreen/ti,am3359-tsc.yaml      | 79 ++++++++++++++++
+>  .../bindings/input/touchscreen/ti-tsc-adc.txt | 91 ------------------
+>  .../bindings/mfd/ti,am3359-tscadc.yaml        | 92 +++++++++++++++++++
+>  4 files changed, 245 insertions(+), 91 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+>  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
+>  create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+> new file mode 100644
+> index 000000000000..b7884be5d378
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+> @@ -0,0 +1,74 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/ti,am3359-adc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bindings for ADC part of TSCADC MFDs on TI SoCs
+> +
+> +maintainers:
+> +  - Vignesh Raghavendra <vigneshr@ti.com>
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - ti,am654-adc
+> +          - const: ti,am3359-adc
+> +      - const: ti,am3359-adc
+> +
+> +  ti,adc-channels:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description:
+> +      List of analog inputs available for ADC.
+> +      AIN0 = 0, AIN1 = 1 and so on till AIN7 = 7.
+> +    minItems: 1
+> +    maxItems: 8
+> +    items:
+> +      maximum: 7
+> +
+> +  ti,chan-step-opendelay:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description:
+> +      List of open delays for each channel of list of analog inputs
+> +      available for ADC. ADC in the order of ti,adc-channels. The
+> +      value corresponds to the number of ADC clock cycles to wait
+> +      after applying the step configuration registers and before
+> +      sending the start of ADC conversion.
+> +    minItems: 1
+> +    maxItems: 8
+> +    items:
+> +      maximum: 0x3FFFF
+> +
+> +  ti,chan-step-sampledelay:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description:
+> +      List of sample delays for each channel of ADC in the order of
+> +      ti,adc-channels. The value corresponds to the number of
+> +      ADC clock cycles to sample (to hold start of conversion high).
+> +    minItems: 1
+> +    maxItems: 8
+> +    items:
+> +      maximum: 0xFF
+> +
+> +  ti,chan-step-avg:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description:
+> +      Number of averages to be performed for each channel of ADC. If
+> +      average is 16 then input is sampled 16 times and averaged to
+> +      get more accurate value. This increases the time taken by ADC
+> +      to generate a sample.
+> +    minItems: 1
+> +    maxItems: 8
+> +    items:
+> +      maximum: 16
+> +
+> +  "#io-channel-cells":
+> +    const: 1
+> +
+> +required:
+> +  - compatible
+> +  - "#io-channel-cells"
+> +
+> +additionalProperties: false
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml b/Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+> new file mode 100644
+> index 000000000000..288f8d73b653
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+> @@ -0,0 +1,79 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/touchscreen/ti,am3359-tsc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bindings for TSC part of TSCADC MFDs on TI SoCs
+> +
+> +maintainers:
+> +  - Vignesh Raghavendra <vigneshr@ti.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: ti,am3359-tsc
+> +
+> +  ti,wires:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [4, 5, 8]
+> +    description:
+> +      Number of wires used by touchscreen
+> +
+> +  ti,x-plate-resistance:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      X plate resistance
+> +
+> +  ti,coordinate-readouts:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 1
+> +    maximum: 5
+> +    description:
+> +      The sequencer supports a total of 16 programmable steps
+> +      each step is used to read a single coordinate. A single
+> +      readout is enough but multiple reads can increase the quality.
+> +      A value of 5 means, 5 reads for X, 5 for Y and 2 for Z (always).
+> +      This utilises 12 of the 16 software steps available.
+> +      The remaining 4 can be used by the ADC.
+> +
+> +  ti,wire-config:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description: |
+> +      Different boards could have a different order for
+> +      connecting wires on touchscreen. We need to provide an
+> +      8 bit number where in the 1st four bits represent the
+> +      analog lines and the next 4 bits represent positive/
+> +      negative terminal on that input line. Notations to
+> +      represent the input lines and terminals respectively
+> +      is as follows:
+> +      AIN0 = 0, AIN1 = 1 and so on till AIN7 = 7.
+> +      XP  = 0, XN = 1, YP = 2, YN = 3.
+> +      minItems: 4
+> +    items:
+> +      maximum: 0x73
+> +
+> +  ti,charge-delay:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Length of touch screen charge delay step in terms of
+> +      List of analog inputs available for ADC.
+> +      ADC clock cycles. Charge delay value should be large
+> +      in order to avoid false pen-up events. This value
+> +      effects the overall sampling speed, hence need to be
+> +      kept as low as possible, while avoiding false pen-up
+> +      event. Start from a lower value, say 0x400, and
+> +      increase value until false pen-up events are avoided.
+> +      The pen-up detection happens immediately after the
+> +      charge step, so this does in fact function as a
+> +      hardware knob for adjusting the amount of "settling time".
+> +    minimum: 0x1
+> +    maximum: 0xFFFF
+> +
+> +required:
+> +  - compatible
+> +  - ti,wires
+> +  - ti,coordinate-readouts
+> +  - ti,wire-config
+> +  - ti,x-plate-resistance
+> +
+> +additionalProperties: false
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt b/Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
+> deleted file mode 100644
+> index aad5e34965eb..000000000000
+> --- a/Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
+> +++ /dev/null
+> @@ -1,91 +0,0 @@
+> -* TI - TSC ADC (Touschscreen and analog digital converter)
+> -~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> -
+> -Required properties:
+> -- mfd
+> -	compatible: Should be
+> -		"ti,am3359-tscadc" for AM335x/AM437x SoCs
+> -		"ti,am654-tscadc", "ti,am3359-tscadc" for AM654 SoCs
+> -- child "tsc"
+> -	compatible: Should be "ti,am3359-tsc".
+> -	ti,wires: Wires refer to application modes i.e. 4/5/8 wire touchscreen
+> -		  support on the platform.
+> -	ti,x-plate-resistance: X plate resistance
+> -	ti,coordinate-readouts: The sequencer supports a total of 16
+> -				programmable steps each step is used to
+> -				read a single coordinate. A single
+> -                                readout is enough but multiple reads can
+> -				increase the quality.
+> -				A value of 5 means, 5 reads for X, 5 for
+> -				Y and 2 for Z (always). This utilises 12
+> -				of the 16 software steps available. The
+> -				remaining 4 can be used by the ADC.
+> -	ti,wire-config: Different boards could have a different order for
+> -			connecting wires on touchscreen. We need to provide an
+> -			8 bit number where in the 1st four bits represent the
+> -			analog lines and the next 4 bits represent positive/
+> -			negative terminal on that input line. Notations to
+> -			represent the input lines and terminals resoectively
+> -			is as follows:
+> -			AIN0 = 0, AIN1 = 1 and so on till AIN7 = 7.
+> -			XP  = 0, XN = 1, YP = 2, YN = 3.
+> -- child "adc"
+> -	compatible: Should be
+> -		    "ti,am3359-adc" for AM335x/AM437x SoCs
+> -		    "ti,am654-adc", "ti,am3359-adc" for AM654 SoCs
+> -	ti,adc-channels: List of analog inputs available for ADC.
+> -			 AIN0 = 0, AIN1 = 1 and so on till AIN7 = 7.
+> -
+> -Optional properties:
+> -- child "tsc"
+> -	ti,charge-delay: Length of touch screen charge delay step in terms of
+> -			 ADC clock cycles. Charge delay value should be large
+> -			 in order to avoid false pen-up events. This value
+> -			 effects the overall sampling speed, hence need to be
+> -			 kept as low as possible, while avoiding false pen-up
+> -			 event. Start from a lower value, say 0x400, and
+> -			 increase value until false pen-up events are avoided.
+> -			 The pen-up detection happens immediately after the
+> -			 charge step, so this does in fact function as a
+> -			 hardware knob for adjusting the amount of "settling
+> -			 time".
+> -
+> -- child "adc"
+> -	ti,chan-step-opendelay: List of open delays for each channel of
+> -				ADC in the order of ti,adc-channels. The
+> -				value corresponds to the number of ADC
+> -				clock cycles to wait after applying the
+> -				step configuration registers and before
+> -				sending the start of ADC conversion.
+> -				Maximum value is 0x3FFFF.
+> -       ti,chan-step-sampledelay: List of sample delays for each channel
+> -				  of ADC in the order of ti,adc-channels.
+> -				  The value corresponds to the number of
+> -				  ADC clock cycles to sample (to hold
+> -				  start of conversion high).
+> -				  Maximum value is 0xFF.
+> -       ti,chan-step-avg: Number of averages to be performed for each
+> -			  channel of ADC. If average is 16 then input
+> -			  is sampled 16 times and averaged to get more
+> -			  accurate value. This increases the time taken
+> -			  by ADC to generate a sample. Valid range is 0
+> -			  average to 16 averages. Maximum value is 16.
+> -
+> -Example:
+> -	tscadc: tscadc@44e0d000 {
+> -		compatible = "ti,am3359-tscadc";
+> -		tsc {
+> -			ti,wires = <4>;
+> -			ti,x-plate-resistance = <200>;
+> -			ti,coordiante-readouts = <5>;
+> -			ti,wire-config = <0x00 0x11 0x22 0x33>;
+> -			ti,charge-delay = <0x400>;
+> -		};
+> -
+> -		adc {
+> -			ti,adc-channels = <4 5 6 7>;
+> -			ti,chan-step-opendelay = <0x098 0x3ffff 0x098 0x0>;
+> -			ti,chan-step-sampledelay = <0xff 0x0 0xf 0x0>;
+> -			ti,chan-step-avg = <16 2 4 8>;
+> -		};
+> -	}
+> diff --git a/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> new file mode 100644
+> index 000000000000..61854b61e378
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> @@ -0,0 +1,92 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/ti,am3359-tscadc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Bindings for Touchscreen + ADC MFD IPs on TI SoCs
+> +
+> +maintainers:
+> +  - Vignesh Raghavendra <vigneshr@ti.com>
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - ti,am654-tscadc
+> +          - const: ti,am3359-tscadc
+> +      - const: ti,am3359-tscadc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: "adc_tsc_fck"
 
-The nodes are added in the common am57-pruss.dtsi file and enabled
-by default, but are disabled in all the existing AM57xx board dts
-files. These nodes need pinctrl lines, and so should be enabled
-only on boards where they are actually wired and pinned out for
-PRUSS Ethernet. Any new board dts file should disable these if
-they are not sure.
+Don't need quotes
 
-Signed-off-by: Suman Anna <s-anna@ti.com>
-Signed-off-by: Andrew F. Davis <afd@ti.com>
----
- arch/arm/boot/dts/am57-pruss.dtsi             | 20 +++++++++++++++++++
- arch/arm/boot/dts/am571x-idk.dts              |  8 ++++++++
- arch/arm/boot/dts/am572x-idk.dts              |  8 ++++++++
- arch/arm/boot/dts/am574x-idk.dts              |  8 ++++++++
- .../boot/dts/am57xx-beagle-x15-common.dtsi    |  8 ++++++++
- arch/arm/boot/dts/am57xx-cl-som-am57x.dts     |  8 ++++++++
- 6 files changed, 60 insertions(+)
+> +
+> +  dmas:
+> +    maxItems: 2
+> +
+> +  dma-names:
+> +    items:
+> +      - const: fifo0
+> +      - const: fifo1
+> +
+> +  power-domains: true
+> +
+> +  tsc:
+> +    $ref: ../input/touchscreen/ti,am3359-tsc.yaml
 
-diff --git a/arch/arm/boot/dts/am57-pruss.dtsi b/arch/arm/boot/dts/am57-pruss.dtsi
-index 494d56830b34..46c5383f0eee 100644
---- a/arch/arm/boot/dts/am57-pruss.dtsi
-+++ b/arch/arm/boot/dts/am57-pruss.dtsi
-@@ -102,6 +102,16 @@ pru1_1: pru@38000 {
- 				reg-names = "iram", "control", "debug";
- 				firmware-name = "am57xx-pru1_1-fw";
- 			};
-+
-+			pruss1_mdio: mdio@32400 {
-+				compatible = "ti,davinci_mdio";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				clocks = <&dpll_gmac_h13x2_ck>;
-+				clock-names = "fck";
-+				bus_freq = <1000000>;
-+				reg = <0x32400 0x90>;
-+			};
- 		};
- 	};
- 
-@@ -201,6 +211,16 @@ pru2_1: pru@38000 {
- 				reg-names = "iram", "control", "debug";
- 				firmware-name = "am57xx-pru2_1-fw";
- 			};
-+
-+			pruss2_mdio: mdio@32400 {
-+				compatible = "ti,davinci_mdio";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				clocks = <&dpll_gmac_h13x2_ck>;
-+				clock-names = "fck";
-+				bus_freq = <1000000>;
-+				reg = <0x32400 0x90>;
-+			};
- 		};
- 	};
- };
-diff --git a/arch/arm/boot/dts/am571x-idk.dts b/arch/arm/boot/dts/am571x-idk.dts
-index e81078c2d00d..48425020281a 100644
---- a/arch/arm/boot/dts/am571x-idk.dts
-+++ b/arch/arm/boot/dts/am571x-idk.dts
-@@ -208,3 +208,11 @@ &mmc2 {
- 	pinctrl-1 = <&mmc2_pins_hs>;
- 	pinctrl-2 = <&mmc2_pins_ddr_rev20 &mmc2_iodelay_ddr_conf>;
- };
-+
-+&pruss1_mdio {
-+	status = "disabled";
-+};
-+
-+&pruss2_mdio {
-+	status = "disabled";
-+};
-diff --git a/arch/arm/boot/dts/am572x-idk.dts b/arch/arm/boot/dts/am572x-idk.dts
-index 6504265f3f7e..94a738cb0a4d 100644
---- a/arch/arm/boot/dts/am572x-idk.dts
-+++ b/arch/arm/boot/dts/am572x-idk.dts
-@@ -27,3 +27,11 @@ &mmc2 {
- 	pinctrl-1 = <&mmc2_pins_hs>;
- 	pinctrl-2 = <&mmc2_pins_ddr_rev20>;
- };
-+
-+&pruss1_mdio {
-+	status = "disabled";
-+};
-+
-+&pruss2_mdio {
-+	status = "disabled";
-+};
-diff --git a/arch/arm/boot/dts/am574x-idk.dts b/arch/arm/boot/dts/am574x-idk.dts
-index 1b8f3a28af05..c4bf9cb2c9dc 100644
---- a/arch/arm/boot/dts/am574x-idk.dts
-+++ b/arch/arm/boot/dts/am574x-idk.dts
-@@ -43,3 +43,11 @@ &m_can0 {
- &emif1 {
- 	status = "okay";
- };
-+
-+&pruss1_mdio {
-+	status = "disabled";
-+};
-+
-+&pruss2_mdio {
-+	status = "disabled";
-+};
-diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
-index 6b82ecf803c5..994e69ab38d7 100644
---- a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
-+++ b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
-@@ -637,3 +637,11 @@ &dsp2 {
- 	status = "okay";
- 	memory-region = <&dsp2_memory_region>;
- };
-+
-+&pruss1_mdio {
-+	status = "disabled";
-+};
-+
-+&pruss2_mdio {
-+	status = "disabled";
-+};
-diff --git a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-index aed81568a297..2e94f32d9dfc 100644
---- a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-+++ b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
-@@ -618,3 +618,11 @@ &gpio2_target {
- 	status = "okay";
- 	ti,no-reset-on-init;
- };
-+
-+&pruss1_mdio {
-+	status = "disabled";
-+};
-+
-+&pruss2_mdio {
-+	status = "disabled";
-+};
--- 
-2.32.0
+/schemas/input/...
 
+> +    description:
+> +      Bindings for Touchscreen part of the MFD
+> +
+> +  adc:
+> +    $ref: ../iio/adc/ti,am3359-adc.yaml
+
+/schemas/iio/...
+
+> +    description:
+> +      Bindings for ADC part of the MFD
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +if:
+> +  properties:
+> +    compatible:
+> +      contains:
+> +        const: ti,am654-tscadc
+> +then:
+> +  properties:
+> +    tsc: false
+> +
+> +examples:
+> +  - |
+> +    tscadc@44e0d000 {
+> +      compatible = "ti,am3359-tscadc";
+> +      reg = <0x44e0d000 0x1000>;
+> +      interrupts = <16>;
+> +        tsc {
+
+indentation is off
+
+> +          compatible = "ti,am3359-tsc";
+> +          ti,wires = <4>;
+> +          ti,x-plate-resistance = <200>;
+> +          ti,coordinate-readouts = <5>;
+> +          ti,wire-config = <0x00 0x11 0x22 0x33>;
+> +          ti,charge-delay = <0x400>;
+> +        };
+> +
+> +      adc {
+> +        compatible = "ti,am3359-adc";
+> +        ti,adc-channels = <4 5 6 7>;
+> +        ti,chan-step-opendelay = <0x098 0x3ffff 0x098 0x0>;
+> +        ti,chan-step-sampledelay = <0xff 0x0 0xf 0x0>;
+> +        ti,chan-step-avg = <16 2 4 8>;
+> +        #io-channel-cells = <1>;
+> +      };
+> +    };
+
+With those few nits fixed,
+
+Reviewed-by: Rob Herring <robh@kernel.org>
