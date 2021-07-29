@@ -2,43 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECDCC3DAF54
-	for <lists+linux-omap@lfdr.de>; Fri, 30 Jul 2021 00:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 462133DAF5C
+	for <lists+linux-omap@lfdr.de>; Fri, 30 Jul 2021 00:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232559AbhG2Wqf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Jul 2021 18:46:35 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:35794 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229953AbhG2Wqe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Jul 2021 18:46:34 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 16TMkMAg128796;
+        id S233557AbhG2Wqg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Jul 2021 18:46:36 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:60404 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233098AbhG2Wqf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Jul 2021 18:46:35 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 16TMkM1C036092;
         Thu, 29 Jul 2021 17:46:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
         s=ti-com-17Q1; t=1627598782;
-        bh=zyPK25hj+mcVdZ6JnpEZ8xmAdDPtCH3ZFTgBzK2PMmw=;
+        bh=CGqqtBXZQj636K55bIY88SfvDT1XNe1TEWjPiHUZSDk=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=Ge1/QQTTC1WqgLuPZEVpKKMjsjcFqmabtIKjEw1HRbNtoNRDTBQxg7OG3sl/XezXH
-         0LoTyevZ/qQLWS31QRSyJTBc75NMCYqbhmZ+75GvWsByzKF6eitJvBgd/kXJ89JumQ
-         Q9Ymu0uVRz+tDP59Y9+kLjeAV2ss5Ou7Ig9wrQro=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 16TMkMYR014567
+        b=FCFAcN77tCmojn56sTa5sisf2bLFGbZIrKTJp5W9Fa1r2ysxB+7dDlInl0PdIPCW6
+         /cyqrpgTpcPGvR7cr1ltkFIzwGKBUO6Bl8S0O1vyYiOMlEY+9nzxTjqiV2jxS3e/Z8
+         kPe9D0+Cn88VqD8JWRmmKsJ3fb0fVYFUj8+2uY/c=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 16TMkMiH029007
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
         Thu, 29 Jul 2021 17:46:22 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 29
  Jul 2021 17:46:22 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
  Frontend Transport; Thu, 29 Jul 2021 17:46:22 -0500
 Received: from lelv0597.itg.ti.com (lelv0597.itg.ti.com [10.181.64.32])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 16TMkMcW043448;
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 16TMkMue076793;
         Thu, 29 Jul 2021 17:46:22 -0500
 Received: from localhost ([10.250.38.176])
-        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 16TMkLUn016274;
-        Thu, 29 Jul 2021 17:46:21 -0500
+        by lelv0597.itg.ti.com (8.14.7/8.14.7) with ESMTP id 16TMkMeu016277;
+        Thu, 29 Jul 2021 17:46:22 -0500
 From:   Suman Anna <s-anna@ti.com>
 To:     Tony Lindgren <tony@atomide.com>
 CC:     Grygorii Strashko <grygorii.strashko@ti.com>,
@@ -48,9 +48,9 @@ CC:     Grygorii Strashko <grygorii.strashko@ti.com>,
         <linux-omap@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <devicetree@vger.kernel.org>, Suman Anna <s-anna@ti.com>
-Subject: [PATCH 08/11] ARM: dts: am4372: Add the PRU-ICSS0 DT node
-Date:   Thu, 29 Jul 2021 17:46:18 -0500
-Message-ID: <20210729224621.2295-9-s-anna@ti.com>
+Subject: [PATCH 09/11] ARM: dts: am4372: Add PRUSS MDIO controller node
+Date:   Thu, 29 Jul 2021 17:46:19 -0500
+Message-ID: <20210729224621.2295-10-s-anna@ti.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210729224621.2295-1-s-anna@ti.com>
 References: <20210729224621.2295-1-s-anna@ti.com>
@@ -62,137 +62,116 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The AM4376+ SoCs have a second smaller PRU-ICSS subsystem (PRUSS0) in
-addition to the primary PRUSS1 instance. The PRUSS0 has less DRAM
-per PRU, and no Shared DRAM among other minor differences. The IEP
-and MII_RT modules even though present within the IP are not pinned
-out.
+From: "Andrew F. Davis" <afd@ti.com>
 
-This PRUSS0 instance has a weird SoC integration. It shares the same
-L3 OCP interconnect interface with PRUSS1, and also shares its reset
-line and clocks. Any external accesses from PRUSS0 requires the PRUSS1's
-PRUSS_SYSCFG register to be programmed properly. That said, it is its
-own IP instance (a cut-down version), and so it has been added as an
-independent node (sibling node to PRUSS1 node) and a child node of the
-corresponding PRUSS target module interconnect node. This allows the
-PRUSS0 instance to be enabled/disabled independently of the PRUSS1
-instance.
+The PRU-ICSS1 instance on AM437x SoCs has a MDIO sub-module that
+can be used to control external PHYs associated with the Industrial
+Ethernet peripherals within the PRUSS. The MDIO module used within
+this PRU-ICSS is an instance of the MDIO Controller used in TI
+Davinci SoCs. The same bus frequency of 1 MHz is chosen as the
+regular MDIO node. Note that there is no MDIO node added to the
+smaller PRU-ICSS0 instance as the MDIO pins are not pinned out.
 
-The nodes are added under the corresponding interconnect target module
-node in the common am4372 dtsi file. The PRU-ICSS instances are not
-supported on AM4372 SoC though in the AM437x family, so the interconnect
-target module node should be disabled in any derivative board dts file that
-uses AM4372 SoCs. The individual PRUSS node can be disabled in the
-corresponding board dts file if desired.
+The node is added and enabled in the common am4372.dtsi file by
+default, and disabled in all the existing AM437x board dts files.
+This node needs pinctrl lines, and so should be enabled only on
+boards where they are actually wired and pinned out for PRUSS
+Ethernet. Any new board dts file should disable these if they
+are not sure.
 
-The default names for the firmware images for each PRU core are defined
-as follows (these can be adjusted either in derivative board dts files or
-through sysfs at runtime if required):
-     PRU-ICSS0 PRU0 Core: am437x-pru0_0-fw
-     PRU-ICSS0 PRU1 Core: am437x-pru0_1-fw
-
-Note:
-1. There are few more sub-modules like the Industrial Ethernet Peripheral
-   (IEP), eCAP, UART, that do not have bindings and so will be added in the
-   future. Only UART is pinned out, so others should be added in disabled
-   state if added.
-2. The PRUSS0 INTC on AM437x SoCs routes the host interrupt 5 to the other
-   PRUSS1, so it is already marked reserved through the 'ti,irqs-reserved'
-   property.
-
+Signed-off-by: Andrew F. Davis <afd@ti.com>
+[s-anna@ti.com: fix reg address, add commit description]
 Signed-off-by: Suman Anna <s-anna@ti.com>
 ---
- arch/arm/boot/dts/am4372.dtsi | 77 +++++++++++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+ arch/arm/boot/dts/am4372.dtsi        | 10 ++++++++++
+ arch/arm/boot/dts/am437x-cm-t43.dts  |  4 ++++
+ arch/arm/boot/dts/am437x-gp-evm.dts  |  4 ++++
+ arch/arm/boot/dts/am437x-idk-evm.dts |  4 ++++
+ arch/arm/boot/dts/am437x-sk-evm.dts  |  4 ++++
+ arch/arm/boot/dts/am43x-epos-evm.dts |  4 ++++
+ 6 files changed, 30 insertions(+)
 
 diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
-index ddfe58b1ae79..2200a09c2065 100644
+index 2200a09c2065..61a1d88f9df6 100644
 --- a/arch/arm/boot/dts/am4372.dtsi
 +++ b/arch/arm/boot/dts/am4372.dtsi
-@@ -512,6 +512,83 @@ pru1_1: pru@38000 {
+@@ -511,6 +511,16 @@ pru1_1: pru@38000 {
+ 					reg-names = "iram", "control", "debug";
  					firmware-name = "am437x-pru1_1-fw";
  				};
- 			};
 +
-+			pruss0: pruss@40000 {
-+				compatible = "ti,am4376-pruss0";
-+				reg = <0x40000 0x40000>;
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				ranges;
-+
-+				pruss0_mem: memories@40000 {
-+					reg = <0x40000 0x1000>,
-+					      <0x42000 0x1000>;
-+					reg-names = "dram0", "dram1";
-+				};
-+
-+				pruss0_cfg: cfg@66000 {
-+					compatible = "ti,pruss-cfg", "syscon";
-+					reg = <0x66000 0x2000>;
++				pruss1_mdio: mdio@32400 {
++					compatible = "ti,davinci_mdio";
++					reg = <0x32400 0x90>;
++					clocks = <&dpll_core_m4_ck>;
++					clock-names = "fck";
++					bus_freq = <1000000>;
 +					#address-cells = <1>;
-+					#size-cells = <1>;
-+					ranges = <0x0 0x66000 0x2000>;
-+
-+					clocks {
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+
-+						pruss0_iepclk_mux: iepclk-mux@30 {
-+							reg = <0x30>;
-+							#clock-cells = <0>;
-+							clocks = <&sysclk_div>,     /* icss_iep_gclk */
-+								 <&pruss_ocp_gclk>; /* icss_ocp_gclk */
-+						};
-+					};
++					#size-cells = <0>;
 +				};
-+
-+				pruss0_mii_rt: mii-rt@72000 {
-+					compatible = "ti,pruss-mii", "syscon";
-+					reg = <0x72000 0x58>;
-+					status = "disabled";
-+				};
-+
-+				pruss0_intc: interrupt-controller@60000 {
-+					compatible = "ti,pruss-intc";
-+					reg = <0x60000 0x2000>;
-+					interrupt-controller;
-+					#interrupt-cells = <3>;
-+					interrupts = <GIC_SPI 159 IRQ_TYPE_LEVEL_HIGH>,
-+						     <GIC_SPI 160 IRQ_TYPE_LEVEL_HIGH>,
-+						     <GIC_SPI 161 IRQ_TYPE_LEVEL_HIGH>,
-+						     <GIC_SPI 162 IRQ_TYPE_LEVEL_HIGH>,
-+						     <GIC_SPI 163 IRQ_TYPE_LEVEL_HIGH>,
-+						     <GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>,
-+						     <GIC_SPI 165 IRQ_TYPE_LEVEL_HIGH>;
-+					interrupt-names = "host_intr0", "host_intr1",
-+							  "host_intr2", "host_intr3",
-+							  "host_intr4",
-+							  "host_intr6", "host_intr7";
-+					ti,irqs-reserved = /bits/ 8 <0x20>; /* BIT(5) */
-+				};
-+
-+				pru0_0: pru@74000 {
-+					compatible = "ti,am4376-pru";
-+					reg = <0x74000 0x1000>,
-+					      <0x62000 0x400>,
-+					      <0x62400 0x100>;
-+					reg-names = "iram", "control", "debug";
-+					firmware-name = "am437x-pru0_0-fw";
-+				};
-+
-+				pru0_1: pru@78000 {
-+					compatible = "ti,am4376-pru";
-+					reg = <0x78000 0x1000>,
-+					      <0x64000 0x400>,
-+					      <0x64400 0x100>;
-+					reg-names = "iram", "control", "debug";
-+					firmware-name = "am437x-pru0_1-fw";
-+				};
-+			};
- 		};
+ 			};
  
- 		target-module@50000000 {
+ 			pruss0: pruss@40000 {
+diff --git a/arch/arm/boot/dts/am437x-cm-t43.dts b/arch/arm/boot/dts/am437x-cm-t43.dts
+index a83f46ed0c9a..5ce8e684e7d3 100644
+--- a/arch/arm/boot/dts/am437x-cm-t43.dts
++++ b/arch/arm/boot/dts/am437x-cm-t43.dts
+@@ -416,3 +416,7 @@ &cpu {
+ 			   <600000 1100000>,
+ 			   <300000 950000>;
+ };
++
++&pruss1_mdio {
++	status = "disabled";
++};
+diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
+index e2677682b540..c2e4896076e7 100644
+--- a/arch/arm/boot/dts/am437x-gp-evm.dts
++++ b/arch/arm/boot/dts/am437x-gp-evm.dts
+@@ -1118,3 +1118,7 @@ &rtc {
+ &cpu {
+ 	cpu0-supply = <&dcdc2>;
+ };
++
++&pruss1_mdio {
++	status = "disabled";
++};
+diff --git a/arch/arm/boot/dts/am437x-idk-evm.dts b/arch/arm/boot/dts/am437x-idk-evm.dts
+index 2dc525512266..53f64e3ce735 100644
+--- a/arch/arm/boot/dts/am437x-idk-evm.dts
++++ b/arch/arm/boot/dts/am437x-idk-evm.dts
+@@ -537,3 +537,7 @@ opp100-600000000 {
+ 		opp-suspend;
+ 	};
+ };
++
++&pruss1_mdio {
++	status = "disabled";
++};
+diff --git a/arch/arm/boot/dts/am437x-sk-evm.dts b/arch/arm/boot/dts/am437x-sk-evm.dts
+index 496ed34f7755..20a34d2d85df 100644
+--- a/arch/arm/boot/dts/am437x-sk-evm.dts
++++ b/arch/arm/boot/dts/am437x-sk-evm.dts
+@@ -892,3 +892,7 @@ vpfe0_ep: endpoint {
+ 		};
+ 	};
+ };
++
++&pruss1_mdio {
++	status = "disabled";
++};
+diff --git a/arch/arm/boot/dts/am43x-epos-evm.dts b/arch/arm/boot/dts/am43x-epos-evm.dts
+index aae0af10a5b1..d16aa2221c91 100644
+--- a/arch/arm/boot/dts/am43x-epos-evm.dts
++++ b/arch/arm/boot/dts/am43x-epos-evm.dts
+@@ -1018,3 +1018,7 @@ &mux_synctimer32k_ck {
+ &cpu {
+ 	cpu0-supply = <&dcdc2>;
+ };
++
++&pruss1_mdio {
++	status = "disabled";
++};
 -- 
 2.32.0
 
