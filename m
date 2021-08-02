@@ -2,74 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FD133DCF6A
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Aug 2021 06:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C08B3DE071
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Aug 2021 22:10:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232240AbhHBEYd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 Aug 2021 00:24:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43760 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232186AbhHBEYa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Aug 2021 00:24:30 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 914EEC0617A1
-        for <linux-omap@vger.kernel.org>; Sun,  1 Aug 2021 21:24:21 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id gn26so28752001ejc.3
-        for <linux-omap@vger.kernel.org>; Sun, 01 Aug 2021 21:24:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
-        b=FtyL1jenxhHoD0FEqr0JzEzar9WxjQ0aFEwPIjOui/KxHqjdRIaWw+qc9fVrqT7/Dn
-         Pnh35Va41LybAL6U8YkeIBgROe6j/64zDWESXr3a3yRfbQQPGRB9fNiPFd+zLtRJzUIN
-         QuzzTY5SkBKHMhw3aNm828s4szNx+qezVfjbXBb1AnLosRqM3hZLsmXFs11UFe9XwQd0
-         8wSmR+hXWoecdn7C1dRJ3raMOO2OzRp8To/v4OIIenhLUR2Xi2bEwQKHQsPiMZ9RJ/f/
-         /P5G34L+RYG0gvY4mQKUVcv9jgYngramQoP+XViWVUuAojxufRmPTkFAnPt7xVda61k1
-         G8fw==
+        id S230448AbhHBUKv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Aug 2021 16:10:51 -0400
+Received: from mail-io1-f47.google.com ([209.85.166.47]:37487 "EHLO
+        mail-io1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230095AbhHBUKu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Aug 2021 16:10:50 -0400
+Received: by mail-io1-f47.google.com with SMTP id r18so21770730iot.4;
+        Mon, 02 Aug 2021 13:10:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
-        b=VVovMw5Xp0Vps+cx+n9jbOOtUnJiZHxZFjwKmyL2pSQ8S1mX60XPJiiy+i77YC4agY
-         M9XlF5QiVWxcOO0r8AxKOhJCrXh0W7WIL8EE5ZihECtdoNQ+ZLfouyDq0OXMrYqFePsW
-         LE2/JQFW9DnDbbgEnMc4TsKxUBgUxEZ5IZbL4ga0RNyubEd3e0BYCsp9YoJfOPpG+UOT
-         TVmfguXhtHSHHnK5ymJFErUN8i37uYarKPkWEhRfmEWZ2kRJk+F/UHd5qyS4U7WfU6mM
-         sN6TJ8fqG0+UTpZk+64Nd4xYvsTZBaBGC5fRU6NXvl+HCUWCjAAKtpyGlfiz+P0g55ad
-         3t4w==
-X-Gm-Message-State: AOAM531msyDXFu6zuV86xwYNcgdjou0xxLgUYPDaJ8ujWT/3riF5GEf9
-        4Z8X1LGWmH4Kjab6IJ0E+Qx1NNHx7Ep04Z/uJhPvB+cD/vEY1Q==
-X-Google-Smtp-Source: ABdhPJzys5yCwXnLOHH4NsCIcKA9f726GMnAOsN9NLlhSmyZNb7UhzU0IEwJ6FYKksyg3UeOKVwrbLA6pAJm2hMlOV0=
-X-Received: by 2002:aa7:c0d1:: with SMTP id j17mr16890014edp.217.1627878249276;
- Sun, 01 Aug 2021 21:24:09 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=gikjOiO4H1nc2cQpUCBf40RVNhjFrx+ABQnwAlk4JKw=;
+        b=hFLowbEnTdVfaRVtvGWD6NTaR2XT61iufprS/gdQnxrck4pne0vS2k3tMWSaaDRosj
+         ANYWu4ria6G0gOvmiIvcWQ7HxcAgzynErv9uqd3zzuQKONF58+hogo9glPt5cM4bk5Sp
+         q4ubyA26pPE7HIddmj/++IItS2/iIdG9shAGfD+4v5zII6QDNY6+vPhDtCh3h21eopAi
+         11M9ZOOcdaiMZ0t1Kk43FTX15byY1nqEWYO2b0ZWp4i7/XystcdbN2+pTEHwyvHMVf9e
+         w9LGucPL60F1hKrPGKlRlPmqLPaI+h3zk8/QTNXBMLhRQ5xHEy+B7rV/i2aKwcZGaL5t
+         mmGA==
+X-Gm-Message-State: AOAM532igXb+t9TA9lBEseatakHXj7c+pf8s1bQis0S3bFf6g8VoBqaK
+        qmLq4/OgCySikz7ExEN8hIRWmgkn6Q==
+X-Google-Smtp-Source: ABdhPJzBB/Uf6MsOrRmpHsMXZBZohaVYGPn2oh2WpXqDupVWlTVWB0zFsu7LzoCzaovatBfC9oyGlA==
+X-Received: by 2002:a5e:9901:: with SMTP id t1mr186303ioj.5.1627935039117;
+        Mon, 02 Aug 2021 13:10:39 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id p7sm6099859ils.24.2021.08.02.13.10.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Aug 2021 13:10:38 -0700 (PDT)
+Received: (nullmailer pid 1522995 invoked by uid 1000);
+        Mon, 02 Aug 2021 20:10:37 -0000
+Date:   Mon, 2 Aug 2021 14:10:37 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-serial@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: serial: 8250: Update for standard
+ overrun-throttle property
+Message-ID: <YQhRPVQ0bbE8T+hf@robh.at.kernel.org>
+References: <20210727103533.51547-1-tony@atomide.com>
 MIME-Version: 1.0
-Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:24:08
- -0700 (PDT)
-Reply-To: ablahikazabl67@gmail.com
-From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
-Date:   Mon, 2 Aug 2021 05:24:08 +0100
-Message-ID: <CAKwBCXuzDf40zPCct3xg8L9LubxzXWgC230fQ80GXrmg_Yuttw@mail.gmail.com>
-Subject: More Authentic Information
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210727103533.51547-1-tony@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Dear Partner,
+On Tue, 27 Jul 2021 13:35:32 +0300, Tony Lindgren wrote:
+> In some cases we want to specify overrun-throttle like other 8250 drivers
+> are doing.
+> 
+> Cc: devicetree@vger.kernel.org
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  Documentation/devicetree/bindings/serial/8250_omap.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-I am soliciting your partnership to relocate $12.5 Million to your
-country for investment on my behalf and you will be entitled to 30% of
-the sum once the transaction is successful made.
-
-Please indicate your genuine interest if you are capable so that i
-will send you the authentic details and documents of the transaction
-in awareness with some of my fellow Directors in the bank.
-
-If you are interested, here is my private Email address:
-(ablahikazabl67@gmail.com)
-For more authentic and legit information.
-
-
-Regards :  Abdoulahi Kazim
+Acked-by: Rob Herring <robh@kernel.org>
