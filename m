@@ -2,77 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01F353DB77D
-	for <lists+linux-omap@lfdr.de>; Fri, 30 Jul 2021 12:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FD133DCF6A
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Aug 2021 06:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238520AbhG3K77 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 30 Jul 2021 06:59:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57900 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238461AbhG3K76 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 30 Jul 2021 06:59:58 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 57F8D60F9B;
-        Fri, 30 Jul 2021 10:59:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627642794;
-        bh=7G8XPhtyHOsQOBrdu6AY5KW4NxFLaa/KplGrDdA8Mn8=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=V4cT09UFGn1FlQxEKbRS4g0/ToJp5VmSrNF2NBcUrJpZgFuB6x+wrlDk73aQFX1aK
-         uSzGtv7M6HwSE+4z2lPDhm9fZvKKbI1KvT4905okIknu/QdDnocaE8jHio/WJEVWtO
-         jMu95MNGUiapvvaSsO6IAWncaL4K57Lrp5l+SKjq/dftKGT7gDC4scniEVPz8i6T9S
-         U/++szs+4hiKF27XBJGiRx8M1jyJQ5KQrPN6W15HGf3+9gSdo5r5oXjv9tRr2wDygt
-         yCFr+mYPGHK4SQJ5DCmWDOGJ16/jad5/yVZgI5RPA5JcPU5aaasFPSAsZ3wPK7GcvM
-         Eh5eT88/SwdZw==
-Subject: Re: [PATCH 1/2] memory: omap-gpmc: Clear GPMC_CS_CONFIG7 register on
- restore if unused
-To:     Tony Lindgren <tony@atomide.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20210727101034.32148-1-tony@atomide.com>
-From:   Roger Quadros <rogerq@kernel.org>
-Message-ID: <f0a0dfe8-a185-2b14-e12a-ebdd6e2c909f@kernel.org>
-Date:   Fri, 30 Jul 2021 13:59:51 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S232240AbhHBEYd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 Aug 2021 00:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43760 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232186AbhHBEYa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Aug 2021 00:24:30 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 914EEC0617A1
+        for <linux-omap@vger.kernel.org>; Sun,  1 Aug 2021 21:24:21 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id gn26so28752001ejc.3
+        for <linux-omap@vger.kernel.org>; Sun, 01 Aug 2021 21:24:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=FtyL1jenxhHoD0FEqr0JzEzar9WxjQ0aFEwPIjOui/KxHqjdRIaWw+qc9fVrqT7/Dn
+         Pnh35Va41LybAL6U8YkeIBgROe6j/64zDWESXr3a3yRfbQQPGRB9fNiPFd+zLtRJzUIN
+         QuzzTY5SkBKHMhw3aNm828s4szNx+qezVfjbXBb1AnLosRqM3hZLsmXFs11UFe9XwQd0
+         8wSmR+hXWoecdn7C1dRJ3raMOO2OzRp8To/v4OIIenhLUR2Xi2bEwQKHQsPiMZ9RJ/f/
+         /P5G34L+RYG0gvY4mQKUVcv9jgYngramQoP+XViWVUuAojxufRmPTkFAnPt7xVda61k1
+         G8fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=VVovMw5Xp0Vps+cx+n9jbOOtUnJiZHxZFjwKmyL2pSQ8S1mX60XPJiiy+i77YC4agY
+         M9XlF5QiVWxcOO0r8AxKOhJCrXh0W7WIL8EE5ZihECtdoNQ+ZLfouyDq0OXMrYqFePsW
+         LE2/JQFW9DnDbbgEnMc4TsKxUBgUxEZ5IZbL4ga0RNyubEd3e0BYCsp9YoJfOPpG+UOT
+         TVmfguXhtHSHHnK5ymJFErUN8i37uYarKPkWEhRfmEWZ2kRJk+F/UHd5qyS4U7WfU6mM
+         sN6TJ8fqG0+UTpZk+64Nd4xYvsTZBaBGC5fRU6NXvl+HCUWCjAAKtpyGlfiz+P0g55ad
+         3t4w==
+X-Gm-Message-State: AOAM531msyDXFu6zuV86xwYNcgdjou0xxLgUYPDaJ8ujWT/3riF5GEf9
+        4Z8X1LGWmH4Kjab6IJ0E+Qx1NNHx7Ep04Z/uJhPvB+cD/vEY1Q==
+X-Google-Smtp-Source: ABdhPJzys5yCwXnLOHH4NsCIcKA9f726GMnAOsN9NLlhSmyZNb7UhzU0IEwJ6FYKksyg3UeOKVwrbLA6pAJm2hMlOV0=
+X-Received: by 2002:aa7:c0d1:: with SMTP id j17mr16890014edp.217.1627878249276;
+ Sun, 01 Aug 2021 21:24:09 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210727101034.32148-1-tony@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:24:08
+ -0700 (PDT)
+Reply-To: ablahikazabl67@gmail.com
+From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
+Date:   Mon, 2 Aug 2021 05:24:08 +0100
+Message-ID: <CAKwBCXuzDf40zPCct3xg8L9LubxzXWgC230fQ80GXrmg_Yuttw@mail.gmail.com>
+Subject: More Authentic Information
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+-- 
+Dear Partner,
+
+I am soliciting your partnership to relocate $12.5 Million to your
+country for investment on my behalf and you will be entitled to 30% of
+the sum once the transaction is successful made.
+
+Please indicate your genuine interest if you are capable so that i
+will send you the authentic details and documents of the transaction
+in awareness with some of my fellow Directors in the bank.
+
+If you are interested, here is my private Email address:
+(ablahikazabl67@gmail.com)
+For more authentic and legit information.
 
 
-On 27/07/2021 13:10, Tony Lindgren wrote:
-> We want to clear any unused GPMC_CS_CONFIG7 register on restore to
-> ensure unused chip selects are not enabled.
-> 
-> Cc: Roger Quadros <rogerq@kernel.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-
-Acked-by: Roger Quadros <rogerq@kernel.org>
-
-Sorry if you got this twice. I got a bounce back on the previous Ack.
-
-cheers,
--roger
-
-> ---
->  drivers/memory/omap-gpmc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-> --- a/drivers/memory/omap-gpmc.c
-> +++ b/drivers/memory/omap-gpmc.c
-> @@ -2595,6 +2595,8 @@ void omap3_gpmc_restore_context(void)
->  				gpmc_context.cs_context[i].config6);
->  			gpmc_cs_write_reg(i, GPMC_CS_CONFIG7,
->  				gpmc_context.cs_context[i].config7);
-> +		} else {
-> +			gpmc_cs_write_reg(i, GPMC_CS_CONFIG7, 0);
->  		}
->  	}
->  }
-> 
+Regards :  Abdoulahi Kazim
