@@ -2,70 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C08B3DE071
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Aug 2021 22:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE0B93DE77B
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Aug 2021 09:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230448AbhHBUKv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 Aug 2021 16:10:51 -0400
-Received: from mail-io1-f47.google.com ([209.85.166.47]:37487 "EHLO
-        mail-io1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbhHBUKu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 Aug 2021 16:10:50 -0400
-Received: by mail-io1-f47.google.com with SMTP id r18so21770730iot.4;
-        Mon, 02 Aug 2021 13:10:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=gikjOiO4H1nc2cQpUCBf40RVNhjFrx+ABQnwAlk4JKw=;
-        b=hFLowbEnTdVfaRVtvGWD6NTaR2XT61iufprS/gdQnxrck4pne0vS2k3tMWSaaDRosj
-         ANYWu4ria6G0gOvmiIvcWQ7HxcAgzynErv9uqd3zzuQKONF58+hogo9glPt5cM4bk5Sp
-         q4ubyA26pPE7HIddmj/++IItS2/iIdG9shAGfD+4v5zII6QDNY6+vPhDtCh3h21eopAi
-         11M9ZOOcdaiMZ0t1Kk43FTX15byY1nqEWYO2b0ZWp4i7/XystcdbN2+pTEHwyvHMVf9e
-         w9LGucPL60F1hKrPGKlRlPmqLPaI+h3zk8/QTNXBMLhRQ5xHEy+B7rV/i2aKwcZGaL5t
-         mmGA==
-X-Gm-Message-State: AOAM532igXb+t9TA9lBEseatakHXj7c+pf8s1bQis0S3bFf6g8VoBqaK
-        qmLq4/OgCySikz7ExEN8hIRWmgkn6Q==
-X-Google-Smtp-Source: ABdhPJzBB/Uf6MsOrRmpHsMXZBZohaVYGPn2oh2WpXqDupVWlTVWB0zFsu7LzoCzaovatBfC9oyGlA==
-X-Received: by 2002:a5e:9901:: with SMTP id t1mr186303ioj.5.1627935039117;
-        Mon, 02 Aug 2021 13:10:39 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id p7sm6099859ils.24.2021.08.02.13.10.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Aug 2021 13:10:38 -0700 (PDT)
-Received: (nullmailer pid 1522995 invoked by uid 1000);
-        Mon, 02 Aug 2021 20:10:37 -0000
-Date:   Mon, 2 Aug 2021 14:10:37 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+        id S234270AbhHCHuG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 Aug 2021 03:50:06 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:35722 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234271AbhHCHuF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 Aug 2021 03:50:05 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1737ndL5031663;
+        Tue, 3 Aug 2021 02:49:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1627976979;
+        bh=jU6NdUOo1QvDJP+eJFQCU2O42F89bmLL3ZejTmPvGHk=;
+        h=From:To:CC:Subject:Date;
+        b=dSQa9pc7mip0liDz7RQSJn4WMD2X1/FGOvkztAz/4xNW5Yapv+Bgj8HDjknIyCbio
+         D1aaKTyNHYIOR9JLS2jKg+d/9Rm1eTcJhUkHl176RDLMX+nOLlPczPBiprr0kLC9Je
+         kH26BZGGTyy5p8ZTvqOF1a2l+SBDdEOCTOh/w/nc=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1737ndu4120998
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 3 Aug 2021 02:49:39 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 3 Aug
+ 2021 02:49:38 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Tue, 3 Aug 2021 02:49:38 -0500
+Received: from a0393678-ssd.india.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1737nXrv045202;
+        Tue, 3 Aug 2021 02:49:34 -0500
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC:     Lokesh Vutla <lokeshvutla@ti.com>, <kishon@ti.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: serial: 8250: Update for standard
- overrun-throttle property
-Message-ID: <YQhRPVQ0bbE8T+hf@robh.at.kernel.org>
-References: <20210727103533.51547-1-tony@atomide.com>
+        Tom Joseph <tjoseph@cadence.com>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <nadeem@cadence.com>
+Subject: [PATCH v2 0/6] PCI: Add support for J7200 and AM64
+Date:   Tue, 3 Aug 2021 13:19:26 +0530
+Message-ID: <20210803074932.19820-1-kishon@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210727103533.51547-1-tony@atomide.com>
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 27 Jul 2021 13:35:32 +0300, Tony Lindgren wrote:
-> In some cases we want to specify overrun-throttle like other 8250 drivers
-> are doing.
-> 
-> Cc: devicetree@vger.kernel.org
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  Documentation/devicetree/bindings/serial/8250_omap.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
+This series adds the compatible specific to J7200 and AM64 and
+applies the erratas and configuration specific to them.
 
-Acked-by: Rob Herring <robh@kernel.org>
+This series also includes Nadeem's patch that adds a quirk in
+Cadence driver which is used by J7200 [1].
+
+The DT binding for both J7200 and AM64 is already merged.
+
+v1 of the patch series can be found at [2]
+
+Changes from v1:
+1) As suggested by Bjorn, used unsigned int :1, instead of bool for
+structure members
+2) Removed using unnecessary local variables and also fixed some
+code alignment
+
+[1] -> https://lore.kernel.org/r/20210528155626.21793-1-nadeem@cadence.com
+[2] -> https://lore.kernel.org/r/20210706105035.9915-1-kishon@ti.com
+
+Kishon Vijay Abraham I (5):
+  PCI: cadence: Use bitfield for *quirk_retrain_flag* instead of bool
+  PCI: j721e: Add PCIe support for J7200
+  PCI: j721e: Add PCIe support for AM64
+  misc: pci_endpoint_test: Do not request or allocate IRQs in probe
+  misc: pci_endpoint_test: Add deviceID for AM64 and J7200
+
+Nadeem Athani (1):
+  PCI: cadence: Add quirk flag to set minimum delay in LTSSM
+    Detect.Quiet state
+
+ drivers/misc/pci_endpoint_test.c              | 27 ++++++--
+ drivers/pci/controller/cadence/pci-j721e.c    | 61 +++++++++++++++++--
+ .../pci/controller/cadence/pcie-cadence-ep.c  |  4 ++
+ .../controller/cadence/pcie-cadence-host.c    |  3 +
+ drivers/pci/controller/cadence/pcie-cadence.c | 17 ++++++
+ drivers/pci/controller/cadence/pcie-cadence.h | 17 +++++-
+ 6 files changed, 117 insertions(+), 12 deletions(-)
+
+-- 
+2.17.1
+
