@@ -2,183 +2,201 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F2B03E1B92
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Aug 2021 20:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAF663E1F2F
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Aug 2021 01:10:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241576AbhHESoD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Aug 2021 14:44:03 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:33964 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241568AbhHESoC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Aug 2021 14:44:02 -0400
+        id S233170AbhHEXKV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Aug 2021 19:10:21 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:49838 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229697AbhHEXKU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Aug 2021 19:10:20 -0400
 Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 175IhhCt001060;
-        Thu, 5 Aug 2021 13:43:43 -0500
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 175NA0C3096509;
+        Thu, 5 Aug 2021 18:10:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1628189023;
-        bh=46JDL8MQEgeXUPygiDI9iRLIqECk9VxRHBRsZUVsTe0=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=bFzVWr8IUighh8u3JJL/AhOWz4wbdb5iju+RonuFifeBvPOIGI23vz1tur4qrRe1j
-         A3khATTv+PEdRheUlpVj5wT9zzxitwVxlblKXE9tnNhNKF5KXV+jzw82CIjnNXVFzE
-         1FG+MtcFDzUmJ9yjT78ImAdn/3bT1g9ocqbgLhbQ=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 175Ihhqe023395
+        s=ti-com-17Q1; t=1628205000;
+        bh=ThN2FmLumQVqOQMVQSRYRzdVLB1Kzlgj72nVzeD0km0=;
+        h=From:To:CC:Subject:Date;
+        b=pYCPISS4Nyw5Uk0KEYdAfMDi6+E9ilPsqGzQSKWq6qjvqSK0Swk32rBe5/EbMDmrI
+         UiVn+iHmKxHT8zgLeoxiQ0yMV4jwxd2qr127jY5MTrSK9mAdmANU2PVSVxmhCxmxR+
+         Lzgi8UWsxzZ1N4N0FwVpGgInO3diKyktN5gNzzIk=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 175NA0sr005723
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 5 Aug 2021 13:43:43 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 5 Aug 2021 18:10:00 -0500
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 5 Aug
- 2021 13:43:43 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ 2021 18:10:00 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Thu, 5 Aug 2021 13:43:43 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 175IhebH020200;
-        Thu, 5 Aug 2021 13:43:41 -0500
-Subject: Re: [PATCH net v2] net: ethernet: ti: cpsw: fix min eth packet size
- for non-switch use-cases
-To:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ben Hutchings <ben.hutchings@essensium.com>
-CC:     <linux-kernel@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        <linux-omap@vger.kernel.org>, Lokesh Vutla <lokeshvutla@ti.com>,
-        <stable@vger.kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-References: <20210805145511.12016-1-grygorii.strashko@ti.com>
+ Frontend Transport; Thu, 5 Aug 2021 18:10:00 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 175N9wDC030172;
+        Thu, 5 Aug 2021 18:09:59 -0500
 From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <85769243-daa0-c5c4-f441-6270c4b21cd5@ti.com>
-Date:   Thu, 5 Aug 2021 21:43:39 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     Lokesh Vutla <lokeshvutla@ti.com>,
+        Paul Barker <paul.barker@sancloud.com>,
+        <linux-kernel@vger.kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH v2] ARM: dts: am335x-bone: switch to new cpsw switch drv
+Date:   Fri, 6 Aug 2021 02:09:56 +0300
+Message-ID: <20210805230956.7379-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <20210805145511.12016-1-grygorii.strashko@ti.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+The dual_mac mode has been preserved the same way between legacy and new
+driver, and one port devices works the same as 1 dual_mac port - it's safe
+to switch drivers.
 
-On 05/08/2021 17:55, Grygorii Strashko wrote:
-> The CPSW switchdev driver inherited fix from commit 9421c9015047 ("net:
-> ethernet: ti: cpsw: fix min eth packet size") which changes min TX packet
-> size to 64bytes (VLAN_ETH_ZLEN, excluding ETH_FCS). It was done to fix HW
-> packed drop issue when packets are sent from Host to the port with PVID and
-> un-tagging enabled. Unfortunately this breaks some other non-switch
-> specific use-cases, like:
-> - [1] CPSW port as DSA CPU port with DSA-tag applied at the end of the
-> packet
-> - [2] Some industrial protocols, which expects min TX packet size 60Bytes
-> (excluding FCS).
-> 
-> Fix it by configuring min TX packet size depending on driver mode
->   - 60Bytes (ETH_ZLEN) for multi mac (dual-mac) mode
->   - 64Bytes (VLAN_ETH_ZLEN) for switch mode
-> and update it during driver mode change and annotate with
-> READ_ONCE()/WRITE_ONCE() as it can be read by napi while writing.
-> 
-> [1] https://lore.kernel.org/netdev/20210531124051.GA15218@cephalopod/
-> [2] https://e2e.ti.com/support/arm/sitara_arm/f/791/t/701669
-> 
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-> Reported-by: Ben Hutchings <ben.hutchings@essensium.com>
-> Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
-> ---
-> 
-> Changes in v2:
-> - use skb_put_padto
-> - update description
-> - annotate tx_packet_min with READ_ONCE()/WRITE_ONCE()
-> 
-> I'm not going to add additional changes in cpdma configuration interface and,
-> instead, will send patches to convert all cpdma users to use skb_put_padto() and
-> drop frames padding from cpdma.
-> 
-> v1: https://patchwork.kernel.org/project/netdevbpf/patch/20210611132732.10690-1-grygorii.strashko@ti.com/
-> 
->   drivers/net/ethernet/ti/cpsw_new.c  | 7 +++++--
->   drivers/net/ethernet/ti/cpsw_priv.h | 4 +++-
->   2 files changed, 8 insertions(+), 3 deletions(-)
-> 
+So, Switch BeagleBone boards to use new cpsw switch driver. Those boards
+have or 2 Ext. port wired and configured in dual_mac mode by default, or
+only 1 Ext. port.
 
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+For am335x-sancloud-bbe-common.dtsi also removed duplicated davinci_mdio DT
+nodes which already defined in am335x-bone-common.dtsi.
 
-> diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-> index ae167223e87f..d904f4ca4b37 100644
-> --- a/drivers/net/ethernet/ti/cpsw_new.c
-> +++ b/drivers/net/ethernet/ti/cpsw_new.c
-> @@ -921,7 +921,7 @@ static netdev_tx_t cpsw_ndo_start_xmit(struct sk_buff *skb,
->   	struct cpdma_chan *txch;
->   	int ret, q_idx;
->   
-> -	if (skb_padto(skb, CPSW_MIN_PACKET_SIZE)) {
-> +	if (skb_put_padto(skb, READ_ONCE(priv->tx_packet_min))) {
->   		cpsw_err(priv, tx_err, "packet pad failed\n");
->   		ndev->stats.tx_dropped++;
->   		return NET_XMIT_DROP;
-> @@ -1101,7 +1101,7 @@ static int cpsw_ndo_xdp_xmit(struct net_device *ndev, int n,
->   
->   	for (i = 0; i < n; i++) {
->   		xdpf = frames[i];
-> -		if (xdpf->len < CPSW_MIN_PACKET_SIZE)
-> +		if (xdpf->len < READ_ONCE(priv->tx_packet_min))
->   			break;
->   
->   		if (cpsw_xdp_tx_frame(priv, xdpf, NULL, priv->emac_port))
-> @@ -1390,6 +1390,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
->   		priv->dev  = dev;
->   		priv->msg_enable = netif_msg_init(debug_level, CPSW_DEBUG);
->   		priv->emac_port = i + 1;
-> +		priv->tx_packet_min = CPSW_MIN_PACKET_SIZE;
->   
->   		if (is_valid_ether_addr(slave_data->mac_addr)) {
->   			ether_addr_copy(priv->mac_addr, slave_data->mac_addr);
-> @@ -1698,6 +1699,7 @@ static int cpsw_dl_switch_mode_set(struct devlink *dl, u32 id,
->   
->   			priv = netdev_priv(sl_ndev);
->   			slave->port_vlan = vlan;
-> +			WRITE_ONCE(priv->tx_packet_min, CPSW_MIN_PACKET_SIZE_VLAN);
->   			if (netif_running(sl_ndev))
->   				cpsw_port_add_switch_def_ale_entries(priv,
->   								     slave);
-> @@ -1726,6 +1728,7 @@ static int cpsw_dl_switch_mode_set(struct devlink *dl, u32 id,
->   
->   			priv = netdev_priv(slave->ndev);
->   			slave->port_vlan = slave->data->dual_emac_res_vlan;
-> +			WRITE_ONCE(priv->tx_packet_min, CPSW_MIN_PACKET_SIZE);
->   			cpsw_port_add_dual_emac_def_ale_entries(priv, slave);
->   		}
->   
-> diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
-> index a323bea54faa..2951fb7b9dae 100644
-> --- a/drivers/net/ethernet/ti/cpsw_priv.h
-> +++ b/drivers/net/ethernet/ti/cpsw_priv.h
-> @@ -89,7 +89,8 @@ do {								\
->   
->   #define CPSW_POLL_WEIGHT	64
->   #define CPSW_RX_VLAN_ENCAP_HDR_SIZE		4
-> -#define CPSW_MIN_PACKET_SIZE	(VLAN_ETH_ZLEN)
-> +#define CPSW_MIN_PACKET_SIZE_VLAN	(VLAN_ETH_ZLEN)
-> +#define CPSW_MIN_PACKET_SIZE	(ETH_ZLEN)
->   #define CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN +\
->   				 ETH_FCS_LEN +\
->   				 CPSW_RX_VLAN_ENCAP_HDR_SIZE)
-> @@ -380,6 +381,7 @@ struct cpsw_priv {
->   	u32 emac_port;
->   	struct cpsw_common *cpsw;
->   	int offload_fwd_mark;
-> +	u32 tx_packet_min;
->   };
->   
->   #define ndev_to_cpsw(ndev) (((struct cpsw_priv *)netdev_priv(ndev))->cpsw)
-> 
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+---
 
+changes in v2:
+ - commit message updated to indicate duplicated nodes removal in am335x-sancloud-bbe-common.dtsi
+ - dropped phy-handle for cpsw port in am335x-sancloud-bbe-common.dtsi
+
+ arch/arm/boot/dts/am335x-bone-common.dtsi     | 13 ++++---
+ .../boot/dts/am335x-boneblack-wireless.dts    |  2 +-
+ .../boot/dts/am335x-bonegreen-wireless.dts    |  2 +-
+ .../boot/dts/am335x-sancloud-bbe-common.dtsi  | 34 ++-----------------
+ 4 files changed, 12 insertions(+), 39 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am335x-bone-common.dtsi b/arch/arm/boot/dts/am335x-bone-common.dtsi
+index 34a0045b5f65..0ccdc7cd463b 100644
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -353,24 +353,27 @@
+ 	};
+ };
+ 
+-&cpsw_emac0 {
++&cpsw_port1 {
+ 	phy-handle = <&ethphy0>;
+ 	phy-mode = "mii";
++	ti,dual-emac-pvid = <1>;
+ };
+ 
+-&mac {
+-	slaves = <1>;
++&cpsw_port2 {
++	status = "disabled";
++};
++
++&mac_sw {
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&cpsw_default>;
+ 	pinctrl-1 = <&cpsw_sleep>;
+ 	status = "okay";
+ };
+ 
+-&davinci_mdio {
++&davinci_mdio_sw {
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&davinci_mdio_default>;
+ 	pinctrl-1 = <&davinci_mdio_sleep>;
+-	status = "okay";
+ 
+ 	ethphy0: ethernet-phy@0 {
+ 		reg = <0>;
+diff --git a/arch/arm/boot/dts/am335x-boneblack-wireless.dts b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+index 8b2b24c80670..c72b09ab8da0 100644
+--- a/arch/arm/boot/dts/am335x-boneblack-wireless.dts
++++ b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+@@ -63,7 +63,7 @@
+ 	};
+ };
+ 
+-&mac {
++&mac_sw {
+ 	status = "disabled";
+ };
+ 
+diff --git a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+index 74db0fc39397..215f279e476b 100644
+--- a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
++++ b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+@@ -62,7 +62,7 @@
+ 	};
+ };
+ 
+-&mac {
++&mac_sw {
+ 	status = "disabled";
+ };
+ 
+diff --git a/arch/arm/boot/dts/am335x-sancloud-bbe-common.dtsi b/arch/arm/boot/dts/am335x-sancloud-bbe-common.dtsi
+index bd9c21813192..627c18d23f94 100644
+--- a/arch/arm/boot/dts/am335x-sancloud-bbe-common.dtsi
++++ b/arch/arm/boot/dts/am335x-sancloud-bbe-common.dtsi
+@@ -40,22 +40,6 @@
+ 		>;
+ 	};
+ 
+-	davinci_mdio_default: davinci_mdio_default {
+-		pinctrl-single,pins = <
+-			/* MDIO */
+-			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLUP | SLEWCTRL_FAST, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_OUTPUT_PULLUP, MUX_MODE0)
+-		>;
+-	};
+-
+-	davinci_mdio_sleep: davinci_mdio_sleep {
+-		pinctrl-single,pins = <
+-			/* MDIO reset value */
+-			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLDOWN, MUX_MODE7)
+-			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_INPUT_PULLDOWN, MUX_MODE7)
+-		>;
+-	};
+-
+ 	usb_hub_ctrl: usb_hub_ctrl {
+ 		pinctrl-single,pins = <
+ 			AM33XX_PADCONF(AM335X_PIN_RMII1_REF_CLK, PIN_OUTPUT_PULLUP, MUX_MODE7)     /* rmii1_refclk.gpio0_29 */
+@@ -63,26 +47,12 @@
+ 	};
+ };
+ 
+-&mac {
+-	pinctrl-names = "default", "sleep";
++&mac_sw {
+ 	pinctrl-0 = <&cpsw_default>;
+ 	pinctrl-1 = <&cpsw_sleep>;
+-	status = "okay";
+-};
+-
+-&davinci_mdio {
+-	pinctrl-names = "default", "sleep";
+-	pinctrl-0 = <&davinci_mdio_default>;
+-	pinctrl-1 = <&davinci_mdio_sleep>;
+-	status = "okay";
+-
+-	ethphy0: ethernet-phy@0 {
+-		reg = <0>;
+-	};
+ };
+ 
+-&cpsw_emac0 {
+-	phy-handle = <&ethphy0>;
++&cpsw_port1 {
+ 	phy-mode = "rgmii-id";
+ };
+ 
 -- 
-Best regards,
-grygorii
+2.17.1
+
