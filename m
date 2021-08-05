@@ -2,93 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC003E108B
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Aug 2021 10:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 930D23E1237
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Aug 2021 12:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232601AbhHEIsY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Aug 2021 04:48:24 -0400
-Received: from muru.com ([72.249.23.125]:35994 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232009AbhHEIsY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 5 Aug 2021 04:48:24 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 036C68061;
-        Thu,  5 Aug 2021 08:48:29 +0000 (UTC)
-Date:   Thu, 5 Aug 2021 11:48:08 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Paul Barker <paul.barker@sancloud.com>
-Cc:     Robert Nelson <robertcnelson@gmail.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] Add support for the SanCloud BBE Lite
-Message-ID: <YQulyGLNNkyYcBSY@atomide.com>
-References: <20210720083928.10404-1-paul.barker@sancloud.com>
- <YP/J+YC6GFeH+I5j@atomide.com>
- <20210804115221.5650e440.paul.barker@sancloud.com>
+        id S240277AbhHEKKD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Aug 2021 06:10:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240126AbhHEKKD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Aug 2021 06:10:03 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EAF5C061798
+        for <linux-omap@vger.kernel.org>; Thu,  5 Aug 2021 03:09:48 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id y12so7562345edo.6
+        for <linux-omap@vger.kernel.org>; Thu, 05 Aug 2021 03:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
+        b=pZQoWa1Y2a/TOvVgtc2aL1q+UNTxeXzgcRbLfWP5BjwM9+d6LB6nYjJTeCsoLu86JY
+         59UGkrZLrY5eJozo8Qqomp+tGiDNDuF55zQ6wRY0PWOikKjU5xCOzrseeqMGUUMKKsBh
+         fp/JBQ0DoVW+XqGFqG8yELXBoI0BygJkZnMVaEKYf4FJ41ziPG7Xhtfe79lWccUfb2If
+         mmzclWH1oOLnHWUPybIwkVxfINtGhuUDjsJ0qgY5DWCrG+mz1XhL9WosC1xcw+3sn7Br
+         dLgJcV82tCFdKpAA3YF7i4kopfCTmXqQYjvOyp6WyxAVrhsnbO6++STpnA0G8q24EEi7
+         5BKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=J67+rxbQxfS8kPDQ/50P30WNOuT2eFzd+bURjICaS/k=;
+        b=mhWJ0bEaoRnC8cIcpaIjTIbMmkr9E7Ch4+qD/GnPLYR4sPTQj57x064movuwTuL3Xq
+         WPsWh3ku1Rm4cPL8VRGhKWZ2k2+rPZDJ4AV/P8aGGYWJGxBrfacaLSOSvThC01MRHbw+
+         pekndEbrqtEL8btrP4dWdSXoZ8zl5GIVS1zlB+8XwszatjIHfw4CoDXKdUuXjBG9ewVy
+         BLbZusxHb7YHtoL4jFT/93W1B4v+QO+2NHlMjumrSTbCQNTiuUC1Z7N9AzORxZQ2d3fg
+         4KRtabUoxwIyg6XRA+hLtuE+uZYe8YVXG3UBUlVdnAre9zMc1E5TmP3ETrQv364iIPsG
+         2Njg==
+X-Gm-Message-State: AOAM533o1JgdPH/erVxjxMMNvBMWqud9zr3nv8Q1rutlO0fyoYwMabdh
+        TzFy9YMLQikEs8HKN2RWsUlRiU/ebZ3JdcJHTew=
+X-Google-Smtp-Source: ABdhPJwFoOZg/lERasTt1cjR8tCLUN4Ge+hMsK8F/7QG0dQYcxPz6aQJWaPCCKpk7Lqs3kOQ8UompI+ccuLzIQDt4dU=
+X-Received: by 2002:a05:6402:60e:: with SMTP id n14mr5484811edv.142.1628158186866;
+ Thu, 05 Aug 2021 03:09:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="LM9XEI8L+5xUn6r5"
-Content-Disposition: inline
-In-Reply-To: <20210804115221.5650e440.paul.barker@sancloud.com>
+Received: by 2002:a05:6408:258c:b029:e3:fe5c:5c2d with HTTP; Thu, 5 Aug 2021
+ 03:09:46 -0700 (PDT)
+Reply-To: theresabangurah3333@yahoo.com
+From:   Theresa Bangurah <mariamabah77879@gmail.com>
+Date:   Thu, 5 Aug 2021 11:09:46 +0100
+Message-ID: <CAAi==jpyD=+eCTNYpc7yD=t0iYTgLbYVHpJHBdGinDZs048h-w@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
---LM9XEI8L+5xUn6r5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-* Paul Barker <paul.barker@sancloud.com> [210804 10:52]:
-> On Tue, 27 Jul 2021 11:55:21 +0300
-> Tony Lindgren <tony@atomide.com> wrote:
->=20
-> > * Paul Barker <paul.barker@sancloud.com> [210720 11:40]:
-> > > The Lite variant of the SanCloud BeagleBone Enhanced (BBE) removes the
-> > > HDMI encoder, barometer and accelerometer chips and adds a Micron
-> > > Authenta SPI flash chip. =20
-> >=20
-> > Thanks applying all for v5.15 merge window.
->=20
-> I tested the for-next branch of linux-omap to confirm that things
-> worked with these patches applied. There was a NULL pointer
-> dereference in ptp_clock_register() during boot. The fix appears to be
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/?id=3D55eac20617ca84129273ab248f4d7bfe456967de
-> which went into 5.14-rc2.
-
-Yeah so it seems, too bad it was not there for -rc1 already.
-
-> Merging for-next with 5.14-rc4 resulted in things working as expected.
-
-OK thanks for checking.
-
-Regards,
-
-Tony
-
-
-
---LM9XEI8L+5xUn6r5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEkgNvrZJU/QSQYIcQG9Q+yVyrpXMFAmELpcgACgkQG9Q+yVyr
-pXNH8RAAyABpBrVjH86mulZbiTQVaChUTMxQhcUcDPDYfNQAvqd6nfO3EFv4YoW7
-gCbDD1EBqarwd5/7KWg7MNChtUZ/tjnrFjqjpGo0UD/bjUjYdepAChHYpvuyk4ac
-v6+jSdFjIV70iraoPGGRy1qR1DEO1IsO0dMLsBsf9t8VU60a9IBdT4gEh8d84SdS
-dNIBDHb+pPbrlSoKwWE/THh9xIVA5byZtbTn97NXaPNnmIG3OMw1Ndj1hoWh5lOs
-6oHUyfadvRM8oB8WQlRjIYjnNRzMBI+8Tu5qqDD1wjS3NLTn06cHkRtCHUvklhoq
-BY+9vaTl8Zl6PTZIpMc+nVDpuwmfRZaFUte98e+0n2P2MOT/8osRVl67+6hIog+T
-OpI4ONHa8QX/i83GypviXH1LNj5UqXE8wyyVxmEpM1RG5EofDh/LxopU4PzTCDfE
-h6HW2PEFttt3RE/gvUldpx/GGxjnnleHj1nBCITv7PMi5z7dxl4I+azKzPATjDHQ
-+0l32nd26yooKCp1F9FpgwU71Q+7jyl5c9zzk3Glxv/m0CdDyzaDadN67IGclXNx
-eeGe4LRNq9ETCc8hTuGepdpgk5581BzvPd8qguBKotnYoQGV0rQOERFwXAt1TPAw
-tBQ422Y3aOGHLpEPFCelXZrtCdLlmvvDdDTF+jybOj9hmrDWroI=
-=KlWf
------END PGP SIGNATURE-----
-
---LM9XEI8L+5xUn6r5--
+-- 
+My name is Mrs.Theresa Bangurah,i am American citizen i have something
+important to tell you.Reply me immediately you get this message.God
+bless you.
