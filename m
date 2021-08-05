@@ -2,74 +2,194 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 593A43E177C
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Aug 2021 17:04:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFA853E1A65
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Aug 2021 19:30:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238638AbhHEPE6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 Aug 2021 11:04:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50288 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230183AbhHEPE6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Aug 2021 11:04:58 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE38C061765
-        for <linux-omap@vger.kernel.org>; Thu,  5 Aug 2021 08:04:43 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id g21so8874356edb.4
-        for <linux-omap@vger.kernel.org>; Thu, 05 Aug 2021 08:04:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZXj+/MzIh8TUaHnTl21vLV+r81+xZuq+H+PEdDDidP8=;
-        b=Mf2dsHWy37tUUIuN3qvDKQd4LLUZT9O7337Zx9Tqj5aWjYxkBRsCWBc5bo9LbaOO3G
-         MhhwdPdwhZYZNNp9Zp/KwLsVyAn4Hc3ZTSQKJpuv1khamx99SshXut4lrhoelJk2EWGw
-         +U4TPPgZts2Vtp2ZZCJylwOs0YA5VUVngYwrJrF1Mu/kxyI5Tf87csoNkTp3mksu0Hrg
-         YmPM9niHpX6pmdLn07DrR9kw9V9OqkYVomF/1k7TtV81DObi/skRwzq/6IPnGZ8enuQo
-         7jCt0jJ8Fe79b1eIcK+G3gPXgcGgNIzpCP0PtceMF9+fSi/eXOsYuJyMWYl51fHlkTxC
-         lftQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZXj+/MzIh8TUaHnTl21vLV+r81+xZuq+H+PEdDDidP8=;
-        b=VdsMNpXGM6PVg2LAmXvR8A8ikrRyNFiKW0yx2PjZBn6pZaEb49SguuwwpDmgxhk1jg
-         HXzhEwe6iD6tQWwWdp80dfvx2gENnAjcbuP2oNgMzByKjbVe5t27vQdZ9iRg0jwU5U1a
-         sWbSUkBchjN+n332Fl39tND3tOWvP4hgvNPf0f3cuGnqXeO2wElf2wWXPhen/AzIXj1U
-         botxsAbTpZk/9QtjIBpeISgvTIPJnVL3vv/mF063WjMjLH40YICs1kCs/iAL236f3k16
-         RVN/vQCXY3A9t7dWkQ9X3VDo0OYYSpdsjLMRCInnFVuu8AkGoOLwZ8ufwbzSuv1GuZmJ
-         +0rQ==
-X-Gm-Message-State: AOAM530RVGBKeK1UN8mheFacV0I2054WmFg4AaB/Fv8ui4CNAiQECq+0
-        8OqK8ZuOeEKNsegtHszs/kFzQRTKyqQOtQ3+AFY=
-X-Google-Smtp-Source: ABdhPJzywjAqfdEs/kl8ZpylY9wi4+KxSaLm6sDbYK7d7LXNE5AtAXC5hnZMgKV9AjGa55x3rmizGdPODWXuJDt9BJg=
-X-Received: by 2002:aa7:d8d4:: with SMTP id k20mr7033582eds.373.1628175881637;
- Thu, 05 Aug 2021 08:04:41 -0700 (PDT)
+        id S237055AbhHERaT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 Aug 2021 13:30:19 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:39474 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230385AbhHERaT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 Aug 2021 13:30:19 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 175HU0FI098138;
+        Thu, 5 Aug 2021 12:30:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1628184600;
+        bh=5HM42TrhyJ+dgEI137mtVY8Bi0VP1NjSvoUG5V2ri7Y=;
+        h=From:To:CC:Subject:Date;
+        b=biO80seR2jRd+IM5MS6A/+gqawLY/l0vuPJ7+XQahafLhe9p6d/glLRtQT5H2Xhzo
+         nVO5cuAL1oYqmIg9GoYJof9giMyyfebt2Ow7O9RT7YiFru/YEfH5Sfr/x9pjk+AfV4
+         i2KrJsw4DIuJ28hDiLtQTtqP3Is4yQMNnvOh7wro=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 175HU0K7054890
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 5 Aug 2021 12:30:00 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 5 Aug
+ 2021 12:29:59 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Thu, 5 Aug 2021 12:29:59 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 175HTwRc002706;
+        Thu, 5 Aug 2021 12:29:58 -0500
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+To:     Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
+CC:     Lokesh Vutla <lokeshvutla@ti.com>,
+        Paul Barker <paul.barker@sancloud.com>,
+        <linux-kernel@vger.kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>
+Subject: [PATCH v2] ARM: dts: am335x-bone: switch to new cpsw switch drv
+Date:   Thu, 5 Aug 2021 20:29:54 +0300
+Message-ID: <20210805172954.5409-1-grygorii.strashko@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20210613125105.786984-1-pbrobinson@gmail.com> <YP/Epx04Za2wiSlt@atomide.com>
-In-Reply-To: <YP/Epx04Za2wiSlt@atomide.com>
-From:   Peter Robinson <pbrobinson@gmail.com>
-Date:   Thu, 5 Aug 2021 16:04:30 +0100
-Message-ID: <CALeDE9OC+OAuGaNM+iEO44bg+QAdjTE3NQkSdLLZUb-OXeo4Xg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] arm: omap2: Drop MACH_OMAP3517EVM entry
-To:     tony@atomide.com
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+The dual_mac mode has been preserved the same way between legacy and new
+driver, and one port devices works the same as 1 dual_mac port - it's safe
+to switch drivers.
 
-> * Peter Robinson <pbrobinson@gmail.com> [210613 15:51]:
-> > The MACH_OMAP3517EVM was added back in commit 549f95ed2016 due to
-> > being used by the ASoC driver, but this driver was dropped in
-> > commit 2c2596f3ab25 as the audio for this board had been moved to
-> > a simple-audio-card configuration so MACH_OMAP3517EVM is now
-> > properly unuused and can be dropped.
->
-> Applying into omap-for-v5.15/soc thanks.
+So, Switch BeagleBone boards to use new cpsw switch driver. Those boards
+have or 2 Ext. port wired and configured in dual_mac mode by default, or
+only 1 Ext. port.
 
-Was that all 3 of the series or just this one patch, I only see the
-one for your 5.15 PR.
+Signed-off-by: Grygorii Strashko <grygorii.strashko@ti.com>
+---
+v2: only rebase
 
-Regards,
-Peter
+ arch/arm/boot/dts/am335x-bone-common.dtsi     | 13 +++++---
+ .../boot/dts/am335x-boneblack-wireless.dts    |  2 +-
+ .../boot/dts/am335x-bonegreen-wireless.dts    |  2 +-
+ .../boot/dts/am335x-sancloud-bbe-common.dtsi  | 33 ++-----------------
+ 4 files changed, 12 insertions(+), 38 deletions(-)
+
+diff --git a/arch/arm/boot/dts/am335x-bone-common.dtsi b/arch/arm/boot/dts/am335x-bone-common.dtsi
+index 34a0045b5f65..0ccdc7cd463b 100644
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -353,24 +353,27 @@
+ 	};
+ };
+ 
+-&cpsw_emac0 {
++&cpsw_port1 {
+ 	phy-handle = <&ethphy0>;
+ 	phy-mode = "mii";
++	ti,dual-emac-pvid = <1>;
+ };
+ 
+-&mac {
+-	slaves = <1>;
++&cpsw_port2 {
++	status = "disabled";
++};
++
++&mac_sw {
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&cpsw_default>;
+ 	pinctrl-1 = <&cpsw_sleep>;
+ 	status = "okay";
+ };
+ 
+-&davinci_mdio {
++&davinci_mdio_sw {
+ 	pinctrl-names = "default", "sleep";
+ 	pinctrl-0 = <&davinci_mdio_default>;
+ 	pinctrl-1 = <&davinci_mdio_sleep>;
+-	status = "okay";
+ 
+ 	ethphy0: ethernet-phy@0 {
+ 		reg = <0>;
+diff --git a/arch/arm/boot/dts/am335x-boneblack-wireless.dts b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+index 8b2b24c80670..c72b09ab8da0 100644
+--- a/arch/arm/boot/dts/am335x-boneblack-wireless.dts
++++ b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
+@@ -63,7 +63,7 @@
+ 	};
+ };
+ 
+-&mac {
++&mac_sw {
+ 	status = "disabled";
+ };
+ 
+diff --git a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+index 74db0fc39397..215f279e476b 100644
+--- a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
++++ b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
+@@ -62,7 +62,7 @@
+ 	};
+ };
+ 
+-&mac {
++&mac_sw {
+ 	status = "disabled";
+ };
+ 
+diff --git a/arch/arm/boot/dts/am335x-sancloud-bbe-common.dtsi b/arch/arm/boot/dts/am335x-sancloud-bbe-common.dtsi
+index bd9c21813192..2513d7cde09c 100644
+--- a/arch/arm/boot/dts/am335x-sancloud-bbe-common.dtsi
++++ b/arch/arm/boot/dts/am335x-sancloud-bbe-common.dtsi
+@@ -40,22 +40,6 @@
+ 		>;
+ 	};
+ 
+-	davinci_mdio_default: davinci_mdio_default {
+-		pinctrl-single,pins = <
+-			/* MDIO */
+-			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLUP | SLEWCTRL_FAST, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_OUTPUT_PULLUP, MUX_MODE0)
+-		>;
+-	};
+-
+-	davinci_mdio_sleep: davinci_mdio_sleep {
+-		pinctrl-single,pins = <
+-			/* MDIO reset value */
+-			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLDOWN, MUX_MODE7)
+-			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_INPUT_PULLDOWN, MUX_MODE7)
+-		>;
+-	};
+-
+ 	usb_hub_ctrl: usb_hub_ctrl {
+ 		pinctrl-single,pins = <
+ 			AM33XX_PADCONF(AM335X_PIN_RMII1_REF_CLK, PIN_OUTPUT_PULLUP, MUX_MODE7)     /* rmii1_refclk.gpio0_29 */
+@@ -63,25 +47,12 @@
+ 	};
+ };
+ 
+-&mac {
+-	pinctrl-names = "default", "sleep";
++&mac_sw {
+ 	pinctrl-0 = <&cpsw_default>;
+ 	pinctrl-1 = <&cpsw_sleep>;
+-	status = "okay";
+-};
+-
+-&davinci_mdio {
+-	pinctrl-names = "default", "sleep";
+-	pinctrl-0 = <&davinci_mdio_default>;
+-	pinctrl-1 = <&davinci_mdio_sleep>;
+-	status = "okay";
+-
+-	ethphy0: ethernet-phy@0 {
+-		reg = <0>;
+-	};
+ };
+ 
+-&cpsw_emac0 {
++&cpsw_port1 {
+ 	phy-handle = <&ethphy0>;
+ 	phy-mode = "rgmii-id";
+ };
+-- 
+2.17.1
+
