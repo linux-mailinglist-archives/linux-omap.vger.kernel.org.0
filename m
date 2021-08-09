@@ -2,230 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B7FC3E3F22
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Aug 2021 06:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2249B3E4212
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Aug 2021 11:07:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233026AbhHIEur (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Aug 2021 00:50:47 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:35642 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230491AbhHIEuq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Aug 2021 00:50:46 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1794oHI7057051;
-        Sun, 8 Aug 2021 23:50:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1628484617;
-        bh=eOYKKUdCEvtAsO5ARORHx5Je/UqNe6xk5ByfbaiPVkE=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Mqj1dknunTsuB/3ESpr/Eq4QvylzQ3UBcKiRdDuSYxDOBRjU6/VUNK4djleSU9Kv7
-         MUzXAv3fTB0WcsDSCeNHWuWryRqoOFWZ8HX89sWaVtBCVfgRvXmIXt9SMsmxP2wDzv
-         S/LdXA6tlJxhthlxQm5Aa48WC6Gi1KYrfgjSx6lY=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1794oGRu129264
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 8 Aug 2021 23:50:16 -0500
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Sun, 8 Aug
- 2021 23:50:15 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Sun, 8 Aug 2021 23:50:15 -0500
-Received: from [10.250.235.70] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1794oB9a029703;
-        Sun, 8 Aug 2021 23:50:12 -0500
-Subject: Re: [PATCH v2 2/3] PCI: j721e: Add PCI legacy interrupt support for
- J721E
-To:     Marc Zyngier <maz@kernel.org>
-CC:     Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Tom Joseph <tjoseph@cadence.com>, <linux-omap@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Lokesh Vutla <lokeshvutla@ti.com>
-References: <20210804132912.30685-1-kishon@ti.com>
- <20210804132912.30685-3-kishon@ti.com> <87h7g5w8d8.wl-maz@kernel.org>
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-Message-ID: <c20be7ae-e4a7-c3ba-f1c9-e4ff2aae0a66@ti.com>
-Date:   Mon, 9 Aug 2021 10:20:10 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S234176AbhHIJH5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Aug 2021 05:07:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55422 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234062AbhHIJH4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Aug 2021 05:07:56 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 662F1C0613CF
+        for <linux-omap@vger.kernel.org>; Mon,  9 Aug 2021 02:07:33 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id f5so4622047wrm.13
+        for <linux-omap@vger.kernel.org>; Mon, 09 Aug 2021 02:07:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=/ZPOlrNFMpNUTPbgUazrf5s5awBfvFWEx4XOmYGlmFM=;
+        b=xuTbN9NL08Xcyq4YkCIGhzlEKVrVctUgSIIhVBnkaX8eBSEHaFOlZ6xhpHC8lMNFIe
+         dwmLzw6HSzfSkmDyldkyO4cF/B4FSaQ+R0e3imf9Uqwu/s1kxF6cO7lgFBnp2CQiHQZb
+         ptygmaW+KOYy2Vg86ysWX42PDO7BrZXZJ2slJRdSO2oCp1BIbrBre/fMom8tMKlqVz0H
+         YgsuS74yevpikRF9h2yy5vlV8pLKC5hbNzRmJXeGnXWlCyldErZ0DwkZjzAc6HNz0Ks0
+         do7m4j3JuvYi7N6B2LzEz8XuzVlzUZp+/3EnES80Duj6XTL4TcUfvLUOpI6PI0+bVEHc
+         haRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=/ZPOlrNFMpNUTPbgUazrf5s5awBfvFWEx4XOmYGlmFM=;
+        b=gkNWTRM6yo1PCDlZavtJ3euy2p6RhXpOvuNSWWPMxZzAOycSdvYbY2NKNwGjNYOiVr
+         KmNF6fsYrXXDBwSLkNVtLWDXVwTwdpY1TW127hCJBHJhaZF0vl1baQgZy85BP6EqGSdP
+         MQoXqep2l+DV8eg0WUQHogfB3r3e1uf8rWtH7mu0A8jAfE/1wfuDjgXMyRbDEw/5uW97
+         plrr2rtinSuCrIpkeBt++p20xZEzq8cpQrx/zIKaEGuYyZHG50Ss2UCXGmH3xs4+Zmaq
+         hJdtqGoJWcLpG/bM7mQ1VFnDXtneT6hLq1s5OfiPUnAQU/pRPkT7V0BffLY028dU/kWX
+         7A7w==
+X-Gm-Message-State: AOAM532G1gNJBu14LOi8npvkmyTZT+ph0N642CffeZvWxDA2TLe/ieWa
+        /uoTWTFK6o7lNks+z0g1Q02+Cw==
+X-Google-Smtp-Source: ABdhPJyLRv8OWaU2rJjJ7UBftQqOajWt7JIwvnGbG61bADURpPUKgdSk4u6IhZ36haGe/OcsoLIAnw==
+X-Received: by 2002:a05:6000:1106:: with SMTP id z6mr24270092wrw.296.1628500051979;
+        Mon, 09 Aug 2021 02:07:31 -0700 (PDT)
+Received: from localhost ([86.61.181.4])
+        by smtp.gmail.com with ESMTPSA id v17sm18937438wrt.87.2021.08.09.02.07.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Aug 2021 02:07:31 -0700 (PDT)
+Date:   Mon, 9 Aug 2021 11:07:30 +0200
+From:   Jiri Pirko <jiri@resnulli.us>
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
+        Bin Luo <luobin9@huawei.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Coiby Xu <coiby.xu@gmail.com>,
+        Derek Chickles <dchickles@marvell.com>, drivers@pensando.io,
+        Felix Manlunas <fmanlunas@marvell.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        hariprasad <hkelam@marvell.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        intel-wired-lan@lists.osuosl.org,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Jerin Jacob <jerinj@marvell.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Linu Cherian <lcherian@marvell.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-staging@lists.linux.dev, Manish Chopra <manishc@marvell.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        netdev@vger.kernel.org, oss-drivers@corigine.com,
+        Richard Cochran <richardcochran@gmail.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Satanand Burla <sburla@marvell.com>,
+        Shannon Nelson <snelson@pensando.io>,
+        Simon Horman <simon.horman@corigine.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>
+Subject: Re: [PATCH net-next] devlink: Set device as early as possible
+Message-ID: <YRDwUrOK1YHsK7CE@nanopsycho>
+References: <6859503f7e3e6cd706bf01ef06f1cae8c0b0970b.1628449004.git.leonro@nvidia.com>
 MIME-Version: 1.0
-In-Reply-To: <87h7g5w8d8.wl-maz@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6859503f7e3e6cd706bf01ef06f1cae8c0b0970b.1628449004.git.leonro@nvidia.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Marc,
+Sun, Aug 08, 2021 at 08:57:43PM CEST, leon@kernel.org wrote:
+>From: Leon Romanovsky <leonro@nvidia.com>
+>
+>All kernel devlink implementations call to devlink_alloc() during
+>initialization routine for specific device which is used later as
+>a parent device for devlink_register().
+>
+>Such late device assignment causes to the situation which requires us to
+>call to device_register() before setting other parameters, but that call
+>opens devlink to the world and makes accessible for the netlink users.
+>
+>Any attempt to move devlink_register() to be the last call generates the
+>following error due to access to the devlink->dev pointer.
+>
+>[    8.758862]  devlink_nl_param_fill+0x2e8/0xe50
+>[    8.760305]  devlink_param_notify+0x6d/0x180
+>[    8.760435]  __devlink_params_register+0x2f1/0x670
+>[    8.760558]  devlink_params_register+0x1e/0x20
+>
+>The simple change of API to set devlink device in the devlink_alloc()
+>instead of devlink_register() fixes all this above and ensures that
+>prior to call to devlink_register() everything already set.
+>
+>Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 
-On 04/08/21 8:43 pm, Marc Zyngier wrote:
-> On Wed, 04 Aug 2021 14:29:11 +0100,
-> Kishon Vijay Abraham I <kishon@ti.com> wrote:
->>
->> Add PCI legacy interrupt support for J721E. J721E has a single HW
->> interrupt line for all the four legacy interrupts INTA/INTB/INTC/INTD.
->> The HW interrupt line connected to GIC is a pulse interrupt whereas
->> the legacy interrupts by definition is level interrupt. In order to
->> provide level interrupt functionality to edge interrupt line, PCIe
->> in J721E has provided IRQ_EOI register.
->>
->> However due to Errata ID #i2094 ([1]), EOI feature is not enabled in HW
->> and only a single pulse interrupt will be generated for every
->> ASSERT_INTx/DEASSERT_INTx.
-> 
-> So my earlier remark stands. If you get a single edge, how do you
-> handle a level that is still high after having handled the interrupt
-> on hardware that has this bug?
-
-Right, this hardware (J721E) has a bug but was fixed in J7200 (Patch 3/3
-handles that).
-> 
->>
->> [1] -> J721E DRA829/TDA4VM Processors Silicon Revision 1.1/1.0 SPRZ455A –
->>        DECEMBER 2020 – REVISED AUGUST 2021
->>        (https://www.ti.com/lit/er/sprz455a/sprz455a.pdf)
->>
->> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
->> ---
->>  drivers/pci/controller/cadence/pci-j721e.c | 85 ++++++++++++++++++++++
->>  1 file changed, 85 insertions(+)
->>
->> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
->> index 2ec037c43bd5..c2e7a78dc31f 100644
->> --- a/drivers/pci/controller/cadence/pci-j721e.c
->> +++ b/drivers/pci/controller/cadence/pci-j721e.c
->> @@ -29,6 +29,13 @@
->>  #define LINK_DOWN		BIT(1)
->>  #define J7200_LINK_DOWN		BIT(10)
->>  
->> +#define EOI_REG			0x10
->> +
->> +#define ENABLE_REG_SYS_0	0x100
->> +#define STATUS_REG_SYS_0	0x500
->> +#define STATUS_CLR_REG_SYS_0	0x700
->> +#define INTx_EN(num)		(1 << (num))
->> +
->>  #define J721E_PCIE_USER_CMD_STATUS	0x4
->>  #define LINK_TRAINING_ENABLE		BIT(0)
->>  
->> @@ -59,6 +66,7 @@ struct j721e_pcie {
->>  	void __iomem		*user_cfg_base;
->>  	void __iomem		*intd_cfg_base;
->>  	u32			linkdown_irq_regfield;
->> +	struct irq_domain	*legacy_irq_domain;
->>  };
->>  
->>  enum j721e_pcie_mode {
->> @@ -121,6 +129,79 @@ static void j721e_pcie_config_link_irq(struct j721e_pcie *pcie)
->>  	j721e_pcie_intd_writel(pcie, ENABLE_REG_SYS_2, reg);
->>  }
->>  
->> +static void j721e_pcie_v1_legacy_irq_handler(struct irq_desc *desc)
->> +{
->> +	struct j721e_pcie *pcie = irq_desc_get_handler_data(desc);
->> +	struct irq_chip *chip = irq_desc_get_chip(desc);
->> +	int i, virq;
->> +	u32 reg;
->> +
->> +	chained_irq_enter(chip, desc);
->> +
->> +	for (i = 0; i < PCI_NUM_INTX; i++) {
->> +		reg = j721e_pcie_intd_readl(pcie, STATUS_REG_SYS_0);
->> +		if (!(reg & INTx_EN(i)))
->> +			continue;
-> 
-> Why do you need to perform multiple reads? Surely reg contains all the
-> bits you need, doesn't it?
-
-Right, will fix it up.
-> 
->> +
->> +		virq = irq_find_mapping(pcie->legacy_irq_domain, 3 - i);
->> +		generic_handle_irq(virq);
-> 
-> Please combine both lines into a single generic_handle_domain_irq()
-> call.
-
-Okay.
-> 
->> +		j721e_pcie_intd_writel(pcie, STATUS_CLR_REG_SYS_0, INTx_EN(i));
-> 
-> What is the purpose of this write? It feels like this should be a
-> irq_eoi callback.
-
-It's an IRQ ACK, since in this platform the level to edge is not
-implemented properly in HW.
-> 
->> +	}
->> +
->> +	chained_irq_exit(chip, desc);
->> +}
->> +
->> +static int j721e_pcie_intx_map(struct irq_domain *domain, unsigned int irq, irq_hw_number_t hwirq)
->> +{
->> +	irq_set_chip_and_handler(irq, &dummy_irq_chip, handle_simple_irq);
-> 
-> An INTx interrupt is a level interrupt. Please use the corresponding flow.
-
-Okay.
-> 
->> +	irq_set_chip_data(irq, domain->host_data);
->> +
->> +	return 0;
->> +}
->> +
->> +static const struct irq_domain_ops j721e_pcie_intx_domain_ops = {
->> +	.map = j721e_pcie_intx_map,
->> +};
->> +
->> +static int j721e_pcie_config_legacy_irq(struct j721e_pcie *pcie)
->> +{
->> +	struct irq_domain *legacy_irq_domain;
->> +	struct device *dev = pcie->dev;
->> +	struct device_node *node = dev->of_node;
->> +	struct device_node *intc_node;
->> +	int irq, i;
->> +	u32 reg;
->> +
->> +	intc_node = of_get_child_by_name(node, "interrupt-controller");
->> +	if (!intc_node) {
->> +		dev_dbg(dev, "interrupt-controller node is absent. Legacy INTR not supported\n");
->> +		return 0;
->> +	}
->> +
->> +	irq = irq_of_parse_and_map(intc_node, 0);
->> +	if (!irq) {
->> +		dev_err(dev, "Failed to parse and map legacy irq\n");
->> +		return -EINVAL;
->> +	}
->> +	irq_set_chained_handler_and_data(irq, j721e_pcie_v1_legacy_irq_handler, pcie);
->> +
->> +	legacy_irq_domain = irq_domain_add_linear(intc_node, PCI_NUM_INTX,
->> +						  &j721e_pcie_intx_domain_ops, pcie);
->> +	if (!legacy_irq_domain) {
->> +		dev_err(dev, "Failed to add irq domain for legacy irqs\n");
->> +		return -EINVAL;
->> +	}
->> +	pcie->legacy_irq_domain = legacy_irq_domain;
->> +
->> +	for (i = 0; i < PCI_NUM_INTX; i++) {
->> +		reg = j721e_pcie_intd_readl(pcie, ENABLE_REG_SYS_0);
->> +		reg |= INTx_EN(i);
->> +		j721e_pcie_intd_writel(pcie, ENABLE_REG_SYS_0, reg);
->> +	}
-> 
-> This should be moved to the irq_unmask() callback.
-
-Should we also have a corresponding irq_mask()? Then would require us
-implement reference counting since legacy interrupts are shared.
-
-Thanks,
-Kishon
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
