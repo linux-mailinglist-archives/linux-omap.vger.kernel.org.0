@@ -2,260 +2,246 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 009483E483B
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Aug 2021 16:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2920F3E4847
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Aug 2021 17:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234139AbhHIO7S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 Aug 2021 10:59:18 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:59304 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234721AbhHIO7Q (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 Aug 2021 10:59:16 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 179EwiQu082499;
-        Mon, 9 Aug 2021 09:58:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1628521124;
-        bh=09ejnoww8LHfpYMudP6J6GaNJiO6h2BlMyUZjOdqowQ=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=Gej3T5iFFJyYWoN4txEil/k4QT4WcVxhjZVyrVSA+voRHWAI6TLSsqa/CsKkTel0m
-         vuPGsMN8NOiDurZtRJkxAIvLHYPQ5130sV+A6odmSr5HqRiglnGOTA6VuLMDi8TAWV
-         NgnwFEb5I+Meg+zeaAZ1f/9gjO+KBPemO+zHi4QM=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 179EwidY010884
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 9 Aug 2021 09:58:44 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Mon, 9 Aug
- 2021 09:58:43 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Mon, 9 Aug 2021 09:58:43 -0500
-Received: from [10.250.235.238] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 179EwcgI083226;
-        Mon, 9 Aug 2021 09:58:39 -0500
-Subject: Re: [PATCH v2 2/3] PCI: j721e: Add PCI legacy interrupt support for
- J721E
-To:     Marc Zyngier <maz@kernel.org>
-CC:     Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Tom Joseph <tjoseph@cadence.com>, <linux-omap@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Lokesh Vutla <lokeshvutla@ti.com>
-References: <20210804132912.30685-1-kishon@ti.com>
- <20210804132912.30685-3-kishon@ti.com> <87h7g5w8d8.wl-maz@kernel.org>
- <c20be7ae-e4a7-c3ba-f1c9-e4ff2aae0a66@ti.com> <87o8a7arew.wl-maz@kernel.org>
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-Message-ID: <7646c75e-29de-1edc-225c-57feeaa80118@ti.com>
-Date:   Mon, 9 Aug 2021 20:28:38 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S235081AbhHIPDI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 Aug 2021 11:03:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33030 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233910AbhHIPC7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 9 Aug 2021 11:02:59 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D8D2D61076;
+        Mon,  9 Aug 2021 15:02:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628521358;
+        bh=pfjcDfHytZByOLCnRC45esWeBCKweXCcCxBaUgCy7QA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=IPXWzxQlZRe+At7z1ru23QFRFfPiSAv55/yZ8TgyQcgUUtyUIMrdXwhbo860OElc5
+         Ok/d9xCDFeWiaL8XU6GY4uYjOIxIKHUmEDlXu6LqTr682tAzObKfwUBknaS1BY68+I
+         eBJBCXBvsdVU6awmrz+i4Mb7uKpOfdn9icGGfqfBTZ5Grq486oA5Nr+pvlITSZ5xRk
+         TegaARyCBjzKmDCziFFhUGHM/5CsLGht7leKhw7/Y1PB/nGyLfGDPY9rfTQxf2BJFv
+         anU/XZiHRwxIYBXPuTElmYDYs5aq59sm96U8Y976SBcDOrRz6v8X4kcHitLtNJKunw
+         rKtnwDPhD/puA==
+Received: by mail-ed1-f43.google.com with SMTP id k9so7791900edr.10;
+        Mon, 09 Aug 2021 08:02:38 -0700 (PDT)
+X-Gm-Message-State: AOAM530fS3YIlCqFUU8Yj3hZih/ZiwdTzNJour0/UaX2AjxpTxAjp9g0
+        As3RFo2ABb/crq/SLomCS8LsNuLg093FHQFMaA==
+X-Google-Smtp-Source: ABdhPJzz/fNsZEmnTjGSH+qCz/71Qb2qPNXw5kmiZBCj/bvfBq5zSJOVPr0Lh97VLh2/gf0EMJIAll0PAP2cvH3I8FE=
+X-Received: by 2002:a05:6402:104b:: with SMTP id e11mr13966903edu.62.1628521357363;
+ Mon, 09 Aug 2021 08:02:37 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87o8a7arew.wl-maz@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <20200821035420.380495-1-robh@kernel.org> <20200821035420.380495-40-robh@kernel.org>
+ <d7146c20-6992-44a0-c390-f801d352cf15@nvidia.com>
+In-Reply-To: <d7146c20-6992-44a0-c390-f801d352cf15@nvidia.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Mon, 9 Aug 2021 09:02:25 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+=AyqU-GPvt_cfDPpe0Grs2ez9BH7HvqyiPNgB6QTkYw@mail.gmail.com>
+Message-ID: <CAL_Jsq+=AyqU-GPvt_cfDPpe0Grs2ez9BH7HvqyiPNgB6QTkYw@mail.gmail.com>
+Subject: Re: [PATCH v2 39/40] PCI: dwc: Move N_FTS setup to common setup
+To:     Vidya Sagar <vidyas@nvidia.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        PCI <linux-pci@vger.kernel.org>, Andy Gross <agross@kernel.org>,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dilip Kota <eswara.kota@linux.intel.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Jesper Nilsson <jesper.nilsson@axis.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Murali Karicheri <m-karicheri2@ti.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        Yue Wang <yue.wang@amlogic.com>, Marc Zyngier <maz@kernel.org>,
+        "open list:ARM/Amlogic Meson..." <linux-amlogic@lists.infradead.org>,
+        linux-arm-kernel@axis.com,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Marc,
+On Sun, Aug 8, 2021 at 9:01 AM Vidya Sagar <vidyas@nvidia.com> wrote:
+>
+>
+>
+> On 8/21/2020 9:24 AM, Rob Herring wrote:
+> > The Designware controller has common registers to set number of fast
+> > training sequence ordered sets. The Artpec6, Intel, and Tegra driver
+> > initialize these register fields. Let's move the initialization to the
+> > common setup code and drivers just have to provide the value.
+> >
+> > There's a slight change in that the common clock mode N_FTS field is
+> > now initialized. Previously only the Intel driver set this. It's not
+> > clear from the code if common clock mode is used in the Artpec6 or Tegra
+> > driver. It depends on the DWC configuration. Given the field is not
+> > initialized while the others are, it seems unlikely common clock mode
+> > is used.
+> >
+> > Cc: Jesper Nilsson <jesper.nilsson@axis.com>
+> > Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+> > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: Jingoo Han <jingoohan1@gmail.com>
+> > Cc: Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+> > Cc: Thierry Reding <thierry.reding@gmail.com>
+> > Cc: Jonathan Hunter <jonathanh@nvidia.com>
+> > Cc: linux-tegra@vger.kernel.org
+> > Signed-off-by: Rob Herring <robh@kernel.org>
+> > ---
+> >   drivers/pci/controller/dwc/pcie-artpec6.c    | 37 +++-----------------
+> >   drivers/pci/controller/dwc/pcie-designware.c | 28 +++++++++------
+> >   drivers/pci/controller/dwc/pcie-designware.h |  3 +-
+> >   drivers/pci/controller/dwc/pcie-intel-gw.c   | 27 +++++---------
+> >   drivers/pci/controller/dwc/pcie-tegra194.c   | 25 ++-----------
+> >   5 files changed, 35 insertions(+), 85 deletions(-)
+> >
+> > diff --git a/drivers/pci/controller/dwc/pcie-artpec6.c b/drivers/pci/controller/dwc/pcie-artpec6.c
+> > index 86f4d66d8587..929448e9e0bc 100644
+> > --- a/drivers/pci/controller/dwc/pcie-artpec6.c
+> > +++ b/drivers/pci/controller/dwc/pcie-artpec6.c
+> > @@ -44,13 +44,6 @@ struct artpec_pcie_of_data {
+> >
+> >   static const struct of_device_id artpec6_pcie_of_match[];
+> >
+> > -/* PCIe Port Logic registers (memory-mapped) */
+> > -#define PL_OFFSET                    0x700
+> > -
+> > -#define ACK_F_ASPM_CTRL_OFF          (PL_OFFSET + 0xc)
+> > -#define ACK_N_FTS_MASK                       GENMASK(15, 8)
+> > -#define ACK_N_FTS(x)                 (((x) << 8) & ACK_N_FTS_MASK)
+> > -
+> >   /* ARTPEC-6 specific registers */
+> >   #define PCIECFG                             0x18
+> >   #define  PCIECFG_DBG_OEN            BIT(24)
+> > @@ -289,30 +282,6 @@ static void artpec6_pcie_init_phy(struct artpec6_pcie *artpec6_pcie)
+> >       }
+> >   }
+> >
+> > -static void artpec6_pcie_set_nfts(struct artpec6_pcie *artpec6_pcie)
+> > -{
+> > -     struct dw_pcie *pci = artpec6_pcie->pci;
+> > -     u32 val;
+> > -
+> > -     if (artpec6_pcie->variant != ARTPEC7)
+> > -             return;
+> > -
+> > -     /*
+> > -      * Increase the N_FTS (Number of Fast Training Sequences)
+> > -      * to be transmitted when transitioning from L0s to L0.
+> > -      */
+> > -     val = dw_pcie_readl_dbi(pci, ACK_F_ASPM_CTRL_OFF);
+> > -     val &= ~ACK_N_FTS_MASK;
+> > -     val |= ACK_N_FTS(180);
+> > -     dw_pcie_writel_dbi(pci, ACK_F_ASPM_CTRL_OFF, val);
+> > -
+> > -     /*
+> > -      * Set the Number of Fast Training Sequences that the core
+> > -      * advertises as its N_FTS during Gen2 or Gen3 link training.
+> > -      */
+> > -     dw_pcie_link_set_n_fts(pci, 180);
+> > -}
+> > -
+> >   static void artpec6_pcie_assert_core_reset(struct artpec6_pcie *artpec6_pcie)
+> >   {
+> >       u32 val;
+> > @@ -351,11 +320,14 @@ static int artpec6_pcie_host_init(struct pcie_port *pp)
+> >       struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> >       struct artpec6_pcie *artpec6_pcie = to_artpec6_pcie(pci);
+> >
+> > +     if (artpec6_pcie->variant == ARTPEC7) {
+> > +             pci->n_fts[0] = 180;
+> > +             pci->n_fts[1] = 180;
+> > +     }
+> >       artpec6_pcie_assert_core_reset(artpec6_pcie);
+> >       artpec6_pcie_init_phy(artpec6_pcie);
+> >       artpec6_pcie_deassert_core_reset(artpec6_pcie);
+> >       artpec6_pcie_wait_for_phy(artpec6_pcie);
+> > -     artpec6_pcie_set_nfts(artpec6_pcie);
+> >       dw_pcie_setup_rc(pp);
+> >       artpec6_pcie_establish_link(pci);
+> >       dw_pcie_wait_for_link(pci);
+> > @@ -403,7 +375,6 @@ static void artpec6_pcie_ep_init(struct dw_pcie_ep *ep)
+> >       artpec6_pcie_init_phy(artpec6_pcie);
+> >       artpec6_pcie_deassert_core_reset(artpec6_pcie);
+> >       artpec6_pcie_wait_for_phy(artpec6_pcie);
+> > -     artpec6_pcie_set_nfts(artpec6_pcie);
+> >
+> >       for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
+> >               dw_pcie_ep_reset_bar(pci, bar);
+> > diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+> > index 61e1faba15bf..3cb21247619c 100644
+> > --- a/drivers/pci/controller/dwc/pcie-designware.c
+> > +++ b/drivers/pci/controller/dwc/pcie-designware.c
+> > @@ -510,17 +510,6 @@ static void dw_pcie_link_set_max_speed(struct dw_pcie *pci, u32 link_gen)
+> >   }
+> >   EXPORT_SYMBOL_GPL(dw_pcie_link_set_max_speed);
+> >
+> > -void dw_pcie_link_set_n_fts(struct dw_pcie *pci, u32 n_fts)
+> > -{
+> > -     u32 val;
+> > -
+> > -     val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
+> > -     val &= ~PORT_LOGIC_N_FTS_MASK;
+> > -     val |= n_fts & PORT_LOGIC_N_FTS_MASK;
+> > -     dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
+> > -}
+> > -EXPORT_SYMBOL_GPL(dw_pcie_link_set_n_fts);
+> > -
+> >   static u8 dw_pcie_iatu_unroll_enabled(struct dw_pcie *pci)
+> >   {
+> >       u32 val;
+> > @@ -551,6 +540,23 @@ void dw_pcie_setup(struct dw_pcie *pci)
+> >       if (pci->link_gen > 0)
+> >               dw_pcie_link_set_max_speed(pci, pci->link_gen);
+> >
+> > +     /* Configure Gen1 N_FTS */
+> > +     if (pci->n_fts[0]) {
+> > +             val = dw_pcie_readl_dbi(pci, PCIE_PORT_AFR);
+> > +             val &= ~(PORT_AFR_N_FTS_MASK | PORT_AFR_CC_N_FTS_MASK);
+> > +             val |= PORT_AFR_N_FTS(pci->n_fts[0]);
+> > +             val |= PORT_AFR_CC_N_FTS(pci->n_fts[0]);
+> > +             dw_pcie_writel_dbi(pci, PCIE_PORT_AFR, val);
+> > +     }
+> > +
+> > +     /* Configure Gen2+ N_FTS */
+> > +     if (pci->n_fts[1]) {
+> > +             val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
+> > +             val &= ~PORT_LOGIC_N_FTS_MASK;
+> > +             val |= pci->n_fts[pci->link_gen - 1];
+> Apologies for getting late to this change given that the change has
+> already been merged.
+> I'm wondering why is it that link_gen has to be used in deriving the
+> index instead of directly using '1' as the index?
+> Infact the for link speed greater than 2, accesses go beyond n_fts[]
+> array boundaries.
+> Since the if() check is done based on a non-zero value of pci->n_fts[1],
+> shouldn't the same be used for programming also?
 
-On 09/08/21 3:09 pm, Marc Zyngier wrote:
-> On Mon, 09 Aug 2021 05:50:10 +0100,
-> Kishon Vijay Abraham I <kishon@ti.com> wrote:
->>
->> Hi Marc,
->>
->> On 04/08/21 8:43 pm, Marc Zyngier wrote:
->>> On Wed, 04 Aug 2021 14:29:11 +0100,
->>> Kishon Vijay Abraham I <kishon@ti.com> wrote:
->>>>
->>>> Add PCI legacy interrupt support for J721E. J721E has a single HW
->>>> interrupt line for all the four legacy interrupts INTA/INTB/INTC/INTD.
->>>> The HW interrupt line connected to GIC is a pulse interrupt whereas
->>>> the legacy interrupts by definition is level interrupt. In order to
->>>> provide level interrupt functionality to edge interrupt line, PCIe
->>>> in J721E has provided IRQ_EOI register.
->>>>
->>>> However due to Errata ID #i2094 ([1]), EOI feature is not enabled in HW
->>>> and only a single pulse interrupt will be generated for every
->>>> ASSERT_INTx/DEASSERT_INTx.
->>>
->>> So my earlier remark stands. If you get a single edge, how do you
->>> handle a level that is still high after having handled the interrupt
->>> on hardware that has this bug?
->>
->> Right, this hardware (J721E) has a bug but was fixed in J7200 (Patch 3/3
->> handles that).
-> 
-> But how do you make it work with J721E? Is it even worth supporting if
-> (as I expect) it is unreliable?
+Yes, I think you are right.
 
-I've seen at-least the NVMe devices triggers the interrupts again and
-the data transfer completes. But I agree, this is unreliable.
-> 
->>>
->>>>
->>>> [1] -> J721E DRA829/TDA4VM Processors Silicon Revision 1.1/1.0 SPRZ455A –
->>>>        DECEMBER 2020 – REVISED AUGUST 2021
->>>>        (https://www.ti.com/lit/er/sprz455a/sprz455a.pdf)
->>>>
->>>> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
->>>> ---
->>>>  drivers/pci/controller/cadence/pci-j721e.c | 85 ++++++++++++++++++++++
->>>>  1 file changed, 85 insertions(+)
->>>>
->>>> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
->>>> index 2ec037c43bd5..c2e7a78dc31f 100644
->>>> --- a/drivers/pci/controller/cadence/pci-j721e.c
->>>> +++ b/drivers/pci/controller/cadence/pci-j721e.c
->>>> @@ -29,6 +29,13 @@
->>>>  #define LINK_DOWN		BIT(1)
->>>>  #define J7200_LINK_DOWN		BIT(10)
->>>>  
->>>> +#define EOI_REG			0x10
->>>> +
->>>> +#define ENABLE_REG_SYS_0	0x100
->>>> +#define STATUS_REG_SYS_0	0x500
->>>> +#define STATUS_CLR_REG_SYS_0	0x700
->>>> +#define INTx_EN(num)		(1 << (num))
->>>> +
->>>>  #define J721E_PCIE_USER_CMD_STATUS	0x4
->>>>  #define LINK_TRAINING_ENABLE		BIT(0)
->>>>  
->>>> @@ -59,6 +66,7 @@ struct j721e_pcie {
->>>>  	void __iomem		*user_cfg_base;
->>>>  	void __iomem		*intd_cfg_base;
->>>>  	u32			linkdown_irq_regfield;
->>>> +	struct irq_domain	*legacy_irq_domain;
->>>>  };
->>>>  
->>>>  enum j721e_pcie_mode {
->>>> @@ -121,6 +129,79 @@ static void j721e_pcie_config_link_irq(struct j721e_pcie *pcie)
->>>>  	j721e_pcie_intd_writel(pcie, ENABLE_REG_SYS_2, reg);
->>>>  }
->>>>  
->>>> +static void j721e_pcie_v1_legacy_irq_handler(struct irq_desc *desc)
->>>> +{
->>>> +	struct j721e_pcie *pcie = irq_desc_get_handler_data(desc);
->>>> +	struct irq_chip *chip = irq_desc_get_chip(desc);
->>>> +	int i, virq;
->>>> +	u32 reg;
->>>> +
->>>> +	chained_irq_enter(chip, desc);
->>>> +
->>>> +	for (i = 0; i < PCI_NUM_INTX; i++) {
->>>> +		reg = j721e_pcie_intd_readl(pcie, STATUS_REG_SYS_0);
->>>> +		if (!(reg & INTx_EN(i)))
->>>> +			continue;
->>>
->>> Why do you need to perform multiple reads? Surely reg contains all the
->>> bits you need, doesn't it?
->>
->> Right, will fix it up.
->>>
->>>> +
->>>> +		virq = irq_find_mapping(pcie->legacy_irq_domain, 3 - i);
->>>> +		generic_handle_irq(virq);
->>>
->>> Please combine both lines into a single generic_handle_domain_irq()
->>> call.
->>
->> Okay.
->>>
->>>> +		j721e_pcie_intd_writel(pcie, STATUS_CLR_REG_SYS_0, INTx_EN(i));
->>>
->>> What is the purpose of this write? It feels like this should be a
->>> irq_eoi callback.
->>
->> It's an IRQ ACK, since in this platform the level to edge is not
->> implemented properly in HW.
-> 
-> An Ack for an edge interrupt would need to happen before you handle
-> the interrupt, or you'd wrongly acknowledge edges that fire between
-> the handling of the interrupt and the Ack, and that would never be
-> handled.
-> 
-> If it really is an Ack, it needs to be moved *before* the handling,
-> preferably in an irq_ack callback. Otherwise, it is an EOI, and it
-> belongs to irq_eoi.
-> 
->>>
->>>> +	}
->>>> +
->>>> +	chained_irq_exit(chip, desc);
->>>> +}
->>>> +
->>>> +static int j721e_pcie_intx_map(struct irq_domain *domain, unsigned int irq, irq_hw_number_t hwirq)
->>>> +{
->>>> +	irq_set_chip_and_handler(irq, &dummy_irq_chip, handle_simple_irq);
->>>
->>> An INTx interrupt is a level interrupt. Please use the corresponding flow.
->>
->> Okay.
->>>
->>>> +	irq_set_chip_data(irq, domain->host_data);
->>>> +
->>>> +	return 0;
->>>> +}
->>>> +
->>>> +static const struct irq_domain_ops j721e_pcie_intx_domain_ops = {
->>>> +	.map = j721e_pcie_intx_map,
->>>> +};
->>>> +
->>>> +static int j721e_pcie_config_legacy_irq(struct j721e_pcie *pcie)
->>>> +{
->>>> +	struct irq_domain *legacy_irq_domain;
->>>> +	struct device *dev = pcie->dev;
->>>> +	struct device_node *node = dev->of_node;
->>>> +	struct device_node *intc_node;
->>>> +	int irq, i;
->>>> +	u32 reg;
->>>> +
->>>> +	intc_node = of_get_child_by_name(node, "interrupt-controller");
->>>> +	if (!intc_node) {
->>>> +		dev_dbg(dev, "interrupt-controller node is absent. Legacy INTR not supported\n");
->>>> +		return 0;
->>>> +	}
->>>> +
->>>> +	irq = irq_of_parse_and_map(intc_node, 0);
->>>> +	if (!irq) {
->>>> +		dev_err(dev, "Failed to parse and map legacy irq\n");
->>>> +		return -EINVAL;
->>>> +	}
->>>> +	irq_set_chained_handler_and_data(irq, j721e_pcie_v1_legacy_irq_handler, pcie);
->>>> +
->>>> +	legacy_irq_domain = irq_domain_add_linear(intc_node, PCI_NUM_INTX,
->>>> +						  &j721e_pcie_intx_domain_ops, pcie);
->>>> +	if (!legacy_irq_domain) {
->>>> +		dev_err(dev, "Failed to add irq domain for legacy irqs\n");
->>>> +		return -EINVAL;
->>>> +	}
->>>> +	pcie->legacy_irq_domain = legacy_irq_domain;
->>>> +
->>>> +	for (i = 0; i < PCI_NUM_INTX; i++) {
->>>> +		reg = j721e_pcie_intd_readl(pcie, ENABLE_REG_SYS_0);
->>>> +		reg |= INTx_EN(i);
->>>> +		j721e_pcie_intd_writel(pcie, ENABLE_REG_SYS_0, reg);
->>>> +	}
->>>
->>> This should be moved to the irq_unmask() callback.
->>
->> Should we also have a corresponding irq_mask()? Then would require us
->> implement reference counting since legacy interrupts are shared.
-> 
-> The core code should already deal with this, I expect. It isn't like
-> shared interrupts are something new. And yes, you should have both
-> mask and unmask.
-
-Thanks for clarifying.
-
-Best Regards,
-Kishon
+Rob
