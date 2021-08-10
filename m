@@ -2,82 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DC273E5A72
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 14:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76E5F3E5AB5
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 15:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240939AbhHJMwm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Tue, 10 Aug 2021 08:52:42 -0400
-Received: from muru.com ([72.249.23.125]:40850 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240885AbhHJMwk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Aug 2021 08:52:40 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id DD17080CF;
-        Tue, 10 Aug 2021 12:52:37 +0000 (UTC)
-Date:   Tue, 10 Aug 2021 15:52:15 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Pavel Machek <pavel@denx.de>
-Cc:     sashal@kernel.org, linux-omap@vger.kernel.org,
-        Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S239178AbhHJNIt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Aug 2021 09:08:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44722 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238793AbhHJNIs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Aug 2021 09:08:48 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B935AC0613D3;
+        Tue, 10 Aug 2021 06:08:26 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id e19so35299192ejs.9;
+        Tue, 10 Aug 2021 06:08:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=xs/+O7rAz0hyKzsctUcio2WQZUKn46iac13X1YxyLOs=;
+        b=HCCl7rgFmcy3zKwIxkaZ/SBUd8zqPrb094075z1tmOI4VPtPFJxydk1aoQ4B2mcRJ2
+         cQbJUQDbzcm1dkhCvmLco8Me5ubngY8nbgtYF0sJ4eL85zbQyFqLGyp/ySVX1oMF/iSG
+         vbjIbxMCaeikvl+bgs/I6KvQSlwON8h6QIJ/y4JkTJzU3UePnUxBhQOh1L7I7o6lC6Va
+         ajSBOfrGIA0UG06ic10DngwwBxhWDA2POkbpQH93j60p7JEWn4jt32GvxfG2iNSy4hfj
+         yyCxV6P1vKnmRiuGGEdWGMZQPJ5OaIGrTF36KT7jCgkXxKcljAlP0sCWBR/x3nM56IYM
+         tq6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=xs/+O7rAz0hyKzsctUcio2WQZUKn46iac13X1YxyLOs=;
+        b=H3uO4uX3kTzkyDqsI6ddJbwdtQ5lQL+5yR9AaGTABOvQqiWqC6881CxtuyfW90vwKg
+         Pd0xAdu9HKfusKypLX2RTIba4WeYUe3t8Z62/85XeXxQzvHm6Jz6TIpJacgJD1ajaIAt
+         F/pHvixOkWZS0d1D+Pcn0dgDKh81sB1l7hkGe1ayWUjhgQbX5CaTGSmurI4epFQ8iSXb
+         JjD/cvQgJuA5MG991EpQBD2WYeA/9egyxS3e4R4Ze/SCuTWlYBg4RI07ZWdteNON15Il
+         rDMQwPiBRqIIK85oTQ2uY//atSLvBBxT677/Sg9TGtMdapQSnuO+hHj0h/a3q+EAFkwI
+         nltA==
+X-Gm-Message-State: AOAM531SegdyiacFQIUb8leS8bsyYS9U3zWeZTbi8FvEUBrZSiM/Rwxk
+        cb3VbqIMO/h8EQl1SNToMLE=
+X-Google-Smtp-Source: ABdhPJwUr/73rEkMhaIveh98iMIskFOJfJbfcePSx7fWzOrGY6Gd0FewqY2WalFFgiQ4kd1+ecE4PA==
+X-Received: by 2002:a17:906:dfe5:: with SMTP id lc5mr27153744ejc.20.1628600905375;
+        Tue, 10 Aug 2021 06:08:25 -0700 (PDT)
+Received: from skbuf ([188.25.144.60])
+        by smtp.gmail.com with ESMTPSA id b25sm9645288edv.9.2021.08.10.06.08.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Aug 2021 06:08:24 -0700 (PDT)
+Date:   Tue, 10 Aug 2021 16:08:21 +0300
+From:   Vladimir Oltean <olteanv@gmail.com>
+To:     Karsten Graul <kgraul@linux.ibm.com>
+Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
+        Lars Povlsen <lars.povlsen@microchip.com>,
+        Steen Hegelund <Steen.Hegelund@microchip.com>,
+        UNGLinuxDriver@microchip.com,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>
-Subject: Re: [PATCH] bus: ti-sysc: Fix gpt12 system timer issue with reserved
- status
-Message-ID: <YRJ2fyS6z1i/2W2e@atomide.com>
-References: <20210611060224.36769-1-tony@atomide.com>
- <20210810124006.GA25121@amd>
+        Julian Wiedmann <jwi@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Jianbo Liu <jianbol@nvidia.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Bjarni Jonasson <bjarni.jonasson@microchip.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tobias Waldekranz <tobias@waldekranz.com>,
+        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        Ido Schimmel <idosch@idosch.org>
+Subject: Re: [PATCH v2 net] net: switchdev: zero-initialize struct
+ switchdev_notifier_fdb_info emitted by drivers towards the bridge
+Message-ID: <20210810130821.7gdngordzzxkpws3@skbuf>
+References: <20210810115024.1629983-1-vladimir.oltean@nxp.com>
+ <dfa98bf7-cab4-4076-ef5f-880a8baa89ee@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20210810124006.GA25121@amd>
+In-Reply-To: <dfa98bf7-cab4-4076-ef5f-880a8baa89ee@linux.ibm.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Pavel Machek <pavel@denx.de> [210810 12:40]:
-> Hi!
-> 
-> I noticed the issue while reviewing stable kernels, as this is being
-> backported.
-> 
-> > Jarkko Nikula <jarkko.nikula@bitmer.com> reported that Beagleboard
-> > revision c2 stopped booting. Jarkko bisected the issue down to
-> > commit 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend
-> > and resume for am3 and am4").
-> > 
-> > Let's fix the issue by tagging system timers as reserved rather than
-> > ignoring them. And let's not probe any interconnect target module child
-> > devices for reserved modules.
-> 
-> +++ b/drivers/bus/ti-sysc.c
-> > @@ -3093,8 +3095,8 @@ static int sysc_probe(struct platform_device *pdev)
-> >  		return error;
-> >  
-> >  	error = sysc_check_active_timer(ddata);
-> > -	if (error)
-> > -		return error;
-> > +	if (error == -EBUSY)
-> > +		ddata->reserved = true;
-> >  
-> >  	error = sysc_get_clocks(ddata);
-> >  	if (error)
-> 
-> What is going on here? First, we silently ignore errors other than
-> EBUSY. Second, sysc_check_active_timer() can't return -EBUSY: it
-> returns either 0 or -ENXIO. (I checked 5.10-stable, mainline and
-> -next-20210806).
+On Tue, Aug 10, 2021 at 02:41:48PM +0200, Karsten Graul wrote:
+> On 10/08/2021 13:50, Vladimir Oltean wrote:
+> > The blamed commit a new field to struct switchdev_notifier_fdb_info, but
+>                   ^^^ added?
 
-Thanks for spotting it, looks like there's now a conflict with commit
-65fb73676112 ("bus: ti-sysc: suppress err msg for timers used as
-clockevent/source"). It seems we should also check for -ENXIO here
-too. And yeah it makes sens to return on other errors for sure.
-
-Regards,
-
-Tony
+yes. but I won't send a v3 just for that. thanks for noticing.
