@@ -2,115 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFCF03E5A06
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 14:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18D4C3E5A0A
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 14:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240626AbhHJMgQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Aug 2021 08:36:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36868 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240603AbhHJMgK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Aug 2021 08:36:10 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7944EC06179B
-        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 05:35:47 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id x12so2575656wrr.11
-        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 05:35:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=cXcVfaJa9gxQfqomI6BeLC46V441BROQ5crN/C0u7tQ=;
-        b=aFsv3vr+XQ6POKdiOCpyItN/s1A3yD15/zjn5UostldN1x0iL5S1t/7EXoUl4mMz8Q
-         8uowNLbyuG2VkEPcjjwnxbK6tW9BeU8zchx6GlPqOffGl7lbLoMYd2ECnz8EIIuFGAW4
-         Rjt6Db4jWbDc7edO/2yn9cC82+Y6maFBe7ARMIb6MT9SB32P8lSW/xxLmi6ooVHg1n1R
-         fWj5yHcEtOUtG6Zie4y9ktNsQrvGTNFnDBCFkPxHUKFMLVmRIrHiV6Yn7GSXi+ytpjxw
-         UFqTo3igkPxFx/S9aTva5s6e+RD887u4ahF5QGcNM7fvB5Dfu3sNWWxy584kPwVotjxq
-         cW3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=cXcVfaJa9gxQfqomI6BeLC46V441BROQ5crN/C0u7tQ=;
-        b=r83vt6dEQ50HMFlh/08h56zITBU8wFL5EYF2D8BjVdMcAJTiE0m43XR9sSBjQpITic
-         oJmNfhcqAc19rHzFXDbVA8Yy4O07S6c9NJIo/D0KqWJlzavPq9BIzXmrVtEqTOIFutP8
-         P+u1yuEMODYpISGszuiJsbN3n1sMXaxTUlS8qhFA0gbGv8u6gmf0yrIaIbKtZPGT0VIm
-         Zw2ViG9CO64n6TyOnx3PFdBzexG+k0hJBkztk86nrxpUz7iPBs3wnhD8uexgbHFSeIxo
-         hFzG2rYgiseYdsETiiGSTCfamXBCZEKK/IAx08yQJyhWnazY3njSj5DlN8suQSCIscXW
-         G5Pw==
-X-Gm-Message-State: AOAM533qTryp9dyF5N8kAXMN82O4/D8jmUJNppa5nVUZIhaJTRl6v+5j
-        Hei7uliUzCIDot8D9+JO6n1IRg==
-X-Google-Smtp-Source: ABdhPJyrxhF8E0q6i871koPqo7IgwEwcQPwaC+jYoSQxm92eBV0IEuOY/clY+5owwOhTp0yntrvIQw==
-X-Received: by 2002:adf:e5cf:: with SMTP id a15mr30538552wrn.362.1628598945798;
-        Tue, 10 Aug 2021 05:35:45 -0700 (PDT)
-Received: from google.com ([2a00:79e0:d:210:e920:cedf:a082:9d02])
-        by smtp.gmail.com with ESMTPSA id 104sm23687271wrc.4.2021.08.10.05.35.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Aug 2021 05:35:45 -0700 (PDT)
-Date:   Tue, 10 Aug 2021 13:35:39 +0100
-From:   Quentin Perret <qperret@google.com>
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
-        Vincent Donnefort <vincent.donnefort@arm.com>,
-        lukasz.luba@arm.com, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>, linux-pm@vger.kernel.org,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 0/8] cpufreq: Auto-register with energy model
-Message-ID: <YRJym+Vn4bbwQzzs@google.com>
-References: <cover.1628579170.git.viresh.kumar@linaro.org>
+        id S238731AbhHJMhK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Aug 2021 08:37:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40336 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236886AbhHJMhK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Aug 2021 08:37:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F7E7604DC;
+        Tue, 10 Aug 2021 12:36:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628599008;
+        bh=65wwyZ1PzsTjVVRVB8uytBblEiEgZgMvnsoHRtYi+4s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=h+LM/Sc5HKau/FXlituogSJez40C0Za87secHQ8Y8xGr/etTL57hF7STihj5eAEW0
+         vWUwYtq5tUkpP/H1I5WeMU55oAeiPWkFGDVXM31alULgQbOZpKXBhkxd3T6Q2/wZbg
+         2F71pgzZ9VKXCO1isfwKcxdmLzQFrEpaWmGQtL3C/ZIj6CU2Yg54lzKMiw8MzaxAql
+         EGWA5SKO4EOac5sQZteftPIKBVaOeP03Abs8CqasWtkaTrSOVOSFq5SYa8BZJndS0P
+         NJcx8D4d2NfiIxOH7VU1V/kwIITuIXNnOoy2DpGy7c+JJqUJqmHzlmzv1o+bFX3Eke
+         BUV0HfJy2xujA==
+Date:   Tue, 10 Aug 2021 15:36:44 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc:     netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
+        Lars Povlsen <lars.povlsen@microchip.com>,
+        Steen Hegelund <Steen.Hegelund@microchip.com>,
+        UNGLinuxDriver@microchip.com,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Julian Wiedmann <jwi@linux.ibm.com>,
+        Karsten Graul <kgraul@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Jianbo Liu <jianbol@nvidia.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Bjarni Jonasson <bjarni.jonasson@microchip.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tobias Waldekranz <tobias@waldekranz.com>,
+        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        Ido Schimmel <idosch@idosch.org>
+Subject: Re: [PATCH v2 net] net: switchdev: zero-initialize struct
+ switchdev_notifier_fdb_info emitted by drivers towards the bridge
+Message-ID: <YRJy3F6lXuKNQIpl@unreal>
+References: <20210810115024.1629983-1-vladimir.oltean@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1628579170.git.viresh.kumar@linaro.org>
+In-Reply-To: <20210810115024.1629983-1-vladimir.oltean@nxp.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tuesday 10 Aug 2021 at 13:06:47 (+0530), Viresh Kumar wrote:
-> Provide a cpufreq driver flag so drivers can ask the cpufreq core to register
-> with the EM core on their behalf.
-
-Hmm, that's not quite what this does. This asks the cpufreq core to
-use *PM_OPP* to register an EM, which I think is kinda wrong to do from
-there IMO. The decision to use PM_OPP or another mechanism to register
-an EM belongs to platform specific code (drivers), so it is odd for the
-PM_OPP registration to have its own cpufreq flag but not the other ways.
-
-As mentioned in another thread, the very reason to have PM_EM is to not
-depend on PM_OPP, so I'm worried about the direction of travel with this
-series TBH.
-
-> This allows us to get rid of duplicated code
-> in the drivers and fix the unregistration part as well, which none of the
-> drivers have done until now.
-
-This series adds more code than it removes, and the unregistration is
-not a fix as we don't ever remove the EM tables by design, so not sure
-either of these points are valid arguments.
-
-> This would also make the registration with EM core to happen only after policy
-> is fully initialized, and the EM core can do other stuff from in there, like
-> marking frequencies as inefficient (WIP). Though this patchset is useful without
-> that work being done and should be merged nevertheless.
+On Tue, Aug 10, 2021 at 02:50:24PM +0300, Vladimir Oltean wrote:
+> The blamed commit a new field to struct switchdev_notifier_fdb_info, but
+> did not make sure that all call paths set it to something valid. For
+> example, a switchdev driver may emit a SWITCHDEV_FDB_ADD_TO_BRIDGE
+> notifier, and since the 'is_local' flag is not set, it contains junk
+> from the stack, so the bridge might interpret those notifications as
+> being for local FDB entries when that was not intended.
 > 
-> This doesn't update scmi cpufreq driver for now as it is a special case and need
-> to be handled differently. Though we can make it work with this if required.
-
-Note that we'll have more 'special cases' if other architectures start
-using PM_EM, which is what we have been trying to allow since the
-beginning, so that's worth keeping in mind.
+> To avoid that now and in the future, zero-initialize all
+> switchdev_notifier_fdb_info structures created by drivers such that all
+> newly added fields to not need to touch drivers again.
+> 
+> Fixes: 2c4eca3ef716 ("net: bridge: switchdev: include local flag in FDB notifications")
+> Reported-by: Ido Schimmel <idosch@idosch.org>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> Tested-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+> v1->v2: use an empty struct initializer as opposed to memset, as
+>         suggested by Leon Romanovsky
+> 
+>  drivers/net/ethernet/marvell/prestera/prestera_switchdev.c | 4 ++--
+>  drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c       | 2 +-
+>  drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c      | 4 ++--
+>  drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c   | 2 +-
+>  drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c    | 2 +-
+>  drivers/net/ethernet/rocker/rocker_main.c                  | 2 +-
+>  drivers/net/ethernet/rocker/rocker_ofdpa.c                 | 2 +-
+>  drivers/net/ethernet/ti/am65-cpsw-switchdev.c              | 2 +-
+>  drivers/net/ethernet/ti/cpsw_switchdev.c                   | 2 +-
+>  drivers/s390/net/qeth_l2_main.c                            | 4 ++--
+>  net/dsa/slave.c                                            | 2 +-
+>  11 files changed, 14 insertions(+), 14 deletions(-)
+> 
 
 Thanks,
-Quentin
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
