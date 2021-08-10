@@ -2,98 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76E5F3E5AB5
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 15:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3E33E5B2F
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 15:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239178AbhHJNIt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Aug 2021 09:08:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44722 "EHLO
+        id S239564AbhHJNWy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Aug 2021 09:22:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238793AbhHJNIs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Aug 2021 09:08:48 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B935AC0613D3;
-        Tue, 10 Aug 2021 06:08:26 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id e19so35299192ejs.9;
-        Tue, 10 Aug 2021 06:08:26 -0700 (PDT)
+        with ESMTP id S241190AbhHJNWx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Aug 2021 09:22:53 -0400
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC930C061799
+        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 06:22:26 -0700 (PDT)
+Received: by mail-vs1-xe2f.google.com with SMTP id y1so12330314vsc.1
+        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 06:22:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=xs/+O7rAz0hyKzsctUcio2WQZUKn46iac13X1YxyLOs=;
-        b=HCCl7rgFmcy3zKwIxkaZ/SBUd8zqPrb094075z1tmOI4VPtPFJxydk1aoQ4B2mcRJ2
-         cQbJUQDbzcm1dkhCvmLco8Me5ubngY8nbgtYF0sJ4eL85zbQyFqLGyp/ySVX1oMF/iSG
-         vbjIbxMCaeikvl+bgs/I6KvQSlwON8h6QIJ/y4JkTJzU3UePnUxBhQOh1L7I7o6lC6Va
-         ajSBOfrGIA0UG06ic10DngwwBxhWDA2POkbpQH93j60p7JEWn4jt32GvxfG2iNSy4hfj
-         yyCxV6P1vKnmRiuGGEdWGMZQPJ5OaIGrTF36KT7jCgkXxKcljAlP0sCWBR/x3nM56IYM
-         tq6Q==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
+        b=RAmY1KiqpEdlF22ZQIZ1/v4crVLf6oRAu7uzUKSsr6UOFzbQMvphJjUzC1oaa80TPx
+         sryCOMFDERRUhHX9AC2pnH1/89nfasye1uyNgLMiyhc+s/QS4sTOWIp26bDGwa+cTUq7
+         jAeX3bfApTIxsikwKnnuqWKZki7Ps6oYoEvSiC8THqFJpALv7j+e/yAKYexQP9Vuc1B3
+         G7N3OvlCAtQTEjVXh3cwxICIF/7r/xnu+Z5hj2yvLOUj8sg059KP9LewkzU/sphk96Js
+         cMn4otA7z1h50ryfHoieTV/9QFDByNeganBk2SLg/+jk+OMOVc4ThEBIuk43F8qeR5Gz
+         G1Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=xs/+O7rAz0hyKzsctUcio2WQZUKn46iac13X1YxyLOs=;
-        b=H3uO4uX3kTzkyDqsI6ddJbwdtQ5lQL+5yR9AaGTABOvQqiWqC6881CxtuyfW90vwKg
-         Pd0xAdu9HKfusKypLX2RTIba4WeYUe3t8Z62/85XeXxQzvHm6Jz6TIpJacgJD1ajaIAt
-         F/pHvixOkWZS0d1D+Pcn0dgDKh81sB1l7hkGe1ayWUjhgQbX5CaTGSmurI4epFQ8iSXb
-         JjD/cvQgJuA5MG991EpQBD2WYeA/9egyxS3e4R4Ze/SCuTWlYBg4RI07ZWdteNON15Il
-         rDMQwPiBRqIIK85oTQ2uY//atSLvBBxT677/Sg9TGtMdapQSnuO+hHj0h/a3q+EAFkwI
-         nltA==
-X-Gm-Message-State: AOAM531SegdyiacFQIUb8leS8bsyYS9U3zWeZTbi8FvEUBrZSiM/Rwxk
-        cb3VbqIMO/h8EQl1SNToMLE=
-X-Google-Smtp-Source: ABdhPJwUr/73rEkMhaIveh98iMIskFOJfJbfcePSx7fWzOrGY6Gd0FewqY2WalFFgiQ4kd1+ecE4PA==
-X-Received: by 2002:a17:906:dfe5:: with SMTP id lc5mr27153744ejc.20.1628600905375;
-        Tue, 10 Aug 2021 06:08:25 -0700 (PDT)
-Received: from skbuf ([188.25.144.60])
-        by smtp.gmail.com with ESMTPSA id b25sm9645288edv.9.2021.08.10.06.08.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Aug 2021 06:08:24 -0700 (PDT)
-Date:   Tue, 10 Aug 2021 16:08:21 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Karsten Graul <kgraul@linux.ibm.com>
-Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
-        Lars Povlsen <lars.povlsen@microchip.com>,
-        Steen Hegelund <Steen.Hegelund@microchip.com>,
-        UNGLinuxDriver@microchip.com,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Julian Wiedmann <jwi@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Jianbo Liu <jianbol@nvidia.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Bjarni Jonasson <bjarni.jonasson@microchip.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tobias Waldekranz <tobias@waldekranz.com>,
-        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-        Ido Schimmel <idosch@idosch.org>
-Subject: Re: [PATCH v2 net] net: switchdev: zero-initialize struct
- switchdev_notifier_fdb_info emitted by drivers towards the bridge
-Message-ID: <20210810130821.7gdngordzzxkpws3@skbuf>
-References: <20210810115024.1629983-1-vladimir.oltean@nxp.com>
- <dfa98bf7-cab4-4076-ef5f-880a8baa89ee@linux.ibm.com>
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=2tvLhkad0w+Mh63WhnFJkmRFgYsLXsJmUqGVjzUAFIo=;
+        b=IB0/Bk66/+JI2AjLRBso4SbRgzf6U775+6Eakt0NkMGXPBh4w3noHfJkvOyrT8HUUS
+         lGlRp2ONlWtMF1nkldBm0zG8PcGG63O84LVlDhZc+hZuXfdBfdal+WGnttTMYDExUzuJ
+         iMVWTQlLaZgFQwwaW5oe6il7qwPfc7zcQj06/3bGQFVZNEByYxkV24oyD/qQR3NUrjTM
+         Zui6FREi/A6+RUSGAqKPaaZZfz9AB+KcfKbJgJKpn1U40zjNaAlEHgM4ll5Lhc/zIkzA
+         hXdRT1wfeuNOsN+HndMwODTjrtXlnOM3aYLjoPYdtDACj1Xr3avInp5En3khYA9J5b/F
+         YczA==
+X-Gm-Message-State: AOAM533ZdrZnXdnI/gUGJH5YqPEM2otQiEqT5czcalNaj49qerGFYoCM
+        P2p9F8a75JiSVAMLHrxPEhHuzqlz1gPK9CUQjHs=
+X-Google-Smtp-Source: ABdhPJzdZaZAGbFkBSHnnPNk1c5Io51Npzwlau06OocOTArVOV7JBoh0RwdHzwkpw/TfpT4LEXb41vP18DQ3Q8Zlbtc=
+X-Received: by 2002:a67:22c5:: with SMTP id i188mr21670615vsi.33.1628601745941;
+ Tue, 10 Aug 2021 06:22:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dfa98bf7-cab4-4076-ef5f-880a8baa89ee@linux.ibm.com>
+Sender: immeublesourou@gmail.com
+Received: by 2002:ab0:3903:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 06:22:25
+ -0700 (PDT)
+From:   John Kumor <owo219901@gmail.com>
+Date:   Wed, 11 Aug 2021 01:22:25 +1200
+X-Google-Sender-Auth: 9Z0qRDqDsaato8HcU9OvC9NuwZM
+Message-ID: <CAHdg_cS1=ttFjYAmPvkT6Vo7CGkKfxfaQujZwiXjatfiZ=kKNg@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Aug 10, 2021 at 02:41:48PM +0200, Karsten Graul wrote:
-> On 10/08/2021 13:50, Vladimir Oltean wrote:
-> > The blamed commit a new field to struct switchdev_notifier_fdb_info, but
->                   ^^^ added?
-
-yes. but I won't send a v3 just for that. thanks for noticing.
+My dear,
+Greetings! I trust that all is well with you and your family. Did you
+receive my previous email?
+Regards
+John Kumor.
