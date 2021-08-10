@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 67BD83E5CB7
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 16:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A39BB3E5D00
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 16:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242225AbhHJOPf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Aug 2021 10:15:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51032 "EHLO mail.kernel.org"
+        id S242637AbhHJOQ1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Aug 2021 10:16:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53478 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242212AbhHJOPf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Aug 2021 10:15:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F234E61051;
-        Tue, 10 Aug 2021 14:15:11 +0000 (UTC)
+        id S242497AbhHJOQH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Aug 2021 10:16:07 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A2DC761075;
+        Tue, 10 Aug 2021 14:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628604912;
+        s=k20201202; t=1628604945;
         bh=xC+BBKoZiCriGDF9X9QmzpHZ2z6ZAXuPMpw4yI+zFBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AtHKNyLa5S2F7EhgwT9qLM0JZaJnUhISW9b7zA6cVB6QIHI1z522x2efppOYHED+r
-         5UkCeFsxx5N1cBrZpIhSEgUD7r2DnkqnWzbjGqReZWaoSCYrqAz5JhDK0DFfZ9uSI6
-         rtzmsV++j298j+V54AW/ai/GCyamwoZa86aujrCagvEPgPetYSFMcMIPB3BJSX2ztS
-         1F7VokVjDVbbOJXIVxw8ktZyJ0LVdvpxQQKes4nNLRxoceafXhmCxiMfjf5AHAjy3D
-         pbpVZNHUbX7yRlz2lV+aX2ItpV65VWJFSvOIATDqefXELa4QMTvZVhf/Wzkr4ObEKT
-         TO9evYHmXrWMg==
+        b=AN/XlpyZVn0aPBQ4o+HZbMA+KfE7nXGSf6uehK9fjtlg6bmf5+IaNcwOvoimdQ318
+         6W1AeqA6/tLXesaSYUDwURROJOmN5lFcNr/08YDons4HDjveHCbXfopJMHtVD4Zra0
+         2Vc7nyPYVbvnhY6UWph0cU/FYpjdoIBcosZCJG2MncziqeLldt2yomWuI63GW9u149
+         amGzf8blwQPBzidZAbne1Xe9BMPRZs/HZ3g3a8XFISQW5v9aMKulrkJuFGrxGPwrmX
+         WDonEzpNiET3BCtrD0pIVDYPFQaoXYhi2tzuxsoneRWfC1waN5ZY4KxDRelLbpGBnj
+         h0QDRW0eSQaNQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Dave Gerlach <d-gerlach@ti.com>,
@@ -30,12 +30,12 @@ Cc:     Dave Gerlach <d-gerlach@ti.com>,
         Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 05/24] ARM: dts: am43x-epos-evm: Reduce i2c0 bus speed for tps65218
-Date:   Tue, 10 Aug 2021 10:14:46 -0400
-Message-Id: <20210810141505.3117318-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 05/20] ARM: dts: am43x-epos-evm: Reduce i2c0 bus speed for tps65218
+Date:   Tue, 10 Aug 2021 10:15:23 -0400
+Message-Id: <20210810141538.3117707-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210810141505.3117318-1-sashal@kernel.org>
-References: <20210810141505.3117318-1-sashal@kernel.org>
+In-Reply-To: <20210810141538.3117707-1-sashal@kernel.org>
+References: <20210810141538.3117707-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
