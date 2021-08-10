@@ -2,156 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26B153E5C0C
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 15:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF72E3E5C43
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 15:53:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238099AbhHJNpr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Aug 2021 09:45:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51782 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240192AbhHJNpq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Aug 2021 09:45:46 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0AEC561075;
-        Tue, 10 Aug 2021 13:45:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628603124;
-        bh=Glql89CKaEO2bKO5D0IqlIuTd5q4oxJ9Hn2ZSRZr+6k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=W3pWCgta7DCxFxMKzABYUZSAlENjwlFpfuHFoXXv2Eit9eMl2Z+UCcO5Dc43YQQMt
-         WTVNyQ8MROBG3w8rJQO0Vcp2otFrz65A5789N/iQ/b/3s13ylFpmZfF1fcAyaedt3N
-         ovC4qeJXiHZ331CjANyr3NzVzEvoZfFX9lJQHWfWjQT7fe/rRrKM6xabrSL4pAwcGO
-         WAsrZtoEL2msoqVQ9ZFYcuNKnb/5PkDkqbuYEJEXJF/iG5535KgIcyS7mmOTgv7IMD
-         CA0tzZ8OzXMMcuEEsgbziGo3jbol8i+tLifnzLmNjQRUT3CMMibJPFoNQ8K7rON1B/
-         /tR/laAwFJygA==
-Date:   Tue, 10 Aug 2021 16:45:20 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Prabhakar Kushwaha <prabhakar.pkin@gmail.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
-        Bin Luo <luobin9@huawei.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Coiby Xu <coiby.xu@gmail.com>,
-        Derek Chickles <dchickles@marvell.com>, drivers@pensando.io,
-        Felix Manlunas <fmanlunas@marvell.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        hariprasad <hkelam@marvell.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
-        Manish Chopra <manishc@marvell.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        netdev@vger.kernel.org, oss-drivers@corigine.com,
-        Richard Cochran <richardcochran@gmail.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Satanand Burla <sburla@marvell.com>,
-        Shannon Nelson <snelson@pensando.io>,
-        Simon Horman <simon.horman@corigine.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Prabhakar Kushwaha <pkushwaha@marvell.com>,
-        Shai Malin <malin1024@gmail.com>,
-        Shai Malin <smalin@marvell.com>, rtoshniwal@marvell.com,
-        Omkar Kulkarni <okulkarni@marvell.com>
-Subject: Re: [PATCH net-next] devlink: Set device as early as possible
-Message-ID: <YRKC8NKClMyaQOmt@unreal>
-References: <6859503f7e3e6cd706bf01ef06f1cae8c0b0970b.1628449004.git.leonro@nvidia.com>
- <CAJ2QiJLJk73RDS_XwQ0FY0ODq9qXbmiEZ2Y8Fkz9vVheK4he8g@mail.gmail.com>
+        id S242020AbhHJNxv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Aug 2021 09:53:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55866 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242012AbhHJNxs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Aug 2021 09:53:48 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D4F3C061799
+        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 06:53:26 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id r6so4160572wrt.4
+        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 06:53:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=KGQUuCBolB3utTNPACMz6iKuWRDIGgWJm/VpB8UjVfc=;
+        b=Lt1tyTHbI94Kgt8wK9nxBSF3jPgGselZKupAsXiBd6uILEZdcKhg5LYPO6QfrIiNvi
+         DWrV2wRXXA01ZHs26Vovn0Uojl4XIZZFox4wswtHZgW6Xuxv9jpzdV5pcfkzcnB8xjO1
+         TBhoaYhdFbcRFLb7zW+HVGuD9FiUQp4XHqAABpYgaKY4UU49KRmdSyW6Gl4SH0P13q5B
+         Y8wnQ6tNXvOlirXy8jU6Jnp8ImOSwA01aM1IFV5xhXKnjxp2c/EBgSwL8wXkddc1RRFa
+         eVi+aWY8EqcCcAi0Ux4F4hsXAxDQinpBrytVKz9rF1QrcnzQ3f3cxJ1deYdyTrUpm9FP
+         u/Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=KGQUuCBolB3utTNPACMz6iKuWRDIGgWJm/VpB8UjVfc=;
+        b=knheTnlbDnwRr22wtTFS+o+b+kjEeX3Ow0a7hc103AWozwP3X0S4C/EFi4xVSKZn1P
+         zbNpi9yJ5i8IEz0Zo7rnjjtIa+pEYz63cx55sCt1gbkOxPvUPPkEQ1vJSArzaUC7Luzt
+         HBspuB6aoDhk9Jk66PsmND/vjcwTa5a97kRZmBjeksspLJtgMArEaoSFN5SLDBM4E60N
+         El2iPSKR6jIKb+VeLIDTvapFMSdZD3zJRlFnK2Y2YUxlVbuqz5GgWmfdnKe9oZjbr4bi
+         3OVeROKdzRiF54V+MhHoUQaj8MRQzjflhK8GdzJhYpmxGom0nwDPBt/Q1+OFABOV8LCs
+         QlLw==
+X-Gm-Message-State: AOAM533Sf/kUcqMOwbpV2zr0BDDjqnMrHPtIka5BbSpf0jhSlw9bgOR9
+        GPaVzP2kRURceUYJnhagRXl9wg==
+X-Google-Smtp-Source: ABdhPJyP5/KLF9l16H0O6iAMcu4TdoATOhVCPzOX8vMqts7ssz/9ljckqMeKlqZVUnJFhD3xwJoprg==
+X-Received: by 2002:a5d:660e:: with SMTP id n14mr13818163wru.346.1628603604443;
+        Tue, 10 Aug 2021 06:53:24 -0700 (PDT)
+Received: from google.com ([2a00:79e0:d:210:e920:cedf:a082:9d02])
+        by smtp.gmail.com with ESMTPSA id 18sm3305981wmv.27.2021.08.10.06.53.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Aug 2021 06:53:24 -0700 (PDT)
+Date:   Tue, 10 Aug 2021 14:53:18 +0100
+From:   Quentin Perret <qperret@google.com>
+To:     Lukasz Luba <lukasz.luba@arm.com>
+Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Rafael Wysocki <rjw@rjwysocki.net>,
+        Vincent Donnefort <vincent.donnefort@arm.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Kevin Hilman <khilman@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>, linux-pm@vger.kernel.org,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 0/8] cpufreq: Auto-register with energy model
+Message-ID: <YRKEztjdIFU1J5/9@google.com>
+References: <cover.1628579170.git.viresh.kumar@linaro.org>
+ <YRJym+Vn4bbwQzzs@google.com>
+ <af06b333-3d8a-807c-9ccb-d491d6a54930@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJ2QiJLJk73RDS_XwQ0FY0ODq9qXbmiEZ2Y8Fkz9vVheK4he8g@mail.gmail.com>
+In-Reply-To: <af06b333-3d8a-807c-9ccb-d491d6a54930@arm.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Aug 10, 2021 at 06:08:51PM +0530, Prabhakar Kushwaha wrote:
-> Hi Leon,
+On Tuesday 10 Aug 2021 at 14:25:15 (+0100), Lukasz Luba wrote:
+> The way I see this is that the flag in cpufreq avoids
+> mistakes potentially made by driver developer. It will automaticaly
+> register the *simple* EM model via dev_pm_opp_of_register_em() on behalf
+> of drivers (which is already done manually by drivers). The developer
+> would just set the flag similarly to CPUFREQ_IS_COOLING_DEV and be sure
+> it will register at the right time. Well tested flag approach should be
+> safer, easier to understand, maintain.
 
-<...>
-
-> >  struct devlink *devlink_alloc_ns(const struct devlink_ops *ops,
-> > -                                size_t priv_size, struct net *net)
-> > +                                size_t priv_size, struct net *net,
-> > +                                struct device *dev)
-> >  {
-> >         struct devlink *devlink;
-> >
-> > -       if (WARN_ON(!ops))
-> > -               return NULL;
-> > -
-> > +       WARN_ON(!ops || !dev);
-> >         if (!devlink_reload_actions_valid(ops))
-> >                 return NULL;
-> >
-> >         devlink = kzalloc(sizeof(*devlink) + priv_size, GFP_KERNEL);
-> >         if (!devlink)
-> >                 return NULL;
-> > +
-> > +       devlink->dev = dev;
-> >         devlink->ops = ops;
-> >         xa_init_flags(&devlink->snapshot_ids, XA_FLAGS_ALLOC);
-> >         write_pnet(&devlink->_net, net);
-> > @@ -8810,12 +8812,9 @@ EXPORT_SYMBOL_GPL(devlink_alloc_ns);
-> >   *     devlink_register - Register devlink instance
-> >   *
-> >   *     @devlink: devlink
-> > - *     @dev: parent device
-> >   */
-> 
-> This patch is converting devlink_alloc() to devlink_alloc_register().
-> 
-> There are 2 APIs: devlink_alloc() and devlink_register().
-> Both APIs can be used in a scenario,
->               Where devlink_alloc() can be done by code written around
-> one struct dev and used by another struct dev.
-> or
-> This scenario is not even a valid scenario?
-
-devlink_alloc() is used to allocated netdev structures for newly
-initialized device, it is not possible to share same devlink instance
-between different devices.
-
-> 
-> > -int devlink_register(struct devlink *devlink, struct device *dev)
-> > +int devlink_register(struct devlink *devlink)
-> >  {
-> > -       WARN_ON(devlink->dev);
-> > -       devlink->dev = dev;
-> >         mutex_lock(&devlink_mutex);
-> >         list_add_tail(&devlink->list, &devlink_list);
-> >         devlink_notify(devlink, DEVLINK_CMD_NEW);
-> 
-> Considering device registration has been moved to devlink_alloc().
-> Can the remaining code of devlink_register() be also moved in devlink_alloc()?
-
-The line "list_add_tail(&devlink->list, &devlink_list);" makes the
-devlink instance visible to the devlink netlink users. We need to be
-sure that it is happening when the device is already initialized, while
-devlink_alloc() is performed usually as first line in .probe() routine.
-
-This means that we can't combine alloc an register and
-devlink_alloc_register() can't be valid scenario.
-
-Thanks
-
-> 
-> --pk
+I would agree with all that if calling dev_pm_opp_of_register_em() was
+complicated, but that is not really the case. I don't think we ever call
+PM_OPP directly from cpufreq core ATM, which makes a lot of sense if you
+consider PM_OPP arch-specific. I could understand that we might accept a
+little 'violation' of the abstraction with this series if there were
+real benefits, but I just don't see them.
