@@ -2,96 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 21D8F3E5A23
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 14:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FDC23E5A29
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 14:42:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240667AbhHJMki (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Aug 2021 08:40:38 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:39778 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240682AbhHJMkc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 Aug 2021 08:40:32 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B8C5A1C0B77; Tue, 10 Aug 2021 14:40:07 +0200 (CEST)
-Date:   Tue, 10 Aug 2021 14:40:07 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Tony Lindgren <tony@atomide.com>, sashal@kernel.org
-Cc:     linux-omap@vger.kernel.org, Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S240702AbhHJMmj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Aug 2021 08:42:39 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:6104 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S240686AbhHJMmi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Aug 2021 08:42:38 -0400
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 17ACZnjb006759;
+        Tue, 10 Aug 2021 08:41:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=RHsR6aVGy+GaELvcNwuiB11e5P4OeCZdzOOLRCSalVI=;
+ b=UgSXAUjX8e9BxPI3R7A8uMNgvRpfJTmyKTpNNjav7mbpqx2AIVKSleA2bj0rNFBZvFSM
+ aKMuoQDRWM7UGi3LrKdC9P4scRndC+kNOI88NLYCD76sdDEOdcOaFsZWKqgWT34sillS
+ JVybsByWa4Id0LaT84AC2aauGA8RwwSQs8dmqmag8PE2Nc/ZZiAZx9mEa+3q4588wf4w
+ GY619hOs+QeuI7OyMVgxDfi/zZLgDAfTZwtCmxlRdjj1qSfCAgj0GZpq/ThLzRMpcPO+
+ GEJPB0s+JFoALdiWWHiN6gIHTQLyj/CAfx2P5QsJrHsrNJWntpS+eiBoRcs07bNXmMWt ng== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3ab8kk9qc2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 10 Aug 2021 08:41:55 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+        by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17ACbMF8004746;
+        Tue, 10 Aug 2021 12:41:52 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by ppma01fra.de.ibm.com with ESMTP id 3a9ht8ne50-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 10 Aug 2021 12:41:52 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 17ACfohE59310512
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 10 Aug 2021 12:41:50 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DBE1D4C050;
+        Tue, 10 Aug 2021 12:41:49 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 005204C044;
+        Tue, 10 Aug 2021 12:41:48 +0000 (GMT)
+Received: from [9.171.19.103] (unknown [9.171.19.103])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Tue, 10 Aug 2021 12:41:47 +0000 (GMT)
+Subject: Re: [PATCH v2 net] net: switchdev: zero-initialize struct
+ switchdev_notifier_fdb_info emitted by drivers towards the bridge
+To:     Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Vadym Kochan <vkochan@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
+        Lars Povlsen <lars.povlsen@microchip.com>,
+        Steen Hegelund <Steen.Hegelund@microchip.com>,
+        UNGLinuxDriver@microchip.com,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>
-Subject: Re: [PATCH] bus: ti-sysc: Fix gpt12 system timer issue with reserved
- status
-Message-ID: <20210810124006.GA25121@amd>
-References: <20210611060224.36769-1-tony@atomide.com>
+        Julian Wiedmann <jwi@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Jianbo Liu <jianbol@nvidia.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Bjarni Jonasson <bjarni.jonasson@microchip.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tobias Waldekranz <tobias@waldekranz.com>,
+        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-s390@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        Ido Schimmel <idosch@idosch.org>
+References: <20210810115024.1629983-1-vladimir.oltean@nxp.com>
+From:   Karsten Graul <kgraul@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+Message-ID: <dfa98bf7-cab4-4076-ef5f-880a8baa89ee@linux.ibm.com>
+Date:   Tue, 10 Aug 2021 14:41:48 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="bp/iNruPH9dso1Pn"
-Content-Disposition: inline
-In-Reply-To: <20210611060224.36769-1-tony@atomide.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20210810115024.1629983-1-vladimir.oltean@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _j8fSda4zE-t-vI3t2qAYb9FXmKJ_HIy
+X-Proofpoint-ORIG-GUID: _j8fSda4zE-t-vI3t2qAYb9FXmKJ_HIy
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-08-10_05:2021-08-10,2021-08-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ clxscore=1011 lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0
+ mlxscore=0 priorityscore=1501 mlxlogscore=999 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
+ definitions=main-2108100080
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 10/08/2021 13:50, Vladimir Oltean wrote:
+> The blamed commit a new field to struct switchdev_notifier_fdb_info, but
+                  ^^^ added?
 
---bp/iNruPH9dso1Pn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> did not make sure that all call paths set it to something valid. For
+> example, a switchdev driver may emit a SWITCHDEV_FDB_ADD_TO_BRIDGE
+> notifier, and since the 'is_local' flag is not set, it contains junk
+> from the stack, so the bridge might interpret those notifications as
+> being for local FDB entries when that was not intended.
+> 
+> To avoid that now and in the future, zero-initialize all
+> switchdev_notifier_fdb_info structures created by drivers such that all
+> newly added fields to not need to touch drivers again.
+> 
+> Fixes: 2c4eca3ef716 ("net: bridge: switchdev: include local flag in FDB notifications")
+> Reported-by: Ido Schimmel <idosch@idosch.org>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> Tested-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+> v1->v2: use an empty struct initializer as opposed to memset, as
+>         suggested by Leon Romanovsky
 
-Hi!
+For drivers/s390/net/qeth_l2_main.c :
 
-I noticed the issue while reviewing stable kernels, as this is being
-backported.
+Reviewed-by: Karsten Graul <kgraul@linux.ibm.com>
 
-> Jarkko Nikula <jarkko.nikula@bitmer.com> reported that Beagleboard
-> revision c2 stopped booting. Jarkko bisected the issue down to
-> commit 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend
-> and resume for am3 and am4").
->=20
-> Let's fix the issue by tagging system timers as reserved rather than
-> ignoring them. And let's not probe any interconnect target module child
-> devices for reserved modules.
-
-+++ b/drivers/bus/ti-sysc.c
-> @@ -3093,8 +3095,8 @@ static int sysc_probe(struct platform_device *pdev)
->  		return error;
-> =20
->  	error =3D sysc_check_active_timer(ddata);
-> -	if (error)
-> -		return error;
-> +	if (error =3D=3D -EBUSY)
-> +		ddata->reserved =3D true;
-> =20
->  	error =3D sysc_get_clocks(ddata);
->  	if (error)
-
-What is going on here? First, we silently ignore errors other than
-EBUSY. Second, sysc_check_active_timer() can't return -EBUSY: it
-returns either 0 or -ENXIO. (I checked 5.10-stable, mainline and
--next-20210806).
-
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---bp/iNruPH9dso1Pn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmESc6YACgkQMOfwapXb+vKZ5wCeLKBimzJgT4TZyjOoeCGslBeJ
-BH8AoKYD1/pIPyYP4B42sem9TRwrdWEx
-=XRbK
------END PGP SIGNATURE-----
-
---bp/iNruPH9dso1Pn--
+Thanks
