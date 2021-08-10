@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A39BB3E5D00
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 16:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DC873E5D32
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Aug 2021 16:18:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242637AbhHJOQ1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 Aug 2021 10:16:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53478 "EHLO mail.kernel.org"
+        id S243161AbhHJOSE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 Aug 2021 10:18:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54576 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242497AbhHJOQH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 10 Aug 2021 10:16:07 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A2DC761075;
-        Tue, 10 Aug 2021 14:15:44 +0000 (UTC)
+        id S242668AbhHJOQc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 10 Aug 2021 10:16:32 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C767961077;
+        Tue, 10 Aug 2021 14:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628604945;
-        bh=xC+BBKoZiCriGDF9X9QmzpHZ2z6ZAXuPMpw4yI+zFBc=;
+        s=k20201202; t=1628604970;
+        bh=pIkV9wydnAyCRfAb8mqsxSsG6Cofj6HILAhsTgrXHv8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AN/XlpyZVn0aPBQ4o+HZbMA+KfE7nXGSf6uehK9fjtlg6bmf5+IaNcwOvoimdQ318
-         6W1AeqA6/tLXesaSYUDwURROJOmN5lFcNr/08YDons4HDjveHCbXfopJMHtVD4Zra0
-         2Vc7nyPYVbvnhY6UWph0cU/FYpjdoIBcosZCJG2MncziqeLldt2yomWuI63GW9u149
-         amGzf8blwQPBzidZAbne1Xe9BMPRZs/HZ3g3a8XFISQW5v9aMKulrkJuFGrxGPwrmX
-         WDonEzpNiET3BCtrD0pIVDYPFQaoXYhi2tzuxsoneRWfC1waN5ZY4KxDRelLbpGBnj
-         h0QDRW0eSQaNQ==
+        b=OxtCn0vB6Mv9dd6CI04vd+V3m0vB2wh+pHeegrwPpdEIMgCU+eR3mktcstAqVIa3u
+         eIbsUqrseCJ1KwShQzWTeQiMnmI8K3+9mv34+3Tv7O4iX74M/C+3eVaeqnoOwly+xA
+         z579bEPZsI7JJkAleKZsLDMl/WmBMCnyJA8ubz5OvjI3W5rmLgTSEWLeXRgrGJOcbC
+         INMjLY+X0g4AwQK/wvehShNIHB8Eg+PNlw0Cj327jRa5eXp5KB1+QxTX5wpMwWxEMe
+         H76SLHAb9WrJ3Ca7GmcwKS84XPUvCTwZRTCfRRjj57zkZ9zSTMIpgINE4qG6jw8Hhp
+         4RwSLgttSChQQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Dave Gerlach <d-gerlach@ti.com>,
@@ -30,12 +30,12 @@ Cc:     Dave Gerlach <d-gerlach@ti.com>,
         Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 05/20] ARM: dts: am43x-epos-evm: Reduce i2c0 bus speed for tps65218
-Date:   Tue, 10 Aug 2021 10:15:23 -0400
-Message-Id: <20210810141538.3117707-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 03/13] ARM: dts: am43x-epos-evm: Reduce i2c0 bus speed for tps65218
+Date:   Tue, 10 Aug 2021 10:15:55 -0400
+Message-Id: <20210810141606.3117932-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210810141538.3117707-1-sashal@kernel.org>
-References: <20210810141538.3117707-1-sashal@kernel.org>
+In-Reply-To: <20210810141606.3117932-1-sashal@kernel.org>
+References: <20210810141606.3117932-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -74,10 +74,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/boot/dts/am43x-epos-evm.dts b/arch/arm/boot/dts/am43x-epos-evm.dts
-index 8b696107eef8..d2aebdbc7e0f 100644
+index a9f191d78b54..d0ea95830d45 100644
 --- a/arch/arm/boot/dts/am43x-epos-evm.dts
 +++ b/arch/arm/boot/dts/am43x-epos-evm.dts
-@@ -582,7 +582,7 @@ &i2c0 {
+@@ -589,7 +589,7 @@ &i2c0 {
  	status = "okay";
  	pinctrl-names = "default";
  	pinctrl-0 = <&i2c0_pins>;
