@@ -2,57 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAB3B3E8E44
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Aug 2021 12:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE183E900E
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Aug 2021 14:06:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236976AbhHKKPU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Aug 2021 06:15:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
+        id S237498AbhHKMGj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Aug 2021 08:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236993AbhHKKPP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Aug 2021 06:15:15 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859BFC061765
-        for <linux-omap@vger.kernel.org>; Wed, 11 Aug 2021 03:14:52 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id u13-20020a17090abb0db0290177e1d9b3f7so8797604pjr.1
-        for <linux-omap@vger.kernel.org>; Wed, 11 Aug 2021 03:14:52 -0700 (PDT)
+        with ESMTP id S237443AbhHKMGi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Aug 2021 08:06:38 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E189C061765
+        for <linux-omap@vger.kernel.org>; Wed, 11 Aug 2021 05:06:14 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id m24-20020a17090a7f98b0290178b1a81700so4406220pjl.4
+        for <linux-omap@vger.kernel.org>; Wed, 11 Aug 2021 05:06:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Rg+nfqNpN4KVS6P5Kg2kgnadiI4aRZsAUMlE7w6kB2k=;
-        b=ac4casP3kUB13OsUJQcv38FKO7pVIq50bZ6uPGU1NEdpQ0ASqnp8urXzheGfF4JgZJ
-         F0GBVqBxpnRY7eoErIyp2IabG5QIpaejNKNbwc0aQqxzw6oZgMJeXCdM+On3gP7GcwAm
-         Ze6ZM7NUk6+K3utV/jdB+12kqYzQTqBoRF8pt/wvWMKT0t0AejJqeovqCSNaOQMJbO1L
-         dD5NFrhUjhU22SWOPidIBz2QfpP5F/XNnFPgeAwhtmB5nt6HWk+7H9MN4LVZKKuaHvyE
-         KiuTQa4lU4FT+xPngVH2NJUbPObjZ/HoPrBwxQiQRHH+/uoJ61KSOscQQ3Qen6LcUrLD
-         YtkQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FKg83oB/EOubumHMLyW/+CxlonCs6Sr8DZwUqs7o61s=;
+        b=hVsCtquq6U45kkQsI7Vj3hNlKPy4eJSsAmLAbQEn+7pXV2fOQSrxopruKn3Ijor4hJ
+         G3XsS5s9jVLqw0cMSMl5wK6FVWYmItaavWYetcFnlX4D5xn3TCcyZaVSIVPzMQQJ6I5R
+         dx1WDeV5O6HZSPu941m4uq2vC2UQNKfSo7DfOH5e2VWf4Gw+gb0cgXH7QF8UrNJHR05Q
+         ASd86ZctPo0kjcQxyD0AcAr7jotdkEb09HtawOdq2Yg9MgJ7Q7EkgYv6WJZ8hN8c7JGa
+         czQYiGXR9gLjmD+F/9aozWcLXiB4+NT46gLj7Ed2ICK9sOgrgVSsXmWHZmxmz0ZpZed1
+         iI9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Rg+nfqNpN4KVS6P5Kg2kgnadiI4aRZsAUMlE7w6kB2k=;
-        b=nvHiWlfFiraoyPA1dnuYYvbnx09t2lHE5DSmOynfm2IUYZmlsYtjCLiNrIGCwbZjSP
-         oxE9UIWLFKuNexVPvyLhrIDQErjejCjwDYMJ7iOy73hYtwRjohzLWgpttaWkA37cRgGJ
-         Anwjzjx+3xD1XO4KzHgEsgkvc+zZJSiPBYG2qX31YOEzYHHBqaBe5M03ofhciEkB3ekz
-         ZxXSFbbJn9KqV8fP26rYT9bxjduAPN8XPRtui8fsKARG05zoZDnF5VH0EzMEHsppsZJF
-         fcGIxVKfNiJuCeE5d1FOo6iDeSrrCI64YAJVZP6ivAQooqtkBqOF0nTulRl/OJUBLqI/
-         PnDA==
-X-Gm-Message-State: AOAM531I6fAtEl1Nj52nGJqpPvxNR8/NP8ww+GRyZfnPxAj13b4Zobz9
-        w6Md0lGhBwneKhNGZC/pdbNJxg==
-X-Google-Smtp-Source: ABdhPJzXjMW9vKhvdq5O6Gt8ct98tc27N2TMRTz0kLhqKVJ5iHf/FGC7+T3yYcwqi1noPFO5FkhCyA==
-X-Received: by 2002:aa7:9f5b:0:b029:3be:2a1f:ca58 with SMTP id h27-20020aa79f5b0000b02903be2a1fca58mr27592438pfr.46.1628676892055;
-        Wed, 11 Aug 2021 03:14:52 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FKg83oB/EOubumHMLyW/+CxlonCs6Sr8DZwUqs7o61s=;
+        b=ZKTKtJ8PvvnOcRATZqD2UvIIhIk5OXkchfH4qReyVA1JSTw1+I+tZ39EE9NpFlGda4
+         aNkmug6EDt6eAh0OE5Dh/+v37b+e3oLonC6hTWGaWovOaUx1s9vsL1sf3ugVHSyiazcg
+         uWbAtohyRy+wkbdB6suyU1KVbbtHrF4jPcqmG/7evVjKUNuB0sSY/QCXVaE8949hFwJE
+         mQYGoD1VvUq3sxpYV6Jg88irMu++6qwbiEsp4I2Bw7aPYfhCP42LD0XF26LBq3vWXnnw
+         Izedj637Gi4DZ2xrIUoCtaxlKRn0SPx/f3LYuhUhpA91KulNfTX3BTRhqz6Rs7xgijAz
+         xujQ==
+X-Gm-Message-State: AOAM533hOQi2S/cA7sMTKjJa173qDR2WaSlolDJVL/7DMoAQMv6i66eT
+        sySE9HPzSb5RKpl4j79uA4pxdA==
+X-Google-Smtp-Source: ABdhPJztfFMMqUn9AEZt5iJ8AdfS9ivDU1oMjYwxS6YRWF0FK+JSOzQ526ggirfhbR8GWllwV35JIQ==
+X-Received: by 2002:a17:90a:404a:: with SMTP id k10mr37162653pjg.145.1628683574049;
+        Wed, 11 Aug 2021 05:06:14 -0700 (PDT)
 Received: from localhost ([122.172.201.85])
-        by smtp.gmail.com with ESMTPSA id j25sm27085750pfe.198.2021.08.11.03.14.51
+        by smtp.gmail.com with ESMTPSA id v20sm2695779pgi.39.2021.08.11.05.06.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Aug 2021 03:14:51 -0700 (PDT)
-Date:   Wed, 11 Aug 2021 15:44:49 +0530
+        Wed, 11 Aug 2021 05:06:13 -0700 (PDT)
 From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Quentin Perret <qperret@google.com>
-Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
-        Vincent Donnefort <vincent.donnefort@arm.com>,
-        lukasz.luba@arm.com, Andy Gross <agross@kernel.org>,
+To:     Rafael Wysocki <rjw@rjwysocki.net>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Cristian Marussi <cristian.marussi@arm.com>,
         Fabio Estevam <festevam@gmail.com>,
@@ -62,41 +58,77 @@ Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Shawn Guo <shawnguo@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>, linux-pm@vger.kernel.org,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     linux-pm@vger.kernel.org,
         Vincent Guittot <vincent.guittot@linaro.org>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Quentin Perret <qperret@google.com>,
         linux-arm-kernel@lists.infradead.org,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 0/8] cpufreq: Auto-register with energy model
-Message-ID: <20210811101449.c2533ediwboeplqj@vireshk-i7>
-References: <cover.1628579170.git.viresh.kumar@linaro.org>
- <YRJym+Vn4bbwQzzs@google.com>
- <20210811051859.ihjzhvrnuct2knvy@vireshk-i7>
- <20210811053406.jqwextgtnxhgsjd2@vireshk-i7>
- <YROc95YKA1Y/TfYI@google.com>
- <20210811095311.e6wnma2ubkqdtuic@vireshk-i7>
- <YROin5WudmmEPard@google.com>
+Subject: [PATCH V2 0/9] cpufreq: Auto-register with energy model
+Date:   Wed, 11 Aug 2021 17:28:38 +0530
+Message-Id: <cover.1628682874.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YROin5WudmmEPard@google.com>
-User-Agent: NeoMutt/20180716-391-311a52
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 11-08-21, 11:12, Quentin Perret wrote:
-> I think using the ready() callback can work just fine as long as we
-> document clearly it is important to register the EM from there and not
-> anywhere else. The dedicated em_register() callback makes that a bit
-> clearer and should avoid a bit of boilerplate in the driver, but it's
-> not a big deal really, so I'm happy either way ;)
+Many cpufreq drivers register with the energy model for each policy and
+do exactly the same thing. Follow the footsteps of thermal-cooling, to
+get it done from the cpufreq core itself.
 
-Yeah, I think just the same. It is better to have register_em as a
-separate call. I was just wondering if it is the right choice :)
+Provide a new callback, which will be called, if present, by the cpufreq
+core at the right moment (more on that in the code's comment). Also
+provide a generic implementation that uses dev_pm_opp_of_register_em().
 
-Anyway, I think ready() will get removed pretty soon, so register_em()
-will work well. I will redo this series and send it.
+This also allows us to register with the EM at a later point of time,
+compared to ->init(), from where the EM core can access cpufreq policy
+directly using cpufreq_cpu_get() type of helpers and perform other work,
+like marking few frequencies inefficient, this will be done separately.
+
+This is build/boot tested by the bot for a couple of boards.
+
+https://gitlab.com/vireshk/pmko/-/pipelines/351525873
+
+Note that I haven't picked any of the Reviewed-by tags from the first version
+since the idea is very much changed here.
+
+V1->V2:
+- Add a callback instead of flag.
+- Register before governor is initialized.
+- Update scmi driver as well.
+- Don't unregister from the EM core.
+
+--
+Viresh
+
+Viresh Kumar (9):
+  cpufreq: Auto-register with energy model if asked
+  cpufreq: dt: Use auto-registration for energy model
+  cpufreq: imx6q: Use auto-registration for energy model
+  cpufreq: mediatek: Use auto-registration for energy model
+  cpufreq: omap: Use auto-registration for energy model
+  cpufreq: qcom-cpufreq-hw: Use auto-registration for energy model
+  cpufreq: scpi: Use auto-registration for energy model
+  cpufreq: vexpress: Use auto-registration for energy model
+  cpufreq: scmi: Use .register_em() callback
+
+ drivers/cpufreq/cpufreq-dt.c           |  3 +-
+ drivers/cpufreq/cpufreq.c              | 12 ++++++
+ drivers/cpufreq/imx6q-cpufreq.c        |  2 +-
+ drivers/cpufreq/mediatek-cpufreq.c     |  3 +-
+ drivers/cpufreq/omap-cpufreq.c         |  2 +-
+ drivers/cpufreq/qcom-cpufreq-hw.c      |  3 +-
+ drivers/cpufreq/scmi-cpufreq.c         | 55 +++++++++++++++-----------
+ drivers/cpufreq/scpi-cpufreq.c         |  3 +-
+ drivers/cpufreq/vexpress-spc-cpufreq.c |  3 +-
+ include/linux/cpufreq.h                | 14 +++++++
+ 10 files changed, 65 insertions(+), 35 deletions(-)
 
 -- 
-viresh
+2.31.1.272.g89b43f80a514
+
