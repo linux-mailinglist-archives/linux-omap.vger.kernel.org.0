@@ -2,52 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A907A3E89A1
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Aug 2021 07:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFACA3E89C8
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Aug 2021 07:34:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbhHKFTp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Aug 2021 01:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41500 "EHLO
+        id S229730AbhHKFed (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Aug 2021 01:34:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234172AbhHKFTZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Aug 2021 01:19:25 -0400
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7A6C061765
-        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 22:19:02 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id oa17so1614478pjb.1
-        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 22:19:02 -0700 (PDT)
+        with ESMTP id S234309AbhHKFec (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Aug 2021 01:34:32 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D825DC0613D5
+        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 22:34:09 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id 28-20020a17090a031cb0290178dcd8a4d1so3971073pje.0
+        for <linux-omap@vger.kernel.org>; Tue, 10 Aug 2021 22:34:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=HZD0Vc3lp/XqIPTm8s+fyeFvAaL1Bw4mNZGMJyfHjck=;
-        b=JsUzkrlDPAu8MK89pY4o2ZMqmceYFpkvBK5JN4Q3rcKt2yG6fIG7GyD/keZNyuPlO/
-         pWDGRH0qVmkLvGILreUzHaQu2FqD7yCQInNs4MJfpOiBzeWCu1wVYqJHzzWd7jjg+1lK
-         BPFkK9UOvNfF/dC32k369RJCDXvuGtx44NefqAQ8+PCbgjAa2GCfEu+hhsZOan5ymCE4
-         Ckimj6yuQU672Pnu8Th/zBuzKM9OCrQ0Z4nuzcpM71M4Ou7EoR9Xl8bFAePomrmwMIFX
-         SScfYhAV4fznqI7SG3+EA8jmNDowekCV9Zq4xhx491ewQCRU3dBLaVY249wQNytNEBdH
-         cKTg==
+        bh=ScSbxJofNLIiJut+toTZ7USozFNrpn/9FRU/yhxl+AE=;
+        b=eb6WOqa/iiW+lVxPN/WwlN1ktVPrT2bUzlrRfDrYo41IvDzG4/ln5yWs6uXhICalPc
+         8R0u5AzW7yMU6cYgS+wfVr1wFhPcTBbZD2Xyd4b7nHZ3hafixxLtxxbPGwpJLDHfRGdI
+         zsU9bV0uTcH4s9YjyKyk3RwVbO/HStRc+oKgUx5B2+8G9pO8KCbN0SSodCkkTKH5OwCj
+         NkEi8tGAip3xqqCWY5Cd5cCb4jacmdKEE4+LxGNZA+sGwQu085Zzb25vTOg1ndLK0z5V
+         r4ejQRIY4GkBb+GZRhHuNkrSOOBP5ZQyuytbggBbhP7/xyVm24hsXA8Zo39boZpUz10E
+         Ygng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=HZD0Vc3lp/XqIPTm8s+fyeFvAaL1Bw4mNZGMJyfHjck=;
-        b=BbdXzmsN17hi87i5jYGXqY+5o9baAjKoGaZpxKVQz7Rm+FHVip3+l+IbcYdo/+145s
-         2NJ/CokfkfJDys0wibYNiminURKz7DU0WP0hcOYgblO0YLETE9lrAVFhTqrPwxw6j8H3
-         P5fJathvLE8dCfc1i4c81mH3Y8gAGhzCoO9mOTif4wYGo39MwawFbS4y4YTBfFkfbSnb
-         TeOvmyqsyK5+ByrRMTdNuEJvsQkM4hqibyK2ARqgk5RqkyWbk69YsEBIwDpoGTwF6+wY
-         /R7h1yw40JYlsP5+ZV2u8KAbIx2mta2USMunSt6aj5IFskQ/tkub4Dfp9weZ8pku+5Zq
-         O4KQ==
-X-Gm-Message-State: AOAM530D3PYwyaMTKdm0+fei4NxBVwAPVJu95PFqOgCSdfl/+/6Tpr28
-        zCSF9AyBufaGaNjOIhlVDW/iEg==
-X-Google-Smtp-Source: ABdhPJzkff8ozUzWrLhACtgWHkaRe212yS2ydFbdEsIQCClF9gDAs7w5Kivh/WFFx4A/swTDLByBiw==
-X-Received: by 2002:a17:90a:ce0a:: with SMTP id f10mr35357981pju.71.1628659141754;
-        Tue, 10 Aug 2021 22:19:01 -0700 (PDT)
+        bh=ScSbxJofNLIiJut+toTZ7USozFNrpn/9FRU/yhxl+AE=;
+        b=oF7bIUNPN59eYGDVXZYmhHWdK4i8F4liHvGeQhOuEhg/JF+8qeLAjpZWR39hXR97Ml
+         Za7BgS9Dd6hWU8RC3/38+NbPFt0UUe3zshZuw9qzA+k1BnFKVH8Bda1nrLzXG8xcdnok
+         Mk78HJZlVkHDQDuVvGftbYU/w8vFLLhmmLdk6cT4iyRslPVmYnsAdmRy1W1tpeCCGlDU
+         1Ku/mBRHHZhAQE8orKzuz9VsO/fkCPo1I1WQd/JnHBSAehmeKktxB0oQVqtemORGL2h2
+         +mYeWvmuuXrLidG0gfsWFXXuP1vXdQgikC/Nihzfa+H/Dg08DiDFv8oqtIqi33xaMNJE
+         OpJA==
+X-Gm-Message-State: AOAM532AffcSYsXSudcXSdTxm8plTVi+BzPUMNXn0E2UNn+9FOWPmTgg
+        YghQfFhX4zKJd4Zc+VXWN4i2dQ==
+X-Google-Smtp-Source: ABdhPJyJHzEP2u8Lqj/aaTrSt5nOj9C159L82xQKicF/GaJrGfuVo5tn/qTlGn31FvoW9cEaqP30pg==
+X-Received: by 2002:a17:902:8507:b029:12b:533e:5e9d with SMTP id bj7-20020a1709028507b029012b533e5e9dmr28394940plb.53.1628660049321;
+        Tue, 10 Aug 2021 22:34:09 -0700 (PDT)
 Received: from localhost ([122.172.201.85])
-        by smtp.gmail.com with ESMTPSA id z13sm4816257pjd.44.2021.08.10.22.19.00
+        by smtp.gmail.com with ESMTPSA id q4sm6443106pga.48.2021.08.10.22.34.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Aug 2021 22:19:01 -0700 (PDT)
-Date:   Wed, 11 Aug 2021 10:48:59 +0530
+        Tue, 10 Aug 2021 22:34:08 -0700 (PDT)
+Date:   Wed, 11 Aug 2021 11:04:06 +0530
 From:   Viresh Kumar <viresh.kumar@linaro.org>
 To:     Quentin Perret <qperret@google.com>
 Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
@@ -68,83 +68,43 @@ Cc:     Rafael Wysocki <rjw@rjwysocki.net>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org
 Subject: Re: [PATCH 0/8] cpufreq: Auto-register with energy model
-Message-ID: <20210811051859.ihjzhvrnuct2knvy@vireshk-i7>
+Message-ID: <20210811053406.jqwextgtnxhgsjd2@vireshk-i7>
 References: <cover.1628579170.git.viresh.kumar@linaro.org>
  <YRJym+Vn4bbwQzzs@google.com>
+ <20210811051859.ihjzhvrnuct2knvy@vireshk-i7>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YRJym+Vn4bbwQzzs@google.com>
+In-Reply-To: <20210811051859.ihjzhvrnuct2knvy@vireshk-i7>
 User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10-08-21, 13:35, Quentin Perret wrote:
-> On Tuesday 10 Aug 2021 at 13:06:47 (+0530), Viresh Kumar wrote:
-> > Provide a cpufreq driver flag so drivers can ask the cpufreq core to register
-> > with the EM core on their behalf.
+On 11-08-21, 10:48, Viresh Kumar wrote:
+> On 10-08-21, 13:35, Quentin Perret wrote:
+> > This series adds more code than it removes,
 > 
-> Hmm, that's not quite what this does. This asks the cpufreq core to
-> use *PM_OPP* to register an EM, which I think is kinda wrong to do from
-> there IMO. The decision to use PM_OPP or another mechanism to register
-> an EM belongs to platform specific code (drivers), so it is odd for the
-> PM_OPP registration to have its own cpufreq flag but not the other ways.
+> Sadly yes :(
 > 
-> As mentioned in another thread, the very reason to have PM_EM is to not
-> depend on PM_OPP, so I'm worried about the direction of travel with this
-> series TBH.
-
-I had to use the pm-opp version, since almost everyone was using that.
-
-On the other hand, there isn't a lot of OPP specific stuff in
-dev_pm_opp_of_register_em(). It just uses dev_pm_opp_get_opp_count(),
-that's all. This ended up in the OPP core, nothing else. Maybe we can
-now move it back to the EM core and name it differently ?
-
-> > This allows us to get rid of duplicated code
-> > in the drivers and fix the unregistration part as well, which none of the
-> > drivers have done until now.
+> > and the unregistration is
+> > not a fix as we don't ever remove the EM tables by design, so not sure
+> > either of these points are valid arguments.
 > 
-> This series adds more code than it removes,
+> I think that design needs to be looked over again, it looks broken to
+> me everytime I land onto this code. I wonder why we don't unregister
+> stuff.
 
-Sadly yes :(
+Coming back to this series. We have two options, based on what I
+proposed here:
 
-> and the unregistration is
-> not a fix as we don't ever remove the EM tables by design, so not sure
-> either of these points are valid arguments.
+https://lore.kernel.org/linux-pm/20210811050327.3yxrk4kqxjjwaztx@vireshk-i7/
 
-I think that design needs to be looked over again, it looks broken to
-me everytime I land onto this code. I wonder why we don't unregister
-stuff.
+1. Let cpufreq core register with EM on behalf of cpufreq drivers.
 
-Lets say, I am working on the cpufreq driver and I want to test that
-on my ARM machine. Rebooting a simpler board to test stuff out is
-easy, but if I am working on an ARM server which is running lots of
-other userspace stuff as well, I won't want to reboot the machine just
-to test a different versions of the driver. I will rather want to
-build the driver as module and insert/remove it again and again.
+2. Update drivers to use ->ready() callback to do this stuff.
 
-If the frequency table changes in between versions, this just breaks
-as EM won't be updated again.
-
-This breaks one of the most basic rules of Linux Kernel. Inserting a
-module should have exactly the same final behavior every single time.
-This model doesn't guarantee it. It simply looks broken.
-
-> > This would also make the registration with EM core to happen only after policy
-> > is fully initialized, and the EM core can do other stuff from in there, like
-> > marking frequencies as inefficient (WIP). Though this patchset is useful without
-> > that work being done and should be merged nevertheless.
-> > 
-> > This doesn't update scmi cpufreq driver for now as it is a special case and need
-> > to be handled differently. Though we can make it work with this if required.
-> 
-> Note that we'll have more 'special cases' if other architectures start
-> using PM_EM, which is what we have been trying to allow since the
-> beginning, so that's worth keeping in mind.
-
-Yes, we need to take care of all such special cases as well.
+I am fine with both :)
 
 -- 
 viresh
