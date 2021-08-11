@@ -2,127 +2,266 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9886E3E9367
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Aug 2021 16:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8068D3E941B
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Aug 2021 16:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231902AbhHKOSZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Aug 2021 10:18:25 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:48090 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231661AbhHKOSY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Aug 2021 10:18:24 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 17BEHxA9055410;
-        Wed, 11 Aug 2021 09:17:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1628691479;
-        bh=c/qxUABx9tYL9Rzvu0Q3NRtn9QytLHQRiK5j6AsPu7A=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To;
-        b=yAQ2bAB7jdIdW3XkkTmm8r9qN3PXppcdqjaZXAN927YlfBHC7LMZiCsH5tbV204Vi
-         vE5yO0aq2HyTd+EPn7l/eyjfvcYDll6mIWZ2/7WOD3/ZZVHktAW7/XYPsZRwbCkqnX
-         xwE6dBZtQRc6+NpmMpRhmCByV9+padnYuOB8T83M=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 17BEHwAE032215
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 11 Aug 2021 09:17:59 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 11
- Aug 2021 09:17:58 -0500
-Received: from DFLE113.ent.ti.com ([fe80::5de1:db32:7f81:772f]) by
- DFLE113.ent.ti.com ([fe80::5de1:db32:7f81:772f%18]) with mapi id
- 15.01.2176.012; Wed, 11 Aug 2021 09:17:58 -0500
-From:   "Woodruff, Richard" <r-woodruff2@ti.com>
-To:     David Russell <david.russell73@gmail.com>,
-        Tony Lindgren <tony@atomide.com>
-CC:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Subject: RE: [EXTERNAL] OMAP2430 kernel hangs on ioremap of IVA2.1 addresses
-Thread-Topic: [EXTERNAL] OMAP2430 kernel hangs on ioremap of IVA2.1 addresses
-Thread-Index: AQHXW64KTel5D7x5GUqgCeE1dBGRWqsIrOqggALerYCAY3DfAP//vyPQ
-Date:   Wed, 11 Aug 2021 14:17:58 +0000
-Message-ID: <6616af990c3d4cc8b3ca51e1a6e9283e@ti.com>
-References: <E26ACA77-0F54-41BC-BA45-29B641A6BEA9@gmail.com>
- <cb562f9f798d4431a09f19e8efd24727@ti.com> <YMBdt8dDdvySofuC@atomide.com>
- <2B1CE4CB-689F-4547-A64C-A7FB699F0730@gmail.com>
-In-Reply-To: <2B1CE4CB-689F-4547-A64C-A7FB699F0730@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.250.57.201]
-x-exclaimer-md-config: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+        id S232597AbhHKO6w convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 11 Aug 2021 10:58:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43372 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232823AbhHKO6t (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 11 Aug 2021 10:58:49 -0400
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org [51.254.78.96])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6C36460FA0;
+        Wed, 11 Aug 2021 14:58:25 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <maz@kernel.org>)
+        id 1mDpgV-004MOX-FV; Wed, 11 Aug 2021 15:58:23 +0100
+Date:   Wed, 11 Aug 2021 15:58:23 +0100
+Message-ID: <87k0ks9gfk.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 2/2] PCI: j721e: Add PCI legacy interrupt support for J7200
+In-Reply-To: <20210811123846.31921-3-kishon@ti.com>
+References: <20210811123846.31921-1-kishon@ti.com>
+        <20210811123846.31921-3-kishon@ti.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kishon@ti.com, lorenzo.pieralisi@arm.com, robh@kernel.org, bhelgaas@google.com, lokeshvutla@ti.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-SGVsbG8gRGF2ZSwNCg0KSXQgZGVwZW5kcyBvbiB3aGF0IGZlYXR1cmVzIHlvdSBuZWVkIHRvIHNh
-dGlzZnkgeW91ciB1c2UgY2FzZSAoa2VybmVsICsgYmFzZSArIGFwcGxpY2F0aW9uKS4gIFN0YWJs
-ZSBvbGRlciBrZXJuZWxzIGNhbiBkbyBzb21lIHRhc2tzIHdlbGwgZW5vdWdoIGlmIHRoZXkgaGF2
-ZSB0aGUgZmVhdHVyZXMgeW91IG5lZWQgaW4gcGxhY2UuICBJZiB5b3UgbmVlZCBuZXdlciBmZWF0
-dXJlcyB0aGVuIHdoYXQgYW4gb2xkZXIga2VybmVsIHByb3ZpZGVkLCBpdCBjYW4gYmUgYSBsb3Qg
-b2Ygd29yayB0byBiYWNrIHBvcnQuICBBbHNvIGlmIHRoZSBrZXJuZWwgaXMgdXNlZCBpbiBvcGVu
-IG5ldHdvcmtzIHRoZW4gaG93IHRvIGhhbmRsZSBzZWN1cml0eSBpcyBhbHNvIHNvbWV0aGluZyB0
-byBjb25zaWRlci4NCg0KSSd2ZSBub3QgYm9vdGVkIG15IE9NQVAyNDMwIGJvYXJkIGZvciBzZXZl
-cmFsIHllYXJzLCBob3dldmVyLCBJIGRvIGhhdmUgc29tZSBvbGQgdGFibGV0cyBhbmQgcGhvbmVz
-IEkgc3RhcnQgZnJvbSB0aW1lIHRvIHRpbWUuICBUaGUgbGFzdCBrZXJuZWwncyBJIHVzZWQgb24g
-aXQgd2VyZSBhcm91bmQgdGhlIHRpbWUgZnJhbWUgb2Ygd2hhdCB5b3UgYXJlIHVzaW5nLiBJdCBp
-cyB2ZXJ5IGxpa2VseSBzb21lIG5ld2VyIHNuYXBzaG90cyB3ZXJlIGRvbmUgb24gYSBwZXIgcHJv
-amVjdCBiYXNpcy4NCg0KUHJvYmFibHkgYSBnb29kIG1pbmltYWwga2VybmVsIHdpdGggYmFzaWMg
-ZHJpdmVycyBjYW4gYmUgbWFkZSBhdCBtdWx0aXBsZSBwb2ludHMuICBJJ20gbGVzcyBzdXJlIGFi
-b3V0IHRoZSBzdGF0ZSBvZiBvcGVuIGRyaXZlcnMgd2l0aCBXTDE4eHguICBJJ2Qgc3VnZ2VzdCBl
-eHBsb3JpbmcgdGhhdCBhIGJpdCBtb3JlIHRvIHNlZSBpZiBpdCBlbmRzIHVwIGRvbWluYXRpbmcu
-ICBGb3IgZWFybHkgV0xBTiwgc29tZXRpbWVzIGZpcm13YXJlIGFuZCBmcmFnaWxlIERNQSBpbnRl
-Z3JhdGlvbnMgd2VyZSBoYXJkIHRvIHdvcmsgYXJvdW5kLg0KDQpSZWdhcmRzLA0KUmljaGFyZCBX
-Lg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogRGF2aWQgUnVzc2VsbCA8ZGF2
-aWQucnVzc2VsbDczQGdtYWlsLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIEF1Z3VzdCAxMSwgMjAy
-MSA3OjU0IEFNDQpUbzogVG9ueSBMaW5kZ3JlbiA8dG9ueUBhdG9taWRlLmNvbT4NCkNjOiBXb29k
-cnVmZiwgUmljaGFyZCA8ci13b29kcnVmZjJAdGkuY29tPjsgbGludXgtb21hcEB2Z2VyLmtlcm5l
-bC5vcmcNClN1YmplY3Q6IFJlOiBbRVhURVJOQUxdIE9NQVAyNDMwIGtlcm5lbCBoYW5ncyBvbiBp
-b3JlbWFwIG9mIElWQTIuMSBhZGRyZXNzZXMNCg0KR29vZCBNb3JuaW5nLA0KDQpJIGhhdmUgYmVl
-biB1cGdyYWRpbmcgYSBsZWdhY3kgcHJvamVjdCB0aGF0IHJ1bnMgb24gYW4gT01BUDI0MzAgYmFz
-ZWQgb24gdGhlIGxpbnV4LW9tYXAgcmVwbyAodGFnIHYyLjYuMjgtb21hcDEpIHRvIG1haW5saW5l
-IHY1LjEwOyBJIGhhdmUgYmVlbiBhYmxlIHRvIGdldCB0aGUgbWFpbiBhcHBsaWNhdGlvbiBydW5u
-aW5nLCBob3dldmVyIEkgYW0gY29uY2VybmVkIHRoZXJlIGFyZSBwb3RlbnRpYWxseSBtYW55IHVu
-ZGVybHlpbmcgaXNzdWVzIEkgaGF2ZSBub3QgY29ycmVjdGVkIG5vciBldmVuIHNlZW4geWV0LiAg
-SSByZWNhbGxlZCBUb2554oCZcyBjb21tZW50IHRoYXQgdGhlIHBhcnQgaXMgZGF0ZWQgKG9mIGNv
-dXJzZSB0aGVyZSBpcyBubyBhcmd1bWVudCBmcm9tIG1lIHRoZXJlKSB0byB0aGUgcG9pbnQgdGhh
-dCBJIGFtIG5vdCBzdXJlIHRvIHdoYXQgZXh0ZW50IGFueW9uZSBoYXMgdXNlZCB0aGUgbGF0ZXN0
-IG1haW5saW5lIG9uIGFuIE9NQVAyeHh4IHBhcnQgKGkuZS4sIHJlZ3Jlc3Npb24gdGVzdGluZyku
-DQoNCkkgYW0gaG9wZWZ1bCBzb21lb25lIGhhcyBhIGdvb2Qgc3VnZ2VzdGlvbiB0byB0aGUgZm9s
-bG93aW5nIHF1ZXN0aW9uOiAgd2hhdCBtYWlubGluZSBrZXJuZWwgdmVyc2lvbiB3b3VsZCBiZSBj
-b25zaWRlcmVkIHRoZSBtb3N0IHN0YWJsZSBpbiByZWdhcmRzIHRvIGFuIE9NQVAyNDMwIHByb2Nl
-c3NvciB0aGF0IG1heSBhbHNvIGluY2x1ZGUgdGhlIFRJIFdMMTh4eCB3aWZpIGRyaXZlcj8gIE9y
-IGlmIHRoZXkgZG8gbm90IG92ZXJsYXAsIHNpbXBseSB3aGF0IGlzIHRoZSBsYXRlc3QgbWFpbmxp
-bmUga2VybmVsIHZlcnNpb24gdGhhdCB3b3VsZCBiZSBtb3N0IHN0YWJsZSBmb3IgT01BUDJ4eHg/
-ICBJIGFtIGp1c3QgYWZyYWlkIHRoZSB2NS4xMCBhbmQgdjQuMTkgYXJlIHNvIG5ldyB0aGF0IHRo
-ZXJlIGFyZSB1bmRlcmx5aW5nIGlzc3VlcyB0aGF0IHdvdWxkIHRha2Ugc2lnbmlmaWNhbnQgdGlt
-ZSB0byBjaGFzZSBkb3duOyBidXQgaWYgSSBjYW4gcm9sbC1iYWNrIHRvIGFuIG9sZGVyIHZlcnNp
-b24gKHlldCBuZXdlciB0aGFuIDIuNi4yOCksIHRoYXQgbWlnaHQgZ2V0IG1lIGNsb3NlciB0byB3
-aGVyZSBJIG5lZWQgdG8gYmUuDQoNClRoYW5rcyBmb3IgYW55IHN1Z2dlc3Rpb25zLA0KDQpEYXZl
-DQoNCj4gT24gSnVuIDgsIDIwMjEsIGF0IDExOjIwIFBNLCBUb255IExpbmRncmVuIDx0b255QGF0
-b21pZGUuY29tPiB3cm90ZToNCj4gDQo+IEhpLA0KPiANCj4gKiBXb29kcnVmZiwgUmljaGFyZCA8
-ci13b29kcnVmZjJAdGkuY29tPiBbMjEwNjA3IDE1OjQwXToNCj4+IEd1ZXNzOiB0aGlzIGJpdCBp
-biBKVEFHIHNjcmlwdCB1c2VkIGZvciBJVkEgdGVzdHMgcHJvYmFibHkgaXMgbWlzc2luZyBhbmQg
-bmVlZHMgdG8gYmUgd29ya2VkIGluLiAgVGhlIGdlbmVyaWMgbGludXgtb21hcCBjbG9jayBjb2Rl
-IHByb2JhYmx5IGhhbmRsZXMgdGhlIElWQSBjbG9jayBidXQgbWF5YmUgbm90IHRoZSByZXNldHMu
-DQo+PiANCj4+ICAgLyogIEVuYWJsZSBJVkEtc3MgZnVuY3Rpb25hbCBjbG9jayAoc2V0IGJpdCAw
-KSAqLw0KPj4gICAoKihpbnQqKTB4NDkwMDY4MDApIHw9IDB4MTsNCj4+IA0KPj4gICAvKiBSZWxl
-YXNlIGwzc19pZGxlX3JlcSAgKi8NCj4+ICAgKCooaW50KikweDQ5MDA2ODEwKSB8PSAoMSA8PCAx
-KTsNCj4+IA0KPj4gICAvKiBSZWxlYXNlIEwzUyByZXNldCBhbmQgcG93ZXItb24gcmVzZXQgKGNs
-ZWFyIGJpdCAxKSBhdCB0aGUgc2FtZSB0aW1lICovDQo+PiAgICgqKGludCopMHg0OTAwNjg1MCkg
-Jj0gfigoIDEgPDwgMSkpOw0KPiANCj4gSGVoIGFuZCBJIHRob3VnaHQgbm9ib2R5IGlzIHVzaW5n
-IDI0MzAgYW55IGxvbmdlciA6KQ0KPiANCj4gRllJLCB0aGUgY3VycmVudCBtYWlubGluZSBrZXJu
-ZWwgYWN0dWFsbHkgY2FuIGRlYWwgd2l0aCBhbGwgdGhhdCB1c2luZyANCj4gcmVzZXQgZHJpdmVy
-IGFuZCBnZW5wZCwgc2VlIGZvciBleGFtcGxlIGNvbW1pdHM6DQo+IA0KPiBhZTU3ZDE1NTg5MDgg
-KCJBUk06IGR0czogQ29uZmlndXJlIGludGVyY29ubmVjdCB0YXJnZXQgbW9kdWxlIGZvciBkcmE3
-IA0KPiBpdmEiKQ0KPiBlZmZlODllNDAwMzcgKCJzb2M6IHRpOiBvbWFwLXBybTogRml4IG9jY2Fz
-aW9uYWwgYWJvcnQgb24gcmVzZXQgDQo+IGRlYXNzZXJ0IGZvciBkcmE3IGl2YSIpDQo+IA0KPiBT
-aW1pbGFyIHNldHVwIHNob3VsZCBhbHNvIHdvcmsgZm9yIDI0MzAgYnV0IG5lZWRzIHRoZSBwb3dl
-ciBkb21haW5zIA0KPiBjb25maWd1cmVkIGZvciBkcml2ZXJzL3NvYy90aS9vbWFwX3BybS5jIGF0
-IGxlYXN0IGZvciBpdmEuDQo+IA0KPiBEYXZpZCwgSSB0aGluayB3aGF0IHlvdSdyZSBzZWVpbmcg
-aXMgaXZhIGdldHRpbmcgcmVsZWFzZWQgZnJvbSByZXNldCANCj4gd2l0aCBhbiB1bmNvbmZpZ3Vy
-ZWQgTU1VLCBhbmQgdGhlbiB0aGUgc3lzdGVtIHdpbGwgaGFuZy4NCj4gDQo+IFJlZ2FyZHMsDQo+
-IA0KPiBUb255DQoNCg==
+On Wed, 11 Aug 2021 13:38:46 +0100,
+Kishon Vijay Abraham I <kishon@ti.com> wrote:
+> 
+> Add PCI legacy interrupt support for J7200. J7200 has a single HW
+> interrupt line for all the four legacy interrupts INTA/INTB/INTC/INTD.
+> The HW interrupt line connected to GIC is a pulse interrupt whereas
+> the legacy interrupts by definition is level interrupt. In order to
+> provide level interrupt functionality to edge interrupt line, PCIe
+> in J7200 has provided USER_EOI_REG register. When the SW writes to
+> USER_EOI_REG register after handling the interrupt, the IP checks the
+> state of legacy interrupt and re-triggers pulse interrupt invoking
+> the handler again.
+> 
+> Due to Errata ID #i2094 ([1]), EOI feature is not enabled in J721E
+> and only a single pulse interrupt will be generated for every
+> ASSERT_INTx/DEASSERT_INTx. Hence legacy interrupt is not enabled in
+> J721E.
+
+How do you prevent this from being enabled on an affected platform?
+Just by virtue of not having the interrupt-controller property in DT?
+In which case, it may be useful to clarify this in the DT binding and
+say that it is only valid on J7200.
+
+> 
+> [1] -> J721E DRA829/TDA4VM Processors Silicon Revision 1.1/1.0 SPRZ455A –
+>        DECEMBER 2020 – REVISED AUGUST 2021
+>        (https://www.ti.com/lit/er/sprz455a/sprz455a.pdf)
+> 
+> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> ---
+>  drivers/pci/controller/cadence/pci-j721e.c | 119 +++++++++++++++++++++
+>  1 file changed, 119 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index ffb176d288cd..4e786d6b89e0 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -29,12 +29,24 @@
+>  #define LINK_DOWN		BIT(1)
+>  #define J7200_LINK_DOWN		BIT(10)
+>  
+> +#define ENABLE_REG_SYS_1	0x104
+> +#define STATUS_REG_SYS_1	0x504
+> +#define SYS1_INTx_EN(num)	(1 << (22 + (num)))
+> +
+>  #define J721E_PCIE_USER_CMD_STATUS	0x4
+>  #define LINK_TRAINING_ENABLE		BIT(0)
+>  
+>  #define J721E_PCIE_USER_LINKSTATUS	0x14
+>  #define LINK_STATUS			GENMASK(1, 0)
+>  
+> +#define USER_EOI_REG		0xC8
+> +enum eoi_reg {
+> +	EOI_DOWNSTREAM_INTERRUPT,
+> +	EOI_FLR_INTERRUPT,
+> +	EOI_LEGACY_INTERRUPT,
+> +	EOI_POWER_STATE_INTERRUPT,
+> +};
+> +
+>  enum link_status {
+>  	NO_RECEIVERS_DETECTED,
+>  	LINK_TRAINING_IN_PROGRESS,
+> @@ -59,6 +71,7 @@ struct j721e_pcie {
+>  	void __iomem		*user_cfg_base;
+>  	void __iomem		*intd_cfg_base;
+>  	u32			linkdown_irq_regfield;
+> +	struct irq_domain	*legacy_irq_domain;
+>  };
+>  
+>  enum j721e_pcie_mode {
+> @@ -121,6 +134,108 @@ static void j721e_pcie_config_link_irq(struct j721e_pcie *pcie)
+>  	j721e_pcie_intd_writel(pcie, ENABLE_REG_SYS_2, reg);
+>  }
+>  
+> +static void j721e_pcie_legacy_irq_handler(struct irq_desc *desc)
+> +{
+> +	struct j721e_pcie *pcie = irq_desc_get_handler_data(desc);
+> +	struct irq_chip *chip = irq_desc_get_chip(desc);
+> +	int i, virq;
+> +	u32 reg;
+> +
+> +	chained_irq_enter(chip, desc);
+> +
+> +	reg = j721e_pcie_intd_readl(pcie, STATUS_REG_SYS_1);
+> +	for (i = 0; i < PCI_NUM_INTX; i++) {
+> +		if (!(reg & SYS1_INTx_EN(i)))
+> +			continue;
+> +
+> +		virq = irq_find_mapping(pcie->legacy_irq_domain, i);
+> +		generic_handle_irq(virq);
+
+Please use generic_handle_domain_irq().
+
+> +	}
+> +
+> +	chained_irq_exit(chip, desc);
+> +}
+> +
+> +static void j721e_pcie_irq_eoi(struct irq_data *data)
+> +{
+> +	struct j721e_pcie *pcie = irq_data_get_irq_chip_data(data);
+> +
+> +	j721e_pcie_user_writel(pcie, USER_EOI_REG, EOI_LEGACY_INTERRUPT);
+> +}
+> +
+> +static void j721e_pcie_irq_enable(struct irq_data *data)
+> +{
+> +	struct j721e_pcie *pcie = irq_data_get_irq_chip_data(data);
+> +	u32 reg;
+> +
+> +	reg = j721e_pcie_intd_readl(pcie, ENABLE_REG_SYS_1);
+> +	reg |= SYS1_INTx_EN(irqd_to_hwirq(data));
+> +	j721e_pcie_intd_writel(pcie, ENABLE_REG_SYS_1, reg);
+
+RMW of a register shared between interrupts without a lock. It will
+eventually end badly.
+
+> +}
+> +
+> +static void j721e_pcie_irq_disable(struct irq_data *data)
+> +{
+> +	struct j721e_pcie *pcie = irq_data_get_irq_chip_data(data);
+> +	u32 reg;
+> +
+> +	reg = j721e_pcie_intd_readl(pcie, ENABLE_REG_SYS_1);
+> +	reg &= ~SYS1_INTx_EN(irqd_to_hwirq(data));
+> +	j721e_pcie_intd_writel(pcie, ENABLE_REG_SYS_1, reg);
+
+Same thing.
+
+> +}
+> +
+> +struct irq_chip j721e_pcie_irq_chip = {
+> +	.name		= "J721E-PCIE-INTX",
+> +	.irq_eoi	= j721e_pcie_irq_eoi,
+> +	.irq_enable	= j721e_pcie_irq_enable,
+> +	.irq_disable	= j721e_pcie_irq_disable,
+> +};
+> +
+> +static int j721e_pcie_intx_map(struct irq_domain *domain, unsigned int irq, irq_hw_number_t hwirq)
+> +{
+> +	struct j721e_pcie *pcie = domain->host_data;
+> +
+> +	irq_set_chip_and_handler(irq, &j721e_pcie_irq_chip, handle_fasteoi_irq);
+> +	irq_set_chip_data(irq, pcie);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct irq_domain_ops j721e_pcie_intx_domain_ops = {
+> +	.map = j721e_pcie_intx_map,
+> +};
+> +
+> +static int j721e_pcie_config_legacy_irq(struct j721e_pcie *pcie)
+> +{
+> +	struct irq_domain *legacy_irq_domain;
+> +	struct device *dev = pcie->dev;
+> +	struct device_node *node = dev->of_node;
+> +	struct device_node *intc_node;
+> +	int irq;
+> +
+> +	intc_node = of_get_child_by_name(node, "interrupt-controller");
+> +	if (!intc_node) {
+> +		dev_dbg(dev, "interrupt-controller node is absent. Legacy INTR not supported\n");
+> +		return 0;
+> +	}
+> +
+> +	irq = irq_of_parse_and_map(intc_node, 0);
+> +	if (!irq) {
+> +		dev_err(dev, "Failed to parse and map legacy irq\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	irq_set_chained_handler_and_data(irq, j721e_pcie_legacy_irq_handler, pcie);
+
+At this stage, you now have enabled the mux interrupt, and it can fire
+at will (who knows what state the enabled bits are, given that you
+don't initialise them?). However, you still haven't allocated the
+domain. What could possibly go wrong?
+
+Please initialise all the interrupts to their disabled state, and only
+register the handler once all the data structures have been populated.
+
+> +
+> +	legacy_irq_domain = irq_domain_add_linear(intc_node, PCI_NUM_INTX,
+> +						  &j721e_pcie_intx_domain_ops, pcie);
+> +	if (!legacy_irq_domain) {
+> +		dev_err(dev, "Failed to add irq domain for legacy irqs\n");
+> +		return -EINVAL;
+> +	}
+> +	pcie->legacy_irq_domain = legacy_irq_domain;
+> +
+> +	return 0;
+> +}
+> +
+>  static int j721e_pcie_start_link(struct cdns_pcie *cdns_pcie)
+>  {
+>  	struct j721e_pcie *pcie = dev_get_drvdata(cdns_pcie->dev);
+> @@ -433,6 +548,10 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  			goto err_get_sync;
+>  		}
+>  
+> +		ret = j721e_pcie_config_legacy_irq(pcie);
+> +		if (ret < 0)
+> +			goto err_get_sync;
+> +
+>  		bridge = devm_pci_alloc_host_bridge(dev, sizeof(*rc));
+>  		if (!bridge) {
+>  			ret = -ENOMEM;
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
