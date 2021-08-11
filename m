@@ -2,132 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D48C3E91F8
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Aug 2021 14:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9886E3E9367
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Aug 2021 16:18:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230367AbhHKMyq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 Aug 2021 08:54:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34378 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230376AbhHKMyq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Aug 2021 08:54:46 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 027E9C061765
-        for <linux-omap@vger.kernel.org>; Wed, 11 Aug 2021 05:54:23 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id a8so3206327pjk.4
-        for <linux-omap@vger.kernel.org>; Wed, 11 Aug 2021 05:54:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=G5XDF0Yaeq/aoKslFJ82JM45zkOaxv7CSOIrzeYMj68=;
-        b=LcKqry7phgW7YlwSvzcQkvLliZX1dcN7Pmks9GFhqPUVs9EFMv/n/ON2XZ94LFoeMv
-         1f7rr5J8x+U8AGxF+H4LLTBaj2eZ6AUT3uSfHtsFb6rbvZwEcI5yeNT/cOD8ftxPEIen
-         e2dw1OeclspRXRwPpFfwLEqXG6auDgi+JapCQtdCspZ9FDwfw1clWnw+PFBv9Rhxc9iq
-         lsaidmgjA1POj44NM++a67woGSVsvCTr62ZU71VuJFjENMoc3dsAPpZFfUiH9q8Up89k
-         EEPuz+T0TJsaOOiY9XWiKPuIN6tmeqWKrfzdJPal0dlo3E0Z2f6jRsY2m8lAMaODV5Dr
-         2ASg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=G5XDF0Yaeq/aoKslFJ82JM45zkOaxv7CSOIrzeYMj68=;
-        b=ttLW9ryR2D9fLr1pnqPLl5kvu4B5I1E0rE0f0S6gjIg8xqj1MIbGM0+zo1PQu4TjL1
-         /asJgvzBcMmRE0Eu9cR5eCp72iq7MQ9wJgQspcv7yGz+mie2XsblqDEU5LuXi4z9Dsr7
-         +rge0bOUhZ7yMmAOCXO0kI8jLhbcdJgvUVGFy0GQu+Crrnx1bKprNb4l6VbKKUonr8Fl
-         jzDv5rWewldz7zv9quSU9XGSsWHhLFfQrfYmBCEyoTVuTAeql8z7eMxNZKizJcmygADj
-         2iXFineJQqlo2FfvrimLNDlX0+mjVZVzovP6LWzNBWlMg9HuN9euaBVqHbasbiMA/85E
-         JiwQ==
-X-Gm-Message-State: AOAM533ZQBkGZHEsRaCE8uG+9bFe5WMKAPa9SJXqkrZF28cZ1ZnFDFjc
-        mOe940k8uHH3W0Q5zr+X9jyKMmRUEqmm0A==
-X-Google-Smtp-Source: ABdhPJz3og/D+Oq8UdDjxNoHz0anGyDu3pykaHR+OZHaKf/vLOKyWTmkE+0uPJt9eLBSQ4qyC4mf/g==
-X-Received: by 2002:a17:90a:8b07:: with SMTP id y7mr10593977pjn.30.1628686462417;
-        Wed, 11 Aug 2021 05:54:22 -0700 (PDT)
-Received: from ?IPv6:2600:8800:6880:151:5100:428e:ac50:3e8a? ([2600:8800:6880:151:5100:428e:ac50:3e8a])
-        by smtp.gmail.com with ESMTPSA id u19sm24863773pfg.42.2021.08.11.05.54.21
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 11 Aug 2021 05:54:21 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.7\))
-Subject: Re: [EXTERNAL] OMAP2430 kernel hangs on ioremap of IVA2.1 addresses
-From:   David Russell <david.russell73@gmail.com>
-In-Reply-To: <YMBdt8dDdvySofuC@atomide.com>
-Date:   Wed, 11 Aug 2021 05:54:20 -0700
-Cc:     "Woodruff, Richard" <r-woodruff2@ti.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2B1CE4CB-689F-4547-A64C-A7FB699F0730@gmail.com>
+        id S231902AbhHKOSZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 Aug 2021 10:18:25 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:48090 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231661AbhHKOSY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 Aug 2021 10:18:24 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 17BEHxA9055410;
+        Wed, 11 Aug 2021 09:17:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1628691479;
+        bh=c/qxUABx9tYL9Rzvu0Q3NRtn9QytLHQRiK5j6AsPu7A=;
+        h=From:To:CC:Subject:Date:References:In-Reply-To;
+        b=yAQ2bAB7jdIdW3XkkTmm8r9qN3PXppcdqjaZXAN927YlfBHC7LMZiCsH5tbV204Vi
+         vE5yO0aq2HyTd+EPn7l/eyjfvcYDll6mIWZ2/7WOD3/ZZVHktAW7/XYPsZRwbCkqnX
+         xwE6dBZtQRc6+NpmMpRhmCByV9+padnYuOB8T83M=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 17BEHwAE032215
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 11 Aug 2021 09:17:59 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 11
+ Aug 2021 09:17:58 -0500
+Received: from DFLE113.ent.ti.com ([fe80::5de1:db32:7f81:772f]) by
+ DFLE113.ent.ti.com ([fe80::5de1:db32:7f81:772f%18]) with mapi id
+ 15.01.2176.012; Wed, 11 Aug 2021 09:17:58 -0500
+From:   "Woodruff, Richard" <r-woodruff2@ti.com>
+To:     David Russell <david.russell73@gmail.com>,
+        Tony Lindgren <tony@atomide.com>
+CC:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Subject: RE: [EXTERNAL] OMAP2430 kernel hangs on ioremap of IVA2.1 addresses
+Thread-Topic: [EXTERNAL] OMAP2430 kernel hangs on ioremap of IVA2.1 addresses
+Thread-Index: AQHXW64KTel5D7x5GUqgCeE1dBGRWqsIrOqggALerYCAY3DfAP//vyPQ
+Date:   Wed, 11 Aug 2021 14:17:58 +0000
+Message-ID: <6616af990c3d4cc8b3ca51e1a6e9283e@ti.com>
 References: <E26ACA77-0F54-41BC-BA45-29B641A6BEA9@gmail.com>
  <cb562f9f798d4431a09f19e8efd24727@ti.com> <YMBdt8dDdvySofuC@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.7)
+ <2B1CE4CB-689F-4547-A64C-A7FB699F0730@gmail.com>
+In-Reply-To: <2B1CE4CB-689F-4547-A64C-A7FB699F0730@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.250.57.201]
+x-exclaimer-md-config: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Good Morning,
-
-I have been upgrading a legacy project that runs on an OMAP2430 based on =
-the linux-omap repo (tag v2.6.28-omap1) to mainline v5.10; I have been =
-able to get the main application running, however I am concerned there =
-are potentially many underlying issues I have not corrected nor even =
-seen yet.  I recalled Tony=E2=80=99s comment that the part is dated (of =
-course there is no argument from me there) to the point that I am not =
-sure to what extent anyone has used the latest mainline on an OMAP2xxx =
-part (i.e., regression testing).
-
-I am hopeful someone has a good suggestion to the following question:  =
-what mainline kernel version would be considered the most stable in =
-regards to an OMAP2430 processor that may also include the TI WL18xx =
-wifi driver?  Or if they do not overlap, simply what is the latest =
-mainline kernel version that would be most stable for OMAP2xxx?  I am =
-just afraid the v5.10 and v4.19 are so new that there are underlying =
-issues that would take significant time to chase down; but if I can =
-roll-back to an older version (yet newer than 2.6.28), that might get me =
-closer to where I need to be.
-
-Thanks for any suggestions,
-
-Dave
-
-> On Jun 8, 2021, at 11:20 PM, Tony Lindgren <tony@atomide.com> wrote:
->=20
-> Hi,
->=20
-> * Woodruff, Richard <r-woodruff2@ti.com> [210607 15:40]:
->> Guess: this bit in JTAG script used for IVA tests probably is missing =
-and needs to be worked in.  The generic linux-omap clock code probably =
-handles the IVA clock but maybe not the resets.
->>=20
->>   /*  Enable IVA-ss functional clock (set bit 0) */
->>   (*(int*)0x49006800) |=3D 0x1;
->>=20
->>   /* Release l3s_idle_req  */
->>   (*(int*)0x49006810) |=3D (1 << 1);
->>=20
->>   /* Release L3S reset and power-on reset (clear bit 1) at the same =
-time */
->>   (*(int*)0x49006850) &=3D ~(( 1 << 1));
->=20
-> Heh and I thought nobody is using 2430 any longer :)
->=20
-> FYI, the current mainline kernel actually can deal with all that using
-> reset driver and genpd, see for example commits:
->=20
-> ae57d1558908 ("ARM: dts: Configure interconnect target module for dra7 =
-iva")
-> effe89e40037 ("soc: ti: omap-prm: Fix occasional abort on reset =
-deassert for dra7 iva")
->=20
-> Similar setup should also work for 2430 but needs the power domains
-> configured for drivers/soc/ti/omap_prm.c at least for iva.
->=20
-> David, I think what you're seeing is iva getting released from reset =
-with
-> an unconfigured MMU, and then the system will hang.
->=20
-> Regards,
->=20
-> Tony
-
+SGVsbG8gRGF2ZSwNCg0KSXQgZGVwZW5kcyBvbiB3aGF0IGZlYXR1cmVzIHlvdSBuZWVkIHRvIHNh
+dGlzZnkgeW91ciB1c2UgY2FzZSAoa2VybmVsICsgYmFzZSArIGFwcGxpY2F0aW9uKS4gIFN0YWJs
+ZSBvbGRlciBrZXJuZWxzIGNhbiBkbyBzb21lIHRhc2tzIHdlbGwgZW5vdWdoIGlmIHRoZXkgaGF2
+ZSB0aGUgZmVhdHVyZXMgeW91IG5lZWQgaW4gcGxhY2UuICBJZiB5b3UgbmVlZCBuZXdlciBmZWF0
+dXJlcyB0aGVuIHdoYXQgYW4gb2xkZXIga2VybmVsIHByb3ZpZGVkLCBpdCBjYW4gYmUgYSBsb3Qg
+b2Ygd29yayB0byBiYWNrIHBvcnQuICBBbHNvIGlmIHRoZSBrZXJuZWwgaXMgdXNlZCBpbiBvcGVu
+IG5ldHdvcmtzIHRoZW4gaG93IHRvIGhhbmRsZSBzZWN1cml0eSBpcyBhbHNvIHNvbWV0aGluZyB0
+byBjb25zaWRlci4NCg0KSSd2ZSBub3QgYm9vdGVkIG15IE9NQVAyNDMwIGJvYXJkIGZvciBzZXZl
+cmFsIHllYXJzLCBob3dldmVyLCBJIGRvIGhhdmUgc29tZSBvbGQgdGFibGV0cyBhbmQgcGhvbmVz
+IEkgc3RhcnQgZnJvbSB0aW1lIHRvIHRpbWUuICBUaGUgbGFzdCBrZXJuZWwncyBJIHVzZWQgb24g
+aXQgd2VyZSBhcm91bmQgdGhlIHRpbWUgZnJhbWUgb2Ygd2hhdCB5b3UgYXJlIHVzaW5nLiBJdCBp
+cyB2ZXJ5IGxpa2VseSBzb21lIG5ld2VyIHNuYXBzaG90cyB3ZXJlIGRvbmUgb24gYSBwZXIgcHJv
+amVjdCBiYXNpcy4NCg0KUHJvYmFibHkgYSBnb29kIG1pbmltYWwga2VybmVsIHdpdGggYmFzaWMg
+ZHJpdmVycyBjYW4gYmUgbWFkZSBhdCBtdWx0aXBsZSBwb2ludHMuICBJJ20gbGVzcyBzdXJlIGFi
+b3V0IHRoZSBzdGF0ZSBvZiBvcGVuIGRyaXZlcnMgd2l0aCBXTDE4eHguICBJJ2Qgc3VnZ2VzdCBl
+eHBsb3JpbmcgdGhhdCBhIGJpdCBtb3JlIHRvIHNlZSBpZiBpdCBlbmRzIHVwIGRvbWluYXRpbmcu
+ICBGb3IgZWFybHkgV0xBTiwgc29tZXRpbWVzIGZpcm13YXJlIGFuZCBmcmFnaWxlIERNQSBpbnRl
+Z3JhdGlvbnMgd2VyZSBoYXJkIHRvIHdvcmsgYXJvdW5kLg0KDQpSZWdhcmRzLA0KUmljaGFyZCBX
+Lg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogRGF2aWQgUnVzc2VsbCA8ZGF2
+aWQucnVzc2VsbDczQGdtYWlsLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIEF1Z3VzdCAxMSwgMjAy
+MSA3OjU0IEFNDQpUbzogVG9ueSBMaW5kZ3JlbiA8dG9ueUBhdG9taWRlLmNvbT4NCkNjOiBXb29k
+cnVmZiwgUmljaGFyZCA8ci13b29kcnVmZjJAdGkuY29tPjsgbGludXgtb21hcEB2Z2VyLmtlcm5l
+bC5vcmcNClN1YmplY3Q6IFJlOiBbRVhURVJOQUxdIE9NQVAyNDMwIGtlcm5lbCBoYW5ncyBvbiBp
+b3JlbWFwIG9mIElWQTIuMSBhZGRyZXNzZXMNCg0KR29vZCBNb3JuaW5nLA0KDQpJIGhhdmUgYmVl
+biB1cGdyYWRpbmcgYSBsZWdhY3kgcHJvamVjdCB0aGF0IHJ1bnMgb24gYW4gT01BUDI0MzAgYmFz
+ZWQgb24gdGhlIGxpbnV4LW9tYXAgcmVwbyAodGFnIHYyLjYuMjgtb21hcDEpIHRvIG1haW5saW5l
+IHY1LjEwOyBJIGhhdmUgYmVlbiBhYmxlIHRvIGdldCB0aGUgbWFpbiBhcHBsaWNhdGlvbiBydW5u
+aW5nLCBob3dldmVyIEkgYW0gY29uY2VybmVkIHRoZXJlIGFyZSBwb3RlbnRpYWxseSBtYW55IHVu
+ZGVybHlpbmcgaXNzdWVzIEkgaGF2ZSBub3QgY29ycmVjdGVkIG5vciBldmVuIHNlZW4geWV0LiAg
+SSByZWNhbGxlZCBUb2554oCZcyBjb21tZW50IHRoYXQgdGhlIHBhcnQgaXMgZGF0ZWQgKG9mIGNv
+dXJzZSB0aGVyZSBpcyBubyBhcmd1bWVudCBmcm9tIG1lIHRoZXJlKSB0byB0aGUgcG9pbnQgdGhh
+dCBJIGFtIG5vdCBzdXJlIHRvIHdoYXQgZXh0ZW50IGFueW9uZSBoYXMgdXNlZCB0aGUgbGF0ZXN0
+IG1haW5saW5lIG9uIGFuIE9NQVAyeHh4IHBhcnQgKGkuZS4sIHJlZ3Jlc3Npb24gdGVzdGluZyku
+DQoNCkkgYW0gaG9wZWZ1bCBzb21lb25lIGhhcyBhIGdvb2Qgc3VnZ2VzdGlvbiB0byB0aGUgZm9s
+bG93aW5nIHF1ZXN0aW9uOiAgd2hhdCBtYWlubGluZSBrZXJuZWwgdmVyc2lvbiB3b3VsZCBiZSBj
+b25zaWRlcmVkIHRoZSBtb3N0IHN0YWJsZSBpbiByZWdhcmRzIHRvIGFuIE9NQVAyNDMwIHByb2Nl
+c3NvciB0aGF0IG1heSBhbHNvIGluY2x1ZGUgdGhlIFRJIFdMMTh4eCB3aWZpIGRyaXZlcj8gIE9y
+IGlmIHRoZXkgZG8gbm90IG92ZXJsYXAsIHNpbXBseSB3aGF0IGlzIHRoZSBsYXRlc3QgbWFpbmxp
+bmUga2VybmVsIHZlcnNpb24gdGhhdCB3b3VsZCBiZSBtb3N0IHN0YWJsZSBmb3IgT01BUDJ4eHg/
+ICBJIGFtIGp1c3QgYWZyYWlkIHRoZSB2NS4xMCBhbmQgdjQuMTkgYXJlIHNvIG5ldyB0aGF0IHRo
+ZXJlIGFyZSB1bmRlcmx5aW5nIGlzc3VlcyB0aGF0IHdvdWxkIHRha2Ugc2lnbmlmaWNhbnQgdGlt
+ZSB0byBjaGFzZSBkb3duOyBidXQgaWYgSSBjYW4gcm9sbC1iYWNrIHRvIGFuIG9sZGVyIHZlcnNp
+b24gKHlldCBuZXdlciB0aGFuIDIuNi4yOCksIHRoYXQgbWlnaHQgZ2V0IG1lIGNsb3NlciB0byB3
+aGVyZSBJIG5lZWQgdG8gYmUuDQoNClRoYW5rcyBmb3IgYW55IHN1Z2dlc3Rpb25zLA0KDQpEYXZl
+DQoNCj4gT24gSnVuIDgsIDIwMjEsIGF0IDExOjIwIFBNLCBUb255IExpbmRncmVuIDx0b255QGF0
+b21pZGUuY29tPiB3cm90ZToNCj4gDQo+IEhpLA0KPiANCj4gKiBXb29kcnVmZiwgUmljaGFyZCA8
+ci13b29kcnVmZjJAdGkuY29tPiBbMjEwNjA3IDE1OjQwXToNCj4+IEd1ZXNzOiB0aGlzIGJpdCBp
+biBKVEFHIHNjcmlwdCB1c2VkIGZvciBJVkEgdGVzdHMgcHJvYmFibHkgaXMgbWlzc2luZyBhbmQg
+bmVlZHMgdG8gYmUgd29ya2VkIGluLiAgVGhlIGdlbmVyaWMgbGludXgtb21hcCBjbG9jayBjb2Rl
+IHByb2JhYmx5IGhhbmRsZXMgdGhlIElWQSBjbG9jayBidXQgbWF5YmUgbm90IHRoZSByZXNldHMu
+DQo+PiANCj4+ICAgLyogIEVuYWJsZSBJVkEtc3MgZnVuY3Rpb25hbCBjbG9jayAoc2V0IGJpdCAw
+KSAqLw0KPj4gICAoKihpbnQqKTB4NDkwMDY4MDApIHw9IDB4MTsNCj4+IA0KPj4gICAvKiBSZWxl
+YXNlIGwzc19pZGxlX3JlcSAgKi8NCj4+ICAgKCooaW50KikweDQ5MDA2ODEwKSB8PSAoMSA8PCAx
+KTsNCj4+IA0KPj4gICAvKiBSZWxlYXNlIEwzUyByZXNldCBhbmQgcG93ZXItb24gcmVzZXQgKGNs
+ZWFyIGJpdCAxKSBhdCB0aGUgc2FtZSB0aW1lICovDQo+PiAgICgqKGludCopMHg0OTAwNjg1MCkg
+Jj0gfigoIDEgPDwgMSkpOw0KPiANCj4gSGVoIGFuZCBJIHRob3VnaHQgbm9ib2R5IGlzIHVzaW5n
+IDI0MzAgYW55IGxvbmdlciA6KQ0KPiANCj4gRllJLCB0aGUgY3VycmVudCBtYWlubGluZSBrZXJu
+ZWwgYWN0dWFsbHkgY2FuIGRlYWwgd2l0aCBhbGwgdGhhdCB1c2luZyANCj4gcmVzZXQgZHJpdmVy
+IGFuZCBnZW5wZCwgc2VlIGZvciBleGFtcGxlIGNvbW1pdHM6DQo+IA0KPiBhZTU3ZDE1NTg5MDgg
+KCJBUk06IGR0czogQ29uZmlndXJlIGludGVyY29ubmVjdCB0YXJnZXQgbW9kdWxlIGZvciBkcmE3
+IA0KPiBpdmEiKQ0KPiBlZmZlODllNDAwMzcgKCJzb2M6IHRpOiBvbWFwLXBybTogRml4IG9jY2Fz
+aW9uYWwgYWJvcnQgb24gcmVzZXQgDQo+IGRlYXNzZXJ0IGZvciBkcmE3IGl2YSIpDQo+IA0KPiBT
+aW1pbGFyIHNldHVwIHNob3VsZCBhbHNvIHdvcmsgZm9yIDI0MzAgYnV0IG5lZWRzIHRoZSBwb3dl
+ciBkb21haW5zIA0KPiBjb25maWd1cmVkIGZvciBkcml2ZXJzL3NvYy90aS9vbWFwX3BybS5jIGF0
+IGxlYXN0IGZvciBpdmEuDQo+IA0KPiBEYXZpZCwgSSB0aGluayB3aGF0IHlvdSdyZSBzZWVpbmcg
+aXMgaXZhIGdldHRpbmcgcmVsZWFzZWQgZnJvbSByZXNldCANCj4gd2l0aCBhbiB1bmNvbmZpZ3Vy
+ZWQgTU1VLCBhbmQgdGhlbiB0aGUgc3lzdGVtIHdpbGwgaGFuZy4NCj4gDQo+IFJlZ2FyZHMsDQo+
+IA0KPiBUb255DQoNCg==
