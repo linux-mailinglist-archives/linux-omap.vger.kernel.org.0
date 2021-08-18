@@ -2,117 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B5C23EDD45
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Aug 2021 20:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B190E3F0579
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Aug 2021 15:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230105AbhHPSnv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 Aug 2021 14:43:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbhHPSnu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 Aug 2021 14:43:50 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A45C0613C1
-        for <linux-omap@vger.kernel.org>; Mon, 16 Aug 2021 11:43:18 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id h11so28651038ljo.12
-        for <linux-omap@vger.kernel.org>; Mon, 16 Aug 2021 11:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tc8LvEjKB125fMvaYu4lvIYEHsbzSNtJpdQim2oDD+w=;
-        b=iQi8JqbQuE1XAZgXMTPQ/bq2ZSyLNYvZn4GHu6SXRYH7hMe75T+H4yVrj5+bLj0y/P
-         1bhzwOTyC9cDAoezDQaNh9rW9ZhUHP2n58JQVG9peGjJCfxR0s/1MMbESF4B2IuA5tCg
-         QIfSTfcM9U6Y427NAhhUvuUz28zeCQFYRwTzY74OTrkzJV/1UcRlKtqLqVETjaQwcNl0
-         stpD1FIzlKpjpcpKNX/UVklYyyxWey440cqHOs0/sgY6Vmod/D50ivwlBpj5Y6e2+Q/y
-         TXSFOAAAI6xpWc5F6Ui3Kam+3RtI9sSp1Z0eKsnls9Et9XhKnnK3XKaAiyL8HxUNr1o+
-         gcNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tc8LvEjKB125fMvaYu4lvIYEHsbzSNtJpdQim2oDD+w=;
-        b=kKoHuyFrmo3YR0iQA1MRGfif9VYA3yBntOElsUlR9lisIOP2jlJlr0CzBQv0VdB9xu
-         kNLUFmhklzy3E+T/QvTAOJngEURpIEvY55vpyYcVbRln+AwEuSC9RppBuaCDa9TA4pMb
-         dmXiSFbEtrCe5tbd8vguSEVv/aCvwtgumJZBg4CqOoEuAAZHZT/WewOq9GB+2/xpdnK3
-         EQq0WkoQ4rDZqH5w2woxY/evFieWp2H5zcn234zNVwIB/7LS/+DpkqObusCMDZwJ/WTe
-         SyFjqVuRPpxWrHJxchszafrI7jeCi5/kjtXQkc1aZ8DGrttfSr2/r8BMvLIi/6MtQHL/
-         iCfg==
-X-Gm-Message-State: AOAM532+ijU3VPh9YrNL2xkesPICaxc0kvbLhKckMQjXVP5+5J7aQ+fL
-        BpRVo+Ub0CkPOaNhrH7XJ6OIH1ndqQuRy0J+qttbSg==
-X-Google-Smtp-Source: ABdhPJxh2J/gfj4uaNJSi+hQ4c8sGsIdVmOD7cbnGyOdIh3lGXQ2f0SdgCyg3NVunsSvPOSfgxwlymzCJCztsFWubLY=
-X-Received: by 2002:a2e:94cb:: with SMTP id r11mr61720ljh.116.1629139396718;
- Mon, 16 Aug 2021 11:43:16 -0700 (PDT)
+        id S238252AbhHRN7m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 18 Aug 2021 09:59:42 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:45650 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238027AbhHRN7l (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 18 Aug 2021 09:59:41 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 17IDwtkx030165;
+        Wed, 18 Aug 2021 08:58:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1629295135;
+        bh=JcQTkmL2npVaq5oSIjOTaMiBBRi3bnk0fB3Mygg/7Hc=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=KXcMNJHH9Xl3hUN5856K9/sSv+bOt5Wzy5TN13m9/fgQLiL5XylwKuzIsyZuEVoFW
+         WR5Woz9ygXDXAQ7l/s8sDEXrEmzRMlg+cw8i033cP5YdkTmG2yyYfJmJbKWUuamQwL
+         s0fl7vXr36dEv5+L62pDr5wQj/SJ3jQNgUpL7BZU=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 17IDwt2D121306
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 18 Aug 2021 08:58:55 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Wed, 18
+ Aug 2021 08:58:54 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Wed, 18 Aug 2021 08:58:54 -0500
+Received: from [10.250.232.133] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 17IDwoP7043374;
+        Wed, 18 Aug 2021 08:58:51 -0500
+Subject: Re: [PATCH v2 1/3] dt-bindings: PCI: ti,j721e: Add bindings to
+ specify legacy interrupts
+To:     Rob Herring <robh@kernel.org>
+CC:     Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Tom Joseph <tjoseph@cadence.com>, <linux-omap@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Lokesh Vutla <lokeshvutla@ti.com>
+References: <20210804132912.30685-1-kishon@ti.com>
+ <20210804132912.30685-2-kishon@ti.com> <YRapMFNb63MSPJ1E@robh.at.kernel.org>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <d0f83129-4c9a-d9ff-380a-cab37a86e29e@ti.com>
+Date:   Wed, 18 Aug 2021 19:28:50 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210815191852.52271-1-nathan@kernel.org>
-In-Reply-To: <20210815191852.52271-1-nathan@kernel.org>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 16 Aug 2021 11:43:05 -0700
-Message-ID: <CAKwvOdknYUxe1dHW-muGr=ZJc=hCKBrfhZCNQR9tEJTwr0fK=Q@mail.gmail.com>
-Subject: Re: [PATCH] bus: ti-sysc: Add break in switch statement in sysc_init_soc()
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <YRapMFNb63MSPJ1E@robh.at.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Aug 15, 2021 at 12:19 PM Nathan Chancellor <nathan@kernel.org> wrote:
->
-> After commit a6d90e9f2232 ("bus: ti-sysc: AM3: RNG is GP only"), clang
-> with -Wimplicit-fallthrough enabled warns:
->
-> drivers/bus/ti-sysc.c:2958:3: warning: unannotated fall-through between
-> switch labels [-Wimplicit-fallthrough]
->                 default:
->                 ^
-> drivers/bus/ti-sysc.c:2958:3: note: insert 'break;' to avoid
-> fall-through
->                 default:
->                 ^
->                 break;
-> 1 warning generated.
->
-> Clang's version of this warning is a little bit more pedantic than
-> GCC's. Add the missing break to satisfy it to match what has been done
-> all over the kernel tree.
->
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Hi Rob,
 
-Thanks for the patch!
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+On 13/08/21 10:47 pm, Rob Herring wrote:
+> On Wed, Aug 04, 2021 at 06:59:10PM +0530, Kishon Vijay Abraham I wrote:
+>> Add bindings to specify interrupt controller for legacy interrupts.
+>>
+>> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+>> ---
+>>  .../bindings/pci/ti,j721e-pci-host.yaml           | 15 +++++++++++++++
+>>  1 file changed, 15 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+>> index cc900202df29..f461d7b4c0cc 100644
+>> --- a/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+>> +++ b/Documentation/devicetree/bindings/pci/ti,j721e-pci-host.yaml
+>> @@ -74,6 +74,11 @@ properties:
+>>  
+>>    msi-map: true
+>>  
+>> +patternProperties:
+>> +  "interrupt-controller":
+> 
+> Not a pattern unless you meant for foo-interrupt-controller-bar to be 
+> valid.
+> 
+> Anything is allowed in the node?
 
-> ---
->  drivers/bus/ti-sysc.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-> index 0ef98e3ba341..afe8222db7cd 100644
-> --- a/drivers/bus/ti-sysc.c
-> +++ b/drivers/bus/ti-sysc.c
-> @@ -2955,6 +2955,7 @@ static int sysc_init_soc(struct sysc *ddata)
->                         break;
->                 case SOC_AM3:
->                         sysc_add_disabled(0x48310000);  /* rng */
-> +                       break;
->                 default:
->                         break;
->                 }
->
-> base-commit: ba31f97d43be41ca99ab72a6131d7c226306865f
-> --
-> 2.33.0.rc2
->
-> --
-> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20210815191852.52271-1-nathan%40kernel.org.
+It's same as whatever is defined in schemas/interrupt-controller.yaml,
+just that it should be a subnode of pcie@. Should I add whatever is
+present in schemas/interrupt-controller.yaml here?
 
-
-
--- 
-Thanks,
-~Nick Desaulniers
+Thanks
+Kishon
+> 
+>> +    type: object
+>> +    description: interrupt controller to handle legacy interrupts.
+>> +
+>>  required:
+>>    - compatible
+>>    - reg
+>> @@ -97,6 +102,8 @@ unevaluatedProperties: false
+>>  
+>>  examples:
+>>    - |
+>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>>      #include <dt-bindings/soc/ti,sci_pm_domain.h>
+>>      #include <dt-bindings/gpio/gpio.h>
+>>  
+>> @@ -131,5 +138,13 @@ examples:
+>>              ranges = <0x01000000 0x0 0x10001000  0x00 0x10001000  0x0 0x0010000>,
+>>                       <0x02000000 0x0 0x10011000  0x00 0x10011000  0x0 0x7fef000>;
+>>              dma-ranges = <0x02000000 0x0 0x0 0x0 0x0 0x10000 0x0>;
+>> +
+>> +
+>> +            pcie0_intc: interrupt-controller {
+>> +                    interrupt-controller;
+>> +                    #interrupt-cells = <1>;
+>> +                    interrupt-parent = <&gic500>;
+>> +                    interrupts = <GIC_SPI 312 IRQ_TYPE_EDGE_RISING>;
+>> +            };
+>>          };
+>>      };
+>> -- 
+>> 2.17.1
+>>
+>>
