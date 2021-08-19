@@ -2,47 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ACCC53F13AE
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Aug 2021 08:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D27063F18B5
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Aug 2021 14:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231446AbhHSGkn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Aug 2021 02:40:43 -0400
-Received: from muru.com ([72.249.23.125]:48844 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230483AbhHSGkm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 19 Aug 2021 02:40:42 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7252680EB;
-        Thu, 19 Aug 2021 06:40:28 +0000 (UTC)
-Date:   Thu, 19 Aug 2021 09:40:05 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
-Subject: Re: [PATCH] bus: ti-sysc: Add break in switch statement in
- sysc_init_soc()
-Message-ID: <YR38xShxaaEzNPxi@atomide.com>
-References: <20210815191852.52271-1-nathan@kernel.org>
+        id S238357AbhHSMFV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Aug 2021 08:05:21 -0400
+Received: from smtp-relay-canonical-1.canonical.com ([185.125.188.121]:51948
+        "EHLO smtp-relay-canonical-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238105AbhHSMFV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 19 Aug 2021 08:05:21 -0400
+Received: from localhost (1.general.cking.uk.vpn [10.172.193.212])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 977413F328;
+        Thu, 19 Aug 2021 12:04:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1629374683;
+        bh=QUE+Hz7hicyzL2G0Uw8v/suyW1F/+qww9QoZPWvoHqY=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
+        b=Zxfo5gIWEgwYXJKX9Yv8VfkD9cB+DuhbtRR14+jv/2PoUDagdODjcAAfgvk/BRqWM
+         eHdOLeju7mDV/m3L9ErakhO/+JLbyb/fdttrBERrbItm+K6snYHpoOSffnhSf0KquA
+         duQyJsTyMNzvkB6/LEzmXuNFlb9vfLjddQaSuvzJWMfS/lCUH1UjLLCb4ygfsefzxb
+         X+4qle46s1bqTO78peg7Zkd/Hiu4y8cQW/8NaG9VfbuyTj5OBx7iC3q+AfWroRyII+
+         fnmPPQrtyMPgTM6dHQLJ1petxBw1USD9LaHXew1Ah4zn/JugC8+Yl+WGKIjXgkn1WT
+         vAVoH42/K+frw==
+From:   Colin King <colin.king@canonical.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] net: ethernet: ti: cpsw: make array stpa static const, makes object smaller
+Date:   Thu, 19 Aug 2021 13:04:43 +0100
+Message-Id: <20210819120443.7083-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210815191852.52271-1-nathan@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Nathan Chancellor <nathan@kernel.org> [210815 22:19]:
-> After commit a6d90e9f2232 ("bus: ti-sysc: AM3: RNG is GP only"), clang
-> with -Wimplicit-fallthrough enabled warns:
-> 
-> drivers/bus/ti-sysc.c:2958:3: warning: unannotated fall-through between
-> switch labels [-Wimplicit-fallthrough]
->                 default:
+From: Colin Ian King <colin.king@canonical.com>
 
-Thanks applying into fixes.
+Don't populate the array stpa on the stack but instead it
+static const. Makes the object code smaller by 81 bytes:
 
-Regards,
+Before:
+   text    data   bss    dec    hex filename
+  54993   17248     0  72241  11a31 ./drivers/net/ethernet/ti/cpsw_new.o
 
-Tony
+After:
+   text    data   bss    dec    hex filename
+  54784   17376     0  72160  119e0 ./drivers/net/ethernet/ti/cpsw_new.o
+
+(gcc version 10.3.0)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/ti/cpsw_new.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index 85d05b9be2b8..534d39f729e2 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -502,7 +502,7 @@ static void cpsw_restore(struct cpsw_priv *priv)
+ 
+ static void cpsw_init_stp_ale_entry(struct cpsw_common *cpsw)
+ {
+-	char stpa[] = {0x01, 0x80, 0xc2, 0x0, 0x0, 0x0};
++	static const char stpa[] = {0x01, 0x80, 0xc2, 0x0, 0x0, 0x0};
+ 
+ 	cpsw_ale_add_mcast(cpsw->ale, stpa,
+ 			   ALE_PORT_HOST, ALE_SUPER, 0,
+-- 
+2.32.0
+
