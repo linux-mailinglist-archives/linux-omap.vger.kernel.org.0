@@ -2,68 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 692463F1BBB
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Aug 2021 16:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96F0C3F24AE
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Aug 2021 04:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240487AbhHSOjh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Aug 2021 10:39:37 -0400
-Received: from foss.arm.com ([217.140.110.172]:39848 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240264AbhHSOjh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 19 Aug 2021 10:39:37 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B878113E;
-        Thu, 19 Aug 2021 07:39:00 -0700 (PDT)
-Received: from e123427-lin.arm.com (unknown [10.57.42.121])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D0A7D3F66F;
-        Thu, 19 Aug 2021 07:38:57 -0700 (PDT)
-From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-To:     Kishon Vijay Abraham I <kishon@ti.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Rob Herring <robh@kernel.org>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-omap@vger.kernel.org, nadeem@cadence.com,
-        linux-arm-kernel@lists.infradead.org,
-        Tom Joseph <tjoseph@cadence.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lokesh Vutla <lokeshvutla@ti.com>
-Subject: Re: [PATCH v3 0/5] PCI: Add support for J7200 and AM64
-Date:   Thu, 19 Aug 2021 15:38:52 +0100
-Message-Id: <162938392214.29875.12508742461574225755.b4-ty@arm.com>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20210811123336.31357-1-kishon@ti.com>
-References: <20210811123336.31357-1-kishon@ti.com>
+        id S237268AbhHTCQJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 Aug 2021 22:16:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36666 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234768AbhHTCQI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Aug 2021 22:16:08 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D5EC061575;
+        Thu, 19 Aug 2021 19:15:31 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id y9so6333579qtv.7;
+        Thu, 19 Aug 2021 19:15:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mgg6OSXjYOGCt953oRCYOuUm9dXQWYHQwFuVeNFVFo4=;
+        b=s2w/JUFsOgn9JFym1QKLSk51H9GIQhKoD6hJgH/5zCeC0VvYYpoDBk5uijYU5EUMG7
+         FjmzR0qQi+gKFkZy43UzC1Btzfq5ZexhRihAX1+kef9/lnEHRNQduYMHCwKNH5DdyNh6
+         IhNdwsXMrBM25fI+zSvQy+Uf4s6dOZvVDHdEdEHEaI3r/Or2kcaX+77CnG8fcXEeQ3X0
+         04xNTbTrkS9CDOFsJSfl/Hrm1eSNzE/+N2IvHUCu/L1CxySzqu79UiLwk0xGx7k9r6oI
+         yLwVrpzVJwvSIUjRS+3cHizfOSqjnEZOH/D4gYjxAltWKjfA2veDm6+89Ldl08adZAvX
+         mHNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mgg6OSXjYOGCt953oRCYOuUm9dXQWYHQwFuVeNFVFo4=;
+        b=La+n/poZaZvaVDE39cPp2fG5dNtz/I84wNcNVLXcFCP6sbBbiPcn/pBtafOKJjlg5b
+         DY9oBH1Da8MN0rGthZwDKZ7jfc/HU+6FY9olM6WsDa08ciCWxv2ogIPetTwdXzUKIiUD
+         8FiIuqHjsSXxCeWPHokcBa2tzblCLkBRK664IVMbHusKxP8q3C5y663Xfz8cHrltCcUN
+         vwdWh4DH9X6YBpRKKTkwJXQDgMNBqoQH+w16d+Yr+26F9Fu+7PisEnRfRkq8uMYVXKQ3
+         by50HP6pt4SF502L475nuqe1rh3TyF9uZnOlcZ8qUwMsW5tGvcW90bVFLrXBUxyQctoY
+         e6YA==
+X-Gm-Message-State: AOAM530kPMBukOQDU6XOpCmcbgrReaTtaha8ZPPsYq6sUhlUEKcsazaO
+        HLWwolyLc8Kj0AGMnIoELJI=
+X-Google-Smtp-Source: ABdhPJyqwKeMCdI+1c0UUXtbwtY8zYIle1OYAae0EU3Kld2Yh2/EQfmbiYWh/P7oP0tCOS6FI6iFbA==
+X-Received: by 2002:ac8:5d0b:: with SMTP id f11mr15514469qtx.294.1629425730969;
+        Thu, 19 Aug 2021 19:15:30 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id n124sm2595096qkf.119.2021.08.19.19.15.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Aug 2021 19:15:30 -0700 (PDT)
+From:   jing yangyang <cgel.zte@gmail.com>
+X-Google-Original-From: jing yangyang <jing.yangyang@zte.com.cn>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Russell King <linux@armlinux.org.uk>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        jing yangyang <jing.yangyang@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH linux-next] arm: dma fix returnvar.cocci warnings
+Date:   Thu, 19 Aug 2021 19:15:18 -0700
+Message-Id: <20210820021518.10844-1-jing.yangyang@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 11 Aug 2021 18:03:31 +0530, Kishon Vijay Abraham I wrote:
-> This series adds the compatible specific to J7200 and AM64 and
-> applies the erratas and configuration specific to them.
-> 
-> This series also includes Nadeem's patch that adds a quirk in
-> Cadence driver which is used by J7200 [1].
-> 
-> The DT binding for both J7200 and AM64 is already merged.
-> 
-> [...]
+Remove unneeded variables when "0" can be returned.
 
-Applied to pci/cadence, thanks!
+Generated by: scripts/coccinelle/misc/returnvar.cocci
 
-[1/5] PCI: cadence: Use bitfield for *quirk_retrain_flag* instead of bool
-      https://git.kernel.org/lpieralisi/pci/c/f4455748b2
-[2/5] PCI: cadence: Add quirk flag to set minimum delay in LTSSM Detect.Quiet state
-      https://git.kernel.org/lpieralisi/pci/c/09c24094b2
-[3/5] PCI: j721e: Add PCIe support for J7200
-      https://git.kernel.org/lpieralisi/pci/c/f1de58802f
-[4/5] PCI: j721e: Add PCIe support for AM64
-      https://git.kernel.org/lpieralisi/pci/c/c8a375a8e1
-[5/5] misc: pci_endpoint_test: Add deviceID for AM64 and J7200
-      https://git.kernel.org/lpieralisi/pci/c/7c52009d94
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: jing yangyang <jing.yangyang@zte.com.cn>
+---
+ arch/arm/mach-omap2/dma.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Thanks,
-Lorenzo
+diff --git a/arch/arm/mach-omap2/dma.c b/arch/arm/mach-omap2/dma.c
+index dfc9b21..ba4a48e 100644
+--- a/arch/arm/mach-omap2/dma.c
++++ b/arch/arm/mach-omap2/dma.c
+@@ -79,7 +79,6 @@
+ 
+ static unsigned configure_dma_errata(void)
+ {
+-	unsigned errata = 0;
+ 
+ 	/*
+ 	 * Errata applicable for OMAP2430ES1.0 and all omap2420
+@@ -158,7 +157,7 @@ static unsigned configure_dma_errata(void)
+ 	if (cpu_is_omap34xx() && (omap_type() != OMAP2_DEVICE_TYPE_GP))
+ 		SET_DMA_ERRATA(DMA_ROMCODE_BUG);
+ 
+-	return errata;
++	return 0;
+ }
+ 
+ static const struct dma_slave_map omap24xx_sdma_dt_map[] = {
+-- 
+1.8.3.1
+
+
