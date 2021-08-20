@@ -2,100 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96F0C3F24AE
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Aug 2021 04:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FEBD3F2898
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Aug 2021 10:39:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237268AbhHTCQJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 Aug 2021 22:16:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36666 "EHLO
+        id S230418AbhHTIk3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 Aug 2021 04:40:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234768AbhHTCQI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 Aug 2021 22:16:08 -0400
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D5EC061575;
-        Thu, 19 Aug 2021 19:15:31 -0700 (PDT)
-Received: by mail-qt1-x830.google.com with SMTP id y9so6333579qtv.7;
-        Thu, 19 Aug 2021 19:15:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mgg6OSXjYOGCt953oRCYOuUm9dXQWYHQwFuVeNFVFo4=;
-        b=s2w/JUFsOgn9JFym1QKLSk51H9GIQhKoD6hJgH/5zCeC0VvYYpoDBk5uijYU5EUMG7
-         FjmzR0qQi+gKFkZy43UzC1Btzfq5ZexhRihAX1+kef9/lnEHRNQduYMHCwKNH5DdyNh6
-         IhNdwsXMrBM25fI+zSvQy+Uf4s6dOZvVDHdEdEHEaI3r/Or2kcaX+77CnG8fcXEeQ3X0
-         04xNTbTrkS9CDOFsJSfl/Hrm1eSNzE/+N2IvHUCu/L1CxySzqu79UiLwk0xGx7k9r6oI
-         yLwVrpzVJwvSIUjRS+3cHizfOSqjnEZOH/D4gYjxAltWKjfA2veDm6+89Ldl08adZAvX
-         mHNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mgg6OSXjYOGCt953oRCYOuUm9dXQWYHQwFuVeNFVFo4=;
-        b=La+n/poZaZvaVDE39cPp2fG5dNtz/I84wNcNVLXcFCP6sbBbiPcn/pBtafOKJjlg5b
-         DY9oBH1Da8MN0rGthZwDKZ7jfc/HU+6FY9olM6WsDa08ciCWxv2ogIPetTwdXzUKIiUD
-         8FiIuqHjsSXxCeWPHokcBa2tzblCLkBRK664IVMbHusKxP8q3C5y663Xfz8cHrltCcUN
-         vwdWh4DH9X6YBpRKKTkwJXQDgMNBqoQH+w16d+Yr+26F9Fu+7PisEnRfRkq8uMYVXKQ3
-         by50HP6pt4SF502L475nuqe1rh3TyF9uZnOlcZ8qUwMsW5tGvcW90bVFLrXBUxyQctoY
-         e6YA==
-X-Gm-Message-State: AOAM530kPMBukOQDU6XOpCmcbgrReaTtaha8ZPPsYq6sUhlUEKcsazaO
-        HLWwolyLc8Kj0AGMnIoELJI=
-X-Google-Smtp-Source: ABdhPJyqwKeMCdI+1c0UUXtbwtY8zYIle1OYAae0EU3Kld2Yh2/EQfmbiYWh/P7oP0tCOS6FI6iFbA==
-X-Received: by 2002:ac8:5d0b:: with SMTP id f11mr15514469qtx.294.1629425730969;
-        Thu, 19 Aug 2021 19:15:30 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id n124sm2595096qkf.119.2021.08.19.19.15.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Aug 2021 19:15:30 -0700 (PDT)
-From:   jing yangyang <cgel.zte@gmail.com>
-X-Google-Original-From: jing yangyang <jing.yangyang@zte.com.cn>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Russell King <linux@armlinux.org.uk>, linux-omap@vger.kernel.org,
+        with ESMTP id S232492AbhHTIkT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 Aug 2021 04:40:19 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00D14C061575;
+        Fri, 20 Aug 2021 01:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=DfZRiyhckJgDZd+4P0ruvpcZyWdGQcguYkwagPN4yBw=; b=CkpGap+R6re0l37V45qzEe6OA
+        IH0thIi0Oi4MTQjS2d+2aplShKUdrZZC20H3jE5SfTvSFvVBUhrZG0WmBgbBAqBlOkqOL652Ufndr
+        K0z84/fo+bOJBseJRINXpNGC4LQioVEyQx4zsyIaJtQL0pg38Y1iJPGrR43NBAoPa8BWiht5gevQD
+        fH5e5PkaxSx2D09N3B3xwGn2pUuaglhHGdNBzPCAcHsFRCSkQUX7iZM51OWvCdUw2bI0naMoff90e
+        ZEdzxj1QVo2140hp8YFP4FPCJVPIti+qu6skTWnM6OPmASAo8hULEZ1UE6vlgp09omNVluz0VFNR9
+        T9iWIoYOg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47474)
+        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1mH03p-00075E-6X; Fri, 20 Aug 2021 09:39:33 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1mH03j-0003Dt-OM; Fri, 20 Aug 2021 09:39:27 +0100
+Date:   Fri, 20 Aug 2021 09:39:27 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     jing yangyang <cgel.zte@gmail.com>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         jing yangyang <jing.yangyang@zte.com.cn>,
         Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH linux-next] arm: dma fix returnvar.cocci warnings
-Date:   Thu, 19 Aug 2021 19:15:18 -0700
-Message-Id: <20210820021518.10844-1-jing.yangyang@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: Re: [PATCH linux-next] arm: dma fix returnvar.cocci warnings
+Message-ID: <20210820083927.GC1343@shell.armlinux.org.uk>
+References: <20210820021518.10844-1-jing.yangyang@zte.com.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210820021518.10844-1-jing.yangyang@zte.com.cn>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Remove unneeded variables when "0" can be returned.
+On Thu, Aug 19, 2021 at 07:15:18PM -0700, jing yangyang wrote:
+> Remove unneeded variables when "0" can be returned.
+> 
+> Generated by: scripts/coccinelle/misc/returnvar.cocci
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: jing yangyang <jing.yangyang@zte.com.cn>
 
-Generated by: scripts/coccinelle/misc/returnvar.cocci
+NAK.  This is not the first time this _untested_ and _incorrect_
+patch has been submitted.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: jing yangyang <jing.yangyang@zte.com.cn>
----
- arch/arm/mach-omap2/dma.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/arch/arm/mach-omap2/dma.c b/arch/arm/mach-omap2/dma.c
-index dfc9b21..ba4a48e 100644
---- a/arch/arm/mach-omap2/dma.c
-+++ b/arch/arm/mach-omap2/dma.c
-@@ -79,7 +79,6 @@
- 
- static unsigned configure_dma_errata(void)
- {
--	unsigned errata = 0;
- 
- 	/*
- 	 * Errata applicable for OMAP2430ES1.0 and all omap2420
-@@ -158,7 +157,7 @@ static unsigned configure_dma_errata(void)
- 	if (cpu_is_omap34xx() && (omap_type() != OMAP2_DEVICE_TYPE_GP))
- 		SET_DMA_ERRATA(DMA_ROMCODE_BUG);
- 
--	return errata;
-+	return 0;
- }
- 
- static const struct dma_slave_map omap24xx_sdma_dt_map[] = {
 -- 
-1.8.3.1
-
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
