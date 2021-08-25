@@ -2,83 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 030DE3F5D9A
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Aug 2021 14:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF293F73BE
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Aug 2021 12:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236880AbhHXMEw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 24 Aug 2021 08:04:52 -0400
-Received: from smtpbg587.qq.com ([113.96.223.105]:50970 "EHLO smtpbg587.qq.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234787AbhHXMEv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 24 Aug 2021 08:04:51 -0400
-X-QQ-mid: bizesmtp54t1629806534tjskznfw
-Received: from localhost.localdomain (unknown [171.223.97.141])
-        by esmtp6.qq.com (ESMTP) with 
-        id ; Tue, 24 Aug 2021 20:02:13 +0800 (CST)
-X-QQ-SSF: 01000000000000B0D000000A0000000
-X-QQ-FEAT: X7NOTpAiNV9y2mUVjnG8y0XYRtp6ebttZyUfiBBe3EQj5Fcr2bdcWJe1rLBUf
-        QmjOFhF9IG6VcW25vClp/mRXX3siqUCjxGywC/sT22vcuV9RkmX6G62J+RVEfvPx1N2yFlZ
-        0eYpSp1OkmvI5LaA/f2HW1IbQFtAnuGQqRdbI8zMjh3RBOln9HpGxJq8j+1favQJDpKEs11
-        f04qLunsOUBulhMAEc904aTgefcFsZgdbjRLsJ+ahvAElxsnAat7vUXjTB7YzX1Zs6bwwXK
-        Dnba+Rzr7gMHCWXlf/rvT1aN9zmvfYmlwx3sLhEwbwuMYABm3/Sr5GB7F/mMQodBZqmoDSy
-        zR6dq2c
-X-QQ-GoodBg: 0
-From:   Jason Wang <wangborong@cdjrlc.com>
-To:     paul@pwsan.com
-Cc:     bcousson@baylibre.com, tony@atomide.com, linux@armlinux.org.uk,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Jason Wang <wangborong@cdjrlc.com>
-Subject: [PATCH] ARM: OMAP2+: Fix typo in some comments
-Date:   Tue, 24 Aug 2021 20:01:23 +0800
-Message-Id: <20210824120123.10899-1-wangborong@cdjrlc.com>
-X-Mailer: git-send-email 2.32.0
+        id S237052AbhHYKyf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 25 Aug 2021 06:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47420 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236560AbhHYKyf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Aug 2021 06:54:35 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D9CC061757
+        for <linux-omap@vger.kernel.org>; Wed, 25 Aug 2021 03:53:49 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id i6so36280115edu.1
+        for <linux-omap@vger.kernel.org>; Wed, 25 Aug 2021 03:53:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=DmdV8096NdizQwTeMvVQkDoJuE9MC+OXLADeBXSmY6I=;
+        b=ZsFSm3mXluiOlewiCwnoKGr2xDS7rSjYe641Ymepe6+u1QRCZ9QRRX+hxneN79Eocf
+         TSzriEEqn+5edTwAD7WCz8ShDGBph7AJ9B3TFKyOg/yLqtmhB6iBxpE3Z9Yoc6j+D0WM
+         Ux6QxKZG/3cTzksJH2ITq+xEetPkO/X0BZzfEpY5ypl1iJG+JejphdxBnCcEMQ2vh1MS
+         OpDzAjpzDZ44OCHnWX/qPofrEzlc1PhoyfU23x4GMUOuIcGQStE1T17qMdFvCtULO0gg
+         Hd5Q0AKFfDFGSlozX1a/fm5Hrw6h/9boe3aYIC8oZxZSlDdGD3v4eYrZnz+FPBDCN+/l
+         gOfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=DmdV8096NdizQwTeMvVQkDoJuE9MC+OXLADeBXSmY6I=;
+        b=AyWn2wXE7pv4PSzRB6juk00zoeRResKxoRcDQ1iLz6WC9g8zmv5LmunkQbaHycYS9Q
+         ru/LeYRN/DTHuz74wEu17KkxGbQEEjuf9BV7V1bgn32MYsuFewt2Cq/2u1Rin5E9v77V
+         xjLwFanJP2Owy+erbdnzbQa1078p11g/ap9MWtHjxnNuo5lwXtsYGxc1PXEcsIpMxhWj
+         ctX1ZHqJ+J+0AJc0AuaT0jehAlQTyt2x09IhbqtWjgWLBvZjSmptfn2t2uPR5o9E6qtp
+         lSSnDjKmMnlUm8JPvyqghs9NWTBMRKW8u+v9oxbl3ADSx3fUE5XkPWsWrb9QW/g9Law4
+         S9pg==
+X-Gm-Message-State: AOAM531xmwUOgzZUeRJREutEB0jLuQOt7dtpyEvyBjYWW2QPBtexHSxi
+        7gnNnZtIG3LxMeOvq+RJV4aOAjloBwKxFEbtpRQ=
+X-Google-Smtp-Source: ABdhPJxDRdweAo0OqGHMQfaHdYW9bexindEk2PJPSIcaqIyqkqHPvZvBLs04PlUCrv2CHZEXr7zrVTKxs/J5nVsHKk0=
+X-Received: by 2002:aa7:cfcb:: with SMTP id r11mr20165550edy.14.1629888827916;
+ Wed, 25 Aug 2021 03:53:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam3
+Received: by 2002:a05:6402:b85:0:0:0:0 with HTTP; Wed, 25 Aug 2021 03:53:47
+ -0700 (PDT)
+Reply-To: seybajean@yahoo.com
+From:   seyba jean <seybaj2001@gmail.com>
+Date:   Wed, 25 Aug 2021 11:53:47 +0100
+Message-ID: <CA+nO_N6cOjihVXUQiGoz=cJ78QJj1BwPtVREQh0_h4+p_TGbKw@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The double `the' in comment "get a struct clk * for the the hwmod's ..."
-is repeated. Therefore, we should remove one of them from the comments.
-
-Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
----
- arch/arm/mach-omap2/omap_hwmod.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
-index 12b26e04686f..a78ef7e7ce23 100644
---- a/arch/arm/mach-omap2/omap_hwmod.c
-+++ b/arch/arm/mach-omap2/omap_hwmod.c
-@@ -812,7 +812,7 @@ static struct clk *_lookup_clkctrl_clk(struct omap_hwmod *oh)
- }
- 
- /**
-- * _init_main_clk - get a struct clk * for the the hwmod's main functional clk
-+ * _init_main_clk - get a struct clk * for the hwmod's main functional clk
-  * @oh: struct omap_hwmod *
-  *
-  * Called from _init_clocks().  Populates the @oh _clk (main
-@@ -862,7 +862,7 @@ static int _init_main_clk(struct omap_hwmod *oh)
- }
- 
- /**
-- * _init_interface_clks - get a struct clk * for the the hwmod's interface clks
-+ * _init_interface_clks - get a struct clk * for the hwmod's interface clks
-  * @oh: struct omap_hwmod *
-  *
-  * Called from _init_clocks().  Populates the @oh OCP slave interface
-@@ -901,7 +901,7 @@ static int _init_interface_clks(struct omap_hwmod *oh)
- }
- 
- /**
-- * _init_opt_clk - get a struct clk * for the the hwmod's optional clocks
-+ * _init_opt_clk - get a struct clk * for the hwmod's optional clocks
-  * @oh: struct omap_hwmod *
-  *
-  * Called from _init_clocks().  Populates the @oh omap_hwmod_opt_clk
 -- 
-2.32.0
+Hello,
 
+I am so sorry contacting you in this means especially when we have
+never met before. I urgently seek your service to represent me in
+investing in your region / country and you will be rewarded for your
+service without affecting your present job with very little time
+invested in it.
+
+My interest is in buying real estate, private schools or companies
+with potentials for rapid growth in long terms.
+
+So please confirm interest by responding back.
+
+My dearest regards
+
+Seyba Jean
