@@ -2,78 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A49553F791F
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Aug 2021 17:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A95D3F7E48
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Aug 2021 00:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242031AbhHYPft (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 25 Aug 2021 11:35:49 -0400
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:47475 "EHLO
-        mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241961AbhHYPfl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Aug 2021 11:35:41 -0400
-Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 373F2C32AE;
-        Wed, 25 Aug 2021 15:27:06 +0000 (UTC)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id AF657C000B;
-        Wed, 25 Aug 2021 15:26:42 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
+        id S229890AbhHYWU1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 25 Aug 2021 18:20:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229684AbhHYWU1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Aug 2021 18:20:27 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 320DAC061757
+        for <linux-omap@vger.kernel.org>; Wed, 25 Aug 2021 15:19:41 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id c4so431033plh.7
+        for <linux-omap@vger.kernel.org>; Wed, 25 Aug 2021 15:19:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pdp7-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7y91ZZBFmSi3o3CDJ8D/muM7G6GHXmZrIVUvgWSiFNA=;
+        b=hWNx527ojuNThiL2YMY3rZod4+Absf8DJSeJjrO49nLpWRQI3m+2ekATsn8sTS93FX
+         bP0o8PIavWDxSLI3bRSZktmWzndwZiI90kzxMrP9uHAgWqR0d2bOyh9RCv3XVtdJ/4lz
+         bdKPDdq6Kx+RE9e6mHbWeAB12Z8PZA+Ve8m64+iGU/vsieXsR1gM66yOi6YQU5YU0IQe
+         ASa1i20ApqlFz/d70s/KFEJA+Gd12HXD68b8yzVDisF4e8ME2vM3rhjInw5bZ/pDzmcy
+         sgxAK5JIMKW15oFwHPvczE5PyFryxpuWEV1qogUMASSO6foCfQlgQexK7dIE1oP++Ahd
+         CzFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7y91ZZBFmSi3o3CDJ8D/muM7G6GHXmZrIVUvgWSiFNA=;
+        b=knjY3qgHGysIGHN/XujmmI84dEq7T/cYV5MVBLDzOQCUH82V0+gUfWva9iedLXq5Dt
+         2eZxBeiXwOO3uRMQWKTBIdXqzKOaP0g8yfhUeVrReJMClhT544dZQBQrTuXplW5028i9
+         GlUbarKUntfv4dW774ZNJIv4nOl/v1mh2/WXuse/FxE8pd0+DWPKupCYYcWUmveMQOH5
+         urrHUK2W8PA9yJchE6LMTooCqDXcWy375Dwgu6ObP24edIL/5lPsNokb7twj3iigRNGV
+         cVdWg8YdrWQBsDs8RXa1j43i7HEitwUAG1j39gAAzGpSH9YSfd8SSkjV6a8ANYk+ZuU9
+         iuPQ==
+X-Gm-Message-State: AOAM530jHGtTEm9qWvULdK1VrdaJTkjBByowkkpzS78UTl2bNhHIDOGz
+        W8J2KIBh/Jl2rEuIl8PYbuVdLg==
+X-Google-Smtp-Source: ABdhPJx3ajUGrJMkfstuFqFPcxHSkqyvquMO1us6MWW98soyBM8Kd3/DJQ6RnBTpANpt4pJ8qmtAaQ==
+X-Received: by 2002:a17:902:e8ce:b0:132:b140:9540 with SMTP id v14-20020a170902e8ce00b00132b1409540mr678239plg.28.1629929980596;
+        Wed, 25 Aug 2021 15:19:40 -0700 (PDT)
+Received: from localhost.localdomain ([174.127.163.79])
+        by smtp.gmail.com with ESMTPSA id n1sm969527pgt.63.2021.08.25.15.19.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Aug 2021 15:19:40 -0700 (PDT)
+From:   Drew Fustini <drew@pdp7.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "Ryan J . Barnett" <ryan.barnett@collins.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 40/40] ARM: dts: am437x-gp-evm: enable ADC1
-Date:   Wed, 25 Aug 2021 17:25:18 +0200
-Message-Id: <20210825152518.379386-41-miquel.raynal@bootlin.com>
+        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Drew Fustini <drew@pdp7.com>
+Subject: [PATCH] ARM: dts: am335x-pocketbeagle: switch to pinconf-single
+Date:   Wed, 25 Aug 2021 13:25:19 -0700
+Message-Id: <20210825202516.1384510-1-drew@pdp7.com>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210825152518.379386-1-miquel.raynal@bootlin.com>
-References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-ADC0 and ADC1 pins are available on external connector J22.
+Switch the compatible for the am33xx_pinmux pin controller node from
+pinctrl-single to pinconf-single. The only change between these two
+compatibles is that PCS_HAS_PINCONF will be true. This then allows
+pinconf properties to be utilized.
 
-Enable ADC1 which was missing.
+The purpose of this change is to allow the PocketBeagle to use:
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+  pinctrl-single,bias-pullup
+  pinctrl-single,bias-pulldown
+
+This dts already defines these properites for gpio pins in the default
+pinctrl state but it has no effect unless PCS_HAS_PINCONF is set.
+
+The bias properties can then be modified on the corresponding gpio lines
+through the gpiod uapi. The mapping between the pins and gpio lines is
+defined by gpio-ranges under the gpio controller nodes in am33xx-l4.dtsi
+
+Signed-off-by: Drew Fustini <drew@pdp7.com>
 ---
- arch/arm/boot/dts/am437x-gp-evm.dts | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm/boot/dts/am335x-pocketbeagle.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
-index a383d5c035f9..a611d3899209 100644
---- a/arch/arm/boot/dts/am437x-gp-evm.dts
-+++ b/arch/arm/boot/dts/am437x-gp-evm.dts
-@@ -775,6 +775,14 @@ adc {
- 	};
- };
+diff --git a/arch/arm/boot/dts/am335x-pocketbeagle.dts b/arch/arm/boot/dts/am335x-pocketbeagle.dts
+index 209cdd17dc1e..5e415d8ffdd8 100644
+--- a/arch/arm/boot/dts/am335x-pocketbeagle.dts
++++ b/arch/arm/boot/dts/am335x-pocketbeagle.dts
+@@ -205,6 +205,7 @@ &gpio3 {
  
-+&magadc {
-+	status = "okay";
-+
-+	adc {
-+		ti,adc-channels = <0 1 2 3 4 5 6 7>;
-+	};
-+};
-+
- &ecap0 {
- 	status = "disabled";
+ &am33xx_pinmux {
+ 
++	compatible = "pinconf-single";
  	pinctrl-names = "default";
+ 
+ 	pinctrl-0 =   < &P2_03_gpio &P1_34_gpio &P2_19_gpio &P2_24_gpio
 -- 
 2.27.0
 
