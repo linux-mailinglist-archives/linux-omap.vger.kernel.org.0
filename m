@@ -2,101 +2,189 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A95D3F7E48
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Aug 2021 00:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3555A3F82A3
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Aug 2021 08:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229890AbhHYWU1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 25 Aug 2021 18:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229684AbhHYWU1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 25 Aug 2021 18:20:27 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 320DAC061757
-        for <linux-omap@vger.kernel.org>; Wed, 25 Aug 2021 15:19:41 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id c4so431033plh.7
-        for <linux-omap@vger.kernel.org>; Wed, 25 Aug 2021 15:19:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pdp7-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7y91ZZBFmSi3o3CDJ8D/muM7G6GHXmZrIVUvgWSiFNA=;
-        b=hWNx527ojuNThiL2YMY3rZod4+Absf8DJSeJjrO49nLpWRQI3m+2ekATsn8sTS93FX
-         bP0o8PIavWDxSLI3bRSZktmWzndwZiI90kzxMrP9uHAgWqR0d2bOyh9RCv3XVtdJ/4lz
-         bdKPDdq6Kx+RE9e6mHbWeAB12Z8PZA+Ve8m64+iGU/vsieXsR1gM66yOi6YQU5YU0IQe
-         ASa1i20ApqlFz/d70s/KFEJA+Gd12HXD68b8yzVDisF4e8ME2vM3rhjInw5bZ/pDzmcy
-         sgxAK5JIMKW15oFwHPvczE5PyFryxpuWEV1qogUMASSO6foCfQlgQexK7dIE1oP++Ahd
-         CzFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7y91ZZBFmSi3o3CDJ8D/muM7G6GHXmZrIVUvgWSiFNA=;
-        b=knjY3qgHGysIGHN/XujmmI84dEq7T/cYV5MVBLDzOQCUH82V0+gUfWva9iedLXq5Dt
-         2eZxBeiXwOO3uRMQWKTBIdXqzKOaP0g8yfhUeVrReJMClhT544dZQBQrTuXplW5028i9
-         GlUbarKUntfv4dW774ZNJIv4nOl/v1mh2/WXuse/FxE8pd0+DWPKupCYYcWUmveMQOH5
-         urrHUK2W8PA9yJchE6LMTooCqDXcWy375Dwgu6ObP24edIL/5lPsNokb7twj3iigRNGV
-         cVdWg8YdrWQBsDs8RXa1j43i7HEitwUAG1j39gAAzGpSH9YSfd8SSkjV6a8ANYk+ZuU9
-         iuPQ==
-X-Gm-Message-State: AOAM530jHGtTEm9qWvULdK1VrdaJTkjBByowkkpzS78UTl2bNhHIDOGz
-        W8J2KIBh/Jl2rEuIl8PYbuVdLg==
-X-Google-Smtp-Source: ABdhPJx3ajUGrJMkfstuFqFPcxHSkqyvquMO1us6MWW98soyBM8Kd3/DJQ6RnBTpANpt4pJ8qmtAaQ==
-X-Received: by 2002:a17:902:e8ce:b0:132:b140:9540 with SMTP id v14-20020a170902e8ce00b00132b1409540mr678239plg.28.1629929980596;
-        Wed, 25 Aug 2021 15:19:40 -0700 (PDT)
-Received: from localhost.localdomain ([174.127.163.79])
-        by smtp.gmail.com with ESMTPSA id n1sm969527pgt.63.2021.08.25.15.19.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Aug 2021 15:19:40 -0700 (PDT)
-From:   Drew Fustini <drew@pdp7.com>
-To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        id S239601AbhHZGq6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 26 Aug 2021 02:46:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38886 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239112AbhHZGq5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 26 Aug 2021 02:46:57 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8B9A060FDC;
+        Thu, 26 Aug 2021 06:46:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1629960370;
+        bh=J6ZcW3z82EQuJPCW19f+4Dp9f4QbeEdqv8HxFEf6j6g=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=pDN5pmmJoQCOMAFfW3j7gKvuE1OG9kRVO11hmxcB08Y/+Fl0XVL/uixTB19kCE24p
+         3Rt9TBNuMnWch4KHdzTJ3014NAula4o7cQtDjxL/cMnI20r8pluTNrpYZ5GoDO7LOI
+         KLlf32xQ4GdmN/8eOZE5Dj7DntGKvJa0dXJMbyoJp6HXTPoo8LXPSIzXZEBmB1cHjd
+         53zSa5BD+xbQlZB4SSjuHYrAKGF7S7hkIJYimJD5yK4N0ZoJcsKjjetxQxTA9ta3Rt
+         lcfwmXbm4x1yalCzKke1pVJHyEjk7AXK2cHHlh37X5dUBPyl6WbRkJV2csTJdYhAW8
+         Uc59+tR4bWtaQ==
+Subject: Re: [PATCH v16 3/7] ARM: configs: Explicitly enable USB_XHCI_PLATFORM
+ where needed
+To:     Matthias Kaehlcke <mka@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Felipe Balbi <balbi@kernel.org>
+Cc:     devicetree@vger.kernel.org, Peter Chen <peter.chen@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        Bastien Nocera <hadess@hadess.net>,
+        Ravi Chandra Sadineni <ravisadineni@chromium.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Andrew Lunn <andrew@lunn.ch>, Arnd Bergmann <arnd@arndb.de>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Dong Aisheng <aisheng.dong@nxp.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jens Axboe <axboe@kernel.dk>, Johan Hovold <johan@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Lionel Debieve <lionel.debieve@st.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Mark Brown <broonie@kernel.org>,
+        =?UTF-8?Q?Martin_J=c3=bccker?= <martin.juecker@gmail.com>,
+        Olivier Moysan <olivier.moysan@st.com>,
+        Robert Richter <rric@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Drew Fustini <drew@pdp7.com>
-Subject: [PATCH] ARM: dts: am335x-pocketbeagle: switch to pinconf-single
-Date:   Wed, 25 Aug 2021 13:25:19 -0700
-Message-Id: <20210825202516.1384510-1-drew@pdp7.com>
-X-Mailer: git-send-email 2.27.0
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        William Cohen <wcohen@redhat.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        =?UTF-8?Q?=c5=81ukasz_Stelmach?= <l.stelmach@samsung.com>
+References: <20210813195228.2003500-1-mka@chromium.org>
+ <20210813125146.v16.3.I010d5725652b981ebbafba0b260190fe4b995a40@changeid>
+From:   Roger Quadros <rogerq@kernel.org>
+Message-ID: <bcbb80fe-950f-6ea5-0f09-a4cf5b571912@kernel.org>
+Date:   Thu, 26 Aug 2021 09:45:59 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210813125146.v16.3.I010d5725652b981ebbafba0b260190fe4b995a40@changeid>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Switch the compatible for the am33xx_pinmux pin controller node from
-pinctrl-single to pinconf-single. The only change between these two
-compatibles is that PCS_HAS_PINCONF will be true. This then allows
-pinconf properties to be utilized.
 
-The purpose of this change is to allow the PocketBeagle to use:
 
-  pinctrl-single,bias-pullup
-  pinctrl-single,bias-pulldown
+On 13/08/2021 22:52, Matthias Kaehlcke wrote:
+> The dependency of USB_DWC3 and USB_XHCI_MVEBU on USB_XHCI_PLATFORM
+> is being changed from 'select' to 'depends on' by another patch.
+> With that patch the defconfigs that enable one of these host
+> controllers also need to select USB_XHCI_PLATFORM explicitly
+> to keep the resulting config unchanged.
+> 
+> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
 
-This dts already defines these properites for gpio pins in the default
-pinctrl state but it has no effect unless PCS_HAS_PINCONF is set.
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
 
-The bias properties can then be modified on the corresponding gpio lines
-through the gpiod uapi. The mapping between the pins and gpio lines is
-defined by gpio-ranges under the gpio controller nodes in am33xx-l4.dtsi
+cheers,
+-roger
 
-Signed-off-by: Drew Fustini <drew@pdp7.com>
----
- arch/arm/boot/dts/am335x-pocketbeagle.dts | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm/boot/dts/am335x-pocketbeagle.dts b/arch/arm/boot/dts/am335x-pocketbeagle.dts
-index 209cdd17dc1e..5e415d8ffdd8 100644
---- a/arch/arm/boot/dts/am335x-pocketbeagle.dts
-+++ b/arch/arm/boot/dts/am335x-pocketbeagle.dts
-@@ -205,6 +205,7 @@ &gpio3 {
- 
- &am33xx_pinmux {
- 
-+	compatible = "pinconf-single";
- 	pinctrl-names = "default";
- 
- 	pinctrl-0 =   < &P2_03_gpio &P1_34_gpio &P2_19_gpio &P2_24_gpio
--- 
-2.27.0
-
+> ---
+> 
+> Changes in v16:
+> - patch added to the series
+> 
+>  arch/arm/configs/exynos_defconfig    | 1 +
+>  arch/arm/configs/keystone_defconfig  | 1 +
+>  arch/arm/configs/multi_v7_defconfig  | 1 +
+>  arch/arm/configs/mvebu_v7_defconfig  | 1 +
+>  arch/arm/configs/omap2plus_defconfig | 1 +
+>  arch/arm/configs/pxa_defconfig       | 1 +
+>  6 files changed, 6 insertions(+)
+> 
+> diff --git a/arch/arm/configs/exynos_defconfig b/arch/arm/configs/exynos_defconfig
+> index f4e1873912a3..660fccb40f34 100644
+> --- a/arch/arm/configs/exynos_defconfig
+> +++ b/arch/arm/configs/exynos_defconfig
+> @@ -255,6 +255,7 @@ CONFIG_SND_SIMPLE_CARD=y
+>  CONFIG_USB=y
+>  CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+>  CONFIG_USB_XHCI_HCD=y
+> +CONFIG_USB_XHCI_PLATFORM=y
+>  CONFIG_USB_EHCI_HCD=y
+>  CONFIG_USB_EHCI_EXYNOS=y
+>  CONFIG_USB_OHCI_HCD=y
+> diff --git a/arch/arm/configs/keystone_defconfig b/arch/arm/configs/keystone_defconfig
+> index 33c917df7b32..4f66c5a5d94d 100644
+> --- a/arch/arm/configs/keystone_defconfig
+> +++ b/arch/arm/configs/keystone_defconfig
+> @@ -164,6 +164,7 @@ CONFIG_USB=y
+>  CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+>  CONFIG_USB_MON=y
+>  CONFIG_USB_XHCI_HCD=y
+> +CONFIG_USB_XHCI_PLATFORM=y
+>  CONFIG_USB_STORAGE=y
+>  CONFIG_USB_DWC3=y
+>  CONFIG_NOP_USB_XCEIV=y
+> diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+> index 52a0400fdd92..4619418e53f4 100644
+> --- a/arch/arm/configs/multi_v7_defconfig
+> +++ b/arch/arm/configs/multi_v7_defconfig
+> @@ -787,6 +787,7 @@ CONFIG_SND_AUDIO_GRAPH_CARD=m
+>  CONFIG_USB=y
+>  CONFIG_USB_OTG=y
+>  CONFIG_USB_XHCI_HCD=y
+> +CONFIG_USB_XHCI_PLATFORM=y
+>  CONFIG_USB_XHCI_MVEBU=y
+>  CONFIG_USB_XHCI_TEGRA=m
+>  CONFIG_USB_EHCI_HCD=y
+> diff --git a/arch/arm/configs/mvebu_v7_defconfig b/arch/arm/configs/mvebu_v7_defconfig
+> index cddce57fe4b9..6cb85ec4fe54 100644
+> --- a/arch/arm/configs/mvebu_v7_defconfig
+> +++ b/arch/arm/configs/mvebu_v7_defconfig
+> @@ -103,6 +103,7 @@ CONFIG_SND_SIMPLE_CARD=y
+>  CONFIG_USB=y
+>  CONFIG_USB_XHCI_HCD=y
+>  CONFIG_USB_XHCI_MVEBU=y
+> +CONFIG_USB_XHCI_PLATFORM=y
+>  CONFIG_USB_EHCI_HCD=y
+>  CONFIG_USB_EHCI_ROOT_HUB_TT=y
+>  CONFIG_USB_STORAGE=y
+> diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+> index 2ac2418084ab..a015fb04fa25 100644
+> --- a/arch/arm/configs/omap2plus_defconfig
+> +++ b/arch/arm/configs/omap2plus_defconfig
+> @@ -562,6 +562,7 @@ CONFIG_USB=m
+>  CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+>  CONFIG_USB_MON=m
+>  CONFIG_USB_XHCI_HCD=m
+> +CONFIG_USB_XHCI_PLATFORM=m
+>  CONFIG_USB_EHCI_HCD=m
+>  CONFIG_USB_OHCI_HCD=m
+>  CONFIG_USB_ACM=m
+> diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
+> index 363f1b1b08e3..e44763fe2b23 100644
+> --- a/arch/arm/configs/pxa_defconfig
+> +++ b/arch/arm/configs/pxa_defconfig
+> @@ -524,6 +524,7 @@ CONFIG_USB=m
+>  CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+>  CONFIG_USB_MON=m
+>  CONFIG_USB_XHCI_HCD=m
+> +CONFIG_USB_XHCI_PLATFORM=m
+>  CONFIG_USB_EHCI_HCD=m
+>  CONFIG_USB_EHCI_HCD_PLATFORM=m
+>  CONFIG_USB_ISP116X_HCD=m
+> 
