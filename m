@@ -2,72 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3ACD3F9278
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Aug 2021 04:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A36BE3FA493
+	for <lists+linux-omap@lfdr.de>; Sat, 28 Aug 2021 11:17:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244086AbhH0Cnk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 26 Aug 2021 22:43:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57746 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244004AbhH0Cnj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 Aug 2021 22:43:39 -0400
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB27BC0613C1
-        for <linux-omap@vger.kernel.org>; Thu, 26 Aug 2021 19:42:51 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id 6so7564815oiy.8
-        for <linux-omap@vger.kernel.org>; Thu, 26 Aug 2021 19:42:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=L16basOqEiOzLTkZH+t3zY5i95O9fedNzsOwpInpw/4ZRCIa+HeD/2CxHpaiLN4xkB
-         EIiuVQ6uT/riLY726gd92BelAteEVej/sIoRpjJjMBix97pnTW/hDSERzHbyOVnqC0pg
-         KmnOZ518P8Yr0GCGOxdgRyLxeNe4HRe6d8MU13c0vzAp6qMXiQDG26arfNcrsbddvUbC
-         fsOV+/YT+7+2+Z4FGZSjxV3z3TC3Ch/CuuUWjR5k+Z5zmJj1JgmcSWRjsJ5yQejZJkxY
-         Z/i4UTigeSvz03lUgskwozqRGSa3iCYdmgemkQ0cBVFJQcXOHhRcG2M1chjo47XazyPm
-         u/2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=JcCnNkxtHweN6ApEPCItRB3oqJyAr4ORMY/4f0Zly6Y=;
-        b=bJjSOKzDeFxWDu42MiA92b5LITyOkYrEH4SF/s/qpoyya45JXoVBIvQyy7nolx4aUG
-         gp9tLJ3AafZ420AUXCbSmwHeppOUBN9hwTSzAKnkjAd4ARQ5uQJMHcZitQ95K2UU/70B
-         5SfSHgZyusrkANnrq11+7p/B3Urgrjczg4bMu+iohmFO7DxHvhFnleLgXKRiVp/dU/yH
-         FWo6kaJ+F6x187HYb5toawgBfF+u7ZEBYo1sNJPu43kWVohLd1z7z2ADtsO8z97mJHUG
-         KGYJVK6TKCNeUoMvt6hUOnGuvVqSyEJMWyILdRC5c5+Cwa8BBOikRE+bZbTcrgPrAwMZ
-         mofQ==
-X-Gm-Message-State: AOAM532AYco80l+3fWTRnHfKCfnW2C+5C48RoVNUQFf0gVB8y+DGiw8a
-        o9+AbFFdVwM51o8i+VLkQq2Gy4ofajZ9NNoz2M4=
-X-Google-Smtp-Source: ABdhPJw1wy/4mhbGOTwjhRivl/cp0DdOlGymYxsZANyL7QdJvGqwfU3MY+lTcg5CqX45IobC1i7h3Z8KWyWzjLM8VN4=
-X-Received: by 2002:aca:ab93:: with SMTP id u141mr4848049oie.151.1630032171270;
- Thu, 26 Aug 2021 19:42:51 -0700 (PDT)
+        id S233493AbhH1I4R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 28 Aug 2021 04:56:17 -0400
+Received: from mx21.baidu.com ([220.181.3.85]:51374 "EHLO baidu.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S233446AbhH1I4R (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 28 Aug 2021 04:56:17 -0400
+Received: from BC-Mail-Ex06.internal.baidu.com (unknown [172.31.51.46])
+        by Forcepoint Email with ESMTPS id 3D7B5594B4CA4834E692;
+        Sat, 28 Aug 2021 16:55:11 +0800 (CST)
+Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
+ BC-Mail-Ex06.internal.baidu.com (172.31.51.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2242.12; Sat, 28 Aug 2021 16:55:11 +0800
+Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.62.16) by
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.14; Sat, 28 Aug 2021 16:55:10 +0800
+From:   Cai Huoqing <caihuoqing@baidu.com>
+To:     <ulf.hansson@linaro.org>, <dianders@chromium.org>
+CC:     <linux-mmc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Cai Huoqing <caihuoqing@baidu.com>
+Subject: [PATCH] mmc: omap_hsmmc: Make use of the helper macro SET_RUNTIME_PM_OPS()
+Date:   Sat, 28 Aug 2021 16:54:46 +0800
+Message-ID: <20210828085446.1878-1-caihuoqing@baidu.com>
+X-Mailer: git-send-email 2.32.0.windows.2
 MIME-Version: 1.0
-Received: by 2002:ac9:320d:0:0:0:0:0 with HTTP; Thu, 26 Aug 2021 19:42:50
- -0700 (PDT)
-From:   john williams <jw44018@gmail.com>
-Date:   Thu, 26 Aug 2021 14:42:50 -1200
-Message-ID: <CAALucP-4Prk2-Fz4QqbkAZfqO5+3=DMQbNk8v-Apu+VHuQdx3Q@mail.gmail.com>
-Subject: CONFIRM YOUR DETAILS TO ENABLE US START,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.31.62.16]
+X-ClientProxiedBy: BC-Mail-Ex18.internal.baidu.com (172.31.51.12) To
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dear Beneficiary,
+Use the helper macro SET_RUNTIME_PM_OPS() instead of the verbose
+operators ".runtime_suspend/.runtime_resume", because the
+SET_RUNTIME_PM_OPS() is a nice helper macro that could be brought
+in to make code a little clearer, a little more concise.
 
-Following your pending fund for years and the delay you imposed in
-receiving it,We have called back your fund to this office as directed
-by the Finance Office and we will be paying you directly through the
-BANK OF AMERICA.(BOA) NEW YORK BRANCH AND ALL YOU NEED NOW IS TO
-RE-CONFIRM YOUR BANKING DETAILS FOR THE TRANSFER IMMEDIATELY WITHOUT
-ANY FURTHER DELAY.
+Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+---
+ drivers/mmc/host/omap_hsmmc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-NOTE THAT WE WILL PAY ALL THE EXPENSES INVOLVED FOR YOU TO RECEIVE
-THIS FUND AND ALL WE NEED FROM YOU IS YOUR CO-OPERATION.
+diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+index 2f8038d69f67..748303e14841 100644
+--- a/drivers/mmc/host/omap_hsmmc.c
++++ b/drivers/mmc/host/omap_hsmmc.c
+@@ -2156,8 +2156,7 @@ static int omap_hsmmc_runtime_resume(struct device *dev)
+ 
+ static const struct dev_pm_ops omap_hsmmc_dev_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(omap_hsmmc_suspend, omap_hsmmc_resume)
+-	.runtime_suspend = omap_hsmmc_runtime_suspend,
+-	.runtime_resume = omap_hsmmc_runtime_resume,
++	SET_RUNTIME_PM_OPS(omap_hsmmc_runtime_suspend, omap_hsmmc_runtime_resume, NULL)
+ };
+ 
+ static struct platform_driver omap_hsmmc_driver = {
+-- 
+2.25.1
 
-Send your full details with Banking details to enable us commence the
-transfer process immediately through the BOA BANK IN NEW YORK,USA OR
-DO YOU WANT TO RECEIVE THIS FUND VIA ATM CARD ????????.
-
-John O.Williams.
