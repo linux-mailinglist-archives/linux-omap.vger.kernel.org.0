@@ -2,104 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3750B3FA711
-	for <lists+linux-omap@lfdr.de>; Sat, 28 Aug 2021 19:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAB293FB61E
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Aug 2021 14:33:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbhH1R6s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 28 Aug 2021 13:58:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48920 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229912AbhH1R6q (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 28 Aug 2021 13:58:46 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E3EFC061796
-        for <linux-omap@vger.kernel.org>; Sat, 28 Aug 2021 10:57:56 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d17so6063751plr.12
-        for <linux-omap@vger.kernel.org>; Sat, 28 Aug 2021 10:57:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=qoRrda6U6GxHzpOEaIJ6gVUXCj3XTmN8tjTe4PtJ0hc=;
-        b=mmMbPiCU3U+syXMjU8vmu6LDmEoQU8JvLN7kPzP2kUB2pj1DoBzCimW/GwtZyrYsiu
-         ddQHHN+WPFjOXjVBZdvWcwpfDfER+4xVOWV93BdAAmPCASjc1I1FSB6KLfHvnofn1nHK
-         i1/OgItiwbOqlNZtnkp2Ww50woEvHsYEsO+V8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=qoRrda6U6GxHzpOEaIJ6gVUXCj3XTmN8tjTe4PtJ0hc=;
-        b=Dm+PV34L3GUspg1SIABoxGUxm+dHvj8EJHxatWRxgTDbaRa7NmZl5JDafkFMkDK0ft
-         x1FY4uZ01JTeuTY0INsjGlyZjQIqV81+nqCT2UNXS/GVTa+eefP2E+VB+nvWK4VWnp/u
-         aziIqFydYD/o3m9R5bVQcX7Kh+0zAkRgkuOLDkZii3UN09bTwCZumFjHyE4uIu44ePZE
-         Bp7o/5IQFDIeDtZgPFAOZArwZQWjjRI+FQCtjpdTAlHpz21DUBXJ4u9BBqanSdIUtxJe
-         j7iuuw8Z8gCPTFip5QkYwaELUvicgmFvxIa5e89J1ZMUcgjUoADIBLY2+yDGSplCqsOG
-         XL5w==
-X-Gm-Message-State: AOAM533b7RKD6OwQCdJxiWLhUx5cBwmTGsbQsJr91/xvwyCKLPRTG2Fh
-        e90ecxbopPsDhEMIUjbDXvTFKA==
-X-Google-Smtp-Source: ABdhPJwIfzGrqWWVKr5y17UZd/DsAh6nRMZPSFCys6z9v4x1Eg8H5t+RpDONcLx091gGh24zKeqkUA==
-X-Received: by 2002:a17:902:fe81:b0:133:851e:5923 with SMTP id x1-20020a170902fe8100b00133851e5923mr14151597plm.25.1630173475568;
-        Sat, 28 Aug 2021 10:57:55 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id t15sm11199595pgi.80.2021.08.28.10.57.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Aug 2021 10:57:54 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Kees Cook <keescook@chromium.org>,
-        kernel test robot <lkp@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Keerthy <j-keerthy@ti.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.co.uk>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        linux-omap@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: [PATCH] clocksource/drivers/timer-ti-dm: Select TIMER_OF
-Date:   Sat, 28 Aug 2021 10:57:47 -0700
-Message-Id: <20210828175747.3777891-1-keescook@chromium.org>
-X-Mailer: git-send-email 2.30.2
+        id S236587AbhH3MeX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 30 Aug 2021 08:34:23 -0400
+Received: from smtpbg127.qq.com ([109.244.180.96]:32466 "EHLO smtpbg.qq.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S232267AbhH3MeX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 30 Aug 2021 08:34:23 -0400
+X-QQ-mid: bizesmtp40t1630326771tm1kaj5x
+Received: from localhost.localdomain (unknown [171.223.99.71])
+        by esmtp6.qq.com (ESMTP) with 
+        id ; Mon, 30 Aug 2021 20:32:48 +0800 (CST)
+X-QQ-SSF: 01000000004000C0D000B00A0000000
+X-QQ-FEAT: ikVgnzmvsa8SxmQ1mguFw4U+Du57XD1NId7DJ3hYvRKitl6EyUueCghgz8fvv
+        QKUHdVrL/kV4wtPmoV3Slb51CeH5ZoXSUzj9J/KcgDIa5AraQX6MtIUEwoZCVXaKn39VNz+
+        iA8TrKZwp3F+3VuvtA0Sp0j4LCkM8BVazT3UwDy4pS6lhbahQ3gP0BZsDTXFk5dBApCWBxg
+        RL7dize42e0pBY08I8lQhS7SAetez70Jy+Cn43HM8Gepn+g3ltp6GUfaZXZalP6ZMH3sARW
+        Xq2PQMQkgObcXAXFUjrSyuyDzWYMjkywTOYm/z0Bc6I+kZUSM6LduBLcNL7rQ2i+XmfxK8l
+        r/6PYsp
+X-QQ-GoodBg: 0
+From:   Jason Wang <wangborong@cdjrlc.com>
+To:     tony@atomide.com
+Cc:     linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jason Wang <wangborong@cdjrlc.com>
+Subject: [PATCH] ARM: OMAP2+: Fix comment typo
+Date:   Mon, 30 Aug 2021 20:31:28 +0800
+Message-Id: <20210830123128.9767-1-wangborong@cdjrlc.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1368; h=from:subject; bh=9jx5uQPQqpp6TrFslvjEgR6EW3HiZEM9ERGP13bv27o=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhKnka8IMpGL75t9SdPtlw5cO32b0cj/Ljslc5NM+C Mk3bmEKJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYSp5GgAKCRCJcvTf3G3AJsbaD/ 9aHBUpWn4I1adVnh/gDEinuFwYEId8xHXMAzcKmAtGYn9aDrtjoho0QB65x/XE3thwjJv4rCtM6cfP im14GI7xHW/uIfagrW0Jiv9Rg9b1t0Gu2w6x6HrzymAHfrplvvcm8A8TDdFOWBrECEbKKEyFHvKxvI 7LEnxaaIY5RGxG17eFQXW2wdFuGppuHhZqenCfX8JRIZ2XzGKOJ6VnV7i5qWldvBe7jSPUbiYAK+xm Mi+AN3Xqkc1Guj/KGGMJ6nAyZKHRQ0l8SVTJeShnoPnWuor8X6haOExTFTH6tPl+0pbOisdtXiOumw axOUWWOeU7ga0QFJ+vacWTKXFmc+fMAS6355YTYFM3q2Rnv1eLDTZoetNwjxvitQtVfoeoY6+DQUtg uRMxDbULb22uh2rWpm5GkRABAdPiNXfbSUjTFRKAOjYFFxA85CC3XlHI9eW4Sa0Xr1hbffFm50Fb7j L+XEGRWoVoO/UONT74eVGC1HLJXDqGUs71GTXbWDRG77Sg2CN/+GNTI+JlJjznLvbWPT8njCD7Qr5n 0ZXDIlKtM2NF2xfDOWksUL6GgQc1sGloiVyDtxVgiyJIpNsHC4AG9hJUSQ0zi0PzoIr3LAz/3ylz6e ktGmQcMYLEmlX14y5Vn4v+WxMigNBrSEQU8vbERGmENn9RVkg4tg3OAs9NHA==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-When building OMAP_DM_TIMER without TIMER_OF, there are orphan sections
-due to the use of TIMER_OF_DELCARE() without CONFIG_TIMER_OF. Select
-CONFIG_TIMER_OF when enaling OMAP_DM_TIMER:
+Remove one of the repeated 'not' in three comments.
 
-arm-linux-gnueabi-ld: warning: orphan section `__timer_of_table' from `drivers/clocksource/timer-ti-dm-systimer.o' being placed in section `__timer_of_table'
-
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/lkml/202108282255.tkdt4ani-lkp@intel.com/
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.co.uk>
-Cc: Ladislav Michl <ladis@linux-mips.org>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: linux-omap@vger.kernel.org
-Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
 ---
- drivers/clocksource/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-omap2/powerdomain.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 0f5e3983951a..08f8cb944a2a 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -24,6 +24,7 @@ config I8253_LOCK
- 
- config OMAP_DM_TIMER
- 	bool
-+	select TIMER_OF
- 
- config CLKBLD_I8253
- 	def_bool y if CLKSRC_I8253 || CLKEVT_I8253 || I8253_LOCK
+diff --git a/arch/arm/mach-omap2/powerdomain.c b/arch/arm/mach-omap2/powerdomain.c
+index 0a5b87e2a4b0..2d747f6cffe8 100644
+--- a/arch/arm/mach-omap2/powerdomain.c
++++ b/arch/arm/mach-omap2/powerdomain.c
+@@ -626,7 +626,7 @@ int pwrdm_read_prev_pwrst(struct powerdomain *pwrdm)
+  * powerdomain @pwrdm will enter when the powerdomain enters retention.
+  * This will be either RETENTION or OFF, if supported.  Returns
+  * -EINVAL if the powerdomain pointer is null or the target power
+- * state is not not supported, or returns 0 upon success.
++ * state is not supported, or returns 0 upon success.
+  */
+ int pwrdm_set_logic_retst(struct powerdomain *pwrdm, u8 pwrst)
+ {
+@@ -658,7 +658,7 @@ int pwrdm_set_logic_retst(struct powerdomain *pwrdm, u8 pwrst)
+  * state.  @bank will be a number from 0 to 3, and represents different
+  * types of memory, depending on the powerdomain.  Returns -EINVAL if
+  * the powerdomain pointer is null or the target power state is not
+- * not supported for this memory bank, -EEXIST if the target memory
++ * supported for this memory bank, -EEXIST if the target memory
+  * bank does not exist or is not controllable, or returns 0 upon
+  * success.
+  */
+@@ -696,7 +696,7 @@ int pwrdm_set_mem_onst(struct powerdomain *pwrdm, u8 bank, u8 pwrst)
+  * different types of memory, depending on the powerdomain.  @pwrst
+  * will be either RETENTION or OFF, if supported.  Returns -EINVAL if
+  * the powerdomain pointer is null or the target power state is not
+- * not supported for this memory bank, -EEXIST if the target memory
++ * supported for this memory bank, -EEXIST if the target memory
+  * bank does not exist or is not controllable, or returns 0 upon
+  * success.
+  */
 -- 
-2.30.2
+2.33.0
 
