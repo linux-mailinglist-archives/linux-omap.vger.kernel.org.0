@@ -2,87 +2,168 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60B713FC482
-	for <lists+linux-omap@lfdr.de>; Tue, 31 Aug 2021 11:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E39EE3FCDDB
+	for <lists+linux-omap@lfdr.de>; Tue, 31 Aug 2021 22:01:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240451AbhHaIzk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 31 Aug 2021 04:55:40 -0400
-Received: from foss.arm.com ([217.140.110.172]:52410 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240380AbhHaIzk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 31 Aug 2021 04:55:40 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 803EB1FB;
-        Tue, 31 Aug 2021 01:54:44 -0700 (PDT)
-Received: from [192.168.178.6] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1FE993F5A1;
-        Tue, 31 Aug 2021 01:54:40 -0700 (PDT)
-Subject: Re: [PATCH V3 0/9] Add callback to register with energy model
-To:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Rafael Wysocki <rjw@rjwysocki.net>,
-        Vincent Donnefort <vincent.donnefort@arm.com>,
-        lukasz.luba@arm.com, Quentin Perret <qperret@google.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Cc:     linux-pm@vger.kernel.org,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org
-References: <cover.1628742634.git.viresh.kumar@linaro.org>
-From:   Dietmar Eggemann <dietmar.eggemann@arm.com>
-Message-ID: <3d5b823f-259a-8fc6-27ab-2a5d5df89844@arm.com>
-Date:   Tue, 31 Aug 2021 10:54:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S240755AbhHaTeL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 31 Aug 2021 15:34:11 -0400
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:40943 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234139AbhHaTeK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 31 Aug 2021 15:34:10 -0400
+Received: by mail-ot1-f44.google.com with SMTP id 107-20020a9d0bf4000000b0051b8be1192fso505554oth.7;
+        Tue, 31 Aug 2021 12:33:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=W4G3btfQoqpVB2WnXumklQXRHhxDd2G4lTDMKDvcpiw=;
+        b=qqx+Gwlyiln1F6ELj6LYsBMPXmiZ9En2c5nmNlh1SArGzq5uslofwuLG8fVWGe6psL
+         tO1/ylVTtdOZQ0AtxszBdmYYtl/MdlV8291dQ3Vt/lqjK2SzyhNvHwchCt0rkW98IvhQ
+         aWUSwg7h/D77HW4d2dBhGLI762M+maj2ByiGcVTYglgRozIRcE6xLAONJhtYn6Oa5Egp
+         LcAnQdam8oADJtKnYhT7+qp8TW/PiG/ihF3Kkg8h4KR2Qqir/ul31bRdJ8+mUluty1VP
+         rQVnIqYYDPPst8jjB1V1x7UNBSPzjFLR/bYvieYCg7xPeW0GD3mxnrpn7EvZx1tmtGIz
+         a0Aw==
+X-Gm-Message-State: AOAM533DkZPImJn1nRZhoOxaBSkT2WzLckqGbUNwcPy4lruJfseA83hP
+        v1O5RGn4WXsvXBp83soSTw==
+X-Google-Smtp-Source: ABdhPJy05ej2GopPGoQw/nVfTmaL2qhTsLNPDa2RwYNtgHGf1ltyxAXGgmt/C+lmxdZeI6yxTtWCyw==
+X-Received: by 2002:a05:6830:608:: with SMTP id w8mr24702828oti.73.1630438394603;
+        Tue, 31 Aug 2021 12:33:14 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id s24sm3808165oic.34.2021.08.31.12.33.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Aug 2021 12:33:13 -0700 (PDT)
+Received: (nullmailer pid 523904 invoked by uid 1000);
+        Tue, 31 Aug 2021 19:33:12 -0000
+Date:   Tue, 31 Aug 2021 14:33:12 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
+        Tony Lindgren <tony@atomide.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "Ryan J . Barnett" <ryan.barnett@collins.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: Re: [PATCH 02/40] dt-bindings: mfd: ti,am3359-tscadc: Add a yaml
+ description for this MFD
+Message-ID: <YS6D+Hm5Y+t77JRQ@robh.at.kernel.org>
+References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
+ <20210825152518.379386-3-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-In-Reply-To: <cover.1628742634.git.viresh.kumar@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210825152518.379386-3-miquel.raynal@bootlin.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 12/08/2021 06:35, Viresh Kumar wrote:
-> Many cpufreq drivers register with the energy model for each policy and
-> do exactly the same thing. Follow the footsteps of thermal-cooling, to
-> get it done from the cpufreq core itself.
+On Wed, Aug 25, 2021 at 05:24:40PM +0200, Miquel Raynal wrote:
+> There is a very light description of this MFD in a text file dedicated
+> to a touchscreen controller (which is one of the two children of the
+> MFD). Here is now a complete yaml description.
 > 
-> Provide a new callback, which will be called, if present, by the cpufreq
-> core at the right moment (more on that in the code's comment). Also
-> provide a generic implementation that uses dev_pm_opp_of_register_em().
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> ---
+>  .../bindings/mfd/ti,am3359-tscadc.yaml        | 75 +++++++++++++++++++
+>  1 file changed, 75 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
 > 
-> This also allows us to register with the EM at a later point of time,
-> compared to ->init(), from where the EM core can access cpufreq policy
-> directly using cpufreq_cpu_get() type of helpers and perform other work,
-> like marking few frequencies inefficient, this will be done separately.
-> 
-> This is build/boot tested by the bot for a couple of boards.
-> 
-> https://gitlab.com/vireshk/pmko/-/pipelines/351965580
-> 
-> FWIW, I have queued up the series for linux-next to get more testing, but your
-> reviews are welcome. Thanks.
-> 
-> V2->V3:
-> - Drop the auto-register part from all logs, this isn't called auto registration
->   anymore.
-> - Call register_em() only for new policies.
-> - Update scmi driver to register with EM only when required.
-> - Add Rby tags.
+> diff --git a/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> new file mode 100644
+> index 000000000000..96b329508d8a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> @@ -0,0 +1,75 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/ti,am3359-tscadc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: TI AM3359 Touchscreen controller/ADC
+> +
+> +maintainers:
+> +  - Miquel Raynal <miquel.raynal@bootlin.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: ti,am3359-tscadc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: fck
+> +
+> +  dmas:
+> +    items:
+> +      - description: DMA controller phandle and request line for FIFO0
+> +      - description: DMA controller phandle and request line for FIFO1
+> +
+> +  dma-names:
+> +    items:
+> +      - const: fifo0
+> +      - const: fifo1
+> +
+> +patternProperties:
+> +  "^adc$":
+> +    description: ADC
+> +
+> +  "^tsc$":
+> +    description: Touchscreen controller
 
-LGTM. Tested on TC2 (vexpress-spc), Juno-r0 (scpi-cpufreq and scmi).
+These are fixed strings, so move to 'properties'. They also need 'type: 
+object' to indicate they are nodes.
 
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
+> +  - dmas
+> +  - dma-names
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    tscadc: tscadc@0 {
+> +        compatible = "ti,am3359-tscadc";
+> +        reg = <0x0 0x1000>;
+> +        interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
+> +        clocks = <&adc_tsc_fck>;
+> +        clock-names = "fck";
+> +        dmas = <&edma 53 0>, <&edma 57 0>;
+> +        dma-names = "fifo0", "fifo1";
+> +        status = "disabled";
 
+Don't show 'status' in examples. It disables some checks.
 
+> +
+> +        tsc {
+> +        };
+> +
+> +        adc {
+> +        };
+> +    };
+> -- 
+> 2.27.0
+> 
+> 
