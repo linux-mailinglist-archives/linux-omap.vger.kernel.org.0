@@ -2,116 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 025723FB88A
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Aug 2021 16:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60B713FC482
+	for <lists+linux-omap@lfdr.de>; Tue, 31 Aug 2021 11:00:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237123AbhH3Ovg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 30 Aug 2021 10:51:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47580 "EHLO mail.kernel.org"
+        id S240451AbhHaIzk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 31 Aug 2021 04:55:40 -0400
+Received: from foss.arm.com ([217.140.110.172]:52410 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234246AbhH3Ovg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 30 Aug 2021 10:51:36 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0C2366056B;
-        Mon, 30 Aug 2021 14:50:36 +0000 (UTC)
-Date:   Mon, 30 Aug 2021 15:53:48 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
-        Tony Lindgren <tony@atomide.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "Ryan J . Barnett" <ryan.barnett@collins.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH 23/40] mfd: ti_am335x_tscadc: Rename a variable
-Message-ID: <20210830155348.528555ea@jic23-huawei>
-In-Reply-To: <20210825152518.379386-24-miquel.raynal@bootlin.com>
-References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
-        <20210825152518.379386-24-miquel.raynal@bootlin.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S240380AbhHaIzk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 31 Aug 2021 04:55:40 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 803EB1FB;
+        Tue, 31 Aug 2021 01:54:44 -0700 (PDT)
+Received: from [192.168.178.6] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1FE993F5A1;
+        Tue, 31 Aug 2021 01:54:40 -0700 (PDT)
+Subject: Re: [PATCH V3 0/9] Add callback to register with energy model
+To:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Rafael Wysocki <rjw@rjwysocki.net>,
+        Vincent Donnefort <vincent.donnefort@arm.com>,
+        lukasz.luba@arm.com, Quentin Perret <qperret@google.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Kevin Hilman <khilman@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>
+Cc:     linux-pm@vger.kernel.org,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org
+References: <cover.1628742634.git.viresh.kumar@linaro.org>
+From:   Dietmar Eggemann <dietmar.eggemann@arm.com>
+Message-ID: <3d5b823f-259a-8fc6-27ab-2a5d5df89844@arm.com>
+Date:   Tue, 31 Aug 2021 10:54:39 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <cover.1628742634.git.viresh.kumar@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 25 Aug 2021 17:25:01 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-
-> We need to retrieve the number of wires used by the "secondary" device
-> (the touchscreen or the magnetic reader). Let's rename tsc_wires to
-> become tscmag_wires to clarify the fact that this variable can be used
-> in both situations.
+On 12/08/2021 06:35, Viresh Kumar wrote:
+> Many cpufreq drivers register with the energy model for each policy and
+> do exactly the same thing. Follow the footsteps of thermal-cooling, to
+> get it done from the cpufreq core itself.
 > 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Seems sensible.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-> ---
->  drivers/mfd/ti_am335x_tscadc.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+> Provide a new callback, which will be called, if present, by the cpufreq
+> core at the right moment (more on that in the code's comment). Also
+> provide a generic implementation that uses dev_pm_opp_of_register_em().
 > 
-> diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> index 02477ce827d0..047426a74a2e 100644
-> --- a/drivers/mfd/ti_am335x_tscadc.c
-> +++ b/drivers/mfd/ti_am335x_tscadc.c
-> @@ -121,7 +121,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  	const __be32 *cur;
->  	struct clk *clk;
->  	u32 val;
-> -	int tsc_wires = 0, adc_channels = 0, readouts = 0, cell_idx = 0;
-> +	int tscmag_wires = 0, adc_channels = 0, readouts = 0, cell_idx = 0;
->  	int total_channels, err;
->  
->  	/* Allocate memory for device */
-> @@ -139,7 +139,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  	tscadc->data = of_device_get_match_data(&pdev->dev);
->  
->  	node = of_get_child_by_name(pdev->dev.of_node, "tsc");
-> -	of_property_read_u32(node, "ti,wires", &tsc_wires);
-> +	of_property_read_u32(node, "ti,wires", &tscmag_wires);
->  	of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
->  
->  	node = of_get_child_by_name(pdev->dev.of_node, "adc");
-> @@ -152,7 +152,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  		}
->  	}
->  
-> -	total_channels = tsc_wires + adc_channels;
-> +	total_channels = tscmag_wires + adc_channels;
->  	if (total_channels > 8) {
->  		dev_err(&pdev->dev, "Number of i/p channels more than 8\n");
->  		return -EINVAL;
-> @@ -218,9 +218,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  	tscadc->ctrl = CNTRLREG_TSC_STEPCONFIGWRT | CNTRLREG_STEPID;
->  	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
->  
-> -	if (tsc_wires > 0) {
-> +	if (tscmag_wires > 0) {
->  		tscadc->ctrl |= CNTRLREG_TSC_ENB;
-> -		if (tsc_wires == 5)
-> +		if (tscmag_wires == 5)
->  			tscadc->ctrl |= CNTRLREG_TSC_5WIRE;
->  		else
->  			tscadc->ctrl |= CNTRLREG_TSC_4WIRE;
-> @@ -232,7 +232,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_SSENB);
->  
->  	/* TSC Cell */
-> -	if (tsc_wires > 0) {
-> +	if (tscmag_wires > 0) {
->  		cell = &tscadc->cells[cell_idx++];
->  		cell->name = tscadc->data->name_tscmag;
->  		cell->of_compatible = tscadc->data->compat_tscmag;
+> This also allows us to register with the EM at a later point of time,
+> compared to ->init(), from where the EM core can access cpufreq policy
+> directly using cpufreq_cpu_get() type of helpers and perform other work,
+> like marking few frequencies inefficient, this will be done separately.
+> 
+> This is build/boot tested by the bot for a couple of boards.
+> 
+> https://gitlab.com/vireshk/pmko/-/pipelines/351965580
+> 
+> FWIW, I have queued up the series for linux-next to get more testing, but your
+> reviews are welcome. Thanks.
+> 
+> V2->V3:
+> - Drop the auto-register part from all logs, this isn't called auto registration
+>   anymore.
+> - Call register_em() only for new policies.
+> - Update scmi driver to register with EM only when required.
+> - Add Rby tags.
+
+LGTM. Tested on TC2 (vexpress-spc), Juno-r0 (scpi-cpufreq and scmi).
+
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+
 
