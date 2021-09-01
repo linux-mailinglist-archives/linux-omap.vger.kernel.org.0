@@ -2,48 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D61F93FE3A1
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Sep 2021 22:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78AE13FE3B7
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Sep 2021 22:20:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245214AbhIAUVc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Sep 2021 16:21:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55242 "EHLO
+        id S1343833AbhIAUVl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Sep 2021 16:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231529AbhIAUVZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Sep 2021 16:21:25 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2954C0613C1
-        for <linux-omap@vger.kernel.org>; Wed,  1 Sep 2021 13:20:26 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id e16so735591pfc.6
-        for <linux-omap@vger.kernel.org>; Wed, 01 Sep 2021 13:20:26 -0700 (PDT)
+        with ESMTP id S1343628AbhIAUVg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Sep 2021 16:21:36 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6717EC0613C1
+        for <linux-omap@vger.kernel.org>; Wed,  1 Sep 2021 13:20:39 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id t1so667087pgv.3
+        for <linux-omap@vger.kernel.org>; Wed, 01 Sep 2021 13:20:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+u2QuOkRRMX/DqMZWfX/UVRQi9noRYZC06sr4Cz0Hp8=;
-        b=ZMMPana7L7vTDCgu/jp5FKD2Lrbrz0jK26GBO0aS5kFqX8ZWAwDd8LGVRgMmKIW4cy
-         pM4/1N42XKs3Esi1gnR1zGqKA++SzJlDvfQrVg5j28Z5B5k6XohhNOknkTV7aRkmINrK
-         CmPERtsKo0Rsb/rb2L17uz6Xg8W52l6oAnoOY=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=E8qwumdZ9oBSWiOJWekiuI9kVQEVD+hbH3p2QOU9bho=;
+        b=dGj++XtGx8+YT5EUHae2J5PWQLwHqUTj2jp6r/tq26hWAY1hkxlVyj7ULBKz4DkFSj
+         VjCPkPykivBT/WV4nRKWjF3HSnfpPda6cQXInEjQeCNQDUwE5yYaF3bHA2df7g1REnUm
+         MQ5qPM6zRYAaqR6MAT3gxj62FAX1+fkS/ngdo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+u2QuOkRRMX/DqMZWfX/UVRQi9noRYZC06sr4Cz0Hp8=;
-        b=gcR9yRPm7+7yf0VUogF3tsuh7ix0Rhj5XT2xuWBuXINPp/lumjC4v5tlnB/HTGsaur
-         adzHEE+teXcgsc9JjF6Xu2YaKqfs9F9qLuOyRrUUWJUzypsZ1PhRn932ZUkbtxFPougd
-         WsW5K6DGqZGOwj6ZoChrM6lWj4Odcfcd+l1TjP6ucyPlQHfWzg2OXAY9Irun3OQTl4Vz
-         lsx15/X8y3M477G8HNfkU7vAFSRX99u6rDOojqJdSHLDg3aE+jbLQrDd8ye8wKLoMyjw
-         uLCy4+Ygcwle3FATpGFG2yuO7KVKfVeQEy5lWJKll6Bmml7GGlrBk2DN5BKdfMqFvgy7
-         0WWw==
-X-Gm-Message-State: AOAM531nOIXx78P/oqnF2V0lV2mfXgEx/tz5vFvHQhCk6+5/3VI5IvDK
-        6pVdclazJsZnBCX1AIyua+bjRg==
-X-Google-Smtp-Source: ABdhPJzep5JI+YTg6jYwfIvOqV7EJbMgqrs4tymTqpHRzn2sts2yu7nyKA3inirB5PAxwEJh4dOyVA==
-X-Received: by 2002:a65:6642:: with SMTP id z2mr790331pgv.240.1630527626154;
-        Wed, 01 Sep 2021 13:20:26 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=E8qwumdZ9oBSWiOJWekiuI9kVQEVD+hbH3p2QOU9bho=;
+        b=MgvRlWOFYr/BT+DSpqpcXj+d+yU/JklL/dPUkhXoC1agb/x6Gcjfe4M5K9dQpkVlMR
+         K55eHT7nSBQahtPoV/ObkdT0LGhlJfOK34pykWTtSuZkfbkd++/R1pUOu+NHs9kQUksR
+         GBP5/+3QIAvRQlxvf5hu4EPSrOndBuCFvb6yQg9To94y/LTg2OUfro3xCUdDQ2BfhdhQ
+         I4qC7G+P7nMBTM6oHYsO02SHf4G8uaP61waTIY4ds3RDlNvfT867tsVk44hiADwA4vqu
+         aoAtAsjyD+Jyc/1T9xiGamkmTdlyv9xFbwvbSmWQt/2w37KmBzyXC5d7juie4qYvd+1T
+         v9gQ==
+X-Gm-Message-State: AOAM5339lI+pzCX2xCag8insq6ku+9cxQ38iQbwcM/jT+dG96+utNizU
+        Gc5EtuYf6ftqqjgxMWGTxMV8gA==
+X-Google-Smtp-Source: ABdhPJwKHIxkRf8tll3o/JV+NozSZXR8JXT86l6s5dscYRAz4FpIBM4E8sqjB/y0dJgJoM/pnV6YcQ==
+X-Received: by 2002:a63:4c1f:: with SMTP id z31mr819727pga.50.1630527638889;
+        Wed, 01 Sep 2021 13:20:38 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:202:201:958b:b561:a735:e774])
-        by smtp.gmail.com with ESMTPSA id x15sm321178pfq.31.2021.09.01.13.20.21
+        by smtp.gmail.com with ESMTPSA id x15sm321178pfq.31.2021.09.01.13.20.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Sep 2021 13:20:25 -0700 (PDT)
+        Wed, 01 Sep 2021 13:20:38 -0700 (PDT)
 From:   Douglas Anderson <dianders@chromium.org>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -65,30 +65,23 @@ Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Andreas Kemnade <andreas@kemnade.info>,
         Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
         Anson Huang <Anson.Huang@nxp.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chen-Yu Tsai <wens@csie.org>,
+        Arnd Bergmann <arnd@arndb.de>, Chen-Yu Tsai <wens@csie.org>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
         Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
         Corentin Labbe <clabbe@baylibre.com>,
         Daniel Thompson <daniel.thompson@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Dmitry Osipenko <digetx@gmail.com>,
         Emil Velikov <emil.velikov@collabora.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
         Eugen Hristev <eugen.hristev@microchip.com>,
         Fabio Estevam <festevam@gmail.com>,
         Fabrice Gasnier <fabrice.gasnier@st.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
-        Jagan Teki <jagan@amarulasolutions.com>,
         Jernej Skrabec <jernej.skrabec@gmail.com>,
         Joel Stanley <joel@jms.id.au>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         Kees Cook <keescook@chromium.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Lionel Debieve <lionel.debieve@st.com>,
         Liviu Dudau <liviu.dudau@arm.com>,
@@ -98,14 +91,11 @@ Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Manivannan Sadhasivam <mani@kernel.org>,
         Marek Szyprowski <m.szyprowski@samsung.com>,
         =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
-        Michael Walle <michael@walle.cc>,
         NXP Linux Team <linux-imx@nxp.com>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Nishanth Menon <nm@ti.com>,
         Olivier Moysan <olivier.moysan@st.com>,
         Olof Johansson <olof@lixom.net>,
         Otavio Salvador <otavio@ossystems.com.br>,
-        Paul Cercueil <paul@crapouillou.net>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Razvan Stefanescu <razvan.stefanescu@microchip.com>,
         Robert Richter <rric@kernel.org>,
@@ -114,138 +104,234 @@ Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Shawn Guo <shawnguo@kernel.org>,
         Stefan Wahren <stefan.wahren@i2se.com>,
         Sudeep Holla <sudeep.holla@arm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Tony Lindgren <tony@atomide.com>,
         Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>,
         Viresh Kumar <viresh.kumar@linaro.org>,
         Vladimir Zapolskiy <vz@mleia.com>,
-        Will Deacon <will@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
         linux-tegra@vger.kernel.org,
         =?UTF-8?q?=C5=81ukasz=20Stelmach?= <l.stelmach@samsung.com>
-Subject: [PATCH v3 00/16] eDP: Support probing eDP panels dynamically instead of hardcoding
-Date:   Wed,  1 Sep 2021 13:19:18 -0700
-Message-Id: <20210901201934.1084250-1-dianders@chromium.org>
+Subject: [PATCH v3 06/16] ARM: configs: Everyone who had PANEL_SIMPLE now gets PANEL_SIMPLE_EDP
+Date:   Wed,  1 Sep 2021 13:19:24 -0700
+Message-Id: <20210901131531.v3.6.I02250cd7d4799661b068bcc65849a456ed411734@changeid>
 X-Mailer: git-send-email 2.33.0.259.gc128427fd7-goog
+In-Reply-To: <20210901201934.1084250-1-dianders@chromium.org>
+References: <20210901201934.1084250-1-dianders@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The goal of this patch series is to move away from hardcoding exact
-eDP panels in device tree files. As discussed in the various patches
-in this series (I'm not repeating everything here), most eDP panels
-are 99% probable and we can get that last 1% by allowing two "power
-up" delays to be specified in the device tree file and then using the
-panel ID (found in the EDID) to look up additional power sequencing
-delays for the panel.
+In the patch ("drm/panel-simple-edp: Split eDP panels out of
+panel-simple") we split the PANEL_SIMPLE driver in 2. By default let's
+give everyone who had the old driver enabled the new driver too. If
+folks want to opt-out of one or the other they always can later.
 
-This patch series is the logical contiunation of a previous patch
-series where I proposed solving this problem by adding a
-board-specific compatible string [1]. In the discussion that followed
-it sounded like people were open to something like the solution
-proposed in this new series.
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
 
-In version 2 I got rid of the idea that we could have a "fallback"
-compatible string that we'd use if we didn't recognize the ID in the
-EDID. This simplifies the bindings a lot and the implementation
-somewhat. As a result of not having a "fallback", though, I'm not
-confident in transitioning any existing boards over to this since
-we'll have to fallback to very conservative timings if we don't
-recognize the ID from the EDID and I can't guarantee that I've seen
-every panel that might have shipped on an existing product. The plan
-is to use "edp-panel" only on new boards or new revisions of old
-boards where we can guarantee that every EDID that ships out of the
-factory has an ID in the table.
+(no changes since v1)
 
-Version 3 of this series now splits out all eDP panels to their own
-driver and adds the generic eDP panel support to this new driver. I
-believe this is what Sam was looking for [2].
+ arch/arm/configs/at91_dt_defconfig   | 1 +
+ arch/arm/configs/exynos_defconfig    | 1 +
+ arch/arm/configs/imx_v6_v7_defconfig | 1 +
+ arch/arm/configs/lpc32xx_defconfig   | 1 +
+ arch/arm/configs/multi_v5_defconfig  | 1 +
+ arch/arm/configs/multi_v7_defconfig  | 1 +
+ arch/arm/configs/omap2plus_defconfig | 1 +
+ arch/arm/configs/qcom_defconfig      | 1 +
+ arch/arm/configs/realview_defconfig  | 1 +
+ arch/arm/configs/sama5_defconfig     | 1 +
+ arch/arm/configs/shmobile_defconfig  | 1 +
+ arch/arm/configs/sunxi_defconfig     | 1 +
+ arch/arm/configs/tegra_defconfig     | 1 +
+ arch/arm/configs/versatile_defconfig | 1 +
+ arch/arm/configs/vexpress_defconfig  | 1 +
+ 15 files changed, 15 insertions(+)
 
-[1] https://lore.kernel.org/r/YFKQaXOmOwYyeqvM@google.com/
-[2] https://lore.kernel.org/r/YRTsFNTn%2FT8fLxyB@ravnborg.org/
-
-Changes in v3:
-- Decode hex product ID w/ same endianness as everyone else.
-- ("Reorder logicpd_type_28...") patch new for v3.
-- Split eDP panels patch new for v3.
-- Move wayward panels patch new for v3.
-- ("Non-eDP panels don't need "HPD" handling") new for v3.
-- Split the delay structure out patch just on eDP now.
-- ("Better describe eDP panel delays") new for v3.
-- Fix "prepare_to_enable" patch new for v3.
-- ("Don't re-read the EDID every time") moved to eDP only patch.
-- Generic "edp-panel" handled by the eDP panel driver now.
-- Change init order to we power at the end.
-- Adjust endianness of product ID.
-- Fallback to conservative delays if panel not recognized.
-- Add Sharp LQ116M1JW10 to table.
-- Add AUO B116XAN06.1 to table.
-- Rename delays more generically so they can be reused.
-
-Changes in v2:
-- No longer allow fallback to panel-simple.
-- Add "-ms" suffix to delays.
-- Don't support a "fallback" panel. Probed panels must be probed.
-- Not based on patch to copy "desc"--just allocate for probed panels.
-- Add "-ms" suffix to delays.
-
-Douglas Anderson (16):
-  dt-bindings: drm/panel-simple-edp: Introduce generic eDP panels
-  drm/edid: Break out reading block 0 of the EDID
-  drm/edid: Allow the querying/working with the panel ID from the EDID
-  drm/panel-simple: Reorder logicpd_type_28 / mitsubishi_aa070mc01
-  drm/panel-simple-edp: Split eDP panels out of panel-simple
-  ARM: configs: Everyone who had PANEL_SIMPLE now gets PANEL_SIMPLE_EDP
-  arm64: defconfig: Everyone who had PANEL_SIMPLE now gets
-    PANEL_SIMPLE_EDP
-  MIPS: configs: Everyone who had PANEL_SIMPLE now gets PANEL_SIMPLE_EDP
-  drm/panel-simple-edp: Move some wayward panels to the eDP driver
-  drm/panel-simple: Non-eDP panels don't need "HPD" handling
-  drm/panel-simple-edp: Split the delay structure out
-  drm/panel-simple-edp: Better describe eDP panel delays
-  drm/panel-simple-edp: hpd_reliable shouldn't be subtraced from
-    hpd_absent
-  drm/panel-simple-edp: Fix "prepare_to_enable" if panel doesn't handle
-    HPD
-  drm/panel-simple-edp: Don't re-read the EDID every time we power off
-    the panel
-  drm/panel-simple-edp: Implement generic "edp-panel"s probed by EDID
-
- .../bindings/display/panel/panel-edp.yaml     |  188 ++
- arch/arm/configs/at91_dt_defconfig            |    1 +
- arch/arm/configs/exynos_defconfig             |    1 +
- arch/arm/configs/imx_v6_v7_defconfig          |    1 +
- arch/arm/configs/lpc32xx_defconfig            |    1 +
- arch/arm/configs/multi_v5_defconfig           |    1 +
- arch/arm/configs/multi_v7_defconfig           |    1 +
- arch/arm/configs/omap2plus_defconfig          |    1 +
- arch/arm/configs/qcom_defconfig               |    1 +
- arch/arm/configs/realview_defconfig           |    1 +
- arch/arm/configs/sama5_defconfig              |    1 +
- arch/arm/configs/shmobile_defconfig           |    1 +
- arch/arm/configs/sunxi_defconfig              |    1 +
- arch/arm/configs/tegra_defconfig              |    1 +
- arch/arm/configs/versatile_defconfig          |    1 +
- arch/arm/configs/vexpress_defconfig           |    1 +
- arch/arm64/configs/defconfig                  |    1 +
- arch/mips/configs/qi_lb60_defconfig           |    1 +
- arch/mips/configs/rs90_defconfig              |    1 +
- drivers/gpu/drm/drm_edid.c                    |  121 +-
- drivers/gpu/drm/panel/Kconfig                 |   16 +-
- drivers/gpu/drm/panel/Makefile                |    1 +
- drivers/gpu/drm/panel/panel-simple-edp.c      | 1895 +++++++++++++++++
- drivers/gpu/drm/panel/panel-simple.c          | 1100 +---------
- include/drm/drm_edid.h                        |   47 +
- 25 files changed, 2293 insertions(+), 1093 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/display/panel/panel-edp.yaml
- create mode 100644 drivers/gpu/drm/panel/panel-simple-edp.c
-
+diff --git a/arch/arm/configs/at91_dt_defconfig b/arch/arm/configs/at91_dt_defconfig
+index b1564e0aa000..3c92ba8c850d 100644
+--- a/arch/arm/configs/at91_dt_defconfig
++++ b/arch/arm/configs/at91_dt_defconfig
+@@ -144,6 +144,7 @@ CONFIG_VIDEO_MT9V032=m
+ CONFIG_DRM=y
+ CONFIG_DRM_ATMEL_HLCDC=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_FB_ATMEL=y
+ CONFIG_BACKLIGHT_ATMEL_LCDC=y
+ CONFIG_BACKLIGHT_PWM=y
+diff --git a/arch/arm/configs/exynos_defconfig b/arch/arm/configs/exynos_defconfig
+index f4e1873912a3..3fc348d5765d 100644
+--- a/arch/arm/configs/exynos_defconfig
++++ b/arch/arm/configs/exynos_defconfig
+@@ -227,6 +227,7 @@ CONFIG_DRM_EXYNOS_DPI=y
+ CONFIG_DRM_EXYNOS_DSI=y
+ CONFIG_DRM_EXYNOS_HDMI=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_PANEL_SAMSUNG_LD9040=y
+ CONFIG_DRM_PANEL_SAMSUNG_S6E63J0X03=y
+ CONFIG_DRM_PANEL_SAMSUNG_S6E8AA0=y
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 079fcd8d1d11..ece13c0dc153 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -280,6 +280,7 @@ CONFIG_DRM=y
+ CONFIG_DRM_MSM=y
+ CONFIG_DRM_PANEL_LVDS=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_PANEL_SEIKO_43WVF1G=y
+ CONFIG_DRM_TI_TFP410=y
+ CONFIG_DRM_DW_HDMI_AHB_AUDIO=m
+diff --git a/arch/arm/configs/lpc32xx_defconfig b/arch/arm/configs/lpc32xx_defconfig
+index 989bcc84e7fb..86db9cdced97 100644
+--- a/arch/arm/configs/lpc32xx_defconfig
++++ b/arch/arm/configs/lpc32xx_defconfig
+@@ -108,6 +108,7 @@ CONFIG_REGULATOR=y
+ CONFIG_REGULATOR_FIXED_VOLTAGE=y
+ CONFIG_DRM=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_PL111=y
+ CONFIG_FB_MODE_HELPERS=y
+ CONFIG_BACKLIGHT_CLASS_DEVICE=y
+diff --git a/arch/arm/configs/multi_v5_defconfig b/arch/arm/configs/multi_v5_defconfig
+index 80a3ae02d759..fab163305918 100644
+--- a/arch/arm/configs/multi_v5_defconfig
++++ b/arch/arm/configs/multi_v5_defconfig
+@@ -194,6 +194,7 @@ CONFIG_VIDEO_ATMEL_ISI=m
+ CONFIG_DRM=y
+ CONFIG_DRM_ATMEL_HLCDC=m
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_ASPEED_GFX=m
+ CONFIG_FB_IMX=y
+ CONFIG_FB_ATMEL=y
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index d9abaae118dd..d299d0045823 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -699,6 +699,7 @@ CONFIG_DRM_TEGRA=y
+ CONFIG_DRM_STM=m
+ CONFIG_DRM_STM_DSI=m
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_PANEL_SAMSUNG_LD9040=m
+ CONFIG_DRM_PANEL_ORISETECH_OTM8009A=m
+ CONFIG_DRM_PANEL_RAYDIUM_RM68200=m
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index 2ac2418084ab..dcc55aa62d69 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -511,6 +511,7 @@ CONFIG_OMAP2_DSS_DSI=y
+ CONFIG_DRM_TILCDC=m
+ CONFIG_DRM_PANEL_DSI_CM=m
+ CONFIG_DRM_PANEL_SIMPLE=m
++CONFIG_DRM_PANEL_SIMPLE_EDP=m
+ CONFIG_DRM_PANEL_LG_LB035Q02=m
+ CONFIG_DRM_PANEL_NEC_NL8048HL11=m
+ CONFIG_DRM_PANEL_SHARP_LS037V7DW01=m
+diff --git a/arch/arm/configs/qcom_defconfig b/arch/arm/configs/qcom_defconfig
+index 26353cbfa968..37116db013f8 100644
+--- a/arch/arm/configs/qcom_defconfig
++++ b/arch/arm/configs/qcom_defconfig
+@@ -158,6 +158,7 @@ CONFIG_MEDIA_SUPPORT=y
+ CONFIG_DRM=y
+ CONFIG_DRM_MSM=m
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_ANALOGIX_ANX78XX=m
+ CONFIG_FB=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
+diff --git a/arch/arm/configs/realview_defconfig b/arch/arm/configs/realview_defconfig
+index 4c01e313099f..c433890fc4e9 100644
+--- a/arch/arm/configs/realview_defconfig
++++ b/arch/arm/configs/realview_defconfig
+@@ -61,6 +61,7 @@ CONFIG_REGULATOR=y
+ CONFIG_REGULATOR_FIXED_VOLTAGE=y
+ CONFIG_DRM=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_DISPLAY_CONNECTOR=y
+ CONFIG_DRM_SIMPLE_BRIDGE=y
+ CONFIG_DRM_PL111=y
+diff --git a/arch/arm/configs/sama5_defconfig b/arch/arm/configs/sama5_defconfig
+index 17db3b3e2dd3..c2ab428e6327 100644
+--- a/arch/arm/configs/sama5_defconfig
++++ b/arch/arm/configs/sama5_defconfig
+@@ -160,6 +160,7 @@ CONFIG_VIDEO_MT9V032=m
+ CONFIG_DRM=y
+ CONFIG_DRM_ATMEL_HLCDC=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_LCD_CLASS_DEVICE=y
+ CONFIG_BACKLIGHT_CLASS_DEVICE=y
+ CONFIG_BACKLIGHT_PWM=y
+diff --git a/arch/arm/configs/shmobile_defconfig b/arch/arm/configs/shmobile_defconfig
+index d9a27e4e0914..3b3e9a16c956 100644
+--- a/arch/arm/configs/shmobile_defconfig
++++ b/arch/arm/configs/shmobile_defconfig
+@@ -129,6 +129,7 @@ CONFIG_VIDEO_ML86V7667=y
+ CONFIG_DRM=y
+ CONFIG_DRM_RCAR_DU=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_DISPLAY_CONNECTOR=y
+ CONFIG_DRM_LVDS_CODEC=y
+ CONFIG_DRM_SII902X=y
+diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
+index a60c134c5e04..f6b4f6684631 100644
+--- a/arch/arm/configs/sunxi_defconfig
++++ b/arch/arm/configs/sunxi_defconfig
+@@ -108,6 +108,7 @@ CONFIG_DRM_SUN4I_HDMI_CEC=y
+ CONFIG_DRM_SUN8I_DW_HDMI=y
+ CONFIG_DRM_PANEL_LVDS=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_SIMPLE_BRIDGE=y
+ CONFIG_DRM_LIMA=y
+ CONFIG_FB_SIMPLE=y
+diff --git a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
+index 3d8d8af9524d..918134415254 100644
+--- a/arch/arm/configs/tegra_defconfig
++++ b/arch/arm/configs/tegra_defconfig
+@@ -204,6 +204,7 @@ CONFIG_DRM_TEGRA=y
+ CONFIG_DRM_TEGRA_STAGING=y
+ CONFIG_DRM_PANEL_LVDS=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_LVDS_CODEC=y
+ # CONFIG_LCD_CLASS_DEVICE is not set
+ CONFIG_BACKLIGHT_CLASS_DEVICE=y
+diff --git a/arch/arm/configs/versatile_defconfig b/arch/arm/configs/versatile_defconfig
+index b703f4757021..f424671523a9 100644
+--- a/arch/arm/configs/versatile_defconfig
++++ b/arch/arm/configs/versatile_defconfig
+@@ -57,6 +57,7 @@ CONFIG_GPIO_PL061=y
+ CONFIG_DRM=y
+ CONFIG_DRM_PANEL_ARM_VERSATILE=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_DISPLAY_CONNECTOR=y
+ CONFIG_DRM_SIMPLE_BRIDGE=y
+ CONFIG_DRM_PL111=y
+diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
+index b5e246dd23f4..baf9c7810a14 100644
+--- a/arch/arm/configs/vexpress_defconfig
++++ b/arch/arm/configs/vexpress_defconfig
+@@ -77,6 +77,7 @@ CONFIG_SENSORS_VEXPRESS=y
+ CONFIG_REGULATOR_VEXPRESS=y
+ CONFIG_DRM=y
+ CONFIG_DRM_PANEL_SIMPLE=y
++CONFIG_DRM_PANEL_SIMPLE_EDP=y
+ CONFIG_DRM_SII902X=y
+ CONFIG_DRM_PL111=y
+ CONFIG_FB=y
 -- 
 2.33.0.259.gc128427fd7-goog
 
