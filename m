@@ -2,91 +2,116 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24D4F3FE1F0
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Sep 2021 20:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4F4A3FE301
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Sep 2021 21:26:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344971AbhIASM0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Sep 2021 14:12:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53708 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346815AbhIASMU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Sep 2021 14:12:20 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 714BFC06122E
-        for <linux-omap@vger.kernel.org>; Wed,  1 Sep 2021 11:11:22 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id mw10-20020a17090b4d0a00b0017b59213831so349500pjb.0
-        for <linux-omap@vger.kernel.org>; Wed, 01 Sep 2021 11:11:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
-        b=LD3mpzy1s09M3e/Eheelu/QMtbN6lrYJQ+S1BsYhmG4zP9OQuKOeD1zHV2lZaK7Hdt
-         vXoBMumPRACuZhnwd8TYAFIvdImPe0Zn4DA41GnzHGsnpDZPE0wUFWVFNzgpxF6bh6D8
-         CVxTiiIN7w8BVpPirFLytZKK2cFqqV6q9qR8cw4XmdYYgGZs+MdnDeP+neEr/SbnLI2h
-         mwT6gqJ8+HvNCQei5Zu6b3U+/YcUOepEDfVn6t0IkNG5YzxTV8mH8IqZ4zEsqBchdgxI
-         E/zGH3KCiuS7UdfEMBVKPbpzhhPyh4quLRALvE4iCHtswqSZDgWUuzksodIw8OWwGR1Z
-         0RlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=2joGkq8i8C5vglZO1FYNTlWqLyr4vSiCXKQYXBVnv4Q=;
-        b=TezGZlv1PWk1XEOSjhffb+GNGn/BiZR7AudScNsRie8lrULOSW/PVm/SGVVIT1qz6x
-         EKidFDLKVYd++1tlaKYYrezUKMxzX81dkelgJA8aryqFn4KO4W89w9HlaAvGd6KnzuEm
-         GrrWFA7ViSniu1xyXTAgWS0Vm7kLGEph0EqKUOlhO3Z+7AHhtphSw+uKE3lep5AnEIiL
-         T1aPO0Il45V1m3nEFVSeoH+1otzqzs/NZcHG582KHwmxKvAKMQkfT6hKKotDd1Rktz+q
-         E6a+1PpUxU6JAbs24+Y6+8xpv1rgAfMQ6QZrrn9Ft5r+JgW3ML54jDfVSfFik7jRy9NJ
-         poXw==
-X-Gm-Message-State: AOAM530tPWY6UReRquKzA8kavyeYJluhSF/9c/Qte/Z5wgpejbfu2K6I
-        Z0RTw4iaZixK5L/ElsITbLxxbDj9FqqxxWSar7DPCQHLDjgr7g==
-X-Google-Smtp-Source: ABdhPJwbbBYGjUEQSS3Bb7EfYk34O3AVuG22pVIF78fkATQG8c+PQmeHgcc35+YrriS74Wl5STB8JbzOasp+8kCVBlk=
-X-Received: by 2002:a67:8c5:: with SMTP id 188mr1017695vsi.4.1630519870726;
- Wed, 01 Sep 2021 11:11:10 -0700 (PDT)
+        id S236087AbhIAT1y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Sep 2021 15:27:54 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:57636 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231146AbhIAT1y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Sep 2021 15:27:54 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 181JQV31026608;
+        Wed, 1 Sep 2021 14:26:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1630524391;
+        bh=TRuE6KH2UxmRjPL0Ha46ANT3bo9HPWgsSgDp/PvBKzc=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=OXBmmCLjO6oE6W9zHxyjm/9XLP3rXatuwT6QPX2OSmM0On9ZbRhpKv5gqz54yQZZS
+         acnmgW4VsAWLhBQlDE5CTLNk4ydNWDdNpvdSPp1AjBPOLGFGwdktOmT3K1v9QOIRIw
+         zzfikghV581kQmywpLzluztlRdPRw76+wwN3J4Ns=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 181JQVOn060436
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 1 Sep 2021 14:26:31 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 1
+ Sep 2021 14:26:30 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Wed, 1 Sep 2021 14:26:30 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 181JQQCx020864;
+        Wed, 1 Sep 2021 14:26:26 -0500
+Subject: Re: [PATCH 28/40] mfd: ti_am335x_tscadc: Add ADC1/magnetic reader
+ support
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>
+CC:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "Ryan J . Barnett" <ryan.barnett@collins.com>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-input@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, Jason Reeder <jreeder@ti.com>
+References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
+ <20210825152518.379386-29-miquel.raynal@bootlin.com>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <732e002d-d732-5411-1be4-1ecafc993da5@ti.com>
+Date:   Wed, 1 Sep 2021 22:26:25 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Received: by 2002:ab0:740d:0:0:0:0:0 with HTTP; Wed, 1 Sep 2021 11:11:10 -0700 (PDT)
-From:   CorisBank International <corisbankintlbf@gmail.com>
-Date:   Wed, 1 Sep 2021 11:11:10 -0700
-Message-ID: <CA+25hwzjLgVdtDXYWeuqFBTvAbpc4oxK0dW54s7tjGNyU_m0ow@mail.gmail.com>
-Subject: CORISBANK INTERNATIONAL OFFICIAL NOTIFICATION
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210825152518.379386-29-miquel.raynal@bootlin.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Att: Client
 
 
-CORISBANK INTERNATIONAL URGENT NOTIFICATION
+On 25/08/2021 18:25, Miquel Raynal wrote:
+> Introduce a new compatible that has another set of driver data,
+> targeting am437x SoCs with a magnetic reader instead of the
+> touchscreen and a more featureful set of registers.
+> 
+> Co-developed-by: Jason Reeder <jreeder@ti.com>
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> Signed-off-by: Jason Reeder <jreeder@ti.com>
+> ---
+>   drivers/mfd/ti_am335x_tscadc.c       | 43 ++++++++++++++++++++++------
+>   include/linux/mfd/ti_am335x_tscadc.h |  9 +++++-
+>   2 files changed, 43 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+> index 1a30610dc65f..f4f6b9db4d2a 100644
+> --- a/drivers/mfd/ti_am335x_tscadc.c
+> +++ b/drivers/mfd/ti_am335x_tscadc.c
+> @@ -122,9 +122,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+>   	const __be32 *cur;
+>   	struct clk *clk;
+>   	u32 val;
+> -	bool use_tsc = false;
+> +	bool use_tsc = false, use_mag = false;
+>   	int tscmag_wires = 0, adc_channels = 0, readouts = 0, cell_idx = 0;
+> -	int total_channels, err;
+> +	int mag_tracks = 0, total_channels, err;
+>   
+>   	/* Allocate memory for device */
+>   	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
+> @@ -146,6 +146,12 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+>   		of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
+>   		if (tscmag_wires)
+>   			use_tsc = true;
+> +	} else {
+> +		node = of_get_child_by_name(pdev->dev.of_node, "mag");
+> +		of_property_read_u32(node, "ti,tracks", &mag_tracks);
 
-Notification / Notification/ Notification
+"ti,tracks" seems undocumented?
 
-Note, We are writing to inform you officially that Finally the Central
-Bank Financial Authority have approved to transfer your $8.2Million
-which was signed by late Mrs Rose Banneth the COVID.19 victim to
-transfer to you, Late Mrs Rose Banneth the France Lady contacted us to
-transfer her fund in our bank to you for Orphanage work before she
-died by the COVID.19
-and as it is now, you will receive your fund through our corresponding
-bank in Dubai [Emirate Investment Bank ] for security reason. Please
-you should reconfirm your details to receive the $8.2Million.
+[....]
 
-Name, Country, Address, occupations, Age, Telephone number, account
-Details so that we can immediately forward to the World Bank to
-transfer the fund.
-You are advised to comply on timely manner to permit this esteem bank
-transfer your fund as scheduled.
-
-We look forward to serving you better
-Your Financial Comfort Is A Priority
-Thank you for choosing Corisbank International.
-
-Sincerely,
-
-----
-
-Mr Diakarya Ouattara
-Managing Director
-Bank Coris
-Burkina Faso
-+226 556 163 37
-financial_bf_info@accountant.com
+-- 
+Best regards,
+grygorii
