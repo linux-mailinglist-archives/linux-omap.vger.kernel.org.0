@@ -2,104 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 846463FE972
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 08:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 795153FEB9E
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 11:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242156AbhIBGsJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Thu, 2 Sep 2021 02:48:09 -0400
-Received: from relay10.mail.gandi.net ([217.70.178.230]:48891 "EHLO
-        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242135AbhIBGsJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Sep 2021 02:48:09 -0400
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 361B224000C;
-        Thu,  2 Sep 2021 06:47:06 +0000 (UTC)
-Date:   Thu, 2 Sep 2021 08:47:06 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "Ryan J . Barnett" <ryan.barnett@collins.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-input@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-clk@vger.kernel.org>, Jason Reeder <jreeder@ti.com>
-Subject: Re: [PATCH 28/40] mfd: ti_am335x_tscadc: Add ADC1/magnetic reader
- support
-Message-ID: <20210902084706.7cd54453@xps13>
-In-Reply-To: <732e002d-d732-5411-1be4-1ecafc993da5@ti.com>
-References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
-        <20210825152518.379386-29-miquel.raynal@bootlin.com>
-        <732e002d-d732-5411-1be4-1ecafc993da5@ti.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+        id S245263AbhIBJ5S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Sep 2021 05:57:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39048 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233157AbhIBJ5N (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 2 Sep 2021 05:57:13 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5860560525;
+        Thu,  2 Sep 2021 09:56:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630576575;
+        bh=Z8WT93iMfPtGcY/7MRMgThZsMD/TOvlbUhTRN5F/47Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=D6nx9d14dorAF1Ocl3z8akTPeHaEQj9JyJyHjd9S/r+qHN9FTXH1BN/vtD36JZeI0
+         RZW205UVgX/RcfOP61931s611dmJvy7ZnMW2myA1huTvzn8OpBgccKzmYSJmFTz8Bz
+         m9nsuiO37oxEwPtJQDgkjT/a2vH0kn10YESL0mpb8ZU71hYh2nMSfquedxVoeRfABN
+         KzJZhU97h/NVsQETN9PCnXXeYmVC0m5GdXar40mD48jHUTcSncHj76TnohKmcYHQMy
+         v/EKrAeYqgDczAIHcHJ6OOE5XcSVgSGk21Ovsd/v5v+icPrHW9zyeh3lxQ9R831SUs
+         XTM355k1NuIYQ==
+From:   Roger Quadros <rogerq@kernel.org>
+To:     tony@atomide.com
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski@canonical.com,
+        miquel.raynal@bootlin.com, nm@ti.com, lokeshvutla@ti.com,
+        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH v2 0/6] dt-bindings: memory-controllers: ti,gpmc: Convert to yaml
+Date:   Thu,  2 Sep 2021 12:56:03 +0300
+Message-Id: <20210902095609.16583-1-rogerq@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Grygorii,
+Hi,
 
-Grygorii Strashko <grygorii.strashko@ti.com> wrote on Wed, 1 Sep 2021
-22:26:25 +0300:
+This series converts ti,gpmc memory controller and ti,gpmc-nand and
+ti,gpmc-onenand MTD controller bindings to yaml.
 
-> On 25/08/2021 18:25, Miquel Raynal wrote:
-> > Introduce a new compatible that has another set of driver data,
-> > targeting am437x SoCs with a magnetic reader instead of the
-> > touchscreen and a more featureful set of registers.
-> > 
-> > Co-developed-by: Jason Reeder <jreeder@ti.com>
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > Signed-off-by: Jason Reeder <jreeder@ti.com>
-> > ---
-> >   drivers/mfd/ti_am335x_tscadc.c       | 43 ++++++++++++++++++++++------
-> >   include/linux/mfd/ti_am335x_tscadc.h |  9 +++++-
-> >   2 files changed, 43 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> > index 1a30610dc65f..f4f6b9db4d2a 100644
-> > --- a/drivers/mfd/ti_am335x_tscadc.c
-> > +++ b/drivers/mfd/ti_am335x_tscadc.c
-> > @@ -122,9 +122,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >   	const __be32 *cur;
-> >   	struct clk *clk;
-> >   	u32 val;
-> > -	bool use_tsc = false;
-> > +	bool use_tsc = false, use_mag = false;
-> >   	int tscmag_wires = 0, adc_channels = 0, readouts = 0, cell_idx = 0;
-> > -	int total_channels, err;
-> > +	int mag_tracks = 0, total_channels, err;  
-> >   >   	/* Allocate memory for device */  
-> >   	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
-> > @@ -146,6 +146,12 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> >   		of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
-> >   		if (tscmag_wires)
-> >   			use_tsc = true;
-> > +	} else {
-> > +		node = of_get_child_by_name(pdev->dev.of_node, "mag");
-> > +		of_property_read_u32(node, "ti,tracks", &mag_tracks);  
-> 
-> "ti,tracks" seems undocumented?
+cheers,
+-roger
 
-Well that's true and almost on purpose, I am not focusing on the
-magnetic reader feature, it is not supported, I don't have one, I don't
-plan to add support for it. But in the driver I need to know how many
-"tracks" are unavailable for the ADC in order to implement the entire
-logic (this block comes from TI and the naming from Jason Reeder).
+Changelog:
+v2:
+- Fix all errors in dtbs_check and dt_bindings_check
+- remove references to gpmc-omap.txt
+- Convert ti,gpmc-nand and ti,gpmc-onenand bindings to yaml as well
 
-I am not comfortable writing a binding file for a device that I won't
-use, it's the best way to miss something and have stable broken
-bindings in the future. So I assumed it was not a big deal to have this
-property in the code, which may be updated/removed/enhanced later if
-needed without having to mess with the code too much. What do you think?
+Roger Quadros (6):
+  ARM: dts: omap: Fixup GPMC child nodes
+  dt-bindings: memory-controllers: ti,gpmc: Convert to yaml
+  dt-bindings: mtd: ti,gpmc-nand: Convert to yaml
+  dt-bindings: mtd: ti,gpmc-onenand: Convert to yaml
+  dt-bindings: mtd: Remove gpmc-nor.txt
+  dt-bindings: net: Remove gpmc-eth.txt
 
-Thanks,
-Miquèl
+ .../bindings/memory-controllers/omap-gpmc.txt | 157 --------
+ .../bindings/memory-controllers/ti,gpmc.yaml  | 364 ++++++++++++++++++
+ .../devicetree/bindings/mtd/gpmc-nand.txt     | 147 -------
+ .../devicetree/bindings/mtd/gpmc-nor.txt      |  98 -----
+ .../devicetree/bindings/mtd/gpmc-onenand.txt  |  48 ---
+ .../devicetree/bindings/mtd/ti,gpmc-nand.yaml | 109 ++++++
+ .../bindings/mtd/ti,gpmc-onenand.yaml         |  71 ++++
+ .../devicetree/bindings/net/gpmc-eth.txt      |  97 -----
+ .../boot/dts/logicpd-som-lv-baseboard.dtsi    |   2 +-
+ .../boot/dts/logicpd-torpedo-37xx-devkit.dts  |   2 +-
+ .../boot/dts/logicpd-torpedo-baseboard.dtsi   |   2 +-
+ arch/arm/boot/dts/omap-gpmc-smsc911x.dtsi     |  62 ++-
+ arch/arm/boot/dts/omap-gpmc-smsc9221.dtsi     |  59 ++-
+ arch/arm/boot/dts/omap-zoom-common.dtsi       |  16 +-
+ arch/arm/boot/dts/omap2430-sdp.dts            |   6 +-
+ arch/arm/boot/dts/omap3-cm-t3x30.dtsi         |   6 +-
+ .../arm/boot/dts/omap3-devkit8000-common.dtsi |   4 +-
+ arch/arm/boot/dts/omap3-evm-37xx.dts          |   1 +
+ arch/arm/boot/dts/omap3-evm-common.dtsi       |   9 -
+ .../boot/dts/omap3-evm-processor-common.dtsi  |   5 +-
+ arch/arm/boot/dts/omap3-evm.dts               |   1 +
+ arch/arm/boot/dts/omap3-igep0020-common.dtsi  |   5 +-
+ arch/arm/boot/dts/omap3-ldp.dts               |   5 +-
+ arch/arm/boot/dts/omap3-n900.dts              |   2 +-
+ .../dts/omap3-overo-chestnut43-common.dtsi    |   6 +-
+ .../arm/boot/dts/omap3-overo-tobi-common.dtsi |   6 +-
+ .../boot/dts/omap3-overo-tobiduo-common.dtsi  |   8 +-
+ arch/arm/boot/dts/omap3-sb-t35.dtsi           |   4 +-
+ arch/arm/boot/dts/omap4-duovero-parlor.dts    |   6 +-
+ 29 files changed, 649 insertions(+), 659 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/memory-controllers/omap-gpmc.txt
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-nand.txt
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-nor.txt
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-onenand.txt
+ create mode 100644 Documentation/devicetree/bindings/mtd/ti,gpmc-nand.yaml
+ create mode 100644 Documentation/devicetree/bindings/mtd/ti,gpmc-onenand.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/gpmc-eth.txt
+
+-- 
+2.17.1
+
