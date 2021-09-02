@@ -2,98 +2,183 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3693B3FF4C8
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 22:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC29B3FF5E3
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 23:51:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243511AbhIBUUt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Sep 2021 16:20:49 -0400
-Received: from mail-ot1-f52.google.com ([209.85.210.52]:46671 "EHLO
-        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231321AbhIBUUs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Sep 2021 16:20:48 -0400
-Received: by mail-ot1-f52.google.com with SMTP id v33-20020a0568300921b0290517cd06302dso4079540ott.13;
-        Thu, 02 Sep 2021 13:19:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Zc4Bka7Z27BGz/FwvwBav+oDcWlZ03tv3Oc8DdWUZWI=;
-        b=HHbWATxTs5k98teAMuG8uT+YyQeXZr+kfQ26OAXFXn+1jnpA8plgzjlW8e2GtoMf0F
-         0hh2T++G42nq18G7FO1qo1FF+60E2uDmVdygQ3MY84yFdJnUp7WTQ6bn3rv8RnmWBnLS
-         7acMvrKBDbN4EXLEF0vnT59EwkDjF09cTPvyxrDFjy9BTm96XqVWBeaqoKBas+FnEDnY
-         3rgfESGddWPTpWelF5z+9MyIQhNOz0VrKtBKT7n2wvM9ReAQA9CFMvnjHzA7PLGdtovD
-         Qr1HB8qH0/csDVhbw9G+kaa4uqLWoNZgNWtYeEDYxlUFSA7/x9ZHlP9Wbz0lbquCMjOU
-         7I1g==
-X-Gm-Message-State: AOAM533ovryQj4aGTyMj1Jc1jI5vBnyXK/MAnayAYa/XawOUUr9Or7Xp
-        L790/+8DreYlWZ4SNnbm7g==
-X-Google-Smtp-Source: ABdhPJw04aku2y1a3SMsnpZ4nOCM6NowBUS6YDQcqSvrA7ax/OabLLpjd1UAk6sQK81rJWoJ0YGwIQ==
-X-Received: by 2002:a9d:705d:: with SMTP id x29mr53896otj.260.1630613989387;
-        Thu, 02 Sep 2021 13:19:49 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id c7sm536107otm.27.2021.09.02.13.19.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Sep 2021 13:19:48 -0700 (PDT)
-Received: (nullmailer pid 1341550 invoked by uid 1000);
-        Thu, 02 Sep 2021 20:19:47 -0000
-Date:   Thu, 2 Sep 2021 15:19:47 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Roger Quadros <rogerq@kernel.org>
-Cc:     tony@atomide.com, krzysztof.kozlowski@canonical.com,
-        miquel.raynal@bootlin.com, nm@ti.com, lokeshvutla@ti.com,
-        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] dt-bindings: memory-controllers: ti,gpmc: Convert
- to yaml
-Message-ID: <YTEx44lPKf0jaIU3@robh.at.kernel.org>
-References: <20210902095609.16583-1-rogerq@kernel.org>
- <20210902095609.16583-3-rogerq@kernel.org>
+        id S1347614AbhIBVws (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Sep 2021 17:52:48 -0400
+Received: from relay10.mail.gandi.net ([217.70.178.230]:57211 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347600AbhIBVwr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Sep 2021 17:52:47 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id B96F2240006;
+        Thu,  2 Sep 2021 21:51:44 +0000 (UTC)
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v2 00/46] TI AM437X ADC1
+Date:   Thu,  2 Sep 2021 23:50:58 +0200
+Message-Id: <20210902215144.507243-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210902095609.16583-3-rogerq@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Sep 02, 2021 at 12:56:05PM +0300, Roger Quadros wrote:
-> Convert omap-gpmc.txt to ti,gpmc.yaml.
-> 
-> Signed-off-by: Roger Quadros <rogerq@kernel.org>
-> ---
->  .../bindings/memory-controllers/omap-gpmc.txt | 157 --------
->  .../bindings/memory-controllers/ti,gpmc.yaml  | 364 ++++++++++++++++++
->  .../devicetree/bindings/mtd/gpmc-nand.txt     |   2 +-
->  .../devicetree/bindings/mtd/gpmc-nor.txt      |   4 +-
->  .../devicetree/bindings/mtd/gpmc-onenand.txt  |   2 +-
->  .../devicetree/bindings/net/gpmc-eth.txt      |   4 +-
->  6 files changed, 370 insertions(+), 163 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/memory-controllers/omap-gpmc.txt
->  create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
+Hello,
 
-Also, please install yamllint and fix all the warnings:
+This is a (fairly big) series bringing support of AM437X ADC1.
+On TI AM33XX SoCs family there is an ADC that can also be connected to a
+touchscreen. This hardware has been extended and is present on certain
+SoCs from the AM437X family. In particular, the touchscreen has been
+replaced by a magnetic card reader. In both cases, the representation is
+an MFD device with two children:
+- on AM33XX: the touchscreen controller and the ADC
+- on AM437X: the magnetic card reader and the ADC
 
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:97:6: [warning] wrong indentation: expected 4 but found 5 (indentation)                                                                                                      
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:135:9: [warning] wrong indentation: expected 10 but found 8 (indentation)                                                                                                    
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:190:27: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:193:26: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:199:23: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:202:34: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:205:32: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:208:32: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:211:26: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:214:23: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:217:26: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:220:25: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:226:28: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:229:29: [warning] too many spaces after colon (colons)                                                                                                                       
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:242:29: [warning] too many spaces after colon (colons)
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:245:29: [warning] too many spaces after colon (colons)
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:248:22: [warning] too many spaces after colon (colons)
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:270:25: [warning] too many spaces after colon (colons)
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:274:27: [warning] too many spaces after colon (colons)
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:277:27: [warning] too many spaces after colon (colons)
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:280:26: [warning] too many spaces after colon (colons)
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:314:25: [warning] too many spaces after colon (colons)
-../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:317:24: [warning] too many spaces after colon (colons)
+This series really targets small and atomic changes so that the overall
+review is eased, even though it leads to a lot of rather small patches.
+Here are the steps:
+* Supporting the missing clock
+* Translating a single text file containing the description for the
+  MFD, the touchscreen and the ADC into three independent yaml files.
+* Cleaning/preparing the MFD driver.
+* Supporting ADC1 in the MFD driver.
+* Cleaning/preparing of the ADC driver.
+* Supporting ADC1 in the ADC driver.
+* Updating various device trees.
 
-Rob
+Here is the full series again. I decided not to split it given the fact
+that I moved things around a little bit and addressed several different
+issues which impacted other patches, perhaps the next iteration if needed
+will be focused on a subset of patches. The clock patch has been acked,
+the ADC patches almost as well, so we expect the series to go through
+the MFD tree now.
+
+Thanks,
+Miquèl
+
+Changes in v2:
+* Added various R-by/A-by tags.
+* Various typos & style fixes.
+[Bindings]
+* Included the missing ti,am654-tscadc compatible.
+* Reworded the compatible lines as requested by Jonathan.
+* Reworded the bindings content a little bit as advised by Rob (subnodes
+  being objects, MFD descriptions provided once, status and unused
+  labels removed).
+[SPDX changes]
+* Mentioned that the license macro and the license text matched.
+* Also added an SPDX tag in the MFD header.
+[MFD header]
+* Used the BIT(), GENMASK() and PREP_FIELD() macros when relevant.
+[MFD driver]
+* Did not reordered the variables declared on the probe stack as advised
+  by Jonathan.
+* Added missing of_node_put() calls.
+* Moved the patch changing the place where the main structure is
+  allocated to directly precede the patch using this change.
+* Fixed the driver data wiring (bug happening between ex patches 16 and
+  28).
+* Added a commit just to explain the reordering of the register writes
+  during initialization/resume.
+* Explained the check about 'use_tsc' in the commit message.
+* Added a link to the TRM in a commit message referencing it.
+* Removed the use of the ti,tracks property, used a constant value
+  instead.
+* Dropped the error check when retrieving the "wrong" DT property
+  (coordiante-readouts) which is unused.
+
+Miquel Raynal (46):
+  clk: ti: am43xx: Add clkctrl data for am43xx ADC1
+  dt-bindings: mfd: ti,am3359-tscadc: Add a yaml description for this
+    MFD
+  dt-bindings: touchscreen: ti,am3359-tsc: New yaml description
+  dt-bindings: iio: adc: ti,am3359-adc: New yaml description
+  dt-bindings: touchscreen: ti,am3359-tsc: Remove deprecated text file
+  dt-bindings: mfd: ti,am3359-tscadc: Describe am4372 MFD compatible
+  dt-bindings: iio: adc: ti,am3359-adc: Describe am4372 ADC compatible
+  mfd: ti_am335x_tscadc: Replace license text with SPDX tag
+  mfd: ti_am335x_tscadc: Fix style
+  mfd: ti_am335x_tscadc: Drop extra spacing when declaring stack
+    variables
+  mfd: ti_am335x_tscadc: Ensure a balanced number of node get/put
+  mfd: ti_am335x_tscadc: Get rid of useless gotos
+  mfd: ti_am335x_tscadc: Reword the comment explaining the dividers
+  mfd: ti_am335x_tscadc: Don't search the tree for our clock
+  mfd: ti_am335x_tscadc: Simplify divisor calculation
+  mfd: ti_am335x_tscadc: Move the driver structure allocation earlier
+  mfd: ti_am335x_tscadc: Use driver data
+  mfd: ti_am335x_tscadc: Mimic the probe from resume()
+  mfd: ti_am335x_tscadc: Drop useless variables from the driver
+    structure
+  mfd: ti_am335x_tscadc: Always provide an idle configuration
+  mfd: ti_am335x_tscadc: Reorder the initialization steps
+  mfd: ti_am335x_tscadc: Gather the ctrl register logic in one place
+  mfd: ti_am335x_tscadc: Replace the header license text with SPDX tag
+  mfd: ti_am335x_tscadc: Fix header spacing
+  mfd: ti_am335x_tscadc: Use BIT() and GENMASK() when relevant in the
+    header
+  mfd: ti_am335x_tscadc: Use FIELD_PREP() when relevant in the header
+  mfd: ti_am335x_tscadc: Rename the subsystem enable macro
+  mfd: ti_am335x_tscadc: Add TSC prefix in certain macros
+  mfd: ti_am335x_tscadc: Rename a variable
+  mfd: ti_am335x_tscadc: Fix an error message
+  mfd: ti_am335x_tscadc: Add a boolean to clarify the presence of a
+    touchscreen
+  mfd: ti_am335x_tscadc: Introduce has_tsc
+  mfd: ti_am335x_tscadc: Move control register configuration
+  mfd: ti_am335x_tscadc: Add ADC1/magnetic reader support
+  mfd: ti_am335x_tscadc: Support the correctly spelled DT property
+  iio: adc: ti_am335x_adc: Wait the idle state to avoid stalls
+  iio: adc: ti_am335x_adc: Replace license text with SPDX tag
+  iio: adc: ti_am335x_adc: Fix style
+  iio: adc: ti_am335x_adc: Get rid of useless gotos
+  iio: adc: ti_am335x_adc: Gather the checks on the delays
+  iio: adc: ti_am335x_adc: Add a unit to the timeout delay
+  iio: adc: ti_am335x_adc: Add the scale information
+  iio: adc: ti_am335x_adc: Add the am437x compatible
+  ARM: dts: am437x-cm-t43: Use a correctly spelled DT property
+  ARM: dts: am43xx: Describe the magnetic reader/ADC1 hardware module
+  ARM: dts: am437x-gp-evm: enable ADC1
+
+ .../bindings/iio/adc/ti,am3359-adc.yaml       |  70 +++++
+ .../input/touchscreen/ti,am3359-tsc.yaml      |  76 ++++++
+ .../bindings/input/touchscreen/ti-tsc-adc.txt |  91 -------
+ .../bindings/mfd/ti,am3359-tscadc.yaml        |  84 ++++++
+ arch/arm/boot/dts/am437x-cm-t43.dts           |   2 +-
+ arch/arm/boot/dts/am437x-gp-evm.dts           |   8 +
+ arch/arm/boot/dts/am437x-l4.dtsi              |  31 ++-
+ arch/arm/boot/dts/am43xx-clocks.dtsi          |   7 +
+ drivers/clk/ti/clk-43xx.c                     |   1 +
+ drivers/iio/adc/ti_am335x_adc.c               | 217 +++++++++-------
+ drivers/mfd/ti_am335x_tscadc.c                | 242 ++++++++++--------
+ include/dt-bindings/clock/am4.h               |   1 +
+ include/linux/mfd/ti_am335x_tscadc.h          | 127 ++++-----
+ 13 files changed, 609 insertions(+), 348 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
+ create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+
+-- 
+2.27.0
+
