@@ -2,121 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 071FD3FF489
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 22:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3693B3FF4C8
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 22:19:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231207AbhIBUEi convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Thu, 2 Sep 2021 16:04:38 -0400
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:54915 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343608AbhIBUEi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Sep 2021 16:04:38 -0400
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 95CE71BF203;
-        Thu,  2 Sep 2021 20:03:35 +0000 (UTC)
-Date:   Thu, 2 Sep 2021 22:03:34 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
-        Tony Lindgren <tony@atomide.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "Ryan J . Barnett" <ryan.barnett@collins.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org, Jason Reeder <jreeder@ti.com>
-Subject: Re: [PATCH 28/40] mfd: ti_am335x_tscadc: Add ADC1/magnetic reader
- support
-Message-ID: <20210902220334.2abd0083@xps13>
-In-Reply-To: <20210830151010.7dcb1be3@jic23-huawei>
-References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
-        <20210825152518.379386-29-miquel.raynal@bootlin.com>
-        <20210830151010.7dcb1be3@jic23-huawei>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S243511AbhIBUUt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Sep 2021 16:20:49 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:46671 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231321AbhIBUUs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Sep 2021 16:20:48 -0400
+Received: by mail-ot1-f52.google.com with SMTP id v33-20020a0568300921b0290517cd06302dso4079540ott.13;
+        Thu, 02 Sep 2021 13:19:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Zc4Bka7Z27BGz/FwvwBav+oDcWlZ03tv3Oc8DdWUZWI=;
+        b=HHbWATxTs5k98teAMuG8uT+YyQeXZr+kfQ26OAXFXn+1jnpA8plgzjlW8e2GtoMf0F
+         0hh2T++G42nq18G7FO1qo1FF+60E2uDmVdygQ3MY84yFdJnUp7WTQ6bn3rv8RnmWBnLS
+         7acMvrKBDbN4EXLEF0vnT59EwkDjF09cTPvyxrDFjy9BTm96XqVWBeaqoKBas+FnEDnY
+         3rgfESGddWPTpWelF5z+9MyIQhNOz0VrKtBKT7n2wvM9ReAQA9CFMvnjHzA7PLGdtovD
+         Qr1HB8qH0/csDVhbw9G+kaa4uqLWoNZgNWtYeEDYxlUFSA7/x9ZHlP9Wbz0lbquCMjOU
+         7I1g==
+X-Gm-Message-State: AOAM533ovryQj4aGTyMj1Jc1jI5vBnyXK/MAnayAYa/XawOUUr9Or7Xp
+        L790/+8DreYlWZ4SNnbm7g==
+X-Google-Smtp-Source: ABdhPJw04aku2y1a3SMsnpZ4nOCM6NowBUS6YDQcqSvrA7ax/OabLLpjd1UAk6sQK81rJWoJ0YGwIQ==
+X-Received: by 2002:a9d:705d:: with SMTP id x29mr53896otj.260.1630613989387;
+        Thu, 02 Sep 2021 13:19:49 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id c7sm536107otm.27.2021.09.02.13.19.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Sep 2021 13:19:48 -0700 (PDT)
+Received: (nullmailer pid 1341550 invoked by uid 1000);
+        Thu, 02 Sep 2021 20:19:47 -0000
+Date:   Thu, 2 Sep 2021 15:19:47 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     tony@atomide.com, krzysztof.kozlowski@canonical.com,
+        miquel.raynal@bootlin.com, nm@ti.com, lokeshvutla@ti.com,
+        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/6] dt-bindings: memory-controllers: ti,gpmc: Convert
+ to yaml
+Message-ID: <YTEx44lPKf0jaIU3@robh.at.kernel.org>
+References: <20210902095609.16583-1-rogerq@kernel.org>
+ <20210902095609.16583-3-rogerq@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210902095609.16583-3-rogerq@kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Jonathan,
-
-
-> > +static const struct ti_tscadc_data magdata = {
-> > +	.has_tsc = false,
-> > +	.has_mag = true,
-> > +	.name_tscmag = "TI-am43xx-mag",
-> > +	.compat_tscmag = "ti,am4372-mag",
-> > +	.name_adc = "TI-am43xx-adc",
-> > +	.compat_adc = "ti,am4372-adc",
-> > +	.target_clk_rate = MAG_ADC_CLK,
-> > +};
-> > +
-> >  static const struct of_device_id ti_tscadc_dt_ids[] = {
-> > -	{ .compatible = "ti,am3359-tscadc", },
-> > +	{
-> > +		.compatible = "ti,am3359-tscadc",
-> > +		.data = &tscdata,  
-> Interesting to see match data added here and not before.
-> Given you don't have any code in here that seems to have
-> changed to use the match data, was it buggy before or is this still
-> not used?
-
-As said earlier, it was buggy before. It is now fixed.
-
+On Thu, Sep 02, 2021 at 12:56:05PM +0300, Roger Quadros wrote:
+> Convert omap-gpmc.txt to ti,gpmc.yaml.
 > 
-> > +	},
-> > +	{
-> > +		.compatible = "ti,am4372-magadc",
-> > +		.data = &magdata,
-> > +	},
-> >  	{ }
-> >  };
-> >  MODULE_DEVICE_TABLE(of, ti_tscadc_dt_ids);
-> > @@ -355,6 +382,6 @@ static struct platform_driver ti_tscadc_driver = {
-> >  
-> >  module_platform_driver(ti_tscadc_driver);
-> >  
-> > -MODULE_DESCRIPTION("TI touchscreen / ADC MFD controller driver");
-> > +MODULE_DESCRIPTION("TI touchscreen/magnetic reader/ADC MFD controller driver");
-> >  MODULE_AUTHOR("Rachna Patil <rachna@ti.com>");
-> >  MODULE_LICENSE("GPL");
-> > diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-> > index 082b2af94263..31b22ec567e7 100644
-> > --- a/include/linux/mfd/ti_am335x_tscadc.h
-> > +++ b/include/linux/mfd/ti_am335x_tscadc.h
-> > @@ -129,6 +129,11 @@
-> >  #define CNTRLREG_TSC_8WIRE	CNTRLREG_TSC_AFE_CTRL(3)
-> >  #define CNTRLREG_TSC_ENB	BIT(7)
-> >  
-> > +/*Control registers bitfields  for MAGADC IP */
-> > +#define CNTRLREG_MAGADCENB      BIT(0)
-> > +#define CNTRLREG_MAG_PREAMP_PWRDOWN BIT(5)
-> > +#define CNTRLREG_MAG_PREAMP_BYPASS  BIT(6)
-> > +
-> >  /* FIFO READ Register */
-> >  #define FIFOREAD_DATA_MASK (0xfff << 0)
-> >  #define FIFOREAD_CHNLID_MASK (0xf << 16)
-> > @@ -141,7 +146,8 @@
-> >  #define SEQ_STATUS BIT(5)
-> >  #define CHARGE_STEP		0x11
-> >  
-> > -#define TSC_ADC_CLK		3000000
-> > +#define TSC_ADC_CLK		3000000 /* 3 MHz */
-> > +#define MAG_ADC_CLK		13000000 /* 13 MHz */  
-> 
-> Not sure on current status, but there is a proposed series floating
-> about that adds HZ_PER_MEGAHZ or something like that which would make
-> it easier to spot if these have right number of zeros.
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> ---
+>  .../bindings/memory-controllers/omap-gpmc.txt | 157 --------
+>  .../bindings/memory-controllers/ti,gpmc.yaml  | 364 ++++++++++++++++++
+>  .../devicetree/bindings/mtd/gpmc-nand.txt     |   2 +-
+>  .../devicetree/bindings/mtd/gpmc-nor.txt      |   4 +-
+>  .../devicetree/bindings/mtd/gpmc-onenand.txt  |   2 +-
+>  .../devicetree/bindings/net/gpmc-eth.txt      |   4 +-
+>  6 files changed, 370 insertions(+), 163 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/memory-controllers/omap-gpmc.txt
+>  create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
 
-Would be nice indeed, but it looks like it's not yet mainline :/
+Also, please install yamllint and fix all the warnings:
 
-Thanks,
-Miquèl
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:97:6: [warning] wrong indentation: expected 4 but found 5 (indentation)                                                                                                      
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:135:9: [warning] wrong indentation: expected 10 but found 8 (indentation)                                                                                                    
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:190:27: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:193:26: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:199:23: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:202:34: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:205:32: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:208:32: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:211:26: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:214:23: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:217:26: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:220:25: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:226:28: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:229:29: [warning] too many spaces after colon (colons)                                                                                                                       
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:242:29: [warning] too many spaces after colon (colons)
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:245:29: [warning] too many spaces after colon (colons)
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:248:22: [warning] too many spaces after colon (colons)
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:270:25: [warning] too many spaces after colon (colons)
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:274:27: [warning] too many spaces after colon (colons)
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:277:27: [warning] too many spaces after colon (colons)
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:280:26: [warning] too many spaces after colon (colons)
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:314:25: [warning] too many spaces after colon (colons)
+../Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml:317:24: [warning] too many spaces after colon (colons)
+
+Rob
