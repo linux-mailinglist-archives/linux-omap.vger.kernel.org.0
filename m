@@ -2,136 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBEB73FEBBB
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 11:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86EF33FEBBE
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 11:58:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232113AbhIBJ65 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Sep 2021 05:58:57 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:34176 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231544AbhIBJ64 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Sep 2021 05:58:56 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1829vZVF024830;
-        Thu, 2 Sep 2021 04:57:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1630576655;
-        bh=nEoymP6uiFiiUs51DwV54eLM+vIw5+7/A3ZrzYKIF2w=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=TLIJKYvgitFbshk0d29u9N5kCnhcT3+knLZvP3vYItsrYveDUKecS+YatT/pPvl05
-         hSQDAb3sz8jcT0Aaq8931DzYe0U6ZDIrcihspwTgFCor2dBWfIAWczmbhEgnuvArjb
-         /G07zugGFS/zX6BM+/7B1itjIVb0hQgWy3GX6Ex0=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1829vZL5107782
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 2 Sep 2021 04:57:35 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 2
- Sep 2021 04:57:34 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Thu, 2 Sep 2021 04:57:34 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1829vU2G106438;
-        Thu, 2 Sep 2021 04:57:31 -0500
-Subject: Re: [PATCH 28/40] mfd: ti_am335x_tscadc: Add ADC1/magnetic reader
- support
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "Ryan J . Barnett" <ryan.barnett@collins.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-input@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-clk@vger.kernel.org>, Jason Reeder <jreeder@ti.com>
-References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
- <20210825152518.379386-29-miquel.raynal@bootlin.com>
- <732e002d-d732-5411-1be4-1ecafc993da5@ti.com> <20210902084706.7cd54453@xps13>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <2e1cb934-c85a-34ca-c701-0d845bf0680a@ti.com>
-Date:   Thu, 2 Sep 2021 12:57:30 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <20210902084706.7cd54453@xps13>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S235574AbhIBJ7b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 2 Sep 2021 05:59:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41348 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232644AbhIBJ7a (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 2 Sep 2021 05:59:30 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5135360F6C;
+        Thu,  2 Sep 2021 09:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630576712;
+        bh=q8E+E2rYJkV7BQee24UsqEKlRCaqEhysh5UMj0qQ8s4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=sdEgqb3FIGTAiH2nvKXrniMgXmZiqLlwkAmvCDNHptfN55A7p8D3mI2cwTZUczA99
+         4YLjT0UeAXmS7TUoiHO8OY05w0iOufK1dvHrT5XR/5oKn3XUpgxsBPJrfdlM0fSeoT
+         hPNDM272Z6LCbfTxSqo8NIMeCJTvdhI004oDK24GFSxzBxSbbrm0vcj8LRBgOSJ1vY
+         hsRMSDV+sZTAiDZkLSodD07sQ9QwGIAQhTV6LpQd/47pXRQvOzVpU8JhvxxP33iOUp
+         lidyQoUsob7oalHv4b8IFoNS0oCwakNqVHYUMFru4LKlSHvlla+dN4evFwcpCcfCnZ
+         wh7hIHoKzyNVQ==
+From:   Roger Quadros <rogerq@kernel.org>
+To:     tony@atomide.com
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>,
+        stable@vger.kernel.org
+Subject: [PATCH] ARM: dts: omap3430-sdp: Fix NAND device node
+Date:   Thu,  2 Sep 2021 12:58:28 +0300
+Message-Id: <20210902095828.16788-1-rogerq@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Nand is on CS1 so reg properties first field should be 1 not 0.
 
+Fixes: 44e4716499b8 ("ARM: dts: omap3: Fix NAND device nodes")
+Cc: stable@vger.kernel.org # v4.6+
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+---
+ arch/arm/boot/dts/omap3430-sdp.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 02/09/2021 09:47, Miquel Raynal wrote:
-> Hi Grygorii,
-> 
-> Grygorii Strashko <grygorii.strashko@ti.com> wrote on Wed, 1 Sep 2021
-> 22:26:25 +0300:
-> 
->> On 25/08/2021 18:25, Miquel Raynal wrote:
->>> Introduce a new compatible that has another set of driver data,
->>> targeting am437x SoCs with a magnetic reader instead of the
->>> touchscreen and a more featureful set of registers.
->>>
->>> Co-developed-by: Jason Reeder <jreeder@ti.com>
->>> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
->>> Signed-off-by: Jason Reeder <jreeder@ti.com>
->>> ---
->>>    drivers/mfd/ti_am335x_tscadc.c       | 43 ++++++++++++++++++++++------
->>>    include/linux/mfd/ti_am335x_tscadc.h |  9 +++++-
->>>    2 files changed, 43 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
->>> index 1a30610dc65f..f4f6b9db4d2a 100644
->>> --- a/drivers/mfd/ti_am335x_tscadc.c
->>> +++ b/drivers/mfd/ti_am335x_tscadc.c
->>> @@ -122,9 +122,9 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->>>    	const __be32 *cur;
->>>    	struct clk *clk;
->>>    	u32 val;
->>> -	bool use_tsc = false;
->>> +	bool use_tsc = false, use_mag = false;
->>>    	int tscmag_wires = 0, adc_channels = 0, readouts = 0, cell_idx = 0;
->>> -	int total_channels, err;
->>> +	int mag_tracks = 0, total_channels, err;
->>>    >   	/* Allocate memory for device */
->>>    	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
->>> @@ -146,6 +146,12 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->>>    		of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
->>>    		if (tscmag_wires)
->>>    			use_tsc = true;
->>> +	} else {
->>> +		node = of_get_child_by_name(pdev->dev.of_node, "mag");
->>> +		of_property_read_u32(node, "ti,tracks", &mag_tracks);
->>
->> "ti,tracks" seems undocumented?
-> 
-> Well that's true and almost on purpose, I am not focusing on the
-> magnetic reader feature, it is not supported, I don't have one, I don't
-> plan to add support for it. But in the driver I need to know how many
-> "tracks" are unavailable for the ADC in order to implement the entire
-> logic (this block comes from TI and the naming from Jason Reeder).
-> 
-> I am not comfortable writing a binding file for a device that I won't
-> use, it's the best way to miss something and have stable broken
-> bindings in the future. So I assumed it was not a big deal to have this
-> property in the code, which may be updated/removed/enhanced later if
-> needed without having to mess with the code too much. What do you think?
-
-Sry, it's not ok.
-You need to (a) add binding or (b) w/a it in some way -
-like drop it and use const value instead, for example.
-
+diff --git a/arch/arm/boot/dts/omap3430-sdp.dts b/arch/arm/boot/dts/omap3430-sdp.dts
+index c5b903718414..7d530ae3483b 100644
+--- a/arch/arm/boot/dts/omap3430-sdp.dts
++++ b/arch/arm/boot/dts/omap3430-sdp.dts
+@@ -101,7 +101,7 @@
+ 
+ 	nand@1,0 {
+ 		compatible = "ti,omap2-nand";
+-		reg = <0 0 4>; /* CS0, offset 0, IO size 4 */
++		reg = <1 0 4>; /* CS1, offset 0, IO size 4 */
+ 		interrupt-parent = <&gpmc>;
+ 		interrupts = <0 IRQ_TYPE_NONE>, /* fifoevent */
+ 			     <1 IRQ_TYPE_NONE>;	/* termcount */
 -- 
-Best regards,
-grygorii
+2.17.1
+
