@@ -2,97 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB93D3FEF60
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 16:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9D763FF262
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Sep 2021 19:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345379AbhIBOWp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 2 Sep 2021 10:22:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40862 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234283AbhIBOWn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 2 Sep 2021 10:22:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3F3C3610A4;
-        Thu,  2 Sep 2021 14:21:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630592505;
-        bh=sUsA0gFbABycvbiHzVJiJQ+UzKuwYnPW95lbREpcEWw=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=XANpgNcQspq5z8PetoCzgkEbmqNZk7yTrPFnmupbUnt9JFfFxRDbj7QpyT5IxnI0j
-         XdWYsC7EEEbB9lE8GPjnQ+N9CizsW0oGNvdnQCJwwCAlD7UlgaJV8jmWETXD+NyyqI
-         vMGZrUwujYY4diEYs8O3EqqtCVQPEqlwz1oKinBswVYMbbSnw2NtFm0YKOqyGDAty5
-         BZI98ASpP55dAZ7NhkHQp5ofmZ1wn/BOC1+2ff8DrGLGPuCdOulNCbr/khiY8WTs1x
-         OA08OZrDB3Zlrz1C8/wuJzSRLXZD4jH2Ht9zWlT+j59bs7KpqFWBOWGIXTkFGC7gIt
-         4oT6bdu3WSBOQ==
-Subject: Re: [PATCH v2 2/6] dt-bindings: memory-controllers: ti,gpmc: Convert
- to yaml
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, nm@ti.com,
-        linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org,
-        lokeshvutla@ti.com, robh+dt@kernel.org,
-        krzysztof.kozlowski@canonical.com, miquel.raynal@bootlin.com,
-        tony@atomide.com, linux-kernel@vger.kernel.org
-References: <20210902095609.16583-1-rogerq@kernel.org>
- <20210902095609.16583-3-rogerq@kernel.org>
- <1630584239.117607.685604.nullmailer@robh.at.kernel.org>
-From:   Roger Quadros <rogerq@kernel.org>
-Message-ID: <d6b5a2b3-6a29-0c5d-cbe5-eda9b07b2c65@kernel.org>
-Date:   Thu, 2 Sep 2021 17:21:41 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S1346622AbhIBRgg convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Thu, 2 Sep 2021 13:36:36 -0400
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:47369 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234580AbhIBRgg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 2 Sep 2021 13:36:36 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 256C21BF207;
+        Thu,  2 Sep 2021 17:35:32 +0000 (UTC)
+Date:   Thu, 2 Sep 2021 19:35:32 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
+        Tony Lindgren <tony@atomide.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "Ryan J . Barnett" <ryan.barnett@collins.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: Re: [PATCH 02/40] dt-bindings: mfd: ti,am3359-tscadc: Add a yaml
+ description for this MFD
+Message-ID: <20210902193532.004715f7@xps13>
+In-Reply-To: <20210830134714.133cbb65@jic23-huawei>
+References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
+        <20210825152518.379386-3-miquel.raynal@bootlin.com>
+        <20210830134714.133cbb65@jic23-huawei>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <1630584239.117607.685604.nullmailer@robh.at.kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Rob,
+Hi Jonathan,
 
-On 02/09/2021 15:03, Rob Herring wrote:
-> On Thu, 02 Sep 2021 12:56:05 +0300, Roger Quadros wrote:
->> Convert omap-gpmc.txt to ti,gpmc.yaml.
->>
->> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->> ---
->>  .../bindings/memory-controllers/omap-gpmc.txt | 157 --------
->>  .../bindings/memory-controllers/ti,gpmc.yaml  | 364 ++++++++++++++++++
->>  .../devicetree/bindings/mtd/gpmc-nand.txt     |   2 +-
->>  .../devicetree/bindings/mtd/gpmc-nor.txt      |   4 +-
->>  .../devicetree/bindings/mtd/gpmc-onenand.txt  |   2 +-
->>  .../devicetree/bindings/net/gpmc-eth.txt      |   4 +-
->>  6 files changed, 370 insertions(+), 163 deletions(-)
->>  delete mode 100644 Documentation/devicetree/bindings/memory-controllers/omap-gpmc.txt
->>  create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
->>
-> 
-> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> Documentation/devicetree/bindings/memory-controllers/ti,gpmc.example.dt.yaml:0:0: /example-0/memory-controller@50000000/nand@0,0: failed to match any schema with compatible: ['ti,omap2-nand']
+Jonathan Cameron <jic23@kernel.org> wrote on Mon, 30 Aug 2021 13:47:14
++0100:
 
-'ti,omap2-nand' compatible is being added in patch 3 of this series.
-So the error will go away there.
+> On Wed, 25 Aug 2021 17:24:40 +0200
+> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> 
+> > There is a very light description of this MFD in a text file dedicated
+> > to a touchscreen controller (which is one of the two children of the
+> > MFD). Here is now a complete yaml description.  
+> 
+> Make sure to call out places where you are filling in gaps in the
+> txt file description.  Looks like we forgot to keep that up to date as the driver
+> evolved. oops.
 
-cheers,
--roger
+Right, I always forget these links, will update them.
 
-> doc reference errors (make refcheckdocs):
 > 
-> See https://patchwork.ozlabs.org/patch/1523568
+> > 
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > ---
+> >  .../bindings/mfd/ti,am3359-tscadc.yaml        | 75 +++++++++++++++++++
+> >  1 file changed, 75 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> > new file mode 100644
+> > index 000000000000..96b329508d8a
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> > @@ -0,0 +1,75 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/mfd/ti,am3359-tscadc.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: TI AM3359 Touchscreen controller/ADC
+> > +
+> > +maintainers:
+> > +  - Miquel Raynal <miquel.raynal@bootlin.com>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: ti,am3359-tscadc  
 > 
-> This check can fail if there are any dependencies. The base for a patch
-> series is generally the most recent rc1.
+> text documents the more specific ti,am654-tscadc as well.
+
+Oops, I saw it and then forgot. Thanks for checking!
+
+> Something like
 > 
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
+>    properties:
+>      compatible:
+>        oneof:
+>          - const: ti,am3359-tscadc
+>          - items:
+>              - const: ti,am654-tscadc
+>              - const: ti,am3359-tscadc
 > 
-> pip3 install dtschema --upgrade
-> 
-> Please check and re-submit.
-> 
+> Note this superceeds my comment on later patches about changing to enum when
+> introducing the new compatible. Ah well.
+
+No problem (and thanks for the 50+ reviews btw ;) )
+
+Thanks,
+Miquèl
