@@ -2,109 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 350CE40007B
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Sep 2021 15:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E27874002E7
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Sep 2021 18:05:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235578AbhICNZx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Sep 2021 09:25:53 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:46854 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235169AbhICNZw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Sep 2021 09:25:52 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 183DOQcg115630;
-        Fri, 3 Sep 2021 08:24:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1630675467;
-        bh=PEqomZ4Oiml/sEhlVDsmQO11W5RCqsiO5+Ta60ysjuw=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=LdI0WxniaW0bFR6H2Nv0SVSO5ZOf0hHKXAyWZrkhv6/um49n/DzxQ1GBLmWINZEPK
-         QlU5W4N5MhrNIn8lfO7PB1wGX8U+92cwBDozHnYzWxQiL5jxGUW/frVfgIqIncq2je
-         VApoAc/1btX+4+BJNy08qBkT9Nmyz82ifMTxcF1I=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 183DOQq1056319
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 3 Sep 2021 08:24:26 -0500
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Fri, 3
- Sep 2021 08:24:26 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Fri, 3 Sep 2021 08:24:26 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 183DONNN072354;
-        Fri, 3 Sep 2021 08:24:23 -0500
-Subject: Re: [PATCH v2 33/46] mfd: ti_am335x_tscadc: Move control register
- configuration
-To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>
-CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-input@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        id S1349907AbhICQGt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Sep 2021 12:06:49 -0400
+Received: from mail-ot1-f50.google.com ([209.85.210.50]:45661 "EHLO
+        mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349877AbhICQGt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Sep 2021 12:06:49 -0400
+Received: by mail-ot1-f50.google.com with SMTP id l7-20020a0568302b0700b0051c0181deebso7077026otv.12;
+        Fri, 03 Sep 2021 09:05:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=l0iP5JJE35ZYuQbK+af2NVnrw5T8/CIq2PpEDrl/wgI=;
+        b=cZrP0svCROTmCQMnJx39JRfOrLzA01FQGSwHbdYiWnOv2oCMIGiUMBVQHxWanAuYqm
+         ulSsCIE4umFojxa4RSJeTG2jYMWKhJ3CWrFfdRwa/bH/KE0l5/W9/qFv3vK30TVJeSSH
+         aQuKaloDChPSKe9kExkDYZXk8eQBulsyQf+xVlhvn44Bmq5XDvRJnmqkR3Zh97NIYbVe
+         Na73Bbb44uj1BSEKgoWtmGpu1rNgGMfypwrWYyi8b5oxFDM3i7CRrG+x7EtOKSow9Smn
+         PlyN0eA+s5TXEsWVm1sihpy1FgJD3LnqvLABMToLjn3Wl/owny82o1G/Q+ACX84Q9FeR
+         bGeQ==
+X-Gm-Message-State: AOAM531yadocuaVcrq552nIDN3DY3555gY5gu0QaKlZ1pVk2bJ90I2b/
+        FDfApUsMJdQV3wRO3jXs+w==
+X-Google-Smtp-Source: ABdhPJxPXAwNcuTVCNipDZcHpn9gMAFUSAPv4e7EAwdcq2R3yUvO8vkzMFVQeGXC8h3qbDef3E34gw==
+X-Received: by 2002:a05:6830:238a:: with SMTP id l10mr3771066ots.333.1630685148671;
+        Fri, 03 Sep 2021 09:05:48 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id x1sm1024309otu.8.2021.09.03.09.05.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Sep 2021 09:05:47 -0700 (PDT)
+Received: (nullmailer pid 3023292 invoked by uid 1000);
+        Fri, 03 Sep 2021 16:05:46 -0000
+Date:   Fri, 3 Sep 2021 11:05:46 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     bcousson@baylibre.com, Lee Jones <lee.jones@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        devicetree@vger.kernel.org,
         Ryan Barnett <ryan.barnett@collins.com>,
-        Jason Reeder <jreeder@ti.com>
+        linux-omap@vger.kernel.org, Jason Reeder <jreeder@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-input@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 02/46] dt-bindings: mfd: ti,am3359-tscadc: Add a yaml
+ description for this MFD
+Message-ID: <YTJH2lMu3QPMn8T8@robh.at.kernel.org>
 References: <20210902215144.507243-1-miquel.raynal@bootlin.com>
- <20210902215144.507243-34-miquel.raynal@bootlin.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <3bc1f515-0b3c-ad0c-9624-4d4804899007@ti.com>
-Date:   Fri, 3 Sep 2021 16:24:22 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ <20210902215144.507243-3-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-In-Reply-To: <20210902215144.507243-34-miquel.raynal@bootlin.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210902215144.507243-3-miquel.raynal@bootlin.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 03/09/2021 00:51, Miquel Raynal wrote:
-> The datasheet states that most of the configuration should be set in the
-> control register in the first place, before actually enabling the
-> hardware. So far only half of the configuration was made in the first
-> step, which does not make really sense and would complicating the code
-> when introducing support for the am437x hardware.
-> 
-> Let's move that register write a bit below to enclose more configuration.
+On Thu, 02 Sep 2021 23:51:00 +0200, Miquel Raynal wrote:
+> There is a very light description of this MFD in a text file dedicated
+> to a touchscreen controller (which is one of the two children of the
+> MFD). Here is now a complete yaml description.
 > 
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 > ---
->   drivers/mfd/ti_am335x_tscadc.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> index 29ada9da8826..a0db3e4ff265 100644
-> --- a/drivers/mfd/ti_am335x_tscadc.c
-> +++ b/drivers/mfd/ti_am335x_tscadc.c
-> @@ -239,6 +239,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->   	}
->   	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
->   
-> +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
-> +
-
-Strange change - above 2 lines a the same !?
-
->   	tscadc_idle_config(tscadc);
->   
->   	/* Enable the TSC module enable bit */
+>  .../bindings/mfd/ti,am3359-tscadc.yaml        | 79 +++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
 > 
 
--- 
-Best regards,
-grygorii
+Reviewed-by: Rob Herring <robh@kernel.org>
