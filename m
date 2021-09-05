@@ -2,182 +2,152 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80638400F3F
-	for <lists+linux-omap@lfdr.de>; Sun,  5 Sep 2021 13:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86C7B400F62
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Sep 2021 13:54:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237791AbhIELLK convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Sun, 5 Sep 2021 07:11:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38884 "EHLO mail.kernel.org"
+        id S237859AbhIELzN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Sep 2021 07:55:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56238 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237534AbhIELLJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 5 Sep 2021 07:11:09 -0400
+        id S232168AbhIELzN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 5 Sep 2021 07:55:13 -0400
 Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 22F4260F22;
-        Sun,  5 Sep 2021 11:10:00 +0000 (UTC)
-Date:   Sun, 5 Sep 2021 12:13:23 +0100
+        by mail.kernel.org (Postfix) with ESMTPSA id E1C0560FBF;
+        Sun,  5 Sep 2021 11:54:03 +0000 (UTC)
+Date:   Sun, 5 Sep 2021 12:57:25 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
         Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
-        Tony Lindgren <tony@atomide.com>,
-        Tero Kristo <t-kristo@ti.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-omap@vger.kernel.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        "Ryan J . Barnett" <ryan.barnett@collins.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-clk@vger.kernel.org
-Subject: Re: [PATCH 20/40] mfd: ti_am335x_tscadc: Gather the ctrl register
- logic at one place
-Message-ID: <20210905121323.1cfa7dd9@jic23-huawei>
-In-Reply-To: <20210902214247.13243c71@xps13>
-References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
-        <20210825152518.379386-21-miquel.raynal@bootlin.com>
-        <20210830145608.09d7e685@jic23-huawei>
-        <20210902214247.13243c71@xps13>
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>
+Subject: Re: [PATCH v2 02/46] dt-bindings: mfd: ti,am3359-tscadc: Add a yaml
+ description for this MFD
+Message-ID: <20210905125725.31d49e5e@jic23-huawei>
+In-Reply-To: <20210902215144.507243-3-miquel.raynal@bootlin.com>
+References: <20210902215144.507243-1-miquel.raynal@bootlin.com>
+        <20210902215144.507243-3-miquel.raynal@bootlin.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 2 Sep 2021 21:42:47 +0200
+On Thu,  2 Sep 2021 23:51:00 +0200
 Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-> Hi Jonathan,
+> There is a very light description of this MFD in a text file dedicated
+> to a touchscreen controller (which is one of the two children of the
+> MFD). Here is now a complete yaml description.
 > 
-> Jonathan Cameron <jic23@kernel.org> wrote on Mon, 30 Aug 2021 14:56:08
-> +0100:
-> 
-> > On Wed, 25 Aug 2021 17:24:58 +0200
-> > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> >   
-> > > Instead of deriving in the probe and in the resume path the value of the
-> > > ctrl register, let's do it only once in the probe, save the value of
-> > > this register in the driver's structure and use it from the resume
-> > > callback.
-> > > 
-> > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>    
-> > A few minor things inline.
-> > 
-> > J
-> >   
-> > > ---
-> > >  drivers/mfd/ti_am335x_tscadc.c       | 31 ++++++++--------------------
-> > >  include/linux/mfd/ti_am335x_tscadc.h |  2 +-
-> > >  2 files changed, 10 insertions(+), 23 deletions(-)
-> > > 
-> > > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> > > index 7071344ad18e..d661e8ae66c9 100644
-> > > --- a/drivers/mfd/ti_am335x_tscadc.c
-> > > +++ b/drivers/mfd/ti_am335x_tscadc.c
-> > > @@ -122,7 +122,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> > >  	struct clk *clk;
-> > >  	u32 val;
-> > >  	int tsc_wires = 0, adc_channels = 0, readouts = 0, cell_idx = 0;
-> > > -	int total_channels, ctrl, err;
-> > > +	int total_channels, err;
-> > >  
-> > >  	/* Allocate memory for device */
-> > >  	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
-> > > @@ -215,22 +215,21 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
-> > >  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
-> > >  
-> > >  	/* Set the control register bits */
-> > > -	ctrl = CNTRLREG_STEPCONFIGWRT |	CNTRLREG_STEPID;
-> > > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
-> > > +	tscadc->ctrl = CNTRLREG_STEPCONFIGWRT | CNTRLREG_STEPID;
-> > > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
-> > >  
-> > >  	if (tsc_wires > 0) {
-> > > -		tscadc->tsc_wires = tsc_wires;
-> > > +		tscadc->ctrl |= CNTRLREG_TSCENB;
-> > >  		if (tsc_wires == 5)
-> > > -			ctrl |= CNTRLREG_5WIRE | CNTRLREG_TSCENB;
-> > > +			tscadc->ctrl |= CNTRLREG_5WIRE;
-> > >  		else
-> > > -			ctrl |= CNTRLREG_4WIRE | CNTRLREG_TSCENB;
-> > > +			tscadc->ctrl |= CNTRLREG_4WIRE;
-> > >  	}
-> > >  
-> > >  	tscadc_idle_config(tscadc);
-> > >  
-> > >  	/* Enable the TSC module enable bit */
-> > > -	ctrl |= CNTRLREG_TSCSSENB;
-> > > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
-> > > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_TSCSSENB);
-> > >  
-> > >  	/* TSC Cell */
-> > >  	if (tsc_wires > 0) {
-> > > @@ -305,25 +304,13 @@ static int __maybe_unused tscadc_suspend(struct device *dev)
-> > >  static int __maybe_unused tscadc_resume(struct device *dev)
-> > >  {
-> > >  	struct ti_tscadc_dev *tscadc = dev_get_drvdata(dev);
-> > > -	u32 ctrl;
-> > >  
-> > >  	pm_runtime_get_sync(dev);
-> > >  
-> > > -	/* context restore */
-> > > -	ctrl = CNTRLREG_STEPCONFIGWRT |	CNTRLREG_STEPID;
-> > > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
-> > > -
-> > > -	if (tscadc->tsc_wires > 0) {
-> > > -		if (tscadc->tsc_wires == 5)
-> > > -			ctrl |= CNTRLREG_5WIRE | CNTRLREG_TSCENB;
-> > > -		else
-> > > -			ctrl |= CNTRLREG_4WIRE | CNTRLREG_TSCENB;
-> > > -	}
-> > > -	ctrl |= CNTRLREG_TSCSSENB;
-> > > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
-> > > -
-> > >  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
-> > > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);    
-> > 
-> > Patch description should mention why this ordering change is here.  
-> 
-> I actually moved the patch that reorders things earlier so that the
-> reviewer is not bothered by the order changes later on.
-> 
-> >   
-> > >  	tscadc_idle_config(tscadc);
-> > > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_TSCSSENB);    
-> > 
-> > As the value of tscadc->ctrl is not the same as REG_CTRL this is a bit non obvious.
-> > 
-> > You might be better off keeping them in sync, but masking that bit out and then resetting
-> > it as appropriate.  
-> 
-> I honestly find more readable doing:
-> 
-> ctrl = flags;
-> writel(ctrl);
-> writel(ctrl | en_bit);
-> 
-> than
-> 
-> ctrl = flags;
-> writel(ctrl & ~en_bit);
-> writel(ctrl);
-> 
-> because the second version emphasis the fact that we reset the en_bit
-> (which is wrong, the point of this first write is to actually write all
-> the configuration but not the en_bit yet) while the first version
-> clearly shows that the second write includes an additional "enable bit".
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Looks good now
 
-Fair enough.  Perhaps it's worth throwing in a comment though if you happen
-to be respining to say tcsadc->ctrl isn't actually the contents of
-the register, but rather of 'most' of it.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Jonathan
-
+> ---
+>  .../bindings/mfd/ti,am3359-tscadc.yaml        | 79 +++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
 > 
-> Thanks,
-> Miquèl
+> diff --git a/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> new file mode 100644
+> index 000000000000..b2bff85f2329
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+> @@ -0,0 +1,79 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/ti,am3359-tscadc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: TI AM3359 Touchscreen controller/ADC
+> +
+> +maintainers:
+> +  - Miquel Raynal <miquel.raynal@bootlin.com>
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: ti,am3359-tscadc
+> +      - items:
+> +          - const: ti,am654-tscadc
+> +          - const: ti,am3359-tscadc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: fck
+> +
+> +  dmas:
+> +    items:
+> +      - description: DMA controller phandle and request line for FIFO0
+> +      - description: DMA controller phandle and request line for FIFO1
+> +
+> +  dma-names:
+> +    items:
+> +      - const: fifo0
+> +      - const: fifo1
+> +
+> +  adc:
+> +    type: object
+> +    description: ADC child
+> +
+> +  tsc:
+> +    type: object
+> +    description: Touchscreen controller child
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
+> +  - dmas
+> +  - dma-names
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    tscadc@0 {
+> +        compatible = "ti,am3359-tscadc";
+> +        reg = <0x0 0x1000>;
+> +        interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
+> +        clocks = <&adc_tsc_fck>;
+> +        clock-names = "fck";
+> +        dmas = <&edma 53 0>, <&edma 57 0>;
+> +        dma-names = "fifo0", "fifo1";
+> +
+> +        tsc {
+> +        };
+> +
+> +        adc {
+> +        };
+> +    };
 
