@@ -2,98 +2,182 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87180400B75
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Sep 2021 15:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80638400F3F
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Sep 2021 13:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233149AbhIDNSq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 4 Sep 2021 09:18:46 -0400
-Received: from mout.gmx.net ([212.227.15.15]:35711 "EHLO mout.gmx.net"
+        id S237791AbhIELLK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Sun, 5 Sep 2021 07:11:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38884 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230379AbhIDNSp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 4 Sep 2021 09:18:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1630761459;
-        bh=anRpNVH27qFxp/JuNYRLaMaSlrUvcuVTQZSIBrXFAPM=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=hGeA4LjSAWagwA+D3QEVGKowTQTlSwiVD6jHCasbiDtYxF/xOMIqAugRyElrcsdwo
-         Rkn00cOrVvvP4dRdDfkgFc0TP8gqTvG0fbHDVmQddt8pBNJhVclqDPqJSUnXqY9Iws
-         Kf2sXun9Wymc/FCizeRWdCNiqjf4abclqO3beKP0=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from localhost.localdomain ([79.150.72.99]) by mail.gmx.net
- (mrgmx004 [212.227.17.184]) with ESMTPSA (Nemesis) id
- 1MEUzA-1mAuxF2gNG-00FzhO; Sat, 04 Sep 2021 15:17:39 +0200
-From:   Len Baker <len.baker@gmx.com>
-To:     Tero Kristo <kristo@kernel.org>,
+        id S237534AbhIELLJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 5 Sep 2021 07:11:09 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 22F4260F22;
+        Sun,  5 Sep 2021 11:10:00 +0000 (UTC)
+Date:   Sun, 5 Sep 2021 12:13:23 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
+        Tony Lindgren <tony@atomide.com>,
+        Tero Kristo <t-kristo@ti.com>,
         Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     Len Baker <len.baker@gmx.com>, Kees Cook <keescook@chromium.org>,
-        linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] clk: ti: composite: Prefer kcalloc over open coded arithmetic
-Date:   Sat,  4 Sep 2021 15:17:14 +0200
-Message-Id: <20210904131714.2312-1-len.baker@gmx.com>
-X-Mailer: git-send-email 2.25.1
+        Stephen Boyd <sboyd@kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        "Ryan J . Barnett" <ryan.barnett@collins.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org
+Subject: Re: [PATCH 20/40] mfd: ti_am335x_tscadc: Gather the ctrl register
+ logic at one place
+Message-ID: <20210905121323.1cfa7dd9@jic23-huawei>
+In-Reply-To: <20210902214247.13243c71@xps13>
+References: <20210825152518.379386-1-miquel.raynal@bootlin.com>
+        <20210825152518.379386-21-miquel.raynal@bootlin.com>
+        <20210830145608.09d7e685@jic23-huawei>
+        <20210902214247.13243c71@xps13>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/CTvZZgUUU4aW56h57ya80evQdHSE2y2Afe+boB24hpwe914lpk
- x6nxeUz3HoNtUEfE1fnSXTLwXfieC2KH6c6TZ+oCh9X2txpFZoLwBi62uqIF4fxree+EXlm
- 19hxmCeNtTHbUGTpwIR1H6xVRexeCNuRKUzceIuwCt3mfhEySYtUub3ltH4wJjOVLmRsbJ9
- /ZxJr/45nR990NCS/pdCA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:tVroNg3tl+w=:PPfRbT44yh/VG/YPE/zc4S
- Hf5BJscqDVAdXhETLWnirVm9IF5zVkrlhVa76tCVJZTLSshkIVx4ck71kza5L0Jp2pmhrp5Ue
- MFIzURUtMrhYBRuaaQgpi6AzA6R6z4HypWEAkpdFEwJTMs7EUwJ1KDGifGp+5JxsQn6rLFvdy
- H3v5snz/I7tRhqCdOBgkVpqyKpTBUCXf5/2ATAdDPxyUZ48ic024WmtvbfRQBkEEATeX7DAKD
- gFZIA31OEwSgkn+XQVI846aQX0z9PYuoAzr43KHwIIK8cqr3Ku2ABCSUmJI6HrUqke2Gbf1z4
- i6JpFTHZSWhT3Q1VqNorWSE65+NIfUszWvkuDieAtCR/P/n0eDyb01jQv3vjRHbLjhJJJ3hr7
- m2C8oEsAICIBQA44xNbmiEjmuqXhIlYHtYznFyJLRTQKpwoAgxTfi6xN58KGmtmc/AMI4PjOI
- TjUK7fxDyHSUaone8+XStiGtn3xGW61IqElWkJ2JHtHY4XpMis+fYMzISlPAEfBXqRQqUpEJK
- c0Z83nIFNt8J1C0XDEgkto348schP5gU9m/Xi4LAWlkL8oGNYxLGDqBc9MI+CYws8Ems2XFZ8
- nvujerrwm767GgE4Mdy8XzXjV8i15NLYklBTEogPxEICbJ4WuMYAxWGbvPjdzESY4PhXr9LkA
- 3JIUFB28t6YppK+oPUh4OHY4mmVJeFx28KvKYQTSbjx0MwjxKfRC0jDGi0Po+nQrJuHDWA51o
- MEqtdqNFp4+eb9jjaDfHOQxa2GYks/ej3KnKs+Ff9gEoAJESG3w1Zwr9OH9Cgoxjx5rqb/6zk
- je69cg4CiOrQyN3qU1mcKXohc7s0ppe4Aj+OlSsVu7NDmfDyH6pDkTIKRIHm4k0zCs9joXyvn
- bNMsJ0EpfgMwEe+KyGyDgHpj7eWu3pvwp2CHC7d03i2CFfK5t498aDPlq5gGzbY46Dp9GsS3y
- rZbk/cA9cMfoy5pPmfpK5tyOuafql1gRu4JZk6nsBG4aUPqfSG4MJAkmh4zHnbny6UwSK98qN
- 2xTVgl6c7Vlc4krtIGLYfcf3hrqx9nzFsMQP2GjHuiiLCrAS3gKLXBnxrzHc99342cFQxTxh3
- je/ODOtT8sZgRzfi+Bwwd5Se+Z4TTid3yf5SbjIJimUmZd/dFvprkcn3w==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-As noted in the "Deprecated Interfaces, Language Features, Attributes,
-and Conventions" documentation [1], size calculations (especially
-multiplication) should not be performed in memory allocator (or similar)
-function arguments due to the risk of them overflowing. This could lead
-to values wrapping around and a smaller allocation being made than the
-caller was expecting. Using those allocations could lead to linear
-overflows of heap memory and other misbehaviors.
+On Thu, 2 Sep 2021 21:42:47 +0200
+Miquel Raynal <miquel.raynal@bootlin.com> wrote:
 
-So, use the purpose specific kcalloc() function instead of the argument
-size * count in the kzalloc() function.
+> Hi Jonathan,
+> 
+> Jonathan Cameron <jic23@kernel.org> wrote on Mon, 30 Aug 2021 14:56:08
+> +0100:
+> 
+> > On Wed, 25 Aug 2021 17:24:58 +0200
+> > Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> >   
+> > > Instead of deriving in the probe and in the resume path the value of the
+> > > ctrl register, let's do it only once in the probe, save the value of
+> > > this register in the driver's structure and use it from the resume
+> > > callback.
+> > > 
+> > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>    
+> > A few minor things inline.
+> > 
+> > J
+> >   
+> > > ---
+> > >  drivers/mfd/ti_am335x_tscadc.c       | 31 ++++++++--------------------
+> > >  include/linux/mfd/ti_am335x_tscadc.h |  2 +-
+> > >  2 files changed, 10 insertions(+), 23 deletions(-)
+> > > 
+> > > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+> > > index 7071344ad18e..d661e8ae66c9 100644
+> > > --- a/drivers/mfd/ti_am335x_tscadc.c
+> > > +++ b/drivers/mfd/ti_am335x_tscadc.c
+> > > @@ -122,7 +122,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> > >  	struct clk *clk;
+> > >  	u32 val;
+> > >  	int tsc_wires = 0, adc_channels = 0, readouts = 0, cell_idx = 0;
+> > > -	int total_channels, ctrl, err;
+> > > +	int total_channels, err;
+> > >  
+> > >  	/* Allocate memory for device */
+> > >  	tscadc = devm_kzalloc(&pdev->dev, sizeof(*tscadc), GFP_KERNEL);
+> > > @@ -215,22 +215,21 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> > >  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
+> > >  
+> > >  	/* Set the control register bits */
+> > > -	ctrl = CNTRLREG_STEPCONFIGWRT |	CNTRLREG_STEPID;
+> > > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
+> > > +	tscadc->ctrl = CNTRLREG_STEPCONFIGWRT | CNTRLREG_STEPID;
+> > > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);
+> > >  
+> > >  	if (tsc_wires > 0) {
+> > > -		tscadc->tsc_wires = tsc_wires;
+> > > +		tscadc->ctrl |= CNTRLREG_TSCENB;
+> > >  		if (tsc_wires == 5)
+> > > -			ctrl |= CNTRLREG_5WIRE | CNTRLREG_TSCENB;
+> > > +			tscadc->ctrl |= CNTRLREG_5WIRE;
+> > >  		else
+> > > -			ctrl |= CNTRLREG_4WIRE | CNTRLREG_TSCENB;
+> > > +			tscadc->ctrl |= CNTRLREG_4WIRE;
+> > >  	}
+> > >  
+> > >  	tscadc_idle_config(tscadc);
+> > >  
+> > >  	/* Enable the TSC module enable bit */
+> > > -	ctrl |= CNTRLREG_TSCSSENB;
+> > > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
+> > > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_TSCSSENB);
+> > >  
+> > >  	/* TSC Cell */
+> > >  	if (tsc_wires > 0) {
+> > > @@ -305,25 +304,13 @@ static int __maybe_unused tscadc_suspend(struct device *dev)
+> > >  static int __maybe_unused tscadc_resume(struct device *dev)
+> > >  {
+> > >  	struct ti_tscadc_dev *tscadc = dev_get_drvdata(dev);
+> > > -	u32 ctrl;
+> > >  
+> > >  	pm_runtime_get_sync(dev);
+> > >  
+> > > -	/* context restore */
+> > > -	ctrl = CNTRLREG_STEPCONFIGWRT |	CNTRLREG_STEPID;
+> > > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
+> > > -
+> > > -	if (tscadc->tsc_wires > 0) {
+> > > -		if (tscadc->tsc_wires == 5)
+> > > -			ctrl |= CNTRLREG_5WIRE | CNTRLREG_TSCENB;
+> > > -		else
+> > > -			ctrl |= CNTRLREG_4WIRE | CNTRLREG_TSCENB;
+> > > -	}
+> > > -	ctrl |= CNTRLREG_TSCSSENB;
+> > > -	regmap_write(tscadc->regmap, REG_CTRL, ctrl);
+> > > -
+> > >  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
+> > > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl);    
+> > 
+> > Patch description should mention why this ordering change is here.  
+> 
+> I actually moved the patch that reorders things earlier so that the
+> reviewer is not bothered by the order changes later on.
+> 
+> >   
+> > >  	tscadc_idle_config(tscadc);
+> > > +	regmap_write(tscadc->regmap, REG_CTRL, tscadc->ctrl | CNTRLREG_TSCSSENB);    
+> > 
+> > As the value of tscadc->ctrl is not the same as REG_CTRL this is a bit non obvious.
+> > 
+> > You might be better off keeping them in sync, but masking that bit out and then resetting
+> > it as appropriate.  
+> 
+> I honestly find more readable doing:
+> 
+> ctrl = flags;
+> writel(ctrl);
+> writel(ctrl | en_bit);
+> 
+> than
+> 
+> ctrl = flags;
+> writel(ctrl & ~en_bit);
+> writel(ctrl);
+> 
+> because the second version emphasis the fact that we reset the en_bit
+> (which is wrong, the point of this first write is to actually write all
+> the configuration but not the en_bit yet) while the first version
+> clearly shows that the second write includes an additional "enable bit".
 
-[1] https://www.kernel.org/doc/html/v5.14/process/deprecated.html#open-cod=
-ed-arithmetic-in-allocator-arguments
+Fair enough.  Perhaps it's worth throwing in a comment though if you happen
+to be respining to say tcsadc->ctrl isn't actually the contents of
+the register, but rather of 'most' of it.
 
-Signed-off-by: Len Baker <len.baker@gmx.com>
-=2D--
- drivers/clk/ti/composite.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Jonathan
 
-diff --git a/drivers/clk/ti/composite.c b/drivers/clk/ti/composite.c
-index eaa43575cfa5..eb5ce9735c7d 100644
-=2D-- a/drivers/clk/ti/composite.c
-+++ b/drivers/clk/ti/composite.c
-@@ -253,7 +253,7 @@ int __init ti_clk_add_component(struct device_node *no=
-de, struct clk_hw *hw,
- 		return -EINVAL;
- 	}
-
--	parent_names =3D kzalloc((sizeof(char *) * num_parents), GFP_KERNEL);
-+	parent_names =3D kcalloc(num_parents, sizeof(char *), GFP_KERNEL);
- 	if (!parent_names)
- 		return -ENOMEM;
-
-=2D-
-2.25.1
+> 
+> Thanks,
+> Miquèl
 
