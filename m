@@ -2,89 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A117400FF0
-	for <lists+linux-omap@lfdr.de>; Sun,  5 Sep 2021 15:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FB01401270
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Sep 2021 03:20:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233765AbhIENWG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 5 Sep 2021 09:22:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37936 "EHLO mail.kernel.org"
+        id S238521AbhIFBVD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Sep 2021 21:21:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37270 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231754AbhIENWF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 5 Sep 2021 09:22:05 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4FB8E60F45;
-        Sun,  5 Sep 2021 13:20:55 +0000 (UTC)
-Date:   Sun, 5 Sep 2021 14:24:19 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
-        Tony Lindgren <tony@atomide.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>
-Subject: Re: [PATCH v2 35/46] mfd: ti_am335x_tscadc: Support the correctly
- spelled DT property
-Message-ID: <20210905142419.67b7f48f@jic23-huawei>
-In-Reply-To: <20210902215144.507243-36-miquel.raynal@bootlin.com>
-References: <20210902215144.507243-1-miquel.raynal@bootlin.com>
-        <20210902215144.507243-36-miquel.raynal@bootlin.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S238579AbhIFBU7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 5 Sep 2021 21:20:59 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A4DA561039;
+        Mon,  6 Sep 2021 01:19:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630891195;
+        bh=Ot+28yzud98tBNnOiqNPW6YBHnIqP50O9qr9lr6+dQs=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=UeTfT5OUYZAS4VH32BSBHOiYWgQG91NFdDmWJ47F9tQjHJe9b9s4NPgBPdJvZL9zJ
+         mp44GjgWlJZmem1DcRf3vxnuq93GZZjgP5oXMVVwbD32ohquEF2b4hR7FGB9adDBAm
+         gFcI2JQrtfY9eYLSwkW16Dq9oSS/cNCpW61IRNiOnwEkRaGiMmglHY8xFJXUWD+HI+
+         5ySOBnsGEp6bsaPgwJ48MoUYLjjnomxMOshmSsorIjQGJQTjmwq0dogkjFfnWwvr+3
+         O+4gvUOS8/d6NAZlgTq/Evp905dSzvY1I+pPFpfqY9N5nH+oXK5nF8IcJjjnitQ2hr
+         +pZxtOckBsJ+A==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dmitry Osipenko <digetx@gmail.com>,
+        Matt Merhar <mattmerhar@protonmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.14 03/47] regulator: tps65910: Silence deferred probe error
+Date:   Sun,  5 Sep 2021 21:19:07 -0400
+Message-Id: <20210906011951.928679-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210906011951.928679-1-sashal@kernel.org>
+References: <20210906011951.928679-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu,  2 Sep 2021 23:51:33 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+From: Dmitry Osipenko <digetx@gmail.com>
 
-> There was in the past a typo in the coordinate readouts property. The
-> bindings have been updated, the touchscreen driver as well and now
-> supports both. However, the MFD driver that is in charge of verifying
-> the validity of the property only checks the bogus one. Add support for
-> the correctly spelled DT property.
-> 
-> Fixes: c9aeb249bf72 ("Input: ti_am335x_tsc - fix spelling mistake in TSC/ADC DT binding")
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Looks good now.
+[ Upstream commit e301df76472cc929fa62d923bc3892931f7ad71d ]
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The TPS65910 regulator now gets a deferred probe until supply regulator is
+registered. Silence noisy error message about the deferred probe.
 
-> ---
->  drivers/mfd/ti_am335x_tscadc.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
-> index a3347f9fc388..4c2fe9910400 100644
-> --- a/drivers/mfd/ti_am335x_tscadc.c
-> +++ b/drivers/mfd/ti_am335x_tscadc.c
-> @@ -144,8 +144,14 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
->  	if (tscadc->data->has_tsc) {
->  		node = of_get_child_by_name(pdev->dev.of_node, "tsc");
->  		of_property_read_u32(node, "ti,wires", &tscmag_wires);
-> -		of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
-> +		err = of_property_read_u32(node, "ti,coordinate-readouts",
-> +					   &readouts);
-> +		if (err < 0)
-> +			of_property_read_u32(node, "ti,coordiante-readouts",
-> +					     &readouts);
-> +
->  		of_node_put(node);
-> +
->  		if (tscmag_wires)
->  			use_tsc = true;
->  	} else {
+Reported-by: Matt Merhar <mattmerhar@protonmail.com> # Ouya T30
+Tested-by: Matt Merhar <mattmerhar@protonmail.com> # Ouya T30
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+Link: https://lore.kernel.org/r/20210705201211.16082-1-digetx@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/regulator/tps65910-regulator.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/regulator/tps65910-regulator.c b/drivers/regulator/tps65910-regulator.c
+index 1d5b0a1b86f7..06cbe60c990f 100644
+--- a/drivers/regulator/tps65910-regulator.c
++++ b/drivers/regulator/tps65910-regulator.c
+@@ -1211,12 +1211,10 @@ static int tps65910_probe(struct platform_device *pdev)
+ 
+ 		rdev = devm_regulator_register(&pdev->dev, &pmic->desc[i],
+ 					       &config);
+-		if (IS_ERR(rdev)) {
+-			dev_err(tps65910->dev,
+-				"failed to register %s regulator\n",
+-				pdev->name);
+-			return PTR_ERR(rdev);
+-		}
++		if (IS_ERR(rdev))
++			return dev_err_probe(tps65910->dev, PTR_ERR(rdev),
++					     "failed to register %s regulator\n",
++					     pdev->name);
+ 
+ 		/* Save regulator for cleanup */
+ 		pmic->rdev[i] = rdev;
+-- 
+2.30.2
 
