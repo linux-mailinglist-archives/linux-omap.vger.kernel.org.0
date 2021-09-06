@@ -2,76 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2105401E84
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Sep 2021 18:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D44E3401E97
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Sep 2021 18:37:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244221AbhIFQeI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Sep 2021 12:34:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60788 "EHLO
+        id S241972AbhIFQho (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Sep 2021 12:37:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244398AbhIFQeE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Sep 2021 12:34:04 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 160E5C0612A3
-        for <linux-omap@vger.kernel.org>; Mon,  6 Sep 2021 09:32:54 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id y18so9377544ioc.1
-        for <linux-omap@vger.kernel.org>; Mon, 06 Sep 2021 09:32:54 -0700 (PDT)
+        with ESMTP id S230263AbhIFQhm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Sep 2021 12:37:42 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B915C061575
+        for <linux-omap@vger.kernel.org>; Mon,  6 Sep 2021 09:36:37 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id p15so12215752ljn.3
+        for <linux-omap@vger.kernel.org>; Mon, 06 Sep 2021 09:36:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Hi0ERA05Hh6q+34+Ou3AtyiRWoG/jVLdZcB+Ekv+M3g=;
-        b=AQXQzDCQYveoXX8TzTwuiAk/FEyR3wCuvC9VFUOgylxIOdg1EFZyjuPsYQnAcX6J45
-         hGQ/TLw/xoIRE4dR4duos/11L9nUC9pcUBl/RXv6WkJZOj9GF3K+dFgRBHNvOmD3hg/2
-         8aWexR+OCBkLd9FzUsmw6Mf2hXMKPJJYu5JOjAjvp1WIk7xCdh9mnYnLj+26R+tY7rgo
-         HJPLbs6wPd+nl87UvFskxFfDoXbe22pxgW1zf9L/3TdM0lyau7vB+LmM0EAyEmYoeoMO
-         ZhwZDLJwTAD2meT4nF7FnViJ3hJIW4496YAschcWJBrRRFI5yQJjoNMRwEQgQiqRwsUz
-         E0sQ==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Cgr6Jz+lrB7D42Igr6LQ2k0LOWT6QRl6Zo2ea56U1/0=;
+        b=qFue/ctcVup2ZBYh+V2vDeXGYUQlqSSTr0F0rtwg3ihQG1N3E0nkPHz7F4S1cPA36X
+         XX6ajt0l5e6WRc1OnNJ88Rpm6B8Pvq4fIq15S2eNWK19rSp8lbBhRTGNaOs+d/6T9JNg
+         KMMQ66achlkth81CmiYymoqErBfB5qgnbMzMsGnIUh7ybdTBdGBNFO0xsZrShGCerYp5
+         NjEQZn2gTzmLOrPHL/UKB5lXjoC3v6bB936WCcMPL/Jb2F7yiCALaOj5JiWVREyTtXV4
+         QA6oo/C8cZj+rIGHtw7QNIHz/16i4xnpriV+1DjH0V88DESYATAWCmLrhb84m+Z0mohL
+         hgFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Hi0ERA05Hh6q+34+Ou3AtyiRWoG/jVLdZcB+Ekv+M3g=;
-        b=ZRhl+ysqbkJvpGMqlvAqjiQ6EsFl0B2yClteRpkH4OWlKi6UNjiIK70OTURqglygOw
-         Tcd9nbXgRY61BadSzPsxGvOQtyL+ignk7C8P2YSxSOy2oDZr6+Umji6pxWkTfpJnjKeW
-         RkBamWVSMixGSjwGwr9s56WjNu+CQHdAYJdNSlHe8XkQdDa46sU41bAjDNWtyZ7IoAsS
-         BMXAyh6DlP6nbAbZc1CwaETo6jz7lqsPQvLrKzM7r9jmLCP0oXDI4+8sUCgNwNDBX3lT
-         IpOadUzsn7Ys/m4MkitkhgTIwT6oA2GcL+hllLhPaszHWuFsttQghIfqrXqLtqtO1XBQ
-         FyyQ==
-X-Gm-Message-State: AOAM5337BHV2xzuo76ux5XE4wM78ZG+fX0kcJeJr8p5eh/+16Skjg1rl
-        xgUhnupVGXBbXGyopIQPMH6oRnUgPyrYt7+6qLnUVG6nZUs=
-X-Google-Smtp-Source: ABdhPJyNYLbPp58BcQ7mI7j8eL1xi4DRM/CVSKmP+XLlKZnpaM0c4B2zxnkjBdrMYYyKOgNolLHbsclwr0lft4or1UU=
-X-Received: by 2002:a05:6e02:1ca6:: with SMTP id x6mr8854675ill.86.1630945961991;
- Mon, 06 Sep 2021 09:32:41 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Cgr6Jz+lrB7D42Igr6LQ2k0LOWT6QRl6Zo2ea56U1/0=;
+        b=A1H79VmRChHV25K7SlSadf+4S1AhTVuhIg0ClvTgJkue6uHeLiIwtB2g5IgSeki+4F
+         BZ0NxXn5lKt5xaHsBnVOju6K9CVcS2QbMKqxD/uDiZViEGGdwPF75nEI1guc9CHTqgE8
+         yjCCqc7/xP5rubir72nKtkWLZvte5/Axldnm9P092OPfICiBE6ap3qSjZMLEVTHKXJIc
+         vv1LoW/ZKzqjlTgZfVyXjW0MPcuC2t83ZhpkLr+opvNdClu8Zn8/VOsZgKW1Zvfyu9mC
+         vlufThJEaG6qIrdMPfwxZQhQ0BHEDzax7fnrnlWK7e5neVI7DZynRyijltL2iJYRAsg2
+         t/CA==
+X-Gm-Message-State: AOAM531Z5fKhMYIhLtHEqbGtb70fWaZrxhtiSjNnEK0xeRdiQW28rbVj
+        9W1Pcngsqop2voAUpvA97hY9hToS38B5CiJhYNkqQw==
+X-Google-Smtp-Source: ABdhPJzT5LiGUegKEZsMvc5nNqo2qWbWBytqyjX8rsodVuGLIyP1vHsR6WA8ikEELHPTINM6V/ky1ojVSaj1bOIzF8M=
+X-Received: by 2002:a2e:960c:: with SMTP id v12mr12032538ljh.300.1630946195528;
+ Mon, 06 Sep 2021 09:36:35 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6e02:1d86:0:0:0:0 with HTTP; Mon, 6 Sep 2021 09:32:41
- -0700 (PDT)
-Reply-To: suzara.wans2021@gmail.com
-From:   Mrs Suzara Maling Wan <mr.brueshands4world@gmail.com>
-Date:   Mon, 6 Sep 2021 09:32:41 -0700
-Message-ID: <CABvx5tpkSnzTGw2hd3awtMaYZ6SrrR=GwA3X22LN=2t5+bDtOw@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
+References: <20210828085446.1878-1-caihuoqing@baidu.com>
+In-Reply-To: <20210828085446.1878-1-caihuoqing@baidu.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 6 Sep 2021 18:35:58 +0200
+Message-ID: <CAPDyKFqz-Go=gCYpzsN6Np3SnfKm_iCWnhORidj1PTHm_ftx7w@mail.gmail.com>
+Subject: Re: [PATCH] mmc: omap_hsmmc: Make use of the helper macro SET_RUNTIME_PM_OPS()
+To:     Cai Huoqing <caihuoqing@baidu.com>
+Cc:     Doug Anderson <dianders@chromium.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
-of the Philippine presently base in West Africa B/F, dealing with
-exportation of Gold, I was diagnose of blood Causal decease, and my
-doctor have announce to me that I have few days to leave due to the
-condition of my sickness.
+On Sat, 28 Aug 2021 at 10:55, Cai Huoqing <caihuoqing@baidu.com> wrote:
+>
+> Use the helper macro SET_RUNTIME_PM_OPS() instead of the verbose
+> operators ".runtime_suspend/.runtime_resume", because the
+> SET_RUNTIME_PM_OPS() is a nice helper macro that could be brought
+> in to make code a little clearer, a little more concise.
 
-I have a desire to build an orphanage home in your country of which i
-cannot execute the project myself due to my present health condition,
-I am willing to hand over the project under your care for you to help
-me fulfill my dreams and desire of building an orphanage home in your
-country.
+That makes sense to me.
 
-Reply in you are will to help so that I can direct you to my bank for
-the urgent transfer of the fund/money require for the project to your
-account as I have already made the fund/money available.
+>
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+> ---
+>  drivers/mmc/host/omap_hsmmc.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+> index 2f8038d69f67..748303e14841 100644
+> --- a/drivers/mmc/host/omap_hsmmc.c
+> +++ b/drivers/mmc/host/omap_hsmmc.c
+> @@ -2156,8 +2156,7 @@ static int omap_hsmmc_runtime_resume(struct device *dev)
+>
+>  static const struct dev_pm_ops omap_hsmmc_dev_pm_ops = {
+>         SET_SYSTEM_SLEEP_PM_OPS(omap_hsmmc_suspend, omap_hsmmc_resume)
+> -       .runtime_suspend = omap_hsmmc_runtime_suspend,
+> -       .runtime_resume = omap_hsmmc_runtime_resume,
+> +       SET_RUNTIME_PM_OPS(omap_hsmmc_runtime_suspend, omap_hsmmc_runtime_resume, NULL)
+>  };
 
-With kind regards
-Mrs Suzara Maling Wan
+When building this driver with CONFIG_PM being unset, the compiler
+will complain about unused functions. Please add "#ifdef CONFIG_PM"
+around the implementation of omap_hsmmc_runtime_suspend|resume() to
+address that.
+
+>
+>  static struct platform_driver omap_hsmmc_driver = {
+> --
+> 2.25.1
+>
+
+Kind regards
+Uffe
