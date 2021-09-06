@@ -2,39 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39BF24012E0
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Sep 2021 03:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36C4940135D
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Sep 2021 03:25:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238912AbhIFBWt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 5 Sep 2021 21:22:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38926 "EHLO mail.kernel.org"
+        id S239934AbhIFBZk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Sep 2021 21:25:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38612 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239102AbhIFBWA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 5 Sep 2021 21:22:00 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 668A9610CC;
-        Mon,  6 Sep 2021 01:20:55 +0000 (UTC)
+        id S239946AbhIFBYI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 5 Sep 2021 21:24:08 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9C44A60EBA;
+        Mon,  6 Sep 2021 01:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630891256;
+        s=k20201202; t=1630891317;
         bh=Ot+28yzud98tBNnOiqNPW6YBHnIqP50O9qr9lr6+dQs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dxY7t0SEfyAhC5BBz6Ansyy49FWreN4gQIIlujLTMrTgBjgLPj8zjamOgGi6sJUuD
-         7BrKyfKzvzaDhNCyGWBDjmYzqCunfj4hyo4TXQIGOGOz6+t4DFwxBF+IZ3wOka9pdt
-         0yrjUnB2lJpp0DlGnNLiDCepTQUEaDNz+c8raJMoHiPi8oejSr5oveC/1vrpHVwg53
-         2xFP6burEn6nZTtimLEL4o/TGCOSNvCdPDKRDh4hLcqhePick0l7Tx4hvcFS1crabM
-         H597PDwlVT8Pk9Y+k4Z7vhSbDJjEO9R4g3roZOcq7pn+x75gtZO0nn/tmCaCCTKeXu
-         BTnFbTfTNM0Fg==
+        b=DnNAYlsnFBUMOhW9uRHx8KcsQ8v65g63FJ+TuObbGs7JnYxQt8d/wGSRuGxmOC+J0
+         8zR3Rli4fC5g0Y3RagABiWNDM3v+acdJrLMlgvTUkxYXHWdWf5H3rVi5hIKXByj9pC
+         fINlXQpFmgfXVx94VqXTgk0Ah/XQDi5/rbKWJFs0w0wWFgSbn17xDDyCGUPZHVf7Yx
+         isiL3nr+HibmlOxcm6nuNaePW6dDyOnUnfp+9rSUpvdZoWXEIvc0pVEYgrrFV9a2S2
+         sDVaDbUwZygEIffD8E/qo8pXMfc+toSK9iMtHp6I5rXTTfT0iwEY32bUcn+XVvR6CT
+         75AP4ESyf3VNQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Dmitry Osipenko <digetx@gmail.com>,
         Matt Merhar <mattmerhar@protonmail.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 03/46] regulator: tps65910: Silence deferred probe error
-Date:   Sun,  5 Sep 2021 21:20:08 -0400
-Message-Id: <20210906012052.929174-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 03/39] regulator: tps65910: Silence deferred probe error
+Date:   Sun,  5 Sep 2021 21:21:17 -0400
+Message-Id: <20210906012153.929962-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210906012052.929174-1-sashal@kernel.org>
-References: <20210906012052.929174-1-sashal@kernel.org>
+In-Reply-To: <20210906012153.929962-1-sashal@kernel.org>
+References: <20210906012153.929962-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
