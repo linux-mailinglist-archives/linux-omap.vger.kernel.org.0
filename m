@@ -2,39 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36C4940135D
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Sep 2021 03:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F196401448
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Sep 2021 03:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239934AbhIFBZk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 5 Sep 2021 21:25:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38612 "EHLO mail.kernel.org"
+        id S241322AbhIFBcr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Sep 2021 21:32:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47360 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239946AbhIFBYI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 5 Sep 2021 21:24:08 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9C44A60EBA;
-        Mon,  6 Sep 2021 01:21:56 +0000 (UTC)
+        id S1351848AbhIFBbJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 5 Sep 2021 21:31:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 27C3660EBA;
+        Mon,  6 Sep 2021 01:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630891317;
-        bh=Ot+28yzud98tBNnOiqNPW6YBHnIqP50O9qr9lr6+dQs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DnNAYlsnFBUMOhW9uRHx8KcsQ8v65g63FJ+TuObbGs7JnYxQt8d/wGSRuGxmOC+J0
-         8zR3Rli4fC5g0Y3RagABiWNDM3v+acdJrLMlgvTUkxYXHWdWf5H3rVi5hIKXByj9pC
-         fINlXQpFmgfXVx94VqXTgk0Ah/XQDi5/rbKWJFs0w0wWFgSbn17xDDyCGUPZHVf7Yx
-         isiL3nr+HibmlOxcm6nuNaePW6dDyOnUnfp+9rSUpvdZoWXEIvc0pVEYgrrFV9a2S2
-         sDVaDbUwZygEIffD8E/qo8pXMfc+toSK9iMtHp6I5rXTTfT0iwEY32bUcn+XVvR6CT
-         75AP4ESyf3VNQ==
+        s=k20201202; t=1630891476;
+        bh=aJbU3niOMiqWDfuuNzo+NUQMkgvX7J+4DUaYisS19y0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ut/yU9UV/VHkvbu/gp2zWav9gMLUP+cq3hlkN15ksiXvHMI95J4bOxKWLn0h79rYW
+         WXdMuay1hl9igGOcH0TS2eZpD6vFqsIJ5jFJiRyl5FK3uC1MCcC4u+RUBUqwFPYhPx
+         kzsGs2G8CJ3KMLT0uYnH9n76SRVpUmH5y2mFVdnQ1bJL/pCYayRkbI51sAzZvLf7mK
+         6odEW3FtiHjN+i5Lc0t8h1dUvJImLOkvb9QY0QBeFVThTEWUoHDeHTVWScnNqe7LoH
+         W9DF+7b2mzmmohhAfnj4Dwcz/FHGpIxShdMYqn83x9DR5BNXlexQvKRob5+8bbelCT
+         Bt9BwT+G9LXtA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Dmitry Osipenko <digetx@gmail.com>,
         Matt Merhar <mattmerhar@protonmail.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 03/39] regulator: tps65910: Silence deferred probe error
-Date:   Sun,  5 Sep 2021 21:21:17 -0400
-Message-Id: <20210906012153.929962-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 1/9] regulator: tps65910: Silence deferred probe error
+Date:   Sun,  5 Sep 2021 21:24:26 -0400
+Message-Id: <20210906012435.931318-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210906012153.929962-1-sashal@kernel.org>
-References: <20210906012153.929962-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +59,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/regulator/tps65910-regulator.c b/drivers/regulator/tps65910-regulator.c
-index 1d5b0a1b86f7..06cbe60c990f 100644
+index 9cde7b075701..1603d730919b 100644
 --- a/drivers/regulator/tps65910-regulator.c
 +++ b/drivers/regulator/tps65910-regulator.c
-@@ -1211,12 +1211,10 @@ static int tps65910_probe(struct platform_device *pdev)
+@@ -1208,12 +1208,10 @@ static int tps65910_probe(struct platform_device *pdev)
  
  		rdev = devm_regulator_register(&pdev->dev, &pmic->desc[i],
  					       &config);
