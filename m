@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A3554027D1
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Sep 2021 13:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2EF54027D3
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Sep 2021 13:32:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343944AbhIGLdr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Sep 2021 07:33:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53382 "EHLO mail.kernel.org"
+        id S1344024AbhIGLdz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Sep 2021 07:33:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53506 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244596AbhIGLdo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 7 Sep 2021 07:33:44 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9970861101;
-        Tue,  7 Sep 2021 11:32:35 +0000 (UTC)
+        id S245276AbhIGLdr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 7 Sep 2021 07:33:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 81780610A3;
+        Tue,  7 Sep 2021 11:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631014358;
-        bh=xjXBwJevs5XgLWRG+LQGWP4p8XpWIa5UPqlENQ7qU0s=;
+        s=k20201202; t=1631014361;
+        bh=48j2wsnGyat2ILyzMymL7hUEkoVXB+R33pMrIohVclo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D0XeGjPYmgKTKmspSc2ikrrjf1WI3z/KAvZWFKKXoqzNwrfoL5dQ9DJo1i625c8Ya
-         MSB271t4+5lhMrbblv/nFcoJL2rV6LWjjM/g625I0/MOo9h87AasX5hzl5FS6xJGFc
-         sF+8OQHeVOGsQ7R/SSXZ4u4PQ4IgrIW/6jDwyux/ERhWLk90MpbN0pMDv0B1Oor8lR
-         QrWwcOBoFhoBgju7Wy2j4Ju5Ws3Io7dixyJTnoOZvSKHSklgtcjw2gPazP7A6dYr7E
-         QlmPqOAYw2H0MKl5m9csnKRUMBB56NF6O56iUc+Z5CD2pRs19hpW1C3m2guWw5Nkln
-         Kvbid/dRH95UQ==
+        b=ieWhPeVRUctXlWAZQAgqk5ogAEJYA/1Pm0X8PHvphVJ8zyCnQikZywjX8Tf6dGQvO
+         CqD99DFmEhHZ5y7dZ/k2zgYK794diAKBbIB1dg+6Z2YII1ix5Ihuz3EmAAuHFJsW3d
+         1Yn0gen21AeAwz9aSx1N6TVzhGcFa/TZb0sPIlDGO16UkI+KeDHfjkl5kOqUfgaL9g
+         pBgILe4BHojbF+KbgG6kb9KudrIiObO66kqvCI/tWXKe1P9we8O39hDIsfrMx6b0Pp
+         YzqTu6gSPHTKg3VrgrRYtnsVKpAeF3RE9qqfDb9KBKe3cddi8ukJNFM9MeDcSO86lI
+         zNziePd7c0+DA==
 From:   Roger Quadros <rogerq@kernel.org>
 To:     tony@atomide.com
 Cc:     robh+dt@kernel.org, grygorii.strashko@ti.com, nm@ti.com,
@@ -31,9 +31,9 @@ Cc:     robh+dt@kernel.org, grygorii.strashko@ti.com, nm@ti.com,
         devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
         Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH v3 2/8] dt-bindings: mtd: Remove gpmc-nor.txt
-Date:   Tue,  7 Sep 2021 14:32:20 +0300
-Message-Id: <20210907113226.31876-3-rogerq@kernel.org>
+Subject: [PATCH v3 3/8] dt-bindings: net: Remove gpmc-eth.txt
+Date:   Tue,  7 Sep 2021 14:32:21 +0300
+Message-Id: <20210907113226.31876-4-rogerq@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210907113226.31876-1-rogerq@kernel.org>
 References: <20210907113226.31876-1-rogerq@kernel.org>
@@ -41,65 +41,76 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There is no GPMC NOR compatible or device driver. GPMC is just
-a bus interface over which standard (CFI/JEDC) NOR Flash chips
-can be attached.
+There is no GPMC Ethernet compatible or device driver. GPMC is
+just a bus interface over which devices like Ethernet controller
+can be to.
 
-For NOR chip bindings, please refer to
-Documentation/devicetree/bindings/mtd/mtd-physmap.yaml
+For SMSC 911x Ethernet chip bindings, please refer to
+Documentation/devicetree/bindings/net/smsc,lan9115.yaml
 
 Signed-off-by: Roger Quadros <rogerq@kernel.org>
 ---
- .../devicetree/bindings/mtd/gpmc-nor.txt      | 98 -------------------
- 1 file changed, 98 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-nor.txt
+ .../devicetree/bindings/net/gpmc-eth.txt      | 97 -------------------
+ 1 file changed, 97 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/net/gpmc-eth.txt
 
-diff --git a/Documentation/devicetree/bindings/mtd/gpmc-nor.txt b/Documentation/devicetree/bindings/mtd/gpmc-nor.txt
+diff --git a/Documentation/devicetree/bindings/net/gpmc-eth.txt b/Documentation/devicetree/bindings/net/gpmc-eth.txt
 deleted file mode 100644
-index c8567b40fe13..000000000000
---- a/Documentation/devicetree/bindings/mtd/gpmc-nor.txt
+index 32821066a85b..000000000000
+--- a/Documentation/devicetree/bindings/net/gpmc-eth.txt
 +++ /dev/null
-@@ -1,98 +0,0 @@
--Device tree bindings for NOR flash connect to TI GPMC
+@@ -1,97 +0,0 @@
+-Device tree bindings for Ethernet chip connected to TI GPMC
 -
--NOR flash connected to the TI GPMC (found on OMAP boards) are represented as
--child nodes of the GPMC controller with a name of "nor".
+-Besides being used to interface with external memory devices, the
+-General-Purpose Memory Controller can be used to connect Pseudo-SRAM devices
+-such as ethernet controllers to processors using the TI GPMC as a data bus.
+-
+-Ethernet controllers connected to TI GPMC are represented as child nodes of
+-the GPMC controller with an "ethernet" name.
 -
 -All timing relevant properties as well as generic GPMC child properties are
 -explained in a separate documents. Please refer to
 -Documentation/devicetree/bindings/memory-controllers/omap-gpmc.txt
 -
+-For the properties relevant to the ethernet controller connected to the GPMC
+-refer to the binding documentation of the device. For example, the documentation
+-for the SMSC 911x is Documentation/devicetree/bindings/net/smsc,lan9115.yaml
+-
+-Child nodes need to specify the GPMC bus address width using the "bank-width"
+-property but is possible that an ethernet controller also has a property to
+-specify the I/O registers address width. Even when the GPMC has a maximum 16-bit
+-address width, it supports devices with 32-bit word registers.
+-For example with an SMSC LAN911x/912x controller connected to the TI GPMC on an
+-OMAP2+ board, "bank-width = <2>;" and "reg-io-width = <4>;".
+-
 -Required properties:
--- bank-width: 		Width of NOR flash in bytes. GPMC supports 8-bit and
--			16-bit devices and so must be either 1 or 2 bytes.
--- compatible:		Documentation/devicetree/bindings/mtd/mtd-physmap.txt
--- gpmc,cs-on-ns:		Chip-select assertion time
+-- bank-width: 		Address width of the device in bytes. GPMC supports 8-bit
+-			and 16-bit devices and so must be either 1 or 2 bytes.
+-- compatible:		Compatible string property for the ethernet child device.
+-- gpmc,cs-on-ns:	Chip-select assertion time
 -- gpmc,cs-rd-off-ns:	Chip-select de-assertion time for reads
 -- gpmc,cs-wr-off-ns:	Chip-select de-assertion time for writes
 -- gpmc,oe-on-ns:	Output-enable assertion time
 -- gpmc,oe-off-ns:	Output-enable de-assertion time
--- gpmc,we-on-ns		Write-enable assertion time
+-- gpmc,we-on-ns:	Write-enable assertion time
 -- gpmc,we-off-ns:	Write-enable de-assertion time
 -- gpmc,access-ns:	Start cycle to first data capture (read access)
 -- gpmc,rd-cycle-ns:	Total read cycle time
 -- gpmc,wr-cycle-ns:	Total write cycle time
--- linux,mtd-name:	Documentation/devicetree/bindings/mtd/mtd-physmap.txt
 -- reg:			Chip-select, base address (relative to chip-select)
--			and size of NOR flash. Note that base address will be
--			typically 0 as this is the start of the chip-select.
+-			and size of the memory mapped for the device.
+-			Note that base address will be typically 0 as this
+-			is the start of the chip-select.
 -
 -Optional properties:
 -- gpmc,XXX		Additional GPMC timings and settings parameters. See
 -			Documentation/devicetree/bindings/memory-controllers/omap-gpmc.txt
 -
--Optional properties for partition table parsing:
--- #address-cells: should be set to 1
--- #size-cells: should be set to 1
--
 -Example:
 -
 -gpmc: gpmc@6e000000 {
--	compatible = "ti,omap3430-gpmc", "simple-bus";
+-	compatible = "ti,omap3430-gpmc";
 -	ti,hwmods = "gpmc";
 -	reg = <0x6e000000 0x1000>;
 -	interrupts = <20>;
@@ -108,14 +119,11 @@ index c8567b40fe13..000000000000
 -	#address-cells = <2>;
 -	#size-cells = <1>;
 -
--	ranges = <0 0 0x10000000 0x08000000>;
+-	ranges = <5 0 0x2c000000 0x1000000>;
 -
--	nor@0,0 {
--		compatible = "cfi-flash";
--		linux,mtd-name= "intel,pf48f6000m0y1be";
--		#address-cells = <1>;
--		#size-cells = <1>;
--		reg = <0 0 0x08000000>;
+-	ethernet@5,0 {
+-		compatible = "smsc,lan9221", "smsc,lan9115";
+-		reg = <5 0 0xff>;
 -		bank-width = <2>;
 -
 -		gpmc,mux-add-data;
@@ -140,22 +148,13 @@ index c8567b40fe13..000000000000
 -		gpmc,cycle2cycle-samecsen;
 -		gpmc,cycle2cycle-diffcsen;
 -
--		partition@0 {
--			label = "bootloader-nor";
--			reg = <0 0x40000>;
--		};
--		partition@40000 {
--			label = "params-nor";
--			reg = <0x40000 0x40000>;
--		};
--		partition@80000 {
--			label = "kernel-nor";
--			reg = <0x80000 0x200000>;
--		};
--		partition@280000 {
--			label = "filesystem-nor";
--			reg = <0x240000 0x7d80000>;
--		};
+-		interrupt-parent = <&gpio6>;
+-		interrupts = <16>;
+-		vmmc-supply = <&vddvario>;
+-		vmmc_aux-supply = <&vdd33a>;
+-		reg-io-width = <4>;
+-
+-		smsc,save-mac-address;
 -	};
 -};
 -- 
