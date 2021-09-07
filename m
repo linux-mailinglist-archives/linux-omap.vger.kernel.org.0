@@ -2,166 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3612402752
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Sep 2021 12:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB7344027CA
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Sep 2021 13:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343606AbhIGKnE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Sep 2021 06:43:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47220 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343584AbhIGKnC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Sep 2021 06:43:02 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08C2C0613C1
-        for <linux-omap@vger.kernel.org>; Tue,  7 Sep 2021 03:41:55 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id s10so18588187lfr.11
-        for <linux-omap@vger.kernel.org>; Tue, 07 Sep 2021 03:41:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OhaD61tWBABFBKPbk39Bf67VDPEJcFHjjk5fNX+E5yU=;
-        b=h7YlEPMvvvWPmHN0mOYi63YLv6yVF12bWfWtFS2c/y76M7DqdhGZgUL8k/OEZ3Vn9h
-         VFr38ZRutYOrE2jaJI0KzAnPQ89g3pfYAjYVs7nYK8M3SoVoRPXshdxy3l/BGhWqsxSr
-         BKmujtY4i+oSjJsk+Bjz4H6+ekmJl53x5L9YaM1IFfVsjOeTNaWw+f8LM6ilMA60YHa6
-         VvXR7wKrFogELILtXEQSnZ5azgT6lpAc6JXXAgrB27dXd4MyW96PZTzDFG9mtcZAulk7
-         /H7wMnUESOcVAn9vb7gbNOECshMIeJzlR6Y5nkqYuKPk42GSe4Go2m1DGjd+N4MgixOC
-         WpWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OhaD61tWBABFBKPbk39Bf67VDPEJcFHjjk5fNX+E5yU=;
-        b=mb/lmvjWi0gnbulbS5yXGz3bD48VILftF141YaZfLo4LP1NsW/tGQKvCq+RqN7oKvY
-         VZ0rhjIqrBIshxanq+YdDln68M7mGHXZMcwTH5+BXcjmGLpDZvXfddBaGl7ucnPMoTu0
-         QRdkUSXbGtqxA6YABQqWFr4hvtG3pGH/zfD2x3OV/g3+pEKsyDIcmqC9Z+rbafOF3HWr
-         YdQaFDaCM03BzbUYU7/8m/N1HWRIz4ZAnjsANegYKx5ocwEpIVzWEciH7ErXe8QexExK
-         /wcrEwcjEwAh2c02sqOJUb0+YZvFGE/01ndaZ3W0VCh4n7iXH+oisN24EOlf5O+a9HDW
-         Xjyg==
-X-Gm-Message-State: AOAM531+uu7YKHRCfO6xUAMpl1I9I3JLnPBhd869cwhj8KyL0DEv6i5I
-        Ms5I2J7VfmLp2K0U0kYSHwf5cZaxi1vm3/XHgHVYQg==
-X-Google-Smtp-Source: ABdhPJx5OzN424vh3oUBOd8az3yzOHpWuZvPJYGzzfbrnfcRI/DT6ljkNdyfvmPJ0H6drgHJs7FbTfrhZnQn3vKdz38=
-X-Received: by 2002:a19:ac42:: with SMTP id r2mr12064265lfc.167.1631011314103;
- Tue, 07 Sep 2021 03:41:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210904000543.2019010-1-saravanak@google.com> <20210904000543.2019010-2-saravanak@google.com>
-In-Reply-To: <20210904000543.2019010-2-saravanak@google.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 7 Sep 2021 12:41:18 +0200
-Message-ID: <CAPDyKFrsKvHXMT-6CuFXKfqX+hZa3vGAu7hQz=9ZYBC7-dYS0w@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] drivers: bus: simple-pm-bus: Add support for
- probing simple bus only devices
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-oxnas@groups.io,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S243381AbhIGLdk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Sep 2021 07:33:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53230 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242785AbhIGLdi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 7 Sep 2021 07:33:38 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C09AD6109F;
+        Tue,  7 Sep 2021 11:32:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631014352;
+        bh=8UMQ97vyI3ophSye3dLSGxheasRTdFGrQH/XhCLQ7Ew=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Fv6sKsziXoufVFVqeUEuQ/cPd5N953M7hvg2B8vo+AcIqdBXfen6okuSz3UjfVEfw
+         +DEi76nJ7QIEOsCEkYgwYhKbB9wuKG5EsVxBSlTS8+A8J8bHd9oV9oo4lyQlmVOjXB
+         KS8dKlLJlfkhHJRyujvmyfAcOriwa5sn9bdGlYUE0fPgYg8DblkAQI4J/3Xw3Rr2rE
+         /dZp1KmtYPGG+klDKq3+uUL0x1Gtm9V2L8RZFON59XBZuGlBNXQ33ZxYGVThpe+a6Z
+         UCsAwiuc1mbIWHVqhko1/3ee04A9H5bvf1jejGkjpFQFntOCqB1wp8KUQpdCaJSUZ+
+         kSEIRmBDH5HEQ==
+From:   Roger Quadros <rogerq@kernel.org>
+To:     tony@atomide.com
+Cc:     robh+dt@kernel.org, grygorii.strashko@ti.com, nm@ti.com,
+        lokeshvutla@ti.com, nsekhar@ti.com,
+        krzysztof.kozlowski@canonical.com, miquel.raynal@bootlin.com,
+        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH v3 0/8] dt-bindings: memory-controllers: ti,gpmc: Convert to yaml
+Date:   Tue,  7 Sep 2021 14:32:18 +0300
+Message-Id: <20210907113226.31876-1-rogerq@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 4 Sept 2021 at 02:05, Saravana Kannan <saravanak@google.com> wrote:
->
-> fw_devlink could end up creating device links for bus only devices.
-> However, bus only devices don't get probed and can block probe() or
-> sync_state() [1] call backs of other devices. To avoid this, probe these
-> devices using the simple-pm-bus driver.
->
-> However, there are instances of devices that are not simple buses (they
-> get probed by their specific drivers) that also list the "simple-bus"
-> (or other bus only compatible strings) in their compatible property to
-> automatically populate their child devices. We still want these devices
-> to get probed by their specific drivers. So, we make sure this driver
-> only probes devices that are only buses.
->
-> [1] - https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> Tested-by: Saravana Kannan <saravanak@google.com>
+Hi,
 
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+This series converts ti,gpmc memory controller and ti,gpmc-nand and
+ti,gpmc-onenand MTD controller bindings to yaml.
 
-I will run some tests as soon as I can and let you know the results.
+cheers,
+-roger
 
-Kind regards
-Uffe
+Changelog:
+v3:
+- fix indentation
+- split GPMC child timings/settings into ti,gpmc-child.yaml
+This allows us to refer to it at 3 places and avoid use of
+'additionalProperties: true' at 2 places.
+- specify defaults where applicable
+- reordered patches
+- added patch for making "gpmc,device-width" optional with defaults.
+- address all review comments.
 
-> ---
->  drivers/bus/simple-pm-bus.c | 32 +++++++++++++++++++++++++++++---
->  1 file changed, 29 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
-> index 01a3d0cd08ed..3e086a9f34cb 100644
-> --- a/drivers/bus/simple-pm-bus.c
-> +++ b/drivers/bus/simple-pm-bus.c
-> @@ -13,11 +13,26 @@
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->
-> -
->  static int simple_pm_bus_probe(struct platform_device *pdev)
->  {
-> -       const struct of_dev_auxdata *lookup = dev_get_platdata(&pdev->dev);
-> -       struct device_node *np = pdev->dev.of_node;
-> +       const struct device *dev = &pdev->dev;
-> +       const struct of_dev_auxdata *lookup = dev_get_platdata(dev);
-> +       struct device_node *np = dev->of_node;
-> +       const struct of_device_id *match;
-> +
-> +       match = of_match_device(dev->driver->of_match_table, dev);
-> +
-> +       /*
-> +        * These are transparent bus devices (not simple-pm-bus matches) that
-> +        * have their child nodes populated automatically.  So, don't need to
-> +        * do anything more.
-> +        */
-> +       if (match && match->data) {
-> +               if (of_property_match_string(np, "compatible", match->compatible) == 0)
-> +                       return 0;
-> +               else
-> +                       return -ENODEV;
-> +       }
->
->         dev_dbg(&pdev->dev, "%s\n", __func__);
->
-> @@ -31,14 +46,25 @@ static int simple_pm_bus_probe(struct platform_device *pdev)
->
->  static int simple_pm_bus_remove(struct platform_device *pdev)
->  {
-> +       const void *data = of_device_get_match_data(&pdev->dev);
-> +
-> +       if (data)
-> +               return 0;
-> +
->         dev_dbg(&pdev->dev, "%s\n", __func__);
->
->         pm_runtime_disable(&pdev->dev);
->         return 0;
->  }
->
-> +#define ONLY_BUS       ((void *) 1) /* Match if the device is only a bus. */
-> +
->  static const struct of_device_id simple_pm_bus_of_match[] = {
->         { .compatible = "simple-pm-bus", },
-> +       { .compatible = "simple-bus",   .data = ONLY_BUS },
-> +       { .compatible = "simple-mfd",   .data = ONLY_BUS },
-> +       { .compatible = "isa",          .data = ONLY_BUS },
-> +       { .compatible = "arm,amba-bus", .data = ONLY_BUS },
->         { /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, simple_pm_bus_of_match);
-> --
-> 2.33.0.153.gba50c8fa24-goog
->
+v2:
+- Fix all errors in dtbs_check and dt_bindings_check
+- remove references to gpmc-omap.txt
+- Convert ti,gpmc-nand and ti,gpmc-onenand bindings to yaml as well
+
+Roger Quadros (8):
+  ARM: dts: omap: Fixup GPMC child nodes
+  dt-bindings: mtd: Remove gpmc-nor.txt
+  dt-bindings: net: Remove gpmc-eth.txt
+  dt-bindings: memory-controllers: Introduce ti,gpmc-child
+  dt-bindings: mtd: ti,gpmc-nand: Convert to yaml
+  dt-bindings: mtd: ti,gpmc-onenand: Convert to yaml
+  dt-bindings: memory-controllers: ti,gpmc: Convert to yaml
+  memory: gpmc-omap: "gpmc,device-width" DT property is optional
+
+ .../bindings/memory-controllers/omap-gpmc.txt | 157 -----------
+ .../memory-controllers/ti,gpmc-child.yaml     | 245 ++++++++++++++++++
+ .../bindings/memory-controllers/ti,gpmc.yaml  | 174 +++++++++++++
+ .../devicetree/bindings/mtd/gpmc-nand.txt     | 147 -----------
+ .../devicetree/bindings/mtd/gpmc-nor.txt      |  98 -------
+ .../devicetree/bindings/mtd/gpmc-onenand.txt  |  48 ----
+ .../devicetree/bindings/mtd/ti,gpmc-nand.yaml | 110 ++++++++
+ .../bindings/mtd/ti,gpmc-onenand.yaml         |  69 +++++
+ .../devicetree/bindings/net/gpmc-eth.txt      |  97 -------
+ .../boot/dts/logicpd-som-lv-baseboard.dtsi    |   2 +-
+ .../boot/dts/logicpd-torpedo-37xx-devkit.dts  |   2 +-
+ .../boot/dts/logicpd-torpedo-baseboard.dtsi   |   2 +-
+ arch/arm/boot/dts/omap-gpmc-smsc911x.dtsi     |  62 +++--
+ arch/arm/boot/dts/omap-gpmc-smsc9221.dtsi     |  59 ++---
+ arch/arm/boot/dts/omap-zoom-common.dtsi       |  16 +-
+ arch/arm/boot/dts/omap2430-sdp.dts            |   6 +-
+ arch/arm/boot/dts/omap3-cm-t3x30.dtsi         |   6 +-
+ .../arm/boot/dts/omap3-devkit8000-common.dtsi |   4 +-
+ arch/arm/boot/dts/omap3-evm-37xx.dts          |   1 +
+ arch/arm/boot/dts/omap3-evm-common.dtsi       |   9 -
+ .../boot/dts/omap3-evm-processor-common.dtsi  |   5 +-
+ arch/arm/boot/dts/omap3-evm.dts               |   1 +
+ arch/arm/boot/dts/omap3-igep0020-common.dtsi  |   5 +-
+ arch/arm/boot/dts/omap3-ldp.dts               |   5 +-
+ arch/arm/boot/dts/omap3-n900.dts              |   2 +-
+ .../dts/omap3-overo-chestnut43-common.dtsi    |   6 +-
+ .../arm/boot/dts/omap3-overo-tobi-common.dtsi |   6 +-
+ .../boot/dts/omap3-overo-tobiduo-common.dtsi  |   8 +-
+ arch/arm/boot/dts/omap3-sb-t35.dtsi           |   4 +-
+ arch/arm/boot/dts/omap4-duovero-parlor.dts    |   6 +-
+ drivers/memory/omap-gpmc.c                    |  41 +--
+ 31 files changed, 729 insertions(+), 674 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/memory-controllers/omap-gpmc.txt
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-nand.txt
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-nor.txt
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-onenand.txt
+ create mode 100644 Documentation/devicetree/bindings/mtd/ti,gpmc-nand.yaml
+ create mode 100644 Documentation/devicetree/bindings/mtd/ti,gpmc-onenand.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/gpmc-eth.txt
+
+-- 
+2.17.1
+
