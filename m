@@ -2,208 +2,254 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 774E84048DB
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Sep 2021 13:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1EDC405877
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Sep 2021 16:03:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234643AbhIILDz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Sep 2021 07:03:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234550AbhIILDw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Sep 2021 07:03:52 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC635C061575
-        for <linux-omap@vger.kernel.org>; Thu,  9 Sep 2021 04:02:42 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id c8so2939148lfi.3
-        for <linux-omap@vger.kernel.org>; Thu, 09 Sep 2021 04:02:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UuzBwp7ONK3SLRR0C5P0oUyDGhq5fqHDJWQ6GNaGd3o=;
-        b=QpAtOW4UBgMtIqy3cUYtD5ENY0dY0xtpdeLfO8WJ+FDAGBU5RRD4Je0JiMzQgNI+8B
-         BeRztIlXNCEHRjFLTg6RawqfpoxzoSPTLjgCRsz7j5qvrKvpOSpj8XfaBfwgwy+k5Lw/
-         ZVCSWZITvtuKC3aUXmNMyAylSxPAnL7ERdMsCSV1Lxnoh0A5nB7N3GwChvjlmekHudSD
-         6oXhUXH111e8n8NVzijMeAoCPwvbibPvkfObKudCB/A7X2hy7RwdFeyWV7x3Z4Pf1lnv
-         rLXFTA56iyyaDS/p2iGqCJYYEFscyTO+n2SQHS6nTIJHhw1/j7lXpx10wLJFRr3EiHxI
-         uNHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UuzBwp7ONK3SLRR0C5P0oUyDGhq5fqHDJWQ6GNaGd3o=;
-        b=7BqLdAtyzeySSbY3+AjAHFOs++FAWKMiC9mJ8OlN+kC/J4CptRwukNM5Ulx5sToB5R
-         aYgX2vIt4cUmn8c4knll39cD7nBXyfeEEl1tCBEjmZn6ZWDawoEEXCtXe0YKc8vlWf/j
-         GO/OzcM0JeJp+M2mgsZ8f/uKOUBK2r3gFXZ2uWb9AVh7C3WmH6q4cfLMgAAvS7y1l9fO
-         R9MvrOlhCKtk8Zlz9BZN33FPd9Px0CpXlATgNW+DgtjVKose8Ow2/Gzf5tVW63s1PCf/
-         V6+8Icc7tLeQDxOcd2RtLdHDirs92uLAItj/VcU+Cloxmkv8x/1BUR5GnFhlJcQ85qE9
-         saYQ==
-X-Gm-Message-State: AOAM532AgJZQazrBNLPsKT8AzFf4EkW1PpZkq6BIEtYGw58RR55HhuRL
-        aCG7+dhJ6Gjolo5ut7WWKF8Mpaf6R1ONjwZMn8+yqA==
-X-Google-Smtp-Source: ABdhPJy3mWn7qeyq8n17edf1tHxklevbxaO65oTUlKfBimrKR4Ud4ggJ7NUbnrmXGkBcppaDG0lVyZ/HBNZcWkTSgsI=
-X-Received: by 2002:a05:6512:31c7:: with SMTP id j7mr1825685lfe.373.1631185361009;
- Thu, 09 Sep 2021 04:02:41 -0700 (PDT)
+        id S245618AbhIIODw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Sep 2021 10:03:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51564 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244381AbhIIODJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 9 Sep 2021 10:03:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F3D84610CE;
+        Thu,  9 Sep 2021 14:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631196120;
+        bh=VfcMtzFJq+x3oimwRfSGM3+HsOCz4ZFSYvliKSNFghI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Cx7dqUh6Rl0fzneeoP+NmUqbIDdjyAemDWc6Jz7FofANtXhofVIvSsPKycqctmSdv
+         1E7CJgPH/X94KjMai9+YdZieMvE7BK1JD0r0Vte/0F348TXS+QNE1Kc4VyrscCCzc/
+         2BCZGWPU8W7i0o2IvR83sqra3mifDTURtrqSNf0KPtgfgJf3Id4HqV/OuNoFUC42fN
+         AgetbUvQWd5xPZeG7zNcSOpg1T/omv30wsORVp7jSucX8mkEhD6cN7qHdlEWRbiUVN
+         T2Rr5IliCvvYno/AofHkbu9lsHxzqmkjHQqHpEXfJlyDoHSwXk8lOvYOABnZuxBlkl
+         6Zd0wKZYDwNCw==
+Received: by mail-ed1-f49.google.com with SMTP id 9so2797368edx.11;
+        Thu, 09 Sep 2021 07:01:59 -0700 (PDT)
+X-Gm-Message-State: AOAM533KYHXGUZZ99CUGDLB9e9YKF2T3i8m5MDZdxZsIb7LCH/sVKB2x
+        pmWaxCiSgCrXLeZ9RXa0KKYdH8XcQglD/YIwMQ==
+X-Google-Smtp-Source: ABdhPJwlfbFsgaLlLSIuNjQjq2JLgFOQzN2NxKhZEqmEPXIEG/ydouVOBI9d0WFnAhc3n78EUwntrE8dU1HlVQySAz0=
+X-Received: by 2002:aa7:d645:: with SMTP id v5mr3380474edr.145.1631196118501;
+ Thu, 09 Sep 2021 07:01:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210904000543.2019010-1-saravanak@google.com> <20210904000543.2019010-3-saravanak@google.com>
-In-Reply-To: <20210904000543.2019010-3-saravanak@google.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 9 Sep 2021 13:02:03 +0200
-Message-ID: <CAPDyKFo2rHww_UmbhjeyQ=SSYE0sQwSv0Nxy=iEaK55j7i9DXQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] drivers: bus: Delete CONFIG_SIMPLE_PM_BUS
+References: <20210904000543.2019010-1-saravanak@google.com>
+ <20210904000543.2019010-2-saravanak@google.com> <CAMuHMdUhZy7W_HLtNJ2ECK5uQV5xHV7pDk5BXfNUpW9L68G5Aw@mail.gmail.com>
+ <CAGETcx_7N3gtaT-YHGaGL+Qtkv=JOhgPcPF1A+kQ4aaDoetvSA@mail.gmail.com>
+ <CAL_Jsq+-DAz+80QtpX5obWWcy=MAyxmTb262VAgMiKwnn=hfxQ@mail.gmail.com> <CAGETcx_=8yX6ObaEJk8QNSaWQPdFHsw4R74JrDFKqOL0AN-gLw@mail.gmail.com>
+In-Reply-To: <CAGETcx_=8yX6ObaEJk8QNSaWQPdFHsw4R74JrDFKqOL0AN-gLw@mail.gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 9 Sep 2021 09:01:46 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJVsEj=rmExYHtphfxw_W6cq8WU45SSuYi_g2_KiUaFsg@mail.gmail.com>
+Message-ID: <CAL_JsqJVsEj=rmExYHtphfxw_W6cq8WU45SSuYi_g2_KiUaFsg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] drivers: bus: simple-pm-bus: Add support for
+ probing simple bus only devices
 To:     Saravana Kannan <saravanak@google.com>
-Cc:     Russell King <linux@armlinux.org.uk>,
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Russell King <linux@armlinux.org.uk>,
         Neil Armstrong <narmstrong@baylibre.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
         Magnus Damm <magnus.damm@gmail.com>,
         Tony Lindgren <tony@atomide.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
         Damien Le Moal <damien.lemoal@wdc.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Android Kernel Team <kernel-team@android.com>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-oxnas@groups.io,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Lee Jones <lee.jones@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 4 Sept 2021 at 02:05, Saravana Kannan <saravanak@google.com> wrote:
+On Wed, Sep 8, 2021 at 7:58 PM Saravana Kannan <saravanak@google.com> wrote:
 >
-> The simple-pm-bus driver is mandatory for CONFIG_OF based platforms to
-> work with fw_devlink. So, always compile it in for CONFIG_OF and delete
-> the config since it's no longer necessary.
+> On Wed, Sep 8, 2021 at 5:16 PM Rob Herring <robh+dt@kernel.org> wrote:
+> >
+> > On Tue, Sep 7, 2021 at 2:01 AM Saravana Kannan <saravanak@google.com> wrote:
+> > >
+> > > On Mon, Sep 6, 2021 at 12:54 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > >
+> > > > Hi Saravana,
+> > > >
+> > > > Thanks for your patch!
+> > > >
+> > > > CC linux-pm, Lee (mfd)
+> > > >
+> > > > On Sat, Sep 4, 2021 at 2:05 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > > > fw_devlink could end up creating device links for bus only devices.
+> > > > > However, bus only devices don't get probed and can block probe() or
+> > > > > sync_state() [1] call backs of other devices. To avoid this, probe these
+> > > > > devices using the simple-pm-bus driver.
+> > > > >
+> > > > > However, there are instances of devices that are not simple buses (they
+> > > > > get probed by their specific drivers) that also list the "simple-bus"
+> > > > > (or other bus only compatible strings) in their compatible property to
+> > > > > automatically populate their child devices. We still want these devices
+> > > > > to get probed by their specific drivers. So, we make sure this driver
+> > > > > only probes devices that are only buses.
+> > > >
+> > > > Note that this can also be the case for buses declaring compatibility
+> > > > with "simple-pm-bus".  However, at the moment, none of such device
+> > > > nodes in upstream DTS files have device-specific drivers.
+> > >
+> > > Not sure about mfd, but I want to make sure we don't confuse busses
+> > > (which are typically added to a class) with these "simple bus" devices
+> > > that are added to platform_bus. Also if these other buses are actually
+> > > causing an issue, then then should implement their own stub driver or
+> > > use try patch[2] if they are added to classes (devices on classes
+> > > don't probe)
+> > >
+> > > [2] - https://lore.kernel.org/lkml/20210831224510.703253-1-saravanak@google.com/
+> > >
+> > > >
+> > > > > [1] - https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
+> > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > > > Tested-by: Saravana Kannan <saravanak@google.com>
+> > > >
+> > > > > --- a/drivers/bus/simple-pm-bus.c
+> > > > > +++ b/drivers/bus/simple-pm-bus.c
+> > > > > @@ -13,11 +13,26 @@
+> > > > >  #include <linux/platform_device.h>
+> > > > >  #include <linux/pm_runtime.h>
+> > > > >
+> > > > > -
+> > > > >  static int simple_pm_bus_probe(struct platform_device *pdev)
+> > > > >  {
+> > > > > -       const struct of_dev_auxdata *lookup = dev_get_platdata(&pdev->dev);
+> > > > > -       struct device_node *np = pdev->dev.of_node;
+> > > > > +       const struct device *dev = &pdev->dev;
+> > > > > +       const struct of_dev_auxdata *lookup = dev_get_platdata(dev);
+> > > > > +       struct device_node *np = dev->of_node;
+> > > > > +       const struct of_device_id *match;
+> > > > > +
+> > > > > +       match = of_match_device(dev->driver->of_match_table, dev);
+> > > > > +
+> > > > > +       /*
+> > > > > +        * These are transparent bus devices (not simple-pm-bus matches) that
+> > > > > +        * have their child nodes populated automatically.  So, don't need to
+> > > > > +        * do anything more.
+> > > > > +        */
+> > > > > +       if (match && match->data) {
+> > > > > +               if (of_property_match_string(np, "compatible", match->compatible) == 0)
+> > > >
+> > > > Does this work as expected? Having multiple compatible values in a
+> > > > device node does not guarantee there exist a separate driver for any
+> > > > of the device-specific compatible values.
+> > >
+> > > Right, and if they are platform devices that are equivalent to
+> > > simple-bus (meaning, they don't do anything in Linux and just have
+> > > their devices populated) we can add those to this list too.
+> >
+> > I think this needs to be a list of compatibles we have drivers for
+> > instead.
 >
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> I don't think a "denylist" (devices we shouldn't probe with this
+> driver) would be a short list. As of today, literally any device that
+> has children could add a "simple-bus" to the compatible property and
+> get its child devices populated for free. If we use a denylist, we'll
+> have to update it every time someone adds "simple-bus" as a general
+> match to a DT node (new or otherwise) that isn't in the denylist. The
+> list would blow up and be a maintenance headache.
+>
+> Also, a denylist won't capture any DT that isn't part of the kernel
+> repo but depends on "simple-bus" to populate the device's child nodes.
+> Keep in mind this could be true even for completely upstream drivers
+> today. And on top of that, this will also break for downstream drivers
+> and platforms in the development stage.
 
-Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
+You've got this all backwards. The list would be compatibles for which
+they have their own driver. If they have their own driver, we know
+that because there is a driver in the kernel. If you have an out of
+tree bus driver, then I guess you shouldn't be claiming compatibility
+with 'simple-bus'.
 
-Kind regards
-Uffe
+> The allowlist is much smaller and manageable.
 
-> ---
->  arch/arm/configs/multi_v7_defconfig |  1 -
->  arch/arm/configs/oxnas_v6_defconfig |  1 -
->  arch/arm/configs/shmobile_defconfig |  1 -
->  arch/arm/mach-omap2/Kconfig         |  1 -
->  arch/arm64/configs/defconfig        |  1 -
->  drivers/bus/Kconfig                 | 12 ------------
->  drivers/bus/Makefile                |  2 +-
->  drivers/soc/canaan/Kconfig          |  1 -
->  8 files changed, 1 insertion(+), 19 deletions(-)
+I count 140 cases of 'simple-bus' with another compatible. I find
+roughly 24 of those under drivers/ that have a driver (and look,
+there's at91 pinctrl/gpio). There's some more under arch/, but I'm not
+sure if they are drivers. This is what I ran:
+
+git grep -ho '".*", "simple-bus"' -- arch/ | cut -d' ' -f1 | grep -oE
+'".+"' | grep -v '"syscon"' | sort -u > buses.txt
+git grep -f buses.txt -- drivers/
+
+I haven't looked at 'simple-mfd', but that was supposed to always mean
+'no driver'.
+
+To put it another way, let's look at 3 possibilities:
+
+'simple-bus'
+'foo,has-no-driver', 'simple-bus'
+'foo,has-a-driver', 'simple-bus'
+
+The first case is easy. The last 2 cases are not. We have no way to
+handle them differently without a list.
+
+> > A more specific compatible that the OS doesn't understand
+> > shouldn't cause a change in behavior and adding one would.
+
+Again, if a dt is modified from case 1 to case 2, there should not be
+a change in behavior. Presumably if Ulf changed his test in this way,
+it would again fail, right?
+
+
+> I think the amount of specific compatible strings that'll be added,
+> but won't have drivers added to Linux AND would want to boot with
+> Linux is much less likely than the amount of times we'd have to update
+> a denylist.
 >
-> diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
-> index d9abaae118dd..362720ae8d65 100644
-> --- a/arch/arm/configs/multi_v7_defconfig
-> +++ b/arch/arm/configs/multi_v7_defconfig
-> @@ -196,7 +196,6 @@ CONFIG_PCI_EPF_TEST=m
->  CONFIG_DEVTMPFS=y
->  CONFIG_DEVTMPFS_MOUNT=y
->  CONFIG_OMAP_OCP2SCP=y
-> -CONFIG_SIMPLE_PM_BUS=y
->  CONFIG_MTD=y
->  CONFIG_MTD_CMDLINE_PARTS=y
->  CONFIG_MTD_BLOCK=y
-> diff --git a/arch/arm/configs/oxnas_v6_defconfig b/arch/arm/configs/oxnas_v6_defconfig
-> index cae0db6b4eaf..de37f7e90999 100644
-> --- a/arch/arm/configs/oxnas_v6_defconfig
-> +++ b/arch/arm/configs/oxnas_v6_defconfig
-> @@ -46,7 +46,6 @@ CONFIG_DEVTMPFS=y
->  CONFIG_DEVTMPFS_MOUNT=y
->  CONFIG_DMA_CMA=y
->  CONFIG_CMA_SIZE_MBYTES=64
-> -CONFIG_SIMPLE_PM_BUS=y
->  CONFIG_MTD=y
->  CONFIG_MTD_CMDLINE_PARTS=y
->  CONFIG_MTD_BLOCK=y
-> diff --git a/arch/arm/configs/shmobile_defconfig b/arch/arm/configs/shmobile_defconfig
-> index d9a27e4e0914..18d2a960b2d2 100644
-> --- a/arch/arm/configs/shmobile_defconfig
-> +++ b/arch/arm/configs/shmobile_defconfig
-> @@ -40,7 +40,6 @@ CONFIG_PCI_RCAR_GEN2=y
->  CONFIG_PCIE_RCAR_HOST=y
->  CONFIG_DEVTMPFS=y
->  CONFIG_DEVTMPFS_MOUNT=y
-> -CONFIG_SIMPLE_PM_BUS=y
->  CONFIG_MTD=y
->  CONFIG_MTD_BLOCK=y
->  CONFIG_MTD_CFI=y
-> diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
-> index 7df8f5276ddf..02f2f3157f07 100644
-> --- a/arch/arm/mach-omap2/Kconfig
-> +++ b/arch/arm/mach-omap2/Kconfig
-> @@ -112,7 +112,6 @@ config ARCH_OMAP2PLUS
->         select PM_GENERIC_DOMAINS
->         select PM_GENERIC_DOMAINS_OF
->         select RESET_CONTROLLER
-> -       select SIMPLE_PM_BUS
->         select SOC_BUS
->         select TI_SYSC
->         select OMAP_IRQCHIP
-> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-> index f423d08b9a71..474b1f2e3f06 100644
-> --- a/arch/arm64/configs/defconfig
-> +++ b/arch/arm64/configs/defconfig
-> @@ -245,7 +245,6 @@ CONFIG_DEVTMPFS_MOUNT=y
->  CONFIG_FW_LOADER_USER_HELPER=y
->  CONFIG_FW_LOADER_USER_HELPER_FALLBACK=y
->  CONFIG_HISILICON_LPC=y
-> -CONFIG_SIMPLE_PM_BUS=y
->  CONFIG_FSL_MC_BUS=y
->  CONFIG_TEGRA_ACONNECT=m
->  CONFIG_GNSS=m
-> diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
-> index e7f7eee6ee9a..dc3801369488 100644
-> --- a/drivers/bus/Kconfig
-> +++ b/drivers/bus/Kconfig
-> @@ -141,18 +141,6 @@ config QCOM_EBI2
->           Interface 2, which can be used to connect things like NAND Flash,
->           SRAM, ethernet adapters, FPGAs and LCD displays.
+> Also, if we do hit the cases you mention and we want those devices to
+> get probed anyway, with my current allowlist approach, we could use
+> "driver_override" to force this driver to match them. If you use a
+> denylist like you said, there's no way you can get the simple-pm-bus
+> to unbind and let the more specific driver to bind.
+
+Where would we set "driver_override"? Aren't we going to end up with a
+driver_override list?
+
+[...]
+
+> > > > [*] Especially if "simple-pm-bus" and "simple-bus" would be treated
+> > > >     the same.
+> > >
+> > > They are not treated the same way.
+> >
+> > I think it would be better if they were. IOW, the core code stops
+> > descending into simple-bus, etc. nodes and they are populated here.
+> > Then we just get rid of of_default_bus_match_table.
 >
-> -config SIMPLE_PM_BUS
-> -       tristate "Simple Power-Managed Bus Driver"
-> -       depends on OF && PM
-> -       help
-> -         Driver for transparent busses that don't need a real driver, but
-> -         where the bus controller is part of a PM domain, or under the control
-> -         of a functional clock, and thus relies on runtime PM for managing
-> -         this PM domain and/or clock.
-> -         An example of such a bus controller is the Renesas Bus State
-> -         Controller (BSC, sometimes called "LBSC within Bus Bridge", or
-> -         "External Bus Interface") as found on several Renesas ARM SoCs.
-> -
->  config SUN50I_DE2_BUS
->         bool "Allwinner A64 DE2 Bus Driver"
->           default ARM64
-> diff --git a/drivers/bus/Makefile b/drivers/bus/Makefile
-> index 397e35392bff..86aacd36a56d 100644
-> --- a/drivers/bus/Makefile
-> +++ b/drivers/bus/Makefile
-> @@ -26,7 +26,7 @@ obj-$(CONFIG_OMAP_OCP2SCP)    += omap-ocp2scp.o
->  obj-$(CONFIG_QCOM_EBI2)                += qcom-ebi2.o
->  obj-$(CONFIG_SUN50I_DE2_BUS)   += sun50i-de2.o
->  obj-$(CONFIG_SUNXI_RSB)                += sunxi-rsb.o
-> -obj-$(CONFIG_SIMPLE_PM_BUS)    += simple-pm-bus.o
-> +obj-$(CONFIG_OF)               += simple-pm-bus.o
->  obj-$(CONFIG_TEGRA_ACONNECT)   += tegra-aconnect.o
->  obj-$(CONFIG_TEGRA_GMI)                += tegra-gmi.o
->  obj-$(CONFIG_TI_PWMSS)         += ti-pwmss.o
-> diff --git a/drivers/soc/canaan/Kconfig b/drivers/soc/canaan/Kconfig
-> index 8179b69518b4..853096b7e84c 100644
-> --- a/drivers/soc/canaan/Kconfig
-> +++ b/drivers/soc/canaan/Kconfig
-> @@ -5,7 +5,6 @@ config SOC_K210_SYSCTL
->         depends on RISCV && SOC_CANAAN && OF
->         default SOC_CANAAN
->          select PM
-> -        select SIMPLE_PM_BUS
->          select SYSCON
->          select MFD_SYSCON
->         help
-> --
-> 2.33.0.153.gba50c8fa24-goog
+> Right, I would if we could. But we can't simply stop descending the
+> simple-bus nodes in the core code because all the specific drivers
+> that used to have their child devices populated automatically would
+> stop working and would need to be updated to populate their child
+> devices. And I'm sure there are a ton more downstream kernels and
+> downstream DTs (that use upstream kernels) that we would break.
 >
+> If you really want to do that go for it, but I'd rather not do all
+> this as part of trying to fix the issue Ulf reported that needs
+> simple-bus only devices probed.
+
+Agreed.
+
+> > That could cause some issues with init ordering. As I recall the at91
+> > gpio and pinctrl drivers are sensitive to this. The default call to
+> > of_platform_populate doesn't work on those systems because the devices
+> > get created later than when their machine specific call happens. It
+> > may have been a case of a parent probe assuming a child probe
+> > completed after of_platform_populate returns (also a problem for Qcom
+> > with DWC3). There's a fix for at91 somewhere in the git history after
+> > I broke it. I started trying to untangle things with at91, but never
+> > finished that.
+>
+> I think it'll cause a lot of issues if we stop descending simple-bus
+> nodes in the core code. We're just scratching the surface here.
+
+Perhaps, but if there's cases which are that fragile, we should fix them.
+
+Rob
