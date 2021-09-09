@@ -2,324 +2,228 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 88ED3404194
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Sep 2021 01:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD40B404225
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Sep 2021 02:16:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235099AbhIHXJp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 8 Sep 2021 19:09:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36520 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233709AbhIHXJo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 8 Sep 2021 19:09:44 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC8F6C06175F
-        for <linux-omap@vger.kernel.org>; Wed,  8 Sep 2021 16:08:35 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id w6so1859637pll.3
-        for <linux-omap@vger.kernel.org>; Wed, 08 Sep 2021 16:08:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lixom-net.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zZtlzVhWBbwXoavimL5Cu2zNuLqJKyQrs9PtnLoTbBw=;
-        b=kSjq7V7UVdcmFJyduvILA7A+e4J9ObyfE9f9UlOv1wvamgAl4MgHpJqYP1XrUEZhuD
-         qsMZW0Fk31XflGWEup34tqLssSis/K7KZ1VFRY9uiUuUWwWoHQYync4TQhBzfDNxh2Tv
-         UOgVsuOzWCLKEPDsv1L+nBsBQk5yO9jklbAtJDFD1Th25XdzQZGa3b+fMzs2kswPgwWN
-         8sKr8mQWjMCY75HA6h2gk7J0vCnx9c19EL7g70oFrnAsU54eBRbWhdip29c8oSPgqgpf
-         L5YVWqhWliH0iHZRhi1JBIHkJQ5qPATPl+ulZnecXkpVLPg+9gvZI4nTQS742Q+by/1E
-         VlHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zZtlzVhWBbwXoavimL5Cu2zNuLqJKyQrs9PtnLoTbBw=;
-        b=k/+Xh+hK4Uigx2G1u+7JWBG3J8JlV0K84aW3BIb/95WUGJP3Gk6zTlND4S4NL4AW7t
-         C/l9mwOB54zaJd6UR4+DWXZ5R5YTYSwoO07xLmwqYJFHld8xBDSoQb/FVf4prkIh4m6M
-         56qILNerQGoNGvjkTFuahmMXWsSE/CT7cyCpFMS1oJjG52h45ovV3jmeQoCv7LbmeaxZ
-         EEvysxW6ul7mZH7JG/5sIa5+XZFdiTHdB2jZPy4MCdEUk9gHVL1JLkKaID5ReWOT/jJb
-         0b9nxVxe0dINMm1S4q8Zg5F5scWXBRCIn1RFnj8Q44cZIK6X07faL8kOmoglNfAePP23
-         b2Kw==
-X-Gm-Message-State: AOAM533vEIkocxa+sSjcx4qQH59uAjJwuzzcH+34h5vmFdy8r+z6BbK0
-        3tXxLV7277b3j/bXDNJKOgk4PpkBzVywg7O5j07HuQ==
-X-Google-Smtp-Source: ABdhPJyFn28fS/y5ulgH/27LqxDmH6NBfIEoA9Td+810/fo43QUOaiDpFlx7utmV8lw1jHrEN/4yqFOCMF/8I1/Q04A=
-X-Received: by 2002:a17:90a:7301:: with SMTP id m1mr45943pjk.34.1631142514970;
- Wed, 08 Sep 2021 16:08:34 -0700 (PDT)
+        id S1348027AbhIIARU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 8 Sep 2021 20:17:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37384 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241998AbhIIART (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 8 Sep 2021 20:17:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1BE4461131;
+        Thu,  9 Sep 2021 00:16:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631146571;
+        bh=3wT/77ifq2R1itJ2LaY3Uko3fH+ybrNTZbvI0BB4JbQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=tkGFAgGd5BEudCzi7QNF8qxfLm0EQHAYbwSgrZB+0TzFGp+DG1E1UMo6Vk7lQq8TD
+         U9zxNnc0x5PI7zZOT2D5dxWIxoqAr7Cco/dtaHtZ71KlF53Js0XrLOGOtck1WhJAXc
+         pUT79VbHq5I0l+4In5QIIEB2TJa3rHz1rcpmBgRjd0R6J3mn0ufxXpgVu5Hz+0K7LK
+         yJ5ksBRKDrotKhbMCMQI9g1tRiU6khOnJue++japYCI3DTNUEAaO9w/2qRkIL/zsxe
+         nTfhsEA71lmoWec165AVdzeQLlkSg16vCEiJg8Y2MbbJjkB8AldhJ+rcPGPdS7Gnqa
+         G048KetDpuhyA==
+Received: by mail-ej1-f53.google.com with SMTP id x11so7795599ejv.0;
+        Wed, 08 Sep 2021 17:16:10 -0700 (PDT)
+X-Gm-Message-State: AOAM533QFZ+OzaCVCvulB+GG2eqFvqiDAJ7RoMJo2QjTmWcalI9aUA6U
+        Ir48kgkEBaxJlT93siONRPTK/tJQRMeBJypoaQ==
+X-Google-Smtp-Source: ABdhPJz14Imk476ha8K3WOAD7DkMuuT7rbeRcjoFY4GXGKHqc5FockmccC4lpgUwA6gBj0fp/p9PHV886vX/3e61W1A=
+X-Received: by 2002:a17:906:1913:: with SMTP id a19mr364513eje.390.1631146569570;
+ Wed, 08 Sep 2021 17:16:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210901201934.1084250-1-dianders@chromium.org>
- <20210901131531.v3.6.I02250cd7d4799661b068bcc65849a456ed411734@changeid>
- <CAOesGMjp4pscuxciHZo7br-acgbkZSdRA_mUWNpcz0OfF7zOSA@mail.gmail.com>
- <CAD=FV=WPXAUyuAHb1jKx9F_aw+JGX4MWB3or=Eq5rXoKY=OQMw@mail.gmail.com>
- <163070152582.405991.9480635890491684680@swboyd.mtv.corp.google.com> <CAD=FV=XzPVda==+hkJ8ZJNXz3sT=V+8y4gbsbUik4k3Om_cGvQ@mail.gmail.com>
-In-Reply-To: <CAD=FV=XzPVda==+hkJ8ZJNXz3sT=V+8y4gbsbUik4k3Om_cGvQ@mail.gmail.com>
-From:   Olof Johansson <olof@lixom.net>
-Date:   Wed, 8 Sep 2021 16:08:23 -0700
-Message-ID: <CAOesGMhd+m=hU6Fj3QXxqZb6TFf414UwvQLsLWgxe9Zb=3-tPQ@mail.gmail.com>
-Subject: Re: [PATCH v3 06/16] ARM: configs: Everyone who had PANEL_SIMPLE now
- gets PANEL_SIMPLE_EDP
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Stephen Boyd <sboyd@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Linus W <linus.walleij@linaro.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        DTML <devicetree@vger.kernel.org>,
-        Steev Klimaszewski <steev@kali.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Maxime Ripard <mripard@kernel.org>,
-        David Airlie <airlied@linux.ie>,
-        DRI mailing list <dri-devel@lists.freedesktop.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
-        Anson Huang <Anson.Huang@nxp.com>,
-        Arnd Bergmann <arnd@arndb.de>, Chen-Yu Tsai <wens@csie.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-        Core ntin Labbe <clabbe@baylibre.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Emil Velikov <emil.velikov@collabora.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kees Cook <keescook@chromium.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Lionel Debieve <lionel.debieve@st.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        =?UTF-8?Q?Martin_J=C3=BCcker?= <martin.juecker@gmail.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Olivier Moysan <olivier.moysan@st.com>,
-        Otavio Salvador <otavio@ossystems.com.br>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Razvan Stefanescu <razvan.stefanescu@microchip.com>,
-        Robert Richter <rric@kernel.org>,
+References: <20210904000543.2019010-1-saravanak@google.com>
+ <20210904000543.2019010-2-saravanak@google.com> <CAMuHMdUhZy7W_HLtNJ2ECK5uQV5xHV7pDk5BXfNUpW9L68G5Aw@mail.gmail.com>
+ <CAGETcx_7N3gtaT-YHGaGL+Qtkv=JOhgPcPF1A+kQ4aaDoetvSA@mail.gmail.com>
+In-Reply-To: <CAGETcx_7N3gtaT-YHGaGL+Qtkv=JOhgPcPF1A+kQ4aaDoetvSA@mail.gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Wed, 8 Sep 2021 19:15:58 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+-DAz+80QtpX5obWWcy=MAyxmTb262VAgMiKwnn=hfxQ@mail.gmail.com>
+Message-ID: <CAL_Jsq+-DAz+80QtpX5obWWcy=MAyxmTb262VAgMiKwnn=hfxQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] drivers: bus: simple-pm-bus: Add support for
+ probing simple bus only devices
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Russell King <linux@armlinux.org.uk>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
         Tony Lindgren <tony@atomide.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
+        linux-oxnas@groups.io,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
-        <linux-samsung-soc@vger.kernel.org>, linux-sunxi@lists.linux.dev,
-        =?UTF-8?Q?open_list=3ATEGRA_ARCHITECTURE_SUPPORT_=3Clinux=2D_tegra=40vger=2Ekern?=
-         =?UTF-8?Q?el=2Eorg=3E=2C_=C5=81ukasz_Stelmach?= 
-        <l.stelmach@samsung.com>
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Lee Jones <lee.jones@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 8, 2021 at 3:36 PM Doug Anderson <dianders@chromium.org> wrote:
+On Tue, Sep 7, 2021 at 2:01 AM Saravana Kannan <saravanak@google.com> wrote:
 >
-> Hi,
->
-> On Fri, Sep 3, 2021 at 1:38 PM Stephen Boyd <sboyd@kernel.org> wrote:
+> On Mon, Sep 6, 2021 at 12:54 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 > >
-> > Quoting Doug Anderson (2021-09-01 16:10:15)
-> > > Hi,
-> > >
-> > > On Wed, Sep 1, 2021 at 2:12 PM Olof Johansson <olof@lixom.net> wrote:
-> > > >
-> > > > On Wed, Sep 1, 2021 at 1:20 PM Douglas Anderson <dianders@chromium.org> wrote:
-> > > > >
-> > > > > In the patch ("drm/panel-simple-edp: Split eDP panels out of
-> > > > > panel-simple") we split the PANEL_SIMPLE driver in 2. By default let's
-> > > > > give everyone who had the old driver enabled the new driver too. If
-> > > > > folks want to opt-out of one or the other they always can later.
-> > > > >
-> > > > > Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> > > >
-> > > > Isn't this a case where the new option should just have had the old
-> > > > option as the default value to avoid this kind of churn and possibly
-> > > > broken platforms?
-> > >
-> > > I'm happy to go either way. I guess I didn't do that originally
-> > > because logically there's not any reason to link the two drivers going
-> > > forward. Said another way, someone enabling the "simple panel" driver
-> > > for non-eDP panels wouldn't expect that the "simple panel" driver for
-> > > DP panels would also get enabled by default. They really have nothing
-> > > to do with one another. Enabling by default for something like this
-> > > also seems like it would lead to bloat. I could have sworn that
-> > > periodically people get yelled at for marking drivers on by default
-> > > when it doesn't make sense.
-> > >
-> > > ...that being said, I'm happy to change the default as you suggest.
-> > > Just let me know.
+> > Hi Saravana,
 > >
-> > Having the default will help olddefconfig users seamlessly migrate to
-> > the new Kconfig. Sadly they don't notice that they should probably
-> > disable the previous Kconfig symbol, but oh well. At least with the
-> > default they don't go on a hunt/bisect to figure out that some Kconfig
-> > needed to be enabled now that they're using a new kernel version.
+> > Thanks for your patch!
 > >
-> > Maybe the default should have a TODO comment next to it indicating we
-> > should remove the default in a year or two.
+> > CC linux-pm, Lee (mfd)
+> >
+> > On Sat, Sep 4, 2021 at 2:05 AM Saravana Kannan <saravanak@google.com> wrote:
+> > > fw_devlink could end up creating device links for bus only devices.
+> > > However, bus only devices don't get probed and can block probe() or
+> > > sync_state() [1] call backs of other devices. To avoid this, probe these
+> > > devices using the simple-pm-bus driver.
+> > >
+> > > However, there are instances of devices that are not simple buses (they
+> > > get probed by their specific drivers) that also list the "simple-bus"
+> > > (or other bus only compatible strings) in their compatible property to
+> > > automatically populate their child devices. We still want these devices
+> > > to get probed by their specific drivers. So, we make sure this driver
+> > > only probes devices that are only buses.
+> >
+> > Note that this can also be the case for buses declaring compatibility
+> > with "simple-pm-bus".  However, at the moment, none of such device
+> > nodes in upstream DTS files have device-specific drivers.
 >
-> OK, so I'm trying to figure out how to do this without just "kicking
-> the can" down the road. I guess your idea is that for the next year
-> this will be the default and that anyone who really wants
-> "CONFIG_DRM_PANEL_EDP" will "opt-in" to keep it by adding
-> "CONFIG_DRM_PANEL_EDP=y" to their config? ...and then after a year
-> passes we remove the default? ...but that won't work, will it? Since
-> "CONFIG_DRM_PANEL_EDP" will be the default for the next year then you
-> really can't add it to the "defconfig", at least if you ever
-> "normalize" it. The "defconfig" by definition has everything stripped
-> from it that's already the "default", so for the next year anyone who
-> tries to opt-in will get their preference stripped.
+> Not sure about mfd, but I want to make sure we don't confuse busses
+> (which are typically added to a class) with these "simple bus" devices
+> that are added to platform_bus. Also if these other buses are actually
+> causing an issue, then then should implement their own stub driver or
+> use try patch[2] if they are added to classes (devices on classes
+> don't probe)
 >
-> Hrm, so let me explain options as I see them. Maybe someone can point
-> out something that I missed. I'll assume that we'll change the config
-> option from CONFIG_DRM_PANEL_SIMPLE_EDP to CONFIG_DRM_PANEL_EDP
-> (remove the "SIMPLE" part).
+> [2] - https://lore.kernel.org/lkml/20210831224510.703253-1-saravanak@google.com/
 >
-> ==
+> >
+> > > [1] - https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
+> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > Tested-by: Saravana Kannan <saravanak@google.com>
+> >
+> > > --- a/drivers/bus/simple-pm-bus.c
+> > > +++ b/drivers/bus/simple-pm-bus.c
+> > > @@ -13,11 +13,26 @@
+> > >  #include <linux/platform_device.h>
+> > >  #include <linux/pm_runtime.h>
+> > >
+> > > -
+> > >  static int simple_pm_bus_probe(struct platform_device *pdev)
+> > >  {
+> > > -       const struct of_dev_auxdata *lookup = dev_get_platdata(&pdev->dev);
+> > > -       struct device_node *np = pdev->dev.of_node;
+> > > +       const struct device *dev = &pdev->dev;
+> > > +       const struct of_dev_auxdata *lookup = dev_get_platdata(dev);
+> > > +       struct device_node *np = dev->of_node;
+> > > +       const struct of_device_id *match;
+> > > +
+> > > +       match = of_match_device(dev->driver->of_match_table, dev);
+> > > +
+> > > +       /*
+> > > +        * These are transparent bus devices (not simple-pm-bus matches) that
+> > > +        * have their child nodes populated automatically.  So, don't need to
+> > > +        * do anything more.
+> > > +        */
+> > > +       if (match && match->data) {
+> > > +               if (of_property_match_string(np, "compatible", match->compatible) == 0)
+> >
+> > Does this work as expected? Having multiple compatible values in a
+> > device node does not guarantee there exist a separate driver for any
+> > of the device-specific compatible values.
 >
-> Where we were before my series:
->
-> * One config "CONFIG_DRM_PANEL_SIMPLE" and it enables simple non-eDP
-> and eDP drivers.
->
-> ==
->
-> Option 1: update everyone's configs (this patch)
->
-> * Keep old config "CONFIG_DRM_PANEL_SIMPLE" but it now only means
-> enable the panel-simple (non-eDP) driver.
-> * Anyone who wants eDP panels must opt-in to "CONFIG_DRM_PANEL_EDP"
-> * Update all configs in mainline; any out-of mainline configs must
-> figure this out themselves.
->
-> Pros:
-> * no long term baggage
->
-> Cons:
-> * patch upstream is a bit of "churn"
-> * anyone with downstream config will have to figure out what happened.
->
-> ==
->
-> Option 2: kick the can down the road + accept cruft
->
-> * Keep old config "CONFIG_DRM_PANEL_SIMPLE" and it means enable the
-> panel-simple (non-eDP) driver.
-> * Anyone with "CONFIG_DRM_PANEL_SIMPLE" is opted in by default to
-> "CONFIG_DRM_PANEL_EDP"
->
-> AKA:
-> config DRM_PANEL_EDP
->   default DRM_PANEL_SIMPLE
->
-> Pros:
-> * no config patches needed upstream at all and everything just works!
->
-> Cons:
-> * people are opted in to extra cruft by default and need to know to turn it off.
-> * unclear if we can change the default without the same problems.
->
-> ==
->
-> Option 3: try to be clever
->
-> * Add _two_ new configs. CONFIG_DRM_PANEL_SIMPLE_V2 and CONFIG_DRM_PANEL_EDP.
-> * Old config "CONFIG_DRM_PANEL_SIMPLE" gets marked as "deprecated".
-> * Both new configs have "default CONFIG_DRM_PANEL_SIMPLE"
->
-> Now anyone old will magically get both the new config options by
-> default. Anyone looking at this in the future _won't_ set the
-> deprecated CONFIG_DRM_PANEL_SIMPLE but will instead choose if they
-> want either the eDP or "simple" driver.
->
-> Pros:
-> * No long term baggage.
-> * Everyone is transitioned automatically by default with no cruft patches.
->
-> Cons:
-> * I can't think of a better name than "CONFIG_DRM_PANEL_SIMPLE_V2" and
-> that name is ugly.
->
-> ==
->
-> Option 4: shave a yak
->
-> When thinking about this I came up with a clever idea of stashing the
-> kernel version in a defconfig when it's generated. Then you could do
-> something like:
->
-> config DRM_PANEL_EDP
->   default DRM_PANEL_SIMPLE if DEFCONFIG_GENERATED_AT <= 0x00050f00
->
-> That feels like a good idea to me but who knows what others would
-> think. In general I think this series already shaves enough yaks. This
-> isn't a new problem we're trying to solve so it seems like we should
-> pick one of the options above.
->
-> ==
->
-> Unless I get an explicit NAK from someone like Olof or Arnd or I hear
-> that everyone loves Option #3 I'll probably just stick with the
-> existing approach since:
->
-> * Olof's wording didn't make it sound like a strong objection.
+> Right, and if they are platform devices that are equivalent to
+> simple-bus (meaning, they don't do anything in Linux and just have
+> their devices populated) we can add those to this list too.
 
-Yeah, not a strong objection but an enquiry if there's a better way to
-handle it. TL;DR: I don't think there really is.
+I think this needs to be a list of compatibles we have drivers for
+instead. A more specific compatible that the OS doesn't understand
+shouldn't cause a change in behavior and adding one would. I expect it
+to be a short list.
 
-My comment mostly came from the fact that when olddefconfig gets
-broken like this, we tend to have a bunch of patches trickle in over
-time as downstream users discover the need to turn on the new option.
-You covered (most) of that  by doing the appropriate defconfigs to
-this patch series, so it won't be as bad (besides any newly added
-defconfigs during the same release, and we're quite careful about
-doing that these days).
+We are guaranteed that of_match_device() returns the best match in the
+match list, so we really just need 1 list here with a boolean to bail
+or not.
 
-I think most of the other options, besides 2, are just more overhead
-than needed here. So I'd be fine with just picking up option 1.
+> > > +                       return 0;
+> > > +               else
+> > > +                       return -ENODEV;
+> >
+> > So if we get here, as both branches use "return", we skip the
+> > pm_runtime_enable() and of_platform_populate() below:
+> >   - of_platform_populate() is handled for these buses by
+> >     of_platform_default_populate(), so that's OK,
+> >   - I'm wondering if any of the simple-mfd sub-devices use Runtime
+> >     PM, but currently fail to save power because pm_runtime_enable()
+> >     is never called for the MFD container, just like with simple-bus...
+>
+> But this doesn't affect simple-mfd though.
+>
+> >
+> > > +       }
+> > >
+> > >         dev_dbg(&pdev->dev, "%s\n", __func__);
+> > >
+> > > @@ -31,14 +46,25 @@ static int simple_pm_bus_probe(struct platform_device *pdev)
+> > >
+> > >  static int simple_pm_bus_remove(struct platform_device *pdev)
+> > >  {
+> > > +       const void *data = of_device_get_match_data(&pdev->dev);
+> > > +
+> > > +       if (data)
+> > > +               return 0;
+> > > +
+> > >         dev_dbg(&pdev->dev, "%s\n", __func__);
+> > >
+> > >         pm_runtime_disable(&pdev->dev);
+> > >         return 0;
+> > >  }
+> > >
+> > > +#define ONLY_BUS       ((void *) 1) /* Match if the device is only a bus. */
+> > > +
+> > >  static const struct of_device_id simple_pm_bus_of_match[] = {
+> > >         { .compatible = "simple-pm-bus", },
+> > > +       { .compatible = "simple-bus",   .data = ONLY_BUS },
+> > > +       { .compatible = "simple-mfd",   .data = ONLY_BUS },
+> > > +       { .compatible = "isa",          .data = ONLY_BUS },
+> >
+> > #ifdef CONFIG_ARM_AMBA ?
+>
+> Not needed? If CONFIG_ARM_AMBA isn't enabled, the device wouldn't be
+> created in the first place.
+>
+> >
+> > > +       { .compatible = "arm,amba-bus", .data = ONLY_BUS },
+> > >         { /* sentinel */ }
+> >
+> > This is now (almost[*]) the same as of_default_bus_match_table[]
+> > in drivers/of/platform.c. Perhaps it can be shared?
+>
+> I wanted this table to be expandable as needed. That's why I'm
+> intentionally not using of_default_bus_match_table[].
+>
+> >
+> > [*] Especially if "simple-pm-bus" and "simple-bus" would be treated
+> >     the same.
+>
+> They are not treated the same way.
 
-What's clear is that this is not a very convenient activity that
-scales, but we don't do it all that often. This is where something
-like a "HAVE_EDP" type config that the platform can provide helps, but
-adding it just for this rework seems to be more work than it's worth.
+I think it would be better if they were. IOW, the core code stops
+descending into simple-bus, etc. nodes and they are populated here.
+Then we just get rid of of_default_bus_match_table.
 
-> * From git history it looks as if config patches don't necessarily
-> land through the SoC tree and thus I'd by default follow the
-> suggestions of the DRM folks. Andrzej suggested going with the
-> existing approach as long as I changed the symbol names and re-ordered
-> the patches.
+That could cause some issues with init ordering. As I recall the at91
+gpio and pinctrl drivers are sensitive to this. The default call to
+of_platform_populate doesn't work on those systems because the devices
+get created later than when their machine specific call happens. It
+may have been a case of a parent probe assuming a child probe
+completed after of_platform_populate returns (also a problem for Qcom
+with DWC3). There's a fix for at91 somewhere in the git history after
+I broke it. I started trying to untangle things with at91, but never
+finished that.
 
-Right, Kconfig changes usually go with the driver. dts and defconfig
-changes go to the SoC tree though since otherwise we end up with a
-bunch of churn and conflicts.
-
-> Please yell if anything above sounds wrong! I'll probably try to send
-> out a new version tomorrow or the next day, but I won't land it right
-> away to give people time to yell.
-
-I'd leave it up to you if you want to do option 1 or 2, since there's
-no really convenient way to do it better. 3 seems to be a bigger
-hammer than what this situation calls for IMHO.
-
-
--Olof
+Rob
