@@ -2,308 +2,260 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8D11405CB1
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Sep 2021 20:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26CC0405E55
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Sep 2021 23:02:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243307AbhIISNB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Sep 2021 14:13:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39968 "EHLO
+        id S1346228AbhIIVCf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Sep 2021 17:02:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237170AbhIISMx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Sep 2021 14:12:53 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F00CC06175F
-        for <linux-omap@vger.kernel.org>; Thu,  9 Sep 2021 11:11:43 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id c6so5647432ybm.10
-        for <linux-omap@vger.kernel.org>; Thu, 09 Sep 2021 11:11:43 -0700 (PDT)
+        with ESMTP id S1346024AbhIIVCe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Sep 2021 17:02:34 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D542EC061760
+        for <linux-omap@vger.kernel.org>; Thu,  9 Sep 2021 14:01:19 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id k24so3104616pgh.8
+        for <linux-omap@vger.kernel.org>; Thu, 09 Sep 2021 14:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=u6kdTLP4blcA8sJPI1Kt/GVyajBThh78ApUdpd9ltlU=;
-        b=AsFqgOO8KmUumO6ItaywSLlxAXP7p9MKiCWzAihV0/B5H1ngf6FHVgn2/n2kkNklRF
-         SF5YhVNAq93bp+GtO0emLbCyrMxAfgtSE+MTQx94CJT2vycSho58La+8e+P7h2iqSONL
-         nOvFXKGLQ8NPjAv4+6jiaqIz4p10A1VJbHt3HXqhifyUdAhyg0EFwTTterdAiidZcKD/
-         3uUDZc9en3Ihfm7Lqd9q93brsPwtkjexmpr/IbV7Yei1SO5oTx3wGqq+y3jTy6qNMSwc
-         Cn6axisXoFdplCF28TL3WDIRT5zDWfveV70s8ucczMq7+0xRqdsVFYy2SknZ7dIMjHIP
-         dgDQ==
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TgYZsymCmqy6vs2OAQuoPF75DcvJ7dTHyXuxA0yEqwQ=;
+        b=l3z9MTSjdnlmhP5mE7FA5iEXUZFoTQXDdRHC+RW4FVdcmwc4PenpU06QOYEENGQV7u
+         G2ulyEeNyekNayLflnSI2V4wHKdy9EH9yUa50gYrRaW6weQ6+jrhJXV2earkNzZQ2rFB
+         KtCzrZPvcxxigSjMFri/KLpVSnvl/0QKhpJOA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=u6kdTLP4blcA8sJPI1Kt/GVyajBThh78ApUdpd9ltlU=;
-        b=1Yl+V/SBtjr2qQEo2E7ZjSa/rQc4ZEpDjYplrNgIhbwEn9p4XszpcJMkzcDfF/Ysyt
-         YdnVFy5DFNd8eNZVx+WzRw7IAw9wodx7kj6cCHxLygFqE+z7JmL6+PZkhbiBgnihCm4v
-         Zc9BHbrXoUehagnsp43hrVCHTHJOnr3i9rEdB+Ow/M4slWis2FIkJt27I6/VQSIKqfE4
-         mm0pNaPLYEQ2K1RWctg+GNMjFDeWbQcH+ik33Ebs/R8H5Q8Jyd5dxlW11tFvj3cBHqu9
-         n6KTnBGqv+hjz59rDau3cleMoH8Fx/iXEdG8VjWHI+DaPIbvF3up55MZcInmsNUTHgho
-         7+3A==
-X-Gm-Message-State: AOAM531qi8FjHQm3G9rDS0ZLxq5H0+xyw0pnkijih4UMJUQbGMcgSYU0
-        CCvnu+lSq0fDdmAZlyr75zU/TWzptth/RTpuacw7rA==
-X-Google-Smtp-Source: ABdhPJyJsamDjgGMpayoYeRjf3elvWjSUFpFFtJQK0sADqZTc/zflkV0d5YsP2LDr13d9Wig/b32oUJdcrFb16qSG4g=
-X-Received: by 2002:a25:b94:: with SMTP id 142mr5409913ybl.508.1631211101608;
- Thu, 09 Sep 2021 11:11:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210904000543.2019010-1-saravanak@google.com>
- <20210904000543.2019010-2-saravanak@google.com> <CAMuHMdUhZy7W_HLtNJ2ECK5uQV5xHV7pDk5BXfNUpW9L68G5Aw@mail.gmail.com>
- <CAGETcx_7N3gtaT-YHGaGL+Qtkv=JOhgPcPF1A+kQ4aaDoetvSA@mail.gmail.com>
- <CAL_Jsq+-DAz+80QtpX5obWWcy=MAyxmTb262VAgMiKwnn=hfxQ@mail.gmail.com>
- <CAGETcx_=8yX6ObaEJk8QNSaWQPdFHsw4R74JrDFKqOL0AN-gLw@mail.gmail.com> <CAL_JsqJVsEj=rmExYHtphfxw_W6cq8WU45SSuYi_g2_KiUaFsg@mail.gmail.com>
-In-Reply-To: <CAL_JsqJVsEj=rmExYHtphfxw_W6cq8WU45SSuYi_g2_KiUaFsg@mail.gmail.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 9 Sep 2021 11:11:05 -0700
-Message-ID: <CAGETcx8WqGN6Dt1snbR0D7yLfAwWjhRawfX3is_xrExP3_tY1g@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] drivers: bus: simple-pm-bus: Add support for
- probing simple bus only devices
-To:     Rob Herring <robh+dt@kernel.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TgYZsymCmqy6vs2OAQuoPF75DcvJ7dTHyXuxA0yEqwQ=;
+        b=6/welhVhd0wg1XgQqaPafiB5c4pyN4dZgj8EIHGl39yrpE3CZlCRBRyqV16JHYop1O
+         3CvQXXDzGjQMIMX+TgZWe3jz4KfzbI/WGJqyOR7SAKb0kwt7SDsfBoZe65cJi0/O48YQ
+         4yFtbx3u9MEGIgs0Zx4EE4FZ9PpRKWiqk+Hm8EPXTutvvHDo11NVptNf3A9Y2/9chV/C
+         z5v9FOoeJNpsr5gib57KUEC4+CZHEiBN2j9iPC4FyF0tKjRWkN0k9A7HFlwSQhliFVWy
+         ywcVvYGU1xxMrfXGyNpGV1jKaol8tHRlI9VukBrIRvIEsBBDmFw9CfPXKTWK6LhbFNAg
+         JWCg==
+X-Gm-Message-State: AOAM5334ZZ1uuuW6axqz/JV1/Evj/MiTD1IBYA76Gh3Rmp08wW7r4F0M
+        t99kZsP9pV43p3kZEvDbbSQ7PQ==
+X-Google-Smtp-Source: ABdhPJzNYdLP54ZPrpCmZ3ORzDC7zdYKwrZ7BBoTmjOUbsHF+UzEN4SItH8EnPA93NK8fIF0hPxZ7g==
+X-Received: by 2002:a63:9a19:: with SMTP id o25mr4440039pge.61.1631221279054;
+        Thu, 09 Sep 2021 14:01:19 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:201:8da3:b0fb:4261:2c10])
+        by smtp.gmail.com with ESMTPSA id l143sm177069pfd.60.2021.09.09.14.01.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Sep 2021 14:01:18 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>
+Cc:     devicetree@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Linus W <linus.walleij@linaro.org>,
+        Daniel Vetter <daniel@ffwll.ch>, linux-arm-msm@vger.kernel.org,
+        Steev Klimaszewski <steev@kali.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        David Airlie <airlied@linux.ie>,
+        dri-devel@lists.freedesktop.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
+        Anson Huang <Anson.Huang@nxp.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+        Corentin Labbe <clabbe@baylibre.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Emil Velikov <emil.velikov@collabora.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+        Jagan Teki <jagan@amarulasolutions.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Lionel Debieve <lionel.debieve@st.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Michael Walle <michael@walle.cc>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Nishanth Menon <nm@ti.com>,
+        Olivier Moysan <olivier.moysan@st.com>,
+        Olof Johansson <olof@lixom.net>,
+        Otavio Salvador <otavio@ossystems.com.br>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Razvan Stefanescu <razvan.stefanescu@microchip.com>,
+        Robert Richter <rric@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Vladimir Zapolskiy <vz@mleia.com>,
         Will Deacon <will@kernel.org>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-oxnas@groups.io,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
-        <linux-omap@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Lee Jones <lee.jones@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        linux-tegra@vger.kernel.org,
+        =?UTF-8?q?=C5=81ukasz=20Stelmach?= <l.stelmach@samsung.com>
+Subject: [PATCH v4 00/15] eDP: Support probing eDP panels dynamically instead of hardcoding
+Date:   Thu,  9 Sep 2021 14:00:16 -0700
+Message-Id: <20210909210032.465570-1-dianders@chromium.org>
+X-Mailer: git-send-email 2.33.0.309.g3052b89438-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Sep 9, 2021 at 7:02 AM Rob Herring <robh+dt@kernel.org> wrote:
->
-> On Wed, Sep 8, 2021 at 7:58 PM Saravana Kannan <saravanak@google.com> wrote:
-> >
-> > On Wed, Sep 8, 2021 at 5:16 PM Rob Herring <robh+dt@kernel.org> wrote:
-> > >
-> > > On Tue, Sep 7, 2021 at 2:01 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > >
-> > > > On Mon, Sep 6, 2021 at 12:54 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > > >
-> > > > > Hi Saravana,
-> > > > >
-> > > > > Thanks for your patch!
-> > > > >
-> > > > > CC linux-pm, Lee (mfd)
-> > > > >
-> > > > > On Sat, Sep 4, 2021 at 2:05 AM Saravana Kannan <saravanak@google.com> wrote:
-> > > > > > fw_devlink could end up creating device links for bus only devices.
-> > > > > > However, bus only devices don't get probed and can block probe() or
-> > > > > > sync_state() [1] call backs of other devices. To avoid this, probe these
-> > > > > > devices using the simple-pm-bus driver.
-> > > > > >
-> > > > > > However, there are instances of devices that are not simple buses (they
-> > > > > > get probed by their specific drivers) that also list the "simple-bus"
-> > > > > > (or other bus only compatible strings) in their compatible property to
-> > > > > > automatically populate their child devices. We still want these devices
-> > > > > > to get probed by their specific drivers. So, we make sure this driver
-> > > > > > only probes devices that are only buses.
-> > > > >
-> > > > > Note that this can also be the case for buses declaring compatibility
-> > > > > with "simple-pm-bus".  However, at the moment, none of such device
-> > > > > nodes in upstream DTS files have device-specific drivers.
-> > > >
-> > > > Not sure about mfd, but I want to make sure we don't confuse busses
-> > > > (which are typically added to a class) with these "simple bus" devices
-> > > > that are added to platform_bus. Also if these other buses are actually
-> > > > causing an issue, then then should implement their own stub driver or
-> > > > use try patch[2] if they are added to classes (devices on classes
-> > > > don't probe)
-> > > >
-> > > > [2] - https://lore.kernel.org/lkml/20210831224510.703253-1-saravanak@google.com/
-> > > >
-> > > > >
-> > > > > > [1] - https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
-> > > > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > > > Tested-by: Saravana Kannan <saravanak@google.com>
-> > > > >
-> > > > > > --- a/drivers/bus/simple-pm-bus.c
-> > > > > > +++ b/drivers/bus/simple-pm-bus.c
-> > > > > > @@ -13,11 +13,26 @@
-> > > > > >  #include <linux/platform_device.h>
-> > > > > >  #include <linux/pm_runtime.h>
-> > > > > >
-> > > > > > -
-> > > > > >  static int simple_pm_bus_probe(struct platform_device *pdev)
-> > > > > >  {
-> > > > > > -       const struct of_dev_auxdata *lookup = dev_get_platdata(&pdev->dev);
-> > > > > > -       struct device_node *np = pdev->dev.of_node;
-> > > > > > +       const struct device *dev = &pdev->dev;
-> > > > > > +       const struct of_dev_auxdata *lookup = dev_get_platdata(dev);
-> > > > > > +       struct device_node *np = dev->of_node;
-> > > > > > +       const struct of_device_id *match;
-> > > > > > +
-> > > > > > +       match = of_match_device(dev->driver->of_match_table, dev);
-> > > > > > +
-> > > > > > +       /*
-> > > > > > +        * These are transparent bus devices (not simple-pm-bus matches) that
-> > > > > > +        * have their child nodes populated automatically.  So, don't need to
-> > > > > > +        * do anything more.
-> > > > > > +        */
-> > > > > > +       if (match && match->data) {
-> > > > > > +               if (of_property_match_string(np, "compatible", match->compatible) == 0)
-> > > > >
-> > > > > Does this work as expected? Having multiple compatible values in a
-> > > > > device node does not guarantee there exist a separate driver for any
-> > > > > of the device-specific compatible values.
-> > > >
-> > > > Right, and if they are platform devices that are equivalent to
-> > > > simple-bus (meaning, they don't do anything in Linux and just have
-> > > > their devices populated) we can add those to this list too.
-> > >
-> > > I think this needs to be a list of compatibles we have drivers for
-> > > instead.
-> >
-> > I don't think a "denylist" (devices we shouldn't probe with this
-> > driver) would be a short list. As of today, literally any device that
-> > has children could add a "simple-bus" to the compatible property and
-> > get its child devices populated for free. If we use a denylist, we'll
-> > have to update it every time someone adds "simple-bus" as a general
-> > match to a DT node (new or otherwise) that isn't in the denylist. The
-> > list would blow up and be a maintenance headache.
-> >
-> > Also, a denylist won't capture any DT that isn't part of the kernel
-> > repo but depends on "simple-bus" to populate the device's child nodes.
-> > Keep in mind this could be true even for completely upstream drivers
-> > today. And on top of that, this will also break for downstream drivers
-> > and platforms in the development stage.
->
-> You've got this all backwards.
+The goal of this patch series is to move away from hardcoding exact
+eDP panels in device tree files. As discussed in the various patches
+in this series (I'm not repeating everything here), most eDP panels
+are 99% probable and we can get that last 1% by allowing two "power
+up" delays to be specified in the device tree file and then using the
+panel ID (found in the EDID) to look up additional power sequencing
+delays for the panel.
 
-I don't think so. I got what you are saying.
+This patch series is the logical contiunation of a previous patch
+series where I proposed solving this problem by adding a
+board-specific compatible string [1]. In the discussion that followed
+it sounded like people were open to something like the solution
+proposed in this new series.
 
-> The list would be compatibles for which
-> they have their own driver. If they have their own driver, we know
-> that because there is a driver in the kernel. If you have an out of
-> tree bus driver, then I guess you shouldn't be claiming compatibility
-> with 'simple-bus'.
+In version 2 I got rid of the idea that we could have a "fallback"
+compatible string that we'd use if we didn't recognize the ID in the
+EDID. This simplifies the bindings a lot and the implementation
+somewhat. As a result of not having a "fallback", though, I'm not
+confident in transitioning any existing boards over to this since
+we'll have to fallback to very conservative timings if we don't
+recognize the ID from the EDID and I can't guarantee that I've seen
+every panel that might have shipped on an existing product. The plan
+is to use "edp-panel" only on new boards or new revisions of old
+boards where we can guarantee that every EDID that ships out of the
+factory has an ID in the table.
 
-But it isn't just out of tree drivers though. Take for example (a
-random compatible string with a driver in upstream)
-"qcom,sdm845-gpucc" that has DT nodes in a couple of DTS files. It's
-perfectly valid today today to add child nodes under it and have the
-child nodes get populated by making the compatible property:
-"qcom,sdm845-gpucc", "simple-bus"
+Version 3 of this series now splits out all eDP panels to their own
+driver and adds the generic eDP panel support to this new driver. I
+believe this is what Sam was looking for [2].
 
-The only thing not upstreamed in that case is the DT file. And I'm
-fairly certain our position is not "if your DT isn't in the kernel
-repo we won't support it". In this situation we have no way of knowing
-we need to add "qcom,sdm845-gpucc" to the "it has a driver, don't
-probe it" list. And even if they upstream it, this list is going to
-blow up. And we are breaking backward compatibility that can't be
-fixed without a kernel update (no runtime fixes possible).
+Version 4 of this series is mostly small fixes / renames from review
+feedback. It's largely the same as v3. Other than naming /
+description / comment changes, the differences are:
+- Dropped the MIPS config patch as per request.
+- Reorder config patches first.
+- Added a new patch to use the panel ID scheme for quirks.
+- Landed the reorder of logicpd_type_28 / mitsubishi_aa070mc01
+It could possibly be ready to land?
 
-> > The allowlist is much smaller and manageable.
->
-> I count 140 cases of 'simple-bus' with another compatible. I find
-> roughly 24 of those under drivers/ that have a driver (and look,
-> there's at91 pinctrl/gpio). There's some more under arch/, but I'm not
-> sure if they are drivers. This is what I ran:
->
-> git grep -ho '".*", "simple-bus"' -- arch/ | cut -d' ' -f1 | grep -oE
-> '".+"' | grep -v '"syscon"' | sort -u > buses.txt
-> git grep -f buses.txt -- drivers/
->
-> I haven't looked at 'simple-mfd', but that was supposed to always mean
-> 'no driver'.
->
-> To put it another way, let's look at 3 possibilities:
->
-> 'simple-bus'
-> 'foo,has-no-driver', 'simple-bus'
-> 'foo,has-a-driver', 'simple-bus'
->
-> The first case is easy. The last 2 cases are not. We have no way to
-> handle them differently without a list.
->
-> > > A more specific compatible that the OS doesn't understand
-> > > shouldn't cause a change in behavior and adding one would.
->
-> Again, if a dt is modified from case 1 to case 2, there should not be
-> a change in behavior.
+[1] https://lore.kernel.org/r/YFKQaXOmOwYyeqvM@google.com/
+[2] https://lore.kernel.org/r/YRTsFNTn%2FT8fLxyB@ravnborg.org/
 
-My point is that if DT is modified from 1 to 2, we'll need to add
-"foo,has-no-driver" to the list we'll maintain. That preserves
-backward compatibility with existing DTs and if someone modifies the
-DT it's more likely that they can modify the kernel too. See more
-below.
+Changes in v4:
+- "u8 *edid" => "void *edid" to avoid cast.
+- ("Use new encoded panel id style for quirks matching") new for v4.
+- Don't put kmalloc() in the "if" test even if the old code did.
+- Don't refer to "panel-simple" in commit message.
+- PANEL_SIMPLE_EDP => PANEL_EDP
+- Remove "non-eDP" in panel-simple description.
+- Reordered config patches to be before code patch
+- decode_edid_id() => drm_edid_decode_panel_id()
+- drm_do_get_edid_blk0() => drm_do_get_edid_base_block()
+- drm_get_panel_id() => drm_edid_get_panel_id()
+- encode_edid_id() => drm_edid_encode_panel_id()
+- panel-simple-edp => panel-edp
+- split panel id extraction out to its own function.
 
-> Presumably if Ulf changed his test in this way,
-> it would again fail, right?
->
->
-> > I think the amount of specific compatible strings that'll be added,
-> > but won't have drivers added to Linux AND would want to boot with
-> > Linux is much less likely than the amount of times we'd have to update
-> > a denylist.
-> >
-> > Also, if we do hit the cases you mention and we want those devices to
-> > get probed anyway, with my current allowlist approach, we could use
-> > "driver_override" to force this driver to match them. If you use a
-> > denylist like you said, there's no way you can get the simple-pm-bus
-> > to unbind and let the more specific driver to bind.
->
-> Where would we set "driver_override"? Aren't we going to end up with a
-> driver_override list?
+Changes in v3:
+- ("Better describe eDP panel delays") new for v3.
+- ("Don't re-read the EDID every time") moved to eDP only patch.
+- ("Non-eDP panels don't need "HPD" handling") new for v3.
+- Add AUO B116XAN06.1 to table.
+- Add Sharp LQ116M1JW10 to table.
+- Adjust endianness of product ID.
+- Change init order to we power at the end.
+- Decode hex product ID w/ same endianness as everyone else.
+- Fallback to conservative delays if panel not recognized.
+- Fix "prepare_to_enable" patch new for v3.
+- Generic "edp-panel" handled by the eDP panel driver now.
+- Move wayward panels patch new for v3.
+- Rename delays more generically so they can be reused.
+- Split eDP panels patch new for v3.
+- Split the delay structure out patch just on eDP now.
 
-I'm not saying we maintain a list in the kernel. I'm saying if someone
-changed their DT to add 'foo,has-no-driver', but hit the unlikely case
-where they can update the DT but not the kernel, they can still get
-the 'foo,has-no-driver' to probe by using the driver_override file for
-that device in sysfs. TLDR: they can still get it to work without
-having to modify the kernel.
+Changes in v2:
+- Add "-ms" suffix to delays.
+- Don't support a "fallback" panel. Probed panels must be probed.
+- No longer allow fallback to panel-simple.
+- Not based on patch to copy "desc"--just allocate for probed panels.
 
->
-> [...]
->
-> > > > > [*] Especially if "simple-pm-bus" and "simple-bus" would be treated
-> > > > >     the same.
-> > > >
-> > > > They are not treated the same way.
-> > >
-> > > I think it would be better if they were. IOW, the core code stops
-> > > descending into simple-bus, etc. nodes and they are populated here.
-> > > Then we just get rid of of_default_bus_match_table.
-> >
-> > Right, I would if we could. But we can't simply stop descending the
-> > simple-bus nodes in the core code because all the specific drivers
-> > that used to have their child devices populated automatically would
-> > stop working and would need to be updated to populate their child
-> > devices. And I'm sure there are a ton more downstream kernels and
-> > downstream DTs (that use upstream kernels) that we would break.
-> >
-> > If you really want to do that go for it, but I'd rather not do all
-> > this as part of trying to fix the issue Ulf reported that needs
-> > simple-bus only devices probed.
->
-> Agreed.
+Douglas Anderson (15):
+  dt-bindings: drm/panel-simple-edp: Introduce generic eDP panels
+  drm/edid: Break out reading block 0 of the EDID
+  drm/edid: Allow querying/working with the panel ID from the EDID
+  drm/edid: Use new encoded panel id style for quirks matching
+  ARM: configs: Everyone who had PANEL_SIMPLE now gets PANEL_EDP
+  arm64: defconfig: Everyone who had PANEL_SIMPLE now gets PANEL_EDP
+  drm/panel-edp: Split eDP panels out of panel-simple
+  drm/panel-edp: Move some wayward panels to the eDP driver
+  drm/panel-simple: Non-eDP panels don't need "HPD" handling
+  drm/panel-edp: Split the delay structure out
+  drm/panel-edp: Better describe eDP panel delays
+  drm/panel-edp: hpd_reliable shouldn't be subtraced from hpd_absent
+  drm/panel-edp: Fix "prepare_to_enable" if panel doesn't handle HPD
+  drm/panel-edp: Don't re-read the EDID every time we power off the
+    panel
+  drm/panel-edp: Implement generic "edp-panel"s probed by EDID
 
-I'm confused. So you are okay with this patch to merge now?
+ .../bindings/display/panel/panel-edp.yaml     |  188 ++
+ arch/arm/configs/at91_dt_defconfig            |    1 +
+ arch/arm/configs/exynos_defconfig             |    1 +
+ arch/arm/configs/imx_v6_v7_defconfig          |    1 +
+ arch/arm/configs/lpc32xx_defconfig            |    1 +
+ arch/arm/configs/multi_v5_defconfig           |    1 +
+ arch/arm/configs/multi_v7_defconfig           |    1 +
+ arch/arm/configs/omap2plus_defconfig          |    1 +
+ arch/arm/configs/qcom_defconfig               |    1 +
+ arch/arm/configs/realview_defconfig           |    1 +
+ arch/arm/configs/sama5_defconfig              |    1 +
+ arch/arm/configs/shmobile_defconfig           |    1 +
+ arch/arm/configs/sunxi_defconfig              |    1 +
+ arch/arm/configs/tegra_defconfig              |    1 +
+ arch/arm/configs/versatile_defconfig          |    1 +
+ arch/arm/configs/vexpress_defconfig           |    1 +
+ arch/arm64/configs/defconfig                  |    1 +
+ drivers/gpu/drm/drm_edid.c                    |  281 ++-
+ drivers/gpu/drm/panel/Kconfig                 |   16 +-
+ drivers/gpu/drm/panel/Makefile                |    1 +
+ drivers/gpu/drm/panel/panel-edp.c             | 1896 +++++++++++++++++
+ drivers/gpu/drm/panel/panel-simple.c          | 1072 +---------
+ include/drm/drm_edid.h                        |   47 +
+ 23 files changed, 2355 insertions(+), 1162 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/panel-edp.yaml
+ create mode 100644 drivers/gpu/drm/panel/panel-edp.c
 
-> > > That could cause some issues with init ordering. As I recall the at91
-> > > gpio and pinctrl drivers are sensitive to this. The default call to
-> > > of_platform_populate doesn't work on those systems because the devices
-> > > get created later than when their machine specific call happens. It
-> > > may have been a case of a parent probe assuming a child probe
-> > > completed after of_platform_populate returns (also a problem for Qcom
-> > > with DWC3). There's a fix for at91 somewhere in the git history after
-> > > I broke it. I started trying to untangle things with at91, but never
-> > > finished that.
-> >
-> > I think it'll cause a lot of issues if we stop descending simple-bus
-> > nodes in the core code. We're just scratching the surface here.
->
-> Perhaps, but if there's cases which are that fragile, we should fix them.
+-- 
+2.33.0.309.g3052b89438-goog
 
-Sure, but I'm not sure I want to open that can of works,
-
--Saravana
