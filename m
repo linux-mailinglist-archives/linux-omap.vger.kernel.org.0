@@ -2,39 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D096B407742
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Sep 2021 15:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D34CF407794
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Sep 2021 15:17:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236545AbhIKNPv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 11 Sep 2021 09:15:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39312 "EHLO mail.kernel.org"
+        id S236682AbhIKNSn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 11 Sep 2021 09:18:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40666 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236593AbhIKNOP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 11 Sep 2021 09:14:15 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 231506127C;
-        Sat, 11 Sep 2021 13:12:56 +0000 (UTC)
+        id S236297AbhIKNQr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 11 Sep 2021 09:16:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A1D2161264;
+        Sat, 11 Sep 2021 13:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631365976;
-        bh=KZx2coV5sDm2IWpgob1FGB4ClO7nRf9NDLHt8uR2oMQ=;
+        s=k20201202; t=1631366007;
+        bh=3yos3JvVPLcMvFsxovYx1mLu68HlfZthsxXRfdeKGhs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KBfM9DFOhiLkLYSTRnmiqJKfvHfA5mIflZEIK8ykSTD5vezcRHd2eoYaxCRE/xHQI
-         AlP0EvJWONk11XjL4wIahjwM64ui8E4XYmZWtTF52JZgMx8NWVb9hg6QBJJ1KirrVf
-         diLA8c9EzhI6Ao+tGL/zhPU+E2Sm3gXlkGNSMNqtH5j/N/lq3V+eu+wzdYZ9TQqA/m
-         3MZoX8fgtkHWFZh4eKxbNymLF2fYPm1F6i/TtwEOYDLcmB/cpiRrVaNiBmQX5cei3m
-         gZY1SSTLxMWl9Z3jNXWvnfRJN08SQp84gt3V+t5MD+2y/6zxHhOX0EzBJg0CYhRZI3
-         Rq68cXIRkA6cg==
+        b=PXCwbUvFC9hHvoNJG1/28GTSaN36eNsQlQF7GQjOAjxGi0wdvTln5sJO+bidZUv/N
+         QZYt5nowPZjFthvnK95LkDl5zY+yGra32HJFy40EO2ACEq0VHlWZlbqdsRkcFvhVMr
+         bn4xRCwCSt4bAPh9s6BvhhddprDmXJBHJnLKuGmsoEh0Tkg3niahmcev8TiZKF9S74
+         U7NkCskhRjV7BZoRDzgM/QRKlN9rO0Jw/xzxOl829lyXPTdBc6whQDhdtRABNP74lm
+         PpN9DiYVUvsLqQPLAzM08j/7CJO0M8ldyxEinYxqy4Bh+/0XAPYIVF3dB4oFV4CCFY
+         7wFszID15/bzg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Sasha Levin <sashal@kernel.org>, linux-omap@vger.kernel.org,
         linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.13 17/29] PCI: j721e: Add PCIe support for AM64
-Date:   Sat, 11 Sep 2021 09:12:21 -0400
-Message-Id: <20210911131233.284800-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 11/25] PCI: cadence: Use bitfield for *quirk_retrain_flag* instead of bool
+Date:   Sat, 11 Sep 2021 09:12:58 -0400
+Message-Id: <20210911131312.285225-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210911131233.284800-1-sashal@kernel.org>
-References: <20210911131233.284800-1-sashal@kernel.org>
+In-Reply-To: <20210911131312.285225-1-sashal@kernel.org>
+References: <20210911131312.285225-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -45,57 +46,51 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Kishon Vijay Abraham I <kishon@ti.com>
 
-[ Upstream commit c8a375a8e15ac31293d7fda08008d6da8f5df3db ]
+[ Upstream commit f4455748b2126a9ba2bcc9cfb2fbcaa08de29bb2 ]
 
-AM64 has the same PCIe IP as in J7200 with certain erratas not
-applicable (quirk_detect_quiet_flag). Add support for "ti,am64-pcie-host"
-compatible and "ti,am64-pcie-ep" compatible that is specific to AM64.
+No functional change. As we are intending to add additional 1-bit
+members in struct j721e_pcie_data/struct cdns_pcie_rc, use bitfields
+instead of bool since it takes less space. As discussed in [1],
+the preference is to use bitfileds instead of bool inside structures.
 
-Link: https://lore.kernel.org/r/20210811123336.31357-5-kishon@ti.com
+[1] -> https://lore.kernel.org/linux-fsdevel/CA+55aFzKQ6Pj18TB8p4Yr0M4t+S+BsiHH=BJNmn=76-NcjTj-g@mail.gmail.com/
+
+Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://lore.kernel.org/r/20210811123336.31357-2-kishon@ti.com
 Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
 Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pci-j721e.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/pci/controller/cadence/pci-j721e.c    | 2 +-
+ drivers/pci/controller/cadence/pcie-cadence.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 10b13b728284..ffb176d288cd 100644
+index d34ca0fda0f6..973b309ac9ba 100644
 --- a/drivers/pci/controller/cadence/pci-j721e.c
 +++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -310,6 +310,17 @@ static const struct j721e_pcie_data j7200_pcie_ep_data = {
- 	.quirk_detect_quiet_flag = true,
+@@ -63,7 +63,7 @@ enum j721e_pcie_mode {
+ 
+ struct j721e_pcie_data {
+ 	enum j721e_pcie_mode	mode;
+-	bool quirk_retrain_flag;
++	unsigned int		quirk_retrain_flag:1;
  };
  
-+static const struct j721e_pcie_data am64_pcie_rc_data = {
-+	.mode = PCI_MODE_RC,
-+	.linkdown_irq_regfield = J7200_LINK_DOWN,
-+	.byte_access_allowed = true,
-+};
-+
-+static const struct j721e_pcie_data am64_pcie_ep_data = {
-+	.mode = PCI_MODE_EP,
-+	.linkdown_irq_regfield = J7200_LINK_DOWN,
-+};
-+
- static const struct of_device_id of_j721e_pcie_match[] = {
- 	{
- 		.compatible = "ti,j721e-pcie-host",
-@@ -327,6 +338,14 @@ static const struct of_device_id of_j721e_pcie_match[] = {
- 		.compatible = "ti,j7200-pcie-ep",
- 		.data = &j7200_pcie_ep_data,
- 	},
-+	{
-+		.compatible = "ti,am64-pcie-host",
-+		.data = &am64_pcie_rc_data,
-+	},
-+	{
-+		.compatible = "ti,am64-pcie-ep",
-+		.data = &am64_pcie_ep_data,
-+	},
- 	{},
+ static inline u32 j721e_pcie_user_readl(struct j721e_pcie *pcie, u32 offset)
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 6705a5fedfbb..60981877f65b 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -299,7 +299,7 @@ struct cdns_pcie_rc {
+ 	u32			vendor_id;
+ 	u32			device_id;
+ 	bool			avail_ib_bar[CDNS_PCIE_RP_MAX_IB];
+-	bool                    quirk_retrain_flag;
++	unsigned int		quirk_retrain_flag:1;
  };
  
+ /**
 -- 
 2.30.2
 
