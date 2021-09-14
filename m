@@ -2,58 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49F1340784A
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Sep 2021 15:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBD7C40A908
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Sep 2021 10:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238345AbhIKNaL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 11 Sep 2021 09:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48932 "EHLO
+        id S229805AbhINIUl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Sep 2021 04:20:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238362AbhIKN3M (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Sep 2021 09:29:12 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC9EC028BE1
-        for <linux-omap@vger.kernel.org>; Sat, 11 Sep 2021 06:22:54 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id b200so5955708iof.13
-        for <linux-omap@vger.kernel.org>; Sat, 11 Sep 2021 06:22:54 -0700 (PDT)
+        with ESMTP id S229699AbhINIUl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Sep 2021 04:20:41 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DCA5C061574
+        for <linux-omap@vger.kernel.org>; Tue, 14 Sep 2021 01:19:24 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id k4so27028285lfj.7
+        for <linux-omap@vger.kernel.org>; Tue, 14 Sep 2021 01:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=wLwU2RMsaoxCtNPTnRbKPbretu8LRibpMTqg+kTqxHs=;
-        b=mzgzdCZVXmrqCrjk1icnQ/wF/KfZkHYdc0fR2p7dYlOr3OZiv2OaatLQ3MtuUEVlHw
-         TzwnUwxoalaJEIINFKbkk8UPd97azx0cnGk3Jv3b4pdECqGUWxrZ4LK0GmukuwWgSmwP
-         zH8XBUTWf+7kzsiUAJOijT+wWoScGG4EJXiBy7CL73GgDI/McX39j+jQ9TRdLe/4wHG8
-         542WvM7/pDHIv//PnWjxUSJvTf7nLGQeZwyKVSfen2u4Xqn0NpZakVs8k+wAFxqDu6+6
-         fKhMVow4okpNZIM2Qim314U/QfP+EoXTrFx16LXtAs1ixa9QI7eY390Ow/mSr7P5eTj6
-         0c6Q==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=S6BdG8m/+YmzKUlsOlG6QXcVOmgCnE97Lc5P84bgnxTraCg5F/VjVT0dc8H/U4ufRx
+         UDJuf2QEP8uwglOPxtdG1mQ8jrPn7h3TCT729zpQKYtPuDGMKan5GWtVo9TYOb0C+sul
+         D491gOuJSQmAipCXGZtPoVnHGywBVmsD9zTPKHykBNxH/J4S1TlO/bcv7ZL0uoeVPLca
+         t/WXspBW12jiCituH6hVpbKOJYhq5aI5NQZ4TElrVxBUgPerW3pacHHV0DzBg0guzcqU
+         u7SRUBS9KbzUAj25IJ+6EW00YkRzLMwHSwqFbmq8GWJ/c2WssPG6xNZszAMu/zlCXXIz
+         eEhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=wLwU2RMsaoxCtNPTnRbKPbretu8LRibpMTqg+kTqxHs=;
-        b=eaw/RTRhhqy66rct0sj91+ql0zG5SEaRBpZJariwPg6mgR9GNysB+FWTiwYH9J4qmw
-         YXUnivywUAIxLv6aVYgfeuFVCc/QsPtjJP0fucj/p8/KgOXJPzOrIDXT+Q0nCq33OM1H
-         lZ2O2I0v+rDrTG0Ibn/m7dAmaEwXm+NkYKjeECfzT8rZT4vpmho7UOT8vqnHCRGK8lhF
-         GFuNm3uWX6OzPEmMYedDjC4O6Egr6zdA3g0GwQoIStraJ7iRLTeSCT1QEWQNB0QxwFdb
-         YsZ+A8tdQ26W5GOT+tbLM+GBw+cnqgUx3dM6ECSiXYNgRAWjrSFbd0j49yMJtAb29ot+
-         NaxA==
-X-Gm-Message-State: AOAM531fhC8ZhtEmb+lCPVMl8WcqQVVtm4e7YZNH3LOgTqbuuNh97W+b
-        fUt2+mZeckRsyC3lI5eGLKUf2TTBQSU9tvCwBug=
-X-Google-Smtp-Source: ABdhPJx5Gv2j9kCRxktbDLPQF6WqedL9SHFpNCrlguw2qGIZCxudWvMqotidw0kIKknBJ1Yax3wuuHA+5xp9MMonhEs=
-X-Received: by 2002:a6b:3c16:: with SMTP id k22mr2014238iob.130.1631366574463;
- Sat, 11 Sep 2021 06:22:54 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
+        b=Kqeej4MSVTL8PTm74n7ONF+sxKN4PM54TpPrsXR/bdeo2SVM5dgzzg2IgbTMyLhcWM
+         6TgmRMAfSfdVwHj2W/4gaO1JbuXHWXAsoGNpgIZTzaygbZA2EbCkxBVdj3SagvWZ0Cu8
+         UnOUqQb1QPh0ZDTL4g1UppALykXe2gQ9PNnmAza9+5tH1yW+IzdxLBxVWaYvPdzSPLcb
+         vue+yFu0+DChrEqtOiydELOH/vzgcBW/um2Xt7FjyOm/LwgibjrPSs5StKyGF4BJ8yNf
+         MkkA1HbHqC8dB3tQmnqwrbxEGWhqYpjztdNAX5RdIU77hE9vdU2K04b0k7bZCjXDnN5z
+         ja6g==
+X-Gm-Message-State: AOAM532qzxhvA56kbzFjwnJ0DuxIuU4+blUJhtyXukhFSSHpnfqzXUJo
+        JSpVfn51tVIreaYTKZaBZnU8RhKdFfOGLAqzgDQ=
+X-Google-Smtp-Source: ABdhPJz72FnVEF6asRG4lAv3uPWkYfPE7nbQCL7lKxMNVmhTycZgfvbGl9xW6rGB2/IYYBKxcciP43PKcZyUmDm+oe0=
+X-Received: by 2002:a05:6512:3b9e:: with SMTP id g30mr11913913lfv.651.1631607562486;
+ Tue, 14 Sep 2021 01:19:22 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a4f:b91c:0:0:0:0:0 with HTTP; Sat, 11 Sep 2021 06:22:54
+Received: by 2002:a2e:96c5:0:0:0:0:0 with HTTP; Tue, 14 Sep 2021 01:19:22
  -0700 (PDT)
-From:   Daniels Alexander <danielsalexander222@gmail.com>
-Date:   Sat, 11 Sep 2021 21:22:54 +0800
-Message-ID: <CANV_nGqjoR1g-uZmG0MB_QXZv8go93BSppbghRGqrtSonLUPQg@mail.gmail.com>
-Subject: Hello, how are you doing?
+Reply-To: abdwabbomaddah91@gmail.com
+From:   Abdwabbo Maddah <abdwabbomaddah614@gmail.com>
+Date:   Tue, 14 Sep 2021 09:19:22 +0100
+Message-ID: <CAFVKCABWKoiMXPWs8w=743AL8zCwFGiyXydKyHHy+nKg5Roebw@mail.gmail.com>
+Subject: DID YOU RECEIVE MY MAIL?
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-I haven't heard from you, did you receive my previous email? if not
-kindly get back to me on my private email
-abdulla.abdulrahman222@gmail.com
+-- 
+Dear,
+I had sent you a mail but i don't think you received it that's why am
+writing you again.It is important you get back to me as soon as you
+can.
+Abd-Wabbo Maddah
