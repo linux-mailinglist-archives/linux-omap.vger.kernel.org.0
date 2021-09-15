@@ -2,177 +2,196 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C17140C27F
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Sep 2021 11:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3565E40C915
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Sep 2021 17:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237058AbhIOJMa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Sep 2021 05:12:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54620 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237219AbhIOJM1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 15 Sep 2021 05:12:27 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C946161242;
-        Wed, 15 Sep 2021 09:11:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631697068;
-        bh=bccyqd4Mgjh1Dt3QIgyk+eVgSktxwaJgdDXfU+Wh/RI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=lJRVRJOC2nhd84Q1PWIANjsOBuCNPNTzZq8mnfjNtsfg0FVowkQlUWrBfID7BDhib
-         noB8FLVfGwbSu84dj7RdMy7/PymTS1FB2VfqdQgxLLaQTbRHg+mHIdxXUY1/gxG4M/
-         jLRaTE5cssIgWhCh6HEnEqZ9L38di6gWrkHPLz4nN7Q6pL+wALQ2ZokD+NcKTTTqij
-         dYB1vKwji71Z79j0mwMflVoakx1mKJWYGCM6pvuniIrd4fcPE8k8iAOPfi5TfZ6r/D
-         n1e6lTDpLqTekuBFUvrVOQq64OHZykrkdwIctYnpoZpJ5wH9jh5g0PKBDL04tzl4K8
-         Mka+wiOnt6bAg==
-Subject: Re: [PATCH v3 8/8] memory: gpmc-omap: "gpmc,device-width" DT property
- is optional
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        tony@atomide.com
-Cc:     robh+dt@kernel.org, grygorii.strashko@ti.com, nm@ti.com,
-        lokeshvutla@ti.com, nsekhar@ti.com, miquel.raynal@bootlin.com,
-        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210907113226.31876-1-rogerq@kernel.org>
- <20210907113226.31876-9-rogerq@kernel.org>
- <aa465bd9-b3d5-8d75-3e59-e86c2cd093cd@canonical.com>
-From:   Roger Quadros <rogerq@kernel.org>
-Message-ID: <a881ac1f-2f00-e675-aea6-154b28ca6eff@kernel.org>
-Date:   Wed, 15 Sep 2021 12:11:04 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S234334AbhIOQAc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Sep 2021 12:00:32 -0400
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:51937 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234166AbhIOQAb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Sep 2021 12:00:31 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id BDDAA1BF207;
+        Wed, 15 Sep 2021 15:59:08 +0000 (UTC)
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v3 00/47] TI AM437X ADC1
+Date:   Wed, 15 Sep 2021 17:58:21 +0200
+Message-Id: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <aa465bd9-b3d5-8d75-3e59-e86c2cd093cd@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Krzysztof,
+Hello,
 
-On 07/09/2021 15:36, Krzysztof Kozlowski wrote:
-> On 07/09/2021 13:32, Roger Quadros wrote:
->> Check for valid gpmc,device-width, nand-bus-width and bank-width
->> at one place. Default to 8-bit width if none present.
-> 
-> I don't understand the message in the context of the patch. The title
-> says one property is optional - that's it. The message says you
-> consolidate checks. How is this related to the title?
-> 
-> The patch itself moves around checking of properties and reads
-> nand-bus-width *always*. It does not "check at one place" but rather
-> "check always". In the same time, the patch does not remove
-> gpmc,device-width check in other place.
-> 
-> All three elements - the title, message and patch - do different things.
-> What did you want to achieve here? Can you help in clarifying it?
-> 
+This is a (fairly big) series bringing support of AM437X ADC1.
+On TI AM33XX SoCs family there is an ADC that can also be connected to a
+touchscreen. This hardware has been extended and is present on certain
+SoCs from the AM437X family. In particular, the touchscreen has been
+replaced by a magnetic card reader. In both cases, the representation is
+an MFD device with two children:
+* on AM33XX: the touchscreen controller and the ADC
+* on AM437X: the magnetic card reader and the ADC
 
-OK I will explain it better in commit log in next revision. Let me explain here a bit.
+This series really targets small and atomic changes so that the overall
+review is eased, even though it leads to a lot of rather small patches.
+Here are the steps:
+* Supporting the missing clock
+* Translating a single text file containing the description for the
+  MFD, the touchscreen and the ADC into three independent yaml files.
+* Cleaning/preparing the MFD driver.
+* Supporting ADC1 in the MFD driver.
+* Cleaning/preparing of the ADC driver.
+* Supporting ADC1 in the ADC driver.
+* Updating various device trees.
 
-Prior to this patch it was working like this
+Here is the full series again, almost reviewed and acked entirely, but
+rebased on the last -rc1. The clock patch has been acked, the ADC
+patches as well, so we expect the series to go through the MFD
+tree if hte maintainers agree with it.
 
-	/* in gpmc_read_settings_dt() */
-	s->device_width = 0;	/* invalid width, should be 1 for 8-bit, 2 for 16-bit */
-	of_property_read_u32(np, "gpmc,device-width", s->device_width);
+Thanks,
+Miquèl
 
-	/* in gpmc_probe_generic_child () */
-	if (of_device_is_compatible(child, "ti,omap2-nand")) {
-		/* check for nand-bus-width, if absent set s->device_width to 1 (i.e. 8-bit) */
-	} else {
-		/* check for bank-width, if absent and s->device_width not set, error out */
-	}
+Changes in v3:
+* Rebased on top of v5.15-rc1.
+* R-by/A-by tags added.
+* Light reordering to let the of_put_node() fix to be applied more easily
+* Dropped a patch made useless because of the previous reordering
+* Explained how the tscadc->ctrl variable was used.
+* Fixed a couple of typos.
+* Included the change for the HZ macro.
+* Went further in the BIT()/FIELD_PREP() cleanup.
+* Added maximum definitions for sample delay/open delay.
+* Removed useless definitions.
+* Fixed a couple of rebase conflicts (the series was not bisectable).
 
-So that means if all three, "gpmc,device-width". "nand-bus-width" and "bank-width" are missing then
-it would create an error situation.
+Changes in v2:
+* Added various R-by/A-by tags.
+* Various typos & style fixes.
+[Bindings]
+* Included the missing ti,am654-tscadc compatible.
+* Reworded the compatible lines as requested by Jonathan.
+* Reworded the bindings content a little bit as advised by Rob (subnodes
+  being objects, MFD descriptions provided once, status and unused
+  labels removed).
+[SPDX changes]
+* Mentioned that the license macro and the license text matched.
+* Also added an SPDX tag in the MFD header.
+[MFD header]
+* Used the BIT(), GENMASK() and PREP_FIELD() macros when relevant.
+[MFD driver]
+* Did not reordered the variables declared on the probe stack as advised
+  by Jonathan.
+* Added missing of_node_put() calls.
+* Moved the patch changing the place where the main structure is
+  allocated to directly precede the patch using this change.
+* Fixed the driver data wiring (bug happening between ex patches 16 and
+  28).
+* Added a commit just to explain the reordering of the register writes
+  during initialization/resume.
+* Explained the check about 'use_tsc' in the commit message.
+* Added a link to the TRM in a commit message referencing it.
+* Removed the use of the ti,tracks property, used a constant value
+  instead.
+* Dropped the error check when retrieving the "wrong" DT property
+  (coordiante-readouts) which is unused.
 
-The patch is doing 3 things.
-1) Make sure all DT checks related to bus width are being done at one place for better readability.
-2) even if all 3 width properties are absent, we will not treat it as error and default to 8-bit.
-3) check for nand-bus-width regardless of whether compatible to "ti,omap2-nand" or not.
 
-Hope this explains well.
+Miquel Raynal (47):
+  clk: ti: am43xx: Add clkctrl data for am43xx ADC1
+  dt-bindings: mfd: ti,am3359-tscadc: Add a yaml description for this
+    MFD
+  dt-bindings: touchscreen: ti,am3359-tsc: New yaml description
+  dt-bindings: iio: adc: ti,am3359-adc: New yaml description
+  dt-bindings: touchscreen: ti,am3359-tsc: Remove deprecated text file
+  dt-bindings: mfd: ti,am3359-tscadc: Describe am4372 MFD compatible
+  dt-bindings: iio: adc: ti,am3359-adc: Describe am4372 ADC compatible
+  mfd: ti_am335x_tscadc: Ensure a balanced number of node get/put
+  mfd: ti_am335x_tscadc: Replace license text with SPDX tag
+  mfd: ti_am335x_tscadc: Fix style
+  mfd: ti_am335x_tscadc: Drop extra spacing when declaring stack
+    variables
+  mfd: ti_am335x_tscadc: Get rid of useless gotos
+  mfd: ti_am335x_tscadc: Reword the comment explaining the dividers
+  mfd: ti_am335x_tscadc: Don't search the tree for our clock
+  mfd: ti_am335x_tscadc: Simplify divisor calculation
+  mfd: ti_am335x_tscadc: Move the driver structure allocation earlier
+  mfd: ti_am335x_tscadc: Use driver data
+  mfd: ti_am335x_tscadc: Mimic the probe from resume()
+  mfd: ti_am335x_tscadc: Drop useless variables from the driver
+    structure
+  mfd: ti_am335x_tscadc: Always provide an idle configuration
+  mfd: ti_am335x_tscadc: Reorder the initialization steps
+  mfd: ti_am335x_tscadc: Gather the ctrl register logic in one place
+  mfd: ti_am335x_tscadc: Replace the header license text with SPDX tag
+  mfd: ti_am335x_tscadc: Fix header spacing
+  mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ macro
+  mfd: ti_am335x_tscadc: Use BIT(), GENMASK() and FIELD_PREP() when
+    relevant
+  mfd: ti_am335x_tscadc: Clarify the maximum values for DT entries
+  mfd: ti_am335x_tscadc: Drop useless definitions from the header
+  mfd: ti_am335x_tscadc: Rename the subsystem enable macro
+  mfd: ti_am335x_tscadc: Add TSC prefix in certain macros
+  mfd: ti_am335x_tscadc: Rename a variable
+  mfd: ti_am335x_tscadc: Fix an error message
+  mfd: ti_am335x_tscadc: Add a boolean to clarify the presence of a
+    touchscreen
+  mfd: ti_am335x_tscadc: Introduce has_tsc
+  mfd: ti_am335x_tscadc: Add ADC1/magnetic reader support
+  mfd: ti_am335x_tscadc: Support the correctly spelled DT property
+  iio: adc: ti_am335x_adc: Wait the idle state to avoid stalls
+  iio: adc: ti_am335x_adc: Replace license text with SPDX tag
+  iio: adc: ti_am335x_adc: Fix style
+  iio: adc: ti_am335x_adc: Get rid of useless gotos
+  iio: adc: ti_am335x_adc: Gather the checks on the delays
+  iio: adc: ti_am335x_adc: Add a unit to the timeout delay
+  iio: adc: ti_am335x_adc: Add the scale information
+  iio: adc: ti_am335x_adc: Add the am437x compatible
+  ARM: dts: am437x-cm-t43: Use a correctly spelled DT property
+  ARM: dts: am43xx: Describe the magnetic reader/ADC1 hardware module
+  ARM: dts: am437x-gp-evm: enable ADC1
 
-cheers,
--roger
+ .../bindings/iio/adc/ti,am3359-adc.yaml       |  70 +++++
+ .../input/touchscreen/ti,am3359-tsc.yaml      |  76 ++++++
+ .../bindings/input/touchscreen/ti-tsc-adc.txt |  91 -------
+ .../bindings/mfd/ti,am3359-tscadc.yaml        |  84 ++++++
+ arch/arm/boot/dts/am437x-cm-t43.dts           |   2 +-
+ arch/arm/boot/dts/am437x-gp-evm.dts           |   8 +
+ arch/arm/boot/dts/am437x-l4.dtsi              |  31 ++-
+ arch/arm/boot/dts/am43xx-clocks.dtsi          |   7 +
+ drivers/clk/ti/clk-43xx.c                     |   1 +
+ drivers/iio/adc/ti_am335x_adc.c               | 220 +++++++++-------
+ drivers/mfd/ti_am335x_tscadc.c                | 243 ++++++++++--------
+ include/dt-bindings/clock/am4.h               |   1 +
+ include/linux/mfd/ti_am335x_tscadc.h          | 115 ++++-----
+ 13 files changed, 599 insertions(+), 350 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
+ create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
 
-> 
-> Best regards,
-> Krzysztof
-> 
-> 
->>
->> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->> ---
->>  drivers/memory/omap-gpmc.c | 41 ++++++++++++++++++++++++--------------
->>  1 file changed, 26 insertions(+), 15 deletions(-)
->>
->> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
->> index f80c2ea39ca4..32d7c665f33c 100644
->> --- a/drivers/memory/omap-gpmc.c
->> +++ b/drivers/memory/omap-gpmc.c
->> @@ -2171,10 +2171,8 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
->>  		}
->>  	}
->>  
->> -	if (of_device_is_compatible(child, "ti,omap2-nand")) {
->> -		/* NAND specific setup */
->> -		val = 8;
->> -		of_property_read_u32(child, "nand-bus-width", &val);
->> +	/* DT node can have "nand-bus-width" or "bank-width" or "gpmc,device-width" */
->> +	if (!of_property_read_u32(child, "nand-bus-width", &val)) {
->>  		switch (val) {
->>  		case 8:
->>  			gpmc_s.device_width = GPMC_DEVWIDTH_8BIT;
->> @@ -2183,24 +2181,37 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
->>  			gpmc_s.device_width = GPMC_DEVWIDTH_16BIT;
->>  			break;
->>  		default:
->> -			dev_err(&pdev->dev, "%pOFn: invalid 'nand-bus-width'\n",
->> -				child);
->> +			dev_err(&pdev->dev,
->> +				"%pOFn: invalid 'nand-bus-width':%d\n", child, val);
->> +			ret = -EINVAL;
->> +			goto err;
->> +		}
->> +	} else if (!of_property_read_u32(child, "bank-width", &val)) {
->> +		if (val != 1 && val != 2) {
->> +			dev_err(&pdev->dev,
->> +				"%pOFn: invalid 'bank-width':%d\n", child, val);
->>  			ret = -EINVAL;
->>  			goto err;
->>  		}
->> +		gpmc_s.device_width = val;
->> +	} else if (!of_property_read_u32(child, "gpmc,device-width", &val)) {
->> +		if (val != 1 && val != 2) {
->> +			dev_err(&pdev->dev,
->> +				"%pOFn: invalid 'gpmc,device-width':%d\n", child, val);
->> +			ret = -EINVAL;
->> +			goto err;
->> +		}
->> +		gpmc_s.device_width = val;
->> +	} else {
->> +		/* default to 8-bit */
->> +		gpmc_s.device_width = GPMC_DEVWIDTH_8BIT;
->> +	}
->>  
->> +	if (of_device_is_compatible(child, "ti,omap2-nand")) {
->> +		/* NAND specific setup */
->>  		/* disable write protect */
->>  		gpmc_configure(GPMC_CONFIG_WP, 0);
->>  		gpmc_s.device_nand = true;
->> -	} else {
->> -		ret = of_property_read_u32(child, "bank-width",
->> -					   &gpmc_s.device_width);
->> -		if (ret < 0 && !gpmc_s.device_width) {
->> -			dev_err(&pdev->dev,
->> -				"%pOF has no 'gpmc,device-width' property\n",
->> -				child);
->> -			goto err;
->> -		}
->>  	}
->>  
->>  	/* Reserve wait pin if it is required and valid */
->>
-> 
-> 
+-- 
+2.27.0
+
