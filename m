@@ -2,77 +2,111 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C607240C9AB
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Sep 2021 18:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF67040D5AC
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Sep 2021 11:14:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234526AbhIOQCL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Sep 2021 12:02:11 -0400
-Received: from relay8-d.mail.gandi.net ([217.70.183.201]:44495 "EHLO
-        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238513AbhIOQCE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Sep 2021 12:02:04 -0400
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 00A7B1BF21B;
-        Wed, 15 Sep 2021 16:00:42 +0000 (UTC)
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        id S235760AbhIPJPo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Sep 2021 05:15:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40926 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235418AbhIPJPm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 16 Sep 2021 05:15:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4E1A0611CA;
+        Thu, 16 Sep 2021 09:14:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631783661;
+        bh=HpXVplz89oKyc+hivBPzxb/s0fvvid7dqIkLDoV0E8s=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lRyC+Gl6hpA65PTmNoIvzIyVlFwS1vvgpOXA4IShHvXBxni2jYB5SiQUoU+fAPpe7
+         MhnOfSEDpi0f8ZqYssR8CnOyMA/WbCzxSWt1mOakOCY8TqwNRCL3kQrQCKrB2zWRIB
+         5G0n7Tz6Uoky9NsNn5NDTtSzpSpYgyGclzrBZA3Gs8NpLY4HEgX3PjaPn8FmThtKR2
+         aBhvThsya5NVQoLmW1gxaxwHQwFF6ykyqS6fssrJvf8d7OLU9EwLMDYNfhy/Dw6CY7
+         InDJMP3HNKwr3VvEbl2g/5QXYa9v7CBmkpGyauf133KiKGoSP98tRVlSt1Mjgaucod
+         b9jsm+2PWf6gQ==
+Received: by mail.kernel.org with local (Exim 4.94.2)
+        (envelope-from <mchehab@kernel.org>)
+        id 1mQnTH-001sKa-8R; Thu, 16 Sep 2021 11:14:19 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Evgeniy Polyakov <zbr@ioremap.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>, Martin KaFai Lau <kafai@fb.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
-        Tony Lindgren <tony@atomide.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v3 47/47] ARM: dts: am437x-gp-evm: enable ADC1
-Date:   Wed, 15 Sep 2021 17:59:08 +0200
-Message-Id: <20210915155908.476767-48-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210915155908.476767-1-miquel.raynal@bootlin.com>
-References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+        Shuah Khan <shuah@kernel.org>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        bpf@vger.kernel.org, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-kselftest@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        sparmaintainer@unisys.com
+Subject: [PATCH 00/24] Fix some issues at documentation
+Date:   Thu, 16 Sep 2021 11:13:53 +0200
+Message-Id: <cover.1631783482.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-ADC0 and ADC1 pins are available on external connector J22.
+Hi John,
 
-Enable ADC1 which was missing.
+The first patch in this series fix a bad character used instead of
+a "(c)" UTF-8 symbol.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- arch/arm/boot/dts/am437x-gp-evm.dts | 8 ++++++++
- 1 file changed, 8 insertions(+)
+The remaining ones fix several broken references to files
+under Documentation/, several due to DT schema conversions
+from .txt to .yaml.
 
-diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
-index c2e4896076e7..4416ddb559e4 100644
---- a/arch/arm/boot/dts/am437x-gp-evm.dts
-+++ b/arch/arm/boot/dts/am437x-gp-evm.dts
-@@ -775,6 +775,14 @@ adc {
- 	};
- };
- 
-+&magadc {
-+	status = "okay";
-+
-+	adc {
-+		ti,adc-channels = <0 1 2 3 4 5 6 7>;
-+	};
-+};
-+
- &ecap0 {
- 	status = "okay";
- 	pinctrl-names = "default";
+Mauro Carvalho Chehab (24):
+  visorbus: fix a copyright symbol that was bad encoded
+  dt-bindings: net: dsa: sja1105: update nxp,sja1105.yaml reference
+  dt-bindings: arm: mediatek: mmsys: update mediatek,mmsys.yaml
+    reference
+  dt-bindings: w1: update w1-gpio.yaml reference
+  dt-bindings: mmc: update mmc-card.yaml reference
+  libbpf: update index.rst reference
+  docs: accounting: update delay-accounting.rst reference
+  tools: bpftool: update bpftool-prog.rst reference
+  tools: bpftool: update bpftool-map.rst reference
+  bpftool: update bpftool-cgroup.rst reference
+  MAINTAINERS: update mtd-physmap.yaml reference
+  MAINTAINERS: update arm,vic.yaml reference
+  MAINTAINERS: update aspeed,i2c.yaml reference
+  MAINTAINERS: update faraday,ftrtc010.yaml reference
+  MAINTAINERS: update fsl,fec.yaml reference
+  MAINTAINERS: update mtd-physmap.yaml reference
+  MAINTAINERS: update ti,am654-hbmc.yaml reference
+  MAINTAINERS: update ti,sci.yaml reference
+  MAINTAINERS: update intel,ixp46x-rng.yaml reference
+  MAINTAINERS: update nxp,imx8-jpeg.yaml reference
+  MAINTAINERS: update gemini.yaml reference
+  MAINTAINERS: update brcm,unimac-mdio.yaml reference
+  MAINTAINERS: update chipone,icn8318.yaml reference
+  MAINTAINERS: update silergy,sy8106a.yaml reference
+
+ Documentation/admin-guide/sysctl/kernel.rst   |  2 +-
+ Documentation/bpf/index.rst                   |  2 +-
+ .../display/mediatek/mediatek,disp.txt        |  2 +-
+ Documentation/networking/dsa/sja1105.rst      |  2 +-
+ Documentation/w1/masters/w1-gpio.rst          |  2 +-
+ MAINTAINERS                                   | 28 +++++++++----------
+ drivers/mmc/host/omap_hsmmc.c                 |  2 +-
+ drivers/visorbus/visorbus_main.c              |  2 +-
+ .../selftests/bpf/test_bpftool_synctypes.py   |  6 ++--
+ 9 files changed, 24 insertions(+), 24 deletions(-)
+
 -- 
-2.27.0
+2.31.1
+
 
