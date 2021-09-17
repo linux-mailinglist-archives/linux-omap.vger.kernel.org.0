@@ -2,137 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EA2640F225
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Sep 2021 08:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8E7C40F2FA
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Sep 2021 09:17:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234581AbhIQGPu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Sep 2021 02:15:50 -0400
-Received: from muru.com ([72.249.23.125]:33802 "EHLO muru.com"
+        id S238763AbhIQHSh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Sep 2021 03:18:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55958 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232039AbhIQGPu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 17 Sep 2021 02:15:50 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D4DC180FB;
-        Fri, 17 Sep 2021 06:14:54 +0000 (UTC)
-Date:   Fri, 17 Sep 2021 09:14:26 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-Cc:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Suman Anna <s-anna@ti.com>, "Andrew F. Davis" <afd@ti.com>,
-        Paul Barker <paul.barker@sancloud.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: beaglebone black boot failure Linux v5.15.rc1
-Message-ID: <YUQyQgFAOFnBlcdP@atomide.com>
-References: <120a0ca4-28c7-5a7b-f1ab-2015c8817bda@fi.rohmeurope.com>
+        id S238726AbhIQHSh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Sep 2021 03:18:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 512AE61152;
+        Fri, 17 Sep 2021 07:17:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631863035;
+        bh=ja8+tLdTmXfno2EXHr51WCR4GUxc76U00kgVCyJ/NGo=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=M4ewBQPtOqclfz0Ur4bXuvZKTjWgHGjINFiOawT7DeG8XrFKcauPh5bd7a9DXG/3N
+         VD3oPf2BhVIcMKZ6QKsNO8wZTcWOqMEtvd6MRFK9aNK6EqzM0mnMlxuLb1D9Q4sgSY
+         Iz/Pma94UcjIpkwjJ5BOumdpzaMBRwyXqOCaKIosCvsNhJqio5gxSKaQVTImdvReMi
+         TEWuOMlom04nNjWa3Yw7vARiih+dcMvuHShiv5xMCjjoyhRzLyoysS+Zli9Gu2JwiE
+         y4AiuolYY/i6UTP4mRGd56UFiXpoLys3x1OIbCQ1UZabOOIPJOd/ASxUtKc5OhqzQ4
+         /pPszyUB5KTLw==
+Subject: Re: [PATCH v3 8/8] memory: gpmc-omap: "gpmc,device-width" DT property
+ is optional
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        tony@atomide.com
+Cc:     robh+dt@kernel.org, grygorii.strashko@ti.com, nm@ti.com,
+        lokeshvutla@ti.com, nsekhar@ti.com, miquel.raynal@bootlin.com,
+        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210907113226.31876-1-rogerq@kernel.org>
+ <20210907113226.31876-9-rogerq@kernel.org>
+ <aa465bd9-b3d5-8d75-3e59-e86c2cd093cd@canonical.com>
+ <a881ac1f-2f00-e675-aea6-154b28ca6eff@kernel.org>
+ <35643319-e3b0-bde1-c51b-57c3b5474146@canonical.com>
+From:   Roger Quadros <rogerq@kernel.org>
+Message-ID: <d574837c-b42a-53be-7885-9feb7183ce96@kernel.org>
+Date:   Fri, 17 Sep 2021 10:17:10 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="oRDPEQLgRneHPu9G"
-Content-Disposition: inline
-In-Reply-To: <120a0ca4-28c7-5a7b-f1ab-2015c8817bda@fi.rohmeurope.com>
+In-Reply-To: <35643319-e3b0-bde1-c51b-57c3b5474146@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 
---oRDPEQLgRneHPu9G
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Hi,
-
-* Vaittinen, Matti <Matti.Vaittinen@fi.rohmeurope.com> [210916 09:15]:
-> Yesterday I asked about this at #armlinux so if someone saw my message 
-> there - this is the same topic.
+On 16/09/2021 13:48, Krzysztof Kozlowski wrote:
+> On 15/09/2021 11:11, Roger Quadros wrote:
+>> Hi Krzysztof,
+>>
+>> On 07/09/2021 15:36, Krzysztof Kozlowski wrote:
+>>> On 07/09/2021 13:32, Roger Quadros wrote:
+>>>> Check for valid gpmc,device-width, nand-bus-width and bank-width
+>>>> at one place. Default to 8-bit width if none present.
+>>>
+>>> I don't understand the message in the context of the patch. The title
+>>> says one property is optional - that's it. The message says you
+>>> consolidate checks. How is this related to the title?
+>>>
+>>> The patch itself moves around checking of properties and reads
+>>> nand-bus-width *always*. It does not "check at one place" but rather
+>>> "check always". In the same time, the patch does not remove
+>>> gpmc,device-width check in other place.
+>>>
+>>> All three elements - the title, message and patch - do different things.
+>>> What did you want to achieve here? Can you help in clarifying it?
+>>>
+>>
+>> OK I will explain it better in commit log in next revision. Let me explain here a bit.
+>>
+>> Prior to this patch it was working like this
+>>
+>> 	/* in gpmc_read_settings_dt() */
+>> 	s->device_width = 0;	/* invalid width, should be 1 for 8-bit, 2 for 16-bit */
+>> 	of_property_read_u32(np, "gpmc,device-width", s->device_width);
+>>
+>> 	/* in gpmc_probe_generic_child () */
+>> 	if (of_device_is_compatible(child, "ti,omap2-nand")) {
+>> 		/* check for nand-bus-width, if absent set s->device_width to 1 (i.e. 8-bit) */
+>> 	} else {
+>> 		/* check for bank-width, if absent and s->device_width not set, error out */
+>> 	}
+>>
+>> So that means if all three, "gpmc,device-width". "nand-bus-width" and "bank-width" are missing then
+>> it would create an error situation.
+>>
+>> The patch is doing 3 things.
+>> 1) Make sure all DT checks related to bus width are being done at one place for better readability.
 > 
-> My beaglebone black (rev c) based test environment fails to boot with 
-> v5.15-rc1. Boot succeeds with the v5.14.
+> Not entirely. The gpmc,device-width is still done in the other place
+> because you did not remove it from the code. Unless you meant parsing of
+> gpmc,device-width not reading from DT? But then another round of checks
+> is in gpmc_cs_program_settings() so not in one place.
+
+By checking I meant parsing. But you are right, I missed the part in gpmc_cs_program_settings().
+
 > 
-> I use pretty old uBoot, TFTP to load kernel and device-tree, and have 
-> hosted the rootfs on NFS server.
-
-Using older u-boot versions should be just fine. Using bootz with zImage
-instead of uimage is a good reason to update for folks using a really
-old u-boot though.
-
-> The v5.15-rc1 fails to boot with no prints from kernel visible in serial 
-> console. Please see the serial log at the end of this message.
+> If you consolidate the checks to one place, I would expect the code to
+> be removed from other places, so from gpmc_cs_program_settings() and
+> gpmc_read_settings_dt(). Since this is not happening, the message
+> confuses me.
 > 
-> Bisecting the Linus' tree pointed out the commit:
-> [1c7ba565e70365763ea780666a3eee679344b962] ARM: dts: am335x-baltos: 
-> switch to new cpsw switch drv
+>> 2) even if all 3 width properties are absent, we will not treat it as error and default to 8-bit.
 > 
-> I don't see this exact commit touching the BBB device-tree. In Linus' 
-> tree it is a part of a merge commit. Reverting the whole merge on top of 
-> the v5.15-rc1
+> This is not mentioned in commit msg.
 > 
-> This reverts commit 81b6a285737700c2e04ef0893617b80481b6b4b7, reversing
-> changes made to f73979109bc11a0ed26b6deeb403fb5d05676ffc.
+>> 3) check for nand-bus-width regardless of whether compatible to "ti,omap2-nand" or not.
 > 
-> makes my beaglebone black to boot again.
+> Also not mentioned in commit msg.
 > 
-> Yesterday I tried adding this patch:
-> https://lore.kernel.org/linux-omap/20210915065032.45013-1-tony@atomide.com/T/#u
-> pointed by Tom on top of the v5.15-rc1 - no avail. I also did #define 
-> DEBUG at ti-sys.c as was suggested by Tom - but I don't see any more output.
+> Your commit reorganizes parsing and validating the child DT properties
+> but it does not change from "multiple place" to "one place".
+> 
+> At least I don't see it.
 
-Correction, that was me, not Tom :)
+OK. I will write a better commit log next time. Thanks for the review :)
 
-For me, adding any kind of delay fixed the issue. Also adding some printk
-statements fixed it for me.
-
-> Any suggestions what to check next?
-
-Maybe try the attached patch? If it helps, just try with the with the
-ti,sysc-delay-us = <2> added as few modules need that after enable.
-
-It's also possible there is an issue with some other device that is now
-getting enabled other than pruss. The last XXX printk output should show
-the last device being probed.
-
-Looks like you need to also enable CONFIG_SERIAL_EARLYCON=y, and pass
-console=ttyS0,115200 debug earlycon in the kernel command line.
-
-Regards,
-
-Tony
-
---oRDPEQLgRneHPu9G
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline; filename="debug.patch"
-
-diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
---- a/arch/arm/boot/dts/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/am33xx-l4.dtsi
-@@ -845,6 +845,7 @@ pruss_tm: target-module@300000 {	/* 0x4a300000, ap 9 04.0 */
- 			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
- 					<SYSC_IDLE_NO>,
- 					<SYSC_IDLE_SMART>;
-+			ti,sysc-delay-us = <2>;
- 			clocks = <&pruss_ocp_clkctrl AM3_PRUSS_OCP_PRUSS_CLKCTRL 0>;
- 			clock-names = "fck";
- 			resets = <&prm_per 1>;
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2,7 +2,7 @@
- /*
-  * ti-sysc.c - Texas Instruments sysc interconnect target driver
-  */
--
-+#define DEBUG
- #include <linux/io.h>
- #include <linux/clk.h>
- #include <linux/clkdev.h>
-@@ -3051,6 +3051,8 @@ static int sysc_probe(struct platform_device *pdev)
- 	if (!ddata)
- 		return -ENOMEM;
- 
-+	dev_info(&pdev->dev, "XXX %s\n", __func__);
-+
- 	ddata->offsets[SYSC_REVISION] = -ENODEV;
- 	ddata->offsets[SYSC_SYSCONFIG] = -ENODEV;
- 	ddata->offsets[SYSC_SYSSTATUS] = -ENODEV;
-
---oRDPEQLgRneHPu9G--
+cheers,
+-roger
