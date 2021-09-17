@@ -2,34 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0AC640F166
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Sep 2021 06:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02FAB40F113
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Sep 2021 06:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244777AbhIQEli (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Sep 2021 00:41:38 -0400
-Received: from mx22.baidu.com ([220.181.50.185]:38234 "EHLO baidu.com"
+        id S244526AbhIQEZq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Sep 2021 00:25:46 -0400
+Received: from mx22.baidu.com ([220.181.50.185]:54524 "EHLO baidu.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S244720AbhIQElZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 17 Sep 2021 00:41:25 -0400
-Received: from BC-Mail-Ex29.internal.baidu.com (unknown [172.31.51.23])
-        by Forcepoint Email with ESMTPS id EF57B883484BA65A75EB;
-        Fri, 17 Sep 2021 12:24:20 +0800 (CST)
+        id S244497AbhIQEZq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Sep 2021 00:25:46 -0400
+Received: from BC-Mail-Ex28.internal.baidu.com (unknown [172.31.51.22])
+        by Forcepoint Email with ESMTPS id 3CADBB485E86C57D5AE5;
+        Fri, 17 Sep 2021 12:24:23 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex29.internal.baidu.com (172.31.51.23) with Microsoft SMTP Server
+ BC-Mail-Ex28.internal.baidu.com (172.31.51.22) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Fri, 17 Sep 2021 12:24:20 +0800
+ 15.1.2176.2; Fri, 17 Sep 2021 12:24:22 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Fri, 17 Sep 2021 12:24:20 +0800
+ 15.1.2308.14; Fri, 17 Sep 2021 12:24:22 +0800
 From:   Cai Huoqing <caihuoqing@baidu.com>
 To:     <caihuoqing@baidu.com>
 CC:     <linux-fbdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
         <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 1/4] fbdev: omapfb: panel-lgphilips-lb035q02: Make use of the helper function dev_err_probe()
-Date:   Fri, 17 Sep 2021 12:24:10 +0800
-Message-ID: <20210917042414.17787-1-caihuoqing@baidu.com>
+Subject: [PATCH 2/4] fbdev: omapfb: lcd_ams_delta: Make use of the helper function dev_err_probe()
+Date:   Fri, 17 Sep 2021 12:24:11 +0800
+Message-ID: <20210917042414.17787-2-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210917042414.17787-1-caihuoqing@baidu.com>
+References: <20210917042414.17787-1-caihuoqing@baidu.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [172.31.63.8]
@@ -47,27 +49,38 @@ gets printed.
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
- .../fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/omap/lcd_ams_delta.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c
-index 1bec7a4422e8..6befd22dbd5c 100644
---- a/drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c
-+++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-lgphilips-lb035q02.c
-@@ -244,10 +244,9 @@ static int lb035q02_probe_of(struct spi_device *spi)
- 	struct gpio_desc *gpio;
+diff --git a/drivers/video/fbdev/omap/lcd_ams_delta.c b/drivers/video/fbdev/omap/lcd_ams_delta.c
+index 8e54aae544a0..bbf871f9d862 100644
+--- a/drivers/video/fbdev/omap/lcd_ams_delta.c
++++ b/drivers/video/fbdev/omap/lcd_ams_delta.c
+@@ -131,18 +131,14 @@ static int ams_delta_panel_probe(struct platform_device *pdev)
+ 	int ret;
  
- 	gpio = devm_gpiod_get(&spi->dev, "enable", GPIOD_OUT_LOW);
--	if (IS_ERR(gpio)) {
--		dev_err(&spi->dev, "failed to parse enable gpio\n");
--		return PTR_ERR(gpio);
+ 	gpiod_vblen = devm_gpiod_get(&pdev->dev, "vblen", GPIOD_OUT_LOW);
+-	if (IS_ERR(gpiod_vblen)) {
+-		ret = PTR_ERR(gpiod_vblen);
+-		dev_err(&pdev->dev, "VBLEN GPIO request failed (%d)\n", ret);
+-		return ret;
 -	}
-+	if (IS_ERR(gpio))
-+		return dev_err_probe(&spi->dev, PTR_ERR(gpio),
-+				     "failed to parse enable gpio\n");
++	if (IS_ERR(gpiod_vblen))
++		return dev_err_probe(&pdev->dev, PTR_ERR(gpiod_vblen),
++				     "VBLEN GPIO request failed\n");
  
- 	ddata->enable_gpio = gpio;
+ 	gpiod_ndisp = devm_gpiod_get(&pdev->dev, "ndisp", GPIOD_OUT_LOW);
+-	if (IS_ERR(gpiod_ndisp)) {
+-		ret = PTR_ERR(gpiod_ndisp);
+-		dev_err(&pdev->dev, "NDISP GPIO request failed (%d)\n", ret);
+-		return ret;
+-	}
++	if (IS_ERR(gpiod_ndisp))
++		return dev_err_probe(&pdev->dev, PTR_ERR(gpiod_ndisp),
++				     "NDISP GPIO request failed\n");
  
+ #ifdef CONFIG_LCD_CLASS_DEVICE
+ 	lcd_device = lcd_device_register("omapfb", &pdev->dev, NULL,
 -- 
 2.25.1
 
