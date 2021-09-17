@@ -2,33 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02FAB40F113
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Sep 2021 06:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65AE640F168
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Sep 2021 06:40:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244526AbhIQEZq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Sep 2021 00:25:46 -0400
-Received: from mx22.baidu.com ([220.181.50.185]:54524 "EHLO baidu.com"
+        id S244720AbhIQElr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Sep 2021 00:41:47 -0400
+Received: from mx24.baidu.com ([111.206.215.185]:38236 "EHLO baidu.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S244497AbhIQEZq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 17 Sep 2021 00:25:46 -0400
-Received: from BC-Mail-Ex28.internal.baidu.com (unknown [172.31.51.22])
-        by Forcepoint Email with ESMTPS id 3CADBB485E86C57D5AE5;
-        Fri, 17 Sep 2021 12:24:23 +0800 (CST)
+        id S244719AbhIQElZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Sep 2021 00:41:25 -0400
+Received: from BC-Mail-Ex27.internal.baidu.com (unknown [172.31.51.21])
+        by Forcepoint Email with ESMTPS id 3F31A86BEF9686DE023E;
+        Fri, 17 Sep 2021 12:24:25 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex28.internal.baidu.com (172.31.51.22) with Microsoft SMTP Server
+ BC-Mail-Ex27.internal.baidu.com (172.31.51.21) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Fri, 17 Sep 2021 12:24:22 +0800
+ 15.1.2176.2; Fri, 17 Sep 2021 12:24:24 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Fri, 17 Sep 2021 12:24:22 +0800
+ 15.1.2308.14; Fri, 17 Sep 2021 12:24:24 +0800
 From:   Cai Huoqing <caihuoqing@baidu.com>
 To:     <caihuoqing@baidu.com>
 CC:     <linux-fbdev@vger.kernel.org>, <linux-omap@vger.kernel.org>,
         <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/4] fbdev: omapfb: lcd_ams_delta: Make use of the helper function dev_err_probe()
-Date:   Fri, 17 Sep 2021 12:24:11 +0800
-Message-ID: <20210917042414.17787-2-caihuoqing@baidu.com>
+Subject: [PATCH 3/4] fbdev: omapfb: panel-sharp-ls037v7dw01: Make use of the helper function dev_err_probe()
+Date:   Fri, 17 Sep 2021 12:24:12 +0800
+Message-ID: <20210917042414.17787-3-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210917042414.17787-1-caihuoqing@baidu.com>
 References: <20210917042414.17787-1-caihuoqing@baidu.com>
@@ -49,38 +49,27 @@ gets printed.
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
- drivers/video/fbdev/omap/lcd_ams_delta.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ .../fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c  | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap/lcd_ams_delta.c b/drivers/video/fbdev/omap/lcd_ams_delta.c
-index 8e54aae544a0..bbf871f9d862 100644
---- a/drivers/video/fbdev/omap/lcd_ams_delta.c
-+++ b/drivers/video/fbdev/omap/lcd_ams_delta.c
-@@ -131,18 +131,14 @@ static int ams_delta_panel_probe(struct platform_device *pdev)
- 	int ret;
+diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c
+index 602324c5c9f9..f1072c319de8 100644
+--- a/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c
++++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-sharp-ls037v7dw01.c
+@@ -211,10 +211,9 @@ static int sharp_ls_probe_of(struct platform_device *pdev)
+ 	int r;
  
- 	gpiod_vblen = devm_gpiod_get(&pdev->dev, "vblen", GPIOD_OUT_LOW);
--	if (IS_ERR(gpiod_vblen)) {
--		ret = PTR_ERR(gpiod_vblen);
--		dev_err(&pdev->dev, "VBLEN GPIO request failed (%d)\n", ret);
--		return ret;
+ 	ddata->vcc = devm_regulator_get(&pdev->dev, "envdd");
+-	if (IS_ERR(ddata->vcc)) {
+-		dev_err(&pdev->dev, "failed to get regulator\n");
+-		return PTR_ERR(ddata->vcc);
 -	}
-+	if (IS_ERR(gpiod_vblen))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(gpiod_vblen),
-+				     "VBLEN GPIO request failed\n");
++	if (IS_ERR(ddata->vcc))
++		return dev_err_probe(&pdev->dev, PTR_ERR(ddata->vcc),
++				     "failed to get regulator\n");
  
- 	gpiod_ndisp = devm_gpiod_get(&pdev->dev, "ndisp", GPIOD_OUT_LOW);
--	if (IS_ERR(gpiod_ndisp)) {
--		ret = PTR_ERR(gpiod_ndisp);
--		dev_err(&pdev->dev, "NDISP GPIO request failed (%d)\n", ret);
--		return ret;
--	}
-+	if (IS_ERR(gpiod_ndisp))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(gpiod_ndisp),
-+				     "NDISP GPIO request failed\n");
- 
- #ifdef CONFIG_LCD_CLASS_DEVICE
- 	lcd_device = lcd_device_register("omapfb", &pdev->dev, NULL,
+ 	/* lcd INI */
+ 	r = sharp_ls_get_gpio_of(&pdev->dev, 0, 0, "enable", &ddata->ini_gpio);
 -- 
 2.25.1
 
