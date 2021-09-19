@@ -2,80 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F404410CBB
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Sep 2021 19:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE57410D97
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Sep 2021 00:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230266AbhISRnT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 19 Sep 2021 13:43:19 -0400
-Received: from 49-237-179-185.static.tentacle.fi ([185.179.237.49]:54498 "EHLO
-        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229846AbhISRnS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 19 Sep 2021 13:43:18 -0400
-Received: from 88-114-184-142.elisa-laajakaista.fi ([88.114.184.142] helo=[192.168.1.42])
-        by bitmer.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <jarkko.nikula@bitmer.com>)
-        id 1mS0p3-00075q-NK; Sun, 19 Sep 2021 20:41:49 +0300
-From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
-Subject: Regression with e428e250fde6 on BeagleBoard Rev C2
-To:     linux-omap@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Message-ID: <3f6924a7-1934-b94e-2441-4781fe737f32@bitmer.com>
-Date:   Sun, 19 Sep 2021 20:41:46 +0300
+        id S233428AbhISWIZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 19 Sep 2021 18:08:25 -0400
+Received: from hostingweb31-40.netsons.net ([89.40.174.40]:38511 "EHLO
+        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233170AbhISWIV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 19 Sep 2021 18:08:21 -0400
+X-Greylist: delayed 3828 seconds by postgrey-1.27 at vger.kernel.org; Sun, 19 Sep 2021 18:08:19 EDT
+Received: from [77.244.183.192] (port=65316 helo=[192.168.178.41])
+        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <luca@lucaceresoli.net>)
+        id 1mS3xn-00BOKz-4D; Sun, 19 Sep 2021 23:03:03 +0200
+Subject: Re: [PATCH v2 0/4] PCI: dwc: pci-dra7xx: miscellaneous improvements
+To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, kishon@ti.com
+Cc:     linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+References: <20210531085934.2662457-1-luca@lucaceresoli.net>
+ <20210621144109.GC27516@lpieralisi> <20210813155328.GC15515@lpieralisi>
+From:   Luca Ceresoli <luca@lucaceresoli.net>
+Message-ID: <46422460-ae9b-3c04-1f59-54bb6631317e@lucaceresoli.net>
+Date:   Sun, 19 Sep 2021 23:03:00 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
+In-Reply-To: <20210813155328.GC15515@lpieralisi>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lucaceresoli.net
+X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
+X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi
+Hi Lorenzo, Kishon,
 
-I found another timer related regression on BeagleBoard Rev C2 which was
-present before 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix
-suspend and resume for am3 and am4") and which remains after fix
-3ff340e24c9d ("bus: ti-sysc: Fix gpt12 system timer issue with reserved
-status") including today's head d4d016caa4b8 ("alpha: move __udiv_qrnnd
-library function to arch/alpha/lib/").
+On 13/08/21 17:53, Lorenzo Pieralisi wrote:
+> On Mon, Jun 21, 2021 at 03:41:09PM +0100, Lorenzo Pieralisi wrote:
+>> On Mon, May 31, 2021 at 10:59:30AM +0200, Luca Ceresoli wrote:
+>>> This is an series of mixed improvements to the DRA7 PCI controller driver:
+>>> allow building as a loadabel module, allow to get and enable a clock and a
+>>> small cleanup.
+>>>
+>>> Luca
+>>>
+>>> Luca Ceresoli (4):
+>>>   PCI: dwc: Export more symbols to allow modular drivers
+>>>   PCI: dra7xx: Make it a kernel module
+>>>   PCI: dra7xx: Remove unused include
+>>>   PCI: dra7xx: Get an optional clock
+>>>
+>>>  drivers/pci/controller/dwc/Kconfig            |  6 ++---
+>>>  drivers/pci/controller/dwc/pci-dra7xx.c       | 22 +++++++++++++++++--
+>>>  .../pci/controller/dwc/pcie-designware-ep.c   |  1 +
+>>>  drivers/pci/controller/dwc/pcie-designware.c  |  1 +
+>>>  4 files changed, 25 insertions(+), 5 deletions(-)
+>>
+>> Hi Kishon,
+>>
+>> I'd need your ACK to proceed with this series that looks like it
+>> is ready to go, please let me know.
+> 
+> Still need it - please let me know.
+> 
+> Lorenzo
 
-Issue occurs when omap3_isp is not loaded and symptoms are the same than
-my previous finding [1]. I.e. timer interrupts appear missing and need
-to hit keys on serial console in order to let boot (when omap3_isp not
-built) or "sleep 1" in shell to continue.
+Should I resend the series?
 
-I bisected that regression to commit
-e428e250fde6 ("ARM: dts: Configure system timers for omap3")
+BTW it still applies cleanly on both the pci next branch and on mainline
+master.
 
-According to commit and dmesg it seems to switch from 32k timer to 13
-MHz timer. Commit does not explain why it marks 32k timer as unusable on
-the BeagleBoard. Or was that a copy-paste error from another dts?
-
-Before
-
-[    0.000000] OMAP clockevent source: timer12 at 32768 Hz
-[    0.000000] OMAP clocksource: 32k_counter at 32768 Hz
-[    0.000000] clocksource: 32k_counter: mask: 0xffffffff max_cycles:
-0xffffffff, max_idle_ns: 58327039986419 ns
-[    0.000030] sched_clock: 32 bits at 32kHz, resolution 30517ns, wraps
-every 65535999984741ns
-
-After e428e250fde6
-
-[    0.000000] TI gptimer clockevent: 13000000 Hz at
-/ocp@68000000/target-module@49032000
-[    0.000000] TI gptimer clocksource: always-on
-/ocp@68000000/target-module@48304000
-[    0.000091] sched_clock: 32 bits at 32kHz, resolution 30517ns, wraps
-every 65535999984741ns
-[    0.000183] clocksource: dmtimer: mask: 0xffffffff max_cycles:
-0xffffffff, max_idle_ns: 58327039986419 ns
-
-I fail to understand how omap3isp affects this since it actually disable
-clocks after probe. Does it keep some power domain active which then
-keeps the timer active etc?
-
-1. https://marc.info/?l=linux-omap&m=162221018410523&w=2
+-- 
+Luca
