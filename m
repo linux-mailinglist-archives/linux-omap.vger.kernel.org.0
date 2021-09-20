@@ -2,109 +2,183 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3620C4114F7
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Sep 2021 14:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 052344115E6
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Sep 2021 15:35:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238880AbhITMyp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Sep 2021 08:54:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57324 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238756AbhITMyk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Sep 2021 08:54:40 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08AB2C061764
-        for <linux-omap@vger.kernel.org>; Mon, 20 Sep 2021 05:53:14 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id i23so29427483wrb.2
-        for <linux-omap@vger.kernel.org>; Mon, 20 Sep 2021 05:53:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=PjEbP5FJLcpWh+4b44AHLWfvKeb2DmOP9yJ8lA/X9iA=;
-        b=3XOYbCWAd6nb+N8oj01jL8MfRPdgUK/Ri4tO+xxWx5g5uh5XTt7COSZx4aYM5W5IR2
-         tI03kPBLAOgLlyxDBmvyKAkX4GjlExxkEp3k8jCaVdibCWz40UaYa7T6I7D5YzIl/6eb
-         a8kG2xKiFsGZVU9e2uFoVHa0TZJWWseb0HrvOwU1Nm2K0mDUegDN0bkiv/GdQYDBBiyZ
-         neqt6LxM+6Gbv97Tpdpa8/1fE2AGXlzPVOMFQoPd/KDPxe3M1T6RkE2A46qs/hI1GPCM
-         /PkMDlixgwwbjSU/7GiHGzcIcPOBmTdDpXV0yFQhK84Lsa3JIUnc2u3sTE8shzUC49sE
-         n5YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=PjEbP5FJLcpWh+4b44AHLWfvKeb2DmOP9yJ8lA/X9iA=;
-        b=C0scwomi/t8umiiXsyUnjbQwC/p6aFUalXrv7d3u/FYJh9K9NPevVng5fpiB/4es0A
-         vRjeondd1Myrj7C+bG7QUsuu+e3ss7izwUH3ixaFYQIp4p93RP8GHeewXyoTFwLMStsQ
-         pE1Wa4NaanQL5jx/UdVY6bNkRV+1OOeAWdGsg/ooGnQnrEvPhlSLIoMssALAMd+5Yy4l
-         0A72P1TwWywp64r6faHtCDcqG/+fO4bV3X6GmI4DdCNpsz5dzo6/Ul+4GK8UZmcrX6wB
-         g2OSGrV8+4vy+1eb9smh6AApHdYil8BAhQ1f6lQz8/wNGSba58ZNOoblZwq3Ss7wLDxM
-         JHww==
-X-Gm-Message-State: AOAM533xxxj/erCe2x6Xlo3EwWZzaKDHjK6FhK3d0LlENOUp5YlgmPgB
-        pVOqDZ7wChfHjgPbJq9vMGtxXQ==
-X-Google-Smtp-Source: ABdhPJxFeSU0jxjMYkUW8j+6kTjexSxZSwQl8MOiIsTkj+Pz9m2MLhUxApnqYlfA23Ad8UB5U9uJjQ==
-X-Received: by 2002:adf:f011:: with SMTP id j17mr28087183wro.320.1632142392493;
-        Mon, 20 Sep 2021 05:53:12 -0700 (PDT)
-Received: from localhost.localdomain ([2001:861:44c0:66c0:aa8a:ef22:59c5:1bf3])
-        by smtp.gmail.com with ESMTPSA id j21sm15791643wrd.48.2021.09.20.05.53.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Sep 2021 05:53:12 -0700 (PDT)
-From:   Neil Armstrong <narmstrong@baylibre.com>
-To:     tony@atomide.com
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Gowtham Tammana <g-tammana@ti.com>,
-        Eric Ruei <e-ruei1@ti.com>, Jacob Stiffler <j-stiffler@ti.com>,
-        Jyri Sarha <jsarha@ti.com>,
-        Neil Armstrong <narmstrong@baylibre.com>
-Subject: [PATCH 4/4] ARM: dts: am57xx-evm: Enable BB2D node
-Date:   Mon, 20 Sep 2021 14:53:06 +0200
-Message-Id: <20210920125306.12347-5-narmstrong@baylibre.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210920125306.12347-1-narmstrong@baylibre.com>
-References: <20210920125306.12347-1-narmstrong@baylibre.com>
+        id S233516AbhITNg2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Sep 2021 09:36:28 -0400
+Received: from muru.com ([72.249.23.125]:34970 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233401AbhITNg2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 20 Sep 2021 09:36:28 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 65E4080FE;
+        Mon, 20 Sep 2021 13:35:28 +0000 (UTC)
+Date:   Mon, 20 Sep 2021 16:34:59 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Jarkko Nikula <jarkko.nikula@bitmer.com>
+Cc:     linux-omap@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: Regression with e428e250fde6 on BeagleBoard Rev C2
+Message-ID: <YUiOA4QEbZXPmQ7F@atomide.com>
+References: <3f6924a7-1934-b94e-2441-4781fe737f32@bitmer.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3f6924a7-1934-b94e-2441-4781fe737f32@bitmer.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Gowtham Tammana <g-tammana@ti.com>
+Hi,
 
-This enables the BB2D graphics accelerator for the AM57x based
-Beagle-X15 (GPEVM) and IDK platforms.
+* Jarkko Nikula <jarkko.nikula@bitmer.com> [210919 17:42]:
+> Hi
+> 
+> I found another timer related regression on BeagleBoard Rev C2 which was
+> present before 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix
+> suspend and resume for am3 and am4") and which remains after fix
+> 3ff340e24c9d ("bus: ti-sysc: Fix gpt12 system timer issue with reserved
+> status") including today's head d4d016caa4b8 ("alpha: move __udiv_qrnnd
+> library function to arch/alpha/lib/").
+> 
+> Issue occurs when omap3_isp is not loaded and symptoms are the same than
+> my previous finding [1]. I.e. timer interrupts appear missing and need
+> to hit keys on serial console in order to let boot (when omap3_isp not
+> built) or "sleep 1" in shell to continue.
+> 
+> I bisected that regression to commit
+> e428e250fde6 ("ARM: dts: Configure system timers for omap3")
 
-Signed-off-by: Eric Ruei <e-ruei1@ti.com>
-Signed-off-by: Jacob Stiffler <j-stiffler@ti.com>
-Signed-off-by: Gowtham Tammana <g-tammana@ti.com>
-Signed-off-by: Jyri Sarha <jsarha@ti.com>
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
----
- arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi | 4 ++++
- arch/arm/boot/dts/am57xx-idk-common.dtsi        | 4 ++++
- 2 files changed, 8 insertions(+)
+OK thanks for bisecting it down :)
 
-diff --git a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
-index 994e69ab38d7..151b3d5775cc 100644
---- a/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
-+++ b/arch/arm/boot/dts/am57xx-beagle-x15-common.dtsi
-@@ -645,3 +645,7 @@ &pruss1_mdio {
- &pruss2_mdio {
- 	status = "disabled";
+> According to commit and dmesg it seems to switch from 32k timer to 13
+> MHz timer. Commit does not explain why it marks 32k timer as unusable on
+> the BeagleBoard. Or was that a copy-paste error from another dts?
+
+There is a 32k timer errata for beagleboard "Boards revision A and < B5"
+at https://elinux.org/BeagleBoard_Community, but looks like that is
+not what we were doing earlier looks like..
+
+> Before
+> 
+> [    0.000000] OMAP clockevent source: timer12 at 32768 Hz
+> [    0.000000] OMAP clocksource: 32k_counter at 32768 Hz
+> [    0.000000] clocksource: 32k_counter: mask: 0xffffffff max_cycles:
+> 0xffffffff, max_idle_ns: 58327039986419 ns
+> [    0.000030] sched_clock: 32 bits at 32kHz, resolution 30517ns, wraps
+> every 65535999984741ns
+
+Interesting, so the workaround we've had is still using the 32k clock
+source instead of the mpu clock source, and also using the 32k_counter.
+Let's switch back to that then, that sounds much nicer :)
+
+> After e428e250fde6
+> 
+> [    0.000000] TI gptimer clockevent: 13000000 Hz at
+> /ocp@68000000/target-module@49032000
+> [    0.000000] TI gptimer clocksource: always-on
+> /ocp@68000000/target-module@48304000
+> [    0.000091] sched_clock: 32 bits at 32kHz, resolution 30517ns, wraps
+> every 65535999984741ns
+> [    0.000183] clocksource: dmtimer: mask: 0xffffffff max_cycles:
+> 0xffffffff, max_idle_ns: 58327039986419 ns
+
+The patch below should take us back to the earlier configuration,
+can you please give it a try?
+
+> I fail to understand how omap3isp affects this since it actually disable
+> clocks after probe. Does it keep some power domain active which then
+> keeps the timer active etc?
+
+Sounds like it's because omap3isp never allows the SoC to enter deeper
+idle states. The mpu clock is stopped for idle states.
+
+Regards,
+
+Tony
+
+8<---------------
+diff --git a/arch/arm/boot/dts/omap3-beagle.dts b/arch/arm/boot/dts/omap3-beagle.dts
+--- a/arch/arm/boot/dts/omap3-beagle.dts
++++ b/arch/arm/boot/dts/omap3-beagle.dts
+@@ -304,11 +304,6 @@ &usbhsehci {
+ 	phys = <0 &hsusb2_phy>;
  };
-+
-+&bb2d {
-+	status = "okay";
-+};
-diff --git a/arch/arm/boot/dts/am57xx-idk-common.dtsi b/arch/arm/boot/dts/am57xx-idk-common.dtsi
-index 9fcb8944aa3e..cbab72a4c8b6 100644
---- a/arch/arm/boot/dts/am57xx-idk-common.dtsi
-+++ b/arch/arm/boot/dts/am57xx-idk-common.dtsi
-@@ -606,3 +606,7 @@ dpi_out: endpoint {
- 		};
+ 
+-/* Unusable as clocksource because of unreliable oscillator */
+-&counter32k {
+-	status = "disabled";
+-};
+-
+ /* Unusable as clockevent because if unreliable oscillator, allow to idle */
+ &timer1_target {
+ 	/delete-property/ti,no-reset-on-init;
+@@ -318,22 +313,13 @@ timer@0 {
  	};
  };
-+
-+&bb2d {
-+	status = "ok";
-+};
+ 
+-/* Preferred always-on timer for clocksource */
++/* Preferred always-on timer for clockevent */
+ &timer12_target {
+ 	ti,no-reset-on-init;
+ 	ti,no-idle;
+ 	timer@0 {
+-		/* Always clocked by secure_32k_fck */
+-	};
+-};
+-
+-/* Preferred timer for clockevent */
+-&timer2_target {
+-	ti,no-reset-on-init;
+-	ti,no-idle;
+-	timer@0 {
+-		assigned-clocks = <&gpt2_fck>;
+-		assigned-clock-parents = <&sys_ck>;
++		assigned-clocks = <&gpt12_fck>;
++		assigned-clock-parents = <&secure_32k_fck>;
+ 	};
+ };
+ 
+diff --git a/arch/arm/boot/dts/omap3-devkit8000.dts b/arch/arm/boot/dts/omap3-devkit8000.dts
+--- a/arch/arm/boot/dts/omap3-devkit8000.dts
++++ b/arch/arm/boot/dts/omap3-devkit8000.dts
+@@ -15,11 +15,6 @@ aliases {
+ 	};
+ };
+ 
+-/* Unusable as clocksource because of unreliable oscillator */
+-&counter32k {
+-	status = "disabled";
+-};
+-
+ /* Unusable as clockevent because if unreliable oscillator, allow to idle */
+ &timer1_target {
+ 	/delete-property/ti,no-reset-on-init;
+@@ -29,21 +24,12 @@ timer@0 {
+ 	};
+ };
+ 
+-/* Preferred always-on timer for clocksource */
++/* Preferred always-on timer for clockevent */
+ &timer12_target {
+ 	ti,no-reset-on-init;
+ 	ti,no-idle;
+ 	timer@0 {
+-		/* Always clocked by secure_32k_fck */
+-	};
+-};
+-
+-/* Preferred timer for clockevent */
+-&timer2_target {
+-	ti,no-reset-on-init;
+-	ti,no-idle;
+-	timer@0 {
+-		assigned-clocks = <&gpt2_fck>;
+-		assigned-clock-parents = <&sys_ck>;
++		assigned-clocks = <&gpt12_fck>;
++		assigned-clock-parents = <&secure_32k_fck>;
+ 	};
+ };
 -- 
-2.25.1
-
+2.33.0
