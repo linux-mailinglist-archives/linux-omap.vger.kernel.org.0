@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13A664131A4
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 12:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B39484131AA
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 12:34:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231986AbhIUKf2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Sep 2021 06:35:28 -0400
-Received: from muru.com ([72.249.23.125]:35532 "EHLO muru.com"
+        id S232130AbhIUKfg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Sep 2021 06:35:36 -0400
+Received: from muru.com ([72.249.23.125]:35542 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231927AbhIUKf2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 21 Sep 2021 06:35:28 -0400
+        id S232000AbhIUKfa (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 21 Sep 2021 06:35:30 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 0B4F380A8;
-        Tue, 21 Sep 2021 10:34:25 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 118A38127;
+        Tue, 21 Sep 2021 10:34:27 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
@@ -22,9 +22,9 @@ Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 3/6] serial: core: Add new prep_tx for power management
-Date:   Tue, 21 Sep 2021 13:33:43 +0300
-Message-Id: <20210921103346.64824-4-tony@atomide.com>
+Subject: [PATCH 4/6] serial: 8250: Implement prep_tx for power management
+Date:   Tue, 21 Sep 2021 13:33:44 +0300
+Message-Id: <20210921103346.64824-5-tony@atomide.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210921103346.64824-1-tony@atomide.com>
 References: <20210921103346.64824-1-tony@atomide.com>
@@ -34,95 +34,55 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-If the serial driver implements PM runtime with autosuspend, the port may
-be powered off for TX. To wake up the port, let's add new prep_tx() call
-for serial drivers to implement as needed. We call it from serial
-write_room() and write() functions. If the serial port is not enabled,
-we just return 0.
+We can use the prep_tx() call to wake up an idle serial port. This allows
+ust to remove the depedency to pm_runtime_irq_safe() for 8250_omap driver
+in the following patches.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- Documentation/driver-api/serial/driver.rst |  9 +++++++++
- drivers/tty/serial/serial_core.c           | 23 ++++++++++++++++++++++
- include/linux/serial_core.h                |  1 +
- 3 files changed, 33 insertions(+)
+ drivers/tty/serial/8250/8250_port.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/Documentation/driver-api/serial/driver.rst b/Documentation/driver-api/serial/driver.rst
---- a/Documentation/driver-api/serial/driver.rst
-+++ b/Documentation/driver-api/serial/driver.rst
-@@ -136,6 +136,15 @@ hardware.
- 
- 	This call must not sleep
- 
-+  prep_tx(port)
-+	Prepare port for transmitting characters.
-+
-+	Locking: port->lock taken.
-+
-+	Interrupts: locally disabled.
-+
-+	This call must not sleep
-+
-   start_tx(port)
- 	Start transmitting characters.
- 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -118,6 +118,17 @@ static void uart_stop(struct tty_struct *tty)
- 	uart_port_unlock(port, flags);
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1650,6 +1650,29 @@ static enum hrtimer_restart serial8250_em485_handle_start_tx(struct hrtimer *t)
+ 	return HRTIMER_NORESTART;
  }
  
-+static int __uart_prep_tx(struct tty_struct *tty)
++static int serial8250_prep_tx(struct uart_port *port)
 +{
-+	struct uart_state *state = tty->driver_data;
-+	struct uart_port *port = state->uart_port;
++	struct uart_8250_port *up = up_to_u8250p(port);
++	struct device *dev = up->port.dev;
++	int err;
 +
-+	if (port && !uart_tx_stopped(port) && port->ops->prep_tx)
-+		return port->ops->prep_tx(port);
++	if (!(up->capabilities & UART_CAP_RPM))
++		return 0;
 +
-+	return 0;
++	if (!pm_runtime_suspended(dev)) {
++		pm_runtime_mark_last_busy(dev);
++		return 0;
++	}
++
++	err = pm_request_resume(dev);
++	if (err < 0) {
++		dev_warn(dev, "prep_tx wakeup failed: %d\n", err);
++		return err;
++	}
++
++	return -EINPROGRESS;
 +}
 +
- static void __uart_start(struct tty_struct *tty)
+ static void serial8250_start_tx(struct uart_port *port)
  {
- 	struct uart_state *state = tty->driver_data;
-@@ -574,6 +585,12 @@ static int uart_write(struct tty_struct *tty,
- 		return 0;
- 	}
- 
-+	ret = __uart_prep_tx(tty);
-+	if (ret < 0) {
-+		uart_port_unlock(port, flags);
-+		return 0;
-+	}
-+
- 	while (port) {
- 		c = CIRC_SPACE_TO_END(circ->head, circ->tail, UART_XMIT_SIZE);
- 		if (count < c)
-@@ -600,6 +617,12 @@ static unsigned int uart_write_room(struct tty_struct *tty)
- 	unsigned int ret;
- 
- 	port = uart_port_lock(state, flags);
-+	ret = __uart_prep_tx(tty);
-+	if (ret < 0) {
-+		uart_port_unlock(port, flags);
-+		return 0;
-+	}
-+
- 	ret = uart_circ_chars_free(&state->xmit);
- 	uart_port_unlock(port, flags);
- 	return ret;
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -40,6 +40,7 @@ struct uart_ops {
- 	void		(*set_mctrl)(struct uart_port *, unsigned int mctrl);
- 	unsigned int	(*get_mctrl)(struct uart_port *);
- 	void		(*stop_tx)(struct uart_port *);
-+	int		(*prep_tx)(struct uart_port *);
- 	void		(*start_tx)(struct uart_port *);
- 	void		(*throttle)(struct uart_port *);
- 	void		(*unthrottle)(struct uart_port *);
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+@@ -3227,6 +3250,7 @@ static const struct uart_ops serial8250_pops = {
+ 	.set_mctrl	= serial8250_set_mctrl,
+ 	.get_mctrl	= serial8250_get_mctrl,
+ 	.stop_tx	= serial8250_stop_tx,
++	.prep_tx	= serial8250_prep_tx,
+ 	.start_tx	= serial8250_start_tx,
+ 	.throttle	= serial8250_throttle,
+ 	.unthrottle	= serial8250_unthrottle,
 -- 
 2.33.0
