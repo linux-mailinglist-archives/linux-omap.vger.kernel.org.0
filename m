@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B5FEF41310C
+	by mail.lfdr.de (Postfix) with ESMTP id B342841310B
 	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 12:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231575AbhIUKDB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Sep 2021 06:03:01 -0400
-Received: from muru.com ([72.249.23.125]:35410 "EHLO muru.com"
+        id S229683AbhIUKDC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Sep 2021 06:03:02 -0400
+Received: from muru.com ([72.249.23.125]:35428 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231483AbhIUKC5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 21 Sep 2021 06:02:57 -0400
+        id S231570AbhIUKDA (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 21 Sep 2021 06:03:00 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 959BA812F;
-        Tue, 21 Sep 2021 10:01:55 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id EC5B08132;
+        Tue, 21 Sep 2021 10:01:57 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
@@ -22,9 +22,9 @@ Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         Keerthy <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>,
         Nishanth Menon <nm@ti.com>, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 2/9] bus: ti-sysc: Check for lost context in sysc_reinit_module()
-Date:   Tue, 21 Sep 2021 13:01:08 +0300
-Message-Id: <20210921100115.59865-3-tony@atomide.com>
+Subject: [PATCH 3/9] bus: ti-sysc: Add quirk handling for reinit on context lost
+Date:   Tue, 21 Sep 2021 13:01:09 +0300
+Message-Id: <20210921100115.59865-4-tony@atomide.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210921100115.59865-1-tony@atomide.com>
 References: <20210921100115.59865-1-tony@atomide.com>
@@ -34,137 +34,219 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There is no need to restore context if it was not lost. Let's add a new
-function sysc_check_context() to check for lost context. To make use of it,
-we need to save the sysconfig register status on enable and disable.
+Some interconnect target modules such as otg and gpmc on am335x need a
+re-init after resume. As we also have PM runtime cases where the context
+may be lost, let's handle these all with cpu_pm.
+
+For the am335x resume path, we already have cpu_pm_resume() call
+cpu_pm_cluster_exit().
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/bus/ti-sysc.c | 60 +++++++++++++++++++++++++++++++++++--------
- 1 file changed, 49 insertions(+), 11 deletions(-)
+ drivers/bus/ti-sysc.c                 | 108 ++++++++++++++++++++++++--
+ include/linux/platform_data/ti-sysc.h |   1 +
+ 2 files changed, 103 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
 --- a/drivers/bus/ti-sysc.c
 +++ b/drivers/bus/ti-sysc.c
-@@ -132,6 +132,7 @@ struct sysc {
- 	struct ti_sysc_cookie cookie;
- 	const char *name;
- 	u32 revision;
-+	u32 sysconfig;
- 	unsigned int reserved:1;
- 	unsigned int enabled:1;
- 	unsigned int needs_resume:1;
-@@ -1135,7 +1136,8 @@ static int sysc_enable_module(struct device *dev)
- 	best_mode = fls(ddata->cfg.midlemodes) - 1;
- 	if (best_mode > SYSC_IDLE_MASK) {
- 		dev_err(dev, "%s: invalid midlemode\n", __func__);
--		return -EINVAL;
-+		error = -EINVAL;
-+		goto save_context;
- 	}
+@@ -6,6 +6,7 @@
+ #include <linux/io.h>
+ #include <linux/clk.h>
+ #include <linux/clkdev.h>
++#include <linux/cpu_pm.h>
+ #include <linux/delay.h>
+ #include <linux/list.h>
+ #include <linux/module.h>
+@@ -52,11 +53,18 @@ struct sysc_address {
+ 	struct list_head node;
+ };
  
- 	if (ddata->cfg.quirks & SYSC_QUIRK_SWSUP_MSTANDBY)
-@@ -1153,13 +1155,16 @@ static int sysc_enable_module(struct device *dev)
- 		sysc_write_sysconfig(ddata, reg);
- 	}
- 
--	/* Flush posted write */
--	sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
-+	error = 0;
++struct sysc_module {
++	struct sysc *ddata;
++	struct list_head node;
++};
 +
-+save_context:
-+	/* Save context and flush posted write */
-+	ddata->sysconfig = sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
+ struct sysc_soc_info {
+ 	unsigned long general_purpose:1;
+ 	enum sysc_soc soc;
+-	struct mutex list_lock;			/* disabled modules list lock */
++	struct mutex list_lock;	/* disabled and restored modules list lock */
+ 	struct list_head disabled_modules;
++	struct list_head restored_modules;
++	struct notifier_block nb;
+ };
  
- 	if (ddata->module_enable_quirk)
- 		ddata->module_enable_quirk(ddata);
- 
--	return 0;
-+	return error;
- }
- 
- static int sysc_best_idle_mode(u32 idlemodes, u32 *best_mode)
-@@ -1216,8 +1221,10 @@ static int sysc_disable_module(struct device *dev)
- set_sidle:
- 	/* Set SIDLE mode */
- 	idlemodes = ddata->cfg.sidlemodes;
--	if (!idlemodes || regbits->sidle_shift < 0)
--		return 0;
-+	if (!idlemodes || regbits->sidle_shift < 0) {
-+		ret = 0;
-+		goto save_context;
-+	}
- 
- 	if (ddata->cfg.quirks & SYSC_QUIRK_SWSUP_SIDLE) {
- 		best_mode = SYSC_IDLE_FORCE;
-@@ -1225,7 +1232,8 @@ static int sysc_disable_module(struct device *dev)
- 		ret = sysc_best_idle_mode(idlemodes, &best_mode);
- 		if (ret) {
- 			dev_err(dev, "%s: invalid sidlemode\n", __func__);
--			return ret;
-+			ret = -EINVAL;
-+			goto save_context;
- 		}
+ enum sysc_clocks {
+@@ -2477,6 +2485,79 @@ static struct dev_pm_domain sysc_child_pm_domain = {
  	}
+ };
  
-@@ -1236,10 +1244,13 @@ static int sysc_disable_module(struct device *dev)
- 		reg |= 1 << regbits->autoidle_shift;
- 	sysc_write_sysconfig(ddata, reg);
- 
--	/* Flush posted write */
--	sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
-+	ret = 0;
- 
--	return 0;
-+save_context:
-+	/* Save context and flush posted write */
-+	ddata->sysconfig = sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
-+
-+	return ret;
- }
- 
- static int __maybe_unused sysc_runtime_suspend_legacy(struct device *dev,
-@@ -1377,13 +1388,40 @@ static int __maybe_unused sysc_runtime_resume(struct device *dev)
- 	return error;
- }
- 
-+/*
-+ * Checks if device context was lost. Assumes the sysconfig register value
-+ * after lost context is different from the configured value. Only works for
-+ * enabled devices.
-+ *
-+ * Eventually we may want to also add support to using the context lost
-+ * registers that some SoCs have.
-+ */
-+static int sysc_check_context(struct sysc *ddata)
++/* Caller needs to take list_lock if ever used outside of cpu_pm */
++static void sysc_reinit_modules(struct sysc_soc_info *soc)
 +{
-+	u32 reg;
++	struct sysc_module *module;
++	struct list_head *pos;
++	struct sysc *ddata;
++	int error = 0;
 +
-+	if (!ddata->enabled)
-+		return -ENODATA;
-+
-+	reg = sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
-+	if (reg == ddata->sysconfig)
-+		return 0;
-+
-+	return -EACCES;
++	list_for_each(pos, &sysc_soc->restored_modules) {
++		module = list_entry(pos, struct sysc_module, node);
++		ddata = module->ddata;
++		error = sysc_reinit_module(ddata, ddata->enabled);
++	}
 +}
 +
- static int sysc_reinit_module(struct sysc *ddata, bool leave_enabled)
- {
- 	struct device *dev = ddata->dev;
- 	int error;
- 
--	/* Disable target module if it is enabled */
- 	if (ddata->enabled) {
-+		/* Nothing to do if enabled and context not lost */
-+		error = sysc_check_context(ddata);
-+		if (!error)
-+			return 0;
++/**
++ * sysc_context_notifier - optionally reset and restore module after idle
++ * @nb: notifier block
++ * @cmd: unused
++ * @v: unused
++ *
++ * Some interconnect target modules need to be restored, or reset and restored
++ * on CPU_PM CPU_PM_CLUSTER_EXIT notifier. This is needed at least for am335x
++ * OTG and GPMC target modules even if the modules are unused.
++ */
++static int sysc_context_notifier(struct notifier_block *nb, unsigned long cmd,
++				 void *v)
++{
++	struct sysc_soc_info *soc;
 +
-+		/* Disable target module if it is enabled */
- 		error = sysc_runtime_suspend(dev);
- 		if (error)
- 			dev_warn(dev, "reinit suspend failed: %i\n", error);
++	soc = container_of(nb, struct sysc_soc_info, nb);
++
++	switch (cmd) {
++	case CPU_CLUSTER_PM_ENTER:
++		break;
++	case CPU_CLUSTER_PM_ENTER_FAILED:	/* No need to restore context */
++		break;
++	case CPU_CLUSTER_PM_EXIT:
++		sysc_reinit_modules(soc);
++		break;
++	}
++
++	return NOTIFY_OK;
++}
++
++/**
++ * sysc_add_restored - optionally add reset and restore quirk hanlling
++ * @ddata: device data
++ */
++static void sysc_add_restored(struct sysc *ddata)
++{
++	struct sysc_module *restored_module;
++
++	restored_module = kzalloc(sizeof(*restored_module), GFP_KERNEL);
++	if (!restored_module)
++		return;
++
++	restored_module->ddata = ddata;
++
++	mutex_lock(&sysc_soc->list_lock);
++
++	list_add(&restored_module->node, &sysc_soc->restored_modules);
++
++	if (sysc_soc->nb.notifier_call)
++		goto out_unlock;
++
++	sysc_soc->nb.notifier_call = sysc_context_notifier;
++	cpu_pm_register_notifier(&sysc_soc->nb);
++
++out_unlock:
++	mutex_unlock(&sysc_soc->list_lock);
++}
++
+ /**
+  * sysc_legacy_idle_quirk - handle children in omap_device compatible way
+  * @ddata: device driver data
+@@ -2976,12 +3057,14 @@ static int sysc_add_disabled(unsigned long base)
+ }
+ 
+ /*
+- * One time init to detect the booted SoC and disable unavailable features.
++ * One time init to detect the booted SoC, disable unavailable features
++ * and initialize list for optional cpu_pm notifier.
++ *
+  * Note that we initialize static data shared across all ti-sysc instances
+  * so ddata is only used for SoC type. This can be called from module_init
+  * once we no longer need to rely on platform data.
+  */
+-static int sysc_init_soc(struct sysc *ddata)
++static int sysc_init_static_data(struct sysc *ddata)
+ {
+ 	const struct soc_device_attribute *match;
+ 	struct ti_sysc_platform_data *pdata;
+@@ -2997,6 +3080,7 @@ static int sysc_init_soc(struct sysc *ddata)
+ 
+ 	mutex_init(&sysc_soc->list_lock);
+ 	INIT_LIST_HEAD(&sysc_soc->disabled_modules);
++	INIT_LIST_HEAD(&sysc_soc->restored_modules);
+ 	sysc_soc->general_purpose = true;
+ 
+ 	pdata = dev_get_platdata(ddata->dev);
+@@ -3060,15 +3144,24 @@ static int sysc_init_soc(struct sysc *ddata)
+ 	return 0;
+ }
+ 
+-static void sysc_cleanup_soc(void)
++static void sysc_cleanup_static_data(void)
+ {
++	struct sysc_module *restored_module;
+ 	struct sysc_address *disabled_module;
+ 	struct list_head *pos, *tmp;
+ 
+ 	if (!sysc_soc)
+ 		return;
+ 
++	if (sysc_soc->nb.notifier_call)
++		cpu_pm_unregister_notifier(&sysc_soc->nb);
++
+ 	mutex_lock(&sysc_soc->list_lock);
++	list_for_each_safe(pos, tmp, &sysc_soc->restored_modules) {
++		restored_module = list_entry(pos, struct sysc_module, node);
++		list_del(pos);
++		kfree(restored_module);
++	}
+ 	list_for_each_safe(pos, tmp, &sysc_soc->disabled_modules) {
+ 		disabled_module = list_entry(pos, struct sysc_address, node);
+ 		list_del(pos);
+@@ -3136,7 +3229,7 @@ static int sysc_probe(struct platform_device *pdev)
+ 	ddata->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, ddata);
+ 
+-	error = sysc_init_soc(ddata);
++	error = sysc_init_static_data(ddata);
+ 	if (error)
+ 		return error;
+ 
+@@ -3234,6 +3327,9 @@ static int sysc_probe(struct platform_device *pdev)
+ 		pm_runtime_put(&pdev->dev);
+ 	}
+ 
++	if (ddata->cfg.quirks & SYSC_QUIRK_REINIT_ON_CTX_LOST)
++		sysc_add_restored(ddata);
++
+ 	return 0;
+ 
+ err:
+@@ -3315,7 +3411,7 @@ static void __exit sysc_exit(void)
+ {
+ 	bus_unregister_notifier(&platform_bus_type, &sysc_nb);
+ 	platform_driver_unregister(&sysc_driver);
+-	sysc_cleanup_soc();
++	sysc_cleanup_static_data();
+ }
+ module_exit(sysc_exit);
+ 
+diff --git a/include/linux/platform_data/ti-sysc.h b/include/linux/platform_data/ti-sysc.h
+--- a/include/linux/platform_data/ti-sysc.h
++++ b/include/linux/platform_data/ti-sysc.h
+@@ -50,6 +50,7 @@ struct sysc_regbits {
+ 	s8 emufree_shift;
+ };
+ 
++#define SYSC_QUIRK_REINIT_ON_CTX_LOST	BIT(28)
+ #define SYSC_QUIRK_REINIT_ON_RESUME	BIT(27)
+ #define SYSC_QUIRK_GPMC_DEBUG		BIT(26)
+ #define SYSC_MODULE_QUIRK_ENA_RESETDONE	BIT(25)
 -- 
 2.33.0
