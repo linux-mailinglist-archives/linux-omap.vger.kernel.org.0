@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F428413261
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 13:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2688F413267
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 13:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232395AbhIULRs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Sep 2021 07:17:48 -0400
-Received: from muru.com ([72.249.23.125]:35712 "EHLO muru.com"
+        id S232400AbhIULRv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Sep 2021 07:17:51 -0400
+Received: from muru.com ([72.249.23.125]:35722 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232380AbhIULRm (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 21 Sep 2021 07:17:42 -0400
+        id S232387AbhIULRo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 21 Sep 2021 07:17:44 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id CD1E580A8;
-        Tue, 21 Sep 2021 11:16:39 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 221F88132;
+        Tue, 21 Sep 2021 11:16:41 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
@@ -23,9 +23,9 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Santosh Shilimkar <ssantosh@kernel.org>,
         linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: [PATCH 3/5] mmc: sdhci-omap: Add omap_offset to support omap3 and earlier
-Date:   Tue, 21 Sep 2021 14:15:58 +0300
-Message-Id: <20210921111600.24577-4-tony@atomide.com>
+Subject: [PATCH 4/5] mmc: sdhci-omap: Implement PM runtime functions
+Date:   Tue, 21 Sep 2021 14:15:59 +0300
+Message-Id: <20210921111600.24577-5-tony@atomide.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210921111600.24577-1-tony@atomide.com>
 References: <20210921111600.24577-1-tony@atomide.com>
@@ -35,198 +35,153 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The omap specific registers are at offset 0x100 from base for omap4 and
-later, and for omap3 and earlier they are at offset 0. Let's handle also
-the earlier SoCs by adding omap_offset.
+Implement PM runtime functions and enable MMC_CAP_AGGRESSIVE_PM.
 
-Note that eventually we should just move to using standard sdhci register
-access for the sdhci range with new offsets starting at 0x100.
+Note that we save context in probe to avoid restoring invalid context
+on the first resume. For system suspend, we have the new PM runtime
+functions do most of the work.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/mmc/host/sdhci-omap.c | 61 ++++++++++++++++++++++++++---------
- 1 file changed, 45 insertions(+), 16 deletions(-)
+ drivers/mmc/host/sdhci-omap.c | 66 +++++++++++++++++++++++++++++------
+ 1 file changed, 56 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
 --- a/drivers/mmc/host/sdhci-omap.c
 +++ b/drivers/mmc/host/sdhci-omap.c
-@@ -21,9 +21,14 @@
+@@ -117,6 +117,9 @@ struct sdhci_omap_host {
  
- #include "sdhci-pltfm.h"
- 
--#define SDHCI_OMAP_SYSCONFIG	0x110
-+/*
-+ * Note that the register offsets used here are from omap_regs
-+ * base which is 0x100 for omap4 and later, and 0 for omap3 and
-+ * earlier.
-+ */
-+#define SDHCI_OMAP_SYSCONFIG	0x10
- 
--#define SDHCI_OMAP_CON		0x12c
-+#define SDHCI_OMAP_CON		0x2c
- #define CON_DW8			BIT(5)
- #define CON_DMA_MASTER		BIT(20)
- #define CON_DDR			BIT(19)
-@@ -33,20 +38,20 @@
- #define CON_INIT		BIT(1)
- #define CON_OD			BIT(0)
- 
--#define SDHCI_OMAP_DLL		0x0134
-+#define SDHCI_OMAP_DLL		0x34
- #define DLL_SWT			BIT(20)
- #define DLL_FORCE_SR_C_SHIFT	13
- #define DLL_FORCE_SR_C_MASK	(0x7f << DLL_FORCE_SR_C_SHIFT)
- #define DLL_FORCE_VALUE		BIT(12)
- #define DLL_CALIB		BIT(1)
- 
--#define SDHCI_OMAP_CMD		0x20c
-+#define SDHCI_OMAP_CMD		0x10c
- 
--#define SDHCI_OMAP_PSTATE	0x0224
-+#define SDHCI_OMAP_PSTATE	0x124
- #define PSTATE_DLEV_DAT0	BIT(20)
- #define PSTATE_DATI		BIT(1)
- 
--#define SDHCI_OMAP_HCTL		0x228
-+#define SDHCI_OMAP_HCTL		0x128
- #define HCTL_SDBP		BIT(8)
- #define HCTL_SDVS_SHIFT		9
- #define HCTL_SDVS_MASK		(0x7 << HCTL_SDVS_SHIFT)
-@@ -54,28 +59,28 @@
- #define HCTL_SDVS_30		(0x6 << HCTL_SDVS_SHIFT)
- #define HCTL_SDVS_18		(0x5 << HCTL_SDVS_SHIFT)
- 
--#define SDHCI_OMAP_SYSCTL	0x22c
-+#define SDHCI_OMAP_SYSCTL	0x12c
- #define SYSCTL_CEN		BIT(2)
- #define SYSCTL_CLKD_SHIFT	6
- #define SYSCTL_CLKD_MASK	0x3ff
- 
--#define SDHCI_OMAP_STAT		0x230
-+#define SDHCI_OMAP_STAT		0x130
- 
--#define SDHCI_OMAP_IE		0x234
-+#define SDHCI_OMAP_IE		0x134
- #define INT_CC_EN		BIT(0)
- 
--#define SDHCI_OMAP_ISE		0x238
-+#define SDHCI_OMAP_ISE		0x138
- 
--#define SDHCI_OMAP_AC12		0x23c
-+#define SDHCI_OMAP_AC12		0x13c
- #define AC12_V1V8_SIGEN		BIT(19)
- #define AC12_SCLK_SEL		BIT(23)
- 
--#define SDHCI_OMAP_CAPA		0x240
-+#define SDHCI_OMAP_CAPA		0x140
- #define CAPA_VS33		BIT(24)
- #define CAPA_VS30		BIT(25)
- #define CAPA_VS18		BIT(26)
- 
--#define SDHCI_OMAP_CAPA2	0x0244
-+#define SDHCI_OMAP_CAPA2	0x144
- #define CAPA2_TSDR50		BIT(13)
- 
- #define SDHCI_OMAP_TIMEOUT	1		/* 1 msec */
-@@ -93,7 +98,8 @@
- #define SDHCI_OMAP_SPECIAL_RESET	BIT(1)
- 
- struct sdhci_omap_data {
--	u32 offset;
-+	int omap_offset;	/* Offset for omap regs from base */
-+	u32 offset;		/* Offset for SDHCI regs from base */
- 	u8 flags;
- };
- 
-@@ -112,6 +118,10 @@ struct sdhci_omap_host {
  	struct pinctrl		*pinctrl;
  	struct pinctrl_state	**pinctrl_state;
++	unsigned long		context_valid:1;
++	unsigned long		is_runtime_suspended:1;
++	unsigned long		needs_resume:1;
  	bool			is_tuning;
+ 
+ 	/* Offset for omap specific registers from base */
+@@ -1207,6 +1210,8 @@ static const struct soc_device_attribute sdhci_omap_soc_devices[] = {
+ 	}
+ };
+ 
++static void sdhci_omap_context_save(struct sdhci_omap_host *omap_host);
 +
-+	/* Offset for omap specific registers from base */
-+	int			omap_offset;
-+
- 	/* Omap specific context save */
- 	u32			con;
- 	u32			hctl;
-@@ -127,13 +137,13 @@ static void sdhci_omap_stop_clock(struct sdhci_omap_host *omap_host);
- static inline u32 sdhci_omap_readl(struct sdhci_omap_host *host,
- 				   unsigned int offset)
+ static int sdhci_omap_probe(struct platform_device *pdev)
  {
--	return readl(host->base + offset);
-+	return readl(host->base + host->omap_offset + offset);
+ 	int ret;
+@@ -1338,6 +1343,8 @@ static int sdhci_omap_probe(struct platform_device *pdev)
+ 	/* R1B responses is required to properly manage HW busy detection. */
+ 	mmc->caps |= MMC_CAP_NEED_RSP_BUSY;
+ 
++	mmc->caps |= MMC_CAP_AGGRESSIVE_PM;
++
+ 	ret = sdhci_setup_host(host);
+ 	if (ret)
+ 		goto err_put_sync;
+@@ -1350,6 +1357,11 @@ static int sdhci_omap_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_cleanup_host;
+ 
++	sdhci_omap_context_save(omap_host);
++	omap_host->context_valid = 1;
++
++	pm_runtime_put_sync(dev);
++
+ 	return 0;
+ 
+ err_cleanup_host:
+@@ -1371,6 +1383,7 @@ static int sdhci_omap_remove(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct sdhci_host *host = platform_get_drvdata(pdev);
+ 
++	pm_runtime_get_sync(dev);
+ 	sdhci_remove_host(host, true);
+ 	pm_runtime_put_sync(dev);
+ 	pm_runtime_disable(dev);
+@@ -1402,42 +1415,75 @@ static void sdhci_omap_context_restore(struct sdhci_omap_host *omap_host)
+ 	sdhci_omap_writel(omap_host, SDHCI_OMAP_ISE, omap_host->ise);
  }
  
- static inline void sdhci_omap_writel(struct sdhci_omap_host *host,
- 				     unsigned int offset, u32 data)
+-static int __maybe_unused sdhci_omap_suspend(struct device *dev)
++static int __maybe_unused sdhci_omap_runtime_suspend(struct device *dev)
  {
--	writel(data, host->base + offset);
-+	writel(data, host->base + host->omap_offset + offset);
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+ 
+-	sdhci_suspend_host(host);
+-
+ 	sdhci_omap_context_save(omap_host);
+ 
+ 	pinctrl_pm_select_idle_state(dev);
+ 
+-	pm_runtime_force_suspend(dev);
++	omap_host->is_runtime_suspended = 1;
+ 
+ 	return 0;
  }
  
- static int sdhci_omap_set_pbias(struct sdhci_omap_host *omap_host,
-@@ -1009,36 +1019,54 @@ static const struct sdhci_pltfm_data sdhci_omap_pdata = {
- 	.ops = &sdhci_omap_ops,
- };
+-static int __maybe_unused sdhci_omap_resume(struct device *dev)
++static int __maybe_unused sdhci_omap_runtime_resume(struct device *dev)
+ {
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
  
-+static const struct sdhci_omap_data omap2430_data = {
-+	.omap_offset = 0,
-+	.offset = 0x100,
-+};
+-	pm_runtime_force_resume(dev);
+-
+ 	pinctrl_pm_select_default_state(dev);
+ 
+-	sdhci_omap_context_restore(omap_host);
++	if (omap_host->context_valid)
++		sdhci_omap_context_restore(omap_host);
 +
-+static const struct sdhci_omap_data omap3_data = {
-+	.omap_offset = 0,
-+	.offset = 0x100,
-+};
++	omap_host->is_runtime_suspended = 0;
 +
- static const struct sdhci_omap_data omap4_data = {
-+	.omap_offset = 0x100,
- 	.offset = 0x200,
- 	.flags = SDHCI_OMAP_SPECIAL_RESET,
- };
++	return 0;
++}
++
++static int __maybe_unused sdhci_omap_suspend(struct device *dev)
++{
++	struct sdhci_host *host = dev_get_drvdata(dev);
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
++
++	if (omap_host->is_runtime_suspended)
++		return 0;
++
++	sdhci_suspend_host(host);
++	sdhci_omap_runtime_suspend(dev);
++	omap_host->needs_resume = 1;
  
- static const struct sdhci_omap_data omap5_data = {
-+	.omap_offset = 0x100,
- 	.offset = 0x200,
- 	.flags = SDHCI_OMAP_SPECIAL_RESET,
- };
++	return 0;
++}
++
++static int __maybe_unused sdhci_omap_resume(struct device *dev)
++{
++	struct sdhci_host *host = dev_get_drvdata(dev);
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
++
++	if (!omap_host->needs_resume)
++		return 0;
++
++	sdhci_omap_runtime_resume(dev);
+ 	sdhci_resume_host(host);
++	omap_host->needs_resume = 0;
  
- static const struct sdhci_omap_data k2g_data = {
-+	.omap_offset = 0x100,
- 	.offset = 0x200,
- };
+ 	return 0;
+ }
+ #endif
+-static SIMPLE_DEV_PM_OPS(sdhci_omap_dev_pm_ops, sdhci_omap_suspend,
+-			 sdhci_omap_resume);
++
++static const struct dev_pm_ops sdhci_omap_dev_pm_ops = {
++	SET_RUNTIME_PM_OPS(sdhci_omap_runtime_suspend,
++			   sdhci_omap_runtime_resume, NULL)
++	SET_SYSTEM_SLEEP_PM_OPS(sdhci_omap_suspend, sdhci_omap_resume)
++};
  
- static const struct sdhci_omap_data am335_data = {
-+	.omap_offset = 0x100,
- 	.offset = 0x200,
- 	.flags = SDHCI_OMAP_SPECIAL_RESET,
- };
- 
- static const struct sdhci_omap_data am437_data = {
-+	.omap_offset = 0x100,
- 	.offset = 0x200,
- 	.flags = SDHCI_OMAP_SPECIAL_RESET,
- };
- 
- static const struct sdhci_omap_data dra7_data = {
-+	.omap_offset = 0x100,
- 	.offset = 0x200,
- 	.flags	= SDHCI_OMAP_REQUIRE_IODELAY,
- };
- 
- static const struct of_device_id omap_sdhci_match[] = {
-+	{ .compatible = "ti,omap2430-sdhci", .data = &omap2430_data },
-+	{ .compatible = "ti,omap3-sdhci", .data = &omap3_data },
- 	{ .compatible = "ti,omap4-sdhci", .data = &omap4_data },
- 	{ .compatible = "ti,omap5-sdhci", .data = &omap5_data },
- 	{ .compatible = "ti,dra7-sdhci", .data = &dra7_data },
-@@ -1223,6 +1251,7 @@ static int sdhci_omap_probe(struct platform_device *pdev)
- 	omap_host->power_mode = MMC_POWER_UNDEFINED;
- 	omap_host->timing = MMC_TIMING_LEGACY;
- 	omap_host->flags = data->flags;
-+	omap_host->omap_offset = data->omap_offset;
- 	host->ioaddr += offset;
- 	host->mapbase = regs->start + offset;
- 
+ static struct platform_driver sdhci_omap_driver = {
+ 	.probe = sdhci_omap_probe,
 -- 
 2.33.0
