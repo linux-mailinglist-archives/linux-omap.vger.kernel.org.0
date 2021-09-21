@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 279544131A3
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 12:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13A664131A4
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 12:34:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231939AbhIUKf1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Sep 2021 06:35:27 -0400
-Received: from muru.com ([72.249.23.125]:35522 "EHLO muru.com"
+        id S231986AbhIUKf2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Sep 2021 06:35:28 -0400
+Received: from muru.com ([72.249.23.125]:35532 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231823AbhIUKf0 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 21 Sep 2021 06:35:26 -0400
+        id S231927AbhIUKf2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 21 Sep 2021 06:35:28 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 37951812F;
-        Tue, 21 Sep 2021 10:34:24 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 0B4F380A8;
+        Tue, 21 Sep 2021 10:34:25 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
@@ -22,9 +22,9 @@ Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/6] tty: n_gsm: Don't ignore write return value in gsmld_output()
-Date:   Tue, 21 Sep 2021 13:33:42 +0300
-Message-Id: <20210921103346.64824-3-tony@atomide.com>
+Subject: [PATCH 3/6] serial: core: Add new prep_tx for power management
+Date:   Tue, 21 Sep 2021 13:33:43 +0300
+Message-Id: <20210921103346.64824-4-tony@atomide.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210921103346.64824-1-tony@atomide.com>
 References: <20210921103346.64824-1-tony@atomide.com>
@@ -34,36 +34,95 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We currently have gsmld_output() ignore the return value from device
-write. This means we will lose packets if device write returns 0 or
-an error.
+If the serial driver implements PM runtime with autosuspend, the port may
+be powered off for TX. To wake up the port, let's add new prep_tx() call
+for serial drivers to implement as needed. We call it from serial
+write_room() and write() functions. If the serial port is not enabled,
+we just return 0.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/tty/n_gsm.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ Documentation/driver-api/serial/driver.rst |  9 +++++++++
+ drivers/tty/serial/serial_core.c           | 23 ++++++++++++++++++++++
+ include/linux/serial_core.h                |  1 +
+ 3 files changed, 33 insertions(+)
 
-diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -687,7 +687,7 @@ static void gsm_data_kick(struct gsm_mux *gsm, struct gsm_dlci *dlci)
- 			print_hex_dump_bytes("gsm_data_kick: ",
- 					     DUMP_PREFIX_OFFSET,
- 					     gsm->txframe, len);
--		if (gsmld_output(gsm, gsm->txframe, len) < 0)
-+		if (gsmld_output(gsm, gsm->txframe, len) <= 0)
- 			break;
- 		/* FIXME: Can eliminate one SOF in many more cases */
- 		gsm->tx_bytes -= msg->len;
-@@ -2358,8 +2358,7 @@ static int gsmld_output(struct gsm_mux *gsm, u8 *data, int len)
- 	if (debug & 4)
- 		print_hex_dump_bytes("gsmld_output: ", DUMP_PREFIX_OFFSET,
- 				     data, len);
--	gsm->tty->ops->write(gsm->tty, data, len);
--	return len;
-+	return gsm->tty->ops->write(gsm->tty, data, len);
+diff --git a/Documentation/driver-api/serial/driver.rst b/Documentation/driver-api/serial/driver.rst
+--- a/Documentation/driver-api/serial/driver.rst
++++ b/Documentation/driver-api/serial/driver.rst
+@@ -136,6 +136,15 @@ hardware.
+ 
+ 	This call must not sleep
+ 
++  prep_tx(port)
++	Prepare port for transmitting characters.
++
++	Locking: port->lock taken.
++
++	Interrupts: locally disabled.
++
++	This call must not sleep
++
+   start_tx(port)
+ 	Start transmitting characters.
+ 
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -118,6 +118,17 @@ static void uart_stop(struct tty_struct *tty)
+ 	uart_port_unlock(port, flags);
  }
  
- /**
++static int __uart_prep_tx(struct tty_struct *tty)
++{
++	struct uart_state *state = tty->driver_data;
++	struct uart_port *port = state->uart_port;
++
++	if (port && !uart_tx_stopped(port) && port->ops->prep_tx)
++		return port->ops->prep_tx(port);
++
++	return 0;
++}
++
+ static void __uart_start(struct tty_struct *tty)
+ {
+ 	struct uart_state *state = tty->driver_data;
+@@ -574,6 +585,12 @@ static int uart_write(struct tty_struct *tty,
+ 		return 0;
+ 	}
+ 
++	ret = __uart_prep_tx(tty);
++	if (ret < 0) {
++		uart_port_unlock(port, flags);
++		return 0;
++	}
++
+ 	while (port) {
+ 		c = CIRC_SPACE_TO_END(circ->head, circ->tail, UART_XMIT_SIZE);
+ 		if (count < c)
+@@ -600,6 +617,12 @@ static unsigned int uart_write_room(struct tty_struct *tty)
+ 	unsigned int ret;
+ 
+ 	port = uart_port_lock(state, flags);
++	ret = __uart_prep_tx(tty);
++	if (ret < 0) {
++		uart_port_unlock(port, flags);
++		return 0;
++	}
++
+ 	ret = uart_circ_chars_free(&state->xmit);
+ 	uart_port_unlock(port, flags);
+ 	return ret;
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -40,6 +40,7 @@ struct uart_ops {
+ 	void		(*set_mctrl)(struct uart_port *, unsigned int mctrl);
+ 	unsigned int	(*get_mctrl)(struct uart_port *);
+ 	void		(*stop_tx)(struct uart_port *);
++	int		(*prep_tx)(struct uart_port *);
+ 	void		(*start_tx)(struct uart_port *);
+ 	void		(*throttle)(struct uart_port *);
+ 	void		(*unthrottle)(struct uart_port *);
 -- 
 2.33.0
