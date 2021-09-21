@@ -2,60 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95C8C412EEB
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 09:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3367B412EF0
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 09:02:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230020AbhIUHCd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Sep 2021 03:02:33 -0400
-Received: from muru.com ([72.249.23.125]:35232 "EHLO muru.com"
+        id S230026AbhIUHDw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Sep 2021 03:03:52 -0400
+Received: from muru.com ([72.249.23.125]:35246 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230027AbhIUHC3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 21 Sep 2021 03:02:29 -0400
+        id S229998AbhIUHDw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 21 Sep 2021 03:03:52 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 18FD180A8;
-        Tue, 21 Sep 2021 07:01:29 +0000 (UTC)
-Date:   Tue, 21 Sep 2021 10:00:59 +0300
+        by muru.com (Postfix) with ESMTPS id 26C1E80A8;
+        Tue, 21 Sep 2021 07:02:52 +0000 (UTC)
+Date:   Tue, 21 Sep 2021 10:02:22 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
 Cc:     Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        linux-omap@vger.kernel.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Andreas Kemnade <andreas@kemnade.info>
 Subject: Re: Regression with e428e250fde6 on BeagleBoard Rev C2
-Message-ID: <YUmDKzMko81wc/C+@atomide.com>
+Message-ID: <YUmDfrqBzCWlAQcz@atomide.com>
 References: <3f6924a7-1934-b94e-2441-4781fe737f32@bitmer.com>
- <YUiOA4QEbZXPmQ7F@atomide.com>
- <20210920165216.34abc4dd@aktux>
+ <3C216B2C-5D6B-489C-A9D8-D14880EC91B7@goldelico.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210920165216.34abc4dd@aktux>
+In-Reply-To: <3C216B2C-5D6B-489C-A9D8-D14880EC91B7@goldelico.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Andreas Kemnade <andreas@kemnade.info> [210920 15:26]:
-> Hi,
-> 
-> On Mon, 20 Sep 2021 16:34:59 +0300
-> Tony Lindgren <tony@atomide.com> wrote:
-> 
-> > > I fail to understand how omap3isp affects this since it actually disable
-> > > clocks after probe. Does it keep some power domain active which then
-> > > keeps the timer active etc?  
-> > 
-> > Sounds like it's because omap3isp never allows the SoC to enter deeper
-> > idle states. The mpu clock is stopped for idle states.
-> 
-> On GTA04 I experienced also some strange pm issues with omap3isp:
-> rmmod clears up everything fine.
-> 
-> After probing, clocks seems to be turned off, but power consumption
-> does not drop. It only drops when there is an iommu_detach paired to
-> that iommu_attach in the driver.
-> But if I add it, the driver does not work properly.
+* H. Nikolaus Schaller <hns@goldelico.com> [210920 18:20]:
+> Another effect I have seen is that heartbeat (I think it is a local patch
+> I have in our devicetree) stops and toggles almost each time I press the enter
+> key on the serial console.
 
-Are you also seeing a timer issue? Or just the omap3isp not idling the
-SoC issue?
+Yeah this would be the case if the clockevent is not working properly.
+I assume this is with beagleboard rev c2 and not on other boards?
 
 Regards,
 
