@@ -2,123 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E2616412CFC
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 04:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5072E412D93
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 05:56:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231543AbhIUCvm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Sep 2021 22:51:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46118 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344291AbhIUCUi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 20 Sep 2021 22:20:38 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 946B461245;
-        Tue, 21 Sep 2021 02:19:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632190750;
-        bh=Z+11tE516+e0V1bcSE+sqc/byA+rMuk9RbFhyqq7PYk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=d90ZZKy8uQqKCKsdlcPvk8V+Wg37YRYMGkKcES9+Dp7tMmqpK2DNANFneNOaJcTI2
-         b4ZDwbRcpjJEi59AMJct89FFTyI2XQW4U9OVG94kCpYOwKDtoGxIhrZlFEkfukoQmJ
-         LVcx4Of36Y+mtMne9kJFCnfjgN6NS0kQnG+SRqLlC01hSPA4UAKh2FaFK8hmeTPGr4
-         u4KgNPsbR2urWO0se7ZrGB+6/jd1GfpBe2FRo9FVU6f1MJIb8X2jCdbh8Sv1pDd+Hl
-         i4qvy5Uyr2VqLXN8sv0VpTZHYtbCOGjhcAZDU/DJTWaGXnZQbwKgVg+ZCO8QyLw+Wy
-         Mqc3qkth7VV4g==
-Date:   Tue, 21 Sep 2021 05:19:06 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
-        Bin Luo <luobin9@huawei.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Coiby Xu <coiby.xu@gmail.com>,
-        Derek Chickles <dchickles@marvell.com>, drivers@pensando.io,
-        Felix Manlunas <fmanlunas@marvell.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        hariprasad <hkelam@marvell.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Jonathan Lemon <jonathan.lemon@gmail.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev,
-        Manish Chopra <manishc@marvell.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        netdev@vger.kernel.org, oss-drivers@corigine.com,
-        Richard Cochran <richardcochran@gmail.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Satanand Burla <sburla@marvell.com>,
-        Shannon Nelson <snelson@pensando.io>,
-        Simon Horman <simon.horman@corigine.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>
-Subject: Re: [PATCH net-next] devlink: Make devlink_register to be void
-Message-ID: <YUlBGk2Mq3iYhtku@unreal>
-References: <2e089a45e03db31bf451d768fc588c02a2f781e8.1632148852.git.leonro@nvidia.com>
- <20210920133915.59ddfeef@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <20210920140407.0732b3d0@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        id S229757AbhIUD53 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Sep 2021 23:57:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33882 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229819AbhIUD5X (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Sep 2021 23:57:23 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44EE2C061574;
+        Mon, 20 Sep 2021 20:55:56 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id h3-20020a17090a580300b0019ce70f8243so996324pji.4;
+        Mon, 20 Sep 2021 20:55:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=+p/128o7i1UymqNDQ9P1ON/m0j3mTXGoYCXSuHhjJN8=;
+        b=beixg3eVD/JxEI2rh/CC3BASJC1nP6HlE5LsHd7XZV+EJazY4iHXAn6np/vvWVqZu7
+         w9/zBC98gmoo6H361uYMNsCnyzZSxrzkXeBG2k+kRPgPQni0aJ4JKNib32qNgMiODkk6
+         AToJuV180FANjeUzcxehKpGMz52oJL4Bw4ejezxy+bAi9VYCRh189dswq7L5YLY0Qlq7
+         L+d4EQ98LsfFeDFLdZ+Tv3RAqMyRZzBWIW2raZKLi+BnkP5cqWU5eMrXSTk91Pa9TkRx
+         6yrFvW/W5q8Qms6sV1DK0CMwR3t9X8JvrmRVqA4aH8BuHu7XRpnqUVldjTj73uFHcgnf
+         k6AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=+p/128o7i1UymqNDQ9P1ON/m0j3mTXGoYCXSuHhjJN8=;
+        b=EDf0Mi0iIHLkRdDDKMvoi/z7d1HoCCr1u+uROnPMOZXC82h/YZvJ4xORwaOhxI7R8g
+         Awm6DHBLZYXbQaXftOku5ULLLpBQBQwg1a+g9ui6XRlOHAfC/HiyKPccN6lLsB22LRKC
+         Fep5WTj5DVJ4f7GzxRxMn282GfOQCejsK03RCXJZXHoxFuuFhSEwinf796DewiWUN0Zq
+         kDl93ypu5fdEHbw9zWR5PXN0rbt81nfefiva1oDclqmZtSEHXoQqY7qYWrLy8lzuhq3e
+         HCR5SpPgOmPv546ZxeCxX8GbmwkUm2/0N2SEHq+sXATKf8D+KmwyeMRrSBJAF1hGuE38
+         E6OQ==
+X-Gm-Message-State: AOAM5329sCWrAlCeYrI+sNZOz84nyQ9JIsNyLAmED4EDSPUiL6slDQJH
+        BKLnG7mfKxbNHXpNFGLN2Ps=
+X-Google-Smtp-Source: ABdhPJzAPVWqwNCAtMgLgO6fBJdjvBv9VGDMWgLMdIwvpqB1Rq40Vy4gadrm00xovYPjkjPXlw5eNw==
+X-Received: by 2002:a17:902:e78f:b0:139:a3c3:5eaa with SMTP id cp15-20020a170902e78f00b00139a3c35eaamr25430110plb.47.1632196555577;
+        Mon, 20 Sep 2021 20:55:55 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:a5b4:f272:6a63:5b57])
+        by smtp.gmail.com with ESMTPSA id b85sm16160889pfb.0.2021.09.20.20.55.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Sep 2021 20:55:53 -0700 (PDT)
+Date:   Mon, 20 Sep 2021 20:55:50 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, bcousson@baylibre.com,
+        Tony Lindgren <tony@atomide.com>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>, Rob Herring <robh@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 03/47] dt-bindings: touchscreen: ti,am3359-tsc: New
+ yaml description
+Message-ID: <YUlXxpGO7oahbZ8L@google.com>
+References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+ <20210915155908.476767-4-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210920140407.0732b3d0@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <20210915155908.476767-4-miquel.raynal@bootlin.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Sep 20, 2021 at 02:04:07PM -0700, Jakub Kicinski wrote:
-> On Mon, 20 Sep 2021 13:39:15 -0700 Jakub Kicinski wrote:
-> > On Mon, 20 Sep 2021 17:41:44 +0300 Leon Romanovsky wrote:
-> > > From: Leon Romanovsky <leonro@nvidia.com>
-> > > 
-> > > devlink_register() can't fail and always returns success, but all drivers
-> > > are obligated to check returned status anyway. This adds a lot of boilerplate
-> > > code to handle impossible flow.
-> > > 
-> > > Make devlink_register() void and simplify the drivers that use that
-> > > API call.  
-> > 
-> > Unlike unused functions bringing back error handling may be
-> > non-trivial. I'd rather you deferred such cleanups until you're 
-> > ready to post your full rework and therefore give us some confidence 
-> > the revert will not be needed.
+On Wed, Sep 15, 2021 at 05:58:24PM +0200, Miquel Raynal wrote:
+> This touchscreen controller is already described in a text file:
+> Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
 > 
-> If you disagree you gotta repost, new devlink_register call got added
-> in the meantime.
+> After introducing a proper description of the MFD, this is the second
+> step. The file cannot be removed yet as it also contains an ADC
+> description.
+> 
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This is exactly what I afraid, new devlink API users are added faster
-than I can cleanup them.
+I expect this will be merged through MFD tree with the rest of the
+patches, so
 
-For example, let's take a look on newly added ipc_devlink_init(), it is
-called conditionally "if (stage == IPC_MEM_EXEC_STAGE_BOOT) {". How can
-it be different stage if we are in driver .probe() routine?
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-They also introduced devlink_sio.devlink_read_pend and
-devlink_sio.read_sem to protect from something that right position of
-devlink_register() will fix. I also have serious doubts that their
-current protection is correct, once they called to devlink_params_publish()
-the user can crash the system, because he can access the parameters before
-they initialized their protection.
+Thanks.
 
-So yes, I disagree. We will need to make sure that devlink_register()
-can't fail and it will make life easier for everyone (no need to unwind)
-while we put that command  being last in probe sequence.
-
-If I repost, will you take it? I don't want to waste anyone time if it
-is not.
-
-Thanks
+-- 
+Dmitry
