@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA97F413108
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 12:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5FEF41310C
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 12:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229486AbhIUKC4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Sep 2021 06:02:56 -0400
-Received: from muru.com ([72.249.23.125]:35408 "EHLO muru.com"
+        id S231575AbhIUKDB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Sep 2021 06:03:01 -0400
+Received: from muru.com ([72.249.23.125]:35410 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229683AbhIUKCz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 21 Sep 2021 06:02:55 -0400
+        id S231483AbhIUKC5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 21 Sep 2021 06:02:57 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 4A5138127;
-        Tue, 21 Sep 2021 10:01:53 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 959BA812F;
+        Tue, 21 Sep 2021 10:01:55 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
@@ -22,9 +22,9 @@ Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         Keerthy <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>,
         Nishanth Menon <nm@ti.com>, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 1/9] bus: ti-sysc: Fix timekeeping_suspended warning on resume
-Date:   Tue, 21 Sep 2021 13:01:07 +0300
-Message-Id: <20210921100115.59865-2-tony@atomide.com>
+Subject: [PATCH 2/9] bus: ti-sysc: Check for lost context in sysc_reinit_module()
+Date:   Tue, 21 Sep 2021 13:01:08 +0300
+Message-Id: <20210921100115.59865-3-tony@atomide.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210921100115.59865-1-tony@atomide.com>
 References: <20210921100115.59865-1-tony@atomide.com>
@@ -34,122 +34,137 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On resume we can get a warning at kernel/time/timekeeping.c:824 for
-timekeeping_suspended.
+There is no need to restore context if it was not lost. Let's add a new
+function sysc_check_context() to check for lost context. To make use of it,
+we need to save the sysconfig register status on enable and disable.
 
-Let's fix this by adding separate functions for sysc_poll_reset_sysstatus()
-and sysc_poll_reset_sysconfig() and have the new functions handle also
-timekeeping_suspended.
-
-If iopoll at some point supports timekeeping_suspended, we can just drop
-the custom handling from these functions.
-
-Fixes: d46f9fbec719 ("bus: ti-sysc: Use optional clocks on for enable and wait for softreset bit")
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/bus/ti-sysc.c | 65 +++++++++++++++++++++++++++++++++++--------
- 1 file changed, 53 insertions(+), 12 deletions(-)
+ drivers/bus/ti-sysc.c | 60 +++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 49 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
 --- a/drivers/bus/ti-sysc.c
 +++ b/drivers/bus/ti-sysc.c
-@@ -17,6 +17,7 @@
- #include <linux/of_platform.h>
- #include <linux/slab.h>
- #include <linux/sys_soc.h>
-+#include <linux/timekeeping.h>
- #include <linux/iopoll.h>
- 
- #include <linux/platform_data/ti-sysc.h>
-@@ -223,37 +224,77 @@ static u32 sysc_read_sysstatus(struct sysc *ddata)
- 	return sysc_read(ddata, offset);
- }
- 
--/* Poll on reset status */
--static int sysc_wait_softreset(struct sysc *ddata)
-+static int sysc_poll_reset_sysstatus(struct sysc *ddata)
- {
--	u32 sysc_mask, syss_done, rstval;
--	int syss_offset, error = 0;
--
--	if (ddata->cap->regbits->srst_shift < 0)
--		return 0;
--
--	syss_offset = ddata->offsets[SYSC_SYSSTATUS];
--	sysc_mask = BIT(ddata->cap->regbits->srst_shift);
-+	int error, retries;
-+	u32 syss_done, rstval;
- 
- 	if (ddata->cfg.quirks & SYSS_QUIRK_RESETDONE_INVERTED)
- 		syss_done = 0;
- 	else
- 		syss_done = ddata->cfg.syss_mask;
- 
--	if (syss_offset >= 0) {
-+	if (likely(!timekeeping_suspended)) {
- 		error = readx_poll_timeout_atomic(sysc_read_sysstatus, ddata,
- 				rstval, (rstval & ddata->cfg.syss_mask) ==
- 				syss_done, 100, MAX_MODULE_SOFTRESET_WAIT);
-+	} else {
-+		retries = MAX_MODULE_SOFTRESET_WAIT;
-+		while (retries--) {
-+			rstval = sysc_read_sysstatus(ddata);
-+			if ((rstval & ddata->cfg.syss_mask) == syss_done)
-+				return 0;
-+			udelay(2); /* Account for udelay flakeyness */
-+		}
-+		error = -ETIMEDOUT;
-+	}
- 
--	} else if (ddata->cfg.quirks & SYSC_QUIRK_RESET_STATUS) {
-+	return error;
-+}
-+
-+static int sysc_poll_reset_sysconfig(struct sysc *ddata)
-+{
-+	int error, retries;
-+	u32 sysc_mask, rstval;
-+
-+	sysc_mask = BIT(ddata->cap->regbits->srst_shift);
-+
-+	if (likely(!timekeeping_suspended)) {
- 		error = readx_poll_timeout_atomic(sysc_read_sysconfig, ddata,
- 				rstval, !(rstval & sysc_mask),
- 				100, MAX_MODULE_SOFTRESET_WAIT);
-+	} else {
-+		retries = MAX_MODULE_SOFTRESET_WAIT;
-+		while (retries--) {
-+			rstval = sysc_read_sysconfig(ddata);
-+			if (!(rstval & sysc_mask))
-+				return 0;
-+			udelay(2); /* Account for udelay flakeyness */
-+		}
-+		error = -ETIMEDOUT;
+@@ -132,6 +132,7 @@ struct sysc {
+ 	struct ti_sysc_cookie cookie;
+ 	const char *name;
+ 	u32 revision;
++	u32 sysconfig;
+ 	unsigned int reserved:1;
+ 	unsigned int enabled:1;
+ 	unsigned int needs_resume:1;
+@@ -1135,7 +1136,8 @@ static int sysc_enable_module(struct device *dev)
+ 	best_mode = fls(ddata->cfg.midlemodes) - 1;
+ 	if (best_mode > SYSC_IDLE_MASK) {
+ 		dev_err(dev, "%s: invalid midlemode\n", __func__);
+-		return -EINVAL;
++		error = -EINVAL;
++		goto save_context;
  	}
  
+ 	if (ddata->cfg.quirks & SYSC_QUIRK_SWSUP_MSTANDBY)
+@@ -1153,13 +1155,16 @@ static int sysc_enable_module(struct device *dev)
+ 		sysc_write_sysconfig(ddata, reg);
+ 	}
+ 
+-	/* Flush posted write */
+-	sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
++	error = 0;
++
++save_context:
++	/* Save context and flush posted write */
++	ddata->sysconfig = sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
+ 
+ 	if (ddata->module_enable_quirk)
+ 		ddata->module_enable_quirk(ddata);
+ 
+-	return 0;
++	return error;
+ }
+ 
+ static int sysc_best_idle_mode(u32 idlemodes, u32 *best_mode)
+@@ -1216,8 +1221,10 @@ static int sysc_disable_module(struct device *dev)
+ set_sidle:
+ 	/* Set SIDLE mode */
+ 	idlemodes = ddata->cfg.sidlemodes;
+-	if (!idlemodes || regbits->sidle_shift < 0)
+-		return 0;
++	if (!idlemodes || regbits->sidle_shift < 0) {
++		ret = 0;
++		goto save_context;
++	}
+ 
+ 	if (ddata->cfg.quirks & SYSC_QUIRK_SWSUP_SIDLE) {
+ 		best_mode = SYSC_IDLE_FORCE;
+@@ -1225,7 +1232,8 @@ static int sysc_disable_module(struct device *dev)
+ 		ret = sysc_best_idle_mode(idlemodes, &best_mode);
+ 		if (ret) {
+ 			dev_err(dev, "%s: invalid sidlemode\n", __func__);
+-			return ret;
++			ret = -EINVAL;
++			goto save_context;
+ 		}
+ 	}
+ 
+@@ -1236,10 +1244,13 @@ static int sysc_disable_module(struct device *dev)
+ 		reg |= 1 << regbits->autoidle_shift;
+ 	sysc_write_sysconfig(ddata, reg);
+ 
+-	/* Flush posted write */
+-	sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
++	ret = 0;
+ 
+-	return 0;
++save_context:
++	/* Save context and flush posted write */
++	ddata->sysconfig = sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
++
++	return ret;
+ }
+ 
+ static int __maybe_unused sysc_runtime_suspend_legacy(struct device *dev,
+@@ -1377,13 +1388,40 @@ static int __maybe_unused sysc_runtime_resume(struct device *dev)
  	return error;
  }
  
-+/* Poll on reset status */
-+static int sysc_wait_softreset(struct sysc *ddata)
++/*
++ * Checks if device context was lost. Assumes the sysconfig register value
++ * after lost context is different from the configured value. Only works for
++ * enabled devices.
++ *
++ * Eventually we may want to also add support to using the context lost
++ * registers that some SoCs have.
++ */
++static int sysc_check_context(struct sysc *ddata)
 +{
-+	int syss_offset, error = 0;
++	u32 reg;
 +
-+	if (ddata->cap->regbits->srst_shift < 0)
++	if (!ddata->enabled)
++		return -ENODATA;
++
++	reg = sysc_read(ddata, ddata->offsets[SYSC_SYSCONFIG]);
++	if (reg == ddata->sysconfig)
 +		return 0;
 +
-+	syss_offset = ddata->offsets[SYSC_SYSSTATUS];
-+
-+	if (syss_offset >= 0)
-+		error = sysc_poll_reset_sysstatus(ddata);
-+	else if (ddata->cfg.quirks & SYSC_QUIRK_RESET_STATUS)
-+		error = sysc_poll_reset_sysconfig(ddata);
-+
-+	return error;
++	return -EACCES;
 +}
 +
- static int sysc_add_named_clock_from_child(struct sysc *ddata,
- 					   const char *name,
- 					   const char *optfck_name)
+ static int sysc_reinit_module(struct sysc *ddata, bool leave_enabled)
+ {
+ 	struct device *dev = ddata->dev;
+ 	int error;
+ 
+-	/* Disable target module if it is enabled */
+ 	if (ddata->enabled) {
++		/* Nothing to do if enabled and context not lost */
++		error = sysc_check_context(ddata);
++		if (!error)
++			return 0;
++
++		/* Disable target module if it is enabled */
+ 		error = sysc_runtime_suspend(dev);
+ 		if (error)
+ 			dev_warn(dev, "reinit suspend failed: %i\n", error);
 -- 
 2.33.0
