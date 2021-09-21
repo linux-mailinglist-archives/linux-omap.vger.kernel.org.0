@@ -2,163 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0620A4136F7
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 18:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED613413789
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 18:25:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233926AbhIUQIz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Sep 2021 12:08:55 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:38748 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233808AbhIUQIy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Sep 2021 12:08:54 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 18LG7Hrg024487;
-        Tue, 21 Sep 2021 11:07:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1632240437;
-        bh=/a1W7IPmzzGl3sZu6vkWa+mjYDw4tT7DUSxlF9GjKaI=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=xfVApT0n7vMiP1BLASvvZ9ZPw3/EIG/3DbpADD1bpD75UCLVSwOZA50jWOh9FaDzQ
-         FraFSj7yEJq5y3rQVXiGjwPjjmjcSC2XfyOtWLaReHr5ntMLc+LvnkbvlMRCK/PDN5
-         RjeVm22VIUJ0pBvREpcEczgAvVzrFalR501J46+Q=
-Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 18LG7HRH114212
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 21 Sep 2021 11:07:17 -0500
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 21
- Sep 2021 11:07:17 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Tue, 21 Sep 2021 11:07:17 -0500
-Received: from [10.250.37.219] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 18LG7G0G047699;
-        Tue, 21 Sep 2021 11:07:16 -0500
-Subject: Re: beaglebone black boot failure Linux v5.15.rc1
-To:     Tony Lindgren <tony@atomide.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-CC:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        Paul Barker <paul.barker@sancloud.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <120a0ca4-28c7-5a7b-f1ab-2015c8817bda@fi.rohmeurope.com>
- <YUQyQgFAOFnBlcdP@atomide.com>
- <0679a5bb-88d1-077d-6107-d5f88ef60dbf@fi.rohmeurope.com>
- <8f3963ca-ff09-b876-ae9e-433add242de2@ti.com>
- <331ab81e-cd42-7e9b-617a-fde4c773c07a@ti.com>
- <615b6fec-6c62-4a97-6d0c-d2e5a5d1ccb2@fi.rohmeurope.com>
- <dab93132-2e5a-78f2-4313-fc541ea36a10@ti.com>
- <36785ccf-57b4-eaf1-cfc0-b024857f7694@gmail.com>
- <YUmOGFUFONR/ynfW@atomide.com>
-From:   Suman Anna <s-anna@ti.com>
-Message-ID: <cce97271-11d2-cc1a-a0fc-c8e8b4482329@ti.com>
-Date:   Tue, 21 Sep 2021 11:07:10 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S233808AbhIUQ1V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Sep 2021 12:27:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35592 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234289AbhIUQ1V (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Sep 2021 12:27:21 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C5CC061574
+        for <linux-omap@vger.kernel.org>; Tue, 21 Sep 2021 09:25:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=X3sWw0BNHkFSeYFULYzOwIGhSCwbJGH82om0HQe1mpo=; b=ZuvswVPWdU1Wh7jxU26c/GPV/9
+        6sxK0WxmVwogdN3TDEwEc7uJdLqY8Cnp+ed8uhbCuXh1SFTr31IDJEg9vDooLnTZzjXLkua0nsAi7
+        2+cxPBBsa2A3WoJsMe5SD2fAS+HvivjmJ9bz1aW6X15GHgwaj+0xntCmX8J9MKBe16tk=;
+Received: from p200300ccff1714001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff17:1400:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1mSiaa-0002RD-JO; Tue, 21 Sep 2021 18:25:48 +0200
+Date:   Tue, 21 Sep 2021 18:25:47 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        linux-omap@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: Regression with e428e250fde6 on BeagleBoard Rev C2
+Message-ID: <20210921182547.6dd6a382@aktux>
+In-Reply-To: <YUmDKzMko81wc/C+@atomide.com>
+References: <3f6924a7-1934-b94e-2441-4781fe737f32@bitmer.com>
+        <YUiOA4QEbZXPmQ7F@atomide.com>
+        <20210920165216.34abc4dd@aktux>
+        <YUmDKzMko81wc/C+@atomide.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <YUmOGFUFONR/ynfW@atomide.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Matti, Tony,
+On Tue, 21 Sep 2021 10:00:59 +0300
+Tony Lindgren <tony@atomide.com> wrote:
 
-On 9/21/21 2:47 AM, Tony Lindgren wrote:
-> * Matti Vaittinen <mazziesaccount@gmail.com> [210920 08:23]:
->> Finally, adding the udelay(100); (as Tony suggested) at the end of the
->> omap_reset_deassert() did make the oops go away even when pruss_tm was
->> enabled. I don't know what would be a proper fix though.
+> * Andreas Kemnade <andreas@kemnade.info> [210920 15:26]:
+> > Hi,
+> > 
+> > On Mon, 20 Sep 2021 16:34:59 +0300
+> > Tony Lindgren <tony@atomide.com> wrote:
+> >   
+> > > > I fail to understand how omap3isp affects this since it actually disable
+> > > > clocks after probe. Does it keep some power domain active which then
+> > > > keeps the timer active etc?    
+> > > 
+> > > Sounds like it's because omap3isp never allows the SoC to enter deeper
+> > > idle states. The mpu clock is stopped for idle states.  
+> > 
+> > On GTA04 I experienced also some strange pm issues with omap3isp:
+> > rmmod clears up everything fine.
+> > 
+> > After probing, clocks seems to be turned off, but power consumption
+> > does not drop. It only drops when there is an iommu_detach paired to
+> > that iommu_attach in the driver.
+> > But if I add it, the driver does not work properly.  
+> 
+> Are you also seeing a timer issue? Or just the omap3isp not idling the
+> SoC issue?
+> 
+Just the omap3isp not idling the SoC.
+That are just general pm experience I had with the omap3isp issue, I
+have seen on earlier kernel versions but never succeeded in properly
+fixing them. I have not tried the 5.15-rcX on gta04 yet.
 
-I have been able to boot v5.15-rc1 just fine on my BBB without any additional
-changes [1].
-
-May I ask what is your BBB board version? My board is rev.A5C.
-
-I vaguely remember from all those years ago when I first enabled PRUSS on AM335x
-that some earlier BBB versions had some issues around PRUSS.
-
-regards
-Suman
-
-[1] https://marc.info/?l=linux-omap&m=163223991005545&w=2
-
-> 
-> The following patch works for me on bbb with the following test script:
-> 
-> #!/bin/sh
-> 
-> module="4a326000.target-module"
-> driver="/sys/bus/platform/drivers/ti-sysc"
-> 
-> while true; do
-> 	echo ${module} > ${driver}/bind
-> 	echo ${module} > ${driver}/unbind
-> done
-> 
-> It also allows leaving out the udelay for dra7 iva reset. Care to try
-> this and see if it helps?
-> 
-> Regards,
-> 
-> Tony
-> 
-> 8< -----------------
-> diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
-> --- a/drivers/soc/ti/omap_prm.c
-> +++ b/drivers/soc/ti/omap_prm.c
-> @@ -825,26 +825,29 @@ static int omap_reset_deassert(struct reset_controller_dev *rcdev,
->  	writel_relaxed(v, reset->prm->base + reset->prm->data->rstctrl);
->  	spin_unlock_irqrestore(&reset->lock, flags);
->  
-> -	if (!has_rstst)
-> -		goto exit;
-> -
-> -	/* wait for the status to be set */
-> -	ret = readl_relaxed_poll_timeout_atomic(reset->prm->base +
-> +	if (has_rstst) {
-> +		/* wait for the status to be set */
-> +		ret = readl_relaxed_poll_timeout_atomic(reset->prm->base +
->  						 reset->prm->data->rstst,
->  						 v, v & BIT(st_bit), 1,
->  						 OMAP_RESET_MAX_WAIT);
-> -	if (ret)
-> -		pr_err("%s: timedout waiting for %s:%lu\n", __func__,
-> -		       reset->prm->data->name, id);
-> -
-> -exit:
-> -	if (reset->clkdm) {
-> -		/* At least dra7 iva needs a delay before clkdm idle */
-> -		if (has_rstst)
-> -			udelay(1);
-> -		pdata->clkdm_allow_idle(reset->clkdm);
-> +		if (ret)
-> +			pr_err("%s: timedout waiting for %s:%lu\n", __func__,
-> +			       reset->prm->data->name, id);
-> +	} else {
-> +		/* wait for the reset bit to cleaar */
-> +		ret = readl_relaxed_poll_timeout_atomic(reset->prm->base +
-> +						reset->prm->data->rstctrl,
-> +						v, !(v & BIT(id)), 1,
-> +						OMAP_RESET_MAX_WAIT);
-> +		if (ret)
-> +			pr_err("%s: timedout waiting for %s:%lu\n", __func__,
-> +			       reset->prm->data->name, id);
->  	}
->  
-> +	if (reset->clkdm)
-> +		pdata->clkdm_allow_idle(reset->clkdm);
-> +
->  	return ret;
->  }
->  
-> 
-
+Regards,
+Andreas
