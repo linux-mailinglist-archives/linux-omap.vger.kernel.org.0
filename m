@@ -2,32 +2,31 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 412D34127B8
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Sep 2021 23:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2616412CFC
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 04:50:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232177AbhITVHi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Sep 2021 17:07:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59162 "EHLO mail.kernel.org"
+        id S231543AbhIUCvm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Sep 2021 22:51:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46118 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232859AbhITVFh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 20 Sep 2021 17:05:37 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AB76B61159;
-        Mon, 20 Sep 2021 21:04:08 +0000 (UTC)
+        id S1344291AbhIUCUi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 20 Sep 2021 22:20:38 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 946B461245;
+        Tue, 21 Sep 2021 02:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632171850;
-        bh=PqdFM5XpCW4SO8VwVFeVL8/W3ovMxPa8/cSLHK/1cCU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=l4hTPB4s2MuadFq2p5e6Xplm6rWChHn0TAe148keYBM4PyhsT4Z0dnrIVf4x/yUrW
-         TvJNAHPIAWaiTrxwhZP6PjK5F01TpWMMxEJxSL5YmcFiv4SSbVUbrrQeuDWiUNgj6w
-         dOitjMtSyPq5FUu0W9nnZU/e1BI2V6ZFfsIn0zAowC7cN5qZaRb9YgUmUZHBtokOKA
-         Sg0JzWzyV4CyUUiAVLRJR5PotXNmfupXMRQum0qomXQ8OQvbh/E3LGEGB3qd6Zqwbt
-         sXDu5phtaLCaLXsfYXXjpW92B+QfVofmgWfVAGj9rugEoExMyHyr4E3uskHK2JwC8c
-         VEhwLWOugkKRQ==
-Date:   Mon, 20 Sep 2021 14:04:07 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Leon Romanovsky <leon@kernel.org>
+        s=k20201202; t=1632190750;
+        bh=Z+11tE516+e0V1bcSE+sqc/byA+rMuk9RbFhyqq7PYk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=d90ZZKy8uQqKCKsdlcPvk8V+Wg37YRYMGkKcES9+Dp7tMmqpK2DNANFneNOaJcTI2
+         b4ZDwbRcpjJEi59AMJct89FFTyI2XQW4U9OVG94kCpYOwKDtoGxIhrZlFEkfukoQmJ
+         LVcx4Of36Y+mtMne9kJFCnfjgN6NS0kQnG+SRqLlC01hSPA4UAKh2FaFK8hmeTPGr4
+         u4KgNPsbR2urWO0se7ZrGB+6/jd1GfpBe2FRo9FVU6f1MJIb8X2jCdbh8Sv1pDd+Hl
+         i4qvy5Uyr2VqLXN8sv0VpTZHYtbCOGjhcAZDU/DJTWaGXnZQbwKgVg+ZCO8QyLw+Wy
+         Mqc3qkth7VV4g==
+Date:   Tue, 21 Sep 2021 05:19:06 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     "David S . Miller" <davem@davemloft.net>,
-        Leon Romanovsky <leonro@nvidia.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
         Bin Luo <luobin9@huawei.com>,
@@ -69,32 +68,57 @@ Cc:     "David S . Miller" <davem@davemloft.net>,
         Vladimir Oltean <vladimir.oltean@nxp.com>,
         Yisen Zhuang <yisen.zhuang@huawei.com>
 Subject: Re: [PATCH net-next] devlink: Make devlink_register to be void
-Message-ID: <20210920140407.0732b3d0@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20210920133915.59ddfeef@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Message-ID: <YUlBGk2Mq3iYhtku@unreal>
 References: <2e089a45e03db31bf451d768fc588c02a2f781e8.1632148852.git.leonro@nvidia.com>
-        <20210920133915.59ddfeef@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <20210920133915.59ddfeef@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <20210920140407.0732b3d0@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210920140407.0732b3d0@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 20 Sep 2021 13:39:15 -0700 Jakub Kicinski wrote:
-> On Mon, 20 Sep 2021 17:41:44 +0300 Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
+On Mon, Sep 20, 2021 at 02:04:07PM -0700, Jakub Kicinski wrote:
+> On Mon, 20 Sep 2021 13:39:15 -0700 Jakub Kicinski wrote:
+> > On Mon, 20 Sep 2021 17:41:44 +0300 Leon Romanovsky wrote:
+> > > From: Leon Romanovsky <leonro@nvidia.com>
+> > > 
+> > > devlink_register() can't fail and always returns success, but all drivers
+> > > are obligated to check returned status anyway. This adds a lot of boilerplate
+> > > code to handle impossible flow.
+> > > 
+> > > Make devlink_register() void and simplify the drivers that use that
+> > > API call.  
 > > 
-> > devlink_register() can't fail and always returns success, but all drivers
-> > are obligated to check returned status anyway. This adds a lot of boilerplate
-> > code to handle impossible flow.
-> > 
-> > Make devlink_register() void and simplify the drivers that use that
-> > API call.  
+> > Unlike unused functions bringing back error handling may be
+> > non-trivial. I'd rather you deferred such cleanups until you're 
+> > ready to post your full rework and therefore give us some confidence 
+> > the revert will not be needed.
 > 
-> Unlike unused functions bringing back error handling may be
-> non-trivial. I'd rather you deferred such cleanups until you're 
-> ready to post your full rework and therefore give us some confidence 
-> the revert will not be needed.
+> If you disagree you gotta repost, new devlink_register call got added
+> in the meantime.
 
-If you disagree you gotta repost, new devlink_register call got added
-in the meantime.
+This is exactly what I afraid, new devlink API users are added faster
+than I can cleanup them.
+
+For example, let's take a look on newly added ipc_devlink_init(), it is
+called conditionally "if (stage == IPC_MEM_EXEC_STAGE_BOOT) {". How can
+it be different stage if we are in driver .probe() routine?
+
+They also introduced devlink_sio.devlink_read_pend and
+devlink_sio.read_sem to protect from something that right position of
+devlink_register() will fix. I also have serious doubts that their
+current protection is correct, once they called to devlink_params_publish()
+the user can crash the system, because he can access the parameters before
+they initialized their protection.
+
+So yes, I disagree. We will need to make sure that devlink_register()
+can't fail and it will make life easier for everyone (no need to unwind)
+while we put that command  being last in probe sequence.
+
+If I repost, will you take it? I don't want to waste anyone time if it
+is not.
+
+Thanks
