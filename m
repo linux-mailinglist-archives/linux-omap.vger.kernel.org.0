@@ -2,48 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B084412FCE
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 09:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5C16413107
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Sep 2021 12:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230269AbhIUH5D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Sep 2021 03:57:03 -0400
-Received: from muru.com ([72.249.23.125]:35356 "EHLO muru.com"
+        id S229530AbhIUKCy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Sep 2021 06:02:54 -0400
+Received: from muru.com ([72.249.23.125]:35392 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230032AbhIUH5C (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 21 Sep 2021 03:57:02 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7922B80A8;
-        Tue, 21 Sep 2021 07:56:02 +0000 (UTC)
-Date:   Tue, 21 Sep 2021 10:55:33 +0300
+        id S229486AbhIUKCx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 21 Sep 2021 06:02:53 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 200DD80A8;
+        Tue, 21 Sep 2021 10:01:50 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Suman Anna <s-anna@ti.com>
-Cc:     linux-omap@vger.kernel.org, Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
+To:     linux-omap@vger.kernel.org
+Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Kishon Vijay Abraham <kishon@ti.com>
-Subject: Re: [PATCH] bus: ti-sysc: Fix external abort for am335x pruss probe
-Message-ID: <YUmP9avkWbsIZmBE@atomide.com>
-References: <20210915065032.45013-1-tony@atomide.com>
- <3fd1968e-491e-6d98-ec9c-d29baed3158f@ti.com>
+        Keerthy <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>,
+        Nishanth Menon <nm@ti.com>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/9] Context loss handling for ti-sysc
+Date:   Tue, 21 Sep 2021 13:01:06 +0300
+Message-Id: <20210921100115.59865-1-tony@atomide.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3fd1968e-491e-6d98-ec9c-d29baed3158f@ti.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Suman Anna <s-anna@ti.com> [210916 16:55]:
-> Let me take a look at this during the weekend. I did verify the AM335x PRUSS
-> when I posted the dts patches on 5.14-rc. You should be able to check as well
-> from your staging branch with PRUSS patches.
+Hi,
 
-FYI, I just posted what might be a better fix and a test script in thread
-"beaglebone black boot failure Linux v5.15.rc1".
+Here are some changes to handle interconnect target module context loss
+and re-init better for ti-sysc.
+
+There is also one warning fix, and we can drop the old quirks for gpio
+and sham modules./tmp/outgoing/0000-cover-letter.patch
 
 Regards,
 
 Tony
+
+
+Tony Lindgren (9):
+  bus: ti-sysc: Fix timekeeping_suspended warning on resume
+  bus: ti-sysc: Check for lost context in sysc_reinit_module()
+  bus: ti-sysc: Add quirk handling for reinit on context lost
+  bus: ti-sysc: Add quirk handling for reset on re-init
+  bus: ti-sysc: Use context lost quirks for gpmc
+  bus: ti-sysc: Use context lost quirk for otg
+  bus: ti-sysc: Handle otg force idle quirk
+  bus: ti-sysc: Drop legacy quirk flag for gpio
+  bus: ti-sysc: Drop legacy quirk flag for sham
+
+ drivers/bus/ti-sysc.c                 | 277 ++++++++++++++++++++++----
+ include/linux/platform_data/ti-sysc.h |   3 +
+ 2 files changed, 245 insertions(+), 35 deletions(-)
+
+-- 
+2.33.0
