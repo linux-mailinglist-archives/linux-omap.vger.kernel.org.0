@@ -2,135 +2,206 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82FCC414CEA
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Sep 2021 17:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68ED7414D43
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Sep 2021 17:42:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236319AbhIVPYu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Sep 2021 11:24:50 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:53728 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232318AbhIVPYt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Sep 2021 11:24:49 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 18MFNFhR038602;
-        Wed, 22 Sep 2021 10:23:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1632324195;
-        bh=gIbemJ+kywr0NJwH0hZD9O0Ys2noMM7/Eq9Bx7iJ8QM=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=xM99oYcYNdc28qoQpm8sht76OjTnlscceA4FzroL5d/DA+kt0v7vpfIXYBs6ohrYq
-         QU4MdOXIUAX1n4s5ufrmefRn/AsELv2y1F20PlRHKeKM9qfsyswiI1ZMKLJq6i3ob3
-         nU5aYfPIy2KEY2Crq93RiYWUs7KgFC2hOWnnflWY=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 18MFNFSe038491
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 22 Sep 2021 10:23:15 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 22
- Sep 2021 10:23:14 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Wed, 22 Sep 2021 10:23:14 -0500
-Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 18MFNAIq028062;
-        Wed, 22 Sep 2021 10:23:11 -0500
-Subject: Re: [PATCH 5/5] mmc: sdhci-omap: Configure optional wakeirq
-To:     Tony Lindgren <tony@atomide.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-CC:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.chunyan@linaro.org>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        <linux-mmc@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>
-References: <20210921111600.24577-1-tony@atomide.com>
- <20210921111600.24577-6-tony@atomide.com>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-Message-ID: <eafa3743-1f73-8a6e-bcb4-d97405dcdb11@ti.com>
-Date:   Wed, 22 Sep 2021 18:23:10 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S236328AbhIVPnt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 22 Sep 2021 11:43:49 -0400
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:44515 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231712AbhIVPns (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Sep 2021 11:43:48 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 512F1E0005;
+        Wed, 22 Sep 2021 15:42:15 +0000 (UTC)
+Date:   Wed, 22 Sep 2021 17:42:14 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 17/47] mfd: ti_am335x_tscadc: Use driver data
+Message-ID: <20210922174214.7aee560a@xps13>
+In-Reply-To: <YUtFX/6I4VuBHXgf@google.com>
+References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+        <20210915155908.476767-18-miquel.raynal@bootlin.com>
+        <YUtFX/6I4VuBHXgf@google.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20210921111600.24577-6-tony@atomide.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Lee,
 
+lee.jones@linaro.org wrote on Wed, 22 Sep 2021 16:01:51 +0100:
 
-On 21/09/2021 14:16, Tony Lindgren wrote:
-> Configure optional wakeirq. This may be optionally configured for SDIO
-> dat1 pin for wake-up events for SoCs that support deeper idle states.
+> On Wed, 15 Sep 2021, Miquel Raynal wrote:
 > 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->   drivers/mmc/host/sdhci-omap.c | 19 +++++++++++++++++++
->   1 file changed, 19 insertions(+)
+> > So far every sub-cell parameter in this driver was hardcoded: cell name,
+> > cell compatible, specific clock name and desired clock frequency.
+> > 
+> > As we are about to introduce support for ADC1/magnetic reader, we need a
+> > bit of flexibility. Let's add a driver data structure which will contain
+> > these information.
+> > 
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  drivers/mfd/ti_am335x_tscadc.c       | 25 +++++++++++++++++++------
+> >  include/linux/mfd/ti_am335x_tscadc.h |  9 +++++++++
+> >  2 files changed, 28 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+> > index ba821109e98b..fbc8e338188a 100644
+> > --- a/drivers/mfd/ti_am335x_tscadc.c
+> > +++ b/drivers/mfd/ti_am335x_tscadc.c
+> > @@ -137,6 +137,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  		return -EINVAL;
+> >  	}
+> >  
+> > +	tscadc->data = of_device_get_match_data(&pdev->dev);
+> > +
+> >  	node = of_get_child_by_name(pdev->dev.of_node, "tsc");
+> >  	of_property_read_u32(node, "ti,wires", &tsc_wires);
+> >  	of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
+> > @@ -212,7 +214,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  		goto err_disable_clk;
+> >  	}
+> >  
+> > -	tscadc->clk_div = (clk_get_rate(clk) / ADC_CLK) - 1;
+> > +	tscadc->clk_div = (clk_get_rate(clk) / tscadc->data->target_clk_rate) - 1;
+> >  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
+> >  
+> >  	/* Set the control register bits */
+> > @@ -241,8 +243,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  	if (tsc_wires > 0) {
+> >  		tscadc->tsc_cell = tscadc->used_cells;
+> >  		cell = &tscadc->cells[tscadc->used_cells++];
+> > -		cell->name = "TI-am335x-tsc";
+> > -		cell->of_compatible = "ti,am3359-tsc";
+> > +		cell->name = tscadc->data->name_tscmag;
+> > +		cell->of_compatible = tscadc->data->compat_tscmag;
+> >  		cell->platform_data = &tscadc;
+> >  		cell->pdata_size = sizeof(tscadc);
+> >  	}
+> > @@ -251,8 +253,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> >  	if (adc_channels > 0) {
+> >  		tscadc->adc_cell = tscadc->used_cells;
+> >  		cell = &tscadc->cells[tscadc->used_cells++];
+> > -		cell->name = "TI-am335x-adc";
+> > -		cell->of_compatible = "ti,am3359-adc";
+> > +		cell->name = tscadc->data->name_adc;
+> > +		cell->of_compatible = tscadc->data->compat_adc;
+> >  		cell->platform_data = &tscadc;
+> >  		cell->pdata_size = sizeof(tscadc);
+> >  	}
+> > @@ -338,8 +340,19 @@ static int __maybe_unused tscadc_resume(struct device *dev)
+> >  
+> >  static SIMPLE_DEV_PM_OPS(tscadc_pm_ops, tscadc_suspend, tscadc_resume);
+> >  
+> > +static const struct ti_tscadc_data tscdata = {
+> > +	.name_tscmag = "TI-am335x-tsc",
+> > +	.compat_tscmag = "ti,am3359-tsc",
+> > +	.name_adc = "TI-am335x-adc",
+> > +	.compat_adc = "ti,am3359-adc",
+> > +	.target_clk_rate = ADC_CLK,
+> > +};
+> > +
+> >  static const struct of_device_id ti_tscadc_dt_ids[] = {
+> > -	{ .compatible = "ti,am3359-tscadc", },
+> > +	{
+> > +		.compatible = "ti,am3359-tscadc",
+> > +		.data = &tscdata,
+> > +	},
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, ti_tscadc_dt_ids);
+> > diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
+> > index ffc091b77633..0f581c15d95a 100644
+> > --- a/include/linux/mfd/ti_am335x_tscadc.h
+> > +++ b/include/linux/mfd/ti_am335x_tscadc.h
+> > @@ -162,11 +162,20 @@
+> >  
+> >  #define TSCADC_CELLS		2
+> >  
+> > +struct ti_tscadc_data {
+> > +	char *name_tscmag;
+> > +	char *compat_tscmag;
+> > +	char *name_adc;
+> > +	char *compat_adc;  
 > 
-> diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
-> --- a/drivers/mmc/host/sdhci-omap.c
-> +++ b/drivers/mmc/host/sdhci-omap.c
-> @@ -12,8 +12,10 @@
->   #include <linux/module.h>
->   #include <linux/of.h>
->   #include <linux/of_device.h>
-> +#include <linux/of_irq.h>
->   #include <linux/platform_device.h>
->   #include <linux/pm_runtime.h>
-> +#include <linux/pm_wakeirq.h>
->   #include <linux/regulator/consumer.h>
->   #include <linux/pinctrl/consumer.h>
->   #include <linux/sys_soc.h>
-> @@ -117,6 +119,7 @@ struct sdhci_omap_host {
->   
->   	struct pinctrl		*pinctrl;
->   	struct pinctrl_state	**pinctrl_state;
-> +	int			wakeirq;
->   	unsigned long		context_valid:1;
->   	unsigned long		is_runtime_suspended:1;
->   	unsigned long		needs_resume:1;
-> @@ -1360,6 +1363,21 @@ static int sdhci_omap_probe(struct platform_device *pdev)
->   	sdhci_omap_context_save(omap_host);
->   	omap_host->context_valid = 1;
->   
-> +	of_irq_get_byname(dev->of_node, "wakeup");
+> I think these names should be improved.
+> 
+> What is tscmag?
+> 
+> Does that represent both the Magnetic Reader and the Touchscreen?
 
-No assign to omap_host->wakeirq
+Not exactly, it represents *either* the magnetic reader *or* the
+touchscreen.
 
-> +	if (omap_host->wakeirq == -EPROBE_DEFER) {
-> +		ret = -EPROBE_DEFER;
-> +		goto err_cleanup_host;
-> +	}
-> +	if (omap_host->wakeirq > 0) {
-> +		device_init_wakeup(dev, true);
-> +		ret = dev_pm_set_dedicated_wake_irq(dev, omap_host->wakeirq);
-> +		if (ret) {
-> +			device_init_wakeup(dev, false);
-> +			goto err_cleanup_host;
-> +		}
-> +		host->mmc->pm_caps |= MMC_PM_WAKE_SDIO_IRQ;
-> +	}
-> +
->   	pm_runtime_put_sync(dev);
->   
->   	return 0;
-> @@ -1385,6 +1403,7 @@ static int sdhci_omap_remove(struct platform_device *pdev)
->   
->   	pm_runtime_get_sync(dev);
->   	sdhci_remove_host(host, true);
-> +	dev_pm_clear_wake_irq(dev);
->   	pm_runtime_put_sync(dev);
->   	pm_runtime_disable(dev);
->   	sdhci_pltfm_free(pdev);
+Basically you can have either one version of the hardware which
+is a regular ADC that can be also used as a touchscreen controller, or
+you can have another version of the hardware which is a regular ADC
+that can be also used as a magnetic reader.
+
+Both features can be used as the same time (ts + adc or mag + adc),
+hence we need a name for the touchscreen child node and for the adc
+child node *or* a name for the magnetic reader chil node and for the adc
+child node.
+
+> If so, I'd prefer that you split them.  If not, I need more info.
+> 
+> For readability, I suggest;
+> 
+>   touchscreen_name
+>   touchscreen_compatible
+>   mag_reader_name
+>   mag_reader_compatible
+>   adc_name
+>   adc_compatible
+>   etc
 > 
 
--- 
-Best regards,
-grygorii
+I can certainly improve the names though.
+
+> What is a magnetic reader anyway?
+> 
+> Does it read the magnetic stripe on a payment card?
+
+Yes!
+
+> 
+> > +	unsigned int target_clk_rate;
+> > +};
+> > +
+> >  struct ti_tscadc_dev {
+> >  	struct device *dev;
+> >  	struct regmap *regmap;
+> >  	void __iomem *tscadc_base;
+> >  	phys_addr_t tscadc_phys_base;
+> > +	const struct ti_tscadc_data *data;
+> >  	int irq;
+> >  	int used_cells;	/* 1-2 */
+> >  	int tsc_wires;  
+> 
+
+
+Thanks,
+Miquèl
