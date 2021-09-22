@@ -2,65 +2,216 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD836414BD2
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Sep 2021 16:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE5B5414CA3
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Sep 2021 17:01:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236212AbhIVO0J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Sep 2021 10:26:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56706 "EHLO
+        id S236303AbhIVPD1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Sep 2021 11:03:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236231AbhIVO0I (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Sep 2021 10:26:08 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16451C061756
-        for <linux-omap@vger.kernel.org>; Wed, 22 Sep 2021 07:24:39 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id bj3-20020a17090b088300b0019e6603fe89so1040144pjb.4
-        for <linux-omap@vger.kernel.org>; Wed, 22 Sep 2021 07:24:39 -0700 (PDT)
+        with ESMTP id S236334AbhIVPD0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Sep 2021 11:03:26 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63BB8C061757
+        for <linux-omap@vger.kernel.org>; Wed, 22 Sep 2021 08:01:56 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id d6so7652718wrc.11
+        for <linux-omap@vger.kernel.org>; Wed, 22 Sep 2021 08:01:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=n9CHWZyWDp9kvdnuR+4lcf8cF9DH3RRu6znx/rfpPqs=;
-        b=odL3wjNPb7I/0EoO8dr+zljh4jE2fNC4oA2cjJ+HsQuUByWbcm8xybAfPB5XBu93PO
-         Yz9D2apLt8mEiEfIMQlmSLNthA+3pPQCOCJthLiRwhhFKnqHSdO2kNvGSwDmIYDq5V6g
-         NGpko1fxp9twGzQ2emsGAkJStrw6Ukxg53KGJqyFXKspthWU0kr5o/0PmnyrODt2ZEGg
-         zvZG2ou3UTwZN/ouBhmkRec6cKvs57XzSRKLnxQJTlZH8X5MjgPBf26l556eAwj+7Aii
-         5j5Ucqbm76Yk/kkwlaCbCacNNdZlWSCm1pIfWO+xOyrrlb6VYCcf2x8W7L2YoXiwJxRm
-         bMHw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=e/8vlf6ZJGgT0nFK3H9I5QV9du1gDdHD92jDJeZbQnc=;
+        b=MrlCvM9fTVPK8UCQ3ZxglrH5BVRHqFmwHH7UebhoEibKMzIZsiLnkPD0iV3IkXJ2Lu
+         fhBXkvjUdg5gu40HiSHO+iwclKd92Rpp5NPeFExco+d9VFcte+3WhPmVbYmavZ1kSt7b
+         dwf4uxU1tMuTISLUpHeiaMQviDQ5UVW7awBdvuGWiOpj/lFSR8wDmkXYE7zrK+9r7p3q
+         LKVJy/sMWgy58vzyNFzJ2E8IdmGV1a/LE0c/ceQ2TnJhN5KPXzj9qecT8ghg//a2pSpF
+         UbdKpjfeKu3topNapIKUrSkejYg7LTtonUC/oJOrgnfuFinh90yS774S2xvQGqAYlKjb
+         OmOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=n9CHWZyWDp9kvdnuR+4lcf8cF9DH3RRu6znx/rfpPqs=;
-        b=A5tXx74hV69yKFgDDCbtESICyl6uF3lR+SIjpd7MfFr7D4tWig9EwwYV4uaLWHDW5L
-         tTyM8m4RAb6BJKSCEFaN7vr1pCZMa17cyhnE9JbeNw5gTmr7xgCgDB92InoqbXvR5zZN
-         owkav+Y2KMEDCWovW705DMAVhVztwiQpWeut4o3QhzGNnhF1Q8/EXV9J1R85IhdNqexc
-         aKC9sTEjZT+faBsRgbFqH9IkCsabLgw6v0OsezsWE0bAP0hYgQ5EPmznPYnfJFfInAKr
-         /C/ahE0xFXZItK6SQyKQbovrb7OHZDa57+rR7rNUqChA171LbE5kfhmQM8psvfiQ8U1w
-         +uhQ==
-X-Gm-Message-State: AOAM531rg6KL10yaggXNffwgssTwzvQ9NsABXUdGzrtcwpjBIFFVQ687
-        Bn/aA+wXPir5BKgapq1cnAszPzTV11d2vcUOGhM=
-X-Google-Smtp-Source: ABdhPJzPzLSijOszPBevexjHldaaqEMTc6CkBViPa5wbzxTT9B0EL9xFruWgnqGtnhyFtWUQjGOQtLk2EJijGK0P4jM=
-X-Received: by 2002:a05:6102:20c1:: with SMTP id i1mr14438141vsr.60.1632320666521;
- Wed, 22 Sep 2021 07:24:26 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=e/8vlf6ZJGgT0nFK3H9I5QV9du1gDdHD92jDJeZbQnc=;
+        b=Sgy7sLZp4qZSnbDfnqZaeU6gJTNmOAo2eDgDhj/dHKqo8xYVWjUzbyk4lantu1E848
+         i3zqV6HaoFHnfTy2NMqA6P8C93mi1zJcmFRU+GGcQaA20pMiL1q35SUp/vkc5AGU+2N/
+         lEJaVQU3a7qu0pUPXB1P4EpqvDekBVD0bFmdRgNjS5D4MuK2LlEVM+fAyLWOhBmOF/r7
+         dEy3asMmBS/euiyCC53aoV+cl4MobrdQLdAlxJ1KINnB3pEVy4dfv8KJSZmDUHZjwOZS
+         fTS3/YXD4sat8Ww15r5k6UCtkBDH5M0Yawsz8aYhdrjx8VvxeNJ3i6MD5gmGtDmJkL8r
+         ieGg==
+X-Gm-Message-State: AOAM532YJ2pfkV1OZra0g64QwZYCD1av8jnOMfq1DVK4PxEGUVVy0zgx
+        RO/w4QZnZczg1tO6AmO0Fw8Mmg==
+X-Google-Smtp-Source: ABdhPJy8lhd5Xbf6p0Cw8bQC6TWALcWr6/FiKINfo9OvwSibxVc/vVq99NAlmqvZoMQd5Mb+BoI0xw==
+X-Received: by 2002:a05:600c:22d6:: with SMTP id 22mr11062985wmg.17.1632322914822;
+        Wed, 22 Sep 2021 08:01:54 -0700 (PDT)
+Received: from google.com ([95.148.6.233])
+        by smtp.gmail.com with ESMTPSA id k6sm5942844wmo.37.2021.09.22.08.01.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Sep 2021 08:01:53 -0700 (PDT)
+Date:   Wed, 22 Sep 2021 16:01:51 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 17/47] mfd: ti_am335x_tscadc: Use driver data
+Message-ID: <YUtFX/6I4VuBHXgf@google.com>
+References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+ <20210915155908.476767-18-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-Received: by 2002:a67:ca19:0:0:0:0:0 with HTTP; Wed, 22 Sep 2021 07:24:25
- -0700 (PDT)
-Reply-To: mrs.fedora@yahoo.com
-From:   "Mrs. Fedora Borislav" <nnakhodorkovsky2@gmail.com>
-Date:   Wed, 22 Sep 2021 15:24:25 +0100
-Message-ID: <CANBA4+ePa0L40OzN2iWGkHui=rteMSRX9cHVLt33GdtgOGzSzA@mail.gmail.com>
-Subject: HELLO
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210915155908.476767-18-miquel.raynal@bootlin.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, 15 Sep 2021, Miquel Raynal wrote:
+
+> So far every sub-cell parameter in this driver was hardcoded: cell name,
+> cell compatible, specific clock name and desired clock frequency.
+> 
+> As we are about to introduce support for ADC1/magnetic reader, we need a
+> bit of flexibility. Let's add a driver data structure which will contain
+> these information.
+> 
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/mfd/ti_am335x_tscadc.c       | 25 +++++++++++++++++++------
+>  include/linux/mfd/ti_am335x_tscadc.h |  9 +++++++++
+>  2 files changed, 28 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+> index ba821109e98b..fbc8e338188a 100644
+> --- a/drivers/mfd/ti_am335x_tscadc.c
+> +++ b/drivers/mfd/ti_am335x_tscadc.c
+> @@ -137,6 +137,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+>  		return -EINVAL;
+>  	}
+>  
+> +	tscadc->data = of_device_get_match_data(&pdev->dev);
+> +
+>  	node = of_get_child_by_name(pdev->dev.of_node, "tsc");
+>  	of_property_read_u32(node, "ti,wires", &tsc_wires);
+>  	of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
+> @@ -212,7 +214,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+>  		goto err_disable_clk;
+>  	}
+>  
+> -	tscadc->clk_div = (clk_get_rate(clk) / ADC_CLK) - 1;
+> +	tscadc->clk_div = (clk_get_rate(clk) / tscadc->data->target_clk_rate) - 1;
+>  	regmap_write(tscadc->regmap, REG_CLKDIV, tscadc->clk_div);
+>  
+>  	/* Set the control register bits */
+> @@ -241,8 +243,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+>  	if (tsc_wires > 0) {
+>  		tscadc->tsc_cell = tscadc->used_cells;
+>  		cell = &tscadc->cells[tscadc->used_cells++];
+> -		cell->name = "TI-am335x-tsc";
+> -		cell->of_compatible = "ti,am3359-tsc";
+> +		cell->name = tscadc->data->name_tscmag;
+> +		cell->of_compatible = tscadc->data->compat_tscmag;
+>  		cell->platform_data = &tscadc;
+>  		cell->pdata_size = sizeof(tscadc);
+>  	}
+> @@ -251,8 +253,8 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+>  	if (adc_channels > 0) {
+>  		tscadc->adc_cell = tscadc->used_cells;
+>  		cell = &tscadc->cells[tscadc->used_cells++];
+> -		cell->name = "TI-am335x-adc";
+> -		cell->of_compatible = "ti,am3359-adc";
+> +		cell->name = tscadc->data->name_adc;
+> +		cell->of_compatible = tscadc->data->compat_adc;
+>  		cell->platform_data = &tscadc;
+>  		cell->pdata_size = sizeof(tscadc);
+>  	}
+> @@ -338,8 +340,19 @@ static int __maybe_unused tscadc_resume(struct device *dev)
+>  
+>  static SIMPLE_DEV_PM_OPS(tscadc_pm_ops, tscadc_suspend, tscadc_resume);
+>  
+> +static const struct ti_tscadc_data tscdata = {
+> +	.name_tscmag = "TI-am335x-tsc",
+> +	.compat_tscmag = "ti,am3359-tsc",
+> +	.name_adc = "TI-am335x-adc",
+> +	.compat_adc = "ti,am3359-adc",
+> +	.target_clk_rate = ADC_CLK,
+> +};
+> +
+>  static const struct of_device_id ti_tscadc_dt_ids[] = {
+> -	{ .compatible = "ti,am3359-tscadc", },
+> +	{
+> +		.compatible = "ti,am3359-tscadc",
+> +		.data = &tscdata,
+> +	},
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, ti_tscadc_dt_ids);
+> diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
+> index ffc091b77633..0f581c15d95a 100644
+> --- a/include/linux/mfd/ti_am335x_tscadc.h
+> +++ b/include/linux/mfd/ti_am335x_tscadc.h
+> @@ -162,11 +162,20 @@
+>  
+>  #define TSCADC_CELLS		2
+>  
+> +struct ti_tscadc_data {
+> +	char *name_tscmag;
+> +	char *compat_tscmag;
+> +	char *name_adc;
+> +	char *compat_adc;
+
+I think these names should be improved.
+
+What is tscmag?
+
+Does that represent both the Magnetic Reader and the Touchscreen?
+
+If so, I'd prefer that you split them.  If not, I need more info.
+
+For readability, I suggest;
+
+  touchscreen_name
+  touchscreen_compatible
+  mag_reader_name
+  mag_reader_compatible
+  adc_name
+  adc_compatible
+  etc
+
+What is a magnetic reader anyway?
+
+Does it read the magnetic stripe on a payment card?
+
+> +	unsigned int target_clk_rate;
+> +};
+> +
+>  struct ti_tscadc_dev {
+>  	struct device *dev;
+>  	struct regmap *regmap;
+>  	void __iomem *tscadc_base;
+>  	phys_addr_t tscadc_phys_base;
+> +	const struct ti_tscadc_data *data;
+>  	int irq;
+>  	int used_cells;	/* 1-2 */
+>  	int tsc_wires;
+
 -- 
-Hello
-
-I am Mrs.Fedora Borislav from Russia, i have a business proposal for
-you. Please reach me on my private email for more information.(
-mrs.fedora1@hotmail.com)
-
-Thank you.
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
