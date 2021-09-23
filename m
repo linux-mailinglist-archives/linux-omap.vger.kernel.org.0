@@ -2,94 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F177D415ECF
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Sep 2021 14:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 269E641619F
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Sep 2021 17:02:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241012AbhIWMva (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Sep 2021 08:51:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54702 "EHLO mail.kernel.org"
+        id S241833AbhIWPEB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Sep 2021 11:04:01 -0400
+Received: from muru.com ([72.249.23.125]:36512 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241000AbhIWMv3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 23 Sep 2021 08:51:29 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3635C60FE6;
-        Thu, 23 Sep 2021 12:49:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632401398;
-        bh=UMepoSpw7A+fESNgPq1gBYNpjtYbMA1QMXXCmUStQ3U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bKNWDjKpLU2Z+6/d4fxh7ogVZ1YAp7XG1nxQSQRqnw0VKsA4lEkI9FFIQO7UoBL5I
-         a8Vo7cXHmO1XFBZXXhm3HbUGwu4DFj5QDsdt6xURSbmHkEBklLTo0iljMuMh/ymQeR
-         v9uBBcudr05ppvzu3cJmUS6IZaQL2OC3RorhnGCrDjx2SCwPB9FL9O4gKfyQt0KEZ4
-         /Q8KRXQdP5pUpM8BX1IAB4O0AznADbVTmVdB8YAxo6f9onQZY2GvqsoAOsbnIC23y2
-         AO/YpreQjncm+0uU3TcfrdiwL8wTAlSquD4gHIJ6a1W2rsW9xZHSLiy/qXLBC/38jC
-         qkCBkVwii28eQ==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1mTOAp-0001cS-Q2; Thu, 23 Sep 2021 14:49:59 +0200
-Date:   Thu, 23 Sep 2021 14:49:59 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
+        id S241798AbhIWPEB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 23 Sep 2021 11:04:01 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 1CA4580C0;
+        Thu, 23 Sep 2021 15:02:57 +0000 (UTC)
+Date:   Thu, 23 Sep 2021 18:02:27 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Johan Hovold <johan@kernel.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
         Jiri Slaby <jirislaby@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/6] serial: 8250: Implement prep_tx for power management
-Message-ID: <YUx399WBrMiZDhno@hovoldconsulting.com>
+Subject: Re: [PATCH 3/6] serial: core: Add new prep_tx for power management
+Message-ID: <YUyXA5UStMHGQDZZ@atomide.com>
 References: <20210921103346.64824-1-tony@atomide.com>
- <20210921103346.64824-5-tony@atomide.com>
+ <20210921103346.64824-4-tony@atomide.com>
+ <YUx3AkT4Du/PT+V5@hovoldconsulting.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210921103346.64824-5-tony@atomide.com>
+In-Reply-To: <YUx3AkT4Du/PT+V5@hovoldconsulting.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Sep 21, 2021 at 01:33:44PM +0300, Tony Lindgren wrote:
-> We can use the prep_tx() call to wake up an idle serial port. This allows
-> ust to remove the depedency to pm_runtime_irq_safe() for 8250_omap driver
-> in the following patches.
+* Johan Hovold <johan@kernel.org> [210923 12:46]:
+> On Tue, Sep 21, 2021 at 01:33:43PM +0300, Tony Lindgren wrote:
+> > If the serial driver implements PM runtime with autosuspend, the port may
+> > be powered off for TX. To wake up the port, let's add new prep_tx() call
+> > for serial drivers to implement as needed. We call it from serial
+> > write_room() and write() functions. If the serial port is not enabled,
+> > we just return 0.
 > 
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/tty/serial/8250/8250_port.c | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-> --- a/drivers/tty/serial/8250/8250_port.c
-> +++ b/drivers/tty/serial/8250/8250_port.c
-> @@ -1650,6 +1650,29 @@ static enum hrtimer_restart serial8250_em485_handle_start_tx(struct hrtimer *t)
->  	return HRTIMER_NORESTART;
->  }
->  
-> +static int serial8250_prep_tx(struct uart_port *port)
-> +{
-> +	struct uart_8250_port *up = up_to_u8250p(port);
-> +	struct device *dev = up->port.dev;
-> +	int err;
-> +
-> +	if (!(up->capabilities & UART_CAP_RPM))
-> +		return 0;
-> +
-> +	if (!pm_runtime_suspended(dev)) {
-> +		pm_runtime_mark_last_busy(dev);
-> +		return 0;
-> +	}
-> +
-> +	err = pm_request_resume(dev);
-> +	if (err < 0) {
-> +		dev_warn(dev, "prep_tx wakeup failed: %d\n", err);
-> +		return err;
-> +	}
+> This isn't right. If there's room in the driver buffer, there's no
+> reason to not accept those characters.
 
-How is this supposed to work without a runtime PM usage-counter
-increment? What's to prevent the port from suspending again while it's
-transmitting?
+Maybe. We might get away with returning zero bytes written in write().
+But to me it seems better to stop things early when write is known
+to not succeed.
 
-> +
-> +	return -EINPROGRESS;
-> +}
+> It's the drivers responsibility to resume writing when write() is
+> called and that me need to be done in a runtime resume callback in case
+> the device is suspended.
 
-Johan
+I think we currently need to return zero bytes written from write()
+when the serial port is not usable.
+
+I don't think we can return a fake number of bytes written from write().
+
+And even if we could return a fake number of bytes written, we could
+run into issues doing the real write to the serial port.
+
+> No need to be patching line disciplines for this.
+
+Do you see issues with handling the errors in line disciplines?
+
+Regards,
+
+Tony
