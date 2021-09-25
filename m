@@ -2,152 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 065B841819A
-	for <lists+linux-omap@lfdr.de>; Sat, 25 Sep 2021 13:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7300D4182EF
+	for <lists+linux-omap@lfdr.de>; Sat, 25 Sep 2021 16:55:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343576AbhIYL0Y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 25 Sep 2021 07:26:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57524 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244756AbhIYLZx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 25 Sep 2021 07:25:53 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D1B0761352;
-        Sat, 25 Sep 2021 11:24:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632569058;
-        bh=iRLV6v3e7JYAyZzq3uX24jBWmOHmWur2DvK8Vt/2i+0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pR22exCjUS7YCkjkCvD8Rnb9sosGeBFWlArr/YA3QFWWrtyauBEi7+Tuhqd4afoJR
-         eRUaq5hWn2OMw9LPTV8rZEfeRlENaJNpc2E4GJnYKmRa7zvr8b5JTcEqZmvEYOvhf/
-         2YLSW8fytAdZTjkgmt/8HJ/SHvzIf7/eRAOikZt9Oa1UDm8a+EloI0pZzg2GkXLWp/
-         kbdu3Un5+qwR8prVYLnTt23VXb+LJjt7pgc76zL+oyZsh181Sb/7IqLOeqFUK9InuA
-         voqdYkfrjahsfJjF/DzkF/YIBNWKLGBMyC3/4eZXseBdGBO3ITOoLCyUVllM0CXPr8
-         8zF7KKkx596zg==
-From:   Leon Romanovsky <leon@kernel.org>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Leon Romanovsky <leonro@nvidia.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
-        Bin Luo <luobin9@huawei.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Coiby Xu <coiby.xu@gmail.com>,
-        Derek Chickles <dchickles@marvell.com>, drivers@pensando.io,
-        Felix Manlunas <fmanlunas@marvell.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        hariprasad <hkelam@marvell.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Intel Corporation <linuxwwan@intel.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Jonathan Lemon <jonathan.lemon@gmail.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Manish Chopra <manishc@marvell.com>,
-        M Chetan Kumar <m.chetan.kumar@intel.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Michael Guralnik <michaelgur@mellanox.com>,
-        netdev@vger.kernel.org, oss-drivers@corigine.com,
-        Richard Cochran <richardcochran@gmail.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Satanand Burla <sburla@marvell.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Shannon Nelson <snelson@pensando.io>,
-        Simon Horman <simon.horman@corigine.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: [PATCH net-next v1 21/21] net: dsa: Move devlink registration to be last devlink command
-Date:   Sat, 25 Sep 2021 14:23:01 +0300
-Message-Id: <66dd7979b44ac307711c382054f428f9287666a8.1632565508.git.leonro@nvidia.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1632565508.git.leonro@nvidia.com>
-References: <cover.1632565508.git.leonro@nvidia.com>
+        id S1343833AbhIYO5G (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 25 Sep 2021 10:57:06 -0400
+Received: from 49-237-179-185.static.tentacle.fi ([185.179.237.49]:55056 "EHLO
+        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234173AbhIYO5G (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 25 Sep 2021 10:57:06 -0400
+Received: from 88-114-184-142.elisa-laajakaista.fi ([88.114.184.142] helo=[192.168.1.42])
+        by bitmer.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <jarkko.nikula@bitmer.com>)
+        id 1mU95J-00047V-Oa; Sat, 25 Sep 2021 17:55:25 +0300
+Subject: Re: Regression with e428e250fde6 on BeagleBoard Rev C2
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Andreas Kemnade <andreas@kemnade.info>
+References: <3f6924a7-1934-b94e-2441-4781fe737f32@bitmer.com>
+ <YUiOA4QEbZXPmQ7F@atomide.com>
+ <5de5382b-9f11-c99b-5b9b-c90ae023e10b@bitmer.com>
+ <YUmC/xbYDnXMrsb1@atomide.com>
+ <638e4599-ab1d-ee88-6974-17463ce42f5c@bitmer.com>
+ <YUsAffFIHUi1ZxEY@atomide.com>
+ <cbe53e9f-b407-d758-67bb-5fb65bddfc03@bitmer.com>
+ <YUwThz8SAdjBD+cn@atomide.com>
+ <93196bcd-836d-2432-9d1c-458904ba4f41@bitmer.com>
+ <YU14FjzAMU0uUubW@atomide.com>
+From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
+Message-ID: <18a27933-e412-c1ed-a744-62cfbcd6a81b@bitmer.com>
+Date:   Sat, 25 Sep 2021 17:55:22 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <YU14FjzAMU0uUubW@atomide.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Leon Romanovsky <leonro@nvidia.com>
+On 9/24/21 10:02 AM, Tony Lindgren wrote:
+> * Jarkko Nikula <jarkko.nikula@bitmer.com> [210923 18:04]:
+>> On 9/23/21 8:41 AM, Tony Lindgren wrote:
+>>> * Jarkko Nikula <jarkko.nikula@bitmer.com> [210922 17:22]:
+>>>> Better luck with this one but looks like idling cause "undefined
+>>>> instruction" crash. Cache/memory etc corruption perhaps? Serial console
+>>>> log attached.
+>>>
+>>> Hmm. If you comment out the twl power node, does the omap3-beagle-ab4.dtb
+>>> boot normally for you? It should behave the same as current mainline then
+>>> with the omap3isp issue.
+>>>
+>> Commenting the twl_power node out or removing the twl section leads to
+>> immediately rebooting kernel:
+> 
+> Below is an updated patch to move the timer quirks to omap3-beagle-ab4.dtb
+> with no twl changes.
+> 
+Sigh, I found the reason for immediately rebooting kernel from bash history:
 
-This change prevents from users to access device before devlink
-is fully configured.
+"rm arch/arm/boot/zImage" followed by "cat
+arch/arm/boot/dts/omap3-beagle-ab4.dtb >>arch/arm/boot/zImage; ma
+LOADADDR=0x80008000 uImage", i.e. forgot to build the zImage between.
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- net/dsa/dsa2.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+(alias ma='nice make -j `getconf _NPROCESSORS_ONLN` ARCH=arm
+CROSS_COMPILE="ccache arm-linux-gnueabihf-"')
 
-diff --git a/net/dsa/dsa2.c b/net/dsa/dsa2.c
-index a020339e1973..8ca6a1170c9d 100644
---- a/net/dsa/dsa2.c
-+++ b/net/dsa/dsa2.c
-@@ -848,7 +848,6 @@ static int dsa_switch_setup(struct dsa_switch *ds)
- 	dl_priv = devlink_priv(ds->devlink);
- 	dl_priv->ds = ds;
- 
--	devlink_register(ds->devlink);
- 	/* Setup devlink port instances now, so that the switch
- 	 * setup() can register regions etc, against the ports
- 	 */
-@@ -874,8 +873,6 @@ static int dsa_switch_setup(struct dsa_switch *ds)
- 	if (err)
- 		goto teardown;
- 
--	devlink_params_publish(ds->devlink);
--
- 	if (!ds->slave_mii_bus && ds->ops->phy_read) {
- 		ds->slave_mii_bus = mdiobus_alloc();
- 		if (!ds->slave_mii_bus) {
-@@ -891,7 +888,7 @@ static int dsa_switch_setup(struct dsa_switch *ds)
- 	}
- 
- 	ds->setup = true;
--
-+	devlink_register(ds->devlink);
- 	return 0;
- 
- free_slave_mii_bus:
-@@ -906,7 +903,6 @@ static int dsa_switch_setup(struct dsa_switch *ds)
- 	list_for_each_entry(dp, &ds->dst->ports, list)
- 		if (dp->ds == ds)
- 			dsa_port_devlink_teardown(dp);
--	devlink_unregister(ds->devlink);
- 	devlink_free(ds->devlink);
- 	ds->devlink = NULL;
- 	return err;
-@@ -919,6 +915,9 @@ static void dsa_switch_teardown(struct dsa_switch *ds)
- 	if (!ds->setup)
- 		return;
- 
-+	if (ds->devlink)
-+		devlink_unregister(ds->devlink);
-+
- 	if (ds->slave_mii_bus && ds->ops->phy_read) {
- 		mdiobus_unregister(ds->slave_mii_bus);
- 		mdiobus_free(ds->slave_mii_bus);
-@@ -934,7 +933,6 @@ static void dsa_switch_teardown(struct dsa_switch *ds)
- 		list_for_each_entry(dp, &ds->dst->ports, list)
- 			if (dp->ds == ds)
- 				dsa_port_devlink_teardown(dp);
--		devlink_unregister(ds->devlink);
- 		devlink_free(ds->devlink);
- 		ds->devlink = NULL;
- 	}
--- 
-2.31.1
+So yes, with your latest patch omap3-beagle-ab4.dtb behaves as unpatched
+omap3-beagle.dtb (boots but timer issues when omap3_isp not loaded).
 
+Jarkko
