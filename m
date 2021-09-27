@@ -2,194 +2,174 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB5141940D
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Sep 2021 14:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8156D419541
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Sep 2021 15:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234284AbhI0MWr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Sep 2021 08:22:47 -0400
-Received: from mail-bn8nam11on2120.outbound.protection.outlook.com ([40.107.236.120]:36897
-        "EHLO NAM11-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S234283AbhI0MWf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 27 Sep 2021 08:22:35 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DiFEr884XeBlvlIR6ocDlc2616hGMt9AVPpkzET8qrhiAa+xnbcDUfq5O2MfDW0iNWLLKHTb7jbcKOyam8oEomeut/lzi715qTjq9flFbfR4eEPPAtFz4dYsxpdPBQe0goVmrNM2Jhu+J1D6uZroycXvZXawc3/lx+gQHRbpic9lJeTxGMSmibEEnlki0akdDsOAJlanjsnVcX0xZfQ045/zAeraNnVhnxzM6oRalxbyLtbjc5swlQ7u47ZVAlHuHqYo7mdoPB6uuZ/nYusFjyT8c8hxuTFNtRRX88Ew5Q7BqQSxaV5YUpi3LFzk0I7ewjIlgnw6vYMgrsf569QZSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O7e0fUKbKjWbWIQDOZlq+edoH9nwRJ8FJ1ng3AD9X2w=;
- b=eR3yrZNhX/b2ZKqCZD1n85+lH3FkpLbo58Vbx/Rs+kUuZ8J9HT1HVTNt/jng5AI04PijkdFj+VZb2/IepbNyJXKYHQYE6YQYpe1by1KwPS2dMD3UVg2vSK4tHJRXRjAhT3j+SY1NmFzJ6TXanXsepuKR28AQLPMNEw6HubnnNtI3tCpW1pnvy4l+L8yOWPKxbuNQDXEK0RwY0f9bHYScwBIzj2/lNGX1P05A7jw56Wi0tzUt5di+qrvUHTphL9VR+wGshYT8Pm1wKz2Dbxl9Bh+8b+Ho87rN5bXGBjiM4noaQaZeMr4/uzUHTKHX/Tl5gR80FPkrSEXT4ulMmx5j0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O7e0fUKbKjWbWIQDOZlq+edoH9nwRJ8FJ1ng3AD9X2w=;
- b=kY6ZN8HNHKBuCvUH67wFVpFJ8x84sXkfikkOwciDF3ouV12QaF6B6g/0YQejaICd+yTuBwllC0mhWBbBBDXCfJVkpzuijfAOz0kyS9dgmHVDZGdaBrw0WUiUNE/dVglVcfpp6r5w6Ju8/MOdBG1+Ypmjv6wUKbwAKYzWlBIPmRo=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by PH0PR13MB4777.namprd13.prod.outlook.com (2603:10b6:510:7a::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.9; Mon, 27 Sep
- 2021 12:20:55 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::e1d9:64d0:cb4f:3e90]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::e1d9:64d0:cb4f:3e90%9]) with mapi id 15.20.4566.012; Mon, 27 Sep 2021
- 12:20:55 +0000
-Date:   Mon, 27 Sep 2021 14:20:42 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Leon Romanovsky <leon@kernel.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
-        Bin Luo <luobin9@huawei.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Coiby Xu <coiby.xu@gmail.com>,
-        Derek Chickles <dchickles@marvell.com>, drivers@pensando.io,
-        Felix Manlunas <fmanlunas@marvell.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        hariprasad <hkelam@marvell.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Intel Corporation <linuxwwan@intel.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Jonathan Lemon <jonathan.lemon@gmail.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Manish Chopra <manishc@marvell.com>,
-        M Chetan Kumar <m.chetan.kumar@intel.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Michael Guralnik <michaelgur@mellanox.com>,
-        netdev@vger.kernel.org, oss-drivers@corigine.com,
-        Richard Cochran <richardcochran@gmail.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Satanand Burla <sburla@marvell.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Shannon Nelson <snelson@pensando.io>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [PATCH net-next v1 13/21] nfp: Move delink_register to be last
- command
-Message-ID: <20210927122041.GA12315@corigine.com>
-References: <cover.1632565508.git.leonro@nvidia.com>
- <f393212ad3906808ee7eb5cff06ef2e053eb9d2b.1632565508.git.leonro@nvidia.com>
- <20210927083923.GC17484@corigine.com>
- <YVGwtNEcWSgYvyyV@unreal>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YVGwtNEcWSgYvyyV@unreal>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: AM0P190CA0010.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:208:190::20) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        id S234581AbhI0NnC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Sep 2021 09:43:02 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38350 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234359AbhI0NnB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 27 Sep 2021 09:43:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E397F61002;
+        Mon, 27 Sep 2021 13:41:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632750083;
+        bh=JjI0u1L1jKYQtGmh8Dc3QRrE0SY4VzH+q8NSvJlPrCE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UClzlqs++rOnLjpjymIt0cVidcglKG6CcGx2na/S9y1vd1qQj5be+HCu+2KldW5vl
+         FRnQO8OhzNoQBRIR4a42rEDwf3XKpwj3iFtMswxtqaGMC9bnOUM8VM45N5O5JvnsSE
+         vYwEOySWzGBif+A8G02uPbk3pq0QgHTA90XpGkbfIdfkR72e5xFegw/ok+hOR+WPci
+         eQq+QizAVHf8SdCBeTGQx2QejfRioOF2niXDgiCaO/3KDSpNhusnVzuiSdR9/KvoFW
+         H8otAHETZs9mlx7Z7HZBKxI4U8rBfAOoWCyemnwJkodHazMlIBWH3Rdj4Q+xBSDDUl
+         d5Sb6F+ktRhEw==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc:     Tomi Valkeinen <tomba@kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        linux-omap@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-media@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] media: omap_vout: use dma_addr_t consistently
+Date:   Mon, 27 Sep 2021 15:41:06 +0200
+Message-Id: <20210927134116.1592896-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Received: from corigine.com (2001:982:756:703:d63d:7eff:fe99:ac9d) by AM0P190CA0010.EURP190.PROD.OUTLOOK.COM (2603:10a6:208:190::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.14 via Frontend Transport; Mon, 27 Sep 2021 12:20:46 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 39345651-ba2b-40b2-854f-08d981b1410f
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4777:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <PH0PR13MB4777CD8C9ADCCFBD547CB97EE8A79@PH0PR13MB4777.namprd13.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:525;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EyhxYIJIuUVdVD9OZFra1Jk/tmWIUKd+I5tMoPJw2p2blAepXkwL6VUeD1gYzb0wbeHMHb7KB3U93m8+StceA56ovEGuSMPUFNau4arAje/is9BtSA18NGERUlZ6mLjbcW9J+T/6h24tdWE9+W5M4+wJZRuV6wO4glatd4vk3iUTNMK8lkB+y2Vnp6iVsHhX0YvXFcTl4lFbz3/uqBAFfqOt/uKsl8cpXO31sDSQvA5G4ZO59tsRQsJ4PPOcUhIhzYDhCg5TY3rmNIQys3nkOsY097DUrLry3ZD2q8hyH1wGO5qo9wT5/bCW3BhiDjWaEG3nYxUkbYobMgJrrmPv6TgQdhHDJZWmnGuAdxgqxNi+2LpZvhK5iNMzJ0ve64B4d6pFBi7T6+NiA4elM2c2Q0aLl2nAmB96PulgMH5QpgrqP4rifZWfoXGdFKXZruXRI/dlFna6iub54sOc4ygTqGbrB8UUzsBeASxvlu0yRfsOqC5E6sX4aOfmy+SNcaJ/oTVfm1cZ4KvL0+tBOUmVUcjWSV/J82G9IH4FmFtg/WNBQRCXrgxVOR8VavYrGGTkva4+4deoukiGfuAqYLHiwdrzWsX3s6Ui5e2JJN/BsU26FIJI4aqlCr1qPcfS09iCoNoAYfk5ltIXAt8yOd+/19IqzbrBA3sXiYwKk4Axctywbt+9jOeuzaJ/Fi/PhA6EieqLvBHKxBGe7jYB4l6rWLiBVTFlJj8fe+3/BB6fAjw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(346002)(396003)(366004)(39840400004)(136003)(2906002)(7696005)(186003)(52116002)(508600001)(33656002)(6916009)(5660300002)(316002)(36756003)(4326008)(83380400001)(55016002)(8936002)(8676002)(7416002)(6666004)(54906003)(966005)(7366002)(8886007)(1076003)(66556008)(66946007)(66476007)(38100700002)(7406005)(86362001)(2616005)(44832011);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Kb8KYVmr60hFAzEw/zQxnfcvfo/BbO44vGlVApIexPmrejJow74QdWPGq5j6?=
- =?us-ascii?Q?t7E6+WkkQkLBT/Ow6yppzAI1AvEFJKjvwcfhFCZHYA43si464RQJOTgsWFa7?=
- =?us-ascii?Q?yTTmTQ6YRtH9f8Z43+D8k2HGQLaiIJ1hBJH5H6fu1jzJUegQT6+0/FkBYgvm?=
- =?us-ascii?Q?imnvPixke9sWAFfFLPzpI13I5HUFTJLSNAGL4UxYGHbXqfr+X0b6t5krxqLm?=
- =?us-ascii?Q?0WOPNg7nMRQhbWF0WsnTaYHAHpfXxsa3lo6cfN2zJErBF2yom/y++z3Dj89Q?=
- =?us-ascii?Q?f2nUBbkOVffqA6JdGS+yzeEZLhP8zaUrZBg5DEPhjmnp950OZXiJCC05EBjV?=
- =?us-ascii?Q?l3vjergtfFhZuJ+i1KyMwOVWOPuhNY1KaJuVYOCAJ3WznZeA/KUeQimjzLT3?=
- =?us-ascii?Q?o8kQopFLoq66OauErVSqiPhGtGMlEe1/+lgZfnzJGSgvkbn4n+ms2jSZFQbg?=
- =?us-ascii?Q?yRTbu+8dWoWoJCvRVeK9PaqHph1cxBP4BLzJD9UWVhF5Q0dgU1fs9SM9FjcN?=
- =?us-ascii?Q?/AIOUSgR+0yTLcYUbM7uOyJPTZDS1G6daGDNZEn6KSItEzLfj5PR/2ivuRIU?=
- =?us-ascii?Q?zhfKqz5EyqpE5FJgM5+XDHUkUhijZG791zAP53LaPKWpYnmGhDtHbPEK4+Qt?=
- =?us-ascii?Q?sh6R/O4sAb1IP0b27UPV1D9ujoZ42nB2MevfD6ch4PPypS6T25NnpdTlxPnf?=
- =?us-ascii?Q?/Zw6PLJuFJtss53lGQni4qei/IZqMitx4uJlPJo1O6S4lrMBDy7e+NVdtxWd?=
- =?us-ascii?Q?NVfAtV7Yi9o73FBrj4b063WhH62cKnLh+R4lb/6X1M7r8f2tGbsLwyrfn+9S?=
- =?us-ascii?Q?5//XOz0AhqUhlrdKthlcfCcUvQgEIlTgGXtFfXNQORGBQYlZwwFl94etEH6O?=
- =?us-ascii?Q?978soaVbYMhiZp5pDOyPFvyIZzz6Px2KSSeWaLoeelIUDdXeiIqsl2UTnGio?=
- =?us-ascii?Q?/sza7X5Z+FxwBVpWZHRRj4y5dnbqS1fvwnLa7ZiMDN91PE+8CpT3ThR2UOC+?=
- =?us-ascii?Q?ByQ6tGernrWRdsQzTWG6KWGG1ZpmFntnGvYJLNkv2cOwzoWCN9mpBmuo0jOl?=
- =?us-ascii?Q?ahvkPQ9xooFTznbLr/dF2nrrJMJ6NUiz+/VKRXibtR+6++ptV5nJxLD4hGXh?=
- =?us-ascii?Q?l/UkZmV7KEIq44yIKgyy87GDu34uEfzhyT+KDY2P2vjpx2Cvgs+fC4tr7Kd1?=
- =?us-ascii?Q?oscQ5ngLlOAdZ/V6L1E3GDJHz/n/djNyP25RDro8u30JTq8BoMjNffBYuLUL?=
- =?us-ascii?Q?KXXAqb7I3rRdLBfobZxXPWwhydj/0UL3opR+pH01RFMSENL7A2uDNOpk3MJv?=
- =?us-ascii?Q?fiffuQJD3vI2p23pH7uAlZFDrTtGIVWbSV0FUDiNhvKBs3zJ4WPnZeSVjTBn?=
- =?us-ascii?Q?M8axTsHD5p0zMYx4ArMdApz15Psj?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39345651-ba2b-40b2-854f-08d981b1410f
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2021 12:20:55.2825
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ul8ACsjmDCk49ktQ7Hl6PGtdQB2D0mmJBNzYOWn2DsR/jppM/pMUyhwtazg/GprcUE/tgSzpEKfCaGN1QJRL+8v+pXlUSvv49Y1ja2K7WsY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR13MB4777
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Sep 27, 2021 at 02:53:24PM +0300, Leon Romanovsky wrote:
-> On Mon, Sep 27, 2021 at 10:39:24AM +0200, Simon Horman wrote:
-> > On Sat, Sep 25, 2021 at 02:22:53PM +0300, Leon Romanovsky wrote:
-> > > From: Leon Romanovsky <leonro@nvidia.com>
-> > > 
-> > > Open user space access to the devlink after driver is probed.
-> > 
-> > Hi Leon,
-> > 
-> > I think a description of why is warranted here.
-> 
-> After devlink_register(), users can send GET and SET netlink commands to
-> the uninitialized driver. In some cases, nothing will happen, but not in
-> all and hard to prove that ALL drivers are safe with such early access.
-> 
-> It means that local users can (in theory for some and in practice for
-> others) crash the system (or leverage permissions) with early devlink_register()
-> by accessing internal to driver pointers that are not set yet.
-> 
-> Like I said in the commit message, I'm not fixing all drivers.
-> https://lore.kernel.org/netdev/cover.1632565508.git.leonro@nvidia.com/T/#m063eb4e67389bafcc3b3ddc07197bf43181b7209
-> 
-> Because some of the driver authors made a wonderful job to obfuscate their
-> driver and write completely unmanageable code.
-> 
-> I do move devlink_register() to be last devlink command for all drivers,
-> to allow me to clean devlink core locking and API in next series.
-> 
-> This series should raise your eyebrow and trigger a question: "is my
-> driver vulnerable too?". And the answer will depend on devlink_register()
-> position in the .probe() call.
-> 
-> Thanks
+From: Arnd Bergmann <arnd@arndb.de>
 
-Thanks for the explanation.
-And thanks for taking time to update the NFP driver.
+gcc notices that the driver mixes 'dma_addr_t' 'u8 *' and 'u32'
+to store DMA addresses:
 
-> > > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+drivers/media/platform/omap/omap_vout.c: In function 'omap_vout_vb2_prepare':
+drivers/media/platform/omap/omap_vout.c:979:37: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+  vout->queued_buf_addr[vb->index] = (u8 *)buf_phy_addr;
+                                     ^
+drivers/media/platform/omap/omap_vout.c: In function 'omap_vout_create_video_devices':
+drivers/media/platform/omap/omap_vout.c:1479:21: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+   vout->fbuf.base = (void *)info.paddr;
 
-Acked-by: Simon Horman <simon.horman@corigine.com>
+Use dma_addr_t everywhere here to avoid the type conversions and document
+what the address is used for. Assigning to vout->fbuf.base still requires
+a cast, since that is part of the driver independent data structure.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/media/platform/omap/omap_vout.c      | 18 ++++++++++--------
+ drivers/media/platform/omap/omap_vout_vrfb.c |  2 +-
+ drivers/media/platform/omap/omap_voutdef.h   |  2 +-
+ 3 files changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/media/platform/omap/omap_vout.c b/drivers/media/platform/omap/omap_vout.c
+index 21193f0b7f61..3e0d9af7ffec 100644
+--- a/drivers/media/platform/omap/omap_vout.c
++++ b/drivers/media/platform/omap/omap_vout.c
+@@ -277,7 +277,7 @@ static int video_mode_to_dss_mode(struct omap_vout_device *vout)
+  */
+ static int omapvid_setup_overlay(struct omap_vout_device *vout,
+ 		struct omap_overlay *ovl, int posx, int posy, int outw,
+-		int outh, u32 addr)
++		int outh, dma_addr_t addr)
+ {
+ 	int ret = 0;
+ 	struct omap_overlay_info info;
+@@ -352,7 +352,7 @@ static int omapvid_setup_overlay(struct omap_vout_device *vout,
+ /*
+  * Initialize the overlay structure
+  */
+-static int omapvid_init(struct omap_vout_device *vout, u32 addr)
++static int omapvid_init(struct omap_vout_device *vout, dma_addr_t addr)
+ {
+ 	int ret = 0, i;
+ 	struct v4l2_window *win;
+@@ -479,7 +479,8 @@ static int omapvid_handle_interlace_display(struct omap_vout_device *vout,
+ static void omap_vout_isr(void *arg, unsigned int irqstatus)
+ {
+ 	int ret, fid, mgr_id;
+-	u32 addr, irq;
++	dma_addr_t addr;
++	u32 irq;
+ 	struct omap_overlay *ovl;
+ 	u64 ts;
+ 	struct omapvideo_info *ovid;
+@@ -543,7 +544,7 @@ static void omap_vout_isr(void *arg, unsigned int irqstatus)
+ 			struct omap_vout_buffer, queue);
+ 	list_del(&vout->next_frm->queue);
+ 
+-	addr = (unsigned long)vout->queued_buf_addr[vout->next_frm->vbuf.vb2_buf.index]
++	addr = vout->queued_buf_addr[vout->next_frm->vbuf.vb2_buf.index]
+ 		+ vout->cropped_offset;
+ 
+ 	/* First save the configuration in ovelray structure */
+@@ -976,7 +977,7 @@ static int omap_vout_vb2_prepare(struct vb2_buffer *vb)
+ 	vb2_set_plane_payload(vb, 0, vout->pix.sizeimage);
+ 	voutbuf->vbuf.field = V4L2_FIELD_NONE;
+ 
+-	vout->queued_buf_addr[vb->index] = (u8 *)buf_phy_addr;
++	vout->queued_buf_addr[vb->index] = buf_phy_addr;
+ 	if (ovid->rotation_type == VOUT_ROT_VRFB)
+ 		return omap_vout_prepare_vrfb(vout, vb);
+ 	return 0;
+@@ -995,7 +996,8 @@ static int omap_vout_vb2_start_streaming(struct vb2_queue *vq, unsigned int coun
+ 	struct omap_vout_device *vout = vb2_get_drv_priv(vq);
+ 	struct omapvideo_info *ovid = &vout->vid_info;
+ 	struct omap_vout_buffer *buf, *tmp;
+-	u32 addr = 0, mask = 0;
++	dma_addr_t addr = 0;
++	u32 mask = 0;
+ 	int ret, j;
+ 
+ 	/* Get the next frame from the buffer queue */
+@@ -1018,7 +1020,7 @@ static int omap_vout_vb2_start_streaming(struct vb2_queue *vq, unsigned int coun
+ 			goto out;
+ 		}
+ 
+-	addr = (unsigned long)vout->queued_buf_addr[vout->cur_frm->vbuf.vb2_buf.index]
++	addr = vout->queued_buf_addr[vout->cur_frm->vbuf.vb2_buf.index]
+ 		+ vout->cropped_offset;
+ 
+ 	mask = DISPC_IRQ_VSYNC | DISPC_IRQ_EVSYNC_EVEN | DISPC_IRQ_EVSYNC_ODD
+@@ -1476,7 +1478,7 @@ static int __init omap_vout_create_video_devices(struct platform_device *pdev)
+ 		 * To be precise: fbuf.base should match smem_start of
+ 		 * struct fb_fix_screeninfo.
+ 		 */
+-		vout->fbuf.base = (void *)info.paddr;
++		vout->fbuf.base = (void *)(uintptr_t)info.paddr;
+ 
+ 		/* Set VRFB as rotation_type for omap2 and omap3 */
+ 		if (omap_vout_dss_omap24xx() || omap_vout_dss_omap34xx())
+diff --git a/drivers/media/platform/omap/omap_vout_vrfb.c b/drivers/media/platform/omap/omap_vout_vrfb.c
+index 6bd672cbdb62..0cfa0169875f 100644
+--- a/drivers/media/platform/omap/omap_vout_vrfb.c
++++ b/drivers/media/platform/omap/omap_vout_vrfb.c
+@@ -305,7 +305,7 @@ int omap_vout_prepare_vrfb(struct omap_vout_device *vout,
+ 	/* Store buffers physical address into an array. Addresses
+ 	 * from this array will be used to configure DSS */
+ 	rotation = calc_rotation(vout);
+-	vout->queued_buf_addr[vb->index] = (u8 *)
++	vout->queued_buf_addr[vb->index] =
+ 		vout->vrfb_context[vb->index].paddr[rotation];
+ 	return 0;
+ }
+diff --git a/drivers/media/platform/omap/omap_voutdef.h b/drivers/media/platform/omap/omap_voutdef.h
+index 1cff6dea1879..b586193341d2 100644
+--- a/drivers/media/platform/omap/omap_voutdef.h
++++ b/drivers/media/platform/omap/omap_voutdef.h
+@@ -170,7 +170,7 @@ struct omap_vout_device {
+ 	struct omap_vout_buffer *cur_frm, *next_frm;
+ 	spinlock_t vbq_lock;            /* spinlock for dma_queue */
+ 	struct list_head dma_queue;
+-	u8 *queued_buf_addr[VIDEO_MAX_FRAME];
++	dma_addr_t queued_buf_addr[VIDEO_MAX_FRAME];
+ 	u32 cropped_offset;
+ 	s32 tv_field1_offset;
+ 	void *isr_handle;
+-- 
+2.29.2
 
