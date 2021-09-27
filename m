@@ -2,67 +2,183 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2861418F22
-	for <lists+linux-omap@lfdr.de>; Mon, 27 Sep 2021 08:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCFC0419069
+	for <lists+linux-omap@lfdr.de>; Mon, 27 Sep 2021 10:09:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232992AbhI0Gpz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Sep 2021 02:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34820 "EHLO
+        id S233374AbhI0ILO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Sep 2021 04:11:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232981AbhI0Gpz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Sep 2021 02:45:55 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4549C061714
-        for <linux-omap@vger.kernel.org>; Sun, 26 Sep 2021 23:44:17 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id 17so16855983pgp.4
-        for <linux-omap@vger.kernel.org>; Sun, 26 Sep 2021 23:44:17 -0700 (PDT)
+        with ESMTP id S233300AbhI0ILO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Sep 2021 04:11:14 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D340C061575
+        for <linux-omap@vger.kernel.org>; Mon, 27 Sep 2021 01:09:36 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id i23so49947383wrb.2
+        for <linux-omap@vger.kernel.org>; Mon, 27 Sep 2021 01:09:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=UKtJ8ZI/5dG6JfOjNevc2B7cAHynW8IYJSTVxExVW3g=;
-        b=oIntlSnlsI+cajkJIzxrWupFyHzd7C16Mfo0AgshhI/uSSyf4m4EG4jQMnkYX0xu9h
-         Y2heIPshp3rnk6qLLXtO/RzKMV5YDo3HUFElHsjlOMAph4G/8tNTg5EPUTw5Q7YPEtQS
-         gjtRo1Sk3SUhIpS0qEEz/zW5HQdvk8efZDsUYL++M/UZ8yOnqNJqzlZ4sZXDGulwhtIZ
-         ds+af9PTYagQHfyA73/L86fcNYHSxpQ0rkE6SmC0qXTscLFG9uBSknqddYQ+ylPTLh/s
-         lX9OTZQgof74CHFvvc2A7cL3tREUUVNABdT7Nm3oFenvwffSf0fHyOlc0Wg5yH+E0eZa
-         Zrew==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=9F/dOrkeMh+t6dNCFSGwYqJcbpKTkv75T5foTFZYKGo=;
+        b=iTKf8Re+I7mIU+dY+9f70h+TO1JO28z8McxFJ9wpr9nUjRpAcq2N6jO+Fd7uqgWdT8
+         Bel0Q2yBp9zy/+WWlUDNwVgQ9DcPnwGl1zLGtuXWz/irz/2rkcKXpvdiM0UGpz7Rn5Fa
+         6oYzQ5m7n2FQDJT2Pa+EAoMcGO4Wc8jTtMQKwBDp5sIcjmSDreg763ZMt4KUNo6J809H
+         50x5CGwn+3uIKPoYfsscMPqqfSQLyOdfezeR3NZFRWVwgjTcZscQkEAdb8CQWS4r3RBB
+         leyFg1JQaXBJ1+hGlCPZXg0RoXXXztxk4kqZGvo7VpAtBKbCFsT+r5IDYSALNg+g6P56
+         9ffg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=UKtJ8ZI/5dG6JfOjNevc2B7cAHynW8IYJSTVxExVW3g=;
-        b=oHAWaIrlDkX1ANDb06G6Pvd0k3SBCRxtpzOPCDiYTe7uCWxjkXMszo6CRkYVNUemAq
-         AJjqRYZFF+hMyAvU0RVeMi1vEcxhcLc20wVI5WzxlBUHJbhp3RcL3ZjRYQfLMgg48e6V
-         baVujfODM1UzZX9P+N21FNtcsshl1EfJJQkrvU+Fjga0VP8oJuNlFxM8hUBR/BmT5lhm
-         EwZMVJDCl7hFV925wGS4uAdOlKwrv7Pff6+THfTUnE8t8n3iJlMbHgWui1GLpuiMmAP5
-         1Tp4Q8HGyJ3P4BR86uWTucTzXyT//YCegLqUkR2DjaR+JmcNPWBkZrAwsHd5f8ADCp3D
-         wksg==
-X-Gm-Message-State: AOAM533t+qCA9M8+RYBaypT9KcNFk2unAQvwPYpm0ODmJDhFU+l7gvBi
-        j45EQrMxnfiCWJivpSeemOqFaeXE/0Bm2ITVYNc=
-X-Google-Smtp-Source: ABdhPJxgMyRnkFJTMhUqpw2tLrjbHHWxH9HhwUGCh9lAHhRFeVt9/NO7wz3FX6rhvEvlj3wnyWCBJovI6LTMeI5TMTI=
-X-Received: by 2002:a63:1d58:: with SMTP id d24mr5713291pgm.316.1632725057483;
- Sun, 26 Sep 2021 23:44:17 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=9F/dOrkeMh+t6dNCFSGwYqJcbpKTkv75T5foTFZYKGo=;
+        b=mWNiI+XS3za1judCSrK8W+sWhUlGU+wot4n/dwzdoxVcamWiVVS0yVZUO8Jg5ygJFy
+         uY/w7pdy73I120akFKnNkosYYelmbpHvnlRN/V52mmG+ePVTEJLH8mMzPAl2i8K5OeYH
+         sgKYGWg0ctZt3UjTNX7S0J7liNRak7FAVKAn7pavdfT9iZ/cAZWBUTFXfh2K49h06rmY
+         ybfFbcVoxmq6s9oflw6vLv1liRRgF4G0NQyzp6/jCTtPo4OfixhsjC4o86Iyqpa9WNM7
+         UZ5h+ggpOykF4VvA4GxSCy3YvQ9d9BKbj1I6Xo/Qg7HAmSu3cZkfIwCzTmJWTeNiVQY4
+         c6LA==
+X-Gm-Message-State: AOAM531wteMKP21GutJlotYUXhBSkZwl/BxOggD2ktbCYSE7V4FO4Yox
+        Iu4JYOR42h8Mg4T3StZakbRToA==
+X-Google-Smtp-Source: ABdhPJyFXeKtm+hoVqcltCOEbNO4S5Q/93mKEKweRYj2kfH4joPD+V4sXuktCJZGy0649HSQxMJd+w==
+X-Received: by 2002:a1c:19c6:: with SMTP id 189mr11595703wmz.121.1632730175006;
+        Mon, 27 Sep 2021 01:09:35 -0700 (PDT)
+Received: from google.com ([95.148.6.233])
+        by smtp.gmail.com with ESMTPSA id w18sm451077wrt.79.2021.09.27.01.09.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Sep 2021 01:09:34 -0700 (PDT)
+Date:   Mon, 27 Sep 2021 09:09:32 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 36/47] mfd: ti_am335x_tscadc: Support the correctly
+ spelled DT property
+Message-ID: <YVF8PDl54lpUc+6S@google.com>
+References: <20210915155908.476767-1-miquel.raynal@bootlin.com>
+ <20210915155908.476767-37-miquel.raynal@bootlin.com>
+ <YUtSVo9HBAiomswv@google.com>
+ <20210923101922.2c108d2b@xps13>
+ <YUxEsfOvn7Vr8F2c@google.com>
+ <20210923113312.14fc9027@xps13>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:fda0:0:0:0:0 with HTTP; Sun, 26 Sep 2021 23:44:17
- -0700 (PDT)
-Reply-To: mg9594651@gmail.com
-From:   Matthew Gonzalez <info.hudson00@gmail.com>
-Date:   Mon, 27 Sep 2021 07:44:17 +0100
-Message-ID: <CAOH7Kr34=Gwix_zZen9odactLH3i07DLapqE5bRJi3aabZtYmQ@mail.gmail.com>
-Subject: ASAP
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210923113312.14fc9027@xps13>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello
+On Thu, 23 Sep 2021, Miquel Raynal wrote:
 
-I trust that this message will reach you in good health? Please, I
-have something that I would like to share with you.
+> Hi Lee,
+> 
+> lee.jones@linaro.org wrote on Thu, 23 Sep 2021 10:11:13 +0100:
+> 
+> > On Thu, 23 Sep 2021, Miquel Raynal wrote:
+> > 
+> > > Hi Lee,
+> > > 
+> > > lee.jones@linaro.org wrote on Wed, 22 Sep 2021 16:57:10 +0100:
+> > >   
+> > > > On Wed, 15 Sep 2021, Miquel Raynal wrote:
+> > > >   
+> > > > > There was in the past a typo in the coordinate readouts property. The
+> > > > > bindings have been updated, the touchscreen driver as well and now
+> > > > > supports both. However, the MFD driver that is in charge of verifying
+> > > > > the validity of the property only checks the bogus one. Add support for
+> > > > > the correctly spelled DT property.
+> > > > > 
+> > > > > Fixes: c9aeb249bf72 ("Input: ti_am335x_tsc - fix spelling mistake in TSC/ADC DT binding")
+> > > > > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> > > > > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > ---
+> > > > >  drivers/mfd/ti_am335x_tscadc.c | 8 +++++++-
+> > > > >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > > > > 
+> > > > > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+> > > > > index 155a8ed879b3..aa46ed669016 100644
+> > > > > --- a/drivers/mfd/ti_am335x_tscadc.c
+> > > > > +++ b/drivers/mfd/ti_am335x_tscadc.c
+> > > > > @@ -144,8 +144,14 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+> > > > >  	if (tscadc->data->has_tsc) {
+> > > > >  		node = of_get_child_by_name(pdev->dev.of_node, "tsc");
+> > > > >  		of_property_read_u32(node, "ti,wires", &tscmag_wires);
+> > > > > -		of_property_read_u32(node, "ti,coordiante-readouts", &readouts);
+> > > > > +		err = of_property_read_u32(node, "ti,coordinate-readouts",
+> > > > > +					   &readouts);
+> > > > > +		if (err < 0)
+> > > > > +			of_property_read_u32(node, "ti,coordiante-readouts",
+> > > > > +					     &readouts);
+> > > > > +    
+> > > > 
+> > > > How long are you proposing that we support this churn?  
+> > > 
+> > > Well, I am not proposing anything, I am just "fixing" the driver so
+> > > that it fits the bindings :) Given the fact that at the end of this
+> > > series there is a patch that changes the "coordiante" typo to
+> > > "coordinate" in a device tree source file, I believe it is still too
+> > > soon...  
+> > 
+> > If this is something you're changing in this set, please reconsider.
+> > 
+> > I'd rather have a slightly misspelled documented property than being
+> > forced to support 2 for any length of time.
+> 
+> I am not suggesting anything here:
+> - "coordiante" was introduced back in 2014.
+> - "coordinate" was introduced shortly later.
+> - "coordiante" was considered part of the "stable API" back in 2014 and
+>   even though the right spelling got introduced very shortly after, DT
+>   stability rules wanted us to support it forever.
+> - The touchscreen driver has immediately be fixed to support both but
+>   not the MFD driver, and this does not make any sense!
+> 
+> We *should* either support only one property (1) or support both in the
+> two drivers (2), but supporting the two in one driver and supporting
+> only one in the other one does not make any sense (given the fact that
+> these two drives are tied together, the touchscreen driver does not
+> exist without the MFD driver). That is what I am fixing here.
+> 
+> Is #1 valid? Theoretically it's the best scenario. In practice it is
+> not (yet) possible because the two versions are still used in the
+> mainline device trees:
+> $ git grep coordiante-readouts -- arch/arm/boot/dts/ | wc -l
+> 1
+> $ git grep coordinate-readouts -- arch/arm/boot/dts/ | wc -l
+> 5
+> 
+> So in this series I am fixing the MFD driver to be sure it handles
+> correctly the correctly spelled DT property which is used by 5 boards
+> since at least 6 years and I am also updating the remaining DT to use
+> the correctly spelled property as well.
+> 
+> I suppose we could propose to drop support for the "coordiante"
+> version of that property in a few years but if we decide to do it right
+> now we're definitely gonna break users.
 
-Please, respond back to me for more details.
+It's a shame that the misspelled one is still in use.  If they were
+all changed over at the start, there would be a strong case for
+dropping support for it.
 
-Sincerely,
-
-Matthew Gonzalez.
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
