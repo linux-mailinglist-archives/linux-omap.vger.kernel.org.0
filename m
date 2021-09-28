@@ -2,103 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0832841A308
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Sep 2021 00:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7041D41A450
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Sep 2021 02:54:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237663AbhI0WeD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Sep 2021 18:34:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57988 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237879AbhI0WeC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Sep 2021 18:34:02 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A10DC06176F
-        for <linux-omap@vger.kernel.org>; Mon, 27 Sep 2021 15:32:22 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id b20so84345394lfv.3
-        for <linux-omap@vger.kernel.org>; Mon, 27 Sep 2021 15:32:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DMB4uEvQ0xVrD8Va6J2iEK6E/SkN/sPqQLy12BaukGc=;
-        b=Ocvt4nNiCJOqVLkC9W3p356vc5csAvL5pLJ13h8XPW8trbNtFaIUVNv7mumrKE9Lta
-         gcCk7oDxWmM17/f/NKWtizEG59pXAjMXZQmltDRXTFj3dWjxCl9rTft57VO6li4yWr1B
-         AbgIH2WytDlNVw1rF+XJL3Nj8cLUzfBRtGy87wKrFtJ6Af1WqhVWn6eooD+BFppmLQ7b
-         TkN603eiWwcAInfD0bsL7XyJR9EUqpVbiZcyyrgOIfwOmlNDHUU57SzMeMZocmp8u3qw
-         2RACZ5DcBDyb6B4v2a2dkwGPSH9VyfLTowxSy/obkHqqfb7MxOKvt9jNXTEH4YRudCGS
-         mvXw==
+        id S238236AbhI1A4b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Sep 2021 20:56:31 -0400
+Received: from mail-wr1-f51.google.com ([209.85.221.51]:41943 "EHLO
+        mail-wr1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229942AbhI1A4b (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Sep 2021 20:56:31 -0400
+Received: by mail-wr1-f51.google.com with SMTP id w29so54849231wra.8;
+        Mon, 27 Sep 2021 17:54:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DMB4uEvQ0xVrD8Va6J2iEK6E/SkN/sPqQLy12BaukGc=;
-        b=Ze/uskDZPbl94tCYIOZR7t6juwr5cj/lB2ie9aD8FgBe6NrFu9wkZ7nE57X7ZAt5d1
-         9nmP6Qezefvfyt0k08glmALYpAHtxdh3JuDlA9Rw7wlTjWnrt6LEaCDtSYC9DNm7L72e
-         +wDKsHurWwzzqitRizLqTkTq77bV4ebtj0VoqkSv+LubWH79ERgDcJtuEtCd4PWsk+08
-         zFLbT94XhcHm9eU4FEPPu56TkDOEWTHiY9lUZsOhW5ll9Cmup9XHpy7Bpa3MZ99MzK6U
-         Mv14aSqEuJHoO2qCdcu2Om+rxGW2KzMfo4N3HHg0cUP6Cpq0EtG+Y7+ajFP+p6iB9NLs
-         UQcA==
-X-Gm-Message-State: AOAM532qc7OBNAaAqL+VDCWpIxGFVAVLuF/cNLWK9/t5JPdWsB53831k
-        gKFk3zTkeGtoN6a5kh9yzFh92ObN8ONA4raFSZAjbw==
-X-Google-Smtp-Source: ABdhPJy5S/UJseOoADDBSALYznDfpb/mX97baRse3NaikYI0hAJV3/+tDHz8WgddNqOPuo4UZWWx6twW/GK4Tjgi138=
-X-Received: by 2002:ac2:4157:: with SMTP id c23mr2148581lfi.184.1632781940116;
- Mon, 27 Sep 2021 15:32:20 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=n2sXzJg2SsfZ8S0g5MG0HaM4hrj/bpFvf9vFQzLvc0c=;
+        b=l86AfC1ibMKeztbexCfDC77rPbyK2bLAvHzDXr+LGcAfQ6sqrC+gT2zoMCVoF/5WNW
+         0iO016vOQV9UBR9sopUKldg6W6Qx8ThJ1s00aj3s8m1NdfZsKhvDbDSboOC/yoXIxXRH
+         LO1fPg7gNzU2Elnx96CRqCZzeJstKnblsixHSxTgZPfxLHqz9Eec6pJNMqHTaDPv0+sn
+         LiJWpv5KtOqI4S4x9grapbl47/oPNwQsFgPXjBTTdytT8rgNQM8NXey3RuOdEQj8Lklx
+         tQl3TKVlIQDaAZC1OP2LG+WkuwQJCdabJyrIl+LwtXDOKWcEVdRNsguOb/bnLSOt9U6n
+         Otag==
+X-Gm-Message-State: AOAM530bGkmbRPCUjVWKm9+cFaTbQ6zYZ1ORXBZuyHJQ9MCp8eJngDJZ
+        sQlZjiukZ1bxpJnTZlgdTRE0RHweLeSSY3s2
+X-Google-Smtp-Source: ABdhPJwqkd5w1g7BZXopwb7Al1e5soWrw9CirT8+m0wKI1sd2xp4RmW6QW5X/6NfauELjq4AiwASKg==
+X-Received: by 2002:a05:6000:46:: with SMTP id k6mr3227667wrx.104.1632790491627;
+        Mon, 27 Sep 2021 17:54:51 -0700 (PDT)
+Received: from rocinante ([95.155.85.46])
+        by smtp.gmail.com with ESMTPSA id l25sm988037wmi.29.2021.09.27.17.54.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Sep 2021 17:54:50 -0700 (PDT)
+Date:   Tue, 28 Sep 2021 02:54:49 +0200
+From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     kishon@ti.com, tjoseph@cadence.com, lorenzo.pieralisi@arm.com,
+        robh@kernel.org, bhelgaas@google.com, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] PCI: j721e: Fix an error handling path in
+ 'j721e_pcie_probe()'
+Message-ID: <YVJn2SHvRcTO2tY5@rocinante>
+References: <db477b0cb444891a17c4bb424467667dc30d0bab.1624794264.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-References: <20210924073441.7835-1-tony@atomide.com>
-In-Reply-To: <20210924073441.7835-1-tony@atomide.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 28 Sep 2021 00:31:44 +0200
-Message-ID: <CAPDyKFqnJw+D307X93TdLagtnratuMM7Fwi=qceedA9J=Cn9ww@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: sdhci-omap: Document ti,non-removable
- property as deprecated
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.chunyan@linaro.org>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <db477b0cb444891a17c4bb424467667dc30d0bab.1624794264.git.christophe.jaillet@wanadoo.fr>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 24 Sept 2021 at 09:34, Tony Lindgren <tony@atomide.com> wrote:
->
-> Nowadays the standard non-removable property should be used, but we
-> still need to parse the ti,non-removable too. Let's document it as a
-> deprecated property.
->
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+Hi Christophe,
 
-Applied for next, thanks!
+Thank you for sending the patch over!
 
-Kind regards
-Uffe
+Just a tiny nit-pick: there is no need to surround function names in single
+quotes in the subject and in the commit message.
 
+> If an error occurs after a successful 'cdns_pcie_init_phy()' call, it must
+> be undone by a 'cdns_pcie_disable_phy()' call, as already done above and
+> below.
 
+Here, in the above sentence, you could simply mention that this is needed
+for the device to be correctly powered down should there be an error, and
+reference to the "above" and "below" code.
+
+> Update the 'goto' to branch at the correct place of the error handling
+> path.
+> 
+> Fixes: 49e0efdce791 ("PCI: j721e: Add support to provide refclk to PCIe connector")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->  Documentation/devicetree/bindings/mmc/sdhci-omap.txt | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt b/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
-> @@ -28,6 +28,9 @@ Optional properties:
->                 DMA specifiers listed in dmas. The string naming is to be "tx"
->                 and "rx" for TX and RX DMA requests, respectively.
->
-> +Deprecated properties:
-> +- ti,non-removable: Compatible with the generic non-removable property
-> +
->  Example:
->         mmc1: mmc@4809c000 {
->                 compatible = "ti,dra7-sdhci";
-> --
-> 2.33.0
+>  drivers/pci/controller/cadence/pci-j721e.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index 35e61048e133..8933db6ab1af 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -424,7 +424,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  		ret = clk_prepare_enable(clk);
+>  		if (ret) {
+>  			dev_err(dev, "failed to enable pcie_refclk\n");
+> -			goto err_get_sync;
+> +			goto err_pcie_setup;
+>  		}
+>  		pcie->refclk = clk;
+
+Thank you!
+
+Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
+
+	Krzysztof
