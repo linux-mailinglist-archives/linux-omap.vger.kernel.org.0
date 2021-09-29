@@ -2,88 +2,149 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 685F941C84F
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 17:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7494241C878
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 17:31:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345167AbhI2P05 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Sep 2021 11:26:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36670 "EHLO mail.kernel.org"
+        id S1345265AbhI2Pdh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Sep 2021 11:33:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40962 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344945AbhI2P05 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Sep 2021 11:26:57 -0400
-Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 89FD661440;
-        Wed, 29 Sep 2021 15:25:11 +0000 (UTC)
-Date:   Wed, 29 Sep 2021 16:29:05 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 25/48] mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ
- macro
-Message-ID: <20210929162905.5fc771c5@jic23-huawei>
-In-Reply-To: <20210928133143.157329-26-miquel.raynal@bootlin.com>
-References: <20210928133143.157329-1-miquel.raynal@bootlin.com>
-        <20210928133143.157329-26-miquel.raynal@bootlin.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
+        id S1345178AbhI2Pdg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Sep 2021 11:33:36 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 87BE661159;
+        Wed, 29 Sep 2021 15:31:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632929515;
+        bh=HXwoS1HjJA1S0yfWFpWczWoEmqeqJ8/hI4qGlsQfiLE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=a8sMw03Rp6PGGokI/cGFo4lnq8A92MECDtnNRH0qAYiC9K1Vj5DaLvJfztY1rEwx2
+         J3FjihL9ii52e8Zfc1LoVAXfQPLIFtkcWyusSyw6hrLPxYhHTnB49JgfL17mN5pY50
+         8YPYUUzVPu6Gkd6TA90y1EU7fcrWlEMBwJGhL7hOX7n7IYjBvJbjvmnzc7myNa6TOJ
+         xOL0M+HYncEtqnaVZr7i4ot3tZbMpp7lbMxXHKZaRL6OYsWT1I2t1Q0jXuKcshj3+i
+         EhRojJsY7u7SHu6Llx2j3/ql9Ac0a4DTztxk62AfY9CPj7ePahwroyGlhgI7Xfabug
+         yDOSXw/s46Y1Q==
+Date:   Wed, 29 Sep 2021 18:31:51 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
+        Bin Luo <luobin9@huawei.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Coiby Xu <coiby.xu@gmail.com>,
+        Derek Chickles <dchickles@marvell.com>, drivers@pensando.io,
+        Eric Dumazet <eric.dumazet@gmail.com>,
+        Felix Manlunas <fmanlunas@marvell.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        hariprasad <hkelam@marvell.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        intel-wired-lan@lists.osuosl.org,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Jerin Jacob <jerinj@marvell.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Jonathan Lemon <jonathan.lemon@gmail.com>,
+        Linu Cherian <lcherian@marvell.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev,
+        Manish Chopra <manishc@marvell.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Moshe Shemesh <moshe@nvidia.com>, netdev@vger.kernel.org,
+        oss-drivers@corigine.com,
+        Richard Cochran <richardcochran@gmail.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Satanand Burla <sburla@marvell.com>,
+        Shannon Nelson <snelson@pensando.io>,
+        Shay Drory <shayd@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>
+Subject: Re: [PATCH net-next v1 0/5] Devlink reload and missed notifications
+ fix
+Message-ID: <YVSG55i75awUpAmn@unreal>
+References: <cover.1632916329.git.leonro@nvidia.com>
+ <20210929064004.3172946e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <YVR0iKIRYDXQbD+o@unreal>
+ <20210929073940.5d7ed022@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210929073940.5d7ed022@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 28 Sep 2021 15:31:20 +0200
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-
-> Before adding another frequency with even more zeroes, use the
-> HZ_PER_MHZ macro to clarify the number.
+On Wed, Sep 29, 2021 at 07:39:40AM -0700, Jakub Kicinski wrote:
+> On Wed, 29 Sep 2021 17:13:28 +0300 Leon Romanovsky wrote:
+> > On Wed, Sep 29, 2021 at 06:40:04AM -0700, Jakub Kicinski wrote:
+> > > On Wed, 29 Sep 2021 15:00:41 +0300 Leon Romanovsky wrote:  
+> > > > This series starts from the fixing the bug introduced by implementing
+> > > > devlink delayed notifications logic, where I missed some of the
+> > > > notifications functions.
+> > > > 
+> > > > The rest series provides a way to dynamically set devlink ops that is
+> > > > needed for mlx5 multiport device and starts cleanup by removing
+> > > > not-needed logic.
+> > > > 
+> > > > In the next series, we will delete various publish API, drop general
+> > > > lock, annotate the code and rework logic around devlink->lock.
+> > > > 
+> > > > All this is possible because driver initialization is separated from the
+> > > > user input now.  
+> > > 
+> > > Swapping ops is a nasty hack in my book.
+> > > 
+> > > And all that to avoid having two op structures in one driver.
+> > > Or to avoid having counters which are always 0?  
+> > 
+> > We don't need to advertise counters for feature that is not supported.
+> > In multiport mlx5 devices, the reload functionality is not supported, so
+> > this change at least make that device to behave like all other netdev
+> > devices that don't support devlink reload.
+> > 
+> > The ops structure is set very early to make sure that internal devlink
+> > routines will be able access driver back during initialization (btw very
+> > questionable design choice)
 > 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-You missed tag I gave on v3.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Thanks,
-
-> ---
->  include/linux/mfd/ti_am335x_tscadc.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Indeed, is this fixable? Or now that devlink_register() was moved to 
+> the end of probe netdev can call ops before instance is registered?
 > 
-> diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
-> index 893c474c1f8c..a85643677bef 100644
-> --- a/include/linux/mfd/ti_am335x_tscadc.h
-> +++ b/include/linux/mfd/ti_am335x_tscadc.h
-> @@ -9,6 +9,7 @@
->  #define __LINUX_TI_AM335X_TSCADC_MFD_H
->  
->  #include <linux/mfd/core.h>
-> +#include <linux/units.h>
->  
->  #define REG_RAWIRQSTATUS	0x024
->  #define REG_IRQSTATUS		0x028
-> @@ -133,7 +134,7 @@
->  #define SEQ_STATUS		BIT(5)
->  #define CHARGE_STEP		0x11
->  
-> -#define ADC_CLK			3000000
-> +#define ADC_CLK			(3 * HZ_PER_MHZ)
->  #define TOTAL_STEPS		16
->  #define TOTAL_CHANNELS		8
->  #define FIFO1_THRESHOLD		19
+> > and at that stage the driver doesn't know
+> > yet which device type it is going to drive.
+> > 
+> > So the answer is:
+> > 1. Can't have two structures.
+> 
+> I still don't understand why. To be clear - swapping full op structures
+> is probably acceptable if it's a pure upgrade (existing pointers match).
+> Poking new ops into a structure (in alphabetical order if I understand
+> your reply to Greg, not destructor-before-contructor) is what I deem
+> questionable.
 
+It is sorted simply for readability and not for any other technical
+reason.
+
+Regarding new ops, this is how we are setting callbacks in RDMA based on
+actual device support. It works like a charm.
+
+> 
+> > 2. Same behaviour across all netdev devices.
+> 
+> Unclear what this is referring to.
+
+If your device doesn't support devlink reload, it won't print any
+reload counters at all. It is not the case for the multiport mlx5
+device. It doesn't support, but still present these counters.
+
+Thanks
