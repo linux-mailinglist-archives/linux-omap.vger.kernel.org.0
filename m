@@ -2,32 +2,31 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE92541C2E5
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 12:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C610441C408
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 14:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244552AbhI2Kov (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Sep 2021 06:44:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57438 "EHLO mail.kernel.org"
+        id S245446AbhI2MCc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Sep 2021 08:02:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52362 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243396AbhI2Kov (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Sep 2021 06:44:51 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A563161159;
-        Wed, 29 Sep 2021 10:43:09 +0000 (UTC)
+        id S245278AbhI2MCc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Sep 2021 08:02:32 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 96DCF61409;
+        Wed, 29 Sep 2021 12:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632912190;
-        bh=+dWbv6MK792jqAAiE3Iu+92XjoDmSSphFkEX4olyN/k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kkT0wJpXtOU1jKHLvTLEHDcFzyGsaTW2KbNFDDkSceiRF44orOxlmvEdUXPiAg1ne
-         T9iBP5MvAqpqlvvpT2eQB5LUHDWmHoBVhcaxAgfyBZK3m0dp5WUM2VzbZTPT1Q2vDn
-         TGpnO6rLO17kCzczJQTqNS6nN6cJkMUC9kAhjLV2CX+gL4IkIfAtJuTnHOB4GnObl5
-         f6AOUTYLHsTOjT+xKpBB8WraodAp0Rvr8Ol2OtCxF+vGeaZ48SswJ/7MMLvV00Wto8
-         70Uen1mLSDQS6ubpjqE94UZnhj+4JQMmVTwAgxMEhyVRUvZkuZ0qdZEMSs6jN352r7
-         LTzEfohSacJDQ==
-Date:   Wed, 29 Sep 2021 13:43:06 +0300
+        s=k20201202; t=1632916851;
+        bh=hZUZHfgfiTNNYSpnegZKCRZ4rkRJapfY17ImCztFpso=;
+        h=From:To:Cc:Subject:Date:From;
+        b=noEJzrN8+a7bB2Ia3WV/RbudWF03qf8/UhZ3QzTdnCN1X5OLGFysMqcf1SkC3DZWG
+         drQm3kpAV2CfhKxC2Q0FDh+hNwzaK2MApcI1pvoLamseqt8tsBOTXDEV7SBnXlC4Aj
+         Zlb0BbN6MFK4TTJN7yJZKyDQZcHKM/InshW14ECHmH8AX8+hb8+j6GapFI8b438cdX
+         MFYahDhd59cBpE3tQ2NufCayJdtET2WSuwk3xi7RNb7VwmgXcWKv9521E7WZfXdlas
+         5Q3F8diYv/2raIFAG7sdhp4nnl/UggE6K0ia4pimnsBGxu1jrJjSQkF/W7Ox59ka87
+         aBlDM9L2fCvWw==
 From:   Leon Romanovsky <leon@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Leon Romanovsky <leonro@nvidia.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
         Bin Luo <luobin9@huawei.com>,
@@ -71,51 +70,80 @@ Cc:     "David S . Miller" <davem@davemloft.net>,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Vladimir Oltean <vladimir.oltean@nxp.com>,
         Yisen Zhuang <yisen.zhuang@huawei.com>
-Subject: Re: [PATCH net-next 3/5] devlink: Allow set specific ops callbacks
- dynamically
-Message-ID: <YVRDOijPHji2vg82@unreal>
-References: <cover.1632909221.git.leonro@nvidia.com>
- <4e99e3996118ce0e2da5367b8fc2a427095dfffd.1632909221.git.leonro@nvidia.com>
- <20210929103823.GK2048@kadam>
+Subject: [PATCH net-next v1 0/5] Devlink reload and missed notifications fix
+Date:   Wed, 29 Sep 2021 15:00:41 +0300
+Message-Id: <cover.1632916329.git.leonro@nvidia.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210929103823.GK2048@kadam>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 29, 2021 at 01:38:23PM +0300, Dan Carpenter wrote:
-> On Wed, Sep 29, 2021 at 01:16:37PM +0300, Leon Romanovsky wrote:
-> > +void devlink_set_ops(struct devlink *devlink, struct devlink_ops *ops)
-> > +{
-> > +	struct devlink_ops *dev_ops = devlink->ops;
-> > +
-> > +	WARN_ON(!devlink_reload_actions_valid(ops));
-> > +
-> > +#define SET_DEVICE_OP(ptr, name)                                               \
-> > +	do {                                                                   \
-> > +		if (ops->name)                                                 \
-> 
-> Could you make "ops" a parameter of the macro instead of hard coding it?
+From: Leon Romanovsky <leonro@nvidia.com>
 
-Sure
+Changelog:
+v1:
+ * Missed removal of extra WARN_ON
+ * Added "ops parameter to macro as Dan suggested.
+v0: https://lore.kernel.org/all/cover.1632909221.git.leonro@nvidia.com
 
-> 
-> regards,
-> dan carpenter
-> 
-> > +			if (!((ptr)->name))				       \
-> > +				(ptr)->name = ops->name;                       \
-> > +	} while (0)
-> > +
-> > +	/* Keep sorted */
-> > +	SET_DEVICE_OP(dev_ops, reload_actions);
-> > +	SET_DEVICE_OP(dev_ops, reload_down);
-> > +	SET_DEVICE_OP(dev_ops, reload_limits);
-> > +	SET_DEVICE_OP(dev_ops, reload_up);
-> > +
-> > +#undef SET_DEVICE_OP
-> > +}
-> > +EXPORT_SYMBOL_GPL(devlink_set_ops);
-> 
+-------------------------------------------------------------------
+Hi,
+
+This series starts from the fixing the bug introduced by implementing
+devlink delayed notifications logic, where I missed some of the
+notifications functions.
+
+The rest series provides a way to dynamically set devlink ops that is
+needed for mlx5 multiport device and starts cleanup by removing
+not-needed logic.
+
+In the next series, we will delete various publish API, drop general
+lock, annotate the code and rework logic around devlink->lock.
+
+All this is possible because driver initialization is separated from the
+user input now.
+
+Thanks
+
+Leon Romanovsky (5):
+  devlink: Add missed notifications iterators
+  devlink: Allow modification of devlink ops
+  devlink: Allow set specific ops callbacks dynamically
+  net/mlx5: Register separate reload devlink ops for multiport device
+  devlink: Delete reload enable/disable interface
+
+ .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |   6 +-
+ .../net/ethernet/cavium/liquidio/lio_main.c   |   2 +-
+ .../freescale/dpaa2/dpaa2-eth-devlink.c       |   2 +-
+ .../hisilicon/hns3/hns3pf/hclge_devlink.c     |   5 +-
+ .../hisilicon/hns3/hns3vf/hclgevf_devlink.c   |   5 +-
+ .../net/ethernet/huawei/hinic/hinic_devlink.c |   2 +-
+ drivers/net/ethernet/intel/ice/ice_devlink.c  |   2 +-
+ .../marvell/octeontx2/af/rvu_devlink.c        |   2 +-
+ .../marvell/prestera/prestera_devlink.c       |   2 +-
+ drivers/net/ethernet/mellanox/mlx4/main.c     |   4 +-
+ .../net/ethernet/mellanox/mlx5/core/devlink.c |  15 +-
+ .../net/ethernet/mellanox/mlx5/core/main.c    |   3 -
+ .../mellanox/mlx5/core/sf/dev/driver.c        |   5 +-
+ drivers/net/ethernet/mellanox/mlxsw/core.c    |  12 +-
+ drivers/net/ethernet/mscc/ocelot.h            |   2 +-
+ drivers/net/ethernet/mscc/ocelot_net.c        |   2 +-
+ .../net/ethernet/netronome/nfp/nfp_devlink.c  |   2 +-
+ drivers/net/ethernet/netronome/nfp/nfp_main.h |   2 +-
+ .../ethernet/pensando/ionic/ionic_devlink.c   |   2 +-
+ drivers/net/ethernet/qlogic/qed/qed_devlink.c |   2 +-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      |   2 +-
+ drivers/net/ethernet/ti/cpsw_new.c            |   2 +-
+ drivers/net/netdevsim/dev.c                   |   5 +-
+ drivers/ptp/ptp_ocp.c                         |   2 +-
+ drivers/staging/qlge/qlge_main.c              |   2 +-
+ include/net/devlink.h                         |  15 +-
+ net/core/devlink.c                            | 156 ++++++++++--------
+ net/dsa/dsa2.c                                |   2 +-
+ 28 files changed, 131 insertions(+), 134 deletions(-)
+
+-- 
+2.31.1
+
