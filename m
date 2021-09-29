@@ -2,173 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D69D41C531
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 15:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CCC841C560
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 15:17:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343954AbhI2NJd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Sep 2021 09:09:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34634 "EHLO mail.kernel.org"
+        id S1344068AbhI2NTR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Sep 2021 09:19:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38224 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242801AbhI2NJd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Sep 2021 09:09:33 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9B56C613DA;
-        Wed, 29 Sep 2021 13:07:51 +0000 (UTC)
+        id S1344061AbhI2NTQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Sep 2021 09:19:16 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 395E8611C8;
+        Wed, 29 Sep 2021 13:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632920872;
-        bh=Yukjau1sHLA6B/N3xjvNRV9Olu/CU/SlHx+B5dO3Emw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cCEGI93aXv71iUXZzEJTr2TRq+w3ofeLRCnVE3mfUAwTgmo43LOO/x8xfal4Yn1Ze
-         5X71y4uQ8YRh7OnS2bZh3zt5QGH/d+GE6zboUgNaYqlOLi52ms5UVyyxV39ka0MEOc
-         Czm7DZiGEiitUVSNqCGOAnAaUcGcngUKxn7fUwdUbP4McZrhBmNWkEdjvdPSpoJgij
-         Op8x6hXOiS0e+qrOEdpoSZZBHRkELZgQJCbCuJYraJ3HdQU2dXmtZGQZ7z6+pf+E9p
-         00gA9nJxmMWYATc3ehdXmsvfP3HTePMl+KEh7MA/OvrjrQdLZyAiE5oQqMPds3v/pB
-         D+ilhSmpvuSsQ==
-Date:   Wed, 29 Sep 2021 16:07:49 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
-        Bin Luo <luobin9@huawei.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Coiby Xu <coiby.xu@gmail.com>,
-        Derek Chickles <dchickles@marvell.com>,
-        "drivers@pensando.io" <drivers@pensando.io>,
-        Felix Manlunas <fmanlunas@marvell.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "GR-everest-linux-l2@marvell.com" <GR-everest-linux-l2@marvell.com>,
-        "GR-Linux-NIC-Dev@marvell.com" <GR-Linux-NIC-Dev@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Intel Corporation <linuxwwan@intel.com>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Jonathan Lemon <jonathan.lemon@gmail.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Manish Chopra <manishc@marvell.com>,
-        M Chetan Kumar <m.chetan.kumar@intel.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Michael Guralnik <michaelgur@mellanox.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "oss-drivers@corigine.com" <oss-drivers@corigine.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Satanand Burla <sburla@marvell.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Shannon Nelson <snelson@pensando.io>,
-        Simon Horman <simon.horman@corigine.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
-        Vadym Kochan <vkochan@marvell.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>
-Subject: Re: [PATCH net-next v1 21/21] net: dsa: Move devlink registration to
- be last devlink command
-Message-ID: <YVRlJagqFInXCgGZ@unreal>
-References: <cover.1632565508.git.leonro@nvidia.com>
- <66dd7979b44ac307711c382054f428f9287666a8.1632565508.git.leonro@nvidia.com>
- <20210929130226.j53fcztm6utpt3tu@skbuf>
+        s=k20201202; t=1632921455;
+        bh=/7ffRfO70FzWtNxTpBsYQ6/zH6FWWTHiDyUtdaVoxNM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=VggxSjaXR3LQSOrES/Fvon5cf53q55be9Xwqlb67r6AmQoa/D+PywZcGiGnxyc8/M
+         JMnbE/07Vc3r4f+wMc66bIVYFGWzk6jM58KMy204c38ODHx6fM5JKyDNy1B6VqOQbn
+         /o/w9/CNRcGRYnNAHcWwPSYSTkh1Lm59FIJQBIu1xABqI09/zJhWs7mDMYdhvQU55E
+         32pI3oXGw95sabLY2AJLE0Ztkuv1w/yqSqBcHVcxXy448+G3qbeT3QYu/hQfe3b9me
+         KKi8xiBQqEUSXXRDa0/2LmOh88fp5WCogTZhThYk7vxaQDonvwtLopuK1IcfHo21fQ
+         nvZ8xbFz0IuLg==
+From:   Mark Brown <broonie@kernel.org>
+To:     Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Rikard Falkeborn <rikard.falkeborn@gmail.com>
+Cc:     Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        Jaroslav Kysela <perex@perex.cz>, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] ASoC: ti: Constify static snd_soc_ops
+Date:   Wed, 29 Sep 2021 14:16:44 +0100
+Message-Id: <163292102842.46827.14999239239747146155.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210929093121.21253-1-rikard.falkeborn@gmail.com>
+References: <20210929093121.21253-1-rikard.falkeborn@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210929130226.j53fcztm6utpt3tu@skbuf>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 29, 2021 at 01:02:27PM +0000, Vladimir Oltean wrote:
-> Hi Leon,
+On Wed, 29 Sep 2021 11:31:21 +0200, Rikard Falkeborn wrote:
+> These are only assigned to the ops field in the snd_soc_dai_link struct
+> which is a pointer to const struct snd_soc_ops. Make them const to allow
+> the compiler to put them in read-only memory.
 > 
-> On Sat, Sep 25, 2021 at 02:23:01PM +0300, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> >
-> > This change prevents from users to access device before devlink
-> > is fully configured.
-> >
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > ---
-> >  net/dsa/dsa2.c | 10 ++++------
-> >  1 file changed, 4 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/net/dsa/dsa2.c b/net/dsa/dsa2.c
-> > index a020339e1973..8ca6a1170c9d 100644
-> > --- a/net/dsa/dsa2.c
-> > +++ b/net/dsa/dsa2.c
-> > @@ -848,7 +848,6 @@ static int dsa_switch_setup(struct dsa_switch *ds)
-> >  	dl_priv = devlink_priv(ds->devlink);
-> >  	dl_priv->ds = ds;
-> >
-> > -	devlink_register(ds->devlink);
-> >  	/* Setup devlink port instances now, so that the switch
-> >  	 * setup() can register regions etc, against the ports
-> >  	 */
-> > @@ -874,8 +873,6 @@ static int dsa_switch_setup(struct dsa_switch *ds)
-> >  	if (err)
-> >  		goto teardown;
-> >
-> > -	devlink_params_publish(ds->devlink);
-> > -
-> >  	if (!ds->slave_mii_bus && ds->ops->phy_read) {
-> >  		ds->slave_mii_bus = mdiobus_alloc();
-> >  		if (!ds->slave_mii_bus) {
-> > @@ -891,7 +888,7 @@ static int dsa_switch_setup(struct dsa_switch *ds)
-> >  	}
-> >
-> >  	ds->setup = true;
-> > -
-> > +	devlink_register(ds->devlink);
-> >  	return 0;
-> >
-> >  free_slave_mii_bus:
-> > @@ -906,7 +903,6 @@ static int dsa_switch_setup(struct dsa_switch *ds)
-> >  	list_for_each_entry(dp, &ds->dst->ports, list)
-> >  		if (dp->ds == ds)
-> >  			dsa_port_devlink_teardown(dp);
-> > -	devlink_unregister(ds->devlink);
-> >  	devlink_free(ds->devlink);
-> >  	ds->devlink = NULL;
-> >  	return err;
-> > @@ -919,6 +915,9 @@ static void dsa_switch_teardown(struct dsa_switch *ds)
-> >  	if (!ds->setup)
-> >  		return;
-> >
-> > +	if (ds->devlink)
-> > +		devlink_unregister(ds->devlink);
-> > +
-> >  	if (ds->slave_mii_bus && ds->ops->phy_read) {
-> >  		mdiobus_unregister(ds->slave_mii_bus);
-> >  		mdiobus_free(ds->slave_mii_bus);
-> > @@ -934,7 +933,6 @@ static void dsa_switch_teardown(struct dsa_switch *ds)
-> >  		list_for_each_entry(dp, &ds->dst->ports, list)
-> >  			if (dp->ds == ds)
-> >  				dsa_port_devlink_teardown(dp);
-> > -		devlink_unregister(ds->devlink);
-> >  		devlink_free(ds->devlink);
-> >  		ds->devlink = NULL;
-> >  	}
-> > --
-> > 2.31.1
-> >
 > 
-> Sorry, I did not have time to review/test this change earlier.
-> I now see this WARN_ON being triggered when I boot a board:
 
-Sorry about that, it was missed in one of my rebases.
-The fix was posted here.
-https://lore.kernel.org/all/2ed1159291f2a589b013914f2b60d8172fc525c1.1632916329.git.leonro@nvidia.com
+Applied to
 
-Thanks
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: ti: Constify static snd_soc_ops
+      commit: 5100436c27aafdbc860de17447862304c5639b60
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
