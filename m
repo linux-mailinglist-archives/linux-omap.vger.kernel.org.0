@@ -2,30 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4458041C6F5
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 16:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29F6F41C846
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 17:24:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245664AbhI2OlZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Sep 2021 10:41:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34124 "EHLO mail.kernel.org"
+        id S1345079AbhI2P03 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Sep 2021 11:26:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36244 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244630AbhI2OlY (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Sep 2021 10:41:24 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D7FC061288;
-        Wed, 29 Sep 2021 14:39:41 +0000 (UTC)
+        id S1344945AbhI2P03 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Sep 2021 11:26:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 604FF61440;
+        Wed, 29 Sep 2021 15:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632926383;
-        bh=nnq87NutyIOGGif5N+QrkzjWO+6VWs0z6DZ46avoARs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eqiziXnfY6Gb8Aqa7QR6beBqHy27XIjRrNUvvAZpBe8wAWCnLdAtcFyomIe7AQOpr
-         4y5Asa4+B80UxnB1HHcJhWNrtHtO1xZ3wY/gSf+jYnf98cFaKFzj08VOrxUhrIW7Xl
-         WhtES6XqwCW5MPr95wOLYo64luS6u1zSPfI8WRAF7ohJTYNANFQJlfrV9MLvFa+BQB
-         qRGrx+33hqKztnR5yfNuHpe7tcbvP77g91NjW7WEy/hhDjv2PbU7F3vMSN5g+9a7XX
-         6BT/cH+dKXao9KYoRKv24DJNK8fNaz/UswWiMxA+XjskLExRXFjir7NSfinIiFeJQq
-         T9KesJYV0X2ng==
-Date:   Wed, 29 Sep 2021 07:39:40 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Leon Romanovsky <leon@kernel.org>
+        s=k20201202; t=1632929088;
+        bh=xBRRX1rYjiTzPEoPMHw1rL24TvrnK+689UnwZagbnsQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aP/SzhecYqJ59hW7NpP/05VpI6etnlUtWV51qr4Sjrsj7iIglusLMXx2XNaO0fT0M
+         RyFp76HRYmy1cib0bH0hsp/eVZnogcmCelT/ZwaymqsJegIyZJRgdg5tNKJsghh0RX
+         h735xxlR9XptIYNPpeHPeVEIWeiC9Q4ek0t3XMoih4QzIJ1mz04rG59BZZLxMrAzht
+         MHpF9eFzGaB22t5a325IB+YbBszRNGWukMKfRmsCWK+zMzKR3DD/rQmxK4ETBnoB+G
+         hvBLRT6RtSXZYMSVRvFbB12XrLiTkxZUMC0ZQ7vldriFuDLP8cPBDmDxWn6bw8TPTP
+         TWgYqiOk6HtYQ==
+Date:   Wed, 29 Sep 2021 18:24:44 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     "David S . Miller" <davem@davemloft.net>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
@@ -70,66 +70,54 @@ Cc:     "David S . Miller" <davem@davemloft.net>,
         Vivien Didelot <vivien.didelot@gmail.com>,
         Vladimir Oltean <vladimir.oltean@nxp.com>,
         Yisen Zhuang <yisen.zhuang@huawei.com>
-Subject: Re: [PATCH net-next v1 0/5] Devlink reload and missed notifications
- fix
-Message-ID: <20210929073940.5d7ed022@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <YVR0iKIRYDXQbD+o@unreal>
+Subject: Re: [PATCH net-next v1 4/5] net/mlx5: Register separate reload
+ devlink ops for multiport device
+Message-ID: <YVSFPNq+IDUlZAeI@unreal>
 References: <cover.1632916329.git.leonro@nvidia.com>
-        <20210929064004.3172946e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <YVR0iKIRYDXQbD+o@unreal>
+ <a8bf9a036fe0a590df830a77a31cc81c355f525d.1632916329.git.leonro@nvidia.com>
+ <20210929065549.43b13203@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <YVR1PKQjsBfvUTPU@unreal>
+ <20210929072631.437ffad9@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <YVR4qDxiQw95jaWK@unreal>
+ <20210929073551.16dd2267@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210929073551.16dd2267@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 29 Sep 2021 17:13:28 +0300 Leon Romanovsky wrote:
-> On Wed, Sep 29, 2021 at 06:40:04AM -0700, Jakub Kicinski wrote:
-> > On Wed, 29 Sep 2021 15:00:41 +0300 Leon Romanovsky wrote:  
-> > > This series starts from the fixing the bug introduced by implementing
-> > > devlink delayed notifications logic, where I missed some of the
-> > > notifications functions.
+On Wed, Sep 29, 2021 at 07:35:51AM -0700, Jakub Kicinski wrote:
+> On Wed, 29 Sep 2021 17:31:04 +0300 Leon Romanovsky wrote:
+> > On Wed, Sep 29, 2021 at 07:26:31AM -0700, Jakub Kicinski wrote:
+> > > On Wed, 29 Sep 2021 17:16:28 +0300 Leon Romanovsky wrote:  
+> > > > devlink_ops pointer is not constant at this stage, so why can't I copy
+> > > > reload_* pointers to the "main" devlink ops?
+> > > > 
+> > > > I wanted to avoid to copy all pointers.  
 > > > 
-> > > The rest series provides a way to dynamically set devlink ops that is
-> > > needed for mlx5 multiport device and starts cleanup by removing
-> > > not-needed logic.
+> > > Hm. I must be missing a key piece here. IIUC you want to have different
+> > > ops based on some device property. But there is only one
 > > > 
-> > > In the next series, we will delete various publish API, drop general
-> > > lock, annotate the code and rework logic around devlink->lock.
+> > > static struct devlink_ops mlx5_devlink_ops;
 > > > 
-> > > All this is possible because driver initialization is separated from the
-> > > user input now.  
+> > > so how can two devlink instances in the system use that and have
+> > > different ops without a copy?  
 > > 
-> > Swapping ops is a nasty hack in my book.
-> > 
-> > And all that to avoid having two op structures in one driver.
-> > Or to avoid having counters which are always 0?  
+> > No, I have two:
+> > * Base ops - mlx5_devlink_ops
+> > * Extra reload commands - mlx5_devlink_reload
 > 
-> We don't need to advertise counters for feature that is not supported.
-> In multiport mlx5 devices, the reload functionality is not supported, so
-> this change at least make that device to behave like all other netdev
-> devices that don't support devlink reload.
+> Still those are global for the driver, no?
+
+Ugh, yes
+
 > 
-> The ops structure is set very early to make sure that internal devlink
-> routines will be able access driver back during initialization (btw very
-> questionable design choice)
+> What if you have multiple NICs or whatever.
 
-Indeed, is this fixable? Or now that devlink_register() was moved to 
-the end of probe netdev can call ops before instance is registered?
+I missed it and always tested with one device L(.
 
-> and at that stage the driver doesn't know
-> yet which device type it is going to drive.
-> 
-> So the answer is:
-> 1. Can't have two structures.
+I'll add copy-all-ops code.
 
-I still don't understand why. To be clear - swapping full op structures
-is probably acceptable if it's a pure upgrade (existing pointers match).
-Poking new ops into a structure (in alphabetical order if I understand
-your reply to Greg, not destructor-before-contructor) is what I deem
-questionable.
-
-> 2. Same behaviour across all netdev devices.
-
-Unclear what this is referring to.
+Thanks
