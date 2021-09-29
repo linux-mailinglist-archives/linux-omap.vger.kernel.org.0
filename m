@@ -2,30 +2,30 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73FD741CB5A
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 19:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A08741CC60
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 21:11:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343928AbhI2R5V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Sep 2021 13:57:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48984 "EHLO mail.kernel.org"
+        id S1346461AbhI2TMs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Sep 2021 15:12:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46490 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1343675AbhI2R5V (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Sep 2021 13:57:21 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3F91561406;
-        Wed, 29 Sep 2021 17:55:38 +0000 (UTC)
+        id S1346459AbhI2TMr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Sep 2021 15:12:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AEB456152B;
+        Wed, 29 Sep 2021 19:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632938139;
-        bh=Wdm5mZ9EIzamcCpNJ3f6wNkVlDGhsWErQpSRyqfdzvM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ScXxN8A83d1IhIwCquDkP/qeTHZqGJC3TLJ3FOxV2L1FoyPI6FHkUTH5yPMPNyPCU
-         qXNzAifxJbHiPiO6nCkLMX7EPPaCyVhggywKQdGI6k8u/r+CShy6MDG1j6rLZglgcu
-         igUym4bjnU1v9ZjB1vxlcRgu37WILOCSCsdSB7qn+EfYCWZE2anMLTjBSeGeEFXWkM
-         3EFSdkCUq1Todb5f+rX39drvyu8P8oZbA71z5YJJrjTkSrwr8bAk+DD5P0nKyaIpe8
-         CZpJTpp26nY4u4AUdYCrZiXjAbecEVDKi6gIbth+hYcnzqvJaDY5F6RZD0/6MUJuBl
-         Z889Vw81JzPKg==
-Date:   Wed, 29 Sep 2021 10:55:37 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Leon Romanovsky <leon@kernel.org>
+        s=k20201202; t=1632942665;
+        bh=KLrloZPzLW18c3xvNXLpZsRmlo/8Db+xpwDUJ6mpspw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=g/Y6B1hsAFTG9hM7y/eREJP0dV2b20GYaTs3YeZ4KaTMtiHknXZf3ADcL0bTTnWPC
+         Kc76CU3P4x3ye3SQjW+Pz7UeT6FmOn/m5jNHrqgZ560+HE8bsAQ8BBtbm9rDGctA43
+         z4EuglKmsLwW9FSKlZXsxGNWqFa9pmBQpUbVw/3cgO1TEMKo1I+QBzUgSkcyDYGWYt
+         3pE7btqaH0EXIoQ5/Zo3bI28GzOczDegU7PsSamKO0GVRCuqOObO+AxpPsm56Ko141
+         MrQS2LRnvXbbElRArzKioa6wZC6QSjnirE8DucXayN16mJfNEc1BpHjXI3nFBMB9Lc
+         kXMFaYz3zTNMw==
+Date:   Wed, 29 Sep 2021 22:11:01 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     "David S . Miller" <davem@davemloft.net>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
@@ -72,61 +72,70 @@ Cc:     "David S . Miller" <davem@davemloft.net>,
         Yisen Zhuang <yisen.zhuang@huawei.com>
 Subject: Re: [PATCH net-next v1 0/5] Devlink reload and missed notifications
  fix
-Message-ID: <20210929105537.758d5d85@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <YVSG55i75awUpAmn@unreal>
+Message-ID: <YVS6RQfcp2YVxrv3@unreal>
 References: <cover.1632916329.git.leonro@nvidia.com>
-        <20210929064004.3172946e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <YVR0iKIRYDXQbD+o@unreal>
-        <20210929073940.5d7ed022@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <YVSG55i75awUpAmn@unreal>
+ <20210929064004.3172946e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <YVR0iKIRYDXQbD+o@unreal>
+ <20210929073940.5d7ed022@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+ <YVSG55i75awUpAmn@unreal>
+ <20210929105537.758d5d85@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210929105537.758d5d85@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 29 Sep 2021 18:31:51 +0300 Leon Romanovsky wrote:
-> On Wed, Sep 29, 2021 at 07:39:40AM -0700, Jakub Kicinski wrote:
-> > On Wed, 29 Sep 2021 17:13:28 +0300 Leon Romanovsky wrote:  
-> > > We don't need to advertise counters for feature that is not supported.
-> > > In multiport mlx5 devices, the reload functionality is not supported, so
-> > > this change at least make that device to behave like all other netdev
-> > > devices that don't support devlink reload.
+On Wed, Sep 29, 2021 at 10:55:37AM -0700, Jakub Kicinski wrote:
+> On Wed, 29 Sep 2021 18:31:51 +0300 Leon Romanovsky wrote:
+> > On Wed, Sep 29, 2021 at 07:39:40AM -0700, Jakub Kicinski wrote:
+> > > On Wed, 29 Sep 2021 17:13:28 +0300 Leon Romanovsky wrote:  
+> > > > We don't need to advertise counters for feature that is not supported.
+> > > > In multiport mlx5 devices, the reload functionality is not supported, so
+> > > > this change at least make that device to behave like all other netdev
+> > > > devices that don't support devlink reload.
+> > > > 
+> > > > The ops structure is set very early to make sure that internal devlink
+> > > > routines will be able access driver back during initialization (btw very
+> > > > questionable design choice)  
 > > > 
-> > > The ops structure is set very early to make sure that internal devlink
-> > > routines will be able access driver back during initialization (btw very
-> > > questionable design choice)  
-> > 
-> > Indeed, is this fixable? Or now that devlink_register() was moved to 
-> > the end of probe netdev can call ops before instance is registered?
-> >   
-> > > and at that stage the driver doesn't know
-> > > yet which device type it is going to drive.
+> > > Indeed, is this fixable? Or now that devlink_register() was moved to 
+> > > the end of probe netdev can call ops before instance is registered?
+> > >   
+> > > > and at that stage the driver doesn't know
+> > > > yet which device type it is going to drive.
+> > > > 
+> > > > So the answer is:
+> > > > 1. Can't have two structures.  
 > > > 
-> > > So the answer is:
-> > > 1. Can't have two structures.  
+> > > I still don't understand why. To be clear - swapping full op structures
+> > > is probably acceptable if it's a pure upgrade (existing pointers match).
+> > > Poking new ops into a structure (in alphabetical order if I understand
+> > > your reply to Greg, not destructor-before-contructor) is what I deem
+> > > questionable.  
 > > 
-> > I still don't understand why. To be clear - swapping full op structures
-> > is probably acceptable if it's a pure upgrade (existing pointers match).
-> > Poking new ops into a structure (in alphabetical order if I understand
-> > your reply to Greg, not destructor-before-contructor) is what I deem
-> > questionable.  
-> 
-> It is sorted simply for readability and not for any other technical
-> reason.
-> 
-> Regarding new ops, this is how we are setting callbacks in RDMA based on
-> actual device support. It works like a charm.
-> 
-> > > 2. Same behaviour across all netdev devices.  
+> > It is sorted simply for readability and not for any other technical
+> > reason.
 > > 
-> > Unclear what this is referring to.  
+> > Regarding new ops, this is how we are setting callbacks in RDMA based on
+> > actual device support. It works like a charm.
+> > 
+> > > > 2. Same behaviour across all netdev devices.  
+> > > 
+> > > Unclear what this is referring to.  
+> > 
+> > If your device doesn't support devlink reload, it won't print any
+> > reload counters at all. It is not the case for the multiport mlx5
+> > device. It doesn't support, but still present these counters.
 > 
-> If your device doesn't support devlink reload, it won't print any
-> reload counters at all. It is not the case for the multiport mlx5
-> device. It doesn't support, but still present these counters.
+> There's myriad ways you can hide features.
+> 
+> Swapping ops is heavy handed and prone to data races, I don't like it.
 
-There's myriad ways you can hide features.
+I'm not swapping, but setting only in supported devices.
 
-Swapping ops is heavy handed and prone to data races, I don't like it.
+Anyway, please give me a chance to present improved version of this
+mechanism and we will continue from there.
+
+Thanks
