@@ -2,75 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EDF441C5FD
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 15:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5097041C620
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 15:55:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344337AbhI2Nsg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Sep 2021 09:48:36 -0400
-Received: from mail-eopbgr150052.outbound.protection.outlook.com ([40.107.15.52]:47122
-        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1344359AbhI2Nsb (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Sep 2021 09:48:31 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T7CMuPPhudrKG42bzfH+GB6TlJTxdUmLkGrVyKiB3h/yeTQ78Fr7gy2i6/t6+P2hE/vEiDzU4Uv+fWoXO1H3rEFOIPhb+eRRWOZ9k3kbs/5N7+exEugr49P1K34IOdpjPmZ/Vhq3ZN3DsoTXphJNIJS1T8KtS0SLlKAmCMMfkdv/6QBsD9wcx3cK6vfMiB8IgEg23PZqqAacPN19yTYz928pdrl0GZ7/rq39EeFLSEqod4SEG+crNWH3d9qihBoe6sxvjTs8lX4e9hCFQGl0U+SyKh/ZQDQqOrwgIJNOgCZNyo4vIKBimYOk33ED+iYG1zaqJWO8uHIl/iqIC4beTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=V1XmirgrOSG9zjWgfeKj5xUFnjz6cQiB4U+Bc1fZpc4=;
- b=RRvcfmFq7sMzxgu+CNCjpBprn882uXXb/yhEtlAlktjSaHDZVFdDPPPlZhvHyqL+imkTkeNW+45wdRbvsWOeJLC80RD1HqBe4izgVUOwERuphLTX38/gQpimKTM5FoW/F8MTpgiLJxNXCvtO1/SS5i4eIOYXI+nsgMNTl/SAMabLABEWn+jqSa006v52Q2EOVd9SsctNYa2YfHo+dDjr7vFpBtDAh5nZLY6cwjo+596ac1Ibv0Oh0QNUVvPiDTkwcAClSFE2SjkNcW4KpWPFrIQBGzl1Q8jv+tNo+9auCtdkahmhevPo09+s6QYu28x/b0WnGxhpMvsLaKiaBGOnlw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V1XmirgrOSG9zjWgfeKj5xUFnjz6cQiB4U+Bc1fZpc4=;
- b=KQr/cgauaLYCZ7tp6DKzj4Qaq+x+hI7+p3iuzHDKdv8IQFb7c6QanjIQGmm/Nma1nM7dnMkNZLFtzcLoMgbc/1x+EuDPtQdY3nN4Ck5ruayHg6AX+VKUbHYW/P/6nmIByNnr0ePhszc4d02764KfXiBUWvbItvwLHs30UWgilbE=
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com (2603:10a6:803:55::19)
- by VI1PR0402MB3407.eurprd04.prod.outlook.com (2603:10a6:803:5::25) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.14; Wed, 29 Sep
- 2021 13:46:38 +0000
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::e157:3280:7bc3:18c4]) by VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::e157:3280:7bc3:18c4%5]) with mapi id 15.20.4544.022; Wed, 29 Sep 2021
- 13:46:38 +0000
-From:   Vladimir Oltean <vladimir.oltean@nxp.com>
-To:     Jakub Kicinski <kuba@kernel.org>
-CC:     Leon Romanovsky <leon@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
+        id S1344297AbhI2N5d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Sep 2021 09:57:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39814 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244987AbhI2N5d (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Sep 2021 09:57:33 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 93920613D1;
+        Wed, 29 Sep 2021 13:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632923752;
+        bh=40noVjUADcTFuL18AWlGlA5AqcgIKtJPa+QjlNndmaA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=TXfiJIOjDYkjlTD+FmCDLSeBSzFecqoscMatnM7hRJz6j32y6GJB5hP8vfTt6JtQw
+         gn9IlvE39J2vPbTRVUjz/jaT1L06lP4uP3LB0zCIkKE19K7ZX7zpsQT4XmXdM9B3iy
+         n2nfvYiL7HU7s8inrnWIlJkpF247sn7mwN75YafcAT+/81FgXfryg4c2QAJFCt3D9j
+         ZSL6MbbLr8QpNIW+tnfQcnHcw8vhN2rd8/kZZ/1VvZZr/OQDqKCuAkkyMyIRCyYbsS
+         0inDhEXaYXr29LaGJbQDn0nEnUJH5BtJeJ6S5lwBpW7pky/dWO5mnEJNlMzLVnU0ir
+         pugj5/zEYMKlg==
+Date:   Wed, 29 Sep 2021 06:55:49 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     "David S . Miller" <davem@davemloft.net>,
         Leon Romanovsky <leonro@nvidia.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
         Bin Luo <luobin9@huawei.com>,
         Claudiu Manoil <claudiu.manoil@nxp.com>,
         Coiby Xu <coiby.xu@gmail.com>,
-        Derek Chickles <dchickles@marvell.com>,
-        "drivers@pensando.io" <drivers@pensando.io>,
+        Derek Chickles <dchickles@marvell.com>, drivers@pensando.io,
         Eric Dumazet <eric.dumazet@gmail.com>,
         Felix Manlunas <fmanlunas@marvell.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Geetha sowjanya <gakula@marvell.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "GR-everest-linux-l2@marvell.com" <GR-everest-linux-l2@marvell.com>,
-        "GR-Linux-NIC-Dev@marvell.com" <GR-Linux-NIC-Dev@marvell.com>,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
         hariprasad <hkelam@marvell.com>,
         Ido Schimmel <idosch@nvidia.com>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        intel-wired-lan@lists.osuosl.org,
         Ioana Ciornei <ioana.ciornei@nxp.com>,
         Jerin Jacob <jerinj@marvell.com>,
         Jesse Brandeburg <jesse.brandeburg@intel.com>,
         Jiri Pirko <jiri@nvidia.com>,
         Jonathan Lemon <jonathan.lemon@gmail.com>,
         Linu Cherian <lcherian@marvell.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev,
         Manish Chopra <manishc@marvell.com>,
         Michael Chan <michael.chan@broadcom.com>,
-        Moshe Shemesh <moshe@nvidia.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "oss-drivers@corigine.com" <oss-drivers@corigine.com>,
+        Moshe Shemesh <moshe@nvidia.com>, netdev@vger.kernel.org,
+        oss-drivers@corigine.com,
         Richard Cochran <richardcochran@gmail.com>,
         Saeed Mahameed <saeedm@nvidia.com>,
         Salil Mehta <salil.mehta@huawei.com>,
@@ -83,104 +67,84 @@ CC:     Leon Romanovsky <leon@kernel.org>,
         Taras Chornyi <tchornyi@marvell.com>,
         Tariq Toukan <tariqt@nvidia.com>,
         Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "UNGLinuxDriver@microchip.com" <UNGLinuxDriver@microchip.com>,
-        Vadym Kochan <vkochan@marvell.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
         Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
         Yisen Zhuang <yisen.zhuang@huawei.com>
-Subject: Re: [PATCH net-next v1 0/5] Devlink reload and missed notifications
- fix
-Thread-Topic: [PATCH net-next v1 0/5] Devlink reload and missed notifications
- fix
-Thread-Index: AQHXtSmnzeYCAA/7lEWpi1Kvh7cE5au7BLAAgAAB1YA=
-Date:   Wed, 29 Sep 2021 13:46:38 +0000
-Message-ID: <20210929134637.4wlbd5ehbgc55cuo@skbuf>
+Subject: Re: [PATCH net-next v1 4/5] net/mlx5: Register separate reload
+ devlink ops for multiport device
+Message-ID: <20210929065549.43b13203@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <a8bf9a036fe0a590df830a77a31cc81c355f525d.1632916329.git.leonro@nvidia.com>
 References: <cover.1632916329.git.leonro@nvidia.com>
- <20210929064004.3172946e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <20210929064004.3172946e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: e3d5af6b-578c-4d32-6008-08d9834f8fbb
-x-ms-traffictypediagnostic: VI1PR0402MB3407:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VI1PR0402MB3407A6AA7CC2BF25D00528F1E0A99@VI1PR0402MB3407.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: erLOUqfR55I2fUoT9CHt2JqBo5vJjOwZ8VeGZZK+NaONvvGSNzfIGSoBw0ucytuXPPuoG9trZqWpbR1EsTf50GpGFFUDJ+dn9PJv5Wun8UpA8wHMsiSREjsccy/g7UeG4UJ1QebPndsIkZphKHphJVu2MK16T2x8+pFs+IYtBFdEQLBNZ/5C75kS2tlPD3VTy0ylXPte/9/jMVUIFI6DYng1vsJr+UM3Ok/7Vh2KLtjZyFtN+kXcRihbnju6OCbytLX6cxG5lV1X/JKY8gwJqSgzFqfG+ltWo3thEojyh2WQlda8j3Sqon5NMjhrC2otRxR6zpRpkV7Y0XsV0FsUJy3IpStM4p2F1+1DKyuspZpADQKiiBTQQcboKc6gIPcnxEycEvHk/H5oebOlJgzzRjrf6VYaLPVlR32ee69CnAKA++aqW5wavvtYfN6jZjMsnJdA74ZO+8O48Gp+4SYesXnRIsihYPwbrOJi8q9OVZxP2dQ2CrwsfmVz0RkKBEBE3Db1Y2Y/qmxj8I19eswI78BNJbctpakYsmwRrfX0gPlSjLIqqaFfVQ9erua+rFxPhqG2a3T7+YfYr86FOgIihMTPj0NiL4YoH5BGCBKkb+YpZmeHtkw1StTASsfLpch3IYzIyNJvdg7XNOG4NCxbjer/YPRYLlr7RJRVrrsEHfiY9lbPlwqQdgK15Hb8HjGs4BX3A98pdpTvRRJ/oGgjPA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5136.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(4636009)(366004)(54906003)(26005)(122000001)(4326008)(15650500001)(38100700002)(71200400001)(76116006)(6512007)(38070700005)(6486002)(8936002)(2906002)(64756008)(66556008)(66476007)(91956017)(66446008)(6506007)(8676002)(316002)(44832011)(66946007)(5660300002)(86362001)(83380400001)(7406005)(7366002)(9686003)(7416002)(33716001)(186003)(508600001)(1076003)(6916009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?1rTGdkzSXAUKcbgQJGuNfH2lTN0m2mhzrkQ0TR/YEQkl6S8XmS2CQNbFiNIq?=
- =?us-ascii?Q?WigOEwNlyv/8dSNEmqPymVKw2HbYE3jFOMQa38yFlU3Q5p90PYybJtKj7/ai?=
- =?us-ascii?Q?dCJBFxKPap3vzf1HpnuZxa81Wu6ziz8P08oP8ZnvjoaBiFoMy3/MNspbTewy?=
- =?us-ascii?Q?2bKqMP9a1nl28eAAZPp0mH6T5OHzWfS5gBsUnTAX5paDHj3DzLQ1L1nZPRDC?=
- =?us-ascii?Q?zfvo6qZJ/EwpG8E6o6w4muxmUCV5wqtzgX0U8ZOVjspuHM9okMa84iDNmlPA?=
- =?us-ascii?Q?/IUG9Vwtcltpj4dJdZyPnHF1ve9SgA0trNV7HTsmzW4Ko68WcGStI30YOVgY?=
- =?us-ascii?Q?IqMRTQyYqyobUZ2VrV14cu47AiG+uzyYJI/epW4CC9yi9bZfPQpty/z9st24?=
- =?us-ascii?Q?gNGrkVW4qmcOBNNAmUBmOKbK0zaKBGliqBcaa50oOezaQK1aNdbWF5EE1kIP?=
- =?us-ascii?Q?SENuexBOHjpuwITiA7RmMX4KSoLNwRotOhys8eyqiRXm5kEnikrOPEx0YOM/?=
- =?us-ascii?Q?WjUD9G7bNEPrJbL6zfQ6Dt+z/j5xkchJ9IIgpfTRQglcWLHkSEXvgne7iUnr?=
- =?us-ascii?Q?V+R+5s9FUcHGfkR4BkhCPifcNZJlwY3PR/0e4eV1rmmOBv+Wh/aAUf91pGE0?=
- =?us-ascii?Q?tDHNgPtLXNGqeQc9mTDIo1+WzOOocfdQ0ffPrciVzpMK8gOjFX6XGelXiO6I?=
- =?us-ascii?Q?UIBb4gNINVJlyUNmdZt2i0dDi6Dlw2mVB1XVDpuZxbuwggpMnBAXKZApfUmI?=
- =?us-ascii?Q?ikDONDAJ7l+Q4PGleAj3BsUyD3V/fPK0gt7/2Puz6GLSunWoOzyxdK2AyJBy?=
- =?us-ascii?Q?6ijXcDsFOJvf4ckjpuo+6Nb0vQccouCJw42I3wDjhE5TfAtVUfp5IjM0bJhM?=
- =?us-ascii?Q?igqg1GPm41d9Y9DMp1V4fbVjyTWNZL6AYj5wt7wrSb6tpKVIW+R467ZbJ1F/?=
- =?us-ascii?Q?lP7lE2D3b2QwWrLXVvFg0XVkvd3uIWmJBv6HzzYo3DC2kZQaCsYB0qSo8FIn?=
- =?us-ascii?Q?1OsP8AN/tJD0lyhjWTEF1hIUNHOiK6jCigC8MCUyWWyRzSVFTdMpdf2HlSXg?=
- =?us-ascii?Q?uQNmBRT1BiK3uwX2HAJ62LAxIWVIRhXNjNMg4BjzBvNdl3C+mcPXQtIZ4tyL?=
- =?us-ascii?Q?4qqpEihff2tNomBlC3GkRfbsLuMzLgX0Ox8f/4+ZxiPxofM8HcrvmPBms7qV?=
- =?us-ascii?Q?MI7zC9h+e4XaNJoDi2e6BKbabxzoSbxbpame/N47t8ZnOFayY2z228jyw26N?=
- =?us-ascii?Q?LSauSTvDVR70I1dQ5EJMCisQm+1n7I2YS2ngsGJPWNsmq7Z9gYzwbN5iI7zU?=
- =?us-ascii?Q?jmRQmES0+p1ouIHi+4f4geGUiOm1PVtkPUn5g1AJrZuvzA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <06867A5915F0EF4D959157776A11D02D@eurprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        <a8bf9a036fe0a590df830a77a31cc81c355f525d.1632916329.git.leonro@nvidia.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5136.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3d5af6b-578c-4d32-6008-08d9834f8fbb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2021 13:46:38.5643
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: y3uHaOH/HIMiCzwWZvcn+Zia/azTUVQdXMb4r9zybIbo69qDBkMZEqEIZsTzJj9UuLqPSvoGMlyxTRnhDb9rfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3407
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 29, 2021 at 06:40:04AM -0700, Jakub Kicinski wrote:
-> On Wed, 29 Sep 2021 15:00:41 +0300 Leon Romanovsky wrote:
-> > This series starts from the fixing the bug introduced by implementing
-> > devlink delayed notifications logic, where I missed some of the
-> > notifications functions.
-> >
-> > The rest series provides a way to dynamically set devlink ops that is
-> > needed for mlx5 multiport device and starts cleanup by removing
-> > not-needed logic.
-> >
-> > In the next series, we will delete various publish API, drop general
-> > lock, annotate the code and rework logic around devlink->lock.
-> >
-> > All this is possible because driver initialization is separated from th=
-e
-> > user input now.
->
-> Swapping ops is a nasty hack in my book.
->
-> And all that to avoid having two op structures in one driver.
-> Or to avoid having counters which are always 0?
->
-> Sorry, at the very least you need better explanation for this.
+On Wed, 29 Sep 2021 15:00:45 +0300 Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
+>=20
+> Mulitport slave device doesn't support devlink reload, so instead of
+> complicating initialization flow with devlink_reload_enable() which
+> will be removed in next patch, set specialized devlink ops callbacks
+> for reload operations.
+>=20
+> This fixes an error when reload counters exposed (and equal zero) for
+> the mode that is not supported at all.
+>=20
+> Fixes: d89ddaae1766 ("net/mlx5: Disable devlink reload for multi port sla=
+ve device")
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+>  drivers/net/ethernet/mellanox/mlx5/core/devlink.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/=
+net/ethernet/mellanox/mlx5/core/devlink.c
+> index 47c9f7f5bb79..e85eca6976a9 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+> @@ -309,14 +309,17 @@ static struct devlink_ops mlx5_devlink_ops =3D {
+>  #endif
+>  	.flash_update =3D mlx5_devlink_flash_update,
+>  	.info_get =3D mlx5_devlink_info_get,
+> +	.trap_init =3D mlx5_devlink_trap_init,
+> +	.trap_fini =3D mlx5_devlink_trap_fini,
+> +	.trap_action_set =3D mlx5_devlink_trap_action_set,
+> +};
+> +
+> +static struct devlink_ops mlx5_devlink_reload =3D {
+>  	.reload_actions =3D BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT) |
+>  			  BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE),
+>  	.reload_limits =3D BIT(DEVLINK_RELOAD_LIMIT_NO_RESET),
+>  	.reload_down =3D mlx5_devlink_reload_down,
+>  	.reload_up =3D mlx5_devlink_reload_up,
+> -	.trap_init =3D mlx5_devlink_trap_init,
+> -	.trap_fini =3D mlx5_devlink_trap_fini,
+> -	.trap_action_set =3D mlx5_devlink_trap_action_set,
+>  };
+> =20
+>  void mlx5_devlink_trap_report(struct mlx5_core_dev *dev, int trap_id, st=
+ruct sk_buff *skb,
+> @@ -791,6 +794,7 @@ static void mlx5_devlink_traps_unregister(struct devl=
+ink *devlink)
+> =20
+>  int mlx5_devlink_register(struct devlink *devlink)
+>  {
+> +	struct mlx5_core_dev *dev =3D devlink_priv(devlink);
+>  	int err;
+> =20
+>  	err =3D devlink_params_register(devlink, mlx5_devlink_params,
+> @@ -808,6 +812,9 @@ int mlx5_devlink_register(struct devlink *devlink)
+>  	if (err)
+>  		goto traps_reg_err;
+> =20
+> +	if (!mlx5_core_is_mp_slave(dev))
+> +		devlink_set_ops(devlink, &mlx5_devlink_reload);
 
-Leon, while the discussion about this unfolds, can you please repost
-patch 1 separately? :)
-Thanks.=
+Does this work? Where do you make a copy of the ops? =F0=9F=A4=94 You can't=
+ modify
+the driver-global ops, to state the obvious.
