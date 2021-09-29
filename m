@@ -2,122 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29F6F41C846
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 17:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 685F941C84F
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 17:25:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345079AbhI2P03 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Sep 2021 11:26:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36244 "EHLO mail.kernel.org"
+        id S1345167AbhI2P05 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Sep 2021 11:26:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36670 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344945AbhI2P03 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Sep 2021 11:26:29 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 604FF61440;
-        Wed, 29 Sep 2021 15:24:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1632929088;
-        bh=xBRRX1rYjiTzPEoPMHw1rL24TvrnK+689UnwZagbnsQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aP/SzhecYqJ59hW7NpP/05VpI6etnlUtWV51qr4Sjrsj7iIglusLMXx2XNaO0fT0M
-         RyFp76HRYmy1cib0bH0hsp/eVZnogcmCelT/ZwaymqsJegIyZJRgdg5tNKJsghh0RX
-         h735xxlR9XptIYNPpeHPeVEIWeiC9Q4ek0t3XMoih4QzIJ1mz04rG59BZZLxMrAzht
-         MHpF9eFzGaB22t5a325IB+YbBszRNGWukMKfRmsCWK+zMzKR3DD/rQmxK4ETBnoB+G
-         hvBLRT6RtSXZYMSVRvFbB12XrLiTkxZUMC0ZQ7vldriFuDLP8cPBDmDxWn6bw8TPTP
-         TWgYqiOk6HtYQ==
-Date:   Wed, 29 Sep 2021 18:24:44 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
-        Bin Luo <luobin9@huawei.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Coiby Xu <coiby.xu@gmail.com>,
-        Derek Chickles <dchickles@marvell.com>, drivers@pensando.io,
-        Eric Dumazet <eric.dumazet@gmail.com>,
-        Felix Manlunas <fmanlunas@marvell.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
-        hariprasad <hkelam@marvell.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        intel-wired-lan@lists.osuosl.org,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Jonathan Lemon <jonathan.lemon@gmail.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev,
-        Manish Chopra <manishc@marvell.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Moshe Shemesh <moshe@nvidia.com>, netdev@vger.kernel.org,
-        oss-drivers@corigine.com,
-        Richard Cochran <richardcochran@gmail.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Satanand Burla <sburla@marvell.com>,
-        Shannon Nelson <snelson@pensando.io>,
-        Shay Drory <shayd@nvidia.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Taras Chornyi <tchornyi@marvell.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>
-Subject: Re: [PATCH net-next v1 4/5] net/mlx5: Register separate reload
- devlink ops for multiport device
-Message-ID: <YVSFPNq+IDUlZAeI@unreal>
-References: <cover.1632916329.git.leonro@nvidia.com>
- <a8bf9a036fe0a590df830a77a31cc81c355f525d.1632916329.git.leonro@nvidia.com>
- <20210929065549.43b13203@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <YVR1PKQjsBfvUTPU@unreal>
- <20210929072631.437ffad9@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <YVR4qDxiQw95jaWK@unreal>
- <20210929073551.16dd2267@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        id S1344945AbhI2P05 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Sep 2021 11:26:57 -0400
+Received: from jic23-huawei (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 89FD661440;
+        Wed, 29 Sep 2021 15:25:11 +0000 (UTC)
+Date:   Wed, 29 Sep 2021 16:29:05 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 25/48] mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ
+ macro
+Message-ID: <20210929162905.5fc771c5@jic23-huawei>
+In-Reply-To: <20210928133143.157329-26-miquel.raynal@bootlin.com>
+References: <20210928133143.157329-1-miquel.raynal@bootlin.com>
+        <20210928133143.157329-26-miquel.raynal@bootlin.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.30; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210929073551.16dd2267@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 29, 2021 at 07:35:51AM -0700, Jakub Kicinski wrote:
-> On Wed, 29 Sep 2021 17:31:04 +0300 Leon Romanovsky wrote:
-> > On Wed, Sep 29, 2021 at 07:26:31AM -0700, Jakub Kicinski wrote:
-> > > On Wed, 29 Sep 2021 17:16:28 +0300 Leon Romanovsky wrote:  
-> > > > devlink_ops pointer is not constant at this stage, so why can't I copy
-> > > > reload_* pointers to the "main" devlink ops?
-> > > > 
-> > > > I wanted to avoid to copy all pointers.  
-> > > 
-> > > Hm. I must be missing a key piece here. IIUC you want to have different
-> > > ops based on some device property. But there is only one
-> > > 
-> > > static struct devlink_ops mlx5_devlink_ops;
-> > > 
-> > > so how can two devlink instances in the system use that and have
-> > > different ops without a copy?  
-> > 
-> > No, I have two:
-> > * Base ops - mlx5_devlink_ops
-> > * Extra reload commands - mlx5_devlink_reload
+On Tue, 28 Sep 2021 15:31:20 +0200
+Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+
+> Before adding another frequency with even more zeroes, use the
+> HZ_PER_MHZ macro to clarify the number.
 > 
-> Still those are global for the driver, no?
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+You missed tag I gave on v3.
 
-Ugh, yes
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
+Thanks,
+
+> ---
+>  include/linux/mfd/ti_am335x_tscadc.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> What if you have multiple NICs or whatever.
+> diff --git a/include/linux/mfd/ti_am335x_tscadc.h b/include/linux/mfd/ti_am335x_tscadc.h
+> index 893c474c1f8c..a85643677bef 100644
+> --- a/include/linux/mfd/ti_am335x_tscadc.h
+> +++ b/include/linux/mfd/ti_am335x_tscadc.h
+> @@ -9,6 +9,7 @@
+>  #define __LINUX_TI_AM335X_TSCADC_MFD_H
+>  
+>  #include <linux/mfd/core.h>
+> +#include <linux/units.h>
+>  
+>  #define REG_RAWIRQSTATUS	0x024
+>  #define REG_IRQSTATUS		0x028
+> @@ -133,7 +134,7 @@
+>  #define SEQ_STATUS		BIT(5)
+>  #define CHARGE_STEP		0x11
+>  
+> -#define ADC_CLK			3000000
+> +#define ADC_CLK			(3 * HZ_PER_MHZ)
+>  #define TOTAL_STEPS		16
+>  #define TOTAL_CHANNELS		8
+>  #define FIFO1_THRESHOLD		19
 
-I missed it and always tested with one device L(.
-
-I'll add copy-all-ops code.
-
-Thanks
