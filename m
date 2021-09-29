@@ -2,106 +2,141 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B02F41C1A4
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 11:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D133E41C266
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 12:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245059AbhI2JdZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Sep 2021 05:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59164 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245050AbhI2JdZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Sep 2021 05:33:25 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76AEAC06161C;
-        Wed, 29 Sep 2021 02:31:44 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id i19so5176806lfu.0;
-        Wed, 29 Sep 2021 02:31:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=v/UGSy92lBMO//Gz9RL9r0Z90ZEqI/HZ9DcXU2pm2WA=;
-        b=ThxTKH8UE/PEbqm5nMiArOtjD3zpEzB8+HfD6CI7jeQJqe8q7HIYMBrhSgU+LaAuto
-         smh8NC4aah7HbtZXgq3EkQ4pPfBs3gEt23lg7NITWTJmxZOAW/hW6BQx4cU6nyBxTHdS
-         4NJI0alZIqHjaPLhvaPbaqHdYt5dHTieCfMKI0iORFIVElhidD/TaMWptD3B30HuAwaf
-         xztX5EQ8GbEISHs27HfqDhHBi4u82UUJfWHELvgDD3Op5QokttLtCpAnbo9TmYn64Uwv
-         OR5aG4bPFDGuwGAhT8zdiVwcqrWgitZF+6luHiIytjfjqLtUhmxNVOQRki/vScQZGwsj
-         IdNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=v/UGSy92lBMO//Gz9RL9r0Z90ZEqI/HZ9DcXU2pm2WA=;
-        b=SHwE9GMYQg1jJ242kjV3BAh7tmqbkFWc4uif+W7Vc7FxzVyBj9XS+fasZWIn1S+rn/
-         Iz/TpRaVW36xrfvudiKWCmGT0UlEspb3JIjVJZufT5HKHABtBadr8F7UDkd4gt1xrLsv
-         68/eJ6n9P8LDHEIhvcLRCJ0XJCM62AGN/dDC2d5ovywS/2LOLK80hpJl1CpmBF2sTplt
-         z0no3jDZaOq+y1HlBMEm3sp4ZQ45IDVbXi1kgGYu5Kme1Ejzygq5LwRyoCTHIKDHM1lG
-         5I1UnoV934S4n9/za1yChCtopNFLSvw2Un/qUGuN5qZQXlByq3C5chRCrO2wq2DX7wD1
-         7dXQ==
-X-Gm-Message-State: AOAM533nm3avm+kbXUYh4XTThDUkkDMGFIjoPUKWTJeD5w5+X3wiuOsU
-        NMd0HGIENMsLp680VbXAAR0Cniadkmc=
-X-Google-Smtp-Source: ABdhPJwW4/4zsW63VKddIGXUEAZY6myLvIRsXoZS6oK5Kniynr0ocbgfm+QATYDGdfGFM9XeHDO40Q==
-X-Received: by 2002:a2e:a22a:: with SMTP id i10mr4879367ljm.464.1632907902914;
-        Wed, 29 Sep 2021 02:31:42 -0700 (PDT)
-Received: from localhost.localdomain (h-98-128-228-193.NA.cust.bahnhof.se. [98.128.228.193])
-        by smtp.gmail.com with ESMTPSA id a25sm181519lfk.63.2021.09.29.02.31.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Sep 2021 02:31:42 -0700 (PDT)
-From:   Rikard Falkeborn <rikard.falkeborn@gmail.com>
-To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>
-Cc:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Rikard Falkeborn <rikard.falkeborn@gmail.com>
-Subject: [PATCH] ASoC: ti: Constify static snd_soc_ops
-Date:   Wed, 29 Sep 2021 11:31:21 +0200
-Message-Id: <20210929093121.21253-1-rikard.falkeborn@gmail.com>
-X-Mailer: git-send-email 2.33.0
+        id S245309AbhI2KS2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Sep 2021 06:18:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49104 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245281AbhI2KSZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Sep 2021 06:18:25 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BCB2461246;
+        Wed, 29 Sep 2021 10:16:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632910604;
+        bh=qFw7P+hcQO8gyog1G00tPfDMkEj0DfJDAtYJY+PxoXw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=cbvOltDAkYA38s+2BT60i6dhPXyjFnohHHO0GecqYsMKg5aor5jao+3l8IUt4UdZ7
+         oi8hqdbIO1yW8eci7z6Pvfs9PT742Ys1obggWu2qRy3zfy6e8nhmNbpBelWPUGhGvs
+         d1gD6u19l2hxY11Eyqi6d+hhzizNGu9MLfE4v6VOTBNJgxZ9tGPDRedn5HR1jZgTVN
+         BOMVNOw9DIWvF5YWMB68X6iUxxjJnQfAqxISyqvKDu8B9OKZH5MxWzZ3mw0tZ/rMEd
+         xNyUveZbgz+EO5FATa5of/5+WbJ0wrAmaAl4ae9v+j0vN68YE5MyakJr2/CWVHlz+1
+         bPb7UHb61PA4w==
+From:   Leon Romanovsky <leon@kernel.org>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Leon Romanovsky <leonro@nvidia.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
+        Bin Luo <luobin9@huawei.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Coiby Xu <coiby.xu@gmail.com>,
+        Derek Chickles <dchickles@marvell.com>, drivers@pensando.io,
+        Eric Dumazet <eric.dumazet@gmail.com>,
+        Felix Manlunas <fmanlunas@marvell.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        GR-everest-linux-l2@marvell.com, GR-Linux-NIC-Dev@marvell.com,
+        hariprasad <hkelam@marvell.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        intel-wired-lan@lists.osuosl.org,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Jerin Jacob <jerinj@marvell.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Jonathan Lemon <jonathan.lemon@gmail.com>,
+        Linu Cherian <lcherian@marvell.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev,
+        Manish Chopra <manishc@marvell.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Moshe Shemesh <moshe@nvidia.com>, netdev@vger.kernel.org,
+        oss-drivers@corigine.com,
+        Richard Cochran <richardcochran@gmail.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Satanand Burla <sburla@marvell.com>,
+        Shannon Nelson <snelson@pensando.io>,
+        Shay Drory <shayd@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Taras Chornyi <tchornyi@marvell.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        UNGLinuxDriver@microchip.com, Vadym Kochan <vkochan@marvell.com>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>
+Subject: [PATCH net-next 0/5] Devlink reload and missed notifications fix
+Date:   Wed, 29 Sep 2021 13:16:34 +0300
+Message-Id: <cover.1632909221.git.leonro@nvidia.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-These are only assigned to the ops field in the snd_soc_dai_link struct
-which is a pointer to const struct snd_soc_ops. Make them const to allow
-the compiler to put them in read-only memory.
+From: Leon Romanovsky <leonro@nvidia.com>
 
-Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
----
- sound/soc/ti/davinci-evm.c      | 2 +-
- sound/soc/ti/omap-abe-twl6040.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Hi,
 
-diff --git a/sound/soc/ti/davinci-evm.c b/sound/soc/ti/davinci-evm.c
-index b043a0070d20..68d69e32681a 100644
---- a/sound/soc/ti/davinci-evm.c
-+++ b/sound/soc/ti/davinci-evm.c
-@@ -73,7 +73,7 @@ static int evm_hw_params(struct snd_pcm_substream *substream,
- 	return 0;
- }
- 
--static struct snd_soc_ops evm_ops = {
-+static const struct snd_soc_ops evm_ops = {
- 	.startup = evm_startup,
- 	.shutdown = evm_shutdown,
- 	.hw_params = evm_hw_params,
-diff --git a/sound/soc/ti/omap-abe-twl6040.c b/sound/soc/ti/omap-abe-twl6040.c
-index 2e3d1eea77c1..da809c7f25a4 100644
---- a/sound/soc/ti/omap-abe-twl6040.c
-+++ b/sound/soc/ti/omap-abe-twl6040.c
-@@ -96,7 +96,7 @@ static int omap_abe_dmic_hw_params(struct snd_pcm_substream *substream,
- 	return 0;
- }
- 
--static struct snd_soc_ops omap_abe_dmic_ops = {
-+static const struct snd_soc_ops omap_abe_dmic_ops = {
- 	.hw_params = omap_abe_dmic_hw_params,
- };
- 
+This series starts from the fixing the bug introduced by implementing
+devlink delayed notifications logic, where I missed some of the
+notifications functions.
+
+The rest series provides a way to dynamically set devlink ops that is
+needed for mlx5 multiport device and starts cleanup by removing
+not-needed logic.
+
+In the next series, we will delete various publish API, drop general
+lock, annotate the code and rework logic around devlink->lock.
+
+All this is possible because driver initialization is separated from the
+user input now.
+
+Thanks
+
+Leon Romanovsky (5):
+  devlink: Add missed notifications iterators
+  devlink: Allow modification of devlink ops
+  devlink: Allow set specific ops callbacks dynamically
+  net/mlx5: Register separate reload devlink ops for multiport device
+  devlink: Delete reload enable/disable interface
+
+ .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |   6 +-
+ .../net/ethernet/cavium/liquidio/lio_main.c   |   2 +-
+ .../freescale/dpaa2/dpaa2-eth-devlink.c       |   2 +-
+ .../hisilicon/hns3/hns3pf/hclge_devlink.c     |   5 +-
+ .../hisilicon/hns3/hns3vf/hclgevf_devlink.c   |   5 +-
+ .../net/ethernet/huawei/hinic/hinic_devlink.c |   2 +-
+ drivers/net/ethernet/intel/ice/ice_devlink.c  |   2 +-
+ .../marvell/octeontx2/af/rvu_devlink.c        |   2 +-
+ .../marvell/prestera/prestera_devlink.c       |   2 +-
+ drivers/net/ethernet/mellanox/mlx4/main.c     |   4 +-
+ .../net/ethernet/mellanox/mlx5/core/devlink.c |  15 +-
+ .../net/ethernet/mellanox/mlx5/core/main.c    |   3 -
+ .../mellanox/mlx5/core/sf/dev/driver.c        |   5 +-
+ drivers/net/ethernet/mellanox/mlxsw/core.c    |  12 +-
+ drivers/net/ethernet/mscc/ocelot.h            |   2 +-
+ drivers/net/ethernet/mscc/ocelot_net.c        |   2 +-
+ .../net/ethernet/netronome/nfp/nfp_devlink.c  |   2 +-
+ drivers/net/ethernet/netronome/nfp/nfp_main.h |   2 +-
+ .../ethernet/pensando/ionic/ionic_devlink.c   |   2 +-
+ drivers/net/ethernet/qlogic/qed/qed_devlink.c |   2 +-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      |   2 +-
+ drivers/net/ethernet/ti/cpsw_new.c            |   2 +-
+ drivers/net/netdevsim/dev.c                   |   5 +-
+ drivers/ptp/ptp_ocp.c                         |   2 +-
+ drivers/staging/qlge/qlge_main.c              |   2 +-
+ include/net/devlink.h                         |  15 +-
+ net/core/devlink.c                            | 155 ++++++++++--------
+ net/dsa/dsa2.c                                |   2 +-
+ 28 files changed, 131 insertions(+), 133 deletions(-)
+
 -- 
-2.33.0
+2.31.1
 
