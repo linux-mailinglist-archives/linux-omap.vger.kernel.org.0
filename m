@@ -2,30 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 379B341C4A4
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 14:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4D2641C50B
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Sep 2021 14:58:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343661AbhI2M0y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Sep 2021 08:26:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37494 "EHLO mail.kernel.org"
+        id S1343927AbhI2NAO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Sep 2021 09:00:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59828 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1343657AbhI2M0p (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 29 Sep 2021 08:26:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F09DB6134F;
-        Wed, 29 Sep 2021 12:25:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1632918304;
-        bh=wWhYoJmf5o0goYtd67yiGvYSKB/JovKlR7TP3Zqi99g=;
+        id S1343889AbhI2NAN (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 29 Sep 2021 09:00:13 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A9B661211;
+        Wed, 29 Sep 2021 12:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632920312;
+        bh=j2Wb33as6mzdBS3YhKeavZz4SfbOKLPsDU6YQXmeqwo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FOgYB8oD4xLYiT0MCbtWOdRGH09IaQNPSb9EOFkBWsnpoxLHGflJa7ENoq5BBegTA
-         /idNuAQ88djuyX6GEANEa3D9oBEdUuEjGy3rDzcd4GQcWFa+2U/Gw+KtNXffW4v0Ud
-         7oDuoKWmOB12QpwjmS0H8zNQahoQsoL0nRw6FaFU=
-Date:   Wed, 29 Sep 2021 14:25:00 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Leon Romanovsky <leon@kernel.org>
+        b=SaKUa75ehCfoIF0ddeLIUF8v+AG+MGe8xIP1UF82TZq9Zhr8OiGNBT4OWN1arr0Wo
+         HXdbxucj0JELyLM6WgOgi0QnGFaPrKBFAdbLTMcABabCcAmv/BbcSkOpEcZOpw5rbn
+         yepoi2ngSz4JdfabJCC1QdWw7qIShD+f5xZIBNdMzO4r6y8wNW24kYxkt7m1J70MbV
+         vip1XtOWNXBDrjfMr6hzHPMBExjy7c2Fo4g54lbP3ZxJfPoX0sd+9RIFKXgbKLx4wv
+         VxoveKPIqj3dkPR9vyfrom4xKSP64IlJ/+Ykph9Uyd/pOaMDDog2Q0WveAlEflJZ65
+         mZVaPXMg79IxA==
+Date:   Wed, 29 Sep 2021 15:58:28 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "David S . Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
-        Leon Romanovsky <leonro@nvidia.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Andrew Lunn <andrew@lunn.ch>, Ariel Elior <aelior@marvell.com>,
         Bin Luo <luobin9@huawei.com>,
@@ -70,39 +72,49 @@ Cc:     "David S . Miller" <davem@davemloft.net>,
         Yisen Zhuang <yisen.zhuang@huawei.com>
 Subject: Re: [PATCH net-next v1 3/5] devlink: Allow set specific ops
  callbacks dynamically
-Message-ID: <YVRbHMODzcciHa2p@kroah.com>
+Message-ID: <YVRi9B4bxR/jZrug@unreal>
 References: <cover.1632916329.git.leonro@nvidia.com>
  <aac64d4861d6207a90a6d45245ee5ed59114659a.1632916329.git.leonro@nvidia.com>
+ <YVRbHMODzcciHa2p@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aac64d4861d6207a90a6d45245ee5ed59114659a.1632916329.git.leonro@nvidia.com>
+In-Reply-To: <YVRbHMODzcciHa2p@kroah.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 29, 2021 at 03:00:44PM +0300, Leon Romanovsky wrote:
-> +void devlink_set_ops(struct devlink *devlink, struct devlink_ops *ops)
-> +{
-> +	struct devlink_ops *dev_ops = devlink->ops;
-> +
-> +	WARN_ON(!devlink_reload_actions_valid(ops));
-> +
-> +#define SET_DEVICE_OP(ptr, op, name)                                           \
-> +	do {                                                                   \
-> +		if ((op)->name)                                                \
-> +			if (!((ptr)->name))                                    \
-> +				(ptr)->name = (op)->name;                      \
-> +	} while (0)
-> +
-> +	/* Keep sorted */
-> +	SET_DEVICE_OP(dev_ops, ops, reload_actions);
-> +	SET_DEVICE_OP(dev_ops, ops, reload_down);
-> +	SET_DEVICE_OP(dev_ops, ops, reload_limits);
-> +	SET_DEVICE_OP(dev_ops, ops, reload_up);
+On Wed, Sep 29, 2021 at 02:25:00PM +0200, Greg Kroah-Hartman wrote:
+> On Wed, Sep 29, 2021 at 03:00:44PM +0300, Leon Romanovsky wrote:
+> > +void devlink_set_ops(struct devlink *devlink, struct devlink_ops *ops)
+> > +{
+> > +	struct devlink_ops *dev_ops = devlink->ops;
+> > +
+> > +	WARN_ON(!devlink_reload_actions_valid(ops));
+> > +
+> > +#define SET_DEVICE_OP(ptr, op, name)                                           \
+> > +	do {                                                                   \
+> > +		if ((op)->name)                                                \
+> > +			if (!((ptr)->name))                                    \
+> > +				(ptr)->name = (op)->name;                      \
+> > +	} while (0)
+> > +
+> > +	/* Keep sorted */
+> > +	SET_DEVICE_OP(dev_ops, ops, reload_actions);
+> > +	SET_DEVICE_OP(dev_ops, ops, reload_down);
+> > +	SET_DEVICE_OP(dev_ops, ops, reload_limits);
+> > +	SET_DEVICE_OP(dev_ops, ops, reload_up);
+> 
+> Keep sorted in what order?  And why?
 
-Keep sorted in what order?  And why?
+Sorted by name.
 
-thanks,
+It simplifies future addition of new commands and removes useless fraction
+where place new line.
 
-greg k-h
+Thanks
+
+> 
+> thanks,
+> 
+> greg k-h
