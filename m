@@ -2,111 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6648541D4EF
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Sep 2021 10:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340F541D52F
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Sep 2021 10:07:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348912AbhI3IC4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Sep 2021 04:02:56 -0400
-Received: from muru.com ([72.249.23.125]:39032 "EHLO muru.com"
+        id S1349011AbhI3IIi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Sep 2021 04:08:38 -0400
+Received: from muru.com ([72.249.23.125]:39052 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348885AbhI3ICz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 30 Sep 2021 04:02:55 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 3EC918050;
-        Thu, 30 Sep 2021 08:01:32 +0000 (UTC)
+        id S1349206AbhI3IH6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 30 Sep 2021 04:07:58 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id C235B8050;
+        Thu, 30 Sep 2021 08:06:44 +0000 (UTC)
+Date:   Thu, 30 Sep 2021 11:06:13 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Suman Anna <s-anna@ti.com>, Tero Kristo <kristo@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Drew Fustini <pdp7pdp7@gmail.com>,
+To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Robert Nelson <robertcnelson@gmail.com>,
-        Yongqin Liu <yongqin.liu@linaro.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: [PATCH] soc: ti: omap-prm: Fix external abort for am335x pruss
-Date:   Thu, 30 Sep 2021 11:01:00 +0300
-Message-Id: <20210930080100.56820-1-tony@atomide.com>
-X-Mailer: git-send-email 2.33.0
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        Suman Anna <s-anna@ti.com>,
+        Paul Barker <paul.barker@sancloud.com>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: beaglebone black boot failure Linux v5.15.rc1
+Message-ID: <YVVv9YjIaEksXPEr@atomide.com>
+References: <YUQyQgFAOFnBlcdP@atomide.com>
+ <0679a5bb-88d1-077d-6107-d5f88ef60dbf@fi.rohmeurope.com>
+ <8f3963ca-ff09-b876-ae9e-433add242de2@ti.com>
+ <331ab81e-cd42-7e9b-617a-fde4c773c07a@ti.com>
+ <615b6fec-6c62-4a97-6d0c-d2e5a5d1ccb2@fi.rohmeurope.com>
+ <dab93132-2e5a-78f2-4313-fc541ea36a10@ti.com>
+ <36785ccf-57b4-eaf1-cfc0-b024857f7694@gmail.com>
+ <YUmOGFUFONR/ynfW@atomide.com>
+ <34b4c7a7-155c-5f06-c5c7-54489a59bce1@fi.rohmeurope.com>
+ <YUrt3fGQVIwmvuOv@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YUrt3fGQVIwmvuOv@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Starting with v5.15-rc1, we may now see some am335x beaglebone black
-device produce the following error on pruss probe:
+* Tony Lindgren <tony@atomide.com> [210922 08:49]:
+> * Vaittinen, Matti <Matti.Vaittinen@fi.rohmeurope.com> [210922 08:45]:
+> > Hi Tony & All,
+> > 
+> > 
+> > On 9/21/21 10:47, Tony Lindgren wrote:
+> > > * Matti Vaittinen <mazziesaccount@gmail.com> [210920 08:23]:
+> > > 
+> > > It also allows leaving out the udelay for dra7 iva reset. Care to try
+> > > this and see if it helps?
+> > 
+> > Thanks Tony. I applied your patch on top of v5.15-rc1 and my BBB booted 
+> > up successfully. I didn't give it more than few attempts though. Do you 
+> > think that could merged as a fix to mainline?
+> > 
+> > If so - feel free to add a
+> > Tested-by: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+> 
+> OK great, good to hear! And thanks for testing :) Yeah I'll post a proper
+> fix for mainline. But one thing to consider though..
+> 
+> I'm wondering if we should always wait for the rstctrl bit to go down
+> before we even attempt to check the rststs bit if a rststs registe
+> exists.
 
-Unhandled fault: external abort on non-linefetch (0x1008) at 0xe0326000
+I've sent out a proper patch for this at [0] below, please review and
+test.
 
-This has started with the enabling of pruss for am335x in the dts files.
+Regards,
 
-Turns out the is caused by the PRM reset handling not waiting for the
-reset bit to clear. To fix the issue, let's always wait for the reset
-bit to clear, even if there is a separate reset status register.
+Tony
 
-We attempted to fix a similar issue for dra7 iva with a udelay() in
-commit effe89e40037 ("soc: ti: omap-prm: Fix occasional abort on reset
-deassert for dra7 iva"). There is no longer a need for the udelay()
-for dra7 iva reset either with the check added for reset bit clearing.
-
-Cc: Drew Fustini <pdp7pdp7@gmail.com>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc: Robert Nelson <robertcnelson@gmail.com>
-Cc: Yongqin Liu <yongqin.liu@linaro.org>
-Reported-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: effe89e40037 ("soc: ti: omap-prm: Fix occasional abort on reset deassert for dra7 iva")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/soc/ti/omap_prm.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
---- a/drivers/soc/ti/omap_prm.c
-+++ b/drivers/soc/ti/omap_prm.c
-@@ -825,25 +825,28 @@ static int omap_reset_deassert(struct reset_controller_dev *rcdev,
- 	writel_relaxed(v, reset->prm->base + reset->prm->data->rstctrl);
- 	spin_unlock_irqrestore(&reset->lock, flags);
- 
--	if (!has_rstst)
--		goto exit;
-+	/* wait for the reset bit to clear */
-+	ret = readl_relaxed_poll_timeout_atomic(reset->prm->base +
-+						reset->prm->data->rstctrl,
-+						v, !(v & BIT(id)), 1,
-+						OMAP_RESET_MAX_WAIT);
-+	if (ret)
-+		pr_err("%s: timedout waiting for %s:%lu\n", __func__,
-+		       reset->prm->data->name, id);
- 
- 	/* wait for the status to be set */
--	ret = readl_relaxed_poll_timeout_atomic(reset->prm->base +
-+	if (has_rstst) {
-+		ret = readl_relaxed_poll_timeout_atomic(reset->prm->base +
- 						 reset->prm->data->rstst,
- 						 v, v & BIT(st_bit), 1,
- 						 OMAP_RESET_MAX_WAIT);
--	if (ret)
--		pr_err("%s: timedout waiting for %s:%lu\n", __func__,
--		       reset->prm->data->name, id);
-+		if (ret)
-+			pr_err("%s: timedout waiting for %s:%lu\n", __func__,
-+			       reset->prm->data->name, id);
-+	}
- 
--exit:
--	if (reset->clkdm) {
--		/* At least dra7 iva needs a delay before clkdm idle */
--		if (has_rstst)
--			udelay(1);
-+	if (reset->clkdm)
- 		pdata->clkdm_allow_idle(reset->clkdm);
--	}
- 
- 	return ret;
- }
--- 
-2.33.0
+[0] [PATCH] soc: ti: omap-prm: Fix external abort for am335x pruss
+    https://lore.kernel.org/linux-omap/20210930080100.56820-1-tony@atomide.com/T/#u
