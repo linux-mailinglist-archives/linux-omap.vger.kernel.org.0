@@ -2,79 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C96F841D5B2
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Sep 2021 10:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34AE041D5C7
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Sep 2021 10:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348827AbhI3Iv3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Sep 2021 04:51:29 -0400
-Received: from muru.com ([72.249.23.125]:39120 "EHLO muru.com"
+        id S1348958AbhI3Izp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Sep 2021 04:55:45 -0400
+Received: from foss.arm.com ([217.140.110.172]:50682 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348818AbhI3Iv3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 30 Sep 2021 04:51:29 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id ED3A38050;
-        Thu, 30 Sep 2021 08:50:15 +0000 (UTC)
-Date:   Thu, 30 Sep 2021 11:49:45 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     kernel test robot <lkp@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Keerthy <j-keerthy@ti.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.co.uk>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        linux-omap@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Select TIMER_OF
-Message-ID: <YVV6KZ7TYhvABjIz@atomide.com>
-References: <20210828175747.3777891-1-keescook@chromium.org>
+        id S1348952AbhI3Izp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 30 Sep 2021 04:55:45 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 803C8D6E;
+        Thu, 30 Sep 2021 01:54:02 -0700 (PDT)
+Received: from e123427-lin.arm.com (unknown [10.57.49.184])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E53843F793;
+        Thu, 30 Sep 2021 01:54:00 -0700 (PDT)
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Luca Ceresoli <luca@lucaceresoli.net>, linux-pci@vger.kernel.org
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        linux-kernel@vger.kernel.org,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2 0/4] PCI: dwc: pci-dra7xx: miscellaneous improvements
+Date:   Thu, 30 Sep 2021 09:53:53 +0100
+Message-Id: <163299201477.31815.18190082659502039608.b4-ty@arm.com>
+X-Mailer: git-send-email 2.31.0
+In-Reply-To: <20210531085934.2662457-1-luca@lucaceresoli.net>
+References: <20210531085934.2662457-1-luca@lucaceresoli.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210828175747.3777891-1-keescook@chromium.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Kees Cook <keescook@chromium.org> [210828 17:58]:
-> When building OMAP_DM_TIMER without TIMER_OF, there are orphan sections
-> due to the use of TIMER_OF_DELCARE() without CONFIG_TIMER_OF. Select
-> CONFIG_TIMER_OF when enaling OMAP_DM_TIMER:
+On Mon, 31 May 2021 10:59:30 +0200, Luca Ceresoli wrote:
+> This is an series of mixed improvements to the DRA7 PCI controller driver:
+> allow building as a loadabel module, allow to get and enable a clock and a
+> small cleanup.
 > 
-> arm-linux-gnueabi-ld: warning: orphan section `__timer_of_table' from `drivers/clocksource/timer-ti-dm-systimer.o' being placed in section `__timer_of_table'
+> Luca
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Link: https://lore.kernel.org/lkml/202108282255.tkdt4ani-lkp@intel.com/
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Keerthy <j-keerthy@ti.com>
-> Cc: Sebastian Reichel <sebastian.reichel@collabora.co.uk>
-> Cc: Ladislav Michl <ladis@linux-mips.org>
-> Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-> Cc: linux-omap@vger.kernel.org
-> Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+> Luca Ceresoli (4):
+>   PCI: dwc: Export more symbols to allow modular drivers
+>   PCI: dra7xx: Make it a kernel module
+>   PCI: dra7xx: Remove unused include
+>   PCI: dra7xx: Get an optional clock
+> 
+> [...]
 
-Sorry for the delay, I just noticed I never replied earlier:
+Applied to pci/dwc, thanks!
 
-Acked-by: Tony Lindgren <tony@atomide.com>
+[1/4] PCI: dwc: Export more symbols to allow modular drivers
+      https://git.kernel.org/lpieralisi/pci/c/3a7fb86758
+[2/4] PCI: dra7xx: Make it a kernel module
+      https://git.kernel.org/lpieralisi/pci/c/3b868d150e
+[3/4] PCI: dra7xx: Remove unused include
+      https://git.kernel.org/lpieralisi/pci/c/b9a6943dc8
+[4/4] PCI: dra7xx: Get an optional clock
+      https://git.kernel.org/lpieralisi/pci/c/5af9405397
 
-> ---
->  drivers/clocksource/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index 0f5e3983951a..08f8cb944a2a 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -24,6 +24,7 @@ config I8253_LOCK
->  
->  config OMAP_DM_TIMER
->  	bool
-> +	select TIMER_OF
->  
->  config CLKBLD_I8253
->  	def_bool y if CLKSRC_I8253 || CLKEVT_I8253 || I8253_LOCK
-> -- 
-> 2.30.2
-> 
+Thanks,
+Lorenzo
