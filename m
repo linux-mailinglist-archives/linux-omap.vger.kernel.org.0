@@ -2,68 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1288541E80B
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Oct 2021 09:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F72841E85C
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Oct 2021 09:34:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352306AbhJAHNZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Fri, 1 Oct 2021 03:13:25 -0400
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:49765 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352057AbhJAHNY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Oct 2021 03:13:24 -0400
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id CA64D1C000A;
-        Fri,  1 Oct 2021 07:11:35 +0000 (UTC)
-Date:   Fri, 1 Oct 2021 09:11:32 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Lokesh Vutla <lokeshvutla@ti.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Jason Reeder <jreeder@ti.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 25/48] mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ
- macro
-Message-ID: <20211001091132.748a624d@xps13>
-In-Reply-To: <20210929162905.5fc771c5@jic23-huawei>
-References: <20210928133143.157329-1-miquel.raynal@bootlin.com>
-        <20210928133143.157329-26-miquel.raynal@bootlin.com>
-        <20210929162905.5fc771c5@jic23-huawei>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1352526AbhJAHgS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Oct 2021 03:36:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42112 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352497AbhJAHgR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Oct 2021 03:36:17 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D839CC06177A;
+        Fri,  1 Oct 2021 00:34:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=/KNbdMFoOKxu0lGyFPrV7jwi5kRSdH7fdSWGknBxn4c=; b=hlJ4++4nqjH7wJjFg1Bu1Krhh2
+        xxnCJJWg7qML7/JbuIGJy2gJCXl0Yk5LAZxgKyan7mRPSO4g/0+H1Zlrtd1WC9UqadV8pmue1fxpM
+        txJKUEndHDcnVt4IrhFRyUfFPeHGqbljIYBu2KOLZZBbtA625LQoR6a/QO/K71MECKr4=;
+Received: from p200300ccff0b42001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0b:4200:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1mWD3s-00012f-1t; Fri, 01 Oct 2021 09:34:28 +0200
+Received: from andi by aktux with local (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1mWD3q-00CBfP-HK; Fri, 01 Oct 2021 09:34:26 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
+        hns@goldelico.com, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        letux-kernel@openphoenux.org
+Cc:     Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH 0/5] arm: dts: omap3-gta04: dtbs_check fixes
+Date:   Fri,  1 Oct 2021 09:34:11 +0200
+Message-Id: <20211001073416.2904733-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Jonathan,
+This series fixes some errors found by make dtbs_check. Most
+do not fix functional issues, just syntax but one typo was
+unveiled by make dtbs_check which only caused no problems by
+luck.
 
-jic23@kernel.org wrote on Wed, 29 Sep 2021 16:29:05 +0100:
+Andreas Kemnade (5):
+  arm: dts: omap3-gta04: cleanup LCD definition
+  arm: dts: omap3-gta04: fix missing sensor supply
+  arm: dts: omap3-gta04a5: fix missing sensor supply
+  arm: dts: omap3-gta04a4: accelerometer irq fix
+  arm: dts: omap3-gta04: cleanup led node names
 
-> On Tue, 28 Sep 2021 15:31:20 +0200
-> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> 
-> > Before adding another frequency with even more zeroes, use the
-> > HZ_PER_MHZ macro to clarify the number.
-> > 
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>  
-> You missed tag I gave on v3.
-> 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+ arch/arm/boot/dts/omap3-gta04.dtsi  | 23 +++++++++++++----------
+ arch/arm/boot/dts/omap3-gta04a5.dts |  2 ++
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-Oh right, sorry about that.
+-- 
+2.30.2
 
-Cheers,
-Miquèl
