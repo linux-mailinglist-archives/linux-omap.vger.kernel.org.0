@@ -2,70 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65D6141EBBC
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Oct 2021 13:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D42CF41EE73
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Oct 2021 15:21:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353750AbhJALZR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 Oct 2021 07:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38360 "EHLO
+        id S231634AbhJANX0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Oct 2021 09:23:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353576AbhJALZR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Oct 2021 07:25:17 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1528C061775
-        for <linux-omap@vger.kernel.org>; Fri,  1 Oct 2021 04:23:32 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id j27so6994072wms.0
-        for <linux-omap@vger.kernel.org>; Fri, 01 Oct 2021 04:23:32 -0700 (PDT)
+        with ESMTP id S231511AbhJANX0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Oct 2021 09:23:26 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F830C06177C
+        for <linux-omap@vger.kernel.org>; Fri,  1 Oct 2021 06:21:42 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id 187so3488909pfc.10
+        for <linux-omap@vger.kernel.org>; Fri, 01 Oct 2021 06:21:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=LLmurtDEA5JVo9ZjaVbs0k4e4TwS64Te4eBdtibog0kZhKtMbbW8tQQDGWCGYqh2vR
-         8gJtXNuGTlAQJd+qsGv+3OAhFDt/wOGzw8G6YLcjGrydESup73VVND/l29tgi0mXUeVx
-         6yFbWdliMayK0fUtEgI8JL2JnmrVDrL12nhRb2mcvVmCDNjW8DNyoG1X3sCxHWDr4PqV
-         +LQ+HSwjVq+cA6hpgFAkK00lZzjD6OXAoiuAjAQ8OWIDaoQ4uT4766xHvsmdcJJW1hwY
-         HEHpAxnZyUvLEI2bEKwi8zkfJfFUQ00VuDFJ4JgLrVlTzPrMBuGJ+NoTTYUw4KPWZ57Z
-         hXKw==
+        bh=L+FOcXiUe3NJF4I+6Nd2qgDzoccy9conF/JK7IB4dwk=;
+        b=ovFcsm8NoSOrd5og4GdXmUUaPwsyP+ckfU9iKdPLuD/rAD212s3g0cgh3WEP0fmGEH
+         zFlyZQTyJuhjStuQggT4c8q3mpVV6MWHhhCqBGKZVRfia6rpJ0N7/L+nHLKYYyw8TmrQ
+         1K9s8l6Q7YfJDtueTj+Xgeg3IV+kglpAgorzyB0Ndzm8dcpa8C+fH6SCXffrqlAzcigk
+         VBc1BtagTLvPOco2/Rmw8fP2XyRvexFGLaOYq+HBpwcPytAHOrE2mcQzs307StMrhBPK
+         09pN3UrzSQji6TfVLlyQ71ASXRUjqX4aNMV9Zp5HRYn5ZTvHH1HoFONA2NpBSA3rwux/
+         S8vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
-        b=FfMs3gpC5TCbgYY2HOEii5R0MZdhgHCV1Vn3wRgL/tfPVk/sYUbkUXWX8gmuFi8bUJ
-         oCjAc8cIPCa6ihnfCJNnbbLK8YipSdGFgVb7sEiB/LZRjXqyHm/TooSh7Qg+p2q1h2Sf
-         Jp89LmKILFA8j6tgekP53e+nSrvahRbZ9m1X02zZUhnUbbYQMeRSgQPWZMgXaKhHp3Yz
-         04c/eqiyT0dTMa34m/A20QqkM1SXzCsgYwLC8nJHmgjsejNdeRas9Ig2XPIruy1HlSTu
-         SlrjtSQgEPPD09bwb1IFy5LSmdhCJIhO68i0VyyvH7L3khrsKabY++buoYw/FcxjZ4/I
-         eq6w==
-X-Gm-Message-State: AOAM530jOhztEltQ9ECnTp3q371F3SUO3CviYkBLfYkw7ftCinFgwDq6
-        aUdNfS3OiBdsbgWdTEsOl7dBg6gbq4JT8xavbCA=
-X-Google-Smtp-Source: ABdhPJwx6yg83rEz/wA3vUxiDB4RpzcX7hEEsqPqQUM4vWqpNgpCfJS7yHovwICOW8hdgnEQXPQ9uvBeH0bXWvea8hc=
-X-Received: by 2002:a1c:9dcc:: with SMTP id g195mr3911232wme.70.1633087411379;
- Fri, 01 Oct 2021 04:23:31 -0700 (PDT)
+        bh=L+FOcXiUe3NJF4I+6Nd2qgDzoccy9conF/JK7IB4dwk=;
+        b=ZhQhe4Pv7MsBIdeD926TlLCf5/5R3twduOzbdpkMvjZ0RALXQ7CyrAWgQ6PrzgTE2W
+         G/JBNREjruc9Mn87iBTYL8jETIBV6kJLniV/sGJjypAy9tXvuwzLFR2P4m3MVhFSOBHh
+         R4A0cyBwCSaPs+zsXEY9Lefr1YSNmfqj/Ef1Zdgqwl9S7U0R6ZQN0ZzqxrEc4CwDXYB8
+         qp4LRetZnAXVag2+6yiZ5NwchsuMHV76yWy8+2Ky/9MD8HirACQ18LEEHOqSYsbBUAaY
+         rNRCulG0t+c+txD1N5dFSE+MRQJmscVyVgwZP3zCG+9R9f1JIcediYef6VFtq0BDbdlb
+         oeNQ==
+X-Gm-Message-State: AOAM533oCRr0ZydOw1G8fCpWWkvzqXAIaFS6J9f8X85jZ9fNF3bDFnXF
+        3tvGgZ1svFV+Vk4/vdGTodmVL6p6dbUEEdTCoyY=
+X-Google-Smtp-Source: ABdhPJwfw42BwSaBPXLz2+WzW1I/k1dMucY2hoRC3G4hyGb9miD2LL4aU0WmOxk5kStr8hfJ/QXD5zDpFMXINeFUUks=
+X-Received: by 2002:a65:4884:: with SMTP id n4mr9859136pgs.68.1633094501800;
+ Fri, 01 Oct 2021 06:21:41 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a5d:47c8:0:0:0:0:0 with HTTP; Fri, 1 Oct 2021 04:23:30 -0700 (PDT)
-Reply-To: joymat52@gmail.com
-From:   JOYCE THOMAS <co68605@gmail.com>
-Date:   Fri, 1 Oct 2021 04:23:30 -0700
-Message-ID: <CAFNbjxSSKXSOW9rtdEUTKWhhjbgiEf5cOUPdkUDSMZwyJxdNTg@mail.gmail.com>
-Subject: ATTN:
+Received: by 2002:a05:6a10:c7cb:0:0:0:0 with HTTP; Fri, 1 Oct 2021 06:21:41
+ -0700 (PDT)
+Reply-To: fionahill.usa@hotmail.com
+From:   Fiona Hill <isabellahelmreich2@gmail.com>
+Date:   Fri, 1 Oct 2021 06:21:41 -0700
+Message-ID: <CABwDZrH0=Moc9owUAmOTq-BjaKtG2V2S23NocZAD=PjTtf+aBg@mail.gmail.com>
+Subject: 
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello Dear
-My Name is Mr. Joyce Thomas. Contact me for more information on the
-transfer of ($7.9 million dollars) left by my late client from your
-Country. I want to present you as a business partner and next of kin
-of the fund. I will give you the details of this transaction, as soon
-as I hear from you. I need the information below:
-Full Name:
-Address:
-Occupation:
-Age:
-Personal Email:
-Personal Telephone:
-Best Regards,
-Mr.Joyce  Thomas
+-- 
+Hi, please with honest did you receive my message?
