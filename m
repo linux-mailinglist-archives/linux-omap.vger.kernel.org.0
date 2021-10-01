@@ -2,59 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D42CF41EE73
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Oct 2021 15:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC0041EF01
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Oct 2021 15:59:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231634AbhJANX0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 Oct 2021 09:23:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38138 "EHLO
+        id S1352697AbhJAOBC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Oct 2021 10:01:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231511AbhJANX0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Oct 2021 09:23:26 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F830C06177C
-        for <linux-omap@vger.kernel.org>; Fri,  1 Oct 2021 06:21:42 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id 187so3488909pfc.10
-        for <linux-omap@vger.kernel.org>; Fri, 01 Oct 2021 06:21:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=L+FOcXiUe3NJF4I+6Nd2qgDzoccy9conF/JK7IB4dwk=;
-        b=ovFcsm8NoSOrd5og4GdXmUUaPwsyP+ckfU9iKdPLuD/rAD212s3g0cgh3WEP0fmGEH
-         zFlyZQTyJuhjStuQggT4c8q3mpVV6MWHhhCqBGKZVRfia6rpJ0N7/L+nHLKYYyw8TmrQ
-         1K9s8l6Q7YfJDtueTj+Xgeg3IV+kglpAgorzyB0Ndzm8dcpa8C+fH6SCXffrqlAzcigk
-         VBc1BtagTLvPOco2/Rmw8fP2XyRvexFGLaOYq+HBpwcPytAHOrE2mcQzs307StMrhBPK
-         09pN3UrzSQji6TfVLlyQ71ASXRUjqX4aNMV9Zp5HRYn5ZTvHH1HoFONA2NpBSA3rwux/
-         S8vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=L+FOcXiUe3NJF4I+6Nd2qgDzoccy9conF/JK7IB4dwk=;
-        b=ZhQhe4Pv7MsBIdeD926TlLCf5/5R3twduOzbdpkMvjZ0RALXQ7CyrAWgQ6PrzgTE2W
-         G/JBNREjruc9Mn87iBTYL8jETIBV6kJLniV/sGJjypAy9tXvuwzLFR2P4m3MVhFSOBHh
-         R4A0cyBwCSaPs+zsXEY9Lefr1YSNmfqj/Ef1Zdgqwl9S7U0R6ZQN0ZzqxrEc4CwDXYB8
-         qp4LRetZnAXVag2+6yiZ5NwchsuMHV76yWy8+2Ky/9MD8HirACQ18LEEHOqSYsbBUAaY
-         rNRCulG0t+c+txD1N5dFSE+MRQJmscVyVgwZP3zCG+9R9f1JIcediYef6VFtq0BDbdlb
-         oeNQ==
-X-Gm-Message-State: AOAM533oCRr0ZydOw1G8fCpWWkvzqXAIaFS6J9f8X85jZ9fNF3bDFnXF
-        3tvGgZ1svFV+Vk4/vdGTodmVL6p6dbUEEdTCoyY=
-X-Google-Smtp-Source: ABdhPJwfw42BwSaBPXLz2+WzW1I/k1dMucY2hoRC3G4hyGb9miD2LL4aU0WmOxk5kStr8hfJ/QXD5zDpFMXINeFUUks=
-X-Received: by 2002:a65:4884:: with SMTP id n4mr9859136pgs.68.1633094501800;
- Fri, 01 Oct 2021 06:21:41 -0700 (PDT)
+        with ESMTP id S231458AbhJAOBB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Oct 2021 10:01:01 -0400
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65E0DC061775;
+        Fri,  1 Oct 2021 06:59:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=l0QKhZJiAMYm7mghBwurn/4et/ZmCUBUJgrearXat5U=; b=Ijcc/b8pN/nBoXWU0tDCNKAo0i
+        wJZmZZeytyRph7TCobJihIYREzd8TKIbbO/EhKxX0H/q2BubmrxCq+9gRjPAgmEI+HPalk4n3Xv5o
+        fQxpLNUTG4/HeszbJhbrVQA0xVWH8yxUFUJILUWpjXm26EEpVWjMvFDhZwKSyIQpbOr0=;
+Received: from p200300ccff0b42001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0b:4200:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1mWJ4B-0000sG-Gc; Fri, 01 Oct 2021 15:59:12 +0200
+Received: from andi by aktux with local (Exim 4.94.2)
+        (envelope-from <andreas@kemnade.info>)
+        id 1mWJ4B-00CDum-1D; Fri, 01 Oct 2021 15:59:11 +0200
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     bcousson@baylibre.com, tony@atomide.com, robh+dt@kernel.org,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH] ARM: dts: omap3: fix cpu thermal label name
+Date:   Fri,  1 Oct 2021 15:59:08 +0200
+Message-Id: <20211001135908.2913378-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:c7cb:0:0:0:0 with HTTP; Fri, 1 Oct 2021 06:21:41
- -0700 (PDT)
-Reply-To: fionahill.usa@hotmail.com
-From:   Fiona Hill <isabellahelmreich2@gmail.com>
-Date:   Fri, 1 Oct 2021 06:21:41 -0700
-Message-ID: <CABwDZrH0=Moc9owUAmOTq-BjaKtG2V2S23NocZAD=PjTtf+aBg@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hyphens should be used in label names. make dtbs_check complains
+about that since it does not match the corresponding pattern
+
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ arch/arm/boot/dts/omap3-cpu-thermal.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+index 1ed837859374..a9069cca5888 100644
+--- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
++++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+@@ -10,7 +10,7 @@
+ 
+ #include <dt-bindings/thermal/thermal.h>
+ 
+-cpu_thermal: cpu_thermal {
++cpu_thermal: cpu-thermal {
+ 	polling-delay-passive = <250>; /* milliseconds */
+ 	polling-delay = <1000>; /* milliseconds */
+ 	coefficients = <0 20000>;
 -- 
-Hi, please with honest did you receive my message?
+2.30.2
+
