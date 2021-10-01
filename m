@@ -2,76 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D75841E452
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Oct 2021 00:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1288541E80B
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Oct 2021 09:11:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349168AbhI3XAB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Sep 2021 19:00:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40738 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349424AbhI3W7v (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Sep 2021 18:59:51 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33DC4C06176E
-        for <linux-omap@vger.kernel.org>; Thu, 30 Sep 2021 15:58:07 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id i4so31950744lfv.4
-        for <linux-omap@vger.kernel.org>; Thu, 30 Sep 2021 15:58:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
-        b=MKgmwTymFYza+KstTnGDTbp34cg2DdcDuMfZG3PjjDuEIAc0SpQwZCBn9B5plRA2sH
-         Uy+mqVv1Mf9fqlkgaqseo24TvFunj/73s0JcELuk/QOt5BtGCma4RQT6tygXRwHsrPtE
-         9ST8RQwhU50Yg+FrMbCDBCquBabo6vCKqOzstyW1CSyiZ+4Cp0rjpLqBROCiwVuQfpzN
-         b9jMWpCHpW1PQwfOc3J8sB6Wh0R6tRcDAStyWC1+mSHz8jFSMQ+32uClRPcy6NMLYiQJ
-         77FIuOjIDsrK+IhKqBWEixFJtKAbxY7/Pt5TderdYWIJmvFDKBLHooGZre7LmJZI/7f5
-         QgsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=AnIUtRQtDgk3YDJAatwz+LXUKRWPbctJNdAprjwvZ5o=;
-        b=yX07cd2nfQO7aveYio1cXMExp+pS342Z/1yGMxW842CEuV2Os01A2fwHP9O/vTFVvo
-         hWDUcGvekeh9WbVXzp26wT+mM5XJaFhJAMrqQdB+3bfsXaVhpD5gVMEx4MPLj4vrD+ej
-         8deDqnUKGqxE8lL2/s+6ykNlqZN3L+/K2XKJLNSbLOuhvcgTHW5nQVnXHLuUVbe5i8HE
-         LGaPZANtX8HsJ5SYHu2imvAZOy/OZzei2LXFF/5Ov8Nm2xhHNsJHhfkf7xeCSeToDMPz
-         jMWhYoM8NQz4u/3OFOfllaellzTT+dz85VPXHphqjA5GuOw3LidQe8CXvlPij5tV8upp
-         EhGg==
-X-Gm-Message-State: AOAM532sQpHmDt85gULxjkQSHhqqUhMfzmZRhp34Ks++cK2FuHd995CU
-        87iCYNbDHPhcqQWuFwE8n902hP5jkkvALT6fseGmSbCzII6qObub
-X-Google-Smtp-Source: ABdhPJyaQxmyBoYIuSzQTNrAMWvExTOSuawF3Spe4WJZ9NuBcXgbhwZA4QFoC3LmIeijsu1rf0PfOv4VrMQbG+9CKgk=
-X-Received: by 2002:a05:651c:54d:: with SMTP id q13mr9205651ljp.43.1633042674048;
- Thu, 30 Sep 2021 15:57:54 -0700 (PDT)
+        id S1352306AbhJAHNZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Fri, 1 Oct 2021 03:13:25 -0400
+Received: from relay5-d.mail.gandi.net ([217.70.183.197]:49765 "EHLO
+        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352057AbhJAHNY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Oct 2021 03:13:24 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id CA64D1C000A;
+        Fri,  1 Oct 2021 07:11:35 +0000 (UTC)
+Date:   Fri, 1 Oct 2021 09:11:32 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Lee Jones <lee.jones@linaro.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Lokesh Vutla <lokeshvutla@ti.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Jason Reeder <jreeder@ti.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 25/48] mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ
+ macro
+Message-ID: <20211001091132.748a624d@xps13>
+In-Reply-To: <20210929162905.5fc771c5@jic23-huawei>
+References: <20210928133143.157329-1-miquel.raynal@bootlin.com>
+        <20210928133143.157329-26-miquel.raynal@bootlin.com>
+        <20210929162905.5fc771c5@jic23-huawei>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Received: by 2002:a05:6512:5d8:0:0:0:0 with HTTP; Thu, 30 Sep 2021 15:57:53
- -0700 (PDT)
-Reply-To: southwestloanco59@gmail.com
-From:   SOUTHWESTLOANCO <saniabdullahinng2020@gmail.com>
-Date:   Thu, 30 Sep 2021 15:57:53 -0700
-Message-ID: <CA+3X9TyFuWcfRCd3Vjix8ovtMH4VzZ7-9+KkajEBvG+YAg+wmw@mail.gmail.com>
-Subject: Dear owner,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Good day,
-          Do you need a loan ? We offer any kind of loan to repay in
-6months with just 2% interest
+Hi Jonathan,
 
-Kindly Reply with below information
+jic23@kernel.org wrote on Wed, 29 Sep 2021 16:29:05 +0100:
 
-NAME...............
-ADDRESS..........
-OCCUPATION....
-AGE...................
-PHONE..............
-AMOUNT NEEDED......
+> On Tue, 28 Sep 2021 15:31:20 +0200
+> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+> 
+> > Before adding another frequency with even more zeroes, use the
+> > HZ_PER_MHZ macro to clarify the number.
+> > 
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>  
+> You missed tag I gave on v3.
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Regards
+Oh right, sorry about that.
 
-Contact  Mr Gary Edward +13182955380
-
-Remittance Department southwestloanco59@gmail.com
+Cheers,
+Miquèl
