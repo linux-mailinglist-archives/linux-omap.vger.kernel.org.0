@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD43141FC51
-	for <lists+linux-omap@lfdr.de>; Sat,  2 Oct 2021 15:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 140AB41FD06
+	for <lists+linux-omap@lfdr.de>; Sat,  2 Oct 2021 18:15:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233248AbhJBNbG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 2 Oct 2021 09:31:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52142 "EHLO
+        id S233583AbhJBQRN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 2 Oct 2021 12:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230089AbhJBNbF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Oct 2021 09:31:05 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74184C0613EC;
-        Sat,  2 Oct 2021 06:29:19 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id dj4so46212653edb.5;
-        Sat, 02 Oct 2021 06:29:19 -0700 (PDT)
+        with ESMTP id S233451AbhJBQRM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Oct 2021 12:17:12 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF86FC0613EC;
+        Sat,  2 Oct 2021 09:15:26 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id bd28so46382471edb.9;
+        Sat, 02 Oct 2021 09:15:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Qo3Emk/l8HcCIf+3gstpLuI9ENkhEiIS4ul424Y9Sro=;
-        b=aOZwHotJ3gUPWwDNRFcZRYnC6a7noj054IlZhpAzpGNhoxcOlo5TX8RdV5hENx05oj
-         EKcg+cvSAcMO2iGcygEUBc6HHJDFbPVMMI/TF15rpVR23QWwoTFk/X8oycnb5NIxMB34
-         N5yKIFa0fmRiJKg5fluaBsCK5vQTjwjGLYoEOCOCEsGRqDuqRupcKrQOcfuy7AR83yDK
-         WvaRZRxybEcfzxadlwSxat7mWOMPeIVz3bByBEY21ZN+8HrFiJcRpI/yvW4+4uxi1I6e
-         u0MWIsYScnt8QzkEz2BLRVx03t+qu5XEeCpmWczO6XhvOQbAMrZB2+fEkPRvzFTYDCwJ
-         fp1g==
+        bh=GU4RaNbxOwXU1AIglgn1YkqGJA8DPAlBXbwJZqnnnz4=;
+        b=ohxzd4KXkpBTobxCCJI+EWnhcki2mwF5TARWnr0FNSIxRBV4ADr/1IX9F5sRh0E+qe
+         tu7hz0dFBpYErVRlUNTUTgo8ciikJdQGZKoHCplDOcK8sNnSB+lvYXBqqihx0F/NquWJ
+         GuLFckHqzfZL+IHhJ0iBsDnpq39i7/e/jECDNLUlCfUv3gO+mzbfPZvvQQ8qyt/CBz3d
+         Gp07zNddoyklfm+chXC6vRx5lHi4r2rENYX6TkZDXRSBEOu8CE/qFSuQa3Hve6uiY/D2
+         JUHCKBfhVNtfKRyU4CjeP/UeI6F4N/FS4+sAAeGO8rEPQlmzg5LfkqndupxPZzDaCOOF
+         Ti5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Qo3Emk/l8HcCIf+3gstpLuI9ENkhEiIS4ul424Y9Sro=;
-        b=P4BjtikxLX6+8y2Usz8HgKjzCeOQA/zWVGXyayJY0OaZgikwJd2shkAIVtsXQ6qO1Y
-         C/PNY0tnY1mb9q4aWY6uyvRaiW1WWTydeIlgWe/PseDhcb48d713QofjPv17QSHk+SZY
-         bXwe8739nAI0M98hI9HF6Q3VuZYc/FBPI7BZ1RVrrOc8w87dMv37kcHiRg6+d3Bz6jyU
-         mCs6xbQNS7syteHevYYIOU2aH7hbXhN1i1f4d+fZuAXvWfNxnJjKvay8xKRd4F8Ww+PC
-         4b0ghSL/VWeTk1wPU8/heO9CSia6i7YcwMS3J2DYA5jOHFPiglYKd+tjYAbFcstDqbzj
-         /pww==
-X-Gm-Message-State: AOAM533379pQK4pFGb5j5jLeYgszq2ZhWEAHl4DDpPlMge5CZ/CM3sAk
-        D8D+XfCn0uIXMqFvetjnq84QHYcez5fr6JD6RzU=
-X-Google-Smtp-Source: ABdhPJxTmHrkD5TOWf2Hau50nDISHpJ4h1F8E+CIDPxAHzzjSpfOif6k/wo7Xx2BSYXSD1XoY71m0y3DIXIbtf4M/GM=
-X-Received: by 2002:a17:906:948:: with SMTP id j8mr4003927ejd.371.1633181357828;
- Sat, 02 Oct 2021 06:29:17 -0700 (PDT)
+        bh=GU4RaNbxOwXU1AIglgn1YkqGJA8DPAlBXbwJZqnnnz4=;
+        b=ipW66doPpbyJcDMdsHxv/vjzShgyEYKZqYQ4E7uSxaw0P7UlqduSyIA1/wMDPrILHY
+         txZZYedxbWR8t7p7GoZIz8Soo00/j/xEGlfCAgoUA1LJG8tbJkqt++YMlf4ivp0HsjeK
+         uSlDmCaF/mOpwX/ICpL40G84p77liChVboZ7PfgxV0K25zyPdeeJ9qBSCixpqlm+fHEi
+         22CrRD2jxVvD/g9Y4TwP4RgGL52B5JLiHPrAO9oufk/A1NeasEw87obsKyQlPAtd+YSd
+         +4STmnfVBnPpd4gjcwY3QTkM71+PQzzGlROw40WeRt+3MuPTkD6FA9arOkWESCITJ4t/
+         xjYA==
+X-Gm-Message-State: AOAM532yBy2gAnrpZhwXtnPtDCbm5aPqYC+USWXjk4/vWyu2F/NoBB7Q
+        IvqIwHtYG0PFl3afrA6UsGbZPHur1nKVC0E9B+E=
+X-Google-Smtp-Source: ABdhPJx8iGPvBXqIOC79LIMaSFWfmnsPsAvezXdC1Fm0UJHmRbMR3uvQb5Otz+6ieWqCJWaTHSKX4lYjiN3ceab33Lg=
+X-Received: by 2002:aa7:d903:: with SMTP id a3mr3840670edr.292.1633191324726;
+ Sat, 02 Oct 2021 09:15:24 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210930065733.31943-1-tony@atomide.com> <20210930065733.31943-2-tony@atomide.com>
 In-Reply-To: <20210930065733.31943-2-tony@atomide.com>
 From:   Adam Ford <aford173@gmail.com>
-Date:   Sat, 2 Oct 2021 08:29:06 -0500
-Message-ID: <CAHCN7xJ_28ALRds4rduQP3LZoEK9y6mdia_czKU0DWse7FnjoA@mail.gmail.com>
+Date:   Sat, 2 Oct 2021 11:15:13 -0500
+Message-ID: <CAHCN7xKTkPEo1mmaG+cRYacpo4-8ONz-S6Nzdg9XeAEd5rt5TA@mail.gmail.com>
 Subject: Re: [PATCH 1/5] dt-bindings: sdhci-omap: Update binding for legacy SoCs
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
@@ -79,21 +79,10 @@ On Thu, Sep 30, 2021 at 1:58 AM Tony Lindgren <tony@atomide.com> wrote:
 > Acked-by: Rob Herring <robh@kernel.org>
 > Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-Tony,
+For the series, with an additional change to omap3.dtsi to reference
+mmc nodes to ti,omap3-sdhci,
 
-I noticed that you added omap3 compatibility to the driver and the
-bindings, but no device tree changes for omap3.dtsi to enable this.
-Is there anything holding back?
-
-I modified omap3.dtsi and changed the compatible flag to
-ti,omap3-sdhci and it boots from SD card just fine.  For some reason,
-I cannot get the wl1283 to function, but the driver probes, so I need
-to spend some time investigating this.
-
-If i can get my wl1283 working again, I'll reply with a tested note.
-I hope to have more time tomorrow, but i can't do it any more today.
-
-adam
+Tested-by: Adam Ford <aford173@gmail.com> # logicpd-torpedo-37xx-devkit
 
 > ---
 >  Documentation/devicetree/bindings/mmc/sdhci-omap.txt | 6 +++++-
