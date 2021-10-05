@@ -2,110 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D67B54223CB
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Oct 2021 12:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C84A0422BD3
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Oct 2021 17:07:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233449AbhJEKru (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 5 Oct 2021 06:47:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48718 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233077AbhJEKru (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Oct 2021 06:47:50 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59F5C06161C;
-        Tue,  5 Oct 2021 03:45:59 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id g10so16999605edj.1;
-        Tue, 05 Oct 2021 03:45:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=cIIxJObi+e13NmHv65VtLTgT3/9mPzupU8skdaC+/ac=;
-        b=moF1A5AADl4m9a/AWvqtYEGUruMAE24BQ0ekMHjyRw9JBhSB9uLARlzooYReDJm83N
-         ZqdWx4rSiCxofnYQHFkq6nlrsxxt/kEarV6q76IpKaWAQy32eZ/m8RgX1O9nGx0PSiwD
-         6PuMtSCkfxhff+rgkcMCvv4suLA7jfxXf26my09QMdeEQxBGAi+q3v7CwW4B5kZ+QIQB
-         nnV1HhzFapxDw4tKLqLgpExtZBen3LUkgV7bpWQaUK2N6kfsuQsxTwQdZADJTxKomwS+
-         4ujkzJMIY908r8OBaw+jXEbwfWMtaamCNi0p9uEc1bzBFtVGY2cSaqp8THtt6Rd20gCh
-         ndLg==
+        id S235335AbhJEPJD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Oct 2021 11:09:03 -0400
+Received: from mail-ua1-f54.google.com ([209.85.222.54]:37726 "EHLO
+        mail-ua1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229488AbhJEPJD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Oct 2021 11:09:03 -0400
+Received: by mail-ua1-f54.google.com with SMTP id i13so443927uat.4;
+        Tue, 05 Oct 2021 08:07:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=cIIxJObi+e13NmHv65VtLTgT3/9mPzupU8skdaC+/ac=;
-        b=AugDPtooqHf3ysaed7IFEIiBGeShNnXJXy7XyJeeD6LM7trN5v44WvGWmmKXUycBGY
-         sAm8SX35XOgPGHmtKYPu0Jcv7nBEq3cBPa0TW0YcNiv0QhusCgTfNaG5va5eb3yJJm5Y
-         56x2we1kmqnT+lgHhN3U4LmJYFXPwaS8ak6tOaAXCrgQm7Qo2MRr5GMsxkzikM6nbCRU
-         3D8MJIBzcTBxNbBVPJbkEjaL2M99ft3GLGvfPeDVzKTrtjd10sAz1eTR4GWassQa4m2G
-         9UB7mPYVqVJTE3Xt4pkdr8Ke6enMYNboOpKu9La6k+Svz4Ry9XPJltLpmdfSiRvkbjpL
-         C6LA==
-X-Gm-Message-State: AOAM531BVWQVGCHEBX67RkiQDnoRx1l+X5nJiHIojWi4F+ClNSUtS0yq
-        JdxStK6AssikFS4ldY79N2YceiU84IyYRThzpQ/bspXb
-X-Google-Smtp-Source: ABdhPJyLahJVk0oA8O9uOJ3sJ4bZ5NZT4ZV1Vn9RfrurcfjD3ViTjOfDDkA8qpc8CM24WI20/bKb1FTujaVHOeqsN84=
-X-Received: by 2002:a50:be81:: with SMTP id b1mr26068397edk.59.1633430757237;
- Tue, 05 Oct 2021 03:45:57 -0700 (PDT)
+        bh=bk0G/z1T/uosdH3nhuVAPRarw22NSmvJmajc0ie3v6A=;
+        b=bN53d8riJpjCyaARGHXvJW88vILTqKU2VwG8/fdJRTH3rxfwBDBC32In8GohAuiuxr
+         g4vsVsfAg3ijBNWs9Rq5rhdG3dR17TrkNqKHgd0dQ6pszTElkcV6XTQxNVzUUWJ8A1iN
+         foWlfYHv/IdvJ7xTAqCX6RyompmmI6ssO6kx0u7N1SSz+qT825wm/I3IGPntixoGl5dl
+         LTEkfTQOPux2us0cnZquNpItbX8GnRibsgDSGw+r4RgXGM1BQu3d6VY8yWk234dzK+9s
+         sfiMrKCQBOLaOzz+feZwOOIK3HYyNTjRfA7ok49yj3aa2ZyEKqd8d9wEBhn9/OuxEAic
+         aCkw==
+X-Gm-Message-State: AOAM531sPTEydhQrq6Fv6S/l6dg8W5uzGA49w//lnn4VAiyvZm1bqaS4
+        Kk/nQB26YU+O4oem5Gkh7RmBM8I+hPt9Wy3pnhc=
+X-Google-Smtp-Source: ABdhPJzxRXB84hERP6o6WD8zVyYzPaZTAX750wbPz4I9CTy02fziulaptkej0GIkEyJDLO2QdDkhEc1GsBZ/isZxSXk=
+X-Received: by 2002:ab0:538a:: with SMTP id k10mr13022243uaa.14.1633446432404;
+ Tue, 05 Oct 2021 08:07:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210930065733.31943-1-tony@atomide.com> <20210930065733.31943-2-tony@atomide.com>
- <CAHCN7xJ_28ALRds4rduQP3LZoEK9y6mdia_czKU0DWse7FnjoA@mail.gmail.com> <YVwHEqaAtk0MFwmR@atomide.com>
-In-Reply-To: <YVwHEqaAtk0MFwmR@atomide.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Tue, 5 Oct 2021 05:45:46 -0500
-Message-ID: <CAHCN7xLBi09oHa75SxOc=CJ3hHZCNTxn6Z7m0NwuMcLY8+UL6g@mail.gmail.com>
-Subject: Re: [PATCH 1/5] dt-bindings: sdhci-omap: Update binding for legacy SoCs
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.chunyan@linaro.org>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh@kernel.org>
+References: <20210929000735.585237-1-saravanak@google.com> <20210929000735.585237-2-saravanak@google.com>
+In-Reply-To: <20210929000735.585237-2-saravanak@google.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 5 Oct 2021 17:07:01 +0200
+Message-ID: <CAMuHMdXG1MLQiwoaa6W5R8fJUBEUePUPnmqQ3baoVzLzp=JMLQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] drivers: bus: simple-pm-bus: Add support for
+ probing simple bus only devices
+To:     Saravana Kannan <saravanak@google.com>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Android Kernel Team <kernel-team@android.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-oxnas@groups.io,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Oct 5, 2021 at 3:04 AM Tony Lindgren <tony@atomide.com> wrote:
+On Wed, Sep 29, 2021 at 2:07 AM Saravana Kannan <saravanak@google.com> wrote:
+> fw_devlink could end up creating device links for bus only devices.
+> However, bus only devices don't get probed and can block probe() or
+> sync_state() [1] call backs of other devices. To avoid this, probe these
+> devices using the simple-pm-bus driver.
 >
-> Hi,
+> However, there are instances of devices that are not simple buses (they get
+> probed by their specific drivers) that also list the "simple-bus" (or other
+> bus only compatible strings) in their compatible property to automatically
+> populate their child devices. We still want these devices to get probed by
+> their specific drivers. So, we make sure this driver only probes devices
+> that are only buses.
 >
-> * Adam Ford <aford173@gmail.com> [211002 13:29]:
-> > I noticed that you added omap3 compatibility to the driver and the
-> > bindings, but no device tree changes for omap3.dtsi to enable this.
-> > Is there anything holding back?
->
-> There is at least the wl1251 quirk handling missing as I mentioned in
-> the cover letter. I guess we could enable sdhci except for wl1251 users
-> though.
+> [1] - https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
+> Fixes: c442a0d18744 ("driver core: Set fw_devlink to "permissive" behavior by default")
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> Tested-by: Saravana Kannan <saravanak@google.com>
+> Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-Sorry, I guess I missed the cover letter.  I didn't see any obvious
-differences between the drivers other than the hsmmc driver enumerated
-before the DMA, so it threw some splat indicating that.  The newer
-driver appears to enumerate after the DMA, so that message
-disappeared.
+Works fine on R-Car Gen/Gen3 (simple-bus), and SH-Mobile AG5
+and R-Mobile APE6 (simple-pm-bus).
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
->
-> > I modified omap3.dtsi and changed the compatible flag to
-> > ti,omap3-sdhci and it boots from SD card just fine.  For some reason,
-> > I cannot get the wl1283 to function, but the driver probes, so I need
-> > to spend some time investigating this.
-> >
-> > If i can get my wl1283 working again, I'll reply with a tested note.
-> > I hope to have more time tomorrow, but i can't do it any more today.
->
-> I don't have wl1283 omap3 devices online, but I have tested that the
-> sdhci patches do work with wl12xx and mwifiex drivers. Did you figure
-> out why your wl1283 is not working with sdhci?
+Gr{oetje,eeting}s,
 
-I did get it working.  It was a MAC address issue.  I didn't properly
-set the MAC address.  Once I did, it worked just fine.
+                        Geert
 
-I think I sent a 2nd reply with a tested-by message.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-adam
->
-> Regards,
->
-> Tony
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
