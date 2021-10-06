@@ -2,50 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F49F42375D
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Oct 2021 07:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED323423763
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Oct 2021 07:07:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229852AbhJFFJE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Oct 2021 01:09:04 -0400
-Received: from muru.com ([72.249.23.125]:41192 "EHLO muru.com"
+        id S231281AbhJFFJn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Oct 2021 01:09:43 -0400
+Received: from muru.com ([72.249.23.125]:41204 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229639AbhJFFJE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 6 Oct 2021 01:09:04 -0400
+        id S229639AbhJFFJn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 6 Oct 2021 01:09:43 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id E5EFC80E1;
-        Wed,  6 Oct 2021 05:07:42 +0000 (UTC)
-Date:   Wed, 6 Oct 2021 08:07:10 +0300
+        by muru.com (Postfix) with ESMTPS id BEFC480E1;
+        Wed,  6 Oct 2021 05:08:21 +0000 (UTC)
+Date:   Wed, 6 Oct 2021 08:07:49 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     linux-omap@vger.kernel.org, Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Suman Anna <s-anna@ti.com>, Tero Kristo <kristo@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Drew Fustini <pdp7pdp7@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Robert Nelson <robertcnelson@gmail.com>,
-        Yongqin Liu <yongqin.liu@linaro.org>
-Subject: Re: [PATCH] soc: ti: omap-prm: Fix external abort for am335x pruss
-Message-ID: <YV0u/ot+RJu35Ejz@atomide.com>
-References: <20210930080100.56820-1-tony@atomide.com>
- <b7d29bf2-f7b6-1d53-2d59-9c1bb5ee4d84@gmail.com>
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: omap3430-sdp: Fix NAND device node
+Message-ID: <YV0vJcH6jJL0x11p@atomide.com>
+References: <20210902095828.16788-1-rogerq@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b7d29bf2-f7b6-1d53-2d59-9c1bb5ee4d84@gmail.com>
+In-Reply-To: <20210902095828.16788-1-rogerq@kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Matti Vaittinen <mazziesaccount@gmail.com> [210930 11:20]:
-> Thanks Tony!
+* Roger Quadros <rogerq@kernel.org> [210902 12:58]:
+> Nand is on CS1 so reg properties first field should be 1 not 0.
 > 
-> This was _much_ appreciated :)
+> Fixes: 44e4716499b8 ("ARM: dts: omap3: Fix NAND device nodes")
 
-Thanks for testing, applying this into fixes.
-
-Regards,
+Thanks applying into fixes.
 
 Tony
