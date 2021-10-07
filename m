@@ -2,58 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B7284251B2
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Oct 2021 13:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33C3E42529A
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Oct 2021 14:08:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240803AbhJGLHE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Oct 2021 07:07:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36564 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240755AbhJGLHC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Oct 2021 07:07:02 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9EBDC061764
-        for <linux-omap@vger.kernel.org>; Thu,  7 Oct 2021 04:05:08 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id s4so12461913ybs.8
-        for <linux-omap@vger.kernel.org>; Thu, 07 Oct 2021 04:05:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=yl79lOcWxFMFA8BCGecYiE6dwIHNzfeqenv4Qbz9ZyM=;
-        b=myikagGian9Kr8yyBq6Ddk6tSc8LlkDep7tq782nM5SKblHR9GAAzB8v6pa2wB8O4G
-         6KYORaSetAm7HjQvUwPEyyEvbZSwZzqNmzw9whro/GvgGCBkhXHF6+BhR4q7YSGLVrPO
-         V/o2mV2nBdzHOHyUWZjQLjTq270JpYQGVebGz7D7TnyKhzySpft2Xxt0bQpwuH6Cs9wU
-         pen1RykpUlNiGQqPc1dZUmV8FCfe0EvAPhpWJFSyp47M7EeSh1nVYFH3/2dfdZ0KDCF/
-         xbR/KbqFOj4444xLXDxRScn1UBDGoBJiTpPOupuNcqTqXk8SWl9pAP3xXG5j2OUxf7hn
-         W5ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=yl79lOcWxFMFA8BCGecYiE6dwIHNzfeqenv4Qbz9ZyM=;
-        b=D4b6Sg2FOWA3EJJbkVGb65Q0IdY/MsDGFbn8Ub5e5rleLXmPfI+AGHQKR7yxaw7Xm7
-         jloYTjRxmNuLqPvbQMyaDiV8eRoLbwK8JlDGaYBPyxy0Fz0P9eXbRgeCX3xvo3+4L3MP
-         dyEfTq6iwOdVYXlXuM6mg6ghBTFbxo52zirLdv0O4BaybLibW1ABRLHIFgFfmb5CqyAM
-         W0S5r4fdJWnLXv6VJh2J/3P5Ink62QhJxpATLQsNs9qQzwLcPle7KHWUPFpchS6h6J5J
-         pAz4DV/eFm5aIhJLWJgcZHDa0pKrLigV4zbCfLBDrJIhPQ/fK9uMP5hD2p0Pen7boHWv
-         aX9g==
-X-Gm-Message-State: AOAM532cAJztR+z3DsYolP3ZIf1cNmf8vifuFC5fli7/10Bye4vpo7UQ
-        BQwLWEsOvoPET+HpuEwQHLmRnmiyaarj8Q5y3eY=
-X-Google-Smtp-Source: ABdhPJzyBy24UuU+8rqO9tJ1iSyJfdys2h4jCVMsdCPuL194y4MAamXMdM/LXyWpWUrcZvHtnutkKGs7Z9ERvwqx2HE=
-X-Received: by 2002:a25:cc1:: with SMTP id 184mr3830965ybm.363.1633604707934;
- Thu, 07 Oct 2021 04:05:07 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a81:30ca:0:0:0:0:0 with HTTP; Thu, 7 Oct 2021 04:05:07 -0700 (PDT)
-Reply-To: mrsvaldezannem@gmail.com
-From:   valdez anne <koukourasisi@gmail.com>
-Date:   Thu, 7 Oct 2021 11:05:07 +0000
-Message-ID: <CALg=kHHSDSm42271uYnTrE7Kmna0v3oSoE1876Nr+SAv4KgwVA@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S241275AbhJGMKn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Oct 2021 08:10:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50478 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S241286AbhJGMK3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 7 Oct 2021 08:10:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4B0E46124A;
+        Thu,  7 Oct 2021 12:08:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633608515;
+        bh=HGmW2Bpu1a5bINyn8Ucb9I/QzXitFICRrfHlC6pBvyo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qrpuaWuWYUgvFHeoxYcoGRQfTOKj/mc808W/UqinXepQ5T7choodbBwd5koV1P1FQ
+         tnxk/DB1uq1ENhO4rRokT0ymGl88lECHW2GT51fIP02rcKkYyhhNsgryArkzEXyH4S
+         o9+cPFdfFhGAeEe1HAB9sdqOWl4PxxvzOsrgXjAZaDFKrlLIlf2/r3yzDKecYa9Z+P
+         bNjcxikeMXEjGYpLXkdn+OFirALx2Bdf6tUecjnnnR5Xn2zG8xwiLSnboBTX8L5w4c
+         awGfaC0DiP4/K0utyH2X2YdWrgNL2552Efl4NUd2xl89jiynScHxKiKz2x8kcc/WET
+         Sm8ViJilejvFg==
+From:   Roger Quadros <rogerq@kernel.org>
+To:     tony@atomide.com
+Cc:     robh+dt@kernel.org, grygorii.strashko@ti.com, nm@ti.com,
+        lokeshvutla@ti.com, nsekhar@ti.com,
+        krzysztof.kozlowski@canonical.com, miquel.raynal@bootlin.com,
+        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH v5 0/8] dt-bindings: memory-controllers: ti,gpmc: Convert to yaml
+Date:   Thu,  7 Oct 2021 15:08:22 +0300
+Message-Id: <20211007120830.17221-1-rogerq@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-_Can you reply to my previous email, do I need your reply? I am
-Waiting for reading from you.
+Hi,
+
+This series converts ti,gpmc memory controller and ti,gpmc-nand and
+ti,gpmc-onenand MTD controller bindings to yaml.
+
+cheers,
+-roger
+
+Changelog:
+v5
+- separated DT changes so easy to review
+- dropped ethernet@gpmc label changes. I was trying to fix the dtbs_check
+ warning "'ethernet@gpmc' does not match any of the regexes: '@[0-7],[a-f0-9]+$', 'pinctrl-[0-9]+'"
+ but the patch causes a side effect for omap4-duovero-parlor.dts such that the
+ GPMC timings specified in the board DTS wer not being used but
+ being overridden by omap-gpmc-smsc911x.dtsi instead. This is not what we
+ want.
+- dropped patch "memory: gpmc-omap: "gpmc,device-width" DT property is optional"
+ I will pick this up in another series. Don't want this patch to hold back the .yaml cleanup series.
+- arranged compatibles in alphabetical order in ti,gpmc.yaml
+- fixed example in ti,gpmc-onenand.yaml
+- Rebased on 5.15-rc1
+- Added Acks
+
+v4
+- reference partition.yaml in ti,gpmc-nand.yaml and ti,gpmc-onenenc.yaml
+- use address-cells/size-cells: true instead of absolute size.
+
+v3:
+- fix indentation
+- split GPMC child timings/settings into ti,gpmc-child.yaml
+This allows us to refer to it at 3 places and avoid use of
+'additionalProperties: true' at 2 places.
+- specify defaults where applicable
+- reordered patches
+- added patch for making "gpmc,device-width" optional with defaults.
+- address all review comments.
+
+v2:
+- Fix all errors in dtbs_check and dt_bindings_check
+- remove references to gpmc-omap.txt
+- Convert ti,gpmc-nand and ti,gpmc-onenand bindings to yaml as well
+
+Roger Quadros (8):
+  dt-bindings: mtd: Remove gpmc-nor.txt
+  dt-bindings: net: Remove gpmc-eth.txt
+  dt-bindings: memory-controllers: Introduce ti,gpmc-child
+  dt-bindings: mtd: ti,gpmc-nand: Convert to yaml
+  dt-bindings: mtd: ti,gpmc-onenand: Convert to yaml
+  dt-bindings: memory-controllers: ti,gpmc: Convert to yaml
+  ARM: dts: omap: Fix boolean properties
+    gpmc,cycle2cycle-{same|diff}csen
+  ARM: dts: omap: fix gpmc,mux-add-data type
+
+ .../bindings/memory-controllers/omap-gpmc.txt | 157 -----------
+ .../memory-controllers/ti,gpmc-child.yaml     | 245 ++++++++++++++++++
+ .../bindings/memory-controllers/ti,gpmc.yaml  | 172 ++++++++++++
+ .../devicetree/bindings/mtd/gpmc-nand.txt     | 147 -----------
+ .../devicetree/bindings/mtd/gpmc-nor.txt      |  98 -------
+ .../devicetree/bindings/mtd/gpmc-onenand.txt  |  48 ----
+ .../devicetree/bindings/mtd/ti,gpmc-nand.yaml | 121 +++++++++
+ .../bindings/mtd/ti,gpmc-onenand.yaml         |  81 ++++++
+ .../devicetree/bindings/net/gpmc-eth.txt      |  97 -------
+ arch/arm/boot/dts/omap-gpmc-smsc911x.dtsi     |   4 +-
+ arch/arm/boot/dts/omap-gpmc-smsc9221.dtsi     |   2 +-
+ arch/arm/boot/dts/omap-zoom-common.dtsi       |   4 +-
+ arch/arm/boot/dts/omap2430-sdp.dts            |   4 +-
+ .../arm/boot/dts/omap3-devkit8000-common.dtsi |   4 +-
+ .../boot/dts/omap3-overo-tobiduo-common.dtsi  |   2 +-
+ arch/arm/boot/dts/omap3-sb-t35.dtsi           |   4 +-
+ 16 files changed, 631 insertions(+), 559 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/memory-controllers/omap-gpmc.txt
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-nand.txt
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-nor.txt
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-onenand.txt
+ create mode 100644 Documentation/devicetree/bindings/mtd/ti,gpmc-nand.yaml
+ create mode 100644 Documentation/devicetree/bindings/mtd/ti,gpmc-onenand.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/gpmc-eth.txt
+
+-- 
+2.17.1
+
