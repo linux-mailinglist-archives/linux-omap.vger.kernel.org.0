@@ -2,149 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF200425DCB
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Oct 2021 22:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F845426286
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Oct 2021 04:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233958AbhJGUsT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Oct 2021 16:48:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60886 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241391AbhJGUsS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Oct 2021 16:48:18 -0400
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7445C061762
-        for <linux-omap@vger.kernel.org>; Thu,  7 Oct 2021 13:46:23 -0700 (PDT)
-Received: by mail-ot1-x32d.google.com with SMTP id c26-20020a056830349a00b0054d96d25c1eso9030551otu.9
-        for <linux-omap@vger.kernel.org>; Thu, 07 Oct 2021 13:46:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
-         :subject:to:cc;
-        bh=AzPcN97cKsNPALhXpMD11mH7HEQFoOQxmRwJj4GT2BE=;
-        b=VKE1L+LNJEY5RERAvLjjCsaH/jdKjoku3gHwtdboexhAsqiGhsrBthGb5Bevr2KL0+
-         jYu0WOqYVJd76tRyLHu5v0RDHRXhT3UI5ixFqKcrvx4m/ZZosj+JGaDDjHY7+j87pVvj
-         p0DVEPcEZ8ZyFwHVBRvaQza8MAbygGXJtdr9M=
+        id S241354AbhJHCsX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Oct 2021 22:48:23 -0400
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:36383 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231928AbhJHCsO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Oct 2021 22:48:14 -0400
+Received: by mail-ot1-f41.google.com with SMTP id 5-20020a9d0685000000b0054706d7b8e5so10001691otx.3;
+        Thu, 07 Oct 2021 19:46:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from
-         :user-agent:date:message-id:subject:to:cc;
-        bh=AzPcN97cKsNPALhXpMD11mH7HEQFoOQxmRwJj4GT2BE=;
-        b=tOJaq2hWs4RAG1p5ci6Te1ne3CL/i2w6zcdRG6vequtAurxqW2B+b4WSUm51jourZM
-         QwYL2aT/i64B7cDOns8k1YMBr4H3I0edKeuzF3DkKYvZ/JSOnG7uLpoMfuecR/BnJP+j
-         dkhxbjKNx0n93k3un0xi4fIV+Ay/l6nPzjjeo3rqBgkDBTUx+grf6MJEUcPVAc8l4gXb
-         IFiTKkYAFSogelMgrUxUd1Lh07gwW8nKofmGo2IIy8nExMkqwFtl1OR4UCuYJAn+5M5p
-         Hlfz+SFCvX3rF/E7tmoywB053i3FXgnxl8yNrZWCAiUVd4BQUJOM1LZrXRAMtvmSV/Ob
-         bLEg==
-X-Gm-Message-State: AOAM53254O7gZSjaz1tr5up2LVMb0HmRDa7X0yG2a/wXpikjVbehGVKR
-        swpbEyVVR9Tadd9KFcQqdfjINdxvQBZRmK1Np+tq1w==
-X-Google-Smtp-Source: ABdhPJweLV2SqPIqB/I4y9UNqm9St3+8NImkU0IzW6xIcGeoqaYzaiZnETNJ/uKVGt4qTegoVLXLut8mi4j1L8pdWt0=
-X-Received: by 2002:a05:6830:1c2e:: with SMTP id f14mr5293990ote.159.1633639583170;
- Thu, 07 Oct 2021 13:46:23 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 Oct 2021 16:46:22 -0400
-MIME-Version: 1.0
-In-Reply-To: <5d3f4343-da38-04b4-fdb9-cb2dd4983db2@gmail.com>
-References: <20211006193819.2654854-1-swboyd@chromium.org> <5d3f4343-da38-04b4-fdb9-cb2dd4983db2@gmail.com>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.9.1
-Date:   Thu, 7 Oct 2021 16:46:22 -0400
-Message-ID: <CAE-0n50s_cOLA0xRa8mmUS2Nawd5X7WiQE3PvOLHu+i=hE3Eow@mail.gmail.com>
-Subject: Re: [PATCH v2 00/34] component: Make into an aggregate bus
-To:     Andrzej Hajda <andrzej.hajda@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
-        Chen Feng <puck.chen@hisilicon.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Christian Gmeiner <christian.gmeiner@gmail.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Emma Anholt <emma@anholt.net>,
-        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
-        Inki Dae <inki.dae@samsung.com>,
-        James Qian Wang <james.qian.wang@arm.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Joerg Roedel <joro@8bytes.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        Jyri Sarha <jyri.sarha@iki.fi>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-pm@vger.kernel.org, Liviu Dudau <liviu.dudau@arm.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Russell King <linux+etnaviv@armlinux.org.uk>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Sandy Huang <hjc@rock-chips.com>,
-        Saravana Kannan <saravanak@google.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Tian Tao <tiantao6@hisilicon.com>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Tomi Valkeinen <tomba@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Xinliang Liu <xinliang.liu@linaro.org>,
-        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-        Yong Wu <yong.wu@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=Zcjj5xjNcu3yBSi1V0zjT4XwOHiWirc0eie6sMutm3Q=;
+        b=WXduVdpRzX+wXq8LZ8SXMEzEEEL2vp98m5FSNAI9ZbBAjmNgZqA16mDBiZ172QsXA+
+         KGNibQApWfNHO2bHJoSceJz+oAxy1cmeOvhBV0DT5wNkeAaLQb70+LzjkTNIBDsCATCm
+         rMDSOBFWbnF48srmBWzUZEP9mr3zHuFqt/InNhTf9d2Rv8XJxT0rbcQ5bffKjvzhMFk7
+         r4tXz3yKb/cIhXZOxgq7E5rzeXVg49qcMrG33imb1t1h70EcDiIvqcsuhRYtiYeLcqcA
+         5x5Aj2ws6dbCmI9FLcwiEjNzIGqbYOHNGaSUjbbLBIzQOaDhzn/nN/MfXhk0QsEyaXvW
+         WUVQ==
+X-Gm-Message-State: AOAM5300ETYdqF7Qml/im2uiZMvB1bIg3lUCggwRo4k46go0DbZFAPzL
+        etOeK0ABjaPNHTuyWREaTA==
+X-Google-Smtp-Source: ABdhPJy/HBKh7vqWy3cKV2MqICEFzucVlBEHlS1spVkJgYlN8jqsSaZxNrI/zs2h1pu1ULZfV84rwg==
+X-Received: by 2002:a05:6830:4028:: with SMTP id i8mr6664972ots.12.1633661179812;
+        Thu, 07 Oct 2021 19:46:19 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id r25sm231482ooq.43.2021.10.07.19.46.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Oct 2021 19:46:19 -0700 (PDT)
+Received: (nullmailer pid 1409596 invoked by uid 1000);
+        Fri, 08 Oct 2021 02:46:12 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Simon Horman <horms+renesas@verge.net.au>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Suman Anna <s-anna@ti.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        devicetree@vger.kernel.org
+In-Reply-To: <20211007124858.44011-4-tony@atomide.com>
+References: <20211007124858.44011-1-tony@atomide.com> <20211007124858.44011-4-tony@atomide.com>
+Subject: Re: [PATCH 3/3] dt-bindings: bus: ti-sysc: Update to use yaml binding
+Date:   Thu, 07 Oct 2021 21:46:12 -0500
+Message-Id: <1633661172.611522.1409595.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Andrzej Hajda (2021-10-07 03:16:27)
-> Hi Stephen,
->
-> On 06.10.2021 21:37, Stephen Boyd wrote:
-> > This series is from discussion we had on reordering the device lists for
-> > drm shutdown paths[1]. I've introduced an 'aggregate' bus that we put
-> > the aggregate device onto and then we probe the aggregate device once
-> > all the components are probed and call component_add(). The probe/remove
-> > hooks are where the bind/unbind calls go, and then a shutdown hook is
-> > added that can be used to shutdown the drm display pipeline at the right
-> > time.
-> >
-> > This works for me on my sc7180 board. I no longer get a warning from i2c
-> > at shutdown that we're trying to make an i2c transaction after the i2c
-> > bus has been shutdown. There's more work to do on the msm drm driver to
-> > extract component device resources like clks, regulators, etc. out of
-> > the component bind function into the driver probe but I wanted to move
-> > everything over now in other component drivers before tackling that
-> > problem.
->
->
-> As I understand you have DSI host with i2c-controlled DSI bridge. And
-> there is an issue that bridge is shutdown before msmdrm. Your solution
-> is to 'adjust' device order on pm list.
-> I had similar issue and solved it locally by adding notification from
-> DSI bridge to DSI host that is has to be removed: mipi_dsi_detach, this
-> notification escalates in DSI host to component_del and this allow to
-> react properly.
->
-> Advantages:
-> - it is local (only involves DSI host and DSI device),
-> - it does not depend on PM internals,
-> - it can be used in other scenarios as well - unbinding DSI device driver
->
-> Disadvantage:
-> - It is DSI specific (but this is your case), I have advertised some
-> time ago more general approach [1][2].
->
-> [1]: https://static.sched.com/hosted_files/osseu18/0f/deferred_problem.pdf
-> [2]: https://lwn.net/Articles/625454/
->
+On Thu, 07 Oct 2021 15:48:58 +0300, Tony Lindgren wrote:
+> Update the binding for ti-sysc interconnect target module driver to yaml
+> format.
+> 
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Suman Anna <s-anna@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  .../devicetree/bindings/bus/ti-sysc.txt       | 139 ----------------
+>  .../devicetree/bindings/bus/ti-sysc.yaml      | 150 ++++++++++++++++++
+>  2 files changed, 150 insertions(+), 139 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/bus/ti-sysc.txt
+>  create mode 100644 Documentation/devicetree/bindings/bus/ti-sysc.yaml
+> 
 
-I think these are all points for or against using the component code in
-general? Maybe you can send patches that you think can solve the problem
-I'm experiencing and we can review them on the list.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/bus/ti-sysc.yaml:36:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
+./Documentation/devicetree/bindings/bus/ti-sysc.yaml:55:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
+
+dtschema/dtc warnings/errors:
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1537683
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
