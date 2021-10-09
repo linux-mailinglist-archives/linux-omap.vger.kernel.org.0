@@ -2,53 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 196EC427AF4
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Oct 2021 16:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95B68427AF3
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Oct 2021 16:48:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233794AbhJIOu0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S233858AbhJIOu0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Sat, 9 Oct 2021 10:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35100 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233799AbhJIOu0 (ORCPT
+        with ESMTP id S233794AbhJIOu0 (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Sat, 9 Oct 2021 10:50:26 -0400
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28BDEC061570
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B61C061762
         for <linux-omap@vger.kernel.org>; Sat,  9 Oct 2021 07:48:29 -0700 (PDT)
-Received: by mail-qv1-xf2b.google.com with SMTP id d20so8227921qvm.8
+Received: by mail-qt1-x82b.google.com with SMTP id t16so130847qto.5
         for <linux-omap@vger.kernel.org>; Sat, 09 Oct 2021 07:48:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:reply-to:from:date:message-id:subject:to
          :content-transfer-encoding;
         bh=ifc8tpX3tYy4I17tUGApbP9MFzwX6sDdwlb+u9pW2pQ=;
-        b=auGLiosMignzSJxkQWrmYD4Mnuin3NVAQDknXPaya4wJuqtW/hbXMLz/I2nMtSu8nF
-         xlPOB6Kr/Z+ys6bf76G3Tfwhou22WYFfIxUcjXqdipQLz6sP9w8ReKCtxS2y+xu1Tr4W
-         bsYIXmrib295UCCAXmfZ3Lw3Lz7NaII9qrcpofvOkDKDwn7ALXa4AtR6WAWzRHaRbOnh
-         Ki3PRAfbdiegAF8/MOvid0J6QMh4kYVFWf7iL62W/NaY8GuZHHp5K/epFzYQNPV5Uy4B
-         MH89m1Gc7ABmGLBQXyjxVOpSEOl8WrNMalGsjCPBM4KbUI9Xvi9NUZQnXzCSvDTAWbiU
-         hROQ==
+        b=ixZuSwftwo0yyPyO8/j3RcmYutrubnewRIqpK57C+lG5keOU3vo2NTlG3r5nsVk0YJ
+         ElCtpMr58gmKeTKp/H5XJ7/l+pM/HUl3bONFiZkcbZzFliSo6aM521VA/Z/UcDrmzx8r
+         J04xQpnUDkuWt9nvPswIdHwYjYfi8yW7B3n7BqjkhVNfvD5JOE940x2hznJPLDEqlMMU
+         Ec6sG7AXmjA1lygxOZpnzjQ0uBvopFK/iJyYeWHJncmbKPTM1JmDlsxTSndFc/37EwgJ
+         qWbJQWuwao0vFl1TwSAI8WYoVZ212REgiavg3EX2/pI1IId9ZmRrHHvt+emc274X8R8V
+         9WSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to:content-transfer-encoding;
         bh=ifc8tpX3tYy4I17tUGApbP9MFzwX6sDdwlb+u9pW2pQ=;
-        b=dMMgL5xWua24bzHefrq2YzriSE7kzuQiYapi4EN8w4ayoE3eVsT9SudoKF3ScdQvq6
-         n+CW+m59J3MaUBQyAqO/w1h+LfQqbN9M0fZhxeDokEd85NYPDUQ84Ga/avCbFTBLAh5b
-         1w4iARVl0IcTD5jcHRO1Q9NAgcK05Gsihn+XWpC2/2yLNaB+3EaABpNMkCDpWW34EiQe
-         qog/90wLdC+KB4I1oyTVEQnqK+gBlyaxaCCqnzJLbfpdMhKNO8JGcWvtJNdPfmNM6Fzm
-         pjHK2m6X7cm3PZlEOPi711zhk0hA81uVLtwWPtrwnDf/nWo7+uY7+3M0VRiGhe20VZvB
-         CBGw==
-X-Gm-Message-State: AOAM5318fMib4xNTLYQ5+SUmXr1qP9OsXh7/ozdG24q00eE0jqickOlN
-        BZsM3fUTwQ3IXf52w+58e7iuGu1NtFdcNj3nPEM=
-X-Google-Smtp-Source: ABdhPJxIrGqs6L8Pdt7b/PqNyHz4ISQP/Xa4GWGVNCihp9L0BgjjwSb/skTuw7MW9eKl/PxdCqX7GMmU2DU90WQVPlE=
-X-Received: by 2002:a05:6214:d8c:: with SMTP id e12mr8886183qve.14.1633790908364;
+        b=sSoIZfbMIPZt4L5/Qpvxj3cypUmhXIhZV7fpBMvXsJcebVp1S0GZaygpAKjtiI1oGg
+         Yf6jpoz1uttZIYD3Zj+5gtbE49h3lCSa31xdW7C9MnDzRY8coHTV/RX4+LZ4pt8FVUN7
+         vaRAEFZpCgVT4kPyHTOqzjyk2WL5qk6Cva5rAuch6nhih+0oT19GJDt+nawkf3D/WDi8
+         RCTBsOZ3pGJyPZXdkENoIR/BQ4jkXEsLLyrz/Id74y4x/NnSjBhiSc96L9hJ/YsjN8O/
+         mMgIDtnHZmlhKAgJvNfkoVDPaj7HdVF68qx8cUl4OZMBEvWiB5uxH/0rBaaMWQmanni/
+         +cuw==
+X-Gm-Message-State: AOAM5312C29BrvgmdNsqsk3bqmP6YK05PzHMgIGPVOqvn309gqZtOoOy
+        UeMyUM6pBubNCK0g0V0hi3VEGvD4XkRgUGxLqlc=
+X-Google-Smtp-Source: ABdhPJyEJ67cxYR08S378MIVWpV04t4uhT0P4ObV1Ix3SIbJ0Yb/RrQrn+l61mPvpnz+5aqAp98Amou68nV7ady0Sb8=
+X-Received: by 2002:ac8:7769:: with SMTP id h9mr4457060qtu.156.1633790908436;
  Sat, 09 Oct 2021 07:48:28 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ad4:56e2:0:0:0:0:0 with HTTP; Sat, 9 Oct 2021 07:48:27 -0700 (PDT)
+Received: by 2002:ad4:56e2:0:0:0:0:0 with HTTP; Sat, 9 Oct 2021 07:48:28 -0700 (PDT)
 Reply-To: juliefoundation758@gmail.com
 From:   Julie Leach <dannywise010@gmail.com>
-Date:   Sat, 9 Oct 2021 22:48:27 +0800
-Message-ID: <CAHar6F_W3wMsMUjU_y6u7y1i75rTMvdcjL0J+p+H6uD7D2DxeQ@mail.gmail.com>
+Date:   Sat, 9 Oct 2021 22:48:28 +0800
+Message-ID: <CAHar6F864WdumYX4LQJPBn-DavCNy3gUfLzBxyD7wjr6tzw4Xw@mail.gmail.com>
 Subject: Re
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
