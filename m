@@ -2,75 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95B68427AF3
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Oct 2021 16:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB47E427AFB
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Oct 2021 16:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233858AbhJIOu0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 9 Oct 2021 10:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233794AbhJIOu0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 9 Oct 2021 10:50:26 -0400
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B61C061762
-        for <linux-omap@vger.kernel.org>; Sat,  9 Oct 2021 07:48:29 -0700 (PDT)
-Received: by mail-qt1-x82b.google.com with SMTP id t16so130847qto.5
-        for <linux-omap@vger.kernel.org>; Sat, 09 Oct 2021 07:48:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=ifc8tpX3tYy4I17tUGApbP9MFzwX6sDdwlb+u9pW2pQ=;
-        b=ixZuSwftwo0yyPyO8/j3RcmYutrubnewRIqpK57C+lG5keOU3vo2NTlG3r5nsVk0YJ
-         ElCtpMr58gmKeTKp/H5XJ7/l+pM/HUl3bONFiZkcbZzFliSo6aM521VA/Z/UcDrmzx8r
-         J04xQpnUDkuWt9nvPswIdHwYjYfi8yW7B3n7BqjkhVNfvD5JOE940x2hznJPLDEqlMMU
-         Ec6sG7AXmjA1lygxOZpnzjQ0uBvopFK/iJyYeWHJncmbKPTM1JmDlsxTSndFc/37EwgJ
-         qWbJQWuwao0vFl1TwSAI8WYoVZ212REgiavg3EX2/pI1IId9ZmRrHHvt+emc274X8R8V
-         9WSA==
+        id S234115AbhJIOym (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 9 Oct 2021 10:54:42 -0400
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:33320
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233657AbhJIOyi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 9 Oct 2021 10:54:38 -0400
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 87A9D40011
+        for <linux-omap@vger.kernel.org>; Sat,  9 Oct 2021 14:52:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1633791160;
+        bh=cUxQy0Bth8q+GCo4vniDh9W7ssLXht20HUqFZATsxok=;
+        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+         In-Reply-To:Content-Type;
+        b=O1cOJHu5S2s5g6CVxWSYXRFuVPLSXrSRx/BhizxvBYFUugeMj/mJzVsz4W+idzW2b
+         yFEgw8CN5TaT37d8sSUrM3+65A1OR1p5V7MzbPVpRVtNsFRVCSJojzkqLzQQ1c5h02
+         jWAAcCMMJAHpCx7AcRD+kPuCyS8tmf0u5xlFtaaJ9L62y7Fh+zGFyLK8Tg8WhUAoge
+         hbfxFWoWo7AGawRzgC1UTJLFjz2ZCs7dyQxZ8Gtpihia2t7KO6rzA9V6u1mxzKxOQA
+         9VbC3FJcP4CLqk8zMI/txxkUq5AzP0nsMGQZXo0YljKsvB7JHh6DjhX//reQCpDNUW
+         wn/ZJiyZ9t4Tw==
+Received: by mail-ed1-f69.google.com with SMTP id u24-20020aa7db98000000b003db57b1688aso6385717edt.6
+        for <linux-omap@vger.kernel.org>; Sat, 09 Oct 2021 07:52:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=ifc8tpX3tYy4I17tUGApbP9MFzwX6sDdwlb+u9pW2pQ=;
-        b=sSoIZfbMIPZt4L5/Qpvxj3cypUmhXIhZV7fpBMvXsJcebVp1S0GZaygpAKjtiI1oGg
-         Yf6jpoz1uttZIYD3Zj+5gtbE49h3lCSa31xdW7C9MnDzRY8coHTV/RX4+LZ4pt8FVUN7
-         vaRAEFZpCgVT4kPyHTOqzjyk2WL5qk6Cva5rAuch6nhih+0oT19GJDt+nawkf3D/WDi8
-         RCTBsOZ3pGJyPZXdkENoIR/BQ4jkXEsLLyrz/Id74y4x/NnSjBhiSc96L9hJ/YsjN8O/
-         mMgIDtnHZmlhKAgJvNfkoVDPaj7HdVF68qx8cUl4OZMBEvWiB5uxH/0rBaaMWQmanni/
-         +cuw==
-X-Gm-Message-State: AOAM5312C29BrvgmdNsqsk3bqmP6YK05PzHMgIGPVOqvn309gqZtOoOy
-        UeMyUM6pBubNCK0g0V0hi3VEGvD4XkRgUGxLqlc=
-X-Google-Smtp-Source: ABdhPJyEJ67cxYR08S378MIVWpV04t4uhT0P4ObV1Ix3SIbJ0Yb/RrQrn+l61mPvpnz+5aqAp98Amou68nV7ady0Sb8=
-X-Received: by 2002:ac8:7769:: with SMTP id h9mr4457060qtu.156.1633790908436;
- Sat, 09 Oct 2021 07:48:28 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=cUxQy0Bth8q+GCo4vniDh9W7ssLXht20HUqFZATsxok=;
+        b=FmB79Zbxli4OwUo2xaiMuco77QW56ehAFdNkNZDsAQlc6wcnVrqts5AVbrXtdsFv1u
+         Kp9+kOKhOR9LhEng7AwI9iv6GZ5+fB4A97bwA/xZq8nPhPb3aA/lAOjGxuupyRLyRQiY
+         3yCQmK6ZdfO781R5+Ks3lpV97gh5chgZa6krwqaQ2YBhGzcwNLtyrSvS28n/QpXEC1Mv
+         kgvg0oYAXhVjl8vG8zVm9cIJqYisa2uLKdq/FHo9oI41wuW/OESBR0D5n/I1pClDj99K
+         CdrOzMtDWYALtg4TQ+3j3xsFZP6S/3RholnXZzlwwiZMERk3S2HhldGOs0FlnzEdyQAT
+         +yDw==
+X-Gm-Message-State: AOAM531yZGx3QBENYsVYkHzP8EbNd5KJd92V1h6YNWcV81MnezCbHGOL
+        QSVJMG939RLMCyd0YFouV2v1jzOfC9yy9EbVC0IY8qRRVL17o7M/73mH/6KYxkWS+o878BQnK07
+        8rSoH9E9mP6GIRj5gWr8qpgtDYqU7ZwlXLNZG2N4=
+X-Received: by 2002:a17:906:4f96:: with SMTP id o22mr12106273eju.169.1633791160217;
+        Sat, 09 Oct 2021 07:52:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyQkyKpJO+752VWuzH558+pOz9Vyk2rpYND0quJOBJ3uvzM5hpazCy/T4WFK8NFjQUP0vkb3w==
+X-Received: by 2002:a17:906:4f96:: with SMTP id o22mr12106249eju.169.1633791160026;
+        Sat, 09 Oct 2021 07:52:40 -0700 (PDT)
+Received: from [192.168.0.20] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id i4sm1307649edt.29.2021.10.09.07.52.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 Oct 2021 07:52:39 -0700 (PDT)
+Subject: Re: [PATCH v5 3/8] dt-bindings: memory-controllers: Introduce
+ ti,gpmc-child
+To:     Roger Quadros <rogerq@kernel.org>, tony@atomide.com
+Cc:     robh+dt@kernel.org, grygorii.strashko@ti.com, nm@ti.com,
+        lokeshvutla@ti.com, nsekhar@ti.com, miquel.raynal@bootlin.com,
+        devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20211007120830.17221-1-rogerq@kernel.org>
+ <20211007120830.17221-4-rogerq@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Message-ID: <a6478659-cea1-8c5a-287d-acc27b60a898@canonical.com>
+Date:   Sat, 9 Oct 2021 16:52:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Received: by 2002:ad4:56e2:0:0:0:0:0 with HTTP; Sat, 9 Oct 2021 07:48:28 -0700 (PDT)
-Reply-To: juliefoundation758@gmail.com
-From:   Julie Leach <dannywise010@gmail.com>
-Date:   Sat, 9 Oct 2021 22:48:28 +0800
-Message-ID: <CAHar6F864WdumYX4LQJPBn-DavCNy3gUfLzBxyD7wjr6tzw4Xw@mail.gmail.com>
-Subject: Re
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20211007120830.17221-4-rogerq@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-Sehr geehrter Beg=C3=BCnstigter,
+On 07/10/2021 14:08, Roger Quadros wrote:
+> This binding is meant for the child nodes of the TI GPMC node. The node
+> represents any device connected to the GPMC bus. It may be a Flash chip,
+> RAM chip or Ethernet controller, etc. These properties are meant for
+> configuring the GPMC settings/timings and will accompany the bindings
+> supported by the respective device.
+> 
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../memory-controllers/ti,gpmc-child.yaml     | 245 ++++++++++++++++++
+>  1 file changed, 245 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
+> 
 
-Gr=C3=BC=C3=9Fe dich. Ich bin Julie Leach, die Mega-Gewinnerin von $310.5M =
-in Mega In
-Millions Jackpot, ich spende an 5 zuf=C3=A4llige Personen, wenn du das beko=
-mmst
-email, dann wurde deine E-Mail nach einem Spinball ausgew=C3=A4hlt. Ich hab=
-e
-freiwillig beschlossen, die Summe von 3 Millionen US-Dollar zu spenden
-(3.000.000,00 $) an Sie als einer der ausgew=C3=A4hlten 5, um meine Gewinne
-zu =C3=BCberpr=C3=BCfen
 
-Bitte leiten Sie Ihre Annahmeerkl=C3=A4rung an uns weiter an:
-juliefoundation758@gmail.com
-Bleibe gesegnet.
-Julie Leach
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+
+
+Best regards,
+Krzysztof
