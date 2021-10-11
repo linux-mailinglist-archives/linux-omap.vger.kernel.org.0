@@ -2,117 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E014E428673
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Oct 2021 07:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AACD42867D
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Oct 2021 07:53:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231974AbhJKFw7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Oct 2021 01:52:59 -0400
-Received: from muru.com ([72.249.23.125]:43220 "EHLO muru.com"
+        id S233385AbhJKFzw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Oct 2021 01:55:52 -0400
+Received: from muru.com ([72.249.23.125]:43242 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229986AbhJKFw7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 Oct 2021 01:52:59 -0400
+        id S230102AbhJKFzw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 11 Oct 2021 01:55:52 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id A3E78805F;
-        Mon, 11 Oct 2021 05:51:30 +0000 (UTC)
-Date:   Mon, 11 Oct 2021 08:50:57 +0300
+        by muru.com (Postfix) with ESMTPS id B4D7C805F;
+        Mon, 11 Oct 2021 05:54:23 +0000 (UTC)
+Date:   Mon, 11 Oct 2021 08:53:50 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
-        Suman Anna <s-anna@ti.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms+renesas@verge.net.au>
-Subject: Re: [PATCH 3/3] dt-bindings: bus: ti-sysc: Update to use yaml binding
-Message-ID: <YWPQwVd9+qvmoD6O@atomide.com>
-References: <20211007124858.44011-1-tony@atomide.com>
- <20211007124858.44011-4-tony@atomide.com>
- <YWCsdFWzXEpPyYAI@robh.at.kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Cc:     Roger Quadros <rogerq@kernel.org>,
+        =?utf-8?Q?Miqu=C3=A8l?= Raynal <miquel.raynal@bootlin.com>,
+        robh+dt@kernel.org, grygorii.strashko@ti.com, nm@ti.com,
+        nsekhar@ti.com, devicetree@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 0/8] dt-bindings: memory-controllers: ti,gpmc: Convert
+ to yaml
+Message-ID: <YWPRbmaJQN85wRIO@atomide.com>
+References: <20211007120830.17221-1-rogerq@kernel.org>
+ <6b90a6fd-001f-a41a-b69f-2bd3ec8a8e26@canonical.com>
+ <e165b6ee-91d3-3a50-3b9d-3f15fa82a101@kernel.org>
+ <64b65579-7153-1e7d-9866-77ce07fd1df5@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YWCsdFWzXEpPyYAI@robh.at.kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <64b65579-7153-1e7d-9866-77ce07fd1df5@canonical.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Rob Herring <robh@kernel.org> [211008 20:39]:
-> On Thu, Oct 07, 2021 at 03:48:58PM +0300, Tony Lindgren wrote:
-> > +  compatible:
-> > +    oneOf:
-> > +      - items:
-> > +        - enum:
-> > +            - ti,sysc-omap2
-> > +            - ti,sysc-omap2
-> > +            - ti,sysc-omap4
-> > +            - ti,sysc-omap4-simple
-> > +            - ti,sysc-omap2-timer
-> > +            - ti,sysc-omap4-timer
-> > +            - ti,sysc-omap3430-sr
-> > +            - ti,sysc-omap3630-sr
-> > +            - ti,sysc-omap4-sr
-> > +            - ti,sysc-omap3-sham
-> > +            - ti,sysc-omap-aes
-> > +            - ti,sysc-mcasp
-> > +            - ti,sysc-dra7-mcasp
-> > +            - ti,sysc-usb-host-fs
-> > +            - ti,sysc-dra7-mcan
-> > +            - ti,sysc-pruss
-> > +        - const: ti,sysc
-> > +      - items:
-> > +        - const: ti,sysc
+* Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com> [211009 14:56]:
+> On 08/10/2021 21:10, Roger Quadros wrote:
+> > Krzysztof,
+> > 
+> > On 07/10/2021 20:37, Krzysztof Kozlowski wrote:
+> >> On 07/10/2021 14:08, Roger Quadros wrote:
+> >>> Hi,
+> >>>
+> >>> This series converts ti,gpmc memory controller and ti,gpmc-nand and
+> >>> ti,gpmc-onenand MTD controller bindings to yaml.
+> >>>
+> >>> cheers,
+> >>> -roger
+> >>>
+> >>
+> >> Hi,
+> >>
+> >> Although you did not mention it here, it looks like you have some
+> >> dependencies between the patches. Maybe this shall go simply via Rob's tree?
+> >>
+> > 
+> > Rob has acked all the DT binding patches.
+> > So it is upto you and Miquèl to decide the best way. MTD tree or Memory controller tree
+> > for the dt-bindings patches.
+> > 
+> > The ARM: dts changes should go via Tony's OMAP SoC tree.
+> > 
+> > Or if Tony is OK with it then maybe all patches can go via Tony's tree? :)
+> > 
 > 
-> This doesn't really match what the old doc said nor the old example. 
-> Fine to fix in the conversion if wrong, but just highlight that in the 
-> commit msg.
-
-OK yes we currently always need "ti,sysc" as the clockdomain autoidle
-handling still relies on auxdata.
-
-> > +
-> > +  reg: true
 > 
-> Any number of register areas is valid?
+> I reviewed the two memory-controller patches, so feel free to take them
+> via MTD or OMAP SoC.
 
-Yes the number of registers is known, I'll update to use max three reg.
+Sounds like I should pick up these because of the dts changes.
 
-> > +
-> > +  reg-names: true
-> 
-> You've thrown out the names defined before.
-
-Yup these are known too.
-
-> > +
-> > +  clocks: true
-> 
-> Any number of clocks is valid? 
-
-I think 8 clocks is the highest seen :)
-
-> > +  clock-names: true
-> 
-> You've thrown out the names defined before.
-
-Hmm fck and ick can be named, the rest are device specific though.
-
-> > +
-> > +  power-domains: true
-> 
-> How many?
-
-Just one should be enough here.
-
-> > +additionalProperties: true
-> 
-> This can be restricted to child nodes only? If so:
-> 
-> additionalProperties:
->   type: object
-
-OK great, this can be limited to child nodes only.
-
-Regards,
+Thanks,
 
 Tony
