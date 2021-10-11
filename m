@@ -2,116 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7861F427B06
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Oct 2021 16:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D377742862F
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Oct 2021 07:23:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233858AbhJIO5s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 9 Oct 2021 10:57:48 -0400
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:48426
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233789AbhJIO5r (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 9 Oct 2021 10:57:47 -0400
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 5959D3FFEE
-        for <linux-omap@vger.kernel.org>; Sat,  9 Oct 2021 14:55:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1633791350;
-        bh=OR65H5NuMBUvU2gGs2fbaIk23M5ThHLMaMsBl/nMMeE=;
-        h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-         In-Reply-To:Content-Type;
-        b=l51lXQWdqHgkK9F20f5bM7ZzoVGipin1ZBQh7NAFkzgULJtPqzgKw6T/XedRlYr56
-         DWplnqTZnEZVSYrELBdqFqjxuxNBTZaJiog+lxizfr5DqiSk76YiFFdkXcOWEPnnla
-         CZWGxt0jCuq0HNcRZvV6veFmwSmxLs0Swl8oB587Iwqp0fViN4ckDU/8/k0C2FUozm
-         H194OlAfs9SPLo2ESNx4IdIixDUgHafjTCPDl863Izl6fVZroPYJasAyHl8Fl+aK02
-         8SX5dPyk3noYacD1R83PfYQs76iOuf1wLGesBiYeuvhgLL4H3+4DT0NDKONUl3E/BI
-         c0Fx9odF/Wb8w==
-Received: by mail-ed1-f71.google.com with SMTP id z6-20020a50cd06000000b003d2c2e38f1fso11798830edi.1
-        for <linux-omap@vger.kernel.org>; Sat, 09 Oct 2021 07:55:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=OR65H5NuMBUvU2gGs2fbaIk23M5ThHLMaMsBl/nMMeE=;
-        b=EG/z8sas/GfdrHlH4MFl7+tYYWHvMBSrfivPJ5I1ehR/B5zQer7tghu1xkNqK0Ixw6
-         ZlXEz2bivisRS8gD3dk98Q20h3zEKHA2PxuL2/tWoGce5RwecVruqiS+Qgjbk9puauEm
-         GZDZGTTUP6ZmHXUtYTfEszjMlDA+oA074rIfPIA5ETiCik+3B2N0AdTb6lM7nUDf1Nhp
-         VabovVIutxw7v39+mAC2hRmITHuydSRiXJJgyssS28U7nQ7z/613S3Cavw4IFNQ4hXV6
-         lubyL1nRuKM9qSZQ/l8BVp/X0kXsBkHtl1MqZY4wMKhCFs8NF83PQfEbUiNRLsS3HSzc
-         CIyg==
-X-Gm-Message-State: AOAM533hIptQbnSjBAnNks14UJytQBYa6SQaOhIjoMP0eYHmoJKWPaxR
-        LF0OEKRY0aFpKBcmh66kVO3gmEdyNRhQhnIdGabfBiVWz3FOfEYwO/LnUqz/eNDqjMhQJTr42E+
-        lwrMS9pVDioVLGKH5uAJ+I3eTZs89Pa5pgv4AEWc=
-X-Received: by 2002:a17:906:85d1:: with SMTP id i17mr12344764ejy.489.1633791349363;
-        Sat, 09 Oct 2021 07:55:49 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJysZic929Uxw8JYpz7WzFewFmKc77x3gZ5rU/zJ0CZ4rD4WUO5T09DI1UO8d+VtTaHPd4U6Pw==
-X-Received: by 2002:a17:906:85d1:: with SMTP id i17mr12344735ejy.489.1633791349134;
-        Sat, 09 Oct 2021 07:55:49 -0700 (PDT)
-Received: from [192.168.0.20] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id r19sm1303981edt.54.2021.10.09.07.55.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 09 Oct 2021 07:55:48 -0700 (PDT)
-Subject: Re: [PATCH v5 0/8] dt-bindings: memory-controllers: ti,gpmc: Convert
- to yaml
-To:     Roger Quadros <rogerq@kernel.org>, tony@atomide.com,
-        =?UTF-8?Q?Miqu=c3=a8l_Raynal?= <miquel.raynal@bootlin.com>
-Cc:     robh+dt@kernel.org, grygorii.strashko@ti.com, nm@ti.com,
-        nsekhar@ti.com, devicetree@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20211007120830.17221-1-rogerq@kernel.org>
- <6b90a6fd-001f-a41a-b69f-2bd3ec8a8e26@canonical.com>
- <e165b6ee-91d3-3a50-3b9d-3f15fa82a101@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Message-ID: <64b65579-7153-1e7d-9866-77ce07fd1df5@canonical.com>
-Date:   Sat, 9 Oct 2021 16:55:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S233421AbhJKFZp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Oct 2021 01:25:45 -0400
+Received: from muru.com ([72.249.23.125]:43204 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231560AbhJKFZo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 11 Oct 2021 01:25:44 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 9DC92805F;
+        Mon, 11 Oct 2021 05:24:15 +0000 (UTC)
+Date:   Mon, 11 Oct 2021 08:23:42 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Chunyan Zhang <zhang.chunyan@linaro.org>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        DTML <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 4/5] mmc: sdhci-omap: Implement PM runtime functions
+Message-ID: <YWPKXvPCTIir+TzG@atomide.com>
+References: <20210930065733.31943-1-tony@atomide.com>
+ <20210930065733.31943-5-tony@atomide.com>
+ <CAPDyKFpybVPeYy-FsXnzDXNri+f7rhPmKa6vBF8NMUc3dQCZRw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <e165b6ee-91d3-3a50-3b9d-3f15fa82a101@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpybVPeYy-FsXnzDXNri+f7rhPmKa6vBF8NMUc3dQCZRw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/10/2021 21:10, Roger Quadros wrote:
-> Krzysztof,
+* Ulf Hansson <ulf.hansson@linaro.org> [211008 14:44]:
+> On Thu, 30 Sept 2021 at 08:57, Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > Implement PM runtime functions and enable MMC_CAP_AGGRESSIVE_PM.
 > 
-> On 07/10/2021 20:37, Krzysztof Kozlowski wrote:
->> On 07/10/2021 14:08, Roger Quadros wrote:
->>> Hi,
->>>
->>> This series converts ti,gpmc memory controller and ti,gpmc-nand and
->>> ti,gpmc-onenand MTD controller bindings to yaml.
->>>
->>> cheers,
->>> -roger
->>>
->>
->> Hi,
->>
->> Although you did not mention it here, it looks like you have some
->> dependencies between the patches. Maybe this shall go simply via Rob's tree?
->>
-> 
-> Rob has acked all the DT binding patches.
-> So it is upto you and Miquèl to decide the best way. MTD tree or Memory controller tree
-> for the dt-bindings patches.
-> 
-> The ARM: dts changes should go via Tony's OMAP SoC tree.
-> 
-> Or if Tony is OK with it then maybe all patches can go via Tony's tree? :)
-> 
+> I suggest you split this change into two pieces. MMC_CAP_AGGRESSIVE_PM
+> is about enabling runtime PM management for the eMMC/SD card device,
+> which is perfectly fine to use independently of whether runtime PM is
+> supported for the host device.
 
+OK
 
-I reviewed the two memory-controller patches, so feel free to take them
-via MTD or OMAP SoC.
+> > @@ -1350,6 +1357,11 @@ static int sdhci_omap_probe(struct platform_device *pdev)
+> >         if (ret)
+> >                 goto err_cleanup_host;
+> >
+> > +       sdhci_omap_context_save(omap_host);
+> > +       omap_host->context_valid = 1;
+> 
+> Looks like you can remove this flag, it's not being used.
 
+Hmm I think it is needed as otherwise we end up trying to restore
+an invalid context on probe on the first pm_runtime_get(). Do you
+have some nicer solution for that in mind?
 
-Best regards,
-Krzysztof
+> > +
+> > +       pm_runtime_put_sync(dev);
+> 
+> I recommend to use the PM runtime autosuspend feature, as to avoid an
+> initial latency for every I/O request to the host driver. The mmc core
+> already supports that, see mmc_release_host().
+> 
+> The typical default timeout value for autosuspend, is usually set
+> ~50-200ms, by host drivers (if I recall correctly).
+
+OK I have a patch to also enable autosuspend too, I'll add that
+too for the next revision.
+
+> > @@ -1371,6 +1383,7 @@ static int sdhci_omap_remove(struct platform_device *pdev)
+> >         struct device *dev = &pdev->dev;
+> >         struct sdhci_host *host = platform_get_drvdata(pdev);
+> >
+> > +       pm_runtime_get_sync(dev);
+> >         sdhci_remove_host(host, true);
+> >         pm_runtime_put_sync(dev);
+> 
+> There is no guarantee that this triggers a call to
+> ->sdhci_omap_runtime_suspend(), which I guess is what we want.
+> Userspace via sysfs may have increase the RPM usage count
+> (pm_runtime_forbid(), for example.
+> 
+> To address this, I would call pm_runtime_disable() first and then
+> explicitly put the device into low power state, rather than relying on
+> runtime PM to do it. Another option could be to use
+> pm_runtime_force_suspend().
+
+OK I'll take a look.
+
+> > @@ -1402,42 +1415,75 @@ static void sdhci_omap_context_restore(struct sdhci_omap_host *omap_host)
+> >         sdhci_omap_writel(omap_host, SDHCI_OMAP_ISE, omap_host->ise);
+> >  }
+> >
+> > -static int __maybe_unused sdhci_omap_suspend(struct device *dev)
+> > +static int __maybe_unused sdhci_omap_runtime_suspend(struct device *dev)
+> >  {
+> >         struct sdhci_host *host = dev_get_drvdata(dev);
+> >         struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> >         struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+> >
+> > -       sdhci_suspend_host(host);
+> > -
+> 
+> Shouldn't you call sdhci_runtime_suspend_host() somewhere here?
+
+I'm pretty sure I tried, but runtime resume did not seem to work after
+doing that.. I'll take a look again.
+
+> > +static int __maybe_unused sdhci_omap_suspend(struct device *dev)
+> > +{
+> > +       struct sdhci_host *host = dev_get_drvdata(dev);
+> > +       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> > +       struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+> > +
+> > +       if (omap_host->is_runtime_suspended)
+> > +               return 0;
+> 
+> So if the host is already runtime suspended, it's okay to just leave it as is?
+
+Ideally yeah there should not be anything left to do for suspesnd at
+that point. But sounds like I may be missing something.
+
+> In a way that sounds like you could call pm_runtime_force_suspend()
+> instead, assuming the sdhci_omap_runtime_suspend() can be extended to
+> do the right thing for system suspend as well.
+
+OK I'll check.
+
+> It looks a bit odd that sdhci_suspend_host() is called only when the
+> host is runtime resumed. Perhaps you can elaborate a bit more on why
+> this is, so I can understand better what you want to achieve here.
+
+I guess I'm not clear on what's left for sdhci_suspend_host() to do if
+the host is already runtime suspended :)
+
+Regards,
+
+Tony
