@@ -2,80 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C0DC428B7D
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Oct 2021 12:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BB40428BB9
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Oct 2021 13:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236167AbhJKK60 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Oct 2021 06:58:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51584 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236130AbhJKK6X (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Oct 2021 06:58:23 -0400
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2112C06178A
-        for <linux-omap@vger.kernel.org>; Mon, 11 Oct 2021 03:56:13 -0700 (PDT)
-Received: by mail-lf1-x142.google.com with SMTP id y15so71990453lfk.7
-        for <linux-omap@vger.kernel.org>; Mon, 11 Oct 2021 03:56:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=km/+rwE10MGCG3K0BNjxD+A2l394aMlSCDFqBEiDyrs45mObKwVEkOccUp5BPFftJU
-         5cB06txNzUPVxcrxQnkqMq9zaxAqQeR9eoa3+7DqnAg3rX7wMze/dloERdrhczopiGET
-         PvxtLks7kWCMKTs5Q8Mmq12LwUKUT5cPH1x1mszpEwl0kuXWAYNTl0kX4+cL3oWAj8+a
-         6an2wLimFEmscCT9jtQf7FGYav0q/UTa6GRCeFihab7mYp8KZTVzyAi9ONxHllw1wfay
-         OSS3CoE7RnQ2PFKTnc/5Yya8gHnSshWvMzermo1msudbBS7MTk09iY8fA6ci8A/KmFSk
-         +E4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=DOxN63QWnl4dBNWQl+LufsBrewR+8VuPJnGph7ijSeE=;
-        b=euc+Oc76mTwB1ynEr2xFOiNp3pmYuoQBmUFSjvz93ItBS0bgl4VoNGvaqVliwvmWb6
-         KJD5JMXDXbjtkkYGVj+ON2FzQjs/JFViLS88H5ksIo8WYJiuZiQDdPwoRl8F0OclsYRW
-         0fwA5pkLrDLQBvwrNOrKzqcDX5skFUSBv95V/uHQokOaKHqwYA3WGYt7SMxLPuZH6SEd
-         egTm0FhJJi0Bi44dmj3JmESuXKkZ+/w2Ficdr5kapiIskWLrc72kd5B0yjw9bztWsqfE
-         hk/iJj+dmTHOCMeYahEZqYPPUU/ddelqPmLgap+CnRqxnrqJ/uuv+6FCGa6/EBW0csBU
-         oJYA==
-X-Gm-Message-State: AOAM531dFSrpLItljcYyWwHiZo+Wrv7Ip7+6NvVCjlFqp3x1aYDO6E+Z
-        3/Hj9yrpfC0rWY22/EewcXqfMr7lN1FoLGBNN7KYwAhZMHKOYw==
-X-Google-Smtp-Source: ABdhPJxWYMUVxuj7Tly9azrkWxEMXzTPZAklmoVIH4V2ykknMMiBN9imOFz2zTqxux/zk/7pzvFSRlX+C6mfjc7ADy4=
-X-Received: by 2002:adf:8b9a:: with SMTP id o26mr24377548wra.109.1633949760323;
- Mon, 11 Oct 2021 03:56:00 -0700 (PDT)
+        id S235971AbhJKLEu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Oct 2021 07:04:50 -0400
+Received: from muru.com ([72.249.23.125]:43342 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236122AbhJKLEt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 11 Oct 2021 07:04:49 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id AD9BD8061;
+        Mon, 11 Oct 2021 11:03:19 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL 1/3] SoC changes for omaps for v5.16
+Date:   Mon, 11 Oct 2021 14:02:42 +0300
+Message-Id: <pull-1633950030-501948@atomide.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Received: by 2002:adf:dd8c:0:0:0:0:0 with HTTP; Mon, 11 Oct 2021 03:55:59
- -0700 (PDT)
-Reply-To: ramcharan9910@outlook.com
-From:   "Cr.David Ramcharan" <convy0101@gmail.com>
-Date:   Mon, 11 Oct 2021 03:55:59 -0700
-Message-ID: <CADDRs95718H=K3tUjphEHH_C96xYhoJw7jeCMpt_FfZZjhEXrA@mail.gmail.com>
-Subject: Thank You
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Please I am writing to notify you again on my intention to list your
-name as a beneficiary to the total sum of GBP6.350 million (Six
-million, Three hundred and fifty thousand British Pounds Sterlings) in
-the intent of the deceased (name now withheld since this is my second
-letter to you).
+From: "Tony Lindgren" <tony@atomide.com>
 
-I contacted you because you bear the surname identity and therefore
-can present you as the beneficiary to inherit the account proceeds of
-the deceased since there is no written "WILL" or trace to the deceased
-family relatives. My aim is to present you to my Bank Authorities as
-the Next of Kin to our deceased client. I will guide you all through
-the Claim procedure by providing all relevant Information and guiding
-you in your decisions and response to the Bank Management. All the
-papers will be processed after your acceptance.
+The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
 
-In your acceptance of this deal, I request that you kindly forward to
-me your letter of acceptance; your current telephone and fax numbers
-,age, occupational status and a forwarding address to enable me submit
-to the Bank Management the details as the Next of Kin to their
-deceased customer. Reply strictly through: ramcharancrdavid@gmail.com
+  Linux 5.15-rc1 (2021-09-12 16:28:37 -0700)
 
-Yours faithfully,
-Cr.David Ramcharan
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.16/soc-signed
+
+for you to fetch changes up to e60150de94ef1508e77cbf5956ecc0ca84c4fc9b:
+
+  ARM: OMAP2+: Drop unused CM defines for am3 (2021-10-06 12:36:23 +0300)
+
+----------------------------------------------------------------
+SoC changes for omaps for v5.16
+
+Few non-urgent comment typo fixes and few changes to drop unused auxdata.
+Then a series of changes to drop some a pile of old unused defines. These
+can be now dropped for the SoCs that have been updated to use devicetree
+data with drivers/clock and drivers/soc device drivers.
+
+----------------------------------------------------------------
+Jason Wang (2):
+      ARM: OMAP2+: Fix typo in some comments
+      ARM: OMAP2+: Fix comment typo
+
+Tony Lindgren (11):
+      ARM: OMAP2+: Drop old unused omap5_uevm_legacy_init()
+      ARM: OMAP2+: Drop unused old auxdata for dra7x_evm_mmc_quirk()
+      ARM: OMAP2+: Drop unused PRM defines for dra7
+      ARM: OMAP2+: Drop unused PRM defines for omap5
+      ARM: OMAP2+: Drop unused PRM defines for omap4
+      ARM: OMAP2+: Drop unused PRM defines for am4
+      ARM: OMAP2+: Drop unused PRM defines for am3
+      ARM: OMAP2+: Drop unused CM defines for dra7
+      ARM: OMAP2+: Drop unused CM and SCRM defines for omap5
+      ARM: OMAP2+: Drop unused CM and SCRM defines for omap4
+      ARM: OMAP2+: Drop unused CM defines for am3
+
+ arch/arm/mach-omap2/cm-regbits-44xx.h | 101 ------
+ arch/arm/mach-omap2/cm1_44xx.h        | 174 ----------
+ arch/arm/mach-omap2/cm1_54xx.h        | 168 ---------
+ arch/arm/mach-omap2/cm1_7xx.h         | 263 --------------
+ arch/arm/mach-omap2/cm2_44xx.h        | 386 ---------------------
+ arch/arm/mach-omap2/cm2_54xx.h        | 325 ------------------
+ arch/arm/mach-omap2/cm2_7xx.h         | 449 ------------------------
+ arch/arm/mach-omap2/cm33xx.h          | 280 ---------------
+ arch/arm/mach-omap2/omap_hwmod.c      |   6 +-
+ arch/arm/mach-omap2/pdata-quirks.c    |  36 --
+ arch/arm/mach-omap2/powerdomain.c     |   6 +-
+ arch/arm/mach-omap2/prcm43xx.h        |  94 -----
+ arch/arm/mach-omap2/prm33xx.h         |  40 ---
+ arch/arm/mach-omap2/prm44xx.h         | 630 ----------------------------------
+ arch/arm/mach-omap2/prm54xx.h         | 358 -------------------
+ arch/arm/mach-omap2/prm7xx.h          | 613 ---------------------------------
+ arch/arm/mach-omap2/scrm44xx.h        | 141 --------
+ arch/arm/mach-omap2/scrm54xx.h        | 228 ------------
+ 18 files changed, 6 insertions(+), 4292 deletions(-)
+ delete mode 100644 arch/arm/mach-omap2/scrm54xx.h
