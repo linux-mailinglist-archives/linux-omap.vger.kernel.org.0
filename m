@@ -2,27 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BB40428BB9
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Oct 2021 13:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C60AC428BBB
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Oct 2021 13:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235971AbhJKLEu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Oct 2021 07:04:50 -0400
-Received: from muru.com ([72.249.23.125]:43342 "EHLO muru.com"
+        id S236128AbhJKLEw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Oct 2021 07:04:52 -0400
+Received: from muru.com ([72.249.23.125]:43346 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236122AbhJKLEt (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 Oct 2021 07:04:49 -0400
+        id S236132AbhJKLEv (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 11 Oct 2021 07:04:51 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id AD9BD8061;
-        Mon, 11 Oct 2021 11:03:19 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 5A9F28102;
+        Mon, 11 Oct 2021 11:03:22 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     soc@kernel.org
 Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 1/3] SoC changes for omaps for v5.16
-Date:   Mon, 11 Oct 2021 14:02:42 +0300
-Message-Id: <pull-1633950030-501948@atomide.com>
+Subject: [GIT PULL 2/3] Driver changes for ti-sysc for v5.16
+Date:   Mon, 11 Oct 2021 14:02:43 +0300
+Message-Id: <pull-1633950030-501948@atomide.com-2>
 X-Mailer: git-send-email 2.33.0
+In-Reply-To: <pull-1633950030-501948@atomide.com>
+References: <pull-1633950030-501948@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,55 +40,49 @@ The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.16/soc-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.16/ti-sysc-signed
 
-for you to fetch changes up to e60150de94ef1508e77cbf5956ecc0ca84c4fc9b:
+for you to fetch changes up to 1b1da99b845337362a3dafe0f7b49927ab4ae041:
 
-  ARM: OMAP2+: Drop unused CM defines for am3 (2021-10-06 12:36:23 +0300)
-
-----------------------------------------------------------------
-SoC changes for omaps for v5.16
-
-Few non-urgent comment typo fixes and few changes to drop unused auxdata.
-Then a series of changes to drop some a pile of old unused defines. These
-can be now dropped for the SoCs that have been updated to use devicetree
-data with drivers/clock and drivers/soc device drivers.
+  bus: ti-sysc: Fix variable set but not used warning for reinit_modules (2021-10-06 08:38:09 +0300)
 
 ----------------------------------------------------------------
-Jason Wang (2):
-      ARM: OMAP2+: Fix typo in some comments
-      ARM: OMAP2+: Fix comment typo
+Driver changes for ti-sysc for v5.16
 
-Tony Lindgren (11):
-      ARM: OMAP2+: Drop old unused omap5_uevm_legacy_init()
-      ARM: OMAP2+: Drop unused old auxdata for dra7x_evm_mmc_quirk()
-      ARM: OMAP2+: Drop unused PRM defines for dra7
-      ARM: OMAP2+: Drop unused PRM defines for omap5
-      ARM: OMAP2+: Drop unused PRM defines for omap4
-      ARM: OMAP2+: Drop unused PRM defines for am4
-      ARM: OMAP2+: Drop unused PRM defines for am3
-      ARM: OMAP2+: Drop unused CM defines for dra7
-      ARM: OMAP2+: Drop unused CM and SCRM defines for omap5
-      ARM: OMAP2+: Drop unused CM and SCRM defines for omap4
-      ARM: OMAP2+: Drop unused CM defines for am3
+Changes for ti-sysc driver for improved system suspend and resume
+support as some drivers need to be reinitialized on resume. Also
+a non-urgent resume warning fix, and dropping of legacy flags for
+gpio and sham:
 
- arch/arm/mach-omap2/cm-regbits-44xx.h | 101 ------
- arch/arm/mach-omap2/cm1_44xx.h        | 174 ----------
- arch/arm/mach-omap2/cm1_54xx.h        | 168 ---------
- arch/arm/mach-omap2/cm1_7xx.h         | 263 --------------
- arch/arm/mach-omap2/cm2_44xx.h        | 386 ---------------------
- arch/arm/mach-omap2/cm2_54xx.h        | 325 ------------------
- arch/arm/mach-omap2/cm2_7xx.h         | 449 ------------------------
- arch/arm/mach-omap2/cm33xx.h          | 280 ---------------
- arch/arm/mach-omap2/omap_hwmod.c      |   6 +-
- arch/arm/mach-omap2/pdata-quirks.c    |  36 --
- arch/arm/mach-omap2/powerdomain.c     |   6 +-
- arch/arm/mach-omap2/prcm43xx.h        |  94 -----
- arch/arm/mach-omap2/prm33xx.h         |  40 ---
- arch/arm/mach-omap2/prm44xx.h         | 630 ----------------------------------
- arch/arm/mach-omap2/prm54xx.h         | 358 -------------------
- arch/arm/mach-omap2/prm7xx.h          | 613 ---------------------------------
- arch/arm/mach-omap2/scrm44xx.h        | 141 --------
- arch/arm/mach-omap2/scrm54xx.h        | 228 ------------
- 18 files changed, 6 insertions(+), 4292 deletions(-)
- delete mode 100644 arch/arm/mach-omap2/scrm54xx.h
+- Fix timekeeping suspended warning on resume. Probably no need to merge
+  this into fixes as it's gone unnoticed for a while.
+
+- Check for context loss for reinit of a module
+
+- Add add quirk handling to reinit on context loss, and also fix a
+  build warning it caused
+
+- Add quirk handling to reset on reinit
+
+- Use context loss quirk for gpmc and otg
+
+- Handle otg force-idle quirk even if no driver is loaded
+
+- Drop legacy flags for gpio and sham
+
+----------------------------------------------------------------
+Tony Lindgren (10):
+      bus: ti-sysc: Fix timekeeping_suspended warning on resume
+      bus: ti-sysc: Check for lost context in sysc_reinit_module()
+      bus: ti-sysc: Add quirk handling for reinit on context lost
+      bus: ti-sysc: Add quirk handling for reset on re-init
+      bus: ti-sysc: Use context lost quirks for gpmc
+      bus: ti-sysc: Use context lost quirk for otg
+      bus: ti-sysc: Handle otg force idle quirk
+      bus: ti-sysc: Drop legacy quirk flag for gpio
+      bus: ti-sysc: Drop legacy quirk flag for sham
+      bus: ti-sysc: Fix variable set but not used warning for reinit_modules
+
+ drivers/bus/ti-sysc.c                 | 276 +++++++++++++++++++++++++++++-----
+ include/linux/platform_data/ti-sysc.h |   3 +
+ 2 files changed, 244 insertions(+), 35 deletions(-)
