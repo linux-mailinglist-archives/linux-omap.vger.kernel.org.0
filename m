@@ -2,155 +2,203 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E458142A06B
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Oct 2021 10:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5684B42A0B3
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Oct 2021 11:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232666AbhJLI6t (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Oct 2021 04:58:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39702 "EHLO
+        id S235769AbhJLJIw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Oct 2021 05:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235225AbhJLI6t (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Oct 2021 04:58:49 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9A99C06161C
-        for <linux-omap@vger.kernel.org>; Tue, 12 Oct 2021 01:56:47 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id r18so64706279wrg.6
-        for <linux-omap@vger.kernel.org>; Tue, 12 Oct 2021 01:56:47 -0700 (PDT)
+        with ESMTP id S235867AbhJLJIl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Oct 2021 05:08:41 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC1EBC06176D
+        for <linux-omap@vger.kernel.org>; Tue, 12 Oct 2021 02:06:37 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id j5so85074595lfg.8
+        for <linux-omap@vger.kernel.org>; Tue, 12 Oct 2021 02:06:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=subject:to:cc:references:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=M26QgNKHVwINnFDN5ZpyN6NPNBXWBB9Q2t3/HJe1M0k=;
-        b=KX7DlKXLdINg0hkrXzVXLeuSbJ3oQpyZ3QSJV9vXGUSoRkDqQsEpRrsvDUXlpSxRvg
-         Tga2wh68JYGLd8WYLVnn91Tj1P9BbwFI8YypqFAaKq1+yhG3tDeqH33ZNqG40W4m1+TW
-         qXFdteUGOreIqR9hWWB3fhRjp3Fqd46Vq4XLSxth1BiCCGh9scg6emOrfmoPecPuUGsT
-         MX3c+tF5u8hGkrA80BntDmXKPX3uflLDvkvpu50QMVKLUWS3P2JN4Ln+ycwh9X6s0st2
-         fLTbSmf/YxBJ+E9HDdqrEqlI3A4DtbWKYxAsGRKM8y7jiN5bNMmmWaRZbZcHAOoQNVyn
-         cpfg==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ChqUlAKdsiUWbRik4asROZltsnHtV5wLFR2z9t60VnA=;
+        b=qgowPwZS3BxR5Tc9pIDtOjb2YztzYenn/ptRVoacfkw/O+kQF94PA9JyOfsrINtOuY
+         VDbnxHOuLl3B80mghrXZttK+a/ol2xOvcdqt/cdBc40rpL0q18L/CdNoKbluJS0Cqzfx
+         VENn4+S9RKPV4vnNKtFmr2Y7nqNSyQ4jXt9BFOfZqMLHuCbN9uWQwJEknCkuE/hm1JLD
+         /HuhO3toNxz+nPvKizRPZxJpraGLF69eBIdofyOjgT47qovEjGat2q1Chb16NguYyZ3m
+         pQVz0SWFRsPbdm31aQo72Dq8z7RDkTR52zc928IT5cGlhfR9+TUW1VFjtW3XqJnwtRUf
+         dPnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=M26QgNKHVwINnFDN5ZpyN6NPNBXWBB9Q2t3/HJe1M0k=;
-        b=wauu1WHMVSNPH6rDens0G8137RNWWzHa88QkxijFrZOVQFoxvJw9jZ931pgv5SoPW5
-         3pK8rMBs+rxyWMtE+Pj9LPi2LceFzjr7f1pGFcWaA0oiRr8RBp1ydINX+ed4ER7nbisT
-         Ha78h0qyNplGUqqD/zIuO8iP7I9Z1myn9RAFe6BemVm9gjEUNeB8BKAJm5J+GFwLi24g
-         /DEfuUgzKw8vKSf50y9wpuvpVS2w7WdR8jc/7n8bNtPh1VAY9TcwM7PggEAujmD+NYza
-         9FNd94gfW0qv149cEFJkJqDTXbZM6kWUKRr3fjyexK4y38IzoS35zcKXbI+xyFSyV3wI
-         8Faw==
-X-Gm-Message-State: AOAM531l9iaKz3kWyfQadAiNPGzEUmnEnoUBHLU7t82qEmKe0vw6oVxd
-        V8W+mJy6Jxkv2iBhp+zb5pAPbA==
-X-Google-Smtp-Source: ABdhPJyBLbijYLOTA9vu2h7atyJw8y8MmMU/KKsZSa62Q9ItyGn52l9j8W64U2Lvl1BgBpRcmOUTyQ==
-X-Received: by 2002:a1c:740e:: with SMTP id p14mr4143429wmc.109.1634029006194;
-        Tue, 12 Oct 2021 01:56:46 -0700 (PDT)
-Received: from ?IPv6:2001:861:44c0:66c0:4e93:9fa7:4d66:4f5c? ([2001:861:44c0:66c0:4e93:9fa7:4d66:4f5c])
-        by smtp.gmail.com with ESMTPSA id y8sm1778590wmi.43.2021.10.12.01.56.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Oct 2021 01:56:45 -0700 (PDT)
-Subject: Re: [PATCH v5 4/8] drm/omap: omap_plane: subclass drm_plane_state
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, khilman@baylibre.com,
-        Benoit Parrot <bparrot@ti.com>
-References: <20210923070701.145377-1-narmstrong@baylibre.com>
- <20210923070701.145377-5-narmstrong@baylibre.com>
- <b9bb0e4b-26b8-72f0-937b-1a08145352d8@ideasonboard.com>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Organization: Baylibre
-Message-ID: <9814d390-6bfd-5b95-4ea0-412e255ef840@baylibre.com>
-Date:   Tue, 12 Oct 2021 10:56:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ChqUlAKdsiUWbRik4asROZltsnHtV5wLFR2z9t60VnA=;
+        b=vY1eZJaJOBhWe7BvmBFqsGltlzgnrRyL6B9YOWaApX/jqUBbHOWk2F+5VwEBJ1GUVF
+         l15WaHazgW6CzedW6pmzvQu+pmGmp4v10Ln46ROCFpBQl5/oMUg01zTOK4AqN8W8fc5N
+         WCfWl3O8LauaTm8kV+JihJkvh5Cwb3J0LiMPk4d5A3ezreUCwhNlr4jPY2IqlU/Kitlg
+         i65ye4VA2FD2j/JT2cNMY5cm5lAEy9dF+gghz2caSUnmXXiDx2wlGEXUgWP52N72dVe3
+         OAEqg1JcpTCFAi7120gKPPs+v9OXUblHKJPj+K32niyQB5lMnOBXTA+cVEMBuGWQa6Np
+         P9dg==
+X-Gm-Message-State: AOAM532GcFz4EV/DpnJG+3hhOR7NPDpmJFgEYHnR3dVn+zmChPGbrRm8
+        g3ASqUi4Q4kkZX1Y1aj9tZvZTSl1XgpeuPXjVv/jPQ==
+X-Google-Smtp-Source: ABdhPJyLeCSuVo8IR/cNrsuAUgzCRzHZ4PRZTzuS9/kNqGM9IWATvv/qeFDtJz4/Wo8P2L/q8i/AIXLko0u/Dloj3MY=
+X-Received: by 2002:a05:6512:4029:: with SMTP id br41mr17875247lfb.233.1634029595999;
+ Tue, 12 Oct 2021 02:06:35 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <b9bb0e4b-26b8-72f0-937b-1a08145352d8@ideasonboard.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20210930065733.31943-1-tony@atomide.com> <20210930065733.31943-5-tony@atomide.com>
+ <CAPDyKFpybVPeYy-FsXnzDXNri+f7rhPmKa6vBF8NMUc3dQCZRw@mail.gmail.com> <YWPKXvPCTIir+TzG@atomide.com>
+In-Reply-To: <YWPKXvPCTIir+TzG@atomide.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 12 Oct 2021 11:05:59 +0200
+Message-ID: <CAPDyKFo-pmxG7EfxagqANJzCemf_Y96jdCnzzen=iOdPq-rJBA@mail.gmail.com>
+Subject: Re: [PATCH 4/5] mmc: sdhci-omap: Implement PM runtime functions
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Chunyan Zhang <zhang.chunyan@linaro.org>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        DTML <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 12/10/2021 10:13, Tomi Valkeinen wrote:
-> On 23/09/2021 10:06, Neil Armstrong wrote:
->> From: Benoit Parrot <bparrot@ti.com>
->>
->> In preparation to add omap plane state specific extensions we need to
->> subclass drm_plane_state and add the relevant helpers.
->>
->> The addition of specific extension will be done separately.
->>
->> Signed-off-by: Benoit Parrot <bparrot@ti.com>
->> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
->> ---
->>   drivers/gpu/drm/omapdrm/omap_plane.c | 38 +++++++++++++++++++++++++---
->>   1 file changed, 35 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/omapdrm/omap_plane.c b/drivers/gpu/drm/omapdrm/omap_plane.c
->> index 0df5381cc015..bda794b4c915 100644
->> --- a/drivers/gpu/drm/omapdrm/omap_plane.c
->> +++ b/drivers/gpu/drm/omapdrm/omap_plane.c
->> @@ -16,6 +16,13 @@
->>    * plane funcs
->>    */
->>   +#define to_omap_plane_state(x) container_of(x, struct omap_plane_state, base)
->> +
->> +struct omap_plane_state {
->> +    /* Must be first. */
->> +    struct drm_plane_state base;
->> +};
->> +
->>   #define to_omap_plane(x) container_of(x, struct omap_plane, base)
->>     struct omap_plane {
->> @@ -207,11 +214,17 @@ void omap_plane_install_properties(struct drm_plane *plane,
->>   static void omap_plane_reset(struct drm_plane *plane)
->>   {
->>       struct omap_plane *omap_plane = to_omap_plane(plane);
->> +    struct omap_plane_state *omap_state;
->>   -    drm_atomic_helper_plane_reset(plane);
->> -    if (!plane->state)
->> +    if (plane->state)
->> +        drm_atomic_helper_plane_destroy_state(plane, plane->state);
->> +
->> +    omap_state = kzalloc(sizeof(*omap_state), GFP_KERNEL);
->> +    if (!omap_state)
->>           return;
->>   +    __drm_atomic_helper_plane_reset(plane, &omap_state->base);
->> +
->>       /*
->>        * Set the zpos default depending on whether we are a primary or overlay
->>        * plane.
->> @@ -222,6 +235,25 @@ static void omap_plane_reset(struct drm_plane *plane)
->>       plane->state->color_range = DRM_COLOR_YCBCR_FULL_RANGE;
->>   }
->>   +static struct drm_plane_state *
->> +omap_plane_atomic_duplicate_state(struct drm_plane *plane)
->> +{
->> +    struct omap_plane_state *state;
->> +    struct omap_plane_state *copy;
->> +
->> +    if (WARN_ON(!plane->state))
->> +        return NULL;
->> +
->> +    state = to_omap_plane_state(plane->state);
->> +    copy = kmemdup(state, sizeof(*state), GFP_KERNEL);
->> +    if (!copy)
->> +        return NULL;
->> +
->> +    __drm_atomic_helper_plane_duplicate_state(plane, &copy->base);
->> +
->> +    return &copy->base;
->> +}
->> +
-> 
-> omap_crtc.c has similar, but slightly different, functions. I think it would be good to use the same style in omap_plane, or, if the approach above is better, change omap_crtc to match the style here.
+On Mon, 11 Oct 2021 at 07:23, Tony Lindgren <tony@atomide.com> wrote:
+>
+> * Ulf Hansson <ulf.hansson@linaro.org> [211008 14:44]:
+> > On Thu, 30 Sept 2021 at 08:57, Tony Lindgren <tony@atomide.com> wrote:
+> > >
+> > > Implement PM runtime functions and enable MMC_CAP_AGGRESSIVE_PM.
+> >
+> > I suggest you split this change into two pieces. MMC_CAP_AGGRESSIVE_PM
+> > is about enabling runtime PM management for the eMMC/SD card device,
+> > which is perfectly fine to use independently of whether runtime PM is
+> > supported for the host device.
+>
+> OK
+>
+> > > @@ -1350,6 +1357,11 @@ static int sdhci_omap_probe(struct platform_device *pdev)
+> > >         if (ret)
+> > >                 goto err_cleanup_host;
+> > >
+> > > +       sdhci_omap_context_save(omap_host);
+> > > +       omap_host->context_valid = 1;
+> >
+> > Looks like you can remove this flag, it's not being used.
+>
+> Hmm I think it is needed as otherwise we end up trying to restore
+> an invalid context on probe on the first pm_runtime_get(). Do you
+> have some nicer solution for that in mind?
 
-Indeed the crtc version is better, I used the same style.
+Right, I didn't notice that, my apologies.
 
-Thanks,
-Neil
+In any case, an option is to bring the device into full power, without
+calling pm_runtime_resume_and_get() from ->probe(). In principle,
+running the same operations as the ->runtime_resume() callback does,
+except for restoring the context then. When this is done, the
+following calls to runtime PM should do the trick (I extended it to
+support autosuspend as well):
 
-> 
->  Tomi
+pm_runtime_get_noresume()
+pm_runtime_set_active()
+pm_runtime_set_autosuspend_delay()
+pm_runtime_use_autosuspend()
+pm_runtime_enable()
 
+Note that, this means that the omaps PM domain's ->runtime_resume()
+callback doesn't get invoked when powering on the device for the first
+time. Can this be a problem?
+
+>
+> > > +
+> > > +       pm_runtime_put_sync(dev);
+> >
+> > I recommend to use the PM runtime autosuspend feature, as to avoid an
+> > initial latency for every I/O request to the host driver. The mmc core
+> > already supports that, see mmc_release_host().
+> >
+> > The typical default timeout value for autosuspend, is usually set
+> > ~50-200ms, by host drivers (if I recall correctly).
+>
+> OK I have a patch to also enable autosuspend too, I'll add that
+> too for the next revision.
+>
+> > > @@ -1371,6 +1383,7 @@ static int sdhci_omap_remove(struct platform_device *pdev)
+> > >         struct device *dev = &pdev->dev;
+> > >         struct sdhci_host *host = platform_get_drvdata(pdev);
+> > >
+> > > +       pm_runtime_get_sync(dev);
+> > >         sdhci_remove_host(host, true);
+> > >         pm_runtime_put_sync(dev);
+> >
+> > There is no guarantee that this triggers a call to
+> > ->sdhci_omap_runtime_suspend(), which I guess is what we want.
+> > Userspace via sysfs may have increase the RPM usage count
+> > (pm_runtime_forbid(), for example.
+> >
+> > To address this, I would call pm_runtime_disable() first and then
+> > explicitly put the device into low power state, rather than relying on
+> > runtime PM to do it. Another option could be to use
+> > pm_runtime_force_suspend().
+>
+> OK I'll take a look.
+>
+> > > @@ -1402,42 +1415,75 @@ static void sdhci_omap_context_restore(struct sdhci_omap_host *omap_host)
+> > >         sdhci_omap_writel(omap_host, SDHCI_OMAP_ISE, omap_host->ise);
+> > >  }
+> > >
+> > > -static int __maybe_unused sdhci_omap_suspend(struct device *dev)
+> > > +static int __maybe_unused sdhci_omap_runtime_suspend(struct device *dev)
+> > >  {
+> > >         struct sdhci_host *host = dev_get_drvdata(dev);
+> > >         struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> > >         struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+> > >
+> > > -       sdhci_suspend_host(host);
+> > > -
+> >
+> > Shouldn't you call sdhci_runtime_suspend_host() somewhere here?
+>
+> I'm pretty sure I tried, but runtime resume did not seem to work after
+> doing that.. I'll take a look again.
+>
+> > > +static int __maybe_unused sdhci_omap_suspend(struct device *dev)
+> > > +{
+> > > +       struct sdhci_host *host = dev_get_drvdata(dev);
+> > > +       struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> > > +       struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
+> > > +
+> > > +       if (omap_host->is_runtime_suspended)
+> > > +               return 0;
+> >
+> > So if the host is already runtime suspended, it's okay to just leave it as is?
+>
+> Ideally yeah there should not be anything left to do for suspesnd at
+> that point. But sounds like I may be missing something.
+>
+> > In a way that sounds like you could call pm_runtime_force_suspend()
+> > instead, assuming the sdhci_omap_runtime_suspend() can be extended to
+> > do the right thing for system suspend as well.
+>
+> OK I'll check.
+>
+> > It looks a bit odd that sdhci_suspend_host() is called only when the
+> > host is runtime resumed. Perhaps you can elaborate a bit more on why
+> > this is, so I can understand better what you want to achieve here.
+>
+> I guess I'm not clear on what's left for sdhci_suspend_host() to do if
+> the host is already runtime suspended :)
+
+I think what boils down to that is that, sdhci_suspend|resume_host()
+adds some special treatment for system wakeups (for SDIO irqs). I am
+not sure whether you may need that.
+
+Some host drivers doesn't use sdhci_suspend|resume_host, but sticks to
+the sdhci_runtime_suspend|resume()_host() functions. Like
+sdhci-sprd.c, for example.
+
+Kind regards
+Uffe
