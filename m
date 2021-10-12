@@ -2,112 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36BE742A8AF
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Oct 2021 17:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E9EB42AD24
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Oct 2021 21:18:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237477AbhJLPoA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Oct 2021 11:44:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48178 "EHLO
+        id S233467AbhJLTUT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Oct 2021 15:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237430AbhJLPn7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Oct 2021 11:43:59 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A8FC061745
-        for <linux-omap@vger.kernel.org>; Tue, 12 Oct 2021 08:41:57 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id r10so68271627wra.12
-        for <linux-omap@vger.kernel.org>; Tue, 12 Oct 2021 08:41:57 -0700 (PDT)
+        with ESMTP id S231586AbhJLTUT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Oct 2021 15:20:19 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD63C061745
+        for <linux-omap@vger.kernel.org>; Tue, 12 Oct 2021 12:18:17 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id t11so189114plq.11
+        for <linux-omap@vger.kernel.org>; Tue, 12 Oct 2021 12:18:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=subject:to:cc:references:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=UTtSB/AxX+nSKnjq3c2L4Uc0/wQulxnMO92eFOXOlYQ=;
-        b=MmwgVDETVJouQBmc3HR0QBJHA2yCYg7nOK9wdX24BdMwb15QNzWm4KcN/8Bb0oTo17
-         PHkQZsm6Ngg7F/cN6jcrFT2QvAb0e92JUAVV9UA0e+NMmk2f9uKUuiWr5c3POlYf4Yhv
-         zg9cBpOl7f9DSyY0tdtNUWeBNvQFH7ioHPm4ecBAXXh4kxTB4z42r0fuITeOo5QaXpxL
-         WjLCPsZjLqhYFE1vpSPcS3YLbR7fhoXnUY5xIYzNlL5fbPqT2nPzsJFWdwFl6W+QcG9O
-         URGwnTBuFNwURuAcuh9dJWex/Xgl4vCB2EllYmY8n6ZvWjF/0gycf4EjFG4y0qxO0Lv2
-         94Iw==
+        bh=rZojLxNHDG9L7+3rBw8GD2erwwT1gR6rCpMitvc63e0=;
+        b=tmFO6TcJoOdc9Uwt0V6Q6OIdANSPgpyKyYXF68sVhVU4R0xAQhislD8qKjtIimIDVa
+         zdFb5nn6ehNoAp4vHMoIT9Mji+vLVRlE/PIAUQ3i0zhd+4+vxVkRLfSJ/yY3nb3aRZuC
+         Kz4LQbD5By/aHvLScYZSZdZ6E4hK2Afy0xjW6q7WRBvZVy6J0UfEIAYi7MiL4pHW7oN4
+         trkuplyZLAmeGJ8euR1Wavrd64RTePolxHvyxaNX+Rs9J5D0jKQk06opNsDrm24eVPnn
+         ZpvqzLelSDG8dBOoyW8OYxYLXaq+Sm+AzvoonVkLFAd4ZLhxAUVQZQWiRZTgEEpCcHxg
+         etbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=UTtSB/AxX+nSKnjq3c2L4Uc0/wQulxnMO92eFOXOlYQ=;
-        b=y2KXJQhd4luFyGmPseys9V0LJnrMGq7EsplWb/Vm8oclilzWYmwl+Rg6K4rsklkqLu
-         EZIcMdWSrGieChNsFAXY+Pd6g0CW6YwyIdizQerEi2KhF4LfspVTnCm6jGQ//dPsa2nS
-         Fo/sbzqVLAXOKBtUEZ8NxkGJS0WzbLlVRu+3Y3W5X7TsPb/X0n4uVbeyd8HevP9GU/r/
-         7fVFP5JKr/3JEQgvjX8wZpoLddidY+YuMqvuOY0Hv1EAjzDbKWqWDKzneUtoic66q1XI
-         qzDEpF4phbicdR/F0zmw5LdgMuC/XEOPWlid3yihxEaNN5cA20bk8f0TEzOWDqJCEjww
-         lwuQ==
-X-Gm-Message-State: AOAM530GFf1/KaHBu4aXO6KvpLwalJH1Og3SSWMBqBhvWhC13zRMTrON
-        L5V0oEien5iRxcmVZZ3RWW1+Bg==
-X-Google-Smtp-Source: ABdhPJwxDHwuJQc5gA52Ios6lKJyqwI1A27lY5AbKwzJqazbY/YH/HnLJtkOUMdNrZRwnolvQW8Iug==
-X-Received: by 2002:a7b:c406:: with SMTP id k6mr6436165wmi.170.1634053315482;
-        Tue, 12 Oct 2021 08:41:55 -0700 (PDT)
-Received: from ?IPv6:2001:861:44c0:66c0:4e93:9fa7:4d66:4f5c? ([2001:861:44c0:66c0:4e93:9fa7:4d66:4f5c])
-        by smtp.gmail.com with ESMTPSA id w5sm10829357wrq.86.2021.10.12.08.41.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Oct 2021 08:41:55 -0700 (PDT)
-Subject: Re: [PATCH v5 5/8] drm/omap: Add global state as a private atomic
- object
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, khilman@baylibre.com,
-        Benoit Parrot <bparrot@ti.com>
-References: <20210923070701.145377-1-narmstrong@baylibre.com>
- <20210923070701.145377-6-narmstrong@baylibre.com>
- <2609ca32-90e8-1335-2769-14dcbcdfafde@ideasonboard.com>
- <ab06e379-1579-2352-3525-dbdca6a94f9b@baylibre.com>
- <00ad704f-cd01-cfc2-0418-1cb0561c41a5@ideasonboard.com>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Organization: Baylibre
-Message-ID: <aa8eb332-83d9-2212-2d3d-cb5ad40ef73a@baylibre.com>
-Date:   Tue, 12 Oct 2021 17:41:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rZojLxNHDG9L7+3rBw8GD2erwwT1gR6rCpMitvc63e0=;
+        b=iFVbRaoyRcQUBUZUpK3g90z4GteS/O8O5BsalqwLAsl1R2mNffKjnkXyr4+9WfGae1
+         dulMocg8QOysEgenTtxZL7qNW9aggbkAjt+YE6WYNIzg4SIpp2DwGIsJEzBcFiJYqWcA
+         Ld1yZcRpYJhq73+gGlABgtI6wP8Gg8RFjJy52xTwUtyUAdq+h/sMrrmZsl77cx9t9MGm
+         2u6U6fSlEG0ruGGAYEcB5z9kpdMFhGoYDxtYU2WAmeRoKwTW/9fbmpLskSZTwFAqzch+
+         0z6uhcIENpIo0ImlG68Gvuxhx1s1dWIOevQsyoJ9+iyGdWKhbn5O8b5qwnMrIyQDOSeq
+         Vc9w==
+X-Gm-Message-State: AOAM533SNB4zFwfn0pzKD5W8AXbFgbhtwNqqIjTOgCbtp0cmhOgnHbLG
+        LS5Om2WJngLJTjroTEMie1/IKQ==
+X-Google-Smtp-Source: ABdhPJxLhhrR7V1Yrp1Bh/N/xYlCfPjHADDWFcDrI1Nm4TmYW4ilTk5/Ck9mf1567yZUtUrCDO9JhQ==
+X-Received: by 2002:a17:903:1207:b0:13d:b9b1:ead7 with SMTP id l7-20020a170903120700b0013db9b1ead7mr31653976plh.63.1634066297097;
+        Tue, 12 Oct 2021 12:18:17 -0700 (PDT)
+Received: from x1.hsd1.or.comcast.net ([2601:1c2:1000:35e0:e8e2:9471:3c5b:c7c4])
+        by smtp.gmail.com with ESMTPSA id z11sm11586812pfk.204.2021.10.12.12.18.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Oct 2021 12:18:16 -0700 (PDT)
+From:   Drew Fustini <dfustini@baylibre.com>
+To:     Benoit Cousson <bcousson@baylibre.com>,
+        Dave Gerlach <d-gerlach@ti.com>, Keerthy <j-keerthy@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Drew Fustini <dfustini@baylibre.com>
+Subject: [PATCH] ARM: dts: am335x: Add rtc node as system-power-controller
+Date:   Tue, 12 Oct 2021 12:13:12 -0700
+Message-Id: <20211012191311.879838-1-dfustini@baylibre.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-In-Reply-To: <00ad704f-cd01-cfc2-0418-1cb0561c41a5@ideasonboard.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 12/10/2021 15:38, Tomi Valkeinen wrote:
-> On 12/10/2021 16:23, Neil Armstrong wrote:
-> 
->>>> +    struct drm_private_obj glob_obj;
->>>> +
->>>>        struct drm_fb_helper *fbdev;
->>>>          struct workqueue_struct *wq;
->>>> @@ -88,5 +105,9 @@ struct omap_drm_private {
->>>>        void omap_debugfs_init(struct drm_minor *minor);
->>>> +struct omap_global_state *__must_check
->>>> +omap_get_global_state(struct drm_atomic_state *s);
->>>> +struct omap_global_state *
->>>> +omap_get_existing_global_state(struct omap_drm_private *priv);
->>>
->>> These could also be separated by empty lines. At least to my eyes it gets confusing if those declarations are not separated.
->>
->> Atomic states can be extremely confusing, and hard to track.
->> I checked and they do what they are documented for...
->>
->> The omap_get_existing_global_state() is the most confusing since the result depends if
->> we are in an atomic transaction of not.
-> 
-> So here I was just talking about the cosmetics, how the lines above look like. I have trouble seeing where the function declaration starts and where it ends without looking closely, as both lines of the declaration start at the first column, and there are no empty lines between the declarations.
+From: Keerthy <j-keerthy@ti.com>
 
-Ok, it's a legacy of the 80chars max, will reformat.
+PMIC_PWR_EN pin of RTC on am335x-evm, bone, and boneblack is connected to
+PMIC on board, so flag rtc node as system-power-controller to allow
+software to poweroff boards.
 
-> 
-> But now that you mention, yes, the states are confusing =). And this series is somewhat difficult. I think it's important for future maintainability to include explanations and comments in this series for the confusing parts (plane-overlay mapping and state handling, mostly).
+Signed-off-by: Dave Gerlach <d-gerlach@ti.com>
+Signed-off-by: Keerthy <j-keerthy@ti.com>
+Signed-off-by: Drew Fustini <dfustini@baylibre.com>
+---
+ arch/arm/boot/dts/am335x-bone-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-Yep I added some hopefully useful comments explaining that.
-
-Neil
-
-> 
->  Tomi
+diff --git a/arch/arm/boot/dts/am335x-bone-common.dtsi b/arch/arm/boot/dts/am335x-bone-common.dtsi
+index 0ccdc7cd463b..56ae5095a5b8 100644
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -399,6 +399,7 @@ &sham {
+ &rtc {
+ 	clocks = <&clk_32768_ck>, <&clk_24mhz_clkctrl AM3_CLK_24MHZ_CLKDIV32K_CLKCTRL 0>;
+ 	clock-names = "ext-clk", "int-clk";
++	system-power-controller;
+ };
+ 
+ &pruss_tm {
+-- 
+2.27.0
 
