@@ -2,185 +2,283 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5729D429E7B
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Oct 2021 09:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DD98429F2D
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Oct 2021 10:00:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233890AbhJLHX0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Oct 2021 03:23:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45516 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233507AbhJLHX0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Oct 2021 03:23:26 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F041AC061570;
-        Tue, 12 Oct 2021 00:21:24 -0700 (PDT)
+        id S234577AbhJLICE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Oct 2021 04:02:04 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:50760 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234566AbhJLICD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Oct 2021 04:02:03 -0400
 Received: from [192.168.1.111] (91-158-153-130.elisa-laajakaista.fi [91.158.153.130])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 31B81F1;
-        Tue, 12 Oct 2021 09:21:23 +0200 (CEST)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 17E01F1;
+        Tue, 12 Oct 2021 10:00:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1634023283;
-        bh=UdFCjI4cwaSDdeWWXv/2XqR4Rxx5UVD22jWQA8TQ7/o=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=HGHS9HXB3+qbhYLqY2jHEU/IwHJk1VsZ+KFTLgjyWp0JmU6FxuVHWH5dpLodndPEb
-         uXOdIJFkSXtzpiyPzLAC6BTsBKup7eGyxP5GQwUBDlCPPYZFLggtZ56o7Vo4wXU3Zl
-         G+BhhuFQMsfIQKmeZXZL6Z6U2yJ4OmXZv3RfRYNU=
-Subject: Re: [PATCH v5 1/8] drm/omap: Add ability to check if requested plane
- modes can be supported
+        s=mail; t=1634025600;
+        bh=1LolTykz25ZRqhJ0HndWPDaSMEgQLzF8E+TYn1nz52w=;
+        h=To:Cc:References:From:Subject:Date:In-Reply-To:From;
+        b=TQc8mSpKVruBEmeAJ+UBwlESPzg6K3Gx+nodHvu4mGx0adpSW+MXY+2gDK95xUGos
+         oiHHFO0G0eURkza3sqcUQD2myOkwzH/vxmVVhgbdoALjs1Df/vMi7aOstbB6C8Fubd
+         gRKRILPbUO6NzCBTaHfhy9xjhaFLH+THyEFskG8E=
 To:     Neil Armstrong <narmstrong@baylibre.com>
 Cc:     linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
         linux-kernel@vger.kernel.org, khilman@baylibre.com,
         Benoit Parrot <bparrot@ti.com>
 References: <20210923070701.145377-1-narmstrong@baylibre.com>
- <20210923070701.145377-2-narmstrong@baylibre.com>
+ <20210923070701.145377-4-narmstrong@baylibre.com>
 From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Message-ID: <e69a1c23-3ea2-9777-c251-b5afd1cf4590@ideasonboard.com>
-Date:   Tue, 12 Oct 2021 10:21:20 +0300
+Subject: Re: [PATCH v5 3/8] drm/omap: introduce omap_hw_overlay
+Message-ID: <6e5980a6-218e-b585-3ad7-3e55350929b6@ideasonboard.com>
+Date:   Tue, 12 Oct 2021 10:59:57 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20210923070701.145377-2-narmstrong@baylibre.com>
+In-Reply-To: <20210923070701.145377-4-narmstrong@baylibre.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
 On 23/09/2021 10:06, Neil Armstrong wrote:
 > From: Benoit Parrot <bparrot@ti.com>
 > 
-> We currently assume that an overlay has the same maximum width and
-> maximum height as the overlay manager. This assumption is incorrect. On
-> some variants the overlay manager maximum width is twice the maximum
-> width that the overlay can handle. We need to add the appropriate data
-> per variant as well as export a helper function to retrieve the data so
-> check can be made dynamically in omap_plane_atomic_check().
+> Split out the hardware overlay specifics from omap_plane.
+> To start, the hw overlays are statically assigned to planes.
+> 
+> The goal is to eventually assign hw overlays dynamically to planes
+> during plane->atomic_check() based on requested caps (scaling, YUV,
+> etc). And then perform hw overlay re-assignment if required.
 > 
 > Signed-off-by: Benoit Parrot <bparrot@ti.com>
 > Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
 > ---
->   drivers/gpu/drm/omapdrm/dss/dispc.c  | 22 ++++++++++++++++++++++
->   drivers/gpu/drm/omapdrm/dss/dss.h    |  2 ++
->   drivers/gpu/drm/omapdrm/omap_plane.c | 14 ++++++++++++++
->   3 files changed, 38 insertions(+)
+>   drivers/gpu/drm/omapdrm/Makefile       |  1 +
+>   drivers/gpu/drm/omapdrm/omap_drv.c     |  9 ++-
+>   drivers/gpu/drm/omapdrm/omap_drv.h     |  4 ++
+>   drivers/gpu/drm/omapdrm/omap_overlay.c | 87 ++++++++++++++++++++++++++
+>   drivers/gpu/drm/omapdrm/omap_overlay.h | 31 +++++++++
+>   drivers/gpu/drm/omapdrm/omap_plane.c   | 42 ++++++-------
+>   6 files changed, 151 insertions(+), 23 deletions(-)
+>   create mode 100644 drivers/gpu/drm/omapdrm/omap_overlay.c
+>   create mode 100644 drivers/gpu/drm/omapdrm/omap_overlay.h
 > 
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dispc.c b/drivers/gpu/drm/omapdrm/dss/dispc.c
-> index 3c4a4991e45a..bdecec8f4d88 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dispc.c
-> +++ b/drivers/gpu/drm/omapdrm/dss/dispc.c
-> @@ -92,6 +92,8 @@ struct dispc_features {
->   	u8 mgr_height_start;
->   	u16 mgr_width_max;
->   	u16 mgr_height_max;
-> +	u16 ovl_width_max;
-> +	u16 ovl_height_max;
->   	unsigned long max_lcd_pclk;
->   	unsigned long max_tv_pclk;
->   	unsigned int max_downscale;
-> @@ -2599,6 +2601,12 @@ static int dispc_ovl_calc_scaling(struct dispc_device *dispc,
->   	return 0;
->   }
+> diff --git a/drivers/gpu/drm/omapdrm/Makefile b/drivers/gpu/drm/omapdrm/Makefile
+> index 21e8277ff88f..710b4e0abcf0 100644
+> --- a/drivers/gpu/drm/omapdrm/Makefile
+> +++ b/drivers/gpu/drm/omapdrm/Makefile
+> @@ -9,6 +9,7 @@ omapdrm-y := omap_drv.o \
+>   	omap_debugfs.o \
+>   	omap_crtc.o \
+>   	omap_plane.o \
+> +	omap_overlay.o \
+>   	omap_encoder.o \
+>   	omap_fb.o \
+>   	omap_gem.o \
+> diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
+> index f86e20578143..b994014b22e8 100644
+> --- a/drivers/gpu/drm/omapdrm/omap_drv.c
+> +++ b/drivers/gpu/drm/omapdrm/omap_drv.c
+> @@ -583,10 +583,14 @@ static int omapdrm_init(struct omap_drm_private *priv, struct device *dev)
 >   
-> +void dispc_ovl_get_max_size(struct dispc_device *dispc, u16 *width, u16 *height)
+>   	omap_gem_init(ddev);
+>   
+> +	ret = omap_hwoverlays_init(priv);
+> +	if (ret)
+> +		goto err_gem_deinit;
+> +
+>   	ret = omap_modeset_init(ddev);
+>   	if (ret) {
+>   		dev_err(priv->dev, "omap_modeset_init failed: ret=%d\n", ret);
+> -		goto err_gem_deinit;
+> +		goto err_free_overlays;
+>   	}
+>   
+>   	/* Initialize vblank handling, start with all CRTCs disabled. */
+> @@ -618,6 +622,8 @@ static int omapdrm_init(struct omap_drm_private *priv, struct device *dev)
+>   	omap_fbdev_fini(ddev);
+>   err_cleanup_modeset:
+>   	omap_modeset_fini(ddev);
+> +err_free_overlays:
+> +	omap_hwoverlays_destroy(priv);
+>   err_gem_deinit:
+>   	omap_gem_deinit(ddev);
+>   	destroy_workqueue(priv->wq);
+> @@ -642,6 +648,7 @@ static void omapdrm_cleanup(struct omap_drm_private *priv)
+>   	drm_atomic_helper_shutdown(ddev);
+>   
+>   	omap_modeset_fini(ddev);
+> +	omap_hwoverlays_destroy(priv);
+>   	omap_gem_deinit(ddev);
+>   
+>   	destroy_workqueue(priv->wq);
+> diff --git a/drivers/gpu/drm/omapdrm/omap_drv.h b/drivers/gpu/drm/omapdrm/omap_drv.h
+> index 591d4c273f02..b4d9c2062723 100644
+> --- a/drivers/gpu/drm/omapdrm/omap_drv.h
+> +++ b/drivers/gpu/drm/omapdrm/omap_drv.h
+> @@ -24,6 +24,7 @@
+>   #include "omap_gem.h"
+>   #include "omap_irq.h"
+>   #include "omap_plane.h"
+> +#include "omap_overlay.h"
+>   
+>   #define DBG(fmt, ...) DRM_DEBUG_DRIVER(fmt"\n", ##__VA_ARGS__)
+>   #define VERB(fmt, ...) if (0) DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__) /* verbose debug */
+> @@ -57,6 +58,9 @@ struct omap_drm_private {
+>   	unsigned int num_planes;
+>   	struct drm_plane *planes[8];
+>   
+> +	unsigned int num_ovls;
+> +	struct omap_hw_overlay *overlays[8];
+> +
+>   	struct drm_fb_helper *fbdev;
+>   
+>   	struct workqueue_struct *wq;
+> diff --git a/drivers/gpu/drm/omapdrm/omap_overlay.c b/drivers/gpu/drm/omapdrm/omap_overlay.c
+> new file mode 100644
+> index 000000000000..2b1416d2aad2
+> --- /dev/null
+> +++ b/drivers/gpu/drm/omapdrm/omap_overlay.c
+> @@ -0,0 +1,87 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2018 Texas Instruments Incorporated -  http://www.ti.com/
+> + * Author: Benoit Parrot, <bparrot@ti.com>
+
+Extra comma there, and similar case below.
+
+> + */
+> +
+> +#include <drm/drm_atomic.h>
+> +#include <drm/drm_atomic_helper.h>
+> +#include <drm/drm_plane_helper.h>
+> +
+> +#include "omap_dmm_tiler.h"
+> +#include "omap_drv.h"
+> +
+> +/*
+> + * overlay funcs
+> + */
+> +static const char * const overlay_id_to_name[] = {
+> +	[OMAP_DSS_GFX] = "gfx",
+> +	[OMAP_DSS_VIDEO1] = "vid1",
+> +	[OMAP_DSS_VIDEO2] = "vid2",
+> +	[OMAP_DSS_VIDEO3] = "vid3",
+> +};
+
+I was expecting to see the name array to be removed from omap_plane.c as 
+it's moved here, but that's not the case. Why is that? Especially as 
+after this series these names make no sense with the planes.
+
+> +static void omap_overlay_destroy(struct omap_hw_overlay *overlay)
 > +{
-> +	*width = dispc->feat->ovl_width_max;
-> +	*height = dispc->feat->ovl_height_max;
+> +	kfree(overlay);
 > +}
 > +
->   static int dispc_ovl_setup_common(struct dispc_device *dispc,
->   				  enum omap_plane_id plane,
->   				  enum omap_overlay_caps caps,
-> @@ -4240,6 +4248,8 @@ static const struct dispc_features omap24xx_dispc_feats = {
->   	.mgr_height_start	=	26,
->   	.mgr_width_max		=	2048,
->   	.mgr_height_max		=	2048,
-> +	.ovl_width_max		=	2048,
-> +	.ovl_height_max		=	2048,
->   	.max_lcd_pclk		=	66500000,
->   	.max_downscale		=	2,
->   	/*
-> @@ -4278,6 +4288,8 @@ static const struct dispc_features omap34xx_rev1_0_dispc_feats = {
->   	.mgr_height_start	=	26,
->   	.mgr_width_max		=	2048,
->   	.mgr_height_max		=	2048,
-> +	.ovl_width_max		=	2048,
-> +	.ovl_height_max		=	2048,
->   	.max_lcd_pclk		=	173000000,
->   	.max_tv_pclk		=	59000000,
->   	.max_downscale		=	4,
-> @@ -4313,6 +4325,8 @@ static const struct dispc_features omap34xx_rev3_0_dispc_feats = {
->   	.mgr_height_start	=	26,
->   	.mgr_width_max		=	2048,
->   	.mgr_height_max		=	2048,
-> +	.ovl_width_max		=	2048,
-> +	.ovl_height_max		=	2048,
->   	.max_lcd_pclk		=	173000000,
->   	.max_tv_pclk		=	59000000,
->   	.max_downscale		=	4,
-> @@ -4348,6 +4362,8 @@ static const struct dispc_features omap36xx_dispc_feats = {
->   	.mgr_height_start	=	26,
->   	.mgr_width_max		=	2048,
->   	.mgr_height_max		=	2048,
-> +	.ovl_width_max		=	2048,
-> +	.ovl_height_max		=	2048,
->   	.max_lcd_pclk		=	173000000,
->   	.max_tv_pclk		=	59000000,
->   	.max_downscale		=	4,
-> @@ -4383,6 +4399,8 @@ static const struct dispc_features am43xx_dispc_feats = {
->   	.mgr_height_start	=	26,
->   	.mgr_width_max		=	2048,
->   	.mgr_height_max		=	2048,
-> +	.ovl_width_max		=	2048,
-> +	.ovl_height_max		=	2048,
->   	.max_lcd_pclk		=	173000000,
->   	.max_tv_pclk		=	59000000,
->   	.max_downscale		=	4,
-> @@ -4418,6 +4436,8 @@ static const struct dispc_features omap44xx_dispc_feats = {
->   	.mgr_height_start	=	26,
->   	.mgr_width_max		=	2048,
->   	.mgr_height_max		=	2048,
-> +	.ovl_width_max		=	2048,
-> +	.ovl_height_max		=	2048,
->   	.max_lcd_pclk		=	170000000,
->   	.max_tv_pclk		=	185625000,
->   	.max_downscale		=	4,
-> @@ -4457,6 +4477,8 @@ static const struct dispc_features omap54xx_dispc_feats = {
->   	.mgr_height_start	=	27,
->   	.mgr_width_max		=	4096,
->   	.mgr_height_max		=	4096,
-> +	.ovl_width_max		=	2048,
-> +	.ovl_height_max		=	4096,
->   	.max_lcd_pclk		=	170000000,
->   	.max_tv_pclk		=	192000000,
->   	.max_downscale		=	4,
-> diff --git a/drivers/gpu/drm/omapdrm/dss/dss.h b/drivers/gpu/drm/omapdrm/dss/dss.h
-> index a547527bb2f3..14c39f7c3988 100644
-> --- a/drivers/gpu/drm/omapdrm/dss/dss.h
-> +++ b/drivers/gpu/drm/omapdrm/dss/dss.h
-> @@ -397,6 +397,8 @@ int dispc_get_num_mgrs(struct dispc_device *dispc);
->   const u32 *dispc_ovl_get_color_modes(struct dispc_device *dispc,
->   					    enum omap_plane_id plane);
->   
-> +void dispc_ovl_get_max_size(struct dispc_device *dispc, u16 *width, u16 *height);
+> +static struct omap_hw_overlay *omap_overlay_init(enum omap_plane_id overlay_id,
+> +						 enum omap_overlay_caps caps)
+> +{
+> +	struct omap_hw_overlay *overlay;
 > +
->   u32 dispc_read_irqstatus(struct dispc_device *dispc);
->   void dispc_clear_irqstatus(struct dispc_device *dispc, u32 mask);
->   void dispc_write_irqenable(struct dispc_device *dispc, u32 mask);
-> diff --git a/drivers/gpu/drm/omapdrm/omap_plane.c b/drivers/gpu/drm/omapdrm/omap_plane.c
-> index 512af976b7e9..d0a67b7ed1a0 100644
-> --- a/drivers/gpu/drm/omapdrm/omap_plane.c
-> +++ b/drivers/gpu/drm/omapdrm/omap_plane.c
-> @@ -109,11 +109,18 @@ static int omap_plane_atomic_check(struct drm_plane *plane,
->   {
->   	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state,
->   										 plane);
-> +	struct omap_drm_private *priv = plane->dev->dev_private;
->   	struct drm_crtc_state *crtc_state;
-> +	u16 width, height;
-> +	u32 width_fp, height_fp;
+> +	overlay = kzalloc(sizeof(*overlay), GFP_KERNEL);
+> +	if (!overlay)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	overlay->name = overlay_id_to_name[overlay_id];
+> +	overlay->overlay_id = overlay_id;
+> +	overlay->caps = caps;
+> +	/*
+> +	 * When this is called priv->num_crtcs is not known yet.
+> +	 * Use a safe mask value to start with, it will get updated to the
+> +	 * proper value after the first use.
+> +	 */
+> +	overlay->possible_crtcs = 0xff;
 
-I think naming these max_w/max_width etc. would be better.
+This sounds like a hack. Why do we need possible_crtcs anyway? If I'm 
+not mistaken, on all DSS versions any overlay can be used on any ctrtc. 
+On the DRM plane level we need the possible_crtc as the DRM framework 
+needs that (i.e. we just always set all crtcs available for all planes), 
+but why is it needed here?
+
+> +	return overlay;
+> +}
+> +
+> +int omap_hwoverlays_init(struct omap_drm_private *priv)
+> +{
+> +	static const enum omap_plane_id hw_plane_ids[] = {
+> +			OMAP_DSS_GFX, OMAP_DSS_VIDEO1,
+> +			OMAP_DSS_VIDEO2, OMAP_DSS_VIDEO3,
+> +	};
+> +	u32 num_overlays = dispc_get_num_ovls(priv->dispc);
+> +	enum omap_overlay_caps caps;
+> +	int i, ret;
+> +
+> +	for (i = 0; i < num_overlays; i++) {
+> +		struct omap_hw_overlay *overlay;
+> +
+> +		caps = dispc_ovl_get_caps(priv->dispc, hw_plane_ids[i]);
+> +		overlay = omap_overlay_init(hw_plane_ids[i], caps);
+> +		if (IS_ERR(overlay)) {
+> +			ret = PTR_ERR(overlay);
+> +			dev_err(priv->dev, "failed to construct overlay for %s (%d)\n",
+> +				overlay_id_to_name[i], ret);
+> +			return ret;
+> +		}
+
+I think this leaks memory if omap_overlay_init() fails.
+
+> +		overlay->idx = priv->num_ovls;
+> +		priv->overlays[priv->num_ovls++] = overlay;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +void omap_hwoverlays_destroy(struct omap_drm_private *priv)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < priv->num_ovls; i++) {
+> +		omap_overlay_destroy(priv->overlays[i]);
+> +		priv->overlays[i] = NULL;
+> +	}
+> +}
+> diff --git a/drivers/gpu/drm/omapdrm/omap_overlay.h b/drivers/gpu/drm/omapdrm/omap_overlay.h
+> new file mode 100644
+> index 000000000000..892fecb67adb
+> --- /dev/null
+> +++ b/drivers/gpu/drm/omapdrm/omap_overlay.h
+> @@ -0,0 +1,31 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2018 Texas Instruments Incorporated -  http://www.ti.com/
+> + * Author: Benoit Parrot, <bparrot@ti.com>
+> + */
+> +
+> +#ifndef __OMAPDRM_OVERLAY_H__
+> +#define __OMAPDRM_OVERLAY_H__
+> +
+> +#include <linux/types.h>
+> +
+> +enum drm_plane_type;
+> +
+> +struct drm_device;
+> +struct drm_mode_object;
+> +struct drm_plane;
+> +
+> +/* Used to associate a HW overlay/plane to a plane */
+> +struct omap_hw_overlay {
+> +	int idx;
+
+unsigned int.
+
+> +
+> +	const char *name;
+> +	enum omap_plane_id overlay_id;
+
+Perhaps just "id" is fine. You don't have "overlay_name" there either, 
+but just "name".
 
   Tomi
