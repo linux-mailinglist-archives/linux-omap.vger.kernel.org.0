@@ -2,80 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7BBA428BBC
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Oct 2021 13:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52E79429E66
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Oct 2021 09:15:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236132AbhJKLEz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Oct 2021 07:04:55 -0400
-Received: from muru.com ([72.249.23.125]:43352 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236147AbhJKLEy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 11 Oct 2021 07:04:54 -0400
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 470E28061;
-        Mon, 11 Oct 2021 11:03:25 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL 3/3] Devicetree changes for omaps for v5.16
-Date:   Mon, 11 Oct 2021 14:02:44 +0300
-Message-Id: <pull-1633950030-501948@atomide.com-3>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <pull-1633950030-501948@atomide.com>
-References: <pull-1633950030-501948@atomide.com>
+        id S233439AbhJLHRR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Oct 2021 03:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44122 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233602AbhJLHRQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Oct 2021 03:17:16 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00ECCC061570;
+        Tue, 12 Oct 2021 00:15:14 -0700 (PDT)
+Received: from [192.168.1.111] (91-158-153-130.elisa-laajakaista.fi [91.158.153.130])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 97264F1;
+        Tue, 12 Oct 2021 09:15:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1634022911;
+        bh=bwwneXptR3fIUmxlEKyinPusHZqeroYeldtSJarcPqo=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=m3oMckN5BEtG/5zjHAlhaWW1W5X3bvL5tztDTFfs20e/ob3Q/pc2gxLm4IK0D4yIK
+         yDWJp+TyBTdOJmZl2L9PQxu2IvqRWUA5QGK2QxwAccLv+2HlLxQWglXIk0TaFM7A8s
+         /+vvPhkFne06xoAJyhuAooj3VWJ/fEOeH9dr7UrY=
+Subject: Re: [PATCH v5 0/8] drm/omap: Add virtual-planes support
+To:     Neil Armstrong <narmstrong@baylibre.com>
+Cc:     linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, khilman@baylibre.com
+References: <20210923070701.145377-1-narmstrong@baylibre.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Message-ID: <e7c295be-7a0c-877c-ba25-3b580d7d9521@ideasonboard.com>
+Date:   Tue, 12 Oct 2021 10:15:08 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210923070701.145377-1-narmstrong@baylibre.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+On 23/09/2021 10:06, Neil Armstrong wrote:
+> This patchset is the follow-up the v4 patchset from Benoit Parrot at [1].
+> 
+> This patch series adds virtual-plane support to omapdrm driver to allow the use
+> of display wider than 2048 pixels.
+> 
+> In order to do so we introduce the concept of hw_overlay which can then be
+> dynamically allocated to a plane. When the requested output width exceed what
+> be supported by one overlay a second is then allocated if possible to handle
+> display wider then 2048.
+> 
+> This series replaces an earlier series which was DT based and using statically
+> allocated resources.
+> 
+> This implementation is inspired from the work done in msm/disp/mdp5
+> driver.
+> 
+> Changes since v4 at [1]:
+> - rebased on v5.15-rc2
 
-The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
+What is this based on? Doesn't apply to v5.15-rc2, and "error: sha1 
+information is lacking or useless".
 
-  Linux 5.15-rc1 (2021-09-12 16:28:37 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.16/dt-signed
-
-for you to fetch changes up to 02794dbdc892a20479995cb9083a69a2ff213d96:
-
-  ARM: dts: dra7: add entry for bb2d module (2021-10-06 10:46:44 +0300)
-
-----------------------------------------------------------------
-Devicetree changes for omaps for v5.16
-
-These changes configure devices for am335x and dra7, and fixes
-various devicetree check warnings for gta04:
-
-- Update am335x-pocketbeagle to use pinconf-single
-
-- A series of devicetree warning fixes for omap3 and gta04
-
-- Configure bb2d Vivante GC 2D Accelerator for dra7
-
-----------------------------------------------------------------
-Andreas Kemnade (6):
-      ARM: dts: omap3: fix cpu thermal label name
-      arm: dts: omap3-gta04: cleanup LCD definition
-      arm: dts: omap3-gta04: fix missing sensor supply
-      arm: dts: omap3-gta04a5: fix missing sensor supply
-      arm: dts: omap3-gta04a4: accelerometer irq fix
-      arm: dts: omap3-gta04: cleanup led node names
-
-Drew Fustini (1):
-      ARM: dts: am335x-pocketbeagle: switch to pinconf-single
-
-Gowtham Tammana (1):
-      ARM: dts: dra7: add entry for bb2d module
-
- arch/arm/boot/dts/am335x-pocketbeagle.dts |  1 +
- arch/arm/boot/dts/dra7.dtsi               | 19 +++++++++++++++++++
- arch/arm/boot/dts/omap3-cpu-thermal.dtsi  |  2 +-
- arch/arm/boot/dts/omap3-gta04.dtsi        | 23 +++++++++++++----------
- arch/arm/boot/dts/omap3-gta04a5.dts       |  2 ++
- 5 files changed, 36 insertions(+), 11 deletions(-)
+  Tomi
