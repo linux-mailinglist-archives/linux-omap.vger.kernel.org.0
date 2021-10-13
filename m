@@ -2,329 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DFC742CB4B
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Oct 2021 22:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B379442CCF5
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Oct 2021 23:41:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229913AbhJMUrB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Oct 2021 16:47:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56352 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229912AbhJMUqu (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 13 Oct 2021 16:46:50 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 96E88611AE;
-        Wed, 13 Oct 2021 20:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634157886;
-        bh=0nsH5JzpS+cDxXSdXa1drDcQKUBZOZabEIHq9PAOIrQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nixRvxHgSf72z7+945QX0+MtWRKFrGwp6GaHPdn0GFr8GICtW06KNKT0x87LhS5Cv
-         r/3Rvxrp/BBP7ouhMzGbiPa/6oB1X6fJxXywB6+nQVWWH8rowXBhWRE7+i1jGbcG9k
-         WXk9RrsdpfHDr+WYCClwVZKqm0l+EKwr06VwEtq19bZcOnVlunSSZEDcVs4IEIQj90
-         ufUUXZu130+/2v+2v3LlCthXe3R4/QF1z3z8L/GRWwXoIL7TheKnmKFJO0SpPYuZtO
-         Rcdu7+y8hlkBOcJYoV2o6ZvkpAThUSaMEpsiwsCleBd+0lLXEOwfmhfjZCn7vJ8Ig3
-         82iQZEJcB+T1Q==
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     davem@davemloft.net
-Cc:     netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        sammy@sammy.net, christopher.lee@cspi.com,
-        grygorii.strashko@ti.com, linux@dominikbrodowski.net,
-        linux-omap@vger.kernel.org
-Subject: [PATCH net-next 6/7] ethernet: replace netdev->dev_addr assignment loops
-Date:   Wed, 13 Oct 2021 13:44:34 -0700
-Message-Id: <20211013204435.322561-7-kuba@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211013204435.322561-1-kuba@kernel.org>
-References: <20211013204435.322561-1-kuba@kernel.org>
+        id S229972AbhJMVnL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 Oct 2021 17:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37344 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229588AbhJMVnL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Oct 2021 17:43:11 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83F0DC061570
+        for <linux-omap@vger.kernel.org>; Wed, 13 Oct 2021 14:41:07 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id ls18-20020a17090b351200b001a00250584aso5427186pjb.4
+        for <linux-omap@vger.kernel.org>; Wed, 13 Oct 2021 14:41:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=WLc6IrRUzN1NvABbj03b/K9mQI1mZYYIfJGl67UGN1E=;
+        b=jDN/84phO6U6OaSVcThD15QLRd2ZqbAZo/8MbgCsAWe0rbQalRTW6L7kXvj6dKFnDc
+         Y8Z5L1EwDO/zlr8NNf6AXf/6y27lmdnHqn83Kg9p9yWsNj9NmvEFGJpiAZhd60h7stRo
+         G0dcmsDAPKzxg9a4reONasgPPFLjKSOdjl9tmetSamocgxCfsRzWe+vrv4nZlNd5GQmc
+         Um+3J/v85kAxFLVoQOuRDv8vnaxFgPGbhlbSXwg4Jj9Ltdcr0LVqNlNSkhfcvyoY1btE
+         IcnH0RBxKrQn37/gJEwgQbgXtt3BIJvri4wcPXfPvT2ZcyO/HSAgYZMrOSm6lNoONadY
+         dX6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=WLc6IrRUzN1NvABbj03b/K9mQI1mZYYIfJGl67UGN1E=;
+        b=37oK4hyzFE5fyMtWy0AN+AyLCZrSlWYdd6zEMJVh7uYdyOK5z3hA7osD5PVZqf09Ro
+         PXc61IQmBM3OSePtKVjcM2jd0/061Y0nZtLZGbLIStcx7gkISE88NRZqqmzqgc9Xe1ex
+         fjauA0o/F25MOcES5MgYT18B8+HKnigH5FPpXW3rtPo0WENRD6VjRWVgEyJsqNUhqwXi
+         uSBOAvqpSS1LH9fKFnL/OeFfxP7TwfTUB8z3hKFtN58MgWdlcyOqnWzlrH6qQ5/X4mII
+         H+izD02CWppM+kOEjFEXCr0SdpV/ooC7yS+GWlw95JNfTYv663E3f+PJmzTtCYzIgEJW
+         Awbg==
+X-Gm-Message-State: AOAM530/4uSOXtUwmW4ja5LL0L/mjvDEkhrPUhZD5GAYfA1krWd2ruNw
+        fe6ZKuGfOaPhAFv87olRoMb/+w==
+X-Google-Smtp-Source: ABdhPJy9LDPdllIYUeK920uW66OjzrCDW6L9SnC73V58zpH3rwB2+vHPLI64AB5nRJs+sl8PMx6vTg==
+X-Received: by 2002:a17:903:11c9:b0:13b:9a01:aa27 with SMTP id q9-20020a17090311c900b0013b9a01aa27mr1466854plh.46.1634161267013;
+        Wed, 13 Oct 2021 14:41:07 -0700 (PDT)
+Received: from x1 ([2601:1c2:1080:1950:bd36:67b6:1d6:68ff])
+        by smtp.gmail.com with ESMTPSA id n21sm398999pfv.115.2021.10.13.14.41.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Oct 2021 14:41:06 -0700 (PDT)
+Date:   Wed, 13 Oct 2021 14:41:03 -0700
+From:   Drew Fustini <dfustini@baylibre.com>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Benoit Cousson <bcousson@baylibre.com>,
+        Dave Gerlach <d-gerlach@ti.com>, Keerthy <j-keerthy@ti.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: am335x: Add rtc node as system-power-controller
+Message-ID: <20211013214103.GA10628@x1>
+References: <20211012191311.879838-1-dfustini@baylibre.com>
+ <YWaJfofs8QAtBnVu@hovoldconsulting.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YWaJfofs8QAtBnVu@hovoldconsulting.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-A handful of drivers contains loops assigning the mac
-addr byte by byte. Convert those to eth_hw_addr_set().
+On Wed, Oct 13, 2021 at 09:23:42AM +0200, Johan Hovold wrote:
+> On Tue, Oct 12, 2021 at 12:13:12PM -0700, Drew Fustini wrote:
+> > From: Keerthy <j-keerthy@ti.com>
+> > 
+> > PMIC_PWR_EN pin of RTC on am335x-evm, bone, and boneblack is connected to
+> > PMIC on board, so flag rtc node as system-power-controller to allow
+> > software to poweroff boards.
+> 
+> The "system-power-controller" property is already set in
+> bone-common.dtsi since
+> 
+> 	2876cc4a773c ("ARM: dts: Move most of am335x-boneblack.dts to am335x-boneblack-common.dtsi")
+> 
+> so this probably only affects am335x-evm and that should be reflected in
+> the commit message.
+> 
+> Also, should you now remove the property from boneblack-common? Or just
+> add it to am335x-evm instead?
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: sammy@sammy.net
-CC: christopher.lee@cspi.com
-CC: grygorii.strashko@ti.com
-CC: linux@dominikbrodowski.net
-CC: linux-omap@vger.kernel.org
----
- drivers/net/ethernet/amd/sun3lance.c             | 4 +---
- drivers/net/ethernet/amd/sunlance.c              | 4 +---
- drivers/net/ethernet/apple/bmac.c                | 7 ++-----
- drivers/net/ethernet/dlink/dl2k.c                | 3 +--
- drivers/net/ethernet/fujitsu/fmvj18x_cs.c        | 7 ++-----
- drivers/net/ethernet/i825xx/sun3_82586.c         | 5 ++---
- drivers/net/ethernet/myricom/myri10ge/myri10ge.c | 4 +---
- drivers/net/ethernet/smsc/smc91c92_cs.c          | 5 ++---
- drivers/net/ethernet/sun/sunbmac.c               | 4 +---
- drivers/net/ethernet/ti/davinci_emac.c           | 4 +---
- drivers/pcmcia/pcmcia_cis.c                      | 5 ++---
- net/atm/lec.c                                    | 3 +--
- 12 files changed, 17 insertions(+), 38 deletions(-)
+Thank you for reviewing. Yes, I should improve the commit message as the
+BeagleBone Black is already covered for the rtc system-power-controller
+in am335x-boneblack-common.dtsi.  
 
-diff --git a/drivers/net/ethernet/amd/sun3lance.c b/drivers/net/ethernet/amd/sun3lance.c
-index 4a845bc071b2..007bd7787291 100644
---- a/drivers/net/ethernet/amd/sun3lance.c
-+++ b/drivers/net/ethernet/amd/sun3lance.c
-@@ -305,7 +305,6 @@ static int __init lance_probe( struct net_device *dev)
- 	unsigned long ioaddr;
- 
- 	struct lance_private	*lp;
--	int 			i;
- 	static int 		did_version;
- 	volatile unsigned short *ioaddr_probe;
- 	unsigned short tmp1, tmp2;
-@@ -373,8 +372,7 @@ static int __init lance_probe( struct net_device *dev)
- 		   dev->irq);
- 
- 	/* copy in the ethernet address from the prom */
--	for(i = 0; i < 6 ; i++)
--	     dev->dev_addr[i] = idprom->id_ethaddr[i];
-+	eth_hw_addr_set(dev, idprom->id_ethaddr);
- 
- 	/* tell the card it's ether address, bytes swapped */
- 	MEM->init.hwaddr[0] = dev->dev_addr[1];
-diff --git a/drivers/net/ethernet/amd/sunlance.c b/drivers/net/ethernet/amd/sunlance.c
-index ddece276ae23..22d609563af8 100644
---- a/drivers/net/ethernet/amd/sunlance.c
-+++ b/drivers/net/ethernet/amd/sunlance.c
-@@ -1301,7 +1301,6 @@ static int sparc_lance_probe_one(struct platform_device *op,
- 	struct device_node *dp = op->dev.of_node;
- 	struct lance_private *lp;
- 	struct net_device *dev;
--	int    i;
- 
- 	dev = alloc_etherdev(sizeof(struct lance_private) + 8);
- 	if (!dev)
-@@ -1315,8 +1314,7 @@ static int sparc_lance_probe_one(struct platform_device *op,
- 	 * will copy the address in the device structure to the lance
- 	 * initialization block.
- 	 */
--	for (i = 0; i < 6; i++)
--		dev->dev_addr[i] = idprom->id_ethaddr[i];
-+	eth_hw_addr_set(dev, idprom->id_ethaddr);
- 
- 	/* Get the IO region */
- 	lp->lregs = of_ioremap(&op->resource[0], 0,
-diff --git a/drivers/net/ethernet/apple/bmac.c b/drivers/net/ethernet/apple/bmac.c
-index a63ec2005af3..9a650d1c1bdd 100644
---- a/drivers/net/ethernet/apple/bmac.c
-+++ b/drivers/net/ethernet/apple/bmac.c
-@@ -521,17 +521,14 @@ static int bmac_resume(struct macio_dev *mdev)
- static int bmac_set_address(struct net_device *dev, void *addr)
- {
- 	struct bmac_data *bp = netdev_priv(dev);
--	unsigned char *p = addr;
- 	const unsigned short *pWord16;
- 	unsigned long flags;
--	int i;
- 
- 	XXDEBUG(("bmac: enter set_address\n"));
- 	spin_lock_irqsave(&bp->lock, flags);
- 
--	for (i = 0; i < 6; ++i) {
--		dev->dev_addr[i] = p[i];
--	}
-+	eth_hw_addr_set(dev, addr);
-+
- 	/* load up the hardware address */
- 	pWord16  = (const unsigned short *)dev->dev_addr;
- 	bmwrite(dev, MADD0, *pWord16++);
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 993bba0ffb16..a301f7e6a440 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -349,8 +349,7 @@ parse_eeprom (struct net_device *dev)
- 	}
- 
- 	/* Set MAC address */
--	for (i = 0; i < 6; i++)
--		dev->dev_addr[i] = psrom->mac_addr[i];
-+	eth_hw_addr_set(dev, psrom->mac_addr);
- 
- 	if (np->chip_id == CHIP_IP1000A) {
- 		np->led_mode = psrom->led_mode;
-diff --git a/drivers/net/ethernet/fujitsu/fmvj18x_cs.c b/drivers/net/ethernet/fujitsu/fmvj18x_cs.c
-index 62c0bed82ced..62600153b964 100644
---- a/drivers/net/ethernet/fujitsu/fmvj18x_cs.c
-+++ b/drivers/net/ethernet/fujitsu/fmvj18x_cs.c
-@@ -468,8 +468,7 @@ static int fmvj18x_config(struct pcmcia_device *link)
- 		    goto failed;
- 	    }
- 	    /* Read MACID from CIS */
--	    for (i = 0; i < 6; i++)
--		    dev->dev_addr[i] = buf[i + 5];
-+	    eth_hw_addr_set(dev, &buf[5]);
- 	    kfree(buf);
- 	} else {
- 	    if (pcmcia_get_mac_from_cis(link, dev))
-@@ -499,9 +498,7 @@ static int fmvj18x_config(struct pcmcia_device *link)
- 	    pr_notice("unable to read hardware net address\n");
- 	    goto failed;
- 	}
--	for (i = 0 ; i < 6; i++) {
--	    dev->dev_addr[i] = buggybuf[i];
--	}
-+	eth_hw_addr_set(dev, buggybuf);
- 	card_name = "FMV-J182";
- 	break;
-     case MBH10302:
-diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
-index 18d32302c3c7..3909c6a0af89 100644
---- a/drivers/net/ethernet/i825xx/sun3_82586.c
-+++ b/drivers/net/ethernet/i825xx/sun3_82586.c
-@@ -339,14 +339,13 @@ static const struct net_device_ops sun3_82586_netdev_ops = {
- 
- static int __init sun3_82586_probe1(struct net_device *dev,int ioaddr)
- {
--	int i, size, retval;
-+	int size, retval;
- 
- 	if (!request_region(ioaddr, SUN3_82586_TOTAL_SIZE, DRV_NAME))
- 		return -EBUSY;
- 
- 	/* copy in the ethernet address from the prom */
--	for(i = 0; i < 6 ; i++)
--	     dev->dev_addr[i] = idprom->id_ethaddr[i];
-+	eth_hw_addr_set(dev, idprom->id_ethaddr);
- 
- 	printk("%s: SUN3 Intel 82586 found at %lx, ",dev->name,dev->base_addr);
- 
-diff --git a/drivers/net/ethernet/myricom/myri10ge/myri10ge.c b/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
-index 5ae59b1e5b48..5736fcdafd7a 100644
---- a/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
-+++ b/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
-@@ -3739,7 +3739,6 @@ static int myri10ge_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	struct net_device *netdev;
- 	struct myri10ge_priv *mgp;
- 	struct device *dev = &pdev->dev;
--	int i;
- 	int status = -ENXIO;
- 	int dac_enabled;
- 	unsigned hdr_offset, ss_offset;
-@@ -3829,8 +3828,7 @@ static int myri10ge_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (status)
- 		goto abort_with_ioremap;
- 
--	for (i = 0; i < ETH_ALEN; i++)
--		netdev->dev_addr[i] = mgp->mac_addr[i];
-+	eth_hw_addr_set(netdev, mgp->mac_addr);
- 
- 	myri10ge_select_firmware(mgp);
- 
-diff --git a/drivers/net/ethernet/smsc/smc91c92_cs.c b/drivers/net/ethernet/smsc/smc91c92_cs.c
-index 42fc37c7887a..e5658aa39765 100644
---- a/drivers/net/ethernet/smsc/smc91c92_cs.c
-+++ b/drivers/net/ethernet/smsc/smc91c92_cs.c
-@@ -666,14 +666,13 @@ static int pcmcia_osi_mac(struct pcmcia_device *p_dev,
- 			  void *priv)
- {
- 	struct net_device *dev = priv;
--	int i;
- 
- 	if (tuple->TupleDataLen < 8)
- 		return -EINVAL;
- 	if (tuple->TupleData[0] != 0x04)
- 		return -EINVAL;
--	for (i = 0; i < 6; i++)
--		dev->dev_addr[i] = tuple->TupleData[i+2];
-+
-+	eth_hw_addr_set(dev, &tuple->TupleData[2]);
- 	return 0;
- };
- 
-diff --git a/drivers/net/ethernet/sun/sunbmac.c b/drivers/net/ethernet/sun/sunbmac.c
-index d70426670c37..531a6f449afa 100644
---- a/drivers/net/ethernet/sun/sunbmac.c
-+++ b/drivers/net/ethernet/sun/sunbmac.c
-@@ -1076,7 +1076,6 @@ static int bigmac_ether_init(struct platform_device *op,
- 	struct net_device *dev;
- 	u8 bsizes, bsizes_more;
- 	struct bigmac *bp;
--	int i;
- 
- 	/* Get a new device struct for this interface. */
- 	dev = alloc_etherdev(sizeof(struct bigmac));
-@@ -1086,8 +1085,7 @@ static int bigmac_ether_init(struct platform_device *op,
- 	if (version_printed++ == 0)
- 		printk(KERN_INFO "%s", version);
- 
--	for (i = 0; i < 6; i++)
--		dev->dev_addr[i] = idprom->id_ethaddr[i];
-+	eth_hw_addr_set(dev, idprom->id_ethaddr);
- 
- 	/* Setup softc, with backpointers to QEC and BigMAC SBUS device structs. */
- 	bp = netdev_priv(dev);
-diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
-index 4538e597eefe..2d2dcf70563f 100644
---- a/drivers/net/ethernet/ti/davinci_emac.c
-+++ b/drivers/net/ethernet/ti/davinci_emac.c
-@@ -1402,7 +1402,6 @@ static int match_first_device(struct device *dev, const void *data)
- static int emac_dev_open(struct net_device *ndev)
- {
- 	struct device *emac_dev = &ndev->dev;
--	u32 cnt;
- 	struct resource *res;
- 	int q, m, ret;
- 	int res_num = 0, irq_num = 0;
-@@ -1420,8 +1419,7 @@ static int emac_dev_open(struct net_device *ndev)
- 	}
- 
- 	netif_carrier_off(ndev);
--	for (cnt = 0; cnt < ETH_ALEN; cnt++)
--		ndev->dev_addr[cnt] = priv->mac_addr[cnt];
-+	eth_hw_addr_set(ndev, priv->mac_addr);
- 
- 	/* Configuration items */
- 	priv->rx_buf_size = EMAC_DEF_MAX_FRAME_SIZE + NET_IP_ALIGN;
-diff --git a/drivers/pcmcia/pcmcia_cis.c b/drivers/pcmcia/pcmcia_cis.c
-index d2d0ed4b27c8..f650e19a315c 100644
---- a/drivers/pcmcia/pcmcia_cis.c
-+++ b/drivers/pcmcia/pcmcia_cis.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/netdevice.h>
-+#include <linux/etherdevice.h>
- 
- #include <pcmcia/cisreg.h>
- #include <pcmcia/cistpl.h>
-@@ -398,7 +399,6 @@ static int pcmcia_do_get_mac(struct pcmcia_device *p_dev, tuple_t *tuple,
- 			     void *priv)
- {
- 	struct net_device *dev = priv;
--	int i;
- 
- 	if (tuple->TupleData[0] != CISTPL_FUNCE_LAN_NODE_ID)
- 		return -EINVAL;
-@@ -412,8 +412,7 @@ static int pcmcia_do_get_mac(struct pcmcia_device *p_dev, tuple_t *tuple,
- 		dev_warn(&p_dev->dev, "Invalid header for LAN_NODE_ID\n");
- 		return -EINVAL;
- 	}
--	for (i = 0; i < 6; i++)
--		dev->dev_addr[i] = tuple->TupleData[i+2];
-+	eth_hw_addr_set(dev, &tuple->TupleData[2]);
- 	return 0;
- }
- 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index 7226c784dbe0..8eaea4a4bbd6 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -355,8 +355,7 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
- 	pr_debug("%s: msg from zeppelin:%d\n", dev->name, mesg->type);
- 	switch (mesg->type) {
- 	case l_set_mac_addr:
--		for (i = 0; i < 6; i++)
--			dev->dev_addr[i] = mesg->content.normal.mac_addr[i];
-+		eth_hw_addr_set(dev, mesg->content.normal.mac_addr);
- 		break;
- 	case l_del_mac_addr:
- 		for (i = 0; i < 6; i++)
--- 
-2.31.1
+I believe it would be ok to remove system-power-controller from 
+am335x-boneblack-common.dtsi and have it in am335x-bone-common.dtsi.
 
+These are the files that include am335x-boneblack-common.dtsi:
+arch/arm/boot/dts/am335x-boneblack-wireless.dts
+arch/arm/boot/dts/am335x-boneblack.dts
+arch/arm/boot/dts/am335x-sancloud-bbe-lite.dts
+arch/arm/boot/dts/am335x-sancloud-bbe.dts
+
+But they all also include am335x-bone-common.dtsi.
+
+However, I just noticed that am335x-evm.dts does not include either
+am335x-boneblack-common.dtsi or am335x-boneblack-common.dtsi. Thus
+rtc system-power-controller should be directly inserted into
+am335x-evm.dts.
+
+I considered just moving system-power-controller to the rtc node in
+am33xx-l4.dtsi but I don't think that would be correct as this would not
+be valid for all am33xx devices.
+
+Does that seem correct to you?
+
+Thank you,
+Drew
