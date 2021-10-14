@@ -2,61 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3468342DB47
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Oct 2021 16:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4496E42DFA1
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Oct 2021 18:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231774AbhJNORr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 14 Oct 2021 10:17:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231452AbhJNORr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Oct 2021 10:17:47 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B1B9C061570
-        for <linux-omap@vger.kernel.org>; Thu, 14 Oct 2021 07:15:42 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id u21so24497595lff.8
-        for <linux-omap@vger.kernel.org>; Thu, 14 Oct 2021 07:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=71QdEmlwBmyzW2/4qEGlb6RuQKZwUgr5VIqT5E3Y77g=;
-        b=hrtVyknI+Hf6tWdJhhtrS3dJesu54H3FjYaPh8xpnIjjKB0uqSpoBJUicUSxZG4q47
-         T6+GngBb4tM3ArO23cMVlwupmZHA1YIIDPOtjUoAk6kqh+w2fjtU6uA1jGcELtC9HPa3
-         hI5KAiIFNWlICHhxTyS0V3PYqvYrAO1CAarHZgpJbsj90FxrQHM4fk9YJ5XB0RE/gPdy
-         NRrxHEhA6CZ3lnsojEQ7WGRThGUBdLqiFd7Xi9ikRw/DJdVoFAg4V/yZtM/Wlo5S+sgV
-         ShSCeZMVnWAkvRgqbyFK09pcBCn5X5vX0d5Nj/TqDU++X1RSlMriHtolH9mBq9E7/bnd
-         PkDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=71QdEmlwBmyzW2/4qEGlb6RuQKZwUgr5VIqT5E3Y77g=;
-        b=66U3Sa4H9RYmiKk4EaKg1UA4pWOhFoJ4Dw0nlaBX0JK+vgKJdRYKwxvMYVvja96vKY
-         5hIfWy8mFuHZba6JZg4nCn+mW55OoR41Ai2l0EwH077ceQAQa+0iC10TF2/q5KfPAsFO
-         BMn149HQL5c44I+8IHfexisFbt6MAA+lXHGkCU9OjKBjQ7f8VMGYv0WvywxrCMYxruuK
-         JVSwO8bFl+++Op7s2inslmw94X3jypua3L/6wwsU9NFYc0qlkLcMlgfbHGildMDwuQsI
-         CcuN0lhO5f1LIhttD9AduWgiVFaoBhq2qFsm6hN9XYNCkNQLfeXLvw1yf3JCyfpRRpWv
-         hsKQ==
-X-Gm-Message-State: AOAM533CdamyK8il4Pjg+7gJJOhHWl/DkG36AaTZNW6Fx914paPiUXZ8
-        I7uvz89rH7DVoOgsoe8Gq8KkHhFEL6tMP3s9eGk=
-X-Google-Smtp-Source: ABdhPJxP1/TPmoH/nML2es4Yr0MxepQ3FCzE97I6rKl2uMZ4jRyAqw+eSTL0OF6rJ3IFwRVd9nedn39rv9DNjWU4J6c=
-X-Received: by 2002:a2e:611a:: with SMTP id v26mr6124204ljb.122.1634220939851;
- Thu, 14 Oct 2021 07:15:39 -0700 (PDT)
+        id S232496AbhJNQvF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 14 Oct 2021 12:51:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37450 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233497AbhJNQvB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 14 Oct 2021 12:51:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B2BDD6109E;
+        Thu, 14 Oct 2021 16:48:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634230136;
+        bh=/Hf0VjXN6iyYy6YK32OUC6tMBg1hQi/SYJ14SKE5H/4=;
+        h=Date:From:To:Subject:From;
+        b=ooCImsbvs+VtpH8EU0ZNPxgl6dfPCRirRShNowMC4TH6HA74C7k0jmazO2lO0D4FB
+         riKUsg+P3Tw825Db06ypvOYMi00tW/xFnJFc1Obfqp53qI/qhjkBm0iH1StR785T00
+         oaQBtBpMgElQP7UP/dEG34IdcqgEH2An1K1HBjaKzzEHlSOldL0drDzqeQbGIb0JFT
+         C4AR2wXM5KPbcEDc2IIG89gllO6wPZ9p81Ij4MOL+dzXfL2IzEJSTZYkT2hj+5hiff
+         mNAy8+H+ftORN/K2uJcBivQsPuJWRzOK2Fe/JpABAoSmBWQP27zTM4XHmO6m5pK03I
+         G79ZH9vfz96dg==
+Date:   Thu, 14 Oct 2021 11:53:20 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Cc: linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org, ;
+Illegal-Object: Syntax error in To: address found on vger.kernel.org:
+        To:     ;
+                        ^-missing semicolon to end mail group, extraneous tokens in mailbox, missing end of mailbox
+Subject: [PATCH] video: omapfb: Fix fall-through warning for Clang
+Message-ID: <20211014165320.GA1145571@embeddedor>
 MIME-Version: 1.0
-Received: by 2002:ab3:1d0c:0:0:0:0:0 with HTTP; Thu, 14 Oct 2021 07:15:37
- -0700 (PDT)
-Reply-To: mr.jeannasri@gmail.com
-From:   jean nasri <renor9423@gmail.com>
-Date:   Thu, 14 Oct 2021 16:15:37 +0200
-Message-ID: <CAAGTwFFoieDPBW+JQXzDJD2yd07C4jNZ3unNuhq00xd6WwAyfQ@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
-Do you have an account to receive donation funds? Please reply for
-further explanation.
-Nasri.
+Fix the following fallthrough warnings:
+
+drivers/video/fbdev/omap/omapfb_main.c:1558:2: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+           case 0:
+           ^
+   drivers/video/fbdev/omap/omapfb_main.c:1558:2: note: insert 'break;' to avoid fall-through
+           case 0:
+           ^
+           break;
+   1 warning generated.
+
+This helps with the ongoing efforts to globally enable
+-Wimplicit-fallthrough for Clang.
+
+Link: https://github.com/KSPP/linux/issues/115
+Link: https://lore.kernel.org/lkml/202110141005.hUjaYMEi-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/video/fbdev/omap/omapfb_main.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+index 3d090d2d9ed9..b495c09e6102 100644
+--- a/drivers/video/fbdev/omap/omapfb_main.c
++++ b/drivers/video/fbdev/omap/omapfb_main.c
+@@ -1555,6 +1555,7 @@ static void omapfb_free_resources(struct omapfb_device *fbdev, int state)
+ 	case 1:
+ 		dev_set_drvdata(fbdev->dev, NULL);
+ 		kfree(fbdev);
++		break;
+ 	case 0:
+ 		/* nothing to free */
+ 		break;
+-- 
+2.27.0
+
