@@ -2,18 +2,18 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7746F42EF0B
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Oct 2021 12:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E7AF42EF0C
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Oct 2021 12:47:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238039AbhJOKtl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 15 Oct 2021 06:49:41 -0400
-Received: from muru.com ([72.249.23.125]:44880 "EHLO muru.com"
+        id S238041AbhJOKtn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 Oct 2021 06:49:43 -0400
+Received: from muru.com ([72.249.23.125]:44890 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229690AbhJOKtk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 15 Oct 2021 06:49:40 -0400
+        id S229690AbhJOKtn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 15 Oct 2021 06:49:43 -0400
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id AD19883F4;
-        Fri, 15 Oct 2021 10:48:04 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 09C2A83F2;
+        Fri, 15 Oct 2021 10:48:06 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Ulf Hansson <ulf.hansson@linaro.org>
 Cc:     Adrian Hunter <adrian.hunter@intel.com>,
@@ -23,9 +23,9 @@ Cc:     Adrian Hunter <adrian.hunter@intel.com>,
         Santosh Shilimkar <ssantosh@kernel.org>,
         linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org,
         Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
-Subject: [PATCH 2/6] mmc: sdhci-omap: Handle voltages to add support omap4
-Date:   Fri, 15 Oct 2021 13:47:16 +0300
-Message-Id: <20211015104720.52240-3-tony@atomide.com>
+Subject: [PATCH 3/6] mmc: sdhci-omap: Add omap_offset to support omap3 and earlier
+Date:   Fri, 15 Oct 2021 13:47:17 +0300
+Message-Id: <20211015104720.52240-4-tony@atomide.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211015104720.52240-1-tony@atomide.com>
 References: <20211015104720.52240-1-tony@atomide.com>
@@ -35,245 +35,198 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In order to start deprecating the custom omap_hsmmc.c in favor of the
-generic sdhci-omap driver, we need to add support for voltages for earlier
-SoCs.
+The omap specific registers are at offset 0x100 from base for omap4 and
+later, and for omap3 and earlier they are at offset 0. Let's handle also
+the earlier SoCs by adding omap_offset.
 
-The PBIAS regulator on omap4 and earlier only supports nominal values of
-1.8V and 3.0V, while omap5 and later support nominal values of 1.8V and
-3.3V IO voltage.
-
-This gets omap4/5 working with sdhci-omap driver.
+Note that eventually we should just move to using standard sdhci register
+access for the sdhci range with new offsets starting at 0x100.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/mmc/host/sdhci-omap.c | 124 ++++++++++++++++++++++++++--------
- 1 file changed, 96 insertions(+), 28 deletions(-)
+ drivers/mmc/host/sdhci-omap.c | 61 ++++++++++++++++++++++++++---------
+ 1 file changed, 45 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
 --- a/drivers/mmc/host/sdhci-omap.c
 +++ b/drivers/mmc/host/sdhci-omap.c
-@@ -178,7 +178,7 @@ static int sdhci_omap_set_pbias(struct sdhci_omap_host *omap_host,
- }
+@@ -21,9 +21,14 @@
  
- static int sdhci_omap_enable_iov(struct sdhci_omap_host *omap_host,
--				 unsigned int iov)
-+				 unsigned int iov_pbias)
- {
- 	int ret;
- 	struct sdhci_host *host = omap_host->host;
-@@ -189,14 +189,15 @@ static int sdhci_omap_enable_iov(struct sdhci_omap_host *omap_host,
- 		return ret;
+ #include "sdhci-pltfm.h"
  
- 	if (!IS_ERR(mmc->supply.vqmmc)) {
--		ret = regulator_set_voltage(mmc->supply.vqmmc, iov, iov);
--		if (ret) {
-+		/* Pick the right voltage to allow 3.0V for 3.3V nominal PBIAS */
-+		ret = mmc_regulator_set_vqmmc(mmc, &mmc->ios);
-+		if (ret < 0) {
- 			dev_err(mmc_dev(mmc), "vqmmc set voltage failed\n");
- 			return ret;
- 		}
- 	}
+-#define SDHCI_OMAP_SYSCONFIG	0x110
++/*
++ * Note that the register offsets used here are from omap_regs
++ * base which is 0x100 for omap4 and later, and 0 for omap3 and
++ * earlier.
++ */
++#define SDHCI_OMAP_SYSCONFIG	0x10
  
--	ret = sdhci_omap_set_pbias(omap_host, true, iov);
-+	ret = sdhci_omap_set_pbias(omap_host, true, iov_pbias);
- 	if (ret)
- 		return ret;
+-#define SDHCI_OMAP_CON		0x12c
++#define SDHCI_OMAP_CON		0x2c
+ #define CON_DW8			BIT(5)
+ #define CON_DMA_MASTER		BIT(20)
+ #define CON_DDR			BIT(19)
+@@ -33,20 +38,20 @@
+ #define CON_INIT		BIT(1)
+ #define CON_OD			BIT(0)
  
-@@ -206,16 +207,28 @@ static int sdhci_omap_enable_iov(struct sdhci_omap_host *omap_host,
- static void sdhci_omap_conf_bus_power(struct sdhci_omap_host *omap_host,
- 				      unsigned char signal_voltage)
- {
--	u32 reg;
-+	u32 reg, capa;
- 	ktime_t timeout;
+-#define SDHCI_OMAP_DLL		0x0134
++#define SDHCI_OMAP_DLL		0x34
+ #define DLL_SWT			BIT(20)
+ #define DLL_FORCE_SR_C_SHIFT	13
+ #define DLL_FORCE_SR_C_MASK	(0x7f << DLL_FORCE_SR_C_SHIFT)
+ #define DLL_FORCE_VALUE		BIT(12)
+ #define DLL_CALIB		BIT(1)
  
- 	reg = sdhci_omap_readl(omap_host, SDHCI_OMAP_HCTL);
- 	reg &= ~HCTL_SDVS_MASK;
+-#define SDHCI_OMAP_CMD		0x20c
++#define SDHCI_OMAP_CMD		0x10c
  
--	if (signal_voltage == MMC_SIGNAL_VOLTAGE_330)
--		reg |= HCTL_SDVS_33;
--	else
-+	switch (signal_voltage) {
-+	case MMC_SIGNAL_VOLTAGE_330:
-+		capa = sdhci_omap_readl(omap_host, SDHCI_OMAP_CAPA);
-+		if (capa & CAPA_VS33)
-+			reg |= HCTL_SDVS_33;
-+		else if (capa & CAPA_VS30)
-+			reg |= HCTL_SDVS_30;
-+		else
-+			dev_warn(omap_host->dev, "misconfigured CAPA: %08x\n",
-+				 capa);
-+		break;
-+	case MMC_SIGNAL_VOLTAGE_180:
-+	default:
- 		reg |= HCTL_SDVS_18;
-+		break;
-+	}
+-#define SDHCI_OMAP_PSTATE	0x0224
++#define SDHCI_OMAP_PSTATE	0x124
+ #define PSTATE_DLEV_DAT0	BIT(20)
+ #define PSTATE_DATI		BIT(1)
  
- 	sdhci_omap_writel(omap_host, SDHCI_OMAP_HCTL, reg);
+-#define SDHCI_OMAP_HCTL		0x228
++#define SDHCI_OMAP_HCTL		0x128
+ #define HCTL_SDBP		BIT(8)
+ #define HCTL_SDVS_SHIFT		9
+ #define HCTL_SDVS_MASK		(0x7 << HCTL_SDVS_SHIFT)
+@@ -54,28 +59,28 @@
+ #define HCTL_SDVS_30		(0x6 << HCTL_SDVS_SHIFT)
+ #define HCTL_SDVS_18		(0x5 << HCTL_SDVS_SHIFT)
  
-@@ -533,28 +546,32 @@ static int sdhci_omap_start_signal_voltage_switch(struct mmc_host *mmc,
+-#define SDHCI_OMAP_SYSCTL	0x22c
++#define SDHCI_OMAP_SYSCTL	0x12c
+ #define SYSCTL_CEN		BIT(2)
+ #define SYSCTL_CLKD_SHIFT	6
+ #define SYSCTL_CLKD_MASK	0x3ff
  
- 	if (ios->signal_voltage == MMC_SIGNAL_VOLTAGE_330) {
- 		reg = sdhci_omap_readl(omap_host, SDHCI_OMAP_CAPA);
--		if (!(reg & CAPA_VS33))
-+		if (!(reg & (CAPA_VS30 | CAPA_VS33)))
- 			return -EOPNOTSUPP;
+-#define SDHCI_OMAP_STAT		0x230
++#define SDHCI_OMAP_STAT		0x130
  
-+		if (reg & CAPA_VS30)
-+			iov = IOV_3V0;
-+		else
-+			iov = IOV_3V3;
-+
- 		sdhci_omap_conf_bus_power(omap_host, ios->signal_voltage);
+-#define SDHCI_OMAP_IE		0x234
++#define SDHCI_OMAP_IE		0x134
+ #define INT_CC_EN		BIT(0)
  
- 		reg = sdhci_omap_readl(omap_host, SDHCI_OMAP_AC12);
- 		reg &= ~AC12_V1V8_SIGEN;
- 		sdhci_omap_writel(omap_host, SDHCI_OMAP_AC12, reg);
+-#define SDHCI_OMAP_ISE		0x238
++#define SDHCI_OMAP_ISE		0x138
  
--		iov = IOV_3V3;
- 	} else if (ios->signal_voltage == MMC_SIGNAL_VOLTAGE_180) {
- 		reg = sdhci_omap_readl(omap_host, SDHCI_OMAP_CAPA);
- 		if (!(reg & CAPA_VS18))
- 			return -EOPNOTSUPP;
+-#define SDHCI_OMAP_AC12		0x23c
++#define SDHCI_OMAP_AC12		0x13c
+ #define AC12_V1V8_SIGEN		BIT(19)
+ #define AC12_SCLK_SEL		BIT(23)
  
-+		iov = IOV_1V8;
-+
- 		sdhci_omap_conf_bus_power(omap_host, ios->signal_voltage);
+-#define SDHCI_OMAP_CAPA		0x240
++#define SDHCI_OMAP_CAPA		0x140
+ #define CAPA_VS33		BIT(24)
+ #define CAPA_VS30		BIT(25)
+ #define CAPA_VS18		BIT(26)
  
- 		reg = sdhci_omap_readl(omap_host, SDHCI_OMAP_AC12);
- 		reg |= AC12_V1V8_SIGEN;
- 		sdhci_omap_writel(omap_host, SDHCI_OMAP_AC12, reg);
--
--		iov = IOV_1V8;
- 	} else {
- 		return -EOPNOTSUPP;
- 	}
-@@ -910,34 +927,73 @@ static struct sdhci_ops sdhci_omap_ops = {
- 	.set_timeout = sdhci_omap_set_timeout,
+-#define SDHCI_OMAP_CAPA2	0x0244
++#define SDHCI_OMAP_CAPA2	0x144
+ #define CAPA2_TSDR50		BIT(13)
+ 
+ #define SDHCI_OMAP_TIMEOUT	1		/* 1 msec */
+@@ -93,7 +98,8 @@
+ #define SDHCI_OMAP_SPECIAL_RESET	BIT(1)
+ 
+ struct sdhci_omap_data {
+-	u32 offset;
++	int omap_offset;	/* Offset for omap regs from base */
++	u32 offset;		/* Offset for SDHCI regs from base */
+ 	u8 flags;
  };
  
--static int sdhci_omap_set_capabilities(struct sdhci_omap_host *omap_host)
-+static unsigned int sdhci_omap_regulator_get_caps(struct device *dev,
-+						  const char *name)
+@@ -112,6 +118,10 @@ struct sdhci_omap_host {
+ 	struct pinctrl		*pinctrl;
+ 	struct pinctrl_state	**pinctrl_state;
+ 	bool			is_tuning;
++
++	/* Offset for omap specific registers from base */
++	int			omap_offset;
++
+ 	/* Omap specific context save */
+ 	u32			con;
+ 	u32			hctl;
+@@ -127,13 +137,13 @@ static void sdhci_omap_stop_clock(struct sdhci_omap_host *omap_host);
+ static inline u32 sdhci_omap_readl(struct sdhci_omap_host *host,
+ 				   unsigned int offset)
  {
--	u32 reg;
--	int ret = 0;
-+	struct regulator *reg;
-+	unsigned int caps = 0;
-+
-+	reg = regulator_get(dev, name);
-+	if (IS_ERR(reg))
-+		return ~0U;
-+
-+	if (regulator_is_supported_voltage(reg, 1700000, 1950000))
-+		caps |= SDHCI_CAN_VDD_180;
-+	if (regulator_is_supported_voltage(reg, 2700000, 3150000))
-+		caps |= SDHCI_CAN_VDD_300;
-+	if (regulator_is_supported_voltage(reg, 3150000, 3600000))
-+		caps |= SDHCI_CAN_VDD_330;
-+
-+	regulator_put(reg);
-+
-+	return caps;
-+}
-+
-+static int sdhci_omap_set_capabilities(struct sdhci_host *host)
-+{
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
- 	struct device *dev = omap_host->dev;
--	struct regulator *vqmmc;
-+	const u32 mask = SDHCI_CAN_VDD_180 | SDHCI_CAN_VDD_300 | SDHCI_CAN_VDD_330;
-+	unsigned int pbias, vqmmc, caps = 0;
-+	u32 reg;
- 
--	vqmmc = regulator_get(dev, "vqmmc");
--	if (IS_ERR(vqmmc)) {
--		ret = PTR_ERR(vqmmc);
--		goto reg_put;
--	}
-+	pbias = sdhci_omap_regulator_get_caps(dev, "pbias");
-+	vqmmc = sdhci_omap_regulator_get_caps(dev, "vqmmc");
-+	caps = pbias & vqmmc;
-+
-+	if (pbias != ~0U && vqmmc == ~0U)
-+		dev_warn(dev, "vqmmc regulator missing for pbias\n");
-+	else if (caps == ~0U)
-+		return 0;
-+
-+	/*
-+	 * Quirk handling to allow 3.0V vqmmc with a valid 3.3V PBIAS. This is
-+	 * needed for 3.0V ldo9_reg on omap5 at least.
-+	 */
-+	if (pbias != ~0U && (pbias & SDHCI_CAN_VDD_330) &&
-+	    (vqmmc & SDHCI_CAN_VDD_300))
-+		caps |= SDHCI_CAN_VDD_330;
- 
- 	/* voltage capabilities might be set by boot loader, clear it */
- 	reg = sdhci_omap_readl(omap_host, SDHCI_OMAP_CAPA);
- 	reg &= ~(CAPA_VS18 | CAPA_VS30 | CAPA_VS33);
- 
--	if (regulator_is_supported_voltage(vqmmc, IOV_3V3, IOV_3V3))
--		reg |= CAPA_VS33;
--	if (regulator_is_supported_voltage(vqmmc, IOV_1V8, IOV_1V8))
-+	if (caps & SDHCI_CAN_VDD_180)
- 		reg |= CAPA_VS18;
- 
-+	if (caps & SDHCI_CAN_VDD_300)
-+		reg |= CAPA_VS30;
-+
-+	if (caps & SDHCI_CAN_VDD_330)
-+		reg |= CAPA_VS33;
-+
- 	sdhci_omap_writel(omap_host, SDHCI_OMAP_CAPA, reg);
- 
--reg_put:
--	regulator_put(vqmmc);
-+	host->caps &= ~mask;
-+	host->caps |= caps;
- 
--	return ret;
-+	return 0;
+-	return readl(host->base + offset);
++	return readl(host->base + host->omap_offset + offset);
  }
  
- static const struct sdhci_pltfm_data sdhci_omap_pdata = {
-@@ -953,6 +1009,16 @@ static const struct sdhci_pltfm_data sdhci_omap_pdata = {
+ static inline void sdhci_omap_writel(struct sdhci_omap_host *host,
+ 				     unsigned int offset, u32 data)
+ {
+-	writel(data, host->base + offset);
++	writel(data, host->base + host->omap_offset + offset);
+ }
+ 
+ static int sdhci_omap_set_pbias(struct sdhci_omap_host *omap_host,
+@@ -1009,36 +1019,54 @@ static const struct sdhci_pltfm_data sdhci_omap_pdata = {
  	.ops = &sdhci_omap_ops,
  };
  
-+static const struct sdhci_omap_data omap4_data = {
-+	.offset = 0x200,
-+	.flags = SDHCI_OMAP_SPECIAL_RESET,
++static const struct sdhci_omap_data omap2430_data = {
++	.omap_offset = 0,
++	.offset = 0x100,
 +};
 +
-+static const struct sdhci_omap_data omap5_data = {
-+	.offset = 0x200,
-+	.flags = SDHCI_OMAP_SPECIAL_RESET,
++static const struct sdhci_omap_data omap3_data = {
++	.omap_offset = 0,
++	.offset = 0x100,
 +};
 +
+ static const struct sdhci_omap_data omap4_data = {
++	.omap_offset = 0x100,
+ 	.offset = 0x200,
+ 	.flags = SDHCI_OMAP_SPECIAL_RESET,
+ };
+ 
+ static const struct sdhci_omap_data omap5_data = {
++	.omap_offset = 0x100,
+ 	.offset = 0x200,
+ 	.flags = SDHCI_OMAP_SPECIAL_RESET,
+ };
+ 
  static const struct sdhci_omap_data k2g_data = {
++	.omap_offset = 0x100,
  	.offset = 0x200,
  };
-@@ -973,6 +1039,8 @@ static const struct sdhci_omap_data dra7_data = {
+ 
+ static const struct sdhci_omap_data am335_data = {
++	.omap_offset = 0x100,
+ 	.offset = 0x200,
+ 	.flags = SDHCI_OMAP_SPECIAL_RESET,
+ };
+ 
+ static const struct sdhci_omap_data am437_data = {
++	.omap_offset = 0x100,
+ 	.offset = 0x200,
+ 	.flags = SDHCI_OMAP_SPECIAL_RESET,
+ };
+ 
+ static const struct sdhci_omap_data dra7_data = {
++	.omap_offset = 0x100,
+ 	.offset = 0x200,
+ 	.flags	= SDHCI_OMAP_REQUIRE_IODELAY,
  };
  
  static const struct of_device_id omap_sdhci_match[] = {
-+	{ .compatible = "ti,omap4-sdhci", .data = &omap4_data },
-+	{ .compatible = "ti,omap5-sdhci", .data = &omap5_data },
++	{ .compatible = "ti,omap2430-sdhci", .data = &omap2430_data },
++	{ .compatible = "ti,omap3-sdhci", .data = &omap3_data },
+ 	{ .compatible = "ti,omap4-sdhci", .data = &omap4_data },
+ 	{ .compatible = "ti,omap5-sdhci", .data = &omap5_data },
  	{ .compatible = "ti,dra7-sdhci", .data = &dra7_data },
- 	{ .compatible = "ti,k2g-sdhci", .data = &k2g_data },
- 	{ .compatible = "ti,am335-sdhci", .data = &am335_data },
-@@ -1212,7 +1280,7 @@ static int sdhci_omap_probe(struct platform_device *pdev)
- 		goto err_rpm_disable;
- 	}
+@@ -1223,6 +1251,7 @@ static int sdhci_omap_probe(struct platform_device *pdev)
+ 	omap_host->power_mode = MMC_POWER_UNDEFINED;
+ 	omap_host->timing = MMC_TIMING_LEGACY;
+ 	omap_host->flags = data->flags;
++	omap_host->omap_offset = data->omap_offset;
+ 	host->ioaddr += offset;
+ 	host->mapbase = regs->start + offset;
  
--	ret = sdhci_omap_set_capabilities(omap_host);
-+	ret = sdhci_omap_set_capabilities(host);
- 	if (ret) {
- 		dev_err(dev, "failed to set system capabilities\n");
- 		goto err_put_sync;
 -- 
 2.33.0
