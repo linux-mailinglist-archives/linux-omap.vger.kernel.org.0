@@ -2,130 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E460742E92B
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Oct 2021 08:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E857342E936
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Oct 2021 08:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235523AbhJOGla (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 15 Oct 2021 02:41:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56990 "EHLO mail.kernel.org"
+        id S233075AbhJOGrY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 Oct 2021 02:47:24 -0400
+Received: from muru.com ([72.249.23.125]:44774 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229716AbhJOGla (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 15 Oct 2021 02:41:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B89B861184;
-        Fri, 15 Oct 2021 06:39:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1634279964;
-        bh=eHMP1L5p7U9JjkTgxLAgLmWgChOZElqg0ECTI25pFiM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vH5xyVPI7ANQGLw7FNvgZFKqHpopiBvQMnPds7bxMgnbwjA8XxmviHtF/zfnjwhNU
-         G+6HLYm08gIDuOVCObdDG0AXRoBnmlvhxa2cYdTI/5DF97VTndUoIbYg+t2Ivojhxv
-         cDly48omx4tvWBlX4moZM+FA+Sex7vXvTIsISXTU=
-Date:   Fri, 15 Oct 2021 08:39:20 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Matthias Kaehlcke <mka@chromium.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Peter Chen <peter.chen@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux USB List <linux-usb@vger.kernel.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        Ravi Chandra Sadineni <ravisadineni@chromium.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Al Cooper <alcooperx@gmail.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
-        Andy Gross <agross@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Dong Aisheng <aisheng.dong@nxp.com>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        Jens Axboe <axboe@kernel.dk>, Johan Hovold <johan@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Lionel Debieve <lionel.debieve@st.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Mark Brown <broonie@kernel.org>,
-        Martin =?iso-8859-1?Q?J=FCcker?= <martin.juecker@gmail.com>,
-        Nishanth Menon <nm@ti.com>,
-        Olivier Moysan <olivier.moysan@st.com>,
-        Pawel Laszczak <pawell@cadence.com>,
-        Robert Richter <rric@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        William Cohen <wcohen@redhat.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        =?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>
-Subject: Re: [PATCH v16 0/7] usb: misc: Add onboard_usb_hub driver
-Message-ID: <YWkiGGBKOVokBye9@kroah.com>
-References: <20210813195228.2003500-1-mka@chromium.org>
- <YUoRq1RrOIoiBJ5+@google.com>
- <CAD=FV=WrddUhWT0wUVZD0gN_+8Zy1VGY77LYLYBvhaPQQ_SqZw@mail.gmail.com>
+        id S229716AbhJOGrX (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 15 Oct 2021 02:47:23 -0400
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 9905A80F1;
+        Fri, 15 Oct 2021 06:45:48 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL] GPMC changes for omaps for v5.16
+Date:   Fri, 15 Oct 2021 09:45:14 +0300
+Message-Id: <pull-1634280279-284035@atomide.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAD=FV=WrddUhWT0wUVZD0gN_+8Zy1VGY77LYLYBvhaPQQ_SqZw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Oct 14, 2021 at 02:38:55PM -0700, Doug Anderson wrote:
-> Hi,
-> 
-> On Tue, Sep 21, 2021 at 10:09 AM Matthias Kaehlcke <mka@chromium.org> wrote:
-> >
-> > Hi Greg,
-> >
-> > are there any actions pending or can this land in usb-testing?
-> >
-> > I confirmed that this series can be rebased on top of v5.15-rc2
-> > without conflicts.
-> 
-> I'm quite interested to know what the next action items are, too. This
-> is one of the very few patches we have for trogdor (excluding MIPI
-> camera, which is a long story) that we're carrying downstream, so I'm
-> keenly interested in making sure it's unblocked (if, indeed, it's
-> blocked on anything).
-> 
-> If folks feel that this needs more review eyes before landing again
-> then I'll try to find some time in the next week or two. If it's just
-> waiting for the merge window to open/close so it can have maximal bake
-> time, that's cool too. Please yell if there's something that I can do
-> to help, though! :-)
+From: "Tony Lindgren" <tony@atomide.com>
 
-I would love more review-eyes on this please.
+The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
 
-It's in my queue to review, I just need to spend the time on it, sorry
-for the delay.
+  Linux 5.15-rc1 (2021-09-12 16:28:37 -0700)
 
-greg k-h
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.16/gpmc-signed
+
+for you to fetch changes up to 51b9e22ffd3c4c56cbb7caae9750f70e55ffa603:
+
+  ARM: dts: omap: fix gpmc,mux-add-data type (2021-10-11 12:31:54 +0300)
+
+----------------------------------------------------------------
+Changes for omap gpmc bindings and devicetree files for v5.16
+
+A series of changes to update the gpmc related bindings to yaml
+format, and a few non-urgent dts fixes.
+
+----------------------------------------------------------------
+Roger Quadros (8):
+      dt-bindings: mtd: Remove gpmc-nor.txt
+      dt-bindings: net: Remove gpmc-eth.txt
+      dt-bindings: memory-controllers: Introduce ti,gpmc-child
+      dt-bindings: mtd: ti,gpmc-nand: Convert to yaml
+      dt-bindings: mtd: ti,gpmc-onenand: Convert to yaml
+      dt-bindings: memory-controllers: ti,gpmc: Convert to yaml
+      ARM: dts: omap: Fix boolean properties gpmc,cycle2cycle-{same|diff}csen
+      ARM: dts: omap: fix gpmc,mux-add-data type
+
+ .../bindings/memory-controllers/omap-gpmc.txt      | 157 -------------
+ .../bindings/memory-controllers/ti,gpmc-child.yaml | 245 +++++++++++++++++++++
+ .../bindings/memory-controllers/ti,gpmc.yaml       | 172 +++++++++++++++
+ .../devicetree/bindings/mtd/gpmc-nand.txt          | 147 -------------
+ Documentation/devicetree/bindings/mtd/gpmc-nor.txt |  98 ---------
+ .../devicetree/bindings/mtd/gpmc-onenand.txt       |  48 ----
+ .../devicetree/bindings/mtd/ti,gpmc-nand.yaml      | 121 ++++++++++
+ .../devicetree/bindings/mtd/ti,gpmc-onenand.yaml   |  81 +++++++
+ Documentation/devicetree/bindings/net/gpmc-eth.txt |  97 --------
+ arch/arm/boot/dts/omap-gpmc-smsc911x.dtsi          |   4 +-
+ arch/arm/boot/dts/omap-gpmc-smsc9221.dtsi          |   2 +-
+ arch/arm/boot/dts/omap-zoom-common.dtsi            |   4 +-
+ arch/arm/boot/dts/omap2430-sdp.dts                 |   4 +-
+ arch/arm/boot/dts/omap3-devkit8000-common.dtsi     |   4 +-
+ arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi  |   2 +-
+ arch/arm/boot/dts/omap3-sb-t35.dtsi                |   4 +-
+ 16 files changed, 631 insertions(+), 559 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/memory-controllers/omap-gpmc.txt
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
+ create mode 100644 Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-nand.txt
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-nor.txt
+ delete mode 100644 Documentation/devicetree/bindings/mtd/gpmc-onenand.txt
+ create mode 100644 Documentation/devicetree/bindings/mtd/ti,gpmc-nand.yaml
+ create mode 100644 Documentation/devicetree/bindings/mtd/ti,gpmc-onenand.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/gpmc-eth.txt
