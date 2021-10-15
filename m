@@ -2,65 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E2C042ED53
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Oct 2021 11:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 783CB42EDC2
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Oct 2021 11:34:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231447AbhJOJPw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 15 Oct 2021 05:15:52 -0400
-Received: from muru.com ([72.249.23.125]:44812 "EHLO muru.com"
+        id S237434AbhJOJgy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 Oct 2021 05:36:54 -0400
+Received: from muru.com ([72.249.23.125]:44834 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231273AbhJOJPw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 15 Oct 2021 05:15:52 -0400
+        id S236690AbhJOJgy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 15 Oct 2021 05:36:54 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 6F00980F1;
-        Fri, 15 Oct 2021 09:14:17 +0000 (UTC)
-Date:   Fri, 15 Oct 2021 12:13:43 +0300
+        by muru.com (Postfix) with ESMTPS id D6ECF80F1;
+        Fri, 15 Oct 2021 09:35:19 +0000 (UTC)
+Date:   Fri, 15 Oct 2021 12:34:46 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] serial: core: Add wakeup() and start_pending_tx()
- for power management
-Message-ID: <YWlGR/xVJjX8q2j5@atomide.com>
-References: <20210930062906.58937-1-tony@atomide.com>
- <20210930062906.58937-2-tony@atomide.com>
- <YWbSJCEkqQ0KzQ5E@kroah.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Chunyan Zhang <zhang.chunyan@linaro.org>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        DTML <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 4/6] mmc: sdhci-omap: Implement PM runtime functions
+Message-ID: <YWlLNn0yN2r1xDSq@atomide.com>
+References: <20211012103750.38328-1-tony@atomide.com>
+ <20211012103750.38328-5-tony@atomide.com>
+ <CAPDyKFq_jiYPrm_kcprijFfcceVVGnZpkG+4ZY_XSBXJnCT0LA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YWbSJCEkqQ0KzQ5E@kroah.com>
+In-Reply-To: <CAPDyKFq_jiYPrm_kcprijFfcceVVGnZpkG+4ZY_XSBXJnCT0LA@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Greg Kroah-Hartman <gregkh@linuxfoundation.org> [211013 12:34]:
-> On Thu, Sep 30, 2021 at 09:29:03AM +0300, Tony Lindgren wrote:
-> > --- a/drivers/tty/serial/serial_core.c
-> > +++ b/drivers/tty/serial/serial_core.c
-> > @@ -91,6 +91,23 @@ static inline struct uart_port *uart_port_check(struct uart_state *state)
-> >  	return state->uart_port;
-> >  }
-> >  
-> > +/*
-> > + * This routine can be used before register access to wake up a serial
-> > + * port that has been runtime PM suspended by the serial port driver.
-> > + * Note that the runtime_suspended flag is managed by the serial port
-> > + * device driver runtime PM.
-> > + */
-> > +static int uart_port_wakeup(struct uart_port *port)
-> > +{
-> > +	if (!atomic_read(&port->runtime_suspended))
-> > +		return 0;
+* Ulf Hansson <ulf.hansson@linaro.org> [211012 15:17]:
+> On Tue, 12 Oct 2021 at 12:38, Tony Lindgren <tony@atomide.com> wrote:
+> > @@ -1350,15 +1355,21 @@ static int sdhci_omap_probe(struct platform_device *pdev)
+> >         if (ret)
+> >                 goto err_cleanup_host;
+> >
+> > +       sdhci_omap_context_save(omap_host);
 > 
-> And if the value changes right after you read this?
+> Calling sdhci_omap_context_save() here looks unnecessary. The device
+> is already runtime resumed at this point.
 > 
-> Why not use a real lock here?  Don't use an atomic if you don't need it.
+> In other words, sdhci_omap_context_save() will be called from the
+> ->runtime_suspend() callback, next time the device becomes runtime
+> suspended. That should be sufficient, right?
 
-Yeah good point, we should just use port->lock.
+Yup this can be now dropped with omap_host->con initialized to
+-EINVAL earlier.
+
+> > @@ -1371,8 +1382,12 @@ static int sdhci_omap_remove(struct platform_device *pdev)
+> >         struct device *dev = &pdev->dev;
+> >         struct sdhci_host *host = platform_get_drvdata(pdev);
+> >
+> > +       pm_runtime_get_sync(dev);
+> >         sdhci_remove_host(host, true);
+> > +       pm_runtime_dont_use_autosuspend(dev);
+> >         pm_runtime_put_sync(dev);
+> > +       /* Ensure device gets idled despite userspace sysfs config */
+> > +       pm_runtime_force_suspend(dev);
+> >         pm_runtime_disable(dev);
+> 
+> The call to pm_runtime_disable() can be removed, as that is taken care
+> of in pm_runtime_force_suspend().
+
+OK
+
+> > +static int __maybe_unused sdhci_omap_suspend(struct device *dev)
+> > +{
+> > +       struct sdhci_host *host = dev_get_drvdata(dev);
+> > +       int err;
+> > +
+> > +       /* Enable for configuring wakeups, paired in resume */
+> > +       err = pm_runtime_resume_and_get(dev);
+> > +       if (err < 0)
+> > +               return err;
+> > +
+> > +       sdhci_suspend_host(host);
+> 
+> As far as I can tell, sdhci_suspend_host() doesn't really make sense
+> for the omap variant. What you need, is to put the device into the
+> same low power state as "runtime suspend", that should be sufficient.
+> 
+> The system wakeup will be armed (and later then disarmed) by the PM
+> core, when it calls device_wakeup_arm_wake_irqs() from the
+> dpm_suspend_noirq() phase.
+> 
+> In other words, pointing the system suspend/resume callbacks to
+> pm_runtime_force_suspend|resume() should work fine, I think.
+
+OK sounds good to me.
 
 Regards,
 
