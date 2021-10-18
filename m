@@ -2,169 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A777A4327D7
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Oct 2021 21:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87F0A43294A
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Oct 2021 23:49:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbhJRTob (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 Oct 2021 15:44:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60670 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230159AbhJRTob (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 18 Oct 2021 15:44:31 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9485E60F57;
-        Mon, 18 Oct 2021 19:42:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1634586139;
-        bh=sL9bIISzFWXLmkxiyBctOfsH3HvP/CyNjDg9oXri6sw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=swOvq8MdtbJ0gdSpPW1iV1a4gLL6xWh1VP4h+WRTK3nC930K8SL2AVILnvOEAf8Sf
-         5UrRJwwFlHUy3NdAHL7REtWQd6KiMW2RrZQ/QPbPCLOvJTE2tSLWppOHFa5XQrBWsh
-         AqQeLuaUAFHIPFZWgIXEYIaLpV5VBC5PYU36O8wVqZOUzO4Yiz0HIh2FUpcKCT0Lxl
-         0oXObKITDoEHU+rhJLhyX14BoOYFSEdbPcNVybr3UMNWvWRJi8cYUvtVT9gXmJzf5K
-         RszevF2H7zHLyV9Q9ev7s+YPpIcxMvNV6o4P/dhXesLlngpGwgNcw83rRBLUynRMyv
-         0i4jVj1xvDoqA==
-Date:   Mon, 18 Oct 2021 14:42:18 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Parshuram Raju Thombare <pthombar@cadence.com>
-Cc:     kishon@ti.com, tjoseph@cadence.com, lorenzo.pieralisi@arm.com,
-        robh@kernel.org, kw@linux.com, bhelgaas@google.com,
-        linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        mparab@cadence.com
-Subject: Re: [PATCH] PCI: cadence: Disable Function Level Reset support
-Message-ID: <20211018194218.GA2248370@bhelgaas>
+        id S231811AbhJRVvi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 Oct 2021 17:51:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229524AbhJRVvh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 Oct 2021 17:51:37 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0855CC06161C
+        for <linux-omap@vger.kernel.org>; Mon, 18 Oct 2021 14:49:26 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id m20so17976177iol.4
+        for <linux-omap@vger.kernel.org>; Mon, 18 Oct 2021 14:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=pvrfk+btNaHVnXDgHHIXgMr5VUpT/9Qf15uUZyIvenc=;
+        b=hcdnyNs/5L3NEPnzIglRajZ2DOnTUJXYkaQ1kra3dW2b7pDj2KkIORFmNPIZGW1xRY
+         5P8bu8rKkBKq9tjB+3wtsdltBRCAUXSdL5e6LO8CdHYA8X7IEWg7aTlAvqcNCJPezgWy
+         lHIQtTlwCxmgByiL061/2uGwed8DXtQhVVPLypsRxl4NgWxDc2mm+fzm/24qKL3FK21r
+         omalcUSr+NFlp6gNLUScvTIg2v9g3ABeezaF93z6/UfqERIDr4rXYnInumPn/YTsFCuC
+         i5JxCySkLz1uB5MWGdhomJslzpZj2ML9nGYDIWvmbqXpZN7jWzHF4m2+kNq7XcEax1/W
+         fILA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=pvrfk+btNaHVnXDgHHIXgMr5VUpT/9Qf15uUZyIvenc=;
+        b=KZNFkMl3PHXaVksOVJQuGW3W/RT1vNef26WLeRs22MHRufTLNrzTk2pSw6L9d1Otgu
+         PyezWiZGSOKnKli+/5l2XE3kCHmFnG90z1igKxPGE0MSPZmO3/hChlZEkNeZ8NKtmf9/
+         jdQpzPbG8xruKzYA1jYHz36XANTjci4k47jA8serLsE7y/lvibzKc8U0kz8ezY4m4MEP
+         bJiBg3ci3t2HjFJ5d+Q816WtkNDkRoY5mWkEZF4IBWxiSZgQYqColVcgyOQnKSyTcPFu
+         LtxgbSmBLBY2qaNnJqFyNXU1mLf/eC6zCHqI0sG6Apn8EpU6fVekKbAPzM66Vq8UCCtV
+         XDQQ==
+X-Gm-Message-State: AOAM530UQziQWkLHFBfmQnmbNpIO8SZFGHyJKpnpDSAsUaZHe6auWXEX
+        I0jU6bEkr1EM/4TCVCRwapnOR//AcuoHUzurrPw=
+X-Google-Smtp-Source: ABdhPJwnP1xaNBoFfdGn7eeFJ1hSWj1M6pxc4sueVTAEtS02JjhWMHXQQ1hghYVsGWfbfhC/eKg0cX9l/iJFWoMfW9s=
+X-Received: by 2002:a6b:b48b:: with SMTP id d133mr16972607iof.12.1634593765480;
+ Mon, 18 Oct 2021 14:49:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1634580445-89772-1-git-send-email-pthombar@cadence.com>
+Received: by 2002:a05:6602:13c3:0:0:0:0 with HTTP; Mon, 18 Oct 2021 14:49:25
+ -0700 (PDT)
+Reply-To: LishaHaman225@gmail.com
+From:   Miss Lisha Haman <rhamatouwashidha@gmail.com>
+Date:   Mon, 18 Oct 2021 14:49:25 -0700
+Message-ID: <CAAFd3ocTAjJsmfJSFzv_HMfdtkRznbfZqzs+XdtnqXYB8eyR=w@mail.gmail.com>
+Subject: Hello Dearest
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 18, 2021 at 11:07:25AM -0700, Parshuram Raju Thombare wrote:
-> From: Parshuram Thombare <pthombar@cadence.com>
-> 
-> This patch disables FLR (Function Level Reset) support on all physical
-> functions.
-> During FLR, the Margining Lane Status and Margining Lane Control
-> registers should not be reset, as per PCIe specification.
-> However, the Controller incorrectly resets these registers upon FLR.
-> This causes PCISIG compliance FLR test to fail. Hence disabling
-> FLR on all functions using quirk flag.
+My dear I am Miss Lisha Haman 23 years of age , I am the only daughter
+to Dr Abdul Haman from France-Paris who work with (SEMAFO) the biggest
+Canadian gold producer here in West Africa Burkina Faso,
 
-Add blank lines between paragraphs.
+Unfortunately my father was a victim on the deadliest attack by the
+jihadist On the 6 November 2019 when gunmen ambushed a convoy
+transporting workers of the Canadian mining firm Semafo, it is my sad
+moment each time I think about this, but the reason why I contacted
+you is that I have my late father receipt of deposit he made with a
+bank in abroad with my name as next of kin, The total amount deposited
+was 3.7 million United Stated dollars,
 
-Write the text in imperative mood, e.g.,
+Now I decided to travel for the money but embassy here deny me visa
+due to the Corona virus outbreak,
 
-  Disable FLR (Function Level Reset) support on all functions.
+I talk to the bank regarding my visa problem and they advise me to
+look for my relative trusted bank account so that they will transfer
+the total fund in there, But I am the only daughter of my father and
+have no relative to present, that is why I want to present you to the
+bank as my relative who will receive the total fund on my behalf and
+also take care of me as well,
 
-It looks like this patch clears PCI_EXP_DEVCAP_FLR in the Device
-Capabilities register.  From the point of view of Linux, that means
-the device doesn't *advertise* FLR support.
+I attached my picture  with this mail please send me your complete
+full details such as, Your Full Name:
 
-That's different from actualy *disabling* FLR support, but maybe
-there's internal logic in the device that ignores
-PCI_EXP_DEVCTL_BCR_FLR when PCI_EXP_DEVCAP_FLR is cleared?
+Home and Office Addresses:
 
-> Signed-off-by: Parshuram Thombare <pthombar@cadence.com>
-> ---
->  drivers/pci/controller/cadence/pci-j721e.c       |  3 +++
->  drivers/pci/controller/cadence/pcie-cadence-ep.c | 18 +++++++++++++++++-
->  drivers/pci/controller/cadence/pcie-cadence.h    |  3 +++
->  3 files changed, 23 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> index ffb176d..635e36c 100644
-> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> @@ -70,6 +70,7 @@ struct j721e_pcie_data {
->  	enum j721e_pcie_mode	mode;
->  	unsigned int		quirk_retrain_flag:1;
->  	unsigned int		quirk_detect_quiet_flag:1;
-> +	unsigned int		quirk_disable_flr:1;
->  	u32			linkdown_irq_regfield;
->  	unsigned int		byte_access_allowed:1;
->  };
-> @@ -308,6 +309,7 @@ static int cdns_ti_pcie_config_write(struct pci_bus *bus, unsigned int devfn,
->  static const struct j721e_pcie_data j7200_pcie_ep_data = {
->  	.mode = PCI_MODE_EP,
->  	.quirk_detect_quiet_flag = true,
-> +	.quirk_disable_flr = true,
->  };
->  
->  static const struct j721e_pcie_data am64_pcie_rc_data = {
-> @@ -510,6 +512,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
->  			goto err_get_sync;
->  		}
->  		ep->quirk_detect_quiet_flag = data->quirk_detect_quiet_flag;
-> +		ep->quirk_disable_flr = data->quirk_disable_flr;
->  
->  		cdns_pcie = &ep->pcie;
->  		cdns_pcie->dev = dev;
-> diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-> index 88e05b9..4b1c4bc 100644
-> --- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-> +++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-> @@ -565,7 +565,8 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
->  	struct cdns_pcie_ep *ep = epc_get_drvdata(epc);
->  	struct cdns_pcie *pcie = &ep->pcie;
->  	struct device *dev = pcie->dev;
-> -	int ret;
-> +	int max_epfs = sizeof(epc->function_num_map) * 8;
-> +	int ret, value, epf;
->  
->  	/*
->  	 * BIT(0) is hardwired to 1, hence function 0 is always enabled
-> @@ -573,6 +574,21 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
->  	 */
->  	cdns_pcie_writel(pcie, CDNS_PCIE_LM_EP_FUNC_CFG, epc->function_num_map);
->  
-> +	if (ep->quirk_disable_flr) {
-> +		for (epf = 0; epf < max_epfs; epf++) {
-> +			if (!(epc->function_num_map & BIT(epf)))
-> +				continue;
-> +
-> +			value = cdns_pcie_ep_fn_readl(pcie, epf,
-> +					CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET +
-> +					PCI_EXP_DEVCAP);
-> +			value &= ~PCI_EXP_DEVCAP_FLR;
-> +			cdns_pcie_ep_fn_writel(pcie, epf,
-> +					CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET +
-> +					PCI_EXP_DEVCAP, value);
-> +		}
-> +	}
-> +
->  	ret = cdns_pcie_start_link(pcie);
->  	if (ret) {
->  		dev_err(dev, "Failed to start link\n");
-> diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
-> index 262421e..e978e7c 100644
-> --- a/drivers/pci/controller/cadence/pcie-cadence.h
-> +++ b/drivers/pci/controller/cadence/pcie-cadence.h
-> @@ -123,6 +123,7 @@
->  
->  #define CDNS_PCIE_EP_FUNC_MSI_CAP_OFFSET	0x90
->  #define CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET	0xb0
-> +#define CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET	0xc0
->  #define CDNS_PCIE_EP_FUNC_SRIOV_CAP_OFFSET	0x200
->  
->  /*
-> @@ -357,6 +358,7 @@ struct cdns_pcie_epf {
->   *        minimize time between read and write
->   * @epf: Structure to hold info about endpoint function
->   * @quirk_detect_quiet_flag: LTSSM Detect Quiet min delay set as quirk
-> + * @quirk_disable_flr: Disable FLR (Function Level Reset) quirk flag
->   */
->  struct cdns_pcie_ep {
->  	struct cdns_pcie	pcie;
-> @@ -372,6 +374,7 @@ struct cdns_pcie_ep {
->  	spinlock_t		lock;
->  	struct cdns_pcie_epf	*epf;
->  	unsigned int		quirk_detect_quiet_flag:1;
-> +	unsigned int		quirk_disable_flr:1;
->  };
->  
->  
-> -- 
-> 1.9.1
-> 
+Telephone Number:
+
+Occupation:
+
+Country of Residence:
+
+Your Bank account number where the bank will remit the fund
+
+Once I received your details, I will give you the bank contact so that
+you can contact them directly to discuss how they can transfer the
+total fund in your bank account so that you can relocate me to join
+you over there in your country,
+
+Sincerely
+
+LishaHaman225@gmail.com
+
+Miss Lisha Haman
