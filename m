@@ -2,608 +2,246 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAABF431FA2
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Oct 2021 16:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EF87432609
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Oct 2021 20:07:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232268AbhJRObj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 Oct 2021 10:31:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48362 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbhJRObQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 Oct 2021 10:31:16 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 553ABC061772
-        for <linux-omap@vger.kernel.org>; Mon, 18 Oct 2021 07:28:56 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id e3so41513574wrc.11
-        for <linux-omap@vger.kernel.org>; Mon, 18 Oct 2021 07:28:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=aWfkRcI+Ad/dVg/7UcWT4R6pfcBLtf8s3+uKTB3IQa8=;
-        b=0AYYR5YNUSxFfvg5k2h+0qkwCYjIFCYaHlFc+onvFNpoKcKAqCl6rIJ+oHXRe7ts2w
-         rOsd/DbyuDkZOaT6qTNIWfXJcPZjMx+KAUvJMDp1KCiykytHYo7TEL3hem6b7u8NocXS
-         k8gzdFLKJes/XV5vISsrOZrW/DekLV6XaDGQrZpgJ48dz/yQfm5n/vDNq+AprZqS83Xr
-         bRl6YdOzpwXb/BIKkOWFA9J8Q+u+L9ld8S96pmef5UiRKhxrpNq/F0/AcBfks4nmaYIc
-         CXGDGi9o10ijq++pjGFilidYHihdeM9bnmwPAia/y01tXlFmF0qcZYim/Z/KdJtan8yJ
-         N5gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=aWfkRcI+Ad/dVg/7UcWT4R6pfcBLtf8s3+uKTB3IQa8=;
-        b=YFEu6HQBf8b3sbrv0wIPPq/zd8+KMo7O3lj+KaXNZtrpLLzHp9ixvryc+1XHLj/TDk
-         0ajZg01BwQvfTP5BdcP6FiRnwDSYO0OWWHSZC+HnIyQJGY2imcOSdJ/2vGK/lcjU1/Vw
-         DWZ5sqgN7RLhWHbESWvWpl0UlagMuMQMKKyMN28i3imB2/NGJaPy7GDCX7bd8TEx6+4J
-         mIWICcfdwhaBeXPrB3kjmsQMZNtbdbJAiK1otBAE6Eyg6BjGZr03yS5AxXaZaGmKizof
-         AYVjq4suh0GuVcJo95rHy7k3I1UDvpT/St/FsiIgK69q9f5r4KGkhQ7Owx1byRtmUzYR
-         anhw==
-X-Gm-Message-State: AOAM531knrdS+B5pyovIiknJ+i9USw9LtH/fCVFm/RjGXWzFhfqh0tFq
-        xoi7wPKRqA93U5IaKxk3fu7+Fg==
-X-Google-Smtp-Source: ABdhPJxx6AM/k4crwQWhk86OqfcFBXcw76ma1X41luk9Gtj64lP9k3pWzSuQRw4J/m14WOduKFvkPA==
-X-Received: by 2002:adf:a29c:: with SMTP id s28mr34701675wra.116.1634567334729;
-        Mon, 18 Oct 2021 07:28:54 -0700 (PDT)
-Received: from localhost.localdomain ([2001:861:44c0:66c0:2dd7:d5eb:6e87:f924])
-        by smtp.gmail.com with ESMTPSA id b3sm12908495wrp.52.2021.10.18.07.28.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Oct 2021 07:28:54 -0700 (PDT)
-From:   Neil Armstrong <narmstrong@baylibre.com>
-To:     tomba@kernel.org
-Cc:     linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, khilman@baylibre.com,
-        Benoit Parrot <bparrot@ti.com>,
-        Neil Armstrong <narmstrong@baylibre.com>
-Subject: [PATCH v6 9/9] drm/omap: Add a 'right overlay' to plane state
-Date:   Mon, 18 Oct 2021 16:28:42 +0200
-Message-Id: <20211018142842.2511200-10-narmstrong@baylibre.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211018142842.2511200-1-narmstrong@baylibre.com>
-References: <20211018142842.2511200-1-narmstrong@baylibre.com>
+        id S231318AbhJRSKC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 Oct 2021 14:10:02 -0400
+Received: from mx0a-0014ca01.pphosted.com ([208.84.65.235]:54762 "EHLO
+        mx0a-0014ca01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231548AbhJRSKC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 18 Oct 2021 14:10:02 -0400
+Received: from pps.filterd (m0042385.ppops.net [127.0.0.1])
+        by mx0a-0014ca01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19IFpIr9015865;
+        Mon, 18 Oct 2021 11:07:34 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=proofpoint;
+ bh=i41GYAvsVXWfvC/aoyDZxHGHghwLHP94O3sVu7cX1Ws=;
+ b=qDi3Kk+flhvrjBHb6ZnNvSiLjgdRXjP1zCmBz5awbB0UKA9fwczz1B+gARV8RbIkhUgJ
+ XFbtR2jWX3GmoRcIYBmNjH3bSKyKvw381LjZ9i2MBdZGT+6TTEFBmTAQC0zPhEvD50gL
+ QyjN/n9PtDwnDI7f9iRwAe6rydk7C0YdWr2XYuElaUU9Iu7i9MekWm11/ZJHr+eFQbdy
+ P0IH7rFTTchAOPe2woE3ARvUjKOnHnyi63UQmWsJsLYVi7qc8b9LwaPXXEl2Dh+Xl5Jj
+ 0fsbrChiBXjQLPS6NCD17mFBH3YJ1nX/jBJxQgs8Xd8uR/iorK3SLPyQaX6yDSzN/i0O bw== 
+Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam07lp2042.outbound.protection.outlook.com [104.47.51.42])
+        by mx0a-0014ca01.pphosted.com with ESMTP id 3bs8p698e3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 18 Oct 2021 11:07:34 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lO7YF7twHOt4Ugn92hjQF1RaJ3CZPFOtlz64nJcUvGc11y7b8Cy7vKsdcA2Bb3RBgUZx5cIgzLfVFyIKFjlQCQegJgYA0BTe80gBgAR1u3ZeqoC6jphlUdxUxnB9IRneST65kqH5GGqZCJC09taKQLRtXbny6AumBm42WaEXpZfQHkIXsmHL0EhvMtACH/dMesFvGnct3nPBTc1O6LYMzzDLtKlNN8MsmKBzZN+8X8pKobHSakNYEj4dc2vr5t/Z9E9DmaYVaokPlvp64qYvnT++loDmyoKI6byKwzhl8m7bV1buTwjYtUiIcx+Hd0qBXY+OMKRabHIBp+kwGIsw8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i41GYAvsVXWfvC/aoyDZxHGHghwLHP94O3sVu7cX1Ws=;
+ b=LKVcr4rNk85zehL6o8ezlxbzehwkew7GvENkWYVVA20gn6TDnv9a8CNsrhUHpfYCebvmiUQDQPIyEgG0NOojoGDqt37QDDKtdSHNIxLqVcaZEqvmim21TW3fOTBCKop6XLpdmr597JvU1EVfJuNZCxd4PVjqo97oGG82RKa6Td4Qp/9Tp/AAXIi7Ppp6Y3dcgJayc6SQNT5tFPocsGZpd/hatzNP9bbRqqnIzpXGA/oHiG/5Tn4MthgECnhyt26A7xTCUUYb7WHcSI0zgi8sKqKaijJ6SAtC3r/UTZ2tBYSOf/SjKMCWOtWx0CFw2THuJj4eSGrjsaXcnb7BNaxKrw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 199.43.4.23) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=cadence.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=cadence.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i41GYAvsVXWfvC/aoyDZxHGHghwLHP94O3sVu7cX1Ws=;
+ b=eBX3y2q4zexli+i9IWOR1GcZh+1ITPk47J8yUsH1IQGxwXt7J4hyGEaymdWH1LQGbuCbSUZ34Ob77uSfpOmTfPtVX4YI25FtvxhpospuFHW8tc5uTRItGEeAXIEQgMAs6Lod9XMwEA0skGS4BvmfSAZnbO0uAQNAnQFx/ocCOt8=
+Received: from MW4PR03CA0167.namprd03.prod.outlook.com (2603:10b6:303:8d::22)
+ by DM5PR0701MB3752.namprd07.prod.outlook.com (2603:10b6:4:7f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.18; Mon, 18 Oct
+ 2021 18:07:31 +0000
+Received: from MW2NAM12FT045.eop-nam12.prod.protection.outlook.com
+ (2603:10b6:303:8d:cafe::d1) by MW4PR03CA0167.outlook.office365.com
+ (2603:10b6:303:8d::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.18 via Frontend
+ Transport; Mon, 18 Oct 2021 18:07:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 199.43.4.23)
+ smtp.mailfrom=cadence.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=pass action=none
+ header.from=cadence.com;
+Received-SPF: Pass (protection.outlook.com: domain of cadence.com designates
+ 199.43.4.23 as permitted sender) receiver=protection.outlook.com;
+ client-ip=199.43.4.23; helo=rmmaillnx1.cadence.com;
+Received: from rmmaillnx1.cadence.com (199.43.4.23) by
+ MW2NAM12FT045.mail.protection.outlook.com (10.13.181.12) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4628.8 via Frontend Transport; Mon, 18 Oct 2021 18:07:30 +0000
+Received: from mailsj9.global.cadence.com (mailsj9.cadence.com [10.202.56.202])
+        by rmmaillnx1.cadence.com (8.14.4/8.14.4) with ESMTP id 19II7STa001586
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 18 Oct 2021 14:07:28 -0400
+Received: from mailsj8.global.cadence.com (10.202.56.201) by
+ mailsj9.global.cadence.com (10.202.56.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 18 Oct 2021 11:07:27 -0700
+Received: from ipgpd01.cadence.com (158.140.83.21) by
+ mailsj8.global.cadence.com (10.202.56.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2
+ via Frontend Transport; Mon, 18 Oct 2021 11:07:27 -0700
+Received: from ipgpd01.cadence.com (localhost.localdomain [127.0.0.1])
+        by ipgpd01.cadence.com (8.14.4/8.14.4) with ESMTP id 19II7RlN089813;
+        Mon, 18 Oct 2021 11:07:27 -0700
+Received: (from pthombar@localhost)
+        by ipgpd01.cadence.com (8.14.4/8.14.4/Submit) id 19II7Rfe089810;
+        Mon, 18 Oct 2021 11:07:27 -0700
+From:   Parshuram Raju Thombare <pthombar@cadence.com>
+To:     <kishon@ti.com>, <tjoseph@cadence.com>,
+        <lorenzo.pieralisi@arm.com>, <robh@kernel.org>, <kw@linux.com>,
+        <bhelgaas@google.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mparab@cadence.com>,
+        <pthombar@cadence.com>
+Subject: [PATCH] PCI: cadence: Disable Function Level Reset support
+Date:   Mon, 18 Oct 2021 11:07:25 -0700
+Message-ID: <1634580445-89772-1-git-send-email-pthombar@cadence.com>
+X-Mailer: git-send-email 2.2.2
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=18684; i=narmstrong@baylibre.com;
- h=from:subject; bh=NC9+9hOFeR0NxyrDNJZ9woIRxQM6OE3ms9Jm/JeFkPs=;
- b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBhbYSGhOqWu0BZre/GQagvnP+4/wuLP5aHk6E7RfXe
- fh2tHBWJAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCYW2EhgAKCRB33NvayMhJ0RK9EA
- DOeHutCJcap1KVxulMZa34ob/siR2deuFf3Hv/KrP+vnEmukpTPJ/IJYFzNfhrK1Q7RpknsqaBQfHN
- D+tBjvwOo3EjC4EQEC8sUDxWLx4AFUslGsdab+PkQ3D16t2rYP4AeihdwJlgHYUuIYRRHCIIIJ8bMM
- a5Y7XvPQdaA+xCUMmJJEuPWd8qt6p2wHnnhj2cZOc/0tuGxo5+/FbvoLNdyRjrcXf4o+QGjluJ+B98
- BnQMHWNsUlNRPIMwd51j8n9vhyshISWESVJEULsocJ6VrnvHrUlpSwMy0hBlr3tEEfMl9Os9tge7+0
- +ofPf0cAKhpn1wJPN6cq+d5uH+P0Xk3w/CbTHx8acpauffAtFNJ+z0fxbpGuc7EDYpblmgEWQQ/KcP
- 0k5wKTl2hR3Z5vf4i4YELpodMM/AhKF4yGvrheUxdZdtL31BV25leZfGgwqtx9zEwFyVX96b9CQC6p
- EhR24BcOa8VKA+onge6K+kIO0D99vXOmeUleNhP5DY6YEUmS8y6KOdfhGnc3SW6MCGchJ9KpaaZksU
- 4UIvpvS+oGnov6MFABxP3pYN0VcE0EtO8hNytUjWc+G57Jqu9A+JM9MIhQZn11rCpdkZWKLX7REAfI
- hysQJNVooyDTW4BISqPKEIQl4UHFoaGlqWv818VtK3lu2jFM4hJg3odMoRSQ==
-X-Developer-Key: i=narmstrong@baylibre.com; a=openpgp; fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-CrossPremisesHeadersFilteredBySendConnector: mailsj9.global.cadence.com
+X-OrganizationHeadersPreserved: mailsj9.global.cadence.com
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c31d9df4-6c2c-4024-cfde-08d992622701
+X-MS-TrafficTypeDiagnostic: DM5PR0701MB3752:
+X-Microsoft-Antispam-PRVS: <DM5PR0701MB3752EAD2371C0A7F254E427DC1BC9@DM5PR0701MB3752.namprd07.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: joogyMjV/eO4Tw7YU5MYHZuoSoAxjBNQL7bO7uDDPd8JC7YpserkAy4xdbYIas1KSaSb5xGA4d560kjeW8qUYXGex7pEtpfbgDrfxEtI72PH/Wrqokk7ILy9K3WI1Whqc/gyhl7SIWkWeFqmPXTDbGif4p2+xxm2VedTixi4yiOcGHStxEq1CtBEkMEHfTFNb7LyRu5VErooR9RMDnVGyrjeisikMA8IuKq8+3WVwYLdcr9jS99mclKklIZK1vF+v9mUoYRCRVbRXkiWaPwT3YnFmA9yaFSIHPrEijVQ8Q/CmoDus7pj1bFqcgTHabIkzBO4cW9Le7d+zSEoOh99zbsfuiEmjOmFH4iNGoF7DZlvUmM/lmUSnrO9RdrYnNvxZ27vtYhSBAP3TdbBI+ZWQFZpPYoXAMejUD1FV6meGt5ZzjYZE+XCEHHRiemXSusCkKBZ3fLLjPOM09rYXOKYkIrmXyRthGD85la7s8AewRWwKaTK4+0Rvl84P8earr6+5gbTSISxnkieRcflA8RkU/JCpb2WrDN/6oNuielQGkp3K1a2/8oxEmS3SkMWGmd/XzVHRj5gHhEYXsboG/Pk57EKjF/4Fo9kIFQhkFLiq/Yo2ogyt3uDySTK6qI9cZpHFt5va9KkJuDG+sP7LKS0l1Eox/fCpW/5wTyYnzq3UID3V95/dOb7475iNcgp6Ej7FgOq9++Od0IXhX8dctsektTkXgCM9UYFkpaNv7PApJrMOVUDuFp68so9ofczu+saUd4iOleiv8uXWSr8vjTorA==
+X-Forefront-Antispam-Report: CIP:199.43.4.23;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:rmmaillnx1.cadence.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36092001)(36840700001)(46966006)(36860700001)(81166007)(508600001)(8936002)(356005)(2616005)(36906005)(83380400001)(426003)(336012)(82310400003)(8676002)(316002)(70586007)(70206006)(42186006)(107886003)(47076005)(110136005)(54906003)(26005)(36756003)(4326008)(2906002)(86362001)(5660300002)(186003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: cadence.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2021 18:07:30.6957
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c31d9df4-6c2c-4024-cfde-08d992622701
+X-MS-Exchange-CrossTenant-Id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=d36035c5-6ce6-4662-a3dc-e762e61ae4c9;Ip=[199.43.4.23];Helo=[rmmaillnx1.cadence.com]
+X-MS-Exchange-CrossTenant-AuthSource: MW2NAM12FT045.eop-nam12.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR0701MB3752
+X-Proofpoint-ORIG-GUID: dzFvyqvcybN90gYauaPmLNk4fsA_a16p
+X-Proofpoint-GUID: dzFvyqvcybN90gYauaPmLNk4fsA_a16p
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-18_07,2021-10-18_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 mlxlogscore=977
+ suspectscore=0 mlxscore=0 spamscore=0 adultscore=0 lowpriorityscore=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 clxscore=1011 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110180102
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Benoit Parrot <bparrot@ti.com>
+From: Parshuram Thombare <pthombar@cadence.com>
 
-If the drm_plane has a source width that's greater than the max width
-supported by a single hw overlay, then we assign a 'r_overlay' to it in
-omap_plane_atomic_check().
+This patch disables FLR (Function Level Reset) support on all physical
+functions.
+During FLR, the Margining Lane Status and Margining Lane Control
+registers should not be reset, as per PCIe specification.
+However, the Controller incorrectly resets these registers upon FLR.
+This causes PCISIG compliance FLR test to fail. Hence disabling
+FLR on all functions using quirk flag.
 
-Both overlays should have the capabilities required to handle the source
-framebuffer. The only parameters that vary between the left and right
-hwoverlays are the src_w, crtc_w, src_x and crtc_x as we just even chop
-the fb into left and right halves.
-
-We also take care of not creating odd width size when dealing with YUV
-formats.
-
-Since both halves need to be 'appear' side by side the zpos is
-recalculated when dealing with dual overlay cases so that the other
-planes zpos is consistent.
-
-Depending on user space usage it is possible that on occasion the number
-of requested planes exceeds the numbers of overlays required to display
-them. In that case a failure would be returned for the plane that cannot
-be handled at that time. It is up to user space to make sure the H/W
-resource are not over-subscribed.
-
-Signed-off-by: Benoit Parrot <bparrot@ti.com>
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+Signed-off-by: Parshuram Thombare <pthombar@cadence.com>
 ---
- drivers/gpu/drm/omapdrm/omap_drv.c     |  91 ++++++++++++++++++-
- drivers/gpu/drm/omapdrm/omap_fb.c      |  33 ++++++-
- drivers/gpu/drm/omapdrm/omap_fb.h      |   4 +-
- drivers/gpu/drm/omapdrm/omap_overlay.c |  23 ++++-
- drivers/gpu/drm/omapdrm/omap_overlay.h |   3 +-
- drivers/gpu/drm/omapdrm/omap_plane.c   | 120 +++++++++++++++++++++++--
- drivers/gpu/drm/omapdrm/omap_plane.h   |   1 +
- 7 files changed, 263 insertions(+), 12 deletions(-)
+ drivers/pci/controller/cadence/pci-j721e.c       |  3 +++
+ drivers/pci/controller/cadence/pcie-cadence-ep.c | 18 +++++++++++++++++-
+ drivers/pci/controller/cadence/pcie-cadence.h    |  3 +++
+ 3 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
-index c7912374d393..f088b6313950 100644
---- a/drivers/gpu/drm/omapdrm/omap_drv.c
-+++ b/drivers/gpu/drm/omapdrm/omap_drv.c
-@@ -117,6 +117,95 @@ static void omap_atomic_commit_tail(struct drm_atomic_state *old_state)
- 	dispc_runtime_put(priv->dispc);
- }
- 
-+static int drm_atomic_state_normalized_zpos_cmp(const void *a, const void *b)
-+{
-+	const struct drm_plane_state *sa = *(struct drm_plane_state **)a;
-+	const struct drm_plane_state *sb = *(struct drm_plane_state **)b;
-+
-+	if (sa->normalized_zpos != sb->normalized_zpos)
-+		return sa->normalized_zpos - sb->normalized_zpos;
-+	else
-+		return sa->plane->base.id - sb->plane->base.id;
-+}
-+
-+static int omap_atomic_update_normalize_zpos(struct drm_device *dev,
-+					     struct drm_atomic_state *state)
-+{
-+	struct drm_crtc *crtc;
-+	struct drm_crtc_state *old_state, *new_state;
-+	struct drm_plane *plane;
-+	int c, i, n, inc;
-+	int total_planes = dev->mode_config.num_total_plane;
-+	struct drm_plane_state **states;
-+	int ret = 0;
-+
-+	states = kmalloc_array(total_planes, sizeof(*states), GFP_KERNEL);
-+	if (!states)
-+		return -ENOMEM;
-+
-+	for_each_oldnew_crtc_in_state(state, crtc, old_state, new_state, c) {
-+		if (old_state->plane_mask == new_state->plane_mask &&
-+		    !new_state->zpos_changed)
-+			continue;
-+
-+		/* Reset plane increment and index value for every crtc */
-+		n = 0;
-+
-+		/*
-+		 * Normalization process might create new states for planes
-+		 * which normalized_zpos has to be recalculated.
-+		 */
-+		drm_for_each_plane_mask(plane, dev, new_state->plane_mask) {
-+			struct drm_plane_state *plane_state =
-+				drm_atomic_get_plane_state(new_state->state,
-+							   plane);
-+			if (IS_ERR(plane_state)) {
-+				ret = PTR_ERR(plane_state);
-+				goto done;
-+			}
-+			states[n++] = plane_state;
-+		}
-+
-+		sort(states, n, sizeof(*states),
-+		     drm_atomic_state_normalized_zpos_cmp, NULL);
-+
-+		for (i = 0, inc = 0; i < n; i++) {
-+			plane = states[i]->plane;
-+
-+			states[i]->normalized_zpos = i + inc;
-+			DRM_DEBUG_ATOMIC("[PLANE:%d:%s] updated normalized zpos value %d\n",
-+					 plane->base.id, plane->name,
-+					 states[i]->normalized_zpos);
-+
-+			if (is_omap_plane_dual_overlay(states[i]))
-+				inc++;
-+		}
-+		new_state->zpos_changed = true;
-+	}
-+
-+done:
-+	kfree(states);
-+	return ret;
-+}
-+
-+static int omap_atomic_check(struct drm_device *dev,
-+			     struct drm_atomic_state *state)
-+{
-+	int ret;
-+
-+	ret = drm_atomic_helper_check(dev, state);
-+	if (ret)
-+		return ret;
-+
-+	if (dev->mode_config.normalize_zpos) {
-+		ret = omap_atomic_update_normalize_zpos(dev, state);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static const struct drm_mode_config_helper_funcs omap_mode_config_helper_funcs = {
- 	.atomic_commit_tail = omap_atomic_commit_tail,
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index ffb176d..635e36c 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -70,6 +70,7 @@ struct j721e_pcie_data {
+ 	enum j721e_pcie_mode	mode;
+ 	unsigned int		quirk_retrain_flag:1;
+ 	unsigned int		quirk_detect_quiet_flag:1;
++	unsigned int		quirk_disable_flr:1;
+ 	u32			linkdown_irq_regfield;
+ 	unsigned int		byte_access_allowed:1;
  };
-@@ -124,7 +213,7 @@ static const struct drm_mode_config_helper_funcs omap_mode_config_helper_funcs =
- static const struct drm_mode_config_funcs omap_mode_config_funcs = {
- 	.fb_create = omap_framebuffer_create,
- 	.output_poll_changed = drm_fb_helper_output_poll_changed,
--	.atomic_check = drm_atomic_helper_check,
-+	.atomic_check = omap_atomic_check,
- 	.atomic_commit = drm_atomic_helper_commit,
+@@ -308,6 +309,7 @@ static int cdns_ti_pcie_config_write(struct pci_bus *bus, unsigned int devfn,
+ static const struct j721e_pcie_data j7200_pcie_ep_data = {
+ 	.mode = PCI_MODE_EP,
+ 	.quirk_detect_quiet_flag = true,
++	.quirk_disable_flr = true,
  };
  
-diff --git a/drivers/gpu/drm/omapdrm/omap_fb.c b/drivers/gpu/drm/omapdrm/omap_fb.c
-index 190afc564914..895e66b08a81 100644
---- a/drivers/gpu/drm/omapdrm/omap_fb.c
-+++ b/drivers/gpu/drm/omapdrm/omap_fb.c
-@@ -131,7 +131,9 @@ static u32 drm_rotation_to_tiler(unsigned int drm_rot)
- /* update ovl info for scanout, handles cases of multi-planar fb's, etc.
-  */
- void omap_framebuffer_update_scanout(struct drm_framebuffer *fb,
--		struct drm_plane_state *state, struct omap_overlay_info *info)
-+		struct drm_plane_state *state,
-+		struct omap_overlay_info *info,
-+		struct omap_overlay_info *r_info)
- {
- 	struct omap_framebuffer *omap_fb = to_omap_framebuffer(fb);
- 	const struct drm_format_info *format = omap_fb->format;
-@@ -218,6 +220,35 @@ void omap_framebuffer_update_scanout(struct drm_framebuffer *fb,
- 	} else {
- 		info->p_uv_addr = 0;
- 	}
-+
-+	if (r_info) {
-+		info->width /= 2;
-+		info->out_width /= 2;
-+
-+		*r_info = *info;
-+
-+		if (fb->format->is_yuv) {
-+			if (info->width & 1) {
-+				info->width++;
-+				r_info->width--;
-+			}
-+
-+			if (info->out_width & 1) {
-+				info->out_width++;
-+				r_info->out_width--;
-+			}
-+		}
-+
-+		r_info->pos_x = info->pos_x + info->out_width;
-+
-+		r_info->paddr =	get_linear_addr(fb, format, 0,
-+						x + info->width, y);
-+		if (fb->format->format == DRM_FORMAT_NV12) {
-+			r_info->p_uv_addr =
-+				get_linear_addr(fb, format, 1,
-+						x + info->width, y);
-+		}
-+	}
- }
- 
- /* pin, prepare for scanout: */
-diff --git a/drivers/gpu/drm/omapdrm/omap_fb.h b/drivers/gpu/drm/omapdrm/omap_fb.h
-index c0e19aed8220..b75f0b5ef1d8 100644
---- a/drivers/gpu/drm/omapdrm/omap_fb.h
-+++ b/drivers/gpu/drm/omapdrm/omap_fb.h
-@@ -26,7 +26,9 @@ struct drm_framebuffer *omap_framebuffer_init(struct drm_device *dev,
- int omap_framebuffer_pin(struct drm_framebuffer *fb);
- void omap_framebuffer_unpin(struct drm_framebuffer *fb);
- void omap_framebuffer_update_scanout(struct drm_framebuffer *fb,
--		struct drm_plane_state *state, struct omap_overlay_info *info);
-+		struct drm_plane_state *state,
-+		struct omap_overlay_info *info,
-+		struct omap_overlay_info *r_info);
- bool omap_framebuffer_supports_rotation(struct drm_framebuffer *fb);
- void omap_framebuffer_describe(struct drm_framebuffer *fb, struct seq_file *m);
- 
-diff --git a/drivers/gpu/drm/omapdrm/omap_overlay.c b/drivers/gpu/drm/omapdrm/omap_overlay.c
-index afb2b44fdf86..10730c9b2752 100644
---- a/drivers/gpu/drm/omapdrm/omap_overlay.c
-+++ b/drivers/gpu/drm/omapdrm/omap_overlay.c
-@@ -67,12 +67,13 @@ omap_plane_find_free_overlay(struct drm_device *dev, struct drm_plane *hwoverlay
-  * next global overlay_map to be enabled when atomic transaction is valid.
-  */
- int omap_overlay_assign(struct drm_atomic_state *s, struct drm_plane *plane,
--			u32 caps, u32 fourcc, struct omap_hw_overlay **overlay)
-+			u32 caps, u32 fourcc, struct omap_hw_overlay **overlay,
-+			struct omap_hw_overlay **r_overlay)
- {
- 	/* Get the global state of the current atomic transaction */
- 	struct omap_global_state *state = omap_get_global_state(s);
- 	struct drm_plane **overlay_map = state->hwoverlay_to_plane;
--	struct omap_hw_overlay *ovl;
-+	struct omap_hw_overlay *ovl, *r_ovl;
- 
- 	ovl = omap_plane_find_free_overlay(s->dev, overlay_map, caps, fourcc);
- 	if (!ovl)
-@@ -81,8 +82,26 @@ int omap_overlay_assign(struct drm_atomic_state *s, struct drm_plane *plane,
- 	overlay_map[ovl->idx] = plane;
- 	*overlay = ovl;
- 
-+	if (r_overlay) {
-+		r_ovl = omap_plane_find_free_overlay(s->dev, overlay_map,
-+						     caps, fourcc);
-+		if (!r_ovl) {
-+			overlay_map[r_ovl->idx] = NULL;
-+			*overlay = NULL;
-+			return -ENOMEM;
-+		}
-+
-+		overlay_map[r_ovl->idx] = plane;
-+		*r_overlay = r_ovl;
-+	}
-+
- 	DBG("%s: assign to plane %s caps %x", ovl->name, plane->name, caps);
- 
-+	if (r_overlay) {
-+		DBG("%s: assign to right of plane %s caps %x",
-+		    r_ovl->name, plane->name, caps);
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/drivers/gpu/drm/omapdrm/omap_overlay.h b/drivers/gpu/drm/omapdrm/omap_overlay.h
-index 38ca55e1e2d7..e36a43f35563 100644
---- a/drivers/gpu/drm/omapdrm/omap_overlay.h
-+++ b/drivers/gpu/drm/omapdrm/omap_overlay.h
-@@ -28,7 +28,8 @@ struct omap_hw_overlay {
- int omap_hwoverlays_init(struct omap_drm_private *priv);
- void omap_hwoverlays_destroy(struct omap_drm_private *priv);
- int omap_overlay_assign(struct drm_atomic_state *s, struct drm_plane *plane,
--			u32 caps, u32 fourcc, struct omap_hw_overlay **overlay);
-+			u32 caps, u32 fourcc, struct omap_hw_overlay **overlay,
-+			struct omap_hw_overlay **r_overlay);
- void omap_overlay_release(struct drm_atomic_state *s, struct omap_hw_overlay *overlay);
- void omap_overlay_update_state(struct omap_drm_private *priv, struct omap_hw_overlay *overlay);
- #endif /* __OMAPDRM_OVERLAY_H__ */
-diff --git a/drivers/gpu/drm/omapdrm/omap_plane.c b/drivers/gpu/drm/omapdrm/omap_plane.c
-index 5001c8354e4f..15cdff988dbc 100644
---- a/drivers/gpu/drm/omapdrm/omap_plane.c
-+++ b/drivers/gpu/drm/omapdrm/omap_plane.c
-@@ -24,6 +24,7 @@ struct omap_plane_state {
- 	struct drm_plane_state base;
- 
- 	struct omap_hw_overlay *overlay;
-+	struct omap_hw_overlay *r_overlay;  /* right overlay */
- };
- 
- #define to_omap_plane(x) container_of(x, struct omap_plane, base)
-@@ -33,6 +34,13 @@ struct omap_plane {
- 	enum omap_plane_id id;
- };
- 
-+bool is_omap_plane_dual_overlay(struct drm_plane_state *state)
-+{
-+	struct omap_plane_state *omap_state = to_omap_plane_state(state);
-+
-+	return !!omap_state->r_overlay;
-+}
-+
- static int omap_plane_prepare_fb(struct drm_plane *plane,
- 				 struct drm_plane_state *new_state)
- {
-@@ -61,16 +69,21 @@ static void omap_plane_atomic_update(struct drm_plane *plane,
- 									   plane);
- 	struct omap_plane_state *new_omap_state;
- 	struct omap_plane_state *old_omap_state;
--	struct omap_overlay_info info;
--	enum omap_plane_id ovl_id;
-+	struct omap_overlay_info info, r_info;
-+	enum omap_plane_id ovl_id, r_ovl_id;
- 	int ret;
-+	bool dual_ovl;
- 
- 	new_omap_state = to_omap_plane_state(new_state);
- 	old_omap_state = to_omap_plane_state(old_state);
- 
-+	dual_ovl = is_omap_plane_dual_overlay(new_state);
-+
- 	/* Cleanup previously held overlay if needed */
- 	if (old_omap_state->overlay)
- 		omap_overlay_update_state(priv, old_omap_state->overlay);
-+	if (old_omap_state->r_overlay)
-+		omap_overlay_update_state(priv, old_omap_state->r_overlay);
- 
- 	if (!new_omap_state->overlay) {
- 		DBG("[PLANE:%d:%s] no overlay attached", plane->base.id, plane->name);
-@@ -93,8 +106,11 @@ static void omap_plane_atomic_update(struct drm_plane *plane,
- 	info.color_encoding = new_state->color_encoding;
- 	info.color_range = new_state->color_range;
- 
-+	r_info = info;
-+
- 	/* update scanout: */
--	omap_framebuffer_update_scanout(new_state->fb, new_state, &info);
-+	omap_framebuffer_update_scanout(new_state->fb, new_state, &info,
-+					dual_ovl ? &r_info : NULL);
- 
- 	DBG("%s: %dx%d -> %dx%d (%d)",
- 			new_omap_state->overlay->name, info.width, info.height,
-@@ -102,6 +118,23 @@ static void omap_plane_atomic_update(struct drm_plane *plane,
- 	DBG("%d,%d %pad %pad", info.pos_x, info.pos_y,
- 			&info.paddr, &info.p_uv_addr);
- 
-+	if (dual_ovl) {
-+		r_ovl_id = new_omap_state->r_overlay->id;
-+		/*
-+		 * If the current plane uses 2 hw planes the very next
-+		 * zorder is used by the r_overlay so we just use the
-+		 * main overlay zorder + 1
-+		 */
-+		r_info.zorder = info.zorder + 1;
-+
-+		DBG("%s: %dx%d -> %dx%d (%d)",
-+		    new_omap_state->r_overlay->name,
-+		    r_info.width, r_info.height,
-+		    r_info.out_width, r_info.out_height, r_info.screen_width);
-+		DBG("%d,%d %pad %pad", r_info.pos_x, r_info.pos_y,
-+		    &r_info.paddr, &r_info.p_uv_addr);
-+	}
-+
- 	/* and finally, update omapdss: */
- 	ret = dispc_ovl_setup(priv->dispc, ovl_id, &info,
- 			      omap_crtc_timings(new_state->crtc), false,
-@@ -114,6 +147,21 @@ static void omap_plane_atomic_update(struct drm_plane *plane,
- 	}
- 
- 	dispc_ovl_enable(priv->dispc, ovl_id, true);
-+
-+	if (dual_ovl) {
-+		ret = dispc_ovl_setup(priv->dispc, r_ovl_id, &r_info,
-+				      omap_crtc_timings(new_state->crtc), false,
-+				      omap_crtc_channel(new_state->crtc));
-+		if (ret) {
-+			dev_err(plane->dev->dev, "Failed to setup plane right-overlay %s\n",
-+				plane->name);
-+			dispc_ovl_enable(priv->dispc, r_ovl_id, false);
-+			dispc_ovl_enable(priv->dispc, ovl_id, false);
-+			return;
-+		}
-+
-+		dispc_ovl_enable(priv->dispc, r_ovl_id, true);
-+	}
- }
- 
- static void omap_plane_atomic_disable(struct drm_plane *plane,
-@@ -139,6 +187,11 @@ static void omap_plane_atomic_disable(struct drm_plane *plane,
- 
- 	omap_overlay_update_state(priv, old_omap_state->overlay);
- 	new_omap_state->overlay = NULL;
-+
-+	if (is_omap_plane_dual_overlay(old_state)) {
-+		omap_overlay_update_state(priv, old_omap_state->r_overlay);
-+		new_omap_state->r_overlay = NULL;
-+	}
- }
- 
- #define FRAC_16_16(mult, div)    (((mult) << 16) / (div))
-@@ -154,6 +207,7 @@ static int omap_plane_atomic_check(struct drm_plane *plane,
- 	struct omap_plane_state *omap_state = to_omap_plane_state(new_plane_state);
- 	struct omap_global_state *omap_overlay_global_state;
- 	struct drm_crtc_state *crtc_state;
-+	bool new_r_hw_overlay = false;
- 	bool new_hw_overlay = false;
- 	u32 max_width, max_height;
- 	struct drm_crtc *crtc;
-@@ -196,7 +250,9 @@ static int omap_plane_atomic_check(struct drm_plane *plane,
- 
- 	if (!new_plane_state->visible) {
- 		omap_overlay_release(state, omap_state->overlay);
-+		omap_overlay_release(state, omap_state->r_overlay);
- 		omap_state->overlay = NULL;
-+		omap_state->r_overlay = NULL;
- 		return 0;
- 	}
- 
-@@ -213,8 +269,30 @@ static int omap_plane_atomic_check(struct drm_plane *plane,
- 	if (new_plane_state->src_h > max_height || new_plane_state->crtc_h > height)
- 		return -EINVAL;
- 
--	if (new_plane_state->src_w > max_width || new_plane_state->crtc_w > width)
--		return -EINVAL;
-+
-+	if (new_plane_state->src_w > max_width || new_plane_state->crtc_w > width) {
-+		bool is_fourcc_yuv = new_plane_state->fb->format->is_yuv;
-+
-+		if (is_fourcc_yuv && (((new_plane_state->src_w >> 16) / 2 & 1) ||
-+				      new_plane_state->crtc_w / 2 & 1)) {
-+			/*
-+			 * When calculating the split overlay width
-+			 * and it yield an odd value we will need to adjust
-+			 * the indivual width +/- 1. So make sure it fits
-+			 */
-+			if (new_plane_state->src_w <= ((2 * width - 1) << 16) &&
-+			    new_plane_state->crtc_w <= (2 * width - 1))
-+				new_r_hw_overlay = true;
-+			else
-+				return -EINVAL;
-+		} else {
-+			if (new_plane_state->src_w <= (2 * max_width) &&
-+			    new_plane_state->crtc_w <= (2 * width))
-+				new_r_hw_overlay = true;
-+			else
-+				return -EINVAL;
-+		}
-+	}
- 
- 	if (new_plane_state->rotation != DRM_MODE_ROTATE_0 &&
- 	    !omap_framebuffer_supports_rotation(new_plane_state->fb))
-@@ -239,24 +317,44 @@ static int omap_plane_atomic_check(struct drm_plane *plane,
- 			new_hw_overlay = true;
- 	}
- 
-+	/*
-+	 * check if we need two overlays and only have 1 or
-+	 * if we had 2 overlays but will only need 1
-+	 */
-+	if ((new_r_hw_overlay && !omap_state->r_overlay) ||
-+	    (!new_r_hw_overlay && omap_state->r_overlay))
-+		new_hw_overlay = true;
-+
- 	if (new_hw_overlay) {
- 		struct omap_hw_overlay *old_ovl = omap_state->overlay;
-+		struct omap_hw_overlay *old_r_ovl = omap_state->r_overlay;
- 		struct omap_hw_overlay *new_ovl = NULL;
-+		struct omap_hw_overlay *new_r_ovl = NULL;
- 
- 		omap_overlay_release(state, old_ovl);
-+		omap_overlay_release(state, old_r_ovl);
- 
--		ret = omap_overlay_assign(state, plane, caps, fourcc, &new_ovl);
-+		ret = omap_overlay_assign(state, plane, caps, fourcc, &new_ovl,
-+					  new_r_hw_overlay ? &new_r_ovl : NULL);
- 		if (ret) {
- 			DBG("%s: failed to assign hw_overlay", plane->name);
- 			omap_state->overlay = NULL;
-+			omap_state->r_overlay = NULL;
- 			return ret;
+ static const struct j721e_pcie_data am64_pcie_rc_data = {
+@@ -510,6 +512,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 			goto err_get_sync;
  		}
+ 		ep->quirk_detect_quiet_flag = data->quirk_detect_quiet_flag;
++		ep->quirk_disable_flr = data->quirk_disable_flr;
  
- 		omap_state->overlay = new_ovl;
-+		if (new_r_hw_overlay)
-+			omap_state->r_overlay = new_r_ovl;
-+		else
-+			omap_state->r_overlay = NULL;
- 	}
+ 		cdns_pcie = &ep->pcie;
+ 		cdns_pcie->dev = dev;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+index 88e05b9..4b1c4bc 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+@@ -565,7 +565,8 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
+ 	struct cdns_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct cdns_pcie *pcie = &ep->pcie;
+ 	struct device *dev = pcie->dev;
+-	int ret;
++	int max_epfs = sizeof(epc->function_num_map) * 8;
++	int ret, value, epf;
  
- 	DBG("plane: %s overlay_id: %d", plane->name, omap_state->overlay->id);
+ 	/*
+ 	 * BIT(0) is hardwired to 1, hence function 0 is always enabled
+@@ -573,6 +574,21 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
+ 	 */
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_LM_EP_FUNC_CFG, epc->function_num_map);
  
-+	if (omap_state->r_overlay)
-+		DBG("plane: %s r_overlay_id: %d", plane->name, omap_state->r_overlay->id);
++	if (ep->quirk_disable_flr) {
++		for (epf = 0; epf < max_epfs; epf++) {
++			if (!(epc->function_num_map & BIT(epf)))
++				continue;
 +
- 	return 0;
- }
- 
-@@ -344,6 +442,7 @@ omap_plane_atomic_duplicate_state(struct drm_plane *plane)
- 	__drm_atomic_helper_plane_duplicate_state(plane, &state->base);
- 
- 	state->overlay = current_state->overlay;
-+	state->r_overlay = current_state->r_overlay;
- 
- 	return &state->base;
- }
-@@ -361,6 +460,15 @@ static void omap_plane_atomic_print_state(struct drm_printer *p,
- 			   omap_state->overlay->id);
- 		drm_printf(p, "\t\tcaps=0x%x\n", omap_state->overlay->caps);
- 	}
-+
-+	drm_printf(p, "\tr_overlay=%s\n", omap_state->r_overlay ?
-+					  omap_state->r_overlay->name : "(null)");
-+	if (omap_state->r_overlay) {
-+		drm_printf(p, "\t\tidx=%d\n", omap_state->r_overlay->idx);
-+		drm_printf(p, "\t\toverlay_id=%d\n",
-+			   omap_state->r_overlay->id);
-+		drm_printf(p, "\t\tcaps=0x%x\n", omap_state->r_overlay->caps);
++			value = cdns_pcie_ep_fn_readl(pcie, epf,
++					CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET +
++					PCI_EXP_DEVCAP);
++			value &= ~PCI_EXP_DEVCAP_FLR;
++			cdns_pcie_ep_fn_writel(pcie, epf,
++					CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET +
++					PCI_EXP_DEVCAP, value);
++		}
 +	}
- }
++
+ 	ret = cdns_pcie_start_link(pcie);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to start link\n");
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 262421e..e978e7c 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -123,6 +123,7 @@
  
- static int omap_plane_atomic_set_property(struct drm_plane *plane,
-diff --git a/drivers/gpu/drm/omapdrm/omap_plane.h b/drivers/gpu/drm/omapdrm/omap_plane.h
-index 0c28fe8ffa20..a9a33e12722a 100644
---- a/drivers/gpu/drm/omapdrm/omap_plane.h
-+++ b/drivers/gpu/drm/omapdrm/omap_plane.h
-@@ -22,5 +22,6 @@ struct drm_plane *omap_plane_init(struct drm_device *dev,
- 		u32 possible_crtcs);
- void omap_plane_install_properties(struct drm_plane *plane,
- 		struct drm_mode_object *obj);
-+bool is_omap_plane_dual_overlay(struct drm_plane_state *state);
+ #define CDNS_PCIE_EP_FUNC_MSI_CAP_OFFSET	0x90
+ #define CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET	0xb0
++#define CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET	0xc0
+ #define CDNS_PCIE_EP_FUNC_SRIOV_CAP_OFFSET	0x200
  
- #endif /* __OMAPDRM_PLANE_H__ */
+ /*
+@@ -357,6 +358,7 @@ struct cdns_pcie_epf {
+  *        minimize time between read and write
+  * @epf: Structure to hold info about endpoint function
+  * @quirk_detect_quiet_flag: LTSSM Detect Quiet min delay set as quirk
++ * @quirk_disable_flr: Disable FLR (Function Level Reset) quirk flag
+  */
+ struct cdns_pcie_ep {
+ 	struct cdns_pcie	pcie;
+@@ -372,6 +374,7 @@ struct cdns_pcie_ep {
+ 	spinlock_t		lock;
+ 	struct cdns_pcie_epf	*epf;
+ 	unsigned int		quirk_detect_quiet_flag:1;
++	unsigned int		quirk_disable_flr:1;
+ };
+ 
+ 
 -- 
-2.25.1
+1.9.1
 
