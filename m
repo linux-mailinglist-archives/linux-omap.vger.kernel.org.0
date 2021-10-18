@@ -2,199 +2,229 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7CB443005B
-	for <lists+linux-omap@lfdr.de>; Sat, 16 Oct 2021 07:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1958143112A
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Oct 2021 09:10:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242614AbhJPFGR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 16 Oct 2021 01:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54470 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242518AbhJPFGQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 16 Oct 2021 01:06:16 -0400
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CC67C061570
-        for <linux-omap@vger.kernel.org>; Fri, 15 Oct 2021 22:04:09 -0700 (PDT)
-Received: by mail-pg1-x536.google.com with SMTP id 133so10475397pgb.1
-        for <linux-omap@vger.kernel.org>; Fri, 15 Oct 2021 22:04:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=1nRqPfmxrrw4CktC2ScfbUfntBuVYUtnPZ0553muocI=;
-        b=kl7hgM7vwGZWFu9LWpuyq+dIGP0Viks4UP5QnQQLMzbLucXzOyLk+HA8ZFnUm8LuYk
-         2eEWV1rXCXKL3snTDc6Cau1/G+eBVgLQoDJCF4j41wp/C8lSvmA9lHsnA33vARCg5Zkk
-         WMQ+ubC4tZyoWlckkab1kNqkrGte5WJN4Ijsenp10HOJQ6oBqU4ti/tQ6RRvyNY6lPhY
-         MvXvyhMbUKO2F8Sc9ut7lUxhFRHpvdJT5RrJ9QHAQcE2tzI5s3eCTypjggtKpL9xecxA
-         TYF2VRQAMmIKZlXFmiEJd18T26oSwltNM5lh9oPG67zh7exuchPqofWzQTEzUzMVmjr+
-         cQcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=1nRqPfmxrrw4CktC2ScfbUfntBuVYUtnPZ0553muocI=;
-        b=n+Lyde6dyzMe5H9QHGCf0GhanCyi2DYsiLqoQdBo6XcGWDN2wsUArVzdUK3/ECG0L3
-         vtnU4yKNScTMIsxCnlTJ0oYADWhmKrFnXytIbG8PXWb7cs11Y8W0pINuHztXUUYLyfuD
-         e4YA8D6dVn6EXlsTb4U/ovWFmtLjJpkydj7PLmNsmKIuS0klCTiFuL3SuTDZbr4PBG9/
-         oVZML0psMFQzPeQS//Jmo+SoOGI9f7puwRIER8mtNjtyatsMfMTOvADVmsY74UkuF1lT
-         rySY3ir8xPzwvUtVqPrPNmIYBwfud4jBV7JsVMWv9GzEhrJsWKjMRHH3EcpNmFPC8bUD
-         2yhQ==
-X-Gm-Message-State: AOAM533TaqF8oLmkqZLybpLuLUWu/Jf9gQpVaxrQeIHUpItIpDKucA3W
-        bP55Osz3qWwDpI9iqaTDSPqJYg==
-X-Google-Smtp-Source: ABdhPJyFTYXZY3VXt/hO0dPUs4MLGklG9srMkkjcN27uPXSIJJgmIUpxOwZDQJ2MxXSF5ZkBNhe71w==
-X-Received: by 2002:aa7:8bd3:0:b0:44c:68b3:a52e with SMTP id s19-20020aa78bd3000000b0044c68b3a52emr16055519pfd.74.1634360648469;
-        Fri, 15 Oct 2021 22:04:08 -0700 (PDT)
-Received: from x1 ([2601:1c2:1080:1950:2d9b:6b84:2b5:218c])
-        by smtp.gmail.com with ESMTPSA id 21sm12617106pjg.57.2021.10.15.22.04.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Oct 2021 22:04:08 -0700 (PDT)
-Date:   Fri, 15 Oct 2021 22:04:06 -0700
-From:   Drew Fustini <dfustini@baylibre.com>
-To:     Jason Kridner <jkridner@beagleboard.org>
-Cc:     Johan Hovold <johan@kernel.org>,
-        Benoit Cousson <bcousson@baylibre.com>,
-        Dave Gerlach <d-gerlach@ti.com>, Keerthy <j-keerthy@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        OMAP List <linux-omap@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: am335x: Add rtc node as system-power-controller
-Message-ID: <20211016050406.GA575510@x1>
-References: <20211012191311.879838-1-dfustini@baylibre.com>
- <YWaJfofs8QAtBnVu@hovoldconsulting.com>
- <20211013214103.GA10628@x1>
- <YWgJkkJ4LuAJhLmk@hovoldconsulting.com>
- <CA+T6QPkUSJZ9Pb8JvfuVuGzfv0cX-HQcT3eALN5Y9882r676MA@mail.gmail.com>
+        id S230339AbhJRHLk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 Oct 2021 03:11:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55868 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231168AbhJRHL2 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 18 Oct 2021 03:11:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DCE8960F46;
+        Mon, 18 Oct 2021 07:09:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634540954;
+        bh=/FwxTPVyYlS0JwFehN3Om6/BlQClmq2iSl8vuzoG3og=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GMO4/9kiyDNgh66xZRfk464MLHi/zlU/2AupDsSc1WFzvAqvNJ+QOXBk8C87o8JzE
+         9AJP/eZNf4mJtfIyWkadvwExFJ6T52b++w7MmsTouAYhKyU0C5KwlXn9a/vmtGdtQZ
+         fvcnmoMR6UOBJkdPOX1zV1cJL7hyIPcwyF/W7I5gYKE7a07OWgqnrmvPRb/p4/RQiE
+         u/spgHzeaPDDCUgNevX0XhypN/YZ6uxJcQ0sogNY2bFglk+bQ8RfoaxMLuQ7ZB41ro
+         tZ5xdkK6mDbRE57K8SAVMoF00WGe/8z1dzVbewBFgBtHWqBvZQxRht9oFO7RsHHwTf
+         9tIv2ZvaFS2aQ==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1mcMlc-00009s-J0; Mon, 18 Oct 2021 09:09:05 +0200
+Date:   Mon, 18 Oct 2021 09:09:04 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] serial: core: Add wakeup() and start_pending_tx()
+ for power management
+Message-ID: <YW0dkD3jYCsHYs6p@hovoldconsulting.com>
+References: <20211015112626.35359-1-tony@atomide.com>
+ <20211015112626.35359-2-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+T6QPkUSJZ9Pb8JvfuVuGzfv0cX-HQcT3eALN5Y9882r676MA@mail.gmail.com>
+In-Reply-To: <20211015112626.35359-2-tony@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Oct 14, 2021 at 10:12:48AM -0400, Jason Kridner wrote:
-> On Thu, Oct 14, 2021 at 6:43 AM Johan Hovold <johan@kernel.org> wrote:
+On Fri, Oct 15, 2021 at 02:26:23PM +0300, Tony Lindgren wrote:
+> If the serial driver implements PM runtime with autosuspend, the port may
+> be powered down on TX. To wake up the port, let's add new wakeup() call
+> for serial drivers to implement as needed. We can call wakeup() from
+> __uart_start() and flow control related functions before attempting to
+> write to the serial port registers.
 > 
-> > On Wed, Oct 13, 2021 at 02:41:03PM -0700, Drew Fustini wrote:
-> > > On Wed, Oct 13, 2021 at 09:23:42AM +0200, Johan Hovold wrote:
-> > > > On Tue, Oct 12, 2021 at 12:13:12PM -0700, Drew Fustini wrote:
-> > > > > From: Keerthy <j-keerthy@ti.com>
-> > > > >
-> > > > > PMIC_PWR_EN pin of RTC on am335x-evm, bone, and boneblack is
-> > connected to
-> > > > > PMIC on board, so flag rtc node as system-power-controller to allow
-> > > > > software to poweroff boards.
-> > > >
-> > > > The "system-power-controller" property is already set in
-> > > > bone-common.dtsi since
-> > > >
-> > > >     2876cc4a773c ("ARM: dts: Move most of am335x-boneblack.dts to
-> > am335x-boneblack-common.dtsi")
-> > > >
-> > > > so this probably only affects am335x-evm and that should be reflected
-> > in
-> > > > the commit message.
-> > > >
-> > > > Also, should you now remove the property from boneblack-common? Or just
-> > > > add it to am335x-evm instead?
-> > >
-> > > Thank you for reviewing. Yes, I should improve the commit message as the
-> > > BeagleBone Black is already covered for the rtc system-power-controller
-> > > in am335x-boneblack-common.dtsi.
-> >
-> > So is sancloud-bbe apparently.
-> >
-> > I only noticed because I added support to BeagleBone Black long ago so
-> > unless there'd been a regression it should already be supported.
-> >
-> > > I believe it would be ok to remove system-power-controller from
-> > > am335x-boneblack-common.dtsi and have it in am335x-bone-common.dtsi.
-> > >
-> > > These are the files that include am335x-boneblack-common.dtsi:
-> > > arch/arm/boot/dts/am335x-boneblack-wireless.dts
-> > > arch/arm/boot/dts/am335x-boneblack.dts
-> > > arch/arm/boot/dts/am335x-sancloud-bbe-lite.dts
-> > > arch/arm/boot/dts/am335x-sancloud-bbe.dts
-> > >
-> > > But they all also include am335x-bone-common.dtsi.
-> > >
-> > > However, I just noticed that am335x-evm.dts does not include either
-> > > am335x-boneblack-common.dtsi or am335x-boneblack-common.dtsi. Thus
-> > > rtc system-power-controller should be directly inserted into
-> > > am335x-evm.dts.
-> >
-> > Right.
-> >
-> > > I considered just moving system-power-controller to the rtc node in
-> > > am33xx-l4.dtsi but I don't think that would be correct as this would not
-> > > be valid for all am33xx devices.
-> > >
-> > > Does that seem correct to you?
-> >
-> > No, that wouldn't be right.
-> >
-> > You're more familiar with the different variants here, but unless all
-> > flavours of Bone Black have the signal wired, it should probably be
-> > pushed down into the dts files again.
-> >
+> Let's keep track of the serial port with a new runtime_suspended flag
+> that the device driver runtime PM suspend and resume can manage with
+> port->lock held. This is because only the device driver knows what the
+> device runtime PM state as in Documentation/power/runtime_pm.rst
+> under "9. Autosuspend, or automatically-delayed suspend" for locking.
 > 
-> I believe anything "bone" is going to have the same RTC power
-> configuration. I believe this could be inconsistent at the AM335x level.
+> To allow the serial port drivers to send out pending tx on runtime PM
+> resume, let's add start_pending_tx() as suggested by Johan Hovold
+> <johan@kernel.org>.
+> 
+> Suggested-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 
-Thanks for the input Jason and Johan.
+So this looks somewhat like a step in the right direction, but...
 
-These are the dts files that currently include either 
-am335x-bone-common.dtsi or am335x-boneblack-common.dtsi:
+> ---
+>  Documentation/driver-api/serial/driver.rst |  9 +++
+>  drivers/tty/serial/serial_core.c           | 68 +++++++++++++++++++++-
+>  include/linux/serial_core.h                |  3 +
+>  3 files changed, 78 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/driver-api/serial/driver.rst b/Documentation/driver-api/serial/driver.rst
+> --- a/Documentation/driver-api/serial/driver.rst
+> +++ b/Documentation/driver-api/serial/driver.rst
+> @@ -234,6 +234,15 @@ hardware.
+>  
+>  	Interrupts: caller dependent.
+>  
+> +  wakeup(port)
+> +	Wake up port if it has been runtime PM suspended.
+> +
+> +	Locking: port->lock taken.
+> +
+> +	Interrupts: locally disabled.
+> +
+> +	This call must not sleep
+> +
+>    flush_buffer(port)
+>  	Flush any write buffers, reset any DMA state and stop any
+>  	ongoing DMA transfers.
+> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+> --- a/drivers/tty/serial/serial_core.c
+> +++ b/drivers/tty/serial/serial_core.c
+> @@ -91,6 +91,35 @@ static inline struct uart_port *uart_port_check(struct uart_state *state)
+>  	return state->uart_port;
+>  }
+>  
+> +/*
+> + * This routine can be used before register access to wake up a serial
+> + * port that has been runtime PM suspended by the serial port driver.
+> + * Note that the runtime_suspended flag is managed by the serial port
+> + * device driver runtime PM.
+> + */
+> +static int __uart_port_wakeup(struct uart_port *port)
+> +{
+> +	if (!port->runtime_suspended)
+> +		return 0;
+> +
+> +	if (port->ops->wakeup)
+> +		return port->ops->wakeup(port);
+> +
+> +	return 0;
+> +}
+> +
+> +static int uart_port_wakeup(struct uart_port *port)
+> +{
+> +	unsigned long flags;
+> +	int ret;
+> +
+> +	spin_lock_irqsave(&port->lock, flags);
+> +	ret = __uart_port_wakeup(port);
+> +	spin_unlock_irqrestore(&port->lock, flags);
+> +
+> +	return ret;
+> +}
+> +
+>  /*
+>   * This routine is used by the interrupt handler to schedule processing in
+>   * the software interrupt portion of the driver.
+> @@ -123,8 +152,13 @@ static void __uart_start(struct tty_struct *tty)
+>  	struct uart_state *state = tty->driver_data;
+>  	struct uart_port *port = state->uart_port;
+>  
+> -	if (port && !uart_tx_stopped(port))
+> -		port->ops->start_tx(port);
+> +	if (!port || uart_tx_stopped(port))
+> +		return;
+> +
+> +	if (__uart_port_wakeup(port) < 0)
+> +		return;
+> +
+> +	port->ops->start_tx(port);
+>  }
+>  
+>  static void uart_start(struct tty_struct *tty)
+> @@ -138,6 +172,21 @@ static void uart_start(struct tty_struct *tty)
+>  	uart_port_unlock(port, flags);
+>  }
+>  
+> +/*
+> + * This routine can be called from the serial driver runtime PM resume function
+> + * to transmit buffered data if the serial port was not active on uart_write().
+> + */
+> +void uart_start_pending_tx(struct uart_port *port)
+> +{
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&port->lock, flags);
+> +	if (!uart_tx_stopped(port) && uart_circ_chars_pending(&port->state->xmit))
+> +		port->ops->start_tx(port);
+> +	spin_unlock_irqrestore(&port->lock, flags);
+> +}
+> +EXPORT_SYMBOL(uart_start_pending_tx);
+> +
+>  static void
+>  uart_update_mctrl(struct uart_port *port, unsigned int set, unsigned int clear)
+>  {
+> @@ -1067,6 +1116,11 @@ uart_tiocmset(struct tty_struct *tty, unsigned int set, unsigned int clear)
+>  	if (!uport)
+>  		goto out;
+>  
+> +	if (uart_port_wakeup(uport) < 0) {
+> +		ret = -EAGAIN;
+> +		goto out;
+> +	}
 
-    am335x-bone.dts  
-	am335x-bone-common.dtsi
+...this isn't right. You should just resume the device synchronously
+here and not return some random error to user space, which it is
+unlikely to even handle.
 
-    am335x-boneblack.dts
-        am335x-bone-common.dtsi
-	am335x-boneblack-common.dtsi [rtc system-power-controller]
+Now this may require moving more of the runtime PM into serial core,
+where it should have been added in the first place, due to a lot of the
+serial callbacks being called with the port spin lock held.
 
-    am335x-boneblack-wireless.dts
-	am335x-bone-common.dtsi
-	am335x-boneblack-common.dtsi [rtc system-power-controller]
+The current implementation is just broken. Take uart_dtr_rts(), for
+example, nothing makes sure that the device is active before accessing
+the modem control registers there. You're currently just relying on
+luck and pm_runtime_irq_safe() (which you are now trying to remove).
 
-    am335x-bonegreen.dts
-	am335x-bone-common.dtsi
+> +
+>  	if (!tty_io_error(tty)) {
+>  		uart_update_mctrl(uport, set, clear);
+>  		ret = 0;
+> @@ -1402,6 +1456,11 @@ uart_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
+>  		goto out_up;
+>  	}
+>  
+> +	if (uart_port_wakeup(uport) < 0) {
+> +		ret = -EAGAIN;
+> +		goto out_up;
+> +	}
+> +
+>  	/*
+>  	 * All these rely on hardware being present and need to be
+>  	 * protected against the tty being hung up.
+> @@ -1724,7 +1783,12 @@ static void uart_dtr_rts(struct tty_port *port, int raise)
+>  	uport = uart_port_ref(state);
+>  	if (!uport)
+>  		return;
+> +
+> +	if (uart_port_wakeup(uport) < 0)
+> +		goto out;
+> +
+>  	uart_port_dtr_rts(uport, raise);
+> +out:
+>  	uart_port_deref(uport);
+>  }
 
-    am335x-bonegreen-wireless.dts
-	am335x-bone-common.dtsi
+Heh, here you do try to do something about dtr_rts(), but you can't just
+ignore the request and wish for the best in case the device is
+suspended. :) There needs to be a synchronous resume here too.
 
-    am335x-sancloud-bbe.dts
-	am335x-bone-common.dtsi
-	am335x-boneblack-common.dtsi [rtc system-power-controller]
-
-    am335x-sancloud-bbe-lite.dts
-	am335x-bone-common.dtsi
-	am335x-boneblack-common.dtsi [rtc system-power-controller]
-
-am335x-boneblack.dts, am335x-boneblack-wireless.dts,
-am335x-sancloud-bbe.dts, and am335x-sancloud-bbe-lite.dts already have
-the rtc system-power-controller through am335x-boneblack-common.dtsi.
-
-Moving rtc system-power-controller from am335x-boneblack-common.dtsi to
-am335x-bone-common.dtsi would have no change for those boards as they
-also include am335x-bone-common.dtsi.
-
-It would add system-power-controller to am335x-bone.dts,
-am335x-bonegreen.dts, and am335x-bonegreen-wireless.dts.
-
-The original bone, green and green wireless have PMIC_POWR_EN (ZCZ C6)
-connected to PWR_EN on the TPS65217B PMIC. Thus system-power-controller
-should be valid for them too.
-
-I will make new patch series that:
-
-  * removes system-power-controller from am335x-boneblack-common.dtsi 
-  * adds system-power-controller to am335x-bone-common.dtsi
-  * adds system-power-controller to am335x-evm.dts, am335x-icev2.dts,
-    am335x-icev2-prueth.dts
-
-However, am335x-evmsk.dts should not have system-power-controller as
-PMIC_POWR_EN is not connected in that board design.
-
-Thanks,
-Drew
+Johan
