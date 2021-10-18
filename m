@@ -2,17 +2,17 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9156B4326A0
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Oct 2021 20:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3524326DB
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Oct 2021 20:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233095AbhJRSlu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 Oct 2021 14:41:50 -0400
-Received: from mxout04.lancloud.ru ([45.84.86.114]:55466 "EHLO
-        mxout04.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233011AbhJRSls (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 Oct 2021 14:41:48 -0400
+        id S231590AbhJRSvo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 Oct 2021 14:51:44 -0400
+Received: from mxout03.lancloud.ru ([45.84.86.113]:36444 "EHLO
+        mxout03.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232216AbhJRSvn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 Oct 2021 14:51:43 -0400
 Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout04.lancloud.ru 9134820A88D8
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout03.lancloud.ru 18ADC206F609
 Received: from LanCloud
 Received: from LanCloud
 Received: from LanCloud
@@ -21,9 +21,9 @@ To:     <linux-usb@vger.kernel.org>,
         Alan Stern <stern@rowland.harvard.edu>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
 CC:     <linux-omap@vger.kernel.org>
-Subject: [PATCH 04/22] usb: host: ehci-omap: deny IRQ0
-Date:   Mon, 18 Oct 2021 21:39:12 +0300
-Message-ID: <20211018183930.8448-5-s.shtylyov@omp.ru>
+Subject: [PATCH 12/22] usb: host: ohci-omap: deny IRQ0
+Date:   Mon, 18 Oct 2021 21:39:20 +0300
+Message-ID: <20211018183930.8448-13-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20211018183930.8448-1-s.shtylyov@omp.ru>
 References: <20211018183930.8448-1-s.shtylyov@omp.ru>
@@ -41,25 +41,27 @@ If platform_get_irq() returns IRQ0 (considered invalid according to Linus)
 the driver blithely passes it to usb_add_hcd() that treats IRQ0 as no IRQ
 at all. Deny IRQ0 right away, returning -EINVAL from the probe() method...
 
-Fixes: b33f37064b74 ("USB: host: ehci: introduce omap ehci-hcd driver")
+Fixes: 489447380a29 ("[PATCH] handle errors returned by platform_get_irq*()")
 Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 ---
- drivers/usb/host/ehci-omap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/ohci-omap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
-index 7f4a03e8647a..79cec242c025 100644
---- a/drivers/usb/host/ehci-omap.c
-+++ b/drivers/usb/host/ehci-omap.c
-@@ -117,6 +117,8 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		return irq;
-+	if (!irq)
-+		return -ENIVAL;
- 
- 	res =  platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	regs = devm_ioremap_resource(dev, res);
+diff --git a/drivers/usb/host/ohci-omap.c b/drivers/usb/host/ohci-omap.c
+index ded9738392e4..6d5f964d0995 100644
+--- a/drivers/usb/host/ohci-omap.c
++++ b/drivers/usb/host/ohci-omap.c
+@@ -309,6 +309,10 @@ static int ohci_hcd_omap_probe(struct platform_device *pdev)
+ 		retval = -ENXIO;
+ 		goto err3;
+ 	}
++	if (!irq) {
++		retval = -EINVAL;
++		goto err3;
++	}
+ 	retval = usb_add_hcd(hcd, irq, 0);
+ 	if (retval)
+ 		goto err3;
 -- 
 2.26.3
 
