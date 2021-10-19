@@ -2,121 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34B0D4334D5
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Oct 2021 13:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C7B6433632
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Oct 2021 14:43:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235396AbhJSLj7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Oct 2021 07:39:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53078 "EHLO
+        id S235692AbhJSMpf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Oct 2021 08:45:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235425AbhJSLjq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Oct 2021 07:39:46 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4132CC061769
-        for <linux-omap@vger.kernel.org>; Tue, 19 Oct 2021 04:37:29 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id x192so6679133lff.12
-        for <linux-omap@vger.kernel.org>; Tue, 19 Oct 2021 04:37:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CdPF+nAmej64mkR0xEgrQMTU0no804stc0osvj6kTUg=;
-        b=lZYxFWcKseVaD8ggpOAQFkgIWWlgAO6sN+FF9jcLwlhS3lrFVB5KyR8l8ZfmHtxL47
-         szt5OrrZCFK2dSyV1ZKyfCDUrtrSTRT5ipWX9seSlWfav6OxroI2PTm8FQWCwhNl+uKu
-         4J8gVG6OArjQSom9+ixsQZWRMjCE/N+nhbgwsBjDLY6sSGLfHn9dbVrDNyjD1XYqfKuq
-         7dg3UbCgNhgc+O5VxwUxWCFPADhFekYCjz/IquF7jkv6Trt7+dAuzUip9z+jHPSODShn
-         /Hl34ChP8MeQLItRCLKh/mJwHgiEI8Vo+FgGxjeYUteu0IEpSFSmZCZgork79wsabyvx
-         8zuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CdPF+nAmej64mkR0xEgrQMTU0no804stc0osvj6kTUg=;
-        b=0ysSw6suv7/srJ4NtKwLnjI1x0Kso5P65bzr+DjvvCkYwVCkF65F9F1HTmVMGvcfGG
-         e5/ej6amDwvt6LVzRw66KTyCiW7qzD71Fru97z2H7nNe3UnkkxbnTz9de3aPN5KNCK2y
-         6WqnrfTjj6aKtqVdbiFqmTFZcTj6GmmJMgrl7pWuISos1rvhuSTdQOxI7yP9SPvAEdKg
-         jgEt+sEw6X0w05wNlXKdcxkDfQEoTkTpzyoSS7z/MPPBpZvSsptgtGwiTIxW660f3y2t
-         8h28pOakrCcAqfvciH04Ebp1dNBfXYDWUcroLY5jp39jx0RahXcXG96DPOENxA4RsVal
-         ga7A==
-X-Gm-Message-State: AOAM532AP8rhN0r4KCccAWDaDSJm+8GTO3NjmW1KwyzJQbeyDQL3XrFb
-        JdfDevt0PWtKzIWATlrcpoxE9baNT0qyjxeT7UZQMg==
-X-Google-Smtp-Source: ABdhPJxKT3O/0e6XB8E3CXnzNjzfH4t/JQnxNF+xHXvwOIFdL47cQ56BLWHm9PXUgYML55dzAFoM5Me5qL51ZGBzpb8=
-X-Received: by 2002:ac2:5e3c:: with SMTP id o28mr5494689lfg.184.1634643447603;
- Tue, 19 Oct 2021 04:37:27 -0700 (PDT)
+        with ESMTP id S235669AbhJSMpf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Oct 2021 08:45:35 -0400
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60C89C06161C
+        for <linux-omap@vger.kernel.org>; Tue, 19 Oct 2021 05:43:22 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:b4c3:ba80:54db:46f])
+        by michel.telenet-ops.be with bizsmtp
+        id 7ojF2600T12AN0U06ojFz9; Tue, 19 Oct 2021 14:43:20 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mcoSZ-0069O3-4O; Tue, 19 Oct 2021 14:43:15 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mcoSY-00EESZ-FR; Tue, 19 Oct 2021 14:43:14 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Rob Herring <robh+dt@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        David Lechner <david@lechnology.com>,
+        Sebastian Reichel <sre@kernel.org>
+Cc:     devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/3] dt-bindings: net: TI wlcore json schema conversion and fix
+Date:   Tue, 19 Oct 2021 14:43:10 +0200
+Message-Id: <cover.1634646975.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20211015104720.52240-1-tony@atomide.com>
-In-Reply-To: <20211015104720.52240-1-tony@atomide.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 19 Oct 2021 13:36:51 +0200
-Message-ID: <CAPDyKFra85z7w3LkJFJ-rkb-0PwdcxRCAVTrFEWpvV7gqJAAtw@mail.gmail.com>
-Subject: Re: [PATCHv4 0/6] More SoCs for sdhci-omap to deprecate omap_hsmmc
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.chunyan@linaro.org>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 15 Oct 2021 at 12:47, Tony Lindgren <tony@atomide.com> wrote:
->
-> Hi,
->
-> Here are v4 changes to add support to sdhci-omap for earlier SoCs so we
-> can start deprecating the old omap_hsmmc driver.
->
-> For most part these changes can be tested just by changing the old hsmmc
-> devicetree compatible value for the SoC as described in the first binding
-> patch. Then after some testing, I'll post patches to enable sdhci-omap
-> for all the omap variants instead of omap_hsmmc.
->
-> These patches are against current Linux next.
->
-> Regards,
->
-> Tony
->
-> Changes since v3:
->
-> - More runtime PM fixes and improvments as commented by Ulf
->
-> - Use 0U instead of 0UL to fix compile warnings
->
-> Changes since v2:
->
-> - Fix up runtime PM issues and enable autosuspend based on comments
->   from Ulf
->
->   Changes since v1:
->
->   - Added Rob's ack for the binding changes
->
->   - Fix wakeirq assignment as noted by Grygorii
->
->
-> Tony Lindgren (6):
->   dt-bindings: sdhci-omap: Update binding for legacy SoCs
->   mmc: sdhci-omap: Handle voltages to add support omap4
->   mmc: sdhci-omap: Add omap_offset to support omap3 and earlier
->   mmc: sdhci-omap: Implement PM runtime functions
->   mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM
->   mmc: sdhci-omap: Configure optional wakeirq
->
->  .../devicetree/bindings/mmc/sdhci-omap.txt    |   6 +-
->  drivers/mmc/host/sdhci-omap.c                 | 260 ++++++++++++++----
->  2 files changed, 204 insertions(+), 62 deletions(-)
->
-> --
-> 2.33.0
+	Hi all,
 
-Applied for next, thanks!
+This patch series converts the Device Tree bindings for the Texas
+Instruments Wilink Wireless LAN and Bluetooth Controllers to
+json-schema, after fixing an issue in a Device Tree source file.
 
-Kind regards
-Uffe
+Thanks for your comments!
+
+Geert Uytterhoeven (3):
+  ARM: dts: motorola-mapphone: Drop second ti,wlcore compatible value
+  dt-bindings: net: wireless: ti,wlcore: Convert to json-schema
+  dt-bindings: net: ti,bluetooth: Convert to json-schema
+
+ .../devicetree/bindings/net/ti,bluetooth.yaml |  91 ++++++++++++
+ .../devicetree/bindings/net/ti-bluetooth.txt  |  60 --------
+ .../bindings/net/wireless/ti,wlcore,spi.txt   |  57 --------
+ .../bindings/net/wireless/ti,wlcore.txt       |  45 ------
+ .../bindings/net/wireless/ti,wlcore.yaml      | 134 ++++++++++++++++++
+ .../boot/dts/motorola-mapphone-common.dtsi    |   2 +-
+ arch/arm/boot/dts/omap3-gta04a5.dts           |   2 +-
+ 7 files changed, 227 insertions(+), 164 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/ti,bluetooth.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/ti-bluetooth.txt
+ delete mode 100644 Documentation/devicetree/bindings/net/wireless/ti,wlcore,spi.txt
+ delete mode 100644 Documentation/devicetree/bindings/net/wireless/ti,wlcore.txt
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/ti,wlcore.yaml
+
+-- 
+2.25.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
