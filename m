@@ -2,65 +2,184 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FCAB433B4E
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Oct 2021 17:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1BD7433B8A
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Oct 2021 18:02:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234143AbhJSPzk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Oct 2021 11:55:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56428 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234124AbhJSPzf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Oct 2021 11:55:35 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED549C061746
-        for <linux-omap@vger.kernel.org>; Tue, 19 Oct 2021 08:53:21 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id n7so7042439ljp.5
-        for <linux-omap@vger.kernel.org>; Tue, 19 Oct 2021 08:53:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=jaCZSSAkbAMREaY/hqrdytvcXWwYWJ58MCP7XcU6bpM=;
-        b=aFLmZVEiTuXce2IFgLdMr5MYKRh0L+az6/JC3o1AmOliSTkXK7rDzdPfXzz6o1jVYS
-         W4PgnBVA+zWEZnKPqyYT3gPCdxBA3P73ITcWfzNsPbPC9IMB5LOjaCkpeVBSvUK/8zW0
-         TqoBOe1IW4r+RTeotcWPeFCOlDB+S7LoKHT4GIgxxHso11IzwtTuhXjdRpZEQ6thSkKW
-         GCXCDeK7kHC87163hoqW7g1Yugq9mwyasX8+/NWiZx4Nvo5GGQCls6blpX2OlBRkVnh3
-         C9P4YBqDQGf+6ZM84EtKDE1kj8WPyXWtDZSCNdys6fbMVoLhRJXNNg/YToT454sHOXoF
-         pMzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=jaCZSSAkbAMREaY/hqrdytvcXWwYWJ58MCP7XcU6bpM=;
-        b=BZc/CAddgqGmG771+67nh59oXgAQ5kaA7VmnnQBiMCj/RDHby0O96+YcRZN1b0/89N
-         MVgm8sHNhu+wev2tL4uHSiLDoOuKBMFdFQ08dI8cxSobYwVhGlo5JXYRZ/e7/w7nw2ot
-         YGjAhUxE2M81HehvZJADXmUNwd1MT/ffQjIISHK8U6T0dpY/WykGgKtfXxY5xa0FaD6p
-         ETluXJDd3l+KdUcw30fas4XQ86V8MF2A+KvLXuUUsc0qtLyuDdsD6al1GVTa/5e73XZ5
-         MxE8m3N8bUpD/rfZ9J77WekS5bVrgYoq9fGXWWZyoPtzhHC0T6U0yzBPAf/JQVGDCmol
-         G7+w==
-X-Gm-Message-State: AOAM531UGjocvpr4B3wQIDevjDOHRQhgTC+80/P+7mRvN5WwaErBuuX5
-        Yd0xbzE8ZloB+yD8voTVETymA2grUpNIvpm1I3M=
-X-Google-Smtp-Source: ABdhPJzYLwC6JYZ+cvOzcCYHnT1obJb/Kt6p8IKKokOkwmdzbtSw8CQAGbs8NfhLoF/p7MQP1uedFFBmQK9JPv3fE4A=
-X-Received: by 2002:a05:651c:203:: with SMTP id y3mr7352949ljn.335.1634658800303;
- Tue, 19 Oct 2021 08:53:20 -0700 (PDT)
+        id S231495AbhJSQFF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Oct 2021 12:05:05 -0400
+Received: from vern.gendns.com ([98.142.107.122]:54244 "EHLO vern.gendns.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230168AbhJSQFF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 19 Oct 2021 12:05:05 -0400
+X-Greylist: delayed 1302 seconds by postgrey-1.27 at vger.kernel.org; Tue, 19 Oct 2021 12:05:04 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=sZekwuwMwcMC0PSMG4u/OrHchR+x4Vkc9whNiwOFRTU=; b=swhCBTxRJxxtIgLi9/dq8+T6r/
+        vspvuy0rZ+pYE/Qr7xdcW7dMSI/fhJyFOTgCsFHKkFZIq7vke3zf0kLJMD6OaKLDB0tcBMhKIreMZ
+        TWm8HtLQ77oVsZG9+jOo1050N5P/oePr0JftFVFYXIJGnrjAFETDM4QkjUo0Il/DHCWbcISI0Drr2
+        v4iOonRLYFTRpN9itQVm4M3ksp2LbDdbZXS5azuxZeGMfKqZOAwvWs+IzmoZ/38wM6Ic+e0QDalm3
+        4v8/+gp+89DHOLr4iBQ1WIo712DB8mXH6lm0dezc1a4yPnPULwJ8YfzX4RWUaQCkjGRWJLKFWaZsK
+        l9RCwGfA==;
+Received: from 108-198-5-147.lightspeed.okcbok.sbcglobal.net ([108.198.5.147]:40992 helo=[192.168.0.134])
+        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <david@lechnology.com>)
+        id 1mcrEb-0004JI-9h; Tue, 19 Oct 2021 11:41:06 -0400
+Subject: Re: [PATCH 3/3] dt-bindings: net: ti,bluetooth: Convert to
+ json-schema
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh+dt@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sebastian Reichel <sre@kernel.org>
+Cc:     devicetree@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+References: <cover.1634646975.git.geert+renesas@glider.be>
+ <c1814db9aff7f09ea41b562a2da305312d8df2dd.1634646975.git.geert+renesas@glider.be>
+From:   David Lechner <david@lechnology.com>
+Message-ID: <70d3efb8-e379-5d20-1873-4752e893f10b@lechnology.com>
+Date:   Tue, 19 Oct 2021 10:41:03 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Received: by 2002:a2e:a68f:0:0:0:0:0 with HTTP; Tue, 19 Oct 2021 08:53:19
- -0700 (PDT)
-Reply-To: ozkansahin.gbbva@gmail.com
-From:   LYDIA WRIGHT <henryhart212@gmail.com>
-Date:   Tue, 19 Oct 2021 18:53:19 +0300
-Message-ID: <CAFM2HgzfPz4a33Oe33LNCgaEZU-RqBXMws+oSW=3KdePHWxvcg@mail.gmail.com>
-Subject: Best Regards
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <c1814db9aff7f09ea41b562a2da305312d8df2dd.1634646975.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Greetings dear,
-I'm a cancer patient and I intend to donate funds to a charity in your
-country with your help... Please respond for additional information
-here.=F0=9F=91=87 (lydiawright836@gmail.com), if you are interested.
-regards
-Mrs. Lydia A. Wright
+On 10/19/21 7:43 AM, Geert Uytterhoeven wrote:
+> Convert the Texas Instruments serial-attached bluetooth Device Tree
+> binding documentation to json-schema.
+> 
+> Add missing max-speed property.
+> Update the example.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> I listed David as maintainer, as he wrote the original bindings.
+> Please scream if not appropriate.
+
+I'm not affiliated with TI in any way, so if someone from TI
+wants to take responsibility, that would probably be better.
+
+For for the time being...
+
+Acked-by: David Lechner <david@lechnology.com>
+
+
+> ---
+>   .../devicetree/bindings/net/ti,bluetooth.yaml | 91 +++++++++++++++++++
+>   .../devicetree/bindings/net/ti-bluetooth.txt  | 60 ------------
+>   2 files changed, 91 insertions(+), 60 deletions(-)
+>   create mode 100644 Documentation/devicetree/bindings/net/ti,bluetooth.yaml
+>   delete mode 100644 Documentation/devicetree/bindings/net/ti-bluetooth.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/net/ti,bluetooth.yaml b/Documentation/devicetree/bindings/net/ti,bluetooth.yaml
+> new file mode 100644
+> index 0000000000000000..9f6102977c9732d2
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/ti,bluetooth.yaml
+> @@ -0,0 +1,91 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/ti,bluetooth.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments Bluetooth Chips
+> +
+> +maintainers:
+> +  - David Lechner <david@lechnology.com>
+> +
+> +description: |
+> +  This documents the binding structure and common properties for serial
+> +  attached TI Bluetooth devices. The following chips are included in this
+> +  binding:
+> +
+> +  * TI CC256x Bluetooth devices
+> +  * TI WiLink 7/8 (wl12xx/wl18xx) Shared Transport BT/FM/GPS devices
+> +
+> +  TI WiLink devices have a UART interface for providing Bluetooth, FM radio,
+> +  and GPS over what's called "shared transport". The shared transport is
+> +  standard BT HCI protocol with additional channels for the other functions.
+> +
+> +  TI WiLink devices also have a separate WiFi interface as described in
+> +  wireless/ti,wlcore.yaml.
+> +
+> +  This bindings follows the UART slave device binding in ../serial/serial.yaml.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,cc2560
+> +      - ti,wl1271-st
+> +      - ti,wl1273-st
+> +      - ti,wl1281-st
+> +      - ti,wl1283-st
+> +      - ti,wl1285-st
+> +      - ti,wl1801-st
+> +      - ti,wl1805-st
+> +      - ti,wl1807-st
+> +      - ti,wl1831-st
+> +      - ti,wl1835-st
+> +      - ti,wl1837-st
+> +
+> +  enable-gpios:
+> +    maxItems: 1
+> +
+> +  vio-supply:
+> +    description: Vio input supply (1.8V)
+> +
+> +  vbat-supply:
+> +    description: Vbat input supply (2.9-4.8V)
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: ext_clock
+> +
+> +  max-speed: true
+
+Does this mean that max-speed from serial.yaml is supported
+but current-speed is not?
+
+> +
+> +  nvmem-cells:
+> +    maxItems: 1
+> +    description:
+> +      Nvmem data cell that contains a 6 byte BD address with the most
+> +      significant byte first (big-endian).
+> +
+> +  nvmem-cell-names:
+> +    items:
+> +      - const: bd-address
+> +
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: false
+> +
