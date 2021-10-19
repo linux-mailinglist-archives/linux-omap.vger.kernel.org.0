@@ -2,97 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C33084332A4
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Oct 2021 11:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34B0D4334D5
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Oct 2021 13:37:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235124AbhJSJlh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Oct 2021 05:41:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54192 "EHLO
+        id S235396AbhJSLj7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Oct 2021 07:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235145AbhJSJl0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Oct 2021 05:41:26 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FA4C06177B
-        for <linux-omap@vger.kernel.org>; Tue, 19 Oct 2021 02:39:02 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id i1so17685722qtr.6
-        for <linux-omap@vger.kernel.org>; Tue, 19 Oct 2021 02:39:02 -0700 (PDT)
+        with ESMTP id S235425AbhJSLjq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Oct 2021 07:39:46 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4132CC061769
+        for <linux-omap@vger.kernel.org>; Tue, 19 Oct 2021 04:37:29 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id x192so6679133lff.12
+        for <linux-omap@vger.kernel.org>; Tue, 19 Oct 2021 04:37:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
-        b=TOvN/3L74NxJ8jkZLAwc1HWcAigE5PqgL50bgmFqgfF5N3Ni/F/hFF6HKKLKTN31yN
-         HevaAXYbPfypt8hhKvSPyehT5ALdXqczNk+5xUwtC+i5sgHXh2uIQwAecZjfCaWU8ix6
-         IP3iNNDeKzM9Rarn67S7Y6Q5meavaw7Mpk+sez5Jm9gTXVkS2K7rH0HxN0wGBD1vTEZW
-         SlZ7Ohjm5TDffwxVe9psHKkZrw9F8ewS3UJdvRp48BugnVC9N6o6tGt7kOuD9dBL9WOI
-         l1dbXlU20FuuDCR1G9eGV6dpPzPq/obtSd+vSUmjw4dvgQ3M4KndmuUgzevCd5/KLP2j
-         AvJA==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CdPF+nAmej64mkR0xEgrQMTU0no804stc0osvj6kTUg=;
+        b=lZYxFWcKseVaD8ggpOAQFkgIWWlgAO6sN+FF9jcLwlhS3lrFVB5KyR8l8ZfmHtxL47
+         szt5OrrZCFK2dSyV1ZKyfCDUrtrSTRT5ipWX9seSlWfav6OxroI2PTm8FQWCwhNl+uKu
+         4J8gVG6OArjQSom9+ixsQZWRMjCE/N+nhbgwsBjDLY6sSGLfHn9dbVrDNyjD1XYqfKuq
+         7dg3UbCgNhgc+O5VxwUxWCFPADhFekYCjz/IquF7jkv6Trt7+dAuzUip9z+jHPSODShn
+         /Hl34ChP8MeQLItRCLKh/mJwHgiEI8Vo+FgGxjeYUteu0IEpSFSmZCZgork79wsabyvx
+         8zuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
-        b=FgWFMzXvS7jh2g7IjP+fyuNqXHD90ewPp+sgQGL9eHDpNWlFuXCuUznosdYtKhhcBz
-         1Y7PyRg3Gb7LkcAQtdIse+HJDDfqFTQGvi0E3AtDcqxYjmqkjGWUqNCz13SGqbAqsNs0
-         AAinrmgINb2PIcI0RTbCYUUCLnVO2qy//dhP4yyEodOy4bGxWQH9wWBGd1CejxuYINr3
-         QFsrRrgp5SFj9gE4rvl7uxhInWO6FscbkbOT/OYrVBedNcNKsjlv420eiImRsNfKjjaS
-         EcyjbNAcgaca3ueMWuanN9Dz5kEjeMRtrg9v6yoESdNcJLScacA+qhmWI6S9F9NBJcWD
-         uroA==
-X-Gm-Message-State: AOAM532yXw3WA5XYzN1pJDw9A0kZb5xNtzTqRI32HFYvfl1lTfpW0n7w
-        rwJcqsoVOmCBIw2IOeXcsYD86X7tkxOc8Wm9LWOs7gi6oRw=
-X-Google-Smtp-Source: ABdhPJzMH7/Viv+gmOFi/wRxRbcc549EbhNxq1WBmFuuCl5Y1sIaNw3hPc5P9A8SHm6QnP1HNGNAvecvirmJS/oiL6w=
-X-Received: by 2002:a02:6f5d:: with SMTP id b29mr3319085jae.113.1634636331013;
- Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CdPF+nAmej64mkR0xEgrQMTU0no804stc0osvj6kTUg=;
+        b=0ysSw6suv7/srJ4NtKwLnjI1x0Kso5P65bzr+DjvvCkYwVCkF65F9F1HTmVMGvcfGG
+         e5/ej6amDwvt6LVzRw66KTyCiW7qzD71Fru97z2H7nNe3UnkkxbnTz9de3aPN5KNCK2y
+         6WqnrfTjj6aKtqVdbiFqmTFZcTj6GmmJMgrl7pWuISos1rvhuSTdQOxI7yP9SPvAEdKg
+         jgEt+sEw6X0w05wNlXKdcxkDfQEoTkTpzyoSS7z/MPPBpZvSsptgtGwiTIxW660f3y2t
+         8h28pOakrCcAqfvciH04Ebp1dNBfXYDWUcroLY5jp39jx0RahXcXG96DPOENxA4RsVal
+         ga7A==
+X-Gm-Message-State: AOAM532AP8rhN0r4KCccAWDaDSJm+8GTO3NjmW1KwyzJQbeyDQL3XrFb
+        JdfDevt0PWtKzIWATlrcpoxE9baNT0qyjxeT7UZQMg==
+X-Google-Smtp-Source: ABdhPJxKT3O/0e6XB8E3CXnzNjzfH4t/JQnxNF+xHXvwOIFdL47cQ56BLWHm9PXUgYML55dzAFoM5Me5qL51ZGBzpb8=
+X-Received: by 2002:ac2:5e3c:: with SMTP id o28mr5494689lfg.184.1634643447603;
+ Tue, 19 Oct 2021 04:37:27 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a92:c7c6:0:0:0:0:0 with HTTP; Tue, 19 Oct 2021 02:38:50
- -0700 (PDT)
-Reply-To: megaritalouisdrayfu199@yahoo.com
-From:   "Mrs. Margarita Louis-Dreyfus." <anniewei112@gmail.com>
-Date:   Mon, 18 Oct 2021 21:38:50 -1200
-Message-ID: <CAGT4pMkzKn8mfeY05OAG04CCAxodKEVDUk46D=O7cfK8+n1=tA@mail.gmail.com>
-Subject: Charitable funds to help the less privilege!
-To:     undisclosed-recipients:;
+References: <20211015104720.52240-1-tony@atomide.com>
+In-Reply-To: <20211015104720.52240-1-tony@atomide.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 19 Oct 2021 13:36:51 +0200
+Message-ID: <CAPDyKFra85z7w3LkJFJ-rkb-0PwdcxRCAVTrFEWpvV7gqJAAtw@mail.gmail.com>
+Subject: Re: [PATCHv4 0/6] More SoCs for sdhci-omap to deprecate omap_hsmmc
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Chunyan Zhang <zhang.chunyan@linaro.org>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        DTML <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-Hello,
+On Fri, 15 Oct 2021 at 12:47, Tony Lindgren <tony@atomide.com> wrote:
+>
+> Hi,
+>
+> Here are v4 changes to add support to sdhci-omap for earlier SoCs so we
+> can start deprecating the old omap_hsmmc driver.
+>
+> For most part these changes can be tested just by changing the old hsmmc
+> devicetree compatible value for the SoC as described in the first binding
+> patch. Then after some testing, I'll post patches to enable sdhci-omap
+> for all the omap variants instead of omap_hsmmc.
+>
+> These patches are against current Linux next.
+>
+> Regards,
+>
+> Tony
+>
+> Changes since v3:
+>
+> - More runtime PM fixes and improvments as commented by Ulf
+>
+> - Use 0U instead of 0UL to fix compile warnings
+>
+> Changes since v2:
+>
+> - Fix up runtime PM issues and enable autosuspend based on comments
+>   from Ulf
+>
+>   Changes since v1:
+>
+>   - Added Rob's ack for the binding changes
+>
+>   - Fix wakeirq assignment as noted by Grygorii
+>
+>
+> Tony Lindgren (6):
+>   dt-bindings: sdhci-omap: Update binding for legacy SoCs
+>   mmc: sdhci-omap: Handle voltages to add support omap4
+>   mmc: sdhci-omap: Add omap_offset to support omap3 and earlier
+>   mmc: sdhci-omap: Implement PM runtime functions
+>   mmc: sdhci-omap: Allow SDIO card power off and enable aggressive PM
+>   mmc: sdhci-omap: Configure optional wakeirq
+>
+>  .../devicetree/bindings/mmc/sdhci-omap.txt    |   6 +-
+>  drivers/mmc/host/sdhci-omap.c                 | 260 ++++++++++++++----
+>  2 files changed, 204 insertions(+), 62 deletions(-)
+>
+> --
+> 2.33.0
 
-I am sorry to encroach into your privacy in this manner, my name
-Margarita Louis-Dreyfus , I find it pleasurable to offer you my
-partnership in business, i only pray at this time that your email
-address is still valid. I want to solicit your attention to receive
-money on my behalf for humanitarian project to help the less
-priviledge.
+Applied for next, thanks!
 
-The purpose of my contacting you is because my status would not permit
-me to do this alone. Given my current state of health, I have decided
-to donate Ninety -Eight Million United State Dollars to establish a
-foundation with your help to reach out to the less privilege, orphans,
-sick and homeless people in your country who will receive their
-blessings as i promised my God before i leave this earth.
-
-I got your contact through my personal search, you were revealed as
-being quite astute in private entrepreneurship, and i have no doubt
-that you can handle this huge financial transaction. Please contact my
-executor for more information:
-
-Mr. Ford Spencer(Attorney at Law).
-For: Mrs. Margarita Louis-Dreyfus
-LEGAL DEPARTMENT LAWSON & ASSOCIATES
-(JUSTICE, FAIRPLAY & EQUITY)
-Email: fordspencer828@yahoo.com, fordspencereqs828@gmail.com
-Office: +1-970-414-1400
-+1-702-714-3422
-Mobile: +1 916 269 2733
-Fax: +1-970-414-1433
-=C2=AE Property of Steven C Spence PA.
-
-Your earliest response to this letter will be appreciated.
-
-Kind Regards,
-
-Mrs. Margarita Louis-Dreyfus.
+Kind regards
+Uffe
