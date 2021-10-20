@@ -2,163 +2,338 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78BC44343F1
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Oct 2021 05:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83AC6434512
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Oct 2021 08:21:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229864AbhJTDlT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Oct 2021 23:41:19 -0400
-Received: from mx0b-0014ca01.pphosted.com ([208.86.201.193]:7360 "EHLO
-        mx0a-0014ca01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229555AbhJTDlS (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 19 Oct 2021 23:41:18 -0400
-Received: from pps.filterd (m0042333.ppops.net [127.0.0.1])
-        by mx0b-0014ca01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19K1chwD004401;
-        Tue, 19 Oct 2021 20:38:50 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=proofpoint;
- bh=kkzC3v39pXt5cT0EaAWdCRz2tQajUTtyMIZaBlp7htQ=;
- b=PiyJW9YjWtTpF+rfSst9PtvW3hA0VIbNe04kAEHvn1jiiv3a4aNf1fye1lyrI5QY+fav
- YP3lNsLWFHYLkKhmdnNtgq/sZ5jDrUjOsaZYEcKWTedohT+nS36xUNyI0aH8Cbcdsyb8
- jh05jHiRbPo3YS7HRPcRd3yVct9whgLAFj7yQizT0CbEmtenWTWlyYMgYmY8FrvkT1Ww
- 8WvTLFv/PeM3Yqrxzexte5D9JWUanlOSr0n2DcwyxnNs6+S/4FZoJe2OxDzM9JYCilxf
- 359UiJIeOft+brqPAHJPOz10/aKJnqVb9dpeyWT6XF2Rn17I1+sT0qtSFUk/mzan8+Xi ig== 
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2103.outbound.protection.outlook.com [104.47.58.103])
-        by mx0b-0014ca01.pphosted.com with ESMTP id 3bsk6ww4u2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 19 Oct 2021 20:38:50 -0700
+        id S229809AbhJTGXz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 20 Oct 2021 02:23:55 -0400
+Received: from mail-bn1nam07on2061.outbound.protection.outlook.com ([40.107.212.61]:39103
+        "EHLO NAM02-BN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229691AbhJTGXy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 20 Oct 2021 02:23:54 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OZCz5YVylcWYLld62NeFdWMuqyPfymrbnHYeiAzy5DyQW94377I1xo4zcsLZk7ohvv3OX+tlC2wFYvYNIukPhZrNvTbgeFVUxYWfnTVVnqTZZDz5TwidrXUoPbleSQzqMOLNu2IpCW1Gf2Wa9AvASi5cK6/jpJWHxI9sB+EU+K0xpJI9/+B1uCWwJyPY+D3IyxXbPc6B7yE5AtXvlYpQRtpN4Saovv6tvyp2ME8b2mxGt7oFgVGC1bI0isDaXduLSjmcXxmLFhtdKi4m9fgJHGq4tcY9ROQDUvtLjVyWgWApOJVOJqT7z+VFys7iIniVHuXs4HZWKK4B18cEngDgMg==
+ b=m9TakCvWYlSSyT80I7m82tOuXBv3o9EtVlr4LLfplqmrPdAb6cicwzPv0t7WJ3drbnkLMILWCRmBYkK07HCTe9nYaX08QW9+1SYrhK8YCwrqSOS3ST7ciYSPL5nQVjDjxKx0PqpMdWtGl//QiMNOvBTkKZiDS/ekfw9mSZAV2UjKcK/bjU9Nihh81Yw0z+EinXeSuFJgulgyE3ZnBDnYm30FsDQZYR8vOSOGXmpJlmPGCu8YpAmfiV7PNjSuDb+n4YtpqFJAeuZQ425ZrLEKrRPIiLN+gVCHtw5c0ouJygg/2+M2dPJ1CFxr7g5usXTGr4MTHJnjWtMvhvXlOJ2DUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kkzC3v39pXt5cT0EaAWdCRz2tQajUTtyMIZaBlp7htQ=;
- b=OpJEbp01yibptMX+XzSEAr2RIM32aHqAVWEPGXpZ/84wpk7f+LQIBWz5t67nl+YBwajBtfxMQVscBa0Akfgj0oalqgulPCBkQN79H0OBPrWZLDVM5dfszQ6m5fUKi3qLW3k4NkM3c+YT3DS29UT78HEkrlovorRC38BzNzcBcu6V96nw2pmWRrZt3s3G6ZlC+AteOsKNDWUmL2cYYIcXZdgKmRKUO4C0UcKsJPTWt6IaQNJrsRsnI9wfpOVuSucPV0ziFU7rEbmIjpL/aB8K560YK/VlpGF/lX+9ppG6fIL2se1WOD7ut5lOAbNkDRCs3+9xC2/uz1OM7dm6o6bUjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
- dkim=pass header.d=cadence.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
- s=selector2;
+ bh=giHEi8StHDpFAIKZ2fjbrOrRzROdUjeBGR7s6YiPPk8=;
+ b=dmS4rRrK/g3O33ldx8as3eJekD7ORXwiGET1tB1HB/7u+pN7OidYdb6Wc2Xxx5JV1Pk5MCMajIoEXip9DY3V24+ysizzXBV7WhUplMmV4BIh5c30ZCN689KyBvAj2GEOMgM9yBqOZ3t68fImj8wyUNZwvqCUkwRcfY37fJtNkldRKI+pfth2CjZPBokxl8lBT08l7wy6qSoAW/1DiqaQSUvm2suMD5NBD4lKDR68vv0hmfJ348XGh4kDS2wCVXmSeynMNBsFYeNslozNWf4GSaweAMEoRJqw9e+bHiD9E0NDw6Xq0RjcKRXH3qYre6mRn4W7hwZVUhr4Th+3hGq4Uw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.62.198) smtp.rcpttodomain=foss.st.com smtp.mailfrom=xilinx.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=xilinx.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kkzC3v39pXt5cT0EaAWdCRz2tQajUTtyMIZaBlp7htQ=;
- b=y3AxtyLxnThTwH4x75rbyNIsapNftlbYrXBwKQCX56EknSxerzyZoKZmXzI0wuWwbNM0MaZ/YKj7jnIliMvVi+ebiM7cccw+u2DnVEMGYgiEdQM/L823X33vcDb/y7KP/HsMYTjhCF7C3Q0cwe1WTI7n4axeNfdoDwguMeezqns=
-Received: from CY4PR07MB2757.namprd07.prod.outlook.com (2603:10b6:903:22::20)
- by CY4PR07MB3605.namprd07.prod.outlook.com (2603:10b6:910:76::20) with
+ bh=giHEi8StHDpFAIKZ2fjbrOrRzROdUjeBGR7s6YiPPk8=;
+ b=GK+hmKXrGWW5qR8g5NU00hPJaTOxWrRF6u1pFuZPIsrjlu1rLJdKLfONq3f5Bq6FGy5vgzD9nZrIWRz8jMO0OndubmN+6A3DJlSJ39gZOk80CKi3WFDXeoir9FVhqJUijlx4C34MGWiyBFf85rT7dGGPUy9YPuo+EzhoI0T7yWk=
+Received: from SA9PR11CA0017.namprd11.prod.outlook.com (2603:10b6:806:6e::22)
+ by BN7PR02MB4993.namprd02.prod.outlook.com (2603:10b6:408:25::29) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.17; Wed, 20 Oct
- 2021 03:38:48 +0000
-Received: from CY4PR07MB2757.namprd07.prod.outlook.com
- ([fe80::903b:e71d:a584:9c87]) by CY4PR07MB2757.namprd07.prod.outlook.com
- ([fe80::903b:e71d:a584:9c87%3]) with mapi id 15.20.4608.018; Wed, 20 Oct 2021
- 03:38:48 +0000
-From:   Parshuram Raju Thombare <pthombar@cadence.com>
-To:     Bjorn Helgaas <helgaas@kernel.org>
-CC:     "kishon@ti.com" <kishon@ti.com>, Tom Joseph <tjoseph@cadence.com>,
-        "lorenzo.pieralisi@arm.com" <lorenzo.pieralisi@arm.com>,
-        "robh@kernel.org" <robh@kernel.org>, "kw@linux.com" <kw@linux.com>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Milind Parab <mparab@cadence.com>
-Subject: RE: [PATCH] PCI: cadence: Disable Function Level Reset support
-Thread-Topic: [PATCH] PCI: cadence: Disable Function Level Reset support
-Thread-Index: AQHXxEsGD19CGPKz3UqopILaYcgccKvZJ+4AgAIXBbA=
-Date:   Wed, 20 Oct 2021 03:38:47 +0000
-Message-ID: <CY4PR07MB27579495272871B120875A83C1BE9@CY4PR07MB2757.namprd07.prod.outlook.com>
-References: <1634580445-89772-1-git-send-email-pthombar@cadence.com>
- <20211018194218.GA2248370@bhelgaas>
-In-Reply-To: <20211018194218.GA2248370@bhelgaas>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNccHRob21iYXJcYXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRiYTI5ZTM1Ylxtc2dzXG1zZy0zOTRkZGNkMC0zMTU3LTExZWMtODY0ZC0xMDY1MzBlZjIyZjVcYW1lLXRlc3RcMzk0ZGRjZDItMzE1Ny0xMWVjLTg2NGQtMTA2NTMwZWYyMmY1Ym9keS50eHQiIHN6PSI3MTkiIHQ9IjEzMjc5MTc0NzI0NTExODg0MiIgaD0iSGdHSWY1MkM2Q0dlMnREeG1ZQ0ZlYVl4Sld3PSIgaWQ9IiIgYmw9IjAiIGJvPSIxIi8+PC9tZXRhPg==
-x-dg-rorf: true
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=cadence.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: dfbb60c6-50b0-4274-ced7-08d9937b205b
-x-ms-traffictypediagnostic: CY4PR07MB3605:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CY4PR07MB3605C00D87AAE9242D47F40FC1BE9@CY4PR07MB3605.namprd07.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: QjsCdGBXUGDO48P7zSC+Psvp/QyfD4o+wdE/v5HWSYXnMENYNxKDjFnNxzb4uwXoMlDFueJ44OrQkSEQeTDK/jYsiEPNqcqK6NpQE8HD+ZiilEORRHvAS3pI5bRBYWkoNbpIeoVmQmhNdrAmfsx3kVdgkFRJ8IlpT0gkofDnErpt/nZk+a2eA7o0zNQVgt/W0/vW8njD4O8lP4uZJ4gmob56j3Xg7ANRpSwAz3Z4fgc1NBsKCZoCtH1HKUJaYbfN8pizninwsrPvV+YQGlmIUau7PGXGK8dqIdaSJ8vhU6Xjrichd8Ef1GdeeCst+EFwFHzbnbDSDA9/4AS30I1KRw7hlrH52AjDFf4ih1RHoproW1wijBbPwlTTNTc/h1qWuzTixXOJGgyWZ4QOQVbub/GWfDNFS86dk/wNOaUyreMKRR1yAgKVnz268fr8yTbyl1GOQ7eCVpL1zHfro7ym8l13noRB0BE3bikx281WRa01XlUfDlmaQACczrij7QGpTUe7heUnR4WY5osSZpzx/cb/3qZ7QT5RFlpJklASPXaYxQ9YdvVKmY6XJfMquAkVun9NZgxA/4sfSsnbOsQ+ILrdnmrUAk03y4PvDiVB6xDpvAZfRtI/81PXRmuxJ6fSz+65kwr4W2C7pn2bJZB8vft1+vQG4RGlJ0dkqELYk1vJU53RFGaOFBdaBTTgECBmiju2R1CI3pbNDHwjKwIMeaxwEevy+0DIjplVl01QoT5V/MLWjtzkfMWKYxL5BtaG
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR07MB2757.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(36092001)(8676002)(66556008)(76116006)(64756008)(6916009)(54906003)(66446008)(7416002)(66946007)(8936002)(107886003)(66476007)(38070700005)(38100700002)(71200400001)(6506007)(26005)(2906002)(52536014)(5660300002)(316002)(55016002)(33656002)(7696005)(4326008)(508600001)(9686003)(186003)(4744005)(86362001)(122000001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?0Mv6KQg12f0sYq6APylf4NWYeOiqxRfdQXYbOmU2jmFCBSu/29zilWAsFcNR?=
- =?us-ascii?Q?st6lPw8ME3cq771K8gturVlkoGJshVuqntoznnDNjFc4sESX0kKcPJWQzwAX?=
- =?us-ascii?Q?d5i4ni36DO/m5FXDZMqm1wbxdPll2nDdrMYNJDC+vS2V+tXizoYVjDMaZR20?=
- =?us-ascii?Q?2NhWt3IZ30tJOhOHCgq77hGlxtimpoApWZVD7D3iTPOS+c5h06FAe2s7xy2O?=
- =?us-ascii?Q?TTZxeFJ4E+oH7/TPgaI1cL+F3ltFlk2QlttXlEnOPdE0hyodHs7XjSjvfEow?=
- =?us-ascii?Q?KUnPWz/fPBhx2DkGIaBq5kc9oyZFwN5l+Gt+X3L6mpMxA8CkRPEJHmPgKJ0y?=
- =?us-ascii?Q?3yPjq8Adw441InW8VSz+AjpG8aic8lLP07Y450yB++KVbkugQNDqtxIBokEq?=
- =?us-ascii?Q?JfflREou6pUk2mQW0Fc3WBBGSBzLyjv7rr2Alcfj0i10G0XZCiCf3dPTy/3l?=
- =?us-ascii?Q?nqB9gBHqS/o0ePFcUO5ZNAtc/WtnntDmtiN2L9jjB6lfm62aEe4AFfRgIjF9?=
- =?us-ascii?Q?d9mXbwQhwcEYYumQUcZedQho9ZbsBWpKXvCnh+Qq3Dq9YzYBOZHlLfEks9cb?=
- =?us-ascii?Q?RLwdas0sKCq6TlSgrECz46fK52h0Kda5y7VH9EIUKRCf5s+HeAWbDj+sy3JM?=
- =?us-ascii?Q?N3bNkpGnIH106EA9HopY1Q6taIunJw8hIQLyotacEr9fJiaK5SZmnaJHXe6t?=
- =?us-ascii?Q?M5oGydfIxag/wOCGVA3AXjQlTAAbn0R5YJSW9MrQxxXgRKRnhm4/F8IwgSr6?=
- =?us-ascii?Q?4201VyYkL8DZZNaZ8UBzOP8abTbQBydPZu97OISLaKfFUaDAP5p6IuWurCUp?=
- =?us-ascii?Q?DhBWgGi61R92MDUWlWGbNyrdFv1yDhsYD3Oe8pffF8M2vc+O4tTHe4yi3Tz8?=
- =?us-ascii?Q?+NFs6RvzY05EnE2knX0vOP9QD5et/v3dZFlhEdUYCZ/sC+asSnR80AjaRm+K?=
- =?us-ascii?Q?NtpTRzjfdn+XDgSYmzerl+gYWxu99oizgePtrcu3zq0oUxb/Zu+7WgjMDuTK?=
- =?us-ascii?Q?7r9CZfNozLZI/HJc12+gReB39HH6TkRRwqRSY8fhJd27WQvwyilsEF0VbGjJ?=
- =?us-ascii?Q?KF7j0mscQ3Tv4D+ABkyYCvF7rMeeh4nUXcMgKHoCSv+UbIThIDKZWon/tYfd?=
- =?us-ascii?Q?7wUpP+/tEVtNkeQfvVtF6U/2sb8SipAfex8Poc1QOM+2tIAOb9fo9eqvcvo+?=
- =?us-ascii?Q?1XMoENNpXTyjiVnwgmtoktyeOhMP6boVyksfPfidbabIzAY6R64yQ27a6zbs?=
- =?us-ascii?Q?xZiRGlBEc+ya1r0kzMexJL7/L+WqLtBN7bvvJRyFjfd1xWWhKZZtEoSlamCv?=
- =?us-ascii?Q?J99bOgjWF9TSSEyoisMsm8Yb?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.18; Wed, 20 Oct
+ 2021 06:21:36 +0000
+Received: from SN1NAM02FT0020.eop-nam02.prod.protection.outlook.com
+ (2603:10b6:806:6e:cafe::70) by SA9PR11CA0017.outlook.office365.com
+ (2603:10b6:806:6e::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.15 via Frontend
+ Transport; Wed, 20 Oct 2021 06:21:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.62.198)
+ smtp.mailfrom=xilinx.com; foss.st.com; dkim=none (message not signed)
+ header.d=none;foss.st.com; dmarc=pass action=none header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.62.198 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.62.198; helo=xsj-pvapexch01.xlnx.xilinx.com;
+Received: from xsj-pvapexch01.xlnx.xilinx.com (149.199.62.198) by
+ SN1NAM02FT0020.mail.protection.outlook.com (10.97.5.96) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4608.15 via Frontend Transport; Wed, 20 Oct 2021 06:21:35 +0000
+Received: from xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) by
+ xsj-pvapexch01.xlnx.xilinx.com (172.19.86.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.14; Tue, 19 Oct 2021 23:21:35 -0700
+Received: from smtp.xilinx.com (172.19.127.95) by
+ xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server id
+ 15.1.2176.14 via Frontend Transport; Tue, 19 Oct 2021 23:21:35 -0700
+Envelope-to: fabrice.gasnier@foss.st.com,
+ gregkh@linuxfoundation.org,
+ dianders@chromium.org,
+ mka@chromium.org,
+ robh+dt@kernel.org,
+ stern@rowland.harvard.edu,
+ frowand.list@gmail.com,
+ mathias.nyman@intel.com,
+ balbi@kernel.org,
+ devicetree@vger.kernel.org,
+ peter.chen@kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org,
+ hadess@hadess.net,
+ ravisadineni@chromium.org,
+ rogerq@kernel.org,
+ krzk@kernel.org,
+ swboyd@chromium.org,
+ alcooperx@gmail.com,
+ viro@zeniv.linux.org.uk,
+ alexandre.belloni@bootlin.com,
+ alexandre.torgue@foss.st.com,
+ andrew@lunn.ch,
+ andrey.zhizhikin@leica-geosystems.com,
+ agross@kernel.org,
+ arnd@arndb.de,
+ a-govindraju@ti.com,
+ bjorn.andersson@linaro.org,
+ catalin.marinas@arm.com,
+ dmitry.baryshkov@linaro.org,
+ digetx@gmail.com,
+ aisheng.dong@nxp.com,
+ enric.balletbo@collabora.com,
+ festevam@gmail.com,
+ f.fainelli@gmail.com,
+ gregory.clement@bootlin.com,
+ grygorii.strashko@ti.com,
+ agx@sigxcpu.org,
+ jagan@amarulasolutions.com,
+ axboe@kernel.dk,
+ johan@kernel.org,
+ krzysztof.kozlowski@canonical.com,
+ prabhakar.mahadev-lad.rj@bp.renesas.com,
+ lionel.debieve@st.com,
+ mani@kernel.org,
+ m.szyprowski@samsung.com,
+ broonie@kernel.org,
+ martin.juecker@gmail.com,
+ nm@ti.com,
+ olivier.moysan@st.com,
+ pawell@cadence.com,
+ rric@kernel.org,
+ linux@armlinux.org.uk,
+ sebastian.hesselbarth@gmail.com,
+ shawnguo@kernel.org,
+ tglx@linutronix.de,
+ tony@atomide.com,
+ vkoul@kernel.org,
+ viresh.kumar@linaro.org,
+ will@kernel.org,
+ wcohen@redhat.com,
+ linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org,
+ linux-omap@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org,
+ l.stelmach@samsung.com
+Received: from [10.254.241.49] (port=58266)
+        by smtp.xilinx.com with esmtp (Exim 4.90)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1md4yk-0000Uh-VX; Tue, 19 Oct 2021 23:21:35 -0700
+Message-ID: <0739e563-c8e7-2a19-e440-4f32e7de3917@xilinx.com>
+Date:   Wed, 20 Oct 2021 08:21:21 +0200
 MIME-Version: 1.0
-X-OriginatorOrg: cadence.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR07MB2757.namprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dfbb60c6-50b0-4274-ced7-08d9937b205b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Oct 2021 03:38:48.1634
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v16 0/7] usb: misc: Add onboard_usb_hub driver
+Content-Language: en-US
+To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Doug Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     Alan Stern <stern@rowland.harvard.edu>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Peter Chen <peter.chen@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        Ravi Chandra Sadineni <ravisadineni@chromium.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Al Cooper <alcooperx@gmail.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre TORGUE - foss <alexandre.torgue@foss.st.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
+        Andy Gross <agross@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Aswath Govindraju <a-govindraju@ti.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Dong Aisheng <aisheng.dong@nxp.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        =?UTF-8?Q?Guido_G=c3=bcnther?= <agx@sigxcpu.org>,
+        Jagan Teki <jagan@amarulasolutions.com>,
+        Jens Axboe <axboe@kernel.dk>, Johan Hovold <johan@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Lionel DEBIEVE <lionel.debieve@st.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Mark Brown <broonie@kernel.org>,
+        =?UTF-8?Q?Martin_J=c3=bccker?= <martin.juecker@gmail.com>,
+        Nishanth Menon <nm@ti.com>,
+        Olivier MOYSAN <olivier.moysan@st.com>,
+        Pawel Laszczak <pawell@cadence.com>,
+        Robert Richter <rric@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Lindgren <tony@atomide.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Will Deacon <will@kernel.org>,
+        William Cohen <wcohen@redhat.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        =?UTF-8?Q?=c5=81ukasz_Stelmach?= <l.stelmach@samsung.com>
+References: <20210813195228.2003500-1-mka@chromium.org>
+ <YUoRq1RrOIoiBJ5+@google.com>
+ <CAD=FV=WrddUhWT0wUVZD0gN_+8Zy1VGY77LYLYBvhaPQQ_SqZw@mail.gmail.com>
+ <YWkiGGBKOVokBye9@kroah.com>
+ <03f28680-35eb-25f4-5041-f3a56144da24@foss.st.com>
+From:   Michal Simek <michal.simek@xilinx.com>
+In-Reply-To: <03f28680-35eb-25f4-5041-f3a56144da24@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 169799c7-e285-46bd-f041-08d99391de50
+X-MS-TrafficTypeDiagnostic: BN7PR02MB4993:
+X-Microsoft-Antispam-PRVS: <BN7PR02MB499358B36AB14EFB6257D5EEC6BE9@BN7PR02MB4993.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4aTsYdVKpydSui2KMony/3+fxpka/pnXS5lrt95t/8bJYtSY6Wr5G+2oq51wH/Rg3/xduAIfgyXf2RvzFS6R01i5amcSmaDBh0lEJfg1Vf/zGHDOIE0kHxB0aA9dACu82Rr5zhtKGJwW6E7vEfu/ciiP2LlvkC2Al+GZ5wQGeOrm2oyYewfEZw64ONGvWyxqC5uOI4SG5q/Pb7K9AAuC7w5708FrrxqWggN4dXnjTOpfH2GGqX/Lu9gzaeAu86smcXeyeAabVuTKOVEQAMMllEg+iKEp0CkninuFIK+uI5xyuNlSG6M8CmzjvOhhhOtCvzs/jRi429MtK7GygOhcOkfKgwG1dbPlNzZ9t9zlTUGa9w984CmsOIhlQFMJuzfNykS7LgreyjwDYCzX3RBtQGiQGG12YMROeDb3q/3rssEx0SJIiFMibB+rrTtqe8T0az/eVl8N2gZ6Q373HJPLd/IhrMuuC+qQdjqPSmFa5gL9pyCrsDsQgZz9DQ4GLq4v2sSLB1AuqF9ocz0k1cbA8ulXFulXC2SHxXnD7BIBZFDN5/2g7ECe9teCBegzQRLaJXUWRlN1BMnXkPZ2Kt7OfBkAU1IyejdTNVvUlZ6xnH+ut71uYQbNr1RUngjo6I6BP/TOFTqBaaZb4QCLE5UxmUXuVgWnMEtJx6RTSUSZ8p5H1kmwseMw1Yqrg00YytjzCThQhPIapgnpHIrcw2JE2u2ZO4QcM9oItMfrCpOtBmlcBjjkpQYgKZHUGyTTSuMwRHsdzaaoT3uPJNKUnLcvSDep4bG4aATYC2Lk8nzPo62q43siNfTrymhKbLHv63Y6g45K4++We+kNBxOJ54on53ONCcrZI83inA2UCpPuoKw=
+X-Forefront-Antispam-Report: CIP:149.199.62.198;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapexch01.xlnx.xilinx.com;PTR:unknown-62-198.xilinx.com;CAT:NONE;SFS:(36840700001)(46966006)(70206006)(7406005)(7366002)(7416002)(36860700001)(36906005)(508600001)(110136005)(426003)(70586007)(9786002)(7636003)(6666004)(2616005)(36756003)(5660300002)(186003)(82310400003)(26005)(8676002)(356005)(8936002)(54906003)(31696002)(2906002)(83380400001)(31686004)(44832011)(53546011)(316002)(966005)(4326008)(47076005)(336012)(50156003)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2021 06:21:35.8123
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pthombar@global.cadence.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR07MB3605
-X-Proofpoint-ORIG-GUID: H2QfgnNlQZrsYGfSsXrdzMbWBGrLmGR6
-X-Proofpoint-GUID: H2QfgnNlQZrsYGfSsXrdzMbWBGrLmGR6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-20_01,2021-10-19_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0
- priorityscore=1501 lowpriorityscore=0 impostorscore=0 mlxlogscore=621
- clxscore=1011 adultscore=0 bulkscore=0 malwarescore=0 mlxscore=0
- spamscore=0 suspectscore=0 phishscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2109230001
- definitions=main-2110200015
+X-MS-Exchange-CrossTenant-Network-Message-Id: 169799c7-e285-46bd-f041-08d99391de50
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.62.198];Helo=[xsj-pvapexch01.xlnx.xilinx.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1NAM02FT0020.eop-nam02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR02MB4993
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
->Add blank lines between paragraphs.
->Write the text in imperative mood, e.g.,
 
-Ok
 
->  Disable FLR (Function Level Reset) support on all functions.
->It looks like this patch clears PCI_EXP_DEVCAP_FLR in the Device
->Capabilities register.  From the point of view of Linux, that means
->the device doesn't *advertise* FLR support.
->
->That's different from actualy *disabling* FLR support, but maybe
->there's internal logic in the device that ignores
->PCI_EXP_DEVCTL_BCR_FLR when PCI_EXP_DEVCAP_FLR is cleared?
+On 10/19/21 18:04, Fabrice Gasnier wrote:
+> On 10/15/21 8:39 AM, Greg Kroah-Hartman wrote:
+>> On Thu, Oct 14, 2021 at 02:38:55PM -0700, Doug Anderson wrote:
+>>> Hi,
+>>>
+>>> On Tue, Sep 21, 2021 at 10:09 AM Matthias Kaehlcke <mka@chromium.org> wrote:
+>>>>
+>>>> Hi Greg,
+>>>>
+>>>> are there any actions pending or can this land in usb-testing?
+>>>>
+>>>> I confirmed that this series can be rebased on top of v5.15-rc2
+>>>> without conflicts.
+>>>
+>>> I'm quite interested to know what the next action items are, too. This
+>>> is one of the very few patches we have for trogdor (excluding MIPI
+>>> camera, which is a long story) that we're carrying downstream, so I'm
+>>> keenly interested in making sure it's unblocked (if, indeed, it's
+>>> blocked on anything).
+>>>
+>>> If folks feel that this needs more review eyes before landing again
+>>> then I'll try to find some time in the next week or two. If it's just
+>>> waiting for the merge window to open/close so it can have maximal bake
+>>> time, that's cool too. Please yell if there's something that I can do
+>>> to help, though! :-)
+>>
+>> I would love more review-eyes on this please.
+>>
+> 
+> Hi,
+> 
+> I noticed this series some time ago, and wanted to take a closer look.
+> 
+> The same issue this series address is seen on stm32 board for instance.
+> (arch/arm/boot/dts/stm32mp15xx-dkx.dtsi). On board HUB (not described in
+> the DT) is supplied by an always-on regulator.
+> So it could could be interesting/useful to address the same case ,
+> on stm32 boards, where USB2 (ehci-platform driver) is used currently.
+> 
+> I noticed a few things, especially on the dt-bindings. I've some
+> questions here.
+> 
+> In this series, RTS5411 is used. The dt-bindings documents it as a child
+> node of the USB controller. E.g.
+> 
+> &usb {
+> 	usb_hub_2_0: hub@1 {
+> 		...
+> 	};
+> 
+> 	usb_hub_3_0: hub@2 {
+> 	};
+> }
+> 
+> I had a quick look at RTS5411 datasheet. It looks like there's an i2c
+> interface too.
+> - I guess the I2C interface isn't used in your case ?
+>    (I haven't checked what it could be used for...)
+> 
+> In the stm32 boards (stm32mp15xx-dkx), there's an usb2514b chip
+> - that also could be wired on I2C interface (0R mount option)
+> - unused on stm32 boards by default
+> 
+> usb2514b chip already has a dt-bindings (with compatible), and a driver:
+> - drivers/usb/misc/usb251xb.c
+> - Documentation/devicetree/bindings/usb/usb251xb.txt
+> 
+> It is defined more as an i2c chip, so I'd expect it as an i2c child,
+> e.g. like:
+> 
+> &i2c {
+> 	usb2514b@2c {
+> 		compatible = "microchip,usb2514b";
+> 		...
+> 	};
+> };
+> 
+> 
+> This way, I don't see how it could be used together with onboard_usb_hub
+> driver ? (But I may have missed it)
+> Is it possible to use a phandle, instead of a child node ?
+> 
+> However, in the stm32mp15xx-dkx case, i2c interface isn't wired/used by
+> default. So obviously the i2c driver isn't used. In this case, could the
+> "microchip,usb2514b" be listed in onboard_usb_hub driver ?
+> (wouldn't it be redundant ?)
+> 
+> In this case it would be a child node of the usb DT node... Maybe that's
+> more a question for Rob: would it be "legal" regarding existing
+> dt-bindings ?
 
-Yes, this patch is just to prevent device from advertising FLR support.
+We wanted to upstream driver for microchip usb5744 and based on this 
+thread with Rob
 
-Regards,
-Parshuram Thombare
+https://lore.kernel.org/all/CAL_JsqJZBbu+UXqUNdZwg-uv0PAsNg55026PTwhKr5wQtxCjVQ@mail.gmail.com/
+
+the recommendation was to use i2c-bus link. And in our usb5744 case 
+where usb hub has only one i2c address we just hardcoded it in the 
+driver. I should be pushing this driver to xilinx soc tree soon if you 
+want to take a look.
+
+Thanks,
+Michal
