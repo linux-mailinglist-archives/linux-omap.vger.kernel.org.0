@@ -2,123 +2,236 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7798F434F82
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Oct 2021 17:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF2CC435184
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Oct 2021 19:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230515AbhJTQAI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 20 Oct 2021 12:00:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43914 "EHLO
+        id S230325AbhJTRnu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 20 Oct 2021 13:43:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbhJTQAI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 Oct 2021 12:00:08 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB8A9C06174E
-        for <linux-omap@vger.kernel.org>; Wed, 20 Oct 2021 08:57:53 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id 186-20020a1c01c3000000b0030d8315b593so2810845wmb.5
-        for <linux-omap@vger.kernel.org>; Wed, 20 Oct 2021 08:57:53 -0700 (PDT)
+        with ESMTP id S230481AbhJTRnt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 Oct 2021 13:43:49 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8832C061753
+        for <linux-omap@vger.kernel.org>; Wed, 20 Oct 2021 10:41:34 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id pi19-20020a17090b1e5300b0019fdd3557d3so2953433pjb.5
+        for <linux-omap@vger.kernel.org>; Wed, 20 Oct 2021 10:41:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=wg0KJqHRV08qX4QVL+ntQvH0cOPBhNXqn/SMEbf5V98=;
-        b=U2SOf9kJARwcP8IJA+zkKOcS7SDbUbqF69fwz8T/Dl5L/KGAwvVa6XaYgbOFa6OGWb
-         iVNnQCeiiJIBjw5DilysiOBw1H2TRBhOf4r2YG3uD7+GIYYrOmYegKX8h7hL/WnOg477
-         8aPagA9sFfs+/GxCHD7hf3hqz28Ug4cVglGNJFvRn/sUakywQ4E9wIBcdKZlY7h6LhCK
-         qgB6G7g0xFL7bNIplPvjfWgBNd9CF2GYWKbSvwG/Qn4oXRL3G70mr6+n9LPdbuTMzQoC
-         z7vgF5HqW4O1V8cYASUvpod05GZDaIWCdnTUA/rgdOte8wVnoEtSQGZU2Sbir7PqmXqn
-         Y85g==
+         :content-disposition:in-reply-to;
+        bh=tLS8+kBpzekWeBdekKGTRJk0E4srTCOVGmq4Px1Q8VQ=;
+        b=gJbARJpG2w9XXkcZ6CSy2/THoVI0FcFNYFPuofYL8NVisjqdt0X0eq+HH+reaQpVXm
+         5MI+SplxtlxvZ1E0OLUyfIl/XiVcXduiwQnprTmO3DEStW4HT30c1IoDI1oVZxm+iOAV
+         3/XJwkPNgY1b56D39N24JZYm6H5qZHpfKUBzM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=wg0KJqHRV08qX4QVL+ntQvH0cOPBhNXqn/SMEbf5V98=;
-        b=OQ4dhqBsQfl2YghKj9c/rHQQc3+EVpfweYgCWY0zduJB4VTx/ULX2ARMLmk00XFg+l
-         aSgmflmOXCJNXUvOwbM5aKvFL6rwAYhD3pzHWbK8XIZR50r0Hhc+mrSXqjXlpYtcAMs9
-         5TFxZwwb2OKHeKE03f/Jl4sc7a8j7VvXarGRLb01IeiJMyFdle613Se+t1zU8sbkuL7o
-         usPTLvP/EDfK5lOkUQRckaCQQNlJuD92vJabPy3IgiTmDZMwN4jZ7b0gfDgsN9u2La9o
-         XgnTOM7ii0zMWdSKc+rDWmwvAl9Gfk4BgPj55s7UNFqa+JkRLKFe0oXgUIUQ5PUYo/w9
-         7VEg==
-X-Gm-Message-State: AOAM533IxRkOG+pC4tD3tLvf1NzCMZtwZxixpNTS14sKrZVrBPIMweJs
-        Zh5y6gxPEdpN8xD83EsTOFSy9g==
-X-Google-Smtp-Source: ABdhPJzInNCFCNWJ+mCj2v3d0N5Vo28HRFOV2AbllNKZOn9TvqF8m7fmuTpcxZWZHMzSi6OGjfbAbQ==
-X-Received: by 2002:adf:bb0a:: with SMTP id r10mr44197wrg.23.1634745472287;
-        Wed, 20 Oct 2021 08:57:52 -0700 (PDT)
-Received: from google.com ([95.148.6.207])
-        by smtp.gmail.com with ESMTPSA id q12sm2428423wrp.13.2021.10.20.08.57.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Oct 2021 08:57:51 -0700 (PDT)
-Date:   Wed, 20 Oct 2021 16:57:49 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-omap@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 00/48] TI AM437X ADC1
-Message-ID: <YXA8fVh5Q7aWNFE2@google.com>
-References: <20211015081506.933180-1-miquel.raynal@bootlin.com>
- <20211020173611.07980c1d@xps13>
+         :mime-version:content-disposition:in-reply-to;
+        bh=tLS8+kBpzekWeBdekKGTRJk0E4srTCOVGmq4Px1Q8VQ=;
+        b=AfNzKCSIvf/+Wo72Dm0zXDvkDeA0MiM3qAjzwgci8LGaMmCx/R3N5iQab257RhOX9i
+         YwsH6WOZzrShDq2OzP1ey6+zGCfsTuhi6IXkCuTkALJSMAborTw0RhTP6HbiChHXA737
+         Em73d8OHuNZdb+4E90eH6pCpuWgOL/kigiGSmA/hZqFn4Uhjs6apgoMjr5bSEYkV5S/k
+         w9eCVEl/NgcB2TySv1IOqeyEVqLIWs3L8wwAx82IlavycFjSYv6IW2pXgz4tDAt2lMPc
+         gIY0FZMlhzFvHfRr333ovfjs0iy1yzDHUoqO68ucR14gr8Yve+kLE2Jr3MIBB/+3TKY9
+         BLRA==
+X-Gm-Message-State: AOAM531dEsV30Xmc0N7a4j1pJBX9TlgNRMnW6QCR+kOzkQUiSqemTzy2
+        715fagTlSVluKADO/v5BX23Hlw==
+X-Google-Smtp-Source: ABdhPJzlGMQDOJLoQZpO+D08HsHF1MsykzBHtuqJvEm206lRGp9Qb3pe7UydXadxkqIvENvT61l62w==
+X-Received: by 2002:a17:903:1ca:b0:13e:f367:9361 with SMTP id e10-20020a17090301ca00b0013ef3679361mr507344plh.3.1634751694235;
+        Wed, 20 Oct 2021 10:41:34 -0700 (PDT)
+Received: from localhost ([2620:15c:202:201:d5fe:85e9:caf2:ec4e])
+        by smtp.gmail.com with UTF8SMTPSA id i128sm3148602pfc.47.2021.10.20.10.41.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Oct 2021 10:41:33 -0700 (PDT)
+Date:   Wed, 20 Oct 2021 10:41:31 -0700
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Michal Simek <michal.simek@xilinx.com>
+Cc:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Doug Anderson <dianders@chromium.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Peter Chen <peter.chen@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        Ravi Chandra Sadineni <ravisadineni@chromium.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Al Cooper <alcooperx@gmail.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre TORGUE - foss <alexandre.torgue@foss.st.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>,
+        Andy Gross <agross@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Aswath Govindraju <a-govindraju@ti.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        Dong Aisheng <aisheng.dong@nxp.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
+        Jagan Teki <jagan@amarulasolutions.com>,
+        Jens Axboe <axboe@kernel.dk>, Johan Hovold <johan@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Lionel DEBIEVE <lionel.debieve@st.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Mark Brown <broonie@kernel.org>,
+        Martin =?utf-8?Q?J=C3=BCcker?= <martin.juecker@gmail.com>,
+        Nishanth Menon <nm@ti.com>,
+        Olivier MOYSAN <olivier.moysan@st.com>,
+        Pawel Laszczak <pawell@cadence.com>,
+        Robert Richter <rric@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Lindgren <tony@atomide.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Will Deacon <will@kernel.org>,
+        William Cohen <wcohen@redhat.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        =?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>
+Subject: Re: [PATCH v16 0/7] usb: misc: Add onboard_usb_hub driver
+Message-ID: <YXBUywpxasyTtSCr@google.com>
+References: <20210813195228.2003500-1-mka@chromium.org>
+ <YUoRq1RrOIoiBJ5+@google.com>
+ <CAD=FV=WrddUhWT0wUVZD0gN_+8Zy1VGY77LYLYBvhaPQQ_SqZw@mail.gmail.com>
+ <YWkiGGBKOVokBye9@kroah.com>
+ <03f28680-35eb-25f4-5041-f3a56144da24@foss.st.com>
+ <0739e563-c8e7-2a19-e440-4f32e7de3917@xilinx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211020173611.07980c1d@xps13>
+In-Reply-To: <0739e563-c8e7-2a19-e440-4f32e7de3917@xilinx.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 20 Oct 2021, Miquel Raynal wrote:
-
-> Hi Lee,
+On Wed, Oct 20, 2021 at 08:21:21AM +0200, Michal Simek wrote:
 > 
-> miquel.raynal@bootlin.com wrote on Fri, 15 Oct 2021 10:14:18 +0200:
 > 
-> > /*
-> >  * Reducing the Cc: list as this is just a rebase and all patches
-> >  * received reviews already. Only the DT patches have received no
-> >  * feedback, hence keeping the omap@ list in.
-> >  */
+> On 10/19/21 18:04, Fabrice Gasnier wrote:
+> > On 10/15/21 8:39 AM, Greg Kroah-Hartman wrote:
+> > > On Thu, Oct 14, 2021 at 02:38:55PM -0700, Doug Anderson wrote:
+> > > > Hi,
+> > > > 
+> > > > On Tue, Sep 21, 2021 at 10:09 AM Matthias Kaehlcke <mka@chromium.org> wrote:
+> > > > > 
+> > > > > Hi Greg,
+> > > > > 
+> > > > > are there any actions pending or can this land in usb-testing?
+> > > > > 
+> > > > > I confirmed that this series can be rebased on top of v5.15-rc2
+> > > > > without conflicts.
+> > > > 
+> > > > I'm quite interested to know what the next action items are, too. This
+> > > > is one of the very few patches we have for trogdor (excluding MIPI
+> > > > camera, which is a long story) that we're carrying downstream, so I'm
+> > > > keenly interested in making sure it's unblocked (if, indeed, it's
+> > > > blocked on anything).
+> > > > 
+> > > > If folks feel that this needs more review eyes before landing again
+> > > > then I'll try to find some time in the next week or two. If it's just
+> > > > waiting for the merge window to open/close so it can have maximal bake
+> > > > time, that's cool too. Please yell if there's something that I can do
+> > > > to help, though! :-)
+> > > 
+> > > I would love more review-eyes on this please.
+> > > 
 > > 
-> > Hello,
+> > Hi,
 > > 
-> > This is a (fairly big) series bringing support of AM437X ADC1.
-> > On TI AM33XX SoCs family there is an ADC that can also be connected to a
-> > touchscreen. This hardware has been extended and is present on certain
-> > SoCs from the AM437X family. In particular, the touchscreen has been
-> > replaced by a magnetic card reader. In both cases, the representation is
-> > an MFD device with two children:
-> > * on AM33XX: the touchscreen controller and the ADC
-> > * on AM437X: the magnetic stripe reader and the ADC
+> > I noticed this series some time ago, and wanted to take a closer look.
 > > 
-> > This series really targets small and atomic changes so that the overall
-> > review is eased, even though it leads to a lot of rather small patches.
-> > Here are the steps:
-> > * Supporting the missing clock
-> > * Translating a single text file containing the description for the
-> >   MFD, the touchscreen and the ADC into three independent yaml files.
-> > * Cleaning/preparing the MFD driver.
-> > * Supporting ADC1 in the MFD driver.
-> > * Cleaning/preparing of the ADC driver.
-> > * Supporting ADC1 in the ADC driver.
-> > * Updating various device trees.
+> > The same issue this series address is seen on stm32 board for instance.
+> > (arch/arm/boot/dts/stm32mp15xx-dkx.dtsi). On board HUB (not described in
+> > the DT) is supplied by an always-on regulator.
+> > So it could could be interesting/useful to address the same case ,
+> > on stm32 boards, where USB2 (ehci-platform driver) is used currently.
 > > 
-> > Here is the full series again, almost reviewed and acked entirely.
-> > The clock patch has been acked, the ADC patches as well, so we expect
-> > the series to go through the MFD tree if the maintainers agree with it.
+> > I noticed a few things, especially on the dt-bindings. I've some
+> > questions here.
+> > 
+> > In this series, RTS5411 is used. The dt-bindings documents it as a child
+> > node of the USB controller. E.g.
+> > 
+> > &usb {
+> > 	usb_hub_2_0: hub@1 {
+> > 		...
+> > 	};
+> > 
+> > 	usb_hub_3_0: hub@2 {
+> > 	};
+> > }
+> > 
+> > I had a quick look at RTS5411 datasheet. It looks like there's an i2c
+> > interface too.
+> > - I guess the I2C interface isn't used in your case ?
+> >    (I haven't checked what it could be used for...)
+> > 
+> > In the stm32 boards (stm32mp15xx-dkx), there's an usb2514b chip
+> > - that also could be wired on I2C interface (0R mount option)
+> > - unused on stm32 boards by default
+> > 
+> > usb2514b chip already has a dt-bindings (with compatible), and a driver:
+> > - drivers/usb/misc/usb251xb.c
+> > - Documentation/devicetree/bindings/usb/usb251xb.txt
+> > 
+> > It is defined more as an i2c chip, so I'd expect it as an i2c child,
+> > e.g. like:
+> > 
+> > &i2c {
+> > 	usb2514b@2c {
+> > 		compatible = "microchip,usb2514b";
+> > 		...
+> > 	};
+> > };
+> > 
+> > 
+> > This way, I don't see how it could be used together with onboard_usb_hub
+> > driver ? (But I may have missed it)
+> > Is it possible to use a phandle, instead of a child node ?
+> > 
+> > However, in the stm32mp15xx-dkx case, i2c interface isn't wired/used by
+> > default. So obviously the i2c driver isn't used. In this case, could the
+> > "microchip,usb2514b" be listed in onboard_usb_hub driver ?
+> > (wouldn't it be redundant ?)
+> > 
+> > In this case it would be a child node of the usb DT node... Maybe that's
+> > more a question for Rob: would it be "legal" regarding existing
+> > dt-bindings ?
 > 
-> Sorry to ping you so early, but we already are at -rc6 and I was
-> wondering if you could take the series as it has been on the mailing
-> list for a while and received no real change since a couple of weeks
-> already, possibly avoiding the need for yet another resend of 48
-> patches :)
+> We wanted to upstream driver for microchip usb5744 and based on this thread
+> with Rob
+> 
+> https://lore.kernel.org/all/CAL_JsqJZBbu+UXqUNdZwg-uv0PAsNg55026PTwhKr5wQtxCjVQ@mail.gmail.com/
+> 
+> the recommendation was to use i2c-bus link. And in our usb5744 case where
+> usb hub has only one i2c address we just hardcoded it in the driver. I
+> should be pushing this driver to xilinx soc tree soon if you want to take a
+> look.
 
-Don't worry, it's email day tomorrow.  I have a bunch of high-priority
-patches/sets that I aim to handle, yours included.
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Interesting, with the 'i2c-bus' link it might be feasible to support the
+i2c functionality in the onboard_usb_hub driver if desired. Not sure how
+things would look when the hub can have different i2c addresses. Also in
+case of powering down the hub during system suspend any configuration
+through i2c would have to be done again on resume.
