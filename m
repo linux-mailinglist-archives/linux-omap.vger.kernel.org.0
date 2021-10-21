@@ -2,82 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 678A8436236
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Oct 2021 14:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB134362A0
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Oct 2021 15:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231216AbhJUNBO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Oct 2021 09:01:14 -0400
-Received: from muru.com ([72.249.23.125]:47024 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230463AbhJUNBO (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 21 Oct 2021 09:01:14 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 5524380EB;
-        Thu, 21 Oct 2021 12:59:31 +0000 (UTC)
-Date:   Thu, 21 Oct 2021 15:58:56 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Russell King <linux@armlinux.org.uk>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org
-Subject: Re: Non-existing config symbols DEBUG_OMAP{3,4,5}UART{1,2}
-Message-ID: <YXFkEEwfeF8+osSr@atomide.com>
-References: <CAKXUXMy0FUv25cUGDnhnv=3pTd7NGjepbHao7QoQw8h0hh3CRw@mail.gmail.com>
+        id S230190AbhJUNVU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Oct 2021 09:21:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50984 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230285AbhJUNVS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Oct 2021 09:21:18 -0400
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FB5C061220
+        for <linux-omap@vger.kernel.org>; Thu, 21 Oct 2021 06:19:00 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:2c41:c2bf:5c8f:53c5])
+        by xavier.telenet-ops.be with bizsmtp
+        id 8dJv260041Z5S4H01dJvnF; Thu, 21 Oct 2021 15:18:58 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mdXyA-006ZA9-SL; Thu, 21 Oct 2021 15:18:54 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mdXyA-00GQ7o-FK; Thu, 21 Oct 2021 15:18:54 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Russell King <linux@armlinux.org.uk>,
+        Rob Herring <robh+dt@kernel.org>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/3] dt-bindings: display: bridge: nxp,tda998x: Json-schema conversion and fixes
+Date:   Thu, 21 Oct 2021 15:18:50 +0200
+Message-Id: <cover.1634822085.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKXUXMy0FUv25cUGDnhnv=3pTd7NGjepbHao7QoQw8h0hh3CRw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+	Hi all,
 
-* Lukas Bulwahn <lukas.bulwahn@gmail.com> [211011 05:39]:
-> Dear Tony,
-> 
-> With commit d2b310b0234c ("ARM: debug: Use generic 8250 debug_ll for
-> omap2 and omap3/4/5 common uarts"), you added address definitions of
-> DEBUG_UART_PHYS for OMAP2, OMAP3, OMAP4 and OMAP5 in
-> ./arch/arm/Kconfig.debug.
-> 
-> These definitions depend on:
->   - DEBUG_OMAP2UART1 || DEBUG_OMAP3UART1 || DEBUG_OMAP4UART1 ||
-> DEBUG_OMAP5UART1, and
->   - DEBUG_OMAP2UART2 || DEBUG_OMAP3UART2 || DEBUG_OMAP4UART2 ||
-> DEBUG_OMAP5UART2.
-> 
-> As of now, only DEBUG_OMAP2UART{1,2} are defined in
-> ./arch/arm/Kconfig.debug, but DEBUG_OMAP{3,4,5}UART{1,2} are not
-> defined. Hence, ./scripts/checkkconfigsymbols.py warns here on
-> non-existing symbols.
-> 
-> I am unsure about the best way to resolve this issue.
-> 
-> - Would you like to simply reuse the config DEBUG_OMAP2UART{1,2} also
-> for OMAP3, OMAP4 and OMAP5? Then, we probably just need to delete the
-> dead references
-> to DEBUG_OMAP{3,4,5}UART{1,2}. If you consider this further change
-> helpful, we could even rename the configs to DEBUG_OMAP2PLUSUART{1,2}
-> to make the architecture more specific.
-> 
-> - Do you see the need for separate config definitions for UART{1,2} on
-> OMAP3, OMAP4 and OMAP5? Then, we would need to add further definitions
-> DEBUG_OMAP{3,4,5}UART{1,2}
-> in this file and link those to the specific architecture.
-> 
-> Once the direction is clear, I am happy to provide a patch to address
-> this issue or you can quickly take care of this yourself.
+This patch series converts the NXP TDA998x HDMI transmitter Device Tree
+binding documentation to json-schema, after a few customary fixes.
 
-The missing ones should be the same as the DEBUG_OMAP2 I think. We still
-have these defined in arch/arm/mach-omap2/include/mach/serial.h, so that
-can be used to confirm it.
+Thanks for your comments!
 
-Seems like we can just reuse the DEBUG_OMAP2UART variants, not sure if
-we need to rename these to DEBUG_OMAP2PLUSUART variants.
+Geert Uytterhoeven (3):
+  ARM: dts: am335x: Fix TDA998x ports addressing
+  [RFC] arm64: dts: renesas: cat874: Drop bogus clocks property
+  [RFC] dt-bindings: display: bridge: nxp,tda998x: Convert to
+    json-schema
 
-Regards,
+ .../bindings/display/bridge/nxp,tda998x.yaml  | 108 ++++++++++++++++++
+ .../bindings/display/bridge/tda998x.txt       |  54 ---------
+ arch/arm/boot/dts/am335x-boneblack-hdmi.dtsi  |   7 +-
+ arch/arm/boot/dts/am335x-myirtech-myd.dts     |   7 +-
+ .../boot/dts/renesas/r8a774c0-cat874.dts      |   1 -
+ 5 files changed, 120 insertions(+), 57 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
+ delete mode 100644 Documentation/devicetree/bindings/display/bridge/tda998x.txt
 
-Tony
+-- 
+2.25.1
 
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
