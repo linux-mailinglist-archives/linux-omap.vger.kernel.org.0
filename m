@@ -2,103 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 821A2435AF4
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Oct 2021 08:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 822A4435C51
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Oct 2021 09:46:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231357AbhJUGfQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Oct 2021 02:35:16 -0400
-Received: from muru.com ([72.249.23.125]:46880 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231443AbhJUGfP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 21 Oct 2021 02:35:15 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 3197480C1;
-        Thu, 21 Oct 2021 06:33:30 +0000 (UTC)
-Date:   Thu, 21 Oct 2021 09:32:55 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        id S231287AbhJUHsT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Thu, 21 Oct 2021 03:48:19 -0400
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:37425 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231406AbhJUHsT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Oct 2021 03:48:19 -0400
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 9F7C020019;
+        Thu, 21 Oct 2021 07:45:56 +0000 (UTC)
+Date:   Thu, 21 Oct 2021 09:45:55 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ryan Barnett <ryan.barnett@collins.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] serial: core: Add wakeup() and start_pending_tx()
- for power management
-Message-ID: <YXEJlyuGmhwNSGyb@atomide.com>
-References: <20211015112626.35359-1-tony@atomide.com>
- <20211015112626.35359-2-tony@atomide.com>
- <YW0dkD3jYCsHYs6p@hovoldconsulting.com>
+Subject: Re: [PATCH v6 00/48] TI AM437X ADC1
+Message-ID: <20211021094555.0557d1a4@xps13>
+In-Reply-To: <YXA8fVh5Q7aWNFE2@google.com>
+References: <20211015081506.933180-1-miquel.raynal@bootlin.com>
+        <20211020173611.07980c1d@xps13>
+        <YXA8fVh5Q7aWNFE2@google.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YW0dkD3jYCsHYs6p@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hi Lee,
 
-* Johan Hovold <johan@kernel.org> [211018 07:09]:
-> On Fri, Oct 15, 2021 at 02:26:23PM +0300, Tony Lindgren wrote:
-> > @@ -1067,6 +1116,11 @@ uart_tiocmset(struct tty_struct *tty, unsigned int set, unsigned int clear)
-> >  	if (!uport)
-> >  		goto out;
-> >  
-> > +	if (uart_port_wakeup(uport) < 0) {
-> > +		ret = -EAGAIN;
-> > +		goto out;
-> > +	}
+lee.jones@linaro.org wrote on Wed, 20 Oct 2021 16:57:49 +0100:
+
+> On Wed, 20 Oct 2021, Miquel Raynal wrote:
 > 
-> ...this isn't right. You should just resume the device synchronously
-> here and not return some random error to user space, which it is
-> unlikely to even handle.
-
-OK I'll check what we can already wake synchronously :)
-
-> Now this may require moving more of the runtime PM into serial core,
-> where it should have been added in the first place, due to a lot of the
-> serial callbacks being called with the port spin lock held.
-
-Yup.. So the good news is that Andy already has the generic serial layer
-runtime PM changes in his WIP tree. I'll take a look if we can already
-add some of that without bringing in all the other dependencies.
-
-> The current implementation is just broken. Take uart_dtr_rts(), for
-> example, nothing makes sure that the device is active before accessing
-> the modem control registers there. You're currently just relying on
-> luck and pm_runtime_irq_safe() (which you are now trying to remove).
-
-Yeah agreed, it's broken. It is usable for at least two limited cases
-though, which are a serial port console with PM, and bluetooth with PM.
-
-The serial port console typically only has RX and TX lines connected, and
-the bluetooth typically uses out-of-band GPIO pins for wakeups.
-
-To enable the serial port PM in general, we need to make sure it is
-enabled only for applications where it can be used. So it needs to be
-enabled from the user space as we do for the serial console, or enabled
-from the consumer device driver for things like bluetooth.
-
-Sure the TX should work in all other cases too..
-
-> > +
-> > +	if (uart_port_wakeup(uport) < 0)
-> > +		goto out;
-> > +
-> >  	uart_port_dtr_rts(uport, raise);
-> > +out:
-> >  	uart_port_deref(uport);
-> >  }
+> > Hi Lee,
+> > 
+> > miquel.raynal@bootlin.com wrote on Fri, 15 Oct 2021 10:14:18 +0200:
+> >   
+> > > /*
+> > >  * Reducing the Cc: list as this is just a rebase and all patches
+> > >  * received reviews already. Only the DT patches have received no
+> > >  * feedback, hence keeping the omap@ list in.
+> > >  */
+> > > 
+> > > Hello,
+> > > 
+> > > This is a (fairly big) series bringing support of AM437X ADC1.
+> > > On TI AM33XX SoCs family there is an ADC that can also be connected to a
+> > > touchscreen. This hardware has been extended and is present on certain
+> > > SoCs from the AM437X family. In particular, the touchscreen has been
+> > > replaced by a magnetic card reader. In both cases, the representation is
+> > > an MFD device with two children:
+> > > * on AM33XX: the touchscreen controller and the ADC
+> > > * on AM437X: the magnetic stripe reader and the ADC
+> > > 
+> > > This series really targets small and atomic changes so that the overall
+> > > review is eased, even though it leads to a lot of rather small patches.
+> > > Here are the steps:
+> > > * Supporting the missing clock
+> > > * Translating a single text file containing the description for the
+> > >   MFD, the touchscreen and the ADC into three independent yaml files.
+> > > * Cleaning/preparing the MFD driver.
+> > > * Supporting ADC1 in the MFD driver.
+> > > * Cleaning/preparing of the ADC driver.
+> > > * Supporting ADC1 in the ADC driver.
+> > > * Updating various device trees.
+> > > 
+> > > Here is the full series again, almost reviewed and acked entirely.
+> > > The clock patch has been acked, the ADC patches as well, so we expect
+> > > the series to go through the MFD tree if the maintainers agree with it.  
+> > 
+> > Sorry to ping you so early, but we already are at -rc6 and I was
+> > wondering if you could take the series as it has been on the mailing
+> > list for a while and received no real change since a couple of weeks
+> > already, possibly avoiding the need for yet another resend of 48
+> > patches :)  
 > 
-> Heh, here you do try to do something about dtr_rts(), but you can't just
-> ignore the request and wish for the best in case the device is
-> suspended. :) There needs to be a synchronous resume here too.
+> Don't worry, it's email day tomorrow.  I have a bunch of high-priority
+> patches/sets that I aim to handle, yours included.
 
-Well for the current use cases the port should be already awake at
-this point :) But yeah, for the TX path we should be able to handle
-all the cases.
+Haha, ok, thanks for the quick feedback :)
 
-Regards,
-
-Tony
+Cheers,
+Miquèl
