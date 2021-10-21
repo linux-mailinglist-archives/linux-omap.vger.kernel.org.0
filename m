@@ -2,84 +2,135 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16512436A37
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Oct 2021 20:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B880436B62
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Oct 2021 21:34:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230267AbhJUSMi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Oct 2021 14:12:38 -0400
-Received: from 49-237-179-185.static.tentacle.fi ([185.179.237.49]:56754 "EHLO
-        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229968AbhJUSMi (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 21 Oct 2021 14:12:38 -0400
-Received: from 88-114-184-125.elisa-laajakaista.fi ([88.114.184.125] helo=[192.168.1.42])
-        by bitmer.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <jarkko.nikula@bitmer.com>)
-        id 1mdcWC-0008IB-0J; Thu, 21 Oct 2021 21:10:20 +0300
-Subject: Re: Regression with e428e250fde6 on BeagleBoard Rev C2
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <3f6924a7-1934-b94e-2441-4781fe737f32@bitmer.com>
- <YUiOA4QEbZXPmQ7F@atomide.com>
- <5de5382b-9f11-c99b-5b9b-c90ae023e10b@bitmer.com>
- <YUmC/xbYDnXMrsb1@atomide.com>
- <2e85559a-52fe-f887-51b5-4e7505ebda1e@bitmer.com>
- <YXFyCIGJj4HnHCpy@atomide.com>
-From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
-Message-ID: <5987632f-78a1-94c6-f02e-4f52b927a8e2@bitmer.com>
-Date:   Thu, 21 Oct 2021 21:10:16 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S231579AbhJUThI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Oct 2021 15:37:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54244 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231533AbhJUThI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Oct 2021 15:37:08 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE21AC061764
+        for <linux-omap@vger.kernel.org>; Thu, 21 Oct 2021 12:34:51 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id u5so159074ljo.8
+        for <linux-omap@vger.kernel.org>; Thu, 21 Oct 2021 12:34:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XfPdG1exyoqsagrAofCA8FWRp2LfbnD+0yi1Ma+izbU=;
+        b=dQzIGiKDgjHtKcuV2a2egJjdMID/clNbQXNSqSwBosKjKw9iHwYb+jTVL3VbF82uef
+         DwyKQrX20HMUA9KlrHe3l9H/JM/PCpFyiZOESfL/ku9cRA1kZ8O5KL1gk8T8qSYez7nn
+         keZYSxdthbR50Dt01V3FfSmZGb0BET2nfCfwP36ZSHNAqmIIEjJa3sg6MWnWPoQ52rEB
+         z979zJXlvGvneeEG/XECgq+0SlD4gFHfiDoYYxFz/f+gA5YCSne3SHJL6uwSeTXMlijv
+         t3U2ZgBe3QadIXix/qcyTtB8eJqbqwtVNmUYjTazNhG1lSDwWskSdnHNyOWe9tjVcv7J
+         6Dug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XfPdG1exyoqsagrAofCA8FWRp2LfbnD+0yi1Ma+izbU=;
+        b=n2b4KqUcpgLXIUeT73p06aUpb50P/4NIGGsv/7cKeinl2vChUUU2BA7hoCZ3FIM4ei
+         zTKvIpajqc1qgERSXSjXin55FI0VOmlhrDhpSOMNe/DhTWHmDDLd65ptRoRawIrQ36Or
+         E5n67cas3jZDLBIjBpK4zOGvW/fOYc/y9aca/JA7YyvOxsw9OFSapC8L1XJudQHuAtmb
+         y383CwJLkFgqDmML1oirfNKIYLHqkdMwFOXD51r3FVLH1r0edGscPzSa2s/EdIQnYFuj
+         ZDJ5Xz27JxpXR6aqYAUf5WhSvkRUJQV67lm16/wfPncmizvlCYab3O5ZbNYDUOk6OwTq
+         s5Jg==
+X-Gm-Message-State: AOAM533sHLsCUNZ/VKhk+WSWwVh5pvQ3RbfvgPnrZMd5iaDdDkXtYUTT
+        8ixAh5s4Q2EE9WTAeZ3JSL21Pfkd9UNm4UDnCAjVcA==
+X-Google-Smtp-Source: ABdhPJxopEDg84hjCeiUpyIMp1whfBazBwaoTeOeOgXTY/Hsl1WxGC1nltKtZGv0ssWAlE8ibNj0WmQi8oqbCYzBj5w=
+X-Received: by 2002:a2e:bd11:: with SMTP id n17mr7783336ljq.273.1634844889269;
+ Thu, 21 Oct 2021 12:34:49 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YXFyCIGJj4HnHCpy@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20211021134352.10135-1-tony@atomide.com>
+In-Reply-To: <20211021134352.10135-1-tony@atomide.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 21 Oct 2021 21:34:12 +0200
+Message-ID: <CAPDyKFr83Kw20272=SYUY5_r1AMmbJRb=XdGaNu0-RojuXSAXQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-omap: Fix build if CONFIG_PM_SLEEP is not set
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Chunyan Zhang <zhang.chunyan@linaro.org>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/21/21 4:58 PM, Tony Lindgren wrote:
->> Could it be possible the "secure_32k_fck" clock has some system hanging
->> issue on my beagle? How I understand from e428e250fde6 ("ARM: dts:
->> Configure system timers for omap3") that "secure_32k_fck" is not
->> referenced explicitly but your patch here does.
-> 
-> Yes seems like there may be some extra issue on the omap3-beagle
-> boards. Seeing the earlycon output would be good to see.
-> 
-Here are the last lines with your earlier patch and patch below applied
-(my tested-by below):
-
-...
-[    0.000000] IRQ: Found an INTC at 0x(ptrval) (revision 4.0) with 96
-interrupts
-[    0.000000] random: get_random_bytes called from
-start_kernel+0x464/0x6c4 with crng_init=0
-[    0.000000] Clocking rate (Crystal/Core/MPU): 26.0/332/600 MHz
-[    0.000000] OMAP clocksource: 32k_counter at 32768 Hz
-[    0.000000] clocksource: 32k_counter: mask: 0xffffffff max_cycles:
-0xffffffff, max_idle_ns: 58327039986419 ns
-[    0.000000] sched_clock: 32 bits at 32kHz, resolution 30517ns, wraps
-every 65535999984741ns
-[    0.014617] TI gptimer clocksource: always-on
-/ocp@68000000/target-module@48304000
-[    0.022583] sched_clock: 32 bits at 32kHz, resolution 30517ns, wraps
-every 65535999984741ns
-[    0.032073] clocksource: dmtimer: mask: 0xffffffff max_cycles:
-0xffffffff, max_idle_ns: 58327039986419 ns
-[    0.044372] Console: colour dummy device 80x30
-
-> Subject: [PATCH] ARM: dts: Add missing stdout-path for omap3-beagle
->  variants
-> 
-> This allows seeing early serial console output as long as the kernel
-> config has CONFIG_SERIAL_EARLYCON=y, and the kernel command line has
-> earlycon.
-> 
+On Thu, 21 Oct 2021 at 15:43, Tony Lindgren <tony@atomide.com> wrote:
+>
+> Commit f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions")
+> combined the use of runtime PM and system suspend functions but left the
+> ifdef CONFIG_PM_SLEEP in place causing undeclared identifier error for
+> sdhci_omap_runtime_suspend if CONFIG_PM_SLEEP is not enabled.
+>
+> Let's fix the error by removing ifdef CONFIG_PM_SLEEP and tagging the
+> reset of the PM related functions with __maybe_unused.
+>
+> Let's also remove the forward declaration for sdhci_omap_context_save(),
+> that was accidentally left from an earlier version and is no longer used.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
 > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/mmc/host/sdhci-omap.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
+> --- a/drivers/mmc/host/sdhci-omap.c
+> +++ b/drivers/mmc/host/sdhci-omap.c
+> @@ -1210,8 +1210,6 @@ static const struct soc_device_attribute sdhci_omap_soc_devices[] = {
+>         }
+>  };
+>
+> -static void sdhci_omap_context_save(struct sdhci_omap_host *omap_host);
+> -
+>  static int sdhci_omap_probe(struct platform_device *pdev)
+>  {
+>         int ret;
+> @@ -1417,8 +1415,8 @@ static int sdhci_omap_remove(struct platform_device *pdev)
+>
+>         return 0;
+>  }
+> -#ifdef CONFIG_PM_SLEEP
 
-You may add to this patch:
+This above should be:
+#ifdef CONFIG_PM
 
-Tested-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
+sdhci_runtime_suspend|resume() host is defined like this as well, so
+the below would trigger a compiler error when built with CONFIG_PM
+unset.
+
+> -static void sdhci_omap_context_save(struct sdhci_omap_host *omap_host)
+> +
+> +static void __maybe_unused sdhci_omap_context_save(struct sdhci_omap_host *omap_host)
+>  {
+>         omap_host->con = sdhci_omap_readl(omap_host, SDHCI_OMAP_CON);
+>         omap_host->hctl = sdhci_omap_readl(omap_host, SDHCI_OMAP_HCTL);
+> @@ -1429,7 +1427,7 @@ static void sdhci_omap_context_save(struct sdhci_omap_host *omap_host)
+>  }
+>
+>  /* Order matters here, HCTL must be restored in two phases */
+> -static void sdhci_omap_context_restore(struct sdhci_omap_host *omap_host)
+> +static void __maybe_unused sdhci_omap_context_restore(struct sdhci_omap_host *omap_host)
+>  {
+>         sdhci_omap_writel(omap_host, SDHCI_OMAP_HCTL, omap_host->hctl);
+>         sdhci_omap_writel(omap_host, SDHCI_OMAP_CAPA, omap_host->capa);
+> @@ -1471,7 +1469,6 @@ static int __maybe_unused sdhci_omap_runtime_resume(struct device *dev)
+>
+>         return 0;
+>  }
+> -#endif
+>
+>  static const struct dev_pm_ops sdhci_omap_dev_pm_ops = {
+>         SET_RUNTIME_PM_OPS(sdhci_omap_runtime_suspend,
+
+Kind regards
+Uffe
