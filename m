@@ -2,213 +2,155 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F3E5E43601B
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Oct 2021 13:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABB004360FE
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Oct 2021 14:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230265AbhJULX6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Oct 2021 07:23:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51308 "EHLO
+        id S231570AbhJUMFI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Oct 2021 08:05:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230179AbhJULX6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Oct 2021 07:23:58 -0400
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2FA4C061749
-        for <linux-omap@vger.kernel.org>; Thu, 21 Oct 2021 04:21:41 -0700 (PDT)
-Received: by mail-io1-xd29.google.com with SMTP id p142so472821iod.0
-        for <linux-omap@vger.kernel.org>; Thu, 21 Oct 2021 04:21:41 -0700 (PDT)
+        with ESMTP id S231556AbhJUMFF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Oct 2021 08:05:05 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52814C06174E
+        for <linux-omap@vger.kernel.org>; Thu, 21 Oct 2021 05:02:49 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id m22so819821wrb.0
+        for <linux-omap@vger.kernel.org>; Thu, 21 Oct 2021 05:02:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hHTl0EN9dQ/dp9evKTTMpGqyp59LLT52mZlH+IIiot8=;
-        b=AQ+5EHmgKNlon0JYKx/HWu5x6U66Dcgko2YsZqPv201SVAWH6nfAXCe6BrNIJTgweU
-         owxFxSqSKQ9lfcUwyV5ckK+OFn0e5vmPJR0CFUWJ53fpkGyrgJFB1ZfsmNZL3iUFz8jH
-         OkREspWPq5dNqwJRHY0/qL6/apmHCbOMTfg9d8moUcertONvMnP7xYWRrSx9gCe7OwYG
-         J9aPVhC3YVVbEWzBVBCINMU/2Q4E8R0jUYUxzNmdIq4wj64/gJsEr1qWWjBfwL9+V238
-         0Vu3k6epCFJJEmMmYn8r3vfBt2LLoyx+84QGCYdsK46gvG0KfTTlZuBV03A344QGE1pb
-         6nOA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=+66ztlp2S24vDRQ1MInENOk33hsXduQT+x2D2y0sLew=;
+        b=ecqoSHJYObNAVAuyjdiByagc4VdDj5FyN3U2UHy9QEPyn/wPQwmgpim5Ej/vyZNTt4
+         3wcrfvK+cBPaEf4DnL18712D5IUSmDi6IQEeG00/cAaZ94gFbTvvBqGF9E0HhbiMfnBe
+         UNOH6dQVZXx/jc2dd8o5t5LR2JSClpWtR/gmg+UPOULlzrFyZqHhhG1YWneIQC4I4d3T
+         NVSJyxAUh7WV9CJoniZW9YbtZebIfhlBIt93Hm74FJBfgB0/yut7BRlmtOfKBwdIogtJ
+         F6XayrXR9ht8PW83lefWHCmEdT+ux+iAgMCBl7QZgbtLibVhdyv5YcdnZZziWhl0Wz+v
+         Wi0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hHTl0EN9dQ/dp9evKTTMpGqyp59LLT52mZlH+IIiot8=;
-        b=IU1M+nO+6iq1dDt4g5a46gdGmP2Aj3+QI89QQsdV9SGmw+jWEJMFMTaGVc0diKu0fS
-         9QXLOSTfEsspLqY+Gic7qBmjTQd/ZYbHp9xgnLmS3nyxS9HA942FNZt0TwJR+5fgM6Za
-         B4fFZn76iRlSI4d+KepKQHfj/ZzYF4MmUT94WoCFRB6k5wN87m8AIOmw3ohbMV5IlgdU
-         e/bVPZt+uz9aTEJq1BJlyYXN1mvyuQc+SQaxwFVkQx9QjDxWDUh4e+TuZL3CZzMtL+Qa
-         JlbimRe9nFHPT6XYPRbIYhyHs+NdIYVq6KlCZZhA7pZ6xFgZBZc0YKDUGS6pRXVKnKLK
-         c+7Q==
-X-Gm-Message-State: AOAM533pd0zZ9l8ygqE/R0S6OihSB9FtCG5xgHEtKEzgv5r1mBzbjJg3
-        B8WMiYMVzGgXr7EilmmK4V16TXEp4rnPfc86kH1I6w==
-X-Google-Smtp-Source: ABdhPJxMRo/M6HcJdEwh6eTZSJmNRK1zwILbTp96Xp6bcY/ASKoT49bvdtBnoUUI19JfFMMWqZN4m0P00TAN76G7v0w=
-X-Received: by 2002:a05:6638:3796:: with SMTP id w22mr3510784jal.25.1634815300995;
- Thu, 21 Oct 2021 04:21:40 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=+66ztlp2S24vDRQ1MInENOk33hsXduQT+x2D2y0sLew=;
+        b=QwnldymEVGPcWwgt6J1yzScrrPgyiPTsSI/Kd2JdrMnDRPcAIjGMlAjDZPMb+Nze+l
+         O7BM/DaM9BktGYtObxNMPWtxXjGdiOX+EKhqbe6h9B0NXjX8hMGczn9qDXxkUMhltz76
+         pRtQJ4fkIF8AIksuCQv1LHspveiYV47Cffgn4IFnyIoVmRiBF294VMqZ0P/ZAbdLFYYQ
+         z5hWb4jZy92fSQ6L/UGAjyZGe3CRnu0V/ndeaCFawGWYVkZZaGt/JuGVlcX7g4kzXgWx
+         UqmELsmzC65yfqQ3P929MUiqU6FmTPvib0pN+kUZg/hUA9C0d+b30p2DBA4kEr7U7XKh
+         HQ7g==
+X-Gm-Message-State: AOAM530E2E2YE3a1m1Djsif4S8I7gk9G/aQy2uBo3aPdJPFZbSPPu911
+        ptwuzmvYe5QVd+5pH/TdfH6PFQ==
+X-Google-Smtp-Source: ABdhPJwFfs/5sKCa/AM6W5aPkoxzFP02nlu9qRn1TINKXqXb+lVY15e+3uRLbz462hFU6Vd2S0n4yA==
+X-Received: by 2002:adf:bbc8:: with SMTP id z8mr6690188wrg.281.1634817767865;
+        Thu, 21 Oct 2021 05:02:47 -0700 (PDT)
+Received: from google.com ([95.148.6.207])
+        by smtp.gmail.com with ESMTPSA id k40sm1209825wms.21.2021.10.21.05.02.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Oct 2021 05:02:47 -0700 (PDT)
+Date:   Thu, 21 Oct 2021 13:02:45 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Immutable branch between MFD, IIO, Input (Touchscreen)
+ and Clk due for the v5.16 merge window
+Message-ID: <YXFW5R8zK/g9Rqei@google.com>
+References: <20211015081506.933180-1-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-References: <20210929000735.585237-1-saravanak@google.com> <20210929000735.585237-3-saravanak@google.com>
-In-Reply-To: <20210929000735.585237-3-saravanak@google.com>
-From:   Amit Pundir <amit.pundir@linaro.org>
-Date:   Thu, 21 Oct 2021 16:51:04 +0530
-Message-ID: <CAMi1Hd0HvPOT277mx8hNTU9NQH2ti7h5qc5+rxOkRWwbfrhyQQ@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] drivers: bus: Delete CONFIG_SIMPLE_PM_BUS
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Android Kernel Team <kernel-team@android.com>,
-        linux-arm-kernel@lists.infradead.org,
-        lkml <linux-kernel@vger.kernel.org>, linux-oxnas@groups.io,
-        linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-riscv@lists.infradead.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        John Stultz <john.stultz@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211015081506.933180-1-miquel.raynal@bootlin.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Saravana,
+Enjoy!
 
-This patch broke v5.15-rc6 on RB5 (sm8250 | qcom/qrb5165-rb5.dts).
-I can't boot past this point https://www.irccloud.com/pastebin/raw/Nv6ZwHmW.
+The following changes since commit 6880fa6c56601bb8ed59df6c30fd390cc5f6dd8f:
 
-Regards,
-Amit Pundir
+  Linux 5.15-rc1 (2021-09-12 16:28:37 -0700)
 
-On Wed, 29 Sept 2021 at 05:37, Saravana Kannan <saravanak@google.com> wrote:
->
-> The simple-pm-bus driver is mandatory for CONFIG_OF based platforms to work
-> with fw_devlink. So, always compile it in for CONFIG_OF and delete the
-> config since it's no longer necessary.
->
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
-> ---
->  arch/arm/configs/multi_v7_defconfig |  1 -
->  arch/arm/configs/oxnas_v6_defconfig |  1 -
->  arch/arm/configs/shmobile_defconfig |  1 -
->  arch/arm/mach-omap2/Kconfig         |  1 -
->  arch/arm64/configs/defconfig        |  1 -
->  drivers/bus/Kconfig                 | 12 ------------
->  drivers/bus/Makefile                |  2 +-
->  drivers/soc/canaan/Kconfig          |  1 -
->  8 files changed, 1 insertion(+), 19 deletions(-)
->
-> diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
-> index d9abaae118dd..362720ae8d65 100644
-> --- a/arch/arm/configs/multi_v7_defconfig
-> +++ b/arch/arm/configs/multi_v7_defconfig
-> @@ -196,7 +196,6 @@ CONFIG_PCI_EPF_TEST=m
->  CONFIG_DEVTMPFS=y
->  CONFIG_DEVTMPFS_MOUNT=y
->  CONFIG_OMAP_OCP2SCP=y
-> -CONFIG_SIMPLE_PM_BUS=y
->  CONFIG_MTD=y
->  CONFIG_MTD_CMDLINE_PARTS=y
->  CONFIG_MTD_BLOCK=y
-> diff --git a/arch/arm/configs/oxnas_v6_defconfig b/arch/arm/configs/oxnas_v6_defconfig
-> index cae0db6b4eaf..de37f7e90999 100644
-> --- a/arch/arm/configs/oxnas_v6_defconfig
-> +++ b/arch/arm/configs/oxnas_v6_defconfig
-> @@ -46,7 +46,6 @@ CONFIG_DEVTMPFS=y
->  CONFIG_DEVTMPFS_MOUNT=y
->  CONFIG_DMA_CMA=y
->  CONFIG_CMA_SIZE_MBYTES=64
-> -CONFIG_SIMPLE_PM_BUS=y
->  CONFIG_MTD=y
->  CONFIG_MTD_CMDLINE_PARTS=y
->  CONFIG_MTD_BLOCK=y
-> diff --git a/arch/arm/configs/shmobile_defconfig b/arch/arm/configs/shmobile_defconfig
-> index d9a27e4e0914..18d2a960b2d2 100644
-> --- a/arch/arm/configs/shmobile_defconfig
-> +++ b/arch/arm/configs/shmobile_defconfig
-> @@ -40,7 +40,6 @@ CONFIG_PCI_RCAR_GEN2=y
->  CONFIG_PCIE_RCAR_HOST=y
->  CONFIG_DEVTMPFS=y
->  CONFIG_DEVTMPFS_MOUNT=y
-> -CONFIG_SIMPLE_PM_BUS=y
->  CONFIG_MTD=y
->  CONFIG_MTD_BLOCK=y
->  CONFIG_MTD_CFI=y
-> diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
-> index 7df8f5276ddf..02f2f3157f07 100644
-> --- a/arch/arm/mach-omap2/Kconfig
-> +++ b/arch/arm/mach-omap2/Kconfig
-> @@ -112,7 +112,6 @@ config ARCH_OMAP2PLUS
->         select PM_GENERIC_DOMAINS
->         select PM_GENERIC_DOMAINS_OF
->         select RESET_CONTROLLER
-> -       select SIMPLE_PM_BUS
->         select SOC_BUS
->         select TI_SYSC
->         select OMAP_IRQCHIP
-> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-> index f423d08b9a71..474b1f2e3f06 100644
-> --- a/arch/arm64/configs/defconfig
-> +++ b/arch/arm64/configs/defconfig
-> @@ -245,7 +245,6 @@ CONFIG_DEVTMPFS_MOUNT=y
->  CONFIG_FW_LOADER_USER_HELPER=y
->  CONFIG_FW_LOADER_USER_HELPER_FALLBACK=y
->  CONFIG_HISILICON_LPC=y
-> -CONFIG_SIMPLE_PM_BUS=y
->  CONFIG_FSL_MC_BUS=y
->  CONFIG_TEGRA_ACONNECT=m
->  CONFIG_GNSS=m
-> diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
-> index e7f7eee6ee9a..dc3801369488 100644
-> --- a/drivers/bus/Kconfig
-> +++ b/drivers/bus/Kconfig
-> @@ -141,18 +141,6 @@ config QCOM_EBI2
->           Interface 2, which can be used to connect things like NAND Flash,
->           SRAM, ethernet adapters, FPGAs and LCD displays.
->
-> -config SIMPLE_PM_BUS
-> -       tristate "Simple Power-Managed Bus Driver"
-> -       depends on OF && PM
-> -       help
-> -         Driver for transparent busses that don't need a real driver, but
-> -         where the bus controller is part of a PM domain, or under the control
-> -         of a functional clock, and thus relies on runtime PM for managing
-> -         this PM domain and/or clock.
-> -         An example of such a bus controller is the Renesas Bus State
-> -         Controller (BSC, sometimes called "LBSC within Bus Bridge", or
-> -         "External Bus Interface") as found on several Renesas ARM SoCs.
-> -
->  config SUN50I_DE2_BUS
->         bool "Allwinner A64 DE2 Bus Driver"
->           default ARM64
-> diff --git a/drivers/bus/Makefile b/drivers/bus/Makefile
-> index 397e35392bff..86aacd36a56d 100644
-> --- a/drivers/bus/Makefile
-> +++ b/drivers/bus/Makefile
-> @@ -26,7 +26,7 @@ obj-$(CONFIG_OMAP_OCP2SCP)    += omap-ocp2scp.o
->  obj-$(CONFIG_QCOM_EBI2)                += qcom-ebi2.o
->  obj-$(CONFIG_SUN50I_DE2_BUS)   += sun50i-de2.o
->  obj-$(CONFIG_SUNXI_RSB)                += sunxi-rsb.o
-> -obj-$(CONFIG_SIMPLE_PM_BUS)    += simple-pm-bus.o
-> +obj-$(CONFIG_OF)               += simple-pm-bus.o
->  obj-$(CONFIG_TEGRA_ACONNECT)   += tegra-aconnect.o
->  obj-$(CONFIG_TEGRA_GMI)                += tegra-gmi.o
->  obj-$(CONFIG_TI_PWMSS)         += ti-pwmss.o
-> diff --git a/drivers/soc/canaan/Kconfig b/drivers/soc/canaan/Kconfig
-> index 8179b69518b4..853096b7e84c 100644
-> --- a/drivers/soc/canaan/Kconfig
-> +++ b/drivers/soc/canaan/Kconfig
-> @@ -5,7 +5,6 @@ config SOC_K210_SYSCTL
->         depends on RISCV && SOC_CANAAN && OF
->         default SOC_CANAAN
->          select PM
-> -        select SIMPLE_PM_BUS
->          select SYSCON
->          select MFD_SYSCON
->         help
-> --
-> 2.33.0.685.g46640cef36-goog
->
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-iio-touchscreen-clk-v5.16
+
+for you to fetch changes up to e7c8a5fe82ff8ee100c65598187674eef4748bf2:
+
+  iio: adc: ti_am335x_adc: Add the am437x compatible (2021-10-21 10:02:48 +0100)
+
+----------------------------------------------------------------
+Immutable branch between MFD, IIO, Input (Touchscreen) and Clk due for the v5.16 merge window
+
+----------------------------------------------------------------
+Miquel Raynal (45):
+      clk: ti: am43xx: Add clkctrl data for am43xx ADC1
+      dt-bindings: mfd: ti,am3359-tscadc: Add a yaml description for this MFD
+      dt-bindings: touchscreen: ti,am3359-tsc: New yaml description
+      dt-bindings: iio: adc: ti,am3359-adc: New yaml description
+      dt-bindings: touchscreen: ti,am3359-tsc: Remove deprecated text file
+      dt-bindings: mfd: ti,am3359-tscadc: Describe am4372 MFD compatible
+      dt-bindings: iio: adc: ti,am3359-adc: Describe am4372 ADC compatible
+      mfd: ti_am335x_tscadc: Ensure a balanced number of node get/put
+      mfd: ti_am335x_tscadc: Replace license text with SPDX tag
+      mfd: ti_am335x_tscadc: Fix style
+      mfd: ti_am335x_tscadc: Get rid of useless gotos
+      mfd: ti_am335x_tscadc: Drop extra spacing when declaring stack variables
+      mfd: ti_am335x_tscadc: Reword the comment explaining the dividers
+      mfd: ti_am335x_tscadc: Don't search the tree for our clock
+      mfd: ti_am335x_tscadc: Simplify divisor calculation
+      mfd: ti_am335x_tscadc: Move the driver structure allocation earlier
+      mfd: ti_am335x_tscadc: Use driver data
+      mfd: ti_am335x_tscadc: Mimic the probe from resume()
+      mfd: ti_am335x_tscadc: Drop useless variables from the driver structure
+      mfd: ti_am335x_tscadc: Always provide an idle configuration
+      mfd: ti_am335x_tscadc: Reorder the initialization steps
+      mfd: ti_am335x_tscadc: Gather the ctrl register logic in one place
+      mfd: ti_am335x_tscadc: Replace the header license text with SPDX tag
+      mfd: ti_am335x_tscadc: Fix header spacing
+      mfd: ti_am335x_tscadc: Use the new HZ_PER_MHZ macro
+      mfd: ti_am335x_tscadc: Drop unused definitions from the header
+      mfd: ti_am335x_tscadc: Use BIT(), GENMASK() and FIELD_PREP() when relevant
+      mfd: ti_am335x_tscadc: Clarify the maximum values for DT entries
+      mfd: ti_am335x_tscadc: Drop useless definitions from the header
+      mfd: ti_am335x_tscadc: Rename the subsystem enable macro
+      mfd: ti_am335x_tscadc: Add TSC prefix in certain macros
+      mfd: ti_am335x_tscadc: Rename a variable
+      mfd: ti_am335x_tscadc: Fix an error message
+      mfd: ti_am335x_tscadc: Add a boolean to clarify the presence of a touchscreen
+      mfd: ti_am335x_tscadc: Introduce a helper to deal with the type of hardware
+      mfd: ti_am335x_tscadc: Add ADC1/magnetic reader support
+      mfd: ti_am335x_tscadc: Support the correctly spelled DT property
+      iio: adc: ti_am335x_adc: Wait the idle state to avoid stalls
+      iio: adc: ti_am335x_adc: Replace license text with SPDX tag
+      iio: adc: ti_am335x_adc: Fix style
+      iio: adc: ti_am335x_adc: Get rid of useless gotos
+      iio: adc: ti_am335x_adc: Gather the checks on the delays
+      iio: adc: ti_am335x_adc: Add a unit to the timeout delay
+      iio: adc: ti_am335x_adc: Add the scale information
+      iio: adc: ti_am335x_adc: Add the am437x compatible
+
+ Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml           |  70 ++++++++++
+ Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml |  76 +++++++++++
+ Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt     |  91 -------------
+ Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml            |  84 ++++++++++++
+ drivers/clk/ti/clk-43xx.c                                              |   1 +
+ drivers/iio/adc/ti_am335x_adc.c                                        | 220 ++++++++++++++++++-------------
+ drivers/mfd/ti_am335x_tscadc.c                                         | 235 +++++++++++++++++++---------------
+ include/dt-bindings/clock/am4.h                                        |   1 +
+ include/linux/mfd/ti_am335x_tscadc.h                                   | 119 +++++++++--------
+ 9 files changed, 549 insertions(+), 348 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti,am3359-tsc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/ti-tsc-adc.txt
+ create mode 100644 Documentation/devicetree/bindings/mfd/ti,am3359-tscadc.yaml
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
