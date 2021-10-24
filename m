@@ -2,80 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 043C043871E
-	for <lists+linux-omap@lfdr.de>; Sun, 24 Oct 2021 08:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69CB44389FA
+	for <lists+linux-omap@lfdr.de>; Sun, 24 Oct 2021 17:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229868AbhJXGnk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 24 Oct 2021 02:43:40 -0400
-Received: from muru.com ([72.249.23.125]:47996 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229464AbhJXGnk (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 24 Oct 2021 02:43:40 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id C88C58027;
-        Sun, 24 Oct 2021 06:41:52 +0000 (UTC)
-Date:   Sun, 24 Oct 2021 09:41:17 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Jarkko Nikula <jarkko.nikula@bitmer.com>
-Cc:     linux-omap@vger.kernel.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: Regression with e428e250fde6 on BeagleBoard Rev C2
-Message-ID: <YXUADRgx/xTw/IRn@atomide.com>
-References: <3f6924a7-1934-b94e-2441-4781fe737f32@bitmer.com>
- <YUiOA4QEbZXPmQ7F@atomide.com>
- <5de5382b-9f11-c99b-5b9b-c90ae023e10b@bitmer.com>
- <YUmC/xbYDnXMrsb1@atomide.com>
- <2e85559a-52fe-f887-51b5-4e7505ebda1e@bitmer.com>
- <YXFyCIGJj4HnHCpy@atomide.com>
- <5987632f-78a1-94c6-f02e-4f52b927a8e2@bitmer.com>
+        id S231733AbhJXPmW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 24 Oct 2021 11:42:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45740 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231699AbhJXPmV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 24 Oct 2021 11:42:21 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B94A1C061745;
+        Sun, 24 Oct 2021 08:40:00 -0700 (PDT)
+Date:   Sun, 24 Oct 2021 15:39:56 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1635089998;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=g50gduEGBSY+ideoguu6iU1dmhxEDVh8QVKLPEg9Oeo=;
+        b=CsVMZpm6hdgD/5NuTaY1alTSWTbWYN2h+ClvF5mdjZqqhAx8cHYVAssRW1dUJbd4cAbwm3
+        /1dkq6CNLGOYwDqzIa3klpgqF6GkPSdD2fYLGerOZRhLCBZH1HrfcSx+8fMJ1L0gOsTy82
+        UjOgyIJW7B/wLENOBWkjMc5ZAlw05Zusuor7yMGMsnnGep0UM3LmtnC0f+eoDdM/EsFk5R
+        txM0OXMGEGtS1oKaDbZq2pFkwBAS7oBsi/E5pLPfr/K2+k2oM8jsa0n3eJ3JCyq4FmEn37
+        wqs3A3doCMfxpvB2gAGhO/o/aYkki2ibRDvznpoIsLSARp04VkEQNmdCYedGVA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1635089998;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=g50gduEGBSY+ideoguu6iU1dmhxEDVh8QVKLPEg9Oeo=;
+        b=cOxnKr/R5BKbzLzg4MmHuHmPih1NErUgpm4/WeW2lc9voj2RxnNTF1T1ZhifElnH7DtyWE
+        6HvMZtMtvc470ODQ==
+From:   "tip-bot2 for Kees Cook" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] clocksource/drivers/timer-ti-dm: Select TIMER_OF
+Cc:     kernel test robot <lkp@intel.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Keerthy <j-keerthy@ti.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.co.uk>,
+        Ladislav Michl <ladis@linux-mips.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-omap@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210828175747.3777891-1-keescook@chromium.org>
+References: <20210828175747.3777891-1-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5987632f-78a1-94c6-f02e-4f52b927a8e2@bitmer.com>
+Message-ID: <163508999694.626.15597528223513744347.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Jarkko Nikula <jarkko.nikula@bitmer.com> [211021 18:10]:
-> On 10/21/21 4:58 PM, Tony Lindgren wrote:
-> >> Could it be possible the "secure_32k_fck" clock has some system hanging
-> >> issue on my beagle? How I understand from e428e250fde6 ("ARM: dts:
-> >> Configure system timers for omap3") that "secure_32k_fck" is not
-> >> referenced explicitly but your patch here does.
-> > 
-> > Yes seems like there may be some extra issue on the omap3-beagle
-> > boards. Seeing the earlycon output would be good to see.
-> > 
-> Here are the last lines with your earlier patch and patch below applied
-> (my tested-by below):
+The following commit has been merged into the timers/core branch of tip:
 
-OK thanks.
+Commit-ID:     eda9a4f7af6ee47e9e131f20e4f8a41a97379293
+Gitweb:        https://git.kernel.org/tip/eda9a4f7af6ee47e9e131f20e4f8a41a97379293
+Author:        Kees Cook <keescook@chromium.org>
+AuthorDate:    Sat, 28 Aug 2021 10:57:47 -07:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Thu, 21 Oct 2021 14:18:53 +02:00
 
-> ...
-> [    0.000000] IRQ: Found an INTC at 0x(ptrval) (revision 4.0) with 96
-> interrupts
-> [    0.000000] random: get_random_bytes called from
-> start_kernel+0x464/0x6c4 with crng_init=0
-> [    0.000000] Clocking rate (Crystal/Core/MPU): 26.0/332/600 MHz
-> [    0.000000] OMAP clocksource: 32k_counter at 32768 Hz
-> [    0.000000] clocksource: 32k_counter: mask: 0xffffffff max_cycles:
-> 0xffffffff, max_idle_ns: 58327039986419 ns
-> [    0.000000] sched_clock: 32 bits at 32kHz, resolution 30517ns, wraps
-> every 65535999984741ns
-> [    0.014617] TI gptimer clocksource: always-on
-> /ocp@68000000/target-module@48304000
-> [    0.022583] sched_clock: 32 bits at 32kHz, resolution 30517ns, wraps
-> every 65535999984741ns
-> [    0.032073] clocksource: dmtimer: mask: 0xffffffff max_cycles:
-> 0xffffffff, max_idle_ns: 58327039986419 ns
-> [    0.044372] Console: colour dummy device 80x30
+clocksource/drivers/timer-ti-dm: Select TIMER_OF
 
-Hmm so this is with the gpt12 that should be only used for the a-b
-variants. Sure it should still work on later variants too though.
+When building OMAP_DM_TIMER without TIMER_OF, there are orphan sections
+due to the use of TIMER_OF_DELCARE() without CONFIG_TIMER_OF. Select
+CONFIG_TIMER_OF when enaling OMAP_DM_TIMER:
 
-Looks like the 32k timer for the gpt12 clocksource is working as the
-time is increasing, but the clockevent is not working somehow.
+arm-linux-gnueabi-ld: warning: orphan section `__timer_of_table' from `drivers/clocksource/timer-ti-dm-systimer.o' being placed in section `__timer_of_table'
 
-Regards,
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/lkml/202108282255.tkdt4ani-lkp@intel.com/
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+Cc: Ladislav Michl <ladis@linux-mips.org>
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: linux-omap@vger.kernel.org
+Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Acked-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20210828175747.3777891-1-keescook@chromium.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+---
+ drivers/clocksource/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Tony
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index ac56b56..e71ac54 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -24,6 +24,7 @@ config I8253_LOCK
+ 
+ config OMAP_DM_TIMER
+ 	bool
++	select TIMER_OF
+ 
+ config CLKBLD_I8253
+ 	def_bool y if CLKSRC_I8253 || CLKEVT_I8253 || I8253_LOCK
