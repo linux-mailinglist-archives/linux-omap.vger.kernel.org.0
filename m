@@ -2,120 +2,302 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95B4643CF69
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Oct 2021 19:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C118C43D3B8
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Oct 2021 23:17:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243166AbhJ0RGN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 Oct 2021 13:06:13 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:15874 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243195AbhJ0RGJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Oct 2021 13:06:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1635354047;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=UcGJA7PEzuSJ63GKIVH98UGJaPpm3sGP7NyUN1zuyBo=;
-    b=sOD83cqktCW8+WMvGxX8in5KCcElKPnSn60m5Q+pZQ7KIxtfosolonZl/Gp43SWR3D
-    s0eY5AFhUOgsP169qkXq8Ywcn2vH/avd8Q2rWv43hDl8w7I1LPVzMlvx16EoEqKy3oOg
-    bWhnBTRq+erj2HB2l6bRyPvInON5aV+NzxB3Q8K5Cb/AMniRKjrpAq9vj74X3Wr5Qman
-    UsVUuA/CdC/6PpqGNVoP/db9HyQ+u3MXOfrw0jOXnAxoaGHkj5zpvdswCN0Fx/BPb74t
-    hKjdkzl2UdgrCqogsJqAXLFBDIc+2gaREAc+JV7slQ/zwNDC3S68MnNJ/BhqrNsN+wvx
-    L6hA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NIGH/jrwDaimQ=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.34.1 DYNA|AUTH)
-    with ESMTPSA id d01d1fx9RH0h350
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Wed, 27 Oct 2021 19:00:43 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: [RFC] mmc: core: transplant ti,wl1251 quirks from to be retired
- omap_hsmmc
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <80C6A8DD-183B-4FDD-B203-D3108C106043@goldelico.com>
-Date:   Wed, 27 Oct 2021 19:00:42 +0200
-Cc:     Jerome Pouiller <Jerome.Pouiller@silabs.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
+        id S244270AbhJ0VUV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 27 Oct 2021 17:20:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53682 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235594AbhJ0VUU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Oct 2021 17:20:20 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35012C061570;
+        Wed, 27 Oct 2021 14:17:54 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id bq11so8952736lfb.10;
+        Wed, 27 Oct 2021 14:17:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HanWLUgUF9ofZz0QDrpGI0FWc48M0ufWpqHp0nt1b2E=;
+        b=a1C0lJ0gvckIcvrduJKizBVznyKnv2//TCPoPAKkXD5DGkkQrqb/ViKHcln36NfZVY
+         ISxWYKFK39QVsDuVPSlu1LT5SZ/nBBGFDz/uufiZqdO/sZQ/qKfQbI2KUPqf8Q5RxkHA
+         MqrWECpWx+g/FtcgYyau3zztbhU+vtw2w2aCc+udZXZ6rXXp+WIwUtGzuFURsYXqbmre
+         UplyFnSR1G34j0+8EfYoJdUe8oXvIadmEQEw4Cs4f6QOILfUENf3Exk7blXkIQnIkrzz
+         fkcmzAmhEcuM9KSNxc0P3MxX2C8tZcNnFx2+J321vEf5QsS8Rq276nN8ZpOlB8JNgrdd
+         UeOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HanWLUgUF9ofZz0QDrpGI0FWc48M0ufWpqHp0nt1b2E=;
+        b=2DBntz91cSzQN0hRaF2E2r81j/aTuNe4fWfUbZrLjhLoW8iksFUvDeW7fS/UzDKebm
+         mtVXi4Xj24A9qUUK+3V+XwL1thd7HsWfor75K1v75Yo+w6TMWXhYeX5Uml/ctT758X/o
+         T1MvUYvL3hljnFUylZLyu3CkLhlhJDtcl9HVo3W0b8mx1E26Z9uOJlpHS8KvbojLMTfk
+         hsv9Wz7SwIMBMyhTEd3R7oH3SYFJgkJzLtB6ouRuP7L/1u/OZC3lyAs6ILDk5nzkG/qA
+         Qm0Ix5LNU+2mAdbZgE3HWIRziutrX2FoIEdewSaAyk8SQ04aKVXTLMdiUTa+nwqG8FDA
+         juQg==
+X-Gm-Message-State: AOAM531GISKMTlxyJl2aqX0gN8gj0vwq+ULZblzv2Id05X36+NwQ+7wQ
+        826MJLuq2Y6L+xRgUTIoU3s=
+X-Google-Smtp-Source: ABdhPJwziuHQfMqUpY6gmZyMY580K8cBL+Vix4M/+v/UKEXvEr1gkREZREaCQS2oC15RMdaQR1Q4+A==
+X-Received: by 2002:a05:6512:31a:: with SMTP id t26mr121977lfp.280.1635369472536;
+        Wed, 27 Oct 2021 14:17:52 -0700 (PDT)
+Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru. [46.138.41.28])
+        by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.17.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Oct 2021 14:17:52 -0700 (PDT)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Bean Huo <beanhuo@micron.com>, linux-mmc@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        Chen-Yu Tsai <wens@csie.org>,
+        =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
         Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <935598D6-B8B5-4EC8-B87E-8EDC0F3B58CF@goldelico.com>
-References: <8ecc5c79c1dd0627d570ede31e18c860786cacca.1633519499.git.hns@goldelico.com>
- <CAPDyKFraMXqC9OBeUTpm=bxjrFZTCopV3ZJQf1TRsA8UeTWdTA@mail.gmail.com>
- <80C6A8DD-183B-4FDD-B203-D3108C106043@goldelico.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-X-Mailer: Apple Mail (2.3445.104.21)
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [PATCH v2 00/45] Introduce power-off+restart call chain API
+Date:   Thu, 28 Oct 2021 00:16:30 +0300
+Message-Id: <20211027211715.12671-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.33.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Ulf,
+Problem
+-------
 
-> Am 26.10.2021 um 20:08 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->=20
-> Hi Uf,
->>=20
->> As a matter of fact, the similar problem that you are looking to
->> address (applying card quirks based on DT compatibility strings), is
->> partly being taken care of in another series [1], being discussed
->> right now. I think the solution for the ti,wl1251 should be based =
-upon
->> that too. Please have a look and see if you can play with that!?
->=20
-> That is interesting.
-> Yes, maybe it can be the basis. At least for finding the chip and =
-driver.
+SoC devices require power-off call chaining functionality from kernel.
+We have a widely used restart chaining provided by restart notifier API,
+but nothing for power-off.
 
-I have done a first experiment.
+Solution
+--------
 
-It seems as if the series [1] does the opposite of what we need... It =
-just
-skips entries in struct mmc_fixup if the DT does *not* match.
+Introduce new API that provides both restart and power-off call chains.
 
-This new match is not even tried in the wl1251 case since =
-card->cis.vendor
-and card->cis.device are not properly initialized when =
-mmc_fixup_device() is called.
-(in the upstream code the init_card function sets these and also sets =
-MMC_QUIRK_NONSTD_SDIO
-to early abort before sdio_read_cccr, sdio_read_common_cis, and =
-mmc_fixup_device).
+Why combine restart with power-off? Because drivers often do both.
+More practical to have API that provides both under the same roof.
 
-What I don't get from the code is how cis.vendor or cis.device can be
-initialized from device tree for a specific device. As far as I see it =
-can
-only be checked for and some quirks can be set from a table if vendor =
-and
-device read from the CIS registers do match.=20
+The new API is designed with simplicity and extensibility in mind.
+It's built upon the existing restart and reboot APIs. The simplicity
+is in new helper functions that are convenient for drivers. The
+extensibility is in the design that doesn't hardcode callback
+arguments, making easy to add new parameters and remove old.
 
-Instead, we want to match DT and define some values for an otherwise =
-unknown
-device (i.e. we can't match by vendor or other methods) to help to =
-initialize
-the interface. So in mmc_fixup_device it is too late and we need =
-something
-running earlier, based purely on device tree information...
+This is a third attempt to introduce the new API. First was made by
+Guenter Roeck back in 2014, second was made by Thierry Reding in 2017.
+In fact the work didn't stop and recently arm_pm_restart() was removed
+from v5.14 kernel, which was a part of preparatory work started by
+Guenter Roeck. I took into account experience and ideas from the
+previous attempts, extended and polished them.
 
-BR and thanks,
-Nikolaus
+Adoption plan
+-------------
 
+This patchset introduces the new API. It also converts multiple drivers
+and arch code to the new API to demonstrate how it all looks in practice.
 
-> [1]
-> [RFC PATCH 0/2] mmc: allow to rely on the DT to apply quirks
-> =
-https://lore.kernel.org/lkml/20211014143031.1313783-1-Jerome.Pouiller@sila=
-bs.com/
+The plan is:
+
+1. Merge new API (patches 1-8). This API will co-exist with the old APIs.
+
+2. Convert arch code to do_kernel_power_off() (patches 9-21).
+
+3. Convert drivers and platform code to the new API.
+
+4. Remove obsolete pm_power_off and pm_power_off_prepare variables.
+
+5. Make restart-notifier API private to kernel/reboot.c once no users left.
+
+Results
+-------
+
+1. Devices can be powered off properly.
+
+2. Global variables are removed from drivers.
+
+3. Global pm_power_off and pm_power_off_prepare callback variables are
+removed once all users are converted to the new API. The latter callback
+is removed by patch #25 of this series.
+
+4. Ambiguous call chain ordering is prohibited. See patch #5 which adds
+verification of restart handlers priorities, ensuring that they are unique.
+
+Changelog:
+
+v2: - Replaced standalone power-off call chain demo-API with the combined
+      power-off+restart API because this is what drivers want. It's a more
+      comprehensive solution.
+
+    - Converted multiple drivers and arch code to the new API. Suggested by
+      Andy Shevchenko. I skimmed through the rest of drivers, verifying that
+      new API suits them. The rest of the drivers will be converted once we
+      will settle on the new API, otherwise will be too many patches here.
+
+    - v2 API doesn't expose notifier to users and require handlers to
+      have unique priority. Suggested by Guenter Roeck.
+
+    - v2 API has power-off chaining disabled by default and require
+      drivers to explicitly opt-in to the chaining. This preserves old
+      behaviour for existing drivers once they are converted to the new
+      API.
+
+Dmitry Osipenko (45):
+  notifier: Remove extern annotation from function prototypes
+  notifier: Add blocking_notifier_call_chain_empty()
+  notifier: Add atomic/blocking_notifier_has_unique_priority()
+  reboot: Correct typo in a comment
+  reboot: Warn if restart handler has duplicated priority
+  reboot: Warn if unregister_restart_handler() fails
+  reboot: Remove extern annotation from function prototypes
+  kernel: Add combined power-off+restart handler call chain API
+  xen/x86: Use do_kernel_power_off()
+  ARM: Use do_kernel_power_off()
+  arm64: Use do_kernel_power_off()
+  csky: Use do_kernel_power_off()
+  ia64: Use do_kernel_power_off()
+  mips: Use do_kernel_power_off()
+  nds32: Use do_kernel_power_off()
+  parisc: Use do_kernel_power_off()
+  powerpc: Use do_kernel_power_off()
+  riscv: Use do_kernel_power_off()
+  sh: Use do_kernel_power_off()
+  x86: Use do_kernel_power_off()
+  m68k: Switch to new power-handler API
+  memory: emif: Use kernel_can_power_off()
+  ACPI: power: Switch to power-handler API
+  regulator: pfuze100: Use devm_register_power_handler()
+  reboot: Remove pm_power_off_prepare()
+  soc/tegra: pmc: Utilize power-handler API to power off Nexus 7
+    properly
+  mfd: ntxec: Use devm_register_power_handler()
+  mfd: rn5t618: Use devm_register_power_handler()
+  mfd: acer-a500: Use devm_register_power_handler()
+  mfd: ene-kb3930: Use devm_register_power_handler()
+  mfd: axp20x: Use register_simple_power_off_handler()
+  mfd: retu: Use devm_register_simple_power_off_handler()
+  mfd: rk808: Use devm_register_simple_power_off_handler()
+  mfd: palmas: Use devm_register_simple_power_off_handler()
+  mfd: max8907: Use devm_register_simple_power_off_handler()
+  mfd: tps6586x: Use devm_register_simple_power_off_handler()
+  mfd: tps65910: Use devm_register_simple_power_off_handler()
+  mfd: max77620: Use devm_register_simple_power_off_handler()
+  mfd: dm355evm_msp: Use devm_register_trivial_power_off_handler()
+  mfd: twl4030: Use devm_register_trivial_power_off_handler()
+  mfd: ab8500: Use devm_register_trivial_power_off_handler()
+  reset: ath79: Use devm_register_simple_restart_handler()
+  reset: intel-gw: Use devm_register_simple_restart_handler()
+  reset: lpc18xx: Use devm_register_prioritized_restart_handler()
+  reset: npcm: Use devm_register_prioritized_restart_handler()
+
+ arch/arm/kernel/reboot.c               |   4 +-
+ arch/arm64/kernel/process.c            |   3 +-
+ arch/csky/kernel/power.c               |   6 +-
+ arch/ia64/kernel/process.c             |   4 +-
+ arch/m68k/emu/natfeat.c                |   3 +-
+ arch/m68k/include/asm/machdep.h        |   1 -
+ arch/m68k/kernel/process.c             |   5 +-
+ arch/m68k/kernel/setup_mm.c            |   1 -
+ arch/m68k/kernel/setup_no.c            |   1 -
+ arch/m68k/mac/config.c                 |   4 +-
+ arch/mips/kernel/reset.c               |   3 +-
+ arch/nds32/kernel/process.c            |   3 +-
+ arch/parisc/kernel/process.c           |   4 +-
+ arch/powerpc/kernel/setup-common.c     |   4 +-
+ arch/powerpc/xmon/xmon.c               |   3 +-
+ arch/riscv/kernel/reset.c              |  12 +-
+ arch/sh/kernel/reboot.c                |   3 +-
+ arch/x86/kernel/reboot.c               |   4 +-
+ arch/x86/xen/enlighten_pv.c            |   4 +-
+ drivers/acpi/sleep.c                   |  25 +-
+ drivers/memory/emif.c                  |   2 +-
+ drivers/mfd/ab8500-sysctrl.c           |  17 +-
+ drivers/mfd/acer-ec-a500.c             |  52 +--
+ drivers/mfd/axp20x.c                   |  22 +-
+ drivers/mfd/dm355evm_msp.c             |  20 +-
+ drivers/mfd/ene-kb3930.c               |  45 +-
+ drivers/mfd/max77620.c                 |  21 +-
+ drivers/mfd/max8907.c                  |  22 +-
+ drivers/mfd/ntxec.c                    |  50 +-
+ drivers/mfd/palmas.c                   |  24 +-
+ drivers/mfd/retu-mfd.c                 |  31 +-
+ drivers/mfd/rk808.c                    |  23 +-
+ drivers/mfd/rn5t618.c                  |  56 +--
+ drivers/mfd/tps6586x.c                 |  21 +-
+ drivers/mfd/tps65910.c                 |  17 +-
+ drivers/mfd/twl4030-power.c            |  10 +-
+ drivers/regulator/pfuze100-regulator.c |  39 +-
+ drivers/reset/reset-ath79.c            |  15 +-
+ drivers/reset/reset-intel-gw.c         |  13 +-
+ drivers/reset/reset-lpc18xx.c          |  14 +-
+ drivers/reset/reset-npcm.c             |  14 +-
+ drivers/soc/tegra/pmc.c                |  54 ++-
+ include/linux/mfd/axp20x.h             |   1 +
+ include/linux/notifier.h               |  37 +-
+ include/linux/pm.h                     |   1 -
+ include/linux/reboot.h                 | 216 ++++++++-
+ kernel/notifier.c                      |  88 ++++
+ kernel/power/hibernate.c               |   2 +-
+ kernel/reboot.c                        | 615 ++++++++++++++++++++++++-
+ 49 files changed, 1209 insertions(+), 430 deletions(-)
+
+-- 
+2.33.1
 
