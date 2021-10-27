@@ -2,135 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FB043D5D2
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Oct 2021 23:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8A9B43D741
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 01:09:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233272AbhJ0Vec (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 Oct 2021 17:34:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56886 "EHLO
+        id S230292AbhJ0XLi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 27 Oct 2021 19:11:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232997AbhJ0Ve2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Oct 2021 17:34:28 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B002FC061243
-        for <linux-omap@vger.kernel.org>; Wed, 27 Oct 2021 14:32:02 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id j9so9039637lfu.7
-        for <linux-omap@vger.kernel.org>; Wed, 27 Oct 2021 14:32:02 -0700 (PDT)
+        with ESMTP id S230251AbhJ0XLe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Oct 2021 19:11:34 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92F6BC061767
+        for <linux-omap@vger.kernel.org>; Wed, 27 Oct 2021 16:09:08 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id t5-20020a17090a4e4500b001a0a284fcc2so6408405pjl.2
+        for <linux-omap@vger.kernel.org>; Wed, 27 Oct 2021 16:09:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ciBhkyr1/0LNSGctHDSe0+MHfUX1+FeMJz6V3BRLfBA=;
-        b=kGwwoXKRSmvokd6xwLnsAjIyjxdFz9bqwMq5MPQ34U7mBjLIsrnZUIvMbALaDu+PEF
-         bCx6uyzIElmTlnOQ+qfcaf08lIQ37WCYDibPmjM0YYhZ+qI416CJrbtviWdV++i+GgUw
-         FXT8Q5rQnCkGclbe7ubEDaD20wxnssxE7dJjsSHoQleNI0sIOkLoWA3dvO+fQJWUc16F
-         vf1HQx8x/2xk53lIJmzyvuZNogz7JyipqQkgHitf15IDzxIzrBDTlPosTsohiy8gcOjZ
-         xJFWZF3unYTrK/TDjsNTbah7KFEtlBTNajaKzxuPdo11uYUCaVFe5jX7FotgbUiV/GcY
-         T3gg==
+        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XJfFTW9EjYJeHoclf1SeEwj25PLenE7ts5EFTr8vzec=;
+        b=vYjyS+8EH3CfIBezSrdmSEFFSJc1bpK8IsDLNwp4SIdgzIr0qhB73jSdQ+tZtt+gKe
+         gLRCAnofL8DMkcE7vLBKcZfntvEYsCybXJMFIekVgyaoqoB4d2yoy2/fxl6NKOgXIYmd
+         GMEiLNFKg0iVmrnBvlpV4pv/PV+nqVeQwlB1PLBrwM8b8vjtjZjGvc3MJRrAfuUoDBNo
+         ViaF9lo0gQuECLSnf0dUVzQmZPRvjI+cvfCWgH2cYeMbb2VhrXJlj9sEs5Y4vYC263de
+         h2wbGwEHNdbZkGS/4AP/MxQ7HKYBbqiVTjD7lo6//33sqHBHnP35ISg1TmvMKaMznq9A
+         cKAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ciBhkyr1/0LNSGctHDSe0+MHfUX1+FeMJz6V3BRLfBA=;
-        b=Yk44i7bApB1ny1OLH9AXe0HErL/to8jkAnMrRNug4eMerE9Gcduzj335ZzIHvSo38U
-         rtACPd8lT7I6S+PkIHVp0AoOxKuav+ujOm6D5jroCZgqK3QfWAFdBWYN5mira5XfjAm4
-         W3/DRF5z6+3RPqfyitlbWC2+S6jh7Fv59SZfsYtWNjtbQ6rJmtpoa5rpy8lyn3Rg8+hX
-         6FOrhE1bZ3QDtRRi+40ZUx1uPsdgo/oJVVxl93OYx/xSHRsNB7gfwHuuiA5WCoT9pfdw
-         HYxUkuOQsWFnDl1CLQ+MyXXl+tUGnaA4pojJFhWzQSs6BC5pFbz56sGDtInj8fSEleT1
-         zrQQ==
-X-Gm-Message-State: AOAM533TkgkYaEnnM62G5olHwMp/HAX9tXFY+bttBvmbMrZMDv9jokKx
-        TxGsQJRutPe6jpq4FeOAtAAihBjpIySgmpWxFzSn9Q==
-X-Google-Smtp-Source: ABdhPJx9R0mAeyyBLHyBCSfUxqjhwVMpaLs4L3/9SRi3ESAaH8BLzp+0eR6f5/NuVGObOh/WX7+bvLssaRQ2YXoVhqY=
-X-Received: by 2002:a05:6512:3093:: with SMTP id z19mr148202lfd.167.1635370321040;
- Wed, 27 Oct 2021 14:32:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <8ecc5c79c1dd0627d570ede31e18c860786cacca.1633519499.git.hns@goldelico.com>
- <CAPDyKFraMXqC9OBeUTpm=bxjrFZTCopV3ZJQf1TRsA8UeTWdTA@mail.gmail.com>
- <80C6A8DD-183B-4FDD-B203-D3108C106043@goldelico.com> <935598D6-B8B5-4EC8-B87E-8EDC0F3B58CF@goldelico.com>
-In-Reply-To: <935598D6-B8B5-4EC8-B87E-8EDC0F3B58CF@goldelico.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 27 Oct 2021 23:31:23 +0200
-Message-ID: <CAPDyKFp47sAXhM2s5HOqV2wLf-kYRhdqSdzcn7a62ZW23SSPdg@mail.gmail.com>
-Subject: Re: [RFC] mmc: core: transplant ti,wl1251 quirks from to be retired omap_hsmmc
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Jerome Pouiller <Jerome.Pouiller@silabs.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bean Huo <beanhuo@micron.com>, linux-mmc@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=XJfFTW9EjYJeHoclf1SeEwj25PLenE7ts5EFTr8vzec=;
+        b=APbHKlrzDBwKOcQukaQtitpOp88+pdMGj414ux3Mh0q3mIt8SKbtvS28tFQGzH4/8/
+         nNTVpbS6M434JK9syVhgtK2B3E+It+u0rnBHxxnkz9kB/dRmHpIOcVVJ2XvQPgJYO6UI
+         x3sKG0kwYhQ+iqpqEW0cbf34haFumg/a+6bWrbt4WZO1iXKVCGngEyKPdZhSPeXRxAiC
+         BmK7amJdltkCyWlrpZVmeI46u0e08v8rBq0GriI0cpcYRaVsYuiXi/2dETmrd7f4Q36V
+         CfFRn6oZTuq7mZqk50M6mzMJNIurHgRzondSoDCC1xImcEqGF6ce5tT8C/U+BORAfT59
+         nE5Q==
+X-Gm-Message-State: AOAM530J+n5gs4oJTuGoenJ8Sn3vvj2hkXbRjVM0aWBMq4gDV4YOqNo/
+        EXVptcJB8CI2v2K9rqddIas8xg==
+X-Google-Smtp-Source: ABdhPJxUJYglQ4uyqyrvUHQJ2HBzLbAnkI4OfP0sJtC8YPLND6BbQ0gKrpcxmED13rpzsyQoceaG3g==
+X-Received: by 2002:a17:903:246:b0:13f:2ff9:8b93 with SMTP id j6-20020a170903024600b0013f2ff98b93mr652035plh.54.1635376148047;
+        Wed, 27 Oct 2021 16:09:08 -0700 (PDT)
+Received: from localhost ([2620:0:1000:5e10:60fc:a50:6d27:9fd3])
+        by smtp.gmail.com with ESMTPSA id bg15sm739067pjb.15.2021.10.27.16.09.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Oct 2021 16:09:07 -0700 (PDT)
+Date:   Wed, 27 Oct 2021 16:09:07 -0700 (PDT)
+X-Google-Original-Date: Wed, 27 Oct 2021 16:09:01 PDT (-0700)
+Subject:     Re: [PATCH v2 18/45] riscv: Use do_kernel_power_off()
+In-Reply-To: <20211027211715.12671-19-digetx@gmail.com>
+CC:     thierry.reding@gmail.com, jonathanh@nvidia.com,
+        lee.jones@linaro.org, rafael@kernel.org, broonie@kernel.org,
+        akpm@linux-foundation.org, linux@roeck-us.net,
+        linux@armlinux.org.uk, daniel.lezcano@linaro.org,
+        andriy.shevchenko@linux.intel.com, ulf.hansson@linaro.org,
+        catalin.marinas@arm.com, will@kernel.org, guoren@kernel.org,
+        geert@linux-m68k.org, gerg@linux-m68k.org, funaho@jurai.org,
+        tsbogend@alpha.franken.de, nickhu@andestech.com,
+        green.hu@gmail.com, deanbo422@gmail.com,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, ysato@users.sourceforge.jp, dalias@libc.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        boris.ostrovsky@oracle.com, jgross@suse.com,
+        sstabellini@kernel.org, lenb@kernel.org, ssantosh@kernel.org,
+        krzysztof.kozlowski@canonical.com, linus.walleij@linaro.org,
+        wens@csie.org, j.neuschaefer@gmx.net, tony@atomide.com,
+        lgirdwood@gmail.com, p.zabel@pengutronix.de, vz@mleia.com,
+        avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
+        venture@google.com, yuenn@google.com, benjaminfair@google.com,
+        pavel@ucw.cz, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-omap@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
+        linux-pm@vger.kernel.org
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     digetx@gmail.com
+Message-ID: <mhng-fd8f451c-4860-4b0c-a155-6f65891cd276@palmerdabbelt-glaptop>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 27 Oct 2021 at 19:01, H. Nikolaus Schaller <hns@goldelico.com> wrote:
+On Wed, 27 Oct 2021 14:16:48 PDT (-0700), digetx@gmail.com wrote:
+> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
+> that invokes chained power-off handlers. It also invokes legacy
+> pm_power_off() for now, which will be removed once all drivers will
+> be converted to the new power-off API.
 >
-> Hi Ulf,
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> ---
+>  arch/riscv/kernel/reset.c | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
 >
-> > Am 26.10.2021 um 20:08 schrieb H. Nikolaus Schaller <hns@goldelico.com>:
-> >
-> > Hi Uf,
-> >>
-> >> As a matter of fact, the similar problem that you are looking to
-> >> address (applying card quirks based on DT compatibility strings), is
-> >> partly being taken care of in another series [1], being discussed
-> >> right now. I think the solution for the ti,wl1251 should be based upon
-> >> that too. Please have a look and see if you can play with that!?
-> >
-> > That is interesting.
-> > Yes, maybe it can be the basis. At least for finding the chip and driver.
+> diff --git a/arch/riscv/kernel/reset.c b/arch/riscv/kernel/reset.c
+> index 9c842c41684a..912288572226 100644
+> --- a/arch/riscv/kernel/reset.c
+> +++ b/arch/riscv/kernel/reset.c
+> @@ -23,16 +23,12 @@ void machine_restart(char *cmd)
 >
-> I have done a first experiment.
+>  void machine_halt(void)
+>  {
+> -	if (pm_power_off != NULL)
+> -		pm_power_off();
+> -	else
+> -		default_power_off();
+> +	do_kernel_power_off();
+> +	default_power_off();
+>  }
 >
-> It seems as if the series [1] does the opposite of what we need... It just
-> skips entries in struct mmc_fixup if the DT does *not* match.
+>  void machine_power_off(void)
+>  {
+> -	if (pm_power_off != NULL)
+> -		pm_power_off();
+> -	else
+> -		default_power_off();
+> +	do_kernel_power_off();
+> +	default_power_off();
+>  }
 
-Ohh, I didn't look that close. In that case the code isn't doing what
-it *should*. The point is really to match on the compatible string and
-then add quirks if that is found.
-
-Let me have a closer look - and for sure, I am willing to help if needed.
-
->
-> This new match is not even tried in the wl1251 case since card->cis.vendor
-> and card->cis.device are not properly initialized when mmc_fixup_device() is called.
-> (in the upstream code the init_card function sets these and also sets MMC_QUIRK_NONSTD_SDIO
-> to early abort before sdio_read_cccr, sdio_read_common_cis, and mmc_fixup_device).
-
-We can call mmc_fixup_device() more than once during initialization
-and provide different struct mmc_fixup* - if that is needed.
-
->
-> What I don't get from the code is how cis.vendor or cis.device can be
-> initialized from device tree for a specific device. As far as I see it can
-> only be checked for and some quirks can be set from a table if vendor and
-> device read from the CIS registers do match.
-
-Yes. I thought that should be possible, but maybe it is not?
-
->
-> Instead, we want to match DT and define some values for an otherwise unknown
-> device (i.e. we can't match by vendor or other methods) to help to initialize
-> the interface. So in mmc_fixup_device it is too late and we need something
-> running earlier, based purely on device tree information...
-
-Okay, I will have a closer look. Maybe we need to extend the card
-quirks interface a bit to make it suitable for this case too.
-
->
-> BR and thanks,
-> Nikolaus
->
->
-> > [1]
-> > [RFC PATCH 0/2] mmc: allow to rely on the DT to apply quirks
-> > https://lore.kernel.org/lkml/20211014143031.1313783-1-Jerome.Pouiller@silabs.com/
->
-
-Kind regards
-Uffe
+Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
