@@ -2,55 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2451443C200
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Oct 2021 07:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F4A843C535
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Oct 2021 10:31:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238167AbhJ0FFq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 27 Oct 2021 01:05:46 -0400
-Received: from muru.com ([72.249.23.125]:48920 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230349AbhJ0FFq (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 27 Oct 2021 01:05:46 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 968AB80CD;
-        Wed, 27 Oct 2021 05:03:54 +0000 (UTC)
-Date:   Wed, 27 Oct 2021 08:03:18 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Suman Anna <s-anna@ti.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCHv2] dt-bindings: bus: ti-sysc: Update to use yaml binding
-Message-ID: <YXjdloMA02XtIGZ4@atomide.com>
-References: <20211015113350.35830-1-tony@atomide.com>
- <YXh0JtEnB6uKR/my@robh.at.kernel.org>
+        id S238627AbhJ0IeL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 27 Oct 2021 04:34:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45394 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239011AbhJ0IeE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 27 Oct 2021 04:34:04 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1758C0432C7;
+        Wed, 27 Oct 2021 01:29:22 -0700 (PDT)
+Received: from [192.168.1.111] (91-158-153-130.elisa-laajakaista.fi [91.158.153.130])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 110F1596;
+        Wed, 27 Oct 2021 10:29:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1635323360;
+        bh=ZTxjc1XWpuboGG/O4vVtLIPrMyAcKbxdbhRyjYyHbM0=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=NyzggpmnL+IQVYBMnkB2upSyIgIP3dFlF3+3olECgBeaWzGS8lUrFyYHDNJA+qucm
+         tmTZtqjimzTHPjyLcbwDFofFyAo/qIg6TJ7YhWyIILHx2HR6GAzpRBlPPmrI3pcl66
+         FVkFCEAIwNp1A+T4f5cmsttpjDXg4wKh+XzC3ss0=
+Subject: Re: [PATCH v6 1/9] drm/omap: add sanity plane state check
+To:     Neil Armstrong <narmstrong@baylibre.com>
+Cc:     linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, khilman@baylibre.com,
+        Benoit Parrot <bparrot@ti.com>
+References: <20211018142842.2511200-1-narmstrong@baylibre.com>
+ <20211018142842.2511200-2-narmstrong@baylibre.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Message-ID: <ea3d01fd-b723-b245-90cc-c5874f95122c@ideasonboard.com>
+Date:   Wed, 27 Oct 2021 11:29:17 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YXh0JtEnB6uKR/my@robh.at.kernel.org>
+In-Reply-To: <20211018142842.2511200-2-narmstrong@baylibre.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Rob Herring <robh@kernel.org> [211026 21:34]:
-> I reworked the reg-names and clock-names to be more concise and applied. 
-
-OK thanks.
-
-> Like this:
+On 18/10/2021 17:28, Neil Armstrong wrote:
+> Call drm_atomic_helper_check_plane_state() from the plane
+> atomic_check() callback in order to add plane state sanity
+> checking.
 > 
->   clock-names:
->     description:
->       Target module clock names like "fck", "ick", "optck1", "optck2"
->       if the clocks are configurable.
->     oneOf:
->       - enum: [ ick, fck, sys_clk ]
->       - items:
->           - const: fck
->           - enum: [ ick. dbclk, osc, sys_clk, dss_clk, ahclkx ]
-...
+> It will permit filtering out totally bad scaling factors, even
+> if the real check are done later in the atomic commit.
 
-Looks good to me :)
+I think there's more to it: the function sets plane_state->visible, 
+which is used in later patches.
 
-Tony
+  Tomi
