@@ -2,46 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53A3C43DDF7
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 11:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EFF043DE21
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 11:51:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229850AbhJ1JtR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Oct 2021 05:49:17 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:20490 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbhJ1JtR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 05:49:17 -0400
-X-Greylist: delayed 341 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Oct 2021 05:49:16 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1635414224;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=6iZMXH9oQp7yfoBy6uIi23vCzU7CVARSRZrB+lxBmMs=;
-    b=FZn+S8gD2YPYYn87J3OXVr9jqnHP2npfLQYDRWWr/fYTuGczH6FqyqGOqTwwBBj3vL
-    bnUZGvrJJMnuwdb0um+saJ7RdAvSe9nauVPr8YrW5gifoH1M9rSOVS6YyrCdaTcZ6BPY
-    Yi89Kt04aSJgM54VnZrpmpW6O8NZavOuSQnxDuun0ZHr+xn5zTyOk7wR78g3Zk2uVvbQ
-    mGKv7cs6Uvz1Ancsgl31p3Di1j6FU1FohOBZNQP4s3NUxn2ORPYunluavYdL9udthwoy
-    58PQcTTdizBNNX+oQmjqFKcru/GsKDbEI0IjdimXhXbv9ZP+QzM5QzSpL1WKjilkMB5I
-    1OeQ==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw4vtTA=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.34.1 DYNA|AUTH)
-    with ESMTPSA id d01d1fx9S9hi5h2
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Thu, 28 Oct 2021 11:43:44 +0200 (CEST)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: [RFC] mmc: core: transplant ti,wl1251 quirks from to be retired
- omap_hsmmc
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <1EF25CD6-7801-4C15-AB4C-5F499948A653@goldelico.com>
-Date:   Thu, 28 Oct 2021 11:43:43 +0200
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        id S229868AbhJ1JyL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Oct 2021 05:54:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51958 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229833AbhJ1JyL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 05:54:11 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908B0C061745
+        for <linux-omap@vger.kernel.org>; Thu, 28 Oct 2021 02:51:44 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id i26so7771890ljg.7
+        for <linux-omap@vger.kernel.org>; Thu, 28 Oct 2021 02:51:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KCpmUIi4CdbkIKY1b/j8ncQVr9EMyQgSlpp/uwcjT8I=;
+        b=jUDMWyajK0l2lhY4KRjDzD3/OTMk+bkhq3AnRUjLSCXhsitnZHNtNagE85/1smHyJ1
+         EBU5SlSD1fhxXVkks2c21QXXeYbjcEsp5G/c0ZJdr4YFC14ua1yF4pfLQz+rRMYipwyM
+         usWTyEXNOymtogNGR5Oot/6TGJ8ndkZtxC1cIKCnWtrHNzPZDLqBDbs/hbeoX2vYc3Ww
+         5lgIayuiYkYjP1N0UtAnbVfK1jFiq6NgJTKMd5byY2RaIqaGUjyc39XlROSsRRp+SsLB
+         3QsvBor/LEIt+BOdimnZcXP2mVVcsoBmiFmZ72DRmcbUktNgWuvxvaPh3oz0l1Wm+yqA
+         cjfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KCpmUIi4CdbkIKY1b/j8ncQVr9EMyQgSlpp/uwcjT8I=;
+        b=Z6yyYnuxdA8XC/wZvtEbHc4DY52+7khHS7AvkorCX8F5ScMxco6tYAtRpkT+p/DBpU
+         D5XJ8crp7oC3Mkn4eCkK10rVxqr8tw0ha1oRfRR/MqQFdiQzHkY/ZNFnLJVUv92xi8/w
+         84icDrkGLHewBcXr+vAxfayED4JfI2n9Vz2LCluaHKX59kbTxsALfRAjwgFtcs45Ubcn
+         WmgdQARqZ4qYp7xsO7Kn8ZL/tHz8x8r7cD8WJ5cynjQ60maSEBa4seqPmL8LffNb5gnm
+         A2BJ3x2aIPB3FAsFcnR4Rj5EF65X1bx+0AzXp2Be6xhf5GVL2wMHjZXhdNWCEdJ+08eQ
+         T6iA==
+X-Gm-Message-State: AOAM5309zeEjcfIxWOf3HpJcA589D06+f5hWN3FVDCV5cdttvddr7oPG
+        Us6IX34wSbg/aBkn9fir/xL7XGLMrf3yuJ+fVud9TA==
+X-Google-Smtp-Source: ABdhPJzxsTQcVifTPlqxGObEpVIwRC4S2wZKtsuhIX12A13sgEwHMtX3PW6IDKgOaVu1YD8T3f+H+azigKVR3HZZ6S0=
+X-Received: by 2002:a05:651c:907:: with SMTP id e7mr3728516ljq.300.1635414702972;
+ Thu, 28 Oct 2021 02:51:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <8ecc5c79c1dd0627d570ede31e18c860786cacca.1633519499.git.hns@goldelico.com>
+ <CAPDyKFp47sAXhM2s5HOqV2wLf-kYRhdqSdzcn7a62ZW23SSPdg@mail.gmail.com>
+ <470A96FD-DB24-4C32-BC9F-AE2F617FBF2D@goldelico.com> <2013308.OSlt1BDEiP@pc-42>
+ <1EF25CD6-7801-4C15-AB4C-5F499948A653@goldelico.com> <920CFF1F-475C-4403-B563-DDD144F7E52D@goldelico.com>
+In-Reply-To: <920CFF1F-475C-4403-B563-DDD144F7E52D@goldelico.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 28 Oct 2021 11:51:06 +0200
+Message-ID: <CAPDyKFp9EEHX1nooBUd7oXCfyaRwFhcikLdxrfcmnoG=2tjEww@mail.gmail.com>
+Subject: Re: [RFC] mmc: core: transplant ti,wl1251 quirks from to be retired omap_hsmmc
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>,
         Avri Altman <avri.altman@wdc.com>,
         Shawn Lin <shawn.lin@rock-chips.com>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -51,91 +64,38 @@ Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
         Tony Lindgren <tony@atomide.com>,
         Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <920CFF1F-475C-4403-B563-DDD144F7E52D@goldelico.com>
-References: <8ecc5c79c1dd0627d570ede31e18c860786cacca.1633519499.git.hns@goldelico.com>
- <CAPDyKFp47sAXhM2s5HOqV2wLf-kYRhdqSdzcn7a62ZW23SSPdg@mail.gmail.com>
- <470A96FD-DB24-4C32-BC9F-AE2F617FBF2D@goldelico.com>
- <2013308.OSlt1BDEiP@pc-42>
- <1EF25CD6-7801-4C15-AB4C-5F499948A653@goldelico.com>
-To:     =?utf-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
-X-Mailer: Apple Mail (2.3445.104.21)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+[...]
 
+> >>>
+> >>> Combining your suggestions we could do roughly:
+> >>>
+> >>> in mmc_sdio_init_card():
+> >>>
+> >>>       if (host->ops->init_card)
+> >>>               host->ops->init_card(host, card);
+> >>>       else
+> >>>               mmc_fixup_device(host, sdio_prepare_fixups_methods);
+> >>
+> >> I think I mostly agree, but why you don't call mmc_fixup_device() if
+> >> init_card is defined? (BTW, mmc_fixup_device() takes a card as
+> >> first parameter)
+> >
+> > Because I want to get rid of init_card. It is host specific and not client
+> > specific.
+>
+> Ah, on a second though we can do that independently. Either there is
+> some init_card - or something in the fixup tables. Why not both...
+> So the else clause is not needed.
 
-> Am 28.10.2021 um 11:40 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->=20
-> Hi J=C3=A9r=C3=B4me,
->=20
->> Am 28.10.2021 um 10:59 schrieb J=C3=A9r=C3=B4me Pouiller =
-<jerome.pouiller@silabs.com>:
->>=20
->> Hi Nikolaus,
->>=20
->> On Thursday 28 October 2021 09:08:50 CEST H. Nikolaus Schaller wrote:
->>=20
->>>> Let me have a closer look - and for sure, I am willing to help if =
-needed.
->>=20
->> I confirm it does not have the expected behavior. =
-!mmc_fixup_of_compatible_match()
->> should be mmc_fixup_of_compatible_match(), sorry.
->=20
-> Ok, I see.
->=20
-> One more question: how can I specify "ti,wl1251" in some struct =
-mmc_fixup table?
-> Does it need another macro like MMC_FIXUP() or SDIO_FIXUP() to set the =
-.name
-> field?
->=20
->>>=20
->>> Combining your suggestions we could do roughly:
->>>=20
->>> in mmc_sdio_init_card():
->>>=20
->>>       if (host->ops->init_card)
->>>               host->ops->init_card(host, card);
->>>       else
->>>               mmc_fixup_device(host, sdio_prepare_fixups_methods);
->>=20
->> I think I mostly agree, but why you don't call mmc_fixup_device() if
->> init_card is defined? (BTW, mmc_fixup_device() takes a card as
->> first parameter)
->=20
-> Because I want to get rid of init_card. It is host specific and not =
-client
-> specific.
+I agree, I definitely want to get rid of ->init_card() as well, but
+let's deal with that from changes on top.
 
-Ah, on a second though we can do that independently. Either there is
-some init_card - or something in the fixup tables. Why not both...
-So the else clause is not needed.
+[...]
 
-And you are right, the first parameter should be card`.
-
->=20
->>=20
->>=20
->>> Next we need a location for the sdio_prepare_fixups_methods table =
-and functions.
->>>=20
->>> For "ti,wl1251" we would then provide the entry in the table and a =
-function doing
->>> the setup. But where should these be defined? Likely not in a header =
-file like
->>> quirks.h? But there is no quirks.c.
->>=20
->> I think you can place your function in drivers/mmc/core/card.h. There =
-are
->> already add_quirk(), add_limit_rate_quirk(), add_quirk_mmc(), etc...
->=20
-> Ok. Would be some add_wl1251_quirk() then.
->=20
-> BR and thanks,
-> Nikolaus
->=20
-
+Kind regards
+Uffe
