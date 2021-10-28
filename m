@@ -2,104 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 704A743DE6D
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 12:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A55EB43DF67
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 12:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229775AbhJ1KKR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Oct 2021 06:10:17 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.168]:25062 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbhJ1KKR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 06:10:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1635415649;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=hXR8Z/Nu1gLX0h4WuKajrdI1yS2oKpMgJtR5xG9UxGM=;
-    b=KrW0hEHwbBnKn27A1B4OPBxV1nQgN7v3JNpkZ2R4FQnwHfKUziYbzv8Hr6prIm5J8q
-    Nu74y5bmI6E04xlbCVTNFEp056Y0ktmmL8iwMBCR1Aw5UUXktsVjO8Qmgu4y2I3J3lgR
-    nbMysHedReIGsVDS/7Q1AjTDRF70YW9nE9egEFaw022ZBHiP+vJS1/kwu1495Tr+3SKh
-    Z841xHxiMPdBmSjRvWA6flsGjoGNPmHtw++otWMqHk+o2P2RZJZeXNG89OEVQvta+9SQ
-    XdkySfvdHeEfixPMLhYugnxhWac6y6Yc4hqWYWhSbyUl9S1tFyyFndlHjoIjv86uEnuO
-    zi1w==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw4vtTA=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.34.1 DYNA|AUTH)
-    with ESMTPSA id d01d1fx9SA7S5sY
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Thu, 28 Oct 2021 12:07:28 +0200 (CEST)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: [RFC] mmc: core: transplant ti,wl1251 quirks from to be retired
- omap_hsmmc
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <34072875.m9Xp8G9xV5@pc-42>
-Date:   Thu, 28 Oct 2021 12:07:27 +0200
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Avri Altman <avri.altman@wdc.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bean Huo <beanhuo@micron.com>, linux-mmc@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4153E8E6-2D39-4AEA-9CC6-411D4FF8CE67@goldelico.com>
-References: <8ecc5c79c1dd0627d570ede31e18c860786cacca.1633519499.git.hns@goldelico.com>
- <2013308.OSlt1BDEiP@pc-42>
- <1EF25CD6-7801-4C15-AB4C-5F499948A653@goldelico.com>
- <34072875.m9Xp8G9xV5@pc-42>
-To:     =?utf-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
-X-Mailer: Apple Mail (2.3445.104.21)
+        id S230326AbhJ1Kyy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Oct 2021 06:54:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37552 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230210AbhJ1Kyu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 06:54:50 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87403C0611C2
+        for <linux-omap@vger.kernel.org>; Thu, 28 Oct 2021 03:52:22 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id f8so1417284edy.4
+        for <linux-omap@vger.kernel.org>; Thu, 28 Oct 2021 03:52:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=MqgQiMnth4O6zLvpsYbAhVLW1BorpgoCleWwfkY0/i+i6OSDuXRZO1jIKzpTTrmehO
+         XtsLWdXiTcL+XCe4naFtf2tTUJnbwwmDpuUkpvRhLd+LEnuxY7nNr11hmTRUVX1WOHsO
+         bN0u1arCg4gm9LHdXRMZFcXOD22U5gDGuBOuhPo6qvWbt6nA2j/p/5IZ88XFHrEsiSW3
+         12hentYJMlWeUfa2lUQkLm+5/fvMSizrI7wGoF2taOa3dgGUV5HKZWb0yAAH7nAXVevJ
+         tDC/xbHNLzSn310XeD3Gkoobjl6MPBQzT5DSLzerNBdTKOdmyp3xvfvOyo80qVUTZIED
+         gaRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=Z+jp10m+X7ojP7Iv5M+KqjyfiuEucom6n7z44Z3gSuPWs/mdVh/MTgLvH53AcqqWM1
+         XsWovriak80ONuJJywBHFtcvmjCx4TBOounAUxouJN6JIQbPKMMv2TcMhn+Wif+PKy2A
+         J2qOhfjPTSnoeii8OMyhNzORj/m6feA8BvjKoO/VBlyLqPUoe6GZEt8KDJOJTFSdDfW1
+         i9RlIhUuHy07lTw7ZfW+qJbidkdxnOjAAlipLiZIk7ZYC1s2HLFsGVaH51Uja+PA3G8+
+         uRYEoX3UdeIcTULWf4LpuZ5y+nTH+jWaLRJTQExM+WzwEAULuUg/bOVtrv8CBJT6e8mi
+         mGgg==
+X-Gm-Message-State: AOAM531V5obuCHNqvAFeShtd+1yvMumsVAitwADOJUnKvjPHI3C4YdgI
+        SFi5o5a5vYIcswSVbQCdHVsibB4f7quFLI+n+0wqxd5/vNDftKFs
+X-Google-Smtp-Source: ABdhPJw39EF9dJlXS9lAFrZ3adXxB8DVzXcygVzA3uRLiZxWlggxaB9ElCxkEB0P82xisoA6G442GD5iqMe2hCgLIt8=
+X-Received: by 2002:a2e:9a83:: with SMTP id p3mr3750290lji.145.1635418330269;
+ Thu, 28 Oct 2021 03:52:10 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:ab3:6f89:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 03:52:09
+ -0700 (PDT)
+Reply-To: aabdulwalialhashmi@gmail.com
+From:   Abdulwali Alhashmi <husamalsayed.hs@gmail.com>
+Date:   Thu, 28 Oct 2021 03:52:09 -0700
+Message-ID: <CAF6yYCeS=rm8=_71-kMjVo4oaVK57w9X52R_yv1HDrBe7vh-sA@mail.gmail.com>
+Subject: PLEASE GET BACK TO ME IF I CAN I TRUST YOU
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+-- 
+Greetings,
 
+Firstly, I apologize for encroaching into your privacy in this manner
+as it may seem unethical though it is a matter of great importance.
 
-> Am 28.10.2021 um 11:55 schrieb J=C3=A9r=C3=B4me Pouiller =
-<jerome.pouiller@silabs.com>:
->=20
-> On Thursday 28 October 2021 11:40:59 CEST H. Nikolaus Schaller wrote:
->>> Am 28.10.2021 um 10:59 schrieb J=C3=A9r=C3=B4me Pouiller =
-<jerome.pouiller@silabs.com>:
->>> On Thursday 28 October 2021 09:08:50 CEST H. Nikolaus Schaller =
-wrote:
->>>=20
->>>>> Let me have a closer look - and for sure, I am willing to help if =
-needed.
->>>=20
->>> I confirm it does not have the expected behavior. =
-!mmc_fixup_of_compatible_match()
->>> should be mmc_fixup_of_compatible_match(), sorry.
->>=20
->> Ok, I see.
->>=20
->> One more question: how can I specify "ti,wl1251" in some struct =
-mmc_fixup table?
->> Does it need another macro like MMC_FIXUP() or SDIO_FIXUP() to set =
-the .name
->> field?
->=20
-> yes, I didn't provide it with my RFC.=20
+I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
 
-I see.
+I am contacting you because my status would not permit me to do this
+alone as it is concerning our customer and an investment placed under
+our bank's management over 5 years ago.
 
-Starts to look like a good plan and we just have to execute it.
+I have a proposal I would love to discuss with you which will be very
+beneficial to both of us. It's regarding my late client who has a huge
+deposit with my bank.
 
-Please notify if you have a new version to work with (it isn't urgent =
-since the
-transplantation is only needed if omap_hsmmc is retired which depends on =
-merge
-of the new driver).
+He is from your country and shares the same last name with you.
 
-BR and thanks,
-Nikolaus
+I want to seek your consent to present you as the next of kin to my
+late client who died and left a huge deposit with my bank.
 
+I would respectfully request that you keep the contents of this mail
+confidential and respect the integrity of the information you come by
+as a result of this mail.
+
+Please kindly get back to me for more details if I can TRUST YOU.{
+aabdulwalialhashmi@gmail.com }
+
+Regards
+Abdulwali Alhashmi
+Treasury and Deposit Management,
+Cayman National Bank Cayman Islands
