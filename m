@@ -2,172 +2,308 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95C7943DBAF
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 09:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB75643DC2F
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 09:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229822AbhJ1HLj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Oct 2021 03:11:39 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:21061 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbhJ1HLi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 03:11:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1635404932;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=AmCnIkC4xxL8JxCkpiyDD7JlfpGKYsyeat25tXevaX4=;
-    b=jLG7PP43yreRqs2U/5telR2iGo8kTKwncWbdYEzwaXEixgwnzzyHQfHvpq/S82OQes
-    AsyOI2BgYqECOyfzjOyyGa/W3p6dSVPtTG2yU10XZYMFyCoQEMxp0Y9RHYWtqL6hTpCT
-    WusP6S5qw46BdJFMUPKoNF5IB+i/JkEP9wqEbw5X99NalY0WX2hYiZWke3gU3Wip/h+3
-    +ccdwFUUUsFTYX68Qg+sKxIsgyJkWm8FnVgV0keKoO69tl2z456sfZtQ8A86kxJHRvSu
-    rE6DoMoECg0dJ2kXG7UE6Rpo6jmeA3TE6uymcscduEWq574YnyuAhGbqOLxFI8vdUrRM
-    J1jg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw4vtTA=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.34.1 DYNA|AUTH)
-    with ESMTPSA id d01d1fx9S78p4jN
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Thu, 28 Oct 2021 09:08:51 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: [RFC] mmc: core: transplant ti,wl1251 quirks from to be retired
- omap_hsmmc
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <CAPDyKFp47sAXhM2s5HOqV2wLf-kYRhdqSdzcn7a62ZW23SSPdg@mail.gmail.com>
-Date:   Thu, 28 Oct 2021 09:08:50 +0200
-Cc:     Jerome Pouiller <Jerome.Pouiller@silabs.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Shawn Lin <shawn.lin@rock-chips.com>,
+        id S229950AbhJ1HiR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Oct 2021 03:38:17 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28]:45484 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229800AbhJ1HiP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 03:38:15 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 399DF2177B;
+        Thu, 28 Oct 2021 07:35:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1635406546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=6B5pmyQNFFGuA4GPECyRE5zg2HYL2//T1yApmd7nsM0=;
+        b=r6yeWDlMsEfA0y5YFT2WvCIkR54aJfsk2BjD1k73An8Lpr9mBWZehdxnBWG0AsAvfvNmwI
+        MnonR7NMALwwPFGOhAwXYUyYDhujPU8bNxWRam4ZnSksywP0T/oIpzAMXVbgdvII+AA6d1
+        h1svOAaQoBSAgC2+n2bt/LD5oO+njA0=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7F48A13ABD;
+        Thu, 28 Oct 2021 07:35:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 1yyyHc9SemEoHwAAMHmgww
+        (envelope-from <jgross@suse.com>); Thu, 28 Oct 2021 07:35:43 +0000
+Subject: Re: [PATCH v2 09/45] xen/x86: Use do_kernel_power_off()
+To:     Dmitry Osipenko <digetx@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Bean Huo <beanhuo@micron.com>, linux-mmc@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        Chen-Yu Tsai <wens@csie.org>,
+        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
         Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <470A96FD-DB24-4C32-BC9F-AE2F617FBF2D@goldelico.com>
-References: <8ecc5c79c1dd0627d570ede31e18c860786cacca.1633519499.git.hns@goldelico.com>
- <CAPDyKFraMXqC9OBeUTpm=bxjrFZTCopV3ZJQf1TRsA8UeTWdTA@mail.gmail.com>
- <80C6A8DD-183B-4FDD-B203-D3108C106043@goldelico.com>
- <935598D6-B8B5-4EC8-B87E-8EDC0F3B58CF@goldelico.com>
- <CAPDyKFp47sAXhM2s5HOqV2wLf-kYRhdqSdzcn7a62ZW23SSPdg@mail.gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-X-Mailer: Apple Mail (2.3445.104.21)
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+        linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20211027211715.12671-1-digetx@gmail.com>
+ <20211027211715.12671-10-digetx@gmail.com>
+From:   Juergen Gross <jgross@suse.com>
+Message-ID: <0a9e42a1-c179-0d0c-99e3-f355b5db5aa1@suse.com>
+Date:   Thu, 28 Oct 2021 09:35:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
+MIME-Version: 1.0
+In-Reply-To: <20211027211715.12671-10-digetx@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K
+Content-Type: multipart/mixed; boundary="s6NO7De5nnKdkPBqWk386oADRqxtp9b1f";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: Dmitry Osipenko <digetx@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck
+ <linux@roeck-us.net>, Russell King <linux@armlinux.org.uk>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Greg Ungerer <gerg@linux-m68k.org>, Joshua Thompson <funaho@jurai.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Greentime Hu <green.hu@gmail.com>,
+ Vincent Chen <deanbo422@gmail.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, Len Brown <lenb@kernel.org>,
+ Santosh Shilimkar <ssantosh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Chen-Yu Tsai <wens@csie.org>,
+ =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
+ Tony Lindgren <tony@atomide.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Vladimir Zapolskiy <vz@mleia.com>,
+ Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>,
+ Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>,
+ Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>,
+ Pavel Machek <pavel@ucw.cz>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-acpi@vger.kernel.org, linux-omap@vger.kernel.org,
+ openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
+ linux-pm@vger.kernel.org
+Message-ID: <0a9e42a1-c179-0d0c-99e3-f355b5db5aa1@suse.com>
+Subject: Re: [PATCH v2 09/45] xen/x86: Use do_kernel_power_off()
+References: <20211027211715.12671-1-digetx@gmail.com>
+ <20211027211715.12671-10-digetx@gmail.com>
+In-Reply-To: <20211027211715.12671-10-digetx@gmail.com>
 
+--s6NO7De5nnKdkPBqWk386oADRqxtp9b1f
+Content-Type: multipart/mixed;
+ boundary="------------58F2BFF62DC0576B4BD13AA9"
+Content-Language: en-US
 
-> Am 27.10.2021 um 23:31 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
+This is a multi-part message in MIME format.
+--------------58F2BFF62DC0576B4BD13AA9
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+
+On 27.10.21 23:16, Dmitry Osipenko wrote:
+> Kernel now supports chained power-off handlers. Use do_kernel_power_off=
+()
+> that invokes chained power-off handlers. It also invokes legacy
+> pm_power_off() for now, which will be removed once all drivers will
+> be converted to the new power-off API.
 >=20
-> On Wed, 27 Oct 2021 at 19:01, H. Nikolaus Schaller <hns@goldelico.com> =
-wrote:
->>=20
->> Hi Ulf,
->>=20
->>> Am 26.10.2021 um 20:08 schrieb H. Nikolaus Schaller =
-<hns@goldelico.com>:
->>>=20
->>> Hi Uf,
->>>>=20
->>>> As a matter of fact, the similar problem that you are looking to
->>>> address (applying card quirks based on DT compatibility strings), =
-is
->>>> partly being taken care of in another series [1], being discussed
->>>> right now. I think the solution for the ti,wl1251 should be based =
-upon
->>>> that too. Please have a look and see if you can play with that!?
->>>=20
->>> That is interesting.
->>> Yes, maybe it can be the basis. At least for finding the chip and =
-driver.
->>=20
->> I have done a first experiment.
->>=20
->> It seems as if the series [1] does the opposite of what we need... It =
-just
->> skips entries in struct mmc_fixup if the DT does *not* match.
->=20
-> Ohh, I didn't look that close. In that case the code isn't doing what
-> it *should*. The point is really to match on the compatible string and
-> then add quirks if that is found.
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 
-That is what I had expected.
+Acked-by: Juergen Gross <jgross@suse.com>
 
->=20
-> Let me have a closer look - and for sure, I am willing to help if =
-needed.
->=20
->>=20
->> This new match is not even tried in the wl1251 case since =
-card->cis.vendor
->> and card->cis.device are not properly initialized when =
-mmc_fixup_device() is called.
->> (in the upstream code the init_card function sets these and also sets =
-MMC_QUIRK_NONSTD_SDIO
->> to early abort before sdio_read_cccr, sdio_read_common_cis, and =
-mmc_fixup_device).
->=20
-> We can call mmc_fixup_device() more than once during initialization
-> and provide different struct mmc_fixup* - if that is needed.
 
-Ah, looks good.
+Juergen
 
->=20
->>=20
->> What I don't get from the code is how cis.vendor or cis.device can be
->> initialized from device tree for a specific device. As far as I see =
-it can
->> only be checked for and some quirks can be set from a table if vendor =
-and
->> device read from the CIS registers do match.
->=20
-> Yes. I thought that should be possible, but maybe it is not?
 
-It seems to be a hen or egg issue here. MMC_QUIRK_NONSTD_SDIO should be =
-set
-before we can match by vendor and device or compatible. But it can't be =
-set
-late.
+--------------58F2BFF62DC0576B4BD13AA9
+Content-Type: application/pgp-keys;
+ name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: OpenPGP public key
+Content-Disposition: attachment;
+ filename="OpenPGP_0xB0DE9DD628BF132F.asc"
 
->=20
->>=20
->> Instead, we want to match DT and define some values for an otherwise =
-unknown
->> device (i.e. we can't match by vendor or other methods) to help to =
-initialize
->> the interface. So in mmc_fixup_device it is too late and we need =
-something
->> running earlier, based purely on device tree information...
->=20
-> Okay, I will have a closer look. Maybe we need to extend the card
-> quirks interface a bit to make it suitable for this case too.
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-Combining your suggestions we could do roughly:
+xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOBy=
+cWx
+w3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJvedYm8O=
+f8Z
+d621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJNwQpd369y=
+9bf
+IhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvxXP3FAp2pkW0xq=
+G7/
+377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEBAAHNHEp1ZXJnZW4gR=
+3Jv
+c3MgPGpnQHBmdXBmLm5ldD7CwHkEEwECACMFAlOMcBYCGwMHCwkIBwMCAQYVCAIJCgsEFgIDA=
+QIe
+AQIXgAAKCRCw3p3WKL8TL0KdB/93FcIZ3GCNwFU0u3EjNbNjmXBKDY4FUGNQH2lvWAUy+dnyT=
+hpw
+dtF/jQ6j9RwE8VP0+NXcYpGJDWlNb9/JmYqLiX2Q3TyevpB0CA3dbBQp0OW0fgCetToGIQrg0=
+MbD
+1C/sEOv8Mr4NAfbauXjZlvTj30H2jO0u+6WGM6nHwbh2l5O8ZiHkH32iaSTfN7Eu5RnNVUJbv=
+oPH
+Z8SlM4KWm8rG+lIkGurqqu5gu8q8ZMKdsdGC4bBxdQKDKHEFExLJK/nRPFmAuGlId1E3fe10v=
+5QL
++qHI3EIPtyfE7i9Hz6rVwi7lWKgh7pe0ZvatAudZ+JNIlBKptb64FaiIOAWDCx1SzR9KdWVyZ=
+2Vu
+IEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+wsB5BBMBAgAjBQJTjHCvAhsDBwsJCAcDAgEGFQgCC=
+QoL
+BBYCAwECHgECF4AACgkQsN6d1ii/Ey/HmQf/RtI7kv5A2PS4RF7HoZhPVPogNVbC4YA6lW7Dr=
+Wf0
+teC0RR3MzXfy6pJ+7KLgkqMlrAbN/8Dvjoz78X+5vhH/rDLa9BuZQlhFmvcGtCF8eR0T1v0nC=
+/nu
+AFVGy+67q2DH8As3KPu0344TBDpAvr2uYM4tSqxK4DURx5INz4ZZ0WNFHcqsfvlGJALDeE0Lh=
+ITT
+d9jLzdDad1pQSToCnLl6SBJZjDOX9QQcyUigZFtCXFst4dlsvddrxyqT1f17+2cFSdu7+ynLm=
+XBK
+7abQ3rwJY8SbRO2iRulogc5vr/RLMMlscDAiDkaFQWLoqHHOdfO9rURssHNN8WkMnQfvUewRz=
+80h
+SnVlcmdlbiBHcm9zcyA8amdyb3NzQG5vdmVsbC5jb20+wsB5BBMBAgAjBQJTjHDXAhsDBwsJC=
+AcD
+AgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey8PUQf/ehmgCI9jB9hlgexLvgOtf7PJn=
+FOX
+gMLdBQgBlVPO3/D9R8LtF9DBAFPNhlrsfIG/SqICoRCqUcJ96Pn3P7UUinFG/I0ECGF4EvTE1=
+jnD
+kfJZr6jrbjgyoZHiw/4BNwSTL9rWASyLgqlA8u1mf+c2yUwcGhgkRAd1gOwungxcwzwqgljf0=
+N51
+N5JfVRHRtyfwq/ge+YEkDGcTU6Y0sPOuj4Dyfm8fJzdfHNQsWq3PnczLVELStJNdapwPOoE+l=
+otu
+fe3AM2vAEYJ9rTz3Cki4JFUsgLkHFqGZarrPGi1eyQcXeluldO3m91NK/1xMI3/+8jbO0tsn1=
+tqS
+EUGIJi7ox80eSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1c2UuZGU+wsB5BBMBAgAjBQJTjHDrA=
+hsD
+BwsJCAcDAgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey+LhQf9GL45eU5vOowA2u5N3=
+g3O
+ZUEBmDHVVbqMtzwlmNC4k9Kx39r5s2vcFl4tXqW7g9/ViXYuiDXb0RfUpZiIUW89siKrkzmQ5=
+dM7
+wRqzgJpJwK8Bn2MIxAKArekWpiCKvBOB/Cc+3EXE78XdlxLyOi/NrmSGRIov0karw2RzMNOu5=
+D+j
+LRZQd1Sv27AR+IP3I8U4aqnhLpwhK7MEy9oCILlgZ1QZe49kpcumcZKORmzBTNh30FVKK1Evm=
+V2x
+AKDoaEOgQB4iFQLhJCdP1I5aSgM5IVFdn7v5YgEYuJYx37IoN1EblHI//x/e2AaIHpzK5h88N=
+Eaw
+QsaNRpNSrcfbFmAg987ATQRTjHAWAQgAyzH6AOODMBjgfWE9VeCgsrwH3exNAU32gLq2xvjpW=
+nHI
+s98ndPUDpnoxWQugJ6MpMncr0xSwFmHEgnSEjK/PAjppgmyc57BwKII3sV4on+gDVFJR6Y8ZR=
+wgn
+BC5mVM6JjQ5xDk8WRXljExRfUX9pNhdE5eBOZJrDRoLUmmjDtKzWaDhIg/+1Hzz93X4fCQkNV=
+bVF
+LELU9bMaLPBG/x5q4iYZ2k2ex6d47YE1ZFdMm6YBYMOljGkZKwYde5ldM9mo45mmwe0icXKLk=
+pEd
+IXKTZeKDO+Hdv1aqFuAcccTg9RXDQjmwhC3yEmrmcfl0+rPghO0Iv3OOImwTEe4co3c1mwARA=
+QAB
+wsBfBBgBAgAJBQJTjHAWAhsMAAoJELDendYovxMvQ/gH/1ha96vm4P/L+bQpJwrZ/dneZcmEw=
+Tbe
+8YFsw2V/Buv6Z4Mysln3nQK5ZadD534CF7TDVft7fC4tU4PONxF5D+/tvgkPfDAfF77zy2AH1=
+vJz
+Q1fOU8lYFpZXTXIHb+559UqvIB8AdgR3SAJGHHt4RKA0F7f5ipYBBrC6cyXJyyoprT10EMvU8=
+VGi
+wXvTyJz3fjoYsdFzpWPlJEBRMedCot60g5dmbdrZ5DWClAr0yau47zpWj3enf1tLWaqcsuylW=
+svi
+uGjKGw7KHQd3bxALOknAp4dN3QwBYCKuZ7AddY9yjynVaD5X7nF9nO5BjR/i1DG86lem3iBDX=
+zXs
+ZDn8R38=3D
+=3D2wuH
+-----END PGP PUBLIC KEY BLOCK-----
 
-in mmc_sdio_init_card():
+--------------58F2BFF62DC0576B4BD13AA9--
 
-	if (host->ops->init_card)
-		host->ops->init_card(host, card);
-	else
-		mmc_fixup_device(host, sdio_prepare_fixups_methods);
+--s6NO7De5nnKdkPBqWk386oADRqxtp9b1f--
 
-Next we need a location for the sdio_prepare_fixups_methods table and =
-functions.
+--gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
-For "ti,wl1251" we would then provide the entry in the table and a =
-function doing
-the setup. But where should these be defined? Likely not in a header =
-file like
-quirks.h? But there is no quirks.c.
+-----BEGIN PGP SIGNATURE-----
 
-Best regards,
-Nikolaus
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmF6Us4FAwAAAAAACgkQsN6d1ii/Ey81
+RQf+O3ya1tE8Z6tv0yRGBRxJKsYIhum0plUzBYr4KjAMitS51HL7pjN2SqE+kRW8tC6fvz4MBV4Z
+Bz+M8arbbC/asIjQfOQZb7/Bq5fDArNCDorqYSn/pVKT1f6Q41/74k05FMlTVVrl+SGj3w59z4uY
+Lf6z5wnewjYkuZOCAGfe2tfxDRlwSaSa2FVHQWI6NNjxysvYLSr3UBBBsh09j8+adx17Q0C5vRvK
+EX1Ik8bZJIw/xEyUzVkwRgpBlMmvnTyQEpLqBoXCH3VyiSymWybl0lJR43bhuZXd44FWcs7GGxnX
+mwHRqP+ks0TmdWNmGx98oQFP3LVC0zx8uBRZBZBycA==
+=NnyJ
+-----END PGP SIGNATURE-----
 
+--gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K--
