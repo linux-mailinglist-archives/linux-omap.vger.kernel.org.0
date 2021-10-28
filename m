@@ -2,59 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B10E43DDCB
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 11:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A176143DDF0
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 11:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbhJ1Jet (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Oct 2021 05:34:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47582 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbhJ1Jer (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 05:34:47 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97478C061767
-        for <linux-omap@vger.kernel.org>; Thu, 28 Oct 2021 02:32:20 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id l2so9595921lji.6
-        for <linux-omap@vger.kernel.org>; Thu, 28 Oct 2021 02:32:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=H1cBbZ29iBhIzlADanMboqR5PTvmcX6f2VNyLE4w9Tk=;
-        b=ZF8RwgiR46eeZoRy7bQm9ex9lg/svajTlowMu+8I/nRfgUrrjWGJSl4sMB22wU7Yzo
-         /amQHrUnik25ChBxiQIVRNWRGarvxrwqBWfH5dqMT9GU5jy4sRNGgEF71cLdL2CDAqVT
-         qikRVVu61rlTBpGB7b+ixhzqMJF7B15oRsKr15GP84lQO92p4ldyL+uJ9MVUVxMOsFfh
-         QWbkYGdti4Q2LauYBohGXpFdBS1pQF4Qfydx8mBSrZU/m9NsxdO93pfcRWqvy1OG/g7W
-         IdbctlT1Tu4E6WoZI23e4BP+BHnxdqJXOc1BL2l2bVA0/suNaoegxy8PlicibO70KB7E
-         674A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=H1cBbZ29iBhIzlADanMboqR5PTvmcX6f2VNyLE4w9Tk=;
-        b=EevfHSk1KDRtL0a6Hm8GIV1LX/SYEW/TWQXqmfEPN1UvKV+zW7r/lF+uv/DuWU0fyq
-         k3FPjeQfm+iFOs9t9ZTdZL8CJOOkT9tfR10qJX+WYwiPD079Xh4+QRK8jic937dbt+vs
-         EDwkZnZRoSKnaBiGZtPESNNDTiHYIoVWC9UwkKpNsJAoHU3axuECY9KK1lr1zeH/9QpZ
-         Akj1kYeWNotkpp2WlNd8eDy3rSuXVsN3tydKkfW0ibI1q5ii2TJH9SpbxuF/0G/PP2ru
-         yzRmOx/Ro/eX4ott5e+ZqtSmeOiQVfZlMKTdqm9eX+3SnfT5yr/B98tCjkS16Zstxrvl
-         DndA==
-X-Gm-Message-State: AOAM5303aa43FHJjUF+JtAxUR7eLWZc4DTLX0uXW1C76sX3CHCSd3EZL
-        6yCBb1l0GE39JQ1mwqXBcLp5q2Y5M9samHC7JOaSNEv3LxE=
-X-Google-Smtp-Source: ABdhPJxJuR23jXNDWfiQxoqWI52YVAi1m5sbex/r8p4Wi8DX0c1r6Ft0KZ8J9L4U+hz7GkJMrE2CJvDkj11pjzajMi0=
-X-Received: by 2002:a05:651c:11c4:: with SMTP id z4mr3422469ljo.463.1635413538930;
- Thu, 28 Oct 2021 02:32:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <8ecc5c79c1dd0627d570ede31e18c860786cacca.1633519499.git.hns@goldelico.com>
- <CAPDyKFp47sAXhM2s5HOqV2wLf-kYRhdqSdzcn7a62ZW23SSPdg@mail.gmail.com>
- <470A96FD-DB24-4C32-BC9F-AE2F617FBF2D@goldelico.com> <2013308.OSlt1BDEiP@pc-42>
+        id S230078AbhJ1Jqj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Oct 2021 05:46:39 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.166]:25570 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229850AbhJ1Jqh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 05:46:37 -0400
+X-Greylist: delayed 60166 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Oct 2021 05:46:36 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1635414062;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=KhRgye8CY3owm5tetj48D4pQO+58RvsWv1qQ+l2jbdo=;
+    b=sZ/CZDz5ZiqvsMwBa+CaNh9MDYp1kKp035LW5k2Kb/Px7Nrx4naKWUJqGbK4r9iTxa
+    B4uK3PR1gjLOTRNabs6+UXKMs7/ZFdZDP52EZrfJbTSg/va2LbvU9BdE/IAFY/wqPgP2
+    tQ3TV6Wqj32WRqJykj9uWHH7xomNxYBJGIM7LuuAPsewTIlzY9OirWknn9lS1zRKP8eW
+    grLS7XbfmoqroxqOZOb1TFR+CSIBjZozkq/A6+dCc6UTF5hEyQIax1wrfSc7SxH2AvJ0
+    rcwdwQOYcukwXO+22ngWpnpQGnB33u15TrzuJneS9Tva/V1u/nvwVLUpGhYcVtm3AIEL
+    T3VA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw4vtTA=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+    by smtp.strato.de (RZmta 47.34.1 DYNA|AUTH)
+    with ESMTPSA id d01d1fx9S9f15fQ
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Thu, 28 Oct 2021 11:41:01 +0200 (CEST)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
+Subject: Re: [RFC] mmc: core: transplant ti,wl1251 quirks from to be retired
+ omap_hsmmc
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
 In-Reply-To: <2013308.OSlt1BDEiP@pc-42>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 28 Oct 2021 11:31:42 +0200
-Message-ID: <CAPDyKFouhj7V7n-7NSw=9-vLWqPvAmhUuZFVPR5Htw=aCLVZ_Q@mail.gmail.com>
-Subject: Re: [RFC] mmc: core: transplant ti,wl1251 quirks from to be retired omap_hsmmc
-To:     =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Avri Altman <avri.altman@wdc.com>,
+Date:   Thu, 28 Oct 2021 11:40:59 +0200
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Avri Altman <avri.altman@wdc.com>,
         Shawn Lin <shawn.lin@rock-chips.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Bean Huo <beanhuo@micron.com>, linux-mmc@vger.kernel.org,
@@ -63,40 +51,77 @@ Cc:     Avri Altman <avri.altman@wdc.com>,
         <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
         Tony Lindgren <tony@atomide.com>,
         Linux-OMAP <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1EF25CD6-7801-4C15-AB4C-5F499948A653@goldelico.com>
+References: <8ecc5c79c1dd0627d570ede31e18c860786cacca.1633519499.git.hns@goldelico.com>
+ <CAPDyKFp47sAXhM2s5HOqV2wLf-kYRhdqSdzcn7a62ZW23SSPdg@mail.gmail.com>
+ <470A96FD-DB24-4C32-BC9F-AE2F617FBF2D@goldelico.com>
+ <2013308.OSlt1BDEiP@pc-42>
+To:     =?utf-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
+X-Mailer: Apple Mail (2.3445.104.21)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-[...]
+Hi J=C3=A9r=C3=B4me,
 
-> > Combining your suggestions we could do roughly:
-> >
-> > in mmc_sdio_init_card():
-> >
-> >         if (host->ops->init_card)
-> >                 host->ops->init_card(host, card);
-> >         else
-> >                 mmc_fixup_device(host, sdio_prepare_fixups_methods);
->
+> Am 28.10.2021 um 10:59 schrieb J=C3=A9r=C3=B4me Pouiller =
+<jerome.pouiller@silabs.com>:
+>=20
+> Hi Nikolaus,
+>=20
+> On Thursday 28 October 2021 09:08:50 CEST H. Nikolaus Schaller wrote:
+>=20
+>>> Let me have a closer look - and for sure, I am willing to help if =
+needed.
+>=20
+> I confirm it does not have the expected behavior. =
+!mmc_fixup_of_compatible_match()
+> should be mmc_fixup_of_compatible_match(), sorry.
+
+Ok, I see.
+
+One more question: how can I specify "ti,wl1251" in some struct =
+mmc_fixup table?
+Does it need another macro like MMC_FIXUP() or SDIO_FIXUP() to set the =
+.name
+field?
+
+>>=20
+>> Combining your suggestions we could do roughly:
+>>=20
+>> in mmc_sdio_init_card():
+>>=20
+>>        if (host->ops->init_card)
+>>                host->ops->init_card(host, card);
+>>        else
+>>                mmc_fixup_device(host, sdio_prepare_fixups_methods);
+>=20
 > I think I mostly agree, but why you don't call mmc_fixup_device() if
 > init_card is defined? (BTW, mmc_fixup_device() takes a card as
 > first parameter)
 
-Ack.
+Because I want to get rid of init_card. It is host specific and not =
+client
+specific.
 
->
->
-> > Next we need a location for the sdio_prepare_fixups_methods table and functions.
-> >
-> > For "ti,wl1251" we would then provide the entry in the table and a function doing
-> > the setup. But where should these be defined? Likely not in a header file like
-> > quirks.h? But there is no quirks.c.
->
-> I think you can place your function in drivers/mmc/core/card.h. There are
+>=20
+>=20
+>> Next we need a location for the sdio_prepare_fixups_methods table and =
+functions.
+>>=20
+>> For "ti,wl1251" we would then provide the entry in the table and a =
+function doing
+>> the setup. But where should these be defined? Likely not in a header =
+file like
+>> quirks.h? But there is no quirks.c.
+>=20
+> I think you can place your function in drivers/mmc/core/card.h. There =
+are
 > already add_quirk(), add_limit_rate_quirk(), add_quirk_mmc(), etc...
 
-FYI: I don't mind adding a quirks.c, if that makes sense.
+Ok. Would be some add_wl1251_quirk() then.
 
-Kind regards
-Uffe
+BR and thanks,
+Nikolaus
+
