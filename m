@@ -2,308 +2,224 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB75643DC2F
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 09:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72E8543DD60
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Oct 2021 10:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbhJ1HiR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Oct 2021 03:38:17 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28]:45484 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229800AbhJ1HiP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 03:38:15 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 399DF2177B;
-        Thu, 28 Oct 2021 07:35:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1635406546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=6B5pmyQNFFGuA4GPECyRE5zg2HYL2//T1yApmd7nsM0=;
-        b=r6yeWDlMsEfA0y5YFT2WvCIkR54aJfsk2BjD1k73An8Lpr9mBWZehdxnBWG0AsAvfvNmwI
-        MnonR7NMALwwPFGOhAwXYUyYDhujPU8bNxWRam4ZnSksywP0T/oIpzAMXVbgdvII+AA6d1
-        h1svOAaQoBSAgC2+n2bt/LD5oO+njA0=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7F48A13ABD;
-        Thu, 28 Oct 2021 07:35:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 1yyyHc9SemEoHwAAMHmgww
-        (envelope-from <jgross@suse.com>); Thu, 28 Oct 2021 07:35:43 +0000
-Subject: Re: [PATCH v2 09/45] xen/x86: Use do_kernel_power_off()
-To:     Dmitry Osipenko <digetx@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        id S230098AbhJ1JB5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Oct 2021 05:01:57 -0400
+Received: from mail-co1nam11on2073.outbound.protection.outlook.com ([40.107.220.73]:45217
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229791AbhJ1JBz (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 28 Oct 2021 05:01:55 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CxTeh5v2JKUGXTQZqE3NT5pfisEkgyDW5MjHrFVeRxl2/C/iW/Gv5OaFwCtIzPnzqBReyFHEMVZEpvFfcM0EmdorrPWX0fiZBhv+jVn+tdgK3J0NgchEhCJMHmuyJLI2l2a8ZYwEuJYeojbXuG9eBTqbIlf/nF9kLWTgCn5vDTAeOW+7weUhEqnANkB1KEpMlZ5otvvg9QxB2iE6KGL1Bkj+znIkATBYSybt2jswlS9YihVEowz/FPih7BH8yT15xCkO7HP4zf9RFuWTe09e1Iyqkb6Vnf2o95YSzUgcO+7JZdt4JYXjDz3yq8yhB6tw1SJiS4BKDW3yOZUfKYc8iw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DMNKFJ4oHHqQ0aofXt/zsA6e3KSUrbf0pUcq4sUB1gA=;
+ b=coL4XSBFWexKj+sA42yLp+ODVAYp5TN/dZIXBQU0Tw3tJgcfSuHOMkW7Ts8Dv+dfXSpoZ/ZQ0MlKn28ByOEYmGAFrxyvkQU8NJ0WOROKlYokYvcCee6+KdJH4frYMVZ+6uC4e4oCk9SbtVSXMIa9F1L/HL9dcMUI5B4/KjzJABvTjsiZvoBA5FPX3NMIEyMkttrvk/702AGkc1GTObj7Wth8ae8sNCyZCmCdPLeWS+1GW5tLhmy2yBei1Oa/WJKxO7d5rBu6mgpLMo1q4Qm9PhpIC4uS8FD1HS796xfxFnbgRpDnG2TOWoNbx55VJrxADAldLz3nn9oNlOszzdfFIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DMNKFJ4oHHqQ0aofXt/zsA6e3KSUrbf0pUcq4sUB1gA=;
+ b=PA60R27B1paoJmdYViMd+nY0aGEANqAR34cDrqjodt5ESCHzssl1oeYfLu+q63SfGaxJx2TxP4xFtqmIxkkTHzWR0ZTzfOYjqVRizuVkLENbcqXqahVFgqO5nVN8Gt5NRQqpXYY3CAHfZrVPOMRkY7UbTjA5CLpPgNadvDBmndY=
+Authentication-Results: linaro.org; dkim=none (message not signed)
+ header.d=none;linaro.org; dmarc=none action=none header.from=silabs.com;
+Received: from PH0PR11MB5657.namprd11.prod.outlook.com (2603:10b6:510:ee::19)
+ by PH0PR11MB5612.namprd11.prod.outlook.com (2603:10b6:510:e7::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.18; Thu, 28 Oct
+ 2021 08:59:25 +0000
+Received: from PH0PR11MB5657.namprd11.prod.outlook.com
+ ([fe80::31cb:3b13:b0e8:d8f4]) by PH0PR11MB5657.namprd11.prod.outlook.com
+ ([fe80::31cb:3b13:b0e8:d8f4%9]) with mapi id 15.20.4628.020; Thu, 28 Oct 2021
+ 08:59:25 +0000
+From:   =?ISO-8859-1?Q?J=E9r=F4me?= Pouiller <jerome.pouiller@silabs.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Avri Altman <avri.altman@wdc.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
+        Bean Huo <beanhuo@micron.com>, linux-mmc@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
         Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-10-digetx@gmail.com>
-From:   Juergen Gross <jgross@suse.com>
-Message-ID: <0a9e42a1-c179-0d0c-99e3-f355b5db5aa1@suse.com>
-Date:   Thu, 28 Oct 2021 09:35:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        Linux-OMAP <linux-omap@vger.kernel.org>
+Subject: Re: [RFC] mmc: core: transplant ti,wl1251 quirks from to be retired omap_hsmmc
+Date:   Thu, 28 Oct 2021 10:59:17 +0200
+Message-ID: <2013308.OSlt1BDEiP@pc-42>
+Organization: Silicon Labs
+In-Reply-To: <470A96FD-DB24-4C32-BC9F-AE2F617FBF2D@goldelico.com>
+References: <8ecc5c79c1dd0627d570ede31e18c860786cacca.1633519499.git.hns@goldelico.com> <CAPDyKFp47sAXhM2s5HOqV2wLf-kYRhdqSdzcn7a62ZW23SSPdg@mail.gmail.com> <470A96FD-DB24-4C32-BC9F-AE2F617FBF2D@goldelico.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-ClientProxiedBy: PR0P264CA0277.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:100:1::25) To PH0PR11MB5657.namprd11.prod.outlook.com
+ (2603:10b6:510:ee::19)
 MIME-Version: 1.0
-In-Reply-To: <20211027211715.12671-10-digetx@gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K"
+Received: from pc-42.localnet (37.71.187.125) by PR0P264CA0277.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100:1::25) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.15 via Frontend Transport; Thu, 28 Oct 2021 08:59:23 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4e74c73d-dbaa-4f0d-0c33-08d999f13dd6
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5612:
+X-Microsoft-Antispam-PRVS: <PH0PR11MB5612835835EB0956E6D8A3EF93869@PH0PR11MB5612.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: HByCEgUGvmkPk21NIjxeVb2WwcG8/zGFKNj7aJ6ZFwZgDMLbfgcafwovbBRwkPNTN+TyOfYtN5wbU+3SQJenbEPYbfAJfWLK11sMQmf95AXYXHCe7D4NnQhrKh51pQNsF9iXyKs6+4XnEv2vFepqbE93Hfnit4Xrd23yIZXo8jR/1aCklzXnvyijzT/1oYqLxtdX1y4aDF/BSBYhLmMG6m2VkdIbXwxpe7Dty3wyx2TJMIx61n8S3lllcOHnbmr/z8cBOXO5IkcLuBQZ3FyIz4GTrvKDHlnc95VFUtU8AeSG553cNFO6LJrPk8qbOzO+c8NCniWH34+96zLYwlmfdZdhaL9w7Zd9oMFGuyiByEeRZvenhtEMT5rzdMO6Px/p6TnhYMvcjjrLjdtS/QTeFBa7oXGfHcIfXdZdl9SoWJzspenj+q1vtgbdvcQm46HW3JrSnO/TGF+AiNdxknK1hhvF1qrKV4zTsyGRRel/rPtgtQX9mAmqxTmrXattMHj+2lHf5zbb7XE9EafCSaLpT4QqENr1au1/0ViBY2HZ5wMPBnEG64ct6VKaV0Fmqdm7xPcPjd+jqK3HAhfBy7c9M1eEu+rlb+23IL4xfXZPF70TeBiKTFSUMAFhbgXSfsdGUfqCgBZtC5ovS8Y61ntQuoD/oGAh+/krxVJx1d2sm4fLj9GQ5lETrXGHyeNKE1CKdXktDioVbS5nFWTNh6+pPhw10n95eth6psB8tKbzj2w=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5657.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(508600001)(66556008)(66476007)(2906002)(66946007)(186003)(9686003)(26005)(956004)(4326008)(8676002)(8936002)(6486002)(316002)(110136005)(52116002)(33716001)(6666004)(83380400001)(6506007)(54906003)(6512007)(86362001)(66574015)(5660300002)(38100700002)(7416002)(36916002)(38350700002)(39026012);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?E44jxA7hC6DyuP1CzC3H5zdE3FwtW6VaXTA//l1JsL5cEssQLfWicUQqU5?=
+ =?iso-8859-1?Q?gdeRC1kJrbGYkUm+dp+Qj2StSsPXqBnLZ8F20/z5vVRbVvopA5ZixtkGaY?=
+ =?iso-8859-1?Q?17J8Hrou2sigo3ePPooRCH9d4Tx804bD9DJB4gTs+u60d/+lAMs9Wd78Vu?=
+ =?iso-8859-1?Q?JTdYvuVJIbbCw8Pvusld4yCH4nTQ/Cs0YGfpVNXAMTD2uzIptTOHW7+IIH?=
+ =?iso-8859-1?Q?gXjM2gGvshFt76o1COUxi1KRDMSVhaa+y4HlkRByr02vS0fIajGhmCcAcf?=
+ =?iso-8859-1?Q?PBxCew3tZ/pAiUfauVySincaFCi0VQMmbxE+CdtsVYyOkuHhqf2+qr3Ybo?=
+ =?iso-8859-1?Q?hpzGHXQDJWeMa16rOp7/wfWI93ppSGY/8IPkgSjJ3yLGE4s2mAuWek0LJT?=
+ =?iso-8859-1?Q?Ve+aJQTPqJmifUgOmgojq+JjABsteJSz3Iinj9zr7NKu5mKE2U4zG2RV0s?=
+ =?iso-8859-1?Q?LBv3mdtAd5lfWtQcCtTG9rDbwAZbNBmNJCWng5EFas6ZPwYLNg27W0l80q?=
+ =?iso-8859-1?Q?oEX7C1pYYHnJoBCYJdnnCQjdgVoctDQyhnAeZ0sacTvDzNe9WHPJdqLBww?=
+ =?iso-8859-1?Q?2TTqPlC0U4f5/gVuo8iCIQnrcb+i6fWU72rl30sn0Nt6dWReouFqy5nJ2z?=
+ =?iso-8859-1?Q?HW7DiVqRXQr+qPX9ZD9os0IOp7kcYpOEBtk9JtjtNbX/+oTOvklI4Ca6l0?=
+ =?iso-8859-1?Q?9VUc6OvF8B7JDTTLVmhThcEjEdxsb/7rptrw6v70naFaOiul0e04yFrgth?=
+ =?iso-8859-1?Q?CqaXw2a6xvEVUAdaSQ7gHoi8cY5YSo8t8o2w1z8Clu97JYs6kO9p6Ggcxl?=
+ =?iso-8859-1?Q?BAGmRYMy3osHXoCPFnmeGP0vT7e/bzP7zpbmP0fZtSbaiycWl5Hnu/z/8f?=
+ =?iso-8859-1?Q?G4wjNDphXQ5/FsO2qHwUlRajhjmE4v5TBz7T9MstnDkuXCm2uhjI0/3xyZ?=
+ =?iso-8859-1?Q?fs28YYhzZ4mdcRmTD4uVd0ahjkMCmyktBDb0EWONNnS5qLHgxWmvMVdLtA?=
+ =?iso-8859-1?Q?Kydin+JaOAYMKmOOLheNlUVVk47ZaCeR4upwTjp1U+C+oiDVtPXSgXQQYT?=
+ =?iso-8859-1?Q?6dY4qKvbHchtYoxoqjVm+j04gjUi4Mo3fXt1hsFGyuoUDUQlRyJz05Et4f?=
+ =?iso-8859-1?Q?CMzvtj2cZPz1h4FSVeyBWYhHiqvxAS4swNn+RE9ev9DYJK2m9Xfaxk0xHN?=
+ =?iso-8859-1?Q?MrpeM5X+weZ3UiFqmcEaDyb4qN4GOQNwfmMSzWBP/ZUvWLLpFp5sgweAz6?=
+ =?iso-8859-1?Q?HL1eZsjvTGNBSC9+gPgR4wWxYZ9GST7LwemkW+BtzfT/1oDqTtA3J/HW20?=
+ =?iso-8859-1?Q?ivkDknUWMoISik8+tXtWtaP5js1dfDxbtqEJ9OoHqr9d4VvuUkiOf4FpUz?=
+ =?iso-8859-1?Q?Obq3glXkjdFsaAQi09GFJ7SFIpm3gbhfQZGmLfKGnKvefuNQAia+e4GhCs?=
+ =?iso-8859-1?Q?qdJh7JCL+dc0tjRaMNrPI6KwUlYuwu06p9zYbmHZZqZb7xu6dhmGF2dNxb?=
+ =?iso-8859-1?Q?WmLCO+xV3fIIyN0MvWle3AoszldaQQyHcfrGPFtu8j4IrOJ5zzJTNhhtkt?=
+ =?iso-8859-1?Q?FgHK++aQJTUtS71iQr5LLoOFNVza68igiDYrgwV2ftYGsM1MHVyCoT0H1e?=
+ =?iso-8859-1?Q?JBpzdtx25m3dzI5bdmIZiKI/1Mk14+oF3rUELIQnVACoj179wi+LwMs6yc?=
+ =?iso-8859-1?Q?zYSHNgqq5FWilDWgiY0=3D?=
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e74c73d-dbaa-4f0d-0c33-08d999f13dd6
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5657.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2021 08:59:25.4914
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4cYu0UTUPfPT6hBG0aLZllb2tjRXqtxrtcIu4wy0mr2/u35yLy7uIbkjj+RbR4eAonl9bUiQB7U64FdAxDSBkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5612
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K
-Content-Type: multipart/mixed; boundary="s6NO7De5nnKdkPBqWk386oADRqxtp9b1f";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Dmitry Osipenko <digetx@gmail.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Mark Brown <broonie@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Guenter Roeck
- <linux@roeck-us.net>, Russell King <linux@armlinux.org.uk>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Guo Ren <guoren@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Greg Ungerer <gerg@linux-m68k.org>, Joshua Thompson <funaho@jurai.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, Greentime Hu <green.hu@gmail.com>,
- Vincent Chen <deanbo422@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Stefano Stabellini <sstabellini@kernel.org>, Len Brown <lenb@kernel.org>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Linus Walleij <linus.walleij@linaro.org>, Chen-Yu Tsai <wens@csie.org>,
- =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
- Tony Lindgren <tony@atomide.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Philipp Zabel <p.zabel@pengutronix.de>, Vladimir Zapolskiy <vz@mleia.com>,
- Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>,
- Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>,
- Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>,
- Pavel Machek <pavel@ucw.cz>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-sh@vger.kernel.org, xen-devel@lists.xenproject.org,
- linux-acpi@vger.kernel.org, linux-omap@vger.kernel.org,
- openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
- linux-pm@vger.kernel.org
-Message-ID: <0a9e42a1-c179-0d0c-99e3-f355b5db5aa1@suse.com>
-Subject: Re: [PATCH v2 09/45] xen/x86: Use do_kernel_power_off()
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-10-digetx@gmail.com>
-In-Reply-To: <20211027211715.12671-10-digetx@gmail.com>
+Hi Nikolaus,
 
---s6NO7De5nnKdkPBqWk386oADRqxtp9b1f
-Content-Type: multipart/mixed;
- boundary="------------58F2BFF62DC0576B4BD13AA9"
-Content-Language: en-US
-
-This is a multi-part message in MIME format.
---------------58F2BFF62DC0576B4BD13AA9
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-
-On 27.10.21 23:16, Dmitry Osipenko wrote:
-> Kernel now supports chained power-off handlers. Use do_kernel_power_off=
-()
-> that invokes chained power-off handlers. It also invokes legacy
-> pm_power_off() for now, which will be removed once all drivers will
-> be converted to the new power-off API.
+On Thursday 28 October 2021 09:08:50 CEST H. Nikolaus Schaller wrote:
+> > Am 27.10.2021 um 23:31 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
+> > On Wed, 27 Oct 2021 at 19:01, H. Nikolaus Schaller <hns@goldelico.com> =
+wrote:
+> >>> Am 26.10.2021 um 20:08 schrieb H. Nikolaus Schaller <hns@goldelico.co=
+m>:
+> >>>> As a matter of fact, the similar problem that you are looking to
+> >>>> address (applying card quirks based on DT compatibility strings), is
+> >>>> partly being taken care of in another series [1], being discussed
+> >>>> right now. I think the solution for the ti,wl1251 should be based up=
+on
+> >>>> that too. Please have a look and see if you can play with that!?
+> >>>
+> >>> That is interesting.
+> >>> Yes, maybe it can be the basis. At least for finding the chip and dri=
+ver.
+> >>
+> >> I have done a first experiment.
+> >>
+> >> It seems as if the series [1] does the opposite of what we need... It =
+just
+> >> skips entries in struct mmc_fixup if the DT does *not* match.
+> >
+> > Ohh, I didn't look that close. In that case the code isn't doing what
+> > it *should*. The point is really to match on the compatible string and
+> > then add quirks if that is found.
 >=20
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> That is what I had expected.
 
-Acked-by: Juergen Gross <jgross@suse.com>
-
-
-Juergen
+Note I have not tested this code. My primary goal was to submit the idea. I
+think I will be able to send a true PR next week.
 
 
---------------58F2BFF62DC0576B4BD13AA9
-Content-Type: application/pgp-keys;
- name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Transfer-Encoding: quoted-printable
-Content-Description: OpenPGP public key
-Content-Disposition: attachment;
- filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+> > Let me have a closer look - and for sure, I am willing to help if neede=
+d.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+I confirm it does not have the expected behavior. !mmc_fixup_of_compatible_=
+match()
+should be mmc_fixup_of_compatible_match(), sorry.
 
-xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOBy=
-cWx
-w3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJvedYm8O=
-f8Z
-d621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJNwQpd369y=
-9bf
-IhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvxXP3FAp2pkW0xq=
-G7/
-377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEBAAHNHEp1ZXJnZW4gR=
-3Jv
-c3MgPGpnQHBmdXBmLm5ldD7CwHkEEwECACMFAlOMcBYCGwMHCwkIBwMCAQYVCAIJCgsEFgIDA=
-QIe
-AQIXgAAKCRCw3p3WKL8TL0KdB/93FcIZ3GCNwFU0u3EjNbNjmXBKDY4FUGNQH2lvWAUy+dnyT=
-hpw
-dtF/jQ6j9RwE8VP0+NXcYpGJDWlNb9/JmYqLiX2Q3TyevpB0CA3dbBQp0OW0fgCetToGIQrg0=
-MbD
-1C/sEOv8Mr4NAfbauXjZlvTj30H2jO0u+6WGM6nHwbh2l5O8ZiHkH32iaSTfN7Eu5RnNVUJbv=
-oPH
-Z8SlM4KWm8rG+lIkGurqqu5gu8q8ZMKdsdGC4bBxdQKDKHEFExLJK/nRPFmAuGlId1E3fe10v=
-5QL
-+qHI3EIPtyfE7i9Hz6rVwi7lWKgh7pe0ZvatAudZ+JNIlBKptb64FaiIOAWDCx1SzR9KdWVyZ=
-2Vu
-IEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+wsB5BBMBAgAjBQJTjHCvAhsDBwsJCAcDAgEGFQgCC=
-QoL
-BBYCAwECHgECF4AACgkQsN6d1ii/Ey/HmQf/RtI7kv5A2PS4RF7HoZhPVPogNVbC4YA6lW7Dr=
-Wf0
-teC0RR3MzXfy6pJ+7KLgkqMlrAbN/8Dvjoz78X+5vhH/rDLa9BuZQlhFmvcGtCF8eR0T1v0nC=
-/nu
-AFVGy+67q2DH8As3KPu0344TBDpAvr2uYM4tSqxK4DURx5INz4ZZ0WNFHcqsfvlGJALDeE0Lh=
-ITT
-d9jLzdDad1pQSToCnLl6SBJZjDOX9QQcyUigZFtCXFst4dlsvddrxyqT1f17+2cFSdu7+ynLm=
-XBK
-7abQ3rwJY8SbRO2iRulogc5vr/RLMMlscDAiDkaFQWLoqHHOdfO9rURssHNN8WkMnQfvUewRz=
-80h
-SnVlcmdlbiBHcm9zcyA8amdyb3NzQG5vdmVsbC5jb20+wsB5BBMBAgAjBQJTjHDXAhsDBwsJC=
-AcD
-AgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey8PUQf/ehmgCI9jB9hlgexLvgOtf7PJn=
-FOX
-gMLdBQgBlVPO3/D9R8LtF9DBAFPNhlrsfIG/SqICoRCqUcJ96Pn3P7UUinFG/I0ECGF4EvTE1=
-jnD
-kfJZr6jrbjgyoZHiw/4BNwSTL9rWASyLgqlA8u1mf+c2yUwcGhgkRAd1gOwungxcwzwqgljf0=
-N51
-N5JfVRHRtyfwq/ge+YEkDGcTU6Y0sPOuj4Dyfm8fJzdfHNQsWq3PnczLVELStJNdapwPOoE+l=
-otu
-fe3AM2vAEYJ9rTz3Cki4JFUsgLkHFqGZarrPGi1eyQcXeluldO3m91NK/1xMI3/+8jbO0tsn1=
-tqS
-EUGIJi7ox80eSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1c2UuZGU+wsB5BBMBAgAjBQJTjHDrA=
-hsD
-BwsJCAcDAgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey+LhQf9GL45eU5vOowA2u5N3=
-g3O
-ZUEBmDHVVbqMtzwlmNC4k9Kx39r5s2vcFl4tXqW7g9/ViXYuiDXb0RfUpZiIUW89siKrkzmQ5=
-dM7
-wRqzgJpJwK8Bn2MIxAKArekWpiCKvBOB/Cc+3EXE78XdlxLyOi/NrmSGRIov0karw2RzMNOu5=
-D+j
-LRZQd1Sv27AR+IP3I8U4aqnhLpwhK7MEy9oCILlgZ1QZe49kpcumcZKORmzBTNh30FVKK1Evm=
-V2x
-AKDoaEOgQB4iFQLhJCdP1I5aSgM5IVFdn7v5YgEYuJYx37IoN1EblHI//x/e2AaIHpzK5h88N=
-Eaw
-QsaNRpNSrcfbFmAg987ATQRTjHAWAQgAyzH6AOODMBjgfWE9VeCgsrwH3exNAU32gLq2xvjpW=
-nHI
-s98ndPUDpnoxWQugJ6MpMncr0xSwFmHEgnSEjK/PAjppgmyc57BwKII3sV4on+gDVFJR6Y8ZR=
-wgn
-BC5mVM6JjQ5xDk8WRXljExRfUX9pNhdE5eBOZJrDRoLUmmjDtKzWaDhIg/+1Hzz93X4fCQkNV=
-bVF
-LELU9bMaLPBG/x5q4iYZ2k2ex6d47YE1ZFdMm6YBYMOljGkZKwYde5ldM9mo45mmwe0icXKLk=
-pEd
-IXKTZeKDO+Hdv1aqFuAcccTg9RXDQjmwhC3yEmrmcfl0+rPghO0Iv3OOImwTEe4co3c1mwARA=
-QAB
-wsBfBBgBAgAJBQJTjHAWAhsMAAoJELDendYovxMvQ/gH/1ha96vm4P/L+bQpJwrZ/dneZcmEw=
-Tbe
-8YFsw2V/Buv6Z4Mysln3nQK5ZadD534CF7TDVft7fC4tU4PONxF5D+/tvgkPfDAfF77zy2AH1=
-vJz
-Q1fOU8lYFpZXTXIHb+559UqvIB8AdgR3SAJGHHt4RKA0F7f5ipYBBrC6cyXJyyoprT10EMvU8=
-VGi
-wXvTyJz3fjoYsdFzpWPlJEBRMedCot60g5dmbdrZ5DWClAr0yau47zpWj3enf1tLWaqcsuylW=
-svi
-uGjKGw7KHQd3bxALOknAp4dN3QwBYCKuZ7AddY9yjynVaD5X7nF9nO5BjR/i1DG86lem3iBDX=
-zXs
-ZDn8R38=3D
-=3D2wuH
------END PGP PUBLIC KEY BLOCK-----
 
---------------58F2BFF62DC0576B4BD13AA9--
+[...]
+> >> What I don't get from the code is how cis.vendor or cis.device can be
+> >> initialized from device tree for a specific device. As far as I see it=
+ can
+> >> only be checked for and some quirks can be set from a table if vendor =
+and
+> >> device read from the CIS registers do match.
+> >
+> > Yes. I thought that should be possible, but maybe it is not?
+>=20
+> It seems to be a hen or egg issue here. MMC_QUIRK_NONSTD_SDIO should be s=
+et
+> before we can match by vendor and device or compatible. But it can't be s=
+et
+> late.
 
---s6NO7De5nnKdkPBqWk386oADRqxtp9b1f--
+I think you can add a new fixup table that could be applied earlier (as you
+do in your suggestion below).
 
---gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
 
------BEGIN PGP SIGNATURE-----
+> >> Instead, we want to match DT and define some values for an otherwise u=
+nknown
+> >> device (i.e. we can't match by vendor or other methods) to help to ini=
+tialize
+> >> the interface. So in mmc_fixup_device it is too late and we need somet=
+hing
+> >> running earlier, based purely on device tree information...
+> >
+> > Okay, I will have a closer look. Maybe we need to extend the card
+> > quirks interface a bit to make it suitable for this case too.
+>=20
+> Combining your suggestions we could do roughly:
+>=20
+> in mmc_sdio_init_card():
+>=20
+>         if (host->ops->init_card)
+>                 host->ops->init_card(host, card);
+>         else
+>                 mmc_fixup_device(host, sdio_prepare_fixups_methods);
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmF6Us4FAwAAAAAACgkQsN6d1ii/Ey81
-RQf+O3ya1tE8Z6tv0yRGBRxJKsYIhum0plUzBYr4KjAMitS51HL7pjN2SqE+kRW8tC6fvz4MBV4Z
-Bz+M8arbbC/asIjQfOQZb7/Bq5fDArNCDorqYSn/pVKT1f6Q41/74k05FMlTVVrl+SGj3w59z4uY
-Lf6z5wnewjYkuZOCAGfe2tfxDRlwSaSa2FVHQWI6NNjxysvYLSr3UBBBsh09j8+adx17Q0C5vRvK
-EX1Ik8bZJIw/xEyUzVkwRgpBlMmvnTyQEpLqBoXCH3VyiSymWybl0lJR43bhuZXd44FWcs7GGxnX
-mwHRqP+ks0TmdWNmGx98oQFP3LVC0zx8uBRZBZBycA==
-=NnyJ
------END PGP SIGNATURE-----
+I think I mostly agree, but why you don't call mmc_fixup_device() if
+init_card is defined? (BTW, mmc_fixup_device() takes a card as
+first parameter)
 
---gFqi6FeylFrTW5XaUARAuOXV5Sz4QEf7K--
+
+> Next we need a location for the sdio_prepare_fixups_methods table and fun=
+ctions.
+>=20
+> For "ti,wl1251" we would then provide the entry in the table and a functi=
+on doing
+> the setup. But where should these be defined? Likely not in a header file=
+ like
+> quirks.h? But there is no quirks.c.
+
+I think you can place your function in drivers/mmc/core/card.h. There are
+already add_quirk(), add_limit_rate_quirk(), add_quirk_mmc(), etc...
+
+
+--=20
+J=E9r=F4me Pouiller
+
+
