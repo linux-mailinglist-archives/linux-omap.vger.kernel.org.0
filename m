@@ -2,54 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 041EC43F8D5
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Oct 2021 10:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B48643F9F2
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Oct 2021 11:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232351AbhJ2IbF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 Oct 2021 04:31:05 -0400
-Received: from mail-ua1-f52.google.com ([209.85.222.52]:40627 "EHLO
-        mail-ua1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232313AbhJ2IbD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Oct 2021 04:31:03 -0400
-Received: by mail-ua1-f52.google.com with SMTP id e2so16726347uax.7;
-        Fri, 29 Oct 2021 01:28:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7D7n4zKwOftMKeYPi/HfP+/e549fNZjw4uN7YVlzcCA=;
-        b=REpTAMCuEcvBcZG05BYr+owNep+eUsDzFLRgCXGhxUZIvHUKqENJYFI5sq8UOdr/HK
-         UCR5kYlCR6TQER9BohbSRAl1zWXpzMbBMEEp7AzR6U4jsfBOmuRzoGNOqTaUcTsp/xAC
-         /FbHQb8W520hRGnvPMmsL90LW6R8NLJzd6XcRNeAjsEKAnzi0NqX3BHaO2nFNUUASDsr
-         n5jhlYury4C9dAqYUW4/sgVQ5lHaiofCOfXcZoINMphRDO9/++TMcc69+CMLaFVATWQ2
-         5+8/dYsAVEEymbREETqNlBjBp2L/PyWTnyTaydbMxnlO1ANvRO5gZE3rZSPowTWZBz6s
-         fPRg==
-X-Gm-Message-State: AOAM530DuQXlFzUjo9+IT+zkFBPKAr9tliLtesAIDFndHtFjN1zxbSge
-        zSgiwOWPs6dHlYretm/IrkjZU57pWJ3p8g==
-X-Google-Smtp-Source: ABdhPJwIGmVfHea/XDDWhijIQkLFnGrqabW3gf7oUEUOifyOSEE+9aM5YMvwt1mgN7Na+AP8aXdJdA==
-X-Received: by 2002:a67:b149:: with SMTP id z9mr10823866vsl.16.1635496114717;
-        Fri, 29 Oct 2021 01:28:34 -0700 (PDT)
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com. [209.85.221.182])
-        by smtp.gmail.com with ESMTPSA id w4sm794698uae.20.2021.10.29.01.28.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Oct 2021 01:28:34 -0700 (PDT)
-Received: by mail-vk1-f182.google.com with SMTP id bc10so4250270vkb.1;
-        Fri, 29 Oct 2021 01:28:34 -0700 (PDT)
-X-Received: by 2002:a05:6122:804:: with SMTP id 4mr9584050vkj.7.1635496113976;
- Fri, 29 Oct 2021 01:28:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1634822085.git.geert+renesas@glider.be> <1f6bf58d76efc2e869b800534b818d1451ef98a2.1634822085.git.geert+renesas@glider.be>
- <YXtIsCnJ+L5zqCVk@robh.at.kernel.org> <YXusEUpTBUdvS7LY@shell.armlinux.org.uk>
-In-Reply-To: <YXusEUpTBUdvS7LY@shell.armlinux.org.uk>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 29 Oct 2021 10:28:22 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX+Ke54zyi2Z2ROk-2xpbcXU6+FFH71gEz0vEBXCAgVXw@mail.gmail.com>
-Message-ID: <CAMuHMdX+Ke54zyi2Z2ROk-2xpbcXU6+FFH71gEz0vEBXCAgVXw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] [RFC] dt-bindings: display: bridge: nxp,tda998x:
- Convert to json-schema
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+        id S231533AbhJ2Jfl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 Oct 2021 05:35:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34262 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229927AbhJ2Jfl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Oct 2021 05:35:41 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9571C061570;
+        Fri, 29 Oct 2021 02:33:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=CndVQumI3AmJcTN9QjVmztpnvBa8Y3ayGPnj6RHPOAk=; b=S5rvlnm+YWnjZXwjESU4Cg9RkO
+        1oBbvOtf8vlGrivD0exvKmG0JIpjsoc+PTkH6ccKmlrERZzQcrxC4uSvu1FnUXch/g3Ufoyx+4Zbc
+        7watAkRcNQcZ1voNNBWUYuEa+90pWl6GPIEPMwxRkQzhQMigIYRkDqAVqNCf7tCNAiIRCp4KVj62X
+        LouPAmvZsuDT+DZ6CqZKAc9C2Jm3V3eNuEkSrmQKDA7Wvgig0EmQYekp/Xbw87PLOEy74YkdG/6MF
+        +ZNGJpole4xXsYrl23p3ChgLFSBr0OAbWQ2TTZ6S+T1rQrdC1lOyRwiRJRfshHGYhNykv+D+SHeQu
+        31MQr1DA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55376)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1mgOG1-0008SP-Si; Fri, 29 Oct 2021 10:33:05 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1mgOFz-0001Uu-OQ; Fri, 29 Oct 2021 10:33:03 +0100
+Date:   Fri, 29 Oct 2021 10:33:03 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Rob Herring <robh@kernel.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
         Magnus Damm <magnus.damm@gmail.com>,
         Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
@@ -61,73 +50,52 @@ Cc:     Rob Herring <robh@kernel.org>,
         "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
         <linux-omap@vger.kernel.org>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 3/3] [RFC] dt-bindings: display: bridge: nxp,tda998x:
+ Convert to json-schema
+Message-ID: <YXu/zwjYqoqYgfLx@shell.armlinux.org.uk>
+References: <cover.1634822085.git.geert+renesas@glider.be>
+ <1f6bf58d76efc2e869b800534b818d1451ef98a2.1634822085.git.geert+renesas@glider.be>
+ <YXtIsCnJ+L5zqCVk@robh.at.kernel.org>
+ <YXusEUpTBUdvS7LY@shell.armlinux.org.uk>
+ <CAMuHMdX+Ke54zyi2Z2ROk-2xpbcXU6+FFH71gEz0vEBXCAgVXw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdX+Ke54zyi2Z2ROk-2xpbcXU6+FFH71gEz0vEBXCAgVXw@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Russell,
+On Fri, Oct 29, 2021 at 10:28:22AM +0200, Geert Uytterhoeven wrote:
+> Hi Russell,
+> 
+> Thanks for your comments!
+> 
+> No, you can still use port:
+> 
+> +oneOf:
+> +  - required:
+> +      - port
+> +  - required:
+> +      - ports
+> 
+> When using ports, no further requirements are set, but perhaps port@0
+> should be made required in that case?
 
-Thanks for your comments!
+Maybe I don't understand the binding description then, but to me it
+looks like you require both port@0 and port@1.
 
-On Fri, Oct 29, 2021 at 10:08 AM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
-> On Thu, Oct 28, 2021 at 08:04:48PM -0500, Rob Herring wrote:
-> > On Thu, Oct 21, 2021 at 03:18:53PM +0200, Geert Uytterhoeven wrote:
-> > > +    properties:
-> > > +      port@0:
-> > > +        type: object
-> > > +        description: FIXME
-> >
-> > Looks like the input from the example
-> >
-> > > +
-> > > +      port@1:
-> > > +        type: object
-> > > +        description: FIXME
-> >
-> > Presumably the output to connector or another bridge.
->
-> This is changing the binding. The original had:
->
-> Required node:
->   - port: Input port node with endpoint definition, as described
->         in Documentation/devicetree/bindings/graph.txt
+The reality of the driver is that it makes almost no use of the graph
+itself, except via drm_of_find_possible_crtcs() to find the connected
+CRTCs. If it is connected to an I2S source, then it probably needs a
+port specification for that. If someone wants to describe the HDMI
+connector (which I don't see any point in) then they likely need a
+port specification for that too. However, the driver itself doesn't
+care about any of those.
 
-Indeed, cfr. "Add ports hierarchy, as an alternative to port." in the
-patch description. Some users use port, other use ports with one or
-two port subnodes.
+So, describing the port nodes makes no sense.
 
-> The above change appears to require that tda998x now has two ports.
-
-No, you can still use port:
-
-+oneOf:
-+  - required:
-+      - port
-+  - required:
-+      - ports
-
-When using ports, no further requirements are set, but perhaps port@0
-should be made required in that case?
-
-> This goes against current usage in DT and the example.
-
-The original example didn't even have the original required input
-port node, so it was incomplete.
-
-arch/arm64/boot/dts/renesas/r8a774c0-cat874.dts has two port subnodes.
-Is that wrong?
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
