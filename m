@@ -2,142 +2,207 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 104DB43F37D
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Oct 2021 01:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9872243F43C
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Oct 2021 03:04:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231531AbhJ1Xat (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Oct 2021 19:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41956 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbhJ1Xap (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 19:30:45 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 850AFC061745;
-        Thu, 28 Oct 2021 16:28:17 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id c28so16877445lfv.13;
-        Thu, 28 Oct 2021 16:28:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=g1ASowQL1SYh3xyvjjnrsnFWzhxhuZ1FkP7TdHa31mE=;
-        b=or9I8eXmdc6hOUu3ilMz+ymgHlGQQmwFfcjANI787MFy3461r29Qlx4Drko3A82jiZ
-         /Dxbh+rXJkVd+vSmZQz7ByF21FNMWE7Msuh2tmQH7FzEaAaJykw/79BGIIrJtKwboRDm
-         04V8OvO+c+XCXlI7f4QRPE7cqx6GZulezk5I+0MnmugoyzWrW9wGp3T/sQ+0YL50opsM
-         PEj+17btedXyPtu3l7DUltlj+rCIDD63O2gZoZwfDEKUeboD39P9kLuxM5uqsYcKe9n/
-         MuNWRD7sUlbhLEou6B/xsQNLsenMP/929SI9uvSZZXHuqFx/YvhRAZPMrz7X4+YxCerI
-         /TgQ==
+        id S231371AbhJ2BHS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Oct 2021 21:07:18 -0400
+Received: from mail-oi1-f177.google.com ([209.85.167.177]:41856 "EHLO
+        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230211AbhJ2BHS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Oct 2021 21:07:18 -0400
+Received: by mail-oi1-f177.google.com with SMTP id y128so10950157oie.8;
+        Thu, 28 Oct 2021 18:04:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=g1ASowQL1SYh3xyvjjnrsnFWzhxhuZ1FkP7TdHa31mE=;
-        b=cOkqdGeNEuZcAHnpdUXk1+5EmFZRDGpC5tRffGYu/vF24A+jKJL7M9mnRkN7nhE4Y/
-         LlIOgzW7RGRIJLf6h/kSoUNlwyZ7r+bA3TrLtwBqHtuMzlXD/f4ggUxwqYZRPJpIHsIb
-         HuGEwaz/RCE2Gy2MXOoZ2zktFpQ5HhPFbSh1cbImIdWP/A+HLdqoy5buIrsEyfkUkJKZ
-         2tHzxnOJ/HcMzTARcchnIxOCgLkWturaRU9Za11tsOnWz0gkufF/9iFPnwYjiT0RUJa0
-         aZJ8hVZGX/ODzwg7U52cNmRwEUG18a+RScItWUvS/hh1vxdhHaTsYpYo/cRUMnMWPcmr
-         YeFg==
-X-Gm-Message-State: AOAM533VU1mbUz4A00epD7HQENnplQUD31uOpugw3cw/JurTbdWCBjVV
-        F8WtTJ0H/i4piMeiXBS1RTNW4VX7J48=
-X-Google-Smtp-Source: ABdhPJwV2hV4le461ll7P/MiVtzPzva4GF7PaVejAVvhmYPc9uewsxLl7FIVcxk+rSnnrtvlDg/jfg==
-X-Received: by 2002:a19:760a:: with SMTP id c10mr6627861lff.302.1635463695803;
-        Thu, 28 Oct 2021 16:28:15 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-44-18.dynamic.spd-mgts.ru. [46.138.44.18])
-        by smtp.googlemail.com with ESMTPSA id bn3sm414682ljb.7.2021.10.28.16.28.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Oct 2021 16:28:15 -0700 (PDT)
-Subject: Re: [PATCH v2 03/45] notifier: Add
- atomic/blocking_notifier_has_unique_priority()
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=MBThxz376ZwKQ2CgIvx7+SMMvDix0ZYUqM2XlMvadr4=;
+        b=4GduFkWIY6QYIrndJ+XSf0fllX/W6FRy3jWnjPXcZLsDrtC+fCGxh3Ww2vEjZzHptN
+         7FIxuFZgTmV3PdXSYadSEMVJ0e7HSfIzH98a8yob+3+DR4ZHYhgN9JFvCs4cHOPa5LC1
+         ix0KEpA2z416lbPSiSunYC3k8X8cXJKAjmvfmvsuv5Pm3U0T5iZm+YeJxOx+L5nWQHbd
+         doQtVOXCgBWI0r5ueIQzc32lL+Mukpdz3FolQLyVi1h029HTcANvqWtr6LLbV7KbzrwG
+         IxMm2Bnpo2Q8uvDguyMba7W4A79J5Q+mC5H+dN/Wvhaij6v4ZcKezQOMZMmsvroay3p7
+         JBxw==
+X-Gm-Message-State: AOAM531pbnJ4R3+XpSD7PdiomW2RELJRCI5VpqmZDN13GqtJH0KTB/BD
+        i1q8qQ231u07tu1lxHvqgg==
+X-Google-Smtp-Source: ABdhPJzeaNxZQbYoKleC+9X4I4grVU2VleGQ5z3Y2B0SgItQOsHtBytVFlMJYjvHXWFwZquRHenZ2g==
+X-Received: by 2002:a05:6808:1789:: with SMTP id bg9mr5825185oib.171.1635469490331;
+        Thu, 28 Oct 2021 18:04:50 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id s5sm1679987ois.55.2021.10.28.18.04.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Oct 2021 18:04:49 -0700 (PDT)
+Received: (nullmailer pid 923293 invoked by uid 1000);
+        Fri, 29 Oct 2021 01:04:48 -0000
+Date:   Thu, 28 Oct 2021 20:04:48 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-4-digetx@gmail.com>
- <YXqCz/utp2DFJJ45@smile.fi.intel.com>
- <c5fb7590-03a7-0eea-4040-07472a5c9710@gmail.com>
-Message-ID: <8a9c4a9a-ea0d-4bc9-cf57-9bd99b211d47@gmail.com>
-Date:   Fri, 29 Oct 2021 02:28:13 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Magnus Damm <magnus.damm@gmail.com>,
+        Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, devicetree@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH 3/3] [RFC] dt-bindings: display: bridge: nxp,tda998x:
+ Convert to json-schema
+Message-ID: <YXtIsCnJ+L5zqCVk@robh.at.kernel.org>
+References: <cover.1634822085.git.geert+renesas@glider.be>
+ <1f6bf58d76efc2e869b800534b818d1451ef98a2.1634822085.git.geert+renesas@glider.be>
 MIME-Version: 1.0
-In-Reply-To: <c5fb7590-03a7-0eea-4040-07472a5c9710@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1f6bf58d76efc2e869b800534b818d1451ef98a2.1634822085.git.geert+renesas@glider.be>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-29.10.2021 00:32, Dmitry Osipenko пишет:
->>> +	/*
->>> +	 * This code gets used during boot-up, when task switching is
->>> +	 * not yet working and interrupts must remain disabled.  At
->> One space is enough.
-> This comment is replicated multiple times over this source file. You can
-> find it before each down_write(). I borrowed the text as-is, for
-> consistency.
+On Thu, Oct 21, 2021 at 03:18:53PM +0200, Geert Uytterhoeven wrote:
+> Convert the NXP TDA998x HDMI transmitter Device Tree binding
+> documentation to json-schema.
+> 
+> Add missing "#sound-dai-cells" property.
+> Add ports hierarchy, as an alternative to port.
+> Drop pinctrl properties, as they do not belong here.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> RFC as I do not know:
+>   1. The correct value(s) for '#sound-dai-cells' (the example used 2,
+>      which was IMHO wrong, while all actual users use 0),
+>   2. The meaning of the various ports subnodes.
+> ---
+>  .../bindings/display/bridge/nxp,tda998x.yaml  | 108 ++++++++++++++++++
+>  .../bindings/display/bridge/tda998x.txt       |  54 ---------
+>  2 files changed, 108 insertions(+), 54 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/display/bridge/tda998x.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
+> new file mode 100644
+> index 0000000000000000..87c64edcf5d5617d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
+> @@ -0,0 +1,108 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP TDA998x HDMI transmitter
+> +
+> +maintainers:
+> +  - Russell King <linux@armlinux.org.uk>
+> +
+> +properties:
+> +  compatible:
+> +    const: nxp,tda998x
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  video-ports:
+> +    default: 0x230145
+> +    description:
+> +      24 bits value which defines how the video controller output is wired to
+> +      the TDA998x input.
 
-Actually, it should be down_read() here since there are no writes. I'll
-correct it in v3.
+maximum: 0xffffff
+
+(at least...)
+
+> +
+> +  audio-ports:
+> +    description:
+> +      Array of 8-bit values, 2 values per DAI (Documentation/sound/soc/dai.rst).
+> +      The implementation allows one or two DAIs.
+> +      If two DAIs are defined, they must be of different type.
+> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +    items:
+> +      minItems: 1
+> +      maxItems: 2
+> +      items:
+> +        - description: |
+> +            The first value defines the DAI type: TDA998x_SPDIF or TDA998x_I2S
+> +            (see include/dt-bindings/display/tda998x.h).
+> +        - description:
+> +            The second value defines the tda998x AP_ENA reg content when the
+> +            DAI in question is used.
+> +
+> +  '#sound-dai-cells':
+> +    enum: [ 0, 1 ]
+> +
+> +  nxp,calib-gpios:
+> +    maxItems: 1
+> +    description:
+> +      Calibration GPIO, which must correspond with the gpio used for the
+> +      TDA998x interrupt pin.
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +
+> +    properties:
+> +      port@0:
+> +        type: object
+> +        description: FIXME
+
+Looks like the input from the example
+
+> +
+> +      port@1:
+> +        type: object
+> +        description: FIXME
+
+Presumably the output to connector or another bridge.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +oneOf:
+> +  - required:
+> +      - port
+> +  - required:
+> +      - ports
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/display/tda998x.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        tda998x: hdmi-encoder@70 {
+> +            compatible = "nxp,tda998x";
+> +            reg = <0x70>;
+> +            interrupt-parent = <&gpio0>;
+> +            interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+> +            video-ports = <0x230145>;
+> +
+> +            #sound-dai-cells = <1>;
+> +                         /* DAI-format / AP_ENA reg value */
+> +            audio-ports = <TDA998x_SPDIF 0x04>,
+> +                          <TDA998x_I2S 0x03>;
+> +
+> +            port {
+> +                tda998x_in: endpoint {
+> +                    remote-endpoint = <&lcdc_0>;
+> +                };
+> +            };
+> +        };
+> +    };
