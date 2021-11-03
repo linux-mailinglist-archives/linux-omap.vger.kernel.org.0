@@ -2,71 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00FBB443A99
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Nov 2021 01:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 675E9444ACF
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Nov 2021 23:21:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbhKCAwn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 2 Nov 2021 20:52:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50870 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231533AbhKCAwn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 2 Nov 2021 20:52:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id B8B8A60F90;
-        Wed,  3 Nov 2021 00:50:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1635900607;
-        bh=o2xe1unT6/OIQcRhUNsxVPvo3YZ42Zjr/sKjAQ7bkQ4=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=js8KTS8JqC7KvkLCx73s0lwk4xYjss1etHYm3UzmMLBZHseqsRxPWUAJ5GXbMDVWS
-         r0TVQAz3+SRKyoDeZtzHf79fsjL5oZLZRUIDWAlW3PCKXSjM6FS9+mX3YXz/U13Frl
-         8tOIKwnIQ41jBRdBJP14qpgVCOU5E+tYjB0m9tWgNWr3PGcvzoNKUIzuBWMLoG/rjv
-         BmnStUEmb/yTA6P2zn23918IWh4I/jColyK2iGuq/X3Cmt7ExMlg64Y97UZRy2YwPi
-         kBy5g9i6gGGDyHA76LfEwFssFKFxqG/4dnrCLkwF6NQQEOziLkhrO+8pA6Vi/uUw+w
-         6XS8r3+rmjpag==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id AE133609B9;
-        Wed,  3 Nov 2021 00:50:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S229913AbhKCWXh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 3 Nov 2021 18:23:37 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:58944 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229698AbhKCWXh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 3 Nov 2021 18:23:37 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1A3MKkL0051391;
+        Wed, 3 Nov 2021 17:20:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1635978046;
+        bh=nPRWGwf0M5iXxJZ1q+xhIqLjuZmGolgtAVobYVmw5cY=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=kEn0LCl7vY9bkeWj74VZ4GAhwrhpeS6IAcpXAskAKqO3a3npyMNXKL+nAKRVtm3+w
+         ciO4jcHfXfKc2aoSTm6qqNBiJAXc6xI6U8czsJu7mnukgkUsY9L3sdautyj/EFhoXb
+         wcmfeBN66p4pevQz3qGYyqnyokvsTQ9HY44boXk4=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1A3MKkQj028821
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 3 Nov 2021 17:20:46 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 3
+ Nov 2021 17:20:45 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Wed, 3 Nov 2021 17:20:45 -0500
+Received: from [10.250.100.73] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1A3MKgiX122125;
+        Wed, 3 Nov 2021 17:20:43 -0500
+Subject: Re: [PATCH net-next v2 2/3] net: ethernet: ti: am65-cpsw: enable
+ bc/mc storm prevention support
+To:     Jakub Kicinski <kuba@kernel.org>
+CC:     "David S. Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-omap@vger.kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>
+References: <20211101170122.19160-1-grygorii.strashko@ti.com>
+ <20211101170122.19160-3-grygorii.strashko@ti.com>
+ <20211102173840.01f464ec@kicinski-fedora-PC1C0HJN>
+From:   Grygorii Strashko <grygorii.strashko@ti.com>
+Message-ID: <81a427a1-b969-4039-0c3f-567b3073abc1@ti.com>
+Date:   Thu, 4 Nov 2021 00:20:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] net: davinci_emac: Fix interrupt pacing disable
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <163590060770.14144.16946664384523632045.git-patchwork-notify@kernel.org>
-Date:   Wed, 03 Nov 2021 00:50:07 +0000
-References: <20211101152343.4193233-1-bigunclemax@gmail.com>
-In-Reply-To: <20211101152343.4193233-1-bigunclemax@gmail.com>
-To:     Maxim Kiselev <bigunclemax@gmail.com>
-Cc:     grygorii.strashko@ti.com, davem@davemloft.net, kuba@kernel.org,
-        yangyingliang@huawei.com, andrew@lunn.ch, colin.king@canonical.com,
-        moyufeng@huawei.com, michael@walle.cc, srk@ti.com,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <20211102173840.01f464ec@kicinski-fedora-PC1C0HJN>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
+hi Jakub,
 
-This patch was applied to netdev/net.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  1 Nov 2021 18:23:41 +0300 you wrote:
-> This patch allows to use 0 for `coal->rx_coalesce_usecs` param to
-> disable rx irq coalescing.
+On 03/11/2021 02:38, Jakub Kicinski wrote:
+> On Mon, 1 Nov 2021 19:01:21 +0200 Grygorii Strashko wrote:
+>>   - 01:00:00:00:00:00 fixed value has to be used for MC packets rate
+>>     limiting (exact match)
 > 
-> Previously we could enable rx irq coalescing via ethtool
-> (For ex: `ethtool -C eth0 rx-usecs 2000`) but we couldn't disable
-> it because this part rejects 0 value:
+> This looks like a stretch, why not use a mask? You can require users to
+> always install both BC and MC rules if you want to make sure the masked
+> rule does not match BC.
 > 
-> [...]
 
-Here is the summary with links:
-  - [v2] net: davinci_emac: Fix interrupt pacing disable
-    https://git.kernel.org/netdev/net/c/d52bcb47bdf9
+Those matching rules are hard coded in HW for packet rate limiting and SW only
+enables them and sets requested pps limit.
+- 1:BC: HW does exact match on BC MAC address
+- 2:MC: HW does match on MC bit (the least-significant bit of the first octet)
 
-You are awesome, thank you!
+Therefore the exact match done in this patch for above dst_mac's with
+is_broadcast_ether_addr() and ether_addr_equal().
+
+The K3 cpsw also supports number configurable policiers (bit rate limit) in
+ALE for which supports is to be added, and for them MC mask (sort of, it uses
+number of ignored bits, like FF-FF-FF-00-00-00) can be used.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Best regards,
+grygorii
