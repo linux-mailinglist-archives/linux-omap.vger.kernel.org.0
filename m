@@ -2,58 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EFB744785D
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Nov 2021 02:45:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 948BB447B1C
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Nov 2021 08:31:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230348AbhKHBsW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 7 Nov 2021 20:48:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39452 "EHLO
+        id S237851AbhKHHav (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Nov 2021 02:30:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbhKHBsV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 7 Nov 2021 20:48:21 -0500
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68570C061570
-        for <linux-omap@vger.kernel.org>; Sun,  7 Nov 2021 17:45:38 -0800 (PST)
-Received: by mail-il1-x12b.google.com with SMTP id i9so15352420ilu.8
-        for <linux-omap@vger.kernel.org>; Sun, 07 Nov 2021 17:45:38 -0800 (PST)
+        with ESMTP id S237878AbhKHHac (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Nov 2021 02:30:32 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8726C061229
+        for <linux-omap@vger.kernel.org>; Sun,  7 Nov 2021 23:27:33 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id bi35so33948314lfb.9
+        for <linux-omap@vger.kernel.org>; Sun, 07 Nov 2021 23:27:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ub-ac-id.20210112.gappssmtp.com; s=20210112;
+        d=gmail.com; s=20210112;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=HsKe1irRV6kznvVT/stxg/OFNC2sWNjMK4OPxul8fCI=;
-        b=F5qCXf/68FCgI4UuuyhO/IMgxQVuRT1dtUB/CDRj2SB4OSlX56+kPzXq7QYQfKJRvV
-         d4PVeyN7bci+Y/QeOKyJNThBkjew9qXn3fyAen74tzia4xuKxKKEg1lHdi+kS3O3K9sT
-         w2LXbWjv2oVnVdOhS0vokdROYdOu0esduVtTcFwGWIos0Go8Fk5rSyE3XHfYqyNrwNzu
-         p5qNQVh77Fr3oZu+nVdd3MTBJnn7PlH85xcZR1xWrE5xOX38BN6oXc9ekwho8RpJxP1j
-         iHWEo0vBvAi+DG1mz3PkGqrBCfGFgjT6gs/+CpVenfMSiZjj+V2ePBhDAmE/CpdDgqPa
-         OnFg==
+        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
+        b=lohGAXI96njXpZ5r6vgYlUkp2V68iRMzDV25uaLpmT1WmpX2h0YNNnPekuKOrJR7Hh
+         rCcmOUgGjsAkeHEvvQCkM6ux+TyqL0CqGbf0IPfL8V+eIKLF7r3X9QWFup/xVl2xV9qZ
+         NGc0LQ7JpvXhk+YTEHFaFd2QnuENE8mCWi0drmIQkANv1zf9DM6Bfjx/yF/A/b9RtJFU
+         CT2DuJeqJ7evq+rJKQgmUSCIg2GjkqvLZlnb0ekZ1/3u7apFf2k73Uqo2u8YZ8hKmOIw
+         ZGA3M8LZJFGSmW3P+nQyYMCLCtL13s+WCsnPOmCuuFd5xieMsN0vbLhindKIE3OfrP6U
+         BcYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=HsKe1irRV6kznvVT/stxg/OFNC2sWNjMK4OPxul8fCI=;
-        b=E4h5b0D3Tyho3PRd/Zw6SttkrhZrs+rXXSFYBDSKHgAJycp9qfCtKunOGobWwtqEq2
-         QO8iOVq8EBJihnxxUVn47ld0rfJrtKM8nqfUElcQHmxWwotxPw3vIViKscScCJRAQyTb
-         T1DfDg5728BHWnd15cNuEhLLrfSyxxYG9wpFmOr7k6ddnv2fh7H3lMHwNRRgWRVyHKep
-         TvaVCPlcuKIcsKPxIWtDO9ytccQzXbQ/Y8uFNhC8J2PUb/p+3HwHPQUZ2+zXuyjtwI9a
-         wC2Qb2UCMxCQmiDVvLtNDy8wf+lJDnK9SkYLYd+Fubt16yJ21uisYr+UUS++QVbApPWS
-         lQ6g==
-X-Gm-Message-State: AOAM532cr1BMMGsgtKFtCTYCQawauA/IvyaE+q54mXyXGbxMy3m1jRmj
-        nS4xbKdLPLEjS4FCDCz1kHgCDOrO2gxHzjdeO99gaA==
-X-Google-Smtp-Source: ABdhPJxUGbP9WeRbbeDXwweseeMrMrg8AyCH7VCmKeIHGiXE+FmmyWm/xNGBYzO320Z1aFtkKg0e/Z2Mf/JIwWJ3gpo=
-X-Received: by 2002:a92:c80e:: with SMTP id v14mr6606467iln.128.1636335937677;
- Sun, 07 Nov 2021 17:45:37 -0800 (PST)
+        bh=gS+G2bXPLTc8QV9oSOsVFPfildfSifO+gabOlUjPn+8=;
+        b=gm08Cub1BewHTVEaVz9t9wVGiFf9jQfiDtKT0ucPLHfihoB6gf8u/01jSPhTK/dLpP
+         2YolD5iXHK6w8ayeNdjN3R+JYTd79BJDwYUCwzHpp8LSgfly/ayyHsmvIiNWi7GfMOqn
+         7dTrvif9Q91ubLB+MhIuVQtA0xJ6jWkALp341MQbwz8ivffwK2isvLH6zHy1lw28aYq7
+         jKZKzeYfur5JwPNtwP6Vq3bDANmh5vd4rb1mXbtrUD1wDEvHvj7/tnjouLEgbAM+2TBi
+         5iP8+RfxXBxo9sJ4PIW1TSOQT9DPf0fwUVQiiJt6/E2Yclt2SrDFN5Ia23s/JNr2tXtL
+         MwKg==
+X-Gm-Message-State: AOAM532YODaiWznZ6Rt+D1gvvpuZhrzUlx7zo1L3bBINeF6dJpeHozcg
+        29sDmGCCUZEymm4YUCQ3i57lUS+MH2f6KcLiglX+iKLi8P4=
+X-Google-Smtp-Source: ABdhPJwiROS9SRRNMvDLES4YHo6uT5d60ZUwIiFmBNAm9OxEfLgMU9cee9PqVQWim0XNVifN/Rk5vWcyMQ7rvBndYNE=
+X-Received: by 2002:a05:6402:557:: with SMTP id i23mr66769092edx.176.1636356441798;
+ Sun, 07 Nov 2021 23:27:21 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a5d:924b:0:0:0:0:0 with HTTP; Sun, 7 Nov 2021 17:45:37 -0800 (PST)
-Reply-To: loveth12347@gmail.com
-From:   "Setyoadi ." <setyoadi@ub.ac.id>
-Date:   Mon, 8 Nov 2021 01:45:37 +0000
-Message-ID: <CANSBrzw-zNnD885nJSNERPz5742Poz9j296HfM93JkfinHMkLA@mail.gmail.com>
-Subject: hii
+Received: by 2002:a50:2501:0:0:0:0:0 with HTTP; Sun, 7 Nov 2021 23:27:21 -0800 (PST)
+Reply-To: mariaschaefler@gmx.com
+From:   Maria Schaefler <ziskoraa@gmail.com>
+Date:   Mon, 8 Nov 2021 07:27:21 +0000
+Message-ID: <CAJh0FjiFL7uihMBL6ckYO8FJ6tnzM+tBivU2c60yDbG14LZLeA@mail.gmail.com>
+Subject: MY HEART CHOOSE YOU.
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On two occasions, I have sent an email to you which you have not
-responded to. Can you find time to respond to me now?
+Given my current state of health, I have decided to donate what I
+inherited from my late husband to you to help the poor and needy. I am
+Mrs Maria Schaefler,a 57years old dying woman. I was diagnosed for
+cancer about 2 years ago and I have few months to live according to
+medical experts. Email me for my directives
