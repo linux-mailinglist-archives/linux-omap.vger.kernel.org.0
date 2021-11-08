@@ -2,88 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 838D8449AF6
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Nov 2021 18:43:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C64C449E35
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Nov 2021 22:29:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236568AbhKHRqK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 8 Nov 2021 12:46:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57266 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232449AbhKHRqJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Nov 2021 12:46:09 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08015C061570
-        for <linux-omap@vger.kernel.org>; Mon,  8 Nov 2021 09:43:25 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id f4so65446163edx.12
-        for <linux-omap@vger.kernel.org>; Mon, 08 Nov 2021 09:43:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=V9DcSgqCjKR/wGotEn+yw7r67/AYLDgR/ccibCOh6/I=;
-        b=VQmGrzfDEYLvIn49piE4JEtXWKKz/4s0zcyTvhcuGMiPtiD7xZLg/D3aHwBMUsv9+n
-         xb44J5cbT51uCceoQ2Ewejx6xOcM4DjExfvrESA9ZYOzURtGhLxZupFKcL//K8QXIjHP
-         sdWSEAvAYRIBUwB1Q1n9rrN+ohhGihskcrbwYW6nnCkIdeLvlaxwJXOdjnEhCoToUzV/
-         jX6cYLG4YH3vPMiYUwW/3gXSI9teXFDBfuuxYiX032Op2FV8EjarHZ6cozW9a9MfQT4r
-         yB5CMhpFMbXpQ24wWGcozq98Ffbs66gUXULk0cppg342xejbiOmCwMGbYKA85xTl50oF
-         Nd3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=V9DcSgqCjKR/wGotEn+yw7r67/AYLDgR/ccibCOh6/I=;
-        b=a3XM7M2KpQkZNfG7hGk9lnJqE9TSMS4piJijZzLE2qo68Y1Zh9mqFa99p6bO/og/cn
-         aeXrsZlvYfn/cp8Y2fHG7WX4zT+onTtfgw1BWj6A2Dt1F+uyJWRybq8qcZES+KJzhqdb
-         /+ITIRs6nL+ZAdjVI8DvMKLL8PKeeiCnYDti8aIRGELAAObpQHVNOK9s8Nuy2H5qzYdu
-         hlaFydTUZ1/3yT7fep6G6QL/7hWxKhKrzelVRemcJlodadRRBCcODtUlhsFSBQLig92M
-         lgZx0I4+r36r06FqXbRUwnNgFkH1Mbnd4beaOgSLaxOSI+cxBRR0U/TO/EV+GxGCkiOf
-         pGyw==
-X-Gm-Message-State: AOAM531JjXK9DNBM+b+Aiddl0pb978Vbw2/WXsocqMM2ZkW6t4c0Y8Eh
-        NDzcV70g/G8X1bhkNCE/nS0bKGWIrY8=
-X-Google-Smtp-Source: ABdhPJxN5CovFOJtg0VPJ+IAO3WAyY99DzOazmJiIzh1sieLst1d7BfSE8eJe0AD86O1pF+gcHWQSA==
-X-Received: by 2002:a17:907:6287:: with SMTP id nd7mr1237563ejc.152.1636393403634;
-        Mon, 08 Nov 2021 09:43:23 -0800 (PST)
-Received: from [192.168.1.10] ([46.249.74.23])
-        by smtp.googlemail.com with ESMTPSA id eg33sm9613029edb.77.2021.11.08.09.43.22
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 08 Nov 2021 09:43:23 -0800 (PST)
-Subject: Re: omapdrm VRFB rotation
-From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-To:     tomi.valkeinen@ideasonboard.com
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-References: <92fd80eb-6591-fb45-8885-309c79c2d4c0@gmail.com>
-Message-ID: <689ba705-c7fc-428c-3288-0c4adb3cc63f@gmail.com>
-Date:   Mon, 8 Nov 2021 19:43:08 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Firefox/60.0 Thunderbird/60.6.1
+        id S240292AbhKHVbp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 8 Nov 2021 16:31:45 -0500
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:62249 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238330AbhKHVbo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 8 Nov 2021 16:31:44 -0500
+Received: from pop-os.home ([86.243.171.122])
+        by smtp.orange.fr with ESMTPA
+        id kCCGmjvWff6fnkCCGmJNY2; Mon, 08 Nov 2021 22:28:59 +0100
+X-ME-Helo: pop-os.home
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Mon, 08 Nov 2021 22:28:59 +0100
+X-ME-IP: 86.243.171.122
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     grygorii.strashko@ti.com, davem@davemloft.net, kuba@kernel.org,
+        shenyang39@huawei.com, vigneshr@ti.com
+Cc:     linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: ethernet: ti: cpsw_ale: Fix access to un-initialized memory
+Date:   Mon,  8 Nov 2021 22:28:55 +0100
+Message-Id: <c709f0325a7244ff133e405d017d9efba3b200f6.1636406827.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <92fd80eb-6591-fb45-8885-309c79c2d4c0@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Sorry, mail was sent to the old Tomi's address.
+It is spurious to allocate a bitmap without initializing it.
+So, better safe than sorry, initialize it to 0 at least to have some known
+values.
 
-On 8.11.21 г. 19:05 ч., Ivaylo Dimitrov wrote:
-> Hi,
-> 
-> Currently omapdrm supports TILER rotation only, which excludes omap3 and 
-> earlier SoCs. I have the hardware (N900/N950), time and will to 
-> implement VRFB rotation support in omapdrm driver, however, I'll 
-> appreciate some hints. Or, if there is already something ready, please 
-> point me to it so I can take it from where it is.
-> 
-> Besides partially reverting 517a8a9564c0dea98e6d4e2c7f0fe4cbb9b8c9ba and 
-> copying VRFB code from omapfb, is there anything else I shall take in 
-> consideration? Or, VRFB driver should not be a part of omapdrm, but a 
-> standalone one?
-> 
-> Regards,
-> Ivo
+While at it, switch to the devm_bitmap_ API which is less verbose.
+
+Fixes: 4b41d3436796 ("net: ethernet: ti: cpsw: allow untagged traffic on host port")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Maybe this patch is useless, because of some _add_vlan _del_vlan stuff that
+initialize things correctly before they are used, but it really looks
+spurious to me.
+IIUC, cpsw_rx_vlan_encap() (and the embedded cpsw_ale_get_vlan_p0_untag()
+could test any bit in the un-initialized bitmap)
+
+Just a guess, I've not tried to understand all the logic involved.
+---
+ drivers/net/ethernet/ti/cpsw_ale.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 0c75e0576ee1..1ef0aaef5c61 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -1299,10 +1299,8 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
+ 	if (!ale)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	ale->p0_untag_vid_mask =
+-		devm_kmalloc_array(params->dev, BITS_TO_LONGS(VLAN_N_VID),
+-				   sizeof(unsigned long),
+-				   GFP_KERNEL);
++	ale->p0_untag_vid_mask = devm_bitmap_zalloc(params->dev, VLAN_N_VID,
++						    GFP_KERNEL);
+ 	if (!ale->p0_untag_vid_mask)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-- 
+2.30.2
+
