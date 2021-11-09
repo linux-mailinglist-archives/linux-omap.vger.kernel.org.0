@@ -2,75 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 151BF44AA81
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 10:23:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CFE444AC19
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 11:59:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244817AbhKIJZt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Nov 2021 04:25:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43422 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244806AbhKIJZs (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Nov 2021 04:25:48 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2471BC061764
-        for <linux-omap@vger.kernel.org>; Tue,  9 Nov 2021 01:23:03 -0800 (PST)
-Received: from [192.168.1.111] (91-158-153-130.elisa-laajakaista.fi [91.158.153.130])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id B60F6FD1;
-        Tue,  9 Nov 2021 10:22:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1636449780;
-        bh=rECzhCin5c7MwPmmUtM6y9/8k7qGZLDHKYWc3rLq5lQ=;
-        h=To:Cc:References:From:Subject:Date:In-Reply-To:From;
-        b=AWSDroOu9zavj/n18tLDi7HgH8ZeO+cf6YcK+t6RP30hLqs2EHieM/KWk3KhjBw4B
-         IAkWrh9rG5axpJYK59ikPyGYDjoJ0dhoA5g7Q5VHFRXmq9jTGKreFM6FcAD0IYwpxu
-         RWrxpsgmtycuFfRKX8a8NhQ+WB0mhgLWxNMnOthM=
-To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        id S245516AbhKILCJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Nov 2021 06:02:09 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.168]:35920 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240102AbhKILCJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Nov 2021 06:02:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1636455550;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=iclles0HcE+xilvjLmH735b23I37lsz37ax0NdBpqBs=;
+    b=MSCI5i88h8+E+PgYE2HcJTvTStgm0dUPaI7TrjKZVPA3lAVlD+O9D742l0U0+KiIbf
+    fW9OSQ9YW2+r0xk3ZH/Id50olxMRAdoV514zDLiH6LOciedgQa3OgTye/2GJkfLbxQwR
+    cMRvfnOlCgOxqJngF4xvNOr3Ga4fF4FYYMI1+BcjYcki8OfSwnnqCSLxkuR7ISc0nvcu
+    zr24imqkENk7dEgkfImHBmbERymOciTbsm3n6KYIVIA1WmrXhfAidDyRsSDR/8Frk04e
+    W25L96fFZq/JEmgkxTNbNw99jT7riUNcyiWnsR7ywefdkAiY5e9cfSi+nnnC+hyHY6Ht
+    z5Qw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1KHeBQyh+ITDDFoCL4="
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+    by smtp.strato.de (RZmta 47.34.1 DYNA|AUTH)
+    with ESMTPSA id 902c63xA9Ax9OW2
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 9 Nov 2021 11:59:09 +0100 (CET)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>, Avri Altman <avri.altman@wdc.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Tony Lindgren <tony@atomide.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-References: <92fd80eb-6591-fb45-8885-309c79c2d4c0@gmail.com>
- <689ba705-c7fc-428c-3288-0c4adb3cc63f@gmail.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: Re: omapdrm VRFB rotation
-Message-ID: <40c102c3-207b-e8ae-f292-aeff6b1515ce@ideasonboard.com>
-Date:   Tue, 9 Nov 2021 11:22:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Bean Huo <beanhuo@micron.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Kiwoong Kim <kwmad.kim@samsung.com>,
+        Tian Tao <tiantao6@hisilicon.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Yang Li <abaci-bugfix@linux.alibaba.com>
+Cc:     notasas@gmail.com, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
+Subject: [PATCH 0/5] mmc: core: extend mmc_fixup_device and transplant ti,wl1251 quirks from to be retired omap_hsmmc
+Date:   Tue,  9 Nov 2021 11:59:03 +0100
+Message-Id: <cover.1636455548.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-In-Reply-To: <689ba705-c7fc-428c-3288-0c4adb3cc63f@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+PATCH V1 2021-11-09 11:59:08:
+* merge call of mmc_fixup_device for sdio into other commit (suggested by Ulf Hansson <ulf.hansson@linaro.org>)
+* do not call mmc_fixup_device(card, sdio_card_init_methods) for mmc and sd interfaces, just sdio (suggested by Ulf Hansson <ulf.hansson@linaro.org>)
+* do not use a matching list but a single string constant (suggested by Ulf Hansson <ulf.hansson@linaro.org>)
+* switched to "[PATCH v1]" (suggested by Ulf Hansson <ulf.hansson@linaro.org>)
 
-On 08/11/2021 19:43, Ivaylo Dimitrov wrote:
-> Sorry, mail was sent to the old Tomi's address.
-> 
-> On 8.11.21 г. 19:05 ч., Ivaylo Dimitrov wrote:
->> Hi,
->>
->> Currently omapdrm supports TILER rotation only, which excludes omap3 
->> and earlier SoCs. I have the hardware (N900/N950), time and will to 
->> implement VRFB rotation support in omapdrm driver, however, I'll 
->> appreciate some hints. Or, if there is already something ready, please 
->> point me to it so I can take it from where it is.
->>
->> Besides partially reverting 517a8a9564c0dea98e6d4e2c7f0fe4cbb9b8c9ba 
->> and copying VRFB code from omapfb, is there anything else I shall take 
->> in consideration? Or, VRFB driver should not be a part of omapdrm, but 
->> a standalone one?
+RFC V4 2021-11-05 10:05:51:
+* remove const from char *const * (Ulf Hansson <ulf.hansson@linaro.org>)
+* use for_each_child_of_node() to scan compatible children (Ulf Hansson <ulf.hansson@linaro.org>)
+(see: https://lore.kernel.org/lkml/CAPDyKFpr0kpRXoUACNNSwe8pL1S9wJPjnX+GFGS1PNezKCDYzQ@mail.gmail.com/)
 
-We already have DMM driver in the omapdrm module, and I think VRFB fits 
-along just fine. I don't think there ever has been any other users for 
-VRFB than DSS, and as it's such an old IP, I don't think there ever will.
+RFC V3 2021-11-03 14:00:13:
+* patches have been split into smaller ones a little further
+* propose a new macro for setup of device tree compatible quirks
+* directly include patches by jerome.pouiller@silabs.com
+  in this series
 
-I don't have any particular hints in mind.
+RFC V2 2021-11-01 10:24:26:
+* reworked to not misuse mmc_select_card() but add a call to
+  mmc_fixup_device() right after where host->ops->init_card
+  was called before to apply the wl1251 specific quirks.
+  Device tree matching is done by a new table passed to mmc_fixup_device().
+  suggested by: ulf.hansson@linaro.org
+  based on patches by: jerome.pouiller@silabs.com
 
-Do you have omap4/5 so you can test that DMM still works after your changes?
+RFC V1 2021-10-06 13:24:13:
 
-  Tomi
+
+H. Nikolaus Schaller (3):
+  mmc: core: provide macro and table to match the device tree to apply
+    quirks
+  mmc: core: transplant ti,wl1251 quirks from to be retired omap_hsmmc
+  mmc: host: omap_hsmmc: revert special init for wl1251
+
+Jérôme Pouiller (2):
+  mmc: core: rewrite mmc_fixup_device()
+  mmc: core: allow to match the device tree to apply quirks
+
+ drivers/mmc/core/card.h       | 37 ++++++++++++++++++++
+ drivers/mmc/core/quirks.h     | 64 +++++++++++++++++++++++++----------
+ drivers/mmc/core/sdio.c       |  1 +
+ drivers/mmc/host/omap_hsmmc.c | 36 --------------------
+ 4 files changed, 85 insertions(+), 53 deletions(-)
+
+-- 
+2.33.0
+
