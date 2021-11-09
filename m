@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E434644B890
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 23:42:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF4AC44B8B5
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 23:43:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344383AbhKIWoz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Nov 2021 17:44:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60122 "EHLO mail.kernel.org"
+        id S1344726AbhKIWpq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Nov 2021 17:45:46 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36038 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345744AbhKIWmP (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 9 Nov 2021 17:42:15 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D44C861221;
-        Tue,  9 Nov 2021 22:24:11 +0000 (UTC)
+        id S1346119AbhKIWno (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 9 Nov 2021 17:43:44 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 471E461A0D;
+        Tue,  9 Nov 2021 22:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636496653;
+        s=k20201202; t=1636496673;
         bh=MIv2PVE0hYJ/DibRIv6CQED5BS/nlyXUll2BwE/PMrk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rc+R+nslKvY1K2e7nqJFIGF/ASA3NN+3VF3AiuTg6RFEkaDJ+GdKFuPF96ezpgwSg
-         7b+55ZX5JSkeeLkBcDIp3TPxlsvPzlwAhebbPa5sAWT1I2cT9f7yDn7uzTz1W5m2E4
-         3ps/BFeeagM8NjelacEWkiisJfSM9+HUVRaIN5kUyKKtvhjOka0fbpjjdZs7xH8rjl
-         N5ZX/hyWkxLkvwr+AerVTXS+ARBENM2s2vNvBzU9wN9Vk8zfGVoRRDTLBBSIQfmiVd
-         jbZ84fCQanVsoedTpKhGuAq1XdXUrlSlqDuSnCnuJW8GvCpiE2/aiwq25FZGCArrP8
-         ef+hiyLOMLprQ==
+        b=csqnX0TCUpftpxtVKhySG/AIvfY3K72B9n72Bee1CQdc7cMgIiYYtb0l+FnKOLdau
+         O23ZpytSuLNXKqZYCNDak5fJPbImbaOSkT5IN3tFYXBKTdkibFqHj5nMcy2FHFfSfG
+         46w7/A9ogDYn2cenK3UxeqPqnUv+2f3JLiE7u5BTiGsw9L/SExiAmvhIJB4ZfWo1W2
+         LSA/bRUDS6KOR4OQfwjmxyszFx2taIpvqhU5yTfnrDv4vkRhYdWChj4QcXmFm5qZTT
+         7Newi/d4VCKrWwNEckAVMiNfLC4YajsM8CdPAfn2VMNMNGCUbSBha531apLVkNyEeK
+         uIBHnIp+nNE2A==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Roger Quadros <rogerq@kernel.org>,
@@ -32,12 +32,12 @@ Cc:     Roger Quadros <rogerq@kernel.org>,
         ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
         linux@arm.linux.org.uk, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 4.9 05/13] ARM: dts: omap: fix gpmc,mux-add-data type
-Date:   Tue,  9 Nov 2021 17:23:56 -0500
-Message-Id: <20211109222405.1236040-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 04/12] ARM: dts: omap: fix gpmc,mux-add-data type
+Date:   Tue,  9 Nov 2021 17:24:18 -0500
+Message-Id: <20211109222426.1236575-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211109222405.1236040-1-sashal@kernel.org>
-References: <20211109222405.1236040-1-sashal@kernel.org>
+In-Reply-To: <20211109222426.1236575-1-sashal@kernel.org>
+References: <20211109222426.1236575-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
