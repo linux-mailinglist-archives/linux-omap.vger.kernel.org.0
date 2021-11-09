@@ -2,33 +2,33 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7012A44AC23
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 11:59:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA1FD44AC1E
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 11:59:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245528AbhKILCL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S245526AbhKILCL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Tue, 9 Nov 2021 06:02:11 -0500
-Received: from mo4-p03-ob.smtp.rzone.de ([81.169.146.173]:14389 "EHLO
+Received: from mo4-p03-ob.smtp.rzone.de ([85.215.255.102]:35143 "EHLO
         mo4-p03-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245513AbhKILCJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Nov 2021 06:02:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1636455551;
+        with ESMTP id S245515AbhKILCK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Nov 2021 06:02:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1636455552;
     s=strato-dkim-0002; d=goldelico.com;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=3WxCiJju1Jj7ObO+gVh3oAZ8JmxUqs06i+MBBHM9dzs=;
-    b=SzJVs82v2AvhCuPHeI3lAUYlg3mEeqfFPw6HZgLOZSu4fPeQgbb1gFoR4NEulsNiJn
-    mJVUVa8dgwdXjj9TGN5BynXxL3Zeuqom4uW8seX5lCZaHAY4XBABpPlWTAgsQtAEO/es
-    lyST9oL9Z0u3/Yhf31+f+af33vykXGEg+yK7hzXrAB72/z1sflKYrRlIhFl/wWQHLFqy
-    wnVfEh4+rgJ+Z149ixlJXKA8POaeXG33cVwzTuQPPT9fwgsackpPHPl3lpKaeqq40QM2
-    dgEGgRkU5CfXaD5PGLr9Ao7HVfD/Y42Hc2RU/xCp7e9nEtrPWj14VSb4guMrvOJR5/qD
-    nX7A==
+    bh=Uqnxx80FjURagoMKSCCsXpe0WBFasnf3OQMszPGS01Q=;
+    b=eScPnUOxN/ee71CjMBaOc4g73ovcTF+cr88tTE9Jl5xGgKBYey+88hGOOqrGMC6JGO
+    hxQ0P0VAXBC/AIwEE7We+pppezMgVMAxp5Qcndtw62Ix9VWfhmVw9vIOs/2woiO8dWHK
+    7wYAUfa4oa9BmUPuUnPaYaNxVXdxdteHvGBMzUolJjLzyLuSZOoGBGDlrHEoNNj9/UbY
+    anjMYJbQ6MgoIAKhoSqLBBJSfDwsaXICETmreo/GUj+U4P/etrsL1tlpTGKRgOcBenuj
+    gcbMcZPcB3FLvlY117MHAUziCBSVNQ7of//RSv9nxqM+BNGUKxYjbEbFdSICcjTVj89g
+    lfvg==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1KHeBQyh+ITDDFoCL4="
 X-RZG-CLASS-ID: mo00
 Received: from iMac.fritz.box
     by smtp.strato.de (RZmta 47.34.1 DYNA|AUTH)
-    with ESMTPSA id 902c63xA9AxBOW5
+    with ESMTPSA id 902c63xA9AxBOW6
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
     Tue, 9 Nov 2021 11:59:11 +0100 (CET)
@@ -48,9 +48,9 @@ To:     Ulf Hansson <ulf.hansson@linaro.org>,
 Cc:     notasas@gmail.com, linux-mmc@vger.kernel.org,
         linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
         kernel@pyra-handheld.com, linux-omap@vger.kernel.org
-Subject: [PATCH 3/5] mmc: core: provide macro and table to match the device tree to apply quirks
-Date:   Tue,  9 Nov 2021 11:59:06 +0100
-Message-Id: <b13fd8b3eebc3c23b6816b254a518c224cbdcfd4.1636455548.git.hns@goldelico.com>
+Subject: [PATCH 4/5] mmc: core: transplant ti,wl1251 quirks from to be retired omap_hsmmc
+Date:   Tue,  9 Nov 2021 11:59:07 +0100
+Message-Id: <2d46adc580330788df1c7ef2a45be1e003387e0b.1636455548.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <cover.1636455548.git.hns@goldelico.com>
 References: <cover.1636455548.git.hns@goldelico.com>
@@ -60,77 +60,75 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This (initially empty) table allows to match quirks early based
-on .compatible of the child node of some mmc/sdio interface.
+The TiWi WL1251 WiFi chip needs special setup of the sdio
+interface before it can be probed.
 
-This allows to add quirks based on device tree instead of having
-card specific code in the host ops.
+So far, this is done in omap_hsmmc_init_card() in omap_hsmmc.c
+which makes it useable only if connected to omap devices
+which use the omap_hsmmc. The OpenPandora is the most promient
+example.
 
-A new macro SDIO_FIXUP_COMPATIBLE makes the definition readable.
+There are plans to switch to a newer sdhci-omap driver and
+retire omap_hsmmc. Hence this quirk must be reworked or moved
+somewhere else. Ideally to some location that is not dependent
+on the specific SoC mmc host driver.
 
-And we call mmc_fixup_device(sdio_card_init_methods) just after
-where host->ops->init_card() can be optionally called.
+This is achieved by the new mmc_fixup_device() option introduced
+by ("mmc: allow to match the device tree to apply quirks") to match
+through device tree compatible string.
+
+This quirk will be called early right after where host->ops->init_card()
+and thus omap_hsmmc_init_card() was previously called.
 
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- drivers/mmc/core/card.h   | 15 +++++++++++++++
- drivers/mmc/core/quirks.h |  4 ++++
- drivers/mmc/core/sdio.c   |  1 +
- 3 files changed, 20 insertions(+)
+ drivers/mmc/core/card.h   | 19 +++++++++++++++++++
+ drivers/mmc/core/quirks.h |  2 ++
+ 2 files changed, 21 insertions(+)
 
 diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-index 483e7f2f1039e..216faf5ad1021 100644
+index 216faf5ad1021..1695ce827d512 100644
 --- a/drivers/mmc/core/card.h
 +++ b/drivers/mmc/core/card.h
-@@ -122,6 +122,21 @@ struct mmc_fixup {
- 		   _vendor, _device,					\
- 		   _fixup, _data, EXT_CSD_REV_ANY)			\
+@@ -168,6 +168,25 @@ static inline void __maybe_unused add_limit_rate_quirk(struct mmc_card *card,
+ 	card->quirk_max_rate = data;
+ }
  
-+#define SDIO_FIXUP_COMPATIBLE(_compatible, _fixup, _data)		\
-+	{						\
-+		.name = CID_NAME_ANY,			\
-+		.manfid = CID_MANFID_ANY,		\
-+		.oemid = CID_OEMID_ANY,			\
-+		.rev_start = 0,				\
-+		.rev_end = -1ull,			\
-+		.cis_vendor = SDIO_ANY_ID,		\
-+		.cis_device = SDIO_ANY_ID,		\
-+		.vendor_fixup = (_fixup),		\
-+		.data = (_data),			\
-+		.ext_csd_rev = EXT_CSD_REV_ANY,		\
-+		.of_compatible = _compatible,	\
-+	}
++static inline void __maybe_unused wl1251_quirk(struct mmc_card *card,
++					       int data)
++{
++	/*
++	 * We have TI wl1251 attached to this mmc. Pass this
++	 * information to the SDIO core because it can't be
++	 * probed by normal methods.
++	 */
 +
- #define cid_rev(hwrev, fwrev, year, month)	\
- 	(((u64) hwrev) << 40 |			\
- 	 ((u64) fwrev) << 32 |			\
++	dev_info(card->host->parent, "found wl1251\n");
++	card->quirks |= MMC_QUIRK_NONSTD_SDIO;
++	card->cccr.wide_bus = 1;
++	card->cis.vendor = 0x104c;
++	card->cis.device = 0x9066;
++	card->cis.blksize = 512;
++	card->cis.max_dtr = 24000000;
++	card->ocr = 0x80;
++}
++
+ /*
+  * Quirk add/remove for MMC products.
+  */
 diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index 4a767f2fbaaaa..a23df65332cdf 100644
+index a23df65332cdf..20f5687272778 100644
 --- a/drivers/mmc/core/quirks.h
 +++ b/drivers/mmc/core/quirks.h
-@@ -146,6 +146,10 @@ static const struct mmc_fixup __maybe_unused sdio_fixup_methods[] = {
+@@ -147,6 +147,8 @@ static const struct mmc_fixup __maybe_unused sdio_fixup_methods[] = {
+ };
+ 
+ static const struct mmc_fixup __maybe_unused sdio_card_init_methods[] = {
++	SDIO_FIXUP_COMPATIBLE("ti,wl1251", wl1251_quirk, 0),
++
  	END_FIXUP
  };
  
-+static const struct mmc_fixup __maybe_unused sdio_card_init_methods[] = {
-+	END_FIXUP
-+};
-+
- static inline bool mmc_fixup_of_compatible_match(struct mmc_card *card,
- 						 const char *compatible)
- {
-diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index 68edf7a615be5..cf8ee66990508 100644
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -707,6 +707,7 @@ static int mmc_sdio_init_card(struct mmc_host *host, u32 ocr,
- 	 */
- 	if (host->ops->init_card)
- 		host->ops->init_card(host, card);
-+	mmc_fixup_device(card, sdio_card_init_methods);
- 
- 	/*
- 	 * If the host and card support UHS-I mode request the card
 -- 
 2.33.0
 
