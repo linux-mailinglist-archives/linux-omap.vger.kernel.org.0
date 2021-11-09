@@ -2,27 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6509A44B801
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 23:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6763E44B854
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 23:39:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345600AbhKIWjs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Nov 2021 17:39:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59706 "EHLO mail.kernel.org"
+        id S1344736AbhKIWmJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Nov 2021 17:42:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59904 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1345174AbhKIWhl (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 9 Nov 2021 17:37:41 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EEC1761B05;
-        Tue,  9 Nov 2021 22:22:51 +0000 (UTC)
+        id S1345279AbhKIWjw (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 9 Nov 2021 17:39:52 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 775AB61B28;
+        Tue,  9 Nov 2021 22:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636496573;
-        bh=yRU2nC94K7wNrUtgKiFvZusWJJCgd3iynH7iUVZAMW8=;
+        s=k20201202; t=1636496610;
+        bh=4FLFo4QtKGgZSNkxhZDuAi2pcLRTmHCDtelC4gPDTQ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qbqufija2uEMZPloDiWAS7EPt9+LFa70+cODi4YskRmG9/NgUWaSbnGAM4mYGuEhc
-         N9XZ6S0zzYQn+tCMpFlaLLWXVJfZc5B26aGIECF5e+g8ziDuL2Ye0tuRjZda9dTUf9
-         kRftam4TRCO5PPr3bzUXfCiAZg+phy+KyDwjyWam5M/lGcL7LZ4vx0fWsZQa7OEAOW
-         vwE4edZxJXE0yAUVL2YhjqnPteqFXKTDtZ02UkXjyBARdbwpdxSuLMIBfEQuwn546Q
-         M+ydTC31BB6K42/9+bepsHafPeORNqowZysD9PJlkWuzMlp9gSY4SB7FPWnygVGkA0
-         KpfuOeicVMeMg==
+        b=Hpim0EKx77TAlKhCz+JE3rK3vqcuF7Z9I3gqd4vQkVNy48f6y/30OWabdbmDZ4zS0
+         amk0VF67AN9JpIotmgMWR8z1k9Y1tEvy0Ial0CCoYlaJVzfWdxXsZkp0aF6OlzbJIr
+         8qnASOAL5dva2gKXWg3jR2Juu5fzVYvk48ATr31ikzFLAi2RD9T+Q/5AVsntWGPLE0
+         0dG7mJGAg4sugYvKlFYQggF0Lu1yiIL6ojRO/0WA+uO3piTI1p3W4m6QDfyqbkXPg8
+         LekPFP/Fw+0cyYTZN9y1R4dIviisIdp12EgMl4/05g7fH2+8wZMrXW6VINXOruMY6e
+         7cHG0tzi7lLjg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Roger Quadros <rogerq@kernel.org>,
@@ -32,12 +32,12 @@ Cc:     Roger Quadros <rogerq@kernel.org>,
         ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
         linux@arm.linux.org.uk, linux-omap@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 18/30] ARM: dts: omap: fix gpmc,mux-add-data type
-Date:   Tue,  9 Nov 2021 17:22:12 -0500
-Message-Id: <20211109222224.1235388-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 12/21] ARM: dts: omap: fix gpmc,mux-add-data type
+Date:   Tue,  9 Nov 2021 17:23:01 -0500
+Message-Id: <20211109222311.1235686-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211109222224.1235388-1-sashal@kernel.org>
-References: <20211109222224.1235388-1-sashal@kernel.org>
+In-Reply-To: <20211109222311.1235686-1-sashal@kernel.org>
+References: <20211109222311.1235686-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -78,10 +78,10 @@ index 7f6aefd134514..e7534fe9c53cf 100644
  		gpmc,cs-rd-off-ns = <42>;
  		gpmc,cs-wr-off-ns = <36>;
 diff --git a/arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi b/arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi
-index e5da3bc6f1050..218a10c0d8159 100644
+index 82e98ee3023ad..3dbeb7a6c569c 100644
 --- a/arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi
 +++ b/arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi
-@@ -22,7 +22,7 @@
+@@ -25,7 +25,7 @@
  		compatible = "smsc,lan9221","smsc,lan9115";
  		bank-width = <2>;
  
