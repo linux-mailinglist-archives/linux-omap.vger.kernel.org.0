@@ -2,67 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEFD944B218
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 18:43:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE0144B5E0
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Nov 2021 23:21:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241164AbhKIRqZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Nov 2021 12:46:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236368AbhKIRqZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Nov 2021 12:46:25 -0500
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD3DFC061764
-        for <linux-omap@vger.kernel.org>; Tue,  9 Nov 2021 09:43:38 -0800 (PST)
-Received: by mail-yb1-xb30.google.com with SMTP id 131so54914353ybc.7
-        for <linux-omap@vger.kernel.org>; Tue, 09 Nov 2021 09:43:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=imgEyPKZJXioT57QZIHImgBbmP2LjKkzFSDJsibRDbM=;
-        b=Tg9BKzM/6X0oGNe8WcRousSv0DI0terEHVse9GTku7tm+TavyT2Icpn7GxYxaW+mLs
-         WbDhKldSB/gxqZlEODtaHUtbRwNVfdKMR8vLoYaKO6NCfB/Nd2Anl4ZTjUEgpa+Werux
-         yh94YXSIDWBfcSmxqZuMKkzq5Z0QfQDbFkiZuTMc62SzCOy+YBDUFMZwrtYeNHjInzpj
-         PXPflPM0ygLwYemXZ5pEO/9QDSjHugszf2ozSSztoRic/g0QQTsPYvK176UsNte6OW2E
-         n3tp2YPhZwAgJW/3tWh91/6fLRBMQyIbcTJHd00c+kIKSz7aYPY0ezBKd3eio6+VreR/
-         HcZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=imgEyPKZJXioT57QZIHImgBbmP2LjKkzFSDJsibRDbM=;
-        b=fCDDzVRoqo0ell1FS88DccQxkC9bz8ZPPu8tjJUMeHg59aGsOwDxmc7xNrQhkjfBrA
-         o0SuNsb8ldJmpEsbtMT/4Uhohl1EdAe9OvIff7lR+PzDV0ujJLd+3ch435eIwuuwLQ3g
-         aGiFwxcZz9zGCTrsbJysiFOVVnDzwW4LyLgnp0khP1VKDAET55zQkWqA5+wywCeMcxZf
-         9kxmZr+5F0DwN7Kd7Ouf1vnUsUPN/sJOiO8fDhL9i1U9stUfXoFwYus+4ict70YfsAO2
-         NsN9Q6FK96AjQqwHacJMR//s0Qe/6s9Nj8h1HYlvERI2dltyIc3uAF9uqMeBDPccU1BW
-         xL8w==
-X-Gm-Message-State: AOAM533GPizt/l9sVvJI5yIdV55id+PsyVSmKh3tVSRXCFyhwYKDKTGq
-        Nc/VpM2qicjU0heZAw6HZiM7h4zYqaMlKVcEDHw=
-X-Google-Smtp-Source: ABdhPJwLuOjHJt8RlEF5UzslEYSdihoo9keOj1XpPlJa60ufP+diCGY5l9jJQEbNH/YD1T407wEq6niUqGhQzrI9aJI=
-X-Received: by 2002:a25:2fd1:: with SMTP id v200mr10412450ybv.78.1636479817401;
- Tue, 09 Nov 2021 09:43:37 -0800 (PST)
+        id S245674AbhKIWXv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Nov 2021 17:23:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40916 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1343940AbhKIWWB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 9 Nov 2021 17:22:01 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 27FC6613B3;
+        Tue,  9 Nov 2021 22:18:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1636496298;
+        bh=yRU2nC94K7wNrUtgKiFvZusWJJCgd3iynH7iUVZAMW8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=IfuzkhP4jwBc9fM4hSApgywrCY0Yctz8lxuhOqOpqSIaTaqGXaRdPcyhlT4QwD0FD
+         a6KXns0druWYYQ3WjixvGMb+Y9L5j4S44HJdC8K7Z1fCBa04hfyYyTmphBBYnPMN+w
+         XYnVPkaq9IfmzId37eW6TiQCLah89y5bOe+k/b8bABpHdwX9M8Vi/O9WQR7h2OIRXs
+         s/2UvTjHFDIneeMGKK1F6z89wO/eiQN+7vZiRS5tbnekWWKmo278Cha7rKTozn6Ptj
+         43yk0biOxpe51tGZNM6QvFuZnvvg2epiajOuibwLWLxFYihF4JbcyKIvkFcyWEPH8V
+         Fa0xaSzyBE8Jw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Roger Quadros <rogerq@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, bcousson@baylibre.com,
+        robh+dt@kernel.org, pawel.moll@arm.com, mark.rutland@arm.com,
+        ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
+        linux@arm.linux.org.uk, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 53/82] ARM: dts: omap: fix gpmc,mux-add-data type
+Date:   Tue,  9 Nov 2021 17:16:11 -0500
+Message-Id: <20211109221641.1233217-53-sashal@kernel.org>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211109221641.1233217-1-sashal@kernel.org>
+References: <20211109221641.1233217-1-sashal@kernel.org>
 MIME-Version: 1.0
-Sender: mrmoorewilliams180@gmail.com
-Received: by 2002:a25:2a0c:0:0:0:0:0 with HTTP; Tue, 9 Nov 2021 09:43:36 -0800 (PST)
-From:   Mrs bill Sma chantal <mrsbillsamchantal01@gmail.com>
-Date:   Tue, 9 Nov 2021 09:43:36 -0800
-X-Google-Sender-Auth: WnlxugxGzS3aMxdAlahfnyUjF-A
-Message-ID: <CAN7uGCWwtEm5BU0Rq9OhKng+MEn9JOuMvmDwxp2icOo3xS8EeQ@mail.gmail.com>
-Subject: GOOD NEWS
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-hello....
+From: Roger Quadros <rogerq@kernel.org>
 
-You have been compensated with the sum of 6.1 million dollars in this
-united nation the payment will be issue into atm visa  card and send
-to you from the santander bank we need your address and your
-Whatsapp number
+[ Upstream commit 51b9e22ffd3c4c56cbb7caae9750f70e55ffa603 ]
 
-Thanks my
+gpmc,mux-add-data is not boolean.
 
-Mrs bill Sma chantal
+Fixes the below errors flagged by dtbs_check.
+
+"ethernet@4,0:gpmc,mux-add-data: True is not of type 'array'"
+
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/boot/dts/omap-gpmc-smsc9221.dtsi         | 2 +-
+ arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/omap-gpmc-smsc9221.dtsi b/arch/arm/boot/dts/omap-gpmc-smsc9221.dtsi
+index 7f6aefd134514..e7534fe9c53cf 100644
+--- a/arch/arm/boot/dts/omap-gpmc-smsc9221.dtsi
++++ b/arch/arm/boot/dts/omap-gpmc-smsc9221.dtsi
+@@ -29,7 +29,7 @@
+ 		compatible = "smsc,lan9221","smsc,lan9115";
+ 		bank-width = <2>;
+ 
+-		gpmc,mux-add-data;
++		gpmc,mux-add-data = <0>;
+ 		gpmc,cs-on-ns = <0>;
+ 		gpmc,cs-rd-off-ns = <42>;
+ 		gpmc,cs-wr-off-ns = <36>;
+diff --git a/arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi b/arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi
+index e5da3bc6f1050..218a10c0d8159 100644
+--- a/arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi
++++ b/arch/arm/boot/dts/omap3-overo-tobiduo-common.dtsi
+@@ -22,7 +22,7 @@
+ 		compatible = "smsc,lan9221","smsc,lan9115";
+ 		bank-width = <2>;
+ 
+-		gpmc,mux-add-data;
++		gpmc,mux-add-data = <0>;
+ 		gpmc,cs-on-ns = <0>;
+ 		gpmc,cs-rd-off-ns = <42>;
+ 		gpmc,cs-wr-off-ns = <36>;
+-- 
+2.33.0
+
