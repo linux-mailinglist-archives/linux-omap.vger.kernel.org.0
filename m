@@ -2,198 +2,247 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58FA244BF02
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Nov 2021 11:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD34244BFC7
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Nov 2021 12:05:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231263AbhKJKs5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 10 Nov 2021 05:48:57 -0500
-Received: from mout.gmx.net ([212.227.15.18]:48747 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231171AbhKJKsx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 10 Nov 2021 05:48:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1636541050;
-        bh=h45DiQjGY0Dfm8CE9cn4qF+342ykeQ4Uk5C/gkooaIw=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-        b=kmUfRHIzmoViydSucYTxEQG1FNJ8CWRzX0F3WYOX1d2VD3eujCwT6kC0uAXqWmZLt
-         eMJ+M/8iTWkQKI5o+Bspt5/1og5A5qZCqV0IRSD+beJIRF0/33jVnOkUer8fEeU46q
-         NY7uVn1Yx5reMWfFjuhrJ2jc6HS5QmKSQvralaIo=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from longitude ([5.146.194.160]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYeQr-1nEmW91Bsx-00Vcng; Wed, 10
- Nov 2021 11:44:10 +0100
-Date:   Wed, 10 Nov 2021 11:43:55 +0100
-From:   Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>, Tony Lindgren <tony@atomide.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 27/45] mfd: ntxec: Use devm_register_power_handler()
-Message-ID: <YYuia9KFdi+ETT+I@latitude>
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-28-digetx@gmail.com>
- <YYbqlmOM95q7Hbjo@latitude>
- <be0c74c6-05a9-cad5-c285-6626d05f8860@gmail.com>
- <9a22c22d-94b1-f519-27a2-ae0b8bbf6e99@roeck-us.net>
- <658cf796-e3b1-f816-1e15-9e9e08b8ade0@gmail.com>
- <5a17fee3-4214-c2b9-abc1-ab9d6071591b@roeck-us.net>
- <c0b52994-51f5-806b-b07e-3e70d8217ffc@gmail.com>
- <YYkIeBSCFka9yrqC@latitude>
- <04103df3-1ef4-b560-a5cb-fa51737d28ad@gmail.com>
+        id S231131AbhKJLI2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 10 Nov 2021 06:08:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51544 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231478AbhKJLIW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 10 Nov 2021 06:08:22 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF13EC061764
+        for <linux-omap@vger.kernel.org>; Wed, 10 Nov 2021 03:05:34 -0800 (PST)
+Received: from [192.168.1.111] (91-158-153-130.elisa-laajakaista.fi [91.158.153.130])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id D545C3F6;
+        Wed, 10 Nov 2021 12:05:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1636542332;
+        bh=zd18TGfWfyu+VS9pcf23VDloVfRA6PU+HT4Op9uGLF0=;
+        h=To:Cc:References:From:Subject:Date:In-Reply-To:From;
+        b=qUXjDB767Gtk7sPUy74ZO/95iR8R3Cw60c9kfcw3VsZiLQtT/QzIa1GJNS0OQq9Nm
+         naQBlNPYnq6HlyFa2uwUfTjqXdCCx6cIxaCK7fpamc2Q4LuNvnx27JvOpn6Kc/Kerb
+         K+mrQyHykPh3roXs8DmqgEtFY7Yc//+BLIF/RLZk=
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        Carl Philipp Klemm <philipp@uvos.xyz>
+References: <92fd80eb-6591-fb45-8885-309c79c2d4c0@gmail.com>
+ <689ba705-c7fc-428c-3288-0c4adb3cc63f@gmail.com>
+ <40c102c3-207b-e8ae-f292-aeff6b1515ce@ideasonboard.com>
+ <7a25d8c7-7d39-f102-36ff-35cf594de9ce@gmail.com>
+ <1cc9bb77-6a73-829e-1478-6c828f10564d@ideasonboard.com>
+ <08107fc8-240d-90d7-524d-792fe325de80@gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: Re: omapdrm VRFB rotation
+Message-ID: <d392f738-900c-b8b6-bda6-7dbecbc0e581@ideasonboard.com>
+Date:   Wed, 10 Nov 2021 13:05:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="2Vc8voT8F+nWl+5t"
-Content-Disposition: inline
-In-Reply-To: <04103df3-1ef4-b560-a5cb-fa51737d28ad@gmail.com>
-X-Provags-ID: V03:K1:Jd3HsvpIvSkd1z9MZ8A+M8pmRMEjtJGTIH5/rKKzl1zv92guAhj
- 9dWDOhUd2UJZ9MerqFJu2sL0Vqy01eD3StlZDn4FJIminWyxKafYCrFSKtByuDa87GeS9OR
- qeoUp0E4UiW3sjAndGidVfCkZjgUQcURUuhYsgKl5H5XKG1g/BTOt0/CSBYYpcJ5Udag/gd
- 3wpmaE1MgAr/8Zxl8PaIg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9zHz1F4x458=:7Vp+bYm0dzpDVbvG6/Jg2u
- qI4IrtGWKiV/jMQFkG7dyJBbQvpEWwPJ76d/zJSyX1M1lKNm0KMizgdWYVXyIW/XoqBwKPv1D
- 53+DzXdLuVgOm0wkoIG2GeQ/nb/c84AhvSEAoevpHCl6VEXR6fOvbN82cXa7985eDdl8UKM+O
- 4h3Is/MA4WoDtRBZ1OqiFsYx8FLL1RBd0E7FqR319PSJ/bJwJAdPbaC1JvQk6kHH3/NBFt26i
- Q3DgkmG6muY/n8xv9b9V7t/ZWlppYtelF1o5MvHu2J00j2PbYSZX9eozu/Doat8V94rSWUKYb
- 8pSdnLPUWq70O5KtVp9tTAFvyw/H1FShEa0gt9n4kbbOSofwKtWPp3w6ndwZn0vqQiMqSpx5F
- pW+VpkbxvWsOFEWJJsTGH2eqGFH7HNRknQZl+87wW5wtL7KvGgF3QsbsIAWrKtzB9X/8WrLGE
- Q2bThe7j50/eherGVoafg+OX1FpxcH8SkWxWRwHOYPY6MAcfWvoCbb0Lrq1TuMCEIR21SYzz/
- nKcIQ2MIMbO6pJev1gnsMMspAiK9v/yDDf2YfwA5W5cMnog6ZH1EP7GjRP+V1L4WGIVmIYWjZ
- cHGTxKjNY18j227bPzrRrZw1mR3FZxmby4QNq9M2UubsB6oeBGdjh2aJPUPJBCfs/+3a18KA+
- xA6FQOnu4L1XhctfO1s8iX0YD6ideSBMb0KHUFr1N0LQgA0QEITEwNFtzGkPBB/gQ91Mtb/BO
- /mpnNG0EzJaO/w5CiG92jdML3JVtyvpMLyLhPWE0HyQ2mtmYYeRjCDxP5oDHzH4e/JAELuTV1
- U+KgtcC4SdatS1E3xSGfYaEWJnZD3guRw2ZDMVMPz1QzGYvBbk1uTXDDTpqBpiWB9POVDvyMU
- RZN7S/dzQnujlcpYxqJMiIBsYFZJI3saxm1eCZh79EkYKtr+yxECJAHRe1ooDxlvmf+PdmvFz
- teW5eV+FQ6Z8TxYl0+/Pxm1aaTMg360Uf5O3Yxxq+6pW+Cr9pdW+jbwf3FWQ4Opb03KxmWDUJ
- J/4DosOxyxjcCBCxt9avnDv6aic7H0cD/lL1HPIA+I+KJ0H2Wh10gm+vMHpsdMkzEHCpK13Dh
- +VtVl/6MSAYdCs=
+In-Reply-To: <08107fc8-240d-90d7-524d-792fe325de80@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 10/11/2021 11:50, Ivaylo Dimitrov wrote:
+> 
+> 
+> On 10.11.21 г. 11:01 ч., Tomi Valkeinen wrote:
+>> On 10/11/2021 10:29, Ivaylo Dimitrov wrote:
+>>> Hi,
+>>>
+>>> On 9.11.21 г. 11:22 ч., Tomi Valkeinen wrote:
+>>>> Hi,
+>>>>
+>>>> On 08/11/2021 19:43, Ivaylo Dimitrov wrote:
+>>>>> Sorry, mail was sent to the old Tomi's address.
+>>>>>
+>>>>> On 8.11.21 г. 19:05 ч., Ivaylo Dimitrov wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> Currently omapdrm supports TILER rotation only, which excludes 
+>>>>>> omap3 and earlier SoCs. I have the hardware (N900/N950), time and 
+>>>>>> will to implement VRFB rotation support in omapdrm driver, 
+>>>>>> however, I'll appreciate some hints. Or, if there is already 
+>>>>>> something ready, please point me to it so I can take it from where 
+>>>>>> it is.
+>>>>>>
+>>>>>> Besides partially reverting 
+>>>>>> 517a8a9564c0dea98e6d4e2c7f0fe4cbb9b8c9ba and copying VRFB code 
+>>>>>> from omapfb, is there anything else I shall take in consideration? 
+>>>>>> Or, VRFB driver should not be a part of omapdrm, but a standalone 
+>>>>>> one?
+>>>>
+>>>> We already have DMM driver in the omapdrm module, and I think VRFB 
+>>>> fits along just fine. I don't think there ever has been any other 
+>>>> users for VRFB than DSS, and as it's such an old IP, I don't think 
+>>>> there ever will.
+>>>>
+>>>
+>>> Ok, I guess if a need appears, it can always be moved out of omapdrm. 
+>>> The same applies to DMM/TILER code I guess.
+>>
+>> Yes.
+>>
+>>>> I don't have any particular hints in mind.
+>>>>
+>>>> Do you have omap4/5 so you can test that DMM still works after your 
+>>>> changes?
+>>>>
+>>
+>> So, first, a few clarifications about DMM/TILER. There are two 
+>> somewhat separate things. I'm not sure what are the exactly correct 
+>> words for these, but these are the terms I've used:
+>>
+>> - DMM (sometimes called wrongly TILER 1D), which acts as a basic 
+>> iommu. It doesn't do rotation, just mapping scattered pages to a 
+>> contiguous memory view.
+>>
+>> - TILER (or TILER 2D) which on top of the above, adds support for 
+>> rotation.
+>>
+> 
+> Thanks for the clarification, I'll try to stick to those.
+> 
+>>> Yes, I have motorola droid4 (4430/sgx540) to test with. Which brings 
+>>> another issue on the table - I was not able to find a way to allocate 
+>>> a TILER dma_buf. The only way seems to be by using omap_bo_xxx 
+>>> functions, which is a 'vendor' API. Do I miss something or omapdrm is 
+>>> lacks 
+>>
+>> Yes, omap_bo_xxx is omap specific API. But I don't understand your 
+>> question about omapdrm. omap_bo functions use omapdrm's API. The 
+>> userspace can skip libdrm and just call the ioctls directly if they so 
+>> want.
+>>
+> 
+> omap_bo functions/ioctls do, but if we try to use GBM dma_buf API 
+> (gbm_bo_create() and friends), we cannot allocate anything but CMA 
+> memory which omapdrm refuses to rotate, IIUC. Well at least I was not 
+> able to  make framebuffer rotate with GBM allocated BO.
 
---2Vc8voT8F+nWl+5t
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, I think that's true: libgbm doesn't support omap's TILER.
 
-On Mon, Nov 08, 2021 at 02:36:42PM +0300, Dmitry Osipenko wrote:
-> 08.11.2021 14:22, Jonathan Neusch=C3=A4fer =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
-> > On Sun, Nov 07, 2021 at 08:42:33PM +0300, Dmitry Osipenko wrote:
-> > [...]
-> >> EC drivers tend to use higher priority in general. Jonathan, could you
-> >> please confirm that NTXEC driver is a more preferable restart method
-> >> than the watchdog?
-> >=20
-> > Yes. The original firmware uses the NTXEC to restart, and it works well,
-> > so I do think it's preferable.
->=20
-> Thank you, then I'll update the NTXEC patch like this:
->=20
-> https://github.com/grate-driver/linux/commit/22da3d91f1734d9a0ed036220ad4=
-ea28465af988
+> The terms I use:
+> dma_buf - BO that is allocated using GBM API and seems to end up here: 
+> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/omapdrm/omap_gem.c#L1300. 
+> Seems it cannot go through the TILER.
 
-I tested again, but sys_off_handler_reboot called a bogus pointer
-(probably reboot_prepare_cb). I think it was left uninitialized in
-ntxec_probe, which uses devm_kmalloc. I guess we could switch it to
-devm_kzalloc:
+Isn't that a gbm_bo? Or something =). dma_buf means a specific thing, 
+which is not what you mean above.
 
-diff --git a/drivers/mfd/ntxec.c b/drivers/mfd/ntxec.c
-index 1f55dfce14308..30364beb4b1d0 100644
---- a/drivers/mfd/ntxec.c
-+++ b/drivers/mfd/ntxec.c
-@@ -144,7 +144,7 @@ static int ntxec_probe(struct i2c_client *client)
- 	const struct mfd_cell *subdevs;
- 	size_t n_subdevs;
-=20
--	ec =3D devm_kmalloc(&client->dev, sizeof(*ec), GFP_KERNEL);
-+	ec =3D devm_kzalloc(&client->dev, sizeof(*ec), GFP_KERNEL);
- 	if (!ec)
- 		return -ENOMEM;
-=20
+> omap_bo: BO that is allocated using omap_bo functions. IIUC this is 
+> basically a dumb buffer, but it can be allocated to be accesses through 
+> TILER by passing the appropriate flags to omap_bo_new().
 
+No, I don't think you can allocate a TILER buffer with omap_bo_new(), 
+you need to use omap_bo_new_tiled().
 
-With that done, it works flawlessly.
+>>> functionality? Also, is there any particular reason why TILER is not 
+>>> enabled by default for dma_buf BOs? Is it a limited resource (like, 
+>>> there is a finite number of BOs that can use TILER) or there is some 
+>>
+>> Yes, TILER is a limited resource, there's a maximum size for the 
+>> currently mapped memory. Going through TILER is also slower, and while 
+>> for 0 degree rotation the diff probably isn't much, it's still there.
+>>
+> 
+> Yeah, so we should go through TILER only when needed. The same as VRFB.
+> 
+>> Also TILER is not really quite supported, as I never got it working 
+>> with all the YUV modes, and also because there's a HW issue, which may 
+>> cause the device to lock up in some rare cases. And last, TILER 
+>> creates such a memory layout that it's not possible to share it safely 
+>> with dmabuf, as dmabuf lacks the features to properly describe the 
+>> layout.
+>>
+>> All that said, I think TILER should mostly work in upstream.
+>>
+> 
+> But, only from omap_bo BOs
 
+Yes.
 
-Thanks,
-Jonathan
+>> However, DMM is supported, and used by default. If you allocate a dumb 
+>> buffer, it uses DMM by default.
+>>
+> 
+> not for dma_buf BOs though. Not really an issue as on omap3 there is no 
+> DMM so we must use CMA either ways.
 
---2Vc8voT8F+nWl+5t
-Content-Type: application/pgp-signature; name="signature.asc"
+I think all allocations use DMM by default, if available. So gbm_bo 
+should use DMM underneath on omap4/5.
 
------BEGIN PGP SIGNATURE-----
+>>> other reason. Also, is it possible to 'migrate' non-TILER BO to a 
+>>> TILER one? The same issue will arise with VRFB (with its 12 contexts 
+>>> on omap3) as well.
+>>
+>> No, not possible to migrate.
+>>
+>>> So, in short:
+>>> - omap3: VRFB driver to be added to omapdrm.
+>>> - omap3/omap4/omap5: dma_buf lacks TILER/VRFB support
+>>
+>> Can you elaborate on what's missing?
+>>
+> 
+> GBM BOs (which I call dma_buf BOs) lack TILER support
+> 
+>>> Adding VRFB should be trivial, but I am more concerned about how to 
+>>> rotate dma_buf buffers. I imagine something like - on setting the 
+>>> plane "rotate" property, migrate physical address from 'normal' CMA 
+>>> memory to a TILER/VRFB one. Is that possible? What if we already have 
+>>> that bo mmap-ed? What if SGX MMU is already set up to access the 
+>>> memory? Or, is it possible to use TILER for read access, the same way 
+>>> VRFB can be set-up, so instead of writing through TILER/VRFB, DSS to 
+>>> be set-up to read FB memory through TILER/VRFB thus avoiding the need 
+>>> to migrate SG and/or page tables?
+>>
+>> I have to say I don't quite remember how VRFB works.
+> 
+> it has 12 'contexts' that can represent up to that number of 'images' in 
+> memory with rotated views
+> 
+>> But for TILER, we have to specifically allocate a TILER buffer. And 
+>> then everyone else uses TILER 0 degree view, but DSS can use 
+>> 0/90/180/270 view when showing it on the display.
+>>
+> 
+> oh, so in theory omapdrm should be able to show dma_buf BOs rotated? We 
+> only lack a way to allocate TILER GBM BO, right?
 
-iQIzBAABCgAdFiEEvHAHGBBjQPVy+qvDCDBEmo7zX9sFAmGLoj4ACgkQCDBEmo7z
-X9tbGw/9GW9TBNeJDqVwinH41nEM2TsnygEKpr7D3uPWXiWIIh7wxva0XnLkeDOr
-YZUOSFjLglCoW9n8UjIgpmScFQ9OY5em2dY9iSOPk55FYy/kkD1LKXl8Qbto3Xjr
-XRwv4EDIxlfO2uvjXgc07E2zGjiZdqaFwcIiMz1l8Rns6jC+AbzO0KFcoffXXKCg
-oCDi/e1hnVfze/XGWTTSXbofwfAKHJPVE11uF8lK2Uqv0THOAbvpIQdZiQPaNuVe
-bZuJ1p6wMxzjc6HiB8C6aJ0sy5Po98ZKWTAvvqFXBitgvOx0VCgKfJfqS+06qxiA
-gYnxdQAIJjcwrBJYfpry4rg9nBYvH7Jao/uKYoXSm73mtXdEqG4oIQIZ0eC7jS/d
-dRGjzR5mrhaA3G8mWMssxg6RX1EGpYBimy7XGpgml/bIXrEjGYZi3FaGZSnk9UTd
-oAutr3b9I43OZFYo/gRKjQmEl9C1Ru/ZsmKDin75X8hfCzrFOoAUCLQ7X/tbbPoF
-As6x8TUBJY8Zd9xBW2i/4sm+ZPAuMG5TMzzpRj/DEs2RN5UouXycBqzTFNleFYYf
-LuwPDYZYSqe75uXgu0K0weup8tULnVfBuvOJDR5yMF7tf90iNku7JIcIXjtKglWH
-EA0twe/kQWknjeUcmaR65U1v+cf8ekV6V8TVrEKb4cCEYf3HPBw=
-=z+7h
------END PGP SIGNATURE-----
+Yes.
 
---2Vc8voT8F+nWl+5t--
+> I ported xf86-video-omap to use GBM API instead of omap_bo API and it 
+> works fine in native orientation. However, when it tries to set 
+> 'rotated' property to framebuffer, it receives an error. Should I trace 
+> to see why it fails in the kernel or this is not supported?
+
+Well, I have no idea what's going on there, but I just tested with the 
+latest drm-misc-next, and at least a basic test with TILER works. I used 
+kms++ and rottest.py.
+
+Maybe you used omap_bo_new(), which does not give you a TILER buffer?
+
+>> But I think the case is the same for VRFB too: if you want to use 
+>> VRFB, all access has to go through VRFB, as the pixels are written to 
+>> memory in a special way.
+>>
+> 
+> Yes, I think you are right.
+> 
+> Sorry for asking so much questions but I want to have a clear picture on 
+> what is supposed to work and what is missing.
+
+No problem. I think it's very nice to get VRFB moved to omapdrm, as I 
+believe that's the only feature missing from omapdrm which is supported 
+in omapfb.
+
+  Tomi
