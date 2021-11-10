@@ -2,242 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5CB044BE10
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Nov 2021 10:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 585F644BE7F
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Nov 2021 11:22:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230419AbhKJJx1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 10 Nov 2021 04:53:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34324 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbhKJJx0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 10 Nov 2021 04:53:26 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81B9DC061764
-        for <linux-omap@vger.kernel.org>; Wed, 10 Nov 2021 01:50:39 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id m14so8409286edd.0
-        for <linux-omap@vger.kernel.org>; Wed, 10 Nov 2021 01:50:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=VZaZz3Aeqpu2chpMjvULcYMLsoVJlCoCfdik60QK9po=;
-        b=FqytibrECGTL7r6lxdjuxJB5R53t648Ck2lPZqblVnfkim4W5vigYElTPDJwB1g/JU
-         vmyKcQk9zXWRA11OWswcxa5TKq1cNeg/cajEWS7u4KixofFgh6xdJLGiSBMQCEjmkLPl
-         5mI3omwmdzVsuFeOWP07KaNzVKm2A/MFWAb6fYJfcNQ7iJB/Edz5b5CAuz+n4jZNmfgF
-         wsU+v/nCYhfPL3OJpq0akseKfatlGYGvDOg1DXZxcwBv3/zAWDOOxJe9yIoE+9U/CNsY
-         8xSCQFLz/C87pgRXKlC/DiwzwcWcUSZ6cEV7Xcc3GN3+pC2fraBEsu7JXmveULLGL0kl
-         JsnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=VZaZz3Aeqpu2chpMjvULcYMLsoVJlCoCfdik60QK9po=;
-        b=HwcmpBn9HYLC8u9HP2OI9Bq1ZjUjBn9qAM3e6PSZ3sSX/hND1Wxaf74NTAohX/Hekp
-         3GEdVu8o8UzGAPl/YGCviiCaVwaB11i/CQxI3broV6vniOeWLVnebH+T7ZIw+AIbAAlz
-         7USbWp5Uk73GlU4YoTXLcVzuxmZcOyOZEyuZYlGPNxFFN7pTkqit+WIZh26O7Si2i0zg
-         QssjJACQOOtDUD3LHRhBi7oH1MGCHfjx/nMNufqWRLF4p+8SRQ+SbBmZNp8N+07PLlZ6
-         KKiBTokXKY7DapOPxp53gMO6lFsezF8FnVn5me/cafVbfL361sUcWWBtz44IHPNillub
-         V3TQ==
-X-Gm-Message-State: AOAM530L4fcIB6fAOcFATpi0lvuBFq3MHZsxOUkyAU87eZTweLg25iDe
-        ek3tuVjG6JZecVQW9ZZANiBIDWMWxtw=
-X-Google-Smtp-Source: ABdhPJyIdfg+nir9eevqGmfFqNLfL+SMA0POgqW4wH8jte2NwmU/l4gI93FViCStaENJyFjR4+/KIw==
-X-Received: by 2002:aa7:d8d5:: with SMTP id k21mr19724344eds.209.1636537837897;
-        Wed, 10 Nov 2021 01:50:37 -0800 (PST)
-Received: from [192.168.1.10] ([46.249.74.23])
-        by smtp.googlemail.com with ESMTPSA id mc3sm7804793ejb.24.2021.11.10.01.50.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 10 Nov 2021 01:50:37 -0800 (PST)
-Subject: Re: omapdrm VRFB rotation
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        Carl Philipp Klemm <philipp@uvos.xyz>
-References: <92fd80eb-6591-fb45-8885-309c79c2d4c0@gmail.com>
- <689ba705-c7fc-428c-3288-0c4adb3cc63f@gmail.com>
- <40c102c3-207b-e8ae-f292-aeff6b1515ce@ideasonboard.com>
- <7a25d8c7-7d39-f102-36ff-35cf594de9ce@gmail.com>
- <1cc9bb77-6a73-829e-1478-6c828f10564d@ideasonboard.com>
-From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Message-ID: <08107fc8-240d-90d7-524d-792fe325de80@gmail.com>
-Date:   Wed, 10 Nov 2021 11:50:21 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Firefox/60.0 Thunderbird/60.6.1
+        id S230117AbhKJKZN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 10 Nov 2021 05:25:13 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:49418 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231126AbhKJKZN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 10 Nov 2021 05:25:13 -0500
+Received: from [192.168.1.111] (91-158-153-130.elisa-laajakaista.fi [91.158.153.130])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 92509D8B;
+        Wed, 10 Nov 2021 11:22:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1636539742;
+        bh=Kb2mqQcYSIR30c1c/QCzqZNgi4OO/yDrYs6SnhNUIuQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=aPLuUzA685pqCn694mGfTKHYBiuVhIufJVoMO2GulmQVv36CE3Ox+BK4MACzJ+hDp
+         8oKRyKHUh5zgtOZOi+SmyS85U7loN3CDuB7b85TZSQgdx7YQjWP0lX8HRyKEE8Npcg
+         2Z+4dZxUZ3O9UinQJ7cGN0hnmawutZyeFLSpw6Y0=
+Subject: Re: [PATCH] drm/omap: increase DSS5 max tv pclk to 192MHz
+To:     Neil Armstrong <narmstrong@baylibre.com>
+Cc:     linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, khilman@baylibre.com,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>
+References: <20211012133939.2145462-1-narmstrong@baylibre.com>
+ <b0683f52-abde-cb11-c88c-dd05645945a0@baylibre.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Message-ID: <f6bc98f1-2a1e-1fd9-6efe-37193b835b0d@ideasonboard.com>
+Date:   Wed, 10 Nov 2021 12:22:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <1cc9bb77-6a73-829e-1478-6c828f10564d@ideasonboard.com>
+In-Reply-To: <b0683f52-abde-cb11-c88c-dd05645945a0@baylibre.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 10.11.21 г. 11:01 ч., Tomi Valkeinen wrote:
-> On 10/11/2021 10:29, Ivaylo Dimitrov wrote:
->> Hi,
+On 09/11/2021 15:33, Neil Armstrong wrote:
+> Hi Tomi,
+> 
+> On 12/10/2021 15:39, Neil Armstrong wrote:
+>> From: Tomi Valkeinen <tomi.valkeinen@ti.com>
 >>
->> On 9.11.21 г. 11:22 ч., Tomi Valkeinen wrote:
->>> Hi,
->>>
->>> On 08/11/2021 19:43, Ivaylo Dimitrov wrote:
->>>> Sorry, mail was sent to the old Tomi's address.
->>>>
->>>> On 8.11.21 г. 19:05 ч., Ivaylo Dimitrov wrote:
->>>>> Hi,
->>>>>
->>>>> Currently omapdrm supports TILER rotation only, which excludes 
->>>>> omap3 and earlier SoCs. I have the hardware (N900/N950), time and 
->>>>> will to implement VRFB rotation support in omapdrm driver, however, 
->>>>> I'll appreciate some hints. Or, if there is already something 
->>>>> ready, please point me to it so I can take it from where it is.
->>>>>
->>>>> Besides partially reverting 
->>>>> 517a8a9564c0dea98e6d4e2c7f0fe4cbb9b8c9ba and copying VRFB code from 
->>>>> omapfb, is there anything else I shall take in consideration? Or, 
->>>>> VRFB driver should not be a part of omapdrm, but a standalone one?
->>>
->>> We already have DMM driver in the omapdrm module, and I think VRFB 
->>> fits along just fine. I don't think there ever has been any other 
->>> users for VRFB than DSS, and as it's such an old IP, I don't think 
->>> there ever will.
->>>
+>> DSS5's maximum tv pclk rate (i.e. HDMI) is set to 186MHz, which comes
+>> from the TRM (DPLL_HDMI_CLK1 frequency must be lower than 186 MHz). To
+>> support DRA76's wide screen HDMI feature, we need to increase this
+>> maximum rate.
 >>
->> Ok, I guess if a need appears, it can always be moved out of omapdrm. 
->> The same applies to DMM/TILER code I guess.
+>> Testing shows that the PLL seems to work fine even with ~240MHz clocks,
+>> and even the HDMI output at that clock is stable enough for monitors to
+>> show a picture. This holds true for all DRA7 and AM5 SoCs (and probably
+>> also for OMAP5).
+>>
+>> However, the highest we can go without big refactoring to the clocking
+>> code is 192MHz, as that is the DSS func clock we get from the PRCM. So,
+>> increase the max HDMI pixel clock to 192MHz for now, to allow some more
+>> 2k+ modes to work.
+>>
+>> This patch never had a clear confirmation from HW people, but this
+>> change stayed on production trees for multiple years without any report
+>> on an eventual breakage.
+>>
+>> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
+>> Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+>> ---
+>>   drivers/gpu/drm/omapdrm/dss/dispc.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> Tomi,
+>>
+>> I slighly changed the commit message to point the fact this patch has been
+>> used in production fort years without any sign of breakage.
+>>
+>> Neil
+>>
+>> diff --git a/drivers/gpu/drm/omapdrm/dss/dispc.c b/drivers/gpu/drm/omapdrm/dss/dispc.c
+>> index 5619420cc2cc..3c4a4991e45a 100644
+>> --- a/drivers/gpu/drm/omapdrm/dss/dispc.c
+>> +++ b/drivers/gpu/drm/omapdrm/dss/dispc.c
+>> @@ -4458,7 +4458,7 @@ static const struct dispc_features omap54xx_dispc_feats = {
+>>   	.mgr_width_max		=	4096,
+>>   	.mgr_height_max		=	4096,
+>>   	.max_lcd_pclk		=	170000000,
+>> -	.max_tv_pclk		=	186000000,
+>> +	.max_tv_pclk		=	192000000,
+>>   	.max_downscale		=	4,
+>>   	.max_line_width		=	2048,
+>>   	.min_pcd		=	1,
+>>
+>> base-commit: e4e737bb5c170df6135a127739a9e6148ee3da82
+>>
 > 
-> Yes.
-> 
->>> I don't have any particular hints in mind.
->>>
->>> Do you have omap4/5 so you can test that DMM still works after your 
->>> changes?
->>>
-> 
-> So, first, a few clarifications about DMM/TILER. There are two somewhat 
-> separate things. I'm not sure what are the exactly correct words for 
-> these, but these are the terms I've used:
-> 
-> - DMM (sometimes called wrongly TILER 1D), which acts as a basic iommu. 
-> It doesn't do rotation, just mapping scattered pages to a contiguous 
-> memory view.
-> 
-> - TILER (or TILER 2D) which on top of the above, adds support for rotation.
-> 
+> Gentle ping,
 
-Thanks for the clarification, I'll try to stick to those.
+Thanks, I'll apply this to drm-misc-next.
 
->> Yes, I have motorola droid4 (4430/sgx540) to test with. Which brings 
->> another issue on the table - I was not able to find a way to allocate 
->> a TILER dma_buf. The only way seems to be by using omap_bo_xxx 
->> functions, which is a 'vendor' API. Do I miss something or omapdrm is 
->> lacks 
-> 
-> Yes, omap_bo_xxx is omap specific API. But I don't understand your 
-> question about omapdrm. omap_bo functions use omapdrm's API. The 
-> userspace can skip libdrm and just call the ioctls directly if they so 
-> want.
-> 
+  Tomi
 
-omap_bo functions/ioctls do, but if we try to use GBM dma_buf API 
-(gbm_bo_create() and friends), we cannot allocate anything but CMA 
-memory which omapdrm refuses to rotate, IIUC. Well at least I was not 
-able to  make framebuffer rotate with GBM allocated BO.
-
-The terms I use:
-dma_buf - BO that is allocated using GBM API and seems to end up here: 
-https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/omapdrm/omap_gem.c#L1300. 
-Seems it cannot go through the TILER.
-
-omap_bo: BO that is allocated using omap_bo functions. IIUC this is 
-basically a dumb buffer, but it can be allocated to be accesses through 
-TILER by passing the appropriate flags to omap_bo_new().
-
->> functionality? Also, is there any particular reason why TILER is not 
->> enabled by default for dma_buf BOs? Is it a limited resource (like, 
->> there is a finite number of BOs that can use TILER) or there is some 
-> 
-> Yes, TILER is a limited resource, there's a maximum size for the 
-> currently mapped memory. Going through TILER is also slower, and while 
-> for 0 degree rotation the diff probably isn't much, it's still there.
-> 
-
-Yeah, so we should go through TILER only when needed. The same as VRFB.
-
-> Also TILER is not really quite supported, as I never got it working with 
-> all the YUV modes, and also because there's a HW issue, which may cause 
-> the device to lock up in some rare cases. And last, TILER creates such a 
-> memory layout that it's not possible to share it safely with dmabuf, as 
-> dmabuf lacks the features to properly describe the layout.
-> 
-> All that said, I think TILER should mostly work in upstream.
-> 
-
-But, only from omap_bo BOs
-
-> However, DMM is supported, and used by default. If you allocate a dumb 
-> buffer, it uses DMM by default.
-> 
-
-not for dma_buf BOs though. Not really an issue as on omap3 there is no 
-DMM so we must use CMA either ways.
-
->> other reason. Also, is it possible to 'migrate' non-TILER BO to a 
->> TILER one? The same issue will arise with VRFB (with its 12 contexts 
->> on omap3) as well.
-> 
-> No, not possible to migrate.
-> 
->> So, in short:
->> - omap3: VRFB driver to be added to omapdrm.
->> - omap3/omap4/omap5: dma_buf lacks TILER/VRFB support
-> 
-> Can you elaborate on what's missing?
-> 
-
-GBM BOs (which I call dma_buf BOs) lack TILER support
-
->> Adding VRFB should be trivial, but I am more concerned about how to 
->> rotate dma_buf buffers. I imagine something like - on setting the 
->> plane "rotate" property, migrate physical address from 'normal' CMA 
->> memory to a TILER/VRFB one. Is that possible? What if we already have 
->> that bo mmap-ed? What if SGX MMU is already set up to access the 
->> memory? Or, is it possible to use TILER for read access, the same way 
->> VRFB can be set-up, so instead of writing through TILER/VRFB, DSS to 
->> be set-up to read FB memory through TILER/VRFB thus avoiding the need 
->> to migrate SG and/or page tables?
-> 
-> I have to say I don't quite remember how VRFB works.
-
-it has 12 'contexts' that can represent up to that number of 'images' in 
-memory with rotated views
-
-> But for TILER, we 
-> have to specifically allocate a TILER buffer. And then everyone else 
-> uses TILER 0 degree view, but DSS can use 0/90/180/270 view when showing 
-> it on the display.
-> 
-
-oh, so in theory omapdrm should be able to show dma_buf BOs rotated? We 
-only lack a way to allocate TILER GBM BO, right?
-
-I ported xf86-video-omap to use GBM API instead of omap_bo API and it 
-works fine in native orientation. However, when it tries to set 
-'rotated' property to framebuffer, it receives an error. Should I trace 
-to see why it fails in the kernel or this is not supported?
-
-> But I think the case is the same for VRFB too: if you want to use VRFB, 
-> all access has to go through VRFB, as the pixels are written to memory 
-> in a special way.
-> 
-
-Yes, I think you are right.
-
-Sorry for asking so much questions but I want to have a clear picture on 
-what is supposed to work and what is missing.
-
-Thanks,
-Ivo
