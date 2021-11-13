@@ -2,49 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F41E44F0DD
-	for <lists+linux-omap@lfdr.de>; Sat, 13 Nov 2021 03:45:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CF7C44F133
+	for <lists+linux-omap@lfdr.de>; Sat, 13 Nov 2021 05:26:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235370AbhKMCsd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 12 Nov 2021 21:48:33 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:53110 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232571AbhKMCsd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Nov 2021 21:48:33 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1AD2hn8W013163;
-        Fri, 12 Nov 2021 20:43:49 -0600
+        id S235676AbhKME3l (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Nov 2021 23:29:41 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:40664 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235653AbhKME3l (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Nov 2021 23:29:41 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1AD4QgNZ005480;
+        Fri, 12 Nov 2021 22:26:42 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1636771429;
-        bh=mhr8E9T4/nfsYQVYgx7OTXivgSgiT+8i+vo9IYLf+YY=;
+        s=ti-com-17Q1; t=1636777602;
+        bh=AzxwH1X9ows2Erct7pYAUSmPXFfFQD/w7RCW6wE/p34=;
         h=From:To:CC:Subject:Date;
-        b=uaDWQc/kDocfHQnEV95+Choi3i8YXEXg88nOzLxrqyLZ4VU2JHUIeR0M41c+BMc0y
-         1zEDU2c4+Zu0l+RzR/giE9YiRKbyFzBxut2W+m8EsVOWpu7xCkGfXcPXzFnfg+oDAf
-         92U7+Mr016wctSzSZl3V0zljX65FxR98h+tsvFUk=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1AD2hn79109998
+        b=Lh1WQRdW6m2geHcICcadRnf2oFNdjUIDwVREtyz3nFJbw0QTNy38RzO0sE8YmHBlR
+         ikPg5PxuNjrr8q0AJlw2yT0njjsRIfTMkLGrQDPJbzdI+yFDzITRuA6FE0E8razN8/
+         +BOLrRJCjTfgZzudsIYHQ2Lvask/QDRFMYdkm8eA=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1AD4QgG0061509
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 12 Nov 2021 20:43:49 -0600
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 12 Nov 2021 22:26:42 -0600
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Fri, 12
- Nov 2021 20:43:49 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2021 22:26:42 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Fri, 12 Nov 2021 20:43:49 -0600
+ Frontend Transport; Fri, 12 Nov 2021 22:26:42 -0600
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1AD2hnY0110243;
-        Fri, 12 Nov 2021 20:43:49 -0600
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1AD4QgFL034758;
+        Fri, 12 Nov 2021 22:26:42 -0600
 From:   Nishanth Menon <nm@ti.com>
 To:     Rob Herring <robh+dt@kernel.org>, Tero Kristo <kristo@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>
 CC:     <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>, Nishanth Menon <nm@ti.com>,
         <linux-omap@vger.kernel.org>, Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH] arm64: dts: k3-j7200: Correct the d-cache-sets info
-Date:   Fri, 12 Nov 2021 20:43:48 -0600
-Message-ID: <20211113024348.29257-1-nm@ti.com>
+Subject: [PATCH V2] arm64: dts: ti: k3-j7200: Correct the d-cache-sets info
+Date:   Fri, 12 Nov 2021 22:26:40 -0600
+Message-ID: <20211113042640.30955-1-nm@ti.com>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -54,7 +54,7 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-A72 Cluster (chapter 1.3,1 [1]) has 48KB Icache, 32KB Dcache and 1MB L2 Cache
+A72 Cluster (chapter 1.3.1 [1]) has 48KB Icache, 32KB Dcache and 1MB L2 Cache
  - ICache is 3-way set-associative
  - Dcache is 2-way set-associative
  - Line size are 64bytes
@@ -70,6 +70,13 @@ Fixes: d361ed88455f ("arm64: dts: ti: Add support for J7200 SoC")
 Reported-by: Peng Fan <peng.fan@nxp.com>
 Signed-off-by: Nishanth Menon <nm@ti.com>
 ---
+
+Changes since V1:
+* subject line fixup to stay in sync with other patches
+* type in chapter (',' replaced with '.')
+
+V1: https://lore.kernel.org/linux-arm-kernel/20211113024348.29257-1-nm@ti.com/T/#u
+
  arch/arm64/boot/dts/ti/k3-j7200.dtsi | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
