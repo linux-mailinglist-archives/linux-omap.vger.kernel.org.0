@@ -2,24 +2,24 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBA22450DE6
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Nov 2021 19:06:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9515450B83
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Nov 2021 18:22:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239671AbhKOSJE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 Nov 2021 13:09:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46092 "EHLO mail.kernel.org"
+        id S237499AbhKORZR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Nov 2021 12:25:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50868 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239850AbhKOSEy (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 15 Nov 2021 13:04:54 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8ED3763274;
-        Mon, 15 Nov 2021 17:39:37 +0000 (UTC)
+        id S237777AbhKORYD (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 15 Nov 2021 12:24:03 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D1F3963286;
+        Mon, 15 Nov 2021 17:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1636997978;
-        bh=QNkBOXerpcpHEfQOVpQVhKG2iNCf4nEvew5Iw5lWYuM=;
+        s=korg; t=1636996705;
+        bh=DbtiOiCLEsnKuUdPZWFWTy0CB/G5GaTeDk2npq8/nNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DqW3SrvaObnHhKtBGMgod3klXj2joQhOA1V2AjJZZ2qur/Y37zBmD/s8WJG8W2YUm
-         5QSW3jjDAqEH/B8IGCwp+Qx0eWVQ3OV4KsDN75q9QORfxSx/QJ/Tq4MMkN4zAWUk1e
-         +ykxzbWf1L9t8bAgdikJeFcPcEVHkQS8Q4JUpoJU=
+        b=hRpmUDQcXdUhjRC7TbJrCnhRpbEOw7TUc6H/bANKZNNs82ZxYmCMGVKwqcGjvacv8
+         nFyDdzmXqH+yV0Ow0UkrR8dje3J8EvDZtvYSyNJvyf0SaQ7uqW0ezuROhFcgd82A/S
+         omi9u1Z89C45ufY8DpwVdZagA4vu4bZXSJdDsoIg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -32,12 +32,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Grygorii Strashko <grygorii.strashko@ti.com>,
         linux-omap@vger.kernel.org, Kees Cook <keescook@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 343/575] clocksource/drivers/timer-ti-dm: Select TIMER_OF
-Date:   Mon, 15 Nov 2021 18:01:08 +0100
-Message-Id: <20211115165355.663142735@linuxfoundation.org>
+Subject: [PATCH 5.4 236/355] clocksource/drivers/timer-ti-dm: Select TIMER_OF
+Date:   Mon, 15 Nov 2021 18:02:40 +0100
+Message-Id: <20211115165321.385021610@linuxfoundation.org>
 X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211115165343.579890274@linuxfoundation.org>
-References: <20211115165343.579890274@linuxfoundation.org>
+In-Reply-To: <20211115165313.549179499@linuxfoundation.org>
+References: <20211115165313.549179499@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -76,7 +76,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 39f4d88662002..a0c6e88bebe08 100644
+index 3bb5625504e2f..9bfe4c5af87e3 100644
 --- a/drivers/clocksource/Kconfig
 +++ b/drivers/clocksource/Kconfig
 @@ -24,6 +24,7 @@ config I8253_LOCK
