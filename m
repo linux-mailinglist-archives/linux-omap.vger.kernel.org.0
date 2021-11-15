@@ -2,242 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2412451576
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Nov 2021 21:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 471A6451577
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Nov 2021 21:36:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238043AbhKOUjK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 Nov 2021 15:39:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37996 "EHLO
+        id S242334AbhKOUjM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Nov 2021 15:39:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345342AbhKOT2G (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Nov 2021 14:28:06 -0500
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0A9BC055369;
-        Mon, 15 Nov 2021 10:50:19 -0800 (PST)
-Received: by mail-ed1-x535.google.com with SMTP id z10so49763713edc.11;
-        Mon, 15 Nov 2021 10:50:19 -0800 (PST)
+        with ESMTP id S1350454AbhKOUXx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Nov 2021 15:23:53 -0500
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED197C061570
+        for <linux-omap@vger.kernel.org>; Mon, 15 Nov 2021 12:18:23 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id d10so50529586ybe.3
+        for <linux-omap@vger.kernel.org>; Mon, 15 Nov 2021 12:18:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Gn7jXM01WcfaWXjLEWMjsDlPibi8krKRinvyDSpZnFA=;
-        b=K9fwfdf3q/Fq0L8Y1OUKCiuYmyYH8FcsXstw9vDNpYO+hB15Pv0KndCy7hi4KpfBj6
-         pGjH54IRIVxlrxlO64ZtSTS0qgVIOb2cREgAuVqUjvDtX/1GAXk9OhoGJBt6sRU6XSXW
-         ih3o8+N5oravrHbfgO/fUNpoTPorkcSonVJztLWo1YDb9ki3VNkLiOwTvXRebxHIl/nG
-         TLEMLyUPdMbNPxuFL8EppdhXBUSkFQeauFhgKBgRgSwyABChk6/c4u6Onf9QxEklkM+E
-         VJoOJr0ysuVwhotJnFgeOjsEdP/RwPz9XvbZrPMCFw5izJrYKGvYkES7uTc9eh961J4l
-         2zUg==
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ti2qS38N54C0keJ4viYpkfZvuilsGcLNEF7JfCXeTTQ=;
+        b=dh/Oa9Ne/UX3lXjDB4COE5fcmk8sukuVS9CcQeo4HvaaL9inYkLrRgESiTiiJjH8Ha
+         VD+voEPVlu4lT/PFKwINwdG4d11smF+KO/ppWh9QkjAYWf9nI2V51AWJZTZVp4mOvqr/
+         OqeBQGqGBLjLgEja7DyQ3k/np69fx0UsIFBY0muAvUQRNUVa5/KFzlzavNtVE2HhmDsK
+         bmh6KbqsAKlU3IKOQjpgPqjw0dOCkZxcS8P+7EtoLtYNqQhqa9IbpkxB9gRHMNpqSxBi
+         l/xRTx3ssiex9d5VCAExW9LSc6GJtcglSAdxi43WZcr1AEmZAEonPwY3qqbOY1Qs3OD3
+         dPHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=Gn7jXM01WcfaWXjLEWMjsDlPibi8krKRinvyDSpZnFA=;
-        b=Rk4rPZA9NzFYwcCBu4fNYj7u0WFBM/otE+00SuuDGHe1DfS7nb8NWlL7uDLsEKFS0Z
-         Wi0g3m2wpMsicc2q/2A1SbzXl3RpHi1D+7N8QOA4YUauLzW7mDxty7kXtugN/pqQ41wL
-         K9axOvUF+QZgvKD4sCXUPPRAgMJzy2yXF5bBesQKqAW3yAIqVRnE0bc02J2WI6yhal9D
-         t7WiSD/F3UPe+rdAOuM7i1AfcK3HXVZavnSDE8CAVwUZm8IsrkpB+GRJaEekvGUS+QXY
-         cb6FxlcyI3VRSMwHASHgEaIWM3p6+MCj0cX83nGAxTkKt4Bw7xH8/trtNpe/bO9QiLb/
-         6Rzg==
-X-Gm-Message-State: AOAM530Afq4Cm83sMqaY6b4/qmNx7S1wXumsAikMLOvf5qAe2IBDdV/3
-        8AaO6HAvaAtdxpMVG/y4ryM=
-X-Google-Smtp-Source: ABdhPJyhKaz9mQ1BRMe4H1E6wkaXWCjD7Oa5jrIA3y0X3VWGJZF6rD0vhZJ66lc45u4MQOTUPpZPiQ==
-X-Received: by 2002:a05:6402:5216:: with SMTP id s22mr1240652edd.291.1637002218552;
-        Mon, 15 Nov 2021 10:50:18 -0800 (PST)
-Received: from localhost.localdomain ([46.249.74.23])
-        by smtp.gmail.com with ESMTPSA id og14sm6866287ejc.107.2021.11.15.10.50.17
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 15 Nov 2021 10:50:18 -0800 (PST)
-From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-To:     tomba@kernel.org
-Cc:     matthijsvanduin@gmail.com, airlied@linux.ie, daniel@ffwll.ch,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        merlijn@wizzup.org, philipp@uvos.xyz,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Subject: [PATCH v3] drm: omapdrm: Export correct scatterlist for TILER backed BOs
-Date:   Mon, 15 Nov 2021 20:45:56 +0200
-Message-Id: <1637001956-4928-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <36598203-eced-131d-85ef-f4940872e751@ideasonboard.com>
-References: <36598203-eced-131d-85ef-f4940872e751@ideasonboard.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ti2qS38N54C0keJ4viYpkfZvuilsGcLNEF7JfCXeTTQ=;
+        b=bWhtbpcssm4uL9XWaBXAjdrKdv8W+ungfolTN+nuYBYcaHXVlVHkUi+RFY8hl0MvCR
+         Q28pHHiaoCUpUbjISYSiLgT1n3jA7wj59Lox+f3kSKHeISqb6KKkoGTt92cAQKlMoPcA
+         mGuNZemDZOsSZ4SJGqLxTahdOC2McBlK+VWNEPAIq7kOmujPOrsJBUO7XdQn7xkidCu6
+         EszvlGhaE2muFvyK5lgklZMWHLDJjJ9+kE58Iit7ZVpn9wEsVBZhO5B5h++pIfc6+ofJ
+         ybi2wYKa8LBCp/N9Zf7wP34PaLowIenqCtsAX5zsYbAr3KrONWMJVCNSaovNPc+Ek7Oe
+         kf7w==
+X-Gm-Message-State: AOAM532tU+2+Rt6YSIh12EVOfzB5wGUrqmw/9j4gwHjk89E9L1idGHSh
+        zvVFI8vfA7n9hipSYvY1lhPRlDWvqFKbszisyTSQZQ==
+X-Google-Smtp-Source: ABdhPJxKkmPEnUXj0aVbJDTQXnWiiYrBJDqwAo+CYLHhYd6MMCN9FGeHm5tb4KkW7mZ9cUyGQQ0uXz7x+4W8OBjmlCo=
+X-Received: by 2002:a5b:783:: with SMTP id b3mr1822562ybq.328.1637007502971;
+ Mon, 15 Nov 2021 12:18:22 -0800 (PST)
+MIME-Version: 1.0
+References: <20210929000735.585237-1-saravanak@google.com> <20210929000735.585237-2-saravanak@google.com>
+ <YYu4EglV7SBZU2Iy@ryzen> <CAGETcx_m3f5JgrKQXZ5DUxDkpGhAau9G8uYm8a0iQ8JbcD0Rtg@mail.gmail.com>
+In-Reply-To: <CAGETcx_m3f5JgrKQXZ5DUxDkpGhAau9G8uYm8a0iQ8JbcD0Rtg@mail.gmail.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Mon, 15 Nov 2021 12:17:46 -0800
+Message-ID: <CAGETcx_a-d7qQNi3sUce3AzbPcvGJK5JSuiiHm4h4e_q-MT7Dg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] drivers: bus: simple-pm-bus: Add support for
+ probing simple bus only devices
+To:     Abel Vesa <abelvesa@kernel.org>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, kernel-team@android.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-oxnas@groups.io, linux-renesas-soc@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Memory of BOs backed by TILER is not contiguous, but omap_gem_map_dma_buf()
-exports it like it is. This leads to (possibly) invalid memory accesses if
-another device imports such a BO.
+On Wed, Nov 10, 2021 at 12:24 PM Saravana Kannan <saravanak@google.com> wrote:
+>
+> On Wed, Nov 10, 2021 at 4:16 AM Abel Vesa <abelvesa@kernel.org> wrote:
+> >
+> > On 21-09-28 17:07:33, Saravana Kannan wrote:
+> > > fw_devlink could end up creating device links for bus only devices.
+> > > However, bus only devices don't get probed and can block probe() or
+> > > sync_state() [1] call backs of other devices. To avoid this, probe these
+> > > devices using the simple-pm-bus driver.
+> > >
+> > > However, there are instances of devices that are not simple buses (they get
+> > > probed by their specific drivers) that also list the "simple-bus" (or other
+> > > bus only compatible strings) in their compatible property to automatically
+> > > populate their child devices. We still want these devices to get probed by
+> > > their specific drivers. So, we make sure this driver only probes devices
+> > > that are only buses.
+> > >
+> > > [1] - https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
+> > > Fixes: c442a0d18744 ("driver core: Set fw_devlink to "permissive" behavior by default")
+> > > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > > Tested-by: Saravana Kannan <saravanak@google.com>
+> > > Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > > ---
+> > >  drivers/bus/simple-pm-bus.c | 42 ++++++++++++++++++++++++++++++++++---
+> > >  1 file changed, 39 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
+> > > index 01a3d0cd08ed..6b8d6257ed8a 100644
+> > > --- a/drivers/bus/simple-pm-bus.c
+> > > +++ b/drivers/bus/simple-pm-bus.c
+> > > @@ -13,11 +13,36 @@
+> > >  #include <linux/platform_device.h>
+> > >  #include <linux/pm_runtime.h>
+> > >
+> > > -
+> > >  static int simple_pm_bus_probe(struct platform_device *pdev)
+> > >  {
+> > > -     const struct of_dev_auxdata *lookup = dev_get_platdata(&pdev->dev);
+> > > -     struct device_node *np = pdev->dev.of_node;
+> > > +     const struct device *dev = &pdev->dev;
+> > > +     const struct of_dev_auxdata *lookup = dev_get_platdata(dev);
+> > > +     struct device_node *np = dev->of_node;
+> > > +     const struct of_device_id *match;
+> > > +
+> > > +     /*
+> > > +      * Allow user to use driver_override to bind this driver to a
+> > > +      * transparent bus device which has a different compatible string
+> > > +      * that's not listed in simple_pm_bus_of_match. We don't want to do any
+> > > +      * of the simple-pm-bus tasks for these devices, so return early.
+> > > +      */
+> > > +     if (pdev->driver_override)
+> > > +             return 0;
+> > > +
+> > > +     match = of_match_device(dev->driver->of_match_table, dev);
+> > > +     /*
+> > > +      * These are transparent bus devices (not simple-pm-bus matches) that
+> > > +      * have their child nodes populated automatically.  So, don't need to
+> > > +      * do anything more. We only match with the device if this driver is
+> > > +      * the most specific match because we don't want to incorrectly bind to
+> > > +      * a device that has a more specific driver.
+> > > +      */
+> > > +     if (match && match->data) {
+> > > +             if (of_property_match_string(np, "compatible", match->compatible) == 0)
+> > > +                     return 0;
+> > > +             else
+> > > +                     return -ENODEV;
+> > > +     }
+> >
+> > This change is breaking the expected behavior for the already existent
+> > simple-bus nodes. All the simple-bus compatibles should be replaced now
+> > to simple-pm-bus. In my case, on some i.MX8 platforms, without the
+> > devlink, the devices suspend sequence changes (and even breaks).
+> >
+> > To avoid breaking the already existent simple-bus nodes, maybe the logic
+> > should've been reversed: keep the simple-bus as is and add another
+> > compatible, IDK, something like simple-trasnparent-bus, or something.
+>
+> The intent of this change IS to affect existing simple-bus nodes (but
+> not in the way it's affecting you). But if it's breaking stuff, we
+> obviously need to fix it.
+>
+> I have a hunch on what's going on in your case, but can you point me
+> to the specific simple-bus node that's getting affected? I'm expecting
+> it to be a simple-bus node that gets added AFTER this driver is
+> registered at device_initcall (module_init gets converted to
+> device_initcall).
+>
+> Also, can you try this hack patch to see if it helps your case?
+> https://lore.kernel.org/lkml/CAGETcx9U130Oq-umrvXME4JhEpO0Wadoki3kNxx=0-YvTR6PtQ@mail.gmail.com/
+>
+> I have some thoughts on how I could fix this, but I need to think
+> about a few cases.
 
-Fix that by providing a sg that correctly describes TILER memory layout.
-Also, make sure to destroy it on unpin, as it is no longer valid.
+Hi Abel,
 
-Suggested-by: Matthijs van Duin <matthijsvanduin@gmail.com>
-Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
----
- drivers/gpu/drm/omapdrm/omap_gem.c        | 77 +++++++++++++++++++++++++++++++
- drivers/gpu/drm/omapdrm/omap_gem.h        |  2 +
- drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c | 32 ++-----------
- 3 files changed, 83 insertions(+), 28 deletions(-)
+Friendly reminder.
 
-diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
-index 97e5fe6..cd4a31c 100644
---- a/drivers/gpu/drm/omapdrm/omap_gem.c
-+++ b/drivers/gpu/drm/omapdrm/omap_gem.c
-@@ -862,6 +862,11 @@ static void omap_gem_unpin_locked(struct drm_gem_object *obj)
- 		return;
- 
- 	if (refcount_dec_and_test(&omap_obj->dma_addr_cnt)) {
-+		if (omap_obj->sgt) {
-+			sg_free_table(omap_obj->sgt);
-+			kfree(omap_obj->sgt);
-+			omap_obj->sgt = NULL;
-+		}
- 		ret = tiler_unpin(omap_obj->block);
- 		if (ret) {
- 			dev_err(obj->dev->dev,
-@@ -974,6 +979,78 @@ int omap_gem_put_pages(struct drm_gem_object *obj)
- 	return 0;
- }
- 
-+struct sg_table *omap_gem_get_sg(struct drm_gem_object *obj)
-+{
-+	struct omap_gem_object *omap_obj = to_omap_bo(obj);
-+	dma_addr_t addr;
-+	struct sg_table *sgt;
-+	struct scatterlist *sg;
-+	unsigned int count, len, stride, i;
-+	int ret;
-+
-+	ret = omap_gem_pin(obj, &addr);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	mutex_lock(&omap_obj->lock);
-+
-+	sgt = omap_obj->sgt;
-+	if (sgt)
-+		goto out;
-+
-+	sgt = kzalloc(sizeof(*sgt), GFP_KERNEL);
-+	if (!sgt) {
-+		ret = -ENOMEM;
-+		goto err_unpin;
-+	}
-+
-+	if (omap_obj->flags & OMAP_BO_TILED_MASK) {
-+		enum tiler_fmt fmt = gem2fmt(omap_obj->flags);
-+
-+		len = omap_obj->width << (int)fmt;
-+		count = omap_obj->height;
-+		stride = tiler_stride(fmt, 0);
-+	} else {
-+		len = obj->size;
-+		count = 1;
-+		stride = 0;
-+	}
-+
-+	ret = sg_alloc_table(sgt, count, GFP_KERNEL);
-+	if (ret)
-+		goto err_free;
-+
-+	for_each_sg(sgt->sgl, sg, count, i) {
-+		sg_set_page(sg, phys_to_page(addr), len, offset_in_page(addr));
-+		sg_dma_address(sg) = addr;
-+		sg_dma_len(sg) = len;
-+
-+		addr += stride;
-+	}
-+
-+	omap_obj->sgt = sgt;
-+out:
-+	mutex_unlock(&omap_obj->lock);
-+	return sgt;
-+
-+err_free:
-+	kfree(sgt);
-+err_unpin:
-+	mutex_unlock(&omap_obj->lock);
-+	omap_gem_unpin(obj);
-+	return ERR_PTR(ret);
-+}
-+
-+void omap_gem_put_sg(struct drm_gem_object *obj, struct sg_table *sgt)
-+{
-+	struct omap_gem_object *omap_obj = to_omap_bo(obj);
-+
-+	if (WARN_ON(omap_obj->sgt != sgt))
-+		return;
-+
-+	omap_gem_unpin(obj);
-+}
-+
- #ifdef CONFIG_DRM_FBDEV_EMULATION
- /*
-  * Get kernel virtual address for CPU access.. this more or less only
-diff --git a/drivers/gpu/drm/omapdrm/omap_gem.h b/drivers/gpu/drm/omapdrm/omap_gem.h
-index eda9b48..19209e3 100644
---- a/drivers/gpu/drm/omapdrm/omap_gem.h
-+++ b/drivers/gpu/drm/omapdrm/omap_gem.h
-@@ -82,5 +82,7 @@ int omap_gem_get_pages(struct drm_gem_object *obj, struct page ***pages,
- int omap_gem_rotated_dma_addr(struct drm_gem_object *obj, u32 orient,
- 		int x, int y, dma_addr_t *dma_addr);
- int omap_gem_tiled_stride(struct drm_gem_object *obj, u32 orient);
-+struct sg_table *omap_gem_get_sg(struct drm_gem_object *obj);
-+void omap_gem_put_sg(struct drm_gem_object *obj, struct sg_table *sgt);
- 
- #endif /* __OMAPDRM_GEM_H__ */
-diff --git a/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c b/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
-index f4cde3a..9650416 100644
---- a/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
-+++ b/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
-@@ -21,45 +21,21 @@ static struct sg_table *omap_gem_map_dma_buf(
- {
- 	struct drm_gem_object *obj = attachment->dmabuf->priv;
- 	struct sg_table *sg;
--	dma_addr_t dma_addr;
--	int ret;
--
--	sg = kzalloc(sizeof(*sg), GFP_KERNEL);
--	if (!sg)
--		return ERR_PTR(-ENOMEM);
--
--	/* camera, etc, need physically contiguous.. but we need a
--	 * better way to know this..
--	 */
--	ret = omap_gem_pin(obj, &dma_addr);
--	if (ret)
--		goto out;
--
--	ret = sg_alloc_table(sg, 1, GFP_KERNEL);
--	if (ret)
--		goto out;
--
--	sg_init_table(sg->sgl, 1);
--	sg_dma_len(sg->sgl) = obj->size;
--	sg_set_page(sg->sgl, pfn_to_page(PFN_DOWN(dma_addr)), obj->size, 0);
--	sg_dma_address(sg->sgl) = dma_addr;
-+	sg = omap_gem_get_sg(obj);
-+	if (IS_ERR(sg))
-+		return sg;
- 
- 	/* this must be after omap_gem_pin() to ensure we have pages attached */
- 	omap_gem_dma_sync_buffer(obj, dir);
- 
- 	return sg;
--out:
--	kfree(sg);
--	return ERR_PTR(ret);
- }
- 
- static void omap_gem_unmap_dma_buf(struct dma_buf_attachment *attachment,
- 		struct sg_table *sg, enum dma_data_direction dir)
- {
- 	struct drm_gem_object *obj = attachment->dmabuf->priv;
--	omap_gem_unpin(obj);
--	sg_free_table(sg);
--	kfree(sg);
-+	omap_gem_put_sg(obj, sg);
- }
- 
- static int omap_gem_dmabuf_begin_cpu_access(struct dma_buf *buffer,
--- 
-1.9.1
-
+-Saravana
