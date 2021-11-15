@@ -2,383 +2,268 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B43B1450021
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Nov 2021 09:42:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36B6445002B
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Nov 2021 09:43:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233752AbhKOIpc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 Nov 2021 03:45:32 -0500
-Received: from muru.com ([72.249.23.125]:56456 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236413AbhKOIp1 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 15 Nov 2021 03:45:27 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 8FBEE826C;
-        Mon, 15 Nov 2021 08:43:07 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 7/7] serial: 8250_port: Remove calls to runtime PM
-Date:   Mon, 15 Nov 2021 10:42:03 +0200
-Message-Id: <20211115084203.56478-8-tony@atomide.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211115084203.56478-1-tony@atomide.com>
-References: <20211115084203.56478-1-tony@atomide.com>
+        id S230191AbhKOIpw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Nov 2021 03:45:52 -0500
+Received: from perceval.ideasonboard.com ([213.167.242.64]:38320 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236993AbhKOIpp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Nov 2021 03:45:45 -0500
+Received: from [192.168.1.111] (91-158-153-130.elisa-laajakaista.fi [91.158.153.130])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id A475D9CA;
+        Mon, 15 Nov 2021 09:42:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1636965766;
+        bh=R5m7krlEredtuMgQMY3FQqbB6SYhti84Tpe3/vW7WBk=;
+        h=To:Cc:References:From:Subject:Date:In-Reply-To:From;
+        b=N5IdQ4rc2A0y/7/pfdgbWDRhjbcgqljuAM/uiZQVreuFpTLvO6UzQ1nhDb7DWHWzz
+         CMsvRg0hDlgPk5dR2VyjWkhxq34k3gfBmtBrscX7OHS7Fu2W54lIrpLW9pIXpEn4rA
+         uNOsk2Vrr/70q/dMeeT47QtiB9SMLWnfjITrFZpc=
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc:     matthijsvanduin@gmail.com, airlied@linux.ie, daniel@ffwll.ch,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <1636796417-5997-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+ <1636797239-6384-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: Re: [PATCH v2] drm: omapdrm: Export correct scatterlist for TILER
+ backed BOs
+Message-ID: <36598203-eced-131d-85ef-f4940872e751@ideasonboard.com>
+Date:   Mon, 15 Nov 2021 10:42:41 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <1636797239-6384-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Hi,
 
-Since we now have runtime PM calls in serial_core.c the individual
-drivers do not need them anymore for the struct uart_ops related
-functions.
+On 13/11/2021 11:53, Ivaylo Dimitrov wrote:
+> Memory of BOs backed by TILER is not contiguous, but omap_gem_map_dma_buf()
+> exports it like it is. This leads to (possibly) invalid memory accesses if
+> another device imports such a BO.
 
-Remove runtime PM calls in 8250 driver. This still leaves the flag for
-UART_CAP_RPM for serial8250_rpm_get_tx(), serial8250_rpm_put_tx() and
-serial8250_wakeup() to manage the reference count for serial TX.
+This is one reason why TILER hasn't been officially supported. But the 
+above is not exactly right, or at least not the whole truth.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-[tony@atomide.com: updated to remove the exported functions too]
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/tty/serial/8250/8250.h      |  3 -
- drivers/tty/serial/8250/8250_port.c | 98 ++++++++---------------------
- 2 files changed, 27 insertions(+), 74 deletions(-)
+A BO's memory via the TILER memory is contiguous, although with 
+consistent gaps of memory that should not be accessed. That point is 
+important, as the IPs that might use TILER backed BOs only support 
+contiguous memory.
 
-diff --git a/drivers/tty/serial/8250/8250.h b/drivers/tty/serial/8250/8250.h
---- a/drivers/tty/serial/8250/8250.h
-+++ b/drivers/tty/serial/8250/8250.h
-@@ -152,9 +152,6 @@ static inline bool serial8250_clear_THRI(struct uart_8250_port *up)
- 
- struct uart_8250_port *serial8250_get_port(int line);
- 
--void serial8250_rpm_get(struct uart_8250_port *p);
--void serial8250_rpm_put(struct uart_8250_port *p);
--
- void serial8250_rpm_get_tx(struct uart_8250_port *p);
- void serial8250_rpm_put_tx(struct uart_8250_port *p);
- 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -573,23 +573,6 @@ void serial8250_clear_and_reinit_fifos(struct uart_8250_port *p)
- }
- EXPORT_SYMBOL_GPL(serial8250_clear_and_reinit_fifos);
- 
--void serial8250_rpm_get(struct uart_8250_port *p)
--{
--	if (!(p->capabilities & UART_CAP_RPM))
--		return;
--	pm_runtime_get_sync(p->port.dev);
--}
--EXPORT_SYMBOL_GPL(serial8250_rpm_get);
--
--void serial8250_rpm_put(struct uart_8250_port *p)
--{
--	if (!(p->capabilities & UART_CAP_RPM))
--		return;
--	pm_runtime_mark_last_busy(p->port.dev);
--	pm_runtime_put_autosuspend(p->port.dev);
--}
--EXPORT_SYMBOL_GPL(serial8250_rpm_put);
--
- /**
-  *	serial8250_em485_init() - put uart_8250_port into rs485 emulating
-  *	@p:	uart_8250_port port instance
-@@ -724,7 +707,14 @@ void serial8250_rpm_get_tx(struct uart_8250_port *p)
- 	rpm_active = xchg(&p->rpm_tx_active, 1);
- 	if (rpm_active)
- 		return;
--	pm_runtime_get(p->port.dev);
-+
-+	/*
-+	 * Device has to be powered on at this point. Here we just increase
-+	 * reference count to prevent autosuspend until the TX FIFO becomes
-+	 * empty. Paired with serial8250_rpm_put_tx(). See also a comment
-+	 * in serial8250_tx_chars().
-+	 */
-+	pm_runtime_get_noresume(p->port.dev);
- }
- EXPORT_SYMBOL_GPL(serial8250_rpm_get_tx);
- 
-@@ -752,8 +742,6 @@ static void serial8250_set_sleep(struct uart_8250_port *p, int sleep)
- {
- 	unsigned char lcr = 0, efr = 0;
- 
--	serial8250_rpm_get(p);
--
- 	if (p->capabilities & UART_CAP_SLEEP) {
- 		if (p->capabilities & UART_CAP_EFR) {
- 			lcr = serial_in(p, UART_LCR);
-@@ -769,8 +757,6 @@ static void serial8250_set_sleep(struct uart_8250_port *p, int sleep)
- 			serial_out(p, UART_LCR, lcr);
- 		}
- 	}
--
--	serial8250_rpm_put(p);
- }
- 
- #ifdef CONFIG_SERIAL_8250_RSA
-@@ -1432,13 +1418,9 @@ static void serial8250_stop_rx(struct uart_port *port)
- {
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 
--	serial8250_rpm_get(up);
--
- 	up->ier &= ~(UART_IER_RLSI | UART_IER_RDI);
- 	up->port.read_status_mask &= ~UART_LSR_DR;
- 	serial_port_out(port, UART_IER, up->ier);
--
--	serial8250_rpm_put(up);
- }
- 
- /**
-@@ -1477,8 +1459,11 @@ static enum hrtimer_restart serial8250_em485_handle_stop_tx(struct hrtimer *t)
- 			stop_tx_timer);
- 	struct uart_8250_port *p = em485->port;
- 	unsigned long flags;
-+	int err;
- 
--	serial8250_rpm_get(p);
-+	err = pm_runtime_resume_and_get(p->port.dev);
-+	if (err < 0)
-+		goto out_rpm_err;
- 	spin_lock_irqsave(&p->port.lock, flags);
- 	if (em485->active_timer == &em485->stop_tx_timer) {
- 		p->rs485_stop_tx(p);
-@@ -1486,8 +1471,9 @@ static enum hrtimer_restart serial8250_em485_handle_stop_tx(struct hrtimer *t)
- 		em485->tx_stopped = true;
- 	}
- 	spin_unlock_irqrestore(&p->port.lock, flags);
--	serial8250_rpm_put(p);
--
-+	pm_runtime_mark_last_busy(p->port.dev);
-+	pm_runtime_put_autosuspend(p->port.dev);
-+out_rpm_err:
- 	return HRTIMER_NORESTART;
- }
- 
-@@ -1545,7 +1531,6 @@ static void serial8250_stop_tx(struct uart_port *port)
- {
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 
--	serial8250_rpm_get(up);
- 	__stop_tx(up);
- 
- 	/*
-@@ -1555,7 +1540,6 @@ static void serial8250_stop_tx(struct uart_port *port)
- 		up->acr |= UART_ACR_TXDIS;
- 		serial_icr_write(up, UART_ACR, up->acr);
- 	}
--	serial8250_rpm_put(up);
- }
- 
- static inline void __start_tx(struct uart_port *port)
-@@ -1703,9 +1687,7 @@ static void serial8250_enable_ms(struct uart_port *port)
- 
- 	up->ier |= UART_IER_MSI;
- 
--	serial8250_rpm_get(up);
- 	serial_port_out(port, UART_IER, up->ier);
--	serial8250_rpm_put(up);
- }
- 
- void serial8250_read_char(struct uart_8250_port *up, unsigned char lsr)
-@@ -1984,15 +1966,11 @@ static unsigned int serial8250_tx_empty(struct uart_port *port)
- 	unsigned long flags;
- 	unsigned int lsr;
- 
--	serial8250_rpm_get(up);
--
- 	spin_lock_irqsave(&port->lock, flags);
- 	lsr = serial_port_in(port, UART_LSR);
- 	up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
- 	spin_unlock_irqrestore(&port->lock, flags);
- 
--	serial8250_rpm_put(up);
--
- 	return (lsr & BOTH_EMPTY) == BOTH_EMPTY ? TIOCSER_TEMT : 0;
- }
- 
-@@ -2002,9 +1980,7 @@ unsigned int serial8250_do_get_mctrl(struct uart_port *port)
- 	unsigned int status;
- 	unsigned int val;
- 
--	serial8250_rpm_get(up);
- 	status = serial8250_modem_status(up);
--	serial8250_rpm_put(up);
- 
- 	val = serial8250_MSR_to_TIOCM(status);
- 	if (up->gpios)
-@@ -2054,7 +2030,6 @@ static void serial8250_break_ctl(struct uart_port *port, int break_state)
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	unsigned long flags;
- 
--	serial8250_rpm_get(up);
- 	spin_lock_irqsave(&port->lock, flags);
- 	if (break_state == -1)
- 		up->lcr |= UART_LCR_SBC;
-@@ -2062,7 +2037,6 @@ static void serial8250_break_ctl(struct uart_port *port, int break_state)
- 		up->lcr &= ~UART_LCR_SBC;
- 	serial_port_out(port, UART_LCR, up->lcr);
- 	spin_unlock_irqrestore(&port->lock, flags);
--	serial8250_rpm_put(up);
- }
- 
- /*
-@@ -2107,33 +2081,21 @@ static void wait_for_xmitr(struct uart_8250_port *up, int bits)
- 
- static int serial8250_get_poll_char(struct uart_port *port)
- {
--	struct uart_8250_port *up = up_to_u8250p(port);
- 	unsigned char lsr;
--	int status;
--
--	serial8250_rpm_get(up);
- 
- 	lsr = serial_port_in(port, UART_LSR);
-+	if (!(lsr & UART_LSR_DR))
-+		return NO_POLL_CHAR;
- 
--	if (!(lsr & UART_LSR_DR)) {
--		status = NO_POLL_CHAR;
--		goto out;
--	}
--
--	status = serial_port_in(port, UART_RX);
--out:
--	serial8250_rpm_put(up);
--	return status;
-+	return serial_port_in(port, UART_RX);
- }
- 
--
- static void serial8250_put_poll_char(struct uart_port *port,
- 			 unsigned char c)
- {
- 	unsigned int ier;
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 
--	serial8250_rpm_get(up);
- 	/*
- 	 *	First save the IER then disable the interrupts
- 	 */
-@@ -2155,7 +2117,6 @@ static void serial8250_put_poll_char(struct uart_port *port,
- 	 */
- 	wait_for_xmitr(up, BOTH_EMPTY);
- 	serial_port_out(port, UART_IER, ier);
--	serial8250_rpm_put(up);
- }
- 
- #endif /* CONFIG_CONSOLE_POLL */
-@@ -2178,7 +2139,6 @@ int serial8250_do_startup(struct uart_port *port)
- 	if (port->iotype != up->cur_iotype)
- 		set_io_from_upio(port);
- 
--	serial8250_rpm_get(up);
- 	if (port->type == PORT_16C950) {
- 		/* Wake up and initialize UART */
- 		up->acr = 0;
-@@ -2244,8 +2204,7 @@ int serial8250_do_startup(struct uart_port *port)
- 	if (!(port->flags & UPF_BUGGY_UART) &&
- 	    (serial_port_in(port, UART_LSR) == 0xff)) {
- 		dev_info_ratelimited(port->dev, "LSR safety check engaged!\n");
--		retval = -ENODEV;
--		goto out;
-+		return -ENODEV;
- 	}
- 
- 	/*
-@@ -2333,7 +2292,7 @@ int serial8250_do_startup(struct uart_port *port)
- 
- 	retval = up->ops->setup_irq(up);
- 	if (retval)
--		goto out;
-+		return retval;
- 
- 	/*
- 	 * Now, initialize the UART
-@@ -2432,10 +2391,7 @@ int serial8250_do_startup(struct uart_port *port)
- 		outb_p(0x80, icp);
- 		inb_p(icp);
- 	}
--	retval = 0;
--out:
--	serial8250_rpm_put(up);
--	return retval;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(serial8250_do_startup);
- 
-@@ -2451,7 +2407,6 @@ void serial8250_do_shutdown(struct uart_port *port)
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	unsigned long flags;
- 
--	serial8250_rpm_get(up);
- 	/*
- 	 * Disable interrupts from this port
- 	 */
-@@ -2495,7 +2450,6 @@ void serial8250_do_shutdown(struct uart_port *port)
- 	 * the IRQ chain.
- 	 */
- 	serial_port_in(port, UART_RX);
--	serial8250_rpm_put(up);
- 
- 	up->ops->release_irq(up);
- }
-@@ -2737,6 +2691,7 @@ void serial8250_update_uartclk(struct uart_port *port, unsigned int uartclk)
- 	unsigned int baud, quot, frac = 0;
- 	struct ktermios *termios;
- 	unsigned long flags;
-+	int err;
- 
- 	mutex_lock(&port->state->port.mutex);
- 
-@@ -2753,7 +2708,9 @@ void serial8250_update_uartclk(struct uart_port *port, unsigned int uartclk)
- 	baud = serial8250_get_baud_rate(port, termios, NULL);
- 	quot = serial8250_get_divisor(port, baud, &frac);
- 
--	serial8250_rpm_get(up);
-+	err = pm_runtime_resume_and_get(port->dev);
-+	if (err < 0)
-+		goto out_lock;
- 	spin_lock_irqsave(&port->lock, flags);
- 
- 	uart_update_timeout(port, termios->c_cflag, baud);
-@@ -2762,7 +2719,8 @@ void serial8250_update_uartclk(struct uart_port *port, unsigned int uartclk)
- 	serial_port_out(port, UART_LCR, up->lcr);
- 
- 	spin_unlock_irqrestore(&port->lock, flags);
--	serial8250_rpm_put(up);
-+	pm_runtime_mark_last_busy(port->dev);
-+	pm_runtime_put_autosuspend(port->dev);
- 
- out_lock:
- 	mutex_unlock(&port->state->port.mutex);
-@@ -2793,7 +2751,6 @@ serial8250_do_set_termios(struct uart_port *port, struct ktermios *termios,
- 	 * Ok, we're now changing the port state.  Do it with
- 	 * interrupts disabled.
- 	 */
--	serial8250_rpm_get(up);
- 	spin_lock_irqsave(&port->lock, flags);
- 
- 	up->lcr = cval;					/* Save computed LCR */
-@@ -2899,7 +2856,6 @@ serial8250_do_set_termios(struct uart_port *port, struct ktermios *termios,
- 	}
- 	serial8250_set_mctrl(port, port->mctrl);
- 	spin_unlock_irqrestore(&port->lock, flags);
--	serial8250_rpm_put(up);
- 
- 	/* Don't rewrite B0 */
- 	if (tty_termios_baud_rate(termios))
--- 
-2.33.1
+This means that the drivers for such IPs cannot use the BOs exported 
+like you do in this patch. I believe the drivers could be improved by 
+writing a helper function which studies the sg_table and concludes that 
+it's actually contiguous. I think we should have at least one such 
+driver fixed along with this patch so that we can be more confident that 
+this actually works.
+
+But I'm not sure what that driver would be on droid4. I have DRA7 boards 
+which have VIP, CAL and VPE that I can use here. Perhaps it wouldn't be 
+too much effort for me to extend my tests a bit to include CAL, and try 
+to fix the driver. I just fear the driver changes won't be trivial.
+
+Did you test this somehow?
+
+Did you look at the userspace mmap of TILER buffers? I wonder if that 
+goes correctly or not. Isn't memory to userspace mapped per page, and 
+lengths of the TILER lines are not page aligned?
+
+> Fix that by providing a scatterlist that correctly describes TILER memory
+> layout.
+> 
+> Suggested-by: Matthijs van Duin <matthijsvanduin@gmail.com>
+> Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+> ---
+>   drivers/gpu/drm/omapdrm/omap_gem.c        | 76 +++++++++++++++++++++++++++++++
+>   drivers/gpu/drm/omapdrm/omap_gem.h        |  3 +-
+>   drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c | 32 ++-----------
+>   3 files changed, 82 insertions(+), 29 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
+> index 97e5fe6..2ffcc37 100644
+> --- a/drivers/gpu/drm/omapdrm/omap_gem.c
+> +++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+> @@ -862,6 +862,11 @@ static void omap_gem_unpin_locked(struct drm_gem_object *obj)
+>   		return;
+>   
+>   	if (refcount_dec_and_test(&omap_obj->dma_addr_cnt)) {
+> +		if (omap_obj->sgt) {
+> +			sg_free_table(omap_obj->sgt);
+> +			kfree(omap_obj->sgt);
+> +			omap_obj->sgt = NULL;
+> +		}
+
+This behavior is different than before, isn't it? The commit desc only 
+mentions changing the construction of the sg-list, not how they're 
+allocated and freed.
+
+>   		ret = tiler_unpin(omap_obj->block);
+>   		if (ret) {
+>   			dev_err(obj->dev->dev,
+> @@ -974,6 +979,77 @@ int omap_gem_put_pages(struct drm_gem_object *obj)
+>   	return 0;
+>   }
+>   
+> +struct sg_table *omap_gem_get_sg(struct drm_gem_object *obj)
+> +{
+> +	struct omap_gem_object *omap_obj = to_omap_bo(obj);
+> +	dma_addr_t addr;
+> +	struct sg_table *sgt;
+> +	struct scatterlist *sg;
+> +	unsigned int count, len, stride, i;
+> +	int ret;
+> +
+> +	ret = omap_gem_pin(obj, &addr);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	mutex_lock(&omap_obj->lock);
+> +
+> +	sgt = omap_obj->sgt;
+> +	if (sgt)
+> +		goto out;
+> +
+> +	sgt = kzalloc(sizeof(*sgt), GFP_KERNEL);
+> +	ret = -ENOMEM;
+> +	if (!sgt)
+> +		goto out_unpin;
+
+I think you can move the ret = ... to be inside the if block.
+
+> +
+> +	if (omap_obj->flags & OMAP_BO_TILED_MASK) {
+> +		enum tiler_fmt fmt = gem2fmt(omap_obj->flags);
+> +
+> +		len = omap_obj->width << (int)fmt;
+> +		count = omap_obj->height;
+> +		stride = tiler_stride(fmt, 0);
+> +	} else {
+> +		len = obj->size;
+> +		count = 1;
+> +		stride = 0;
+> +	}
+> +
+> +	ret = sg_alloc_table(sgt, count, GFP_KERNEL);
+> +	if (ret)
+> +		goto out_free;
+> +
+> +	for_each_sg(sgt->sgl, sg, count, i) {
+> +		sg_set_page(sg, phys_to_page(addr), len, offset_in_page(addr));
+> +		sg_dma_address(sg) = addr;
+> +		sg_dma_len(sg) = len;
+> +
+> +		addr += stride;
+> +	}
+> +
+> +	omap_obj->sgt = sgt;
+> +out:
+> +	mutex_unlock(&omap_obj->lock);
+> +	return sgt;
+> +
+> +out_free:
+> +	kfree(sgt);
+> +out_unpin:
+
+There are errors handlers, I suggest err_ prefix.
+
+> +	mutex_unlock(&omap_obj->lock);
+> +	omap_gem_unpin(obj);
+> +	return ERR_PTR(ret);
+> +}
+> +
+> +void omap_gem_put_sg(struct drm_gem_object *obj, struct sg_table *sgt)
+> +{
+> +	struct omap_gem_object *omap_obj = to_omap_bo(obj);
+> +
+> +	if (WARN_ON(omap_obj->sgt != sgt))
+> +		return;
+> +
+> +	omap_gem_unpin(obj);
+> +}
+> +
+>   #ifdef CONFIG_DRM_FBDEV_EMULATION
+>   /*
+>    * Get kernel virtual address for CPU access.. this more or less only
+> diff --git a/drivers/gpu/drm/omapdrm/omap_gem.h b/drivers/gpu/drm/omapdrm/omap_gem.h
+> index eda9b48..3b61cfc 100644
+> --- a/drivers/gpu/drm/omapdrm/omap_gem.h
+> +++ b/drivers/gpu/drm/omapdrm/omap_gem.h
+> @@ -77,10 +77,11 @@ void omap_gem_dma_sync_buffer(struct drm_gem_object *obj,
+>   int omap_gem_get_pages(struct drm_gem_object *obj, struct page ***pages,
+>   		bool remap);
+>   int omap_gem_put_pages(struct drm_gem_object *obj);
+> -
+
+Extra change here.
+
+>   u32 omap_gem_flags(struct drm_gem_object *obj);
+>   int omap_gem_rotated_dma_addr(struct drm_gem_object *obj, u32 orient,
+>   		int x, int y, dma_addr_t *dma_addr);
+>   int omap_gem_tiled_stride(struct drm_gem_object *obj, u32 orient);
+> +struct sg_table *omap_gem_get_sg(struct drm_gem_object *obj);
+> +void omap_gem_put_sg(struct drm_gem_object *obj, struct sg_table *sgt);
+>   
+>   #endif /* __OMAPDRM_GEM_H__ */
+> diff --git a/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c b/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
+> index f4cde3a..9650416 100644
+> --- a/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
+> +++ b/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
+> @@ -21,45 +21,21 @@ static struct sg_table *omap_gem_map_dma_buf(
+>   {
+>   	struct drm_gem_object *obj = attachment->dmabuf->priv;
+>   	struct sg_table *sg;
+> -	dma_addr_t dma_addr;
+> -	int ret;
+> -
+> -	sg = kzalloc(sizeof(*sg), GFP_KERNEL);
+> -	if (!sg)
+> -		return ERR_PTR(-ENOMEM);
+> -
+> -	/* camera, etc, need physically contiguous.. but we need a
+> -	 * better way to know this..
+> -	 */
+> -	ret = omap_gem_pin(obj, &dma_addr);
+> -	if (ret)
+> -		goto out;
+> -
+> -	ret = sg_alloc_table(sg, 1, GFP_KERNEL);
+> -	if (ret)
+> -		goto out;
+> -
+> -	sg_init_table(sg->sgl, 1);
+> -	sg_dma_len(sg->sgl) = obj->size;
+> -	sg_set_page(sg->sgl, pfn_to_page(PFN_DOWN(dma_addr)), obj->size, 0);
+> -	sg_dma_address(sg->sgl) = dma_addr;
+> +	sg = omap_gem_get_sg(obj);
+> +	if (IS_ERR(sg))
+> +		return sg;
+>   
+>   	/* this must be after omap_gem_pin() to ensure we have pages attached */
+>   	omap_gem_dma_sync_buffer(obj, dir);
+>   
+>   	return sg;
+> -out:
+> -	kfree(sg);
+> -	return ERR_PTR(ret);
+>   }
+>   
+>   static void omap_gem_unmap_dma_buf(struct dma_buf_attachment *attachment,
+>   		struct sg_table *sg, enum dma_data_direction dir)
+>   {
+>   	struct drm_gem_object *obj = attachment->dmabuf->priv;
+> -	omap_gem_unpin(obj);
+> -	sg_free_table(sg);
+> -	kfree(sg);
+> +	omap_gem_put_sg(obj, sg);
+>   }
+>   
+>   static int omap_gem_dmabuf_begin_cpu_access(struct dma_buf *buffer,
+> 
