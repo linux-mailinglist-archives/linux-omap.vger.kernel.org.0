@@ -2,295 +2,250 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8720452B24
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Nov 2021 07:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A684452BC4
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Nov 2021 08:40:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234631AbhKPGph (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Nov 2021 01:45:37 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:58892 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234817AbhKPGpW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Nov 2021 01:45:22 -0500
-Received: from [192.168.1.111] (91-158-153-130.elisa-laajakaista.fi [91.158.153.130])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id AFA7C93;
-        Tue, 16 Nov 2021 07:42:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1637044942;
-        bh=oRQSCgF5wtD0slgPyvbtlKIrlsaPM1o2AXg4IEkcBpg=;
-        h=To:Cc:References:From:Subject:Date:In-Reply-To:From;
-        b=PeoizySOxRAsSuzLEH6mnYI4j/VepsmRqDv/l8kK/jiUoZwMEXM4VyJNyiuXvxC5O
-         NjCWFdaudTSkU7Fc8bHV/ufs+YFw3E+I296KCFNVZsfAlzGYXLwbH29PzHsc9RGQsM
-         DDfkSqg7Kc1OAwIknlGBrlFwLOk4FoQ0hBdQiV70=
-To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc:     matthijsvanduin@gmail.com, airlied@linux.ie, daniel@ffwll.ch,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <1636796417-5997-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <1636797239-6384-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <36598203-eced-131d-85ef-f4940872e751@ideasonboard.com>
- <16a38e8e-071c-7275-8a33-487f7c3c8f2a@gmail.com>
- <ee42102b-c584-6e20-e710-711f79467fa3@ideasonboard.com>
- <e24ba773-298c-c703-9719-abba3527f8dd@gmail.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: Re: [PATCH v2] drm: omapdrm: Export correct scatterlist for TILER
- backed BOs
-Message-ID: <16724dbf-ff40-4d18-cde4-b3716583289f@ideasonboard.com>
-Date:   Tue, 16 Nov 2021 08:42:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S231185AbhKPHmt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Nov 2021 02:42:49 -0500
+Received: from mx0b-0014ca01.pphosted.com ([208.86.201.193]:16874 "EHLO
+        mx0a-0014ca01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S230403AbhKPHmi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 16 Nov 2021 02:42:38 -0500
+Received: from pps.filterd (m0042333.ppops.net [127.0.0.1])
+        by mx0b-0014ca01.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AG4RJlf021318;
+        Mon, 15 Nov 2021 23:39:23 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=proofpoint;
+ bh=K1PYtbv/VaaQ1kphs3Y5cL44ARkzArrdsRK925kZZ2w=;
+ b=P2SVf+aqRXjhNXHw5CScZ/lIRnhzM1Z9QyTt+0jPUnr63MHjTVNixiJ1IQs6lDmTGdJm
+ /H/SVRrh+nmv8yY5FgFRLJCOrWnNW6+W4vEGmo8WEkp5l4kvhtnyq8ptKFSQSPeblWhq
+ 2dJRTL7pfMvgwlTzmTRKnAKu96bxiEa/Aye1HRj1lFXaLDoG8CucKlAot5plNktbYJBk
+ QZtFgGGyBdcD2XLf/yn8FpFrwBQaHrrOJc3sWyGK4wUFObiUzFdXSno/79YMEaSGKXDZ
+ GRiqE7fGiZtOflHMx/+MO6xYG2xnS8r/iK6z3VOQRbd1Eni5yhkCjBTFgMOE6uDGS2Ad 0w== 
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2168.outbound.protection.outlook.com [104.47.56.168])
+        by mx0b-0014ca01.pphosted.com (PPS) with ESMTPS id 3cbkj1441w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 15 Nov 2021 23:39:22 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fgSJ81Fr+d+cqKa9NNrwLDe15HDj5dyMOj7FcQ7d3r1hitEle1kIgjKl7d5lCiCJPlfbc9/sKA0ohxP75gstV6k3pMO5hJxK3XE7rxwTcddEpqkLLoSiYxni44NsNThK6YsOhuwCJ8DRaB4vpoxG/pIJ/TnnmPGA4NDrKCfjIhH/gr5uq/JpqmTpE0uXbasRjT7srOsB5RBUgXHkLnUNTr5fgSUwziarNBww70NbFJKTSCQoP4FudZE/Lh+aTB0ZIIWV6AIDUmnuivsnzsls6uGTohOR7JZ2UjwPya6T/jYt5TzveMhJjqjqJtiG/zSXrks9rnj7wwKlcgwIAfQzRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K1PYtbv/VaaQ1kphs3Y5cL44ARkzArrdsRK925kZZ2w=;
+ b=LNkQyL1FXdpxRzQm5hELjpTSQu6n6D75AFrZ/rO8s666WV+NeDXVgOXdt7oNPEC1is9nyISkzJbrM6OkC1IvXX2K8hDT0qqM5fckKXw9E8YFIGS2LTGKLE50QskspR7t0EU4Tyt0EWLlX2UWKgiAkeq8hy4N9i8JaDN4q3KyQ9tpPd9yAviwcC0XAzDa/qbkiZTCOqzIR2gLJ0p9FFqGQ+sCarQPNOOXt+FYTqRCX6uX2/wk0ktX7gwyVq/2PvBKQ1UCd+5aHCVMbEeNnGBOo95hYoc3Nl0GYrzkqkPmWK544ZSZ/jinDCfvocuWE3SCII6IuORANwNm43mIW8sq4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 158.140.1.147) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=cadence.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=cadence.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K1PYtbv/VaaQ1kphs3Y5cL44ARkzArrdsRK925kZZ2w=;
+ b=uis+RgemU3YdbuSDzEVl5eVm50gQvvDTdG8Vge2OzFR1ArgesgO5iTrFEFMSdw/zYWBWxicvBnQR5up/Dv5Pl9oy9JT11N1afx4hy0iFtI3C6vAyAp3IZiZrljtgidBbORBzOM+eVJbtFGMiR3i26OFBZuTwD5J3s3lUBwZUd7c=
+Received: from BN8PR15CA0007.namprd15.prod.outlook.com (2603:10b6:408:c0::20)
+ by BY5PR07MB8150.namprd07.prod.outlook.com (2603:10b6:a03:1da::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.19; Tue, 16 Nov
+ 2021 07:39:19 +0000
+Received: from BN8NAM12FT060.eop-nam12.prod.protection.outlook.com
+ (2603:10b6:408:c0:cafe::ef) by BN8PR15CA0007.outlook.office365.com
+ (2603:10b6:408:c0::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.19 via Frontend
+ Transport; Tue, 16 Nov 2021 07:39:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 158.140.1.147)
+ smtp.mailfrom=cadence.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=cadence.com;
+Received-SPF: Pass (protection.outlook.com: domain of cadence.com designates
+ 158.140.1.147 as permitted sender) receiver=protection.outlook.com;
+ client-ip=158.140.1.147; helo=sjmaillnx1.cadence.com;
+Received: from sjmaillnx1.cadence.com (158.140.1.147) by
+ BN8NAM12FT060.mail.protection.outlook.com (10.13.183.174) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4713.9 via Frontend Transport; Tue, 16 Nov 2021 07:39:19 +0000
+Received: from mailsj9.global.cadence.com (mailsj9.cadence.com [10.202.56.202])
+        by sjmaillnx1.cadence.com (8.14.4/8.14.4) with ESMTP id 1AG7dJIR009107
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 15 Nov 2021 23:39:19 -0800
+Received: from mailsj9.global.cadence.com (10.202.56.202) by
+ mailsj9.global.cadence.com (10.202.56.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 15 Nov 2021 23:39:19 -0800
+Received: from ipgpd01.cadence.com (158.140.83.21) by
+ mailsj9.global.cadence.com (10.202.56.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2
+ via Frontend Transport; Mon, 15 Nov 2021 23:39:19 -0800
+Received: from ipgpd01.cadence.com (localhost.localdomain [127.0.0.1])
+        by ipgpd01.cadence.com (8.14.4/8.14.4) with ESMTP id 1AG7dJe4073706;
+        Mon, 15 Nov 2021 23:39:19 -0800
+Received: (from pthombar@localhost)
+        by ipgpd01.cadence.com (8.14.4/8.14.4/Submit) id 1AG7dINL073702;
+        Mon, 15 Nov 2021 23:39:18 -0800
+From:   Parshuram Raju Thombare <pthombar@cadence.com>
+To:     <bhelgaas@google.com>, <kishon@ti.com>, <tjoseph@cadence.com>,
+        <lorenzo.pieralisi@arm.com>, <robh@kernel.org>, <kw@linux.com>
+CC:     <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <mparab@cadence.com>,
+        <pthombar@cadence.com>
+Subject: [PATCH v2] PCI: cadence: Clear FLR in device capabilities register
+Date:   Mon, 15 Nov 2021 23:39:16 -0800
+Message-ID: <1637048356-73662-1-git-send-email-pthombar@cadence.com>
+X-Mailer: git-send-email 2.2.2
 MIME-Version: 1.0
-In-Reply-To: <e24ba773-298c-c703-9719-abba3527f8dd@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-CrossPremisesHeadersFilteredBySendConnector: mailsj9.global.cadence.com
+X-OrganizationHeadersPreserved: mailsj9.global.cadence.com
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0010f333-b8fa-409e-93e8-08d9a8d4331f
+X-MS-TrafficTypeDiagnostic: BY5PR07MB8150:
+X-Microsoft-Antispam-PRVS: <BY5PR07MB81504A2ED43EC480E763080CC1999@BY5PR07MB8150.namprd07.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: gTuTL+3mlLkonP43JGWgvm9BUn3BGa/Hfgzqp+jgwNkfTGSMZfbAS0ZsvOFiK2EllnOHrTQlCLEnm0uF0bcnAcaveoz+WUeiBCJAEdGj2soMCvP0uGvEZWgUZrTD1qh1y8qZa8TbcBas1hePZ9Gq+areRBgK4HjbifnkABHGsEbM5paynnOzOLmqmPBnZTweb3Qtuvqno4TV3FPh07qhGrZe3DmGLXD6nwir92SYutkqrpE68zVeyUN88m0gSP4xjz37ntrbd7NO1aXukXCxGQYuazdgmvrsAVxweLEgH96yi/3VMPgunPPjWpzWV+HXnjFCJHgQi7hSAhJwKyEmrB/0mQjOKEvgNDX0qhtj3Cgaj8FWtQoc75vCtCjsn/SU8TJ4HumdmlWK6M/K3/7jJyjtm++tkOltkWz6JBuVlPSpRurOiJwc9u78+UbxZp2kGdlHLvnqXAqjc/qfe9nmwB0c9giIjxrtZOMixaPLD3Gxc12RSCZTpEQ9BBqJwkYxlOaZrfl8LEhee6+bg037zHJ+zcVmBZYW8GsuFHBSBIJRH4pGqEhiIs69j28P5exyMjskKkEiDDdIqpUTNrjWIEL8r11mwou1nRC6t4mQPnuGG7MAf/deduug6tAg4TpG8Nz/lWFULo4SjKNY/pAsoG+ReT/HnSZl1RsZT3TSUtogVG7DbPhVKfTSW4h01uO9+FXYRj43IiCRBo5n70hrcVW5ifrGgoLmpL2R/qvaqDA=
+X-Forefront-Antispam-Report: CIP:158.140.1.147;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:sjmaillnx1.cadence.com;PTR:unknown.Cadence.COM;CAT:NONE;SFS:(4636009)(36092001)(46966006)(36840700001)(54906003)(36860700001)(110136005)(47076005)(8936002)(4326008)(5660300002)(26005)(86362001)(186003)(8676002)(83380400001)(107886003)(70586007)(2616005)(7636003)(336012)(36756003)(356005)(42186006)(316002)(70206006)(82310400003)(508600001)(426003)(2906002)(36906005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: cadence.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2021 07:39:19.2367
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0010f333-b8fa-409e-93e8-08d9a8d4331f
+X-MS-Exchange-CrossTenant-Id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=d36035c5-6ce6-4662-a3dc-e762e61ae4c9;Ip=[158.140.1.147];Helo=[sjmaillnx1.cadence.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM12FT060.eop-nam12.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR07MB8150
+X-Proofpoint-ORIG-GUID: 6DL6XtQ5wSkRCB9S4CwVZdjwiLekI6sS
+X-Proofpoint-GUID: 6DL6XtQ5wSkRCB9S4CwVZdjwiLekI6sS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-15_16,2021-11-15_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 suspectscore=0
+ malwarescore=0 impostorscore=0 phishscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
+ mlxscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111160038
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 15/11/2021 19:15, Ivaylo Dimitrov wrote:
-> Hi,
-> 
-> On 15.11.21 г. 17:37 ч., Tomi Valkeinen wrote:
->> On 15/11/2021 15:55, Ivaylo Dimitrov wrote:
->>> Hi Tomi,
->>>
->>> On 15.11.21 г. 10:42 ч., Tomi Valkeinen wrote:
->>>> Hi,
->>>>
->>>> On 13/11/2021 11:53, Ivaylo Dimitrov wrote:
->>>>> Memory of BOs backed by TILER is not contiguous, but 
->>>>> omap_gem_map_dma_buf()
->>>>> exports it like it is. This leads to (possibly) invalid memory 
->>>>> accesses if
->>>>> another device imports such a BO.
->>>>
->>>> This is one reason why TILER hasn't been officially supported. But 
->>>> the above is not exactly right, or at least not the whole truth.
->>>>
->>>
->>> Definitely, not only these BOs lie about their memory layout, they 
->>> lie about size and alignment as well. I have 2 more patches here (one 
->>> is to align TILER memory on page, as proposed by Matthijs in the 
->>> other mail, the other to set the correct size when exporting TILER 
->>> BO), but I wanted to hear from you first, like, what is the general 
->>> trend :) .
->>
->> My thoughts here are that the current code doesn't work in practice, 
->> so if you get it fixed, it's great =).
->>
->>> Also, I have another patch in mind, that will enable exporting of 
->>> buffers that are not TILER backed, but are not CMA backed either. SGX 
->>> for example does not need CMA memory to render to.
->>
->> What do you mean with this? DSS needs contiguous memory, so the memory 
->> has to be 1) physically contiguous, 2) mapped with DMM or 3) mapped 
->> with TILER. There's no reason for the driver to export non-contiguous 
->> memory.
->>
-> 
-> DSS yes, but, omapdrm is used to allocate non-scanout buffers as well, 
-> which do not need to be (and in practice are not) contiguous. GPU (or 
-> anyone with MMU) can render on them (DRI buffers for example) and later 
-> on those buffers can be copied (blit) to the framebuffer. Yes, not 
-> zero-copy, but if you're doing compositing, there is no option anyway.
-> 
-> Exactly this is done by omap-video driver for example. GBM BOs are 
-> allocated through omapdrm as well.
+From: Parshuram Thombare <pthombar@cadence.com>
 
-That is not correct and shouldn't be done. omapdrm is not a generic 
-memory allocator. We have real generic allocators, so those should be 
-used. Or, if the buffer is only used for a single device, the buffer 
-should be allocated from that device's driver.
+Clear FLR (Function Level Reset) from device capabilities
+registers for all physical functions.
 
->>>> A BO's memory via the TILER memory is contiguous, although with 
->>>> consistent gaps of memory that should not be accessed. 
->>>
->>> I think this more or less contradicts to the definition of 
->>> contiguous, no?  :)
->>
->> Depends on the definition ;). The buffers can be handled with DMA that 
->> only supports contiguous memory, so...
->>
->>>> That point is important, as the IPs that might use TILER backed BOs 
->>>> only support contiguous memory.
->>>>
->>>
->>> Well, every IP with MMU should be capable to use such BOs. SGX has 
->>> one for sure, IIRC IVA and ISP on omap3 has MMUs too.
->>
->> True, we have those. But none of the DRA7 capture IPs have MMU.
->>
->>>> This means that the drivers for such IPs cannot use the BOs exported 
->>>
->>> Neither they can use them without the patch.
->>>
->>>> like you do in this patch. I believe the drivers could be improved 
->>>> by writing a helper function which studies the sg_table and 
->>>> concludes that it's actually contiguous. I think we should have at 
->>>> least one such driver fixed along with this patch so that we can be 
->>>> more confident that this actually works.
->>>>
->>>
->>> Yes, I we have such driver, but unfortunately it is not upstream (PVR 
->>> driver that is). Right now I have droid4 in front of me with SGX 
->>> rendering hildon-desktop in landscape using TILER BO.
->>>
->>> Sure I had 2 more patches applied and also had to teach PVR driver to 
->>> know how to use that scatterlist, but that was a trivial change (an 
->>> old version of the patch 
->>> https://github.com/tmlind/linux_openpvrsgx/commit/90f16ed906c8c6eb4893d3ff647ca7d921972495). 
->>>
->>>
->>> See glmark-es2 results (with a little help of a simple PVR EXA):
->>>
->>> user@devuan-droid4:/root$ uname -a
->>> Linux devuan-droid4 5.15.2-01783-g6ba3430a6fad-dirty #28 SMP PREEMPT 
->>> Mon Nov 15 08:48:21 EET 2021 armv7l GNU/Linux
->>> user@devuan-droid4:/root$ xrandr -o 3
->>> user@devuan-droid4:/root$ glmark2-es2 --fullscreen
->>> =======================================================
->>>      glmark2 2020.04
->>> =======================================================
->>>      OpenGL Information
->>>      GL_VENDOR:     Imagination Technologies
->>>      GL_RENDERER:   PowerVR SGX 540
->>>      GL_VERSION:    OpenGL ES 2.0 build 1.17@4948957
->>> =======================================================
->>> [build] use-vbo=false: FPS: 107 FrameTime: 9.346 ms
->>> [build] use-vbo=true: FPS: 136 FrameTime: 7.353 ms
->>> [texture] texture-filter=nearest: FPS: 156 FrameTime: 6.410 ms
->>> [texture] texture-filter=linear: FPS: 153 FrameTime: 6.536 ms
->>> [texture] texture-filter=mipmap: FPS: 152 FrameTime: 6.579 ms
->>> [shading] shading=gouraud: FPS: 111 FrameTime: 9.009 ms
->>> [shading] shading=blinn-phong-inf: FPS: 116 FrameTime: 8.621 ms
->>> [shading] shading=phong: FPS: 104 FrameTime: 9.615 ms
->>> [shading] shading=cel: FPS: 96 FrameTime: 10.417 ms
->>> [bump] bump-render=high-poly: FPS: 67 FrameTime: 14.925 ms
->>> [bump] bump-render=normals: FPS: 140 FrameTime: 7.143 ms
->>> [bump] bump-render=height: FPS: 131 FrameTime: 7.634 ms
->>> [effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 49 FrameTime: 20.408 ms
->>> [effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 17 FrameTime: 
->>> 58.824 ms
->>> [pulsar] light=false:quads=5:texture=false: FPS: 152 FrameTime: 6.579 ms
->>> [desktop] 
->>> blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 23 
->>> FrameTime: 43.478 ms
->>> [desktop] effect=shadow:windows=4: FPS: 64 FrameTime: 15.625 ms
->>> [buffer] 
->>> columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: 
->>> FPS: 33 FrameTime: 30.303 ms
->>> [buffer] 
->>> columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: 
->>> FPS: 33 FrameTime: 30.303 ms
->>> [buffer] 
->>> columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: 
->>> FPS: 60 FrameTime: 16.667 ms
->>> [ideas] speed=duration: FPS: 115 FrameTime: 8.696 ms
->>> [jellyfish] <default>: FPS: 48 FrameTime: 20.833 ms
->>> [terrain] <default>:PVR:(Error): SGXKickTA: TA went out of Mem and 
->>> SPM occurred during last TA kick [0, ]
->>> PVR:(Error): SGXKickTA: TA went out of Mem and SPM occurred during 
->>> last TA kick [0, ]
->>> PVR:(Error): SGXKickTA: TA went out of Mem and SPM occurred during 
->>> last TA kick [0, ]
->>>   FPS: 1 FrameTime: 1000.000 ms
->>> [shadow] <default>: FPS: 31 FrameTime: 32.258 ms
->>> [refract] <default>: FPS: 13 FrameTime: 76.923 ms
->>> [conditionals] fragment-steps=0:vertex-steps=0: FPS: 156 FrameTime: 
->>> 6.410 ms
->>> [conditionals] fragment-steps=5:vertex-steps=0: FPS: 100 FrameTime: 
->>> 10.000 ms
->>> [conditionals] fragment-steps=0:vertex-steps=5: FPS: 156 FrameTime: 
->>> 6.410 ms
->>> [function] fragment-complexity=low:fragment-steps=5: FPS: 128 
->>> FrameTime: 7.812 ms
->>> [function] fragment-complexity=medium:fragment-steps=5: FPS: 83 
->>> FrameTime: 12.048 ms
->>> [loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 127 
->>> FrameTime: 7.874 ms
->>> [loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 
->>> 104 FrameTime: 9.615 ms
->>> [loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 77 
->>> FrameTime: 12.987 ms
->>> =======================================================
->>>                                    glmark2 Score: 92
->>> =======================================================
->>>
->>> Impressive, ain't it ;)
->>>
->>>> But I'm not sure what that driver would be on droid4. I have DRA7 
->>>> boards which have VIP, CAL and VPE that I can use here. Perhaps it 
->>>> wouldn't be too much effort for me to extend my tests a bit to 
->>>> include CAL, and try to fix the driver. I just fear the driver 
->>>> changes won't be trivial.
->>>>
->>>
->>> At least PVR change was really trivial.
->>>
->>>> Did you test this somehow?
->>>>
->>>
->>> Yes, on droid4, works with no issue, see above.
->>>
->>>> Did you look at the userspace mmap of TILER buffers? I wonder if 
->>>> that goes correctly or not. Isn't memory to userspace mapped per 
->>>> page, and lengths of the TILER lines are not page aligned?
->>>>
->>>
->>> I really can't explain it any better than Matthijs, see the other mail.
->>>
->>> So, what I think shall be done to have TILER BOs (and not only) in a 
->>> shape that's usable for anything else but a simple test-cases, if you 
->>> accept the $subject patch:
->>>
->>> 1. Make TILER BOs page-aligned (simple patch, I already have it). 
->>> That should fix possible invalid memory accesses for both mmap()-ed 
->>> memory and kernel drivers.
->>
->> Sounds good.
->>
->>> 2. Set exp_info.size = omap_gem_mmap_size(obj); when exporting a BO. 
->>> That way importer knows the real BO memory size (including alignment 
->>> etc) so he will be able to calculate the number of pages he needs to 
->>> map the scatterlist.
->>
->> Can you elaborate what this means?
->>
-> 
-> When we align to page, we shall report the size including the alignment, 
-> no? Or, it is the importer that shall take care to calculate BO size( 
-> including the alignment) based on scatterlist if he needs to?
+During FLR, the Margining Lane Status and Margining Lane Control
+registers should not be reset, as per PCIe specification.
+However, the controller incorrectly resets these registers upon FLR.
+This causes PCISIG compliance FLR test to fail. Hence preventing
+all functions from advertising FLR support if flag quirk_disable_flr
+is set.
 
-I'm not sure... But I guess the export size should include the alignment.
+Signed-off-by: Parshuram Thombare <pthombar@cadence.com>
+---
+Changes since v1:
+Changes suggested by Bjorn in the description.
 
-Hmm... I haven't had enough coffee yet, but how does this go... Let's 
-say we have a tiled fb, and the width gets expanded to a page. What 
-happens to reads/writes that happen outside the fb, but still within the 
-page? Those should cause an error or do nothing, but is it possible that 
-they go through TILER and get mapped to some real memory location?
+---
+ drivers/pci/controller/cadence/pci-j721e.c       |  3 +++
+ drivers/pci/controller/cadence/pcie-cadence-ep.c | 18 +++++++++++++++++-
+ drivers/pci/controller/cadence/pcie-cadence.h    |  3 +++
+ 3 files changed, 23 insertions(+), 1 deletion(-)
 
->>> 3. Do not refuse to export non-TILER non-contiguous buffers (we can 
->>> use them for rendering, for example)
->>
->> omapdrm should only allow allocation of buffers that are used for 
->> display. Pure render buffers should be allocated from SGX.
->>
-> 
-> In practice everyone around uses omapdrm to allocate all kinds of 
-> buffers, which kind of makes sense to me - that way you keep only one 
-> DRM fd around. Take omap-video for example, it uses omap_bo_new() (or 
-> omap_bo_tiled()) to allocate DRI buffers. GBM does the same 
-> (gbm_bo_create() uses omapdrm, because that's the DRM fd you create gbm 
-> with), IIUC. But those buffers should not be necessarily scanout capable.
-> 
-> The problem with contiguous buffers as I see it, is that CMA is limited, 
-> so lets not waste it if we can use DMA memory and scatterlist.
-> 
-> To support that, we just need to simply create a scatterlist, in similar 
-> way we do for TILER BOs in the $subject patch, so it should be few lines 
-> of code only.
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index ffb176d..635e36c 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -70,6 +70,7 @@ struct j721e_pcie_data {
+ 	enum j721e_pcie_mode	mode;
+ 	unsigned int		quirk_retrain_flag:1;
+ 	unsigned int		quirk_detect_quiet_flag:1;
++	unsigned int		quirk_disable_flr:1;
+ 	u32			linkdown_irq_regfield;
+ 	unsigned int		byte_access_allowed:1;
+ };
+@@ -308,6 +309,7 @@ static int cdns_ti_pcie_config_write(struct pci_bus *bus, unsigned int devfn,
+ static const struct j721e_pcie_data j7200_pcie_ep_data = {
+ 	.mode = PCI_MODE_EP,
+ 	.quirk_detect_quiet_flag = true,
++	.quirk_disable_flr = true,
+ };
+ 
+ static const struct j721e_pcie_data am64_pcie_rc_data = {
+@@ -510,6 +512,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 			goto err_get_sync;
+ 		}
+ 		ep->quirk_detect_quiet_flag = data->quirk_detect_quiet_flag;
++		ep->quirk_disable_flr = data->quirk_disable_flr;
+ 
+ 		cdns_pcie = &ep->pcie;
+ 		cdns_pcie->dev = dev;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+index 88e05b9..4b1c4bc 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+@@ -565,7 +565,8 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
+ 	struct cdns_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct cdns_pcie *pcie = &ep->pcie;
+ 	struct device *dev = pcie->dev;
+-	int ret;
++	int max_epfs = sizeof(epc->function_num_map) * 8;
++	int ret, value, epf;
+ 
+ 	/*
+ 	 * BIT(0) is hardwired to 1, hence function 0 is always enabled
+@@ -573,6 +574,21 @@ static int cdns_pcie_ep_start(struct pci_epc *epc)
+ 	 */
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_LM_EP_FUNC_CFG, epc->function_num_map);
+ 
++	if (ep->quirk_disable_flr) {
++		for (epf = 0; epf < max_epfs; epf++) {
++			if (!(epc->function_num_map & BIT(epf)))
++				continue;
++
++			value = cdns_pcie_ep_fn_readl(pcie, epf,
++					CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET +
++					PCI_EXP_DEVCAP);
++			value &= ~PCI_EXP_DEVCAP_FLR;
++			cdns_pcie_ep_fn_writel(pcie, epf,
++					CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET +
++					PCI_EXP_DEVCAP, value);
++		}
++	}
++
+ 	ret = cdns_pcie_start_link(pcie);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to start link\n");
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 262421e..e978e7c 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -123,6 +123,7 @@
+ 
+ #define CDNS_PCIE_EP_FUNC_MSI_CAP_OFFSET	0x90
+ #define CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET	0xb0
++#define CDNS_PCIE_EP_FUNC_DEV_CAP_OFFSET	0xc0
+ #define CDNS_PCIE_EP_FUNC_SRIOV_CAP_OFFSET	0x200
+ 
+ /*
+@@ -357,6 +358,7 @@ struct cdns_pcie_epf {
+  *        minimize time between read and write
+  * @epf: Structure to hold info about endpoint function
+  * @quirk_detect_quiet_flag: LTSSM Detect Quiet min delay set as quirk
++ * @quirk_disable_flr: Disable FLR (Function Level Reset) quirk flag
+  */
+ struct cdns_pcie_ep {
+ 	struct cdns_pcie	pcie;
+@@ -372,6 +374,7 @@ struct cdns_pcie_ep {
+ 	spinlock_t		lock;
+ 	struct cdns_pcie_epf	*epf;
+ 	unsigned int		quirk_detect_quiet_flag:1;
++	unsigned int		quirk_disable_flr:1;
+ };
+ 
+ 
+-- 
+1.9.1
 
-Yep. Well, as I mentioned above, I disagree with this. We have proper 
-generic memory allocators.
-
-  Tomi
