@@ -2,101 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9D7452980
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Nov 2021 06:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CF6F452B0A
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Nov 2021 07:36:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233506AbhKPFX5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Nov 2021 00:23:57 -0500
-Received: from muru.com ([72.249.23.125]:56730 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233571AbhKPFWr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 16 Nov 2021 00:22:47 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 31EF8806C;
-        Tue, 16 Nov 2021 05:20:23 +0000 (UTC)
-Date:   Tue, 16 Nov 2021 07:19:43 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Abel Vesa <abelvesa@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, kernel-team@android.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-oxnas@groups.io, linux-renesas-soc@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v4 1/2] drivers: bus: simple-pm-bus: Add support for
- probing simple bus only devices
-Message-ID: <YZM/b2/F8xmK43vr@atomide.com>
-References: <20210929000735.585237-1-saravanak@google.com>
- <20210929000735.585237-2-saravanak@google.com>
- <YYu4EglV7SBZU2Iy@ryzen>
- <CAGETcx_m3f5JgrKQXZ5DUxDkpGhAau9G8uYm8a0iQ8JbcD0Rtg@mail.gmail.com>
- <CAGETcx_a-d7qQNi3sUce3AzbPcvGJK5JSuiiHm4h4e_q-MT7Dg@mail.gmail.com>
+        id S233925AbhKPGju (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Nov 2021 01:39:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233868AbhKPGh1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Nov 2021 01:37:27 -0500
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ECFCC0432CC;
+        Mon, 15 Nov 2021 22:27:32 -0800 (PST)
+Received: by mail-pf1-x433.google.com with SMTP id x5so6551577pfr.0;
+        Mon, 15 Nov 2021 22:27:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xUihz6cPZv7rYs39OZ9cIRP3xprrR050mWdI6KmmNmo=;
+        b=F4daJEzclFjzRrAWljO2lDAW7Oumn90n0WgJTGEkPieHfnPB5C7AxbIgoaPMI5KaJK
+         Iwypr9DXqwBoIEAyV2u9yHDl38Ly/cL7y2FPaIdXFt7DFLsoqt7OFRPD3hT12J3iWna+
+         l8XNAqddJbiR4bMSjTCP0A1BqZAfrQpPn2oxeKt7PpTLj5Hcj5b4wzRxbH3VN0ORuAJC
+         WUdvVceEUzg8hBlIiUedmFmerIo8YaV36mnPGtkwly0FjqKnaD9kSVwgztQcq8VeNqBQ
+         9BWuTjc7HrPMgwg7S7+xtps4e3AjqJCEPobL8NjEjqMAbVucolELI38lXxHZKmCTbufF
+         1E8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xUihz6cPZv7rYs39OZ9cIRP3xprrR050mWdI6KmmNmo=;
+        b=ymIcOAmKLvgdE/ch7RWii/LuPFT3GAYygb8+yMNXrijuEuTNRYOEYcKovbVE91M/Tc
+         bClzf0vlxy4/cTjUTyHqsZtRo+h/Ny/BHcOMXIz0drp4p141NtgKcENsjKvi9J/bkJWj
+         cfq1QsAaGYdpVAWV3hinnwXo+On5wCOxMnF+ZveGxizvQpQQgD3TfF12Q8obQcFd4r5x
+         sFB1EmoFlbsgRneNFicu06DGk0ivD7hPyAbGqHUPayQRoSTzynV7KZY09iXMq6IYIbAO
+         GGGiaGRlcPlr/S8vQDOsd8RwgxAByIEcF2SCze5pHVb2WjrE1Cu6Gcn4Qi4+McuRjPoc
+         kZRA==
+X-Gm-Message-State: AOAM531Rhk+6kOGovWngvgSSi3IOSD0hbmWuomU0s8TuRacSo7t9u4oV
+        UBWyM7siHcdWd4c1mvQYbQoVShn2sZQ=
+X-Google-Smtp-Source: ABdhPJxZAnlSYRfcdPc+UxhQEFMyuCsfOBYWdrq6so38OF8P/dkezjSelnqcV6b/46C/VfjSkF7Ebw==
+X-Received: by 2002:a63:6a43:: with SMTP id f64mr3199613pgc.393.1637044052172;
+        Mon, 15 Nov 2021 22:27:32 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id e15sm17225884pfv.131.2021.11.15.22.27.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Nov 2021 22:27:31 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: ye.guojin@zte.com.cn
+To:     tony@atomide.com
+Cc:     linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ye Guojin <ye.guojin@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] ARM: OMAP2+: adjust the location of put_device() call in omapdss_init_of
+Date:   Tue, 16 Nov 2021 06:27:26 +0000
+Message-Id: <20211116062726.154689-1-ye.guojin@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGETcx_a-d7qQNi3sUce3AzbPcvGJK5JSuiiHm4h4e_q-MT7Dg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Saravana Kannan <saravanak@google.com> [211115 20:19]:
-> On Wed, Nov 10, 2021 at 12:24 PM Saravana Kannan <saravanak@google.com> wrote:
-> >
-> > On Wed, Nov 10, 2021 at 4:16 AM Abel Vesa <abelvesa@kernel.org> wrote:
-> > >
-> > > On 21-09-28 17:07:33, Saravana Kannan wrote:
-> > > > fw_devlink could end up creating device links for bus only devices.
-> > > > However, bus only devices don't get probed and can block probe() or
-> > > > sync_state() [1] call backs of other devices. To avoid this, probe these
-> > > > devices using the simple-pm-bus driver.
-> > > >
-> > > > However, there are instances of devices that are not simple buses (they get
-> > > > probed by their specific drivers) that also list the "simple-bus" (or other
-> > > > bus only compatible strings) in their compatible property to automatically
-> > > > populate their child devices. We still want these devices to get probed by
-> > > > their specific drivers. So, we make sure this driver only probes devices
-> > > > that are only buses.
-...
-> > >
-> > > This change is breaking the expected behavior for the already existent
-> > > simple-bus nodes. All the simple-bus compatibles should be replaced now
-> > > to simple-pm-bus. In my case, on some i.MX8 platforms, without the
-> > > devlink, the devices suspend sequence changes (and even breaks).
-> > >
-> > > To avoid breaking the already existent simple-bus nodes, maybe the logic
-> > > should've been reversed: keep the simple-bus as is and add another
-> > > compatible, IDK, something like simple-trasnparent-bus, or something.
-> >
-> > The intent of this change IS to affect existing simple-bus nodes (but
-> > not in the way it's affecting you). But if it's breaking stuff, we
-> > obviously need to fix it.
-> >
-> > I have a hunch on what's going on in your case, but can you point me
-> > to the specific simple-bus node that's getting affected? I'm expecting
-> > it to be a simple-bus node that gets added AFTER this driver is
-> > registered at device_initcall (module_init gets converted to
-> > device_initcall).
-> >
-> > Also, can you try this hack patch to see if it helps your case?
-> > https://lore.kernel.org/lkml/CAGETcx9U130Oq-umrvXME4JhEpO0Wadoki3kNxx=0-YvTR6PtQ@mail.gmail.com/
-> >
-> > I have some thoughts on how I could fix this, but I need to think
-> > about a few cases.
+From: Ye Guojin <ye.guojin@zte.com.cn>
 
-Not sure if this is related.. Some drivers need to be updated from
-builtin_platform_driver_probe() to use builtin_platform_driver() when
-switching to simple-pm-bus because of deferred probe. See more info
-in commit e259c2926c01 ("PCI: pci-dra7xx: Prepare for deferred probe
-with module_platform_driver").
+This was found by coccicheck:
+./arch/arm/mach-omap2/display.c, 272, 1-7, ERROR missing put_device;
+call of_find_device_by_node on line 258, but without a corresponding
+object release within this function.
 
-Regards,
+Move the put_device() call before the if judgment.
 
-Tony
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Ye Guojin <ye.guojin@zte.com.cn>
+---
+ arch/arm/mach-omap2/display.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-omap2/display.c b/arch/arm/mach-omap2/display.c
+index 6daaa645ae5d..21413a9b7b6c 100644
+--- a/arch/arm/mach-omap2/display.c
++++ b/arch/arm/mach-omap2/display.c
+@@ -263,9 +263,9 @@ static int __init omapdss_init_of(void)
+ 	}
+ 
+ 	r = of_platform_populate(node, NULL, NULL, &pdev->dev);
++	put_device(&pdev->dev);
+ 	if (r) {
+ 		pr_err("Unable to populate DSS submodule devices\n");
+-		put_device(&pdev->dev);
+ 		return r;
+ 	}
+ 
+-- 
+2.25.1
+
