@@ -2,197 +2,139 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4BD3453AAE
-	for <lists+linux-omap@lfdr.de>; Tue, 16 Nov 2021 21:08:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE25D453C16
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Nov 2021 23:02:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234976AbhKPULk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Nov 2021 15:11:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33612 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240390AbhKPULT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Nov 2021 15:11:19 -0500
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A298CC06120E
-        for <linux-omap@vger.kernel.org>; Tue, 16 Nov 2021 12:08:01 -0800 (PST)
-Received: by mail-pj1-x102b.google.com with SMTP id fv9-20020a17090b0e8900b001a6a5ab1392so428056pjb.1
-        for <linux-omap@vger.kernel.org>; Tue, 16 Nov 2021 12:08:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=crOTKUCyMhT7agRKo0/8Pkjd+/3KY9pvz/mc1Si+z/Y=;
-        b=nr3nPH6E/UK2DHjnHu0MrbBDICwiEtQpKQypZCoAY9mN3IluH3WzQGBKHY6AyYsTw6
-         VkxtuRt0/80P08P9upngXKgsA3zXW1ac+ZdTxtaC9TJiCkuMVar5H4/zFU7Gpigf6Bkb
-         Jij00vRZJjmaky8FyR9y73W0VeXO2UbGtTSos=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=crOTKUCyMhT7agRKo0/8Pkjd+/3KY9pvz/mc1Si+z/Y=;
-        b=j4P6GXYKWzTS9OHQYI3E58fa9oaJ7Kdp0Afr5cFg7OT9z5fJOswlzmaOdU9/nKtbdw
-         OJ19o/3T3QP0/oFnuEgU+piVl2r/zj9wwRKdHtrnjAxRP2wFZZVZRuVsBj4B/aStOjPj
-         tjEa2kSHUbCgG7QfqtrAvn3/jiaLU9SF18D+mzYsaxF/BzBiBIB1pbp3CrEROcZ/ZO3K
-         zUCyGC4gxa76Vm9FhlEqEcV+08ustthkc35ITO7rqZcXWMd0Yu+/RpCe5KKu6MzxnysL
-         xvIGa+so3HctkcP5Iz6UjAY1l70082SidE/0d9tuYxGeonZH2LG6Xuqo6LX7BvFBopov
-         eAfA==
-X-Gm-Message-State: AOAM530FyjEPvP4VGIe+/aD7UPHABmBh/l7BE1LbNmEcZ2r67NQu+Zp/
-        PPmv6RYTKJJPoEDl3zrEwQPY/g==
-X-Google-Smtp-Source: ABdhPJyyE/9JCr1MRQS5KZgpYT/vJfotilC7Q6491y/QQJNILtemANaDP/oEBXo2rpgkuS28FKQU1w==
-X-Received: by 2002:a17:90a:4142:: with SMTP id m2mr2336078pjg.80.1637093281134;
-        Tue, 16 Nov 2021 12:08:01 -0800 (PST)
-Received: from localhost ([2620:15c:202:201:54aa:73ab:b480:41e2])
-        by smtp.gmail.com with UTF8SMTPSA id y28sm20052235pfa.208.2021.11.16.12.08.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Nov 2021 12:08:00 -0800 (PST)
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Felipe Balbi <balbi@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Peter Chen <peter.chen@kernel.org>, linux-usb@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Ravi Chandra Sadineni <ravisadineni@chromium.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Pawel Laszczak <pawell@cadence.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: [PATCH v17 7/7] usb: Specify dependencies on USB_XHCI_PLATFORM with 'depends on'
-Date:   Tue, 16 Nov 2021 12:07:39 -0800
-Message-Id: <20211116120642.v17.7.If248f05613bbb06a44eb0b0909be5d97218f417b@changeid>
-X-Mailer: git-send-email 2.34.0.rc1.387.gb447b232ab-goog
-In-Reply-To: <20211116200739.924401-1-mka@chromium.org>
-References: <20211116200739.924401-1-mka@chromium.org>
+        id S231426AbhKPWFh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Nov 2021 17:05:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41164 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229597AbhKPWFg (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 16 Nov 2021 17:05:36 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3FA0963225
+        for <linux-omap@vger.kernel.org>; Tue, 16 Nov 2021 22:02:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637100159;
+        bh=srPgqhsTlVTk5sTdV+i02cuw0ZC1dGKBq4SDKhS42DI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=HL6X8+QXAx3Oqy7SocDxG9qxz4o2KpqryF1y605XdFoOXxAgnAw7mGhuf/oGFQj8h
+         GOkRsA9kH1ZFwGwh8fyAb/QmAj7Y2wZzpIg83NN4RIEJYcztTdin2f2qMyLn5T/XVy
+         W3ja2pCW8gi9UaHIlW6k337ZWzAgYjOxDktTWOtsWsFLp4a9lscCzOx80d1zV5vIqy
+         pWlp1X8HwrdjiSYHYmrjDijvH8pqgEmPjEZeGTse1bSYYHE7RlMWgpbIXdCGCf+7Cu
+         wcaJ9a31EUDfuCAiRFvcoaoOkYqXWcgI8l7K75cKKRZn50BVWa8nHTe1/UV9MqtpMF
+         gHFCiyG+5/Wkg==
+Received: by mail-ot1-f54.google.com with SMTP id u18-20020a9d7212000000b00560cb1dc10bso854443otj.11
+        for <linux-omap@vger.kernel.org>; Tue, 16 Nov 2021 14:02:39 -0800 (PST)
+X-Gm-Message-State: AOAM530iae0RDQufVoBPn8sDRjWuiKvzATmeLP0mrZ5fWrU3Xx85ywX6
+        1TFjZE7BOzl659UmIFMRPVp+Q/A06qBzbVYBzFo=
+X-Google-Smtp-Source: ABdhPJxtpuAju26ed5cEA8CF8eMq4N+v+Apj2D6X1ETX/5j1uuisyZY5AQ1fShskmNcL9vFco3xdR43g+D8q2f9Qamo=
+X-Received: by 2002:a05:6830:1445:: with SMTP id w5mr9087591otp.112.1637100158441;
+ Tue, 16 Nov 2021 14:02:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211115111816.3911213-1-ardb@kernel.org> <20211115111816.3911213-8-ardb@kernel.org>
+ <d73b25ec-7ade-2090-9ab4-df4ff8d7db94@collabora.com> <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
+ <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk>
+In-Reply-To: <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 16 Nov 2021 23:02:26 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
+Message-ID: <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
+Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     Guillaume Tucker <guillaume.tucker@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "kernelci@groups.io" <kernelci@groups.io>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Some USB controller drivers that depend on the xhci-plat driver
-specify this dependency using 'select' in Kconfig. This is not
-recommended for symbols that have other dependencies as it may
-lead to invalid configurations. Use 'depends on' to specify the
-dependency instead of 'select'.
+On Tue, 16 Nov 2021 at 21:06, Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+>
+> On Tue, Nov 16, 2021 at 08:28:02PM +0100, Ard Biesheuvel wrote:
+> > (+ Tony and linux-omap@)
+> >
+> > On Tue, 16 Nov 2021 at 10:23, Guillaume Tucker
+> > <guillaume.tucker@collabora.com> wrote:
+> > >
+> > > Hi Ard,
+> > >
+> > > Please see the bisection report below about a boot failure on
+> > > omap4-panda which is pointing to this patch.
+> > >
+> > > Reports aren't automatically sent to the public while we're
+> > > trialing new bisection features on kernelci.org but this one
+> > > looks valid.
+> > >
+> > > Some more details can be found here:
+> > >
+> > >   https://linux.kernelci.org/test/case/id/6191b1b97c175a5ade335948/
+> > >
+> > > It seems like the kernel just froze after about 3 seconds without
+> > > any obvious errors in the log.
+> > >
+> > > Please let us know if you need any help debugging this issue or
+> > > if you have a fix to try.
+> > >
+> >
+> > Thanks for the report.
+> >
+> > I wonder if this might be related to low level platform code running
+> > off a different stack (maybe in SRAM?) when an interrupt is taken? Or
+> > using a different set of page tables that are out of sync in terms of
+> > VMALLOC space mappings?
+> >
+> > Could anyone who speaks OMAP please take a look at the linked boot
+> > log, and hopefully make sense of it?
+> >
+> > For background, this series enables vmap'ed stacks support for ARMv7,
+> > which means that the entry code checks whether the stack pointer may
+> > be pointing into the guard region before the vmalloc'ed stack, and
+> > kills the task if it looks like the kernel stack overflowed.
+> >
+> > Here's another instance:
+> > https://linux.kernelci.org/build/id/6193fa5c6c4e1d02bd3358ff/
+> >
+> > Everything builds and boots happily, but odd things happen on OMAP
+> > based devices: Panda just gives up right after discovering the USB
+> > controller, and Beagle-XM just starts showing all kinds of weird
+> > crashes at roughly the same point in the boot.
+>
+> I haven't looked at the logs yet... but there may be a more
+> fundamental reason that it may be stalling.
+>
+> vmalloc space is lazily mapped to process page tables that the
+> allocation did not happen inside - specifically the L1 entries.
+>
+> When a new thread is created, you're vmalloc()ing a kernel stack.
+> This is done in the parent task for the child task. If the child
+> task doesn't contain the L1 entry for its vmalloc'd stack, then
+> the first stack access by the child will fault.
+>
+> The fault processing will be done in the child's context, so we
+> immediately try to save the state to the child's kernel stack,
+> which is not yet mapped. The result is another fault, which
+> triggers yet another fault, etc.
+>
 
-For dwc3 specify the dependency on USB_XHCI_PLATFORM in
-USB_DWC3_HOST and USB_DWC3_DUAL_ROLE. Also adjust the
-dependencies of USB_DWC3_CORE to make sure that at least one
-of USB_DWC3_HOST, USB_DWC3_GADGET or USB_DWC3_DUAL_ROLE can be
-selected.
+I deal with this condition specifically in two different places:
+- at context switch time, there is a dummy read from the new stack
+while running from the old one, to ensure that the fault takes place
+while SP points to a valid mapping;
+- at mm_switch() time, the vmalloc_seq counter is used to ensure that
+the new MM is synced to init_mm in terms of vmalloc PMD entries.
 
-Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
----
-
-Changes in v17:
-- removed explicit dependency on USB from USB_DWC3
-- added 'Reviewed-by' tags from Roger and Doug
-
-Changes in v16:
-- none
-
-Changes in v15:
-- adjusted dependencies of USB_DWC3_CORE to make sure it can only
-  be enabled when at least one of USB_DWC3_HOST, USB_DWC3_GADGET
-  or USB_DWC3_DUAL_ROLE is selectable
-- updated commit message
-
-Changes in v14:
-- none
-
-Changes in v13:
-- patch added to the series
-
- drivers/usb/cdns3/Kconfig | 2 +-
- drivers/usb/dwc3/Kconfig  | 5 +++--
- drivers/usb/host/Kconfig  | 4 ++--
- 3 files changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/usb/cdns3/Kconfig b/drivers/usb/cdns3/Kconfig
-index b98ca0a1352a..07e12f786d48 100644
---- a/drivers/usb/cdns3/Kconfig
-+++ b/drivers/usb/cdns3/Kconfig
-@@ -1,7 +1,7 @@
- config USB_CDNS_SUPPORT
- 	tristate "Cadence USB Support"
- 	depends on USB_SUPPORT && (USB || USB_GADGET) && HAS_DMA
--	select USB_XHCI_PLATFORM if USB_XHCI_HCD
-+	depends on !USB_XHCI_HCD || USB_XHCI_PLATFORM
- 	select USB_ROLE_SWITCH
- 	help
- 	  Say Y here if your system has a Cadence USBSS or USBSSP
-diff --git a/drivers/usb/dwc3/Kconfig b/drivers/usb/dwc3/Kconfig
-index c483f28b695d..8f08b0724379 100644
---- a/drivers/usb/dwc3/Kconfig
-+++ b/drivers/usb/dwc3/Kconfig
-@@ -2,8 +2,7 @@
- 
- config USB_DWC3
- 	tristate "DesignWare USB3 DRD Core Support"
--	depends on (USB || USB_GADGET) && HAS_DMA
--	select USB_XHCI_PLATFORM if USB_XHCI_HCD
-+	depends on (USB_XHCI_PLATFORM || USB_GADGET) && HAS_DMA
- 	select USB_ROLE_SWITCH if USB_DWC3_DUAL_ROLE
- 	help
- 	  Say Y or M here if your system has a Dual Role SuperSpeed
-@@ -30,6 +29,7 @@ choice
- config USB_DWC3_HOST
- 	bool "Host only mode"
- 	depends on USB=y || USB=USB_DWC3
-+	depends on USB_XHCI_PLATFORM
- 	help
- 	  Select this when you want to use DWC3 in host mode only,
- 	  thereby the gadget feature will be regressed.
-@@ -44,6 +44,7 @@ config USB_DWC3_GADGET
- config USB_DWC3_DUAL_ROLE
- 	bool "Dual Role mode"
- 	depends on ((USB=y || USB=USB_DWC3) && (USB_GADGET=y || USB_GADGET=USB_DWC3))
-+	depends on USB_XHCI_PLATFORM
- 	depends on (EXTCON=y || EXTCON=USB_DWC3)
- 	help
- 	  This is the default mode of working of DWC3 controller where
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index d1d926f8f9c2..e5e612f143a1 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -80,7 +80,7 @@ config USB_XHCI_MTK
- 
- config USB_XHCI_MVEBU
- 	tristate "xHCI support for Marvell Armada 375/38x/37xx"
--	select USB_XHCI_PLATFORM
-+	depends on USB_XHCI_PLATFORM
- 	depends on HAS_IOMEM
- 	depends on ARCH_MVEBU || COMPILE_TEST
- 	help
-@@ -112,9 +112,9 @@ config USB_EHCI_BRCMSTB
- config USB_BRCMSTB
- 	tristate "Broadcom STB USB support"
- 	depends on (ARCH_BRCMSTB && PHY_BRCM_USB) || COMPILE_TEST
-+	depends on !USB_XHCI_HCD || USB_XHCI_PLATFORM
- 	select USB_OHCI_HCD_PLATFORM if USB_OHCI_HCD
- 	select USB_EHCI_BRCMSTB if USB_EHCI_HCD
--	select USB_XHCI_PLATFORM if USB_XHCI_HCD
- 	help
- 	  Enables support for XHCI, EHCI and OHCI host controllers
- 	  found in Broadcom STB SoC's.
--- 
-2.34.0.rc1.387.gb447b232ab-goog
-
+Of course, I may have missed something, but I wouldn't expect a
+fundamental flaw in this logic to affect only OMAP3/4 based platforms
+in such a weird way. Perhaps there is something I missed in terms of
+TLB maintenance, although I would expect the existing fault handler to
+take care of that.
