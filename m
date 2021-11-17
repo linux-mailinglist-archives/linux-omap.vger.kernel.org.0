@@ -2,124 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71AB5453E6C
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Nov 2021 03:21:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38392453F74
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Nov 2021 05:26:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229944AbhKQCYo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Nov 2021 21:24:44 -0500
-Received: from netrider.rowland.org ([192.131.102.5]:41019 "HELO
-        netrider.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with SMTP id S231244AbhKQCYn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Nov 2021 21:24:43 -0500
-Received: (qmail 158965 invoked by uid 1000); 16 Nov 2021 21:21:44 -0500
-Date:   Tue, 16 Nov 2021 21:21:44 -0500
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Matthias Kaehlcke <mka@chromium.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Felipe Balbi <balbi@kernel.org>, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Peter Chen <peter.chen@kernel.org>, linux-usb@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Ravi Chandra Sadineni <ravisadineni@chromium.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Pawel Laszczak <pawell@cadence.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH v17 7/7] usb: Specify dependencies on USB_XHCI_PLATFORM
- with 'depends on'
-Message-ID: <20211117022144.GA158646@rowland.harvard.edu>
-References: <20211116200739.924401-1-mka@chromium.org>
- <20211116120642.v17.7.If248f05613bbb06a44eb0b0909be5d97218f417b@changeid>
+        id S233032AbhKQE3q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 16 Nov 2021 23:29:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60342 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229632AbhKQE3q (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Nov 2021 23:29:46 -0500
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D9C2C061570;
+        Tue, 16 Nov 2021 20:26:48 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id t21so1035302plr.6;
+        Tue, 16 Nov 2021 20:26:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=tS1+hrsrVzfQyOyashnDo/1MOiewYsmRz2aYDUPV49o=;
+        b=lxBEbNwMW1lHDoIwuqj28c8tm0NjGUuTFBJSUJHyDJJG0UBSxIbqIwauHI92BqEfDH
+         HlUQ6j4o9XAZV3+4Gn4iXZNIZiN5H7Ak/qSk7DOCrgPrJs+cONqpLeWAcIAnJlwl5f+u
+         ZSvkGwyybv1XH46QPpr6zCt50wqyxdq5rytd6EUFf8TFl54TSY+LnC8wKgOgILTwjpTJ
+         P726ugo3RfyuzY7qT7z1kri6+Qw9r88k5JiiOIE1BqfxfgsUUnPX+sAVhFoNkKwScK/9
+         H1O7UYICoJtlq9e3ryf5+LDrmunurg9DkPN0O+alJHD29pKf+02VCedH6IHaVT55pb0f
+         VVSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=tS1+hrsrVzfQyOyashnDo/1MOiewYsmRz2aYDUPV49o=;
+        b=hv561G5qzU8xoriLL16RGmD8XdNUzq+TYvJkkXc7uFpikHvvyrMopC9U3UQyQV3TLj
+         E4DRWwRLkyksyl/Ur+OF8eSovn49sEeIy+S9vQL30iLB/uMxUxdm2ttPlBVMZV5ZxMID
+         w90Jh46m5voagPl3/y2SHxD6N2dpCrxCIDPG71zUWkAgD1+tiZ/PLmvHT37quqqapXdQ
+         HS7c0sNwy6IZImy8zVBaahK7ZEAS7xsqxcQli83yFYVO8LQCxRW/LbehBeeler8lJhZv
+         ez0L6Jvglvd+3Qc409+DBX6SqMO3B28WWRJPObGcSKKeEH2wHL2zRkYk3ywltxfjtoed
+         h8ow==
+X-Gm-Message-State: AOAM533cMXu52DTsVJbr60T57GPoQl6VP/l+4OfmXWrI7XMFgr7B5Dl5
+        K5ItnXGq3azNqOFkSd+2sWw=
+X-Google-Smtp-Source: ABdhPJxGxJv0Zv2wAjmIKvIusG0vR1m1fkt+DrH84i9dq3xSvWRzSH/46yZBdmayD2vtxIliNe0+YQ==
+X-Received: by 2002:a17:902:db12:b0:142:3ac:7ec3 with SMTP id m18-20020a170902db1200b0014203ac7ec3mr51376829plx.2.1637123207961;
+        Tue, 16 Nov 2021 20:26:47 -0800 (PST)
+Received: from hoboy.vegasvil.org ([2601:645:c000:2163:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id pj12sm3909958pjb.51.2021.11.16.20.26.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Nov 2021 20:26:47 -0800 (PST)
+Date:   Tue, 16 Nov 2021 20:26:45 -0800
+From:   Richard Cochran <richardcochran@gmail.com>
+To:     Kurt Kanzenbach <kurt@linutronix.de>
+Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: ethernet: ti: cpsw: Enable PHY timestamping
+Message-ID: <20211117042645.GB23271@hoboy.vegasvil.org>
+References: <20211116080325.92830-1-kurt@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211116120642.v17.7.If248f05613bbb06a44eb0b0909be5d97218f417b@changeid>
+In-Reply-To: <20211116080325.92830-1-kurt@linutronix.de>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Nov 16, 2021 at 12:07:39PM -0800, Matthias Kaehlcke wrote:
-> Some USB controller drivers that depend on the xhci-plat driver
-> specify this dependency using 'select' in Kconfig. This is not
-> recommended for symbols that have other dependencies as it may
-> lead to invalid configurations. Use 'depends on' to specify the
-> dependency instead of 'select'.
+On Tue, Nov 16, 2021 at 09:03:25AM +0100, Kurt Kanzenbach wrote:
+> If the used PHYs also support hardware timestamping, all configuration requests
+> should be forwared to the PHYs instead of being processed by the MAC driver
+> itself.
 > 
-> For dwc3 specify the dependency on USB_XHCI_PLATFORM in
-> USB_DWC3_HOST and USB_DWC3_DUAL_ROLE. Also adjust the
-> dependencies of USB_DWC3_CORE to make sure that at least one
-> of USB_DWC3_HOST, USB_DWC3_GADGET or USB_DWC3_DUAL_ROLE can be
-> selected.
+> This enables PHY timestamping in combination with the cpsw driver.
 > 
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> Reviewed-by: Roger Quadros <rogerq@kernel.org>
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> ---
+> Tested with an am335x based board with two DP83640 PHYs connected to the cpsw
+> switch.
 > 
-> Changes in v17:
-> - removed explicit dependency on USB from USB_DWC3
-> - added 'Reviewed-by' tags from Roger and Doug
-> 
-> Changes in v16:
-> - none
-> 
-> Changes in v15:
-> - adjusted dependencies of USB_DWC3_CORE to make sure it can only
->   be enabled when at least one of USB_DWC3_HOST, USB_DWC3_GADGET
->   or USB_DWC3_DUAL_ROLE is selectable
-> - updated commit message
-> 
-> Changes in v14:
-> - none
-> 
-> Changes in v13:
-> - patch added to the series
+> Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
 
-> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-> index d1d926f8f9c2..e5e612f143a1 100644
-> --- a/drivers/usb/host/Kconfig
-> +++ b/drivers/usb/host/Kconfig
-> @@ -80,7 +80,7 @@ config USB_XHCI_MTK
->  
->  config USB_XHCI_MVEBU
->  	tristate "xHCI support for Marvell Armada 375/38x/37xx"
-> -	select USB_XHCI_PLATFORM
-> +	depends on USB_XHCI_PLATFORM
->  	depends on HAS_IOMEM
->  	depends on ARCH_MVEBU || COMPILE_TEST
->  	help
-> @@ -112,9 +112,9 @@ config USB_EHCI_BRCMSTB
->  config USB_BRCMSTB
->  	tristate "Broadcom STB USB support"
->  	depends on (ARCH_BRCMSTB && PHY_BRCM_USB) || COMPILE_TEST
-> +	depends on !USB_XHCI_HCD || USB_XHCI_PLATFORM
->  	select USB_OHCI_HCD_PLATFORM if USB_OHCI_HCD
->  	select USB_EHCI_BRCMSTB if USB_EHCI_HCD
-> -	select USB_XHCI_PLATFORM if USB_XHCI_HCD
->  	help
->  	  Enables support for XHCI, EHCI and OHCI host controllers
->  	  found in Broadcom STB SoC's.
-
-It should be pointed out that this now requires people with xHCI systems 
-to actively turn on CONFIG_USB_XHCI_PLATFORM before they can enable 
-CONFIG_USB_BRCMSTB.  Before, that was not necessary.  Some users might 
-get confused and not realize what is needed.  Perhaps something should 
-be added to the "help" text.
-
-Alan Stern
+Acked-by: Richard Cochran <richardcochran@gmail.com>
