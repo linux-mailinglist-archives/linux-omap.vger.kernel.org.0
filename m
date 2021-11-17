@@ -2,86 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38392453F74
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Nov 2021 05:26:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6FEB45423C
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Nov 2021 08:59:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233032AbhKQE3q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 16 Nov 2021 23:29:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60342 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229632AbhKQE3q (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 16 Nov 2021 23:29:46 -0500
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D9C2C061570;
-        Tue, 16 Nov 2021 20:26:48 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id t21so1035302plr.6;
-        Tue, 16 Nov 2021 20:26:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=tS1+hrsrVzfQyOyashnDo/1MOiewYsmRz2aYDUPV49o=;
-        b=lxBEbNwMW1lHDoIwuqj28c8tm0NjGUuTFBJSUJHyDJJG0UBSxIbqIwauHI92BqEfDH
-         HlUQ6j4o9XAZV3+4Gn4iXZNIZiN5H7Ak/qSk7DOCrgPrJs+cONqpLeWAcIAnJlwl5f+u
-         ZSvkGwyybv1XH46QPpr6zCt50wqyxdq5rytd6EUFf8TFl54TSY+LnC8wKgOgILTwjpTJ
-         P726ugo3RfyuzY7qT7z1kri6+Qw9r88k5JiiOIE1BqfxfgsUUnPX+sAVhFoNkKwScK/9
-         H1O7UYICoJtlq9e3ryf5+LDrmunurg9DkPN0O+alJHD29pKf+02VCedH6IHaVT55pb0f
-         VVSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tS1+hrsrVzfQyOyashnDo/1MOiewYsmRz2aYDUPV49o=;
-        b=hv561G5qzU8xoriLL16RGmD8XdNUzq+TYvJkkXc7uFpikHvvyrMopC9U3UQyQV3TLj
-         E4DRWwRLkyksyl/Ur+OF8eSovn49sEeIy+S9vQL30iLB/uMxUxdm2ttPlBVMZV5ZxMID
-         w90Jh46m5voagPl3/y2SHxD6N2dpCrxCIDPG71zUWkAgD1+tiZ/PLmvHT37quqqapXdQ
-         HS7c0sNwy6IZImy8zVBaahK7ZEAS7xsqxcQli83yFYVO8LQCxRW/LbehBeeler8lJhZv
-         ez0L6Jvglvd+3Qc409+DBX6SqMO3B28WWRJPObGcSKKeEH2wHL2zRkYk3ywltxfjtoed
-         h8ow==
-X-Gm-Message-State: AOAM533cMXu52DTsVJbr60T57GPoQl6VP/l+4OfmXWrI7XMFgr7B5Dl5
-        K5ItnXGq3azNqOFkSd+2sWw=
-X-Google-Smtp-Source: ABdhPJxGxJv0Zv2wAjmIKvIusG0vR1m1fkt+DrH84i9dq3xSvWRzSH/46yZBdmayD2vtxIliNe0+YQ==
-X-Received: by 2002:a17:902:db12:b0:142:3ac:7ec3 with SMTP id m18-20020a170902db1200b0014203ac7ec3mr51376829plx.2.1637123207961;
-        Tue, 16 Nov 2021 20:26:47 -0800 (PST)
-Received: from hoboy.vegasvil.org ([2601:645:c000:2163:e2d5:5eff:fea5:802f])
-        by smtp.gmail.com with ESMTPSA id pj12sm3909958pjb.51.2021.11.16.20.26.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Nov 2021 20:26:47 -0800 (PST)
-Date:   Tue, 16 Nov 2021 20:26:45 -0800
-From:   Richard Cochran <richardcochran@gmail.com>
-To:     Kurt Kanzenbach <kurt@linutronix.de>
-Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ethernet: ti: cpsw: Enable PHY timestamping
-Message-ID: <20211117042645.GB23271@hoboy.vegasvil.org>
-References: <20211116080325.92830-1-kurt@linutronix.de>
+        id S234332AbhKQICy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Nov 2021 03:02:54 -0500
+Received: from muru.com ([72.249.23.125]:57096 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231967AbhKQICx (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 17 Nov 2021 03:02:53 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 04A9E80F0;
+        Wed, 17 Nov 2021 08:00:32 +0000 (UTC)
+Date:   Wed, 17 Nov 2021 09:59:52 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Guillaume Tucker <guillaume.tucker@collabora.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Nicolas Pitre <nico@fluxnic.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>,
+        Keith Packard <keithpac@amazon.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "kernelci@groups.io" <kernelci@groups.io>
+Subject: Re: [PATCH v3 7/7] ARM: implement support for vmap'ed stacks
+Message-ID: <YZS2eC0lmR+bonvc@atomide.com>
+References: <20211115111816.3911213-1-ardb@kernel.org>
+ <20211115111816.3911213-8-ardb@kernel.org>
+ <d73b25ec-7ade-2090-9ab4-df4ff8d7db94@collabora.com>
+ <CAMj1kXHLushGdSfH3HEUeRuGuZMFS1PUZ+_7vp5dmRHGtjyYfQ@mail.gmail.com>
+ <YZQPTmfjMq5IQeSR@shell.armlinux.org.uk>
+ <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211116080325.92830-1-kurt@linutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAMj1kXGZmTJiEUqgXn7ibi+UftjYRwMRFzfKUo=XDFKitn-Agg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Nov 16, 2021 at 09:03:25AM +0100, Kurt Kanzenbach wrote:
-> If the used PHYs also support hardware timestamping, all configuration requests
-> should be forwared to the PHYs instead of being processed by the MAC driver
-> itself.
-> 
-> This enables PHY timestamping in combination with the cpsw driver.
-> 
-> Tested with an am335x based board with two DP83640 PHYs connected to the cpsw
-> switch.
-> 
-> Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+* Ard Biesheuvel <ardb@kernel.org> [211116 22:03]:
+> Of course, I may have missed something, but I wouldn't expect a
+> fundamental flaw in this logic to affect only OMAP3/4 based platforms
+> in such a weird way. Perhaps there is something I missed in terms of
+> TLB maintenance, although I would expect the existing fault handler to
+> take care of that.
 
-Acked-by: Richard Cochran <richardcochran@gmail.com>
+Looks like disabling the deeper idle states for cpuidle where the CPUSs
+get shut down and restored seems to work around the issue at least for
+omap4. The assembly code is in arch/arm/mach-omap2/sleep44xx.S, and in
+sleep34xx.S for omap3. No idea so far what might be causing this..
+
+Regards,
+
+Tony
