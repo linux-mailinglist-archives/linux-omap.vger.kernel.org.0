@@ -2,73 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D17E6454902
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Nov 2021 15:40:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23EDB455707
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Nov 2021 09:34:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238820AbhKQOnW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Nov 2021 09:43:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57988 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238684AbhKQOnI (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 17 Nov 2021 09:43:08 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id 29B83613A4;
-        Wed, 17 Nov 2021 14:40:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637160009;
-        bh=j28oowKD8nhaQY7RB0VZECtzz89fGIR629vd9TTVopA=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=EpaeXgLfKQWNlk8V9VVNlGwcJeMMDCVQxQxL7AZ4MqNmrHxSGO7aIUa/tqDnekvzy
-         9qfyNKhtl/+L3WPpVJkhfMEQVFxk6r7C6gw0oCeR/ftLDIAHAip6IPHFUrNe7GqEIT
-         PNeqYbefndBr/Ysdozlir6UHHOjxcHA7eYHyoFnbxLkeUXkJt2HT/aoaJHv+fRzKtf
-         Q3nVjIUT0Le3tMf+5Fmo/Hx0GOljpE8FSjUgJbXFPwiaPfJ1p8CN1KZKD9XCj6K+7B
-         10swCLygW6ionzdCLumZ+OZZnY1M8BBynsyX/BkhRZbfVxCr7OospLYz/hKvlLoRgF
-         xiZMYwTwJxBFA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 1F24F609D3;
-        Wed, 17 Nov 2021 14:40:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        id S244570AbhKRIhC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 18 Nov 2021 03:37:02 -0500
+Received: from mail-vk1-f178.google.com ([209.85.221.178]:43905 "EHLO
+        mail-vk1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231745AbhKRIg7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Nov 2021 03:36:59 -0500
+Received: by mail-vk1-f178.google.com with SMTP id f7so3314221vkf.10;
+        Thu, 18 Nov 2021 00:33:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZHqYNDJJeUEUo7A1lpPpFJOTlOxuy2hnNwzoc1obFj4=;
+        b=oBS12w+9eoB+GNK5ttaheySAoQCi5//SWrMXplOzeMxA2iLOEtHROkDKhmy9KOEups
+         QY+Br51pQc1iTBVUdSLcUHeY4w4/cD84JFzzkYaILeNY4XuV1eVGlF/IY3EmwdlTM2EX
+         B8zsLhD5Ydz+1pyJaway/rZUchv7O2nLYMZ+eLjGGnsrg8NVfGvCaSdUytb0/YSv8O8B
+         U1zU9NcyznDONM/HlZfrZE1cOkvYfZHEN6COp7+gz1/4PgVEhnQOBQ3u0azawlIJNQAl
+         KgPrnYddatJVJ6ZEf5xdNhqFKZLaezkw/Y1vYQ2FZ/HFEFjRORxKB5DSNmx1WY0v3enK
+         JACg==
+X-Gm-Message-State: AOAM533lq04oRS1U+BtW9JWXd8rFbPsOs96AaFhomQUfAIVLG2A0j6if
+        MM51zapppiHezV0U5WGBINpZGmQoxSKuWw==
+X-Google-Smtp-Source: ABdhPJw9zNRA1CPsFkP107X/6FhORafVKbRo6lA4KacCUoDjaNiz5H76ur4ROy1DEjGph3EDGz+vuQ==
+X-Received: by 2002:a05:6122:2158:: with SMTP id m24mr33991798vkd.1.1637224439099;
+        Thu, 18 Nov 2021 00:33:59 -0800 (PST)
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com. [209.85.222.52])
+        by smtp.gmail.com with ESMTPSA id c21sm1238238vso.21.2021.11.18.00.33.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Nov 2021 00:33:58 -0800 (PST)
+Received: by mail-ua1-f52.google.com with SMTP id i6so11962945uae.6;
+        Thu, 18 Nov 2021 00:33:57 -0800 (PST)
+X-Received: by 2002:a05:6102:e82:: with SMTP id l2mr78426134vst.37.1637224437450;
+ Thu, 18 Nov 2021 00:33:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ethernet: ti: cpsw: Enable PHY timestamping
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <163716000912.6275.7397497381606966697.git-patchwork-notify@kernel.org>
-Date:   Wed, 17 Nov 2021 14:40:09 +0000
-References: <20211116080325.92830-1-kurt@linutronix.de>
-In-Reply-To: <20211116080325.92830-1-kurt@linutronix.de>
-To:     Kurt Kanzenbach <kurt@linutronix.de>
-Cc:     grygorii.strashko@ti.com, davem@davemloft.net, kuba@kernel.org,
-        daniel@iogearbox.net, toke@redhat.com, ilias.apalodimas@linaro.org,
-        lorenzo@kernel.org, bjorn@kernel.org, bigeasy@linutronix.de,
-        richardcochran@gmail.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org
+References: <20211117121829.11141-1-guozhengkui@vivo.com>
+In-Reply-To: <20211117121829.11141-1-guozhengkui@vivo.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 18 Nov 2021 09:33:46 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWxSBSb0zA=_Httx53ocJ5qtKUHArq_+pCAWKB9ppzn1g@mail.gmail.com>
+Message-ID: <CAMuHMdWxSBSb0zA=_Httx53ocJ5qtKUHArq_+pCAWKB9ppzn1g@mail.gmail.com>
+Subject: Re: [PATCH] video: omapfb: Use scnprintf() instead of snprintf()
+To:     Guo Zhengkui <guozhengkui@vivo.com>
+Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        "open list:OMAP FRAMEBUFFER SUPPORT" <linux-fbdev@vger.kernel.org>,
+        "open list:OMAP FRAMEBUFFER SUPPORT" <linux-omap@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <dri-devel@lists.freedesktop.org>,
+        open list <linux-kernel@vger.kernel.org>, kernel@vivo.com,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        Gilles Muller <Gilles.Muller@inria.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>, cocci@inria.fr
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
+Hi Guo,
 
-This patch was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+CC cocci
 
-On Tue, 16 Nov 2021 09:03:25 +0100 you wrote:
-> If the used PHYs also support hardware timestamping, all configuration requests
-> should be forwared to the PHYs instead of being processed by the MAC driver
-> itself.
-> 
-> This enables PHY timestamping in combination with the cpsw driver.
-> 
-> Tested with an am335x based board with two DP83640 PHYs connected to the cpsw
-> switch.
-> 
-> [...]
+On Wed, Nov 17, 2021 at 1:58 PM Guo Zhengkui <guozhengkui@vivo.com> wrote:
+> Fix following warnings:
+> ./drivers/video/fbdev/omap/omapfb_main.c:1382:8-16:
+> WARNING: use scnprintf or sprintf
+> ./drivers/video/fbdev/omap/omapfb_main.c:1306:8-16:
+> WARNING: use scnprintf or sprintf
+>
+> Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
 
-Here is the summary with links:
-  - [net-next] net: ethernet: ti: cpsw: Enable PHY timestamping
-    https://git.kernel.org/netdev/net-next/c/65483559dc0a
+Thanks for your patch!
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> --- a/drivers/video/fbdev/omap/omapfb_main.c
+> +++ b/drivers/video/fbdev/omap/omapfb_main.c
+> @@ -1303,7 +1303,7 @@ static ssize_t omapfb_show_panel_name(struct device *dev,
+>  {
+>         struct omapfb_device *fbdev = dev_get_drvdata(dev);
+>
+> -       return snprintf(buf, PAGE_SIZE, "%s\n", fbdev->panel->name);
+> +       return scnprintf(buf, PAGE_SIZE, "%s\n", fbdev->panel->name);
+>  }
 
+I guess all of these should use sysfs_emit() instead.
 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
