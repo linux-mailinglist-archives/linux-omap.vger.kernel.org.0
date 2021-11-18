@@ -2,87 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62388455B78
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Nov 2021 13:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2493455C69
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Nov 2021 14:13:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344585AbhKRM0U (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 18 Nov 2021 07:26:20 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:50728 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1344598AbhKRM0Q (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 18 Nov 2021 07:26:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637238194;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=8z10nVUuLThSGaC7z17W3SUgE6/tXKgk2oSZG6Kearc=;
-        b=QpYEeXU0BSOoOXyWZ9gcjRDdaJDhUvtTc0HOiXQe8pJNvg1FjFqu9yJvSeHRK5sF8RO9yB
-        HHkAkVyCDcsTEX1/UURxkrK7WsNIKm2FF/jYqyih5xWYJA4ZyCZyW/IstUzxMmShx7F4Q9
-        95J9OhdQ845Zs7GMbvgDsWnWhR8hUWQ=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-566-KoLvdVvePZmKwJIfs9uvpw-1; Thu, 18 Nov 2021 07:23:13 -0500
-X-MC-Unique: KoLvdVvePZmKwJIfs9uvpw-1
-Received: by mail-ed1-f72.google.com with SMTP id f4-20020a50e084000000b003db585bc274so5080552edl.17
-        for <linux-omap@vger.kernel.org>; Thu, 18 Nov 2021 04:23:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=8z10nVUuLThSGaC7z17W3SUgE6/tXKgk2oSZG6Kearc=;
-        b=ffbZDz5EiZJT1PmCyLDhU+iuc7MFWUGsQSGPbtQ/7H337TH0tZY+C1FzJqXRkWohfL
-         4Zx4KTBynsYgw3Ir8huRpFv6UYYxnUhQPvUzHTFoEZi8zj/G7CE5/ExZ5YIIoaJLluYb
-         usz3k1/Q8GqnBQ8ruZrL2LvvGQe1y3yrrQ84zyzZUuVcukW20Sopk0cddaSOZ4Rqk959
-         M+aBL7JCkUgRjPKO+ozt8+lBnG6dTUimvwvadhBRzRDndkut7FRWQGW/JZC89biJirzU
-         hbYjeV8N95D1EAm08OmwTlUCmnIukccEPCYYV13/Os0SueUiihaAD3Kepo2Bvlh8OO3Q
-         J/wg==
-X-Gm-Message-State: AOAM530kSWIn5JGLMz7CmFTzoXKpWaphbBSsPq/YNlhtLMttw71a5I2I
-        gxX3gqvaHDhUnDDpmhiwjDIsMcQfDaG01ev3G73+qzGVCQ/ZbYocPx1dbAApVl3FmxCen5tsA+p
-        CNGceigxfEt5LMnmoQDDXbQ==
-X-Received: by 2002:a17:906:79c3:: with SMTP id m3mr32043403ejo.332.1637238192439;
-        Thu, 18 Nov 2021 04:23:12 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwXkZowzHNR4Kff8uzrLdpzFSDx11xdWSgEZrkn+GcIjq2GwcSEmYZYHEyqXcc24iAApiYDNA==
-X-Received: by 2002:a17:906:79c3:: with SMTP id m3mr32043355ejo.332.1637238192136;
-        Thu, 18 Nov 2021 04:23:12 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c1e:bf00:1054:9d19:e0f0:8214? (2001-1c00-0c1e-bf00-1054-9d19-e0f0-8214.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:1054:9d19:e0f0:8214])
-        by smtp.gmail.com with ESMTPSA id l16sm665254edb.59.2021.11.18.04.23.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Nov 2021 04:23:11 -0800 (PST)
-Message-ID: <3908d07c-f397-2af3-83f0-a190968130d9@redhat.com>
-Date:   Thu, 18 Nov 2021 13:23:11 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] extcon: fix extcon_get_extcon_dev() error handling
-Content-Language: en-US
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>
-Cc:     Chanwoo Choi <cw00.choi@samsung.com>,
+        id S229585AbhKRNQX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 18 Nov 2021 08:16:23 -0500
+Received: from mga12.intel.com ([192.55.52.136]:47562 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229461AbhKRNQW (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 18 Nov 2021 08:16:22 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10171"; a="214211668"
+X-IronPort-AV: E=Sophos;i="5.87,244,1631602800"; 
+   d="scan'208";a="214211668"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2021 05:13:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,244,1631602800"; 
+   d="scan'208";a="646558919"
+Received: from kuha.fi.intel.com ([10.237.72.166])
+  by fmsmga001.fm.intel.com with SMTP; 18 Nov 2021 05:13:18 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 18 Nov 2021 15:13:17 +0200
+Date:   Thu, 18 Nov 2021 15:13:17 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
         Sebastian Reichel <sre@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>, Felipe Balbi <balbi@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Felipe Balbi <balbi@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Guenter Roeck <linux@roeck-us.net>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
         kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] extcon: fix extcon_get_extcon_dev() error handling
+Message-ID: <YZZRbYj88r2tUBT2@kuha.fi.intel.com>
 References: <20211118113026.GG1147@kili>
-From:   Hans de Goede <hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20211118113026.GG1147@kili>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-On 11/18/21 12:32, Dan Carpenter wrote:
+On Thu, Nov 18, 2021 at 02:32:22PM +0300, Dan Carpenter wrote:
 > The extcon_get_extcon_dev() function returns error pointers on error
 > and NULL when it's a -EPROBE_DEFER defer situation.  There are eight
 > callers and only two of them handled this correctly.  In the other
@@ -95,14 +60,7 @@ On 11/18/21 12:32, Dan Carpenter wrote:
 > 
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Thanks, patch looks good to me:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
 > ---
 > The two callers where the drivers can be built without CONFIG_EXTCON
@@ -275,5 +233,8 @@ Hans
 >  
 >  			dev_info(dev, "controlling USB role\n");
 >  		} else {
-> 
+> -- 
+> 2.20.1
 
+-- 
+heikki
