@@ -2,173 +2,265 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28F16456AF4
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Nov 2021 08:33:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 948C3456B4B
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Nov 2021 09:06:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229896AbhKSHgR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Nov 2021 02:36:17 -0500
-Received: from mail-sgaapc01on2135.outbound.protection.outlook.com ([40.107.215.135]:18113
-        "EHLO APC01-SG2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229523AbhKSHgQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 19 Nov 2021 02:36:16 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g2jcRIQICQHuQmvFSZRIDmsRfC/Ja3gdo5o9+Axlree0NmsZznQLASC6uody6df2Z+tWSWZAQAnaw45mP52VNPim76vIaqjGlesJs2xTTkd/zRdC0EoVVNHm0CsWjUcyZXqCVAWF1Kzx6aN885a3hy/l0jSTkODC7Ctq3TCgh6QA1G3A4y5n6JMX8kXc1jlZ1KG8xhPHjbK6Zu5XEshFEhkq3N2NuFIPMjRKi+5/vFES5D0QQ51yeOLQjSMAXa/arq546ff8U6GW8Z01BPVrT/P/MukLmuCgfQbX/J8VSybTylt4nEFtTM4uip4som3uh7z7BGtnTC/as7CKN9Q3bg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H7WGpVYbJ2fu58L5txpZ47ZzRmzY1LIqlcm0FX3LOO0=;
- b=PkeHvhwi/Iz5OmkRNse+QEDmst39CNKTgtQqqTH3PsDwwyfRp4pRuj3cReXx7n3PjiL0R/kwAeIzrwSMbAlD2BQBKmaCWN8CyqNGAjlaAzKOBO4gIZ/KSGF0ZKSROZEMg4JOJu3BTdqHVDZqGKac5dgE0pWgOM/EWqOM0nEuNcgcZbi6EV8iyO18nIitkAOPmYf+vmJhIx7vfQWj3gST/MJpYp1yJCTl30R+FABvWBxhUyg4a0al1UrvYhF4bEtxdzABdiUqOzYTAlSU+5KneXIfQEvzhi7QXE+mtSQ7NBv8oDrVPwza5LrA8w8WHGBRUTeO86Hupyo+5JQsh1XeUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com;
- s=selector2-vivo0-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H7WGpVYbJ2fu58L5txpZ47ZzRmzY1LIqlcm0FX3LOO0=;
- b=LGPfMP0/N3AaJG96QH3QXv1UN49ukxBb4ifkHqb+tGjMZGPJoWiugrRAFRoDETM0ieQM/oQyCQUhfeBs/QBDQA2SiQPqoOjSQ+RnfiUApjxK0c0yJedjA2y/IQdi5p1loQ/rnAqKA3+5GUcMaOBjS6EWMAiBdWQLVqUaveiuNRI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from HK2PR06MB3492.apcprd06.prod.outlook.com (2603:1096:202:2f::10)
- by HK2PR0601MB2033.apcprd06.prod.outlook.com (2603:1096:202:8::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.19; Fri, 19 Nov
- 2021 07:33:11 +0000
-Received: from HK2PR06MB3492.apcprd06.prod.outlook.com
- ([fe80::814a:4668:a3bd:768]) by HK2PR06MB3492.apcprd06.prod.outlook.com
- ([fe80::814a:4668:a3bd:768%7]) with mapi id 15.20.4713.022; Fri, 19 Nov 2021
- 07:33:10 +0000
-From:   Guo Zhengkui <guozhengkui@vivo.com>
-To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Guo Zhengkui <guozhengkui@vivo.com>,
-        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Cc:     kernel@vivo.com
-Subject: [PATCH] video: omapfb: Use sysfs_emit() instead of snprintf()
-Date:   Fri, 19 Nov 2021 15:31:26 +0800
-Message-Id: <20211119073139.18832-1-guozhengkui@vivo.com>
-X-Mailer: git-send-email 2.20.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR03CA0125.apcprd03.prod.outlook.com
- (2603:1096:4:91::29) To HK2PR06MB3492.apcprd06.prod.outlook.com
- (2603:1096:202:2f::10)
-MIME-Version: 1.0
-Received: from guozhengkui.debian (203.90.234.87) by SG2PR03CA0125.apcprd03.prod.outlook.com (2603:1096:4:91::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.11 via Frontend Transport; Fri, 19 Nov 2021 07:33:09 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 166350bc-ffd5-4cf2-48cc-08d9ab2ed67f
-X-MS-TrafficTypeDiagnostic: HK2PR0601MB2033:
-X-Microsoft-Antispam-PRVS: <HK2PR0601MB203379AC009E8F5F86A2E4F5C79C9@HK2PR0601MB2033.apcprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:82;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1Hm8fqlNZ8K+lqlB6sBtXiC1zALwEcVa+ENrTuKOl13bkjWO9qu7yfgscj5cIuYiA5h2LO/G5fnUk87KkaKtKW/Qw5J8m0KLceBO/hT4uoGBoFU+hn/pRh7Kwiw5sPM+O/FD01dUK7976t+sFQ20WHQ6cXjv37D9KIpR85v1ICssIo6z4QcDA7mIYphMrgw717WYNgm7CW6gVKMEI9t661KCwrvYYT26fFS+riTT7KZcx44GUOHHkvLOY4c/R1gV4d1uWJfFUfgSJaRw5ifJPMTod/X3ke/SYFV/0NGtQ2yajNrH+5DKO2nZ9dLMfzyA9yZC9gng0WMAd4qV2KBYt36gBG0El6BlaUOkQbh4vi4vqTss+mWUnMY+dm/BNB1oUQongMWB7/qqOLcQXv9bnXFIIYwMEVH3xmq5ldduLYeKimGhNghgb6g8DUX6dhW2wZ/fXHHr3HW7n10bY8lPTlFjWMaSi8RHZvp4ZgLv0nYORg+owjXaz2ko0xhJNFmPy0DD94OU9k2f/KT1FqDIDxyacQ6LF74G5WK3xv/zfrh6JhdlzXhsZvnGcJO/ADZSuXjiED9/iE0rSqc/VuuA1DgLQR8dXoIE37IRR6ZYp+3Sn0iEIjXM5cEaZML8mBObMv6jc45rkWMrSoyQ0AJGGvPH1lH3Sxr8TWOgjWtzOjRurl6Ez7nKoGAqjnawM/DsIc+ABxJ3T9ib2XYZn7T1Fg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HK2PR06MB3492.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(6486002)(38100700002)(26005)(52116002)(2906002)(956004)(4326008)(508600001)(186003)(316002)(110136005)(6666004)(8936002)(5660300002)(38350700002)(1076003)(86362001)(66556008)(6512007)(66476007)(6506007)(107886003)(36756003)(83380400001)(66946007)(2616005)(8676002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?a4hKdYsY4e5SovbhUwQRSjZogFjn+3HcsgKQjTNBr2mhRC9FFJmxRKYsicB3?=
- =?us-ascii?Q?n8USvZCxbA4PIG7Ngn3+LDoRsZUmOhufRWui4LwrWtPhaQm/o0lEfnytOG7/?=
- =?us-ascii?Q?pdSAu7tANfo3Gwf52d/6sMKSr7+KX1mJeEVfMkw18Su7u3bWg8k0iO5ovLG1?=
- =?us-ascii?Q?mISbtCqgdwzA2xY8E52KE8ptU5Gy2gE4ZQrlmdplLED+XeGuuAHJcrLE0t5/?=
- =?us-ascii?Q?c3lQqFMTPhYleVngbq+xOsziHFt5bOikctoQbBGt44xqsEzypMcv8oTie5wr?=
- =?us-ascii?Q?xC+qsaPTt5396ftlgyeGpgvui4OyQcVHk7PxJ5jgEzd3l8cpYZEbfgZ+yN81?=
- =?us-ascii?Q?9WbJFuO3XJcXH2VxH58YCXUGC2yXgJPQI9/wKB9c6VfdB5Om/7PnJRrwpEoi?=
- =?us-ascii?Q?Hg0kELmz4oonGJtjTDYIR9erAER7ewhazKE8Imjdlm4kWkvM8aVDz1hf2kGQ?=
- =?us-ascii?Q?ZayYAnvHYJaLK/zzGDi2f7PsD69ru90CH+vwX6TW7PNs771DPWGbMTAVTNfI?=
- =?us-ascii?Q?2IGWaGCt9jahVGr0DKmkJOakr03Xv8WiRR07XfzmdKIcScBxqhc9Dfb/UUOt?=
- =?us-ascii?Q?AQFPZ78pWXtwPJ32F5OGso44sCicHPUFZpR3Up+gzOCYVmb41eyJzZBKXHHI?=
- =?us-ascii?Q?3uIb6V+AgPd+fDffE37H8Jl4pbL3XWK3/Sb8Xru+ks/huimC3pJsu6/V1IvC?=
- =?us-ascii?Q?KjorAcHXpGbEEaNsl+xOLQWP5sR+BtbQFd+hGreDhp68ImaxKyRTIBcGicyy?=
- =?us-ascii?Q?A/V45zzf23FkIpzENMNGdkRcDFMM+Z+9Ecn0LBVx9GOxPT2gBQxWtQF0704P?=
- =?us-ascii?Q?fUpjHmK8Qpn6N/4nWEq4iMvD2+7dFsSt+Z64+cryQnST02zW23OT0DUP4YFx?=
- =?us-ascii?Q?CLh83WnkWEm1d7IwmVviTIIuNRJvuGd7HL5XYovdRI3+H0kQQG5HuWJ0UOQn?=
- =?us-ascii?Q?GmiBlD5UJSEe/r7ostNVM0rT4EyYvVuOoMUmNSoaeG/5p2IiTXrduU5DLwZ2?=
- =?us-ascii?Q?GhRigArZXBzt+rbTvBM0vv46YQDcyoOlb/qOv+NnIuW/G26aTjr9avHLgsss?=
- =?us-ascii?Q?EAhQ3pGvPMMalNAHs04obsQzcQwnyavMRrgqZU+IXEO//MFDBhqkD3iiml0R?=
- =?us-ascii?Q?xEL6eRPfmo7E7yQUIp6ADfUA4LubqtxgX/P1NQnkde5hUkw62a78DLKJQg/F?=
- =?us-ascii?Q?B4jUgm13a8dp5IT92YcJoLTjW8Q/xqhTIyx2+CVWK5nDQzuOwj5gfciIR30k?=
- =?us-ascii?Q?c39YmvL5r72+j8m5za1q342n9kjsp65JyrCGohnDSF+4/FFQX6i1uqsBPno+?=
- =?us-ascii?Q?8F4LDb3zXrTizq4GhxEKO64sxTRp/urR+qLdqn+p/cGKzh0hQCpJb8/0P6AV?=
- =?us-ascii?Q?0PwDegglxa3ymxH7bERjofOJT0pHbduFtLSP+wAR7/zU+xCKBZNnTlOpL5yU?=
- =?us-ascii?Q?q4GpptH4chp+aCSXkCQXAtfCvA6osYfpfrxzIrEXXHfzg8bo7hkhRSYa6GC5?=
- =?us-ascii?Q?ovdfwoxCZHtTXMfW3cPsupeRxPHLfWUehfxJ1ZNUm7AZ6GqVxf44NYGeUPRQ?=
- =?us-ascii?Q?zk3hScg3TedOPMNqm1LvSqUwytochuvhnR/STLaaVcXiJoqmcINFyG9uwHNI?=
- =?us-ascii?Q?tkw30BuCTzpK+RV5D3KJuWE=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 166350bc-ffd5-4cf2-48cc-08d9ab2ed67f
-X-MS-Exchange-CrossTenant-AuthSource: HK2PR06MB3492.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2021 07:33:10.7855
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kuAiyYw1Z0aQFCDYiERa4yYyAjG9ap3osROt0XDly6GuU4HH2RaULan8hJHP8V8jBoCNJioyGJqWh9eDEFSgIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HK2PR0601MB2033
+        id S232142AbhKSIJg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Nov 2021 03:09:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56920 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229998AbhKSIJg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Nov 2021 03:09:36 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DB6C061574;
+        Fri, 19 Nov 2021 00:06:34 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id x6so27490610edr.5;
+        Fri, 19 Nov 2021 00:06:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=HpnI11UFmqSwcVKDCW0pz5ox3oUMTdHuPvOQ5eFVx6s=;
+        b=cizEyZ8TxXeJwifdYV9Rcx4bH8o3Fkht45mLUYYLvZeq0gCOTQUI0Gz2d7IA6NUnUw
+         SXrj1pKZPhH418mhr3QGhza/KW/CwjWChmOLp8YUNcX5061FbkGVm47NfMLJZfXkcl2/
+         sSNr84jcVxQj0/kkB5v2kF/bIJntIhGPtC5UT3NErMo05JSoHf/6HsEP5TEwefFKftu0
+         NcdgqkFCeDltX/ob5efO9YbwmD07+Yp7d+vLoQfh6amCzwgWUR1vA1hSi7u8pEiszb37
+         J3jwCWIIFxSeBSHQoKyRa+Liyaan8WysXBpmsr2M3ZBljcCyYHKLdJ1WiwwPwiul/hUP
+         jopw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=HpnI11UFmqSwcVKDCW0pz5ox3oUMTdHuPvOQ5eFVx6s=;
+        b=dc5HpBsR1UxCqubyMJs50slqOfkm40x3ubC12puvMaF+QIyMBWcQEdeiRk9ilZ4Th4
+         hdqJGVMv9pUg1eQApP0O68jfu019k8fQelsi30UaPmwIDSR5AyT0T72g1bi4OM48l/Ri
+         /nsfzeuNExb6pect9SMJxF1VjTvEBdIS+O1j+5T7Mexn+BtMrqoF4mKbbUT/83s5x+BS
+         JhM3s9zXLb45FPhRNXaYBnPxcxUrDaYeybnf5ez4HWt9PPqAYsH7SmYpM2wgGwlizurn
+         HAZmwVisS95S5THlti1drFbNVTVviug3catLPUuUVR2QHOdVZG9DzUURYS1xRJxb/nyQ
+         Vn6A==
+X-Gm-Message-State: AOAM533AVfQUPqhblwKOS8Oa4T37uUG/0jVbM0OATSfmvIrAohiNdAki
+        sqhkNq1R9UWElL4CNZdFllc=
+X-Google-Smtp-Source: ABdhPJyyODmI058mT/cuOjFCdvdqhRDFKrjP3tev97P69Iiu8/g3pBAZAfjg48ByYtgjr+fnmvtLYw==
+X-Received: by 2002:a05:6402:4407:: with SMTP id y7mr21542840eda.140.1637309193106;
+        Fri, 19 Nov 2021 00:06:33 -0800 (PST)
+Received: from localhost.localdomain ([46.249.74.23])
+        by smtp.gmail.com with ESMTPSA id w23sm1092231edr.19.2021.11.19.00.06.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 19 Nov 2021 00:06:32 -0800 (PST)
+From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+To:     tomba@kernel.org
+Cc:     matthijsvanduin@gmail.com, airlied@linux.ie, daniel@ffwll.ch,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        merlijn@wizzup.org, philipp@uvos.xyz,
+        laurent.pinchart@ideasonboard.com,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Subject: [PATCH v3] drm: omapdrm: Export correct scatterlist for TILER backed BOs
+Date:   Fri, 19 Nov 2021 10:06:20 +0200
+Message-Id: <1637309180-31032-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <3e9307e5-1f03-9854-2b2b-859173e8f2ae@gmail.com>
+References: <3e9307e5-1f03-9854-2b2b-859173e8f2ae@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use sysfs_emit() instead of snprintf().
+Memory of BOs backed by TILER is not contiguous, but omap_gem_map_dma_buf()
+exports it like it is. This leads to (possibly) invalid memory accesses if
+another device imports such a BO.
 
-Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
+Fix that by providing sg that correctly describes TILER memory layout.
+Align TILER allocations to page, so importer to be able to correctly set
+its MMU if have one. Set export size accounting for the alignment. Also,
+make sure to destroy sg on unpin, as it is no longer valid.
+
+Tested on Motorola Droid4 by using GPU (sgx540) to render.
+
+Suggested-by: Matthijs van Duin <matthijsvanduin@gmail.com>
+Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
 ---
- drivers/video/fbdev/omap/omapfb_main.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/omapdrm/omap_gem.c        | 79 ++++++++++++++++++++++++++++++-
+ drivers/gpu/drm/omapdrm/omap_gem.h        |  2 +
+ drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c | 34 ++-----------
+ 3 files changed, 85 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-index b495c09e6102..083388a4ceeb 100644
---- a/drivers/video/fbdev/omap/omapfb_main.c
-+++ b/drivers/video/fbdev/omap/omapfb_main.c
-@@ -16,6 +16,7 @@
- #include <linux/slab.h>
- #include <linux/uaccess.h>
- #include <linux/module.h>
-+#include <linux/sysfs.h>
+diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
+index 97e5fe6..54cb6ce 100644
+--- a/drivers/gpu/drm/omapdrm/omap_gem.c
++++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+@@ -800,7 +800,7 @@ int omap_gem_pin(struct drm_gem_object *obj, dma_addr_t *dma_addr)
+ 			if (omap_obj->flags & OMAP_BO_TILED_MASK) {
+ 				block = tiler_reserve_2d(fmt,
+ 						omap_obj->width,
+-						omap_obj->height, 0);
++						omap_obj->height, PAGE_SIZE);
+ 			} else {
+ 				block = tiler_reserve_1d(obj->size);
+ 			}
+@@ -862,6 +862,11 @@ static void omap_gem_unpin_locked(struct drm_gem_object *obj)
+ 		return;
  
- #include <linux/omap-dma.h>
- 
-@@ -1303,7 +1304,7 @@ static ssize_t omapfb_show_panel_name(struct device *dev,
- {
- 	struct omapfb_device *fbdev = dev_get_drvdata(dev);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n", fbdev->panel->name);
-+	return sysfs_emit(buf, "%s\n", fbdev->panel->name);
+ 	if (refcount_dec_and_test(&omap_obj->dma_addr_cnt)) {
++		if (omap_obj->sgt) {
++			sg_free_table(omap_obj->sgt);
++			kfree(omap_obj->sgt);
++			omap_obj->sgt = NULL;
++		}
+ 		ret = tiler_unpin(omap_obj->block);
+ 		if (ret) {
+ 			dev_err(obj->dev->dev,
+@@ -974,6 +979,78 @@ int omap_gem_put_pages(struct drm_gem_object *obj)
+ 	return 0;
  }
  
- static ssize_t omapfb_show_bklight_level(struct device *dev,
-@@ -1314,8 +1315,8 @@ static ssize_t omapfb_show_bklight_level(struct device *dev,
- 	int r;
++struct sg_table *omap_gem_get_sg(struct drm_gem_object *obj)
++{
++	struct omap_gem_object *omap_obj = to_omap_bo(obj);
++	dma_addr_t addr;
++	struct sg_table *sgt;
++	struct scatterlist *sg;
++	unsigned int count, len, stride, i;
++	int ret;
++
++	ret = omap_gem_pin(obj, &addr);
++	if (ret)
++		return ERR_PTR(ret);
++
++	mutex_lock(&omap_obj->lock);
++
++	sgt = omap_obj->sgt;
++	if (sgt)
++		goto out;
++
++	sgt = kzalloc(sizeof(*sgt), GFP_KERNEL);
++	if (!sgt) {
++		ret = -ENOMEM;
++		goto err_unpin;
++	}
++
++	if (omap_obj->flags & OMAP_BO_TILED_MASK) {
++		enum tiler_fmt fmt = gem2fmt(omap_obj->flags);
++
++		len = omap_obj->width << (int)fmt;
++		count = omap_obj->height;
++		stride = tiler_stride(fmt, 0);
++	} else {
++		len = obj->size;
++		count = 1;
++		stride = 0;
++	}
++
++	ret = sg_alloc_table(sgt, count, GFP_KERNEL);
++	if (ret)
++		goto err_free;
++
++	for_each_sg(sgt->sgl, sg, count, i) {
++		sg_set_page(sg, phys_to_page(addr), len, offset_in_page(addr));
++		sg_dma_address(sg) = addr;
++		sg_dma_len(sg) = len;
++
++		addr += stride;
++	}
++
++	omap_obj->sgt = sgt;
++out:
++	mutex_unlock(&omap_obj->lock);
++	return sgt;
++
++err_free:
++	kfree(sgt);
++err_unpin:
++	mutex_unlock(&omap_obj->lock);
++	omap_gem_unpin(obj);
++	return ERR_PTR(ret);
++}
++
++void omap_gem_put_sg(struct drm_gem_object *obj, struct sg_table *sgt)
++{
++	struct omap_gem_object *omap_obj = to_omap_bo(obj);
++
++	if (WARN_ON(omap_obj->sgt != sgt))
++		return;
++
++	omap_gem_unpin(obj);
++}
++
+ #ifdef CONFIG_DRM_FBDEV_EMULATION
+ /*
+  * Get kernel virtual address for CPU access.. this more or less only
+diff --git a/drivers/gpu/drm/omapdrm/omap_gem.h b/drivers/gpu/drm/omapdrm/omap_gem.h
+index eda9b48..19209e3 100644
+--- a/drivers/gpu/drm/omapdrm/omap_gem.h
++++ b/drivers/gpu/drm/omapdrm/omap_gem.h
+@@ -82,5 +82,7 @@ int omap_gem_get_pages(struct drm_gem_object *obj, struct page ***pages,
+ int omap_gem_rotated_dma_addr(struct drm_gem_object *obj, u32 orient,
+ 		int x, int y, dma_addr_t *dma_addr);
+ int omap_gem_tiled_stride(struct drm_gem_object *obj, u32 orient);
++struct sg_table *omap_gem_get_sg(struct drm_gem_object *obj);
++void omap_gem_put_sg(struct drm_gem_object *obj, struct sg_table *sgt);
  
- 	if (fbdev->panel->get_bklight_level) {
--		r = snprintf(buf, PAGE_SIZE, "%d\n",
--			     fbdev->panel->get_bklight_level(fbdev->panel));
-+		r = sysfs_emit(buf, "%d\n",
-+			       fbdev->panel->get_bklight_level(fbdev->panel));
- 	} else
- 		r = -ENODEV;
- 	return r;
-@@ -1348,8 +1349,8 @@ static ssize_t omapfb_show_bklight_max(struct device *dev,
- 	int r;
- 
- 	if (fbdev->panel->get_bklight_level) {
--		r = snprintf(buf, PAGE_SIZE, "%d\n",
--			     fbdev->panel->get_bklight_max(fbdev->panel));
-+		r = sysfs_emit(buf, "%d\n",
-+			       fbdev->panel->get_bklight_max(fbdev->panel));
- 	} else
- 		r = -ENODEV;
- 	return r;
-@@ -1379,7 +1380,7 @@ static ssize_t omapfb_show_ctrl_name(struct device *dev,
+ #endif /* __OMAPDRM_GEM_H__ */
+diff --git a/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c b/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
+index f4cde3a..95a9a89 100644
+--- a/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
++++ b/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
+@@ -21,45 +21,21 @@ static struct sg_table *omap_gem_map_dma_buf(
  {
- 	struct omapfb_device *fbdev = dev_get_drvdata(dev);
+ 	struct drm_gem_object *obj = attachment->dmabuf->priv;
+ 	struct sg_table *sg;
+-	dma_addr_t dma_addr;
+-	int ret;
+-
+-	sg = kzalloc(sizeof(*sg), GFP_KERNEL);
+-	if (!sg)
+-		return ERR_PTR(-ENOMEM);
+-
+-	/* camera, etc, need physically contiguous.. but we need a
+-	 * better way to know this..
+-	 */
+-	ret = omap_gem_pin(obj, &dma_addr);
+-	if (ret)
+-		goto out;
+-
+-	ret = sg_alloc_table(sg, 1, GFP_KERNEL);
+-	if (ret)
+-		goto out;
+-
+-	sg_init_table(sg->sgl, 1);
+-	sg_dma_len(sg->sgl) = obj->size;
+-	sg_set_page(sg->sgl, pfn_to_page(PFN_DOWN(dma_addr)), obj->size, 0);
+-	sg_dma_address(sg->sgl) = dma_addr;
++	sg = omap_gem_get_sg(obj);
++	if (IS_ERR(sg))
++		return sg;
  
--	return snprintf(buf, PAGE_SIZE, "%s\n", fbdev->ctrl->name);
-+	return sysfs_emit(buf, "%s\n", fbdev->ctrl->name);
+ 	/* this must be after omap_gem_pin() to ensure we have pages attached */
+ 	omap_gem_dma_sync_buffer(obj, dir);
+ 
+ 	return sg;
+-out:
+-	kfree(sg);
+-	return ERR_PTR(ret);
  }
  
- static struct device_attribute dev_attr_ctrl_name =
+ static void omap_gem_unmap_dma_buf(struct dma_buf_attachment *attachment,
+ 		struct sg_table *sg, enum dma_data_direction dir)
+ {
+ 	struct drm_gem_object *obj = attachment->dmabuf->priv;
+-	omap_gem_unpin(obj);
+-	sg_free_table(sg);
+-	kfree(sg);
++	omap_gem_put_sg(obj, sg);
+ }
+ 
+ static int omap_gem_dmabuf_begin_cpu_access(struct dma_buf *buffer,
+@@ -112,7 +88,7 @@ struct dma_buf *omap_gem_prime_export(struct drm_gem_object *obj, int flags)
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+ 
+ 	exp_info.ops = &omap_dmabuf_ops;
+-	exp_info.size = obj->size;
++	exp_info.size = omap_gem_mmap_size(obj);
+ 	exp_info.flags = flags;
+ 	exp_info.priv = obj;
+ 
 -- 
-2.20.1
+1.9.1
 
