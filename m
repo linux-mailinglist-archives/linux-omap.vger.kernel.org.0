@@ -2,266 +2,173 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91001456A5E
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Nov 2021 07:42:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28F16456AF4
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Nov 2021 08:33:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231751AbhKSGpV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Nov 2021 01:45:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37970 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbhKSGpU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Nov 2021 01:45:20 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DBC6C061574;
-        Thu, 18 Nov 2021 22:42:19 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id w1so38241313edd.10;
-        Thu, 18 Nov 2021 22:42:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=WA9LiTlhoGdtTveHLIWbttG/Wyg3YCDIS8K7cfNHsPo=;
-        b=BzCPU6KtQZHVTpXPlCgYe9QnIysvnkwKD7X/UrKwCZkvlVu8G+C3ou63DCKYsqT1px
-         cRxt9+oZLO47g/8KqJ+d1VmgJrpYi63Yl7jAKJGnRKo53MeCsz82SWSMH2/X6DO6qgCq
-         08JlfNfGYi1JuxK/gkSXZsA0E58x9criRGVVxBwDWZZ/QxqgDanMud20DSZSNalKYkaI
-         3xkhHXDe762Varoe/TRO01PyrZXQy5XWZsV0d3iY4gGdJSw+o0QAcpnm/22Dqk84kZK6
-         /3c5GrwvqM4788BzzH4u4YZ/qWCtmhw1Y4mF3kkRmYFgnqfRFriecA96DFr0Ly2SjcEg
-         IbVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=WA9LiTlhoGdtTveHLIWbttG/Wyg3YCDIS8K7cfNHsPo=;
-        b=zJtVH/iDhEkW76SgpJ1a3BKVOgumhFaXEL2WVHM5epYmRj/ph8bHK1F3zx246Hy8Sr
-         fOcRb0E7L71t323xLzHE562U37yVSpWC0qvRcpap4wG5YntNLGo3egV3fNKMRCjkVl0J
-         16J7b6xJC0YrcZpahnpRCgmX2H0hO5By/+erHQD9rZyOieZuH3go0hTl9BI0QIPnlC4z
-         4SzLyMin3QjbjFqdFfw6q1ruRC+jNrXLOfleiLGNhDQkfcnU+bdX6adhEp+BXKJhe8Y7
-         nZdbp+ULh1nYgdwTIuxhIBNDIRuZhC4pvAgbyUNc/JktbTEDNdUu4SJzB/fcmbUfvDmg
-         eT6A==
-X-Gm-Message-State: AOAM533AgTBuR6hX55bOlh7vavzNLVf+P7Im+lJAb0GIUS5IQYD17J7I
-        MLbgNnNMQbzYwF6cBgBS5lY=
-X-Google-Smtp-Source: ABdhPJwTo6bwDgDxXsPzXH9nqsKO0UchX5izURA0IYvGvyYkSTNlQcEVkHMcX+Toozs+koEYO61oOQ==
-X-Received: by 2002:a05:6402:35ce:: with SMTP id z14mr20111296edc.197.1637304137887;
-        Thu, 18 Nov 2021 22:42:17 -0800 (PST)
-Received: from [192.168.1.10] ([46.249.74.23])
-        by smtp.googlemail.com with ESMTPSA id u10sm988129edo.16.2021.11.18.22.42.16
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Nov 2021 22:42:17 -0800 (PST)
-Subject: Re: [PATCH v2] drm: omapdrm: Export correct scatterlist for TILER
- backed BOs
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     matthijsvanduin@gmail.com, airlied@linux.ie, daniel@ffwll.ch,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Carl Philipp Klemm <philipp@uvos.xyz>
-References: <1636796417-5997-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <1636797239-6384-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <36598203-eced-131d-85ef-f4940872e751@ideasonboard.com>
- <16a38e8e-071c-7275-8a33-487f7c3c8f2a@gmail.com>
- <ee42102b-c584-6e20-e710-711f79467fa3@ideasonboard.com>
- <e24ba773-298c-c703-9719-abba3527f8dd@gmail.com>
- <16724dbf-ff40-4d18-cde4-b3716583289f@ideasonboard.com>
- <52829986-ee80-6965-beb3-411f3728e2aa@gmail.com>
- <3b484902-2741-0333-389f-e5c31f278c87@ideasonboard.com>
-From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Message-ID: <3e9307e5-1f03-9854-2b2b-859173e8f2ae@gmail.com>
-Date:   Fri, 19 Nov 2021 08:42:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Firefox/60.0 Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <3b484902-2741-0333-389f-e5c31f278c87@ideasonboard.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
+        id S229896AbhKSHgR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Nov 2021 02:36:17 -0500
+Received: from mail-sgaapc01on2135.outbound.protection.outlook.com ([40.107.215.135]:18113
+        "EHLO APC01-SG2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229523AbhKSHgQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 19 Nov 2021 02:36:16 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g2jcRIQICQHuQmvFSZRIDmsRfC/Ja3gdo5o9+Axlree0NmsZznQLASC6uody6df2Z+tWSWZAQAnaw45mP52VNPim76vIaqjGlesJs2xTTkd/zRdC0EoVVNHm0CsWjUcyZXqCVAWF1Kzx6aN885a3hy/l0jSTkODC7Ctq3TCgh6QA1G3A4y5n6JMX8kXc1jlZ1KG8xhPHjbK6Zu5XEshFEhkq3N2NuFIPMjRKi+5/vFES5D0QQ51yeOLQjSMAXa/arq546ff8U6GW8Z01BPVrT/P/MukLmuCgfQbX/J8VSybTylt4nEFtTM4uip4som3uh7z7BGtnTC/as7CKN9Q3bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H7WGpVYbJ2fu58L5txpZ47ZzRmzY1LIqlcm0FX3LOO0=;
+ b=PkeHvhwi/Iz5OmkRNse+QEDmst39CNKTgtQqqTH3PsDwwyfRp4pRuj3cReXx7n3PjiL0R/kwAeIzrwSMbAlD2BQBKmaCWN8CyqNGAjlaAzKOBO4gIZ/KSGF0ZKSROZEMg4JOJu3BTdqHVDZqGKac5dgE0pWgOM/EWqOM0nEuNcgcZbi6EV8iyO18nIitkAOPmYf+vmJhIx7vfQWj3gST/MJpYp1yJCTl30R+FABvWBxhUyg4a0al1UrvYhF4bEtxdzABdiUqOzYTAlSU+5KneXIfQEvzhi7QXE+mtSQ7NBv8oDrVPwza5LrA8w8WHGBRUTeO86Hupyo+5JQsh1XeUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com;
+ s=selector2-vivo0-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H7WGpVYbJ2fu58L5txpZ47ZzRmzY1LIqlcm0FX3LOO0=;
+ b=LGPfMP0/N3AaJG96QH3QXv1UN49ukxBb4ifkHqb+tGjMZGPJoWiugrRAFRoDETM0ieQM/oQyCQUhfeBs/QBDQA2SiQPqoOjSQ+RnfiUApjxK0c0yJedjA2y/IQdi5p1loQ/rnAqKA3+5GUcMaOBjS6EWMAiBdWQLVqUaveiuNRI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from HK2PR06MB3492.apcprd06.prod.outlook.com (2603:1096:202:2f::10)
+ by HK2PR0601MB2033.apcprd06.prod.outlook.com (2603:1096:202:8::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.19; Fri, 19 Nov
+ 2021 07:33:11 +0000
+Received: from HK2PR06MB3492.apcprd06.prod.outlook.com
+ ([fe80::814a:4668:a3bd:768]) by HK2PR06MB3492.apcprd06.prod.outlook.com
+ ([fe80::814a:4668:a3bd:768%7]) with mapi id 15.20.4713.022; Fri, 19 Nov 2021
+ 07:33:10 +0000
+From:   Guo Zhengkui <guozhengkui@vivo.com>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Guo Zhengkui <guozhengkui@vivo.com>,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Cc:     kernel@vivo.com
+Subject: [PATCH] video: omapfb: Use sysfs_emit() instead of snprintf()
+Date:   Fri, 19 Nov 2021 15:31:26 +0800
+Message-Id: <20211119073139.18832-1-guozhengkui@vivo.com>
+X-Mailer: git-send-email 2.20.1
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR03CA0125.apcprd03.prod.outlook.com
+ (2603:1096:4:91::29) To HK2PR06MB3492.apcprd06.prod.outlook.com
+ (2603:1096:202:2f::10)
+MIME-Version: 1.0
+Received: from guozhengkui.debian (203.90.234.87) by SG2PR03CA0125.apcprd03.prod.outlook.com (2603:1096:4:91::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.11 via Frontend Transport; Fri, 19 Nov 2021 07:33:09 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 166350bc-ffd5-4cf2-48cc-08d9ab2ed67f
+X-MS-TrafficTypeDiagnostic: HK2PR0601MB2033:
+X-Microsoft-Antispam-PRVS: <HK2PR0601MB203379AC009E8F5F86A2E4F5C79C9@HK2PR0601MB2033.apcprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:82;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 1Hm8fqlNZ8K+lqlB6sBtXiC1zALwEcVa+ENrTuKOl13bkjWO9qu7yfgscj5cIuYiA5h2LO/G5fnUk87KkaKtKW/Qw5J8m0KLceBO/hT4uoGBoFU+hn/pRh7Kwiw5sPM+O/FD01dUK7976t+sFQ20WHQ6cXjv37D9KIpR85v1ICssIo6z4QcDA7mIYphMrgw717WYNgm7CW6gVKMEI9t661KCwrvYYT26fFS+riTT7KZcx44GUOHHkvLOY4c/R1gV4d1uWJfFUfgSJaRw5ifJPMTod/X3ke/SYFV/0NGtQ2yajNrH+5DKO2nZ9dLMfzyA9yZC9gng0WMAd4qV2KBYt36gBG0El6BlaUOkQbh4vi4vqTss+mWUnMY+dm/BNB1oUQongMWB7/qqOLcQXv9bnXFIIYwMEVH3xmq5ldduLYeKimGhNghgb6g8DUX6dhW2wZ/fXHHr3HW7n10bY8lPTlFjWMaSi8RHZvp4ZgLv0nYORg+owjXaz2ko0xhJNFmPy0DD94OU9k2f/KT1FqDIDxyacQ6LF74G5WK3xv/zfrh6JhdlzXhsZvnGcJO/ADZSuXjiED9/iE0rSqc/VuuA1DgLQR8dXoIE37IRR6ZYp+3Sn0iEIjXM5cEaZML8mBObMv6jc45rkWMrSoyQ0AJGGvPH1lH3Sxr8TWOgjWtzOjRurl6Ez7nKoGAqjnawM/DsIc+ABxJ3T9ib2XYZn7T1Fg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HK2PR06MB3492.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(6486002)(38100700002)(26005)(52116002)(2906002)(956004)(4326008)(508600001)(186003)(316002)(110136005)(6666004)(8936002)(5660300002)(38350700002)(1076003)(86362001)(66556008)(6512007)(66476007)(6506007)(107886003)(36756003)(83380400001)(66946007)(2616005)(8676002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?a4hKdYsY4e5SovbhUwQRSjZogFjn+3HcsgKQjTNBr2mhRC9FFJmxRKYsicB3?=
+ =?us-ascii?Q?n8USvZCxbA4PIG7Ngn3+LDoRsZUmOhufRWui4LwrWtPhaQm/o0lEfnytOG7/?=
+ =?us-ascii?Q?pdSAu7tANfo3Gwf52d/6sMKSr7+KX1mJeEVfMkw18Su7u3bWg8k0iO5ovLG1?=
+ =?us-ascii?Q?mISbtCqgdwzA2xY8E52KE8ptU5Gy2gE4ZQrlmdplLED+XeGuuAHJcrLE0t5/?=
+ =?us-ascii?Q?c3lQqFMTPhYleVngbq+xOsziHFt5bOikctoQbBGt44xqsEzypMcv8oTie5wr?=
+ =?us-ascii?Q?xC+qsaPTt5396ftlgyeGpgvui4OyQcVHk7PxJ5jgEzd3l8cpYZEbfgZ+yN81?=
+ =?us-ascii?Q?9WbJFuO3XJcXH2VxH58YCXUGC2yXgJPQI9/wKB9c6VfdB5Om/7PnJRrwpEoi?=
+ =?us-ascii?Q?Hg0kELmz4oonGJtjTDYIR9erAER7ewhazKE8Imjdlm4kWkvM8aVDz1hf2kGQ?=
+ =?us-ascii?Q?ZayYAnvHYJaLK/zzGDi2f7PsD69ru90CH+vwX6TW7PNs771DPWGbMTAVTNfI?=
+ =?us-ascii?Q?2IGWaGCt9jahVGr0DKmkJOakr03Xv8WiRR07XfzmdKIcScBxqhc9Dfb/UUOt?=
+ =?us-ascii?Q?AQFPZ78pWXtwPJ32F5OGso44sCicHPUFZpR3Up+gzOCYVmb41eyJzZBKXHHI?=
+ =?us-ascii?Q?3uIb6V+AgPd+fDffE37H8Jl4pbL3XWK3/Sb8Xru+ks/huimC3pJsu6/V1IvC?=
+ =?us-ascii?Q?KjorAcHXpGbEEaNsl+xOLQWP5sR+BtbQFd+hGreDhp68ImaxKyRTIBcGicyy?=
+ =?us-ascii?Q?A/V45zzf23FkIpzENMNGdkRcDFMM+Z+9Ecn0LBVx9GOxPT2gBQxWtQF0704P?=
+ =?us-ascii?Q?fUpjHmK8Qpn6N/4nWEq4iMvD2+7dFsSt+Z64+cryQnST02zW23OT0DUP4YFx?=
+ =?us-ascii?Q?CLh83WnkWEm1d7IwmVviTIIuNRJvuGd7HL5XYovdRI3+H0kQQG5HuWJ0UOQn?=
+ =?us-ascii?Q?GmiBlD5UJSEe/r7ostNVM0rT4EyYvVuOoMUmNSoaeG/5p2IiTXrduU5DLwZ2?=
+ =?us-ascii?Q?GhRigArZXBzt+rbTvBM0vv46YQDcyoOlb/qOv+NnIuW/G26aTjr9avHLgsss?=
+ =?us-ascii?Q?EAhQ3pGvPMMalNAHs04obsQzcQwnyavMRrgqZU+IXEO//MFDBhqkD3iiml0R?=
+ =?us-ascii?Q?xEL6eRPfmo7E7yQUIp6ADfUA4LubqtxgX/P1NQnkde5hUkw62a78DLKJQg/F?=
+ =?us-ascii?Q?B4jUgm13a8dp5IT92YcJoLTjW8Q/xqhTIyx2+CVWK5nDQzuOwj5gfciIR30k?=
+ =?us-ascii?Q?c39YmvL5r72+j8m5za1q342n9kjsp65JyrCGohnDSF+4/FFQX6i1uqsBPno+?=
+ =?us-ascii?Q?8F4LDb3zXrTizq4GhxEKO64sxTRp/urR+qLdqn+p/cGKzh0hQCpJb8/0P6AV?=
+ =?us-ascii?Q?0PwDegglxa3ymxH7bERjofOJT0pHbduFtLSP+wAR7/zU+xCKBZNnTlOpL5yU?=
+ =?us-ascii?Q?q4GpptH4chp+aCSXkCQXAtfCvA6osYfpfrxzIrEXXHfzg8bo7hkhRSYa6GC5?=
+ =?us-ascii?Q?ovdfwoxCZHtTXMfW3cPsupeRxPHLfWUehfxJ1ZNUm7AZ6GqVxf44NYGeUPRQ?=
+ =?us-ascii?Q?zk3hScg3TedOPMNqm1LvSqUwytochuvhnR/STLaaVcXiJoqmcINFyG9uwHNI?=
+ =?us-ascii?Q?tkw30BuCTzpK+RV5D3KJuWE=3D?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 166350bc-ffd5-4cf2-48cc-08d9ab2ed67f
+X-MS-Exchange-CrossTenant-AuthSource: HK2PR06MB3492.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2021 07:33:10.7855
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kuAiyYw1Z0aQFCDYiERa4yYyAjG9ap3osROt0XDly6GuU4HH2RaULan8hJHP8V8jBoCNJioyGJqWh9eDEFSgIw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HK2PR0601MB2033
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Use sysfs_emit() instead of snprintf().
 
+Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
+---
+ drivers/video/fbdev/omap/omapfb_main.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-On 16.11.21 г. 12:20 ч., Tomi Valkeinen wrote:
-> On 16/11/2021 10:27, Ivaylo Dimitrov wrote:
->> Hi,
->>
->> On 16.11.21 г. 8:42 ч., Tomi Valkeinen wrote:
->>> On 15/11/2021 19:15, Ivaylo Dimitrov wrote:
->>>> Hi,
->>>>
->>>> On 15.11.21 г. 17:37 ч., Tomi Valkeinen wrote:
->>>>> On 15/11/2021 15:55, Ivaylo Dimitrov wrote:
->>>>>> Hi Tomi,
->>>>>>
->>>>>> On 15.11.21 г. 10:42 ч., Tomi Valkeinen wrote:
->>>>>>> Hi,
->>>>>>>
->>>>>>> On 13/11/2021 11:53, Ivaylo Dimitrov wrote:
->>>>>>>> Memory of BOs backed by TILER is not contiguous, but 
->>>>>>>> omap_gem_map_dma_buf()
->>>>>>>> exports it like it is. This leads to (possibly) invalid memory 
->>>>>>>> accesses if
->>>>>>>> another device imports such a BO.
->>>>>>>
->>>>>>> This is one reason why TILER hasn't been officially supported. 
->>>>>>> But the above is not exactly right, or at least not the whole truth.
->>>>>>>
->>>>>>
->>>>>> Definitely, not only these BOs lie about their memory layout, they 
->>>>>> lie about size and alignment as well. I have 2 more patches here 
->>>>>> (one is to align TILER memory on page, as proposed by Matthijs in 
->>>>>> the other mail, the other to set the correct size when exporting 
->>>>>> TILER BO), but I wanted to hear from you first, like, what is the 
->>>>>> general trend :) .
->>>>>
->>>>> My thoughts here are that the current code doesn't work in 
->>>>> practice, so if you get it fixed, it's great =).
->>>>>
->>>>>> Also, I have another patch in mind, that will enable exporting of 
->>>>>> buffers that are not TILER backed, but are not CMA backed either. 
->>>>>> SGX for example does not need CMA memory to render to.
->>>>>
->>>>> What do you mean with this? DSS needs contiguous memory, so the 
->>>>> memory has to be 1) physically contiguous, 2) mapped with DMM or 3) 
->>>>> mapped with TILER. There's no reason for the driver to export 
->>>>> non-contiguous memory.
->>>>>
->>>>
->>>> DSS yes, but, omapdrm is used to allocate non-scanout buffers as 
->>>> well, which do not need to be (and in practice are not) contiguous. 
->>>> GPU (or anyone with MMU) can render on them (DRI buffers for 
->>>> example) and later on those buffers can be copied (blit) to the 
->>>> framebuffer. Yes, not zero-copy, but if you're doing compositing, 
->>>> there is no option anyway.
->>>>
->>>> Exactly this is done by omap-video driver for example. GBM BOs are 
->>>> allocated through omapdrm as well.
->>>
->>> That is not correct and shouldn't be done. omapdrm is not a generic 
->>> memory allocator. We have real generic allocators, so those should be 
->>> used. Or, if the buffer is only used for a single device, the buffer 
->>> should be allocated from that device's driver.
->>>
->>
->> Yes, I saw the comment in kernel headers that dumb buffers should not 
->> be used for rendering 
->> (https://elixir.bootlin.com/linux/latest/source/include/drm/drm_drv.h#L361). 
->> This makes no sense to me at all, but maybe I am missing the point.
-> 
-> I believe that comments refers to another issue: a dumb buffer from may 
-> not be usable for rendering. It's only guaranteed to be 
-> readable/writable by the CPU.
-> 
-> What I'm talking about is that a driver must support memory allocations 
-> for buffers that the device handled by the driver can use. In many cases 
-> that allocated buffer also works with other devices, and thus dmabuf 
-> export/import can be used. But a driver supporting memory allocations 
-> for buffers that the device itself cannot use is just wrong.
-> 
->> Also, it could be that the implementation of omap-video and/or PVR 
->> userspace blobs is against the specs, but I see omap-video calling 
->> DRM_IOCTL_OMAP_GEM_NEW for DRI buffers without OMAP_BO_SCANOUT and 
->> libdbm.so calling DRM_IOCTL_MODE_CREATE_DUMB to create buffers then 
->> used for rendering.
-> 
-> I think neither of those are exactly material to be used as examples on 
-> how to do things. And there's lots of history there. We didn't have 
-> generic allocators back then.
-> 
->> This is not an issue on omap4 an later, because when export of that 
->> buffer is requested, omapdrm uses DMM and exports a single scatterlist 
->> entry, IIUC.
->>
->> But, on omap3, given there is no DMM, export is simply refused. I 
->> don't see that as a consistent behaviour - we shall either a) export 
->> non-scanout buffers (scattered ones) using whatever is supported (DMM 
->> and single scatterlist entry on omap4 (and later), multiple-entry 
->> scatterlist on omap3) or b) always require OMAP_BO_SCANOUT for BOs to 
->> be exported and refuse to export if no such flag is set. I would say 
->> b) is not a good option which leaves a) only.
-> 
-> I think we should always require OMAP_BO_SCANOUT, or rather, drop the 
-> flag totally and always expect the buffer to be a scanout buffer. The 
-> only use for DSS is scanout, and those are the only buffers that omapdrm 
-> needs to support. But that would be breaking the uAPI, so I think we 
-> just have to support what we do now.
-> 
->> BTW, I think DMM is not really needed unless userspace requests 
->> mmap(), in theory we can provide userspace with view through DMM but 
->> give device drivers multiple entry scatterlist, potentially saving DMM 
->> space.
-> 
-> The userspace (CPU) doesn't need the DMM, the CPU has an MMU. I thought 
-> we already skip the DMM when mapping to the userspace. But in TILER case 
-> we always need TILER, even with the CPU.
-> 
->> I hope I made it clearer now why I think this feature shall be 
->> implemented.
-> 
-> I think it's just adding more wrong on top of the old wrong =).
-> 
-> Also, if we need DMM/TILER allocations for other devices than DSS (but 
-> so far this hasn't been mentioned), then I think the DMM/TILER 
-> functionality should be separated from omapdrm and moved to (I think) 
-> dma-heap.
-> 
->>>>>> 2. Set exp_info.size = omap_gem_mmap_size(obj); when exporting a 
->>>>>> BO. That way importer knows the real BO memory size (including 
->>>>>> alignment etc) so he will be able to calculate the number of pages 
->>>>>> he needs to map the scatterlist.
->>>>>
->>>>> Can you elaborate what this means?
->>>>>
->>>>
->>>> When we align to page, we shall report the size including the 
->>>> alignment, no? Or, it is the importer that shall take care to 
->>>> calculate BO size( including the alignment) based on scatterlist if 
->>>> he needs to?
->>>
->>> I'm not sure... But I guess the export size should include the 
->>> alignment.
->>>
->>
->> My understanding as well. Will sent that change as a part of page 
->> alignment patch.
->>
->>> Hmm... I haven't had enough coffee yet, but how does this go... Let's 
->>> say we have a tiled fb, and the width gets expanded to a page. What 
->>> happens to reads/writes that happen outside the fb, but still within 
->>> the page? Those should cause an error or do nothing, but is it 
->>> possible that they go through TILER and get mapped to some real 
->>> memory location?
->>>
->>
->> I lack the details here, but reading through TRM leaves me with the 
->> impression that TILER smallest unit is a tile, and every tile is 
->> backed by a real memory page (4KiB), so outside read-writes will end 
->> up in memory that's there but unused and will do nothing.
->>
->> omap_gem_new() calls tiler_align(), which in turn seems to return 
->> page-aligned size, so I think there is no issue here.
-> 
-> Maybe, but, consider this example, with numbers totally out of thin air: 
-> We have a fb with the width of 32 pixels, so 128 bytes. If we have tiles 
-> which cover 32 x 32 pixels (so 4096 bytes with 4 bpp), we need one tile 
-> to cover the width. But we have all the rest of the page mapped, so 3968 
-> bytes that are not covered with a tile (or rather, we haven't configured 
-> that tile, or maybe the tile contains old configuration).
-> 
-> I could be totally wrong here, as I don't remember the details. But I do 
-> think that it's very easy to get this wrong, creating memory corruptions 
-> and/or security violations.
-> 
+diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+index b495c09e6102..083388a4ceeb 100644
+--- a/drivers/video/fbdev/omap/omapfb_main.c
++++ b/drivers/video/fbdev/omap/omapfb_main.c
+@@ -16,6 +16,7 @@
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
+ #include <linux/module.h>
++#include <linux/sysfs.h>
+ 
+ #include <linux/omap-dma.h>
+ 
+@@ -1303,7 +1304,7 @@ static ssize_t omapfb_show_panel_name(struct device *dev,
+ {
+ 	struct omapfb_device *fbdev = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n", fbdev->panel->name);
++	return sysfs_emit(buf, "%s\n", fbdev->panel->name);
+ }
+ 
+ static ssize_t omapfb_show_bklight_level(struct device *dev,
+@@ -1314,8 +1315,8 @@ static ssize_t omapfb_show_bklight_level(struct device *dev,
+ 	int r;
+ 
+ 	if (fbdev->panel->get_bklight_level) {
+-		r = snprintf(buf, PAGE_SIZE, "%d\n",
+-			     fbdev->panel->get_bklight_level(fbdev->panel));
++		r = sysfs_emit(buf, "%d\n",
++			       fbdev->panel->get_bklight_level(fbdev->panel));
+ 	} else
+ 		r = -ENODEV;
+ 	return r;
+@@ -1348,8 +1349,8 @@ static ssize_t omapfb_show_bklight_max(struct device *dev,
+ 	int r;
+ 
+ 	if (fbdev->panel->get_bklight_level) {
+-		r = snprintf(buf, PAGE_SIZE, "%d\n",
+-			     fbdev->panel->get_bklight_max(fbdev->panel));
++		r = sysfs_emit(buf, "%d\n",
++			       fbdev->panel->get_bklight_max(fbdev->panel));
+ 	} else
+ 		r = -ENODEV;
+ 	return r;
+@@ -1379,7 +1380,7 @@ static ssize_t omapfb_show_ctrl_name(struct device *dev,
+ {
+ 	struct omapfb_device *fbdev = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n", fbdev->ctrl->name);
++	return sysfs_emit(buf, "%s\n", fbdev->ctrl->name);
+ }
+ 
+ static struct device_attribute dev_attr_ctrl_name =
+-- 
+2.20.1
 
-By further looking into this, I think we actually don't have any issue 
-here, see 
-https://elixir.bootlin.com/linux/v5.16-rc1/source/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c#L982. 
-So, on probe, all LUTs are initialised to point to dummy page, the same 
-happens when 2d block is released - its LUT entries are initialised to 
-point to dummy page - 
-https://elixir.bootlin.com/linux/v5.16-rc1/source/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c#L529.
-
-I will send v3 that just incorporates 2d allocations page size alignment 
-and export size fix.
-
-Ivo
