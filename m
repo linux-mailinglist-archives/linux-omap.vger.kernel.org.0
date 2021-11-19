@@ -2,151 +2,266 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FEEA45622D
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Nov 2021 19:16:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91001456A5E
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Nov 2021 07:42:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232274AbhKRSTr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 18 Nov 2021 13:19:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40464 "EHLO
+        id S231751AbhKSGpV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Nov 2021 01:45:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229936AbhKRSTq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Nov 2021 13:19:46 -0500
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD78C061574;
-        Thu, 18 Nov 2021 10:16:46 -0800 (PST)
-Received: by mail-oi1-x235.google.com with SMTP id t23so16111020oiw.3;
-        Thu, 18 Nov 2021 10:16:46 -0800 (PST)
+        with ESMTP id S229457AbhKSGpU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Nov 2021 01:45:20 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DBC6C061574;
+        Thu, 18 Nov 2021 22:42:19 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id w1so38241313edd.10;
+        Thu, 18 Nov 2021 22:42:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=X8UnDQOpdeoBIJYA5H/uzZ/Savdkcg/csk1G/KUgy84=;
-        b=VjRxZdo4+nULl3q2nzT6EjGdIPZICO9L/YRnStHr6TgTBhJEq59epE/C577qznLwYP
-         Jjl0RG811YeRXGftKAJWZP40VSyQhM6kN5BxDnstg0NbdgQ3SBpuF0P55lT03aK6eVyc
-         remOhvHkq4rU9H40/LRv1JZOsYNHrNZ9FyxYpe4aKJDB9x0wTnH/JTT9JOUjG7TJ5Ic7
-         zzB7+tikSFSlNVRDjFbmK6Z7bpHqv8ptwQDIDFxOlDHyamnKtRm8vmFddC87/U/SzsZm
-         0+BTzcy+FaWI+Bv6IpAd1eNxj/+mHE/+XNsuaFpqsSWUhnj3tv6V4nxymkMCqlZ9pcvf
-         ezjg==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=WA9LiTlhoGdtTveHLIWbttG/Wyg3YCDIS8K7cfNHsPo=;
+        b=BzCPU6KtQZHVTpXPlCgYe9QnIysvnkwKD7X/UrKwCZkvlVu8G+C3ou63DCKYsqT1px
+         cRxt9+oZLO47g/8KqJ+d1VmgJrpYi63Yl7jAKJGnRKo53MeCsz82SWSMH2/X6DO6qgCq
+         08JlfNfGYi1JuxK/gkSXZsA0E58x9criRGVVxBwDWZZ/QxqgDanMud20DSZSNalKYkaI
+         3xkhHXDe762Varoe/TRO01PyrZXQy5XWZsV0d3iY4gGdJSw+o0QAcpnm/22Dqk84kZK6
+         /3c5GrwvqM4788BzzH4u4YZ/qWCtmhw1Y4mF3kkRmYFgnqfRFriecA96DFr0Ly2SjcEg
+         IbVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=X8UnDQOpdeoBIJYA5H/uzZ/Savdkcg/csk1G/KUgy84=;
-        b=fuoyc3kN7kkakMyTxDv55qYz2wElohAeuwua3ZiXN30gTVgPkh/AomOrlWCVxqHq39
-         jwsLZKNZNd+QumSE+8rzEUVHTS63JYuSrjaTN+DK/eGQXJ/seD2vi+Hvm0dAGBCKag1g
-         Tq2hf9Gire8K8DcrAoRi95l6DxDHGRFlfjyxBvQycwhFYxHHEof+LEKUjriNVuOvmOwk
-         EG4Qm4AOBm1fTMRPYnqpa6OA8aG0LzS/ybFS0+9lK26F2bdvT29i9yRW+f7WNcxD1DhB
-         K0KODt4fp53Ay5Bl/VaJVBqjXggPkRnIOBMLs/9L3WHZzQikXBg17tEKuCZZ+EUvF9sj
-         SA6g==
-X-Gm-Message-State: AOAM532H0aFK83wYuC8yCgdVGT7UYPHdlSDsaHPeCqhaBhoN4GIAvENt
-        b7VqQ/P50wxkwc0XCngTfbA=
-X-Google-Smtp-Source: ABdhPJwq9dbpTZrRvunI22VBRv8g2MvkV6R+lh9BcnQWlE17ZBbJyVzfxPIxI7lQi5IB4667s36OcQ==
-X-Received: by 2002:a05:6808:b08:: with SMTP id s8mr9603710oij.126.1637259405525;
-        Thu, 18 Nov 2021 10:16:45 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id e3sm102940otk.71.2021.11.18.10.16.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Nov 2021 10:16:44 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Thu, 18 Nov 2021 10:16:43 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] extcon: fix extcon_get_extcon_dev() error handling
-Message-ID: <20211118181643.GB3320814@roeck-us.net>
-References: <20211118113026.GG1147@kili>
- <a33fc3d7-a389-a805-0ef9-4b90de1d3d89@roeck-us.net>
- <20211118145135.GO27562@kadam>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=WA9LiTlhoGdtTveHLIWbttG/Wyg3YCDIS8K7cfNHsPo=;
+        b=zJtVH/iDhEkW76SgpJ1a3BKVOgumhFaXEL2WVHM5epYmRj/ph8bHK1F3zx246Hy8Sr
+         fOcRb0E7L71t323xLzHE562U37yVSpWC0qvRcpap4wG5YntNLGo3egV3fNKMRCjkVl0J
+         16J7b6xJC0YrcZpahnpRCgmX2H0hO5By/+erHQD9rZyOieZuH3go0hTl9BI0QIPnlC4z
+         4SzLyMin3QjbjFqdFfw6q1ruRC+jNrXLOfleiLGNhDQkfcnU+bdX6adhEp+BXKJhe8Y7
+         nZdbp+ULh1nYgdwTIuxhIBNDIRuZhC4pvAgbyUNc/JktbTEDNdUu4SJzB/fcmbUfvDmg
+         eT6A==
+X-Gm-Message-State: AOAM533AgTBuR6hX55bOlh7vavzNLVf+P7Im+lJAb0GIUS5IQYD17J7I
+        MLbgNnNMQbzYwF6cBgBS5lY=
+X-Google-Smtp-Source: ABdhPJwTo6bwDgDxXsPzXH9nqsKO0UchX5izURA0IYvGvyYkSTNlQcEVkHMcX+Toozs+koEYO61oOQ==
+X-Received: by 2002:a05:6402:35ce:: with SMTP id z14mr20111296edc.197.1637304137887;
+        Thu, 18 Nov 2021 22:42:17 -0800 (PST)
+Received: from [192.168.1.10] ([46.249.74.23])
+        by smtp.googlemail.com with ESMTPSA id u10sm988129edo.16.2021.11.18.22.42.16
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 18 Nov 2021 22:42:17 -0800 (PST)
+Subject: Re: [PATCH v2] drm: omapdrm: Export correct scatterlist for TILER
+ backed BOs
+To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc:     matthijsvanduin@gmail.com, airlied@linux.ie, daniel@ffwll.ch,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Carl Philipp Klemm <philipp@uvos.xyz>
+References: <1636796417-5997-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+ <1636797239-6384-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+ <36598203-eced-131d-85ef-f4940872e751@ideasonboard.com>
+ <16a38e8e-071c-7275-8a33-487f7c3c8f2a@gmail.com>
+ <ee42102b-c584-6e20-e710-711f79467fa3@ideasonboard.com>
+ <e24ba773-298c-c703-9719-abba3527f8dd@gmail.com>
+ <16724dbf-ff40-4d18-cde4-b3716583289f@ideasonboard.com>
+ <52829986-ee80-6965-beb3-411f3728e2aa@gmail.com>
+ <3b484902-2741-0333-389f-e5c31f278c87@ideasonboard.com>
+From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Message-ID: <3e9307e5-1f03-9854-2b2b-859173e8f2ae@gmail.com>
+Date:   Fri, 19 Nov 2021 08:42:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Firefox/60.0 Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211118145135.GO27562@kadam>
+In-Reply-To: <3b484902-2741-0333-389f-e5c31f278c87@ideasonboard.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Nov 18, 2021 at 05:51:35PM +0300, Dan Carpenter wrote:
-> On Thu, Nov 18, 2021 at 06:22:58AM -0800, Guenter Roeck wrote:
-> > On 11/18/21 3:32 AM, Dan Carpenter wrote:
-> > > The extcon_get_extcon_dev() function returns error pointers on error
-> > > and NULL when it's a -EPROBE_DEFER defer situation.  There are eight
-> > > callers and only two of them handled this correctly.  In the other
-> > > callers an error pointer return would lead to a crash.
-> > > 
-> > > What prevents crashes is that errors can only happen in the case of
-> > > a bug in the caller or if CONFIG_EXTCON is disabled.  Six out of
-> > > eight callers use the Kconfig to either depend on or select
-> > > CONFIG_EXTCON.  Thus the real life impact of these bugs is tiny.
-> > > 
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > ---
-> > > The two callers where the drivers can be built without CONFIG_EXTCON
-> > > are TYPEC_FUSB302 and CHARGER_MAX8997.
-> > > 
-> > [ ... ]
-> > > diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-> > > index 7a2a17866a82..8594b59bd527 100644
-> > > --- a/drivers/usb/typec/tcpm/fusb302.c
-> > > +++ b/drivers/usb/typec/tcpm/fusb302.c
-> > > @@ -1706,8 +1706,8 @@ static int fusb302_probe(struct i2c_client *client,
-> > >   	 */
-> > >   	if (device_property_read_string(dev, "linux,extcon-name", &name) == 0) {
-> > >   		chip->extcon = extcon_get_extcon_dev(name);
-> > > -		if (!chip->extcon)
-> > > -			return -EPROBE_DEFER;
-> > > +		if (IS_ERR(chip->extcon))
-> > > +			return PTR_ERR(chip->extcon);
-> > 
-> > Why does the code not need to return -EPROBE_DEFER ? The description states
-> > that NULL is returned in that situation. Doesn't that mean that defer situations
-> > are no longer handled with this patch in place ?
-> 
-> I'm not sure I understand what you are saying here.  In the original
-> code, extcon_get_extcon_dev() would return NULL and relied on the
-> callers to change NULL into a -EPROBE_DEFER.  If extcon_get_extcon_dev()
-> returned ERR_PTR(-EINVAL) (which is impossible as mentioned) the it
-> would lead to a crash.
-> 
-> In the new code, the extcon_get_extcon_dev() function returns
-> -EPROBE_DEFER directly so the caller code is much simpler.
-> 
-Misunderstanding on my side. I didn't get that extcon_get_extcon_dev()
-now returns -EPROBE_DEFER.
 
-> > 
-> > Also, with this patch in place, the code will no longer work if extcon is disabled,
-> > because extcon_get_extcon_dev() will return -ENODEV and the above code will bail out.
-> > The behavior of the code wasn't optimal in that case (it would wait until timeout
-> > in tcpm_get_current_limit() before returning), but at least it didn't fail.
+
+On 16.11.21 г. 12:20 ч., Tomi Valkeinen wrote:
+> On 16/11/2021 10:27, Ivaylo Dimitrov wrote:
+>> Hi,
+>>
+>> On 16.11.21 г. 8:42 ч., Tomi Valkeinen wrote:
+>>> On 15/11/2021 19:15, Ivaylo Dimitrov wrote:
+>>>> Hi,
+>>>>
+>>>> On 15.11.21 г. 17:37 ч., Tomi Valkeinen wrote:
+>>>>> On 15/11/2021 15:55, Ivaylo Dimitrov wrote:
+>>>>>> Hi Tomi,
+>>>>>>
+>>>>>> On 15.11.21 г. 10:42 ч., Tomi Valkeinen wrote:
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> On 13/11/2021 11:53, Ivaylo Dimitrov wrote:
+>>>>>>>> Memory of BOs backed by TILER is not contiguous, but 
+>>>>>>>> omap_gem_map_dma_buf()
+>>>>>>>> exports it like it is. This leads to (possibly) invalid memory 
+>>>>>>>> accesses if
+>>>>>>>> another device imports such a BO.
+>>>>>>>
+>>>>>>> This is one reason why TILER hasn't been officially supported. 
+>>>>>>> But the above is not exactly right, or at least not the whole truth.
+>>>>>>>
+>>>>>>
+>>>>>> Definitely, not only these BOs lie about their memory layout, they 
+>>>>>> lie about size and alignment as well. I have 2 more patches here 
+>>>>>> (one is to align TILER memory on page, as proposed by Matthijs in 
+>>>>>> the other mail, the other to set the correct size when exporting 
+>>>>>> TILER BO), but I wanted to hear from you first, like, what is the 
+>>>>>> general trend :) .
+>>>>>
+>>>>> My thoughts here are that the current code doesn't work in 
+>>>>> practice, so if you get it fixed, it's great =).
+>>>>>
+>>>>>> Also, I have another patch in mind, that will enable exporting of 
+>>>>>> buffers that are not TILER backed, but are not CMA backed either. 
+>>>>>> SGX for example does not need CMA memory to render to.
+>>>>>
+>>>>> What do you mean with this? DSS needs contiguous memory, so the 
+>>>>> memory has to be 1) physically contiguous, 2) mapped with DMM or 3) 
+>>>>> mapped with TILER. There's no reason for the driver to export 
+>>>>> non-contiguous memory.
+>>>>>
+>>>>
+>>>> DSS yes, but, omapdrm is used to allocate non-scanout buffers as 
+>>>> well, which do not need to be (and in practice are not) contiguous. 
+>>>> GPU (or anyone with MMU) can render on them (DRI buffers for 
+>>>> example) and later on those buffers can be copied (blit) to the 
+>>>> framebuffer. Yes, not zero-copy, but if you're doing compositing, 
+>>>> there is no option anyway.
+>>>>
+>>>> Exactly this is done by omap-video driver for example. GBM BOs are 
+>>>> allocated through omapdrm as well.
+>>>
+>>> That is not correct and shouldn't be done. omapdrm is not a generic 
+>>> memory allocator. We have real generic allocators, so those should be 
+>>> used. Or, if the buffer is only used for a single device, the buffer 
+>>> should be allocated from that device's driver.
+>>>
+>>
+>> Yes, I saw the comment in kernel headers that dumb buffers should not 
+>> be used for rendering 
+>> (https://elixir.bootlin.com/linux/latest/source/include/drm/drm_drv.h#L361). 
+>> This makes no sense to me at all, but maybe I am missing the point.
 > 
-> Huh.  You are right.  Initialy I thought that tcpm_get_current_limit()
-> would crash.  This is one of the two drivers which I mentioned that can
-> be built without CONFIG_EXTCON.
+> I believe that comments refers to another issue: a dumb buffer from may 
+> not be usable for rendering. It's only guaranteed to be 
+> readable/writable by the CPU.
 > 
-> I will modify the version of extcon_get_extcon_dev() where CONFIG_EXTCON
-> is disabled to return NULL.  That is the standard/correct way to write
-> these.  That will turn tcpm_get_current_limit() into a no-op.
+> What I'm talking about is that a driver must support memory allocations 
+> for buffers that the device handled by the driver can use. In many cases 
+> that allocated buffer also works with other devices, and thus dmabuf 
+> export/import can be used. But a driver supporting memory allocations 
+> for buffers that the device itself cannot use is just wrong.
 > 
-> A belt and suspenders approach might be to modify the Kconfig so this
-> driver selects CONFIG_EXTCON.
+>> Also, it could be that the implementation of omap-video and/or PVR 
+>> userspace blobs is against the specs, but I see omap-video calling 
+>> DRM_IOCTL_OMAP_GEM_NEW for DRI buffers without OMAP_BO_SCANOUT and 
+>> libdbm.so calling DRM_IOCTL_MODE_CREATE_DUMB to create buffers then 
+>> used for rendering.
+> 
+> I think neither of those are exactly material to be used as examples on 
+> how to do things. And there's lots of history there. We didn't have 
+> generic allocators back then.
+> 
+>> This is not an issue on omap4 an later, because when export of that 
+>> buffer is requested, omapdrm uses DMM and exports a single scatterlist 
+>> entry, IIUC.
+>>
+>> But, on omap3, given there is no DMM, export is simply refused. I 
+>> don't see that as a consistent behaviour - we shall either a) export 
+>> non-scanout buffers (scattered ones) using whatever is supported (DMM 
+>> and single scatterlist entry on omap4 (and later), multiple-entry 
+>> scatterlist on omap3) or b) always require OMAP_BO_SCANOUT for BOs to 
+>> be exported and refuse to export if no such flag is set. I would say 
+>> b) is not a good option which leaves a) only.
+> 
+> I think we should always require OMAP_BO_SCANOUT, or rather, drop the 
+> flag totally and always expect the buffer to be a scanout buffer. The 
+> only use for DSS is scanout, and those are the only buffers that omapdrm 
+> needs to support. But that would be breaking the uAPI, so I think we 
+> just have to support what we do now.
+> 
+>> BTW, I think DMM is not really needed unless userspace requests 
+>> mmap(), in theory we can provide userspace with view through DMM but 
+>> give device drivers multiple entry scatterlist, potentially saving DMM 
+>> space.
+> 
+> The userspace (CPU) doesn't need the DMM, the CPU has an MMU. I thought 
+> we already skip the DMM when mapping to the userspace. But in TILER case 
+> we always need TILER, even with the CPU.
+> 
+>> I hope I made it clearer now why I think this feature shall be 
+>> implemented.
+> 
+> I think it's just adding more wrong on top of the old wrong =).
+> 
+> Also, if we need DMM/TILER allocations for other devices than DSS (but 
+> so far this hasn't been mentioned), then I think the DMM/TILER 
+> functionality should be separated from omapdrm and moved to (I think) 
+> dma-heap.
+> 
+>>>>>> 2. Set exp_info.size = omap_gem_mmap_size(obj); when exporting a 
+>>>>>> BO. That way importer knows the real BO memory size (including 
+>>>>>> alignment etc) so he will be able to calculate the number of pages 
+>>>>>> he needs to map the scatterlist.
+>>>>>
+>>>>> Can you elaborate what this means?
+>>>>>
+>>>>
+>>>> When we align to page, we shall report the size including the 
+>>>> alignment, no? Or, it is the importer that shall take care to 
+>>>> calculate BO size( including the alignment) based on scatterlist if 
+>>>> he needs to?
+>>>
+>>> I'm not sure... But I guess the export size should include the 
+>>> alignment.
+>>>
+>>
+>> My understanding as well. Will sent that change as a part of page 
+>> alignment patch.
+>>
+>>> Hmm... I haven't had enough coffee yet, but how does this go... Let's 
+>>> say we have a tiled fb, and the width gets expanded to a page. What 
+>>> happens to reads/writes that happen outside the fb, but still within 
+>>> the page? Those should cause an error or do nothing, but is it 
+>>> possible that they go through TILER and get mapped to some real 
+>>> memory location?
+>>>
+>>
+>> I lack the details here, but reading through TRM leaves me with the 
+>> impression that TILER smallest unit is a tile, and every tile is 
+>> backed by a real memory page (4KiB), so outside read-writes will end 
+>> up in memory that's there but unused and will do nothing.
+>>
+>> omap_gem_new() calls tiler_align(), which in turn seems to return 
+>> page-aligned size, so I think there is no issue here.
+> 
+> Maybe, but, consider this example, with numbers totally out of thin air: 
+> We have a fb with the width of 32 pixels, so 128 bytes. If we have tiles 
+> which cover 32 x 32 pixels (so 4096 bytes with 4 bpp), we need one tile 
+> to cover the width. But we have all the rest of the page mapped, so 3968 
+> bytes that are not covered with a tile (or rather, we haven't configured 
+> that tile, or maybe the tile contains old configuration).
+> 
+> I could be totally wrong here, as I don't remember the details. But I do 
+> think that it's very easy to get this wrong, creating memory corruptions 
+> and/or security violations.
 > 
 
-That would pull in unnecessary extra code, though, if the driver is supposed
-to be able to work without it.
+By further looking into this, I think we actually don't have any issue 
+here, see 
+https://elixir.bootlin.com/linux/v5.16-rc1/source/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c#L982. 
+So, on probe, all LUTs are initialised to point to dummy page, the same 
+happens when 2d block is released - its LUT entries are initialised to 
+point to dummy page - 
+https://elixir.bootlin.com/linux/v5.16-rc1/source/drivers/gpu/drm/omapdrm/omap_dmm_tiler.c#L529.
 
-Thanks,
-Guenter
+I will send v3 that just incorporates 2d allocations page size alignment 
+and export size fix.
 
-> regards,
-> dan carpenter
-> 
+Ivo
