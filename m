@@ -2,68 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83476458DAC
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Nov 2021 12:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 388C54592B4
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Nov 2021 17:11:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238743AbhKVLqq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Nov 2021 06:46:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36242 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237365AbhKVLqp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Nov 2021 06:46:45 -0500
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63DCCC061574
-        for <linux-omap@vger.kernel.org>; Mon, 22 Nov 2021 03:43:39 -0800 (PST)
-Received: by mail-il1-x144.google.com with SMTP id m5so9285068ilh.11
-        for <linux-omap@vger.kernel.org>; Mon, 22 Nov 2021 03:43:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Sw5sXMAC9IeBMeUt8/3lQb1uasIw729SIpXYRz+nt0k=;
-        b=dgZFIhPCauP1xdgMvhV0v+HW9TaBGopV73oV9OaG+SsaimCL6rJVOyUs7l5rRm5tTt
-         AQ7W+YXUgqhFcuaV5X/eBcwsKKe21hF7bPwE5X3SA1dMB2fQXdu8MtM4lYlfJlvvqzy3
-         ami8o1P16lotO0ZZoz2nYdaTIxjoGVsrJeRfxi+vqndh+Pa+JIuwFR1KzqEmVZcAFEgf
-         Ae8IFmnm4xrhJKdIVvnn0aZhMY8hhezaqF0C3Nf5FHZNoVbMAviTwy+PwCyqyzIhN4kF
-         xzSqkRHET0phrmXXoEk8YBL3X26EzVUMeyoIYpJLjA6r+ZcIEuaiEqEVCr0Asz780NRZ
-         9KGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Sw5sXMAC9IeBMeUt8/3lQb1uasIw729SIpXYRz+nt0k=;
-        b=UPPOcoROGpSA1KnP9WeyYk5yaBabQzY3rXlCqDqurqUK4DqP2X8paS1rnp/Y590lo9
-         DxpqNtYTG1IYjxWNuabc2fSZog3WAKtN0tIxMRwCkf0eZ/6fd3Dcw0Wao9W+SdkWDTyW
-         FoZgjJQfaZQvtaj6hICAlXgoZsXh57wxG/hmjZuRkUa+LgG7AdQZrnGnghM7qXtSIUSY
-         caGF8bNpgxa3OsXr7+G1gs5ui40+JXg6flT3rZR3Tz9k23d5GZxAMYOBBmybuA+6Y9wv
-         LItNMnndx2ARjY6Mqs4O8dZTBYpb1PYvuEx53GUSazF8JTIgaZ/INTjciJn1ucBFcVfv
-         QohA==
-X-Gm-Message-State: AOAM533rYwdajb+hNBf3LmNMfPdHguTkd5iMEk4Qu7njg08SbGPfGcyI
-        sOAGoee5RfGEvj5vu2PFOYYG852rGQDr1McI5Cg=
-X-Google-Smtp-Source: ABdhPJyyVl6KZqk+G+WaDDYBqduJSmFyLZ5S3FK/doNLC6ElJTDOHHjrLBXkSnJj10W13nortOhbuD7Ys1IBYZ3wtx0=
-X-Received: by 2002:a92:4a0a:: with SMTP id m10mr7326066ilf.160.1637581418813;
- Mon, 22 Nov 2021 03:43:38 -0800 (PST)
+        id S231739AbhKVQOg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Nov 2021 11:14:36 -0500
+Received: from mx08-00227901.pphosted.com ([91.207.212.184]:52378 "EHLO
+        mx08-00227901.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229955AbhKVQOf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 22 Nov 2021 11:14:35 -0500
+Received: from pps.filterd (m0097674.ppops.net [127.0.0.1])
+        by mx08-.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AJ7wixf018132;
+        Fri, 19 Nov 2021 10:27:13 +0100
+Received: from zbw2k16ex01.bardusch.net ([185.80.186.174])
+        by mx08-.pphosted.com (PPS) with ESMTPS id 3cdmdm1455-6
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Fri, 19 Nov 2021 10:27:13 +0100
+Received: from zbw2k16ex02.bardusch.net (172.25.1.2) by
+ ZBW2K16EX01.bardusch.net (172.25.1.1) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.1.2308.20;
+ Fri, 19 Nov 2021 10:27:11 +0100
+Received: from User (172.25.1.131) by zbw2k16ex02.bardusch.net (172.25.1.2)
+ with Microsoft SMTP Server id 15.1.2308.20 via Frontend Transport; Fri, 19
+ Nov 2021 10:27:00 +0100
+Reply-To: <josechoondak@gmail.com>
+From:   Joseph Choondak <info@ndd.co.mz>
+Subject: I hope this email finds you well.
+Date:   Fri, 19 Nov 2021 01:27:14 -0800
 MIME-Version: 1.0
-Received: by 2002:a05:6622:b34:0:0:0:0 with HTTP; Mon, 22 Nov 2021 03:43:38
- -0800 (PST)
-Reply-To: wongleshiu@gmail.com
-From:   Wong Shiu <tinsleymeekinsjrn@gmail.com>
-Date:   Mon, 22 Nov 2021 13:43:38 +0200
-Message-ID: <CAEbty7AcHocNP_rbizAs9uNsY-iamqJjq8N-NStm3ketgFjW3A@mail.gmail.com>
-Subject: Good Day
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <e36b6b33-d3b3-4f08-8033-0aba2c4cece8@zbw2k16ex02.bardusch.net>
+To:     Undisclosed recipients:;
+X-Proofpoint-GUID: TLQLmM0KGMyKZ2pptUvqji1PrJ_tMJCL
+X-Proofpoint-ORIG-GUID: TLQLmM0KGMyKZ2pptUvqji1PrJ_tMJCL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-19_08,2021-11-17_01,2020-04-07_01
+X-Proofpoint-Spam-Reason: orgsafe
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Good day
+May I please ask with considerable urgency for your kind assistance with the following matter.
+I'm a financial person, I think  I have something huge you might be interested in.
 
-I found your email in the Google database,
+Looking forward to hearing from you.
 
-Is your email address still valid? I have a good business proposal for you,
 
-If you are interested, please contact me for further information at:
-wongleshiu@gmail.com
-
-Wong  Shiu
+Respectfully!!
+Joseph Choondak
+Account Executive.
