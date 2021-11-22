@@ -2,59 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73CA44585D7
-	for <lists+linux-omap@lfdr.de>; Sun, 21 Nov 2021 19:10:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83476458DAC
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Nov 2021 12:43:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238630AbhKUSNJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 21 Nov 2021 13:13:09 -0500
-Received: from relay.rsaweb.co.za ([41.74.187.155]:44344 "EHLO
-        relay.rsaweb.co.za" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235965AbhKUSNI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 21 Nov 2021 13:13:08 -0500
-X-Greylist: delayed 811 seconds by postgrey-1.27 at vger.kernel.org; Sun, 21 Nov 2021 13:13:05 EST
-Received: from relay.rsaweb.co.za (localhost [127.0.0.1])
-        by relay.rsaweb.co.za (Postfix) with ESMTP id 8BAF23E31EA;
-        Sun, 21 Nov 2021 19:56:02 +0200 (SAST)
-Received: from mailnode1.rsaweb.co.za (unknown [41.74.182.203])
-        by relay.rsaweb.co.za (Postfix) with ESMTP;
-        Sun, 21 Nov 2021 19:56:02 +0200 (SAST)
-Received: from mail.rsaweb.co.za (unknown [10.0.0.112])
-        by mailnode1.rsaweb.co.za (Postfix) with ESMTP id 954025F7F5;
-        Sun, 21 Nov 2021 19:56:10 +0200 (SAST)
+        id S238743AbhKVLqq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Nov 2021 06:46:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36242 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237365AbhKVLqp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Nov 2021 06:46:45 -0500
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63DCCC061574
+        for <linux-omap@vger.kernel.org>; Mon, 22 Nov 2021 03:43:39 -0800 (PST)
+Received: by mail-il1-x144.google.com with SMTP id m5so9285068ilh.11
+        for <linux-omap@vger.kernel.org>; Mon, 22 Nov 2021 03:43:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Sw5sXMAC9IeBMeUt8/3lQb1uasIw729SIpXYRz+nt0k=;
+        b=dgZFIhPCauP1xdgMvhV0v+HW9TaBGopV73oV9OaG+SsaimCL6rJVOyUs7l5rRm5tTt
+         AQ7W+YXUgqhFcuaV5X/eBcwsKKe21hF7bPwE5X3SA1dMB2fQXdu8MtM4lYlfJlvvqzy3
+         ami8o1P16lotO0ZZoz2nYdaTIxjoGVsrJeRfxi+vqndh+Pa+JIuwFR1KzqEmVZcAFEgf
+         Ae8IFmnm4xrhJKdIVvnn0aZhMY8hhezaqF0C3Nf5FHZNoVbMAviTwy+PwCyqyzIhN4kF
+         xzSqkRHET0phrmXXoEk8YBL3X26EzVUMeyoIYpJLjA6r+ZcIEuaiEqEVCr0Asz780NRZ
+         9KGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Sw5sXMAC9IeBMeUt8/3lQb1uasIw729SIpXYRz+nt0k=;
+        b=UPPOcoROGpSA1KnP9WeyYk5yaBabQzY3rXlCqDqurqUK4DqP2X8paS1rnp/Y590lo9
+         DxpqNtYTG1IYjxWNuabc2fSZog3WAKtN0tIxMRwCkf0eZ/6fd3Dcw0Wao9W+SdkWDTyW
+         FoZgjJQfaZQvtaj6hICAlXgoZsXh57wxG/hmjZuRkUa+LgG7AdQZrnGnghM7qXtSIUSY
+         caGF8bNpgxa3OsXr7+G1gs5ui40+JXg6flT3rZR3Tz9k23d5GZxAMYOBBmybuA+6Y9wv
+         LItNMnndx2ARjY6Mqs4O8dZTBYpb1PYvuEx53GUSazF8JTIgaZ/INTjciJn1ucBFcVfv
+         QohA==
+X-Gm-Message-State: AOAM533rYwdajb+hNBf3LmNMfPdHguTkd5iMEk4Qu7njg08SbGPfGcyI
+        sOAGoee5RfGEvj5vu2PFOYYG852rGQDr1McI5Cg=
+X-Google-Smtp-Source: ABdhPJyyVl6KZqk+G+WaDDYBqduJSmFyLZ5S3FK/doNLC6ElJTDOHHjrLBXkSnJj10W13nortOhbuD7Ys1IBYZ3wtx0=
+X-Received: by 2002:a92:4a0a:: with SMTP id m10mr7326066ilf.160.1637581418813;
+ Mon, 22 Nov 2021 03:43:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Mon, 22 Nov 2021 01:56:10 +0800
-From:   Josee LAROUCHE <wmerwe@rsaweb.co.za>
+Received: by 2002:a05:6622:b34:0:0:0:0 with HTTP; Mon, 22 Nov 2021 03:43:38
+ -0800 (PST)
+Reply-To: wongleshiu@gmail.com
+From:   Wong Shiu <tinsleymeekinsjrn@gmail.com>
+Date:   Mon, 22 Nov 2021 13:43:38 +0200
+Message-ID: <CAEbty7AcHocNP_rbizAs9uNsY-iamqJjq8N-NStm3ketgFjW3A@mail.gmail.com>
+Subject: Good Day
 To:     undisclosed-recipients:;
-Subject: Bonjour;
-Organization: Projet
-Reply-To: larouchejoseemme@gmail.com
-Mail-Reply-To: larouchejoseemme@gmail.com
-Message-ID: <c3b7109f30b61c87af46f44caa337cb7@rsaweb.co.za>
-X-Sender: wmerwe@rsaweb.co.za
-User-Agent: Roundcube Webmail/1.3.1 
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
 -- 
-Bonjour
-Je me nomme Josée LAROUCHE née le 27 Mars 1944 d'origine Française.  Je
-suis désolée de vous contacter si brusquement je tiens à vous informer
-que c’est la grâce de Dieu qui m’a dirigée vers vous et je le
-remercie. je viens de choisir votre profil pour vous  faire un don d'une
-somme de 1.000.000 € (Euros) . Mais je ne donne pas cette somme pour que
-vous en bénéficiez tout seul. vous utilisez 55% aux enfants démunis,aux
-profits des handicapés, personnes de troisième âge,orphelins ..etc dans
-votre pays ou autre pays de votre choix . c'est à dire construire des
-orphelinats en mon nom ,construire des restaurants de cœur...etc. j'ai 
-pas
-une raison de vous choisir.c'est Dieu qui a décidé ainsi .Nul n'a le
-droit d'être heureux tout seul. Actuellement  je suis sous observation
-médicale à Manchester. Pour avoir plus de renseignements concernant mon
-projet et moi même veillez me donner votre avis dans ma boîte mail qui
-est:   larouchejoseemme@gmail.com
+Good day
+
+I found your email in the Google database,
+
+Is your email address still valid? I have a good business proposal for you,
+
+If you are interested, please contact me for further information at:
+wongleshiu@gmail.com
+
+Wong  Shiu
