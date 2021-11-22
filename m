@@ -2,59 +2,216 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 388C54592B4
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Nov 2021 17:11:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F21C445927E
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Nov 2021 16:58:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231739AbhKVQOg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Nov 2021 11:14:36 -0500
-Received: from mx08-00227901.pphosted.com ([91.207.212.184]:52378 "EHLO
-        mx08-00227901.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229955AbhKVQOf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 22 Nov 2021 11:14:35 -0500
-Received: from pps.filterd (m0097674.ppops.net [127.0.0.1])
-        by mx08-.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 1AJ7wixf018132;
-        Fri, 19 Nov 2021 10:27:13 +0100
-Received: from zbw2k16ex01.bardusch.net ([185.80.186.174])
-        by mx08-.pphosted.com (PPS) with ESMTPS id 3cdmdm1455-6
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 19 Nov 2021 10:27:13 +0100
-Received: from zbw2k16ex02.bardusch.net (172.25.1.2) by
- ZBW2K16EX01.bardusch.net (172.25.1.1) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.1.2308.20;
- Fri, 19 Nov 2021 10:27:11 +0100
-Received: from User (172.25.1.131) by zbw2k16ex02.bardusch.net (172.25.1.2)
- with Microsoft SMTP Server id 15.1.2308.20 via Frontend Transport; Fri, 19
- Nov 2021 10:27:00 +0100
-Reply-To: <josechoondak@gmail.com>
-From:   Joseph Choondak <info@ndd.co.mz>
-Subject: I hope this email finds you well.
-Date:   Fri, 19 Nov 2021 01:27:14 -0800
+        id S240586AbhKVQAc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Nov 2021 11:00:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37966 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240458AbhKVQAM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Nov 2021 11:00:12 -0500
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97319C061784
+        for <linux-omap@vger.kernel.org>; Mon, 22 Nov 2021 07:57:00 -0800 (PST)
+Received: from ramsan.of.borg ([84.195.186.194])
+        by xavier.telenet-ops.be with bizsmtp
+        id MTwH260044C55Sk01TwHfq; Mon, 22 Nov 2021 16:56:58 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mpBe5-00EL3K-Py; Mon, 22 Nov 2021 16:54:17 +0100
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mpBe5-00HGy1-9n; Mon, 22 Nov 2021 16:54:17 +0100
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        Paul Walmsley <paul@pwsan.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Benoit Parrot <bparrot@ti.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 00/17] Non-const bitfield helper conversions
+Date:   Mon, 22 Nov 2021 16:53:53 +0100
+Message-Id: <cover.1637592133.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <e36b6b33-d3b3-4f08-8033-0aba2c4cece8@zbw2k16ex02.bardusch.net>
-To:     Undisclosed recipients:;
-X-Proofpoint-GUID: TLQLmM0KGMyKZ2pptUvqji1PrJ_tMJCL
-X-Proofpoint-ORIG-GUID: TLQLmM0KGMyKZ2pptUvqji1PrJ_tMJCL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-19_08,2021-11-17_01,2020-04-07_01
-X-Proofpoint-Spam-Reason: orgsafe
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-May I please ask with considerable urgency for your kind assistance with the following matter.
-I'm a financial person, I think  I have something huge you might be interested in.
+	Hi all,
 
-Looking forward to hearing from you.
+<linux/bitfield.h> contains various helpers for accessing bitfields, as
+typically used in hardware registers for memory-mapped I/O blocks. These
+helpers ensure type safety, and deduce automatically shift values from
+mask values, avoiding mistakes due to inconsistent shifts and masks, and
+leading to a reduction in source code size.
 
+I have already submitted a few conversions to the FIELD_{GET,PREP}()
+helpers that were fixes for real bugs:
+  - [PATCH] mips: cm: Convert to bitfield API to fix out-of-bounds
+    access
+    https://lore.kernel.org/r/0471c545117c5fa05bd9c73005cda9b74608a61e.1635501373.git.geert+renesas@glider.be
+  - [PATCH] drm/armada: Fix off-by-one error in
+    armada_overlay_get_property()
+    https://lore.kernel.org/r/5818c8b04834e6a9525441bc181580a230354b69.1635501237.git.geert+renesas@glider.be
 
-Respectfully!!
-Joseph Choondak
-Account Executive.
+Plus several patches for normal conversions:
+  - [PATCH] ARM: ptrace: Use bitfield helpers
+    https://lore.kernel.org/r/a1445d3abb45cfc95cb1b03180fd53caf122035b.1637593297.git.geert+renesas@glider.be
+  - [PATCH] MIPS: CPC: Use bitfield helpers
+    https://lore.kernel.org/r/35f0f17e3d987afaa9cd09cdcb8131d42a53c3e1.1637593297.git.geert+renesas@glider.be
+  - [PATCH] MIPS: CPS: Use bitfield helpers
+    https://lore.kernel.org/r/8bd8b1b9a3787e594285addcf2057754540d0a5f.1637593297.git.geert+renesas@glider.be
+  - [PATCH] crypto: sa2ul - Use bitfield helpers
+    https://lore.kernel.org/r/ca89d204ef2e40193479db2742eadf0d9cf3c0ff.1637593297.git.geert+renesas@glider.be
+  - [PATCH] dmaengine: stm32-mdma: Use bitfield helpers
+    https://lore.kernel.org/r/36ceab242a594233dc7dc6f1dddb4ac32d1e846f.1637593297.git.geert+renesas@glider.be
+  - [PATCH] intel_th: Use bitfield helpers
+    https://lore.kernel.org/r/b1e4f027aa88acfbdfaa771b0920bd1d977828ba.1637593297.git.geert+renesas@glider.be
+  - [PATCH] Input: palmas-pwrbutton - use bitfield helpers
+    https://lore.kernel.org/r/f8831b88346b36fc6e01e0910d0db6c94287d2b4.1637593297.git.geert+renesas@glider.be
+  - [PATCH] irqchip/mips-gic: Use bitfield helpers
+    https://lore.kernel.org/r/74f9d126961a90d3e311b92a54870eaac5b3ae57.1637593297.git.geert+renesas@glider.be
+  - [PATCH] mfd: mc13xxx: Use bitfield helpers
+    https://lore.kernel.org/r/afa46868cf8c1666e9cbbbec42767ca2294b024d.1637593297.git.geert+renesas@glider.be
+  - [PATCH] regulator: lp873x: Use bitfield helpers
+    https://lore.kernel.org/r/44d60384b640c8586b4ca7edbc9287a34ce21c5b.1637593297.git.geert+renesas@glider.be
+  - [PATCH] regulator: lp87565: Use bitfield helpers
+    https://lore.kernel.org/r/941c2dfd5b5b124b8950bcce42db4c343dfe9821.1637593297.git.geert+renesas@glider.be
+
+The existing FIELD_{GET,PREP}() macros are limited to compile-time
+constants.  However, it is very common to prepare or extract bitfield
+elements where the bitfield mask is not a compile-time constant.
+To avoid this limitation, the AT91 clock driver already has its own
+field_{prep,get}() macros.
+
+This patch series makes them available for general use, and converts
+several drivers to the existing FIELD_{GET,PREP}() and the new
+field_{get,prep}() helpers.
+
+I can take the first two patches through the reneas-clk tree for v5.17,
+but probably it is best for the remaining patches to be postponed to
+v5.18.
+
+Thanks for your comments!
+
+Geert Uytterhoeven (17):
+  bitfield: Add non-constant field_{prep,get}() helpers
+  clk: renesas: Use bitfield helpers
+  [RFC] soc: renesas: Use bitfield helpers
+  [RFC] ARM: OMAP2+: Use bitfield helpers
+  [RFC] bus: omap_l3_noc: Use bitfield helpers
+  [RFC] clk: ti: Use bitfield helpers
+  [RFC] iio: st_sensors: Use bitfield helpers
+  [RFC] iio: humidity: hts221: Use bitfield helpers
+  [RFC] iio: imu: st_lsm6dsx: Use bitfield helpers
+  [RFC] media: ti-vpe: cal: Use bitfield helpers
+  [RFC] mmc: sdhci-of-aspeed: Use bitfield helpers
+  [RFC] pinctrl: aspeed: Use bitfield helpers
+  [RFC] pinctl: ti: iodelay: Use bitfield helpers
+  [RFC] regulator: ti-abb: Use bitfield helpers
+  [RFC] thermal/ti-soc-thermal: Use bitfield helpers
+  [RFC] ALSA: ice1724: Use bitfield helpers
+  [RFC] rtw89: Use bitfield helpers
+
+ arch/arm/mach-omap2/clkt2xxx_dpllcore.c       |  5 +-
+ arch/arm/mach-omap2/cm2xxx.c                  | 11 ++-
+ arch/arm/mach-omap2/cm2xxx_3xxx.h             |  9 +--
+ arch/arm/mach-omap2/cm33xx.c                  |  9 +--
+ arch/arm/mach-omap2/cm3xxx.c                  |  7 +-
+ arch/arm/mach-omap2/cminst44xx.c              |  9 +--
+ arch/arm/mach-omap2/powerdomains3xxx_data.c   |  3 +-
+ arch/arm/mach-omap2/prm.h                     |  2 -
+ arch/arm/mach-omap2/prm2xxx.c                 |  4 +-
+ arch/arm/mach-omap2/prm2xxx_3xxx.c            |  7 +-
+ arch/arm/mach-omap2/prm2xxx_3xxx.h            |  9 +--
+ arch/arm/mach-omap2/prm33xx.c                 | 53 +++++-------
+ arch/arm/mach-omap2/prm3xxx.c                 |  3 +-
+ arch/arm/mach-omap2/prm44xx.c                 | 53 ++++--------
+ arch/arm/mach-omap2/vc.c                      | 12 +--
+ arch/arm/mach-omap2/vp.c                      | 11 +--
+ drivers/bus/omap_l3_noc.c                     |  4 +-
+ drivers/clk/at91/clk-peripheral.c             |  1 +
+ drivers/clk/at91/pmc.h                        |  3 -
+ drivers/clk/renesas/clk-div6.c                |  6 +-
+ drivers/clk/renesas/r8a779a0-cpg-mssr.c       |  9 +--
+ drivers/clk/renesas/rcar-gen3-cpg.c           | 15 ++--
+ drivers/clk/ti/apll.c                         | 25 +++---
+ drivers/clk/ti/dpll3xxx.c                     | 81 ++++++++-----------
+ .../iio/common/st_sensors/st_sensors_core.c   |  5 +-
+ drivers/iio/humidity/hts221_core.c            |  8 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  1 -
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    |  7 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 45 +++++------
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c  | 11 +--
+ drivers/media/platform/ti-vpe/cal.h           |  4 +-
+ drivers/mmc/host/sdhci-of-aspeed.c            |  5 +-
+ drivers/net/wireless/realtek/rtw89/core.h     | 38 ++-------
+ drivers/pinctrl/aspeed/pinctrl-aspeed-g4.c    |  3 +-
+ drivers/pinctrl/aspeed/pinctrl-aspeed-g5.c    |  3 +-
+ drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c    |  3 +-
+ drivers/pinctrl/aspeed/pinctrl-aspeed.c       |  5 +-
+ drivers/pinctrl/aspeed/pinmux-aspeed.c        |  6 +-
+ drivers/pinctrl/ti/pinctrl-ti-iodelay.c       | 35 +++-----
+ drivers/regulator/ti-abb-regulator.c          |  7 +-
+ drivers/soc/renesas/renesas-soc.c             |  4 +-
+ drivers/thermal/ti-soc-thermal/ti-bandgap.c   | 11 ++-
+ include/linux/bitfield.h                      | 30 +++++++
+ sound/pci/ice1712/wm8766.c                    | 14 ++--
+ sound/pci/ice1712/wm8776.c                    | 14 ++--
+ 45 files changed, 263 insertions(+), 347 deletions(-)
+
+-- 
+2.25.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
