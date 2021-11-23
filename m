@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1882E45A01D
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 11:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60E4745A021
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 11:26:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229847AbhKWK30 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Nov 2021 05:29:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45420 "EHLO mail.kernel.org"
+        id S235444AbhKWK3b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Nov 2021 05:29:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45456 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235346AbhKWK30 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Nov 2021 05:29:26 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 77F056102A;
-        Tue, 23 Nov 2021 10:26:16 +0000 (UTC)
+        id S235356AbhKWK32 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 23 Nov 2021 05:29:28 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AD2BE60ED4;
+        Tue, 23 Nov 2021 10:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637663178;
+        s=k20201202; t=1637663180;
         bh=H9X1abjHl74goFDJmGzOnSvlKUx52sUOVNBBILp1Zpw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bs2Ubfsva/+nTuqEMkfjqO99vjHfLxR72YKz0ElP4uUtrWOmh1NLxTfIyojdAftNu
-         qbf0i1SR4nIzeBNOvfYnaWLYdAOB3EZ05JXYMd0+gzvuJnDm0sz7kchCAB7xFiFUGh
-         VWdofRIvNCWlQ7EJfSrgAlvxHOp9WjYyK4CDJ5nnabitVQkYv8EbJpFbV70fYnDHU2
-         NLg9lXYMlUOJ+5cSiDay86ybpIHMbJkOh+JREGycSlxGTV9O6YGSGByD4ESllVTIwE
-         fhMLSBcKd+hCbLnwUJKYliHvY4hvx7vebIpHN2UHLrjvlVyvOFZRJ9uohKReMf0bQo
-         k5YSu8/urIbSA==
+        b=GagIVRS+axpQLcQ/NF5w9z4eeUghs/uFqjDv6kr2UGCZkWUid3gIOt/hcq3nQz9b/
+         wjf+TGnj24M9/O+L6Vc6oiDVUO9RwO85d4PJvKy3w122PGu16QUq9lpF/iAKSCR/EK
+         bVzZn+908GjtDprbYTD7JskbcATJDGNShbH11WubnhPQe36B0H5v40Q/rBCrYm96J2
+         UQ4NlecTu9+ojYyDbNFEffuYYSbSK/gwVzsLyd1FLaQc642xiOQz6wCcZjeerToGy0
+         zibfsHN1hze7WNsk6MIuWs9e4+JWkREXqn/ecUZ6RE3BxgW6Nf427EsTv0vz4iIDAH
+         pPxvG13FYIACg==
 From:   Roger Quadros <rogerq@kernel.org>
 To:     krzysztof.kozlowski@canonical.com, tony@atomide.com
 Cc:     kishon@ti.com, nm@ti.com, vigneshr@ti.com,
         linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH 2/4] memory: gpmc: Fix menuconfig visibility
-Date:   Tue, 23 Nov 2021 12:26:03 +0200
-Message-Id: <20211123102607.13002-3-rogerq@kernel.org>
+Subject: [PATCH 2/4] memory: omap-gpmc: Fix menuconfig visibility
+Date:   Tue, 23 Nov 2021 12:26:04 +0200
+Message-Id: <20211123102607.13002-4-rogerq@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20211123102607.13002-1-rogerq@kernel.org>
 References: <20211123102607.13002-1-rogerq@kernel.org>
