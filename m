@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53A2645A023
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 11:26:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8BFB45A027
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 11:26:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235485AbhKWK3c (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Nov 2021 05:29:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45560 "EHLO mail.kernel.org"
+        id S235503AbhKWK3e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Nov 2021 05:29:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45596 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235420AbhKWK3a (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Nov 2021 05:29:30 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1A4FE60F24;
-        Tue, 23 Nov 2021 10:26:20 +0000 (UTC)
+        id S235501AbhKWK3d (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 23 Nov 2021 05:29:33 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5270860FED;
+        Tue, 23 Nov 2021 10:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637663182;
+        s=k20201202; t=1637663185;
         bh=MeirT4xGsKt7osRpBz1wQ0uIbtgu/8LH4Sy26maoJnk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fb32FDXZMGuw2BLfTGGea6MWbsE5bSwgmliZ6uqv1BEloffv6xHM++ggK6y8PfxPd
-         UbRiC+AOna1HTR3J3kCSSzMrXw6nhy4lZhix/KyeeTKTI0smSZoyzFJs80X8s4HRnd
-         Yz44yTasg1GbZJ9Ghft6UZhPvQSIU72nmW1JcgNA9ScpELArDthV3TOhFDKK6pFQtd
-         6F0KtlBgMMUZ8Mg42qId1cWE4e9rwghhyL9CGIOoOO5pn0tHo2tqqY2jEHJX6WrB9w
-         l0gSYp8LspY0gqvBFyacrdBlhXU2hfjUt3Omii671jQ8stNr99qguy/18GFkbtb9U7
-         jXOP0EsoN8dLw==
+        b=nJvH4gvS0bN9+1IadU5xrynwVmMTRBKLalH3WImMPhoWms9ByOqMlks0IQg61p6jZ
+         bLR0ZCeBQPU1Zgj0kGZltYfO0Zu6hhgFjVCL10b2IsHmwFplrq4GJMc0KGq1wtt8vA
+         TQQQJl9lPhal7GnvlTX3YB5f+iXcbHfqwDiMXMM2mapbar/mLJxTWwm2Ud7F4fGqwi
+         hfTUAJt4kPCSkjOVmOQS+eo+mOjmO7U8Uaq58m5tP1ZGFn5peYxJ9ZDSrJS8VBNqiN
+         k2+JUsH14GEz1BH6biosD1Auw2etlYxblvndmz3tfOkPISQqNvW6Rdxw936YekpWPh
+         HkchONlvxEB4A==
 From:   Roger Quadros <rogerq@kernel.org>
 To:     krzysztof.kozlowski@canonical.com, tony@atomide.com
 Cc:     kishon@ti.com, nm@ti.com, vigneshr@ti.com,
         linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH 3/4] memory: omap-gpmc: Add support for GPMC on AM64 SoC
-Date:   Tue, 23 Nov 2021 12:26:05 +0200
-Message-Id: <20211123102607.13002-5-rogerq@kernel.org>
+Subject: [PATCH 3/4] memory: omap-gpmc: memory: omap-gpmc: Add support for GPMC on AM64 SoC
+Date:   Tue, 23 Nov 2021 12:26:06 +0200
+Message-Id: <20211123102607.13002-6-rogerq@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20211123102607.13002-1-rogerq@kernel.org>
 References: <20211123102607.13002-1-rogerq@kernel.org>
