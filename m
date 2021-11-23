@@ -2,144 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B41E45A038
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 11:28:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC4BA45A166
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 12:24:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235321AbhKWKbc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Nov 2021 05:31:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46604 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235146AbhKWKbc (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 23 Nov 2021 05:31:32 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A1B3960ED4;
-        Tue, 23 Nov 2021 10:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637663304;
-        bh=82zLsD1/kJ0fI0M0BCmFm0SsC1r/oUVVvTaESdHggQI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=jAXnTfLxhCKUoWGUOOPGCF0sYl+pSPeGH5gDVSGUZQychTNFS4yaef5npL6q2R4q0
-         pKgSoDOQfwBJYqbvltuas50YOhr3JTIkPkX3Y3idDlJ1OLaPID9ceN2JyjTY4I8V7x
-         lRzfOFWqQewXazehJ+C1ay0hKqLhVNC+NGFWoWXVGqG+dvGmM1oJagyhapIYa5TvUN
-         XKyoIzBXvlhX9to7S07zYiCiZ17ZIo6nvEc1rT6UQioVaRSTwF3AZTju1AOmlYqXdW
-         +Q1kD4gZw9NNNElGltWUTrkN1whZDg3vJdXSlx+p/uHgAGT7KWlgFC86Z+dfKNleRI
-         xQ1aN0pwTOA3g==
-Subject: Re: [PATCH 3/4] memory: omap-gpmc: memory: omap-gpmc: Add support for
- GPMC on AM64 SoC
-To:     krzysztof.kozlowski@canonical.com, tony@atomide.com
-Cc:     kishon@ti.com, nm@ti.com, vigneshr@ti.com,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <20211123102607.13002-1-rogerq@kernel.org>
- <20211123102607.13002-6-rogerq@kernel.org>
-From:   Roger Quadros <rogerq@kernel.org>
-Message-ID: <a9043d7e-20ca-5a53-c54f-825d94c79689@kernel.org>
-Date:   Tue, 23 Nov 2021 12:28:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-In-Reply-To: <20211123102607.13002-6-rogerq@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S236113AbhKWL1z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Nov 2021 06:27:55 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:33990 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236097AbhKWL1y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Nov 2021 06:27:54 -0500
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id 210DC1FD39;
+        Tue, 23 Nov 2021 11:24:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1637666684; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=UFMk9Bgs0C48EUfsk3ZFvxtIETbpuVrnTCZsE9y/THg=;
+        b=B5wgrGMQxccfarx7KLxD/v3wx8FzL961VMxubhW0cO/WUVPlEQomF+nVuFGnnBslrEEhT1
+        xudqYqMaf+YphX2nzCoCbfB0B6g9AeH9QfhE7lu7z3ACo7VQrklZRhovUB+NCMR7oDuaNe
+        0hq0zD2HZHDxU7bsE6McRJtXzhuF0Ds=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1637666684;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=UFMk9Bgs0C48EUfsk3ZFvxtIETbpuVrnTCZsE9y/THg=;
+        b=JvnlyRw9hsp7oaQ0km8FOqiXL/FSSMsTm/BLHjKdYHEZKscA/ru44PAvFmPvH3xzeJazLO
+        xpP7CG8EyA51s0BA==
+Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
+        by relay2.suse.de (Postfix) with ESMTP id E56A2A3B85;
+        Tue, 23 Nov 2021 11:24:41 +0000 (UTC)
+Date:   Tue, 23 Nov 2021 12:24:41 +0100
+Message-ID: <s5hwnkz9ksm.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        Paul Walmsley <paul@pwsan.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Benoit Parrot <bparrot@ti.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH/RFC 16/17] ALSA: ice1724: Use bitfield helpers
+In-Reply-To: <45fa162856814176045ffbb49ee64cf0ea7e00bc.1637592133.git.geert+renesas@glider.be>
+References: <cover.1637592133.git.geert+renesas@glider.be>
+        <45fa162856814176045ffbb49ee64cf0ea7e00bc.1637592133.git.geert+renesas@glider.be>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
+ FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
+ (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Please ignore this one as well.
-
-On 23/11/2021 12:26, Roger Quadros wrote:
-> The TI's AM64 SoC has the GPMC module. Add compatible for it.
+On Mon, 22 Nov 2021 16:54:09 +0100,
+Geert Uytterhoeven wrote:
 > 
-> Traditionally GPMC external addresses have always been mapped to first
-> 1GB physical address. However newer platforms, can have it mapped
-> at different locations. Support this address provision via device tree.
+> Use the field_{get,prep}() helpers, instead of open-coding the same
+> operations.
 > 
-> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 > ---
->  drivers/memory/omap-gpmc.c | 40 ++++++++++++++++++++++++++++----------
->  1 file changed, 30 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-> index be0858bff4d3..624153048182 100644
-> --- a/drivers/memory/omap-gpmc.c
-> +++ b/drivers/memory/omap-gpmc.c
-> @@ -237,6 +237,7 @@ struct gpmc_device {
->  	struct omap3_gpmc_regs context;
->  	int nirqs;
->  	unsigned int is_suspended:1;
-> +	struct resource *data;
->  };
->  
->  static struct irq_domain *gpmc_irq_domain;
-> @@ -1456,12 +1457,18 @@ static void gpmc_mem_exit(void)
->  	}
->  }
->  
-> -static void gpmc_mem_init(void)
-> +static void gpmc_mem_init(struct gpmc_device *gpmc)
->  {
->  	int cs;
->  
-> -	gpmc_mem_root.start = GPMC_MEM_START;
-> -	gpmc_mem_root.end = GPMC_MEM_END;
-> +	if (!gpmc->data) {
-> +		/* All legacy devices have same data IO window */
-> +		gpmc_mem_root.start = GPMC_MEM_START;
-> +		gpmc_mem_root.end = GPMC_MEM_END;
-> +	} else {
-> +		gpmc_mem_root.start = gpmc->data->start;
-> +		gpmc_mem_root.end = gpmc->data->end;
-> +	}
->  
->  	/* Reserve all regions that has been set up by bootloader */
->  	for (cs = 0; cs < gpmc_cs_num; cs++) {
-> @@ -1888,6 +1895,7 @@ static const struct of_device_id gpmc_dt_ids[] = {
->  	{ .compatible = "ti,omap3430-gpmc" },	/* omap3430 & omap3630 */
->  	{ .compatible = "ti,omap4430-gpmc" },	/* omap4430 & omap4460 & omap543x */
->  	{ .compatible = "ti,am3352-gpmc" },	/* am335x devices */
-> +	{ .compatible = "ti,am64-gpmc" },
->  	{ }
->  };
->  
-> @@ -2502,13 +2510,25 @@ static int gpmc_probe(struct platform_device *pdev)
->  	gpmc->dev = &pdev->dev;
->  	platform_set_drvdata(pdev, gpmc);
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (!res)
-> -		return -ENOENT;
-> +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "cfg");
-> +	if (!res) {
-> +		/* legacy DT */
-> +		gpmc_base = devm_platform_ioremap_resource(pdev, 0);
-> +		if (IS_ERR(gpmc_base))
-> +			return PTR_ERR(gpmc_base);
-> +	} else {
-> +		gpmc_base = devm_ioremap_resource(&pdev->dev, res);
-> +		if (IS_ERR(gpmc_base))
-> +			return PTR_ERR(gpmc_base);
-> +
-> +		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "data");
-> +		if (!res) {
-> +			dev_err(&pdev->dev, "couldn't get data reg resource\n");
-> +			return -ENOENT;
-> +		}
->  
-> -	gpmc_base = devm_ioremap_resource(&pdev->dev, res);
-> -	if (IS_ERR(gpmc_base))
-> -		return PTR_ERR(gpmc_base);
-> +		gpmc->data = res;
-> +	}
->  
->  	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
->  	if (!res) {
-> @@ -2562,7 +2582,7 @@ static int gpmc_probe(struct platform_device *pdev)
->  	dev_info(gpmc->dev, "GPMC revision %d.%d\n", GPMC_REVISION_MAJOR(l),
->  		 GPMC_REVISION_MINOR(l));
->  
-> -	gpmc_mem_init();
-> +	gpmc_mem_init(gpmc);
->  	rc = gpmc_gpio_init(gpmc);
->  	if (rc)
->  		goto gpio_init_failed;
-> 
+> Compile-tested only.
+> Marked RFC, as this depends on [PATCH 01/17], but follows a different
+> path to upstream.
+
+Acked-by: Takashi Iwai <tiwai@suse.de>
+
+
+thanks,
+
+Takashi
