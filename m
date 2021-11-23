@@ -2,112 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC4BA45A166
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 12:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0282C45A255
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 13:17:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236113AbhKWL1z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Nov 2021 06:27:55 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:33990 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236097AbhKWL1y (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Nov 2021 06:27:54 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 210DC1FD39;
-        Tue, 23 Nov 2021 11:24:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1637666684; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UFMk9Bgs0C48EUfsk3ZFvxtIETbpuVrnTCZsE9y/THg=;
-        b=B5wgrGMQxccfarx7KLxD/v3wx8FzL961VMxubhW0cO/WUVPlEQomF+nVuFGnnBslrEEhT1
-        xudqYqMaf+YphX2nzCoCbfB0B6g9AeH9QfhE7lu7z3ACo7VQrklZRhovUB+NCMR7oDuaNe
-        0hq0zD2HZHDxU7bsE6McRJtXzhuF0Ds=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1637666684;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UFMk9Bgs0C48EUfsk3ZFvxtIETbpuVrnTCZsE9y/THg=;
-        b=JvnlyRw9hsp7oaQ0km8FOqiXL/FSSMsTm/BLHjKdYHEZKscA/ru44PAvFmPvH3xzeJazLO
-        xpP7CG8EyA51s0BA==
-Received: from alsa1.suse.de (alsa1.suse.de [10.160.4.42])
-        by relay2.suse.de (Postfix) with ESMTP id E56A2A3B85;
-        Tue, 23 Nov 2021 11:24:41 +0000 (UTC)
-Date:   Tue, 23 Nov 2021 12:24:41 +0100
-Message-ID: <s5hwnkz9ksm.wl-tiwai@suse.de>
-From:   Takashi Iwai <tiwai@suse.de>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Benoit Parrot <bparrot@ti.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH/RFC 16/17] ALSA: ice1724: Use bitfield helpers
-In-Reply-To: <45fa162856814176045ffbb49ee64cf0ea7e00bc.1637592133.git.geert+renesas@glider.be>
-References: <cover.1637592133.git.geert+renesas@glider.be>
-        <45fa162856814176045ffbb49ee64cf0ea7e00bc.1637592133.git.geert+renesas@glider.be>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI/1.14.6 (Maruoka)
- FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.8 Emacs/25.3
- (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI 1.14.6 - "Maruoka")
-Content-Type: text/plain; charset=US-ASCII
+        id S236864AbhKWMUc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Nov 2021 07:20:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60376 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236349AbhKWMUb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Nov 2021 07:20:31 -0500
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC59AC06173E
+        for <linux-omap@vger.kernel.org>; Tue, 23 Nov 2021 04:17:23 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id o14so16912013plg.5
+        for <linux-omap@vger.kernel.org>; Tue, 23 Nov 2021 04:17:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mkEq4BmUEoVljcEckgSBMpnauvpC1UPUMHZm4B1fp+I=;
+        b=VcGYHHbDRnrUAfaRRo4xGBGFhB4Jot3nXPuT9mY1IOGqyooi3Wcys0ovFy7Bzu4Qp9
+         cYOH+EvjG00zSGBgIH/8Z/kS9vhIXf7KXvoL2KoDZJ8WjF0si+ZFXU+djPWMJSNjkqi+
+         OxiIV13I6hfCfNPRT39/KrbxiRS/hykVkcTrDrfxRZ8yYd8THK6qRTT8fizqep+XJazk
+         Qv5K9NG6G+FDo1XgIa56/uyYRUCOvOJksbeNYMtnguwFwlezGqQwMpvwLFEhfivF0Cnn
+         LvVv5JBaBHp8TmHLb1C3BkgmIYptvOgtwZrC1cZSIBdvXzrNDW0+jLB/TcIbhkdVMeR7
+         rEmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mkEq4BmUEoVljcEckgSBMpnauvpC1UPUMHZm4B1fp+I=;
+        b=0NJYkXypF+BxOJdgceMupe3GLB+A12CPT2snMLhVwO9XNu0rZI6lTp9ycbggKN/Fhz
+         R7I7i/B/CmGg1fQfStRZfOlwupSz9UI5wb0mAGHTy3cvnyaA4fxqfZOxJ9IUk3cEFdwd
+         pgiiYPSrWkTtze1A9IgXAhgE1K9gIg+cRsSixEWg7H3gZT3sHqm9PQ3nikHlNcfB6sJA
+         l0Lre1DJCvxD+4gFY5bNxxgrGMCmnV/bp17tySG+cNH/eW0/Py+evZJOevFxq8bifEmL
+         ifNxMiymKzL6w4BnK04FdkvE1+26amyQzzFADkQO/t8G71wFBs42GF29AvFBMSdm6m8i
+         Nf3Q==
+X-Gm-Message-State: AOAM530IQOTksdbJLa9FTCRn5zKS/QpYRGxhFfj+JR++o7PIInOzy6nj
+        Jgdp+JSbGIw9vU3ARdLGPZuvmS0j928fsGg/rwuZTZ4XYkvXxQ==
+X-Google-Smtp-Source: ABdhPJyIfpk0+b2S4AFQbfbs8J2OvaMrtsZs+urGdBeIzgn6P66p2hhrcO2Z6+mIMMcpBsNQdZSqHDlNIky/ZACRHgg=
+X-Received: by 2002:a17:90b:390a:: with SMTP id ob10mr2371927pjb.216.1637669843320;
+ Tue, 23 Nov 2021 04:17:23 -0800 (PST)
+MIME-Version: 1.0
+References: <20210921071807.30978-1-narmstrong@baylibre.com>
+ <20210921071807.30978-2-narmstrong@baylibre.com> <YV1UdSVOrZ3B9pq/@atomide.com>
+In-Reply-To: <YV1UdSVOrZ3B9pq/@atomide.com>
+From:   Yongqin Liu <yongqin.liu@linaro.org>
+Date:   Tue, 23 Nov 2021 20:17:10 +0800
+Message-ID: <CAMSo37UN78k=WE0CwRyNNV3P9kau+JzVZ7mHOMMvh5Bn=+=jAQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] ARM: dts: dra7: add entry for bb2d module
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Neil Armstrong <narmstrong@baylibre.com>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Gowtham Tammana <g-tammana@ti.com>,
+        Jyri Sarha <jsarha@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 22 Nov 2021 16:54:09 +0100,
-Geert Uytterhoeven wrote:
-> 
-> Use the field_{get,prep}() helpers, instead of open-coding the same
-> operations.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> Compile-tested only.
-> Marked RFC, as this depends on [PATCH 01/17], but follows a different
-> path to upstream.
+Hi, Neil, Tony
 
-Acked-by: Takashi Iwai <tiwai@suse.de>
+# sorry for the confusion if you have received the mail which I sent
+before, which is not in plain text mode.
 
+We have one out of tree change to enable the SGX544 gpu for the
+beagleboard-X15 Android build,
+    https://android-review.linaro.org/c/kernel/common/+/20521/11/arch/arm/boot/dts/dra7.dtsi
 
-thanks,
+and that seems to conflict with this BB2D enabling change,
+Could you please help give some suggestions on how we should update our patch
+to make it work with BB2D, without the revert of this change?
 
-Takashi
+On Wed, 6 Oct 2021 at 15:47, Tony Lindgren <tony@atomide.com> wrote:
+>
+> * Neil Armstrong <narmstrong@baylibre.com> [210921 10:18]:
+> > From: Gowtham Tammana <g-tammana@ti.com>
+> >
+> > BB2D is a Vivante GC 2D Accelerator.
+> > This adds the node to the dts file within a target module node.
+> > Crossbar index number is used for interrupt mapping.
+>
+> Thanks applying into omap-for-v5.16/dt.
+>
+> Tony
+
+-- 
+Best Regards,
+Yongqin Liu
+---------------------------------------------------------------
+#mailing list
+linaro-android@lists.linaro.org
+http://lists.linaro.org/mailman/listinfo/linaro-android
