@@ -2,128 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7486945AA10
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 18:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F5C745ACBF
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Nov 2021 20:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230359AbhKWR3n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Nov 2021 12:29:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48702 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233865AbhKWR3m (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Nov 2021 12:29:42 -0500
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0DC1C061574
-        for <linux-omap@vger.kernel.org>; Tue, 23 Nov 2021 09:26:33 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id n8so17667440plf.4
-        for <linux-omap@vger.kernel.org>; Tue, 23 Nov 2021 09:26:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KPed58hFTpRLwDYqt33WLynTmRa2Y0w9rmJh+0dHScs=;
-        b=NsQtJWQHb0i7N75jRXDo1GAfh8tCOwnNO/CY1LBHQ3+k1q+QvHJ8lxNXxFur5/TfxX
-         lKMf6ziPucsto3HP6SMT+fkTlcbNPlDtf+o3rmjOWTHFqZSbXSIwSTu4cCYY3sciqQW/
-         R7uDNf+91nRyHkASh0xFxgYlen0yUmoYQT8rxaQE/mVEsKDDE2ku7aPAALunA65sPwxg
-         CNm651hMUnAEkAoSXU+RlTvItFP/doDb338O5wKv3fkW2xLNkyQgbZvzWBZRqoy3xl0X
-         reLXNosQq9q6WY4J50b/HJOcCH5Q6p5wV5OJCvEGjp5dRJuG6eVc6wHSGVdbUDcJmLEq
-         07oQ==
+        id S238809AbhKWTrE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Nov 2021 14:47:04 -0500
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:34580
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238547AbhKWTrD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Tue, 23 Nov 2021 14:47:03 -0500
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com [209.85.208.199])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 79FF140746
+        for <linux-omap@vger.kernel.org>; Tue, 23 Nov 2021 19:43:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1637696634;
+        bh=X9nPu6M4MnGefRZgRydbBLcoxEN2an8Y7q8i1bd1GgY=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=D8bhrCEb54Ptj/jszwGK3G055/akajeVAAG/5P5NnjKYaxW6ar8hzh+6VUHpZn64v
+         NJmLomc+OUKRXAURHYtBjXftV0oLhSTHzDPEHYnyw0SPvufi2fazUZGn15tndOEgSW
+         CTA66G1nqSn2U6d484+tHixHCW2tLC55EPEce2PZyU13nDZrthRoofdymTWmAMKazw
+         JEZRVZA1MaP51vCGcu44l8iZjHG26sut7Vfz1yMLyYiPER8YAOE8bD7sqOGjz+9gL+
+         GG/VHwSSRPNTyz2l8WgQByukHibK/WLJGDwJ1HgmVTiAdv1b6PbAqIICTi48oVSixE
+         INQOYhORa5Qig==
+Received: by mail-lj1-f199.google.com with SMTP id t25-20020a2e8e79000000b0021b5c659213so69402ljk.10
+        for <linux-omap@vger.kernel.org>; Tue, 23 Nov 2021 11:43:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KPed58hFTpRLwDYqt33WLynTmRa2Y0w9rmJh+0dHScs=;
-        b=JRlisZkSEiaK7EdKn3vRqHkJKD2KFEk0xgvm0OIAwi6C40OlDekYCIipgULdh8njuY
-         tnh5zU01HFrR2KYRXSQty32xPumv1uL2eq9H/7svDaxBxLLLm79djGuwj8SmRZ+OOcmV
-         6B7bI4DIFKGL6RFwlUHBpCXDqbQWKDIVSXgqk3CgroSCRAaSdDjrThNHsk+DMelg4oIO
-         vg+E5tKw7s1667GNphGq39hH0Pv7hz7w00syE6xSEM8YYF6rrIEqqFHo/ppSWxvQ3bYy
-         IgCMpzozr+yseXWtcBRJ0x6FwmHWBjTW14ek+3vBpEyl6MSziqb5g7/UBpcZnWjmdjNm
-         edSA==
-X-Gm-Message-State: AOAM530dsRH8h5OvPM5gSnoKoZ0eSL+RilEELCrXMBEqZr6lUQQx9NBX
-        aqA02eGqxh375UomGBbXwHRCheA0NHPy1YIFhZXX/dBvJfYGZg==
-X-Google-Smtp-Source: ABdhPJw2jpYc2Lwn/EShV3vG24WLglTCIqgSsDmx5UNLkhvp9W8mUJfbLxP8eGkFhr9vraOm6G/vBX3gZPAZn9uZNGI=
-X-Received: by 2002:a17:90b:4a05:: with SMTP id kk5mr4925971pjb.142.1637688393387;
- Tue, 23 Nov 2021 09:26:33 -0800 (PST)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=X9nPu6M4MnGefRZgRydbBLcoxEN2an8Y7q8i1bd1GgY=;
+        b=chnNCF+p5qhuDD2PSmMlt5fnaC43OjDlwfYTrpHJlBMr8LMdcXr0ZlIq2DklPdM+VP
+         7wL3AjdpnwQp264LEY3kv6GpdS/dYhvSpF3HpHzcP8GaSHWowxzD3ooThSMr3q+9JXwu
+         ceGF+OC/foNrOyrIucQI3CWKIvmjuNH4sg5W88ypLmUdq7u8BIGKaPWXPs1umsTGpaJt
+         JR3FtSJ3YmZBPImI/oFc0TJ1nAVaXtoZf8/zrxMVTKxpvj1tjFL5xGbbRcYF2chdNeTI
+         A3IDLHXgglv2j+BBGbehkRv41DnG0qdT55b9fZH3VcBF3+fxyIitYkyK5aYAobymaKlY
+         1BZQ==
+X-Gm-Message-State: AOAM530M8qaaYmxHktP9pEf/9fAMsgoCO+cUcRYCojSHTgG0AY4LbOHJ
+        3WKGqASg5MnCK8ZPNne+gEvOzlIYTr5JVh86X02dG0fS8hB8I0ecicugLp8lD6gElFDo6I9MVk2
+        RxnGba6eNGNf/qm+WBA34zFZxVc032DMXQc0LlgU=
+X-Received: by 2002:a19:f242:: with SMTP id d2mr7801922lfk.516.1637696633485;
+        Tue, 23 Nov 2021 11:43:53 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxFaBRKZmEoS9PRHvnxswXTWeitqkbEItlmIJMyGoqfOpgMWayVxNDGVMByx8TFop12tJI2zw==
+X-Received: by 2002:a19:f242:: with SMTP id d2mr7801899lfk.516.1637696633321;
+        Tue, 23 Nov 2021 11:43:53 -0800 (PST)
+Received: from [192.168.3.67] (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
+        by smtp.gmail.com with ESMTPSA id r3sm1387507lfc.114.2021.11.23.11.43.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Nov 2021 11:43:52 -0800 (PST)
+Message-ID: <6a8f93a4-7390-1f1e-6ba0-601859c21ac0@canonical.com>
+Date:   Tue, 23 Nov 2021 20:43:52 +0100
 MIME-Version: 1.0
-References: <20210921071807.30978-1-narmstrong@baylibre.com>
- <20210921071807.30978-2-narmstrong@baylibre.com> <YV1UdSVOrZ3B9pq/@atomide.com>
- <CAMSo37UN78k=WE0CwRyNNV3P9kau+JzVZ7mHOMMvh5Bn=+=jAQ@mail.gmail.com> <78b51650-0e32-e81f-0191-2222580e7343@baylibre.com>
-In-Reply-To: <78b51650-0e32-e81f-0191-2222580e7343@baylibre.com>
-From:   Yongqin Liu <yongqin.liu@linaro.org>
-Date:   Wed, 24 Nov 2021 01:26:21 +0800
-Message-ID: <CAMSo37X1BA1cYYxwjWBo_dhjpGYuYD2KK00+3ZWAwNeJq8UfxQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ARM: dts: dra7: add entry for bb2d module
-To:     Neil Armstrong <narmstrong@baylibre.com>
-Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Gowtham Tammana <g-tammana@ti.com>, Jyri Sarha <jsarha@ti.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH 2/4] memory: omap-gpmc: Fix menuconfig visibility
+Content-Language: en-US
+To:     Roger Quadros <rogerq@kernel.org>, tony@atomide.com
+Cc:     kishon@ti.com, nm@ti.com, vigneshr@ti.com,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20211123102607.13002-1-rogerq@kernel.org>
+ <20211123102607.13002-4-rogerq@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20211123102607.13002-4-rogerq@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi, Neil
+On 23/11/2021 11:26, Roger Quadros wrote:
+> GPMC was not being visible if COMPILE_TEST is not enabled.
+> 
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> ---
+>  drivers/memory/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
-On Tue, 23 Nov 2021 at 20:47, Neil Armstrong <narmstrong@baylibre.com> wrote:
->
-> Hi,
->
-> On 23/11/2021 13:17, Yongqin Liu wrote:
-> > Hi, Neil, Tony
-> >
-> > # sorry for the confusion if you have received the mail which I sent
-> > before, which is not in plain text mode.
-> >
-> > We have one out of tree change to enable the SGX544 gpu for the
-> > beagleboard-X15 Android build,
-> >     https://android-review.linaro.org/c/kernel/common/+/20521/11/arch/arm/boot/dts/dra7.dtsi
-> >
-> > and that seems to conflict with this BB2D enabling change,
-> > Could you please help give some suggestions on how we should update our patch
-> > to make it work with BB2D, without the revert of this change?
->
-> This BB2D patch alters the target-module@59000000 while your SGX
-> change alters the target-module@56000000.
->
-> Please rebase your patches.
-I am sorry if the "conflict" I used previously caused the confusion.
-What I meant with the "conflict" word is the feature conflict, not the
-patch merge conflict.
+... which was probably on purpose, similarly to many other SoC drivers
+which are selected by platform. Therefore there is no bug to fix here -
+lack of visibility is not a problem. Please document instead why you
+want to change it, e.g. why this is a problem or unwanted behavior.
 
-I could merge my SGX change with the BB2D change there, but then my
-build could not boot successfully to the homescreen,
-I need to revert the BB2D change to have it boot to the homescreen successfully.
-
-Here are the serial console output in case you want to check:
-https://pastebin.com/RY472b96  work with the BB2D change reverted
-https://pastebin.com/aP97r7rJ    does not work with the BB2D change.
-
-Not sure if you have any idea about the problem.
-Please help give some suggestions on what I could try.
-
-Thanks,
-Yongqin
->
-> >
-> > On Wed, 6 Oct 2021 at 15:47, Tony Lindgren <tony@atomide.com> wrote:
-> >>
-> >> * Neil Armstrong <narmstrong@baylibre.com> [210921 10:18]:
-> >>> From: Gowtham Tammana <g-tammana@ti.com>
-> >>>
-> >>> BB2D is a Vivante GC 2D Accelerator.
-> >>> This adds the node to the dts file within a target module node.
-> >>> Crossbar index number is used for interrupt mapping.
-> >>
-> >> Thanks applying into omap-for-v5.16/dt.
-> >>
-> >> Tony
-> >
->
-
-
--- 
-Best Regards,
-Yongqin Liu
----------------------------------------------------------------
-#mailing list
-linaro-android@lists.linaro.org
-http://lists.linaro.org/mailman/listinfo/linaro-android
+Best regards,
+Krzysztof
