@@ -2,93 +2,129 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2A4E45C07B
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Nov 2021 14:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BE845C6AE
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Nov 2021 15:07:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344657AbhKXNJV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Nov 2021 08:09:21 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45302 "EHLO mail.kernel.org"
+        id S1350107AbhKXOKk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Nov 2021 09:10:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53830 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1347226AbhKXNHU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 24 Nov 2021 08:07:20 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7353A61A3C;
-        Wed, 24 Nov 2021 12:38:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1637757511;
-        bh=RkwHq1cRwgCLq/qexO1dmHvG2QeRPD46hOCbh35QAlg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kM0Si0MC3Wcm/NvZcaBGikJnzL/xE2Q9wEPbV42tt9CKDgoLKW/NTPSicEnkpVVo+
-         Fq7eSFiBdnRdCexpetp9H5hJg3WwdnbVdVSWw6wdYegfPHjQyO2FduVIVc2b+hGyF9
-         +HgfrjhFjoxGb+cZweQw4bVxpyCOl2F1oRSeHddU=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        id S1356052AbhKXOIj (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 24 Nov 2021 09:08:39 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B124C6135F;
+        Wed, 24 Nov 2021 13:59:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637762378;
+        bh=qRP+clj8R/VdWhftZ8Y8X7gwjyLiR1Ndt0XMFQ1d99I=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=qwjskdleu3wFs5Bp+wvn7/HQgcncwjzNLbZJvm05oYaNrcYQTwWP5OPt4NA+r19ce
+         xvpj4Ygu81mu+0T0HClP6KV/QWjpcF9snHTHoGaG5tUeLxnTTWkLES0g3C2OG9fyHP
+         3gdMDDzRgjs1FxHFxipNVT3bu4+1WLgAMlUBkLt05N30IajW10WzN8g5y+5eK5i725
+         UrYk6tfyltIEGHPLMkyi6LuRszHy8ZTAL81DcgYxpSc8FxYZIzgFUL244Ub8IMFPQK
+         iyz4glX1RQI/lDwdXU9D49kB+bXi/+6kFMsXGuBY9Lzmn68zgSqocZJHLF6A/zwCj2
+         E8n91Zb/v+PWQ==
+Date:   Wed, 24 Nov 2021 05:59:35 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Tony Lindgren <tony@atomide.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        Paul Walmsley <paul@pwsan.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Benoit Parrot <bparrot@ti.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
         Keerthy <j-keerthy@ti.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.co.uk>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        linux-omap@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 160/323] clocksource/drivers/timer-ti-dm: Select TIMER_OF
-Date:   Wed, 24 Nov 2021 12:55:50 +0100
-Message-Id: <20211124115724.327164032@linuxfoundation.org>
-X-Mailer: git-send-email 2.34.0
-In-Reply-To: <20211124115718.822024889@linuxfoundation.org>
-References: <20211124115718.822024889@linuxfoundation.org>
-User-Agent: quilt/0.66
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}()
+ helpers
+Message-ID: <20211124055935.416dc472@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <05d4673a0343bfd83824d307e9cf8bf92e3814a6.camel@sipsolutions.net>
+References: <cover.1637592133.git.geert+renesas@glider.be>
+        <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
+        <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
+        <20211122171739.03848154@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <CAMuHMdWAAGrQUZN18cnDTDUUhuPNTZTFkRMe2Sbf+s7CedPSxA@mail.gmail.com>
+        <637a4183861a1f2cdab52b7652bfa7ed33fbcdd2.camel@sipsolutions.net>
+        <20211123154922.600fd3b5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <05d4673a0343bfd83824d307e9cf8bf92e3814a6.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Kees Cook <keescook@chromium.org>
+On Wed, 24 Nov 2021 09:03:24 +0100 Johannes Berg wrote:
+> On Tue, 2021-11-23 at 15:49 -0800, Jakub Kicinski wrote:
+> > > Indeed.
+> > > 
+> > > Also as I said in my other mail, the le32/be32/... variants are
+> > > tremendously useful, and they fundamentally cannot be expressed with the
+> > > FIELD_GET() or field_get() macros. IMHO this is a clear advantage to the  
+> > 
+> > Can you elaborate?  
+> 
+> Well, the way I see it, the only advantage of FIELD_GET() is that it
+> will auto-determine the type (based on the mask type.) This cannot work
+> if you need be/le conversions, because the be/le type annotations are
+> invisible to the compiler.
+> 
+> So obviously you could write a BE32_FIELD_GET(), but then really that's
+> equivalent to be32_get_bits() - note you you have to actually specify
+> the type in the macro name. I guess in theory you could make macros
+> where the type is an argument (like FIELD_GET_TYPE(be32, ...)), but I
+> don't see how that gains anything.
 
-[ Upstream commit eda9a4f7af6ee47e9e131f20e4f8a41a97379293 ]
+Ah, that's what you meant! Thanks for spelling it out.
 
-When building OMAP_DM_TIMER without TIMER_OF, there are orphan sections
-due to the use of TIMER_OF_DELCARE() without CONFIG_TIMER_OF. Select
-CONFIG_TIMER_OF when enaling OMAP_DM_TIMER:
+FWIW I never found the be/le versions useful. Most of the time the data
+comes from bus accessors which swap or is unaligned so you have to do
+be/le_get_unaligned, which swaps. Plus if you access/set multiple
+fields you'd swap them one by one which seems wasteful.
 
-arm-linux-gnueabi-ld: warning: orphan section `__timer_of_table' from `drivers/clocksource/timer-ti-dm-systimer.o' being placed in section `__timer_of_table'
+> > > typed versions, and if you ask me we should get rid of the FIELD_GETand
+> > > FIELD_PREP entirely - difficult now, but at least let's not propagate
+> > > that?  
+> > 
+> > I don't see why.  
+> 
+> Just for being more regular, in the spirit of "there's exactly one
+> correct way of doing it" :)
 
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/lkml/202108282255.tkdt4ani-lkp@intel.com/
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.co.uk>
-Cc: Ladislav Michl <ladis@linux-mips.org>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: linux-omap@vger.kernel.org
-Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20210828175747.3777891-1-keescook@chromium.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/clocksource/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Right now it seems the uppercase macros are more prevalent.
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 4d37f018d846c..06504384c3765 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -23,6 +23,7 @@ config I8253_LOCK
- 
- config OMAP_DM_TIMER
- 	bool
-+	select TIMER_OF
- 
- config CLKBLD_I8253
- 	def_bool y if CLKSRC_I8253 || CLKEVT_I8253 || I8253_LOCK
--- 
-2.33.0
-
-
-
+Could just be because of the way the "swapping ones" are defined.
