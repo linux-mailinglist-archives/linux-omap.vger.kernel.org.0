@@ -2,153 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 90F8D45B675
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Nov 2021 09:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2A4E45C07B
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Nov 2021 14:06:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241325AbhKXI1b (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Nov 2021 03:27:31 -0500
-Received: from m43-7.mailgun.net ([69.72.43.7]:44118 "EHLO m43-7.mailgun.net"
+        id S1344657AbhKXNJV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Nov 2021 08:09:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45302 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241313AbhKXI13 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 24 Nov 2021 03:27:29 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1637742260; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=DLx8xZfugkoYBeo1v25B565K1wJJHlGolp3uooimdG4=; b=bNsxTrQyq9uGwuB3f2LyEcxsvAp9kD/C4fNIuYqL7wdR0INGNqkdkYAL6AQiYP+HKysGkv73
- CYHsPEgeVXDeFd7bJYmMA7Oz/1YUg44l72wHEEI5ntB8TnM3GEkzY/SvktnbEJA3SoSt3f0S
- PcTzk1aHGKk317FKx2i3qMH1ytk=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyIwZGJlNiIsICJsaW51eC1vbWFwQHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 619df6b3e7d68470afb0244c (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 24 Nov 2021 08:24:19
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EBD19C4338F; Wed, 24 Nov 2021 08:24:18 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL
-        autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 02E23C4338F;
-        Wed, 24 Nov 2021 08:24:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org 02E23C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        id S1347226AbhKXNHU (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 24 Nov 2021 08:07:20 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7353A61A3C;
+        Wed, 24 Nov 2021 12:38:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1637757511;
+        bh=RkwHq1cRwgCLq/qexO1dmHvG2QeRPD46hOCbh35QAlg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=kM0Si0MC3Wcm/NvZcaBGikJnzL/xE2Q9wEPbV42tt9CKDgoLKW/NTPSicEnkpVVo+
+         Fq7eSFiBdnRdCexpetp9H5hJg3WwdnbVdVSWw6wdYegfPHjQyO2FduVIVc2b+hGyF9
+         +HgfrjhFjoxGb+cZweQw4bVxpyCOl2F1oRSeHddU=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
         Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Benoit Parrot <bparrot@ti.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH 01/17] bitfield: Add non-constant field_{prep,get}() helpers
-References: <cover.1637592133.git.geert+renesas@glider.be>
-        <3a54a6703879d10f08cf0275a2a69297ebd2b1d4.1637592133.git.geert+renesas@glider.be>
-        <01b44b38c087c151171f8d45a2090474c2559306.camel@sipsolutions.net>
-        <CAMuHMdUnBgFpqhgjf5AA0LH9MZOFALeC=YinZ4Tv_V+Y9hkRSg@mail.gmail.com>
-Date:   Wed, 24 Nov 2021 10:24:02 +0200
-In-Reply-To: <CAMuHMdUnBgFpqhgjf5AA0LH9MZOFALeC=YinZ4Tv_V+Y9hkRSg@mail.gmail.com>
-        (Geert Uytterhoeven's message of "Tue, 23 Nov 2021 09:30:14 +0100")
-Message-ID: <87sfvm55ct.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Keerthy <j-keerthy@ti.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.co.uk>,
+        Ladislav Michl <ladis@linux-mips.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        linux-omap@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 160/323] clocksource/drivers/timer-ti-dm: Select TIMER_OF
+Date:   Wed, 24 Nov 2021 12:55:50 +0100
+Message-Id: <20211124115724.327164032@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.0
+In-Reply-To: <20211124115718.822024889@linuxfoundation.org>
+References: <20211124115718.822024889@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Geert Uytterhoeven <geert@linux-m68k.org> writes:
+From: Kees Cook <keescook@chromium.org>
 
-> Hi Johannes,
->
-> On Mon, Nov 22, 2021 at 5:33 PM Johannes Berg <johannes@sipsolutions.net> wrote:
->> On Mon, 2021-11-22 at 16:53 +0100, Geert Uytterhoeven wrote:
->> > The existing FIELD_{GET,PREP}() macros are limited to compile-time
->> > constants.  However, it is very common to prepare or extract bitfield
->> > elements where the bitfield mask is not a compile-time constant.
->> >
->>
->> I'm not sure it's really a good idea to add a third API here?
->>
->> We have the upper-case (constant) versions, and already
->> {u32,...}_get_bits()/etc.
->
-> These don't work for non-const masks.
->
->> Also, you're using __ffs(), which doesn't work for 64-bit on 32-bit
->> architectures (afaict), so that seems a bit awkward.
->
-> That's a valid comment. Can be fixed by using a wrapper macro
-> that checks if typeof(mask) == u64, and uses an __ffs64() version when
-> needed.
->
->> Maybe we can make {u32,...}_get_bits() be doing compile-time only checks
->> if it is indeed a constant? The __field_overflow() usage is already only
->> done if __builtin_constant_p(v), so I guess we can do the same with
->> __bad_mask()?
->
-> Are all compilers smart enough to replace the division by
-> field_multiplier(field) by a shift?
+[ Upstream commit eda9a4f7af6ee47e9e131f20e4f8a41a97379293 ]
 
-It looks like the answer is no as few weeks back I received a comment
-internally that a team is seeing a slow down with u32_get_bits():
+When building OMAP_DM_TIMER without TIMER_OF, there are orphan sections
+due to the use of TIMER_OF_DELCARE() without CONFIG_TIMER_OF. Select
+CONFIG_TIMER_OF when enaling OMAP_DM_TIMER:
 
-"Time taken for executing both the macros/inline function (in terms of microseconds)
-(out of 3 Trails)
-FIELD_GET	: 32, 31, 32
-u32_get_bits	: 6379, 6664, 6558"
+arm-linux-gnueabi-ld: warning: orphan section `__timer_of_table' from `drivers/clocksource/timer-ti-dm-systimer.o' being placed in section `__timer_of_table'
 
-Sadly I didn't realise to ask what compiler they were using. But I still
-prefer {u32,...}_get_bits() over FIELD_GET(), they are just so much
-cleaner to use.
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/lkml/202108282255.tkdt4ani-lkp@intel.com/
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Keerthy <j-keerthy@ti.com>
+Cc: Sebastian Reichel <sebastian.reichel@collabora.co.uk>
+Cc: Ladislav Michl <ladis@linux-mips.org>
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: linux-omap@vger.kernel.org
+Fixes: 52762fbd1c47 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Acked-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20210828175747.3777891-1-keescook@chromium.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/clocksource/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 4d37f018d846c..06504384c3765 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -23,6 +23,7 @@ config I8253_LOCK
+ 
+ config OMAP_DM_TIMER
+ 	bool
++	select TIMER_OF
+ 
+ config CLKBLD_I8253
+ 	def_bool y if CLKSRC_I8253 || CLKEVT_I8253 || I8253_LOCK
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.33.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+
