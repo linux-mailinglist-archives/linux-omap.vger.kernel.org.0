@@ -2,144 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65BE245C887
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Nov 2021 16:21:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC40545CCAA
+	for <lists+linux-omap@lfdr.de>; Wed, 24 Nov 2021 20:01:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234639AbhKXPYb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 24 Nov 2021 10:24:31 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56]:4159 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229866AbhKXPY3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Nov 2021 10:24:29 -0500
-Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Hzl7x66WJz67x9G;
-        Wed, 24 Nov 2021 23:20:45 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Wed, 24 Nov 2021 16:21:16 +0100
-Received: from localhost (10.52.122.252) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Wed, 24 Nov
- 2021 15:21:14 +0000
-Date:   Wed, 24 Nov 2021 15:21:12 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-CC:     Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Paul Walmsley <paul@pwsan.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Tero Kristo <kristo@kernel.org>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Lorenzo Bianconi" <lorenzo.bianconi83@gmail.com>,
-        Benoit Parrot <bparrot@ti.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Joel Stanley <joel@jms.id.au>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        "Amit Kucheria" <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-clk@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <linux-aspeed@lists.ozlabs.org>,
-        <openbmc@lists.ozlabs.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <alsa-devel@alsa-project.org>
-Subject: Re: [PATCH/RFC 08/17] iio: humidity: hts221: Use bitfield helpers
-Message-ID: <20211124152112.000078bf@Huawei.com>
-In-Reply-To: <c906f7449c0210cefba53eab2c2d87105d5c8599.1637592133.git.geert+renesas@glider.be>
-References: <cover.1637592133.git.geert+renesas@glider.be>
-        <c906f7449c0210cefba53eab2c2d87105d5c8599.1637592133.git.geert+renesas@glider.be>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        id S234768AbhKXTFB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 24 Nov 2021 14:05:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55058 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230468AbhKXTFA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 24 Nov 2021 14:05:00 -0500
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F7BC061574;
+        Wed, 24 Nov 2021 11:01:50 -0800 (PST)
+Received: by mail-lj1-x22c.google.com with SMTP id i63so7546519lji.3;
+        Wed, 24 Nov 2021 11:01:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HB5Uno7mPEgJ7bG9gHGpKx58JbhDKtKcQ9mk992LdI8=;
+        b=GL4bZUuqm+wkEX2j2dAm5uvA+8tXowQCu7EWl2vXN1PNEtMP2+sUhSEcAAkwXUNlUi
+         YcAHBNGzXEDyJwTvpk1UvHzhgOb9oD5ILkOe5yzqjffeXjWrbbvTpXA10c89hebBJPFf
+         b/vTAqdWXgb183fiQoL/huEgTRK93E6BNwZE8YgJczjm8GniQ7hVtKFTKuDS2SeTnaKZ
+         d0cKF7w1wBhAngkJocKAU/cNUKpgH1qJpvm5KPpKmjVSXKOyALabPDl3n/uXnJnJqsk5
+         3mPGBGUc834/GQjkUK0xM0mOlqsaFaerr3T9GAGR7roy6/RDrMnBDgZem3i2v/GHTa0/
+         MdTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HB5Uno7mPEgJ7bG9gHGpKx58JbhDKtKcQ9mk992LdI8=;
+        b=0rsz57+9EdlX2J8k2AexGGdq6MO1M+jze1l5BXgy19EwdCPrsS4e+vHS14O1h66Ee2
+         /YH38R0iHSXujIySa1e7BG/Gd0BDU71GEsf6Xm52Ltzhr4ls8m9yJvdLv4uJZJ9CnY0v
+         7C9WPRc2LULns3vecIQ8LHcTZjH4ueurbkDOY8nA5cLIMXmVvPuAfoOMb+e/q2U4OqNC
+         0fo3nG5lwT6UyJhzg03rkRTRD1iJnxuqZczLWcTNbzLBINn7Vl7YYKfk8QranKd0xQ/G
+         HrTlKNV94tFnVs71LSWCAzJ70d42uN8TiUjIz6G222ZbH0VbWueeOff6ATMYLUHjn3bl
+         iVgQ==
+X-Gm-Message-State: AOAM532gX5y6gI3VikigULH5Gd2rWLCzj0GxIvilhcK/h8HG/xb1S+tV
+        GG6ZvHbuX+x0kVzbk4+GZ78O+p9E8Hk=
+X-Google-Smtp-Source: ABdhPJx6+3Bv4REdEvYQPqth18YMMEmulgzz509fJMrNya8E42TOFHvZVKeBgIrqx/ki+Mo3WNAcJQ==
+X-Received: by 2002:a2e:5c04:: with SMTP id q4mr18915802ljb.334.1637780508620;
+        Wed, 24 Nov 2021 11:01:48 -0800 (PST)
+Received: from localhost.localdomain (94-29-48-99.dynamic.spd-mgts.ru. [94.29.48.99])
+        by smtp.gmail.com with ESMTPSA id u21sm58366ljl.76.2021.11.24.11.01.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Nov 2021 11:01:48 -0800 (PST)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Svyatoslav Ryhel <clamor95@gmail.com>
+Cc:     linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1] mfd: tps65910: Set PWR_OFF bit during driver probe
+Date:   Wed, 24 Nov 2021 22:01:04 +0300
+Message-Id: <20211124190104.23554-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.52.122.252]
-X-ClientProxiedBy: lhreml733-chm.china.huawei.com (10.201.108.84) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 22 Nov 2021 16:54:01 +0100
-Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+The PWR_OFF bit needs to be set in order to power off properly, without
+hanging PMIC. This bit needs to be set early in order to allow thermal
+protection of NVIDIA Terga SoCs to power off hardware properly, otherwise
+a battery re-plug may be needed on some devices to recover after the hang.
 
-> Use the field_prep() helper, instead of open-coding the same operation.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Hi Geert,
+Cc: <stable@vger.kernel.org>
+Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # ASUS TF201
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+---
+ drivers/mfd/tps65910.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-If this should got forwards, looks like a nice cleanup for the two IIO
-ones, so I'll be happy to pick them up once infrastructure in place
-(ideally have the infrastructure an immutable branch to save having
-to revisit in 3+ months time!)
-
-Jonathan
-
-> ---
-> Compile-tested only.
-> Marked RFC, as this depends on [PATCH 01/17], but follows a different
-> path to upstream.
-> ---
->  drivers/iio/humidity/hts221_core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/humidity/hts221_core.c b/drivers/iio/humidity/hts221_core.c
-> index 6a39615b696114cd..749aedc469ede5c1 100644
-> --- a/drivers/iio/humidity/hts221_core.c
-> +++ b/drivers/iio/humidity/hts221_core.c
-> @@ -7,6 +7,7 @@
->   * Lorenzo Bianconi <lorenzo.bianconi@st.com>
->   */
->  
-> +#include <linux/bitfield.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/device.h>
-> @@ -171,7 +172,7 @@ static int hts221_update_avg(struct hts221_hw *hw,
->  			     u16 val)
->  {
->  	const struct hts221_avg *avg = &hts221_avg_list[type];
-> -	int i, err, data;
-> +	int i, err;
->  
->  	for (i = 0; i < HTS221_AVG_DEPTH; i++)
->  		if (avg->avg_avl[i] == val)
-> @@ -180,9 +181,8 @@ static int hts221_update_avg(struct hts221_hw *hw,
->  	if (i == HTS221_AVG_DEPTH)
->  		return -EINVAL;
->  
-> -	data = ((i << __ffs(avg->mask)) & avg->mask);
-> -	err = regmap_update_bits(hw->regmap, avg->addr,
-> -				 avg->mask, data);
-> +	err = regmap_update_bits(hw->regmap, avg->addr, avg->mask,
-> +				 field_prep(avg->mask, i));
->  	if (err < 0)
->  		return err;
->  
+diff --git a/drivers/mfd/tps65910.c b/drivers/mfd/tps65910.c
+index 6e105cca27d4..67e2707af4bc 100644
+--- a/drivers/mfd/tps65910.c
++++ b/drivers/mfd/tps65910.c
+@@ -436,15 +436,6 @@ static void tps65910_power_off(void)
+ 
+ 	tps65910 = dev_get_drvdata(&tps65910_i2c_client->dev);
+ 
+-	/*
+-	 * The PWR_OFF bit needs to be set separately, before transitioning
+-	 * to the OFF state. It enables the "sequential" power-off mode on
+-	 * TPS65911, it's a NO-OP on TPS65910.
+-	 */
+-	if (regmap_set_bits(tps65910->regmap, TPS65910_DEVCTRL,
+-			    DEVCTRL_PWR_OFF_MASK) < 0)
+-		return;
+-
+ 	regmap_update_bits(tps65910->regmap, TPS65910_DEVCTRL,
+ 			   DEVCTRL_DEV_OFF_MASK | DEVCTRL_DEV_ON_MASK,
+ 			   DEVCTRL_DEV_OFF_MASK);
+@@ -504,6 +495,19 @@ static int tps65910_i2c_probe(struct i2c_client *i2c,
+ 	tps65910_sleepinit(tps65910, pmic_plat_data);
+ 
+ 	if (pmic_plat_data->pm_off && !pm_power_off) {
++		/*
++		 * The PWR_OFF bit needs to be set separately, before
++		 * transitioning to the OFF state. It enables the "sequential"
++		 * power-off mode on TPS65911, it's a NO-OP on TPS65910.
++		 */
++		ret = regmap_set_bits(tps65910->regmap, TPS65910_DEVCTRL,
++				      DEVCTRL_PWR_OFF_MASK);
++		if (ret) {
++			dev_err(&i2c->dev, "failed to set power-off mode: %d\n",
++				ret);
++			return ret;
++		}
++
+ 		tps65910_i2c_client = i2c;
+ 		pm_power_off = tps65910_power_off;
+ 	}
+-- 
+2.33.1
 
