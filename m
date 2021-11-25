@@ -2,79 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C0FF45D87D
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Nov 2021 11:55:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C92645D992
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Nov 2021 12:51:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354786AbhKYK6p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Nov 2021 05:58:45 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:34602 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350909AbhKYK4m (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Nov 2021 05:56:42 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1APArSab076934;
-        Thu, 25 Nov 2021 04:53:28 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1637837608;
-        bh=hq+jbBY8FwWxm2D0OQwVWEAEKF4FYNiMLiwTnw33f1A=;
-        h=From:To:CC:Subject:Date;
-        b=IAdhgLwK3XqnwjZKPkNOBRExXwlsFQAbuXH+KppFZLcCLoS1Q0uoh38rjn8tLtLC5
-         oFwa2W/0F9+/jROePUiW0FJWz/wafiKVmCBCl/VXAbDRtyf2it0jKt7L7os7NLpXQm
-         k2y6PvNf8rEalrYUXOzLj0VnUdcBpivGe+wH33K8=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1APArS73048719
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 25 Nov 2021 04:53:28 -0600
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 25
- Nov 2021 04:53:27 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Thu, 25 Nov 2021 04:53:27 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1APArQTV120557;
-        Thu, 25 Nov 2021 04:53:27 -0600
-From:   Jayesh Choudhary <j-choudhary@ti.com>
-To:     <robh+dt@kernel.org>
-CC:     <bcousson@baylibre.com>, <tony@atomide.com>, <j-choudhary@ti.com>,
-        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] ARM: dts: am335x-wega: Fix typo in mcasp property rx-num-evt
-Date:   Thu, 25 Nov 2021 16:23:26 +0530
-Message-ID: <20211125105326.17000-1-j-choudhary@ti.com>
-X-Mailer: git-send-email 2.17.1
+        id S239572AbhKYLy6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Nov 2021 06:54:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51764 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238964AbhKYLw6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Nov 2021 06:52:58 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FAA8C0617A0;
+        Thu, 25 Nov 2021 03:47:23 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id t26so15619659lfk.9;
+        Thu, 25 Nov 2021 03:47:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=xjNtZhslGdewYi4/DDCriqSgf5isSxRwQ8y3BIZKOyw=;
+        b=aamzeuqJYayyPoYuDlfHehlm0t5RiB/4dmHiX1X4K5uKuzZO8qvIYW1ainbLyJemsN
+         wJshgIxPZYw7X7zhoSYXT2mFNUzesVKLrt6f1tF2ND29eI5vLKH+8+sQaOO1hmOGiRci
+         KSL5gT5jxmQVI48v6SaiQbPXCg93l5kjkmmdtkDRLJVTY3ANCuFLlMqSLurFMMgJcPM1
+         wCfQmWSZCRAFAMHKhxEX+gfwzBDWn4fZ5Bo5mHLtKdgWgwdvIIlcvh9qoaNS7jodzX+F
+         xwHaVqlzHLrsBv6TQ2U9GyYbgj3htKUTrY8MMZeJpFAkT3Expk6CXn+s5ygpG99KqIBr
+         aPrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=xjNtZhslGdewYi4/DDCriqSgf5isSxRwQ8y3BIZKOyw=;
+        b=pkClquiJTa5rC/jBzRkEKWgLX982EX4k8qr1+4gz/PvP/XfNKm+vYNouv/Mq1O39nC
+         Ez8aTbjJC5G7raJ7h2Mjosy1ss93dIZ3iMYd8j03SuamznFoYO+2U3UDQr/6Co+zHXvv
+         bMH29CQOBcNfjxF5SQOVr6ETmoXN7Y2BanWV0E/FKOVO8G1UM+HHh824Btkx1O8gvUsT
+         cSOFbYySolN5ErqgoIPDnThqU3/lWc52NOumF266NEH/FBFwUao+eJpza9vW1896nSGZ
+         bE6FGwh40GsTfrg6jOUc7Pv2T8Mr76ipPyEtKsOyhnfwVXV5AWKKhbAjG+8/AE658uFj
+         m/Nw==
+X-Gm-Message-State: AOAM531RRMj4RtLNd/IHjKIRk1IXbPWZYCvMkAJ3wZAFIXsxwAoN6Uga
+        0DT4T0mSJ0r4v7KLqpfv1cOv72Fs9WykqtI3btlYLJm8bQ==
+X-Google-Smtp-Source: ABdhPJxV0nTZKhLvw9mCwuGjnjREvyBOSbv/Q0U8XWchLzQKSAa9lZom2oNJxwxsaYUsUbVhljD5gKJNA7Z3z2cEX7I=
+X-Received: by 2002:a19:5212:: with SMTP id m18mr24065469lfb.267.1637840841735;
+ Thu, 25 Nov 2021 03:47:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+From:   Johannes Pointner <h4nn35.work@gmail.com>
+Date:   Thu, 25 Nov 2021 12:44:22 +0100
+Message-ID: <CAHvQdo3ovYAENUC1eb=ujvcu6MHV+qW+d9V9L1+JX6eVbKb4Cg@mail.gmail.com>
+Subject: pwm: pwm-omap-dmtimer: fails with Unable to find Timer pdev
+To:     tony@atomide.com, linux-omap@vger.kernel.org,
+        linux-pwm@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Fix the property name 'rx-num-evt'.
+Hello,
 
-Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
----
-The modification has not been tested. It needs to be tested
-to ensure that there are no regressions.
+I just tried to update an am3352 board to kernel 5.15 (before I used
+5.10) but I'm not able to get omap-dmtimer-pwm to probe anymore. The
+driver fails with the following errors:
+[    1.238511] omap-dmtimer-pwm omap-pwm@timer5: Unable to find Timer pdev
+[    1.238590] omap-dmtimer-pwm omap-pwm@timer6: Unable to find Timer pdev
 
- arch/arm/boot/dts/am335x-wega.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Patching the driver like this
+        timer_pdev = of_find_device_by_node(timer);
+       if (!timer_pdev) {
+               dev_err(&pdev->dev, "Unable to find Timer pdev\n");
+-               ret = -ENODEV;
++               ret = -EPROBE_DEFER;
+               goto err_find_timer_pdev;
+       }
+solves the problem but I'm not sure if this is the right way.
 
-diff --git a/arch/arm/boot/dts/am335x-wega.dtsi b/arch/arm/boot/dts/am335x-wega.dtsi
-index 673159d93a6a..f957fea8208e 100644
---- a/arch/arm/boot/dts/am335x-wega.dtsi
-+++ b/arch/arm/boot/dts/am335x-wega.dtsi
-@@ -55,7 +55,7 @@
- 		2 1 0 0 /* # 0: INACTIVE, 1: TX, 2: RX */
- 	>;
- 	tx-num-evt = <16>;
--	rt-num-evt = <16>;
-+	rx-num-evt = <16>;
- 	status = "okay";
- };
- 
--- 
-2.17.1
+I tried to find out when this problem started and found out that the
+last working version is 5.10.x. As of 5.11 it no longer works.
 
+Thanks,
+Hannes
