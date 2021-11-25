@@ -2,135 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D144945D9EB
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Nov 2021 13:20:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 953A545DBD6
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Nov 2021 15:02:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347935AbhKYMYF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Nov 2021 07:24:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35188 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239650AbhKYMWF (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 25 Nov 2021 07:22:05 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6E7A6603E5;
-        Thu, 25 Nov 2021 12:18:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1637842732;
-        bh=lFfGKss/qS/TiL5sYYjPBk2n1JD8OdsKZA9q69hDafk=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=d87xb1Quc+VVnWKM5scF8rWdA3RTXV2VEC96LbiwAVHbQ4NaAU7PPgDHBV6VKGqLz
-         aZ1+H8hLVO+rwadc/0x73JA55atNsXNm85FCV+bHc3Cq1+pOxGxAI+a7B9uAIf7egi
-         ZJkycrnbyMY9gq8VQhnfqOFQJOc/gb42uePPq3diI2fNrWuhaNWaVKH+t1ESZMq6kJ
-         r2J9DOcCqODvF9d4juG4rd6WzBSvwfOSWAKv+3Pf6JT52WtC4KMerpfyhaVZ0vG9BF
-         3Gn9X53HEQe1ILSqKOik68P4IlasoLGtlP8brbECKrR6vPjFEuGM2kNrHd1zMVF9J5
-         6bMTddrsrQQXQ==
-Subject: Re: [PATCH 1/4] dt-bindings: memory-controllers: ti,gpmc: Add
- compatible for AM64
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        tony@atomide.com
-Cc:     kishon@ti.com, nm@ti.com, vigneshr@ti.com,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
-References: <20211123102607.13002-1-rogerq@kernel.org>
- <20211123102607.13002-2-rogerq@kernel.org>
- <a28532b1-bfa0-031b-91cc-070cad557599@canonical.com>
-From:   Roger Quadros <rogerq@kernel.org>
-Message-ID: <782c626b-bbe5-38a0-85ea-1e34bd8b887d@kernel.org>
-Date:   Thu, 25 Nov 2021 14:18:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S1346177AbhKYOF5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Nov 2021 09:05:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53820 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350991AbhKYOD5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Nov 2021 09:03:57 -0500
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DCBCC0613F4
+        for <linux-omap@vger.kernel.org>; Thu, 25 Nov 2021 05:59:13 -0800 (PST)
+Received: by mail-lj1-x244.google.com with SMTP id d11so12647834ljg.8
+        for <linux-omap@vger.kernel.org>; Thu, 25 Nov 2021 05:59:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=tiVXAoiixLbAJRjb88vY0LdRZ5GSgqYUE6sDPkL29xM=;
+        b=lbpPQaaSn5IFjjDjemCiz32JzNR9JOcR2+H8p5ygeoEilLEoQrcqOL1b6QtY9aCDuv
+         f331Z8LHUmyZtV2JqDuaalQfi/1uE5w9KChi2o9mQmse/vht96CyKyWQtLHM79UNPrzM
+         /k9EUan4icKJ/sbqIQvz1cWfH/sHbL+fpF4T7iNLjeyN6FCpDAFtrEva2zsvFA0MRUC+
+         d70ZKchBqI8IGCC/aHt4Uvoc4n/syN8aUBeRHy9bDzLFG0hU+BvDA2Y43bM8Kqavz9I8
+         3kpYlYqaZslJ/BHhopZu9pazCHVbALrLY5z6kxxavqNN3WnLE9NUZWzQXN0M1982//PC
+         NH1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=tiVXAoiixLbAJRjb88vY0LdRZ5GSgqYUE6sDPkL29xM=;
+        b=DT0KIkoov7Q76uuotD9zHKaulWH7jLf8RtocZPvD4eP40ZmXLZ8SkINadvlFFPvqXf
+         /6YttH8ApV9+5WLe1O5RYxZ8yPUVb+nTkTfC60vEy19zcpiH0U5zsxFGLWh5yY7vjVrr
+         7u9qM/GX41jVaFre7Gtt1zen2Rr+1Llpeux8JOUQRXbcM8CDmf8Dr/VukUlCZdHPIyI0
+         v0H1cy91+5M0T54OdxULV+M4ktty/HqIhE4X7fRrZQn5UuLfajLsrsVFoS7UMmfnmJCx
+         DBfY9Ia0fXJ2ZiqwFJIHAodAb8gx7ii/rmqlAGSVPriZmWnqSHpn5g/+RtX7xF9J6le2
+         ubPg==
+X-Gm-Message-State: AOAM532ey5PiuohgILvUhhNQP8+Cfi9dTNkv+UXSOyV+hbwI+ogbxahd
+        sMYYZKGXP2SBRG8Bd/RLq97ym+Zon587dyOgsWU=
+X-Google-Smtp-Source: ABdhPJxIgUPqRzGgZWubt4fEFML4JKEyJgFSvDP5lm3r31oAyCCkVSkQ/2ezQH8+MZbDe60qz9TNeiK+KqqhkccX39M=
+X-Received: by 2002:a2e:a279:: with SMTP id k25mr24874577ljm.37.1637848751395;
+ Thu, 25 Nov 2021 05:59:11 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <a28532b1-bfa0-031b-91cc-070cad557599@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ac2:5bc8:0:0:0:0:0 with HTTP; Thu, 25 Nov 2021 05:59:11
+ -0800 (PST)
+Reply-To: mrmohammadzraqab099@gmail.com
+From:   "Mr Mohammad Z. Raqab" <charlieremon7@gmail.com>
+Date:   Thu, 25 Nov 2021 13:59:11 +0000
+Message-ID: <CADTN-87y+vufN8HXNedAY4bJQhOfbVbYPjpELOULz6pqNsV+Mg@mail.gmail.com>
+Subject: ATN:PLEASE/ I AM Mr Mohammad Z. Raqab
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+ATN:PLEASE/ I AM Mr Mohammad Z. Raqab
+Before I introduce myself, I wish to inform you that this letter is
+not a hoax mail and I urge you to treat it serious. This letter must ,
+come to you as a big surprise, but I believe it is only a day that
+people meet and become great friends and business partners.
 
+Please I want you to read this letter very carefully and I must
+apologize for barging this message into your mail box without any
+formal introduction due to the urgency and confidentiality of this
+business and I know that this message will come to you as a surprise.
+Please, this is not a joke and I will not like you to joke with it OK,
+With due respect to your person and much sincerity of purpose, I make
+this contact with you as I believe that you can be of great
+assistance,  to me. My name is  Mr Mohammad Z. Raqab , from Burkina
+Faso, West Africa. I
+work in Bank  as telex manager, please see this as a confidential
+message and do  not reveal it to another person, and let me know
+whether you can be of assistance regarding my proposal  below because
+it is top secret.
 
-On 23/11/2021 21:47, Krzysztof Kozlowski wrote:
-> On 23/11/2021 11:26, Roger Quadros wrote:
->> AM64 SoC contains the GPMC module. Add compatible for it.
->>
->> Newer SoCs don't necessarily map GPMC data region at the same place
->> as legacy SoCs. Add reg-names "data", to provide this information to
->> the device driver.
->>
->> Cc: Rob Herring <robh+dt@kernel.org>
->> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->> ---
->>  .../bindings/memory-controllers/ti,gpmc.yaml         | 12 +++++++++++-
->>  1 file changed, 11 insertions(+), 1 deletion(-)
->>
->> diff --git a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
->> index 25b42d68f9b3..1869cc6f949b 100644
->> --- a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
->> +++ b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
->> @@ -23,13 +23,20 @@ properties:
->>      items:
->>        - enum:
->>            - ti,am3352-gpmc
->> +          - ti,am64-gpmc
->>            - ti,omap2420-gpmc
->>            - ti,omap2430-gpmc
->>            - ti,omap3430-gpmc
->>            - ti,omap4430-gpmc
->>  
->>    reg:
->> -    maxItems: 1
->> +    minItems: 1
->> +    maxItems: 2
->> +
->> +  reg-names:
->> +    items:
->> +      - const: cfg
->> +      - const: data
-> 
-> I see your driver handles cases with only one reg item, but I have other
+I am about to retire from active Banking service to start a new life ,
+but I am skeptical to reveal this particular secret to a stranger.
+You must assure me that everything will be handled confidentially
+because we are not going to suffer again in life. It has been 10 years
+now that most of the greedy African Politicians used our bank to
+launder,  money overseas through the help of their Political
 
-The support for these two items is added in patch 3 of this series "memory: omap-gpmc: Add support for GPMC on AM64 SoC"
+advisers.  Most of the funds which they transferred out of the shores
+of Africa were gold
+and oil money that was supposed to have been used to develop the
+continent. Their Political advisers always inflated the amounts before
+transferring to foreign accounts,  so I also used the opportunity to
+divert part of the funds hence I am aware that there is no official
+trace of
 
-> question - is it correct to have older (ARMv7) platform with two reg
-> items? Or can am64-gpmc come with only one reg?
+how much was transferred as all the accounts used for such  transfers
+were being closed after transfer.  I acted as the Bank Officer to most
+of the politicians and when I discovered that they
+were using me to succeed in their greedy act;  I also cleaned some of
+their banking records from the Bank files and no one cared to ask me
+because the money was too much for them to control,  They laundered
+over $5billion Dollars during the process. Before I send this message
+to you,  I have already diverted ($10.5million Dollars) to an escrow
+account belonging to no one in the bank. The bank is anxious now to
+know who the beneficiary to the funds is because
 
-Older platforms currently have only one reg, but they can be updated to come with two without breaking functionality.
-am64-gpmc cannot come with one reg as the defaults for data window are not suitable for AM64.
+they have made a lot of profits with the funds. It is more than Eight
+years now and most of the politicians are no longer using our bank to
+transfer funds overseas. The ($10.5million Dollars) has been laying
+waste in our bank and I don't want to retire from the bank without
+transferring the funds to a foreign account to enable me share the
+proceeds with the receiver (a foreigner).
+The money will be shared 60% for me and 40% for you. There is no one
+coming to ask you about the funds because I secured everything. I only
+want you to assist me by providing a reliable bank account where the
+funds can be transferred. You are not to face any difficulties or
+legal implications as I am going to handle the transfer personally. If
+you are capable of receiving the funds,  do let me know immediately to
+enable me give you a detailed
 
-All legacy platforms were using a fixed Data IO window (first 1 GB) but from AM64 this was moved elsewhere, so the need for this change.
+information on what to do.  For me,  I have not stolen the money from
+anyone because the other people that took the whole money did not face
+any problems.  This is my chance to grab my own life opportunity but
+you must keep the details of the funds secret to avoid any leakages as
+no one in the bank knows about my plans.  Please get back to me if you
+are interested and capable to handle this project,  I shall intimate
+you on what to do when I hear from your confirmation and acceptance.
+If you are capable of being my trusted associate,do declare your
+consent to me, I am looking forward to hear from you immediately for
+further information,
 
-> IOW, I am surprised there is no if-else case precising this minItems
-> requirement for different SocS.
-> 
-
-OK. I will add this.
-
->>  
->>    interrupts:
->>      maxItems: 1
->> @@ -44,6 +51,9 @@ properties:
->>      items:
->>        - const: fck
->>  
->> +  power-domains:
->> +    maxItems: 1
-> 
-> Similar, but looks like a weaker requirement - could an older SoC define
-> power-domain?
-
-No. Will add SoC specific constraint for this as well.
-
-> 
->> +
->>    dmas:
->>      items:
->>        - description: DMA channel for GPMC NAND prefetch
->>
-> 
-> 
-> Best regards,
-> Krzysztof
-> 
-
-cheers,
--roger
+Thanks with my best regards.
+Mr Mohammad Z. Raqab ,
+Bank Telex Manager
+Burkina Faso/Ouagadougou
+My PRIVATE mail, mrmohammadzraqab099@gmail.com
