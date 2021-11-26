@@ -2,21 +2,21 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B75A45EFFA
+	by mail.lfdr.de (Postfix) with ESMTP id 889F145EFFB
 	for <lists+linux-omap@lfdr.de>; Fri, 26 Nov 2021 15:37:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236242AbhKZOkX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S1348251AbhKZOkX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Fri, 26 Nov 2021 09:40:23 -0500
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:53917 "EHLO
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:58451 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377759AbhKZOiW (ORCPT
+        with ESMTP id S1377762AbhKZOiW (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Fri, 26 Nov 2021 09:38:22 -0500
 Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id C7387C212F
-        for <linux-omap@vger.kernel.org>; Fri, 26 Nov 2021 14:26:36 +0000 (UTC)
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id 3D044D2E4A
+        for <linux-omap@vger.kernel.org>; Fri, 26 Nov 2021 14:26:37 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 64F11FF80D;
-        Fri, 26 Nov 2021 14:24:14 +0000 (UTC)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 2CEB3FF80E;
+        Fri, 26 Nov 2021 14:24:15 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>
 Cc:     Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
@@ -24,9 +24,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         <linux-kernel@vger.kernel.org>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [RESEND v6 1/3] ARM: dts: am437x-cm-t43: Use a correctly spelled DT property
-Date:   Fri, 26 Nov 2021 15:24:11 +0100
-Message-Id: <20211126142413.354770-2-miquel.raynal@bootlin.com>
+Subject: [RESEND v6 2/3] ARM: dts: am43xx: Describe the magnetic reader/ADC1 hardware module
+Date:   Fri, 26 Nov 2021 15:24:12 +0100
+Message-Id: <20211126142413.354770-3-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20211126142413.354770-1-miquel.raynal@bootlin.com>
 References: <20211126142413.354770-1-miquel.raynal@bootlin.com>
@@ -37,31 +37,79 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Back in 2014 a property got misspelled "ti,coordiante-readouts" instead
-of "ti,coordinate-readouts".
-
-The year after it got fixed but both are still supported, although this
-is not a reason to continue using this old deprecated property.
+This hardware module is close to the am33xx ADC module but instead of
+featuring a touchscreen it has a magnetic reader capability.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Acked-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/am437x-cm-t43.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/am437x-l4.dtsi     | 31 ++++++++++++++++++++++++++--
+ arch/arm/boot/dts/am43xx-clocks.dtsi |  7 +++++++
+ 2 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am437x-cm-t43.dts b/arch/arm/boot/dts/am437x-cm-t43.dts
-index 5ce8e684e7d3..3e3354780db8 100644
---- a/arch/arm/boot/dts/am437x-cm-t43.dts
-+++ b/arch/arm/boot/dts/am437x-cm-t43.dts
-@@ -399,7 +399,7 @@ &tscadc {
- 	tsc {
- 		ti,wires = <4>;
- 		ti,x-plate-resistance = <200>;
--		ti,coordiante-readouts = <5>;
-+		ti,coordinate-readouts = <5>;
- 		ti,wire-config = <0x00 0x11 0x22 0x33>;
+diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
+index ba58e6b0da1d..8f2268c02778 100644
+--- a/arch/arm/boot/dts/am437x-l4.dtsi
++++ b/arch/arm/boot/dts/am437x-l4.dtsi
+@@ -2378,11 +2378,38 @@ hdq: hdq@0 {
+ 		};
+ 
+ 		target-module@4c000 {			/* 0x4834c000, ap 114 72.0 */
+-			compatible = "ti,sysc";
+-			status = "disabled";
++			compatible = "ti,sysc-omap4", "ti,sysc";
++			reg = <0x4c000 0x4>,
++			      <0x4c010 0x4>;
++			reg-names = "rev", "sysc";
++			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
++					<SYSC_IDLE_NO>,
++					<SYSC_IDLE_SMART>;
++			clocks = <&l3s_clkctrl AM4_L3S_ADC1_CLKCTRL 0>;
++			clock-names = "fck";
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges = <0x0 0x4c000 0x2000>;
++
++			magadc: magadc@0 {
++				compatible = "ti,am4372-magadc";
++				reg = <0x0 0x2000>;
++				interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&adc_mag_fck>;
++				clock-names = "fck";
++				dmas = <&edma 54 0>, <&edma 55 0>;
++				dma-names = "fifo0", "fifo1";
++				status = "disabled";
++
++				mag {
++					compatible = "ti,am4372-mag";
++				};
++
++				adc {
++					#io-channel-cells = <1>;
++					compatible ="ti,am4372-adc";
++				};
++			};
+ 		};
+ 
+ 		target-module@80000 {			/* 0x48380000, ap 123 42.0 */
+diff --git a/arch/arm/boot/dts/am43xx-clocks.dtsi b/arch/arm/boot/dts/am43xx-clocks.dtsi
+index 314fc5975acb..66e892fa3398 100644
+--- a/arch/arm/boot/dts/am43xx-clocks.dtsi
++++ b/arch/arm/boot/dts/am43xx-clocks.dtsi
+@@ -444,6 +444,13 @@ wdt1_fck: wdt1_fck@422c {
+ 		reg = <0x422c>;
  	};
  
++	adc_mag_fck: adc_mag_fck@424c {
++		#clock-cells = <0>;
++		compatible = "ti,mux-clock";
++		clocks = <&sys_clkin_ck>, <&dpll_per_m2_ck>;
++		reg = <0x424c>;
++	};
++
+ 	l3_gclk: l3_gclk {
+ 		#clock-cells = <0>;
+ 		compatible = "fixed-factor-clock";
 -- 
 2.27.0
 
