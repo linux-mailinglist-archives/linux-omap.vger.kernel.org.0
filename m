@@ -2,21 +2,21 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A17C145EFFC
+	by mail.lfdr.de (Postfix) with ESMTP id 1B75A45EFFA
 	for <lists+linux-omap@lfdr.de>; Fri, 26 Nov 2021 15:37:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240922AbhKZOkX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S236242AbhKZOkX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Fri, 26 Nov 2021 09:40:23 -0500
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:37223 "EHLO
+Received: from mslow1.mail.gandi.net ([217.70.178.240]:53917 "EHLO
         mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377765AbhKZOiW (ORCPT
+        with ESMTP id S1377759AbhKZOiW (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Fri, 26 Nov 2021 09:38:22 -0500
 Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id C841CD2BBF
+        by mslow1.mail.gandi.net (Postfix) with ESMTP id C7387C212F
         for <linux-omap@vger.kernel.org>; Fri, 26 Nov 2021 14:26:36 +0000 (UTC)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 71906FF80A;
-        Fri, 26 Nov 2021 14:24:13 +0000 (UTC)
+        by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 64F11FF80D;
+        Fri, 26 Nov 2021 14:24:14 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     bcousson@baylibre.com, Tony Lindgren <tony@atomide.com>
 Cc:     Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
@@ -24,10 +24,12 @@ Cc:     Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
         <linux-kernel@vger.kernel.org>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [RESEND v6 0/3] ARM: dts: TI AM437X ADC1
-Date:   Fri, 26 Nov 2021 15:24:10 +0100
-Message-Id: <20211126142413.354770-1-miquel.raynal@bootlin.com>
+Subject: [RESEND v6 1/3] ARM: dts: am437x-cm-t43: Use a correctly spelled DT property
+Date:   Fri, 26 Nov 2021 15:24:11 +0100
+Message-Id: <20211126142413.354770-2-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20211126142413.354770-1-miquel.raynal@bootlin.com>
+References: <20211126142413.354770-1-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -35,32 +37,31 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello, as part of a very big series, support for the AM437X ADC1 has
-been merged in v5.16-rc1. It involved quite a few changes in the MFD and
-IIO subsystems, as well as the acknowledgment of new bindings:
-https://lkml.org/lkml/2021/10/15/217
+Back in 2014 a property got misspelled "ti,coordiante-readouts" instead
+of "ti,coordinate-readouts".
 
-Now that everything is upstream, it's time to merge the device tree
-changes which I am resending today (already Acked-by Tony but not taken
-by anybody yet).
+The year after it got fixed but both are still supported, although this
+is not a reason to continue using this old deprecated property.
 
-BTW I received a robot report which will be fixed by this series:
-https://lkml.kernel.org/lkml/202111210737.L4TuykRK-lkp@intel.com/T/
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/am437x-cm-t43.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Miquèl
-
-Miquel Raynal (3):
-  ARM: dts: am437x-cm-t43: Use a correctly spelled DT property
-  ARM: dts: am43xx: Describe the magnetic reader/ADC1 hardware module
-  ARM: dts: am437x-gp-evm: enable ADC1
-
- arch/arm/boot/dts/am437x-cm-t43.dts  |  2 +-
- arch/arm/boot/dts/am437x-gp-evm.dts  |  8 +++++++
- arch/arm/boot/dts/am437x-l4.dtsi     | 31 ++++++++++++++++++++++++++--
- arch/arm/boot/dts/am43xx-clocks.dtsi |  7 +++++++
- 4 files changed, 45 insertions(+), 3 deletions(-)
-
+diff --git a/arch/arm/boot/dts/am437x-cm-t43.dts b/arch/arm/boot/dts/am437x-cm-t43.dts
+index 5ce8e684e7d3..3e3354780db8 100644
+--- a/arch/arm/boot/dts/am437x-cm-t43.dts
++++ b/arch/arm/boot/dts/am437x-cm-t43.dts
+@@ -399,7 +399,7 @@ &tscadc {
+ 	tsc {
+ 		ti,wires = <4>;
+ 		ti,x-plate-resistance = <200>;
+-		ti,coordiante-readouts = <5>;
++		ti,coordinate-readouts = <5>;
+ 		ti,wire-config = <0x00 0x11 0x22 0x33>;
+ 	};
+ 
 -- 
 2.27.0
 
