@@ -2,76 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76E65460965
-	for <lists+linux-omap@lfdr.de>; Sun, 28 Nov 2021 20:27:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55A95460B7D
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Nov 2021 01:15:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbhK1Tan (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 28 Nov 2021 14:30:43 -0500
-Received: from 49-237-179-185.static.tentacle.fi ([185.179.237.49]:59370 "EHLO
-        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1357211AbhK1T2m (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 28 Nov 2021 14:28:42 -0500
-X-Greylist: delayed 2513 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Nov 2021 14:28:40 EST
-Received: from 88-114-184-140.elisa-laajakaista.fi ([88.114.184.140] helo=[192.168.1.48])
-        by bitmer.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <jarkko.nikula@bitmer.com>)
-        id 1mrP8t-0003BD-LO; Sun, 28 Nov 2021 20:43:15 +0200
-Subject: Re: [PATCH] ARM: dts: Fix timer regression for beagleboard revision c
-To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Cc:     =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Rob Herring <robh+dt@kernel.org>
-References: <20211125144834.52457-1-tony@atomide.com>
-From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
-Message-ID: <18772611-59f8-57ad-581d-40ea71d3d706@bitmer.com>
-Date:   Sun, 28 Nov 2021 20:43:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S1359778AbhK2ASe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 28 Nov 2021 19:18:34 -0500
+Received: from mail.vallenar.cl ([200.54.241.89]:39018 "EHLO mail.vallenar.cl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233716AbhK2AQd (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 28 Nov 2021 19:16:33 -0500
+X-Greylist: delayed 20294 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Nov 2021 19:16:30 EST
+Received: from localhost (localhost [127.0.0.1])
+        by mail.vallenar.cl (Postfix) with ESMTP id B6B9E1CC54D2;
+        Sun, 28 Nov 2021 12:29:34 -0300 (-03)
+Received: from mail.vallenar.cl ([127.0.0.1])
+        by localhost (mail.vallenar.cl [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id KoyW2nH7GhDD; Sun, 28 Nov 2021 12:29:34 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.vallenar.cl (Postfix) with ESMTP id 3122B1D06842;
+        Sun, 28 Nov 2021 11:45:20 -0300 (-03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.vallenar.cl 3122B1D06842
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vallenar.cl;
+        s=EC098874-C7DE-11E7-B3B1-1A9A6030413E; t=1638110720;
+        bh=IQxUcKgLaEia+DMrVj9OEHbWOH8TffrzQMeZgAxYubI=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=ZNBNFUZbmFa2MHgDVnqeLUNmN1jhvIoIkMHZTp8rDDfwo5mpNBsBVbO8RAJCiC7El
+         +VRB+SyXtRcilNrHQXQaPXnqwriKkMY96p2U9JdvT25Pvs30y1yC0idQP7feAgHN5C
+         510coTQH0yXzg/N7bnGVoeOODT5Bq+9YByGo+oB7uh3zNaT8MZoWKyls6hJSsulfKm
+         cY+YKvYAYXu9tmAGuln574ixcTAY/PY44NpBwFzV7BnN1KA3q0ALEHKkThQ+on5UML
+         Xti6+OBaIapzFEFuHoclzm2AFuLehO8hi0kLvqToLxvFHB2HkAyWBX6wCFV/7hgDMI
+         hu2+d/o+eTobg==
+X-Virus-Scanned: amavisd-new at vallenar.cl
+Received: from mail.vallenar.cl ([127.0.0.1])
+        by localhost (mail.vallenar.cl [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Wnon1U2B1Kbm; Sun, 28 Nov 2021 11:45:19 -0300 (-03)
+Received: from [192.168.8.101] (unknown [105.0.3.102])
+        by mail.vallenar.cl (Postfix) with ESMTPSA id 756591D08C9F;
+        Sun, 28 Nov 2021 11:21:39 -0300 (-03)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <20211125144834.52457-1-tony@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: 2.000.000,00. Euro
+To:     Recipients <yperez@vallenar.cl>
+From:   "manuel franco" <yperez@vallenar.cl>
+Date:   Sun, 28 Nov 2021 16:29:09 +0200
+Reply-To: manuelfrancospende00@gmail.com
+Message-Id: <20211128142139.756591D08C9F@mail.vallenar.cl>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 25.11.2021 16.48, Tony Lindgren wrote:
-> Commit e428e250fde6 ("ARM: dts: Configure system timers for omap3")
-> caused a timer regression for beagleboard revision c where the system
-> clockevent stops working if omap3isp module is unloaded.
-> 
-> Turns out we still have beagleboard revisions a-b4 capacitor c70 quirks
-> applied that limit the usable timers for no good reason. This also affects
-> the power management as we use the system clock instead of the 32k clock
-> source.
-> 
-> Let's fix the issue by adding a new omap3-beagle-ab4.dts for the old timer
-> quirks. This allows us to remove the timer quirks for later beagleboard
-> revisions. We also need to update the related timer quirk check for the
-> correct compatible property.
-> 
-> Fixes: e428e250fde6 ("ARM: dts: Configure system timers for omap3")
-> Cc: linux-kernel@vger.kernel.org
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Reported-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  .../devicetree/bindings/arm/omap/omap.txt     |  3 ++
->  arch/arm/boot/dts/Makefile                    |  1 +
->  arch/arm/boot/dts/omap3-beagle-ab4.dts        | 47 +++++++++++++++++++
->  arch/arm/boot/dts/omap3-beagle.dts            | 33 -------------
->  drivers/clocksource/timer-ti-dm-systimer.c    |  2 +-
->  5 files changed, 52 insertions(+), 34 deletions(-)
->  create mode 100644 arch/arm/boot/dts/omap3-beagle-ab4.dts
-> 
-I trust Tony got this working since I lent the board for him to look at
-this regression since our earlier remote attempts didn't find a working fix.
+Sie haben eine Spende von 2.000.000,00. Euro
 
-Jarkko
-
+Mein Name ist Manuel Franco aus den Vereinigten Staaten.
+Ich habe die Amerika-Lotterie im Wert von 768 Millionen US-Dollar gewonnen =
+und spende einen Teil davon an nur 5 gl=FCckliche Menschen und ein paar Wai=
+senh=E4user als Wohlwollen f=FCr die Menschheit.
