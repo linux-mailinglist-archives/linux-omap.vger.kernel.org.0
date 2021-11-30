@@ -2,84 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B475462200
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Nov 2021 21:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A81B94628D4
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Nov 2021 01:06:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232577AbhK2UUO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Nov 2021 15:20:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57880 "EHLO
+        id S231482AbhK3AJd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 29 Nov 2021 19:09:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232661AbhK2URq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Nov 2021 15:17:46 -0500
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4C7C06FD55
-        for <linux-omap@vger.kernel.org>; Mon, 29 Nov 2021 08:50:58 -0800 (PST)
-Received: by mail-qt1-x831.google.com with SMTP id o17so17235240qtk.1
-        for <linux-omap@vger.kernel.org>; Mon, 29 Nov 2021 08:50:58 -0800 (PST)
+        with ESMTP id S231165AbhK3AJd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Nov 2021 19:09:33 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077D6C061574;
+        Mon, 29 Nov 2021 16:06:15 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id iq11so13951359pjb.3;
+        Mon, 29 Nov 2021 16:06:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8i97t995Zk/UONue08tgjxO+0T3cD3iM9YK1xD/VFf4=;
-        b=BYy+lq/6ux4Ymm/+9Uy4J+Z5GwEQRUvU0RZ0VfAOsaLu+J/lOJc237SZuB9g4DmQaP
-         9oV91USlIIzKTw6WCV5FAMKLfFCNngugDdlgdYI3M7CkPZCcq5KJ5pe4NJoM99eJTkdt
-         exoao+mTYC8YOfJKJuxQZi8AhWcNRRtktnXlzlwuzFxuZk7dStS0DiZ0mxTbW5Avj+a4
-         0F345WQ+fZVi9hVw2Sl1sAFmrTrhdTszt2YMDwKPbsYsZBbYXgPj9xt7FtpfNt6y7Mfz
-         nKxoMGQVPrSsr/soYCBvpVMXDjTRR+bBxMmZi/GjnivUODk3hOG+22Vl/L6tmpD/mlhd
-         zU+g==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NPU8E18/rfNO+NGRed1cne32L6+cx+NUy8rxuVdLCdI=;
+        b=APAUZ+P6V7/0qC11v7y+ToCCkwQKZyISJAue7T7o7k7kYnncHcnlkAglBSsyTZ/dlh
+         B8IQgmKyyOTn2D0f3kt4sqEfgIx3X/bEMn0ArFYOnoNrW7RW6RhrqaSv5MeI/nzv6TlD
+         mafbfO3G2WOfdM0g6vDMFpi12GoL3lH8ICJ1bwPrpZChc9p+IP8WQfDGePbXbFaDkqBD
+         bh2LV0zPRK0X4XWryW0Y7+eLxsyaGpRDXvZE0vZBBdBXDcHpGXM2zz9B6t4RwoUMx94t
+         iDxjYluOCpabjDBkcS69PX107K+BOrb9NZ5YU0vHZf25vWHFO83B2I85jrSRVglOH5M3
+         5Cuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8i97t995Zk/UONue08tgjxO+0T3cD3iM9YK1xD/VFf4=;
-        b=vBwkb+Z34tEBbNiWyQzaSEbFAxn/rOD9/N1KUjzz9Fsh3Ejg5weGqZehSLsFCL9NGa
-         Y31WIggej8i/MfRjjoxL5hIT71wyvYnI/rGucrZ1a0FIiX3M/qRMVqgmTNrqZNl646b/
-         uy8ZbtsSOVYk4rHt/vmsPBn437xo6YLfUPDaQ04uKn1Tc+RNHZfgUvfhlmWMRqC/Kmee
-         Yr2Ty+Y8rr7LAqyoz7rugy1zjMLvB/7rKgBLe9Qvdibp2bw9OMtSgOaAeyH85W1SYVDa
-         Em5v5OF/Fiowkk+JgHmGYzBPGk/Yq5UZ/bnhTr50wZOuvYcFqiSiq/1wcuaQgf6DBlAc
-         PfWw==
-X-Gm-Message-State: AOAM530F+oxkvMhZOW1h9XoUcUNmsjAjsM1oRSj/EkL4mawy3JK/VYrx
-        8ShsBbRRC7/aeivMno3B44yGTqwLRpxzkj7ADrs=
-X-Google-Smtp-Source: ABdhPJyLLyKw5GysVtVhJIMNhcTy5GB5Z4abm0E8S29ZPpDfyz/jWR23WtmM1+TuV6DCo0iBeHntEa28eGqEH8Ht1lA=
-X-Received: by 2002:ac8:5a0d:: with SMTP id n13mr35982583qta.555.1638204657773;
- Mon, 29 Nov 2021 08:50:57 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NPU8E18/rfNO+NGRed1cne32L6+cx+NUy8rxuVdLCdI=;
+        b=gKdwLrAPNWObvQXQg33DYts9RdenfNLQkHmNk9EwvFtGr0cMtczn/eRBLflJTTLxi9
+         JOKZham3HK1oeOAbhl3/5niOkHIDY8y5V9QSe73jsonsm+kHsFe/h3bTV4qdQ9IvRBFX
+         2EuLxQjyQHlDcaYGrB6pTPD/JM18+r9PkIgI0DhsthiTblCogCqgC/RFb4ARzMR2uZku
+         Pgnr5O1ccZKC9JH0bi55TtMJy7cWFKAeifRvO0NYqNdBZsOXTFdrd3ySOzompUajmE+H
+         xvzRQQdElpGLe6mMUNNA0k8MU65KU4s+byIqHj9ZZVoYczyUqChxGEb6L9Asv9WvpJub
+         tALQ==
+X-Gm-Message-State: AOAM531mQrvOWYv+0bUoKYcWVGZttNokixg342LEFUMf9qWyzts/u7fE
+        G0RqWIuzjDtDy1Q0oydCXTw=
+X-Google-Smtp-Source: ABdhPJyyKwr7COUgkXlgf5fJU/eSeNrWuXpxppKX2t3WN929YduwwLP7E2MN9rErqvmzvJoQukrZ0Q==
+X-Received: by 2002:a17:902:a60b:b0:142:7621:be0b with SMTP id u11-20020a170902a60b00b001427621be0bmr62807805plq.58.1638230774600;
+        Mon, 29 Nov 2021 16:06:14 -0800 (PST)
+Received: from debian11-dev-61.localdomain (192.243.120.180.16clouds.com. [192.243.120.180])
+        by smtp.gmail.com with ESMTPSA id f5sm417713pju.15.2021.11.29.16.06.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Nov 2021 16:06:14 -0800 (PST)
+From:   davidcomponentone@gmail.com
+X-Google-Original-From: yang.guang5@zte.com.cn
+To:     yang.guang5@zte.com.cn
+Cc:     davidcomponentone@gmail.com, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] omapfb: replace snprintf with sysfs_emit
+Date:   Tue, 30 Nov 2021 08:06:03 +0800
+Message-Id: <02f27656a2da68cac42ebee55a78b0316ff3d83d.1638185487.git.yang.guang5@zte.com.cn>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Received: by 2002:a05:6214:21ce:0:0:0:0 with HTTP; Mon, 29 Nov 2021 08:50:57
- -0800 (PST)
-Reply-To: aisha.elgdd00788@yahoo.com
-From:   "Mrs.Aisha El Gaddafi" <mraisha.elgaddfi0.1@gmail.com>
-Date:   Mon, 29 Nov 2021 16:50:57 +0000
-Message-ID: <CAO=J1ZKc2ERp7i20Q6JTYZ=artr2GL8PqoqYcyBDwBxTwObZiA@mail.gmail.com>
-Subject: Can I invest in your country from Mrs. Aisha El Gaddafi?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Can I invest in your country from Mrs. Aisha El Gaddafi?
-Dear Friend,
+From: Yang Guang <yang.guang5@zte.com.cn>
 
-I came across your e-mail contact prior a private search while in need
-of your assistance. My name is Aisha  Al-Qaddafi a single Mother and a
-Widow with three Children. I am the only biological Daughter of late
-Libyan President (Late Colonel Muammar Gaddafi).
+coccinelle report:
+./drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c:
+479:9-17: WARNING: use scnprintf or sprintf
 
-I have investment funds worth Twenty Seven Million Five Hundred
-Thousand United State Dollar ($27.500.000.00 ) and i need a trusted
-investment Manager/Partner because of my current refugee status,
-however, I am interested in you for investment project assistance in
-your country, may be from there, we can build business relationship in
-the nearest future.
+Use sysfs_emit instead of scnprintf or sprintf makes more sense.
 
-I am willing to negotiate investment/business profit sharing ratio
-with you base on the future investment earning profits.
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+---
+ .../video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If you are willing to handle this project on my behalf kindly reply
-urgent to enable me provide you more information about the investment
-funds.
+diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c
+index 8d8b5ff7d43c..3696eb09b69b 100644
+--- a/drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c
++++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c
+@@ -476,7 +476,7 @@ static ssize_t show_cabc_available_modes(struct device *dev,
+ 	int i;
+ 
+ 	if (!ddata->has_cabc)
+-		return snprintf(buf, PAGE_SIZE, "%s\n", cabc_modes[0]);
++		return sysfs_emit(buf, "%s\n", cabc_modes[0]);
+ 
+ 	for (i = 0, len = 0;
+ 	     len < PAGE_SIZE && i < ARRAY_SIZE(cabc_modes); i++)
+-- 
+2.30.2
 
-Your Urgent Reply Will Be Appreciated. contact me at this email
-address ( aisha.elgdd00788@yahoo.com ) for further discussion.
-
-Best Regards
-Mrs Aisha Al-Qadda
