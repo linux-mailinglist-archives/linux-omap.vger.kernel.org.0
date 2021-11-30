@@ -2,36 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D246463153
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Nov 2021 11:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D064463180
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Nov 2021 11:47:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235357AbhK3Kpr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Nov 2021 05:45:47 -0500
-Received: from sin.source.kernel.org ([145.40.73.55]:36664 "EHLO
+        id S235622AbhK3KvC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Nov 2021 05:51:02 -0500
+Received: from sin.source.kernel.org ([145.40.73.55]:38588 "EHLO
         sin.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235420AbhK3Kpp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Nov 2021 05:45:45 -0500
+        with ESMTP id S236112AbhK3KvB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Nov 2021 05:51:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id F1EF4CE0F75;
-        Tue, 30 Nov 2021 10:42:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7D4C53FC7;
-        Tue, 30 Nov 2021 10:42:23 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 52B68CE189B;
+        Tue, 30 Nov 2021 10:47:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C51AC53FC1;
+        Tue, 30 Nov 2021 10:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638268943;
-        bh=lW7rNqsKnrpPntFaevhbx0JIKxnZ+u2HzbZCCctOQ/8=;
+        s=k20201202; t=1638269259;
+        bh=Iz+w3i4CcMBGzfiS3z5i9lV9fdtABytE0ZRUKvT6d90=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OXLyXtdqvEjzfFhmQfya5cH9eJvY7CTV6LI5Z6snZUPmNUPxQoxl6M4scdoRRp41O
-         nRYRUNncO84VjIUyOJALIs5KY/b9uuKzSqaTlqtR083BV3EURrbscqygNED5aprBSm
-         NGdW/fbQDmz0koToB192wtMmk5qNVvduy0FtF+eZ52UrCYX9DkSVSX72f64jkUj53V
-         knmDJwlIZq9Kwl/s0UZfTvDAk2FS8SJpAJwtJRqwjlIU3QKbbJGDiAwlRYKXF3LNRZ
-         QuKcYEHx7TvkeYmOmPANdYArClrp8bQKAa1sMm72yuFvImiGE5C5wy8dDA16fyWqkP
-         59MUdrFvs0VSQ==
+        b=V0NMU0/JMdqWxjxpv0W7Ryf1hQ836qBt7Ny1ypT9hSr9sOKqhCcEwExAUftvAjHPL
+         6p/cSec3sjBwjdOOotLXEoOsd0RQFKSMJn5U4CcmW57kX7CgABZXAMhyj5lzORgK1c
+         oSHTB0MQ06m/rvpQp5L/rkZ7kM8kK2ZhQvTFX/p8IdMDWhtwxq1+d2+R66QRrtqSyz
+         kd2wz8BXW9dBePQdTqHmyxW3u5rluFDCP6lZq7OfcSGa24UUOVFu+/jqMLc1BNw0L0
+         ovfM4IYbJBybMAejgG4c/4fLIbyF5OPEewlKHphiy9yCcazUAk08uLjPacN7FBAQgf
+         waTAatYRcmTUw==
 Received: from johan by xi.lan with local (Exim 4.94.2)
         (envelope-from <johan@kernel.org>)
-        id 1ms0aG-0006d9-MN; Tue, 30 Nov 2021 11:42:00 +0100
-Date:   Tue, 30 Nov 2021 11:42:00 +0100
+        id 1ms0fM-0006f6-Hk; Tue, 30 Nov 2021 11:47:16 +0100
+Date:   Tue, 30 Nov 2021 11:47:16 +0100
 From:   Johan Hovold <johan@kernel.org>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -42,35 +42,100 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH 6/7] serial: 8250_omap: Drop the use of
- pm_runtime_irq_safe()
-Message-ID: <YaX/+CkUM+hjVqjP@hovoldconsulting.com>
+Subject: Re: [PATCH 7/7] serial: 8250_port: Remove calls to runtime PM
+Message-ID: <YaYBNIGwOkHts6wn@hovoldconsulting.com>
 References: <20211115084203.56478-1-tony@atomide.com>
- <20211115084203.56478-7-tony@atomide.com>
+ <20211115084203.56478-8-tony@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211115084203.56478-7-tony@atomide.com>
+In-Reply-To: <20211115084203.56478-8-tony@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Nov 15, 2021 at 10:42:02AM +0200, Tony Lindgren wrote:
-> We can finally drop the pm_runtime_irq_safe() usage for 8250_omap driver.
+On Mon, Nov 15, 2021 at 10:42:03AM +0200, Tony Lindgren wrote:
+> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > 
-> We already have the serial layer RX wake path fixed for power management.
-> We no longer allow deeper idle states unless the kernel console has been
-> detached, and we require that the RX wakeirq is configured.
+> Since we now have runtime PM calls in serial_core.c the individual
+> drivers do not need them anymore for the struct uart_ops related
+> functions.
 > 
-> For TX path, we now use the prep_tx() and uart_flush_tx() calls.
-
-Looks like this commit message is outdated. These functions no longer
-exist.
-
-> To drop pm_runtime_irq_safe(), we remove all PM runtime calls from the
-> interrupt context. If we ever see an interrupt for an idled port, we just
-> bail out.
+> Remove runtime PM calls in 8250 driver. This still leaves the flag for
+> UART_CAP_RPM for serial8250_rpm_get_tx(), serial8250_rpm_put_tx() and
+> serial8250_wakeup() to manage the reference count for serial TX.
 > 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> [tony@atomide.com: updated to remove the exported functions too]
 > Signed-off-by: Tony Lindgren <tony@atomide.com>
+
+> @@ -1477,8 +1459,11 @@ static enum hrtimer_restart serial8250_em485_handle_stop_tx(struct hrtimer *t)
+>  			stop_tx_timer);
+>  	struct uart_8250_port *p = em485->port;
+>  	unsigned long flags;
+> +	int err;
+>  
+> -	serial8250_rpm_get(p);
+> +	err = pm_runtime_resume_and_get(p->port.dev);
+
+This also won't work as this function is called on timer expiry; you
+cannot do a synchronous resume here.
+
+> +	if (err < 0)
+> +		goto out_rpm_err;
+>  	spin_lock_irqsave(&p->port.lock, flags);
+>  	if (em485->active_timer == &em485->stop_tx_timer) {
+>  		p->rs485_stop_tx(p);
+> @@ -1486,8 +1471,9 @@ static enum hrtimer_restart serial8250_em485_handle_stop_tx(struct hrtimer *t)
+>  		em485->tx_stopped = true;
+>  	}
+>  	spin_unlock_irqrestore(&p->port.lock, flags);
+> -	serial8250_rpm_put(p);
+> -
+> +	pm_runtime_mark_last_busy(p->port.dev);
+> +	pm_runtime_put_autosuspend(p->port.dev);
+> +out_rpm_err:
+>  	return HRTIMER_NORESTART;
+>  }
+  
+>  void serial8250_read_char(struct uart_8250_port *up, unsigned char lsr)
+> @@ -1984,15 +1966,11 @@ static unsigned int serial8250_tx_empty(struct uart_port *port)
+>  	unsigned long flags;
+>  	unsigned int lsr;
+>  
+> -	serial8250_rpm_get(up);
+> -
+>  	spin_lock_irqsave(&port->lock, flags);
+>  	lsr = serial_port_in(port, UART_LSR);
+>  	up->lsr_saved_flags |= lsr & LSR_SAVE_FLAGS;
+>  	spin_unlock_irqrestore(&port->lock, flags);
+>  
+> -	serial8250_rpm_put(up);
+> -
+>  	return (lsr & BOTH_EMPTY) == BOTH_EMPTY ? TIOCSER_TEMT : 0;
+>  }
+
+As I mentioned elsewhere, the corresponding get+put is missing in serial
+core now.
+
+>  static void serial8250_put_poll_char(struct uart_port *port,
+>  			 unsigned char c)
+>  {
+>  	unsigned int ier;
+>  	struct uart_8250_port *up = up_to_u8250p(port);
+>  
+> -	serial8250_rpm_get(up);
+>  	/*
+>  	 *	First save the IER then disable the interrupts
+>  	 */
+> @@ -2155,7 +2117,6 @@ static void serial8250_put_poll_char(struct uart_port *port,
+>  	 */
+>  	wait_for_xmitr(up, BOTH_EMPTY);
+>  	serial_port_out(port, UART_IER, ier);
+> -	serial8250_rpm_put(up);
+>  }
+
+And this is a console callback; where is it guaranteed that the console
+is never suspended?
 
 Johan
