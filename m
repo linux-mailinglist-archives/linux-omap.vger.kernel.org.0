@@ -2,94 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A81B94628D4
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Nov 2021 01:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F28E46307C
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Nov 2021 11:02:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231482AbhK3AJd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Nov 2021 19:09:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55940 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbhK3AJd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Nov 2021 19:09:33 -0500
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077D6C061574;
-        Mon, 29 Nov 2021 16:06:15 -0800 (PST)
-Received: by mail-pj1-x1032.google.com with SMTP id iq11so13951359pjb.3;
-        Mon, 29 Nov 2021 16:06:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NPU8E18/rfNO+NGRed1cne32L6+cx+NUy8rxuVdLCdI=;
-        b=APAUZ+P6V7/0qC11v7y+ToCCkwQKZyISJAue7T7o7k7kYnncHcnlkAglBSsyTZ/dlh
-         B8IQgmKyyOTn2D0f3kt4sqEfgIx3X/bEMn0ArFYOnoNrW7RW6RhrqaSv5MeI/nzv6TlD
-         mafbfO3G2WOfdM0g6vDMFpi12GoL3lH8ICJ1bwPrpZChc9p+IP8WQfDGePbXbFaDkqBD
-         bh2LV0zPRK0X4XWryW0Y7+eLxsyaGpRDXvZE0vZBBdBXDcHpGXM2zz9B6t4RwoUMx94t
-         iDxjYluOCpabjDBkcS69PX107K+BOrb9NZ5YU0vHZf25vWHFO83B2I85jrSRVglOH5M3
-         5Cuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=NPU8E18/rfNO+NGRed1cne32L6+cx+NUy8rxuVdLCdI=;
-        b=gKdwLrAPNWObvQXQg33DYts9RdenfNLQkHmNk9EwvFtGr0cMtczn/eRBLflJTTLxi9
-         JOKZham3HK1oeOAbhl3/5niOkHIDY8y5V9QSe73jsonsm+kHsFe/h3bTV4qdQ9IvRBFX
-         2EuLxQjyQHlDcaYGrB6pTPD/JM18+r9PkIgI0DhsthiTblCogCqgC/RFb4ARzMR2uZku
-         Pgnr5O1ccZKC9JH0bi55TtMJy7cWFKAeifRvO0NYqNdBZsOXTFdrd3ySOzompUajmE+H
-         xvzRQQdElpGLe6mMUNNA0k8MU65KU4s+byIqHj9ZZVoYczyUqChxGEb6L9Asv9WvpJub
-         tALQ==
-X-Gm-Message-State: AOAM531mQrvOWYv+0bUoKYcWVGZttNokixg342LEFUMf9qWyzts/u7fE
-        G0RqWIuzjDtDy1Q0oydCXTw=
-X-Google-Smtp-Source: ABdhPJyyKwr7COUgkXlgf5fJU/eSeNrWuXpxppKX2t3WN929YduwwLP7E2MN9rErqvmzvJoQukrZ0Q==
-X-Received: by 2002:a17:902:a60b:b0:142:7621:be0b with SMTP id u11-20020a170902a60b00b001427621be0bmr62807805plq.58.1638230774600;
-        Mon, 29 Nov 2021 16:06:14 -0800 (PST)
-Received: from debian11-dev-61.localdomain (192.243.120.180.16clouds.com. [192.243.120.180])
-        by smtp.gmail.com with ESMTPSA id f5sm417713pju.15.2021.11.29.16.06.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Nov 2021 16:06:14 -0800 (PST)
-From:   davidcomponentone@gmail.com
-X-Google-Original-From: yang.guang5@zte.com.cn
-To:     yang.guang5@zte.com.cn
-Cc:     davidcomponentone@gmail.com, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] omapfb: replace snprintf with sysfs_emit
-Date:   Tue, 30 Nov 2021 08:06:03 +0800
-Message-Id: <02f27656a2da68cac42ebee55a78b0316ff3d83d.1638185487.git.yang.guang5@zte.com.cn>
-X-Mailer: git-send-email 2.30.2
+        id S240573AbhK3KFs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Nov 2021 05:05:48 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:43002 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235524AbhK3KFr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Nov 2021 05:05:47 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7FCC9B817EB;
+        Tue, 30 Nov 2021 10:02:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178A1C53FC1;
+        Tue, 30 Nov 2021 10:02:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638266545;
+        bh=uvfhP3wDsqp2sLZLzqwLmrkaZ/VK2MfBZFqJU936Qv0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Mh2hfS6Gw67B48wTiqhi0UiqGeJhIoaRNt8K7v9Mg7lhHotZ2KWMk+gJhD389rOfp
+         Ire0MgGCbIGSiOl3vEKEEti/fEvbOypcINfAQarVEEdFXOyG5FuhAgAnKLCIxM+i4X
+         WcUxEHKSYNx7ZGuFMFzwfveaUpcO2hYxUV6LrpLx6JXgDSQ4ipzILen6pPizHD6VrR
+         EGMW1nGS03CDjDqtqCSEKY8leolcZsEFkUWsOxl3kDPFEKk/80mJkfZIzKmiGttKLL
+         TZ8UrxP/G6t4dVv9RMBuA5F7WbavuGvXzQFtCXYIem7VByocKeWRSOWYVUhPMA2CXM
+         s1Qn2jP41qcRw==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1mrzxZ-0006Mo-9O; Tue, 30 Nov 2021 11:02:02 +0100
+Date:   Tue, 30 Nov 2021 11:02:01 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCHv4 0/7] Serial port generic PM to fix 8250 PM
+Message-ID: <YaX2mbUv9Yv3icl4@hovoldconsulting.com>
+References: <20211115084203.56478-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211115084203.56478-1-tony@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Yang Guang <yang.guang5@zte.com.cn>
+On Mon, Nov 15, 2021 at 10:41:56AM +0200, Tony Lindgren wrote:
+> Hi,
+> 
+> Here are v4 patches for serial port generic PM. The scope has now expanded
+> a bit from the earlier attempts to get rid of pm_runtime_irq_safe() for
+> the 8250_omap driver. I've now picked up three patches from Andy's earlier
+> generic serial port PM series.
 
-coccinelle report:
-./drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c:
-479:9-17: WARNING: use scnprintf or sprintf
+So this looks like another step in the right direction but there are
+still some missing pieces.
 
-Use sysfs_emit instead of scnprintf or sprintf makes more sense.
+First, you need to provide an overview of the design decisions made here
+in cover letter. It's currently spread out over several patches and
+those commit messages still do not hold all the details.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
----
- .../video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c    | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Specifically, it looks like tx can still stall indefinitely if the
+autosuspend timer fires. This can happen at low baud rates and also when
+using flow control.
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c
-index 8d8b5ff7d43c..3696eb09b69b 100644
---- a/drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c
-+++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c
-@@ -476,7 +476,7 @@ static ssize_t show_cabc_available_modes(struct device *dev,
- 	int i;
- 
- 	if (!ddata->has_cabc)
--		return snprintf(buf, PAGE_SIZE, "%s\n", cabc_modes[0]);
-+		return sysfs_emit(buf, "%s\n", cabc_modes[0]);
- 
- 	for (i = 0, len = 0;
- 	     len < PAGE_SIZE && i < ARRAY_SIZE(cabc_modes); i++)
--- 
-2.30.2
+It also looks like the expected calls to update the last busy timestamp
+might be missing from the interrupt handlers or related helpers.
 
+Please also describe how this interacts with the console. Is a console
+port now never suspended? Where is that enforced? The final patch
+appears to rely on this when it drops PM calls from for example some
+console poll callbacks.
+
+> Changes since v3:
+> - Pick three patches from Andy's earlier serial port PM series to handle
+>   issues pointed out by Johan
+
+Please also be more specific here when sending an updated series. I
+can't really tell what has changed from just this one sentence.
+
+Johan
