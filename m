@@ -2,111 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A2E464C6F
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Dec 2021 12:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 024D1464CBC
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Dec 2021 12:34:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237790AbhLALSa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Dec 2021 06:18:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57410 "EHLO
+        id S243193AbhLALh0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Dec 2021 06:37:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237786AbhLALS1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Dec 2021 06:18:27 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E0DAC061574;
-        Wed,  1 Dec 2021 03:15:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id E05DECE1DCA;
-        Wed,  1 Dec 2021 11:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB200C53FCC;
-        Wed,  1 Dec 2021 11:15:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638357303;
-        bh=ehVTzL9X6BysmNP85++ptIBdmSpHTbsCMyi3z2tu5D0=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=HjFzzYB/CE/19drSrda2JNv9tdyBGIIOGNr0il7/WmQa5vCF21CUBUS0bqKZAhtJS
-         1Y5T6A/VJuGdGKwjxK4C7YXojve9Ebi7/l6p9wXK/12GFeOAY/945ZeMm2h1+k8FD7
-         qYTXtZ6UV4jXuP85XZ0bVSeNZ8VUCtIufsHsPcWzwba5KOf27Y7DhN67pxKhflnmod
-         l86/bg4KTuPQQUQhI2TUphk1hutcOl2JpIb73VBnCQVRZt4Ugkp35EoJfjvdMwa7RA
-         jFA/kWHDls45bQUQYSCpF3EVrB4n7zfQRWJAsKFc56WMXcYl57CamD6qZDBI1L8lAG
-         ifEiSWROxQQCw==
-Subject: Re: [PATCH 1/4] dt-bindings: memory-controllers: ti,gpmc: Add
- compatible for AM64
-To:     Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     tony@atomide.com, kishon@ti.com, nm@ti.com, vigneshr@ti.com,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <20211123102607.13002-1-rogerq@kernel.org>
- <20211123102607.13002-2-rogerq@kernel.org>
- <a28532b1-bfa0-031b-91cc-070cad557599@canonical.com>
- <YaafXKXfzBQaNSvq@robh.at.kernel.org>
-From:   Roger Quadros <rogerq@kernel.org>
-Message-ID: <acc05242-8d0a-093a-c076-af35a339333c@kernel.org>
-Date:   Wed, 1 Dec 2021 13:14:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S243160AbhLALhY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Dec 2021 06:37:24 -0500
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D6FC06175E
+        for <linux-omap@vger.kernel.org>; Wed,  1 Dec 2021 03:34:00 -0800 (PST)
+Received: by mail-ua1-x92f.google.com with SMTP id t13so48209996uad.9
+        for <linux-omap@vger.kernel.org>; Wed, 01 Dec 2021 03:34:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=nKE9e+4jEQRb21OhoYPSbxPLfJ2IuSmNXU0U6wmcP4ykCacrWpdbtE0jjuz/hSLLGi
+         3CHjeG+lFmWzoULwCsmlhVFgDEk5dLFaYb51pw7bXGjZ9H8t0j91dP9aL17MRQYkMPZK
+         Snvty/Yp8/ZrWZr2EuFXHqBxUdbU8X39ik45viERJ1Dn7qW8BPCFp2vlafV2okU0kn5j
+         QPTIDY8QJSy8zAVbK10d6+AY0lky+mrQRAAg0uS1DacQStzD/dQtt/uBz/RlGIdZCai/
+         BHep24kmiLdl1nvBvHYMFonu8NoJvJlErv7lbZlg2+2c277BpkzmDA4WwPZoxzlIf0Mh
+         Af5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=cbrdw7QV5xw2X64rhXYGHTejuXsCXXd50rJ7sNqx7IKtLAkg4IlNOkbpsW8evVNkR6
+         Oa7zCwk51XjZ5aGJ9BKFo7a51rV5VtfCBDV3xwGlIkXPGNikvV+LYC+5EdtlQUihTR5G
+         wlty/M6e73ASGFjgcB2RRwBTiw6YFuF5rBFsiwy1rasWB7Fkhm0NAej+slVdYgL+q820
+         oE5Or8zcfU9ELryz5bfnPatBp/qf/dOXTjk9FSmVurGMGgLhuPx3gaGdwgbSwVP9fvY6
+         2Um4JuYxyfuAdQz3f9FxkW0pCSRdu/oc4Oe36rAz6hyWArEy5OSaW4CmOSupwnWxM/nY
+         UD3Q==
+X-Gm-Message-State: AOAM533ZMA31Bi88Wh35XB9kR3RFRNi9V6N8sl3yM/iYqj3K/0aFHjXX
+        +WBtPU4QP5Jbj7CRnRCwTKIZ9P9gYNfNs9qKHWs=
+X-Google-Smtp-Source: ABdhPJwK+H50pzFgfv5CJPfAwBzUdMqIKHh+Ckkuju2lG2knVlJrzqINPiiwPjc/Uz6xuSJez7Fkn5YZPcfa5CPpvro=
+X-Received: by 2002:a67:ef4d:: with SMTP id k13mr6266305vsr.4.1638358439020;
+ Wed, 01 Dec 2021 03:33:59 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <YaafXKXfzBQaNSvq@robh.at.kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Sender: unitednationawardwinner@gmail.com
+Received: by 2002:ab0:6c55:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:33:58 -0800 (PST)
+From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
+Date:   Wed, 1 Dec 2021 03:33:58 -0800
+X-Google-Sender-Auth: uTQ_nfkzXaWGWaTWp1BSFqK3Ucs
+Message-ID: <CAJ4dHaSrD-X=xpfKNZV-hXSiMV6mNYrgy5vWCNkKm6iu5RQStg@mail.gmail.com>
+Subject: Your long awaited part payment of $2.5.000.00Usd
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Attention: Beneficiary, Your long awaited part payment of
+$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
+Dollars) is ready for immediate release to you, and it was
+electronically credited into an ATM Visa Card for easy delivery.
 
-On 01/12/2021 00:02, Rob Herring wrote:
-> On Tue, Nov 23, 2021 at 08:47:57PM +0100, Krzysztof Kozlowski wrote:
->> On 23/11/2021 11:26, Roger Quadros wrote:
->>> AM64 SoC contains the GPMC module. Add compatible for it.
->>>
->>> Newer SoCs don't necessarily map GPMC data region at the same place
->>> as legacy SoCs. Add reg-names "data", to provide this information to
->>> the device driver.
->>>
->>> Cc: Rob Herring <robh+dt@kernel.org>
->>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->>> ---
->>>  .../bindings/memory-controllers/ti,gpmc.yaml         | 12 +++++++++++-
->>>  1 file changed, 11 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
->>> index 25b42d68f9b3..1869cc6f949b 100644
->>> --- a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
->>> +++ b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc.yaml
->>> @@ -23,13 +23,20 @@ properties:
->>>      items:
->>>        - enum:
->>>            - ti,am3352-gpmc
->>> +          - ti,am64-gpmc
->>>            - ti,omap2420-gpmc
->>>            - ti,omap2430-gpmc
->>>            - ti,omap3430-gpmc
->>>            - ti,omap4430-gpmc
->>>  
->>>    reg:
->>> -    maxItems: 1
->>> +    minItems: 1
->>> +    maxItems: 2
->>> +
->>> +  reg-names:
->>> +    items:
->>> +      - const: cfg
->>> +      - const: data
->>
->> I see your driver handles cases with only one reg item, but I have other
->> question - is it correct to have older (ARMv7) platform with two reg
->> items? Or can am64-gpmc come with only one reg?
->> IOW, I am surprised there is no if-else case precising this minItems
->> requirement for different SocS.
-> 
-> I don't think that is needed here. If the assumption is 'reg-names' is 
-> only present when there are 2 entries, then it is fine. Maybe 
-> 'reg-names' should be required for ti,am64-gpmc though.
+Your new Payment Reference No.- 6363836,
+Pin Code No: 1787
+Your Certificate of Merit Payment No: 05872,
 
-Yes, I'll make 'reg-names' property required for ti,am64-gpmc.
+Your Names: |
+Address: |
 
-cheers,
--roger
+Person to Contact:MR KELLY HALL the Director of the International
+Audit unit ATM Payment Center,
+
+Email: uba-bf@e-ubabf.com
+TELEPHONE: +226 64865611 You can whatsApp the bank
+
+Regards.
+Mrs ORGIL BAATAR
