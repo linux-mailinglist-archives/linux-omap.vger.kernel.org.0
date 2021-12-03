@@ -2,118 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04719467761
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Dec 2021 13:26:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8131A4678BD
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Dec 2021 14:49:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352129AbhLCMaL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Dec 2021 07:30:11 -0500
-Received: from mga04.intel.com ([192.55.52.120]:8019 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236481AbhLCMaK (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 3 Dec 2021 07:30:10 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10186"; a="235700117"
-X-IronPort-AV: E=Sophos;i="5.87,284,1631602800"; 
-   d="scan'208";a="235700117"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2021 04:26:46 -0800
-X-IronPort-AV: E=Sophos;i="5.87,284,1631602800"; 
-   d="scan'208";a="678082863"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2021 04:26:35 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mt7d5-001lPG-5I;
-        Fri, 03 Dec 2021 14:25:31 +0200
-Date:   Fri, 3 Dec 2021 14:25:30 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Marc Zyngier <maz@kernel.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Chunyan Zhang <chunyan.zhang@unisoc.com>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Tony Lindgren <tony@atomide.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jianqun Xu <jay.xu@rock-chips.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Thierry Reding <treding@nvidia.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        patches@opensource.cirrus.com,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        linux-power <linux-power@fi.rohmeurope.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC..." 
-        <linux-mediatek@lists.infradead.org>, linux-pwm@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-unisoc@lists.infradead.org,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-tegra@vger.kernel.org, Ray Jui <rjui@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-        Keerthy <j-keerthy@ti.com>, Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>
-Subject: Re: [PATCH v1 1/3] gpio: Get rid of duplicate of_node assignment in
- the drivers
-Message-ID: <YaoMuoONxbJb0prf@smile.fi.intel.com>
-References: <20211202210839.79140-1-andriy.shevchenko@linux.intel.com>
- <CAMRc=Md-TKUETLzf41D2KeQODac153_AumMTW4928XfJ70GRxQ@mail.gmail.com>
+        id S1352220AbhLCNxP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Dec 2021 08:53:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44224 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238055AbhLCNxP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Dec 2021 08:53:15 -0500
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2A9C06173E;
+        Fri,  3 Dec 2021 05:49:51 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: adalessandro)
+        with ESMTPSA id AE14E1F46E6B
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
+        t=1638539389; bh=AnDiFrsgV5WgdCgD8vjRtGdtU3v0T9/rxm9SYGxtvnE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=U4qKWwHGBDOLXZNq09fFcdqG5Z0XOoQSRBlzu69SNN/pCMIkTqYPVmTGrVflpYhZc
+         wzOEwvU7RzU3bn1wHyYOVfLkpJJK1hGOlA1NsHggtOJcgnv0zLSIGNN7MnNk6DgDC4
+         gPtCqQ8n4X9+cI1JrO8ofbrC6wh4bl2ittvPPsrYO8P6Hh37HmwLEZRN6nh4BS+Yte
+         THRnwVeBVc4rbY4EKE8SF8QfgE0B9Fvyagc++Js66UmJrzbscdgNnneNl5toYzxWXa
+         DwFILZWXXsrD4plKThLJ+R3Lto9OsxPBJbGGN81MmGURWGYr5rq/MV3uDmaVBJIPbd
+         hm6Qgag1EZ4Kg==
+From:   Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+To:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc:     Xiubo.Lee@gmail.com, ariel.dalessandro@collabora.com,
+        bcousson@baylibre.com, broonie@kernel.org, festevam@gmail.com,
+        kuninori.morimoto.gx@renesas.com, lgirdwood@gmail.com,
+        michael@amarulasolutions.com, nicoleotsuka@gmail.com,
+        perex@perex.cz, robh+dt@kernel.org, shengjiu.wang@gmail.com,
+        tiwai@suse.com, tony@atomide.com
+Subject: [PATCH 0/4] fsl-asoc-card: Add optional dt property for setting mclk-id
+Date:   Fri,  3 Dec 2021 10:49:26 -0300
+Message-Id: <20211203134930.128703-1-ariel.dalessandro@collabora.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMRc=Md-TKUETLzf41D2KeQODac153_AumMTW4928XfJ70GRxQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Dec 03, 2021 at 09:40:55AM +0100, Bartosz Golaszewski wrote:
-> On Thu, Dec 2, 2021 at 10:17 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > GPIO library does copy the of_node from the parent device of
-> > the GPIO chip, there is no need to repeat this in the individual
-> > drivers. Remove these assignment all at once.
-> >
-> > For the details one may look into the of_gpio_dev_init() implementation.
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
-> 
-> I have a bad feeling about this but I've gone through the drivers in
-> this patch and it seems like you don't update any of the drivers that
-> use multiple child OF nodes so I can't really point out any obvious
-> bug.
+This is a follow up of patchset:
 
-Yes, like I said it's just a series to kick off the conversion.
-I left the corner cases to the last.
+    [RFC patch 0/5] Support BCLK input clock in tlv320aic31xx
 
-> I have another change I'm working on that's related, let me send it shortly.
+Sound cards may allow using different main clock inputs. In the generic
+fsl-asoc-card driver, these values are hardcoded for each specific card
+configuration.
 
-Do you mean it should be attached to the series?
+Let's make it more flexible, allowing setting mclk-id from the
+device-tree node.
+
+Ariel D'Alessandro (4):
+  dt-bindings: sound: Rename tlv320aic31xx-micbias as tlv320aic31xx
+  dt-bindings: tlv320aic31xx: Define PLL clock inputs
+  ASoC: fsl-asoc-card: Add optional dt property for setting mclk-id
+  ASoC: fsl-asoc-card: Remove BCLK default value for tlv320aic31xx card
+
+ .../devicetree/bindings/sound/fsl-asoc-card.txt    |  1 +
+ .../devicetree/bindings/sound/tlv320aic31xx.txt    |  2 +-
+ arch/arm/boot/dts/am43x-epos-evm.dts               |  2 +-
+ include/dt-bindings/sound/tlv320aic31xx-micbias.h  |  9 ---------
+ include/dt-bindings/sound/tlv320aic31xx.h          | 14 ++++++++++++++
+ sound/soc/codecs/tlv320aic31xx.c                   |  2 +-
+ sound/soc/fsl/fsl-asoc-card.c                      |  7 ++++++-
+ 7 files changed, 24 insertions(+), 13 deletions(-)
+ delete mode 100644 include/dt-bindings/sound/tlv320aic31xx-micbias.h
+ create mode 100644 include/dt-bindings/sound/tlv320aic31xx.h
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 
