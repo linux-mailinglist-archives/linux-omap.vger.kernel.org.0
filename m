@@ -2,76 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DD2B467CD6
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Dec 2021 18:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD9D0467CFC
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Dec 2021 19:11:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382463AbhLCRyO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Dec 2021 12:54:14 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:59156 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343541AbhLCRyN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Dec 2021 12:54:13 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: adalessandro)
-        with ESMTPSA id 5BF591F4724E
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
-        t=1638553848; bh=sjUDlRzGKvbKVrH0gyQWnGzouzwqlG1XZ4Jt6m71DjQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NwkfaQSTsNOkewcP0B716mc78gWZExuruZKkT+w5vMZK3j5bz16Jz46lMdsSHN6d8
-         vbrQW+rczqrkZv7gADP/scWRDEpZELWkgK9yA3WbJZ7dzxsAcQM3cDW6Z1dSMAb2Ph
-         DNZF/IGm1DuStbG7DGLsA3ifLF43DOGqZelzCHtFwWuhY9wg8KVgqH+XQ0KWLpha4L
-         qG7g0WNvjEWJlWRgAmxQ49gBw/2k9U/fZgKgHc25hoh1vheF6Au/McyIVX/qPQcez6
-         qZRfpnnAGXXsjsVkukAqI/r4Gfni8Z3xi3pR/SlzRu6kHkDoRnRsKTWgE+AyRiCnpk
-         05KK4eUCt4h8g==
-From:   Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-To:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        id S235439AbhLCSOc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Dec 2021 13:14:32 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:35496 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234979AbhLCSOc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Dec 2021 13:14:32 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 001A962C76;
+        Fri,  3 Dec 2021 18:11:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB94CC53FAD;
+        Fri,  3 Dec 2021 18:11:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638555067;
+        bh=igFrEeJpF2OZf9Jo/80sQz+WH1Z+Faa3wH+gun1zpGY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qw4NTfMGNzvYUWRtyWUWBWIFfJbMRl1w+tXmritIu3cq5/GhmZFF7C1Ek7BeaO+7o
+         sg2mlee98y5i72D4684ISJFsfqeJWZl45+7nNvmNYrAZaP1x2k81A9hFFeCFZp8hrE
+         Wt1vOsMs0G7Op+LNIER1akRdDpHd5Qa/r4czfcErcJd4wRPAoDtT7rlGSC7d2rr0+y
+         2d7cuZ9RKtiYbabKfVn30ibthkO8FYNKb/ufKjAjZD9GkYBcU81qdm7VI1YeQDi33z
+         cWodv7KJTcjNzWt6aXf3pwNDX2YXSGH70wE6gGJYg8xp4O22l6x2uoRTawksDCK61a
+         PLAuMJN8v+GXg==
+Date:   Fri, 3 Dec 2021 18:11:00 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+Cc:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc:     Xiubo.Lee@gmail.com, ariel.dalessandro@collabora.com,
-        bcousson@baylibre.com, broonie@kernel.org, festevam@gmail.com,
+        linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com,
+        bcousson@baylibre.com, festevam@gmail.com,
         kuninori.morimoto.gx@renesas.com, lgirdwood@gmail.com,
         michael@amarulasolutions.com, nicoleotsuka@gmail.com,
         perex@perex.cz, robh+dt@kernel.org, shengjiu.wang@gmail.com,
         tiwai@suse.com, tony@atomide.com
-Subject: [PATCH 1/1] ASoC: fsl-asoc-card: Add missing Kconfig option for tlv320aic31xx
-Date:   Fri,  3 Dec 2021 14:50:18 -0300
-Message-Id: <20211203175018.252641-2-ariel.dalessandro@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211203175018.252641-1-ariel.dalessandro@collabora.com>
+Subject: Re: [PATCH 1/1] ASoC: fsl-asoc-card: Add missing Kconfig option for
+ tlv320aic31xx
+Message-ID: <YapdtAAbrhJ8kW0M@sirena.org.uk>
 References: <20211203175018.252641-1-ariel.dalessandro@collabora.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="lh3+hiHCqE5cETDw"
+Content-Disposition: inline
+In-Reply-To: <20211203175018.252641-1-ariel.dalessandro@collabora.com>
+X-Cookie: Don't get mad, get interest.
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The following commit added support for tlv320aic31xx codec to
-fsl-asoc-card, but missed the related Kconfig option. Fix this.
 
-  commit 8c9b9cfb7724685ce705f511b882f30597596536
-  Author: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-  Date:   Fri Nov 19 12:32:48 2021 -0300
+--lh3+hiHCqE5cETDw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-      ASoC: fsl-asoc-card: Support fsl,imx-audio-tlv320aic31xx codec
+On Fri, Dec 03, 2021 at 02:50:17PM -0300, Ariel D'Alessandro wrote:
+> This is a follow up of patchsets:
+>=20
+>   [RFC patch 0/5] Support BCLK input clock in tlv320aic31xx
+>   [PATCH 0/4] fsl-asoc-card: Add optional dt property for setting mclk-id
 
-Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
----
- sound/soc/fsl/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Please don't send cover letters for single patches, if there is anything
+that needs saying put it in the changelog of the patch or after the ---
+if it's administrative stuff.  This reduces mail volume and ensures that=20
+any important information is recorded in the changelog rather than being
+lost.=20
 
-diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
-index 8e05d092790e..10fa38753453 100644
---- a/sound/soc/fsl/Kconfig
-+++ b/sound/soc/fsl/Kconfig
-@@ -311,6 +311,7 @@ config SND_SOC_FSL_ASOC_CARD
- 	select SND_SOC_FSL_ESAI
- 	select SND_SOC_FSL_SAI
- 	select SND_SOC_FSL_SSI
-+	select SND_SOC_TLV320AIC31XX
- 	select SND_SOC_WM8994
- 	select MFD_WM8994
- 	help
--- 
-2.30.2
+--lh3+hiHCqE5cETDw
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGqXbMACgkQJNaLcl1U
+h9D2Cgf/R5khnlu5BvBDSME0pvpG+4+PjCkPFKi3+kdhK7Onjmyln1gLD2p/pjDl
+C2EP3YXQcgiUywBXBrCblKFmsu2XQjqlCco9TcYbnmBzcmtROfr+m3vGVgsVFAtY
+3R0EhJtfcHTVzhtgQokgsTNeUITGdjPFmU/VozNqdDUObyBP2VLr/l4eLtDcEWF8
+RteHve4FrIcJxTQjYNMpAsIBB5ztm2l+IuFI1kAnIcfG3iDgDNaNHeENbhgKIjiU
+LES7XBsQbDmO7S8svN213VOLmfUowwAL5I6mnJBZlkTPATA7zMkZnvMk8L59nnsS
+rgual2IJtpkc4Viaq4BYba1kKrcWXA==
+=gP64
+-----END PGP SIGNATURE-----
+
+--lh3+hiHCqE5cETDw--
