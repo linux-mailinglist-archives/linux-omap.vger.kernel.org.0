@@ -2,70 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 091F84678CB
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Dec 2021 14:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2293467925
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Dec 2021 15:10:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381259AbhLCNxi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Dec 2021 08:53:38 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:57112 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381283AbhLCNxg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Dec 2021 08:53:36 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: adalessandro)
-        with ESMTPSA id C280B1F46E6D
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
-        t=1638539411; bh=TkTmwZ0FYTVGHTMq9D0FngDmmux/nJ6AitqgScE+BKU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H3PzJr9ctzV9XksbyCYfNLLdEilTfaQQX1DHDpOz1DkyCqufSm3kekWJsu/l5Vf+b
-         1MImoypigWgj+DhU1Ti0dEpXaG56OBD91eriFuu5U3kshf90A2CQiTVRFKqy9VKpaR
-         3l4gHx0DRt2kJ76SqEUXeZFxaMsoawyLG1llB3d0LoncmcrdHVj39e9Wmy3O4XQ8Ho
-         D+6N9buTJt6sqLy/SJPPisbPD9tcuISqJ+QIT6tWZc31IQCid8/V6zkXUoRm9BgHnp
-         HxWBl79qbNijBU20czKoN+L2Y8olB0G9IZMA0BlRQw9Pw0J+mYsLGucRoQ+mKdsfZq
-         eW9R0MEWWxUaQ==
-From:   Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-To:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc:     Xiubo.Lee@gmail.com, ariel.dalessandro@collabora.com,
-        bcousson@baylibre.com, broonie@kernel.org, festevam@gmail.com,
-        kuninori.morimoto.gx@renesas.com, lgirdwood@gmail.com,
-        michael@amarulasolutions.com, nicoleotsuka@gmail.com,
-        perex@perex.cz, robh+dt@kernel.org, shengjiu.wang@gmail.com,
-        tiwai@suse.com, tony@atomide.com
-Subject: [PATCH 4/4] ASoC: fsl-asoc-card: Remove BCLK default value for tlv320aic31xx card
-Date:   Fri,  3 Dec 2021 10:49:30 -0300
-Message-Id: <20211203134930.128703-5-ariel.dalessandro@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211203134930.128703-1-ariel.dalessandro@collabora.com>
-References: <20211203134930.128703-1-ariel.dalessandro@collabora.com>
+        id S1381363AbhLCOOM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Dec 2021 09:14:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49150 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1381358AbhLCOOL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Dec 2021 09:14:11 -0500
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE19C06174A
+        for <linux-omap@vger.kernel.org>; Fri,  3 Dec 2021 06:10:47 -0800 (PST)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed10:3191:9890:620a:6f4])
+        by laurent.telenet-ops.be with bizsmtp
+        id RqAl2600P3eLghq01qAlpX; Fri, 03 Dec 2021 15:10:45 +0100
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mt9Gv-002Lro-4Z; Fri, 03 Dec 2021 15:10:45 +0100
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mt9Gu-000ll4-JI; Fri, 03 Dec 2021 15:10:44 +0100
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH v2] ARM: dts: motorola-mapphone: Drop second ti,wlcore compatible value
+Date:   Fri,  3 Dec 2021 15:10:43 +0100
+Message-Id: <17693a54a471c50d2d091d7a65f6571e7b0f7c51.1638540458.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Now that fsl-asoc-card support setting mclk-id through the device-tree
-mclk-id property, let's remove the default BCLK configuration for this
-card.
+The TI wlcore DT bindings specify using a single compatible value for
+each variant, and the Linux kernel driver matches against the first
+compatible value since commit 078b30da3f074f2e ("wlcore: add wl1285
+compatible") in v4.13.
 
-Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 1 -
- 1 file changed, 1 deletion(-)
+v2:
+  - Add Reviewed-by.
+---
+ arch/arm/boot/dts/motorola-mapphone-common.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index bb962e04d40b..e92d90010d45 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -637,7 +637,6 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 		priv->dai_link[2].dpcm_capture = 0;
- 		priv->cpu_priv.sysclk_dir[TX] = SND_SOC_CLOCK_OUT;
- 		priv->cpu_priv.sysclk_dir[RX] = SND_SOC_CLOCK_OUT;
--		priv->codec_priv.mclk_id = AIC31XX_PLL_CLKIN_BCLK;
- 		priv->card.dapm_routes = audio_map_tx;
- 		priv->card.num_dapm_routes = ARRAY_SIZE(audio_map_tx);
- 	} else if (of_device_is_compatible(np, "fsl,imx-audio-wm8962")) {
+diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+index a4423ff0df39264b..c7a1f3ffc48ca58e 100644
+--- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+@@ -310,7 +310,7 @@ &mmc3 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+ 	wlcore: wlcore@2 {
+-		compatible = "ti,wl1285", "ti,wl1283";
++		compatible = "ti,wl1285";
+ 		reg = <2>;
+ 		/* gpio_100 with gpmc_wait2 pad as wakeirq */
+ 		interrupts-extended = <&gpio4 4 IRQ_TYPE_LEVEL_HIGH>,
 -- 
-2.30.2
+2.25.1
 
