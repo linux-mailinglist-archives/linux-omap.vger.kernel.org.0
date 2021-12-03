@@ -2,41 +2,41 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 554C94675E9
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Dec 2021 12:07:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E96B4675F7
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Dec 2021 12:13:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380267AbhLCLLL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 3 Dec 2021 06:11:11 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:44168 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380216AbhLCLLK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Dec 2021 06:11:10 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1B3B7aYA125397;
-        Fri, 3 Dec 2021 05:07:36 -0600
+        id S1380295AbhLCLQn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 3 Dec 2021 06:16:43 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:54210 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235997AbhLCLQn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 3 Dec 2021 06:16:43 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1B3BDBdN112705;
+        Fri, 3 Dec 2021 05:13:11 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1638529656;
-        bh=o2/3Sb6TDRH3rx8TWLvMcNFdX2xi3fcTYplGH9IWqHA=;
+        s=ti-com-17Q1; t=1638529991;
+        bh=GrKJIZ02eZdfcKmB7j5fDaxR+HIVNYkC4fwMiMR4Wcg=;
         h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=GNan/2Tu/yS8xqEBljoRMaFvSzhkOt5UfYKHw2PtOcbnIN887LoX0bCgb8GViyxTX
-         kueOSL5EJNO7DACmjTiR4OdP+uSSnRVTT7gJriKEaMgg23MXSfHZtkCG129h1nSDUb
-         eYejbVRm/gFI0pn51ggwO3eu6kRWHbLT39weFcE4=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1B3B7aKK052803
+        b=QQdZnqOolvTlErih4CD/hmoZgB90kqaHKWV8juSA+kWFsFf3ssQUcUITkcNF5ntFl
+         rb5Djz6TdiW7A/+qvMP9S0PUwQCPpJ9twuRe97x7aB/nOdFdo95mTn173T0sew31Hq
+         oa1BnsgFFo7RDAzL/7EBj+2N/dkLVdTnzRjcD4Ew=
+Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1B3BDBBE022837
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 3 Dec 2021 05:07:36 -0600
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 3 Dec 2021 05:13:11 -0600
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Fri, 3
- Dec 2021 05:07:36 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2021 05:13:11 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Fri, 3 Dec 2021 05:07:36 -0600
+ Frontend Transport; Fri, 3 Dec 2021 05:13:11 -0600
 Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1B3B7ZQm019521;
-        Fri, 3 Dec 2021 05:07:36 -0600
-Date:   Fri, 3 Dec 2021 16:37:34 +0530
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1B3BDAwd093223;
+        Fri, 3 Dec 2021 05:13:11 -0600
+Date:   Fri, 3 Dec 2021 16:43:10 +0530
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Nishanth Menon <nm@ti.com>
 CC:     Rob Herring <robh+dt@kernel.org>, Tero Kristo <kristo@kernel.org>,
@@ -44,13 +44,13 @@ CC:     Rob Herring <robh+dt@kernel.org>, Tero Kristo <kristo@kernel.org>,
         <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-omap@vger.kernel.org>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH] arm64: dts: ti: k3-j7200: Fix the L2 cache sets
-Message-ID: <20211203110734.23e2t356s45ux5mu@ti.com>
-References: <20211113043638.4358-1-nm@ti.com>
+Subject: Re: [PATCH] arm64: dts: ti: k3-am642: Fix the L2 cache sets
+Message-ID: <20211203111308.zfxczgywmjzplbha@ti.com>
+References: <20211113043635.4296-1-nm@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20211113043638.4358-1-nm@ti.com>
+In-Reply-To: <20211113043635.4296-1-nm@ti.com>
 User-Agent: NeoMutt/20171215
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
@@ -58,46 +58,41 @@ List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 On 12/11/21 10:36PM, Nishanth Menon wrote:
-> A72's L2 cache[1] on J7200[2] is 1MB. A53's L2 is fixed line length of
-                                        ^^^
+> A53's L2 cache[1] on AM642[2] is 256KB. A53's L2 is fixed line length
+> of 64 bytes and 16-way set-associative cache structure.
 
-Same as previous patch, do you mean A72? J7200 does not have an A53 core 
-and this cache node is for A72 cores anyway.
-
-With this fixed,
+This time the commit message is correct :-)
 
 Reviewed-by: Pratyush Yadav <p.yadav@ti.com>
 
-> 64 bytes and 16-way set-associative cache structure.
 > 
-> 1MB of L2 / 64 (line length) = 16384 ways
-> 16384 ways / 16 = 1024 sets
+> 256KB of L2 / 64 (line length) = 4096 ways
+> 4096 ways / 16 = 256 sets
 > 
 > Fix the l2 cache-sets.
 > 
-> [1] https://developer.arm.com/documentation/100095/0003/Level-2-Memory-System/About-the-L2-memory-system
-> [2] https://www.ti.com/lit/pdf/spruiu1
+> [1] https://developer.arm.com/documentation/ddi0500/j/Level-2-Memory-System/About-the-L2-memory-system?lang=en
+> [2] https://www.ti.com/lit/pdf/spruim2
 > 
-> Fixes: d361ed88455f ("arm64: dts: ti: Add support for J7200 SoC")
+> Fixes: 8abae9389bdb ("arm64: dts: ti: Add support for AM642 SoC")
 > Reported-by: Peng Fan <peng.fan@nxp.com>
 > Signed-off-by: Nishanth Menon <nm@ti.com>
 > ---
->  arch/arm64/boot/dts/ti/k3-j7200.dtsi | 2 +-
+>  arch/arm64/boot/dts/ti/k3-am642.dtsi | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm64/boot/dts/ti/k3-j7200.dtsi b/arch/arm64/boot/dts/ti/k3-j7200.dtsi
-> index 958587d3a33d..64fef4e67d76 100644
-> --- a/arch/arm64/boot/dts/ti/k3-j7200.dtsi
-> +++ b/arch/arm64/boot/dts/ti/k3-j7200.dtsi
-> @@ -86,7 +86,7 @@ L2_0: l2-cache0 {
+> diff --git a/arch/arm64/boot/dts/ti/k3-am642.dtsi b/arch/arm64/boot/dts/ti/k3-am642.dtsi
+> index e2b397c88401..8a76f4821b11 100644
+> --- a/arch/arm64/boot/dts/ti/k3-am642.dtsi
+> +++ b/arch/arm64/boot/dts/ti/k3-am642.dtsi
+> @@ -60,6 +60,6 @@ L2_0: l2-cache0 {
 >  		cache-level = <2>;
->  		cache-size = <0x100000>;
+>  		cache-size = <0x40000>;
 >  		cache-line-size = <64>;
-> -		cache-sets = <2048>;
-> +		cache-sets = <1024>;
->  		next-level-cache = <&msmc_l3>;
+> -		cache-sets = <512>;
+> +		cache-sets = <256>;
 >  	};
->  
+>  };
 
 -- 
 Regards,
