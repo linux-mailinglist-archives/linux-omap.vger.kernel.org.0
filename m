@@ -2,131 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2348C46967E
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Dec 2021 14:13:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC96A469688
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Dec 2021 14:13:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244039AbhLFNQa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Dec 2021 08:16:30 -0500
-Received: from mga04.intel.com ([192.55.52.120]:41243 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244041AbhLFNQ3 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 6 Dec 2021 08:16:29 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10189"; a="236046871"
-X-IronPort-AV: E=Sophos;i="5.87,291,1631602800"; 
-   d="scan'208";a="236046871"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2021 05:13:01 -0800
-X-IronPort-AV: E=Sophos;i="5.87,291,1631602800"; 
-   d="scan'208";a="604986568"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2021 05:12:50 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1muDmW-002mwh-84;
-        Mon, 06 Dec 2021 15:11:48 +0200
-Date:   Mon, 6 Dec 2021 15:11:48 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Marc Zyngier <maz@kernel.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Chunyan Zhang <chunyan.zhang@unisoc.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Tony Lindgren <tony@atomide.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Jianqun Xu <jay.xu@rock-chips.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Thierry Reding <treding@nvidia.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-power@fi.rohmeurope.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-pwm@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-unisoc@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-tegra@vger.kernel.org, Ray Jui <rjui@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-        Keerthy <j-keerthy@ti.com>, Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>
-Subject: Re: [PATCH v1 1/3] gpio: Get rid of duplicate of_node assignment in
- the drivers
-Message-ID: <Ya4MFMWSyj4YbdNG@smile.fi.intel.com>
-References: <20211202210839.79140-1-andriy.shevchenko@linux.intel.com>
- <CACRpkdZbpKqG_uS2N8TW2-HL5CqnuKDpHVCabf66MyQQof0jOw@mail.gmail.com>
+        id S243961AbhLFNQ4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Dec 2021 08:16:56 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:39690 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244135AbhLFNQz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Dec 2021 08:16:55 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DDC7l007221;
+        Mon, 6 Dec 2021 07:13:12 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1638796392;
+        bh=pYddrYXJDPAFBh5ZxgKQltpBvrTtJhPxeuFlwIUqGrQ=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=lbUorVoQfhLEQEPl0kRruM+/uehG1lEJZO0ZMQk6c/RV5/+YwhP0wsO8mib34Oo3v
+         OdPosVu3L9ImLn1GcobeQrfbhT8toAps6XpVhF497aoc72/ih9ux7YvkiFwblo1MhE
+         3I9FJXqWUbkwf4Xd5qEIQ7N5dIie+COQo3j/TGyg=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1B6DDCQN050638
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 6 Dec 2021 07:13:12 -0600
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 6
+ Dec 2021 07:13:12 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Mon, 6 Dec 2021 07:13:12 -0600
+Received: from uda0132425.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DD9BU115824;
+        Mon, 6 Dec 2021 07:13:09 -0600
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+To:     Rob Herring <robh+dt@kernel.org>, Tero Kristo <kristo@kernel.org>,
+        Nishanth Menon <nm@ti.com>
+CC:     Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-omap@vger.kernel.org>, Peng Fan <peng.fan@nxp.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: ti: k3-j721e: Fix the L2 cache sets
+Date:   Mon, 6 Dec 2021 18:43:06 +0530
+Message-ID: <163879570036.16658.15551378280556472124.b4-ty@ti.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211113043639.4413-1-nm@ti.com>
+References: <20211113043639.4413-1-nm@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACRpkdZbpKqG_uS2N8TW2-HL5CqnuKDpHVCabf66MyQQof0jOw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, Dec 05, 2021 at 01:06:07AM +0100, Linus Walleij wrote:
-> On Thu, Dec 2, 2021 at 10:17 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
+Hi Nishanth Menon,
+ 
+On Fri, 12 Nov 2021 22:36:39 -0600, Nishanth Menon wrote:
+> A72's L2 cache[1] on J721e[2] is 1MB. A53's L2 is fixed line length of
+> 64 bytes and 16-way set-associative cache structure.
 > 
-> > GPIO library does copy the of_node from the parent device of
-> > the GPIO chip, there is no need to repeat this in the individual
-> > drivers. Remove these assignment all at once.
-> >
-> > For the details one may look into the of_gpio_dev_init() implementation.
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+Replaced A53 reference with A72 locally and applied.
+
+
+> 1MB of L2 / 64 (line length) = 16384 ways
+> 16384 ways / 16 = 1024 sets
 > 
-> This is definitely a patch in the right direction, as Bart says
-> it can be a bit dangerous, the outliers are those drivers that
-> assign the .dev to something completely different than the
-> the dev where the of_node is copied from.
-
-I carefully checked these all and this patch series is only for the cases
-when I'm sure it's the same device, which is used as parent, and its of_node
-supplied.
-
-> The idea was definitely always to only assign it in the core
-> *unless* there is a reason to have a completely different
-> of_node for some reason.
+> Fix the l2 cache-sets.
 > 
-> > +++ b/drivers/gpio/gpio-rda.c
-> > @@ -240,8 +240,6 @@ static int rda_gpio_probe(struct platform_device *pdev)
-> >         rda_gpio->chip.label = dev_name(dev);
-> >         rda_gpio->chip.ngpio = ngpios;
-> >         rda_gpio->chip.base = -1;
-> > -       rda_gpio->chip.parent = dev;
-> > -       rda_gpio->chip.of_node = np;
-> 
-> Mention in the commit message that in this driver
-> you also drop the the .parent assignment because the
-> core will handle it.
-
-Okay, I will update it. Also I'll update to the last codebase (dunno if Bart
-is going to pull the IB from Lee where one of the drivers is gone: da53cc634cea
-("gpio: bd70528 Drop BD70528 support").
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> [...]
+ 
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
+ 
+[1/1] arm64: dts: ti: k3-j721e: Fix the L2 cache sets
+      commit: e9ba3a5bc6fdc2c796c69fdaf5ed6c9957cf9f9d
+ 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+ 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+ 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+ 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+ 
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+--
+Vignesh
 
