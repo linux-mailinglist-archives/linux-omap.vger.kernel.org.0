@@ -2,40 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC96A469688
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Dec 2021 14:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DB43469693
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Dec 2021 14:14:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243961AbhLFNQ4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Dec 2021 08:16:56 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:39690 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244135AbhLFNQz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Dec 2021 08:16:55 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DDC7l007221;
-        Mon, 6 Dec 2021 07:13:12 -0600
+        id S244167AbhLFNRg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Dec 2021 08:17:36 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:41644 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243677AbhLFNRg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Dec 2021 08:17:36 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DE11v069333;
+        Mon, 6 Dec 2021 07:14:01 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1638796392;
-        bh=pYddrYXJDPAFBh5ZxgKQltpBvrTtJhPxeuFlwIUqGrQ=;
+        s=ti-com-17Q1; t=1638796441;
+        bh=57/1yIMHKGTOQVQFiDYnWahJ3TqzMM1YvgdWyM8QCOE=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=lbUorVoQfhLEQEPl0kRruM+/uehG1lEJZO0ZMQk6c/RV5/+YwhP0wsO8mib34Oo3v
-         OdPosVu3L9ImLn1GcobeQrfbhT8toAps6XpVhF497aoc72/ih9ux7YvkiFwblo1MhE
-         3I9FJXqWUbkwf4Xd5qEIQ7N5dIie+COQo3j/TGyg=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1B6DDCQN050638
+        b=O2N9U2h23Wq2XBLf2iNphHoY8S5GyUTFe8WNXir5XMXkF497HAYoLz84f2C/vlfID
+         5/BBh8kkkDmo8jSYP6RISdjd7mUuXbaPWYpvlJrcaBlcdxqehSx66u+vlE8xzr105F
+         lp9GeCk89wTekw0t4CU1rHg5KO6xdl1M7HRrrSFw=
+Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1B6DE1eo094445
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 6 Dec 2021 07:13:12 -0600
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 6 Dec 2021 07:14:01 -0600
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 6
- Dec 2021 07:13:12 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2021 07:14:00 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 6 Dec 2021 07:13:12 -0600
+ Frontend Transport; Mon, 6 Dec 2021 07:14:00 -0600
 Received: from uda0132425.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DD9BU115824;
-        Mon, 6 Dec 2021 07:13:09 -0600
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DDvRW116765;
+        Mon, 6 Dec 2021 07:13:58 -0600
 From:   Vignesh Raghavendra <vigneshr@ti.com>
 To:     Rob Herring <robh+dt@kernel.org>, Tero Kristo <kristo@kernel.org>,
         Nishanth Menon <nm@ti.com>
@@ -43,12 +43,12 @@ CC:     Vignesh Raghavendra <vigneshr@ti.com>,
         <linux-omap@vger.kernel.org>, Peng Fan <peng.fan@nxp.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH] arm64: dts: ti: k3-j721e: Fix the L2 cache sets
-Date:   Mon, 6 Dec 2021 18:43:06 +0530
-Message-ID: <163879570036.16658.15551378280556472124.b4-ty@ti.com>
+Subject: Re: [PATCH V2] arm64: dts: ti: k3-j7200: Correct the d-cache-sets info
+Date:   Mon, 6 Dec 2021 18:43:55 +0530
+Message-ID: <163879570035.16658.8331794401790118618.b4-ty@ti.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211113043639.4413-1-nm@ti.com>
-References: <20211113043639.4413-1-nm@ti.com>
+In-Reply-To: <20211113042640.30955-1-nm@ti.com>
+References: <20211113042640.30955-1-nm@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -59,26 +59,22 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi Nishanth Menon,
  
-On Fri, 12 Nov 2021 22:36:39 -0600, Nishanth Menon wrote:
-> A72's L2 cache[1] on J721e[2] is 1MB. A53's L2 is fixed line length of
-> 64 bytes and 16-way set-associative cache structure.
+On Fri, 12 Nov 2021 22:26:40 -0600, Nishanth Menon wrote:
+> A72 Cluster (chapter 1.3.1 [1]) has 48KB Icache, 32KB Dcache and 1MB L2 Cache
+>  - ICache is 3-way set-associative
+>  - Dcache is 2-way set-associative
+>  - Line size are 64bytes
 > 
-
-Replaced A53 reference with A72 locally and applied.
-
-
-> 1MB of L2 / 64 (line length) = 16384 ways
-> 16384 ways / 16 = 1024 sets
-> 
-> Fix the l2 cache-sets.
+> 32KB (Dcache)/64 (fixed line length of 64 bytes) = 512 ways
+> 512 ways / 2 (Dcache is 2-way per set) = 256 sets.
 > 
 > [...]
  
 I have applied the following to branch ti-k3-dts-next on [1].
 Thank you!
  
-[1/1] arm64: dts: ti: k3-j721e: Fix the L2 cache sets
-      commit: e9ba3a5bc6fdc2c796c69fdaf5ed6c9957cf9f9d
+[1/1] arm64: dts: ti: k3-j7200: Correct the d-cache-sets info
+      commit: a172c86931709d6663318609d71a811333bdf4b0
  
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent up the chain during
