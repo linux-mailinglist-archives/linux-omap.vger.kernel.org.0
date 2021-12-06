@@ -2,77 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DB0D1468F06
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Dec 2021 03:11:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 715BC46965B
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Dec 2021 14:11:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233577AbhLFCOi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 5 Dec 2021 21:14:38 -0500
-Received: from smtp25.cstnet.cn ([159.226.251.25]:60580 "EHLO cstnet.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231177AbhLFCOh (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sun, 5 Dec 2021 21:14:37 -0500
-Received: from localhost.localdomain (unknown [124.16.138.128])
-        by APP-05 (Coremail) with SMTP id zQCowAB3WBUQca1hg+loAQ--.22527S2;
-        Mon, 06 Dec 2021 10:10:32 +0800 (CST)
-From:   Jiasheng Jiang <jiasheng@iscas.ac.cn>
-To:     tony@atomide.com, lee.jones@linaro.org
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Subject: [PATCH] mfd: omap-usb-host: Handle dma_set_coherent_mask error codes
-Date:   Mon,  6 Dec 2021 10:10:21 +0800
-Message-Id: <20211206021021.1616073-1-jiasheng@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+        id S243863AbhLFNOt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Dec 2021 08:14:49 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:41388 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241808AbhLFNOt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Dec 2021 08:14:49 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DBCkS068713;
+        Mon, 6 Dec 2021 07:11:12 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1638796272;
+        bh=XpW8C+Npy/fS/z+5zc4yNKkgBO7jqb7oSvghV5APEtU=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=Nz7u/A7Sqs//hWz/kkXshsx0bI5UoRiG1EsxayZ7Px2NFtJyOUoZ9pNRdubshxj9u
+         NDNWRFvhSrYkRUuSdvGYqqvSlCt0sE51gxM4Tsb0dPZENrpjzv3x5SvOM+ZeXmvYYs
+         F9gZmTlcWB7BDQFgHINoYLPX6skRL6dXXoMB+RjU=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1B6DBB9m091663
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 6 Dec 2021 07:11:12 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 6
+ Dec 2021 07:11:11 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Mon, 6 Dec 2021 07:11:11 -0600
+Received: from uda0132425.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DB8jM072137;
+        Mon, 6 Dec 2021 07:11:09 -0600
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+To:     Rob Herring <robh+dt@kernel.org>, Tero Kristo <kristo@kernel.org>,
+        Nishanth Menon <nm@ti.com>
+CC:     Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-omap@vger.kernel.org>, Peng Fan <peng.fan@nxp.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: ti: k3-j7200: Fix the L2 cache sets
+Date:   Mon, 6 Dec 2021 18:40:18 +0530
+Message-ID: <163879570036.16658.17037182694525892897.b4-ty@ti.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211113043638.4358-1-nm@ti.com>
+References: <20211113043638.4358-1-nm@ti.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowAB3WBUQca1hg+loAQ--.22527S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrur4fAw1fuFWUuFWkXF1UKFg_yoWDXFXEg3
-        Z8ZFyvgrZF934Iy3W2kw4rA34Igw10vrn3ZF40kF4Sqry2q3ZxXw4xZr1xAr1UZrWDAryq
-        kwn7Zrs3Cw1IvjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-        6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-        A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-        6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
-        4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-        7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
-        1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY02Avz4vE14v_
-        Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
-        WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI
-        7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-        1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4U
-        MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUbYhF7UUUU
-        U==
-X-Originating-IP: [124.16.138.128]
-X-CM-SenderInfo: pmld2xxhqjqxpvfd2hldfou0/
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The return value of dma_set_coherent_mask() is not always 0.
-To catch the exception in case that dma is not support the mask.
-
-Fixes: cbb8c220e70d ("mfd: Remove omap-usb-host magic numbers for dev dma mask")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
----
- drivers/mfd/omap-usb-host.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-index 2a3a240b4619..05af9ad314b1 100644
---- a/drivers/mfd/omap-usb-host.c
-+++ b/drivers/mfd/omap-usb-host.c
-@@ -169,7 +169,11 @@ static struct platform_device *omap_usbhs_alloc_child(const char *name,
- 	}
+Hi Nishanth Menon,
  
- 	child->dev.dma_mask		= &usbhs_dmamask;
--	dma_set_coherent_mask(&child->dev, DMA_BIT_MASK(32));
-+	ret = dma_set_coherent_mask(&child->dev, DMA_BIT_MASK(32));
-+	if (ret) {
-+		dev_err(&child->dev, "DMA enable failed\n");
-+		goto err_alloc;
-+	}
- 	child->dev.parent		= dev;
+On Fri, 12 Nov 2021 22:36:38 -0600, Nishanth Menon wrote:
+> A72's L2 cache[1] on J7200[2] is 1MB. A53's L2 is fixed line length of
+> 64 bytes and 16-way set-associative cache structure.
+> 
+
+Replaced A53 referenc with A72 locally and applied.
+
+> 1MB of L2 / 64 (line length) = 16384 ways
+> 16384 ways / 16 = 1024 sets
+> 
+> Fix the l2 cache-sets.
+> 
+> [...]
  
- 	ret = platform_device_add(child);
--- 
-2.25.1
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
+ 
+[1/1] arm64: dts: ti: k3-j7200: Fix the L2 cache sets
+      commit: d0c826106f3fc11ff97285102b576b65576654ae
+ 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+ 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+ 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+ 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+ 
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+--
+Vignesh
 
