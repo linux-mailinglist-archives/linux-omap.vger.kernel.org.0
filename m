@@ -2,153 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA0F4696C9
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Dec 2021 14:20:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACC714696D2
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Dec 2021 14:22:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244310AbhLFNXf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 6 Dec 2021 08:23:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56826 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243687AbhLFNXe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Dec 2021 08:23:34 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4E69C061354
-        for <linux-omap@vger.kernel.org>; Mon,  6 Dec 2021 05:20:05 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id r11so42576927edd.9
-        for <linux-omap@vger.kernel.org>; Mon, 06 Dec 2021 05:20:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hvZZ98+ZsTYkg5d9GGJxZP1sUx5SwZWVJ8siiSeTEiQ=;
-        b=2MOQRTdPkwhZdrDsZF8v1LkIe9VhVcu+CnHsKM9OdXefuBhdam0kh3pKuY/iXJ4jwh
-         zU6Pi0uyyixDjjwk/OQSxSOoc3iQ4xccBh7VU5XFj2RJmmXBFIQ5+C1z5IVbt1IIXZI9
-         dWJnZb7vMFYt3V5p/nBP65LNmmSKgBcIPbBTYhEdVlTDWAEZK/VS4uN6PLzPx/US5RWz
-         mZbpnIm91JPS41EBzCzQXFGe1mimok+Yzh24z3yokPYDAKM6CqgeVZv0RUMAMUb6bGfj
-         4BUxGDcldPfeerU2uRtK9S94iyKNhrpwRqnnngf6pKx2tQNdE8FduPUAGoYjZpp5I9Hz
-         mHRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hvZZ98+ZsTYkg5d9GGJxZP1sUx5SwZWVJ8siiSeTEiQ=;
-        b=3O5tblqmodXu3vVj3xYZ8E8l9OQq12E7ylnfiKw9ZofiNtpsEgMPVq4vEd9+jEJMn7
-         25mZwcK+xpadPbqEi4L2FP2R/QoY6uKy5XCpauVpVAbIsKSJUq5kH1v8jYoS9GrbnoOZ
-         ijXJPdDeoDFygYgcMtiJNszYgY16v+HfaytQNJkD5M2PVrEJpsxQnzHNgSZ1+s/LOb9Z
-         9W5qNAU41xkGnUREllpdGGL+PCF7JlmQqvAIMK8HUO48W6HHo5FU3Yu+i7h/qMxwQIZx
-         otYk6MWyAJHUMvftbLgQZw+6RqskEDfgoYgyjWMKXc5+r60xNznHCW38BVuSgdkp2iXC
-         7mhA==
-X-Gm-Message-State: AOAM533q5vH7NbagDUMg0523+OSEh3aOMxxG/uNC/BECKU6pzjr+SeRU
-        O2GzLkYh8lpptgIH/Kfb3VxN8ITcHAV0sC2Sv8mifQ==
-X-Google-Smtp-Source: ABdhPJxT2dlCIImgLcO5pXZfgOHvmQ1PFmCORP62C543H7xjg6esBcWHlJIUNIvBYImdxEeNXjaXGHzx8AiVjQpaFnY=
-X-Received: by 2002:a17:906:7b53:: with SMTP id n19mr45793820ejo.538.1638796804233;
- Mon, 06 Dec 2021 05:20:04 -0800 (PST)
+        id S244381AbhLFNZg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 6 Dec 2021 08:25:36 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:40622 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244369AbhLFNZg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 6 Dec 2021 08:25:36 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DLvaj009276;
+        Mon, 6 Dec 2021 07:21:57 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1638796918;
+        bh=o4RttUSCrTmPAxrbzFqdWgBnrZ+5Ctc0eO9fvzF3r/8=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=CVY+kjxLcal5VD0gYjXm7gLMjJSTIJfgHH09dWqSwcbDuhA0iI4PTvNxteE1KVlTA
+         4PEpkFVmEmJSQRTSZdevFXRqsdf90zZygza7+5J08J41wUIs43kGgkxxQREvlf2K7/
+         TJO7JIj8ukx3rl6u+wx89wJQIecd5dgLPJplb1w8=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1B6DLvLS122651
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 6 Dec 2021 07:21:57 -0600
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 6
+ Dec 2021 07:21:57 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Mon, 6 Dec 2021 07:21:57 -0600
+Received: from uda0132425.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1B6DLsHF091959;
+        Mon, 6 Dec 2021 07:21:55 -0600
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+To:     Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+CC:     Vignesh Raghavendra <vigneshr@ti.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH] arm64: dts: ti: k3-am642: Fix the L2 cache sets
+Date:   Mon, 6 Dec 2021 18:51:34 +0530
+Message-ID: <163879687338.18805.990123917091132995.b4-ty@ti.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211113043635.4296-1-nm@ti.com>
+References: <20211113043635.4296-1-nm@ti.com>
 MIME-Version: 1.0
-References: <20211202210839.79140-1-andriy.shevchenko@linux.intel.com>
- <CACRpkdZbpKqG_uS2N8TW2-HL5CqnuKDpHVCabf66MyQQof0jOw@mail.gmail.com> <Ya4MFMWSyj4YbdNG@smile.fi.intel.com>
-In-Reply-To: <Ya4MFMWSyj4YbdNG@smile.fi.intel.com>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Mon, 6 Dec 2021 14:19:53 +0100
-Message-ID: <CAMRc=MfHir4B3X=Hhkb1_VBQJFE17=YEexDa-+cs2LnFASPRkA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] gpio: Get rid of duplicate of_node assignment in
- the drivers
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Chunyan Zhang <chunyan.zhang@unisoc.com>,
-        Baruch Siach <baruch@tkos.co.il>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Tony Lindgren <tony@atomide.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Jianqun Xu <jay.xu@rock-chips.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Thierry Reding <treding@nvidia.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        patches@opensource.cirrus.com,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        linux-power <linux-power@fi.rohmeurope.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC..." 
-        <linux-mediatek@lists.infradead.org>, linux-pwm@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-unisoc@lists.infradead.org,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-tegra@vger.kernel.org, Ray Jui <rjui@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-        Keerthy <j-keerthy@ti.com>, Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Dec 6, 2021 at 2:13 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Sun, Dec 05, 2021 at 01:06:07AM +0100, Linus Walleij wrote:
-> > On Thu, Dec 2, 2021 at 10:17 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > > GPIO library does copy the of_node from the parent device of
-> > > the GPIO chip, there is no need to repeat this in the individual
-> > > drivers. Remove these assignment all at once.
-> > >
-> > > For the details one may look into the of_gpio_dev_init() implementation.
-> > >
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> >
-> > This is definitely a patch in the right direction, as Bart says
-> > it can be a bit dangerous, the outliers are those drivers that
-> > assign the .dev to something completely different than the
-> > the dev where the of_node is copied from.
->
-> I carefully checked these all and this patch series is only for the cases
-> when I'm sure it's the same device, which is used as parent, and its of_node
-> supplied.
->
-> > The idea was definitely always to only assign it in the core
-> > *unless* there is a reason to have a completely different
-> > of_node for some reason.
-> >
-> > > +++ b/drivers/gpio/gpio-rda.c
-> > > @@ -240,8 +240,6 @@ static int rda_gpio_probe(struct platform_device *pdev)
-> > >         rda_gpio->chip.label = dev_name(dev);
-> > >         rda_gpio->chip.ngpio = ngpios;
-> > >         rda_gpio->chip.base = -1;
-> > > -       rda_gpio->chip.parent = dev;
-> > > -       rda_gpio->chip.of_node = np;
-> >
-> > Mention in the commit message that in this driver
-> > you also drop the the .parent assignment because the
-> > core will handle it.
->
-> Okay, I will update it. Also I'll update to the last codebase (dunno if Bart
-> is going to pull the IB from Lee where one of the drivers is gone: da53cc634cea
-> ("gpio: bd70528 Drop BD70528 support").
->
+Hi Nishanth Menon,
+ 
+On Fri, 12 Nov 2021 22:36:35 -0600, Nishanth Menon wrote:
+> A53's L2 cache[1] on AM642[2] is 256KB. A53's L2 is fixed line length
+> of 64 bytes and 16-way set-associative cache structure.
+> 
+> 256KB of L2 / 64 (line length) = 4096 ways
+> 4096 ways / 16 = 256 sets
+> 
+> Fix the l2 cache-sets.
+> 
+> [...]
+ 
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
+ 
+[1/1] arm64: dts: ti: k3-am642: Fix the L2 cache sets
+      commit: a27a93bf70045be54b594fa8482959ffb84166d7
+ 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+ 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+ 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+ 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+ 
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+--
+Vignesh
 
-I didn't plan to, just drop it from your patch.
-
-Bart
