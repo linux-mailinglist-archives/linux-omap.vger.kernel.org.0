@@ -2,93 +2,78 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ACE046E2EB
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Dec 2021 08:08:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E78C46E2FD
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Dec 2021 08:11:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233493AbhLIHLp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Dec 2021 02:11:45 -0500
-Received: from muru.com ([72.249.23.125]:36310 "EHLO muru.com"
+        id S231834AbhLIHOf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Dec 2021 02:14:35 -0500
+Received: from muru.com ([72.249.23.125]:36326 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231572AbhLIHLo (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 9 Dec 2021 02:11:44 -0500
+        id S231664AbhLIHOf (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 9 Dec 2021 02:14:35 -0500
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id E1C8B80A3;
-        Thu,  9 Dec 2021 07:08:51 +0000 (UTC)
-Date:   Thu, 9 Dec 2021 09:08:08 +0200
+        by muru.com (Postfix) with ESMTPS id BE29C80A3;
+        Thu,  9 Dec 2021 07:11:42 +0000 (UTC)
+Date:   Thu, 9 Dec 2021 09:10:59 +0200
 From:   Tony Lindgren <tony@atomide.com>
-To:     Yongqin Liu <yongqin.liu@linaro.org>
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Gowtham Tammana <g-tammana@ti.com>,
-        Jyri Sarha <jsarha@ti.com>
-Subject: Re: [PATCH v2 1/1] ARM: dts: dra7: add entry for bb2d module
-Message-ID: <YbGrWGuIWdMNqNqU@atomide.com>
-References: <20210921071807.30978-1-narmstrong@baylibre.com>
- <20210921071807.30978-2-narmstrong@baylibre.com>
- <YV1UdSVOrZ3B9pq/@atomide.com>
- <CAMSo37UN78k=WE0CwRyNNV3P9kau+JzVZ7mHOMMvh5Bn=+=jAQ@mail.gmail.com>
- <78b51650-0e32-e81f-0191-2222580e7343@baylibre.com>
- <CAMSo37X1BA1cYYxwjWBo_dhjpGYuYD2KK00+3ZWAwNeJq8UfxQ@mail.gmail.com>
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v1] ARM: dts: elpida_ecb240abacn: Change Elpida compatible
+Message-ID: <YbGsAxOOHHJfDUCT@atomide.com>
+References: <20211019234059.29877-1-digetx@gmail.com>
+ <a584428e-99f7-986e-90d5-7e81ca213158@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAMSo37X1BA1cYYxwjWBo_dhjpGYuYD2KK00+3ZWAwNeJq8UfxQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a584428e-99f7-986e-90d5-7e81ca213158@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Yongqin Liu <yongqin.liu@linaro.org> [211123 17:27]:
-> Hi, Neil
-> 
-> On Tue, 23 Nov 2021 at 20:47, Neil Armstrong <narmstrong@baylibre.com> wrote:
-> >
-> > Hi,
-> >
-> > On 23/11/2021 13:17, Yongqin Liu wrote:
-> > > Hi, Neil, Tony
-> > >
-> > > # sorry for the confusion if you have received the mail which I sent
-> > > before, which is not in plain text mode.
-> > >
-> > > We have one out of tree change to enable the SGX544 gpu for the
-> > > beagleboard-X15 Android build,
-> > >     https://android-review.linaro.org/c/kernel/common/+/20521/11/arch/arm/boot/dts/dra7.dtsi
-> > >
-> > > and that seems to conflict with this BB2D enabling change,
-> > > Could you please help give some suggestions on how we should update our patch
-> > > to make it work with BB2D, without the revert of this change?
-> >
-> > This BB2D patch alters the target-module@59000000 while your SGX
-> > change alters the target-module@56000000.
-> >
-> > Please rebase your patches.
-> I am sorry if the "conflict" I used previously caused the confusion.
-> What I meant with the "conflict" word is the feature conflict, not the
-> patch merge conflict.
-> 
-> I could merge my SGX change with the BB2D change there, but then my
-> build could not boot successfully to the homescreen,
-> I need to revert the BB2D change to have it boot to the homescreen successfully.
-> 
-> Here are the serial console output in case you want to check:
-> https://pastebin.com/RY472b96  work with the BB2D change reverted
-> https://pastebin.com/aP97r7rJ    does not work with the BB2D change.
-> 
-> Not sure if you have any idea about the problem.
-> Please help give some suggestions on what I could try.
+Hi,
 
-Sounds like your out of tree SGX patches also tinker with the BB2D module.
+* Dmitry Osipenko <digetx@gmail.com> [211027 12:19]:
+> 20.10.2021 02:40, Dmitry Osipenko пишет:
+> > Vendor prefix shouldn't start with capital letter. The Elpida Memory
+> > compatible was never used in practice, hence just correct the compatible.
+> > 
+> > Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> > ---
+> >  arch/arm/boot/dts/elpida_ecb240abacn.dtsi | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/arm/boot/dts/elpida_ecb240abacn.dtsi b/arch/arm/boot/dts/elpida_ecb240abacn.dtsi
+> > index d87ee4794f83..9698801cbcfb 100644
+> > --- a/arch/arm/boot/dts/elpida_ecb240abacn.dtsi
+> > +++ b/arch/arm/boot/dts/elpida_ecb240abacn.dtsi
+> > @@ -5,7 +5,7 @@
+> >  
+> >  / {
+> >  	elpida_ECB240ABACN: lpddr2 {
+> > -		compatible	= "Elpida,ECB240ABACN","jedec,lpddr2-s4";
+> > +		compatible	= "elpida,ECB240ABACN","jedec,lpddr2-s4";
+> >  		density		= <2048>;
+> >  		io-width	= <32>;
+> >  
+> > 
+> 
+> This patch should go via OMAP tree since there is only OMAP board which
+> uses this dtsi. To make it more clear, "elpida" variant is now
+> documented in the bindings [1][2].
+> 
+> [1]
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=9e17f71e9c334f14ad6a8ec3edc09c7a4244e12f
+> 
+> [2]
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=001b8b2594db4ea24fbea4c161e665f858917fce
+> 
+> If there is no interest in taking the patch via OMAP tree, then it may
+> go via the DT git tree. Rob, you should pick it up then.
 
-To me it sounds like you can just tag the new target-module@59000000 added
-by this patch with status = "disabled" in your SGX patch until you have
-updated the driver code.
-
-I'm adding this patch into omap-for-v5.17/dt as for 2D acceleration there
-is the etnaviv driver in the mainline kernel that should be usable to
-some extent.
+Applying into omap-for-v5.17/dt thanks.
 
 Regards,
 
 Tony
-
-
