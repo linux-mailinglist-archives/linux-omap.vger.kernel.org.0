@@ -2,43 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5B6B46E373
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Dec 2021 08:44:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74E4A46E37B
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Dec 2021 08:47:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231449AbhLIHsJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Dec 2021 02:48:09 -0500
-Received: from muru.com ([72.249.23.125]:36412 "EHLO muru.com"
+        id S232286AbhLIHud (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Dec 2021 02:50:33 -0500
+Received: from muru.com ([72.249.23.125]:36432 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230154AbhLIHsJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 9 Dec 2021 02:48:09 -0500
+        id S230154AbhLIHud (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 9 Dec 2021 02:50:33 -0500
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 8008680A3;
-        Thu,  9 Dec 2021 07:45:17 +0000 (UTC)
-Date:   Thu, 9 Dec 2021 09:44:34 +0200
+        by muru.com (Postfix) with ESMTPS id 31B8480A3;
+        Thu,  9 Dec 2021 07:47:41 +0000 (UTC)
+Date:   Thu, 9 Dec 2021 09:46:57 +0200
 From:   Tony Lindgren <tony@atomide.com>
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v2] ARM: dts: motorola-mapphone: Drop second ti,wlcore
- compatible value
-Message-ID: <YbGz4j+Iw6Jfhlaz@atomide.com>
-References: <17693a54a471c50d2d091d7a65f6571e7b0f7c51.1638540458.git.geert+renesas@glider.be>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/2] ARM: dts: am335x: Use correct vendor prefix for
+ Asahi Kasei Corp.
+Message-ID: <YbG0cTdF98HWzqLY@atomide.com>
+References: <20211206144802.217073-1-thierry.reding@gmail.com>
+ <20211206144802.217073-2-thierry.reding@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <17693a54a471c50d2d091d7a65f6571e7b0f7c51.1638540458.git.geert+renesas@glider.be>
+In-Reply-To: <20211206144802.217073-2-thierry.reding@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Geert Uytterhoeven <geert+renesas@glider.be> [211203 16:11]:
-> The TI wlcore DT bindings specify using a single compatible value for
-> each variant, and the Linux kernel driver matches against the first
-> compatible value since commit 078b30da3f074f2e ("wlcore: add wl1285
-> compatible") in v4.13.
+* Thierry Reding <thierry.reding@gmail.com> [211206 16:48]:
+> From: Thierry Reding <treding@nvidia.com>
+> 
+> The old "ak" vendor prefix that was never officially accepted was still
+> being used in some device trees. Convert to the correct vendor prefix
+> (i.e. "asahi-kasei").
 
-Thanks applying into omap-for-v5.17/dt.
+Applying into omap-for-v5.17/dt thanks.
 
 Tony
