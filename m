@@ -2,58 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C2F846E3AE
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Dec 2021 09:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40F7D46E3F9
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Dec 2021 09:17:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234273AbhLIIIs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Dec 2021 03:08:48 -0500
-Received: from muru.com ([72.249.23.125]:36448 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229941AbhLIIIs (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 9 Dec 2021 03:08:48 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 7C6D380A3;
-        Thu,  9 Dec 2021 08:05:56 +0000 (UTC)
-Date:   Thu, 9 Dec 2021 10:05:13 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Yongqin Liu <yongqin.liu@linaro.org>
-Cc:     Neil Armstrong <narmstrong@baylibre.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Gowtham Tammana <g-tammana@ti.com>,
-        Jyri Sarha <jsarha@ti.com>
-Subject: Re: [PATCH v2 1/1] ARM: dts: dra7: add entry for bb2d module
-Message-ID: <YbG4ufDete8PrWNx@atomide.com>
-References: <20210921071807.30978-1-narmstrong@baylibre.com>
- <20210921071807.30978-2-narmstrong@baylibre.com>
- <YV1UdSVOrZ3B9pq/@atomide.com>
- <CAMSo37UN78k=WE0CwRyNNV3P9kau+JzVZ7mHOMMvh5Bn=+=jAQ@mail.gmail.com>
- <78b51650-0e32-e81f-0191-2222580e7343@baylibre.com>
- <CAMSo37X1BA1cYYxwjWBo_dhjpGYuYD2KK00+3ZWAwNeJq8UfxQ@mail.gmail.com>
- <YbGrWGuIWdMNqNqU@atomide.com>
+        id S234497AbhLIIVY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Dec 2021 03:21:24 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:43488 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229536AbhLIIVV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Dec 2021 03:21:21 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E22CCB823D2;
+        Thu,  9 Dec 2021 08:17:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A602BC004DD;
+        Thu,  9 Dec 2021 08:17:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639037865;
+        bh=kSIIusx9xaK/GoMoLZqWX0pvenSDfG9Wd5vs3wVEza0=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=BFY1NywGgTHu26oMmfuVs4DolrjrLzoJe553GPfbbcQV+KD2ATzsVVtxJV56RFitE
+         AttxpkmeN2Q9AKuZ0dunWgq3lHQw3Shz45sCtB6tSFA8O8L034VcauyjSeB1xZpMWr
+         m6TAPUcfyBXRFrbu5KcFNROE+6VbE47+qN6C2PyhI5bTrOTEtlFtVluJMtGML7BCEp
+         zz5Y7I2GHZohKVS5WXGI2jtpb5XsMKWTe8AbbigDnqWwGrmshMZumgM/0PORX0J/2j
+         0Um2lV6/NNJq+YjAKjKOvRVus/XIrGMT8n3uAVFMyUR+yOB+xngyXc8/6Xf5u+wc/X
+         VZ9L8sA/WGY5A==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YbGrWGuIWdMNqNqU@atomide.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20211127173036.150535-1-colin.i.king@gmail.com>
+References: <20211127173036.150535-1-colin.i.king@gmail.com>
+Subject: Re: [PATCH] clk/ti/adpll: Make const pointer error a static const array
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To:     Colin Ian King <colin.i.king@googlemail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Tero Kristo <kristo@kernel.org>, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Date:   Thu, 09 Dec 2021 00:17:44 -0800
+User-Agent: alot/0.9.1
+Message-Id: <20211209081745.A602BC004DD@smtp.kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [211209 07:08]:
-> Sounds like your out of tree SGX patches also tinker with the BB2D module.
-> 
-> To me it sounds like you can just tag the new target-module@59000000 added
-> by this patch with status = "disabled" in your SGX patch until you have
-> updated the driver code.
+Quoting Colin Ian King (2021-11-27 09:30:36)
+> Make const pointer error a static const array, removes a dereference
+> and shrinks object code a little.
+>=20
+> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> ---
 
-The above still applies..
-
-> I'm adding this patch into omap-for-v5.17/dt as for 2D acceleration there
-> is the etnaviv driver in the mainline kernel that should be usable to
-> some extent.
-
-..but looks like we already merged this patch earlier so no need to
-reapply :) Sorry I still had the patch tagged in my inbox.
-
-Regards,
-
-Tony
+Applied to clk-next
