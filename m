@@ -2,96 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7B1946F9B1
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Dec 2021 04:53:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E6F46FB38
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Dec 2021 08:20:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236458AbhLJD4n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Dec 2021 22:56:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51784 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236481AbhLJD4m (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Dec 2021 22:56:42 -0500
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B504C061353
-        for <linux-omap@vger.kernel.org>; Thu,  9 Dec 2021 19:53:08 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id u11so5421757plf.3
-        for <linux-omap@vger.kernel.org>; Thu, 09 Dec 2021 19:53:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=BzSbfZd4JQBrY56BTZ7Ukbk+6z7XGMbbqjBNLXp9q7o=;
-        b=UHFsxs1Qanuf6rGkoZ0V/xVRoh9AFiGYUrAsN32lvoaESAlJj78UgYYPbF5vdPL3Bk
-         KtVW3YtfGpkBjSpoksdlvQYscYisY6IH/di0J/uQNG3BDGvnY/m8LmuvoBEEFBk/YnIF
-         2Tq8LeJWpft5cpTDPJAesyQkERwlynZMDPxlSNUqiTEZgZoCOb5zP54GlSVYZQsZ87dj
-         +Sso4/pGzUoeBcWwqToiUeYbiB53AR0hds3lrl1kltJd8c0bqkINPVLqRStgt5o5gC+C
-         TzHDzuBGuAZSQY8WYOF67DQc8b2dvJY6XBQVLxc2Xmrn+Qdz7QU87vY3MKifOuGrKs4+
-         fN6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BzSbfZd4JQBrY56BTZ7Ukbk+6z7XGMbbqjBNLXp9q7o=;
-        b=yzFkcbPSiHjHMzYJN02veMuoV5IIum7DKtc9d3bQutgqXL0lpos22i7F/jJmDJE6iJ
-         okJkpvsxoRbbktz/Ygm8j9b8iWQcmQkk7h5plR7YuFdTbIymzCB6RcKjt7z/w0z1FexX
-         24vL9y4OaYYR4n+7JpK8szUwFvLanWagMoe5FbfWv6Rp2dt70KDf4nHRMO7kY11VGxdI
-         pGAmQYaSINRQRHKvibIbO/cg9EJN50cApyYmZHK6v+KtT7EwnERVxRH9H/oDxlOqBqdR
-         dHqu1IaL2ad9ixnvYqRe5RPxQryI16fCB0lAvNAult6kRAg/kwlYM5m1Ycsz8k4LrGzK
-         SihA==
-X-Gm-Message-State: AOAM532sSeWXqa9dXC/BT9fjSg7T4Ugwgh+MzoS8jOxKvfIQxGpgJK1H
-        mmu+hvnqDl3y7ofDQ3Lx5wZyuA==
-X-Google-Smtp-Source: ABdhPJz1NGw0NPJFcUffa8z/0UBVpMhqf1ZVaIjsYAonkfNcQGbolrZHg/tdq7hiD4WTlFandL5Y1w==
-X-Received: by 2002:a17:90b:11c1:: with SMTP id gv1mr20848816pjb.208.1639108387855;
-        Thu, 09 Dec 2021 19:53:07 -0800 (PST)
-Received: from localhost ([106.201.42.111])
-        by smtp.gmail.com with ESMTPSA id p124sm1151703pfg.110.2021.12.09.19.53.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Dec 2021 19:53:07 -0800 (PST)
-Date:   Fri, 10 Dec 2021 09:23:05 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Thierry Reding <thierry.reding@gmail.com>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        kernel@pengutronix.de, linux-imx@nxp.com,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: Remove unsupported properties for STMPE MFD
-Message-ID: <20211210035305.35hhxovruk5otqpg@vireshk-i7>
-References: <20211209173009.618162-1-thierry.reding@gmail.com>
+        id S237418AbhLJHX6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Dec 2021 02:23:58 -0500
+Received: from muru.com ([72.249.23.125]:36770 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237181AbhLJHX6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 10 Dec 2021 02:23:58 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 73CCE806C;
+        Fri, 10 Dec 2021 07:21:04 +0000 (UTC)
+Date:   Fri, 10 Dec 2021 09:20:21 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     linux-omap <linux-omap@vger.kernel.org>,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Dev Null <devnull@uvos.xyz>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Nitin Gupta <nigupta@nvidia.com>
+Subject: Re: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
+ memory compaction
+Message-ID: <YbL/teuB7qtGhtfL@atomide.com>
+References: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211209173009.618162-1-thierry.reding@gmail.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 09-12-21, 18:30, Thierry Reding wrote:
-> From: Thierry Reding <treding@nvidia.com>
-> 
-> Some users of the STMPE MFD bindings use unsupported properties such as
-> "id", "blocks" and "irq-trigger". These look like they may have been
-> under discussion at some point but never made it into the bindings that
-> were accepted upstream.
-> 
-> Remove these unknown properties from the device trees to avoid errors
-> during validation against the DT schema.
-> 
-> Signed-off-by: Thierry Reding <treding@nvidia.com>
-> ---
->  arch/arm/boot/dts/spear1310-evb.dts        | 1 -
->  arch/arm/boot/dts/spear1340-evb.dts        | 2 --
->  arch/arm/boot/dts/spear320-hmi.dts         | 3 ---
+Hi,
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+* Merlijn Wajer <merlijn@wizzup.org> [211210 00:34]:
+> Hi,
+> 
+> I've spent the day bisecting what exact commit prevented the Nokia N900
+> from entering the OFF sleep state (between v5.8 and v5.9), and it this
+> commit:
+> 
+> > # first bad commit: [facdaa917c4d5a376d09d25865f5a863f906234a] mm: proactive compaction
+> 
+> The git tree prior to that commit can idle at about ~27mW in OFF mode,
+> and it will often remain in that mode for prolonged amounts of time
+> (easily 30 seconds, depending on running userspace). Which the above
+> commit applied, the Nokia N900 almost never hits OFF mode any more. This
+> would suggest at least to disable CONFIG_COMPACTION, perhaps in
+> omap2plus_defconfig? I suspect this might cause idle problems beyond the
+> Nokia N900, too.
 
--- 
-viresh
+Nice find, adding Nitin to Cc as well. Nitin, can we somehow avoid the
+timers for CONFIG_COMPACTION on an idle system to prevent waking up the
+system unnecessarily?
+
+Not sure if sysctl -w vm.compaction_proactiveness=0 is enough to disable
+compaction for idle, maybe also the HPAGE_FRAG_CHECK_INTERVAL_MSEC = 500
+at ms also causes extra wake-ups?
+
+Regards,
+
+Tony
+
+> Maybe nothing needs to be done here other than disable the config option
+> -- but I wanted to share this in case others are trying to figure out
+> what happened to their battery life. :-)
+> 
+> There seem be more power regressions since then (at least on 5.15 there
+> is more blocking proper idle), so I'll try to find those as well, but if
+> this commit is reverted (or CONFIG_COMPACTION=n is in .config - probably
+> easier) on top of v5.9 the system seems to idle fine.
+> 
+> > # grep ^core_pwrdm /sys/kernel/debug/pm_debug/count | cut -d',' -f2,
+> > OFF:16,RET:2
+> 
+> Hope this helps someone...
+> 
+> Regards,
+> Merlijn
+> 
+> PS: v5.10 seems to use another 19mW if panel_sony_acx565akm is loaded
+> even when display is not active (maybe it doesn't suspend or something?
+> - could be fixed later, just noticed it for v5.10). I load it initially
+> to idle the display, but until I rmmod the modules, the module uses
+> quite a bit more power. This problem is not present in v5.9, so that is
+> another thing to chase down I guess... And then v5.15 uses another 12mW
+> more, for not yet uncovered reasons)
