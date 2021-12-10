@@ -2,71 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C5B646FE0D
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Dec 2021 10:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FD7046FF95
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Dec 2021 12:13:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232524AbhLJJpQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Dec 2021 04:45:16 -0500
-Received: from mail.wizzup.org ([95.217.97.174]:43480 "EHLO wizzup.org"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231864AbhLJJpQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 10 Dec 2021 04:45:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
-        s=mail; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
-        Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=doSnLVpzSvaqr4NQDA9GRIBQZJwxqvyFpOIBYgu6rFQ=; b=agOAwplekXMeKfH70GxdYHYqg6
-        6f6ocNXPadmgPd3l6OkV+gxa2Y01TfZjNyS0yuYNBC1Sat5iziif2K3lWt0ngom/wFaMKMeF+dwz1
-        wIwwRDqfz0ag/NB4uE0hmedH529sLXdKsnrnheGfO4l0Y+EKuZJuNLfkulZyl0lVRF9Tq2IyPBZGQ
-        JhjSEZoCyTaLNMYLPdLIiQTGbpAgkkqPeQzgHr3uoQHVciMU1YfCg6pVF1Htedqh0rtpsOz5uYR4H
-        zPNBbm/v4prqntYfdylyxcNXb6qrKZ5XVsVeVfBKgdY86Lrx8P/GQIR9egGKP0Fq/QRlm2ecMqYcL
-        J1vNDqIw==;
-Received: from [45.83.235.159] (helo=[0.0.0.0])
-        by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <merlijn@wizzup.org>)
-        id 1mvcP9-0000OP-7Z; Fri, 10 Dec 2021 09:41:27 +0000
-Subject: Re: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
- memory compaction
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap <linux-omap@vger.kernel.org>,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
+        id S237559AbhLJLRZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Dec 2021 06:17:25 -0500
+Received: from fgw22-4.mail.saunalahti.fi ([62.142.5.109]:33519 "EHLO
+        fgw22-4.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233117AbhLJLRY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 10 Dec 2021 06:17:24 -0500
+Received: from darkstar.musicnaut.iki.fi (85-76-101-4-nat.elisa-mobile.fi [85.76.101.4])
+        by fgw22.mail.saunalahti.fi (Halon) with ESMTP
+        id 3df9c624-59aa-11ec-ae1c-005056bdf889;
+        Fri, 10 Dec 2021 13:13:47 +0200 (EET)
+Date:   Fri, 10 Dec 2021 13:13:45 +0200
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     "Merlijn B.W. Wajer" <merlijn@archive.org>
+Cc:     Andreas Kemnade <andreas@kemnade.info>,
         Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>, Dev Null <devnull@uvos.xyz>,
         Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Dev Null <devnull@uvos.xyz>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Nitin Gupta <nigupta@nvidia.com>
-References: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
- <YbL/teuB7qtGhtfL@atomide.com>
-From:   Merlijn Wajer <merlijn@wizzup.org>
-Message-ID: <102ac103-83e9-6f64-b209-4d238c0a2893@wizzup.org>
-Date:   Fri, 10 Dec 2021 10:47:14 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Sebastian Reichel <sre@kernel.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: Oops while booting 5.15.2 on Nokia N900
+Message-ID: <20211210111345.GD799423@darkstar.musicnaut.iki.fi>
+References: <12e13327-3bb5-229e-d784-cd528db4b58e@archive.org>
+ <6fa3d07a-28e5-7853-e6ca-fc405d3080e4@archive.org>
+ <c75ac850-7d9b-6263-a046-57c8f4435090@archive.org>
+ <f463d8f2-109e-3040-4350-ce20d651ffe6@archive.org>
+ <20211208205700.GA12125@duo.ucw.cz>
+ <20211208220400.1f9cff00@aktux>
+ <ee94556b-2c35-c641-a86a-e9e70600aab7@archive.org>
 MIME-Version: 1.0
-In-Reply-To: <YbL/teuB7qtGhtfL@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ee94556b-2c35-c641-a86a-e9e70600aab7@archive.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi,
 
-On 10/12/2021 08:20, Tony Lindgren wrote:
-> 
-> Not sure if sysctl -w vm.compaction_proactiveness=0 is enough to disable
-> compaction for idle, maybe also the HPAGE_FRAG_CHECK_INTERVAL_MSEC = 500
-> at ms also causes extra wake-ups?
+On Wed, Dec 08, 2021 at 11:34:53PM +0100, Merlijn B.W. Wajer wrote:
+> What I have seen is that if off mode is enabled from userspace
+> (debugfs), it does not cause a problem (or I don't hit the problem at
+> least). That said, my off mode tests are pretty minimal with
+> init=/bin/sh, and I haven't gotten a fully booted (with lots of modules
+> loaded, gui and daemons) system to enter off mode yet.
 
-I remember trying setting vm.compaction_proactiveness to 0 and it didn't
-help with idling, and my thought was also that the check-interval was
-still active.
+I also started seeing crashes with fb2c599f0566 on N900. It's been several
+months since I last tested, but I remember I was able to trigger the
+crashes reliably with MMC access from the minimal shell enviroment.
+I see the MMC is also visible in your crash logs. My test case was
+something like "sleep 30 ; blkid ; sleep 30".
 
-Cheers,
-Merlijn
+A.
