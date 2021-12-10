@@ -2,21 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18E6F46FB38
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Dec 2021 08:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5B646FE0D
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Dec 2021 10:41:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237418AbhLJHX6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Dec 2021 02:23:58 -0500
-Received: from muru.com ([72.249.23.125]:36770 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237181AbhLJHX6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 10 Dec 2021 02:23:58 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 73CCE806C;
-        Fri, 10 Dec 2021 07:21:04 +0000 (UTC)
-Date:   Fri, 10 Dec 2021 09:20:21 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Merlijn Wajer <merlijn@wizzup.org>
+        id S232524AbhLJJpQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Dec 2021 04:45:16 -0500
+Received: from mail.wizzup.org ([95.217.97.174]:43480 "EHLO wizzup.org"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231864AbhLJJpQ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 10 Dec 2021 04:45:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
+        s=mail; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
+        Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=doSnLVpzSvaqr4NQDA9GRIBQZJwxqvyFpOIBYgu6rFQ=; b=agOAwplekXMeKfH70GxdYHYqg6
+        6f6ocNXPadmgPd3l6OkV+gxa2Y01TfZjNyS0yuYNBC1Sat5iziif2K3lWt0ngom/wFaMKMeF+dwz1
+        wIwwRDqfz0ag/NB4uE0hmedH529sLXdKsnrnheGfO4l0Y+EKuZJuNLfkulZyl0lVRF9Tq2IyPBZGQ
+        JhjSEZoCyTaLNMYLPdLIiQTGbpAgkkqPeQzgHr3uoQHVciMU1YfCg6pVF1Htedqh0rtpsOz5uYR4H
+        zPNBbm/v4prqntYfdylyxcNXb6qrKZ5XVsVeVfBKgdY86Lrx8P/GQIR9egGKP0Fq/QRlm2ecMqYcL
+        J1vNDqIw==;
+Received: from [45.83.235.159] (helo=[0.0.0.0])
+        by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <merlijn@wizzup.org>)
+        id 1mvcP9-0000OP-7Z; Fri, 10 Dec 2021 09:41:27 +0000
+Subject: Re: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
+ memory compaction
+To:     Tony Lindgren <tony@atomide.com>
 Cc:     linux-omap <linux-omap@vger.kernel.org>,
         phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
         Pavel Machek <pavel@ucw.cz>,
@@ -26,70 +40,33 @@ Cc:     linux-omap <linux-omap@vger.kernel.org>,
         Andreas Kemnade <andreas@kemnade.info>,
         "H. Nikolaus Schaller" <hns@goldelico.com>,
         Nitin Gupta <nigupta@nvidia.com>
-Subject: Re: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
- memory compaction
-Message-ID: <YbL/teuB7qtGhtfL@atomide.com>
 References: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
+ <YbL/teuB7qtGhtfL@atomide.com>
+From:   Merlijn Wajer <merlijn@wizzup.org>
+Message-ID: <102ac103-83e9-6f64-b209-4d238c0a2893@wizzup.org>
+Date:   Fri, 10 Dec 2021 10:47:14 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
+In-Reply-To: <YbL/teuB7qtGhtfL@atomide.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
 Hi,
 
-* Merlijn Wajer <merlijn@wizzup.org> [211210 00:34]:
-> Hi,
+On 10/12/2021 08:20, Tony Lindgren wrote:
 > 
-> I've spent the day bisecting what exact commit prevented the Nokia N900
-> from entering the OFF sleep state (between v5.8 and v5.9), and it this
-> commit:
-> 
-> > # first bad commit: [facdaa917c4d5a376d09d25865f5a863f906234a] mm: proactive compaction
-> 
-> The git tree prior to that commit can idle at about ~27mW in OFF mode,
-> and it will often remain in that mode for prolonged amounts of time
-> (easily 30 seconds, depending on running userspace). Which the above
-> commit applied, the Nokia N900 almost never hits OFF mode any more. This
-> would suggest at least to disable CONFIG_COMPACTION, perhaps in
-> omap2plus_defconfig? I suspect this might cause idle problems beyond the
-> Nokia N900, too.
+> Not sure if sysctl -w vm.compaction_proactiveness=0 is enough to disable
+> compaction for idle, maybe also the HPAGE_FRAG_CHECK_INTERVAL_MSEC = 500
+> at ms also causes extra wake-ups?
 
-Nice find, adding Nitin to Cc as well. Nitin, can we somehow avoid the
-timers for CONFIG_COMPACTION on an idle system to prevent waking up the
-system unnecessarily?
+I remember trying setting vm.compaction_proactiveness to 0 and it didn't
+help with idling, and my thought was also that the check-interval was
+still active.
 
-Not sure if sysctl -w vm.compaction_proactiveness=0 is enough to disable
-compaction for idle, maybe also the HPAGE_FRAG_CHECK_INTERVAL_MSEC = 500
-at ms also causes extra wake-ups?
-
-Regards,
-
-Tony
-
-> Maybe nothing needs to be done here other than disable the config option
-> -- but I wanted to share this in case others are trying to figure out
-> what happened to their battery life. :-)
-> 
-> There seem be more power regressions since then (at least on 5.15 there
-> is more blocking proper idle), so I'll try to find those as well, but if
-> this commit is reverted (or CONFIG_COMPACTION=n is in .config - probably
-> easier) on top of v5.9 the system seems to idle fine.
-> 
-> > # grep ^core_pwrdm /sys/kernel/debug/pm_debug/count | cut -d',' -f2,
-> > OFF:16,RET:2
-> 
-> Hope this helps someone...
-> 
-> Regards,
-> Merlijn
-> 
-> PS: v5.10 seems to use another 19mW if panel_sony_acx565akm is loaded
-> even when display is not active (maybe it doesn't suspend or something?
-> - could be fixed later, just noticed it for v5.10). I load it initially
-> to idle the display, but until I rmmod the modules, the module uses
-> quite a bit more power. This problem is not present in v5.9, so that is
-> another thing to chase down I guess... And then v5.15 uses another 12mW
-> more, for not yet uncovered reasons)
+Cheers,
+Merlijn
