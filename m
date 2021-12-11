@@ -2,77 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CEDA047104D
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Dec 2021 03:02:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF113471247
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Dec 2021 07:57:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345683AbhLKCFx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 10 Dec 2021 21:05:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48228 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345690AbhLKCFw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Dec 2021 21:05:52 -0500
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4FCC061D5E
-        for <linux-omap@vger.kernel.org>; Fri, 10 Dec 2021 18:02:16 -0800 (PST)
-Received: by mail-lj1-x241.google.com with SMTP id l7so16187399lja.2
-        for <linux-omap@vger.kernel.org>; Fri, 10 Dec 2021 18:02:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
-        b=YLFlW2EU3wC14KpVTk+IM58oSghSYLjMmVu6zQ/IYCwgsR5Sf12xJCL/5+CVpbXsnt
-         22KfNqT06o98mhCtfoOfWNh/4tfFmj2AFDjLdssqJs8+fwuuzWeqstsrP9Eqc87OlMHn
-         TvZYh66KNDgDYMOMzV+7fqlsVNnsPbs5tbKal0uE5CTp2Rk7sipJ65nnPaJWW6urjiYG
-         yjhaQr0+DsLsyIMnaiNd6rjtUc7yQgIo65YEuBLpX5cuMOVjNiZW8dTCMF1ZcQmI8lLg
-         ts2zRNIssQ7WVu8YEQseHp9elEHPuA+qDafMGck3ipNTcw1LcoccQXJFJcltFVTtty4m
-         33gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
-        b=YJ2aZBIv8iR/hP9MESZRnco0y1/T6xuoszvwm49pF5ZLvjahRddh3y3KDr+jzmkmA1
-         XiKoEGeBleOYzcRs7I1plmBcy4BeWs2vGq7O21FepEVFGYNpawzxfphfWNR1EMLUxUCW
-         oNJ5zXpwirIgwGVxbe5bF2oQuKQeDgnwXF3XcxSfa4dmJngDn07mLPPejtY3Rb2cvWVe
-         QDVtSN+g37u+3Pim2YX+VUgdZsUU/AtAAD82FWi8v2YNQXh0FQwtgFx8XbDRjl6gxFF9
-         DZYMeFWgqP9njDkVHcu2GrQQVeMfiUAFLIPt0HPYf18eYz2sfwrZObb1qe/7XNtlQX4F
-         cPbg==
-X-Gm-Message-State: AOAM5302gfexUPfD5gB3x0LHTVHoPZQs4HamSzb4Da/VzXpsb1mE7pBK
-        On5uRP9psQ51MfjD7+MsR3ldjX/jri4OUELEA79XzHKGdS3uacuh
-X-Google-Smtp-Source: ABdhPJxBVYZ26kuukI+qghu2oEbePULLlY8UzOvy8Thh2XI49DVZF++TlN5eyoWkvajWnohXM36KonRfGTJC1IRe82w=
-X-Received: by 2002:a2e:9d8f:: with SMTP id c15mr17452679ljj.477.1639188123220;
- Fri, 10 Dec 2021 18:02:03 -0800 (PST)
+        id S229685AbhLKG5y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 11 Dec 2021 01:57:54 -0500
+Received: from muru.com ([72.249.23.125]:37108 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229455AbhLKG5y (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 11 Dec 2021 01:57:54 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 199CB809F;
+        Sat, 11 Dec 2021 06:58:35 +0000 (UTC)
+Date:   Sat, 11 Dec 2021 08:57:51 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "Merlijn B.W. Wajer" <merlijn@archive.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Pavel Machek <pavel@ucw.cz>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Dev Null <devnull@uvos.xyz>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: Oops while booting 5.15.2 on Nokia N900
+Message-ID: <YbRL75F/SlcPJjtf@atomide.com>
+References: <12e13327-3bb5-229e-d784-cd528db4b58e@archive.org>
+ <6fa3d07a-28e5-7853-e6ca-fc405d3080e4@archive.org>
+ <c75ac850-7d9b-6263-a046-57c8f4435090@archive.org>
+ <f463d8f2-109e-3040-4350-ce20d651ffe6@archive.org>
+ <20211208205700.GA12125@duo.ucw.cz>
+ <20211208220400.1f9cff00@aktux>
+ <ee94556b-2c35-c641-a86a-e9e70600aab7@archive.org>
+ <20211210111345.GD799423@darkstar.musicnaut.iki.fi>
+ <7438fa4a-ea92-a3ce-4cc7-8da8a4af02b5@wizzup.org>
 MIME-Version: 1.0
-Received: by 2002:a05:6512:12c7:0:0:0:0 with HTTP; Fri, 10 Dec 2021 18:02:02
- -0800 (PST)
-Reply-To: internationallmonetary695@gmail.com
-From:   International Monetary fund <abubakarsadiq1297@gmail.com>
-Date:   Fri, 10 Dec 2021 18:02:02 -0800
-Message-ID: <CAHXNoSg3Z7iK4ieUWhau28hUaL637ztb2vgqOT3oZCxEMRC3RQ@mail.gmail.com>
-Subject: Dear Beneficiary,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7438fa4a-ea92-a3ce-4cc7-8da8a4af02b5@wizzup.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
- I.M.F Head Office
-#1900 Pennsylvania Ave NW,
-Washington, DC 20431
-INTERNATIONAL MONETARY FUND.
-REF:-XVGNN82010
-internationallmonetary695@gmail.com
-Telephone : +12062785473
+* Merlijn Wajer <merlijn@wizzup.org> [211210 23:41]:
+> Hi Aaro,
+> 
+> On 10/12/2021 12:13, Aaro Koskinen wrote:
+> > Hi,
+> > 
+> > On Wed, Dec 08, 2021 at 11:34:53PM +0100, Merlijn B.W. Wajer wrote:
+> >> What I have seen is that if off mode is enabled from userspace
+> >> (debugfs), it does not cause a problem (or I don't hit the problem at
+> >> least). That said, my off mode tests are pretty minimal with
+> >> init=/bin/sh, and I haven't gotten a fully booted (with lots of modules
+> >> loaded, gui and daemons) system to enter off mode yet.
+> > 
+> > I also started seeing crashes with fb2c599f0566 on N900. It's been several
+> > months since I last tested, but I remember I was able to trigger the
+> > crashes reliably with MMC access from the minimal shell enviroment.
+> > I see the MMC is also visible in your crash logs. My test case was
+> > something like "sleep 30 ; blkid ; sleep 30".
+> 
+> Thanks for this info -- I can confirm, I see the same when I do this:
+> 
+> 1. boot to init=/bin/bash
+> 
+> 2. run:
+> 
+> > modprobe panel-sony-acx565akm
+> > 
+> > mount -t proc none /proc
+> > mount -t sysfs none /sys
+> > mount -t debugfs none /sys/kernel/debug
+> > mount -o rw,remount /
+> > 
+> > echo 1 > /sys/kernel/debug/pm_debug/enable_off_mode
+> > echo 0 > /sys/class/backlight/acx565akm/brightness
+> 
+> 3. run:
+> 
+> > sleep 30 ; blkid
+> 
+> So we have a pretty reproducible test case here I think.
 
-This message is from International Monetary fund (IMF) I am Mr Bo Li
-deputy to  Kristalina Georgieva the current president of International
-  Monetary fund (IMF) We are aware of the stress you have been passing
-through and how you have lost your money trying to claim your fund ,
-you have to worry no more for the international monetary fund is fully
- in-charge of your fund now, contact  me for more info on how you will
-receive your fund( internationallmonetary695@gmail.com) or call me
-on-Telephone : +12062785473 for more info.
+Just to see if this relates to the omap_hsmmc.c driver, maybe try this with
+v5.16-rc1 also with a patch that changes omap3.dtsi ti,omap3-hsmmc compatibles
+with ti,omap3-sdhci compatibles.
 
 Regards,
-Mr Bo Li
+
+Tony
+
