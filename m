@@ -2,95 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF113471247
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Dec 2021 07:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54CC747129E
+	for <lists+linux-omap@lfdr.de>; Sat, 11 Dec 2021 08:54:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229685AbhLKG5y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 11 Dec 2021 01:57:54 -0500
-Received: from muru.com ([72.249.23.125]:37108 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229455AbhLKG5y (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 11 Dec 2021 01:57:54 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 199CB809F;
-        Sat, 11 Dec 2021 06:58:35 +0000 (UTC)
-Date:   Sat, 11 Dec 2021 08:57:51 +0200
-From:   Tony Lindgren <tony@atomide.com>
+        id S229687AbhLKHyH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 11 Dec 2021 02:54:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40200 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229503AbhLKHyH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Dec 2021 02:54:07 -0500
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D90BC061714
+        for <linux-omap@vger.kernel.org>; Fri, 10 Dec 2021 23:54:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20180802; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=3X918KdCszKdJTzpGEpHXq9YOFlEhNVsgugET2Gl3OY=; b=ceU6dhAhSTjKADpmJ9aOk/S+9C
+        mlyi34fsZYj0V+N9DO5V5afhInv3FMBAL8J6iOpppbPsuj37525OqazRwhnU+BOM2xj1cCxLR3MNf
+        X+NlZ7qK0PGGCNdoIcnnzrLVuCqZVjTooZT9GMD9sC8I+Kv97sSL/T8GAf5MvKTcLkuo=;
+Received: from p200300ccff3520001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff35:2000:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1mvxCl-0001ay-Ss; Sat, 11 Dec 2021 08:54:04 +0100
+Date:   Sat, 11 Dec 2021 08:54:03 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
 To:     Merlijn Wajer <merlijn@wizzup.org>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        "Merlijn B.W. Wajer" <merlijn@archive.org>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Pavel Machek <pavel@ucw.cz>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Dev Null <devnull@uvos.xyz>,
+Cc:     linux-omap <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Adam Ford <aford173@gmail.com>,
         Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: Oops while booting 5.15.2 on Nokia N900
-Message-ID: <YbRL75F/SlcPJjtf@atomide.com>
-References: <12e13327-3bb5-229e-d784-cd528db4b58e@archive.org>
- <6fa3d07a-28e5-7853-e6ca-fc405d3080e4@archive.org>
- <c75ac850-7d9b-6263-a046-57c8f4435090@archive.org>
- <f463d8f2-109e-3040-4350-ce20d651ffe6@archive.org>
- <20211208205700.GA12125@duo.ucw.cz>
- <20211208220400.1f9cff00@aktux>
- <ee94556b-2c35-c641-a86a-e9e70600aab7@archive.org>
- <20211210111345.GD799423@darkstar.musicnaut.iki.fi>
- <7438fa4a-ea92-a3ce-4cc7-8da8a4af02b5@wizzup.org>
+        Pavel Machek <pavel@ucw.cz>, Dev Null <devnull@uvos.xyz>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: Nokia N900 OFF mode regression between v5.10 and v5.11
+Message-ID: <20211211085403.3c1fcb0d@aktux>
+In-Reply-To: <43cac03a-53c2-83dd-e1b0-4d25920d9095@wizzup.org>
+References: <43cac03a-53c2-83dd-e1b0-4d25920d9095@wizzup.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7438fa4a-ea92-a3ce-4cc7-8da8a4af02b5@wizzup.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0 (-)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Merlijn Wajer <merlijn@wizzup.org> [211210 23:41]:
-> Hi Aaro,
-> 
-> On 10/12/2021 12:13, Aaro Koskinen wrote:
-> > Hi,
-> > 
-> > On Wed, Dec 08, 2021 at 11:34:53PM +0100, Merlijn B.W. Wajer wrote:
-> >> What I have seen is that if off mode is enabled from userspace
-> >> (debugfs), it does not cause a problem (or I don't hit the problem at
-> >> least). That said, my off mode tests are pretty minimal with
-> >> init=/bin/sh, and I haven't gotten a fully booted (with lots of modules
-> >> loaded, gui and daemons) system to enter off mode yet.
-> > 
-> > I also started seeing crashes with fb2c599f0566 on N900. It's been several
-> > months since I last tested, but I remember I was able to trigger the
-> > crashes reliably with MMC access from the minimal shell enviroment.
-> > I see the MMC is also visible in your crash logs. My test case was
-> > something like "sleep 30 ; blkid ; sleep 30".
-> 
-> Thanks for this info -- I can confirm, I see the same when I do this:
-> 
-> 1. boot to init=/bin/bash
-> 
-> 2. run:
-> 
-> > modprobe panel-sony-acx565akm
-> > 
-> > mount -t proc none /proc
-> > mount -t sysfs none /sys
-> > mount -t debugfs none /sys/kernel/debug
-> > mount -o rw,remount /
-> > 
-> > echo 1 > /sys/kernel/debug/pm_debug/enable_off_mode
-> > echo 0 > /sys/class/backlight/acx565akm/brightness
-> 
-> 3. run:
-> 
-> > sleep 30 ; blkid
-> 
-> So we have a pretty reproducible test case here I think.
+Hi,
 
-Just to see if this relates to the omap_hsmmc.c driver, maybe try this with
-v5.16-rc1 also with a patch that changes omap3.dtsi ti,omap3-hsmmc compatibles
-with ti,omap3-sdhci compatibles.
+On Sat, 11 Dec 2021 00:20:24 +0100
+Merlijn Wajer <merlijn@wizzup.org> wrote:
+
+> Hi Tony, Adam,
+> 
+> I noticed that after I fixed the OFF mode regression between v5.9 and
+> v5.10 that there are another one between v5.10 and v5.11. Fortunately,
+> much like the other change it can be worked around with a config change,
+> and in fact it looks like the commit identified by git bisect is indeed
+> just a commit to change omap2plus_defconfig.
+> 
+> a82820fcd079e38309403f595f005a8cc318a13c ("ARM: omap2plus_defconfig:
+> Enable OMAP3_THERMAL") prevents the N900 from entering OFF mode pretty
+> much all the time (I've seen scenarios with OFF:2,RET:500), but with the
+> config change reverted, stuff like this is more common: OFF:13,RET:2
+> 
+> We will probably to keep the thermal features enabled, but maybe we can
+> figure out why it causes the SoC to not enter sleep modes?
+
+well, it was enabled after people agreed that is fixed... including me.
+It was wrongly enabled some time before, then disabled again, fixed and
+reenabled.
+The mentioned commit was just after the fix. So what is different now?
 
 Regards,
-
-Tony
-
+Andreas
