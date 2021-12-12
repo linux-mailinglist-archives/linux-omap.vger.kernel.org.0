@@ -2,78 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24E2447170B
-	for <lists+linux-omap@lfdr.de>; Sat, 11 Dec 2021 22:59:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E61E471783
+	for <lists+linux-omap@lfdr.de>; Sun, 12 Dec 2021 02:21:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231694AbhLKV6c (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 11 Dec 2021 16:58:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54124 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231706AbhLKV6a (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 11 Dec 2021 16:58:30 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 424A5C061751
-        for <linux-omap@vger.kernel.org>; Sat, 11 Dec 2021 13:58:30 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id v1so40972239edx.2
-        for <linux-omap@vger.kernel.org>; Sat, 11 Dec 2021 13:58:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
-        b=SOBkDHN1upt351fJGA10IENq8Lskn6OtfiA/mtFXWwbxNo6rK0VqMIikUbNdR10QL9
-         NEz57nH7+DwD4ui2QjR5G0PDUg/x30DeYlpAViKmfLpj6c8owgTXHIRe2HlXrWJIYspc
-         p1qexb7VgQzyxOs2U317jKWC2PVt5FsJQNP/qzuU8HlodfKZxoIrg2Y5u0+UlgiuF7n+
-         KF6xHlFhNhhV0WZH+n1XpQNFkro1//sIniT/eC7+Qq7omDixZHJ42uWefxucVRQsgqoP
-         MP9jAyQEdDJw2KiXunMshfyB4wcDGfWvxehuLHSr6op0i/Er4qRI4zT2OKxsbV2QjSnP
-         PYpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=hD0jfu1MWy/UXBkBYsVvOAZPApZLyir6gKavdc4BceI=;
-        b=l/4YyeEzdeL8ePbFA9JTWo8M0iyJI71WvCpeePlZHr6KBrhpxSWqFS4pOQ099CrXKc
-         Q3kqSWaha37hpvceX4+laG5zot7tvY6I6g/sKT7AI1a/cTXKS66cQNusH9EbpvW/CTn1
-         J5PHuJIfkqjqYj//5npEX3zLFAhvaJMcpsMXpZuyVS3UUvpV4CAch/ycGfYgfaTavBnp
-         VGcNZcKig47yIJxs4MPecn/Qp5KzbRkefkWeCK0Usge7Gc2Qu0irISGzg1Fa8kgUUMvu
-         OmPyee45TQ09eglUPXuskkzB91SjO3IQ+bY4cXsQ/N8ExmWgvLvnRp8DP3dg/zlqAN+4
-         2Z4g==
-X-Gm-Message-State: AOAM532I0F6taonPR+WZJ7V9IsnUUDD5O0xUv79BSR2aXGjtFxpVLr8y
-        EYMPz285NPhLCC17wEWEg4FM4fV0KbPNxm+fc9DB+Z2K3XoRFGCiRAs=
-X-Google-Smtp-Source: ABdhPJxTVLquc00JfCv8xmVg6F+Df36Ax6F8m8eI1vWHtjjPBaUzu2dvtxl/29t2QJINStCFpJhLct20UqzajIEroTA=
-X-Received: by 2002:a17:907:6da2:: with SMTP id sb34mr33325880ejc.509.1639259897490;
- Sat, 11 Dec 2021 13:58:17 -0800 (PST)
+        id S232338AbhLLBVV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 11 Dec 2021 20:21:21 -0500
+Received: from mail.wizzup.org ([95.217.97.174]:43830 "EHLO wizzup.org"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229622AbhLLBVV (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 11 Dec 2021 20:21:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
+        s=mail; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
+        Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=kfXiGbifsNlas8MXnGNwccDNGaLpk9F4wZOQCojkuv8=; b=hlfA3oVowhf6j9DAac9xEtD3ot
+        EZ8rkD83QU2SN8LasXWahBhi6LPc1bVww4XWuf0BRhJCUBVA7YfRzQCUcEXlZSzmXGBhequlPXHNZ
+        e63MJBZSJiStgbbJ4HkvGI69/Pd3o9LCyzcyqC6jU74+MPoTjfK4fCUhZQH5h6sGG8Ms4JbBLMNjw
+        GUg7wsfYgTcd29FXGByQiKk6d5QNJPSy6jUvL/drg/OUSKRXAHS2EI3GksxGP0dxu2mmiyRw7S2O1
+        hJejKp09pEr5sKKhS/MyIlgJ1a8cPivIOChiPPGmzf6uRVpfBnaR6uB4ZvaD/3oHX9w7yeFxRnxsv
+        V2dMyMXQ==;
+Received: from [45.83.235.159] (helo=[0.0.0.0])
+        by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <merlijn@wizzup.org>)
+        id 1mwDY2-0001Ew-Lm; Sun, 12 Dec 2021 01:21:06 +0000
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     linux-omap <linux-omap@vger.kernel.org>,
+        Sebastian Reichel <sre@kernel.org>, zhangqilong3@huawei.com,
+        jingxiangfeng@huawei.com, Tony Lindgren <tony@atomide.com>,
+        Dev Null <devnull@uvos.xyz>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+References: <4ed95c71-2066-6b4c-ad1b-53ef02d79d53@wizzup.org>
+ <20211208210706.GB12125@duo.ucw.cz>
+From:   Merlijn Wajer <merlijn@wizzup.org>
+Subject: Re: Oops in ssi (through nokia-modem)
+Message-ID: <5780923a-315d-d65e-6bcf-ef2a5a3002bc@wizzup.org>
+Date:   Sun, 12 Dec 2021 02:26:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Reply-To: martinafrancis022@gmail.com
-Sender: rebeccaalhajidangombe@gmail.com
-Received: by 2002:a17:907:94d3:0:0:0:0 with HTTP; Sat, 11 Dec 2021 13:58:16
- -0800 (PST)
-From:   Martina Francis <martinafrancis61@gmail.com>
-Date:   Sat, 11 Dec 2021 13:58:16 -0800
-X-Google-Sender-Auth: QI6h_ccu4Os7HpLN5lf7FmNkMqQ
-Message-ID: <CANadOMYJBdKak2aObykULF4gdU88=OTR03g+XDqpCofMfFracg@mail.gmail.com>
-Subject: Bom Dia meu querido
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20211208210706.GB12125@duo.ucw.cz>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-Bom Dia meu querido,
-Como vai voc=C3=AA hoje, meu nome =C3=A9 Dona Martina Francis, uma vi=C3=BA=
-va doente.
-Eu tenho um fundo de doa=C3=A7=C3=A3o de ($ 2.700.000,00 USD) MILH=C3=95ES =
-que quero
-doar atrav=C3=A9s de voc=C3=AA para ajudar os =C3=B3rf=C3=A3os, vi=C3=BAvas=
-, deficientes
-f=C3=ADsicos e casas de caridade.
+Hi Sebastian, Pavel,
 
-Por favor, volte para mim imediatamente ap=C3=B3s ler esta mensagem para
-obter mais detalhes sobre esta agenda humanit=C3=A1ria.
+On 08/12/2021 22:07, Pavel Machek wrote:
+> Hi!
+> 
+>> As soon as nokia-modem on my Nokia N900 gets used, I get the following
+>> warning, followed by an oops [1]. I believe the nokia-modem module is
+>> probed with the "pm=1" argument, but that doesn't seem particularly
+>> important given the trace, I think.
+> 
+> Actually, it seems two warnings and an oops.
+> 
+>>> [  165.467529] IPv6: ADDRCONF(NETDEV_CHANGE): phonet0: link becomes ready
+>>> [  165.498687] ------------[ cut here ]------------
+>>> [  165.503417] WARNING: CPU: 0 PID: 662 at kernel/dma/mapping.c:188 __dma_map_sg_attrs+0xd8/0x100
+> 
+> This one should be easy. __dma_map_sg_attrs
+> 
+>         if (WARN_ON_ONCE(!dev->dma_mask))
+> 		return 0;
+> 
+> someone forgot to set the mask. ssi_start_dma() has some dev_dbgs,
+> could you make sure they end up in the logs?
+> 
+> Maybe it is as simple as adding dma_set_mask() somehwere?
+> dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32)); ?
+> 
+> 
+>>> [  165.787841] ---[ end trace a3f2b689bab17aa5 ]---
+>>> [  166.436523] irq 26: nobody cared (try booting with the "irqpoll" option)
+>>> [  166.443298] CPU: 0 PID: 662 Comm: irq/83-SSI PORT Tainted: G        W         5.15.2-218696-g31e48a7f0946-dirty #1
+>>> [  166.453704] Hardware name: Nokia RX-51 board
+> 
+> Second warning here. We don't have handler for irq 26. 
+> 
+>>> [  166.593566] 8<--- cut here ---
+>>> [  166.600799] Unable to handle kernel NULL pointer dereference at virtual address 00000000
+>>> [  166.608978] pgd = 34df813c
+>>> [  166.611724] [00000000] *pgd=00000000
+> 
+> And now the oops...
 
-Deus te aben=C3=A7oe enquanto espero sua resposta.
-Sua irm=C3=A3.
+It looks like the warnings and oops go together. I realised that v5.9
+was fine, linux-5.9.y (stable) was not, so I did a bisect on that, and
+found this commit (upstream commit in the description).
 
-Sra. Martina Francis.
+> $ git bisect good
+> 4e57482e8440fac7137832629109730ea4b267aa is the first bad commit
+> commit 4e57482e8440fac7137832629109730ea4b267aa
+> Author: Thomas Tai <thomas.tai@oracle.com>
+> Date:   Thu Sep 17 18:43:03 2020 +0200
+> 
+>     dma-direct: Fix potential NULL pointer dereference
+> 
+>     [ Upstream commit f959dcd6ddfd29235030e8026471ac1b022ad2b0 ]
+> 
+>     When booting the kernel v5.9-rc4 on a VM, the kernel would panic when
+>     printing a warning message in swiotlb_map(). The dev->dma_mask must not
+>     be a NULL pointer when calling the dma mapping layer. A NULL pointer
+>     check can potentially avoid the panic.
+> 
+>     Signed-off-by: Thomas Tai <thomas.tai@oracle.com>
+>     Reviewed-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+>     Signed-off-by: Christoph Hellwig <hch@lst.de>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+>  include/linux/dma-direct.h |  3 ---
+>  kernel/dma/mapping.c       | 11 +++++++++++
+>  2 files changed, 11 insertions(+), 3 deletions(-)
+
+So it sounds like setting the dev->dma_mask in the driver is the right
+fix, as Pavel suggested. The commit returns an error when the mask is
+NULL and that is probably what causes the oops later on. I'll try look
+at fixing this soon, unless someone beats me to it. I suppose we'll want
+this potential fix in the stable trees as well.
+
+Regards,
+Merlijn
