@@ -2,74 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8528F471C69
-	for <lists+linux-omap@lfdr.de>; Sun, 12 Dec 2021 19:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2370471C71
+	for <lists+linux-omap@lfdr.de>; Sun, 12 Dec 2021 20:05:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232099AbhLLS7y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 12 Dec 2021 13:59:54 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:58812 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231902AbhLLS7x (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 12 Dec 2021 13:59:53 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 8BBC81C0B7A; Sun, 12 Dec 2021 19:59:52 +0100 (CET)
-Date:   Sun, 12 Dec 2021 19:59:44 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Merlijn Wajer <merlijn@wizzup.org>
-Cc:     linux-omap <linux-omap@vger.kernel.org>,
-        Sebastian Reichel <sre@kernel.org>, zhangqilong3@huawei.com,
-        jingxiangfeng@huawei.com, Tony Lindgren <tony@atomide.com>,
-        Dev Null <devnull@uvos.xyz>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Subject: Re: Oops in ssi (through nokia-modem)
-Message-ID: <20211212185944.GA9725@duo.ucw.cz>
-References: <4ed95c71-2066-6b4c-ad1b-53ef02d79d53@wizzup.org>
- <20211208210706.GB12125@duo.ucw.cz>
- <5780923a-315d-d65e-6bcf-ef2a5a3002bc@wizzup.org>
- <865c5758-fc18-7abe-2fa1-cf3b16e827f8@wizzup.org>
+        id S232107AbhLLTE7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 12 Dec 2021 14:04:59 -0500
+Received: from 49-237-179-185.static.tentacle.fi ([185.179.237.49]:48332 "EHLO
+        bitmer.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231902AbhLLTE7 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sun, 12 Dec 2021 14:04:59 -0500
+Received: from jarkko by bitmer.com with local (Exim 4.89)
+        (envelope-from <jarkko.nikula@bitmer.com>)
+        id 1mwU9X-0000o6-Rv; Sun, 12 Dec 2021 21:04:55 +0200
+Date:   Sun, 12 Dec 2021 21:04:55 +0200
+From:   Jarkko Nikula <jarkko.nikula@bitmer.com>
+To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Cc:     =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH] ARM: dts: Fix timer regression for beagleboard revision c
+Message-ID: <20211212190455.qbggbhmr5nquw7bw@bitmer.com>
+References: <20211125144834.52457-1-tony@atomide.com>
+ <ef843afa-c99d-328d-853a-00ef293a47f2@bitmer.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="45Z9DzgjV8m4Oswq"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <865c5758-fc18-7abe-2fa1-cf3b16e827f8@wizzup.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <ef843afa-c99d-328d-853a-00ef293a47f2@bitmer.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Sat, Dec 11, 2021 at 05:30:57PM +0200, Jarkko Nikula wrote:
+> Hi Tony
+> 
+> On 11/25/21 16:48, Tony Lindgren wrote:
+> > Commit e428e250fde6 ("ARM: dts: Configure system timers for omap3")
+> > caused a timer regression for beagleboard revision c where the system
+> > clockevent stops working if omap3isp module is unloaded.
+> > 
+> > Turns out we still have beagleboard revisions a-b4 capacitor c70 quirks
+> > applied that limit the usable timers for no good reason. This also affects
+> > the power management as we use the system clock instead of the 32k clock
+> > source.
+> > 
+> > Let's fix the issue by adding a new omap3-beagle-ab4.dts for the old timer
+> > quirks. This allows us to remove the timer quirks for later beagleboard
+> > revisions. We also need to update the related timer quirk check for the
+> > correct compatible property.
+> > 
+> > Fixes: e428e250fde6 ("ARM: dts: Configure system timers for omap3")
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> > Cc: Thomas Gleixner <tglx@linutronix.de>
+> > Cc: Rob Herring <robh+dt@kernel.org>
+> > Reported-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
+> > Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > ---
+> 
+> >  .../devicetree/bindings/arm/omap/omap.txt     |  3 ++
+> >  arch/arm/boot/dts/Makefile                    |  1 +
+> >  arch/arm/boot/dts/omap3-beagle-ab4.dts        | 47 +++++++++++++++++++
+> >  arch/arm/boot/dts/omap3-beagle.dts            | 33 -------------
+> >  drivers/clocksource/timer-ti-dm-systimer.c    |  2 +-
+> >  5 files changed, 52 insertions(+), 34 deletions(-)
+> >  create mode 100644 arch/arm/boot/dts/omap3-beagle-ab4.dts
+> > 
+> I must have some error in my methodology since I cannot see the issue
+> being fixed with your patch :-(
+> 
+Facepalm, as I was expecting I had error in my methodology... see below
 
---45Z9DzgjV8m4Oswq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> cat arch/arm/boot/dts/omap3-beagle.dtb >>arch/arm/boot/zImage
 
-Hi!
+This I used years before your patch and by some reason I confused to use
+new omap3-beagle-ab4.dtb when testing your patch yesterday:
 
-> > +       dma_set_mask_and_coherent(&ssi->device, DMA_BIT_MASK(32));
->=20
-> All the other problems remain (no one cared about the irq and NULL
-> pointer). Perhaps some IRQ is not set up for DMA completion (just
-> guessing here?)
->=20
-> However, looking at the omap3-n900.dts it looks to me that the ssi_pins
-> definition suggests that it should use pio, rather than DMA.
->=20
-> Does either of you recall if DMA was ever used on the N900, or does the
-> offending commit just cause DMA to be used by accident?
+> cat arch/arm/boot/dts/omap3-beagle-ab4.dtb >>arch/arm/boot/zImage
 
-No idea, sorry :-(.
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
+without realizing my Beagle Board version is not between A to B4 but C2.
+So when using the omap3-beagle.dtb your patch fixes the regression I
+found.
 
---45Z9DzgjV8m4Oswq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYbZGoAAKCRAw5/Bqldv6
-8ra+AJ4hpo25i/WfHQ0bFYbc/SwXE6vdRACdGkJ4KBSUGdEBgZvfy8sXuCM2dL8=
-=vUs+
------END PGP SIGNATURE-----
-
---45Z9DzgjV8m4Oswq--
+Tested-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
