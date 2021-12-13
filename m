@@ -2,112 +2,141 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE6EE473610
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Dec 2021 21:37:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFE1A4736A3
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Dec 2021 22:43:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242959AbhLMUhX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Dec 2021 15:37:23 -0500
-Received: from mail-oi1-f182.google.com ([209.85.167.182]:37729 "EHLO
-        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242961AbhLMUhW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Dec 2021 15:37:22 -0500
-Received: by mail-oi1-f182.google.com with SMTP id bj13so24788945oib.4;
-        Mon, 13 Dec 2021 12:37:21 -0800 (PST)
+        id S243133AbhLMVnW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Dec 2021 16:43:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57416 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239587AbhLMVnW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Dec 2021 16:43:22 -0500
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A56DC061748
+        for <linux-omap@vger.kernel.org>; Mon, 13 Dec 2021 13:43:20 -0800 (PST)
+Received: by mail-oi1-x231.google.com with SMTP id q25so25070019oiw.0
+        for <linux-omap@vger.kernel.org>; Mon, 13 Dec 2021 13:43:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
+         :subject:to:cc;
+        bh=TmGwTxtk1ApFzRT5JcuqotjuO1Eq6SC3X6wTg4aSOGc=;
+        b=eNaZByPA3A9BMSPWspOZQZYK28rssM3XgZvdRx5XCTDo+TI+Z8nG1+mtIgUfxDnjCQ
+         bTEdUbOAJjsIjMzHXemYzUBdwPs2m2wTR//V0+o7cw+D60ALBLxTHVQuUEx5jmat3Cjs
+         p1UaXu+fZVvCxOFZfcOs4V3KjhAoTqrodl634=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ZgfptJ9Nc5V7IoyX3trjYNyQOy+R5xm/7NE8jjO7OEA=;
-        b=A+7A8e7+X4eKMs8NI1gbybdxm308BK7IwKilQmoBnTzZtl+SDoxun+Gr7X58uAEz4T
-         xAjqtnWmMG4c+7WZOOevpvAOsmDs1D86OLUaXmdYkK3BwRShcWAsXXkK5qdkmOBE9eBL
-         XCZaOvYe5zsNGy0pqj5hiPvsjU7MeLs3PFNo76zHtK8V7GaXc2CITxncIDC0yPXnm8HZ
-         zSRafWzkdLChC2xdU+oSC20hNxMYn1HUG9FNCMBpnU3GOF2UR70fq5OzXs2taOqWSy6U
-         afZmY5aNZ1jfoHFXkt7IGWmynP645aZnwWBL58ACQ4ANn1/jCTT9J+DUnE5BD3SMUz0J
-         fBcA==
-X-Gm-Message-State: AOAM530QcjucT2C1s6EXywsEFfqPTOZdSzg0W/UfLn9AUtZMRy2gpYUv
-        DCFI6sHNKJji+xoc9Mb4Ny1xT3z9Vw==
-X-Google-Smtp-Source: ABdhPJxRGFl7/TuYODUdC0OyJhloj38Cvr/IgqWq5bUIDnUkSaz8Q/Vd7zdWNvdsGQ+H/NDCpJzSSA==
-X-Received: by 2002:a05:6808:20a5:: with SMTP id s37mr28661250oiw.127.1639427841508;
-        Mon, 13 Dec 2021 12:37:21 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id d8sm2915081oiw.24.2021.12.13.12.37.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Dec 2021 12:37:20 -0800 (PST)
-Received: (nullmailer pid 1529335 invoked by uid 1000);
-        Mon, 13 Dec 2021 20:37:19 -0000
-Date:   Mon, 13 Dec 2021 14:37:19 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-Cc:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com,
-        bcousson@baylibre.com, broonie@kernel.org, festevam@gmail.com,
-        kuninori.morimoto.gx@renesas.com, lgirdwood@gmail.com,
-        michael@amarulasolutions.com, nicoleotsuka@gmail.com,
-        perex@perex.cz, shengjiu.wang@gmail.com, tiwai@suse.com,
-        tony@atomide.com
-Subject: Re: [PATCH 3/4] ASoC: fsl-asoc-card: Add optional dt property for
- setting mclk-id
-Message-ID: <Ybeu/1vsUzvAg2Ya@robh.at.kernel.org>
-References: <20211203134930.128703-1-ariel.dalessandro@collabora.com>
- <20211203134930.128703-4-ariel.dalessandro@collabora.com>
+        h=x-gm-message-state:mime-version:in-reply-to:references:from
+         :user-agent:date:message-id:subject:to:cc;
+        bh=TmGwTxtk1ApFzRT5JcuqotjuO1Eq6SC3X6wTg4aSOGc=;
+        b=niTU+tgO4CPtzyRrlGnxzva3w5mY8dS0RrI6kFNGyAunq45H/H8vTiZf8RI9D96F2y
+         aaEjdkZcVi4ZURbKtnPilINr+GWflVBTlYXIb8NnQWaTYv5BvCpJ2pigyGnSfYdRdnJa
+         OzKl7Ir6IQiDQKkHnaXmvH3jXjIBI5jqZK2lgEpM2WHsBCSWuTy4gChZNG+m92Mlz6GV
+         YhI3OK3Y4wY/jgiXGPXnPEfr8rWA8wwywFsbQNbdTzs7NJMcljvvfE2anrb7jP7jmsmW
+         Db+48yd8mrWysAcHNhaXqP/71o1qmiy6SiIou4IbX0kegsqM3IH9xLaizZgJ9ADrmVer
+         e6Dw==
+X-Gm-Message-State: AOAM532isHm78lnBIHVjRJ4pDIOo4wWsYvleIF1GRi0QWPAnd4Jqx6pm
+        fUCydUgaRWdkiEX+ZWOB6WvUr1Yt+82AUgP+k6gW4g==
+X-Google-Smtp-Source: ABdhPJwBmJUtITTggfiBEHtxlPNAqOaF12KYEh1ljweCao7w72Js/U/c7J5QINoBhIaZJpcXb7QiXAChzLKfd0d+7y0=
+X-Received: by 2002:a05:6808:211f:: with SMTP id r31mr1129616oiw.64.1639431800144;
+ Mon, 13 Dec 2021 13:43:20 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 13 Dec 2021 13:43:19 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211203134930.128703-4-ariel.dalessandro@collabora.com>
+In-Reply-To: <Ya+mV/zuRVVIGVy1@phenom.ffwll.local>
+References: <20211202222732.2453851-1-swboyd@chromium.org> <Ya+mV/zuRVVIGVy1@phenom.ffwll.local>
+From:   Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.9.1
+Date:   Mon, 13 Dec 2021 13:43:19 -0800
+Message-ID: <CAE-0n53dnsAdjBUVmDMbcvrSJEE=RPu7PGX_zaWCZ_ZBUAythA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/34] component: Make into an aggregate bus
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Daniel Vetter <daniel@ffwll.ch>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        Chen Feng <puck.chen@hisilicon.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Christian Gmeiner <christian.gmeiner@gmail.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Emma Anholt <emma@anholt.net>,
+        =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+        Inki Dae <inki.dae@samsung.com>,
+        James Qian Wang <james.qian.wang@arm.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Joerg Roedel <joro@8bytes.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Jyri Sarha <jyri.sarha@iki.fi>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-pm@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Russell King <linux+etnaviv@armlinux.org.uk>,
+        Russell King <rmk+kernel@arm.linux.org.uk>,
+        Sandy Huang <hjc@rock-chips.com>,
+        Saravana Kannan <saravanak@google.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Tian Tao <tiantao6@hisilicon.com>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        Tomi Valkeinen <tomba@kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Xinliang Liu <xinliang.liu@linaro.org>,
+        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+        Yong Wu <yong.wu@mediatek.com>,
+        Vitaly Lubart <vitaly.lubart@intel.com>,
+        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Dec 03, 2021 at 10:49:29AM -0300, Ariel D'Alessandro wrote:
-> Sound cards may allow using different main clock inputs. In the generic
-> fsl-asoc-card driver, these values are hardcoded for each specific card
-> configuration.
-> 
-> Let's make it more flexible, allowing setting mclk-id from the
-> device-tree node. Otherwise, the default value for each card
-> configuration is used.
-> 
-> Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-> ---
->  Documentation/devicetree/bindings/sound/fsl-asoc-card.txt | 1 +
->  sound/soc/fsl/fsl-asoc-card.c                             | 6 ++++++
->  2 files changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
-> index 23d83fa7609f..b219626a5403 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
-> +++ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
-> @@ -82,6 +82,7 @@ Optional properties:
->    - dai-format		: audio format, for details see simple-card.yaml.
->    - frame-inversion	: dai-link uses frame clock inversion, for details see simple-card.yaml.
->    - bitclock-inversion	: dai-link uses bit clock inversion, for details see simple-card.yaml.
-> +  - mclk-id		: main clock id, specific for each card configuration.
+Quoting Daniel Vetter (2021-12-07 10:22:15)
+> On Thu, Dec 02, 2021 at 02:26:58PM -0800, Stephen Boyd wrote:
+> > This series is from discussion we had on reordering the device lists for
+> > drm shutdown paths[1]. I've introduced an 'aggregate' bus that we put
+> > the aggregate device onto and then we probe the aggregate device once
+> > all the components are probed and call component_add(). The probe/remove
+> > hooks are where the bind/unbind calls go, and then a shutdown hook is
+> > added that can be used to shutdown the drm display pipeline at the right
+> > time.
+> >
+> > This works for me on my sc7180 board. I no longer get a warning from i2c
+> > at shutdown that we're trying to make an i2c transaction after the i2c
+> > bus has been shutdown. There's more work to do on the msm drm driver to
+> > extract component device resources like clks, regulators, etc. out of
+> > the component bind function into the driver probe but I wanted to move
+> > everything over now in other component drivers before tackling that
+> > problem.
+> >
+> > Tested-by tags would be appreciated, and Acked-by/Reviewed-by tags too.
+>
+> Thanks for pushing this forward. Unfortunately I'm completely burried and
+> it's just not improving, so merge plan:
+>
+> - please get Greg KH to ack the bus/driver core stuff
+>
+> - please get one of the drm-misc committers we have from Google's Chromeos
+>   team (there should be a few by now) to review&push this.
 
-Ahh, there it is. This change and the header defines should be 1 patch 
-and driver changes another.
+Sounds like a plan. Thanks!
 
->  
->  Optional unless SSI is selected as a CPU DAI:
->  
-> diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-> index 90cbed496f98..bb962e04d40b 100644
-> --- a/sound/soc/fsl/fsl-asoc-card.c
-> +++ b/sound/soc/fsl/fsl-asoc-card.c
-> @@ -693,6 +693,12 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
->  		goto asrc_fail;
->  	}
->  
-> +	/*
-> +	 * Allow setting mclk-id from the device-tree node. Otherwise, the
-> +	 * default value for each card configuration is used.
-> +	 */
-> +	of_property_read_u32(np, "mclk-id", &priv->codec_priv.mclk_id);
-> +
->  	/* Format info from DT is optional. */
->  	snd_soc_daifmt_parse_clock_provider_as_phandle(np, NULL, &bitclkprovider, &frameprovider);
->  	if (bitclkprovider || frameprovider) {
-> -- 
-> 2.30.2
-> 
-> 
+>
+> Otherwise I fear this might get stuck and I'd really like to avoid that.
+>
