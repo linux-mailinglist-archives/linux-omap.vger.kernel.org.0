@@ -2,70 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C4914720CD
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Dec 2021 06:54:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 237D64720D8
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Dec 2021 06:57:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbhLMFyw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Dec 2021 00:54:52 -0500
-Received: from muru.com ([72.249.23.125]:37892 "EHLO muru.com"
+        id S230357AbhLMF5v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Dec 2021 00:57:51 -0500
+Received: from muru.com ([72.249.23.125]:37912 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230054AbhLMFys (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 13 Dec 2021 00:54:48 -0500
+        id S230324AbhLMF5u (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 13 Dec 2021 00:57:50 -0500
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 0F97E809F;
-        Mon, 13 Dec 2021 05:55:30 +0000 (UTC)
-Date:   Mon, 13 Dec 2021 07:54:46 +0200
+        by muru.com (Postfix) with ESMTPS id 2B179809F;
+        Mon, 13 Dec 2021 05:58:32 +0000 (UTC)
+Date:   Mon, 13 Dec 2021 07:57:48 +0200
 From:   Tony Lindgren <tony@atomide.com>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     Merlijn Wajer <merlijn@wizzup.org>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Adam Ford <aford173@gmail.com>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dev Null <devnull@uvos.xyz>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: Re: Nokia N900 OFF mode regression between v5.10 and v5.11
-Message-ID: <YbbgJnmslVRngjuh@atomide.com>
-References: <43cac03a-53c2-83dd-e1b0-4d25920d9095@wizzup.org>
- <20211211085403.3c1fcb0d@aktux>
- <4fa31761-e7d2-0995-2180-c52afeb39dfa@wizzup.org>
- <20211211114306.16116dde@aktux>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Dev Null <devnull@uvos.xyz>,
+        Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org,
+        Kevin Hilman <khilman@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/2] pmic-cpcap: add motorola,droid3 compatible
+Message-ID: <Ybbg3GNwST5Cr9Br@atomide.com>
+References: <20211212230459.13579-1-merlijn@wizzup.org>
+ <20211212230459.13579-2-merlijn@wizzup.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211211114306.16116dde@aktux>
+In-Reply-To: <20211212230459.13579-2-merlijn@wizzup.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Andreas Kemnade <andreas@kemnade.info> [211211 10:43]:
-> The patch fixing thermal power management is: 
+* Merlijn Wajer <merlijn@wizzup.org> [211212 23:00]:
+> The Droid 3 and the Bionic appear to share the same hardware, so add
+> the compatible for the Droid 3 as well.
+> 
+> Signed-off-by: Merlijn Wajer <merlijn@wizzup.org>
+> ---
+>  arch/arm/mach-omap2/pmic-cpcap.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-omap2/pmic-cpcap.c b/arch/arm/mach-omap2/pmic-cpcap.c
+> index 668dc84fd31e..b9188dde13b9 100644
+> --- a/arch/arm/mach-omap2/pmic-cpcap.c
+> +++ b/arch/arm/mach-omap2/pmic-cpcap.c
+> @@ -245,7 +245,8 @@ int __init omap4_cpcap_init(void)
+>  	voltdm = voltdm_lookup("mpu");
+>  	omap_voltage_register_pmic(voltdm, &omap443x_max8952_mpu);
 >  
-> commit 5093402e5b449b64f7bbaa09057ce40a8f3c1484
-> Author: Adam Ford <aford173@gmail.com>
-> Date:   Fri Sep 11 07:31:56 2020 -0500
-> 
->     thermal: ti-soc-thermal: Enable addition power management
->     
->     The bandgap sensor can be idled when the processor is too, but it
->     isn't currently being done, so the power consumption of OMAP3
->     boards can elevated if the bangap sensor is enabled.
->     
->     This patch attempts to use some additional power management
->     to idle the clock to the bandgap when not needed.
-> 
-> Maybe there is something specific to the N900 which causes these
-> issues? Well, I'll recheck on the boards I have.
+> -	if (of_machine_is_compatible("motorola,droid-bionic")) {
+> +	if (of_machine_is_compatible("motorola,droid-bionic") ||
+> +	    of_machine_is_compatible("motorola,droid3")) {
+>  		voltdm = voltdm_lookup("core");
+>  		omap_voltage_register_pmic(voltdm, &omap_cpcap_core);
+>  
 
-My guess the issue is that omap3-thermal needs to constantly poll
-for the registers to get the status and that blocks any deeper
-idle states. For PM, probably omap3-thermal needs to be tagged with
-status = "disabled" assuming there is some other external thermal
-sensor. I'm also guessing that the old Nokia kernel never used the
-integrated thermal sensor, might be worth checking though.
+Looks OK to me, however we should also add all the mapphones to the
+Documentation/devicetree/bindings/arm/omap/omap.txt so we can avoid
+dtb check warnings. Care to also do a patch for that? Looks like the
+others are missing too.
 
 Regards,
 
 Tony
+
+
