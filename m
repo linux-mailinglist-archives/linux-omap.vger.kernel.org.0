@@ -2,90 +2,79 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F6347635A
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Dec 2021 21:33:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D52DF47665B
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Dec 2021 00:16:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236075AbhLOUdE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Dec 2021 15:33:04 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:46478 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234794AbhLOUdE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Dec 2021 15:33:04 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 75A521C0B98; Wed, 15 Dec 2021 21:33:02 +0100 (CET)
-Date:   Wed, 15 Dec 2021 21:32:59 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Merlijn Wajer <merlijn@wizzup.org>
-Cc:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Dev Null <devnull@uvos.xyz>, Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-omap@vger.kernel.org, Dan Murphy <dmurphy@ti.com>,
-        devicetree@vger.kernel.org, Doug Zobel <dougdev334@gmail.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Sicelo A . Mhlongo" <absicsz@gmail.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>
-Subject: Re: [PATCH 0/2] Fix RGB status LED and keyboard backlight LEDs on
- Nokia N900
-Message-ID: <20211215203259.GF28336@duo.ucw.cz>
-References: <20211212224007.10293-1-merlijn@wizzup.org>
+        id S231761AbhLOXQK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Dec 2021 18:16:10 -0500
+Received: from mail-oi1-f172.google.com ([209.85.167.172]:44562 "EHLO
+        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231739AbhLOXQJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Dec 2021 18:16:09 -0500
+Received: by mail-oi1-f172.google.com with SMTP id be32so33818657oib.11;
+        Wed, 15 Dec 2021 15:16:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=++wJQfX9SRKTgDa7iRDm4XjqjWaFak1BGA3bq4SdHY8=;
+        b=amgBVyhB6CrnasIBRdDbSGBtRuFlXBCAxVShCHiDW65cA8AzgtRo50ir4jugdgs0Aq
+         wn4vKhpMjPTY+stSGSUAHTl4DCSeOGVQKdqsqlFnLhiL9dArm5YmRmW94CrFlsrv9Hqy
+         K3jcMTtsoP62AiQvGPvWOiLG7gGtII3bEh+i52+k6uekLttKta0pMMm8g2aUqugF7Xdl
+         xarGT5mhufbdX6ynjj5VL+QyDLPxxJKH7DePL+9+kEIKJoR0VnRM4dIdSjeBkTC9s5mg
+         fVLLWvIkRyGGziJBOzOjS7rtFTUYDQ6iMPb/m8ZcwIYY02DIjW0NRi4anbLX/VAVX93N
+         sTjA==
+X-Gm-Message-State: AOAM530QaZ9Xwa27LI0GkwN+Cnq9+8Zl+eMpgPMK5qfGcxxKXIGZZhr8
+        w9NPYH18G72QK5U53b09UQ==
+X-Google-Smtp-Source: ABdhPJzWb+X8AU9phOzqa3L4kDw+icvNMkXfJyKOKnI6KQnWK5fei15LOQROoLYcH56rzggBqu3/sQ==
+X-Received: by 2002:a05:6808:3a3:: with SMTP id n3mr1972992oie.81.1639610169310;
+        Wed, 15 Dec 2021 15:16:09 -0800 (PST)
+Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.googlemail.com with ESMTPSA id g7sm740166oon.27.2021.12.15.15.16.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Dec 2021 15:16:07 -0800 (PST)
+From:   Rob Herring <robh@kernel.org>
+To:     Matthias Brugger <matthias.bgg@gmail.com>, Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH 0/2] usb: musb resource clean-ups
+Date:   Wed, 15 Dec 2021 17:07:55 -0600
+Message-Id: <20211215230756.2009115-1-robh@kernel.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="+ts6NCQ4mrNQIV8p"
-Content-Disposition: inline
-In-Reply-To: <20211212224007.10293-1-merlijn@wizzup.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+This short series reworks the platform device resources of the musb 
+child device to avoid using static resources. Setting the parent 
+device's DT node on the child device is sufficient for the standard 
+resource functions to work.
 
---+ts6NCQ4mrNQIV8p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I ran this thru kernel-ci and didn't see any failures, but I don't know 
+if any tested platform uses MUSB driver or if a failure would show up in 
+the boot log.
 
-Hi!
+Rob
 
-> The RGB status LED and keyboard backlight LEDs were broken on the Nokia N=
-900
-> since the conversion to gpiod descriptors and additionally later on with =
-the
-> addition of multi color support. There was at least one attempt merged to=
- fix
-> the lp5523 driver since the gpiod conversion, but it doesn't honour the d=
-evice
-> tree, which in the case of the Nokia N900 means that the fix doesn't work.
->=20
-> In this series are two patches fix the problems:
->=20
-> * One addresses the gpiod change in the device tree as well as the multi
->   color support in the device tree;
-> * The other patch fixes the previous attempt at fixing the driver to hono=
-ur
->   the device tree;
->=20
-> Please let me know if anything seems off, and I'll be glad to make any
-> recommended changes, thanks!
+Rob Herring (2):
+  usb: musb: Drop unneeded resource copying
+  usb: musb: Set the DT node on the child device
 
-Thank you, I took the series. But if it changes the names in
-/sys/class/leds, we want to do something else.
+ drivers/usb/musb/am35x.c    |  2 ++
+ drivers/usb/musb/da8xx.c    | 20 ++++----------------
+ drivers/usb/musb/jz4740.c   |  1 +
+ drivers/usb/musb/mediatek.c |  2 ++
+ drivers/usb/musb/omap2430.c | 23 ++---------------------
+ drivers/usb/musb/ux500.c    | 18 ++----------------
+ 6 files changed, 13 insertions(+), 53 deletions(-)
 
-Best regards,
-									Pavel
---=20
-http://www.livejournal.com/~pavelmachek
+-- 
+2.32.0
 
---+ts6NCQ4mrNQIV8p
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYbpQ+wAKCRAw5/Bqldv6
-8tAtAKCGwht0aPaKEMlZ4zXs/D60Icv3TQCfRL/bIMI2LAnvY0mTztHvcD5BO6M=
-=jTvz
------END PGP SIGNATURE-----
-
---+ts6NCQ4mrNQIV8p--
