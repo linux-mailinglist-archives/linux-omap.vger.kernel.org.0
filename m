@@ -2,49 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13CA647613E
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Dec 2021 19:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF5CC476352
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Dec 2021 21:31:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239023AbhLOS5J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Dec 2021 13:57:09 -0500
-Received: from lit704.phy.lolipop.jp ([118.27.125.14]:57442 "EHLO
-        lit704.phy.lolipop.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235473AbhLOS5J (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Dec 2021 13:57:09 -0500
-X-Greylist: delayed 599 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 Dec 2021 13:57:09 EST
-Received: by lit704.phy.lolipop.jp (Postfix, from userid 995)
-        id A4D123C0F591B; Thu, 16 Dec 2021 03:47:08 +0900 (JST)
-To:     linux-omap@vger.kernel.org
-Subject: =?ISO-2022-JP?B?GyRCIVokKkxkJCQ5ZyRvJDskIiRqJCwkSCQmJDQkNiQkJF4kNyQ/IVsbKEJbeW91ci1zdWJqZWN0XQ==?=
-Date:   Wed, 15 Dec 2021 18:47:08 +0000
-From:   "?? Beatrice is interested in your profile! Click Here:
-        http://bit.do/fSS9u?m820 ??" <linux-omap@vger.kernel.org>
-Message-ID: <f09495b8a54d23dc476aa05d11b290cd@openmind39.com>
-X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+        id S236041AbhLOUbU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Dec 2021 15:31:20 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:46296 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234794AbhLOUbT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Dec 2021 15:31:19 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 590531C0B98; Wed, 15 Dec 2021 21:31:18 +0100 (CET)
+Date:   Wed, 15 Dec 2021 21:31:13 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Dev Null <devnull@uvos.xyz>, Tony Lindgren <tony@atomide.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        "Sicelo A. Mhlongo" <absicsz@gmail.com>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] ARM: dts: omap3-n900: Fix lp5523 for multi color
+Message-ID: <20211215203113.GE28336@duo.ucw.cz>
+References: <20211212224007.10293-1-merlijn@wizzup.org>
+ <20211212224007.10293-2-merlijn@wizzup.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-2022-JP
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="a1QUDc0q7S3U7/Jg"
+Content-Disposition: inline
+In-Reply-To: <20211212224007.10293-2-merlijn@wizzup.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-お問い合わせありがとうございます。
-下記の内容にて送信いたしました。
 
-■お名前
-?? Beatrice is interested in your profile! Click Here: http://bit.do/fSS9u?m820 ??
+--a1QUDc0q7S3U7/Jg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-■ふりがな
-6j87yat4
+Hi!
 
-■メールアドレス
-linux-omap@vger.kernel.org
+> From: "Sicelo A. Mhlongo" <absicsz@gmail.com>
+>=20
+> Since the LED multicolor framework support was added in commit
+> 92a81562e695 ("leds: lp55xx: Add multicolor framework support to lp55xx")
+> LEDs on this platform stopped working.
 
-■御社名
-91gzu2
+Does this change names is /sys/class/leds?
 
-■電話番号
-283965535159
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
 
-■お問い合わせ内容
-xqt2nqx
+--a1QUDc0q7S3U7/Jg
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYbpQkQAKCRAw5/Bqldv6
+8vpmAKCmg+y81WeSFmyrK2qvObpFyZI28gCeKQovv1MP1lI3LSdsWLab55DwqFE=
+=mEH/
+-----END PGP SIGNATURE-----
+
+--a1QUDc0q7S3U7/Jg--
