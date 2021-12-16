@@ -2,85 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9063847708F
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Dec 2021 12:42:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83EEF4770F0
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Dec 2021 12:45:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232621AbhLPLmY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Dec 2021 06:42:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60100 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232724AbhLPLmR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Dec 2021 06:42:17 -0500
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E5BC061757
-        for <linux-omap@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
-Received: by mail-qk1-x735.google.com with SMTP id l25so13693359qkl.5
-        for <linux-omap@vger.kernel.org>; Thu, 16 Dec 2021 03:42:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=RYToo8NyNPhlgiHYmZ1ikup312GHYFKKh+SoiQn5DFM08VhX1fCTukNf+Ub7gXZH+R
-         Fdt5I+ZO38LiZ7aX4HrBDtCguvWjGt4+jG/EN+k0G3h02B6emUjwzPzxnL4uWQz6AWTD
-         WqO7wKZcX2hj88TEq1skHq9q03JmZTMsDYFAuzRyTE65aq8YfmTLKW6klN/Aemrjl5Su
-         VOqZm/oCKsPxxvibvSdyBq0qcyBC7yt8asycNVxLymhtuzVbvkdkv8HRw/7WHA5ZhBTe
-         lfMRM7TjowGzvp5BFYZjQfF4jcwfD0Oa7xMNuJL1tGpMndUewyeeM3+DNYanGu61M7GC
-         kNpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=Ni9pTVeWzrbAckrVqeXe0l6ceHi3KwxPdjrYqsqUGVk2syMGPa4KQLdyIyb/r2o9mv
-         NHQJslyfbrmNSpUEL7r63lIMm3lzUt1DmHMthN8kW06WkZdLLEZUCLGT9uy7Qa+VSh/8
-         3yuHTy8Z8Gy9A7vsPHQ4CN1jz+Ettq/PfDtHR0Hpmz0eGbBY1XqSANaOLENxLkuJ/bvc
-         NsE95i+mcp+BytnSkia8Y01f8frTJCe2SZRxBom4jzG07jsn3DKNa/AW4NAd4enbJ22G
-         xeKmllorYN4i7rnA23A6BtsXuXkHouP6Hs9ZqCnJaYkinWLJQoZpb5TBI/E3nMad0dkj
-         zFuw==
-X-Gm-Message-State: AOAM532S8JyMq7JguK/7pc2QXvPv3q2KgshrPZ9auuEozMPOSgRptVS2
-        uIcXFh485QP98AmTa+KbxWqoDqE1Xk20uuwC96Y=
-X-Google-Smtp-Source: ABdhPJxYJ2zBl8EMgF/vH/Si0uACMgpOTf1urUCOAwYb4fXYvwfKJa3PKYFOZBbaDpp9AFOjwJ3sIeVfeVjNcnbyBfg=
-X-Received: by 2002:a05:620a:bc3:: with SMTP id s3mr11727889qki.197.1639654936129;
- Thu, 16 Dec 2021 03:42:16 -0800 (PST)
+        id S234078AbhLPLo7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Dec 2021 06:44:59 -0500
+Received: from mail.wizzup.org ([95.217.97.174]:44500 "EHLO wizzup.org"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S234276AbhLPLok (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 16 Dec 2021 06:44:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
+        s=mail; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
+        Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=S9Vleixp9Hk+l/pEzhz3w9o6LjKmpY/kaFA5/9KTWIo=; b=Kb9usO7WOx4xMq3OTJPeR5S67W
+        sAv49bME9rdg/TSeWfL1WmJH42ssyM2ACS78KdJ8FicY5nDtGSEG96foUNKplVGUfNfwZfOY3Hfzn
+        ZDWEPojvUno4c+J+Ge6rq99UeLlsderkBMirLQvwdnwto6s+SbvdSlz+JfaE+5M8AjoAWQiUYPTjq
+        whshHbmdJ+41nC499/wH1D28PhQYkHkMec35Mp3k0uFJxUy9m0JjvhQ/YdYDaWz7qgHT7/NKHeoku
+        jj1RRvUjjwTNBPrIaEtxqS6ttKVnBuA3H5kBmmOZzwf1ukB3sIbGDvUg4baIuT8A6g0mV7lXjztKc
+        zqVdilEg==;
+Received: from [45.83.235.159] (helo=[0.0.0.0])
+        by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <merlijn@wizzup.org>)
+        id 1mxpBU-0004NN-Im; Thu, 16 Dec 2021 11:44:28 +0000
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Dev Null <devnull@uvos.xyz>, Tony Lindgren <tony@atomide.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        "Sicelo A. Mhlongo" <absicsz@gmail.com>,
+        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20211212224007.10293-1-merlijn@wizzup.org>
+ <20211212224007.10293-2-merlijn@wizzup.org>
+ <20211215203113.GE28336@duo.ucw.cz>
+From:   Merlijn Wajer <merlijn@wizzup.org>
+Subject: Re: [PATCH 1/2] ARM: dts: omap3-n900: Fix lp5523 for multi color
+Message-ID: <ad6fb0bd-5473-9ecb-b97b-ecab9c70a73e@wizzup.org>
+Date:   Thu, 16 Dec 2021 12:50:14 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:15
- -0800 (PST)
-Reply-To: selviasantiago1@gmail.com
-From:   Selvia Santiago <mariamatinez119@gmail.com>
-Date:   Thu, 16 Dec 2021 11:42:15 +0000
-Message-ID: <CAONDhKPUij_8sWOmcDAVKuHSL7avy+Ti7bOVRu6x__3ouvD7kw@mail.gmail.com>
-Subject: Urgent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20211215203113.GE28336@duo.ucw.cz>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Urgent
+Hi Pavel,
 
-I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
-suffering from long time illness (Cancer), there is funds I inherited
-from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
-Million Dollars) which he deposited in bank before his death, I need a
-honest and Faithful person that can use these funds for humanity work.
+On 15/12/2021 21:31, Pavel Machek wrote:
+> Hi!
+> 
+>> From: "Sicelo A. Mhlongo" <absicsz@gmail.com>
+>>
+>> Since the LED multicolor framework support was added in commit
+>> 92a81562e695 ("leds: lp55xx: Add multicolor framework support to lp55xx")
+>> LEDs on this platform stopped working.
+> 
+> Does this change names is /sys/class/leds?
 
-I took this decision because I don't have any child that will inherit
-this money and I don't want a situation where this money will be used
-in an ungodly way. That is why I am taking this decision, and my
-doctor has confirmed to me that I have less than two weeks to live,
-having known my condition I decided to donate this fund to a charity
-or individual that will utilize this money to assist the poor and the
-needy in accordance to my instructions.
+I booted my 5.15 with this series (and some other patches) added and
+these are the led names:
 
-I want you to use 70% of this funds for orphanages, school, church,
-widows, propagating the word and other humanity works,The remaining
-30% should be yours for your efforts as the new beneficiary.
+> root@devuan-n900:~# uname -a
+> Linux devuan-n900 5.15.2-00596-g94bfc7de5522-dirty #58 SMP PREEMPT Thu Dec 16 11:53:53 CET 2021 armv7l GNU/Linux
+> root@devuan-n900:~# ls /sys/class/leds
+> debug::sleep  lp5523:g    lp5523:kb2  lp5523:kb4  lp5523:kb6
+> lp5523:b      lp5523:kb1  lp5523:kb3  lp5523:kb5  lp5523:r
 
-Please if you would be able to use these funds for humanity work
-kindly reply me. As soon as I have received your response, I will give
-you further directives on how you are to go about the claims of the
-said funds.
+On 5.1 (my previous 'stable') kernel, these are the led names:
 
-Remain blessed.
-Mrs Selvia Santiago.
+> root@devuan-n900:~# uname -a
+> Linux devuan-n900 5.1.21 #1 Mon Jul 19 16:32:44 UTC 2021 armv7l GNU/Linux
+> root@devuan-n900:~# ls /sys/class/leds
+> debug::sleep  lp5523:g    lp5523:kb2  lp5523:kb4  lp5523:kb6
+> lp5523:b      lp5523:kb1  lp5523:kb3  lp5523:kb5  lp5523:r
+
+So I don't think the names are changed.
+
+Regards,
+Merlijn
