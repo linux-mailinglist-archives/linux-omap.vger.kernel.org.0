@@ -2,71 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 596FE4788E6
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 11:30:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B2E7478A1B
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 12:37:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235045AbhLQKaI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Dec 2021 05:30:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43332 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235046AbhLQKaG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Dec 2021 05:30:06 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E2CDC061747;
-        Fri, 17 Dec 2021 02:30:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D10B0620F8;
-        Fri, 17 Dec 2021 10:30:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1615C36AE1;
-        Fri, 17 Dec 2021 10:30:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639737005;
-        bh=uf6JxDdnzyqJElQbsppbLQiVy+i5ap0eM73vSTE5d94=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j2m6fWD84gm/uWtxAAcW2R9O16n/+7XbldeZQqOoeKM8Sv99e+FwhvYigQkKj6KCI
-         1JE7p2aDk1nKqGb3+IRTahvh7SDoIH7tvTBwjRPGEHP69MJ9YFnyn2Xp6dWNqbxvSd
-         +YFG8GR3/Rs5BGR1Dy1GTqPAAnCTvTJCkhRz/WSukc8KYLTGIXaikIEywRoG6K8Bg5
-         EYz20zdW2vgX0Euq4hFe81ewYnLKr/eZM8oAdpZeI99hnYfAKHBHLFw0ZbiZjy4dBl
-         jNrX9BgEYweYB8aumuIGerkLuHphr4G9fId9zS4D+O5aPab7DEJeFxT1KEJiIkf5Oa
-         N27AtkY13ckMQ==
-From:   Roger Quadros <rogerq@kernel.org>
-To:     krzysztof.kozlowski@canonical.com, tony@atomide.com
-Cc:     robh@kernel.org, kishon@ti.com, nm@ti.com, vigneshr@ti.com,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH v3 4/4] arm64: arch_k3: Select GPMC device driver
-Date:   Fri, 17 Dec 2021 12:29:45 +0200
-Message-Id: <20211217102945.17432-5-rogerq@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211217102945.17432-1-rogerq@kernel.org>
-References: <20211217102945.17432-1-rogerq@kernel.org>
+        id S233331AbhLQLhB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Dec 2021 06:37:01 -0500
+Received: from muru.com ([72.249.23.125]:39412 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231373AbhLQLhB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Dec 2021 06:37:01 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id A19EE80FB;
+        Fri, 17 Dec 2021 11:37:41 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, Tero Kristo <kristo@kernel.org>
+Subject: [PATCH] dt-bindings: clock: Add binding for TI clksel
+Date:   Fri, 17 Dec 2021 13:36:40 +0200
+Message-Id: <20211217113640.59840-1-tony@atomide.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The GPMC controller is present on some K3 SoCs.
-It provides access to NOR/NAND flashes and asynchronous
-SRAM-like memories and ASICs.
+In order to prepare for fixing lots of devicetree unique_unit_address
+warnings for the TI clock nodes, let's add a binding for the clksel
+clocks. This allows us to move the overlapping devicetree clocks to be
+children of the related clksel nodes. And then we need the reg property
+only for the parent clksel node.
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
+We want to set #clock-cells = <1> in case we ever start parsing the clkcsel
+clocks directly using a clksel driver rather than using the existing
+component clock drivers and child nodes. We also need to update the clock
+drivers to get the IO address from the parent clksel node before updating
+the dts files. These will be posted as separate patches.
+
+Cc: Tero Kristo <kristo@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm64/Kconfig.platforms | 1 +
- 1 file changed, 1 insertion(+)
+ .../bindings/clock/ti/ti,clksel.yaml          | 41 +++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
 
-diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
-index 1aa8b7073218..f447b120f863 100644
---- a/arch/arm64/Kconfig.platforms
-+++ b/arch/arm64/Kconfig.platforms
-@@ -122,6 +122,7 @@ config ARCH_K3
- 	select TI_SCI_INTR_IRQCHIP
- 	select TI_SCI_INTA_IRQCHIP
- 	select TI_K3_SOCINFO
-+	select OMAP_GPMC
- 	help
- 	  This enables support for Texas Instruments' K3 multicore SoC
- 	  architecture.
+diff --git a/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml b/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
+new file mode 100644
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
+@@ -0,0 +1,41 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/clock/ti/ti,clksel.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Binding for TI clksel clock
++
++maintainers:
++  - Tony Lindgren <tony@atomide.com>
++
++description: |
++  The TI CLKSEL clocks consist of consist of a mux, divider, multiplier and
++  gate bits.
++
++properties:
++  compatible:
++    const: ti,clksel
++
++  reg:
++    maxItems: 1
++    description: The CLKSEL register
++
++  "#clock-cells":
++    const: 1
++
++required:
++  - compatible
++  - reg
++  - "#clock-cells"
++
++additionalProperties: true
++
++examples:
++  - |
++    clksel_gfx_fclk: clock@52c {
++      compatible = "ti,clksel";
++      reg = <0x25c 0x4>;
++      #clock-cells = <1>;
++    };
++...
 -- 
-2.17.1
-
+2.34.1
