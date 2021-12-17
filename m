@@ -2,51 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06DE3478102
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 00:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D97CC4781C2
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 01:47:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230159AbhLPX4m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Dec 2021 18:56:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35358 "EHLO
+        id S231207AbhLQAr3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Dec 2021 19:47:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbhLPX4l (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Dec 2021 18:56:41 -0500
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFF92C06173E
-        for <linux-omap@vger.kernel.org>; Thu, 16 Dec 2021 15:56:41 -0800 (PST)
-Received: by mail-pj1-x102b.google.com with SMTP id v16so631314pjn.1
-        for <linux-omap@vger.kernel.org>; Thu, 16 Dec 2021 15:56:41 -0800 (PST)
+        with ESMTP id S229775AbhLQAr3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Dec 2021 19:47:29 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B357CC061574;
+        Thu, 16 Dec 2021 16:47:28 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id d10so1299012lfg.6;
+        Thu, 16 Dec 2021 16:47:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=qfdGylNHpttDgBez5cht2DYfHPgx7qkn9YTiTcn4MeA=;
-        b=abXnDM0+Uarpvz+2qnOD4yB3sfoc2cik1tzmBSbkJYrdEHdoEhqpAXLoAS+9HMLcGa
-         3nwOlFn69pJOP1F7l5xWzHlQaN/tYci4mLiaKu45q3SFyT2SQvvYul2hVmYYjQBWojsQ
-         768KcnF9jVpNTVw1YzyW0uEs6aJ+TgnGqZGRM=
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=AAR+6gokDhVIrnm7EiJygBmXr48WtYzlLYW9kUrZk1I=;
+        b=Qka8zTqjm+QroCBjjfHEMnmj8WmNq3H2uQ1IBvFtxQ11GghpAW1o0uk8IX/TbF+RWb
+         mJkNqP0NwlZW1KHZjLnP+VrX7wSnwe+c8/0K/HotoiBvwiHeqkXahdNNnKIL0Zrggpg1
+         Ysezta2LMpajRr/gzWm/xvzVr00vqjjLz8gbrePUtoPSA0x/4cZxwChelODhjiQYK7va
+         PwS3KyJRwhf1P67jOy8cMoeb7dYVUcHvIULSj9lrvLeepc8ErwHj/yEDEJChjPYVS5FY
+         IobM4twqG0RBriMG+CKfyth4HUbNMOg3hnVKL6wH2h9Rh4tTY66hZfIVTkaFyX11nxMb
+         SWmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=qfdGylNHpttDgBez5cht2DYfHPgx7qkn9YTiTcn4MeA=;
-        b=L+aT07jQgFc0ykF5X7Utrjm8tIC/g2IZUpRK/VzYD6xBNyxlCS0WnZTKc2y8pHMvtU
-         8LD+4xys3Id0/UR/c8x0IYDBtpoowOrU7hIqbn4N/An0NJGKqIf66hrOF6URq8KqcZTG
-         yQSRQkKe2erGNJP5AGhK6bJrIS6ho3Rw24bXfAT7S33F6Xkyjb7rzNuaqxjwgVk7U/1Z
-         q0PnfK6NoXMWKxz8t/WiMT3wts5gKQrZXIdqJjTzhR6ACq719oS1hCqXiBh7njZoRH9l
-         AgPeN6kPpTrdZWm3Shc+U+GEyvX45sgQkxOswdp9tePs/14rwBgIvZlw7O3kny8K0RYQ
-         61dA==
-X-Gm-Message-State: AOAM530d5seHXt5ceDYI4XPKI309hzXnpt/gUfTE3HrGXjjiritONox/
-        52+c/CHQN8FZ/4/QRZOlMfi2eg==
-X-Google-Smtp-Source: ABdhPJycBoVkGQxMMxjDLxo2CE2YaaUcyispOtyAWCRkHr/tOr5hKfzUcxNzZmkHqoL/YQrFdchIhg==
-X-Received: by 2002:a17:90a:c986:: with SMTP id w6mr8898697pjt.27.1639699001289;
-        Thu, 16 Dec 2021 15:56:41 -0800 (PST)
-Received: from localhost ([2620:15c:202:201:81:c257:d961:22b7])
-        by smtp.gmail.com with UTF8SMTPSA id t67sm7212453pfd.24.2021.12.16.15.56.39
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=AAR+6gokDhVIrnm7EiJygBmXr48WtYzlLYW9kUrZk1I=;
+        b=TLZ9fChpmDo5+kJJkmxjNWJbl6NsQNFXh1yx/PoUUVMuv8aA76bcmzQ59C7IkVcZzq
+         EePeLxGlzFyt2e0nXTo8nl42iJopUQTjGBqEpdmO7vID+bGZKqYh+TxXaiQcPmtOu2Yb
+         XeO5vJhTvourpbpGipLGtH+sx0ohY1l344UYKAjlKhX58G+pqxxoQzTqimxzc3KUknFl
+         axwfeg7Qvm0eEZMeFe6BQtQQjRYqG6A5ZSWbKmgPnVZqlTxDBuyRKFA4mYcQeBLYeKXF
+         8IzIm6KTdmuFFhyYhOJHcsPAl4JnwZWFCx/Ls6/RB542VbwxUvY5yWuGhSWQfwKD3e9b
+         3ybg==
+X-Gm-Message-State: AOAM533mLOgd6E42mLnphHUClGSo5naEa/ntGP8u2W+zfgB9HiKEO2mA
+        cNcI08YoKM/6oGSHA5n0YVaDe0jgYyU=
+X-Google-Smtp-Source: ABdhPJxmEjB5n5f5oNzo1e6e3pmj4zBm9PN4yweFZPbD0q0qCiRmk0H/reVmoYCFx2qlpB6falgcZQ==
+X-Received: by 2002:a05:6512:1113:: with SMTP id l19mr667843lfg.184.1639702046863;
+        Thu, 16 Dec 2021 16:47:26 -0800 (PST)
+Received: from [192.168.2.145] (94-29-63-156.dynamic.spd-mgts.ru. [94.29.63.156])
+        by smtp.googlemail.com with ESMTPSA id z8sm1413490ljj.86.2021.12.16.16.47.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Dec 2021 15:56:40 -0800 (PST)
-Date:   Thu, 16 Dec 2021 15:56:38 -0800
-From:   Matthias Kaehlcke <mka@chromium.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thu, 16 Dec 2021 16:47:26 -0800 (PST)
+Subject: Re: [PATCH v17 7/7] usb: Specify dependencies on USB_XHCI_PLATFORM
+ with 'depends on'
+To:     Matthias Kaehlcke <mka@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Alan Stern <stern@rowland.harvard.edu>,
         Rob Herring <robh+dt@kernel.org>,
         Frank Rowand <frowand.list@gmail.com>,
@@ -64,7 +69,6 @@ Cc:     linux-kernel@vger.kernel.org,
         Bastien Nocera <hadess@hadess.net>,
         Andrew Lunn <andrew@lunn.ch>,
         Aswath Govindraju <a-govindraju@ti.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
         Gregory Clement <gregory.clement@bootlin.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>,
@@ -73,40 +77,55 @@ Cc:     linux-kernel@vger.kernel.org,
         Tony Lindgren <tony@atomide.com>,
         linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
         linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH v17 7/7] usb: Specify dependencies on USB_XHCI_PLATFORM
- with 'depends on'
-Message-ID: <YbvSNta4jCxizaTa@google.com>
 References: <20211116200739.924401-1-mka@chromium.org>
  <20211116120642.v17.7.If248f05613bbb06a44eb0b0909be5d97218f417b@changeid>
+ <YbvSNta4jCxizaTa@google.com>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <b0b69294-e7fb-5e7a-80f3-466dd4bdc88a@gmail.com>
+Date:   Fri, 17 Dec 2021 03:47:24 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <YbvSNta4jCxizaTa@google.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20211116120642.v17.7.If248f05613bbb06a44eb0b0909be5d97218f417b@changeid>
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Nov 16, 2021 at 12:07:39PM -0800, Matthias Kaehlcke wrote:
-> Some USB controller drivers that depend on the xhci-plat driver
-> specify this dependency using 'select' in Kconfig. This is not
-> recommended for symbols that have other dependencies as it may
-> lead to invalid configurations. Use 'depends on' to specify the
-> dependency instead of 'select'.
+17.12.2021 02:56, Matthias Kaehlcke пишет:
+> On Tue, Nov 16, 2021 at 12:07:39PM -0800, Matthias Kaehlcke wrote:
+>> Some USB controller drivers that depend on the xhci-plat driver
+>> specify this dependency using 'select' in Kconfig. This is not
+>> recommended for symbols that have other dependencies as it may
+>> lead to invalid configurations. Use 'depends on' to specify the
+>> dependency instead of 'select'.
+>>
+>> For dwc3 specify the dependency on USB_XHCI_PLATFORM in
+>> USB_DWC3_HOST and USB_DWC3_DUAL_ROLE. Also adjust the
+>> dependencies of USB_DWC3_CORE to make sure that at least one
+>> of USB_DWC3_HOST, USB_DWC3_GADGET or USB_DWC3_DUAL_ROLE can be
+>> selected.
+>>
+>> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
+>> Reviewed-by: Roger Quadros <rogerq@kernel.org>
+>> Reviewed-by: Douglas Anderson <dianders@chromium.org>
 > 
-> For dwc3 specify the dependency on USB_XHCI_PLATFORM in
-> USB_DWC3_HOST and USB_DWC3_DUAL_ROLE. Also adjust the
-> dependencies of USB_DWC3_CORE to make sure that at least one
-> of USB_DWC3_HOST, USB_DWC3_GADGET or USB_DWC3_DUAL_ROLE can be
-> selected.
+> Note: This patch has been removed from the onboard_usb_hub series,
+> together with "ARM: configs: Explicitly enable USB_XHCI_PLATFORM
+> where needed" and "arm64: defconfig: Explicitly enable
+> USB_XHCI_PLATFORM". These patches aren't any longer needed for the
+> series. If maintainers think they are useful independently from
+> the series please pick them or let me know what needs to be
+> changed to get them landed.
 > 
-> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
-> Reviewed-by: Roger Quadros <rogerq@kernel.org>
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
 
-Note: This patch has been removed from the onboard_usb_hub series,
-together with "ARM: configs: Explicitly enable USB_XHCI_PLATFORM
-where needed" and "arm64: defconfig: Explicitly enable
-USB_XHCI_PLATFORM". These patches aren't any longer needed for the
-series. If maintainers think they are useful independently from
-the series please pick them or let me know what needs to be
-changed to get them landed.
+Hi,
+
+I don't know what this all is about, perhaps I'm CC'ed semi-randomly
+because touched that Kconfig once.
+
+All I can say here is that the commit message tells us "This is not
+recommended" and doesn't explain what's the actual problem is being
+solved. If there is no real problem, why bother?
