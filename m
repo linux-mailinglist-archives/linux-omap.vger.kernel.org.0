@@ -2,81 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46E24479054
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 16:50:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC4347910E
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 17:14:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238072AbhLQPuZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Dec 2021 10:50:25 -0500
-Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:32768
-        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235122AbhLQPuX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 17 Dec 2021 10:50:23 -0500
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com [209.85.167.71])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 9F9D13F1F3
-        for <linux-omap@vger.kernel.org>; Fri, 17 Dec 2021 15:50:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1639756222;
-        bh=Vz0WaZn+QjmviDVVOxxI0VKa9jS9jnpYSLlaJ+1iHt4=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=o1gg2t2PWWZYaGrKTITfajwqnoGYNcR9VWFFkNaBAgleNCT3GPxq6h4i5acAaKFwq
-         uGeicY7o4K0wTFilno8/chcSqkXh+oJxP+9IYGsxE74KUfe3L/561VJEv+HUvE4LJ6
-         k+XKR+r9P5J815uWLAfEXiv74M7BthzoD4t/1fKzgN4CqyqEUS5/vD/e4qI0IP9UCv
-         /3BtBKeWtV0tQVpCwyZyGOfArdF7jxA4YpxUYX7YGeGWzu2Awu6iqWtrZERO5w7Wlh
-         NDbTTjxAr4WnupT5/Uh/aMraLVGG9NRAuOoW8clsqkOCj+GNu76DVjsR6M9CUVmIkf
-         u94MtSQLbQtkQ==
-Received: by mail-lf1-f71.google.com with SMTP id n18-20020a0565120ad200b004036c43a0ddso1075384lfu.2
-        for <linux-omap@vger.kernel.org>; Fri, 17 Dec 2021 07:50:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Vz0WaZn+QjmviDVVOxxI0VKa9jS9jnpYSLlaJ+1iHt4=;
-        b=SMkYGO2ieXJb8uobfFqLGrl37nGkbQ/GuxeqDcdBrg3qurBqfs3p7HGNBp7MvUXlIg
-         px80q7dsId28YpTQdtdU4YnXk/u4shx9YRCW/TUOIxP40kQoWfqkpZVV5deSbGYTIdnn
-         My8/ifbLqs72dDOanrGQJPKGvU8OuDNgn3BGp7CmTHaj0xl0OA0MV6XZ5IfuI+933Ita
-         ylCokF2ipEHb4pzlUh9Lo0JoRJIig+SAXMLETgJRL5zx5Bk7yIz1Y3/MzhtzD04yHFOy
-         Stkdu/WJIjmI6X3fETqmuOvDRL2CGk+iFyoaOSI/tetNRA1q+bn+WfR2DydNOvgMAibO
-         pbjA==
-X-Gm-Message-State: AOAM532E22ZPiexqETnYA4cBXJD5WQMbpULoO2g9MimVsLw1QvdP2heF
-        L5GnKK3IYLEomCiZH17Sp1odHLNcGtsdHRVunVxu2M+TLUmNK1YXDTlPhniESKNtpd7LW+N3oKi
-        /H70oQPGiqsawKfHSBQPoZg608X7UbHEzzOoVC94=
-X-Received: by 2002:a05:6512:3b13:: with SMTP id f19mr3294908lfv.321.1639756221690;
-        Fri, 17 Dec 2021 07:50:21 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxWVVHP8AIicFtgzT6t5zbqk3uLn5LaifrLCAR18ukQnW+gJGIDSWfttbU1Fp4zH33SsPnLLA==
-X-Received: by 2002:a05:6512:3b13:: with SMTP id f19mr3294897lfv.321.1639756221533;
-        Fri, 17 Dec 2021 07:50:21 -0800 (PST)
-Received: from [192.168.3.67] (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
-        by smtp.gmail.com with ESMTPSA id p20sm1443796lfu.151.2021.12.17.07.50.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Dec 2021 07:50:21 -0800 (PST)
-Message-ID: <f5588a26-1a48-2513-a36a-13bec58e5003@canonical.com>
-Date:   Fri, 17 Dec 2021 16:50:20 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
+        id S238907AbhLQQOY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Dec 2021 11:14:24 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:44924 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235959AbhLQQOY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Dec 2021 11:14:24 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BHGEILp054920;
+        Fri, 17 Dec 2021 10:14:18 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1639757658;
+        bh=QNfovKNIzVYkSpNQyydNLxn4hq4rEdgFphcPrHDTV5s=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=WvptG5c0dnY9oi4J5g+k8JM/DJUh2vEmkPr24rg6Kp9iXILBGTH/vxTrf8yCrLJD4
+         OBlz4H6dTq8KLYT/I+ghyDRRO/L8bgA0LEk8VUAynBlxDModcPR9QkWhKJlq0vs4ov
+         spJuZffP8JeJC9yMHICMxOBcqN0Ix1TmBWwbXtbQ=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BHGEHAS102109
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 17 Dec 2021 10:14:18 -0600
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Fri, 17
+ Dec 2021 10:14:17 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Fri, 17 Dec 2021 10:14:17 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BHGEHD1101479;
+        Fri, 17 Dec 2021 10:14:17 -0600
+Date:   Fri, 17 Dec 2021 10:14:17 -0600
+From:   Nishanth Menon <nm@ti.com>
+To:     Roger Quadros <rogerq@kernel.org>
+CC:     <krzysztof.kozlowski@canonical.com>, <tony@atomide.com>,
+        <robh@kernel.org>, <kishon@ti.com>, <vigneshr@ti.com>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
 Subject: Re: [PATCH v3 4/4] arm64: arch_k3: Select GPMC device driver
-Content-Language: en-US
-To:     Roger Quadros <rogerq@kernel.org>, tony@atomide.com
-Cc:     robh@kernel.org, kishon@ti.com, nm@ti.com, vigneshr@ti.com,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
+Message-ID: <20211217161417.q2qwwlki7oieqzjd@headlock>
 References: <20211217102945.17432-1-rogerq@kernel.org>
  <20211217102945.17432-5-rogerq@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 In-Reply-To: <20211217102945.17432-5-rogerq@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 17/12/2021 11:29, Roger Quadros wrote:
+On 12:29-20211217, Roger Quadros wrote:
 > The GPMC controller is present on some K3 SoCs.
 > It provides access to NOR/NAND flashes and asynchronous
 > SRAM-like memories and ASICs.
@@ -86,13 +67,21 @@ On 17/12/2021 11:29, Roger Quadros wrote:
 >  arch/arm64/Kconfig.platforms | 1 +
 >  1 file changed, 1 insertion(+)
 > 
+> diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+> index 1aa8b7073218..f447b120f863 100644
+> --- a/arch/arm64/Kconfig.platforms
+> +++ b/arch/arm64/Kconfig.platforms
+> @@ -122,6 +122,7 @@ config ARCH_K3
+>  	select TI_SCI_INTR_IRQCHIP
+>  	select TI_SCI_INTA_IRQCHIP
+>  	select TI_K3_SOCINFO
+> +	select OMAP_GPMC
+I dont think GPMC should be part of the select list here. instead
+defconfig patch is prefered. the existance and usage of the same are
+limited and it is NOT a core functional component required to boot up a
+K3 platform.
 
-FWIW:
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-
-Other option would be to make it "default ARCH_K3" in OMAP_GPMC, but
-this is fine for me.
-
-
-Best regards,
-Krzysztof
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D)/Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
