@@ -2,130 +2,160 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D97CC4781C2
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 01:47:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FEA04781E8
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 02:09:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231207AbhLQAr3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Dec 2021 19:47:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47352 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229775AbhLQAr3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Dec 2021 19:47:29 -0500
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B357CC061574;
-        Thu, 16 Dec 2021 16:47:28 -0800 (PST)
-Received: by mail-lf1-x131.google.com with SMTP id d10so1299012lfg.6;
-        Thu, 16 Dec 2021 16:47:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=AAR+6gokDhVIrnm7EiJygBmXr48WtYzlLYW9kUrZk1I=;
-        b=Qka8zTqjm+QroCBjjfHEMnmj8WmNq3H2uQ1IBvFtxQ11GghpAW1o0uk8IX/TbF+RWb
-         mJkNqP0NwlZW1KHZjLnP+VrX7wSnwe+c8/0K/HotoiBvwiHeqkXahdNNnKIL0Zrggpg1
-         Ysezta2LMpajRr/gzWm/xvzVr00vqjjLz8gbrePUtoPSA0x/4cZxwChelODhjiQYK7va
-         PwS3KyJRwhf1P67jOy8cMoeb7dYVUcHvIULSj9lrvLeepc8ErwHj/yEDEJChjPYVS5FY
-         IobM4twqG0RBriMG+CKfyth4HUbNMOg3hnVKL6wH2h9Rh4tTY66hZfIVTkaFyX11nxMb
-         SWmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=AAR+6gokDhVIrnm7EiJygBmXr48WtYzlLYW9kUrZk1I=;
-        b=TLZ9fChpmDo5+kJJkmxjNWJbl6NsQNFXh1yx/PoUUVMuv8aA76bcmzQ59C7IkVcZzq
-         EePeLxGlzFyt2e0nXTo8nl42iJopUQTjGBqEpdmO7vID+bGZKqYh+TxXaiQcPmtOu2Yb
-         XeO5vJhTvourpbpGipLGtH+sx0ohY1l344UYKAjlKhX58G+pqxxoQzTqimxzc3KUknFl
-         axwfeg7Qvm0eEZMeFe6BQtQQjRYqG6A5ZSWbKmgPnVZqlTxDBuyRKFA4mYcQeBLYeKXF
-         8IzIm6KTdmuFFhyYhOJHcsPAl4JnwZWFCx/Ls6/RB542VbwxUvY5yWuGhSWQfwKD3e9b
-         3ybg==
-X-Gm-Message-State: AOAM533mLOgd6E42mLnphHUClGSo5naEa/ntGP8u2W+zfgB9HiKEO2mA
-        cNcI08YoKM/6oGSHA5n0YVaDe0jgYyU=
-X-Google-Smtp-Source: ABdhPJxmEjB5n5f5oNzo1e6e3pmj4zBm9PN4yweFZPbD0q0qCiRmk0H/reVmoYCFx2qlpB6falgcZQ==
-X-Received: by 2002:a05:6512:1113:: with SMTP id l19mr667843lfg.184.1639702046863;
-        Thu, 16 Dec 2021 16:47:26 -0800 (PST)
-Received: from [192.168.2.145] (94-29-63-156.dynamic.spd-mgts.ru. [94.29.63.156])
-        by smtp.googlemail.com with ESMTPSA id z8sm1413490ljj.86.2021.12.16.16.47.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Dec 2021 16:47:26 -0800 (PST)
-Subject: Re: [PATCH v17 7/7] usb: Specify dependencies on USB_XHCI_PLATFORM
- with 'depends on'
-To:     Matthias Kaehlcke <mka@chromium.org>,
+        id S231634AbhLQBJE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Dec 2021 20:09:04 -0500
+Received: from mailout1.samsung.com ([203.254.224.24]:61457 "EHLO
+        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231610AbhLQBJD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Dec 2021 20:09:03 -0500
+Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
+        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20211217010901epoutp01d0c3535404173f39ac5e5ab8b08f90f5~BZYBudGjr2550125501epoutp01v
+        for <linux-omap@vger.kernel.org>; Fri, 17 Dec 2021 01:09:01 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20211217010901epoutp01d0c3535404173f39ac5e5ab8b08f90f5~BZYBudGjr2550125501epoutp01v
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1639703341;
+        bh=64+sb0x84cnuhFi2hvopvmRPJOEX1nVTHzV4z5VhkmA=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=XsFrqpchyFfyh7Z9O3NhucIDX2RDmyZg6KXK7yrrCg0sPHM3hH+3Sbolm7elRTKV5
+         pRkz4w0I/Btp08nJnlaGKkSOh8EkOXCep2ne/GD/+PdLitG+xTU+md1iKaprQmEZTR
+         a5bhipXo80SEN3ecSGvSLIWqq6uLy4FNmWBrC84o=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20211217010901epcas1p1aac532660ac79a097d7214bd5ad2447f~BZYBNIutk1654616546epcas1p1n;
+        Fri, 17 Dec 2021 01:09:01 +0000 (GMT)
+Received: from epsmges1p5.samsung.com (unknown [182.195.38.237]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 4JFW8N3ccXz4x9QN; Fri, 17 Dec
+        2021 01:08:52 +0000 (GMT)
+Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
+        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
+        60.64.28648.F13EBB16; Fri, 17 Dec 2021 10:08:47 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20211217010847epcas1p2d44a4b1a5fa713c126a48697305c80b3~BZX0XEIHJ2372023720epcas1p2i;
+        Fri, 17 Dec 2021 01:08:47 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20211217010847epsmtrp2a813a03c1dc761672460a3f9f72a6cff~BZX0VH9pq2114021140epsmtrp2Q;
+        Fri, 17 Dec 2021 01:08:47 +0000 (GMT)
+X-AuditID: b6c32a39-ff1ff70000006fe8-5b-61bbe31f38ac
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        5F.EC.29871.E13EBB16; Fri, 17 Dec 2021 10:08:46 +0900 (KST)
+Received: from [10.113.221.102] (unknown [10.113.221.102]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20211217010846epsmtip16f9ee118c19b4120a71dabc79476bd2b~BZX0Dh7us0725907259epsmtip1O;
+        Fri, 17 Dec 2021 01:08:46 +0000 (GMT)
+Subject: Re: [PATCH v2] extcon: fix extcon_get_extcon_dev() error handling
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Felipe Balbi <balbi@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        Felipe Balbi <balbi@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Peter Chen <peter.chen@kernel.org>, linux-usb@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Roger Quadros <rogerq@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Ravi Chandra Sadineni <ravisadineni@chromium.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Pawel Laszczak <pawell@cadence.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org
-References: <20211116200739.924401-1-mka@chromium.org>
- <20211116120642.v17.7.If248f05613bbb06a44eb0b0909be5d97218f417b@changeid>
- <YbvSNta4jCxizaTa@google.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <b0b69294-e7fb-5e7a-80f3-466dd4bdc88a@gmail.com>
-Date:   Fri, 17 Dec 2021 03:47:24 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+From:   Chanwoo Choi <cw00.choi@samsung.com>
+Organization: Samsung Electronics
+Message-ID: <1b4515cc-bddc-ff3d-7789-ea2eb66a2e4e@samsung.com>
+Date:   Fri, 17 Dec 2021 10:31:47 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101
+        Thunderbird/59.0
 MIME-Version: 1.0
-In-Reply-To: <YbvSNta4jCxizaTa@google.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20211216155916.GA7738@kadam>
+Content-Type: text/plain; charset="windows-1252"
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrPJsWRmVeSWpSXmKPExsWy7bCmnq78492JBpsPGFgca3vCbvH633QW
+        i+bF69ks3hyfzmTRtXoni8XWW9IWl3fNYbOYvaSfxeJz7xFGi0XLWpktniw8w2Rxu3EFm8Xp
+        3SUWPw+dZ3Lg89jwaDWrx6ZVnWwe804Geuyfu4bd4+PTWywe7/ddZfPY+b2B3aNvyypGj8+b
+        5AI4o7JtMlITU1KLFFLzkvNTMvPSbZW8g+Od403NDAx1DS0tzJUU8hJzU22VXHwCdN0yc4BO
+        V1IoS8wpBQoFJBYXK+nb2RTll5akKmTkF5fYKqUWpOQUmBboFSfmFpfmpevlpZZYGRoYGJkC
+        FSZkZyz5foG94A9Xxf4DW5gbGO9ydDFyckgImEhMmN3M3sXIxSEksINRYun7jcwQzidGiQnX
+        trBBON8YJR7sXs8I03JiwzKolr2MEj/nzGCBcN4zSkx7+5gFpEpYwEuia/YhNhBbREBH4nLn
+        D7AOZoHrzBJ953czgSTYBLQk9r+4AVbEL6AocfXHY6AVHBy8AnYS025ZgYRZBFQl5r1aC1Yi
+        KhAmcXJbC9gVvAKCEidnPgHbxQk05uunr2BxZgEDiSOL5rBC2OISt57MZ4Kw5SW2v53DDPHB
+        Cw6Jpa3mELaLxM9P86A+E5Z4dXwLO4QtJfH53V6w9yUEljFK/JrcyQThrGeUeDmrE2qSscT+
+        pZOZIGxFiZ2/50JdwSfx7msPK8gzEgK8Eh1tQhAlyhKXH9yFKpeUWNzeyTaBUWkWkn9mIflh
+        FpIfZiH5YQEjyypGsdSC4tz01GLDAlN4hCfn525iBKdsLcsdjNPfftA7xMjEwXiIUYKDWUmE
+        V3H57kQh3pTEyqrUovz4otKc1OJDjKbAIJ7ILCWanA/MGnkl8YYmlgYmZkbGJhaGZoZK4rzP
+        /acnCgmkJ5akZqemFqQWwfQxcXBKNTAF10vyfTOYGD9JustEQmLz1tWVa9YKdm9eHbNEf8/F
+        A0Zua68uPhj87Chb27/TNw8oCJVvzjnGFO3mKasqOE9m4jpp2VvPROYHvZR8tofD55Za9NMY
+        +/+Xb/fKaK/rdDhZv+1lw4abvowvXrUnCfaulFkouaDwivbTbCa+lcXZ/HrFZQYSUu/PTlyw
+        adHH/ZN/nGS/lSCgmpkU+IvzY+zkje971f0SYrrv5RxZJPAzM3Kf47vEU4/mnwt7mxXAdG5i
+        gOatFf1X2C/rufAkcL6e3P3pxKJdVofZevxa325VeRBuIdjC39m9iF0k1OIYb2q0ksTRvMDn
+        eT8v/ymbZxaczfjE+1lvnHtk8Es3DiElluKMREMt5qLiRAAbvHQgYgQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOIsWRmVeSWpSXmKPExsWy7bCSnK7c492JBrdbrCyOtT1ht3j9bzqL
+        RfPi9WwWb45PZ7LoWr2TxWLrLWmLy7vmsFnMXtLPYvG59wijxaJlrcwWTxaeYbK43biCzeL0
+        7hKLn4fOMznweWx4tJrVY9OqTjaPeScDPfbPXcPu8fHpLRaP9/uusnns/N7A7tG3ZRWjx+dN
+        cgGcUVw2Kak5mWWpRfp2CVwZS75fYC/4w1Wx/8AW5gbGuxxdjJwcEgImEic2LGPvYuTiEBLY
+        zSixomUbM0RCUmLaxaNANgeQLSxx+HAxRM1bRonGvvesIDXCAl4SXbMPsYHYIgI6Epc7f4AN
+        Yha4zSzRdOwJM0THbyaJrqcQU9kEtCT2v7gB1sEvoChx9cdjRpANvAJ2EtNuWYGEWQRUJea9
+        WgtWIioQJrFzyWMmEJtXQFDi5MwnLCA2J9CYr5++MoLYzAJ6Ejuu/2KFsMUlbj2ZzwRhy0ts
+        fzuHeQKj8Cwk7bOQtMxC0jILScsCRpZVjJKpBcW56bnFhgWGeanlesWJucWleel6yfm5mxjB
+        cauluYNx+6oPeocYmTgYDzFKcDArifAqLt+dKMSbklhZlVqUH19UmpNafIhRmoNFSZz3QtfJ
+        eCGB9MSS1OzU1ILUIpgsEwenVAPTwjefTojELjq0kEl4Y22S1uO7b6v/l0VpGpvyGMZmi6xk
+        LXug+rqtXern94fKe438ldYVBG8Ue/0zWSpLJrRYcSPzCgHR2WfF1sgJGHn+aa+5zcz0u1O5
+        6AVDu/n0C99uShx64vqoQEZE/Q7jjPtJk4vyNsxPrZgn83Xel82n5dfasYX5yXs/8i/afPdh
+        xpvPXc8neD9ZJMcW/VHmo2tWbeYksZ0hQgXbV5k+v8wvm/zkTv3cdzOjb+38V3v+qYRAvFtR
+        1pTvyoYWHuc0Ja5z2vakS5mzymuf9rLP89M9Evzx9bHNTPplV+RMF/VqbFsRqWsTt8JoaeCK
+        E8zXshg3TJTar/5FYm5gQ2HHk2glluKMREMt5qLiRAAzHHy3SgMAAA==
+X-CMS-MailID: 20211217010847epcas1p2d44a4b1a5fa713c126a48697305c80b3
+X-Msg-Generator: CA
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20211123084357epcas1p14833147710153f9606f14941ac8b0d96
+References: <CGME20211123084357epcas1p14833147710153f9606f14941ac8b0d96@epcas1p1.samsung.com>
+        <20211123083925.GA3277@kili>
+        <562b12ff-e395-c818-787e-7fd6ee6d53fb@samsung.com>
+        <20211216075233.GD1978@kadam>
+        <b4d0c326-3122-c5f9-f376-b122f263d92c@samsung.com>
+        <20211216080558.GE1978@kadam>
+        <c8d18573-5dc1-4d45-f134-2a1dbb7590b6@samsung.com>
+        <20211216155916.GA7738@kadam>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-17.12.2021 02:56, Matthias Kaehlcke пишет:
-> On Tue, Nov 16, 2021 at 12:07:39PM -0800, Matthias Kaehlcke wrote:
->> Some USB controller drivers that depend on the xhci-plat driver
->> specify this dependency using 'select' in Kconfig. This is not
->> recommended for symbols that have other dependencies as it may
->> lead to invalid configurations. Use 'depends on' to specify the
->> dependency instead of 'select'.
+On 12/17/21 12:59 AM, Dan Carpenter wrote:
+> On Thu, Dec 16, 2021 at 05:38:04PM +0900, Chanwoo Choi wrote:
+>>>
+>>> To be honest, I'm not sure how this differs from other functions which
+>>> return -EPROBE_DEFER.  How do other functions guarantee they will only
+>>> be called from probe()?
 >>
->> For dwc3 specify the dependency on USB_XHCI_PLATFORM in
->> USB_DWC3_HOST and USB_DWC3_DUAL_ROLE. Also adjust the
->> dependencies of USB_DWC3_CORE to make sure that at least one
->> of USB_DWC3_HOST, USB_DWC3_GADGET or USB_DWC3_DUAL_ROLE can be
->> selected.
+>> If it is possible to know extcon_get_extcon_dev() will be only callled on probe,
+>> it is no problem. But, it is not able to guarantee that extcon_get_extcon_dev()
+>> is called on probe. Because of this reason, this issue should be handled in each device driver.
 >>
->> Signed-off-by: Matthias Kaehlcke <mka@chromium.org>
->> Reviewed-by: Roger Quadros <rogerq@kernel.org>
->> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+>> -EPROBE_DEFER is only for probe step. If return -EPROBE_DEFER except for probe,
+>> it is wrong return value.
 > 
-> Note: This patch has been removed from the onboard_usb_hub series,
-> together with "ARM: configs: Explicitly enable USB_XHCI_PLATFORM
-> where needed" and "arm64: defconfig: Explicitly enable
-> USB_XHCI_PLATFORM". These patches aren't any longer needed for the
-> series. If maintainers think they are useful independently from
-> the series please pick them or let me know what needs to be
-> changed to get them landed.
+> The future is vast and unknowable.  We can't really future proof code
+> and we should never try do that if it makes the code more complicated
+> right now.
 > 
+> When Andy submitted basically the same patch as me three years ago we
+> worried about future developers so we didn't merge his patch.  But
+> three years later no non-probe() were introduced.  Meanwhile the bad API
+> created bugs in the kernel for current users.
 
-Hi,
+As you mentioned, there were no use case except for probe step.
+OK. I agree this approach.
 
-I don't know what this all is about, perhaps I'm CC'ed semi-randomly
-because touched that Kconfig once.
 
-All I can say here is that the commit message tells us "This is not
-recommended" and doesn't explain what's the actual problem is being
-solved. If there is no real problem, why bother?
+For merging this patch, need to get ack from power-supply and usb maintainer.
+After getting the ack, I'll merge it. Thanks.
+
+-- 
+Best Regards,
+Chanwoo Choi
+Samsung Electronics
