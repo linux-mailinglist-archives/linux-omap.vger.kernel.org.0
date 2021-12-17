@@ -2,26 +2,27 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B2E7478A1B
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 12:37:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16531478A7B
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Dec 2021 12:56:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233331AbhLQLhB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Dec 2021 06:37:01 -0500
-Received: from muru.com ([72.249.23.125]:39412 "EHLO muru.com"
+        id S235747AbhLQL4H (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Dec 2021 06:56:07 -0500
+Received: from muru.com ([72.249.23.125]:39426 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231373AbhLQLhB (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 17 Dec 2021 06:37:01 -0500
+        id S231258AbhLQL4H (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 17 Dec 2021 06:56:07 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id A19EE80FB;
-        Fri, 17 Dec 2021 11:37:41 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 9740E80FB;
+        Fri, 17 Dec 2021 11:56:48 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, Tero Kristo <kristo@kernel.org>
-Subject: [PATCH] dt-bindings: clock: Add binding for TI clksel
-Date:   Fri, 17 Dec 2021 13:36:40 +0200
-Message-Id: <20211217113640.59840-1-tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <kristo@kernel.org>
+Subject: [PATCH 1/2] clk: ti: Move dra7 clock devices out of the legacy section
+Date:   Fri, 17 Dec 2021 13:55:58 +0200
+Message-Id: <20211217115559.15352-1-tony@atomide.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -29,70 +30,56 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In order to prepare for fixing lots of devicetree unique_unit_address
-warnings for the TI clock nodes, let's add a binding for the clksel
-clocks. This allows us to move the overlapping devicetree clocks to be
-children of the related clksel nodes. And then we need the reg property
-only for the parent clksel node.
+I accidentally added some dra7 clock defines to the legacy section that
+we want to stop using. Let's move the defines to the right location.
+Note that this is just a cosmetic fix.
 
-We want to set #clock-cells = <1> in case we ever start parsing the clkcsel
-clocks directly using a clksel driver rather than using the existing
-component clock drivers and child nodes. We also need to update the clock
-drivers to get the IO address from the parent clksel node before updating
-the dts files. These will be posted as separate patches.
-
+Cc: linux-clk@vger.kernel.org
+Cc: Stephen Boyd <sboyd@kernel.org>
 Cc: Tero Kristo <kristo@kernel.org>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- .../bindings/clock/ti/ti,clksel.yaml          | 41 +++++++++++++++++++
- 1 file changed, 41 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
+ include/dt-bindings/clock/dra7.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml b/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
-new file mode 100644
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
-@@ -0,0 +1,41 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/ti/ti,clksel.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/include/dt-bindings/clock/dra7.h b/include/dt-bindings/clock/dra7.h
+--- a/include/dt-bindings/clock/dra7.h
++++ b/include/dt-bindings/clock/dra7.h
+@@ -84,17 +84,10 @@
+ #define DRA7_L3_MAIN_2_CLKCTRL	DRA7_CLKCTRL_INDEX(0x20)
+ #define DRA7_L3_INSTR_CLKCTRL	DRA7_CLKCTRL_INDEX(0x28)
+ 
+-/* iva clocks */
+-#define DRA7_IVA_CLKCTRL	DRA7_CLKCTRL_INDEX(0x20)
+-#define DRA7_SL2IF_CLKCTRL	DRA7_CLKCTRL_INDEX(0x28)
+-
+ /* dss clocks */
+ #define DRA7_DSS_CORE_CLKCTRL	DRA7_CLKCTRL_INDEX(0x20)
+ #define DRA7_BB2D_CLKCTRL	DRA7_CLKCTRL_INDEX(0x30)
+ 
+-/* gpu clocks */
+-#define DRA7_GPU_CLKCTRL	DRA7_CLKCTRL_INDEX(0x20)
+-
+ /* l3init clocks */
+ #define DRA7_MMC1_CLKCTRL	DRA7_CLKCTRL_INDEX(0x28)
+ #define DRA7_MMC2_CLKCTRL	DRA7_CLKCTRL_INDEX(0x30)
+@@ -267,10 +260,17 @@
+ #define DRA7_L3INSTR_L3_MAIN_2_CLKCTRL	DRA7_CLKCTRL_INDEX(0x20)
+ #define DRA7_L3INSTR_L3_INSTR_CLKCTRL	DRA7_CLKCTRL_INDEX(0x28)
+ 
++/* iva clocks */
++#define DRA7_IVA_CLKCTRL		DRA7_CLKCTRL_INDEX(0x20)
++#define DRA7_SL2IF_CLKCTRL		DRA7_CLKCTRL_INDEX(0x28)
 +
-+title: Binding for TI clksel clock
+ /* dss clocks */
+ #define DRA7_DSS_DSS_CORE_CLKCTRL	DRA7_CLKCTRL_INDEX(0x20)
+ #define DRA7_DSS_BB2D_CLKCTRL	DRA7_CLKCTRL_INDEX(0x30)
+ 
++/* gpu clocks */
++#define DRA7_GPU_CLKCTRL		DRA7_CLKCTRL_INDEX(0x20)
 +
-+maintainers:
-+  - Tony Lindgren <tony@atomide.com>
-+
-+description: |
-+  The TI CLKSEL clocks consist of consist of a mux, divider, multiplier and
-+  gate bits.
-+
-+properties:
-+  compatible:
-+    const: ti,clksel
-+
-+  reg:
-+    maxItems: 1
-+    description: The CLKSEL register
-+
-+  "#clock-cells":
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - "#clock-cells"
-+
-+additionalProperties: true
-+
-+examples:
-+  - |
-+    clksel_gfx_fclk: clock@52c {
-+      compatible = "ti,clksel";
-+      reg = <0x25c 0x4>;
-+      #clock-cells = <1>;
-+    };
-+...
+ /* l3init clocks */
+ #define DRA7_L3INIT_MMC1_CLKCTRL	DRA7_CLKCTRL_INDEX(0x28)
+ #define DRA7_L3INIT_MMC2_CLKCTRL	DRA7_CLKCTRL_INDEX(0x30)
 -- 
 2.34.1
