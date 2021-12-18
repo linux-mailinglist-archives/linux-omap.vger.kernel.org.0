@@ -2,89 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 897FE479797
-	for <lists+linux-omap@lfdr.de>; Sat, 18 Dec 2021 00:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74C6247996A
+	for <lists+linux-omap@lfdr.de>; Sat, 18 Dec 2021 08:34:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231388AbhLQXiV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Dec 2021 18:38:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57430 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229914AbhLQXiU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Dec 2021 18:38:20 -0500
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D7B0C061574;
-        Fri, 17 Dec 2021 15:38:20 -0800 (PST)
-Received: by mail-lf1-x131.google.com with SMTP id l22so7738933lfg.7;
-        Fri, 17 Dec 2021 15:38:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=tvLuwZuQc2vFuQbM3eSjczyde6xCYDzNlRUJGi0Zkrg=;
-        b=SmZais2gwhqBddKIjEvC4Z//0TkJ/MVGWod8LzyjqWqOke6DIyRTXv6PcSYOav5I6p
-         7AfiLXQMco+QuuePLY4RHwexzF9NNJRs/Bvs4SBIDjQjtimzFHmgGJp6cprxJw+UpJ7U
-         DvGrh4jXZq+rXI/f6JEt80eX1ZKN6MqCvEZ0s/1/vitpsJmau25HIEf0zSK0WIPyGoL0
-         LnagQZOEby10gv78HVUvaofMr0X1aJOsT4ze/xVzh22sOoSam8VuF3u+xTM2bKr4PlMs
-         Elz+ldEKAcSIBXLGVD/7OW+c87k5WVS7Uw0TIJlUeoaoPVWO8OmX6tchO4IhDCYSUY1h
-         04GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=tvLuwZuQc2vFuQbM3eSjczyde6xCYDzNlRUJGi0Zkrg=;
-        b=ao/ALRdgx9etM7QbbrhjtKfabJb3MCJJiPdH4kMfC2yocwtHEDJdtRVSlGchbPLMBn
-         S4PC3XpQZUn1+bV9skZT/03lzPvges67mSAb6kq5/pCemLawI05hjaWpWJUb1v3Jpbv3
-         Yyn5PySyEt0eJPYaSXPHtiRqy3rnS603003BZR6svmvknqL5pZm6KMi09D4ocaFYr4Ug
-         8DmpMIa46Za3lpJP+Z5CiTvopdrK4miXuaKtB1fD17agF0g9RI2+lLuNHpqZ1b5ZJe1s
-         ad+m0UxFQqPzaynmf+Bxp89kBRz2RbLDHaGHSBzCkC2FHxTVjgYTtUmHsmvNJmR0y0+1
-         /gwA==
-X-Gm-Message-State: AOAM531NKhFj8SSu+0I822yB23WkBYnkaTzFnD8hjePtgSAKbEp+0Tuy
-        5nz5llpZbwWpyetorVQncDrZfTRJDAo=
-X-Google-Smtp-Source: ABdhPJzWv9aV3PULV5S7fOiTwP7zomEueQZzONpp6mhA8Ryq7mVqDKVY3/4jPvZL22vPCwZnPcnInA==
-X-Received: by 2002:a05:6512:228a:: with SMTP id f10mr4836388lfu.13.1639784298641;
-        Fri, 17 Dec 2021 15:38:18 -0800 (PST)
-Received: from [192.168.2.145] (94-29-63-156.dynamic.spd-mgts.ru. [94.29.63.156])
-        by smtp.googlemail.com with ESMTPSA id be25sm1868385ljb.114.2021.12.17.15.38.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Dec 2021 15:38:18 -0800 (PST)
-Subject: Re: [PATCH v1] mfd: tps65910: Set PWR_OFF bit during driver probe
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Svyatoslav Ryhel <clamor95@gmail.com>
-Cc:     linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20211124190104.23554-1-digetx@gmail.com>
-Message-ID: <9e28e8a8-2ff1-1990-b8d5-778e8251fe53@gmail.com>
-Date:   Sat, 18 Dec 2021 02:38:17 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S232276AbhLRHe0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 18 Dec 2021 02:34:26 -0500
+Received: from muru.com ([72.249.23.125]:39774 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230506AbhLRHeZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Sat, 18 Dec 2021 02:34:25 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 67A9880F5;
+        Sat, 18 Dec 2021 07:35:07 +0000 (UTC)
+Date:   Sat, 18 Dec 2021 09:34:22 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "Merlijn B.W. Wajer" <merlijn@archive.org>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Pavel Machek <pavel@ucw.cz>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Dev Null <devnull@uvos.xyz>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: Oops while booting 5.15.2 on Nokia N900
+Message-ID: <Yb2O/m4wMYdMgZbh@atomide.com>
+References: <ee94556b-2c35-c641-a86a-e9e70600aab7@archive.org>
+ <20211210111345.GD799423@darkstar.musicnaut.iki.fi>
+ <7438fa4a-ea92-a3ce-4cc7-8da8a4af02b5@wizzup.org>
+ <YbRL75F/SlcPJjtf@atomide.com>
+ <370c8e25-d582-decb-5dd9-625d6548dcd3@wizzup.org>
+ <Ybbegfbnl8+5Xqc5@atomide.com>
+ <9dc4e8d4-ca35-c931-d4c7-7bae43184ef1@wizzup.org>
+ <7b61f212-b665-f8fb-72c7-4c354e773f5a@wizzup.org>
+ <YbdPn21Xf8HD6ILM@atomide.com>
+ <aaf5d01a-4e31-67cc-7312-4449a30a0de8@wizzup.org>
 MIME-Version: 1.0
-In-Reply-To: <20211124190104.23554-1-digetx@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="D0CIRCs4ifS3yrDj"
+Content-Disposition: inline
+In-Reply-To: <aaf5d01a-4e31-67cc-7312-4449a30a0de8@wizzup.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-24.11.2021 22:01, Dmitry Osipenko пишет:
-> The PWR_OFF bit needs to be set in order to power off properly, without
-> hanging PMIC. This bit needs to be set early in order to allow thermal
-> protection of NVIDIA Terga SoCs to power off hardware properly, otherwise
-> a battery re-plug may be needed on some devices to recover after the hang.
+
+--D0CIRCs4ifS3yrDj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+* Merlijn Wajer <merlijn@wizzup.org> [211216 11:34]:
+> Hi,
 > 
-> Cc: <stable@vger.kernel.org>
-> Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # ASUS TF201
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
->  drivers/mfd/tps65910.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
+> On 13/12/2021 14:50, Tony Lindgren wrote:
+> > * Merlijn Wajer <merlijn@wizzup.org> [211213 10:45]:
+> >
+> >> and I am no longer seeing the oopses or resets when running "sleep 30;
+> >> blkid" from minimal userspace.
+> > 
+> > If disabling the cpu_thermal makes things behave, chances are we have wrong
+> > thermal values in the dts for n900 and possible all 34xx devices. The 36xx
+> > values are behaving AFAIK.
+> 
+> Just disabling the bandgap doesn't seem to be enough. I also tried
+> disabling just the bandgap and thermal_zones, but that is also isn't
+> enough. However, *just* disabling cpu_thermal also isn't enough.
+> 
+> Disabling both cpu_thermal and bandgap is enough to stop the oopses [1].
+> So it sounds like there might potentially be some problems in
+> cpu_thermal as well then?
 
-Hello Lee,
+Not sure what's wrong..
 
-Will you be able to take this patch into yours MFD tree?
+But meanwhile, looks like the patch below produces thermal values, so
+maybe check if it allows idling with thermal enabled on n900. It might
+just leave out all the extra polling.
 
+Regards,
 
+Tony
+
+--D0CIRCs4ifS3yrDj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline; filename="test.patch"
+
+diff --git a/drivers/thermal/ti-soc-thermal/omap3-thermal-data.c b/drivers/thermal/ti-soc-thermal/omap3-thermal-data.c
+--- a/drivers/thermal/ti-soc-thermal/omap3-thermal-data.c
++++ b/drivers/thermal/ti-soc-thermal/omap3-thermal-data.c
+@@ -66,7 +66,8 @@ omap34xx_adc_to_temp[128] = {
+ 
+ /* OMAP34XX data */
+ const struct ti_bandgap_data omap34xx_data = {
+-	.features = TI_BANDGAP_FEATURE_CLK_CTRL | TI_BANDGAP_FEATURE_UNRELIABLE,
++	.features = TI_BANDGAP_FEATURE_CLK_CTRL | TI_BANDGAP_FEATURE_UNRELIABLE |
++		    TI_BANDGAP_FEATURE_CONT_MODE_ONLY,
+ 	.fclock_name = "ts_fck",
+ 	.div_ck_name = "ts_fck",
+ 	.conv_table = omap34xx_adc_to_temp,
+
+--D0CIRCs4ifS3yrDj--
