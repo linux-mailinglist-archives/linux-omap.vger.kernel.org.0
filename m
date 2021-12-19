@@ -2,60 +2,83 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFC9A479CAD
-	for <lists+linux-omap@lfdr.de>; Sat, 18 Dec 2021 21:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 023C547A09E
+	for <lists+linux-omap@lfdr.de>; Sun, 19 Dec 2021 14:17:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232227AbhLRUyu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 18 Dec 2021 15:54:50 -0500
-Received: from relay03.chiroro.ne.jp ([103.14.12.148]:56211 "HELO
-        relay03.chiroro.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with SMTP id S231240AbhLRUyu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 18 Dec 2021 15:54:50 -0500
-X-Greylist: delayed 400 seconds by postgrey-1.27 at vger.kernel.org; Sat, 18 Dec 2021 15:54:49 EST
-Received: (qmail 18635 invoked by uid 0); 19 Dec 2021 05:48:08 +0900
-Received: from unknown (HELO sv04.ifn-server.jp) (103.14.12.13)
-  by relay03.chiroro.ne.jp with SMTP; 19 Dec 2021 05:48:08 +0900
-Received: (qmail 964 invoked by uid 48); 19 Dec 2021 05:48:08 +0900
-To:     linux-omap@vger.kernel.org
-Subject: =?ISO-2022-JP?B?GyRCJD0kTkI+JE4kNEFqQ0wbKEI=?=
-X-PHP-Originating-Script: 10068:class-phpmailer.php
-Date:   Sat, 18 Dec 2021 20:48:08 +0000
-From:   =?ISO-2022-JP?B?GyRCQiQxYCRIJSglLyU5JUYlaiUiJEokaSEiM3Q8MDJxPFIlWyVzJUAbKEI=?= 
-        <wordpress@hondaexterior.com>
-Message-ID: <05bb2ce6580b56d7fc3f8fbd825d0633@hondaexterior.com>
-X-Priority: 3
-X-Mailer: PHPMailer 5.2.7 (https://github.com/PHPMailer/PHPMailer/)
+        id S234046AbhLSNRg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 19 Dec 2021 08:17:36 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:48212 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233030AbhLSNRg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 19 Dec 2021 08:17:36 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id C46E41C0B76; Sun, 19 Dec 2021 14:17:34 +0100 (CET)
+Date:   Sun, 19 Dec 2021 14:17:34 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Dev Null <devnull@uvos.xyz>, Tony Lindgren <tony@atomide.com>,
+        Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        soc@kernel.org, Rob Herring <robh+dt@kernel.org>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] Droid3: add initial DTS
+Message-ID: <20211219131734.GA28481@duo.ucw.cz>
+References: <20211212230459.13579-1-merlijn@wizzup.org>
+ <20211212230459.13579-3-merlijn@wizzup.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-2022-JP
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="tKW2IUtsqtDRztdT"
+Content-Disposition: inline
+In-Reply-To: <20211212230459.13579-3-merlijn@wizzup.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-?? Barbara want to meet you! Click Here: https://bit.ly/3qa5oCK?xia ?? 様
 
-お問い合わせありがとうございます。
-内容を確認し、折り返しご連絡させて頂きます。
+--tKW2IUtsqtDRztdT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-※ご返信には数日かかる場合もございますので、ご了承ください。
+Hi!
 
--------------------------------------------------------
+> +		backlight_led: led@0 {
+=2E..
+> +			label =3D ":backlight";
+> +		};
 
-お名前 : ?? Barbara want to meet you! Click Here: https://bit.ly/3qa5oCK?xia ??
+This is same as Droid 4, good.
 
-お名前（ふりがな）: x85mms
+> +		led@1 {
+=2E..
+> +			label =3D ":kbd_backlight";
+> +		};
+> +	};
 
-郵便番号 : yok9d49
+This one is new. We should make sure it is same label as on PCs, and
+then document it in Documentation/leds/well-known-leds.txt .
 
-住所 : cd7brz2
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
 
-電話番号 : 403247707863
+--tKW2IUtsqtDRztdT
+Content-Type: application/pgp-signature; name="signature.asc"
 
-メールアドレス : linux-omap@vger.kernel.org
+-----BEGIN PGP SIGNATURE-----
 
-お問い合わせ項目 : その他のご相談
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYb8w7gAKCRAw5/Bqldv6
+8qhvAJ4j98N12qs8ggWsOf8fa3uQocG3QQCgkKqMgZBqF8OhavVUJ8iZ6MyJiJg=
+=Ovad
+-----END PGP SIGNATURE-----
 
-お問い合わせ内容など : 
-acp2ln1
-
--------------------------------------------------------
-
+--tKW2IUtsqtDRztdT--
