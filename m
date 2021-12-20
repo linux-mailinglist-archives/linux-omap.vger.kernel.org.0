@@ -2,97 +2,149 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49A0147A410
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Dec 2021 05:20:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EF1747A7F8
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Dec 2021 11:53:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237404AbhLTEUU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 19 Dec 2021 23:20:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33244 "EHLO
+        id S229942AbhLTKxu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Dec 2021 05:53:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237401AbhLTEUU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 19 Dec 2021 23:20:20 -0500
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A715C061401
-        for <linux-omap@vger.kernel.org>; Sun, 19 Dec 2021 20:20:20 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id q17so7050896plr.11
-        for <linux-omap@vger.kernel.org>; Sun, 19 Dec 2021 20:20:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=idRrPNY8lT9qvJ1RX4lP6sDX0kRhviqifoOXKRGv1rY=;
-        b=HI/6YkCt3ky43jRDNEN2lf6M22JE6+kU4T+uMtFrbfWX8vNs6ZusoVEID1nBzvAShn
-         S5ZTX7Ta1P9uRa9kd/zrtJZhAtjeuHfoK85oJ1GeE2Dmh+H8ThxhaXpqrOXewiNLqOSQ
-         o5L6XC7ifvxgGIy6Rq0q29P9z//gZq4zSt2X6nIn1ewKEtKWFLpzMiRl3XaW+2KCsW1H
-         pPvGUDfqd1gxPY4X2f+ExStB3eDWtWpgRF3Gwdq/IRh/vjDpkLIdJ3PHlddVT2e1m4bx
-         FfoHQpIUHyIZn/2ipJ3kPNh1POZNSW/ZlOciYn3QWbrNNhMav5W8xhcr1PHVOQgsXOqL
-         pRsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=idRrPNY8lT9qvJ1RX4lP6sDX0kRhviqifoOXKRGv1rY=;
-        b=DnQ2zEoxJSOlcatcmY/Btu1wt1v/m3GX4QutB6M1xaMln0jViOktPYHdAPruOQOskg
-         GiaosDEP3cZa+2l72jy7K0Ek92Y9FQswZuTx6xborlt33X3LgFrP6ka5MBSTeCtwNklG
-         NpgKBsiPGwKGFYGvHII9yNlQNzdZx3DS97LnzEv5DCbVvu/7NUxT5o0GmkGHrY/TMcH6
-         nVzhlBLugZAjtbBxxnSZupXgPGBpP9rlErhrnyvzsUaskjs+qmftzYBrgH0I8nU4kkOK
-         xPOHL2uQZ48h3KzE9ff7weJBaVAGtrNtPRrNMGfI/laPvgnxo3vI/0wizoLG02YUll+i
-         zvlA==
-X-Gm-Message-State: AOAM530DNXmClyttRp4z18vedASXME7vXrfznTW6UgKtASqENGM/W1MR
-        mDeve1TRWcD3Gyu6OCg2NjVSMg==
-X-Google-Smtp-Source: ABdhPJzGZHTTmdWj0H2HUPNmPUFshIz7BAck3SWavB9iLe038KjqDHtpEYTn5mz3kFKV/RLuZgwPPw==
-X-Received: by 2002:a17:90b:164c:: with SMTP id il12mr17891712pjb.241.1639974019397;
-        Sun, 19 Dec 2021 20:20:19 -0800 (PST)
-Received: from localhost ([106.201.42.111])
-        by smtp.gmail.com with ESMTPSA id n14sm6000281pgd.80.2021.12.19.20.20.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Dec 2021 20:20:18 -0800 (PST)
-Date:   Mon, 20 Dec 2021 09:50:16 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     soc@kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: Remove "spidev" nodes
-Message-ID: <20211220042016.cnk332uthdxziv5a@vireshk-i7>
-References: <20211217221232.3664417-1-robh@kernel.org>
+        with ESMTP id S229623AbhLTKxu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Dec 2021 05:53:50 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE97FC061574;
+        Mon, 20 Dec 2021 02:53:49 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D19E60F59;
+        Mon, 20 Dec 2021 10:53:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A4AC36AE8;
+        Mon, 20 Dec 2021 10:53:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639997628;
+        bh=4e786f0nM+mUPF/RnX4DJlDxDuErC7twDTA11GFsfkM=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=c26GdbOJX6ha7RvGLKeMPcY4aT7JoOuGBijU2Gw/DzzBU8A7E7cfqi572C8gz9xw5
+         679vtS7a5fuaHz9Ya8ZdGB3fQaXAC/jeNmjPqRlkKslaf6TRHObn+U1PosPQEoWMKn
+         FH+xg1ouyr7WTsVTxiih7rHIkQtoiIyNJkof6RKXaWwa8v3fQKeYgOHsn2vcCBK837
+         SNgIrYiOPjAhCFk8gYTRCRQfqZWPMkNOUWLUgjP3jUFTTHaz9wIcEK1ZZ7q/d1Bf8D
+         YR8CVUZLtRaFq/YJF6QOJkDbmmQVgn8yi4QtVzf8Jjn4u2gdQ6iiwbIaiQbVujyjIS
+         yfVcmsXawbshg==
+Subject: Re: [PATCH v3 3/4] memory: omap-gpmc: Use a compatible match table
+ when checking for NAND controller
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        tony@atomide.com
+Cc:     robh@kernel.org, kishon@ti.com, nm@ti.com, vigneshr@ti.com,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20211217102945.17432-1-rogerq@kernel.org>
+ <20211217102945.17432-4-rogerq@kernel.org>
+ <88ff0e3e-6709-68fc-88cb-f915dfddbe86@canonical.com>
+From:   Roger Quadros <rogerq@kernel.org>
+Message-ID: <76076ff5-22d9-82d8-ba9e-77755e1ac433@kernel.org>
+Date:   Mon, 20 Dec 2021 12:53:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211217221232.3664417-1-robh@kernel.org>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <88ff0e3e-6709-68fc-88cb-f915dfddbe86@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 17-12-21, 16:12, Rob Herring wrote:
-> "spidev" is not a real device, but a Linux implementation detail. It has
-> never been documented either. The kernel has WARNed on the use of it for
-> over 6 years. Time to remove its usage from the tree.
-> 
-> Cc: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> Arnd, Olof, Can you please apply this directly.
-> 
->  arch/arm/boot/dts/spear1310-evb.dts           | 16 ---------
->  arch/arm/boot/dts/spear1340-evb.dts           | 16 ---------
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
--- 
-viresh
+On 17/12/2021 17:21, Krzysztof Kozlowski wrote:
+> On 17/12/2021 11:29, Roger Quadros wrote:
+>> As more compatibles can be added to the GPMC NAND controller driver
+>> use a compatible match table.
+>>
+>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>> ---
+>>  drivers/memory/omap-gpmc.c                   | 8 +++++++-
+>>  drivers/mtd/nand/raw/omap2.c                 | 2 +-
+>>  include/linux/platform_data/mtd-nand-omap2.h | 5 +++++
+>>  3 files changed, 13 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+>> index 624153048182..814ddb45c13d 100644
+>> --- a/drivers/memory/omap-gpmc.c
+>> +++ b/drivers/memory/omap-gpmc.c
+>> @@ -2091,6 +2091,7 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>>  	u32 val;
+>>  	struct gpio_desc *waitpin_desc = NULL;
+>>  	struct gpmc_device *gpmc = platform_get_drvdata(pdev);
+>> +	bool is_nand = false;
+>>  
+>>  	if (of_property_read_u32(child, "reg", &cs) < 0) {
+>>  		dev_err(&pdev->dev, "%pOF has no 'reg' property\n",
+>> @@ -2183,7 +2184,12 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>>  		}
+>>  	}
+>>  
+>> -	if (of_device_is_compatible(child, "ti,omap2-nand")) {
+>> +#if defined(CONFIG_MTD_NAND_OMAP2)
+> 
+> if (IS_ENABLED()) is preferred. If needed, you could make omap_nand_ids
+> symbol visible always (so without ifdef around it), because extern
+> structure should not have impact when not defined (if I recall
+> correctly...).
+> 
+>> +	if (of_match_node(omap_nand_ids, child))
+>> +		is_nand = true;
+>> +#endif
+>> +
+>> +	if (is_nand) {
+>>  		/* NAND specific setup */
+>>  		val = 8;
+>>  		of_property_read_u32(child, "nand-bus-width", &val);
+>> diff --git a/drivers/mtd/nand/raw/omap2.c b/drivers/mtd/nand/raw/omap2.c
+>> index b26d4947af02..fff834ee726f 100644
+>> --- a/drivers/mtd/nand/raw/omap2.c
+>> +++ b/drivers/mtd/nand/raw/omap2.c
+>> @@ -2352,7 +2352,7 @@ static int omap_nand_remove(struct platform_device *pdev)
+>>  	return ret;
+>>  }
+>>  
+>> -static const struct of_device_id omap_nand_ids[] = {
+>> +const struct of_device_id omap_nand_ids[] = {
+>>  	{ .compatible = "ti,omap2-nand", },
+>>  	{},
+>>  };
+> 
+> I think OMAP2 NAND driver can be a module, so this should have
+> EXPORT_SYMBOL.
+
+To make it work in all combinations (e.g. omap_gpmc built in and
+nand/raw/omap2.c as module) I had to define omap_nand_ids table as static
+in the linux/platform_data/mtd-nand-omap2.h header.
+
+EXPORT_SYMBOL will of course be not required there. ;)
+
+> 
+>> diff --git a/include/linux/platform_data/mtd-nand-omap2.h b/include/linux/platform_data/mtd-nand-omap2.h
+>> index de6ada739121..e1bb90a8db03 100644
+>> --- a/include/linux/platform_data/mtd-nand-omap2.h
+>> +++ b/include/linux/platform_data/mtd-nand-omap2.h
+>> @@ -61,4 +61,9 @@ struct gpmc_nand_regs {
+>>  	void __iomem	*gpmc_bch_result5[GPMC_BCH_NUM_REMAINDER];
+>>  	void __iomem	*gpmc_bch_result6[GPMC_BCH_NUM_REMAINDER];
+>>  };
+>> +
+>> +#if defined(CONFIG_MTD_NAND_OMAP2)
+>> +extern const struct of_device_id omap_nand_ids[];
+>> +#endif
+>> +
+>>  #endif
+>>
+> 
+> 
+> Best regards,
+> Krzysztof
+> 
+
+cheers,
+-roger
