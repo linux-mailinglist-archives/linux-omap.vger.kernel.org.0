@@ -2,138 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 759DF47AA64
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Dec 2021 14:32:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30B5E47AA80
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Dec 2021 14:41:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231536AbhLTNcD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Dec 2021 08:32:03 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:55078 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230176AbhLTNcD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Dec 2021 08:32:03 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BKDVkKh032531;
-        Mon, 20 Dec 2021 07:31:46 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1640007106;
-        bh=5Xojthp86AJPaaXIqo7bpdpUtIVJBB4beqVhAYVWPmY=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=m6x5oO5rFQzL7oRKY0b2681tm5TN8vEsXyNhyFDNyWClWzsK1gtRNRVPSYdF6j3va
-         fPXbbrXCY7ibk6fx2bPoALMHzh7Ri+JcmxCL84e2jdlp/tEhrQ4F4UYnyhUIdO/sYA
-         DmSsvJPrvdymW+wLjfm6WErMr66tFzENq4EIA/Ls=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BKDVkMB115486
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 20 Dec 2021 07:31:46 -0600
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 20
- Dec 2021 07:31:46 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 20 Dec 2021 07:31:46 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BKDVjhM041337;
-        Mon, 20 Dec 2021 07:31:45 -0600
-Date:   Mon, 20 Dec 2021 07:31:45 -0600
-From:   Nishanth Menon <nm@ti.com>
-To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        <SantoshShilimkarssantosh@kernel.org>, <linux-pm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH] soc: ti: smartreflex: Use platform_get_irq_optional() to
- get the interrupt
-Message-ID: <20211220133145.uiww2nuormjks7gc@unruly>
-References: <20211218153943.28014-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        id S230300AbhLTNlo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Dec 2021 08:41:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229539AbhLTNln (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Dec 2021 08:41:43 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EC3C061574
+        for <linux-omap@vger.kernel.org>; Mon, 20 Dec 2021 05:41:43 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id j140-20020a1c2392000000b003399ae48f58so9605249wmj.5
+        for <linux-omap@vger.kernel.org>; Mon, 20 Dec 2021 05:41:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NOr18g898ZyZfaDwFoqGSOzkJGi0rvijYF97Ulw267I=;
+        b=bdPgXJuVndQYn+C2MIXnPu/ZCWxkInMku0G6xt7R3rPwziCSY4AJzC0zr6uKkXDvfr
+         FdrB17CJkmYek460U5qNguz3OmWcAxBIe/3PL2K7eRmjQ9sVOrulIiIaSmMTZuEqOYpi
+         ZvWD5aTOuRFa9SWPKR9A31rRA6W0UhhRtwQ2KLI+UC6wBbSBq4eIgFXnbYF979Ej4Cp9
+         mMZ+dwmoGYWlnQFZ2gpEWPhof8ft+SXJQ5QWcagWUyUSpPXu/AGDUQATqMzPfTl6mLeK
+         SQafUpteG2wLZ5jGcaUeabxbydkF8OU+GKzxCEZhxRKVns2O2C3L+b5wmlIbrxU93ikt
+         jzyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NOr18g898ZyZfaDwFoqGSOzkJGi0rvijYF97Ulw267I=;
+        b=LdGUC8jMOJ5adfhIPWUBNqLguGKbe2NW4LQyl6sqI0Uzn/ersEWNrHNv3U1KdyhAgO
+         GrU/lyPgAvXnMND7iIXzQ78GaUrIRfvpTDRQ8QFm6YBwbK0YIFN6i83+8MCLHwa7Jn5S
+         wMqjwentJXhaBPUDvKDCi86vAM8ZLZwpvWJ0TvEd/NSwO/UJPI/lcBGCulGdCLbLYi8y
+         fTA5P1vzFLf2EvPaht7txI/RFSyEQuIHi+zfKJinzNijtiieJC+7g4hAPu7nb9HEWbq0
+         gMor0eB9LerRP127PU7H9WDkE2vhk0lsy6E80diXyDzFg3dGGQ/odgj23yCar6TOfmCI
+         RLkA==
+X-Gm-Message-State: AOAM530ClOclGeYAcRt18d1TPBeLqLB9CDw4KFSamQQ91J97bEy4pYQZ
+        q7SKWkfbT2tnN0DLrA7b188RZjygiJVDvQ==
+X-Google-Smtp-Source: ABdhPJyot1nFOvUWKiDPHu0fq6oU3wei5emmGG4GffCiJ8ymTB9qthb9sUDk8Gc+b4GS63q3liJ1SQ==
+X-Received: by 2002:a05:600c:4f13:: with SMTP id l19mr8113619wmq.194.1640007701824;
+        Mon, 20 Dec 2021 05:41:41 -0800 (PST)
+Received: from localhost ([193.209.96.43])
+        by smtp.gmail.com with ESMTPSA id l13sm6223508wms.1.2021.12.20.05.41.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Dec 2021 05:41:41 -0800 (PST)
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org
+Subject: [PATCH] ARM: dts: am334x: pdu001: Use correct node name for RTC
+Date:   Mon, 20 Dec 2021 14:41:39 +0100
+Message-Id: <20211220134139.683412-1-thierry.reding@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20211218153943.28014-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 15:39-20211218, Lad Prabhakar wrote:
-> platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
-> allocation of IRQ resources in DT core code, this causes an issue
-> when using hierarchical interrupt domains using "interrupts" property
-> in the node as this bypasses the hierarchical setup and messes up the
-> irq chaining.
-> 
-> In preparation for removal of static setup of IRQ resource from DT core
-> code use platform_get_irq_optional().
-> 
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> ---
-> Hi,
-> 
-> Dropping usage of platform_get_resource() was agreed based on
-> the discussion [0].
-> 
-> [0] https://patchwork.kernel.org/project/linux-renesas-soc/
-> patch/20211209001056.29774-1-prabhakar.mahadev-lad.rj@bp.renesas.com/
-> 
-> Cheers,
-> Prabhakar
-> ---
->  drivers/soc/ti/smartreflex.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/soc/ti/smartreflex.c b/drivers/soc/ti/smartreflex.c
-> index b5b2fa538d5c..4f311e00fa46 100644
-> --- a/drivers/soc/ti/smartreflex.c
-> +++ b/drivers/soc/ti/smartreflex.c
-> @@ -819,7 +819,7 @@ static int omap_sr_probe(struct platform_device *pdev)
->  {
->  	struct omap_sr *sr_info;
->  	struct omap_sr_data *pdata = pdev->dev.platform_data;
-> -	struct resource *mem, *irq;
-> +	struct resource *mem;
->  	struct dentry *nvalue_dir;
->  	int i, ret = 0;
->  
-> @@ -844,7 +844,12 @@ static int omap_sr_probe(struct platform_device *pdev)
->  	if (IS_ERR(sr_info->base))
->  		return PTR_ERR(sr_info->base);
->  
-> -	irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-> +	ret = platform_get_irq_optional(pdev, 0);
-> +	if (ret <= 0 && ret != -ENXIO)
-> +		return ret ? ret : -ENXIO;
-^^ minor: This is a better check compared to what existed, might be good
-to add that to commit message, also does this cause the driver to fail
-probe silently?
+From: Thierry Reding <treding@nvidia.com>
 
-> +	if (ret > 0)
-> +		sr_info->irq = ret;
-> +	ret = 0;
->  
->  	sr_info->fck = devm_clk_get(pdev->dev.parent, "fck");
->  	if (IS_ERR(sr_info->fck))
-> @@ -870,9 +875,6 @@ static int omap_sr_probe(struct platform_device *pdev)
->  	sr_info->autocomp_active = false;
->  	sr_info->ip_type = pdata->ip_type;
->  
-> -	if (irq)
-> -		sr_info->irq = irq->start;
-> -
->  	sr_set_clk_length(sr_info);
->  
->  	list_add(&sr_info->node, &sr_list);
-> -- 
-> 2.17.1
-> 
+RTC devices should be named "rtc" according to the standard RTC device
+tree schema.
 
-Otherwise, looks fine to me. but it is a little late since I have sent out my
-5.17 PR. We can try for rc OR 5.18.
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+---
+ arch/arm/boot/dts/am335x-pdu001.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/arm/boot/dts/am335x-pdu001.dts b/arch/arm/boot/dts/am335x-pdu001.dts
+index b793beeab245..ce6cc2b96654 100644
+--- a/arch/arm/boot/dts/am335x-pdu001.dts
++++ b/arch/arm/boot/dts/am335x-pdu001.dts
+@@ -353,7 +353,7 @@ tft-panel@0 {
+ 		};
+ 	};
+ 
+-	mcp79400: mcp79400@6f {
++	mcp79400: rtc@6f {
+ 		compatible = "microchip,mcp7940x";
+ 		reg = <0x6f>;
+ 	};
 -- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D)/Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+2.34.1
+
