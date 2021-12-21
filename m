@@ -2,155 +2,142 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6258A47C775
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Dec 2021 20:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A57EA47C7FB
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Dec 2021 21:01:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241804AbhLUT2u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Dec 2021 14:28:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60248 "EHLO
+        id S231580AbhLUUBg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Dec 2021 15:01:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241788AbhLUT2t (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Dec 2021 14:28:49 -0500
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CCF3C061574;
-        Tue, 21 Dec 2021 11:28:49 -0800 (PST)
-Received: by mail-yb1-xb29.google.com with SMTP id d10so41883175ybe.3;
-        Tue, 21 Dec 2021 11:28:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=AM2Uy8hfCe/i+HeQMjVJEEeI2+nwC5cXwxDoLTyBZRs=;
-        b=my7aLWciq01DAjEsUYGZ57DPXLh4HYLwg37ao9AgAKfrV3gx5cf75B5+KPRnYjxHah
-         Ypg37fb4iU4SVde75W7aoz2lD7URnKs4fiZmA2eSkCgnSJQDvFurG3nAidA6bE1Vk08V
-         RudzIfYTGs8+sbQVBrW0nTOgqCl7A6nx+/hE0dERj3HaJ0drwZE4kof4ocw7u+4i8KdI
-         MHSWyoJLbD1FGTYq4zTNoFu2avU5wOArZYAxZDZWFmUKilJUR60jrBVzk049/dJRPQAM
-         EqAP+az2OWVcjboCqDlDeNZR9O1zgQA2+SU8qStmKSWB4DRzqjmALgJTnf55FOEjIqNY
-         JOGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=AM2Uy8hfCe/i+HeQMjVJEEeI2+nwC5cXwxDoLTyBZRs=;
-        b=F0ZCHwVQNBp2WvTPhSAVj+7jcES+P1Q61hh5ZvenTPnAtQq1ZEF2MiliMqbmvf1/7Z
-         3LYcKhnBuuLH3TP9SdbJ9bmTuNvO2TpKD4xLpKAfZdTNKe/8inyLUsN1XUs2GxjyDjDy
-         iBGjMBDcSVUljEfySKfccULs1XysM2xrW8bKw+wtAskxyusymqwpKC3PlgQNqEmo9vlm
-         CzwRek99GbE1AMM4IXVpI5Nu3NxrobfEkcRGOsNvKWGmuMQgXhfQNCFEr2tgo1wU0rk6
-         Kb4DFUY61L1twVxQLVCTHvIdolmwaYyPWobIvSUFvCVWrMJOHrQMQQuLPek2XVqIcWm1
-         QZtg==
-X-Gm-Message-State: AOAM532kcIAVdl3vC271UiyCGJrtds04bvFQBrphm6AN/5C4hsnfXZNF
-        zj7u4QTFeitVLTvsV/iv97YAgoX7dkcllMRk2rtdMnV3kJs=
-X-Google-Smtp-Source: ABdhPJw6TLEc+5b2nIlx4c+4oRWUNExrcI82cGFnbKrOgqKo8MgCtrTH+6CMIJCoVSZSFjPRAa4WjarbX9OgtHQrQp4=
-X-Received: by 2002:a25:abe3:: with SMTP id v90mr6112157ybi.315.1640114928720;
- Tue, 21 Dec 2021 11:28:48 -0800 (PST)
+        with ESMTP id S230350AbhLUUBf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Dec 2021 15:01:35 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E870C061574;
+        Tue, 21 Dec 2021 12:01:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1ED5EB819B2;
+        Tue, 21 Dec 2021 20:01:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1DFC36AE8;
+        Tue, 21 Dec 2021 20:01:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640116892;
+        bh=vJkLjaATflEPsX+S3P13UPpgq8GAW8ytUv0DIV3pq8A=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=L7NkvhBKk8LWq5KpKKI3MfV/2OUSKilcD0MPAhJFzYbs6WDWSHpy7kTkKsizL2Pux
+         9pP7ahSftL8dbC7iGD5Wll8t+Lc5jlA5Hlz22y80o7I+k0NvYf5CjBjYeVcotP56U5
+         UiLwWU7Bb0ngLAuOHwiL1DkF+OHC+P4cIozUR3cvQOKl9i9X4gJm9woahhlXUaPQQ/
+         nUqeKPIlO1xn5pX1gfGuYd+HIsOib1LRyxeKQOWB1g8C/6p+srbfJo4FWgUccYZTnK
+         PBRDqop+reGNUjbTPQfVV7KOzZm0hkadmvw6qfvpPL/P+4SrBGGE4G+mp7X7/LLFlm
+         LKlt9tzZMabuQ==
+Subject: Re: [PATCH v4 3/4] memory: omap-gpmc: Use a compatible match table
+ when checking for NAND controller
+To:     krzysztof.kozlowski@canonical.com, miquel.raynal@bootlin.com,
+        tony@atomide.com
+Cc:     robh@kernel.org, kishon@ti.com, nm@ti.com, vigneshr@ti.com,
+        linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20211221131757.2030-1-rogerq@kernel.org>
+ <20211221131757.2030-4-rogerq@kernel.org>
+From:   Roger Quadros <rogerq@kernel.org>
+Message-ID: <51b8e895-95e1-0024-1457-ec534985c9f0@kernel.org>
+Date:   Tue, 21 Dec 2021 22:01:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-References: <20211218153943.28014-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20211220133145.uiww2nuormjks7gc@unruly>
-In-Reply-To: <20211220133145.uiww2nuormjks7gc@unruly>
-From:   "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date:   Tue, 21 Dec 2021 19:28:22 +0000
-Message-ID: <CA+V-a8unRn=TJSnikVJffB3ebQn7RofoCn2yDLne15gW-ch9Yg@mail.gmail.com>
-Subject: Re: [PATCH] soc: ti: smartreflex: Use platform_get_irq_optional() to
- get the interrupt
-To:     Nishanth Menon <nm@ti.com>
-Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        SantoshShilimkarssantosh@kernel.org,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20211221131757.2030-4-rogerq@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Nishanth,
+Hi Miquel,
 
-Thank you for the review.
+On 21/12/2021 15:17, Roger Quadros wrote:
+> As more compatibles can be added to the GPMC NAND controller driver
+> use a compatible match table.
+> 
+> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> ---
+>  drivers/memory/omap-gpmc.c                   | 6 +++++-
+>  drivers/mtd/nand/raw/omap2.c                 | 5 +----
 
-On Mon, Dec 20, 2021 at 1:31 PM Nishanth Menon <nm@ti.com> wrote:
->
-> On 15:39-20211218, Lad Prabhakar wrote:
-> > platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
-> > allocation of IRQ resources in DT core code, this causes an issue
-> > when using hierarchical interrupt domains using "interrupts" property
-> > in the node as this bypasses the hierarchical setup and messes up the
-> > irq chaining.
-> >
-> > In preparation for removal of static setup of IRQ resource from DT core
-> > code use platform_get_irq_optional().
-> >
-> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> > ---
-> > Hi,
-> >
-> > Dropping usage of platform_get_resource() was agreed based on
-> > the discussion [0].
-> >
-> > [0] https://patchwork.kernel.org/project/linux-renesas-soc/
-> > patch/20211209001056.29774-1-prabhakar.mahadev-lad.rj@bp.renesas.com/
-> >
-> > Cheers,
-> > Prabhakar
-> > ---
-> >  drivers/soc/ti/smartreflex.c | 12 +++++++-----
-> >  1 file changed, 7 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/soc/ti/smartreflex.c b/drivers/soc/ti/smartreflex.c
-> > index b5b2fa538d5c..4f311e00fa46 100644
-> > --- a/drivers/soc/ti/smartreflex.c
-> > +++ b/drivers/soc/ti/smartreflex.c
-> > @@ -819,7 +819,7 @@ static int omap_sr_probe(struct platform_device *pdev)
-> >  {
-> >       struct omap_sr *sr_info;
-> >       struct omap_sr_data *pdata = pdev->dev.platform_data;
-> > -     struct resource *mem, *irq;
-> > +     struct resource *mem;
-> >       struct dentry *nvalue_dir;
-> >       int i, ret = 0;
-> >
-> > @@ -844,7 +844,12 @@ static int omap_sr_probe(struct platform_device *pdev)
-> >       if (IS_ERR(sr_info->base))
-> >               return PTR_ERR(sr_info->base);
-> >
-> > -     irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-> > +     ret = platform_get_irq_optional(pdev, 0);
-> > +     if (ret <= 0 && ret != -ENXIO)
-> > +             return ret ? ret : -ENXIO;
-> ^^ minor: This is a better check compared to what existed, might be good
-> to add that to commit message, also does this cause the driver to fail
-> probe silently?
->
-Yes, the probe will fail silently in case of error while getting an
-interrupt if it exists in DT. Do you want me to add an error message
-in case of an error? I'll be sending v2 anyway dropping the check for
-IRQ0.
+Will need your Ack for this one as well. Thanks :)
 
-> > +     if (ret > 0)
-> > +             sr_info->irq = ret;
-> > +     ret = 0;
-> >
-> >       sr_info->fck = devm_clk_get(pdev->dev.parent, "fck");
-> >       if (IS_ERR(sr_info->fck))
-> > @@ -870,9 +875,6 @@ static int omap_sr_probe(struct platform_device *pdev)
-> >       sr_info->autocomp_active = false;
-> >       sr_info->ip_type = pdata->ip_type;
-> >
-> > -     if (irq)
-> > -             sr_info->irq = irq->start;
-> > -
-> >       sr_set_clk_length(sr_info);
-> >
-> >       list_add(&sr_info->node, &sr_list);
-> > --
-> > 2.17.1
-> >
->
-> Otherwise, looks fine to me. but it is a little late since I have sent out my
-> 5.17 PR. We can try for rc OR 5.18.
->
-rc should be OK, as there will be tree wide changes.
 
-Cheers,
-Prabhakar
+>  include/linux/platform_data/mtd-nand-omap2.h | 9 ++++++++-
+>  3 files changed, 14 insertions(+), 6 deletions(-)
+
+cheers,
+-roger
+
+> 
+> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+> index 624153048182..d19ffc895e5b 100644
+> --- a/drivers/memory/omap-gpmc.c
+> +++ b/drivers/memory/omap-gpmc.c
+> @@ -2091,6 +2091,7 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>  	u32 val;
+>  	struct gpio_desc *waitpin_desc = NULL;
+>  	struct gpmc_device *gpmc = platform_get_drvdata(pdev);
+> +	bool is_nand = false;
+>  
+>  	if (of_property_read_u32(child, "reg", &cs) < 0) {
+>  		dev_err(&pdev->dev, "%pOF has no 'reg' property\n",
+> @@ -2183,7 +2184,10 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>  		}
+>  	}
+>  
+> -	if (of_device_is_compatible(child, "ti,omap2-nand")) {
+> +	if (of_match_node(omap_nand_ids, child))
+> +		is_nand = true;
+> +
+> +	if (is_nand) {
+>  		/* NAND specific setup */
+>  		val = 8;
+>  		of_property_read_u32(child, "nand-bus-width", &val);
+> diff --git a/drivers/mtd/nand/raw/omap2.c b/drivers/mtd/nand/raw/omap2.c
+> index b26d4947af02..e6dd8b4cf0d2 100644
+> --- a/drivers/mtd/nand/raw/omap2.c
+> +++ b/drivers/mtd/nand/raw/omap2.c
+> @@ -2352,10 +2352,7 @@ static int omap_nand_remove(struct platform_device *pdev)
+>  	return ret;
+>  }
+>  
+> -static const struct of_device_id omap_nand_ids[] = {
+> -	{ .compatible = "ti,omap2-nand", },
+> -	{},
+> -};
+> +/* omap_nand_ids defined in linux/platform_data/mtd-nand-omap2.h */
+>  MODULE_DEVICE_TABLE(of, omap_nand_ids);
+>  
+>  static struct platform_driver omap_nand_driver = {
+> diff --git a/include/linux/platform_data/mtd-nand-omap2.h b/include/linux/platform_data/mtd-nand-omap2.h
+> index de6ada739121..92f011805ad4 100644
+> --- a/include/linux/platform_data/mtd-nand-omap2.h
+> +++ b/include/linux/platform_data/mtd-nand-omap2.h
+> @@ -7,6 +7,7 @@
+>  #define	_MTD_NAND_OMAP2_H
+>  
+>  #include <linux/mtd/partitions.h>
+> +#include <linux/mod_devicetable.h>
+>  
+>  #define	GPMC_BCH_NUM_REMAINDER	8
+>  
+> @@ -61,4 +62,10 @@ struct gpmc_nand_regs {
+>  	void __iomem	*gpmc_bch_result5[GPMC_BCH_NUM_REMAINDER];
+>  	void __iomem	*gpmc_bch_result6[GPMC_BCH_NUM_REMAINDER];
+>  };
+> -#endif
+> +
+> +static const struct of_device_id omap_nand_ids[] = {
+> +	{ .compatible = "ti,omap2-nand", },
+> +	{},
+> +};
+> +
+> +#endif /* _MTD_NAND_OMAP2_H */
+> 
