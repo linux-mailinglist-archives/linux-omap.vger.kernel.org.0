@@ -2,75 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B204047C856
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Dec 2021 21:39:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A577747CCF3
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 07:24:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234575AbhLUUj3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Dec 2021 15:39:29 -0500
-Received: from relmlor1.renesas.com ([210.160.252.171]:28749 "EHLO
-        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S234572AbhLUUj2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 21 Dec 2021 15:39:28 -0500
-X-IronPort-AV: E=Sophos;i="5.88,224,1635174000"; 
-   d="scan'208";a="104263771"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 22 Dec 2021 05:39:27 +0900
-Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 3D858400CA05;
-        Wed, 22 Dec 2021 05:39:26 +0900 (JST)
-From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To:     Roger Quadros <rogerq@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-omap@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 2/2] memory: omap-gpmc: Make use of the devm_platform_ioremap_resource()
-Date:   Tue, 21 Dec 2021 20:39:16 +0000
-Message-Id: <20211221203916.18588-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211221203916.18588-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20211221203916.18588-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        id S242731AbhLVGY0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Dec 2021 01:24:26 -0500
+Received: from muru.com ([72.249.23.125]:41156 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233176AbhLVGYZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 22 Dec 2021 01:24:25 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id D33BB8107;
+        Wed, 22 Dec 2021 06:25:07 +0000 (UTC)
+Date:   Wed, 22 Dec 2021 08:24:22 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        Tero Kristo <kristo@kernel.org>
+Subject: Re: [PATCH] dt-bindings: clock: Add binding for TI clksel
+Message-ID: <YcLElm04V47kP0Z9@atomide.com>
+References: <20211217113640.59840-1-tony@atomide.com>
+ <YcIZNfTn37uNbj0F@robh.at.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YcIZNfTn37uNbj0F@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use the devm_platform_ioremap_resource() helper instead of
-calling platform_get_resource() and devm_ioremap_resource()
-separately.
+Hi,
 
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
----
- drivers/memory/omap-gpmc.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+* Rob Herring <robh@kernel.org> [211221 18:13]:
+> On Fri, Dec 17, 2021 at 01:36:40PM +0200, Tony Lindgren wrote:
+> > +additionalProperties: true
+> 
+> Like what properties?
+> 
+> true is only used for common, incomplete schemas referenced by device 
+> schemas.
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index 56f401ba53a5..582fe102f923 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2492,7 +2492,6 @@ static int gpmc_probe(struct platform_device *pdev)
- {
- 	int rc;
- 	u32 l;
--	struct resource *res;
- 	struct gpmc_device *gpmc;
- 
- 	gpmc = devm_kzalloc(&pdev->dev, sizeof(*gpmc), GFP_KERNEL);
-@@ -2502,11 +2501,7 @@ static int gpmc_probe(struct platform_device *pdev)
- 	gpmc->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, gpmc);
- 
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res)
--		return -ENOENT;
--
--	gpmc_base = devm_ioremap_resource(&pdev->dev, res);
-+	gpmc_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(gpmc_base))
- 		return PTR_ERR(gpmc_base);
- 
--- 
-2.17.1
+There is a collection of the current component clock child nodes for each
+clksel instance. I got warnings with "additionalProperties: false", but
+maybe the child clock nodes need to be somehow specified in the binding?
 
+For example, below is a sample patch for am335x CLKSEL_GFX_FCLK using a
+clksel parent node with the child nodes moved to fix warnings for
+unique_unit_address. It also has clock-output-names property added to
+avoid the node naming warnings. For the other clksel instances, they can
+be a collection of dividers, multipliers, gates and muxes.
+
+Regards,
+
+Tony
+
+8< --------
+diff --git a/arch/arm/boot/dts/am33xx-clocks.dtsi b/arch/arm/boot/dts/am33xx-clocks.dtsi
+--- a/arch/arm/boot/dts/am33xx-clocks.dtsi
++++ b/arch/arm/boot/dts/am33xx-clocks.dtsi
+@@ -494,20 +494,27 @@ mmc_clk: mmc_clk {
+ 		clock-div = <2>;
+ 	};
+ 
+-	gfx_fclk_clksel_ck: gfx_fclk_clksel_ck@52c {
+-		#clock-cells = <0>;
+-		compatible = "ti,mux-clock";
+-		clocks = <&dpll_core_m4_ck>, <&dpll_per_m2_ck>;
+-		ti,bit-shift = <1>;
+-		reg = <0x052c>;
+-	};
++	clock@52c {
++		compatible = "ti,clksel";
++		reg = <0x52c>;
++		#clock-cells = <1>;
++		#address-cells = <0>;
++
++		gfx_fclk_clksel_ck: clock-gfx-fclk-clksel {
++			#clock-cells = <0>;
++			compatible = "ti,mux-clock";
++			clock-output-names = "gfx_fclk_clksel_ck";
++			clocks = <&dpll_core_m4_ck>, <&dpll_per_m2_ck>;
++			ti,bit-shift = <1>;
++		};
+ 
+-	gfx_fck_div_ck: gfx_fck_div_ck@52c {
+-		#clock-cells = <0>;
+-		compatible = "ti,divider-clock";
+-		clocks = <&gfx_fclk_clksel_ck>;
+-		reg = <0x052c>;
+-		ti,max-div = <2>;
++		gfx_fck_div_ck: clock-gfx-fck-div {
++			#clock-cells = <0>;
++			compatible = "ti,divider-clock";
++			clock-output-names = "gfx_fck_div_ck";
++			clocks = <&gfx_fclk_clksel_ck>;
++			ti,max-div = <2>;
++		};
+ 	};
+ 
+ 	sysclkout_pre_ck: sysclkout_pre_ck@700 {
