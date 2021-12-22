@@ -2,101 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D329147D001
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 11:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 290F747D02C
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 11:43:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239989AbhLVKap (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Dec 2021 05:30:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35668 "EHLO
+        id S236501AbhLVKnh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Dec 2021 05:43:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235010AbhLVKam (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Dec 2021 05:30:42 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4F48C061574;
-        Wed, 22 Dec 2021 02:30:42 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3F2E3B81054;
-        Wed, 22 Dec 2021 10:30:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7085DC36AE5;
-        Wed, 22 Dec 2021 10:30:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640169040;
-        bh=8eRtn9R7D2SkOi593etkmaZGi65sMUskA/NqryVOrBc=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=kZ/No8CwZbWpAUp4QvtpAXKdXyXePi1yeAR2inSG57MGuPH95SUee5X2GJ+vo2RTu
-         nwiQ0JRMzb+mlB/SVAiCXb+ezmrVSY86JasVOWacfBZrcNJUpO1oNInMWe42RPd/sd
-         qh+ubBWlM4W6dpruCTDbGDAID/ItPSyxnljALV2TY9vpPtMaMsHl6fQgiIzgrrZq9o
-         JJCcategoGGlnkhtN9zVr1Yx6uDL/vpo86dl8Fl7zl6FaE5d2pNQlVz4+1C1RlY5IA
-         zss7U596MhopRvgDU+I3Lqmr3RciRVUewv6LM4YXckFu31yXy8E/DrnJGsy2LFDdRD
-         4+P3xLMLQPf8A==
-Subject: Re: [PATCH 2/2] memory: omap-gpmc: Make use of the
- devm_platform_ioremap_resource()
-To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        with ESMTP id S244247AbhLVKnf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Dec 2021 05:43:35 -0500
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EAF4C06173F;
+        Wed, 22 Dec 2021 02:43:35 -0800 (PST)
+Received: by mail-yb1-xb30.google.com with SMTP id 131so5304675ybc.7;
+        Wed, 22 Dec 2021 02:43:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3Vz25OSJbakuWpEywjtLALOtBu/iEUp/q30n1jN5wis=;
+        b=AyUvIBw0mFJmeYTqBMquxP66Cr0SHdjxuOiF8xjQ6jtNVubjkjCETMtlEFyAAhM9gA
+         B34+nGa5YOgLgLzyCn/n9Tl5xH84LCym+vZcu35dHL1/KP36/MWxhmrroVjSkhJvvyl4
+         nrLLXTw2nNbB0LIcJJ3HiAH+nMnypbnGbxf8Y11s17iucRAF5z1hCGoT1benElODWaNg
+         fz5M7kf66RcTW7fU4X7QLkJka0HvCrGZoD7kGAhPv6CV0EHgDkN6Yl1iPot/LKI1tzYO
+         V9fpX76OcuYNt0YVgd951ypIpG7eO193ly4LApIPP+koxCgEY8NTlH3qeX2nL4MZ++Ia
+         hAKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3Vz25OSJbakuWpEywjtLALOtBu/iEUp/q30n1jN5wis=;
+        b=BoVt4R5RKLoBsBmPshcEGk8kEWDk68DWPrn9iiREeh+7/GmC5AzRSmqCuSHvufQt17
+         UU6fAnpk9mAcI1TbMcy0e25NYV37rXD6wf/Ha8gZhWoxFbNfA2r0+Jmnzi0aZWJzb33E
+         uOKR/veLGQaBKyfbzH5McIDJlCjG6ZD227Ky1++2Phx8l1+XhOIfhqT9GjWBWxcHM6Rv
+         h7+LiVTtUBIzVDhvlkJQP+W7DoML/iSmsNy+FJ3+5EyTodmMAe/fk1d1jDnsT8efo16n
+         s5VkehIcB9gpdJbubtrGfnujdwG4VTEy1x+Rhs2eR8EH22UMdqCJyCq4qh2/UJ1QEdFE
+         MWHA==
+X-Gm-Message-State: AOAM532lpRZyWVYcNChncVMYc0M+g1MLhes33qPt2Yz2Kq1/7u8K8Wqk
+        Z1bANlaa8czjH2GHpTbOzKF3nK09K8X+MuVazhIUpTRlloA=
+X-Google-Smtp-Source: ABdhPJw3biLmdDa0m57Mn77USRvpzrPyP5ZLPan59LQfvS5x+IN3wmNnA8JEfzaOtxglQqlMjv7h3DZddqVAevxJMfM=
+X-Received: by 2002:a25:cb97:: with SMTP id b145mr3345276ybg.186.1640169814597;
+ Wed, 22 Dec 2021 02:43:34 -0800 (PST)
+MIME-Version: 1.0
+References: <20211221203916.18588-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20211221203916.18588-3-prabhakar.mahadev-lad.rj@bp.renesas.com> <7b8882c1-a3ef-2cb4-ab2a-a367755cad85@kernel.org>
+In-Reply-To: <7b8882c1-a3ef-2cb4-ab2a-a367755cad85@kernel.org>
+From:   "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date:   Wed, 22 Dec 2021 10:43:08 +0000
+Message-ID: <CA+V-a8tEHP8Y1_v4bCEvnK19vqrcT+LgssZ+jqGLMSZfYXLqCA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] memory: omap-gpmc: Make use of the devm_platform_ioremap_resource()
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
         Tony Lindgren <tony@atomide.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-omap@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        Prabhakar <prabhakar.csengg@gmail.com>
-References: <20211221203916.18588-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20211221203916.18588-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From:   Roger Quadros <rogerq@kernel.org>
-Message-ID: <7b8882c1-a3ef-2cb4-ab2a-a367755cad85@kernel.org>
-Date:   Wed, 22 Dec 2021 12:30:36 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-In-Reply-To: <20211221203916.18588-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Lad,
+Hi Roger,
 
-On 21/12/2021 22:39, Lad Prabhakar wrote:
-> Use the devm_platform_ioremap_resource() helper instead of
-> calling platform_get_resource() and devm_ioremap_resource()
-> separately.
-> 
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> ---
->  drivers/memory/omap-gpmc.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
-> 
-> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-> index 56f401ba53a5..582fe102f923 100644
-> --- a/drivers/memory/omap-gpmc.c
-> +++ b/drivers/memory/omap-gpmc.c
-> @@ -2492,7 +2492,6 @@ static int gpmc_probe(struct platform_device *pdev)
->  {
->  	int rc;
->  	u32 l;
-> -	struct resource *res;
->  	struct gpmc_device *gpmc;
->  
->  	gpmc = devm_kzalloc(&pdev->dev, sizeof(*gpmc), GFP_KERNEL);
-> @@ -2502,11 +2501,7 @@ static int gpmc_probe(struct platform_device *pdev)
->  	gpmc->dev = &pdev->dev;
->  	platform_set_drvdata(pdev, gpmc);
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (!res)
-> -		return -ENOENT;
-> -
-> -	gpmc_base = devm_ioremap_resource(&pdev->dev, res);
-> +	gpmc_base = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(gpmc_base))
->  		return PTR_ERR(gpmc_base);
->  
-> 
+On Wed, Dec 22, 2021 at 10:30 AM Roger Quadros <rogerq@kernel.org> wrote:
+>
+> Hi Lad,
+>
+> On 21/12/2021 22:39, Lad Prabhakar wrote:
+> > Use the devm_platform_ioremap_resource() helper instead of
+> > calling platform_get_resource() and devm_ioremap_resource()
+> > separately.
+> >
+> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > ---
+> >  drivers/memory/omap-gpmc.c | 7 +------
+> >  1 file changed, 1 insertion(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+> > index 56f401ba53a5..582fe102f923 100644
+> > --- a/drivers/memory/omap-gpmc.c
+> > +++ b/drivers/memory/omap-gpmc.c
+> > @@ -2492,7 +2492,6 @@ static int gpmc_probe(struct platform_device *pdev)
+> >  {
+> >       int rc;
+> >       u32 l;
+> > -     struct resource *res;
+> >       struct gpmc_device *gpmc;
+> >
+> >       gpmc = devm_kzalloc(&pdev->dev, sizeof(*gpmc), GFP_KERNEL);
+> > @@ -2502,11 +2501,7 @@ static int gpmc_probe(struct platform_device *pdev)
+> >       gpmc->dev = &pdev->dev;
+> >       platform_set_drvdata(pdev, gpmc);
+> >
+> > -     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > -     if (!res)
+> > -             return -ENOENT;
+> > -
+> > -     gpmc_base = devm_ioremap_resource(&pdev->dev, res);
+> > +     gpmc_base = devm_platform_ioremap_resource(pdev, 0);
+> >       if (IS_ERR(gpmc_base))
+> >               return PTR_ERR(gpmc_base);
+> >
+> >
+>
+> Thanks for the patch but this is already being taken care of by this patch
+> https://lore.kernel.org/lkml/20211221131757.2030-4-rogerq@kernel.org/T/#m9516df757d98049d769601ee4601005f74f3cec7
+>
+Thanks for the pointer, this patch can be dropped.
 
-Thanks for the patch but this is already being taken care of by this patch
-https://lore.kernel.org/lkml/20211221131757.2030-4-rogerq@kernel.org/T/#m9516df757d98049d769601ee4601005f74f3cec7
-
---
-cheers,
--roger
+Cheers,
+Prabhakar
