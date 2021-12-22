@@ -2,79 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B79F47D382
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 15:19:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AEFA47D45E
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 16:49:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245665AbhLVOT0 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Wed, 22 Dec 2021 09:19:26 -0500
-Received: from relay12.mail.gandi.net ([217.70.178.232]:59633 "EHLO
-        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245661AbhLVOTY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Dec 2021 09:19:24 -0500
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 6A7D2200002;
-        Wed, 22 Dec 2021 14:19:21 +0000 (UTC)
-Date:   Wed, 22 Dec 2021 15:19:19 +0100
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Cc:     Roger Quadros <rogerq@kernel.org>, tony@atomide.com,
-        robh@kernel.org, kishon@ti.com, nm@ti.com, vigneshr@ti.com,
-        linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 4/4] mtd: rawnand: omap2: Select GPMC device driver
- for ARCH_K3
-Message-ID: <20211222151919.5d95d72c@xps13>
-In-Reply-To: <2b4386a4-0acc-5db1-fc55-b57ad8a84be3@canonical.com>
-References: <20211221131757.2030-1-rogerq@kernel.org>
-        <20211221131757.2030-5-rogerq@kernel.org>
-        <20211221144917.0a5d8f1a@xps13>
-        <2b4386a4-0acc-5db1-fc55-b57ad8a84be3@canonical.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S237238AbhLVPt1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Dec 2021 10:49:27 -0500
+Received: from smtp-relay-internal-1.canonical.com ([185.125.188.123]:59768
+        "EHLO smtp-relay-internal-1.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236297AbhLVPt1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 22 Dec 2021 10:49:27 -0500
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com [209.85.208.199])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 868133FFDC
+        for <linux-omap@vger.kernel.org>; Wed, 22 Dec 2021 15:49:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1640188159;
+        bh=5hgZLopSA5RqgA5GFHhtSYmuF7JejYilzaVDTyDa+yI=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=MNZ7qT8MlPQEZ1DmwvoR5wrHvhh5o5dNXaYIqReBfbK2WN5vykz3hNnK+LoIM0ltV
+         pi9k2MPyKZBqot1hBUZIEr9K8spi8j2UtstCxb/NqcWKZIhkTR3Tqzab4AZEKAQQFQ
+         hOH0BNy2txjDrFCS7g3ClE838r/mTmkNlc+Izr9m3g2tZKRx7Wj0W9tszPFan7I2V7
+         icAiDTKaaxbzbIJxrLkNyMM+zco26TKcy2FbOJ8mvPi8ykuvaeoiueJYB+8F1XuwQu
+         KUwaeM/jzG9SrTGEJ6UGgRSe2hjSLCVIj3Qc/jI0rjDE9OSmNWc5TTTSftMSniY69b
+         MJl5oHxulh6WA==
+Received: by mail-lj1-f199.google.com with SMTP id bn28-20020a05651c179c00b002222b4cc6d8so378181ljb.0
+        for <linux-omap@vger.kernel.org>; Wed, 22 Dec 2021 07:49:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=5hgZLopSA5RqgA5GFHhtSYmuF7JejYilzaVDTyDa+yI=;
+        b=72ugtC0kqGJyyrUMsKeKDaiQ0bd06MwgY7PCrvAYzC2x15PCAxfQ/+3dNcqQqXIqx0
+         3tVs+7zuT4OLIC8WwTNCuWBHHXIIjS10SuE15rXvqtqvUzzvgZ4UokY2Fav5t5eIOU0O
+         7+V3D3d6zKBJ6qRKkHBGe5zfC8BWS6bPHY1oRiQMikSpZVc/crXSOWn13mIMm9ola2ig
+         6WrJuYbMe//ars73Rztm/l8Nc+bFsPm72ewpNYU4ORSdCpb5V/9pjdDuhnb6/b5PSpB+
+         4+FHW0YfPvrc+C/8vnJaHOgiX0PacP6b0BvMNp0z7EF5voKmyYi4gWXr1hKDS6pFvw6W
+         7wMA==
+X-Gm-Message-State: AOAM532UKqGGPY3OANtrdgvvzRIaKfbqI6w2JpTce2KOQV4Yclwy8bK7
+        5Fcy3bO5FkPQu13S9b/DWV23V6LwAFfjYYcrwEm+HyCNrZT+9Vq4mcnluqCwUAV0V+TRVzZdT/+
+        wP5sFOhZ/zW9GDmzSNwhbUG5vT7dS+BuYaXK/iXc=
+X-Received: by 2002:a05:6512:3baa:: with SMTP id g42mr2755877lfv.651.1640188158915;
+        Wed, 22 Dec 2021 07:49:18 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzwr7cmepBfwLxRYZ+54oFEjSLqgBl8VM/NyfSsn8HLpTn8R8don1yxBiII9LLz1nQ7T4lVUA==
+X-Received: by 2002:a05:6512:3baa:: with SMTP id g42mr2755857lfv.651.1640188158623;
+        Wed, 22 Dec 2021 07:49:18 -0800 (PST)
+Received: from [192.168.3.67] (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
+        by smtp.gmail.com with ESMTPSA id c36sm247915lfv.193.2021.12.22.07.49.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Dec 2021 07:49:17 -0800 (PST)
+Message-ID: <a1ef85b2-25a9-dbdf-c6b0-b645d1c1aad6@canonical.com>
+Date:   Wed, 22 Dec 2021 16:49:16 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.1
+Subject: Re: [PATCH v4 3/4] memory: omap-gpmc: Use a compatible match table
+ when checking for NAND controller
+Content-Language: en-US
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Roger Quadros <rogerq@kernel.org>
+Cc:     tony@atomide.com, robh@kernel.org, kishon@ti.com, nm@ti.com,
+        vigneshr@ti.com, linux-mtd@lists.infradead.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20211221131757.2030-1-rogerq@kernel.org>
+ <20211221131757.2030-4-rogerq@kernel.org>
+ <51b8e895-95e1-0024-1457-ec534985c9f0@kernel.org>
+ <20211222151823.77179b74@xps13>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20211222151823.77179b74@xps13>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Krzysztof,
-
-krzysztof.kozlowski@canonical.com wrote on Wed, 22 Dec 2021 12:50:18
-+0100:
-
-> On 21/12/2021 14:49, Miquel Raynal wrote:
-> > Hi Roger,
-> > 
-> > rogerq@kernel.org wrote on Tue, 21 Dec 2021 15:17:57 +0200:
-> >   
-> >> The GPMC device driver is required for NAND controller
-> >> to work on K3 Architecture. Select it if required.
-> >>
-> >> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> >> Signed-off-by: Roger Quadros <rogerq@kernel.org>
-> >> ---
-> >>  drivers/mtd/nand/raw/Kconfig | 1 +
-> >>  1 file changed, 1 insertion(+)
-> >>
-> >> diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
-> >> index 67b7cb67c030..587f20c6184f 100644
-> >> --- a/drivers/mtd/nand/raw/Kconfig
-> >> +++ b/drivers/mtd/nand/raw/Kconfig
-> >> @@ -42,6 +42,7 @@ config MTD_NAND_OMAP2
-> >>  	tristate "OMAP2, OMAP3, OMAP4 and Keystone NAND controller"
-> >>  	depends on ARCH_OMAP2PLUS || ARCH_KEYSTONE || COMPILE_TEST
-> >>  	depends on HAS_IOMEM
-> >> +	select OMAP_GPMC if ARCH_K3  
-> > 
-> > Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> >   
+On 22/12/2021 15:18, Miquel Raynal wrote:
+> Hi Roger,
 > 
-> This patch looks actually independent. Miquel, do you want me to take it
-> via memory controller drivers tree (like three other patches)?
+> rogerq@kernel.org wrote on Tue, 21 Dec 2021 22:01:28 +0200:
+> 
+>> Hi Miquel,
+>>
+>> On 21/12/2021 15:17, Roger Quadros wrote:
+>>> As more compatibles can be added to the GPMC NAND controller driver
+>>> use a compatible match table.
+>>>
+>>> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+>>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>>> ---
+>>>  drivers/memory/omap-gpmc.c                   | 6 +++++-
+>>>  drivers/mtd/nand/raw/omap2.c                 | 5 +----  
+>>
+>> Will need your Ack for this one as well. Thanks :)
+>>
+>>
+>>>  include/linux/platform_data/mtd-nand-omap2.h | 9 ++++++++-
+>>>  3 files changed, 14 insertions(+), 6 deletions(-)  
+>>
+>> cheers,
+>> -roger
+>>
+>>>
+>>> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+>>> index 624153048182..d19ffc895e5b 100644
+>>> --- a/drivers/memory/omap-gpmc.c
+>>> +++ b/drivers/memory/omap-gpmc.c
+>>> @@ -2091,6 +2091,7 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>>>  	u32 val;
+>>>  	struct gpio_desc *waitpin_desc = NULL;
+>>>  	struct gpmc_device *gpmc = platform_get_drvdata(pdev);
+>>> +	bool is_nand = false;
+>>>  
+>>>  	if (of_property_read_u32(child, "reg", &cs) < 0) {
+>>>  		dev_err(&pdev->dev, "%pOF has no 'reg' property\n",
+>>> @@ -2183,7 +2184,10 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>>>  		}
+>>>  	}
+>>>  
+>>> -	if (of_device_is_compatible(child, "ti,omap2-nand")) {
+>>> +	if (of_match_node(omap_nand_ids, child))
+>>> +		is_nand = true;
+>>> +
+>>> +	if (is_nand) {
+> 
+> nitpick: why this intermediate variable?
+> 
 
-Yes please, you can take it in your tree, I don't expect any conflicts
-in this area.
+Indeed, it looks useless. I think it is left-over from previous version.
+I will remove it while applying.
 
-Thanks,
-Miquèl
+
+Best regards,
+Krzysztof
