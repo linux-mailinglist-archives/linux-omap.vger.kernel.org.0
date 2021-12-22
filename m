@@ -2,114 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 290F747D02C
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 11:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7737C47D0DF
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 12:19:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236501AbhLVKnh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Dec 2021 05:43:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38548 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244247AbhLVKnf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Dec 2021 05:43:35 -0500
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EAF4C06173F;
-        Wed, 22 Dec 2021 02:43:35 -0800 (PST)
-Received: by mail-yb1-xb30.google.com with SMTP id 131so5304675ybc.7;
-        Wed, 22 Dec 2021 02:43:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3Vz25OSJbakuWpEywjtLALOtBu/iEUp/q30n1jN5wis=;
-        b=AyUvIBw0mFJmeYTqBMquxP66Cr0SHdjxuOiF8xjQ6jtNVubjkjCETMtlEFyAAhM9gA
-         B34+nGa5YOgLgLzyCn/n9Tl5xH84LCym+vZcu35dHL1/KP36/MWxhmrroVjSkhJvvyl4
-         nrLLXTw2nNbB0LIcJJ3HiAH+nMnypbnGbxf8Y11s17iucRAF5z1hCGoT1benElODWaNg
-         fz5M7kf66RcTW7fU4X7QLkJka0HvCrGZoD7kGAhPv6CV0EHgDkN6Yl1iPot/LKI1tzYO
-         V9fpX76OcuYNt0YVgd951ypIpG7eO193ly4LApIPP+koxCgEY8NTlH3qeX2nL4MZ++Ia
-         hAKQ==
+        id S244599AbhLVLTK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Dec 2021 06:19:10 -0500
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122]:36176
+        "EHLO smtp-relay-internal-0.canonical.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S244595AbhLVLTJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>);
+        Wed, 22 Dec 2021 06:19:09 -0500
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com [209.85.167.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 9C95E3FFE9
+        for <linux-omap@vger.kernel.org>; Wed, 22 Dec 2021 11:19:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1640171943;
+        bh=gRto3bMwRqm6uYRI49pN2BzwP2iT8FJmfFUdCfTUZnQ=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+         MIME-Version:Content-Type;
+        b=pzYlnJF5fBaQrS3AwPdw4zt4EOx0aCglff6O1rCkLk6YDEQFRPwCRDiLbK3HzHnbx
+         +2+pElXMAwHx7/c3Z6AEzoF3UbOGMWKehgY9PcMHp/3VrYR09OopcnkSih6+bi8Onc
+         F2xje3NGkkOTNW1+QKRxm6PPO4Pdp+b0UzY8Yda6SG4AmvPCmKfzf8B9Vkt/8Xp/hj
+         L9LvodjbY9shbry0SyQ/I2/cb/bsTKQsZO70i3rNfsYzotYWgTOqmhaYz5D3Sn3Ygc
+         +oywljSxLAaLp8SzG9hfCMBHUl+2h+TsopkCvffUqapH31t71Fqr3wGk10AfTsjiN/
+         2IiAcBTweHr8w==
+Received: by mail-lf1-f69.google.com with SMTP id k25-20020a056512331900b004259a8d8090so1082376lfe.12
+        for <linux-omap@vger.kernel.org>; Wed, 22 Dec 2021 03:19:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3Vz25OSJbakuWpEywjtLALOtBu/iEUp/q30n1jN5wis=;
-        b=BoVt4R5RKLoBsBmPshcEGk8kEWDk68DWPrn9iiREeh+7/GmC5AzRSmqCuSHvufQt17
-         UU6fAnpk9mAcI1TbMcy0e25NYV37rXD6wf/Ha8gZhWoxFbNfA2r0+Jmnzi0aZWJzb33E
-         uOKR/veLGQaBKyfbzH5McIDJlCjG6ZD227Ky1++2Phx8l1+XhOIfhqT9GjWBWxcHM6Rv
-         h7+LiVTtUBIzVDhvlkJQP+W7DoML/iSmsNy+FJ3+5EyTodmMAe/fk1d1jDnsT8efo16n
-         s5VkehIcB9gpdJbubtrGfnujdwG4VTEy1x+Rhs2eR8EH22UMdqCJyCq4qh2/UJ1QEdFE
-         MWHA==
-X-Gm-Message-State: AOAM532lpRZyWVYcNChncVMYc0M+g1MLhes33qPt2Yz2Kq1/7u8K8Wqk
-        Z1bANlaa8czjH2GHpTbOzKF3nK09K8X+MuVazhIUpTRlloA=
-X-Google-Smtp-Source: ABdhPJw3biLmdDa0m57Mn77USRvpzrPyP5ZLPan59LQfvS5x+IN3wmNnA8JEfzaOtxglQqlMjv7h3DZddqVAevxJMfM=
-X-Received: by 2002:a25:cb97:: with SMTP id b145mr3345276ybg.186.1640169814597;
- Wed, 22 Dec 2021 02:43:34 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=gRto3bMwRqm6uYRI49pN2BzwP2iT8FJmfFUdCfTUZnQ=;
+        b=miotGaBpyJHMVvP2figzn8qZ/D+4NjuqE/eLKFly5wEk3dMl4CMSjxMLo+u5Mf+4Qh
+         o7D/RBltPxAdH56gmXVlD9+QcuSt0uRffdtRuijxufubFVNclPAN7Ut3tg9tlrhVd7GU
+         wp2gCrs28HkBZ/CAUcqmT6+iFg3du5tx5Cp0A/5mwbBjiwbRehfq7fVMc7Gj0iQ+XzCR
+         8qbWRc2Gy0sAqXRGaor2+drm3yWQ0IY/DPBgTfYli7zvsbHj51j7OFYpu1Ivvweg6MKD
+         UXEPsZJaDdGm2i7h0gP73TDAuYQhs1Lsm8PHUhkDtG6KCwfdWh56OdRMEa1ZBOM+pIvb
+         LNZg==
+X-Gm-Message-State: AOAM5320k1RFPYeRel/VMp+dRxtJcsnVDwl4CfZJ483nDrYaBFp+Egfh
+        v50yNo3K+r87NskSe6Jbfu4zECA5Ox0wctiPSkWhgV+TzaCtQ/T+Lme9QVZimMuIjsXN0xdjBPZ
+        8M45danZPr+W8uenNM/+0gtUAsr1f+k7fSyczhHY=
+X-Received: by 2002:a05:6512:139e:: with SMTP id p30mr2194879lfa.492.1640171942904;
+        Wed, 22 Dec 2021 03:19:02 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyhg2Bn9MX4WVBthED432ggeHj92R+QHM5gFVoD7NyWRBX9XUE/hWjuopOXds2i/FkXGUj7ew==
+X-Received: by 2002:a05:6512:139e:: with SMTP id p30mr2194864lfa.492.1640171942726;
+        Wed, 22 Dec 2021 03:19:02 -0800 (PST)
+Received: from krzk-bin.lan (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
+        by smtp.gmail.com with ESMTPSA id br34sm182068lfb.305.2021.12.22.03.19.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Dec 2021 03:19:01 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+To:     linux-omap@vger.kernel.org,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>
+Subject: Re: (subset) [PATCH 1/2] memory: omap-gpmc: Use platform_get_irq() to get the interrupt
+Date:   Wed, 22 Dec 2021 12:19:00 +0100
+Message-Id: <164017193162.7358.13024794236256951506.b4-ty@canonical.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20211221203916.18588-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20211221203916.18588-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <20211221203916.18588-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
 MIME-Version: 1.0
-References: <20211221203916.18588-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20211221203916.18588-3-prabhakar.mahadev-lad.rj@bp.renesas.com> <7b8882c1-a3ef-2cb4-ab2a-a367755cad85@kernel.org>
-In-Reply-To: <7b8882c1-a3ef-2cb4-ab2a-a367755cad85@kernel.org>
-From:   "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date:   Wed, 22 Dec 2021 10:43:08 +0000
-Message-ID: <CA+V-a8tEHP8Y1_v4bCEvnK19vqrcT+LgssZ+jqGLMSZfYXLqCA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] memory: omap-gpmc: Make use of the devm_platform_ioremap_resource()
-To:     Roger Quadros <rogerq@kernel.org>
-Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Roger,
+On Tue, 21 Dec 2021 20:39:15 +0000, Lad Prabhakar wrote:
+> platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
+> allocation of IRQ resources in DT core code, this causes an issue
+> when using hierarchical interrupt domains using "interrupts" property
+> in the node as this bypasses the hierarchical setup and messes up the
+> irq chaining.
+> 
+> In preparation for removal of static setup of IRQ resource from DT core
+> code use platform_get_irq().
+> 
+> [...]
 
-On Wed, Dec 22, 2021 at 10:30 AM Roger Quadros <rogerq@kernel.org> wrote:
->
-> Hi Lad,
->
-> On 21/12/2021 22:39, Lad Prabhakar wrote:
-> > Use the devm_platform_ioremap_resource() helper instead of
-> > calling platform_get_resource() and devm_ioremap_resource()
-> > separately.
-> >
-> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> > ---
-> >  drivers/memory/omap-gpmc.c | 7 +------
-> >  1 file changed, 1 insertion(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-> > index 56f401ba53a5..582fe102f923 100644
-> > --- a/drivers/memory/omap-gpmc.c
-> > +++ b/drivers/memory/omap-gpmc.c
-> > @@ -2492,7 +2492,6 @@ static int gpmc_probe(struct platform_device *pdev)
-> >  {
-> >       int rc;
-> >       u32 l;
-> > -     struct resource *res;
-> >       struct gpmc_device *gpmc;
-> >
-> >       gpmc = devm_kzalloc(&pdev->dev, sizeof(*gpmc), GFP_KERNEL);
-> > @@ -2502,11 +2501,7 @@ static int gpmc_probe(struct platform_device *pdev)
-> >       gpmc->dev = &pdev->dev;
-> >       platform_set_drvdata(pdev, gpmc);
-> >
-> > -     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > -     if (!res)
-> > -             return -ENOENT;
-> > -
-> > -     gpmc_base = devm_ioremap_resource(&pdev->dev, res);
-> > +     gpmc_base = devm_platform_ioremap_resource(pdev, 0);
-> >       if (IS_ERR(gpmc_base))
-> >               return PTR_ERR(gpmc_base);
-> >
-> >
->
-> Thanks for the patch but this is already being taken care of by this patch
-> https://lore.kernel.org/lkml/20211221131757.2030-4-rogerq@kernel.org/T/#m9516df757d98049d769601ee4601005f74f3cec7
->
-Thanks for the pointer, this patch can be dropped.
+Applied, thanks!
 
-Cheers,
-Prabhakar
+[1/2] memory: omap-gpmc: Use platform_get_irq() to get the interrupt
+      commit: b1ae2e3748142e7324911029703173f464a83522
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
