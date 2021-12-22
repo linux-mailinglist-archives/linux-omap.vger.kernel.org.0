@@ -2,103 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A577747CCF3
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 07:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC87D47CFF6
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 11:28:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242731AbhLVGY0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Dec 2021 01:24:26 -0500
-Received: from muru.com ([72.249.23.125]:41156 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233176AbhLVGYZ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 22 Dec 2021 01:24:25 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D33BB8107;
-        Wed, 22 Dec 2021 06:25:07 +0000 (UTC)
-Date:   Wed, 22 Dec 2021 08:24:22 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
-        Tero Kristo <kristo@kernel.org>
-Subject: Re: [PATCH] dt-bindings: clock: Add binding for TI clksel
-Message-ID: <YcLElm04V47kP0Z9@atomide.com>
-References: <20211217113640.59840-1-tony@atomide.com>
- <YcIZNfTn37uNbj0F@robh.at.kernel.org>
+        id S240020AbhLVK20 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Dec 2021 05:28:26 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:37138 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236538AbhLVK2Z (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Dec 2021 05:28:25 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E3A961981;
+        Wed, 22 Dec 2021 10:28:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357B9C36AE5;
+        Wed, 22 Dec 2021 10:28:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640168904;
+        bh=pRev/3Iu0KQQKhF3jpWLm/ftQPBNrPGf1Xl+zReVV+Q=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=KE5v2barJrhspSY62q3P4vWw55llYiHVuGeLH9m0YY/6Ie8KThhBcBMS7a//A7rir
+         aYf9RK4F6rTiWN9aBlPEoolKV3rMG85pUFMSZUKhTEnRQ2Y8sG3ONqChDDp0XwzQDX
+         lm8ZAAKiS8IYzStGztEgcgjcVOUr1IjF0/aKpfHn3k2SUUocV9Y1T9YONtV5+Wt6k2
+         bC2/wcK2e2kwiVk9ZeSma4ntQMGP/Lq7eMUs5EpAdDPsKNTchhbQ/clUV3Lkk7VTnD
+         wC2zoTlS8d0GKkBKwq0tsdzUWGeY4Ep7ENoVKOarXSk6CKg4d0nBJZtF/wf/0tDhSB
+         fCQ04UQH07IAA==
+Subject: Re: [PATCH 1/2] memory: omap-gpmc: Use platform_get_irq() to get the
+ interrupt
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        linux-omap@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>
+References: <20211221203916.18588-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20211221203916.18588-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+From:   Roger Quadros <rogerq@kernel.org>
+Message-ID: <fed1f0ad-0929-e114-37ad-ffd3eac696d1@kernel.org>
+Date:   Wed, 22 Dec 2021 12:28:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YcIZNfTn37uNbj0F@robh.at.kernel.org>
+In-Reply-To: <20211221203916.18588-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
 
-* Rob Herring <robh@kernel.org> [211221 18:13]:
-> On Fri, Dec 17, 2021 at 01:36:40PM +0200, Tony Lindgren wrote:
-> > +additionalProperties: true
+
+On 21/12/2021 22:39, Lad Prabhakar wrote:
+> platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
+> allocation of IRQ resources in DT core code, this causes an issue
+> when using hierarchical interrupt domains using "interrupts" property
+> in the node as this bypasses the hierarchical setup and messes up the
+> irq chaining.
 > 
-> Like what properties?
+> In preparation for removal of static setup of IRQ resource from DT core
+> code use platform_get_irq().
 > 
-> true is only used for common, incomplete schemas referenced by device 
-> schemas.
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-There is a collection of the current component clock child nodes for each
-clksel instance. I got warnings with "additionalProperties: false", but
-maybe the child clock nodes need to be somehow specified in the binding?
+Acked-by: Roger Quadros <rogerq@ti.com>
 
-For example, below is a sample patch for am335x CLKSEL_GFX_FCLK using a
-clksel parent node with the child nodes moved to fix warnings for
-unique_unit_address. It also has clock-output-names property added to
-avoid the node naming warnings. For the other clksel instances, they can
-be a collection of dividers, multipliers, gates and muxes.
-
-Regards,
-
-Tony
-
-8< --------
-diff --git a/arch/arm/boot/dts/am33xx-clocks.dtsi b/arch/arm/boot/dts/am33xx-clocks.dtsi
---- a/arch/arm/boot/dts/am33xx-clocks.dtsi
-+++ b/arch/arm/boot/dts/am33xx-clocks.dtsi
-@@ -494,20 +494,27 @@ mmc_clk: mmc_clk {
- 		clock-div = <2>;
- 	};
- 
--	gfx_fclk_clksel_ck: gfx_fclk_clksel_ck@52c {
--		#clock-cells = <0>;
--		compatible = "ti,mux-clock";
--		clocks = <&dpll_core_m4_ck>, <&dpll_per_m2_ck>;
--		ti,bit-shift = <1>;
--		reg = <0x052c>;
--	};
-+	clock@52c {
-+		compatible = "ti,clksel";
-+		reg = <0x52c>;
-+		#clock-cells = <1>;
-+		#address-cells = <0>;
-+
-+		gfx_fclk_clksel_ck: clock-gfx-fclk-clksel {
-+			#clock-cells = <0>;
-+			compatible = "ti,mux-clock";
-+			clock-output-names = "gfx_fclk_clksel_ck";
-+			clocks = <&dpll_core_m4_ck>, <&dpll_per_m2_ck>;
-+			ti,bit-shift = <1>;
-+		};
- 
--	gfx_fck_div_ck: gfx_fck_div_ck@52c {
--		#clock-cells = <0>;
--		compatible = "ti,divider-clock";
--		clocks = <&gfx_fclk_clksel_ck>;
--		reg = <0x052c>;
--		ti,max-div = <2>;
-+		gfx_fck_div_ck: clock-gfx-fck-div {
-+			#clock-cells = <0>;
-+			compatible = "ti,divider-clock";
-+			clock-output-names = "gfx_fck_div_ck";
-+			clocks = <&gfx_fclk_clksel_ck>;
-+			ti,max-div = <2>;
-+		};
- 	};
- 
- 	sysclkout_pre_ck: sysclkout_pre_ck@700 {
+cheers,
+-roger
