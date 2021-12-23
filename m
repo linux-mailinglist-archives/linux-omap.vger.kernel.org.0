@@ -2,82 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B87C447E41D
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Dec 2021 14:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB8DB47E6AF
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Dec 2021 18:12:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348642AbhLWNcg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Dec 2021 08:32:36 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:38966 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243693AbhLWNcg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Dec 2021 08:32:36 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BNDWSHX081159;
-        Thu, 23 Dec 2021 07:32:28 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1640266348;
-        bh=iWcG4R+lsaeGi92qcynqwDmqiEjQemoFrPOmJi6oC1U=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=uZ1+QHZzKq5q8PaujQPVpXnk29FMTXFnglT5oqn/Q6wSPx4XI+TeFlO25CrwBL7dD
-         Y8DZbGfliD1/WNE1jC5NLGQybsb9+sSDpwr7/SvY9Y4yKzd193iXe2K9jfGGYSJ/zm
-         KuA+sjpoiEMiDE5pQjr9KByTSbiQdaMSRoOWo9yM=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BNDWSlc022874
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 23 Dec 2021 07:32:28 -0600
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 23
- Dec 2021 07:32:28 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Thu, 23 Dec 2021 07:32:28 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BNDWSnd097752;
-        Thu, 23 Dec 2021 07:32:28 -0600
-Date:   Thu, 23 Dec 2021 07:32:28 -0600
-From:   Nishanth Menon <nm@ti.com>
-To:     "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-CC:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        <SantoshShilimkarssantosh@kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH] soc: ti: smartreflex: Use platform_get_irq_optional() to
- get the interrupt
-Message-ID: <20211223133228.7zy63enji7jkwuwc@enquirer>
-References: <20211218153943.28014-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20211220133145.uiww2nuormjks7gc@unruly>
- <CA+V-a8unRn=TJSnikVJffB3ebQn7RofoCn2yDLne15gW-ch9Yg@mail.gmail.com>
+        id S1349438AbhLWRMO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Dec 2021 12:12:14 -0500
+Received: from mxout01.lancloud.ru ([45.84.86.81]:41330 "EHLO
+        mxout01.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349420AbhLWRMK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Dec 2021 12:12:10 -0500
+Received: from LanCloud
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout01.lancloud.ru 5F6222024192
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
+CC:     Aaro Koskinen <aaro.koskinen@iki.fi>, <linux-omap@vger.kernel.org>
+Subject: [PATCH RFC 05/13] mmc: omap: fix deferred probing
+Date:   Thu, 23 Dec 2021 20:11:54 +0300
+Message-ID: <20211223171202.8224-6-s.shtylyov@omp.ru>
+X-Mailer: git-send-email 2.26.3
+In-Reply-To: <20211223171202.8224-1-s.shtylyov@omp.ru>
+References: <20211223171202.8224-1-s.shtylyov@omp.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CA+V-a8unRn=TJSnikVJffB3ebQn7RofoCn2yDLne15gW-ch9Yg@mail.gmail.com>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [192.168.11.198]
+X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
+ LFEX1907.lancloud.ru (fd00:f066::207)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 19:28-20211221, Lad, Prabhakar wrote:
-[...]
-> Yes, the probe will fail silently in case of error while getting an
-> interrupt if it exists in DT. Do you want me to add an error message
-> in case of an error? I'll be sending v2 anyway dropping the check for
-> IRQ0.
+The driver overrides the error codes returned by platform_get_irq() to
+-ENXIO, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the
+error codes upstream.
 
-Yes please, please add an error message.
+Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+---
+ drivers/mmc/host/omap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[...]
-> rc should be OK, as there will be tree wide changes.
-
-Lets try and do that (hopefully we should have a new respin by rc1).
-
+diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
+index 5e5af34090f1..ecf2a68d0e84 100644
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -1343,7 +1343,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+-		return -ENXIO;
++		return irq;
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	host->virt_base = devm_ioremap_resource(&pdev->dev, res);
 -- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D)/Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+2.26.3
+
