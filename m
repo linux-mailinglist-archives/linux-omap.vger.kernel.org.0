@@ -2,52 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9988A47E008
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Dec 2021 08:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B87C447E41D
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Dec 2021 14:32:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239465AbhLWH4p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Dec 2021 02:56:45 -0500
-Received: from mail.BETTERBIZ.PL ([45.86.209.138]:58258 "EHLO
-        mail.betterbiz.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239426AbhLWH4o (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Dec 2021 02:56:44 -0500
-X-Greylist: delayed 535 seconds by postgrey-1.27 at vger.kernel.org; Thu, 23 Dec 2021 02:56:44 EST
-Received: by mail.betterbiz.pl (Postfix, from userid 1001)
-        id A810782A7B; Thu, 23 Dec 2021 02:45:57 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=betterbiz.pl; s=mail;
-        t=1640245664; bh=07NAgW1e0WiNB9zqagiM2BnwZfWBCpNa2E4+ccxBPgw=;
-        h=Date:From:To:Subject:From;
-        b=f053UvfDYsNFIHai3gZMqeUx/cP3ENGEnEecGwUEqOFUAExXAJvEHDgHXjK8kqt2A
-         PnRLv+Oppgo84YkLvODfaVEPtS+8k28YFXvketp93NChYkssjQ0RwBnhJOBMa2dk3Q
-         NrrSjSAmJVj1vTsDFhq6SKg4zstxQjlqfuPbifcWQ/GbW1jTej0rhVoF0S/Q6wWynS
-         zFWE3cL3tmaP+XWYktYLiyUFf2L5vJqzbaoUhKkLtUSJCO0ydm0qNIj3Ae+sEQSkcC
-         vrCqKWepU63KQNFfJJjzbKlBZ4hpWW0DJFAaX5HL659VrZAkQXJfDLDkbH4EIhVx8q
-         sr+PHIuPCmNlw==
-Received: by mail.betterbiz.pl for <linux-omap@vger.kernel.org>; Thu, 23 Dec 2021 07:45:53 GMT
-Message-ID: <20211223024500-0.1.f.10f3.0.nsvjho9fsg@betterbiz.pl>
-Date:   Thu, 23 Dec 2021 07:45:53 GMT
-From:   "Jakub Daroch" <jakub.daroch@betterbiz.pl>
-To:     <linux-omap@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.betterbiz.pl
+        id S1348642AbhLWNcg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 23 Dec 2021 08:32:36 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:38966 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243693AbhLWNcg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Dec 2021 08:32:36 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BNDWSHX081159;
+        Thu, 23 Dec 2021 07:32:28 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1640266348;
+        bh=iWcG4R+lsaeGi92qcynqwDmqiEjQemoFrPOmJi6oC1U=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=uZ1+QHZzKq5q8PaujQPVpXnk29FMTXFnglT5oqn/Q6wSPx4XI+TeFlO25CrwBL7dD
+         Y8DZbGfliD1/WNE1jC5NLGQybsb9+sSDpwr7/SvY9Y4yKzd193iXe2K9jfGGYSJ/zm
+         KuA+sjpoiEMiDE5pQjr9KByTSbiQdaMSRoOWo9yM=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BNDWSlc022874
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 23 Dec 2021 07:32:28 -0600
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 23
+ Dec 2021 07:32:28 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Thu, 23 Dec 2021 07:32:28 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BNDWSnd097752;
+        Thu, 23 Dec 2021 07:32:28 -0600
+Date:   Thu, 23 Dec 2021 07:32:28 -0600
+From:   Nishanth Menon <nm@ti.com>
+To:     "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+CC:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        <SantoshShilimkarssantosh@kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        LAK <linux-arm-kernel@lists.infradead.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH] soc: ti: smartreflex: Use platform_get_irq_optional() to
+ get the interrupt
+Message-ID: <20211223133228.7zy63enji7jkwuwc@enquirer>
+References: <20211218153943.28014-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20211220133145.uiww2nuormjks7gc@unruly>
+ <CA+V-a8unRn=TJSnikVJffB3ebQn7RofoCn2yDLne15gW-ch9Yg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CA+V-a8unRn=TJSnikVJffB3ebQn7RofoCn2yDLne15gW-ch9Yg@mail.gmail.com>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On 19:28-20211221, Lad, Prabhakar wrote:
+[...]
+> Yes, the probe will fail silently in case of error while getting an
+> interrupt if it exists in DT. Do you want me to add an error message
+> in case of an error? I'll be sending v2 anyway dropping the check for
+> IRQ0.
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+Yes please, please add an error message.
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+[...]
+> rc should be OK, as there will be tree wide changes.
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+Lets try and do that (hopefully we should have a new respin by rc1).
 
-
-Pozdrawiam,
-Jakub Daroch
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D)/Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
