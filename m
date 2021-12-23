@@ -2,121 +2,92 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 43C3747D58F
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Dec 2021 18:04:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A4E47DC95
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Dec 2021 02:11:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344147AbhLVREe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Dec 2021 12:04:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40960 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230314AbhLVREe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Dec 2021 12:04:34 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BEB6C061574;
-        Wed, 22 Dec 2021 09:04:34 -0800 (PST)
+        id S1345609AbhLWBLZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Dec 2021 20:11:25 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:49458 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345633AbhLWBLT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Dec 2021 20:11:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 61508B81D73;
-        Wed, 22 Dec 2021 17:04:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E55C36AE8;
-        Wed, 22 Dec 2021 17:04:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7953C61D98;
+        Thu, 23 Dec 2021 01:11:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99289C36AEA;
+        Thu, 23 Dec 2021 01:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640192671;
-        bh=eKeBnq08+rs4HIltvdOQE1gbk3B+qSg0tbnV0Mny9Vk=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=AmjPH440BrrkIJR4cAs2V16o2SJ/RpyZ1esZVolO0FCEkXY+hzxh6vCirfnKfMSBn
-         cM4BZVhJsv3DCgYYMA2cNk9otRZVceQFGAJSuXKMuAWPhDi7Ym45Fj1BSIArvzzOlK
-         4234X+asFzqM4iFBApagVmTLCZ1Ep8+1Zg03MoLWoVHX0dr/SbVnB2ss/TLz7gK3J5
-         KNc9OwxFyqDlOZpZaJQxE/SbFKE8guwVl3nlAr3uuV7MKAWIzlHj/eeoRq3abpO93B
-         SSCsRS9TiMkt+GOTJq4vUMJzuDzaAdX23dxcEzbWZW9nUmyuwOE4MKsxrwx1sK2fLu
-         rzgjiuh5nuYAw==
-Subject: Re: [PATCH v4 3/4] memory: omap-gpmc: Use a compatible match table
- when checking for NAND controller
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     tony@atomide.com, robh@kernel.org, kishon@ti.com, nm@ti.com,
-        vigneshr@ti.com, linux-mtd@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <20211221131757.2030-1-rogerq@kernel.org>
- <20211221131757.2030-4-rogerq@kernel.org>
- <51b8e895-95e1-0024-1457-ec534985c9f0@kernel.org>
- <20211222151823.77179b74@xps13>
- <a1ef85b2-25a9-dbdf-c6b0-b645d1c1aad6@canonical.com>
-From:   Roger Quadros <rogerq@kernel.org>
-Message-ID: <29e50a31-97ca-06dc-474e-2ceb5486e5bc@kernel.org>
-Date:   Wed, 22 Dec 2021 19:04:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        s=k20201202; t=1640221878;
+        bh=Vi54mz/4hxthWCKu01W9eiBvXWzlLPEqbkFMBL2+LVo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=s8pS7WSXaJ0we2kX41QnNq/kpLw+seDJ3eV4B93lirSpLX5GpXn+Bbo0C3ZCOk4/8
+         5gFIVA7fGAsUgrZr0Z464BSzLnRCdORcsIpJALlPPF4356Jp6SlngEywHUK7lZEG10
+         DwfSW3skPCtAOHQzhq4aElCd92JQB3W5MzTmURuw2EHN+qU/2FGo0pelCtU/J9uDsZ
+         x7qNWAPz+NqXfGuzYP7+zIGvItWvY0KwWKDENdmCdpHy9dpv8jyG4+mqvfmuQF0Ebn
+         CDbbEVXrNmOqeoRbmP4iFSS0Y9zTTX+ue28n2wZ0y3QAduCZSheod9nnfoFgOLBP9w
+         ZNOiV0Z2Emd+Q==
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     linux-pci@vger.kernel.org, Fan Fei <ffclaire1224@gmail.com>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 05/23] PCI: dra7xx: Prefer of_device_get_match_data()
+Date:   Wed, 22 Dec 2021 19:10:36 -0600
+Message-Id: <20211223011054.1227810-6-helgaas@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20211223011054.1227810-1-helgaas@kernel.org>
+References: <20211223011054.1227810-1-helgaas@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <a1ef85b2-25a9-dbdf-c6b0-b645d1c1aad6@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: Fan Fei <ffclaire1224@gmail.com>
 
+The dra7xx driver only needs the device data, not the whole struct
+of_device_id.  Use of_device_get_match_data() instead of of_match_device().
+No functional change intended.
 
-On 22/12/2021 17:49, Krzysztof Kozlowski wrote:
-> On 22/12/2021 15:18, Miquel Raynal wrote:
->> Hi Roger,
->>
->> rogerq@kernel.org wrote on Tue, 21 Dec 2021 22:01:28 +0200:
->>
->>> Hi Miquel,
->>>
->>> On 21/12/2021 15:17, Roger Quadros wrote:
->>>> As more compatibles can be added to the GPMC NAND controller driver
->>>> use a compatible match table.
->>>>
->>>> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
->>>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->>>> ---
->>>>  drivers/memory/omap-gpmc.c                   | 6 +++++-
->>>>  drivers/mtd/nand/raw/omap2.c                 | 5 +----  
->>>
->>> Will need your Ack for this one as well. Thanks :)
->>>
->>>
->>>>  include/linux/platform_data/mtd-nand-omap2.h | 9 ++++++++-
->>>>  3 files changed, 14 insertions(+), 6 deletions(-)  
->>>
->>> cheers,
->>> -roger
->>>
->>>>
->>>> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
->>>> index 624153048182..d19ffc895e5b 100644
->>>> --- a/drivers/memory/omap-gpmc.c
->>>> +++ b/drivers/memory/omap-gpmc.c
->>>> @@ -2091,6 +2091,7 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
->>>>  	u32 val;
->>>>  	struct gpio_desc *waitpin_desc = NULL;
->>>>  	struct gpmc_device *gpmc = platform_get_drvdata(pdev);
->>>> +	bool is_nand = false;
->>>>  
->>>>  	if (of_property_read_u32(child, "reg", &cs) < 0) {
->>>>  		dev_err(&pdev->dev, "%pOF has no 'reg' property\n",
->>>> @@ -2183,7 +2184,10 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
->>>>  		}
->>>>  	}
->>>>  
->>>> -	if (of_device_is_compatible(child, "ti,omap2-nand")) {
->>>> +	if (of_match_node(omap_nand_ids, child))
->>>> +		is_nand = true;
->>>> +
->>>> +	if (is_nand) {
->>
->> nitpick: why this intermediate variable?
->>
-> 
-> Indeed, it looks useless. I think it is left-over from previous version.
-> I will remove it while applying.
+[bhelgaas: commit log]
+Signed-off-by: Fan Fei <ffclaire1224@gmail.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Kishon Vijay Abraham I <kishon@ti.com>
+Cc: linux-omap@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+---
+ drivers/pci/controller/dwc/pci-dra7xx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-You are right. Thanks for saving me a re-spin Krzysztof :)
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index a4221f6f3629..12d19183e746 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -697,16 +697,14 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
+ 	struct device_node *np = dev->of_node;
+ 	char name[10];
+ 	struct gpio_desc *reset;
+-	const struct of_device_id *match;
+ 	const struct dra7xx_pcie_of_data *data;
+ 	enum dw_pcie_device_mode mode;
+ 	u32 b1co_mode_sel_mask;
+ 
+-	match = of_match_device(of_match_ptr(of_dra7xx_pcie_match), dev);
+-	if (!match)
++	data = of_device_get_match_data(dev);
++	if (!data)
+ 		return -EINVAL;
+ 
+-	data = (struct dra7xx_pcie_of_data *)match->data;
+ 	mode = (enum dw_pcie_device_mode)data->mode;
+ 	b1co_mode_sel_mask = data->b1co_mode_sel_mask;
+ 
+-- 
+2.25.1
 
-cheers,
--roger
