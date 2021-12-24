@@ -2,62 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B41347F13E
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Dec 2021 22:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18D6147F13F
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Dec 2021 22:57:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236589AbhLXVw4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Dec 2021 16:52:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
+        id S240510AbhLXV5I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Dec 2021 16:57:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231639AbhLXVw4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Dec 2021 16:52:56 -0500
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9930EC061401
-        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:52:55 -0800 (PST)
-Received: by mail-ed1-x52b.google.com with SMTP id j21so37284006edt.9
-        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:52:55 -0800 (PST)
+        with ESMTP id S240336AbhLXV5I (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Dec 2021 16:57:08 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0960AC061401
+        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:57:08 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id x15so37445366edv.1
+        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:57:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=sender:from:to:subject:date:message-id:in-reply-to:references
-         :reply-to:mime-version:content-transfer-encoding;
-        bh=bLPKiuECka/YE3JJhoSvhijCqaMQjSLtYjjU3gVDyq8=;
-        b=GQi3Sq3qWYQu+x4crrqxzV3WRSRDF3trB5dMo5Q62UGfpSb3p7KWKysN+5nLUAhBoQ
-         4nC9YpB0fmKyZ1InYBb34WlJDQFYDIf3lKCHDjqZ+k61vxsipwn2nXvKLh+eDiI1KKkF
-         kts2thtNPbBL2VmgACrqDIpX+kCCMmqK/uxRdjwLjafw9PSDG0fLoV7BJDLkrji6BHs8
-         UaiSgoPRKu9zyZvtJ0By9OCITbcYWB84KxU3wcDnsIfJ12jYzli4rVdXbitWLhrwv/Nd
-         OgaJHfSha3Xs6LCoDBrWCPfls8o1QPMABDyOywTfjUQQctPPDvaAAw/42qvKji46rRU7
-         mhQA==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OyvgihyUKnAkZZ9N6i7mgmHZa3IHB4liX5osoY6lCeQ=;
+        b=Y6C6iEc5HdmsvJJI6MnL2itrQfEaEwHZNd82qLNXR81C5WUso1WPZ1Ae/vbaspcaVa
+         e0K8SHvAmxjKKNXKKYLSaBkBGAvaryqgHPZhc+P+Y/wedrEAajsfd9+Pq2/WN5b+ykzS
+         Lu50vtZFv9nKOzrr99iFXzQGLcfQ07H1P8xdvRZy+OAz1ZSmFYciel6Wb/RM979g+dL8
+         +3iaP0AXB28/E+rnL6Mfq/YDxC8yU9nfpvkLbj4cLOISKROyRL0L7OhWAmbpNqbyWBR8
+         c5TwV196QZaPPavxN7edd3Evwkj94Tt7UnA++HcH3i593DTA06Jw+DokVW+3lUaXAZHj
+         yE9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:from:to:subject:date:message-id
-         :in-reply-to:references:reply-to:mime-version
-         :content-transfer-encoding;
-        bh=bLPKiuECka/YE3JJhoSvhijCqaMQjSLtYjjU3gVDyq8=;
-        b=b9wLaCPi8wRNg7mqLCpJ+5ddSDcskbyIsc65ZOa/pOPmxOr+cSkuHBWjqJ/lGa5Dsj
-         LjZa4TinREOFuG7bQPyNt7nZT/cvwQjUwl6G+fquemzfJKoaTj3NMOlwxRsHwYnICx1b
-         UslyFwfkV8+K1+tSo0xw3WQl/OjKG1dB5/23Gd9FBL7Cm22P0hQG5I8+pqtd0g90Gb+r
-         gmQmy42LZgNqpSOGSggXnz2ichyHbwPLJHhORnR6VhSDDsB+2PKkuuzmMB1Gj+L4yzZ/
-         qPF2E0wY/rQ7JZZ5A9nTiZgI/pv8Bbu34dZz2MH30bGUQF8X/U0M2tHYPKYt6a3VTj5j
-         +GDQ==
-X-Gm-Message-State: AOAM5333RWk1VLUrcPfD/CigYmQKkwsrmm7oHp/suUmbwiz2mdnqIN2/
-        b63Fg6xy5/gZjMsQuTKmAPTktO5o720=
-X-Google-Smtp-Source: ABdhPJyHepFlhUHgKm3A6/PpNzGPyddR1kcdEX3ZbP0u9JoGtjfGHT1fGMreqPPWBw54adqE02sFbQ==
-X-Received: by 2002:a17:906:888f:: with SMTP id ak15mr6382425ejc.0.1640382774229;
-        Fri, 24 Dec 2021 13:52:54 -0800 (PST)
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=OyvgihyUKnAkZZ9N6i7mgmHZa3IHB4liX5osoY6lCeQ=;
+        b=vNSJukgZS+S2kjbY23HyUg43uZktwVfG71JozGGQq2CCwoXGNpfURI2rmGmf2I7v1f
+         3dZeXraEyvKTHiQo2fZksOvhzn5+oreEHxbD2LAFqf1oRmMhsHB4joXISZ/aJQdidC8N
+         aqNpmLxOzHKjHGwaSg0b4CpO1Ayi2Wo2NQqt+ldifckT+fqNuzlLLVwvn1mEPX3yK0Bj
+         SuqRhw2ZsezNXQU/wcHeBa9zXVW3sffFJHfN7QFIqvccXv3kp2PdPdHwEcwft/P4MsiK
+         kpA7Fdl2XA3B4uGpYurSpy81tDjIQSkstknAWYrPt2SNswwYqpyDchAZDI0lxyAuONVf
+         uKPA==
+X-Gm-Message-State: AOAM533i+SGs63Ajw0ytpeiMzyYKnlNKVBvRnbZcBKZlrGt6OyoTXgyU
+        MyallKH7Cs1X/bj1LvJgrttJ5JXr0fA=
+X-Google-Smtp-Source: ABdhPJxqYE2Ryv7GxMSII2owvomOT9QYy8K5P/ZcO9TCAJrpgIYEjTqwkCJM1MQWRzvNMaEx2PbakA==
+X-Received: by 2002:a17:906:c08c:: with SMTP id f12mr6251860ejz.419.1640383026499;
+        Fri, 24 Dec 2021 13:57:06 -0800 (PST)
 Received: from localhost.localdomain (bband-dyn119.178-40-49.t-com.sk. [178.40.49.119])
-        by smtp.gmail.com with ESMTPSA id di5sm3021692ejc.45.2021.12.24.13.52.53
+        by smtp.gmail.com with ESMTPSA id dn10sm3022476ejc.139.2021.12.24.13.56.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Dec 2021 13:52:53 -0800 (PST)
+        Fri, 24 Dec 2021 13:57:06 -0800 (PST)
 Sender: Peter Vasil <petervasil@gmail.com>
 From:   peter.vasil@gmail.com
-To:     peter.vasil@gmail.com, linux-omap@vger.kernel.org
-Subject: [PATCH 2/6] dt-bindings: regulator: Nokia Tahvo/Betty ASIC Vcore regulator
-Date:   Fri, 24 Dec 2021 22:39:21 +0100
-Message-Id: <20211224214512.1583430-3-peter.vasil@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     peter.vasil@gmail.com
+Subject: [PATCH 3/6] ARM: dts: omap2420-n810: Add Tahvo/Betty LEDPWM and Vcore bindings
+Date:   Fri, 24 Dec 2021 22:56:32 +0100
+Message-Id: <20211224215635.1585808-3-peter.vasil@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211224214512.1583430-1-peter.vasil@gmail.com>
-References: <20211224214512.1583430-1-peter.vasil@gmail.com>
-Reply-To: peter.vasil@gmail.com
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -66,61 +63,60 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Peter Vasil <peter.vasil@gmail.com>
 
-One of the functions of Tahvo/Betty ASIC MFD chip is a voltage regulator for
-Vcore output, adjustable from 1.005V to 1.475V. On Nokia N8x0 Internet Tablet
-devices, this controls power to the Epson S1D13745 framebuffer IC.
+Nokia Tahvo/Betty ASIC provides PWM output for LED control and voltage
+regulator for adjustable Vcore output.
+These are both used on N8x0 devices for display control; LEDPWM for
+backlight and Vcore for framebuffer IC power.
 ---
- .../nokia,tahvo-vcore-regulator.yaml          | 41 +++++++++++++++++++
- 1 file changed, 41 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/regulator/nokia,tahvo-vcore-regulator.yaml
+ arch/arm/boot/dts/omap2420-n810.dts         | 13 +++++++++++++
+ arch/arm/boot/dts/omap2420-n8x0-common.dtsi |  8 +++++++-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/regulator/nokia,tahvo-vcore-regulator.yaml b/Documentation/devicetree/bindings/regulator/nokia,tahvo-vcore-regulator.yaml
-new file mode 100644
-index 000000000000..5e1e98c32311
---- /dev/null
-+++ b/Documentation/devicetree/bindings/regulator/nokia,tahvo-vcore-regulator.yaml
-@@ -0,0 +1,41 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/regulator/nokia,tahvo-vcore-regulator.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/arch/arm/boot/dts/omap2420-n810.dts b/arch/arm/boot/dts/omap2420-n810.dts
+index 09c1dbc0bb69..30f9f9e1a377 100644
+--- a/arch/arm/boot/dts/omap2420-n810.dts
++++ b/arch/arm/boot/dts/omap2420-n810.dts
+@@ -22,6 +22,19 @@ v28_aic: v28_aic {
+ 	};
+ };
+ 
++&tahvo {
++	tahvo_ledpwm: tahvo_ledpwm {
++		compatible = "nokia,tahvo-ledpwm";
++	};
++	tahvo_vcore: tahvo_vcore {
++		compatible = "nokia,tahvo-vcore-regulator";
++		regulator-name = "tornado_vcore";
++		regulator-min-microvolt = <1005000>;
++		regulator-max-microvolt = <1475000>;
++		regulator-always-on;
++	};
++};
 +
-+title: Nokia Tahvo/Betty ASIC Vcore regulator
-+
-+maintainers:
-+  - Peter Vasil <peter.vasil@gmail.com>
-+
-+description: |
-+  One of the functions of Tahvo/Betty ASIC MFD chip is a voltage regulator
-+  for Vcore output, adjustable from 1.005V to 1.475V.
-+  On Nokia N8x0 Internet Tablet devices, this controls power to the Epson
-+  S1D13745 framebuffer IC.
-+
-+allOf:
-+  - $ref: "regulator.yaml#"
-+
-+properties:
-+  compatible:
-+    const: nokia,tahvo-vcore-regulator
-+
-+required:
-+  - compatible
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    tahvo {
-+        tahvo_vcore {
-+            compatible = "nokia,tahvo-vcore-regulator";
-+            regulator-name = "tornado_vcore";
-+            regulator-min-microvolt = <1500000>;
-+            regulator-max-microvolt = <3000000>;
-+            regulator-always-on;
-+        };
-+    };
-+...
+ &omap2420_pmx {
+ 	mcbsp2_pins: mcbsp2_pins {
+ 		pinctrl-single,pins = <
+diff --git a/arch/arm/boot/dts/omap2420-n8x0-common.dtsi b/arch/arm/boot/dts/omap2420-n8x0-common.dtsi
+index 63b0b4921e4e..88d44f5a5f63 100644
+--- a/arch/arm/boot/dts/omap2420-n8x0-common.dtsi
++++ b/arch/arm/boot/dts/omap2420-n8x0-common.dtsi
+@@ -22,9 +22,15 @@ &gpio3 0 GPIO_ACTIVE_HIGH /* gpio64 sel */
+ 			#size-cells = <0>;
+ 			retu: retu@1 {
+ 				compatible = "nokia,retu";
++				reg = <0x1>;
+ 				interrupt-parent = <&gpio4>;
+ 				interrupts = <12 IRQ_TYPE_EDGE_RISING>;
+-				reg = <0x1>;
++			};
++			tahvo: tahvo@2 {
++				compatible = "nokia,tahvo";
++				reg = <0x2>;
++				interrupt-parent = <&gpio4>;
++				interrupts = <15 IRQ_TYPE_EDGE_RISING>;
+ 			};
+ 		};
+ 	};
 -- 
 2.25.1
 
