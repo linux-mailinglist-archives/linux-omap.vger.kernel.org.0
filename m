@@ -2,160 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A71C47F0BD
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Dec 2021 20:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D20F47F13C
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Dec 2021 22:51:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353531AbhLXT1O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Dec 2021 14:27:14 -0500
-Received: from relmlor2.renesas.com ([210.160.252.172]:25711 "EHLO
-        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1353467AbhLXT0z (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 24 Dec 2021 14:26:55 -0500
-X-IronPort-AV: E=Sophos;i="5.88,233,1635174000"; 
-   d="scan'208";a="105121735"
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 25 Dec 2021 04:26:54 +0900
-Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 5655F40F520F;
-        Sat, 25 Dec 2021 04:26:52 +0900 (JST)
-From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To:     netdev@vger.kernel.org,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-omap@vger.kernel.org
-Subject: [PATCH 8/8] net: ethernet: ti: davinci_emac: Use platform_get_irq() to get the interrupt
-Date:   Fri, 24 Dec 2021 19:26:26 +0000
-Message-Id: <20211224192626.15843-9-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211224192626.15843-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20211224192626.15843-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        id S1353599AbhLXVvE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Dec 2021 16:51:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34176 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1353591AbhLXVvD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Dec 2021 16:51:03 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED28C061401
+        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:51:03 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id q14so29614372edi.3
+        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:51:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=sender:from:to:subject:date:message-id:reply-to:mime-version
+         :content-transfer-encoding;
+        bh=njyYK8IAwIOI5hjHtw+gwXwGrvmDKnQ12yvC407PC/c=;
+        b=nrUu2WgylneQdHddZVe8VLSjunkqzVa8WUUt8DxEvb+q1FOyW+OhpBXa1lBLiIjP7S
+         DzsAv4AyGpQBWS0zv+nEl/c/MMOyfdelzS4tpneIx9tA85Bn/ETTF/T9aYOhBClyISS7
+         b8HrvT0H17gfI35I7QHKUr+qFjiS1VjPWYPKBhp5FGhMMH/XLwl2v9lF5QMhfOgPb8s0
+         Zr8jfTzvR0vkjoXR2X2RN1tU2QQQHl0WMkUhH0aDNRFVeBetmJEz6eb8oJoygJYFIklz
+         jU4Ia1ZZQN2qcIgmFFsA4s1L5Nb3Qe6pEZZr+PuDnDNZiLuq6UQavlEGUM8CUEd8KAD9
+         ymXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:sender:from:to:subject:date:message-id:reply-to
+         :mime-version:content-transfer-encoding;
+        bh=njyYK8IAwIOI5hjHtw+gwXwGrvmDKnQ12yvC407PC/c=;
+        b=HOlWdQxQ9RlZSMYAhWeQ5ZISnfIol4KIHdGajal5Apm0d7y+BHp+J/fKJvdilEo84i
+         u5fAw7kBm30pl1N7b8MHvsq9FQlY/k5G2uzA9bWetqOFnUrEPSsiXVmwrcaTCuZnfanY
+         H864FqJhNnwfxrfudJ1CXb3pJt3uOvXrNZAYHJOnuQoIQKWHPu0wFO59HCfmUhRsB1XB
+         d+jsmwRxcIbnnl2uNAdOf64+7qrSta9W9imZrpbSOJ2Wt38q/p6e01SNf93wWRuWAuXa
+         2JmZPCwnO5RjUfZPlBe0myj8embJRKX46sqrRSiWeP4ka+TOBkWwoEgysyl50WCJ26ig
+         frTw==
+X-Gm-Message-State: AOAM5314uq26Ue1A59hbFUGu9Ig6FppEBNUvtsQjmKBZvgjCVydAbhKK
+        RAzGpzXoy3A3HfrCo/jL4XI=
+X-Google-Smtp-Source: ABdhPJyR8fn5Z80Erq4o9fhJERNpTD5/GaaNJ3W+IBDwQIQ/U6pn8nTio9xACytS86gWKRt6frBfAw==
+X-Received: by 2002:a17:906:7304:: with SMTP id di4mr6386663ejc.327.1640382661657;
+        Fri, 24 Dec 2021 13:51:01 -0800 (PST)
+Received: from localhost.localdomain (bband-dyn119.178-40-49.t-com.sk. [178.40.49.119])
+        by smtp.gmail.com with ESMTPSA id di5sm3021692ejc.45.2021.12.24.13.51.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Dec 2021 13:51:01 -0800 (PST)
+Sender: Peter Vasil <petervasil@gmail.com>
+From:   peter.vasil@gmail.com
+To:     peter.vasil@gmail.com, linux-omap@vger.kernel.org
+Subject: [PATCH 0/6] OMAP2: Nokia N810: prepare tahvo cells for display
+Date:   Fri, 24 Dec 2021 22:39:16 +0100
+Message-Id: <20211224214512.1583430-1-peter.vasil@gmail.com>
+X-Mailer: git-send-email 2.25.1
+Reply-To: peter.vasil@gmail.com
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
-allocation of IRQ resources in DT core code, this causes an issue
-when using hierarchical interrupt domains using "interrupts" property
-in the node as this bypasses the hierarchical setup and messes up the
-irq chaining.
+Bye, and Merry Christmas everyone :-)
+Peter
 
-In preparation for removal of static setup of IRQ resource from DT core
-code use platform_get_irq() for DT users only.
+Peter Vasil (6):
+[PATCH 1/6] dt-bindings: leds: Nokia Tahvo/Betty ASIC LEDPWM
+[PATCH 2/6] dt-bindings: regulator: Nokia Tahvo/Betty ASIC Vcore
+[PATCH 3/6] ARM: dts: omap2420-n810: Add Tahvo/Betty LEDPWM and Vcore
+[PATCH 4/6] leds: tahvo: Driver for Tahvo/Betty ASIC LEDPWM output
+[PATCH 5/6] regulator: tahvo-vcore: Add basic Tahvo/Betty ASIC Vcore
+[PATCH 6/6] mfd: retu: Add support for LEDPWM and Vcore regulator MFD
 
-While at it propagate error code in case request_irq() fails instead of
-returning -EBUSY.
+ Documentation/devicetree/bindings/regulator/nokia,tahvo-vcore-regulator.yaml |  41 +++++++++++++++++++++++++++++++++++++++++
+ arch/arm/boot/dts/omap2420-n810.dts                                          |  13 +++++++++++++
+ arch/arm/boot/dts/omap2420-n8x0-common.dtsi                                  |   8 +++++++-
+ drivers/leds/Kconfig                                                         |  12 ++++++++++++
+ drivers/leds/Makefile                                                        |   1 +
+ drivers/leds/leds-tahvo.c                                                    |  85 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/mfd/retu-mfd.c                                                       |   8 ++++++++
+ drivers/regulator/Kconfig                                                    |   8 ++++++++
+ drivers/regulator/Makefile                                                   |   1 +
+ drivers/regulator/tahvo-vcore-regulator.c                                    | 104 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 10 files changed, 280 insertions(+), 1 deletion(-)
 
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
----
- drivers/net/ethernet/ti/davinci_emac.c | 69 ++++++++++++++++----------
- 1 file changed, 42 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
-index d55f06120ce7..31df3267a01a 100644
---- a/drivers/net/ethernet/ti/davinci_emac.c
-+++ b/drivers/net/ethernet/ti/davinci_emac.c
-@@ -1454,23 +1454,33 @@ static int emac_dev_open(struct net_device *ndev)
- 	}
- 
- 	/* Request IRQ */
--	while ((res = platform_get_resource(priv->pdev, IORESOURCE_IRQ,
--					    res_num))) {
--		for (irq_num = res->start; irq_num <= res->end; irq_num++) {
--			if (request_irq(irq_num, emac_irq, 0, ndev->name,
--					ndev)) {
--				dev_err(emac_dev,
--					"DaVinci EMAC: request_irq() failed\n");
--				ret = -EBUSY;
-+	if (dev_of_node(&priv->pdev->dev)) {
-+		while ((ret = platform_get_irq_optional(priv->pdev, res_num)) != -ENXIO) {
-+			if (ret < 0)
-+				goto rollback;
- 
-+			ret = request_irq(ret, emac_irq, 0, ndev->name, ndev);
-+			if (ret) {
-+				dev_err(emac_dev, "DaVinci EMAC: request_irq() failed\n");
- 				goto rollback;
- 			}
-+			res_num++;
- 		}
--		res_num++;
-+	} else {
-+		while ((res = platform_get_resource(priv->pdev, IORESOURCE_IRQ, res_num))) {
-+			for (irq_num = res->start; irq_num <= res->end; irq_num++) {
-+				ret = request_irq(irq_num, emac_irq, 0, ndev->name, ndev);
-+				if (ret) {
-+					dev_err(emac_dev, "DaVinci EMAC: request_irq() failed\n");
-+					goto rollback;
-+				}
-+			}
-+			res_num++;
-+		}
-+		/* prepare counters for rollback in case of an error */
-+		res_num--;
-+		irq_num--;
- 	}
--	/* prepare counters for rollback in case of an error */
--	res_num--;
--	irq_num--;
- 
- 	/* Start/Enable EMAC hardware */
- 	emac_hw_enable(priv);
-@@ -1554,16 +1564,24 @@ static int emac_dev_open(struct net_device *ndev)
- 	napi_disable(&priv->napi);
- 
- rollback:
--	for (q = res_num; q >= 0; q--) {
--		res = platform_get_resource(priv->pdev, IORESOURCE_IRQ, q);
--		/* at the first iteration, irq_num is already set to the
--		 * right value
--		 */
--		if (q != res_num)
--			irq_num = res->end;
-+	if (dev_of_node(&priv->pdev->dev)) {
-+		for (q = res_num - 1; q >= 0; q--) {
-+			irq_num = platform_get_irq(priv->pdev, q);
-+			if (irq_num > 0)
-+				free_irq(irq_num, ndev);
-+		}
-+	} else {
-+		for (q = res_num; q >= 0; q--) {
-+			res = platform_get_resource(priv->pdev, IORESOURCE_IRQ, q);
-+			/* at the first iteration, irq_num is already set to the
-+			 * right value
-+			 */
-+			if (q != res_num)
-+				irq_num = res->end;
- 
--		for (m = irq_num; m >= res->start; m--)
--			free_irq(m, ndev);
-+			for (m = irq_num; m >= res->start; m--)
-+				free_irq(m, ndev);
-+		}
- 	}
- 	cpdma_ctlr_stop(priv->dma);
- 	pm_runtime_put(&priv->pdev->dev);
-@@ -1899,13 +1917,10 @@ static int davinci_emac_probe(struct platform_device *pdev)
- 		goto err_free_txchan;
- 	}
- 
--	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (!res) {
--		dev_err(&pdev->dev, "error getting irq res\n");
--		rc = -ENOENT;
-+	rc = platform_get_irq(pdev, 0);
-+	if (rc < 0)
- 		goto err_free_rxchan;
--	}
--	ndev->irq = res->start;
-+	ndev->irq = rc;
- 
- 	rc = davinci_emac_try_get_mac(pdev, res_ctrl ? 0 : 1, priv->mac_addr);
- 	if (!rc)
--- 
-2.17.1
 
