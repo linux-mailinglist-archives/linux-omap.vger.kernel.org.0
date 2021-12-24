@@ -2,60 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B337247E853
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Dec 2021 20:27:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64F4E47EDDB
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Dec 2021 10:36:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244894AbhLWT14 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 23 Dec 2021 14:27:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56762 "EHLO
+        id S1352294AbhLXJgj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Dec 2021 04:36:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240569AbhLWT1z (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 23 Dec 2021 14:27:55 -0500
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE8EC061756
-        for <linux-omap@vger.kernel.org>; Thu, 23 Dec 2021 11:27:54 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id bt1so14336280lfb.13
-        for <linux-omap@vger.kernel.org>; Thu, 23 Dec 2021 11:27:54 -0800 (PST)
+        with ESMTP id S1352291AbhLXJgi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Dec 2021 04:36:38 -0500
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70B60C061757
+        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 01:36:38 -0800 (PST)
+Received: by mail-qv1-xf44.google.com with SMTP id g15so7413064qvi.6
+        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 01:36:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
-        b=CBPA4ALIypkAp1JGR53249NWjS2ISum3yTx+qhIi2R0i7JWzCjFjGKT62N6pAbNYuw
-         hCJ+laW2V9hJTUsof1tHYBnpCigPQvWli0wGO+aeZvQWk7moqFR/lFDqzuKrtDlaLFFz
-         2+ktVE3UgAph/DsEp7qLna13OfX4E8o2QNgiagbWnGCkUon3Ebho+zrb1XrDrmXRikcL
-         TWGPDcshijjLNDHuXRdCWd5ZrsrU4+VqwNiFwfFss6SDmbZxfNoRLe/1YFIYEbnc9Xu4
-         lj39pVYpGp68XVpIoExoClPXsdw6wQnna/xMVu3kH3crdB7y3cTWR4AkUgVAKq2whLwu
-         ODNQ==
+        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
+        b=EU3oByVab7ZfYVaOljkbDoO4gbcHhebbpIzvSxD8aa5Bjn5YUe+8N3kcGquge9564b
+         EJxGbewkJJs650DLUZcZhcPVC3s015Xar7tzNcE4LM6toQX7hIMMXC5H1W5RklQ8rX06
+         jUaWr+i8l4zMhdFtNJU2vw6VXdQiNa2TZ5Kcd2lhOI8Gj1NvsxtZYnF68gnhiOzpdBd4
+         ngrVTss8n+eDHlvdUsajKrPLd0j/Mf1MfeZppPPQOo93y1u0eBir56c15AWx+HqqCuTP
+         9UmGlMsVjqp7H4abZaiVGyGMVuAESQvLvJ8YizQnUNJe1sTrCRDc+O5bM4qD1a4aO85P
+         Lraw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
-        b=iTQEO3TE5JDBHASSqjapL+d8XbZqC/UaKTV00Sq4dwXYhZu6iqW131peeg2V/nHqw/
-         I2RosEbPxEKmMP5lUe/OQEA3hX/p0+4oXVHKF+jAKaBvQYjfeONK1079UXEQn2r7GI0z
-         /9DOfs/2vC8ceGwXlVwbloCl0rWc1rXYwcYANV5jld02/BXgZ+wtVJAf4WxSoNwwHO2z
-         MmL8hHhRzytmXHQpPU5yXdzJ8illftaTfBOx6c1jTm6btXIld9IAVl80m0AIIUkgC1bu
-         /x51sb252+Jreok98sgSoJWUcUvfY2T9gJ76kVcncXs34jU+6gOu2E6PjcjpA0MP7S25
-         eSQw==
-X-Gm-Message-State: AOAM5317uqZ8ASVzTzYY2+c5eMbDR7CiBOYkkU0FS6DCxIfwvglvHfM4
-        A8DC3pv32z3graIpcri1cfFBStdDiuXjho9SOyU=
-X-Google-Smtp-Source: ABdhPJwl+N2X5TF9aqmmQwNU5NykOChaz69zL7yPj0EG0oButYrkHL2sx+F1GWdzjTQjR0LAnak1lukH6YKKBwj8Wtg=
-X-Received: by 2002:a05:6512:15a7:: with SMTP id bp39mr1583529lfb.363.1640287672745;
- Thu, 23 Dec 2021 11:27:52 -0800 (PST)
+        bh=DA2RfWm5BfTc8dY4tRUxJejPvziWb2AgHmDwtjqgqi8=;
+        b=QtIrvQWsjx1KePgEyr/RZrqQy2O2Ty/TZWXi7kBEXwamhJlxTFCgFxKmsWQgUZQ1Zm
+         j5E2myejjk6riP58BZiBetdLPYkkn1j5BC9p88eLnPgNAd1wULzIhOowqN6C6DQmF6RM
+         czVVh5F5wRJlGo/7t6yEChpLaeUMQ5tfTnBqNDTh7EvIhTI6V5nDk9fZlM18AYEY5xpt
+         gt5xtnG7gUQ1PfD0mLLOAPVNLbLuCA3zi6a/9GF1bKjb8FA4U5eJE7OXVYk5FzyHmz4z
+         XtuZbWH85W+A6kofUUTyNEXbmuMvdAknATuevTymhLjpI7/0hv6oDC6b1poHKgJrFV0u
+         AKPg==
+X-Gm-Message-State: AOAM530uvpn6C4A4ubrIAZUgERAJsG0Tm+NXA8deEeqFo+++JWICV82Q
+        Mu0jA/tjDtEI+zgY4dfm1pH+tYB7ZTFa8iGsaL8=
+X-Google-Smtp-Source: ABdhPJwq25UOhuoqnOwPhzowIypiNw6XyNmceBnLh4BqztRQ9NDxByjxDNQajeWtu5eKyzwIuGhr0bLo472WjtTKd2M=
+X-Received: by 2002:a05:6214:2349:: with SMTP id hu9mr4787481qvb.120.1640338597556;
+ Fri, 24 Dec 2021 01:36:37 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:ab3:73d5:0:0:0:0:0 with HTTP; Thu, 23 Dec 2021 11:27:52
+Received: by 2002:ad4:5c62:0:0:0:0:0 with HTTP; Fri, 24 Dec 2021 01:36:37
  -0800 (PST)
-Reply-To: revfrpaulwilliams2@gmail.com
-From:   "Rev. Fr. Paul Williams" <melindagatesfoundation84@gmail.com>
-Date:   Fri, 24 Dec 2021 00:57:52 +0530
-Message-ID: <CANLnpRvNsPEZuGysAzb=MJUYuO8bQRDAzFFwzyhTVA-qk6ZT+A@mail.gmail.com>
-Subject: Donation From Williams Foundation.
+Reply-To: williamsreneta2019@gmail.com
+From:   MISS WILLIAMS <info.turvateealfastar@gmail.com>
+Date:   Fri, 24 Dec 2021 01:36:37 -0800
+Message-ID: <CAM-qQYbOw_Nf-3E0c5SdpimG8tNZa_cXzZ116yMJEvS6XQpHCw@mail.gmail.com>
+Subject: Greetings Dearest One,
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Contact Rev. Fr. Paul Williams Immediately For A Charity Donation Of
-$6,200,000.00 United States Dollars At E-Mail:
-revfrpaulwilliams2@gmail.com
+Greetings Dearest One,
+
+How are you today, together with your family?Hope fine.I would like to
+use this opportunity to introduce myself to you. I am Miss Reneta
+Williams, From Benin Republic, West Africa. And my late parents are
+Mr. and Mrs. Dikko Williams; my father was a highly reputable business
+magnet who operated in Benin Republic during his days.
+
+I am writing this mail to you with tears and sorrow from my heart.
+With due respect trust and humanity, I know this mail will come to you
+as a surprise since we haven't known or come across each other before,
+considering the fact that I sourced your email contact through the
+Internet in search of trusted person who can be trusted and will
+assist me.
+
+It is sad to say that he passed away mysteriously in France during one
+of his business trips abroad. Though his sudden death was linked or
+rather suspected to have been masterminded by an uncle of his who
+traveled with him at that time. But God knows the truth! My mother
+died when I was just 6yrs old, and since then my father took me so
+special.
+
+Before his death, he called me and informed me that he has the sum of
+Eighteen Million Five Hundred , United State Dollar
+(USD$18.500,000.00) left in fixed deposit account in one of the
+leading banks in Africa. He further told me that he deposited the
+money in my name, and also gave me all the necessary but legal
+documents to this fund with the bank.
+
+I am 21 years old and a university undergraduate and really don't know
+what to do. Now I want an account overseas where I can transfer this
+funds and after the transaction I will come and reside permanently in
+your country till such a time that it will be convenient for me to
+return back home if I so desire.
+
+The death of my father actually brought sorrow to my life. I also want
+to invest the fund under your care because I am ignorant of business
+world. I am in a sincere desire of your humble assistance in this
+regards. Your suggestions and ideas will be highly regarded.
+
+Now permit me to ask these few questions:
+
+1. Can you honestly help me from your heart?
+
+2. Can I completely trust you?
+
+3. What percentage of the total amount in question will be good for
+you after the money is in your account?
+
+Please, consider this and get back to me as soon as
+possible.Immediately and confirm your willingness on this my
+email(williamsreneta2019@gmail.com), here is one of my Picture and
+also i will inform you more details involved in this matter.
+
+Regards,
+
+Miss Reneta Williams.
