@@ -2,58 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE1547F140
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Dec 2021 22:57:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DAFE47F141
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Dec 2021 22:57:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234534AbhLXV5Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Dec 2021 16:57:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35492 "EHLO
+        id S233643AbhLXV5V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 24 Dec 2021 16:57:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233643AbhLXV5P (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Dec 2021 16:57:15 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87112C061401
-        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:57:15 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id f5so37329662edq.6
-        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:57:15 -0800 (PST)
+        with ESMTP id S233632AbhLXV5V (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Dec 2021 16:57:21 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0B0C061401
+        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:57:21 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id o6so37367855edc.4
+        for <linux-omap@vger.kernel.org>; Fri, 24 Dec 2021 13:57:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=rwn2XFIyLqDYr0I7kyX/47b7/JOctwrfRN+rhupWkLI=;
-        b=YjiOouUZtOGXYBcvuACaLmGQQDHVwnHKqOZOoHVqLA7yUBFmajKroh4smqNzZYmX54
-         p8GFbKm/QoevwEcsK2o+GSAL8s5hXN2h6wPJB8qXmMnNdEznSAOv7YJeDoeu0Kd0f6Ye
-         gnjKIM1Y81+nMpYxTXg28xfPM6Kpi0YW7yp0QPNWp8UPjvELO1yg4Z6pew/L6Z69bITI
-         /FBbuckFqaOe7tHUcOxC39oZmhJaooixydXAZAnwfvcBlZZPpClX/Sr7X9tqkshNY+Dc
-         Y84duCZY/sNbP8Xmv8yHlQygJYyvI25Gg5NtvsZS+no9NAkZgap/XOAuo/UhqEFUAl3b
-         G6gg==
+        bh=8SExs5MqnW1iYmYp73hdM/V09cGq8YvDMs/ITrsptY0=;
+        b=bC01/raFpkGU7KlHcaPlKkslHbxnc+yWM3xwIq9fW+OwkrZs9CvKuqTl2nyVBjYbw3
+         SaHQANteA2uwRBMJl3dBkJmrPKKetkNoOYDPo5ZlN2jWg1wDuhv/VoY3nlSTiUccLMVX
+         TfzgPUoXNGGI9gRvPg8CrlrDM5ihDiXLCmhKGvLiCJagkcLTsAtzelRpj+vWGcY+vRgp
+         1uz/enc/1AQTura52XLcWSSsX9RjcKvPClPokYA7e81hW6kER6TTUT/SJs7Zsoy2uq8r
+         qvd0agzgxknwqr+fqdhgLZ9+z/DeFQPs+7CJ8whO3LXdE9xU3wEulbq+DOfUTP6BSiS0
+         +7Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=rwn2XFIyLqDYr0I7kyX/47b7/JOctwrfRN+rhupWkLI=;
-        b=MeSGF/jWXHJ33x/nHYrlJqFnFPXqtobSQ4kNTasAThr9ckb8rjraxEt/wct2B5Opmi
-         CMg5lqFV6FYysyCWjR7A3j+faRnuZRa0dlJ+I74zoPooQc09UXPuThBwcKP9pZ5yTxG/
-         2QJYFOfFGLwkmMgF+qhlUJ9oZKHqCAW8DLuSClpUI5VXWn8vKZu6VCgXNCmVwWmPidKf
-         lBiaEtlwxYMT4y/6Z1R0THH2u9m37kGA6tk+uo5922hoVtwwtqlVYRPiawi7l+t1d1Ai
-         GQVAJaDj9qOYxSSKYsbCgwG/u3usgEYjtj4Rx4Nm/5NrVO7kn2oGCmUPksJrfaMJn5d5
-         dwQA==
-X-Gm-Message-State: AOAM533rs3843nxU0n0xWzDHFMCUO9nAZVR8fnCAV3U3Do6ZVClFNDDv
-        v5eMorDcjWFQhX6hQPEkOPXLl0vFP90=
-X-Google-Smtp-Source: ABdhPJySHpGKLehPJSwAej7tnJ69s99gKdRQ2npcmETHO/vWh8VfcO4UO6DFdmdYL4xD/mV8Xsg+RQ==
-X-Received: by 2002:a17:906:9acd:: with SMTP id ah13mr6436058ejc.666.1640383034157;
-        Fri, 24 Dec 2021 13:57:14 -0800 (PST)
+        bh=8SExs5MqnW1iYmYp73hdM/V09cGq8YvDMs/ITrsptY0=;
+        b=NM064dUTLpQYUBUJTwf2ZIeUw9kcU7EsEQFl7iEYlnm63kY7M8IWs3+tRXTVLvDrSj
+         c86HHADX2mlcWYa1ZfTh+vdN8J2ZlPJ8GTI9e5dHSqzvkz65uCKHMX5AUK+G8Cq746pu
+         wh+dA1KxwDdpYx3JrBnMLmban+8iS7LMugq59yEJlpF1MWrCj+Gv25sGraBMIGnUQ8F8
+         JeDNkO7LlflHCB1Svzv6SSX0cDmZ8mfPMa8isUqb57CtjIrVJb7Ds8EeianyemnmAbCB
+         PQJsmnDjOwsONV8LM3roGeKjfpbItVgklDGse6IXw8hpMs1W4rFmgDqsWfA2s8QRQn0e
+         /o1g==
+X-Gm-Message-State: AOAM532olWcJp+JBmIRboj8o/7crGTRzk/gqm+q/4Jd4AaNLxEslcutG
+        YMz6Akm1/iuoLWKfPhDWRACo2YedW8Q=
+X-Google-Smtp-Source: ABdhPJzF5WWOp2nw5OotBVppBEV1DdNvw80rZwGlYOteeLgHluckWtqf7G5XmuxSaORxD5pZhrXwdA==
+X-Received: by 2002:a17:907:7f1d:: with SMTP id qf29mr6933134ejc.560.1640383039800;
+        Fri, 24 Dec 2021 13:57:19 -0800 (PST)
 Received: from localhost.localdomain (bband-dyn119.178-40-49.t-com.sk. [178.40.49.119])
-        by smtp.gmail.com with ESMTPSA id dn10sm3022476ejc.139.2021.12.24.13.57.13
+        by smtp.gmail.com with ESMTPSA id dn10sm3022476ejc.139.2021.12.24.13.57.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Dec 2021 13:57:13 -0800 (PST)
+        Fri, 24 Dec 2021 13:57:19 -0800 (PST)
 Sender: Peter Vasil <petervasil@gmail.com>
 From:   peter.vasil@gmail.com
 To:     linux-omap@vger.kernel.org
 Cc:     peter.vasil@gmail.com
-Subject: [PATCH 4/6] leds: tahvo: Driver for Tahvo/Betty ASIC LEDPWM output
-Date:   Fri, 24 Dec 2021 22:56:33 +0100
-Message-Id: <20211224215635.1585808-4-peter.vasil@gmail.com>
+Subject: [PATCH 5/6] regulator: tahvo-vcore: Add basic Tahvo/Betty ASIC Vcore output support
+Date:   Fri, 24 Dec 2021 22:56:34 +0100
+Message-Id: <20211224215635.1585808-5-peter.vasil@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211224215635.1585808-3-peter.vasil@gmail.com>
 References: <20211224215635.1585808-3-peter.vasil@gmail.com>
@@ -66,145 +66,158 @@ X-Mailing-List: linux-omap@vger.kernel.org
 From: Peter Vasil <peter.vasil@gmail.com>
 
 Nokia Tahvo/Betty ASIC is a companion chip for mobile devices. One of
-its outputs is a 127-levels PWM, usually used for LED or backlight
-control.
+its outputs is a Vcore adjustable voltage regulator.
 Register control code has been written based on original Nokia kernel
 sources for N810 display driver.
 Driver expects a regmap device as parent, usually retu-mfd driver bound
 to the Tahvo ASIC.
 ---
- drivers/leds/Kconfig      | 12 ++++++
- drivers/leds/Makefile     |  1 +
- drivers/leds/leds-tahvo.c | 85 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 98 insertions(+)
- create mode 100644 drivers/leds/leds-tahvo.c
+ drivers/regulator/Kconfig                 |   8 ++
+ drivers/regulator/Makefile                |   1 +
+ drivers/regulator/tahvo-vcore-regulator.c | 104 ++++++++++++++++++++++
+ 3 files changed, 113 insertions(+)
+ create mode 100644 drivers/regulator/tahvo-vcore-regulator.c
 
-diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-index ed800f5da7d8..010d455a2151 100644
---- a/drivers/leds/Kconfig
-+++ b/drivers/leds/Kconfig
-@@ -871,6 +871,18 @@ config LEDS_ACER_A500
- 	  This option enables support for the Power Button LED of
- 	  Acer Iconia Tab A500.
+diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
+index 6be9b1c8a615..16c684c742cf 100644
+--- a/drivers/regulator/Kconfig
++++ b/drivers/regulator/Kconfig
+@@ -1404,6 +1404,14 @@ config REGULATOR_WM8994
+ 	  This driver provides support for the voltage regulators on the
+ 	  WM8994 CODEC.
  
-+config LEDS_TAHVO
-+	tristate "Tahvo PWM led support"
-+	depends on LEDS_CLASS && MFD_RETU
++config REGULATOR_TAHVO_VCORE
++	tristate "Tahvo/Betty Vcore regulator support"
++	depends on MFD_RETU
 +	help
-+	  Tahvo PWM LED driver for Nokia Internet Tablets (770, N800,
-+	  N810). At least on N810 the LCD backlight is controlled by
-+	  Tahvo/Betty MFD.
++	  This driver supports Vcore voltage control on Nokia's Tahvo/Betty
++	  ASIC chip. The regulator controls framebuffer supply voltage in
++	  Nokia internet tablets (for sure at least N810).
 +
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called leds-tahvo.
-+
-+
- source "drivers/leds/blink/Kconfig"
+ config REGULATOR_QCOM_LABIBB
+ 	tristate "QCOM LAB/IBB regulator support"
+ 	depends on SPMI || COMPILE_TEST
+diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
+index b07d2a22df0b..ed64d2cf8a42 100644
+--- a/drivers/regulator/Makefile
++++ b/drivers/regulator/Makefile
+@@ -170,5 +170,6 @@ obj-$(CONFIG_REGULATOR_WM831X) += wm831x-ldo.o
+ obj-$(CONFIG_REGULATOR_WM8350) += wm8350-regulator.o
+ obj-$(CONFIG_REGULATOR_WM8400) += wm8400-regulator.o
+ obj-$(CONFIG_REGULATOR_WM8994) += wm8994-regulator.o
++obj-$(CONFIG_REGULATOR_TAHVO_VCORE) += tahvo-vcore-regulator.o
  
- comment "Flash and Torch LED drivers"
-diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
-index c636ec069612..30832d3bc947 100644
---- a/drivers/leds/Makefile
-+++ b/drivers/leds/Makefile
-@@ -87,6 +87,7 @@ obj-$(CONFIG_LEDS_TURRIS_OMNIA)		+= leds-turris-omnia.o
- obj-$(CONFIG_LEDS_WM831X_STATUS)	+= leds-wm831x-status.o
- obj-$(CONFIG_LEDS_WM8350)		+= leds-wm8350.o
- obj-$(CONFIG_LEDS_WRAP)			+= leds-wrap.o
-+obj-$(CONFIG_LEDS_TAHVO)		+= leds-tahvo.o
- 
- # LED SPI Drivers
- obj-$(CONFIG_LEDS_CR0014114)		+= leds-cr0014114.o
-diff --git a/drivers/leds/leds-tahvo.c b/drivers/leds/leds-tahvo.c
+ ccflags-$(CONFIG_REGULATOR_DEBUG) += -DDEBUG
+diff --git a/drivers/regulator/tahvo-vcore-regulator.c b/drivers/regulator/tahvo-vcore-regulator.c
 new file mode 100644
-index 000000000000..53feb0749e76
+index 000000000000..a7c92aa7a148
 --- /dev/null
-+++ b/drivers/leds/leds-tahvo.c
-@@ -0,0 +1,85 @@
++++ b/drivers/regulator/tahvo-vcore-regulator.c
+@@ -0,0 +1,104 @@
 +// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Tahvo LED PWM driver
-+ *
-+ * Copyright (C) 2004, 2005 Nokia Corporation
-+ *
-+ * Based on original 2.6 kernel driver for Nokia N8x0 LCD panel.
-+ * Rewritten by Peter Vasil.
-+ */
++//
++// Copyright (C) 2004, 2005 Nokia Corporation
++//
++// Based on original 2.6 kernel driver for Nokia N8x0 LCD panel.
++// Rewritten in 2021 by Peter Vasil <petervasil@gmail.com>.
++//
++// Driver for Nokia Betty/Tahvo Vcore regulator
++// The only known voltages are currently 1.005V==0x0f and 1.475V==0x00 with mask 0x0f
++// Whether the sequence is actually linear is only a guess.
 +
-+#include <linux/leds.h>
++#include <linux/io.h>
 +#include <linux/module.h>
-+#include <linux/platform_device.h>
 +#include <linux/of.h>
++#include <linux/platform_device.h>
 +#include <linux/regmap.h>
++#include <linux/regulator/driver.h>
++#include <linux/regulator/machine.h>
++#include <linux/regulator/of_regulator.h>
 +
-+#define TAHVO_REG_LEDPWM 0x05
++#define TAHVO_REG_VCORE		0x07
 +
-+/* Maximum power/brightness value */
-+#define TAHVO_LEDPWM_MAX 127
-+
-+struct tahvo_led {
-+	struct led_classdev cdev;
-+	struct regmap *regmap;
++// Values in this table are simply interpolated from the only known min/max.
++static const unsigned int tahvo_vcore_voltages[] = {
++	1475000, 1443667, 1412333, 1381000, 1349667, 1318333, 1287000, 1255667,
++	1224333, 1193000, 1161667, 1130333, 1099000, 1067667, 1036333, 1005000,
 +};
 +
-+static int tahvo_led_brightness_set(struct led_classdev *cdev,
-+				    enum led_brightness brightness)
++static const struct regulator_ops tahvo_vcore_regulator_voltage_ops = {
++	.list_voltage = regulator_list_voltage_table,
++	.map_voltage = regulator_map_voltage_iterate,
++	.get_voltage_sel = regulator_get_voltage_sel_regmap,
++	.set_voltage_sel = regulator_set_voltage_sel_regmap,
++};
++
++static const struct regulator_desc vcore_regulator = {
++	.name		= "vcore",
++	.ops		= &tahvo_vcore_regulator_voltage_ops,
++	.type		= REGULATOR_VOLTAGE,
++	.owner		= THIS_MODULE,
++	.volt_table	= tahvo_vcore_voltages,
++	.n_voltages	= ARRAY_SIZE(tahvo_vcore_voltages),
++	.vsel_reg	= TAHVO_REG_VCORE,
++	.vsel_mask	= 0x0f,
++};
++
++static const struct regmap_config tahvo_vcore_regmap_config = {
++	.reg_bits	= 8,
++	.reg_stride	= 1,
++	.val_bits	= 16,
++};
++
++static int tahvo_vcore_regulator_probe(struct platform_device *pdev)
 +{
-+	struct tahvo_led *led = container_of(cdev, struct tahvo_led, cdev);
++	struct device *dev = &pdev->dev;
++	struct regulator_init_data *init_data;
++	struct regulator_config cfg = {};
++	struct regulator_dev *rdev;
 +
-+	return regmap_write(led->regmap, TAHVO_REG_LEDPWM, brightness);
-+}
-+
-+static int tahvo_led_probe(struct platform_device *pdev)
-+{
-+	struct tahvo_led *led;
-+	struct led_init_data init_data;
-+	int ret;
-+
-+	led = devm_kzalloc(&pdev->dev, sizeof(*led), GFP_KERNEL);
-+	if (!led)
-+		return -ENOMEM;
-+
-+	if (pdev->dev.of_node && pdev->dev.of_node->name) {
-+		led->cdev.name = pdev->dev.of_node->name;
-+	} else {
-+		dev_warn(&pdev->dev, "No OF node found, using default name!\n");
-+		led->cdev.name = "tahvo:led";
++	init_data = of_get_regulator_init_data(dev, dev->of_node,
++					       &vcore_regulator);
++	if (!init_data) {
++		dev_err(dev, "Failed to init regulator data!\n");
++		return -EINVAL;
 +	}
 +
-+	led->cdev.max_brightness = TAHVO_LEDPWM_MAX;
-+	led->cdev.brightness_set_blocking = tahvo_led_brightness_set;
++	cfg.dev = dev;
++	cfg.init_data = init_data;
++	cfg.of_node = dev->of_node;
 +
-+	led->regmap = dev_get_regmap(pdev->dev.parent, NULL);
-+
-+	init_data.fwnode = of_fwnode_handle(pdev->dev.of_node);
-+
-+	ret = devm_led_classdev_register_ext(&pdev->dev, &led->cdev, &init_data);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to register PWM LED (%d)\n", ret);
-+		return ret;
++	cfg.regmap = dev_get_regmap(dev->parent, NULL);
++	if (!cfg.regmap) {
++		dev_err(dev, "failed to locate regmap\n");
++		return -ENODEV;
 +	}
++
++	rdev = devm_regulator_register(dev, &vcore_regulator, &cfg);
++	if (IS_ERR(rdev)) {
++		dev_err(dev, "Failed to register regulator: %ld\n",
++			PTR_ERR(rdev));
++		return PTR_ERR(rdev);
++	}
++	platform_set_drvdata(pdev, rdev);
 +
 +	return 0;
 +}
 +
-+static const struct of_device_id of_tahvo_leds_match[] = {
-+	{ .compatible = "nokia,tahvo-ledpwm", },
++static const struct of_device_id regulator_tahvo_vcore_of_match[] = {
++	{ .compatible = "nokia,tahvo-vcore-regulator", },
 +	{},
 +};
 +
-+static struct platform_driver tahvo_led_driver = {
-+	.probe		= tahvo_led_probe,
-+	.driver		= {
-+		.name	= "tahvo-ledpwm",
-+		.of_match_table = of_match_ptr(of_tahvo_leds_match),
++static struct platform_driver tahvo_vcore_regulator_driver = {
++	.probe = tahvo_vcore_regulator_probe,
++	.driver = {
++		.name = "tahvo-vcore-regulator",
++		.of_match_table = of_match_ptr(regulator_tahvo_vcore_of_match),
 +	},
 +};
-+module_platform_driver(tahvo_led_driver);
++module_platform_driver(tahvo_vcore_regulator_driver);
 +
-+MODULE_ALIAS("platform:tahvo-ledpwm");
-+MODULE_DESCRIPTION("Tahvo LED PWM");
-+MODULE_AUTHOR("Peter Vasil <peter.vasil@gmail.com>");
 +MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Peter Vasil <petervasil@gmail.com>");
++MODULE_DESCRIPTION("Tahvo/Betty Vcore voltage regulator");
 -- 
 2.25.1
 
