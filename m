@@ -2,104 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2BB547F6DA
-	for <lists+linux-omap@lfdr.de>; Sun, 26 Dec 2021 14:00:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4E8147F6E7
+	for <lists+linux-omap@lfdr.de>; Sun, 26 Dec 2021 14:06:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231736AbhLZNAQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 26 Dec 2021 08:00:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56932 "EHLO
+        id S233509AbhLZNGi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 26 Dec 2021 08:06:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231607AbhLZNAQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 26 Dec 2021 08:00:16 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F16CC06173E;
-        Sun, 26 Dec 2021 05:00:15 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id f5so51405113edq.6;
-        Sun, 26 Dec 2021 05:00:15 -0800 (PST)
+        with ESMTP id S231607AbhLZNGh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 26 Dec 2021 08:06:37 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72687C06173E;
+        Sun, 26 Dec 2021 05:06:37 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id j6so51353990edw.12;
+        Sun, 26 Dec 2021 05:06:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=KX2upN7lVMvP7KxPsUIxf4otN3C1XyFORAeifAgwa9Q=;
-        b=NRcegHRcUTALBuw2JA8M3RNUoWmZ5rUW0EH33YHkauYgFsn4Gbl1FmeyLB+l50F5ca
-         T3ImxolWDzh5ErkZVzeK0451ogcqGbmUBzsZ44kZMI4y0TopK6dLo5PiUCqHrrxZnM7T
-         8aBoJTztEkeHf3sNYe+zq4SdQS82VRfDuoo58IAu1/VMmew85fkCGggZ8xGW2mXlBldP
-         zXrKkDhKCgZcvQowCbZH/M2VvedBpritYK3p65WjuGPKXDwVSYY5RlpMv8Aa7M/qTcsG
-         4zHCCtXvLHB2093d1i3noP5/3B+2VwCIp6i+DBeHcl5c4VUcVoHP7h5aB3tsHbgi926R
-         97iQ==
+        bh=+mv1TZbhvoh2chJhCcunQKTwBfvV5ipUwhvosrgB5vM=;
+        b=V7lfX6FvMNAxY0TMpaAQq/FSh8ZwfYbDJSYjZw0NpZiMMpSS+zTvmdTH5AFI750qlS
+         HJosN6RoAej/5Jd4f9KbRjmn73CMgRIE1JVNMJ+rl8zCqkneMCw1BXAarQz5DyMHxE0K
+         elqWCLoZjJwnu0WeaWhU/A2nFJ0LFbMag+vktx36mc4V00oRANSHFJF75jy2r8MH0VeD
+         kCPRVMtHIrrP9MVZkPzT0e6VJD3DFa6pRPdbpWRdRiqpkmN4pVfnb8A8h5RXa4qZ5yKu
+         Bf1TxW+MPCTP8qBXaUyD5SMV+weQSN/DJVA3CvDqviElEaSHxkWs6PGJAatwP8HMKkPT
+         8Zyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=KX2upN7lVMvP7KxPsUIxf4otN3C1XyFORAeifAgwa9Q=;
-        b=tFYK8R89++w2irT9Dv7QzZSNmLr9MntHsdz0TLk7F4ev9rDY6eMsEayBtYOPz5uAzH
-         cqlB5CoH8Buy/G1xYoTTqOHRqrAe0Gcc9VeqhxFgYMkVNh6heIDPL9nydxc38iYCgM+k
-         HQw7qQY4WNKi4msXXdSXkRiSaXQqmuKmyTxq9xli/wCHgh8AdVMpPhAkgqzHxJZ9mbtS
-         NTW8ut07qAn/BzDkoCUhn2+ist4XIgqUHr0/ByvJZe10t5sDMvIC0ttiR2BgzTMEoDoi
-         RngPyKmiT90fVe5c42IMOADpFXz7bp0iPSTSGuny/R8j9FdTlwKMXoOiTlCU8mN9zd1q
-         tPgA==
-X-Gm-Message-State: AOAM5328yMpjZn2ZI/6m6K+Bmcia6uKwM+hsVda0mXn+IM7qhc/3Jfag
-        6A/arcCQf8IEo6GAYapz8gCDue8vWyk5QpkuoqjUo8LX
-X-Google-Smtp-Source: ABdhPJxQ+bZq6kRE/3/e0qbgonSeiFY6lRVPfwW8z3QhAFnZxTBkS+cqBKy3IXqhmqVx4RMFh7RBKh7AJ09b+XtRcXo=
-X-Received: by 2002:a17:906:1643:: with SMTP id n3mr10428732ejd.733.1640523614056;
- Sun, 26 Dec 2021 05:00:14 -0800 (PST)
+        bh=+mv1TZbhvoh2chJhCcunQKTwBfvV5ipUwhvosrgB5vM=;
+        b=n+OjSEJY2vb/BrnhREWugNffeEpYIXI9iEImYM/5303ng6vZ+F4t2y4aUcULjoUlmR
+         Q9z3vCDJ0SqA3WIWtZNo2wILyA/TT8SBCvgw51+JCCfeRXZrX3vNKNfV5FNIiici7Paj
+         ySuyXQthkdrQ+4q5RVxzDNm/MVlKhdd0vv5rJOVxfdYJEE0J5WfJ2Qs9bB+MIJsN/Ux1
+         agDyRNbWQb3SwWCKMPc7is9sPjKKnhFH9TCOj53NN1u10SyilRdqlAXF5KXZS6OC2Vr0
+         0vYLWVZQkmRSzKbFy4jn/k3FZymzi5Egwgb0bMGNG2KhL1KZs1AjI9ovINp9gubxAimA
+         m0rQ==
+X-Gm-Message-State: AOAM532EaSMjOTGpjo5bVAkHVEZ++E6wcBeQWNmu9M41hF1rdnTT28EA
+        HOmz7ZkMeHjtPqM+254iNQOgUviAsgYSrggb6Ms=
+X-Google-Smtp-Source: ABdhPJzxD7hL11VINZDFfTCPkZHbLm7V2jLsv2udOhICQzAsLZ0Gh60Fp0KoExxP77XYzDlEpNJJLvl1pzwh72Gxs8s=
+X-Received: by 2002:a17:907:7ea6:: with SMTP id qb38mr11544791ejc.595.1640523995951;
+ Sun, 26 Dec 2021 05:06:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20201216165239.2744-1-grzegorz.jaszczyk@linaro.org>
- <20210106232704.GE9149@xps15> <11303a1b-5ab4-def5-77b1-c500894c9c87@ti.com>
- <20210107224448.GB43045@xps15> <75365443-57e3-e2e0-5865-f78af9d5890b@ti.com>
- <b0e32ad0-487f-9d57-7287-835eee836514@oracle.com> <c5252e8d-094a-dcb7-7ccb-172e58ab3413@ti.com>
-In-Reply-To: <c5252e8d-094a-dcb7-7ccb-172e58ab3413@ti.com>
+References: <20201211184811.6490-1-grzegorz.jaszczyk@linaro.org>
+In-Reply-To: <20201211184811.6490-1-grzegorz.jaszczyk@linaro.org>
 From:   Christian Gmeiner <christian.gmeiner@gmail.com>
-Date:   Sun, 26 Dec 2021 14:00:02 +0100
-Message-ID: <CAH9NwWfJHRc5A5D4qwU_wzGhLzQiYwkOq9RtLGc2SpnruKKHxA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] Introduce PRU remoteproc consumer API
-To:     Suman Anna <s-anna@ti.com>
-Cc:     "santosh.shilimkar@oracle.com" <santosh.shilimkar@oracle.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, ssantosh@kernel.org,
-        linux-remoteproc@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        devicetree@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        praneeth@ti.com, rogerq@kernel.org
+Date:   Sun, 26 Dec 2021 14:06:24 +0100
+Message-ID: <CAH9NwWcDj1odYuAvMVRG5zMOA-Q95EvoTDqq1o-M-s45NTcwkw@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Introduce PRU platform consumer API
+To:     Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>
+Cc:     ssantosh@kernel.org, Suman Anna <s-anna@ti.com>,
+        santosh.shilimkar@oracle.com, Lee Jones <lee.jones@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, praneeth@ti.com,
+        Tony Lindgren <tony@atomide.com>,
+        linux-remoteproc@vger.kernel.org,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-HI all,
+HI all.
 
-Am Di., 26. Jan. 2021 um 06:58 Uhr schrieb Suman Anna <s-anna@ti.com>:
+Am Fr., 11. Dez. 2020 um 20:15 Uhr schrieb Grzegorz Jaszczyk
+<grzegorz.jaszczyk@linaro.org>:
 >
-> Hi Santosh,
+> Hi All,
 >
-> On 1/24/21 10:34 PM, santosh.shilimkar@oracle.com wrote:
-> > Hi Suman, Mathieu,
-> >
-> > On 1/7/21 2:49 PM, Suman Anna wrote:
-> >> On 1/7/21 4:44 PM, Mathieu Poirier wrote:
-> >>> On Wed, Jan 06, 2021 at 06:03:25PM -0600, Suman Anna wrote:
-> >>>> Hi Mathieu,
-> >>>>
-> > [...]
-> >>> I only see input from Andy and Lars in the thread you point out, nothing from
-> >>> Greg.  I have also taken a look at the patch [1] that made checkpatch complain
-> >>> about ENOTSUPP.  From what I see in that commit log the goal is to prevent new
-> >>> additions of ENOTSUPP to the kernel.
-> >>>
-> >>> Please modify and resend, otherwise I'm sure someone will send another patch to
-> >>> fix it before the end of the cycle.
-> >>
-> >> Yeah ok. I will send out a v3.
-> >>
-> > I haven't seen v3 of this series yet. Please post it
-> > if you would like to include it for 5.12.
+> The Programmable Real-Time Unit and Industrial Communication Subsystem (PRU-ICSS
+> or simply PRUSS) on various TI SoCs consists of dual 32-bit RISC cores
+> (Programmable Real-Time Units, or PRUs) for program execution.
 >
-> This series is dependent on couple of patches that would have to come through
-> the remoteproc tree first, and I need to post the next versions of those as
-> well. So, let me sort out those first. You can drop this from your queue for 5.12.
+> There are 3 foundation components for TI PRUSS subsystem: the PRUSS platform
+> driver, the PRUSS INTC driver and the PRUSS remoteproc driver. Two first were
+> already merged and can be found under:
+> 1) drivers/soc/ti/pruss.c
+>    Documentation/devicetree/bindings/soc/ti/ti,pruss.yaml
+> 2) drivers/irqchip/irq-pruss-intc.c
+>    Documentation/devicetree/bindings/interrupt-controller/ti,pruss-intc.yaml
+>
+> The third one [1] was accepted and applied to andersson/remoteproc.git
+> (refs/heads/for-next): [2] but is not merged yet.
+>
+> The programmable nature of the PRUs provide flexibility to implement custom
+> peripheral interfaces, fast real-time responses, or specialized data handling.
+> Example of a PRU consumer drivers will be:
+>   - Software UART over PRUSS
+>   - PRU-ICSS Ethernet EMAC
+>
+> In order to make usage of common PRU resources and allow the consumer drivers to
+> configure the PRU hardware for specific usage the PRU API is introduced.
+>
+> This patch set depends on "Introduce PRU remoteproc consumer API" set [3], which
+> is complementary to this one but goes for different, remoteproc sub-system.
+>
+> [1] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20201208141002.17777-1-grzegorz.jaszczyk@linaro.org/
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/andersson/remoteproc.git/commit/?h=for-next&id=b44786c9bdc46eac8388843f0a6116369cb18bca
+> [3] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20201211142933.25784-1-grzegorz.jaszczyk@linaro.org/
+>
+> Best regards,
+> Grzegorz
+>
+> Andrew F. Davis (1):
+>   soc: ti: pruss: Add pruss_{request,release}_mem_region() API
+>
+> Suman Anna (3):
+>   soc: ti: pruss: Add pruss_cfg_read()/update() API
+>   soc: ti: pruss: Add helper functions to set GPI mode, MII_RT_event and
+>     XFR
+>   soc: ti: pruss: Add helper function to enable OCP master ports
+>
+> Tero Kristo (2):
+>   soc: ti: pruss: Add pruss_get()/put() API
+>   soc: ti: pruss: Add helper functions to get/set PRUSS_CFG_GPMUX
+>
+>  drivers/soc/ti/pruss.c       | 257 ++++++++++++++++++++++++++++++++++-
+>  include/linux/pruss.h        | 221 ++++++++++++++++++++++++++++++
+>  include/linux/pruss_driver.h |  72 +++++++---
+>  3 files changed, 526 insertions(+), 24 deletions(-)
+>
+> --
+> 2.29.0
 >
 
 Is there any update on this patch series?
