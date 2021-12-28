@@ -2,34 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CE64F480C67
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Dec 2021 19:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD071480C5A
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Dec 2021 19:09:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233875AbhL1SPq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 28 Dec 2021 13:15:46 -0500
-Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21048 "EHLO
+        id S231825AbhL1SJ4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Dec 2021 13:09:56 -0500
+Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21106 "EHLO
         sender11-of-o51.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233411AbhL1SPp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Dec 2021 13:15:45 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1640714432; cv=none; 
+        with ESMTP id S231502AbhL1SJ4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Dec 2021 13:09:56 -0500
+X-Greylist: delayed 770 seconds by postgrey-1.27 at vger.kernel.org; Tue, 28 Dec 2021 13:09:56 EST
+ARC-Seal: i=1; a=rsa-sha256; t=1640714974; cv=none; 
         d=zohomail.eu; s=zohoarc; 
-        b=CfF3y5GY5iGOnX8rAz8cHjqqFlU4nJmLqfd3E3S4+w2yLG0JxqgfbeiJqJ6G8WcWV4GG7QJIxXzoY2qbJdROwoaoSuxmXju4PLcm1EOWgsAIXnAN3YGmS5VagKy7ozSznQtdTIPzPBA1H8r/gkSi5yivcqI+Uj3MF1kayf75K3Q=
+        b=b+2at6/dS3v78Y4eHWBZ+2wS9KgpDxcfg90OGlhKXFSnZpa1Iy7LrzS41PAghefXVdxUWhrLSlgAajpDxXVhVk3gkwA8uVLGCfG6PjhGbFJD/EBYmvyrbMIduCYJuvbsbWov3l6VjuRUPcDNSFUjT5QGFvY82Ej5fimGi4sHVY8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1640714432; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=NUzzWyBrbzSHi4hjKohyJTjH8OPFCaSfLbCHp8zeep8=; 
-        b=TkGBmnugGf1wkhs/B6ecGE3eh5n1kn8zZzHFdhbIU39HQJc0fcAnuTKtd3iDo4Ca6Llfq/GJKV5Ib4rizPdcbNgbmQhum0l83V8VWKt4lZn/XP++Z9TEFIv/FUXJJXpq5FZ08MjKq/HJyaHb/J4eRz/jkKYmY6cvj1Zo9K6puh4=
+        t=1640714974; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=oynB9R8k0PLl1IH46elp4NZHwnEBnjiXaZcMGJZ+cRY=; 
+        b=EJoBw4b5ePgr40U5SjGlpKS2nEGxPrKIrV9RZRwOx6vYwkXJBvzGcTfOnR/ql9qzKm03QSDuUyDX+q4gBupGbpVEhS+Nr78rE/z+Yi4Lez7GOxkjl7S3jJDLB5eEZ7+1gUJ0IuPgnLcTBqsIzHZONcEkCu4dYY18zcH22VY+f30=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
         spf=pass  smtp.mailfrom=philipp@uvos.xyz;
         dmarc=pass header.from=<philipp@uvos.xyz>
 Received: from UVOSLinux (aftr-37-201-192-113.unity-media.net [37.201.192.113]) by mx.zoho.eu
-        with SMTPS id 1640714429826914.8390073117779; Tue, 28 Dec 2021 19:00:29 +0100 (CET)
-Date:   Tue, 28 Dec 2021 19:00:29 +0100
+        with SMTPS id 1640714972300267.32556141033467; Tue, 28 Dec 2021 19:09:32 +0100 (CET)
+Date:   Tue, 28 Dec 2021 19:09:31 +0100
 From:   Carl Philipp Klemm <philipp@uvos.xyz>
-To:     sre@kernel.org
-Cc:     tony@atomide.com, merlijn@wizzup.org, linux-omap@vger.kernel.org
-Subject: [RFC PATCH] power: supply: cpcap-charger ramp up charge current
- slowly
-Message-Id: <20211228190029.5a58776acce1352e4aac3e9c@uvos.xyz>
+To:     alsa-devel@alsa-project.org
+Cc:     merlijn@wizzup.org, tony@atomide.com, sre@kernel.org,
+        linux-omap@vger.kernel.org, kuninori.morimoto.gx@renesas.com
+Subject: [RFC PATCH 1/3] ASoC: simple-card-utils: add support for componants
+ provideing jack events via set_jack
+Message-Id: <20211228190931.df5d518220080a734532ebfd@uvos.xyz>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -39,200 +41,130 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Even after "power: supply: cpcap-charger: Add usleep to cpcap charger
-to avoid usb plug bounce" several usb host port and cable combinations,
-especially when combined with usb hubs can cause cpcap-charger to fail
-to activate charging even when vbus is seemingly fine. Using a scope
-this has been tracked down to vbus still dropping quite considerably
-(around 1.5V) for severl us when charging is enabled in these
-problematic port-hub-cable combinations. this is probubly due to line
-inductivity.
+This allows componants that want a jack to report state on to do so by calling
+set_jack on components implementing this function.
 
-To avoid this, after this patch, cpcap-charger will ramp up charge
-current slowly until it hits set current. This makes vbus mutch
-cleaner on the scope and avoids the problem of charging being disabled
-due to under-voltage. As this ramping causes innate delay the dealy
-previously added to combat the related but independent problem of the
-usb plug pins bouncing has been made obsolete.
+Im not entirely sure this is the right way to do this so RFC
 
 Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
 ---
- drivers/power/supply/cpcap-charger.c | 85 +++++++++++++++++++++-------
- 1 file changed, 65 insertions(+), 20 deletions(-)
+ include/sound/simple_card_utils.h     |  6 ++--
+ sound/soc/generic/simple-card-utils.c | 47 +++++++++++++++++++--------
+ 2 files changed, 36 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
-index 60e0ce105a29..1ae252d84685 100644
---- a/drivers/power/supply/cpcap-charger.c
-+++ b/drivers/power/supply/cpcap-charger.c
-@@ -22,6 +22,7 @@
- #include <linux/platform_device.h>
- #include <linux/power_supply.h>
- #include <linux/regmap.h>
-+#include <linux/sched.h>
+diff --git a/include/sound/simple_card_utils.h b/include/sound/simple_card_utils.h
+index 51b3b485a92e..547ad537613d 100644
+--- a/include/sound/simple_card_utils.h
++++ b/include/sound/simple_card_utils.h
+@@ -57,8 +57,8 @@ struct asoc_simple_priv {
+ 		struct prop_nums num;
+ 		unsigned int mclk_fs;
+ 	} *dai_props;
+-	struct asoc_simple_jack hp_jack;
+-	struct asoc_simple_jack mic_jack;
++	struct asoc_simple_jack *hp_jack;
++	struct asoc_simple_jack *mic_jack;
+ 	struct snd_soc_dai_link *dai_link;
+ 	struct asoc_simple_dai *dais;
+ 	struct snd_soc_dai_link_component *dlcs;
+@@ -173,7 +173,7 @@ int asoc_simple_parse_pin_switches(struct snd_soc_card *card,
+ 				   char *prefix);
  
- #include <linux/gpio/consumer.h>
- #include <linux/usb/phy_companion.h>
-@@ -128,6 +129,7 @@ struct cpcap_charger_ddata {
- 	struct list_head irq_list;
- 	struct delayed_work detect_work;
- 	struct delayed_work vbus_work;
-+	struct delayed_work ramp_work;
- 	struct gpio_desc *gpio[2];		/* gpio_reven0 & 1 */
+ int asoc_simple_init_jack(struct snd_soc_card *card,
+-			       struct asoc_simple_jack *sjack,
++			       struct asoc_simple_jack **sjack,
+ 			       int is_hp, char *prefix, char *pin);
+ int asoc_simple_init_priv(struct asoc_simple_priv *priv,
+ 			       struct link_info *li);
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index 10c63b73900c..1899feba16cc 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -395,6 +395,7 @@ int asoc_simple_dai_init(struct snd_soc_pcm_runtime *rtd)
+ 	struct asoc_simple_priv *priv = snd_soc_card_get_drvdata(rtd->card);
+ 	struct simple_dai_props *props = simple_priv_to_props(priv, rtd->num);
+ 	struct asoc_simple_dai *dai;
++	struct snd_soc_component *component;
+ 	int i, ret;
  
- 	struct iio_channel *channels[CPCAP_CHARGER_IIO_NR];
-@@ -142,6 +144,7 @@ struct cpcap_charger_ddata {
- 	int status;
- 	int voltage;
- 	int limit_current;
-+	int set_current;
- };
+ 	for_each_prop_dai_codec(props, i, dai) {
+@@ -412,6 +413,21 @@ int asoc_simple_dai_init(struct snd_soc_pcm_runtime *rtd)
+ 	if (ret < 0)
+ 		return ret;
  
- struct cpcap_interrupt_desc {
-@@ -440,6 +443,21 @@ static int cpcap_charger_enable(struct cpcap_charger_ddata *ddata,
- 	return error;
- }
- 
-+static int cpcap_charger_get_charge_current_reg(struct cpcap_charger_ddata *ddata)
-+{
-+	int error;
-+	unsigned int val;
-+
-+	error = regmap_read(ddata->reg, CPCAP_REG_CRM, &val);
-+
-+	if (error) {
-+		dev_err(ddata->dev, "%s failed with %i\n", __func__, error);
-+		return -1;
++	for_each_rtd_components(rtd, i, component) {
++		if (component->driver->set_jack) {
++			if (!priv->hp_jack) {
++				priv->hp_jack = devm_kzalloc(priv->snd_card.dev,
++					sizeof(*priv->hp_jack), GFP_KERNEL);
++				snd_soc_card_jack_new(&priv->snd_card,
++					"Headphones",
++					SND_JACK_HEADPHONE,
++					&priv->hp_jack->jack,
++					NULL, 0);
++			}
++			snd_soc_component_set_jack(component, &priv->hp_jack->jack, NULL);
++		}
 +	}
 +
-+	return val & 0xf;
-+}
-+
- static bool cpcap_charger_vbus_valid(struct cpcap_charger_ddata *ddata)
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(asoc_simple_dai_init);
+@@ -554,7 +570,7 @@ int asoc_simple_parse_pin_switches(struct snd_soc_card *card,
+ EXPORT_SYMBOL_GPL(asoc_simple_parse_pin_switches);
+ 
+ int asoc_simple_init_jack(struct snd_soc_card *card,
+-			  struct asoc_simple_jack *sjack,
++			  struct asoc_simple_jack **sjack,
+ 			  int is_hp, char *prefix,
+ 			  char *pin)
  {
- 	int error, value = 0;
-@@ -607,6 +625,9 @@ static void cpcap_charger_disconnect(struct cpcap_charger_ddata *ddata,
- 		break;
+@@ -569,8 +585,6 @@ int asoc_simple_init_jack(struct snd_soc_card *card,
+ 	if (!prefix)
+ 		prefix = "";
+ 
+-	sjack->gpio.gpio = -ENOENT;
+-
+ 	if (is_hp) {
+ 		snprintf(prop, sizeof(prop), "%shp-det-gpio", prefix);
+ 		pin_name	= pin ? pin : "Headphones";
+@@ -588,21 +602,26 @@ int asoc_simple_init_jack(struct snd_soc_card *card,
+ 		return -EPROBE_DEFER;
+ 
+ 	if (gpio_is_valid(det)) {
+-		sjack->pin.pin		= pin_name;
+-		sjack->pin.mask		= mask;
++		struct asoc_simple_jack *sjack_d;
++
++		sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);
++		sjack_d = *sjack;
++
++		sjack_d->pin.pin		= pin_name;
++		sjack_d->pin.mask		= mask;
+ 
+-		sjack->gpio.name	= gpio_name;
+-		sjack->gpio.report	= mask;
+-		sjack->gpio.gpio	= det;
+-		sjack->gpio.invert	= !!(flags & OF_GPIO_ACTIVE_LOW);
+-		sjack->gpio.debounce_time = 150;
++		sjack_d->gpio.name	= gpio_name;
++		sjack_d->gpio.report	= mask;
++		sjack_d->gpio.gpio	= det;
++		sjack_d->gpio.invert	= !!(flags & OF_GPIO_ACTIVE_LOW);
++		sjack_d->gpio.debounce_time = 150;
+ 
+ 		snd_soc_card_jack_new(card, pin_name, mask,
+-				      &sjack->jack,
+-				      &sjack->pin, 1);
++				      &sjack_d->jack,
++				      &sjack_d->pin, 1);
+ 
+-		snd_soc_jack_add_gpios(&sjack->jack, 1,
+-				       &sjack->gpio);
++		snd_soc_jack_add_gpios(&sjack_d->jack, 1,
++				       &sjack_d->gpio);
  	}
  
-+	cancel_delayed_work_sync(&ddata->ramp_work);
-+	ddata->set_current = 0;
-+
- 	error = cpcap_charger_disable(ddata);
- 	if (error) {
- 		cpcap_charger_update_state(ddata, POWER_SUPPLY_STATUS_UNKNOWN);
-@@ -618,6 +639,40 @@ static void cpcap_charger_disconnect(struct cpcap_charger_ddata *ddata,
- 	schedule_delayed_work(&ddata->detect_work, delay);
- }
- 
-+static void cpcap_charger_ramp_work(struct work_struct *work)
-+{
-+	struct cpcap_charger_ddata *ddata;
-+	int ichrg;
-+	int vchrg;
-+	int ichrg_current;
-+	int error;
-+
-+	ddata = container_of(work, struct cpcap_charger_ddata,
-+		     ramp_work.work);
-+
-+	ichrg_current = cpcap_charger_get_charge_current_reg(ddata);
-+	ichrg = cpcap_charger_current_to_regval(ddata->set_current);
-+	vchrg = cpcap_charger_voltage_to_regval(ddata->voltage);
-+	if (ichrg_current < ichrg)
-+		++ichrg_current;
-+	else if (ichrg_current > ichrg)
-+		ichrg_current = ichrg;
-+	else
-+		return;
-+
-+	error = cpcap_charger_enable(ddata,
-+					CPCAP_REG_CRM_VCHRG(vchrg),
-+					ichrg_current, 0);
-+	if (error) {
-+		dev_err(ddata->dev, "cpcap_charger_enable failed with %i\n", error);
-+		cpcap_charger_update_state(ddata, POWER_SUPPLY_STATUS_UNKNOWN);
-+	} else {
-+		if (ichrg_current == ichrg && ddata->status != POWER_SUPPLY_STATUS_CHARGING)
-+			cpcap_charger_update_state(ddata, POWER_SUPPLY_STATUS_CHARGING);
-+		schedule_delayed_work(&ddata->ramp_work, HZ/20);
-+	}
-+}
-+
- static void cpcap_usb_detect(struct work_struct *work)
- {
- 	struct cpcap_charger_ddata *ddata;
-@@ -651,13 +706,10 @@ static void cpcap_usb_detect(struct work_struct *work)
- 		return;
- 	}
- 
--	/* Delay for 80ms to avoid vbus bouncing when usb cable is plugged in */
--	usleep_range(80000, 120000);
--
- 	/* Throttle chrgcurr2 interrupt for charger done and retry */
- 	switch (ddata->status) {
- 	case POWER_SUPPLY_STATUS_CHARGING:
--		if (s.chrgcurr2)
-+		if (s.chrgcurr2 || delayed_work_pending(&ddata->ramp_work))
- 			break;
- 		new_state = POWER_SUPPLY_STATUS_FULL;
- 
-@@ -683,8 +735,6 @@ static void cpcap_usb_detect(struct work_struct *work)
- 
- 	if (!ddata->feeding_vbus && cpcap_charger_vbus_valid(ddata) &&
- 	    s.chrgcurr1) {
--		int max_current;
--		int vchrg, ichrg;
- 		union power_supply_propval val;
- 		struct power_supply *battery;
- 
-@@ -701,25 +751,18 @@ static void cpcap_usb_detect(struct work_struct *work)
- 			goto out_err;
- 
- 		if (val.intval) {
--			max_current = 1596000;
-+			ddata->set_current = 1596000;
- 		} else {
- 			dev_info(ddata->dev, "battery not inserted, charging disabled\n");
--			max_current = 0;
-+			ddata->set_current = 0;
- 		}
- 
--		if (max_current > ddata->limit_current)
--			max_current = ddata->limit_current;
--
--		ichrg = cpcap_charger_current_to_regval(max_current);
--		vchrg = cpcap_charger_voltage_to_regval(ddata->voltage);
--		error = cpcap_charger_enable(ddata,
--					     CPCAP_REG_CRM_VCHRG(vchrg),
--					     ichrg, 0);
--		if (error)
--			goto out_err;
--		cpcap_charger_update_state(ddata,
--					   POWER_SUPPLY_STATUS_CHARGING);
-+		if (ddata->set_current > ddata->limit_current)
-+			ddata->set_current = ddata->limit_current;
-+		if (!delayed_work_pending(&ddata->ramp_work))
-+			schedule_delayed_work(&ddata->ramp_work, HZ/20);
- 	} else {
-+		ddata->set_current = 0;
- 		error = cpcap_charger_disable(ddata);
- 		if (error)
- 			goto out_err;
-@@ -902,6 +945,7 @@ static int cpcap_charger_probe(struct platform_device *pdev)
- 	INIT_LIST_HEAD(&ddata->irq_list);
- 	INIT_DELAYED_WORK(&ddata->detect_work, cpcap_usb_detect);
- 	INIT_DELAYED_WORK(&ddata->vbus_work, cpcap_charger_vbus_work);
-+	INIT_DELAYED_WORK(&ddata->ramp_work, cpcap_charger_ramp_work);
- 	platform_set_drvdata(pdev, ddata);
- 
- 	error = cpcap_charger_init_iio(ddata);
-@@ -964,6 +1008,7 @@ static void cpcap_charger_shutdown(struct platform_device *pdev)
- 	cpcap_charger_update_state(ddata, POWER_SUPPLY_STATUS_DISCHARGING);
- 	cancel_delayed_work_sync(&ddata->vbus_work);
- 	cancel_delayed_work_sync(&ddata->detect_work);
-+	cancel_delayed_work_sync(&ddata->ramp_work);
- }
- 
- static int cpcap_charger_remove(struct platform_device *pdev)
+ 	return 0;
 -- 
 2.34.1
