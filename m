@@ -2,112 +2,242 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCC6047F6EA
-	for <lists+linux-omap@lfdr.de>; Sun, 26 Dec 2021 14:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7930480C5E
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Dec 2021 19:12:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233522AbhLZNHK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 26 Dec 2021 08:07:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58482 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231607AbhLZNHJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 26 Dec 2021 08:07:09 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C04CC06173E;
-        Sun, 26 Dec 2021 05:07:09 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id m21so52686835edc.0;
-        Sun, 26 Dec 2021 05:07:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=B2+ZyCKMgaCn+yHM6iaIMiaErSxz8x8VEPA7/E0hwSA=;
-        b=l2yDrf+QDS8RAWsZgi9vW77rfw+j+Rdb9oMINXHtP6SqPqkVii8HAI2Ih4tFLZdmTK
-         6zz96U+qc9gKteY8tlKffzB/EuF07UbiQS9DleCs3TGoSeVdsHgmRrA1PjjVJtHkhVp4
-         L72e9nigt/e1MBR7oIjEIaSENoOV+TEiVwCcNOGxrGXCIWebAu4+cmOJK9b8J9GiDPU5
-         Xz+mIBaqi9mz7TvVbd7viX5hmTttoLWCCj3xvYzIJ3BHfbYRZpgJdcWEv0EzWULNevSV
-         oXyFa/fX7sbi/4B0g1tqB7H9E7lMIhWfdE0fbkaTJy6bauH18GMFUbuGgG8wOInTBwAT
-         PVlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=B2+ZyCKMgaCn+yHM6iaIMiaErSxz8x8VEPA7/E0hwSA=;
-        b=iWOHwXztvj4aOzOU2dTBMzQO4Ursqyycdn6pVzG75LiWysuyz5VTo+ZmoL7ZGIlFog
-         eLhEgkeWE3buVGCylEnL0W3hGp1P5Am/aWqchLMl7oOANDgBFXGUj5YEWLCnHLc3znFc
-         qu9OULf9Dth0PUVTUKgk1/J4JW6DGaOSN2yO9G7aN+SXj6jyzfHjh185Uwuch18Qh93N
-         oUG/MNFxrH9prO+GOkMCXeLZhnD4CckxeqCbVWTcrrN0nxx86yXM7nq6JXyLkyVS33nk
-         9TwXkSnSVl+ZF10Fg/GANewG1e7rjLJdVOJSQZaVj9mLhCbPAZfhI184OhP3kiiU07rp
-         BlBw==
-X-Gm-Message-State: AOAM530RjN6In5QD+JvPBE7f4PzSMTIKP4FopBXGSRKmPvaArewI0Rln
-        5FShRp/4m9D6ARQNQi2xG8PUZIyLh6duvrlaof0=
-X-Google-Smtp-Source: ABdhPJzUou2795TF47OxmF5US3Gh4JD147IGIAJSe1uBVIvJQ0UC3+hhhkzQQqz6jlb3Zk+gNB9FWmbxuZro6bk+Vj0=
-X-Received: by 2002:a17:906:7953:: with SMTP id l19mr11214698ejo.71.1640524027713;
- Sun, 26 Dec 2021 05:07:07 -0800 (PST)
-MIME-Version: 1.0
-References: <20201121030156.22857-1-s-anna@ti.com>
-In-Reply-To: <20201121030156.22857-1-s-anna@ti.com>
-From:   Christian Gmeiner <christian.gmeiner@gmail.com>
-Date:   Sun, 26 Dec 2021 14:06:56 +0100
-Message-ID: <CAH9NwWfFMv0TrHLbAhL6Ykn78jNZDs8e=c30U-QC0mG3jcY5mw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] remoteproc sysfs fixes/improvements
-To:     Suman Anna <s-anna@ti.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
-        Loic Pallardy <loic.pallardy@st.com>,
-        Grzegorz Jaszczyk <grzegorz.jaszczyk@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-remoteproc@vger.kernel.org, linux-omap@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S236849AbhL1SMM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 28 Dec 2021 13:12:12 -0500
+Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21016 "EHLO
+        sender11-of-o51.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231502AbhL1SMM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 28 Dec 2021 13:12:12 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1640714211; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=R1cxMCvhAEszlHw57OixySlPWMGvPKzBvaK/zZgr6R04RVeJ9mBqOO4l3LMDRZxg0s6lDzNXPjw5n3fuwIduvVM1+r+e47QA/UgVCVwySkO6fF+pIUfnvIoB9NK+KvgsE0wcVR20VtODRABIanSKt6eeaqOblkKTl0s+sq6GZ1k=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1640714211; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=yVAhgHN8ExHJyZCfwlBBfyWw9do/V6I42C280ecXvCk=; 
+        b=NznhUvMxxRWFr2rqf/URc4o7DBDDXGqHgo+XyS/Xsslbca46n88tk4nreqy7kGwbik5Z5WVEv08jXoX1lKjY/ax9CIuOqrTrHefSm26sh6vrmVGDIuVpnk2fb6UKpVyfEZIIPtxefzuejnR28iY6NYBOKUokhj4kJP/6YvdCcH8=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
+        dmarc=pass header.from=<philipp@uvos.xyz>
+Received: from UVOSLinux (aftr-37-201-192-113.unity-media.net [37.201.192.113]) by mx.zoho.eu
+        with SMTPS id 1640714209296668.619587098191; Tue, 28 Dec 2021 18:56:49 +0100 (CET)
+Date:   Tue, 28 Dec 2021 18:56:48 +0100
+From:   Carl Philipp Klemm <philipp@uvos.xyz>
+To:     sre@kernel.org
+Cc:     merlijn@wizzup.org, tony@atomide.com, linux-omap@vger.kernel.org
+Subject: [PATCH V3] power: supply: cpcap-battery: Add battery type auto
+ detection for mapphone devices
+Message-Id: <20211228185648.74ba318e9487ab03834ce40d@uvos.xyz>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi all.
+This allows cpcap-battery to detect whitch battery is inserted, HW4X or
+BW8X for xt875 and EB41 for xt894 by examining the battery nvmem. If no
+known battery is detected sane defaults are used.
 
-Am Sa., 21. Nov. 2020 um 04:05 Uhr schrieb Suman Anna <s-anna@ti.com>:
->
-> Hi All,
->
-> This is a refresh of the unaccepted patches from an old series [1].
-> Patches 2 and 3 from that series were merged and these are rebased and
-> revised versions of the same patches. I had forgotten about these patches,
-> and am resurrecting these again. Patches are on top of latest 5.10-rc4.
->
-> The features being introduced here will be needed by the recently posted PRU
-> remoteproc driver [2] in addition to the existing Wkup M3 remoteproc driver.
-> Both of these drivers follow a client-driven boot methodology, with the latter
-> strictly booted by another driver in kernel. The PRU remoteproc driver will be
-> supporting both in-kernel clients as well as control from userspace orthogonally.
-> The logic though is applicable and useful to any remoteproc driver not using
-> 'auto-boot' and using an external driver/application to boot the remoteproc.
->
-> regards
-> Suman
->
-> [1] https://patchwork.kernel.org/project/linux-remoteproc/cover/20180915003725.17549-1-s-anna@ti.com/
-> [2] https://patchwork.kernel.org/project/linux-remoteproc/cover/20201119140850.12268-1-grzegorz.jaszczyk@linaro.org/
->
-> Suman Anna (3):
->   remoteproc: Fix unbalanced boot with sysfs for no auto-boot rprocs
->   remoteproc: Introduce deny_sysfs_ops flag
->   remoteproc: wkup_m3: Set deny_sysfs_ops flag
->
->  drivers/remoteproc/remoteproc_sysfs.c | 28 ++++++++++++++++++++++++++-
->  drivers/remoteproc/wkup_m3_rproc.c    |  1 +
->  include/linux/remoteproc.h            |  2 ++
->  3 files changed, 30 insertions(+), 1 deletion(-)
->
-> --
-> 2.28.0
->
+Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
+---
+ drivers/power/supply/cpcap-battery.c | 125 ++++++++++++++++++++-------
+ 1 file changed, 92 insertions(+), 33 deletions(-)
 
-Is there any update on this patch series?
-
+diff --git a/drivers/power/supply/cpcap-battery.c b/drivers/power/supply/cpcap-battery.c
+index 8d62d4241da3..e079d5549aea 100644
+--- a/drivers/power/supply/cpcap-battery.c
++++ b/drivers/power/supply/cpcap-battery.c
+@@ -28,6 +28,7 @@
+ #include <linux/power_supply.h>
+ #include <linux/reboot.h>
+ #include <linux/regmap.h>
++#include <linux/nvmem-consumer.h>
+ #include <linux/moduleparam.h>
+ 
+ #include <linux/iio/consumer.h>
+@@ -73,6 +74,9 @@
+ 
+ #define CPCAP_BATTERY_CC_SAMPLE_PERIOD_MS	250
+ 
++#define CPCAP_BATTERY_EB41_HW4X_ID 0x9E
++#define CPCAP_BATTERY_BW8X_ID 0x98
++
+ enum {
+ 	CPCAP_BATTERY_IIO_BATTDET,
+ 	CPCAP_BATTERY_IIO_VOLTAGE,
+@@ -138,6 +142,7 @@ struct cpcap_battery_ddata {
+ 	int charge_full;
+ 	int status;
+ 	u16 vendor;
++	bool check_nvmem;
+ 	unsigned int is_full:1;
+ };
+ 
+@@ -354,6 +359,88 @@ cpcap_battery_read_accumulated(struct cpcap_battery_ddata *ddata,
+ 				       ccd->offset);
+ }
+ 
++
++/*
++ * Based on the values from Motorola mapphone Linux kernel for the
++ * stock Droid 4 battery eb41. In the Motorola mapphone Linux
++ * kernel tree the value for pm_cd_factor is passed to the kernel
++ * via device tree. If it turns out to be something device specific
++ * we can consider that too later. These values are also fine for
++ * Bionic's hw4x.
++ *
++ * And looking at the battery full and shutdown values for the stock
++ * kernel on droid 4, full is 4351000 and software initiates shutdown
++ * at 3078000. The device will die around 2743000.
++ */
++static const struct cpcap_battery_config cpcap_battery_eb41_data = {
++	.cd_factor = 0x3cc,
++	.info.technology = POWER_SUPPLY_TECHNOLOGY_LION,
++	.info.voltage_max_design = 4351000,
++	.info.voltage_min_design = 3100000,
++	.info.charge_full_design = 1740000,
++	.bat.constant_charge_voltage_max_uv = 4200000,
++};
++
++/* Values for the extended Droid Bionic battery bw8x. */
++static const struct cpcap_battery_config cpcap_battery_bw8x_data = {
++	.cd_factor = 0x3cc,
++	.info.technology = POWER_SUPPLY_TECHNOLOGY_LION,
++	.info.voltage_max_design = 4200000,
++	.info.voltage_min_design = 3200000,
++	.info.charge_full_design = 2760000,
++	.bat.constant_charge_voltage_max_uv = 4200000,
++};
++
++/*
++ * Safe values for any lipo battery likely to fit into a mapphone
++ * battery bay.
++ */
++static const struct cpcap_battery_config cpcap_battery_unkown_data = {
++	.cd_factor = 0x3cc,
++	.info.technology = POWER_SUPPLY_TECHNOLOGY_LION,
++	.info.voltage_max_design = 4200000,
++	.info.voltage_min_design = 3200000,
++	.info.charge_full_design = 3000000,
++	.bat.constant_charge_voltage_max_uv = 4200000,
++};
++
++static int cpcap_battery_match_nvmem(struct device *dev, const void *data)
++{
++	if (strcmp(dev_name(dev), "89-500029ba0f73") == 0)
++		return 1;
++	else
++		return 0;
++}
++
++static void cpcap_battery_detect_battery_type(struct cpcap_battery_ddata *ddata)
++{
++	struct nvmem_device *nvmem;
++	u8 battery_id = 0;
++
++	ddata->check_nvmem = false;
++
++	nvmem = nvmem_device_find(NULL, &cpcap_battery_match_nvmem);
++	if (IS_ERR_OR_NULL(nvmem)) {
++		ddata->check_nvmem = true;
++		dev_info_once(ddata->dev, "Can not find battery nvmem device. Assuming generic lipo battery\n");
++	} else if (nvmem_device_read(nvmem, 2, 1, &battery_id) < 0) {
++		battery_id = 0;
++		ddata->check_nvmem = true;
++		dev_warn(ddata->dev, "Can not read battery nvmem device. Assuming generic lipo battery\n");
++	}
++
++	switch (battery_id) {
++	case CPCAP_BATTERY_EB41_HW4X_ID:
++		ddata->config = &cpcap_battery_eb41_data;
++		break;
++	case CPCAP_BATTERY_BW8X_ID:
++		ddata->config = &cpcap_battery_bw8x_data;
++		break;
++	default:
++		ddata->config = &cpcap_battery_unkown_data;
++	}
++}
++
+ /**
+  * cpcap_battery_cc_get_avg_current - read cpcap coulumb counter
+  * @ddata: cpcap battery driver device data
+@@ -571,6 +658,9 @@ static int cpcap_battery_get_property(struct power_supply *psy,
+ 	latest = cpcap_battery_latest(ddata);
+ 	previous = cpcap_battery_previous(ddata);
+ 
++	if (ddata->check_nvmem)
++		cpcap_battery_detect_battery_type(ddata);
++
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_PRESENT:
+ 		if (latest->temperature > CPCAP_NO_BATTERY || ignore_temperature_probe)
+@@ -982,30 +1072,10 @@ static int cpcap_battery_calibrate(struct cpcap_battery_ddata *ddata)
+ 	return error;
+ }
+ 
+-/*
+- * Based on the values from Motorola mapphone Linux kernel. In the
+- * the Motorola mapphone Linux kernel tree the value for pm_cd_factor
+- * is passed to the kernel via device tree. If it turns out to be
+- * something device specific we can consider that too later.
+- *
+- * And looking at the battery full and shutdown values for the stock
+- * kernel on droid 4, full is 4351000 and software initiates shutdown
+- * at 3078000. The device will die around 2743000.
+- */
+-static const struct cpcap_battery_config cpcap_battery_default_data = {
+-	.cd_factor = 0x3cc,
+-	.info.technology = POWER_SUPPLY_TECHNOLOGY_LION,
+-	.info.voltage_max_design = 4351000,
+-	.info.voltage_min_design = 3100000,
+-	.info.charge_full_design = 1740000,
+-	.bat.constant_charge_voltage_max_uv = 4200000,
+-};
+-
+ #ifdef CONFIG_OF
+ static const struct of_device_id cpcap_battery_id_table[] = {
+ 	{
+ 		.compatible = "motorola,cpcap-battery",
+-		.data = &cpcap_battery_default_data,
+ 	},
+ 	{},
+ };
+@@ -1026,28 +1096,17 @@ static const struct power_supply_desc cpcap_charger_battery_desc = {
+ static int cpcap_battery_probe(struct platform_device *pdev)
+ {
+ 	struct cpcap_battery_ddata *ddata;
+-	const struct of_device_id *match;
+ 	struct power_supply_config psy_cfg = {};
+ 	int error;
+ 
+-	match = of_match_device(of_match_ptr(cpcap_battery_id_table),
+-				&pdev->dev);
+-	if (!match)
+-		return -EINVAL;
+-
+-	if (!match->data) {
+-		dev_err(&pdev->dev, "no configuration data found\n");
+-
+-		return -ENODEV;
+-	}
+-
+ 	ddata = devm_kzalloc(&pdev->dev, sizeof(*ddata), GFP_KERNEL);
+ 	if (!ddata)
+ 		return -ENOMEM;
+ 
++	cpcap_battery_detect_battery_type(ddata);
++
+ 	INIT_LIST_HEAD(&ddata->irq_list);
+ 	ddata->dev = &pdev->dev;
+-	memcpy(&ddata->config, match->data, sizeof(ddata->config));
+ 
+ 	ddata->reg = dev_get_regmap(ddata->dev->parent, NULL);
+ 	if (!ddata->reg)
 -- 
-greets
---
-Christian Gmeiner, MSc
-
-https://christian-gmeiner.info/privacypolicy
+2.34.1
