@@ -2,94 +2,170 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72E19481395
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Dec 2021 14:36:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA1BE481749
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Dec 2021 23:31:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236724AbhL2Ngt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Dec 2021 08:36:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51334 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236723AbhL2Ngt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Dec 2021 08:36:49 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21675C06173E
-        for <linux-omap@vger.kernel.org>; Wed, 29 Dec 2021 05:36:49 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id p1-20020a1c7401000000b00345c2d068bdso11930701wmc.3
-        for <linux-omap@vger.kernel.org>; Wed, 29 Dec 2021 05:36:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=0FfIMZbJg7XcmpHy8tJJu5EbaxZu+URt8xFWV1rf4hc=;
-        b=iTwUhZkhPvpl7GJAun+kXS6iATLGqMpLGB1tQrfnadiYT9Edwpbn+20J0s2NHG2ZSi
-         /xKSZiLCTiVQYPW1Fo/cIQkKmdi4uyReRvLQn6+nipiRSqMwtw32V5o9KgCn/Zo8QjmY
-         exdkC+/41yUvJ05pFnVRuZDHVRXowzBQxa2NQ4KpXDW8sQ514P0UJWlfaIqhdrKZ5ICN
-         Sugiakg9PhCI3yv3UxFZeSRFWK/1PmrD6PmIFRl8o8YmtzRKkZ9cMD7s8bs9mG1n943W
-         gEW7ldlvEE37YBYP9bnEdZPKCYVCgbDO25AVZuhlt8ou402zr3DVtMsbejPLqgcb6Q/8
-         zuTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=0FfIMZbJg7XcmpHy8tJJu5EbaxZu+URt8xFWV1rf4hc=;
-        b=OpD0PPcaN+g4nNJhVSqCus9iAHHJqU33bIhzDGSXye3c1c8Q0rzjrrG8RZ9kxmjUG7
-         BGOFbXJaKqQ626CYSHRoN0VnK6Nmzze4EMlsC3caVXUXaQIvekcD94hv7r1Gi6VxscqQ
-         btalenAhNNV2JmEnTUxkzJClxXP5ZpwpWVMu/pbI9YCGLAz+i7/dSWFdZgwyFnjeQp+h
-         XmlbHNs65Z0TqA3bBx0YGIp+60rlMIZk8ZLs58N5nrexQEMeIa3SgEZEBC40fHbsErWJ
-         lT8sze25dku9g687JhxWoGfjJBpj6aFtQ0QVF1UNeuk2fqTp3tyJv+OfOHWgW/pyezjq
-         rHlA==
-X-Gm-Message-State: AOAM532U3jBciR1KYohwcV9v3fTNFmKjHfYuErGa0xxbdf76YG9SyfN9
-        k2Z8fA7o3FoFG7RLE7Il7vN/BA==
-X-Google-Smtp-Source: ABdhPJxWgL92JFmSjS0Xa44DifxO4r+i+JRKWsaWvyah0ozzeJPyvF/+quqQutQFuigo8d4XgkP/5A==
-X-Received: by 2002:a05:600c:34c8:: with SMTP id d8mr21901981wmq.94.1640785007658;
-        Wed, 29 Dec 2021 05:36:47 -0800 (PST)
-Received: from google.com ([2.31.167.18])
-        by smtp.gmail.com with ESMTPSA id b16sm23601946wmq.41.2021.12.29.05.36.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Dec 2021 05:36:47 -0800 (PST)
-Date:   Wed, 29 Dec 2021 13:36:45 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Svyatoslav Ryhel <clamor95@gmail.com>,
-        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mfd: tps65910: Set PWR_OFF bit during driver probe
-Message-ID: <YcxkbWWD5p4PrZKE@google.com>
-References: <20211124190104.23554-1-digetx@gmail.com>
+        id S230514AbhL2Wbv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Dec 2021 17:31:51 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:57642 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230448AbhL2Wbu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Dec 2021 17:31:50 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6180CB819C4;
+        Wed, 29 Dec 2021 22:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086E3C36AEC;
+        Wed, 29 Dec 2021 22:31:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1640817108;
+        bh=B4HVt5LABOlLWHuHdH8fZyS2jYElsURWkNBEs1eJcD4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=frU5+fxE/J6Uql1O2WBDMETbgRbTR4pLU9XU7UX0asg9wlJZJLGZWbwANOMSQzO5A
+         lR4u9baiD4O7s6ENK3x4IZTQB6tUEmUn+N2LdX54kvjjRzW1cnMhQp6O9tBqH+uBng
+         4MzzeMcchs5qjCBqOQQYl31OQOtM5mK1DR17Vp38Y6cNyjDQOMh0S/RnVETIAq0TEW
+         635PsES1z6RT4dyrOSC+7jzPWzAVmCb6aAMDjlMom1kPyzTWSf6u5QL62yW5hIxuU6
+         smi1JiutLmqQRZCwBuuoJxCWBIm6lSiFX7/WIB4RbS+FooYV45VhqXJQcpA11NTBSj
+         NvTSNIY8rEE0A==
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     ast@kernel.org, daniel@iogearbox.net
+Cc:     bpf@vger.kernel.org, netdev@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>, shayagr@amazon.com,
+        akiyano@amazon.com, darinzon@amazon.com, ndagan@amazon.com,
+        saeedb@amazon.com, sgoutham@marvell.com, kys@microsoft.com,
+        haiyangz@microsoft.com, sthemmin@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, peppe.cavallaro@st.com,
+        alexandre.torgue@foss.st.com, joabreu@synopsys.com,
+        mcoquelin.stm32@gmail.com, grygorii.strashko@ti.com,
+        sameehj@amazon.com, chenhao288@hisilicon.com, moyufeng@huawei.com,
+        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-omap@vger.kernel.org
+Subject: [PATCH bpf-next 1/2] net: add includes masked by netdevice.h including uapi/bpf.h
+Date:   Wed, 29 Dec 2021 14:31:38 -0800
+Message-Id: <20211229223139.708975-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20211229223139.708975-1-kuba@kernel.org>
+References: <20211229223139.708975-1-kuba@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211124190104.23554-1-digetx@gmail.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 24 Nov 2021, Dmitry Osipenko wrote:
+Add missing includes unmasked by the subsequent change.
 
-> The PWR_OFF bit needs to be set in order to power off properly, without
-> hanging PMIC. This bit needs to be set early in order to allow thermal
-> protection of NVIDIA Terga SoCs to power off hardware properly, otherwise
-> a battery re-plug may be needed on some devices to recover after the hang.
-> 
-> Cc: <stable@vger.kernel.org>
-> Tested-by: Svyatoslav Ryhel <clamor95@gmail.com> # ASUS TF201
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+Mostly network drivers missing an include for XDP_PACKET_HEADROOM.
 
-Please keep these chronological.
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: shayagr@amazon.com
+CC: akiyano@amazon.com
+CC: darinzon@amazon.com
+CC: ndagan@amazon.com
+CC: saeedb@amazon.com
+CC: sgoutham@marvell.com
+CC: kys@microsoft.com
+CC: haiyangz@microsoft.com
+CC: sthemmin@microsoft.com
+CC: wei.liu@kernel.org
+CC: decui@microsoft.com
+CC: peppe.cavallaro@st.com
+CC: alexandre.torgue@foss.st.com
+CC: joabreu@synopsys.com
+CC: mcoquelin.stm32@gmail.com
+CC: grygorii.strashko@ti.com
+CC: sameehj@amazon.com
+CC: chenhao288@hisilicon.com
+CC: moyufeng@huawei.com
+CC: linux-arm-kernel@lists.infradead.org
+CC: linux-hyperv@vger.kernel.org
+CC: linux-stm32@st-md-mailman.stormreply.com
+CC: linux-omap@vger.kernel.org
+---
+ drivers/net/ethernet/amazon/ena/ena_netdev.h       | 1 +
+ drivers/net/ethernet/cavium/thunder/nicvf_queues.c | 1 +
+ drivers/net/ethernet/microsoft/mana/mana_en.c      | 2 ++
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h       | 1 +
+ drivers/net/ethernet/ti/cpsw_priv.h                | 2 ++
+ kernel/bpf/net_namespace.c                         | 1 +
+ 6 files changed, 8 insertions(+)
 
-> ---
->  drivers/mfd/tps65910.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
-
-Applied, thanks.
-
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.h b/drivers/net/ethernet/amazon/ena/ena_netdev.h
+index 0c39fc2fa345..9391c7101fba 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.h
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.h
+@@ -14,6 +14,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/netdevice.h>
+ #include <linux/skbuff.h>
++#include <uapi/linux/bpf.h>
+ 
+ #include "ena_com.h"
+ #include "ena_eth_com.h"
+diff --git a/drivers/net/ethernet/cavium/thunder/nicvf_queues.c b/drivers/net/ethernet/cavium/thunder/nicvf_queues.c
+index 50bbe79fb93d..4367edbdd579 100644
+--- a/drivers/net/ethernet/cavium/thunder/nicvf_queues.c
++++ b/drivers/net/ethernet/cavium/thunder/nicvf_queues.c
+@@ -10,6 +10,7 @@
+ #include <linux/iommu.h>
+ #include <net/ip.h>
+ #include <net/tso.h>
++#include <uapi/linux/bpf.h>
+ 
+ #include "nic_reg.h"
+ #include "nic.h"
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index c1d5a374b967..2ece9e90dc50 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /* Copyright (c) 2021, Microsoft Corporation. */
+ 
++#include <uapi/linux/bpf.h>
++
+ #include <linux/inetdevice.h>
+ #include <linux/etherdevice.h>
+ #include <linux/ethtool.h>
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index 4f5292cadf54..d42b6af32d6e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -22,6 +22,7 @@
+ #include <linux/net_tstamp.h>
+ #include <linux/reset.h>
+ #include <net/page_pool.h>
++#include <uapi/linux/bpf.h>
+ 
+ struct stmmac_resources {
+ 	void __iomem *addr;
+diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
+index f33c882eb70e..74555970730c 100644
+--- a/drivers/net/ethernet/ti/cpsw_priv.h
++++ b/drivers/net/ethernet/ti/cpsw_priv.h
+@@ -6,6 +6,8 @@
+ #ifndef DRIVERS_NET_ETHERNET_TI_CPSW_PRIV_H_
+ #define DRIVERS_NET_ETHERNET_TI_CPSW_PRIV_H_
+ 
++#include <uapi/linux/bpf.h>
++
+ #include "davinci_cpdma.h"
+ 
+ #define CPSW_DEBUG	(NETIF_MSG_HW		| NETIF_MSG_WOL		| \
+diff --git a/kernel/bpf/net_namespace.c b/kernel/bpf/net_namespace.c
+index 542f275bf252..868cc2c43899 100644
+--- a/kernel/bpf/net_namespace.c
++++ b/kernel/bpf/net_namespace.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ #include <linux/bpf.h>
++#include <linux/bpf-netns.h>
+ #include <linux/filter.h>
+ #include <net/net_namespace.h>
+ 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.31.1
+
