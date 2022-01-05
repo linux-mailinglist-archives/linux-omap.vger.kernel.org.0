@@ -2,127 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D9A484DAB
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Jan 2022 06:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42CFB484FCC
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Jan 2022 10:10:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237500AbiAEFge (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Jan 2022 00:36:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33866 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237516AbiAEFge (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jan 2022 00:36:34 -0500
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB37C061785
-        for <linux-omap@vger.kernel.org>; Tue,  4 Jan 2022 21:36:33 -0800 (PST)
-Received: by mail-pg1-x530.google.com with SMTP id 7so21962407pgn.0
-        for <linux-omap@vger.kernel.org>; Tue, 04 Jan 2022 21:36:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:message-id:from:to:cc:subject:in-reply-to:references
-         :user-agent:mime-version;
-        bh=TVi5CpksORLcfI1fN+SmnI5coKP1w9QYwiZzMlp/wXM=;
-        b=m7cIBW0oUCsCJcIhy0K70SnFBvUyPeOka8Sf4E2OqxfbTsXA0mQ5JIdnVTvHnp5+gp
-         0PC1RwgHjYRLzEgdWjziovrFB8WuIcFv1GYd7AQ7XVdnNCdjB3hWVsYtiITPfRSnjc3V
-         85LSq+em5vmwo66Y5WJtXlsY8sf9Fq9NsaSZYEHJ1pp2j0IbqZcaDrwJVFjEXXnlZcxt
-         jyWVOvvx7ttbBevVpEOduataTpCztss0ppBN52Reb9LFNFfYmw1loYLTZSDJcgBm0KsD
-         8A6etMk76RMOCBMIKNiaNwc1pZP3D2BhAng79YeFmAXeuWif893it+8A+b8ELIEiriqa
-         uk+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:message-id:from:to:cc:subject:in-reply-to
-         :references:user-agent:mime-version;
-        bh=TVi5CpksORLcfI1fN+SmnI5coKP1w9QYwiZzMlp/wXM=;
-        b=QB/1NZPtAfH4iR/hukxdykc1IRYpnW+746Eg9IgkjzkuS9NU+eHrYhUJplp1vh0BJk
-         2UxndHEaC1x/kQJrJNEiRm51Hz3MPywuyr2lfaaYhlbCj/XQae/3dEIybxjBbEPtrK0l
-         EkATDyLjt9hHXcN6LSSGqktySkLDL3SvhgkZ03vJEAlAhwkY2lpOLhecSKySroU1Oj0e
-         Ap0UUeACuNqImRm9cZV/mfjHtlftkdFA7OXvKerPU14/YHsUJGhuBX07KutkGZk0NfqS
-         KkfvkCwAh3wldQbYjHNTqYncq/OMw7WgUrwKgWGVjG6nVc6RH8/pIT9KKj/MIRHwYk8t
-         ymVA==
-X-Gm-Message-State: AOAM530ZVHpf0pB/7sxMY2d7/I5ZkPBxvKC7In4DQedEY5zAm43I4fwk
-        GAU0qhfZ/iO4LcoYpoMFl5PY594v5bY=
-X-Google-Smtp-Source: ABdhPJxS4nJvxIzDMug+tzIw6awXdeHfXLMbKClZga9KXE2Tsam3bsyShb6tEYWh1NlymAgXCU9vHQ==
-X-Received: by 2002:a63:711a:: with SMTP id m26mr29336420pgc.49.1641360993389;
-        Tue, 04 Jan 2022 21:36:33 -0800 (PST)
-Received: from venus.gmail.com ([126.249.140.249])
-        by smtp.gmail.com with ESMTPSA id c17sm44886141pfc.163.2022.01.04.21.36.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jan 2022 21:36:33 -0800 (PST)
-Date:   Tue, 04 Jan 2022 21:36:33 -0800 (PST)
-Message-ID: <87a6gawxpe.wl-kuninori.morimoto.gx@gmail.com>
-From:   kuninori.morimoto.gx@gmail.com
-To:     Carl Philipp Klemm <philipp@uvos.xyz>
+        id S231499AbiAEJK4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Jan 2022 04:10:56 -0500
+Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21133 "EHLO
+        sender11-of-o51.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229700AbiAEJK4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jan 2022 04:10:56 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1641373832; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=GJYKqyWhdJlXFR45O4wYWdHIWczRxk6BDOMaKucWOL9YxWyXR/yetmFSQk2x/du6iy1/I1uV1FnnL+GSHXCgMzZtect5BiWN6yZ91iMrNtc/+fzrF7RZt5pG/9SVE+KSYP88r550q0EmCNP3kQt5qjOiPPUqF0g9UGNx5Ie0w4A=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1641373832; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=oPNfawC90lftrQQuBSvQ6SfphKGqT7CocEJaoV8xMDw=; 
+        b=TFEgnjDDJaSst70MFfNdqP8iYxZ30vOk/9uApzt1NXG7tWunlScPHqDN/SoLaylZ3huJwiMjWjxIlZmEiDdAIl9XktRKT2zmlxmzVbOlB8ndcwe8awIQRESgiXXXxea9XP0EDDxEgT7SbZC8QQjEfR61XqbLoKvhAFKdYKyGf3s=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
+        dmarc=pass header.from=<philipp@uvos.xyz>
+Received: from UVOSLinux (aftr-37-201-192-123.unity-media.net [37.201.192.123]) by mx.zoho.eu
+        with SMTPS id 1641373829850604.0765913733462; Wed, 5 Jan 2022 10:10:29 +0100 (CET)
+Date:   Wed, 5 Jan 2022 10:10:28 +0100
+From:   Carl Philipp Klemm <philipp@uvos.xyz>
+To:     kuninori.morimoto.gx@gmail.com
 Cc:     alsa-devel@alsa-project.org, merlijn@wizzup.org, tony@atomide.com,
         sre@kernel.org, linux-omap@vger.kernel.org,
         kuninori.morimoto.gx@renesas.com
-Subject: Re: [RFC PATCH 1/3] ASoC: simple-card-utils: add support for componants provideing jack events via set_jack
-In-Reply-To: <20211228190931.df5d518220080a734532ebfd@uvos.xyz>
+Subject: Re: [RFC PATCH 1/3] ASoC: simple-card-utils: add support for
+ componants provideing jack events via set_jack
+Message-Id: <20220105101028.620b7f2cb7727eedfccd933e@uvos.xyz>
+In-Reply-To: <87a6gawxpe.wl-kuninori.morimoto.gx@gmail.com>
 References: <20211228190931.df5d518220080a734532ebfd@uvos.xyz>
-User-Agent: Wanderlust/2.15.9 Emacs/26.3 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+        <87a6gawxpe.wl-kuninori.morimoto.gx@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi,
 
-Hi Carl
+> I'm sorry but I don't understand what you want to do by this patch.
+> Is main code of this patch asoc_simple_dai_init() update
+> (= call set_jack() for all component) ?
 
-Thank you for your patch.
+Yes, so asoc-audio-graph-card currently only supports headphone jack plug
+detection on devices that provide a simple gpio to sense plug state. The
+intent of this patch is to allow the componant driver to implement jack
+detection in cases where something else has to be done to sense state,
+sutch as comunicating with device firmware or using a shared irq. See
+the other patches in this series for an example. This is performed by
+sharing the jack with the component via set_jack().
+ 
+> ${LINUX}/sound/soc/fsl/fsl-asoc-card.c is using this function, too.
+> We will have compile error without update it.
 
-> This allows componants that want a jack to report state on to do so by calling
-> set_jack on components implementing this function.
->
-> Im not entirely sure this is the right way to do this so RFC
-(snip)
-> +	for_each_rtd_components(rtd, i, component) {
-> +		if (component->driver->set_jack) {
-> +			if (!priv->hp_jack) {
-> +				priv->hp_jack = devm_kzalloc(priv->snd_card.dev,
-> +					sizeof(*priv->hp_jack), GFP_KERNEL);
-> +				snd_soc_card_jack_new(&priv->snd_card,
-> +					"Headphones",
-> +					SND_JACK_HEADPHONE,
-> +					&priv->hp_jack->jack,
-> +					NULL, 0);
-> +			}
-> +			snd_soc_component_set_jack(component, &priv->hp_jack->jack, NULL);
-> +		}
-> +	}
+indeed, will do.
 
-I'm sorry but I don't understand what you want to do by this patch.
-Is main code of this patch asoc_simple_dai_init() update
-(= call set_jack() for all component) ?
+> > +		sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);
+> > +		sjack_d = *sjack;
+> 
+> Am I misunderstanding ?
+> I think you need to do here is this ?
+> 
+> 	-	sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);	
+> 	+	*sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);
 
->  int asoc_simple_init_jack(struct snd_soc_card *card,
-> -			       struct asoc_simple_jack *sjack,
-> +			       struct asoc_simple_jack **sjack,
->  			       int is_hp, char *prefix, char *pin);
+Ah yes thank you, another problem is i lack hardware to test this (the gpio) path.
 
-${LINUX}/sound/soc/fsl/fsl-asoc-card.c is using this function, too.
-We will have compile error without update it.
-
->  int asoc_simple_init_jack(struct snd_soc_card *card,
-> -			  struct asoc_simple_jack *sjack,
-> +			  struct asoc_simple_jack **sjack,
->  			  int is_hp, char *prefix,
->  			  char *pin)
-(snip)
->  	if (gpio_is_valid(det)) {
-> -		sjack->pin.pin		= pin_name;
-> -		sjack->pin.mask		= mask;
-> +		struct asoc_simple_jack *sjack_d;
-> +
-> +		sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);
-> +		sjack_d = *sjack;
-
-Am I misunderstanding ?
-I think you need to do here is this ?
-
-	-	sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);	
-	+	*sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);
-
-Thank you for your help !!
-
-Best regards
----
-Kuninori Morimoto
+-- 
+Carl Philipp Klemm <philipp@uvos.xyz> <carl@uvos.xyz>
