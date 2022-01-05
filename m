@@ -2,36 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DD3248567F
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Jan 2022 17:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C09C7485C33
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jan 2022 00:19:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241845AbiAEQKp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Jan 2022 11:10:45 -0500
-Received: from slot0.cofercan.com ([194.99.46.247]:55091 "EHLO
+        id S245342AbiAEXTe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Jan 2022 18:19:34 -0500
+Received: from slot0.cofercan.com ([194.99.46.247]:45606 "EHLO
         slot0.cofercan.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241849AbiAEQK3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jan 2022 11:10:29 -0500
-X-Greylist: delayed 707 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Jan 2022 11:10:28 EST
+        with ESMTP id S245352AbiAEXTb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jan 2022 18:19:31 -0500
 DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=cofercan.com;
  h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=khi.hod@cofercan.com;
  bh=QCaFo7H5RvOqkcU1HfYXDIBnp+U=;
- b=PIyvtXLMwBsi9v03xyM03J2usHZEJ5FuYN2FNmu5MA71TbunGfwylTnclLHQlpvV+50St+oJxI1/
-   5vsxrBuEgIi35ILpdFijM//+AvqZT4o0ROc3xnjWJfGoilW/F+IsQs8CL/L0I4TA7PmS/pxlhcsf
-   335/gBb1SbLoIbDZKapY2K8I15Pn77BJhtgwqfUsE5w2vtBta5yiV6HyAdNax/C10AOJbsB1MXDk
-   kSBcgmaLcKbngWuS1M8jwFM619gFOSRIOsJK3ntthFISWY+GV4QpL/eJOOI1e3INSA5RnVEBRki4
-   voTp4WBsZLa2jpQkALepf9TJ/nfbK2u0ZnKlnQ==
+ b=TkLWupjLSZZgNTCtoJgnN80OJf5zmJwNPVC3VJIbXWEuy3jxcA3FnYWp92sI8K4DkOqKP305T2D3
+   YBO49TL7t0locO9heKIsGBHTtwcBYMutoVGotEft9GKIvR2xoo16AlWfBe4iRP7Vo4H+f7k8bhyd
+   9ZVIC3LwFjU0P334THt6BrjLlGJfZX43bJzBZYlQDY27r+JkR6fiJBcIgZDxpCwcveHDkVnDBaFV
+   8s4nFXmIafVKQPY/2sUOw/iGgpiaVGzqjj16t72Kio8yrYVY6KS82BK8c6lXHI8eMTVD3Tkod0CK
+   PIp6Ce2XOzN1tRd9UCyI5OgM9SAcbrPOkxmjvg==
 DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=cofercan.com;
- b=ugLMF2+aTfqbLmY2vsPqXawmPFvpikwXUePa6G5joEGeKOMxHF6d2zP8KSSDnNVsTTrczG9hvvvh
-   yAQHWK5UPfi7kWy59f0eoKIwuMIiVfGiLJgL/VIAPccvoKsq+v+IE6KOnP9FHepCo7WoxG1OVJrA
-   NGLk1Eabqz8gHA0bxH9WOjPTkx04vY9pTfLODKLPt+bVV0GALc9mllR0TKxz2CVkcWCt45MY4lzV
-   Pic0Awz3Pt8+XhFKFFKK4C2gvqK9e8lsmloagyOjh0Le+9532Jvek6BMDuTXTu5hUISKtFqn4KSS
-   ePJq8qmvN5g7H7XvhtxXZSlqNIz8btN0WDACVw==;
+ b=jYgEJuOms6zuzOtEWNEf6zXJYEYB/D3cqdpSYN1zLQ7wEGnZQBDYFEiRNAhL5ZQ2lRX8kCdpzx7g
+   aE9MRayOcJQfR1d7eCumQGqbsxvufGXwzwgjTCTjSDKVvxBdTc3U9nlje8hdLz7UDHNfdniDcOpb
+   irOOdgv3R6IevntKhdRrVge75SkBTdjQUcTCFM+0ND3eMfWscNZKXtAVtuA0aF/5ofo7yeztp+xg
+   HILm6vcXy2bo8jbkcPBH6S4eoLh4VecNvwL5pYTNppNRIyEOQmJ26nny+UP5fSkfUMx7MNeSaQ+Q
+   hQRoqsDadgXcpayzerkuYxmvdND3ssG9G/U9gA==;
 Reply-To: inbox.mustafaa@gmail.com
 From:   "Mustafa Ayvaz" <khi.hod@cofercan.com>
 To:     linux-omap@vger.kernel.org
 Subject: MES: 
-Date:   5 Jan 2022 15:50:26 +0000
-Message-ID: <20220105155026.E1A17AB3F3F289B3@cofercan.com>
+Date:   5 Jan 2022 23:19:29 +0000
+Message-ID: <20220105231929.5B28FEE25EC39E43@cofercan.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
         charset="utf-8"
