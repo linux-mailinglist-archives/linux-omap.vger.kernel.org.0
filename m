@@ -2,134 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD566484A5A
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Jan 2022 23:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D9A484DAB
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Jan 2022 06:36:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235107AbiADWFq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 4 Jan 2022 17:05:46 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:57870 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229984AbiADWFq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Jan 2022 17:05:46 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B3C8CB817F9;
-        Tue,  4 Jan 2022 22:05:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8872CC36AE0;
-        Tue,  4 Jan 2022 22:05:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641333943;
-        bh=JMMU67OHTGvWbvNl0vtv8aZm8KtVqmI+hKjOhFmLSpI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=fCh4gjtdViUXNVMUnPpLVB99H9WGyH42Q/Ewo1LK2w1FonkZCz/0L1TB8qua+/KRA
-         4Sspu+kic+zNeY2gGnYscNHXlRcoW+aNkfwVR821XoQJ0NtdDhmzTS9v7GGjehKnpp
-         7GPzWeF5SgzA36BlDjBarSOXx+6kdMxkq6vWf2BKbTXMYzGK2PEms5C9gBXjSbmT1L
-         Md7WkexddEzs1wngO/oNuqU+SJiO0aQS3vliQxY+gpzr4250TCSQM9HNMPnCUa39/8
-         6yN6hf8RlyTh4/sRk5umc/0/8qL3j2HF4MD/ds/bXShsK4/4grYX7c/h50GyRa18gc
-         jTb9+AgjYCx+A==
-Received: by mail-ed1-f48.google.com with SMTP id u25so32571712edf.1;
-        Tue, 04 Jan 2022 14:05:43 -0800 (PST)
-X-Gm-Message-State: AOAM532qUkEOB6RMfPZDUIfNhYT13u7YCa9RYCvFJ6QSrwNdVAc+1FgO
-        p2cyeay5BfCdxB8lshQfdAEfmF5X/UhXashq0g==
-X-Google-Smtp-Source: ABdhPJz1U69x7VqxrMBu0rR5rcZe2+4JsOQcQMCjTZQxvXUeqCCBgjGhvlFtmmDm+R8qo6fNEpiITkFu9IULXzsYbW0=
-X-Received: by 2002:a17:906:7945:: with SMTP id l5mr40578823ejo.82.1641333941863;
- Tue, 04 Jan 2022 14:05:41 -0800 (PST)
-MIME-Version: 1.0
-References: <20211217113640.59840-1-tony@atomide.com> <YcIZNfTn37uNbj0F@robh.at.kernel.org>
- <YcLElm04V47kP0Z9@atomide.com>
-In-Reply-To: <YcLElm04V47kP0Z9@atomide.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Tue, 4 Jan 2022 16:05:30 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLek5SOypZhTxpLK13x2HEYbLbYYotLGOfM-JTb=QE-Eg@mail.gmail.com>
-Message-ID: <CAL_JsqLek5SOypZhTxpLK13x2HEYbLbYYotLGOfM-JTb=QE-Eg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: clock: Add binding for TI clksel
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        devicetree@vger.kernel.org,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Tero Kristo <kristo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        id S237500AbiAEFge (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 5 Jan 2022 00:36:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33866 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237516AbiAEFge (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Jan 2022 00:36:34 -0500
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB37C061785
+        for <linux-omap@vger.kernel.org>; Tue,  4 Jan 2022 21:36:33 -0800 (PST)
+Received: by mail-pg1-x530.google.com with SMTP id 7so21962407pgn.0
+        for <linux-omap@vger.kernel.org>; Tue, 04 Jan 2022 21:36:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:message-id:from:to:cc:subject:in-reply-to:references
+         :user-agent:mime-version;
+        bh=TVi5CpksORLcfI1fN+SmnI5coKP1w9QYwiZzMlp/wXM=;
+        b=m7cIBW0oUCsCJcIhy0K70SnFBvUyPeOka8Sf4E2OqxfbTsXA0mQ5JIdnVTvHnp5+gp
+         0PC1RwgHjYRLzEgdWjziovrFB8WuIcFv1GYd7AQ7XVdnNCdjB3hWVsYtiITPfRSnjc3V
+         85LSq+em5vmwo66Y5WJtXlsY8sf9Fq9NsaSZYEHJ1pp2j0IbqZcaDrwJVFjEXXnlZcxt
+         jyWVOvvx7ttbBevVpEOduataTpCztss0ppBN52Reb9LFNFfYmw1loYLTZSDJcgBm0KsD
+         8A6etMk76RMOCBMIKNiaNwc1pZP3D2BhAng79YeFmAXeuWif893it+8A+b8ELIEiriqa
+         uk+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:from:to:cc:subject:in-reply-to
+         :references:user-agent:mime-version;
+        bh=TVi5CpksORLcfI1fN+SmnI5coKP1w9QYwiZzMlp/wXM=;
+        b=QB/1NZPtAfH4iR/hukxdykc1IRYpnW+746Eg9IgkjzkuS9NU+eHrYhUJplp1vh0BJk
+         2UxndHEaC1x/kQJrJNEiRm51Hz3MPywuyr2lfaaYhlbCj/XQae/3dEIybxjBbEPtrK0l
+         EkATDyLjt9hHXcN6LSSGqktySkLDL3SvhgkZ03vJEAlAhwkY2lpOLhecSKySroU1Oj0e
+         Ap0UUeACuNqImRm9cZV/mfjHtlftkdFA7OXvKerPU14/YHsUJGhuBX07KutkGZk0NfqS
+         KkfvkCwAh3wldQbYjHNTqYncq/OMw7WgUrwKgWGVjG6nVc6RH8/pIT9KKj/MIRHwYk8t
+         ymVA==
+X-Gm-Message-State: AOAM530ZVHpf0pB/7sxMY2d7/I5ZkPBxvKC7In4DQedEY5zAm43I4fwk
+        GAU0qhfZ/iO4LcoYpoMFl5PY594v5bY=
+X-Google-Smtp-Source: ABdhPJxS4nJvxIzDMug+tzIw6awXdeHfXLMbKClZga9KXE2Tsam3bsyShb6tEYWh1NlymAgXCU9vHQ==
+X-Received: by 2002:a63:711a:: with SMTP id m26mr29336420pgc.49.1641360993389;
+        Tue, 04 Jan 2022 21:36:33 -0800 (PST)
+Received: from venus.gmail.com ([126.249.140.249])
+        by smtp.gmail.com with ESMTPSA id c17sm44886141pfc.163.2022.01.04.21.36.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Jan 2022 21:36:33 -0800 (PST)
+Date:   Tue, 04 Jan 2022 21:36:33 -0800 (PST)
+Message-ID: <87a6gawxpe.wl-kuninori.morimoto.gx@gmail.com>
+From:   kuninori.morimoto.gx@gmail.com
+To:     Carl Philipp Klemm <philipp@uvos.xyz>
+Cc:     alsa-devel@alsa-project.org, merlijn@wizzup.org, tony@atomide.com,
+        sre@kernel.org, linux-omap@vger.kernel.org,
+        kuninori.morimoto.gx@renesas.com
+Subject: Re: [RFC PATCH 1/3] ASoC: simple-card-utils: add support for componants provideing jack events via set_jack
+In-Reply-To: <20211228190931.df5d518220080a734532ebfd@uvos.xyz>
+References: <20211228190931.df5d518220080a734532ebfd@uvos.xyz>
+User-Agent: Wanderlust/2.15.9 Emacs/26.3 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Dec 22, 2021 at 12:24 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> Hi,
->
-> * Rob Herring <robh@kernel.org> [211221 18:13]:
-> > On Fri, Dec 17, 2021 at 01:36:40PM +0200, Tony Lindgren wrote:
-> > > +additionalProperties: true
-> >
-> > Like what properties?
-> >
-> > true is only used for common, incomplete schemas referenced by device
-> > schemas.
->
-> There is a collection of the current component clock child nodes for each
-> clksel instance. I got warnings with "additionalProperties: false", but
-> maybe the child clock nodes need to be somehow specified in the binding?
 
-If everything else is a child node, then you can do:
+Hi Carl
 
-additionalProperties:
-  type: object
+Thank you for your patch.
 
+> This allows componants that want a jack to report state on to do so by calling
+> set_jack on components implementing this function.
 >
-> For example, below is a sample patch for am335x CLKSEL_GFX_FCLK using a
-> clksel parent node with the child nodes moved to fix warnings for
-> unique_unit_address. It also has clock-output-names property added to
-> avoid the node naming warnings. For the other clksel instances, they can
-> be a collection of dividers, multipliers, gates and muxes.
->
-> Regards,
->
-> Tony
->
-> 8< --------
-> diff --git a/arch/arm/boot/dts/am33xx-clocks.dtsi b/arch/arm/boot/dts/am33xx-clocks.dtsi
-> --- a/arch/arm/boot/dts/am33xx-clocks.dtsi
-> +++ b/arch/arm/boot/dts/am33xx-clocks.dtsi
-> @@ -494,20 +494,27 @@ mmc_clk: mmc_clk {
->                 clock-div = <2>;
->         };
->
-> -       gfx_fclk_clksel_ck: gfx_fclk_clksel_ck@52c {
-> -               #clock-cells = <0>;
-> -               compatible = "ti,mux-clock";
-> -               clocks = <&dpll_core_m4_ck>, <&dpll_per_m2_ck>;
-> -               ti,bit-shift = <1>;
-> -               reg = <0x052c>;
-> -       };
-> +       clock@52c {
-> +               compatible = "ti,clksel";
-> +               reg = <0x52c>;
-> +               #clock-cells = <1>;
-> +               #address-cells = <0>;
+> Im not entirely sure this is the right way to do this so RFC
+(snip)
+> +	for_each_rtd_components(rtd, i, component) {
+> +		if (component->driver->set_jack) {
+> +			if (!priv->hp_jack) {
+> +				priv->hp_jack = devm_kzalloc(priv->snd_card.dev,
+> +					sizeof(*priv->hp_jack), GFP_KERNEL);
+> +				snd_soc_card_jack_new(&priv->snd_card,
+> +					"Headphones",
+> +					SND_JACK_HEADPHONE,
+> +					&priv->hp_jack->jack,
+> +					NULL, 0);
+> +			}
+> +			snd_soc_component_set_jack(component, &priv->hp_jack->jack, NULL);
+> +		}
+> +	}
+
+I'm sorry but I don't understand what you want to do by this patch.
+Is main code of this patch asoc_simple_dai_init() update
+(= call set_jack() for all component) ?
+
+>  int asoc_simple_init_jack(struct snd_soc_card *card,
+> -			       struct asoc_simple_jack *sjack,
+> +			       struct asoc_simple_jack **sjack,
+>  			       int is_hp, char *prefix, char *pin);
+
+${LINUX}/sound/soc/fsl/fsl-asoc-card.c is using this function, too.
+We will have compile error without update it.
+
+>  int asoc_simple_init_jack(struct snd_soc_card *card,
+> -			  struct asoc_simple_jack *sjack,
+> +			  struct asoc_simple_jack **sjack,
+>  			  int is_hp, char *prefix,
+>  			  char *pin)
+(snip)
+>  	if (gpio_is_valid(det)) {
+> -		sjack->pin.pin		= pin_name;
+> -		sjack->pin.mask		= mask;
+> +		struct asoc_simple_jack *sjack_d;
 > +
-> +               gfx_fclk_clksel_ck: clock-gfx-fclk-clksel {
-> +                       #clock-cells = <0>;
-> +                       compatible = "ti,mux-clock";
-> +                       clock-output-names = "gfx_fclk_clksel_ck";
-> +                       clocks = <&dpll_core_m4_ck>, <&dpll_per_m2_ck>;
-> +                       ti,bit-shift = <1>;
-> +               };
->
-> -       gfx_fck_div_ck: gfx_fck_div_ck@52c {
-> -               #clock-cells = <0>;
-> -               compatible = "ti,divider-clock";
-> -               clocks = <&gfx_fclk_clksel_ck>;
-> -               reg = <0x052c>;
-> -               ti,max-div = <2>;
-> +               gfx_fck_div_ck: clock-gfx-fck-div {
-> +                       #clock-cells = <0>;
-> +                       compatible = "ti,divider-clock";
-> +                       clock-output-names = "gfx_fck_div_ck";
-> +                       clocks = <&gfx_fclk_clksel_ck>;
-> +                       ti,max-div = <2>;
-> +               };
->         };
->
->         sysclkout_pre_ck: sysclkout_pre_ck@700 {
+> +		sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);
+> +		sjack_d = *sjack;
+
+Am I misunderstanding ?
+I think you need to do here is this ?
+
+	-	sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);	
+	+	*sjack = devm_kzalloc(dev, sizeof(*(*sjack)), GFP_KERNEL);
+
+Thank you for your help !!
+
+Best regards
+---
+Kuninori Morimoto
