@@ -2,74 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A66048649A
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jan 2022 13:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 218834864A1
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jan 2022 13:53:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239058AbiAFMvr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 6 Jan 2022 07:51:47 -0500
-Received: from mail.wizzup.org ([95.217.97.174]:45560 "EHLO wizzup.org"
+        id S239009AbiAFMxn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 Jan 2022 07:53:43 -0500
+Received: from mail.wizzup.org ([95.217.97.174]:45590 "EHLO wizzup.org"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229795AbiAFMvr (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 6 Jan 2022 07:51:47 -0500
+        id S231899AbiAFMxn (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 6 Jan 2022 07:53:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
         s=mail; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
-        Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
+        Date:Message-ID:References:Cc:To:From:Subject:Sender:Reply-To:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=nxhH/ukA9KWfY1p+zkFD+7VrSnCLJzCz3XNlG4Obn3w=; b=IvmV79CkASz7lYETsk4Z/zNT3g
-        +/xWGuiHSS9+cmLLkodm18hu5EMb3afWn5eZGkdOC0AliZQdFBTyv+S8r8VjJ7zJ2U2zH3keizYpF
-        FuxjokRZWtSRq7MzAJndfpwSfedgi9ojTfiitiwNySC8BWlkChl+wvstWdYaJtVy9SDW0bW8t6zPx
-        mr4mBP7L7548WHnXdrsnIXcUMwcjuYc3D4BGcjPCG1HWOPCDMJ1iAx0lONQBnDMfQwKwvOIY1Eu/j
-        p3PEriurY3/8Ep3pG7LlHvEYCR8DXA/29WmcKjUAZzXxBMkdGXHRRESqmADXnFHvyCOzsiP44vjFz
-        W86gE3/w==;
+        bh=DbXMhpZ6oy10ugKFlEiPIwocr0y9dCIYfgOWxYnzvTQ=; b=CRX+CoCFUvTFsCNUb/uTiQxOpA
+        tUXDmNKuYHViqLWictlgL2Jq1bbq7VnBR6exiYrZUnBIBxmog/eQ3V/Kvgx2C1+AtncKlDiu9adiA
+        RHWgHenMXwxZ+5MAzFl+y2+LTxUO+aLC62O8N0ZKtsSre+Yzq/1W6yiw7JfUs1bWYnJZnsK/g7cgX
+        zhhY8Dyu75zbqfXO6NfB8nDbXz+xBCeHgj2wxLcnUX2kGClGiTykzKLF4APCnF3P+uAYXgQyNEaEo
+        7oyerF7Uh9Uk+WEJ4kXoOk/ljvVHRO2fUffGdc54uUzhvlC8VNJwKPDc3Mlnf2Ae6PJIbj5drRd5t
+        5iixaKPg==;
 Received: from [45.83.235.159] (helo=[0.0.0.0])
         by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
         (Exim 4.94.2)
         (envelope-from <merlijn@wizzup.org>)
-        id 1n5SF2-00046Q-S3; Thu, 06 Jan 2022 12:51:40 +0000
-Subject: Re: [Openpvrsgx-devgroup] [PATCH] drm: omapdrm: Fix implicit dma_buf
- fencing
-To:     Tony Lindgren <tony@atomide.com>,
-        OpenPVRSGX Linux Driver Group <openpvrsgx-devgroup@letux.org>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc:     tomba@kernel.org, sumit.semwal@linaro.org,
-        christian.koenig@amd.com, philipp@uvos.xyz, airlied@linux.ie,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        daniel@ffwll.ch, linux-omap@vger.kernel.org,
-        linux-media@vger.kernel.org
-References: <1641397018-29872-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <Yda6VhRLHw06yVst@atomide.com>
+        id 1n5SGv-00046r-Ij; Thu, 06 Jan 2022 12:53:37 +0000
+Subject: Re: Nokia N900 increased power draw with panel-sony-acx565akm loaded
+ v5.9 and v5.10
 From:   Merlijn Wajer <merlijn@wizzup.org>
-Message-ID: <7edd09bf-7f2c-3ffd-b3ee-c0daaf0d6e37@wizzup.org>
-Date:   Thu, 6 Jan 2022 13:51:39 +0100
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     linux-omap <linux-omap@vger.kernel.org>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Dev Null <devnull@uvos.xyz>, Pavel Machek <pavel@ucw.cz>,
+        Tony Lindgren <tony@atomide.com>
+References: <001a77db-80c0-d000-3d78-b9b301669826@wizzup.org>
+ <20211213131023.ese6lrkayj4qopfa@earth.universe>
+ <968dbb4a-3944-7226-d686-379a442be7ef@wizzup.org>
+Message-ID: <e8766733-baba-72e8-5638-f7b02fab2601@wizzup.org>
+Date:   Thu, 6 Jan 2022 13:53:36 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <Yda6VhRLHw06yVst@atomide.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <968dbb4a-3944-7226-d686-379a442be7ef@wizzup.org>
+Content-Type: text/plain; charset=windows-1252
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hi Sebastian,
 
-On 06/01/2022 10:45, Tony Lindgren wrote:
-> * Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com> [220105 15:38]:
->> Fix that by initializing dma_buf resv to the resv of the gem object being
->> exported.
+On 16/12/2021 14:06, Merlijn Wajer wrote:
+> Hi Sebastian,
 > 
-> Nice find! This also fixes my wlroots test case with termite running on
-> sway where termite would only partially update when switching between
-> desktops, so:
+> [...]
 > 
-> Tested-by: Tony Lindgren <tony@atomide.com>
+> With this additional patch applied the device seems to idle at lower
+> power usage in the test environment I described in my previous email.
+> That is, it idles at at 42mW with the panel probed, as opposed to 60mW
+> with the panel probed. I also just booted to my Maemo Leste environment
+> and the panel still comes up fine and seems to behave fine.
+> 
+> Is there additional testing I can perform to make sure this patch is the
+> right one?
 
-You can also add my:
+Just an update, Ivaylo is seeing some problems with this patch, so we
+might have to dig in deeper later on. I'll keep the patch around, but it
+shouldn't be merged at this point in time.
 
-Tested-by: Merlijn Wajer <merlijn@wizzup.org>
-
-Cheers,
+Regards,
 Merlijn
