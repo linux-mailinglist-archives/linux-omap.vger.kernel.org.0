@@ -2,88 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CECA4864DE
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jan 2022 14:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2B3B48656E
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Jan 2022 14:43:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239308AbiAFNDl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 6 Jan 2022 08:03:41 -0500
-Received: from mail-wm1-f47.google.com ([209.85.128.47]:52775 "EHLO
-        mail-wm1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239006AbiAFNDl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Jan 2022 08:03:41 -0500
-Received: by mail-wm1-f47.google.com with SMTP id v123so1713435wme.2;
-        Thu, 06 Jan 2022 05:03:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=vcYnekM26AwY1vgrHqt3niX4oXoouwaBi8z/zP8TK7s=;
-        b=KK1AhbTgHQntIEoZKmY7mqNYMpCGMojc2X8jImMj3fsLPy0VObLXJbPoSky5LXsB55
-         pkWPrF2QpkLlj81DfXgOMtzoyEDpPDJdIFHkN5fA/Opdi3tIw/Q5vnjcL2z6W1b6KdrP
-         nMqNkVzzQ33L+9/rzOez7I2fji+61AG4J1x2IvN/pugkswXecJbkPEyRD9gcmk8cYHAe
-         f/z+UYPG0Uu/fgG0sbcEB3nqh1mlzvIdcuXQh9rAJVaKHeYqeG31cETZSctu5hZCI4p7
-         zyCORkBHBWlCDBpvq6rV+hMFKcEt7oTDU89KMSOrpkSz7pv6Qb6Wygg6DR1B+4+Z0x8j
-         jU9g==
-X-Gm-Message-State: AOAM533lyrJtN4u/Crz/ODPbUAJsH7z+yLMQR8Bcrx6H+P4/J8AqbGRR
-        Qb3AofyHcL7S0v6Ai4aVYVk=
-X-Google-Smtp-Source: ABdhPJxjG8n0y9ZGjhfUAQ/lARqGtAcsKv1amFfIs3NrZLQDMXO0cFdv3+3SKS6rfToX8YU5cknK9Q==
-X-Received: by 2002:a05:600c:acf:: with SMTP id c15mr6826950wmr.7.1641474219848;
-        Thu, 06 Jan 2022 05:03:39 -0800 (PST)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id b6sm2089988wri.56.2022.01.06.05.03.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jan 2022 05:03:39 -0800 (PST)
-Date:   Thu, 6 Jan 2022 13:03:37 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     ast@kernel.org, daniel@iogearbox.net, bpf@vger.kernel.org,
-        netdev@vger.kernel.org, shayagr@amazon.com, akiyano@amazon.com,
-        darinzon@amazon.com, ndagan@amazon.com, saeedb@amazon.com,
-        sgoutham@marvell.com, kys@microsoft.com, haiyangz@microsoft.com,
-        sthemmin@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-        peppe.cavallaro@st.com, alexandre.torgue@foss.st.com,
-        joabreu@synopsys.com, mcoquelin.stm32@gmail.com,
-        grygorii.strashko@ti.com, sameehj@amazon.com,
-        chenhao288@hisilicon.com, moyufeng@huawei.com,
-        linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH bpf-next v2 1/2] net: add includes masked by netdevice.h
- including uapi/bpf.h
-Message-ID: <20220106130337.qtvjgffwlyzy7j2y@liuwe-devbox-debian-v2>
-References: <20211230012742.770642-1-kuba@kernel.org>
- <20211230012742.770642-2-kuba@kernel.org>
+        id S239636AbiAFNnM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 Jan 2022 08:43:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46650 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230323AbiAFNnK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Jan 2022 08:43:10 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89704C061245;
+        Thu,  6 Jan 2022 05:43:10 -0800 (PST)
+Received: from [192.168.1.111] (91-156-85-209.elisa-laajakaista.fi [91.156.85.209])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8F61A11FE;
+        Thu,  6 Jan 2022 14:43:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1641476588;
+        bh=MsV4ID3pm8SwQUHMPkDeAsywg1tEqg7BBjSrRVk1xSc=;
+        h=To:Cc:References:From:Subject:Date:In-Reply-To:From;
+        b=vwpLM9Qf2S/3/+fjBGOte1S+a6HvkWHyqFT4C1oQIPBLUOQdjH0AI91/HS2YXZGt/
+         GPiG8VvEyVgOazuGHIus4roqVwqrHVwMs3tiPMDa+BLJeGwlTeNSQ32AMrMPkYyEGp
+         1Zjt78leG5xQqRkiH75wUzU0uCsQE8GC04K+HDyg=
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        sumit.semwal@linaro.org, christian.koenig@amd.com
+Cc:     openpvrsgx-devgroup@letux.org, merlijn@wizzup.org,
+        philipp@uvos.xyz, airlied@linux.ie, daniel@ffwll.ch,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-omap@vger.kernel.org
+References: <1641397018-29872-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: Re: [PATCH] drm: omapdrm: Fix implicit dma_buf fencing
+Message-ID: <0ba4b947-57e0-8a80-68d6-a481d5145ab4@ideasonboard.com>
+Date:   Thu, 6 Jan 2022 15:43:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211230012742.770642-2-kuba@kernel.org>
+In-Reply-To: <1641397018-29872-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Dec 29, 2021 at 05:27:41PM -0800, Jakub Kicinski wrote:
-> Add missing includes unmasked by the subsequent change.
+Hi,
+
+On 05/01/2022 17:36, Ivaylo Dimitrov wrote:
+> Currently omapdrm driver does not initialize dma_buf_export_info resv
+> member, which leads to a new dma_resv being allocated and attached to
+> the exported dma_buf. This leads to the issue that fences created on
+> dma_buf objects imported by other drivers are ignored by omapdrm, as only
+> fences in gem object resv are waited on. This leads to various issues like
+> displaying incomplete frames.
 > 
-> Mostly network drivers missing an include for XDP_PACKET_HEADROOM.
+> Fix that by initializing dma_buf resv to the resv of the gem object being
+> exported.
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[...]
->  drivers/net/ethernet/microsoft/mana/mana_en.c      | 2 ++
+> Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+> ---
+>   drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c b/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
+> index f1f93cabb61e..a111e5c91925 100644
+> --- a/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
+> +++ b/drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c
+> @@ -88,6 +88,7 @@ struct dma_buf *omap_gem_prime_export(struct drm_gem_object *obj, int flags)
+>   	exp_info.size = omap_gem_mmap_size(obj);
+>   	exp_info.flags = flags;
+>   	exp_info.priv = obj;
+> +	exp_info.resv = obj->resv;
+>   
+>   	return drm_gem_dmabuf_export(obj->dev, &exp_info);
+>   }
 
-This seems trivially correct, so in case an ack is needed:
+Thanks! Pushed to drm-misc-next.
 
-Acked-by: Wei Liu <wei.liu@kernel.org>
-
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index c1d5a374b967..2ece9e90dc50 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -1,6 +1,8 @@
->  // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
->  /* Copyright (c) 2021, Microsoft Corporation. */
->  
-> +#include <uapi/linux/bpf.h>
-> +
->  #include <linux/inetdevice.h>
->  #include <linux/etherdevice.h>
->  #include <linux/ethtool.h>
+  Tomi
