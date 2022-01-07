@@ -2,60 +2,131 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDEBA486CF8
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Jan 2022 22:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC089487021
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Jan 2022 03:04:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244985AbiAFV4Z (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 6 Jan 2022 16:56:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46832 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244843AbiAFV4Y (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Jan 2022 16:56:24 -0500
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A043BC061245
-        for <linux-omap@vger.kernel.org>; Thu,  6 Jan 2022 13:56:23 -0800 (PST)
-Received: by mail-qv1-xf42.google.com with SMTP id q3so3701143qvc.7
-        for <linux-omap@vger.kernel.org>; Thu, 06 Jan 2022 13:56:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=VS5pNjM+dtzy9PLwNcG+/sVOQHrdlQb2MUBNj5cMGEA=;
-        b=h+o6l1CzdWqtPKfpt9u76ntZuav9KSI/bUDnltlhlZg9t1HIEblqVH5SoOcIX99pBO
-         mPExHLE7IAt/gm3FH59PV3AHE1+PaIl47eN+bKemoFx5O73hHq/lfRMuBVvRXr+vEPt0
-         RtgMLnhOHl63p90ZxLYmwXCqauXZKLE2R4w5qJ53iaHoOFpW10vOObRzscOsupIgSui5
-         PzmBUmOljNl2ErWMQqaMrj7FO28dY11sj0COOd5tB5CWokXnp61+m45Acfvy7d5eFTd0
-         RsiHRZO14FfauJc2FWYzWFx18MzcQSUuaWaJxAXZ+IDoA5QfLpMwckur8lDSKnnyzZvF
-         6YGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=VS5pNjM+dtzy9PLwNcG+/sVOQHrdlQb2MUBNj5cMGEA=;
-        b=B0eZff2GqIWCjIlyy2w0yH0MJ2wSnj6aflCZiQlTjLC5qEWgtXERiAA6U1nTsFIqAM
-         Ipm1uwA+6659o+y6esOA+JpwKQPS21P38E/jZCpltoR0UD++dcPRzt9A4BrkfNdLk0TL
-         2Gx6pgwxr2tDoGXPCLgRPhl29KYnxcqArJbeGBfnMWo8qJLqEa29yNvqHr/9Um2vAi9+
-         sOEnuNrJ+tfpTxxa15K2SR+8o/WwuAp5TA2thLy/HZ+LsIjpanFJbJRYb9gT8pKDTcD9
-         LZw+p0DevU9MFAhskwdfzDmsiVww43Vg63qJT3HajKm6Nrnh8+WC/TS9naT+MxuUOgJR
-         ipGQ==
-X-Gm-Message-State: AOAM530csI5HmKcK1z8Z34eqz9kT+nGfr27jMGnLByCjQHcKIDVXoMJG
-        Eu9A3tleI+deaQcxWMGpuEuaSVyyE5Htn6YTjQA=
-X-Google-Smtp-Source: ABdhPJwKB0ti9rbZSnr8TMGlh3+iybN4u9JQgcdnK8miJ+pLqqFiJtX8HKsCsRzV1vqpjU+zogf/XOJmXs9o73bnpjk=
-X-Received: by 2002:ad4:5745:: with SMTP id q5mr6530647qvx.121.1641506182823;
- Thu, 06 Jan 2022 13:56:22 -0800 (PST)
+        id S1344626AbiAGCEv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 Jan 2022 21:04:51 -0500
+Received: from vrlogistic.com ([103.217.118.235]:40040 "EHLO
+        mail.vrlogistic.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1344590AbiAGCEu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Jan 2022 21:04:50 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.vrlogistic.com (Postfix) with ESMTP id ABE5FF434C0
+        for <linux-omap@vger.kernel.org>; Fri,  7 Jan 2022 07:38:57 +0530 (IST)
+Content-Type: multipart/report; report-type=delivery-status;
+ boundary="----------=_1641521337-4484-1"
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Received: by 2002:a05:6214:230a:0:0:0:0 with HTTP; Thu, 6 Jan 2022 13:56:22
- -0800 (PST)
-Reply-To: fionahill.usa@hotmail.com
-From:   Fiona Hill <colonelrachelwashburn6@gmail.com>
-Date:   Thu, 6 Jan 2022 13:56:22 -0800
-Message-ID: <CAGoywpN2c30=jTCc+HRv=wACRdms8XwKYtaY5rcG6bdPSW9t+A@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Subject: BANNED contents from you (.exe,transcript.exe)
+Message-ID: <VS8fXzcI37B-dn@mail.vrlogistic.com>
+From:   "Content-filter at mail.vrlogistic.com" 
+        <postmaster@mail.vrlogistic.com>
+To:     <linux-omap@vger.kernel.org>
+Date:   Fri,  7 Jan 2022 07:38:57 +0530 (IST)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
+This is a multi-part message in MIME format...
 
-Happy new year to you. Please  did you receive my message i send to you?
+------------=_1641521337-4484-1
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+
+BANNED CONTENTS ALERT
+
+Our content checker found
+    banned name: .exe,transcript.exe
+
+in email presumably from you <linux-omap@vger.kernel.org>
+to the following recipient:
+-> praveen@vrlogistic.in
+
+Our internal reference code for your message is 04484-01/8fXzcI37B-dn
+
+First upstream SMTP client IP address: [192.168.1.1] 
+According to a 'Received:' trace, the message apparently originated at:
+  [192.168.1.1], vger.kernel.org unknown [192.168.1.1]
+
+Return-Path: <linux-omap@vger.kernel.org>
+From: linux-omap@vger.kernel.org
+Subject: Suipgyvgsr kb pim
+
+Delivery of the email was stopped!
+
+The message has been blocked because it contains a component
+(as a MIME part or nested within) with declared name
+or MIME type or contents type violating our access policy.
+
+To transfer contents that may be considered risky or unwanted
+by site policies, or simply too large for mailing, please consider
+publishing your content on the web, and only sending an URL of the
+document to the recipient.
+
+Depending on the recipient and sender site policies, with a little
+effort it might still be possible to send any contents (including
+viruses) using one of the following methods:
+
+- encrypted using pgp, gpg or other encryption methods;
+
+- wrapped in a password-protected or scrambled container or archive
+  (e.g.: zip -e, arj -g, arc g, rar -p, or other methods)
+
+Note that if the contents is not intended to be secret, the
+encryption key or password may be included in the same message
+for recipient's convenience.
+
+We are sorry for inconvenience if the contents was not malicious.
+
+The purpose of these restrictions is to cut the most common propagation
+methods used by viruses and other malware. These often exploit automatic
+mechanisms and security holes in more popular mail readers (Microsoft
+mail readers and browsers are a common target). By requiring an explicit
+and decisive action from the recipient to decode mail, the danger of
+automatic malware propagation is largely reduced.
+
+
+------------=_1641521337-4484-1
+Content-Type: message/delivery-status; name="dsn_status"
+Content-Disposition: inline; filename="dsn_status"
+Content-Transfer-Encoding: 7bit
+Content-Description: Delivery error report
+
+Reporting-MTA: dns; mail.vrlogistic.com
+Received-From-MTA: smtp; mail.vrlogistic.com ([127.0.0.1])
+Arrival-Date: Fri,  7 Jan 2022 07:38:57 +0530 (IST)
+
+Original-Recipient: rfc822;praveen@vrlogistic.in
+Final-Recipient: rfc822;praveen@vrlogistic.in
+Action: failed
+Status: 5.7.0
+Diagnostic-Code: smtp; 554-5.7.0 Bounce, id=04484-01 - BANNED:
+ 554 5.7.0 .exe,transcript.exe
+Last-Attempt-Date: Fri,  7 Jan 2022 07:38:57 +0530 (IST)
+Final-Log-ID: 04484-01/8fXzcI37B-dn
+
+------------=_1641521337-4484-1
+Content-Type: text/rfc822-headers; name="header"
+Content-Disposition: inline; filename="header"
+Content-Transfer-Encoding: 7bit
+Content-Description: Message header section
+
+Return-Path: <linux-omap@vger.kernel.org>
+Received: from vger.kernel.org (unknown [192.168.1.1])
+	by mail.vrlogistic.com (Postfix) with ESMTP id 1962DF42EAF
+	for <praveen@vrlogistic.in>; Fri,  7 Jan 2022 07:38:53 +0530 (IST)
+From: linux-omap@vger.kernel.org
+To: praveen@vrlogistic.in
+Subject: Suipgyvgsr kb pim
+Date: Fri, 7 Jan 2022 10:04:36 +0800
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0002_C93C6D59.7F7D786F"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+
+------------=_1641521337-4484-1--
