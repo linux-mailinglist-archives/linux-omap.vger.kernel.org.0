@@ -2,84 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5A774883DF
-	for <lists+linux-omap@lfdr.de>; Sat,  8 Jan 2022 14:58:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30AAF4892DD
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Jan 2022 08:58:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbiAHN6U (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 8 Jan 2022 08:58:20 -0500
-Received: from sender11-of-o51.zoho.eu ([31.186.226.237]:21185 "EHLO
-        sender11-of-o51.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbiAHN6U (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 8 Jan 2022 08:58:20 -0500
-ARC-Seal: i=1; a=rsa-sha256; t=1641650273; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=d5q6hQaE6CAivfFg4bEbzI/4xoFiPBTuUHB0JpI3ZesXO8dtWH5MsLgTlLt1LAFg0Dmmj8dskJ2dJ/ypnEdvprlj5Zo9z42L0q2Z2UQtS+w2Lw40HMVVodVP12nqnf1rcfzDy96C+KCjhkCfNc1yXhdFyTXoggXOmMkkyFWNNc4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1641650273; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=db5dCjQMdprZm2Q/1BnWSui0du673YXgro1crJr6KQ8=; 
-        b=ARQp6LaC+RyK2nl4fndultqFUsktM7AH3/Y+DjcEmsT4LsvWKutCP+Y3UZ2zn11rxv5ZapiaAd5UHzLt4WfA90orJO7kiX8qAM+LUO1K01kJJGyGYmx9jDuWG8r6kQssAd8p4YZuD2rvlr18p6st5I5Th+KHd0xjP/vDgNWkl+I=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
-        dmarc=pass header.from=<philipp@uvos.xyz>
-Received: from UVOSLinux (aftr-37-201-192-86.unity-media.net [37.201.192.86]) by mx.zoho.eu
-        with SMTPS id 164165027124930.82840161754507; Sat, 8 Jan 2022 14:57:51 +0100 (CET)
-Date:   Sat, 8 Jan 2022 14:57:49 +0100
-From:   Carl Philipp Klemm <philipp@uvos.xyz>
-To:     kuninori.morimoto.gx@gmail.com
-Cc:     alsa-devel@alsa-project.org, merlijn@wizzup.org, tony@atomide.com,
-        sre@kernel.org, linux-omap@vger.kernel.org,
-        kuninori.morimoto.gx@renesas.com
-Subject: Re: [RFC PATCH 1/3] ASoC: simple-card-utils: add support for
- componants provideing jack events via set_jack
-Message-Id: <20220108145749.f55500222b049f344415a5c3@uvos.xyz>
-In-Reply-To: <87r19ld48v.wl-kuninori.morimoto.gx@gmail.com>
-References: <20211228190931.df5d518220080a734532ebfd@uvos.xyz>
-        <87a6gawxpe.wl-kuninori.morimoto.gx@gmail.com>
-        <20220105101028.620b7f2cb7727eedfccd933e@uvos.xyz>
-        <87r19ld48v.wl-kuninori.morimoto.gx@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+        id S240840AbiAJH4X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 10 Jan 2022 02:56:23 -0500
+Received: from muru.com ([72.249.23.125]:48160 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243681AbiAJHzp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 10 Jan 2022 02:55:45 -0500
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 84DAA805F;
+        Mon, 10 Jan 2022 07:56:28 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     soc@kernel.org
+Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        "Tony Lindgren" <tony@atomide.com>
+Subject: [GIT PULL] Fixes for omaps
+Date:   Mon, 10 Jan 2022 09:55:38 +0200
+Message-Id: <pull-1641801310-149268@atomide.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+From: "Tony Lindgren" <tony@atomide.com>
 
-> (X)	int asoc_simple_init_jack(...)
-> 	{
-> 		...
-> 		if (gpio_is_valid(det)) {
-> 			...
-> 
-> 			snd_soc_card_jack_new(...);
-> 			snd_soc_jack_add_gpios(...);
-> 			for_each_card_components(card, component)
-> (Y)				snd_soc_component_set_jack(component, ...);
-> 		}
-> 		...
-> 	}
+The following changes since commit fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf:
 
-So for the case of cpcap codec on motorola mapphones this dosent help,
-because we dont have a gpio to sense plug state, thus no gpio in dts
-and thus gpio_is_valid will return false, therefore, no jack.
+  Linux 5.16-rc1 (2021-11-14 13:56:52 -0800)
 
-Moving 
+are available in the Git repository at:
 
-sjack->pin.pin		= pin_name;
-sjack->pin.mask		= mask;
+  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-v5.17/fixes-for-merge-window-signed
 
-snd_soc_card_jack_new(card, pin_name, mask,
-		      &sjack->jack,
-		      &sjack->pin, 1);
+for you to fetch changes up to 31aa7056bbec0259e2ec91db7d3571f66b14f93f:
 
-and
+  ARM: dts: Don't use legacy clock defines for dra7 clkctrl (2021-12-22 08:28:19 +0200)
 
-for_each_card_components(card, component)
-			snd_soc_component_set_jack(component, &sjack->jack, NULL);
+----------------------------------------------------------------
+Fixes for omaps
 
-outside of the if block should make this work, at least cpcap gets the jack then.
--- 
-Carl Philipp Klemm <philipp@uvos.xyz> <carl@uvos.xyz>
+A series of fixes for omap variants for minor issues, and a fix for a timer
+regression for some omap3 beagleboard versions.
+
+The timer fix needs to patch both the dts and the timer code because
+otherwise the timer quirk handling for old dtbs will prevent the dts fix
+from working.
+
+The other changes are for issues found by automated analysis, a macasp
+typo fix, and two cosmetic fixes for clocks.
+
+----------------------------------------------------------------
+Jayesh Choudhary (1):
+      ARM: dts: am335x-wega: Fix typo in mcasp property rx-num-evt
+
+Tony Lindgren (3):
+      ARM: dts: Fix timer regression for beagleboard revision c
+      clk: ti: Move dra7 clock devices out of the legacy section
+      ARM: dts: Don't use legacy clock defines for dra7 clkctrl
+
+Wan Jiabing (1):
+      ARM: OMAP2+: hwmod: Add of_node_put() before break
+
+Ye Guojin (1):
+      ARM: OMAP2+: adjust the location of put_device() call in omapdss_init_of
+
+ .../devicetree/bindings/arm/omap/omap.txt          |  3 ++
+ arch/arm/boot/dts/Makefile                         |  1 +
+ arch/arm/boot/dts/am335x-wega.dtsi                 |  2 +-
+ arch/arm/boot/dts/dra7.dtsi                        | 20 ++++-----
+ arch/arm/boot/dts/omap3-beagle-ab4.dts             | 47 ++++++++++++++++++++++
+ arch/arm/boot/dts/omap3-beagle.dts                 | 33 ---------------
+ arch/arm/mach-omap2/display.c                      |  2 +-
+ arch/arm/mach-omap2/omap_hwmod.c                   |  4 +-
+ drivers/clocksource/timer-ti-dm-systimer.c         |  2 +-
+ include/dt-bindings/clock/dra7.h                   | 14 +++----
+ 10 files changed, 74 insertions(+), 54 deletions(-)
+ create mode 100644 arch/arm/boot/dts/omap3-beagle-ab4.dts
