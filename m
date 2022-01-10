@@ -2,65 +2,139 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A8BD48965D
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Jan 2022 11:31:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3A55489997
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Jan 2022 14:12:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243960AbiAJKbF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 10 Jan 2022 05:31:05 -0500
-Received: from muru.com ([72.249.23.125]:48204 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243947AbiAJKa6 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Mon, 10 Jan 2022 05:30:58 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 274C5805F;
-        Mon, 10 Jan 2022 10:31:43 +0000 (UTC)
-Date:   Mon, 10 Jan 2022 12:30:54 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh@kernel.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        devicetree@vger.kernel.org,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Tero Kristo <kristo@kernel.org>
-Subject: Re: [PATCH] dt-bindings: clock: Add binding for TI clksel
-Message-ID: <YdwK3haVDCxyIioo@atomide.com>
-References: <20211217113640.59840-1-tony@atomide.com>
- <YcIZNfTn37uNbj0F@robh.at.kernel.org>
- <YcLElm04V47kP0Z9@atomide.com>
- <CAL_JsqLek5SOypZhTxpLK13x2HEYbLbYYotLGOfM-JTb=QE-Eg@mail.gmail.com>
+        id S230412AbiAJNMQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 10 Jan 2022 08:12:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44416 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230222AbiAJNLt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 Jan 2022 08:11:49 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928C5C034002
+        for <linux-omap@vger.kernel.org>; Mon, 10 Jan 2022 05:11:47 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id u13so44025531lff.12
+        for <linux-omap@vger.kernel.org>; Mon, 10 Jan 2022 05:11:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
+        b=Bgie3w5lZXcUpEJsNUNnYT9D80sz6831OKMgWSWMpAMR4c04HQM1hwHkoZ1AqHgJ5M
+         pQJfhFBsNTGc+jfMsWTuSDXhNBe5XPwJ8/UQZKbYcWTDQ68Eu4MBBVsHf0V3Baa+27Pp
+         IUJW/950IUGNsTto2NnsTW49/Cy4Vf+KfgzDT0+KZ2gcb/QkEKg3LEIj8qPJpiII0Qbk
+         buE3CbPl0T8T6omQLXT3KYJBxN98pPIrfxDam1Qs0diPFN43pWVugWbd8LU8WaIGviK3
+         O/t/NLMKhR03EdE8rMi5c8T5epCw09Yzc4YmAU5QrO9ZaREbayNwAtpm1SWYSR1IiBuY
+         5w9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
+        b=wlyCRsjcSwSLDBo79jr/NWx+i/DcqgYbchXTjl4+MBDQJZrsGCf29zEX8b3MaAz6kd
+         KcSA3CUEuavp2UmnoJP60BerGby0L97TwbvzD/iTFRZTILfLRwu+xqQV3cor3cpl3W2H
+         63gEdRcfQkyHPPyRsfM01mihTmFxgW0dgXmnWWQbuFWo7HCqzynkoCED3GXUbbWlrMrI
+         gXv8b1eL3g6fNodzjgua8dztOLlU6XOs4MBKTQIGN+SRjrZr2k0CLHh9e6h1OQ14DCqE
+         X32PZi7QFKbPj+b8GAs4MYAGt9RVn+VG6vOlZSQur+Ujc5KjEbfnSa9ePeyiMOiUDRHx
+         SahA==
+X-Gm-Message-State: AOAM530DS37VzXzMk1/IECeJxbTahVYlv31YPcUt3STEt8ACKlqXliXp
+        QWa9WzfpSTfiH7qYytBzh3o11bPnHfo6drMhlsQXqmmtEYc=
+X-Google-Smtp-Source: ABdhPJyUuzfRq9+VAp3YIslVsNF7E8r6u+SDvjtiaFw6sfTA9uOxrmlrl9JDay/jDh10uqplhgk07a+YHTpM3Ge0znw=
+X-Received: by 2002:ac2:4c51:: with SMTP id o17mr60639917lfk.558.1641820293776;
+ Mon, 10 Jan 2022 05:11:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqLek5SOypZhTxpLK13x2HEYbLbYYotLGOfM-JTb=QE-Eg@mail.gmail.com>
+Received: by 2002:a05:6504:15d1:0:0:0:0 with HTTP; Mon, 10 Jan 2022 05:11:32
+ -0800 (PST)
+Reply-To: gtbank107@yahoo.com
+From:   Barr Robert Richter <westernunion.benin982@gmail.com>
+Date:   Mon, 10 Jan 2022 14:11:32 +0100
+Message-ID: <CAP=nHBK9zHzp_=-EVswWQiLxEoc+HV4oqddgtnEqf-9qYab_4Q@mail.gmail.com>
+Subject: Contact GT Bank-Benin to receive your transfer amount of $18.5m US Dollars.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Rob Herring <robh@kernel.org> [220104 22:06]:
-> On Wed, Dec 22, 2021 at 12:24 AM Tony Lindgren <tony@atomide.com> wrote:
-> >
-> > Hi,
-> >
-> > * Rob Herring <robh@kernel.org> [211221 18:13]:
-> > > On Fri, Dec 17, 2021 at 01:36:40PM +0200, Tony Lindgren wrote:
-> > > > +additionalProperties: true
-> > >
-> > > Like what properties?
-> > >
-> > > true is only used for common, incomplete schemas referenced by device
-> > > schemas.
-> >
-> > There is a collection of the current component clock child nodes for each
-> > clksel instance. I got warnings with "additionalProperties: false", but
-> > maybe the child clock nodes need to be somehow specified in the binding?
-> 
-> If everything else is a child node, then you can do:
-> 
-> additionalProperties:
->   type: object
+Attn,Dear
+I need you to know that the fear of the LORD is
+the beginning of wisdom, and knowledge of the Holy One is
+understanding. As power of God Most High. And This is the confidence
+we have in approaching God, that if we ask anything according to his
+will, he hears us. I will make you know that Slow and steady wins the race.
+It is your turn to receive your overdue compensation funds total
+amount $18.5Milion  USD.
+I actualized that you will receive your transfer today without any more delay
+No More fee OK, Believe me , I am your Attorney standing here on your favor.
+I just concluded conversation with the Gt Bank Director, Mrs Mary Gate
+And She told me that your transfer is ready today
 
-OK thanks will do, the additional properties are always child nodes.
+So the Bank Asked you to contact them immediately by re-confirming
+your Bank details asap.
+Because this is the Only thing holding this transfer
+If you did not trust me and Mrs Mary Gate,Who Else will you Trust?
+For we are the ones trying to protect your funds here
+and make sure that your funds is secure.
+So Promisingly, I am here to assure you, that Grate Miracle is coming on
+your way, and this funds total amount of $18.500,000 is your
+compensation, entitlement inheritance overdue funds on your name.
+Which you cannot let anything delay you from receiving your funds now,
 
-Regards,
+Finally i advised you to try your possible best and contact Gt Bank Benin
+once you get this message to receive your transfer $18.5 USD today.
+I know that a journey of thousand miles begins with a single step.
+Always put your best foot forward
+Try as hard as you can, God give you best.
+take my advice and follow the due process of your payment, the
+transfer will be released to
+you smoothly without any hitches or hindrance.
 
-Tony
+Contact DR.MRS MARY GATE, Director Gt bank-Benin to receive your
+transfer amount of $18.5m US Dollars
+It was deposited and registered to your name this morning.
+Contact the Bank now to know when they will transfer to your
+country today
+
+Email id: gtbank107@yahoo.com
+Tel/mobile, +229 99069872
+Contact person, Mrs Mary Gate,Director Gt bank-Benin.
+Among the blind the one-eyed man is king
+
+As you sow, so you shall reap, i want you to receive your funds
+Best things in life are free
+Send to her your Bank Details as i listed here.
+
+Your account name-------------
+Your Bank Name----------------
+Account Number----------
+your Bank address----------
+Country-----------
+Your private phone number---------
+Routing Numbers-------------
+Swift Code-----------
+
+Note, Your funds is %100 Percent ready for
+transfer.
+Everything you do remember that Good things come to those who wait.
+I have done this work for you with my personally effort, Honesty is
+the best policy.
+now your transfer is currently deposited with paying bank this morning.
+It is by the grace of God that I received Christ, having known the truth.
+I had no choice than to do what is lawful and justice in the
+sight of God for eternal life and in the sight of man for witness of
+God & His Mercies and glory upon my life.
+
+send this needed bank details to the bank today, so that you receive
+your transfer today as
+it is available for your confirmation today.
+Please do your best as a serious person and send the fee urgent, Note
+that this transfer of $18.500.000 M USD is a Gift from God to Bless
+you.
+
+If you did not contact the bank urgent, finally the Bank will release
+your transfer of $18.500.000M USD to  Mr. David Bollen as your
+representative.
+So not allow another to claim your Money.
+Thanks For your Understanding.
+
+Barr Robert Richter, UN Attorney At Law Court-Benin
