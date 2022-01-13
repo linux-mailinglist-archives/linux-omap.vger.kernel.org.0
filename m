@@ -2,72 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2E8748D304
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jan 2022 08:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 786E348D583
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Jan 2022 11:15:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232071AbiAMHkK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Jan 2022 02:40:10 -0500
-Received: from smtp21.cstnet.cn ([159.226.251.21]:38704 "EHLO cstnet.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229768AbiAMHkJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 13 Jan 2022 02:40:09 -0500
-Received: from localhost.localdomain (unknown [124.16.141.244])
-        by APP-01 (Coremail) with SMTP id qwCowADn7JxF199hYV5FBg--.59804S2;
-        Thu, 13 Jan 2022 15:39:50 +0800 (CST)
-From:   Xu Wang <vulab@iscas.ac.cn>
-To:     dri-devel@lists.freedesktop.org
-Cc:     linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        inux-kernel@vger.kernel.org
-Subject: [PATCH] fbdev: omap2: omapfb: Remove redundant 'flush_workqueue()' calls
-Date:   Thu, 13 Jan 2022 07:39:28 +0000
-Message-Id: <20220113073928.9946-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+        id S232478AbiAMKOx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 13 Jan 2022 05:14:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33792 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232406AbiAMKOv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jan 2022 05:14:51 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADD54C061751
+        for <linux-omap@vger.kernel.org>; Thu, 13 Jan 2022 02:14:50 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n7x83-0007tK-Gn; Thu, 13 Jan 2022 11:14:47 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n7x81-00A3Dd-Ow; Thu, 13 Jan 2022 11:14:45 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1n7x80-0002tF-F0; Thu, 13 Jan 2022 11:14:44 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@pengutronix.de
+Subject: [PATCH 0/2] mfd: twlx030: i2c remove callback cleanup
+Date:   Thu, 13 Jan 2022 11:14:28 +0100
+Message-Id: <20220113101430.12869-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1243; h=from:subject; bh=h1AGTbJiqD6mNVPm86tnmKjfzwpli/WoUAJ8VpKyJz4=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBh3/t1ozSKdNQiQvwLzA8pStVPmFR4uHP0sIea4Rzg 0IrRIaWJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYd/7dQAKCRDB/BR4rcrsCQnCB/ 4vshV+1qe4siSLghsoe8xVQ1vEYOoCo1npRqsyt0PDccBXGOsHPUDc1zTLf+/YL+UpwGt//fYCY0II Zpg0O/7O9bX7BnoxJp3/8R0oBQ9OG6dLRgwiHkWXStxEVAhY8E9IPHeig6J2Xy1BGD+ts8uyF3A1Me zyxs1w0oJ/45OQdfc/7/hSW1/T4KCaYX4cGyVe9NQWbPxAh0/T/8da6npEXrSC9sj2ls/dMJdXgTbB fODYPprqVwG0nXeDGjG1q27bUnhawvEkdKl5XmVAXDZXHVuRlKyWoB7uv1G116sIA7UX8xFVhcmOEc LoAnX0hd0RqpDbEI3oNUUl4TPJt6lQ
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowADn7JxF199hYV5FBg--.59804S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKF17GF47AF1fGFyrCrWUXFb_yoWfXFg_W3
-        s7uFZrXFZ8tr40k34rtan0kFs293srWF47WasrtrZ8K342qrySqrWDZr1IqFWUX3yUCF9r
-        Zr1jgr48Xwn3CjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbFAYjsxI4VWDJwAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I
-        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-        8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
-        cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4
-        A2jsIEc7CjxVAFwI0_Cr1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-        64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-        Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l4I8I
-        3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxV
-        WUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAF
-        wI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcI
-        k0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_
-        Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8v_M3UUUUU==
-X-Originating-IP: [124.16.141.244]
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBggFA10Tf6X3nAAAs3
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-'destroy_workqueue()' already drains the queue before destroying it, so
-there is no need to flush it explicitly.
+Hello,
 
-Remove the redundant 'flush_workqueue()' calls.
+the remove paths of the twl4030 chip can fail and then returns an error
+code in twl_remove() early. This isn't a good thing, because the device
+will still go away with some resources not freed.
+For the twl6030 this cannot happen, and the first patch is just a small
+cleanup. For the twl4030 the situation is improved a bit: When the
+failure happens, the dummy slave devices are removed now.
 
-Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
----
- drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 1 -
- 1 file changed, 1 deletion(-)
+Note that twl4030_exit_irq() is incomplete. The irq isn't freed and
+maybe some more cleanup is missing which might boom if an irq triggers
+after the device is removed. Not sure that twl6030_exit_irq() is better
+in this regard.
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-index a3decc7fadde..afa688e754b9 100644
---- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-+++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-@@ -1854,7 +1854,6 @@ static void omapfb_free_resources(struct omapfb2_device *fbdev)
- 	}
- 
- 	if (fbdev->auto_update_wq != NULL) {
--		flush_workqueue(fbdev->auto_update_wq);
- 		destroy_workqueue(fbdev->auto_update_wq);
- 		fbdev->auto_update_wq = NULL;
- 	}
+I noticed this issue because I work on making i2c_driver::remove return
+void as returning a value != 0 there is almost always an error attached
+to wrong expectations.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (2):
+  mfd: twl6030: Make twl6030_exit_irq() return void
+  mfd: twl4030: Make twl4030_exit_irq() return void
+
+ drivers/mfd/twl-core.c    | 8 ++------
+ drivers/mfd/twl-core.h    | 4 ++--
+ drivers/mfd/twl4030-irq.c | 7 ++-----
+ drivers/mfd/twl6030-irq.c | 3 +--
+ 4 files changed, 7 insertions(+), 15 deletions(-)
+
+base-commit: 455e73a07f6e288b0061dfcf4fcf54fa9fe06458
 -- 
-2.25.1
+2.34.1
 
