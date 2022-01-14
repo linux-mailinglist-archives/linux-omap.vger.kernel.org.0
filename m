@@ -2,82 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54FA948E05E
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Jan 2022 23:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECD1948F0DF
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Jan 2022 21:22:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238008AbiAMWgR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 13 Jan 2022 17:36:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33734 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234876AbiAMWgR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 13 Jan 2022 17:36:17 -0500
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com [IPv6:2607:f8b0:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F5A0C061574
-        for <linux-omap@vger.kernel.org>; Thu, 13 Jan 2022 14:36:17 -0800 (PST)
-Received: by mail-pl1-x644.google.com with SMTP id z3so11651258plg.8
-        for <linux-omap@vger.kernel.org>; Thu, 13 Jan 2022 14:36:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=WpVMz+4gpUntGpyaWEJVBfbKAzjD16yH5Gm0LRNFlu5oAyFKOymMeuFP1trroFQtVK
-         eFyex5Yaw809PnJHpJAwAfZT8MJ21x4fAdgQAF7z4qQiEmY7/ckTK6eNm0hBnHhnOY2B
-         FKcmFIfe+srCgWhYbEpHsRg2Eu4omG6t1/KUG/tF/wsEcHr9X8HV+tzJQCG4zSuI9yfm
-         5x1IWmBrTwpJV5mT8w1DhRnhh42yEtQZmuzlWWD10YBQjxn3AMOR8ery8sESq3nLFz2I
-         UCQ+XbTpj3XQ8UTcFNWtVkV16ZEev7kGTePX5Bqsx9eZ6vbaYe5zlAVAUbq+1OoRf+QD
-         jXmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=YbEI3Q/NEjCtDTVCV1jkA7nYNYBH/Wfa2wk3IkVyJko=;
-        b=OZ5F/bqAIpaqD2/qPrjOPJkflGnBzFK5NY7aeW2Pmsj5dL4/4vZ6adukXjk68VkBXX
-         oIKfuQmvUxFEqDaOLOgx9h8cG3JpR8PEwiEo96wapEaGjSV0HlfqhrKnWUiMM1q6V0tQ
-         sYG5PEDYdeDOMNMPdG5JYQEUrr1o99we7Uue+HCxd0WFj5AwID5ccirbIHwivRO/Uhnh
-         F8rU/L7g/nDvSdzH8cqDq05r3XSfKLZO031aI307GbDzZd/6qb+2k5uZLwaz9sy/Pe3R
-         CD/9lSYH5nxEivibqRdDDVPFs7v0ESsAfoScKd6kuJstiXAIcV+g5TiNkLuoJPLk/WDF
-         Ahkg==
-X-Gm-Message-State: AOAM530xxeL4qmEWhtrjgnQ03daugt/KNhKWgzCp771DuXFV0q0UyI7U
-        QJD8KXbJHd7MTFptYa+i22JhKAyQ52a1UJIJgXY=
-X-Google-Smtp-Source: ABdhPJzaJhfMR+h/tQtNRoX2zC4tRzbz5MEIPSw1qrTgwjU+ECndQZear3zvqEok9F+uo6qFiMnIl4XH+uZsGkdlwAc=
-X-Received: by 2002:a17:90a:cc0d:: with SMTP id b13mr16791500pju.236.1642113376647;
- Thu, 13 Jan 2022 14:36:16 -0800 (PST)
+        id S244238AbiANUW4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Jan 2022 15:22:56 -0500
+Received: from slot0.cofercan.com ([194.99.46.247]:46829 "EHLO
+        slot0.cofercan.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232761AbiANUWz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Jan 2022 15:22:55 -0500
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=cofercan.com;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=khi.hod@cofercan.com;
+ bh=ijVX1QGJKz64acXBgYYpeANPVLg=;
+ b=O5lQ1EFD+OZCYfHVhzGNMWnLPOriVyxiGw0c86bkgX6dpv6S5ZU3eEH+sGRijekoJMdB1k+IGbbf
+   a6F2ukgtXEePvWlsI8+xrlzuaeVJ2kh6HxkavxCn3zqxLki5Fdr4OLo/1IQkEkRT9obsu0dP/c0w
+   QYztd+zJb/+dNHsyOaCS7h8at/cKqJ5Ej26NUrzYeB5iHOezkFtLWjm3BUwYbygt5/IgnhF4Pxse
+   buqcODX8blZ3mWiH0IlmFzFl4NFGoTPa0UhN+Opz2N9EWwtDecmgyUxmZ7C28Uq5ACCLJHNFBeUH
+   hGt00mTFYxb6t+WkBvIvWslX/NsLVbh2nByWvQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=cofercan.com;
+ b=SJmnb9nccDlgNp+4SWhZm9TeZYfoTPtD2CpvnVuWeVMxps3gHGp9E4483owrj7tUuBuMvAccfD8g
+   A08RM0N1bkG3j08VqXiBIeLRkfX+QgKDaGial2RCdrrqbfka88f8R63yfHjorw0sa94FSqGB6drH
+   A3q13q4VkVZeCr8FAyyQKqqaGrVhwATb1UgAt8ZlF2HaxO1Zvh8rPW6rVyNi82rgjFOAUwvkx1+C
+   5DMoJckPSvT6f6gJt4QxYFni+IkJojP5uEMg61fY1er4OFj5HZNNWcegDzt9zWZ78/BOyvFmJZUl
+   9y7I6cZdfVPO0QyCMFpNWUhZ4wpyRY1n+xaPbA==;
+Reply-To: inbox.mustafaa@gmail.com
+From:   Mustafa Ayvaz <khi.hod@cofercan.com>
+To:     linux-omap@vger.kernel.org
+Subject: Guten Abend!
+Date:   14 Jan 2022 20:22:54 +0000
+Message-ID: <20220114202254.642A324A367052E3@cofercan.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:f38c:0:0:0:0 with HTTP; Thu, 13 Jan 2022 14:36:16
- -0800 (PST)
-Reply-To: mchristophdaniel@gmail.com
-From:   Marcus Galois <marcus.galois@gmail.com>
-Date:   Thu, 13 Jan 2022 23:36:16 +0100
-Message-ID: <CANqBaXXCcMpqFZVxPZZJWaz5kmT0bbZzXjB_FkEbmFBi-HPpBQ@mail.gmail.com>
-Subject: Good News Finally.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello friend.
+Lieber linux-omap, 
 
-You might find it so difficult to remember me, though it is indeed a
-very long time, I am much delighted to contact you again after a long
-period of time, I remember you despite circumstances that made things
-not worked out as we projected then. I want to inform you that the
-transaction we're doing together then finally worked out and I decided
-to contact you and to let you know because of your tremendous effort
-to make things work out then.
+Ich bin Barrister Mustafa Ayvaz, ein pers=C3=B6nlicher Anwalt des=20
+verstorbenen Herrn Robert, der sein Leben aufgrund einer=20
+Coronavirus-Krankheit verloren hat, die er sich w=C3=A4hrend seiner=20
+Gesch=C3=A4ftsreise in China zugezogen hat. Ich habe Sie kontaktiert,=20
+um mit mir zusammenzuarbeiten, um die =C3=9Cberweisung eines Fonds=20
+sicherzustellen: Vier Millionen vierhundertzwanzigtausend Dollar,=20
+von ihm hinterlassenes Verm=C3=A4chtnis.
 
-Meanwhile I must inform you that I'm presently in Caribbean Island for
-numerous business negotiation with some partners. with my sincere
-heart i have decided to compensate you with USD$900,000 for your
-dedication then on our transaction, you tried so much that period and
-I appreciated your effort. I wrote a cheque/check on your name, as
-soon as you receive it, you let me know.
+Ich habe gr=C3=BCndlich nach den n=C3=A4chsten Angeh=C3=B6rigen meines=20
+verstorbenen Klienten gesucht, bin aber gescheitert, da ich=20
+seinen aktuellen Wohnsitz und seine Kontaktdaten nicht habe. Bei=20
+meiner Suche bin ich auf Ihr Profil gesto=C3=9Fen, das den gleichen=20
+Nachnamen hat und sich in der gleichen Gegend wie die n=C3=A4chsten=20
+Angeh=C3=B6rigen befindet. Ich beschloss, Sie zu kontaktieren und Sie=20
+als Bonafide-N=C3=A4chsten zu verwenden.
 
-Contact my secretary now on his email: mchristophdaniel@gmail.com
-Name: Mr. Christoph Daniel
+Ich erbitte Ihr Einverst=C3=A4ndnis, Sie als n=C3=A4chsten Angeh=C3=B6rigen=
+=20
+meines verstorbenen Mandanten vorzustellen, da Sie beide=20
+denselben Nachnamen tragen. Die Gelder werden dann an Sie als=20
+Beg=C3=BCnstigten =C3=BCberwiesen und gem=C3=A4=C3=9F einem vorgeschlagenen=
+=20
+Aufteilungsmuster / Verh=C3=A4ltnis von 60:40 geteilt, d.h. 60 % f=C3=BCr=
+=20
+mich und 40 % f=C3=BCr Sie. F=C3=BCr weitere Informationen kontaktieren Sie=
+=20
+mich bitte sofort f=C3=BCr weitere Informationen.
 
-You are to forward to him your Name........ Address.......,Phone
-number......for shipment/dispatch of the cheque/Check to you
+Danach sende ich Ihnen die Einzelheiten zum Beginn der=20
+Transaktion. Kontaktieren Sie mich f=C3=BCr weitere Informationen =C3=BCber=
+=20
+meine E-Mail-Adresse.
 
-Regards,
-Mr. Marcus Galois
+Gr=C3=BC=C3=9Fe
+Mustafa Ayvaz
