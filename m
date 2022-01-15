@@ -2,77 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ECD1948F0DF
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Jan 2022 21:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F13648F7B2
+	for <lists+linux-omap@lfdr.de>; Sat, 15 Jan 2022 17:02:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244238AbiANUW4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Jan 2022 15:22:56 -0500
-Received: from slot0.cofercan.com ([194.99.46.247]:46829 "EHLO
-        slot0.cofercan.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232761AbiANUWz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Jan 2022 15:22:55 -0500
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=cofercan.com;
- h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=khi.hod@cofercan.com;
- bh=ijVX1QGJKz64acXBgYYpeANPVLg=;
- b=O5lQ1EFD+OZCYfHVhzGNMWnLPOriVyxiGw0c86bkgX6dpv6S5ZU3eEH+sGRijekoJMdB1k+IGbbf
-   a6F2ukgtXEePvWlsI8+xrlzuaeVJ2kh6HxkavxCn3zqxLki5Fdr4OLo/1IQkEkRT9obsu0dP/c0w
-   QYztd+zJb/+dNHsyOaCS7h8at/cKqJ5Ej26NUrzYeB5iHOezkFtLWjm3BUwYbygt5/IgnhF4Pxse
-   buqcODX8blZ3mWiH0IlmFzFl4NFGoTPa0UhN+Opz2N9EWwtDecmgyUxmZ7C28Uq5ACCLJHNFBeUH
-   hGt00mTFYxb6t+WkBvIvWslX/NsLVbh2nByWvQ==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=cofercan.com;
- b=SJmnb9nccDlgNp+4SWhZm9TeZYfoTPtD2CpvnVuWeVMxps3gHGp9E4483owrj7tUuBuMvAccfD8g
-   A08RM0N1bkG3j08VqXiBIeLRkfX+QgKDaGial2RCdrrqbfka88f8R63yfHjorw0sa94FSqGB6drH
-   A3q13q4VkVZeCr8FAyyQKqqaGrVhwATb1UgAt8ZlF2HaxO1Zvh8rPW6rVyNi82rgjFOAUwvkx1+C
-   5DMoJckPSvT6f6gJt4QxYFni+IkJojP5uEMg61fY1er4OFj5HZNNWcegDzt9zWZ78/BOyvFmJZUl
-   9y7I6cZdfVPO0QyCMFpNWUhZ4wpyRY1n+xaPbA==;
-Reply-To: inbox.mustafaa@gmail.com
-From:   Mustafa Ayvaz <khi.hod@cofercan.com>
-To:     linux-omap@vger.kernel.org
-Subject: Guten Abend!
-Date:   14 Jan 2022 20:22:54 +0000
-Message-ID: <20220114202254.642A324A367052E3@cofercan.com>
+        id S233027AbiAOQCO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 15 Jan 2022 11:02:14 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:58106 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233026AbiAOQCO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Jan 2022 11:02:14 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 028D460DF5;
+        Sat, 15 Jan 2022 16:02:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5B4C36AE7;
+        Sat, 15 Jan 2022 16:02:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642262533;
+        bh=dXfz+j87xPDNeSX6HqrqgV0QIp9lXOhuOevSxgxBxAg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=fBZUceP1fm1936OzmEoRc6xtqdD5KbaOLzrdEc+FuWEcCjgwnmIq7E5Rf9kN/qhOD
+         8yJWG2lHkrpd6AAyQEMaHrVuUBaZQVsC04OOGISARjc6DNf4NcLCVz59LvwhH1XxXy
+         0moIJHeGq+McQ5xaKrJey/AyOw7Fme5/Aeh/hs1pS32r0E655g9LGIStj7Gcfsr48+
+         56Avbf+02HmjAu1u80ZQKazofB9alNivfvpNOb5XbdMHyaIPqwF/jXOCt6bO0279/8
+         BCmo6chcAZz0OG6WtjiZUYit2B7zeWX4IxUgwaJSjC9VMR5E8F4bpBlH9EnvKMZo94
+         Mk2j4H4tbkxmA==
+Received: by mail-ed1-f48.google.com with SMTP id q25so46084088edb.2;
+        Sat, 15 Jan 2022 08:02:13 -0800 (PST)
+X-Gm-Message-State: AOAM532iF24XQny1hY7MtF5WCxSm1CnvVYUE86Mzh2CW3ma8zqRgdmWp
+        UYoci5uR5GahZiClB0Poi5Qrkegzg/CcOTEX5Q==
+X-Google-Smtp-Source: ABdhPJxfQvzMyV4E/lfsW80blaC+yF6Jz6eXdtfrSUYSUFPPjf5rBowLMBSmFOPgGlwU3ROMI1ZeCovUN+HxGfr8daY=
+X-Received: by 2002:aa7:c587:: with SMTP id g7mr9586993edq.109.1642262531677;
+ Sat, 15 Jan 2022 08:02:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20211214221450.589884-1-luca@lucaceresoli.net>
+ <CAL_Jsq+GQTcx1EGKHug2ZcDZufrKM-4k6PB0vQeTCTG42MHzvA@mail.gmail.com>
+ <59a23c89-0810-eb28-acd9-7051ac34d438@lucaceresoli.net> <4579940c-27dc-733e-4022-ebea4671c839@lucaceresoli.net>
+In-Reply-To: <4579940c-27dc-733e-4022-ebea4671c839@lucaceresoli.net>
+From:   Rob Herring <robh@kernel.org>
+Date:   Sat, 15 Jan 2022 10:02:00 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ5nr6xJoTv3A6UPMMDXhWKcwSEUA3ux3kK8OMWQxdc6w@mail.gmail.com>
+Message-ID: <CAL_JsqJ5nr6xJoTv3A6UPMMDXhWKcwSEUA3ux3kK8OMWQxdc6w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] PCI: dra7xx: Fix link removal on probe error
+To:     Luca Ceresoli <luca@lucaceresoli.net>,
+        Saravana Kannan <saravanak@google.com>
+Cc:     PCI <linux-pci@vger.kernel.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Sekhar Nori <nsekhar@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Lieber linux-omap, 
++Saravana
 
-Ich bin Barrister Mustafa Ayvaz, ein pers=C3=B6nlicher Anwalt des=20
-verstorbenen Herrn Robert, der sein Leben aufgrund einer=20
-Coronavirus-Krankheit verloren hat, die er sich w=C3=A4hrend seiner=20
-Gesch=C3=A4ftsreise in China zugezogen hat. Ich habe Sie kontaktiert,=20
-um mit mir zusammenzuarbeiten, um die =C3=9Cberweisung eines Fonds=20
-sicherzustellen: Vier Millionen vierhundertzwanzigtausend Dollar,=20
-von ihm hinterlassenes Verm=C3=A4chtnis.
+On Tue, Jan 11, 2022 at 4:35 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
+>
+> Hi Rob,
+>
+> On 16/12/21 10:08, Luca Ceresoli wrote:
+> > Hi Rob,
+> >
+> > thanks for the quick feedback!
+> >
+> > On 14/12/21 23:42, Rob Herring wrote:
+> >> On Tue, Dec 14, 2021 at 4:15 PM Luca Ceresoli <luca@lucaceresoli.net> wrote:
+> >>>
+> >>> If a devm_phy_get() calls fails with phy_count==N (N > 0), then N links
+> >>> have already been added by device_link_add() and won't be deleted by
+> >>> device_link_del() because the code calls 'return' and not 'goto err_link'.
+> >>>
+> >>> Fix in a very simple way by doing all the devm_phy_get() calls before all
+> >>> the device_link_add() calls.
+> >>>
+> >>> Fixes: 7a4db656a635 ("PCI: dra7xx: Create functional dependency between PCIe and PHY")
+> >>> Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+> >>> ---
+> >>>  drivers/pci/controller/dwc/pci-dra7xx.c | 2 ++
+> >>>  1 file changed, 2 insertions(+)
+> >>>
+> >>> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> >>> index f7f1490e7beb..2ccc53869e13 100644
+> >>> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> >>> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> >>> @@ -757,7 +757,9 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
+> >>>                 phy[i] = devm_phy_get(dev, name);
+> >>>                 if (IS_ERR(phy[i]))
+> >>>                         return PTR_ERR(phy[i]);
+> >>> +       }
+> >>>
+> >>> +       for (i = 0; i < phy_count; i++) {
+> >>>                 link[i] = device_link_add(dev, &phy[i]->dev, DL_FLAG_STATELESS);
+> >>
+> >> I think this should happen automatically now with fw_devlink being
+> >> enabled by default. Can you try?
+> >
+> > Do you mean removal should be done automatically? I think they are not
+> > due to the DL_FLAG_STATELESS flag.
+>
+> I would love to have feedback because, as said, I think my patch is
+> correct, but if I'm wrong (which might well be) I have to drop patch 1
+> and rewrite patch 2 in a slightly more complex form.
 
-Ich habe gr=C3=BCndlich nach den n=C3=A4chsten Angeh=C3=B6rigen meines=20
-verstorbenen Klienten gesucht, bin aber gescheitert, da ich=20
-seinen aktuellen Wohnsitz und seine Kontaktdaten nicht habe. Bei=20
-meiner Suche bin ich auf Ihr Profil gesto=C3=9Fen, das den gleichen=20
-Nachnamen hat und sich in der gleichen Gegend wie die n=C3=A4chsten=20
-Angeh=C3=B6rigen befindet. Ich beschloss, Sie zu kontaktieren und Sie=20
-als Bonafide-N=C3=A4chsten zu verwenden.
+I mean that why do you need explicit dependency tracking here when
+dependencies on a PHY should happen automatically now. IOW, what is
+special about this driver and dependency?
 
-Ich erbitte Ihr Einverst=C3=A4ndnis, Sie als n=C3=A4chsten Angeh=C3=B6rigen=
-=20
-meines verstorbenen Mandanten vorzustellen, da Sie beide=20
-denselben Nachnamen tragen. Die Gelder werden dann an Sie als=20
-Beg=C3=BCnstigten =C3=BCberwiesen und gem=C3=A4=C3=9F einem vorgeschlagenen=
-=20
-Aufteilungsmuster / Verh=C3=A4ltnis von 60:40 geteilt, d.h. 60 % f=C3=BCr=
-=20
-mich und 40 % f=C3=BCr Sie. F=C3=BCr weitere Informationen kontaktieren Sie=
-=20
-mich bitte sofort f=C3=BCr weitere Informationen.
-
-Danach sende ich Ihnen die Einzelheiten zum Beginn der=20
-Transaktion. Kontaktieren Sie mich f=C3=BCr weitere Informationen =C3=BCber=
-=20
-meine E-Mail-Adresse.
-
-Gr=C3=BC=C3=9Fe
-Mustafa Ayvaz
+Rob
