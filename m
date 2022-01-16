@@ -2,24 +2,24 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F44A48FA46
-	for <lists+linux-omap@lfdr.de>; Sun, 16 Jan 2022 03:09:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4177C48FDAC
+	for <lists+linux-omap@lfdr.de>; Sun, 16 Jan 2022 16:40:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234097AbiAPCIW convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Sat, 15 Jan 2022 21:08:22 -0500
-Received: from ec2-13-115-114-132.ap-northeast-1.compute.amazonaws.com ([13.115.114.132]:56016
+        id S233268AbiAPPkv convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Sun, 16 Jan 2022 10:40:51 -0500
+Received: from ec2-13-115-114-132.ap-northeast-1.compute.amazonaws.com ([13.115.114.132]:39126
         "EHLO mail.gunma-suigai-risk.jp" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230366AbiAPCIV (ORCPT
+        by vger.kernel.org with ESMTP id S232426AbiAPPku (ORCPT
         <rfc822;linux-omap@vger.kernel.org>);
-        Sat, 15 Jan 2022 21:08:21 -0500
-Received: from Unknown (41-139-147-86.safaricombusiness.co.ke [41.139.147.86])
-        by mail.gunma-suigai-risk.jp (Postfix) with ESMTPA id 0BE3923EA451;
-        Sat, 15 Jan 2022 22:16:46 +0000 (UTC)
-Message-ID: <959026757EAA84479B9ED76B6FD0ED96@fxjjy>
+        Sun, 16 Jan 2022 10:40:50 -0500
+Received: from Unknown (unknown [187.141.149.162])
+        by mail.gunma-suigai-risk.jp (Postfix) with ESMTPA id C258A2802E80;
+        Sun, 16 Jan 2022 07:48:46 +0000 (UTC)
+Message-ID: <A4A117444F9BB576AAAFE65A5EBAD30C@zmoja>
 Reply-To: "Fredrik Elvebakk" <fcresswell9@gmail.com>
 From:   "Fredrik Elvebakk" <investment@dnb.no>
 Subject: Re:
-Date:   Sat, 15 Jan 2022 14:15:55 -0800
+Date:   Sat, 15 Jan 2022 23:47:30 -0800
 MIME-Version: 1.0
 Content-Type: text/plain;
         format=flowed;
