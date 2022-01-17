@@ -2,69 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 737BA48FEB0
-	for <lists+linux-omap@lfdr.de>; Sun, 16 Jan 2022 20:37:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 693B749095C
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Jan 2022 14:21:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233672AbiAPThU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 16 Jan 2022 14:37:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40624 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbiAPThU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 16 Jan 2022 14:37:20 -0500
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA8ABC061574
-        for <linux-omap@vger.kernel.org>; Sun, 16 Jan 2022 11:37:19 -0800 (PST)
-Received: by mail-yb1-xb29.google.com with SMTP id g14so39729103ybs.8
-        for <linux-omap@vger.kernel.org>; Sun, 16 Jan 2022 11:37:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z7S+WoAeewe+evENxRmugDyi2UMRp34iK32ErxvL3wo=;
-        b=AGbdwaPlKkbdRjfQPAcvFGUFpF/53z4hYRBGjw+7+pXpGLkfQ0kPikpuc0pqnaooO8
-         PYL2XMm885OJ3qjY4NHgeQgAixuNfzPZMWRt9HJQjMvAZjwAqeXb7QLZkTBIBV2/9wbS
-         S9BgiRYBlDyY24Qb80cv84SoboYNYsuuGkPYR+B4UcO/eQ3rOwh4u6KHYJBLoM0R+F++
-         9+8Rm8LB0O07ki5GqJNtDput0IqetdPG20ANTIT8WPqOfHWEZcVDQVSPVVLOvnjIoIFr
-         ZdaA4mgcrhgWvX0emx7EDN77YAYh/mXl+UYkk6LGyTDkE4IAe/KoIpDyoKkQ2CMl8RCj
-         V1XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z7S+WoAeewe+evENxRmugDyi2UMRp34iK32ErxvL3wo=;
-        b=PI5heUqTrU+JQL9vTMYHnu+0QY7DHDLbtIQbxe1/cSTo7sYGrBEMowU11RdNUW5/qB
-         3WFw4/z/bX4nUecQyQn62gDIJvfGITbzVS69+ltut0RUIU/HLGguAGICYcDp0c3S/dgQ
-         lVZ5g/3ATgvRidlyb9L02NdJahXpkULFZZu5IXo1QgyyXNAE6V1f+1C6YD+mZJKUA9z5
-         b3cq0/E/cOa2IivNFQj/1h5HuIv+reYrlVJG81VKVzGDbng/MLm0G02QW17E6vAyLoqX
-         qMRdzmUh1QMAxhfQOs/E+g/CyJ5TIU5cgHwEvVuu/4KxMvelVs3EI5RuSkYP5EgU6uYW
-         AffQ==
-X-Gm-Message-State: AOAM5305gT1mO4FrynTA7xQIFGNcH6JnF9Vo4FK6Yr003PAbMWZqxj1t
-        3Ki3g0Bcw70nr51Kxs437Uh86xk5fS5Cyulbcs0=
-X-Google-Smtp-Source: ABdhPJyCHFlgTALletkEXWzuc6J1oJ/wB4rQB5E9l4fr0Y2Ygl1+U8dwcd3dsisPvAe8hxG8rPMeyqdtsE1fadIUnnM=
-X-Received: by 2002:a25:f206:: with SMTP id i6mr22772862ybe.750.1642361838862;
- Sun, 16 Jan 2022 11:37:18 -0800 (PST)
+        id S230389AbiAQNV2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Jan 2022 08:21:28 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:52860 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229474AbiAQNV1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Jan 2022 08:21:27 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: adalessandro)
+        with ESMTPSA id 9FE951F439D4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1642425686;
+        bh=cLpfRqHBURM9rPTwgK+plOEmXlOGSYOFoD1NYi3A9mc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=AuQBprJ8i3XCaq30qQMFk4a9PThm05/O46+YIvsdbm1F+SQT5ZBUWBz4gAhyQiSj1
+         ll7IXNX9lzGT1dFT8+Y6yppTQeRGlFzdji++G2JEcXNxHah7P13D1RYZQPwkWZG1SH
+         ueqe792bXa1IwliwmL0uQW4/DBSVFVoYxHYL/LbBeWqSPneJiVIH7LlO7ana3HqGWE
+         H0oDsoH004kaMx7wt/Fn3qBd3JpBzmMUpOKlScZ/YZG0CXxOP+/8fxzD/qZVisSZQ+
+         aHdfRBtNkPgVNmPw7KGYTObE/6NySch99Pr7G29on7YxfuDeS//DZ7jPX8YSq7FdAd
+         speTeoYIXz7Uw==
+From:   Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+To:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc:     Xiubo.Lee@gmail.com, ariel.dalessandro@collabora.com,
+        bcousson@baylibre.com, broonie@kernel.org, festevam@gmail.com,
+        kuninori.morimoto.gx@renesas.com, lgirdwood@gmail.com,
+        michael@amarulasolutions.com, nicoleotsuka@gmail.com,
+        perex@perex.cz, robh+dt@kernel.org, shengjiu.wang@gmail.com,
+        tiwai@suse.com, tony@atomide.com
+Subject: [PATCH v2 0/5] fsl-asoc-card: Add optional dt property for setting mclk-id
+Date:   Mon, 17 Jan 2022 10:21:04 -0300
+Message-Id: <20220117132109.283365-1-ariel.dalessandro@collabora.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received: by 2002:a25:6541:0:0:0:0:0 with HTTP; Sun, 16 Jan 2022 11:37:18
- -0800 (PST)
-Reply-To: salemchantal@mail.ee
-From:   MRS Salem Chantal Lawrence <wkate2579@gmail.com>
-Date:   Sun, 16 Jan 2022 11:37:18 -0800
-Message-ID: <CAJ724YBFvwJYgP0b+dNtp1Enaatr6iBZr1K_4JYLcuyM2Fuj6A@mail.gmail.com>
-Subject: Dear Friend
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Attention
+This is a follow up of patchset:
 
+    [RFC patch 0/5] Support BCLK input clock in tlv320aic31xx
 
-You have Been Compensated with the sum of 4.6 million dollars in this
-United Nation the Payment will be issue into Atm Visa Card and send to you
+Sound cards may allow using different main clock inputs. In the generic
+fsl-asoc-card driver, these values are hardcoded for each specific card
+configuration.
 
-from the Santander Bank of Spain we need your address, Passport and your
-Whatsapp Number.
+Let's make it more flexible, allowing setting mclk-id from the
+device-tree node.
 
+Changes in v2:
+* Split patch adding mckl-id property.
 
-THANKS
-MRS Salem Chantal Lawrence
+Ariel D'Alessandro (5):
+  dt-bindings: sound: Rename tlv320aic31xx-micbias as tlv320aic31xx
+  dt-bindings: tlv320aic31xx: Define PLL clock inputs
+  ASoC: bindings: fsl-asoc-card: Add mclk-id optional property
+  ASoC: fsl-asoc-card: Add optional dt property for setting mclk-id
+  ASoC: fsl-asoc-card: Remove BCLK default value for tlv320aic31xx card
+
+ .../devicetree/bindings/sound/fsl-asoc-card.txt    |  1 +
+ .../devicetree/bindings/sound/tlv320aic31xx.txt    |  2 +-
+ arch/arm/boot/dts/am43x-epos-evm.dts               |  2 +-
+ include/dt-bindings/sound/tlv320aic31xx-micbias.h  |  9 ---------
+ include/dt-bindings/sound/tlv320aic31xx.h          | 14 ++++++++++++++
+ sound/soc/codecs/tlv320aic31xx.c                   |  2 +-
+ sound/soc/fsl/fsl-asoc-card.c                      |  7 ++++++-
+ 7 files changed, 24 insertions(+), 13 deletions(-)
+ delete mode 100644 include/dt-bindings/sound/tlv320aic31xx-micbias.h
+ create mode 100644 include/dt-bindings/sound/tlv320aic31xx.h
+
+-- 
+2.34.1
+
