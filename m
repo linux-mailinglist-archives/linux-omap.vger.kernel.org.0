@@ -2,208 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74F284922F9
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Jan 2022 10:41:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BAA04923B5
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Jan 2022 11:22:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231286AbiARJlH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Jan 2022 04:41:07 -0500
-Received: from muru.com ([72.249.23.125]:51126 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229604AbiARJlH (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Tue, 18 Jan 2022 04:41:07 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 0A9C280C0;
-        Tue, 18 Jan 2022 09:41:54 +0000 (UTC)
-Date:   Tue, 18 Jan 2022 11:41:03 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc:     Johan Hovold <johan@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/7] serial: core: Add support of runtime PM
-Message-ID: <YeaLL0cJFeIhz1Tr@atomide.com>
-References: <20211115084203.56478-1-tony@atomide.com>
- <20211115084203.56478-2-tony@atomide.com>
- <YaX82wxybOZnPKpy@hovoldconsulting.com>
- <YbGwaOj0ZbEuNEPA@atomide.com>
- <YbHb7HRGGFRBorB7@smile.fi.intel.com>
+        id S229774AbiARKWR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Jan 2022 05:22:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56182 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229561AbiARKWQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Jan 2022 05:22:16 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C900C061574;
+        Tue, 18 Jan 2022 02:22:16 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C5E5612AF;
+        Tue, 18 Jan 2022 10:22:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A21C00446;
+        Tue, 18 Jan 2022 10:22:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642501335;
+        bh=n2ayBOICvyWrfihLlmR5uPt2RCYfBgx6AyMG9eDIMXI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fxhlKW8hjLsNcLv+INfK5RAzcSqP1grlZZna7L++9ABVsrwAWZsiv8vmtsjQjl5Gt
+         JhopABXU/Q2TpE6w88+EDvC6HHDWoMy894MBZArTZsBJgHxayuFYZlxzn6hxZ5ZVw0
+         q/wkhoAON751sH5z3u7L+PcEAtS2d3ZjORE0m6spLhUlS0C3HNty1IC63ZnrujkMd9
+         6mhzOX+kVciQqjqYlIwQ56FCWVoxmkmuJFkQluvfks7vP8haTCSANkhVTQ3E+jgBdH
+         FaUV7VDttvZ9a7Mc98OuHU0aBm+aam5XvafHdS408roI7fmHAk94XH28sU5FGmau81
+         XbQhawVDlJlnw==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     netdev@vger.kernel.org
+Cc:     linux-omap@vger.kernel.org, arnd@arndb.de, davem@davemloft.net,
+        kuba@kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: [PATCH net] net: cpsw: avoid alignment faults by taking NET_IP_ALIGN into account
+Date:   Tue, 18 Jan 2022 11:22:04 +0100
+Message-Id: <20220118102204.1258645-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YbHb7HRGGFRBorB7@smile.fi.intel.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3834; h=from:subject; bh=n2ayBOICvyWrfihLlmR5uPt2RCYfBgx6AyMG9eDIMXI=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBh5pTLcARWy9ZVS7+03uNKavkkDy7NTmTWxwE4Y3f+ oTey+b+JAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYeaUywAKCRDDTyI5ktmPJJX7C/ 9ZcVoAWfoxnTJfDvpXi//ALHBSyu8soO+OaLPONzKFGLW8zZu66friwkbmcENqlPLVPj7J2JPtITkv J6k5tYiiRnzqTBMvls20rY19S/LKSEQ8Wzj130cqgAgGoOpQtmxSwi8xUQag1kIU9e5U0WK4ZN05Ed 8zX2UUYZYuG5ftBfReszXV8m1+4z9iRJv8Xpqum38lHpHtaXNFrMzBhf0tTyB5pGYOGsZmNkcDFUBe Fqch/JsQFu01OeBZh2Z8oBPzQcHtOBbstYWWl+WcXFOxNsEdmNpw7yIg+065eJ4tk1T2PeoE6F+Gb/ VjmwsDtzwT0H5UIME9uRzJddx/gOP8yCM1pGYUU5YS6QDSGb1rGjqfxoR+ipA6cNZPcXldu9H3VIQC MGCVDqezd/n9MOWpPB4YhLDrvhYKq2FTqJUXRYUoFNgYLTIrRfv5MhWrttDu5QrZA4/SSk1VQ2hzJ6 P6pBKqJN9PRTIQjnOmZ5Fkak6SynDVS7mJpNU+8heKWD0=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Both versions of the CPSW driver declare a CPSW_HEADROOM_NA macro that
+takes NET_IP_ALIGN into account, but fail to use it appropriately when
+storing incoming packets in memory. This results in the IPv4 source and
+destination addresses to appear misaligned in memory, which causes
+aligment faults that need to be fixed up in software.
 
-* Andy Shevchenko <andriy.shevchenko@intel.com> [211209 10:37]:
-> On Thu, Dec 09, 2021 at 09:29:44AM +0200, Tony Lindgren wrote:
-> > * Johan Hovold <johan@kernel.org> [211130 10:29]:
-> > > On Mon, Nov 15, 2021 at 10:41:57AM +0200, Tony Lindgren wrote:
-> > > > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > > 
-> > > > 8250 driver has wrong implementation of runtime power management, i.e.
-> > > > it uses an irq_safe flag. The irq_safe flag takes a permanent usage count
-> > > > on the parent device preventing the parent from idling. This patch
-> > > > prepares for making runtime power management generic by adding runtime PM
-> > > > calls to serial core once for all UART drivers.
-> > > > 
-> > > > As we have serial drivers that do not enable runtime PM, and drivers that
-> > > > enable runtime PM, we add new functions for serial_pm_resume_and_get() and
-> > > > serial_pm_autosuspend() functions to handle errors and allow the use also
-> > > > for cases when runtime PM is not enabled. The other option considered was
-> > > > to not check for runtime PM enable errors. But some CPUs can hang when the
-> > > > clocks are not enabled for the device, so ignoring the errors is not a good
-> > > > option. Eventually with the serial port drivers updated, we should be able
-> > > > to just switch to using the standard runtime PM calls with no need for the
-> > > > wrapper functions.
-> > > 
-> > > A third option which needs to be considered is to always enable runtime
-> > > pm in core but to keep the ports active while they are opened unless a
-> > > driver opts in for more aggressive power management. This is how USB
-> > > devices are handled for example.
-> > > 
-> > > A next step could then be to move over uart_change_pm() to be handled
-> > > from the pm callbacks.
-> > 
-> > Yes that would be nice to do eventually :)
+So let's switch from CPSW_HEADROOM to CPSW_HEADROOM_NA where needed.
+This gets rid of any alignment faults on the RX path on a Beaglebone
+White.
 
-I think we should do the "third option" above as the first preparatory patch.
-It can be done separately from the rest of the series, and we avoid adding
-serial layer specific wrappers around runtime PM calls in the later patches.
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/net/ethernet/ti/cpsw.c      | 6 +++---
+ drivers/net/ethernet/ti/cpsw_new.c  | 6 +++---
+ drivers/net/ethernet/ti/cpsw_priv.c | 2 +-
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-Below is what I came up with for the preparatory patch, can you guys please
-take a look and see if you have better ideas?
-
-For system suspend and resume, it seems we don't need to do anything as
-runtime PM is anyways disabled already in prepare.
-
-Andy, care to give the following also a try for your serial port test
-cases?
-
-Regards,
-
-Tony
-
-8< --------------------
-diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -997,6 +997,7 @@ int serial8250_register_8250_port(const struct uart_8250_port *up)
- 		uart->port.regshift     = up->port.regshift;
- 		uart->port.iotype       = up->port.iotype;
- 		uart->port.flags        = up->port.flags | UPF_BOOT_AUTOCONF;
-+		uart->port.supports_autosuspend = up->port.supports_autosuspend;
- 		uart->bugs		= up->bugs;
- 		uart->port.mapbase      = up->port.mapbase;
- 		uart->port.mapsize      = up->port.mapsize;
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1352,6 +1352,7 @@ static int omap8250_probe(struct platform_device *pdev)
- 	up.rs485_start_tx = serial8250_em485_start_tx;
- 	up.rs485_stop_tx = serial8250_em485_stop_tx;
- 	up.port.has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
-+	up.port.supports_autosuspend = 1;
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index 33142d505fc8..03575c017500 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -349,7 +349,7 @@ static void cpsw_rx_handler(void *token, int len, int status)
+ 	struct cpsw_common	*cpsw = ndev_to_cpsw(xmeta->ndev);
+ 	int			pkt_size = cpsw->rx_packet_max;
+ 	int			ret = 0, port, ch = xmeta->ch;
+-	int			headroom = CPSW_HEADROOM;
++	int			headroom = CPSW_HEADROOM_NA;
+ 	struct net_device	*ndev = xmeta->ndev;
+ 	struct cpsw_priv	*priv;
+ 	struct page_pool	*pool;
+@@ -392,7 +392,7 @@ static void cpsw_rx_handler(void *token, int len, int status)
+ 	}
  
- 	ret = of_alias_get_id(np, "serial");
+ 	if (priv->xdp_prog) {
+-		int headroom = CPSW_HEADROOM, size = len;
++		int size = len;
+ 
+ 		xdp_init_buff(&xdp, PAGE_SIZE, &priv->xdp_rxq[ch]);
+ 		if (status & CPDMA_RX_VLAN_ENCAP) {
+@@ -442,7 +442,7 @@ static void cpsw_rx_handler(void *token, int len, int status)
+ 	xmeta->ndev = ndev;
+ 	xmeta->ch = ch;
+ 
+-	dma = page_pool_get_dma_addr(new_page) + CPSW_HEADROOM;
++	dma = page_pool_get_dma_addr(new_page) + CPSW_HEADROOM_NA;
+ 	ret = cpdma_chan_submit_mapped(cpsw->rxv[ch].ch, new_page, dma,
+ 				       pkt_size, 0);
  	if (ret < 0) {
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -16,6 +16,7 @@
- #include <linux/console.h>
- #include <linux/gpio/consumer.h>
- #include <linux/of.h>
-+#include <linux/pm_runtime.h>
- #include <linux/proc_fs.h>
- #include <linux/seq_file.h>
- #include <linux/device.h>
-@@ -184,6 +185,7 @@ static int uart_port_startup(struct tty_struct *tty, struct uart_state *state,
- 		int init_hw)
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index 279e261e4720..bd4b1528cf99 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -283,7 +283,7 @@ static void cpsw_rx_handler(void *token, int len, int status)
  {
- 	struct uart_port *uport = uart_port_check(state);
-+	struct device *dev = uport->dev;
- 	unsigned long flags;
- 	unsigned long page;
- 	int retval = 0;
-@@ -191,6 +193,32 @@ static int uart_port_startup(struct tty_struct *tty, struct uart_state *state,
- 	if (uport->type == PORT_UNKNOWN)
- 		return 1;
+ 	struct page *new_page, *page = token;
+ 	void *pa = page_address(page);
+-	int headroom = CPSW_HEADROOM;
++	int headroom = CPSW_HEADROOM_NA;
+ 	struct cpsw_meta_xdp *xmeta;
+ 	struct cpsw_common *cpsw;
+ 	struct net_device *ndev;
+@@ -336,7 +336,7 @@ static void cpsw_rx_handler(void *token, int len, int status)
+ 	}
  
-+	/* Always enable autosuspend and consider child devices for serdev */
-+	pm_runtime_use_autosuspend(dev);
-+	pm_suspend_ignore_children(dev, false);
-+
-+	/*
-+	 * If the port driver did not enable runtime PM in probe, do it now.
-+	 * Devices that did not enable runtime PM get set active so we can
-+	 * properly handler the returned errors for runtime PM calls.
-+	 */
-+	if (!pm_runtime_enabled(dev)) {
-+		pm_runtime_set_active(dev);
-+		pm_runtime_enable(dev);
-+	} else {
-+		uport->implements_pm_runtime = 1;
-+	}
-+
-+	/*
-+	 * Keep the port enabled unless autosuspend is supported.
-+	 * Released in uart_shutdown().
-+	 */
-+	if (!uport->supports_autosuspend) {
-+		retval = pm_runtime_resume_and_get(dev);
-+		if (retval < 0)
-+			return retval;
-+	}
-+
- 	/*
- 	 * Make sure the device is in D0 state.
- 	 */
-@@ -279,6 +307,7 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
- {
- 	struct uart_port *uport = uart_port_check(state);
- 	struct tty_port *port = &state->port;
-+	struct device *dev = uport->dev;
- 	unsigned long flags;
- 	char *xmit_buf = NULL;
+ 	if (priv->xdp_prog) {
+-		int headroom = CPSW_HEADROOM, size = len;
++		int size = len;
  
-@@ -313,6 +342,19 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
- 	 */
- 	tty_port_set_suspended(port, 0);
+ 		xdp_init_buff(&xdp, PAGE_SIZE, &priv->xdp_rxq[ch]);
+ 		if (status & CPDMA_RX_VLAN_ENCAP) {
+@@ -386,7 +386,7 @@ static void cpsw_rx_handler(void *token, int len, int status)
+ 	xmeta->ndev = ndev;
+ 	xmeta->ch = ch;
  
-+	/* Runtime PM paired with configuration done in uart_port_startup() */
-+	if (uport) {
-+		dev = uport->dev;
-+		pm_runtime_dont_use_autosuspend(dev);
-+		pm_suspend_ignore_children(dev, true);
-+		if (!uport->supports_autosuspend)
-+			pm_runtime_put_sync(dev);
-+		if (!uport->implements_pm_runtime) {
-+			pm_runtime_set_suspended(dev);
-+			pm_runtime_disable(dev);
-+		}
-+	}
-+
- 	/*
- 	 * Do not free() the transmit buffer page under the port lock since
- 	 * this can create various circular locking scenarios. For instance,
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -249,6 +249,8 @@ struct uart_port {
- 	unsigned char		hub6;			/* this should be in the 8250 driver */
- 	unsigned char		suspended;
- 	unsigned char		console_reinit;
-+	unsigned long		implements_pm_runtime:1;
-+	unsigned long		supports_autosuspend:1;
- 	const char		*name;			/* port name */
- 	struct attribute_group	*attr_group;		/* port specific attributes */
- 	const struct attribute_group **tty_groups;	/* all attributes (serial core use only) */
+-	dma = page_pool_get_dma_addr(new_page) + CPSW_HEADROOM;
++	dma = page_pool_get_dma_addr(new_page) + CPSW_HEADROOM_NA;
+ 	ret = cpdma_chan_submit_mapped(cpsw->rxv[ch].ch, new_page, dma,
+ 				       pkt_size, 0);
+ 	if (ret < 0) {
+diff --git a/drivers/net/ethernet/ti/cpsw_priv.c b/drivers/net/ethernet/ti/cpsw_priv.c
+index 3537502e5e8b..ba220593e6db 100644
+--- a/drivers/net/ethernet/ti/cpsw_priv.c
++++ b/drivers/net/ethernet/ti/cpsw_priv.c
+@@ -1122,7 +1122,7 @@ int cpsw_fill_rx_channels(struct cpsw_priv *priv)
+ 			xmeta->ndev = priv->ndev;
+ 			xmeta->ch = ch;
+ 
+-			dma = page_pool_get_dma_addr(page) + CPSW_HEADROOM;
++			dma = page_pool_get_dma_addr(page) + CPSW_HEADROOM_NA;
+ 			ret = cpdma_chan_idle_submit_mapped(cpsw->rxv[ch].ch,
+ 							    page, dma,
+ 							    cpsw->rx_packet_max,
 -- 
-2.34.1
+2.30.2
+
