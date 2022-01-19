@@ -2,66 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61144493669
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Jan 2022 09:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5870A493852
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Jan 2022 11:23:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345438AbiASIgF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Jan 2022 03:36:05 -0500
-Received: from m12-11.163.com ([220.181.12.11]:19044 "EHLO m12-11.163.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1343962AbiASIf5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Wed, 19 Jan 2022 03:35:57 -0500
-X-Greylist: delayed 914 seconds by postgrey-1.27 at vger.kernel.org; Wed, 19 Jan 2022 03:35:56 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=Message-ID:Date:MIME-Version:From:Subject; bh=O0PTM
-        6yNmHHx88b8fnQze07UFxYqiDlITLrv05Ku0Ck=; b=M0wXUnnDjl4O/mzyiojg/
-        +Ck0iENFY75WMiXjbCKRVD5gzScim4iJkoqOkorEAiU0Dw/w2C5bGPvvCgs4feSA
-        tMqMfL3LpD+3Xrmgx97CQ8visqCH/1zpPsC27r+tqH75IcE3UYUc/j+/TeBTHl6a
-        t1LUvj+/8lAyhM6WeJywkQ=
-Received: from [192.168.3.109] (unknown [218.201.129.19])
-        by smtp7 (Coremail) with SMTP id C8CowAA3TkrFyedhxZ1iAg--.40740S2;
-        Wed, 19 Jan 2022 16:20:21 +0800 (CST)
-Message-ID: <63abe475-710f-9ff5-ef20-c78b2a3d5e5c@163.com>
-Date:   Wed, 19 Jan 2022 16:20:20 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-To:     linux-omap@vger.kernel.org,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>
-From:   qianfan <qianfanguijin@163.com>
-Subject: OMAP GPIO ready too later
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: C8CowAA3TkrFyedhxZ1iAg--.40740S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-        VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxeT5DUUUU
-X-Originating-IP: [218.201.129.19]
-X-CM-SenderInfo: htld0w5dqj3xxmlqqiywtou0bp/1tbiXQWN7VWBmyZlbQAAsZ
+        id S1345673AbiASKXm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Jan 2022 05:23:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45310 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345318AbiASKXl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jan 2022 05:23:41 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D304C061574;
+        Wed, 19 Jan 2022 02:23:41 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id cx27so9060791edb.1;
+        Wed, 19 Jan 2022 02:23:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=3V1hkQQ8p02w19W2KJ4UIkOLnzPRTwmn+qldd2MXUPQ=;
+        b=UTo4S6CngQrJK8inLCfGWdWffEF0VzWr1c/MOQ1tFDrsrVrZ2mAB2ipU4q8se7EDgP
+         DxrG+gFyvjHymumc0w0C//05G17T8pZn00KF0kHUFN3nScd5YTzTsp0NRNrs3heL5Bvi
+         y9yUHhEmCCkO4RvvhAe2HcFBhB746ja7VQVbcwmtCU/SOFj97PFDVCmtw36MYYcibD2l
+         veksT8cLoWJVeyInIBAHfIt+ZBYyAP36ijhiDIIFVLjpaiw8DvoQSB9SNqZoAcnTYyok
+         0SVy87GQx60xuhIfksZdK6fDIhjU1RPGsKzP6rU4hFH3Msz9Vu8056eqeSAmLWw2S+qj
+         92gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=3V1hkQQ8p02w19W2KJ4UIkOLnzPRTwmn+qldd2MXUPQ=;
+        b=Dj3BZZTLaGLRYohW0D+FJuCAxM5aNmYGHan7W5+n8V4wFj8GxcrpRT8pVo0HmUBZUt
+         HzIyBQIwWz+QDZe5sGhBTGtDrTtlKAD6ifptcS9NjgRunjbbNkg6qpDqgS+7duhoLSdX
+         Ga3PX7YiHaOMCxIpHqqgDiRPj12sCrEH4E6S0HEkb8ky6VGGCw2LYW1JsEODbU87i8Bl
+         IoB61oQ6TfSUtL6SK9no9S3VnilFOJu2ORvOrUwmVbtJT4+uftq5By6RIkXMZNlrT7CQ
+         a+edvTvAnN5XwY5f/Yb48eRrblMkDjtQOSdPVQQ3Zyfc+WGGkW4pRpSdRbFUDSRzgKpy
+         pQ4g==
+X-Gm-Message-State: AOAM5326ekMhJlozU9/wiBTO0HRFgG5uWYrdtICw0e1GP40ivVJowxb3
+        hEbsRVQHn3uER9Ppw5vQop/FXpkvYV0=
+X-Google-Smtp-Source: ABdhPJy2oLLsHT/am6MhkOkALSn5DKiBobM4zLi8a2dn9ReGunq9jvnFMb84OTVkOzMwU3NwADfz7g==
+X-Received: by 2002:a17:906:4fd6:: with SMTP id i22mr23777188ejw.484.1642587819967;
+        Wed, 19 Jan 2022 02:23:39 -0800 (PST)
+Received: from localhost.localdomain ([46.249.74.23])
+        by smtp.gmail.com with ESMTPSA id b4sm3456546ejb.131.2022.01.19.02.23.38
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 19 Jan 2022 02:23:39 -0800 (PST)
+From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+To:     tomba@kernel.org, airlied@linux.ie, daniel@ffwll.ch
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, merlijn@wizzup.org, tony@atomide.com,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Subject: [PATCH 0/3] drm: omapdrm: Fix excessive GEM buffers DMM/CMA usage
+Date:   Wed, 19 Jan 2022 12:23:08 +0200
+Message-Id: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi everyone:
+This patch series fixes excessive DMM or CMA usage of GEM buffers leading to
+various runtime allocation failures. The series enables daily usage of devices
+without exausting limited resources like CMA or DMM space if GPU rendering is
+needed.
 
-On my board there has a gpio watchdong connected on am3358. And I found 
-that the omap gpio device ready too later so it takes about 5 seconds 
-when the gpio-wdt is ready.
+The first patch doesn't bring any functional changes, it just moves some
+TILER/DMM related code to a separate function, to simplify the review of the
+next two patches.
 
-I had tested on some version of linux, check when the OMAP GPIO is 
-ready. Next is the log:
+The second patch allows off-CPU rendering to non-scanout buffers. Without that
+patch, it is basically impossible to use the driver allocated GEM buffers on
+OMAP3 for anything else but a basic CPU rendered examples as if we want GPU
+rendering, we must allocate buffers as scanout buffers, which are CMA allocated.
+CMA soon gets fragmented and we start seeing allocation failures. Such failres
+in Xorg cannot be handeled gracefully, so the system is basically unusable.
 
-v4.19 [    0.195191] OMAP GPIO hardware version 0.1
+Third patch fixes similar issue on OMAP4/5, where DMM/TILER spaces get
+fragmented with time, leading to allocation failures.
 
-v5.4  [    1.168868] OMAP GPIO hardware version 0.1
+Series were tested on Motolola Droid4 and Nokia N900, with OMAP DDX and
+PVR EXA from https://github.com/maemo-leste/xf86-video-omap
 
-v5.9  [    4.598052] OMAP GPIO hardware version 0.1
+Ivaylo Dimitrov (3):
+  drm: omapdrm: simplify omap_gem_pin
+  drm: omapdrm: Support exporting of non-contiguous GEM BOs
+  drm: omapdrm: Do no allocate non-scanout GEMs through DMM/TILER
 
-v5.15 [    1.253851] OMAP GPIO hardware version 0.1
+ drivers/gpu/drm/omapdrm/omap_gem.c        | 198 +++++++++++++++++-------------
+ drivers/gpu/drm/omapdrm/omap_gem.h        |   3 +-
+ drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c |   5 +-
+ 3 files changed, 116 insertions(+), 90 deletions(-)
 
-I can't find which commit slowdown omap gpio driver. could you please 
-give me some advice?
-
-Thanks
+-- 
+1.9.1
 
