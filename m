@@ -2,67 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86137493BE6
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Jan 2022 15:25:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D87D7493DC6
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Jan 2022 16:56:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237452AbiASOZh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 19 Jan 2022 09:25:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44234 "EHLO
+        id S1348945AbiASP45 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Jan 2022 10:56:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235332AbiASOZg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jan 2022 09:25:36 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E10FC061574;
-        Wed, 19 Jan 2022 06:25:36 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id o12so9960817lfu.12;
-        Wed, 19 Jan 2022 06:25:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=bDLBp02jeXk2Kbm1icyCtGEPU2BJF/wbtFBRUuToY6c=;
-        b=OZDPmDyHKoazYm/WmmtX/T2OAceyVmvcO7d4wf41meruGWJV5sdApEAPh8kdVeuIw4
-         Oz3xBH1+RgtcTiouKCakWfEw1J57aPAAWlkjJ2VeP6kSBzByxEuCXnALkCgTGbcDWBml
-         WcElCZO+HexYIvbbyJYltFEiwDoaPXMbVRANVuCR3uT1QgfpjDa0lrnrhOPI/sx6gn6/
-         /MWEt/9MC/0YqDO2fn3+u6tHOG1chNvJsaXZIhkYyzCsccs6w3j93ws74b73OmEifDU2
-         ZH1b2236DPokUMxyUm5w3hsCs+b5bok9k4A5RWbZw1bp5mC4aX+UlQfJtloAhZUtrXCg
-         Nclg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=bDLBp02jeXk2Kbm1icyCtGEPU2BJF/wbtFBRUuToY6c=;
-        b=BA+71gtkspEf1I5unUuvS6CEMCnbOtmD0krhD1cemhJ/o5xskYcrGAw4PkFsM8nW/G
-         UeScOAhrattuInY28ZlGMRahyCmPKTffN87w+cMVI17nfc7H7/amoichDaklj3w+RkRC
-         JjqLtRbSu0/oxM+mBn4Pi8g9+oc8QD8ZJg8Rlifo6iy67pdPQD33ZqBcGrcZecrIT2Fh
-         MqDmyaAQKDybmvPOIPjt8tP3gPgv5/xJb3mGVOmY1AwvikvuAysbW9iGcs/LtLBhgx/t
-         apBbbKc4aQMmK2XWacjwtyC4shn6rL61a9olrswOOUe+lCXxi6dMDTLCuMMxgkB4TaI5
-         6llg==
-X-Gm-Message-State: AOAM533mRLqfPHoufYryjA+F6rDxIXXZMwUfOpm2o2gTibtvQF94ghSR
-        MWRGByXCsZZzrcou2mLHl3u+TDLOick=
-X-Google-Smtp-Source: ABdhPJwhg/02sy+FSDpuGEhZThpslrqLvI3lbHlzTAco2V4/+u5CywUEhSPu73AOY2STvE529H1c/A==
-X-Received: by 2002:a19:600f:: with SMTP id u15mr26216930lfb.633.1642602334616;
-        Wed, 19 Jan 2022 06:25:34 -0800 (PST)
-Received: from scuderia-pc.olvs.miee.ru (broadband-5-228-176-108.ip.moscow.rt.ru. [5.228.176.108])
-        by smtp.gmail.com with ESMTPSA id p22sm1177663lji.21.2022.01.19.06.25.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jan 2022 06:25:34 -0800 (PST)
-From:   Alexey Smirnov <s.alexey@gmail.com>
-To:     ardb@kernel.org
-Cc:     arnd@arndb.de, davem@davemloft.net, grygorii.strashko@ti.com,
-        ilias.apalodimas@linaro.org, kuba@kernel.org,
-        linux-omap@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net] net: cpsw: avoid alignment faults by taking NET_IP_ALIGN into account
-Date:   Wed, 19 Jan 2022 17:25:32 +0300
-Message-Id: <20220119142532.115092-1-s.alexey@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220118102204.1258645-1-ardb@kernel.org>
-References: <20220118102204.1258645-1-ardb@kernel.org>
+        with ESMTP id S242656AbiASP45 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Jan 2022 10:56:57 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB29C061574;
+        Wed, 19 Jan 2022 07:56:56 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DC9161522;
+        Wed, 19 Jan 2022 15:56:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A69FC004E1;
+        Wed, 19 Jan 2022 15:56:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642607815;
+        bh=qYPvs1P2tAPB/MQXMIl5LXLnMgdArANdfiWB34ZUbd0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=G1UjHTztuEdmWbxcGDKR+Kr5ut1HfWu4fyGvsi9t9g2duK0IUy1XG6y5jM0wp9ffX
+         QHIr7K6IgC2hOh23hPe+wJxhRS9middvcOxpwofVZjimebRA4I3ljk7okBZNrdoF98
+         chFOgs5Wscf4cXfFSZjKKrV+MJOjuHPpfhjt9qcUMEFjqHomJt2+BsN/HxlSueH9S7
+         jdBEukTm+cgT9c5LRg4joc3zL3gfL7H/SHcSYaowcmXzfWd1htcF/aY7PELc61SQNq
+         huknVVHsY6eWCupMkOZKvJZ1GALdlh4h4TwJ3iATjBZ5bW1Y5OOIdgsYxV8HiKhW9U
+         k+K6WyYN7vMHA==
+Received: by mail-wm1-f42.google.com with SMTP id 25-20020a05600c231900b003497473a9c4so15054724wmo.5;
+        Wed, 19 Jan 2022 07:56:55 -0800 (PST)
+X-Gm-Message-State: AOAM532JcdkFbAZrdmDnN+aqD5q/rVCb602tSvEt94ekc/FJHe4nsCYV
+        36p2bnFKMEMszMbS/C/N9rpCy3ztEyZTzZibmlo=
+X-Google-Smtp-Source: ABdhPJxRnhs7A5cmmQ4DRok0f/n1AD6ochZdHNyNG2DqQLYL+Ry/y865yHjSPngNazqhutNliwzmUkfnTXl+Wz9RQkI=
+X-Received: by 2002:adf:dcc3:: with SMTP id x3mr3603165wrm.417.1642607814040;
+ Wed, 19 Jan 2022 07:56:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220118102204.1258645-1-ardb@kernel.org> <20220119142532.115092-1-s.alexey@gmail.com>
+In-Reply-To: <20220119142532.115092-1-s.alexey@gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Wed, 19 Jan 2022 16:56:42 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFaM8dH=S3NZw9NqRtAfEa6vMwS0Q0g1v=v9myLyK6VyQ@mail.gmail.com>
+Message-ID: <CAMj1kXFaM8dH=S3NZw9NqRtAfEa6vMwS0Q0g1v=v9myLyK6VyQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: cpsw: avoid alignment faults by taking
+ NET_IP_ALIGN into account
+To:     Alexey Smirnov <s.alexey@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        "open list:BPF JIT for MIPS (32-BIT AND 64-BIT)" 
+        <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Doesn't CPSW_HEADROOM already include NET_IP_ALIGN and has actually more strict
-alignment (by sizeof(long)) than CPSW_HEADROOM_NA?
+On Wed, 19 Jan 2022 at 15:25, Alexey Smirnov <s.alexey@gmail.com> wrote:
+>
+> Doesn't CPSW_HEADROOM already include NET_IP_ALIGN and has actually more strict
+> alignment (by sizeof(long)) than CPSW_HEADROOM_NA?
+
+Yes, and that is exactly the problem. NET_IP_ALIGN is used to
+deliberately *misalign* the start of the packet in memory, so that the
+IP header appears aligned.
