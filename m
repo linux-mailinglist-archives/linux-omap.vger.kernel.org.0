@@ -2,42 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F75496F4D
-	for <lists+linux-omap@lfdr.de>; Sun, 23 Jan 2022 01:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F870496E44
+	for <lists+linux-omap@lfdr.de>; Sun, 23 Jan 2022 00:19:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232039AbiAWAyZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 22 Jan 2022 19:54:25 -0500
-Received: from [36.155.112.122] ([36.155.112.122]:41202 "EHLO
-        ecs-42a4.novalocal" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230326AbiAWAyZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Jan 2022 19:54:25 -0500
-Received: from User (localhost [127.0.0.1])
-        by ecs-42a4.novalocal (Postfix) with SMTP id 127F03045F5;
-        Sun,  9 Jan 2022 13:57:24 +0800 (CST)
-Reply-To: <andbaill228@mail2world.com>
-From:   "Vlieghe" <andbaill228@mail2world.com>
-Subject: Very Importante Notice
-Date:   Sun, 9 Jan 2022 07:55:56 +0200
+        id S235061AbiAVXGH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Sat, 22 Jan 2022 18:06:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50766 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231288AbiAVXGF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Jan 2022 18:06:05 -0500
+X-Greylist: delayed 56469 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 22 Jan 2022 15:06:04 PST
+Received: from fjxxll.cn (unknown [IPv6:240e:37a:2b7:1f00:211:32ff:fe2c:a785])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E0FC06173B;
+        Sat, 22 Jan 2022 15:06:04 -0800 (PST)
+Received: from Unknown (unknown [203.128.77.42])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by fjxxll.cn (Postfix) with ESMTPSA id 57DC250DB8B1;
+        Fri, 21 Jan 2022 15:53:30 +0800 (CST)
+Message-ID: <232690C3C81C32815D5811ADA9C3E26F@tjwlenn>
+Reply-To: "Fredrik Elvebakk" <fcresswell9@gmail.com>
+From:   "Fredrik Elvebakk" <investment@dnb.no>
+Subject: Re:
+Date:   Thu, 20 Jan 2022 23:53:24 -0800
 MIME-Version: 1.0
 Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
+        format=flowed;
+        charset="windows-1251";
+        reply-type=original
+Content-Transfer-Encoding: 8BIT
 X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20220109055726.127F03045F5@ecs-42a4.novalocal>
-To:     undisclosed-recipients:;
+X-Mailer: Microsoft Windows Live Mail 16.4.3528.331
+X-MimeOLE: Produced By Microsoft MimeOLE V16.4.3528.331
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Sir/Madam,
+Hello,
 
-Good day to you.
+Am Fredrik Elvebakk an Investment Manager from Norway. I wish to solicit 
+your interest in an investment project that is currently ongoing in my company (DNB); 
+It is a short term investment with good returns. 
+Simply reply for me to confirm the validity of your email so i shall give you comprehensive details about the project.
 
-I am Dr.Gertjan Vlieghe personal Secretary to Andrew Bailey who double as the Governor, Bank of England (https://en.wikipedia.org/wiki/Andrew_Bailey_%28banker%29). We have an inheritance of a deceased client, who bear the same name  with your surname. kindly contact Andrew Bailey through his personal email ( andbaill228@mail2world.com ) with your details for more information.
-
-Thank you.
-
-Dr.Gertjan Vlieghe
+Best Regards,
+Fredrik Elvebakk
+Business Consultant
