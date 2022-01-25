@@ -2,47 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95A4949BBD8
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Jan 2022 20:11:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDB4E49BBD5
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Jan 2022 20:11:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229609AbiAYTLt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Jan 2022 14:11:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46674 "EHLO
+        id S229611AbiAYTLs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 25 Jan 2022 14:11:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229606AbiAYTLp (ORCPT
+        with ESMTP id S229609AbiAYTLp (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Jan 2022 14:11:45 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EC50C06173B;
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E09BC06173D;
         Tue, 25 Jan 2022 11:11:45 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id bg19-20020a05600c3c9300b0034565e837b6so1096478wmb.1;
-        Tue, 25 Jan 2022 11:11:44 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id c2so26110816wml.1;
+        Tue, 25 Jan 2022 11:11:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=A4ahT0xmp4xOnQS+WOnYEJnDytFq3HkX4S2blTgY2eo=;
-        b=igeazOwDn0zoezH3eIDqkA38MKDCJK8Surb4AuXHSDOF2LLh4AfKl85W8ub63WfOXN
-         J2ZkCRjtZBu1HvEiFViu/a4ADEHySkcOq5qzm5aalEm4oyBiTr9eAN2fLTQe6Smro4ye
-         7V8KnrLeAsOIGu2oqlwA1a9MfBuRfownuePMm43KKDNF6X5/RJrPllgf2yf/CbXyH0M4
-         co0k1IZzhUosGNBTSOQb1rr9AjvDvYWfCaxNfh5K7/1A09RrqOdlq6bfNRY5HcOEgrm/
-         1U4rLnXGj7HJQ/48uGiyrJI1YsI2+M1XIMh/VhvTF7GDY5bfyKcIkKnJW+V3/tBpQddt
-         n1jg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=KSX0PHd9Ocvn3tAvVF0tVn8XsfkxQYUaf/OX9aKGAq4=;
+        b=YU+rfbUSkgSVbHcJZ/oslL4gKStGqsgitj90b25+/aeY2KNnW6y1saUVf9hYC85YMy
+         HguS11mKn/Y3Edfj5+yhwVAosEF5v+wLM7PHEaJgOoG0FMESVEnN22wpiD+IOYId+8jL
+         mIZzHXpvycwyIaeAx19OfILxnVks2+Il7U+DcpBsXVOXWKykyJ5mdjG+WybvZFdTLDgN
+         CpFaRon92rV6IUHMyz8GYPb6l9Y3xJN4e8zcPaDayVOtQLPok9/5pfcA6r1ACWboDe5x
+         8YI5QSivd82+v6onse85pS44MmKUz3Q6WQkJft8Z/w+x1hG4lIvO5S91pFrH0lb1M6Ap
+         vMTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=A4ahT0xmp4xOnQS+WOnYEJnDytFq3HkX4S2blTgY2eo=;
-        b=K/RQqnLpeQpQOnO86oozmHFmwX4TC2tlJt3BZ4OagYjIKtNG2om86n0alTZ7GxHJG+
-         VHyCPQ3PXgYxNrlG2CTfBsNlApky76uXxjTsnWcmYWZHkiZ6DnHUzU9aPQDTEMsVFg4l
-         rpcUvNdrD6b9BRI50Pd5Ypwf2k98JfbXo6zen4f2bDeLCEMjig0WNt1Yc6dXWroYG1zx
-         x8iFiisdePE5bOz8kO2W/Y3RAIdc7mvxuPVPPk38jilDfuDh/f4TwwwjAA8W+vHif/Zr
-         numnx+e8Dl9FCUR63lMd8lR+bt06C7xg+kciDz2kY2BR+sA+jvWvg91GeuuQEjaijHVb
-         PbGg==
-X-Gm-Message-State: AOAM531s2SwpIsub+Tvr9hS6HlEVMe4YubuM9CtgH8Vw+EnvDqXdrrTJ
-        4tWkFDNqBbCrDxDIt/ZPHB+Nu0uEllZ4sQ==
-X-Google-Smtp-Source: ABdhPJxx1GagRRT1GpaV87xR2o93/ZvAoE0GbkOYCEkqYUiissc4d102AjG7zB+uaM3h87Y+iIq8Ag==
-X-Received: by 2002:a7b:c841:: with SMTP id c1mr4238786wml.42.1643137903536;
-        Tue, 25 Jan 2022 11:11:43 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=KSX0PHd9Ocvn3tAvVF0tVn8XsfkxQYUaf/OX9aKGAq4=;
+        b=wm7+8xr37FrhdI+5vf4sX7q7DpDJ0wXV1Gp9+au0bsGz4ndZjjBDdaNHF/AU8rhTqw
+         KMvW+nMJYbvePlPp5L+0T04zpRyE2Td1ZIAbXdbpBAQDmohj+As4+06/6i/X9KXp7ngW
+         x3+kfCSO4BorLDLIpS2S+wVGSM7AG5TBcIoQyccpOQ61D2Xle7OXsAfU9A65hTnO9MIX
+         Trj/4q17RUueF9qNXnZHlLIOeSOvcZ6C+R6hnSjgzwc/4NBkCF4XjvKVHaT5cSO32Lom
+         IhLMynPWhdtPctV5NWSzhC49oLFFaHPQK5G9jl/fm+PUSPSDl9Pb51F0uZ43KAlXAO+c
+         hT7Q==
+X-Gm-Message-State: AOAM5327W/HDBOQvmwHGRdx2nMb0R2yOFp86uF3aYTjm2naSnLmji7DY
+        +iYpw9VtZ472q+M5ZcBNtkkcEO79KLiaNA==
+X-Google-Smtp-Source: ABdhPJwd7QrVzrZPe73PajenGrZUyGol/YVImWpV+A3d0qgAep+7LIT+4591FHxC0KhVeVTX3rsy5g==
+X-Received: by 2002:a05:600c:22cb:: with SMTP id 11mr4305686wmg.2.1643137904068;
+        Tue, 25 Jan 2022 11:11:44 -0800 (PST)
 Received: from Hera.. ([2a01:e34:ec42:a0d0:220:edff:feff:ffff])
         by smtp.gmail.com with ESMTPSA id c23sm1053785wme.35.2022.01.25.11.11.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
@@ -52,102 +52,65 @@ To:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
         tony@atomide.com, bcousson@baylibre.com
 Cc:     robh+dt@kernel.org,
         Anthoine Bourgeois <anthoine.bourgeois@gmail.com>
-Subject: [PATCH 1/2] ARM: dts: switch timer config to common devkit8000 devicetree
-Date:   Tue, 25 Jan 2022 20:11:38 +0100
-Message-Id: <20220125191139.2429555-1-anthoine.bourgeois@gmail.com>
+Subject: [PATCH 2/2] ARM: dts: Use 32KiHz oscillator on devkit8000
+Date:   Tue, 25 Jan 2022 20:11:39 +0100
+Message-Id: <20220125191139.2429555-2-anthoine.bourgeois@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220125191139.2429555-1-anthoine.bourgeois@gmail.com>
+References: <20220125191139.2429555-1-anthoine.bourgeois@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This patch allow lcd43 and lcd70 flavors to benefit from timer
-evolution.
+Devkit8000 board seems to always used 32k_counter as clocksource.
+Restore this behavior.
 
+If clocksource is back to 32k_counter, timer12 is now the clockevent
+source (as before) and timer2 is not longer needed here.
+
+This commit fixes the same issue observed with commit 23885389dbbb
+("ARM: dts: Fix timer regression for beagleboard revision c") when sleep
+is blocked until hitting keys over serial console.
+
+Fixed: aba1ad05da08 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
 Fixed: e428e250fde6 ("ARM: dts: Configure system timers for omap3")
 Signed-off-by: Anthoine Bourgeois <anthoine.bourgeois@gmail.com>
 ---
- .../arm/boot/dts/omap3-devkit8000-common.dtsi | 33 +++++++++++++++++++
- arch/arm/boot/dts/omap3-devkit8000.dts        | 33 -------------------
- 2 files changed, 33 insertions(+), 33 deletions(-)
+ arch/arm/boot/dts/omap3-devkit8000-common.dtsi | 17 +----------------
+ drivers/clocksource/timer-ti-dm-systimer.c     |  3 +--
+ 2 files changed, 2 insertions(+), 18 deletions(-)
 
 diff --git a/arch/arm/boot/dts/omap3-devkit8000-common.dtsi b/arch/arm/boot/dts/omap3-devkit8000-common.dtsi
-index 5e55198e4576..f5197bb31ed8 100644
+index f5197bb31ed8..54cd37336be7 100644
 --- a/arch/arm/boot/dts/omap3-devkit8000-common.dtsi
 +++ b/arch/arm/boot/dts/omap3-devkit8000-common.dtsi
-@@ -158,6 +158,39 @@ &mmc3 {
+@@ -158,11 +158,6 @@ &mmc3 {
  	status = "disabled";
  };
  
-+/* Unusable as clocksource because of unreliable oscillator */
-+&counter32k {
-+	status = "disabled";
-+};
-+
-+/* Unusable as clockevent because if unreliable oscillator, allow to idle */
-+&timer1_target {
-+	/delete-property/ti,no-reset-on-init;
-+	/delete-property/ti,no-idle;
-+	timer@0 {
-+		/delete-property/ti,timer-alwon;
-+	};
-+};
-+
-+/* Preferred always-on timer for clocksource */
-+&timer12_target {
-+	ti,no-reset-on-init;
-+	ti,no-idle;
-+	timer@0 {
-+		/* Always clocked by secure_32k_fck */
-+	};
-+};
-+
-+/* Preferred timer for clockevent */
-+&timer2_target {
-+	ti,no-reset-on-init;
-+	ti,no-idle;
-+	timer@0 {
-+		assigned-clocks = <&gpt2_fck>;
-+		assigned-clock-parents = <&sys_ck>;
-+	};
-+};
-+
- &twl_gpio {
- 	ti,use-leds;
- 	/*
-diff --git a/arch/arm/boot/dts/omap3-devkit8000.dts b/arch/arm/boot/dts/omap3-devkit8000.dts
-index c2995a280729..162d0726b008 100644
---- a/arch/arm/boot/dts/omap3-devkit8000.dts
-+++ b/arch/arm/boot/dts/omap3-devkit8000.dts
-@@ -14,36 +14,3 @@ aliases {
- 		display2 = &tv0;
- 	};
- };
--
 -/* Unusable as clocksource because of unreliable oscillator */
 -&counter32k {
 -	status = "disabled";
 -};
 -
--/* Unusable as clockevent because if unreliable oscillator, allow to idle */
--&timer1_target {
--	/delete-property/ti,no-reset-on-init;
--	/delete-property/ti,no-idle;
--	timer@0 {
--		/delete-property/ti,timer-alwon;
--	};
--};
--
+ /* Unusable as clockevent because if unreliable oscillator, allow to idle */
+ &timer1_target {
+ 	/delete-property/ti,no-reset-on-init;
+@@ -172,7 +167,7 @@ timer@0 {
+ 	};
+ };
+ 
 -/* Preferred always-on timer for clocksource */
--&timer12_target {
--	ti,no-reset-on-init;
--	ti,no-idle;
--	timer@0 {
--		/* Always clocked by secure_32k_fck */
--	};
--};
--
++/* Preferred timer for clockevent */
+ &timer12_target {
+ 	ti,no-reset-on-init;
+ 	ti,no-idle;
+@@ -181,16 +176,6 @@ timer@0 {
+ 	};
+ };
+ 
 -/* Preferred timer for clockevent */
 -&timer2_target {
 -	ti,no-reset-on-init;
@@ -157,6 +120,24 @@ index c2995a280729..162d0726b008 100644
 -		assigned-clock-parents = <&sys_ck>;
 -	};
 -};
+-
+ &twl_gpio {
+ 	ti,use-leds;
+ 	/*
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+index 5c40ca1d4740..1fccb457fcc5 100644
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -241,8 +241,7 @@ static void __init dmtimer_systimer_assign_alwon(void)
+ 	bool quirk_unreliable_oscillator = false;
+ 
+ 	/* Quirk unreliable 32 KiHz oscillator with incomplete dts */
+-	if (of_machine_is_compatible("ti,omap3-beagle-ab4") ||
+-	    of_machine_is_compatible("timll,omap3-devkit8000")) {
++	if (of_machine_is_compatible("ti,omap3-beagle-ab4")) {
+ 		quirk_unreliable_oscillator = true;
+ 		counter_32k = -ENODEV;
+ 	}
 -- 
 2.34.1
 
