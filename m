@@ -2,142 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB4E49BBD5
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Jan 2022 20:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7DA649CBD9
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Jan 2022 15:09:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbiAYTLs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 25 Jan 2022 14:11:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46676 "EHLO
+        id S241408AbiAZOJA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Jan 2022 09:09:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbiAYTLp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 25 Jan 2022 14:11:45 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E09BC06173D;
-        Tue, 25 Jan 2022 11:11:45 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id c2so26110816wml.1;
-        Tue, 25 Jan 2022 11:11:45 -0800 (PST)
+        with ESMTP id S235353AbiAZOJA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Jan 2022 09:09:00 -0500
+Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F0BC06161C
+        for <linux-omap@vger.kernel.org>; Wed, 26 Jan 2022 06:09:00 -0800 (PST)
+Received: by mail-vk1-xa2f.google.com with SMTP id v192so14919207vkv.4
+        for <linux-omap@vger.kernel.org>; Wed, 26 Jan 2022 06:09:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=KSX0PHd9Ocvn3tAvVF0tVn8XsfkxQYUaf/OX9aKGAq4=;
-        b=YU+rfbUSkgSVbHcJZ/oslL4gKStGqsgitj90b25+/aeY2KNnW6y1saUVf9hYC85YMy
-         HguS11mKn/Y3Edfj5+yhwVAosEF5v+wLM7PHEaJgOoG0FMESVEnN22wpiD+IOYId+8jL
-         mIZzHXpvycwyIaeAx19OfILxnVks2+Il7U+DcpBsXVOXWKykyJ5mdjG+WybvZFdTLDgN
-         CpFaRon92rV6IUHMyz8GYPb6l9Y3xJN4e8zcPaDayVOtQLPok9/5pfcA6r1ACWboDe5x
-         8YI5QSivd82+v6onse85pS44MmKUz3Q6WQkJft8Z/w+x1hG4lIvO5S91pFrH0lb1M6Ap
-         vMTw==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=GRybZZx/yAI+UIceFikNUm+eqIrA7gVuxPQPg37riLs=;
+        b=OkkUkVnJpam4uRX0t7ug8kUFe7OcZUywiPC/+e/cSfbh0KVS7+fU/FixoUPt/CfHSp
+         0slFtKWZ3CQjLj17+QmCbvIh2Kk/+Uyku7TOPNkDHzjT8Y3ShDv4tbKIAH4Qy7MRIzLG
+         GYhl2898NJPC7jxazNPLH2Uu0wO5Z88zcg+YkartntCT827W4vWSW1ikZMsnXiImeycf
+         c+jvwRHzbGyEfcMqffOJvLB/pz7Na5+8v6WaGHxC0Tnx6SJoaC0hJ7bHPr2djusCcbj5
+         fKGc7ZCTYFTTAs+5H1kzUq/WU8y/hRRwYM8xBQMYYngheZoEDDuvxEf5lTolv6IEoyk7
+         BAcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=KSX0PHd9Ocvn3tAvVF0tVn8XsfkxQYUaf/OX9aKGAq4=;
-        b=wm7+8xr37FrhdI+5vf4sX7q7DpDJ0wXV1Gp9+au0bsGz4ndZjjBDdaNHF/AU8rhTqw
-         KMvW+nMJYbvePlPp5L+0T04zpRyE2Td1ZIAbXdbpBAQDmohj+As4+06/6i/X9KXp7ngW
-         x3+kfCSO4BorLDLIpS2S+wVGSM7AG5TBcIoQyccpOQ61D2Xle7OXsAfU9A65hTnO9MIX
-         Trj/4q17RUueF9qNXnZHlLIOeSOvcZ6C+R6hnSjgzwc/4NBkCF4XjvKVHaT5cSO32Lom
-         IhLMynPWhdtPctV5NWSzhC49oLFFaHPQK5G9jl/fm+PUSPSDl9Pb51F0uZ43KAlXAO+c
-         hT7Q==
-X-Gm-Message-State: AOAM5327W/HDBOQvmwHGRdx2nMb0R2yOFp86uF3aYTjm2naSnLmji7DY
-        +iYpw9VtZ472q+M5ZcBNtkkcEO79KLiaNA==
-X-Google-Smtp-Source: ABdhPJwd7QrVzrZPe73PajenGrZUyGol/YVImWpV+A3d0qgAep+7LIT+4591FHxC0KhVeVTX3rsy5g==
-X-Received: by 2002:a05:600c:22cb:: with SMTP id 11mr4305686wmg.2.1643137904068;
-        Tue, 25 Jan 2022 11:11:44 -0800 (PST)
-Received: from Hera.. ([2a01:e34:ec42:a0d0:220:edff:feff:ffff])
-        by smtp.gmail.com with ESMTPSA id c23sm1053785wme.35.2022.01.25.11.11.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jan 2022 11:11:43 -0800 (PST)
-From:   Anthoine Bourgeois <anthoine.bourgeois@gmail.com>
-To:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        tony@atomide.com, bcousson@baylibre.com
-Cc:     robh+dt@kernel.org,
-        Anthoine Bourgeois <anthoine.bourgeois@gmail.com>
-Subject: [PATCH 2/2] ARM: dts: Use 32KiHz oscillator on devkit8000
-Date:   Tue, 25 Jan 2022 20:11:39 +0100
-Message-Id: <20220125191139.2429555-2-anthoine.bourgeois@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220125191139.2429555-1-anthoine.bourgeois@gmail.com>
-References: <20220125191139.2429555-1-anthoine.bourgeois@gmail.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=GRybZZx/yAI+UIceFikNUm+eqIrA7gVuxPQPg37riLs=;
+        b=ygPzWCu/Q4rUSB4/mij9ooblT/IVbjOh2VuDFdDoKl3jcNJ4MdctHRvWtNCr+J27JZ
+         m8Gvco2Z4z2H2sS3tApHt+BYtSzy2piprVWi5qDKdKpvLzd3Bs8ym5w0o1wacliJccNi
+         TtiU8CGBQIsbFsa4k/w3STA9uaRyysW+nGssN6MUU74Ctk1X0gYPmmn21BUISiiSHWA9
+         nxohCz5CyCwY1tB86pQyE5d3luaMVdbfBIl3+eV2gUNldaPK5MTBHdDI5F81YgWM3QXH
+         fFhAhnpqGr96hZTO24dTSzdf3YARoAfeA5UMxqqiL5zINg07Qd4r3HFUyxEx1Tu+uCDb
+         BflQ==
+X-Gm-Message-State: AOAM532OmK3Sb2OBlWQWS34sE90G09tbKuyXdziIqqT1ACBagKd68zkl
+        45arXgvGY6g1ekZoGgB660WbvWx2ou1OWmy899s=
+X-Google-Smtp-Source: ABdhPJxtnqCkuTmcg2AZFOyHNVxDicTeglTh21C/hfVJA+Iz0ljCXuR5vtLtJ4FvqE93Ehgewk2SuM6rF/rEcVhkbUw=
+X-Received: by 2002:a1f:2988:: with SMTP id p130mr8550647vkp.34.1643206139303;
+ Wed, 26 Jan 2022 06:08:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a9f:2c8a:0:0:0:0:0 with HTTP; Wed, 26 Jan 2022 06:08:59
+ -0800 (PST)
+Reply-To: orlandomoris56@gmail.com
+From:   Orlando Moris <mrs.mitcheldelepeter01@gmail.com>
+Date:   Wed, 26 Jan 2022 14:08:59 +0000
+Message-ID: <CABmAZDirR3Wrkrbke_v3ntW6T4kFAaOWAimO1+5bQS-OBROZ6g@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Devkit8000 board seems to always used 32k_counter as clocksource.
-Restore this behavior.
-
-If clocksource is back to 32k_counter, timer12 is now the clockevent
-source (as before) and timer2 is not longer needed here.
-
-This commit fixes the same issue observed with commit 23885389dbbb
-("ARM: dts: Fix timer regression for beagleboard revision c") when sleep
-is blocked until hitting keys over serial console.
-
-Fixed: aba1ad05da08 ("clocksource/drivers/timer-ti-dm: Add clockevent and clocksource support")
-Fixed: e428e250fde6 ("ARM: dts: Configure system timers for omap3")
-Signed-off-by: Anthoine Bourgeois <anthoine.bourgeois@gmail.com>
----
- arch/arm/boot/dts/omap3-devkit8000-common.dtsi | 17 +----------------
- drivers/clocksource/timer-ti-dm-systimer.c     |  3 +--
- 2 files changed, 2 insertions(+), 18 deletions(-)
-
-diff --git a/arch/arm/boot/dts/omap3-devkit8000-common.dtsi b/arch/arm/boot/dts/omap3-devkit8000-common.dtsi
-index f5197bb31ed8..54cd37336be7 100644
---- a/arch/arm/boot/dts/omap3-devkit8000-common.dtsi
-+++ b/arch/arm/boot/dts/omap3-devkit8000-common.dtsi
-@@ -158,11 +158,6 @@ &mmc3 {
- 	status = "disabled";
- };
- 
--/* Unusable as clocksource because of unreliable oscillator */
--&counter32k {
--	status = "disabled";
--};
--
- /* Unusable as clockevent because if unreliable oscillator, allow to idle */
- &timer1_target {
- 	/delete-property/ti,no-reset-on-init;
-@@ -172,7 +167,7 @@ timer@0 {
- 	};
- };
- 
--/* Preferred always-on timer for clocksource */
-+/* Preferred timer for clockevent */
- &timer12_target {
- 	ti,no-reset-on-init;
- 	ti,no-idle;
-@@ -181,16 +176,6 @@ timer@0 {
- 	};
- };
- 
--/* Preferred timer for clockevent */
--&timer2_target {
--	ti,no-reset-on-init;
--	ti,no-idle;
--	timer@0 {
--		assigned-clocks = <&gpt2_fck>;
--		assigned-clock-parents = <&sys_ck>;
--	};
--};
--
- &twl_gpio {
- 	ti,use-leds;
- 	/*
-diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
-index 5c40ca1d4740..1fccb457fcc5 100644
---- a/drivers/clocksource/timer-ti-dm-systimer.c
-+++ b/drivers/clocksource/timer-ti-dm-systimer.c
-@@ -241,8 +241,7 @@ static void __init dmtimer_systimer_assign_alwon(void)
- 	bool quirk_unreliable_oscillator = false;
- 
- 	/* Quirk unreliable 32 KiHz oscillator with incomplete dts */
--	if (of_machine_is_compatible("ti,omap3-beagle-ab4") ||
--	    of_machine_is_compatible("timll,omap3-devkit8000")) {
-+	if (of_machine_is_compatible("ti,omap3-beagle-ab4")) {
- 		quirk_unreliable_oscillator = true;
- 		counter_32k = -ENODEV;
- 	}
--- 
-2.34.1
-
+0JfQtNGA0LDQstC10LnRgtC1LCDQnNC+0LvRjyDQtNCwINCx0YrQtNC10YLQtSDQuNC90YTQvtGA
+0LzQuNGA0LDQvdC4LCDRh9C1INGC0L7Qt9C4INC40LzQtdC50LssINC60L7QudGC0L4g0LTQvtC5
+0LTQtSDQsg0K0L/QvtGJ0LXQvdGB0LrQsNGC0LAg0LLQuCDQutGD0YLQuNGPLCDQvdC1INC1INCz
+0YDQtdGI0LrQsCwg0LAg0LUg0LDQtNGA0LXRgdC40YDQsNC9INGB0L/QtdGG0LjQsNC70L3QviDQ
+tNC+INCy0LDRgSDQt9CwDQrQstCw0YjQtSDQstC90LjQvNCw0L3QuNC1LiDQmNC80LDQvCDQv9GA
+0LXQtNC70L7QttC10L3QuNC1INCyINGA0LDQt9C80LXRgCDQvdCwICgkNy41MDAuMDAwLjAwKSwg
+0L7RgdGC0LDQstC10L3Qvg0K0L7RgiDQvNC+0Y8g0L/QvtC60L7QudC10L0g0LrQu9C40LXQvdGC
+INC40L3QttC10L3QtdGAINCa0LDRgNC70L7RgSwg0LrQvtC50YLQviDQvdC+0YHQuCDRgdGK0YnQ
+vtGC0L4g0LjQvNC1INGBINCy0LDRgSwNCtC60L7QudGC0L4g0LUg0YDQsNCx0L7RgtC40Lsg0Lgg
+0LbQuNCy0Y/QuyDRgtGD0Log0LIg0JvQvtC80LUg0KLQvtCz0L4uINCf0L7QutC+0LnQvdC40Y/R
+giDQvNC4INC60LvQuNC10L3RgiDQuA0K0YHQtdC80LXQudGB0YLQstC+0YLQviDQvNC4INCx0Y/R
+hdCwINC30LDQvNC10YHQtdC90Lgg0LIg0LDQstGC0L7QvNC+0LHQuNC70L3QsCDQutCw0YLQsNGB
+0YLRgNC+0YTQsCwg0LrQvtGP0YLQviDQvtGC0L3QtQ0K0LbQuNCy0L7RgtCwINC40LwgLiDQodCy
+0YrRgNC30LLQsNC8INGB0LUg0YEg0LLQsNGBINC60LDRgtC+INC90LDQuS3QsdC70LjQt9GK0Log
+0YDQvtC00L3QuNC90LAg0L3QsCDQv9C+0YfQuNC90LDQu9C40Y8sINC30LANCtC00LAg0LzQvtC2
+0LXRgtC1INC00LAg0L/QvtC70YPRh9C40YLQtSDRgdGA0LXQtNGB0YLQstCw0YLQsCDQv9C+INC4
+0YHQutC+0LLQtS4g0J/RgNC4INCx0YrRgNC3INC+0YLQs9C+0LLQvtGAINGJ0LUg0LLQuA0K0LjQ
+vdGE0L7RgNC80LjRgNCw0Lwg0LfQsCDRgNC10LbQuNC80LjRgtC1INC90LANCtC40LfQv9GK0LvQ
+vdC10L3QuNC1INC90LAg0YLQvtC30Lgg0LTQvtCz0L7QstC+0YAuLCDRgdCy0YrRgNC20LXRgtC1
+INGB0LUg0YEg0LzQtdC9INC90LAg0YLQvtC30Lgg0LjQvNC10LnQuw0KKG9ybGFuZG9tb3JpczU2
+QGdtYWlsLmNvbSkNCg==
