@@ -2,66 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 482D44A33C7
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Jan 2022 05:28:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A388B4A3FE7
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Jan 2022 11:16:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354209AbiA3E2a (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 29 Jan 2022 23:28:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38078 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354188AbiA3E20 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 29 Jan 2022 23:28:26 -0500
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD943C061759
-        for <linux-omap@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
-Received: by mail-yb1-xb30.google.com with SMTP id i62so30422324ybg.5
-        for <linux-omap@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=QI2firgHOSt+2ZiRAEUqBnRqfCndbuygIyUz1kdYlPzS6AXkdk+mfMubksdM+6U8hJ
-         A4UbXdfo0bhasYFmsw5ceBBj4ub2bgaEqkI+Cp5foQd/M11l9HiEax3hX9+hB29fNDF1
-         4XtAbOKK0Jrn48roHo8mUNvKaz7FG0Csy4DWdnw8Q+/oXs7GbWFZBjN+ifwhy6Rfe8k0
-         Pzhs5uXUX+5v6iQyGpPCJWV84GisQUz+5cfOraMc3PalgV6vYI9t2Z4JMkhIMshepKV2
-         BM+Zj3o1QTUTRt1Kxwo+5vz+cvvR7n44irHUjPq0LbDCW52O0lwQK7qPtMHxw7vn0Id9
-         5U2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=O/ydtbQq3hhUQMKLadnWyyYnKXWsNHjK08UiMc2odZ3NkIPH5k24CQrRos1yc6x7dn
-         P6W0tQd6g3utWV+o+xIajzCXa2AMcth2J/P29TLZPDpSDjyoedTb26XVLkGMUgJtPPbo
-         eRah7JMI2lB2eokpNZilN4COyTuXrwecEhla7S5YIPV0ss/qOwZuneQWlbsIydxnJTBg
-         IQVObqSMfG+UTqKndCbMVIv8OcrdLZLAEDxRnW5XrWirugAoMNVUivFwLRj9lKAxFlbV
-         W2YZFb51/08dfC6Vh1knFWCuCWsbmkBpoKiHorDdCNvLQa+rWVZzEVUO1OjfA6hjinLm
-         w6rg==
-X-Gm-Message-State: AOAM5328zHUaZi8F6wFLobaXdTH7jonKOuvRERSZw3XX82Kzgo5mnI2H
-        0xmwXcNPAqR9JAiD/Y5UWSYLIrndzupOcgk/LebYMQFO4tM=
-X-Google-Smtp-Source: ABdhPJz3bgso8viJFkNwiW8XigzdjL6JZBPDE3NfxKOCgEqvWjdU/qagorQKM5joSRLXylFmq9/zlHP85rUYuZ5fTGQ=
-X-Received: by 2002:a25:6d45:: with SMTP id i66mr23246397ybc.352.1643516893721;
- Sat, 29 Jan 2022 20:28:13 -0800 (PST)
+        id S1348392AbiAaKQJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 31 Jan 2022 05:16:09 -0500
+Received: from muru.com ([72.249.23.125]:44646 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232024AbiAaKQJ (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Mon, 31 Jan 2022 05:16:09 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 5F72B8027;
+        Mon, 31 Jan 2022 10:15:59 +0000 (UTC)
+Date:   Mon, 31 Jan 2022 12:16:06 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Drew Fustini <dfustini@baylibre.com>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Keerthy <j-keerthy@ti.com>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Tero Kristo <kristo@kernel.org>, Suman Anna <s-anna@ti.com>
+Subject: Re: [PATCH 2/2] clocksource/drivers/timer-ti-dm: Handle dra7 timer
+ wrap errata i940
+Message-ID: <Yfe25rpSY8OFPxzr@atomide.com>
+References: <20210323074326.28302-1-tony@atomide.com>
+ <20210323074326.28302-3-tony@atomide.com>
+ <YfWsG0p6to3IJuvE@x1>
 MIME-Version: 1.0
-Received: by 2002:a05:7010:2312:b0:201:cd76:102e with HTTP; Sat, 29 Jan 2022
- 20:28:13 -0800 (PST)
-Reply-To: mrs.bill.chantalone01@gmail.com
-From:   "Mrs.Bill.Chantal" <grassroot309@gmail.com>
-Date:   Sun, 30 Jan 2022 05:28:13 +0100
-Message-ID: <CAO3iUMDzg_ZovNWXtuQhU6sDXk7LsNwvNc2pOb7zvX7pPCdMAw@mail.gmail.com>
-Subject: Hello....
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YfWsG0p6to3IJuvE@x1>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-You have been compensated with the sum of 9.5 million dollars in this
-united nation the payment will be issue into atm visa  card and send
-to you from the santander bank we need your address and your
-Whatsapp number  + 1 6465853907  this my email.ID
-( mrs.bill.chantal.roland@gmail.com )  contact  me
+Hi,
 
-Thanks my
+* Drew Fustini <dfustini@baylibre.com> [220129 21:05]:
+> On Tue, Mar 23, 2021 at 09:43:26AM +0200, Tony Lindgren wrote:
+> > There is a timer wrap issue on dra7 for the ARM architected timer.
+> > In a typical clock configuration the timer fails to wrap after 388 days.
+> > 
+> > To work around the issue, we need to use timer-ti-dm percpu timers instead.
+> > 
+> > Let's configure dmtimer3 and 4 as percpu timers by default, and warn about
+> > the issue if the dtb is not configured properly.
+> 
+> Hi Tony,
+> 
+> This causes a conflict for IPU2 which is using timer 3 and 4.
+> 
+> From arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi:
+> 
+>   &ipu2 {
+>           mboxes = <&mailbox6 &mbox_ipu2_ipc3x>;
+>           ti,timers = <&timer3>;
+>           ti,watchdog-timers = <&timer4>, <&timer9>;
+>   };
 
-mrs bill chantal
+OK, sorry I missed that part.
+
+> I noticed an error ("could not get timer platform device") when booting
+> mainline on a BeagleBoard X15 (AM578):
+> 
+>   omap-rproc 55020000.ipu: assigned reserved memory node ipu2-memory@95800000
+>   remoteproc remoteproc1: 55020000.ipu is available
+>   remoteproc remoteproc1: powering up 55020000.ipu
+>   remoteproc remoteproc1: Booting fw image dra7-ipu2-fw.xem4, size 3747220
+>   omap-rproc 55020000.ipu: could not get timer platform device
+>   omap-rproc 55020000.ipu: omap_rproc_enable_timers failed: -19
+>   remoteproc remoteproc1: can't start rproc 55020000.ipu: -19
+> 
+> I switched this errata fix to use timer 15 and 16 instead which resolves
+> the error.  Do you think that is an acceptable solution?
+
+I think the only difference is that timers 15 and 16 are in l4_per3 instead
+of l4_per1. I doubt that matters as they are pretty much always clocked in
+this case. If you want to check you can run cyclictest :)
+
+> If so, I will post the patch to the list.
+
+OK thanks,
+
+Tony
