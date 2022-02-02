@@ -2,140 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A20754A79CA
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Feb 2022 21:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8DAC4A7A69
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Feb 2022 22:27:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347294AbiBBUyg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Feb 2022 15:54:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46174 "EHLO
+        id S232900AbiBBV1M (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Feb 2022 16:27:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239723AbiBBUyg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Feb 2022 15:54:36 -0500
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F57AC06173B
-        for <linux-omap@vger.kernel.org>; Wed,  2 Feb 2022 12:54:36 -0800 (PST)
-Received: by mail-pf1-x42a.google.com with SMTP id e28so353807pfj.5
-        for <linux-omap@vger.kernel.org>; Wed, 02 Feb 2022 12:54:36 -0800 (PST)
+        with ESMTP id S229666AbiBBV1L (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Feb 2022 16:27:11 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 759EAC06173B
+        for <linux-omap@vger.kernel.org>; Wed,  2 Feb 2022 13:27:11 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id cq9-20020a17090af98900b001b8262fe2d5so2747721pjb.0
+        for <linux-omap@vger.kernel.org>; Wed, 02 Feb 2022 13:27:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=l2Oma9zXCLWmq5QWeFwdvr5FNqJvallv/jOB/x/DuMo=;
-        b=PUMB0XI/DBpwDBjvrTU4GRblhYvTYge8mzWnov2rHbPeccUHMEWLLWO4Ox835bCcpg
-         vipWFV2JKk6RSWJrGEcbDILjvbqlik4DgefMvzZNmQMwm9nzoS6kPhU0b+Ppplw7dQ3g
-         XXJDRQ6lRNyf8LM1HeN3vKBIcEfGkghW6UZv0048O8odgN/WKuzLu3ufUG1OvrMJyEtC
-         t7x0A5nEjNAEbw+SLG49jpkkpzvUd3ol2coeKzQRYXY0CmrIIMJozuFFpQk4zoYCXgDy
-         A+NNfFCti8EGbKzo26fpTpaMDXBxNqwPEG8e2LMBodnru6PtY6QcQlsWbJPUSbWbLXBc
-         xDmw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+MX3D9q8d3LzKE4FBcDvQ2a3FDyu2HVNWGmSJadrBn8=;
+        b=4sTFPyi53OOLG+HQ5SejHODLgQ+qUrtD9GZxSJ7ShYrvsFG4QhoWkdAIPReC6G1p0J
+         UHYQCyxOIYt36ZxoKfizbwTzGNEIeaHQKrSchgJZBHkcwOWbI5BgNN2wBStCbBwvH7sB
+         1CmW1G7IXVOHIMTv2TMgULJaHzW0qCFO1gWe26y5STKIUcfsmC5xB9y06BD3zT5/9yCF
+         ywzNX1MaXh13XVPrU6Umz52Ygzw4/iaJ9B1qXyS85YfwrDBUmoKjLRBnN5q3/apX8yaQ
+         HMfoHYU5Okv216E6Gsglt60xd9ICAkbh7CMRQxNvBHBke6RUZUOk9cN2UjzQdYhKhNJC
+         4uzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=l2Oma9zXCLWmq5QWeFwdvr5FNqJvallv/jOB/x/DuMo=;
-        b=ZARVXA0Fqn9QzdtySzkKm6BdOflJNDKANlKX4VFOMxHgbuvwgMBU4ygsamBihyyjsv
-         9r5/1Andz5beQd5kUE5rIGcvwbB30AMg9PqDJ11yYJ+LV8xprFiaaDbY84Qo5jviEKMj
-         j790Ym4jKDjXvvVeN11TBzkVkCyK2MsJwub4p432GEAIrBhverNE3AK+H2oqr3LstAik
-         f/+yXFJMATVAWUkDu/vmvtUPMFDUYFnktjI5DCvzzgODHxIFAiwoKo81gP/h6nf5coT6
-         MZtoAupXLrnxmtn9KxUUVp5LU6r7BW8dJfML7pPGNBky2SNXy1BHWFYxGPTJcg/TJBav
-         OyDw==
-X-Gm-Message-State: AOAM533msVLA+O0qLSRGS61GU369eLAiBg/Tm3NiFJ898sV1qpb/0/c2
-        G8CGE7002jdk1pPA03FaIWWwABZqSpKcLA==
-X-Google-Smtp-Source: ABdhPJxxsEXOdAKWRKznRFLLkUlAgp8BBmDHDhft6rZzZrSGwJ8lyMOEhAyse98KdIdkzQKoL5th+g==
-X-Received: by 2002:a63:5545:: with SMTP id f5mr25618685pgm.157.1643835275909;
-        Wed, 02 Feb 2022 12:54:35 -0800 (PST)
-Received: from x1 ([2601:1c2:1001:7090:9646:73e6:2457:2f0f])
-        by smtp.gmail.com with ESMTPSA id f8sm25371811pfe.204.2022.02.02.12.54.34
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+MX3D9q8d3LzKE4FBcDvQ2a3FDyu2HVNWGmSJadrBn8=;
+        b=NRWAjRN0+003G3i1ouSE1O6NiODBgZ6ar9P3rRJjhGJ75YW2YZzYiAZE5YZkhzyuT1
+         N4Onf0bQU6Q1Snzb45zXB3eRnep3LT2VuRJr2bFcZHWE00VgLc1K4DyqRSxADwfqPRII
+         Dy0bC6SArzNj+L8a2Y7VT9dzZ5DtzhagoIQGE3dQ6GU9xWxPN7h76Pj0T/xt8l6kWm6t
+         HB2OLqXqTB1uKF2Wq05y5ehPLN4QN8hr/D33Q6UEK6f/P15y5ZtNceBd8bFyS1drdx56
+         fuKB3gJwxRhpnGYgiQ8SQBH2TBPNIveKpi9Kxw43iqUX7rjnmb/P2XFPAtTSef7qN7tX
+         uGLQ==
+X-Gm-Message-State: AOAM533uTml96evDvcTivOFjvJbcX7fBivrQkAzALUroj2Om6tjBYoGK
+        jZikcPm0+OOnLWaqPGxtaV3kFQ==
+X-Google-Smtp-Source: ABdhPJzKzue1OErPgU/Ol0OyFasfeCXXO8paAjP9TLPGwHbmhBypSxEY8Nsey15YsuIy5WiTLfvPYA==
+X-Received: by 2002:a17:902:ea0f:: with SMTP id s15mr31734177plg.118.1643837230684;
+        Wed, 02 Feb 2022 13:27:10 -0800 (PST)
+Received: from x1.hsd1.or.comcast.net ([2601:1c2:1001:7090:9646:73e6:2457:2f0f])
+        by smtp.gmail.com with ESMTPSA id mi11sm7579087pjb.37.2022.02.02.13.27.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Feb 2022 12:54:35 -0800 (PST)
-Date:   Wed, 2 Feb 2022 12:54:59 -0800
+        Wed, 02 Feb 2022 13:27:10 -0800 (PST)
 From:   Drew Fustini <dfustini@baylibre.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+To:     Tony Lindgren <tony@atomide.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Keerthy <j-keerthy@ti.com>, linux-kernel@vger.kernel.org,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Tero Kristo <kristo@kernel.org>, Suman Anna <s-anna@ti.com>
-Subject: Re: [PATCH 2/2] clocksource/drivers/timer-ti-dm: Handle dra7 timer
- wrap errata i940
-Message-ID: <Yfrvo+kVd9ZHJjBX@x1>
-References: <20210323074326.28302-1-tony@atomide.com>
- <20210323074326.28302-3-tony@atomide.com>
- <YfWsG0p6to3IJuvE@x1>
- <Yfe25rpSY8OFPxzr@atomide.com>
+        Tero Kristo <kristo@kernel.org>, khilman@baylibre.com,
+        s-anna@ti.com
+Cc:     Drew Fustini <dfustini@baylibre.com>
+Subject: [PATCH] clocksource/drivers/timer-ti-dm: fix regression from errata i940 fix
+Date:   Wed,  2 Feb 2022 13:25:55 -0800
+Message-Id: <20220202212554.1316032-1-dfustini@baylibre.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yfe25rpSY8OFPxzr@atomide.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Jan 31, 2022 at 12:16:06PM +0200, Tony Lindgren wrote:
-> Hi,
-> 
-> * Drew Fustini <dfustini@baylibre.com> [220129 21:05]:
-> > On Tue, Mar 23, 2021 at 09:43:26AM +0200, Tony Lindgren wrote:
-> > > There is a timer wrap issue on dra7 for the ARM architected timer.
-> > > In a typical clock configuration the timer fails to wrap after 388 days.
-> > > 
-> > > To work around the issue, we need to use timer-ti-dm percpu timers instead.
-> > > 
-> > > Let's configure dmtimer3 and 4 as percpu timers by default, and warn about
-> > > the issue if the dtb is not configured properly.
-> > 
-> > Hi Tony,
-> > 
-> > This causes a conflict for IPU2 which is using timer 3 and 4.
-> > 
-> > From arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi:
-> > 
-> >   &ipu2 {
-> >           mboxes = <&mailbox6 &mbox_ipu2_ipc3x>;
-> >           ti,timers = <&timer3>;
-> >           ti,watchdog-timers = <&timer4>, <&timer9>;
-> >   };
-> 
-> OK, sorry I missed that part.
-> 
-> > I noticed an error ("could not get timer platform device") when booting
-> > mainline on a BeagleBoard X15 (AM578):
-> > 
-> >   omap-rproc 55020000.ipu: assigned reserved memory node ipu2-memory@95800000
-> >   remoteproc remoteproc1: 55020000.ipu is available
-> >   remoteproc remoteproc1: powering up 55020000.ipu
-> >   remoteproc remoteproc1: Booting fw image dra7-ipu2-fw.xem4, size 3747220
-> >   omap-rproc 55020000.ipu: could not get timer platform device
-> >   omap-rproc 55020000.ipu: omap_rproc_enable_timers failed: -19
-> >   remoteproc remoteproc1: can't start rproc 55020000.ipu: -19
-> > 
-> > I switched this errata fix to use timer 15 and 16 instead which resolves
-> > the error.  Do you think that is an acceptable solution?
-> 
-> I think the only difference is that timers 15 and 16 are in l4_per3 instead
-> of l4_per1. I doubt that matters as they are pretty much always clocked in
-> this case. If you want to check you can run cyclictest :)
+The existing fix for errata i940 causes a conflict for IPU2 which is
+using timer 3 and 4. From arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi:
 
-I ran this with existing errata fix with dmtimer 3 and 4:
+  &ipu2 {
+          mboxes = <&mailbox6 &mbox_ipu2_ipc3x>;
+          ti,timers = <&timer3>;
+          ti,watchdog-timers = <&timer4>, <&timer9>;
+  };
 
-root@am57xx-evm:~# cyclictest --mlockall --smp --priority=80 --interval=200 --distance=0
-# /dev/cpu_dma_latency set to 0us
-policy: fifo: loadavg: 0.02 0.03 0.05 
+I discovered the timer conflict from when booting mainline on a
+BeagleBoard X15 (AM5728):
 
-T: 0 ( 1449) P:80 I:200 C: 800368 Min:      0 Act:   32 Avg:   22 Max:     128
-T: 1 ( 1450) P:80 I:200 C: 800301 Min:      0 Act:   12 Avg:   23 Max:      70
+  remoteproc remoteproc1: 55020000.ipu is available
+  remoteproc remoteproc1: powering up 55020000.ipu
+  remoteproc remoteproc1: Booting fw image dra7-ipu2-fw.xem4
+  omap-rproc 55020000.ipu: could not get timer platform device
+  omap-rproc 55020000.ipu: omap_rproc_enable_timers failed: -19
+  remoteproc remoteproc1: can't start rproc 55020000.ipu: -19
 
-And the results after my switch to dmtimer 15 and 16:
+I modified the errata fix to use timer 15 and 16 instead which resolves
+the timer conflict.
 
-root@am57xx-evm:~# cyclictest --mlockall --smp --priority=80 --interval=200 --distance=0
-# /dev/cpu_dma_latency set to 0us
-policy: fifo: loadavg: 0.36 0.19 0.07
+Fixes: 25de4ce5ed02 ("clocksource/drivers/timer-ti-dm: Handle dra7 timer wrap errata i940")
+Link: https://lore.kernel.org/linux-omap/YfWsG0p6to3IJuvE@x1/
+Signed-off-by: Drew Fustini <dfustini@baylibre.com>
+---
+Note: I am keeping the device tree and driver change together in one
+patch as that is how the original errata fix commit was structured.
 
-T: 0 ( 1711) P:80 I:200 C: 759599 Min:      0 Act:    6 Avg:   22 Max:     108
-T: 1 ( 1712) P:80 I:200 C: 759539 Min:      0 Act:   19 Avg:   23 Max:      79
+ arch/arm/boot/dts/dra7-l4.dtsi             | 5 ++---
+ arch/arm/boot/dts/dra7.dtsi                | 8 ++++----
+ drivers/clocksource/timer-ti-dm-systimer.c | 4 ++--
+ 3 files changed, 8 insertions(+), 9 deletions(-)
 
-This doesn't appear to show any latency regression.
+diff --git a/arch/arm/boot/dts/dra7-l4.dtsi b/arch/arm/boot/dts/dra7-l4.dtsi
+index 956a26d52a4c..0a11bacffc1f 100644
+--- a/arch/arm/boot/dts/dra7-l4.dtsi
++++ b/arch/arm/boot/dts/dra7-l4.dtsi
+@@ -3482,8 +3482,7 @@ timer14: timer@0 {
+ 				ti,timer-pwm;
+ 			};
+ 		};
+-
+-		target-module@2c000 {			/* 0x4882c000, ap 17 02.0 */
++		timer15_target: target-module@2c000 {	/* 0x4882c000, ap 17 02.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+ 			reg = <0x2c000 0x4>,
+ 			      <0x2c010 0x4>;
+@@ -3511,7 +3510,7 @@ timer15: timer@0 {
+ 			};
+ 		};
+ 
+-		target-module@2e000 {			/* 0x4882e000, ap 19 14.0 */
++		timer16_target: target-module@2e000 {	/* 0x4882e000, ap 19 14.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+ 			reg = <0x2e000 0x4>,
+ 			      <0x2e010 0x4>;
+diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
+index 6b485cbed8d5..8f7ffe2f66e9 100644
+--- a/arch/arm/boot/dts/dra7.dtsi
++++ b/arch/arm/boot/dts/dra7.dtsi
+@@ -1339,20 +1339,20 @@ timer@0 {
+ };
+ 
+ /* Local timers, see ARM architected timer wrap erratum i940 */
+-&timer3_target {
++&timer15_target {
+ 	ti,no-reset-on-init;
+ 	ti,no-idle;
+ 	timer@0 {
+-		assigned-clocks = <&l4per_clkctrl DRA7_L4PER_TIMER3_CLKCTRL 24>;
++		assigned-clocks = <&l4per3_clkctrl DRA7_L4PER3_TIMER15_CLKCTRL 24>;
+ 		assigned-clock-parents = <&timer_sys_clk_div>;
+ 	};
+ };
+ 
+-&timer4_target {
++&timer16_target {
+ 	ti,no-reset-on-init;
+ 	ti,no-idle;
+ 	timer@0 {
+-		assigned-clocks = <&l4per_clkctrl DRA7_L4PER_TIMER4_CLKCTRL 24>;
++		assigned-clocks = <&l4per3_clkctrl DRA7_L4PER3_TIMER16_CLKCTRL 24>;
+ 		assigned-clock-parents = <&timer_sys_clk_div>;
+ 	};
+ };
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+index b6f97960d8ee..c706d63e9f5c 100644
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -695,9 +695,9 @@ static int __init dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
+ 		return 0;
+ 	}
+ 
+-	if (pa == 0x48034000)		/* dra7 dmtimer3 */
++	if (pa == 0x4882C000)           /* dra7 dmtimer15 */
+ 		return dmtimer_percpu_timer_init(np, 0);
+-	else if (pa == 0x48036000)	/* dra7 dmtimer4 */
++	else if (pa == 0x4882E000)      /* dra7 dmtimer16 */
+ 		return dmtimer_percpu_timer_init(np, 1);
+ 
+ 	return 0;
+-- 
+2.32.0
 
-Any other options for cyclictest that that you'd recommend trying?
-
-Thank you,
-Drew
