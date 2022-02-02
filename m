@@ -2,142 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D68B44A791A
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Feb 2022 20:59:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A20754A79CA
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Feb 2022 21:54:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbiBBT7A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 2 Feb 2022 14:59:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33642 "EHLO
+        id S1347294AbiBBUyg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 2 Feb 2022 15:54:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239719AbiBBT67 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Feb 2022 14:58:59 -0500
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E10A5C06173D
-        for <linux-omap@vger.kernel.org>; Wed,  2 Feb 2022 11:58:59 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id n32so201469pfv.11
-        for <linux-omap@vger.kernel.org>; Wed, 02 Feb 2022 11:58:59 -0800 (PST)
+        with ESMTP id S239723AbiBBUyg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 2 Feb 2022 15:54:36 -0500
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F57AC06173B
+        for <linux-omap@vger.kernel.org>; Wed,  2 Feb 2022 12:54:36 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id e28so353807pfj.5
+        for <linux-omap@vger.kernel.org>; Wed, 02 Feb 2022 12:54:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=f3tBDDMz1Cl7wSR0qYXsf1pk6gj1XoAYJtYA02SWsWc=;
-        b=ERt7l2GrHpmbR9DfZcfO/4G0u2ftbECA90n/T2MYtJcF7KHFBaulB2Y3elqwXaErj1
-         SgvMX6enKgKi6ipwi3GMJOLq7A0vUuj+OsY4FTRYGfXeeKMbMo5SyR8KcChUElrIWjP9
-         IpVaglb+4cq+qD6XUS4B5zEK/B8IayPMTqhDakgUHyry0Qxa2ItcvneZnv5x2qc46k/8
-         A4UpBr5ygkm0tyA0ul4/XSajfr/oc0EOYQuT0FLTZsqNS6z0Bm7NgJmChV/kC881wVL1
-         R62PgB5ZIfasDbZ0uRPC0crSVv72woWDxTwCwfMvG3Yi3hUIqeHQq7rAUtZ0br6HfozV
-         89eg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=l2Oma9zXCLWmq5QWeFwdvr5FNqJvallv/jOB/x/DuMo=;
+        b=PUMB0XI/DBpwDBjvrTU4GRblhYvTYge8mzWnov2rHbPeccUHMEWLLWO4Ox835bCcpg
+         vipWFV2JKk6RSWJrGEcbDILjvbqlik4DgefMvzZNmQMwm9nzoS6kPhU0b+Ppplw7dQ3g
+         XXJDRQ6lRNyf8LM1HeN3vKBIcEfGkghW6UZv0048O8odgN/WKuzLu3ufUG1OvrMJyEtC
+         t7x0A5nEjNAEbw+SLG49jpkkpzvUd3ol2coeKzQRYXY0CmrIIMJozuFFpQk4zoYCXgDy
+         A+NNfFCti8EGbKzo26fpTpaMDXBxNqwPEG8e2LMBodnru6PtY6QcQlsWbJPUSbWbLXBc
+         xDmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=f3tBDDMz1Cl7wSR0qYXsf1pk6gj1XoAYJtYA02SWsWc=;
-        b=0jG3rcI1a+Z/c0uAXw7tWcWNHZKn/jE2vnLLiGA80whh0gLxK+TL1GsRv/UTQOXCM4
-         ngHdf2xfHmYHmej5+G3eYgTniSa7M/yJBnPYPzBqnBCCTKZzgMZsSNsbDijLUf3W/PCQ
-         pr0Kx7jtw1f2wKViTEvWs5PYY2RL9PEZ+83oSrWcLIZyH5mK/N6DeM7bIv0p9kY6ASqR
-         e5s385O0lZNHrTqZcK/33R7XGj/TfLcHkTF9hi4VdpV+znUHHJQa7+9jchiEl/aPeKFa
-         WZkiwvs9s8UTwIhTpL6wogWOCpQUf34MQdNhKzNrgEkLNTNuHsSkfJyEt6llT3Sts7tb
-         gk2g==
-X-Gm-Message-State: AOAM531l0/aYZtDNERQQ7xQDWG6wjbl6sUo6GbFc0Oi3Q+2bLkC7wfKN
-        BSGNFZrcg9We6tvFs2lT4zJ9Uw==
-X-Google-Smtp-Source: ABdhPJz4O1XMyNrRMSsccUAwZX/YKxQmjX8hl66qxIZUzVjXNWSKEFQOBJlAS5f+CRg6eHpU2klvjw==
-X-Received: by 2002:a63:6586:: with SMTP id z128mr26035966pgb.103.1643831939129;
-        Wed, 02 Feb 2022 11:58:59 -0800 (PST)
-Received: from localhost (c-71-197-186-152.hsd1.wa.comcast.net. [71.197.186.152])
-        by smtp.gmail.com with ESMTPSA id nu15sm8160658pjb.5.2022.02.02.11.58.58
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=l2Oma9zXCLWmq5QWeFwdvr5FNqJvallv/jOB/x/DuMo=;
+        b=ZARVXA0Fqn9QzdtySzkKm6BdOflJNDKANlKX4VFOMxHgbuvwgMBU4ygsamBihyyjsv
+         9r5/1Andz5beQd5kUE5rIGcvwbB30AMg9PqDJ11yYJ+LV8xprFiaaDbY84Qo5jviEKMj
+         j790Ym4jKDjXvvVeN11TBzkVkCyK2MsJwub4p432GEAIrBhverNE3AK+H2oqr3LstAik
+         f/+yXFJMATVAWUkDu/vmvtUPMFDUYFnktjI5DCvzzgODHxIFAiwoKo81gP/h6nf5coT6
+         MZtoAupXLrnxmtn9KxUUVp5LU6r7BW8dJfML7pPGNBky2SNXy1BHWFYxGPTJcg/TJBav
+         OyDw==
+X-Gm-Message-State: AOAM533msVLA+O0qLSRGS61GU369eLAiBg/Tm3NiFJ898sV1qpb/0/c2
+        G8CGE7002jdk1pPA03FaIWWwABZqSpKcLA==
+X-Google-Smtp-Source: ABdhPJxxsEXOdAKWRKznRFLLkUlAgp8BBmDHDhft6rZzZrSGwJ8lyMOEhAyse98KdIdkzQKoL5th+g==
+X-Received: by 2002:a63:5545:: with SMTP id f5mr25618685pgm.157.1643835275909;
+        Wed, 02 Feb 2022 12:54:35 -0800 (PST)
+Received: from x1 ([2601:1c2:1001:7090:9646:73e6:2457:2f0f])
+        by smtp.gmail.com with ESMTPSA id f8sm25371811pfe.204.2022.02.02.12.54.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Feb 2022 11:58:58 -0800 (PST)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, kernel-team@android.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-oxnas@groups.io, linux-renesas-soc@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v4 1/2] drivers: bus: simple-pm-bus: Add support for
- probing simple bus only devices
-In-Reply-To: <7hee4mmo2s.fsf@baylibre.com>
-References: <20210929000735.585237-1-saravanak@google.com>
- <20210929000735.585237-2-saravanak@google.com>
- <7hk0efmfzo.fsf@baylibre.com>
- <CAGETcx_YEUxEBSBnzFaBxW=9=jO6BO0GuThaMGF+JPkDeC-ivw@mail.gmail.com>
- <7hee4mmo2s.fsf@baylibre.com>
-Date:   Wed, 02 Feb 2022 11:58:58 -0800
-Message-ID: <7hpmo5kpkt.fsf@baylibre.com>
+        Wed, 02 Feb 2022 12:54:35 -0800 (PST)
+Date:   Wed, 2 Feb 2022 12:54:59 -0800
+From:   Drew Fustini <dfustini@baylibre.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Keerthy <j-keerthy@ti.com>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Tero Kristo <kristo@kernel.org>, Suman Anna <s-anna@ti.com>
+Subject: Re: [PATCH 2/2] clocksource/drivers/timer-ti-dm: Handle dra7 timer
+ wrap errata i940
+Message-ID: <Yfrvo+kVd9ZHJjBX@x1>
+References: <20210323074326.28302-1-tony@atomide.com>
+ <20210323074326.28302-3-tony@atomide.com>
+ <YfWsG0p6to3IJuvE@x1>
+ <Yfe25rpSY8OFPxzr@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Yfe25rpSY8OFPxzr@atomide.com>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Kevin Hilman <khilman@baylibre.com> writes:
+On Mon, Jan 31, 2022 at 12:16:06PM +0200, Tony Lindgren wrote:
+> Hi,
+> 
+> * Drew Fustini <dfustini@baylibre.com> [220129 21:05]:
+> > On Tue, Mar 23, 2021 at 09:43:26AM +0200, Tony Lindgren wrote:
+> > > There is a timer wrap issue on dra7 for the ARM architected timer.
+> > > In a typical clock configuration the timer fails to wrap after 388 days.
+> > > 
+> > > To work around the issue, we need to use timer-ti-dm percpu timers instead.
+> > > 
+> > > Let's configure dmtimer3 and 4 as percpu timers by default, and warn about
+> > > the issue if the dtb is not configured properly.
+> > 
+> > Hi Tony,
+> > 
+> > This causes a conflict for IPU2 which is using timer 3 and 4.
+> > 
+> > From arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi:
+> > 
+> >   &ipu2 {
+> >           mboxes = <&mailbox6 &mbox_ipu2_ipc3x>;
+> >           ti,timers = <&timer3>;
+> >           ti,watchdog-timers = <&timer4>, <&timer9>;
+> >   };
+> 
+> OK, sorry I missed that part.
+> 
+> > I noticed an error ("could not get timer platform device") when booting
+> > mainline on a BeagleBoard X15 (AM578):
+> > 
+> >   omap-rproc 55020000.ipu: assigned reserved memory node ipu2-memory@95800000
+> >   remoteproc remoteproc1: 55020000.ipu is available
+> >   remoteproc remoteproc1: powering up 55020000.ipu
+> >   remoteproc remoteproc1: Booting fw image dra7-ipu2-fw.xem4, size 3747220
+> >   omap-rproc 55020000.ipu: could not get timer platform device
+> >   omap-rproc 55020000.ipu: omap_rproc_enable_timers failed: -19
+> >   remoteproc remoteproc1: can't start rproc 55020000.ipu: -19
+> > 
+> > I switched this errata fix to use timer 15 and 16 instead which resolves
+> > the error.  Do you think that is an acceptable solution?
+> 
+> I think the only difference is that timers 15 and 16 are in l4_per3 instead
+> of l4_per1. I doubt that matters as they are pretty much always clocked in
+> this case. If you want to check you can run cyclictest :)
 
-> Saravana Kannan <saravanak@google.com> writes:
->
->> On Mon, Jan 31, 2022 at 7:18 PM Kevin Hilman <khilman@baylibre.com> wrote:
->>>
->>> Hi Saravana,
->>>
->>> Saravana Kannan <saravanak@google.com> writes:
->>>
->>> > fw_devlink could end up creating device links for bus only devices.
->>> > However, bus only devices don't get probed and can block probe() or
->>> > sync_state() [1] call backs of other devices. To avoid this, probe these
->>> > devices using the simple-pm-bus driver.
->>> >
->>> > However, there are instances of devices that are not simple buses (they get
->>> > probed by their specific drivers) that also list the "simple-bus" (or other
->>> > bus only compatible strings) in their compatible property to automatically
->>> > populate their child devices. We still want these devices to get probed by
->>> > their specific drivers. So, we make sure this driver only probes devices
->>> > that are only buses.
->>> >
->>> > [1] - https://lore.kernel.org/lkml/CAPDyKFo9Bxremkb1dDrr4OcXSpE0keVze94Cm=zrkOVxHHxBmQ@mail.gmail.com/
->>> > Fixes: c442a0d18744 ("driver core: Set fw_devlink to "permissive" behavior by default")
->>> > Signed-off-by: Saravana Kannan <saravanak@google.com>
->>> > Tested-by: Saravana Kannan <saravanak@google.com>
->>> > Tested-by: Ulf Hansson <ulf.hansson@linaro.org>
->>>
->>> This patch landed in stable/linux-5.10.y as commit d5f13bbb5104 and it
->>> broke suspend/resume on at least one TI AM335x board I'm testing on:
->>> upstream dts: arch/arm/boot/dts/am335x-icev2.dts, upstream defconfig:
->>> arch/arm/configs/omap2plus_defconfig.
->>>
->>> Bisecting between vanilla v5.10 (good) and stable/linux-5.10.y (bad)
->>> pointed me to this patch, and I confirmed that reverting just this patch
->>> on top of stable/linux-5.10.y makes it work again.
->>>
->>> Also interesting, this same platform works fine on vanilla v5.15, which
->>> also includes this patch.  That suggests that either 1) this patch
->>> should not have been backported to v5.10 stable or 2) there are some
->>> other dependencies that are missing in v5.10.
->>>
->>> Since vanilla v5.10 works fine, I'm leaning towards (1), but if you have
->>> any ideas for deps that need backporting, I'm happy to try.
->>
->> Oh wow! I didn't realize I made so many changes AFTER 5.10! Unless I'm
->> doing something wrong with my git commands.
->> $ git log v5.10..v5.15 --oneline -- drivers/of/property.c
->> $ git log v5.10..v5.15 --oneline --author=saravanak -- drivers/base/
->>
->> If you don't think I got my git command completely wrong, yeah, way
->> too many patches are missing on 5.10. I'd go with the option of
->> dropping this patch on 5.10.
->
-> I agree.  Could you submit a revert for v5.10 stable?  As the patch
-> author, it's probably better if it comes from you.
+I ran this with existing errata fix with dmtimer 3 and 4:
 
-Nevermind, I'm impatient and submitted a revert to stable[1] :)
+root@am57xx-evm:~# cyclictest --mlockall --smp --priority=80 --interval=200 --distance=0
+# /dev/cpu_dma_latency set to 0us
+policy: fifo: loadavg: 0.02 0.03 0.05 
 
-Kevin
+T: 0 ( 1449) P:80 I:200 C: 800368 Min:      0 Act:   32 Avg:   22 Max:     128
+T: 1 ( 1450) P:80 I:200 C: 800301 Min:      0 Act:   12 Avg:   23 Max:      70
 
-[1] https://lore.kernel.org/stable/20220202195705.3598798-1-khilman@baylibre.com/
+And the results after my switch to dmtimer 15 and 16:
+
+root@am57xx-evm:~# cyclictest --mlockall --smp --priority=80 --interval=200 --distance=0
+# /dev/cpu_dma_latency set to 0us
+policy: fifo: loadavg: 0.36 0.19 0.07
+
+T: 0 ( 1711) P:80 I:200 C: 759599 Min:      0 Act:    6 Avg:   22 Max:     108
+T: 1 ( 1712) P:80 I:200 C: 759539 Min:      0 Act:   19 Avg:   23 Max:      79
+
+This doesn't appear to show any latency regression.
+
+Any other options for cyclictest that that you'd recommend trying?
+
+Thank you,
+Drew
