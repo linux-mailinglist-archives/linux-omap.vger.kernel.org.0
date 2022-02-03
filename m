@@ -2,124 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CD294A830C
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Feb 2022 12:24:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F41E4A881F
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Feb 2022 16:56:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350196AbiBCLXs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Feb 2022 06:23:48 -0500
-Received: from muru.com ([72.249.23.125]:45940 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350189AbiBCLXp (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 3 Feb 2022 06:23:45 -0500
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id C8CD7817C;
-        Thu,  3 Feb 2022 11:23:28 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <kristo@kernel.org>
-Subject: [PATCH 3/3] dt-bindings: clock: ti: Add clock-output-names for TI composite clocks
-Date:   Thu,  3 Feb 2022 13:23:37 +0200
-Message-Id: <20220203112337.19821-3-tony@atomide.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220203112337.19821-1-tony@atomide.com>
-References: <20220203112337.19821-1-tony@atomide.com>
+        id S237256AbiBCP4a (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Feb 2022 10:56:30 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:48340 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238210AbiBCP43 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Feb 2022 10:56:29 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 213FuGqB101083;
+        Thu, 3 Feb 2022 09:56:16 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1643903776;
+        bh=Toar8XQdGaRCOJTQWgbWo4IklEUbtuLsEEHm1375h9s=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=uugpJAdno1/N/dQ7mLmQyX0IwyanKSZ2mHancxIP6M2awl2U4osWDxEDwBqAyjMaR
+         daxSDEzQzNa7GLna9wL543MzxchGWud32mgXYufhHiLoP6uPqprH5hEfjPIYubCmQI
+         mJCyQ7UjkLfxZOhAkithcK+OeMwxeH79Zi2qfR8Q=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 213FuGZS087435
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 3 Feb 2022 09:56:16 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 3
+ Feb 2022 09:56:15 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Thu, 3 Feb 2022 09:56:15 -0600
+Received: from [10.249.37.221] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 213FuFQO019479;
+        Thu, 3 Feb 2022 09:56:15 -0600
+Message-ID: <123d2444-9f61-7d9c-66d4-7e981dbc945f@ti.com>
+Date:   Thu, 3 Feb 2022 09:56:15 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: fix regression from
+ errata i940 fix
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>,
+        Drew Fustini <dfustini@baylibre.com>
+CC:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Keerthy <j-keerthy@ti.com>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Tero Kristo <kristo@kernel.org>, <khilman@baylibre.com>
+References: <20220202212554.1316032-1-dfustini@baylibre.com>
+ <Yft723A/i3J1ZftC@atomide.com>
+From:   Suman Anna <s-anna@ti.com>
+In-Reply-To: <Yft723A/i3J1ZftC@atomide.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-For the TI composite clocks, we currently have only the divider clock
-list clock-output-names as an optional devicetree property. Let's add
-clock-output-names for all the TI composite clock bindings.
+Hi Drew,
 
-This allows us to use clock-output-names for the clockctrl instance name
-instead of relying on a custom compatible or non-standard node names.
+On 2/3/22 00:53, Tony Lindgren wrote:
+> * Drew Fustini <dfustini@baylibre.com> [220202 23:26]:
+>> I modified the errata fix to use timer 15 and 16 instead which resolves
+>> the timer conflict.
+> 
+> Makes sens to me, just one nit below.
+> 
+>> Note: I am keeping the device tree and driver change together in one
+>> patch as that is how the original errata fix commit was structured.
+> 
+> Yes.. The old dtb handling for the timer driver causes this dependency
+> unfortunately.
 
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: Tero Kristo <kristo@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- Documentation/devicetree/bindings/clock/ti/clockdomain.txt     | 3 +++
- Documentation/devicetree/bindings/clock/ti/composite.txt       | 3 +++
- .../devicetree/bindings/clock/ti/fixed-factor-clock.txt        | 1 +
- Documentation/devicetree/bindings/clock/ti/gate.txt            | 1 +
- Documentation/devicetree/bindings/clock/ti/interface.txt       | 1 +
- Documentation/devicetree/bindings/clock/ti/mux.txt             | 1 +
- 6 files changed, 10 insertions(+)
+Can you also add the cyclictest info to the commit log when you repost v2?
 
-diff --git a/Documentation/devicetree/bindings/clock/ti/clockdomain.txt b/Documentation/devicetree/bindings/clock/ti/clockdomain.txt
---- a/Documentation/devicetree/bindings/clock/ti/clockdomain.txt
-+++ b/Documentation/devicetree/bindings/clock/ti/clockdomain.txt
-@@ -17,6 +17,9 @@ Required properties:
- - #clock-cells : from common clock binding; shall be set to 0.
- - clocks : link phandles of clocks within this domain
- 
-+Optional properties:
-+- clock-output-names : from common clock binding.
-+
- Examples:
- 	dss_clkdm: dss_clkdm {
- 		compatible = "ti,clockdomain";
-diff --git a/Documentation/devicetree/bindings/clock/ti/composite.txt b/Documentation/devicetree/bindings/clock/ti/composite.txt
---- a/Documentation/devicetree/bindings/clock/ti/composite.txt
-+++ b/Documentation/devicetree/bindings/clock/ti/composite.txt
-@@ -27,6 +27,9 @@ Required properties:
- - clocks : link phandles of component clocks
- - #clock-cells : from common clock binding; shall be set to 0.
- 
-+Optional properties:
-+- clock-output-names : from common clock binding.
-+
- Examples:
- 
- usb_l4_gate_ick: usb_l4_gate_ick {
-diff --git a/Documentation/devicetree/bindings/clock/ti/fixed-factor-clock.txt b/Documentation/devicetree/bindings/clock/ti/fixed-factor-clock.txt
---- a/Documentation/devicetree/bindings/clock/ti/fixed-factor-clock.txt
-+++ b/Documentation/devicetree/bindings/clock/ti/fixed-factor-clock.txt
-@@ -16,6 +16,7 @@ Required properties:
- - clocks: parent clock.
- 
- Optional properties:
-+- clock-output-names : from common clock binding.
- - ti,autoidle-shift: bit shift of the autoidle enable bit for the clock,
-   see [2]
- - reg: offset for the autoidle register of this clock, see [2]
-diff --git a/Documentation/devicetree/bindings/clock/ti/gate.txt b/Documentation/devicetree/bindings/clock/ti/gate.txt
---- a/Documentation/devicetree/bindings/clock/ti/gate.txt
-+++ b/Documentation/devicetree/bindings/clock/ti/gate.txt
-@@ -36,6 +36,7 @@ Required properties:
- 	ti,clkdm-gate-clock type
- 
- Optional properties:
-+- clock-output-names : from common clock binding.
- - ti,bit-shift : bit shift for programming the clock gate, invalid for
- 		 ti,clkdm-gate-clock type
- - ti,set-bit-to-disable : inverts default gate programming. Setting the bit
-diff --git a/Documentation/devicetree/bindings/clock/ti/interface.txt b/Documentation/devicetree/bindings/clock/ti/interface.txt
---- a/Documentation/devicetree/bindings/clock/ti/interface.txt
-+++ b/Documentation/devicetree/bindings/clock/ti/interface.txt
-@@ -28,6 +28,7 @@ Required properties:
- - reg : base address for the control register
- 
- Optional properties:
-+- clock-output-names : from common clock binding.
- - ti,bit-shift : bit shift for the bit enabling/disabling the clock (default 0)
- 
- Examples:
-diff --git a/Documentation/devicetree/bindings/clock/ti/mux.txt b/Documentation/devicetree/bindings/clock/ti/mux.txt
---- a/Documentation/devicetree/bindings/clock/ti/mux.txt
-+++ b/Documentation/devicetree/bindings/clock/ti/mux.txt
-@@ -42,6 +42,7 @@ Required properties:
- - reg : register offset for register controlling adjustable mux
- 
- Optional properties:
-+- clock-output-names : from common clock binding.
- - ti,bit-shift : number of bits to shift the bit-mask, defaults to
-   0 if not present
- - ti,index-starts-at-one : valid input select programming starts at 1, not
--- 
-2.35.1
+regards
+Suman
+
+> 
+>> --- a/drivers/clocksource/timer-ti-dm-systimer.c
+>> +++ b/drivers/clocksource/timer-ti-dm-systimer.c
+>> @@ -695,9 +695,9 @@ static int __init dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
+>>  		return 0;
+>>  	}
+>>  
+>> -	if (pa == 0x48034000)		/* dra7 dmtimer3 */
+>> +	if (pa == 0x4882C000)           /* dra7 dmtimer15 */
+>>  		return dmtimer_percpu_timer_init(np, 0);
+>> -	else if (pa == 0x48036000)	/* dra7 dmtimer4 */
+>> +	else if (pa == 0x4882E000)      /* dra7 dmtimer16 */
+>>  		return dmtimer_percpu_timer_init(np, 1);
+>>  
+>>  	return 0;
+> 
+> Linux use lower case hex number typically :)
+> 
+> With that, please feel free to add:
+> 
+> Reviewed-by: Tony Lindgren <tony@atomide.com>
+
