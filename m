@@ -2,67 +2,60 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A0D34A7F7D
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Feb 2022 07:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9871C4A7F90
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Feb 2022 08:04:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242199AbiBCGxU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Feb 2022 01:53:20 -0500
-Received: from muru.com ([72.249.23.125]:45688 "EHLO muru.com"
+        id S1344930AbiBCHE5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Feb 2022 02:04:57 -0500
+Received: from muru.com ([72.249.23.125]:45710 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244639AbiBCGxS (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Thu, 3 Feb 2022 01:53:18 -0500
+        id S229550AbiBCHE5 (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Thu, 3 Feb 2022 02:04:57 -0500
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id E02E480EE;
-        Thu,  3 Feb 2022 06:53:02 +0000 (UTC)
-Date:   Thu, 3 Feb 2022 08:53:15 +0200
+        by muru.com (Postfix) with ESMTPS id 436F580EE;
+        Thu,  3 Feb 2022 07:04:42 +0000 (UTC)
+Date:   Thu, 3 Feb 2022 09:04:55 +0200
 From:   Tony Lindgren <tony@atomide.com>
-To:     Drew Fustini <dfustini@baylibre.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Keerthy <j-keerthy@ti.com>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Tero Kristo <kristo@kernel.org>, khilman@baylibre.com,
-        s-anna@ti.com
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: fix regression from
- errata i940 fix
-Message-ID: <Yft723A/i3J1ZftC@atomide.com>
-References: <20220202212554.1316032-1-dfustini@baylibre.com>
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Emil Renner Berthing <kernel@esmil.dk>
+Subject: Re: [PATCH 01/12] genirq: Allow the PM device to originate from irq
+ domain
+Message-ID: <Yft+l6/JQlZM88rs@atomide.com>
+References: <20220201120310.878267-1-maz@kernel.org>
+ <20220201120310.878267-2-maz@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220202212554.1316032-1-dfustini@baylibre.com>
+In-Reply-To: <20220201120310.878267-2-maz@kernel.org>
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Drew Fustini <dfustini@baylibre.com> [220202 23:26]:
-> I modified the errata fix to use timer 15 and 16 instead which resolves
-> the timer conflict.
+* Marc Zyngier <maz@kernel.org> [220201 12:03]:
+> As a preparation to moving the reference to the device used for
+> runtime power management, add a new 'dev' field to the irqdomain
+> structure for that exact purpose.
+> 
+> The irq_chip_pm_{get,put}() helpers are made aware of the dual
+> location via a new private helper.
+> 
+> No functional change intended.
 
-Makes sens to me, just one nit below.
+Works for me:
 
-> Note: I am keeping the device tree and driver change together in one
-> patch as that is how the original errata fix commit was structured.
-
-Yes.. The old dtb handling for the timer driver causes this dependency
-unfortunately.
-
-> --- a/drivers/clocksource/timer-ti-dm-systimer.c
-> +++ b/drivers/clocksource/timer-ti-dm-systimer.c
-> @@ -695,9 +695,9 @@ static int __init dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
->  		return 0;
->  	}
->  
-> -	if (pa == 0x48034000)		/* dra7 dmtimer3 */
-> +	if (pa == 0x4882C000)           /* dra7 dmtimer15 */
->  		return dmtimer_percpu_timer_init(np, 0);
-> -	else if (pa == 0x48036000)	/* dra7 dmtimer4 */
-> +	else if (pa == 0x4882E000)      /* dra7 dmtimer16 */
->  		return dmtimer_percpu_timer_init(np, 1);
->  
->  	return 0;
-
-Linux use lower case hex number typically :)
-
-With that, please feel free to add:
-
-Reviewed-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Tony Lindgren <tony@atomide.com>
