@@ -2,26 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 495D84A9458
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Feb 2022 08:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F25474A945A
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Feb 2022 08:15:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348793AbiBDHPD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Feb 2022 02:15:03 -0500
-Received: from muru.com ([72.249.23.125]:46266 "EHLO muru.com"
+        id S1349039AbiBDHPF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Feb 2022 02:15:05 -0500
+Received: from muru.com ([72.249.23.125]:46274 "EHLO muru.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236288AbiBDHPC (ORCPT <rfc822;linux-omap@vger.kernel.org>);
-        Fri, 4 Feb 2022 02:15:02 -0500
+        id S236288AbiBDHPE (ORCPT <rfc822;linux-omap@vger.kernel.org>);
+        Fri, 4 Feb 2022 02:15:04 -0500
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 315398196;
-        Fri,  4 Feb 2022 07:14:45 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 9F16881A5;
+        Fri,  4 Feb 2022 07:14:46 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-clk@vger.kernel.org
 Cc:     Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@codeaurora.org>,
         Tero Kristo <t-kristo@ti.com>, linux-omap@vger.kernel.org
-Subject: [PATCH 4/8] clk: ti: Add ti_find_clock_provider() to use clock-output-names
-Date:   Fri,  4 Feb 2022 09:14:45 +0200
-Message-Id: <20220204071449.16762-5-tony@atomide.com>
+Subject: [PATCH 5/8] clk: ti: Use clock-output-names for clkctrl
+Date:   Fri,  4 Feb 2022 09:14:46 +0200
+Message-Id: <20220204071449.16762-6-tony@atomide.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220204071449.16762-1-tony@atomide.com>
 References: <20220204071449.16762-1-tony@atomide.com>
@@ -31,79 +31,51 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Let's add ti_find_clock_provider() so we can use clock-output-names
-to name the clock provider instead of relying on non-standard devicetree
-node names.
+Use clock-output-names devicetree property for clkctrl clocks if
+available.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/clk/ti/clk.c | 43 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 41 insertions(+), 2 deletions(-)
+ drivers/clk/ti/clkctrl.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/ti/clk.c b/drivers/clk/ti/clk.c
---- a/drivers/clk/ti/clk.c
-+++ b/drivers/clk/ti/clk.c
-@@ -119,12 +119,51 @@ int ti_clk_setup_ll_ops(struct ti_clk_ll_ops *ops)
- 	return 0;
+diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+--- a/drivers/clk/ti/clkctrl.c
++++ b/drivers/clk/ti/clkctrl.c
+@@ -469,14 +469,32 @@ static void __init _clkctrl_add_provider(void *data,
+ 	of_clk_add_hw_provider(np, _ti_omap4_clkctrl_xlate, data);
  }
  
+-/* Get clock name based on compatible string for clkctrl */
+-static char * __init clkctrl_get_name(struct device_node *np)
 +/*
-+ * Eventually we could standardize to using '_' for clk-*.c files to follow the
-+ * TRM naming and leave out the tmp name here.
++ * Get clock name based on "clock-output-names" property or the
++ * compatible property for clkctrl.
 + */
-+static struct device_node *ti_find_clock_provider(struct device_node *from,
-+						  const char *name)
-+{
-+	struct device_node *np;
-+	bool found = false;
-+	const char *n;
-+	char *tmp;
-+
-+	tmp = kstrdup(name, GFP_KERNEL);
-+	if (!tmp)
-+		return NULL;
-+	strreplace(tmp, '-', '_');
-+
-+	/* Node named "clock" with "clock-output-names" */
-+	for_each_of_allnodes_from(from, np) {
-+		if (of_property_read_string_index(np, "clock-output-names",
-+						  0, &n))
-+			continue;
-+
-+		if (!strncmp(n, tmp, strlen(tmp))) {
-+			found = true;
-+			break;
-+		}
-+	}
-+	of_node_put(from);
-+	kfree(tmp);
-+
-+	if (found)
-+		return np;
-+
-+	/* Fall back to using old node name base provider name */
-+	return of_find_node_by_name(from, name);
-+}
-+
- /**
-  * ti_dt_clocks_register - register DT alias clocks during boot
-  * @oclks: list of clocks to register
-  *
-  * Register alias or non-standard DT clock entries during boot. By
-- * default, DT clocks are found based on their node name. If any
-+ * default, DT clocks are found based on their clock-output-names
-+ * property, or the clock node name for legacy cases. If any
-  * additional con-id / dev-id -> clock mapping is required, use this
-  * function to list these.
-  */
-@@ -168,7 +207,7 @@ void __init ti_dt_clocks_register(struct ti_dt_clk oclks[])
- 		if (num_args && clkctrl_nodes_missing)
- 			continue;
++static const char * __init clkctrl_get_name(struct device_node *np)
+ {
+ 	struct property *prop;
+ 	const int prefix_len = 11;
+ 	const char *compat;
++	const char *output;
+ 	char *name;
  
--		node = of_find_node_by_name(NULL, buf);
-+		node = ti_find_clock_provider(NULL, buf);
- 		if (num_args && compat_mode) {
- 			parent = node;
- 			child = of_get_child_by_name(parent, "clock");
++	if (!of_property_read_string_index(np, "clock-output-names", 0,
++					   &output)) {
++		const char *end;
++		int len;
++
++		len = strlen(output);
++		end = strstr(output, "_clkctrl");
++		if (end)
++			len -= strlen(end);
++		name = kstrndup(output, len, GFP_KERNEL);
++
++		return name;
++	}
++
+ 	of_property_for_each_string(np, "compatible", prop, compat) {
+ 		if (!strncmp("ti,clkctrl-", compat, prefix_len)) {
+ 			/* Two letter minimum name length for l3, l4 etc */
 -- 
 2.35.1
