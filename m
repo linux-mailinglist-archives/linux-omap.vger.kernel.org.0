@@ -2,35 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 672044AB6BD
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Feb 2022 09:44:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBE634AD751
+	for <lists+linux-omap@lfdr.de>; Tue,  8 Feb 2022 12:33:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233017AbiBGIVY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Feb 2022 03:21:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52538 "EHLO
+        id S1356784AbiBHLch (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 8 Feb 2022 06:32:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239163AbiBGIN6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Feb 2022 03:13:58 -0500
-X-Greylist: delayed 564 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 00:13:57 PST
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9E445C043181
-        for <linux-omap@vger.kernel.org>; Mon,  7 Feb 2022 00:13:57 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 8E5DF80E1;
-        Mon,  7 Feb 2022 08:04:10 +0000 (UTC)
-Date:   Mon, 7 Feb 2022 10:04:31 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Romain Naour <romain.naour@smile.fr>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: AM5749: tty serial 8250 omap driver crash
-Message-ID: <YgDSj7FJS7nbkJol@atomide.com>
-References: <2c80fd8a-2935-9a6d-43fd-f95fa53c93d2@smile.fr>
+        with ESMTP id S1356957AbiBHLNd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 8 Feb 2022 06:13:33 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 425DAC03FEC6
+        for <linux-omap@vger.kernel.org>; Tue,  8 Feb 2022 03:13:31 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id ch26so322658edb.12
+        for <linux-omap@vger.kernel.org>; Tue, 08 Feb 2022 03:13:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3G2225l3e7AAW7cvW9DSbSKu70gKYyiFP+/P2AbU0GE=;
+        b=Xyf7gEeeFQZpkKXO8gzF2AgluqdrifnT/FgKVNNk/lOKTNzDZiaZpxWZkJBQ3wk8ue
+         hYn6eA9FXNG9IBGN9B+GjYUHQ8714SRdBNzbQJ82JTECIlg3js0Ids8PtzlFJlwQ8/No
+         KjSJpWys4J2GcMk8T8YisSEgyfTJXbUXne3m/y0TCeoQoimlXHHwP1M4P31cZ7kOgtbc
+         +zWBrbmshVSmfUyRDLeErcgLx7SVrFU5Zk0tjgRWRfH+3NXn/PL8N0Wfp1ujODljr+4m
+         cAdFJR6/y3QWMGHdJ/QVE6BBFoYdz9z3MzSn6nX0V+TefwaKjnvOZqYCVvi9JflBbb1S
+         qJ5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3G2225l3e7AAW7cvW9DSbSKu70gKYyiFP+/P2AbU0GE=;
+        b=KqiNZSZHlY/cTY1eIzszli4me+qxV7Qy2o/0d1JMyGrLy/OoU5odF4MBjU3+hGPg0p
+         GmBp1/SsNCvK89cX5+UlaYUxp4UZc8uX3A3GRQXOAF/PP/bAcfNIwvb3qzftNolX/uQV
+         4RgMYG7hFGBE8hb7sF19ZoffXPtUI/5CxE3XVK0PYirnHNuKPL441/2tkFX2P0yqr6kv
+         LsJk6mGRbrdta5g7d0B6OALpchZ31ZnaMG6b0Imscaek/XHlIQZtMfjlQECmhO7XQVBK
+         zgYs3yPyHcDqezgqOkkKNWDYkBxBMuDEu0bw1+lHwDY3rHAnkIstsodNo7ebGlMkkKCN
+         dbqw==
+X-Gm-Message-State: AOAM531+cZqt3sUAiig9sGmPXqdf4jhMjHGH3YOrL8fJ8OoQ7tlxydo6
+        EheFWYQeAsTn97Bjbb3Akl7XMgt8MquEfcv5hkGCTA==
+X-Google-Smtp-Source: ABdhPJywJZL0jTPvvCbkGnYtFW82KoshEzkqB1HixUSDNK3JM1+qqwgc2BPOGxgMTLyu8AS04o5CLxS9fyGFvEJzrWk=
+X-Received: by 2002:aa7:db49:: with SMTP id n9mr3902542edt.100.1644318809786;
+ Tue, 08 Feb 2022 03:13:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2c80fd8a-2935-9a6d-43fd-f95fa53c93d2@smile.fr>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+References: <20220201120310.878267-1-maz@kernel.org>
+In-Reply-To: <20220201120310.878267-1-maz@kernel.org>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 8 Feb 2022 12:13:19 +0100
+Message-ID: <CAMRc=Me=VTqTfa4=p3HOa4_NmE3W6h+YyPLZGKXZo6dqUoxWmg@mail.gmail.com>
+Subject: Re: [PATCH 00/12] genirq: Move irqchip runtime PM over to irq domain
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC..." 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Emil Renner Berthing <kernel@esmil.dk>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -38,38 +80,77 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On Tue, Feb 1, 2022 at 1:03 PM Marc Zyngier <maz@kernel.org> wrote:
+>
+> Our irq_chip data structure currently suffers from two problems:
+>
+> (1) the 'name' field is often dynamically populated with a reference
+>     to the underlying HW (DT node dame, for example)
+>
+> (2) the 'parent_device' which is used to implement runtime PM is also
+>     dynamically populated
+>
+> (3) there is at least one instance of a subsystem messing with the
+>     internals of irq_chip structures (gpiochip_set_irq_hooks is
+>     what I know about)
+>
+> These things mean that although the primary use of irq_chip is to only
+> contain function pointers and other *static* information, the above
+> two fields result in these structures being copied in a number of
+> drivers. Eventually, it would be much better if the various drivers
+> would use irq_chip as an 'ops' data structure (potentially made
+> read-only), and keep the dynamic information somewhere more suitable.
+>
+> For (2) we already have the irqdomain structure that is designed to
+> deal with the context in which interrupts are used, and it makes sense
+> to move the 'parent_device' field over to this structure. This is what
+> this small series is doing, with some minor cleanup on the way.
+>
+> (1) and (3) will be dealt in separate series (and I don't have a good
+> solution for (3) yet).
+>
+> Thanks,
+>
+>         M.
+>
+> Marc Zyngier (12):
+>   genirq: Allow the PM device to originate from irq domain
+>   irqchip/gic: Move PM device over to irq domain
+>   irqchip/renesas-intc-gpio: Move PM device over to irq domain
+>   irqchip/renesas-irqc: Move PM device over to irq domain
+>   irqchip/imx-intmux: Move PM device over to irq domain
+>   gpio: mt7621: Kill parent_device usage
+>   gpio: omap: Move PM device over to irq domain
+>   gpio: rcar: Move PM device over to irq domain
+>   gpio: tpmx86: Move PM device over to irq domain
+>   pinctrl: npcm: Fix broken references to chip->parent_device
+>   pinctrl: starfive: Move PM device over to irq domain
+>   genirq: Kill irq_chip::parent_device
+>
+>  drivers/gpio/gpio-mt7621.c                |  1 -
+>  drivers/gpio/gpio-omap.c                  |  7 ++++---
+>  drivers/gpio/gpio-rcar.c                  |  2 +-
+>  drivers/gpio/gpio-tqmx86.c                |  3 ++-
+>  drivers/irqchip/irq-gic.c                 | 12 +++++------
+>  drivers/irqchip/irq-imx-intmux.c          |  8 +++-----
+>  drivers/irqchip/irq-renesas-intc-irqpin.c |  3 ++-
+>  drivers/irqchip/irq-renesas-irqc.c        |  3 ++-
+>  drivers/pinctrl/nuvoton/pinctrl-npcm7xx.c | 25 +++++++++++------------
+>  drivers/pinctrl/pinctrl-starfive.c        |  3 ++-
+>  include/linux/irq.h                       |  2 --
+>  include/linux/irqdomain.h                 | 10 +++++++++
+>  kernel/irq/chip.c                         | 20 +++++++++++++-----
+>  13 files changed, 59 insertions(+), 40 deletions(-)
+>
+> --
+> 2.30.2
+>
 
-* Romain Naour <romain.naour@smile.fr> [220204 13:39]:
-> It seems that the driver fail to read the UART_LCR register from
-> omap8250_set_mctrl():
-> 
-> "lcr = serial_in(up, UART_LCR);"
-> 
-> PC is at mem_serial_in+0x2c/0x30
-> LR is at omap8250_set_mctrl+0x48/0xb0
-> 
-> The problem only occurs with a -rt kernel, I tried with several kernel version:
-> 5.10-rt, 5.15-rt and 5.17-rt.
-> 
-> I'm not able to reproduce the issue with a standard kernel.
+The changes for GPIO are small so:
 
-Interesting, what's the exception you get with the -rt kernel? Is it an
-unhandled external abort or something else?
+Acked-by: Bartosz Golaszewski <brgl@bgdev.pl>
 
-> While looking at the git history, I noticed this commit [3] about "flakey idling
-> of uarts and stop using swsup_sidle_act".
-> 
-> So I removed the SYSC_QUIRK for uart IP revision 0x50411e03 and it fixed my issue.
+You can take it through your tree and if there are any conflicts, I'll
+just ask for an immutable branch.
 
-Hmm.
-
-> Is the SYSC_QUIRK for omap4 still needed ? Is it safe to remove it ?
-> It seems this issue was introduced while dropping the legacy platform data
-> (between 4.19 and 5.4 kernels).
-
-AFAIK it's still needed, but maybe we can disable it for am57xx though.
-
-Regards,
-
-Tony
+Bart
