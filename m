@@ -1,83 +1,60 @@
 Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46BD14AF30C
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Feb 2022 14:40:36 +0100 (CET)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 3024B4AFFC7
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Feb 2022 23:02:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234320AbiBINkO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Feb 2022 08:40:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59370 "EHLO
+        id S234681AbiBIWBK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Feb 2022 17:01:10 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:37344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234313AbiBINkN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Feb 2022 08:40:13 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D80C0613CA;
-        Wed,  9 Feb 2022 05:40:16 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E46B619FF;
-        Wed,  9 Feb 2022 13:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1144C340E7;
-        Wed,  9 Feb 2022 13:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644414015;
-        bh=+8aJBPSULxP5Zax04rq5roBRVH/mUwGTvhQVeya08Aw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Zyx1Un9dpCjcJBBA9WTpIjqyj+P3afDSBYWrucqMYJdMpL+Op9P6lDfxs/IjQ2OXq
-         g2bkeD1/F4Ajy7Sdb5KDvRx9A0/dIA0lZiIjI1uy+umxSZyCEfCvBqYoRaCid69Bnx
-         8sPjqvn83M5qO9esVwBrate6RVoJBvKqpyYR1Oq7NaHwceS4MpfXK9flTllVh+OZ98
-         DOcrXvV9iFowho2pd4JLqN64zb5vGakCxZNVSZkfSPplWGU7n+poOFQHN6b0jFR5F5
-         QwqYpoHPWzpcD3CTFwR79T0g0sBg1XYbjmu0xh5Fd/LCqKRLVFWNIr9O9LVgw1Zmx7
-         uItQCnP8CHBAg==
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <maz@kernel.org>)
-        id 1nHnCf-006dDe-M2; Wed, 09 Feb 2022 13:40:13 +0000
+        with ESMTP id S234491AbiBIWBG (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Feb 2022 17:01:06 -0500
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C435DF8E3FF;
+        Wed,  9 Feb 2022 14:01:05 -0800 (PST)
+Received: by mail-oi1-f179.google.com with SMTP id u3so3950326oiv.12;
+        Wed, 09 Feb 2022 14:01:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ph17us2VYP151+oagxeJOEGgmWDg7hvLO4GbsmqrUTk=;
+        b=6yICeb7G1p1FtEbKEu4zBtRgke6vmP4jp+w9w7Tey1Ymo13xvEy0BwEmWgpIJgvhwU
+         nNb2V0NHbdPTyx38+XoHKKRzTr1EzGdDhD5UT5uE4eXlFTRSgck/5w8yFmwF0yvy+yEp
+         m9rCgJ4qhc1lAe5orL6nKk/i4OzgbTKxkVOjcN2BHNniLbVLqUHtPXTW8hI5OmhGV7u5
+         MQqPZdYLMhNARbrYJhMC866CIXugHVDxXFTW/1Iig8FYcuQ3TvhD6V99zs2CXponruuQ
+         RR0pvmme+GGhR8nEo1LXT5sgXALzFwLj+spmYXcPx3ozwwdPPYQdRaUBzdAIFDb6KBWT
+         hfmQ==
+X-Gm-Message-State: AOAM531bG0EXaMWRSrYQgcCr3fZOtAjFyq88a1hWld5Y1Hze+LhMt8Ws
+        tKiq1i1VOnDy7BriPIPapw==
+X-Google-Smtp-Source: ABdhPJw1Q8wxmJWgC1W5LJv4r1904ASF7Q897ixVqzlgOVnzH4Uml8NnR8gpAalstpD1jK7m6IdoWg==
+X-Received: by 2002:a05:6808:1719:: with SMTP id bc25mr2567838oib.323.1644444064633;
+        Wed, 09 Feb 2022 14:01:04 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id bj8sm7592435oib.20.2022.02.09.14.01.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Feb 2022 14:01:03 -0800 (PST)
+Received: (nullmailer pid 1005143 invoked by uid 1000);
+        Wed, 09 Feb 2022 22:01:02 -0000
+Date:   Wed, 9 Feb 2022 16:01:02 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-omap@vger.kernel.org, Tero Kristo <kristo@kernel.org>
+Subject: Re: [PATCHv2] dt-bindings: clock: Add binding for TI clksel
+Message-ID: <YgQ5no/7cEW4yRrM@robh.at.kernel.org>
+References: <20220203073929.59296-1-tony@atomide.com>
 MIME-Version: 1.0
-Date:   Wed, 09 Feb 2022 13:40:13 +0000
-From:   Marc Zyngier <maz@kernel.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-mediatek@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
-        <linux-omap@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Emil Renner Berthing <kernel@esmil.dk>
-Subject: Re: [PATCH 03/12] irqchip/renesas-intc-gpio: Move PM device over to
- irq domain
-In-Reply-To: <CAMuHMdXbM8kvmv0XKP8=rYj-8k5cFt50VP69LeDNX5oHx2e9dw@mail.gmail.com>
-References: <20220201120310.878267-1-maz@kernel.org>
- <20220201120310.878267-4-maz@kernel.org>
- <CAMuHMdXbM8kvmv0XKP8=rYj-8k5cFt50VP69LeDNX5oHx2e9dw@mail.gmail.com>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <83f67bec65e4f3cf661e0b6a6bbe9641@kernel.org>
-X-Sender: maz@kernel.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: geert@linux-m68k.org, linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl, matthias.bgg@gmail.com, grygorii.strashko@ti.com, ssantosh@kernel.org, khilman@kernel.org, tglx@linutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de, avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com, kernel@esmil.dk
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220203073929.59296-1-tony@atomide.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,22 +62,36 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2022-02-02 14:27, Geert Uytterhoeven wrote:
-> Hi Marc,
+On Thu, 03 Feb 2022 09:39:29 +0200, Tony Lindgren wrote:
+> In order to prepare for fixing lots of devicetree unique_unit_address
+> warnings for the TI clock nodes, let's add a binding for the TI clksel
+> clocks. This allows us to move the overlapping reg properties for the
+> component clocks to be children of the related clksel nodes. And with
+> that we need the reg property only for the parent clksel node making
+> the reg property unique like it should be.
 > 
-> On Tue, Feb 1, 2022 at 1:12 PM Marc Zyngier <maz@kernel.org> wrote:
->> Move the reference to the device over to the irq domain.
->> 
->> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> We want to set #clock-cells = <2> in case we ever start parsing ranges
+> of clkcsel instances directly using a clksel driver rather than using the
+> existing component clock drivers and child nodes.
 > 
-> Thanks for your patch!
+> And before the devicetree files can be updated, we need to update the
+> TI clock drivers to get the IO address from the parent clksel node.
 > 
-> s/gpio/irqpin/ in the one-line summary?
+> Cc: Tero Kristo <kristo@kernel.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+> 
+> Changes since V1:
+> 
+> - Set additionalProperties to type object as suggested by Rob
+> 
+> - Changed #clock-cells to 2 for parsing ranges of clksel instances
+> 
+> - Updated patch description for more info on why this is needed
+> 
+>  .../bindings/clock/ti/ti,clksel.yaml          | 51 +++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,clksel.yaml
+> 
 
-Indeed, now fixed.
-
-Thanks,
-
-         M.
--- 
-Jazz is not dead. It just smells funny...
+Applied, thanks!
