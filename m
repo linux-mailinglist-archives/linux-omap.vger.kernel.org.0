@@ -2,91 +2,174 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9B3D4B0D29
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Feb 2022 13:05:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C67B4B0E27
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Feb 2022 14:11:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241395AbiBJMFX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 10 Feb 2022 07:05:23 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57714 "EHLO
+        id S242000AbiBJNKv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 10 Feb 2022 08:10:51 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241393AbiBJMFW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Feb 2022 07:05:22 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DD7D010B5
-        for <linux-omap@vger.kernel.org>; Thu, 10 Feb 2022 04:05:21 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 91BEB80FC;
-        Thu, 10 Feb 2022 12:04:51 +0000 (UTC)
-Date:   Thu, 10 Feb 2022 14:05:18 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Romain Naour <romain.naour@smile.fr>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: AM5749: tty serial 8250 omap driver crash
-Message-ID: <YgT/fhpFQfkj1b0j@atomide.com>
-References: <2c80fd8a-2935-9a6d-43fd-f95fa53c93d2@smile.fr>
- <YgDSj7FJS7nbkJol@atomide.com>
- <e3cf5082-b494-9309-6878-da208920fa5a@smile.fr>
+        with ESMTP id S238484AbiBJNKu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 10 Feb 2022 08:10:50 -0500
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0CD61A7;
+        Thu, 10 Feb 2022 05:10:50 -0800 (PST)
+Received: by mail-io1-xd35.google.com with SMTP id d188so7152796iof.7;
+        Thu, 10 Feb 2022 05:10:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CI6j1xULGHZK/LVW1ZPwGP4+AV2y1oZFGa5IIiZmDJo=;
+        b=IiXa3VQCBaF1SQR3XFy7qVDbJBImBsmQr2ySMCLd5hGTAr79yz7XXN6wj+uTkU8TO3
+         dYtgDZJhGzwMKCUO9sLKJokv69VOZ3Az1TVq3ATxSYX576eiywU0ZG5xHPbkjU1zXCpg
+         fp12novry+/WVScxQr4b/ouLV94M6wnamV5uhCAVZUn/UfDBj/Hgwabqla3z9n0OQkDB
+         aXoS8OXUTsEVVkK7N6qEfVxqH+8o/R4AV024vON45LxXEUpFvcrmPl4ix2S4emg2nbfC
+         afCL5gHo2kl6D85muQrijK4J0RmBEA/pV5XmGQkgAn8iyC1ivf3F5hXQ3dD0mTcaDejl
+         rm7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CI6j1xULGHZK/LVW1ZPwGP4+AV2y1oZFGa5IIiZmDJo=;
+        b=SZnwEVkWgMBwhFD5om4aN8QfFtEQQRpdWTPh+OL8kiNM6l42APJSIDmp9XMLxZBqXc
+         K6QMfIJ0oAymK1V20AYzI5a8wfv8VWu7gTx75Xzk2dAYidWs+2l7aAhp7VuFMMFVuj23
+         P907HLFia5RGxkFhw0+QSmmb39bR5US4RCfe8TMw1VZnzCvEHib6fNP4w8VrzEVsv95V
+         EEM25ox2GjYg3U2lo/sa3WEEVe2xYEEibeLrXQunr9Sgq5Ni0YA8WVmwt2FxjUbLs4kV
+         l6bxEK8wAW+77QCkx/ZKCrgY8CckOUGZbIabQaCDUykIsBKtwuCVZN1wiOJw8b3nBV/O
+         6vNQ==
+X-Gm-Message-State: AOAM5338/q5YEmOoPWLoo+VUeH/cpv8GnmDtmEM6YjI0NLxjR4T+HRPm
+        EYR0UO3I2zbdk1X9a6EXHyeGhAuw/C1nGQ==
+X-Google-Smtp-Source: ABdhPJxdr4zXq6vGyMReqolYLQfOtmPtsRHFFhb9UQcKCp1p2ZiL9mBFZ5+kjCdb03tgN/4ftCRQOw==
+X-Received: by 2002:a5e:8406:: with SMTP id h6mr3750298ioj.144.1644498649526;
+        Thu, 10 Feb 2022 05:10:49 -0800 (PST)
+Received: from aford-IdeaCentre-A730.lan ([2601:448:8400:9e8:ca61:525d:775a:21bf])
+        by smtp.gmail.com with ESMTPSA id o22sm11173756iow.37.2022.02.10.05.10.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Feb 2022 05:10:48 -0800 (PST)
+From:   Adam Ford <aford173@gmail.com>
+To:     linux-omap@vger.kernel.org
+Cc:     aford@beaconembedded.com, Adam Ford <aford173@gmail.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] arm: dts: logicpd-torpedo: Add isp1763 support to baseboard
+Date:   Thu, 10 Feb 2022 07:10:28 -0600
+Message-Id: <20220210131028.1404851-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e3cf5082-b494-9309-6878-da208920fa5a@smile.fr>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+The baseboard has an ISP1763 USB controller acting as a host.
+Since the pinmuxing for the corresponding IRQ is different
+between OMAP35 and DM37, the pinmux has been placed in the
+kit-level files, while the common code is placed into the
+baseboard file.
 
-* Romain Naour <romain.naour@smile.fr> [220209 09:13]:
-> Le 07/02/2022 à 09:04, Tony Lindgren a écrit :
-> > Interesting, what's the exception you get with the -rt kernel? Is it an
-> > unhandled external abort or something else?
-> 
-> "asynchronous external abort"
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-OK
-
-> Maybe there is something wrong with the smart-standby or smart-idle feature in
-> the UART IP ? I'm not sure.
-
-Could be that too, but maybe it's as simple as the patch below. Care to
-give it a try?
-
-> Are you able to reproduce it ?
-> Maybe on a IDK574 or a Beaglebone-AI board ?
-
-Not sure why I'm not seeing this one with my test systems.. Have not tried
-with the RT patches for a while though.
-
-Regards,
-
-Tony
-
-8< -------
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -163,6 +163,8 @@ static void omap8250_set_mctrl(struct uart_port *port, unsigned int mctrl)
- 	struct omap8250_priv *priv = up->port.private_data;
- 	u8 lcr;
- 
-+	pm_runtime_get_sync(port->dev);
+diff --git a/arch/arm/boot/dts/logicpd-torpedo-35xx-devkit.dts b/arch/arm/boot/dts/logicpd-torpedo-35xx-devkit.dts
+index 57bae2aa910e..cb08aa62d967 100644
+--- a/arch/arm/boot/dts/logicpd-torpedo-35xx-devkit.dts
++++ b/arch/arm/boot/dts/logicpd-torpedo-35xx-devkit.dts
+@@ -11,3 +11,11 @@ / {
+ 	model = "LogicPD Zoom OMAP35xx Torpedo Development Kit";
+ 	compatible = "logicpd,dm3730-torpedo-devkit", "ti,omap3430", "ti,omap3";
+ };
 +
- 	serial8250_do_set_mctrl(port, mctrl);
- 
- 	if (!mctrl_gpio_to_gpiod(up->gpios, UART_GPIO_RTS)) {
-@@ -179,6 +181,9 @@ static void omap8250_set_mctrl(struct uart_port *port, unsigned int mctrl)
- 		serial_out(up, UART_EFR, priv->efr);
- 		serial_out(up, UART_LCR, lcr);
- 	}
++&omap3_pmx_core {
++	isp1763_pins: pinmux_isp1763_pins {
++		pinctrl-single,pins = <
++			OMAP3_CORE1_IOPAD(0x2154,  PIN_INPUT_PULLUP | MUX_MODE4)	/* sdmmc1_dat6.gpio_128 */
++		>;
++	};
++};
+diff --git a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
+index 5532db04046c..07ea822fe405 100644
+--- a/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
++++ b/arch/arm/boot/dts/logicpd-torpedo-37xx-devkit.dts
+@@ -85,3 +85,12 @@ OMAP3630_CORE2_IOPAD(0x25da, PIN_INPUT_PULLUP | MUX_MODE2)   /* etk_ctl.sdmmc3_c
+ 		>;
+ 	};
+ };
 +
-+	pm_runtime_mark_last_busy(port->dev);
-+	pm_runtime_put_autosuspend(port->dev);
- }
++/* The gpio muxing between omap3530 and dm3730 is different for GPIO_128 */
++&omap3_pmx_wkup {
++	isp1763_pins: pinmux_isp1763_pins {
++		pinctrl-single,pins = <
++			OMAP3_WKUP_IOPAD(0x2a58, PIN_INPUT_PULLUP | MUX_MODE4)	/* reserved.gpio_128 */
++		>;
++	};
++};
+diff --git a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+index 533a47bc4a53..b4664ab00256 100644
+--- a/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
++++ b/arch/arm/boot/dts/logicpd-torpedo-baseboard.dtsi
+@@ -93,7 +93,8 @@ &charger {
  
- /*
+ &gpmc {
+ 	ranges = <0 0 0x30000000 0x1000000	/* CS0: 16MB for NAND */
+-		  1 0 0x2c000000 0x1000000>;	/* CS1: 16MB for LAN9221 */
++		  1 0 0x2c000000 0x1000000	/* CS1: 16MB for LAN9221 */
++		  6 0 0x28000000 0x1000000>;	/* CS6: 16MB for ISP1763 */
+ 
+ 	ethernet@gpmc {
+ 		pinctrl-names = "default";
+@@ -102,6 +103,44 @@ ethernet@gpmc {
+ 		interrupts = <1 IRQ_TYPE_LEVEL_LOW>;		/* gpio129 */
+ 		reg = <1 0 0xff>;
+ 	};
++
++	usb@6,0 {
++		pinctrl-names = "default";
++		pinctrl-0 = <&isp1763_pins>;
++		compatible = "nxp,usb-isp1763";
++		reg = <0x6 0x0 0xff>;
++		interrupt-parent = <&gpio5>;
++		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-names = "host";
++		bus-width = <16>;
++		dr_mode = "host";
++		gpmc,mux-add-data = <0>;
++		gpmc,device-width = <2>;
++		gpmc,wait-pin = <0>;
++		gpmc,burst-length = <4>;
++		gpmc,cycle2cycle-samecsen = <1>;
++		gpmc,cycle2cycle-diffcsen = <1>;
++		gpmc,cs-on-ns = <0>;
++		gpmc,cs-rd-off-ns = <45>;
++		gpmc,cs-wr-off-ns = <45>;
++		gpmc,adv-on-ns = <0>;
++		gpmc,adv-rd-off-ns = <0>;
++		gpmc,adv-wr-off-ns = <0>;
++		gpmc,oe-on-ns = <0>;
++		gpmc,oe-off-ns = <45>;
++		gpmc,we-on-ns = <0>;
++		gpmc,we-off-ns = <25>;
++		gpmc,rd-cycle-ns = <60>;
++		gpmc,wr-cycle-ns = <45>;
++		gpmc,access-ns = <35>;
++		gpmc,page-burst-access-ns = <0>;
++		gpmc,bus-turnaround-ns = <0>;
++		gpmc,cycle2cycle-delay-ns = <60>;
++		gpmc,wait-monitoring-ns = <0>;
++		gpmc,clk-activation-ns = <0>;
++		gpmc,wr-data-mux-bus-ns = <5>;
++		gpmc,wr-access-ns = <20>;
++	};
+ };
+ 
+ &hdqw1w {
+-- 
+2.32.0
+
