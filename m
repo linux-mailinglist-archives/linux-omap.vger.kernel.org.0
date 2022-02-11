@@ -2,80 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFBFF4B2529
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Feb 2022 13:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0646E4B2756
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Feb 2022 14:46:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349783AbiBKMDM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-omap@lfdr.de>); Fri, 11 Feb 2022 07:03:12 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50160 "EHLO
+        id S1349799AbiBKNpy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Feb 2022 08:45:54 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349879AbiBKMDH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Feb 2022 07:03:07 -0500
-X-Greylist: delayed 605 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 11 Feb 2022 04:03:06 PST
-Received: from hp0.dsonivx.sbs (unknown [157.230.15.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D32D54
-        for <linux-omap@vger.kernel.org>; Fri, 11 Feb 2022 04:03:06 -0800 (PST)
-From:   mailing@kaizenprofits.cc
-To:     linux-omap@vger.kernel.org
-Subject: join crypto today
-Date:   11 Feb 2022 11:53:00 +0000
-Message-ID: <20220211115300.2C532F8C54B37529@kaizenprofits.cc>
+        with ESMTP id S238948AbiBKNpy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Feb 2022 08:45:54 -0500
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF2D9E;
+        Fri, 11 Feb 2022 05:45:53 -0800 (PST)
+Received: by mail-qt1-f169.google.com with SMTP id y8so9017781qtn.8;
+        Fri, 11 Feb 2022 05:45:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=dgb78SMhlLckMxfKWnvYjMxeWU9PSdj/kJY8mvW63gw=;
+        b=aKebTLzwSmkj2MZkTFmOf4uCdKYwBMBkliO5118EhKOE3DQegTBYo7bVjH3v0lmG1U
+         VNdEC3gtW0Zk7VyKmuVRFxj/eZbhKDWaubO3d+h9foXQNcTbHheoV7L9lKzVt/fEoWn2
+         K9Qfy+FMBBr+lOLzMDNeajnKCPAb89VAXREerYZb4vG492d1OBcjrusvmCPHJOT9P5WL
+         I7+1EvfCMuBb/1xrVAc7h1hOEXxscCaAovYDhE9yWQ77mtjtfXXc2EuSeSIurGsQ2KIQ
+         z5NQvkFQfY5uqaEon7sLCe7Uj7pk47WyiHPU+tSi1h9W/Y+IaKs1AIGmpx4h0dsnp8QQ
+         6hkQ==
+X-Gm-Message-State: AOAM533lXtxKp+Yp1+8YzDcxEpVtpn+FnB2Sn3njEcXzbXrnPdVrjFbJ
+        aljR40IgZIxRjUk5W02TQtakIQdmGA==
+X-Google-Smtp-Source: ABdhPJxV4tRG7Dqp23hahgNdfJfPz4fDXrmAwDpBOMKeBs5qPO1J/37Ao9XXE4Ahbwfpkj/pFq84qA==
+X-Received: by 2002:ac8:5747:: with SMTP id 7mr1104603qtx.95.1644587152387;
+        Fri, 11 Feb 2022 05:45:52 -0800 (PST)
+Received: from robh.at.kernel.org ([2607:fb90:20dc:156b:8f01:9329:d9ca:df6f])
+        by smtp.gmail.com with ESMTPSA id k13sm12364952qko.45.2022.02.11.05.45.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Feb 2022 05:45:51 -0800 (PST)
+Received: (nullmailer pid 268371 invoked by uid 1000);
+        Fri, 11 Feb 2022 13:45:46 -0000
+Date:   Fri, 11 Feb 2022 07:45:46 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        devicetree@vger.kernel.org, Stephen Boyd <sboyd@codeaurora.org>,
+        Tero Kristo <t-kristo@ti.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 1/3] clk: ti: Drop legacy compatibility clocks for am3
+Message-ID: <YgZoihEm2kBQ/orL@robh.at.kernel.org>
+References: <20220203085618.16043-1-tony@atomide.com>
+ <20220203085618.16043-2-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=1.8 required=5.0 tests=BAYES_50,LOTS_OF_MONEY,
-        RCVD_IN_XBL,SPF_HELO_NONE,SPF_SOFTFAIL,T_MONEY_PERCENT,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220203085618.16043-2-tony@atomide.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Bitcoin Turns Lower, Why BTC Could Extend Losses Below $42.5K
-https://www.kaizenprofits.cc
+On Thu, 03 Feb 2022 10:56:16 +0200, Tony Lindgren wrote:
+> We no longer have users for the compatibility clocks and we can drop them.
+> These are old duplicate clocks for what we using.
+> 
+> Cc: devicetree@vger.kernel.org
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  drivers/clk/ti/Makefile          |   3 +-
+>  drivers/clk/ti/clk-33xx-compat.c | 218 -------------------------------
+>  drivers/clk/ti/clk-33xx.c        |   5 +-
+>  drivers/clk/ti/clkctrl.c         |   8 +-
+>  include/dt-bindings/clock/am3.h  |  93 -------------
+>  5 files changed, 4 insertions(+), 323 deletions(-)
+>  delete mode 100644 drivers/clk/ti/clk-33xx-compat.c
+> 
 
-Bitcoin failed again to clear the $45,500 resistance zone against 
-the US Dollar. BTC is declining and remains at a risk of more 
-losses below $42,500. Bitcoin attempted another upside break 
-above $45,500 but failed. The price is trading below $43,500 and 
-the 100 hourly simple moving average. There was a break below a 
-key bullish trend line with support near $43,500 on the hourly 
-chart of the BTC/USD pair (data feed from Kraken). The pair could 
-decline sharply if there is a clear move below the $42,500 
-support zone. Bitcoin Price Corrects Gains Bitcoin price 
-attempted an upside break above the $45,500 resistance zone. 
-However, BTC struggled to gain pace above the $45,500 level. A 
-high was formed near $45,900 and the price started a fresh 
-decline. The price moved below the $45,000 and $44,500 support 
-levels. Besides, there was a break below a key bullish trend line 
-with support near $43,500 on the hourly chart of the BTC/USD 
-pair. The pair is now trading below $43,500 and the 100 hourly 
-simple moving average. Bitcoin is now finding bids near the 
-$42,600 level. A low is formed near $42,664 and the price is now 
-consolidating losses. An immediate resistance is near the $43,450 
-level. It is near the 23.6% Fib retracement level of the recent 
-decline from the $45,900 high to $42,664 low. The first major 
-resistance is near the $44,000 level and the 100 hourly simple 
-moving average. The next key resistance is near the $44,250 
-level. It is near the 50% Fib retracement level of the recent 
-decline from the $45,900 high to $42,664 low. Source: BTCUSD on 
-https://www.kaizenprofits.cc A clear upside break above the 
-$44,250 level might open the doors for more upsides. The main 
-resistance on the upside is still near the $45,500 level. More 
-Losses in BTC? If bitcoin fails to start a fresh increase above 
-$44,250, it could continue to move down. An immediate support on 
-the downside is near the $42,600 zone. The next major support is 
-seen near the $42,500 level. If there is a downside break below 
-the $42,500 support, the price could start a major decline 
-towards the $41,200 level. Technical indicators: Hourly MACD â€“ 
-The MACD is now gaining pace in the bearish zone. Hourly RSI 
-(Relative Strength Index) â€“ The RSI for BTC/USD is now below the 
-50 level. Major Support Levels â€“ $42,500, followed by $41,200. 
-Major Resistance Levels â€“ $44,000, $44,250 and $45,500.
-
-Register with us now:
-í ½í±‡í ½í±‡í ½í±‡í ½í±‡í ½í±‡
-https://www.kaizenprofits.cc
+Acked-by: Rob Herring <robh@kernel.org>
