@@ -2,88 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89D144B278F
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Feb 2022 15:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE48D4B32B8
+	for <lists+linux-omap@lfdr.de>; Sat, 12 Feb 2022 03:34:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350710AbiBKOLR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 11 Feb 2022 09:11:17 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49978 "EHLO
+        id S229558AbiBLCeo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 11 Feb 2022 21:34:44 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:45106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350715AbiBKOLP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Feb 2022 09:11:15 -0500
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 572A8DE1;
-        Fri, 11 Feb 2022 06:11:14 -0800 (PST)
-Received: by mail-oo1-f47.google.com with SMTP id k13-20020a4a948d000000b003172f2f6bdfso10427133ooi.1;
-        Fri, 11 Feb 2022 06:11:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=becK90zSagIE/vmdgZ2NZa5JnCyjlMT3936wKWpj1L8=;
-        b=QNXCUXAgLY1lQHMw3Jk1BEe5iYD8+zGsxOciIXK1Hz7/L2B0MEoJ24Fgy4cyASyfDU
-         pzyNnnVl6WEkR+dJw81UVGnu8U0+XSND4zCf8WhYe0ZeeVox7WiyZqHmFzPxOA3jQhWm
-         Jr17bjmbd/RIEnquOtpTDKxm3qrwxJcCePDMy7M6PQNkijHIy8fs9nSfo0yBzss3Z7Ol
-         HX3g0ltsR48TVC2RAYLojpAXjH5E2rvfnNgMFK2QbwDmVSjgCKZt3PrRf43huJxdaSxp
-         +8iDEvsRrrPE2u6pvGtRcZb3xT6Kz1/7iLqilOpQrtgsLxEibB0Ji6CBUD60HG8h8u0p
-         NMmA==
-X-Gm-Message-State: AOAM532oi1Ol8oagjrGtfVcNYXWO/v458kgIuBlUJx5dVExPSvz/l2uK
-        s0NHVCaLjDuhpMSz7l1yMf36ECx/Tg==
-X-Google-Smtp-Source: ABdhPJySlAkAErddhsD8rVETpoEppcfPmvHPSOTOjNwsQ8abxTVr0RtEPRSrskH9JfAcJ68wUgzMxA==
-X-Received: by 2002:a05:6870:5303:: with SMTP id j3mr190932oan.51.1644588673591;
-        Fri, 11 Feb 2022 06:11:13 -0800 (PST)
-Received: from robh.at.kernel.org ([2607:fb90:20d7:a802:e6b0:6d9c:32f7:4bd9])
-        by smtp.gmail.com with ESMTPSA id eh38sm5106803oab.36.2022.02.11.06.11.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Feb 2022 06:11:12 -0800 (PST)
-Received: (nullmailer pid 288855 invoked by uid 1000);
-        Fri, 11 Feb 2022 14:11:11 -0000
-Date:   Fri, 11 Feb 2022 08:11:11 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <kristo@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/3] dt-bindings: clock: ti: Add clock-output-names for
- TI composite clocks
-Message-ID: <YgZufwm5VekH7EB0@robh.at.kernel.org>
-References: <20220203112337.19821-1-tony@atomide.com>
- <20220203112337.19821-3-tony@atomide.com>
+        with ESMTP id S229543AbiBLCen (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 11 Feb 2022 21:34:43 -0500
+X-Greylist: delayed 915 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 11 Feb 2022 18:34:38 PST
+Received: from m12-11.163.com (m12-11.163.com [220.181.12.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 982E429838
+        for <linux-omap@vger.kernel.org>; Fri, 11 Feb 2022 18:34:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=Message-ID:Date:MIME-Version:Subject:From; bh=6C4KV
+        f/lOEQ0zwCrpQvbT9R2nNeS49cywD5C2J3GJbk=; b=WCIxmLUKlP38ji+8nYEw1
+        aPUcaYF+rwVjlR22cqgsq+rcULpjQzfl/gpF78U5ETws1/M0MOz1WBm/pLtE4eSK
+        WKBoH5UrndpzkpxSkQNhuIrtzyrIjjH6zQJ2/RgItN5yxfS2STn8hRoM3EIth/Fs
+        PTeqA7Xyz49Ec//cH61U/k=
+Received: from [192.168.3.109] (unknown [218.201.129.19])
+        by smtp7 (Coremail) with SMTP id C8CowAAX5RkQGQdipbFdCg--.37108S2;
+        Sat, 12 Feb 2022 10:18:56 +0800 (CST)
+Message-ID: <bb16001d-4a1b-f842-9445-7305e3496997@163.com>
+Date:   Sat, 12 Feb 2022 10:18:19 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220203112337.19821-3-tony@atomide.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: OMAP GPIO ready too later
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>
+References: <63abe475-710f-9ff5-ef20-c78b2a3d5e5c@163.com>
+ <YfubSOB+uq9jYf/N@atomide.com>
+From:   qianfan <qianfanguijin@163.com>
+In-Reply-To: <YfubSOB+uq9jYf/N@atomide.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: C8CowAAX5RkQGQdipbFdCg--.37108S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr4UJF48tw45Ww4fGF1UAwb_yoW8AFW5pF
+        s7Aa4fKrykJw42kr18twnruF9YyFnrKF45XryDWryava45Wr98XryIya1Y9a4UWw4vgF1F
+        vFWYv345XFW5AFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U4UDXUUUUU=
+X-Originating-IP: [218.201.129.19]
+X-CM-SenderInfo: htld0w5dqj3xxmlqqiywtou0bp/xtbBdhWl7WDkmudLCAAAsR
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 03 Feb 2022 13:23:37 +0200, Tony Lindgren wrote:
-> For the TI composite clocks, we currently have only the divider clock
-> list clock-output-names as an optional devicetree property. Let's add
-> clock-output-names for all the TI composite clock bindings.
-> 
-> This allows us to use clock-output-names for the clockctrl instance name
-> instead of relying on a custom compatible or non-standard node names.
-> 
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: Tero Kristo <kristo@kernel.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  Documentation/devicetree/bindings/clock/ti/clockdomain.txt     | 3 +++
->  Documentation/devicetree/bindings/clock/ti/composite.txt       | 3 +++
->  .../devicetree/bindings/clock/ti/fixed-factor-clock.txt        | 1 +
->  Documentation/devicetree/bindings/clock/ti/gate.txt            | 1 +
->  Documentation/devicetree/bindings/clock/ti/interface.txt       | 1 +
->  Documentation/devicetree/bindings/clock/ti/mux.txt             | 1 +
->  6 files changed, 10 insertions(+)
-> 
 
-Acked-by: Rob Herring <robh@kernel.org>
+在 2022/2/3 17:07, Tony Lindgren 写道:
+> Hi,
+>
+> * qianfan <qianfanguijin@163.com> [220119 08:36]:
+>> Hi everyone:
+>>
+>> On my board there has a gpio watchdong connected on am3358. And I found that
+>> the omap gpio device ready too later so it takes about 5 seconds when the
+>> gpio-wdt is ready.
+>>
+>> I had tested on some version of linux, check when the OMAP GPIO is ready.
+>> Next is the log:
+>>
+>> v4.19 [    0.195191] OMAP GPIO hardware version 0.1
+>>
+>> v5.4  [    1.168868] OMAP GPIO hardware version 0.1
+>>
+>> v5.9  [    4.598052] OMAP GPIO hardware version 0.1
+>>
+>> v5.15 [    1.253851] OMAP GPIO hardware version 0.1
+>>
+>> I can't find which commit slowdown omap gpio driver. could you please give
+>> me some advice?
+> We've moved to probe pretty much everything at normal module_init time
+> instead of trying to probe everything early. Only clocks and system timers
+> need to be probed early for the omap variants.
+>
+> One of the reasons for the device drivers probing later on during the boot
+> is caused by drivers/bus/ti-sysc.c. As ti-sysc is the parent device on the
+> interconnect, none of it's child devices probe before it. And there should
+> not be any need to probe ti-sysc early. The total boot-up time should be
+> about the same, just the probe order has changed. If there are issues with
+> the boot-up time in general, then that's a bug.
+>
+> Maybe you want to configure the watchdog in the bootloader initially until
+> the Linux device drivers get probed?
+
+Yes, the gpio watchdog is alived on bootloader, I want find a good way 
+to feed it until linux driver ready.  gpio-wdt.c has an option 
+CONFIG_GPIO_WATCHDOG_ARCH_INITCALL which will register gpio-wdt driver 
+on arch_innitcall, but this feature doesn't work on am335x platform due 
+to the gpio driver ready too later.
+
+>
+> Regards,
+>
+> Tony
+
