@@ -2,40 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B66CB4B431B
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Feb 2022 08:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A543B4B4539
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Feb 2022 10:10:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240349AbiBNHuK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 14 Feb 2022 02:50:10 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:32776 "EHLO
+        id S242667AbiBNJKq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Feb 2022 04:10:46 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231537AbiBNHuK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Feb 2022 02:50:10 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 944215AEE3
-        for <linux-omap@vger.kernel.org>; Sun, 13 Feb 2022 23:50:02 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 75F2380DE;
-        Mon, 14 Feb 2022 07:49:25 +0000 (UTC)
-Date:   Mon, 14 Feb 2022 09:50:00 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     qianfan <qianfanguijin@163.com>
-Cc:     linux-omap@vger.kernel.org,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>
-Subject: Re: OMAP GPIO ready too later
-Message-ID: <YgoJqP1xBsuqX2ui@atomide.com>
-References: <63abe475-710f-9ff5-ef20-c78b2a3d5e5c@163.com>
- <YfubSOB+uq9jYf/N@atomide.com>
- <bb16001d-4a1b-f842-9445-7305e3496997@163.com>
+        with ESMTP id S242662AbiBNJKo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Feb 2022 04:10:44 -0500
+X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 14 Feb 2022 01:10:37 PST
+Received: from mail.ruletown.pl (mail.ruletown.pl [192.71.213.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCE8A60056
+        for <linux-omap@vger.kernel.org>; Mon, 14 Feb 2022 01:10:37 -0800 (PST)
+Received: by mail.ruletown.pl (Postfix, from userid 1001)
+        id 8E60940B7C; Mon, 14 Feb 2022 09:50:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ruletown.pl; s=mail;
+        t=1644828660; bh=VNuNg2MzRkdVVfp4kSZZW7SxoKEFGotk5GCW4ktyH/8=;
+        h=Date:From:To:Subject:From;
+        b=fJl1JVe/MJE84NTL50nI6Z4D8xriMgRkJRyxsfur5fyBTmvf9PJ6lV30oXt5OjzIg
+         Ng4+gRzm+mXIqlg0pTOYZlNVXBP0vuAo86uExP3If8RVBV3I+tE8RxqgHa8ePNmiT1
+         3QT/3NozQHKjb/Dw6b1NoRy1/58ltrg3j3ucp93tVWt7pqJOdYdDr4mNCdr5GSrwDc
+         ulaiGF5MYIWAY6vxuH1Z4qpk2OhlcCvlzh9p+vqsSFo6etgz9J8e6iyOjS77EPwpO7
+         8hgLgkPZVKiUYZLzEoTllrOTiAJFSosZlP5HakEixk6+nwYl8ugqcrdQSx++P6D2jj
+         K1233YS3qONRg==
+Received: by mail.ruletown.pl for <linux-omap@vger.kernel.org>; Mon, 14 Feb 2022 08:50:47 GMT
+Message-ID: <20220214084500-0.1.v.20fc.0.8g9i60n0k1@ruletown.pl>
+Date:   Mon, 14 Feb 2022 08:50:47 GMT
+From:   "Filip Ostrowski" <filip.ostrowski@ruletown.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: W sprawie samochodu
+X-Mailer: mail.ruletown.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bb16001d-4a1b-f842-9445-7305e3496997@163.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,55 +46,23 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* qianfan <qianfanguijin@163.com> [220212 02:18]:
-> 
-> 在 2022/2/3 17:07, Tony Lindgren 写道:
-> > Hi,
-> > 
-> > * qianfan <qianfanguijin@163.com> [220119 08:36]:
-> > > Hi everyone:
-> > > 
-> > > On my board there has a gpio watchdong connected on am3358. And I found that
-> > > the omap gpio device ready too later so it takes about 5 seconds when the
-> > > gpio-wdt is ready.
-> > > 
-> > > I had tested on some version of linux, check when the OMAP GPIO is ready.
-> > > Next is the log:
-> > > 
-> > > v4.19 [    0.195191] OMAP GPIO hardware version 0.1
-> > > 
-> > > v5.4  [    1.168868] OMAP GPIO hardware version 0.1
-> > > 
-> > > v5.9  [    4.598052] OMAP GPIO hardware version 0.1
-> > > 
-> > > v5.15 [    1.253851] OMAP GPIO hardware version 0.1
-> > > 
-> > > I can't find which commit slowdown omap gpio driver. could you please give
-> > > me some advice?
-> > We've moved to probe pretty much everything at normal module_init time
-> > instead of trying to probe everything early. Only clocks and system timers
-> > need to be probed early for the omap variants.
-> > 
-> > One of the reasons for the device drivers probing later on during the boot
-> > is caused by drivers/bus/ti-sysc.c. As ti-sysc is the parent device on the
-> > interconnect, none of it's child devices probe before it. And there should
-> > not be any need to probe ti-sysc early. The total boot-up time should be
-> > about the same, just the probe order has changed. If there are issues with
-> > the boot-up time in general, then that's a bug.
-> > 
-> > Maybe you want to configure the watchdog in the bootloader initially until
-> > the Linux device drivers get probed?
-> 
-> Yes, the gpio watchdog is alived on bootloader, I want find a good way to
-> feed it until linux driver ready.  gpio-wdt.c has an option
-> CONFIG_GPIO_WATCHDOG_ARCH_INITCALL which will register gpio-wdt driver on
-> arch_innitcall, but this feature doesn't work on am335x platform due to the
-> gpio driver ready too later.
+Dzie=C5=84 dobry,
 
-Well seems like the boottime of 1.25 seconds to having the gpio probed should
-be way longer than your bootloader configured watchdog timeout :) What do you
-have the bootloader set the watchdog timeout?
+chcieliby=C5=9Bmy zapewni=C4=87 Pa=C5=84stwu kompleksowe rozwi=C4=85zania=
+, je=C5=9Bli chodzi o system monitoringu GPS.
 
-Regards,
+Precyzyjne monitorowanie pojazd=C3=B3w na mapach cyfrowych, =C5=9Bledzeni=
+e ich parametr=C3=B3w eksploatacyjnych w czasie rzeczywistym oraz kontrol=
+a paliwa to kluczowe funkcjonalno=C5=9Bci naszego systemu.=20
 
-Tony
+Organizowanie pracy pracownik=C3=B3w jest dzi=C4=99ki temu prostsze i bar=
+dziej efektywne, a oszcz=C4=99dno=C5=9Bci i optymalizacja w zakresie pono=
+szonych koszt=C3=B3w, maj=C4=85 dla ka=C5=BCdego przedsi=C4=99biorcy ogro=
+mne znaczenie.
+
+Dopasujemy nasz=C4=85 ofert=C4=99 do Pa=C5=84stwa oczekiwa=C5=84 i potrze=
+b organizacji. Czy mogliby=C5=9Bmy porozmawia=C4=87 o naszej propozycji?
+
+
+Pozdrawiam,
+Filip Ostrowski
