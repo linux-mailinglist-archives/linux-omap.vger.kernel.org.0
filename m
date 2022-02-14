@@ -2,98 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0F174B3A90
-	for <lists+linux-omap@lfdr.de>; Sun, 13 Feb 2022 10:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 792404B41DC
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Feb 2022 07:14:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229951AbiBMJWE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 13 Feb 2022 04:22:04 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48614 "EHLO
+        id S240786AbiBNGM4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 14 Feb 2022 01:12:56 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229935AbiBMJWE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 13 Feb 2022 04:22:04 -0500
-X-Greylist: delayed 421 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 13 Feb 2022 01:21:57 PST
-Received: from std703.phy.lolipop.jp (std703.phy.lolipop.jp [118.27.125.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82475C35B
-        for <linux-omap@vger.kernel.org>; Sun, 13 Feb 2022 01:21:57 -0800 (PST)
-Received: by std703.phy.lolipop.jp (Postfix, from userid 995)
-        id A4639825BE3D; Sun, 13 Feb 2022 18:14:54 +0900 (JST)
-To:     linux-omap@vger.kernel.org
-Subject: =?ISO-2022-JP?B?GyRCIVolQCVzJTklOSU/JTglKiVIJWklQyUvJTkhWyQqTGQkJDlnJG8kO0Q6JC0kIiRqJCwkSCQmJDQkNiQkJF4kOSFKPCtGMEpWPy4hSxsoQg==?=
-Date:   Sun, 13 Feb 2022 09:14:54 +0000
-From:   =?ISO-2022-JP?B?GyRCJUAlcyU5JTklPyU4JSolSCVpJUMlLyU5GyhC?= 
-        <traxbomb0124@yahoo.co.jp>
-Reply-To: traxbomb0124@yahoo.co.jp
-Message-ID: <657f31ea64810e7502348f82379fd6f4@www.trax-dance.com>
-X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
-X-WPCF7-Content-Type: text/plain
+        with ESMTP id S240750AbiBNGMk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 14 Feb 2022 01:12:40 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A6845622D;
+        Sun, 13 Feb 2022 22:12:22 -0800 (PST)
+X-UUID: 532b5e9ab4954fe3a190f813a1171ddb-20220214
+X-UUID: 532b5e9ab4954fe3a190f813a1171ddb-20220214
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <yong.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1068203619; Mon, 14 Feb 2022 14:12:16 +0800
+Received: from mtkcas11.mediatek.inc (172.21.101.40) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Mon, 14 Feb 2022 14:12:15 +0800
+Received: from localhost.localdomain (10.17.3.154) by mtkcas11.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Mon, 14 Feb 2022 14:12:13 +0800
+From:   Yong Wu <yong.wu@mediatek.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        <dri-devel@lists.freedesktop.org>
+CC:     James Wang <james.qian.wang@arm.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        <iommu@lists.linux-foundation.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        <linux-kernel@vger.kernel.org>, "Joerg Roedel" <joro@8bytes.org>,
+        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        <linux-mediatek@lists.infradead.org>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        "Stephen Boyd" <sboyd@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        <srv_heupstream@mediatek.com>, Rob Clark <robdclark@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Yong Wu <yong.wu@mediatek.com>, "Helge Deller" <deller@gmx.de>,
+        <linux-omap@vger.kernel.org>, <linux-fbdev@vger.kernel.org>
+Subject: [PATCH 22/23] video: omapfb: dss: Make use of the helper component_compare_dev
+Date:   Mon, 14 Feb 2022 14:08:18 +0800
+Message-ID: <20220214060819.7334-23-yong.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20220214060819.7334-1-yong.wu@mediatek.com>
+References: <20220214060819.7334-1-yong.wu@mediatek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-2022-JP
-X-Spam-Status: Yes, score=7.2 required=5.0 tests=BAYES_50,DKIM_ADSP_CUSTOM_MED,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,
-        HEADER_FROM_DIFFERENT_DOMAINS,NML_ADSP_CUSTOM_MED,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,SPOOFED_FREEMAIL,
-        T_GB_WEBFORM,T_SCC_BODY_TEXT_LINE,URIBL_BLACK autolearn=no
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.7 URIBL_BLACK Contains an URL listed in the URIBL blacklist
-        *      [URIs: clck.ru]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [118.27.125.46 listed in bl.score.senderscore.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [traxbomb0124[at]yahoo.co.jp]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [traxbomb0124[at]yahoo.co.jp]
-        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
-        *  0.2 HEADER_FROM_DIFFERENT_DOMAINS From and EnvelopeFrom 2nd level
-        *      mail domains are different
-        *  0.0 DKIM_ADSP_CUSTOM_MED No valid author signature, adsp_override
-        *      is CUSTOM_MED
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 T_GB_WEBFORM Webform with url shortener
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.2 FREEMAIL_FORGED_FROMDOMAIN 2nd level domains in From and
-        *      EnvelopeFrom freemail headers are different
-        *  0.9 NML_ADSP_CUSTOM_MED ADSP custom_med hit, and not from a mailing
-        *       list
-        *  1.7 SPOOFED_FREEMAIL No description available.
-X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-この度はお問い合わせいただきまして、誠にありがとうございます。
-お問い合わせ内容を以下の通り承りましたので、ご確認ください。
+Use the common compare helper from component.
 
-お問い合わせ内容につきましては、担当者より折り返しご連絡させていただきますので、今しばらくお待ちくださいませ。
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-omap@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org
+Signed-off-by: Yong Wu <yong.wu@mediatek.com>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/dss.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-今後ともよろしくお願いいたします。
-
-――――――――――――――――――――――――――――――――――――――――
-
-お名前：?? Julie liked you! Click Here: https://clck.ru/bAmLe?ijx ??
-メールアドレス：linux-omap@vger.kernel.org
-電話番号：197217246338
-
-メッセージ本文:
-w08vgjxh
-
-――――――――――――――――――――――――――――――――――――――――
-ダンススタジオトラックス
-http://www.trax-dance.com
-[姫路スタジオ]
-〒670-0966兵庫県姫路市延末248-1
-TEL:079-282-2557
-[太子スタジオ]
-〒671-1561兵庫県揖保郡太子町鵤388-14
-TEL:079-287-9942
-[加古川スタジオ]
-〒675-0066兵庫県加古川市加古川町寺家町362-1ビアンテビル1F5号
-TEL:079-282-2557
-※お電話は姫路スタジオに繋がります。
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+index a6b1c1598040..45b9d3cf3860 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
+@@ -1193,12 +1193,6 @@ static const struct component_master_ops dss_component_ops = {
+ 	.unbind = dss_unbind,
+ };
+ 
+-static int dss_component_compare(struct device *dev, void *data)
+-{
+-	struct device *child = data;
+-	return dev == child;
+-}
+-
+ static int dss_add_child_component(struct device *dev, void *data)
+ {
+ 	struct component_match **match = data;
+@@ -1212,7 +1206,7 @@ static int dss_add_child_component(struct device *dev, void *data)
+ 	if (strstr(dev_name(dev), "rfbi"))
+ 		return 0;
+ 
+-	component_match_add(dev->parent, match, dss_component_compare, dev);
++	component_match_add(dev->parent, match, component_compare_dev, dev);
+ 
+ 	return 0;
+ }
+-- 
+2.18.0
 
