@@ -2,144 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96DF84B75FD
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Feb 2022 21:48:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DACA4B798F
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Feb 2022 22:49:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244144AbiBOUrJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Feb 2022 15:47:09 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33790 "EHLO
+        id S243601AbiBOV2e (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Feb 2022 16:28:34 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232797AbiBOUrI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Feb 2022 15:47:08 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B6FD93;
-        Tue, 15 Feb 2022 12:46:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1644957995;
-        bh=0OSbOP7dVuxah5dzxOSWPDpWQt+waq4IO/yrm245na0=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=RM8lbqfXj4CquNffPjLDAk/zqsA2R7oPEntJIfErC/JFzifQUKiCCwI3sQ/AwS3UH
-         u+PDvEN61F59Ofw1QXdQ7s99jAvoAWJRtsvl3CYAHnhMh1rMymay5Nv8yKR1A9xG1K
-         XK+pIDDlkBrtJwgBGiQ/YPmKR4xRWeE8wNcYaJAw=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.185.100]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MJE27-1naNTk1Cfr-00KivD; Tue, 15
- Feb 2022 21:46:35 +0100
-Message-ID: <7e60cd01-8afc-ddb5-a1bb-6e9f53ccfba5@gmx.de>
-Date:   Tue, 15 Feb 2022 21:46:24 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH 22/23] video: omapfb: dss: Make use of the helper
- component_compare_dev
-Content-Language: en-US
-To:     Yong Wu <yong.wu@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
-Cc:     James Wang <james.qian.wang@arm.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        iommu@lists.linux-foundation.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
+        with ESMTP id S233069AbiBOV2d (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Feb 2022 16:28:33 -0500
+X-Greylist: delayed 1885 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 15 Feb 2022 13:28:21 PST
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA51CC24A9;
+        Tue, 15 Feb 2022 13:28:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=keg/iMk+UdaNfyy0BZm+iDOzuvq0G4cjTusXA9Hp92k=; b=CAkseX/Qyh+FIx8oj8t3veXNKf
+        UKyx6v1rPPeE7gNSMBgBfKGoC0Yi6enZ8NhlM1sTilCU+NodZ4d8ft4POAS992JSNuPDdt6ZG8am+
+        w+FwWzbH0q1dp0OqCSHkFnaLXFtmo/c81EZlMzbsdwPVNZ/IfR35QWsvVNInmaVq9sSE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1nK4sU-0067XH-Bw; Tue, 15 Feb 2022 21:56:50 +0100
+Date:   Tue, 15 Feb 2022 21:56:50 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Marc Kleine-Budde <mkl@pengutronix.de>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-samsung-soc@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-kernel@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-mediatek@lists.infradead.org,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Stephen Boyd <sboyd@kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Tomasz Figa <tfiga@chromium.org>, srv_heupstream@mediatek.com,
-        Rob Clark <robdclark@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org
-References: <20220214060819.7334-1-yong.wu@mediatek.com>
- <20220214060819.7334-23-yong.wu@mediatek.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20220214060819.7334-23-yong.wu@mediatek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:MjTT6/0mKscyzurmEJq+TRDLFWm722/o5oh1VceIWTDo9Su6z33
- Uqcw4r79WPXMZ1MHVQ5YZwMpT3/LUtQYuMEKT1s4Qsw268nztXs8M1PHTdwFSaaX3fRCVHa
- I5hj8j+9RzGYlu8e8qiZ43jIdVRKdmD+CGxvzWPF1Cw57f4/4D8ejp1FysOEiqU6iTGSqwc
- ErfKQfh2UKAhLIHNSceWg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:EO1+Ylb+ev0=:HpXUahwDBxS2Q6GJ/UdQMa
- n+62M3husXUXoHxxs8AxzjuuYDkqIBegYnyeAV7YgP0Mle0rT21+2LEV21Cm/oK+NdFah8S9W
- CpzPyAZIRuU01jq211YudtbXnvFOMgwbjvey4rIl2NTTJUDs+3nbJ6EgXSJwHO77nbgaCNttA
- G+VtN7qVCXCtu780Msj9tZjo7C1oDNvtl1Z0DVM0OdyjyuO5D93T57PbebQJO+46L8tQ0bfg4
- PClJhDBMO98xxmJRVp6iBSjNS7q7geteQaZ0ZJQVZhNyuKpKUNS7ESMvNsPEhSTzcXNJDdgSx
- Vq9g3AnCPk01P40v1QI4BqRKbdc93kQn/QMzvwnd6VKhhT5hOO0TqppV8u07Mwhznrax7VcRW
- +v1Ixw3WjKmrwEdG4wxBOsqT1dFC/6QoqorX3z1sqp7Ag6Ncwj2vZEjoNZ1YUThIr4BpD/vWq
- hjpVXVTw/vir74eHyvdnz2eZXfQD7YPWYiK3z1oTwSGkoUciP9hPqvp4WS1qWPD3Wx4UiMz4y
- 2dpK2641P1xHzfATt1y9hhMgc6vt9XFxpm9Ycl0uN+Nf/W9WIYa2fD+vPujh/CyO3jLklKrNP
- rhbT5NjDJGfC/AFaC2iH75aCY+P5r1pQZOBnvTunjmLUTuER4bhCqMQqM9G+WAIVA1mScRE7x
- z5RtmJWkKSwplc9SI/e09hsIAALu0cz7R3+T3vF1BUPB0RwiiTFPg2EbSOsu0l9GrJ8CkvoHP
- 6ajgPfPMXcn62tOWZWD9MMtunWjyjGeCeU0sZsO37FBgxO6O75XX5KNPo3ZtVKQ/rb45z2Rj6
- BmFoOKHsV5p6ypFwr9d2I3zNEcl0DYDNBnMwKA/3QTkYeOJgYkBDK8DU7dxFOUM6q9OWcMRcY
- NoMQI8g/0H0GxrMHZA3BmETGV399e4Ve0zB9yhBv/cd9YdH0LKj0wm2/KEIbC/oPNQrOB040l
- zX8J1rybbjKBBzimlhU2e1yTmGHdV4geJl204qxFdDOHSN0uiAnzvI89ljAQcys4MdV9EpQSa
- NnChsjeiQrZB5ZntJzdsbaO7RJJahTHLc0+epBUeuUd6C0orPGZgiQsH8Kwcy4p8Uu6vZoYIV
- JC4pPsVjDwiUHc=
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        bcm-kernel-feedback-list@broadcom.com,
+        Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Scott Branden <sbranden@broadcom.com>, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@pengutronix.de, Shawn Guo <shawnguo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v3 5/8] ARM: dts: exynos: fix ethernet node name for
+ different odroid boards
+Message-ID: <YgwTkr1UIGH6hgJ6@lunn.ch>
+References: <20220215080937.2263111-1-o.rempel@pengutronix.de>
+ <20220215080937.2263111-5-o.rempel@pengutronix.de>
+ <20220215081240.hhie4niqnc5tuka2@pengutronix.de>
+ <20220215081645.GD672@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220215081645.GD672@pengutronix.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2/14/22 07:08, Yong Wu wrote:
-> Use the common compare helper from component.
->
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-omap@vger.kernel.org
-> Cc: linux-fbdev@vger.kernel.org
-> Signed-off-by: Yong Wu <yong.wu@mediatek.com>
+> > > -	ethernet: usbether@2 {
+> > > -		compatible = "usb0424,9730";
+> > > +	ethernet: ethernet@2 {
+> > > +		compatible = "usb424,9730";
+> > 
+> > The change of the compatible is not mentioned in the patch description.
+> > Is this intentional?
+> 
+> No, I forgot to mentione it. According to the USB schema 0 should be
+> removed. So, this compatible was incorrect as well. With leading zero
+> present yaml schema was not able to detect and validate this node.
 
-Applied to the fbdev for-next branch.
+Does the current code not actually care about a leading 0? It will
+match with or without it? It would be good to mention that as well in
+the commit message, otherwise somebody like me is going to ask if this
+breaks backwards compatibility, since normally compatible is an exact
+string match.
 
-Thanks!
-Helge
+And i actually think this is the sort of change which should be as a
+patch of its own. If this causes a regression, a git bisect would then
+tell you if it is the change of usbether -> ethernet, or 0424 to
+424. That is part of why we ask for lots of small changes.
 
->  drivers/video/fbdev/omap2/omapfb/dss/dss.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
->
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss.c b/drivers/video/=
-fbdev/omap2/omapfb/dss/dss.c
-> index a6b1c1598040..45b9d3cf3860 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss.c
-> @@ -1193,12 +1193,6 @@ static const struct component_master_ops dss_comp=
-onent_ops =3D {
->  	.unbind =3D dss_unbind,
->  };
->
-> -static int dss_component_compare(struct device *dev, void *data)
-> -{
-> -	struct device *child =3D data;
-> -	return dev =3D=3D child;
-> -}
-> -
->  static int dss_add_child_component(struct device *dev, void *data)
->  {
->  	struct component_match **match =3D data;
-> @@ -1212,7 +1206,7 @@ static int dss_add_child_component(struct device *=
-dev, void *data)
->  	if (strstr(dev_name(dev), "rfbi"))
->  		return 0;
->
-> -	component_match_add(dev->parent, match, dss_component_compare, dev);
-> +	component_match_add(dev->parent, match, component_compare_dev, dev);
->
->  	return 0;
->  }
->
 
+       Andrew
