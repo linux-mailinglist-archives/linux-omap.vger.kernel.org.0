@@ -2,66 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E32674B69E8
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Feb 2022 11:55:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA28C4B739F
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Feb 2022 17:44:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235207AbiBOKzg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Feb 2022 05:55:36 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47578 "EHLO
+        id S230199AbiBOP1O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 15 Feb 2022 10:27:14 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236818AbiBOKze (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Feb 2022 05:55:34 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DED9D884F
-        for <linux-omap@vger.kernel.org>; Tue, 15 Feb 2022 02:55:17 -0800 (PST)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1nJvTx-0001Ed-JO; Tue, 15 Feb 2022 11:54:53 +0100
-Received: from pengutronix.de (unknown [195.138.59.174])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        (Authenticated sender: mkl-all@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id 0933833A8B;
-        Tue, 15 Feb 2022 10:54:51 +0000 (UTC)
-Date:   Tue, 15 Feb 2022 11:54:47 +0100
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Ray Jui <rjui@broadcom.com>, Rob Herring <robh+dt@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Scott Branden <sbranden@broadcom.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org, kernel@pengutronix.de,
-        linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org,
+        with ESMTP id S239141AbiBOP1N (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Feb 2022 10:27:13 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075A09EBAF;
+        Tue, 15 Feb 2022 07:27:02 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97808615CE;
+        Tue, 15 Feb 2022 15:27:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2769C340EB;
+        Tue, 15 Feb 2022 15:26:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644938821;
+        bh=KRBk8usKmGeZ1GUK1kBqF1ohJl+84gnwg7OyWcxSc50=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jxQWhYtZGugFvBqt4KDyTlqf+ukRYJwSHrz+LGmlruBdfKdKXdtam6VfXrr5+Bb4K
+         w02ZXVEkr+cdqjwTyIzpyCU7mv93AG4WlUAy2Xlv9N5i/QjrMXX9t42Lk2EktdEVJf
+         eWKznf3Bhx+c/qkP2c9yxVVDdHB3N5U2gU16voQ9xIOA0+RBO643xfhOXfcsPe6oCN
+         FIkQC+nl5mmUhBTDvNXE7pIt+Wgpo566dRlnvO9YAojvk4ZD2VcPxYL2qvIOFbL6hl
+         YnWO0rxxH08pZnH18Kwgto7uxNaoNNGTe8Eu5JPPQedHg8+07zuTfoJy1kLNdiPtBy
+         BR/UxLJipkU+g==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Wan Jiabing <wanjiabing@vivo.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>, bcousson@baylibre.com,
+        paul@pwsan.com, linux@armlinux.org.uk, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 1/8] dt-bindings: net: add schema for ASIX USB
- Ethernet controllers
-Message-ID: <20220215105447.vimwbnyabyfxyl4v@pengutronix.de>
-References: <20220215100018.2306046-1-o.rempel@pengutronix.de>
- <20220215100018.2306046-2-o.rempel@pengutronix.de>
+Subject: [PATCH AUTOSEL 5.16 01/34] ARM: OMAP2+: hwmod: Add of_node_put() before break
+Date:   Tue, 15 Feb 2022 10:26:24 -0500
+Message-Id: <20220215152657.580200-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ifqdzi4p4d6arjx2"
-Content-Disposition: inline
-In-Reply-To: <20220215100018.2306046-2-o.rempel@pengutronix.de>
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,41 +56,40 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+From: Wan Jiabing <wanjiabing@vivo.com>
 
---ifqdzi4p4d6arjx2
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 80c469a0a03763f814715f3d12b6f3964c7423e8 ]
 
-On 15.02.2022 11:00:11, Oleksij Rempel wrote:
-> Create schema for ASIX USB Ethernet controllers and import some of
-> currently supported USB IDs form drivers/net/usb/asix_devices.c
->=20
-> This devices are already used in some of DTs. So, this schema makes it of=
-ficial.
-These
+Fix following coccicheck warning:
+./arch/arm/mach-omap2/omap_hwmod.c:753:1-23: WARNING: Function
+for_each_matching_node should have of_node_put() before break
 
-Marc
+Early exits from for_each_matching_node should decrement the
+node reference counter.
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde           |
-Embedded Linux                   | https://www.pengutronix.de  |
-Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
+Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/mach-omap2/omap_hwmod.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---ifqdzi4p4d6arjx2
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+index ccb0e3732c0dc..31d1a21f60416 100644
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -752,8 +752,10 @@ static int __init _init_clkctrl_providers(void)
+ 
+ 	for_each_matching_node(np, ti_clkctrl_match_table) {
+ 		ret = _setup_clkctrl_provider(np);
+-		if (ret)
++		if (ret) {
++			of_node_put(np);
+ 			break;
++		}
+ 	}
+ 
+ 	return ret;
+-- 
+2.34.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEBsvAIBsPu6mG7thcrX5LkNig010FAmILhnUACgkQrX5LkNig
-0127EAf8CJJABhnS+oUjbFpBGUxKQ7ySwvBPYhNMil097GqJDDjXWk8nLPgGs0PV
-kXT/pRPTBDeVWP9o48FVVyOLtWRgK/8mqia24ZAvb6MqXEUTVVOV5xQi7nQsChwp
-B6coQO7Py9d1yOw61MNEj/QR33O5qP3E4GqY4d0UE1p7DNVyeX9apoWDI5xRdZrL
-NV5wzDHIE45Cdgm0Gry8x9UVy8kMbPFV4wqiZo4OS9Ct7b+JkjM6dCFL3gvv7EuK
-kpaJSV2hefMCyrevDo4S6s0laNbec69cXTso9FXJVeWmZfz7L4xbiU3hRBXdyYNH
-kK3tvNuH8nP8Rw0vJyzQlK027HRKCw==
-=unWf
------END PGP SIGNATURE-----
-
---ifqdzi4p4d6arjx2--
