@@ -2,155 +2,127 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 060974B82AB
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 09:12:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91FA84B83AC
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 10:08:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbiBPILk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Feb 2022 03:11:40 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:55610 "EHLO
+        id S231836AbiBPJFG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Feb 2022 04:05:06 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:38302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231497AbiBPIKo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Feb 2022 03:10:44 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB0CB0A46;
-        Wed, 16 Feb 2022 00:10:31 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 2782A212BD;
-        Wed, 16 Feb 2022 08:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1644999030; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=QurIHtBhhxmg1mjCzvXV7QkVSTQDkiRDYufhRd9DHNo=;
-        b=1y08vLht/Zhp3uam1WCwEnKida6HBsxRYIDf9C8T7JS09TokvopDtD1JD/2KcNzcOfcSEy
-        LMo4ktQnmaYrOD7Va+OHVFRC1MrHKSRjKTJ2Ig+9ZcFVms111nBl3lADlVSpJJo3dib+Gs
-        YpC/kbD+vrwW14cYQNfXd92qYdprTNk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1644999030;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=QurIHtBhhxmg1mjCzvXV7QkVSTQDkiRDYufhRd9DHNo=;
-        b=M+wA9HXFIgtbWyJy1u1pR8V3BInARrDnOyA+bc5dge5pGSyhSspu/vOYAmbHp5mLpLY4Ra
-        mssD7WLjv57POhDQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E7B1613A7C;
-        Wed, 16 Feb 2022 08:10:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id CkZqN3WxDGLJRwAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 16 Feb 2022 08:10:29 +0000
-Message-ID: <801579a4-4563-6ea9-1351-90ef36a0d248@suse.de>
-Date:   Wed, 16 Feb 2022 09:10:29 +0100
+        with ESMTP id S230491AbiBPJFF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Feb 2022 04:05:05 -0500
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0A122AE04A
+        for <linux-omap@vger.kernel.org>; Wed, 16 Feb 2022 01:04:53 -0800 (PST)
+Received: by mail-wr1-x436.google.com with SMTP id d27so2294484wrc.6
+        for <linux-omap@vger.kernel.org>; Wed, 16 Feb 2022 01:04:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile-fr.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=sFF5uu9WmnNvmV+Pej/S6QC+JsSr4mKpkT5UiTK3TLQ=;
+        b=nBTi1kl16v2HTVqAsJPxDCbZUC9XvKNyjE1jSqbLsLepXLSRSuyiH0jjhps109X3NS
+         5hESk23tHrLfGAzldZCotZnOlaIITIjtWzTo/aWzZFm+eOOeYOGyP/jowEhLhYWv0Jkt
+         cp/uFi/VEHzBixfAJWOvdHVguyI6pAxO4z0dp9ODl+7j2h52FLugVjH2Ax7tdtFQ07jq
+         uAduTLZ9NlZF/rDG3BNeS8uOYD0brPHEM+HD0L5SQSN7jCtetP7TGPfTRVYdOcoURp7H
+         RAszxkGyrcIvZ5HpD01w3URAeh4/1BvqXZnrZ+fPOFUL8D1psIXdA2ay5OwUDYWLvOem
+         mYaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=sFF5uu9WmnNvmV+Pej/S6QC+JsSr4mKpkT5UiTK3TLQ=;
+        b=Nw8WNW1P1ITo17LP2omGMx5RqsV4izA4jKhG9xNS9WYqciYklRl7rlYdfYULurTdzS
+         fENWAwTkDU9tJvawI63tqEQFLfGk0aKXspfhZDUBv1EUPrrvSCBSLmU3ikU9hhDp9gBB
+         drHByEfBkNqSN4JGTUtJ8olX1LIRnTe9PYRYc/ihWNXmOhvs0h9F6gIItwL5wdtbG3pD
+         ZynvvyaECjqGcNFHK0dXbr/q8gKtgqBLCFfFWlhDffqwJHGt3HuYEiEqk/wXceK29C15
+         fRljOdQ+4ER2HaYORTIg9hjkNDIlBh4QwLFFIzLw8Z+yknpI9VkiAO4k9M5wvYR6eNKI
+         3TYQ==
+X-Gm-Message-State: AOAM5330wAjnxVK6Cw+ehoiCGwLr1csAiW9kbKTBcbT55gcZpOeyzB3d
+        MK9aM2SpSP8sYeMl9g3V4kBoKA==
+X-Google-Smtp-Source: ABdhPJzsStJlrt68HpUxG1ACglaWtMyWDmnHmJ+6srR6Ss6lkwAaN0lhu3hNzHa4sjBdTtg9X2cHMA==
+X-Received: by 2002:adf:d234:0:b0:1e5:78a3:773e with SMTP id k20-20020adfd234000000b001e578a3773emr1512998wrh.136.1645002292011;
+        Wed, 16 Feb 2022 01:04:52 -0800 (PST)
+Received: from ?IPV6:2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f? (2a01cb058f8a18001c97b8d1b477d53f.ipv6.abo.wanadoo.fr. [2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f])
+        by smtp.gmail.com with ESMTPSA id z5sm21704163wmp.10.2022.02.16.01.04.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Feb 2022 01:04:51 -0800 (PST)
+Message-ID: <ca2faa1d-715b-77f8-4f19-037ba9aabc8e@smile.fr>
+Date:   Wed, 16 Feb 2022 10:04:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH 0/3] drm: omapdrm: Fix excessive GEM buffers DMM/CMA usage
+Subject: Re: AM5749: tty serial 8250 omap driver crash
 Content-Language: en-US
-To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, tomba@kernel.org,
-        airlied@linux.ie, daniel@ffwll.ch
-Cc:     tony@atomide.com, merlijn@wizzup.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org
-References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------2Up8X4DZnq5QKzKgPlNDDGt0"
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org
+References: <2c80fd8a-2935-9a6d-43fd-f95fa53c93d2@smile.fr>
+ <YgDSj7FJS7nbkJol@atomide.com>
+ <e3cf5082-b494-9309-6878-da208920fa5a@smile.fr>
+ <YgT/fhpFQfkj1b0j@atomide.com>
+ <9f0cb8f9-ac94-eb50-266a-95df521a7360@smile.fr>
+ <YgoIMPZd7bi6XDGW@atomide.com> <YgpUNMAiXgu+vrtl@atomide.com>
+From:   Romain Naour <romain.naour@smile.fr>
+In-Reply-To: <YgpUNMAiXgu+vrtl@atomide.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------2Up8X4DZnq5QKzKgPlNDDGt0
-Content-Type: multipart/mixed; boundary="------------Xap167iYvpqQG5Ga0GrBLDmT";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, tomba@kernel.org,
- airlied@linux.ie, daniel@ffwll.ch
-Cc: tony@atomide.com, merlijn@wizzup.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-omap@vger.kernel.org
-Message-ID: <801579a4-4563-6ea9-1351-90ef36a0d248@suse.de>
-Subject: Re: [PATCH 0/3] drm: omapdrm: Fix excessive GEM buffers DMM/CMA usage
-References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
-In-Reply-To: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+Hello,
 
---------------Xap167iYvpqQG5Ga0GrBLDmT
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Le 14/02/2022 à 14:08, Tony Lindgren a écrit :
+> * Tony Lindgren <tony@atomide.com> [220214 07:43]:
+>> Looks like the following script to just toggle the module state locks
+>> up things for me on beagle-x15 very fast. So yeah now I'm able to
+>> reproduce the issue. Seems like the module is not ready right after
+>> enabling it live we've seen for dra7 iva for example.
+> 
+> Looks like the following patch is also needed for uarts to avoid unbind
+> clock_unprepare warnings. But even with this patch dra7 uarts won't behave.
+> On unbind, there will be a clock "l4per-clkctrl:0128:0: failed to disable"
+> warning. Looks like after that any following clock enable does not seem to
+> work and that will cause the register access errors.
+> 
+> Looks like this is a dra7 specific issue as a similar test script on omap4
+> duovero keeps on going instead.
 
-SGkNCg0KQW0gMTkuMDEuMjIgdW0gMTE6MjMgc2NocmllYiBJdmF5bG8gRGltaXRyb3Y6DQo+
-IFRoaXMgcGF0Y2ggc2VyaWVzIGZpeGVzIGV4Y2Vzc2l2ZSBETU0gb3IgQ01BIHVzYWdlIG9m
-IEdFTSBidWZmZXJzIGxlYWRpbmcgdG8NCj4gdmFyaW91cyBydW50aW1lIGFsbG9jYXRpb24g
-ZmFpbHVyZXMuIFRoZSBzZXJpZXMgZW5hYmxlcyBkYWlseSB1c2FnZSBvZiBkZXZpY2VzDQo+
-IHdpdGhvdXQgZXhhdXN0aW5nIGxpbWl0ZWQgcmVzb3VyY2VzIGxpa2UgQ01BIG9yIERNTSBz
-cGFjZSBpZiBHUFUgcmVuZGVyaW5nIGlzDQo+IG5lZWRlZC4NCj4gDQo+IFRoZSBmaXJzdCBw
-YXRjaCBkb2Vzbid0IGJyaW5nIGFueSBmdW5jdGlvbmFsIGNoYW5nZXMsIGl0IGp1c3QgbW92
-ZXMgc29tZQ0KPiBUSUxFUi9ETU0gcmVsYXRlZCBjb2RlIHRvIGEgc2VwYXJhdGUgZnVuY3Rp
-b24sIHRvIHNpbXBsaWZ5IHRoZSByZXZpZXcgb2YgdGhlDQo+IG5leHQgdHdvIHBhdGNoZXMu
-DQo+IA0KPiBUaGUgc2Vjb25kIHBhdGNoIGFsbG93cyBvZmYtQ1BVIHJlbmRlcmluZyB0byBu
-b24tc2Nhbm91dCBidWZmZXJzLiBXaXRob3V0IHRoYXQNCj4gcGF0Y2gsIGl0IGlzIGJhc2lj
-YWxseSBpbXBvc3NpYmxlIHRvIHVzZSB0aGUgZHJpdmVyIGFsbG9jYXRlZCBHRU0gYnVmZmVy
-cyBvbg0KPiBPTUFQMyBmb3IgYW55dGhpbmcgZWxzZSBidXQgYSBiYXNpYyBDUFUgcmVuZGVy
-ZWQgZXhhbXBsZXMgYXMgaWYgd2Ugd2FudCBHUFUNCj4gcmVuZGVyaW5nLCB3ZSBtdXN0IGFs
-bG9jYXRlIGJ1ZmZlcnMgYXMgc2Nhbm91dCBidWZmZXJzLCB3aGljaCBhcmUgQ01BIGFsbG9j
-YXRlZC4NCj4gQ01BIHNvb24gZ2V0cyBmcmFnbWVudGVkIGFuZCB3ZSBzdGFydCBzZWVpbmcg
-YWxsb2NhdGlvbiBmYWlsdXJlcy4gU3VjaCBmYWlscmVzDQo+IGluIFhvcmcgY2Fubm90IGJl
-IGhhbmRlbGVkIGdyYWNlZnVsbHksIHNvIHRoZSBzeXN0ZW0gaXMgYmFzaWNhbGx5IHVudXNh
-YmxlLg0KPiANCj4gVGhpcmQgcGF0Y2ggZml4ZXMgc2ltaWxhciBpc3N1ZSBvbiBPTUFQNC81
-LCB3aGVyZSBETU0vVElMRVIgc3BhY2VzIGdldA0KPiBmcmFnbWVudGVkIHdpdGggdGltZSwg
-bGVhZGluZyB0byBhbGxvY2F0aW9uIGZhaWx1cmVzLg0KPiANCj4gU2VyaWVzIHdlcmUgdGVz
-dGVkIG9uIE1vdG9sb2xhIERyb2lkNCBhbmQgTm9raWEgTjkwMCwgd2l0aCBPTUFQIEREWCBh
-bmQNCj4gUFZSIEVYQSBmcm9tIGh0dHBzOi8vZ2l0aHViLmNvbS9tYWVtby1sZXN0ZS94Zjg2
-LXZpZGVvLW9tYXANCj4gDQo+IEl2YXlsbyBEaW1pdHJvdiAoMyk6DQo+ICAgIGRybTogb21h
-cGRybTogc2ltcGxpZnkgb21hcF9nZW1fcGluDQo+ICAgIGRybTogb21hcGRybTogU3VwcG9y
-dCBleHBvcnRpbmcgb2Ygbm9uLWNvbnRpZ3VvdXMgR0VNIEJPcw0KPiAgICBkcm06IG9tYXBk
-cm06IERvIG5vIGFsbG9jYXRlIG5vbi1zY2Fub3V0IEdFTXMgdGhyb3VnaCBETU0vVElMRVIN
-Cg0KV2l0aCB0aGUgbGl0dGxlIGV4cGVydGlzZSBJIGhhdmUgd2l0aCBvbWFwZHJtOg0KDQpB
-Y2tlZC1ieTogVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+DQoNCj4g
-DQo+ICAgZHJpdmVycy9ncHUvZHJtL29tYXBkcm0vb21hcF9nZW0uYyAgICAgICAgfCAxOTgg
-KysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tDQo+ICAgZHJpdmVycy9ncHUvZHJtL29t
-YXBkcm0vb21hcF9nZW0uaCAgICAgICAgfCAgIDMgKy0NCj4gICBkcml2ZXJzL2dwdS9kcm0v
-b21hcGRybS9vbWFwX2dlbV9kbWFidWYuYyB8ICAgNSArLQ0KPiAgIDMgZmlsZXMgY2hhbmdl
-ZCwgMTE2IGluc2VydGlvbnMoKyksIDkwIGRlbGV0aW9ucygtKQ0KPiANCg0KLS0gDQpUaG9t
-YXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2Fy
-ZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpNYXhmZWxkc3RyLiA1LCA5MDQwOSBOw7xybmJl
-cmcsIEdlcm1hbnkNCihIUkIgMzY4MDksIEFHIE7DvHJuYmVyZykNCkdlc2Now6RmdHNmw7xo
-cmVyOiBJdm8gVG90ZXYNCg==
+Thanks for the help and the patch!
 
---------------Xap167iYvpqQG5Ga0GrBLDmT--
+I removed my patch removing the quirk and applied you patch but I can still
+reproduce the issue.
 
---------------2Up8X4DZnq5QKzKgPlNDDGt0
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+Do you need some info about the kernel configuration?
 
------BEGIN PGP SIGNATURE-----
+Best regards,
+Romain
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmIMsXUFAwAAAAAACgkQlh/E3EQov+DM
-5g//aMZv1ir98w2szom1Ic681tGNmQJEJ0ebFbPlh97lgZBq98Z+U8lkehzNNrU7KWscb8668xvV
-j+DIhttI8SiLVvnaKg1sKrzq4OrFtvSu6sebWzJzyuHSCEhL+zobdT+c+QZCOUENN4KZCYP7ynhZ
-fYKx2ImiqlGPNIaGbc4ItFB0GWvhDxO2RB8pmPJjjw+dneoqfF/zmWoyoy/6Uu6gZQZRj++OYeJO
-dK3uqb06IX+M7Kg3q4I+NhTzp4GLjCxJ9avvv8sM6OuIXUVN/qeXfZUAUGbXXDaU2xS/P/I6N1Ys
-Rge7JQw9xynzPZuxmahM91asGbPcurnBXQvSLM/XM4z/VEqmzqW223m0nZ5aX6Lwvain7uC+mlwY
-2MZZX28HPcTCZPxxUsB/6xsBQDWEdxuf9wQubvhpTwoJmpynpmWKLSh2uMauowuW1LAHPQImeQYN
-hqacNpYeJOlT6bEDM8IFN3GUW4barXX2553PxYKkW3HunwxuoOS5fKhWrjt4NsPaA4lqQ0puQY4A
-qJDAC43I3iTY26+h60ae6MN33O5hknpDJ+zIuap224Oe1jB1qL9kJvLlXIheUcEP0Zot4+7UO/hW
-PbNaD+igbO4KBZ+tof4e6ALTrDsKt2WpYFu025WRok0JaNmSEcH9qLClCEIt2Zb0Hzia6JtL2mVn
-6zA=
-=Dxvb
------END PGP SIGNATURE-----
 
---------------2Up8X4DZnq5QKzKgPlNDDGt0--
+> 
+> Regards,
+> 
+> Tony
+> 
+> 8< --------------
+> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+> --- a/drivers/bus/ti-sysc.c
+> +++ b/drivers/bus/ti-sysc.c
+> @@ -3381,7 +3381,9 @@ static int sysc_remove(struct platform_device *pdev)
+>  	struct sysc *ddata = platform_get_drvdata(pdev);
+>  	int error;
+>  
+> -	cancel_delayed_work_sync(&ddata->idle_work);
+> +	/* Device can still be enabled, see deferred idle quirk in probe */
+> +	if (cancel_delayed_work_sync(&ddata->idle_work))
+> +		ti_sysc_idle(&ddata->idle_work.work);
+>  
+>  	error = pm_runtime_resume_and_get(ddata->dev);
+>  	if (error < 0) {
+
