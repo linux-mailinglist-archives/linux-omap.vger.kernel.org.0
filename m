@@ -2,66 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B06374B8091
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 07:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 311B04B8131
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 08:18:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229894AbiBPGQA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Feb 2022 01:16:00 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:40190 "EHLO
+        id S229851AbiBPHRY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Feb 2022 02:17:24 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:34250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbiBPGP7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Feb 2022 01:15:59 -0500
+        with ESMTP id S229812AbiBPHRW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Feb 2022 02:17:22 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D8491928D7
-        for <linux-omap@vger.kernel.org>; Tue, 15 Feb 2022 22:15:48 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F317286D5
+        for <linux-omap@vger.kernel.org>; Tue, 15 Feb 2022 23:17:05 -0800 (PST)
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ore@pengutronix.de>)
-        id 1nKDbB-0000UI-PG; Wed, 16 Feb 2022 07:15:33 +0100
+        id 1nKEYJ-0007Pg-NX; Wed, 16 Feb 2022 08:16:39 +0100
 Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
         (envelope-from <ore@pengutronix.de>)
-        id 1nKDb8-0005ju-14; Wed, 16 Feb 2022 07:15:30 +0100
-Date:   Wed, 16 Feb 2022 07:15:29 +0100
+        id 1nKEYE-0000vr-0Z; Wed, 16 Feb 2022 08:16:34 +0100
+Date:   Wed, 16 Feb 2022 08:16:33 +0100
 From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Andrew Lunn <andrew@lunn.ch>
-Cc:     Marc Kleine-Budde <mkl@pengutronix.de>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-samsung-soc@vger.kernel.org,
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org,
         Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Ray Jui <rjui@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>, Rob Herring <robh+dt@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Scott Branden <sbranden@broadcom.com>, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de, Shawn Guo <shawnguo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v3 5/8] ARM: dts: exynos: fix ethernet node name for
- different odroid boards
-Message-ID: <20220216061529.GA19299@pengutronix.de>
+        Scott Branden <sbranden@broadcom.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, kernel@pengutronix.de,
+        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v3 4/8] ARM: dts: bcm283x: fix ethernet node name
+Message-ID: <20220216071633.GB19299@pengutronix.de>
 References: <20220215080937.2263111-1-o.rempel@pengutronix.de>
- <20220215080937.2263111-5-o.rempel@pengutronix.de>
- <20220215081240.hhie4niqnc5tuka2@pengutronix.de>
- <20220215081645.GD672@pengutronix.de>
- <YgwTkr1UIGH6hgJ6@lunn.ch>
+ <20220215080937.2263111-4-o.rempel@pengutronix.de>
+ <f5ea3375-0306-e37f-5847-e1472164d7b7@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YgwTkr1UIGH6hgJ6@lunn.ch>
+In-Reply-To: <f5ea3375-0306-e37f-5847-e1472164d7b7@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL:  http://www.pengutronix.de/
 X-IRC:  #ptxdist @freenode
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
-X-Uptime: 07:02:13 up 67 days, 14:47, 42 users,  load average: 0.48, 0.27,
- 0.17
+X-Uptime: 08:10:05 up 67 days, 15:55, 56 users,  load average: 0.27, 0.23,
+ 0.18
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
 X-SA-Exim-Mail-From: ore@pengutronix.de
@@ -76,43 +71,45 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 09:56:50PM +0100, Andrew Lunn wrote:
-> > > > -	ethernet: usbether@2 {
-> > > > -		compatible = "usb0424,9730";
-> > > > +	ethernet: ethernet@2 {
-> > > > +		compatible = "usb424,9730";
-> > > 
-> > > The change of the compatible is not mentioned in the patch description.
-> > > Is this intentional?
+On Tue, Feb 15, 2022 at 01:01:06PM -0800, Florian Fainelli wrote:
+> On 2/15/22 12:09 AM, Oleksij Rempel wrote:
+> > It should be "ethernet@x" instead of "usbether@x"
 > > 
-> > No, I forgot to mentione it. According to the USB schema 0 should be
-> > removed. So, this compatible was incorrect as well. With leading zero
-> > present yaml schema was not able to detect and validate this node.
+> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > 
-> Does the current code not actually care about a leading 0? It will
-> match with or without it? It would be good to mention that as well in
-> the commit message, otherwise somebody like me is going to ask if this
-> breaks backwards compatibility, since normally compatible is an exact
-> string match.
+> This looks like, a quick grep on the u-boot source code seems to suggest
+> that only one file is assuming that 'usbether@1' is to be used as a node
+> name and the error message does not even match the code it is patching:
+> 
+> board/liebherr/xea/xea.c:
+>   #ifdef CONFIG_OF_BOARD_SETUP
+>   static int fdt_fixup_l2switch(void *blob)
+>   {
+>           u8 ethaddr[6];
+>           int ret;
+> 
+>           if (eth_env_get_enetaddr("ethaddr", ethaddr)) {
+>                   ret = fdt_find_and_setprop(blob,
+> 
+> "/ahb@80080000/switch@800f0000",
+>                                              "local-mac-address",
+> ethaddr, 6, 1);
+>                   if (ret < 0)
+>                           printf("%s: can't find usbether@1 node: %d\n",
+>                                  __func__, ret);
+>           }
 
-Current kernel code do not care about exact this compatibles. There is
-no driver matching against it. The USB Ethernet driver will take the
-node provided by the USB core drivers without validating the compatible
-against USB ID.
-See:
-drivers/usb/core/of.c
-drivers/usb/core/message.c:2093
+\o/ :)
 
-On other hand, DT validations tools do care about it and this nodes was
-not detected automatically. I found it accidentally by grepping the
-sources.
+>           return 0;
+>   }
+> 
+> I will wait for the other maintainers on the other patches to provide
+> some feedback, but if all is well, will apply this one soon.
 
-> And i actually think this is the sort of change which should be as a
-> patch of its own. If this causes a regression, a git bisect would then
-> tell you if it is the change of usbether -> ethernet, or 0424 to
-> 424. That is part of why we ask for lots of small changes.
-
-Sounds good, I'll update it.
+Full path fdt matching has proven to be not stable enough. Especially on
+chips with early DT adaptation like iMX. It is better to use aliases
+where possible. 
 
 Regards,
 Oleksij
