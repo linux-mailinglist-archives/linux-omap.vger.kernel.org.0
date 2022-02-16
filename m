@@ -2,125 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E36584B8F13
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 18:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9E914B90EF
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 20:06:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237076AbiBPRW0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Feb 2022 12:22:26 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57168 "EHLO
+        id S238002AbiBPTGN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Feb 2022 14:06:13 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237075AbiBPRWZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Feb 2022 12:22:25 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB17131F7E
-        for <linux-omap@vger.kernel.org>; Wed, 16 Feb 2022 09:22:11 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id o34so1640472wms.1
-        for <linux-omap@vger.kernel.org>; Wed, 16 Feb 2022 09:22:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/NAXHTqHaH78x+T8sVGOJ2gQZ1jGHBNk1VyLMuwhC+g=;
-        b=GthiHW4tjsZ9lcnGzpqU84FNocPSA4PsKarrrZfDtye0KfQOwTtottmZqPctU4GnBv
-         7eWfhXypC3B23dOS0gjVZGUa3cQunHbgaZ+L+TpRclrtCcK2iqh6u0G5nmr2tkDm0h4a
-         J2cq1EZ/IsmJ0wzj8Dsnj8X59NfpwnJIZYpMHrqtEXwlmidaEnftzeeF05vUBEt9kDWb
-         pTkXAQKMNxHsVAOvfc9csoBM0qRXVLYdJA4TwP/rrEuZT3h7t6+lW3VFtLgL7IIOdADQ
-         dwoWYgPf+iuBtKaG8rYeKI9swC0b0a4YCkesSDWRWBHeFPXWWqSD3r+AZCfxGL6XVDAy
-         y1SA==
+        with ESMTP id S235595AbiBPTGL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Feb 2022 14:06:11 -0500
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3523C27019F;
+        Wed, 16 Feb 2022 11:05:59 -0800 (PST)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-2d641c31776so9255867b3.12;
+        Wed, 16 Feb 2022 11:05:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/NAXHTqHaH78x+T8sVGOJ2gQZ1jGHBNk1VyLMuwhC+g=;
-        b=b42i25bU/JYpILJ8BOaiYvNYH9mxXBtQRSt3Tqw8Yz2x1iEb3uuMSXeCR9cBHJaHOw
-         iRWR6Rew7CqC74u51sCz94IpSVg1ySTWiMyprRQVYuKYyC81KosF7Af9zFVC+Ds87gJI
-         MrxMPOgCfx11EBMTfrskC1405UTBaQXGUn73TmwEnX325H/PlUVtWONbNpNZikaU8Cik
-         o8oFy5MbOXngPkurYQRBHYgwbhH45unmp0qlgJhpvIutcSMKH2MrUf+M18wi8feZKnI9
-         EGMnwZogFLMiG9HBdQAJEYYZMAo1xcMHmeclg+gDcSENcVbEosx6o/7eGzcAc1nMjj5Q
-         7oNA==
-X-Gm-Message-State: AOAM531MSk1+2C7ZwNEHKT8F1zxymNbGDD3rsbUVQ//yTce/qgXvzOOJ
-        tTjVXJgm0pFetpKPnV4sremlWZ96kGtxzw==
-X-Google-Smtp-Source: ABdhPJwH4hynpcgx1CRuAaoPnH7xTFd2T1HC8Yee7QqNT7H3Mpa9oRWA0+2tDL2XcKYutlWEIM0Ykg==
-X-Received: by 2002:a05:600c:1f05:b0:37b:d9aa:e210 with SMTP id bd5-20020a05600c1f0500b0037bd9aae210mr2598637wmb.63.1645032130297;
-        Wed, 16 Feb 2022 09:22:10 -0800 (PST)
-Received: from P-NTS-Evian.home (2a01cb058f8a18001c97b8d1b477d53f.ipv6.abo.wanadoo.fr. [2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f])
-        by smtp.gmail.com with ESMTPSA id s7sm1282484wri.5.2022.02.16.09.22.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Feb 2022 09:22:09 -0800 (PST)
-From:   Romain Naour <romain.naour@smile.fr>
-To:     linux-omap@vger.kernel.org
-Cc:     Romain Naour <romain.naour@smile.fr>
-Subject: [PATCH] drivers/thermal/ti-soc-thermal: Add hwmon support
-Date:   Wed, 16 Feb 2022 18:22:06 +0100
-Message-Id: <20220216172206.7448-1-romain.naour@smile.fr>
-X-Mailer: git-send-email 2.34.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yLrFIsE9bo3p9BnVIL7Uc7sprqnSKm0YOW7fBIQdERM=;
+        b=RuPu7SzNkaJd1WR9+wnB7RuMLb2/6JyYiKaOmBtWGY+4dQhlRrtGvZ6OCmGpbsWMoE
+         P6HWXArbpHHQ7o31q4rHYkzBeYrTVeQSPrCkdBec5F3RuJYRVM//BwT9telG3bmZAcoB
+         FxtlU7vncA/7M5kWQwcqyBdpk27zG/p5D5rGZq0nsDf1j034j4N9NruAlDbyjIIBOzmu
+         KbHBVnw1SI5P4hqVE2AIEQGFaF2ieMYBNUQvgI02g+e1RAX1uy1xzU6XISp25w56c5dM
+         rQeGODqdry9lEgQwF/Hg6FiJO1SoO7gDJ8o3BoJD78lW8gTuVok5Fl/klWvtUyspycM7
+         AmqA==
+X-Gm-Message-State: AOAM532jcwakILeJ+RRfPI4QyknirUMpZKArmVbmtERBQUf3YEr8M+pB
+        AOGbopeO05mizhBNkS7JDbWQ5dPD2ZUb11wOmK0=
+X-Google-Smtp-Source: ABdhPJyFOmiGOmRDkw8czUhuWEAUWZI3b6hfKAcdDSxdtm3oSTgs7z2noREt7vOvPl7JarLhxJEUxltkCz2WrL99cSU=
+X-Received: by 2002:a0d:c244:0:b0:2d1:1fbb:180d with SMTP id
+ e65-20020a0dc244000000b002d11fbb180dmr3902361ywd.196.1645038358332; Wed, 16
+ Feb 2022 11:05:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220215174743.GA878920@embeddedor> <202202151016.C0471D6E@keescook>
+ <20220215192110.GA883653@embeddedor> <Ygv8wY75hNqS7zO6@unreal> <20220215193221.GA884407@embeddedor>
+In-Reply-To: <20220215193221.GA884407@embeddedor>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 16 Feb 2022 20:05:47 +0100
+Message-ID: <CAJZ5v0jpAnQk+Hub6ue6t712RW+W0YBjb_gAcZZbUeuYMGv7mg@mail.gmail.com>
+Subject: Re: [PATCH][next] treewide: Replace zero-length arrays with
+ flexible-array members
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Leon Romanovsky <leon@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        GR-QLogic-Storage-Upstream@marvell.com,
+        linux-alpha@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        intel-gfx <intel-gfx@lists.freedesktop.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        nouveau <nouveau@lists.freedesktop.org>,
+        coresight@lists.linaro.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+        netdev <netdev@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        "open list:TARGET SUBSYSTEM" <linux-scsi@vger.kernel.org>,
+        target-devel@vger.kernel.org, mpi3mr-linuxdrv.pdl@broadcom.com,
+        linux-staging@lists.linux.dev,
+        linux-rpi-kernel@lists.infradead.org, sparmaintainer@unisys.com,
+        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        "open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <devel@acpica.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        greybus-dev@lists.linaro.org, linux-i3c@lists.infradead.org,
+        linux-rdma@vger.kernel.org,
+        "open list:BLUETOOTH DRIVERS" <linux-bluetooth@vger.kernel.org>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-perf-users@vger.kernel.org,
+        linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Expose ti-soc-thermal thermal sensors as HWMON devices.
+On Tue, Feb 15, 2022 at 8:24 PM Gustavo A. R. Silva
+<gustavoars@kernel.org> wrote:
+>
+> On Tue, Feb 15, 2022 at 09:19:29PM +0200, Leon Romanovsky wrote:
+> > On Tue, Feb 15, 2022 at 01:21:10PM -0600, Gustavo A. R. Silva wrote:
+> > > On Tue, Feb 15, 2022 at 10:17:40AM -0800, Kees Cook wrote:
+> > > > On Tue, Feb 15, 2022 at 11:47:43AM -0600, Gustavo A. R. Silva wrote:
+> > > >
+> > > > These all look trivially correct to me. Only two didn't have the end of
+> > > > the struct visible in the patch, and checking those showed them to be
+> > > > trailing members as well, so:
+> > > >
+> > > > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > >
+> > > I'll add this to my -next tree.
+> >
+> > I would like to ask you to send mlx5 patch separately to netdev. We are working
+> > to delete that file completely and prefer to avoid from unnecessary merge conflicts.
+>
+> Oh OK. Sure thing; I will do so.
 
-  # sensors
-  cpu_thermal-virtual-0
-  Adapter: Virtual device
-  temp1:        +54.2 C  (crit = +105.0 C)
+Can you also send the ACPI patch separately, please?
 
-  dspeve_thermal-virtual-0
-  Adapter: Virtual device
-  temp1:        +51.4 C  (crit = +105.0 C)
-
-  gpu_thermal-virtual-0
-  Adapter: Virtual device
-  temp1:        +54.2 C  (crit = +105.0 C)
-
-  iva_thermal-virtual-0
-  Adapter: Virtual device
-  temp1:        +54.6 C  (crit = +105.0 C)
-
-  core_thermal-virtual-0
-  Adapter: Virtual device
-  temp1:        +52.6 C  (crit = +105.0 C)
-
-Similar to imx_sc_thermal d2bc4dd91da6095a769fdc9bc519d3be7ad5f97a.
-
-No need to take care of thermal_remove_hwmon_sysfs() since
-devm_thermal_add_hwmon_sysfs() (a wrapper around devres) is
-used. See c7fc403e40b0ea18976a59e968c23439a80809e8.
-
-Signed-off-by: Romain Naour <romain.naour@smile.fr>
----
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-index f84375865c97..0959632b2170 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -21,6 +21,7 @@
- 
- #include "ti-thermal.h"
- #include "ti-bandgap.h"
-+#include "../thermal_hwmon.h"
- 
- /* common data structures */
- struct ti_thermal_data {
-@@ -189,6 +190,9 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
- 	ti_bandgap_set_sensor_data(bgp, id, data);
- 	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
- 
-+	if (devm_thermal_add_hwmon_sysfs(data->ti_thermal))
-+		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
-+
- 	return 0;
- }
- 
--- 
-2.34.1
-
+We would like to route it through the upstream ACPICA code base.
