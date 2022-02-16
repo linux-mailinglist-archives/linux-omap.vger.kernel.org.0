@@ -2,115 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A74B64B7F19
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 05:06:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B06374B8091
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 07:19:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244453AbiBPEGm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 15 Feb 2022 23:06:42 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46962 "EHLO
+        id S229894AbiBPGQA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Feb 2022 01:16:00 -0500
+Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:40190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239345AbiBPEGj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 15 Feb 2022 23:06:39 -0500
-Received: from m12-14.163.com (m12-14.163.com [220.181.12.14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3288C6365
-        for <linux-omap@vger.kernel.org>; Tue, 15 Feb 2022 20:06:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=Message-ID:Date:MIME-Version:Subject:From; bh=F2fnS
-        TLvvvEHBuPSziEG4GLktfZXvvy7S3qrcVUlmbE=; b=oNV9HYyciK+RtYMJNKAz+
-        AcUGGZIuAcu28e4qv2k20fEF0Y9Mnev9QqyjILJnOKrUQ+ZLuQkAMhrSEfseMTkF
-        DcaoI1F5S4IEUYTU5A3a7eFISEQq2HC7+tywPbiK9YwQxVWS2ME/QGRlJCTB7eLb
-        K53ch+EQHIKT4RnFPxnHmg=
-Received: from [192.168.3.109] (unknown [218.201.129.19])
-        by smtp10 (Coremail) with SMTP id DsCowACX4hg0eAxiw8GHDQ--.9771S2;
-        Wed, 16 Feb 2022 12:06:13 +0800 (CST)
-Message-ID: <379b9e75-933c-902c-0f6e-807be9acebc5@163.com>
-Date:   Wed, 16 Feb 2022 12:06:00 +0800
+        with ESMTP id S229541AbiBPGP7 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Feb 2022 01:15:59 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D8491928D7
+        for <linux-omap@vger.kernel.org>; Tue, 15 Feb 2022 22:15:48 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1nKDbB-0000UI-PG; Wed, 16 Feb 2022 07:15:33 +0100
+Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1nKDb8-0005ju-14; Wed, 16 Feb 2022 07:15:30 +0100
+Date:   Wed, 16 Feb 2022 07:15:29 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Marc Kleine-Budde <mkl@pengutronix.de>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Scott Branden <sbranden@broadcom.com>, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@pengutronix.de, Shawn Guo <shawnguo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v3 5/8] ARM: dts: exynos: fix ethernet node name for
+ different odroid boards
+Message-ID: <20220216061529.GA19299@pengutronix.de>
+References: <20220215080937.2263111-1-o.rempel@pengutronix.de>
+ <20220215080937.2263111-5-o.rempel@pengutronix.de>
+ <20220215081240.hhie4niqnc5tuka2@pengutronix.de>
+ <20220215081645.GD672@pengutronix.de>
+ <YgwTkr1UIGH6hgJ6@lunn.ch>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: OMAP GPIO ready too later
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman <khilman@kernel.org>
-References: <63abe475-710f-9ff5-ef20-c78b2a3d5e5c@163.com>
- <YfubSOB+uq9jYf/N@atomide.com> <bb16001d-4a1b-f842-9445-7305e3496997@163.com>
- <YgoJqP1xBsuqX2ui@atomide.com>
-From:   qianfan <qianfanguijin@163.com>
-In-Reply-To: <YgoJqP1xBsuqX2ui@atomide.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DsCowACX4hg0eAxiw8GHDQ--.9771S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KFW5Cw47GF43uFyxWF1xXwb_yoW8KFyfpF
-        48Ca45Kr1ktw4jyr18tw1DuFyFyrnrKF15Xr1DGr10vas09r98XrZ2ya1Y9a4DWw4vgw1j
-        vFyUt343XryUAFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRhqXXUUUUU=
-X-Originating-IP: [218.201.129.19]
-X-CM-SenderInfo: htld0w5dqj3xxmlqqiywtou0bp/1tbiXRWp7VWBnKwk9gAAs6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <YgwTkr1UIGH6hgJ6@lunn.ch>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 07:02:13 up 67 days, 14:47, 42 users,  load average: 0.48, 0.27,
+ 0.17
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Tue, Feb 15, 2022 at 09:56:50PM +0100, Andrew Lunn wrote:
+> > > > -	ethernet: usbether@2 {
+> > > > -		compatible = "usb0424,9730";
+> > > > +	ethernet: ethernet@2 {
+> > > > +		compatible = "usb424,9730";
+> > > 
+> > > The change of the compatible is not mentioned in the patch description.
+> > > Is this intentional?
+> > 
+> > No, I forgot to mentione it. According to the USB schema 0 should be
+> > removed. So, this compatible was incorrect as well. With leading zero
+> > present yaml schema was not able to detect and validate this node.
+> 
+> Does the current code not actually care about a leading 0? It will
+> match with or without it? It would be good to mention that as well in
+> the commit message, otherwise somebody like me is going to ask if this
+> breaks backwards compatibility, since normally compatible is an exact
+> string match.
 
-在 2022/2/14 15:50, Tony Lindgren 写道:
-> * qianfan <qianfanguijin@163.com> [220212 02:18]:
->> 在 2022/2/3 17:07, Tony Lindgren 写道:
->>> Hi,
->>>
->>> * qianfan <qianfanguijin@163.com> [220119 08:36]:
->>>> Hi everyone:
->>>>
->>>> On my board there has a gpio watchdong connected on am3358. And I found that
->>>> the omap gpio device ready too later so it takes about 5 seconds when the
->>>> gpio-wdt is ready.
->>>>
->>>> I had tested on some version of linux, check when the OMAP GPIO is ready.
->>>> Next is the log:
->>>>
->>>> v4.19 [    0.195191] OMAP GPIO hardware version 0.1
->>>>
->>>> v5.4  [    1.168868] OMAP GPIO hardware version 0.1
->>>>
->>>> v5.9  [    4.598052] OMAP GPIO hardware version 0.1
->>>>
->>>> v5.15 [    1.253851] OMAP GPIO hardware version 0.1
->>>>
->>>> I can't find which commit slowdown omap gpio driver. could you please give
->>>> me some advice?
->>> We've moved to probe pretty much everything at normal module_init time
->>> instead of trying to probe everything early. Only clocks and system timers
->>> need to be probed early for the omap variants.
->>>
->>> One of the reasons for the device drivers probing later on during the boot
->>> is caused by drivers/bus/ti-sysc.c. As ti-sysc is the parent device on the
->>> interconnect, none of it's child devices probe before it. And there should
->>> not be any need to probe ti-sysc early. The total boot-up time should be
->>> about the same, just the probe order has changed. If there are issues with
->>> the boot-up time in general, then that's a bug.
->>>
->>> Maybe you want to configure the watchdog in the bootloader initially until
->>> the Linux device drivers get probed?
->> Yes, the gpio watchdog is alived on bootloader, I want find a good way to
->> feed it until linux driver ready.  gpio-wdt.c has an option
->> CONFIG_GPIO_WATCHDOG_ARCH_INITCALL which will register gpio-wdt driver on
->> arch_innitcall, but this feature doesn't work on am335x platform due to the
->> gpio driver ready too later.
-> Well seems like the boottime of 1.25 seconds to having the gpio probed should
-> be way longer than your bootloader configured watchdog timeout :) What do you
-> have the bootloader set the watchdog timeout?
-I had sniffer the gpio data by using logic analysis, when the linux 
-gpio-wdt driver toggle watchdog pin, it passed about 5 seconds after the 
-u-boot done. And the gpio watchdog's deadline is 1.6s.
->
-> Regards,
->
-> Tony
+Current kernel code do not care about exact this compatibles. There is
+no driver matching against it. The USB Ethernet driver will take the
+node provided by the USB core drivers without validating the compatible
+against USB ID.
+See:
+drivers/usb/core/of.c
+drivers/usb/core/message.c:2093
 
+On other hand, DT validations tools do care about it and this nodes was
+not detected automatically. I found it accidentally by grepping the
+sources.
+
+> And i actually think this is the sort of change which should be as a
+> patch of its own. If this causes a regression, a git bisect would then
+> tell you if it is the change of usbether -> ethernet, or 0424 to
+> 424. That is part of why we ask for lots of small changes.
+
+Sounds good, I'll update it.
+
+Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
