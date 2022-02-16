@@ -2,159 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FF634B8E7D
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 17:48:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E36584B8F13
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Feb 2022 18:22:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236646AbiBPQsg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 16 Feb 2022 11:48:36 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44206 "EHLO
+        id S237076AbiBPRW0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 16 Feb 2022 12:22:26 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:57168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236631AbiBPQs2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Feb 2022 11:48:28 -0500
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80072.outbound.protection.outlook.com [40.107.8.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4781F2819A2;
-        Wed, 16 Feb 2022 08:48:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZYMkMCJW0Ov2946nJ6vmk30OA1n9KtlkbVs2LMHOmT3709rdBT8aMgk07YeuN6s6aMlOVsCK4UBtN/BTAPSQ55sBJtxDQXrrd/zBcqoxD9LtWOvYcFlyoP7xpyvgY8VAb2HsvXpAhJ5lnKHCMoUNIKjhsEUctRRBkc8c8MB/8Rfos/glFhOIbGtjUDw6uPlYG5utyM78BLmJpzEsL913yJ7n0zKIIYKC9iAasg90287F6vRaxgCsFlCfgEQQDNb9IiYjwAlsJBotz08T+HJBb73Rxfdxpu0Obzr5z34kbyZ4WRra1WLu7LFVRtqIaz2g1XMfMYhRykgJtHRioXPB1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a28wi/5xh2Zt5W6xwbI/RdUMu6XiQwt9JfhXmzFxOO4=;
- b=lCTTaHCzVJcQ0AokPmx3p28Dd/0Ah7z/MSpTudA7m7YdGkw7c7nWx52Y/4NDB4swlNPYban/HG2O1pjB+vnq7E+fSkCMBmLKkzOl1oCylY/VZjkU3x1v9Nw1RZGWBy5rct6SVziCMXzAgw9NT7/UYxHCc2Lsos6q/E68uYlAd02I4FsvBVV2ZxLRlOYum0vdbXWgH00NlaPw0U29ht0FLB1OPmaS+TAXp1xYR5K5IYE//Iq+6Y2RLk3438fg7n0apIK7eh8756/LXxixTpe+fOItDfCV5Uzs6nTKHeKb5uVEhwkLIP5mT9I4wv4EUfDtyoj0rhtS79pZg1wR/Nntow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a28wi/5xh2Zt5W6xwbI/RdUMu6XiQwt9JfhXmzFxOO4=;
- b=iQwTBuYfRY7DgeUlRfNQgfRQz/jYgyOWcq7+C9oskhxEMSzy6FklQQZiiK/f59/0S8ar1YR/Gk5IiClrqhA3r1NBDXpjHUhRhkBBKVQ1dTF+Sj0dbWfL0Zdc5CimN0fRBEec1y982ZvNhZ7kZ78THpyGjqbuG7DUL7/imz2yd4I=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com (2603:10a6:803:55::19)
- by DB7PR04MB4091.eurprd04.prod.outlook.com (2603:10a6:5:1e::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.14; Wed, 16 Feb
- 2022 16:48:14 +0000
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::95cf:8c40:b887:a7b9]) by VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::95cf:8c40:b887:a7b9%4]) with mapi id 15.20.4951.019; Wed, 16 Feb 2022
- 16:48:14 +0000
-From:   Vladimir Oltean <vladimir.oltean@nxp.com>
-To:     netdev@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        UNGLinuxDriver@microchip.com,
-        Lars Povlsen <lars.povlsen@microchip.com>,
-        Steen Hegelund <Steen.Hegelund@microchip.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Karsten Graul <kgraul@linux.ibm.com>,
-        linux-omap@vger.kernel.org
-Subject: [PATCH net-next 5/5] net: ti: cpsw: remove guards against !BRIDGE_VLAN_INFO_BRENTRY
-Date:   Wed, 16 Feb 2022 18:47:52 +0200
-Message-Id: <20220216164752.2794456-6-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220216164752.2794456-1-vladimir.oltean@nxp.com>
-References: <20220216164752.2794456-1-vladimir.oltean@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM4PR0302CA0009.eurprd03.prod.outlook.com
- (2603:10a6:205:2::22) To VI1PR04MB5136.eurprd04.prod.outlook.com
- (2603:10a6:803:55::19)
+        with ESMTP id S237075AbiBPRWZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 16 Feb 2022 12:22:25 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB17131F7E
+        for <linux-omap@vger.kernel.org>; Wed, 16 Feb 2022 09:22:11 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id o34so1640472wms.1
+        for <linux-omap@vger.kernel.org>; Wed, 16 Feb 2022 09:22:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile-fr.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/NAXHTqHaH78x+T8sVGOJ2gQZ1jGHBNk1VyLMuwhC+g=;
+        b=GthiHW4tjsZ9lcnGzpqU84FNocPSA4PsKarrrZfDtye0KfQOwTtottmZqPctU4GnBv
+         7eWfhXypC3B23dOS0gjVZGUa3cQunHbgaZ+L+TpRclrtCcK2iqh6u0G5nmr2tkDm0h4a
+         J2cq1EZ/IsmJ0wzj8Dsnj8X59NfpwnJIZYpMHrqtEXwlmidaEnftzeeF05vUBEt9kDWb
+         pTkXAQKMNxHsVAOvfc9csoBM0qRXVLYdJA4TwP/rrEuZT3h7t6+lW3VFtLgL7IIOdADQ
+         dwoWYgPf+iuBtKaG8rYeKI9swC0b0a4YCkesSDWRWBHeFPXWWqSD3r+AZCfxGL6XVDAy
+         y1SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/NAXHTqHaH78x+T8sVGOJ2gQZ1jGHBNk1VyLMuwhC+g=;
+        b=b42i25bU/JYpILJ8BOaiYvNYH9mxXBtQRSt3Tqw8Yz2x1iEb3uuMSXeCR9cBHJaHOw
+         iRWR6Rew7CqC74u51sCz94IpSVg1ySTWiMyprRQVYuKYyC81KosF7Af9zFVC+Ds87gJI
+         MrxMPOgCfx11EBMTfrskC1405UTBaQXGUn73TmwEnX325H/PlUVtWONbNpNZikaU8Cik
+         o8oFy5MbOXngPkurYQRBHYgwbhH45unmp0qlgJhpvIutcSMKH2MrUf+M18wi8feZKnI9
+         EGMnwZogFLMiG9HBdQAJEYYZMAo1xcMHmeclg+gDcSENcVbEosx6o/7eGzcAc1nMjj5Q
+         7oNA==
+X-Gm-Message-State: AOAM531MSk1+2C7ZwNEHKT8F1zxymNbGDD3rsbUVQ//yTce/qgXvzOOJ
+        tTjVXJgm0pFetpKPnV4sremlWZ96kGtxzw==
+X-Google-Smtp-Source: ABdhPJwH4hynpcgx1CRuAaoPnH7xTFd2T1HC8Yee7QqNT7H3Mpa9oRWA0+2tDL2XcKYutlWEIM0Ykg==
+X-Received: by 2002:a05:600c:1f05:b0:37b:d9aa:e210 with SMTP id bd5-20020a05600c1f0500b0037bd9aae210mr2598637wmb.63.1645032130297;
+        Wed, 16 Feb 2022 09:22:10 -0800 (PST)
+Received: from P-NTS-Evian.home (2a01cb058f8a18001c97b8d1b477d53f.ipv6.abo.wanadoo.fr. [2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f])
+        by smtp.gmail.com with ESMTPSA id s7sm1282484wri.5.2022.02.16.09.22.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Feb 2022 09:22:09 -0800 (PST)
+From:   Romain Naour <romain.naour@smile.fr>
+To:     linux-omap@vger.kernel.org
+Cc:     Romain Naour <romain.naour@smile.fr>
+Subject: [PATCH] drivers/thermal/ti-soc-thermal: Add hwmon support
+Date:   Wed, 16 Feb 2022 18:22:06 +0100
+Message-Id: <20220216172206.7448-1-romain.naour@smile.fr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ea36323a-c241-42c0-065b-08d9f16c1faf
-X-MS-TrafficTypeDiagnostic: DB7PR04MB4091:EE_
-X-Microsoft-Antispam-PRVS: <DB7PR04MB4091961403C214F09D304E76E0359@DB7PR04MB4091.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:765;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qjE6LJhDKqVw6P+FzFWECufTnXidcuRVa5pL3sErEjOVeemVy2ucfQxpvD/AAL9AuNsim6Be9bhS0vMDSUSj+WAmbUOYz59WQrcuEukLpEfCd4aVF/lDxGVoNU2TbXVkZKfeLgQIvtikg8R4ysaGtouwoIZc/8SLCGqnH3BHKZm45xJAslwCdIBbAD6mHEpTKND/d0wiZA3+A4RMT8KMhQtMbnPSID4D5kIpXeDQAFhPe/z4a0Q+R9RrzpoCQSxnRG0CWZm/AUHR7J9whqxi+24RnmfFA9DUxwVr5kM+2qlomXqCx+EoxYBkBVxgylXRjnTys075y5nJD/bYlxMYuVYMeGwGDGOVGIado6AkO1Ey9UxRXFY4LR6MN3J5zyXdFWtgF383yjW6u/U+opmszwCxKA1rmC1P6DHEa6UUA7MFw+kdMXjcuhxtPw78zsVsclHwOZLxePZXyCgS/gNBWg0hEZpF2op9FBSUOKNznc0E/qFskWjGSVBFepvri7bLA7FRZvVXjxSWl4KnmBxxy++clSkGzFxkEqPjuj4FEZssLGbkq/u5q6H9JX0mWQSXUvomTELVPZ3sXIOkMNijn0UiPqOLg11dXwQiX+e0qxxty9smtzUGOG3CFkCKiPJrX8nINXZ2s20dO4rlUSx3XsQxjdSW6s5Y9Rf5e1mI7TmQ5m2xn07cSefPDvh+pluglmAW0zXRpTrQtdgNMtACow==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5136.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(4326008)(44832011)(6916009)(5660300002)(8676002)(52116002)(186003)(7416002)(36756003)(26005)(66476007)(6512007)(1076003)(86362001)(2616005)(8936002)(38350700002)(6666004)(83380400001)(316002)(38100700002)(2906002)(6486002)(66946007)(66556008)(508600001)(6506007)(54906003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PsDT4RTqOUjiWBxD1qjpgkua2BStFtGsYvsape1Bo7qhoL5QqJJy3W4FR5JM?=
- =?us-ascii?Q?Nm6jpEzlLYZd+hrLUYCdoOtj615UeNIT9rcdlV5Qpie2M69uEfYkIsEjUSMF?=
- =?us-ascii?Q?KOmhX79AyZF5A9VFmwnDNFT9W5vkPfYolFWyeKZqPSP0iX114UAiHQa/9YtO?=
- =?us-ascii?Q?1KkApeovQ+HTxenXP1KDODX+U2axg6fAuVx/l6WEuKbIfNj0sVHMVAQh9yRC?=
- =?us-ascii?Q?unaLbO77VPAUZxJwuyOuxcJ2ZZdRa/FsWEAVVBgKRxpVRVNB9haAn95FzKOR?=
- =?us-ascii?Q?HNsq46n6ZVpQ17lYBnmgX1BwTI4mPcXBLmFbENPzI4/6BznL6bi3fQr++zgD?=
- =?us-ascii?Q?VUV2Xp6QkDdpFXZmbYT+wPYmYG1PaEbMoKo8omZKrl72X1qjWIKyNFx4rrlB?=
- =?us-ascii?Q?fGqDZDqmGtMzh/XQWCz33rg9739iv3QiOQiMddzJ+7t9VbL2RXgxCLL5T6Qc?=
- =?us-ascii?Q?6lQlFUCzLY/G5waXgEnOHY46jTyuWJ7T06fxoMvFXXIYNKYhoh8yDqZ2LFHr?=
- =?us-ascii?Q?PNGia9ekgk/qbwfFolLCMoZ7nlwX0Wo9Kq6CzLD23bsih1Fqd2/uXzBvY0lF?=
- =?us-ascii?Q?sT15rATQZW+XmS3cY1XWytCQR/0LxTalDhaLyoK3cFX6ZW+1MzDqOI3mb+N/?=
- =?us-ascii?Q?QyJTbvqytqhd5N1QKzhrW0AmBhKwUccFdgpKJsi2gxQ7BrolkpUHggGIA9Fb?=
- =?us-ascii?Q?SQz9NcbqUiHGl4vHfNwgk20mV2st4ejp0c6LXjEx70L30owNNfY1551MAkwP?=
- =?us-ascii?Q?sccL8ejtihKGNl1MlC2xSXzE1uw/+07oSG2RTv4ROvqE3lR4XeoArdG/w1Rw?=
- =?us-ascii?Q?kmiJD8RoBGvej+1X6njzWPb3Z64iQYFyPM+e4ikLN0yaVMmnntz6JmwrrpGX?=
- =?us-ascii?Q?nI5puBiQGfW08p4Hvcnr84HE6jCSVtloP+zsd9g0/vY3/GF1KRbWEnvNo+op?=
- =?us-ascii?Q?j4V2RWpDgtx3jGrqynQCuX6YnglbY73Rv0NvKVzI9Ta7HsNMkBvA71zqeDI4?=
- =?us-ascii?Q?GHm27Z43MVDtr/R5/IJTnAhv+VNngkWHzHuE0w8RrLuUk6oj7wrcFQE5W8/f?=
- =?us-ascii?Q?m6z775k8dQKqjZNJ7OHtcTHbBDH1QnshFqGVhluhiD9v0gcGDD8KKa3x+OkK?=
- =?us-ascii?Q?5BqA/6fIynimSrMr0bPTbBzPn8GSyI+0kPug/HCDGtRID76wZ+resaEAjwXU?=
- =?us-ascii?Q?MIKUeBXYfOuosBtxqaaXuuJGzmK20dt9rLrAwBRBwIUYlYlMoBDIVyluy4IW?=
- =?us-ascii?Q?m4sycb6tAIlQ9wMCdRhoHiP33nTzP4+84QoycQsebyDrY5qb2PzEtYHTm0Tm?=
- =?us-ascii?Q?JhlKGgwoEh9hCPDbUTU42H6xaEVB03R4ur66k8s9gN7WhHbFxQ3lxIR9AZMx?=
- =?us-ascii?Q?xathcOLuFmtYAx9s8CLF8caaRBuKMkc6NEvERqNceAkCCpg0NOPBxAxw3JCk?=
- =?us-ascii?Q?rT0sUjOySNKUCBXFLQ6S3Ae6QBSrahGRrZ0lXDLWtw6YtE/7IXjSDZpxRH5G?=
- =?us-ascii?Q?t8Rw9D2dbFxb1f07GTtd5gkUv7sMMroMSmyi97C1dfSW/GiWPNYbrqMa0yKe?=
- =?us-ascii?Q?EpkeWbZdg/5vDgEq82ACd8QoOXh/OPmvBS5HKn1N8JiRrAzL57BLLUoj0Xwy?=
- =?us-ascii?Q?TA9mQp3eYDd0fvaER5owo7g=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea36323a-c241-42c0-065b-08d9f16c1faf
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5136.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2022 16:48:14.1993
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fkX5i/i7pjpZW9tslbqW2v8Y0sGFJggpNa6ZqJDsEAJjDWEiIV2qL8ehOqw0asroix9aoRvelbxB8GXOEmvDBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB4091
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Since commit 3116ad0696dd ("net: bridge: vlan: don't notify to switchdev
-master VLANs without BRENTRY flag"), the bridge no longer emits
-switchdev notifiers for VLANs that don't have the
-BRIDGE_VLAN_INFO_BRENTRY flag, so these checks are dead code.
-Remove them.
+Expose ti-soc-thermal thermal sensors as HWMON devices.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+  # sensors
+  cpu_thermal-virtual-0
+  Adapter: Virtual device
+  temp1:        +54.2 C  (crit = +105.0 C)
+
+  dspeve_thermal-virtual-0
+  Adapter: Virtual device
+  temp1:        +51.4 C  (crit = +105.0 C)
+
+  gpu_thermal-virtual-0
+  Adapter: Virtual device
+  temp1:        +54.2 C  (crit = +105.0 C)
+
+  iva_thermal-virtual-0
+  Adapter: Virtual device
+  temp1:        +54.6 C  (crit = +105.0 C)
+
+  core_thermal-virtual-0
+  Adapter: Virtual device
+  temp1:        +52.6 C  (crit = +105.0 C)
+
+Similar to imx_sc_thermal d2bc4dd91da6095a769fdc9bc519d3be7ad5f97a.
+
+No need to take care of thermal_remove_hwmon_sysfs() since
+devm_thermal_add_hwmon_sysfs() (a wrapper around devres) is
+used. See c7fc403e40b0ea18976a59e968c23439a80809e8.
+
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
 ---
- drivers/net/ethernet/ti/cpsw_switchdev.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_switchdev.c b/drivers/net/ethernet/ti/cpsw_switchdev.c
-index a7d97d429e06..ce85f7610273 100644
---- a/drivers/net/ethernet/ti/cpsw_switchdev.c
-+++ b/drivers/net/ethernet/ti/cpsw_switchdev.c
-@@ -252,15 +252,11 @@ static int cpsw_port_vlans_add(struct cpsw_priv *priv,
- {
- 	bool untag = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
- 	struct net_device *orig_dev = vlan->obj.orig_dev;
--	bool cpu_port = netif_is_bridge_master(orig_dev);
- 	bool pvid = vlan->flags & BRIDGE_VLAN_INFO_PVID;
+diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+index f84375865c97..0959632b2170 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
++++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+@@ -21,6 +21,7 @@
  
- 	dev_dbg(priv->dev, "VID add: %s: vid:%u flags:%X\n",
- 		priv->ndev->name, vlan->vid, vlan->flags);
+ #include "ti-thermal.h"
+ #include "ti-bandgap.h"
++#include "../thermal_hwmon.h"
  
--	if (cpu_port && !(vlan->flags & BRIDGE_VLAN_INFO_BRENTRY))
--		return 0;
--
- 	return cpsw_port_vlan_add(priv, untag, pvid, vlan->vid, orig_dev);
+ /* common data structures */
+ struct ti_thermal_data {
+@@ -189,6 +190,9 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+ 	ti_bandgap_set_sensor_data(bgp, id, data);
+ 	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
+ 
++	if (devm_thermal_add_hwmon_sysfs(data->ti_thermal))
++		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
++
+ 	return 0;
  }
  
 -- 
-2.25.1
+2.34.1
 
