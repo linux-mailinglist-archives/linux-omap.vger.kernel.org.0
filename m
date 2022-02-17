@@ -2,43 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 465F44BA074
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Feb 2022 13:58:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA54E4BA08B
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Feb 2022 14:03:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237431AbiBQM6q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Feb 2022 07:58:46 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:54896 "EHLO
+        id S240623AbiBQNDV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Feb 2022 08:03:21 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240578AbiBQM6p (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Feb 2022 07:58:45 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0582E28421A
-        for <linux-omap@vger.kernel.org>; Thu, 17 Feb 2022 04:58:30 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id BD95D80E4;
-        Thu, 17 Feb 2022 12:57:46 +0000 (UTC)
-Date:   Thu, 17 Feb 2022 14:58:28 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Romain Naour <romain.naour@smile.fr>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: AM5749: tty serial 8250 omap driver crash
-Message-ID: <Yg5GdIp5Glp9p/G5@atomide.com>
-References: <e3cf5082-b494-9309-6878-da208920fa5a@smile.fr>
- <YgT/fhpFQfkj1b0j@atomide.com>
- <9f0cb8f9-ac94-eb50-266a-95df521a7360@smile.fr>
- <YgoIMPZd7bi6XDGW@atomide.com>
- <YgpUNMAiXgu+vrtl@atomide.com>
- <ca2faa1d-715b-77f8-4f19-037ba9aabc8e@smile.fr>
- <YgzkLjWwIlm9/SiK@atomide.com>
- <114d59cb-bbea-6298-c346-3f50f04ab2a5@smile.fr>
- <Yg4CZb1Jy2M8wwn/@atomide.com>
- <77a24941-4c46-8d78-391a-d3d1018f311a@smile.fr>
+        with ESMTP id S240621AbiBQNDV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Feb 2022 08:03:21 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB48F291F9D;
+        Thu, 17 Feb 2022 05:03:06 -0800 (PST)
+Received: from [192.168.1.111] (91-156-85-209.elisa-laajakaista.fi [91.156.85.209])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id A6E7647F;
+        Thu, 17 Feb 2022 14:03:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1645102985;
+        bh=fmGNkvDxKEzYBZ9w2iowuzgmO/punzJ1e+W/3pqe3jg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=nK5c9d3dofyn8/Qg3gDKxx5OzAQ4ieOLTGemE3Nb6XEFyY9sytttgDyCj9WYgo+2m
+         jmojucO1qbz+0wMWmlkilyqmVhzKhikVyFw5tSX8nGD9eitiRQAULW31c12WxcEbPP
+         MzFtZjpQnT3TdVsqN2b+MesAHgZuDWySXzDmnrRk=
+Message-ID: <be4e1cd8-a994-303d-9424-14439ce1f7d4@ideasonboard.com>
+Date:   Thu, 17 Feb 2022 15:03:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <77a24941-4c46-8d78-391a-d3d1018f311a@smile.fr>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH 0/3] drm: omapdrm: Fix excessive GEM buffers DMM/CMA usage
+Content-Language: en-US
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, tomba@kernel.org,
+        airlied@linux.ie, daniel@ffwll.ch
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, merlijn@wizzup.org, tony@atomide.com
+References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+In-Reply-To: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,41 +50,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Romain Naour <romain.naour@smile.fr> [220217 09:09]:
-> On u-boot devicetree the uart4 node is missing, but we don't plan to use the gps
-> from uboot :)
-> Should I add the uart4 node?
+Hi Ivaylo,
 
-There should be no need for that, kernel should be able to initialize it
-properly no matter what the state is from the bootloader.
-
-> Since removing the uart quirk had some other side effect, I did a shameless hack
-> in 8250_omap.c to disable autosuspend.
+On 19/01/2022 12:23, Ivaylo Dimitrov wrote:
+> This patch series fixes excessive DMM or CMA usage of GEM buffers leading to
+> various runtime allocation failures. The series enables daily usage of devices
+> without exausting limited resources like CMA or DMM space if GPU rendering is
+> needed.
 > 
-> -	pm_runtime_put_autosuspend(port->dev);
-> +	pm_runtime_dont_use_autosuspend(port->dev);
+> The first patch doesn't bring any functional changes, it just moves some
+> TILER/DMM related code to a separate function, to simplify the review of the
+> next two patches.
 > 
-> With that the uart is always up and running.
-
-Yes but note that 8250_omap autosuspend does not do anything unless the
-timeouts are manually enabled by the userspace. They are initialized to -1
-during probe.
-
-> > The test script I posted does that for all the uarts, probably best not
-> > to do that until the other issues are sorted out :) If so, maybe the issue
-> > on close is that the uart has already autoidled.
+> The second patch allows off-CPU rendering to non-scanout buffers. Without that
+> patch, it is basically impossible to use the driver allocated GEM buffers on
+> OMAP3 for anything else but a basic CPU rendered examples as if we want GPU
+> rendering, we must allocate buffers as scanout buffers, which are CMA allocated.
+> CMA soon gets fragmented and we start seeing allocation failures. Such failres
+> in Xorg cannot be handeled gracefully, so the system is basically unusable.
 > 
-> Indeed. But I'm not sure why the autosuspend is enabled by default?
+> Third patch fixes similar issue on OMAP4/5, where DMM/TILER spaces get
+> fragmented with time, leading to allocation failures.
 
-See above, it's always been initialized to -1 by default so it won't
-do anything. But if you ran the test script I posted, autosuspend timeout
-got enabled for all the uarts. But maybe the issue you posted is yet
-another issue that I don't quite understand yet.
+I think this is just hacking around the problem. The problem is that 
+omapdrm is being used by some as a generic buffer allocator. Those users 
+should be changed to use a their own allocator or a generic allocator. 
+And we could then drop the OMAP_BO_SCANOUT flag, as all buffers would be 
+scanout buffers.
 
-To me it seems we should always have runtime PM functions enable the
-serial port to usable state and get rid of the conditional enable for
-probe and dma.
+Or do we have a regression in the driver? My understanding is that this 
+has never really worked.
 
-Regards,
-
-Tony
+  Tomi
