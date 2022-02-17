@@ -2,171 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D55464BAAA6
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Feb 2022 21:12:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34BFF4BAC13
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Feb 2022 22:50:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245723AbiBQUMT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Feb 2022 15:12:19 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56118 "EHLO
+        id S245229AbiBQVug (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Feb 2022 16:50:36 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243775AbiBQUMT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Feb 2022 15:12:19 -0500
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF34A9E27;
-        Thu, 17 Feb 2022 12:12:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1645128703;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=Message-Id:To:Cc:Subject:Date:From:Cc:Date:From:Subject:Sender;
-    bh=/ncdnXpbY4SFFS0er1tKwPrwjg499WQ61cmVGx8FfzE=;
-    b=i0oHJm1x9dwBejUmyWB+pi02WpJ2jLG6/kipDEZSa5Abus1VKAJGH5U3c7X03Dh1Cw
-    L37QWgHPMmr/Wl9HVFyd0pCaVADPqutNu3aTi7EuigNdOxy5Fb8WfS5sSn7/njlFTvPz
-    4hrh/M6r7e7o7EQ3LFl9CmI2BwsSZ6nBw5ArCbQ3cgd4HjFyrsAX732yWB8umwZNmngS
-    QWdKCTy9k3ZOeKEWRlNBit1D3mKAo3svSkkKC624E02zqUfiXGhdgmuopcTKMgI0ouTI
-    WxxHwZkjuakJD3bo2JKIwuPaTvbmFEkRBbFl2hK829cXuf297uxH3a5Qha+yaThnj1v3
-    RjVg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw4SA"
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.39.2 DYNA|AUTH)
-    with ESMTPSA id Rb8524y1HKBh0LP
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Thu, 17 Feb 2022 21:11:43 +0100 (CET)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-Content-Type: text/plain;
-        charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Date:   Thu, 17 Feb 2022 21:11:40 +0100
-Subject: [BUG] mmc: core: adjust polling interval for CMD1
-Cc:     Jean Rene Dawin <jdawin@math.uni-bielefeld.de>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, Tony Lindgren <tony@atomide.com>
-To:     Huijin Park <huijin.park@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Message-Id: <27DDB061-1235-4F4C-B6A8-F035D77AC9CF@goldelico.com>
-X-Mailer: Apple Mail (2.3445.104.21)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231612AbiBQVuf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Feb 2022 16:50:35 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8544168092
+        for <linux-omap@vger.kernel.org>; Thu, 17 Feb 2022 13:50:19 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id f37so1749225lfv.8
+        for <linux-omap@vger.kernel.org>; Thu, 17 Feb 2022 13:50:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=k02/bKS8aVI9os28coGbc487m6RW3DHQoe7DqZjzTCc=;
+        b=LxPObU6Fzi5HT6pY2zP44/iObwpLjY6V7cEhfQnj7LrpgUAftUPZq3DAIRc6ItbOUU
+         /78Td/LOWh0KzRCD1HKS/J9i4cxmSsGKPOwUsEGP47HwlxINFHgZklQnDlntvPUkIPKV
+         c8TGFg0QD+7p7g2EZrKpeKn72QNg0hHAORjhmoklXDTijX3HRwCFEvUf7uHaIcPsp6OO
+         vESiYJKn3mxom+lpUE1tK4ANgwK5cGhdNX8i+J+bQcQ1vIueOQHMxTE9w1nMidxv3coC
+         aD5aEr6B4L0PUZzhO7jBdllQGNGQozfQKXJyX3ac6uBJKda6/K/3owkUZ0hVmXJpilPu
+         UM8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=k02/bKS8aVI9os28coGbc487m6RW3DHQoe7DqZjzTCc=;
+        b=lr9PtIr3RrOZV9ezyq/nQ7iEw5s5jFoFcm/80BfejmAn84VcnVtQmYiX8S498NXGqr
+         OHTX3uOZe5CTidOzYXdCHhk4EbQ/4TKV6lIRSvw+9KfG48BuPGpkgHBLFaqGA/aMP3Oz
+         hDJ51VC8ZtxLsPqEsxBuNq5c453qPht5bhNGJIUcyyeXSPoL2JPyyrN80JKTDWs3+SZs
+         eXPzy9QXtVBT59p+ln+g5pyTD4o3E1PQdFts9RJiGbTdDi8R/8EFFlKFl2R/LcCTttdg
+         habparsR9P6hkvRGzDYTbRJ/JQ9jNtMvyzaj5BpbG7xAVdihLuHHewrgEzOLESgUaooB
+         ORiA==
+X-Gm-Message-State: AOAM533f5EfIp/ChPtlDadShE4zJx1iKTpso//hl1DQpO/9VVPHOUDT8
+        T7IOW1bDlGB3JM23q48Chgs=
+X-Google-Smtp-Source: ABdhPJx+NO54QRpZFVUAQ3EaCL3piphY6Wa7kUc7muhaZDCVSY/xg8ysaFKrl1hSGDHPW4wMqZLx+A==
+X-Received: by 2002:a19:5212:0:b0:443:5b82:b6b with SMTP id m18-20020a195212000000b004435b820b6bmr3418441lfb.232.1645134618142;
+        Thu, 17 Feb 2022 13:50:18 -0800 (PST)
+Received: from dell.lan (93-181-165-181.internetia.net.pl. [93.181.165.181])
+        by smtp.gmail.com with ESMTPSA id j8sm99672lja.26.2022.02.17.13.50.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Feb 2022 13:50:17 -0800 (PST)
+From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Paul Walmsley <paul@pwsan.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Subject: [PATCH] ARM: OMAP1: clock: Fix UART rate reporting algorithm
+Date:   Thu, 17 Feb 2022 22:49:59 +0100
+Message-Id: <20220217214959.419572-1-jmkrzyszt@gmail.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
+        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-Jean Rene Dawin did report to me a problem on the Beagle Bone Black =
-starting
-with our disto kernel based on v5.17-rc1:
+Since its introduction to the mainline kernel, omap1_uart_recalc() helper
+makes incorrect use of clk->enable_bit as a ready to use bitmap mask while
+it only provides the bit number.  Fix it.
 
->> since kernel 5.17-rc1 I noticed slower emmc performance on Beaglebone
->> Black, but didn't check the logs.
->> When I tried to run 5.17.0-rc3-letux+ it booted fine, but during IO
->> traffic there were messages like
->>=20
->> [  662.529584] mmc1: error -110 doing runtime resume
->> [  669.293590] mmc1: Card stuck being busy! __mmc_poll_for_busy
->>=20
->> [  739.076072] mmc1: Timeout waiting for hardware interrupt.
->> [  739.145676] mmc1: sdhci: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =
-SDHCI REGISTER DUMP =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> [  739.231053] mmc1: sdhci: Sys addr:  0x00000000 | Version:  =
-0x00003101
->> [  739.316472] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  =
-0x00000400
->> [  739.401937] mmc1: sdhci: Argument:  0x00342d30 | Trn mode: =
-0x00000023
->> [  739.487439] mmc1: sdhci: Present:   0x01f70000 | Host ctl: =
-0x00000000
->> [  739.573007] mmc1: sdhci: Power:     0x0000000f | Blk gap:  =
-0x00000000
->> [  739.658609] mmc1: sdhci: Wake-up:   0x00000000 | Clock:    =
-0x00003c07
->> [  739.744224] mmc1: sdhci: Timeout:   0x00000007 | Int stat: =
-0x00000002
->> [  739.829896] mmc1: sdhci: Int enab:  0x027f000b | Sig enab: =
-0x027f000b
->> [  739.915623] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: =
-0x00000001
->> [  740.001394] mmc1: sdhci: Caps:      0x07e10080 | Caps_1:   =
-0x00000000
->> [  740.087208] mmc1: sdhci: Cmd:       0x0000193a | Max curr: =
-0x00000000
->> [  740.173051] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  =
-0x00000000
->> [  740.258928] mmc1: sdhci: Resp[2]:   0x00000000 | Resp[3]:  =
-0x00000000
->> [  740.344854] mmc1: sdhci: Host ctl2: 0x00000000
->> [  740.402796] mmc1: sdhci: =
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>=20
->> and finally IO errors and a corrupted filesystem.
->>=20
->> 5.17.0-rc4-letux+ shows the same behaviour.
+Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+---
+ arch/arm/mach-omap1/clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I checked with my BeagleBoard Black (am3358) and can confirm this =
-observation.
-It happens only with the integrated eMMC but not with the =C2=B5SD =
-connected to
-the other mmc interface.
-
-A git bisect found:
-
-76bfc7ccc2fa9d382576f6013b57a0ef93d5a722 is the first bad commit
-commit 76bfc7ccc2fa9d382576f6013b57a0ef93d5a722
-Author: Huijin Park <huijin.park@samsung.com>
-Date:   Thu Nov 4 15:32:31 2021 +0900
-
-  mmc: core: adjust polling interval for CMD1
-
-  In mmc_send_op_cond(), loops are continuously performed at the same
-  interval of 10 ms.  However the behaviour is not good for some eMMC
-  which can be out from a busy state earlier than 10 ms if normal.
-
-  Rather than fixing about the interval time in mmc_send_op_cond(),
-  let's instead convert into using the common __mmc_poll_for_busy().
-
-  The reason for adjusting the interval time is that it is important
-  to reduce the eMMC initialization time, especially in devices that
-  use eMMC as rootfs.
-
-  Test log(eMMC:KLM8G1GETF-B041):
-
-  before: 12 ms (0.311016 - 0.298729)
-  [    0.295823] mmc0: starting CMD0 arg 00000000 flags 000000c0
-  [    0.298729] mmc0: starting CMD1 arg 40000080 flags 000000e1<-start
-  [    0.311016] mmc0: starting CMD1 arg 40000080 flags 000000e1<-finish
-  [    0.311336] mmc0: starting CMD2 arg 00000000 flags 00000007
-
-  after: 2 ms (0.301270 - 0.298762)
-  [    0.295862] mmc0: starting CMD0 arg 00000000 flags 000000c0
-  [    0.298762] mmc0: starting CMD1 arg 40000080 flags 000000e1<-start
-  [    0.299067] mmc0: starting CMD1 arg 40000080 flags 000000e1
-  [    0.299441] mmc0: starting CMD1 arg 40000080 flags 000000e1
-  [    0.299879] mmc0: starting CMD1 arg 40000080 flags 000000e1
-  [    0.300446] mmc0: starting CMD1 arg 40000080 flags 000000e1
-  [    0.301270] mmc0: starting CMD1 arg 40000080 flags 000000e1<-finish
-  [    0.301572] mmc0: starting CMD2 arg 00000000 flags 00000007
-
-  Signed-off-by: Huijin Park <huijin.park@samsung.com>
-  Link: =
-https://lore.kernel.org/r/20211104063231.2115-3-huijin.park@samsung.com
-  Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-Reverting this makes v5.17-rc[1-4] work.
-
-Any suggestions or fixes?
-
-BR and thanks,
-Nikolaus Schaller
-
-Reported-by: jdawin@math.uni-bielefeld.de
+diff --git a/arch/arm/mach-omap1/clock.c b/arch/arm/mach-omap1/clock.c
+index 9d4a0ab50a46..d63d5eb8d8fd 100644
+--- a/arch/arm/mach-omap1/clock.c
++++ b/arch/arm/mach-omap1/clock.c
+@@ -41,7 +41,7 @@ static DEFINE_SPINLOCK(clockfw_lock);
+ unsigned long omap1_uart_recalc(struct clk *clk)
+ {
+ 	unsigned int val = __raw_readl(clk->enable_reg);
+-	return val & clk->enable_bit ? 48000000 : 12000000;
++	return val & 1 << clk->enable_bit ? 48000000 : 12000000;
+ }
+ 
+ unsigned long omap1_sossi_recalc(struct clk *clk)
+-- 
+2.35.1
 
