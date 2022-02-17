@@ -2,171 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AB004BA5A1
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Feb 2022 17:22:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07EFE4BAA97
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Feb 2022 21:06:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243000AbiBQQWL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 17 Feb 2022 11:22:11 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37104 "EHLO
+        id S237756AbiBQUGl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 17 Feb 2022 15:06:41 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231750AbiBQQWJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Feb 2022 11:22:09 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D2FC162032;
-        Thu, 17 Feb 2022 08:21:55 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id gb39so8565308ejc.1;
-        Thu, 17 Feb 2022 08:21:55 -0800 (PST)
+        with ESMTP id S245667AbiBQUGl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 17 Feb 2022 15:06:41 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 831FB1E7
+        for <linux-omap@vger.kernel.org>; Thu, 17 Feb 2022 12:06:25 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id f37so1312967lfv.8
+        for <linux-omap@vger.kernel.org>; Thu, 17 Feb 2022 12:06:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=DForfRnLwwnXduWv7pqOZNccFubmVw5bTqYdaZSmmMw=;
-        b=Pb/AzPxSe22ghqMXbZYpZ5d+l2fDgDw3kNatdzvkFxy1fF4TmxetKp2MQIZIbo1zNX
-         4YdvI0Lnd5YKvDRdrdwMW4S3YA/ntdNcQcqxphljojhS5nSiSECdGeran97F0wdpV760
-         vAc2lJiPApvKXL4CM223ACwHfEpX0k6mLwwYAMHptQfLA6WyGEAaU/Yf+Q/E/lSFmffU
-         LfrLQ/XxlsZR8m6SRQBgOULLYW5n56nEm2cpl3nK0+Vq/PFUirvBbuYusI6CN2aZXlHq
-         6bS3/AC2XKz20pcRHgywtAihlk9f7auVCI5g9R5KRow+HgjpiR7Y2FW7Re26Wi5UaqKS
-         UjXA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+U20TDiI9vrXWGSFRa4Lg+MjXVh4ORPUTxC5hPPoqRY=;
+        b=fgBkzxdeJezeTziXMC8DxQUk4rtG9UDMNHF0gj23J3G/GQKrM5s39KjyWrrI+c6JxQ
+         o5dsO8/c/qfC0VBmls61cbamyge4ml71R60CjasjS4zOOk7OUat5WZzOdiD7FDv8Ixvu
+         GJMxbumsw8SYWUvvBPR89D2xVZQgg8ZhuKXXuLumMbxuD25OoQ21qUNF2lvK8cH8egZp
+         ZBbMsrKMFiuQWAXKskg+lqEPywyMXMrzzwhqm/uD8ymDOymDselGagUq0T64tTDoLNdf
+         lQiqkWz7Kx5LApJCxDAsJT0pxNUZ1OHqhKtPFRtoiY/ClGTnqoUZKrN4z514+jD/R+8v
+         8R3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=DForfRnLwwnXduWv7pqOZNccFubmVw5bTqYdaZSmmMw=;
-        b=UIxxQF2OZO9t6KArXXQVv7/aLaBEPhXe8sZ25xSjScaPtCDdbICCTh5YenDVgIpR+4
-         YN9kjqeLQkphmjtxVo9ndHFs8NpKljbdFLJr+YEH09zJgrte4DOaZzRpQRlpFZCjtkgI
-         urzayt+kzyWPbsZCrcqgBPIoism1pSqwoRTfAP9aKMrd3npasQtq2Sv0yBzmIHwWJ7t7
-         cW4OkJU6P9DzjLZKUZOsc+xejvjwmLN4bicbEW2EEyjuB/r7hIldXeOON357g3ZOb1Cx
-         j+GL5RfPxPCptvWPQ4eZad20s47ums6Y9U0jRt9v7oezUICBU/yFoWg6H9AmiBY379OB
-         g9Vw==
-X-Gm-Message-State: AOAM531GsjFolR1R0xkBAwjkuotYn7fHVkKybDlTmwxNJi11SUv2X0/U
-        RxgHaA117zL9eB2Ss5kZYlg=
-X-Google-Smtp-Source: ABdhPJyjU5pLyn9ipTJJsTm1EuSFYs/qledmzIu5jwnqn3cnCeqYY1Wn4HRuKjvE5OKo1D4DI7lHcw==
-X-Received: by 2002:a17:907:3c7:b0:6cf:8e46:617c with SMTP id su7-20020a17090703c700b006cf8e46617cmr2883137ejb.557.1645114913546;
-        Thu, 17 Feb 2022 08:21:53 -0800 (PST)
-Received: from [192.168.1.10] ([46.249.74.23])
-        by smtp.googlemail.com with ESMTPSA id l12sm1303112edt.1.2022.02.17.08.21.52
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 17 Feb 2022 08:21:53 -0800 (PST)
-Subject: Re: [PATCH 0/3] drm: omapdrm: Fix excessive GEM buffers DMM/CMA usage
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, tomba@kernel.org,
-        airlied@linux.ie, daniel@ffwll.ch
-Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, merlijn@wizzup.org, tony@atomide.com
-References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <be4e1cd8-a994-303d-9424-14439ce1f7d4@ideasonboard.com>
-From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Message-ID: <47dbc690-bff2-8839-f01f-9287403a7562@gmail.com>
-Date:   Thu, 17 Feb 2022 18:21:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Firefox/60.0 Thunderbird/60.6.1
+        bh=+U20TDiI9vrXWGSFRa4Lg+MjXVh4ORPUTxC5hPPoqRY=;
+        b=VFWhMh86FyhmjeNui/hMPrX23cMbGCGg8Jrkbl5jgOlKEyLu3l6uq610sOKfLwsHaZ
+         T8uIHWYR42BevAE/ONvU+9qW0WpZW5FzcBtsY8BrhHehnWzcpjZccwv0UIeOkn43Hake
+         1ZFmw7oKk/lHj1yF4Lw2y2FjkypPFbLo2zfFbTxAgpk9eKWUQ9QgQGZvq2AgT8jbcp1y
+         AlCVMH8TSZZl4GKVLED9PFqwBropggtjP1J2Iyax3x/yoObCE5HUOblNNYoeTpMN3uc2
+         pFI5/DwLDaTdu1dvEkx4TIK7y+Xw7oa0bMUlRPX90dAO8rfnHvzrBU2BdSO+1G6C0IQy
+         v4lw==
+X-Gm-Message-State: AOAM5326dkxonbaOFb5/MeiEttlAzUZ5d2CZD8knJli19ceb2EloDoH4
+        LWPXIza+GvGPGQ23EQ9q1XQ=
+X-Google-Smtp-Source: ABdhPJy68mgWekGRNL2Jy+ovOpm7OKzgfRnKLRLm5LUnja+UKV6dXx9crOg0qx6v1UgfnLWod7+OTw==
+X-Received: by 2002:a05:6512:46f:b0:443:77fa:f857 with SMTP id x15-20020a056512046f00b0044377faf857mr3167285lfd.140.1645128383744;
+        Thu, 17 Feb 2022 12:06:23 -0800 (PST)
+Received: from dell.lan (93-181-165-181.internetia.net.pl. [93.181.165.181])
+        by smtp.gmail.com with ESMTPSA id k9sm55768lfo.155.2022.02.17.12.06.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Feb 2022 12:06:23 -0800 (PST)
+From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Paul Walmsley <paul@pwsan.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Subject: [RFC RFT PATCH] ARM: OMAP1: clock: Fix early UART rate issues
+Date:   Thu, 17 Feb 2022 21:06:06 +0100
+Message-Id: <20220217200606.415391-1-jmkrzyszt@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-In-Reply-To: <be4e1cd8-a994-303d-9424-14439ce1f7d4@ideasonboard.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
+        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tomi,
+Commit ef772f2ee31e ("ARM: OMAP: Fix CONFIG_DEBUG_LL") was supposed to fix
+low level debugging, most possibly by early enabling UART clocks.  The fix
+actually introduced early reset of most bits of MOD_CONF_CTRL_0 register,
+with the exception of UART1 and UART2 clock related bits which were set
+high.  However, UART1 clock bit can play different roles on different
+OMAP1 variants.  On OMAP1610 it enables the clock as intended, but on
+OMAP1510 it switches the clock rate from 12 to 48 MHz.  Even worth, for
+UART2 the bit changes its clock rate also on OMAP1610.  As a result, UART
+rates set by a bootloader can be unintentionally changed early on kernel
+boot and low level debugging broken, not fixed.  Besides, reset of all
+other bits was not justified.
 
-On 17.02.22 г. 15:03 ч., Tomi Valkeinen wrote:
-> Hi Ivaylo,
-> 
-> On 19/01/2022 12:23, Ivaylo Dimitrov wrote:
->> This patch series fixes excessive DMM or CMA usage of GEM buffers 
->> leading to
->> various runtime allocation failures. The series enables daily usage of 
->> devices
->> without exausting limited resources like CMA or DMM space if GPU 
->> rendering is
->> needed.
->>
->> The first patch doesn't bring any functional changes, it just moves some
->> TILER/DMM related code to a separate function, to simplify the review 
->> of the
->> next two patches.
->>
->> The second patch allows off-CPU rendering to non-scanout buffers. 
->> Without that
->> patch, it is basically impossible to use the driver allocated GEM 
->> buffers on
->> OMAP3 for anything else but a basic CPU rendered examples as if we 
->> want GPU
->> rendering, we must allocate buffers as scanout buffers, which are CMA 
->> allocated.
->> CMA soon gets fragmented and we start seeing allocation failures. Such 
->> failres
->> in Xorg cannot be handeled gracefully, so the system is basically 
->> unusable.
->>
->> Third patch fixes similar issue on OMAP4/5, where DMM/TILER spaces get
->> fragmented with time, leading to allocation failures.
-> 
-> I think this is just hacking around the problem. The problem is that 
-> omapdrm is being used by some as a generic buffer allocator. Those users 
+Don't touch register bits not related to UART clocks.  Also, don't touch
+the bit of UART2 clock.  Make sure UART1 and UART3 are enabled early on
+relevant OMAP1610 machine types while preserving bootloader UART clock
+rates on others.
 
-Well, the user of omap_bo interface I know is xf86-video-omap. Unless if 
-by users you mean 'kernel users' which I know none.
+Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+---
+Tested only on OMAP1510 ams_delta.
 
-I think that if 'we' are to teach xorg omap DDX (or any other user in 
-that regard) to use GPU driver allocator for non-scanout buffers and 
-omapdrm for scanout, it will become a mess. Not impossible though, just 
-way more complicated than the $series. Also, why do omapdrm allow 
-allocation of non-linear buffers and CPU (userspace) access to them, but 
-refuses to export them to kernel drivers? Isn't that the whole point of 
-DMABUF stuff? This is not consistent to me. The series fixes that 
-inconsistency, nothing more.
+ arch/arm/mach-omap1/clock_data.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-> should be changed to use a their own allocator or a generic allocator. 
+diff --git a/arch/arm/mach-omap1/clock_data.c b/arch/arm/mach-omap1/clock_data.c
+index 3ebcd96efbff..7a7951a63bc2 100644
+--- a/arch/arm/mach-omap1/clock_data.c
++++ b/arch/arm/mach-omap1/clock_data.c
+@@ -767,11 +767,11 @@ int __init omap1_clk_init(void)
+ 	u32 reg;
+ 
+ #ifdef CONFIG_DEBUG_LL
+-	/*
+-	 * Resets some clocks that may be left on from bootloader,
+-	 * but leaves serial clocks on.
+-	 */
+-	omap_writel(0x3 << 29, MOD_CONF_CTRL_0);
++	/* Make sure UART clocks are enabled early */
++	if (cpu_is_omap16xx())
++		omap_writel(omap_readl(MOD_CONF_CTRL_0) |
++			    CONF_MOD_UART1_CLK_MODE_R |
++			    CONF_MOD_UART3_CLK_MODE_R, MOD_CONF_CTRL_0);
+ #endif
+ 
+ 	/* USB_REQ_EN will be disabled later if necessary (usb_dc_ck) */
+-- 
+2.35.1
 
-SGX driver/userspace has and uses its own allocator, however, I think 
-there is more than that - what about TILER/VRFB? Do you say that SGX 
-userspace shall be smart enough to requests TILER buffers from omapdrm 
-when scanout buffer is requested and use its own allocator when not?
-
-Actually I was thinking about something like that, and it is achievable 
-now we have:
-
-https://github.com/maemo-leste/sgx-ddk-um/blob/master/dbm/dbm.c (REed 
-SGX 1.17 ddk gbm backend)
-
-> And we could then drop the OMAP_BO_SCANOUT flag, as all buffers would be 
-> scanout buffers.
-> 
-
-And what about OMAP_BO_TILED_XX stuff? To me this is even more of a 
-hack, but it is what it is.
-
-Do I get it correctly that you want to get rid of omap_bo_new/_tiled and 
-have only dumb buffers available in omapdrm? TBH this would be great, 
-however I still don't see how a TILER/VRFB buffer would be allocated, 
-given that flags in drm_mode_create_dumb is not used anywhere in the 
-kernel(AFAIK). Unless all scanout buffers are allocated through 
-TILER/VRFB (which is a good idea IMO).
-
-> Or do we have a regression in the driver? My understanding is that this 
-> has never really worked.
-> 
-
-There are couple of patches in omapdrm that change around BO flags and 
-their meaning so I think there is a regression, as the same 
-userspace/DDX on linux 5.9 results in only 2 linear buffers being 
-allocated, but as SGX driver has different version as well, I can't be 
-100% sure without going through a lengthy assessment of SGX 
-driver/omapdrm code and patches since 5.9. Which I am not going to do as 
-I don't see what the benefit will be.
-
-Please consider this patch series as a fix to an inconsistency, as it is 
-merely that, it does not really bring any new functionality in terms of 
-what is allocated.
-
-Thanks and regards,
-Ivo
