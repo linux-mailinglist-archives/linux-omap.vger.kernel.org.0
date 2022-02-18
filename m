@@ -2,32 +2,36 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02D594BB426
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Feb 2022 09:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0D764BB432
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Feb 2022 09:32:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232495AbiBRI25 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Feb 2022 03:28:57 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51846 "EHLO
+        id S231861AbiBRIca (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 18 Feb 2022 03:32:30 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:33064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbiBRI25 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Feb 2022 03:28:57 -0500
+        with ESMTP id S229923AbiBRIc3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Feb 2022 03:32:29 -0500
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AA6D717044
-        for <linux-omap@vger.kernel.org>; Fri, 18 Feb 2022 00:28:40 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A14F124BC2;
+        Fri, 18 Feb 2022 00:32:13 -0800 (PST)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 74CB780AF;
-        Fri, 18 Feb 2022 08:27:55 +0000 (UTC)
-Date:   Fri, 18 Feb 2022 10:28:38 +0200
+        by muru.com (Postfix) with ESMTPS id 6E00D80AF;
+        Fri, 18 Feb 2022 08:31:28 +0000 (UTC)
+Date:   Fri, 18 Feb 2022 10:32:11 +0200
 From:   Tony Lindgren <tony@atomide.com>
-To:     Romain Naour <romain.naour@smile.fr>
-Cc:     linux-omap@vger.kernel.org
-Subject: Re: [PATCH] drivers/thermal/ti-soc-thermal: Add hwmon support
-Message-ID: <Yg9YtqxqzvUHbKfN@atomide.com>
-References: <20220216172206.7448-1-romain.naour@smile.fr>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     linux-omap@vger.kernel.org, aford@beaconembedded.com,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm: dts: logicpd-torpedo: Add isp1763 support to
+ baseboard
+Message-ID: <Yg9Zi2g5DHyCR5xn@atomide.com>
+References: <20220210131028.1404851-1-aford173@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220216172206.7448-1-romain.naour@smile.fr>
+In-Reply-To: <20220210131028.1404851-1-aford173@gmail.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -37,16 +41,18 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Romain Naour <romain.naour@smile.fr> [220216 17:21]:
-> Expose ti-soc-thermal thermal sensors as HWMON devices.
+* Adam Ford <aford173@gmail.com> [220210 15:10]:
+> The baseboard has an ISP1763 USB controller acting as a host.
+> Since the pinmuxing for the corresponding IRQ is different
+> between OMAP35 and DM37, the pinmux has been placed in the
+> kit-level files, while the common code is placed into the
+> baseboard file.
 
-Can you please send this to the ti-soc-thermal maintainer(s)
-and related subsystem mailing list with linux-omap in Cc?
-See the MAINTAINERS file for info and scripts/get-maintainer.pl
-script.
+Applying into omap-for-v5.18/dt thanks.
 
-Then the subsystem maintainer(s) will pick it up, or will
-ack it and I can pick it up.
+BTW, there's a chance that your board has the external dma request
+lines wired up to ISP1763, if so you might be able to configure
+dmaengine to use it with sdma.
 
 Regards,
 
