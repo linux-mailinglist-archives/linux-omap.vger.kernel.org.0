@@ -2,76 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E425C4BCAF2
-	for <lists+linux-omap@lfdr.de>; Sat, 19 Feb 2022 22:59:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1D824BCB5A
+	for <lists+linux-omap@lfdr.de>; Sun, 20 Feb 2022 01:38:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243232AbiBSV4R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 19 Feb 2022 16:56:17 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55388 "EHLO
+        id S241921AbiBTAa6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Feb 2022 19:30:58 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243237AbiBSV4P (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Feb 2022 16:56:15 -0500
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92B0754199
-        for <linux-omap@vger.kernel.org>; Sat, 19 Feb 2022 13:55:54 -0800 (PST)
-Received: by mail-pj1-x1034.google.com with SMTP id v4so11570292pjh.2
-        for <linux-omap@vger.kernel.org>; Sat, 19 Feb 2022 13:55:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ALItf1cmaYde5anKiXpaOkvR8+mXdj6IXy5l9T74CXY=;
-        b=Fn3Ru8rk2m6UM8OQLbL67IIZ8/ISkk5RdEHaoDTmx+kgG1d3LaSWDLlgU5hpIz1l7O
-         J7wJiWswQe2eiNiH9NK+KlcuyYwX5V/xk9AHURcL6gvv2KVTbN0ZXmOqjFP+Ymae+m6A
-         XsyBw4215bt3cTNo+f3XJ9PD+lGYKgdRNXJuv4eDuVCSb1Kd3aWbB/DRxrG1zuO6qOK6
-         bmbXgCSMop4xAHAEGWRHJpJPJUIw19GqTB9pqV/e0IkSqhlP2Oz0sYn9UK88VS0LbwQK
-         NDpXPd0nK3sJsBc29nP85v40SbCnUAjXVZumbtGJ7Ffb2doMS7kbn7u00qZ8C4AP5K39
-         rWYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ALItf1cmaYde5anKiXpaOkvR8+mXdj6IXy5l9T74CXY=;
-        b=vGm37BOBjxpYwWEHFSRExwS3gQczV86tXDahrYgPwiTpzaP5lQG1kZ+8FZWh3CGDtG
-         azm2EPQI57Q485D0OHKF57iTfJ4IiUGL0sinF8Sdlq9uaULcMHVhEHNn9oS758R0smQ2
-         c0v6N9GRqCLgU7t3kRzH1WZ4M9/miaDkiUA3O/HMduFPHkL4n2XL5xGyelPBtQ43URNq
-         PAFrQTIVi8udRZtgkkEC8L1LVaydGJP5P/Jr6KmNKqdV+gMIr77DufC4yc9baTakWNN3
-         smznTmrK9epFG2pHAURE6Q8W5jnQ8m/kyy6WQ706BoJOFoWe52oodrXDuA7+6I8t8Fo5
-         CNfw==
-X-Gm-Message-State: AOAM532MmADrpPbH393Dwq28n/6nGbxbbtzAKTxWqbYFi3RAAEVEOK2z
-        Z2II0TURX2zGH3gKO880EW7Vpg==
-X-Google-Smtp-Source: ABdhPJxMLUiSjR9mcVV1iK9+hG/lKSlGmCHqWar1s22AM6LNq/uC41pK9n3kfEId/9Rjt1hG8v3Asg==
-X-Received: by 2002:a17:902:ba96:b0:14c:8407:8e4b with SMTP id k22-20020a170902ba9600b0014c84078e4bmr12646881pls.135.1645307754101;
-        Sat, 19 Feb 2022 13:55:54 -0800 (PST)
-Received: from x1.hsd1.or.comcast.net ([2601:1c2:1001:7090:31ab:1e81:9550:f30a])
-        by smtp.gmail.com with ESMTPSA id i17sm13447337pgn.82.2022.02.19.13.55.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Feb 2022 13:55:53 -0800 (PST)
-From:   Drew Fustini <dfustini@baylibre.com>
-To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Dave Gerlach <d-gerlach@ti.com>, devicetree@vger.kernel.org,
-        Drew Fustini <dfustini@baylibre.com>,
-        Keerthy <j-keerthy@ti.com>, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Nishanth Menon <nm@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, s-anna@ti.com,
-        khilman@baylibre.com
-Cc:     Brad Griffis <bgriffis@ti.com>
-Subject: [PATCH 11/11] soc: ti: wkup_m3_ipc: Add debug option to halt m3 in suspend
-Date:   Sat, 19 Feb 2022 13:53:28 -0800
-Message-Id: <20220219215328.485660-12-dfustini@baylibre.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220219215328.485660-1-dfustini@baylibre.com>
-References: <20220219215328.485660-1-dfustini@baylibre.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        with ESMTP id S232470AbiBTAa5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Feb 2022 19:30:57 -0500
+Received: from sender11-of-o51.zoho.eu (sender11-of-o51.zoho.eu [31.186.226.237])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE3A42A14
+        for <linux-omap@vger.kernel.org>; Sat, 19 Feb 2022 16:30:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1645316098; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=iHTfEyOMVKQCQUWTEkxAl7lD59sCRhIq4DcgSqMi+dBUaQI/XXXLG33RtXJUKF9uYLaXkGHujgROognsNWRqybGaRtAZyou1K//uu3TVVV6lLzIh4z7J2gQvreQKpPEdzz9U4oOH7eKa+E8VLW/t1ZgCS3a3QwWp0PMMfq5kejo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1645316098; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=I2SPFUqVbuiNnXgGeTuoa/g4+z6ufb1oWENl/qsaZ88=; 
+        b=IihROJ3ugIWVGgG6QS7hYdrzkUhhCaxoTv4Js1Pbl4Pjqi9ogFgL11i+1z5Yh08Gv6qVoiLEQHUARzH9MYceGANS4oFR2a4jAr1ApBdVdWVd5i89IAuxdE5/b7jxknrgAbhPu3fT/quDassy3sngUBlfXjDvU26g/tjYN5lA0S0=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        spf=pass  smtp.mailfrom=philipp@uvos.xyz;
+        dmarc=pass header.from=<philipp@uvos.xyz>
+Received: from UVOSLinux (ip-037-201-192-120.um10.pools.vodafone-ip.de [37.201.192.120]) by mx.zoho.eu
+        with SMTPS id 1645316096336579.5571665667055; Sun, 20 Feb 2022 01:14:56 +0100 (CET)
+Date:   Sun, 20 Feb 2022 01:14:54 +0100
+From:   Carl Philipp Klemm <philipp@uvos.xyz>
+To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc:     "kuninori.morimoto.gx@gmail.com" <kuninori.morimoto.gx@gmail.com>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "merlijn@wizzup.org" <merlijn@wizzup.org>,
+        "tony@atomide.com" <tony@atomide.com>,
+        "sre@kernel.org" <sre@kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Subject: [PATCH 1/6] ASoC: simple_card_utils: call
+ snd_soc_component_set_jack() at asoc_simple_init_jack()
+Message-Id: <20220220011454.34b190c26487faa18c16e4d2@uvos.xyz>
+In-Reply-To: <OS3PR01MB8426FD3FD1B45BB31C971A56D4509@OS3PR01MB8426.jpnprd01.prod.outlook.com>
+References: <20211228190931.df5d518220080a734532ebfd@uvos.xyz>
+        <87a6gawxpe.wl-kuninori.morimoto.gx@gmail.com>
+        <20220105101028.620b7f2cb7727eedfccd933e@uvos.xyz>
+        <87r19ld48v.wl-kuninori.morimoto.gx@gmail.com>
+        <20220108145749.f55500222b049f344415a5c3@uvos.xyz>
+        <OS3PR01MB8426FD3FD1B45BB31C971A56D4509@OS3PR01MB8426.jpnprd01.prod.outlook.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,FROM_SUSPICIOUS_NTLD,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,172 +60,253 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Dave Gerlach <d-gerlach@ti.com>
+Current simple-card / audio-graph-card are detecting HP/MIC at card->probe
+timing (= A), and not calling snd_soc_component_set_jack() for it.
+Other sound card drivers are using dai_link->init timing (= B) for
+both detecting and set_jack().
 
-Add a debugfs option to allow configurable halting of the wkup_m3
-during suspend at the last possible point before low power mode entry.
-This condition can only be resolved through JTAG and advancing beyond
-the while loop in a8_lp_ds0_handler. Although this hangs the system it
-forces the system to remain active once it has been entirely configured
-for low power mode entry, allowing for register inspection through JTAG
-to help in debugging transition errors.
+	static int snd_soc_bind_card(...)
+	{
+		....
+(A)		ret = snd_soc_card_probe(card);
+		...
+		for_each_card_rtds(card, rtd) {
+(B)			ret = soc_init_pcm_runtime(card, rtd);
+			...
+		}
+		...
+	}
 
-Halt mode can be set using the enable_off_mode entry under wkup_m3_ipc
-in the debugfs.
+This patch
+(a) calls set_jack() (= Y) at asoc_simple_init_jack() (= X) which is
+    used to detect HP/MIC.
+(b) calls it from dai_link->init timing (= B) instead of card->probe
+    timing (= A).
+(c) allows  non-gpio jacks to be reported by a componant give it via
+    snd_soc_component_set_jack if a of node defined by the driver is set
+(d) remove card->init (= A) timing function from
+    simple-card / audio-graph-card.
 
-Suggested-by: Brad Griffis <bgriffis@ti.com>
-Signed-off-by: Dave Gerlach <d-gerlach@ti.com>
-[dfustini: resolve trivial line conflicts]
-Signed-off-by: Drew Fustini <dfustini@baylibre.com>
+(X)	int asoc_simple_init_jack(...)
+	{
+		...
+		if (gpio_is_valid(det)) {
+			...
+
+			snd_soc_card_jack_new(...);
+			snd_soc_jack_add_gpios(...);
+			for_each_card_components(card, component)
+(Y)				snd_soc_component_set_jack(component, ...);
+		}
+		...
+	}
+
+One note here is that simple-card needs PREFIX to detecting HP/MIC,
+but it is not needed on audio-graph-card.
+Thus simple-card uses local function for it, and audio-graph-card is
+using global function and sharing the code with
+audio-graph-card / audio-graph-card2 / audio-graph-card2-custom-sample /
+tegra_audio_graph_card.
+
+Co-Developed-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
 ---
- drivers/soc/ti/wkup_m3_ipc.c | 78 +++++++++++++++++++++++++++++++++++-
- include/linux/wkup_m3_ipc.h  |  2 +
- 2 files changed, 79 insertions(+), 1 deletion(-)
+ include/sound/simple_card_utils.h             |  2 +-
+ .../generic/audio-graph-card2-custom-sample.c |  3 +-
+ sound/soc/generic/audio-graph-card2.c         |  3 +-
+ sound/soc/generic/simple-card-utils.c         | 20 +++++++++-
+ sound/soc/generic/simple-card.c               | 40 ++++++++++---------
+ sound/soc/tegra/tegra_audio_graph_card.c      |  2 +-
+ 6 files changed, 44 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/soc/ti/wkup_m3_ipc.c b/drivers/soc/ti/wkup_m3_ipc.c
-index 5a1722c3bf1a..244bce3f52e8 100644
---- a/drivers/soc/ti/wkup_m3_ipc.c
-+++ b/drivers/soc/ti/wkup_m3_ipc.c
-@@ -7,6 +7,7 @@
-  * Dave Gerlach <d-gerlach@ti.com>
-  */
+diff --git a/include/sound/simple_card_utils.h b/include/sound/simple_card_utils.h
+index df430f1c2a10..34891da5a0fa 100644
+--- a/include/sound/simple_card_utils.h
++++ b/include/sound/simple_card_utils.h
+@@ -182,7 +182,7 @@ int asoc_simple_init_priv(struct asoc_simple_priv *priv,
+ 			       struct link_info *li);
+ int asoc_simple_remove(struct platform_device *pdev);
  
-+#include <linux/debugfs.h>
- #include <linux/err.h>
- #include <linux/firmware.h>
- #include <linux/kernel.h>
-@@ -50,6 +51,9 @@
- #define IPC_IO_ISOLATION_STAT_SHIFT	(10)
- #define IPC_IO_ISOLATION_STAT_MASK	(0x1 << 10)
+-int asoc_graph_card_probe(struct snd_soc_card *card);
++int asoc_graph_dai_init(struct snd_soc_pcm_runtime *rtd);
+ int asoc_graph_is_ports0(struct device_node *port);
  
-+#define IPC_DBG_HALT_SHIFT		(11)
-+#define IPC_DBG_HALT_MASK		(0x1 << 11)
-+
- #define M3_STATE_UNKNOWN		0
- #define M3_STATE_RESET			1
- #define M3_STATE_INITED			2
-@@ -137,6 +141,73 @@ static void wkup_m3_scale_data_fw_cb(const struct firmware *fw, void *context)
- 	release_firmware(fw);
- };
+ #ifdef DEBUG
+diff --git a/sound/soc/generic/audio-graph-card2-custom-sample.c b/sound/soc/generic/audio-graph-card2-custom-sample.c
+index 4a2c743e286c..da6cb69faa8d 100644
+--- a/sound/soc/generic/audio-graph-card2-custom-sample.c
++++ b/sound/soc/generic/audio-graph-card2-custom-sample.c
+@@ -34,8 +34,7 @@ static int custom_card_probe(struct snd_soc_card *card)
  
-+#ifdef CONFIG_DEBUG_FS
-+static void wkup_m3_set_halt_late(bool enabled)
-+{
-+	if (enabled)
-+		m3_ipc_state->halt = (1 << IPC_DBG_HALT_SHIFT);
-+	else
-+		m3_ipc_state->halt = 0;
-+}
-+
-+static int option_get(void *data, u64 *val)
-+{
-+	u32 *option = data;
-+
-+	*val = *option;
-+
+ 	custom_priv->custom_params = 1;
+ 
+-	/* you can use generic probe function */
+-	return asoc_graph_card_probe(card);
 +	return 0;
-+}
+ }
+ 
+ static int custom_hook_pre(struct asoc_simple_priv *priv)
+diff --git a/sound/soc/generic/audio-graph-card2.c b/sound/soc/generic/audio-graph-card2.c
+index b6049bcfb771..dacf158389f9 100644
+--- a/sound/soc/generic/audio-graph-card2.c
++++ b/sound/soc/generic/audio-graph-card2.c
+@@ -710,7 +710,7 @@ static void graph_link_init(struct asoc_simple_priv *priv,
+ 		daiclk = snd_soc_daifmt_clock_provider_fliped(daiclk);
+ 
+ 	dai_link->dai_fmt	= daifmt | daiclk;
+-	dai_link->init		= asoc_simple_dai_init;
++	dai_link->init		= asoc_graph_dai_init;
+ 	dai_link->ops		= &graph_ops;
+ 	if (priv->ops)
+ 		dai_link->ops	= priv->ops;
+@@ -1180,7 +1180,6 @@ int audio_graph2_parse_of(struct asoc_simple_priv *priv, struct device *dev,
+ 	if (!li)
+ 		return -ENOMEM;
+ 
+-	card->probe	= asoc_graph_card_probe;
+ 	card->owner	= THIS_MODULE;
+ 	card->dev	= dev;
+ 
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index 850e968677f1..a135c85584df 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -588,6 +588,8 @@ int asoc_simple_init_jack(struct snd_soc_card *card,
+ 		return -EPROBE_DEFER;
+ 
+ 	if (gpio_is_valid(det)) {
++		struct snd_soc_component *component;
 +
-+static int option_set(void *data, u64 val)
-+{
-+	u32 *option = data;
+ 		sjack->pin.pin		= pin_name;
+ 		sjack->pin.mask		= mask;
+ 
+@@ -603,6 +605,15 @@ int asoc_simple_init_jack(struct snd_soc_card *card,
+ 
+ 		snd_soc_jack_add_gpios(&sjack->jack, 1,
+ 				       &sjack->gpio);
 +
-+	*option = val;
-+
-+	if (option == &m3_ipc_state->halt) {
-+		if (val)
-+			wkup_m3_set_halt_late(true);
-+		else
-+			wkup_m3_set_halt_late(false);
-+	}
-+
-+	return 0;
-+}
-+
-+DEFINE_SIMPLE_ATTRIBUTE(wkup_m3_ipc_option_fops, option_get, option_set,
-+			"%llu\n");
-+
-+static int wkup_m3_ipc_dbg_init(struct wkup_m3_ipc *m3_ipc)
-+{
-+	m3_ipc->dbg_path = debugfs_create_dir("wkup_m3_ipc", NULL);
-+
-+	if (!m3_ipc->dbg_path)
-+		return -EINVAL;
-+
-+	(void)debugfs_create_file("enable_late_halt", 0644,
-+				  m3_ipc->dbg_path,
-+				  &m3_ipc->halt,
-+				  &wkup_m3_ipc_option_fops);
-+
-+	return 0;
-+}
-+
-+static inline void wkup_m3_ipc_dbg_destroy(struct wkup_m3_ipc *m3_ipc)
-+{
-+	debugfs_remove_recursive(m3_ipc->dbg_path);
-+}
-+#else
-+static inline int wkup_m3_ipc_dbg_init(struct wkup_m3_ipc *m3_ipc)
-+{
-+	return 0;
-+}
-+
-+static inline void wkup_m3_ipc_dbg_destroy(struct wkup_m3_ipc *m3_ipc)
-+{
-+}
-+#endif /* CONFIG_DEBUG_FS */
-+
- static int wkup_m3_init_scale_data(struct wkup_m3_ipc *m3_ipc,
- 				   struct device *dev)
- {
-@@ -402,7 +473,8 @@ static int wkup_m3_prepare_low_power(struct wkup_m3_ipc *m3_ipc, int state)
- 	wkup_m3_ctrl_ipc_write(m3_ipc, m3_power_state, 1);
- 	wkup_m3_ctrl_ipc_write(m3_ipc, m3_ipc->mem_type |
- 			       m3_ipc->vtt_conf |
--			       m3_ipc->isolation_conf, 4);
-+			       m3_ipc->isolation_conf |
-+			       m3_ipc->halt, 4);
- 	wkup_m3_ctrl_ipc_write(m3_ipc, DS_IPC_DEFAULT, 2);
- 	wkup_m3_ctrl_ipc_write(m3_ipc, DS_IPC_DEFAULT, 3);
- 	wkup_m3_ctrl_ipc_write(m3_ipc, DS_IPC_DEFAULT, 6);
-@@ -634,6 +706,8 @@ static int wkup_m3_ipc_probe(struct platform_device *pdev)
- 		goto err_put_rproc;
++		for_each_card_components(card, component)
++			snd_soc_component_set_jack(component, &sjack->jack, NULL);
++	} else if (of_property_read_bool(dev->of_node, prefix)) {
++		snd_soc_card_jack_new(card, pin_name, mask,
++				      &sjack->jack,
++				      &sjack->pin, 1);
++		for_each_card_components(card, component)
++			snd_soc_component_set_jack(component, &sjack->jack, NULL);
  	}
  
-+	wkup_m3_ipc_dbg_init(m3_ipc);
-+
  	return 0;
+@@ -758,11 +769,16 @@ int asoc_simple_remove(struct platform_device *pdev)
+ }
+ EXPORT_SYMBOL_GPL(asoc_simple_remove);
  
- err_put_rproc:
-@@ -645,6 +719,8 @@ static int wkup_m3_ipc_probe(struct platform_device *pdev)
- 
- static int wkup_m3_ipc_remove(struct platform_device *pdev)
+-int asoc_graph_card_probe(struct snd_soc_card *card)
++int asoc_graph_dai_init(struct snd_soc_pcm_runtime *rtd)
  {
-+	wkup_m3_ipc_dbg_destroy(m3_ipc_state);
++	struct snd_soc_card *card = rtd->card;
+ 	struct asoc_simple_priv *priv = snd_soc_card_get_drvdata(card);
+ 	int ret;
+ 
++	ret = asoc_simple_dai_init(rtd);
++	if (ret < 0)
++		return ret;
 +
- 	mbox_free_channel(m3_ipc_state->mbox);
+ 	ret = asoc_simple_init_hp(card, &priv->hp_jack, NULL);
+ 	if (ret < 0)
+ 		return ret;
+@@ -773,7 +789,7 @@ int asoc_graph_card_probe(struct snd_soc_card *card)
  
- 	rproc_shutdown(m3_ipc_state->rproc);
-diff --git a/include/linux/wkup_m3_ipc.h b/include/linux/wkup_m3_ipc.h
-index fef0fac60f8c..26d1eb058fa3 100644
---- a/include/linux/wkup_m3_ipc.h
-+++ b/include/linux/wkup_m3_ipc.h
-@@ -36,6 +36,7 @@ struct wkup_m3_ipc {
- 	int vtt_conf;
- 	int isolation_conf;
- 	int state;
-+	u32 halt;
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(asoc_graph_card_probe);
++EXPORT_SYMBOL_GPL(asoc_graph_dai_init);
  
- 	unsigned long volt_scale_offsets;
- 	const char *sd_fw_name;
-@@ -46,6 +47,7 @@ struct wkup_m3_ipc {
+ int asoc_graph_is_ports0(struct device_node *np)
+ {
+diff --git a/sound/soc/generic/simple-card.c b/sound/soc/generic/simple-card.c
+index a3a7990b5cb6..0ead77c40a30 100644
+--- a/sound/soc/generic/simple-card.c
++++ b/sound/soc/generic/simple-card.c
+@@ -149,6 +149,27 @@ static int simple_parse_node(struct asoc_simple_priv *priv,
+ 	return 0;
+ }
  
- 	struct wkup_m3_ipc_ops *ops;
- 	int is_rtc_only;
-+	struct dentry *dbg_path;
- };
++static int simple_dai_init(struct snd_soc_pcm_runtime *rtd)
++{
++	struct snd_soc_card *card = rtd->card;
++	struct asoc_simple_priv *priv = snd_soc_card_get_drvdata(card);
++	int ret;
++
++	ret = asoc_simple_dai_init(rtd);
++	if (ret < 0)
++		return ret;
++
++	ret = asoc_simple_init_hp(card, &priv->hp_jack, PREFIX);
++	if (ret < 0)
++		return ret;
++
++	ret = asoc_simple_init_mic(card, &priv->mic_jack, PREFIX);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
+ static int simple_link_init(struct asoc_simple_priv *priv,
+ 			    struct device_node *node,
+ 			    struct device_node *codec,
+@@ -164,7 +185,7 @@ static int simple_link_init(struct asoc_simple_priv *priv,
+ 	if (ret < 0)
+ 		return 0;
  
- struct wkup_m3_wakeup_src {
+-	dai_link->init			= asoc_simple_dai_init;
++	dai_link->init			= simple_dai_init;
+ 	dai_link->ops			= &simple_ops;
+ 
+ 	return asoc_simple_set_dailink_name(dev, dai_link, name);
+@@ -587,22 +608,6 @@ static int simple_get_dais_count(struct asoc_simple_priv *priv,
+ 				    simple_count_dpcm);
+ }
+ 
+-static int simple_soc_probe(struct snd_soc_card *card)
+-{
+-	struct asoc_simple_priv *priv = snd_soc_card_get_drvdata(card);
+-	int ret;
+-
+-	ret = asoc_simple_init_hp(card, &priv->hp_jack, PREFIX);
+-	if (ret < 0)
+-		return ret;
+-
+-	ret = asoc_simple_init_mic(card, &priv->mic_jack, PREFIX);
+-	if (ret < 0)
+-		return ret;
+-
+-	return 0;
+-}
+-
+ static int asoc_simple_probe(struct platform_device *pdev)
+ {
+ 	struct asoc_simple_priv *priv;
+@@ -620,7 +625,6 @@ static int asoc_simple_probe(struct platform_device *pdev)
+ 	card = simple_priv_to_card(priv);
+ 	card->owner		= THIS_MODULE;
+ 	card->dev		= dev;
+-	card->probe		= simple_soc_probe;
+ 	card->driver_name       = "simple-card";
+ 
+ 	li = devm_kzalloc(dev, sizeof(*li), GFP_KERNEL);
+diff --git a/sound/soc/tegra/tegra_audio_graph_card.c b/sound/soc/tegra/tegra_audio_graph_card.c
+index 1f2c5018bf5a..404762d40389 100644
+--- a/sound/soc/tegra/tegra_audio_graph_card.c
++++ b/sound/soc/tegra/tegra_audio_graph_card.c
+@@ -184,7 +184,7 @@ static int tegra_audio_graph_card_probe(struct snd_soc_card *card)
+ 		return PTR_ERR(priv->clk_plla_out0);
+ 	}
+ 
+-	return asoc_graph_card_probe(card);
++	return 0;
+ }
+ 
+ static int tegra_audio_graph_probe(struct platform_device *pdev)
 -- 
-2.32.0
-
+2.35.1
