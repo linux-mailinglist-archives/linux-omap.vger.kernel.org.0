@@ -2,31 +2,31 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C51894BCB55
-	for <lists+linux-omap@lfdr.de>; Sun, 20 Feb 2022 01:38:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B2CF4BCB56
+	for <lists+linux-omap@lfdr.de>; Sun, 20 Feb 2022 01:38:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240166AbiBTAbh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 19 Feb 2022 19:31:37 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52414 "EHLO
+        id S242046AbiBTAbk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Feb 2022 19:31:40 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232359AbiBTAbh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Feb 2022 19:31:37 -0500
+        with ESMTP id S232359AbiBTAbj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 19 Feb 2022 19:31:39 -0500
 Received: from sender11-of-o51.zoho.eu (sender11-of-o51.zoho.eu [31.186.226.237])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5FF042A12
-        for <linux-omap@vger.kernel.org>; Sat, 19 Feb 2022 16:31:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1645316158; cv=none; 
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3B5F42A12
+        for <linux-omap@vger.kernel.org>; Sat, 19 Feb 2022 16:31:19 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1645316162; cv=none; 
         d=zohomail.eu; s=zohoarc; 
-        b=Qm9ch1yHQj3yxDMlDqq2ax1BNDurgJxxHYj+S1SiVfFDkusFH8GwR5lmvZcIEgpQOfh+TIDovivsOWdzYN122UCnqWpjIQG5xlbKUVtZR/jZk9IX/OjTd2zpbGjFFL4yzNGNa5fBpAxeJ/2jRPJzdotECweyPeSY/OF1B0o668o=
+        b=BpN+CjmxVbFd5iL6o3ttWjd6VLBrUp8QsteaPHo/XeNSDzCisLhxM/VT0d4J2x74fNOYf/G6iYJTBJmsD2YLlCrTBj2b0uIs6ePznBpuMXGWzbPzAXnVGjJ33jV2sdtyygCpaPScMpaIkPcplCpp8Dzd+H0BfJN21cmulH6DHco=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1645316158; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=x5SfbTzdik9CpSSycXOEm5eGKOZ6Os8AY+52HpwRyfY=; 
-        b=fXcA/Uc4VwLr2li9GTmi8R7xvUibQ58oscldwHe4S1q6BrN/ONA9WR2aI7wGx4UFrBKjDWNQd8dBOB2yk8bZu3q/rOqGjpjRjYszInELxNAGXlqkh9iq6dCYvRz/CxotOYx25bvnd0zR0Q5VQrPcapMhqqFm0E9oHbZSysqd4uY=
+        t=1645316162; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=SS8zOxqh5kA3jFU2G4euNrkYb3yGEgk+OrxXHHhdCYg=; 
+        b=Fh+YYavSUi7RcaBNxvCmYl5ppYu3aSYMZVQ8olmOqNaEkb5iiskpTwCbrtAC9ApXabQYNdaa2JZ6ttYbWkrdHoRL40HTv8cBpCHYd1wE/2/cU6NeqX776otHh8o8dhKPBKH/+AIOoBI5HZyj2p+77bPWo7S0VSZL6LtIdAgIfao=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
         spf=pass  smtp.mailfrom=philipp@uvos.xyz;
         dmarc=pass header.from=<philipp@uvos.xyz>
 Received: from UVOSLinux (ip-037-201-192-120.um10.pools.vodafone-ip.de [37.201.192.120]) by mx.zoho.eu
-        with SMTPS id 1645316157038946.724983320766; Sun, 20 Feb 2022 01:15:57 +0100 (CET)
-Date:   Sun, 20 Feb 2022 01:15:55 +0100
+        with SMTPS id 16453161602811012.2654051731125; Sun, 20 Feb 2022 01:16:00 +0100 (CET)
+Date:   Sun, 20 Feb 2022 01:15:59 +0100
 From:   Carl Philipp Klemm <philipp@uvos.xyz>
 To:     Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Cc:     "kuninori.morimoto.gx@gmail.com" <kuninori.morimoto.gx@gmail.com>,
@@ -35,9 +35,9 @@ Cc:     "kuninori.morimoto.gx@gmail.com" <kuninori.morimoto.gx@gmail.com>,
         "tony@atomide.com" <tony@atomide.com>,
         "sre@kernel.org" <sre@kernel.org>,
         "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Subject: [PATCH 4/6] ARM: dts: motorola-mapphone: add interrupt for
- headphone detection
-Message-Id: <20220220011555.2d0ab3e23a6e4012b7b3b711@uvos.xyz>
+Subject: [PATCH 5/6] ARM: dts: motorola-mapphone: add has-hp-jack for
+ audio-graph-card
+Message-Id: <20220220011559.474b4f7cacdef2865a6780f3@uvos.xyz>
 In-Reply-To: <OS3PR01MB8426FD3FD1B45BB31C971A56D4509@OS3PR01MB8426.jpnprd01.prod.outlook.com>
 References: <20211228190931.df5d518220080a734532ebfd@uvos.xyz>
         <87a6gawxpe.wl-kuninori.morimoto.gx@gmail.com>
@@ -62,22 +62,21 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 Signed-off-by: Carl Philipp Klemm <philipp@uvos.xyz>
 ---
- arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boot/dts/motorola-mapphone-common.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
-index 0aff0d306d06..e164169bf820 100644
---- a/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
-+++ b/arch/arm/boot/dts/motorola-cpcap-mapphone.dtsi
-@@ -72,6 +72,9 @@ cpcap_audio: audio-codec {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
+diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+index e26950d8ca85..800017ce096f 100644
+--- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+@@ -150,6 +150,8 @@ soundcard {
+ 			"Headphone Jack", "HSR",
+ 			"MICR", "Internal Mic";
  
-+			interrupts-extended = <&cpcap 9 0>;
-+			interrupt-names = "hpplugged";
++		has-hp-jack;
 +
- 			port@0 {
- 				reg = <0>;
- 				cpcap_audio_codec0: endpoint {
+ 		dais = <&mcbsp2_port>, <&mcbsp3_port>;
+ 	};
+ 
 -- 
 2.35.1
