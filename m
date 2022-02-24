@@ -2,67 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A14C24C27D9
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Feb 2022 10:16:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C9064C3347
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Feb 2022 18:13:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232338AbiBXJRU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 24 Feb 2022 04:17:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48512 "EHLO
+        id S230045AbiBXRNx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Feb 2022 12:13:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231421AbiBXJRQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Feb 2022 04:17:16 -0500
-X-Greylist: delayed 551 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 24 Feb 2022 01:16:45 PST
-Received: from mail.onlinesuccesses.pl (mail.onlinesuccesses.pl [198.244.150.235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AAD1387AE
-        for <linux-omap@vger.kernel.org>; Thu, 24 Feb 2022 01:16:44 -0800 (PST)
-Received: by mail.onlinesuccesses.pl (Postfix, from userid 1002)
-        id 97B4AA4C20; Thu, 24 Feb 2022 09:06:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=onlinesuccesses.pl;
-        s=mail; t=1645693611;
-        bh=nE8HqilgMh4dy7+Z8ksfg7Bc9rmPeQtYFq3/3YR2ODU=;
-        h=Date:From:To:Subject:From;
-        b=XLvl4U6tQf504yv8FxzYisW5kytw6ssQmz4dlYvr6ivPS7cJAcWOSbU0mzQmWN3SH
-         CxV78TNXRWM9YsZqyq7yEWBv4u+mPyFVVvM+1Vt1Tfu8L7pL7c2SdAbab32imAs2Td
-         ovmUnO6UJenfQZtew/1L5FCY69/3uLk7iZChRJPcB0Jra1vN6RL691RmTtUjIJj3ZY
-         13mmcrOjSjFu6V2otb45EHRrb1f8BTFqqY0jJZRE9sF4lMZ/o34JGJq4IEJq+0z/Mx
-         lrN6dQqHD7QtvpvxQsYbIA6ZHGkvlcpq9iYn+TCk6uNLxUquVVIdgRQLMm64yZoZM1
-         skXr191cJGCqQ==
-Received: by mail.onlinesuccesses.pl for <linux-omap@vger.kernel.org>; Thu, 24 Feb 2022 09:05:53 GMT
-Message-ID: <20220224074501-0.1.2r.hoij.0.0ondazhizl@onlinesuccesses.pl>
-Date:   Thu, 24 Feb 2022 09:05:53 GMT
-From:   "Wiktor Zielonko" <wiktor.zielonko@onlinesuccesses.pl>
-To:     <linux-omap@vger.kernel.org>
-Subject: Ruch z pierwszej pozycji w Google
-X-Mailer: mail.onlinesuccesses.pl
+        with ESMTP id S229559AbiBXRNw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Feb 2022 12:13:52 -0500
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 166661AEEFF;
+        Thu, 24 Feb 2022 09:13:23 -0800 (PST)
+Received: by mail-ot1-f46.google.com with SMTP id j8-20020a056830014800b005ad00ef6d5dso1774152otp.0;
+        Thu, 24 Feb 2022 09:13:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=+ZX27TrioUK0w9RGeSuhrt2+KeVxOCfnnAKkSXg0Y28=;
+        b=fas3EfMMo9gKu51kaEbeb4SyG6jOL4W2Qqg39ispmcu2rdfUUSdqXTMwt4pPXahJwf
+         wvCgucb+El6sghc8QPCF0QigRlBAdkYmiKLDMYnYe6r/zENy3sVYIIMHaeEVCo5FsKKX
+         Kbct7ABSlXAoD20RTcbM9v8c/Ragv5qMkc0b23cuJagk6CadASCq5MPWu1WBIheEzJEu
+         3UtAzKUqKX8Hweg+Pdn7/qm7mjw4n/fRyA0tP0d7XMgB0a3lyUFFobwW+hcicihMzXba
+         6OJeTXRRyRw57ZEHcsU9Pu5MxWtnW95AyfkhbgbSuGzDaIzHc/twOAbSA2Kq00wUdTle
+         nb0Q==
+X-Gm-Message-State: AOAM532k+cvIC2psPh+6NwqcT4UYFenHXHvoGB8RVbxxoDCDjCXYF+Jb
+        mkN4/wjt5+oWpx5PlEGxbA==
+X-Google-Smtp-Source: ABdhPJx9dXKdja8XTbBg2/bLvMZID1GMmU5Hnt+lvFxh5MqDE25B95ZmXREQdNQ0X9yYv6+ivnGGwA==
+X-Received: by 2002:a05:6830:1c62:b0:5ad:364d:5e9c with SMTP id s2-20020a0568301c6200b005ad364d5e9cmr1296986otg.164.1645722802376;
+        Thu, 24 Feb 2022 09:13:22 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id m18sm1383094otq.31.2022.02.24.09.13.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Feb 2022 09:13:21 -0800 (PST)
+Received: (nullmailer pid 3257244 invoked by uid 1000);
+        Thu, 24 Feb 2022 17:13:19 -0000
+Date:   Thu, 24 Feb 2022 11:13:19 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        Ray Jui <rjui@broadcom.com>,
+        linux-rpi-kernel@lists.infradead.org,
+        Scott Branden <sbranden@broadcom.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>, kernel@pengutronix.de,
+        linux-tegra@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH v5 1/9] dt-bindings: net: add schema for ASIX USB
+ Ethernet controllers
+Message-ID: <Yhe8r5dGmSvwJeY6@robh.at.kernel.org>
+References: <20220216074927.3619425-1-o.rempel@pengutronix.de>
+ <20220216074927.3619425-2-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220216074927.3619425-2-o.rempel@pengutronix.de>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+On Wed, 16 Feb 2022 08:49:19 +0100, Oleksij Rempel wrote:
+> Create schema for ASIX USB Ethernet controllers and import some of
+> currently supported USB IDs form drivers/net/usb/asix_devices.c
+> 
+> These devices are already used in some of DTs. So, this schema makes it official.
+> NOTE: there was no previously documented txt based DT binding for this
+> controllers.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  .../devicetree/bindings/net/asix,ax88178.yaml | 68 +++++++++++++++++++
+>  1 file changed, 68 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/asix,ax88178.yaml
+> 
 
-jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
-j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
-e Google.=20
-
-Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
-=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
-w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
-owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
-dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
-
-Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
-edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
-edstawi=C4=87 ofert=C4=99?=20
-
-
-Pozdrawiam serdecznie,
-Wiktor Zielonko
+Reviewed-by: Rob Herring <robh@kernel.org>
