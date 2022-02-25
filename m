@@ -2,70 +2,74 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 451E44C43DA
-	for <lists+linux-omap@lfdr.de>; Fri, 25 Feb 2022 12:46:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CEDE4C517B
+	for <lists+linux-omap@lfdr.de>; Fri, 25 Feb 2022 23:25:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235428AbiBYLrP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 25 Feb 2022 06:47:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51520 "EHLO
+        id S237304AbiBYWZ7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 25 Feb 2022 17:25:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240254AbiBYLrO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Feb 2022 06:47:14 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11EFE33C
-        for <linux-omap@vger.kernel.org>; Fri, 25 Feb 2022 03:46:35 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id o62-20020a1ca541000000b00380e3cc26b7so1560401wme.0
-        for <linux-omap@vger.kernel.org>; Fri, 25 Feb 2022 03:46:35 -0800 (PST)
+        with ESMTP id S237118AbiBYWZ6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Feb 2022 17:25:58 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243F01CDDCF
+        for <linux-omap@vger.kernel.org>; Fri, 25 Feb 2022 14:25:25 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id b5so6501629wrr.2
+        for <linux-omap@vger.kernel.org>; Fri, 25 Feb 2022 14:25:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=NK/LzwUva0Lkr32qtgOj2yS2vQ6HzLDYt6awzfuVPIw=;
-        b=ptQ69NYEkWgoJSQxryIG7Mez4hxuXVxNWO6LIDIXpbsP9lxpyFCQp6nFEMpzZ8Ne7P
-         5CE7UQYO9TtATFK4sNokxCArE3tPx02ZckvHJekle7QWJxYK+9iVKyT5xnHCMfOOMQFZ
-         3vN/SgNtzaDhAu96lJJvcyOmwANR92iNMpq4vk7mmk2c86sys5QBXaACP8EwZlGEnoMG
-         BelatBwgucNdC0sZESxOZ2cPZ5ulj3rxHv9ohxdmuOHccdS8hqt0+EEYkGIx467vgXAx
-         3B/RYVpiFnVOCn/FIxxHavgN0l345TlnDlkjS/JSl2xlHrBiiiEYL5bxhVhyTS9gI1rE
-         0BJA==
+         :references:from:in-reply-to:content-transfer-encoding;
+        bh=pMdKTxslGmzlgz5T0AhXDhZ58tmlruUYBH99ctt7vgY=;
+        b=YggS9A2f9j35MkWy7WvKMd7lWxnLAduoYGfA3tPaKwu+R1W1AIxdkQU0lKAo8wNVF+
+         2j0V+AYntUGgtv71u9A4PjNO0/73QDmW0BKCM7+lngwz/VKkaTgb3DXmrLNZ+7od5YSQ
+         cD6JiuSulRFv8+sOdRQgfiDj0/swOdL9QkcSxZep2tJjuLSHMyZ6Fh6KsivpTvNT/Ulb
+         qL1wvs25wL5Nv/VjWppzXCazPfyH75ulJrKar5+BpLsxgqe3ABqJN8jZ170HUtTz/NAL
+         GUwdSlG5XEvZDgxmvYu0pyZBvmgZdz1CE6jaFZBK2Cjcn6y1PDeXHXtgSsQ+kiW8Mink
+         6gZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+         :content-language:to:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=NK/LzwUva0Lkr32qtgOj2yS2vQ6HzLDYt6awzfuVPIw=;
-        b=5ju687g5GT8re+sdPn+xewzdV1tlwFKh5PKtJXe3R6MdCAC2Or08nlDMgR5JfXsyh1
-         f3DpWH1IFHMMJODdvKyyfxuOpINEtR+GPyqcPYy0uk5/ogRiG2uFCHbRYcJeqpsGeN8P
-         VB7I/OtkHU6udvfVIe/jhjhpHXxii3bkEPjxeQnWqzIREyxUo4PPNlGtw80nl3psQ344
-         ImzB1njgwIgYmemC4d39qfvTW78LoEjzgtxwmKzNJ7903QjsbV9Cd02ulT0K3ON99JLd
-         KEMSn53uedMswzr3gwc14Wy6ItGc0CORV2vPOKPXosXvNCbHPHEuXSBTmJwIrtoXVBNf
-         xz7w==
-X-Gm-Message-State: AOAM531HcYA9fyEco3jfTY+n4JiAdtPVui5tHXyTMR7WmPsbJzuHvMNT
-        DL23wg4WTx7/Rvhr3j3JSLd6CCEU22Eq7g==
-X-Google-Smtp-Source: ABdhPJz3TyYDkpSSB0/EXBpY4m7TRQh0Wp8kjUatWyQZJ+KB1tyNYztQ1QI7/GvQgleuwoBy9PhpYA==
-X-Received: by 2002:a05:600c:4e89:b0:37b:bc9a:4618 with SMTP id f9-20020a05600c4e8900b0037bbc9a4618mr2290607wmq.160.1645789593745;
-        Fri, 25 Feb 2022 03:46:33 -0800 (PST)
-Received: from ?IPV6:2a01:e34:ed2f:f020:25a:d4d2:9383:c638? ([2a01:e34:ed2f:f020:25a:d4d2:9383:c638])
-        by smtp.googlemail.com with ESMTPSA id p11-20020adfce0b000000b001e7026150besm2030922wrn.31.2022.02.25.03.46.32
+        bh=pMdKTxslGmzlgz5T0AhXDhZ58tmlruUYBH99ctt7vgY=;
+        b=q9iE/TieYp2aSIxXKrnKHCU/9H3YPh/NkvOfTHmx6sXDprISQW+8UnSIxyfm2Q++0f
+         yPWm8FfXaWFdBEKaAxY7VcwY1mNaeAiJ1lGX/rrFLikel1AGli+9OCaDGntOI9/tGMnP
+         kJHoU1y05GW+NcpsqrfP9BJHuZ2vtD65PDqoylHIC5N5hswJyacDJ/uhhkwkmj3grEwz
+         P1WH4QKcXrPlHGAMbsQOJqEeEBfgJeSCnqlcx1K1lls4xpwbvzfi/O4WIpfOuLmI+ljH
+         FfhwBAZCj98+ZvcYmy6aDXax18/T4dHb5QjZ0ydr9X7AinDb4GY+9feG9AglKtL0TfQq
+         jc6A==
+X-Gm-Message-State: AOAM532ib2AYnBxzrrvfm3bPQrR72nYQMSL5B1w17jzLU0d4ylvdeCS3
+        Rsiq4mOTTWxed0PuK2HvimmxMA==
+X-Google-Smtp-Source: ABdhPJyKBQ224ynEkmOrK/gm7F/M+eTJTaHhxmCo8UJFmtf4IOUMnBwK95SpxSLGz9rfGQMbkrXTvQ==
+X-Received: by 2002:adf:ea4a:0:b0:1ef:7a85:d772 with SMTP id j10-20020adfea4a000000b001ef7a85d772mr2219282wrn.101.1645827923534;
+        Fri, 25 Feb 2022 14:25:23 -0800 (PST)
+Received: from ?IPV6:2a01:e34:ed2f:f020:e11c:33b1:8704:339f? ([2a01:e34:ed2f:f020:e11c:33b1:8704:339f])
+        by smtp.googlemail.com with ESMTPSA id h5-20020adffd45000000b001b36cba20adsm3278743wrs.42.2022.02.25.14.25.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Feb 2022 03:46:33 -0800 (PST)
-Message-ID: <c6b8e5fd-4315-859f-b4a2-a3a055143ddf@linaro.org>
-Date:   Fri, 25 Feb 2022 12:46:31 +0100
+        Fri, 25 Feb 2022 14:25:22 -0800 (PST)
+Message-ID: <7856aa45-d8fc-ca2c-0b95-302f94378c7a@linaro.org>
+Date:   Fri, 25 Feb 2022 23:25:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH] drivers/thermal/ti-soc-thermal: Add hwmon support
+Subject: Re: [PATCH v2] clocksource/drivers/timer-ti-dm: fix regression from
+ errata i940 fix
 Content-Language: en-US
-To:     Romain Naour <romain.naour@smile.fr>, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Cc:     j-keerthy@ti.com, edubezval@gmail.com
-References: <20220218104725.2718904-1-romain.naour@smile.fr>
+To:     Suman Anna <s-anna@ti.com>, Drew Fustini <dfustini@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>, Keerthy <j-keerthy@ti.com>,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Tero Kristo <kristo@kernel.org>, khilman@baylibre.com
+References: <20220204053503.1409162-1-dfustini@baylibre.com>
+ <9d56bc51-2539-fe14-7968-c172acb8b4c9@ti.com>
 From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20220218104725.2718904-1-romain.naour@smile.fr>
+In-Reply-To: <9d56bc51-2539-fe14-7968-c172acb8b4c9@ti.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,75 +77,56 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On 19/02/2022 01:03, Suman Anna wrote:
+> Hi Tony,
+> 
+> On 2/3/22 23:35, Drew Fustini wrote:
+>> The existing fix for errata i940 causes a conflict for IPU2 which is
+>> using timer 3 and 4. From arch/arm/boot/dts/dra7-ipu-dsp-common.dtsi:
+>>
+>>    &ipu2 {
+>>            mboxes = <&mailbox6 &mbox_ipu2_ipc3x>;
+>>            ti,timers = <&timer3>;
+>>            ti,watchdog-timers = <&timer4>, <&timer9>;
+>>    };
+>>
+>> The conflict was noticed when booting mainline on the BeagleBoard X15
+>> which has a TI AM5728 SoC:
+>>
+>>    remoteproc remoteproc1: 55020000.ipu is available
+>>    remoteproc remoteproc1: powering up 55020000.ipu
+>>    remoteproc remoteproc1: Booting fw image dra7-ipu2-fw.xem4
+>>    omap-rproc 55020000.ipu: could not get timer platform device
+>>    omap-rproc 55020000.ipu: omap_rproc_enable_timers failed: -19
+>>    remoteproc remoteproc1: can't start rproc 55020000.ipu: -19
+>>
+>> This change modifies the errata fix to instead use timer 15 and 16 which
+>> resolves the timer conflict.
+>>
+>> It does not appear to introduce any latency regression. Results from
+>> cyclictest with original errata fix using dmtimer 3 and 4:
+>>
+>>    # cyclictest --mlockall --smp --priority=80 --interval=200 --distance=0
+>>    policy: fifo: loadavg: 0.02 0.03 0.05
+>>
+>>    T: 0 ( 1449) P:80 I:200 C: 800368 Min:   0 Act:   32 Avg:   22 Max:  128
+>>    T: 1 ( 1450) P:80 I:200 C: 800301 Min:   0 Act:   12 Avg:   23 Max:   70
+>>
+>> The results after the change to dmtimer 15 and 16:
+>>
+>>    # cyclictest --mlockall --smp --priority=80 --interval=200 --distance=0
+>>    policy: fifo: loadavg: 0.36 0.19 0.07
+>>
+>>    T: 0 ( 1711) P:80 I:200 C: 759599 Min:   0 Act:    6 Avg:   22 Max:  108
+>>    T: 1 ( 1712) P:80 I:200 C: 759539 Min:   0 Act:   19 Avg:   23 Max:   79
+>>
+> 
+> Gentle reminder, I don't see this in linux-next yet, was kinda expecting this
+> would be included in the fixes for 5.17.
+> 
+> Just want to make sure that the patch did not get lost in your mbox.
 
-Hi Romain,
-
-I'll apply the patch.
-
-In the future, use the scripts/get_maintainer.pl -f <file> to get the 
-recipients of your patch if you have a doubt about who to send it to.
-
-Thanks
-
-   -- Daniel
-
-On 18/02/2022 11:47, Romain Naour wrote:
-> Expose ti-soc-thermal thermal sensors as HWMON devices.
-> 
->    # sensors
->    cpu_thermal-virtual-0
->    Adapter: Virtual device
->    temp1:        +54.2 C  (crit = +105.0 C)
-> 
->    dspeve_thermal-virtual-0
->    Adapter: Virtual device
->    temp1:        +51.4 C  (crit = +105.0 C)
-> 
->    gpu_thermal-virtual-0
->    Adapter: Virtual device
->    temp1:        +54.2 C  (crit = +105.0 C)
-> 
->    iva_thermal-virtual-0
->    Adapter: Virtual device
->    temp1:        +54.6 C  (crit = +105.0 C)
-> 
->    core_thermal-virtual-0
->    Adapter: Virtual device
->    temp1:        +52.6 C  (crit = +105.0 C)
-> 
-> Similar to imx_sc_thermal d2bc4dd91da6095a769fdc9bc519d3be7ad5f97a.
-> 
-> No need to take care of thermal_remove_hwmon_sysfs() since
-> devm_thermal_add_hwmon_sysfs() (a wrapper around devres) is
-> used. See c7fc403e40b0ea18976a59e968c23439a80809e8.
-> 
-> Signed-off-by: Romain Naour <romain.naour@smile.fr>
-> ---
->   drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> index f84375865c97..0959632b2170 100644
-> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-> @@ -21,6 +21,7 @@
->   
->   #include "ti-thermal.h"
->   #include "ti-bandgap.h"
-> +#include "../thermal_hwmon.h"
->   
->   /* common data structures */
->   struct ti_thermal_data {
-> @@ -189,6 +190,9 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
->   	ti_bandgap_set_sensor_data(bgp, id, data);
->   	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
->   
-> +	if (devm_thermal_add_hwmon_sysfs(data->ti_thermal))
-> +		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
-> +
->   	return 0;
->   }
->   
+Applied, thanks
 
 
 -- 
