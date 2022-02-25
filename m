@@ -2,72 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9CC64C4312
-	for <lists+linux-omap@lfdr.de>; Fri, 25 Feb 2022 12:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 451E44C43DA
+	for <lists+linux-omap@lfdr.de>; Fri, 25 Feb 2022 12:46:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235766AbiBYLIP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 25 Feb 2022 06:08:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39536 "EHLO
+        id S235428AbiBYLrP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 25 Feb 2022 06:47:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231214AbiBYLIO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Feb 2022 06:08:14 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D99BC1680B3;
-        Fri, 25 Feb 2022 03:07:41 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7221A61803;
-        Fri, 25 Feb 2022 11:07:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584D7C340E7;
-        Fri, 25 Feb 2022 11:07:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1645787260;
-        bh=oLPnU/B1EfAHSSx2pwR9mNAhPWw9h8esfJmG0nixOJ4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=youXPU4HsasCohDyHjU+UExa7esUpBXqe83BkpO4oys3ggTwaVwU0EqcoU9p7OJFz
-         zGObCtr4r04McxUGh6hTF96Id21c4DxsOjZZkFLvs23Le5pH7mzB/BiPhsmwE1eJtj
-         oCn2NhOtflKcUj11rzp9mZivMS6eMmmPjaovNUjk=
-Date:   Fri, 25 Feb 2022 12:07:38 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Yong Wu <yong.wu@mediatek.com>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org,
-        James Wang <james.qian.wang@arm.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        iommu@lists.linux-foundation.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-kernel@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-mediatek@lists.infradead.org,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Stephen Boyd <sboyd@kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Tomasz Figa <tfiga@chromium.org>, srv_heupstream@mediatek.com,
-        Rob Clark <robdclark@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH 22/23] video: omapfb: dss: Make use of the helper
- component_compare_dev
-Message-ID: <Yhi4errwyhNi6pFw@kroah.com>
-References: <20220214060819.7334-1-yong.wu@mediatek.com>
- <20220214060819.7334-23-yong.wu@mediatek.com>
- <7e60cd01-8afc-ddb5-a1bb-6e9f53ccfba5@gmx.de>
+        with ESMTP id S240254AbiBYLrO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Feb 2022 06:47:14 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11EFE33C
+        for <linux-omap@vger.kernel.org>; Fri, 25 Feb 2022 03:46:35 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id o62-20020a1ca541000000b00380e3cc26b7so1560401wme.0
+        for <linux-omap@vger.kernel.org>; Fri, 25 Feb 2022 03:46:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=NK/LzwUva0Lkr32qtgOj2yS2vQ6HzLDYt6awzfuVPIw=;
+        b=ptQ69NYEkWgoJSQxryIG7Mez4hxuXVxNWO6LIDIXpbsP9lxpyFCQp6nFEMpzZ8Ne7P
+         5CE7UQYO9TtATFK4sNokxCArE3tPx02ZckvHJekle7QWJxYK+9iVKyT5xnHCMfOOMQFZ
+         3vN/SgNtzaDhAu96lJJvcyOmwANR92iNMpq4vk7mmk2c86sys5QBXaACP8EwZlGEnoMG
+         BelatBwgucNdC0sZESxOZ2cPZ5ulj3rxHv9ohxdmuOHccdS8hqt0+EEYkGIx467vgXAx
+         3B/RYVpiFnVOCn/FIxxHavgN0l345TlnDlkjS/JSl2xlHrBiiiEYL5bxhVhyTS9gI1rE
+         0BJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=NK/LzwUva0Lkr32qtgOj2yS2vQ6HzLDYt6awzfuVPIw=;
+        b=5ju687g5GT8re+sdPn+xewzdV1tlwFKh5PKtJXe3R6MdCAC2Or08nlDMgR5JfXsyh1
+         f3DpWH1IFHMMJODdvKyyfxuOpINEtR+GPyqcPYy0uk5/ogRiG2uFCHbRYcJeqpsGeN8P
+         VB7I/OtkHU6udvfVIe/jhjhpHXxii3bkEPjxeQnWqzIREyxUo4PPNlGtw80nl3psQ344
+         ImzB1njgwIgYmemC4d39qfvTW78LoEjzgtxwmKzNJ7903QjsbV9Cd02ulT0K3ON99JLd
+         KEMSn53uedMswzr3gwc14Wy6ItGc0CORV2vPOKPXosXvNCbHPHEuXSBTmJwIrtoXVBNf
+         xz7w==
+X-Gm-Message-State: AOAM531HcYA9fyEco3jfTY+n4JiAdtPVui5tHXyTMR7WmPsbJzuHvMNT
+        DL23wg4WTx7/Rvhr3j3JSLd6CCEU22Eq7g==
+X-Google-Smtp-Source: ABdhPJz3TyYDkpSSB0/EXBpY4m7TRQh0Wp8kjUatWyQZJ+KB1tyNYztQ1QI7/GvQgleuwoBy9PhpYA==
+X-Received: by 2002:a05:600c:4e89:b0:37b:bc9a:4618 with SMTP id f9-20020a05600c4e8900b0037bbc9a4618mr2290607wmq.160.1645789593745;
+        Fri, 25 Feb 2022 03:46:33 -0800 (PST)
+Received: from ?IPV6:2a01:e34:ed2f:f020:25a:d4d2:9383:c638? ([2a01:e34:ed2f:f020:25a:d4d2:9383:c638])
+        by smtp.googlemail.com with ESMTPSA id p11-20020adfce0b000000b001e7026150besm2030922wrn.31.2022.02.25.03.46.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Feb 2022 03:46:33 -0800 (PST)
+Message-ID: <c6b8e5fd-4315-859f-b4a2-a3a055143ddf@linaro.org>
+Date:   Fri, 25 Feb 2022 12:46:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7e60cd01-8afc-ddb5-a1bb-6e9f53ccfba5@gmx.de>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] drivers/thermal/ti-soc-thermal: Add hwmon support
+Content-Language: en-US
+To:     Romain Naour <romain.naour@smile.fr>, linux-pm@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Cc:     j-keerthy@ti.com, edubezval@gmail.com
+References: <20220218104725.2718904-1-romain.naour@smile.fr>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20220218104725.2718904-1-romain.naour@smile.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,16 +73,80 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Feb 15, 2022 at 09:46:24PM +0100, Helge Deller wrote:
-> On 2/14/22 07:08, Yong Wu wrote:
-> > Use the common compare helper from component.
-> >
-> > Cc: Helge Deller <deller@gmx.de>
-> > Cc: linux-omap@vger.kernel.org
-> > Cc: linux-fbdev@vger.kernel.org
-> > Signed-off-by: Yong Wu <yong.wu@mediatek.com>
+
+Hi Romain,
+
+I'll apply the patch.
+
+In the future, use the scripts/get_maintainer.pl -f <file> to get the 
+recipients of your patch if you have a doubt about who to send it to.
+
+Thanks
+
+   -- Daniel
+
+On 18/02/2022 11:47, Romain Naour wrote:
+> Expose ti-soc-thermal thermal sensors as HWMON devices.
 > 
-> Applied to the fbdev for-next branch.
+>    # sensors
+>    cpu_thermal-virtual-0
+>    Adapter: Virtual device
+>    temp1:        +54.2 C  (crit = +105.0 C)
+> 
+>    dspeve_thermal-virtual-0
+>    Adapter: Virtual device
+>    temp1:        +51.4 C  (crit = +105.0 C)
+> 
+>    gpu_thermal-virtual-0
+>    Adapter: Virtual device
+>    temp1:        +54.2 C  (crit = +105.0 C)
+> 
+>    iva_thermal-virtual-0
+>    Adapter: Virtual device
+>    temp1:        +54.6 C  (crit = +105.0 C)
+> 
+>    core_thermal-virtual-0
+>    Adapter: Virtual device
+>    temp1:        +52.6 C  (crit = +105.0 C)
+> 
+> Similar to imx_sc_thermal d2bc4dd91da6095a769fdc9bc519d3be7ad5f97a.
+> 
+> No need to take care of thermal_remove_hwmon_sysfs() since
+> devm_thermal_add_hwmon_sysfs() (a wrapper around devres) is
+> used. See c7fc403e40b0ea18976a59e968c23439a80809e8.
+> 
+> Signed-off-by: Romain Naour <romain.naour@smile.fr>
+> ---
+>   drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> index f84375865c97..0959632b2170 100644
+> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> @@ -21,6 +21,7 @@
+>   
+>   #include "ti-thermal.h"
+>   #include "ti-bandgap.h"
+> +#include "../thermal_hwmon.h"
+>   
+>   /* common data structures */
+>   struct ti_thermal_data {
+> @@ -189,6 +190,9 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+>   	ti_bandgap_set_sensor_data(bgp, id, data);
+>   	ti_bandgap_write_update_interval(bgp, data->sensor_id, interval);
+>   
+> +	if (devm_thermal_add_hwmon_sysfs(data->ti_thermal))
+> +		dev_warn(bgp->dev, "failed to add hwmon sysfs attributes\n");
+> +
+>   	return 0;
+>   }
+>   
 
-That will break the build, it needs patch 1/23 to build properly :(
 
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
