@@ -2,70 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 888194C4043
-	for <lists+linux-omap@lfdr.de>; Fri, 25 Feb 2022 09:41:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9CC64C4312
+	for <lists+linux-omap@lfdr.de>; Fri, 25 Feb 2022 12:07:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238575AbiBYIlM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 25 Feb 2022 03:41:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54528 "EHLO
+        id S235766AbiBYLIP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 25 Feb 2022 06:08:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238569AbiBYIlL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Feb 2022 03:41:11 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43C6F252924
-        for <linux-omap@vger.kernel.org>; Fri, 25 Feb 2022 00:40:40 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1nNW9B-0000ZC-UI; Fri, 25 Feb 2022 09:40:17 +0100
-Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1nNW97-000720-Sx; Fri, 25 Feb 2022 09:40:13 +0100
-Date:   Fri, 25 Feb 2022 09:40:13 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Rob Herring <robh@kernel.org>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        with ESMTP id S231214AbiBYLIO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 25 Feb 2022 06:08:14 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D99BC1680B3;
+        Fri, 25 Feb 2022 03:07:41 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7221A61803;
+        Fri, 25 Feb 2022 11:07:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584D7C340E7;
+        Fri, 25 Feb 2022 11:07:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1645787260;
+        bh=oLPnU/B1EfAHSSx2pwR9mNAhPWw9h8esfJmG0nixOJ4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=youXPU4HsasCohDyHjU+UExa7esUpBXqe83BkpO4oys3ggTwaVwU0EqcoU9p7OJFz
+         zGObCtr4r04McxUGh6hTF96Id21c4DxsOjZZkFLvs23Le5pH7mzB/BiPhsmwE1eJtj
+         oCn2NhOtflKcUj11rzp9mZivMS6eMmmPjaovNUjk=
+Date:   Fri, 25 Feb 2022 12:07:38 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     Yong Wu <yong.wu@mediatek.com>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org,
+        James Wang <james.qian.wang@arm.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        iommu@lists.linux-foundation.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Ray Jui <rjui@broadcom.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Scott Branden <sbranden@broadcom.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, kernel@pengutronix.de,
-        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Joerg Roedel <joro@8bytes.org>,
+        Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-mediatek@lists.infradead.org,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v5 2/9] dt-bindings: net: add schema for Microchip/SMSC
- LAN95xx USB Ethernet controllers
-Message-ID: <20220225084013.GA26647@pengutronix.de>
-References: <20220216074927.3619425-1-o.rempel@pengutronix.de>
- <20220216074927.3619425-3-o.rempel@pengutronix.de>
- <Yhe95rXZc7RzgO5o@robh.at.kernel.org>
+        Stephen Boyd <sboyd@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hsin-Yi Wang <hsinyi@chromium.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Tomasz Figa <tfiga@chromium.org>, srv_heupstream@mediatek.com,
+        Rob Clark <robdclark@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org,
+        linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH 22/23] video: omapfb: dss: Make use of the helper
+ component_compare_dev
+Message-ID: <Yhi4errwyhNi6pFw@kroah.com>
+References: <20220214060819.7334-1-yong.wu@mediatek.com>
+ <20220214060819.7334-23-yong.wu@mediatek.com>
+ <7e60cd01-8afc-ddb5-a1bb-6e9f53ccfba5@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Yhe95rXZc7RzgO5o@robh.at.kernel.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 09:37:59 up 76 days, 17:23, 84 users,  load average: 0.25, 0.18,
- 0.18
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+In-Reply-To: <7e60cd01-8afc-ddb5-a1bb-6e9f53ccfba5@gmx.de>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,29 +75,16 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Feb 24, 2022 at 11:18:30AM -0600, Rob Herring wrote:
-> On Wed, Feb 16, 2022 at 08:49:20AM +0100, Oleksij Rempel wrote:
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    usb {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        ethernet@1 {
-> > +            compatible = "usb424,ec00";
+On Tue, Feb 15, 2022 at 09:46:24PM +0100, Helge Deller wrote:
+> On 2/14/22 07:08, Yong Wu wrote:
+> > Use the common compare helper from component.
+> >
+> > Cc: Helge Deller <deller@gmx.de>
+> > Cc: linux-omap@vger.kernel.org
+> > Cc: linux-fbdev@vger.kernel.org
+> > Signed-off-by: Yong Wu <yong.wu@mediatek.com>
 > 
-> If this is a hub/ethernet combo device, how is it valid to be standalone 
-> without the hub?
+> Applied to the fbdev for-next branch.
 
-What is the best way to describe two type of devices: with and without
-hub in package? Have two different schema to keep things simple?
+That will break the build, it needs patch 1/23 to build properly :(
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
