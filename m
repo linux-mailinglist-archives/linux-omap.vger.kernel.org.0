@@ -2,221 +2,281 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CDC64CBB98
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Mar 2022 11:41:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5135C4CBD79
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Mar 2022 13:16:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232445AbiCCKmV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Mar 2022 05:42:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41830 "EHLO
+        id S230150AbiCCMRY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Mar 2022 07:17:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232453AbiCCKmU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Mar 2022 05:42:20 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71C7217B0FB
-        for <linux-omap@vger.kernel.org>; Thu,  3 Mar 2022 02:41:33 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id i11so7691353lfu.3
-        for <linux-omap@vger.kernel.org>; Thu, 03 Mar 2022 02:41:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=p/He5PBfzR9b46Np3sBPyvvvufWEvrJyXSblzv0l4h0=;
-        b=IfDTZ8mnsY+X/hCoFAZGPnck06QKboadm/ipoHjQMtZ0eJpqXXd/HWh7hgdK0K6qp7
-         w8Zg5X+eS58yqGYkplFo7h2FfwKcCmnZj2glx/KsuYh0U93v6JjpZPWch3GIW0ccZYod
-         ow2PYGroE6B75BwiPgbiIj4lYCiGZXZytYEfsvgp8QmULFohUizZY4XyAA/fmY5jbu99
-         XUP5WzWej4ITjnbLZwupR9BBVUhMsb54BGLVV2dr19xZ0JeeedfJwZxz5yztjRDDRCxz
-         1gbNNQtKF9aHbZhEdy6RTDuElWrcr1uDNurfk0GaVyghTEzxy/wog9wVlQMvqmA1uKwK
-         B1kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=p/He5PBfzR9b46Np3sBPyvvvufWEvrJyXSblzv0l4h0=;
-        b=uZ5ukVeVJIl9LUX3CHm5KtqN+TNdx4LO+XXJ2ywSWNQ1Tn++pkPz0B55AP7FLm633J
-         Z6IEAvJ4R2+D+V03X8G8TzQcynXyV9NvDWd81LUa0j6ZKP2RdVcFkdSw2ywvb1s8XNwW
-         CgZzKP8DIz3F6/RIAnHIPA477f2P8m9xHjzBb/h51AOrl3p5xFtizsWI19w1+QCoU6hb
-         Rf9Bias9voBfs00RPKUPY5Sz6Z0kBzZPDXckl6JecPj/VCBpuoC0x4OFgOj0NqjCq1ZS
-         BBAdQH4dvmF6umbK/k7RDs5XK7bq9+E7qW91yubwF8+wLoDQSMuPJszGEWlLGq3/YdAi
-         bX0w==
-X-Gm-Message-State: AOAM532vu0crZRm7qK8/agL8TFF3Tc3U78CImeSmakUbYNrnr5t70n9z
-        k0Koo3qtOvxrMWjqZZIPPLlbvyq5q5dI1dSPQktT04ZtNkOA9Q==
-X-Google-Smtp-Source: ABdhPJyj3Rk8sSBj5VBB1o9Ac4exoe3sztkfuVm5kHNefHJL6csmr+I21vP4c/Fc2zfkpfoBhdIJbTtTJ34rKaZIbig=
-X-Received: by 2002:a05:6512:260b:b0:445:c54c:4157 with SMTP id
- bt11-20020a056512260b00b00445c54c4157mr1540165lfb.254.1646304091630; Thu, 03
- Mar 2022 02:41:31 -0800 (PST)
+        with ESMTP id S233122AbiCCMRV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Mar 2022 07:17:21 -0500
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A7815E6F3
+        for <linux-omap@vger.kernel.org>; Thu,  3 Mar 2022 04:16:33 -0800 (PST)
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20220303121627epoutp01471830bc94824a78c312120abd5203df~Y3geVx-7O0245902459epoutp01I
+        for <linux-omap@vger.kernel.org>; Thu,  3 Mar 2022 12:16:27 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20220303121627epoutp01471830bc94824a78c312120abd5203df~Y3geVx-7O0245902459epoutp01I
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1646309788;
+        bh=abFjtJPmEoNg2ozi6aQR10wX7+g3Ea4YNi0vgPlcFMA=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=BnAyYPLkLQPBA8d6bngGpO/2KFxUJ0MvXtau2S/l6dpMTcs5Zry3ATEircssFjk7h
+         EXqm9ZZXGCcLbi92bIqLhIEmcln1N/eKftpjfTXHCbxKPge2Gdp0Pyj83h//bN4CG2
+         t/4owBHjX5WttKrqMhSSkcs5YoTZBP8gFw8x93Gs=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20220303121627epcas1p197895b85371cf654c64b695047453d23~Y3gd2XTS70702807028epcas1p1M;
+        Thu,  3 Mar 2022 12:16:27 +0000 (GMT)
+Received: from epsmges1p2.samsung.com (unknown [182.195.38.241]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 4K8VMZ0Gxjz4x9Q2; Thu,  3 Mar
+        2022 12:16:26 +0000 (GMT)
+Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
+        epsmges1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        80.2A.08277.991B0226; Thu,  3 Mar 2022 21:16:25 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
+        20220303121624epcas1p3781f58f2f04b0a26c35311aa0f4defcf~Y3gbZajmP0976309763epcas1p3T;
+        Thu,  3 Mar 2022 12:16:24 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20220303121624epsmtrp1e909b922805652a98179a2635067cee0~Y3gbYdir71144211442epsmtrp1t;
+        Thu,  3 Mar 2022 12:16:24 +0000 (GMT)
+X-AuditID: b6c32a36-203ff70000002055-5f-6220b199474b
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        5E.28.29871.891B0226; Thu,  3 Mar 2022 21:16:24 +0900 (KST)
+Received: from localhost.localdomain (unknown [10.88.98.193]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20220303121624epsmtip2117f5f63874145e0e41c807665ac1538~Y3gbKDcA30633506335epsmtip2J;
+        Thu,  3 Mar 2022 12:16:24 +0000 (GMT)
+From:   Huijin Park <huijin.park@samsung.com>
+To:     "H . Nikolaus Schaller" <hns@goldelico.com>,
+        Jean Rene Dawin <jdawin@math.uni-bielefeld.de>
+Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-mmc@vger.kernel.org, letux-kernel@openphoenux.org,
+        Ulf Hansson <ulf.hansson@linaro.org>, tony@atomide.com,
+        huijin.park@samsung.com, bbanghj.park@gmail.com
+Subject: RE: [BUG] mmc: core: adjust polling interval for CMD1 
+Date:   Thu,  3 Mar 2022 21:16:16 +0900
+Message-Id: <20220303121616.2285-1-huijin.park@samsung.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <27DDB061-1235-4F4C-B6A8-F035D77AC9CF@goldelico.com>
- <CAPDyKFrz_2Vp64SUzB8CiHJLTjO8Hx8m3QEhY1VU2ksZhVEx7A@mail.gmail.com>
- <20220302082034.GA5723@math.uni-bielefeld.de> <6715A5BE-CA64-4A3D-8EE5-5BEEB63F268A@goldelico.com>
-In-Reply-To: <6715A5BE-CA64-4A3D-8EE5-5BEEB63F268A@goldelico.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 3 Mar 2022 11:40:55 +0100
-Message-ID: <CAPDyKFqMs6FsJHVOoVmZxzBPgUdLoqa-xeLfvkQi1pn=8k1h6Q@mail.gmail.com>
-Subject: Re: [BUG] mmc: core: adjust polling interval for CMD1
-To:     Jean Rene Dawin <jdawin@math.uni-bielefeld.de>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Huijin Park <huijin.park@samsung.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, Tony Lindgren <tony@atomide.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprFJsWRmVeSWpSXmKPExsWy7bCmvu7MjQpJBlvuW1q83HuI2eLHtq9M
+        Fh0XXSwe3LvEarH1zyU2i8u75rBZHPnfz2gxe0k/i8X+K14Wx9eGO3B5fPs6icVj56y77B5r
+        3p9i9rhzbQ+bx79j7B4tk3axe/RtWcXo8XmTXABHVLZNRmpiSmqRQmpecn5KZl66rZJ3cLxz
+        vKmZgaGuoaWFuZJCXmJuqq2Si0+ArltmDtCBSgpliTmlQKGAxOJiJX07m6L80pJUhYz84hJb
+        pdSClJwCswK94sTc4tK8dL281BIrQwMDI1OgwoTsjK3THzEW3NWpOLLrDnMD4wrlLkZODgkB
+        E4nX3/4ydTFycQgJ7GCU2HRlJjuE84lR4u6c08wQzjdGifnHfzDBtFy/eQKqai+jxM+zBxnh
+        Wo72nmIGqWIT0Ja4vnYrI4gtIpAosbepnw2kiFngCaNE+5MNrCAJYQF7iS2Td4GNZRFQlXi1
+        9w0LiM0rYC2xpukcC8Q6eYmZl76zQ8QFJU7OfAIWZwaKN2+dzQxR85Nd4tY+aQjbRWLd2ylQ
+        vcISr45vYYewpSRe9rdB2ekSGyYfhaopkFgxdw0bhG0s8e7tWqCZHEDzNSXW79KHCCtK7Pw9
+        lxFiLZ/Eu689rCAlEgK8Eh1tQhAlqhKLr35khbClJQ49uMsIYXtI3N0EcbGQQKxEy4P3TBMY
+        5WcheWYWkmdmISxewMi8ilEstaA4Nz212LDACB6ryfm5mxjBiVTLbAfjpLcf9A4xMnEwHmKU
+        4GBWEuG11FRIEuJNSaysSi3Kjy8qzUktPsRoCgzeicxSosn5wFSeVxJvaGJpYGJmZGJhbGls
+        piTOu2ra6UQhgfTEktTs1NSC1CKYPiYOTqkGJnMWJWXOU6uCQud/29p3TDLD/snN4kL7jXtb
+        pguqPS3879w28cy6cOnDP49WvPBz9Cvm23BlReQb+zeLLh18tLSzc39q7d3bR+JUg7ovfZ0Q
+        sGOv4u3Iummrfby3P294LMIWazlrlmL4OddDW35Epa40nWCfsLiOS6pgQmhj6PKrdgLfLCMD
+        5JTnPFsZ65DheODuzNzLIcvUpN93FhzXZ3q7WXLuoQdqTLnHHjXwH9DdyrOiSGhWlt1aqXvW
+        cX5fNkd/U10X8PfXh4DGQ2KZCyus7e9E5jGeKk7cmmMtoR6gxa5+93Xx1AUF3KsbWuzXdaY1
+        LuUub/q1RG3jkv2bb2ksnpzleV7i5b9J2+Q9pyqxFGckGmoxFxUnAgCT8vt/LQQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrOLMWRmVeSWpSXmKPExsWy7bCSvO6MjQpJBr+eqlu83HuI2eLHtq9M
+        Fh0XXSwe3LvEarH1zyU2i8u75rBZHPnfz2gxe0k/i8X+K14Wx9eGO3B5fPs6icVj56y77B5r
+        3p9i9rhzbQ+bx79j7B4tk3axe/RtWcXo8XmTXABHFJdNSmpOZllqkb5dAlfG1umPGAvu6lQc
+        2XWHuYFxhXIXIyeHhICJxPWbJ9hBbCGB3YwSLesMIeLSEu92XmftYuQAsoUlDh8uhij5wChx
+        4p00iM0moC1xfe1WRhBbRCBRouviNaYuRi4OZoE3jBLTL00DSwgL2EtsmbyLCcRmEVCVeLX3
+        DQuIzStgLbGm6RwLxC55iZmXvrNDxAUlTs58AhZnBoo3b53NPIGRbxaS1CwkqQWMTKsYJVML
+        inPTc4sNCwzzUsv1ihNzi0vz0vWS83M3MYLDWktzB+P2VR/0DjEycTAeYpTgYFYS4bXUVEgS
+        4k1JrKxKLcqPLyrNSS0+xCjNwaIkznuh62S8kEB6YklqdmpqQWoRTJaJg1Oqgela055pn/h4
+        JsTrm19okfl49ENIovf5+BkCAZYlN+YE/d+3JNIw2vmWw3ZWl+RMWd64SwyaE5hmc/itzXjV
+        EMKwPdPv0LYbxhNSFQ91Pntk/s/ih4X1dSXHkK2eohJrZC/nyK6brZlvcPSJvxnLQ+ZXka7n
+        L62sndmr1pBjcnXJc0d/kxm+s36Vn+n1/HVL74jih9kfPd69sRKffi9Oo0Zt3+LTT5mnv9LK
+        Xqn6uvfi7YdFc0IsWTx5P0vH3fj1j/Pd7doXzse4n2h8cNha9lbos9OcVezPH7w5KZb+Z4nQ
+        GesLfnN4RRewe9Y0rj6mG35OU4p7s4kEn65/bfSsNROD3jz/yK3V8/6EB/My1adKLMUZiYZa
+        zEXFiQCvnwGk2gIAAA==
+X-CMS-MailID: 20220303121624epcas1p3781f58f2f04b0a26c35311aa0f4defcf
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20220303121624epcas1p3781f58f2f04b0a26c35311aa0f4defcf
+References: <CGME20220303121624epcas1p3781f58f2f04b0a26c35311aa0f4defcf@epcas1p3.samsung.com>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 2 Mar 2022 at 10:40, H. Nikolaus Schaller <hns@goldelico.com> wrote:
+Hi, sorry for the late reply.
+I guess the problem occurs depending on the eMMC model.
+Because I tested again and there was no problem.
+The eMMC model used for the test are as follows.
+(THGBMJG6C1LBAIL, KLM8G1GETF-B041)
+Anyway I guess the cause is interval time.
+I wrote a debug patch assuming that the reason was that some mmc models
+could not process CMD1 delivered at short intervals.
+I copied the polling function and adds interval minimum time parameter.
+I set the minimum time to 1ms. You can adjust it.
+Please test if there is no problem with the debug patch.
+
+>Hi,
 >
-> Hi,
+>> Am 02.03.2022 um 09:20 schrieb Jean Rene Dawin <jdawin@math.uni-bielefeld.de>:
+>> 
+>> Ulf Hansson wrote on Tue  1/03/22 14:38:
+>>> On Thu, 17 Feb 2022 at 21:12, H. Nikolaus Schaller <hns@goldelico.com> wrote:
+>>>> 
+>>> 
+>>> From: Ulf Hansson <ulf.hansson@linaro.org>
+>>> Date: Tue, 1 Mar 2022 14:24:21 +0100
+>>> Subject: [PATCH] mmc: core: Extend timeout to 2s for MMC_SEND_OP_COND
+>>> 
+>>> It looks like the timeout for the MMC_SEND_OP_COND (CMD1) might have become
+>>> a bit too small due to recent changes. Therefore, let's extend it to 2s,
+>>> which is probably more inline with its previous value, to fix the reported
+>>> timeout problems.
+>>> 
+>>> While at it, let's add a define for the timeout value, rather than using
+>>> a hard-coded value for it.
+>>> 
+>>> Reported-by: Jean Rene Dawin <jdawin@math.uni-bielefeld.de>
+>>> Reported-by: H. Nikolaus Schaller <hns@goldelico.com>
+>>> Cc: Huijin Park <huijin.park@samsung.com>
+>>> Fixes: 76bfc7ccc2fa ("mmc: core: adjust polling interval for CMD1")
+>>> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+>>> ---
+>>> drivers/mmc/core/mmc_ops.c | 4 +++-
+>>> 1 file changed, 3 insertions(+), 1 deletion(-)
+>>> 
+>>> diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
+>>> index d63d1c735335..1f57174b3cf3 100644
+>>> --- a/drivers/mmc/core/mmc_ops.c
+>>> +++ b/drivers/mmc/core/mmc_ops.c
+>>> @@ -21,6 +21,7 @@
+>>> 
+>>> #define MMC_BKOPS_TIMEOUT_MS           (120 * 1000) /* 120s */
+>>> #define MMC_SANITIZE_TIMEOUT_MS                (240 * 1000) /* 240s */
+>>> +#define MMC_OP_COND_TIMEOUT_MS         2000 /* 2s */
+>>> 
+>>> static const u8 tuning_blk_pattern_4bit[] = {
+>>>        0xff, 0x0f, 0xff, 0x00, 0xff, 0xcc, 0xc3, 0xcc,
+>>> @@ -232,7 +233,8 @@ int mmc_send_op_cond(struct mmc_host *host, u32
+>>> ocr, u32 *rocr)
+>>>        cmd.arg = mmc_host_is_spi(host) ? 0 : ocr;
+>>>        cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R3 | MMC_CMD_BCR;
+>>> 
+>>> -       err = __mmc_poll_for_busy(host, 1000, &__mmc_send_op_cond_cb, &cb_data);
+>>> +       err = __mmc_poll_for_busy(host, MMC_OP_COND_TIMEOUT_MS,
+>>> +                                 &__mmc_send_op_cond_cb, &cb_data);
+>>>        if (err)
+>>>                return err;
+>>> 
+>>> -- 
+>>> 2.25.1
+>> 
+>> Hi,
+>> 
+>> thanks. But testing with this patch still gives the same errors:
+>> 
+>> [   52.259940] mmc1: Card stuck being busy! __mmc_poll_for_busy
+>> [   52.273380] mmc1: error -110 doing runtime resume
+>> 
+>> and the system gets stuck eventually.
 >
-> > Am 02.03.2022 um 09:20 schrieb Jean Rene Dawin <jdawin@math.uni-bielefeld.de>:
-> >
-> > Ulf Hansson wrote on Tue  1/03/22 14:38:
-> >> On Thu, 17 Feb 2022 at 21:12, H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> >>>
-> >>
-> >> From: Ulf Hansson <ulf.hansson@linaro.org>
-> >> Date: Tue, 1 Mar 2022 14:24:21 +0100
-> >> Subject: [PATCH] mmc: core: Extend timeout to 2s for MMC_SEND_OP_COND
-> >>
-> >> It looks like the timeout for the MMC_SEND_OP_COND (CMD1) might have become
-> >> a bit too small due to recent changes. Therefore, let's extend it to 2s,
-> >> which is probably more inline with its previous value, to fix the reported
-> >> timeout problems.
-> >>
-> >> While at it, let's add a define for the timeout value, rather than using
-> >> a hard-coded value for it.
-> >>
-> >> Reported-by: Jean Rene Dawin <jdawin@math.uni-bielefeld.de>
-> >> Reported-by: H. Nikolaus Schaller <hns@goldelico.com>
-> >> Cc: Huijin Park <huijin.park@samsung.com>
-> >> Fixes: 76bfc7ccc2fa ("mmc: core: adjust polling interval for CMD1")
-> >> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> >> ---
-> >> drivers/mmc/core/mmc_ops.c | 4 +++-
-> >> 1 file changed, 3 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-> >> index d63d1c735335..1f57174b3cf3 100644
-> >> --- a/drivers/mmc/core/mmc_ops.c
-> >> +++ b/drivers/mmc/core/mmc_ops.c
-> >> @@ -21,6 +21,7 @@
-> >>
-> >> #define MMC_BKOPS_TIMEOUT_MS           (120 * 1000) /* 120s */
-> >> #define MMC_SANITIZE_TIMEOUT_MS                (240 * 1000) /* 240s */
-> >> +#define MMC_OP_COND_TIMEOUT_MS         2000 /* 2s */
-> >>
-> >> static const u8 tuning_blk_pattern_4bit[] = {
-> >>        0xff, 0x0f, 0xff, 0x00, 0xff, 0xcc, 0xc3, 0xcc,
-> >> @@ -232,7 +233,8 @@ int mmc_send_op_cond(struct mmc_host *host, u32
-> >> ocr, u32 *rocr)
-> >>        cmd.arg = mmc_host_is_spi(host) ? 0 : ocr;
-> >>        cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R3 | MMC_CMD_BCR;
-> >>
-> >> -       err = __mmc_poll_for_busy(host, 1000, &__mmc_send_op_cond_cb, &cb_data);
-> >> +       err = __mmc_poll_for_busy(host, MMC_OP_COND_TIMEOUT_MS,
-> >> +                                 &__mmc_send_op_cond_cb, &cb_data);
-> >>        if (err)
-> >>                return err;
-> >>
-> >> --
-> >> 2.25.1
-> >
-> > Hi,
-> >
-> > thanks. But testing with this patch still gives the same errors:
-> >
-> > [   52.259940] mmc1: Card stuck being busy! __mmc_poll_for_busy
-> > [   52.273380] mmc1: error -110 doing runtime resume
-> >
-> > and the system gets stuck eventually.
+>Same result from my tests.
 >
-> Same result from my tests.
->
-> BR and thanks,
-> Nikolaus
+>BR and thanks,
+>Nikolaus
 
-Alright, it starts to sound like we might need a revert (or at least a
-way to restore the previous behaviour) - even if that would just paper
-over the real problem. The real problem is more likely related to how
-the host driver manages restoring of the power to the card, which
-happens when runtime resuming it.
 
-In any case, just to make sure the loop timeout itself isn't the
-problem, can you run the below debug patch please? The intent is to
-figure out how long the worst case timeout is, when it's working with
-CMD1. As soon as the timeout exceeds the worst case, there is a
-message printed to the log.
+From c2458cb998dd8e275fefba52dd2532beb153c82d Mon Sep 17 00:00:00 2001
+From: Huijin Park <huijin.park@samsung.com>
+Date: Thu, 3 Mar 2022 20:43:22 +0900
+Subject: [PATCH] mmc: core: extend timeout and set min time for op_cond
 
-The below patch is based upon that the offending commit has been reverted.
+This patch extends timeout to 2s and sets minimal interval time for
+checking op_cond stuck problem.
 
-Kind regards
-Uffe
-
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 3 Mar 2022 11:00:04 +0100
-Subject: [PATCH] mmc: core: DEBUG - Measure and log worst case CMD1 loop
-
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
----
- drivers/mmc/core/mmc_ops.c | 11 +++++++++++
- include/linux/mmc/host.h   |  1 +
- 2 files changed, 12 insertions(+)
+Signed-off-by: Huijin Park <huijin.park@samsung.com>
 
 diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-index 9946733a34c6..3f03d9e8a3a4 100644
+index d63d1c735335..ccad6379d183 100644
 --- a/drivers/mmc/core/mmc_ops.c
 +++ b/drivers/mmc/core/mmc_ops.c
-@@ -177,11 +177,15 @@ int mmc_send_op_cond(struct mmc_host *host, u32
-ocr, u32 *rocr)
+@@ -21,6 +21,7 @@
+ 
+ #define MMC_BKOPS_TIMEOUT_MS		(120 * 1000) /* 120s */
+ #define MMC_SANITIZE_TIMEOUT_MS		(240 * 1000) /* 240s */
++#define MMC_OP_COND_TIMEOUT_MS		(  2 * 1000) /*   2s */
+ 
+ static const u8 tuning_blk_pattern_4bit[] = {
+ 	0xff, 0x0f, 0xff, 0x00, 0xff, 0xcc, 0xc3, 0xcc,
+@@ -179,6 +180,47 @@ int mmc_go_idle(struct mmc_host *host)
+ 	return err;
+ }
+ 
++static int ____mmc_poll_for_busy(struct mmc_host *host, unsigned int udelay_min,
++				 unsigned int timeout_ms,
++				 int (*busy_cb)(void *cb_data, bool *busy),
++				 void *cb_data)
++{
++	int err;
++	unsigned long timeout;
++	unsigned int udelay = udelay_min, udelay_max = 32768;
++	bool expired = false;
++	bool busy = false;
++
++	timeout = jiffies + msecs_to_jiffies(timeout_ms) + 1;
++	do {
++		/*
++		 * Due to the possibility of being preempted while polling,
++		 * check the expiration time first.
++		 */
++		expired = time_after(jiffies, timeout);
++
++		err = (*busy_cb)(cb_data, &busy);
++		if (err)
++			return err;
++
++		/* Timeout if the device still remains busy. */
++		if (expired && busy) {
++			pr_err("%s: Card stuck being busy! %s\n",
++				mmc_hostname(host), __func__);
++			return -ETIMEDOUT;
++		}
++
++		/* Throttle the polling rate to avoid hogging the CPU. */
++		if (busy) {
++			usleep_range(udelay, udelay * 2);
++			if (udelay < udelay_max)
++				udelay *= 2;
++		}
++	} while (busy);
++
++	return 0;
++}
++
+ static int __mmc_send_op_cond_cb(void *cb_data, bool *busy)
  {
-        struct mmc_command cmd = {};
-        int i, err = 0;
-+       s64 cmd1_ms;
-+       ktime_t time_start;
-
-        cmd.opcode = MMC_SEND_OP_COND;
-        cmd.arg = mmc_host_is_spi(host) ? 0 : ocr;
-        cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R3 | MMC_CMD_BCR;
-
-+       time_start = ktime_get();
-+
-        for (i = 100; i; i--) {
-                err = mmc_wait_for_cmd(host, &cmd, 0);
-                if (err)
-@@ -211,6 +215,13 @@ int mmc_send_op_cond(struct mmc_host *host, u32
-ocr, u32 *rocr)
-                        cmd.arg = cmd.resp[0] | BIT(30);
-        }
-
-+       cmd1_ms = ktime_to_ms(ktime_sub(ktime_get(), time_start));
-+       if (!err && cmd1_ms > host->cmd1_ms) {
-+               pr_warn("%s: CMD1 timeout increased to %lld ms, loop=%d\n",
-+                       mmc_hostname(host), cmd1_ms, i);
-+               host->cmd1_ms = cmd1_ms;
-+       }
-+
-        if (rocr && !mmc_host_is_spi(host))
-                *rocr = cmd.resp[0];
-
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index 7afb57cab00b..c2ca3bb05620 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -301,6 +301,7 @@ struct mmc_host {
-        unsigned int            f_min;
-        unsigned int            f_max;
-        unsigned int            f_init;
-+       s64                     cmd1_ms;
-        u32                     ocr_avail;
-        u32                     ocr_avail_sdio; /* SDIO-specific OCR */
-        u32                     ocr_avail_sd;   /* SD-specific OCR */
+ 	struct mmc_op_cond_busy_data *data = cb_data;
+@@ -232,7 +274,8 @@ int mmc_send_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)
+ 	cmd.arg = mmc_host_is_spi(host) ? 0 : ocr;
+ 	cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R3 | MMC_CMD_BCR;
+ 
+-	err = __mmc_poll_for_busy(host, 1000, &__mmc_send_op_cond_cb, &cb_data);
++	err = ____mmc_poll_for_busy(host, 1000, MMC_OP_COND_TIMEOUT_MS,
++				    &__mmc_send_op_cond_cb, &cb_data);
+ 	if (err)
+ 		return err;
+ 
 -- 
-2.25.1
+2.17.1
+
