@@ -2,36 +2,40 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB51C4CBE1B
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Mar 2022 13:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 250334CBE1E
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Mar 2022 13:47:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231533AbiCCMqm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Mar 2022 07:46:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39598 "EHLO
+        id S230426AbiCCMsh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 3 Mar 2022 07:48:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230199AbiCCMqm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Mar 2022 07:46:42 -0500
+        with ESMTP id S230166AbiCCMsg (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Mar 2022 07:48:36 -0500
 Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F1DC184B48
-        for <linux-omap@vger.kernel.org>; Thu,  3 Mar 2022 04:45:56 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284FE5A5A0
+        for <linux-omap@vger.kernel.org>; Thu,  3 Mar 2022 04:47:51 -0800 (PST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:6495:14e6:1343:3ecb])
         by laurent.telenet-ops.be with bizsmtp
-        id 1olu2700m5ER6nL01olvU9; Thu, 03 Mar 2022 13:45:55 +0100
+        id 1onq2700A5ER6nL01onqlo; Thu, 03 Mar 2022 13:47:50 +0100
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1nPkqA-002Xrr-HP; Thu, 03 Mar 2022 13:45:54 +0100
+        id 1nPks1-002XsO-TL; Thu, 03 Mar 2022 13:47:49 +0100
 Received: from geert by rox.of.borg with local (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1nPkq9-008DA1-Qu; Thu, 03 Mar 2022 13:45:53 +0100
+        id 1nPks1-008DGD-7J; Thu, 03 Mar 2022 13:47:49 +0100
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+To:     Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Cc:     linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] bus: ti-sysc: Drop commas after SoC match table sentinels
-Date:   Thu,  3 Mar 2022 13:45:52 +0100
-Message-Id: <602f74030dc746eaa9f82f115acc46e62c6be165.1646311501.git.geert+renesas@glider.be>
+Subject: [PATCH] thermal: ti-soc-thermal: Drop comma after SoC match table sentinel
+Date:   Thu,  3 Mar 2022 13:47:48 +0100
+Message-Id: <8a0317505effc417b947fa2dfd53ca8e2ca6aa44.1646311640.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -49,31 +53,22 @@ elements must be added before the sentinel.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/bus/ti-sysc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/thermal/ti-soc-thermal/ti-bandgap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 54c0ee6dda3021e8..41d5e69063f5117b 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -3049,7 +3049,7 @@ static const struct soc_device_attribute sysc_soc_match[] = {
- 	SOC_FLAG("AM43*", SOC_AM4),
- 	SOC_FLAG("DRA7*", SOC_DRA7),
- 
+diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
+index 83a34d698414b177..40133bf52a059888 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
++++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
+@@ -877,7 +877,7 @@ static struct ti_bandgap *ti_bandgap_build(struct platform_device *pdev)
+  */
+ static const struct soc_device_attribute soc_no_cpu_notifier[] = {
+ 	{ .machine = "OMAP4430" },
 -	{ /* sentinel */ },
 +	{ /* sentinel */ }
  };
  
- /*
-@@ -3070,7 +3070,7 @@ static const struct soc_device_attribute sysc_soc_feat_match[] = {
- 	SOC_FLAG("OMAP3615/AM3715", DIS_IVA),
- 	SOC_FLAG("OMAP3621", DIS_ISP),
- 
--	{ /* sentinel */ },
-+	{ /* sentinel */ }
- };
- 
- static int sysc_add_disabled(unsigned long base)
+ /***   Device driver call backs   ***/
 -- 
 2.25.1
 
