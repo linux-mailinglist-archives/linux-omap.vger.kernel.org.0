@@ -2,173 +2,126 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6722A4CD210
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Mar 2022 11:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2EC44CD5AD
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Mar 2022 14:57:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239078AbiCDKKZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Mar 2022 05:10:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53288 "EHLO
+        id S239006AbiCDN6i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Mar 2022 08:58:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232997AbiCDKKY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Mar 2022 05:10:24 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A01DF489
-        for <linux-omap@vger.kernel.org>; Fri,  4 Mar 2022 02:09:36 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id i11so13313947lfu.3
-        for <linux-omap@vger.kernel.org>; Fri, 04 Mar 2022 02:09:36 -0800 (PST)
+        with ESMTP id S233952AbiCDN6g (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Mar 2022 08:58:36 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE8A41987;
+        Fri,  4 Mar 2022 05:57:48 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id c19so1091744ede.8;
+        Fri, 04 Mar 2022 05:57:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=TTlQzouujxjklNSmEgJUOKvgbuMUOxIuYP4op7FfZLA=;
-        b=pAFN1ddFQ/E0y4qv64XFp85SwQmgi+xcXmt8nmEAyVvhOOMI31LQPQCS/a1PE0+UOR
-         8B6J4criYegIzpwIp+e1b1HmTbtkzHcGAs5ZyQOdxacbmgFA/fpe5AbXnnDevZda50dS
-         EZJR3k9eSSXr5V4VvA87/xXJ4pfGx+caGTcevot0QzO1mSssbAJRojnBDufVSA/kOPGt
-         p+U3vDF/BtqLBkNqJh9DEoJj+OlPhIoYTWoDg4kPtO6vYLnILn1ITvcuu0ryU63AHrin
-         fImJq8o1zghEWqk4pDVH39DADSbHcquLL2wN2vSwi/XRXqfz88Yo81gjv72HZy9LuE10
-         IUFg==
+        bh=V5nbFt1LWA85FHBfIJV2mdkXvx7kKnUB3QLf39i2vgo=;
+        b=dfiW6zayWObNNgP6CwXoRoqBPxQY7wiOH6fO5BcJv1SFBtMs3lawe9zWEom/ZA7aBH
+         8Ibt2l4mhRmBTn/p4d2gZRjOjY9oW2lorwlH1iXI36zdras/b3tM2DgdZ8qiarVig7lw
+         RRA0Kjmp8Pecerkq4FxYMdJRh02wGi6c2e5uv4u87MDqGuYJoQTRJkgI8ahBUUxoJezx
+         76fIf6aqcsk37nFQZhQhGoETN16DLwyp+zpFOXgGkFb8iedTs/zwYtzFakw0fu9wDK0S
+         q2mk4Tz0Gkmv7tuD04DE7PXoZEO9+4ge3zHaMKEcpwFoiy2NxG51sf8pOrcnqwduqm5A
+         ag4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=TTlQzouujxjklNSmEgJUOKvgbuMUOxIuYP4op7FfZLA=;
-        b=dpQoucaCbZs14sajoaUxI9yVALFv9wJMapW5KZvNO2I3ZpyAEMdijK8EWWIPKP/8N8
-         mNBH2fyZgb8XfROQVvqr6mlcxoUUpkHZkk5efVHFZtMBVMVlBJ9nPF5wVL5ZktYnSLE/
-         LF/pfQ4+if0msWQCjx3RbDFPGu5lO+wCae/yTQVH6th/pdoffnghorjTypEwW+poeHlo
-         fCaEoCFNCx/QC2DiZV+dr0iEequ9XhnB7jZNkv5Uxmgju2lmfu2sqjG6J2Yq/21wrX8g
-         bHlfTpCmJ9kLXw3xBN7AjHjjQbvNcphtZIS5mmgzkKf4HIHgAIFN1/am5xTZBfNFDGVl
-         0ysQ==
-X-Gm-Message-State: AOAM5319V4I23cvXUu6mhklgitmMDuFCusEbZB/8g9b20mQYJoe07+d8
-        tv8MdYcQM74gojT9itQIDBq+jhiGQJNNP+iRg0uhxA==
-X-Google-Smtp-Source: ABdhPJxioaW/kEbNRDMpwSwzMDNKpC0oQLgEd/3aJooMgZrQOKmA3ksjnvQNOly3P47CFSn8dG3kvRr5mCQf1ZAIY9Q=
-X-Received: by 2002:a05:6512:ea5:b0:43b:3603:69d9 with SMTP id
- bi37-20020a0565120ea500b0043b360369d9mr24172397lfb.71.1646388575210; Fri, 04
- Mar 2022 02:09:35 -0800 (PST)
+        bh=V5nbFt1LWA85FHBfIJV2mdkXvx7kKnUB3QLf39i2vgo=;
+        b=hchVs3naQ7eYZtNzOVEH5/bCkZXoxCZM5VHKbvqWnfNLuOED5AylYNfqqix/FH45C6
+         leapeLTS6F9stoU+CE0tz6DnTs3V2OJr+DUFaa/VY0ZowILCv60N/RU2x+einlR0+wUy
+         Raash52/94dmi3g4yrTCOPAgKvvjvhv1wfg5BeVrr7k9LHLCgcfcTVswJ5lZGMnfsLeG
+         RaM2E5N/PvZCSulsr1Yp2St+a6QequRMzaQYjQ2WnhB8iOQjahatEM+vp06QGvKlOvTg
+         /oAxDjJ9ZNYVHJZFQ/6FEXD79wi2tcAqvUC6BFtjf4ZEZxlpPioAUU2NkJdp+BMYIuEI
+         9+6g==
+X-Gm-Message-State: AOAM530ymgHmQRE7ePqNznInA8ARQcYQ7LFUAdAdcIqPLoNppN4AV759
+        +CbKd1YpxtoGmWa5GemvDgAYJ4AYcw8F32JlC6k=
+X-Google-Smtp-Source: ABdhPJxdG3SMoJqAwxqByNR7W2v4BfsToiquWcNDTtNN/tCIS1IlOQVTHwj1EIBbbth3+ximAA/li80riOI1yWn/CV8=
+X-Received: by 2002:aa7:d543:0:b0:416:13eb:6fec with SMTP id
+ u3-20020aa7d543000000b0041613eb6fecmr550878edr.348.1646402266648; Fri, 04 Mar
+ 2022 05:57:46 -0800 (PST)
 MIME-Version: 1.0
-References: <27DDB061-1235-4F4C-B6A8-F035D77AC9CF@goldelico.com>
- <CAPDyKFrz_2Vp64SUzB8CiHJLTjO8Hx8m3QEhY1VU2ksZhVEx7A@mail.gmail.com>
- <20220302082034.GA5723@math.uni-bielefeld.de> <6715A5BE-CA64-4A3D-8EE5-5BEEB63F268A@goldelico.com>
- <CAPDyKFqMs6FsJHVOoVmZxzBPgUdLoqa-xeLfvkQi1pn=8k1h6Q@mail.gmail.com> <20220304092811.GA20284@math.uni-bielefeld.de>
-In-Reply-To: <20220304092811.GA20284@math.uni-bielefeld.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 4 Mar 2022 11:08:58 +0100
-Message-ID: <CAPDyKFq1G6uYz_3mMj3ZU54vDuzVDYw09rXCxx2rLAPeoXoFJA@mail.gmail.com>
-Subject: Re: [BUG] mmc: core: adjust polling interval for CMD1
-To:     Jean Rene Dawin <jdawin@math.uni-bielefeld.de>
-Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Huijin Park <huijin.park@samsung.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-mmc@vger.kernel.org, Tony Lindgren <tony@atomide.com>
+References: <20200221195256.54016-1-tony@atomide.com> <20200221195256.54016-7-tony@atomide.com>
+ <CAHCN7xJ0j4kZXiQs-5GrrKLxXYgkYJsnNDreH0MKi8mHPs_Xvw@mail.gmail.com> <YiG4O2h4oVX7CqIe@atomide.com>
+In-Reply-To: <YiG4O2h4oVX7CqIe@atomide.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 4 Mar 2022 07:57:35 -0600
+Message-ID: <CAHCN7xKL8x2=As35PG4T_qbgvqReVk8i_+SaibK9zF86+tGVZQ@mail.gmail.com>
+Subject: Re: [PATCH 6/7] bus: ti-sysc: Implement SoC revision handling
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        =?UTF-8?Q?Andr=C3=A9_Hentschel?= <nerv@dawncrow.de>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 4 Mar 2022 at 10:28, Jean Rene Dawin
-<jdawin@math.uni-bielefeld.de> wrote:
->
-> Ulf Hansson wrote on Thu  3/03/22 11:40:
-> > On Wed, 2 Mar 2022 at 10:40, H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> >
-> > Alright, it starts to sound like we might need a revert (or at least a
-> > way to restore the previous behaviour) - even if that would just paper
-> > over the real problem. The real problem is more likely related to how
-> > the host driver manages restoring of the power to the card, which
-> > happens when runtime resuming it.
-> >
-> > In any case, just to make sure the loop timeout itself isn't the
-> > problem, can you run the below debug patch please? The intent is to
-> > figure out how long the worst case timeout is, when it's working with
-> > CMD1. As soon as the timeout exceeds the worst case, there is a
-> > message printed to the log.
-> >
-> > The below patch is based upon that the offending commit has been reverted.
-> >
-> > Kind regards
-> > Uffe
-> >
-> > From: Ulf Hansson <ulf.hansson@linaro.org>
-> > Date: Thu, 3 Mar 2022 11:00:04 +0100
-> > Subject: [PATCH] mmc: core: DEBUG - Measure and log worst case CMD1 loop
-> >
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > ---
-> >  drivers/mmc/core/mmc_ops.c | 11 +++++++++++
-> >  include/linux/mmc/host.h   |  1 +
-> >  2 files changed, 12 insertions(+)
-> >
-> > diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-> > index 9946733a34c6..3f03d9e8a3a4 100644
-> > --- a/drivers/mmc/core/mmc_ops.c
-> > +++ b/drivers/mmc/core/mmc_ops.c
-> > @@ -177,11 +177,15 @@ int mmc_send_op_cond(struct mmc_host *host, u32
-> > ocr, u32 *rocr)
-> >  {
-> >         struct mmc_command cmd = {};
-> >         int i, err = 0;
-> > +       s64 cmd1_ms;
-> > +       ktime_t time_start;
-> >
-> >         cmd.opcode = MMC_SEND_OP_COND;
-> >         cmd.arg = mmc_host_is_spi(host) ? 0 : ocr;
-> >         cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R3 | MMC_CMD_BCR;
-> >
-> > +       time_start = ktime_get();
-> > +
-> >         for (i = 100; i; i--) {
-> >                 err = mmc_wait_for_cmd(host, &cmd, 0);
-> >                 if (err)
-> > @@ -211,6 +215,13 @@ int mmc_send_op_cond(struct mmc_host *host, u32
-> > ocr, u32 *rocr)
-> >                         cmd.arg = cmd.resp[0] | BIT(30);
-> >         }
-> >
-> > +       cmd1_ms = ktime_to_ms(ktime_sub(ktime_get(), time_start));
-> > +       if (!err && cmd1_ms > host->cmd1_ms) {
-> > +               pr_warn("%s: CMD1 timeout increased to %lld ms, loop=%d\n",
-> > +                       mmc_hostname(host), cmd1_ms, i);
-> > +               host->cmd1_ms = cmd1_ms;
-> > +       }
-> > +
-> >         if (rocr && !mmc_host_is_spi(host))
-> >                 *rocr = cmd.resp[0];
-> >
-> > diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-> > index 7afb57cab00b..c2ca3bb05620 100644
-> > --- a/include/linux/mmc/host.h
-> > +++ b/include/linux/mmc/host.h
-> > @@ -301,6 +301,7 @@ struct mmc_host {
-> >         unsigned int            f_min;
-> >         unsigned int            f_max;
-> >         unsigned int            f_init;
-> > +       s64                     cmd1_ms;
-> >         u32                     ocr_avail;
-> >         u32                     ocr_avail_sdio; /* SDIO-specific OCR */
-> >         u32                     ocr_avail_sd;   /* SD-specific OCR */
-> > --
-> > 2.25.1
+On Fri, Mar 4, 2022 at 12:57 AM Tony Lindgren <tony@atomide.com> wrote:
 >
 > Hi,
 >
-> thanks. With this patch applied with reverted 76bfc7ccc2fa9d382576f6013b57a0ef93d5a722
-> I don't get the "stuck" errors in __mmc_poll_for_busy and only one message of
+> * Adam Ford <aford173@gmail.com> [220302 14:37]:
+> > I apologize for digging up an old thread, but I finally managed to get
+> > my hands on an OMAP3503.  It seems like older kernels do not boot at
+> > all or hang somewhere in the boot process.  I am still seeing a
+> > difference in behavior between OMAP3503 and OMAP3530, where 3505
+> > throws a bunch of splat and a kernel panic, while the 3530 appears to
+> > boot happily.
+> >
+> > Using the latest 5.17-rc6, I had to remove some IVA and SGX references
+> > from omap_l3_smx.h to get the 3503 to stop crashing on boot.
 >
-> [    1.095194] mmc1: CMD1 timeout increased to 64 ms, loop=98
+> OK interesting, I did not know those registers are not accessible
+> on 3503.
+>
+> > Do you have any ideas how we can make the omap3_l3_app_bases and
+> > omap3_l3_debug_bases more cleanly remove the IVA and SGX references
+> > if/when OMAP3503 is detected?  I assume the same algorithm would have
+> > to detect a AM3703 as well.  I'm trying to get my hands on an AM3703
+> > to see if there is similar behavior as what I'm seeing on the
+> > OMAP3503.
+>
+> As there are possibly multiple omap3 variants used on the same
+> boards, we need to rely on the runtime detection of the SoC.
+> So yeah soc_device_attribute is the way to go here.
+>
+> I don't recall any similar issues booting 3703 but it's been a while
+> so worth testing for sure.
 
-Okay, so for some reason polling doesn't work, if we poll too
-frequently. Clearly the 1s total timeout should be sufficient.
+In addition to the OMAP3503, I managed to get an AM3703.  From what I
+can tell, going back as far as kernel 4.9, the OMAP3503 does not boot
+at all. I haven't tried the 4.4 since it's marked EOL at this point.
 
-I will prepare a patch that restores the old behaviour and post it
-within a few minutes.
+I have not started testing the AM3703 yet, but I think it would be a
+good idea to backport this to stable at some point, since it appears
+to fix a serious regression,  not booting.  I'm going to work on some
+experiments with both the AM3703 and OMAP3503 to see what works, what
+doesn't and I'm going try to come up with some ideas on how to address
+the omap3_l3_app changes, but if you have any ideas on how to do it
+cleanly, I'm open for suggestions.
 
-Kind regards
-Uffe
+adam
+>
+> Regards,
+>
+> Tony
