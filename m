@@ -2,70 +2,65 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FF444CDB1D
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Mar 2022 18:41:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CBC04CE042
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Mar 2022 23:38:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238123AbiCDRmA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 4 Mar 2022 12:42:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46180 "EHLO
+        id S229631AbiCDWjX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Mar 2022 17:39:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231807AbiCDRl7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Mar 2022 12:41:59 -0500
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 702091B127B
-        for <linux-omap@vger.kernel.org>; Fri,  4 Mar 2022 09:41:09 -0800 (PST)
-Received: by mail-pg1-x534.google.com with SMTP id e6so8115885pgn.2
-        for <linux-omap@vger.kernel.org>; Fri, 04 Mar 2022 09:41:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=PVlhcCn7DaGojmQuPVn01R8bc+sVgt8z7aPBiwXDtKA=;
-        b=28LE/bh1PCver1vlxXW2uY48K0BNBXlo7W2CUgCSAgdVq+qPP30mJwwvBhfA/6L7Cu
-         hMmXie39seY56jl9FnYvsxLKRmtsTVhsSjNcFupD3HGgAj9Y2zD5hHz7NaejIKh6/vm4
-         QIU7z8n+FwTUFGeebviFwZXaGZ6LKQg4Tv9CCseXKCXsJhVBZ3rySuMU/0vA7gldpRsw
-         Y9XGiIJ63OZWPitaMmqUYd7OSMbs5kGXEvieIpcz6gTRFGAXINhpuArFhnxPaLB6/hJG
-         wMiG8AlpP6ECn1vKfBXEpiosjNrKRFEVeojePtYHGAJ2SUacybFgAOIpuZ93ct9IqOIH
-         onYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=PVlhcCn7DaGojmQuPVn01R8bc+sVgt8z7aPBiwXDtKA=;
-        b=oA4oBv6HdXkX4JJaT7bxsyjTh1G7CNSgb72ass8bVmSdhzti8DREhxL1WZwrHKntbd
-         X/4TiDFADVgmFGfOd0RYbI7AfqEK2zmKMZj4ZB4bEdJ9PxQcCakeFpzTdVuaXFIP6RZ5
-         0y8oyOgx/NOWE2td4k9dNUAXUNEjWluNauFDj8rCOco6SI/2/WL1vxVO7doOakjLE2Mi
-         eFn2qmkRfJY+BfA0L+t/lsZt2CZ3U413Czy5vUAQbGyiibcA15GZPisTCB5Gqf8TVvwq
-         iJCkwZZAhzVfOPntvyPL3D2dwbvqSoetXMn+3zXZn/nwIzpIZh5UpOeR+1bsn53qtnXn
-         kpug==
-X-Gm-Message-State: AOAM53037PTLAlbP0fRO+r96fFX2ipKxIFQ37mW+NJatgYleL7rqp0bO
-        VhEi2yDK9FeIkzM6KfpGvrBeUg==
-X-Google-Smtp-Source: ABdhPJx8/jcrgsC8eOxqGC4hQISCKORpNObve0/4qNvQ59vUxhPXKYZnwgfx+fCtkkqtGPkIn/S1Dw==
-X-Received: by 2002:a63:544c:0:b0:378:907d:1e37 with SMTP id e12-20020a63544c000000b00378907d1e37mr22764324pgm.394.1646415668764;
-        Fri, 04 Mar 2022 09:41:08 -0800 (PST)
-Received: from localhost (c-71-197-186-152.hsd1.wa.comcast.net. [71.197.186.152])
-        by smtp.gmail.com with ESMTPSA id y12-20020a056a00190c00b004f39e28fb87sm6880950pfi.98.2022.03.04.09.41.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Mar 2022 09:41:08 -0800 (PST)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>
-Subject: Re: [PATCH] bus: ti-sysc: Fix gpt12 system timer issue with
- reserved status
-In-Reply-To: <20210611060224.36769-1-tony@atomide.com>
-References: <20210611060224.36769-1-tony@atomide.com>
-Date:   Fri, 04 Mar 2022 09:41:07 -0800
-Message-ID: <7h7d99ehu4.fsf@baylibre.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        with ESMTP id S229475AbiCDWjW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Mar 2022 17:39:22 -0500
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BB312717;
+        Fri,  4 Mar 2022 14:38:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1646433506;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=G31gGYuULnnC5IvJtl2MmzT9OfKz57FNYjCVaM8fsHk=;
+    b=OxNE1KlEmIfn85/pOCdgB740ksGZ1XUkOLbXUFxdQbK2L+AH5VfPTCoDKeqdGggQLY
+    noKMpGTuj1jobiJWOVvWFMElIAmHdmEvym9jtd9ayKJqLpaiZpg22xJKkaQNtCm3QubS
+    2qpJQlPAKZe5swe6LuK6weuh49hZkScuKph2cgcT+2XyxdUGeaXJC+BTKNqklAcsbcgv
+    P90dBUK/b8/faPjZzP5gPO+6bqR6+axVI6iq+Gwwu+FJSPvgbft5UkEHFPPh0qf1W9dL
+    xAuQuL+7HwKHjpUJUMMIAlQVJlyqSUIchiNscwNl45RL3fk7PFUC0HheCHKnXJHcFojH
+    UC2A==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7gpw91N5y2S3i8QUWw=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+    by smtp.strato.de (RZmta 47.40.1 DYNA|AUTH)
+    with ESMTPSA id n729cey24McQ9DH
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Fri, 4 Mar 2022 23:38:26 +0100 (CET)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
+Subject: Re: [PATCH v6 14/48] mfd: ti_am335x_tscadc: Don't search the tree for
+ our clock
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20211015081506.933180-15-miquel.raynal@bootlin.com>
+Date:   Fri, 4 Mar 2022 23:38:25 +0100
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ryan Barnett <ryan.barnett@collins.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7336E356-57E3-4BC5-B098-0A791C2CB360@goldelico.com>
+References: <20211015081506.933180-1-miquel.raynal@bootlin.com>
+ <20211015081506.933180-15-miquel.raynal@bootlin.com>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Tony Lindgren <tony@atomide.com>
+X-Mailer: Apple Mail (2.3445.104.21)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,60 +68,81 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+Hi Miquel,
+I recently found that our BeagleBoneBlack with external touch screen =
+stopped
+to find it.
 
-Tony Lindgren <tony@atomide.com> writes:
+A git bisect revealed this patch (merged into v5.16-rc1) as the first =
+bad:
 
-> Jarkko Nikula <jarkko.nikula@bitmer.com> reported that Beagleboard
-> revision c2 stopped booting. Jarkko bisected the issue down to
-> commit 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend
-> and resume for am3 and am4").
->
-> Let's fix the issue by tagging system timers as reserved rather than
-> ignoring them. And let's not probe any interconnect target module child
-> devices for reserved modules.
->
-> This allows PM runtime to keep track of clocks and clockdomains for
-> the interconnect target module, and prevent the system timer from idling
-> as we already have SYSC_QUIRK_NO_IDLE and SYSC_QUIRK_NO_IDLE_ON_INIT
-> flags set for system timers.
->
-> Fixes: 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend and resume for am3 and am4")
-> Reported-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> Am 15.10.2021 um 10:14 schrieb Miquel Raynal =
+<miquel.raynal@bootlin.com>:
+>=20
+> There is a single clock available in our node, which is named
+> "fck". The clock handler then points to adc_tsc_fck but no need to =
+point
+> directly to it and do a full tree search.
+>=20
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> ---
+> drivers/mfd/ti_am335x_tscadc.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/mfd/ti_am335x_tscadc.c =
+b/drivers/mfd/ti_am335x_tscadc.c
+> index e2c4416f192d..8af44c08d925 100644
+> --- a/drivers/mfd/ti_am335x_tscadc.c
+> +++ b/drivers/mfd/ti_am335x_tscadc.c
+> @@ -206,7 +206,7 @@ static	int ti_tscadc_probe(struct =
+platform_device *pdev)
+> 	 * This frequency is valid since TSC_ADC_SS controller design
+> 	 * assumes the OCP clock is at least 6x faster than the ADC =
+clock.
+> 	 */
+> -	clk =3D devm_clk_get(&pdev->dev, "adc_tsc_fck");
+> +	clk =3D devm_clk_get(&pdev->dev, NULL);
+> 	if (IS_ERR(clk)) {
+> 		dev_err(&pdev->dev, "failed to get TSC fck\n");
+> 		err =3D PTR_ERR(clk);
+> --=20
+> 2.27.0
+>=20
 
-I'm debugging why suspend/resume on AM3x and AM4x are mostly working,
-but getting the warning that not all powerdomains are transitioning:
+While I understand the reasons for this change there seems to be =
+something
+missing now in the device tree because the clock isn't found any more.
 
-   pm33xx pm33xx: PM: Could not transition all powerdomains to target state
+After knowing about the problem I could also locate the log entry:
 
-I bisected it down to $SUBJECT patch, and verified that reverting it
-makes both on am335x-boneblack and am437x-gp-evm fully suspend, and I'm
-now seeing:
+[    4.456680] ti_am3359-tscadc 44e0d000.tscadc: failed to get TSC fck
 
-   pm33xx pm33xx: PM: Successfully put all powerdomains to target state
+Reverting your patch makes it work again.
 
-Note that it doesn't revert cleanly due to some other changes, but this
-one-liner[1] effectively reverts the behavior of $SUBJECT patch, and
-also makes things work again.
+Is there missing a change in the am335x-boneblack or am335x DTS?
 
-I verified the revert (and hack[1]) on both v5.10 stable and mainline
-v5.16 but TBH, I'm still not 100% sure what's going on so looking for
-some guidance from you Tony on what the "real" fix should be.
+Our (private) DTS looks like this, i.e. we don't play with clocks =
+inherited
+from mainline tree:
 
-Kevin
+#include "am335x-boneblack.dts"
 
-[1] 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c                                                                                                            
-index 54c0ee6dda30..82379ff9dce5 100644                                                                                                                               
---- a/drivers/bus/ti-sysc.c                                                                                                                                           
-+++ b/drivers/bus/ti-sysc.c                                                                                                                                           
-@@ -3304,7 +3304,7 @@ static int sysc_probe(struct platform_device *pdev)                                                                                             
-                                                                                                                                                                      
-        error = sysc_check_active_timer(ddata);                                                                                                                       
-        if (error == -ENXIO)                                                                                                                                          
--               ddata->reserved = true;                                                                                                                               
-+               return error;                                                                                                                                         
-        else if (error)                                                                                                                                               
-                return error;                                                                                                                                         
-         
+...
+
+&tscadc {
+        status =3D "okay";
+
+        tsc {
+                ti,wires =3D <4>;
+                ti,x-plate-resistance =3D <600>;
+                ti,coordinate-readouts =3D <5>;
+                ti,wire-config =3D <0x00 0x11 0x22 0x33>;
+        };
+
+        adc {
+                ti,adc-channels =3D <4 5 6 7>;
+        };
+};
+
+BR and thanks,
+Nikolaus=
