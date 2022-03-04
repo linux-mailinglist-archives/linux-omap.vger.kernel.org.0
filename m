@@ -2,86 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 072AB4CC487
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Mar 2022 19:01:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B51B4CCE22
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Mar 2022 07:57:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235562AbiCCSB4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 3 Mar 2022 13:01:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47208 "EHLO
+        id S238581AbiCDG6D (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 4 Mar 2022 01:58:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235560AbiCCSBv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 3 Mar 2022 13:01:51 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 330D81A1C56;
-        Thu,  3 Mar 2022 10:01:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E7FC9B82664;
-        Thu,  3 Mar 2022 18:01:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E79C340EF;
-        Thu,  3 Mar 2022 18:01:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1646330463;
-        bh=xGgnnVHyGleDpVkH9gkP5NrpsGASPkv/CJewUK6NLDU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JcO8OXDEAyL+U547uBOC8tTHMHCd+zP060n+yMQOOYLKkDW7vhWTYCZcQMDwossNu
-         BIpKFOOxv8JWtfM4jVphHMuIVEv87l5eIWRVGUwYXo3p2Xciha+Zg8o8RP/Ha0T/20
-         EAQuHUdE700SSmrxIf7ggqU8y/5ZRDHrigKXam8cZ59D0LucvX3lxxipeOdVeG2VPZ
-         sjjuaxa4diGeHMhw9e8Qw1MD393dESCFq8yOGHrlc3IK/lq3wFz2/gG5blDgjx1o2i
-         7RMv/WEJiK0XqoMtkpMl72YSn7UKOkgMLaNUnl6vLNs4Fv2IOf0CEIQALhduHgqIGX
-         gg9nqfq2z+wlA==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1nPpl8-0000iq-AF; Thu, 03 Mar 2022 19:01:02 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Johan Hovold <johan@kernel.org>
-Subject: [PATCH 2/2] ARM: OMAP2+: drop hwmod-clock helper comment
-Date:   Thu,  3 Mar 2022 19:00:14 +0100
-Message-Id: <20220303180014.2639-3-johan@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220303180014.2639-1-johan@kernel.org>
-References: <20220303180014.2639-1-johan@kernel.org>
+        with ESMTP id S234866AbiCDG6A (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 4 Mar 2022 01:58:00 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F0FE418DAB9;
+        Thu,  3 Mar 2022 22:57:01 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 9549480E1;
+        Fri,  4 Mar 2022 06:55:47 +0000 (UTC)
+Date:   Fri, 4 Mar 2022 08:56:59 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        "Andrew F . Davis" <afd@ti.com>, Dave Gerlach <d-gerlach@ti.com>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Roger Quadros <rogerq@ti.com>, Suman Anna <s-anna@ti.com>,
+        Tero Kristo <t-kristo@ti.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        arm-soc <linux-arm-kernel@lists.infradead.org>,
+        =?utf-8?B?QW5kcsOp?= Hentschel <nerv@dawncrow.de>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [PATCH 6/7] bus: ti-sysc: Implement SoC revision handling
+Message-ID: <YiG4O2h4oVX7CqIe@atomide.com>
+References: <20200221195256.54016-1-tony@atomide.com>
+ <20200221195256.54016-7-tony@atomide.com>
+ <CAHCN7xJ0j4kZXiQs-5GrrKLxXYgkYJsnNDreH0MKi8mHPs_Xvw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHCN7xJ0j4kZXiQs-5GrrKLxXYgkYJsnNDreH0MKi8mHPs_Xvw@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Since commit a4f6cdb0672f ("ARM: OMAP: omap_device: Add
-omap_device_[alloc|delete] for DT integration"),
-_add_hwmod_clocks_clkdev() is called from omap_device_alloc().
+Hi,
 
-Drop the outdated comment referring to how this function was used ten
-odd years ago.
+* Adam Ford <aford173@gmail.com> [220302 14:37]:
+> I apologize for digging up an old thread, but I finally managed to get
+> my hands on an OMAP3503.  It seems like older kernels do not boot at
+> all or hang somewhere in the boot process.  I am still seeing a
+> difference in behavior between OMAP3503 and OMAP3530, where 3505
+> throws a bunch of splat and a kernel panic, while the 3530 appears to
+> boot happily.
+> 
+> Using the latest 5.17-rc6, I had to remove some IVA and SGX references
+> from omap_l3_smx.h to get the 3503 to stop crashing on boot.
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- arch/arm/mach-omap2/omap_device.c | 3 ---
- 1 file changed, 3 deletions(-)
+OK interesting, I did not know those registers are not accessible
+on 3503.
 
-diff --git a/arch/arm/mach-omap2/omap_device.c b/arch/arm/mach-omap2/omap_device.c
-index 3cfa7b01a24b..8b3701901991 100644
---- a/arch/arm/mach-omap2/omap_device.c
-+++ b/arch/arm/mach-omap2/omap_device.c
-@@ -96,9 +96,6 @@ static void _add_clkdev(struct omap_device *od, const char *clk_alias,
-  * omap_device, this function adds an entry in the clkdev table of the
-  * form <dev-id=dev_name, con-id=role> if it does not exist already.
-  *
-- * The function is called from inside omap_device_build_ss(), after
-- * omap_device_register.
-- *
-  * This allows drivers to get a pointer to its optional clocks based on its role
-  * by calling clk_get(<dev*>, <role>).
-  * In the case of the main clock, a "fck" alias is used.
--- 
-2.34.1
+> Do you have any ideas how we can make the omap3_l3_app_bases and
+> omap3_l3_debug_bases more cleanly remove the IVA and SGX references
+> if/when OMAP3503 is detected?  I assume the same algorithm would have
+> to detect a AM3703 as well.  I'm trying to get my hands on an AM3703
+> to see if there is similar behavior as what I'm seeing on the
+> OMAP3503.
 
+As there are possibly multiple omap3 variants used on the same
+boards, we need to rely on the runtime detection of the SoC.
+So yeah soc_device_attribute is the way to go here.
+
+I don't recall any similar issues booting 3703 but it's been a while
+so worth testing for sure.
+
+Regards,
+
+Tony
