@@ -2,63 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D26A4CFCD5
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Mar 2022 12:29:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4454CFCDE
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Mar 2022 12:29:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242089AbiCGL3s (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 7 Mar 2022 06:29:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46574 "EHLO
+        id S240378AbiCGLaZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 7 Mar 2022 06:30:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242982AbiCGL3P (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Mar 2022 06:29:15 -0500
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1884257166
-        for <linux-omap@vger.kernel.org>; Mon,  7 Mar 2022 03:10:49 -0800 (PST)
-Received: from relay9-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::229])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id C9C86C58DC
-        for <linux-omap@vger.kernel.org>; Mon,  7 Mar 2022 11:10:47 +0000 (UTC)
+        with ESMTP id S235374AbiCGLaP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 7 Mar 2022 06:30:15 -0500
+X-Greylist: delayed 215 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Mar 2022 03:14:21 PST
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CF795DA70
+        for <linux-omap@vger.kernel.org>; Mon,  7 Mar 2022 03:14:20 -0800 (PST)
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id E1EA1FF80E;
-        Mon,  7 Mar 2022 11:10:37 +0000 (UTC)
+        by mail.gandi.net (Postfix) with ESMTPSA id 304316000C;
+        Mon,  7 Mar 2022 11:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1646651440;
+        t=1646651655;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=va6hgBVRbtr10BKiH5oDCOu0VwLfnjed/wWRNnb7DUY=;
-        b=gC3ndSWkdul0/O5Y4jHV6jR7MkWuyj436eSHmu6S2Z9kuJJDSUV/+c8Xr4gqjTTzXxPi+e
-        yn8Lz317xPszLkKWTUlDMBkooNHSefTzJUtscXF5RjZ4EQIcZHO31ulyM+57oIEl/H6Mqu
-        iY3E52NJNZNdzNUFaXXfRfr0nTlvpgUqBqlckY7VlUqJ+Lvem3NbcSekMU1w4LIhNRBzkE
-        /jRyqod+8XYQiPJml0/297HhrIfs4htUqbz8dfBWo0IkqRf7CsYNFbOI5wPGWxeF3wa+0e
-        i/yxXJGB8jMuo5CbkqTpqa/UBaJxO4JnO9AnsMj4QhLR6S9cDwXfWzfy1dPIFQ==
-Date:   Mon, 7 Mar 2022 12:10:33 +0100
+         content-transfer-encoding:content-transfer-encoding;
+        bh=QK0XQtPD8JoMHuPVj8WcMiny8pEk+K5XmeLMZMUydEQ=;
+        b=ANNiqf2hfpLEGqKOCH5iQ6WHgL4NHcVvK4idAcT51GHiTlLz359vho4Fx9RsONb9WF2aCc
+        Q/MawShUYJpRSOC857s7UQ123j1ydT1uvv2f1zTCmgeny+sv7SOlpbsjFaYUCDcgNViR3h
+        FBgdz2XD5yQlg/oN+cI8aF6RUK0aCaxSZ4OYJxoVgMvlzv/Po7PYfPi1LdFWHnHyUMKwRo
+        iMiTLWFPAfxldqc+4vx1x3cGohSTyWqtGf3gvXJ9r2SCUhqEmiq2yh8XZYhQfHsyFVm2tn
+        mkLOzCGDui/T1deHxkyQgmvVkksQeSuAsXh9/JzNmRA6XAqRUoJAAVICgabDuA==
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-iio@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, Lee Jones <lee.jones@linaro.org>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Ryan Barnett <ryan.barnett@collins.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-Subject: Re: [PATCH v6 14/48] mfd: ti_am335x_tscadc: Don't search the tree
- for our clock
-Message-ID: <20220307121033.5630fee7@xps13>
-In-Reply-To: <7336E356-57E3-4BC5-B098-0A791C2CB360@goldelico.com>
-References: <20211015081506.933180-1-miquel.raynal@bootlin.com>
-        <20211015081506.933180-15-miquel.raynal@bootlin.com>
-        <7336E356-57E3-4BC5-B098-0A791C2CB360@goldelico.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        "H . Nikolaus Schaller" <hns@goldelico.com>
+Subject: [PATCH] ARM: dts: am33xx-l4: Add missing touchscreen clock properties
+Date:   Mon,  7 Mar 2022 12:14:13 +0100
+Message-Id: <20220307111413.8903-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,102 +55,54 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Nikolaus,
+When adding support for TI magadc, the MFD driver (common to the
+touchscreen and the ADC) got updated to ease the insertion of a new DT
+node for the ADC, with its own compatible, clocks, etc. Commit
+235a96e92c16 ("mfd: ti_am335x_tscadc: Don't search the tree for our
+clock") removed one compatible specific information which was the clock
+name, because the clock was looked up from scratch in the DT while this
+hardware block was only fed by a single clock, already defined and
+properly filled in the DT.
 
-hns@goldelico.com wrote on Fri, 4 Mar 2022 23:38:25 +0100:
+Problem is, this change was only validated with an am437x-based board,
+where the clocks are effectively correctly defined and referenced. But
+on am33xx, the ADC clock is also correctly defined but is not referenced
+with a clock phandle as it out to be.
 
-> Hi Miquel,
-> I recently found that our BeagleBoneBlack with external touch screen stop=
-ped
-> to find it.
->=20
-> A git bisect revealed this patch (merged into v5.16-rc1) as the first bad:
->=20
-> > Am 15.10.2021 um 10:14 schrieb Miquel Raynal <miquel.raynal@bootlin.com=
->:
-> >=20
-> > There is a single clock available in our node, which is named
-> > "fck". The clock handler then points to adc_tsc_fck but no need to point
-> > directly to it and do a full tree search.
-> >=20
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > ---
-> > drivers/mfd/ti_am335x_tscadc.c | 2 +-
-> > 1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tsc=
-adc.c
-> > index e2c4416f192d..8af44c08d925 100644
-> > --- a/drivers/mfd/ti_am335x_tscadc.c
-> > +++ b/drivers/mfd/ti_am335x_tscadc.c
-> > @@ -206,7 +206,7 @@ static	int ti_tscadc_probe(struct platform_device *=
-pdev)
-> > 	 * This frequency is valid since TSC_ADC_SS controller design
-> > 	 * assumes the OCP clock is at least 6x faster than the ADC clock.
-> > 	 */
-> > -	clk =3D devm_clk_get(&pdev->dev, "adc_tsc_fck");
-> > +	clk =3D devm_clk_get(&pdev->dev, NULL);
-> > 	if (IS_ERR(clk)) {
-> > 		dev_err(&pdev->dev, "failed to get TSC fck\n");
-> > 		err =3D PTR_ERR(clk);
-> > --=20
-> > 2.27.0
-> >  =20
->=20
-> While I understand the reasons for this change there seems to be something
-> missing now in the device tree because the clock isn't found any more.
->=20
-> After knowing about the problem I could also locate the log entry:
->=20
-> [    4.456680] ti_am3359-tscadc 44e0d000.tscadc: failed to get TSC fck
->=20
-> Reverting your patch makes it work again.
+The touchscreen bindings clearly state that the clocks/clock-names
+properties are mandatory, but they have been forgotten in one DTSI. This
+was probably not noticed in the first place because of the clock
+actually existing and the clk_get() call going through all the tree
+anyway.
 
-Sorry for the wrong behavior on your side and thanks for the
-investigation.
+Add the missing clock phandles in the am33xx touchscreen description.
 
-> Is there missing a change in the am335x-boneblack or am335x DTS?
+Reported-by: H. Nikolaus Schaller <hns@goldelico.com>
+Fixes: 235a96e92c16 ("mfd: ti_am335x_tscadc: Don't search the tree for our clock")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
 
-I've looked at the code and indeed the am33xx-clock.dtsi file defines
-the touchscreen clock, but unfortunately the am33xx-l4.dtsi file which
-defines the touchscreen node does not reference the clock. The bindings
-clearly require the clocks to be referenced but I believe this was not
-noticed until now because the clock exist and clk_get() did a lookup
-across the tree.
+Hello Nikolaus, as I told you I don't have the relevant hardware to
+verify that this actually fixes your situation but I am rather
+confident. Could you please give this a try?
+Thanks! Miquel
 
-On my side I tested it with an am437x SoC which uses another base
-device tree, which properly references the touchscreen clock where it's
-needed.
+ arch/arm/boot/dts/am33xx-l4.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I will send a patch (untested), can you give it a try and report if it
-fixes your issue?
+diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
+index c9629cb5ccd1..7da42a5b959c 100644
+--- a/arch/arm/boot/dts/am33xx-l4.dtsi
++++ b/arch/arm/boot/dts/am33xx-l4.dtsi
+@@ -263,6 +263,8 @@ tscadc: tscadc@0 {
+ 				compatible = "ti,am3359-tscadc";
+ 				reg = <0x0 0x1000>;
+ 				interrupts = <16>;
++				clocks = <&adc_tsc_fck>;
++				clock-names = "fck";
+ 				status = "disabled";
+ 				dmas = <&edma 53 0>, <&edma 57 0>;
+ 				dma-names = "fifo0", "fifo1";
+-- 
+2.27.0
 
->=20
-> Our (private) DTS looks like this, i.e. we don't play with clocks inherit=
-ed
-> from mainline tree:
->=20
-> #include "am335x-boneblack.dts"
->=20
-> ...
->=20
-> &tscadc {
->         status =3D "okay";
->=20
->         tsc {
->                 ti,wires =3D <4>;
->                 ti,x-plate-resistance =3D <600>;
->                 ti,coordinate-readouts =3D <5>;
->                 ti,wire-config =3D <0x00 0x11 0x22 0x33>;
->         };
->=20
->         adc {
->                 ti,adc-channels =3D <4 5 6 7>;
->         };
-> };
->=20
-> BR and thanks,
-> Nikolaus
-
-Thanks,
-Miqu=C3=A8l
