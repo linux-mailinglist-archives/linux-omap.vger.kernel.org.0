@@ -2,64 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1EBA4D2DA2
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Mar 2022 12:07:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED754D2DA9
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Mar 2022 12:10:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231827AbiCILIW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Mar 2022 06:08:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51522 "EHLO
+        id S229593AbiCILLi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Mar 2022 06:11:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231358AbiCILIV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Mar 2022 06:08:21 -0500
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7776A16EAAC
-        for <linux-omap@vger.kernel.org>; Wed,  9 Mar 2022 03:07:22 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id mg21-20020a17090b371500b001bef9e4657cso4966955pjb.0
-        for <linux-omap@vger.kernel.org>; Wed, 09 Mar 2022 03:07:22 -0800 (PST)
+        with ESMTP id S230240AbiCILLh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Mar 2022 06:11:37 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA4616FDE8;
+        Wed,  9 Mar 2022 03:10:39 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id t19so1648447plr.5;
+        Wed, 09 Mar 2022 03:10:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=GLJWgSjpL4AJbuDEGF6NGRPWdFEMcqQSg2kXliO5hus=;
-        b=R+d/qGWeT5qXfRaxjp8CLmUjwJTwOQYZk/aL3Pudw7PNp1skPxoqIcZx8tZC/AsCBu
-         OZkUXE3WW5HBfguS2vZNquGWQUqu15bjm/HznCdGFFQiiHyGbZK5Un2C30yuIxQtUEdj
-         AiLO91WrQmy4dBDphQWVvBG/bG6Cc8GAACx1XVCJpgoAgS40cAae7EvLzNV+CkpG5tjE
-         ykxC8CI53DCPmj1mzpqeUrOdLjqIay9qsDM0DKl11wfpPPhoTgXnqA/5pamPT5AJiveq
-         FH8Q4VN71mgf5TRXSDUw03F/4dz8iLk7hqQT1D7iZ1YwIJ1+v51qgqxkk6GXUr16eLje
-         L34A==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=TbLlXg902aKOx1jSLgIOuIQvaX7+aR+Xn8kO7bkqzQM=;
+        b=Ia69aUXkkvWAwS38X2tv3wkThPwHUGwhI4RELVhbjXXZ1uw85lVlxC8Au5DOwtqzIE
+         02kQuTFbS2tfoA3J7PK772M51Jssxgfn4yvDPk/bmbRPEEFCaSO4kXLwfJ9c+PJWiMMc
+         Q4s3a+2uIocFTDwWG2c5yA8/9RILQlkHqAIKh6305zb5O06rwMcbgHrZnUtBrVSopc1y
+         +i4tk+JAS15OTyWlpLzaK4kYE5xs/yGL8CZVNAblx/PW82VcqJNXSG4aQYYgrINCrQuD
+         pKYfUvnN1d/kARy+IQH4Bp9mY1n2gfjfwM9AlpjYAGgVflb/h20GFQQZcZAfyWzncAj8
+         Uf1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=GLJWgSjpL4AJbuDEGF6NGRPWdFEMcqQSg2kXliO5hus=;
-        b=8RZpBP1Mn2654GKSUd2TDk7tl+4h9hxulj/KwWYPQoZ624qJm9ozvfUe7QwB3/NJW3
-         gmRf9z0Kj5669YdD/Np4HhLnRbWKURj4JH041tdviDjqbny20XCtOXyWVoSz2HsjlEl5
-         7NFKOOAecXNAl9qmKhsFNIq42dqhDhpJk6g0+ingqgv43pZTqBDzT8vCgSBQmh6i6BYJ
-         z3ZrcWvbamGQDTxZBWgUn42ZUzpmc1dyk9QMZpqSl09GFfDy8BXhfEdJDk4r1d/rVT68
-         t9OKqJdp0OryZ29Vd185TrRbCM7RZlRTfwd6XLX5UN1KEcNCcgcfT2QmonLTXEhjzj0p
-         qLNQ==
-X-Gm-Message-State: AOAM530D6DP7zt0MP2VZmdsJ2hvSxbfX9x6v37b43DZc9P8NlIh4ATWb
-        x3ZgVp4bXuNV7dS6G59XBD2evksKs9mfeT49VfI=
-X-Google-Smtp-Source: ABdhPJzwG3BRXkYf6NwrB7hwcCNkzwY8m//tw1wMLbbQiSMQXSj6BcATixtWdlPpj0lBrkWRiwbo2Q==
-X-Received: by 2002:a17:90b:4b06:b0:1bf:8e05:84a9 with SMTP id lx6-20020a17090b4b0600b001bf8e0584a9mr7496823pjb.27.1646824041650;
-        Wed, 09 Mar 2022 03:07:21 -0800 (PST)
-Received: from localhost (c-71-197-186-152.hsd1.wa.comcast.net. [71.197.186.152])
-        by smtp.gmail.com with ESMTPSA id d11-20020a056a0024cb00b004f725ecf900sm2627557pfv.97.2022.03.09.03.07.21
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=TbLlXg902aKOx1jSLgIOuIQvaX7+aR+Xn8kO7bkqzQM=;
+        b=PU+WMmtw6Hdwr7rzXC9KMyhD9rPC1xcG/YRpkl5xyrDMQfTv91T4LYz8m0rJY1Vo/A
+         IMYd6ebOYFtDSmYPrha58mvq21Wz4hTAOxUkOaBGPG46fW1etznMmwLzZfFOuHjurSK+
+         eUGkk1blCv4sKLyU9vR9On1lTO918vCFX9OpJb6FsYc9mB3wVwrXKo/hEV1g6pIhleD/
+         yfV2lhuErZHuV0ASkmr8j2yQS1wG5IuF9msynQDDKtsSvRxf8XGLMGRtNkwd1JB0sBfz
+         5KVVTANaRSgfF2UciQAGbjd3NNWjE3WJdvatfgnepuU9sO3nHHoH5rQNY091pKMsORax
+         sD7Q==
+X-Gm-Message-State: AOAM531rmJp66nH6zwEA2xRQBgvWZYIE/j3Rqjt7VqELWWths68Dd6i5
+        sMHEfpx1piSqDQPZ5R0a3H4=
+X-Google-Smtp-Source: ABdhPJwtPPzPgrtv2ovP/BwBW7ussm4xufiUnig/ykzL495qNQU15iriIY3F2rAFGkvhfsE1KQX+fw==
+X-Received: by 2002:a17:90b:4b4a:b0:1bf:83d:6805 with SMTP id mi10-20020a17090b4b4a00b001bf083d6805mr10064505pjb.174.1646824238996;
+        Wed, 09 Mar 2022 03:10:38 -0800 (PST)
+Received: from localhost.localdomain ([159.226.95.43])
+        by smtp.googlemail.com with ESMTPSA id k21-20020aa788d5000000b004f71bff2893sm2493560pff.67.2022.03.09.03.10.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Mar 2022 03:07:21 -0800 (PST)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org, Benoit Parrot <bparrot@ti.com>
-Subject: Re: [PATCH] ARM: dts: dra7: Fix suspend warning for vpe powerdomain
-In-Reply-To: <20220308102103.39086-1-tony@atomide.com>
-References: <20220308102103.39086-1-tony@atomide.com>
-Date:   Wed, 09 Mar 2022 03:07:20 -0800
-Message-ID: <7h5yon9yfr.fsf@baylibre.com>
-MIME-Version: 1.0
-Content-Type: text/plain
+        Wed, 09 Mar 2022 03:10:38 -0800 (PST)
+From:   Miaoqian Lin <linmq006@gmail.com>
+To:     Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Roger Quadros <rogerq@ti.com>, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     linmq006@gmail.com
+Subject: [PATCH] usb: musb: Fix missing of_node_put() in omap2430_probe
+Date:   Wed,  9 Mar 2022 11:10:33 +0000
+Message-Id: <20220309111033.24487-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,27 +65,27 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Tony Lindgren <tony@atomide.com> writes:
+The device_node pointer is returned by of_parse_phandle() with refcount
+incremented. We should use of_node_put() on it when done.
 
-> We currently are getting the following warning after a system suspend:
->
-> Powerdomain (vpe_pwrdm) didn't enter target state 0
->
-> Looks like this is because the STANDBYMODE bit for SMART_IDLE should
-> not be used. The TRM "Table 12-348. VPE_SYSCONFIG" says that the value
-> for SMART_IDLE is "0x2: Same behavior as bit-field value of 0x1". But
-> if the SMART_IDLE value is used, PM_VPE_PWRSTST LASTPOWERSTATEENTERED
-> bits always show value of 3.
->
-> Let's fix the issue by dropping SMART_IDLE for vpe. And let's also add
-> the missing the powerdomain for vpe.
->
-> Fixes: 1a2095160594 ("ARM: dts: dra7: Add ti-sysc node for VPE")
-> Cc: Benoit Parrot <bparrot@ti.com>
-> Reported-by: Kevin Hilman <khilman@baylibre.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/usb/musb/omap2430.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks for the fix.  Verified on beagle-x5.
+diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
+index 7d4d0713f4f0..4a963cfa385b 100644
+--- a/drivers/usb/musb/omap2430.c
++++ b/drivers/usb/musb/omap2430.c
+@@ -363,6 +363,7 @@ static int omap2430_probe(struct platform_device *pdev)
+ 	control_node = of_parse_phandle(np, "ctrl-module", 0);
+ 	if (control_node) {
+ 		control_pdev = of_find_device_by_node(control_node);
++		of_node_put(control_node);
+ 		if (!control_pdev) {
+ 			dev_err(&pdev->dev, "Failed to get control device\n");
+ 			ret = -EINVAL;
+-- 
+2.17.1
 
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Tested-by: Kevin Hilman <khilman@baylibre.com>
