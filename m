@@ -2,72 +2,63 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D07274D2D31
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Mar 2022 11:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFA584D2D4C
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Mar 2022 11:43:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230357AbiCIKhV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Mar 2022 05:37:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55690 "EHLO
+        id S230156AbiCIKoL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Mar 2022 05:44:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230332AbiCIKhT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Mar 2022 05:37:19 -0500
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D86C129BB9
-        for <linux-omap@vger.kernel.org>; Wed,  9 Mar 2022 02:36:20 -0800 (PST)
-Received: by mail-pj1-x1030.google.com with SMTP id 15-20020a17090a098f00b001bef0376d5cso1908440pjo.5
-        for <linux-omap@vger.kernel.org>; Wed, 09 Mar 2022 02:36:20 -0800 (PST)
+        with ESMTP id S230232AbiCIKoI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Mar 2022 05:44:08 -0500
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5961EB7EC;
+        Wed,  9 Mar 2022 02:43:10 -0800 (PST)
+Received: by mail-pj1-x102a.google.com with SMTP id bx5so1940512pjb.3;
+        Wed, 09 Mar 2022 02:43:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=nBz9I0mFgs5u062cU8PWaEUMW26wc4vG19g0SAhyIOU=;
-        b=mY94NA13vTUMuBG5Bb4LFlSz3w6FHEwXWhxPlmNJ1x2gXIe5ylLYwvvWbO0dw3ggad
-         /QpIpgbMmdTxCBLWoGyUf5iZXBialoj2hYz/bmjw/3Ge8rDQFXQQ0XT6h4ViJNJbLYmw
-         p0QVP1VWTx9++z0xizrfuicuu9RkgpQdMlHZ83iNHBugqVLkSMRmfPMBtc2CYlTIS9jR
-         VdnbPO+gOd75CscjnUmSZt5mVBZacYseAi4x2Rn4Y0UCD3t3WMiZwtB9+0vWDEB3K5gt
-         W7T17l0rNFhIHyQtW69eTy1xdaHsHxblS/w3IL/XuUKR8iPdpBevan4/w24/RCTtRvkO
-         dZYA==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=bt4ZemLtOjAhYVYN3C3UPz2pvYP7puf8xAJCLiBgkNw=;
+        b=e9B1wDLOf0IBpGci9IPcFDA4oMNKSdRyxP5107p72QEijTIajuJhTQXofC5jCJexCt
+         7CvG9btzhJBjZhDgvKjoMZyJfZ8Xpx169D/L8PUtQbtKxbQwICizvntN6Mr6pNskNeKS
+         t2yljdxctGr/R8HzFqOh9E9GDU2/AsQZZSVJjGCV1rpj3PiPaC6iwRz6Um/YTUSnntoG
+         eb1jY//ACNfwH1FO90zAQWNVCDOOZHEkmIAxKPktWIg/UGuFmIpe4pSRrXkO8AGEgJPe
+         fjbqGGlAt5VltemmdX9w3DILkVFViRmIuj7Eh9svTu6pnOSwwKvrRg+H0jDDeHPJuaQ6
+         WF4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=nBz9I0mFgs5u062cU8PWaEUMW26wc4vG19g0SAhyIOU=;
-        b=7r6UsW3Px1RAwK/pSNX6dgxlx3LTx7COPmEnp9XaLZxCxi4r4QUC5xpSjjsKwS+mzp
-         OQiEWkXjQWbA/gjNeHZX3V/0eGlMg7t8HhcQ7O/am7jPYLvBelQHkN08k5Cnw1Ge9FjI
-         gJsjwfIcyYW7dZOSjhSVoQr0iChTbliWwR5Pi3y5KQUdeOBRxkk4ElRqGvmVy4qGaHrU
-         D4bal8f1ri7h5r16ergJ24JvkPlUeb3akyu0IvFGM8HoSPam6bM+RIlOSzqsIsTeE7kK
-         ZkCrmjpCjB1Mv8jHDIacMF63AwYLqDBNCy6ly2jM1riAq21v7VOtQDhC8VEqClBNwi5E
-         pgtQ==
-X-Gm-Message-State: AOAM5318/eMH26yeoqFW7Eqoe888GKPCf4Fb7F7SVK6VTL0nuzhMITRT
-        UYLUQ0Vku++SeMQVkGpbLa+SZQ==
-X-Google-Smtp-Source: ABdhPJzLigLjr3+0rRbWvgtefYE80In5/d68K54nYw/h39qRlT1InJt38j1/Rnfp072s73i8QfoDaA==
-X-Received: by 2002:a17:903:24e:b0:151:9fa5:ebdd with SMTP id j14-20020a170903024e00b001519fa5ebddmr22258261plh.84.1646822179631;
-        Wed, 09 Mar 2022 02:36:19 -0800 (PST)
-Received: from localhost (c-71-197-186-152.hsd1.wa.comcast.net. [71.197.186.152])
-        by smtp.gmail.com with ESMTPSA id m11-20020a17090a3f8b00b001bc299e0aefsm5915575pjc.56.2022.03.09.02.36.18
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=bt4ZemLtOjAhYVYN3C3UPz2pvYP7puf8xAJCLiBgkNw=;
+        b=MsiVA0Lx09Gc2pWGU8NPjEvFxL4G/o+pUn9YSCOMctSZZUGNx0YmM/ByLVmpCjT6nF
+         j1jy4hyA0/L8EXSKFxdO8CO4g/B1kuWFBWQi2t/mJWcyvWlvyUjdInqtTrIWEQjizsX7
+         VUrqYuF0yPcv8NXqGGkGCnHTVjdN5F5pvGzMgNH9qsavSWzP3qze3zDFNIO9e6ow4btE
+         ex95Iq3PrLCaA1S6/rPZshznwWe/Iuz26gg91hCP4hbdnqpc48mltUXjZBhxrKTkwoVW
+         WfKIwkRPS9hJXx8M5kMGhr4vFDIJ4AnSDQIww1RVImgLFkhi3Yz7yhf8TtUjjWO8o+sl
+         9I1A==
+X-Gm-Message-State: AOAM530BuXTX6Ug1w1wMxAhgcNHnuQC2986zRx+IEb6Dtm/mogG+xz4V
+        4zPTzsjOGyNW2pbgJdLZTr8=
+X-Google-Smtp-Source: ABdhPJxFu1likQj+qOnn7a71MxPF9QsD64CJ2bBKawmiVY26O2ssL8I2crrpWf0Yng7mbq8b7mW+3Q==
+X-Received: by 2002:a17:902:b60f:b0:151:a83a:5402 with SMTP id b15-20020a170902b60f00b00151a83a5402mr22098156pls.21.1646822589768;
+        Wed, 09 Mar 2022 02:43:09 -0800 (PST)
+Received: from localhost.localdomain ([159.226.95.43])
+        by smtp.googlemail.com with ESMTPSA id q13-20020a056a00088d00b004e1bea9c582sm2487557pfj.43.2022.03.09.02.43.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Mar 2022 02:36:19 -0800 (PST)
-From:   Kevin Hilman <khilman@baylibre.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org, Dave Gerlach <d-gerlach@ti.com>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Suman Anna <s-anna@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>
-Subject: Re: [PATCH] bus: ti-sysc: Fix gpt12 system timer issue with
- reserved status
-In-Reply-To: <YiX/0c44p8AL1YIG@atomide.com>
-References: <20210611060224.36769-1-tony@atomide.com>
- <7h7d99ehu4.fsf@baylibre.com> <YiX/0c44p8AL1YIG@atomide.com>
-Date:   Wed, 09 Mar 2022 02:36:18 -0800
-Message-ID: <7h8rtj9zvh.fsf@baylibre.com>
-MIME-Version: 1.0
-Content-Type: text/plain
+        Wed, 09 Mar 2022 02:43:09 -0800 (PST)
+From:   Miaoqian Lin <linmq006@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Santosh Shilimkar <santosh.shilimkar@ti.com>,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     linmq006@gmail.com
+Subject: [PATCH] ARM: OMAP2+: Fix refcount leak in omap_gic_of_init
+Date:   Wed,  9 Mar 2022 10:43:01 +0000
+Message-Id: <20220309104302.18398-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,106 +66,33 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Tony Lindgren <tony@atomide.com> writes:
+The of_find_compatible_node() function returns a node pointer with
+refcount incremented, We should use of_node_put() on it when done
+Add the missing of_node_put() to release the refcount.
 
-> Hi,
->
-> * Kevin Hilman <khilman@baylibre.com> [220304 17:39]:
->> Hi Tony,
->> 
->> Tony Lindgren <tony@atomide.com> writes:
->> 
->> > Jarkko Nikula <jarkko.nikula@bitmer.com> reported that Beagleboard
->> > revision c2 stopped booting. Jarkko bisected the issue down to
->> > commit 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend
->> > and resume for am3 and am4").
->> >
->> > Let's fix the issue by tagging system timers as reserved rather than
->> > ignoring them. And let's not probe any interconnect target module child
->> > devices for reserved modules.
->> >
->> > This allows PM runtime to keep track of clocks and clockdomains for
->> > the interconnect target module, and prevent the system timer from idling
->> > as we already have SYSC_QUIRK_NO_IDLE and SYSC_QUIRK_NO_IDLE_ON_INIT
->> > flags set for system timers.
->> >
->> > Fixes: 6cfcd5563b4f ("clocksource/drivers/timer-ti-dm: Fix suspend and resume for am3 and am4")
->> > Reported-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
->> > Signed-off-by: Tony Lindgren <tony@atomide.com>
->> 
->> I'm debugging why suspend/resume on AM3x and AM4x are mostly working,
->> but getting the warning that not all powerdomains are transitioning:
->> 
->>    pm33xx pm33xx: PM: Could not transition all powerdomains to target state
->> 
->> I bisected it down to $SUBJECT patch, and verified that reverting it
->> makes both on am335x-boneblack and am437x-gp-evm fully suspend, and I'm
->> now seeing:
->> 
->>    pm33xx pm33xx: PM: Successfully put all powerdomains to target state
->> 
->> Note that it doesn't revert cleanly due to some other changes, but this
->> one-liner[1] effectively reverts the behavior of $SUBJECT patch, and
->> also makes things work again.
->> 
->> I verified the revert (and hack[1]) on both v5.10 stable and mainline
->> v5.16 but TBH, I'm still not 100% sure what's going on so looking for
->> some guidance from you Tony on what the "real" fix should be.
->
-> Thanks for debugging the issue Kevin. It seems the issue is caused by the
-> extra runtime PM usage count done for modules tagged no-idle. However,
-> this causes issues for am335x timers as the PM coprocessor needs all
-> the domains idled for system suspend despite the system timers tagged
-> with no-idle.
->
-> We could patch ti-sysc.c for more timer workarounds, but I don't know if
-> that really makes sense. It would add further dependencies between the
-> system timer code and the interconnect code, and I'd rather go back to
-> no dependencies between the system timers and the interconnect code :)
->
-> So I suggest we make the omap3 gpt12 quirk checks SoC specific as below
-> for now, they are not needed for the other SoCs.
->
-> Then at some point we can plan on dropping support for the old beagleboard
-> revisions A to B4, and then reverting commit 3ff340e24c9d ("bus: ti-sysc:
-> Fix gpt12 system timer issue with reserved status").
->
-> Note that we now have commit 23885389dbbb ("ARM: dts: Fix timer regression
-> for beagleboard revision c"), so there no need to (wrongly) enable the
-> old timer quirks for working omap3 revision C and later boards.
+Fixes: fd1c07861491 ("ARM: OMAP4: Fix the init code to have OMAP4460 errata available in DT build")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ arch/arm/mach-omap2/omap4-common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thanks for the explanation.
+diff --git a/arch/arm/mach-omap2/omap4-common.c b/arch/arm/mach-omap2/omap4-common.c
+index 5c3845730dbf..0b80f8bcd304 100644
+--- a/arch/arm/mach-omap2/omap4-common.c
++++ b/arch/arm/mach-omap2/omap4-common.c
+@@ -314,10 +314,12 @@ void __init omap_gic_of_init(void)
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "arm,cortex-a9-gic");
+ 	gic_dist_base_addr = of_iomap(np, 0);
++	of_node_put(np);
+ 	WARN_ON(!gic_dist_base_addr);
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "arm,cortex-a9-twd-timer");
+ 	twd_base = of_iomap(np, 0);
++	of_node_put(np);
+ 	WARN_ON(!twd_base);
+ 
+ skip_errata_init:
+-- 
+2.17.1
 
-> 8< ----------------------
-> From tony Mon Sep 17 00:00:00 2001
-> From: Tony Lindgren <tony@atomide.com>
-> Date: Mon, 7 Mar 2022 14:28:44 +0200
-> Subject: [PATCH] bus: ti-sysc: Make omap3 gpt12 quirk handling SoC
->  specific
->
-> On beagleboard revisions A to B4 we need to use gpt12 as the system timer.
-> However, the quirk handling added for gpt12 caused a regression for system
-> suspend for am335x as the PM coprocessor needs the timers idled for
-> suspend.
->
-> Let's make the gpt12 quirk specific to omap34xx, other SoCs don't need
-> it. Beagleboard revisions C and later no longer need to use the gpt12
-> related quirk. Then at some point, if we decide to drop support for the old
-> beagleboard revisions A to B4, we can also drop the gpt12 related quirks
-> completely.
->
-> Fixes: 3ff340e24c9d ("bus: ti-sysc: Fix gpt12 system timer issue with reserved status")
-> Reported-by: Kevin Hilman <khilman@baylibre.com>
-> Suggested-by: Kevin Hilman <khilman@baylibre.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Tested-by: Kevin Hilman <khilman@baylibre.com>
-
-Teested on am335x-boneblack and am437x-gp-evm and am seeing 
-
-    pm33xx pm33xx: PM: Successfully put all powerdomains to target state
-
-on both boards.
-
-Kevin
