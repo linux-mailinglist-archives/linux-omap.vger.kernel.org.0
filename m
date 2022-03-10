@@ -2,79 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE2D94D2DE8
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Mar 2022 12:25:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1CD44D3EB3
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Mar 2022 02:26:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231898AbiCIL0I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 9 Mar 2022 06:26:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50992 "EHLO
+        id S233669AbiCJB1N (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 9 Mar 2022 20:27:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231896AbiCIL0G (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Mar 2022 06:26:06 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C1B155C3F;
-        Wed,  9 Mar 2022 03:25:07 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80CA3617F3;
-        Wed,  9 Mar 2022 11:25:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4A8C340E8;
-        Wed,  9 Mar 2022 11:25:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1646825106;
-        bh=sasR7Z6YMt2BgPquYWI91P+JY8kGeqgt5cAKUKjR+xM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EWALhsXOjwlsoHoBcMvh0jNZYD3YsswFKfnQkNBoBINhErMNYl5S6VGB+c73b/OEC
-         ae/EdfiVzazMilQFQfepLOz3vYqbIEo+rWQ0yKPzZoR7UnYjvRHGN8IHmlAoLgFJFd
-         80ryLFo2eduN8dGLlHpHQ8NySoawyacXrzfFdNs0=
-Date:   Wed, 9 Mar 2022 12:25:03 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Miaoqian Lin <linmq006@gmail.com>
-Cc:     Bin Liu <b-liu@ti.com>, Roger Quadros <rogerq@ti.com>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] usb: musb: Fix missing of_node_put() in omap2430_probe
-Message-ID: <YiiOj3n3ocUr+/68@kroah.com>
-References: <20220309111033.24487-1-linmq006@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220309111033.24487-1-linmq006@gmail.com>
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230496AbiCJB1M (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 9 Mar 2022 20:27:12 -0500
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 27B8DE02C1;
+        Wed,  9 Mar 2022 17:26:12 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.90,169,1643641200"; 
+   d="scan'208";a="113893486"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 10 Mar 2022 10:26:11 +0900
+Received: from localhost.localdomain (unknown [10.226.36.204])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 80410413CE90;
+        Thu, 10 Mar 2022 10:26:09 +0900 (JST)
+From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH] net: ethernet: ti: davinci_emac: Use platform_get_irq() to get the interrupt
+Date:   Thu, 10 Mar 2022 01:26:06 +0000
+Message-Id: <20220310012606.20217-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Mar 09, 2022 at 11:10:33AM +0000, Miaoqian Lin wrote:
-> The device_node pointer is returned by of_parse_phandle() with refcount
-> incremented. We should use of_node_put() on it when done.
-> 
-> Fixes: 8934d3e4d0e7 ("usb: musb: omap2430: Don't use omap_get_control_dev()")
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->  drivers/usb/musb/omap2430.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
-> index 7d4d0713f4f0..4a963cfa385b 100644
-> --- a/drivers/usb/musb/omap2430.c
-> +++ b/drivers/usb/musb/omap2430.c
-> @@ -363,6 +363,7 @@ static int omap2430_probe(struct platform_device *pdev)
->  	control_node = of_parse_phandle(np, "ctrl-module", 0);
->  	if (control_node) {
->  		control_pdev = of_find_device_by_node(control_node);
-> +		of_node_put(control_node);
->  		if (!control_pdev) {
->  			dev_err(&pdev->dev, "Failed to get control device\n");
->  			ret = -EINVAL;
-> -- 
-> 2.17.1
-> 
+platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
+allocation of IRQ resources in DT core code, this causes an issue
+when using hierarchical interrupt domains using "interrupts" property
+in the node as this bypasses the hierarchical setup and messes up the
+irq chaining.
 
-How was this tested?
+In preparation for removal of static setup of IRQ resource from DT core
+code use platform_get_irq() for DT users only.
+
+While at it propagate error code in emac_dev_stop() in case
+platform_get_irq_optional() fails.
+
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+---
+ drivers/net/ethernet/ti/davinci_emac.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
+index 31df3267a01a..4b6aed78d392 100644
+--- a/drivers/net/ethernet/ti/davinci_emac.c
++++ b/drivers/net/ethernet/ti/davinci_emac.c
+@@ -1604,6 +1604,7 @@ static int emac_dev_stop(struct net_device *ndev)
+ 	int irq_num;
+ 	struct emac_priv *priv = netdev_priv(ndev);
+ 	struct device *emac_dev = &ndev->dev;
++	int ret = 0;
+ 
+ 	/* inform the upper layers. */
+ 	netif_stop_queue(ndev);
+@@ -1618,17 +1619,31 @@ static int emac_dev_stop(struct net_device *ndev)
+ 		phy_disconnect(ndev->phydev);
+ 
+ 	/* Free IRQ */
+-	while ((res = platform_get_resource(priv->pdev, IORESOURCE_IRQ, i))) {
+-		for (irq_num = res->start; irq_num <= res->end; irq_num++)
+-			free_irq(irq_num, priv->ndev);
+-		i++;
++	if (dev_of_node(&priv->pdev->dev)) {
++		do {
++			ret = platform_get_irq_optional(priv->pdev, i);
++			if (ret < 0 && ret != -ENXIO)
++				break;
++			if (ret > 0) {
++				free_irq(ret, priv->ndev);
++			} else {
++				ret = 0;
++				break;
++			}
++		} while (++i);
++	} else {
++		while ((res = platform_get_resource(priv->pdev, IORESOURCE_IRQ, i))) {
++			for (irq_num = res->start; irq_num <= res->end; irq_num++)
++				free_irq(irq_num, priv->ndev);
++			i++;
++		}
+ 	}
+ 
+ 	if (netif_msg_drv(priv))
+ 		dev_notice(emac_dev, "DaVinci EMAC: %s stopped\n", ndev->name);
+ 
+ 	pm_runtime_put(&priv->pdev->dev);
+-	return 0;
++	return ret;
+ }
+ 
+ /**
+-- 
+2.17.1
+
