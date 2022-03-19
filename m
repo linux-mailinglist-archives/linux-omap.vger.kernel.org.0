@@ -2,105 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C6284DE385
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Mar 2022 22:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3914DE5CA
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Mar 2022 04:58:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241121AbiCRV3r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 18 Mar 2022 17:29:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56720 "EHLO
+        id S230259AbiCSEAD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 19 Mar 2022 00:00:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238547AbiCRV3q (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Mar 2022 17:29:46 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E629B65C6
-        for <linux-omap@vger.kernel.org>; Fri, 18 Mar 2022 14:28:25 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 17so12886208lji.1
-        for <linux-omap@vger.kernel.org>; Fri, 18 Mar 2022 14:28:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=T/YT8jITLgW7f0YnEkkxDYteBnHJRvTOMarDgnnU8jo=;
-        b=MJWeBFvPvIQ1MTlGuhcFZOR1Ii+M2A5z0pS7ILy7OG9+c5PlFy2dq12skyq0r3PcKY
-         mV0PpcKJzMa6PzSElrTexxHEFXOj29QHijxNiXHIXPQwLiubO30Lzyr+cyB9ZMNlaz6q
-         7BEm0JyL5/S/ohm7CPZrkr3V4Q6qq5Z/M8iJOwdgrhYx/QnH34DWL4pyRPbz1itAG+l1
-         e/UJV2GCqLGQK/yqTOVhERL0CD23iqlUAg6qCBc8bnVU4V9Nh2gsGgvplX/9FoU8yCOQ
-         7Qx3LTMFO6Sa04o71JL//YEbN7fKzdxsObfh/6MyY1GJjrj4u9nSFODIOQf7SxkwsOUw
-         4UyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=T/YT8jITLgW7f0YnEkkxDYteBnHJRvTOMarDgnnU8jo=;
-        b=s6NZoAa2/zJha/DcvcEpa+dYBFeBlx45Bs12U0cFB8TSyQLnnD/PDFB0zaLUnbj/g0
-         TyetSSC9Br9meVLGWOhslLy4i7JDqIo+a8bOeoitLLuabo1XY+wB00DVu3OwTsdqUeFO
-         zSgtg09cH3n1L4JmHbvV/+f2LygNAvAzB2USg4p9n6rMl+n5IvbzYGorz8LU6SXJpKx+
-         ctPFBPOQxL9o+TtMNhhSIG99t+tIGJeOJ0ymLxfm+cj6E9wUNqoRHAb2x4tVFGV6g8Xh
-         ZmiIN97Ul7YB6wO7V3NRpTouM3n1s0bOTcBCgygS0N3dr8toCK3x7VU2s6QRHpY4XyGA
-         SMDQ==
-X-Gm-Message-State: AOAM5330et5GglobPVUQ2npjxvVyjvgbX8mzfp8T7074OeU+m/3dfcIp
-        rL3aYiHjPu3/pufS+J/Zq/H3+Y2H3o40t2UYJjQ=
-X-Google-Smtp-Source: ABdhPJysfUVvslOKonkaIcyWahpf5ZO4WHWdYkplnsqLW5LX/dN5HDqrn8iMQzyqOowHYG/CJKpoSVxSYVWhz1Q3uWU=
-X-Received: by 2002:a2e:864b:0:b0:248:321:f13a with SMTP id
- i11-20020a2e864b000000b002480321f13amr7241623ljj.210.1647638904135; Fri, 18
- Mar 2022 14:28:24 -0700 (PDT)
+        with ESMTP id S242119AbiCSD7u (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 18 Mar 2022 23:59:50 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6918C12A8F3;
+        Fri, 18 Mar 2022 20:57:52 -0700 (PDT)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22J2ro58012531;
+        Sat, 19 Mar 2022 03:57:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2021-07-09;
+ bh=dOCvppNUKgOlcA89bNUdrq8FTQRYfsjfsvR3rEo7hmg=;
+ b=rB4F0btdvmuQ8qSVzB0TI/MVdj6L1wLlPT1srOv4birzBP2VsA5D9mxqDnty9FGI031e
+ OhuXiDi8PP/hnk9+43pScgnlvc1Msx3IXhpur+XlVll5oz+03KUF4YG2ZJeO5ctAVyuc
+ ABInatOkvEpdjQe0XOBM3Vw23gTi3RCDw1NbsqI8/p8gXop58M1CrcTLpLi34DxilkOw
+ aIKWvxzBLmxogO1BmHkA0n6pbxmOlCrA4EQcUelFgQP2O0W9a5LqlQOoSqpIeuQaOZbZ
+ 7pKjNVt7qrQPqi5lf6wtbxwtbMHhpxhomcEA8IcEfMLaUK5a8MKBz0qkUbZ41JgSbvMB dA== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3ew6ss016q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 19 Mar 2022 03:57:15 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 22J3uvsm007045;
+        Sat, 19 Mar 2022 03:57:14 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id 3ew5kyshp1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 19 Mar 2022 03:57:14 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 22J3v5Qm007126;
+        Sat, 19 Mar 2022 03:57:13 GMT
+Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id 3ew5kyshmn-6;
+        Sat, 19 Mar 2022 03:57:13 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Julia Lawall <Julia.Lawall@inria.fr>, linux-can@vger.kernel.org
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        linux-rdma@vger.kernel.org, Jonas Karlman <jonas@kwiboo.se>,
+        linux-s390@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        linux-clk@vger.kernel.org, linux-spi@vger.kernel.org,
+        Shayne Chen <shayne.chen@mediatek.com>, netdev@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, Jiri Olsa <jolsa@kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        linux-staging@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-perf-users@vger.kernel.org, linux-wireless@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        Sven Schnelle <svens@linux.ibm.com>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-power@fi.rohmeurope.com, linux-mtd@lists.infradead.org,
+        target-devel@vger.kernel.org,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-mediatek@lists.infradead.org,
+        Christian Borntraeger <borntraeger@linux.ibm.com>
+Subject: Re: [PATCH 00/30] fix typos in comments
+Date:   Fri, 18 Mar 2022 23:56:56 -0400
+Message-Id: <164766213032.31329.14855996441316567317.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220314115354.144023-1-Julia.Lawall@inria.fr>
+References: <20220314115354.144023-1-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-Received: by 2002:a05:6520:402a:b0:199:feb0:3ce7 with HTTP; Fri, 18 Mar 2022
- 14:28:23 -0700 (PDT)
-Reply-To: clmloans9@gmail.com
-From:   MR ANTHONY EDWARD <nillapep@gmail.com>
-Date:   Fri, 18 Mar 2022 22:28:23 +0100
-Message-ID: <CAHJCGRh6eG7HBAW+8sEy0t4JyeZ0SnBUgmvd-N=KfbFb5CPuXA@mail.gmail.com>
-Subject: SICHERES KREDITANGEBOT BEI 2%
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:236 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4966]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [clmloans9[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [nillapep[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: ryygBDbx4ESlJehbCVsBuy2qL-PPuldd
+X-Proofpoint-GUID: ryygBDbx4ESlJehbCVsBuy2qL-PPuldd
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-Ben=C3=B6tigen Sie ein Gesch=C3=A4ftsdarlehen oder ein Darlehen jeglicher A=
-rt?
-Wenn ja, kontaktieren Sie uns
+On Mon, 14 Mar 2022 12:53:24 +0100, Julia Lawall wrote:
 
-*Vollst=C3=A4ndiger Name:
-* Ben=C3=B6tigte Menge:
-*Leihdauer:
-*Handy:
-*Land:
+> Various spelling mistakes in comments.
+> Detected with the help of Coccinelle.
+> 
+
+Applied to 5.18/scsi-queue, thanks!
+
+[02/30] scsi: lpfc: fix typos in comments
+        https://git.kernel.org/mkp/scsi/c/9a866e6aaf4e
+[17/30] scsi: elx: libefc_sli: fix typos in comments
+        https://git.kernel.org/mkp/scsi/c/8037185d1ad8
+[24/30] scsi: qla2xxx: fix typos in comments
+        https://git.kernel.org/mkp/scsi/c/5419e0f15622
+[25/30] treewide: fix typos in comments
+        https://git.kernel.org/mkp/scsi/c/9d05790f5187
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
