@@ -2,122 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 291D04E1CDA
-	for <lists+linux-omap@lfdr.de>; Sun, 20 Mar 2022 17:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5130F4E21B5
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Mar 2022 09:06:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245726AbiCTQdZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 20 Mar 2022 12:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56378 "EHLO
+        id S240711AbiCUIIH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 21 Mar 2022 04:08:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229801AbiCTQcx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 20 Mar 2022 12:32:53 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC7C39817;
-        Sun, 20 Mar 2022 09:31:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1647793705;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=xAqIIk59P2ITsK5sfRVvGAwbAfO5UIo5jxPV7DrGofg=;
-    b=qZr9CEalXGEGY6CluVtbvvaTPte9Hv0yQWLfialiAI2PEL28kzRJiwvCcAzYcvCRwO
-    WVIDBTAnt3vUzs04KXYXk/ukG0oDWWMhpmsc9VVM1NX0HL90OlZyuWOkuASqWsXXi4M1
-    GNvuwKYFAZM9q/hEBFx6AaCgLLA3sryWNnOCRrJhsCVfNeCFLLgYQLYRELhXGRXRVhaR
-    c2U7/nVO0y7dUedxUOSlHUPE30mX+Z/nnIbcnFHqfAQvcUyCy1RhC/VLrRA+11hf3lYG
-    vRwfa8bIxChuEepxQXahQ53RMm/eqAlm03kU1asqLQp1oCpDJznauxdZPKlsjCTglQqC
-    w4zg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7gpw91N5y2S3iM4RaQ=="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.41.1 DYNA|AUTH)
-    with ESMTPSA id L6b887y2KGSMH7x
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Sun, 20 Mar 2022 17:28:22 +0100 (CET)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: [PATCH] iio: palmas: shut up warning about calibration mismatch
- (due to noise)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <20220320155259.0fc79dd3@jic23-huawei>
-Date:   Sun, 20 Mar 2022 17:28:21 +0100
-Cc:     Colin Ian King <colin.king@intel.com>,
-        Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        linux-omap@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <18533164-C17A-4CA1-A882-5A160D370498@goldelico.com>
-References: <1cee45bfc3fa2ab59dcc17242fb52468035360a1.1646743982.git.hns@goldelico.com>
- <20220320155259.0fc79dd3@jic23-huawei>
-To:     Jonathan Cameron <jic23@kernel.org>
-X-Mailer: Apple Mail (2.3445.104.21)
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S1345091AbiCUIHy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Mar 2022 04:07:54 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92291F2138;
+        Mon, 21 Mar 2022 01:06:28 -0700 (PDT)
+Received: from mail-wr1-f54.google.com ([209.85.221.54]) by
+ mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1N0X0U-1oJtik1HZU-00wVqJ; Mon, 21 Mar 2022 09:01:18 +0100
+Received: by mail-wr1-f54.google.com with SMTP id q8so8128981wrc.0;
+        Mon, 21 Mar 2022 01:01:18 -0700 (PDT)
+X-Gm-Message-State: AOAM530QyJNXpQwGNlPMqeItywJxqMsl/zbjvWWzDpdlrZkXCr8RJaxz
+        quxuO6/2myPpZKT/w0nv6SS5TdiP5FOIXzaaers=
+X-Google-Smtp-Source: ABdhPJyn1rYxVcE3vSEk7fX9M0V9XhL9fPzronNopTs/qFftIqrfqDJrF+1Q25gMK0KMvVps+51S6HSesNjON/ttkuc=
+X-Received: by 2002:a5d:6d0f:0:b0:203:9157:1c48 with SMTP id
+ e15-20020a5d6d0f000000b0020391571c48mr17006225wrq.192.1647849677912; Mon, 21
+ Mar 2022 01:01:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220310233307.99220-1-jmkrzyszt@gmail.com> <YixWZ+IiN2l9jmzg@atomide.com>
+In-Reply-To: <YixWZ+IiN2l9jmzg@atomide.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 21 Mar 2022 09:01:02 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3nLV2FXRQVocELNTiLqJY-CZXy9Ko6CSunFnhou_493Q@mail.gmail.com>
+Message-ID: <CAK8P3a3nLV2FXRQVocELNTiLqJY-CZXy9Ko6CSunFnhou_493Q@mail.gmail.com>
+Subject: Re: [RFC RFT PATCH 0/4] ARM: OMAP1: clock: Convert to CCF
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Paul Walmsley <paul@pwsan.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Helge Deller <deller@gmx.de>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:vgAUigR5OPNj49ogn46JzH0xL1qFerLhCnQe2Rw4G41COIuYwD2
+ gDQhNMFMotYD1t0mm2MBqsdJWdav5iLbb5T0IpEp2gVK2WGlmTxXsfJ7ELVnTmM7NPGp78h
+ ejDsVzbVo7ItJ26utXeSWw6cgLBwubNJdmpeMif5wlsKHWpInaHGs7TdHV5BGlq174FP8v/
+ E1fG47z+WffR58W8Wpasw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:BPOaNPv7Tw0=:8k4QFT0FY7a7GBg9NpCVN4
+ gCtHYVOrczoclRfMhTn+HeOmoTv95UKmbhp7rRDzXAECtbN5CRw71LFCl9merFGku/DXwKCWJ
+ EL1kN8pfG25zBsgXFFvPHnrfV9jVMcr6ykgbZ6/IB9cPm0NVpqiaHFRsjo7izLrSNZX6tE951
+ Xt80xYb75m0I3g/at+NiPs1FwPiRjSRpDf85zmKbdECUBKqUR65Z8e9ucf9wrH/oQjZDKt4uC
+ ZjxDOz0cSWbN0C5DdxRrAIUjH4F4cUjn00SR54mt8Gp0m4hA9uaOrkSt2Rxse1va1MaLyxy8+
+ /GqIk1KAvWSqhIyeKVdc9PON6xI+qRIoimZ4QAMIuOLn6DYz6ozKOi0K0BSDDGDzW9BzpZ+qL
+ G7aEbOFwChDX2CxCXMJCNirvzR+/slUgAjpJnjmPf8VJ2dM+UpjbcxsLw3fT2SyKeqoqD0/ww
+ mMlyvLGEzKtMEKIafqbL5f0MhTol50eAB7HcIhfOFqpefBp+vayLqUD2nwtDntXOBWA5cfcLx
+ RCN4/M25Qua849SAcQv70bdHAtmESJ4FDfgVGKp9Hc9hW21JbsSTX7w6BMVgjLZ7LbM4L8rjk
+ iTY9WH7M4HWMYHIFUnwSG0pEpAWsxMBvtZtf3PO7Am/l7snxlHDFN3Ckan9XbRiFdBba/N/lx
+ Hczg0DwL89oiMjbqBl2v7LpmXGIubg5HsCj24O9nodhG0Df6rba9vfmD2/ZH5qycEv/cfyBWI
+ HcZ0mPM6pYgzGsE4U67PU9yaB9o3xLjODH0/i5f1QJW+Wg0X+g69hTYF/XTG45nxTW9bCmos+
+ jEueFjvZ8eyWVKzzDrPFHIpLFozxoP6Xx5t0pooa0cp9G+TGgc=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Jonathan,
+On Sat, Mar 12, 2022 at 9:14 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> * Janusz Krzysztofik <jmkrzyszt@gmail.com> [220310 23:32]:
+> > The main motivation behind this series is planned resurection of OMAP1
+> > camera driver.  Since OMAP1 clock internals have never been visible to
+> > drivers, that driver used to use v4l2-clk to expose a pixel clock for a
+> > sensor.  The v4l2-clk code has been recently depreciated and removed from
+> > the media subtree, hence the need for an alternative solution.
+>
+> Nice :) This will also help Arnd with building multi-v5 kernels.
 
-> Am 20.03.2022 um 16:52 schrieb Jonathan Cameron <jic23@kernel.org>:
->=20
-> On Tue,  8 Mar 2022 13:53:03 +0100
-> "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
->=20
->> Although technically checking for ADC values below 0 is correct,
->> because they are outside of the calibration values, there is usually
->> noise which spuriously fills the console log with error messages if
->> calculated input voltage gets close to 0V.
->>=20
->> Ignore small negative calculated values, but clamp them to 0.
->>=20
->> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> Hi.
->=20
-> Should we treat this as a fix or a cleanup?
->=20
-> I don't mind either way.
+Thanks for looping me in, I missed the thread originally but now
+got the replies.
 
-I don't mind either since we have it for long time in our distribution =
-kernel.
+As OMAP1 is the last user of HAVE_LEGACY_CLK on Arm, converting
+it would be particularly nice, and it allows me to dig out my omap1
+multiplatform patches, which does get us closer to endgame.
 
-BR and thanks,
-Nikolaus
+The only other ARM9 platforms that are not multiplatform yet are
+ep93xx (which can probably be done now as well after its
+clk conversion) and s3c24xx (which is scheduled for removal next
+year).
 
->=20
-> Jonathan
->=20
->=20
->> ---
->> drivers/iio/adc/palmas_gpadc.c | 3 ++-
->> 1 file changed, 2 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/drivers/iio/adc/palmas_gpadc.c =
-b/drivers/iio/adc/palmas_gpadc.c
->> index f9c8385c72d3..bcfa6a7f6cb2 100644
->> --- a/drivers/iio/adc/palmas_gpadc.c
->> +++ b/drivers/iio/adc/palmas_gpadc.c
->> @@ -376,7 +376,8 @@ static int =
-palmas_gpadc_get_calibrated_code(struct palmas_gpadc *adc,
->> 					=
-adc->adc_info[adc_chan].gain_error;
->>=20
->> 	if (val < 0) {
->> -		dev_err(adc->dev, "Mismatch with calibration\n");
->> +		if (val < -10)
->> +			dev_err(adc->dev, "Mismatch with calibration var =
-=3D %d\n", val);
->> 		return 0;
->> 	}
->>=20
->=20
+When those are out of the way, we only have StrongARM (rpc,
+sa1100, footbridge) and XScale (pxa, ixp, iop) remaining.
 
+      Arnd
