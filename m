@@ -2,513 +2,186 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E20CF4E328E
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Mar 2022 23:07:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 971684E3945
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Mar 2022 08:00:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229672AbiCUWHs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 21 Mar 2022 18:07:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38872 "EHLO
+        id S237104AbiCVHBn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Mar 2022 03:01:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbiCUWHo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 21 Mar 2022 18:07:44 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 661933F88DA;
-        Mon, 21 Mar 2022 14:58:56 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id r133so178046wma.3;
-        Mon, 21 Mar 2022 14:58:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=hc2MUSZy9bXfa2IvMG2EcX5FyjHx8AEbBsxtAVGDPHM=;
-        b=mqSyS08W7eh4UoQNNjqOdjRtSKHZ7fg9H2oeEH4SlYxbJMzxbOenFBch4vmKpW5nr8
-         7fI7u4s2K27jy8sXuH8X2h04GmvVZ4QPkMbZX0dhT/8VLK/KS8elzkvmflImlU07tzox
-         Job/275jHmzSFhAeXyAYSmH3+l+R+aBH5pDXZ33i6Nedx91g1Q//Ol9fAgz9e6RD19lV
-         FnuaSBqe/I/uPQQ/3PsNWMNdqpj4sfAgOiwK2meZao6Y0C8DwgpbllcNIC4JagL6dfO/
-         O4Lo5a4dRNtX/x9wDd8isX/+Nq7f7OaWC5Z6IUQ1eJV3QWNYsdD4yJQ5l420QsxzgrGb
-         1RPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=hc2MUSZy9bXfa2IvMG2EcX5FyjHx8AEbBsxtAVGDPHM=;
-        b=rQfJJvOCiJ1lm567hebqWsF+P2b8+bQX+7yWLUqGpNeC2vezmojtctB7UTCn1EOxxN
-         IcZZOoSzwxEoqePvUTMOWxceLFsEtmW7Lge3LEghqWsyES6kVIHnROglkEy5/esRE7RT
-         Kr/pzLQeR13/MnHZeGCAKT/0luA4Qg6Z7lclqEu9yhg9LW5v9vjeqNmqLP9x3sR6r2NB
-         HA9nCN64/h6xQ8lRfHCM0As2XozlPuZ34dOWnQiwSNme3fSWn3J2gdW+Leab8zoUSQRW
-         ijFlKm+PxYnjL5oZeDbjTNayBDefy9F4830sGneUFnbK5yPckricETN433MrsaPfbknj
-         kn4A==
-X-Gm-Message-State: AOAM533Yk7WOFDH2TftzmDFtnU358jqK8HFCBQAsb7eDWWzE9UsMg+nH
-        0s43QJ22eksocnts+71Djy0=
-X-Google-Smtp-Source: ABdhPJx0LqqcgiAhwkGdmHGndzTzzQLjKXEEFxGJlNF3tE4UT1eb5HcM4W4uOmxelV6JPlQlFhVXMQ==
-X-Received: by 2002:a05:600c:1e1b:b0:38c:9a0b:8a2c with SMTP id ay27-20020a05600c1e1b00b0038c9a0b8a2cmr1010702wmb.100.1647899676414;
-        Mon, 21 Mar 2022 14:54:36 -0700 (PDT)
-Received: from dell.gdansk-morena.vectranet.pl (178235254230.gdansk.vectranet.pl. [178.235.254.230])
-        by smtp.gmail.com with ESMTPSA id g10-20020adfe40a000000b00203eb3551f0sm15878868wrm.117.2022.03.21.14.54.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Mar 2022 14:54:35 -0700 (PDT)
-From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Paul Walmsley <paul@pwsan.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Helge Deller <deller@gmx.de>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Felipe Balbi <balbi@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-mmc@vger.kernel.org,
-        alsa-devel@alsa-project.org,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Subject: [PATCH v2] ARM: OMAP1: Prepare for conversion of OMAP1 clocks to CCF
-Date:   Mon, 21 Mar 2022 22:54:16 +0100
-Message-Id: <20220321215416.236250-1-jmkrzyszt@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220310233307.99220-3-jmkrzyszt@gmail.com>
-References: <20220310233307.99220-3-jmkrzyszt@gmail.com>
+        with ESMTP id S237101AbiCVHBl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Mar 2022 03:01:41 -0400
+X-Greylist: delayed 322 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Mar 2022 00:00:08 PDT
+Received: from mx08-005c9601.pphosted.com (mx08-005c9601.pphosted.com [205.220.185.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A47AE5FF4
+        for <linux-omap@vger.kernel.org>; Tue, 22 Mar 2022 00:00:07 -0700 (PDT)
+Received: from pps.filterd (m0237837.ppops.net [127.0.0.1])
+        by mx08-005c9601.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22M4TodQ007112;
+        Tue, 22 Mar 2022 07:54:41 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wago.com; h=from : to : cc :
+ subject : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=p012021; bh=yTlTzPsSG8ew9VDHEzgvq/a8osdbbLcJDHHl2i8+TdE=;
+ b=IaAcRQWwW5pPKZluZhu4Zod0ndJnw0QCdmKXN8YW5JsQ0P673Fz5VISvPHnhm5V6cP0u
+ MlbCMLFtwNuZTmvr53TpIr7b7ZR/5zCEEXGMq3PUJx4u2TNUgRAv287dov+PVKKaY6fF
+ STLIMS/mnUylCssNWTDnXsEwjw5KfW7BpJPjgKGN6ELMrQ4Qk4vHyAoQXeoi+aYmoWrU
+ irv5hnKManJGrFBf7h95ifK1uLkVRgFGKlX8IC3tb6xx/yxB35gHZr3l1jYpPxeZyQSH
+ s7s56ReabM9wOogo/z/dqNlW0skf2x0aaTPT8XEJC6SriaOfY229bvY7drNHrR9QkI6b 6Q== 
+Received: from mail.wago.com ([217.237.185.168])
+        by mx08-005c9601.pphosted.com (PPS) with ESMTPS id 3ew4pcjn6u-5
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Tue, 22 Mar 2022 07:54:41 +0100
+Received: from SVEX01011.wago.local (10.1.103.229) by SVEX01014.wago.local
+ (10.1.103.232) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 22 Mar
+ 2022 07:32:55 +0100
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (10.1.103.197) by
+ outlook.wago.com (10.1.103.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21 via Frontend
+ Transport; Tue, 22 Mar 2022 07:32:55 +0100
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YH3YwMwSMPoHTAV5eIiIa+gMKyIOU+Yq9LxlmvCuOfIPESTwac+Dj21ntreWtpnpYJQ+zOujvUvut7OoG3hzBzvR4+5MxxcpAxQPq+rxLsPEWFlwdBycjkfmHyXn7sQ1HgifMbO3fVWU6V9nHnDOII0VMEkTYLE6Vq6s71ydLZQ7XpDwA1rcCShGKt5eDQl/KaPIncBUmrghvsaI8SbXtKarA3QmDaqTNTRiXkTdx5oSek56FoDq8DUNLpPbz9pnE8Gym0gDHoG9OyWC2S85HEWrsSKFAv/Fo5ygjpKNpRn47eqZ0FAT6vPfcUPvoaLz6iB3dXVS7n1eIm29hbJOLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yTlTzPsSG8ew9VDHEzgvq/a8osdbbLcJDHHl2i8+TdE=;
+ b=gT84v4ZaXwLI4QroTO15g2eE9uRuI0DgcjvUoAewpm3WtF9ArL/Oj1u/kNjgqAjyJeCWzxReZ6D4Wa+ImQErXQkhqADmy2IPUsSlTiJ1Lj4cUxRxQbF+s2XVwDASjM3uBR/z1YKBTscwwkEGLaZGuBkRvhsJ79IXgxVgXA7LYbuOC0dmS/doPdwbJhFEBZ1DaZe8cRHnRkc5gEbs/WWUuz661Guq3c/pFvJEiGC+1zihf6fKaZtxQqTB8MJgxDLFRQnwEk5mZm2K6QJEj+G310m96jU/3gSIVbdBGp0NTT1NTZ6K1EKOlC09g3nFbT72n0+plPb9DeioowpQLSWaPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wago.com; dmarc=pass action=none header.from=wago.com;
+ dkim=pass header.d=wago.com; arc=none
+Received: from DB8PR08MB5097.eurprd08.prod.outlook.com (2603:10a6:10:38::15)
+ by AM8PR08MB5588.eurprd08.prod.outlook.com (2603:10a6:20b:1d4::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.17; Tue, 22 Mar
+ 2022 06:32:54 +0000
+Received: from DB8PR08MB5097.eurprd08.prod.outlook.com
+ ([fe80::cc57:a7c3:cf03:e4cb]) by DB8PR08MB5097.eurprd08.prod.outlook.com
+ ([fe80::cc57:a7c3:cf03:e4cb%6]) with mapi id 15.20.5081.023; Tue, 22 Mar 2022
+ 06:32:53 +0000
+From:   =?iso-8859-1?Q?Sondhau=DF=2C_Jan?= <Jan.Sondhauss@wago.com>
+To:     "grygorii.strashko@ti.com" <grygorii.strashko@ti.com>
+CC:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        =?iso-8859-1?Q?Sondhau=DF=2C_Jan?= <Jan.Sondhauss@wago.com>
+Subject: [PATCH] drivers: ethernet: cpsw: fix panic when interrupt coaleceing
+ is set via ethtool
+Thread-Topic: [PATCH] drivers: ethernet: cpsw: fix panic when interrupt
+ coaleceing is set via ethtool
+Thread-Index: AQHYPbapsZNzoyO3w0eRMBgmDSKdYw==
+Date:   Tue, 22 Mar 2022 06:32:53 +0000
+Message-ID: <20220322063221.28132-1-jan.sondhauss@wago.com>
+Accept-Language: en-DE, en-US, de-DE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: git-send-email 2.35.1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: bad5426c-1ab2-436a-acf8-08da0bcdcbaf
+x-ms-traffictypediagnostic: AM8PR08MB5588:EE_
+x-microsoft-antispam-prvs: <AM8PR08MB5588E5C2FC01105440C5ABBD8A179@AM8PR08MB5588.eurprd08.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: HSPW6oy4xF6xMv8w4OXSRKWFvvlBEGcmScjBURVDFlW2ZLgd98HIrdbpETXwCa218RpTU/aPdifuHj7l7sQ6Km0/tI4MlOZhRB3RGQ4FENocspdHXqWL6vkCkMAYdwtuY/9mHdQv6kVApceuOS2AMLgZp67ZyvwM6E+Qmw6pSEBN/2wdZk+9OIB4SPPMPZtZbbaT6xK8RscNFC7AGTWUhpYyUcJYumUE+wkWE+nG+0Z1Up5BMvnHkQKHCUqY+xZi6bUqjd4qTtjbA88dR2FKF9KZaQlErJFKPQFRBnSrnCQXtvQhxSSa7PyMOlbmgFNPatq8r87YoxSFRcywb2UgA2EiFZzmEXXwjIIZi4MJ+y3877/VbgQlSLsr6tVAmSOkBZ1asgx68Cd6RFqXm4s+afA8NxhUTmGcmJmZYweX3CXz/rayY40Q6pBB0hmc7EHK2SvfaFv8J+dP7pMX9275zvbYCxKxnCJjpSjoPD1MrEvR4lP3uc+LHu9dyknlg/XmbFje/FOry/Qm5GeaMfZ4G20e0IZl9GWjWO8Nv/iCjL9xu0NPjUb3nfUpC+UylYSgxlgfE9Z+h+/2sI22aZSEkH8GNfvbmdzSEUwYG5ECuzSAi9v7LT4O2Ed+jxnT/nl/V6WZu1q/ZP0aUi2caYJXkye2rubffihAhbRqKefRnZcnlzWx5pTxO2MAt2EjiAznA7uhfBTY5clo06aWlfcGKw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB5097.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(316002)(107886003)(8936002)(2616005)(186003)(26005)(1076003)(91956017)(66556008)(66476007)(64756008)(66446008)(66946007)(76116006)(86362001)(4326008)(8676002)(6486002)(508600001)(38100700002)(6512007)(6916009)(71200400001)(38070700005)(6506007)(54906003)(122000001)(2906002)(83380400001)(36756003)(5660300002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?hBnh15gLAXJP31ErXur+44o2QBzelSqkBfqNCf2nHKr2oDVaGIX2OtEtOT?=
+ =?iso-8859-1?Q?CiO/MAfjc9kDJcwc7p2KaYeqXUiU+zoDgg6rqIJ+tow9968Vb6dU32VgEd?=
+ =?iso-8859-1?Q?Dx4HCoeCFmJaDQ/JnX1NausNnsjaf/sQSh4aOQTBW2ybBUkhIyHalAF48+?=
+ =?iso-8859-1?Q?iCUrJw/CLo7KSUCgqAmecaiNoFofJQicZFmp9Oe9G9dn5n9eqUZ+y8drLC?=
+ =?iso-8859-1?Q?DENz5Fm7VhbnTrYXSCTfEGWae4IR+89ADh0sHjGLzLkmF8jXOin7Cmeyb9?=
+ =?iso-8859-1?Q?Iu7Uc+maimKdPsrljx7tfxN7UgoQfJQaoSUkLNlkgIqy2OE+ab0ihLpzyh?=
+ =?iso-8859-1?Q?lQq5ccccSwYZ3IOM1t6Tm92PqHnWBqrtfgM6eXV5Qr1n1AjGKzMVWe3cGr?=
+ =?iso-8859-1?Q?hxVds0mad72P8ZUuPgW/j3+BK4V+sBknCsA7SwDHYoTwHSajsp0LNITF34?=
+ =?iso-8859-1?Q?2LRjiGl39HyovAFzFqGpyJMfYIcN/DIDGOmQnKfUIDkOfSvrpL44zbW9A7?=
+ =?iso-8859-1?Q?jYiY+R0l8fjU0w3n97SHPmh7IHwCwzbN5KD1gaPkZm0CPbnYDaOhOfInvX?=
+ =?iso-8859-1?Q?UvQtGud2nhrWSI3appPtEqyOESGOkKtekbAyT7/BDB7v1f004LX4ttBnPX?=
+ =?iso-8859-1?Q?G1uv03BmsBrOJMF5ek0HeKET8lllz4mrDU4LWqsUzBAt7PxkyFqHP8hwSX?=
+ =?iso-8859-1?Q?VZLMD5IbqxhByIpKcuo1QfGtbLWYadPayWD3oZK7P1Qh5PpN2/ArpAXlRF?=
+ =?iso-8859-1?Q?87S6+Gg0ogMNunKOuKcxwlncqIkOKK6oRApITRCFhVbF/Vau+IZ+AIdu+N?=
+ =?iso-8859-1?Q?DB6q23EKHaOaf6kZIKz/DatXUwNI3r3A9gZ+tHlcKKVghWYWgdJ+eizIlt?=
+ =?iso-8859-1?Q?S6X2HJeosuLhF5Oi2R755OUOQioVmuKCxA2hLFuUUbTfw0u8GGp9urZtqo?=
+ =?iso-8859-1?Q?iEv/ydhe1WCDX+Ia1+zpKgxqXlKgqNcDO3hLw5lev2cCNUA1nkITxTtRpM?=
+ =?iso-8859-1?Q?4e1fe4vmR4vz1TA0AfkewkfRFyFaS6HNBLf2k1M8B2dJ9xA1y/wV3ZVska?=
+ =?iso-8859-1?Q?VuOq2i2wsRkvwpMsiGX2NdTdEWvgb8JY6y9RXVCDcvbQckZHVMfK+1RuJp?=
+ =?iso-8859-1?Q?tFVkhEozO8ZGFMkAPqDEbATG9NO0z/zf4J+9Dhg4W7d1Juvz240Vrf1y6r?=
+ =?iso-8859-1?Q?SuQDZCih73g/R2xgHsFAUT9VWEy3dawaj63f07BYrqkwnYOnP8E6cz0YUT?=
+ =?iso-8859-1?Q?BpN1yxJDnKhd1vm2uI743HjRbGl+pvIPk+3jJcz9haS11ISbYGZw2TqlEm?=
+ =?iso-8859-1?Q?72YxV2SjVQY+iKB3ibMUgeDBPcIzDNOzdBex0kQzxu5tqdVtGKVvKMoIRJ?=
+ =?iso-8859-1?Q?V2MWIg3oPzy2+0X/F1ci7JosCheHTf7Jt3BDhqxVVdQEf2RJniHDaWwZOq?=
+ =?iso-8859-1?Q?RTT+wxedelpMMZC378ahH9l9z37IWqI1vdJLQXybrgRGTiAXG6rANlbv1L?=
+ =?iso-8859-1?Q?1NaM1Y45u0qG0Fh4IR5MdYvCmyo5uY3ceMUhku9IJtRw=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
-        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR08MB5097.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bad5426c-1ab2-436a-acf8-08da0bcdcbaf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Mar 2022 06:32:53.8741
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: e211c965-dd84-4c9f-bc3f-4215552a0857
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Oiqs0onkUpNsc/OkDzyS0ry7jPDS21UzjbOnM0g3dLbi6qHmEXMKCjM/W0UGnYijcnkaCGiqXYBOFYreL1c3yg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB5588
+X-OriginatorOrg: wago.com
+X-KSE-ServerInfo: SVEX01014.wago.local, 9
+X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 22.03.2022 03:58:00
+X-KSE-BulkMessagesFiltering-Scan-Result: protection disabled
+X-Proofpoint-GUID: 5x3_CPxXPGX_ALIIvEwtkQVgfX0dC_E1
+X-Proofpoint-ORIG-GUID: 5x3_CPxXPGX_ALIIvEwtkQVgfX0dC_E1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-22_02,2022-03-21_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ clxscore=1011 adultscore=0 mlxlogscore=530 priorityscore=1501
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 mlxscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203220041
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In preparation for conversion of OMAP1 clocks to common clock framework,
-identify users of those clocks which don't call clk_prepare/unprepare()
-and update them to call clk_prepare_enable/clk_disable_unprepare() instead
-of just clk_enable/disable(), as required by CCF implementation of clock
-API.
+cpsw_ethtool uses the power management in the begin and complete
+functions of the ethtool_ops. The result of pm_runtime_get_sync was
+returned unconditionally, which results in problems since the ethtool-
+interface relies on 0 for success and negativ values for errors.
+d43c65b05b84 (ethtool: runtime-resume netdev parent in ethnl_ops_begin)
+introduced power management to the netlink implementation for the
+ethtool interface and does not explicitly check for negative return
+values.
 
-v2: update still a few more OMAP specific drivers missed in v1,
-  - call clk_prepare/unprepare() just after/before clk_get/put() where it
-    can make more sense than merging prepare/unprepare with enable/disable.
+As a result the pm_runtime_suspend function is called one-too-many
+times in ethnl_ops_begin and that leads to an access violation when
+the cpsw hardware is accessed after using
+'ethtool -C eth-of-cpsw rx-usecs 1234'. To fix this the call to
+pm_runtime_get_sync in cpsw_ethtool_op_begin is replaced with a call
+to pm_runtime_resume_and_get as it provides a returnable error-code.
 
-Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Signed-off-by: Jan Sondhauss <jan.sondhauss@wago.com>
 ---
- arch/arm/mach-omap1/mcbsp.c       |  8 ++++----
- arch/arm/mach-omap1/ocpi.c        |  4 ++--
- arch/arm/mach-omap1/serial.c      |  6 +++---
- arch/arm/mach-omap1/timer32k.c    |  2 +-
- drivers/mmc/host/omap.c           | 23 ++++++++++++++---------
- drivers/usb/gadget/udc/omap_udc.c | 14 ++++++++------
- drivers/usb/host/ohci-omap.c      | 18 ++++++++++++++++--
- drivers/video/fbdev/omap/hwa742.c |  6 +++---
- drivers/video/fbdev/omap/lcdc.c   |  6 +++---
- drivers/video/fbdev/omap/sossi.c  |  5 +++--
- sound/soc/ti/osk5912.c            |  9 ++++++++-
- 11 files changed, 65 insertions(+), 36 deletions(-)
+ drivers/net/ethernet/ti/cpsw_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap1/mcbsp.c b/arch/arm/mach-omap1/mcbsp.c
-index f36c34f47f11..3ec2badff6af 100644
---- a/arch/arm/mach-omap1/mcbsp.c
-+++ b/arch/arm/mach-omap1/mcbsp.c
-@@ -44,8 +44,8 @@ static void omap1_mcbsp_request(unsigned int id)
- 			api_clk = clk_get(NULL, "api_ck");
- 			dsp_clk = clk_get(NULL, "dsp_ck");
- 			if (!IS_ERR(api_clk) && !IS_ERR(dsp_clk)) {
--				clk_enable(api_clk);
--				clk_enable(dsp_clk);
-+				clk_prepare_enable(api_clk);
-+				clk_prepare_enable(dsp_clk);
- 
- 				/*
- 				 * DSP external peripheral reset
-@@ -63,11 +63,11 @@ static void omap1_mcbsp_free(unsigned int id)
- 	if (id == 0 || id == 2) {
- 		if (--dsp_use == 0) {
- 			if (!IS_ERR(api_clk)) {
--				clk_disable(api_clk);
-+				clk_disable_unprepare(api_clk);
- 				clk_put(api_clk);
- 			}
- 			if (!IS_ERR(dsp_clk)) {
--				clk_disable(dsp_clk);
-+				clk_disable_unprepare(dsp_clk);
- 				clk_put(dsp_clk);
- 			}
- 		}
-diff --git a/arch/arm/mach-omap1/ocpi.c b/arch/arm/mach-omap1/ocpi.c
-index 380ea2de58c1..03cc48024fd6 100644
---- a/arch/arm/mach-omap1/ocpi.c
-+++ b/arch/arm/mach-omap1/ocpi.c
-@@ -73,7 +73,7 @@ static int __init omap_ocpi_init(void)
- 	if (IS_ERR(ocpi_ck))
- 		return PTR_ERR(ocpi_ck);
- 
--	clk_enable(ocpi_ck);
-+	clk_prepare_enable(ocpi_ck);
- 	ocpi_enable();
- 	pr_info("OMAP OCPI interconnect driver loaded\n");
- 
-@@ -87,7 +87,7 @@ static void __exit omap_ocpi_exit(void)
- 	if (!cpu_is_omap16xx())
- 		return;
- 
--	clk_disable(ocpi_ck);
-+	clk_disable_unprepare(ocpi_ck);
- 	clk_put(ocpi_ck);
- }
- 
-diff --git a/arch/arm/mach-omap1/serial.c b/arch/arm/mach-omap1/serial.c
-index 9eb591fbfd89..5f591a836ab5 100644
---- a/arch/arm/mach-omap1/serial.c
-+++ b/arch/arm/mach-omap1/serial.c
-@@ -141,7 +141,7 @@ void __init omap_serial_init(void)
- 			if (IS_ERR(uart1_ck))
- 				printk("Could not get uart1_ck\n");
- 			else {
--				clk_enable(uart1_ck);
-+				clk_prepare_enable(uart1_ck);
- 				if (cpu_is_omap15xx())
- 					clk_set_rate(uart1_ck, 12000000);
- 			}
-@@ -151,7 +151,7 @@ void __init omap_serial_init(void)
- 			if (IS_ERR(uart2_ck))
- 				printk("Could not get uart2_ck\n");
- 			else {
--				clk_enable(uart2_ck);
-+				clk_prepare_enable(uart2_ck);
- 				if (cpu_is_omap15xx())
- 					clk_set_rate(uart2_ck, 12000000);
- 				else
-@@ -163,7 +163,7 @@ void __init omap_serial_init(void)
- 			if (IS_ERR(uart3_ck))
- 				printk("Could not get uart3_ck\n");
- 			else {
--				clk_enable(uart3_ck);
-+				clk_prepare_enable(uart3_ck);
- 				if (cpu_is_omap15xx())
- 					clk_set_rate(uart3_ck, 12000000);
- 			}
-diff --git a/arch/arm/mach-omap1/timer32k.c b/arch/arm/mach-omap1/timer32k.c
-index 780fdf03c3ce..049c7b7f28c4 100644
---- a/arch/arm/mach-omap1/timer32k.c
-+++ b/arch/arm/mach-omap1/timer32k.c
-@@ -180,7 +180,7 @@ int __init omap_32k_timer_init(void)
- 
- 		sync32k_ick = clk_get(NULL, "omap_32ksync_ick");
- 		if (!IS_ERR(sync32k_ick))
--			clk_enable(sync32k_ick);
-+			clk_prepare_enable(sync32k_ick);
- 
- 		ret = omap_init_clocksource_32k(base);
- 	}
-diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
-index 5e5af34090f1..57d39283924d 100644
---- a/drivers/mmc/host/omap.c
-+++ b/drivers/mmc/host/omap.c
-@@ -1374,7 +1374,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
- 	host->iclk = clk_get(&pdev->dev, "ick");
- 	if (IS_ERR(host->iclk))
- 		return PTR_ERR(host->iclk);
--	clk_enable(host->iclk);
-+	clk_prepare_enable(host->iclk);
- 
- 	host->fclk = clk_get(&pdev->dev, "fck");
- 	if (IS_ERR(host->fclk)) {
-@@ -1382,16 +1382,18 @@ static int mmc_omap_probe(struct platform_device *pdev)
- 		goto err_free_iclk;
- 	}
- 
-+	ret = clk_prepare(host->fclk);
-+	if (ret)
-+		goto err_put_fclk;
-+
- 	host->dma_tx_burst = -1;
- 	host->dma_rx_burst = -1;
- 
- 	host->dma_tx = dma_request_chan(&pdev->dev, "tx");
- 	if (IS_ERR(host->dma_tx)) {
- 		ret = PTR_ERR(host->dma_tx);
--		if (ret == -EPROBE_DEFER) {
--			clk_put(host->fclk);
--			goto err_free_iclk;
--		}
-+		if (ret == -EPROBE_DEFER)
-+			goto err_free_fclk;
- 
- 		host->dma_tx = NULL;
- 		dev_warn(host->dev, "TX DMA channel request failed\n");
-@@ -1403,8 +1405,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
- 		if (ret == -EPROBE_DEFER) {
- 			if (host->dma_tx)
- 				dma_release_channel(host->dma_tx);
--			clk_put(host->fclk);
--			goto err_free_iclk;
-+			goto err_free_fclk;
- 		}
- 
- 		host->dma_rx = NULL;
-@@ -1454,9 +1455,12 @@ static int mmc_omap_probe(struct platform_device *pdev)
- 		dma_release_channel(host->dma_tx);
- 	if (host->dma_rx)
- 		dma_release_channel(host->dma_rx);
-+err_free_fclk:
-+	clk_unprepare(host->fclk);
-+err_put_fclk:
- 	clk_put(host->fclk);
- err_free_iclk:
--	clk_disable(host->iclk);
-+	clk_disable_unprepare(host->iclk);
- 	clk_put(host->iclk);
- 	return ret;
- }
-@@ -1476,8 +1480,9 @@ static int mmc_omap_remove(struct platform_device *pdev)
- 
- 	mmc_omap_fclk_enable(host, 0);
- 	free_irq(host->irq, host);
-+	clk_unprepare(host->fclk);
- 	clk_put(host->fclk);
--	clk_disable(host->iclk);
-+	clk_disable_unprepare(host->iclk);
- 	clk_put(host->iclk);
- 
- 	if (host->dma_tx)
-diff --git a/drivers/usb/gadget/udc/omap_udc.c b/drivers/usb/gadget/udc/omap_udc.c
-index 494da00398d7..8768a3280e19 100644
---- a/drivers/usb/gadget/udc/omap_udc.c
-+++ b/drivers/usb/gadget/udc/omap_udc.c
-@@ -2604,6 +2604,8 @@ static void omap_udc_release(struct device *dev)
- 	if (udc->dc_clk) {
- 		if (udc->clk_requested)
- 			omap_udc_enable_clock(0);
-+		clk_unprepare(udc->hhc_clk);
-+		clk_unprepare(udc->dc_clk);
- 		clk_put(udc->hhc_clk);
- 		clk_put(udc->dc_clk);
- 	}
-@@ -2768,8 +2770,8 @@ static int omap_udc_probe(struct platform_device *pdev)
- 		hhc_clk = clk_get(&pdev->dev, "usb_hhc_ck");
- 		BUG_ON(IS_ERR(dc_clk) || IS_ERR(hhc_clk));
- 		/* can't use omap_udc_enable_clock yet */
--		clk_enable(dc_clk);
--		clk_enable(hhc_clk);
-+		clk_prepare_enable(dc_clk);
-+		clk_prepare_enable(hhc_clk);
- 		udelay(100);
- 	}
- 
-@@ -2778,8 +2780,8 @@ static int omap_udc_probe(struct platform_device *pdev)
- 		hhc_clk = clk_get(&pdev->dev, "l3_ocpi_ck");
- 		BUG_ON(IS_ERR(dc_clk) || IS_ERR(hhc_clk));
- 		/* can't use omap_udc_enable_clock yet */
--		clk_enable(dc_clk);
--		clk_enable(hhc_clk);
-+		clk_prepare_enable(dc_clk);
-+		clk_prepare_enable(hhc_clk);
- 		udelay(100);
- 	}
- 
-@@ -2927,8 +2929,8 @@ static int omap_udc_probe(struct platform_device *pdev)
- 		usb_put_phy(xceiv);
- 
- 	if (cpu_is_omap16xx() || cpu_is_omap7xx()) {
--		clk_disable(hhc_clk);
--		clk_disable(dc_clk);
-+		clk_disable_unprepare(hhc_clk);
-+		clk_disable_unprepare(dc_clk);
- 		clk_put(hhc_clk);
- 		clk_put(dc_clk);
- 	}
-diff --git a/drivers/usb/host/ohci-omap.c b/drivers/usb/host/ohci-omap.c
-index 45dcf8292072..2ab2e089a2b7 100644
---- a/drivers/usb/host/ohci-omap.c
-+++ b/drivers/usb/host/ohci-omap.c
-@@ -281,6 +281,10 @@ static int ohci_hcd_omap_probe(struct platform_device *pdev)
- 		goto err_put_hcd;
- 	}
- 
-+	retval = clk_prepare(priv->usb_host_ck);
-+	if (retval)
-+		goto err_put_host_ck;
-+
- 	if (!cpu_is_omap15xx())
- 		priv->usb_dc_ck = clk_get(&pdev->dev, "usb_dc_ck");
- 	else
-@@ -288,13 +292,17 @@ static int ohci_hcd_omap_probe(struct platform_device *pdev)
- 
- 	if (IS_ERR(priv->usb_dc_ck)) {
- 		retval = PTR_ERR(priv->usb_dc_ck);
--		goto err_put_host_ck;
-+		goto err_unprepare_host_ck;
- 	}
- 
-+	retval = clk_prepare(priv->usb_dc_ck);
-+	if (retval)
-+		goto err_put_dc_ck;
-+
- 	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
- 		dev_dbg(&pdev->dev, "request_mem_region failed\n");
- 		retval = -EBUSY;
--		goto err_put_dc_ck;
-+		goto err_unprepare_dc_ck;
- 	}
- 
- 	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-@@ -319,8 +327,12 @@ static int ohci_hcd_omap_probe(struct platform_device *pdev)
- 	iounmap(hcd->regs);
- err2:
- 	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+err_unprepare_dc_ck:
-+	clk_unprepare(priv->usb_dc_ck);
- err_put_dc_ck:
- 	clk_put(priv->usb_dc_ck);
-+err_unprepare_host_ck:
-+	clk_unprepare(priv->usb_host_ck);
- err_put_host_ck:
- 	clk_put(priv->usb_host_ck);
- err_put_hcd:
-@@ -355,7 +367,9 @@ static int ohci_hcd_omap_remove(struct platform_device *pdev)
- 	}
- 	iounmap(hcd->regs);
- 	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+	clk_unprepare(priv->usb_dc_ck);
- 	clk_put(priv->usb_dc_ck);
-+	clk_unprepare(priv->usb_host_ck);
- 	clk_put(priv->usb_host_ck);
- 	usb_put_hcd(hcd);
- 	return 0;
-diff --git a/drivers/video/fbdev/omap/hwa742.c b/drivers/video/fbdev/omap/hwa742.c
-index b191bef22d98..9d9fe5c3a7a1 100644
---- a/drivers/video/fbdev/omap/hwa742.c
-+++ b/drivers/video/fbdev/omap/hwa742.c
-@@ -964,7 +964,7 @@ static int hwa742_init(struct omapfb_device *fbdev, int ext_mode,
- 	if ((r = calc_extif_timings(ext_clk, &extif_mem_div)) < 0)
- 		goto err3;
- 	hwa742.extif->set_timings(&hwa742.reg_timings);
--	clk_enable(hwa742.sys_ck);
-+	clk_prepare_enable(hwa742.sys_ck);
- 
- 	calc_hwa742_clk_rates(ext_clk, &sys_clk, &pix_clk);
- 	if ((r = calc_extif_timings(sys_clk, &extif_mem_div)) < 0)
-@@ -1023,7 +1023,7 @@ static int hwa742_init(struct omapfb_device *fbdev, int ext_mode,
- 
- 	return 0;
- err4:
--	clk_disable(hwa742.sys_ck);
-+	clk_disable_unprepare(hwa742.sys_ck);
- err3:
- 	hwa742.extif->cleanup();
- err2:
-@@ -1037,7 +1037,7 @@ static void hwa742_cleanup(void)
- 	hwa742_set_update_mode(OMAPFB_UPDATE_DISABLED);
- 	hwa742.extif->cleanup();
- 	hwa742.int_ctrl->cleanup();
--	clk_disable(hwa742.sys_ck);
-+	clk_disable_unprepare(hwa742.sys_ck);
- }
- 
- struct lcd_ctrl hwa742_ctrl = {
-diff --git a/drivers/video/fbdev/omap/lcdc.c b/drivers/video/fbdev/omap/lcdc.c
-index 7317c9aad677..97d20dc0d1d0 100644
---- a/drivers/video/fbdev/omap/lcdc.c
-+++ b/drivers/video/fbdev/omap/lcdc.c
-@@ -711,7 +711,7 @@ static int omap_lcdc_init(struct omapfb_device *fbdev, int ext_mode,
- 		dev_err(fbdev->dev, "failed to adjust LCD rate\n");
- 		goto fail1;
- 	}
--	clk_enable(lcdc.lcd_ck);
-+	clk_prepare_enable(lcdc.lcd_ck);
- 
- 	r = request_irq(OMAP_LCDC_IRQ, lcdc_irq_handler, 0, MODULE_NAME, fbdev);
- 	if (r) {
-@@ -746,7 +746,7 @@ static int omap_lcdc_init(struct omapfb_device *fbdev, int ext_mode,
- fail3:
- 	free_irq(OMAP_LCDC_IRQ, lcdc.fbdev);
- fail2:
--	clk_disable(lcdc.lcd_ck);
-+	clk_disable_unprepare(lcdc.lcd_ck);
- fail1:
- 	clk_put(lcdc.lcd_ck);
- fail0:
-@@ -760,7 +760,7 @@ static void omap_lcdc_cleanup(void)
- 	free_fbmem();
- 	omap_free_lcd_dma();
- 	free_irq(OMAP_LCDC_IRQ, lcdc.fbdev);
--	clk_disable(lcdc.lcd_ck);
-+	clk_disable_unprepare(lcdc.lcd_ck);
- 	clk_put(lcdc.lcd_ck);
- }
- 
-diff --git a/drivers/video/fbdev/omap/sossi.c b/drivers/video/fbdev/omap/sossi.c
-index 80ac67f27f0d..b9cb8b386627 100644
---- a/drivers/video/fbdev/omap/sossi.c
-+++ b/drivers/video/fbdev/omap/sossi.c
-@@ -598,7 +598,7 @@ static int sossi_init(struct omapfb_device *fbdev)
- 	l &= ~CONF_SOSSI_RESET_R;
- 	omap_writel(l, MOD_CONF_CTRL_1);
- 
--	clk_enable(sossi.fck);
-+	clk_prepare_enable(sossi.fck);
- 	l = omap_readl(ARM_IDLECT2);
- 	l &= ~(1 << 8);			/* DMACK_REQ */
- 	omap_writel(l, ARM_IDLECT2);
-@@ -649,7 +649,7 @@ static int sossi_init(struct omapfb_device *fbdev)
- 	return 0;
- 
- err:
--	clk_disable(sossi.fck);
-+	clk_disable_unprepare(sossi.fck);
- 	clk_put(sossi.fck);
- 	return r;
- }
-@@ -657,6 +657,7 @@ static int sossi_init(struct omapfb_device *fbdev)
- static void sossi_cleanup(void)
- {
- 	omap_lcdc_free_dma_callback();
-+	clk_unprepare(sossi.fck);
- 	clk_put(sossi.fck);
- 	iounmap(sossi.base);
- }
-diff --git a/sound/soc/ti/osk5912.c b/sound/soc/ti/osk5912.c
-index 40e29dda7e7a..22da3b335e81 100644
---- a/sound/soc/ti/osk5912.c
-+++ b/sound/soc/ti/osk5912.c
-@@ -134,6 +134,10 @@ static int __init osk_soc_init(void)
- 		goto err2;
- 	}
- 
-+	err = clk_prepare(tlv320aic23_mclk);
-+	if (err)
-+		goto err3;
-+
- 	/*
- 	 * Configure 12 MHz output on MCLK.
- 	 */
-@@ -142,7 +146,7 @@ static int __init osk_soc_init(void)
- 		if (clk_set_rate(tlv320aic23_mclk, CODEC_CLOCK)) {
- 			printk(KERN_ERR "Cannot set MCLK for AIC23 CODEC\n");
- 			err = -ECANCELED;
--			goto err3;
-+			goto err4;
- 		}
- 	}
- 
-@@ -151,6 +155,8 @@ static int __init osk_soc_init(void)
- 
- 	return 0;
- 
-+err4:
-+	clk_unprepare(tlv320aic23_mclk);
- err3:
- 	clk_put(tlv320aic23_mclk);
- err2:
-@@ -164,6 +170,7 @@ static int __init osk_soc_init(void)
- 
- static void __exit osk_soc_exit(void)
- {
-+	clk_unprepare(tlv320aic23_mclk);
- 	clk_put(tlv320aic23_mclk);
- 	platform_device_unregister(osk_snd_device);
- }
--- 
+diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/=
+ti/cpsw_ethtool.c
+index 158c8d3793f4..5eda20039cc1 100644
+--- a/drivers/net/ethernet/ti/cpsw_ethtool.c
++++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
+@@ -364,7 +364,7 @@ int cpsw_ethtool_op_begin(struct net_device *ndev)
+ 	struct cpsw_common *cpsw =3D priv->cpsw;
+ 	int ret;
+=20
+-	ret =3D pm_runtime_get_sync(cpsw->dev);
++	ret =3D pm_runtime_resume_and_get(cpsw->dev);
+ 	if (ret < 0) {
+ 		cpsw_err(priv, drv, "ethtool begin failed %d\n", ret);
+ 		pm_runtime_put_noidle(cpsw->dev);
+--=20
 2.35.1
-
