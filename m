@@ -2,127 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DB314E3C81
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Mar 2022 11:34:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5585E4E3E05
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Mar 2022 13:02:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232591AbiCVKgI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 22 Mar 2022 06:36:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47810 "EHLO
+        id S233145AbiCVMEF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 22 Mar 2022 08:04:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232184AbiCVKgH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Mar 2022 06:36:07 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F343BFB7;
-        Tue, 22 Mar 2022 03:34:40 -0700 (PDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 22MAYTd8007542;
-        Tue, 22 Mar 2022 05:34:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1647945269;
-        bh=z85hXA83Hzf523x7WLNEaVagsOyI5OrDZfXKUsO1vKQ=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=q0RbNM8ZxoaNv/4jNqjL21dmOEO8eeAMpeJMouZURFXpE+vsu4uhgMgntZQIfaxOm
-         x1eiuSKMUuddadclhXWETP9gILS7O054NZF44ZtFcy4Y/DZbyAq/y3sl1/kcLQ9yPi
-         JpzV3JmrtrcJ1xIbYK9cv/dq0Rber/AcGyYRQ3vA=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 22MAYTNs001820
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Mar 2022 05:34:29 -0500
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 22
- Mar 2022 05:34:29 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Tue, 22 Mar 2022 05:34:29 -0500
-Received: from [172.24.222.171] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 22MAYQPt111734;
-        Tue, 22 Mar 2022 05:34:27 -0500
-Message-ID: <d3fac0ae-6d5c-33d7-4e1e-da9058ef525f@ti.com>
-Date:   Tue, 22 Mar 2022 16:04:25 +0530
+        with ESMTP id S231799AbiCVMEE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 22 Mar 2022 08:04:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A3A38301B;
+        Tue, 22 Mar 2022 05:02:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE5ED61382;
+        Tue, 22 Mar 2022 12:02:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545B5C340EC;
+        Tue, 22 Mar 2022 12:02:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1647950556;
+        bh=oXomf+OroFKXPI727l4Y0841A5BkhUXzo5xCfhdMsC0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TKE/1FWW/oIajs0VV3zmrI5NUmCEutISIFYySMXYpw+kvv0dJFWgyqzsVMXykcuoX
+         PyW7CTXlKifLMnywE5dTPyddnXvi+eurEpvnVBN1blVkHfFTNnAhPA7OE976g/tlqX
+         qbH1SznaPVG4E7H6Fq+qBcpe1PMXBezhJxT6ktcaIQRGDLiQWddT0rcKHLQi6S76bn
+         nuH0sA2NVhSCD0GcNMHL/GhCRYNfhBtAtnl4B1E4WmVWpqwLjXfwYlNfiQ+eIw1biZ
+         yxcoyoqSE0Vw3q7w4p3fNwK+Njl8UbLlQfh8LnObtcK56M/8fqDoxNl9qtaEAcMHc9
+         fzBoxgyDpyTYQ==
+Date:   Tue, 22 Mar 2022 12:02:28 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc:     Tony Lindgren <tony@atomide.com>, Paul Walmsley <paul@pwsan.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Helge Deller <deller@gmx.de>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Felipe Balbi <balbi@kernel.org>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Liam Girdwood <lgirdwood@gmail.com>, linux-mmc@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH v2] ARM: OMAP1: Prepare for conversion of OMAP1 clocks to
+ CCF
+Message-ID: <Yjm61MFGuo0Yug/B@sirena.org.uk>
+References: <20220310233307.99220-3-jmkrzyszt@gmail.com>
+ <20220321215416.236250-1-jmkrzyszt@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] drivers: ethernet: cpsw: fix panic when interrupt
- coaleceing is set via ethtool
-Content-Language: en-US
-To:     =?UTF-8?Q?Sondhau=c3=9f=2c_Jan?= <Jan.Sondhauss@wago.com>,
-        "grygorii.strashko@ti.com" <grygorii.strashko@ti.com>
-CC:     "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-References: <20220322063221.28132-1-jan.sondhauss@wago.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-In-Reply-To: <20220322063221.28132-1-jan.sondhauss@wago.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="j44egohE1ZoQznmQ"
+Content-Disposition: inline
+In-Reply-To: <20220321215416.236250-1-jmkrzyszt@gmail.com>
+X-Cookie: Drop that pickle!
+X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
 
-Adding netdev list and maintainers
+--j44egohE1ZoQznmQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Please cc netdev ML and net maintainers
+On Mon, Mar 21, 2022 at 10:54:16PM +0100, Janusz Krzysztofik wrote:
+> In preparation for conversion of OMAP1 clocks to common clock framework,
+> identify users of those clocks which don't call clk_prepare/unprepare()
+> and update them to call clk_prepare_enable/clk_disable_unprepare() instead
+> of just clk_enable/disable(), as required by CCF implementation of clock
+> API.
 
-./scripts/get_maintainer.pl -f drivers/net/ethernet/ti/cpsw_ethtool.c
+Acked-by: Mark Brown <broonie@kernel.org>
 
-On 22/03/22 12:02 pm, Sondhauß, Jan wrote:
-> cpsw_ethtool uses the power management in the begin and complete
-> functions of the ethtool_ops. The result of pm_runtime_get_sync was
-> returned unconditionally, which results in problems since the ethtool-
-> interface relies on 0 for success and negativ values for errors.
-> d43c65b05b84 (ethtool: runtime-resume netdev parent in ethnl_ops_begin)
-> introduced power management to the netlink implementation for the
-> ethtool interface and does not explicitly check for negative return
-> values.
-> 
-> As a result the pm_runtime_suspend function is called one-too-many
-> times in ethnl_ops_begin and that leads to an access violation when
-> the cpsw hardware is accessed after using
-> 'ethtool -C eth-of-cpsw rx-usecs 1234'. To fix this the call to
-> pm_runtime_get_sync in cpsw_ethtool_op_begin is replaced with a call
-> to pm_runtime_resume_and_get as it provides a returnable error-code.
-> 
+--j44egohE1ZoQznmQ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-pm_runtime_resume_and_get() is just wrapper around pm_runtime_get_sync()
-+ error handling (as done in the below code) and both return 0 on
-success and -ve error code on failure
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmI5utQACgkQJNaLcl1U
+h9COEQf9ELwbgSwwn1JVU6FAUZODISuwoWMyUuvHTGdNQEvrMH3GFIUbXQVQONw5
+wO62KwasXhYThVzc3rrC74tKTRzwY9/CvA4GNJfZqmHSuXg02O1XqYe6zUmlRbdt
+qxVjr4o/EKcY48qmrI9SV9k4GBDuOeU2fSZJP7EIvFqLC/tfDbQYYuRB+TY9Ig+j
+oTmg/0JXVooTcMULwexILHzRg4S4+mxOAjfsMojVzku0MepzEPzGo0xZDGYmD0RC
+QggKUpiyDnHPKgNk+pEG+1HmSf9sEd2Vb4k2eMfkacZ7Tz81/FON54F8K/213wKl
+hCsEajyZs2COxhX4Xfe+zoGXkLD3bg==
+=HhWj
+-----END PGP SIGNATURE-----
 
-> Signed-off-by: Jan Sondhauss <jan.sondhauss@wago.com>
-> ---
->  drivers/net/ethernet/ti/cpsw_ethtool.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/ti/cpsw_ethtool.c
-> index 158c8d3793f4..5eda20039cc1 100644
-> --- a/drivers/net/ethernet/ti/cpsw_ethtool.c
-> +++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
-> @@ -364,7 +364,7 @@ int cpsw_ethtool_op_begin(struct net_device *ndev)
->  	struct cpsw_common *cpsw = priv->cpsw;
->  	int ret;
->  
-> -	ret = pm_runtime_get_sync(cpsw->dev);
-> +	ret = pm_runtime_resume_and_get(cpsw->dev)>  	if (ret < 0) {
->  		cpsw_err(priv, drv, "ethtool begin failed %d\n", ret);
->  		pm_runtime_put_noidle(cpsw->dev);
-
-
-In fact code now ends up calling pm_runtime_put_noidle() twice in case
-of failure, once inside pm_runtime_resume_and_get() and again here?
-
-So something looks fishy?
-
-Regards
-Vignesh
+--j44egohE1ZoQznmQ--
