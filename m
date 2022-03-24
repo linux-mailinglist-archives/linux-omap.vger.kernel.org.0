@@ -2,84 +2,130 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94E0A4E5801
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Mar 2022 19:00:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C063A4E5F1E
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Mar 2022 08:10:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343900AbiCWSBs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 23 Mar 2022 14:01:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59524 "EHLO
+        id S1348362AbiCXHMM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 24 Mar 2022 03:12:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235384AbiCWSBq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 23 Mar 2022 14:01:46 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585F837AB5;
-        Wed, 23 Mar 2022 11:00:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1ACC8B82005;
-        Wed, 23 Mar 2022 18:00:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BA5C7C36AE2;
-        Wed, 23 Mar 2022 18:00:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648058413;
-        bh=I+InwoXQcf+sONGnxw2zxvs+HMUOtaWfmkHUkjj3LAo=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=SysejPG8+usZ2W5ix2yNbvGZXvMc0x9e/E1ZEr435V7kfXoAkm4SOSSuxJ/PW5n4H
-         1byoVXJ5sIke6dXFR4du6AFbWq0rkYpHe7MCFw4d+uGd4pLkiY4PTFPYTI86KSdHYs
-         26XCx4NjBXuCxSB52oaFgzJYmCieLccqijCdvQ4fc3ZwR0+oRM/grv6p869p6QQYr+
-         sW6N88cdj1vq0X/STHwkBaFrThJrBEF0Wsi+z58LaV23r9+A0N/Ci67ScmR9/Q/jIn
-         G0YWIGda+b/4R+nR2UfhjgB7fIsFV8UpjDg9EitI4tHy50rCfW2TdqIDZWvli5Fwvm
-         yPfBp6KS+ootg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 94F5FE6D402;
-        Wed, 23 Mar 2022 18:00:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S241560AbiCXHML (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 24 Mar 2022 03:12:11 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A3C992858;
+        Thu, 24 Mar 2022 00:10:40 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id bg10so7282552ejb.4;
+        Thu, 24 Mar 2022 00:10:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EwHGNo4299brXkfx15j4GX5scza9emTqyVtoZOQKDeg=;
+        b=mUjGObUl7C0bY7nCN6SUhdA9Uke/I0GKeZg30Rjqz7+hQfShrg2m5LPgKfjJnZcWh+
+         2uLPDy+zPbyuNNIq24rohLVJfWV59EKAZpW19QlacMWFQQz2m0uiBzaUZbT/+30B84Oi
+         yzaYAE56uZH1G+iRM/rRAO86SUv4q9rXf3mFMKYSAhSE7a6Lfpylcl/6XBnUc06CjQzW
+         WB/mVyATDETVDO3jOo2FIvR0V2/jZoKkEwPbdBkjPZnc0YL98v9fbjgrRargUvUfzbli
+         fDLpBtnATbFwkx/A5ixyeVagHX+E8n+e+/Kd4YNU2OJ8jGMMjUI7Q0rAkRzcu95htbH3
+         Gj8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EwHGNo4299brXkfx15j4GX5scza9emTqyVtoZOQKDeg=;
+        b=ah+2BI2LwDr3wsAJ9V+fYTV6FrEzbCb/xdugMflCXGZrMpRm1z/T7Fo0s8uP/eF2E+
+         d87h2g166fBC7SP1BAid7DTjmA8Kc5Mx80vNFaei8TApYzpB2CWG3GQez8/L8yfJxULP
+         S6uNOcu/GWqC+Na1wo9ZJFPo4vBSmlRreXFzaayvQKmb6Vk2kKJPEplVmb6h7NsADFvV
+         MFpuTxZV02dhyswD4rsQoSrZPn6lf5asmrQE0dw6rUby6dsBPgYaiXwsjdCQunMhOM5g
+         i/eHBDKgPHGP1s6A+YBaVhsuFUvcevhWrh6wandLZ6+SY5qhnuQtOFPo7ub8FkRfTCh+
+         WANQ==
+X-Gm-Message-State: AOAM531+x5dghTbfejhftv8zTsganwzrv4xVSyi4onDo0tEBBAV14neJ
+        BleTXzsH47/JOoodFqscOAc=
+X-Google-Smtp-Source: ABdhPJzuV9/GXeh9KjJYtEK7qcrmXHoJ7GxW2j+7tXUQg5zPZv084j7Alf0YIeEMISjnsuRCzFV2HQ==
+X-Received: by 2002:a17:907:60c8:b0:6da:83f0:9eaa with SMTP id hv8-20020a17090760c800b006da83f09eaamr4081185ejc.605.1648105838649;
+        Thu, 24 Mar 2022 00:10:38 -0700 (PDT)
+Received: from localhost.localdomain (i130160.upc-i.chello.nl. [62.195.130.160])
+        by smtp.googlemail.com with ESMTPSA id b7-20020a170906490700b006b2512921b2sm766465ejq.48.2022.03.24.00.10.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Mar 2022 00:10:38 -0700 (PDT)
+From:   Jakob Koschel <jakobkoschel@gmail.com>
+To:     Tero Kristo <kristo@kernel.org>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-omap@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Rapoport <rppt@kernel.org>,
+        "Brian Johannesmeyer" <bjohannesmeyer@gmail.com>,
+        Cristiano Giuffrida <c.giuffrida@vu.nl>,
+        "Bos, H.J." <h.j.bos@vu.nl>, Jakob Koschel <jakobkoschel@gmail.com>
+Subject: [PATCH] clk: ti: clkctrl: replace usage of found with dedicated list iterator variable
+Date:   Thu, 24 Mar 2022 08:10:19 +0100
+Message-Id: <20220324071019.59483-1-jakobkoschel@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] drivers: ethernet: cpsw: fix panic when intrrupt
- coaleceing is set via ethtool
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <164805841360.28459.4057344335857009664.git-patchwork-notify@kernel.org>
-Date:   Wed, 23 Mar 2022 18:00:13 +0000
-References: <20220323084725.65864-1-jan.sondhauss@wago.com>
-In-Reply-To: <20220323084725.65864-1-jan.sondhauss@wago.com>
-To:     =?utf-8?b?U29uZGhhdcOfLCBKYW4gPGphbi5zb25kaGF1c3NAd2Fnby5jb20+?=@ci.codeaurora.org
-Cc:     grygorii.strashko@ti.com, vigneshr@ti.com, netdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, Jan.Sondhauss@wago.com
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello:
+To move the list iterator variable into the list_for_each_entry_*()
+macro in the future it should be avoided to use the list iterator
+variable after the loop body.
 
-This patch was applied to netdev/net-next.git (master)
-by Jakub Kicinski <kuba@kernel.org>:
+To *never* use the list iterator variable after the loop it was
+concluded to use a separate iterator variable instead of a
+found boolean [1].
 
-On Wed, 23 Mar 2022 08:47:33 +0000 you wrote:
-> cpsw_ethtool_begin directly returns the result of pm_runtime_get_sync
-> when successful.
-> pm_runtime_get_sync returns -error code on failure and 0 on successful
-> resume but also 1 when the device is already active. So the common case
-> for cpsw_ethtool_begin is to return 1. That leads to inconsistent calls
-> to pm_runtime_put in the call-chain so that pm_runtime_put is called
-> one too many times and as result leaving the cpsw dev behind suspended.
-> 
-> [...]
+This removes the need to use a found variable and simply checking if
+the variable was set, can determine if the break/goto was hit.
 
-Here is the summary with links:
-  - [v2] drivers: ethernet: cpsw: fix panic when intrrupt coaleceing is set via ethtool
-    https://git.kernel.org/netdev/net-next/c/2844e2434385
+Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/
+Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+---
+ drivers/clk/ti/clkctrl.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-You are awesome, thank you!
+diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
+index 864c484bde1b..f12caef4f9bd 100644
+--- a/drivers/clk/ti/clkctrl.c
++++ b/drivers/clk/ti/clkctrl.c
+@@ -232,8 +232,7 @@ static struct clk_hw *_ti_omap4_clkctrl_xlate(struct of_phandle_args *clkspec,
+ 					      void *data)
+ {
+ 	struct omap_clkctrl_provider *provider = data;
+-	struct omap_clkctrl_clk *entry;
+-	bool found = false;
++	struct omap_clkctrl_clk *entry = NULL, *iter;
+ 
+ 	if (clkspec->args_count != 2)
+ 		return ERR_PTR(-EINVAL);
+@@ -241,15 +240,15 @@ static struct clk_hw *_ti_omap4_clkctrl_xlate(struct of_phandle_args *clkspec,
+ 	pr_debug("%s: looking for %x:%x\n", __func__,
+ 		 clkspec->args[0], clkspec->args[1]);
+ 
+-	list_for_each_entry(entry, &provider->clocks, node) {
+-		if (entry->reg_offset == clkspec->args[0] &&
+-		    entry->bit_offset == clkspec->args[1]) {
+-			found = true;
++	list_for_each_entry(iter, &provider->clocks, node) {
++		if (iter->reg_offset == clkspec->args[0] &&
++		    iter->bit_offset == clkspec->args[1]) {
++			entry = iter;
+ 			break;
+ 		}
+ 	}
+ 
+-	if (!found)
++	if (!entry)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	return entry->clk;
+
+base-commit: f443e374ae131c168a065ea1748feac6b2e76613
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
