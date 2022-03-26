@@ -2,83 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CAA4E8010
-	for <lists+linux-omap@lfdr.de>; Sat, 26 Mar 2022 09:43:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EBC84E8158
+	for <lists+linux-omap@lfdr.de>; Sat, 26 Mar 2022 15:09:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231920AbiCZIpR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 26 Mar 2022 04:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51734 "EHLO
+        id S232400AbiCZOLO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 26 Mar 2022 10:11:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiCZIpQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 26 Mar 2022 04:45:16 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 679FDDFDD6;
-        Sat, 26 Mar 2022 01:43:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id DFFEDB8013C;
-        Sat, 26 Mar 2022 08:43:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B1AC2BBE4;
-        Sat, 26 Mar 2022 08:43:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648284217;
-        bh=HHV9Ri58ctEofpGBkf5IU36ecNuwh1ugqE59mUikbtE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=qpSodZ3b4PzAzV69sS5ZEwVpwP3kcP1grU144zhP4WapQ2MXLUVfexK/FmdgfwxcP
-         55Ou1TaXozl2cC7aDKU9ZtDo4j5ABc4qOI0qWZ6Xcrz3ohndq/I76AjqfklrKG0vu9
-         7F/g8+f1HS04gS041W2+AWD+9nCJtKZQVxVQ9xyLqX+kyfXYariHvE3FNQHLQkoDRn
-         dv84CKSTZWlD6C8FxGzSgxIJDeWtJIMGBjR072nUQeFPPoBXQQR+BSl/4Gqj0LZNlM
-         VEu7AMvNw77mflC20ie2ySygMJeqJvTUoALoOFxRlmUgzWCVDNidfKpZOcZPv1E6cc
-         3jn2jQpcg5cEw==
-From:   Roger Quadros <rogerq@kernel.org>
-To:     krzk@kernel.org
-Cc:     miquel.raynal@bootlin.com, tony@atomide.com, vigneshr@ti.com,
-        kishon@ti.com, nm@ti.com, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH 1/1] memory: omap-gpmc: Make OMAP_GPMC config visible and selectable
-Date:   Sat, 26 Mar 2022 10:43:31 +0200
-Message-Id: <20220326084331.28310-1-rogerq@kernel.org>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231482AbiCZOLN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 26 Mar 2022 10:11:13 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E864ECEE;
+        Sat, 26 Mar 2022 07:09:36 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 22QE9QOk106943;
+        Sat, 26 Mar 2022 09:09:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1648303766;
+        bh=9FhBa4d6c/E7NyUvf6hFNi3X7f1RjP2z+g6onY7Oo34=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=svklQovqXzG5eh2Wu31ryXLdYNIC/kSyceQQxupnU4dkJUNEgEK8QCIu5vztPNmpD
+         qijLcC42GIayTSD7flGODn54AedQYFBSJhzY8MK4ZUweOoxtMsvXoRusjXQXEXPvmP
+         0tPVQqn8Ll9maAqiFo3+MwNn6xFQPs/DgTqpfYKk=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 22QE9Q5r000685
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Sat, 26 Mar 2022 09:09:26 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Sat, 26
+ Mar 2022 09:09:26 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Sat, 26 Mar 2022 09:09:26 -0500
+Received: from [10.250.235.115] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 22QE9N0g020357;
+        Sat, 26 Mar 2022 09:09:24 -0500
+Message-ID: <e28524f0-7251-afc3-4237-58994659f0d3@ti.com>
+Date:   Sat, 26 Mar 2022 19:39:23 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH 1/1] memory: omap-gpmc: Make OMAP_GPMC config visible and
+ selectable
+Content-Language: en-US
+To:     Roger Quadros <rogerq@kernel.org>, <krzk@kernel.org>
+CC:     <miquel.raynal@bootlin.com>, <tony@atomide.com>, <kishon@ti.com>,
+        <nm@ti.com>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20220326084331.28310-1-rogerq@kernel.org>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+In-Reply-To: <20220326084331.28310-1-rogerq@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-So far for armv7 TI platforms, GPMC was being selected by
-arch/arm/mach-* architecture Kconfig files.
+Hi Roger,
 
-For K3 platforms, GPMC is no longer required for basic boot
-and cannot be always enabled by default by mach- Kconfig.
+On 26/03/22 2:13 pm, Roger Quadros wrote:
+> So far for armv7 TI platforms, GPMC was being selected by
+> arch/arm/mach-* architecture Kconfig files.
+> 
+> For K3 platforms, GPMC is no longer required for basic boot
+> and cannot be always enabled by default by mach- Kconfig.
+> 
+> We need a way for user (or board defconfig) to enable
+> it if required so ake OMAP_GPMC Kconfig option always visible.
+> 
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> ---
+>  drivers/memory/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
+> index 30bff6cb1b8d..da2af9c38fe3 100644
+> --- a/drivers/memory/Kconfig
+> +++ b/drivers/memory/Kconfig
+> @@ -103,8 +103,8 @@ config TI_EMIF
+>  	  temperature changes
+>  
+>  config OMAP_GPMC
+> -	bool "Texas Instruments OMAP SoC GPMC driver" if COMPILE_TEST
+> -	depends on OF_ADDRESS
+> +	bool "Texas Instruments OMAP SoC GPMC driver"
+> +	depends on OF_ADDRESS || COMPILE_TEST
 
-We need a way for user (or board defconfig) to enable
-it if required so ake OMAP_GPMC Kconfig option always visible.
+Can we make this tristate now, so that driver can be built as module?
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
----
- drivers/memory/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-index 30bff6cb1b8d..da2af9c38fe3 100644
---- a/drivers/memory/Kconfig
-+++ b/drivers/memory/Kconfig
-@@ -103,8 +103,8 @@ config TI_EMIF
- 	  temperature changes
- 
- config OMAP_GPMC
--	bool "Texas Instruments OMAP SoC GPMC driver" if COMPILE_TEST
--	depends on OF_ADDRESS
-+	bool "Texas Instruments OMAP SoC GPMC driver"
-+	depends on OF_ADDRESS || COMPILE_TEST
- 	select GPIOLIB
- 	help
- 	  This driver is for the General Purpose Memory Controller (GPMC)
--- 
-2.17.1
-
+>  	select GPIOLIB
+>  	help
+>  	  This driver is for the General Purpose Memory Controller (GPMC)
