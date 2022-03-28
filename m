@@ -2,62 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0DB44E97A9
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Mar 2022 15:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D677D4E97F2
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Mar 2022 15:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234129AbiC1NNk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Mar 2022 09:13:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
+        id S243161AbiC1NXk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Mar 2022 09:23:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237949AbiC1NNh (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 09:13:37 -0400
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8569E14008;
-        Mon, 28 Mar 2022 06:11:55 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id b15so16863595edn.4;
-        Mon, 28 Mar 2022 06:11:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=wduPLn72HNFMFI5wRZhSSzG+yA4cTZ99h7NbdswNd2A=;
-        b=6MV6cuMsa9poZ98dOyiKq5HT6BXhCGhKGTRRRGRTtI31nu7Dl15ukcpJIV9Jk26Pdi
-         7lTTbAMeyNBisjOGWrNUcF2mxz9WDx1S0Is0qzCBTbZ/ubXHejKgogB06e+DRBbZingu
-         Q+51Lg+4TKx53wC3OJffwn16JfxrDEFk7KoHwmBD4ibqvC9pLpfrQeX86+hhwmMJgzef
-         /joqHqB+DRmxS5Zaf3wduE3vMzYLbVD2V4K18z50p9xgkZIHxwZ/xzFUC1pwiaFMIIRw
-         KO0djld+R0giRE1zcEfU8mWBT0YhCUV2pDqJe7sO1Q2S86MBrKUmicFmA58ZKUaLjOYx
-         VUKg==
-X-Gm-Message-State: AOAM532vFmrOLBklDOTCOrrM+qWBgS/PFE7F6r54+rq+ZBTupQ2tMjFk
-        B6hWvm0N2QePlDpqFMQMi2E=
-X-Google-Smtp-Source: ABdhPJxCudiVYrrAevwOd7qI2w6vJI/0O3iILZWbDoT5Qs6a4rL/zpZHpfRLRhnS4khWT/uf9WxELg==
-X-Received: by 2002:a05:6402:168a:b0:3fb:600e:4cc3 with SMTP id a10-20020a056402168a00b003fb600e4cc3mr16186266edv.32.1648473114034;
-        Mon, 28 Mar 2022 06:11:54 -0700 (PDT)
-Received: from [192.168.0.162] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.googlemail.com with ESMTPSA id m21-20020a17090677d500b006df766974basm6046482ejn.3.2022.03.28.06.11.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Mar 2022 06:11:53 -0700 (PDT)
-Message-ID: <8a55260d-7354-028b-8439-475a9fbfe092@kernel.org>
-Date:   Mon, 28 Mar 2022 15:11:52 +0200
+        with ESMTP id S243136AbiC1NXW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 09:23:22 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB2265E159;
+        Mon, 28 Mar 2022 06:21:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1648473670;
+        bh=Nm/Ru4v6GD/9m6h8Ema9mdsaUHXiVXieqg+H9J3bSYw=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=dCRQEFglsITzGpimBzcg+u4n6Kl0FzRG46PfUKNDL3Zc6F4MnJpb1xKHoaS2pPHf7
+         Pje8OF4P7mEbD47lM71pF7jGJfY9ca178uwYfm18LEHprmOLdnwz49EnmIvOp5nfwD
+         IXCKRSqyaVAzKIxi+6TF8gqSqeuG7cFz7zOx9I8k=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from longitude ([37.201.215.112]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mdvqg-1o9Wy01IDW-00b62U; Mon, 28
+ Mar 2022 15:21:10 +0200
+Date:   Mon, 28 Mar 2022 15:21:08 +0200
+From:   Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+To:     Ansuel Smith <ansuelsmth@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-actions@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
+        linux-aspeed@lists.ozlabs.org,
+        linux-rpi-kernel@lists.infradead.org,
+        chrome-platform@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        kernel@dh-electronics.com, linux-mediatek@lists.infradead.org,
+        openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
+        linux-oxnas@groups.io, linux-arm-msm@vger.kernel.org,
+        linux-unisoc@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        linux-realtek-soc@lists.infradead.org
+Subject: Re: [RFC PATCH 0/1] Categorize ARM dts directory
+Message-ID: <YkG2RPrtPaBNXb7a@latitude>
+References: <20220328000915.15041-1-ansuelsmth@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 2/2] memory: omap-gpmc: Allow building as a module
-Content-Language: en-US
-To:     Roger Quadros <rogerq@kernel.org>
-Cc:     miquel.raynal@bootlin.com, tony@atomide.com, vigneshr@ti.com,
-        kishon@ti.com, nm@ti.com, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220328111319.1236-1-rogerq@kernel.org>
- <20220328111319.1236-3-rogerq@kernel.org>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20220328111319.1236-3-rogerq@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="x1hzLjR6QNWBL5ri"
+Content-Disposition: inline
+In-Reply-To: <20220328000915.15041-1-ansuelsmth@gmail.com>
+X-Provags-ID: V03:K1:Bioqa+FsRJNTbH3AmylnUOJ5uauHNDFVr5040I9oO0lC3hC8za8
+ 8toO+l0g55xievdKeTJ469gRnIKOkbsFSsOO+tgGq7irO2EOMhJkwHWcURdNp65efMi2oLY
+ L5fGfWljKrJsoHoMaPXHH/ObRkqn8C/sxbzJkrFQPrLB6jphQpHadN6OgYOe3EsTr5qfgRR
+ 0QxmE3cnPXA2J3+3R2qHQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qSCWiWhp0AA=:JPnFg4Ox1UVYYY/8fhKJVM
+ l+WvPeePMt4LgNO1jOCklUiJsMJp2fVhkF6zvHWpwPAD9p3mgVERt6B29InFZ4jYgFdBA1cTm
+ qSqT6SMcjXT0xhEAtfS8lEHCAbdD+JaGn0C9Vl8obNjSlkwx/RiBlQwb138BWaVTReKkIROJp
+ NmbTpMS9m/HMPbF3tfbiDPS0I/f9zoLSS7lRHcDmG6NU4aEbhAtjG4N8fPjMYmN41KZP9j5Li
+ 0HqNylcSxz+EM6+yyI1O5ffSi+2g4Qeiedae73p8MkQGX0AkPpv20/NDmW8nPMRoCUgSLThAY
+ TLdgd+0xyYxRjrrnEqh1rv8JAQ9VNn+jVKn4b8KoLIFFAHxWRR+1lI0NYVeb+3XeLxOfeBg14
+ gAyZihbMNiS3tr6yDnFt9RsPUjd86HIxJXiBnn8ff/PMNRF4yRbIEmRqoLDMLj7ZQdDyig2TR
+ D3faEKe4uBc/xXFoVzCqIxa/RYEGjM6cmx3QBW4SvS6R6OYs/pkBLkkboqv+dthGVLTpWGQm8
+ t3hHhgBoZzDa/tDukFKzCnMCBX0fvBwPKnGwK3pn+w09ll4szL8l+1POb0DSdWP85MUvSXqIY
+ CEbfamt1sbJpKJhT+xpLHVfcFXCnO/8M/zW+3B5KclMF/aUNQZPItw/KgeBEk22LsgMwBSohD
+ 7pg464l4jsM0XKrhGm0BltSjqvBNzDwBfrU/lM0dbnClpcDfyAZ7djoox39wGvonabWYMqx+I
+ hwAruor/3uM4fCfq9TGuMjXxss+XipMSC9sQVHcKr1rbhp4CWR2WKgcjRuaERyOUV4HoWg3xd
+ 0PT7V6QsSDQzDft0mgayfapeqTiIoERDMphL2Pub/kxAqGkOXvDyIKmOcblFa4eMvZOA2t7pz
+ /UcIVrhr4hcrN0H5A6QqC21PvordOTxUA1TsbJdoWbUXY1KBORh2xhnjzO/9Mur33ngpFnmmy
+ OxPhT26iaoSQ9AfHKYJ8LEsqXBGgF4OewVdWCJWgvOJGhPYVHPQHbP+teS5P8ozVm6x0al4qs
+ 4PygQzjcdy6BF9MKsChug4Iv0jEJ+gKPzHip49KhW1vvSuTzRqJ/qoNcv/VD/9TonnJNkdSTa
+ LKKxAFfWQ792s0=
+X-Spam-Status: No, score=-0.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS,
+        T_SCC_BODY_TEXT_LINE,WEIRD_QUOTING autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,129 +85,103 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 28/03/2022 13:13, Roger Quadros wrote:
-> Allow OMAP_GPMC to be built as a module.
-> 
-> Remove redundant of_match_node() call before
-> of_platform_default_populate() as the latter takes
-> care of matching with of_default_bus_match_table.
 
-Split this part to separate commit, please. It does not look related to
-making it a module.
+--x1hzLjR6QNWBL5ri
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
-> Move compatible match table to the end where it is usually expected.
-> 
-> Signed-off-by: Roger Quadros <rogerq@kernel.org>
-> ---
->  drivers/memory/Kconfig     |  2 +-
->  drivers/memory/omap-gpmc.c | 44 +++++++++++++++++++++-----------------
->  2 files changed, 25 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-> index da2af9c38fe3..4debd4b2c8da 100644
-> --- a/drivers/memory/Kconfig
-> +++ b/drivers/memory/Kconfig
-> @@ -103,7 +103,7 @@ config TI_EMIF
->  	  temperature changes
->  
->  config OMAP_GPMC
-> -	bool "Texas Instruments OMAP SoC GPMC driver"
-> +	tristate "Texas Instruments OMAP SoC GPMC driver"
->  	depends on OF_ADDRESS || COMPILE_TEST
->  	select GPIOLIB
->  	help
-> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-> index ed11887c1b7c..6fdb76cc3bc9 100644
-> --- a/drivers/memory/omap-gpmc.c
-> +++ b/drivers/memory/omap-gpmc.c
-> @@ -12,6 +12,7 @@
->  #include <linux/cpu_pm.h>
->  #include <linux/irq.h>
->  #include <linux/kernel.h>
-> +#include <linux/module.h>
->  #include <linux/init.h>
->  #include <linux/err.h>
->  #include <linux/clk.h>
-> @@ -1889,16 +1890,6 @@ int gpmc_cs_program_settings(int cs, struct gpmc_settings *p)
->  }
->  
->  #ifdef CONFIG_OF
-> -static const struct of_device_id gpmc_dt_ids[] = {
-> -	{ .compatible = "ti,omap2420-gpmc" },
-> -	{ .compatible = "ti,omap2430-gpmc" },
-> -	{ .compatible = "ti,omap3430-gpmc" },	/* omap3430 & omap3630 */
-> -	{ .compatible = "ti,omap4430-gpmc" },	/* omap4430 & omap4460 & omap543x */
-> -	{ .compatible = "ti,am3352-gpmc" },	/* am335x devices */
-> -	{ .compatible = "ti,am64-gpmc" },
-> -	{ }
-> -};
-> -
->  static void gpmc_cs_set_name(int cs, const char *name)
->  {
->  	struct gpmc_cs_data *gpmc = &gpmc_cs[cs];
-> @@ -2257,11 +2248,9 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
->  	if (!of_platform_device_create(child, NULL, &pdev->dev))
->  		goto err_child_fail;
->  
-> -	/* is child a common bus? */
-> -	if (of_match_node(of_default_bus_match_table, child))
-> -		/* create children and other common bus children */
-> -		if (of_platform_default_populate(child, NULL, &pdev->dev))
-> -			goto err_child_fail;
-> +	/* create children and other common bus children */
-> +	if (of_platform_default_populate(child, NULL, &pdev->dev))
-> +		goto err_child_fail;
->  
->  	return 0;
->  
-> @@ -2278,6 +2267,8 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
->  	return ret;
->  }
->  
-> +static const struct of_device_id gpmc_dt_ids[];
-> +
->  static int gpmc_probe_dt(struct platform_device *pdev)
->  {
->  	int ret;
-> @@ -2644,6 +2635,19 @@ static int gpmc_resume(struct device *dev)
->  
->  static SIMPLE_DEV_PM_OPS(gpmc_pm_ops, gpmc_suspend, gpmc_resume);
->  
-> +#ifdef CONFIG_OF
-> +static const struct of_device_id gpmc_dt_ids[] = {
-> +	{ .compatible = "ti,omap2420-gpmc" },
-> +	{ .compatible = "ti,omap2430-gpmc" },
-> +	{ .compatible = "ti,omap3430-gpmc" },	/* omap3430 & omap3630 */
-> +	{ .compatible = "ti,omap4430-gpmc" },	/* omap4430 & omap4460 & omap543x */
-> +	{ .compatible = "ti,am3352-gpmc" },	/* am335x devices */
-> +	{ .compatible = "ti,am64-gpmc" },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, gpmc_dt_ids);
-> +#endif
-> +
->  static struct platform_driver gpmc_driver = {
->  	.probe		= gpmc_probe,
->  	.remove		= gpmc_remove,
-> @@ -2654,8 +2658,8 @@ static struct platform_driver gpmc_driver = {
->  	},
->  };
->  
-> -static __init int gpmc_init(void)
-> -{
-> -	return platform_driver_register(&gpmc_driver);
-> -}
-> -postcore_initcall(gpmc_init);
-> +module_platform_driver(gpmc_driver);
-> +
-> +MODULE_DESCRIPTION("Texas Instruments GPMC driver");
-> +MODULE_ALIAS("platform:" DEVICE_NAME);
+On Mon, Mar 28, 2022 at 02:09:14AM +0200, Ansuel Smith wrote:
+> Hi,
+> as the title say, the intention of this ""series"" is to finally categorize
+> the ARM dts directory in subdirectory for each oem.
+[...]
+> [1] https://gist.github.com/Ansuel/47c49925ee7ef4b1dd035afc74679ab5
+> [2] https://gist.github.com/Ansuel/19f61f1e583c49407ce35c10e770fbe0
 
-Why do you need this alias?
+Nice idea, thank you!
 
-> +MODULE_LICENSE("GPL v2");
+A few notes on categorization below.
 
 
-Best regards,
-Krzysztof
+>  create mode 100644 arch/arm/boot/dts/broadcom/Makefile
+>  rename arch/arm/boot/dts/{ => broadcom}/bcm-cygnus-clock.dtsi (100%)
+
+Or maybe bcm instead of broadcom. Not sure which is preferred by
+Broadcom people.
+
+>  create mode 100644 arch/arm/boot/dts/dove/Makefile
+>  rename arch/arm/boot/dts/{ => dove}/dove-cm-a510.dtsi (100%)
+
+Arguably part of Marvell.
+
+>  create mode 100644 arch/arm/boot/dts/edac/Makefile
+>  rename arch/arm/boot/dts/{ => edac}/ecx-2000.dts (100%)
+>  rename arch/arm/boot/dts/{ => edac}/ecx-common.dtsi (100%)
+>  rename arch/arm/boot/dts/{ => edac}/highbank.dts (100%)
+
+Why edac?
+The most obvious name I can see here is calxeda.
+
+>  create mode 100644 arch/arm/boot/dts/freescale/Makefile
+
+Freescale has been part of NXP for a while, so it might make sense to
+merge the freescale and nxp directories. I can't speak for
+NXP-the-company, so that's just my view as a bystander.
+
+>  create mode 100644 arch/arm/boot/dts/kirkwood/Makefile
+
+The Kirkwood family should probably be sorted into Marvell.
+
+>  create mode 100644 arch/arm/boot/dts/layerscape/Makefile
+>  rename arch/arm/boot/dts/{ => layerscape}/ls1021a-moxa-uc-8410a.dts (100%)
+>  rename arch/arm/boot/dts/{ => layerscape}/ls1021a-qds.dts (100%)
+>  rename arch/arm/boot/dts/{ => layerscape}/ls1021a-tsn.dts (100%)
+>  rename arch/arm/boot/dts/{ => layerscape}/ls1021a-twr.dts (100%)
+>  rename arch/arm/boot/dts/{ => layerscape}/ls1021a.dtsi (100%)
+
+The Layerscape family is part of Freescale/NXP.
+
+>  create mode 120000 arch/arm/boot/dts/nxp/armv7-m.dtsi
+
+armv7-m.dtsi is a bit confusing, because it contains a few devices at
+fixed addresses, so it looks vendor-specific at a first glance into the
+file. However, if it is actually as vendor-neutral as the name implies,
+I think it should live dts/ directly, rather than in vendor
+subdirectories.
+
+>  rename arch/arm/boot/dts/{ => nxp}/lpc18xx.dtsi (100%)
+
+Here we have the NXP LPCxxxx family, which is AFAIK unrelated to the
+i.MX family (and thus the bulk of the Freescale legacy).
+
+>  create mode 100644 arch/arm/boot/dts/vybrid/Makefile
+
+Vybrid is another chip family of NXP, with a good deal of Freescale
+legacy in it as evidenced by the "fsl," prefix in the devicetrees.
+
+
+
+Thanks,
+Jonathan
+
+--x1hzLjR6QNWBL5ri
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEvHAHGBBjQPVy+qvDCDBEmo7zX9sFAmJBthoACgkQCDBEmo7z
+X9sFJw/8DJFQM9nd8arLY6Z//ocARyXbmt5SCXJ4Fe+N9mDLSgBhMW92vbZe9AJj
+LXhypAAS4wZv1lpuor2GHufy5pFc0jL+UXBajKabI27cZX6x1KJR5tWglAAzfepf
+zI8iaRfdQ1vm+70MGQDgXYMsUAyk+1RXuLYWZYXp3XX0E/0SsyXkc92jdqyurZmI
+8PwvWo5cRY+2m35pvPUff8I4RNfrVvCcMUlzD34bnbi6Kt8Iedvn8QCzLglZyKgs
++0JL9pSrbyRvGqbYuaKqryL7bs/msL7CLAqUTzunTi1TFbGV8/dRzlxL9fFYmyFp
+NJ9zszuKs8wfW03g+piIjWwN0ZItFXNQvvdBs0y6bfZZLwu6V9QF1MAN+7cnlCRK
+94EH4UNH/FGOZkTnrW1IfNRG9hBMgddEWKQQmniGKmdZGefAIfvENQWq/ErV5vb5
+vVUwMxG6HqbFZH0C5bFzeyUwd8UjjnCSGJ/Fe3Xdmgqpvk6pdgDESW+/7MEnXYks
+9zs9a/M9a7iGH+Dagu5EkP8L2r2R1wTEBjSXrs0ZjfceZbVvYwygfoKPUzW59eRE
+szecWAs/qLdxDrLfIVN1Kpr8KmLNSyyYT3kFDAkuupyHj4Qb9Am40KgzcTgYgv0g
+ex5m9SbThoor9QWhVT1IDQHbzT0ZKHkaqf0dCJyIPVUekDYbFvA=
+=A4ZY
+-----END PGP SIGNATURE-----
+
+--x1hzLjR6QNWBL5ri--
