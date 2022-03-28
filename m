@@ -2,143 +2,134 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACFF04E98D7
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Mar 2022 16:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A1154E9B21
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Mar 2022 17:30:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240633AbiC1OBv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Mar 2022 10:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60996 "EHLO
+        id S237589AbiC1PcP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Mar 2022 11:32:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239631AbiC1OBu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 10:01:50 -0400
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6511929CB0;
-        Mon, 28 Mar 2022 07:00:08 -0700 (PDT)
+        with ESMTP id S232846AbiC1PcO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 11:32:14 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B20F45D18B;
+        Mon, 28 Mar 2022 08:30:31 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id p15so29459602ejc.7;
+        Mon, 28 Mar 2022 08:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1648476009; x=1680012009;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ayM215iKfS3RVxHHf6+6kiEWl9gC2cMSZOj/C1/hktk=;
-  b=U8/IvxCtevfYoGYrmAhmdvhsaSlpF29tUqtt73uDLA1mNqIdn9gAh5Px
-   LS3s2pIN8sFmOrO/atdnDsCnOk2QBkaCZTV5pGjo+XhXYYarAiIIzXbCI
-   KuAYCgpNsw2miPHYKSwBDdywOVa9743uWj5iGnEiCOVJIgtcJbuIArtuB
-   FiU0E0VJSlejFS+KsPWvPv6sxjL5m10MlkFYv8diGYs+wI7oYwi9BScOm
-   b1YQukNL5OvfmlbFPT95RwnRBykJWQqZ02S/dtSs24P6pyjcRpe4glG6y
-   b8YQyedffRPaJTs0VmLXut/QlvD30JS5tFylRtBCgwTcQfY5ZDcCWeQ0m
-   A==;
-X-IronPort-AV: E=Sophos;i="5.90,217,1643670000"; 
-   d="scan'208";a="22935295"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 28 Mar 2022 16:00:05 +0200
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Mon, 28 Mar 2022 16:00:05 +0200
-X-PGP-Universal: processed;
-        by tq-pgp-pr1.tq-net.de on Mon, 28 Mar 2022 16:00:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1648476005; x=1680012005;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ayM215iKfS3RVxHHf6+6kiEWl9gC2cMSZOj/C1/hktk=;
-  b=WuV252Nu+GZzN74VzCmlspBKd0dca8X2+xSzsUDOC+VBkSdAcRJKkpz9
-   V6ZhUvtyzJXo40EU/KoKsnsMA+udDgpFrmJjA0OOrI8Du6AE/IqQXvbD0
-   l7/oi3cIclt6kdqSsBk62dD3jTXzpYH4IITmDIWCq1j5VlQdR/7ht0rkB
-   UzXa+gf9sB2fMmE9Y4BJg30hxvVMBs2s+cV3pKJsYN741b+m12/z4LAVK
-   Ghd0BfGmPSMkfRYy9LlDPSTztxPRWJXf02LYJ3AALa7lqL+bNoPBea5QD
-   q3OLZ+wYdDSKr/JtyC5EC84xkLnc6lGkLWsLSzPCKdl/McKEhN7OLwWQj
-   g==;
-X-IronPort-AV: E=Sophos;i="5.90,217,1643670000"; 
-   d="scan'208";a="22935294"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 28 Mar 2022 16:00:05 +0200
-Received: from steina-w.localnet (unknown [10.123.49.12])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 20160280065;
-        Mon, 28 Mar 2022 16:00:04 +0200 (CEST)
-From:   Alexander Stein <alexander.stein@ew.tq-group.com>
-To:     Jonathan =?ISO-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>
-Cc:     Ansuel Smith <ansuelsmth@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-actions@lists.infradead.org,
-        linux-sunxi@lists.linux.dev, linux-omap@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
-        linux-aspeed@lists.ozlabs.org,
-        linux-rpi-kernel@lists.infradead.org,
-        chrome-platform@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        kernel@dh-electronics.com, linux-mediatek@lists.infradead.org,
-        openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
-        linux-oxnas@groups.io, linux-arm-msm@vger.kernel.org,
-        linux-unisoc@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        linux-realtek-soc@lists.infradead.org
-Subject: Re: (EXT) Re: [RFC PATCH 0/1] Categorize ARM dts directory
-Date:   Mon, 28 Mar 2022 16:00:02 +0200
-Message-ID: <2100132.irdbgypaU6@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <YkG2RPrtPaBNXb7a@latitude>
-References: <20220328000915.15041-1-ansuelsmth@gmail.com> <YkG2RPrtPaBNXb7a@latitude>
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=p3XuvSz9El6nko432TGNXkjhObeuwCH/Ie6ye/gIxy8=;
+        b=IIz4FdV0mOAafEMr4USQHNy+IBB8W1SLxNvpY/qmwe2L60jIkh+BtkZhRLusE+9byJ
+         VVOGC3zinYbOUHGmsCd3rVC2X3mzOikYzWwgTARQiJoLNejLG6UtsmsOLYNWwa5xebSl
+         LNl2I+j4OF8XLi8+9lnxeCIEzt7rAW/BtqIbKaPUf0iApZt76Mbpehd2wRQJCk5yR+QI
+         8NZpda1g8E03N2qz7Oh7iXrTozXwVZMMJ3MgtA6bpR25EguMNLOn8u0iMynemdSUOket
+         6XSWVQ87FGvnAm7+rdyebHF81x9Q1Xf03LzPHMmJiMMQqQsFNEYlNbGAWHzzK9cZeSNW
+         3Lvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=p3XuvSz9El6nko432TGNXkjhObeuwCH/Ie6ye/gIxy8=;
+        b=JAqN2ruLwtMeJyavhf1AGyRb1bh/zGZjY5VuWv70KNDlM1BOFPC7ghhF8uWGru8qJt
+         jSV3VZuQ1E0p73NQpC1ex5lngI4kSkhEoiYIVQ+CTEks733QydptkXmU2cogVANTUT5k
+         JzTgg2OF8GC6ZjiVsXx8PxmJHZg6K3k2bcYhN/v57VB37qt8NPWEZExKDWDjrgx3uY2/
+         yrV+HoqmHO/OKGrfcXcpj3tox9IfcgmRbR+BSlIP0pUVQgU9/4HixcFlf8kDfgDhZ8jo
+         986paEn2zsvYQ6DGn1WXuKGFtXQ+pWJAD5JbOUudDoBQLhN/YUnoQeinEeohpxdfWnJA
+         9Utg==
+X-Gm-Message-State: AOAM5315gscQJaAeg2qeA4U0bm90VK9wPCWSWFnEryVoYUZX0ZtVnGMG
+        tE9luG+F+WpReVM5YZJJmKE=
+X-Google-Smtp-Source: ABdhPJzTNnMXRuknjU+f0aWqPcOk/WgtWC3qwlzaCIcEolJcpttqYGy3tEe+3vYytAaiM+K47vsWvQ==
+X-Received: by 2002:a17:907:d02:b0:6e0:4f1d:7ab1 with SMTP id gn2-20020a1709070d0200b006e04f1d7ab1mr27848220ejc.716.1648481430084;
+        Mon, 28 Mar 2022 08:30:30 -0700 (PDT)
+Received: from [192.168.1.10] ([46.249.74.23])
+        by smtp.googlemail.com with ESMTPSA id bx5-20020a0564020b4500b00418fca53406sm7022210edb.27.2022.03.28.08.30.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 28 Mar 2022 08:30:29 -0700 (PDT)
+Subject: Re: [PATCH 0/3] drm: omapdrm: Fix excessive GEM buffers DMM/CMA usage
+To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, merlijn@wizzup.org, tony@atomide.com,
+        airlied@linux.ie, daniel@ffwll.ch
+References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+ <e126b6a7-5c34-66d5-d371-b2bae3b94924@ideasonboard.com>
+From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Message-ID: <653c8cf1-8644-f5cb-810e-81539a99d776@gmail.com>
+Date:   Mon, 28 Mar 2022 18:30:19 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Firefox/60.0 Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS,
-        T_SCC_BODY_TEXT_LINE,WEIRD_QUOTING autolearn=no autolearn_force=no
-        version=3.4.6
+In-Reply-To: <e126b6a7-5c34-66d5-d371-b2bae3b94924@ideasonboard.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Am Montag, 28. M=E4rz 2022, 15:21:08 CEST schrieb Jonathan Neusch=E4fer:
-> * PGP Signed by an unknown key
->=20
-> On Mon, Mar 28, 2022 at 02:09:14AM +0200, Ansuel Smith wrote:
-> > Hi,
-> > as the title say, the intention of this ""series"" is to finally
-> > categorize
-> > the ARM dts directory in subdirectory for each oem.
->=20
-> [...]
->=20
-> > [1] https://gist.github.com/Ansuel/47c49925ee7ef4b1dd035afc74679ab5
-> > [2] https://gist.github.com/Ansuel/19f61f1e583c49407ce35c10e770fbe0
->=20
-> Nice idea, thank you!
->=20
-> A few notes on categorization below.
-> [...]
-> >  create mode 100644 arch/arm/boot/dts/freescale/Makefile
->=20
-> Freescale has been part of NXP for a while, so it might make sense to
-> merge the freescale and nxp directories. I can't speak for
-> NXP-the-company, so that's just my view as a bystander.
+Hi,
 
-Please don't mix the names for arm and arm64. It's very confusing if the=20
-vendor directory is named differently for each architecture.
+On 28.03.22 г. 12:46 ч., Tomi Valkeinen wrote:
+> Hi,
+> 
+> On 19/01/2022 12:23, Ivaylo Dimitrov wrote:
+>> This patch series fixes excessive DMM or CMA usage of GEM buffers 
+>> leading to
+>> various runtime allocation failures. The series enables daily usage of 
+>> devices
+>> without exausting limited resources like CMA or DMM space if GPU 
+>> rendering is
+>> needed.
+>>
+>> The first patch doesn't bring any functional changes, it just moves some
+>> TILER/DMM related code to a separate function, to simplify the review 
+>> of the
+>> next two patches.
+>>
+>> The second patch allows off-CPU rendering to non-scanout buffers. 
+>> Without that
+>> patch, it is basically impossible to use the driver allocated GEM 
+>> buffers on
+>> OMAP3 for anything else but a basic CPU rendered examples as if we 
+>> want GPU
+>> rendering, we must allocate buffers as scanout buffers, which are CMA 
+>> allocated.
+>> CMA soon gets fragmented and we start seeing allocation failures. Such 
+>> failres
+>> in Xorg cannot be handeled gracefully, so the system is basically 
+>> unusable.
+>>
+>> Third patch fixes similar issue on OMAP4/5, where DMM/TILER spaces get
+>> fragmented with time, leading to allocation failures.
+>>
+>> Series were tested on Motolola Droid4 and Nokia N900, with OMAP DDX and
+>> PVR EXA from https://github.com/maemo-leste/xf86-video-omap
+>>
+>> Ivaylo Dimitrov (3):
+>>    drm: omapdrm: simplify omap_gem_pin
+>>    drm: omapdrm: Support exporting of non-contiguous GEM BOs
+>>    drm: omapdrm: Do no allocate non-scanout GEMs through DMM/TILER
+>>
+>>   drivers/gpu/drm/omapdrm/omap_gem.c        | 198 
+>> +++++++++++++++++-------------
+>>   drivers/gpu/drm/omapdrm/omap_gem.h        |   3 +-
+>>   drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c |   5 +-
+>>   3 files changed, 116 insertions(+), 90 deletions(-)
+>>
+> 
+> I have pushed this to drm-misc-next.
+> 
 
->[...]
-> >  create mode 120000 arch/arm/boot/dts/nxp/armv7-m.dtsi
->=20
-> armv7-m.dtsi is a bit confusing, because it contains a few devices at
-> fixed addresses, so it looks vendor-specific at a first glance into the
-> file. However, if it is actually as vendor-neutral as the name implies,
-> I think it should live dts/ directly, rather than in vendor
-> subdirectories.
+Great, next is VRFB and TE support for Droid4 panel, as soon as I find 
+some spare time :)
 
-This seems to be some generic devices common for all ARMv7M CPUs used in=20
-Cortex-M CPUs. It's also used by some stm32 .dtsi.
-
-Best regards,
-Alexander
-
-
+Ivo
 
