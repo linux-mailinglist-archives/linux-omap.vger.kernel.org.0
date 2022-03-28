@@ -2,272 +2,192 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF2DD4E9652
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Mar 2022 14:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0DB44E97A9
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Mar 2022 15:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242369AbiC1MOJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Mar 2022 08:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46564 "EHLO
+        id S234129AbiC1NNk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Mar 2022 09:13:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242348AbiC1MOI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 08:14:08 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2718C4666D;
-        Mon, 28 Mar 2022 05:12:26 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.1.2/8.16.1.2) with ESMTP id 22S8DQtg025374;
-        Mon, 28 Mar 2022 14:11:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=Wu7DaILavZ5VFKiDCgIDKD8NRLEzZk4xbMb8t6pZ9V0=;
- b=s+GcPWsAcec/2joFcw9VZTpZlvV7VtKf/ICQWpbbx57TMcRnG9EIRSACq5A5Xcacr2gx
- JtbuTFxpSemWbLIWbM8uT9GqB5oubmlS4WFJqhQs+EuKhYeAJ5m0tWWRVufYTzMftjDo
- AO5vLSEt93w2ZQsBevz0srujPxVjYMrllOdOccNrUWoLmRkynrrwzaa9VCQW152RWnqP
- oP8IWI/Hv36XP18OFxzG6vxrbx5vZwa5viqGScWnJLF0XPwENSJyYPZV4sEJ3TAlnKQc
- gPAyCGpNAXl4lGTmuf3bukVmBPKvZ7oIUMDZRpZYRYFG4osaN7oPKpC7m2Sb+596Updt Bg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3f1tkm2h2j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 28 Mar 2022 14:11:27 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DDF4610002A;
-        Mon, 28 Mar 2022 14:11:25 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id F0179229A6F;
-        Mon, 28 Mar 2022 14:11:24 +0200 (CEST)
-Received: from [10.201.21.201] (10.75.127.44) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Mon, 28 Mar
- 2022 14:11:23 +0200
-Message-ID: <c11344d0-f56e-a34f-1f46-26d0e7de280e@foss.st.com>
-Date:   Mon, 28 Mar 2022 14:11:22 +0200
+        with ESMTP id S237949AbiC1NNh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 09:13:37 -0400
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8569E14008;
+        Mon, 28 Mar 2022 06:11:55 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id b15so16863595edn.4;
+        Mon, 28 Mar 2022 06:11:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=wduPLn72HNFMFI5wRZhSSzG+yA4cTZ99h7NbdswNd2A=;
+        b=6MV6cuMsa9poZ98dOyiKq5HT6BXhCGhKGTRRRGRTtI31nu7Dl15ukcpJIV9Jk26Pdi
+         7lTTbAMeyNBisjOGWrNUcF2mxz9WDx1S0Is0qzCBTbZ/ubXHejKgogB06e+DRBbZingu
+         Q+51Lg+4TKx53wC3OJffwn16JfxrDEFk7KoHwmBD4ibqvC9pLpfrQeX86+hhwmMJgzef
+         /joqHqB+DRmxS5Zaf3wduE3vMzYLbVD2V4K18z50p9xgkZIHxwZ/xzFUC1pwiaFMIIRw
+         KO0djld+R0giRE1zcEfU8mWBT0YhCUV2pDqJe7sO1Q2S86MBrKUmicFmA58ZKUaLjOYx
+         VUKg==
+X-Gm-Message-State: AOAM532vFmrOLBklDOTCOrrM+qWBgS/PFE7F6r54+rq+ZBTupQ2tMjFk
+        B6hWvm0N2QePlDpqFMQMi2E=
+X-Google-Smtp-Source: ABdhPJxCudiVYrrAevwOd7qI2w6vJI/0O3iILZWbDoT5Qs6a4rL/zpZHpfRLRhnS4khWT/uf9WxELg==
+X-Received: by 2002:a05:6402:168a:b0:3fb:600e:4cc3 with SMTP id a10-20020a056402168a00b003fb600e4cc3mr16186266edv.32.1648473114034;
+        Mon, 28 Mar 2022 06:11:54 -0700 (PDT)
+Received: from [192.168.0.162] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
+        by smtp.googlemail.com with ESMTPSA id m21-20020a17090677d500b006df766974basm6046482ejn.3.2022.03.28.06.11.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Mar 2022 06:11:53 -0700 (PDT)
+Message-ID: <8a55260d-7354-028b-8439-475a9fbfe092@kernel.org>
+Date:   Mon, 28 Mar 2022 15:11:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [Linux-stm32] [RFC PATCH 1/1] ARM/arm64: categorize dts in arm
- dir and fix dependency in arm64
+Subject: Re: [PATCH v2 2/2] memory: omap-gpmc: Allow building as a module
 Content-Language: en-US
-To:     Ansuel Smith <ansuelsmth@gmail.com>
-CC:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-actions@lists.infradead.org>, <linux-sunxi@lists.linux.dev>,
-        <linux-omap@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
-        <linux-arm-kernel@axis.com>, <linux-aspeed@lists.ozlabs.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <chrome-platform@lists.linux.dev>,
-        <linux-renesas-soc@vger.kernel.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <kernel@dh-electronics.com>, <linux-mediatek@lists.infradead.org>,
-        <openbmc@lists.ozlabs.org>, <linux-tegra@vger.kernel.org>,
-        <linux-oxnas@groups.io>, <linux-arm-msm@vger.kernel.org>,
-        <linux-unisoc@lists.infradead.org>,
-        <linux-rockchip@lists.infradead.org>,
-        <linux-realtek-soc@lists.infradead.org>
-References: <20220328000915.15041-1-ansuelsmth@gmail.com>
- <20220328000915.15041-2-ansuelsmth@gmail.com>
- <fef4e5dd-d843-ea37-7701-bcfac9d1c9b5@foss.st.com>
- <238c6d7b-a61c-d09e-9377-8f49dad40eeb@foss.st.com>
- <YkGjLPN7tjVeckEO@Ansuel-xps.localdomain>
-From:   Patrice CHOTARD <patrice.chotard@foss.st.com>
-In-Reply-To: <YkGjLPN7tjVeckEO@Ansuel-xps.localdomain>
-Content-Type: text/plain; charset="UTF-8"
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     miquel.raynal@bootlin.com, tony@atomide.com, vigneshr@ti.com,
+        kishon@ti.com, nm@ti.com, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220328111319.1236-1-rogerq@kernel.org>
+ <20220328111319.1236-3-rogerq@kernel.org>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20220328111319.1236-3-rogerq@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-28_04,2022-03-28_01,2022-02-23_01
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,SUSPICIOUS_RECIPS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Ansuel
-
-On 3/28/22 13:59, Ansuel Smith wrote:
-> On Mon, Mar 28, 2022 at 11:20:00AM +0200, Patrice CHOTARD wrote:
->>
->>
->> On 3/28/22 11:09, Patrice CHOTARD wrote:
->>> Hi Ansuel
->>>
->>> On 3/28/22 02:09, Ansuel Smith wrote:
->>>> - Categorize every dts in arm directory in subdirectory
->>>> - Fix Makefile to address for the arm subdirectory
->>>> - Fix any arm64 dependency
->>>>
->>>> Signed-off-by: Ansuel Smith <ansuelsmth@gmail.com>
->>>
->>>>  create mode 100644 arch/arm/boot/dts/st/Makefile
->>>>  rename arch/arm/boot/dts/{ => st}/spear1310-evb.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear1310.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear1340-evb.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear1340.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear13xx.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear300-evb.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear300.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear310-evb.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear310.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear320-evb.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear320-hmi.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear320.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear320s.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear3xx.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear600-evb.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st}/spear600.dtsi (100%)
->>>
->>>
->>> All SPEAr device tree should go into stm sub-directory, as this platform is a STMicroelectronics one
->>> as STi or STM32.
->>
->> Just got an internal discussion, all STMicroelectronics platform should go into "st" sub-directory, and not in "stm" as indicated in my previous e-mail. ;-)
->>
->> Patrice
->>
+On 28/03/2022 13:13, Roger Quadros wrote:
+> Allow OMAP_GPMC to be built as a module.
 > 
-> Noted will do the change. If you notice other wrong categorization, feel
-> free to write a big list so I can fix them. In short merge stm in the st
-> directory. (arch_sti and arch_stm32)
-> Aside from that they are all correct right?
+> Remove redundant of_match_node() call before
+> of_platform_default_populate() as the latter takes
+> care of matching with of_default_bus_match_table.
 
-Yes arch_spear, arch_sti and arch_stm32 in "st" directory.
-Thanks
-Patrice
+Split this part to separate commit, please. It does not look related to
+making it a module.
 
 > 
->>>
->>> Thanks
->>>
->>> Patrice
->>>
->>>>  create mode 100644 arch/arm/boot/dts/st_ericsson/Makefile
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-ab8500.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-ab8505.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-db8500.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-db8520.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-db9500.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-dbx5x0-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-dbx5x0.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-href-ab8500.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-href-family-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-href-stuib.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-href-tvk1281618-r2.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-href-tvk1281618-r3.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-href.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-href520-tvk.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-hrefprev60-stuib.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-hrefprev60-tvk.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-hrefprev60.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-hrefv60plus-stuib.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-hrefv60plus-tvk.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-hrefv60plus.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-nomadik-nhk15.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-nomadik-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-nomadik-s8815.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-nomadik-stn8815.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-snowball.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-ux500-samsung-codina.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-ux500-samsung-gavini.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-ux500-samsung-golden.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-ux500-samsung-janice.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-ux500-samsung-kyle.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => st_ericsson}/ste-ux500-samsung-skomer.dts (100%)
->>>>  create mode 100644 arch/arm/boot/dts/stm/Makefile
->>>>  create mode 120000 arch/arm/boot/dts/stm/armv7-m.dtsi
->>>>  rename arch/arm/boot/dts/{ => stm}/st-pincfg.h (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih407-b2120.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih407-clock.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih407-family.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih407-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih407.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih410-b2120.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih410-b2260.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih410-clock.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih410-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih410.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih418-b2199.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih418-b2264.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih418-clock.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stih418.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stihxxx-b2120.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32429i-eval.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32746g-eval.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f4-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f429-disco.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f429-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f429.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f469-disco.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f469-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f469.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f7-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f746-disco.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f746-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f746.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f769-disco.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32f769-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32h7-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32h743.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32h743i-disco.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32h743i-eval.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32h750.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32h750i-art-pi.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp13-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp131.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp133.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp135.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp135f-dk.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp13xc.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp13xf.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp151.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp153.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp153c-dhcom-drc02.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-avenger96.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-dhcor-avenger96.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-dk1.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-icore-stm32mp1-ctouch2-of10.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-icore-stm32mp1-ctouch2.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-icore-stm32mp1-edimm2.2.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-icore-stm32mp1.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-iot-box.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-microgea-stm32mp1-microdev2.0-of7.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-microgea-stm32mp1-microdev2.0.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-microgea-stm32mp1.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-stinger96.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157a-stinger96.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-dhcom-pdk2.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-dhcom-picoitx.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-dk2.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-ed1.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-emsbc-argon.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-emstamp-argon.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-ev1.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-lxa-mc1.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-odyssey-som.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp157c-odyssey.dts (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xc.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xx-dhcom-drc02.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xx-dhcom-pdk2.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xx-dhcom-picoitx.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xx-dhcom-som.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xx-dhcor-avenger96.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xx-dhcor-io1v8.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xx-dhcor-som.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xx-dkx.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xx-osd32.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xxaa-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xxab-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xxac-pinctrl.dtsi (100%)
->>>>  rename arch/arm/boot/dts/{ => stm}/stm32mp15xxad-pinctrl.dtsi (100%)
+> Move compatible match table to the end where it is usually expected.
 > 
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> ---
+>  drivers/memory/Kconfig     |  2 +-
+>  drivers/memory/omap-gpmc.c | 44 +++++++++++++++++++++-----------------
+>  2 files changed, 25 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
+> index da2af9c38fe3..4debd4b2c8da 100644
+> --- a/drivers/memory/Kconfig
+> +++ b/drivers/memory/Kconfig
+> @@ -103,7 +103,7 @@ config TI_EMIF
+>  	  temperature changes
+>  
+>  config OMAP_GPMC
+> -	bool "Texas Instruments OMAP SoC GPMC driver"
+> +	tristate "Texas Instruments OMAP SoC GPMC driver"
+>  	depends on OF_ADDRESS || COMPILE_TEST
+>  	select GPIOLIB
+>  	help
+> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+> index ed11887c1b7c..6fdb76cc3bc9 100644
+> --- a/drivers/memory/omap-gpmc.c
+> +++ b/drivers/memory/omap-gpmc.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/cpu_pm.h>
+>  #include <linux/irq.h>
+>  #include <linux/kernel.h>
+> +#include <linux/module.h>
+>  #include <linux/init.h>
+>  #include <linux/err.h>
+>  #include <linux/clk.h>
+> @@ -1889,16 +1890,6 @@ int gpmc_cs_program_settings(int cs, struct gpmc_settings *p)
+>  }
+>  
+>  #ifdef CONFIG_OF
+> -static const struct of_device_id gpmc_dt_ids[] = {
+> -	{ .compatible = "ti,omap2420-gpmc" },
+> -	{ .compatible = "ti,omap2430-gpmc" },
+> -	{ .compatible = "ti,omap3430-gpmc" },	/* omap3430 & omap3630 */
+> -	{ .compatible = "ti,omap4430-gpmc" },	/* omap4430 & omap4460 & omap543x */
+> -	{ .compatible = "ti,am3352-gpmc" },	/* am335x devices */
+> -	{ .compatible = "ti,am64-gpmc" },
+> -	{ }
+> -};
+> -
+>  static void gpmc_cs_set_name(int cs, const char *name)
+>  {
+>  	struct gpmc_cs_data *gpmc = &gpmc_cs[cs];
+> @@ -2257,11 +2248,9 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>  	if (!of_platform_device_create(child, NULL, &pdev->dev))
+>  		goto err_child_fail;
+>  
+> -	/* is child a common bus? */
+> -	if (of_match_node(of_default_bus_match_table, child))
+> -		/* create children and other common bus children */
+> -		if (of_platform_default_populate(child, NULL, &pdev->dev))
+> -			goto err_child_fail;
+> +	/* create children and other common bus children */
+> +	if (of_platform_default_populate(child, NULL, &pdev->dev))
+> +		goto err_child_fail;
+>  
+>  	return 0;
+>  
+> @@ -2278,6 +2267,8 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>  	return ret;
+>  }
+>  
+> +static const struct of_device_id gpmc_dt_ids[];
+> +
+>  static int gpmc_probe_dt(struct platform_device *pdev)
+>  {
+>  	int ret;
+> @@ -2644,6 +2635,19 @@ static int gpmc_resume(struct device *dev)
+>  
+>  static SIMPLE_DEV_PM_OPS(gpmc_pm_ops, gpmc_suspend, gpmc_resume);
+>  
+> +#ifdef CONFIG_OF
+> +static const struct of_device_id gpmc_dt_ids[] = {
+> +	{ .compatible = "ti,omap2420-gpmc" },
+> +	{ .compatible = "ti,omap2430-gpmc" },
+> +	{ .compatible = "ti,omap3430-gpmc" },	/* omap3430 & omap3630 */
+> +	{ .compatible = "ti,omap4430-gpmc" },	/* omap4430 & omap4460 & omap543x */
+> +	{ .compatible = "ti,am3352-gpmc" },	/* am335x devices */
+> +	{ .compatible = "ti,am64-gpmc" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, gpmc_dt_ids);
+> +#endif
+> +
+>  static struct platform_driver gpmc_driver = {
+>  	.probe		= gpmc_probe,
+>  	.remove		= gpmc_remove,
+> @@ -2654,8 +2658,8 @@ static struct platform_driver gpmc_driver = {
+>  	},
+>  };
+>  
+> -static __init int gpmc_init(void)
+> -{
+> -	return platform_driver_register(&gpmc_driver);
+> -}
+> -postcore_initcall(gpmc_init);
+> +module_platform_driver(gpmc_driver);
+> +
+> +MODULE_DESCRIPTION("Texas Instruments GPMC driver");
+> +MODULE_ALIAS("platform:" DEVICE_NAME);
+
+Why do you need this alias?
+
+> +MODULE_LICENSE("GPL v2");
+
+
+Best regards,
+Krzysztof
