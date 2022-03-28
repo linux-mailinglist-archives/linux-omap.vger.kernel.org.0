@@ -2,125 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F114E88AA
-	for <lists+linux-omap@lfdr.de>; Sun, 27 Mar 2022 18:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5C964E8F62
+	for <lists+linux-omap@lfdr.de>; Mon, 28 Mar 2022 09:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235956AbiC0QHy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 27 Mar 2022 12:07:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54774 "EHLO
+        id S238972AbiC1H4E (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Mar 2022 03:56:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230232AbiC0QHx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 27 Mar 2022 12:07:53 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B1FC12617;
-        Sun, 27 Mar 2022 09:06:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 14A39B80BFA;
-        Sun, 27 Mar 2022 16:06:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56A8C340EC;
-        Sun, 27 Mar 2022 16:06:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648397171;
-        bh=hInmacrtqqLCdMotd9oxcwLtJbwkVKG97iU/e/STNnk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pc8P3/fmvIb2IQx5O871aJOyhREnvqIDmex0+sOUHG2RVUHs5rzDKGvWqCs8qY5/2
-         YOt+Ou3wzKTRnISQeAnWqWmegSjYKsimFBOJjVHs6Ehtd+AsPPIzk+ol+4G6qXX7aB
-         40O9SIHJPnTcLgM0fmvuCfR3EMc50PRUf2PIMn2sPIRyjRDemvcaDFiP8UejGpWG3l
-         FjWPgyeb198uLZWEgGdN+F2exmzLZ4s7sAQKGI1t72fFfNIpPeVCbsKwYSdS6R8l5U
-         kOwUvhj/DQD1W26rQKnU1ZcazYmPSFTNmu7rI4uZosUBK4B6K708m4VFRlhH9rorNa
-         5vLdpMhsADq3g==
-Date:   Sun, 27 Mar 2022 17:13:43 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Colin Ian King <colin.king@intel.com>,
-        Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] iio: palmas: shut up warning about calibration mismatch
- (due to noise)
-Message-ID: <20220327171343.28d582e7@jic23-huawei>
-In-Reply-To: <18533164-C17A-4CA1-A882-5A160D370498@goldelico.com>
-References: <1cee45bfc3fa2ab59dcc17242fb52468035360a1.1646743982.git.hns@goldelico.com>
-        <20220320155259.0fc79dd3@jic23-huawei>
-        <18533164-C17A-4CA1-A882-5A160D370498@goldelico.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S238973AbiC1H4A (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 03:56:00 -0400
+X-Greylist: delayed 454 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Mar 2022 00:54:20 PDT
+Received: from mail.ourpartnership.pl (mail.ourpartnership.pl [80.211.82.238])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9F1AFB
+        for <linux-omap@vger.kernel.org>; Mon, 28 Mar 2022 00:54:20 -0700 (PDT)
+Received: by mail.ourpartnership.pl (Postfix, from userid 1001)
+        id 55718614FC; Mon, 28 Mar 2022 08:46:18 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ourpartnership.pl;
+        s=mail; t=1648453603;
+        bh=M1ZVeu3q6Upppe+FUx/3rgI7MKJXh389NZDbgCK1SX4=;
+        h=Date:From:To:Subject:From;
+        b=T0l3T7TWWqrWfuzjWYvH4ufvlPtPohRVGEeVWddH1//1D38zj13ZHi6Hm+WLvv00R
+         pxEGrSJFT5VUvHV8fnmBKZWx/mlgCzP//JBOSOsEMnJdjLRB2QiVKDR+unqz9FObrB
+         Gbpc3ilSjjsAZqR9qJdnvwpwgwc7tJ9cuUke7wAS6Btx3T/cjrDZHYu1GGvt6XMCa/
+         K4er9hW7nBbDF4XWFGAIUCpY97t3CyDZ45C2iQiafEM0Snmq89wYnwegryTGZv8JTP
+         QC34R0jFRs63o9HDaUb3f1IXDz41SVrEqrMU1hJksI+zz+sbBmFohfkk6ooFQyZyET
+         W1j9giRsX/OWw==
+Received: by mail.ourpartnership.pl for <linux-omap@vger.kernel.org>; Mon, 28 Mar 2022 07:46:04 GMT
+Message-ID: <20220328074501-0.1.9.29ya.0.d68kmrnafq@ourpartnership.pl>
+Date:   Mon, 28 Mar 2022 07:46:04 GMT
+From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
+        <arkadiusz.sokolowski@ourpartnership.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: Koszty instalacji fotowoltaicznej
+X-Mailer: mail.ourpartnership.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, 20 Mar 2022 17:28:21 +0100
-"H. Nikolaus Schaller" <hns@goldelico.com> wrote:
+Dzie=C5=84 dobry,
 
-> Hi Jonathan,
-> 
-> > Am 20.03.2022 um 16:52 schrieb Jonathan Cameron <jic23@kernel.org>:
-> > 
-> > On Tue,  8 Mar 2022 13:53:03 +0100
-> > "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
-> >   
-> >> Although technically checking for ADC values below 0 is correct,
-> >> because they are outside of the calibration values, there is usually
-> >> noise which spuriously fills the console log with error messages if
-> >> calculated input voltage gets close to 0V.
-> >> 
-> >> Ignore small negative calculated values, but clamp them to 0.
-> >> 
-> >> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>  
-> > Hi.
-> > 
-> > Should we treat this as a fix or a cleanup?
-> > 
-> > I don't mind either way.  
-> 
-> I don't mind either since we have it for long time in our distribution kernel.
-> 
-> BR and thanks,
-> Nikolaus
+stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
+ obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99. =20
 
-Treated as cleanup so applied to the togreg branch of iio.git, but for now
-only pushed out as testing because I'll be rebasing on rc1 next week.
+Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
+acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
+ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
 
-Thanks,
+Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
+=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
+=2E
 
-Jonathan
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
 
-> 
-> > 
-> > Jonathan
-> > 
-> >   
-> >> ---
-> >> drivers/iio/adc/palmas_gpadc.c | 3 ++-
-> >> 1 file changed, 2 insertions(+), 1 deletion(-)
-> >> 
-> >> diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-> >> index f9c8385c72d3..bcfa6a7f6cb2 100644
-> >> --- a/drivers/iio/adc/palmas_gpadc.c
-> >> +++ b/drivers/iio/adc/palmas_gpadc.c
-> >> @@ -376,7 +376,8 @@ static int palmas_gpadc_get_calibrated_code(struct palmas_gpadc *adc,
-> >> 					adc->adc_info[adc_chan].gain_error;
-> >> 
-> >> 	if (val < 0) {
-> >> -		dev_err(adc->dev, "Mismatch with calibration\n");
-> >> +		if (val < -10)
-> >> +			dev_err(adc->dev, "Mismatch with calibration var = %d\n", val);
-> >> 		return 0;
-> >> 	}
-> >>   
-> >   
-> 
 
+Pozdrawiam
+Arkadiusz Soko=C5=82owski
