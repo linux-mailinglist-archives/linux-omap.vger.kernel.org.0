@@ -2,122 +2,202 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 100D94EA42C
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Mar 2022 02:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01B884EA899
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Mar 2022 09:37:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231362AbiC2AZr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Mar 2022 20:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37322 "EHLO
+        id S232127AbiC2HjA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Mar 2022 03:39:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231346AbiC2AZq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 20:25:46 -0400
-Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82CBB2EC;
-        Mon, 28 Mar 2022 17:24:04 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailnew.nyi.internal (Postfix) with ESMTP id AA157580367;
-        Mon, 28 Mar 2022 20:24:01 -0400 (EDT)
-Received: from imap49 ([10.202.2.99])
-  by compute5.internal (MEProxy); Mon, 28 Mar 2022 20:24:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=cc
-        :cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm3; bh=YVcOcYXKVU4PEK
-        ENIKD3lZlfbqMF8OkXUPWQPtT0ZzA=; b=GV8iKIgkifB/LyajStlhIzzaA2PqSU
-        rEPGZBnWRziuDMlxEaU3fjhl0DHmyiueo1E3rsDwPrq1dyaythjr8LeJ4NZ3kmFH
-        v7J0UO7b64vG5VRtrXZ/OicN/3vDmtLy+M6As/zf5/EYH2TO2OF+YIkppderpdcN
-        ocuY8KYW/dUFglcgTgXnC/6f5bvCH2TNkniwuNDGczxXDBDNnP2nHRX3u9u0y3Go
-        2HHhDpJUS8OMLXTkUmRtrROlDXASYpEdp57tTxY7G7Ci6RHcafVgGiKZGpjbHNDZ
-        //P9ySL7tvarTkKke+QN7H1PCcvhD3CsMcxHphO+TJq7W+71Q2wgIxYw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; bh=YVcOcYXKVU4PEKENIKD3lZlfbqMF8OkXUPWQPtT0Z
-        zA=; b=MfUF/QO1w2kk8LobJGDnDjGmGT9HUgvaIsBRcZJH4NP16C60y/NJslTt7
-        orhhkgHh49rbOiH30mg+9nD++QY3WWgzSB2sDT9Qr4nBx6DPKrUBtQOsEMz/dHsj
-        tnZTX8+5b3lvOKKTTCyQClpi0fsj22EquswXftZXPkMfoj2QCv1jAapgIQLAxfMF
-        S0z3hjnx7eO2S93c8UZottn5LmdiG0YcFFuK5zB8/ar7yCvc0Jy0dFV5KjDfSzzb
-        3LrydgytiTwdKd8S3tKaPDcolfNGWpjEyPMA80KKZ8LEsNOU94avhhnY8yVPYBI+
-        z15/ibq45vK+JxVduu76w45M0nzjQ==
-X-ME-Sender: <xms:oFFCYs9K0yagZswp7rFBq_h4vFfHgzOKyc_TzBu90N89g92vvi8M3A>
-    <xme:oFFCYkvw9h1jnh95ii6UH3c9xPcsfcQHqQiMHfK2AbFZHDfMquci3iY3KqTCG7jHE
-    woyrhqOfmB1RNSngg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudehkedgfedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgfgsehtqhertderreejnecuhfhrohhmpedftehn
-    ughrvgifucflvghffhgvrhihfdcuoegrnhgurhgvfiesrghjrdhiugdrrghuqeenucggtf
-    frrghtthgvrhhnpedvgeekheegfedvhfethefhudetteegueeggfeiieegueehkedugedt
-    kefglefgheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpegrnhgurhgvfiesrghjrdhiugdrrghu
-X-ME-Proxy: <xmx:oVFCYiAKjCQA5Zb05U61crJ5MlOJCJLgZQqyWNA7a6PSqL49ds9rcQ>
-    <xmx:oVFCYsd7HLs87jVXkH1pk4ddv_005tSApo64HS9hBsjced9RxeZQlg>
-    <xmx:oVFCYhNCDSxTTbHGsk6l4iYUYPZLYU9gbpl7DI-t2s9QTshCOjdDqA>
-    <xmx:oVFCYjVxoE5j7ipqETgwLEOiheaMjFzqbcptYMrhCgrHpWjYJYVlwQ>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id E057EF6043F; Mon, 28 Mar 2022 20:24:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.5.0-alpha0-4911-g925b585eab-fm-20220323.003-g925b585e
-Mime-Version: 1.0
-Message-Id: <d5e6c96b-5882-4602-93cb-b08a65bfa37e@www.fastmail.com>
-In-Reply-To: <D9AFAC3C-46CA-4C40-8559-FD6934411CAB@goldelico.com>
-References: <20220328000915.15041-1-ansuelsmth@gmail.com>
- <YkG2RPrtPaBNXb7a@latitude>
- <D9AFAC3C-46CA-4C40-8559-FD6934411CAB@goldelico.com>
-Date:   Tue, 29 Mar 2022 10:53:40 +1030
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-        "Ansuel Smith" <ansuelsmth@gmail.com>
-Cc:     "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-actions@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
-        linux-aspeed@lists.ozlabs.org,
-        linux-rpi-kernel@lists.infradead.org,
-        chrome-platform@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        kernel@dh-electronics.com, linux-mediatek@lists.infradead.org,
-        openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
-        linux-oxnas@groups.io, linux-arm-msm@vger.kernel.org,
-        linux-unisoc@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        linux-realtek-soc@lists.infradead.org
-Subject: Re: [RFC PATCH 0/1] Categorize ARM dts directory
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S231801AbiC2Hi6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Mar 2022 03:38:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49BE548388;
+        Tue, 29 Mar 2022 00:37:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2FC661554;
+        Tue, 29 Mar 2022 07:37:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C80BC340ED;
+        Tue, 29 Mar 2022 07:37:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648539435;
+        bh=+etXV8lANDE8ZS57f0zCn3WwYkPsh0BB3chSoBhHPDk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=TCyEpZUpEGLqePzgXmHk89RG4p4AdNes/ZGbDlmoMyPOpbEISigo1OSFIeg5TaFHx
+         zbtM/4mu5R+lka88E/TGn4fb+Pgm2gjIA+NDb8o6/LfTkVp/+LGIu7/Q/NYF2M/giP
+         dO5Lffhd3XOAMcJTzFM9CKRcnsAvxujMee4Wp90Lvz0FlOrC7C6iB4jJvpavzxXj8z
+         J4wTzlm/UowGn0gbqTc5TTsaEjN3z1w0KNxgyc/e0m3WgE8b9YlHJu5CtQ+KBNW8/h
+         T0XS/a4GmO8+bvBp7aXzMbwCpSyRuTNxgG6jflHuKYAAqp++pFr+ddm+7lNrP4RarZ
+         ck5SK7AzqiI+A==
+Message-ID: <c9b0b3e5-28f3-67a2-6456-d63f3232e432@kernel.org>
+Date:   Tue, 29 Mar 2022 10:37:10 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v2 2/2] memory: omap-gpmc: Allow building as a module
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     miquel.raynal@bootlin.com, tony@atomide.com, vigneshr@ti.com,
+        kishon@ti.com, nm@ti.com, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220328111319.1236-1-rogerq@kernel.org>
+ <20220328111319.1236-3-rogerq@kernel.org>
+ <8a55260d-7354-028b-8439-475a9fbfe092@kernel.org>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <8a55260d-7354-028b-8439-475a9fbfe092@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Krzysztof,
 
+On 28/03/2022 16:11, Krzysztof Kozlowski wrote:
+> On 28/03/2022 13:13, Roger Quadros wrote:
+>> Allow OMAP_GPMC to be built as a module.
+>>
+>> Remove redundant of_match_node() call before
+>> of_platform_default_populate() as the latter takes
+>> care of matching with of_default_bus_match_table.
+> 
+> Split this part to separate commit, please. It does not look related to
+> making it a module.
 
-On Tue, 29 Mar 2022, at 00:20, H. Nikolaus Schaller wrote:
->> Am 28.03.2022 um 15:21 schrieb Jonathan Neusch=C3=A4fer <j.neuschaefe=
-r@gmx.net>:
->>=20
->> Or maybe bcm instead of broadcom. Not sure which is preferred by
->> Broadcom people.
->
-> Maybe it should always follow the list of vendor prefixes as we are=20
-> talking about DTS?
+Actually it is related. Without that change build fails
+as it cannot find symbol 'of_default_bus_match_table'
 
-+1 (if we're actually going to do this). That would neuter most the=20
-mistakes and discussion and can be extracted from the dts files=20
-themselves.
+Maybe I'll mention it in commit log.
 
-Andrew
+> 
+>>
+>> Move compatible match table to the end where it is usually expected.
+>>
+>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>> ---
+>>  drivers/memory/Kconfig     |  2 +-
+>>  drivers/memory/omap-gpmc.c | 44 +++++++++++++++++++++-----------------
+>>  2 files changed, 25 insertions(+), 21 deletions(-)
+>>
+>> diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
+>> index da2af9c38fe3..4debd4b2c8da 100644
+>> --- a/drivers/memory/Kconfig
+>> +++ b/drivers/memory/Kconfig
+>> @@ -103,7 +103,7 @@ config TI_EMIF
+>>  	  temperature changes
+>>  
+>>  config OMAP_GPMC
+>> -	bool "Texas Instruments OMAP SoC GPMC driver"
+>> +	tristate "Texas Instruments OMAP SoC GPMC driver"
+>>  	depends on OF_ADDRESS || COMPILE_TEST
+>>  	select GPIOLIB
+>>  	help
+>> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+>> index ed11887c1b7c..6fdb76cc3bc9 100644
+>> --- a/drivers/memory/omap-gpmc.c
+>> +++ b/drivers/memory/omap-gpmc.c
+>> @@ -12,6 +12,7 @@
+>>  #include <linux/cpu_pm.h>
+>>  #include <linux/irq.h>
+>>  #include <linux/kernel.h>
+>> +#include <linux/module.h>
+>>  #include <linux/init.h>
+>>  #include <linux/err.h>
+>>  #include <linux/clk.h>
+>> @@ -1889,16 +1890,6 @@ int gpmc_cs_program_settings(int cs, struct gpmc_settings *p)
+>>  }
+>>  
+>>  #ifdef CONFIG_OF
+>> -static const struct of_device_id gpmc_dt_ids[] = {
+>> -	{ .compatible = "ti,omap2420-gpmc" },
+>> -	{ .compatible = "ti,omap2430-gpmc" },
+>> -	{ .compatible = "ti,omap3430-gpmc" },	/* omap3430 & omap3630 */
+>> -	{ .compatible = "ti,omap4430-gpmc" },	/* omap4430 & omap4460 & omap543x */
+>> -	{ .compatible = "ti,am3352-gpmc" },	/* am335x devices */
+>> -	{ .compatible = "ti,am64-gpmc" },
+>> -	{ }
+>> -};
+>> -
+>>  static void gpmc_cs_set_name(int cs, const char *name)
+>>  {
+>>  	struct gpmc_cs_data *gpmc = &gpmc_cs[cs];
+>> @@ -2257,11 +2248,9 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>>  	if (!of_platform_device_create(child, NULL, &pdev->dev))
+>>  		goto err_child_fail;
+>>  
+>> -	/* is child a common bus? */
+>> -	if (of_match_node(of_default_bus_match_table, child))
+>> -		/* create children and other common bus children */
+>> -		if (of_platform_default_populate(child, NULL, &pdev->dev))
+>> -			goto err_child_fail;
+>> +	/* create children and other common bus children */
+>> +	if (of_platform_default_populate(child, NULL, &pdev->dev))
+>> +		goto err_child_fail;
+>>  
+>>  	return 0;
+>>  
+>> @@ -2278,6 +2267,8 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>>  	return ret;
+>>  }
+>>  
+>> +static const struct of_device_id gpmc_dt_ids[];
+>> +
+>>  static int gpmc_probe_dt(struct platform_device *pdev)
+>>  {
+>>  	int ret;
+>> @@ -2644,6 +2635,19 @@ static int gpmc_resume(struct device *dev)
+>>  
+>>  static SIMPLE_DEV_PM_OPS(gpmc_pm_ops, gpmc_suspend, gpmc_resume);
+>>  
+>> +#ifdef CONFIG_OF
+>> +static const struct of_device_id gpmc_dt_ids[] = {
+>> +	{ .compatible = "ti,omap2420-gpmc" },
+>> +	{ .compatible = "ti,omap2430-gpmc" },
+>> +	{ .compatible = "ti,omap3430-gpmc" },	/* omap3430 & omap3630 */
+>> +	{ .compatible = "ti,omap4430-gpmc" },	/* omap4430 & omap4460 & omap543x */
+>> +	{ .compatible = "ti,am3352-gpmc" },	/* am335x devices */
+>> +	{ .compatible = "ti,am64-gpmc" },
+>> +	{ }
+>> +};
+>> +MODULE_DEVICE_TABLE(of, gpmc_dt_ids);
+>> +#endif
+>> +
+>>  static struct platform_driver gpmc_driver = {
+>>  	.probe		= gpmc_probe,
+>>  	.remove		= gpmc_remove,
+>> @@ -2654,8 +2658,8 @@ static struct platform_driver gpmc_driver = {
+>>  	},
+>>  };
+>>  
+>> -static __init int gpmc_init(void)
+>> -{
+>> -	return platform_driver_register(&gpmc_driver);
+>> -}
+>> -postcore_initcall(gpmc_init);
+>> +module_platform_driver(gpmc_driver);
+>> +
+>> +MODULE_DESCRIPTION("Texas Instruments GPMC driver");
+>> +MODULE_ALIAS("platform:" DEVICE_NAME);
+> 
+> Why do you need this alias?
+
+Not required. I'll remove it.
+
+> 
+>> +MODULE_LICENSE("GPL v2");
+> 
+> 
+> Best regards,
+> Krzysztof
+
+--
+cheers,
+-roger
