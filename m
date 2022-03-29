@@ -2,98 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA0994EA952
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Mar 2022 10:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54F394EA96F
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Mar 2022 10:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233986AbiC2IeO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 29 Mar 2022 04:34:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
+        id S234057AbiC2IhP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 29 Mar 2022 04:37:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233989AbiC2IeN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Mar 2022 04:34:13 -0400
-Received: from new2-smtp.messagingengine.com (new2-smtp.messagingengine.com [66.111.4.224])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073D6EF0A5;
-        Tue, 29 Mar 2022 01:32:28 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailnew.nyi.internal (Postfix) with ESMTP id C8AFC580117;
-        Tue, 29 Mar 2022 04:32:25 -0400 (EDT)
-Received: from imap49 ([10.202.2.99])
-  by compute5.internal (MEProxy); Tue, 29 Mar 2022 04:32:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm3; bh=g+MRVCTHkd5UITx1/MCA0rtdiS/Q7gdlkLwbx1
-        Cvlxo=; b=UCo5xVnvSc2K5kqHRzTJYLeCTDsbjgl6xT1NBykQQVKMp4Ur92CcFO
-        AVM/JayZKVAC/L65NLtrgIbuEHLVwP1Co3xz7FvhPeYlG1Aa5OHK5Qzj2LLMcBlE
-        WDtU+9q9xR4065u7bzMG2cnDmDNge9YR3DUCJyjxKPy6ijNuBxr2WhIiWtmAFGLx
-        CaVwyLl64hj1MiG3Uig1TLYu4vrIGHosrlS82ja6VAHEBoC5JYmZ2CKUWQMpqg+p
-        LhX0oBQIe2SVGDKB1tl9YuLNvxELH4cOL2WMDEfBEJeyYF2z/QfC0sM0WfFEA9jv
-        yiENlM4gRwAggRNn+gcXyaRjlMVLYwRQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=g+MRVCTHkd5UITx1/
-        MCA0rtdiS/Q7gdlkLwbx1Cvlxo=; b=JQKycoTgRna0MzP3EC2Bm6lralytF7Tvt
-        lO0V5VJRByINopZ+fWpwTMDpmc9b/kA60ODT10jjyv7RLyd3OIx56kYmaRKvKXC+
-        9qywkBjHLtg84fuHVkJ82sdvyWSVvO7j8dRzTPrBA5cWRk2mWM6v+O/RybVFk6XN
-        1317aXIiz7LSlCY9H/UvNDXEnOEWcl2X8I5I9ZMOO6mUX7BmtuqNX/TOlTncnjxM
-        vnb/YbOBUfwse4qT7wmShdeh7Zr9gvKg4veBUWBzDumgWjl4uoEolDtlj0LQms3L
-        KmnJxQzF1LHoY56R0OmEIx4KCtCggE0RHmifBELWQFRqbXe/dRoUQ==
-X-ME-Sender: <xms:GMRCYi9lAlRf_jy7QNeRahO_YXR-VhpiMkQ_YloAqeAlNIQCJYksiQ>
-    <xme:GMRCYitrNz2rRmWvgRBDL9li4UdVscERnbnixCB8cuM7YHtD6CAt27u0YdYH6glcG
-    xVRD9PHWS3Uu0dLBA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudehledgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdetnhgu
-    rhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecuggftrf
-    grthhtvghrnhephefhfeekgfekudevheffheeihedujeefjeevjeefudfgfeeutdeuvdeh
-    hfevueffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    eprghnughrvgifsegrjhdrihgurdgruh
-X-ME-Proxy: <xmx:GMRCYoCb5efEYVXCkjDv6RMqt50vpeN1UgDVvgcJYHA7Q7yrh-bcyw>
-    <xmx:GMRCYqehW6WYsT5oizMPuHR-1iStUAS0tj_iRWm6Rvh2pxQnybYqzA>
-    <xmx:GMRCYnOid8_hb9g4tQfGh5YCQefCRBpCLNIYlNoVWZYfWgt5M14Cig>
-    <xmx:GcRCYhUHyBdj-xhT55yXBJuRVssviSpjCt6GNkSVx49WFreCEk1xiw>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 599DFF6043F; Tue, 29 Mar 2022 04:32:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.5.0-alpha0-4911-g925b585eab-fm-20220323.003-g925b585e
-Mime-Version: 1.0
-Message-Id: <a2542d9f-581a-49be-8e70-722fd98ab6f1@www.fastmail.com>
-In-Reply-To: <YkK691VG6ON/6Ysn@atomide.com>
-References: <20220328000915.15041-1-ansuelsmth@gmail.com>
- <CAFr9PXkgrRe-=E=GhNnZ4w1x_FMb97-_RmX6ND1vEd74_TbZSw@mail.gmail.com>
- <YkK691VG6ON/6Ysn@atomide.com>
-Date:   Tue, 29 Mar 2022 19:02:04 +1030
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Tony Lindgren" <tony@atomide.com>,
-        "Daniel Palmer" <daniel@0x0f.com>
-Cc:     "Ansuel Smith" <ansuelsmth@gmail.com>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        DTML <devicetree@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        linux-actions@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        linux-omap@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@axis.com, linux-aspeed@lists.ozlabs.org,
-        linux-rpi-kernel@lists.infradead.org,
-        chrome-platform@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        kernel@dh-electronics.com, linux-mediatek@lists.infradead.org,
-        openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
-        linux-oxnas@groups.io, linux-arm-msm@vger.kernel.org,
-        linux-unisoc@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        linux-realtek-soc@lists.infradead.org
-Subject: Re: [RFC PATCH 0/1] Categorize ARM dts directory
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,WEIRD_QUOTING autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S234058AbiC2IhO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 29 Mar 2022 04:37:14 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D5F23F9FD;
+        Tue, 29 Mar 2022 01:35:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C2E1CB81289;
+        Tue, 29 Mar 2022 08:35:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2044C2BBE4;
+        Tue, 29 Mar 2022 08:35:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648542929;
+        bh=/IgiTLHO0OlmIrIOxlJIDS4eEAqr6nu6wDTstJjIgNg=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=tJFB+r/SF5mC07nLTbLLNlPW6S62rOVp4XyNU2BfsZjCzpWoQZoCjYgqH1R1XtaMV
+         P7LlPPKUJPtK6/+4lhIijF9awnHTtz2NTLgRRwCq13c+/CnlWZrSw4qO48+BLShhP7
+         9ZRRFr6X6lGwD5vL+TtLOdk1tlj8cF8+MJWsa0HubaTmrDzlxrT3B1jv4AO5h4zAdg
+         igMCXYm4EdfdDHmX72QWWmDGhOi4cjTyZ1EbP0v96sZfVrrukWh0/79iOFoKaVlL9i
+         /EquZQq2pa0rVea0eN1rbt34a0ipzFGTaBW5g00p/PPvN0R0yxHkPJ49vxAnq4FOOe
+         iSCXh7awMPgNg==
+Message-ID: <128b1d74-1ce6-bb50-cb44-50e4743186d6@kernel.org>
+Date:   Tue, 29 Mar 2022 11:35:24 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v2 2/2] memory: omap-gpmc: Allow building as a module
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     miquel.raynal@bootlin.com, tony@atomide.com, vigneshr@ti.com,
+        kishon@ti.com, nm@ti.com, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220328111319.1236-1-rogerq@kernel.org>
+ <20220328111319.1236-3-rogerq@kernel.org>
+ <8a55260d-7354-028b-8439-475a9fbfe092@kernel.org>
+ <c9b0b3e5-28f3-67a2-6456-d63f3232e432@kernel.org>
+ <def0fe2c-645e-1dbc-8a1a-dd7393176891@kernel.org>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <def0fe2c-645e-1dbc-8a1a-dd7393176891@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -102,39 +63,39 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 
 
-On Tue, 29 Mar 2022, at 18:23, Tony Lindgren wrote:
-> Hi,
->
-> * Daniel Palmer <daniel@0x0f.com> [220328 08:53]:
->> Hi Ansuel
->> 
->> On Mon, 28 Mar 2022 at 09:09, Ansuel Smith <ansuelsmth@gmail.com> wrote:
->> >
->> > Hi,
->> > as the title say, the intention of this ""series"" is to finally categorize
->> > the ARM dts directory in subdirectory for each oem.
->> 
->> While I agree with this change and think it's for the good (browsing
->> the ARM dts directory at the moment is frustrating..) I think
->> buildroot and others need to be told about this as it'll potentially
->> break their kernel build scripting for ARM and probably messes up the
->> configs they have for existing boards.
->
-> Yeah.. And ideally this would be done in smaller steps as these will
-> conflict with all the other pending patches.
->
-> For example, I have a pile of pending omap clock clean-up dts patches
-> posted and tested waiting for v5.19-rc1 to apply. I'd rather not start
-> redoing or fixing up the patches with sed :)
->
-> What I'd like to have see is that at some point when suitable we move
-> one machine at a time with a script if possible.. Maybe the dtb files
-> generated would need to remain in the current directory until all of
-> the machine dts files are moved? That should help with the build
-> scripting too probably :)
+On 29/03/2022 11:02, Krzysztof Kozlowski wrote:
+> On 29/03/2022 09:37, Roger Quadros wrote:
+>> Hi Krzysztof,
+>>
+>> On 28/03/2022 16:11, Krzysztof Kozlowski wrote:
+>>> On 28/03/2022 13:13, Roger Quadros wrote:
+>>>> Allow OMAP_GPMC to be built as a module.
+>>>>
+>>>> Remove redundant of_match_node() call before
+>>>> of_platform_default_populate() as the latter takes
+>>>> care of matching with of_default_bus_match_table.
+>>>
+>>> Split this part to separate commit, please. It does not look related to
+>>> making it a module.
+>>
+>> Actually it is related. Without that change build fails
+>> as it cannot find symbol 'of_default_bus_match_table'
+> 
+> Hm, because of missing EXPORT?
 
-There's probably some reason not to, but could we symlink the new paths 
-in the subdirectories to the existing files to handle the transition? 
-Then do the move to remove the symlinks at some future point.
+Yes, only module build fails. Built-in is fine.
 
-Andrew
+> 
+> Then it is related although to me removal of redundant code still could
+> be split to separate commit. But I do not insist, if you mention it in
+> commit msg.
+
+OK. Thanks.
+> 
+> 
+> Best regards,
+> Krzysztof
+
+--
+cheers,
+-roger
