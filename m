@@ -2,134 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A1154E9B21
-	for <lists+linux-omap@lfdr.de>; Mon, 28 Mar 2022 17:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 100D94EA42C
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Mar 2022 02:33:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237589AbiC1PcP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 28 Mar 2022 11:32:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38274 "EHLO
+        id S231362AbiC2AZr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 28 Mar 2022 20:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232846AbiC1PcO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 11:32:14 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B20F45D18B;
-        Mon, 28 Mar 2022 08:30:31 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id p15so29459602ejc.7;
-        Mon, 28 Mar 2022 08:30:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=p3XuvSz9El6nko432TGNXkjhObeuwCH/Ie6ye/gIxy8=;
-        b=IIz4FdV0mOAafEMr4USQHNy+IBB8W1SLxNvpY/qmwe2L60jIkh+BtkZhRLusE+9byJ
-         VVOGC3zinYbOUHGmsCd3rVC2X3mzOikYzWwgTARQiJoLNejLG6UtsmsOLYNWwa5xebSl
-         LNl2I+j4OF8XLi8+9lnxeCIEzt7rAW/BtqIbKaPUf0iApZt76Mbpehd2wRQJCk5yR+QI
-         8NZpda1g8E03N2qz7Oh7iXrTozXwVZMMJ3MgtA6bpR25EguMNLOn8u0iMynemdSUOket
-         6XSWVQ87FGvnAm7+rdyebHF81x9Q1Xf03LzPHMmJiMMQqQsFNEYlNbGAWHzzK9cZeSNW
-         3Lvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=p3XuvSz9El6nko432TGNXkjhObeuwCH/Ie6ye/gIxy8=;
-        b=JAqN2ruLwtMeJyavhf1AGyRb1bh/zGZjY5VuWv70KNDlM1BOFPC7ghhF8uWGru8qJt
-         jSV3VZuQ1E0p73NQpC1ex5lngI4kSkhEoiYIVQ+CTEks733QydptkXmU2cogVANTUT5k
-         JzTgg2OF8GC6ZjiVsXx8PxmJHZg6K3k2bcYhN/v57VB37qt8NPWEZExKDWDjrgx3uY2/
-         yrV+HoqmHO/OKGrfcXcpj3tox9IfcgmRbR+BSlIP0pUVQgU9/4HixcFlf8kDfgDhZ8jo
-         986paEn2zsvYQ6DGn1WXuKGFtXQ+pWJAD5JbOUudDoBQLhN/YUnoQeinEeohpxdfWnJA
-         9Utg==
-X-Gm-Message-State: AOAM5315gscQJaAeg2qeA4U0bm90VK9wPCWSWFnEryVoYUZX0ZtVnGMG
-        tE9luG+F+WpReVM5YZJJmKE=
-X-Google-Smtp-Source: ABdhPJzTNnMXRuknjU+f0aWqPcOk/WgtWC3qwlzaCIcEolJcpttqYGy3tEe+3vYytAaiM+K47vsWvQ==
-X-Received: by 2002:a17:907:d02:b0:6e0:4f1d:7ab1 with SMTP id gn2-20020a1709070d0200b006e04f1d7ab1mr27848220ejc.716.1648481430084;
-        Mon, 28 Mar 2022 08:30:30 -0700 (PDT)
-Received: from [192.168.1.10] ([46.249.74.23])
-        by smtp.googlemail.com with ESMTPSA id bx5-20020a0564020b4500b00418fca53406sm7022210edb.27.2022.03.28.08.30.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 28 Mar 2022 08:30:29 -0700 (PDT)
-Subject: Re: [PATCH 0/3] drm: omapdrm: Fix excessive GEM buffers DMM/CMA usage
-To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, merlijn@wizzup.org, tony@atomide.com,
-        airlied@linux.ie, daniel@ffwll.ch
-References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <e126b6a7-5c34-66d5-d371-b2bae3b94924@ideasonboard.com>
-From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Message-ID: <653c8cf1-8644-f5cb-810e-81539a99d776@gmail.com>
-Date:   Mon, 28 Mar 2022 18:30:19 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Firefox/60.0 Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <e126b6a7-5c34-66d5-d371-b2bae3b94924@ideasonboard.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231346AbiC2AZq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 28 Mar 2022 20:25:46 -0400
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82CBB2EC;
+        Mon, 28 Mar 2022 17:24:04 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailnew.nyi.internal (Postfix) with ESMTP id AA157580367;
+        Mon, 28 Mar 2022 20:24:01 -0400 (EDT)
+Received: from imap49 ([10.202.2.99])
+  by compute5.internal (MEProxy); Mon, 28 Mar 2022 20:24:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=cc
+        :cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm3; bh=YVcOcYXKVU4PEK
+        ENIKD3lZlfbqMF8OkXUPWQPtT0ZzA=; b=GV8iKIgkifB/LyajStlhIzzaA2PqSU
+        rEPGZBnWRziuDMlxEaU3fjhl0DHmyiueo1E3rsDwPrq1dyaythjr8LeJ4NZ3kmFH
+        v7J0UO7b64vG5VRtrXZ/OicN/3vDmtLy+M6As/zf5/EYH2TO2OF+YIkppderpdcN
+        ocuY8KYW/dUFglcgTgXnC/6f5bvCH2TNkniwuNDGczxXDBDNnP2nHRX3u9u0y3Go
+        2HHhDpJUS8OMLXTkUmRtrROlDXASYpEdp57tTxY7G7Ci6RHcafVgGiKZGpjbHNDZ
+        //P9ySL7tvarTkKke+QN7H1PCcvhD3CsMcxHphO+TJq7W+71Q2wgIxYw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; bh=YVcOcYXKVU4PEKENIKD3lZlfbqMF8OkXUPWQPtT0Z
+        zA=; b=MfUF/QO1w2kk8LobJGDnDjGmGT9HUgvaIsBRcZJH4NP16C60y/NJslTt7
+        orhhkgHh49rbOiH30mg+9nD++QY3WWgzSB2sDT9Qr4nBx6DPKrUBtQOsEMz/dHsj
+        tnZTX8+5b3lvOKKTTCyQClpi0fsj22EquswXftZXPkMfoj2QCv1jAapgIQLAxfMF
+        S0z3hjnx7eO2S93c8UZottn5LmdiG0YcFFuK5zB8/ar7yCvc0Jy0dFV5KjDfSzzb
+        3LrydgytiTwdKd8S3tKaPDcolfNGWpjEyPMA80KKZ8LEsNOU94avhhnY8yVPYBI+
+        z15/ibq45vK+JxVduu76w45M0nzjQ==
+X-ME-Sender: <xms:oFFCYs9K0yagZswp7rFBq_h4vFfHgzOKyc_TzBu90N89g92vvi8M3A>
+    <xme:oFFCYkvw9h1jnh95ii6UH3c9xPcsfcQHqQiMHfK2AbFZHDfMquci3iY3KqTCG7jHE
+    woyrhqOfmB1RNSngg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudehkedgfedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvffutgfgsehtqhertderreejnecuhfhrohhmpedftehn
+    ughrvgifucflvghffhgvrhihfdcuoegrnhgurhgvfiesrghjrdhiugdrrghuqeenucggtf
+    frrghtthgvrhhnpedvgeekheegfedvhfethefhudetteegueeggfeiieegueehkedugedt
+    kefglefgheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpegrnhgurhgvfiesrghjrdhiugdrrghu
+X-ME-Proxy: <xmx:oVFCYiAKjCQA5Zb05U61crJ5MlOJCJLgZQqyWNA7a6PSqL49ds9rcQ>
+    <xmx:oVFCYsd7HLs87jVXkH1pk4ddv_005tSApo64HS9hBsjced9RxeZQlg>
+    <xmx:oVFCYhNCDSxTTbHGsk6l4iYUYPZLYU9gbpl7DI-t2s9QTshCOjdDqA>
+    <xmx:oVFCYjVxoE5j7ipqETgwLEOiheaMjFzqbcptYMrhCgrHpWjYJYVlwQ>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id E057EF6043F; Mon, 28 Mar 2022 20:24:00 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.5.0-alpha0-4911-g925b585eab-fm-20220323.003-g925b585e
+Mime-Version: 1.0
+Message-Id: <d5e6c96b-5882-4602-93cb-b08a65bfa37e@www.fastmail.com>
+In-Reply-To: <D9AFAC3C-46CA-4C40-8559-FD6934411CAB@goldelico.com>
+References: <20220328000915.15041-1-ansuelsmth@gmail.com>
+ <YkG2RPrtPaBNXb7a@latitude>
+ <D9AFAC3C-46CA-4C40-8559-FD6934411CAB@goldelico.com>
+Date:   Tue, 29 Mar 2022 10:53:40 +1030
+From:   "Andrew Jeffery" <andrew@aj.id.au>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
+        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        "Ansuel Smith" <ansuelsmth@gmail.com>
+Cc:     "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-actions@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
+        linux-aspeed@lists.ozlabs.org,
+        linux-rpi-kernel@lists.infradead.org,
+        chrome-platform@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        kernel@dh-electronics.com, linux-mediatek@lists.infradead.org,
+        openbmc@lists.ozlabs.org, linux-tegra@vger.kernel.org,
+        linux-oxnas@groups.io, linux-arm-msm@vger.kernel.org,
+        linux-unisoc@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        linux-realtek-soc@lists.infradead.org
+Subject: Re: [RFC PATCH 0/1] Categorize ARM dts directory
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
 
-On 28.03.22 г. 12:46 ч., Tomi Valkeinen wrote:
-> Hi,
-> 
-> On 19/01/2022 12:23, Ivaylo Dimitrov wrote:
->> This patch series fixes excessive DMM or CMA usage of GEM buffers 
->> leading to
->> various runtime allocation failures. The series enables daily usage of 
->> devices
->> without exausting limited resources like CMA or DMM space if GPU 
->> rendering is
->> needed.
->>
->> The first patch doesn't bring any functional changes, it just moves some
->> TILER/DMM related code to a separate function, to simplify the review 
->> of the
->> next two patches.
->>
->> The second patch allows off-CPU rendering to non-scanout buffers. 
->> Without that
->> patch, it is basically impossible to use the driver allocated GEM 
->> buffers on
->> OMAP3 for anything else but a basic CPU rendered examples as if we 
->> want GPU
->> rendering, we must allocate buffers as scanout buffers, which are CMA 
->> allocated.
->> CMA soon gets fragmented and we start seeing allocation failures. Such 
->> failres
->> in Xorg cannot be handeled gracefully, so the system is basically 
->> unusable.
->>
->> Third patch fixes similar issue on OMAP4/5, where DMM/TILER spaces get
->> fragmented with time, leading to allocation failures.
->>
->> Series were tested on Motolola Droid4 and Nokia N900, with OMAP DDX and
->> PVR EXA from https://github.com/maemo-leste/xf86-video-omap
->>
->> Ivaylo Dimitrov (3):
->>    drm: omapdrm: simplify omap_gem_pin
->>    drm: omapdrm: Support exporting of non-contiguous GEM BOs
->>    drm: omapdrm: Do no allocate non-scanout GEMs through DMM/TILER
->>
->>   drivers/gpu/drm/omapdrm/omap_gem.c        | 198 
->> +++++++++++++++++-------------
->>   drivers/gpu/drm/omapdrm/omap_gem.h        |   3 +-
->>   drivers/gpu/drm/omapdrm/omap_gem_dmabuf.c |   5 +-
->>   3 files changed, 116 insertions(+), 90 deletions(-)
->>
-> 
-> I have pushed this to drm-misc-next.
-> 
 
-Great, next is VRFB and TE support for Droid4 panel, as soon as I find 
-some spare time :)
+On Tue, 29 Mar 2022, at 00:20, H. Nikolaus Schaller wrote:
+>> Am 28.03.2022 um 15:21 schrieb Jonathan Neusch=C3=A4fer <j.neuschaefe=
+r@gmx.net>:
+>>=20
+>> Or maybe bcm instead of broadcom. Not sure which is preferred by
+>> Broadcom people.
+>
+> Maybe it should always follow the list of vendor prefixes as we are=20
+> talking about DTS?
 
-Ivo
++1 (if we're actually going to do this). That would neuter most the=20
+mistakes and discussion and can be extracted from the dts files=20
+themselves.
 
+Andrew
