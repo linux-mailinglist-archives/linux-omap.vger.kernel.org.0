@@ -2,182 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81FA84ECAB7
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Mar 2022 19:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4386F4ECC74
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Mar 2022 20:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229911AbiC3RfO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 30 Mar 2022 13:35:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60114 "EHLO
+        id S1350072AbiC3Siq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 30 Mar 2022 14:38:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349311AbiC3RfN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Mar 2022 13:35:13 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2062.outbound.protection.outlook.com [40.107.93.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD4B162D8;
-        Wed, 30 Mar 2022 10:33:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O+OqmnNgzo39wGTAD3Px37xU4crtcq/+7X73VXFpLs6TWXuDPq1oDFLdbuhzPK1n0lsHnmUutoLcqCRZ7nY83USv2uPCFY1UFpgU82jrHHz2nI/IS5aCVIkZPXK3V5M8f8hHKeWiaSDQakaHkLUngEsb6Pwd2aKNU6yXrrWLqyUPms6+/zBecCtM3+8KZ+QB8LJf14x3j1R8GO79LY5oGAYfwAOw+cXve936oOwiOAM3On4xu4pC8aS0henBWEIQYZTMP/Aj2m+bYu3ol4yCbJDV7gvPwQSq9/X8Tfzh7BNG+CNnLQN/+Jl5f+OWSucv7G9U6bY2xUJpQn5lDOmrfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yNPo6km0DigoVON72TTyEvKUKhZm3OvmrALL6xn5Vok=;
- b=Eh/SDoLoqZ2wds6FwaP9uFFiCG6yb1NRERPhMJQO8XV71VWl/wZsE49XUZu2qn8jkb1e33YIJitcMmYkl7H0TDpJ/R6aedUZSzdYUCPDnnDM/CtIbivjDSblvyVddnVQUEGbgtWuLf7y3JyDZrAz/YGdLUP1H3m1Ry9xoPwgShHeyBDVCz9Q+8kRnXvSdq0WkvEEQQYa0+FGxYOm97+S1x4gJ3aFzF/6Sj8dedq6e6eDq0EsrzaKpPoW0Oqk1yd9uazOGGRlGcskNWPVFVhKlxbRi+UBRqb4g1qG+AXoec2y36MWO60R39+LGV2HRHGtmdnr4R05+vcTShoo4KuGQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yNPo6km0DigoVON72TTyEvKUKhZm3OvmrALL6xn5Vok=;
- b=MFfKnJVVzazKw+wDlzHoOygN3jEMiYSkTFZyOlYeKjmKleNYd/QN2PNUmFaAHeIwHgVO9dDfESd7qqXGHQEp0/c/vHWG1htCeS5c4Nuc1ZsNaQCil8tL98+HqrYNMKeCK9EuPS0riAk1SLdP+5N2p3MfwTdhcPGNrJonJJCOJAO3xDl4fhELVj74c65DOJPaw4FL23YyfCtyjP36dfN80gTiDdwpdggEVIhPdOOXYKD3nGYuHXz2J1Xs7h2+YAD3jYWZ/mneUT9pI6gXcwlmAk/r10g7ENLtiyk8PzietcYQwIcvS8wWVrYgax1R2lV6deFadMaRneuOOZa/uR7eJg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB4192.namprd12.prod.outlook.com (2603:10b6:208:1d5::15)
- by CY4PR1201MB0216.namprd12.prod.outlook.com (2603:10b6:910:18::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.18; Wed, 30 Mar
- 2022 17:33:24 +0000
-Received: from MN2PR12MB4192.namprd12.prod.outlook.com
- ([fe80::11a0:970a:4c24:c70c]) by MN2PR12MB4192.namprd12.prod.outlook.com
- ([fe80::11a0:970a:4c24:c70c%6]) with mapi id 15.20.5102.027; Wed, 30 Mar 2022
- 17:33:24 +0000
-Date:   Wed, 30 Mar 2022 14:33:23 -0300
-From:   Jason Gunthorpe <jgg@nvidia.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Ashok Raj <ashok.raj@intel.com>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        Liu Yi L <yi.l.liu@intel.com>,
-        Jacob jun Pan <jacob.jun.pan@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-        Christoph Hellwig <hch@lst.de>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, regressions@lists.linux.dev
-Subject: Re: [PATCH v4 8/9] iommu: Remove unused argument in
- is_attach_deferred
-Message-ID: <20220330173323.GA2120790@nvidia.com>
-References: <20220216025249.3459465-1-baolu.lu@linux.intel.com>
- <20220216025249.3459465-9-baolu.lu@linux.intel.com>
- <YkRiawC2T9g+CHSJ@atomide.com>
- <20220330142340.GA2111031@nvidia.com>
- <YkSRKZcJO0q3v5WL@atomide.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YkSRKZcJO0q3v5WL@atomide.com>
-X-ClientProxiedBy: BL0PR0102CA0027.prod.exchangelabs.com
- (2603:10b6:207:18::40) To MN2PR12MB4192.namprd12.prod.outlook.com
- (2603:10b6:208:1d5::15)
+        with ESMTP id S1350443AbiC3S0r (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 30 Mar 2022 14:26:47 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5ECC4A92D
+        for <linux-omap@vger.kernel.org>; Wed, 30 Mar 2022 11:23:50 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-dacc470e03so22908907fac.5
+        for <linux-omap@vger.kernel.org>; Wed, 30 Mar 2022 11:23:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=6PnxJaVdYHTfEoSreao3ANO+XeqxY/p/4dxKSObIH1I=;
+        b=U1oUia1Thamt6Z7oWm6PGNKOk9RXK6Jv76DGrI1cLcYRcY5/d1Tt5qepQRdZm6lsyq
+         RBa/xpJM28ShOu5ibphzafHjPKptRC4OMeOVco0xYKihrCNFhnaGQOBDSvUdgHWgE3gf
+         cWTbx+dPO2nv/wujOZrrbxfJpePUzp7QZ1RCloUPxJhGXTvBKUziPieC1LSkK8oSaB+t
+         E85QJNBGnQK8HE8wei7Zq5jQSpeI5JY8kzofCGcJSUHLIHQXWsBy6ta+brl9WPLZzyWA
+         2jPBZlOFyxLxFI8awBJCcZtcLmSyu35IRMr8cJ72zb2pokIUUqe6EUB9pKUwVKwbq4my
+         ou5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=6PnxJaVdYHTfEoSreao3ANO+XeqxY/p/4dxKSObIH1I=;
+        b=IL2aPg0OQhugmfm79uLxj69MhBZMf5KwvgSGmzqnMpuqcuv1DHq8tBont8/GftAV8Z
+         3yynDGUF+0uQahTQAn0NPFalQwdBLyweYbRk5mZJDHOMa7HS9cFoOY0vlJX6RlBvtAZ/
+         4J38oCaugFUdqgKQOt6h9/vq7zEbKDPthNw8XehL4GVjeaETrHEvWVNic6H8FsRX5yF0
+         Q5wtehTkjIk8RFEm8v6viXtimd50jIT09jNEtumy190uENQf+OtFx4iRGDgUakdqM8/c
+         tU3aR3PhnBv1LfszqWOAHG2JgZY/ea5U3wnl5iixBcjiHMCBgWdcdVvS5pPG4wGQKhC5
+         gRTQ==
+X-Gm-Message-State: AOAM533PxE+uWJjrIC5rwqBFDWoMnDrWOTmBkdjpWFN6knf+0QeeXvN3
+        9gK6yjvNtNH1QBYGAN3UPGDtmUat6b+I877mReAZwgM+YD1w
+X-Google-Smtp-Source: ABdhPJzkTl+tJbylc9dRvis6ZhULbTl7j4ynIkLgm4b/Lu4YSrf6PCWjehKBvofPJCmWKHUKJGD0xbE01MjL0VC50Jo=
+X-Received: by 2002:a17:90b:3143:b0:1c7:5cee:3948 with SMTP id
+ ip3-20020a17090b314300b001c75cee3948mr852445pjb.140.1648664618224; Wed, 30
+ Mar 2022 11:23:38 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 16ad6700-2475-4ab4-2cfd-08da12736478
-X-MS-TrafficTypeDiagnostic: CY4PR1201MB0216:EE_
-X-Microsoft-Antispam-PRVS: <CY4PR1201MB0216EF9A6113E2B1B0B502A5C21F9@CY4PR1201MB0216.namprd12.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1eEfL35KrYQia38PSqmVcarySsiGNqYj+GHPhyQ8FseOo3IoBH0Gm5MFpxyYH5I2MHy7kkAhFBtILnPMbpKWTBeRIHAGxO6EFqJ9xI7lGT4YO/l4lvtOPVcjIH4ofHMw41Mn9CHV/PRcD8Ad/VARCvALxdxITB20O4BJdrd0EKHLTbol2J8D830F03EuofmYo+JrCJcMpx2JFfM1IaE68ovfpDyPc+nuJH5nrPyyNMDWIxR33ss2pagic9p4GsDiUjcVeOMSvaIV8uD+LGciTHrDVvdRqBD069FuChTMYS6edbywVtoEr76Sk5kwX7sdwhhbp8NPnMZY1kYYndxYtto7oBYPulW6EdJvCgngtSc6/sPRW5nm/8CXPr1AAXbyrQyp6N/IY2Vk6IEzVm4nUn00ZcH80dJ/qPk8D7JJ4pRr/NB57WeNXHIIozD3oNH6Y5ADQ/+1js/K3n5/MtspMWKrpw6BrRpGQUYAGaeOBRj4ACslY0dwcThW8r9kdA4kH7gFA+sZDtGOVEFbej58AOo1Bm7oUJFIGhl//GF4kvAisHk2GAWtxC1uCnWrrR7P0sy3YjEEmbc7igfDt+baM+mFcCdR1DxX4fiGMisHGPZh0iFCqmvsBZ6mwLYit5ZQWgfV3K90pT245IQnLOT2ew==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4192.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66946007)(66556008)(66476007)(6512007)(33656002)(83380400001)(86362001)(38100700002)(508600001)(2616005)(36756003)(5660300002)(316002)(7416002)(6916009)(54906003)(4326008)(8676002)(8936002)(186003)(26005)(6506007)(6486002)(1076003)(2906002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?az5X5R4FdEXABSTFo6AnFfnD17ARTwkvatL4FG1XSkUHGltiKA9COg9rwx4h?=
- =?us-ascii?Q?KkFDL6kWlm8qH+ZxhO+ezS5EhaJUFIUGzCn+2LMJwF1+ILtLCQdk7wywlw+9?=
- =?us-ascii?Q?3wkpHol1HjvnyZePUur2vpQcaT1jCuEdCl3AjtLyZTwfXhaW5lPxXJ5aYS4n?=
- =?us-ascii?Q?psADcy2O4Y+BeootJo00UdXaS0JpXOn7MJbHgtXpTc7buhP6UZOoBO6hZgRH?=
- =?us-ascii?Q?R+kBrbAajePWhykRJmG+jEgNVk21odW28r6jd1hU3y49dCeJI6yngaRRRJ13?=
- =?us-ascii?Q?pC03p5Hk8jgA5A8jGHrMyo3xzg/aFcIPYSCplU5lAo66jgWYx6SlOIm+IzII?=
- =?us-ascii?Q?twvlOBLd4aISbtP9ok81kSODwYrujfPxtApBmn585e+3OzzHqIkygpF8XWLK?=
- =?us-ascii?Q?7Z1UtB4159xYFe3aI/97HxYHjOUcGvibWSTHphXxMUXYixb6leeUh+KVi9Qu?=
- =?us-ascii?Q?ht+k9OnOKeAjErWN1v+GntdjMtG9be8i7R6q7NmoonTNtxkvgZDAJonXK1YJ?=
- =?us-ascii?Q?O73q3bXJ2WBFkekwAchjBJjZxUnYmMtdSy8AiUd6+HYHPkzrz0nCVX4Jcrb0?=
- =?us-ascii?Q?SKxxzqW3/SX0lcgvHfKQCCahDS/TlTqg7BrqVG3rWLI0jAuDHoT9433NCAIs?=
- =?us-ascii?Q?34aei4n0rijMAQgto6iM58jwO0//E/SWfWyykAsnP5F381gY7T7vOy/Gnmh5?=
- =?us-ascii?Q?p8NMa0zdPw6R3+k3Xi8A57j3aIsExaD0oYM8gDV/62qf9lvT7C1F7qfHGxBr?=
- =?us-ascii?Q?K/ZeN6k0IVQhL5y1fFESg/r3DKu/pOXbhILKV0YjQrHY7U33fUXRFVTfT48f?=
- =?us-ascii?Q?oEC7UMnTvXXh5e+qW2Err+1NBezP4AbGYW4OZSi0XBT9aWCOLrtr0cL90MD0?=
- =?us-ascii?Q?V67bkWpGXBb7gw2hi6Ja023DjOXz18CUIF1pfNbmRg98LMONDw/3WIX0GByd?=
- =?us-ascii?Q?nnvcD42uaUTpT9UwDolD1q9AkpfAw2wWiyijbjMVRla1UWLagJ+yn8F/PaQL?=
- =?us-ascii?Q?0hKT1OgDUUi8t6yq0rAzDCqUXeNefC+XbVqcbcwd9Dxy5Pk/gD1lpKhprZhc?=
- =?us-ascii?Q?g9ESR5K4v6EHnluWJHxRNSNxBxZ1U3nZzWY1KBALOBHqzcXSygkntFlgfdRw?=
- =?us-ascii?Q?eUUmnV2k+tDRYyfMKEgU+1Tw7Qj3w2njUmMxW4P+XznCPr0JrX1XapJ2eq6A?=
- =?us-ascii?Q?z2+N31Xpfr9FeIXZ5J9nvhQdXaEZlSAD+diMGtXq3/YNc7IMAwM3yYvbKfjr?=
- =?us-ascii?Q?rsQwfiXIqRBppzbXzKq830plKWu5dnZtgGltoU5pNMW6n0NCzCf+XY+q2c6m?=
- =?us-ascii?Q?hz/1VLKpHT7DZ3ZB7rrdyqSnthddpr0H8yQRfoTNxuzYQ0guFZI1L6hHMp/R?=
- =?us-ascii?Q?FQD43ZrbSAIr53gOQU9xiv0WANxYub/SmX1CpDPpGrGMLbHdv4etRWfVLseU?=
- =?us-ascii?Q?jiQnaJUrto6U35lxK02RA13Q+es93vNrhCxi3bQ2aL8LVA/oX9C2N8nHFIZr?=
- =?us-ascii?Q?bT6+Z7AGhi69VOGIWUmGy5dQJvCL7i+vyAyafqz7YEHl2DcADeqU9i4dMqNk?=
- =?us-ascii?Q?dcEC40s15QagEadaGLI23SkWNVjc3II8g4G9hPr0KK6beASew62Uhg3heuje?=
- =?us-ascii?Q?4wR/3NBLmuIwo039s79Q84Q9AIGayxI5qi8xyDTcdagyddWfLhoo6spJO9qo?=
- =?us-ascii?Q?PPi4TyMZRpy4FgsCti7iXb3fDEDjNGjSCFGGU22ZUX4NxeXdav7Hg36oPIz2?=
- =?us-ascii?Q?Vbv83lZaVQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16ad6700-2475-4ab4-2cfd-08da12736478
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB4192.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2022 17:33:24.4045
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Jh+n73HOsf38Ri9qNKi5M4p7vShHqO+Gg8MkwNPuhqe9+dJ+9/TdOSjLEtgmbZOh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1201MB0216
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Reply-To: isabellasayouba0@gmail.com
+Sender: 040stherchurch@gmail.com
+Received: by 2002:a05:6a20:691d:b0:76:6cf5:d552 with HTTP; Wed, 30 Mar 2022
+ 11:23:37 -0700 (PDT)
+From:   Mrs Isabella Sayouba <isabellasayouba0@gmail.com>
+Date:   Wed, 30 Mar 2022 18:23:37 +0000
+X-Google-Sender-Auth: _Xe1kByDkvq-Dn04BagO7gok_qM
+Message-ID: <CAAzQq761QVaWKiKernxpKjqNCK+6V9mRKHBnOcqF8rXJO9Y+aA@mail.gmail.com>
+Subject: =?UTF-8?B?44GC44GE44GV44Gk44CC?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_99,BAYES_999,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Mar 30, 2022 at 08:19:37PM +0300, Tony Lindgren wrote:
-
-> > > __iommu_probe_device from probe_iommu_group+0x2c/0x38
-> > > probe_iommu_group from bus_for_each_dev+0x74/0xbc
-> > > bus_for_each_dev from bus_iommu_probe+0x34/0x2e8
-> > > bus_iommu_probe from bus_set_iommu+0x80/0xc8
-> > > bus_set_iommu from omap_iommu_init+0x88/0xcc
-> > > omap_iommu_init from do_one_initcall+0x44/0x24c
-> > > 
-> > > Any ideas for a fix?
-> > > 
-> > > It would be good to fix this quickly so we don't end up with a broken
-> > > v5.18-rc1..
-> > > 
-> > > For reference, this is mainline commit 41bb23e70b50 ("iommu: Remove unused
-> > > argument in is_attach_deferred").
-> > 
-> > Are you confident in the bisection? I don't see how that commit could
-> > NULL deref..
-> 
-> Oops sorry you're right, the breaking commit is a different patch, it's
-> 3f6634d997db ("iommu: Use right way to retrieve iommu_ops") instead. I must
-> have picked the wrong commit while testing.
-
-That makes alot more sense
- 
-> > Can you find the code that is the NULL deref?
-> 
-> I can debug a bit more tomorrow.
-
-Looks like omap's omap_iommu_probe_device() is buggy, it returns 0 on
-error paths:
-
-	num_iommus = of_property_count_elems_of_size(dev->of_node, "iommus",
-						     sizeof(phandle));
-	if (num_iommus < 0)
-		return 0;
-
-This function needs to return an errno -ENODEV
-
-Otherwise it causes a NULL dev->iommu->iommu_dev and dev_iommu_ops() will
-crash.
-
-Jason
+44GC44GE44GV44Gk44CCDQoNCua2meOCkua1geOBl+OBquOBjOOCieOBk+OBruODoeODvOODq+OC
+kuabuOOBhOOBpuOBhOOBvuOBmeOAguengeOBruebruOBq+OBr+Wkp+OBjeOBquaCsuOBl+OBv+OB
+jOOBguOCiuOBvuOBmeOAguengeOBruWQjeWJjeOBr+OCpOOCtuODmeODqeODu+OCteODqOOCpuOD
+kOOBleOCk+OBp+OBmeOAguODgeODpeODi+OCuOOCouWHuui6q+OBp+OAgeODluODq+OCreODiuOD
+leOCoeOCveOBrueXhemZouOBi+OCiemAo+e1oeOCkuWPluOCiuOBvuOBmeOAguengeOBr+OBguOB
+quOBn+OBq+W/g+OCkumWi+OBhOOBpuaEn+WLleOBl+OBn+OBruOBp+OAgeOBguOBquOBn+OBq+ip
+seOBmeS7peWkluOBq+mBuOaKnuiCouOBr+OBguOCiuOBvuOBm+OCk+OAguengeOBr+OAgTIwMTHl
+ubTjgavkuqHjgY/jgarjgovliY3jgavjg5bjg6vjgq3jg4rjg5XjgqHjgr3jga7jg4Hjg6Xjg4vj
+grjjgqLlpKfkvb/jgag55bm06ZaT5YON44GE44Gm44GE44GfU2F5b3ViYQ0KQnJvd27msI/jgajn
+tZDlqZrjgZfjgb7jgZfjgZ/jgILlrZDkvpvjgarjgZfjgacxMeW5tOmWk+e1kOWpmuOBl+OBn+OA
+gg0KDQrlvbzjga/jgZ/jgaPjgZ815pel6ZaT57aa44GE44Gf55+t44GE55eF5rCX44Gu5b6M44Gn
+5q2744Gr44G+44GX44Gf44CC5b2844Gu5q275b6M44CB56eB44Gv5YaN5ama44GX44Gq44GE44GT
+44Go44Gr5rG644KB44G+44GX44Gf44CC5Lqh44GP44Gq44Gj44Gf5aSr44GM55Sf44GN44Gm44GE
+44Gf44Go44GN44CB5b2844Gv57eP6aGNODUw5LiH44OJ44Or44KS6aCQ44GR44G+44GX44Gf44CC
+DQrvvIg4MDDkuIc1MDAw44OJ44Or77yJ6KW/44Ki44OV44Oq44Kr44Gu44OW44Or44Kt44OK44OV
+44Kh44K944Gu6aaW6YO944Ov44Ks44OJ44Kl44Kw44O844Gu6YqA6KGM44Gn44CC54++5Zyo44CB
+44GT44Gu44GK6YeR44Gv44G+44Gg6YqA6KGM44Gr44GC44KK44G+44GZ44CC5b2844Gv44GT44Gu
+44GK6YeR44KS44OW44Or44Kt44OK44OV44Kh44K944Gu6Ymx5qWt44GL44KJ44Gu6YeR44Gu6Ly4
+5Ye644Gr5Yip55So44Gn44GN44KL44KI44GG44Gr44GX44G+44GX44Gf44CCDQoNCuacgOi/keOA
+geengeOBruWMu+iAheOBr+engeOBjOeZjOOBqOiEs+WNkuS4reOBruWVj+mhjOOBruOBn+OCgeOB
+qzfjg7bmnIjplpPjga/ntprjgYvjgarjgYTjgaDjgo3jgYbjgajnp4HjgavoqIDjgYTjgb7jgZfj
+gZ/jgILnp4HjgpLmnIDjgoLmgqnjgb7jgZvjgabjgYTjgovjga7jga/ohLPljZLkuK3jga7nl4Xm
+sJfjgafjgZnjgILnp4Hjga7nirbmhYvjgpLnn6XjgaPjgZ/jga7jgafjgIHnp4Hjga/jgZPjga7j
+gYrph5HjgpLjgYLjgarjgZ/jgavmuKHjgZfjgabjgIHmgbXjgb7jgozjgarjgYTkurrjgIXjga7k
+uJboqbHjgpLjgZnjgovjgZPjgajjgavjgZfjgb7jgZfjgZ/jgILjgYLjgarjgZ/jga/jgZPjga7j
+gYrph5HjgpLnp4HjgYzjgZPjgZPjgafmjIfnpLrjgZnjgovmlrnms5XjgafliKnnlKjjgZnjgovj
+gafjgZfjgofjgYbjgILnp4Hjga/jgYLjgarjgZ/jgavjgYLjgarjgZ/jga7lgIvkurrnmoTjgark
+vb/nlKjjga7jgZ/jgoHjgavnt4/jgYrph5Hjga4zMOODkeODvOOCu+ODs+ODiOOCkuWPluOBo+OB
+puassuOBl+OBhOOBp+OBmeOAguOBiumHkeOBrjcw77yF44Gv56eB44Gu5ZCN5YmN44Gn5a2k5YWQ
+6Zmi44KS5bu644Gm44CB6YCa44KK44Gu6LKn44GX44GE5Lq644CF44KS5Yqp44GR44KL44Gf44KB
+44Gr5L2/44GG44Gn44GX44KH44GG44CC56eB44Gv5a2k5YWQ44Go44GX44Gm6IKy44Gh44G+44GX
+44Gf44GM44CB56We44Gu5a6244KS57at5oyB44GZ44KL44Gf44KB44Gg44GR44Gr44CB5a625peP
+44Gr44Gv6Kqw44KC44GE44G+44Gb44KT44CC44GT44Gu55eF5rCX44GM56eB44KS44Go44Gm44KC
+6Ium44GX44KB44Gf44Gu44Gn44CB56We44GM56eB44Gu572q44KS6LWm44GX44CB5qW95ZyS44Gn
+56eB44Gu6a2C44KS5Y+X44GR5YWl44KM44KL44KI44GG44Gr44GT44KM44KS44GX44Gm44GE44KL
+44Gu44Gn44GZ44CCDQoNCui/lOS/oeOCkuWPl+OBkeWPluOCiuasoeesrOOAgeODluODq+OCreOD
+iuODleOCoeOCveOBrumKgOihjOOBrumAo+e1oeWFiOOCkuOBiuefpeOCieOBm+OBl+OBvuOBmeOA
+guOBvuOBn+OAgemKgOihjOOBruePvuWcqOOBruWPl+WPluS6uuOBp+OBguOCi+OBk+OBqOOCkuio
+vOaYjuOBmeOCi+aoqemZkOabuOOCkueZuuihjOOBmeOCi+OCiOOBhumKgOihjOmVt+OBq+aMh+ek
+uuOBl+OBvuOBmeOAguengeOBjOOBk+OBk+OBp+i/sOOBueOBn+OCiOOBhuOBq+OBguOBquOBn+OB
+jOOBneOCjOOBq+W/nOOBmOOBpuihjOWLleOBmeOCi+OBk+OBqOOCkuengeOBq+S/neiovOOBl+OB
+puOBj+OBoOOBleOBhOOAgg0KDQrjgqTjgrbjg5njg6njg7vjgrXjg6jjgqbjg5DlpKvkurrjgYvj
+gonjgIINCg==
