@@ -2,124 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7464EE33E
-	for <lists+linux-omap@lfdr.de>; Thu, 31 Mar 2022 23:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BD8A4EE3AB
+	for <lists+linux-omap@lfdr.de>; Thu, 31 Mar 2022 23:59:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236298AbiCaVWd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 31 Mar 2022 17:22:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35072 "EHLO
+        id S240570AbiCaWAN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 31 Mar 2022 18:00:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233592AbiCaVWc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Mar 2022 17:22:32 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5758519FF6E
-        for <linux-omap@vger.kernel.org>; Thu, 31 Mar 2022 14:20:44 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id b130so747784pga.13
-        for <linux-omap@vger.kernel.org>; Thu, 31 Mar 2022 14:20:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=svILDDP1tn6CI+Hh0Pw/4JOxvuo1xmY6BRPzOQqbKnA=;
-        b=2dfB71F+F3N1BfKx9Kxqczba2opQxpo/zINYmDd4Z6PXHpdG5z2OzDAKxa1LzSAN2o
-         NZLwgyOtjG/8lurrH8qFyWYJV/Pg95fgv1vkBH2wPWnMFodh1pxrb7sCjZ6AMm0C2V7O
-         z/1UUrjoDa0wF4nnzTPdb0nvS31OJRD1YTaLoQdKSVtJ4JIXkbY9xXcNpR1d6bHeYUPT
-         7xvX+7bMr+eTg1335pFdVFu79Vct8E2pml6eurl7lCseWgAjgQT4KckXOOq2T42BOX2U
-         gIADtfu8r/GOugPUZh0BI1NVBb2CplcsFq3nFEC1dAZBfPu07+6dfq8NJx6JOwT3NRTv
-         4HAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=svILDDP1tn6CI+Hh0Pw/4JOxvuo1xmY6BRPzOQqbKnA=;
-        b=47fT+52sNAKevC0wCPKdXu7AFTgM27h+yuDFM/TAFor2DSMKoxgfd+3TxSL0DS2JLQ
-         4VtNacXMIF7u1fkR5txeVsNv3OJkh7K/IgRsd91+g0nK/m3W7CzJ5XczlBGRkPIGcfQG
-         s21wigYj14eXNB7BB5asdAKVqHF014G5lmk8eiHRYoGTKvl3g4HOchbkz7Bz5za2OU2h
-         MHxlaAlxnGXw2BQms/9LDrsqUENzPrL9fGL3SxJ61tmqXYJ6AojXJNyf5oW0voEhhIlX
-         hETmb8E0wky2qUggk2yHEJBbTNy/tnF0pQIpvHXMUD+7RnSCD1sXPfPeR/y3WnCMEhDl
-         Q7hg==
-X-Gm-Message-State: AOAM530qXZkRM+Ca2QBh0dQZ/uKhw5SlNayR0bhWw0FpTiYoogklUBTR
-        MB85qQfkgcjUwvAP4/t7mDJsRhXd9DJWJQ==
-X-Google-Smtp-Source: ABdhPJzbez47Mwv9eEJvyiKoQURSHppbrNG51hRYs1H49hqvBOEANdZiWlr9GFjGFb4JMXLR453jBA==
-X-Received: by 2002:a63:fb01:0:b0:398:bb8b:5796 with SMTP id o1-20020a63fb01000000b00398bb8b5796mr5246092pgh.351.1648761643753;
-        Thu, 31 Mar 2022 14:20:43 -0700 (PDT)
-Received: from x1 ([2601:1c2:1001:7090:d825:f497:99ce:fdac])
-        by smtp.gmail.com with ESMTPSA id d18-20020a056a0010d200b004fa2e13ce80sm405829pfu.76.2022.03.31.14.20.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Mar 2022 14:20:43 -0700 (PDT)
-Date:   Thu, 31 Mar 2022 14:21:30 -0700
-From:   Drew Fustini <dfustini@baylibre.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Suman Anna <s-anna@ti.com>, iommu@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH] iommu/omap: Fix regression in probe for NULL pointer
- dereference
-Message-ID: <YkYbWiKH1bSu2VkR@x1>
-References: <20220331062301.24269-1-tony@atomide.com>
+        with ESMTP id S242185AbiCaWAM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Mar 2022 18:00:12 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61664C30;
+        Thu, 31 Mar 2022 14:58:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 59C2CB82256;
+        Thu, 31 Mar 2022 21:58:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11BEC340F0;
+        Thu, 31 Mar 2022 21:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648763899;
+        bh=EdyYRv/RjH6voZpfK9AsnGWVtEgWXeOuukdtRC5UEKg=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=lnycOEjlNdrSNQz4HWAciAAwYkiads1HaoBhzmckHhiGEx2FVc8VApvNG/U9fZnlr
+         7/clOK8vr/mk4bbIw/imRUg8mKlFLGoy3cP6lF6pfy8pQFAN9CSbTGH1aF7rXWFAwC
+         5eUCCuB8MPWi+ft9NaYXhMPh7WIgoijxWXzG3EvDuKREPSLVRmVUmawgEWVWzGnPN6
+         jdqsO4KjIYszy0jIQDN2bn/8Iq5wsP06a7Dx2wzyA5cDIyvc9MJaYk0dnifJpTE+yM
+         7DMl4xqMVdY5x0jyrH5A50uRGYv52Ykkt6t2QK5+3Hwm5mVrzYernar930y/vMNyzw
+         Uhg6D24iOoTWQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220331062301.24269-1-tony@atomide.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <YkXeGS5zaovOaEzp@atomide.com>
+References: <20220325161144.1901695-1-maxime@cerno.tech> <20220325161144.1901695-4-maxime@cerno.tech> <CGME20220330080612eucas1p195caaf35d900412de762a27ae02b7b9e@eucas1p1.samsung.com> <366a0232-bb4a-c357-6aa8-636e398e05eb@samsung.com> <20220330084710.3r6b5pjspz5hdmy6@houat> <YkV3ch7R7YxlATW+@atomide.com> <20220331095456.dyyxsiu2b3yw2vvs@houat> <YkXCGlrok0niwlyg@atomide.com> <20220331153134.h3alp24hzquajkly@houat> <YkXeGS5zaovOaEzp@atomide.com>
+Subject: Re: [PATCH v2 3/3] clk: Drop the rate range on clk_put
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
+        Mike Turquette <mturquette@baylibre.com>,
+        linux-clk@vger.kernel.org,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        'Linux Samsung SOC' <linux-samsung-soc@vger.kernel.org>,
+        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+To:     Maxime Ripard <maxime@cerno.tech>, Tony Lindgren <tony@atomide.com>
+Date:   Thu, 31 Mar 2022 14:58:17 -0700
+User-Agent: alot/0.10
+Message-Id: <20220331215818.F11BEC340F0@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On TLhu, Mar 31, 2022 at 09:23:01AM +0300, Tony Lindgren wrote:
-> Commit 3f6634d997db ("iommu: Use right way to retrieve iommu_ops") started
-> triggering a NULL pointer dereference for some omap variants:
-> 
-> __iommu_probe_device from probe_iommu_group+0x2c/0x38
-> probe_iommu_group from bus_for_each_dev+0x74/0xbc
-> bus_for_each_dev from bus_iommu_probe+0x34/0x2e8
-> bus_iommu_probe from bus_set_iommu+0x80/0xc8
-> bus_set_iommu from omap_iommu_init+0x88/0xcc
-> omap_iommu_init from do_one_initcall+0x44/0x24
-> 
-> This is caused by omap iommu probe returning 0 instead of ERR_PTR(-ENODEV)
-> as noted by Jason Gunthorpe <jgg@ziepe.ca>.
-> 
-> Looks like the regression already happened with an earlier commit
-> 6785eb9105e3 ("iommu/omap: Convert to probe/release_device() call-backs")
-> that changed the function return type and missed converting one place.
-> 
-> Cc: Drew Fustini <dfustini@baylibre.com>
-> Cc: Lu Baolu <baolu.lu@linux.intel.com>
-> Cc: Suman Anna <s-anna@ti.com>
-> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-> Fixes: 6785eb9105e3 ("iommu/omap: Convert to probe/release_device() call-backs")
-> Fixes: 3f6634d997db ("iommu: Use right way to retrieve iommu_ops")
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/iommu/omap-iommu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/omap-iommu.c b/drivers/iommu/omap-iommu.c
-> --- a/drivers/iommu/omap-iommu.c
-> +++ b/drivers/iommu/omap-iommu.c
-> @@ -1661,7 +1661,7 @@ static struct iommu_device *omap_iommu_probe_device(struct device *dev)
->  	num_iommus = of_property_count_elems_of_size(dev->of_node, "iommus",
->  						     sizeof(phandle));
->  	if (num_iommus < 0)
-> -		return 0;
-> +		return ERR_PTR(-ENODEV);
->  
->  	arch_data = kcalloc(num_iommus + 1, sizeof(*arch_data), GFP_KERNEL);
->  	if (!arch_data)
-> -- 
-> 2.35.1
+Quoting Tony Lindgren (2022-03-31 10:00:09)
+> * Maxime Ripard <maxime@cerno.tech> [220331 15:29]:
+> > On Thu, Mar 31, 2022 at 06:00:42PM +0300, Tony Lindgren wrote:
+> > > * Maxime Ripard <maxime@cerno.tech> [220331 09:52]:
+> > > > On Thu, Mar 31, 2022 at 12:42:10PM +0300, Tony Lindgren wrote:
+> > > > > It seems the dts assigned-clock-parents no longer works now?
+> > > >=20
+> > > > That would make some kind of sense, __set_clk_parents calls clk_put=
+ on
+> > > > both the assigned clock and its parent.
+> > > >=20
+> > > > Could you see what parent (and why?) it tries to enforce then?
+> > >=20
+> > > It picks the other option available for the mux clock that only has
+> > > two options. No idea why, but if you have some debug patch in mind I
+> > > can give it a try.
+> > >=20
+> > > > It looks like the gpt1_fck driver might favor another parent for th=
+at
+> > > > rate, which, if it's an invalid configuration, shouldn't really hap=
+pen?
+> > >=20
+> > > Hmm there's a gate clock and a mux clock, there's not really a rate
+> > > selection available here for the sources.
+> >=20
+> > If I followed the OMAP driver properly, clk_mux_determine_rate_flags is
+> > doing the heavy lifting, could you run your test with
+>=20
+> Thanks that produces some interesting output. In the working case with
+> the $subject patch reverted we have:
 
-Mainline with omap2plus_defconfig now boots ok on my BeagleBoard-X15
-with the TI AM5728 SoC after this patch is applied.
-
-Tested-by: Drew Fustini <dfustini@baylibre.com>
-
-thanks,
-drew
+I don't think clk_put() dropping a range request is very important right
+now. If this isn't fixed tomorrow then we should revert out this patch
+so systems can boot -rc1 and try to fix it in parallel.
