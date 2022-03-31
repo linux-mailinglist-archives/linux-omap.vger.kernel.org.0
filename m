@@ -2,104 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D16D4EDA59
-	for <lists+linux-omap@lfdr.de>; Thu, 31 Mar 2022 15:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D14174EDBDD
+	for <lists+linux-omap@lfdr.de>; Thu, 31 Mar 2022 16:42:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233978AbiCaNTP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 31 Mar 2022 09:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34576 "EHLO
+        id S233476AbiCaOoT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 31 Mar 2022 10:44:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233027AbiCaNTO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Mar 2022 09:19:14 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3686220E975
-        for <linux-omap@vger.kernel.org>; Thu, 31 Mar 2022 06:17:27 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nZug1-0008LA-05; Thu, 31 Mar 2022 15:17:25 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nZug0-0007dG-P2; Thu, 31 Mar 2022 15:17:23 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1nZufy-000FO7-IV; Thu, 31 Mar 2022 15:17:22 +0200
-Date:   Thu, 31 Mar 2022 15:17:22 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>
-Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: Re: [PATCH 0/2] mfd: twlx030: i2c remove callback cleanup
-Message-ID: <20220331131722.wt5uik3izzr7kewq@pengutronix.de>
-References: <20220113101430.12869-1-u.kleine-koenig@pengutronix.de>
+        with ESMTP id S232975AbiCaOoS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Mar 2022 10:44:18 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 75BF8215929
+        for <linux-omap@vger.kernel.org>; Thu, 31 Mar 2022 07:42:31 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 55F6880DB;
+        Thu, 31 Mar 2022 14:40:21 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH] ARM: OMAP2+: Fix regression for smc calls for vmap stack
+Date:   Thu, 31 Mar 2022 17:42:25 +0300
+Message-Id: <20220331144225.56553-1-tony@atomide.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="k7bb3avtwrjcunmo"
-Content-Disposition: inline
-In-Reply-To: <20220113101430.12869-1-u.kleine-koenig@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Commit 9c46929e7989 ("ARM: implement THREAD_INFO_IN_TASK for uniprocessor
+systems") started triggering an issue with smc calls hanging on boot as
+VMAP_STACK is now enabled by default.
 
---k7bb3avtwrjcunmo
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Based on discussions on the #armlinux irc channel, Arnd noticed that omaps
+are using __pa() for stack for smc calls. This does not work with vmap
+stack.
 
-On Thu, Jan 13, 2022 at 11:14:28AM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello,
->=20
-> the remove paths of the twl4030 chip can fail and then returns an error
-> code in twl_remove() early. This isn't a good thing, because the device
-> will still go away with some resources not freed.
-> For the twl6030 this cannot happen, and the first patch is just a small
-> cleanup. For the twl4030 the situation is improved a bit: When the
-> failure happens, the dummy slave devices are removed now.
->=20
-> Note that twl4030_exit_irq() is incomplete. The irq isn't freed and
-> maybe some more cleanup is missing which might boom if an irq triggers
-> after the device is removed. Not sure that twl6030_exit_irq() is better
-> in this regard.
->=20
-> I noticed this issue because I work on making i2c_driver::remove return
-> void as returning a value !=3D 0 there is almost always an error attached
-> to wrong expectations.
+Let's fix the issue by changing the param arrays to use static param[5] for
+each function for __pa() to work. This consumes a bit more memory compared
+to adding a single static buffer, but avoids potential races with the smc
+calls initializing the shared buffer.
 
-It's one merge window ago now that I sent these two patches and didn't
-get any feedback. Did this series fell through the cracks?
+Fixes: 9c46929e7989 ("ARM: implement THREAD_INFO_IN_TASK for uniprocessor systems")
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/mach-omap2/omap-secure.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---k7bb3avtwrjcunmo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmJFqd8ACgkQwfwUeK3K
-7AnLdwgAjHkq22/YPazauz9li4T4Gglucux/NLvOBjrtwIyk/K6zn7623YCWSdlK
-NyV358wdTE69ID/SzlfwOFXzUyLx6XuH94galV4v/TDb0/SkpquraC6Q1R/EvnYJ
-s1WrijKXQhlcfpv5pJQ/dIyJKiqi14uPhMuBWjNuF4UbXAWwBMLY+4h9KbpiS8xh
-IyafzqeexB/3lcRDPOAwfREqMC72lkpCkLJJDkOidnkzmDsz5UUASXF2FD0nTEZN
-+qjglyOImwcCE3S6+chwceGxLdo+wFmUO7/6Xow8UPhbQqEUCZPUx5Eh9JTIVSNC
-SdDZDBX6BtI5fXXQLc84Kq/1gVBoYQ==
-=xLPR
------END PGP SIGNATURE-----
-
---k7bb3avtwrjcunmo--
+diff --git a/arch/arm/mach-omap2/omap-secure.c b/arch/arm/mach-omap2/omap-secure.c
+--- a/arch/arm/mach-omap2/omap-secure.c
++++ b/arch/arm/mach-omap2/omap-secure.c
+@@ -59,8 +59,8 @@ static void __init omap_optee_init_check(void)
+ u32 omap_secure_dispatcher(u32 idx, u32 flag, u32 nargs, u32 arg1, u32 arg2,
+ 							 u32 arg3, u32 arg4)
+ {
++	static u32 param[5];
+ 	u32 ret;
+-	u32 param[5];
+ 
+ 	param[0] = nargs;
+ 	param[1] = arg1;
+@@ -119,8 +119,8 @@ phys_addr_t omap_secure_ram_mempool_base(void)
+ #if defined(CONFIG_ARCH_OMAP3) && defined(CONFIG_PM)
+ u32 omap3_save_secure_ram(void __iomem *addr, int size)
+ {
++	static u32 param[5];
+ 	u32 ret;
+-	u32 param[5];
+ 
+ 	if (size != OMAP3_SAVE_SECURE_RAM_SZ)
+ 		return OMAP3_SAVE_SECURE_RAM_SZ;
+@@ -153,8 +153,8 @@ u32 omap3_save_secure_ram(void __iomem *addr, int size)
+ u32 rx51_secure_dispatcher(u32 idx, u32 process, u32 flag, u32 nargs,
+ 			   u32 arg1, u32 arg2, u32 arg3, u32 arg4)
+ {
++	static u32 param[5];
+ 	u32 ret;
+-	u32 param[5];
+ 
+ 	param[0] = nargs+1; /* RX-51 needs number of arguments + 1 */
+ 	param[1] = arg1;
+-- 
+2.35.1
