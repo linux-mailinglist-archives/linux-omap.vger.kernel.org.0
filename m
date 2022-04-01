@@ -2,47 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5751C4EF0C2
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Apr 2022 16:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B47D4EF5AB
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Apr 2022 17:46:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241208AbiDAOjB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 Apr 2022 10:39:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
+        id S1348113AbiDAPPc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Apr 2022 11:15:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348363AbiDAOeN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Apr 2022 10:34:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E512BC7;
-        Fri,  1 Apr 2022 07:32:24 -0700 (PDT)
+        with ESMTP id S1350406AbiDAOr3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Apr 2022 10:47:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB3B52A3393;
+        Fri,  1 Apr 2022 07:37:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AF0761AFD;
-        Fri,  1 Apr 2022 14:32:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CB7C34111;
-        Fri,  1 Apr 2022 14:32:22 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 73B71B82515;
+        Fri,  1 Apr 2022 14:37:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF56C36AE2;
+        Fri,  1 Apr 2022 14:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648823543;
+        s=k20201202; t=1648823836;
         bh=BQ+000fsdHVkiRIowF2xgMLddbyFXjMD5fDA8h5TuYY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QZRSHu+gPK2a1twv+3sLHURoUB7liQOCEmYerFyuei/rXmhtB22TpMiC7sN1xztoP
-         86r1jK8phxCQZ9pZLp/dcrGYxssHa1or4RbmTMef76K8XEuL5xqWUQwCjpTAKQO+qm
-         R+s9yOYOdqTOLdOYojVLpNo5A37z0qNJ1FcJYwWlfe2JTY4WNhMA/2r1zJykNvEtsr
-         P4AKbE6ojWexCe5cY2zdJup0oGZvXZlkBbcKH4Tx5VvOnS5V+W6mfrEbCF3G2EUzUQ
-         jV+o/cIQSktFoAUQYn3TIgcznhKkQTG/l2APezrV7Mo7GlaoqPR0Rqt6RVeohK9Q/D
-         twy787NUi7Fxg==
+        b=kczo9mwX1el9axt1gYtWObqVpVzSFxPSsrrQZIoK3tDQ5H82gkvXvw8sRR+DtLzin
+         +JXXYa5uYobM+isEkOeO5WKihvQM5ud6cSDoBVSLSY8dPJ+xUK+K+3mgD++/sR+Rl7
+         Qgishz/+y7YeGjNBNSJg97IsOUEG1aihi2mHeNgWdls5U3tedeHjeUQoOBfHqFDi+X
+         hRMTT+OAOkdBq6AcEtD1Ykd5XeqRmmKLM5fUk7m/YfzU8tvob4OzQ/mMzdvJ5CupKU
+         s2GVsX9LV/IfHJkLZeS6e6wB7qBOLwK4cDVsF+XDorRNMfdg8RSX9euI06zUe3tzIv
+         js1BSKbkScU0w==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>, balbi@kernel.org,
         linux-usb@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.17 136/149] usb: dwc3: omap: fix "unbalanced disables for smps10_out1" on omap5evm
-Date:   Fri,  1 Apr 2022 10:25:23 -0400
-Message-Id: <20220401142536.1948161-136-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.16 098/109] usb: dwc3: omap: fix "unbalanced disables for smps10_out1" on omap5evm
+Date:   Fri,  1 Apr 2022 10:32:45 -0400
+Message-Id: <20220401143256.1950537-98-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220401142536.1948161-1-sashal@kernel.org>
-References: <20220401142536.1948161-1-sashal@kernel.org>
+In-Reply-To: <20220401143256.1950537-1-sashal@kernel.org>
+References: <20220401143256.1950537-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
