@@ -2,55 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BD8A4EE3AB
-	for <lists+linux-omap@lfdr.de>; Thu, 31 Mar 2022 23:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F3E94EE93B
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Apr 2022 09:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240570AbiCaWAN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 31 Mar 2022 18:00:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50910 "EHLO
+        id S1343928AbiDAHsC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Apr 2022 03:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242185AbiCaWAM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 31 Mar 2022 18:00:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61664C30;
-        Thu, 31 Mar 2022 14:58:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 59C2CB82256;
-        Thu, 31 Mar 2022 21:58:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11BEC340F0;
-        Thu, 31 Mar 2022 21:58:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648763899;
-        bh=EdyYRv/RjH6voZpfK9AsnGWVtEgWXeOuukdtRC5UEKg=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=lnycOEjlNdrSNQz4HWAciAAwYkiads1HaoBhzmckHhiGEx2FVc8VApvNG/U9fZnlr
-         7/clOK8vr/mk4bbIw/imRUg8mKlFLGoy3cP6lF6pfy8pQFAN9CSbTGH1aF7rXWFAwC
-         5eUCCuB8MPWi+ft9NaYXhMPh7WIgoijxWXzG3EvDuKREPSLVRmVUmawgEWVWzGnPN6
-         jdqsO4KjIYszy0jIQDN2bn/8Iq5wsP06a7Dx2wzyA5cDIyvc9MJaYk0dnifJpTE+yM
-         7DMl4xqMVdY5x0jyrH5A50uRGYv52Ykkt6t2QK5+3Hwm5mVrzYernar930y/vMNyzw
-         Uhg6D24iOoTWQ==
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S236779AbiDAHsA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Apr 2022 03:48:00 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B45D1877C3
+        for <linux-omap@vger.kernel.org>; Fri,  1 Apr 2022 00:46:11 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id w4so2907179wrg.12
+        for <linux-omap@vger.kernel.org>; Fri, 01 Apr 2022 00:46:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=LCK4dl8vS+URWlqWXwwTuaXKgNuAXF8HAeyZxE1LFL8=;
+        b=BpbnJzDgr4hcsVzm1oW1UkpOJL1mxsvWBqxwP9Pkn+dLZROp8D3MfzEya/xvto6CWr
+         5Hpy51yFe7FUyHZMj+ten4o6iHyYLGOYzGiFVa8ijakXUpvVAtHFLKterEGzz3KKQxlz
+         ETKbdvSE/Hmbzm22TEyc/WygvjyFzFpHmwzsVIN4Dp/uQh1Q2uw9t6rGy1POR0K7WLPh
+         tdLAt39eVc8KbF4Zm1vgyjPDgcyoVfk4wDMpQaiuzMPcSq4CvpRQr/y9jblbSlvajQzw
+         wQoKcnKDtm3F84FSiVXrvhUmevYn2ZnpxpLRmKJS3rANa0ROOBR36YhB11AHzuGMrMep
+         xe1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=LCK4dl8vS+URWlqWXwwTuaXKgNuAXF8HAeyZxE1LFL8=;
+        b=q9c+AvTKLHC2txcsoafmAtY3imibmtq/p0XXd9iSyMYggc6Roq/spvdjVjGvPD12u/
+         mY1wz5uDIND124g1S2OFFgIKsfOW7kUR+rZgUkNYkU64v5T2Sv/BwCJnCXyoHH5JB7vf
+         otzZiCIRnSDIu3va7eAxKvpigu+k1Z7C3xBnuPTrtjdWEJWJ+nAdrNJrhTMznHjLbqTg
+         xuNeJPeXuPkjGO1XnPtir1Y3NTOOLumTVwdPgE/22ZAokdAkhXXRgEBX+CZxfFj+a1ZB
+         px4z5EMbbikcGXgAhjV3RMjGGifjhcOLDdvhYDqEe0jZ3ApyWxH1Irs0jB+aFxBD+TB+
+         ZPTw==
+X-Gm-Message-State: AOAM532jWde8YbijCDEEpyCI3pylGDl1IluzS9DabKrXap/plwWO3XD9
+        eKjyzE5wr3Fa+uI3/e4EmDYKaQ==
+X-Google-Smtp-Source: ABdhPJx6WEFbSKf1cYZCJRp8RN1ZQmUurhpYge2WRdcRyKlEUox2QLvhk0FjNYGG4Dxt998JIXmRyQ==
+X-Received: by 2002:a5d:4e08:0:b0:205:89b6:1d4d with SMTP id p8-20020a5d4e08000000b0020589b61d4dmr6821818wrt.124.1648799169763;
+        Fri, 01 Apr 2022 00:46:09 -0700 (PDT)
+Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
+        by smtp.gmail.com with ESMTPSA id r4-20020a05600c35c400b0038cbd8c41e9sm9192704wmq.12.2022.04.01.00.46.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Apr 2022 00:46:08 -0700 (PDT)
+Date:   Fri, 1 Apr 2022 08:46:06 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH 0/2] mfd: twlx030: i2c remove callback cleanup
+Message-ID: <Ykatvp3RuNA8IXZ7@google.com>
+References: <20220113101430.12869-1-u.kleine-koenig@pengutronix.de>
+ <20220331131722.wt5uik3izzr7kewq@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <YkXeGS5zaovOaEzp@atomide.com>
-References: <20220325161144.1901695-1-maxime@cerno.tech> <20220325161144.1901695-4-maxime@cerno.tech> <CGME20220330080612eucas1p195caaf35d900412de762a27ae02b7b9e@eucas1p1.samsung.com> <366a0232-bb4a-c357-6aa8-636e398e05eb@samsung.com> <20220330084710.3r6b5pjspz5hdmy6@houat> <YkV3ch7R7YxlATW+@atomide.com> <20220331095456.dyyxsiu2b3yw2vvs@houat> <YkXCGlrok0niwlyg@atomide.com> <20220331153134.h3alp24hzquajkly@houat> <YkXeGS5zaovOaEzp@atomide.com>
-Subject: Re: [PATCH v2 3/3] clk: Drop the rate range on clk_put
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Mike Turquette <mturquette@baylibre.com>,
-        linux-clk@vger.kernel.org,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        'Linux Samsung SOC' <linux-samsung-soc@vger.kernel.org>,
-        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-To:     Maxime Ripard <maxime@cerno.tech>, Tony Lindgren <tony@atomide.com>
-Date:   Thu, 31 Mar 2022 14:58:17 -0700
-User-Agent: alot/0.10
-Message-Id: <20220331215818.F11BEC340F0@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220331131722.wt5uik3izzr7kewq@pengutronix.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,37 +73,38 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Quoting Tony Lindgren (2022-03-31 10:00:09)
-> * Maxime Ripard <maxime@cerno.tech> [220331 15:29]:
-> > On Thu, Mar 31, 2022 at 06:00:42PM +0300, Tony Lindgren wrote:
-> > > * Maxime Ripard <maxime@cerno.tech> [220331 09:52]:
-> > > > On Thu, Mar 31, 2022 at 12:42:10PM +0300, Tony Lindgren wrote:
-> > > > > It seems the dts assigned-clock-parents no longer works now?
-> > > >=20
-> > > > That would make some kind of sense, __set_clk_parents calls clk_put=
- on
-> > > > both the assigned clock and its parent.
-> > > >=20
-> > > > Could you see what parent (and why?) it tries to enforce then?
-> > >=20
-> > > It picks the other option available for the mux clock that only has
-> > > two options. No idea why, but if you have some debug patch in mind I
-> > > can give it a try.
-> > >=20
-> > > > It looks like the gpt1_fck driver might favor another parent for th=
-at
-> > > > rate, which, if it's an invalid configuration, shouldn't really hap=
-pen?
-> > >=20
-> > > Hmm there's a gate clock and a mux clock, there's not really a rate
-> > > selection available here for the sources.
-> >=20
-> > If I followed the OMAP driver properly, clk_mux_determine_rate_flags is
-> > doing the heavy lifting, could you run your test with
->=20
-> Thanks that produces some interesting output. In the working case with
-> the $subject patch reverted we have:
+On Thu, 31 Mar 2022, Uwe Kleine-König wrote:
 
-I don't think clk_put() dropping a range request is very important right
-now. If this isn't fixed tomorrow then we should revert out this patch
-so systems can boot -rc1 and try to fix it in parallel.
+> On Thu, Jan 13, 2022 at 11:14:28AM +0100, Uwe Kleine-König wrote:
+> > Hello,
+> > 
+> > the remove paths of the twl4030 chip can fail and then returns an error
+> > code in twl_remove() early. This isn't a good thing, because the device
+> > will still go away with some resources not freed.
+> > For the twl6030 this cannot happen, and the first patch is just a small
+> > cleanup. For the twl4030 the situation is improved a bit: When the
+> > failure happens, the dummy slave devices are removed now.
+> > 
+> > Note that twl4030_exit_irq() is incomplete. The irq isn't freed and
+> > maybe some more cleanup is missing which might boom if an irq triggers
+> > after the device is removed. Not sure that twl6030_exit_irq() is better
+> > in this regard.
+> > 
+> > I noticed this issue because I work on making i2c_driver::remove return
+> > void as returning a value != 0 there is almost always an error attached
+> > to wrong expectations.
+> 
+> It's one merge window ago now that I sent these two patches and didn't
+> get any feedback. Did this series fell through the cracks?
+
+Yes they did.
+
+Feel free to submit [RESEND]s any time after 2 weeks with no reply.
+
+They are now on my TODO list.
+
+-- 
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
