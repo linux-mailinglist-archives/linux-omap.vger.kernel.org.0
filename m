@@ -2,59 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5848E4F013C
-	for <lists+linux-omap@lfdr.de>; Sat,  2 Apr 2022 13:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 604074F0149
+	for <lists+linux-omap@lfdr.de>; Sat,  2 Apr 2022 13:55:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243884AbiDBLp7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 2 Apr 2022 07:45:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41616 "EHLO
+        id S236730AbiDBL4u (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 2 Apr 2022 07:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236262AbiDBLp7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Apr 2022 07:45:59 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C3310240E;
-        Sat,  2 Apr 2022 04:44:07 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id g24so7028765lja.7;
-        Sat, 02 Apr 2022 04:44:07 -0700 (PDT)
+        with ESMTP id S229534AbiDBL4t (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Apr 2022 07:56:49 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FD5210BBC9;
+        Sat,  2 Apr 2022 04:54:57 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id h7so9287678lfl.2;
+        Sat, 02 Apr 2022 04:54:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=tK+bAzchihkNx5o6wUd4ePW64qHQoy1M/7fPsyxS4r8=;
-        b=ZSxaog/aSPOhLkEsbBwZz2yfw4oGtMjs7gS7d+cWr9E9BOyBR1CmcctL7KVnKhPAu/
-         pBmPBDlI824079KSeOzcZMzGu0h+5G0CYyiHVNfBsHhXqWoTUBQtyZgJdd0K9NUTMy69
-         2W7MkYMQSGULiiEMAOgJqsTGPJUXc/OpbNqC0ID7n09Wu9RibfempUMfwlt70DtU4Rcf
-         zxk7vuTSMDwY/orrDSF+Cxqf9mQF11biQyTwtyyGFFvookm8xh/ggYsWmQzylZuSTdxJ
-         L4IzGP33V8GOp79XgGG40u2G9xCLvZqpIxb6JNlZGyWCyMLr9+kjUvSRGSGiyRRAu8Ns
-         w6Ig==
+        bh=O7nG8AJS/R9S2ZJAIN62cFFHL53dA2MgyCxhgMT/sn0=;
+        b=T3J+o4FO/uAU8qIqjeZbmKanNd/OutwBIyxA3oYPX/iFeQk5dFNYTdCPRjhF1Mz+hw
+         bVDeLx6EUfipSXgpLnH+v77PPj0OOIzO6pk1EUfG4E0eok9EF0IJtTfs8C04iGZzh0zG
+         x4gjByHDoiNzcqWuk68Y8E4qet8Lh6QkRRpVvWPbyFATUHLwSXYNHBPa0E69Pfx1SMbM
+         IEhvuTxpdWH53mfWOiL25ReVrTN4ZX305vwlBvwUknlwx+h5HrE0oPu7XvRO3BriZqqp
+         8Jz0w0RmJGjEct2OxMKkmyKX1gQjy0vu7Ye5oHcw/zXSU1elj94BLcy2F1pBG11OQ11d
+         chzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=tK+bAzchihkNx5o6wUd4ePW64qHQoy1M/7fPsyxS4r8=;
-        b=1u6nTqAMhBVzir5Qr1Ur+dnX0VgFaMr747z6Q1AcWxprzqIs2m6ygWgOlZFZTTh6Oj
-         grIjTBovmIL5wcugXKY9v2JHiBmckYZUuwae/xPe7UXuMoYM290liIR+dgoNqj+7TlVr
-         JY/jWwGRwlflwwUnoU+awKewDj2nb0rrNMQycunVFAcMZdlqTzc3ooOpwRkJ45Jmn3/1
-         c0XjJqMQMztUTDFZvyXQKnbXKJSuAmqoRba4BuqKZEvWRIvelvYxy2kCtzZngRZFnH+5
-         gWpMi+38JxfLaFsQtxCe/qLSsXMPRMZeQzL4dNpYo5Boq+kySqTtEbL4d9PTeWHk8uhT
-         Odww==
-X-Gm-Message-State: AOAM531yq91TEl7BycPbKaXLH60cacOqRs5GnMYzD3PgKKTwrV6/s2tx
-        CYGX7kuiph3MsStp6uDgmGY=
-X-Google-Smtp-Source: ABdhPJyHo1/LhYBh09lbzxjQKqqdsvlO52BgPOarHxuh3Kpp86TNk6ZkFt6WDZBQLewskcaMgr0mEA==
-X-Received: by 2002:a2e:a554:0:b0:249:8dd1:9da9 with SMTP id e20-20020a2ea554000000b002498dd19da9mr15976073ljn.341.1648899845810;
-        Sat, 02 Apr 2022 04:44:05 -0700 (PDT)
+        bh=O7nG8AJS/R9S2ZJAIN62cFFHL53dA2MgyCxhgMT/sn0=;
+        b=KGSnXTaBvIsF4L12B6ms7tNTI6ilX1wiBFh7j1+85YNgaXKWl+lpwpEx4X46xoPY0S
+         hh5x09f9qMjMWyFtDEUUPZkYRwm8rTdhgBNOt9sxajxo8I4jnrcqhbembY4L7nDxubrD
+         kIHt8WgvOmSmDWw8PQwACXS9U2VDg8AJ+0rFyehvfjlnZiplGB43IZFzasZXsh6yB2YJ
+         /XObhpoBbWM6IGcRPmlrfVUAVr8Px2SjHvwo9aqTo5sWilaoAAedviJBKf9/cySQBbEh
+         f36rtGpNYbI+pnCVKA9FIN/9oODcyzZfHmAMymI66kSkiebp2sWl1uzZh5StFyTHEmZC
+         81mQ==
+X-Gm-Message-State: AOAM532gb8tK5SCf96+OrN0RQIK9uHSUMkvQHOZDs7wGZxKbIKHhMqIp
+        1Zg/Cq7dVQxsNWNxxmvVPGubukPnmYKM5hsa
+X-Google-Smtp-Source: ABdhPJza7N3uBhLaWceoecrnl35xtMsLyegy8nmRMBZtbKetasJkvfws4mM6r4sHWGm/uLh6CNAfsQ==
+X-Received: by 2002:a05:6512:130c:b0:44a:2dd3:91d0 with SMTP id x12-20020a056512130c00b0044a2dd391d0mr17253016lfu.234.1648900495457;
+        Sat, 02 Apr 2022 04:54:55 -0700 (PDT)
 Received: from dell.lan (93-181-165-181.internetia.net.pl. [93.181.165.181])
-        by smtp.gmail.com with ESMTPSA id h21-20020a0565123c9500b0044a34642bf4sm505947lfv.7.2022.04.02.04.44.04
+        by smtp.gmail.com with ESMTPSA id m2-20020a05651202e200b0044a0d0f99b9sm504846lfq.278.2022.04.02.04.54.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Apr 2022 04:44:05 -0700 (PDT)
+        Sat, 02 Apr 2022 04:54:54 -0700 (PDT)
 From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Subject: [PATCH] usb: host: ohci-omap: Make it CCF clk API compatible
-Date:   Sat,  2 Apr 2022 13:43:53 +0200
-Message-Id: <20220402114353.130775-1-jmkrzyszt@gmail.com>
+Subject: [PATCH] video: fbdev: omap: Make it CCF clk API compatible
+Date:   Sat,  2 Apr 2022 13:54:44 +0200
+Message-Id: <20220402115444.130999-1-jmkrzyszt@gmail.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -68,76 +67,111 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The driver, OMAP1 specific, now omits clk_prepare/unprepare() steps, not
-supported by OMAP1 custom implementation of clock API.  However, non-CCF
-stubs of those functions exist for use on such platforms until converted
-to CCF.
+OMAP1 LCDC drivers now omit clk_prepare/unprepare() steps, not supported
+by OMAP1 custom implementation of clock API.  However, non-CCF stubs of
+those functions exist for use on such platforms until converted to CCF.
 
-Update the driver to be compatible with CCF implementation of clock API.
+Update the drivers to be compatible with CCF implementation of clock API.
 
 Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
 ---
- drivers/usb/host/ohci-omap.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/omap/hwa742.c | 6 +++---
+ drivers/video/fbdev/omap/lcdc.c   | 6 +++---
+ drivers/video/fbdev/omap/sossi.c  | 5 +++--
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/usb/host/ohci-omap.c b/drivers/usb/host/ohci-omap.c
-index 45dcf8292072..2ab2e089a2b7 100644
---- a/drivers/usb/host/ohci-omap.c
-+++ b/drivers/usb/host/ohci-omap.c
-@@ -281,6 +281,10 @@ static int ohci_hcd_omap_probe(struct platform_device *pdev)
- 		goto err_put_hcd;
- 	}
+diff --git a/drivers/video/fbdev/omap/hwa742.c b/drivers/video/fbdev/omap/hwa742.c
+index b191bef22d98..9d9fe5c3a7a1 100644
+--- a/drivers/video/fbdev/omap/hwa742.c
++++ b/drivers/video/fbdev/omap/hwa742.c
+@@ -964,7 +964,7 @@ static int hwa742_init(struct omapfb_device *fbdev, int ext_mode,
+ 	if ((r = calc_extif_timings(ext_clk, &extif_mem_div)) < 0)
+ 		goto err3;
+ 	hwa742.extif->set_timings(&hwa742.reg_timings);
+-	clk_enable(hwa742.sys_ck);
++	clk_prepare_enable(hwa742.sys_ck);
  
-+	retval = clk_prepare(priv->usb_host_ck);
-+	if (retval)
-+		goto err_put_host_ck;
-+
- 	if (!cpu_is_omap15xx())
- 		priv->usb_dc_ck = clk_get(&pdev->dev, "usb_dc_ck");
- 	else
-@@ -288,13 +292,17 @@ static int ohci_hcd_omap_probe(struct platform_device *pdev)
+ 	calc_hwa742_clk_rates(ext_clk, &sys_clk, &pix_clk);
+ 	if ((r = calc_extif_timings(sys_clk, &extif_mem_div)) < 0)
+@@ -1023,7 +1023,7 @@ static int hwa742_init(struct omapfb_device *fbdev, int ext_mode,
  
- 	if (IS_ERR(priv->usb_dc_ck)) {
- 		retval = PTR_ERR(priv->usb_dc_ck);
--		goto err_put_host_ck;
-+		goto err_unprepare_host_ck;
- 	}
- 
-+	retval = clk_prepare(priv->usb_dc_ck);
-+	if (retval)
-+		goto err_put_dc_ck;
-+
- 	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
- 		dev_dbg(&pdev->dev, "request_mem_region failed\n");
- 		retval = -EBUSY;
--		goto err_put_dc_ck;
-+		goto err_unprepare_dc_ck;
- 	}
- 
- 	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-@@ -319,8 +327,12 @@ static int ohci_hcd_omap_probe(struct platform_device *pdev)
- 	iounmap(hcd->regs);
- err2:
- 	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+err_unprepare_dc_ck:
-+	clk_unprepare(priv->usb_dc_ck);
- err_put_dc_ck:
- 	clk_put(priv->usb_dc_ck);
-+err_unprepare_host_ck:
-+	clk_unprepare(priv->usb_host_ck);
- err_put_host_ck:
- 	clk_put(priv->usb_host_ck);
- err_put_hcd:
-@@ -355,7 +367,9 @@ static int ohci_hcd_omap_remove(struct platform_device *pdev)
- 	}
- 	iounmap(hcd->regs);
- 	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+	clk_unprepare(priv->usb_dc_ck);
- 	clk_put(priv->usb_dc_ck);
-+	clk_unprepare(priv->usb_host_ck);
- 	clk_put(priv->usb_host_ck);
- 	usb_put_hcd(hcd);
  	return 0;
+ err4:
+-	clk_disable(hwa742.sys_ck);
++	clk_disable_unprepare(hwa742.sys_ck);
+ err3:
+ 	hwa742.extif->cleanup();
+ err2:
+@@ -1037,7 +1037,7 @@ static void hwa742_cleanup(void)
+ 	hwa742_set_update_mode(OMAPFB_UPDATE_DISABLED);
+ 	hwa742.extif->cleanup();
+ 	hwa742.int_ctrl->cleanup();
+-	clk_disable(hwa742.sys_ck);
++	clk_disable_unprepare(hwa742.sys_ck);
+ }
+ 
+ struct lcd_ctrl hwa742_ctrl = {
+diff --git a/drivers/video/fbdev/omap/lcdc.c b/drivers/video/fbdev/omap/lcdc.c
+index 7317c9aad677..97d20dc0d1d0 100644
+--- a/drivers/video/fbdev/omap/lcdc.c
++++ b/drivers/video/fbdev/omap/lcdc.c
+@@ -711,7 +711,7 @@ static int omap_lcdc_init(struct omapfb_device *fbdev, int ext_mode,
+ 		dev_err(fbdev->dev, "failed to adjust LCD rate\n");
+ 		goto fail1;
+ 	}
+-	clk_enable(lcdc.lcd_ck);
++	clk_prepare_enable(lcdc.lcd_ck);
+ 
+ 	r = request_irq(OMAP_LCDC_IRQ, lcdc_irq_handler, 0, MODULE_NAME, fbdev);
+ 	if (r) {
+@@ -746,7 +746,7 @@ static int omap_lcdc_init(struct omapfb_device *fbdev, int ext_mode,
+ fail3:
+ 	free_irq(OMAP_LCDC_IRQ, lcdc.fbdev);
+ fail2:
+-	clk_disable(lcdc.lcd_ck);
++	clk_disable_unprepare(lcdc.lcd_ck);
+ fail1:
+ 	clk_put(lcdc.lcd_ck);
+ fail0:
+@@ -760,7 +760,7 @@ static void omap_lcdc_cleanup(void)
+ 	free_fbmem();
+ 	omap_free_lcd_dma();
+ 	free_irq(OMAP_LCDC_IRQ, lcdc.fbdev);
+-	clk_disable(lcdc.lcd_ck);
++	clk_disable_unprepare(lcdc.lcd_ck);
+ 	clk_put(lcdc.lcd_ck);
+ }
+ 
+diff --git a/drivers/video/fbdev/omap/sossi.c b/drivers/video/fbdev/omap/sossi.c
+index 80ac67f27f0d..b9cb8b386627 100644
+--- a/drivers/video/fbdev/omap/sossi.c
++++ b/drivers/video/fbdev/omap/sossi.c
+@@ -598,7 +598,7 @@ static int sossi_init(struct omapfb_device *fbdev)
+ 	l &= ~CONF_SOSSI_RESET_R;
+ 	omap_writel(l, MOD_CONF_CTRL_1);
+ 
+-	clk_enable(sossi.fck);
++	clk_prepare_enable(sossi.fck);
+ 	l = omap_readl(ARM_IDLECT2);
+ 	l &= ~(1 << 8);			/* DMACK_REQ */
+ 	omap_writel(l, ARM_IDLECT2);
+@@ -649,7 +649,7 @@ static int sossi_init(struct omapfb_device *fbdev)
+ 	return 0;
+ 
+ err:
+-	clk_disable(sossi.fck);
++	clk_disable_unprepare(sossi.fck);
+ 	clk_put(sossi.fck);
+ 	return r;
+ }
+@@ -657,6 +657,7 @@ static int sossi_init(struct omapfb_device *fbdev)
+ static void sossi_cleanup(void)
+ {
+ 	omap_lcdc_free_dma_callback();
++	clk_unprepare(sossi.fck);
+ 	clk_put(sossi.fck);
+ 	iounmap(sossi.base);
+ }
 -- 
 2.35.1
 
