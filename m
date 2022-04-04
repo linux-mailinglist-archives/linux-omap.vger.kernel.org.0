@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B16BC4F1C66
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Apr 2022 23:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83BE84F1C6B
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Apr 2022 23:28:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240229AbiDDV1I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 Apr 2022 17:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58084 "EHLO
+        id S1356186AbiDDV1W (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 4 Apr 2022 17:27:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379185AbiDDQmv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Apr 2022 12:42:51 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C90935854
-        for <linux-omap@vger.kernel.org>; Mon,  4 Apr 2022 09:40:53 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id w18so5559412edi.13
-        for <linux-omap@vger.kernel.org>; Mon, 04 Apr 2022 09:40:53 -0700 (PDT)
+        with ESMTP id S1379189AbiDDQmw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Apr 2022 12:42:52 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F0FF35256
+        for <linux-omap@vger.kernel.org>; Mon,  4 Apr 2022 09:40:55 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id g20so11804790edw.6
+        for <linux-omap@vger.kernel.org>; Mon, 04 Apr 2022 09:40:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9ZqvkPw3Hjyi4guP02Qxx6l3xEam/WU15QhmnpKxTbA=;
-        b=giIzCO1vBg7bdLXYJ0jHXWpMyuBAPdR/crAo7hdQl76bbonFJ/KpJa9sqrQeG+eShV
-         OSuWw3bVC1JBb4raXTUMtkkpWZBqnJYUJI9NE9Fs6suiXNBgGFTIm1vm0Szyo2N7NPAs
-         m09XFd0REdtCLingfc8O1k2ipntxCAdK5Xwi6IwoUoAzfAT1RqtlTNZW73pWLXpMYgM1
-         872n72c2L2sD+Fq/W26z6S97OQfrdpdAX/AwW8z1kVB+fi0AfvECnStJ6m+y4T7wKlHC
-         Aa5rImUCWKsC76cOaOfqEZnww1whGheyVEMa9S9pQtIlIGZJiLwul8ocoDo6Z9i/4uV2
-         eokA==
+        bh=Qq86fHdQFBYDGBq4SciqKEleN++5Ao+l5cvatAfZpnA=;
+        b=MXcyu0hReAsgYMSnOPJYIwUQWZ+3yaoTlqnh+LuV6Fi1mAfTSP42uaWZF28tQVEAlU
+         GSa6/hkTgO3rM1JWDk6g+ZlIdIkGZpg7Kpho90bDt11+csYhNfKCR+vo39ykmdiA6PoQ
+         HV8TcpEEkS86UgNzgEXZ+dbwt5FIshl2ChSa94xcqmUv9jtMEc0qMLDpWhUXV19zUdq5
+         gD2gf6XTGYn5kuItDPRm13k498YiGMwk7g0459TO4MXsT6qsDBiVakN6H0n/dj23jOfY
+         C9rr2hOkGPARNCvviaH9FVLETToBl6hrsCTj7Q3hkzr9It/69X4hUnC2IpB69sR6N/hk
+         P1+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9ZqvkPw3Hjyi4guP02Qxx6l3xEam/WU15QhmnpKxTbA=;
-        b=74yz/w6Zrz+Lg3XKc9doM/lvKD8LdZsEPEtUmsQfkE8pXM4H7Ki+f/0zdEx/ohB8Aa
-         NfxHS/t1jeWoSijX8XL0PhPNjbc4g2Td44dGiLIiGMVGxn3cHjsKDuldYD6ZpZm+94RZ
-         Vjed/mLYpkXUjYY9QiaBjAS+bJnV4eZ6xXGy5fdaELi0KVRUQmH31iP/VcPArmm8UrgH
-         X68+dZbh/p2m9DKaAqlCIyNuZfuTW1alCorNw9R9CHG4ORm1qNMfIxMfnu8dznZBq9qP
-         81MGE2DnV0/GGiAubvlmiNt6T+mLHTxCqZ3LQLegZZW+sYUSlVtBgzSRZMUNmBd6j6vB
-         8Pzw==
-X-Gm-Message-State: AOAM5314G3auAelnfU89Ue5M0ohU0J9CUNYI4I5y5tvbiZp/bp1rXK0r
-        n+RJ1+K2/Br/fEMJ1nhkh7MP6A==
-X-Google-Smtp-Source: ABdhPJygljYbgi62MuSIHPxfZNrGxKsv/yrrADdG2l5X1N2m213B0uch95wM9MHAqG+Z9mZJYOs6Dw==
-X-Received: by 2002:a50:9358:0:b0:41c:bcf0:3a95 with SMTP id n24-20020a509358000000b0041cbcf03a95mr1086251eda.20.1649090451998;
-        Mon, 04 Apr 2022 09:40:51 -0700 (PDT)
+        bh=Qq86fHdQFBYDGBq4SciqKEleN++5Ao+l5cvatAfZpnA=;
+        b=hrUYZIfAj1Yvj0CpjW7MhjAN6DVFqnUbY+Es7g+I+qrPXAM9N7ztF6sxm4HdCCFj/X
+         8RqTV1bRjsQpB4tAAJT0MKOUOExF4u4OQdIENL03j/z5dV6XYh/+TV+21t/G34g+lyzu
+         YHLXDiCKqGv3E23XQJP80f8Aslw0vFe3408b5QBJkET9My4BhzH+ZGstVdwLBUfi1MyB
+         WzGZk+kqxP1H/l0dDjEPmr3w0PZgPIZolm4x2FipdekIg+ftHz/dO/tXosIaM+7vFvh7
+         ereBDGhkkK6bqmACLa3yy/uSkjHl7dFyO0rKdMi0DgbFbLtAwKw6KzhlugU6rwEKACW2
+         oheg==
+X-Gm-Message-State: AOAM530bHUzt5fbywZ27/FnlysnKeUBhejVOCo1GkKGnNsWSER2WnPj7
+        ePoTxQD9mLud5gEpG1j+ppObfm72kNc25PAH
+X-Google-Smtp-Source: ABdhPJxHomFt3udU8S52vNGunIJyDLh/iYqz7kTEBI2R9HydWYKbYF9COBXDA3ZXdy99PRqnekRhYQ==
+X-Received: by 2002:a05:6402:438b:b0:41b:5212:1de1 with SMTP id o11-20020a056402438b00b0041b52121de1mr1080487edc.384.1649090453480;
+        Mon, 04 Apr 2022 09:40:53 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id pk9-20020a170906d7a900b006e05b7ce40csm4548231ejb.221.2022.04.04.09.40.50
+        by smtp.gmail.com with ESMTPSA id pk9-20020a170906d7a900b006e05b7ce40csm4548231ejb.221.2022.04.04.09.40.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Apr 2022 09:40:51 -0700 (PDT)
+        Mon, 04 Apr 2022 09:40:52 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Sascha Hauer <s.hauer@pengutronix.de>,
         Rob Herring <robh+dt@kernel.org>, Ray Jui <rjui@broadcom.com>,
@@ -67,12 +67,12 @@ Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
         linux-rpi-kernel@lists.infradead.org
-Subject: Re: (subset) [PATCH v5 5/9] ARM: dts: exynos: fix ethernet node name for different odroid boards
-Date:   Mon,  4 Apr 2022 18:40:47 +0200
-Message-Id: <164909044624.1097466.11264335549854460793.b4-ty@linaro.org>
+Subject: Re: (subset) [PATCH v5 6/9] ARM: dts: exynos: fix compatible strings for Ethernet USB devices
+Date:   Mon,  4 Apr 2022 18:40:48 +0200
+Message-Id: <164909044624.1097466.6376427362225722252.b4-ty@linaro.org>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220216074927.3619425-6-o.rempel@pengutronix.de>
-References: <20220216074927.3619425-1-o.rempel@pengutronix.de> <20220216074927.3619425-6-o.rempel@pengutronix.de>
+In-Reply-To: <20220216074927.3619425-7-o.rempel@pengutronix.de>
+References: <20220216074927.3619425-1-o.rempel@pengutronix.de> <20220216074927.3619425-7-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -86,20 +86,23 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 16 Feb 2022 08:49:23 +0100, Oleksij Rempel wrote:
-> The node name of Ethernet controller should be "ethernet" instead of
-> "usbether" as required by Ethernet controller devicetree schema:
->  Documentation/devicetree/bindings/net/ethernet-controller.yaml
+On Wed, 16 Feb 2022 08:49:24 +0100, Oleksij Rempel wrote:
+> Fix compatible string for Ethernet USB device as required by USB device schema:
+>  Documentation/devicetree/bindings/usb/usb-device.yaml
+>   The textual representation of VID and PID shall be in lower case hexadecimal
+>   with leading zeroes suppressed.
 > 
-> This patch can potentially affect boot loaders patching against full
-> node path instead of using device aliases.
+> Since there are no kernel driver matching against this compatibles, I
+> expect no regressions with this patch. At the same time, without this fix, we
+> are not be able to validate this device nodes with newly provided DT
+> schema.
 > 
 > [...]
 
 Applied, thanks!
 
-[5/9] ARM: dts: exynos: fix ethernet node name for different odroid boards
-      commit: c1ed0f41032f54e47c03088f096f8b37cae40d8e
+[6/9] ARM: dts: exynos: fix compatible strings for Ethernet USB devices
+      commit: 2e33a7b5fdb3930a9b1051bc792dbdc6a7490aae
 
 Best regards,
 -- 
