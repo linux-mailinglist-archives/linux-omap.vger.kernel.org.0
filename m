@@ -2,99 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF25B4F1C6F
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Apr 2022 23:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC3D4F269A
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Apr 2022 10:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379133AbiDDV1Y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 Apr 2022 17:27:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34504 "EHLO
+        id S232851AbiDEIEK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 5 Apr 2022 04:04:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379220AbiDDQqH (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Apr 2022 12:46:07 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EB7425C62;
-        Mon,  4 Apr 2022 09:44:11 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id 2so2102420pjw.2;
-        Mon, 04 Apr 2022 09:44:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=VidJpygdWDhsPO2PnGTUorRul6XI2t/vnWn1jdgufK8=;
-        b=YHcYrPZoBx3AIEnPLlkIjp4d+DhFHUBAZNEMptQgbnoekAnP6pN4qvNlBBwE++iiC4
-         5YZoEAxeSMPeIvZiA7urwvcAsay7jJzAMNJ5cEqxUA32iSJKDxWfJhsPU9SYx2ZXKm51
-         NDi5IkEKmmb3DmthmBj+qAVdgYaZFrqGX37FotMqcTY7Gb0em6W5eSvuWM7AC0hZYt8O
-         OkQqHYAkpGFvGZOgo2FY6dNmpHAqT4o/tBw//AQZCvg2JX79HxLkJQLVY5W1rjz7NCod
-         154PV3TU1cgwzRWqbSIYIW963s70jiuYjwV8vHyoHKFkrt0B2SJgeEfaMmZgKo8Ydo8h
-         r+bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=VidJpygdWDhsPO2PnGTUorRul6XI2t/vnWn1jdgufK8=;
-        b=EJl9CCSPLiS09/Fj0DxUA7VOxwRi5uKuuidIsduqHbC8OWA3nJDekbX2JB1TtbIu/F
-         TIwaeVJaR9B/y/U4wO33CEvN6z4MPhSarsPdV2+hP2or58GQ0YGqlSUokqiT7p7T5XoZ
-         VJHCt7q0B8svQNoZSD/NSYUvDZR4JPegBPtpxrWFUODiNhSfQUTj8bXjc+EhvwoeFyvK
-         BZZVsy46Gb5U2IOmxCiySkt5OHEV50QEt6FC/Hcg99Uad0wX23rp235rE0AoiSWD+tUT
-         2gXW6XWPdpxC2uj8CKmehTRzOViJcDxAYMk8BoYXGAfOI0JMX+/hDLowkJch+GavKpVo
-         iF5A==
-X-Gm-Message-State: AOAM532BaIEpXbN42w33xRfket9R5GOcjZZD1D2uEWG4497o9ofdgSOF
-        qpb0amc/dLHqHz5hwGsYd+A=
-X-Google-Smtp-Source: ABdhPJwe7KWOFaQYr15fxkjseF+MIDSOIPq0cWUdmxxhYqC3/S001kgGbB66UaX+2wPv1A0IJWw3LA==
-X-Received: by 2002:a17:902:bd95:b0:14f:40ab:270e with SMTP id q21-20020a170902bd9500b0014f40ab270emr684770pls.101.1649090650679;
-        Mon, 04 Apr 2022 09:44:10 -0700 (PDT)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id s22-20020a056a00179600b004fb28a97abdsm14300835pfg.12.2022.04.04.09.44.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Apr 2022 09:44:09 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     bcm-kernel-feedback-list@broadcom.com,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        =?iso-8859-1?q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Ray Jui <rjui@broadcom.com>, Rob Herring <robh+dt@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Scott Branden <sbranden@broadcom.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     kernel@pengutronix.de, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v5 4/9] ARM: dts: bcm283x: fix ethernet node name
-Date:   Mon,  4 Apr 2022 09:44:07 -0700
-Message-Id: <20220404164407.2291341-1-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220216074927.3619425-5-o.rempel@pengutronix.de>
-References: <20220216074927.3619425-1-o.rempel@pengutronix.de> <20220216074927.3619425-5-o.rempel@pengutronix.de>
+        with ESMTP id S234258AbiDEH6G (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 5 Apr 2022 03:58:06 -0400
+X-Greylist: delayed 431 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Apr 2022 00:52:10 PDT
+Received: from mail.bizcall.pl (mail.bizcall.pl [192.71.213.112])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E65959BADC
+        for <linux-omap@vger.kernel.org>; Tue,  5 Apr 2022 00:52:10 -0700 (PDT)
+Received: by mail.bizcall.pl (Postfix, from userid 1001)
+        id 178484166E; Tue,  5 Apr 2022 09:44:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bizcall.pl; s=mail;
+        t=1649144698; bh=L7rZPDqncV/PGNK3vBL4eFyhOA8rMHMu3jCfxnl4mEc=;
+        h=Date:From:To:Subject:From;
+        b=K2waawpXxGGO8FP2sVyQyUgeXsg/e/YcPop+5VOx54Sy6V+Hf5gIWuOF6WIE+mOmj
+         seVrhrBNz2bl9ix3GlzQOd31r47aF9Eb1tWrh4O+Y7LeCE/ltGionreccznF9oNszA
+         Y7cfpkS8G2I89mP7JGLLQZAIziLjD/8Fbq6Hhe93Vf/MOc+qnvvAX43dhsKHwp1nU7
+         GYzlo2WTGTiYIRPsVsxe+0g1AMYR49i69CivliKfpBapq7Fxeyjf/OA7/h1NTJjMVp
+         6KD4BSyt02/47Y49VU+M7Rc9pSNcqDwK+E0xsWLjt0UAPoZ1UuHVrIyYwxwbLZkH+z
+         1ULTg2nZnFgQQ==
+Received: by mail.bizcall.pl for <linux-omap@vger.kernel.org>; Tue,  5 Apr 2022 07:43:50 GMT
+Message-ID: <20220405084501-0.1.1v.5i7i.0.mk3e8p8x22@bizcall.pl>
+Date:   Tue,  5 Apr 2022 07:43:50 GMT
+From:   "Marek Onufrowicz" <marek.onufrowicz@bizcall.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.bizcall.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 16 Feb 2022 08:49:22 +0100, Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> It should be "ethernet@x" instead of "usbether@x" as required by Ethernet
-> controller devicetree schema:
->  Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> 
-> This patch can potentially affect boot loaders patching against full
-> node path instead of using device aliases.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
+Dzie=C5=84 dobry!
 
-Applied to https://github.com/Broadcom/stblinux/commits/devicetree/next, thanks!
---
-Florian
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
+
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
+
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
+
+
+Pozdrawiam,
+Marek Onufrowicz
