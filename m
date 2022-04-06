@@ -2,39 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EDC64F5F0C
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Apr 2022 15:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F014F6363
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Apr 2022 17:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232228AbiDFN0O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Apr 2022 09:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56596 "EHLO
+        id S236114AbiDFPay (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Apr 2022 11:30:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233291AbiDFNZw (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Apr 2022 09:25:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDF84386A89;
-        Tue,  5 Apr 2022 18:13:19 -0700 (PDT)
+        with ESMTP id S236125AbiDFPao (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Apr 2022 11:30:44 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972D43C2104;
+        Wed,  6 Apr 2022 05:51:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67F2F61923;
-        Wed,  6 Apr 2022 01:13:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D82AC385A1;
-        Wed,  6 Apr 2022 01:13:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1A4BEB8234E;
+        Wed,  6 Apr 2022 12:51:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C49C385A3;
+        Wed,  6 Apr 2022 12:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649207598;
-        bh=XhrRwaJr766BJcr+zRvpxYXxBy6jna9TGrTSweXCY1Y=;
+        s=k20201202; t=1649249476;
+        bh=25aJM9pLZ2d0/V/4u0XywtbZPqCs8hoXhrvtX2i3dQs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=g8Oqp0wSAhnciHM0lfhuzwuROBlAV0QXRuF062IwHGhpgOFIKfLzrVHCccbzRkOin
-         7R0C0T2xEWGUUREEo79Ws2luDtk97Bcv5Ix1hjIqwDgbv7+de+7BD6E+WqzDBDPNRe
-         WLEMFqAz1mSdFu+lYXB/7w2enU5on5KfevctBaZCzti1J+5FSBMla8KL9U+coMTrDc
-         PT9TDJs3mvxU1JWtZW7ZFa0n0gCUnxc2cb75v7MSxLS7xP52BBXPpbMrZorpTWBtNy
-         bV7obvFWjwnCmzqkA00ARtjNoz8YawBqMbRpjx+OerzeqhQ4pFZPyamnWaUQCXhzGN
-         Efl3Qn+Ia+nGA==
-Date:   Wed, 6 Apr 2022 09:13:10 +0800
+        b=CeTkoaYuAL73AQTXQ3+r4ihDSdu+hBx6bLs9ysOnKTnLHbe2HALx8nLhubbGgM2mU
+         /RR4/MbBfichbeZFBu0v0TWmQuLpcxf52RMjqWhF0ikU4sTqyfie9YzkDPclWhIq5r
+         Uh8MKVYo1Oa2ugZ+aHTP12aKQwzQbe1Zs/79cYkI1I3qLtLRJJpo3H1NnmlBVt203Y
+         DAv08kRL6ixC5i+Ee7lVSoRvNHF9Uh11Wwo+DGfG5tmjVneN0BiZN6MtxxeAdHlsnX
+         iDzLW75Sq7EZ5Ajq0eShiLscY/+/8yE3e7+10cMlP3ln7vvpvgEdkPg+tWF+755UGR
+         mBWdrLN7rUvFw==
+Date:   Wed, 6 Apr 2022 20:51:07 +0800
 From:   Shawn Guo <shawnguo@kernel.org>
-To:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
 Cc:     =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
         "David S. Miller" <davem@davemloft.net>,
         Florian Fainelli <f.fainelli@gmail.com>,
@@ -52,7 +51,7 @@ Cc:     =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
         linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-tegra@vger.kernel.org
 Subject: Re: [PATCH v5 9/9] arm64: dts: imx8mm-kontron: fix ethernet node name
-Message-ID: <20220406011310.GC129381@dragon>
+Message-ID: <20220406125107.GO129381@dragon>
 References: <20220216074927.3619425-1-o.rempel@pengutronix.de>
  <20220216074927.3619425-10-o.rempel@pengutronix.de>
 MIME-Version: 1.0
@@ -69,8 +68,6 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-+ Frieder Schrempf who is the board owner.
-
 On Wed, Feb 16, 2022 at 08:49:27AM +0100, Oleksij Rempel wrote:
 > The node name of Ethernet controller should be "ethernet" instead of
 > "usbether" as required by Ethernet controller devicetree schema:
@@ -78,32 +75,7 @@ On Wed, Feb 16, 2022 at 08:49:27AM +0100, Oleksij Rempel wrote:
 > 
 > This patch can potentially affect boot loaders patching against full
 > node path instead of using device aliases.
-
-Frieder,
-
-Are you okay with that?
-
-Shawn
-
 > 
 > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mm-kontron-n801x-s.dts | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-n801x-s.dts b/arch/arm64/boot/dts/freescale/imx8mm-kontron-n801x-s.dts
-> index d40caf14ac4a..23be1ec538ba 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-n801x-s.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-n801x-s.dts
-> @@ -182,7 +182,7 @@ usb1@1 {
->  		#address-cells = <1>;
->  		#size-cells = <0>;
->  
-> -		usbnet: usbether@1 {
-> +		usbnet: ethernet@1 {
->  			compatible = "usb424,ec00";
->  			reg = <1>;
->  			local-mac-address = [ 00 00 00 00 00 00 ];
-> -- 
-> 2.30.2
-> 
+
+Applied, thanks!
