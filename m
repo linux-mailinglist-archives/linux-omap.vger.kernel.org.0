@@ -2,123 +2,161 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EE6D4F6474
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Apr 2022 18:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A29D4F660B
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Apr 2022 18:52:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236667AbiDFP5H (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Apr 2022 11:57:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57322 "EHLO
+        id S238035AbiDFQxE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Apr 2022 12:53:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236759AbiDFP4z (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Apr 2022 11:56:55 -0400
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8CD156ED5D;
-        Wed,  6 Apr 2022 06:21:56 -0700 (PDT)
-Received: from darkstar.musicnaut.iki.fi (85-76-76-218-nat.elisa-mobile.fi [85.76.76.218])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: aaro.koskinen)
-        by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 67FC71B000E0;
-        Wed,  6 Apr 2022 16:21:51 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-        t=1649251312;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=wwR7bU/LqezBbEgTJDf+iEsMymzvGIHgAIteyu5Psh0=;
-        b=eQ8xzLBJMgXjtwB7Yzjx/LojJlTidJ/nTLI5pX0s3cY3Zpsn8b7BqqyMs3XT0RDiE5x3gs
-        VxYcG9eYTL2ti5Y7V7hFYM+rqV7NikHD3H+p5eERqlQfhhkziGxt5EzkIqEux9pVT/63ct
-        9RZefQzE5i14yPjKv+zCKIJs/eTPZg90LntJxUwFkLpuxJfeJHGC27x/eapHvMw+3QBCfO
-        gmU++itRdwNwFQooc8+77js9RrGrUrR+mkDgelpwUoV/wq1kCEziaeZMKg/gpUDKVDqGmb
-        sdmlvWnhCTYcYS7NFr9PDY7i6KlEk5IH1VV/If5zeEdFsCEIB7hDvyObaWz3Xw==
-Date:   Wed, 6 Apr 2022 16:21:49 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Cc:     Tony Lindgren <tony@atomide.com>, Paul Walmsley <paul@pwsan.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Helge Deller <deller@gmx.de>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Felipe Balbi <balbi@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-mmc@vger.kernel.org,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH v2] ARM: OMAP1: Prepare for conversion of OMAP1 clocks to
- CCF
-Message-ID: <20220406132149.GC594699@darkstar.musicnaut.iki.fi>
-References: <20220310233307.99220-3-jmkrzyszt@gmail.com>
- <20220322163646.GD297526@darkstar.musicnaut.iki.fi>
- <20220322190753.GF297526@darkstar.musicnaut.iki.fi>
- <1810824.tdWV9SEqCh@dell>
+        with ESMTP id S238428AbiDFQwu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Apr 2022 12:52:50 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F55286A75
+        for <linux-omap@vger.kernel.org>; Wed,  6 Apr 2022 07:56:39 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id p10so4493074lfa.12
+        for <linux-omap@vger.kernel.org>; Wed, 06 Apr 2022 07:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gFpgrsnLnc4iDOPupsDr/hfYxK6Z0h6eWyrz3p261dM=;
+        b=lkZwtdvoeffsynG0Cm8wN/TWC2xr9vAgsTqIgZchJO+Xnqv4FT0qZU1mb2+ikd5GgZ
+         ugQsTJEUnRZJcA0NT3P/EHMztqQAMW23LkZaFaH/s5QTkPT+8Mpdb57rGttNOJZQoLEy
+         3E5PLMFWoENkWYrP7/LbcR4EBAb3IJfIxlytRozBrMfUtExLuE8magxgvkP20/wNSoy2
+         CGD1EeggTVMfBnZZ9i9pYp4lcjREdh9ZVcFxihGLfL+R2OWiuyGwSRNhTacDyQPD1w6J
+         XK3x/aR/iAPJMtxkMIWEtGF88Xj656MjKKMyVvwNC9b1mBrOBKyBM86gTgYqcMT2NosD
+         7XNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gFpgrsnLnc4iDOPupsDr/hfYxK6Z0h6eWyrz3p261dM=;
+        b=iOTiGKf/BXxmEr2j+of+Q4CHmM6g9trQf06IGTwJe1AUyImazyICIP3yyLuyUplY2L
+         sBEHfkOezjGfN4YoT4RKTFZN/Rh2slQlGjqjvLmM8XhVF450vXqt94gOgRI+CfAUpcmX
+         m5vd/4uoC1j+PdwQnZZ3OiVIlwzWzc/3x49IPcb5N9Ugt9JV9Bp9oTg1I/fMTD4lIKQm
+         Fz49Vjp1PPAzNfeckuXtUtHNZCvAvMqTDMM+FhB7OMW6P2/2KMo05MlmrgxobSqO9Mlo
+         gdFzM9SXSUxfyDEMMfCvAe/AceZSIyYDTxlxOeYZbz0uqPH5Whz/zqmYSPH7MN5I/KPp
+         l3VQ==
+X-Gm-Message-State: AOAM530FylMDBLyCv0s/0l160JqpYnaInpGozm4AozkqthyEczqQaP+o
+        xLGOhIuJ1XlUpXHL4ZUlGPqJfNl1cb/1N1oeWkehsoczZuY=
+X-Google-Smtp-Source: ABdhPJy+0Vn/oa5vvN/2kOPrZDZXG5mFUd14JNKQ/X2A2nnXBgXrA0jAleJzbKDmd+rPEJod8YDmRWQRljZOFnLmaW4=
+X-Received: by 2002:a05:6512:b19:b0:44a:b7c4:3d94 with SMTP id
+ w25-20020a0565120b1900b0044ab7c43d94mr6109325lfu.358.1649256990277; Wed, 06
+ Apr 2022 07:56:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1810824.tdWV9SEqCh@dell>
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1649251312; a=rsa-sha256;
-        cv=none;
-        b=G3rkvREcvYSgPILWjB5NXkPEwDB12zuDb/aFmiEvpjUFHoIPAJkYCg4gSvydBuXsCOrASV
-        qwVzzbSSEMx9mt98MsnoQGVKzIanrO0nr1oceqozsnLldbYtfYofM5nMCz1ygfNCoiqH+K
-        IgUw/j2ZP7FR0vbtq7AE6gODdl7vMQ3Vfs+C4Xr8gfhiKcLrcewjnyFbLJ8VzM6wBTdU7t
-        gGydIzbI/MdPmrFnVpcq2dLpYJlLq8V5O5cFhpaQPPezxVpgC6QZLcN3upxt341r2aPWzQ
-        DGmnbA4hUe8LZaRUfUkOTNHA0z69SzxLRjRbScNwYpTyKIoK+T6Q5ps5tgqjKw==
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-        s=lahtoruutu; t=1649251312;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=wwR7bU/LqezBbEgTJDf+iEsMymzvGIHgAIteyu5Psh0=;
-        b=vWn818AHWtvsq5cDnlrJUnWE79qMNnj8xFj19jFSqwBPLeAtdZ43oHVi70bcMK+nMmLrSK
-        egs3u5wrj9LuerZbuMRnIpytvyvxIRPPV7q5I7a2AsQUHhbykzAHVVpq/9fp7ydLJC4BkE
-        /j7PyMCSQ8gsrfNhsiwPPt7loNA6QMRRlDk5Z6QZ2s9NdMXLpTvDXdFyETUiIH9yQ6N8ZV
-        UA7Ohf8mDgm8uV/Dx1bNcCT7oIamV8mar/PlKoL+fP1XJy/PNu3ZxCz87uc5NkMQwotWIp
-        I92ppcKhR83XiGqTSWPAjd1EkDpGjMI2CtDXW+kr0FIUmivOhk5Ny7zCGfDavA==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220402112004.129886-1-jmkrzyszt@gmail.com>
+In-Reply-To: <20220402112004.129886-1-jmkrzyszt@gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 6 Apr 2022 16:55:54 +0200
+Message-ID: <CAPDyKFrci4owyLo48FKe-_kcyaYU+C2k42Wwco_52wo_X=Z2Kw@mail.gmail.com>
+Subject: Re: [PATCH] mmc: omap: Make it CCF clk API compatible
+To:     Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>, linux-mmc@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On Sat, 2 Apr 2022 at 13:20, Janusz Krzysztofik <jmkrzyszt@gmail.com> wrote:
+>
+> The driver, OMAP specific, now omits clk_prepare/unprepare() steps, not
+> supported by OMAP custom implementation of clock API.  However, non-CCF
+> stubs of those functions exist for use on such platforms until converted
+> to CCF.
+>
+> Update the driver to be compatible with CCF implementation of clock API.
+>
+> Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
 
-On Sat, Mar 26, 2022 at 10:17:49PM +0100, Janusz Krzysztofik wrote:
-> Dnia wtorek, 22 marca 2022 20:07:53 CET Aaro Koskinen pisze:
-> > On Tue, Mar 22, 2022 at 06:36:48PM +0200, Aaro Koskinen wrote:
-> > > Something is still broken. When doing kexec (using CCF kernel), the
-> > > kexec'ed kernel now hangs early (on 770):
-> > [...]
-> > > [    0.928863] calling  omap1_init_devices+0x0/0x2c @ 1
-> > 
-> > It hangs in omap_sram_reprogram_clock() (<- omap1_select_table_rate()
-> > <- omap1_clk_late_init()).
-> 
-> I've reviewed my changes but haven't found anything suspicious.
+Applied for next, thanks!
 
-The below change is fixing the kexec boot. Based on the comment in the
-code, it seems this clock is needed for the SRAM to work.
+Kind regards
+Uffe
 
-diff --git a/arch/arm/mach-omap1/clock_data.c b/arch/arm/mach-omap1/clock_data.c
-index e33e11f826af..b8b4876ff935 100644
---- a/arch/arm/mach-omap1/clock_data.c
-+++ b/arch/arm/mach-omap1/clock_data.c
-@@ -285,7 +285,7 @@ static struct omap1_clk tc1_ck = {
-  */
- 
- static struct omap1_clk tc2_ck = {
--	.hw.init	= CLK_HW_INIT("tc2_ck", "tc_ck", &omap1_clk_gate_ops, 0),
-+	.hw.init	= CLK_HW_INIT("tc2_ck", "tc_ck", &omap1_clk_gate_ops, CLK_IS_CRITICAL),
- 	.ops		= &clkops_generic,
- 	.enable_reg	= OMAP1_IO_ADDRESS(ARM_IDLECT3),
- 	.enable_bit	= EN_TC2_CK,
 
-A.
+> ---
+>  drivers/mmc/host/omap.c | 23 ++++++++++++++---------
+>  1 file changed, 14 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
+> index 5e5af34090f1..57d39283924d 100644
+> --- a/drivers/mmc/host/omap.c
+> +++ b/drivers/mmc/host/omap.c
+> @@ -1374,7 +1374,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
+>         host->iclk = clk_get(&pdev->dev, "ick");
+>         if (IS_ERR(host->iclk))
+>                 return PTR_ERR(host->iclk);
+> -       clk_enable(host->iclk);
+> +       clk_prepare_enable(host->iclk);
+>
+>         host->fclk = clk_get(&pdev->dev, "fck");
+>         if (IS_ERR(host->fclk)) {
+> @@ -1382,16 +1382,18 @@ static int mmc_omap_probe(struct platform_device *pdev)
+>                 goto err_free_iclk;
+>         }
+>
+> +       ret = clk_prepare(host->fclk);
+> +       if (ret)
+> +               goto err_put_fclk;
+> +
+>         host->dma_tx_burst = -1;
+>         host->dma_rx_burst = -1;
+>
+>         host->dma_tx = dma_request_chan(&pdev->dev, "tx");
+>         if (IS_ERR(host->dma_tx)) {
+>                 ret = PTR_ERR(host->dma_tx);
+> -               if (ret == -EPROBE_DEFER) {
+> -                       clk_put(host->fclk);
+> -                       goto err_free_iclk;
+> -               }
+> +               if (ret == -EPROBE_DEFER)
+> +                       goto err_free_fclk;
+>
+>                 host->dma_tx = NULL;
+>                 dev_warn(host->dev, "TX DMA channel request failed\n");
+> @@ -1403,8 +1405,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
+>                 if (ret == -EPROBE_DEFER) {
+>                         if (host->dma_tx)
+>                                 dma_release_channel(host->dma_tx);
+> -                       clk_put(host->fclk);
+> -                       goto err_free_iclk;
+> +                       goto err_free_fclk;
+>                 }
+>
+>                 host->dma_rx = NULL;
+> @@ -1454,9 +1455,12 @@ static int mmc_omap_probe(struct platform_device *pdev)
+>                 dma_release_channel(host->dma_tx);
+>         if (host->dma_rx)
+>                 dma_release_channel(host->dma_rx);
+> +err_free_fclk:
+> +       clk_unprepare(host->fclk);
+> +err_put_fclk:
+>         clk_put(host->fclk);
+>  err_free_iclk:
+> -       clk_disable(host->iclk);
+> +       clk_disable_unprepare(host->iclk);
+>         clk_put(host->iclk);
+>         return ret;
+>  }
+> @@ -1476,8 +1480,9 @@ static int mmc_omap_remove(struct platform_device *pdev)
+>
+>         mmc_omap_fclk_enable(host, 0);
+>         free_irq(host->irq, host);
+> +       clk_unprepare(host->fclk);
+>         clk_put(host->fclk);
+> -       clk_disable(host->iclk);
+> +       clk_disable_unprepare(host->iclk);
+>         clk_put(host->iclk);
+>
+>         if (host->dma_tx)
+> --
+> 2.35.1
+>
