@@ -2,189 +2,291 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78AAA4F80E4
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Apr 2022 15:45:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 462DD4F81C4
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Apr 2022 16:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240034AbiDGNrY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Apr 2022 09:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42964 "EHLO
+        id S1344110AbiDGOfS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Apr 2022 10:35:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbiDGNrX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Apr 2022 09:47:23 -0400
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8C183DA4A;
-        Thu,  7 Apr 2022 06:45:21 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id B76FB3201F18;
-        Thu,  7 Apr 2022 09:45:18 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Thu, 07 Apr 2022 09:45:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm3; bh=XkgppvWgDnu/dZMOPFJ84XRY5MZLfXMWnu3CdV
-        AKWzo=; b=ErC8jTThrapv3meVeiCaIp4oQMk1742n5RkSAhpxngeFRxZdCaX5Rv
-        tbN/SaLmQ6MEjyWmlFoY4jptA+/CdJjtapBcbadaGE5GuZ1SsoPAnY1ZiNOemg5J
-        YAoUN0B+KZPgrqp4q3RjHp+GomLVUQ+xkA6ODZs9XE02yScCzQ8Qrosq9CZsh2aC
-        J/G0hxDhqiKUaz3Mbjo98OAcrQ0vjYu53dgR3kT33/kz5GRQfl7yh3D2i6tpWf4t
-        EDtiZy45C5/Mkexh3gsa2v3N1zlCuxeVHfUA18k/YPSIFEOp22qWGKusSb5pcuNS
-        TsCnsiDdmQBfp+kvnWycs96kc9pKPE4g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=XkgppvWgDnu/dZMOP
-        FJ84XRY5MZLfXMWnu3CdVAKWzo=; b=Xl2w+l77DtuRQfLFe5XimIwd63k8tYMFK
-        2yQ3Op+jnrgMHdXT/q+s9Siljg+WhBeWA5FDS14tvNiziqB34y0pvXgzE2UGuoVM
-        pDW3K5hEajfSmMiOhPwLPOsj+QnpjIFddMI9PgGjoxnAAwZgXskzLmX7H/Q8Y3af
-        n1+ZbpyZw5vDCEzDthACJ6wf79ksjpkFB/+VrqJFUHhQ0QWT+xFxBNbzA/wO/Ubo
-        6R4UofifRQkoAVgRu16is3k3nr9u8etrw2ESPpwaXwzlalZFMIBTdsnbRR4Jxh34
-        HMyXbOJCPYQsS6pNQe1yJVckgWKh9JtkpSBhE3QvxIiaiA9dkZ/Kg==
-X-ME-Sender: <xms:7OpOYlM1bekRlxSaKAsr27tB-r0yvn1IDR1Dahx-Ejk9VJIgC3Amkw>
-    <xme:7OpOYn9i4uu5ALEe5GK9sexLHZgUVDz7VQ-1N_2MQIWt3UJ6cYnFJhlNTnrhGvdfd
-    SuGUxMgRgsDR5jWXQY>
-X-ME-Received: <xmr:7OpOYkRiVrocdVIVXayPSzll4MazcZZ-da0Lugf4amDdUQXQHlteYheFN8k9pyjF_fK6b2GmE1KMA05Hd2T73DqPYFxGxK2CKN4y0nc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudejkedgieekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpeforgigihhm
-    vgcutfhiphgrrhguuceomhgrgihimhgvsegtvghrnhhordhtvggthheqnecuggftrfgrth
-    htvghrnhepveegudetkeethfetgffgtdekkefghefhffefgeduleehgeehieeuveefgedv
-    ieegnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrgigihhmvgestggvrhhnohdrthgvtghh
-X-ME-Proxy: <xmx:7OpOYhtbpMYLolv3eqNP-UzpuFOix2F0UlT0Mug28Jn_Eun5dDhtGQ>
-    <xmx:7OpOYtfQ_OBwLW0z8TSOviHu8bTA0bpF1PCfu-8SNgGZzVNwKd0xug>
-    <xmx:7OpOYt2xYGgQI7waoL6OGOMkctYS3EfAGrze-Z_mr_-MPzlIQvftsw>
-    <xmx:7upOYsxjMjuEkj8Fmk-gMr_daYo48UE3vPj21r0UevDMV0DJufF7_A>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 7 Apr 2022 09:45:16 -0400 (EDT)
-Date:   Thu, 7 Apr 2022 15:45:14 +0200
-From:   Maxime Ripard <maxime@cerno.tech>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Mike Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        'Linux Samsung SOC' <linux-samsung-soc@vger.kernel.org>,
-        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] clk: Drop the rate range on clk_put
-Message-ID: <20220407134514.sct7g23yto47ylgr@houat>
-References: <20220325161144.1901695-1-maxime@cerno.tech>
- <20220325161144.1901695-4-maxime@cerno.tech>
- <CGME20220330080612eucas1p195caaf35d900412de762a27ae02b7b9e@eucas1p1.samsung.com>
- <366a0232-bb4a-c357-6aa8-636e398e05eb@samsung.com>
- <20220330084710.3r6b5pjspz5hdmy6@houat>
- <YkV3ch7R7YxlATW+@atomide.com>
- <20220407075356.lmqnax35cewiwh4k@houat>
- <Yk6a7meIO+fV5J1D@atomide.com>
- <Yk7GFWdJd2EN7L1V@atomide.com>
+        with ESMTP id S1344076AbiDGOfO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Apr 2022 10:35:14 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA91D1AE3FD
+        for <linux-omap@vger.kernel.org>; Thu,  7 Apr 2022 07:33:10 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id g20so6640896edw.6
+        for <linux-omap@vger.kernel.org>; Thu, 07 Apr 2022 07:33:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LAob4hjVeo8qM+UmXzHTMHiaXqZxB5KGeATzkvlQyeQ=;
+        b=VkAWw3UdKCLqgiNHW6azXeT3giNhyg1isLQYm6ShYnNrTlPF0DjZuhOaMAH4bzAMF7
+         AYqrHT/srA+9QpA58P6t9R+LCPtiu3ZToSWI/ZkBsSOgar1gHIyPjqesGygNqBCXTFlK
+         3mfYyhifC8O9oFwN4h1SUOORLNEhITToH8Tyxeh8EuYh1sShEGZHrGsHY1yZhSRosiUf
+         avWYbnCNXXB5bjarajKrY477sswo2kogSMhP9y4hZxjo9Xq9g6Cj2tnwge5mkc3mwzmJ
+         scX3g8febBWIc0rS0pEe1xinDkkagNfRQrFbRvVG01ojVZs9rRk8bPg1b3ZP0hwiV/vF
+         A1Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LAob4hjVeo8qM+UmXzHTMHiaXqZxB5KGeATzkvlQyeQ=;
+        b=zcl2Xo5vkdgaBvKFDH3TX9TfuoDcBcsCgvW4SMO+xGD3scP1mjYIEEg5JdSyDNJr9B
+         T2lpZFHuMpFmDvt1frYPNdL+c9/Hv4mcKnQdH+cRx+fvjvPWGAeuI1eiTabnLraug8XJ
+         dKdQDKcnmjcZMVtcjQU1aup2PrZizdHV779c8QvMZNwq7AMdKrwc78+tPKldFHxrSXXt
+         +9qqujN1wLw5Jva3oCgr3DVBCUinRKqy2BRZVPk4GJxnaw/jJbRowmuom1m2p26cOQSv
+         YW5BW3xpOucyj/pY0TuGa8Qjh1C0ZH3GFVcMyGitfdRhGh1bFrEy+QDCkSOHCvbtm6MX
+         Uisg==
+X-Gm-Message-State: AOAM531Jfq8MxCHhSGQ2Q1wBsw2xJKndJhPB0EuWqKNFIN3B9kIo8KtU
+        5UmRvPphR7pewuGMGUUJWMruTkTozxTjL1PV
+X-Google-Smtp-Source: ABdhPJxrfNXortbnbnCAxjUrGECnq4VtAi2PQO6is+aLbcsZUm/Tpf+CHgnVSwErA/Yq6cJje6JeEw==
+X-Received: by 2002:aa7:c789:0:b0:413:605d:8d17 with SMTP id n9-20020aa7c789000000b00413605d8d17mr14479659eds.100.1649341988967;
+        Thu, 07 Apr 2022 07:33:08 -0700 (PDT)
+Received: from localhost.localdomain (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
+        by smtp.gmail.com with ESMTPSA id x9-20020a05640226c900b0041d015bb8a5sm1135390edd.26.2022.04.07.07.33.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Apr 2022 07:33:08 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] ARM: dts: omap: align SPI NOR node name with dtschema
+Date:   Thu,  7 Apr 2022 16:33:04 +0200
+Message-Id: <20220407143304.295610-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="s43o3564yso7cyde"
-Content-Disposition: inline
-In-Reply-To: <Yk7GFWdJd2EN7L1V@atomide.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+The node names should be generic and SPI NOR dtschema expects "flash".
 
---s43o3564yso7cyde
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi | 2 +-
+ arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi | 2 +-
+ arch/arm/boot/dts/am335x-phycore-som.dtsi         | 2 +-
+ arch/arm/boot/dts/am335x-sl50.dts                 | 2 +-
+ arch/arm/boot/dts/am3874-iceboard.dts             | 2 +-
+ arch/arm/boot/dts/am437x-cm-t43.dts               | 2 +-
+ arch/arm/boot/dts/am437x-idk-evm.dts              | 2 +-
+ arch/arm/boot/dts/am437x-sk-evm.dts               | 2 +-
+ arch/arm/boot/dts/am43x-epos-evm.dts              | 2 +-
+ arch/arm/boot/dts/am574x-idk.dts                  | 2 +-
+ arch/arm/boot/dts/am57xx-cl-som-am57x.dts         | 2 +-
+ arch/arm/boot/dts/am57xx-idk-common.dtsi          | 2 +-
+ arch/arm/boot/dts/dra7-evm-common.dtsi            | 2 +-
+ arch/arm/boot/dts/dra72-evm-common.dtsi           | 2 +-
+ arch/arm/boot/dts/dra76-evm.dts                   | 2 +-
+ 15 files changed, 15 insertions(+), 15 deletions(-)
 
-Hi Tony,
+diff --git a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
+index 11e8f64b6606..92a0e98ec231 100644
+--- a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
++++ b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
+@@ -182,7 +182,7 @@ &spi0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&spi0_pins>;
+ 
+-	m25p80@0 {
++	flash@0 {
+ 		compatible = "mx25l6405d";
+ 		spi-max-frequency = <40000000>;
+ 
+diff --git a/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi b/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi
+index a7269b90d795..e7e439a0630a 100644
+--- a/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi
++++ b/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi
+@@ -394,7 +394,7 @@ &spi0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&spi0_pins>;
+ 
+-	m25p80@0 {
++	flash@0 {
+ 		compatible = "mx25l6405d";
+ 		spi-max-frequency = <40000000>;
+ 
+diff --git a/arch/arm/boot/dts/am335x-phycore-som.dtsi b/arch/arm/boot/dts/am335x-phycore-som.dtsi
+index f65cd1331315..e2cec1ffaa4c 100644
+--- a/arch/arm/boot/dts/am335x-phycore-som.dtsi
++++ b/arch/arm/boot/dts/am335x-phycore-som.dtsi
+@@ -331,7 +331,7 @@ &spi0 {
+ 	pinctrl-0 = <&spi0_pins>;
+ 	status = "okay";
+ 
+-	serial_flash: m25p80@0 {
++	serial_flash: flash@0 {
+ 		compatible = "jedec,spi-nor";
+ 		spi-max-frequency = <48000000>;
+ 		reg = <0x0>;
+diff --git a/arch/arm/boot/dts/am335x-sl50.dts b/arch/arm/boot/dts/am335x-sl50.dts
+index 6516907ed579..73b5d1a024bd 100644
+--- a/arch/arm/boot/dts/am335x-sl50.dts
++++ b/arch/arm/boot/dts/am335x-sl50.dts
+@@ -588,7 +588,7 @@ &spi0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&spi0_pins>;
+ 
+-	flash: n25q032@1 {
++	flash: flash@1 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "micron,n25q032";
+diff --git a/arch/arm/boot/dts/am3874-iceboard.dts b/arch/arm/boot/dts/am3874-iceboard.dts
+index 9423e9feaa10..c9323d1df303 100644
+--- a/arch/arm/boot/dts/am3874-iceboard.dts
++++ b/arch/arm/boot/dts/am3874-iceboard.dts
+@@ -434,7 +434,7 @@ &usb1 {
+ };
+ 
+ &mcspi1 {
+-	s25fl256@0 {
++	flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "jedec,spi-nor";
+diff --git a/arch/arm/boot/dts/am437x-cm-t43.dts b/arch/arm/boot/dts/am437x-cm-t43.dts
+index 3e3354780db8..0861e868b75a 100644
+--- a/arch/arm/boot/dts/am437x-cm-t43.dts
++++ b/arch/arm/boot/dts/am437x-cm-t43.dts
+@@ -302,7 +302,7 @@ &spi0 {
+ 		&edma 17 0>;
+ 	dma-names = "tx0", "rx0";
+ 
+-	flash: w25q64cvzpig@0 {
++	flash: flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "jedec,spi-nor";
+diff --git a/arch/arm/boot/dts/am437x-idk-evm.dts b/arch/arm/boot/dts/am437x-idk-evm.dts
+index 53f64e3ce735..5a74b83145cf 100644
+--- a/arch/arm/boot/dts/am437x-idk-evm.dts
++++ b/arch/arm/boot/dts/am437x-idk-evm.dts
+@@ -437,7 +437,7 @@ &qspi {
+ 	pinctrl-1 = <&qspi_pins_sleep>;
+ 
+ 	spi-max-frequency = <48000000>;
+-	m25p80@0 {
++	flash@0 {
+ 		compatible = "mx66l51235l";
+ 		spi-max-frequency = <48000000>;
+ 		reg = <0>;
+diff --git a/arch/arm/boot/dts/am437x-sk-evm.dts b/arch/arm/boot/dts/am437x-sk-evm.dts
+index 20a34d2d85df..0bc391243816 100644
+--- a/arch/arm/boot/dts/am437x-sk-evm.dts
++++ b/arch/arm/boot/dts/am437x-sk-evm.dts
+@@ -746,7 +746,7 @@ &qspi {
+ 	pinctrl-0 = <&qspi_pins>;
+ 
+ 	spi-max-frequency = <48000000>;
+-	m25p80@0 {
++	flash@0 {
+ 		compatible = "mx66l51235l";
+ 		spi-max-frequency = <48000000>;
+ 		reg = <0>;
+diff --git a/arch/arm/boot/dts/am43x-epos-evm.dts b/arch/arm/boot/dts/am43x-epos-evm.dts
+index 4f9a7251a107..1165804658bc 100644
+--- a/arch/arm/boot/dts/am43x-epos-evm.dts
++++ b/arch/arm/boot/dts/am43x-epos-evm.dts
+@@ -902,7 +902,7 @@ &qspi {
+ 	pinctrl-1 = <&qspi1_pins_sleep>;
+ 
+ 	spi-max-frequency = <48000000>;
+-	m25p80@0 {
++	flash@0 {
+ 		compatible = "mx66l51235l";
+ 		spi-max-frequency = <48000000>;
+ 		reg = <0>;
+diff --git a/arch/arm/boot/dts/am574x-idk.dts b/arch/arm/boot/dts/am574x-idk.dts
+index 6dff3660bf09..47b9174d2353 100644
+--- a/arch/arm/boot/dts/am574x-idk.dts
++++ b/arch/arm/boot/dts/am574x-idk.dts
+@@ -18,7 +18,7 @@ / {
+ 
+ &qspi {
+ 	spi-max-frequency = <96000000>;
+-	m25p80@0 {
++	flash@0 {
+ 		spi-max-frequency = <96000000>;
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
+index 2e94f32d9dfc..2fc9a5d5e0c0 100644
+--- a/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
++++ b/arch/arm/boot/dts/am57xx-cl-som-am57x.dts
+@@ -491,7 +491,7 @@ &qspi {
+ 
+ 	spi-max-frequency = <48000000>;
+ 
+-	spi_flash: spi_flash@0 {
++	spi_flash: flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "spansion,m25p80", "jedec,spi-nor";
+diff --git a/arch/arm/boot/dts/am57xx-idk-common.dtsi b/arch/arm/boot/dts/am57xx-idk-common.dtsi
+index 9fcb8944aa3e..c06eda817242 100644
+--- a/arch/arm/boot/dts/am57xx-idk-common.dtsi
++++ b/arch/arm/boot/dts/am57xx-idk-common.dtsi
+@@ -526,7 +526,7 @@ &qspi {
+ 	status = "okay";
+ 
+ 	spi-max-frequency = <76800000>;
+-	m25p80@0 {
++	flash@0 {
+ 		compatible = "s25fl256s1", "jedec,spi-nor";
+ 		spi-max-frequency = <76800000>;
+ 		reg = <0>;
+diff --git a/arch/arm/boot/dts/dra7-evm-common.dtsi b/arch/arm/boot/dts/dra7-evm-common.dtsi
+index 0f71a9f37a72..68c43eb12c1a 100644
+--- a/arch/arm/boot/dts/dra7-evm-common.dtsi
++++ b/arch/arm/boot/dts/dra7-evm-common.dtsi
+@@ -135,7 +135,7 @@ &qspi {
+ 	status = "okay";
+ 
+ 	spi-max-frequency = <76800000>;
+-	m25p80@0 {
++	flash@0 {
+ 		compatible = "s25fl256s1";
+ 		spi-max-frequency = <76800000>;
+ 		reg = <0>;
+diff --git a/arch/arm/boot/dts/dra72-evm-common.dtsi b/arch/arm/boot/dts/dra72-evm-common.dtsi
+index f12825268188..8948e10dbeb8 100644
+--- a/arch/arm/boot/dts/dra72-evm-common.dtsi
++++ b/arch/arm/boot/dts/dra72-evm-common.dtsi
+@@ -474,7 +474,7 @@ &qspi {
+ 	status = "okay";
+ 
+ 	spi-max-frequency = <76800000>;
+-	m25p80@0 {
++	flash@0 {
+ 		compatible = "s25fl256s1";
+ 		spi-max-frequency = <76800000>;
+ 		reg = <0>;
+diff --git a/arch/arm/boot/dts/dra76-evm.dts b/arch/arm/boot/dts/dra76-evm.dts
+index e2b7fcb061cf..57868ac60d29 100644
+--- a/arch/arm/boot/dts/dra76-evm.dts
++++ b/arch/arm/boot/dts/dra76-evm.dts
+@@ -511,7 +511,7 @@ hdmi_out: endpoint {
+ 
+ &qspi {
+ 	spi-max-frequency = <96000000>;
+-	m25p80@0 {
++	flash@0 {
+ 		spi-max-frequency = <96000000>;
+ 	};
+ };
+-- 
+2.32.0
 
-On Thu, Apr 07, 2022 at 02:08:05PM +0300, Tony Lindgren wrote:
-> * Tony Lindgren <tony@atomide.com> [220407 08:23]:
-> > Hi,
-> >=20
-> > * Maxime Ripard <maxime@cerno.tech> [220407 07:51]:
-> > > I haven't been able to find an omap3 board or a qemu target that could
-> > > help me debug this, but I fixed a few issues already that could fix o=
-map
-> > > as well.
-> > >=20
-> > > Could you test today's
-> > > https://github.com/mripard/linux/tree/rpi/clk-improvements-more-fixes
-> > >=20
-> > > And let me know if it works?
-> >=20
-> > Yes sorry I've been meaning to try your fixes but had some file system
-> > issues on my build box after a power cut while updating the system. All
-> > good now though, I should be able to give it a try this afternoon.
->=20
-> It now boots, but does a lot of checks on the clocks before the timers
-> get initialized compared to v5.18-rc1.
-
-I was about to say that this is fairly normal with the new behaviour,
-but I've reworked the initial patch in that discussion to only call into
-clk_set_rate_range if there was a range on that clock to begin with.
-
-It should remove the huge majority of the checks you mentioned (and
-hopefully get rid of most of the side effects as well).
-
-It's now pushed to my branch, so it would be awesome if you could test
-again.
-
-> And then there's this:
->=20
-> [    2.532501] clk_core_set_rate_nolock +2293: ssi_ssr_fck_3430es2 affect=
-ed!
-> ...
-> [    2.554443]  unwind_backtrace from show_stack+0x10/0x14
-> [    2.559875]  show_stack from dump_stack_lvl+0x40/0x4c
-> [    2.565093]  dump_stack_lvl from clk_core_set_rate_nolock+0x278/0x2c4
-> [    2.571777]  clk_core_set_rate_nolock from clk_set_rate_range_nolock.p=
-art.0+0x154/0x384
-> [    2.580047]  clk_set_rate_range_nolock.part.0 from __clk_put+0x64/0x174
-> [    2.586853]  __clk_put from clk_add_alias+0x48/0x5c
-> [    2.591918]  clk_add_alias from _add_clkdev.part.0+0x94/0x154
-> [    2.597869]  _add_clkdev.part.0 from omap_device_alloc+0x88/0x114
-> [    2.604156]  omap_device_alloc from _omap_device_notifier_call+0x25c/0=
-x3b4
-> [    2.611236]  _omap_device_notifier_call from blocking_notifier_call_ch=
-ain+0x6c/0x90
-> [    2.619140]  blocking_notifier_call_chain from device_add+0x360/0x894
-> [    2.625823]  device_add from of_platform_device_create_pdata+0x8c/0xb8
-> [    2.632568]  of_platform_device_create_pdata from of_platform_bus_crea=
-te+0x194/0x22c
-> [    2.640563]  of_platform_bus_create from of_platform_bus_create+0x1e0/=
-0x22c
-> [    2.647735]  of_platform_bus_create from of_platform_populate+0x60/0xb8
-> [    2.654571]  of_platform_populate from pdata_quirks_init+0xb4/0xe0
-> [    2.660980]  pdata_quirks_init from omap_generic_init+0xc/0x18
-> [    2.666992]  omap_generic_init from customize_machine+0x1c/0x30
-> [    2.673126]  customize_machine from do_one_initcall+0x44/0x24c
-> [    2.679138]  do_one_initcall from kernel_init_freeable+0x1e8/0x298
-> [    2.685546]  kernel_init_freeable from kernel_init+0x14/0x140
-> [    2.691467]  kernel_init from ret_from_fork+0x14/0x24
-
-It shouldn't be there anymore after that rework, but I couldn't find
-wher the ssi_ssr_fck clock was defined? The only relevant driver seems
-to be omap_ssi_core.c but I don't see any clock driver registered there
-either.
-
-Thanks!
-Maxime
-
---s43o3564yso7cyde
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCYk7q6gAKCRDj7w1vZxhR
-xT8RAPsF2jISFo6CxJQha6ZZVnCgejb1BfTDE4in0xEHwBrGJgEA+KOr64odsCO6
-iACqEk1ESIdBRsaRsLaRK2yxLg0+7A0=
-=e3xE
------END PGP SIGNATURE-----
-
---s43o3564yso7cyde--
