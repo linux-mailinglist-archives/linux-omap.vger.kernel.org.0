@@ -2,43 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9709A4F7CB2
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Apr 2022 12:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 157C94F7D97
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Apr 2022 13:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237545AbiDGK2j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 7 Apr 2022 06:28:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35080 "EHLO
+        id S239279AbiDGLKJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 7 Apr 2022 07:10:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244236AbiDGK2f (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Apr 2022 06:28:35 -0400
+        with ESMTP id S240469AbiDGLKI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 7 Apr 2022 07:10:08 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9C89E972DC;
-        Thu,  7 Apr 2022 03:26:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 72359AAC99;
+        Thu,  7 Apr 2022 04:08:07 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 110738125;
-        Thu,  7 Apr 2022 10:24:06 +0000 (UTC)
-Date:   Thu, 7 Apr 2022 13:26:27 +0300
+        by muru.com (Postfix) with ESMTPS id ADB298125;
+        Thu,  7 Apr 2022 11:05:43 +0000 (UTC)
+Date:   Thu, 7 Apr 2022 14:08:05 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/4] clocksource/drivers/timer-ti-dm: Update defines for
- am6 for inline functions
-Message-ID: <Yk68U6Kbs/ws42f8@atomide.com>
-References: <20220407071006.37031-1-tony@atomide.com>
- <20220407071006.37031-2-tony@atomide.com>
- <9671f0a5-6860-8a75-d65e-345ce890cd88@linaro.org>
- <Yk6drKxwOSVdrKp+@atomide.com>
- <7f3cbdf3-401c-6c30-20fa-b5121bd3f63d@linaro.org>
- <Yk6mb1HjEH4H/b7p@atomide.com>
+To:     Maxime Ripard <maxime@cerno.tech>
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
+        Mike Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        'Linux Samsung SOC' <linux-samsung-soc@vger.kernel.org>,
+        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 3/3] clk: Drop the rate range on clk_put
+Message-ID: <Yk7GFWdJd2EN7L1V@atomide.com>
+References: <20220325161144.1901695-1-maxime@cerno.tech>
+ <20220325161144.1901695-4-maxime@cerno.tech>
+ <CGME20220330080612eucas1p195caaf35d900412de762a27ae02b7b9e@eucas1p1.samsung.com>
+ <366a0232-bb4a-c357-6aa8-636e398e05eb@samsung.com>
+ <20220330084710.3r6b5pjspz5hdmy6@houat>
+ <YkV3ch7R7YxlATW+@atomide.com>
+ <20220407075356.lmqnax35cewiwh4k@houat>
+ <Yk6a7meIO+fV5J1D@atomide.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Yk6mb1HjEH4H/b7p@atomide.com>
+In-Reply-To: <Yk6a7meIO+fV5J1D@atomide.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -48,37 +50,52 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Tony Lindgren <tony@atomide.com> [220407 08:50]:
-> * Daniel Lezcano <daniel.lezcano@linaro.org> [220407 08:23]:
-> > On 07/04/2022 10:15, Tony Lindgren wrote:
-> > > * Daniel Lezcano <daniel.lezcano@linaro.org> [220407 08:01]:
-> > > > On 07/04/2022 09:10, Tony Lindgren wrote:
-> > > > > @@ -251,7 +251,8 @@ int omap_dm_timers_active(void);
-> > > > >     * The below are inlined to optimize code size for system timers. Other code
-> > > > >     * should not need these at all.
-> > > > >     */
-> > > > > -#if defined(CONFIG_ARCH_OMAP1) || defined(CONFIG_ARCH_OMAP2PLUS)
-> > > > > +#if defined(CONFIG_ARCH_OMAP1) || defined(CONFIG_ARCH_OMAP2PLUS) || \
-> > > > > +	defined(CONFIG_ARCH_K3)
-> > > > 
-> > > > Why not replace the above by CONFIG_OMAP_DM_TIMER ?
-> > > 
-> > > Hmm that's a good question for why it was not that way earlier.
-> > > 
-> > > This series changes things for tristate "OMAP dual-mode timer driver" if
-> > > ARCH_K3 || COMPILE_TEST though. So the inline stubs are still needed for
-> > > COMPILE_TEST it seems.
-> > 
-> > But if ARCH_K3 or COMPILE_TEST is set, CONFIG_DM_TIMER is also set, no?
+* Tony Lindgren <tony@atomide.com> [220407 08:23]:
+> Hi,
 > 
-> Right but I suspect that COMPILE_TEST will produce a build error on other
-> architectures. I need to check that though, maybe that is no longer the
-> case.
+> * Maxime Ripard <maxime@cerno.tech> [220407 07:51]:
+> > I haven't been able to find an omap3 board or a qemu target that could
+> > help me debug this, but I fixed a few issues already that could fix omap
+> > as well.
+> > 
+> > Could you test today's
+> > https://github.com/mripard/linux/tree/rpi/clk-improvements-more-fixes
+> > 
+> > And let me know if it works?
+> 
+> Yes sorry I've been meaning to try your fixes but had some file system
+> issues on my build box after a power cut while updating the system. All
+> good now though, I should be able to give it a try this afternoon.
 
-We could use IS_ENABLED(CONFIG_OMAP_DM_TIMER), but looks like we can now
-just move the __omap_dm_timer_* inline functions to timer-ti-dm.c instead.
+It now boots, but does a lot of checks on the clocks before the timers
+get initialized compared to v5.18-rc1. And then there's this:
 
-I'll do that and repost after some testing.
+[    2.532501] clk_core_set_rate_nolock +2293: ssi_ssr_fck_3430es2 affected!
+...
+[    2.554443]  unwind_backtrace from show_stack+0x10/0x14
+[    2.559875]  show_stack from dump_stack_lvl+0x40/0x4c
+[    2.565093]  dump_stack_lvl from clk_core_set_rate_nolock+0x278/0x2c4
+[    2.571777]  clk_core_set_rate_nolock from clk_set_rate_range_nolock.part.0+0x154/0x384
+[    2.580047]  clk_set_rate_range_nolock.part.0 from __clk_put+0x64/0x174
+[    2.586853]  __clk_put from clk_add_alias+0x48/0x5c
+[    2.591918]  clk_add_alias from _add_clkdev.part.0+0x94/0x154
+[    2.597869]  _add_clkdev.part.0 from omap_device_alloc+0x88/0x114
+[    2.604156]  omap_device_alloc from _omap_device_notifier_call+0x25c/0x3b4
+[    2.611236]  _omap_device_notifier_call from blocking_notifier_call_chain+0x6c/0x90
+[    2.619140]  blocking_notifier_call_chain from device_add+0x360/0x894
+[    2.625823]  device_add from of_platform_device_create_pdata+0x8c/0xb8
+[    2.632568]  of_platform_device_create_pdata from of_platform_bus_create+0x194/0x22c
+[    2.640563]  of_platform_bus_create from of_platform_bus_create+0x1e0/0x22c
+[    2.647735]  of_platform_bus_create from of_platform_populate+0x60/0xb8
+[    2.654571]  of_platform_populate from pdata_quirks_init+0xb4/0xe0
+[    2.660980]  pdata_quirks_init from omap_generic_init+0xc/0x18
+[    2.666992]  omap_generic_init from customize_machine+0x1c/0x30
+[    2.673126]  customize_machine from do_one_initcall+0x44/0x24c
+[    2.679138]  do_one_initcall from kernel_init_freeable+0x1e8/0x298
+[    2.685546]  kernel_init_freeable from kernel_init+0x14/0x140
+[    2.691467]  kernel_init from ret_from_fork+0x14/0x24
+
+I'll email you the full log separately to look at.
 
 Regards,
 
