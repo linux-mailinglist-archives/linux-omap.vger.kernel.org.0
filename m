@@ -2,99 +2,235 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9872A4F9442
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Apr 2022 13:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A0054F99AD
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Apr 2022 17:42:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234824AbiDHLjd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Apr 2022 07:39:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47768 "EHLO
+        id S232134AbiDHPoB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Apr 2022 11:44:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234008AbiDHLjd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Apr 2022 07:39:33 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 61D913EF0F;
-        Fri,  8 Apr 2022 04:37:30 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 1F5CC807E;
-        Fri,  8 Apr 2022 11:35:04 +0000 (UTC)
-Date:   Fri, 8 Apr 2022 14:37:27 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-omap@vger.kernel.org,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Keerthy <j-keerthy@ti.com>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Nishanth Menon <nm@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH] ARM: dts: Drop unused ti,am4372-timer compatible
-Message-ID: <YlAed8/biRMUNqNm@atomide.com>
-References: <20220408081216.57146-1-tony@atomide.com>
- <3a4b5e26-e770-d778-5ae5-f46ba00066ce@linaro.org>
- <Yk/yaqWHSpaO2eRe@atomide.com>
- <f7e83ba9-32b6-bb13-3b0e-a1f82bf0ae02@linaro.org>
- <e0cdf420-7a8c-e1a1-c60e-692a77b465e4@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e0cdf420-7a8c-e1a1-c60e-692a77b465e4@ti.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230231AbiDHPoA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Apr 2022 11:44:00 -0400
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 639067EB26;
+        Fri,  8 Apr 2022 08:41:56 -0700 (PDT)
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-ddfa38f1c1so10082827fac.11;
+        Fri, 08 Apr 2022 08:41:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=gc3rc9UDAle15X3NUQszdkSzEDch8StpUzd09vVKlk4=;
+        b=XcBp5mVNpJ3QUvgm935+rOUjA4879G12hpwRmKNkqWQ12H1HHC7gw8cdhyosmPnemf
+         9YMdjNp6HhDIyuWh6BbJLPtZtyfWVCpy2RysY+YohUswLsMYQDXtXB14hNzCkYiZFvu4
+         TJrHuoYH6DL+bokHlTyDjwAod25fa4AAJFwTgi14cF39v2GsI1AX4AiLu33RTVKbBf+h
+         NQ3wJUEuNM2GisjlpW22kVdjN33wLLwXGZLxOqkcPwU5P5akdL2MCxkQd55dNcS+7zAv
+         ATwCof8GPcKEXcVgCI1QJSQw9X94UcXBbVZsZPI/j82LFQkaGhklUxDT1y2mBAOHZxVk
+         cqfA==
+X-Gm-Message-State: AOAM531FUn+G1w+qFrrDUdxuu2gzKwdNNLc4eEzEheUdYFBaC2t3MFY6
+        +4lDjony/ETbjVLxCoFpyQ==
+X-Google-Smtp-Source: ABdhPJwUS18j+rvvp45gUAkE+0ZDG9xKpavicWZYQRIQL0ljRiJ5S15MjjjksL5opKRuzCDAdLthdg==
+X-Received: by 2002:a05:6870:c101:b0:da:b3f:2b89 with SMTP id f1-20020a056870c10100b000da0b3f2b89mr8951063oad.296.1649432515683;
+        Fri, 08 Apr 2022 08:41:55 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id s82-20020acadb55000000b002d9ce64bea0sm8758874oig.48.2022.04.08.08.41.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Apr 2022 08:41:55 -0700 (PDT)
+Received: (nullmailer pid 3536063 invoked by uid 1000);
+        Fri, 08 Apr 2022 15:41:54 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Keerthy <j-keerthy@ti.com>, linux-arm-kernel@lists.infradead.org,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>
+In-Reply-To: <20220408081258.57213-1-tony@atomide.com>
+References: <20220408081258.57213-1-tony@atomide.com>
+Subject: Re: [PATCH] dt-bindings: timer: Update TI timer to yaml and add compatible for am6
+Date:   Fri, 08 Apr 2022 10:41:54 -0500
+Message-Id: <1649432514.728371.3536062.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Grygorii Strashko <grygorii.strashko@ti.com> [220408 09:31]:
+On Fri, 08 Apr 2022 11:12:58 +0300, Tony Lindgren wrote:
+> Let's update the TI timer binding to use yaml. And add compatible for
+> ti,am654-timer for TI am64, am65 and j72 SoCs. As the timer hardware is
+> the same between am64, am65 and j72 we use the compatible name for the
+> earliest SoC with this timer.
 > 
+> As this binding is specific to the TI dual-mode timers also known
+> as dm-timers, let's use ti,timer-dm.yaml naming for the new file.
 > 
-> On 08/04/2022 11:33, Krzysztof Kozlowski wrote:
-> > On 08/04/2022 10:29, Tony Lindgren wrote:
-> > > * Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [220408 08:22]:
-> > > > On 08/04/2022 10:12, Tony Lindgren wrote:
-> > > > > Drop unused (and undocumented) ti,am4372-timer related compatible
-> > > > > properties to avoid dtb warnings when updating the binding to yaml.
-> > > > > 
-> > > > > The dual-mode timer instances on am43 are compatible with the am3
-> > > > > timers.
-> > > > 
-> > > > Are you sure this is correct approach? Maybe some other user of DTS
-> > > > references the am43 compatible, so instead it should be documented in
-> > > > the bindings?
-> > > 
-> > > No users.
-> > 
-> > You sure you check all operating systems and all out-of-tree users? I
-> > did not talk about in-kernel DTS...
-
-Yeah you can never be quite sure :)
-
-> > > The driver does not parse these. The am4 SoCs boot using
-> > > the am3 related compatible properties.
-> > > 
-> > > > See also recommendation "DO use fallback compatibles...":
-> > > > Documentation/devicetree/bindings/writing-bindings.rst
-> > > > which maybe applies here?
-> > > 
-> > > Yes I'd agree if there were users for this, or if this was already
-> > > documented :) But I don't see a need to keep these am4 specific
-> > > properties.
-> > 
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Keerthy <j-keerthy@ti.com>
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+>  .../bindings/timer/ti,timer-dm.yaml           | 105 ++++++++++++++++++
+>  .../devicetree/bindings/timer/ti,timer.txt    |  44 --------
+>  2 files changed, 105 insertions(+), 44 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/timer/ti,timer-dm.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/timer/ti,timer.txt
 > 
-> I'd prefer to drop it if not used and not documented.
-> conversation to yaml is good time for clean up.
-> if somebody complains - can always return back and document it.
 
-Well this will produce warnings for Krzysztof for the dt bindings branch
-until it's dropped for the dts files. And since it's possible to discuss
-this with arguments both ways.. Let's just keep it and document it. I just
-noticed we already have few redundant compatibles with dm814 and dm816 that
-are probably compatible with omap4 if rememember correctly.
+Running 'make dtbs_check' with the schema in this patch gives the
+following warnings. Consider if they are expected or the schema is
+incorrect. These may not be new warnings.
 
-Regards,
+Note that it is not yet a requirement to have 0 warnings for dtbs_check.
+This will change in the future.
 
-Tony
+Full log is available here: https://patchwork.ozlabs.org/patch/
+
+
+timer@0: compatible:0: 'ti,am4372-timer-1ms' is not one of ['ti,omap2420-timer', 'ti,omap3430-timer', 'ti,omap4430-timer', 'ti,omap5430-timer', 'ti,am335x-timer', 'ti,am335x-timer-1ms', 'ti,am654-timer']
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+
+timer@0: compatible:0: 'ti,am4372-timer' is not one of ['ti,omap2420-timer', 'ti,omap3430-timer', 'ti,omap4430-timer', 'ti,omap5430-timer', 'ti,am335x-timer', 'ti,am335x-timer-1ms', 'ti,am654-timer']
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+
+timer@0: compatible: ['ti,am4372-timer-1ms', 'ti,am335x-timer-1ms'] is too long
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+
+timer@0: compatible: ['ti,am4372-timer', 'ti,am335x-timer'] is too long
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-cm-t43.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-gp-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-idk-evm.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sbc-t43.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am437x-sk-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+	arch/arm/boot/dts/am43x-epos-evm.dtb
+
