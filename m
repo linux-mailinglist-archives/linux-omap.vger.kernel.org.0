@@ -2,40 +2,47 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9001A4F8D64
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Apr 2022 08:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA1844F8E07
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Apr 2022 08:26:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233837AbiDHEk2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Apr 2022 00:40:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55516 "EHLO
+        id S234493AbiDHFFv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Apr 2022 01:05:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234287AbiDHEk1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Apr 2022 00:40:27 -0400
+        with ESMTP id S234523AbiDHFFu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Apr 2022 01:05:50 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9ACA3307E57;
-        Thu,  7 Apr 2022 21:38:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 36CEBB36A3;
+        Thu,  7 Apr 2022 22:03:47 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D501C8125;
-        Fri,  8 Apr 2022 04:36:00 +0000 (UTC)
-Date:   Fri, 8 Apr 2022 07:38:23 +0300
+        by muru.com (Postfix) with ESMTPS id 295158125;
+        Fri,  8 Apr 2022 05:01:22 +0000 (UTC)
+Date:   Fri, 8 Apr 2022 08:03:45 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Nishanth Menon <nm@ti.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        Keerthy <j-keerthy@ti.com>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH 1/4] dt-bindings: timer: Add am6 compatible for ti-timer
-Message-ID: <Yk+8P5EdsdZR5h1Z@atomide.com>
-References: <20220407071006.37031-1-tony@atomide.com>
- <20220407133344.v2x2b6rkmskatips@handled>
+To:     Maxime Ripard <maxime@cerno.tech>
+Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
+        Mike Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        'Linux Samsung SOC' <linux-samsung-soc@vger.kernel.org>,
+        linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 3/3] clk: Drop the rate range on clk_put
+Message-ID: <Yk/CMUZ6zRSzYruS@atomide.com>
+References: <20220325161144.1901695-1-maxime@cerno.tech>
+ <20220325161144.1901695-4-maxime@cerno.tech>
+ <CGME20220330080612eucas1p195caaf35d900412de762a27ae02b7b9e@eucas1p1.samsung.com>
+ <366a0232-bb4a-c357-6aa8-636e398e05eb@samsung.com>
+ <20220330084710.3r6b5pjspz5hdmy6@houat>
+ <YkV3ch7R7YxlATW+@atomide.com>
+ <20220407075356.lmqnax35cewiwh4k@houat>
+ <Yk6a7meIO+fV5J1D@atomide.com>
+ <Yk7GFWdJd2EN7L1V@atomide.com>
+ <20220407134514.sct7g23yto47ylgr@houat>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220407133344.v2x2b6rkmskatips@handled>
+In-Reply-To: <20220407134514.sct7g23yto47ylgr@houat>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -45,38 +52,39 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Nishanth Menon <nm@ti.com> [220407 13:31]:
-> On 10:10-20220407, Tony Lindgren wrote:
-> > diff --git a/Documentation/devicetree/bindings/timer/ti,timer.txt b/Documentation/devicetree/bindings/timer/ti,timer.txt
-> > --- a/Documentation/devicetree/bindings/timer/ti,timer.txt
-> > +++ b/Documentation/devicetree/bindings/timer/ti,timer.txt
-> > @@ -14,6 +14,7 @@ Required properties:
-> >  			ti,omap5430-timer (applicable to OMAP543x devices)
-> >  			ti,am335x-timer	(applicable to AM335x devices)
-> >  			ti,am335x-timer-1ms (applicable to AM335x devices)
-> > +			ti,am6-timer (applicable to AM6 devices)
+* Maxime Ripard <maxime@cerno.tech> [220407 13:43]:
+> On Thu, Apr 07, 2022 at 02:08:05PM +0300, Tony Lindgren wrote:
+> > It now boots, but does a lot of checks on the clocks before the timers
+> > get initialized compared to v5.18-rc1.
 > 
-> Suggestion:
+> I was about to say that this is fairly normal with the new behaviour,
+> but I've reworked the initial patch in that discussion to only call into
+> clk_set_rate_range if there was a range on that clock to begin with.
 > 
-> Could we call this ti,am65-timer instead? AM6 is a bit nuanced and spans
-> a couple of sub SoC architectures.
+> It should remove the huge majority of the checks you mentioned (and
+> hopefully get rid of most of the side effects as well).
 
-I think the timer hardware is the same across am64, am65 and j7. So we
-should pick something to represent the am6 timers as it would allow using
-shared dtsi files for the 16 - 30 timers there are.
+OK yeah thanks, looks good to me now. Boot time looks normal, timer clocks
+are right, and runtime PM still works too.
 
-Using shared timer dtsi files should work as long as the clocks are
-defined in include/dt-bindings/clock for each SoC, and assuming we can use
-the same compatible property for the timers.
+> It shouldn't be there anymore after that rework, but I couldn't find
+> wher the ssi_ssr_fck clock was defined? The only relevant driver seems
+> to be omap_ssi_core.c but I don't see any clock driver registered there
+> either.
 
-Of course if the timers are really different across am64, am65 and j72
-then multiple compatible properties are neeeded.
+I'm not seeing this warning any longer :)
 
-If the timer hardware is the same, then I guess we should just pick the
-earliest version, so how about using ti,am64-timer?
+FYI, this clock is defined here:
+
+$ git grep ssi_ssr_fck_3430es2
+arch/arm/boot/dts/omap36xx-omap3430es2plus-clocks.dtsi: ssi_ssr_fck: ssi_ssr_fck_3430es2 {
+drivers/clk/ti/clk-3xxx.c:      DT_CLK(NULL, "ssi_ssr_fck", "ssi_ssr_fck_3430es2"),
+
+Yeah it's confusing, the clock is still created based on the node name.
+I have some clean-up patches coming to fix most of the related make dtbs
+checks warnings now that the clock driver changes got merged.
 
 Regards,
 
 Tony
+
