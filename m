@@ -2,36 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7680C4F92C0
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Apr 2022 12:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9872A4F9442
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Apr 2022 13:37:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234284AbiDHKTf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 8 Apr 2022 06:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60800 "EHLO
+        id S234824AbiDHLjd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 8 Apr 2022 07:39:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234288AbiDHKTd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Apr 2022 06:19:33 -0400
+        with ESMTP id S234008AbiDHLjd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 8 Apr 2022 07:39:33 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AE2EFCBE77;
-        Fri,  8 Apr 2022 03:17:30 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 5D4AF807E;
-        Fri,  8 Apr 2022 10:15:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 61D913EF0F;
+        Fri,  8 Apr 2022 04:37:30 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 1F5CC807E;
+        Fri,  8 Apr 2022 11:35:04 +0000 (UTC)
+Date:   Fri, 8 Apr 2022 14:37:27 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, Keerthy <j-keerthy@ti.com>,
-        Nishanth Menon <nm@ti.com>,
+To:     Grygorii Strashko <grygorii.strashko@ti.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-omap@vger.kernel.org,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        devicetree@vger.kernel.org,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Keerthy <j-keerthy@ti.com>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Nishanth Menon <nm@ti.com>, Rob Herring <robh+dt@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 3/3] clocksource/drivers/timer-ti-dm: Add compatible for am6 SoCs
-Date:   Fri,  8 Apr 2022 13:17:15 +0300
-Message-Id: <20220408101715.43697-4-tony@atomide.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220408101715.43697-1-tony@atomide.com>
-References: <20220408101715.43697-1-tony@atomide.com>
+Subject: Re: [PATCH] ARM: dts: Drop unused ti,am4372-timer compatible
+Message-ID: <YlAed8/biRMUNqNm@atomide.com>
+References: <20220408081216.57146-1-tony@atomide.com>
+ <3a4b5e26-e770-d778-5ae5-f46ba00066ce@linaro.org>
+ <Yk/yaqWHSpaO2eRe@atomide.com>
+ <f7e83ba9-32b6-bb13-3b0e-a1f82bf0ae02@linaro.org>
+ <e0cdf420-7a8c-e1a1-c60e-692a77b465e4@ti.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e0cdf420-7a8c-e1a1-c60e-692a77b465e4@ti.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -41,41 +49,52 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add compatible for ti,am654-timer to support the timers. For example, am654
-has four timers in the MCU domain and 12 timers in the MAIN domain.
+* Grygorii Strashko <grygorii.strashko@ti.com> [220408 09:31]:
+> 
+> 
+> On 08/04/2022 11:33, Krzysztof Kozlowski wrote:
+> > On 08/04/2022 10:29, Tony Lindgren wrote:
+> > > * Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [220408 08:22]:
+> > > > On 08/04/2022 10:12, Tony Lindgren wrote:
+> > > > > Drop unused (and undocumented) ti,am4372-timer related compatible
+> > > > > properties to avoid dtb warnings when updating the binding to yaml.
+> > > > > 
+> > > > > The dual-mode timer instances on am43 are compatible with the am3
+> > > > > timers.
+> > > > 
+> > > > Are you sure this is correct approach? Maybe some other user of DTS
+> > > > references the am43 compatible, so instead it should be documented in
+> > > > the bindings?
+> > > 
+> > > No users.
+> > 
+> > You sure you check all operating systems and all out-of-tree users? I
+> > did not talk about in-kernel DTS...
 
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Nishanth Menon <nm@ti.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- drivers/clocksource/timer-ti-dm.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Yeah you can never be quite sure :)
 
-diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
---- a/drivers/clocksource/timer-ti-dm.c
-+++ b/drivers/clocksource/timer-ti-dm.c
-@@ -1037,6 +1037,10 @@ static const struct dmtimer_platform_data omap3plus_pdata = {
- 	.timer_ops = &dmtimer_ops,
- };
- 
-+static const struct dmtimer_platform_data am6_pdata = {
-+	.timer_ops = &dmtimer_ops,
-+};
-+
- static const struct of_device_id omap_timer_match[] = {
- 	{
- 		.compatible = "ti,omap2420-timer",
-@@ -1065,6 +1069,10 @@ static const struct of_device_id omap_timer_match[] = {
- 		.compatible = "ti,dm816-timer",
- 		.data = &omap3plus_pdata,
- 	},
-+	{
-+		.compatible = "ti,am654-timer",
-+		.data = &am6_pdata,
-+	},
- 	{},
- };
- MODULE_DEVICE_TABLE(of, omap_timer_match);
--- 
-2.35.1
+> > > The driver does not parse these. The am4 SoCs boot using
+> > > the am3 related compatible properties.
+> > > 
+> > > > See also recommendation "DO use fallback compatibles...":
+> > > > Documentation/devicetree/bindings/writing-bindings.rst
+> > > > which maybe applies here?
+> > > 
+> > > Yes I'd agree if there were users for this, or if this was already
+> > > documented :) But I don't see a need to keep these am4 specific
+> > > properties.
+> > 
+> 
+> I'd prefer to drop it if not used and not documented.
+> conversation to yaml is good time for clean up.
+> if somebody complains - can always return back and document it.
+
+Well this will produce warnings for Krzysztof for the dt bindings branch
+until it's dropped for the dts files. And since it's possible to discuss
+this with arguments both ways.. Let's just keep it and document it. I just
+noticed we already have few redundant compatibles with dm814 and dm816 that
+are probably compatible with omap4 if rememember correctly.
+
+Regards,
+
+Tony
