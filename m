@@ -2,115 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BAF64FA9EA
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Apr 2022 19:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 268664FAB46
+	for <lists+linux-omap@lfdr.de>; Sun, 10 Apr 2022 03:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240144AbiDIRZa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 9 Apr 2022 13:25:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52206 "EHLO
+        id S233599AbiDJBEB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 9 Apr 2022 21:04:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232946AbiDIRZ3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 9 Apr 2022 13:25:29 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1582D1FB51E
-        for <linux-omap@vger.kernel.org>; Sat,  9 Apr 2022 10:23:19 -0700 (PDT)
-Received: from mail-wm1-f51.google.com ([209.85.128.51]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MfpKZ-1o9qff0nij-00gEAC for <linux-omap@vger.kernel.org>; Sat, 09 Apr
- 2022 19:23:18 +0200
-Received: by mail-wm1-f51.google.com with SMTP id r7so7430032wmq.2
-        for <linux-omap@vger.kernel.org>; Sat, 09 Apr 2022 10:23:18 -0700 (PDT)
-X-Gm-Message-State: AOAM531J3anK0ZdSJQV8cqvY6lc5AjU5rxskVmqgtUyF3mCm2cpSlGBA
-        bNCVmOl3X+JkFXhNb3JnCzOZ4nTllgZsg/hStGg=
-X-Google-Smtp-Source: ABdhPJzseKJHsUkJM5k6hK+bkMrSmeHI0GKJDhmK8UKoK+9CX5oGfTcspt/oWBS0hBx87KMYGL0rd4VrZSCK6HObcEQ=
-X-Received: by 2002:a05:600c:1e0b:b0:38c:9ac5:b486 with SMTP id
- ay11-20020a05600c1e0b00b0038c9ac5b486mr21764703wmb.71.1649524997759; Sat, 09
- Apr 2022 10:23:17 -0700 (PDT)
+        with ESMTP id S233703AbiDJBEA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 9 Apr 2022 21:04:00 -0400
+X-Greylist: delayed 1836 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 09 Apr 2022 18:01:48 PDT
+Received: from guaco.floridaarsonseminar.com (guaco.floridaarsonseminar.com [85.202.169.206])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61CC1F62D
+        for <linux-omap@vger.kernel.org>; Sat,  9 Apr 2022 18:01:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=floridaarsonseminar.com;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=rae.leo@floridaarsonseminar.com;
+ bh=MnUf62F7Cn+TYukvIUFpyVBy5Yk=;
+ b=iM5b+wHZMo15262X24xlyY2jImAmmVw6y/UMNY8RNwyjV/q/Z88zRXRTtUzxy8pbDFzDrn8WpEHF
+   PS4MQkejNFyrtHiaCzQecYISxOhFlQyhG2kZKbUJbsMiGokG4QznI3XaPZpt0JjjpjCNlHK9u9Tf
+   f9IxSDquc5v/1EtoXdcaqZggAPDXZ97RhWtnfcROksuJN8QkSvFsTEINiwR1mKyIuErTl3OLJ/3H
+   bp3Sl9K+3MjFmVn1xNB2M61zJ6bcse+GsNj8D+vBdHrfKTFGgItXs2GLwfusf4E6zDlbh5cxK6Uh
+   L/iTfHGT4IUk9y4iFRWwQ62TXGp8Lw+ZouKyDA==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=floridaarsonseminar.com;
+ b=Y8d9xZC/QZ7rjHalZsmyF+X827sSB0WUTuKA8WYK86SIo3C8XFyf3h+m9zDjTJhMUVMFrw8fLaQF
+   cWMqFiJEbcs81zamTr6oZ0D6TSeVAlxkd6ONPwzY6jonRJlGFLG1L4dNxJHvuU20B7v4YvAQ+wqQ
+   u2gQYXAm/9PO9x/eD9rQAoDlHh1hgmpZyt+CLSez18xuWffWLhOdRCRz68l4mXgynY1TmGtsGVxM
+   lebzoBc6Kl4UJgsQEZIHC3bIRFpNZXtjf2nlcWfiG3Bw+KRBUAKKIwhle0wvBSgdh/oPS3EcDT/K
+   TFq64xmEMi7YHz3XhQQHWVGFWRMcIuCIezeKNA==;
+Reply-To: ayvamustafa22@gmail.com
+From:   rae.leo@floridaarsonseminar.com
+To:     linux-omap@vger.kernel.org
+Subject: Hello
+Date:   10 Apr 2022 02:31:09 +0200
+Message-ID: <20220410023109.528A51F1C4CADDE9@floridaarsonseminar.com>
 MIME-Version: 1.0
-References: <20220402195155.141364-1-jmkrzyszt@gmail.com> <CAK8P3a0ALOvTwFgr=r7v_E6HXjcUTYnkMqQrGc7fmdPaQ3nm3Q@mail.gmail.com>
- <3167483.44csPzL39Z@dell>
-In-Reply-To: <3167483.44csPzL39Z@dell>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Sat, 9 Apr 2022 19:23:01 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a33KCpwB2X3emyyJqDCbXwabCiJHssOgUgB_3SpiNsm6Q@mail.gmail.com>
-Message-ID: <CAK8P3a33KCpwB2X3emyyJqDCbXwabCiJHssOgUgB_3SpiNsm6Q@mail.gmail.com>
-Subject: Re: [PATCH v3] ARM: OMAP1: Prepare for conversion of OMAP1 clocks to CCF
-To:     Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-omap <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:RYAgdNywZRSzzjIloaRrog1C6ZNORxIXgeQgrhCOlb27A84kNxW
- 5kACTf9V6hZR9PX5r5eLxzwIXz3IRXxeXpTvzGmEEACHGB9PKnNryCtXnmzkj/2NLX78Cp8
- brWSznghoF6h/rsD1MAGnmo937A0sdxF7f/YhWZZ6h6ej/NRoyYXTs69lBkP9dfsDP0JqVz
- B1XMb/aP8xd6Z92wwvxYw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mcPGrFkau5w=:uXJd6Zvo92R/0nKcq6O7YA
- JlTW80z7b65aKmEElwp86N4KFn1YMB24wXF4MBBEzQ1dD6iMztYsxwxC8O0gkyob6Q8JmZITa
- 5EAtHwHAhDWb0lffYg95KX89/DNJ5/lKZuJf+MHnsg5bHCDIl0TEtfsSM0a4dZo3nClEny8X9
- xAGLIbYtiAMT7Hm54VnP3SNxp0niy8Ng9SzICL8KgGPi+QovjF6yiTU967ggkvqRh+3Nrpgq9
- vilIFm6qerLqO2tg/XXvVllvIHhL+x8eULEf8YgqIJzhH/aAUygcKryE4VRRoXYh8BHxL0nzk
- USTwp7n2QJAoEkLdv1ualQc7pCNRwTnDE96Hnq9ISjlJxAaJmiPv/gvp4zGPY4V7eJpGrzahG
- TXSGSX5oxjBSUcJZTj+bInomXnOgvHYW7+8no0F68fse2mvwQrR8mdnxP+Qz534m0jWr2pSrt
- 6ZhDDpa2yC67CFR9iv5/j9jHOKBKtb+6oeGOKURJdlJ+6laC05tziTseTk8oIX6E94Oi8RTJ3
- cYh8X3aaStKr1lWXz45JOh1vtzQorfSl32xT+WcFi7G02vbvBDgidmZYTOjYTu1t1vAWy5HML
- 3eaXu5KfkY1oDDeQUNjWyh5rsSK3lpMXMFvzuElMzc1eGlXsAuIuZZEB7vcUnJJ7X4JflpKFl
- /1M+OKG8Y60k3kiusvK+MBTJYguJcjvFrD9ueDrMESx68INsMqm3un7wyxMkuRlMTNKU=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.2 required=5.0 tests=BAYES_99,BAYES_999,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
+        *      bl.spamcop.net
+        *      [Blocked - see <https://www.spamcop.net/bl.shtml?85.202.169.206>]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [ayvamustafa22[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 RCVD_IN_MSPIKE_L3 RBL: Low reputation (-3)
+        *      [85.202.169.206 listed in bl.mailspike.net]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.0 RCVD_IN_MSPIKE_BL Mailspike blacklisted
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Apr 9, 2022 at 2:05 PM Janusz Krzysztofik <jmkrzyszt@gmail.com> wrote:
-> On Tuesday, 5 April 2022 11:39:05 CEST Arnd Bergmann wrote:
-> > This all looks good to me. I have now rebased my omap1 multiplatform series
-> > on the latest kernel and integrated some of your new work, see [1].
-> >
-> > I have also finished up the multiplatform conversion for all other ARMv4T
-> > and ARMv5 platforms and sent them out, hopefully we are getting into the
-> > endgame with this.
-> >
-> > Are you able to test your CCF patches in combination with my series?
-> > It would be great if we could get this all working in time for 5.19.
-> >
-> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git/log/?h=omap1-multiplatform-5.18
->
-> Your branch with my CCF patches on top of it works for me on my OMAP1510
-> based Amstrad Delta with the below fix:
->
-> diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-> index 8cafe7819e13..292fcb0a24fc 100644
-> --- a/drivers/video/fbdev/omap/omapfb_main.c
-> +++ b/drivers/video/fbdev/omap/omapfb_main.c
-> @@ -1623,7 +1623,7 @@ static int omapfb_do_probe(struct platform_device *pdev,
->
->         init_state = 0;
->
-> -       if (pdev->num_resources != 1) {
-> +       if (pdev->num_resources != 2) {
->                 dev_err(&pdev->dev, "probed for an unknown device\n");
->                 r = -ENODEV;
->                 goto cleanup;
->
-> Amstrad Delta uses internal LCD controller, then the second IRQ (for sossi)
-> is not needed, but your patch "fbdev: omap: pass irqs as resource" adds
-> both to the array of omapfb resources and sets pdev->num_resources = 2.
+sauda=C3=A7=C3=B5es ,
 
-Thanks a lot for testing, I folded your fixup into the corresponding
-patch now and uploaded the new branch. Can you also send me latest
-version of the patches you added on top so I can make them part of the
-series before the final patch?
+Estou procurando um parente do meu falecido cliente Sr. Robert,=20
+que perdeu a vida devido =C3=A0 doen=C3=A7a do Coronav=C3=ADrus, que ele=20=
 
-I would then send the complete series for another (possibly last)
-round of review and try to get it merged for 5.19 if there are no other
-concerns.
+contraiu durante sua viagem de neg=C3=B3cios na China. Eu sou seu=20
+advogado pessoal e estou procurando seus parentes mais pr=C3=B3ximos,=20
+entrei em contato com voc=C3=AA para trabalhar comigo na garantia da=20
+transfer=C3=AAncia de um fundo fiduci=C3=A1rio, quatro milh=C3=B5es,=20
+quatrocentos e vinte mil d=C3=B3lares, legado por meu falecido=20
+cliente.
 
-I have already merged the (comparatively simple) multiplatform conversion
-changes for s3c24xx, ep93xx, ixp4xx and iop into the soc tree, they should
-show up in the linux-next on Monday.
+Entre em contato comigo imediatamente para obter mais=20
+informa=C3=A7=C3=B5es.
 
-        Arnd
+esperando
+Mustaf=C3=A1 Aivaz
