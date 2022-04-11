@@ -2,58 +2,67 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F094B4FBBD7
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Apr 2022 14:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 277774FBD12
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Apr 2022 15:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345944AbiDKMQ6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Apr 2022 08:16:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
+        id S1346476AbiDKNbd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Apr 2022 09:31:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236974AbiDKMQz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 08:16:55 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB53B286ED
-        for <linux-omap@vger.kernel.org>; Mon, 11 Apr 2022 05:14:41 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ndsw7-0003bV-RC; Mon, 11 Apr 2022 14:14:27 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ndsw6-002No1-JO; Mon, 11 Apr 2022 14:14:25 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ndsw4-002b3w-7w; Mon, 11 Apr 2022 14:14:24 +0200
-Date:   Mon, 11 Apr 2022 14:14:24 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+        with ESMTP id S1346477AbiDKNbc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 09:31:32 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B2D27A;
+        Mon, 11 Apr 2022 06:29:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649683757; x=1681219757;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=s7lGp6ZwOUOr6C+R1b0zEt7RIc7T3OGFYwSjiL0N5fc=;
+  b=gwi8SwU3NTeqezpGRXVlHIAFBl1nDepGxQVzkGOvf9ofGArm9O4bIwaK
+   P6F/ZVnCoPrGNAhwzFXAYVU+eg+fNTMoSQAvVwF+RTmaPIJrJi+tszron
+   BkeoluBD20Fi/v+u1E+aT8ZhKvBuKfQY8ayqEpVvNVt77k5YeocxMKGnN
+   P1F9SZfowaIsE/NN6nOORRweHGhNHbszmDAeuIr+//smVTY1X9/XxWFKV
+   4OjjFccneEH9RhwZzs/mif48z6ra4bhp1zRxKOFQJKFa5/NQ/64n0YRVL
+   i4w+M+WeX67i3c6m/wMy1RhXUPG4ngN7i5lV0sy0V56spT70IWF/301Sh
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10313"; a="260962323"
+X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; 
+   d="scan'208";a="260962323"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2022 06:29:16 -0700
+X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; 
+   d="scan'208";a="525977643"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2022 06:29:13 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@intel.com>)
+        id 1ndu2v-001DbK-Mf;
+        Mon, 11 Apr 2022 16:25:33 +0300
+Date:   Mon, 11 Apr 2022 16:25:33 +0300
+From:   Andy Shevchenko <andriy.shevchenko@intel.com>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Jiri Slaby <jirislaby@kernel.org>,
         Johan Hovold <johan@kernel.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Subject: Re: [PATCHv2] serial: 8250: Fix runtime PM for start_tx() for empty
- buffer
-Message-ID: <20220411121424.7pc3jjsqglxbfakt@pengutronix.de>
-References: <20220411111657.16744-1-tony@atomide.com>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] serial: core: Start managing serial controllers to
+ enable runtime PM
+Message-ID: <YlQsTWcM3is9TGdw@smile.fi.intel.com>
+References: <20220411120218.17422-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gesvtf2gmiko2n45"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220411111657.16744-1-tony@atomide.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+In-Reply-To: <20220411120218.17422-1-tony@atomide.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,46 +70,158 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Mon, Apr 11, 2022 at 03:02:18PM +0300, Tony Lindgren wrote:
+> We want to enable runtime PM for serial port device drivers in a generic
+> way. To do this, we want to have the serial core layer manage the
+> registered serial port controllers. For runtime PM, we need a way to find
+> the serial ports for each serial port controller device.
+> 
+> The serial core manages ports. Each serial controller can have multiple
+> ports. As serial core has no struct device, and the serial port device
+> drivers have their own driver data, we cannot currently start making
+> use of serial core generic data easily without changing all the serial
+> port device drivers.
+> 
+> We could consider adding a serial core specific struct device. It would
+> be a child of the serial port device, and would allow us eventually to use
+> device_links to add generic runtime PM calls for example. But as the serial
+> core layer is not a device driver, driver specific features would need to
+> be added, and are probably not justified for a virtual device.
+> 
+> Considering the above, let's improve the serial core layer so we can
+> manage the serial port controllers better. Let's register the controllers
+> with the serial core layer in addition to the serial ports.
+> 
+> To find the serial ports for a controller based on struct device, let's
+> add a new data structure for a serial_controller. Let's add the registered
+> devices into a radix_tree so we can look up the controller easily even
+> with many controllers registered. This allows us to keep track of the
+> runtime PM state for each serial port controller device.
+> 
+> As some serial port device drivers enable runtime PM in their probe before
+> registering with the serial core layer, and some do not enable runtime PM
+> at all currently, we need check the state in the serial core layer on
+> uart_port_startup(). We need to also consider that a serial port device
+> may have multiple ports.
+> 
+> Initially we just want to enable runtime PM for all the serial port
+> controller devices. This allows us to add runtime PM calls and properly
+> handle any errors without a need for serial layer specific runtime PM
+> wrapper functions.
+> 
+> After this patch no functional changes for the serial port device drivers
+> are intended. For most cases, we just enable runtime PM and keep the
+> runtime PM usage count until all the serial controller ports are
+> unregistered. For drivers implementing runtime PM, we just keep track of
+> the configuration.
+> 
+> The serial core layer has the following use cases to deal with:
+> 
+> - If a serial port device driver does not implement runtime PM, the
+>   device state is set to active state, and the runtime PM usage count
+>   is kept until the last port for a device is unregistered
+> 
+> - If a serial port device driver implements runtime PM, the runtime PM
+>   usage count is kept until the last port for the device is unregistered
+> 
+> - If a serial port device driver implements runtime PM autosuspend,
+>   autosuspend is not prevented. This currently gets set only for the
+>   8250_omap driver to keep runtime PM working for it
+> 
+> For system suspend, things should be mostly detached from the runtime PM.
+> The serial port device drivers may call pm_runtime_force_suspend() and
+> pm_runtime_force_resume() as needed.
 
---gesvtf2gmiko2n45
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-On Mon, Apr 11, 2022 at 02:16:57PM +0300, Tony Lindgren wrote:
-> Commit 932d596378b0 ("serial: 8250: Return early in .start_tx() if there
-> are no chars to send") caused a regression where the drivers implementing
-> runtime PM stopped idling. This is because serial8250_rpm_put_tx() is now
-> unbalanced on early return, it normally gets called at __stop_tx().
->=20
-> Fixes: 932d596378b0 ("serial: 8250: Return early in .start_tx() if there =
-are no chars to send")
-> Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> Cc: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> +struct serial_controller {
+> +	struct uart_driver *drv;		/* For port specific uart_state */
 
-Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> +	struct mutex lock;			/* For changing enabled_count */
+> +	int enabled_count;			/* Enable count for runtime PM */
 
-Thanks for cleaning up behind me,
-Uwe
+Wondering if we may use kref instead which will check for saturation as well.
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+> +	unsigned long implements_pm_runtime:1;
+> +	unsigned long supports_autosuspend:1;
+> +};
 
---gesvtf2gmiko2n45
-Content-Type: application/pgp-signature; name="signature.asc"
+...
 
------BEGIN PGP SIGNATURE-----
+> +		WARN_ON(port->supports_autosuspend !=
+> +			controller->supports_autosuspend);
 
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmJUG50ACgkQwfwUeK3K
-7AnyNQgAm9+Gx+Zu14wbYB/VB5sPoHur0onFhMVLygQZZ19CEy8drNGl3RlwEVgI
-XePEBiYTTPSIicfnlKt5iUJ3na0sw0a2P9cuusLA20Uh6wvJ0MBDWwtOqxNxANAT
-ruMELsGXugkGKuNUr4xZC03zaFMWEl7/iCHnZkDC+h/ZlNYQ94myvHKNxFD6BY/u
-fjCsGzty90/ymOqYnxcn4aDHd5l0LkWG5Et3qM+YfG73RyAx1tNyWWN55rW6dCWV
-BtEi4oVpj6NFJlR1egUDpr9Ezckj98YxTyYTK5bvBWsVtt3dy0KVoXDvDQ1Q+W4Q
-KxBkdQgC6J6iwrTdH3+zF/3O/hXA1A==
-=xXFf
------END PGP SIGNATURE-----
+One line?
 
---gesvtf2gmiko2n45--
+
+...
+
+> +	controller = kzalloc(sizeof(*controller), GFP_KERNEL);
+> +	if (!controller)
+> +		return -ENOMEM;
+> +
+> +	mutex_init(&controller->lock);
+> +	controller->drv = drv;
+> +	controller->supports_autosuspend = port->supports_autosuspend;
+> +	port->state->controller = controller;
+> +
+> +	return radix_tree_insert(&serial_core_devices, idx, controller);
+
+Hmm... Memory leak at error?
+
+
+...
+
+> +	if (!idx)
+> +		return;
+
+Do you really need this?
+
+> +	controller = radix_tree_lookup(&serial_core_devices, idx);
+> +	if (!controller)
+> +		return;
+
+...and/or this?
+
+> +	controller = radix_tree_delete(&serial_core_devices, idx);
+> +	if (!controller)
+> +		return;
+
+...
+
+> +	struct device *dev = port->dev;
+
+I would split assignment to be closer to first user...
+
+...
+
+...somewhere here.
+
+> +	if (!dev)
+> +		return 0;
+
+...
+
+> +	struct serial_controller *controller;
+> +	struct device *dev = port->dev;
+> +	struct uart_state *state;
+
+> +	if (!dev)
+> +		return;
+
+Ditto.
+
+...
+
+>  	unsigned char		hub6;			/* this should be in the 8250 driver */
+>  	unsigned char		suspended;
+>  	unsigned char		console_reinit;
+> +	unsigned long		supports_autosuspend:1;
+
+Hmm... Maybe use unsigned char and convert all of them to something else if needed?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
