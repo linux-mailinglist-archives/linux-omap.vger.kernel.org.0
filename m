@@ -2,63 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF3C14FB8C8
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Apr 2022 11:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 392B14FB8DA
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Apr 2022 12:02:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235918AbiDKJ7p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Apr 2022 05:59:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43886 "EHLO
+        id S230099AbiDKKEd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Apr 2022 06:04:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344940AbiDKJ7g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 05:59:36 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB88419AC;
-        Mon, 11 Apr 2022 02:57:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 56FDDB811A6;
-        Mon, 11 Apr 2022 09:57:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA839C385A4;
-        Mon, 11 Apr 2022 09:57:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649671039;
-        bh=XzgoCOpDFPeXrNAPZ9n2pn/IKCFb6l3nipun5dFyDyM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qehk1AnZjxsI1bTVdtNm6FoAFTYc9s6SC81gzZzZ9XQpHKl3pdty27Pou50Gy47Hd
-         Ib/+Ci9lmxlDlxIXQWBdNPsRjz9seUH+heHR/qvgWTxbt0fYLbp6O5pzXShWQ2AVSx
-         kfdCgC3VqJ5wSeb7GOrfA8qBckqIIPunxrKlj+C1dezGCv/o2OKaZ21C78lDq31L2O
-         ou4ucjIKEjrjn8Te/midQyF4KMj9XItdnSiFOOiiaWdQLxbBJoUYkaEqzI/q1NjX8y
-         k08yzPZ0q0NxH0xn4lZHhWyP5dyKkztA8meuUZVXLAJ6uKGTC40eaKHs/6IBqA4+yh
-         YWp+p8RIp9Q0g==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1ndqnI-0003if-V8; Mon, 11 Apr 2022 11:57:13 +0200
-Date:   Mon, 11 Apr 2022 11:57:12 +0200
-From:   Johan Hovold <johan@kernel.org>
+        with ESMTP id S1344967AbiDKKEc (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 06:04:32 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D7F541604
+        for <linux-omap@vger.kernel.org>; Mon, 11 Apr 2022 03:02:19 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ndqs3-0001VG-FJ; Mon, 11 Apr 2022 12:02:07 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ndqs3-002MQB-9j; Mon, 11 Apr 2022 12:02:05 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1ndqs1-002ZTf-2q; Mon, 11 Apr 2022 12:02:05 +0200
+Date:   Mon, 11 Apr 2022 12:02:02 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To:     Tony Lindgren <tony@atomide.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andy Shevchenko <andriy.shevchenko@intel.com>,
         Jiri Slaby <jirislaby@kernel.org>,
+        Johan Hovold <johan@kernel.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        "Matwey V . Kornilov" <matwey@sai.msu.ru>,
         Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 1/2] serial: 8250: Fix runtime PM for start_tx() for RS485
-Message-ID: <YlP7eArvvNWnbMF2@hovoldconsulting.com>
+        "Matwey V. Kornilov" <matwey@sai.msu.ru>
+Subject: Re: [PATCH 2/2] serial: 8250: Fix runtime PM for start_tx() for
+ empty buffer
+Message-ID: <20220411100202.5mzcogksfzk4hlk6@pengutronix.de>
 References: <20220411094805.45696-1-tony@atomide.com>
+ <20220411094805.45696-2-tony@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="mog63zosfq7sgn7x"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220411094805.45696-1-tony@atomide.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20220411094805.45696-2-tony@atomide.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,48 +62,68 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Apr 11, 2022 at 12:48:04PM +0300, Tony Lindgren wrote:
-> The early return from serial8250_start_tx() added by commit e490c9144cfa
-> ("tty: Add software emulated RS485 support for 8250") failed to call
-> serial8250_rpm_put_tx() that normally gets called on __stop_tx().
-> 
-> Likely this is a harmless issue as the RS485 using folks probably are not
-> using runtime PM for the serial ports.
-> 
-> Fixes: e490c9144cfa ("tty: Add software emulated RS485 support for 8250")
-> Cc: Matwey V. Kornilov <matwey@sai.msu.ru>
+
+--mog63zosfq7sgn7x
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Apr 11, 2022 at 12:48:05PM +0300, Tony Lindgren wrote:
+> Commit 932d596378b0 ("serial: 8250: Return early in .start_tx() if there
+> are no chars to send") caused a regression where the drivers implementing
+> runtime PM stopped idling.
+>=20
+> We need to call serial8250_rpm_put_tx() on early exit, it normally gets
+> called later on at __stop_tx().
+>=20
+> Fixes: 932d596378b0 ("serial: 8250: Return early in .start_tx() if there =
+are no chars to send")
 > Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> Cc: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
 >  drivers/tty/serial/8250/8250_port.c | 4 +++-
 >  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+>=20
+> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/825=
+0/8250_port.c
 > --- a/drivers/tty/serial/8250/8250_port.c
 > +++ b/drivers/tty/serial/8250/8250_port.c
-> @@ -1681,8 +1681,10 @@ static void serial8250_start_tx(struct uart_port *port)
->  		return;
->  
->  	if (em485 &&
-> -	    em485->active_timer == &em485->start_tx_timer)
-> +	    em485->active_timer == &em485->start_tx_timer) {
+> @@ -1677,8 +1677,10 @@ static void serial8250_start_tx(struct uart_port *=
+port)
+> =20
+>  	serial8250_rpm_get_tx(up);
+> =20
+> -	if (!port->x_char && uart_circ_empty(&port->state->xmit))
+> +	if (!port->x_char && uart_circ_empty(&port->state->xmit)) {
 > +		serial8250_rpm_put_tx(up);
 >  		return;
 > +	}
 
-I was just taking a quick look at your report about this and also
-noticed this return statement.
+Assuming you don't need serial8250_rpm_get_tx() to check the condition,
+it would be easier to move the early return before the call to
+serial8250_rpm_get_tx().
 
-The runtime PM implementation is a bit of mess as we've discussed
-elsewhere, but the change you propose here doesn't look right.
+Best regards
+Uwe
 
-start_tx() can be deferred in the rs485 case, but that doesn't mean you
-should suspend the device here. In fact, that look like it would just
-break runtime PM (the parts that may work to some extent).
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
->  
->  	if (em485)
->  		start_tx_rs485(port);
+--mog63zosfq7sgn7x
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Johan
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmJT/JcACgkQwfwUeK3K
+7AmWNgf+IEwsufAbM3FLCmMNkfpzUsHgYf7rkVnWWCEQMp6Gp1L6uaZtqT0bYI+5
+wUukJuaYFU1PVp+oy8JB/ZduyFrp/e4qOnPJ9hl2tJg0J6pZ21PH2tO/RYRjbrIT
+h7srAdGQSX/e/u4R/TWRTuakJdwUBJHMpEO6KbXLC4xwpsUNtQeZjdsHUbalsoZg
+SvtjbdFrzeQU05ZF/an8fIgRl5/4LTnauf3YRPR2CBHwuElpuWIUqwR4E4kd7HFc
+OvVnpyGSb5fZ2k9Xvjla/CwW4I+e0At7T8Y4na0Jy6vKO/PhzcdIx2SDPvngYL5E
+ikIrMVTSxTA5IWNHOfJcUvAEqpKxgw==
+=/HZe
+-----END PGP SIGNATURE-----
+
+--mog63zosfq7sgn7x--
