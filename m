@@ -2,22 +2,22 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 066F24FB9B9
+	by mail.lfdr.de (Postfix) with ESMTP id 95B354FB9BB
 	for <lists+linux-omap@lfdr.de>; Mon, 11 Apr 2022 12:34:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345576AbiDKKfO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Apr 2022 06:35:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58426 "EHLO
+        id S242908AbiDKKfv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Apr 2022 06:35:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242812AbiDKKfN (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 06:35:13 -0400
+        with ESMTP id S242812AbiDKKfu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 06:35:50 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1E4E043AC7;
-        Mon, 11 Apr 2022 03:33:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4CBB6434B6;
+        Mon, 11 Apr 2022 03:33:36 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id AEF9D809F;
-        Mon, 11 Apr 2022 10:30:28 +0000 (UTC)
-Date:   Mon, 11 Apr 2022 13:32:58 +0300
+        by muru.com (Postfix) with ESMTPS id EA2B0809F;
+        Mon, 11 Apr 2022 10:31:04 +0000 (UTC)
+Date:   Mon, 11 Apr 2022 13:33:34 +0300
 From:   Tony Lindgren <tony@atomide.com>
 To:     Johan Hovold <johan@kernel.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -27,20 +27,20 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        "Matwey V . Kornilov" <matwey@sai.msu.ru>,
         Steffen Trumtrar <s.trumtrar@pengutronix.de>,
         Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 1/2] serial: 8250: Fix runtime PM for start_tx() for RS485
-Message-ID: <YlQD2mZdorEAKfZ7@atomide.com>
+        <u.kleine-koenig@pengutronix.de>,
+        "Matwey V. Kornilov" <matwey@sai.msu.ru>
+Subject: Re: [PATCH 2/2] serial: 8250: Fix runtime PM for start_tx() for
+ empty buffer
+Message-ID: <YlQD/gvwYp+cJxX9@atomide.com>
 References: <20220411094805.45696-1-tony@atomide.com>
- <YlP7eArvvNWnbMF2@hovoldconsulting.com>
- <YlP+muZF1nDIU0t4@atomide.com>
- <YlQCJE4yQRsO8JPn@hovoldconsulting.com>
+ <20220411094805.45696-2-tony@atomide.com>
+ <YlP/P/JeZ/fS1zAK@hovoldconsulting.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YlQCJE4yQRsO8JPn@hovoldconsulting.com>
+In-Reply-To: <YlP/P/JeZ/fS1zAK@hovoldconsulting.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -50,57 +50,23 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Johan Hovold <johan@kernel.org> [220411 10:23]:
-> On Mon, Apr 11, 2022 at 01:10:34PM +0300, Tony Lindgren wrote:
-> > * Johan Hovold <johan@kernel.org> [220411 09:54]:
-> > > On Mon, Apr 11, 2022 at 12:48:04PM +0300, Tony Lindgren wrote:
-> > > > diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-> > > > --- a/drivers/tty/serial/8250/8250_port.c
-> > > > +++ b/drivers/tty/serial/8250/8250_port.c
-> > > > @@ -1681,8 +1681,10 @@ static void serial8250_start_tx(struct uart_port *port)
-> > > >  		return;
-> > > >  
-> > > >  	if (em485 &&
-> > > > -	    em485->active_timer == &em485->start_tx_timer)
-> > > > +	    em485->active_timer == &em485->start_tx_timer) {
-> > > > +		serial8250_rpm_put_tx(up);
-> > > >  		return;
-> > > > +	}
-> > > 
-> > > I was just taking a quick look at your report about this and also
-> > > noticed this return statement.
-> > > 
-> > > The runtime PM implementation is a bit of mess as we've discussed
-> > > elsewhere, but the change you propose here doesn't look right.
-> > 
-> > Frankly "a bit of mess" applies "a bit more" than just the serial runtime
-> > PM :)
+* Johan Hovold <johan@kernel.org> [220411 10:10]:
+> On Mon, Apr 11, 2022 at 12:48:05PM +0300, Tony Lindgren wrote:
+> > diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+> > --- a/drivers/tty/serial/8250/8250_port.c
+> > +++ b/drivers/tty/serial/8250/8250_port.c
+> > @@ -1677,8 +1677,10 @@ static void serial8250_start_tx(struct uart_port *port)
+> >  
+> >  	serial8250_rpm_get_tx(up);
+> >  
+> > -	if (!port->x_char && uart_circ_empty(&port->state->xmit))
+> > +	if (!port->x_char && uart_circ_empty(&port->state->xmit)) {
+> > +		serial8250_rpm_put_tx(up);
+> >  		return;
+> > +	}
 > 
-> Heh. I'm afraid that's all too true. :)
-> 
-> > > start_tx() can be deferred in the rs485 case, but that doesn't mean you
-> > > should suspend the device here. In fact, that look like it would just
-> > > break runtime PM (the parts that may work to some extent).
-> > 
-> > AFAIK there's currently nothing paired with the serial8250_rpm_get_tx(up)
-> > call at the beginning of serial8250_start_tx() for the early exit cases
-> > if start_tx_rs485() or __start_tx() won't get called.
-> > 
-> > Care to clarify a bit more what you have in mind?
-> 
-> The problem is that that serial8250_rpm_put_tx() you're adding may
-> suspend the device unconditionally (i.e. regardless of any previous
-> calls to serial8250_rpm_get_tx()).
-> 
-> If rs485 tx is just being deferred you mustn't suspend the device before
-> it has had a chance to start transmitting.
+> Move this before the runtime pm get instead?
 
-Hmm I'm pretty sure rs485 has the runtime PM usage count is currently
-unbalanced. To me it seems em485->start_tx_timer calls start_tx()
-again from serial8250_em485_handle_start_tx().
-
-Anyways, let's deal with the regression patch first, this can wait a bit.
-
-Regards,
+Yup good idea.
 
 Tony
