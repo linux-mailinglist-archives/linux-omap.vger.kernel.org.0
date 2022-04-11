@@ -2,128 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 392B14FB8DA
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Apr 2022 12:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 603084FB905
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Apr 2022 12:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230099AbiDKKEd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Apr 2022 06:04:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55218 "EHLO
+        id S1345063AbiDKKIi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Apr 2022 06:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344967AbiDKKEc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 06:04:32 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D7F541604
-        for <linux-omap@vger.kernel.org>; Mon, 11 Apr 2022 03:02:19 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ndqs3-0001VG-FJ; Mon, 11 Apr 2022 12:02:07 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ndqs3-002MQB-9j; Mon, 11 Apr 2022 12:02:05 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ndqs1-002ZTf-2q; Mon, 11 Apr 2022 12:02:05 +0200
-Date:   Mon, 11 Apr 2022 12:02:02 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-        "Matwey V. Kornilov" <matwey@sai.msu.ru>
-Subject: Re: [PATCH 2/2] serial: 8250: Fix runtime PM for start_tx() for
- empty buffer
-Message-ID: <20220411100202.5mzcogksfzk4hlk6@pengutronix.de>
-References: <20220411094805.45696-1-tony@atomide.com>
- <20220411094805.45696-2-tony@atomide.com>
+        with ESMTP id S1345111AbiDKKIh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 06:08:37 -0400
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [IPv6:2001:4b98:dc4:8::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672312229E;
+        Mon, 11 Apr 2022 03:06:13 -0700 (PDT)
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 8191520000C;
+        Mon, 11 Apr 2022 10:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1649671572;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mUVyrpdb9S8/uhuD169w7kcW369lFxrHB2jY1Y7pK1c=;
+        b=eWsCo/Us7q7FEskR2pOfGJJOrnI6iRsXcCLmtBQBzBhBsRxwVAPA7vnTAXtOTeBFOiWoib
+        LFXgH3oO5JYWI0c3riv9PHk8gr+qYuDKm3NA9hEap8FeKV8My9GonikOu8N6Fi6YDMnsiJ
+        UiUCLV52XGdB/CGBl+9G6v31Ez1vjwHz1GBDyxDgBX5Mg8k+TuYXXT/9WK3+SVomZxSFRx
+        x458g6ZrNZLvSo+yLyv9WJS+teWNqea5OkLDk5SjLysPxvqrqGMlcPJsnaZnQOtdwXae1f
+        jO7ikOmnE0VON0neEJBLn++rBaEksPCDhBICZY/8cdrpn4jjbmWXsdYtUlNRdw==
+Date:   Mon, 11 Apr 2022 12:06:10 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     krzk@kernel.org, tony@atomide.com, vigneshr@ti.com, kishon@ti.com,
+        nm@ti.com, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] memory: omap-gpmc: Make OMAP_GPMC config visible
+ and selectable
+Message-ID: <20220411120610.2f0c3504@xps13>
+In-Reply-To: <20220411095516.24754-2-rogerq@kernel.org>
+References: <20220411095516.24754-1-rogerq@kernel.org>
+        <20220411095516.24754-2-rogerq@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="mog63zosfq7sgn7x"
-Content-Disposition: inline
-In-Reply-To: <20220411094805.45696-2-tony@atomide.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi Roger,
 
---mog63zosfq7sgn7x
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+rogerq@kernel.org wrote on Mon, 11 Apr 2022 12:55:15 +0300:
 
-On Mon, Apr 11, 2022 at 12:48:05PM +0300, Tony Lindgren wrote:
-> Commit 932d596378b0 ("serial: 8250: Return early in .start_tx() if there
-> are no chars to send") caused a regression where the drivers implementing
-> runtime PM stopped idling.
+> So far for armv7 TI platforms, GPMC was being selected by
+> arch/arm/mach-* architecture Kconfig files.
 >=20
-> We need to call serial8250_rpm_put_tx() on early exit, it normally gets
-> called later on at __stop_tx().
+> For K3 platforms, GPMC is no longer required for basic boot
+> and cannot be always enabled by default by mach- Kconfig.
 >=20
-> Fixes: 932d596378b0 ("serial: 8250: Return early in .start_tx() if there =
-are no chars to send")
-> Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> Cc: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> We need a way for user (or board defconfig) to enable
+> it if required so ake OMAP_GPMC Kconfig option always visible.
+
+                    make
+
+Otherwise,
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+>=20
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
 > ---
->  drivers/tty/serial/8250/8250_port.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  drivers/memory/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/825=
-0/8250_port.c
-> --- a/drivers/tty/serial/8250/8250_port.c
-> +++ b/drivers/tty/serial/8250/8250_port.c
-> @@ -1677,8 +1677,10 @@ static void serial8250_start_tx(struct uart_port *=
-port)
+> diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
+> index 30bff6cb1b8d..da2af9c38fe3 100644
+> --- a/drivers/memory/Kconfig
+> +++ b/drivers/memory/Kconfig
+> @@ -103,8 +103,8 @@ config TI_EMIF
+>  	  temperature changes
 > =20
->  	serial8250_rpm_get_tx(up);
-> =20
-> -	if (!port->x_char && uart_circ_empty(&port->state->xmit))
-> +	if (!port->x_char && uart_circ_empty(&port->state->xmit)) {
-> +		serial8250_rpm_put_tx(up);
->  		return;
-> +	}
+>  config OMAP_GPMC
+> -	bool "Texas Instruments OMAP SoC GPMC driver" if COMPILE_TEST
+> -	depends on OF_ADDRESS
+> +	bool "Texas Instruments OMAP SoC GPMC driver"
+> +	depends on OF_ADDRESS || COMPILE_TEST
+>  	select GPIOLIB
+>  	help
+>  	  This driver is for the General Purpose Memory Controller (GPMC)
 
-Assuming you don't need serial8250_rpm_get_tx() to check the condition,
-it would be easier to move the early return before the call to
-serial8250_rpm_get_tx().
 
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---mog63zosfq7sgn7x
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmJT/JcACgkQwfwUeK3K
-7AmWNgf+IEwsufAbM3FLCmMNkfpzUsHgYf7rkVnWWCEQMp6Gp1L6uaZtqT0bYI+5
-wUukJuaYFU1PVp+oy8JB/ZduyFrp/e4qOnPJ9hl2tJg0J6pZ21PH2tO/RYRjbrIT
-h7srAdGQSX/e/u4R/TWRTuakJdwUBJHMpEO6KbXLC4xwpsUNtQeZjdsHUbalsoZg
-SvtjbdFrzeQU05ZF/an8fIgRl5/4LTnauf3YRPR2CBHwuElpuWIUqwR4E4kd7HFc
-OvVnpyGSb5fZ2k9Xvjla/CwW4I+e0At7T8Y4na0Jy6vKO/PhzcdIx2SDPvngYL5E
-ikIrMVTSxTA5IWNHOfJcUvAEqpKxgw==
-=/HZe
------END PGP SIGNATURE-----
-
---mog63zosfq7sgn7x--
+Thanks,
+Miqu=C3=A8l
