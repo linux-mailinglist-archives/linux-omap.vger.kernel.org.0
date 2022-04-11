@@ -2,22 +2,22 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A512D4FBDCA
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Apr 2022 15:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A142B4FBE38
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Apr 2022 16:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346684AbiDKNyM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Apr 2022 09:54:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44190 "EHLO
+        id S243601AbiDKOEs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Apr 2022 10:04:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237887AbiDKNyL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 09:54:11 -0400
+        with ESMTP id S1346884AbiDKOEq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Apr 2022 10:04:46 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CA10822A;
-        Mon, 11 Apr 2022 06:51:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1ED0432045;
+        Mon, 11 Apr 2022 07:02:32 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D00F4809F;
-        Mon, 11 Apr 2022 13:49:24 +0000 (UTC)
-Date:   Mon, 11 Apr 2022 16:51:54 +0300
+        by muru.com (Postfix) with ESMTPS id 658FC809F;
+        Mon, 11 Apr 2022 14:00:00 +0000 (UTC)
+Date:   Mon, 11 Apr 2022 17:02:30 +0300
 From:   Tony Lindgren <tony@atomide.com>
 To:     Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,7 +30,7 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] serial: core: Start managing serial controllers to
  enable runtime PM
-Message-ID: <YlQyeoCdTtfUc45h@atomide.com>
+Message-ID: <YlQ09mizfY8z5REh@atomide.com>
 References: <20220411120218.17422-1-tony@atomide.com>
  <YlQsTWcM3is9TGdw@smile.fi.intel.com>
 MIME-Version: 1.0
@@ -48,16 +48,20 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 * Andy Shevchenko <andriy.shevchenko@intel.com> [220411 13:26]:
 > On Mon, Apr 11, 2022 at 03:02:18PM +0300, Tony Lindgren wrote:
-> > +struct serial_controller {
-> > +	struct uart_driver *drv;		/* For port specific uart_state */
+> >  	unsigned char		hub6;			/* this should be in the 8250 driver */
+> >  	unsigned char		suspended;
+> >  	unsigned char		console_reinit;
+> > +	unsigned long		supports_autosuspend:1;
 > 
-> > +	struct mutex lock;			/* For changing enabled_count */
-> > +	int enabled_count;			/* Enable count for runtime PM */
-> 
-> Wondering if we may use kref instead which will check for saturation as well.
+> Hmm... Maybe use unsigned char and convert all of them to something else if needed?
 
-Thanks for the quick review, using kref is a good idea.
+Sorry forgot to reply to this. This can be unsigned char no problem.
+Most of the runtime PM related flags are in the struct serial_controller
+anyways now.
 
 Regards,
 
 Tony
+
+
+
