@@ -2,180 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A477E4FDD22
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Apr 2022 13:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40C214FDD63
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Apr 2022 13:09:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230048AbiDLK52 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 12 Apr 2022 06:57:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44034 "EHLO
+        id S237802AbiDLLJV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 12 Apr 2022 07:09:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359040AbiDLKyl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Apr 2022 06:54:41 -0400
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0134B8A324;
-        Tue, 12 Apr 2022 02:49:51 -0700 (PDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 23C9nfKe095086;
-        Tue, 12 Apr 2022 04:49:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1649756981;
-        bh=+Po/OBwMzMNY+mde2GzDHYUOKX11dNsA5+yYDGz7VLc=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=V7TII7TZR4mvruoLKh3kAxvfLUKV6AL8PGcIARUFTc2n7xgH4hWFHtONJM3zzw/eM
-         vxR6nEWEqZPFftuvUZs/YC+l1a7PAlWi39hhZu8bZ/wk4UobUk1aKwrjI4Jo4y78s2
-         2yV6umjTqndL5TTy8rpNhg7Ab0Dbz/GJp8N5vbSE=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 23C9nfBa023699
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 12 Apr 2022 04:49:41 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 12
- Apr 2022 04:49:41 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Tue, 12 Apr 2022 04:49:41 -0500
-Received: from [10.249.96.184] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 23C9ncAZ101283;
-        Tue, 12 Apr 2022 04:49:38 -0500
-Message-ID: <78ec4bb7-b575-2554-9a29-e25c28022bdf@ti.com>
-Date:   Tue, 12 Apr 2022 12:49:39 +0300
+        with ESMTP id S242390AbiDLLCM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 12 Apr 2022 07:02:12 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E112B32D;
+        Tue, 12 Apr 2022 02:53:47 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id D85868061;
+        Tue, 12 Apr 2022 09:51:13 +0000 (UTC)
+Date:   Tue, 12 Apr 2022 12:53:45 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc:     Merlijn Wajer <merlijn@wizzup.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Dev Null <devnull@uvos.xyz>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Nitin Gupta <nigupta@nvidia.com>,
+        Charan Teja Reddy <charante@codeaurora.org>
+Subject: Re: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
+ memory compaction
+Message-ID: <YlVMKb04CWSvgZ/1@atomide.com>
+References: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
+ <YbL/teuB7qtGhtfL@atomide.com>
+ <a6682d1c-acab-72d3-bbe6-62e6d40a4832@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] net: ethernet: ti: cpsw: using pm_runtime_resume_and_get
- instead of pm_runtime_get_sync
-Content-Language: en-US
-To:     <cgel.zte@gmail.com>
-CC:     <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-References: <20220412082847.2532584-1-chi.minghao@zte.com.cn>
-From:   Grygorii Strashko <grygorii.strashko@ti.com>
-In-Reply-To: <20220412082847.2532584-1-chi.minghao@zte.com.cn>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a6682d1c-acab-72d3-bbe6-62e6d40a4832@gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 12/04/2022 11:28, cgel.zte@gmail.com wrote:
-> From: Minghao Chi <chi.minghao@zte.com.cn>
+* Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com> [220103 14:45]:
+> Hi,
 > 
-> Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
-> pm_runtime_put_noidle. This change is just to simplify the code, no
-> actual functional changes.
+> On 10.12.21 г. 9:20 ч., Tony Lindgren wrote:
+> > Hi,
+> > 
+> > * Merlijn Wajer <merlijn@wizzup.org> [211210 00:34]:
+> > > Hi,
+> > > 
+> > > I've spent the day bisecting what exact commit prevented the Nokia N900
+> > > from entering the OFF sleep state (between v5.8 and v5.9), and it this
+> > > commit:
+> > > 
+> > > > # first bad commit: [facdaa917c4d5a376d09d25865f5a863f906234a] mm: proactive compaction
+> > > 
+> > > The git tree prior to that commit can idle at about ~27mW in OFF mode,
+> > > and it will often remain in that mode for prolonged amounts of time
+> > > (easily 30 seconds, depending on running userspace). Which the above
+> > > commit applied, the Nokia N900 almost never hits OFF mode any more. This
+> > > would suggest at least to disable CONFIG_COMPACTION, perhaps in
+> > > omap2plus_defconfig? I suspect this might cause idle problems beyond the
+> > > Nokia N900, too.
+> > 
+> > Nice find, adding Nitin to Cc as well. Nitin, can we somehow avoid the
+> > timers for CONFIG_COMPACTION on an idle system to prevent waking up the
+> > system unnecessarily?
+> > 
+> > Not sure if sysctl -w vm.compaction_proactiveness=0 is enough to disable
+> > compaction for idle, maybe also the HPAGE_FRAG_CHECK_INTERVAL_MSEC = 500
+> > at ms also causes extra wake-ups?
+> > 
 > 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
-> ---
->   drivers/net/ethernet/ti/cpsw.c | 36 ++++++++++++----------------------
->   1 file changed, 12 insertions(+), 24 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-> index 03575c017500..9f37b5b196a5 100644
-> --- a/drivers/net/ethernet/ti/cpsw.c
-> +++ b/drivers/net/ethernet/ti/cpsw.c
-> @@ -756,11 +756,9 @@ static int cpsw_ndo_open(struct net_device *ndev)
->   	int ret;
->   	u32 reg;
->   
-> -	ret = pm_runtime_get_sync(cpsw->dev);
-> -	if (ret < 0) {
-> -		pm_runtime_put_noidle(cpsw->dev);
-> +	ret = pm_runtime_resume_and_get(cpsw->dev);
-> +	if (ret < 0)
->   		return ret;
-> -	}
->   
->   	netif_carrier_off(ndev);
->   
-> @@ -968,11 +966,9 @@ static int cpsw_ndo_set_mac_address(struct net_device *ndev, void *p)
->   	if (!is_valid_ether_addr(addr->sa_data))
->   		return -EADDRNOTAVAIL;
->   
-> -	ret = pm_runtime_get_sync(cpsw->dev);
-> -	if (ret < 0) {
-> -		pm_runtime_put_noidle(cpsw->dev);
-> +	ret = pm_runtime_resume_and_get(cpsw->dev);
-> +	if (ret < 0)
->   		return ret;
-> -	}
->   
->   	if (cpsw->data.dual_emac) {
->   		vid = cpsw->slaves[priv->emac_port].port_vlan;
-> @@ -1052,11 +1048,9 @@ static int cpsw_ndo_vlan_rx_add_vid(struct net_device *ndev,
->   	if (vid == cpsw->data.default_vlan)
->   		return 0;
->   
-> -	ret = pm_runtime_get_sync(cpsw->dev);
-> -	if (ret < 0) {
-> -		pm_runtime_put_noidle(cpsw->dev);
-> +	ret = pm_runtime_resume_and_get(cpsw->dev);
-> +	if (ret < 0)
->   		return ret;
-> -	}
->   
->   	if (cpsw->data.dual_emac) {
->   		/* In dual EMAC, reserved VLAN id should not be used for
-> @@ -1090,11 +1084,9 @@ static int cpsw_ndo_vlan_rx_kill_vid(struct net_device *ndev,
->   	if (vid == cpsw->data.default_vlan)
->   		return 0;
->   
-> -	ret = pm_runtime_get_sync(cpsw->dev);
-> -	if (ret < 0) {
-> -		pm_runtime_put_noidle(cpsw->dev);
-> +	ret = pm_runtime_resume_and_get(cpsw->dev);
-> +	if (ret < 0)
->   		return ret;
-> -	}
->   
->   	if (cpsw->data.dual_emac) {
->   		int i;
-> @@ -1567,11 +1559,9 @@ static int cpsw_probe(struct platform_device *pdev)
->   	/* Need to enable clocks with runtime PM api to access module
->   	 * registers
->   	 */
-> -	ret = pm_runtime_get_sync(dev);
-> -	if (ret < 0) {
-> -		pm_runtime_put_noidle(dev);
-> +	ret = pm_runtime_resume_and_get(dev);
-> +	if (ret < 0)
->   		goto clean_runtime_disable_ret;
-> -	}
->   
->   	ret = cpsw_probe_dt(&cpsw->data, pdev);
->   	if (ret)
-> @@ -1734,11 +1724,9 @@ static int cpsw_remove(struct platform_device *pdev)
->   	struct cpsw_common *cpsw = platform_get_drvdata(pdev);
->   	int i, ret;
->   
-> -	ret = pm_runtime_get_sync(&pdev->dev);
-> -	if (ret < 0) {
-> -		pm_runtime_put_noidle(&pdev->dev);
-> +	ret = pm_runtime_resume_and_get(&pdev->dev);
-> +	if (ret < 0)
->   		return ret;
-> -	}
->   
->   	for (i = 0; i < cpsw->data.slaves; i++)
->   		if (cpsw->slaves[i].ndev)
+> This doesn't seem to affect Nokia N900 only, waking-up twice a second will
+> have negative effect on power usage of every device this runs on. Could we
+> have some discussion on how to avoid that?
 
-Thank you.
-Reviewed-by: Grygorii Strashko <grygorii.strashko@ti.com>
+Just following up on this as I had it tagged in my inbox.
 
--- 
-Best regards,
-Grygorii, Ukraine
+There's kernel commit 65d759c8f9f5 ("mm: compaction: support triggering of
+proactive compaction by user") that should fix this issue.
+
+It seems to require the the following to disable compaction:
+
+# echo 0 > /proc/sys/vm/compaction_proactiveness
+
+Merlijn, care to check if this fixes the issue you're seeing? Or are threre
+possibly other bugs too preventing n900 from properly idling?
+
+Regards,
+
+Tony
