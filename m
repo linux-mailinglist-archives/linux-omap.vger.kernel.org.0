@@ -2,61 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 096604FF3A5
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Apr 2022 11:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C20154FF3BB
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Apr 2022 11:38:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbiDMJh5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Apr 2022 05:37:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49872 "EHLO
+        id S233467AbiDMJlD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 Apr 2022 05:41:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231349AbiDMJhz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Apr 2022 05:37:55 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CFE653E10;
-        Wed, 13 Apr 2022 02:35:34 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id md4so1413954pjb.4;
-        Wed, 13 Apr 2022 02:35:34 -0700 (PDT)
+        with ESMTP id S233542AbiDMJlC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Apr 2022 05:41:02 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4B8F546B8;
+        Wed, 13 Apr 2022 02:38:40 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id bd13so806812pfb.7;
+        Wed, 13 Apr 2022 02:38:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=/a7BzFN2ctOPRBd9oUWUrScQo5EEkuSIQfpImBe6rnE=;
-        b=I90iibzSdzn+cqhB2DXoa6KLTCJaYar2EiIgmCSBrZVg3dCjj52kRl5OqwkY2lHsys
-         l8aIKnzASwNb2U5xuJ4ZBayF3bLN9uv9cVQg5wwpQLRSkdFhdrArdvqJhd3vBJyS4JaN
-         wR28i/Xa6FsfHvSbPLoA/98HZOMC7EHbN3w6bmn4HZsYfAVoc1TtWaaoxJE7JT09oeqj
-         YbC1H89SiJDCxWA92uclljjTOpyqudsq+KYPLavzpDc4cfMCbngPGzwmDyaMd3xK2WkT
-         VScZ71aPK8bbAihoXtNTL4x6JPKX83xbFd5dB6o8sqOiFQE4zfHianOCtoJpUFcNNx52
-         /VmA==
+        bh=o66bR84svG1Vv/PCgfD86hSotmaG/IulOEB6qjFphHY=;
+        b=O1ailLv5n/IpRssNt70UTBjt2MWMuJh+5g5eO2Px3oyGgm6pqhnrM1ywI0skHauiES
+         V1/F8akwE9Hg8YxYr6/KeX4uBjrejQDEKiHQ5f1/AvoLPPVVMOmrK3e+F6JkGS8xkr7z
+         JWlmiOIesk/dQlqK6xC3zdIz2YMrRtFM5zE7bzBbb428GbltQ9elKDNvJi52Fz8Mrk8D
+         gi5Z/iZMdXzYK0XooL0JqYt6meIj5mU+lMFDTMgggOlzmxcNdEjZzA+6daXdD0S2PICb
+         XCKBPiHdZqAZOwSjZewuY+nd139MaqzHSx0i5Yz5SKi6rVJ2ymKtujobKVWK2rspDRBI
+         AFvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=/a7BzFN2ctOPRBd9oUWUrScQo5EEkuSIQfpImBe6rnE=;
-        b=VyT3Ard7MMoackziZB92Gjlmsg/7GSdI9a5ivuDs5msc58KFri+tiEFPF2Q+Ok+9xW
-         Yv5mQul1MXL8Q15NWw1e1pKnbJtjDpPRRyVpQusgYW8LYQ5dVyqkuyLvI7gnOCF1fZR5
-         7KtJIQsUEf2+xi7LBowjDy1bE3ZmFys8QxDsAeZr3P9ywiG0lBKWrzt6aRPcTSST/PMW
-         1/ptBSo1/wY267IdQ4Qu4zRVGv9Dns4uPbpS7zfCghbCqPbwXhpJUrLTXvQID/sikcX8
-         raZzjpgzsRXJDxct6WedVBz+gw46CPaqMheF9W4Edwi63RZBo+C8Z6H4HnZd3hyVSn1r
-         Xa9g==
-X-Gm-Message-State: AOAM5300J5jsB/XP1ZpmdXcQibdM5hsmG2iOXPfhjv6HoFYYjltSowUe
-        qaUdyTLgo45cZtifxJUeJNE=
-X-Google-Smtp-Source: ABdhPJwTJVrtAYTdoE6pUKxTEQVVIrUZU1wLgzdAsEDbTjMXYK0ZJfLhWxBoBhx+EB116oYkPExZRg==
-X-Received: by 2002:a17:90b:390c:b0:1c7:9a94:1797 with SMTP id ob12-20020a17090b390c00b001c79a941797mr9728575pjb.221.1649842533823;
-        Wed, 13 Apr 2022 02:35:33 -0700 (PDT)
+        bh=o66bR84svG1Vv/PCgfD86hSotmaG/IulOEB6qjFphHY=;
+        b=JKC/zkq6F8wSTj6pDQaKb+DO//jgGOneSV9ROj5aGb2dMU1Oy9aJo66jJf0sCu39lg
+         ylUzoPw9bqPJUVqAWIlFiAqTznIp3l0D4Z9CCiS1XRpRu0SSvwUO3e/bPL0uv0romjn6
+         PHr05BBY1TqJVpRlfZ3j6nB89ZI0Vi7QDrrdaLIBjXDh4SK5h2J7e+dpXYo/lHnIDEP/
+         GINiBQ2qfgJpLmlhZlxtJa/XB6cA09nWcE7GIX4MRDasQF4VL4Y1NRcMKZRg+C8LhKDm
+         e++akDgmqUwWK2U2ir+KOzl4D3UuaNTcHIeVUA/RvGnH9y9brOrpvRmkvj30Lt3n7AO/
+         jPNg==
+X-Gm-Message-State: AOAM530ued1tq7VFV6/Sz+xa8rHtgkw1Q9G/HfnL24/fAgFD+mtCrmG0
+        RLK1Y9cQ+bCBkFtpwhwwO/ePebBQr68=
+X-Google-Smtp-Source: ABdhPJwshtt4nObDmt+mbtxGd8W6tobEaRlCzmGKzNLIduo/LNB7dNOxvy4E9xAoo/42buWrjCK0Sg==
+X-Received: by 2002:a65:4787:0:b0:39d:96b7:bfaa with SMTP id e7-20020a654787000000b0039d96b7bfaamr6395784pgs.495.1649842720322;
+        Wed, 13 Apr 2022 02:38:40 -0700 (PDT)
 Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id md4-20020a17090b23c400b001cb66e3e1f8sm2409048pjb.0.2022.04.13.02.35.31
+        by smtp.gmail.com with ESMTPSA id n24-20020aa79058000000b0050612d0fe01sm2242318pfo.2.2022.04.13.02.38.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Apr 2022 02:35:33 -0700 (PDT)
+        Wed, 13 Apr 2022 02:38:40 -0700 (PDT)
 From:   cgel.zte@gmail.com
 X-Google-Original-From: chi.minghao@zte.com.cn
 To:     grygorii.strashko@ti.com
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-omap@vger.kernel.org,
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        toke@redhat.com, linux-omap@vger.kernel.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         Minghao Chi <chi.minghao@zte.com.cn>,
         Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] net: ethernet: ti: cpsw_new: use pm_runtime_resume_and_get() instead of pm_runtime_get_sync()
-Date:   Wed, 13 Apr 2022 09:35:29 +0000
-Message-Id: <20220413093529.2538378-1-chi.minghao@zte.com.cn>
+Subject: [PATCH] net: ethernet: ti: cpsw_priv: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+Date:   Wed, 13 Apr 2022 09:38:36 +0000
+Message-Id: <20220413093836.2538690-1-chi.minghao@zte.com.cn>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -78,94 +79,55 @@ for simplifing code
 Reported-by: Zeal Robot <zealci@zte.com.cn>
 Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 33 ++++++++++--------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/ti/cpsw_priv.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index bd4b1528cf99..13e54b05953c 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -449,11 +449,9 @@ static int cpsw_ndo_vlan_rx_add_vid(struct net_device *ndev,
- 	if (vid == cpsw->data.default_vlan)
- 		return 0;
- 
--	ret = pm_runtime_get_sync(cpsw->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(cpsw->dev);
-+	ret = pm_runtime_resume_and_get(cpsw->dev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	/* In dual EMAC, reserved VLAN id should not be used for
- 	 * creating VLAN interfaces as this can break the dual
-@@ -829,11 +827,9 @@ static int cpsw_ndo_open(struct net_device *ndev)
- 
- 	dev_info(priv->dev, "starting ndev. mode: %s\n",
- 		 cpsw_is_switch_en(cpsw) ? "switch" : "dual_mac");
--	ret = pm_runtime_get_sync(cpsw->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(cpsw->dev);
-+	ret = pm_runtime_resume_and_get(cpsw->dev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	/* Notify the stack of the actual queue counts. */
- 	ret = netif_set_real_num_tx_queues(ndev, cpsw->tx_ch_num);
-@@ -985,11 +981,9 @@ static int cpsw_ndo_set_mac_address(struct net_device *ndev, void *p)
- 	if (!is_valid_ether_addr(addr->sa_data))
- 		return -EADDRNOTAVAIL;
- 
--	ret = pm_runtime_get_sync(cpsw->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(cpsw->dev);
-+	ret = pm_runtime_resume_and_get(cpsw->dev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	vid = cpsw->slaves[slave_no].port_vlan;
- 	flags = ALE_VLAN | ALE_SECURE;
-@@ -1024,11 +1018,9 @@ static int cpsw_ndo_vlan_rx_kill_vid(struct net_device *ndev,
- 	if (vid == cpsw->data.default_vlan)
- 		return 0;
- 
--	ret = pm_runtime_get_sync(cpsw->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(cpsw->dev);
-+	ret = pm_runtime_resume_and_get(cpsw->dev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	/* reset the return code as pm_runtime_get_sync() can return
- 	 * non zero values as well.
-@@ -1918,9 +1910,8 @@ static int cpsw_probe(struct platform_device *pdev)
- 	/* Need to enable clocks with runtime PM api to access module
- 	 * registers
- 	 */
--	ret = pm_runtime_get_sync(dev);
-+	ret = pm_runtime_resume_and_get(dev);
- 	if (ret < 0) {
--		pm_runtime_put_noidle(dev);
- 		pm_runtime_disable(dev);
- 		return ret;
+diff --git a/drivers/net/ethernet/ti/cpsw_priv.c b/drivers/net/ethernet/ti/cpsw_priv.c
+index 8f6817f346ba..917e0392cfe8 100644
+--- a/drivers/net/ethernet/ti/cpsw_priv.c
++++ b/drivers/net/ethernet/ti/cpsw_priv.c
+@@ -754,11 +754,9 @@ int cpsw_ndo_set_tx_maxrate(struct net_device *ndev, int queue, u32 rate)
+ 		return -EINVAL;
  	}
-@@ -2045,11 +2036,9 @@ static int cpsw_remove(struct platform_device *pdev)
- 	struct cpsw_common *cpsw = platform_get_drvdata(pdev);
- 	int ret;
  
--	ret = pm_runtime_get_sync(&pdev->dev);
+-	ret = pm_runtime_get_sync(cpsw->dev);
 -	if (ret < 0) {
--		pm_runtime_put_noidle(&pdev->dev);
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
+-		pm_runtime_put_noidle(cpsw->dev);
++	ret = pm_runtime_resume_and_get(cpsw->dev);
 +	if (ret < 0)
  		return ret;
 -	}
  
- 	cpsw_unregister_notifiers(cpsw);
- 	cpsw_unregister_devlink(cpsw);
+ 	ret = cpdma_chan_set_rate(cpsw->txv[queue].ch, ch_rate);
+ 	pm_runtime_put(cpsw->dev);
+@@ -970,11 +968,9 @@ static int cpsw_set_cbs(struct net_device *ndev,
+ 		return -1;
+ 	}
+ 
+-	ret = pm_runtime_get_sync(cpsw->dev);
+-	if (ret < 0) {
+-		pm_runtime_put_noidle(cpsw->dev);
++	ret = pm_runtime_resume_and_get(cpsw->dev);
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ 	bw = qopt->enable ? qopt->idleslope : 0;
+ 	ret = cpsw_set_fifo_rlimit(priv, fifo, bw);
+@@ -1008,11 +1004,9 @@ static int cpsw_set_mqprio(struct net_device *ndev, void *type_data)
+ 	if (mqprio->mode != TC_MQPRIO_MODE_DCB)
+ 		return -EINVAL;
+ 
+-	ret = pm_runtime_get_sync(cpsw->dev);
+-	if (ret < 0) {
+-		pm_runtime_put_noidle(cpsw->dev);
++	ret = pm_runtime_resume_and_get(cpsw->dev);
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ 	if (num_tc) {
+ 		for (i = 0; i < 8; i++) {
 -- 
 2.25.1
 
