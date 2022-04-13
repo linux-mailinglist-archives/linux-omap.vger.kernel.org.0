@@ -2,56 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C949D4FEE57
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Apr 2022 06:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED0414FEF33
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Apr 2022 08:04:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232326AbiDMEqH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Apr 2022 00:46:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46038 "EHLO
+        id S232573AbiDMGHN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 Apr 2022 02:07:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230030AbiDMEqE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Apr 2022 00:46:04 -0400
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com [199.106.114.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02DEB31DDD;
-        Tue, 12 Apr 2022 21:43:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
-  t=1649825025; x=1681361025;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=Euy5GyMcnB1dcHLsisZMhR4czkWWcNeX4uR3GjmBfcw=;
-  b=rV2BuH1Ma1k9AJGdycvPbJY6qE7b8Kib/9XNR5Yl9XJ0aL6PeOavKTyE
-   63wHEjHDTy0Uhwn2PsSY+h/wSZzrfScVFfuBGHDYxwOwZi0QuQtX8l40o
-   zAyvKDwKfB6YJqZpx3xB3MUGDZHZ70KDq2cX7yg1Sr4JOBCY4zEU469iV
-   k=;
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
-  by alexa-out-sd-01.qualcomm.com with ESMTP; 12 Apr 2022 21:43:44 -0700
-X-QCInternal: smtphost
-Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
-  by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2022 21:43:44 -0700
-Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
- nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 12 Apr 2022 21:43:24 -0700
-Received: from blr-ubuntu-173.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.22; Tue, 12 Apr 2022 21:43:21 -0700
-From:   Rajendra Nayak <quic_rjendra@quicinc.com>
-To:     <tony@atomide.com>, <paul@pwsan.com>
-CC:     <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Rajendra Nayak" <quic_rjendra@quicinc.com>
-Subject: [PATCH] MAINTAINERS: omap: remove me as a maintainer
-Date:   Wed, 13 Apr 2022 10:13:03 +0530
-Message-ID: <1649824983-29400-1-git-send-email-quic_rjendra@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        with ESMTP id S231590AbiDMGHM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Apr 2022 02:07:12 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1DDA42BB36;
+        Tue, 12 Apr 2022 23:04:53 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id CC1CA8061;
+        Wed, 13 Apr 2022 06:02:17 +0000 (UTC)
+Date:   Wed, 13 Apr 2022 09:04:51 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH 1/2] dt-bindings: timer: Update TI timer to yaml
+Message-ID: <YlZoA/TX02E+Ey7U@atomide.com>
+References: <20220412131644.59195-1-tony@atomide.com>
+ <20220412131644.59195-2-tony@atomide.com>
+ <1c455b6e-0009-6f8b-15c8-2a352479c5f2@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1c455b6e-0009-6f8b-15c8-2a352479c5f2@linaro.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,28 +45,80 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The codeaurora.org domain is no longer valid, remove my id
-from the maintainers for OMAP PM frameworks.
-I haven't contributed to them in years, neither do I plan to
-in the future so not updating this with my new quicinc id.
+* Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [220412 17:04]:
+> On 12/04/2022 15:16, Tony Lindgren wrote:
+> > +allOf:
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> > +              - ti,omap3430-timer
+> > +              - ti,omap4430-timer
+> > +              - ti,omap5430-timer
+> > +    then:
+> > +      properties:
+> > +        reg:
+> > +          oneOf:
+> > +            - items:
+> > +                - description: IO address
+> > +            - items:
+> > +                - description: CPU to L4 ABE IO address
+> > +                - description: L3 to L4 ABE IO address
+> > +        clocks:
+> > +          oneOf:
+> > +            - items:
+> > +                - description: Functional clock
+> > +            - items:
+> > +                - description: Functional clock
+> > +                - description: System clock
+> 
+> I think this can be made simpler, without oneOf:
+> 
+>   clocks:
+>     items:
+>       - description: Functional clock
+>       - description: System clock
+>     minItems: 1
+> 
+> 
+> and similar for clock-names.
 
-Signed-off-by: Rajendra Nayak <quic_rjendra@quicinc.com>
----
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+OK simpler sure sounds good to me considering the file path starts with
+"Documentation" :)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 61d9f11..9dbadc8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14364,7 +14364,6 @@ F:	arch/arm/*omap*/*pm*
- F:	drivers/cpufreq/omap-cpufreq.c
- 
- OMAP POWERDOMAIN SOC ADAPTATION LAYER SUPPORT
--M:	Rajendra Nayak <rnayak@codeaurora.org>
- M:	Paul Walmsley <paul@pwsan.com>
- L:	linux-omap@vger.kernel.org
- S:	Maintained
--- 
-2.7.4
+> > +        clock-names:
+> > +          oneOf:
+> > +            - items:
+> > +                - const: fck
+> > +            - items:
+> > +                - const: fck
+> > +                - const: timer_sys_ck
+> > +    else:
+> > +      properties:
+> > +        reg:
+> > +          items:
+> > +            - description: IO address
+> > +        clocks:
+> > +          items:
+> > +            - description: Functional clock
+> > +        clock-names:
+> > +          items:
+> > +            - const: fck
+> 
+> Hmmm, in your previous version I had impression that first clock is not
+> the same on every flavor. Now it looks the same, so clocks you could
+> simplify even more:
+> 1. Define full list in main properties (not in allOf) with minItems:1
+> 2. Use maxItems:1, for this "else:" case.
+> 
+> This could greatly reduce amount of code you need and keep the actual
+> definition of clocks in main properties (not in allOf; allOf are only to
+> constrain it).
 
+OK thanks I'll check. I think we can assume the first clock is "fck" if
+it is configured at all.
+
+Regards,
+
+Tony
