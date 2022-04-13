@@ -2,60 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 364A54FF6DA
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Apr 2022 14:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F2964FF73C
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Apr 2022 14:56:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235548AbiDMMeJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Apr 2022 08:34:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39636 "EHLO
+        id S230038AbiDMM7J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 Apr 2022 08:59:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233111AbiDMMeI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Apr 2022 08:34:08 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6AF02FFDF
-        for <linux-omap@vger.kernel.org>; Wed, 13 Apr 2022 05:31:47 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id t11so3565972eju.13
-        for <linux-omap@vger.kernel.org>; Wed, 13 Apr 2022 05:31:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Lvd9vJ22XsJxh5wTqoaXDSfIwOkDHmJ22hAwLpW3BR4=;
-        b=hjy2sSVw7elKKyHz6mzhXN40yuRJcqMwSGsakM5IxrXzjVIejdTlqU+BfK/cwCtCsY
-         vwe2o/RWaf8W9S4UCgY4vOBOL86mmFdn9rdfICs/cbQytON/B4PgyPpdWtlycm0MbY4l
-         eV/7LWdb4+v58fI3yP26zEvAmP6ZgbU2lEFhMuzIzZF20ppiUacyDkGH/RnI7qrJpDKm
-         1rvmsR3Pl1a5MH309EjSG3qlJyErU+a/itGy/U2JzgJULnvSH7Hm6ap8r9/f+xHVIkFg
-         2TvyyC79SWYNBotIKKvUMWFdUZLA3wN7V8thSy9SA4zXizpjGVBB68f5Yb8KDQ/uUcM2
-         Q4Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Lvd9vJ22XsJxh5wTqoaXDSfIwOkDHmJ22hAwLpW3BR4=;
-        b=O33kVvVd2uC1Q4L3VdYw7isCfsUXFcAUTgHr1EOjoc6lSZMm29JaUOVUZzowCuT+ql
-         GoV95bSuC1ui3BYSU+HA7Kx5Bnc1K8O9Dv3ek0OTknj0+MgZSwaIDewXFtY1mlL+w11R
-         PsmEHLsGNzj9Z9Y0TETOpol24DIIfpDP19MmO7ZBxxeG93/1IFy5woFpC7TYEYEdwPTD
-         E7O84Aq1EtSyhvnLSyvFjzO7KlEuZIWMT3eTGUuJMK2A0Mce7pKtpMhYugkkSyt3Q0L8
-         y5VWy0T2DFqlNiqCkVFy3PXPDKhTvNf6ZnzfKkQSoQQtUTxWpepNydXdCKHhPbZosk+x
-         NTpw==
-X-Gm-Message-State: AOAM531Gaa9AwQGErIHJOI+fPsGVZqbm07MeCZFVrxnghnc4fjFpgK96
-        kdX2KqjMuKWVvZx+zNNCImA50KhvLHuU58m7
-X-Google-Smtp-Source: ABdhPJxaPZnPEmt9ZRLE/nD1VWEp1YfjMr5hnvMPDUvHs/qIEm5F+RB3FkGayjaWEfx/38Lw1k/Nuw==
-X-Received: by 2002:a17:907:728e:b0:6e8:9863:558a with SMTP id dt14-20020a170907728e00b006e89863558amr11503106ejc.205.1649853106315;
-        Wed, 13 Apr 2022 05:31:46 -0700 (PDT)
-Received: from [192.168.0.204] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id r16-20020a056402019000b00418ed60c332sm1061489edv.65.2022.04.13.05.31.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Apr 2022 05:31:45 -0700 (PDT)
-Message-ID: <06852353-9ca1-6f61-7447-b5f1d64ead25@linaro.org>
-Date:   Wed, 13 Apr 2022 14:31:44 +0200
+        with ESMTP id S235561AbiDMM7I (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Apr 2022 08:59:08 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB463554AF;
+        Wed, 13 Apr 2022 05:56:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6E9BCB82404;
+        Wed, 13 Apr 2022 12:56:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BD2C385A3;
+        Wed, 13 Apr 2022 12:56:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649854605;
+        bh=KY1QcnvyktxSRWr137x4skG3AIinv+0KnvxCF19MUt8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=EDn5j0d9jAos2CiGXraQoLtwzqgj+tTDgP434K1hYb0SzcthRJsU3akeC4BD7IFy8
+         DwmB5IsXsIxsuOLR41a5OBI/lcdxuwmol6IDpWE7iy+cCngzncJEKpRqWFl4VTGgJ3
+         pOaa5s6SmrIKU0XdCw9rDIY7vNpdZM8KpqcjTldXxE+N6xAnj9ZSqgq1441T8HK6Dp
+         KDEsGu3X4oO98J/71ubP81LNr0B/qVyZEDLREVN1WW4nyT77sfG6yomrj4/wLmjhN5
+         X5SYg/ichVTD9xk+xScxmE0ZMWh/ezhs5BciDGxAU89Tq9xvmVxrWGYPGqwnERMiUo
+         QQ4gpGWwRU3nA==
+Message-ID: <4681b00e-7f89-d9c4-6361-b781ced72656@kernel.org>
+Date:   Wed, 13 Apr 2022 15:56:40 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
 Subject: Re: [PATCH v3 0/2] memory: omap-gpmc: Allow module build
 Content-Language: en-US
-To:     Roger Quadros <rogerq@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Cc:     linux-omap@vger.kernel.org, nm@ti.com,
         linux-kernel@vger.kernel.org, kishon@ti.com, tony@atomide.com,
         miquel.raynal@bootlin.com, vigneshr@ti.com
@@ -68,54 +51,62 @@ References: <20220411095516.24754-1-rogerq@kernel.org>
  <fdafb49b-9349-087b-f483-4da888193683@kernel.org>
  <f2b7b48f-906e-3445-3861-dcdd4f6551e3@linaro.org>
  <605268c7-9d0f-83d5-d7e6-850dabb380f0@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <605268c7-9d0f-83d5-d7e6-850dabb380f0@kernel.org>
+ <06852353-9ca1-6f61-7447-b5f1d64ead25@linaro.org>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <06852353-9ca1-6f61-7447-b5f1d64ead25@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-8.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 13/04/2022 13:56, Roger Quadros wrote:
-> 
-> 
-> On 13/04/2022 14:47, Krzysztof Kozlowski wrote:
->> On 13/04/2022 13:33, Roger Quadros wrote:
->>>> Previously it was building with COMPILE_TEST on sparc, so what else changed?
->>>>
->>> Previously it was like so
->>>
->>> 	bool "Texas Instruments OMAP SoC GPMC driver" if COMPILE_TEST
->>> 	depends on OF_ADDRESS
->>>
->>> Means it won't build if OF_ADDRESS is not set even if COMPILE_TEST is set.
->>>
->>> And OF_ADDRESS is not set for sparc
->>>
+
+
+On 13/04/2022 15:31, Krzysztof Kozlowski wrote:
+> On 13/04/2022 13:56, Roger Quadros wrote:
 >>
->> Ah, yes, so dropping COMPILE_TEST seems the solution. There are no other
->> "depends" here.
+>>
+>> On 13/04/2022 14:47, Krzysztof Kozlowski wrote:
+>>> On 13/04/2022 13:33, Roger Quadros wrote:
+>>>>> Previously it was building with COMPILE_TEST on sparc, so what else changed?
+>>>>>
+>>>> Previously it was like so
+>>>>
+>>>> 	bool "Texas Instruments OMAP SoC GPMC driver" if COMPILE_TEST
+>>>> 	depends on OF_ADDRESS
+>>>>
+>>>> Means it won't build if OF_ADDRESS is not set even if COMPILE_TEST is set.
+>>>>
+>>>> And OF_ADDRESS is not set for sparc
+>>>>
+>>>
+>>> Ah, yes, so dropping COMPILE_TEST seems the solution. There are no other
+>>> "depends" here.
+>>
+>> But the build failed at irq_domain_remove() which is only available if IRQ_DOMAIN
+>> is enabled.
+>>
+>> It could be possible that OF_ADDRESS is enabled but IRQ_DOMAIN is not right?
 > 
-> But the build failed at irq_domain_remove() which is only available if IRQ_DOMAIN
-> is enabled.
+> I must admit I did not dig this that much. OF_ADDRESS has !SPARC
+> dependency, so after removing COMPILE_TEST the issue should not happen
+> on SPARC. What about other platforms? They should behave I think the
+> same as before - fail if they were failing. Nothing gets worse which is
+> my main concern here.
 > 
-> It could be possible that OF_ADDRESS is enabled but IRQ_DOMAIN is not right?
+> If you have spare time, maybe you could investigate the compile testing
+> on other platforms as well and if something fails, fix it. But it seems
+> it is separate problem.
+> 
 
-I must admit I did not dig this that much. OF_ADDRESS has !SPARC
-dependency, so after removing COMPILE_TEST the issue should not happen
-on SPARC. What about other platforms? They should behave I think the
-same as before - fail if they were failing. Nothing gets worse which is
-my main concern here.
+I won't be able to test on all platforms. I'm ok to not add more dependency and
+just drop COMPILE_TEST.
 
-If you have spare time, maybe you could investigate the compile testing
-on other platforms as well and if something fails, fix it. But it seems
-it is separate problem.
-
-Best regards,
-Krzysztof
+cheers,
+-roger
