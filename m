@@ -2,37 +2,37 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CDD24FF502
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Apr 2022 12:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 929984FF563
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Apr 2022 13:02:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229866AbiDMKpY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 13 Apr 2022 06:45:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38270 "EHLO
+        id S233481AbiDMLE2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 13 Apr 2022 07:04:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbiDMKpW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Apr 2022 06:45:22 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A16B58E7E;
-        Wed, 13 Apr 2022 03:43:01 -0700 (PDT)
+        with ESMTP id S235097AbiDMLEV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 13 Apr 2022 07:04:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0188527FA;
+        Wed, 13 Apr 2022 04:01:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2AD60B820DC;
-        Wed, 13 Apr 2022 10:43:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D5AC385A3;
-        Wed, 13 Apr 2022 10:42:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C92F61BBE;
+        Wed, 13 Apr 2022 11:01:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D309BC385A3;
+        Wed, 13 Apr 2022 11:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649846578;
-        bh=Nbck2JO8xIZHsVnoQTOdHrEyh18zS65OGzHdfwe7X5w=;
+        s=k20201202; t=1649847715;
+        bh=rrm2ErL60KzXsdvNT5DxTs1wy1pJhhiMDLhHjhX/QCw=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=XNT81QRHoXRdMT/lcvxEVkeWhRCHgBKSNSc4RoW9M7F+jCScLCfDbAyMgKnDBoRhG
-         YQwLkmq3S4dNY16Jv1ZfEclx1msuX6NTiqfptmbMLI6hm+dfwc62bqQPitNVsko7NH
-         JCAIqsUQxPUz3BdsmvcjkTQPvPPj3TguO0psEfvff+ci0BN1bHxcrsPrFZtDOn9Iu1
-         B6nVjKB+6G4fRomyTCEQ5FHQx2Z6jOk80eg00d4LBy8VygX6Nh3HT0JxnyE3R86NiA
-         dz4gT7fUTTvHibnqFHtnjJCH65Cdl9ksOFeOoqEg+Y0qmmnUTm4I4K0F6UeTFz5a5S
-         sAl4d5Iu7WgBw==
-Message-ID: <eb5472ab-106a-fcd1-22b4-57b05affaf7b@kernel.org>
-Date:   Wed, 13 Apr 2022 13:42:54 +0300
+        b=ZqvSremG8E0HySuXcqwiAdDgmBeK6aGqd8NXNU/NjoVhQG7ZNa7+1F/me9fXGvdXr
+         STtrQLhcVX7njW3MB6u5pGAbS1GVOQNItSKEwphK5vY/VG1fIRTj0FZl9Bet+ceIdF
+         ZCu4ixWGCMgdrRv5wcqOH6QXKc5BOYLOrQxyZ/ziWW4uyV+8XIFqoTlBgzBAIm6qIb
+         PLVtnG6Eien22LQwtC4jt5z4SRz52P7ta03bI4n0El2g+fPJ/uc0oeoJDBi9c6QEyi
+         yKw0OBM8DLCJEl4mbLovYP2UGNkBomCkmKgOlCGRABVZ+yCyzki+1UdcS8M5aoBbqd
+         qeJmQJOxkKAJw==
+Message-ID: <7b38a717-ffce-0f06-1a77-6d2a114c7e11@kernel.org>
+Date:   Wed, 13 Apr 2022 14:01:51 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
@@ -60,8 +60,6 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
-
-Hi Krzysztof,
 
 On 13/04/2022 13:20, Krzysztof Kozlowski wrote:
 > On 13/04/2022 11:50, Krzysztof Kozlowski wrote:
@@ -95,8 +93,20 @@ On 13/04/2022 13:20, Krzysztof Kozlowski wrote:
 > dropped as well. You need to test it more:
 > 
 > https://krzk.eu/#/builders/63/builds/162
+> 
+> 
+>>  config OMAP_GPMC
+>> -	bool "Texas Instruments OMAP SoC GPMC driver" if COMPILE_TEST
+>> -	depends on OF_ADDRESS
+>> +	bool "Texas Instruments OMAP SoC GPMC driver"
+>> +	depends on OF_ADDRESS || COMPILE_TEST
 
-Thanks for the report. I will fix the issues.
+
+Looks like include/linux/irqdomain.h does not have fallbacks if
+CONFIG_IRQ_DOMAIN is not enabled.
+
+I'll have to drop COMPILE_TEST and add depends on IRQ_DOMAIN.
+Is that OK?
 
 cheers,
 -roger
