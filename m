@@ -2,99 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41B4B500907
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Apr 2022 10:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1070750095A
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Apr 2022 11:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241353AbiDNJAv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 14 Apr 2022 05:00:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43614 "EHLO
+        id S231361AbiDNJK2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 14 Apr 2022 05:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241317AbiDNJAu (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Apr 2022 05:00:50 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 632AB6A058;
-        Thu, 14 Apr 2022 01:58:18 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 615A18132;
-        Thu, 14 Apr 2022 08:55:39 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v5 2/2] dt-bindings: timer: Add compatible for am6 for TI timer-dm
-Date:   Thu, 14 Apr 2022 11:58:07 +0300
-Message-Id: <20220414085807.7389-3-tony@atomide.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220414085807.7389-1-tony@atomide.com>
-References: <20220414085807.7389-1-tony@atomide.com>
+        with ESMTP id S238109AbiDNJK2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Apr 2022 05:10:28 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6546E540;
+        Thu, 14 Apr 2022 02:08:04 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id ll10so4534597pjb.5;
+        Thu, 14 Apr 2022 02:08:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qYtINvSR5Dih3lqIftjEIHDwvXs93GlfwwGB+RQETjg=;
+        b=G06GEOeVuuzjlWUCEo6hbJXjPuVWMHJvuXq9cM78tfK5tfEvemHx0U8OfWz1npch4h
+         C+3BDn1yqytd1BrwWAwbciqRL/gs79YcAZ6HLGqwPqp5BAKzKWoQ6ATsh69IJOERDMxf
+         M/dxJruoPKM/vxd2jZejIfb3hhrVVOq3y/VaiX0VBIZD9dFdwa1QudQChkYwV4DXHMr2
+         QbZ1+XNAQfrurRt5meXb4lL7cYh5pDUdo/6TOAew4qs678sRKKaI8xSB1VfRct/mHN44
+         o3cvXe1icyX3v4giaOJwOPbWkdjgxG/8vX2iWxWY/cJgmkdI4dsBM8fEovaj0qx3Wf0e
+         uM2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qYtINvSR5Dih3lqIftjEIHDwvXs93GlfwwGB+RQETjg=;
+        b=wd5XairboKg1WtY0lVmKSK3q773m87YWmUjPLs0X/6ytEzKHKaWFDRMJ9nm/OBqiTy
+         mwjZ9IVOQfKAIEzSIHX8YEHxLcZmPRGUZcLpq96OYDlAOszSwaoVj8IAr9K8H5Jdgcha
+         QXBWtPRryr+pGtFM1ous+j2xJ1q9E2o470urO3esZeDyzBhD6lqx/iajZLz+43yfW2TH
+         fPGqwfVo6tVoCMIoSFHAa11uDYKJld2XDQpD/L5TuHMLAU18+DNycxGFHsxfiJK3b0rO
+         pd/8Yg3DU7YCf5mbWubq1Cz9YFBd6ENWCSj8m3v3HexUctX3nYAK0qcRDVZ/9XDzea7/
+         K14g==
+X-Gm-Message-State: AOAM531nsfa7FDGe7s5u0gd+in1kOscyqlLuNiD1kC2URh113b+CVMEt
+        zkW6LJqlQIU1ZPB9QgHan+c=
+X-Google-Smtp-Source: ABdhPJz+6ah9if//yY1c2sHC40NolRb/XwCaxX0VprNKeLwyb7PtImEh0zH5k1pYYFwgPSqdAGNk9A==
+X-Received: by 2002:a17:90b:3b84:b0:1cd:fe1c:151 with SMTP id pc4-20020a17090b3b8400b001cdfe1c0151mr2179837pjb.182.1649927283900;
+        Thu, 14 Apr 2022 02:08:03 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id l8-20020a17090a150800b001cbaf536a3esm5496865pja.18.2022.04.14.02.08.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Apr 2022 02:08:03 -0700 (PDT)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To:     grygorii.strashko@ti.com
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-omap@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] net: ethernet: ti: davinci_emac: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+Date:   Thu, 14 Apr 2022 09:08:00 +0000
+Message-Id: <20220414090800.2542064-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Let's add compatible for ti,am654-timer for TI am64, am65 and j72 SoCs.
-As the timer hardware is the same between am64, am65 and j72 we use the
-compatible name for the earliest SoC with this timer.
+From: Minghao Chi <chi.minghao@zte.com.cn>
 
-The timer interrupts are not routable for the operating system for some
-timers on am6. Let's make sure the interrupts are configured for the
-timers on all other SoCs.
+Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
+pm_runtime_put_noidle. This change is just to simplify the code, no
+actual functional changes.
 
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: Keerthy <j-keerthy@ti.com>
-Cc: Nishanth Menon <nm@ti.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
 ---
- .../devicetree/bindings/timer/ti,timer-dm.yaml       | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/davinci_emac.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/timer/ti,timer-dm.yaml b/Documentation/devicetree/bindings/timer/ti,timer-dm.yaml
---- a/Documentation/devicetree/bindings/timer/ti,timer-dm.yaml
-+++ b/Documentation/devicetree/bindings/timer/ti,timer-dm.yaml
-@@ -19,6 +19,7 @@ properties:
-           - enum:
-               - ti,am335x-timer
-               - ti,am335x-timer-1ms
-+              - ti,am654-timer
-               - ti,dm814-timer
-               - ti,dm816-timer
-               - ti,omap2420-timer
-@@ -88,11 +89,20 @@ properties:
- required:
-   - compatible
-   - reg
--  - interrupts
+diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
+index 4b6aed78d392..9d1e98db308b 100644
+--- a/drivers/net/ethernet/ti/davinci_emac.c
++++ b/drivers/net/ethernet/ti/davinci_emac.c
+@@ -1422,9 +1422,8 @@ static int emac_dev_open(struct net_device *ndev)
+ 	struct phy_device *phydev = NULL;
+ 	struct device *phy = NULL;
  
- additionalProperties: false
+-	ret = pm_runtime_get_sync(&priv->pdev->dev);
++	ret = pm_runtime_resume_and_get(&priv->pdev->dev);
+ 	if (ret < 0) {
+-		pm_runtime_put_noidle(&priv->pdev->dev);
+ 		dev_err(&priv->pdev->dev, "%s: failed to get_sync(%d)\n",
+ 			__func__, ret);
+ 		return ret;
+@@ -1661,9 +1660,8 @@ static struct net_device_stats *emac_dev_getnetstats(struct net_device *ndev)
+ 	u32 stats_clear_mask;
+ 	int err;
  
- allOf:
-+  - if:
-+      not:
-+        properties:
-+          compatible:
-+            contains:
-+              const: ti,am654-timer
-+    then:
-+      required:
-+        - interrupts
-+
-   - if:
-       not:
-         properties:
+-	err = pm_runtime_get_sync(&priv->pdev->dev);
++	err = pm_runtime_resume_and_get(&priv->pdev->dev);
+ 	if (err < 0) {
+-		pm_runtime_put_noidle(&priv->pdev->dev);
+ 		dev_err(&priv->pdev->dev, "%s: failed to get_sync(%d)\n",
+ 			__func__, err);
+ 		return &ndev->stats;
+@@ -1954,9 +1952,8 @@ static int davinci_emac_probe(struct platform_device *pdev)
+ 	netif_napi_add(ndev, &priv->napi, emac_poll, EMAC_POLL_WEIGHT);
+ 
+ 	pm_runtime_enable(&pdev->dev);
+-	rc = pm_runtime_get_sync(&pdev->dev);
++	rc = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (rc < 0) {
+-		pm_runtime_put_noidle(&pdev->dev);
+ 		dev_err(&pdev->dev, "%s: failed to get_sync(%d)\n",
+ 			__func__, rc);
+ 		goto err_napi_del;
 -- 
-2.35.1
+2.25.1
+
+
