@@ -2,124 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1070750095A
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Apr 2022 11:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA793501D34
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Apr 2022 23:12:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231361AbiDNJK2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 14 Apr 2022 05:10:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43452 "EHLO
+        id S1346825AbiDNVNL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 14 Apr 2022 17:13:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238109AbiDNJK2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Apr 2022 05:10:28 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6546E540;
-        Thu, 14 Apr 2022 02:08:04 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id ll10so4534597pjb.5;
-        Thu, 14 Apr 2022 02:08:04 -0700 (PDT)
+        with ESMTP id S1346838AbiDNVNJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Apr 2022 17:13:09 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF7C62A3A
+        for <linux-omap@vger.kernel.org>; Thu, 14 Apr 2022 14:10:42 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id r18so7609253ljp.0
+        for <linux-omap@vger.kernel.org>; Thu, 14 Apr 2022 14:10:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=qYtINvSR5Dih3lqIftjEIHDwvXs93GlfwwGB+RQETjg=;
-        b=G06GEOeVuuzjlWUCEo6hbJXjPuVWMHJvuXq9cM78tfK5tfEvemHx0U8OfWz1npch4h
-         C+3BDn1yqytd1BrwWAwbciqRL/gs79YcAZ6HLGqwPqp5BAKzKWoQ6ATsh69IJOERDMxf
-         M/dxJruoPKM/vxd2jZejIfb3hhrVVOq3y/VaiX0VBIZD9dFdwa1QudQChkYwV4DXHMr2
-         QbZ1+XNAQfrurRt5meXb4lL7cYh5pDUdo/6TOAew4qs678sRKKaI8xSB1VfRct/mHN44
-         o3cvXe1icyX3v4giaOJwOPbWkdjgxG/8vX2iWxWY/cJgmkdI4dsBM8fEovaj0qx3Wf0e
-         uM2A==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=+4lpvbKg5yQwrVQ6wBK4s5z3Sbomyjck0oYsYDxCWF8=;
+        b=jS6t1r+tMtQYCeKIEK9rVkTMR9dllh4CsVpViFdCqHnaIsbsVtoRv6a0W+cVrbIHY9
+         p4ye9x2R+xYelSaadTcyueZTSP0acPbagJ8WMjmLB+uf5oE1lm/O3cHFzBT8/AGbj3rt
+         aXD7mSYL+MwRXmwKKBquPWngEWnmV/rH1CvTFnTvO0gOIs44+Ar3CSoXjWB6xk07GCS0
+         j0NZZEcasbl9iWs2Q/wxghIrlRIvgXFrgBo4JiB2oRlmDDkwauzAn4igXkEnSux+eaoY
+         JFT3oriRA6GB/+YqQcnpp53XTT94LImKh/BPvq2ixt+GjpdBFlnTaj95v+QPk/qhaJb5
+         6hzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=qYtINvSR5Dih3lqIftjEIHDwvXs93GlfwwGB+RQETjg=;
-        b=wd5XairboKg1WtY0lVmKSK3q773m87YWmUjPLs0X/6ytEzKHKaWFDRMJ9nm/OBqiTy
-         mwjZ9IVOQfKAIEzSIHX8YEHxLcZmPRGUZcLpq96OYDlAOszSwaoVj8IAr9K8H5Jdgcha
-         QXBWtPRryr+pGtFM1ous+j2xJ1q9E2o470urO3esZeDyzBhD6lqx/iajZLz+43yfW2TH
-         fPGqwfVo6tVoCMIoSFHAa11uDYKJld2XDQpD/L5TuHMLAU18+DNycxGFHsxfiJK3b0rO
-         pd/8Yg3DU7YCf5mbWubq1Cz9YFBd6ENWCSj8m3v3HexUctX3nYAK0qcRDVZ/9XDzea7/
-         K14g==
-X-Gm-Message-State: AOAM531nsfa7FDGe7s5u0gd+in1kOscyqlLuNiD1kC2URh113b+CVMEt
-        zkW6LJqlQIU1ZPB9QgHan+c=
-X-Google-Smtp-Source: ABdhPJz+6ah9if//yY1c2sHC40NolRb/XwCaxX0VprNKeLwyb7PtImEh0zH5k1pYYFwgPSqdAGNk9A==
-X-Received: by 2002:a17:90b:3b84:b0:1cd:fe1c:151 with SMTP id pc4-20020a17090b3b8400b001cdfe1c0151mr2179837pjb.182.1649927283900;
-        Thu, 14 Apr 2022 02:08:03 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id l8-20020a17090a150800b001cbaf536a3esm5496865pja.18.2022.04.14.02.08.02
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=+4lpvbKg5yQwrVQ6wBK4s5z3Sbomyjck0oYsYDxCWF8=;
+        b=bYdrbODcIsFO2iW4GpiurF0wgSDT2Tc/LcZEVXZG17zAFl7v8xcTahZoDX1bwyO5yA
+         0nHWx0fzXRAspN/pxswQl6xBO9Y4XxMPZqVmUCP8Yl4mR0jcYObyD6nW6d/JKVrLA5Sj
+         /4Xv8qxgYr646GoZhkghznana/tiodF6KQV76Tp5OXB6KOOx7POCtjhs6MnVhncy+WVZ
+         uvJ9xanv4UAv2NpNzGzutzrcsE5ZrNS7tv7FXtks9kJLnVC9dB8bhJroSfS6s12cnw2k
+         qjszo1w/scgD7PrdiEqqBT1uVXV6JcPfxmanCvDov1VIGX6/FBNVSppJ2vRkj51FAjF4
+         yUmQ==
+X-Gm-Message-State: AOAM532DnE6AkLD0kBE72X2crilqSqR7M8VcHMJkTkaFeMG9bUMJrDE8
+        J8wA0ZFxnMLotuxCM+2PK5pBZ19axzGrhA==
+X-Google-Smtp-Source: ABdhPJwayg75Kd9g4zvnWfBPOM02BqAawP/bE9Ni0y5VIaArivSHhguCHgWJbuHOkMe11DgTJ3aydQ==
+X-Received: by 2002:a2e:91d7:0:b0:24b:6981:15a6 with SMTP id u23-20020a2e91d7000000b0024b698115a6mr2619424ljg.141.1649970640356;
+        Thu, 14 Apr 2022 14:10:40 -0700 (PDT)
+Received: from dell.intranet (93-181-165-181.internetia.net.pl. [93.181.165.181])
+        by smtp.gmail.com with ESMTPSA id z26-20020ac2419a000000b004484bf6d1e6sm109738lfh.233.2022.04.14.14.10.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Apr 2022 02:08:03 -0700 (PDT)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To:     grygorii.strashko@ti.com
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] net: ethernet: ti: davinci_emac: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
-Date:   Thu, 14 Apr 2022 09:08:00 +0000
-Message-Id: <20220414090800.2542064-1-chi.minghao@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        Thu, 14 Apr 2022 14:10:39 -0700 (PDT)
+From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
+To:     linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] MAINTAINERS: omap1: Add Janusz as an additional maintainer
+Date:   Thu, 14 Apr 2022 23:10:37 +0200
+Message-ID: <1681695.QkHrqEjB74@dell>
+In-Reply-To: <20220413081656.27848-1-tony@atomide.com>
+References: <20220413081656.27848-1-tony@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
+        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Minghao Chi <chi.minghao@zte.com.cn>
+On Wednesday, 13 April 2022 10:16:56 CEST Tony Lindgren wrote:
+> Janusz has been active with improving and testing the omap1 SoC support
+> and has been recently working on adding support for the common clock
+> framework.
+> 
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> 
+> ---
+> 
+> Janusz, does this sound OK to you? :)
 
-Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
-pm_runtime_put_noidle. This change is just to simplify the code, no
-actual functional changes.
+Tony, Aaro, thanks for your confidence in me.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
----
- drivers/net/ethernet/ti/davinci_emac.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Acked-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
 
-diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
-index 4b6aed78d392..9d1e98db308b 100644
---- a/drivers/net/ethernet/ti/davinci_emac.c
-+++ b/drivers/net/ethernet/ti/davinci_emac.c
-@@ -1422,9 +1422,8 @@ static int emac_dev_open(struct net_device *ndev)
- 	struct phy_device *phydev = NULL;
- 	struct device *phy = NULL;
- 
--	ret = pm_runtime_get_sync(&priv->pdev->dev);
-+	ret = pm_runtime_resume_and_get(&priv->pdev->dev);
- 	if (ret < 0) {
--		pm_runtime_put_noidle(&priv->pdev->dev);
- 		dev_err(&priv->pdev->dev, "%s: failed to get_sync(%d)\n",
- 			__func__, ret);
- 		return ret;
-@@ -1661,9 +1660,8 @@ static struct net_device_stats *emac_dev_getnetstats(struct net_device *ndev)
- 	u32 stats_clear_mask;
- 	int err;
- 
--	err = pm_runtime_get_sync(&priv->pdev->dev);
-+	err = pm_runtime_resume_and_get(&priv->pdev->dev);
- 	if (err < 0) {
--		pm_runtime_put_noidle(&priv->pdev->dev);
- 		dev_err(&priv->pdev->dev, "%s: failed to get_sync(%d)\n",
- 			__func__, err);
- 		return &ndev->stats;
-@@ -1954,9 +1952,8 @@ static int davinci_emac_probe(struct platform_device *pdev)
- 	netif_napi_add(ndev, &priv->napi, emac_poll, EMAC_POLL_WEIGHT);
- 
- 	pm_runtime_enable(&pdev->dev);
--	rc = pm_runtime_get_sync(&pdev->dev);
-+	rc = pm_runtime_resume_and_get(&pdev->dev);
- 	if (rc < 0) {
--		pm_runtime_put_noidle(&pdev->dev);
- 		dev_err(&pdev->dev, "%s: failed to get_sync(%d)\n",
- 			__func__, rc);
- 		goto err_napi_del;
--- 
-2.25.1
+Janusz
+
+> 
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -14389,6 +14389,7 @@ F:	arch/arm/boot/dts/am335x-nano.dts
+>  
+>  OMAP1 SUPPORT
+>  M:	Aaro Koskinen <aaro.koskinen@iki.fi>
+> +M:	Janusz Krzysztofik <jmkrzyszt@gmail.com>
+>  M:	Tony Lindgren <tony@atomide.com>
+>  L:	linux-omap@vger.kernel.org
+>  S:	Maintained
+> 
+
+
 
 
