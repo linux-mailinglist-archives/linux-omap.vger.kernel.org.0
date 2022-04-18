@@ -2,104 +2,95 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C070504F1E
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Apr 2022 12:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13514504F3A
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Apr 2022 13:04:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233222AbiDRK5y (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 18 Apr 2022 06:57:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60632 "EHLO
+        id S235062AbiDRLHJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 18 Apr 2022 07:07:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231597AbiDRK5y (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 Apr 2022 06:57:54 -0400
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86E915FEF;
-        Mon, 18 Apr 2022 03:55:15 -0700 (PDT)
-Received: by mail-qk1-x731.google.com with SMTP id q75so2211736qke.6;
-        Mon, 18 Apr 2022 03:55:15 -0700 (PDT)
+        with ESMTP id S231496AbiDRLHI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 18 Apr 2022 07:07:08 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE5741A061
+        for <linux-omap@vger.kernel.org>; Mon, 18 Apr 2022 04:04:29 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id r13so26243602ejd.5
+        for <linux-omap@vger.kernel.org>; Mon, 18 Apr 2022 04:04:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mJYathoFEIzfoBsN3XEQLNGQPaiEyKTpa9HUFEQqI7g=;
-        b=otiHr0bhsPiEU8mmgnUvrKkI2Hme7D0hd1f1xUpHNTxAtDGxbXw9qmpRIQM6ZHTWe5
-         NIHfSibH1l72sCyeyrbuauPKdGlrlNA8FnuLZ66avEHTeGDchDF8A7qq701Js0eX6wio
-         /vNqY5mmF7uugqodylWVPUwWcxxPkdMTo/CMOAkNzQAB9wG+chcbUaUnSzr3awWtnsHk
-         yU/wYJx6EEUNHF9MadCIfmp1nfv7+9ZUOcfv8qlGqGP3KXYD6855+yrEAN0j8MbwB9oY
-         ZdMgcLn7RLOc8R7f0AIpFLRoWErnEG3YKu8jXNx27x/1LQ8NTQms4mc8NNP1lPCV4NAE
-         Oi2A==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=6U9l77FD33XoUxlN4C0IowgyHbs01XD4FahB9dQjefs=;
+        b=NShyOkE824I21KiCOZkQ+WGa6uc9uVI/EIRHGtVSTtEjc0Rv4/rW/9Eph3QsS2yRSN
+         IxbMM3DBA9iMNxEDaUylJjN6+4P3nNE0tmA+FvuXSBHa5t3d/Hvi8sHjs2PBd/MYbnTd
+         Pr1TrthcpxsGYqY8BX3M98xN7I+uHaNIe57Ae8zu4dExc9NO+PBqpHdwpkDEGP8+K8kt
+         N22l93EEPm9fcyqflvrUljAhYhf5ZfMNSuSzTyn4q0Y+yegJVAp/YSlqW4U3rtsuj8S5
+         8/bPAhQiAiESSZ5WtyWgJdypgQGaIX0v/crn4eMbu3euqlof+7keGUBAcBq7rftgiPdb
+         6DrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=mJYathoFEIzfoBsN3XEQLNGQPaiEyKTpa9HUFEQqI7g=;
-        b=x/RIdtHsJ8COIPQDLyd9KPpcgYprtWfJ8mndYBwz2lq2++fGR/ZFI9zMmRDjVS24Nz
-         EPxTgkXT6T/dTH1O8rccxbMudK5Zc5VKZEuCo4kBB6SzBauOvTY5hR/xg03GuyoK9dw4
-         qDgwmcWz0910qM7lGP/wAss2kPNlw9Z+iUX3I3UE6u+j+JfLdzek/tPfWG9fV8fdvoNF
-         Zd9VJmLPe1q4DeWVhXThXiOGIDKwryTpOwau9UywV7zJEEKCwrzcb2CBq+vteml8ijYO
-         5BAetMT10U9Rk3JLC1xJhIUvW8gL2jnZbHCTNKD/ksKjwj9VI0F5FAEXyB35fkFXqUQU
-         GHag==
-X-Gm-Message-State: AOAM531jqgbdcRg4C5VlnHYjVBeS2cqIcnxLPplK7tDjuLrtHjGWon87
-        o/iqZ1HatpynUhN1wVJeMlPWxakmj4I=
-X-Google-Smtp-Source: ABdhPJy+BvVT6h3LQ1zXnfSsqa+cdvoxW7L+2hRCS6LsGQccYUmqYIb9DnXTiZn1BzbGJ4c2WDPN+A==
-X-Received: by 2002:a05:620a:2415:b0:69e:784d:3a4c with SMTP id d21-20020a05620a241500b0069e784d3a4cmr5166230qkn.14.1650279315087;
-        Mon, 18 Apr 2022 03:55:15 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id d126-20020a37b484000000b0067e60283d08sm6287438qkf.40.2022.04.18.03.55.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Apr 2022 03:55:14 -0700 (PDT)
-From:   cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To:     ohad@wizery.com
-Cc:     bjorn.andersson@linaro.org, linux-omap@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] hwspinlock: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
-Date:   Mon, 18 Apr 2022 10:55:08 +0000
-Message-Id: <20220418105508.2558696-1-chi.minghao@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        bh=6U9l77FD33XoUxlN4C0IowgyHbs01XD4FahB9dQjefs=;
+        b=I1YZMrGQRItvHRBK5toxh9l5OXQ/5wOSlz0r3T1oydIqP+BNEV70hbLmzD03RWhH60
+         lY1ka7xYSMcW89iswLKJd/R+2aVHCFMiXXZ3BzayRnx4BIwI68K3X/razNyt0rykE8aj
+         BjGIMzivP90HIDboC69kYKgkARdrOiMFaixWxYbHJCynp2gQXNIJO0boSUJQ5WZrPhKW
+         CklIty93fGfzpoq6n+Q9vv3HJFl2aIGBLpuhLwPNdQCGvdjOL5BpCO3gavG8QzOFzu3u
+         3BPJwmZG3a715NkXgGcPlcbNM29LeULIj/1d9mxb5otR9MW4MI3rGMo4X43Tg2d3HxGA
+         RrBQ==
+X-Gm-Message-State: AOAM532zfZvMpOUqwP0sTOUzXCDRCDWgTqg9jlojedOKK5dRGwGB0vOE
+        GgjQYWxqEzc8dlSn7HMTbNYmYg==
+X-Google-Smtp-Source: ABdhPJxQp369tmI5wz7ZkbMi5huMsFAnrQPw01ST5ZsVv7AcoYpJMxb6xWt+YNdUPpZpiv/nu9RJMQ==
+X-Received: by 2002:a17:906:1ec3:b0:6cf:d118:59e2 with SMTP id m3-20020a1709061ec300b006cfd11859e2mr8698405ejj.767.1650279868386;
+        Mon, 18 Apr 2022 04:04:28 -0700 (PDT)
+Received: from [192.168.0.217] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id ch4-20020a170906c2c400b006efcc061c1fsm293563ejb.178.2022.04.18.04.04.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Apr 2022 04:04:27 -0700 (PDT)
+Message-ID: <ebb51ba4-a199-96ee-6a88-6b917bc9c9d5@linaro.org>
+Date:   Mon, 18 Apr 2022 13:04:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v5 1/2] dt-bindings: timer: Update TI timer to yaml
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-omap@vger.kernel.org,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+References: <20220414085807.7389-1-tony@atomide.com>
+ <20220414085807.7389-2-tony@atomide.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220414085807.7389-2-tony@atomide.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Minghao Chi <chi.minghao@zte.com.cn>
-
-Using pm_runtime_resume_and_get is more appropriate
-for simplifing code
-
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
----
- drivers/hwspinlock/omap_hwspinlock.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/hwspinlock/omap_hwspinlock.c b/drivers/hwspinlock/omap_hwspinlock.c
-index 33eeff94fc2a..1fb3a2550e29 100644
---- a/drivers/hwspinlock/omap_hwspinlock.c
-+++ b/drivers/hwspinlock/omap_hwspinlock.c
-@@ -94,11 +94,9 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
- 	 * the module SYSSTATUS register
- 	 */
- 	pm_runtime_enable(&pdev->dev);
--	ret = pm_runtime_get_sync(&pdev->dev);
--	if (ret < 0) {
--		pm_runtime_put_noidle(&pdev->dev);
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
-+	if (ret < 0)
- 		goto runtime_err;
--	}
- 
- 	/* Determine number of locks */
- 	i = readl(io_base + SYSSTATUS_OFFSET);
--- 
-2.25.1
+On 14/04/2022 10:58, Tony Lindgren wrote:
+> Let's update the TI timer binding to use yaml. As this binding is specific
+> to the TI dual-mode timers also known as dm-timers, let's use file name
+> ti,timer-dm.yaml to avoid confusion with other timers.
+> 
+> We add checks for the deprecated ti,hwmods property as done for other TI
+> device driver bindings earlier.
+> 
 
 
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+
+Best regards,
+Krzysztof
