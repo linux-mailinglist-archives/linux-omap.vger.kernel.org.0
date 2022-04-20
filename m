@@ -2,151 +2,86 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D7265089AD
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Apr 2022 15:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75C0D5089F2
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Apr 2022 16:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379148AbiDTNtQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 20 Apr 2022 09:49:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39234 "EHLO
+        id S1379207AbiDTODi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 20 Apr 2022 10:03:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379139AbiDTNtJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 Apr 2022 09:49:09 -0400
-Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2575A21E0D;
-        Wed, 20 Apr 2022 06:46:22 -0700 (PDT)
-Received: from darkstar.musicnaut.iki.fi (85-76-69-216-nat.elisa-mobile.fi [85.76.69.216])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: aaro.koskinen)
-        by meesny.iki.fi (Postfix) with ESMTPSA id AD3B7205A6;
-        Wed, 20 Apr 2022 16:46:17 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-        t=1650462379;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=hPdeBaZ6eVr/qRTevscI2sSHgl9RZPmaXc8iV1TPOYQ=;
-        b=TWxI7Ho2RtsaPS6MDuk2M+E+sq1KJYxSGS4DmJDZp6BP1taIQkAU15m6enkHBtGqJiUXvp
-        lXQHG+v4JXQrypyUiMgoBHrh9vRs0uJa78N5cmw1Dkb39AobNvcLF22yj6OlonUngPVdl9
-        hg/zZ4gRXP0aP/DTuM9FEXSAfDl6JAk=
-Date:   Wed, 20 Apr 2022 16:46:15 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     linux-omap@vger.kernel.org, tony@atomide.com, jmkrzyszt@gmail.com,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Paul Walmsley <paul@pwsan.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Mark Brown <broonie@kernel.org>,
-        Felipe Balbi <balbi@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-serial@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 26/41] ARM: omap1: relocate static I/O mapping
-Message-ID: <20220420134615.GA1947@darkstar.musicnaut.iki.fi>
-References: <20220419133723.1394715-1-arnd@kernel.org>
- <20220419133723.1394715-27-arnd@kernel.org>
+        with ESMTP id S1354209AbiDTODh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 Apr 2022 10:03:37 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FEF1A392;
+        Wed, 20 Apr 2022 07:00:51 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id y10so3723703ejw.8;
+        Wed, 20 Apr 2022 07:00:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=fUhflkjuCQ88rw7Co6ugfAm65XGN6gdXNEWk+vq4zPg=;
+        b=mTQ16iAF+djeeNR9aPcILOYKECu/ZbfrGwtnu+XynE7Cbibu3eYpGHSkx0VsKCzYaH
+         0vYMp4nkY7qUJdvf7jEqbOrK82j/wxNovOIraHMJGjrSzwXHGuDGYjdszN3R9KWy7hHi
+         tLjBmaB5emRntrDbTzVb1D8TRy4/lwo8AMBaRdQCCNfiFsFhtL496un7SXtv1bwq388Q
+         diNH+Vi0cy4dgxWKADNIKM9tsPXTqI+f9ezwaG6fGyyoPpGsAalTl/PjuXprMswpykTd
+         rzG7NjM25EnzH9IKqAHyXahVzan18fdTBRU0jUJ60dy8+cMV1JkdrThgPdjmTNLwvFUo
+         OUmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=fUhflkjuCQ88rw7Co6ugfAm65XGN6gdXNEWk+vq4zPg=;
+        b=TwDm1iDn+EsreAce2wwMAvoMT9l+KYK56Jnk91Ti5fJptz6auhph0X6CN6E4Lg/vVx
+         EqLpnWt7gJPBQzoX6j5MLR48lJZ0AHuZW/Fk4XbnypvKGypMot7PA0jNlORwaZ5QR6jO
+         Jd8GjvtNgyUN4FXhZIEXL/wcsCY1K3d6ArJbFAGkYpK7yl6ocfrG6j1tf8zi6zkJgNoo
+         /lOknjU7A5EKhJasqtK4Rk4TogsiQKsdVIVr7tsSQ59dTeZSiu/omreSY7xozTqEH0d2
+         LORDNGBOCMqkMKmqdcjtaGUExsQAlBSjfq1hQS3D8bNCs3WLdwZOvkVCdiGQ6EseGG1E
+         08kQ==
+X-Gm-Message-State: AOAM53112uAAgXqw2l/2tNvTSH86EXkvgCsULPlyu6kN49VSuj6Y7UJ5
+        Pb5qBKH15BLayJG45iJ8ohxrL06/GSjotEGkJReoKn/Q0gM=
+X-Google-Smtp-Source: ABdhPJwven6/+OjHqo8zevNFU9kEoxmbW/0E8ncV3gakvluubft6qctAClBbe5/Rkcv9DDjAPNFmSfX4Ao9bTAw3O7w=
+X-Received: by 2002:a17:907:e88:b0:6ef:bce9:ff6a with SMTP id
+ ho8-20020a1709070e8800b006efbce9ff6amr12474874ejc.275.1650463249997; Wed, 20
+ Apr 2022 07:00:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220419133723.1394715-27-arnd@kernel.org>
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-        s=meesny; t=1650462379;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=hPdeBaZ6eVr/qRTevscI2sSHgl9RZPmaXc8iV1TPOYQ=;
-        b=H/ymb4ClmH02P6z9wJPj5hwDvA4ML4CAqvyTrTXpyzakXMrwIF7fhncpTt2p+tyb+n415S
-        rXswuQZfImMNpPXfbjLG2A2bYft152C7y10qe9zeKLi8GlOcXPiCV9y/0Eijq+J6KgXV6K
-        JExPxjG2F+njcVYYdJlNrzaNBE0jppU=
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1650462379; a=rsa-sha256; cv=none;
-        b=CVy72ecIkI6wF0iqwa+Xy91DJU3aDMoxGNfzuIx9Vt1gzOxFw+Q04asMI9whLP3P8s501X
-        P2eVWVYDpVAr6tfbV1PJEm52Z8VQMrb77N573CgDjOg+UHf97HnYPA9FH0wGgHHkmeXpu6
-        wtihpIfPU1zC4kkQJy4ZZuJBXIgiXlA=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Wed, 20 Apr 2022 15:57:24 +0200
+Message-ID: <CAGm1_ktEim1vGOf5i=H_sqrPvg=dT50790YYwXgYKgAut-a=ng@mail.gmail.com>
+Subject: wl18xx: NVS file handling
+To:     Linux-OMAP <linux-omap@vger.kernel.org>
+Cc:     linux-wireless@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
+        sebastian.reichel@collabora.co.uk
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Hi all,
 
-On Tue, Apr 19, 2022 at 03:37:08PM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The address range 0xfee00000-0xfeffffff is used for PCI and
-> PCMCIA I/O port mappings, but OMAP1 has its static mappings
-> there as well.
-> 
-> Move the OMAP1 addresses a little higher to avoid crashing
-> at boot.
+using the 5.18.x kernel, I get the following warning:
 
-This has the same problem I reported in 2019, with earlyprintk the
-system no longer boots:
+wlcore: WARNING Detected unconfigured mac address in nvs, derive from
+fuse instead.
+wlcore: WARNING This default nvs file can be removed from the file system
 
-	https://marc.info/?t=156530014200005&r=1&w=2
+removing the /lib/firmware/ti-connectivity/wl127x-nvs.bin file, I get
+this warning:
 
-Tested on OSK and SX1/qemu.
+wl18xx_driver wl18xx.0.auto: Direct firmware load for
+ti-connectivity/wl1271-nvs.bin failed with error -2
 
-A.
+What's the best way to get rid of these warnings when I don't want to
+handle WLAN's MAC address via the wl127x-nvs.bin?
 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/arm/Kconfig.debug                      | 6 +++---
->  arch/arm/mach-omap1/include/mach/hardware.h | 2 +-
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
-> index 0c9497d549e3..f57b449000f7 100644
-> --- a/arch/arm/Kconfig.debug
-> +++ b/arch/arm/Kconfig.debug
-> @@ -1837,9 +1837,9 @@ config DEBUG_UART_VIRT
->  	default 0xfec00000 if ARCH_IXP4XX && !CPU_BIG_ENDIAN
->  	default 0xfec00003 if ARCH_IXP4XX && CPU_BIG_ENDIAN
->  	default 0xfef36000 if DEBUG_HIGHBANK_UART
-> -	default 0xfefb0000 if DEBUG_OMAP1UART1 || DEBUG_OMAP7XXUART1
-> -	default 0xfefb0800 if DEBUG_OMAP1UART2 || DEBUG_OMAP7XXUART2
-> -	default 0xfefb9800 if DEBUG_OMAP1UART3 || DEBUG_OMAP7XXUART3
-> +	default 0xff000000 if DEBUG_OMAP1UART1 || DEBUG_OMAP7XXUART1
-> +	default 0xff000800 if DEBUG_OMAP1UART2 || DEBUG_OMAP7XXUART2
-> +	default 0xff009800 if DEBUG_OMAP1UART3 || DEBUG_OMAP7XXUART3
->  	default 0xffd01000 if DEBUG_HIP01_UART
->  	default DEBUG_UART_PHYS if !MMU
->  	depends on DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || \
-> diff --git a/arch/arm/mach-omap1/include/mach/hardware.h b/arch/arm/mach-omap1/include/mach/hardware.h
-> index 05c5cd3e95f4..e3522e601ccd 100644
-> --- a/arch/arm/mach-omap1/include/mach/hardware.h
-> +++ b/arch/arm/mach-omap1/include/mach/hardware.h
-> @@ -63,7 +63,7 @@ static inline u32 omap_cs3_phys(void)
->  
->  #endif	/* ifndef __ASSEMBLER__ */
->  
-> -#define OMAP1_IO_OFFSET		0x01000000	/* Virtual IO = 0xfefb0000 */
-> +#define OMAP1_IO_OFFSET		0x00fb0000	/* Virtual IO = 0xff000000 */
->  #define OMAP1_IO_ADDRESS(pa)	IOMEM((pa) - OMAP1_IO_OFFSET)
->  
->  #include <mach/serial.h>
-> -- 
-> 2.29.2
-> 
+According to this discussion [1], NVS file is the last resort for
+handling the MAC address.
+
+[1] https://patchwork.kernel.org/project/linux-wireless/patch/8665E2433BC68541A24DFFCA87B70F5B363E1A3D@DFRE01.ent.ti.com/
+
+Regards,
+Yegor
