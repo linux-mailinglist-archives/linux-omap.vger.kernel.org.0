@@ -2,58 +2,38 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49F40508718
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Apr 2022 13:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7265089AD
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Apr 2022 15:46:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378162AbiDTLfV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 20 Apr 2022 07:35:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43580 "EHLO
+        id S1379148AbiDTNtQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 20 Apr 2022 09:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378151AbiDTLfU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 Apr 2022 07:35:20 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DA4F419A3;
-        Wed, 20 Apr 2022 04:32:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S1379139AbiDTNtJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 20 Apr 2022 09:49:09 -0400
+Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2575A21E0D;
+        Wed, 20 Apr 2022 06:46:22 -0700 (PDT)
+Received: from darkstar.musicnaut.iki.fi (85-76-69-216-nat.elisa-mobile.fi [85.76.69.216])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id D8E4FCE1D78;
-        Wed, 20 Apr 2022 11:32:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAF9C385AC;
-        Wed, 20 Apr 2022 11:32:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650454351;
-        bh=SVJ1k2v3tWdUGg+iydyQsi4Bq8zjjEYtWiKbWgwFaLw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=sQ6L9Sz7HsTeFplAqNVVqZ6QvDLXO7taCfdy4bCI083iKPBu4Tu1W3tAjRXjBMJP+
-         vEnLCGH51YORxEsFGOcZi/zoMsoYQoogO656Bx3dJCN3iokeUHMcZ/sRdJXG/FEfPy
-         OVbCsNPPUvMBA4ygYO3ABwIPljbcDkM69w6wy8bq4hi0dZRIAMv8YMoKSdGB49RoPV
-         7T06gmGwLx2hqcDTbF36X1GFj0Gux2+ukzAt7yv7JaGdNy5Qv43jNDhgQacW6a+5lC
-         7ziU5CwWVIqq9dL54xJaRWmMjZZOJMF8J98DaHAPKZKsUB+PqhqrA4wPmQhlfKvBIW
-         qSWfkWYIEhJww==
-Received: by mail-wr1-f42.google.com with SMTP id x18so1882237wrc.0;
-        Wed, 20 Apr 2022 04:32:31 -0700 (PDT)
-X-Gm-Message-State: AOAM530NWB0Xph9prkK8MhpzZZvtjev6lzNibywcjlBDFqkXONBxzEmC
-        BAB2nVGC+z7kHjbSFQYnKjVNHwqTkjcmslDX/Zg=
-X-Google-Smtp-Source: ABdhPJyiDPtmjdTUE7gVl98mXVlPUP43tSlAHIUMCCxTRsYmEILlWV1BOcaVw3t9k0Uq80bvmC166gAUNNWM192dlCo=
-X-Received: by 2002:a5d:64a3:0:b0:20a:7931:5b84 with SMTP id
- m3-20020a5d64a3000000b0020a79315b84mr15873027wrp.407.1650454349319; Wed, 20
- Apr 2022 04:32:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220419133723.1394715-1-arnd@kernel.org> <20220419133723.1394715-2-arnd@kernel.org>
- <ddaf112d-f997-84b7-2c57-bab3d0cca382@gmail.com>
-In-Reply-To: <ddaf112d-f997-84b7-2c57-bab3d0cca382@gmail.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Wed, 20 Apr 2022 13:32:13 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3+5p5i2Nxy6AxH5qDsVqqxwSR_5ufjoYCALProSLNspg@mail.gmail.com>
-Message-ID: <CAK8P3a3+5p5i2Nxy6AxH5qDsVqqxwSR_5ufjoYCALProSLNspg@mail.gmail.com>
-Subject: Re: [PATCH 01/41] video: fbdev: omapfb: lcd_ams_delta: fix unused
- variable warning
-To:     Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Cc:     linux-omap <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        (Authenticated sender: aaro.koskinen)
+        by meesny.iki.fi (Postfix) with ESMTPSA id AD3B7205A6;
+        Wed, 20 Apr 2022 16:46:17 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+        t=1650462379;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=hPdeBaZ6eVr/qRTevscI2sSHgl9RZPmaXc8iV1TPOYQ=;
+        b=TWxI7Ho2RtsaPS6MDuk2M+E+sq1KJYxSGS4DmJDZp6BP1taIQkAU15m6enkHBtGqJiUXvp
+        lXQHG+v4JXQrypyUiMgoBHrh9vRs0uJa78N5cmw1Dkb39AobNvcLF22yj6OlonUngPVdl9
+        hg/zZ4gRXP0aP/DTuM9FEXSAfDl6JAk=
+Date:   Wed, 20 Apr 2022 16:46:15 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     linux-omap@vger.kernel.org, tony@atomide.com, jmkrzyszt@gmail.com,
         Arnd Bergmann <arnd@arndb.de>,
         Russell King <linux@armlinux.org.uk>,
         Paul Walmsley <paul@pwsan.com>,
@@ -72,58 +52,101 @@ Cc:     linux-omap <linux-omap@vger.kernel.org>,
         Helge Deller <deller@gmx.de>,
         Linus Walleij <linus.walleij@linaro.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        dmaengine@vger.kernel.org,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-serial@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 26/41] ARM: omap1: relocate static I/O mapping
+Message-ID: <20220420134615.GA1947@darkstar.musicnaut.iki.fi>
+References: <20220419133723.1394715-1-arnd@kernel.org>
+ <20220419133723.1394715-27-arnd@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220419133723.1394715-27-arnd@kernel.org>
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+        s=meesny; t=1650462379;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=hPdeBaZ6eVr/qRTevscI2sSHgl9RZPmaXc8iV1TPOYQ=;
+        b=H/ymb4ClmH02P6z9wJPj5hwDvA4ML4CAqvyTrTXpyzakXMrwIF7fhncpTt2p+tyb+n415S
+        rXswuQZfImMNpPXfbjLG2A2bYft152C7y10qe9zeKLi8GlOcXPiCV9y/0Eijq+J6KgXV6K
+        JExPxjG2F+njcVYYdJlNrzaNBE0jppU=
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1650462379; a=rsa-sha256; cv=none;
+        b=CVy72ecIkI6wF0iqwa+Xy91DJU3aDMoxGNfzuIx9Vt1gzOxFw+Q04asMI9whLP3P8s501X
+        P2eVWVYDpVAr6tfbV1PJEm52Z8VQMrb77N573CgDjOg+UHf97HnYPA9FH0wGgHHkmeXpu6
+        wtihpIfPU1zC4kkQJy4ZZuJBXIgiXlA=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Apr 20, 2022 at 11:24 AM Sergei Shtylyov
-<sergei.shtylyov@gmail.com> wrote:
-> On 4/19/22 4:36 PM, Arnd Bergmann wrote:
->
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > A recent cleanup patch removed the only reference to a local variable
-> > in some configurations.
-> >
-> > Move the variable into the one block it is still used in, inside
-> > of an #ifdef, to avoid this warning.
-> >
-> > Fixes: 9d773f103b89 ("video: fbdev: omapfb: lcd_ams_delta: Make use of the helper function dev_err_probe()")
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> >  drivers/video/fbdev/omap/lcd_ams_delta.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/video/fbdev/omap/lcd_ams_delta.c b/drivers/video/fbdev/omap/lcd_ams_delta.c
-> > index bbf871f9d862..01944ce46aa1 100644
-> > --- a/drivers/video/fbdev/omap/lcd_ams_delta.c
-> > +++ b/drivers/video/fbdev/omap/lcd_ams_delta.c
-> [...]
-> > @@ -145,7 +144,7 @@ static int ams_delta_panel_probe(struct platform_device *pdev)
-> >                                               &ams_delta_lcd_ops);
-> >
-> >       if (IS_ERR(lcd_device)) {
-> > -             ret = PTR_ERR(lcd_device);
-> > +             int ret = PTR_ERR(lcd_device);
->
->    How about inserting an empty line after declaration?
+Hi,
 
-Ok, done.
+On Tue, Apr 19, 2022 at 03:37:08PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The address range 0xfee00000-0xfeffffff is used for PCI and
+> PCMCIA I/O port mappings, but OMAP1 has its static mappings
+> there as well.
+> 
+> Move the OMAP1 addresses a little higher to avoid crashing
+> at boot.
 
-        Arnd
+This has the same problem I reported in 2019, with earlyprintk the
+system no longer boots:
+
+	https://marc.info/?t=156530014200005&r=1&w=2
+
+Tested on OSK and SX1/qemu.
+
+A.
+
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/arm/Kconfig.debug                      | 6 +++---
+>  arch/arm/mach-omap1/include/mach/hardware.h | 2 +-
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+> index 0c9497d549e3..f57b449000f7 100644
+> --- a/arch/arm/Kconfig.debug
+> +++ b/arch/arm/Kconfig.debug
+> @@ -1837,9 +1837,9 @@ config DEBUG_UART_VIRT
+>  	default 0xfec00000 if ARCH_IXP4XX && !CPU_BIG_ENDIAN
+>  	default 0xfec00003 if ARCH_IXP4XX && CPU_BIG_ENDIAN
+>  	default 0xfef36000 if DEBUG_HIGHBANK_UART
+> -	default 0xfefb0000 if DEBUG_OMAP1UART1 || DEBUG_OMAP7XXUART1
+> -	default 0xfefb0800 if DEBUG_OMAP1UART2 || DEBUG_OMAP7XXUART2
+> -	default 0xfefb9800 if DEBUG_OMAP1UART3 || DEBUG_OMAP7XXUART3
+> +	default 0xff000000 if DEBUG_OMAP1UART1 || DEBUG_OMAP7XXUART1
+> +	default 0xff000800 if DEBUG_OMAP1UART2 || DEBUG_OMAP7XXUART2
+> +	default 0xff009800 if DEBUG_OMAP1UART3 || DEBUG_OMAP7XXUART3
+>  	default 0xffd01000 if DEBUG_HIP01_UART
+>  	default DEBUG_UART_PHYS if !MMU
+>  	depends on DEBUG_LL_UART_8250 || DEBUG_LL_UART_PL01X || \
+> diff --git a/arch/arm/mach-omap1/include/mach/hardware.h b/arch/arm/mach-omap1/include/mach/hardware.h
+> index 05c5cd3e95f4..e3522e601ccd 100644
+> --- a/arch/arm/mach-omap1/include/mach/hardware.h
+> +++ b/arch/arm/mach-omap1/include/mach/hardware.h
+> @@ -63,7 +63,7 @@ static inline u32 omap_cs3_phys(void)
+>  
+>  #endif	/* ifndef __ASSEMBLER__ */
+>  
+> -#define OMAP1_IO_OFFSET		0x01000000	/* Virtual IO = 0xfefb0000 */
+> +#define OMAP1_IO_OFFSET		0x00fb0000	/* Virtual IO = 0xff000000 */
+>  #define OMAP1_IO_ADDRESS(pa)	IOMEM((pa) - OMAP1_IO_OFFSET)
+>  
+>  #include <mach/serial.h>
+> -- 
+> 2.29.2
+> 
