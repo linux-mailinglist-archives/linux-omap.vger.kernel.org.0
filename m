@@ -2,61 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B26F1509B02
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 10:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E2E3509B67
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 11:07:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351616AbiDUIuy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Apr 2022 04:50:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59862 "EHLO
+        id S1358554AbiDUJE5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Apr 2022 05:04:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386914AbiDUIui (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 04:50:38 -0400
-X-Greylist: delayed 1994 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 21 Apr 2022 01:47:49 PDT
-Received: from mail.rubyinfo.pl (mail.rubyinfo.pl [5.249.159.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DB561EACD
-        for <linux-omap@vger.kernel.org>; Thu, 21 Apr 2022 01:47:49 -0700 (PDT)
-Received: by mail.rubyinfo.pl (Postfix, from userid 1001)
-        id CE12CA443C; Thu, 21 Apr 2022 08:44:34 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rubyinfo.pl; s=mail;
-        t=1650527113; bh=/9MpKlGUGEWWhiQdedVnMqaLo1WTRqCWHemvvbwCPnM=;
-        h=Date:From:To:Subject:From;
-        b=DoCCfMgrKmlzJrlfBeVs1WjlVjZcb+UFLgUV8cDbJG2Dp9IKv63APQbzluCiOY2zM
-         9JhUkA49BbooAxlUav7Q5SCMclmm1R1g/htvzmC9KI5oaiY8ImzPdhyWH1mxX7kbBc
-         v17EmKCJUJWc15RJ0dIqH1pqY8N7k5SUZ9Y1yNBeX8+pX3Ezh169SH/pnVE3+xlYHC
-         lb0Zaxo4pumh5chK7CUQxeQHyV1eK90niQKePDapAure5xkzbjYp7xsqAXI91oL+K7
-         WeGc/eq3S9oQnbZunXOasy7sJiX3gb9f+qJ5813nkihZFkXt09f5cgZ8wSpoyazRtE
-         H6u1isIE8yF7w==
-Received: by mail.rubyinfo.pl for <linux-omap@vger.kernel.org>; Thu, 21 Apr 2022 07:43:33 GMT
-Message-ID: <20220421073001-0.1.4t.p9m6.0.f1ap9tqqip@rubyinfo.pl>
-Date:   Thu, 21 Apr 2022 07:43:33 GMT
-From:   =?UTF-8?Q? "Miko=C5=82aj_Rudzik" ?= <mikolaj.rudzik@rubyinfo.pl>
-To:     <linux-omap@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.rubyinfo.pl
+        with ESMTP id S1345407AbiDUJE5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 05:04:57 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 154C51FCFE;
+        Thu, 21 Apr 2022 02:02:08 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 21so5664619edv.1;
+        Thu, 21 Apr 2022 02:02:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=K6EZ7wsWI5y8UAAAGRQmR1xNFdJPl4DdgJFZp25DwRE=;
+        b=O1hZi3IGLAN5IQCn+JjFH/2oHhCsW3/cgFtEPYCdOUFvSwDHuW33xXHSdHnq78zYf2
+         9Dzb8CutasJJgN+m7fv4Fl+vd1T3JqfYQvdUbEYQQ7vVvLtxpxY2q1v5GyqdGL5XgHnk
+         chDETEMsMLm+R1iabmPqcwGUF5vQtFpFff658AhYsoL+0j1Rbt7hPJ/WKs3n8diq+FSq
+         f2tusAfkYm1ZKQyDIgbGD1sha5Qbiu/vxjS+0t+WhN/1Dp1gL+a0Y2N92KXw/m7s5UGM
+         yjjCAxR74M37zmjDxB33PRK4H800PP59uGS7uOQLWrL1F5MwEOWQpVfbJCVx1CB8kxrW
+         jtsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=K6EZ7wsWI5y8UAAAGRQmR1xNFdJPl4DdgJFZp25DwRE=;
+        b=W7YbLaNKwXGaCM0xyVLC1I+43U3j/wTQqlzIeGUvIIN5QDln8UN3OzuvpceAu/p7P4
+         p2rcTwDKqqZZnILpMpLZ95ZQqYXRsYsVHmVueaxpN2e1U1PL8IR5RM3lS2cM+JYLdp1+
+         u/v7lY3iM01Vfpv7vBVi1sNjOCc/I5PmAjYsmlZy7GzVzU24l/jBj6TlAfCCylhHiQlL
+         RvdXdWVvRIBBkv86DBdBvjAJ0XOlJYC+i850FJlvTzyxO9Sxug82hCQ+QPaoUyCt/4J/
+         aaVvrYT/lNE7Iqsf1LcLQ+ASlodxsgElzBIAsl87UUc2d9cmCq7i4IAIbh8gpvI+jsoY
+         nM7A==
+X-Gm-Message-State: AOAM533gwYNuPx5W5Ahipk+w/0gsji/MrsW81bAqRTONDUHgkHLBILV4
+        lbyw8szfD1vkwttQefKE+hFFpmEKVwsL1VZTYkkP9Wi4Wtg=
+X-Google-Smtp-Source: ABdhPJx4guVtJCUodnfDDJjHz9fHaung5eLfba2XvwbduoSETDjq9IF429gakqBk5vx9H2Hm9o7NLrGzw2whII55WoY=
+X-Received: by 2002:a05:6402:11c7:b0:423:f7f1:e718 with SMTP id
+ j7-20020a05640211c700b00423f7f1e718mr15858549edw.279.1650531726500; Thu, 21
+ Apr 2022 02:02:06 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAGm1_ktEim1vGOf5i=H_sqrPvg=dT50790YYwXgYKgAut-a=ng@mail.gmail.com>
+ <YmDpTAu9wmlLijDA@atomide.com>
+In-Reply-To: <YmDpTAu9wmlLijDA@atomide.com>
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Thu, 21 Apr 2022 11:01:54 +0200
+Message-ID: <CAGm1_kv+b1h1OuWr4w5jS_mqfQpXF7UexiWFsOSs+MJK546=ew@mail.gmail.com>
+Subject: Re: wl18xx: NVS file handling
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-wireless@vger.kernel.org, sebastian.reichel@collabora.co.uk,
+        Eyal Reizer <eyalr@ti.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hi Tony,
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+On Thu, Apr 21, 2022 at 7:19 AM Tony Lindgren <tony@atomide.com> wrote:
+>
+> Hi,
+>
+> * Yegor Yefremov <yegorslists@googlemail.com> [220420 13:58]:
+> > Hi all,
+> >
+> > using the 5.18.x kernel, I get the following warning:
+> >
+> > wlcore: WARNING Detected unconfigured mac address in nvs, derive from
+> > fuse instead.
+> > wlcore: WARNING This default nvs file can be removed from the file system
+> >
+> > removing the /lib/firmware/ti-connectivity/wl127x-nvs.bin file, I get
+> > this warning:
+> >
+> > wl18xx_driver wl18xx.0.auto: Direct firmware load for
+> > ti-connectivity/wl1271-nvs.bin failed with error -2
+> >
+> > What's the best way to get rid of these warnings when I don't want to
+> > handle WLAN's MAC address via the wl127x-nvs.bin?
+>
+> See commit d382b9c00782 ("wlcore: add missing nvs file name info for
+> wilink8"), to me looks like the the second warning should be just removed
+> for wl18xx.
+>
+> > According to this discussion [1], NVS file is the last resort for
+> > handling the MAC address.
+> >
+> > [1] https://patchwork.kernel.org/project/linux-wireless/patch/8665E2433BC68541A24DFFCA87B70F5B363E1A3D@DFRE01.ent.ti.com/
+>
+> Yes the NVS file does not work at all for NFSroot for multiple devices.
+>
+> To me it seems we should have the option for the MAC address to be
+> populated by the bootloader for the devicetree property like Ethernet
+> adapters typically do. Not sure what that might take, maybe it
+> already works. I guess the first step would be to make the nvs file
+> completely optional for wlcore.
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+I'll try to create a patch for making nvs file optional.
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+P.S. a TI maintainer for wlcore would be great .... WPA3 and mesh are
+still not really there [1].
 
+[1] https://software-dl.ti.com/ecs/WiLink8/R8_8/change_log_R8_8.html
 
-Pozdrawiam serdecznie,
-Miko=C5=82aj Rudzik
+Regards,
+Yegor
