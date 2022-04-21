@@ -2,81 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B684509FD4
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 14:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6866A509FCC
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 14:40:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231928AbiDUMne (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Apr 2022 08:43:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45134 "EHLO
+        id S1385245AbiDUMnC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Apr 2022 08:43:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231220AbiDUMnd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 08:43:33 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDCCA220CB
-        for <linux-omap@vger.kernel.org>; Thu, 21 Apr 2022 05:40:43 -0700 (PDT)
-Received: from mail-wm1-f43.google.com ([209.85.128.43]) by
- mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MtfRp-1o2k2m0Ltf-00v8Ka for <linux-omap@vger.kernel.org>; Thu, 21 Apr
- 2022 14:35:39 +0200
-Received: by mail-wm1-f43.google.com with SMTP id p189so3106257wmp.3
-        for <linux-omap@vger.kernel.org>; Thu, 21 Apr 2022 05:35:39 -0700 (PDT)
-X-Gm-Message-State: AOAM533J4mnjo1wtn7tvhMCvrg/RREmO3bFLcUmv+fsm8GfDAlF0cFSP
-        b8FaK2es06u1C/4H7XxRYZvTAZSic87thMLixpo=
-X-Google-Smtp-Source: ABdhPJyNF2euNOgMLkVa0dx5yacmTJRRySkkqP2RuczwMAMvOSzpbCElGtv/AMTcjGmOjglKJB29I01rrjD2SHNDudg=
-X-Received: by 2002:a05:600c:25c5:b0:38f:f0b9:4c8c with SMTP id
- 5-20020a05600c25c500b0038ff0b94c8cmr8754525wml.20.1650544538781; Thu, 21 Apr
- 2022 05:35:38 -0700 (PDT)
+        with ESMTP id S1385061AbiDUMnB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 08:43:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC4BD1CFEA;
+        Thu, 21 Apr 2022 05:40:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 49A2B61C5A;
+        Thu, 21 Apr 2022 12:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A79B4C385A1;
+        Thu, 21 Apr 2022 12:40:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650544811;
+        bh=W830rsXdVoz6lGkLr6jz/XzdBaWMYcxDel5ra7LJO3I=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=np8KbkB0CuWJSnDyEtWq9lIDu9iGdDihH9vlphk/9CiKjmUBY07helW6DRA4DTiht
+         6ft88xPDrmjvSuJYSMHuhEvtxw6kOzAxWZ05vbnc4MtGPNNAhhk0Rsc+B1kEzlBvDk
+         +lQo259F0CJ8vgYyffcUe/eyQWJm42da85stthOAxEUO1oIwEEErYv2LIVJ2Ia4fyj
+         jkCeHdrcbAIRLHFsczGlU+38OIQ1D+QY3vT4zQkAxoSomKnWhOllDb4HucfdoXbUO/
+         CvZn5FudSKhCsBOQMum2bOTcOaS6Pk4F6laLcArvOrFc87rCb4GN18b/UAe/0gk+oa
+         VyKG52+Ma4iTw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 86F04EAC09C;
+        Thu, 21 Apr 2022 12:40:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20220413081656.27848-1-tony@atomide.com>
-In-Reply-To: <20220413081656.27848-1-tony@atomide.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 21 Apr 2022 14:35:22 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1c4H1Bi9ExfgSHg6uUdQD77UChjD528MmFPpFjrvSqFQ@mail.gmail.com>
-Message-ID: <CAK8P3a1c4H1Bi9ExfgSHg6uUdQD77UChjD528MmFPpFjrvSqFQ@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: omap1: Add Janusz as an additional maintainer
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:M6m87tsI7azc2nG5ieF3dnxnH13AbFlNvCddRz+Z6RtCVUILueQ
- o1Fjz+LnU/Wo9OoFVzKfURCUctY3noaDezKRzITYwwMGxePq+atCVSq7xo4PHdpnfGRT3WP
- WPUnujBeyZfsECYwU9kC7SRxrdhM4OLOWrMHQJpWu9mYmzRhtwZcmkLaooIquQlAaoVE8JH
- 5aX0D1ncQGxPSx5fFdPxg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:p04iig/D5Fo=:QksiS5Qr8auSRFlSRYDZS0
- +pUgasHaKsd8Zj1XrwPpC9ZAw1PL/PBz5I2nFyuP64xzA5WuOcsn+tFh09+HZVeNzO8Igrb8u
- rSPV1KABLlcvkNaXNcVszjULhHrVJw69ROiPBXbyzsGsnU4Bpk7eNKLgk/eOLm8Rk5mkNhmDC
- hdfyBUVOIqEmsx86Q7sPfKeOOZ0NKy/AGaHkXAcHjaG1IfNPuEG6VzKzLk4lajIrylETwW6XY
- zD8K1WoLDKJKiPMeHV8PH4p6RfozjNeJ7pvYKzRR7ODwh9juGBLZuBV9QiT4dqJ2c+bfpLSuz
- aAJw6fcYfXKLHKYSpNW/W2gFmQH5BrV6/S7/W/pXxcvdU00pR94y/XaUYWb2kcnR87RIwAa3k
- 1lf7K0V7zlfEkATSmGXkDO0a1sjwA4rx9DTotN4RINl1XuAT7Deh37bsfnv5qoRXdj6xgoJ4p
- wUC619YJp9PV0KRBDOAPYxza9jT8Z2TLWsZTcqEZlpB9p0+pJs8Ga5INnknFuV97hVXUC2iLd
- r6sxFLhccXdfppmUVmk4s/Bn7LzQl5ER3dkCpjGEwOHamfCyFuEgPmGDknB6aUmw4oKLYEWON
- 7crBbkweAhpWs+VCJqd5tOxuVHXYez/JUg6BKww3lAghkFp+FREEkP10G2Ul9a8g0hTYjjBJW
- ONjJ1XdfXgAZ6BhUjx1zihB3QpMexCjT2tirTQQeplrr5iSFTxfAqUnLjj5bBfqSOD2LPF1dV
- Yk4GD324ePgZss+GXlSaGxT4wg0FUW1F2qPH6iN/cmJWpUIeCDgPwCUrVGOMLwL1fqXGboqKH
- l/J98Smm5Sl4VWfB0CMuaQq/3Onp2z6L5r8mLQD9lhyTM4sa3w=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] drivers: net: davinci_mdio: using pm_runtime_resume_and_get
+ instead of pm_runtime_get_sync
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <165054481154.27620.9902312033676025709.git-patchwork-notify@kernel.org>
+Date:   Thu, 21 Apr 2022 12:40:11 +0000
+References: <20220418062921.2557884-1-chi.minghao@zte.com.cn>
+In-Reply-To: <20220418062921.2557884-1-chi.minghao@zte.com.cn>
+To:     Lv Ruyi <cgel.zte@gmail.com>
+Cc:     grygorii.strashko@ti.com, davem@davemloft.net, kuba@kernel.org,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, chi.minghao@zte.com.cn,
+        zealci@zte.com.cn
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Apr 13, 2022 at 10:16 AM Tony Lindgren <tony@atomide.com> wrote:
->
-> Janusz has been active with improving and testing the omap1 SoC support
-> and has been recently working on adding support for the common clock
-> framework.
->
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+Hello:
 
-Applied to the omap1-multiplatform branch now, thanks
+This patch was applied to netdev/net-next.git (master)
+by Paolo Abeni <pabeni@redhat.com>:
 
-       Arnd
+On Mon, 18 Apr 2022 06:29:21 +0000 you wrote:
+> From: Minghao Chi <chi.minghao@zte.com.cn>
+> 
+> Using pm_runtime_resume_and_get is more appropriate
+> for simplifing code
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+> 
+> [...]
+
+Here is the summary with links:
+  - drivers: net: davinci_mdio: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
+    https://git.kernel.org/netdev/net-next/c/4facbe3d4426
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
