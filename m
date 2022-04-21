@@ -2,39 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 023FA50A0E8
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 15:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C091150A316
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 16:47:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386876AbiDUNhn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Apr 2022 09:37:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53728 "EHLO
+        id S1386613AbiDUOtj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Apr 2022 10:49:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbiDUNhb (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 09:37:31 -0400
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFD12ED69;
-        Thu, 21 Apr 2022 06:34:41 -0700 (PDT)
-Received: from darkstar.musicnaut.iki.fi (85-76-47-192-nat.elisa-mobile.fi [85.76.47.192])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S1350611AbiDUOth (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 10:49:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 141B6427D7;
+        Thu, 21 Apr 2022 07:46:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: aaro.koskinen)
-        by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 047811B00252;
-        Thu, 21 Apr 2022 16:34:32 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-        t=1650548074;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=oVFIWam2OH5Kq5QzsfblzUEMIMiatzAi7D5irCcCglk=;
-        b=Xk3qyrppSMBB4y+4boXcQF3oQ0tJICSyEousvelDBkd8/PVx55tQbJieAi/Q0KQa0aNG+G
-        Gh88Z+pM8E36JmzxlWSVvjXm3PFhBwLXYL2LZOWOsctt2/ybfngzEzXevKqVRqqsk+dHOX
-        5L1WRR3RN0Tc57TLDGaoxQzs/vTRLS73kqV8NQ7Pr+rYaKPhEVw6YpbHAi1CUcgHmT/iJb
-        sSsFTNRKlLJoxWjnYPJUSCoDtMuNfYAqp6Y4933cAcgTAbeGBst/0aU+ZHi8x118KnYG/L
-        TTEMpWSI21eBdlKccjScwxNSRB5ywON2ldVT1bI/+m9vyrFPnxxWxtiiOfNC6w==
-Date:   Thu, 21 Apr 2022 16:34:31 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Arnd Bergmann <arnd@kernel.org>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A049B61A36;
+        Thu, 21 Apr 2022 14:46:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F2FC385A5;
+        Thu, 21 Apr 2022 14:46:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650552395;
+        bh=i0HMWq1JRa0F0CeO2hnG9SF3TuKwCFJPlYUxv+11vSY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=KYNnxH1/6h4JHSpiitspdSKkTEwWa1tJBCwmto9ZMzu31V+JKmKgI743LDv+s34bq
+         QmSRKC+hHoCyn8rQMCoQYbCY9I4u1HRgIOm+Pz2OmA5gNIE7rXJyrAZQqUv9oA3TUQ
+         CVuRa/VFqB7epVLHtpWWZFuEw4IysfFmBo/cCYj+4wtcdzx74jW2LjnvsN+imBPGkx
+         NUHT9J1SbF8LbbqYNTV0fbd7NyddYgpQP9JQyBAmIQiZB0mHJDNoZgZMT3gNF6FO91
+         4nSd3Odf/kHuZoRH+pZi1kgbPYDKmWC6TMUEyESfHfKmh/QjbWYzrE2aZ/dN2sYGsU
+         NUgA5p8ikcvFQ==
+Received: by mail-wr1-f53.google.com with SMTP id p18so7030851wru.5;
+        Thu, 21 Apr 2022 07:46:34 -0700 (PDT)
+X-Gm-Message-State: AOAM532BY6WQ1dd6NyA20bzG0oGGSF6u3tYHeSPdcCHhlRa2PoQP/9tt
+        ZPLKxgM81JEfLwIb76smpKGFlV78Vct8FjsHnuI=
+X-Google-Smtp-Source: ABdhPJwYkraliZNB9aswBiexBZv/yC4YtGe2R9rvi1KW9m/P8YE/IbH0HzS9xhCUm+8mp8SN41/aSdFZNG1cTJqd71I=
+X-Received: by 2002:a5d:6da5:0:b0:20a:8805:6988 with SMTP id
+ u5-20020a5d6da5000000b0020a88056988mr48774wrs.317.1650552393282; Thu, 21 Apr
+ 2022 07:46:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220419133723.1394715-1-arnd@kernel.org> <20220420170836.GB1947@darkstar.musicnaut.iki.fi>
+ <CAK8P3a1+sOrn8BWPVc7f+QFZ5=7fE6=MLsMYV9t+HJcG2aRCXA@mail.gmail.com> <20220421133431.GE1947@darkstar.musicnaut.iki.fi>
+In-Reply-To: <20220421133431.GE1947@darkstar.musicnaut.iki.fi>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Thu, 21 Apr 2022 16:46:17 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0LkJ5EvJ13xtAhWzCKnnvYhYgKpPsphr1T-FGg6bzDuw@mail.gmail.com>
+Message-ID: <CAK8P3a0LkJ5EvJ13xtAhWzCKnnvYhYgKpPsphr1T-FGg6bzDuw@mail.gmail.com>
+Subject: Re: [PATCH 00/41] OMAP1 full multiplatform conversion
+To:     Aaro Koskinen <aaro.koskinen@iki.fi>
 Cc:     linux-omap <linux-omap@vger.kernel.org>,
         Tony Lindgren <tony@atomide.com>,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>,
@@ -66,73 +80,50 @@ Cc:     linux-omap <linux-omap@vger.kernel.org>,
         dri-devel <dri-devel@lists.freedesktop.org>,
         Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
         ALSA Development Mailing List <alsa-devel@alsa-project.org>
-Subject: Re: [PATCH 00/41] OMAP1 full multiplatform conversion
-Message-ID: <20220421133431.GE1947@darkstar.musicnaut.iki.fi>
-References: <20220419133723.1394715-1-arnd@kernel.org>
- <20220420170836.GB1947@darkstar.musicnaut.iki.fi>
- <CAK8P3a1+sOrn8BWPVc7f+QFZ5=7fE6=MLsMYV9t+HJcG2aRCXA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a1+sOrn8BWPVc7f+QFZ5=7fE6=MLsMYV9t+HJcG2aRCXA@mail.gmail.com>
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1650548074; a=rsa-sha256;
-        cv=none;
-        b=ENXGTtwbaVogGy0K8rD23cjHmjO1KDBpZYPSWyAXiJ0/g3DluUJMMqXizYyXV1sh/1O56S
-        hChw4SwQwbKFg4HYlY2SOiU8koj4G0UA6uGgTWSMxSwgySv+tbXfSR2Tt70pNgc6FN/vqj
-        fDExRVdSPenGd/ZTQhfjmyvSX3P7pooRbwh0WQDjEhItMOJyG5yZgN9teFQT3NBHXEEZkO
-        lTJHNaVgxdVFvqiak5FfjdiYOvwW5qr/IFspdks2sOUviaT7JpvKaacUapRAwuXFYtOguN
-        JXEZ3bM5xviSbbt9Tw3xErBDkB9cnwUXXzqGZHNp79d0+eb+sY0cVMOQI8ss7A==
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-        s=lahtoruutu; t=1650548074;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=oVFIWam2OH5Kq5QzsfblzUEMIMiatzAi7D5irCcCglk=;
-        b=Eu1uUO0EKvbhrdQZfCpIhRELzJA5jQZA+tye8R+aaTvgG9DkVEsXKYWX2Sby3kmhYmBCFx
-        570Cbs63dCqUFZqQdnWOK5t2vzZfwXPpwZynEikAKA3hi3QfuIi/BoBmae0xNSLey+fMmB
-        6AN1xF39YRJln008whjTgBohIBALbd/JXyh+rxwe1mx9rmT55Z+64rbOepQpAj7WZ0ttFr
-        jnTgxti7i7/9Pg4jNgskYWOOvKpXwrgTWzEQwA6H3TD1Jh0kJTMK2AunGS+FmvtC90A9Rp
-        r/9gYERVC+5BvSqEpSaGtYy+3htyiKaREqUWXaB7dxpxJqJYBA33p4txWzgVSw==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-On Wed, Apr 20, 2022 at 10:00:13PM +0200, Arnd Bergmann wrote:
-> On Wed, Apr 20, 2022 at 7:08 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-> > On Tue, Apr 19, 2022 at 03:36:42PM +0200, Arnd Bergmann wrote:
-> > > From: Arnd Bergmann <arnd@arndb.de>
+On Thu, Apr 21, 2022 at 3:34 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+>
+> Hi,
+>
+> On Wed, Apr 20, 2022 at 10:00:13PM +0200, Arnd Bergmann wrote:
+> > On Wed, Apr 20, 2022 at 7:08 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+> > > On Tue, Apr 19, 2022 at 03:36:42PM +0200, Arnd Bergmann wrote:
+> > > > From: Arnd Bergmann <arnd@arndb.de>
+> > > >
+> > > > This is the full series for converting OMAP1 to multiplatform, rebased
+> > > > from my 2019 attempt to do the same thing. The soc tree contains simpler
+> > > > patches to do the same for iop32x, ixp4xx, ep93xx and s3c24xx, which
+> > > > means we are getting closer to completing this for all ARMv5 platforms
+> > > > (I have patches for PXA, which is the last one remaining).
+> > > >
+> > > > Janusz already tested the branch separately and did the missing work
+> > > > for the common-clk conversion after my previous approach was broken.
 > > >
-> > > This is the full series for converting OMAP1 to multiplatform, rebased
-> > > from my 2019 attempt to do the same thing. The soc tree contains simpler
-> > > patches to do the same for iop32x, ixp4xx, ep93xx and s3c24xx, which
-> > > means we are getting closer to completing this for all ARMv5 platforms
-> > > (I have patches for PXA, which is the last one remaining).
+> > > I tested the full series on the following OMAP1 boards: ams-delta,
+> > > nokia770, osk, palmte and sx1 (QEMU only).
 > > >
-> > > Janusz already tested the branch separately and did the missing work
-> > > for the common-clk conversion after my previous approach was broken.
+> > > Apart from the earlyprintk breakage, everything seemed to work OK.
 > >
-> > I tested the full series on the following OMAP1 boards: ams-delta,
-> > nokia770, osk, palmte and sx1 (QEMU only).
-> >
-> > Apart from the earlyprintk breakage, everything seemed to work OK.
-> 
-> Nice, thanks a lot for testing!
+> > Nice, thanks a lot for testing!
+>
+> With the updated patch 26 also earlyprintk now works, so if you still
+> update the patches, feel free to add for the whole series:
+>
+> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-With the updated patch 26 also earlyprintk now works, so if you still
-update the patches, feel free to add for the whole series:
+I was just doing the merge, so I added the tag to the commit now.
 
-Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+There is now an "omap1/multiplatform-prep" branch that is part of
+arm/multiplatform, and I hope to not have to rebase that. I also
+have an arm/multiplatform-late branch with the remaining contents.
 
-Thanks,
-
-A.
+       Arnd
