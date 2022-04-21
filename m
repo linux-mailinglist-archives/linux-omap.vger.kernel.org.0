@@ -2,128 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C091150A316
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 16:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDBCB50A88E
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 20:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1386613AbiDUOtj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Apr 2022 10:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
+        id S232766AbiDUS7V (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Apr 2022 14:59:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350611AbiDUOth (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 10:49:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 141B6427D7;
-        Thu, 21 Apr 2022 07:46:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A049B61A36;
-        Thu, 21 Apr 2022 14:46:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F2FC385A5;
-        Thu, 21 Apr 2022 14:46:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650552395;
-        bh=i0HMWq1JRa0F0CeO2hnG9SF3TuKwCFJPlYUxv+11vSY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KYNnxH1/6h4JHSpiitspdSKkTEwWa1tJBCwmto9ZMzu31V+JKmKgI743LDv+s34bq
-         QmSRKC+hHoCyn8rQMCoQYbCY9I4u1HRgIOm+Pz2OmA5gNIE7rXJyrAZQqUv9oA3TUQ
-         CVuRa/VFqB7epVLHtpWWZFuEw4IysfFmBo/cCYj+4wtcdzx74jW2LjnvsN+imBPGkx
-         NUHT9J1SbF8LbbqYNTV0fbd7NyddYgpQP9JQyBAmIQiZB0mHJDNoZgZMT3gNF6FO91
-         4nSd3Odf/kHuZoRH+pZi1kgbPYDKmWC6TMUEyESfHfKmh/QjbWYzrE2aZ/dN2sYGsU
-         NUgA5p8ikcvFQ==
-Received: by mail-wr1-f53.google.com with SMTP id p18so7030851wru.5;
-        Thu, 21 Apr 2022 07:46:34 -0700 (PDT)
-X-Gm-Message-State: AOAM532BY6WQ1dd6NyA20bzG0oGGSF6u3tYHeSPdcCHhlRa2PoQP/9tt
-        ZPLKxgM81JEfLwIb76smpKGFlV78Vct8FjsHnuI=
-X-Google-Smtp-Source: ABdhPJwYkraliZNB9aswBiexBZv/yC4YtGe2R9rvi1KW9m/P8YE/IbH0HzS9xhCUm+8mp8SN41/aSdFZNG1cTJqd71I=
-X-Received: by 2002:a5d:6da5:0:b0:20a:8805:6988 with SMTP id
- u5-20020a5d6da5000000b0020a88056988mr48774wrs.317.1650552393282; Thu, 21 Apr
- 2022 07:46:33 -0700 (PDT)
+        with ESMTP id S1380232AbiDUS7S (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 14:59:18 -0400
+Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CD8BAB
+        for <linux-omap@vger.kernel.org>; Thu, 21 Apr 2022 11:56:28 -0700 (PDT)
+Received: by mail-vs1-xe31.google.com with SMTP id i186so5361997vsc.9
+        for <linux-omap@vger.kernel.org>; Thu, 21 Apr 2022 11:56:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=5kO+k+eCcbH4bG94qA50b5/xV4Co1qH4aMNeBz3uozk=;
+        b=hsvvRTo7/o1mIx4s5nvid4uhkJYCTRkSwylyFMwBO/zT+6mzTE/WPCWOk3NlfY5DA0
+         fsQTp2zJcxsPocJcrNg/swi3kQAG5LiN0Is5eKFixqSJ9XPhb226bNDCXgc1kv0G7MxG
+         sSBO5kkY1v2k/flmkW821FLOZZTQq+m2ZM7mo9khzvafBGZy0oOJYhpSi3nZhPcF/A/a
+         UvG4ns4e54g8Ytq9LNht9zBkPEuMH9W2F4ThEumHzdZpJQwwUcCkQ9Fx+HQqeLv/84rv
+         OxrSGtpGq1mSq3BRoMBsm4P2RUsKR2S04PlHz/dE1v6UFPjSY3rH12TaN7me1sHq7eoq
+         5jDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=5kO+k+eCcbH4bG94qA50b5/xV4Co1qH4aMNeBz3uozk=;
+        b=3ZKDTxdFI5jjl4FH7tn/Xaf0BEUicnvnLtbT4NDhYKBFRD4DoIAFR6t6btrjyqQn+6
+         B36Zj3Vyni+kjjnB1OV4Yq1DZEKlXirtp48Xgc8uXAwB+Joy1B/rpqDcp0gxs9mcXzla
+         DV+w0mRdx9EYiVH8EWyetfsU35fgzS91jKRUmy6YxujFxkcnT1EI2W2QUq/rEenaAODx
+         H6uOUtKmcPisg+xsTf+rwunY8Npl8s6mBQXdlLWbAXcu0STkSFt4bkZ1+jAsQROqA4Gs
+         gXfd6Vex83sMQbitQiC+Pdod1SfuiXf4mCxYB0zo+ZnElGNBMU/sNxKT6v3XfeTP8jtO
+         72qA==
+X-Gm-Message-State: AOAM530wHC3AkhKF1O93lC+0ixf0MeSX8RoCKFOKGvzVVUabk7r4E7+O
+        kQlysvd6kOs0AhjVDUOeWj7cFwS4QK4Kd3c3lPg=
+X-Google-Smtp-Source: ABdhPJxtFMAXr0KVxv1vVnNZLInWW53LWF+1uff37HixfP8s0mqeQ4Wmub3j4p8Xki+pRhiX9coLIROQNyQJ2xe5+BE=
+X-Received: by 2002:a67:ec0b:0:b0:32a:355c:c633 with SMTP id
+ d11-20020a67ec0b000000b0032a355cc633mr368998vso.37.1650567387325; Thu, 21 Apr
+ 2022 11:56:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220419133723.1394715-1-arnd@kernel.org> <20220420170836.GB1947@darkstar.musicnaut.iki.fi>
- <CAK8P3a1+sOrn8BWPVc7f+QFZ5=7fE6=MLsMYV9t+HJcG2aRCXA@mail.gmail.com> <20220421133431.GE1947@darkstar.musicnaut.iki.fi>
-In-Reply-To: <20220421133431.GE1947@darkstar.musicnaut.iki.fi>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Thu, 21 Apr 2022 16:46:17 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0LkJ5EvJ13xtAhWzCKnnvYhYgKpPsphr1T-FGg6bzDuw@mail.gmail.com>
-Message-ID: <CAK8P3a0LkJ5EvJ13xtAhWzCKnnvYhYgKpPsphr1T-FGg6bzDuw@mail.gmail.com>
-Subject: Re: [PATCH 00/41] OMAP1 full multiplatform conversion
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc:     linux-omap <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Paul Walmsley <paul@pwsan.com>,
-        Kevin Hilman <khilman@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Mark Brown <broonie@kernel.org>,
-        Felipe Balbi <balbi@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        dmaengine@vger.kernel.org,
-        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>
+Received: by 2002:a05:6124:25a3:b0:2e5:1250:1930 with HTTP; Thu, 21 Apr 2022
+ 11:56:26 -0700 (PDT)
+Reply-To: swiss.barronson0@swissmail.com
+From:   "Mrs. Gamila Catherine" <karishama.bf@gmail.com>
+Date:   Thu, 21 Apr 2022 20:56:26 +0200
+Message-ID: <CAO0Gh4wtxf20O_Qqy41NmkPAkhTWAWJ=vJMOSjO-FQ2YKK-4Zg@mail.gmail.com>
+Subject: Parcel Force Delivery company.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM,UNDISC_MONEY,XFER_LOTSA_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:e31 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5005]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [swiss.barronson0[at]swissmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [karishama.bf[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.0 XFER_LOTSA_MONEY Transfer a lot of money
+        *  2.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Apr 21, 2022 at 3:34 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
->
-> Hi,
->
-> On Wed, Apr 20, 2022 at 10:00:13PM +0200, Arnd Bergmann wrote:
-> > On Wed, Apr 20, 2022 at 7:08 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-> > > On Tue, Apr 19, 2022 at 03:36:42PM +0200, Arnd Bergmann wrote:
-> > > > From: Arnd Bergmann <arnd@arndb.de>
-> > > >
-> > > > This is the full series for converting OMAP1 to multiplatform, rebased
-> > > > from my 2019 attempt to do the same thing. The soc tree contains simpler
-> > > > patches to do the same for iop32x, ixp4xx, ep93xx and s3c24xx, which
-> > > > means we are getting closer to completing this for all ARMv5 platforms
-> > > > (I have patches for PXA, which is the last one remaining).
-> > > >
-> > > > Janusz already tested the branch separately and did the missing work
-> > > > for the common-clk conversion after my previous approach was broken.
-> > >
-> > > I tested the full series on the following OMAP1 boards: ams-delta,
-> > > nokia770, osk, palmte and sx1 (QEMU only).
-> > >
-> > > Apart from the earlyprintk breakage, everything seemed to work OK.
-> >
-> > Nice, thanks a lot for testing!
->
-> With the updated patch 26 also earlyprintk now works, so if you still
-> update the patches, feel free to add for the whole series:
->
-> Tested-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-
-I was just doing the merge, so I added the tag to the commit now.
-
-There is now an "omap1/multiplatform-prep" branch that is part of
-arm/multiplatform, and I hope to not have to rebase that. I also
-have an arm/multiplatform-late branch with the remaining contents.
-
-       Arnd
+For your information i left your Bank draft worth USD 900,000,00
+Dollars  Only to thank you for your kind help to me.I will not contact
+you for long  time due to busy schedule of investment kindly contact
+Parcel Force Delivery company.
+Email:parclpost@gmail.com
+Mobile:+22954859693
