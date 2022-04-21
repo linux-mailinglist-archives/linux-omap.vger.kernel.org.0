@@ -2,36 +2,34 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08F43509F29
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 13:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EE7A509F38
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Apr 2022 14:02:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382612AbiDUMBr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Apr 2022 08:01:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43700 "EHLO
+        id S1384071AbiDUMEy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Apr 2022 08:04:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240811AbiDUMBq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 08:01:46 -0400
+        with ESMTP id S1382912AbiDUMEn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Apr 2022 08:04:43 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2C5872E9E0;
-        Thu, 21 Apr 2022 04:58:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0C3C32F391;
+        Thu, 21 Apr 2022 05:01:47 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 14B158106;
-        Thu, 21 Apr 2022 11:56:05 +0000 (UTC)
-Date:   Thu, 21 Apr 2022 14:58:55 +0300
+        by muru.com (Postfix) with ESMTPS id E8DF88106;
+        Thu, 21 Apr 2022 11:58:54 +0000 (UTC)
+Date:   Thu, 21 Apr 2022 15:01:45 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Merlijn Wajer <merlijn@wizzup.org>
-Cc:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Dev Null <devnull@uvos.xyz>,
-        Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org,
+To:     Adam Ford <aford173@gmail.com>
+Cc:     linux-omap@vger.kernel.org, aford@beaconembedded.com,
         Russell King <linux@armlinux.org.uk>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: omap2plus_defconfig: enable TLV320AIC3X
-Message-ID: <YmFG/+4y1duVsOEh@atomide.com>
-References: <20211216150506.31163-1-merlijn@wizzup.org>
+Subject: Re: [PATCH] ARM: omap2plus_defconfig: Enable ISP176x USB driver
+Message-ID: <YmFHqbSV+T2Qj7Xa@atomide.com>
+References: <20220221184107.2321951-1-aford173@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211216150506.31163-1-merlijn@wizzup.org>
+In-Reply-To: <20220221184107.2321951-1-aford173@gmail.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -40,13 +38,9 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Merlijn Wajer <merlijn@wizzup.org> [211216 17:00]:
-> Commit a96d2ba2d824 ("ASoC: codecs: tlv320aic3x: move I2C to separated
-> file") split the driver into SPI and I2C code and also provided a
-> separate configuration option for it.
-> 
-> The RX51 audio fails to probe since this commit, so let's add this
-> non-obvious configuration option to the defconfig.
+* Adam Ford <aford173@gmail.com> [220221 20:40]:
+> The Logic PD Torpedo baseboard has an ISP1763 USB controller attached
+> to the GPMC bus.  Enable the driver as a module.
 
 Applying into omap-for-v5.19/defconfig thanks.
 
