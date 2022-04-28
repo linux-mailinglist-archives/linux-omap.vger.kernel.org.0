@@ -2,66 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EDDE512EA0
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Apr 2022 10:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65E2E513137
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Apr 2022 12:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344219AbiD1Ijh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 28 Apr 2022 04:39:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39150 "EHLO
+        id S231819AbiD1K0k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 28 Apr 2022 06:26:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344695AbiD1IjJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Apr 2022 04:39:09 -0400
-X-Greylist: delayed 818 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 28 Apr 2022 01:31:36 PDT
-Received: from mail.profitbizdesign.com.pl (mail.profitbizdesign.com.pl [94.177.252.218])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF83FAAE36
-        for <linux-omap@vger.kernel.org>; Thu, 28 Apr 2022 01:31:36 -0700 (PDT)
-Received: by mail.profitbizdesign.com.pl (Postfix, from userid 1001)
-        id BAC44A8876; Thu, 28 Apr 2022 09:11:28 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=profitbizdesign.com.pl; s=mail; t=1651133524;
-        bh=Rfzvu4C+yJ1wyuJ4V+t/udh6cgYEQVnY6S5ltO4wdNg=;
-        h=Date:From:To:Subject:From;
-        b=Qc/5ss4l5Zf6Gm5IVDBbfyf85dliukCPibrwS1imLPdyuR91qs1sSdo4MMINu2wyN
-         gGH8cOJ7oCtB2JtyXFOzj65dfVZ19ZMOHcfGdPH/bL2ha/nc6U2p7VXA7uV2DOsGez
-         GOoZIOp+suDrToUYGA4U5Od8ig6V7PORG4DgXNFcQlr5Tkw9LQeP2euGzLyzmneuxB
-         QCKgUVaexphDHE4a3x6tWKUw1nthsDxNBc7o+pVoZpQI71EdpKEB7XAIXXppa5E1Nb
-         6hEMFubVLaFRjKWeDMkXBXTlYY/e2fIqGVEuRJG5uUdqQ1wP5FQRonpyKImH+tzea+
-         b7NiD3mbbRxrg==
-Received: by mail.profitbizdesign.com.pl for <linux-omap@vger.kernel.org>; Thu, 28 Apr 2022 08:10:19 GMT
-Message-ID: <20220428074503-0.1.1z.5zaa.0.as9trt3ckq@profitbizdesign.com.pl>
-Date:   Thu, 28 Apr 2022 08:10:19 GMT
-From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
-        <arkadiusz.sokolowski@profitbizdesign.com.pl>
-To:     <linux-omap@vger.kernel.org>
-Subject: Koszty instalacji fotowoltaicznej
-X-Mailer: mail.profitbizdesign.com.pl
+        with ESMTP id S234885AbiD1K0i (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 28 Apr 2022 06:26:38 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2DA1220C4;
+        Thu, 28 Apr 2022 03:23:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EED98B82ADD;
+        Thu, 28 Apr 2022 10:23:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B16C385A9;
+        Thu, 28 Apr 2022 10:23:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651141399;
+        bh=eGq+Qy5coA1eiupDJohON71z3nxTpsGZWZmLWIPy7Ls=;
+        h=From:To:Cc:Subject:Date:From;
+        b=t5okDDTkd4qUrowvavmE94jQ05DGUDdcjuHpgLYTfkNzVvG8U7t/ii6RZgsCK4Ekm
+         9nfC2LVtbzjaWcNGF/sNtHEd7dk5peocOPsYoyUrDoSK0HOIRgcvWUfytCyeiW5OC3
+         Li5tofqAOYEAe88wzZ5beQDsLc659hQojAHNJ/aOtPqkuE39imWWfXi4AFLfykl/Et
+         1JTq3Pvquf1+n83xduuvSAYHqnox3vTs4VthV8okERrtQai8ykzip+9Ua8BxEjL95d
+         OsQ6E0kOJNnPQJlBRDJIHsS+Gm6Bb9oViXgnL9Oser3LkpTsQm35f5fDn219YCjlsL
+         Fl98pxTzeHXeQ==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>,
+        Roger Quadros <rogerq@ti.com>, Felipe Balbi <balbi@ti.com>,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] usb: ehci-omap: drop unused ehci_read() function
+Date:   Thu, 28 Apr 2022 12:22:58 +0200
+Message-Id: <20220428102314.950323-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Dzie=C5=84 dobry,
+From: Arnd Bergmann <arnd@arndb.de>
 
-stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
- obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99. =20
+After moving the omap1 platform into generalized multiplatform
+support on ARM, the kernel test robot points out a W=1 warning that
+now shows up in more configurations:
 
-Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
-acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
-ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
+drivers/usb/host/ehci-omap.c:64:19: warning: unused function 'ehci_read'
 
-Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
-=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
-=2E
+The function was last used 9 years ago and can just be removed.
 
-Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
-temacie?
+Fixes: 87425ad36330 ("USB: ehci-omap: Remove PHY reset handling code")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/usb/host/ehci-omap.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Pozdrawiam
-Arkadiusz Soko=C5=82owski
+diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
+index 7f4a03e8647a..8c45bc17a580 100644
+--- a/drivers/usb/host/ehci-omap.c
++++ b/drivers/usb/host/ehci-omap.c
+@@ -61,11 +61,6 @@ static inline void ehci_write(void __iomem *base, u32 reg, u32 val)
+ 	__raw_writel(val, base + reg);
+ }
+ 
+-static inline u32 ehci_read(void __iomem *base, u32 reg)
+-{
+-	return __raw_readl(base + reg);
+-}
+-
+ /* configure so an HC device and id are always provided */
+ /* always called with process context; sleeping is OK */
+ 
+-- 
+2.29.2
+
