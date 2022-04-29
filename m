@@ -2,28 +2,28 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 230A35142F1
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Apr 2022 09:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CA8C5142FA
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Apr 2022 09:07:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354968AbiD2HJ6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 Apr 2022 03:09:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52790 "EHLO
+        id S1354970AbiD2HJ7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 Apr 2022 03:09:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354956AbiD2HJ5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Apr 2022 03:09:57 -0400
+        with ESMTP id S1354969AbiD2HJ6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Apr 2022 03:09:58 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AD6E6BE9EB;
-        Fri, 29 Apr 2022 00:06:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A44B1BE9F0;
+        Fri, 29 Apr 2022 00:06:41 -0700 (PDT)
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 3EDC980B5;
-        Fri, 29 Apr 2022 07:03:32 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 36A7D8138;
+        Fri, 29 Apr 2022 07:03:33 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     linux-omap@vger.kernel.org
 Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
         devicetree@vger.kernel.org
-Subject: [PATCH 18/19] ARM: dts: Group omap3 CM_CLKSEL_PER clocks
-Date:   Fri, 29 Apr 2022 10:06:12 +0300
-Message-Id: <20220429070613.62360-19-tony@atomide.com>
+Subject: [PATCH 19/19] ARM: dts: Group omap3 CM_CLKSEL1_EMU clocks
+Date:   Fri, 29 Apr 2022 10:06:13 +0300
+Message-Id: <20220429070613.62360-20-tony@atomide.com>
 X-Mailer: git-send-email 2.35.2
 In-Reply-To: <20220429070613.62360-1-tony@atomide.com>
 References: <20220429070613.62360-1-tony@atomide.com>
@@ -47,190 +47,191 @@ names for the clocks.
 
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- arch/arm/boot/dts/omap3xxx-clocks.dtsi | 128 +++++++++++++------------
- 1 file changed, 68 insertions(+), 60 deletions(-)
+ arch/arm/boot/dts/omap3xxx-clocks.dtsi | 152 +++++++++++++------------
+ 1 file changed, 80 insertions(+), 72 deletions(-)
 
 diff --git a/arch/arm/boot/dts/omap3xxx-clocks.dtsi b/arch/arm/boot/dts/omap3xxx-clocks.dtsi
 --- a/arch/arm/boot/dts/omap3xxx-clocks.dtsi
 +++ b/arch/arm/boot/dts/omap3xxx-clocks.dtsi
-@@ -1338,11 +1338,75 @@ mcbsp4_gate_fck: clock-mcbsp4-gate-fck {
- 		};
+@@ -254,14 +254,87 @@ dpll3_ck: dpll3_ck@d00 {
+ 		reg = <0x0d00>, <0x0d20>, <0x0d40>, <0x0d30>;
  	};
  
--	gpt2_mux_fck: gpt2_mux_fck@1040 {
+-	dpll3_m3_ck: dpll3_m3_ck@1140 {
 -		#clock-cells = <0>;
--		compatible = "ti,composite-mux-clock";
--		clocks = <&omap_32k_fck>, <&sys_ck>;
-+	/* CM_CLKSEL_PER */
-+	clock@1040 {
+-		compatible = "ti,divider-clock";
+-		clocks = <&dpll3_ck>;
+-		ti,bit-shift = <16>;
+-		ti,max-div = <31>;
++	/* CM_CLKSEL1_EMU */
++	clock@1140 {
 +		compatible = "ti,clksel";
- 		reg = <0x1040>;
+ 		reg = <0x1140>;
+-		ti,index-starts-at-one;
 +		#clock-cells = <2>;
 +		#address-cells = <0>;
 +
-+		gpt2_mux_fck: clock-gpt2-mux-fck {
++		dpll3_m3_ck: clock-dpll3-m3 {
 +			#clock-cells = <0>;
-+			compatible = "ti,composite-mux-clock";
-+			clock-output-names = "gpt2_mux_fck";
-+			clocks = <&omap_32k_fck>, <&sys_ck>;
++			compatible = "ti,divider-clock";
++			clock-output-names = "dpll3_m3_ck";
++			clocks = <&dpll3_ck>;
++			ti,bit-shift = <16>;
++			ti,max-div = <31>;
++			ti,index-starts-at-one;
 +		};
 +
-+		gpt3_mux_fck: clock-gpt3-mux-fck {
++		dpll4_m6_ck: clock-dpll4-m6 {
 +			#clock-cells = <0>;
-+			compatible = "ti,composite-mux-clock";
-+			clock-output-names = "gpt3_mux_fck";
-+			clocks = <&omap_32k_fck>, <&sys_ck>;
-+			ti,bit-shift = <1>;
++			compatible = "ti,divider-clock";
++			clock-output-names = "dpll4_m6_ck";
++			clocks = <&dpll4_ck>;
++			ti,bit-shift = <24>;
++			ti,max-div = <63>;
++			ti,index-starts-at-one;
 +		};
 +
-+		gpt4_mux_fck: clock-gpt4-mux-fck {
++		emu_src_mux_ck: clock-emu-src-mux {
 +			#clock-cells = <0>;
-+			compatible = "ti,composite-mux-clock";
-+			clock-output-names = "gpt4_mux_fck";
-+			clocks = <&omap_32k_fck>, <&sys_ck>;
++			compatible = "ti,mux-clock";
++			clock-output-names = "emu_src_mux_ck";
++			clocks = <&sys_ck>, <&emu_core_alwon_ck>, <&emu_per_alwon_ck>, <&emu_mpu_alwon_ck>;
++		};
++
++		pclk_fck: clock-pclk-fck {
++			#clock-cells = <0>;
++			compatible = "ti,divider-clock";
++			clock-output-names = "pclk_fck";
++			clocks = <&emu_src_ck>;
++			ti,bit-shift = <8>;
++			ti,max-div = <7>;
++			ti,index-starts-at-one;
++		};
++
++		pclkx2_fck: clock-pclkx2-fck {
++			#clock-cells = <0>;
++			compatible = "ti,divider-clock";
++			clock-output-names = "pclkx2_fck";
++			clocks = <&emu_src_ck>;
++			ti,bit-shift = <6>;
++			ti,max-div = <3>;
++			ti,index-starts-at-one;
++		};
++
++		atclk_fck: clock-atclk-fck {
++			#clock-cells = <0>;
++			compatible = "ti,divider-clock";
++			clock-output-names = "atclk_fck";
++			clocks = <&emu_src_ck>;
++			ti,bit-shift = <4>;
++			ti,max-div = <3>;
++			ti,index-starts-at-one;
++		};
++
++		traceclk_src_fck: clock-traceclk-src-fck {
++			#clock-cells = <0>;
++			compatible = "ti,mux-clock";
++			clock-output-names = "traceclk_src_fck";
++			clocks = <&sys_ck>, <&emu_core_alwon_ck>, <&emu_per_alwon_ck>, <&emu_mpu_alwon_ck>;
 +			ti,bit-shift = <2>;
 +		};
 +
-+		gpt5_mux_fck: clock-gpt5-mux-fck {
++		traceclk_fck: clock-traceclk-fck {
 +			#clock-cells = <0>;
-+			compatible = "ti,composite-mux-clock";
-+			clock-output-names = "gpt5_mux_fck";
-+			clocks = <&omap_32k_fck>, <&sys_ck>;
-+			ti,bit-shift = <3>;
-+		};
-+
-+		gpt6_mux_fck: clock-gpt6-mux-fck {
-+			#clock-cells = <0>;
-+			compatible = "ti,composite-mux-clock";
-+			clock-output-names = "gpt6_mux_fck";
-+			clocks = <&omap_32k_fck>, <&sys_ck>;
-+			ti,bit-shift = <4>;
-+		};
-+
-+		gpt7_mux_fck: clock-gpt7-mux-fck {
-+			#clock-cells = <0>;
-+			compatible = "ti,composite-mux-clock";
-+			clock-output-names = "gpt7_mux_fck";
-+			clocks = <&omap_32k_fck>, <&sys_ck>;
-+			ti,bit-shift = <5>;
-+		};
-+
-+		gpt8_mux_fck: clock-gpt8-mux-fck {
-+			#clock-cells = <0>;
-+			compatible = "ti,composite-mux-clock";
-+			clock-output-names = "gpt8_mux_fck";
-+			clocks = <&omap_32k_fck>, <&sys_ck>;
-+			ti,bit-shift = <6>;
-+		};
-+
-+		gpt9_mux_fck: clock-gpt9-mux-fck {
-+			#clock-cells = <0>;
-+			compatible = "ti,composite-mux-clock";
-+			clock-output-names = "gpt9_mux_fck";
-+			clocks = <&omap_32k_fck>, <&sys_ck>;
-+			ti,bit-shift = <7>;
++			compatible = "ti,divider-clock";
++			clock-output-names = "traceclk_fck";
++			clocks = <&traceclk_src_fck>;
++			ti,bit-shift = <11>;
++			ti,max-div = <7>;
++			ti,index-starts-at-one;
 +		};
  	};
  
- 	gpt2_fck: gpt2_fck {
-@@ -1351,98 +1415,42 @@ gpt2_fck: gpt2_fck {
- 		clocks = <&gpt2_gate_fck>, <&gpt2_mux_fck>;
+ 	dpll3_m3x2_mul_ck: dpll3_m3x2_mul_ck {
+@@ -500,16 +573,6 @@ dpll4_m5x2_ck: dpll4_m5x2_ck@d00 {
+ 		ti,set-rate-parent;
  	};
  
--	gpt3_mux_fck: gpt3_mux_fck@1040 {
+-	dpll4_m6_ck: dpll4_m6_ck@1140 {
 -		#clock-cells = <0>;
--		compatible = "ti,composite-mux-clock";
--		clocks = <&omap_32k_fck>, <&sys_ck>;
--		ti,bit-shift = <1>;
--		reg = <0x1040>;
+-		compatible = "ti,divider-clock";
+-		clocks = <&dpll4_ck>;
+-		ti,bit-shift = <24>;
+-		ti,max-div = <63>;
+-		reg = <0x1140>;
+-		ti,index-starts-at-one;
 -	};
 -
- 	gpt3_fck: gpt3_fck {
+ 	dpll4_m6x2_mul_ck: dpll4_m6x2_mul_ck {
  		#clock-cells = <0>;
- 		compatible = "ti,composite-clock";
- 		clocks = <&gpt3_gate_fck>, <&gpt3_mux_fck>;
+ 		compatible = "fixed-factor-clock";
+@@ -1633,67 +1696,12 @@ mcbsp4_ick: clock-mcbsp4-ick {
+ 		};
  	};
  
--	gpt4_mux_fck: gpt4_mux_fck@1040 {
+-	emu_src_mux_ck: emu_src_mux_ck@1140 {
 -		#clock-cells = <0>;
--		compatible = "ti,composite-mux-clock";
--		clocks = <&omap_32k_fck>, <&sys_ck>;
--		ti,bit-shift = <2>;
--		reg = <0x1040>;
+-		compatible = "ti,mux-clock";
+-		clocks = <&sys_ck>, <&emu_core_alwon_ck>, <&emu_per_alwon_ck>, <&emu_mpu_alwon_ck>;
+-		reg = <0x1140>;
 -	};
 -
- 	gpt4_fck: gpt4_fck {
+ 	emu_src_ck: emu_src_ck {
  		#clock-cells = <0>;
- 		compatible = "ti,composite-clock";
- 		clocks = <&gpt4_gate_fck>, <&gpt4_mux_fck>;
+ 		compatible = "ti,clkdm-gate-clock";
+ 		clocks = <&emu_src_mux_ck>;
  	};
  
--	gpt5_mux_fck: gpt5_mux_fck@1040 {
+-	pclk_fck: pclk_fck@1140 {
 -		#clock-cells = <0>;
--		compatible = "ti,composite-mux-clock";
--		clocks = <&omap_32k_fck>, <&sys_ck>;
--		ti,bit-shift = <3>;
--		reg = <0x1040>;
+-		compatible = "ti,divider-clock";
+-		clocks = <&emu_src_ck>;
+-		ti,bit-shift = <8>;
+-		ti,max-div = <7>;
+-		reg = <0x1140>;
+-		ti,index-starts-at-one;
 -	};
 -
- 	gpt5_fck: gpt5_fck {
- 		#clock-cells = <0>;
- 		compatible = "ti,composite-clock";
- 		clocks = <&gpt5_gate_fck>, <&gpt5_mux_fck>;
- 	};
- 
--	gpt6_mux_fck: gpt6_mux_fck@1040 {
+-	pclkx2_fck: pclkx2_fck@1140 {
 -		#clock-cells = <0>;
--		compatible = "ti,composite-mux-clock";
--		clocks = <&omap_32k_fck>, <&sys_ck>;
--		ti,bit-shift = <4>;
--		reg = <0x1040>;
--	};
--
- 	gpt6_fck: gpt6_fck {
- 		#clock-cells = <0>;
- 		compatible = "ti,composite-clock";
- 		clocks = <&gpt6_gate_fck>, <&gpt6_mux_fck>;
- 	};
- 
--	gpt7_mux_fck: gpt7_mux_fck@1040 {
--		#clock-cells = <0>;
--		compatible = "ti,composite-mux-clock";
--		clocks = <&omap_32k_fck>, <&sys_ck>;
--		ti,bit-shift = <5>;
--		reg = <0x1040>;
--	};
--
- 	gpt7_fck: gpt7_fck {
- 		#clock-cells = <0>;
- 		compatible = "ti,composite-clock";
- 		clocks = <&gpt7_gate_fck>, <&gpt7_mux_fck>;
- 	};
- 
--	gpt8_mux_fck: gpt8_mux_fck@1040 {
--		#clock-cells = <0>;
--		compatible = "ti,composite-mux-clock";
--		clocks = <&omap_32k_fck>, <&sys_ck>;
+-		compatible = "ti,divider-clock";
+-		clocks = <&emu_src_ck>;
 -		ti,bit-shift = <6>;
--		reg = <0x1040>;
+-		ti,max-div = <3>;
+-		reg = <0x1140>;
+-		ti,index-starts-at-one;
 -	};
 -
- 	gpt8_fck: gpt8_fck {
- 		#clock-cells = <0>;
- 		compatible = "ti,composite-clock";
- 		clocks = <&gpt8_gate_fck>, <&gpt8_mux_fck>;
- 	};
- 
--	gpt9_mux_fck: gpt9_mux_fck@1040 {
+-	atclk_fck: atclk_fck@1140 {
 -		#clock-cells = <0>;
--		compatible = "ti,composite-mux-clock";
--		clocks = <&omap_32k_fck>, <&sys_ck>;
--		ti,bit-shift = <7>;
--		reg = <0x1040>;
+-		compatible = "ti,divider-clock";
+-		clocks = <&emu_src_ck>;
+-		ti,bit-shift = <4>;
+-		ti,max-div = <3>;
+-		reg = <0x1140>;
+-		ti,index-starts-at-one;
 -	};
 -
- 	gpt9_fck: gpt9_fck {
+-	traceclk_src_fck: traceclk_src_fck@1140 {
+-		#clock-cells = <0>;
+-		compatible = "ti,mux-clock";
+-		clocks = <&sys_ck>, <&emu_core_alwon_ck>, <&emu_per_alwon_ck>, <&emu_mpu_alwon_ck>;
+-		ti,bit-shift = <2>;
+-		reg = <0x1140>;
+-	};
+-
+-	traceclk_fck: traceclk_fck@1140 {
+-		#clock-cells = <0>;
+-		compatible = "ti,divider-clock";
+-		clocks = <&traceclk_src_fck>;
+-		ti,bit-shift = <11>;
+-		ti,max-div = <7>;
+-		reg = <0x1140>;
+-		ti,index-starts-at-one;
+-	};
+-
+ 	secure_32k_fck: secure_32k_fck {
  		#clock-cells = <0>;
- 		compatible = "ti,composite-clock";
+ 		compatible = "fixed-clock";
 -- 
 2.35.2
