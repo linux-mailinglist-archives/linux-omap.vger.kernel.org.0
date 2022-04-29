@@ -2,99 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB5C5142C0
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Apr 2022 08:58:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A69E55142C4
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Apr 2022 08:59:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354824AbiD2HBm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 Apr 2022 03:01:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34268 "EHLO
+        id S1354832AbiD2HCw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 Apr 2022 03:02:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354823AbiD2HBl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Apr 2022 03:01:41 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587C4BCB54
-        for <linux-omap@vger.kernel.org>; Thu, 28 Apr 2022 23:58:24 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id l18so13630424ejc.7
-        for <linux-omap@vger.kernel.org>; Thu, 28 Apr 2022 23:58:24 -0700 (PDT)
+        with ESMTP id S1354836AbiD2HCv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Apr 2022 03:02:51 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B7DBBCB71
+        for <linux-omap@vger.kernel.org>; Thu, 28 Apr 2022 23:59:33 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id k27so7989871edk.4
+        for <linux-omap@vger.kernel.org>; Thu, 28 Apr 2022 23:59:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=3otK7G5mDlVdg7lJNS61dFQOJl59ip503etKmxwIT+Q=;
-        b=e/lmvj5vaNcaQnSTylDlu0Pw85f4ht4NN4mZq8YYxB/mqQTJgxWJ0LRNN13bJLcDoQ
-         z4+hPWCk1ws5H6+lzheYQCGQAxAas3JvU7ngVtVGWWW3RNgzvdf15k2zTLk5eXFXEtva
-         1qwpWgAK+bVoE+rXCp2nhf6mNeVqMfgV+RhNRm0dxxYX318VVrs3vK3f0S1tc7y9rNct
-         2HuG82BPwz4l8nUnDA8N6SMaqqGP7HwZhje3tiSgBnf+pcZ+k2MZeyFS5twLDKlLnfU3
-         Q0RRlFoeWZztKYAOF21FgLfPBpciRuCiEAszUUw/70Vd7axetq71TXekH6JJU9Ha8lWs
-         j3Ng==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=7dcel1unR3OSaS5OenjvPcDKkJcdS5R3C1O6/98GUmQ=;
+        b=LQdCDFQTSiKnyVzKBAY6Jqj6ysLz3DCV5cfns3Da1oyHmMbh62opBpARto/wtWTQeg
+         OIx5tbIyIlvCz+C61RMpk4q8UXOhtIkDK6GgaT2acdp4jHyO6p7Jmw+Fr1/S6Qi3cDcU
+         Ib0t6rlpkPnIgxitjOZdndHjysqgsZLvP9JSPyGiOjBfK+ocsE5WhRSAh35V5b4RJWrl
+         fhNxuUiDeKWBn1QAFBjXws/h965X8+5mOFpLCtwooQ51BW5d0YzNAFKas7vRC5daoEtE
+         UocMhnb0WoD1NEmaRBkMmNo+q/jfwKsoE7l2dMDVUlwHqe6xAg6aXFcgGtLGsMXWbxcT
+         ORxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=3otK7G5mDlVdg7lJNS61dFQOJl59ip503etKmxwIT+Q=;
-        b=dx9hXrv0SWXRj+8kEwIjUGOQUabx80XdJLoued3f4ut/I/gKmlDrQJQGs7i0ST/x8j
-         PCtajgvfRcenk/6oxN7bZPrzgr7xzLg085+DReMfifvM/p5dsAMAFCAUyJ7U3wzaoXOO
-         hWecXwgOyEHNl8rZY11oeSjaJgCvC6dyx8TSS1Tbsk8Xd8q8HLwQvu96dw5CUw5pZAte
-         5coFoc6nr/0luqi/81Fg7xcZuZsLi1lSjC88sphTjWZ0S4sU1/xAYvGgR57feLfaXg67
-         wY33sxgcXz8jA5od9+yNWCmTKasmScCHLbIoMcvlyE5DPNLxfqBtWxYfrFGvU3IE6Niy
-         vbWw==
-X-Gm-Message-State: AOAM531oowFlZEa7kRXHZrJ/1gni3ysSikvkqSrTg6ZVY5IRPLWVpq25
-        2Yqe8X2RAcudmkmb7fnOpKByDg==
-X-Google-Smtp-Source: ABdhPJy5IwCBPgKHwV5/ciE6nZsSCYnubwtZMdcLVKbVPJv43TkmACLi3MR0cMkx7xxn0HedaL+VEA==
-X-Received: by 2002:a17:907:2d24:b0:6f3:91fd:db8f with SMTP id gs36-20020a1709072d2400b006f391fddb8fmr23847854ejc.150.1651215502911;
-        Thu, 28 Apr 2022 23:58:22 -0700 (PDT)
-Received: from localhost.localdomain (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id co8-20020a0564020c0800b0042617ba63c6sm2591363edb.80.2022.04.28.23.58.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Apr 2022 23:58:22 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Roger Quadros <rogerq@kernel.org>, krzk@kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        nm@ti.com, tony@atomide.com, kishon@ti.com, vigneshr@ti.com,
-        miquel.raynal@bootlin.com
-Subject: Re: [PATCH v4 0/2] memory: omap-gpmc: Allow module build
-Date:   Fri, 29 Apr 2022 08:58:17 +0200
-Message-Id: <165121548985.31307.18071225935651783225.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220426082611.24427-1-rogerq@kernel.org>
-References: <20220426082611.24427-1-rogerq@kernel.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=7dcel1unR3OSaS5OenjvPcDKkJcdS5R3C1O6/98GUmQ=;
+        b=ZvFe0pNQLm05evZm1doVWMmiMIt9rl8t4O3XqTw0cLsDnPQ8rc6YVzpbbp7KSpq8Th
+         HfexVkVMHoE9tGzYKImQ6ZljAc9EBYHuaqF0jI3H0dYwiwUMifNaiq58IXjJc33zBWv2
+         FuLDVM1/Z8WlmJUWrsxu0SsblvZo9AbOOylg1iRtC5fBBnYwvjY7aERI8P/mWeSDaVXH
+         pxU1gEcgLHXXcv3IFoBCj4dxZ0HuHKQHAHXh4EEwMYVmI9z4rn7+RD2KOCyJQCDdzBI+
+         r4Zlkdkuy5U5RF0Idra86o231nOV1k46VHhTO9yIzqBzViwYch/29Xs0CPMB4g9x7ygS
+         pNCw==
+X-Gm-Message-State: AOAM530bY4c16iz7BVpx+9XqHmp9ymRG4o/n1sTEb008hYcNQF6AGn8M
+        3M/UiGn6+DE+PLMq6ge4ZICB0g==
+X-Google-Smtp-Source: ABdhPJx2Ly9+KUtPEJqkBVpf88bhpxc8PjYl3CDeeuNKFo8S5Pz7pwUAz4F/kP8kgjNbBS1PhEA+aQ==
+X-Received: by 2002:a05:6402:d05:b0:425:b7ab:776e with SMTP id eb5-20020a0564020d0500b00425b7ab776emr39083670edb.142.1651215571955;
+        Thu, 28 Apr 2022 23:59:31 -0700 (PDT)
+Received: from [192.168.0.169] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id jz1-20020a17090775e100b006f3ef214e27sm360328ejc.141.2022.04.28.23.59.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Apr 2022 23:59:31 -0700 (PDT)
+Message-ID: <36ebec7d-e09a-241f-c7f2-457af7f19ae3@linaro.org>
+Date:   Fri, 29 Apr 2022 08:59:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v4 2/2] memory: omap-gpmc: Allow building as a module
+Content-Language: en-US
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     miquel.raynal@bootlin.com, tony@atomide.com, vigneshr@ti.com,
+        kishon@ti.com, nm@ti.com, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220426082611.24427-1-rogerq@kernel.org>
+ <20220426082611.24427-3-rogerq@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220426082611.24427-3-rogerq@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 26 Apr 2022 11:26:09 +0300, Roger Quadros wrote:
-> These patches allow OMAP_GPMC config to be visible in menuconfig
-> and buildable as a module.
+On 26/04/2022 10:26, Roger Quadros wrote:
+> Allow OMAP_GPMC to be built as a module.
 > 
-> cheers,
-> -roger
+> When building this driver as a module, the symbol
+> 'of_default_bus_match_table' will not be found
+> as it is not being exported.
 > 
-> Changelog:
-> v4:
-> - drop COMPILE_TEST as include/linux/irqdomain.h does not have
-> fallbacks if CONFIG_IRQ_DOMAIN is not available. So build will
-> fail with COMPILE_TEST on platforms not having CONFIG_IRQ_DOMAIN.
-> - use GPL instead of GPL v2 for MODULE_LICENSE. Fixes checkpatch
-> warning.
+> The of_match_node() call is redundant anyways as
+> of_platform_default_populate() already takes care of
+> matching with 'of_default_bus_match_table'. So get
+> rid of that call. This will also resolve the
+> module build failure.
 > 
-> [...]
+> Move compatible match table to the end where it is
+> usually expected.
 
-Applied, thanks!
+Don't
+use
+some
+unusual
+wrapping
+style.
 
-[1/2] memory: omap-gpmc: Make OMAP_GPMC config visible and selectable
-      (no commit info)
-[2/2] memory: omap-gpmc: Allow building as a module
-      (no commit info)
+Read
+instead:
+https://elixir.bootlin.com/linux/v5.18-rc4/source/Documentation/process/submitting-patches.rst#L586
+
 
 Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Krzysztof
