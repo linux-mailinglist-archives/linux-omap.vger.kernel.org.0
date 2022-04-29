@@ -2,236 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CA8C5142FA
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Apr 2022 09:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE29F5143AD
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Apr 2022 10:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354970AbiD2HJ7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 29 Apr 2022 03:09:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52882 "EHLO
+        id S238466AbiD2IPR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 29 Apr 2022 04:15:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354969AbiD2HJ6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Apr 2022 03:09:58 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A44B1BE9F0;
-        Fri, 29 Apr 2022 00:06:41 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 36A7D8138;
-        Fri, 29 Apr 2022 07:03:33 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     linux-omap@vger.kernel.org
-Cc:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        devicetree@vger.kernel.org
-Subject: [PATCH 19/19] ARM: dts: Group omap3 CM_CLKSEL1_EMU clocks
-Date:   Fri, 29 Apr 2022 10:06:13 +0300
-Message-Id: <20220429070613.62360-20-tony@atomide.com>
-X-Mailer: git-send-email 2.35.2
-In-Reply-To: <20220429070613.62360-1-tony@atomide.com>
-References: <20220429070613.62360-1-tony@atomide.com>
+        with ESMTP id S236729AbiD2IPP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 29 Apr 2022 04:15:15 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5562A27B10;
+        Fri, 29 Apr 2022 01:11:58 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id a14-20020a7bc1ce000000b00393fb52a386so5969802wmj.1;
+        Fri, 29 Apr 2022 01:11:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:reply-to:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=XqvrYci+95js6f4mZtp9h/yUnthzubPuS18nX3bTZPY=;
+        b=Agh0hWfNWOLsgMtRQM7cd5+lULJfekaq2Bdh3j5NJrn8b77Zijoq0Lzu+L84ZM2LVz
+         wt1r36bJC8X6sII7aa0Y1uCvfy4g0T+Wg9D0SorY0VU7U5eyo+kztqsvp/jueHRWzWzq
+         Clcs/GPXTwguYJs/ySHdd4cVkPfhD7usB5qc1a4HNTnkYp8PYLFPtPSZ0K7NsQXyHsce
+         TMHr7eRmKAKhHpRhZdf9P8Yc0fC+6ukgaRo55rChtq9CrWhXGHGrwvZl7oJXgq9/ekOV
+         ejIe2PNvw6G5fOikA75aBhkkFGyeLnA85N/DohY9YkAcFI/QMcwRGVZXPcl/thf+D2TZ
+         1wJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:reply-to
+         :subject:content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=XqvrYci+95js6f4mZtp9h/yUnthzubPuS18nX3bTZPY=;
+        b=Fvt6MN5kmgjnb5pYzYN+NFNyKK5UHTGPZZ94c8lN46PVZwm79YT+X8ktGd3LNdGjp3
+         ZCkyrtP7Hn8kdfNV+4Wos3TNmflTrVfSfnqbhdJNGHYNtPJxSWiXG7GbI9bNGVwgq/Mj
+         4u/jjA94dXXrA46bn5G+mSIa5yA9VmXoO8XGQEMFdm09Oamo9o3YuislLbXeOqyRa97R
+         vJY1t2NtwuHGnvGpP250BvUDdNJrBPKlxZ+GAyXywDWR4K1ku6el0MJNeZ7gg6sjPB1J
+         jds8Pa2Xv22wCx8NS8QkhumkxKHgFMBhRoA1nefZQDCA6sm+uPxbtT0ScFEooaA43y8k
+         SI9g==
+X-Gm-Message-State: AOAM532a9gNxRkGoPf2zLikgpCrBHx6V0qq/zOX6BMWdFcRrCrWQ+8b3
+        UKE3Fs4hVQDJC/fFb5jJEM0=
+X-Google-Smtp-Source: ABdhPJzYf70fG27iHwc3wFbKY4QIqsyyUy9X0QI973D1I4SxhcbTK5uGUHInLMnygbTBJgrDh3XA3g==
+X-Received: by 2002:a7b:cbc2:0:b0:388:faec:2036 with SMTP id n2-20020a7bcbc2000000b00388faec2036mr2089539wmi.190.1651219916786;
+        Fri, 29 Apr 2022 01:11:56 -0700 (PDT)
+Received: from [10.7.237.11] (54-240-197-227.amazon.com. [54.240.197.227])
+        by smtp.gmail.com with ESMTPSA id q16-20020a1ce910000000b0038eabd31749sm2222371wmc.32.2022.04.29.01.11.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Apr 2022 01:11:56 -0700 (PDT)
+Message-ID: <c962f441-05b8-8aa1-5186-c85251f3e0ba@gmail.com>
+Date:   Fri, 29 Apr 2022 09:11:54 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Reply-To: paul@xen.org
+Subject: Re: [PATCH net-next v2 01/15] eth: remove copies of the
+ NAPI_POLL_WEIGHT define
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+        pabeni@redhat.com
+Cc:     edumazet@google.com, netdev@vger.kernel.org,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        mlindner@marvell.com, stephen@networkplumber.org, nbd@nbd.name,
+        john@phrozen.org, sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
+        matthias.bgg@gmail.com, grygorii.strashko@ti.com,
+        wei.liu@kernel.org, paul@xen.org,
+        prabhakar.mahadev-lad.rj@bp.renesas.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
+        xen-devel@lists.xenproject.org
+References: <20220428212323.104417-1-kuba@kernel.org>
+ <20220428212323.104417-2-kuba@kernel.org>
+From:   "Durrant, Paul" <xadimgnik@gmail.com>
+In-Reply-To: <20220428212323.104417-2-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The clksel related registers on omap3 cause unique_unit_address and
-node_name_chars_strict warnings with the W=1 or W=2 make flags enabled.
+On 28/04/2022 22:23, Jakub Kicinski wrote:
+> Defining local versions of NAPI_POLL_WEIGHT with the same
+> values in the drivers just makes refactoring harder.
+> 
+> Drop the special defines in a bunch of drivers where the
+> removal is relatively simple so grouping into one patch
+> does not impact reviewability.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: ulli.kroll@googlemail.com
+> CC: linus.walleij@linaro.org
+> CC: mlindner@marvell.com
+> CC: stephen@networkplumber.org
+> CC: nbd@nbd.name
+> CC: john@phrozen.org
+> CC: sean.wang@mediatek.com
+> CC: Mark-MC.Lee@mediatek.com
+> CC: matthias.bgg@gmail.com
+> CC: grygorii.strashko@ti.com
+> CC: wei.liu@kernel.org
+> CC: paul@xen.org
+> CC: prabhakar.mahadev-lad.rj@bp.renesas.com
+> CC: linux-arm-kernel@lists.infradead.org
+> CC: linux-mediatek@lists.infradead.org
+> CC: linux-omap@vger.kernel.org
+> CC: xen-devel@lists.xenproject.org
+> ---
+>   drivers/net/ethernet/cortina/gemini.c         | 4 +---
+>   drivers/net/ethernet/marvell/skge.c           | 3 +--
+>   drivers/net/ethernet/marvell/sky2.c           | 3 +--
+>   drivers/net/ethernet/mediatek/mtk_star_emac.c | 3 +--
+>   drivers/net/ethernet/ti/davinci_emac.c        | 3 +--
+>   drivers/net/ethernet/ti/netcp_core.c          | 5 ++---
+>   drivers/net/xen-netback/interface.c           | 3 +--
+>   7 files changed, 8 insertions(+), 16 deletions(-)
+> 
 
-With the clock drivers updated, we can now avoid most of these warnings
-by grouping the TI component clocks using the TI clksel binding, and
-with the use of clock-output-names property to avoid non-standard node
-names for the clocks.
+xen-netback patch...
 
-Signed-off-by: Tony Lindgren <tony@atomide.com>
----
- arch/arm/boot/dts/omap3xxx-clocks.dtsi | 152 +++++++++++++------------
- 1 file changed, 80 insertions(+), 72 deletions(-)
-
-diff --git a/arch/arm/boot/dts/omap3xxx-clocks.dtsi b/arch/arm/boot/dts/omap3xxx-clocks.dtsi
---- a/arch/arm/boot/dts/omap3xxx-clocks.dtsi
-+++ b/arch/arm/boot/dts/omap3xxx-clocks.dtsi
-@@ -254,14 +254,87 @@ dpll3_ck: dpll3_ck@d00 {
- 		reg = <0x0d00>, <0x0d20>, <0x0d40>, <0x0d30>;
- 	};
- 
--	dpll3_m3_ck: dpll3_m3_ck@1140 {
--		#clock-cells = <0>;
--		compatible = "ti,divider-clock";
--		clocks = <&dpll3_ck>;
--		ti,bit-shift = <16>;
--		ti,max-div = <31>;
-+	/* CM_CLKSEL1_EMU */
-+	clock@1140 {
-+		compatible = "ti,clksel";
- 		reg = <0x1140>;
--		ti,index-starts-at-one;
-+		#clock-cells = <2>;
-+		#address-cells = <0>;
-+
-+		dpll3_m3_ck: clock-dpll3-m3 {
-+			#clock-cells = <0>;
-+			compatible = "ti,divider-clock";
-+			clock-output-names = "dpll3_m3_ck";
-+			clocks = <&dpll3_ck>;
-+			ti,bit-shift = <16>;
-+			ti,max-div = <31>;
-+			ti,index-starts-at-one;
-+		};
-+
-+		dpll4_m6_ck: clock-dpll4-m6 {
-+			#clock-cells = <0>;
-+			compatible = "ti,divider-clock";
-+			clock-output-names = "dpll4_m6_ck";
-+			clocks = <&dpll4_ck>;
-+			ti,bit-shift = <24>;
-+			ti,max-div = <63>;
-+			ti,index-starts-at-one;
-+		};
-+
-+		emu_src_mux_ck: clock-emu-src-mux {
-+			#clock-cells = <0>;
-+			compatible = "ti,mux-clock";
-+			clock-output-names = "emu_src_mux_ck";
-+			clocks = <&sys_ck>, <&emu_core_alwon_ck>, <&emu_per_alwon_ck>, <&emu_mpu_alwon_ck>;
-+		};
-+
-+		pclk_fck: clock-pclk-fck {
-+			#clock-cells = <0>;
-+			compatible = "ti,divider-clock";
-+			clock-output-names = "pclk_fck";
-+			clocks = <&emu_src_ck>;
-+			ti,bit-shift = <8>;
-+			ti,max-div = <7>;
-+			ti,index-starts-at-one;
-+		};
-+
-+		pclkx2_fck: clock-pclkx2-fck {
-+			#clock-cells = <0>;
-+			compatible = "ti,divider-clock";
-+			clock-output-names = "pclkx2_fck";
-+			clocks = <&emu_src_ck>;
-+			ti,bit-shift = <6>;
-+			ti,max-div = <3>;
-+			ti,index-starts-at-one;
-+		};
-+
-+		atclk_fck: clock-atclk-fck {
-+			#clock-cells = <0>;
-+			compatible = "ti,divider-clock";
-+			clock-output-names = "atclk_fck";
-+			clocks = <&emu_src_ck>;
-+			ti,bit-shift = <4>;
-+			ti,max-div = <3>;
-+			ti,index-starts-at-one;
-+		};
-+
-+		traceclk_src_fck: clock-traceclk-src-fck {
-+			#clock-cells = <0>;
-+			compatible = "ti,mux-clock";
-+			clock-output-names = "traceclk_src_fck";
-+			clocks = <&sys_ck>, <&emu_core_alwon_ck>, <&emu_per_alwon_ck>, <&emu_mpu_alwon_ck>;
-+			ti,bit-shift = <2>;
-+		};
-+
-+		traceclk_fck: clock-traceclk-fck {
-+			#clock-cells = <0>;
-+			compatible = "ti,divider-clock";
-+			clock-output-names = "traceclk_fck";
-+			clocks = <&traceclk_src_fck>;
-+			ti,bit-shift = <11>;
-+			ti,max-div = <7>;
-+			ti,index-starts-at-one;
-+		};
- 	};
- 
- 	dpll3_m3x2_mul_ck: dpll3_m3x2_mul_ck {
-@@ -500,16 +573,6 @@ dpll4_m5x2_ck: dpll4_m5x2_ck@d00 {
- 		ti,set-rate-parent;
- 	};
- 
--	dpll4_m6_ck: dpll4_m6_ck@1140 {
--		#clock-cells = <0>;
--		compatible = "ti,divider-clock";
--		clocks = <&dpll4_ck>;
--		ti,bit-shift = <24>;
--		ti,max-div = <63>;
--		reg = <0x1140>;
--		ti,index-starts-at-one;
--	};
--
- 	dpll4_m6x2_mul_ck: dpll4_m6x2_mul_ck {
- 		#clock-cells = <0>;
- 		compatible = "fixed-factor-clock";
-@@ -1633,67 +1696,12 @@ mcbsp4_ick: clock-mcbsp4-ick {
- 		};
- 	};
- 
--	emu_src_mux_ck: emu_src_mux_ck@1140 {
--		#clock-cells = <0>;
--		compatible = "ti,mux-clock";
--		clocks = <&sys_ck>, <&emu_core_alwon_ck>, <&emu_per_alwon_ck>, <&emu_mpu_alwon_ck>;
--		reg = <0x1140>;
--	};
--
- 	emu_src_ck: emu_src_ck {
- 		#clock-cells = <0>;
- 		compatible = "ti,clkdm-gate-clock";
- 		clocks = <&emu_src_mux_ck>;
- 	};
- 
--	pclk_fck: pclk_fck@1140 {
--		#clock-cells = <0>;
--		compatible = "ti,divider-clock";
--		clocks = <&emu_src_ck>;
--		ti,bit-shift = <8>;
--		ti,max-div = <7>;
--		reg = <0x1140>;
--		ti,index-starts-at-one;
--	};
--
--	pclkx2_fck: pclkx2_fck@1140 {
--		#clock-cells = <0>;
--		compatible = "ti,divider-clock";
--		clocks = <&emu_src_ck>;
--		ti,bit-shift = <6>;
--		ti,max-div = <3>;
--		reg = <0x1140>;
--		ti,index-starts-at-one;
--	};
--
--	atclk_fck: atclk_fck@1140 {
--		#clock-cells = <0>;
--		compatible = "ti,divider-clock";
--		clocks = <&emu_src_ck>;
--		ti,bit-shift = <4>;
--		ti,max-div = <3>;
--		reg = <0x1140>;
--		ti,index-starts-at-one;
--	};
--
--	traceclk_src_fck: traceclk_src_fck@1140 {
--		#clock-cells = <0>;
--		compatible = "ti,mux-clock";
--		clocks = <&sys_ck>, <&emu_core_alwon_ck>, <&emu_per_alwon_ck>, <&emu_mpu_alwon_ck>;
--		ti,bit-shift = <2>;
--		reg = <0x1140>;
--	};
--
--	traceclk_fck: traceclk_fck@1140 {
--		#clock-cells = <0>;
--		compatible = "ti,divider-clock";
--		clocks = <&traceclk_src_fck>;
--		ti,bit-shift = <11>;
--		ti,max-div = <7>;
--		reg = <0x1140>;
--		ti,index-starts-at-one;
--	};
--
- 	secure_32k_fck: secure_32k_fck {
- 		#clock-cells = <0>;
- 		compatible = "fixed-clock";
--- 
-2.35.2
+Reviewed-by: Paul Durrant <paul@xen.org>
