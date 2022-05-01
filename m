@@ -2,95 +2,108 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A902515FE8
-	for <lists+linux-omap@lfdr.de>; Sat, 30 Apr 2022 20:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC34F516894
+	for <lists+linux-omap@lfdr.de>; Mon,  2 May 2022 00:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244161AbiD3Svz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 30 Apr 2022 14:51:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36316 "EHLO
+        id S240925AbiEAWOF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 1 May 2022 18:14:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242565AbiD3Svx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 30 Apr 2022 14:51:53 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF3365D16;
-        Sat, 30 Apr 2022 11:48:30 -0700 (PDT)
-Received: from mail-yw1-f181.google.com ([209.85.128.181]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MCbMx-1ncNwt2WNX-009jiN; Sat, 30 Apr 2022 20:48:28 +0200
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-2f16645872fso114804677b3.4;
-        Sat, 30 Apr 2022 11:48:28 -0700 (PDT)
-X-Gm-Message-State: AOAM531T5DuulTu1OgLm6O9hTfZZwe7AWw1dZF+hraCuYrm++rJhGfO0
-        B9aoN48xAyE+uXG7WndIoJkSua0X+4lemCj49DE=
-X-Google-Smtp-Source: ABdhPJw5Ufu73NQqjQznRHFKAzqDqei6NH3iC7AzVn9WUXDhjxTHyVlDQu80ZwapZtPjmhVQSPDsX50LuZep76uZYyA=
-X-Received: by 2002:a81:1dd1:0:b0:2ea:c38b:65a8 with SMTP id
- d200-20020a811dd1000000b002eac38b65a8mr4901410ywd.135.1651344507310; Sat, 30
- Apr 2022 11:48:27 -0700 (PDT)
+        with ESMTP id S1378175AbiEAWNv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 1 May 2022 18:13:51 -0400
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87EE925DE
+        for <linux-omap@vger.kernel.org>; Sun,  1 May 2022 15:10:24 -0700 (PDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-2f7b815ac06so132051197b3.3
+        for <linux-omap@vger.kernel.org>; Sun, 01 May 2022 15:10:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8WXuaqzf5H6JbTMCrSNoDEe2cTNFwsekkVTcYWtQXX8=;
+        b=NIMD1MgHFUA8qDcBtlkRUl6QwAMsrYm2LFtmvl8/1tnPPHxRUpA1yQ5LUAYctdi06T
+         TOsD/Pv8VDI71Se+5p7Pej/mhD4qgf+k14w13KqKouOzghHkUgz02mr9ht1C5Q+AQUuh
+         0KviUgNPzfaZP4wqvtLikTYkYLlECRohNbsEu9h/EpakyyZgJrAzbiZa3kK32wRWZAP8
+         v8ZanNeCIK/+zl9E9gG5DRVG3Hrx7mW8dweXwuLE07vm1+xVHs5Z+8j39wJwgxAr3TB0
+         sIVDxA8IhVVZXSJeGhmsZmd4DHlgLnJXoULjO7WRPuijicppJaGPBhttKcLNbK4Ul/z4
+         EqFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8WXuaqzf5H6JbTMCrSNoDEe2cTNFwsekkVTcYWtQXX8=;
+        b=6+T65eghPK2OTxDmCjePw54nRsuuHGgYIs3Qc06Ja4iNHWHo7+8FO5Z3/40mK8kzda
+         qLlz1GBhsKyuu7fGBEqXs7CPbd8jrQGwiLbBH0ENC82Ywdc+TJrlSWncferotcDtEzpU
+         kaYr025j3mULzlRVZhAv244Yumsbo0sR7N1E1E8et8+6tp8JMEt87f4BWDCV2EPOZyg2
+         EFvC/bNFBn+FyUZTp7RDISjsZymjzN+DwZRE0lT4mMZ9lBaW1fvpTiefGryN7laWS+Vh
+         ecUR2+9gaipFyId9HXlQByIlr7JYpQakAjZxnTHsof4Bi2CDxQUYmudAz8xs/5wtOf72
+         eCDQ==
+X-Gm-Message-State: AOAM530dxej0GI/Eq/hLwgSC4zHejkYetcBezulQbUUIoVeCxeFmppe4
+        fdH/2cwgnBXZAWe3X0k5KyLAdZYXcUdrhVlkDjQTGQ==
+X-Google-Smtp-Source: ABdhPJwVRMVN6PYWPNDrbRGkbqET+tO2dajvHrcjRYlUisQxn4zRaAT7N9xEe7+WAUzHysUVA7VWrMEEZM+qWd2jZ7k=
+X-Received: by 2002:a81:2154:0:b0:2f4:d79e:35dc with SMTP id
+ h81-20020a812154000000b002f4d79e35dcmr9302689ywh.126.1651443023815; Sun, 01
+ May 2022 15:10:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <FA654A0D-29B7-4B6B-B613-73598A92ADA8@goldelico.com>
- <YmkBAsa+fKlp/GcV@atomide.com> <CAK8P3a3N9WBWC_ECB0pSRHUCT4iz=tdT+Dt9Cyd5Wh3qEaVqqA@mail.gmail.com>
- <4CE23DC3-B3E5-45C1-91F3-B88E5444AE7C@goldelico.com> <CAK8P3a3EFfF0gr5kFkboRfJifrY-D+NgHFekBfSePWuY2c8PMA@mail.gmail.com>
- <11504A17-6B50-4D6C-A9E1-CA943C157C93@goldelico.com>
-In-Reply-To: <11504A17-6B50-4D6C-A9E1-CA943C157C93@goldelico.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Sat, 30 Apr 2022 20:48:11 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2RN77ajZD4xRhKsqozPizneLcLYhm0rTE6qX25-4cJsw@mail.gmail.com>
-Message-ID: <CAK8P3a2RN77ajZD4xRhKsqozPizneLcLYhm0rTE6qX25-4cJsw@mail.gmail.com>
-Subject: Re: kernel panic with v5.18-rc1 on OpenPandora (only)
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Ard Biesheuvel <ardb@kernel.org>
+References: <20220427154111.529975-1-kuba@kernel.org> <20220427154111.529975-2-kuba@kernel.org>
+In-Reply-To: <20220427154111.529975-2-kuba@kernel.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 2 May 2022 00:10:12 +0200
+Message-ID: <CACRpkdYOrUkVCW6Bq2V0wkk+2AEP3tkw18m4ra83Gn29knxhYA@mail.gmail.com>
+Subject: Re: [PATCH net-next 01/14] eth: remove copies of the NAPI_POLL_WEIGHT define
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     davem@davemloft.net, pabeni@redhat.com, netdev@vger.kernel.org,
+        ulli.kroll@googlemail.com, mlindner@marvell.com,
+        stephen@networkplumber.org, nbd@nbd.name, john@phrozen.org,
+        sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
+        matthias.bgg@gmail.com, grygorii.strashko@ti.com,
+        wei.liu@kernel.org, paul@xen.org,
+        prabhakar.mahadev-lad.rj@bp.renesas.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-omap@vger.kernel.org,
+        xen-devel@lists.xenproject.org
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:zeN/PKquNR1GJDuLkOYaMOXotY8+6RjGYU412xuiz2+MNzw1Hem
- dTMCkr1XVHk899imNGbFmoE+Kxtq+u9JsCIVC3eTuMcD2htA8HgOTzDxC4ZhyAt6delkaEM
- tidDtInhAZPKxlXxZTlEM+XwxE1sQ7DtsoQVpcXxWBQT7Jgcc054FfEas9m+gr2e5hychOb
- nGbUCoDkByMPtQJIJUAuA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:jBpIgykTDMQ=:xqSzseJLUvs2x5r5I5gkDT
- U5zRsdViPWc3EJEttDDLZVhGuEhSHJbKID9ePjgdQ4mpVJRE4s12zqgU7u0d544b7gp4OO2le
- 8nP7VYBG3JkNYB18vHb0mcDNLPtWft4t2LVRn12JCvmn9cJop2KpeJGicjM2zjU/1utiU84uU
- h/7Kj5AG0Fmkc5Hct/MBRnYmKzaG4KKRtG5OmhR2UxWptUzyBIr/Yj4AURSXSTCjW6FIa3rNW
- cVMZqmHc71tK6eWLrPjQAK+qApdOfZ54hae/+pXKu1DusNj687FYswcvH00Lf1S+JxjYKw3xR
- JizLgJHmHaRavVeGClFUiqe2HJR1mGH+Od41V1N9h5IiFNjpV92KcfBCrOzWzACQWV52pJk6G
- dtxQTsq0Zf7cjOJ2ZhvbWziP3sJ/+D4i22BvNz4IRRdonDaFAyGCNW8DlK/oVGjIamMnIh7Ny
- pV0xY3OVf5hehxmmgGsrpIqT2qRhf37GypSj0pd6yOIOI55kzyI3kBRMaUvEBxNrh77R9o24h
- 4zhxY4cAUqPxYzhhLqFLCRELOM5+Jd45WE3Sm+x+J8YQl4Tq2QBtpN0illofKS3e/s0e3lLMM
- 95TPGlQ77OR8uyToOfW6usB+z2Frbi+bEyLMpaLoIViIMQOe8n/Z9d0VEsINAPi+Q+bKS9Du1
- Fohn3qQoSp7s/O+S6BjUQzYBGOT7rO8AKVHRozzAR+UUc1+PDYSETxx8kdan89A7nWfA=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Apr 30, 2022 at 7:18 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> > Am 30.04.2022 um 17:36 schrieb Arnd Bergmann <arnd@arndb.de>:
-> >
-> >
-> > I suppose this could be anywhere then. The backtrace seems to point
-> > to re-enabling interupts in do_work_pending, so something probably
-> > accessed DMA memory asynchronously.
+On Wed, Apr 27, 2022 at 5:41 PM Jakub Kicinski <kuba@kernel.org> wrote:
+
+> Defining local versions of NAPI_POLL_WEIGHT with the same
+> values in the drivers just makes refactoring harder.
 >
-> Yes. I now (or still) sometimes see the same omap l3 irq issue when plugging in/out the USB/OTG
-> cable. Not with a kernel panic, but in the same driver omap_l3_smx.c.
-> This happens even if the wl1251 driver is removed.
+> Drop the special defines in a bunch of drivers where the
+> removal is relatively simple so grouping into one patch
+> does not impact reviewability.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: ulli.kroll@googlemail.com
+> CC: linus.walleij@linaro.org
+> CC: mlindner@marvell.com
+> CC: stephen@networkplumber.org
+> CC: nbd@nbd.name
+> CC: john@phrozen.org
+> CC: sean.wang@mediatek.com
+> CC: Mark-MC.Lee@mediatek.com
+> CC: matthias.bgg@gmail.com
+> CC: grygorii.strashko@ti.com
+> CC: wei.liu@kernel.org
+> CC: paul@xen.org
+> CC: prabhakar.mahadev-lad.rj@bp.renesas.com
+> CC: linux-arm-kernel@lists.infradead.org
+> CC: linux-mediatek@lists.infradead.org
+> CC: linux-omap@vger.kernel.org
+> CC: xen-devel@lists.xenproject.org
 
-Is this also a regression, or did it happen before the vmap-stack
-change? If this only
-appeared now, then this points to another bug somewhere that you
-should find using
-CONFIG_DMA_API_DEBUG.
+Looks good to me!
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-I think what is going on here is that your platform is able to detect
-the broken DMA
-because of the l3 interrupt handler telling the kernel about it, when
-on other platforms
-we would see either silent data corruption or a DMA that never reaches
-its target.
-
-       Arnd
+Yours,
+Linus Walleij
