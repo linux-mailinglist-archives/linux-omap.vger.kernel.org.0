@@ -2,148 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E684517236
-	for <lists+linux-omap@lfdr.de>; Mon,  2 May 2022 17:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B489D517C02
+	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 04:47:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238823AbiEBPJn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 May 2022 11:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43922 "EHLO
+        id S230180AbiECCts (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 2 May 2022 22:49:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1385660AbiEBPIl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 May 2022 11:08:41 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88A0C10E6;
-        Mon,  2 May 2022 08:05:11 -0700 (PDT)
-Received: from mail-yw1-f179.google.com ([209.85.128.179]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MryOx-1oEmLg2M1l-00nxkF; Mon, 02 May 2022 17:05:09 +0200
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-2ec42eae76bso150714817b3.10;
-        Mon, 02 May 2022 08:05:09 -0700 (PDT)
-X-Gm-Message-State: AOAM531qJEsIAio7JduzkVdmX1EK2TQP8rIcNodqd4lUARfvitrqpSKk
-        C+aOAOuNwdLew/HhVVjv5rK9mC79+fAiLxh5nUI=
-X-Google-Smtp-Source: ABdhPJxAfT0mtI2mFGcDcjtQzedzMQz8eYf0Fg1hWBegKvQSKsyfxj/GbmFIqytbHgyFBYqHFBk+z8YEmiN6Z7/aQXY=
-X-Received: by 2002:a81:ad7:0:b0:2e6:84de:3223 with SMTP id
- 206-20020a810ad7000000b002e684de3223mr11916494ywk.209.1651503907978; Mon, 02
- May 2022 08:05:07 -0700 (PDT)
+        with ESMTP id S230179AbiECCts (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 May 2022 22:49:48 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB0735864;
+        Mon,  2 May 2022 19:46:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651545976; x=1683081976;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0glE8nzzXqDvLLZUoukgdh79WOnXvu208QqhSBt79JI=;
+  b=MCkwdDBGILoiQtv1lqw67mYoFO6WtWQLt1DmJywFefBOIHH0QcAzywOz
+   ht+93EnKZt8oj6xfE7DZEtsXMt8yUs1T5nuffkIj0CRNAlZSO+r/V8WDc
+   dFER8VobKzu+1hfKPeNkJN0Q2jzFElf6Ez/OkqobFsW34tFk3Lq76aptC
+   H4Cq9PuzQmiss9yq00mUffksX1iIsSTeYGTttqDDRqeD5AEzqGPp0l/UF
+   Tv+FiigvuEmmpRkQkPCfdQ2mgsN5iobY0CCusbIXEY2d9V0kpXjfIuvlF
+   mFm054jKyUDpobGuy0UYeJLkp2n4rpUt7OWj+jTA3vvWMXR9r/CeSrjlm
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10335"; a="254843575"
+X-IronPort-AV: E=Sophos;i="5.91,193,1647327600"; 
+   d="scan'208";a="254843575"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2022 19:46:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,193,1647327600"; 
+   d="scan'208";a="653090183"
+Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 02 May 2022 19:46:14 -0700
+Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nliYH-000A5V-QF;
+        Tue, 03 May 2022 02:46:13 +0000
+Date:   Tue, 3 May 2022 10:45:32 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     kbuild-all@lists.01.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: dove: fix returnvar.cocci warnings
+Message-ID: <YnCXTPrbLhvfRVDm@e3a974050dc4>
+References: <202205031017.4TwMan3l-lkp@intel.com>
 MIME-Version: 1.0
-References: <1676021ae8b6d7aada0b1806fed99b1b8359bdc4.1651495112.git.hns@goldelico.com>
- <CAK8P3a3OiFJiR40FXmCZTc1fMZBteGjXqipDcvZqoO85QBxYow@mail.gmail.com> <123640FA-6AF2-4C0E-A7CC-31DCC4CEA15B@goldelico.com>
-In-Reply-To: <123640FA-6AF2-4C0E-A7CC-31DCC4CEA15B@goldelico.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 2 May 2022 17:04:51 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0owDwLYJ1nk6HciV=15wecC6QHPY-QiseRmeRnahcXXQ@mail.gmail.com>
-Message-ID: <CAK8P3a0owDwLYJ1nk6HciV=15wecC6QHPY-QiseRmeRnahcXXQ@mail.gmail.com>
-Subject: Re: [PATCH] wl1251: dynamically allocate memory used for DMA
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Luca Coelho <luca@coelho.fi>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:zjQz1dRpin9BiZg3s4VBfMuW9U+tlPf2caryZKIggkYhZ9Cjemd
- ow0D5GPGmRyloMl0oFDiGVSTOcj+6eu1WRzK2U5RioJjJ6icxlipq0t8eyFQLRz3yIcnXd9
- qoGiYQfXLpaXpfG+iBH0QqAGH9UcOaqPsszZbfbCGBlMNMuD6O15gsi8OkdBu2K2yGf6D7Z
- agURek6T9zdUGkRBpxD+g==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+cN6JuZ3Xro=:DVKj7YeXKBDE0Q9n6DEm06
- zXsZXZaulGdxTb7bhZwiH5xbP8lT2A4gv8QuMqzIevINKjnFi5uAqEYgJETFmRed1uTeZHwfc
- XQwq9QD+UN97jr+gRsqi2kekTgPzMKR6Q+xkzTKHxZKuB3j3Bd8+/ld/kODfmm976DJTJx2Cw
- ZVE0RG5aPH61joAXXYLeotKSMLraYmqxbkGoWrGtY1Za0+EQw/yXuuXVCvjpaBJ2bmYqBicOM
- /uQ6ZIpDCkgdmWlSmvnXlSLOOMVhKbmj/ynGyo749ZIlnb5MAtSo+CYF6BweAUrtOkAu3YhaZ
- uSXurW96e9Sd2gOxWTgBgD2+JF1nYZJwy+SoHWiwv3SFjhxVfkWP0Dexq2qObQHXFDujyzMJf
- k/yssEMaWTepybDzutgQae46ge30N4fUhv/vuxsb9hVK3YknAYo0h3SapvpBJ5H/xd/T8/5uM
- 9OFMS8Yl+zLcrqK+Ui0Wpn0tICLFQZMzvydVPyjBnb0s5JFQzF6sWhHG1g8wGbMNRKneubUh2
- vW2FNcfrcbY9V2HuAODHrl4NSir3iyuvtc4iRDRFomWpyZ3MtUemFORxXr1mQ9thsnklvyi26
- eFVX8zIXBe5zcmrJ4XvrikG9DtMPJlcZVrh8km8+L285dI260csYPNL3Qi0TZYDMsWOBVYjFw
- hcWNfxKQEX+1jFi3gp9jOc763x4HK3krfb5klOa7NpXJAVPR5WlZ8DlSiDZHWlps5JJqPdhWG
- VXdiRJSuX/OedDmfr6K3X8ERvvegTf5BhpvMHiWk8fCIlxmZ6K0lTmwTqk1vZ0tBOVdoyY9gq
- xGIlNpmiaTKh18E7cNZDi7H0RUBDH/76AMh40HIwrx79ta9NXs=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202205031017.4TwMan3l-lkp@intel.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, May 2, 2022 at 4:47 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> > Am 02.05.2022 um 16:06 schrieb Arnd Bergmann <arnd@arndb.de>:
-> > On Mon, May 2, 2022 at 2:38 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> >
-> > The approach in the wlcore driver appears to be simpler because it
-> > avoids dynamic memory allocation and the associated error handling.
->
-> It looks as if it just avoids kmalloc/free sequences in event handling
-> by allocating a big enough buffer once.
->
-> wl1271_cmd_wait_for_event_or_timeout() allocates it like we do now.
+From: kernel test robot <lkp@intel.com>
 
-Ah right, I missed that one.
+arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
 
-> > However, it probably makes another problem worse that also exists
-> > here:
-> >
-> > static inline u32 wl1251_read32(struct wl1251 *wl, int addr)
-> > {
-> >       u32 response;
-> >       wl->if_ops->read(wl, addr, &wl->buffer_32, sizeof(wl->buffer_32));
-> >       return le32_to_cpu(wl->buffer_32);
-> > }
-> >
-> > I think the 'buffer_32' member of 'struct wl1251' needs an explicit
-> > '__cacheline_aligned' attribute to avoid potentially clobbering
-> > some of the structure during a DMA write.
-> >
-> > I don't know if anyone cares enough about the two drivers to
-> > have an opinion. I've added Luca to Cc, but he hasn't maintained
-> > the driver since 2013 and probably doesn't.
->
-> Well, there seems to be quite some common code but indeed devices
-> using these older chips are getting rare so it is probably not worth
-> combining code. And testing needs someone who owns boards
-> with both chips...
 
-No, I wasn't even thinking of combining code, just whether there
-is value in keeping the similar bits in sync to ensure we have the
-same set of bugs on both ;-)
+ Remove unneeded variable used to store return value.
 
-I think the best fix for both drivers would be to keep the DMA
-members (partition and buffer_32) in the respective device
-structures, but mark each one as aligned.
+Generated by: scripts/coccinelle/misc/returnvar.cocci
 
-> > My first guess would be that the driver never worked correctly on big-endian
-> > machines, and that the change is indeed correct, but on the other hand
-> > the conversion was added in commit ac9e2d9afa90 ("wl1251: convert
-> > 32-bit values to le32 before writing to the chip") in a way that suggests it
-> > was meant to work on both.
->
-> wl1251_event_wait() seems to work with the masks provided by code.
-> So I guess the conversion to le32 is harmless on the OpenPandora.
-> Most likely it should be done on big endian devices. I.e. we might have
-> done the right thing.
->
-> Let's see if someone compains or knows more. Otherwise we should
-> fix it just for the Pandora and N900 (both omap3 based) as the only
-> upstream users.
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: kernel test robot <lkp@intel.com>
+---
 
-Ok. In general I like ensure we keep things working for big-endian
-kernels, which are meant to work on any ARMv6+ or newer machine.
-Most of the time it's just a couple of drivers (like this one) that get
-in the way of actually doing it, but then again very few people ever
-care about big-endian ARMv6/v7.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   9f9b9a2972eb8dcaad09d826c5c6d7488eaca3e6
+commit: 09f6b27d5ddd9ad0ec096d1b0f8decdacc70f0f8 [1066/8035] ARM: dove: multiplatform support
+:::::: branch date: 15 hours ago
+:::::: commit date: 4 weeks ago
 
-If we don't have a reason to believe this one is actually wrong, I think
-fixing the endian issue silently is fine, as is ignoring the potential
-other endian issues in the same driver that nobody complained about
-in the past decade ;-)
+ arch/arm/mach-omap2/dma.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-       Arnd
+--- a/arch/arm/mach-omap2/dma.c
++++ b/arch/arm/mach-omap2/dma.c
+@@ -79,8 +79,6 @@ static const struct omap_dma_reg reg_map
+ 
+ static unsigned configure_dma_errata(void)
+ {
+-	unsigned errata = 0;
+-
+ 	/*
+ 	 * Errata applicable for OMAP2430ES1.0 and all omap2420
+ 	 *
+@@ -158,7 +156,7 @@ static unsigned configure_dma_errata(voi
+ 	if (cpu_is_omap34xx() && (omap_type() != OMAP2_DEVICE_TYPE_GP))
+ 		SET_DMA_ERRATA(DMA_ROMCODE_BUG);
+ 
+-	return errata;
++	return 0;
+ }
+ 
+ static const struct dma_slave_map omap24xx_sdma_dt_map[] = {
