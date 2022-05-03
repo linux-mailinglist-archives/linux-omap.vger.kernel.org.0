@@ -2,59 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6542517E22
-	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 09:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24062517EC8
+	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 09:24:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231558AbiECHO6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 May 2022 03:14:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42762 "EHLO
+        id S232250AbiECH0R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 May 2022 03:26:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231561AbiECHO5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 May 2022 03:14:57 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A2FC12FFF9;
-        Tue,  3 May 2022 00:11:22 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 18B37807E;
-        Tue,  3 May 2022 07:08:06 +0000 (UTC)
-Date:   Tue, 3 May 2022 10:11:20 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Vinod Koul <vkoul@kernel.org>, linux-usb@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        dmaengine@vger.kernel.org
-Subject: Re: [PATCH v3 6/6] ARM: dts: dm81xx: use new 'dma-channels/requests'
- properties
-Message-ID: <YnDVmPXYiILP+qSa@atomide.com>
-References: <20220503065201.51818-1-krzysztof.kozlowski@linaro.org>
- <20220503065201.51818-7-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S232186AbiECHZ4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 May 2022 03:25:56 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1AB127164;
+        Tue,  3 May 2022 00:22:08 -0700 (PDT)
+Received: from mail-yw1-f172.google.com ([209.85.128.172]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1N3KgE-1nuy3Y2gPy-010Hes; Tue, 03 May 2022 09:22:06 +0200
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-2f7b815ac06so171033297b3.3;
+        Tue, 03 May 2022 00:22:06 -0700 (PDT)
+X-Gm-Message-State: AOAM531PW4WfhALUGYWaRQ5GaiKb8wrevqIqQOC+ZkhwdWF101mrKAUN
+        NcsF1AfuAVCwXUZFnINvuZDKarmyUMKW3uFURD8=
+X-Google-Smtp-Source: ABdhPJwPr9q0sZe+e8UxYUbigcUnaa5Xa3a0oSwktBFYt4HYrPBnPD483wlKn2ZH53xnNpxMcJ15XBtdVqESN+RJUXQ=
+X-Received: by 2002:a81:9213:0:b0:2f6:eaae:d22f with SMTP id
+ j19-20020a819213000000b002f6eaaed22fmr14551172ywg.249.1651562525321; Tue, 03
+ May 2022 00:22:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220503065201.51818-7-krzysztof.kozlowski@linaro.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <202205031017.4TwMan3l-lkp@intel.com> <YnCXTPrbLhvfRVDm@e3a974050dc4>
+In-Reply-To: <YnCXTPrbLhvfRVDm@e3a974050dc4>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 3 May 2022 09:21:49 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
+Message-ID: <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
+To:     kernel test robot <lkp@intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, kbuild-all@lists.01.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:KBcmf8L+L6p/whd/P8ba85SiL61sT4pvbWzzB3TTUwYaT4iudsB
+ WX/5N7nENNe1TewNk5ab96T2a9ZlV/gizqjJ9QQyArl0Ny9oVqGJjLM7ZdsPGz83iTqbMEK
+ U/cpyXVLIYuCJ6RyNjiXW0Tl5XZ8Q5R5l8hAXPQEXjmEvFdWveY2fCBNVS2SNYBihl7CtJD
+ iHzLJjA2j+Nbp489PmINg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:iQd+zec01aY=:f5iMHfS5U4pzqZdIp0fqY+
+ Y6WdcyOJiGWgqe5lilgTB6y+MjEmPnP3StTreSrVA9T2YpZIECmh458DX0kBTl4q81hpk96o+
+ FWiMlQuzHuW/S10Tv4J58XhjJF9sDWMWBvm8jSjlua0u8PLsI7hwobUjarNdYR4QCPLgTnSkd
+ Q7kzR8XFq/JOVAQCN4Ku45efxA0a0/bvW/sK0j5+A81JjlMmrQi5u4wjbJkzBVlFnZsIV/wyT
+ f3GznbdHwPK2uQluAhYZdaA+sB3VdSpyi82B6Hjf7Nbh2LP/vL+mFg1EgcOGbserp5yh3up/d
+ nySq3oe4UgbGGZqpCxXJ832K/7X5E4YSerp1RST6luT34WW8aVvTNyK3Ct8iFFCkbarqx2WoD
+ dmlrc7ytFixkTldf5SHuXOYA0VHglBTh9jhgzaRfouD7Z5BbKFjG326u8QEhRK87fD2+Z5Bs0
+ 0lCWQSRFnvxv+cGeIC20Z7HEz9YJNA3EPKr36Rkm1EdU9nphzme9rXziHTFbU0/8mkDiidUWV
+ 3tv66vAZcx+glMLTEfikIZkHVk+Km50LVUFwqLq8oD8AFyIDUNVe4tP1w/olWO5wVFBLxszFT
+ 6QvMuexZfPY7461Lgio7/z/TFMbibgm4P59QsIDeAWO4dWThu9gOPgtqJVjIl0G9VNiRu24H9
+ 493j/8AY7FVwu+p9GAk2lnrPgTrOxJJOsByvegxi4ivAxh3dxcPMNuQmoatMQ3K6ZWd4/h+j6
+ v3GrlMubPjaqlY19vOFldHutSHblVU61DSGtmePtuSkvf/EBauo2W2HqnMb2fA5HyKoJX20Cs
+ wcKaynjoYaT997ZXvxeiqVn3v9fVPBNGJXchUeg7QpewbrQ7nM=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> [220503 06:48]:
-> The '#dma-channels' and '#dma-requests' properties were deprecated in
-> favor of these defined by generic dma-common DT bindings.  Add new
-> properties while keeping old ones for backwards compatibility.
+On Tue, May 3, 2022 at 4:45 AM kernel test robot <lkp@intel.com> wrote:
+>
+> From: kernel test robot <lkp@intel.com>
+>
+> arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
+>
+>
+>  Remove unneeded variable used to store return value.
+>
+> Generated by: scripts/coccinelle/misc/returnvar.cocci
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: kernel test robot <lkp@intel.com>
 
-I'm picking up this patch into omap-for-v5.19/dt thanks.
+I checked the patch, and unfortunately it is wrong, the current code
+needs to stay.
+The problem is the SET_DMA_ERRATA() macro that accesses the
+local 'errata' variable.
 
-Regards,
-
-Tony
+         Arnd
