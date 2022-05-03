@@ -2,65 +2,66 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24062517EC8
-	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 09:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A00B3517EE3
+	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 09:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232250AbiECH0R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 May 2022 03:26:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39298 "EHLO
+        id S231765AbiECHcb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 May 2022 03:32:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232186AbiECHZ4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 May 2022 03:25:56 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1AB127164;
-        Tue,  3 May 2022 00:22:08 -0700 (PDT)
-Received: from mail-yw1-f172.google.com ([209.85.128.172]) by
- mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1N3KgE-1nuy3Y2gPy-010Hes; Tue, 03 May 2022 09:22:06 +0200
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-2f7b815ac06so171033297b3.3;
-        Tue, 03 May 2022 00:22:06 -0700 (PDT)
-X-Gm-Message-State: AOAM531PW4WfhALUGYWaRQ5GaiKb8wrevqIqQOC+ZkhwdWF101mrKAUN
-        NcsF1AfuAVCwXUZFnINvuZDKarmyUMKW3uFURD8=
-X-Google-Smtp-Source: ABdhPJwPr9q0sZe+e8UxYUbigcUnaa5Xa3a0oSwktBFYt4HYrPBnPD483wlKn2ZH53xnNpxMcJ15XBtdVqESN+RJUXQ=
-X-Received: by 2002:a81:9213:0:b0:2f6:eaae:d22f with SMTP id
- j19-20020a819213000000b002f6eaaed22fmr14551172ywg.249.1651562525321; Tue, 03
- May 2022 00:22:05 -0700 (PDT)
+        with ESMTP id S231761AbiECHca (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 May 2022 03:32:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E5F36335;
+        Tue,  3 May 2022 00:28:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7E7B8B81CA7;
+        Tue,  3 May 2022 07:28:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E63C385B4;
+        Tue,  3 May 2022 07:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651562936;
+        bh=An4l1Y7GJUH5wN5pzbLPaMxdyCEWxfCi8+OSUuFew+Y=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=eOyf0uVjMcK9EXBoXNGlPtOBO9/w14atentNejxZz2Qh2BaUWL+xwrx1XZ0sC4+sS
+         RSSYpdy5sMK3Cylrd3WbuN9jPBQH0RJlsyPxfHcOSfa//EMznMrN1If2Xn2zqekEwg
+         8Y/Agkwnn0lcag+0lBGEhz/r5QGGbVIW5x/RN5VI/ONKJRG2hfXEBFNKjRXmyrcfc5
+         igtm0h6qmvos1FZvHVPb8JKO6Cs3UnTAgL1IE8WyALOhKagSJIwFMwsRX3GCnKXJA4
+         0HngM3H5GwMG3hBEOLXruISHesArZkECfTWkVXW8Nj8q3YPRGDOcFFGelO+lscLWAH
+         kZtqxlP1bdKGA==
+Received: by mail-oi1-f179.google.com with SMTP id q8so16981360oif.13;
+        Tue, 03 May 2022 00:28:56 -0700 (PDT)
+X-Gm-Message-State: AOAM531yL7Hgh1aJiFmMdATZxRKjqjLYrkomvvKUBhCmpQN2JQ4Enqsm
+        wSKZHA7LvzLzN6ci41s6YnALiHn3+XV+trmlHo4=
+X-Google-Smtp-Source: ABdhPJwz8zIqcnZCZlrTwbBgWNwYTu8rDQC1tRxTgPIW3hyqDf8vMF3Z9MVR4qYEOJtB7xs67ZpYrhzx9nYB4zBxmI4=
+X-Received: by 2002:a05:6808:1141:b0:325:cd92:ef8d with SMTP id
+ u1-20020a056808114100b00325cd92ef8dmr1302131oiu.228.1651562935307; Tue, 03
+ May 2022 00:28:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <202205031017.4TwMan3l-lkp@intel.com> <YnCXTPrbLhvfRVDm@e3a974050dc4>
-In-Reply-To: <YnCXTPrbLhvfRVDm@e3a974050dc4>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 3 May 2022 09:21:49 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
-Message-ID: <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
-To:     kernel test robot <lkp@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, kbuild-all@lists.01.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
+References: <FA654A0D-29B7-4B6B-B613-73598A92ADA8@goldelico.com>
+ <YmkBAsa+fKlp/GcV@atomide.com> <CAK8P3a3N9WBWC_ECB0pSRHUCT4iz=tdT+Dt9Cyd5Wh3qEaVqqA@mail.gmail.com>
+ <4CE23DC3-B3E5-45C1-91F3-B88E5444AE7C@goldelico.com> <CAK8P3a3EFfF0gr5kFkboRfJifrY-D+NgHFekBfSePWuY2c8PMA@mail.gmail.com>
+ <11504A17-6B50-4D6C-A9E1-CA943C157C93@goldelico.com> <CAK8P3a2RN77ajZD4xRhKsqozPizneLcLYhm0rTE6qX25-4cJsw@mail.gmail.com>
+In-Reply-To: <CAK8P3a2RN77ajZD4xRhKsqozPizneLcLYhm0rTE6qX25-4cJsw@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 3 May 2022 09:28:44 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHqHCt9G+HEawsWmba2Z=WVbp6wRrivAQvQCn2iph9kXg@mail.gmail.com>
+Message-ID: <CAMj1kXHqHCt9G+HEawsWmba2Z=WVbp6wRrivAQvQCn2iph9kXg@mail.gmail.com>
+Subject: Re: kernel panic with v5.18-rc1 on OpenPandora (only)
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     "H. Nikolaus Schaller" <hns@goldelico.com>,
         Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:KBcmf8L+L6p/whd/P8ba85SiL61sT4pvbWzzB3TTUwYaT4iudsB
- WX/5N7nENNe1TewNk5ab96T2a9ZlV/gizqjJ9QQyArl0Ny9oVqGJjLM7ZdsPGz83iTqbMEK
- U/cpyXVLIYuCJ6RyNjiXW0Tl5XZ8Q5R5l8hAXPQEXjmEvFdWveY2fCBNVS2SNYBihl7CtJD
- iHzLJjA2j+Nbp489PmINg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:iQd+zec01aY=:f5iMHfS5U4pzqZdIp0fqY+
- Y6WdcyOJiGWgqe5lilgTB6y+MjEmPnP3StTreSrVA9T2YpZIECmh458DX0kBTl4q81hpk96o+
- FWiMlQuzHuW/S10Tv4J58XhjJF9sDWMWBvm8jSjlua0u8PLsI7hwobUjarNdYR4QCPLgTnSkd
- Q7kzR8XFq/JOVAQCN4Ku45efxA0a0/bvW/sK0j5+A81JjlMmrQi5u4wjbJkzBVlFnZsIV/wyT
- f3GznbdHwPK2uQluAhYZdaA+sB3VdSpyi82B6Hjf7Nbh2LP/vL+mFg1EgcOGbserp5yh3up/d
- nySq3oe4UgbGGZqpCxXJ832K/7X5E4YSerp1RST6luT34WW8aVvTNyK3Ct8iFFCkbarqx2WoD
- dmlrc7ytFixkTldf5SHuXOYA0VHglBTh9jhgzaRfouD7Z5BbKFjG326u8QEhRK87fD2+Z5Bs0
- 0lCWQSRFnvxv+cGeIC20Z7HEz9YJNA3EPKr36Rkm1EdU9nphzme9rXziHTFbU0/8mkDiidUWV
- 3tv66vAZcx+glMLTEfikIZkHVk+Km50LVUFwqLq8oD8AFyIDUNVe4tP1w/olWO5wVFBLxszFT
- 6QvMuexZfPY7461Lgio7/z/TFMbibgm4P59QsIDeAWO4dWThu9gOPgtqJVjIl0G9VNiRu24H9
- 493j/8AY7FVwu+p9GAk2lnrPgTrOxJJOsByvegxi4ivAxh3dxcPMNuQmoatMQ3K6ZWd4/h+j6
- v3GrlMubPjaqlY19vOFldHutSHblVU61DSGtmePtuSkvf/EBauo2W2HqnMb2fA5HyKoJX20Cs
- wcKaynjoYaT997ZXvxeiqVn3v9fVPBNGJXchUeg7QpewbrQ7nM=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,23 +69,33 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 3, 2022 at 4:45 AM kernel test robot <lkp@intel.com> wrote:
+On Sat, 30 Apr 2022 at 20:48, Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> From: kernel test robot <lkp@intel.com>
+> On Sat, Apr 30, 2022 at 7:18 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+> > > Am 30.04.2022 um 17:36 schrieb Arnd Bergmann <arnd@arndb.de>:
+> > >
+> > >
+> > > I suppose this could be anywhere then. The backtrace seems to point
+> > > to re-enabling interupts in do_work_pending, so something probably
+> > > accessed DMA memory asynchronously.
+> >
+> > Yes. I now (or still) sometimes see the same omap l3 irq issue when plugging in/out the USB/OTG
+> > cable. Not with a kernel panic, but in the same driver omap_l3_smx.c.
+> > This happens even if the wl1251 driver is removed.
 >
-> arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
+> Is this also a regression, or did it happen before the vmap-stack
+> change? If this only
+> appeared now, then this points to another bug somewhere that you
+> should find using
+> CONFIG_DMA_API_DEBUG.
 >
+> I think what is going on here is that your platform is able to detect
+> the broken DMA
+> because of the l3 interrupt handler telling the kernel about it, when
+> on other platforms
+> we would see either silent data corruption or a DMA that never reaches
+> its target.
 >
->  Remove unneeded variable used to store return value.
->
-> Generated by: scripts/coccinelle/misc/returnvar.cocci
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: kernel test robot <lkp@intel.com>
 
-I checked the patch, and unfortunately it is wrong, the current code
-needs to stay.
-The problem is the SET_DMA_ERRATA() macro that accesses the
-local 'errata' variable.
-
-         Arnd
+I wonder if we could narrow this down by adding the possibility to use
+IRQ stacks in the linear map, while using vmap'ed task stacks.
