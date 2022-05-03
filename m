@@ -2,99 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED4D1517FBF
-	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 10:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABEF8517FA5
+	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 10:23:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232027AbiECIdN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 May 2022 04:33:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
+        id S231847AbiECI0n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 May 2022 04:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231897AbiECIdM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 May 2022 04:33:12 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE5432058
-        for <linux-omap@vger.kernel.org>; Tue,  3 May 2022 01:29:41 -0700 (PDT)
-Received: from mail-ot1-f47.google.com ([209.85.210.47]) by
- mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1Md66H-1oLgcC1DYR-00aADF; Tue, 03 May 2022 10:24:35 +0200
-Received: by mail-ot1-f47.google.com with SMTP id 31-20020a9d0822000000b00605f1807664so8152468oty.3;
-        Tue, 03 May 2022 01:24:34 -0700 (PDT)
-X-Gm-Message-State: AOAM53074jkgLK+v5S2QeAd1nHKqbiNBsFoPaeAmpveEG9ztG5S9Fbbn
-        +xAKNUreKB60yNmbly/v3+td1gGxEsM+b2flrwQ=
-X-Google-Smtp-Source: ABdhPJwrDtRFKbzWyx5Thvx9iv9ah7eyFBtB8lxLn/zZfAdnxobNy3HzZif7KpemB7VbxNVkIL6z9jSMtRXvIKtqCl4=
-X-Received: by 2002:a81:9213:0:b0:2f6:eaae:d22f with SMTP id
- j19-20020a819213000000b002f6eaaed22fmr14611680ywg.249.1651564406792; Tue, 03
- May 2022 00:53:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <202205031017.4TwMan3l-lkp@intel.com> <YnCXTPrbLhvfRVDm@e3a974050dc4>
- <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com> <YnDaINQbVtoJz1T3@atomide.com>
-In-Reply-To: <YnDaINQbVtoJz1T3@atomide.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 3 May 2022 09:53:10 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2NOfu52tADw30e6Bfik56_+PbUv6_+ADs=PUE-6NSrbQ@mail.gmail.com>
-Message-ID: <CAK8P3a2NOfu52tADw30e6Bfik56_+PbUv6_+ADs=PUE-6NSrbQ@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>,
-        kbuild-all@lists.01.org,
+        with ESMTP id S231240AbiECI0m (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 May 2022 04:26:42 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 76EDB29800;
+        Tue,  3 May 2022 01:23:11 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id D8A15814C;
+        Tue,  3 May 2022 08:19:54 +0000 (UTC)
+Date:   Tue, 3 May 2022 11:23:09 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
         Linux Memory Management List <linux-mm@kvack.org>,
         Russell King <linux@armlinux.org.uk>,
         linux-omap <linux-omap@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:74Mgwc2DUG5mMwrZ6MNsmoljzN6pyJ9yjLycxRNFA3NqtnvQWvr
- +XXc1CwiRNmjo/CHNnk9+yENODqvKGuJ7B71HiOOTee+ifhGGaplPvstsZEDQr8Co3QMA6p
- 5Uk5Xn1+YkJ0lZaorHRMpaPbP4yJtzAU0rnEvz1bCxIg7lyZqZnBc1HbBjBZzINP2n/BLLF
- TzMmA22OUqRjjhUusxGIw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:zOs/EaUZU5g=:neyHM/Ij/EFNn2vmpKEHnX
- W9RnhJzkcNmp2L7mVzFd4pjUJ+oPpumCNTTT5/XDrHruNf5Yn5WahVBfsPoZ2QfDCIBRJY5oI
- xKp61Dk5iHxsu3gciAr2Kt6xSGoo9t1PmWXICfRcE6Ap/ralzQE32Of0H/2rL2O1ube++XWA5
- Go4joyompIy4FkODjUwZ8s6qx8NVWjdbTu7jABuGoEg4KcLjgr8twISWIfAClpz9hAYr89YNm
- xnOkKWrmv76gYf3x9RjRTTtJKUGamZlo/bL3IVF+AXzKBhYwmJjcBn72f96sA6vFwnsjnjT4R
- /tIkhJvgI0N72YqLtRsHhVO1va0Pzk5PG+TMg62qlM64Pw9hM1crjUUA9S8j4GaNXwh86e8ll
- CIIfY10q89a1WWRLPZ8dJ4KKkdi2R2/9bf88+3QLOE1/wparfXfBklLiB3vUa3zJvJgUEjNn7
- zfNLlDetZz4P8zFtC9djYbcA43iJFfq/ALcWYMMLDueSvaPF9hJwKCgeCTMiFFJ7x3NlIXzy1
- Lp2jD7Jss287t/bZowJFMXDB5CbWPdH7l4HNZTJO0cTIfxoDqovn4jUbypXTmHXi2EIB5vxM9
- Hayi7m/lSci++kFilSXuDIcJ0BvCnccF2YAdwIravKgpf42K56MMulCLNJWYuKyfeOTDbHjmO
- bEPRdp06A2EmDd6UX/4afTuuTFx48kiEvJQCed4nh36jgyZbsXL/9d0ZyopaQAY3Z8c8HA+jS
- EgtBG3hknfbUEfz/tlLeVx0sLyu2dqnrxILf/jrjEmIPnkBHqBQ0ISE+FrCJNsTJPGfgSzWv/
- lWn2Jpovjzr+1EtDeakh8rjkhIVvP5pyEbu3fEc1FokOr8eml0=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
+Message-ID: <YnDmbUCDf7SVPo0s@atomide.com>
+References: <202205031017.4TwMan3l-lkp@intel.com>
+ <YnCXTPrbLhvfRVDm@e3a974050dc4>
+ <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
+ <YnDaINQbVtoJz1T3@atomide.com>
+ <CAK8P3a2NOfu52tADw30e6Bfik56_+PbUv6_+ADs=PUE-6NSrbQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a2NOfu52tADw30e6Bfik56_+PbUv6_+ADs=PUE-6NSrbQ@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 3, 2022 at 9:30 AM Tony Lindgren <tony@atomide.com> wrote:
-> * Arnd Bergmann <arnd@arndb.de> [220503 07:18]:
-> > On Tue, May 3, 2022 at 4:45 AM kernel test robot <lkp@intel.com> wrote:
+* Arnd Bergmann <arnd@arndb.de> [220503 08:12]:
+> On Tue, May 3, 2022 at 9:30 AM Tony Lindgren <tony@atomide.com> wrote:
+> > * Arnd Bergmann <arnd@arndb.de> [220503 07:18]:
+> > > On Tue, May 3, 2022 at 4:45 AM kernel test robot <lkp@intel.com> wrote:
+> > > >
+> > > > From: kernel test robot <lkp@intel.com>
+> > > >
+> > > > arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
+> > > >
+> > > >
+> > > >  Remove unneeded variable used to store return value.
+> > > >
+> > > > Generated by: scripts/coccinelle/misc/returnvar.cocci
+> > > >
+> > > > Reported-by: kernel test robot <lkp@intel.com>
+> > > > Signed-off-by: kernel test robot <lkp@intel.com>
 > > >
-> > > From: kernel test robot <lkp@intel.com>
-> > >
-> > > arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
-> > >
-> > >
-> > >  Remove unneeded variable used to store return value.
-> > >
-> > > Generated by: scripts/coccinelle/misc/returnvar.cocci
-> > >
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Signed-off-by: kernel test robot <lkp@intel.com>
+> > > I checked the patch, and unfortunately it is wrong, the current code
+> > > needs to stay.
+> > > The problem is the SET_DMA_ERRATA() macro that accesses the
+> > > local 'errata' variable.
 > >
-> > I checked the patch, and unfortunately it is wrong, the current code
-> > needs to stay.
-> > The problem is the SET_DMA_ERRATA() macro that accesses the
-> > local 'errata' variable.
->
-> Yeah this one keeps popping up. Maybe we can make SET_DMA_ERRATA
-> into a function or have it at least change it to set the errata
-> value.
+> > Yeah this one keeps popping up. Maybe we can make SET_DMA_ERRATA
+> > into a function or have it at least change it to set the errata
+> > value.
+> 
+> I would just remove the macro and open-code the assignment, which
+> I think makes it more readable to both people and tools.
 
-I would just remove the macro and open-code the assignment, which
-I think makes it more readable to both people and tools.
+Yeah agree after looking at the macro :)
 
-     Arnd
+Regards,
+
+Tony
