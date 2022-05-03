@@ -2,70 +2,65 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4587D517F9A
-	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 10:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4D1517FBF
+	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 10:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232774AbiECIX4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 3 May 2022 04:23:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
+        id S232027AbiECIdN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 May 2022 04:33:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232599AbiECIXt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 May 2022 04:23:49 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 530ADDA
-        for <linux-omap@vger.kernel.org>; Tue,  3 May 2022 01:20:12 -0700 (PDT)
-Received: from mail-ot1-f50.google.com ([209.85.210.50]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1Mwfj0-1o1ZWS2FqM-00y6QV for <linux-omap@vger.kernel.org>; Tue, 03 May 2022
- 10:20:10 +0200
-Received: by mail-ot1-f50.google.com with SMTP id m6-20020a05683023a600b0060612720715so3994769ots.10
-        for <linux-omap@vger.kernel.org>; Tue, 03 May 2022 01:20:10 -0700 (PDT)
-X-Gm-Message-State: AOAM532RhDYU4H/JXWpFkA3319VB+wZsn0xSm01chGoDJ6mUVe8aIdlH
-        /KWCT89uYQkDuYASGglZGFwtPEMF40H9Lh98oRw=
-X-Google-Smtp-Source: ABdhPJy9R7zCTI6Aw7C6jGQ+pq3KbkGI+32nQsK+YuLq9Y0CUx+axnAMLXKfzAkG+VRohcKoFtwX2TBaxszBE6C0NQU=
-X-Received: by 2002:a81:1697:0:b0:2fa:32f9:78c8 with SMTP id
- 145-20020a811697000000b002fa32f978c8mr3738925yww.135.1651564330419; Tue, 03
- May 2022 00:52:10 -0700 (PDT)
+        with ESMTP id S231897AbiECIdM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 May 2022 04:33:12 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE5432058
+        for <linux-omap@vger.kernel.org>; Tue,  3 May 2022 01:29:41 -0700 (PDT)
+Received: from mail-ot1-f47.google.com ([209.85.210.47]) by
+ mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1Md66H-1oLgcC1DYR-00aADF; Tue, 03 May 2022 10:24:35 +0200
+Received: by mail-ot1-f47.google.com with SMTP id 31-20020a9d0822000000b00605f1807664so8152468oty.3;
+        Tue, 03 May 2022 01:24:34 -0700 (PDT)
+X-Gm-Message-State: AOAM53074jkgLK+v5S2QeAd1nHKqbiNBsFoPaeAmpveEG9ztG5S9Fbbn
+        +xAKNUreKB60yNmbly/v3+td1gGxEsM+b2flrwQ=
+X-Google-Smtp-Source: ABdhPJwrDtRFKbzWyx5Thvx9iv9ah7eyFBtB8lxLn/zZfAdnxobNy3HzZif7KpemB7VbxNVkIL6z9jSMtRXvIKtqCl4=
+X-Received: by 2002:a81:9213:0:b0:2f6:eaae:d22f with SMTP id
+ j19-20020a819213000000b002f6eaaed22fmr14611680ywg.249.1651564406792; Tue, 03
+ May 2022 00:53:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <FA654A0D-29B7-4B6B-B613-73598A92ADA8@goldelico.com>
- <YmkBAsa+fKlp/GcV@atomide.com> <CAK8P3a3N9WBWC_ECB0pSRHUCT4iz=tdT+Dt9Cyd5Wh3qEaVqqA@mail.gmail.com>
- <4CE23DC3-B3E5-45C1-91F3-B88E5444AE7C@goldelico.com> <CAK8P3a3EFfF0gr5kFkboRfJifrY-D+NgHFekBfSePWuY2c8PMA@mail.gmail.com>
- <11504A17-6B50-4D6C-A9E1-CA943C157C93@goldelico.com> <CAK8P3a2RN77ajZD4xRhKsqozPizneLcLYhm0rTE6qX25-4cJsw@mail.gmail.com>
- <CAMj1kXHqHCt9G+HEawsWmba2Z=WVbp6wRrivAQvQCn2iph9kXg@mail.gmail.com>
-In-Reply-To: <CAMj1kXHqHCt9G+HEawsWmba2Z=WVbp6wRrivAQvQCn2iph9kXg@mail.gmail.com>
+References: <202205031017.4TwMan3l-lkp@intel.com> <YnCXTPrbLhvfRVDm@e3a974050dc4>
+ <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com> <YnDaINQbVtoJz1T3@atomide.com>
+In-Reply-To: <YnDaINQbVtoJz1T3@atomide.com>
 From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Tue, 3 May 2022 09:51:54 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2gxnrY=gnv+e2Ey4bPE30wYtMkqC--Z0X-ZjZT=B9VaA@mail.gmail.com>
-Message-ID: <CAK8P3a2gxnrY=gnv+e2Ey4bPE30wYtMkqC--Z0X-ZjZT=B9VaA@mail.gmail.com>
-Subject: Re: kernel panic with v5.18-rc1 on OpenPandora (only)
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Date:   Tue, 3 May 2022 09:53:10 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2NOfu52tADw30e6Bfik56_+PbUv6_+ADs=PUE-6NSrbQ@mail.gmail.com>
+Message-ID: <CAK8P3a2NOfu52tADw30e6Bfik56_+PbUv6_+ADs=PUE-6NSrbQ@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>,
+        kbuild-all@lists.01.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:ZJIZk8l0EpZUxpXFKmiwWPXTustIFDikkaEJNRg7+O4NH+X/gAb
- NkIZubP/eMz3NsJr6xESadvtlpvxKyNzfbQGkG1FIt06FwC/k0jQzzMfC/NlWfeIhyFBTLl
- 1HTMArYgiNiLuNdLFvQO1FcUf5DCPMH78lxqOnEMq0b/+SE8vDXTnwM7uSkDeeDcfOLfHDT
- dFF8BQmQ/22385wLGqwmw==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:JkbgXSst4jw=:Gy4kxAIs+sm009YA1xG1An
- O4ssSCqIMFpPqcHjlAUBkXg0agElbClD248cbpDMkzztfljwtuKCtu/SAWQshSV4EPSzclSul
- fpvbI3wCHZq3S6Lt4KVPcjr6jMooFe40RED2e9SAsqNauEJ7iw+wtRK4cxwZ4QF4CB+dRG8rV
- NPf2k0j45s0wBOVvAn6YSq3jYEJQvRVcgnaidj2vdK+U25zDqM7Gu3OY4bhJn7cfUTmso2kNM
- fkH5WaxWIbuttAj2g/U4sCX85h5dohjbaze99s9yEa/ebILQvr4jdcdNgF3KV5aHct5qSHO8H
- /LYkDT9Ahp2Sy8ztd5qI7QoWqlr1D50qhQMye1XjMrPiINw1gL8qLoBi/YpxXhC6n0URmffV1
- UyONeIfgfQ7Bs2drom4a/zmxbP0uG50HsaW7keRP12f9niyO1gBk17VcmHn0q0+s+2jAL9i8n
- IWA2C1hKehcCIxkx63HtJDKoaxAW6SCmSnvCPOQI/jqhFNvuRSVX9i3rvz2IBuIlHesjUNH5B
- n5sPP45vxAGAry10HP4j39VgAiToua5L5uQcZ5wvZWxvxu62JC2pT390OOy6yrxIE5by+01KZ
- U7QaVCzJwZLoi55rD4S8NdhK7yp+aWrC4WPWAwzmSdBJU1jAIB0QSFvK1t5ukxxzXjMW4rgb8
- uKgt/W5X162m1iUP0U9tbphktlxePpZvbx4WyFycc7/o5XVguUK0VjDOlyknDleJ1IF8qTCoP
- dBazRpj3uUA+LX0uN/i9aOus//u7gJ7PWNl9gYS0zz61zdGZr6jmDmUJUd14ThL3Kd8WyC8yW
- EEelxU66jF1IY9r/mZAXGUqOl9Ng67KbANnOF1GWN1p6dSHwwk=
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+X-Provags-ID: V03:K1:74Mgwc2DUG5mMwrZ6MNsmoljzN6pyJ9yjLycxRNFA3NqtnvQWvr
+ +XXc1CwiRNmjo/CHNnk9+yENODqvKGuJ7B71HiOOTee+ifhGGaplPvstsZEDQr8Co3QMA6p
+ 5Uk5Xn1+YkJ0lZaorHRMpaPbP4yJtzAU0rnEvz1bCxIg7lyZqZnBc1HbBjBZzINP2n/BLLF
+ TzMmA22OUqRjjhUusxGIw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:zOs/EaUZU5g=:neyHM/Ij/EFNn2vmpKEHnX
+ W9RnhJzkcNmp2L7mVzFd4pjUJ+oPpumCNTTT5/XDrHruNf5Yn5WahVBfsPoZ2QfDCIBRJY5oI
+ xKp61Dk5iHxsu3gciAr2Kt6xSGoo9t1PmWXICfRcE6Ap/ralzQE32Of0H/2rL2O1ube++XWA5
+ Go4joyompIy4FkODjUwZ8s6qx8NVWjdbTu7jABuGoEg4KcLjgr8twISWIfAClpz9hAYr89YNm
+ xnOkKWrmv76gYf3x9RjRTTtJKUGamZlo/bL3IVF+AXzKBhYwmJjcBn72f96sA6vFwnsjnjT4R
+ /tIkhJvgI0N72YqLtRsHhVO1va0Pzk5PG+TMg62qlM64Pw9hM1crjUUA9S8j4GaNXwh86e8ll
+ CIIfY10q89a1WWRLPZ8dJ4KKkdi2R2/9bf88+3QLOE1/wparfXfBklLiB3vUa3zJvJgUEjNn7
+ zfNLlDetZz4P8zFtC9djYbcA43iJFfq/ALcWYMMLDueSvaPF9hJwKCgeCTMiFFJ7x3NlIXzy1
+ Lp2jD7Jss287t/bZowJFMXDB5CbWPdH7l4HNZTJO0cTIfxoDqovn4jUbypXTmHXi2EIB5vxM9
+ Hayi7m/lSci++kFilSXuDIcJ0BvCnccF2YAdwIravKgpf42K56MMulCLNJWYuKyfeOTDbHjmO
+ bEPRdp06A2EmDd6UX/4afTuuTFx48kiEvJQCed4nh36jgyZbsXL/9d0ZyopaQAY3Z8c8HA+jS
+ EgtBG3hknfbUEfz/tlLeVx0sLyu2dqnrxILf/jrjEmIPnkBHqBQ0ISE+FrCJNsTJPGfgSzWv/
+ lWn2Jpovjzr+1EtDeakh8rjkhIVvP5pyEbu3fEc1FokOr8eml0=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,27 +69,32 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 3, 2022 at 9:28 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> On Sat, 30 Apr 2022 at 20:48, Arnd Bergmann <arnd@arndb.de> wrote:
+On Tue, May 3, 2022 at 9:30 AM Tony Lindgren <tony@atomide.com> wrote:
+> * Arnd Bergmann <arnd@arndb.de> [220503 07:18]:
+> > On Tue, May 3, 2022 at 4:45 AM kernel test robot <lkp@intel.com> wrote:
+> > >
+> > > From: kernel test robot <lkp@intel.com>
+> > >
+> > > arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
+> > >
+> > >
+> > >  Remove unneeded variable used to store return value.
+> > >
+> > > Generated by: scripts/coccinelle/misc/returnvar.cocci
+> > >
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > > Signed-off-by: kernel test robot <lkp@intel.com>
 > >
-> > I think what is going on here is that your platform is able to detect
-> > the broken DMA because of the l3 interrupt handler telling the kernel
-> > about it, when on other platforms we would see either silent data corruption
-> > or a DMA that never reaches its target.
-> >
+> > I checked the patch, and unfortunately it is wrong, the current code
+> > needs to stay.
+> > The problem is the SET_DMA_ERRATA() macro that accesses the
+> > local 'errata' variable.
 >
-> I wonder if we could narrow this down by adding the possibility to use
-> IRQ stacks in the linear map, while using vmap'ed task stacks.
+> Yeah this one keeps popping up. Maybe we can make SET_DMA_ERRATA
+> into a function or have it at least change it to set the errata
+> value.
 
-I don't think we have actual DMA attempts to the IRQ stack, so this should
-not make a difference. What might help is to print some more information
-in omap3_l3_app_irq() that is likely provided by the hardware. The BUG_ON()
-happens for any timeout error, and that is most of the possible errors.
+I would just remove the macro and open-code the assignment, which
+I think makes it more readable to both people and tools.
 
-Simply dumping the L3 registers should at least show the exact type of
-timeout, and maybe the DMA master ID and physical address that can
-be traced back into a virtual address.
-Setting CONFIG_DMA_API_DEBUG=y should get the same information
-I think, but it can't hurt to do both.
-
-        Arnd
+     Arnd
