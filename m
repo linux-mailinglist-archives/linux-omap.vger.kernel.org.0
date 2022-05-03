@@ -2,110 +2,48 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B489D517C02
-	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 04:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 523BD517D4B
+	for <lists+linux-omap@lfdr.de>; Tue,  3 May 2022 08:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230180AbiECCts (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 2 May 2022 22:49:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35170 "EHLO
+        id S229503AbiECGao (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 3 May 2022 02:30:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230179AbiECCts (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 2 May 2022 22:49:48 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB0735864;
-        Mon,  2 May 2022 19:46:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651545976; x=1683081976;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0glE8nzzXqDvLLZUoukgdh79WOnXvu208QqhSBt79JI=;
-  b=MCkwdDBGILoiQtv1lqw67mYoFO6WtWQLt1DmJywFefBOIHH0QcAzywOz
-   ht+93EnKZt8oj6xfE7DZEtsXMt8yUs1T5nuffkIj0CRNAlZSO+r/V8WDc
-   dFER8VobKzu+1hfKPeNkJN0Q2jzFElf6Ez/OkqobFsW34tFk3Lq76aptC
-   H4Cq9PuzQmiss9yq00mUffksX1iIsSTeYGTttqDDRqeD5AEzqGPp0l/UF
-   Tv+FiigvuEmmpRkQkPCfdQ2mgsN5iobY0CCusbIXEY2d9V0kpXjfIuvlF
-   mFm054jKyUDpobGuy0UYeJLkp2n4rpUt7OWj+jTA3vvWMXR9r/CeSrjlm
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10335"; a="254843575"
-X-IronPort-AV: E=Sophos;i="5.91,193,1647327600"; 
-   d="scan'208";a="254843575"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2022 19:46:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,193,1647327600"; 
-   d="scan'208";a="653090183"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 02 May 2022 19:46:14 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nliYH-000A5V-QF;
-        Tue, 03 May 2022 02:46:13 +0000
-Date:   Tue, 3 May 2022 10:45:32 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     kbuild-all@lists.01.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dove: fix returnvar.cocci warnings
-Message-ID: <YnCXTPrbLhvfRVDm@e3a974050dc4>
-References: <202205031017.4TwMan3l-lkp@intel.com>
+        with ESMTP id S229447AbiECGao (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 3 May 2022 02:30:44 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4A0DBB05;
+        Mon,  2 May 2022 23:27:13 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id D9B3380FB;
+        Tue,  3 May 2022 06:23:56 +0000 (UTC)
+Date:   Tue, 3 May 2022 09:27:11 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH 1/2] ARM: dts: am335x-myirtech: Add an external clock
+ oscillator for CPU RTC
+Message-ID: <YnDLP3yw973/D7cw@atomide.com>
+References: <20220427081914.6773-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202205031017.4TwMan3l-lkp@intel.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220427081914.6773-1-eagle.alexander923@gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: kernel test robot <lkp@intel.com>
+* Alexander Shiyan <eagle.alexander923@gmail.com> [220427 11:16]:
+> The CPU RTC has an external crystal, so to keep time, let's define
+> it for devicetree.
 
-arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
+I've applied both patches into omap-for-v5.19/dt thanks.
 
-
- Remove unneeded variable used to store return value.
-
-Generated by: scripts/coccinelle/misc/returnvar.cocci
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: kernel test robot <lkp@intel.com>
----
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   9f9b9a2972eb8dcaad09d826c5c6d7488eaca3e6
-commit: 09f6b27d5ddd9ad0ec096d1b0f8decdacc70f0f8 [1066/8035] ARM: dove: multiplatform support
-:::::: branch date: 15 hours ago
-:::::: commit date: 4 weeks ago
-
- arch/arm/mach-omap2/dma.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
---- a/arch/arm/mach-omap2/dma.c
-+++ b/arch/arm/mach-omap2/dma.c
-@@ -79,8 +79,6 @@ static const struct omap_dma_reg reg_map
- 
- static unsigned configure_dma_errata(void)
- {
--	unsigned errata = 0;
--
- 	/*
- 	 * Errata applicable for OMAP2430ES1.0 and all omap2420
- 	 *
-@@ -158,7 +156,7 @@ static unsigned configure_dma_errata(voi
- 	if (cpu_is_omap34xx() && (omap_type() != OMAP2_DEVICE_TYPE_GP))
- 		SET_DMA_ERRATA(DMA_ROMCODE_BUG);
- 
--	return errata;
-+	return 0;
- }
- 
- static const struct dma_slave_map omap24xx_sdma_dt_map[] = {
+Tony
