@@ -2,100 +2,152 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14AA151B479
-	for <lists+linux-omap@lfdr.de>; Thu,  5 May 2022 02:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 685AB51B72F
+	for <lists+linux-omap@lfdr.de>; Thu,  5 May 2022 06:33:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232776AbiEEAGr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 4 May 2022 20:06:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42762 "EHLO
+        id S242747AbiEEEhO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 May 2022 00:37:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345899AbiEDX6s (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 4 May 2022 19:58:48 -0400
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 353F153B49
-        for <linux-omap@vger.kernel.org>; Wed,  4 May 2022 16:54:12 -0700 (PDT)
-Received: by mail-yb1-xb43.google.com with SMTP id w187so5077272ybe.2
-        for <linux-omap@vger.kernel.org>; Wed, 04 May 2022 16:54:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
-        b=Dn1MT8x7p4Rbn+pctwVkt7IgIdUxT0LRLjox/JaF9ttsZ2N8sUUglHFRxQa3sl75aK
-         h1U1JpCoOjPff8rV+LL0edQuBh+YvYlTbZ4zx127Qa80qMcS49J0d2nS2s7mVVadwp/M
-         vGp6wV8qQhR9tMRiQjyWHIJslgvG4HigF7p24aLxixJ1l99K68kLikab9Y0HgtSpkDYW
-         0+riuhXlj9dAnGs04evyYz4sFXKtm0FlJKiBI2Dtbo7ebvKr6E7XJkxgxzCXhReMwL1D
-         yv9OUeo9KjH+/RIlVXefhsYivAQRdlwo604eWoXrrvRFVxcSgXwgPis+UtVhyLpBWx3z
-         WyWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ampHH5WJLIBWSsxWwzVjbk5pO9UBFxn81pZ6QIDzZtY=;
-        b=QfbyEiaFCB+c/xsvH8wEPWv+0VcFJSL2GI7cDvayZPMHdSur+41MJIwMNMHKVjlpKC
-         c5gfjFyti2x++fY/dwSlKUBs89+QPFUysEelWF4PO0k5k/ZA2I4dmFNDkrYGzvh1CYOY
-         OU15Guv3K45kWszrdWBpewjBFBUghJdR/50W1tNGzTBUFX3gC7OiHPHkJ67aACaOWIT/
-         hxtvVD9IbUArf+OcQLi+X/9LanaN2FWGU1KYnt/1hsJmf8COD/rvqIZCB3rxi6RdkEm0
-         KMd+RgT4b/T4IHOoBQF4U/lATyboq5oML9Q/3k/q/33MJuMtavK2BHFeiyKDddi3rg1j
-         zuFA==
-X-Gm-Message-State: AOAM533XymL/byTUra//T3JzN9DmBqfwnhiOzIQU6+CQ+EEQz4j18o/a
-        U/VJVhg3bF5xQvoYZynvvAwe9fUuJOQtunm3UcjuAhf1d7lJEA==
-X-Google-Smtp-Source: ABdhPJyXbFHNtxfp8+qt+M9kuv/iG7XfFeFFPd7I4/fmpdxuycMtmf6dIJw5ghtZAT2CwgvAVE/kUl0HxsirxLIU8v0=
-X-Received: by 2002:a9d:6b16:0:b0:605:e0eb:d3d6 with SMTP id
- g22-20020a9d6b16000000b00605e0ebd3d6mr8263208otp.213.1651708440302; Wed, 04
- May 2022 16:54:00 -0700 (PDT)
+        with ESMTP id S238391AbiEEEhN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 May 2022 00:37:13 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 066FE47387
+        for <linux-omap@vger.kernel.org>; Wed,  4 May 2022 21:33:33 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 9107680B0;
+        Thu,  5 May 2022 04:30:12 +0000 (UTC)
+Date:   Thu, 5 May 2022 07:33:31 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Romain Naour <romain.naour@smile.fr>
+Cc:     linux-omap@vger.kernel.org
+Subject: Re: AM5749: tty serial 8250 omap driver crash
+Message-ID: <YnNTm35rqxSVqnt4@atomide.com>
+References: <YgpUNMAiXgu+vrtl@atomide.com>
+ <ca2faa1d-715b-77f8-4f19-037ba9aabc8e@smile.fr>
+ <YgzkLjWwIlm9/SiK@atomide.com>
+ <114d59cb-bbea-6298-c346-3f50f04ab2a5@smile.fr>
+ <Yg4CZb1Jy2M8wwn/@atomide.com>
+ <77a24941-4c46-8d78-391a-d3d1018f311a@smile.fr>
+ <Yg5GdIp5Glp9p/G5@atomide.com>
+ <2d192056-4977-9e2e-f661-23e05e2a6584@smile.fr>
+ <YnD+brrvs36aL71B@atomide.com>
+ <fc11fc68-d1f3-8e47-c5ff-c8ba10e8a7b3@smile.fr>
 MIME-Version: 1.0
-Received: by 2002:a05:6802:1a9:0:0:0:0 with HTTP; Wed, 4 May 2022 16:53:59
- -0700 (PDT)
-Reply-To: ortegainvestmmentforrealinvest@gmail.com
-From:   Info <joybhector64@gmail.com>
-Date:   Thu, 5 May 2022 05:23:59 +0530
-Message-ID: <CAP7KLYgH9LcKHS-KgR0zObHAgC6Fr3D+dOJSbDKurTc_12+iFw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b43 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5002]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [joybhector64[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [joybhector64[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fc11fc68-d1f3-8e47-c5ff-c8ba10e8a7b3@smile.fr>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-I am an investor. I came from the USA and I have many investments all
-over the world.
+* Romain Naour <romain.naour@smile.fr> [220504 12:38]:
+> Hello,
+> 
+> Le 03/05/2022 à 12:05, Tony Lindgren a écrit :
+> > Hi,
+> > 
+> > * Romain Naour <romain.naour@smile.fr> [220402 10:13]:
+> >> Le 17/02/2022 à 13:58, Tony Lindgren a écrit :
+> >>> Yes but note that 8250_omap autosuspend does not do anything unless the
+> >>> timeouts are manually enabled by the userspace. They are initialized to -1
+> >>> during probe.
+> >>
+> >> Actually it's not initialized to -1 on my board, it's initialized to 0. See
+> >> commit [1].
+> > 
+> > Oh you're right. The default should be initialized to 2000ms though, not 0.
+> 
+> How do you know it should use 2000ms by default?
 
-I want you to partner with me to invest in your country I am into many
-investment such as real Estate or buying of properties i can also
-invest money in any of existing business with equity royalty or by %
-percentage so on,
-Warm regards
+Oh I recalled we had such default value.. Seems I was wrong. Sorry for the
+wrong information.
+
+> >> I'm starting to think that is an issue when the 8250_omap driver is used with
+> >> another driver like the gnss serial driver (using a serdev driver).
+> > 
+> > Oh yes you are right. We do this conditionally now.
+> > 
+> >> Since the commit [1] there is no autosuspend delay at all, I would suggest to
+> >> add a default autosuspend delay value. I tested with 200ms based on another example.
+> >>
+> >> diff --git a/drivers/tty/serial/8250/8250_omap.c
+> >> b/drivers/tty/serial/8250/8250_omap.c
+> >> index ec7304d57f5f..8ba830bd493a 100644
+> >> --- a/drivers/tty/serial/8250/8250_omap.c
+> >> +++ b/drivers/tty/serial/8250/8250_omap.c
+> >> @@ -108,6 +108,9 @@
+> >>  /* RX FIFO occupancy indicator */
+> >>  #define UART_OMAP_RX_LVL               0x19
+> >>
+> >> +/* Runtime PM autosuspend timeout: 0ms may trigger wakeup issues */
+> >> +#define UART_AUTOSUSPEND_TIMEOUT               200
+> >> +
+> >>  struct omap8250_priv {
+> >>         int line;
+> >>         u8 habit;
+> >> @@ -1409,6 +1412,8 @@ static int omap8250_probe(struct platform_device *pdev)
+> >>          */
+> >>         if (!of_get_available_child_count(pdev->dev.of_node))
+> >>                 pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
+> >> +       else
+> >> +               pm_runtime_set_autosuspend_delay(&pdev->dev,
+> >> UART_AUTOSUSPEND_TIMEOUT);
+> >>
+> >>         pm_runtime_irq_safe(&pdev->dev);
+> > 
+> > Hmm the value should be set to the default 2000ms already. If it's not, then we
+> > need to find out what is setting it to 0.
+> 
+> I don't see where pm_runtime_set_autosuspend_delay() would be called to set the
+> autosuspend delay to 0.
+> 
+> 2000ms seems to be related to USB_AUTOSUSPEND_DELAY and only relevant for the
+> usb stack.
+
+OK maybe that's where I got the idea.
+
+> Here nothing seems calling pm_runtime_set_autosuspend_delay(), so the
+> autosuspend delay is still using 0 as default value. I'm not sure that the
+> serdev driver really handle the autosuspend delay.
+
+OK. Is your serdev driver not configuring the autosuspend value either?
+
+> Other driver like the omap-sham set the autosuspend delay default value just
+> after pm_runtime_use_autosuspend(&pdev->dev):
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/crypto/omap-sham.c?h=linux-5.10.y#n2126
+> 
+> > 
+> > For adjusting the timeout, you may want to check the child serdev driver
+> > runtime PM autosuspend timeout, adjusting that seems a better place to
+> > prevent the 8250 idle. Not sure how we should handle the 8250 specific
+> > timeout though based on the serdev driver requirements.
+> 
+> For now, I'm not sure I need to adjust the timeout.
+
+Well what is the child serdev driver setting the autosuspend timeout to?
+
+That should prevent the parent 8250 device from suspending. If the serdev
+driver is not using autosuspend, that should prevent the parent 8250 device
+from suspending also until the serdev driver decides to runtime suspend.
+
+I guess I'm not following why the 8250 autosuspend triggers with a serdev
+unless your serdev driver runtime suspends.. Or is there maybe some issue
+where runtime suspending 8250 still causes register access after that
+somehow?
+
+Regards,
+
+Tony
+
+
+> >> [1]
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=627a545c6bb0c7de09208e6546f5111290477261
+> 
