@@ -2,89 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4547451C52B
-	for <lists+linux-omap@lfdr.de>; Thu,  5 May 2022 18:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DC3951CB98
+	for <lists+linux-omap@lfdr.de>; Thu,  5 May 2022 23:47:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232478AbiEEQfL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 May 2022 12:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59498 "EHLO
+        id S1377933AbiEEVuz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 May 2022 17:50:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238980AbiEEQfK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 May 2022 12:35:10 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B76541A4;
-        Thu,  5 May 2022 09:31:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651768290; x=1683304290;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=J1ejMXF3Bd/GCmguw/mohOzkY0z/abBYcpbEVngnjig=;
-  b=KSBY0jJmug1QLSllDfxfXJoymE8MCbG4vSp2SNpi4ko5CBkdKaYBv8na
-   oAXqk5im1MyZtnkOM4csj/zmr80lNEEQ7bqQmSZxkCOtyDBVO3eKHn3LC
-   1PPAnTDzVJDbY8uTYACwn3Q4x5uNwT0++oMXF2zrLtJJEnL3G41GXw3ZD
-   13Xa6qKC1hPOF4m31Wx5RFd8gArAec5xgL6KLT1dU8UbjJmkZd514vGnJ
-   JqXWoWkKYQADCLBK5IzN4yKtrL9bwTwmvwHr6/JLbAEhvkGVeRGWYGJO+
-   zMb07850Elzk6kMAx94ejo55gHydwI5wSgXjFw3cZdUff86bALm41oqDH
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="328713910"
-X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
-   d="scan'208";a="328713910"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 09:31:18 -0700
-X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
-   d="scan'208";a="694739879"
-Received: from evegaag-mobl1.amr.corp.intel.com (HELO [10.209.187.127]) ([10.209.187.127])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 09:31:17 -0700
-Message-ID: <8704209d-d487-a297-b05a-5db99f5f808c@intel.com>
-Date:   Thu, 5 May 2022 09:31:37 -0700
+        with ESMTP id S1344061AbiEEVuy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 May 2022 17:50:54 -0400
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BDA336334
+        for <linux-omap@vger.kernel.org>; Thu,  5 May 2022 14:47:14 -0700 (PDT)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-2f16645872fso63183447b3.4
+        for <linux-omap@vger.kernel.org>; Thu, 05 May 2022 14:47:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=YQBNXwhtatYh34/jLwdUFUCSxf17YDCL4devMyNKc5o=;
+        b=KGL6C8ZW+2n1TmelJ4TkabaVUth3iysttYfCQpMitI97HijzTp6tYWx5Q9X9DKXYHf
+         sKX+BF7dMnc3UyNI9STmWK816dOaKbUnDby0xkOIgprJuJtOqcIrYBh8ZjJDCeaWsYyr
+         uBS6FpEbQ8FsCDQvl9mOoYjhXZCZkppILJhSEzpjZE3MYBgKAy/go87sKFxFVHbk8PJ4
+         A7HVeJHZlufjxN6Z95YGWap4+Hd0+xZ86GpqasFsGYwdInZy+gAuuHQp8x34Rq0xHw9u
+         As+3vW0/NN+JBjPIMQm/RMgIsSAIGhSiezmWxajndwgyw8N+rrZmvOU3ISoIObkq7k5n
+         3SCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=YQBNXwhtatYh34/jLwdUFUCSxf17YDCL4devMyNKc5o=;
+        b=upvg0adUn8sz2vZxQPJKjhCY0GHFpxlVXNw+MXi8n+RXOjaIs0OBdmn/vyalW8IB6g
+         5jfNag9yMV3A2ECPX9GfP32MTlZd2imYdCogp9dhW54ItJf6ugNL0TgjXerz3q/X03bZ
+         F7ZFmrUeAlb4d2wVRRCCcQmKRf/+paHsz6PlxfkguxxNABv49QV2Nna1ydoE+FVGpowS
+         O8O7ov9aikNTYpSa8Nv6d1WRiaTtA4hm3UseSWnQPS4Y16AT4aUnv8xyUKpRlVnodfZy
+         G3le796usiCVrrex910Clx7cO5CrCuKdLeVz/jPneYDOV0XDiViHga7ikrOC93T1XXtH
+         qhqQ==
+X-Gm-Message-State: AOAM531PlJ/Z1NlS1louxRC66TIhKH40lRoUi+ktABTPPQ22StAVuapi
+        dKb7b5VvFc9J+mjtsDNc7JllBPDOlwV9UnZ9DpU=
+X-Google-Smtp-Source: ABdhPJwUpTsy7HB5UudUNUWXy11uaHclazcNq6J2JTsJr17nJJR9StSidSJ6+0QFH2bAPsbiYmdQYed8SPQEJ2EzEFM=
+X-Received: by 2002:a0d:d5d2:0:b0:2f7:c85d:2c0d with SMTP id
+ x201-20020a0dd5d2000000b002f7c85d2c0dmr154328ywd.5.1651787233307; Thu, 05 May
+ 2022 14:47:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>
-Cc:     kbuild-all@lists.01.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <202205031017.4TwMan3l-lkp@intel.com>
- <YnCXTPrbLhvfRVDm@e3a974050dc4>
- <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7110:8194:b0:173:765e:f48a with HTTP; Thu, 5 May 2022
+ 14:47:13 -0700 (PDT)
+Reply-To: binarybitcoinsinvestment@gmail.com
+From:   =?UTF-8?B?V2hhdHNBcHAg4oCqKzEgKDU0MCkgNjE44oCRMDg0NOKArCA=?= 
+        <pmailuk1@gmail.com>
+Date:   Thu, 5 May 2022 22:47:13 +0100
+Message-ID: <CA+j4=s9-h8-2Xs3o0sj=5of+5Fcd3aqWD9vywch0VevMpvZf_Q@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1130 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [pmailuk1[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [pmailuk1[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 5/3/22 00:21, Arnd Bergmann wrote:
-> On Tue, May 3, 2022 at 4:45 AM kernel test robot <lkp@intel.com> wrote:
->> From: kernel test robot <lkp@intel.com>
->>
->> arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
->>
->>  Remove unneeded variable used to store return value.
->>
->> Generated by: scripts/coccinelle/misc/returnvar.cocci
->>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Signed-off-by: kernel test robot <lkp@intel.com>
-> I checked the patch, and unfortunately it is wrong, the current code
-> needs to stay.
-> The problem is the SET_DMA_ERRATA() macro that accesses the
-> local 'errata' variable.
-
-0day folks, do we have humans looking over these before they're going
-out to the list?  If not, can we add some?  If so, can the humans get a
-little more discerning? ;)
+--=20
+I deposited $800 into my trading account by myself and allowed Mr
+James  trade for me and I got my first payout of $8000. I can now
+understand why their are so many recommendations about him and I=E2=80=99m
+also recommending him to you reading this post..Don=E2=80=99t miss out!!!
+Reach him here on fb or WhatsApp: Dm WhatsApp =E2=80=AA+1 (540) 618=E2=80=
+=910844=E2=80=AC
