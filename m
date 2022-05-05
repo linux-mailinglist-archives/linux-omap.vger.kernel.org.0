@@ -2,78 +2,89 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ADE851C1F4
-	for <lists+linux-omap@lfdr.de>; Thu,  5 May 2022 16:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4547451C52B
+	for <lists+linux-omap@lfdr.de>; Thu,  5 May 2022 18:32:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380412AbiEEOMt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 May 2022 10:12:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35706 "EHLO
+        id S232478AbiEEQfL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 5 May 2022 12:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380411AbiEEOMr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 May 2022 10:12:47 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 519065A092;
-        Thu,  5 May 2022 07:09:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=1AnGlm7IYrdrbVjEpzCqloAFW5BU13ZTcRkgwwA7TRk=; b=WbXXXIkI9uJM3lyo4ApulNzhZ6
-        5g+bqUk5FwJf+sxy8D6V/uBqs6znjc2ELqZSPWsngJXvfSxdoXVjJ+PMJIOhcHC3McJ1x9idYN9fQ
-        XaNs+wkERk6ou9DGnCM4FzSlV7g3YvYzlxyear/nU5ZiH7Wdwhz5JYSLkm8dMCRuhc5ugcfIMF4pG
-        0uxc22/wKLxtz5cFEbDSHlWS1AZ4vNIWQcqc0k6COxZEI89Q+z+0VJTi2m/IclklK+hkL0HFs9Jx7
-        uQbltv6S2SPhAAfIgUtaKyth2n/YZpCi8VHIIXQdTV+bLu4GtsGR0/F2zHnvz4bQqPtCuLYjBRS1e
-        IouEPXMQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60602)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1nmc9v-0004xy-LZ; Thu, 05 May 2022 15:08:48 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1nmc9o-0001NI-QR; Thu, 05 May 2022 15:08:40 +0100
-Date:   Thu, 5 May 2022 15:08:40 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     kernel test robot <lkp@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, kbuild-all@lists.01.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+        with ESMTP id S238980AbiEEQfK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 May 2022 12:35:10 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B76541A4;
+        Thu,  5 May 2022 09:31:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651768290; x=1683304290;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=J1ejMXF3Bd/GCmguw/mohOzkY0z/abBYcpbEVngnjig=;
+  b=KSBY0jJmug1QLSllDfxfXJoymE8MCbG4vSp2SNpi4ko5CBkdKaYBv8na
+   oAXqk5im1MyZtnkOM4csj/zmr80lNEEQ7bqQmSZxkCOtyDBVO3eKHn3LC
+   1PPAnTDzVJDbY8uTYACwn3Q4x5uNwT0++oMXF2zrLtJJEnL3G41GXw3ZD
+   13Xa6qKC1hPOF4m31Wx5RFd8gArAec5xgL6KLT1dU8UbjJmkZd514vGnJ
+   JqXWoWkKYQADCLBK5IzN4yKtrL9bwTwmvwHr6/JLbAEhvkGVeRGWYGJO+
+   zMb07850Elzk6kMAx94ejo55gHydwI5wSgXjFw3cZdUff86bALm41oqDH
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="328713910"
+X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
+   d="scan'208";a="328713910"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 09:31:18 -0700
+X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; 
+   d="scan'208";a="694739879"
+Received: from evegaag-mobl1.amr.corp.intel.com (HELO [10.209.187.127]) ([10.209.187.127])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 09:31:17 -0700
+Message-ID: <8704209d-d487-a297-b05a-5db99f5f808c@intel.com>
+Date:   Thu, 5 May 2022 09:31:37 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
 Subject: Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
-Message-ID: <YnPaaDalmN6ky0HM@shell.armlinux.org.uk>
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>
+Cc:     kbuild-all@lists.01.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 References: <202205031017.4TwMan3l-lkp@intel.com>
  <YnCXTPrbLhvfRVDm@e3a974050dc4>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YnCXTPrbLhvfRVDm@e3a974050dc4>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+ <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 03, 2022 at 10:45:32AM +0800, kernel test robot wrote:
-> From: kernel test robot <lkp@intel.com>
-> 
-> arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
-> 
-> 
->  Remove unneeded variable used to store return value.
-> 
-> Generated by: scripts/coccinelle/misc/returnvar.cocci
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: kernel test robot <lkp@intel.com>
+On 5/3/22 00:21, Arnd Bergmann wrote:
+> On Tue, May 3, 2022 at 4:45 AM kernel test robot <lkp@intel.com> wrote:
+>> From: kernel test robot <lkp@intel.com>
+>>
+>> arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
+>>
+>>  Remove unneeded variable used to store return value.
+>>
+>> Generated by: scripts/coccinelle/misc/returnvar.cocci
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Signed-off-by: kernel test robot <lkp@intel.com>
+> I checked the patch, and unfortunately it is wrong, the current code
+> needs to stay.
+> The problem is the SET_DMA_ERRATA() macro that accesses the
+> local 'errata' variable.
 
-NAK. The analysis is wrong.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+0day folks, do we have humans looking over these before they're going
+out to the list?  If not, can we add some?  If so, can the humans get a
+little more discerning? ;)
