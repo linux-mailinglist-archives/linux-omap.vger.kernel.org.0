@@ -2,60 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5229851CE93
-	for <lists+linux-omap@lfdr.de>; Fri,  6 May 2022 04:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15A3B51D115
+	for <lists+linux-omap@lfdr.de>; Fri,  6 May 2022 08:12:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1387804AbiEFBPS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 5 May 2022 21:15:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39408 "EHLO
+        id S1351246AbiEFGPl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 May 2022 02:15:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1387795AbiEFBPR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 5 May 2022 21:15:17 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45DA161297;
-        Thu,  5 May 2022 18:11:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651799496; x=1683335496;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Jtx+r+kKcN9DwsifcqYVbFmEahrg7uWN9dDFosTv5+k=;
-  b=llKOf1yBdHznQs2uUp/j3pHk/PXTuhrCgbPc7cNDdxTavmSVIY2zq3nk
-   5CBDU1awK7Fr/BdxpcTz1J0WOQeIaOf1nbyMkHKuOlPWVhWE0G4CT2sRH
-   6pvUHPR832c4DYiKuF6wGN1wzC4Pq3H7D60Qwace4s5kjc8YK1ZbhXUJM
-   sgXQ+EzXxo7Jw/5OER1mNhsXiJJWpDPueHRCOiWpRyvPc9mew8LFnrE/m
-   37IC9mwGY/CMrBnYx/dN4VHBTUrRAUpiESCelb4mMLfHxY+nTrVm+qxT9
-   4Q5QxoOcNROX+XfogULtMMBbmeS44C71WMb/sQ3nvQKALSCv62MR/cKoI
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="331298643"
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; 
-   d="scan'208";a="331298643"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 18:11:35 -0700
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; 
-   d="scan'208";a="537631054"
-Received: from rli9-dbox.sh.intel.com (HELO rli9-dbox) ([10.239.159.142])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2022 18:11:33 -0700
-Date:   Fri, 6 May 2022 09:09:44 +0800
-From:   Philip Li <philip.li@intel.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>,
-        kbuild-all@lists.01.org,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [kbuild-all] Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
-Message-ID: <YnR1WDQBo4u3m+PP@rli9-dbox>
-References: <202205031017.4TwMan3l-lkp@intel.com>
- <YnCXTPrbLhvfRVDm@e3a974050dc4>
- <YnPaaDalmN6ky0HM@shell.armlinux.org.uk>
+        with ESMTP id S1353259AbiEFGPj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 May 2022 02:15:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E90CD5B3C2;
+        Thu,  5 May 2022 23:11:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B35E61F0C;
+        Fri,  6 May 2022 06:11:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DBDC385A8;
+        Fri,  6 May 2022 06:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651817515;
+        bh=hHJ2dKaQKUKX5YA0P8F4R0QuX/KqDRWP+QfV5J6aF/I=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=AXmhgoivoTIbOkrlU7cOSNNeQVxmMkJrZlYludZjC1B+6e92V8SQFv1SL/KyByxWW
+         Q+wzOCCju2+v0Tveu/H+KRWiEY6aKp+XZOIg/YK8jG9UpwF9wFerSkraLHQyddCxad
+         KQBXpvh7uaJYcQ8Lu7FUSkLROpLCzyi9EC4gQVUTXb4N7yCp2YEP4IZaLT40YDjuR0
+         TsAm7w9DonnasfT0JknwSPUTyA0ay0p+f2ShPc9k20713PJtVtnun7BFKJuzW75lHh
+         MlNi3B6Evj+gy5ZudY+TIpH80mB3pi+BYRtegAmW7Xh40V9HHu++ka97YX1zCCzFRZ
+         o6CDVodLztT6g==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YnPaaDalmN6ky0HM@shell.armlinux.org.uk>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wl1251: dynamically allocate memory used for DMA
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <1676021ae8b6d7aada0b1806fed99b1b8359bdc4.1651495112.git.hns@goldelico.com>
+References: <1676021ae8b6d7aada0b1806fed99b1b8359bdc4.1651495112.git.hns@goldelico.com>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     arnd@arndb.de, tony@atomide.com,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <165181750762.835.18351799442836112147.kvalo@kernel.org>
+Date:   Fri,  6 May 2022 06:11:52 +0000 (UTC)
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,28 +61,28 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, May 05, 2022 at 03:08:40PM +0100, Russell King (Oracle) wrote:
-> On Tue, May 03, 2022 at 10:45:32AM +0800, kernel test robot wrote:
-> > From: kernel test robot <lkp@intel.com>
-> > 
-> > arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
-> > 
-> > 
-> >  Remove unneeded variable used to store return value.
-> > 
-> > Generated by: scripts/coccinelle/misc/returnvar.cocci
-> > 
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: kernel test robot <lkp@intel.com>
-> 
-> NAK. The analysis is wrong.
+"H. Nikolaus Schaller" <hns@goldelico.com> wrote:
 
-sorry about the false patch, we will improve this.
-
+> With introduction of vmap'ed stacks, stack parameters can no
+> longer be used for DMA and now leads to kernel panic.
 > 
-> -- 
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
-> _______________________________________________
-> kbuild-all mailing list -- kbuild-all@lists.01.org
-> To unsubscribe send an email to kbuild-all-leave@lists.01.org
+> It happens at several places for the wl1251 (e.g. when
+> accessed through SDIO) making it unuseable on e.g. the
+> OpenPandora.
+> 
+> We solve this by allocating temporary buffers or use wl1251_read32().
+> 
+> Tested on v5.18-rc5 with OpenPandora.
+> 
+> Fixes: a1c510d0adc6 ("ARM: implement support for vmap'ed stacks")
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+
+Patch applied to wireless-next.git, thanks.
+
+454744754cbf wl1251: dynamically allocate memory used for DMA
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/1676021ae8b6d7aada0b1806fed99b1b8359bdc4.1651495112.git.hns@goldelico.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
