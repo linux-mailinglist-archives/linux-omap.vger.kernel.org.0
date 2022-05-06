@@ -2,44 +2,44 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7905351D254
-	for <lists+linux-omap@lfdr.de>; Fri,  6 May 2022 09:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 423EB51D25D
+	for <lists+linux-omap@lfdr.de>; Fri,  6 May 2022 09:34:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245712AbiEFHfo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 May 2022 03:35:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53446 "EHLO
+        id S1389578AbiEFHhx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 May 2022 03:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231643AbiEFHfk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 May 2022 03:35:40 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D606F5D1B1;
-        Fri,  6 May 2022 00:31:57 -0700 (PDT)
+        with ESMTP id S1357143AbiEFHhw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 May 2022 03:37:52 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDFB25D642;
+        Fri,  6 May 2022 00:34:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651822317; x=1683358317;
+  t=1651822450; x=1683358450;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=SkwnacsNYIuKuqUXcnje2/FShCNjGYncVyvTKO9Qoz4=;
-  b=DxQulxvfjkQmf2kZEqMPCMGYgcLKjLr0cqiBFUzSbcH9cG5hbl5I3UOV
-   tf50Fw9QgJueTPphn3GyaovCGjlpNIISHI1TYmS+BDcO5vyizbEW4vdw3
-   p56SWaH8i5Cya7VYbhEvUzTb8U/0JeMufZnTwQhajM8ivQnLRKB7evzGh
-   /ioC0nm4Mz6eeJ1zhOSvOOxxJQC/Gk2Oclm/KzRVYUYsZLu48KdrXYBpu
-   bNpzoI3AZU7ofs9wAdfhZRstnYXS/6KHFAYQf+gjNPkjoAgqMQdIAqfJA
-   FpvDYZukra/FYDePJZsheFaIcdKz023yBnCCQj9YA6xfNpX5iQcsfwgOw
+  bh=rpRUIxRsFJfMvDD+IjLJpjOz3re74JSzeIb7dhOzr60=;
+  b=FVleBor7rO0q4PHpInmY9Lo9jrCTtVRpIA7uQxl2cBt6UFicfAqWb064
+   hlMDCWn566FfbPbO7qgR+lIqpzGbGbHEzdgfsjp70LUkpQKLPDkSYQM2k
+   j0VruZhkkEa4dx0ZkijrXBz6Tr9Xc9tG3tEGRGlj3hyMPGOwfkzOQL6TP
+   218cKy7a2BQJgV9ajLHL2m5hYjySeTybO/qUTRhv4CvdzEehmp6w884z5
+   MA5IHxR0fd/T3+yrFbA9urEPBJiQ8ONSBP9wAvn8NHiFoeHJt7da2Mjan
+   yC3q0ry86LAxpkp2XeS2D5Ypyjq51btPJnEBr/LmlvRoSQJBAPe7+MmJH
    Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268527422"
+X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="248916600"
 X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; 
-   d="scan'208";a="268527422"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 00:31:57 -0700
+   d="scan'208";a="248916600"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 00:34:10 -0700
 X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; 
-   d="scan'208";a="563686566"
+   d="scan'208";a="585831417"
 Received: from rli9-dbox.sh.intel.com (HELO rli9-dbox) ([10.239.159.142])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 00:31:54 -0700
-Date:   Fri, 6 May 2022 15:30:05 +0800
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 00:34:07 -0700
+Date:   Fri, 6 May 2022 15:32:18 +0800
 From:   Philip Li <philip.li@intel.com>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Dave Hansen <dave.hansen@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Dave Hansen <dave.hansen@intel.com>,
         kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
         Linux Memory Management List <linux-mm@kvack.org>,
         Tony Lindgren <tony@atomide.com>,
@@ -48,19 +48,19 @@ Cc:     Dave Hansen <dave.hansen@intel.com>, Arnd Bergmann <arnd@arndb.de>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
-Message-ID: <YnTOff2tzQIjREd2@rli9-dbox>
+Message-ID: <YnTPAtrN4SAm+gu/@rli9-dbox>
 References: <202205031017.4TwMan3l-lkp@intel.com>
  <YnCXTPrbLhvfRVDm@e3a974050dc4>
  <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
  <8704209d-d487-a297-b05a-5db99f5f808c@intel.com>
  <YnR1OTpYADQy6Xa8@rli9-dbox>
- <CAMj1kXEznFy3GeJJwwyHCHTQoYKmE92BDHisqNM84FoyFFw7rg@mail.gmail.com>
+ <CAK8P3a1fjHnLg774-CfSPaWY16PtS56RgsRuEVA8JRrh+ZoY=g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXEznFy3GeJJwwyHCHTQoYKmE92BDHisqNM84FoyFFw7rg@mail.gmail.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <CAK8P3a1fjHnLg774-CfSPaWY16PtS56RgsRuEVA8JRrh+ZoY=g@mail.gmail.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,9 +69,8 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, May 06, 2022 at 09:24:26AM +0200, Ard Biesheuvel wrote:
-> On Fri, 6 May 2022 at 03:12, Philip Li <philip.li@intel.com> wrote:
-> >
+On Fri, May 06, 2022 at 09:17:44AM +0200, Arnd Bergmann wrote:
+> On Fri, May 6, 2022 at 3:09 AM Philip Li <philip.li@intel.com> wrote:
 > > On Thu, May 05, 2022 at 09:31:37AM -0700, Dave Hansen wrote:
 > > > On 5/3/22 00:21, Arnd Bergmann wrote:
 > > > > On Tue, May 3, 2022 at 4:45 AM kernel test robot <lkp@intel.com> wrote:
@@ -98,24 +97,23 @@ On Fri, May 06, 2022 at 09:24:26AM +0200, Ard Biesheuvel wrote:
 > > we have confidence based on early result analysis and feedback, for these
 > > warnings, 0day sends out patch automatically.
 > >
+> > Thanks for the suggestion Dave, We will change current process to be more
+> > conservative and to avoid false patch by adding human analysis.
 > 
-> Could you please add a special header or something to such emails so I
-> can filter them out? I am strongly opposed to such automatic spambot
-> patch generation, as it wastes valuable reviewer bandwidth to save the
-> bot operator some time, but it think it should be the other way
-> around.
+> For the returnvar.cocci false-positives, I wonder if it's possible to find them
+> using another coccinelle helper that detects badly formed macros which
+> access variables out of scope. I can't think of how this would be expressed,
+> but maybe someone has an idea.
+> 
+> Something else went wrong in this particular patch,  and I can't explain
+> how this happened: the subject line contains the name of the wrong platform,
+> "dove" rather than "omap2". My guess is that this was human error copying
+> the subject line from another patch, but if this came from a script, you
+> may want to check how this gets generated.
 
-Sorry for the trouble, we will stop sending the patch automatically and
-only send out patch after human confirmed/reviewed.
+Thanks Arnd, we will investigate this to fix our side issue. And thanks for
+taking time to check the detail, as mentioned in other reply, we will not
+send out patch unless it is carefully reviewed/acked by members of 0day.
 
 > 
-> We expect contributors to carefully prepare their patch submissions
-> before sending them to the list, and automatically generated patches
-> simply don't mesh with that. The fact that you use a bot does not mean
-> you can ignore these rules.
-
-Got it, we will improve this to follow the right way to send out patches.
-
-Thanks
-
-
+>        Arnd
