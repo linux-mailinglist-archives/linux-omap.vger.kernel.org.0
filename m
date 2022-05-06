@@ -2,58 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15A3B51D115
-	for <lists+linux-omap@lfdr.de>; Fri,  6 May 2022 08:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E17DC51D21D
+	for <lists+linux-omap@lfdr.de>; Fri,  6 May 2022 09:18:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351246AbiEFGPl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 May 2022 02:15:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38666 "EHLO
+        id S1389463AbiEFHVp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 6 May 2022 03:21:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353259AbiEFGPj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 May 2022 02:15:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E90CD5B3C2;
-        Thu,  5 May 2022 23:11:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B35E61F0C;
-        Fri,  6 May 2022 06:11:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DBDC385A8;
-        Fri,  6 May 2022 06:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651817515;
-        bh=hHJ2dKaQKUKX5YA0P8F4R0QuX/KqDRWP+QfV5J6aF/I=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=AXmhgoivoTIbOkrlU7cOSNNeQVxmMkJrZlYludZjC1B+6e92V8SQFv1SL/KyByxWW
-         Q+wzOCCju2+v0Tveu/H+KRWiEY6aKp+XZOIg/YK8jG9UpwF9wFerSkraLHQyddCxad
-         KQBXpvh7uaJYcQ8Lu7FUSkLROpLCzyi9EC4gQVUTXb4N7yCp2YEP4IZaLT40YDjuR0
-         TsAm7w9DonnasfT0JknwSPUTyA0ay0p+f2ShPc9k20713PJtVtnun7BFKJuzW75lHh
-         MlNi3B6Evj+gy5ZudY+TIpH80mB3pi+BYRtegAmW7Xh40V9HHu++ka97YX1zCCzFRZ
-         o6CDVodLztT6g==
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S1352865AbiEFHVp (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 May 2022 03:21:45 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A827566FA3;
+        Fri,  6 May 2022 00:18:02 -0700 (PDT)
+Received: from mail-wr1-f46.google.com ([209.85.221.46]) by
+ mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MtfVx-1o6BQU0OUh-00v8Wd; Fri, 06 May 2022 09:18:01 +0200
+Received: by mail-wr1-f46.google.com with SMTP id j15so8825770wrb.2;
+        Fri, 06 May 2022 00:18:01 -0700 (PDT)
+X-Gm-Message-State: AOAM530UXeyQH1I2fmrx7p793ELh0PDDWac3A8S6+5ZgUs+THa2G4Lef
+        JqXFqiy95L2unMfzNajzPs9LhMYMIdm+nXa+4Kc=
+X-Google-Smtp-Source: ABdhPJxk5kmKl/NuJo2Kw6gbDMmUHBC9PzM37HJ0IpduByOSpYwlVh3nYidBN6G2ViFW9sJzR1YaV0REdELOtYll4hY=
+X-Received: by 2002:a5d:5986:0:b0:20c:5844:820d with SMTP id
+ n6-20020a5d5986000000b0020c5844820dmr1472517wri.192.1651821480693; Fri, 06
+ May 2022 00:18:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wl1251: dynamically allocate memory used for DMA
-From:   Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <1676021ae8b6d7aada0b1806fed99b1b8359bdc4.1651495112.git.hns@goldelico.com>
-References: <1676021ae8b6d7aada0b1806fed99b1b8359bdc4.1651495112.git.hns@goldelico.com>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     arnd@arndb.de, tony@atomide.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com, linux-omap@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <165181750762.835.18351799442836112147.kvalo@kernel.org>
-Date:   Fri,  6 May 2022 06:11:52 +0000 (UTC)
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <202205031017.4TwMan3l-lkp@intel.com> <YnCXTPrbLhvfRVDm@e3a974050dc4>
+ <CAK8P3a1xMeLa72YKMufdej6KguDwiSXtZmMqRxOt5B05x_fx3A@mail.gmail.com>
+ <8704209d-d487-a297-b05a-5db99f5f808c@intel.com> <YnR1OTpYADQy6Xa8@rli9-dbox>
+In-Reply-To: <YnR1OTpYADQy6Xa8@rli9-dbox>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 6 May 2022 09:17:44 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1fjHnLg774-CfSPaWY16PtS56RgsRuEVA8JRrh+ZoY=g@mail.gmail.com>
+Message-ID: <CAK8P3a1fjHnLg774-CfSPaWY16PtS56RgsRuEVA8JRrh+ZoY=g@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dove: fix returnvar.cocci warnings
+To:     Philip Li <philip.li@intel.com>
+Cc:     Dave Hansen <dave.hansen@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+        kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:uuYCo+mphVTnNPmhY2lL8Z/svpjDh2VmUZwvOUg2KeF6q7B2hR6
+ ahh2Wi2f44fThQPEpHBS1G10VRuffKDpyJVvBJtMQAUoDq14lcymApepGtgJGwq5MRrt4b0
+ ARboxp2s8SGXLg5ZGxY7lIQUxMnsFpjxDj7aw9jII6MXNxTXpcpcNSMnc7asz+ZL4J413Eg
+ xQGvDgVgJw1NIAv0oGrfA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:dkUaghogZJM=:fgkZdwjbvnrIqyBPzeiSjz
+ HgyTO2hBQvZUfzDHe0ED0kRf29FVprwbJ+XQldh07PFTsN0RqDuCjgCo1FUE+QtRJGp2i6n5X
+ IfOxc7KIsfR/p0TQRrH/o2lkVhBkOpv83bvmlYH8Dnv1/2KCY+AxSwKLJripbyw4bV4TngiJ9
+ js2eoF+AIjwXUY/ejgxxOCImjbiJYlvWYTNyqJKZA+67HAhLT6y/XhJX68WPlvO7J0ziWT2c/
+ GY4GFSRkE1F3UOwM7a4F4BBJfoDQ6gZKShnS5giCnc7NWi8HcCE8LNoR5aNgPjT8ukGJvMJ5t
+ oeMROoKazKBAOt9RgG83o36eyOz7MPwce+0iNiI5b72IuBymTeF4xzmI4dUBRz9pzhAkCVG0Q
+ gtPKLLZJ8NjzhK2tYh7n4c2MFfpneLQU/a3+ZTbNmvPvjLrPJh9gY+L2MtLZAqpfWb0v+TJ8P
+ TWQHgkrpCeFI+CAAf/8VY2BDOS5y5X54Eq4TSes8EGL3oa9UcZK++JljegvmwsG+MU9YHmryc
+ kpwo1tpr3cLlyq4yaVvXejqkLflaa3RxPnQ+YOdCTSj/LIjg6bHJlyqVkZUg57Zb/3fDK3VEi
+ 2VTLfZXkXrghn1yZMqRldSxZvGmgnTd/si6VCaW2XdOr18r3viGDZljrxjH4rbU21ZC8dOhhe
+ e8EVzHP3IBTp83K4KUdLbDMfBUQk9Oy+W4YUXa7oD3ZetaKb18XtFUSQ7jFtYyiywfAR7e+DH
+ YArJPNioFggKGweNy2pEOKt6JHchOXIaFl6gboG0u6xMo4sUTnGYyDA+d76QvYAGaW+7s78I6
+ 1uAIERe1JuJYDM+n2mDgFReBi/Wx7oWd1vAoVtKAK7bj9K8UoA=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,28 +71,45 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-"H. Nikolaus Schaller" <hns@goldelico.com> wrote:
+On Fri, May 6, 2022 at 3:09 AM Philip Li <philip.li@intel.com> wrote:
+> On Thu, May 05, 2022 at 09:31:37AM -0700, Dave Hansen wrote:
+> > On 5/3/22 00:21, Arnd Bergmann wrote:
+> > > On Tue, May 3, 2022 at 4:45 AM kernel test robot <lkp@intel.com> wrote:
+> > >> From: kernel test robot <lkp@intel.com>
+> > >>
+> > >> arch/arm/mach-omap2/dma.c:82:10-16: Unneeded variable: "errata". Return "0" on line 161
+> > >>
+> > >>  Remove unneeded variable used to store return value.
+> > >>
+> > >> Generated by: scripts/coccinelle/misc/returnvar.cocci
+> > >>
+> > >> Reported-by: kernel test robot <lkp@intel.com>
+> > >> Signed-off-by: kernel test robot <lkp@intel.com>
+> > > I checked the patch, and unfortunately it is wrong, the current code
+> > > needs to stay.
+> > > The problem is the SET_DMA_ERRATA() macro that accesses the
+> > > local 'errata' variable.
+> >
+> > 0day folks, do we have humans looking over these before they're going
+> > out to the list?  If not, can we add some?  If so, can the humans get a
+> > little more discerning? ;)
+>
+> Sorry all for the bad patch. So far, we pick up several cocci warnings that
+> we have confidence based on early result analysis and feedback, for these
+> warnings, 0day sends out patch automatically.
+>
+> Thanks for the suggestion Dave, We will change current process to be more
+> conservative and to avoid false patch by adding human analysis.
 
-> With introduction of vmap'ed stacks, stack parameters can no
-> longer be used for DMA and now leads to kernel panic.
-> 
-> It happens at several places for the wl1251 (e.g. when
-> accessed through SDIO) making it unuseable on e.g. the
-> OpenPandora.
-> 
-> We solve this by allocating temporary buffers or use wl1251_read32().
-> 
-> Tested on v5.18-rc5 with OpenPandora.
-> 
-> Fixes: a1c510d0adc6 ("ARM: implement support for vmap'ed stacks")
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+For the returnvar.cocci false-positives, I wonder if it's possible to find them
+using another coccinelle helper that detects badly formed macros which
+access variables out of scope. I can't think of how this would be expressed,
+but maybe someone has an idea.
 
-Patch applied to wireless-next.git, thanks.
+Something else went wrong in this particular patch,  and I can't explain
+how this happened: the subject line contains the name of the wrong platform,
+"dove" rather than "omap2". My guess is that this was human error copying
+the subject line from another patch, but if this came from a script, you
+may want to check how this gets generated.
 
-454744754cbf wl1251: dynamically allocate memory used for DMA
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/1676021ae8b6d7aada0b1806fed99b1b8359bdc4.1651495112.git.hns@goldelico.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+       Arnd
