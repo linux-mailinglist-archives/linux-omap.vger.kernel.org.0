@@ -2,51 +2,80 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6A5B51E22C
-	for <lists+linux-omap@lfdr.de>; Sat,  7 May 2022 01:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 179B351E845
+	for <lists+linux-omap@lfdr.de>; Sat,  7 May 2022 17:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1445010AbiEFXea (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 6 May 2022 19:34:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34684 "EHLO
+        id S1385771AbiEGPs0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 7 May 2022 11:48:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1445009AbiEFXe3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 6 May 2022 19:34:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1D6113F0B
-        for <linux-omap@vger.kernel.org>; Fri,  6 May 2022 16:30:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7453D61CD0
-        for <linux-omap@vger.kernel.org>; Fri,  6 May 2022 23:30:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0BCC385A9;
-        Fri,  6 May 2022 23:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651879844;
-        bh=AwHPAhoB+u1SGHoLk6NWblhiqpS/bs/bmpiG63zAyew=;
-        h=From:To:Cc:Subject:Date:From;
-        b=BSSjZQAFDLVam8ORkMb2OLFfFXtpjYqth1RXUEdNTf//l9d/NlRfXJNFQzkxFoyN+
-         pV7vymg1t5yqLtgwxnNr7lvqlxjmpmBMqPSmKa/9dhpuO4EE/SgmBsTy9sRzKXy19I
-         R8Zy7RD8VqIvHiGNNYOp9/Ctv2Z2yAm7y2FogZ2aXJ9Ga9DxWR3H9J7/8WWyZFyxQu
-         WW4usn3X9wYBbhBVl6CKOX4ayJBIjMuccgj1Qcf3uTDdjjbvhqWtgg6HruWRR+vUaD
-         TYvkR5Ns8mp8iFBcuanplPozwuU4LVPOYfxyCI4YiqEnNOi5+f9pC4qVNHdFMdPr2o
-         mXARngj9YfeiA==
-From:   Mark Brown <broonie@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2] ARM: dts: am33xx: Map baseboard EEPROM on BeagleBone Black
-Date:   Sat,  7 May 2022 00:30:39 +0100
-Message-Id: <20220506233039.1874405-1-broonie@kernel.org>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S230521AbiEGPs0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 May 2022 11:48:26 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860DC2E9E1
+        for <linux-omap@vger.kernel.org>; Sat,  7 May 2022 08:44:38 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id m20so19412057ejj.10
+        for <linux-omap@vger.kernel.org>; Sat, 07 May 2022 08:44:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=E3A76qcrcJpuHT1G12YlSLVvYvYxuP1f6N185gwBwDQ=;
+        b=yyROzl+V9XUSkE1qCVchX8hnY8dV0C/TwxRhWI7M90eeikkeORBBpzhNZFy5hDbpoG
+         IVrFOlo17Z4Xsz2+JKNL0aqVb6ZR88SjeeXk5UpVqJP/oRRyLMaFf+eH1iMZnq8/uDqm
+         6eq6pHlmhmfLrkgVY7umzWafXoRmcLLlRd5CP1Ws2UT/OXrH6R++DpwlPYlJ31jyzS8n
+         hlWMjdoYeHZtYRKhXlSBEsdHbB6VUO/M4Cduzl5XnvTQzqsqk7m42fj3cj+JxeytbZA5
+         RXLSf91m/8jBeDfeFQMS75G5lDn21bX+/oIahg7ytbtczEOlx22QjAUogdKEe3eG3utW
+         LzvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=E3A76qcrcJpuHT1G12YlSLVvYvYxuP1f6N185gwBwDQ=;
+        b=okgU8hjgPDDS5QJ3GMsW4+LTXKsOvOWR7UsQmVXUE2ZrGGlITdYe2HaFfmotn5wKqK
+         Bb1O6pvDZJgY3N4WIFy9XQVFYKm2HhbgnricJEHgmo7EhEF7kOYvOpfMJs/yj9odEgPJ
+         GyQlpupLjlzoLosYG67awRAQDkgiI+pMRScCkjz7G9Cp9LOxhmWfOAhHRTpRKXocsj9t
+         rrXeiJtqU2IJcWi1uYkMlf7qKNU3fbgTxDtOdoT6e+EoS0ZweOpFiFDnzo7DKlWBscxp
+         cZCTtCDJbotfQtEmV4bRIwhStNjCfO3Rcfw5F0dU4FrIuQzozf+X4RoYIZfN+0GnoPVH
+         2PRA==
+X-Gm-Message-State: AOAM532c23d5VzaGmDsfoPolczYyt8Runt1X8fpMWj4774Bad/DI4BBg
+        nxITaJdPw3n56h3eYo0oubpUqw==
+X-Google-Smtp-Source: ABdhPJwyubeXdkMsUqeNvMkNVYQIZ2g6XDereIOGB4MkxT1AWcLYCVdwtBPyT1embvxVRu2+n5XoGw==
+X-Received: by 2002:a17:907:9494:b0:6f3:edd4:cd55 with SMTP id dm20-20020a170907949400b006f3edd4cd55mr7553597ejc.768.1651938277027;
+        Sat, 07 May 2022 08:44:37 -0700 (PDT)
+Received: from [192.168.0.232] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id h22-20020aa7c616000000b0042617ba63d4sm3687057edq.94.2022.05.07.08.44.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 07 May 2022 08:44:36 -0700 (PDT)
+Message-ID: <93f402d8-d548-c097-c95c-47f8be48b26e@linaro.org>
+Date:   Sat, 7 May 2022 17:44:34 +0200
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=869; h=from:subject; bh=AwHPAhoB+u1SGHoLk6NWblhiqpS/bs/bmpiG63zAyew=; b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBida9P+VCUh8t4eanFO55hj+LppmUgXIaqxRmritdb sPUqd3yJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYnWvTwAKCRAk1otyXVSH0JU0B/ wJ5xedlTNcAvBqgJTneWx3Q33MXsKFW7WXmiw1sMRGXDf9YS5EsF7H4TzdXLNWnB9gr/hfOSm/rx1A yIjlgRIt+zeJNkyldM3j8/eGtsfhNBsH7WL2mX86DYRXlGM73gmsRfERcBqtWWVBAqI1aO4q4YTZHl UJT29NkbD+iPye5qQOmiYUtG+6GfbDTliCpZCTvkxgxB+JQ2Q0SzPgsXAsqPJqrNFqbhDoakE324am Of9kyEPA15o6B1q7qklzYJduUJ1PQqEkhub7OsmmX64wBwzgDKiiabWMTIy4122ZgHjCkVi2KFX6N8 hhew4RSJxV5iuuzZPnKEENim6+g/dc
-X-Developer-Key: i=broonie@kernel.org; a=openpgp; fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v2 4/4] dt-bindings: input: mt-matrix-keypad: add guardian
+ mt matrix keypad bindings definition
+Content-Language: en-US
+To:     Gireesh.Hiremath@in.bosch.com, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-input@vger.kernel.org, bcousson@baylibre.com,
+        tony@atomide.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, dmitry.torokhov@gmail.com,
+        mkorpershoek@baylibre.com, davidgow@google.com,
+        m.felsch@pengutronix.de, swboyd@chromium.org,
+        fengping.yu@mediatek.com, y.oudjana@protonmail.com,
+        rdunlap@infradead.org, colin.king@intel.com
+Cc:     sjoerd.simons@collabora.co.uk, VinayKumar.Shettar@in.bosch.com,
+        Govindaraji.Sivanantham@in.bosch.com, anaclaudia.dias@de.bosch.com
+References: <20220506072737.1590-1-Gireesh.Hiremath@in.bosch.com>
+ <20220506072737.1590-4-Gireesh.Hiremath@in.bosch.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220506072737.1590-4-Gireesh.Hiremath@in.bosch.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,33 +83,177 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The identification EEPROM on the BeagleBone Black baseboard is supplied
-by VDD_3V3A which is supplied by LDO4 on the PMIC. Map this as per the DT
-binding for the EEPROM. Since this supply is always-on this has no
-practical impact but it does silence a warning at boot due to using a dummy
-regulator.
+On 06/05/2022 09:27, Gireesh.Hiremath@in.bosch.com wrote:
+> From: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
+> 
+> Add binding definition for the support of the Guardian
+> mt matrix keypad driver.
+> 
+> Signed-off-by: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
+> ---
+> Hi Krzysztof
+> 
+> Changes since v1: addressed review comments
+> 
+>>> Add binding definition for the support of the Guardian
+>>> mt matrix keypad driver.
+>>>
+>>> Signed-off-by: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
+>>> ---
+>>>  .../bindings/input/mt-matrix-keypad.yaml      | 134 ++++++++++++++++++
+>>>  1 file changed, 134 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/input/mt-matrix-keypad.yaml
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/input/mt-matrix-keypad.yaml b/Documentation/devicetree/bindings/input/mt-matrix-keypad.yaml
+>>> new file mode 100644
+>>> index 000000000000..b52cd478f638
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/input/mt-matrix-keypad.yaml
+>>> @@ -0,0 +1,134 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/input/mt-matrix-keypad.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: GPIO driven mt matrix keypad device tree bindings
+>>> +
+>>> +maintainers:
+>>> +  - vinay <VinayKumar.Shettar@in.bosch.com>
+>>> +
+>>> +description: |
+>>> +  GPIO driven mt matrix keypad is used to interface a SoC with a mt matrix
+>>> +  keypad. The mt matrix keypad supports multiple gpio line, all gpio line act
+>>
+>> s/line/lines/
+> 
+> modified
+> 
+>>> +  as row as wel as column lines, a key can be placed at each intersection
+>>
+>> s/wel/well/
+> 
+> modified
+> 
+>>> +  of a unique row number not equal to a unique column and they are diagonally
+>>> +  symmetric.
+>>> +
+>>
+>> What is "mt" in the "mt matrix"?
+>>
+> 
+> mt is bosch measuring tools matrix keypad
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
+Then it is a specific Bosch device, isn't it? If it is, you should have
+vendor prefixes - to the file name and compatible. If it is not, then
+"mt" is irrelevant here because it is Bosch product name.
 
-v2:
- - Fixed version, sorry - previous version was missing <>.
+> 
+>>> +  Example- For 5 gpio lines, possible matrix is 5x5 and maximum possible
+>>> +        keys are 10.
+>>> +
+>>> +        Sample matrix table for 7 button and 5 gpio line
+>>> +
+>>> +        ------------------------------------------------------
+>>> +        |Row\Col |GPIO 0 | GPIO 1 | GPIO 2 | GPIO 3 | GPIO 4 |
+>>> +        ------------------------------------------------------
+>>> +        | GPIO 0 |  X    | KEY_9  | KEY_2  |   X    | KEY_1  |
+>>> +        ------------------------------------------------------
+>>> +        | GPIO 1 | KEY_9 |  X     | KEY_6  |   X    |  X     |
+>>> +        ------------------------------------------------------
+>>> +        | GPIO 2 | KEY_2 | KEY_6  |  X     | KEY_4  | KEY_7  |
+>>> +        ------------------------------------------------------
+>>> +        | GPIO 3 |  X    |  X     | KEY_4  |  X     | KEY_8  |
+>>> +        ------------------------------------------------------
+>>> +        | GPIO 4 | KEY_1 |  X     | KEY_7  | KEY_8  |  X     |
+>>> +        ------------------------------------------------------
+>>> +        X - invalid key
+>>> +        KEY_x - preferred key code
+>>> +
+>>> +  The mt matrix keypad can sense a key-press and key-release by means of GPIO
+>>> +  lines and report the event using GPIO interrupts to the cpu.
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    oneOf:
+>>> +      - const: gpio-mt-matrix-keypad
+>>> +      - items:
+>>> +          - enum:
+>>> +              - gpio-mt-matrix-keypad
+>>> +          - const: gpio-mt-matrix-keypad
+>>
+>> Aren't all these compatibles the same?
+> 
+> modified
+> 
+>>> +
+>>> +  debounce-delay-ms:
+>>> +    description: Delay after the first bounce of button.
+>>> +    default: 0
+>>> +
+>>> +  col-scan-delay-us:
+>>> +    description: Delay before scanning next active line.
+>>> +    default: 0
+>>> +
+>>> +  number-of-button:
+>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>> +    description: Number of button connected to the keypad controller.
+>>
+>> s/button/buttons/ I presume.
+> 
+> modified
+> 
+>>> +
+>>> +  linux,no-autorepeat:
+>>> +    description: |
+>>> +      Disable the Linux input system's autorepeat feature on the input device.
+>>> +
+>>> +  gpio-activelow:
+>>> +    description: Gpio line are active low.
+>>
+>> No, GPIOs should instead use common flags.
+> 
+> this flag is used to compare with the gpio read value
 
- arch/arm/boot/dts/am335x-boneblack.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+Which is not an answer to my concerns and still a no. Just use the
+flags. What's the point to code it like:
+	line-gpios = <&gpio 1 GPIO_ACTIVE_LOW>;
+	gpio-activelow;
+?
 
-diff --git a/arch/arm/boot/dts/am335x-boneblack.dts b/arch/arm/boot/dts/am335x-boneblack.dts
-index 9312197316f0..b956e2f60fe0 100644
---- a/arch/arm/boot/dts/am335x-boneblack.dts
-+++ b/arch/arm/boot/dts/am335x-boneblack.dts
-@@ -168,3 +168,7 @@ &gpio3 {
- 		"NC",
- 		"NC";
- };
-+
-+&baseboard_eeprom {
-+	vcc-supply = <&ldo4_reg>;
-+};
--- 
-2.30.2
+Or even worse:
+	line-gpios = <&gpio 1 GPIO_ACTIVE_HIGH>;
+	gpio-activelow;
 
+With such coding, enabled is 0 or 1? Which flag is correct?
+
+No, just use existing flags, don't duplicate standard Linux stuff.
+
+> 
+>>> +
+>>> +  line-gpios:
+>>> +    description: |
+>>> +      Gpio lines connected to keypad controller.
+>>> +      all gpio line act as row as wel as column lines.
+>>> +
+>>> +  linux,keymap:
+>>> +    $ref: '/schemas/types.yaml#/definitions/uint32-array'
+>>> +    description: |
+>>> +      An array of packed 1-cell entries containing the equivalent of row,
+>>> +      column and linux key-code. The 32-bit big endian cell is packed as:
+>>> +          row << 24 | column << 16 | key-code
+>>
+>> But anyway this should be just merged into matrix-keypad. It's a simpler
+>> set of that binding.
+> 
+> we have special keypad for Bosch measuring tools, which is not completely
+> matric keypad so we have derived from matrix_kepad.c to make our keypad
+> to work.
+
+Just customize the original keypad, don't duplicate features. Again it's
+not the answer to my concerns. You implement a driver for device with a
+smaller set of features, so there should be no problem in merging it
+into original driver (which supports more features).
+
+Best regards,
+Krzysztof
