@@ -2,109 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F20F251E84B
-	for <lists+linux-omap@lfdr.de>; Sat,  7 May 2022 17:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EFF451E875
+	for <lists+linux-omap@lfdr.de>; Sat,  7 May 2022 18:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1385881AbiEGPuj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 7 May 2022 11:50:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34282 "EHLO
+        id S1349259AbiEGQSB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 7 May 2022 12:18:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386376AbiEGPug (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 May 2022 11:50:36 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CAAB396AB
-        for <linux-omap@vger.kernel.org>; Sat,  7 May 2022 08:46:48 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id g20so11735081edw.6
-        for <linux-omap@vger.kernel.org>; Sat, 07 May 2022 08:46:48 -0700 (PDT)
+        with ESMTP id S232965AbiEGQSA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 May 2022 12:18:00 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC2F12409B
+        for <linux-omap@vger.kernel.org>; Sat,  7 May 2022 09:14:12 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-2f863469afbso108801347b3.0
+        for <linux-omap@vger.kernel.org>; Sat, 07 May 2022 09:14:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=qlyXe/PCI3WzsN++V/F01ukEV4Sfb+BkaPj3isarbsE=;
-        b=xrTpFictnSpYWAbaK34I5kAuP6u5mfh8p4ZMdPl0gsNf9yZLSy+FOyYutaX2wDGMOQ
-         E7Zuc9LI7nZu8m1CWX2xYsvVftdkHwfMkFcNy2nJX0h6II8jhWy8eqzHl1Rjmtjdjc5T
-         Ivqt1O7dpycqNAadYpSoGnJBeYmzXmdJYelpWiJcRux6AkSgU1/QlzpIE5V9MVxiChAE
-         7aHnGEqOOG8D0w7DtTw32j0yAU5jdk5Yvp8v18xR+GyYQmZNfzPlK/UPBTQsQ8MHFcnB
-         9lj34pnxk6fqrnjDy4sl+XVF012uBkJ50EHDhZ5fQxkPq8lHtWig0KVDQvA8jZ9jdQx8
-         FpRQ==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=QTCWBzEezgLv+Z2QZNvCkKQgrxXaSDur4w34RcJaRzY=;
+        b=QYawFWpwZBWwuipWFWMI9eyI1y/OBWWmtfSzTNhg8anmpQszOP8TpyoiOnLDzfJXey
+         69u4trqpviFrQOWM/v/daz331AAPQjTwrMm+8Hsh4gaHCq4uX3DSC7aUX8AVaErnTkpe
+         RZKeIxrdiKHLNhcbQJ3aER92zWxsOf0PMkOp2U8zo1ca58aL/iZ10wY7oxaZLgFAWP6E
+         l5vbKZno1jYjNd8sq3AsVBj6cJUU19G+2uAa73v91HFOf7dpOex+9Qw4SUQ7KnF9E9Hn
+         55zJuYemfKeEWkNK/J1gHQtoNXcRQ/Gi/5vetE+pf21lw04p1nMMMfEdzb227ysRQ+qy
+         YCeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=qlyXe/PCI3WzsN++V/F01ukEV4Sfb+BkaPj3isarbsE=;
-        b=8ImApmtX8H8TfITMVzMnDKk9xLtDSBgpdhBAFPBnhxRWsGtOfDiSrYTuN/1DN5RNcp
-         sRZWOBxFFeQjWtBVvYHdZ5sp7H+WLDohDE+2zNVSUuBLAvD/DJ8j+/46NrSJtMsCyhip
-         vcIb0HMCxc9YWUDDRIiUNf4+AQKPYVVNKrrt+LkrhfXfgEfnNmq64XFVBAw0h6muww7O
-         MsCJiimp+GqpAYvB3gZfDWtFQosaSYt0OiLVetkzBNuw7rwST8P/22vQ+iLvKM+XIWhm
-         pGb7pKmERRBIE/C3+5vxL2TLTFudrMVKSg90ejVDcGqJZ68a3W+fqGSv2fwCJJjAh7UC
-         VWOA==
-X-Gm-Message-State: AOAM533V2k7XQ9+75ROpvTvXXfeJxS6hP0OamiToUCaQ11Ya3qcGJPiF
-        eimXd6AdGvO58OvGuhsjRWe/qg==
-X-Google-Smtp-Source: ABdhPJxJf8kIvRK6Bki9YpxPo960c5ocwQlBvB85sRQc9cAbdz7vRzpsUHob3PP+BzKSzUC3Lz8m8g==
-X-Received: by 2002:a05:6402:520e:b0:428:22d0:e996 with SMTP id s14-20020a056402520e00b0042822d0e996mr8987898edd.250.1651938407017;
-        Sat, 07 May 2022 08:46:47 -0700 (PDT)
-Received: from [192.168.0.232] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id gz12-20020a170906f2cc00b006f3ef214de8sm3109579ejb.78.2022.05.07.08.46.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 May 2022 08:46:46 -0700 (PDT)
-Message-ID: <1b180b09-f2e6-e3dc-ba93-45b03dfcdcbb@linaro.org>
-Date:   Sat, 7 May 2022 17:46:45 +0200
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=QTCWBzEezgLv+Z2QZNvCkKQgrxXaSDur4w34RcJaRzY=;
+        b=o15Fai+OSMRaGgLtMyYry4WhaYcbTgDp6h2+n1Vrmy2p1vTEA5pRopM7ZmF/Eft/Pr
+         jwCu5gPmMUNN3QkYdsgRuiKp/3TP2/4fzItrWzkDQjzfBQJVT3EW7GoD2x2vVVjNimqK
+         LmLq6bdOa6zPHgcK5lGV40PklYvco9XfoNW4CamRGQmRA5FdU3TPfbf8plzsapziL0ez
+         pgUHi5cIJxd7z9jzetRI2kJ/Vk1pfZYDBVyv1lUsp0WGLgDVktczvMZcx+XthjXs91+D
+         VBCGFw0zgOBV6aUHU/aTADVO1YRHhK+qtk4TIUcqLipj9kk+RBTdol95Lpj9nMvzUgU7
+         bL0g==
+X-Gm-Message-State: AOAM532UXxaTwCNLnTIUgsiXP6bMBv9L2nTcqinJZ218d8rNRSpcvffe
+        Z+uqScfzVUJgUd3BZgdMDhd4BRlOz8xHavo4sug=
+X-Google-Smtp-Source: ABdhPJyxTuGQx0hJaoAOVAd9/er5bL3gglUaBQR6oV4RplFIWq+cTw0+jXehPHu27wX10Sx9bYbMTaTmF4+ZQWGX2LY=
+X-Received: by 2002:a81:8cb:0:b0:2f8:9f07:5a12 with SMTP id
+ 194-20020a8108cb000000b002f89f075a12mr7207688ywi.373.1651940052039; Sat, 07
+ May 2022 09:14:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v2 2/4] Input: mt-matrix-keypad: Add Bosch mt matrix
- keypad driver
-Content-Language: en-US
-To:     Gireesh.Hiremath@in.bosch.com, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org, bcousson@baylibre.com,
-        tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, dmitry.torokhov@gmail.com,
-        mkorpershoek@baylibre.com, davidgow@google.com,
-        m.felsch@pengutronix.de, swboyd@chromium.org,
-        fengping.yu@mediatek.com, y.oudjana@protonmail.com,
-        rdunlap@infradead.org, colin.king@intel.com
-Cc:     sjoerd.simons@collabora.co.uk, VinayKumar.Shettar@in.bosch.com,
-        Govindaraji.Sivanantham@in.bosch.com, anaclaudia.dias@de.bosch.com
-References: <20220506072737.1590-1-Gireesh.Hiremath@in.bosch.com>
- <20220506072737.1590-2-Gireesh.Hiremath@in.bosch.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220506072737.1590-2-Gireesh.Hiremath@in.bosch.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Received: by 2002:a05:7110:4753:b0:179:3f9b:c9b7 with HTTP; Sat, 7 May 2022
+ 09:14:11 -0700 (PDT)
+Reply-To: illuminatifame157@gmail.com
+From:   illuminati <avendeidoutimi97@gmail.com>
+Date:   Sat, 7 May 2022 09:14:11 -0700
+Message-ID: <CAJW2nWXtzCrMHznmhZ3zK+HF3QxkrBfS5pWE1TE8E0X-Shmfvg@mail.gmail.com>
+Subject: illuminati
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=7.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1131 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [illuminatifame157[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [avendeidoutimi97[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [avendeidoutimi97[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  0.4 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  1.9 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 06/05/2022 09:27, Gireesh.Hiremath@in.bosch.com wrote:
->>
->>> both matric_keypad.c and mt_matrix_kepad.c logically operate differently,
->>> my openion is not to merge both.
->>
->> IMHO from the user/system-integrator pov it is looking the same and so
->> one driver should be fine. To distinguish between both modes we could
->> add dt-property or add a new dt-compatible like "gpio-matrix-keypad-v2".
->>
-> 
-> as mentioned above our keypad is not complete matrix keypad  and it will
-> not be compatible with matrix_keypad diver. that is the reason we derived
-> mt matrix keypad driver.
-> 
-> to avoid confusion, we will rename the driver as bosch_mt_keypad.c
-> if you suggest.
-
-Sending a new version while discussions are ongoing is not how we reach
-consensus.
-
-Make the driver as part of matrix-keypad driver or bring real arguments
-why it cannot be merged.
-
-Best regards,
-Krzysztof
+--=20
+WILLKOMMEN BEI DER ILLUMINATI BROTHERHOOD ORGANISATION, einem Club der
+Reichen und Ber=C3=BChmten, ist die =C3=A4lteste und gr=C3=B6=C3=9Fte Brude=
+rschaft der
+Welt und besteht aus 3 Millionen Mitgliedern. Wir sind eine gro=C3=9Fe
+Familie unter einem Vater, der das h=C3=B6chste Wesen ist. GOTT
+. Ich glaube, wir alle haben einen Traum, einen Traum, etwas Gro=C3=9Fes im
+Leben zu werden, so viele Menschen sterben heute, ohne ihre Tr=C3=A4ume zu
+verwirklichen. Einige von uns sind dazu bestimmt, Pr=C3=A4sident unserer
+verschiedenen L=C3=A4nder zu werden oder zu werden. einer der weltbesten
+Musiker, Fu=C3=9Fballer, Politiker, Gesch=C3=A4ftsmann, Komiker oder ein He=
+lfer
+f=C3=BCr andere Menschen zu sein, die in Not sind E.T.C. M=C3=B6chten Sie
+Mitglied dieser gro=C3=9Fartigen Organisation werden und Ihren ersten
+Vorteil von 1.000.000 Euro erhalten? Wenn JA, antworten Sie bitte auf
+diese E-Mail: illuminatifame157@gmail.com oder WhatsApp the great
+Grandmaster mit +12312246136
