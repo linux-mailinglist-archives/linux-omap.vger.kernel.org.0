@@ -2,118 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EFF451E875
-	for <lists+linux-omap@lfdr.de>; Sat,  7 May 2022 18:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C17251F3C1
+	for <lists+linux-omap@lfdr.de>; Mon,  9 May 2022 07:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349259AbiEGQSB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 7 May 2022 12:18:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54132 "EHLO
+        id S231464AbiEIFUi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 9 May 2022 01:20:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232965AbiEGQSA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 7 May 2022 12:18:00 -0400
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC2F12409B
-        for <linux-omap@vger.kernel.org>; Sat,  7 May 2022 09:14:12 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-2f863469afbso108801347b3.0
-        for <linux-omap@vger.kernel.org>; Sat, 07 May 2022 09:14:12 -0700 (PDT)
+        with ESMTP id S234445AbiEIFPF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 May 2022 01:15:05 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0148B20F46
+        for <linux-omap@vger.kernel.org>; Sun,  8 May 2022 22:11:11 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id a11so11298705pff.1
+        for <linux-omap@vger.kernel.org>; Sun, 08 May 2022 22:11:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=QTCWBzEezgLv+Z2QZNvCkKQgrxXaSDur4w34RcJaRzY=;
-        b=QYawFWpwZBWwuipWFWMI9eyI1y/OBWWmtfSzTNhg8anmpQszOP8TpyoiOnLDzfJXey
-         69u4trqpviFrQOWM/v/daz331AAPQjTwrMm+8Hsh4gaHCq4uX3DSC7aUX8AVaErnTkpe
-         RZKeIxrdiKHLNhcbQJ3aER92zWxsOf0PMkOp2U8zo1ca58aL/iZ10wY7oxaZLgFAWP6E
-         l5vbKZno1jYjNd8sq3AsVBj6cJUU19G+2uAa73v91HFOf7dpOex+9Qw4SUQ7KnF9E9Hn
-         55zJuYemfKeEWkNK/J1gHQtoNXcRQ/Gi/5vetE+pf21lw04p1nMMMfEdzb227ysRQ+qy
-         YCeQ==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=rDSFCO+czyrWwVIb/ri2W/5CAZ/bjTYqyMNHNUzLBgc=;
+        b=NGeVsQ++HGtjZxzvUZn1nbfaCrKKTfnM27oWvJsxcQJiAy3hRTbcCH2794ZktMDynH
+         R9268OPrKnRi0SxVYCY6APSONAAW56+inot6dKaYvxxiVLvViByq6EpMmXmtQQ9W3zvM
+         noWZh5xnsQQHzXO1FSFi+X4Gumb189wYfLmLhtqViQkZVktne7fXneH4BFF7cj6X4rsq
+         6QI1jPOs3L5/8JvrCyigC6idtOfVxKY1C9aluVUxfuDMub6jQGS5embdFASWhukIScVZ
+         SOatnziUTIe157Q6TVh9w90rUGNYDl7h0PZEjTMKQ0OZlr0FEd9q3rIyrlMMKzdAKDX6
+         5+ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=QTCWBzEezgLv+Z2QZNvCkKQgrxXaSDur4w34RcJaRzY=;
-        b=o15Fai+OSMRaGgLtMyYry4WhaYcbTgDp6h2+n1Vrmy2p1vTEA5pRopM7ZmF/Eft/Pr
-         jwCu5gPmMUNN3QkYdsgRuiKp/3TP2/4fzItrWzkDQjzfBQJVT3EW7GoD2x2vVVjNimqK
-         LmLq6bdOa6zPHgcK5lGV40PklYvco9XfoNW4CamRGQmRA5FdU3TPfbf8plzsapziL0ez
-         pgUHi5cIJxd7z9jzetRI2kJ/Vk1pfZYDBVyv1lUsp0WGLgDVktczvMZcx+XthjXs91+D
-         VBCGFw0zgOBV6aUHU/aTADVO1YRHhK+qtk4TIUcqLipj9kk+RBTdol95Lpj9nMvzUgU7
-         bL0g==
-X-Gm-Message-State: AOAM532UXxaTwCNLnTIUgsiXP6bMBv9L2nTcqinJZ218d8rNRSpcvffe
-        Z+uqScfzVUJgUd3BZgdMDhd4BRlOz8xHavo4sug=
-X-Google-Smtp-Source: ABdhPJyxTuGQx0hJaoAOVAd9/er5bL3gglUaBQR6oV4RplFIWq+cTw0+jXehPHu27wX10Sx9bYbMTaTmF4+ZQWGX2LY=
-X-Received: by 2002:a81:8cb:0:b0:2f8:9f07:5a12 with SMTP id
- 194-20020a8108cb000000b002f89f075a12mr7207688ywi.373.1651940052039; Sat, 07
- May 2022 09:14:12 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=rDSFCO+czyrWwVIb/ri2W/5CAZ/bjTYqyMNHNUzLBgc=;
+        b=jf/3N+F8/Ji934FRdU92BGNY+630D4rNZZwinxIotdm8zVXc1Rea9oERBzfh3DSwd9
+         7rl7iUyJHvZgVc3LOc0gWV604TI+BloHFdPRDqY6/FUWmK5bySMAiwqjJZmdoCWvgC86
+         yFAaaptH2pY22Q6TaWWSf06+m4v2O4TDaFInvzr1Hr7q+hOaqy49dV7n6xe634zFEkZC
+         IUbeOGOMQ2HaBJNpNWCH69woe1pfe5DZIzBIjWYQbV871XKr1MHjCnUqlqRPFk4HkATj
+         uKv+w4w6aiITfGYw9zh4EcUfmlbgMfdHbg0tnpllrroPTq9xAxDWEkfIOgCjeXNl2iis
+         uFKg==
+X-Gm-Message-State: AOAM531ZIa2mo4ttLa4ysLqwOt2yi9AImB1VUNhjaJx4qwtSCGn8x42V
+        SrUDG8Vaxf0eG2DKPx7/NmxcUg==
+X-Google-Smtp-Source: ABdhPJzQmAGyTKxouc0RQtiPKY+fyHgHySgxrAsDXhahZmKoQArbKkfoIBffIe19H+asxSznCOZPgA==
+X-Received: by 2002:a63:7d4a:0:b0:398:dad:6963 with SMTP id m10-20020a637d4a000000b003980dad6963mr11871980pgn.329.1652073071387;
+        Sun, 08 May 2022 22:11:11 -0700 (PDT)
+Received: from x1 ([2601:1c2:1001:7090:8a29:6b15:2464:b015])
+        by smtp.gmail.com with ESMTPSA id t9-20020a170902a5c900b0015e8d4eb1e3sm6027714plq.45.2022.05.08.22.11.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 May 2022 22:11:10 -0700 (PDT)
+Date:   Sun, 8 May 2022 22:12:08 -0700
+From:   Drew Fustini <dfustini@baylibre.com>
+To:     Tony Lindgren <tony@atomide.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Dave Gerlach <d-gerlach@ti.com>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: dmtimer: ack pending interrupt during suspend on am335x/am437x?
+Message-ID: <YniiqM0S+hwsGFni@x1>
 MIME-Version: 1.0
-Received: by 2002:a05:7110:4753:b0:179:3f9b:c9b7 with HTTP; Sat, 7 May 2022
- 09:14:11 -0700 (PDT)
-Reply-To: illuminatifame157@gmail.com
-From:   illuminati <avendeidoutimi97@gmail.com>
-Date:   Sat, 7 May 2022 09:14:11 -0700
-Message-ID: <CAJW2nWXtzCrMHznmhZ3zK+HF3QxkrBfS5pWE1TE8E0X-Shmfvg@mail.gmail.com>
-Subject: illuminati
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1131 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [illuminatifame157[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [avendeidoutimi97[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [avendeidoutimi97[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.5 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  0.4 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  1.9 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-WILLKOMMEN BEI DER ILLUMINATI BROTHERHOOD ORGANISATION, einem Club der
-Reichen und Ber=C3=BChmten, ist die =C3=A4lteste und gr=C3=B6=C3=9Fte Brude=
-rschaft der
-Welt und besteht aus 3 Millionen Mitgliedern. Wir sind eine gro=C3=9Fe
-Familie unter einem Vater, der das h=C3=B6chste Wesen ist. GOTT
-. Ich glaube, wir alle haben einen Traum, einen Traum, etwas Gro=C3=9Fes im
-Leben zu werden, so viele Menschen sterben heute, ohne ihre Tr=C3=A4ume zu
-verwirklichen. Einige von uns sind dazu bestimmt, Pr=C3=A4sident unserer
-verschiedenen L=C3=A4nder zu werden oder zu werden. einer der weltbesten
-Musiker, Fu=C3=9Fballer, Politiker, Gesch=C3=A4ftsmann, Komiker oder ein He=
-lfer
-f=C3=BCr andere Menschen zu sein, die in Not sind E.T.C. M=C3=B6chten Sie
-Mitglied dieser gro=C3=9Fartigen Organisation werden und Ihren ersten
-Vorteil von 1.000.000 Euro erhalten? Wenn JA, antworten Sie bitte auf
-diese E-Mail: illuminatifame157@gmail.com oder WhatsApp the great
-Grandmaster mit +12312246136
+Hello Daniel, Tony suggested I mail you along with the list to get
+feedback. I'm attempting to upstream these two patches [1][2] from
+ti-linux-5.4.y for arch/arm/mach-omap2/timer.c:
+96f4c6e2ba8a ("ARM: OMAP2+: timer: Ack pending interrupt during suspend")
+7ae7dd5f8272 ("ARM: OMAP2+: timer: Extend pending interrupt ACK for gic")
+
+On the TI AM335x and AM437x SoCs, it is possible for a late interrupt to
+be generated which will cause a suspend failure. The first patch makes
+omap_clkevt_idle() ack the irq both in the timer peripheral register
+and in the interrupt controller to avoid the issue.
+
+On AM437x only, the GIC cannot be directly acked using only the irqchip
+calls. To workaround that, the second patch maps the GIC_CPU_BASE and
+reads the GIC_CPU_INTACK register before calling irq_eoi to properly ack
+the late timer interrupts that show up during suspend.
+
+However, Tony removed most of arch/arm/mach-omap2/timer.c with:
+2ee04b88547a ("ARM: OMAP2+: Drop old timer code for dmtimer and 32k counter")
+
+The timers are now implemented in drivers/clocksource/timer-ti-dm.c and
+drivers/clocksource/timer-ti-dm-systimer.c. The function
+dmtimer_clocksource_suspend() disables the dmtimer and clock but does
+not ack any interrupts.
+
+Tony suggested the right place to ack the interrupt during suspend is
+in CPU_CLUSTER_PM_ENTER inside omap_timer_context_notifier().
+
+Do you think that would be an acceptable approach?
+
+Thank you,
+Drew
+
+[1] https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/?h=ti-linux-5.4.y&id=96f4c6e2ba8a
+[2] https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/?h=ti-linux-5.4.y&id=7ae7dd5f8272
