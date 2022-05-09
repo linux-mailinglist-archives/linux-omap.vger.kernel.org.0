@@ -2,75 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A843A51FECC
-	for <lists+linux-omap@lfdr.de>; Mon,  9 May 2022 15:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D67725206B5
+	for <lists+linux-omap@lfdr.de>; Mon,  9 May 2022 23:35:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236381AbiEINwi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 9 May 2022 09:52:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37286 "EHLO
+        id S229585AbiEIVjD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Mon, 9 May 2022 17:39:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236373AbiEINwg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 May 2022 09:52:36 -0400
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A64611C965A
-        for <linux-omap@vger.kernel.org>; Mon,  9 May 2022 06:48:42 -0700 (PDT)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:8886:2b92:63eb:2922])
-        by michel.telenet-ops.be with bizsmtp
-        id Udob2700B0moLbn06dob56; Mon, 09 May 2022 15:48:40 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1no3kZ-003Xmr-3S; Mon, 09 May 2022 15:48:35 +0200
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1no3kY-003NFe-HA; Mon, 09 May 2022 15:48:34 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Roger Quadros <rogerq@kernel.org>
-Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] memory: OMAP_GPMC should depend on ARCH_OMAP2PLUS || ARCH_K3
-Date:   Mon,  9 May 2022 15:48:33 +0200
-Message-Id: <2b7d411b4a7913335082c858cb0d63b9e4bf7c5b.1652103920.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229586AbiEIVjB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 9 May 2022 17:39:01 -0400
+Received: from hwmailrelay01.hostworks.net.au (hwmailrelay01.hostworks.net.au [202.58.32.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 786FA2C8188
+        for <linux-omap@vger.kernel.org>; Mon,  9 May 2022 14:35:06 -0700 (PDT)
+Received: from GMHPRRWAPP02 (unknown [10.20.51.39])
+        by hwmailrelay01.hostworks.net.au (Postfix1d) with ESMTP id E0BDF942D0;
+        Tue, 10 May 2022 06:34:05 +1000 (AEST)
+Received: from [192.168.1.2] (Unknown [154.120.85.161])
+        by GMHPRRWAPP02 with ESMTP
+        ; Tue, 10 May 2022 06:34:05 +1000
+Message-ID: <31BD51FB-AC49-4A9D-8945-2381D1BF05FD@GMHPRRWAPP02>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: BIOMETRIC DATE
+To:     Recipients <info@924sports.com>
+From:   info@924sports.com
+Date:   Mon, 09 May 2022 21:33:48 +0100
+Reply-To: hector@cgglazing.com
+X-Spam-Status: No, score=2.8 required=5.0 tests=BAYES_95,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,
+        UPPERCASE_75_100 autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The Texas Instruments OMAP General Purpose Memory Controller (GPMC) is
-only present on TI OMAP2/3/4/5, AM33xx, AM43x, DRA7xx, TI81xx, and K3
-SoCs.  Hence add a dependency on ARCH_OMAP2PLUS || ARCH_K3, to prevent
-asking the user about this driver when configuring a kernel without
-OMAP2+ or K3 SoC family support.
-
-Fixes: be34f45f0d4aa91c ("memory: omap-gpmc: Make OMAP_GPMC config visible and selectable")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/memory/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-index b7800b37af78a996..f00757912e2e4c1e 100644
---- a/drivers/memory/Kconfig
-+++ b/drivers/memory/Kconfig
-@@ -105,6 +105,7 @@ config TI_EMIF
- config OMAP_GPMC
- 	tristate "Texas Instruments OMAP SoC GPMC driver"
- 	depends on OF_ADDRESS
-+	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
- 	select GPIOLIB
- 	help
- 	  This driver is for the General Purpose Memory Controller (GPMC)
--- 
-2.25.1
+GOOD MORNING
+ I AM MR T.PHILIP  FROM ULSTER BANK YOUR BIOMETRIC DATE FORM AND CLAIM REQUISITION IN BUSINESS OPERATION SERVICES 
+RECORDS DEPARTMENT IS AVAILABLE.08/05/2022 TO ULSTER BANK TO PAID YOU.
+REPLY BACK TO GET YOUR FUNDS
+I appreciate your time reading this piece.
+Yours sincerely,
+Philip Twite
+N;B
+SEND ME YOUR WHATSAPP NUMBER
 
