@@ -2,119 +2,110 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF062520F9C
-	for <lists+linux-omap@lfdr.de>; Tue, 10 May 2022 10:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06EE7520FB0
+	for <lists+linux-omap@lfdr.de>; Tue, 10 May 2022 10:27:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233162AbiEJIXy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 May 2022 04:23:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35568 "EHLO
+        id S237934AbiEJIbH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 May 2022 04:31:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237466AbiEJIXx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 May 2022 04:23:53 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8975528E4FE;
-        Tue, 10 May 2022 01:19:56 -0700 (PDT)
+        with ESMTP id S237973AbiEJIbD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 May 2022 04:31:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826CD36E0F;
+        Tue, 10 May 2022 01:27:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4FDFBB81B55;
-        Tue, 10 May 2022 08:19:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D3BC385A6;
-        Tue, 10 May 2022 08:19:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CA5E612E8;
+        Tue, 10 May 2022 08:27:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DAFC385A6;
+        Tue, 10 May 2022 08:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652170793;
-        bh=97t5SSRW42cNr7qqY2EZ1Z2IgU0S7OqzktsuTvBVZT8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kn9fckBEtQCD/7YuDVWt3hssXR3ImB0py9IRtdog2PFeWa72xjv628Ch1ZIK1IGiG
-         kwZo131g/GSX6eNxeJU0FsPV1qUdeG6aVeBI3TxOJNwjOgRh/oY/zhG87A6/XoZRra
-         i+Myv/ObyBAuP6mHmzj+PbLFlzJy1PQzZLKh/1lGGOWxJtCuymD5HFwrvbhYLNh1hz
-         PpmkIykuyWKG2V0t9bOECqt+4H296sTUISbs63anW4hM2MISPuVTzuJKmwTMPbI2dU
-         3iggs+HvjC4FJA6t3ypyphFnAkBz9DleweDHeNfsO/3KxqC32TTH1GPX4gg8HzTw/3
-         Y+xBN8rO31LqQ==
-Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
-        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <maz@kernel.org>)
-        id 1noL5z-00ABBV-AT; Tue, 10 May 2022 09:19:51 +0100
+        s=k20201202; t=1652171225;
+        bh=OFrK7CAAs1gsU8WZ3xFwTbQX6JjrB8rkbIgLOwzGskk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=bhJYQJtWpSGNWpxUcM+xrY3PtUWDvXz/xPqwDqB6zdhp/GudoGPl7pWYZnQhsBjuQ
+         6HIMbvmXyK4x0e5QKfqS3QAP2h6Vz2MmbrR/OkrSm8DOE7apWLeqYgduaynDYsJ5zU
+         dnVEMnjVAlhL/8f5kBkr1nAg9Ggg1tVzloQAiRUjTklOyv9VVo9b4w1IlAUBlknMLu
+         kypypc+dNG1k47/gKqjkqSXxpf6apcIV96M+PEYHow+YyaHRGyKIYR6UApqclGuEHR
+         5p4mS8NcjyPyI+LbWf1yN6EZFdar3ivQtE1Gvb0JIvl7vlJSduoeJsMLtjsS8nGuyn
+         YWcoofXg2T/iQ==
+Message-ID: <4bee472c-07b1-469a-820a-e11e5c99dabc@kernel.org>
+Date:   Tue, 10 May 2022 11:27:01 +0300
 MIME-Version: 1.0
-Date:   Tue, 10 May 2022 09:19:51 +0100
-From:   Marc Zyngier <maz@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Drew Fustini <dfustini@baylibre.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Dave Gerlach <d-gerlach@ti.com>, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: dmtimer: ack pending interrupt during suspend on am335x/am437x?
-In-Reply-To: <YnoK+XQiargRGUy/@atomide.com>
-References: <YniiqM0S+hwsGFni@x1> <YnoK+XQiargRGUy/@atomide.com>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <4de411aa2fc8a6f185afb8bfd5da63d4@kernel.org>
-X-Sender: maz@kernel.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 51.254.78.96
-X-SA-Exim-Rcpt-To: tony@atomide.com, dfustini@baylibre.com, daniel.lezcano@linaro.org, d-gerlach@ti.com, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH] memory: OMAP_GPMC should depend on ARCH_OMAP2PLUS ||
+ ARCH_K3
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <2b7d411b4a7913335082c858cb0d63b9e4bf7c5b.1652103920.git.geert+renesas@glider.be>
+ <20fd1a74-c0f5-d8e9-4903-b74c185d5aa3@kernel.org>
+ <CAMuHMdVXHSnOOnn3jchezQc+bsPYTnSPuw_rOe+pyskAVaQGnQ@mail.gmail.com>
+ <22ed864d-8d71-7042-4d55-2b0b65d4d281@kernel.org>
+ <CAMuHMdVFHeJvXAfb-Q1WGvDEuKTeVx-3fmmPu18Ci2yoNinMuA@mail.gmail.com>
+ <5cec89ab-76f7-65d5-0b1d-fdd768234f0e@kernel.org>
+ <CAMuHMdW6VH-N7gx+YtccexE7jprvigJDstu_00FJXtH3d45Wdg@mail.gmail.com>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <CAMuHMdW6VH-N7gx+YtccexE7jprvigJDstu_00FJXtH3d45Wdg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 2022-05-10 07:49, Tony Lindgren wrote:
-> * Drew Fustini <dfustini@baylibre.com> [220509 05:07]:
->> Hello Daniel, Tony suggested I mail you along with the list to get
->> feedback. I'm attempting to upstream these two patches [1][2] from
->> ti-linux-5.4.y for arch/arm/mach-omap2/timer.c:
->> 96f4c6e2ba8a ("ARM: OMAP2+: timer: Ack pending interrupt during 
->> suspend")
->> 7ae7dd5f8272 ("ARM: OMAP2+: timer: Extend pending interrupt ACK for 
->> gic")
->> 
->> On the TI AM335x and AM437x SoCs, it is possible for a late interrupt 
->> to
->> be generated which will cause a suspend failure. The first patch makes
->> omap_clkevt_idle() ack the irq both in the timer peripheral register
->> and in the interrupt controller to avoid the issue.
->> 
->> On AM437x only, the GIC cannot be directly acked using only the 
->> irqchip
->> calls. To workaround that, the second patch maps the GIC_CPU_BASE and
->> reads the GIC_CPU_INTACK register before calling irq_eoi to properly 
->> ack
->> the late timer interrupts that show up during suspend.
->> 
->> However, Tony removed most of arch/arm/mach-omap2/timer.c with:
->> 2ee04b88547a ("ARM: OMAP2+: Drop old timer code for dmtimer and 32k 
->> counter")
->> 
->> The timers are now implemented in drivers/clocksource/timer-ti-dm.c 
->> and
->> drivers/clocksource/timer-ti-dm-systimer.c. The function
->> dmtimer_clocksource_suspend() disables the dmtimer and clock but does
->> not ack any interrupts.
->> 
->> Tony suggested the right place to ack the interrupt during suspend is
->> in CPU_CLUSTER_PM_ENTER inside omap_timer_context_notifier().
->> 
->> Do you think that would be an acceptable approach?
+Geert,
+
+On 10/05/2022 11:17, Geert Uytterhoeven wrote:
+> Hi Roger,
 > 
-> Based on what we chatted on irc yesterday, I'd suggest try resetting 
-> the
-> clockevent on suspend first for am3/4 at omap_clockevent_idle() and see 
-> if
-> that takes care of the issue. If it's the timer hardware blocking the
-> deeper idle states, this should work, and GIC will lose it's context
-> on system suspend anyways.
+> On Tue, May 10, 2022 at 10:10 AM Roger Quadros <rogerq@kernel.org> wrote:
+>> On 10/05/2022 11:06, Geert Uytterhoeven wrote:
+>>> On Tue, May 10, 2022 at 9:40 AM Roger Quadros <rogerq@kernel.org> wrote:
+>>>> On 10/05/2022 10:30, Geert Uytterhoeven wrote:
+>>>>> On Tue, May 10, 2022 at 9:22 AM Roger Quadros <rogerq@kernel.org> wrote:
+>>>>>> On 09/05/2022 16:48, Geert Uytterhoeven wrote:
+>>>>>>> The Texas Instruments OMAP General Purpose Memory Controller (GPMC) is
+>>>>>>> only present on TI OMAP2/3/4/5, AM33xx, AM43x, DRA7xx, TI81xx, and K3
+>>>>>>> SoCs.  Hence add a dependency on ARCH_OMAP2PLUS || ARCH_K3, to prevent
+>>>>>>> asking the user about this driver when configuring a kernel without
+>>>>>>> OMAP2+ or K3 SoC family support.
+>>>>>>>
+>>>>>>> Fixes: be34f45f0d4aa91c ("memory: omap-gpmc: Make OMAP_GPMC config visible and selectable")
+>>>>>>> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+>>>
+>>>> Could you please also add ARCH_KEYSTONE in the 'depends on' list
+>>>> as some SoCs in that architecture do have the GPMC block.
+>>>
+>>> Are you sure? AFAICS, none of the Keystone DTS files have device
+>>> nodes that are compatible with the match list in the omap-gpmc driver.
+>>
+>> Yes, the 66AK2G12 SoC contains the GPMC module. [1]
+>>
+>>> Or perhaps the GPMC support still has to be added to the Keystone
+>>> DTS files (and or driver)?
+>>
+>> That's most likely the case.
+> 
+> So would it make sense to compile the omap-gpmc driver on keystone
+> yet, or does that need the introduction of e.g. a ti,k2g-gpmc compatible
+> value first, and thus should it be postponed?
 
-Maybe, but the core tracking code will still know it is in the
-middle of an interrupt. I´d expect things like lockdep to shout
-at you...
+It doesn't harm to be available for keystone already.
+Maybe it will save TI Keystone users some pain as to why OMAP_GPMC is no longer
+available for Keystone. Let's not affect such users. Thanks!
 
-         M.
+cheers,
+-roger
