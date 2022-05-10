@@ -2,101 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93C28520F80
-	for <lists+linux-omap@lfdr.de>; Tue, 10 May 2022 10:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73881520F91
+	for <lists+linux-omap@lfdr.de>; Tue, 10 May 2022 10:16:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230415AbiEJIOm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 May 2022 04:14:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55702 "EHLO
+        id S235430AbiEJIUi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 May 2022 04:20:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232591AbiEJIOk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 May 2022 04:14:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A2FF51;
-        Tue, 10 May 2022 01:10:43 -0700 (PDT)
+        with ESMTP id S232607AbiEJIUh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 May 2022 04:20:37 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9D0D2555A4;
+        Tue, 10 May 2022 01:16:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D0FD561187;
-        Tue, 10 May 2022 08:10:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DE1C385C8;
-        Tue, 10 May 2022 08:10:40 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9DD4AB81B41;
+        Tue, 10 May 2022 08:16:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A11CC385C9;
+        Tue, 10 May 2022 08:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652170242;
-        bh=f21nPmGeD4XcBz7OWRi3kw2WYaSEg8ChapSGdkrXTuo=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=WFIci6vIp2cSMmVsxaI3hyUn0AP+IIbE11w504bRJ1xWzSmnPR1heOFzizdjbZ8MN
-         hi0csyWyyGf158VY+6xN2T6nqdRRvKQOSVPmPjgcT78aq62BfxpvnSddAV2gjf8k0z
-         xCSjNIv4EmyhiqWZsA26P6iWW9Kw6fnIcq2h2WMuA5CGYNnUhj3mbhbyrH4VGKSGK/
-         fXbjljz3EfCvxlqd4EdNa3tAYe32zZnQhWMuQfu2CbKGzlk/Xdz5Vp/fzz4USV8u0I
-         ZNalmgoad6In51RCc79F9+TQZMCof8UFgRxiXREcBcZ6QM7y/ohnQt7Sg5t0e5q7bs
-         gNyWxN5lTXudw==
-Message-ID: <5cec89ab-76f7-65d5-0b1d-fdd768234f0e@kernel.org>
-Date:   Tue, 10 May 2022 11:10:38 +0300
+        s=k20201202; t=1652170597;
+        bh=J7/O303HKOjlJOqWbuNcNBIMSzdGNoVDL+7ArgF5TY8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=GbwuMG+HE4H0cOIcAe4pSjFJ44IWpyH1Sm6yie+R2KK8WvA3VSy9MUi5ml2qTYk+B
+         XGD1S3f2zYOoJFJ7a2MfZMjugzayWoAaFv5HIMLYiNQHWrck3wFbVQGTOAnpiEuJ5c
+         EFgdK8K4W9LTXr9sCylO7uTlKx97+cZxX8KwfJZ3GwfRGqbUws6j/mpZkIkoqnjW+H
+         9A66vWv63mwB14+ceOxsFCVG4zJOu5ncrKFDCBTOwY6wnfw5ueKlgNZa734iI86BPk
+         lYci5VtKrmOmo/yjv6W3G9v1MXif/18hhFQlOiGosWKLb6eTl6hU2hmPCvHOFhvV2R
+         Y7aE/UJq0WYeQ==
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <maz@kernel.org>)
+        id 1noL2o-00AB98-Mp; Tue, 10 May 2022 09:16:34 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] memory: OMAP_GPMC should depend on ARCH_OMAP2PLUS ||
- ARCH_K3
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
-        <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <2b7d411b4a7913335082c858cb0d63b9e4bf7c5b.1652103920.git.geert+renesas@glider.be>
- <20fd1a74-c0f5-d8e9-4903-b74c185d5aa3@kernel.org>
- <CAMuHMdVXHSnOOnn3jchezQc+bsPYTnSPuw_rOe+pyskAVaQGnQ@mail.gmail.com>
- <22ed864d-8d71-7042-4d55-2b0b65d4d281@kernel.org>
- <CAMuHMdVFHeJvXAfb-Q1WGvDEuKTeVx-3fmmPu18Ci2yoNinMuA@mail.gmail.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <CAMuHMdVFHeJvXAfb-Q1WGvDEuKTeVx-3fmmPu18Ci2yoNinMuA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Date:   Tue, 10 May 2022 09:16:34 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     Drew Fustini <dfustini@baylibre.com>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Dave Gerlach <d-gerlach@ti.com>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: dmtimer: ack pending interrupt during suspend on am335x/am437x?
+In-Reply-To: <YniiqM0S+hwsGFni@x1>
+References: <YniiqM0S+hwsGFni@x1>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <7c43bcfd56424d909796977460335f24@misterjones.org>
+X-Sender: maz@kernel.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: dfustini@baylibre.com, tony@atomide.com, daniel.lezcano@linaro.org, d-gerlach@ti.com, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Geert,
-
-On 10/05/2022 11:06, Geert Uytterhoeven wrote:
-> Hi Roger,
+On 2022-05-09 06:12, Drew Fustini wrote:
+> Hello Daniel, Tony suggested I mail you along with the list to get
+> feedback. I'm attempting to upstream these two patches [1][2] from
+> ti-linux-5.4.y for arch/arm/mach-omap2/timer.c:
+> 96f4c6e2ba8a ("ARM: OMAP2+: timer: Ack pending interrupt during 
+> suspend")
+> 7ae7dd5f8272 ("ARM: OMAP2+: timer: Extend pending interrupt ACK for 
+> gic")
 > 
-> On Tue, May 10, 2022 at 9:40 AM Roger Quadros <rogerq@kernel.org> wrote:
->> On 10/05/2022 10:30, Geert Uytterhoeven wrote:
->>> On Tue, May 10, 2022 at 9:22 AM Roger Quadros <rogerq@kernel.org> wrote:
->>>> On 09/05/2022 16:48, Geert Uytterhoeven wrote:
->>>>> The Texas Instruments OMAP General Purpose Memory Controller (GPMC) is
->>>>> only present on TI OMAP2/3/4/5, AM33xx, AM43x, DRA7xx, TI81xx, and K3
->>>>> SoCs.  Hence add a dependency on ARCH_OMAP2PLUS || ARCH_K3, to prevent
->>>>> asking the user about this driver when configuring a kernel without
->>>>> OMAP2+ or K3 SoC family support.
->>>>>
->>>>> Fixes: be34f45f0d4aa91c ("memory: omap-gpmc: Make OMAP_GPMC config visible and selectable")
->>>>> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> On the TI AM335x and AM437x SoCs, it is possible for a late interrupt 
+> to
+> be generated which will cause a suspend failure. The first patch makes
+> omap_clkevt_idle() ack the irq both in the timer peripheral register
+> and in the interrupt controller to avoid the issue.
 > 
->> Could you please also add ARCH_KEYSTONE in the 'depends on' list
->> as some SoCs in that architecture do have the GPMC block.
-> 
-> Are you sure? AFAICS, none of the Keystone DTS files have device
-> nodes that are compatible with the match list in the omap-gpmc driver.
+> On AM437x only, the GIC cannot be directly acked using only the irqchip
+> calls. To workaround that, the second patch maps the GIC_CPU_BASE and
+> reads the GIC_CPU_INTACK register before calling irq_eoi to properly 
+> ack
+> the late timer interrupts that show up during suspend.
 
-Yes, the 66AK2G12 SoC contains the GPMC module. [1]
+This isn´t an Ack. The Ack happens when you read the IAR register
+(Interrupt Acknowledgement Register). Writing to EOI performs at least
+a priority drop, and maybe a deactivation.
+
+Simply writing to EOI doesn´t necessarily solve any problem if the
+GIC is using EOIMode==1, because you´ĺl miss the deactivation.
 
 > 
-> Or perhaps the GPMC support still has to be added to the Keystone
-> DTS files (and or driver)?
+> However, Tony removed most of arch/arm/mach-omap2/timer.c with:
+> 2ee04b88547a ("ARM: OMAP2+: Drop old timer code for dmtimer and 32k 
+> counter")
+> 
+> The timers are now implemented in drivers/clocksource/timer-ti-dm.c and
+> drivers/clocksource/timer-ti-dm-systimer.c. The function
+> dmtimer_clocksource_suspend() disables the dmtimer and clock but does
+> not ack any interrupts.
+> 
+> Tony suggested the right place to ack the interrupt during suspend is
+> in CPU_CLUSTER_PM_ENTER inside omap_timer_context_notifier().
+> 
+> Do you think that would be an acceptable approach?
 
-That's most likely the case.
+The real issue is that you are apparently suspending from within an
+interrupt handler. This is what should be addressed.
 
-cheers,
--roger
+Please don´t randomly call into the irqchip code. It will eventually
+break, and sooner rather than later.
 
-[1] 66AK2G12 datasheet: https://www.ti.com/lit/ds/symlink/66ak2g12.pdf?ts=1652170122865&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252F66AK2G12
+         M.
+-- 
+Jazz is not dead. It just smells funny...
