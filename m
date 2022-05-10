@@ -2,97 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6CF8520E98
-	for <lists+linux-omap@lfdr.de>; Tue, 10 May 2022 09:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A9C520EA3
+	for <lists+linux-omap@lfdr.de>; Tue, 10 May 2022 09:35:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236975AbiEJHis (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 10 May 2022 03:38:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50024 "EHLO
+        id S233456AbiEJHiv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 10 May 2022 03:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240965AbiEJH0Z (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 May 2022 03:26:25 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E55363A5D7;
-        Tue, 10 May 2022 00:22:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5E0D2B81A0A;
-        Tue, 10 May 2022 07:22:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F7AC385A6;
-        Tue, 10 May 2022 07:22:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652167343;
-        bh=7K3MJOtEcuHFbzjGMBK9G/czvkGrWXEYQvzkmmVBkhQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=kZWStkvFA8dnpda13YuPiWGK0wi+F3QMo+0rLC4WwxoXWbBokY9OOoBlHQk5hoX6H
-         9Ev58O9/bLrAXY12Cp+Zy0Fqxwhr2JFzkFkd5C4K2WzSiLpUWI5R7c+l9FTvQ1V3BN
-         W74dn3lvc5yAgBieYb9QwIO9r0d4vlpc/L/qbIs0KkAVctuDVdMQGa1unzI3GJHOAU
-         hOJfC70rggZj7Q+1r3OGZaEVGpb+4eUjFQoTmZzwymFGdocaVeuXngtRtXylCyBLkq
-         AQfI43pXdyN4PA1DaXOCo/EBp9j7xa0gMelyDi7lLpS6lbBwHob9TKQ1gDQxT7wt/g
-         z79lkfNH5V6BA==
-Message-ID: <20fd1a74-c0f5-d8e9-4903-b74c185d5aa3@kernel.org>
-Date:   Tue, 10 May 2022 10:22:18 +0300
+        with ESMTP id S237566AbiEJHer (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 10 May 2022 03:34:47 -0400
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F88663C4;
+        Tue, 10 May 2022 00:30:49 -0700 (PDT)
+Received: by mail-qk1-f175.google.com with SMTP id c1so12612082qkf.13;
+        Tue, 10 May 2022 00:30:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Fo4vqfFCJO4dTHiOSh+MRYxkxA7rYkGYBM5+Lz22icc=;
+        b=UmHxso13IjA2mku/Wdk9OREuCmAPbFw8jsknirIOP2QD28XmEtmJt011uwZQMmvpWX
+         wWsbWOAfazYENaIupnmB/qIofJCbG7tjRFfqORL4rYtBP7VIRHCj2SFH8W4EJ3VboBff
+         TjH61ml9Ie/cRZPJ/rUccOpePBe1RfR5JJnXaF0IP7u3obuOcLGp2kwWbEYDtvsZwZDj
+         Ayn5yjIjIMPlSlN+meU6fF7ZlWhUfr2iJSPuoqEVYJc0Jj7s3Xz1a3ZUi8dGfcplXT0O
+         IGfSAMfja7add+Mvf1bczSvxrUY0MCa9yocszK5DCpvTjkSK79gaFxAd37S0uR4J8lu8
+         bqtg==
+X-Gm-Message-State: AOAM531P1HvNxvvJeIOtjhS0CN6g81HqZ+XO8IVwLw968c33pi7bzbJ1
+        oGY4VyYVnzLHsz39mUgY7iWD/jwYiB1SWQ==
+X-Google-Smtp-Source: ABdhPJwkyLSyTz8gcaU5Rrfg9AccMe3UotI70OHAP75AaOkkcAQ8pnq1Lg8wwSSqfr4iXa3SZIj5MQ==
+X-Received: by 2002:a37:5e82:0:b0:69f:529c:4d39 with SMTP id s124-20020a375e82000000b0069f529c4d39mr14302377qkb.440.1652167847953;
+        Tue, 10 May 2022 00:30:47 -0700 (PDT)
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
+        by smtp.gmail.com with ESMTPSA id o28-20020a05620a0d5c00b0069fc167df92sm8045726qkl.82.2022.05.10.00.30.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 May 2022 00:30:47 -0700 (PDT)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-2f7c57ee6feso169876417b3.2;
+        Tue, 10 May 2022 00:30:47 -0700 (PDT)
+X-Received: by 2002:a81:9b0c:0:b0:2f4:c522:7d3c with SMTP id
+ s12-20020a819b0c000000b002f4c5227d3cmr17920371ywg.316.1652167847192; Tue, 10
+ May 2022 00:30:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] memory: OMAP_GPMC should depend on ARCH_OMAP2PLUS ||
- ARCH_K3
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
 References: <2b7d411b4a7913335082c858cb0d63b9e4bf7c5b.1652103920.git.geert+renesas@glider.be>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <2b7d411b4a7913335082c858cb0d63b9e4bf7c5b.1652103920.git.geert+renesas@glider.be>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+ <20fd1a74-c0f5-d8e9-4903-b74c185d5aa3@kernel.org>
+In-Reply-To: <20fd1a74-c0f5-d8e9-4903-b74c185d5aa3@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 10 May 2022 09:30:35 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVXHSnOOnn3jchezQc+bsPYTnSPuw_rOe+pyskAVaQGnQ@mail.gmail.com>
+Message-ID: <CAMuHMdVXHSnOOnn3jchezQc+bsPYTnSPuw_rOe+pyskAVaQGnQ@mail.gmail.com>
+Subject: Re: [PATCH] memory: OMAP_GPMC should depend on ARCH_OMAP2PLUS || ARCH_K3
+To:     Roger Quadros <rogerq@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        "open list:TI ETHERNET SWITCH DRIVER (CPSW)" 
+        <linux-omap@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Geert,
+Hi Roger,
 
-On 09/05/2022 16:48, Geert Uytterhoeven wrote:
-> The Texas Instruments OMAP General Purpose Memory Controller (GPMC) is
-> only present on TI OMAP2/3/4/5, AM33xx, AM43x, DRA7xx, TI81xx, and K3
-> SoCs.  Hence add a dependency on ARCH_OMAP2PLUS || ARCH_K3, to prevent
-> asking the user about this driver when configuring a kernel without
-> OMAP2+ or K3 SoC family support.
-> 
-> Fixes: be34f45f0d4aa91c ("memory: omap-gpmc: Make OMAP_GPMC config visible and selectable")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
->  drivers/memory/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-> index b7800b37af78a996..f00757912e2e4c1e 100644
-> --- a/drivers/memory/Kconfig
-> +++ b/drivers/memory/Kconfig
-> @@ -105,6 +105,7 @@ config TI_EMIF
->  config OMAP_GPMC
->  	tristate "Texas Instruments OMAP SoC GPMC driver"
->  	depends on OF_ADDRESS
-> +	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
->  	select GPIOLIB
->  	help
->  	  This driver is for the General Purpose Memory Controller (GPMC)
+On Tue, May 10, 2022 at 9:22 AM Roger Quadros <rogerq@kernel.org> wrote:
+> On 09/05/2022 16:48, Geert Uytterhoeven wrote:
+> > The Texas Instruments OMAP General Purpose Memory Controller (GPMC) is
+> > only present on TI OMAP2/3/4/5, AM33xx, AM43x, DRA7xx, TI81xx, and K3
+> > SoCs.  Hence add a dependency on ARCH_OMAP2PLUS || ARCH_K3, to prevent
+> > asking the user about this driver when configuring a kernel without
+> > OMAP2+ or K3 SoC family support.
+> >
+> > Fixes: be34f45f0d4aa91c ("memory: omap-gpmc: Make OMAP_GPMC config visible and selectable")
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Is there any possibility that CONFIG_IRQ_DOMAIN is not set while both
-OF_ADDRESS and COMPILE_TEST are set?
+> > --- a/drivers/memory/Kconfig
+> > +++ b/drivers/memory/Kconfig
+> > @@ -105,6 +105,7 @@ config TI_EMIF
+> >  config OMAP_GPMC
+> >       tristate "Texas Instruments OMAP SoC GPMC driver"
+> >       depends on OF_ADDRESS
+> > +     depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
+> >       select GPIOLIB
+> >       help
+> >         This driver is for the General Purpose Memory Controller (GPMC)
+>
+> Is there any possibility that CONFIG_IRQ_DOMAIN is not set while both
+> OF_ADDRESS and COMPILE_TEST are set?
+>
+> That particular case will lead to build failures.
+>
+> e.g.
+> https://krzk.eu/#/builders/63/builds/162
 
-That particular case will lead to build failures.
+So it needs an additional dependency on IRQ_DOMAIN.
+That is a pre-existing problem, not caused by my patch (which adds
+more dependencies, and doesn't remove any).
 
-e.g.
-https://krzk.eu/#/builders/63/builds/162
+Gr{oetje,eeting}s,
 
-cheers,
--roger
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
