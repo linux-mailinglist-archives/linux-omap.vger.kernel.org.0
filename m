@@ -2,104 +2,93 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05ACB522B38
-	for <lists+linux-omap@lfdr.de>; Wed, 11 May 2022 06:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 645F3522C5D
+	for <lists+linux-omap@lfdr.de>; Wed, 11 May 2022 08:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239081AbiEKEjs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 11 May 2022 00:39:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41968 "EHLO
+        id S240206AbiEKGcI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 11 May 2022 02:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234960AbiEKEj1 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 May 2022 00:39:27 -0400
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4A6D14FC8D
-        for <linux-omap@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-e656032735so1551983fac.0
-        for <linux-omap@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
-         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
-         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
-         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
-         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
-         wrQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=A+evy0CUD0f+7GzWiiWB+b5Adm/QXWz3W7Ho48QFG+rWnetrja5slOM6RIo/gITTz+
-         9mSYpGSVuZNIvU/vLnq5DDp0ybU2vDB0Bc0DMEMMSpqIyeKcMkTBtRUVzv3EMlzldiCn
-         70zsUowqyXzqPRsuQ2JR+hPMKCStcD/wewgwHQKipV/3WSEqcXtXHTVs7nW1p9sVsJR5
-         Qke04Qlf4AqsKTOhp4U8wClOfv1UBJ/EwMbp4JwtDDqMmPkObuEf5q7CMYupkMSt+Uki
-         OVhy/3pSF3HI4CxKF9cFK6Rkajs6qKr1s4pdLT5j06+VmjqiWQ5qEzKTvMizv8wUtCRy
-         K6Jg==
-X-Gm-Message-State: AOAM533WXOva0hUpSAwJgcl5KpwaMZjW7ebwFAvKVG9hjM1hy1ImsEBQ
-        t34eXhGzKOkXIamEgqgvgmvTlR+nLy3AA8KGWy8uJmOdg/GKCw==
-X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
-X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
- gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
- May 2022 21:39:11 -0700 (PDT)
+        with ESMTP id S242108AbiEKGcE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 11 May 2022 02:32:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA8853ED19;
+        Tue, 10 May 2022 23:32:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F198617AA;
+        Wed, 11 May 2022 06:32:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78774C385DB;
+        Wed, 11 May 2022 06:32:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652250722;
+        bh=R/xIMoC2sDOdXzRp4z3fCiF/cRNt3/pLSC+250ZSbdo=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=AtAgiq8s4WkfPFvmodrvV4U4hTO8tfnwUxbkYz3J3WNBSl7MCPJtYHTgvhOAh4ToL
+         TEBxG0FaLR7TsktpJ3WpVavp2fNVN0oxKpAQzOP2KJeJB2T7ef7fMGIkWlcHcKvGqX
+         s9iK1Aii1/uL4Ne+bH96ORXpI9v3wss3oD+s8ihE4a5Flwqmju+o/zgv3bA+LaD4yg
+         W1hd/ydb2bIGq1w9jY4fkBQ072pRirW23ARBWyJVJbk2opHo+2xQSwUXM9r+N/NG3t
+         ct5jugxxh86FM2T1vEvu1PCz/TkBUu+/1uaWnoG4G1ABihvqykiMrM2MrywxRDXB/H
+         +vyY8cK5JqpBQ==
+Message-ID: <8a1acf21-94f9-fe68-0cda-6be27aa89668@kernel.org>
+Date:   Wed, 11 May 2022 09:31:59 +0300
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
- -0700 (PDT)
-From:   Private Mail <privatemail1961@gmail.com>
-Date:   Tue, 10 May 2022 21:39:10 -0700
-Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
-Subject: Have you had this? It is for your Benefit
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
-        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2] memory: OMAP_GPMC should depend on ARCH_OMAP2PLUS ||
+ ARCH_KEYSTONE || ARCH_K3
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <f6780f572f882ed6ab5934321942cf2b412bf8d1.1652174849.git.geert+renesas@glider.be>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <f6780f572f882ed6ab5934321942cf2b412bf8d1.1652174849.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Our Ref: BG/WA0151/2022
 
-Dear Beneficiary
 
-Subject: An Estate of US$15.8 Million
+On 10/05/2022 12:29, Geert Uytterhoeven wrote:
+> The Texas Instruments OMAP General Purpose Memory Controller (GPMC) is
+> only present on TI OMAP2/3/4/5, Keystone, AM33xx, AM43x, DRA7xx, TI81xx,
+> and K3 SoCs.  Hence add a dependency on ARCH_OMAP2PLUS || ARCH_KEYSTONE
+> || ARCH_K3, to prevent asking the user about this driver when
+> configuring a kernel without OMAP2+, Keystone, or K3 SoC family support.
+> 
+> Fixes: be34f45f0d4aa91c ("memory: omap-gpmc: Make OMAP_GPMC config visible and selectable")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Blount and Griffin Genealogical Investigators specializes in probate
-research to locate missing heirs and beneficiaries to estates in the
-United Kingdom and Europe.
+Acked-by: Roger Quadros <rogerq@kernel.org>
 
-We can also help you find wills, obtain copies of certificates, help
-you to administer an estate, as well as calculating how an estate,
-intestacy or trust should be distributed.
 
-You may be entitled to a large pay out for an inheritance in Europe
-worth US$15.8 million. We have discovered an estate belonging to the
-late Depositor has remained unclaimed since he died in 2011 and we
-have strong reasons to believe you are the closest living relative to
-the deceased we can find.
-
-You may unknowingly be the heir of this person who died without
-leaving a will (intestate). We will conduct a probate research to
-prove your entitlement, and can submit a claim on your behalf all at
-no risk to yourselves.
-
-Our service fee of 10% will be paid to us after you have received the estate.
-
-The estate transfer process should take just a matter of days as we
-have the mechanism and expertise to get this done very quickly. This
-message may come to you as a shock, however we hope to work with you
-to transfer the estate to you as quickly as possible.
-
-Feel free to email our senior case worker Mr. Malcolm Casey on email:
-malcolmcasey68@yahoo.com for further discussions.
-
-With warm regards,
-
-Mr. Blount W. Gort, CEO.
-Blount and Griffin Associates Inc
+> ---
+> v2:
+>   - Add ARCH_KEYSTONE, as requested by Roger Quadros.
+> ---
+>  drivers/memory/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
+> index b7800b37af78a996..ac1a411648d8656f 100644
+> --- a/drivers/memory/Kconfig
+> +++ b/drivers/memory/Kconfig
+> @@ -105,6 +105,7 @@ config TI_EMIF
+>  config OMAP_GPMC
+>  	tristate "Texas Instruments OMAP SoC GPMC driver"
+>  	depends on OF_ADDRESS
+> +	depends on ARCH_OMAP2PLUS || ARCH_KEYSTONE || ARCH_K3 || COMPILE_TEST
+>  	select GPIOLIB
+>  	help
+>  	  This driver is for the General Purpose Memory Controller (GPMC)
