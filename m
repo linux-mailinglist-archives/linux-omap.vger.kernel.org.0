@@ -2,103 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C65524A26
-	for <lists+linux-omap@lfdr.de>; Thu, 12 May 2022 12:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34216524DED
+	for <lists+linux-omap@lfdr.de>; Thu, 12 May 2022 15:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352509AbiELKVM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 12 May 2022 06:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41076 "EHLO
+        id S1353082AbiELNLp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 12 May 2022 09:11:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352572AbiELKVE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 May 2022 06:21:04 -0400
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975DB2CE0D;
-        Thu, 12 May 2022 03:21:02 -0700 (PDT)
-Received: by mail-io1-xd36.google.com with SMTP id e3so4783345ios.6;
-        Thu, 12 May 2022 03:21:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FXp069BhAhaqu9+rnJ0bPsp9cWfgDzKQDHjc5fhjNoY=;
-        b=PMJFawy6Pcud0h53JYQ6dkgAxtDKyks70dw+oJ362P4FzJ22KrVIE8NF+/LwqcBUrw
-         K4WIN/7WBHdO9/EChDubQkoIvh53PmQ7DTrZjJx15QCMxUNaEQ9QUibXRUeIl2mctyns
-         dYhhsVb9c6fAfhcZ+k7t3ON6VX+hliEtDgq6aGBFCsV3AleamfM8P6ovgOEWHT82n2eJ
-         VcIo3QR0mSW6ryjNP9WkhthlDBhmDK8EtXtIT33ymFHDxb+RHrY4M/iUp1s7VSYxaL0R
-         eOGgKEaz2F0IEJCeB2aK4RNgSRWqZGVrbThjWt5D2Jv4zoZJf9LRryoiQmSO/8Na2eGR
-         hdKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FXp069BhAhaqu9+rnJ0bPsp9cWfgDzKQDHjc5fhjNoY=;
-        b=mH8qC2joUPYmMnr5ImDRILZN9/w4SZvU9/+mgqOh6Ca/UBjn/7US65H7zdPsZHTFza
-         Js4X1PYSXQfLMkVaivsI9LfcIRwHnB3DD4RJ1i03swUmP+4FVRU1XXrlNphXVslsRRbs
-         IH3t4Y6/GRjB5NpiywaS/pyIvw+oICP52dQZzyBmzaO9zKuL3pS+KGNw9Rc78cvNb31M
-         Pnfws41Ljj+ghKTzxhKK+UpqI8lIrP9qPT1qrZRFupu2DJzspuP9i8pInrSSEXoiTUYs
-         pAKJegcRB1WsbE/ZGJ02WXMvQCiU2WGr6/0V8x3ltw05rQQqH9d2h0yR7F6ynH7CWcIR
-         RRjg==
-X-Gm-Message-State: AOAM532TF2h0bJrZBxf5IWWSXeBl9vQ74babC9PUr4ffEmmy9Po2kTQt
-        fVaUtteXPwxBbb8uwb/sEyYk6fop40PkNvSFJv0=
-X-Google-Smtp-Source: ABdhPJx+ZC9Ocd0QOwPxWtN+gib4b3QQY/gcHZCB5uo0ioGQZSGik5W42eagd2fuSjktwqlukVOUy4sT3f/4WlexuTU=
-X-Received: by 2002:a02:94e6:0:b0:32b:2c45:61d with SMTP id
- x93-20020a0294e6000000b0032b2c45061dmr15537595jah.74.1652350861851; Thu, 12
- May 2022 03:21:01 -0700 (PDT)
+        with ESMTP id S1354377AbiELNLf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 12 May 2022 09:11:35 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0DD06633B8;
+        Thu, 12 May 2022 06:11:33 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 127DE80B3;
+        Thu, 12 May 2022 13:07:56 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     linux-phy@lists.infradead.org, linux-usb@vger.kernel.org,
+        linux-omap@vger.kernel.org, Miaoqian Lin <linmq006@gmail.com>
+Subject: [PATCH] phy: mapphone-mdm6600: Fix runtime disable on probe
+Date:   Thu, 12 May 2022 16:11:28 +0300
+Message-Id: <20220512131128.631-1-tony@atomide.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-References: <CAGm1_kvEcvzKBb2O7NEa1SDt8MuOQfnN8LQ+voNGUBDR8JpKSg@mail.gmail.com>
- <YnNb5M+gHI4hIaPG@atomide.com> <CAGm1_kstAbEZXBYwoK4GrFxMmPi=kpmdfJd1WAB8XSE_vNTTNg@mail.gmail.com>
- <Ynyd9HeFNmGQiovY@atomide.com> <CAK8P3a2wrH9XxGF6uBeQ6J0+KhehxsFO63R6qcwZ1DexH4N=2Q@mail.gmail.com>
-In-Reply-To: <CAK8P3a2wrH9XxGF6uBeQ6J0+KhehxsFO63R6qcwZ1DexH4N=2Q@mail.gmail.com>
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Thu, 12 May 2022 12:20:51 +0200
-Message-ID: <CAGm1_ku85dL_zn4=9=OVkS3S3eBH-eqrc-c1UZyvnERbMrW98Q@mail.gmail.com>
-Subject: Re: am335x: 5.18.x: system stalling
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Tony Lindgren <tony@atomide.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Arnd,
+Commit d644e0d79829 ("phy: mapphone-mdm6600: Fix PM error handling in
+phy_mdm6600_probe") caused a regression where we now unconditionally
+disable runtime PM at the end of the probe while it is only needed on
+errors.
 
-On Thu, May 12, 2022 at 10:43 AM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Thu, May 12, 2022 at 7:41 AM Tony Lindgren <tony@atomide.com> wrote:
-> > * Yegor Yefremov <yegorslists@googlemail.com> [220511 14:16]:
-> > > On Thu, May 5, 2022 at 7:08 AM Tony Lindgren <tony@atomide.com> wrote:
-> > > > * Yegor Yefremov <yegorslists@googlemail.com> [220504 10:35]:
-> > > > > Hi Tony, all,
-> > > > >
-> > > > > since kernel 5.18.x (5.17.x doesn't show this behavior), the system
-> > > > > stalls as soon as I invoke the following commands (initializing
-> > > > > USB-to-CAN converter):
-> > > > >
-> > > > > slcand -o -s8 -t hw -S 3000000 /dev/ttyUSB0
-> > > > > ip link set slcan0 up
->
-> Oh, I missed this part at first and only looked at the backtrace.
-> Which CAN driver
-> are you using? It's likely a problem in the kernel driver.
+Fixes: d644e0d79829 ("phy: mapphone-mdm6600: Fix PM error handling in phy_mdm6600_probe")
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ drivers/phy/motorola/phy-mapphone-mdm6600.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-I am using the slcan driver [1].
-
-> CONFIG_DMA_API_DEBUG is still likely to pinpoint the bug, but I might also
-> just see it by looking at the right source file.
-
-I'll try to get more debug info with CONFIG_DMA_API_DEBUG.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/can/slcan.c?h=v5.18-rc6
-
-Yegor
->        Arnd
+diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+--- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
++++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+@@ -627,10 +627,12 @@ static int phy_mdm6600_probe(struct platform_device *pdev)
+ 	pm_runtime_put_autosuspend(ddata->dev);
+ 
+ cleanup:
+-	if (error < 0)
++	if (error < 0) {
+ 		phy_mdm6600_device_power_off(ddata);
+-	pm_runtime_disable(ddata->dev);
+-	pm_runtime_dont_use_autosuspend(ddata->dev);
++		pm_runtime_disable(ddata->dev);
++		pm_runtime_dont_use_autosuspend(ddata->dev);
++	}
++
+ 	return error;
+ }
+ 
+-- 
+2.36.1
