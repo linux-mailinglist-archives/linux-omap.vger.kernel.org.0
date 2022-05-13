@@ -2,123 +2,167 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1EDE525D3F
-	for <lists+linux-omap@lfdr.de>; Fri, 13 May 2022 10:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B490A525E20
+	for <lists+linux-omap@lfdr.de>; Fri, 13 May 2022 11:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378091AbiEMIX5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 May 2022 04:23:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38616 "EHLO
+        id S1378552AbiEMItl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 May 2022 04:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378174AbiEMIX4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 May 2022 04:23:56 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EE7C26267E
-        for <linux-omap@vger.kernel.org>; Fri, 13 May 2022 01:23:54 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id v12so10358875wrv.10
-        for <linux-omap@vger.kernel.org>; Fri, 13 May 2022 01:23:53 -0700 (PDT)
+        with ESMTP id S1378554AbiEMItk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 May 2022 04:49:40 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C87B2B032B
+        for <linux-omap@vger.kernel.org>; Fri, 13 May 2022 01:49:38 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id e29so839884wrc.11
+        for <linux-omap@vger.kernel.org>; Fri, 13 May 2022 01:49:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=smile-fr.20210112.gappssmtp.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=PyfNVqLhUzNkjpgQ9UuI9hC10iZbU2Sy8hokDDhjW1c=;
-        b=uyE+J/VPE/aqnTrkoYawPZOjwR8W2AJEH4pjIBgBN6s4uE4Bqneq0UBCTPQvgJuLD7
-         3i6I0bk+Ghzkd/Y0OApLv3XSvNbT/xBD+kMrarqJI5g0rIl6ksKsbQNluc2Dd36By0Tg
-         UCdNwxIQS0qIUVp4hoQEKzDXqaHggpNJJlY9kN5tDiz2XfxARp5CfoJYMpAh1eghcQqv
-         GMvyZhrtGvnyRi0ph7vstzMyjOljzqS7+2FUY9tnVndlgLBmxRk7fRk7tpZmH7liTXtG
-         TjSI3zmV02BNZY/8QwjnW9Vxfsn3i8GtFksGO0C6ePN4ebs8nq6LA67UlGJWWn4OVffB
-         8EnA==
+        bh=hBkxAbKDqNhxMFslE8xDJ6YeUuh818TRTss1RROwWhI=;
+        b=gG5O0vlQU4LazHn1JxDIXSb+aQcbB8CF7LVlmQUNOYeK58+wogRDBc6H9bYLMBnj5B
+         HVQQBGJYa71KT2xaBt72zW70qvnPEkDJXbBIiGsVPfwXCrY1DgHVsUd7lihpqIsE5Fbg
+         tL0AOdv/Uic/vy4MSwqhifLsE9TKySCHrWYgXeEr+GH/ipwkNDLwGdJmvM0SiEBOQZII
+         63rbT+YKKIF5tEB1fVeJFBexDQX0As1r7t0RO+5dPdztAGwv0J1wTiGKWL103A1b37js
+         PIrDlGXC1W0dDYmCiHAIC00bjgZgi8Yt/1sLfmlgEKuj30RpjKNJfXR/MW+M7Cy5Rtr9
+         gHvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=PyfNVqLhUzNkjpgQ9UuI9hC10iZbU2Sy8hokDDhjW1c=;
-        b=pxFOFuVKvckTkzxPBR7B2omrcjUuyIcWTr2hqHNpXXBksFOccDbnR5Ns/LrYtKsCHr
-         QY8Rc6mRZkK1HM5dYtugo0iTZKFf0MGHFKUuHVqzsjs0fYZawWXV9ktXjjQQxt20QTn+
-         sEE3DDLNqhmjqy6Cx7omwWhsn1mqqis50RBBVUZD6CzD1lDSwxIcWDOZ6gW5oHyxFrQe
-         7a1jvFlCTCcRUbWS4Iz43632KlJZ8D8pw85+wLDc1qW/jc2gDnuxEY6UrHwPW7lpbORR
-         H6GjxYm8dpZHgxKa3OXfGOIuU8iAPKob963MiCt1c1IPP3/MGWCZNT89RHk4kyPnuUnN
-         9ueA==
-X-Gm-Message-State: AOAM531iFl9Q6i4D/UmBREjlVVIkpvBM9WYCk5V9LfHL4ZjStAaTjyqv
-        eDz080Bs84HMC0SkQ8vW0zmrWA==
-X-Google-Smtp-Source: ABdhPJwdSWww2/id9LJNLs8/PG8ZeQp1Wg5I7GKKT8WISSKYbRD4qonFi6DvwWNJo/zk+LodMt0USA==
-X-Received: by 2002:a5d:6643:0:b0:20a:f3a1:2d07 with SMTP id f3-20020a5d6643000000b0020af3a12d07mr2956737wrw.159.1652430232520;
-        Fri, 13 May 2022 01:23:52 -0700 (PDT)
+        bh=hBkxAbKDqNhxMFslE8xDJ6YeUuh818TRTss1RROwWhI=;
+        b=UMRJlj0rZYaUJW6KjR6ps5889biJovg3uguy3NA+yffF/iS8cqhvu5L2tqg50QaLoS
+         CtanpW4g7q4ncXUmriaVuF9SZenVj2NjUQPTHpPlcbZ+MhL5MAv4gRz/ctse+ulrap9Q
+         Kjue4NU2M5zBZPinSDztHaB7/tXQwCgunl1LG3R2CeucXQTbO/PBOKY+0dC+8Rd6brLd
+         YzOXlLvKtyxRKH2gc0gcP8g/r3lJLrh6ensqWpGN0Om5/vY3T46nB2AbK+w5IPj0rs9/
+         bgKPNOsk0kmjjLOKs911LAPhkk2J+o8pqefhFnqrwUKyeEqXzJCZkV6UbrhUxFBiRlih
+         3H+A==
+X-Gm-Message-State: AOAM530/SvWKI/huKDOkirtrfcHPAZC03erzo3QWe2c+TL35V+HdRXyR
+        XG49aVCBkdPwm6NQW2CpM4Et0g==
+X-Google-Smtp-Source: ABdhPJxqSbr3xhTXHEwWrP1jSAQtKxqx6rwCEXcw+TPBfmqL5ZRF+Z2+l2UC6Tp2nA1ErRYV8Ge63g==
+X-Received: by 2002:a05:6000:184d:b0:20c:5a30:1e48 with SMTP id c13-20020a056000184d00b0020c5a301e48mr2989306wri.614.1652431776663;
+        Fri, 13 May 2022 01:49:36 -0700 (PDT)
 Received: from ?IPV6:2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f? (2a01cb058f8a18001c97b8d1b477d53f.ipv6.abo.wanadoo.fr. [2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f])
-        by smtp.gmail.com with ESMTPSA id z18-20020a7bc152000000b003958af7d0c8sm1656105wmi.45.2022.05.13.01.23.51
+        by smtp.gmail.com with ESMTPSA id j10-20020a05600c42ca00b003942a244ec9sm2073846wme.14.2022.05.13.01.49.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 May 2022 01:23:52 -0700 (PDT)
-Message-ID: <3102213a-1b84-6559-9aa1-d35365be18b5@smile.fr>
-Date:   Fri, 13 May 2022 10:23:51 +0200
+        Fri, 13 May 2022 01:49:36 -0700 (PDT)
+Message-ID: <13fa1d59-7750-a327-c100-a53823509017@smile.fr>
+Date:   Fri, 13 May 2022 10:49:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH] bus: ti-sysc: Fix warnings for unbind for serial
+Subject: Re: [PATCH v4 0/4] memory: omap-gpmc: Add AM64 SoC support
 Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Cc:     Dave Gerlach <d-gerlach@ti.com>, Faiz Abbas <faiz_abbas@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>,
-        Nishanth Menon <nm@ti.com>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20220512053021.61650-1-tony@atomide.com>
+To:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        krzysztof.kozlowski@canonical.com, miquel.raynal@bootlin.com,
+        tony@atomide.com
+Cc:     robh@kernel.org, kishon@ti.com, nm@ti.com, vigneshr@ti.com,
+        linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org
+References: <20211221131757.2030-1-rogerq@kernel.org>
+ <371c1efe-8cff-8bab-8466-02efe4c3d155@smile.fr>
+ <5d8ba4e2-a281-5d0f-d65f-bb0121165b73@ti.com>
 From:   Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <20220512053021.61650-1-tony@atomide.com>
+In-Reply-To: <5d8ba4e2-a281-5d0f-d65f-bb0121165b73@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
+Hi,
 
-Le 12/05/2022 à 07:30, Tony Lindgren a écrit :
-> We can get "failed to disable" clock_unprepare warnings on unbind at least
-> for the serial console device if the unbind is done before the device has
-> been idled.
+Le 15/04/2022 à 15:06, Grygorii Strashko a écrit :
 > 
-> As some devices are using deferred idle, we must check the status for
-> pending idle work to idle the device.
+> 
+> On 15/04/2022 11:59, Romain Naour wrote:
+>> Hello,
+>>
+>> Le 21/12/2021 à 14:17, Roger Quadros a écrit :
+>>> Hi,
+>>>
+>>> TI's AM64 SoC contains one GPMC module. Add driver support for it.
+>>
+>> What's the status of the GPMC interface on K3 architecture, especially for AM65,
+>> AM62 and other Jacinto 7 CPU devices ?
+>>
+>> TI currently don't recommend to use it for now even if there are still some GPMC
+>> use case with FPGA devices:
+>>
+>> https://e2e.ti.com/support/processors-group/processors/f/processors-forum/994191/am6442-am64x-gpmc-support
+>>
+>>
+>> This patch series add omap-gpmc support for AM64 Soc but as of kernel 5.18-rc2,
+>> there is no devicetree using ti,am64-gpmc.
+>>
+>> This patch seems missing (at least):
+>> https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/?h=ti-linux-5.10.y&id=55c102a75d399896c7396229cd687bf97afb5cf6
+>>
+> 
+> It's not how LKML development process works - driver changes has to be sent first
+> and then DT changes  as they accepted by different maintainers and through
+> different trees.
 
-I didn't noticed the "failed to disable" warning so far (kernel 5.10.106 from
-ti-linux-kernel repository) but I applied this patch as suggested [1] while
-investigating another issue "tty serial 8250 omap driver crash".
+Ok, I understand.
 
-Reviewed-by: Romain Naour <romain.naour@smile.fr>
+DT changes are still under review [1] and are not yet merged in 5.18-rc6.
 
-[1] https://marc.info/?l=linux-omap&m=164484408319083&w=2
+Sorry for the noise.
+
+[1] https://lkml.org/lkml/2022/2/4/320
 
 Best regards,
 Romain
 
 
 > 
-> Cc: Romain Naour <romain.naour@smile.fr>
-> Fixes: 76f0f772e469 ("bus: ti-sysc: Improve handling for no-reset-on-init and no-idle-on-init")
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/bus/ti-sysc.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> Thanks!
+>>
+>> Best regards,
+>> Romain
+>>
+>>>
+>>> cheers,
+>>> -roger
+>>>
+>>> Changelog:
+>>> v4
+>>> - move compatible match table to header file so it can be used by
+>>> GPMC driver even when NAND driver is not enabled or as a module.
+>>> GPMC driver is always enabled as built-in.
+>>> - Select OMAP_GPMC driver from MTD_NAND_OMAP2 driver config as
+>>> OMAP_GPMC is not essential for ARCH_K3 boot.
+>>>
+>>> v3
+>>> - use compatible match table for checking for NAND controller node in
+>>> GPMC driver.
+>>>
+>>> v2
+>>> - update DT binding doc to make reg-names and power-domains property
+>>> required only for specific SoC.
+>>>
+>>> Roger Quadros (4):
+>>>    dt-bindings: memory-controllers: ti,gpmc: Add compatible for AM64
+>>>    memory: omap-gpmc: Add support for GPMC on AM64 SoC
+>>>    memory: omap-gpmc: Use a compatible match table when checking for NAND
+>>>      controller
+>>>    mtd: rawnand: omap2: Select GPMC device driver for ARCH_K3
+>>>
+>>>   .../bindings/memory-controllers/ti,gpmc.yaml  | 23 +++++++++-
+>>>   drivers/memory/omap-gpmc.c                    | 46 ++++++++++++++-----
+>>>   drivers/mtd/nand/raw/Kconfig                  |  1 +
+>>>   drivers/mtd/nand/raw/omap2.c                  |  5 +-
+>>>   include/linux/platform_data/mtd-nand-omap2.h  |  9 +++-
+>>>   5 files changed, 67 insertions(+), 17 deletions(-)
+>>>
+>>
 > 
-> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-> --- a/drivers/bus/ti-sysc.c
-> +++ b/drivers/bus/ti-sysc.c
-> @@ -3395,7 +3395,9 @@ static int sysc_remove(struct platform_device *pdev)
->  	struct sysc *ddata = platform_get_drvdata(pdev);
->  	int error;
->  
-> -	cancel_delayed_work_sync(&ddata->idle_work);
-> +	/* Device can still be enabled, see deferred idle quirk in probe */
-> +	if (cancel_delayed_work_sync(&ddata->idle_work))
-> +		ti_sysc_idle(&ddata->idle_work.work);
->  
->  	error = pm_runtime_resume_and_get(ddata->dev);
->  	if (error < 0) {
 
