@@ -2,167 +2,172 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B490A525E20
-	for <lists+linux-omap@lfdr.de>; Fri, 13 May 2022 11:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C761526EBD
+	for <lists+linux-omap@lfdr.de>; Sat, 14 May 2022 09:14:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378552AbiEMItl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 13 May 2022 04:49:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44466 "EHLO
+        id S231671AbiENDrj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 13 May 2022 23:47:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378554AbiEMItk (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 May 2022 04:49:40 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C87B2B032B
-        for <linux-omap@vger.kernel.org>; Fri, 13 May 2022 01:49:38 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id e29so839884wrc.11
-        for <linux-omap@vger.kernel.org>; Fri, 13 May 2022 01:49:38 -0700 (PDT)
+        with ESMTP id S231657AbiENDri (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 13 May 2022 23:47:38 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A0D114D1F
+        for <linux-omap@vger.kernel.org>; Fri, 13 May 2022 20:47:35 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-2f7ca2ce255so107433417b3.7
+        for <linux-omap@vger.kernel.org>; Fri, 13 May 2022 20:47:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=hBkxAbKDqNhxMFslE8xDJ6YeUuh818TRTss1RROwWhI=;
-        b=gG5O0vlQU4LazHn1JxDIXSb+aQcbB8CF7LVlmQUNOYeK58+wogRDBc6H9bYLMBnj5B
-         HVQQBGJYa71KT2xaBt72zW70qvnPEkDJXbBIiGsVPfwXCrY1DgHVsUd7lihpqIsE5Fbg
-         tL0AOdv/Uic/vy4MSwqhifLsE9TKySCHrWYgXeEr+GH/ipwkNDLwGdJmvM0SiEBOQZII
-         63rbT+YKKIF5tEB1fVeJFBexDQX0As1r7t0RO+5dPdztAGwv0J1wTiGKWL103A1b37js
-         PIrDlGXC1W0dDYmCiHAIC00bjgZgi8Yt/1sLfmlgEKuj30RpjKNJfXR/MW+M7Cy5Rtr9
-         gHvQ==
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GlgtfqIsCtTv5Jauk4wjOqDSq6O7AkKJ3RvfO9y7TuY=;
+        b=Hd3y72OZxm4CV6vW7TxvqAtmoAy+5gV6r8Hf73b2YVQhbZh/HnO/aOE8OjMotWtJsU
+         pgzFZb7Pbdo2z3gPi9huhyKqFUGMLw3qTCbrVpuaAWUIFHWGbwySJWLcSD3x2HJrwRq3
+         9fXf4FixKmDUChFhx096IeeNMt3xcPz0/4o2aTvkQVRfQbAJc5UhQHyWxXSkV4gFPg33
+         SGpNyqOFMnggv210P+5AB5hDnM0fJ36oi+VoIRbJ9v2IN0RWG2s14SDXdE2Oc2HrLKAY
+         bja30YKLL/ESaJrKPVW74HGSsPp2CsdjFg4HM+oVywqUe7/hTlwWz89KB+xAYsV0Z17x
+         OmUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=hBkxAbKDqNhxMFslE8xDJ6YeUuh818TRTss1RROwWhI=;
-        b=UMRJlj0rZYaUJW6KjR6ps5889biJovg3uguy3NA+yffF/iS8cqhvu5L2tqg50QaLoS
-         CtanpW4g7q4ncXUmriaVuF9SZenVj2NjUQPTHpPlcbZ+MhL5MAv4gRz/ctse+ulrap9Q
-         Kjue4NU2M5zBZPinSDztHaB7/tXQwCgunl1LG3R2CeucXQTbO/PBOKY+0dC+8Rd6brLd
-         YzOXlLvKtyxRKH2gc0gcP8g/r3lJLrh6ensqWpGN0Om5/vY3T46nB2AbK+w5IPj0rs9/
-         bgKPNOsk0kmjjLOKs911LAPhkk2J+o8pqefhFnqrwUKyeEqXzJCZkV6UbrhUxFBiRlih
-         3H+A==
-X-Gm-Message-State: AOAM530/SvWKI/huKDOkirtrfcHPAZC03erzo3QWe2c+TL35V+HdRXyR
-        XG49aVCBkdPwm6NQW2CpM4Et0g==
-X-Google-Smtp-Source: ABdhPJxqSbr3xhTXHEwWrP1jSAQtKxqx6rwCEXcw+TPBfmqL5ZRF+Z2+l2UC6Tp2nA1ErRYV8Ge63g==
-X-Received: by 2002:a05:6000:184d:b0:20c:5a30:1e48 with SMTP id c13-20020a056000184d00b0020c5a301e48mr2989306wri.614.1652431776663;
-        Fri, 13 May 2022 01:49:36 -0700 (PDT)
-Received: from ?IPV6:2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f? (2a01cb058f8a18001c97b8d1b477d53f.ipv6.abo.wanadoo.fr. [2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f])
-        by smtp.gmail.com with ESMTPSA id j10-20020a05600c42ca00b003942a244ec9sm2073846wme.14.2022.05.13.01.49.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 May 2022 01:49:36 -0700 (PDT)
-Message-ID: <13fa1d59-7750-a327-c100-a53823509017@smile.fr>
-Date:   Fri, 13 May 2022 10:49:35 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GlgtfqIsCtTv5Jauk4wjOqDSq6O7AkKJ3RvfO9y7TuY=;
+        b=KZZKn13xVloTg+SwDh6gbblNgvYn1pAqyDhzPjno2qD2oX3BgwdBuBITF6FRz09Lpa
+         f1X6KKgFrjvdDZyM6A0NC0Du5ZxDcLQpjNe6jFIqqSBkiMLFZFJgoFT8odDVl2FFdXsX
+         c2Sw8d9wDiOu0+spO+YqlW31edd696OwhnSuLbEKXzmkp3vu6N+c0cQZAmpYqggn6+S6
+         9Fy4DWL+DzQ81BcPM/3qjgc3COEbaN/jOg38QtWJrvfU9rUmeTxEdKH8BOL2ST45ZaQJ
+         Gp1JG7YLupKftXeBdfr9LYXqacffD5ceAEbmos70wlg8c/SLIctlPi4SjSvI5C/aPf77
+         VweQ==
+X-Gm-Message-State: AOAM532d9pjmy6hIjj9g4gNxvoHaiWBxo5rNlejPtG1z0U4dUE27ECvQ
+        ZnA05mVoh4aVXUtXmxBsJ1LXz7XKcfXcdKYro1eC5Q==
+X-Google-Smtp-Source: ABdhPJyuCzmt9tIN7J1096gL4CtFK52NhgqgDXFCfNnRSovHU7C3BAMp6A67Zyxusp7zpb2DBDbNkL2qgI0VZxj+CYg=
+X-Received: by 2002:a0d:cfc5:0:b0:2dc:48db:dda1 with SMTP id
+ r188-20020a0dcfc5000000b002dc48dbdda1mr9063293ywd.83.1652500054045; Fri, 13
+ May 2022 20:47:34 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v4 0/4] memory: omap-gpmc: Add AM64 SoC support
-Content-Language: en-US
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        krzysztof.kozlowski@canonical.com, miquel.raynal@bootlin.com,
-        tony@atomide.com
-Cc:     robh@kernel.org, kishon@ti.com, nm@ti.com, vigneshr@ti.com,
-        linux-mtd@lists.infradead.org, linux-omap@vger.kernel.org
-References: <20211221131757.2030-1-rogerq@kernel.org>
- <371c1efe-8cff-8bab-8466-02efe4c3d155@smile.fr>
- <5d8ba4e2-a281-5d0f-d65f-bb0121165b73@ti.com>
-From:   Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <5d8ba4e2-a281-5d0f-d65f-bb0121165b73@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20211214221450.589884-1-luca@lucaceresoli.net>
+ <CAL_Jsq+GQTcx1EGKHug2ZcDZufrKM-4k6PB0vQeTCTG42MHzvA@mail.gmail.com>
+ <59a23c89-0810-eb28-acd9-7051ac34d438@lucaceresoli.net> <4579940c-27dc-733e-4022-ebea4671c839@lucaceresoli.net>
+ <CAL_JsqJ5nr6xJoTv3A6UPMMDXhWKcwSEUA3ux3kK8OMWQxdc6w@mail.gmail.com>
+ <YnvnNUrsCOUxMu8A@lpieralisi> <615718f9-151e-20fb-fcb0-56063ae61ca6@lucaceresoli.net>
+In-Reply-To: <615718f9-151e-20fb-fcb0-56063ae61ca6@lucaceresoli.net>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 13 May 2022 20:46:57 -0700
+Message-ID: <CAGETcx9r4e9PkUFNZ+vUfqOSO5=e9apmBj0+DyOkKEvc4CnsLQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] PCI: dra7xx: Fix link removal on probe error
+To:     Luca Ceresoli <luca@lucaceresoli.net>
+Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>, PCI <linux-pci@vger.kernel.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Sekhar Nori <nsekhar@ti.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On Thu, May 12, 2022 at 7:07 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
+>
+> Hi Lorenzo,
+>
+> On 11/05/22 18:41, Lorenzo Pieralisi wrote:
+> > On Sat, Jan 15, 2022 at 10:02:00AM -0600, Rob Herring wrote:
+> >> +Saravana
+> >>
+> >> On Tue, Jan 11, 2022 at 4:35 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
+> >>>
+> >>> Hi Rob,
+> >>>
+> >>> On 16/12/21 10:08, Luca Ceresoli wrote:
+> >>>> Hi Rob,
+> >>>>
+> >>>> thanks for the quick feedback!
+> >>>>
+> >>>> On 14/12/21 23:42, Rob Herring wrote:
+> >>>>> On Tue, Dec 14, 2021 at 4:15 PM Luca Ceresoli <luca@lucaceresoli.net> wrote:
+> >>>>>>
+> >>>>>> If a devm_phy_get() calls fails with phy_count==N (N > 0), then N links
+> >>>>>> have already been added by device_link_add() and won't be deleted by
+> >>>>>> device_link_del() because the code calls 'return' and not 'goto err_link'.
+> >>>>>>
+> >>>>>> Fix in a very simple way by doing all the devm_phy_get() calls before all
+> >>>>>> the device_link_add() calls.
+> >>>>>>
+> >>>>>> Fixes: 7a4db656a635 ("PCI: dra7xx: Create functional dependency between PCIe and PHY")
+> >>>>>> Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+> >>>>>> ---
+> >>>>>>  drivers/pci/controller/dwc/pci-dra7xx.c | 2 ++
+> >>>>>>  1 file changed, 2 insertions(+)
+> >>>>>>
+> >>>>>> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> >>>>>> index f7f1490e7beb..2ccc53869e13 100644
+> >>>>>> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> >>>>>> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> >>>>>> @@ -757,7 +757,9 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
+> >>>>>>                 phy[i] = devm_phy_get(dev, name);
+> >>>>>>                 if (IS_ERR(phy[i]))
+> >>>>>>                         return PTR_ERR(phy[i]);
+> >>>>>> +       }
+> >>>>>>
+> >>>>>> +       for (i = 0; i < phy_count; i++) {
+> >>>>>>                 link[i] = device_link_add(dev, &phy[i]->dev, DL_FLAG_STATELESS);
+> >>>>>
+> >>>>> I think this should happen automatically now with fw_devlink being
+> >>>>> enabled by default. Can you try?
+> >>>>
+> >>>> Do you mean removal should be done automatically? I think they are not
+> >>>> due to the DL_FLAG_STATELESS flag.
+> >>>
+> >>> I would love to have feedback because, as said, I think my patch is
+> >>> correct, but if I'm wrong (which might well be) I have to drop patch 1
+> >>> and rewrite patch 2 in a slightly more complex form.
+> >>
+> >> I mean that why do you need explicit dependency tracking here when
+> >> dependencies on a PHY should happen automatically now. IOW, what is
+> >> special about this driver and dependency?
+> >
+> > Any update on this patch ? I think patch 2 can be merged, please
+> > let me know if this one can be dropped.
+>
+> Thanks for the feedback! You would say yes, you can merge patch 2,
+> except it probably does not even apply as it is written in a way that is
+> based on the changes in patch 1.
+>
+> I could rewrite patch 2 to not depend on patch 1 of course, but it
+> wouldn't make code simpler, perhaps more complex. And moreover the
+> hardware that I used to have access to has phy_count==1 so I could never
+> test the failing case, and sadly now I have no access to that hardware.
 
-Le 15/04/2022 à 15:06, Grygorii Strashko a écrit :
-> 
-> 
-> On 15/04/2022 11:59, Romain Naour wrote:
->> Hello,
->>
->> Le 21/12/2021 à 14:17, Roger Quadros a écrit :
->>> Hi,
->>>
->>> TI's AM64 SoC contains one GPMC module. Add driver support for it.
->>
->> What's the status of the GPMC interface on K3 architecture, especially for AM65,
->> AM62 and other Jacinto 7 CPU devices ?
->>
->> TI currently don't recommend to use it for now even if there are still some GPMC
->> use case with FPGA devices:
->>
->> https://e2e.ti.com/support/processors-group/processors/f/processors-forum/994191/am6442-am64x-gpmc-support
->>
->>
->> This patch series add omap-gpmc support for AM64 Soc but as of kernel 5.18-rc2,
->> there is no devicetree using ti,am64-gpmc.
->>
->> This patch seems missing (at least):
->> https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/?h=ti-linux-5.10.y&id=55c102a75d399896c7396229cd687bf97afb5cf6
->>
-> 
-> It's not how LKML development process works - driver changes has to be sent first
-> and then DT changes  as they accepted by different maintainers and through
-> different trees.
+Hi Luca,
 
-Ok, I understand.
+The fw_devlink code to create device links from consumers to "phys"
+suppliers is pretty well exercised. Most/all Android devices running
+5.10+ kernels (including Pixel 6) use fw_devlink=on to be able to boot
+properly.
 
-DT changes are still under review [1] and are not yet merged in 5.18-rc6.
+So I'd be pretty confident in deleting the device_link_add/del() code
+in drivers/pci/controller/dwc/pci-dra7xx.c. The device links should
+already be there before the probe is even called.
 
-Sorry for the noise.
+Also, if you want to check if the device links (even the 1 phy one you
+have) are being created, you can look at /sys/class/devlink to see the
+list of all device links that are currently present. You can delete
+the code and then use this to check too.
 
-[1] https://lkml.org/lkml/2022/2/4/320
+-Saravana
 
-Best regards,
-Romain
-
-
-> 
->>
->> Thanks!
->>
->> Best regards,
->> Romain
->>
->>>
->>> cheers,
->>> -roger
->>>
->>> Changelog:
->>> v4
->>> - move compatible match table to header file so it can be used by
->>> GPMC driver even when NAND driver is not enabled or as a module.
->>> GPMC driver is always enabled as built-in.
->>> - Select OMAP_GPMC driver from MTD_NAND_OMAP2 driver config as
->>> OMAP_GPMC is not essential for ARCH_K3 boot.
->>>
->>> v3
->>> - use compatible match table for checking for NAND controller node in
->>> GPMC driver.
->>>
->>> v2
->>> - update DT binding doc to make reg-names and power-domains property
->>> required only for specific SoC.
->>>
->>> Roger Quadros (4):
->>>    dt-bindings: memory-controllers: ti,gpmc: Add compatible for AM64
->>>    memory: omap-gpmc: Add support for GPMC on AM64 SoC
->>>    memory: omap-gpmc: Use a compatible match table when checking for NAND
->>>      controller
->>>    mtd: rawnand: omap2: Select GPMC device driver for ARCH_K3
->>>
->>>   .../bindings/memory-controllers/ti,gpmc.yaml  | 23 +++++++++-
->>>   drivers/memory/omap-gpmc.c                    | 46 ++++++++++++++-----
->>>   drivers/mtd/nand/raw/Kconfig                  |  1 +
->>>   drivers/mtd/nand/raw/omap2.c                  |  5 +-
->>>   include/linux/platform_data/mtd-nand-omap2.h  |  9 +++-
->>>   5 files changed, 67 insertions(+), 17 deletions(-)
->>>
->>
-> 
-
+>
+> --
+> Luca
