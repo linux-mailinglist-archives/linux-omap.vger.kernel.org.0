@@ -2,122 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96D76528C19
-	for <lists+linux-omap@lfdr.de>; Mon, 16 May 2022 19:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62B35528DB1
+	for <lists+linux-omap@lfdr.de>; Mon, 16 May 2022 21:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244247AbiEPRgg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 May 2022 13:36:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40438 "EHLO
+        id S1345267AbiEPTG2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 May 2022 15:06:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344324AbiEPRgf (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 May 2022 13:36:35 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EEB31F606
-        for <linux-omap@vger.kernel.org>; Mon, 16 May 2022 10:36:33 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id o12-20020a1c4d0c000000b00393fbe2973dso11367263wmh.2
-        for <linux-omap@vger.kernel.org>; Mon, 16 May 2022 10:36:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=qm/hyYGNx6E0+awyuae5gq8Kj5pYNEmIlldZLbvGEc4=;
-        b=E4vlPnYiGHteAmnsuQWiQcvxwJBgAPo0qKeYV9wJEmhGyPB6rjsGn2fRmlJjwhGwrj
-         4w0TNDQ+NLUXTUcXFDkskLY95p5r50K1eX1JmUytrMOS37peVh1NxqbjkK51YL5VeIJ+
-         e/4A3Pb24pB7f5jg5e1M6M34OgklW6JNo+Kjv9ngrGO26/d+8bBpzJ1cagtbwdn9rQax
-         o/+EeTjmm0z4dtjVFN0NNZDEeiGYNo0Ueh6CGLQm6yZy9j1xralOw8tyDJXVX5urq0HM
-         QeN9jHLLGmRdugWpAwixvRthnNjXoaIirE6/jOaCBBR+Is3RONv7QsMzyVtjNf1GlnPh
-         XCXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=qm/hyYGNx6E0+awyuae5gq8Kj5pYNEmIlldZLbvGEc4=;
-        b=GYUifsgI7ciXyA/+VOkJS7IEOfT7ZZU3khNp0aVzUKZ890NWh84jH6RevTZ2AGJeSo
-         ZF44QiX1T6o3WGCNMdJ/0wWnBbLBUeYd1jINCC0s4SDKxE6GrTcet3C+bppd/QJzQgZa
-         QBe8pj4efA4t5wt6PjPb7wloUKGpdiYWWR85Z/3hkVFg3TjHvCzQ6rJdY0707S19b8lr
-         rXcVktDkyTXlA4NsGeheEfGG8QiLx8kkmp+meBj6yPsJiBIFYqcN8gBuI2nhjTjGJ8k8
-         nafTiyX5VS3VwW7ZPW0+qt4Umt+Mrj3+ptQe6J3M/nkTWcAfF8uQKKLcLonFpozWO4QO
-         /F9g==
-X-Gm-Message-State: AOAM5308fuIGVuOsFlIBusLtBdFgNCLtPIndlA0K2mTMnpryFd7bi396
-        Q3pnuX6AQABUDYZOjlIKM8hRvAqYT59wN5QeHKU=
-X-Google-Smtp-Source: ABdhPJwvFDrDV8i/Tx3oUWBOP0kcjjLdo5Y72Zm14UOiCrPX2cjHvxbx7uQ7AVB7M1kws1lDB+GS7Q==
-X-Received: by 2002:a1c:4456:0:b0:395:b9bf:57 with SMTP id r83-20020a1c4456000000b00395b9bf0057mr25625826wma.21.1652722592176;
-        Mon, 16 May 2022 10:36:32 -0700 (PDT)
-Received: from [192.168.1.177] ([88.127.185.201])
-        by smtp.gmail.com with ESMTPSA id y13-20020a7bc18d000000b003942a244ee4sm6328346wmi.41.2022.05.16.10.36.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 May 2022 10:36:31 -0700 (PDT)
-Message-ID: <86a9798a-5fe6-7705-ed4e-6f5e798c7994@baylibre.com>
-Date:   Mon, 16 May 2022 19:36:30 +0200
+        with ESMTP id S1345325AbiEPTGK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 May 2022 15:06:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F31920BD8;
+        Mon, 16 May 2022 12:06:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DBB50614CB;
+        Mon, 16 May 2022 19:06:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83024C385AA;
+        Mon, 16 May 2022 19:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652727967;
+        bh=2Resw6p+2SXUmxtcyRn6SOdYMRyAbxOVblDDKJZfhuk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=BSfKI3ipMdkFD4rYZrdaySQegpDAWsCAylzId9ynBGOuOqecfeWt14fH5AoEc7BHS
+         V8gAZ8FUYAWZ7+5K/4PIDrD6pGIIdrV0O2Jn6D6ulUbwttrVFEhG/G9b0Md4pdqADY
+         53Xfp2wtiTvaziCmhPIFbYVTjPjsMkMemaBd4jPHGp7NQtU+tEhOGlW+KsaU0+Uy//
+         GqydFI+z4tPURPZqkSW3aoa95B2I32CoYGYQEgbbShn5S4SKud+VDFCFP1PSKk/hrU
+         wBLkQLJ+Vw6ANisqhMcgiJZpjptSCT72a9hpW4OU0IhEEp1d+2ZA0FAxOElhbv5Pqe
+         BtFm85iRWxmGA==
+Date:   Mon, 16 May 2022 12:06:05 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-sh@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-mm@kvack.org,
+        linux-mips@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
+        kunit-dev@googlegroups.com, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, bpf@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org
+Subject: Re: [linux-next:master] BUILD REGRESSION
+ 1e1b28b936aed946122b4e0991e7144fdbbfd77e
+Message-ID: <20220516120605.7a6bb562@kernel.org>
+In-Reply-To: <6280f965.kTCPpIEVY9TwoNre%lkp@intel.com>
+References: <6280f965.kTCPpIEVY9TwoNre%lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v2] arm64: dts: ti: k3-am625-sk: enable ramoops
-Content-Language: en-US
-To:     Nishanth Menon <nm@ti.com>
-Cc:     linux-omap@vger.kernel.org, vigneshr@ti.com, praneeth@ti.com,
-        linux-arm-kernel@lists.infradead.org, khilman@baylibre.com
-References: <20220516145408.1000678-1-glaroque@baylibre.com>
- <20220516164853.nai7xbmclvvkywf5@party>
-From:   Guillaume LA ROQUE <glaroque@baylibre.com>
-In-Reply-To: <20220516164853.nai7xbmclvvkywf5@party>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Le 16/05/2022 à 18:48, Nishanth Menon a écrit :
-> On 16:54-20220516, Guillaume La Roque wrote:
->> Enable ramoops features to easily debug some issues
->>
->> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
->> Signed-off-by: Kevin Hilman <khilman@baylibre.com>
->> ---
->> Changes in v2:
->> - Apply script create-mem_map.py  with args given by Nishanth Menon
->> - Spelling fix
->> ---
->>   arch/arm64/boot/dts/ti/k3-am625-sk.dts | 9 +++++++++
->>   1 file changed, 9 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/ti/k3-am625-sk.dts b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
->> index 0de4113ccd5d..dfb16c29a000 100644
->> --- a/arch/arm64/boot/dts/ti/k3-am625-sk.dts
->> +++ b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
->> @@ -36,6 +36,15 @@ reserved-memory {
->>   		#size-cells = <2>;
->>   		ranges;
->>
->> +		ramoops@0x9ca00000 {
->> +			compatible = "ramoops";
->> +			reg = <0x0 0xe0000000 0x0 0x00100000>;
-> I think you intended 0x9ca00000 here?
->
-> Static checks should have caught this for you. please run them
-> prior to posting?
-sorry for that i forgot to run it and update line .
+On Sun, 15 May 2022 21:00:21 +0800 kernel test robot wrote:
+> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> branch HEAD: 1e1b28b936aed946122b4e0991e7144fdbbfd77e  Add linux-next specific files for 20220513
+> 
+> Error/Warning reports:
+> 
+> https://lore.kernel.org/linux-mm/202204181931.klAC6fWo-lkp@intel.com
+> https://lore.kernel.org/linux-mm/202204291924.vTGZmerI-lkp@intel.com
+> https://lore.kernel.org/linux-mm/202205031017.4TwMan3l-lkp@intel.com
+> https://lore.kernel.org/linux-mm/202205041248.WgCwPcEV-lkp@intel.com
+> https://lore.kernel.org/linux-mm/202205122113.uLKzd3SZ-lkp@intel.com
+> https://lore.kernel.org/linux-mm/202205150051.3RzuooAG-lkp@intel.com
+> https://lore.kernel.org/linux-mm/202205150117.sd6HzBVm-lkp@intel.com
+> https://lore.kernel.org/lkml/202205100617.5UUm3Uet-lkp@intel.com
+> https://lore.kernel.org/llvm/202204210555.DNvfHvIb-lkp@intel.com
+> https://lore.kernel.org/llvm/202205060132.uhqyUx1l-lkp@intel.com
+> https://lore.kernel.org/llvm/202205120010.zWBednzM-lkp@intel.com
+> https://lore.kernel.org/llvm/202205141122.qihFGUem-lkp@intel.com
+> 
+> Error/Warning: (recently discovered and may have been fixed)
+> 
+> <command-line>: fatal error: ./include/generated/utsrelease.h: No such file or directory
+> arch/arm/mach-versatile/versatile.c:56:14: warning: no previous prototype for function 'mmc_status' [-Wmissing-prototypes]
+> arch/x86/kvm/pmu.h:20:32: warning: 'vmx_icl_pebs_cpu' defined but not used [-Wunused-const-variable=]
+> drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_link_dp.c:5102:7: warning: variable 'allow_lttpr_non_transparent_mode' set but not used [-Wunused-but-set-variable]
+> drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_link_dp.c:5147:6: warning: no previous prototype for function 'dp_parse_lttpr_mode' [-Wmissing-prototypes]
+> drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c:1364:5: warning: no previous prototype for 'amdgpu_discovery_get_mall_info' [-Wmissing-prototypes]
+> drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c:1983:6: warning: no previous prototype for function 'gfx_v11_0_rlc_stop' [-Wmissing-prototypes]
+> drivers/gpu/drm/amd/amdgpu/soc21.c:171:6: warning: no previous prototype for 'soc21_grbm_select' [-Wmissing-prototypes]
+> drivers/gpu/drm/solomon/ssd130x-spi.c:154:35: warning: 'ssd130x_spi_table' defined but not used [-Wunused-const-variable=]
+> drivers/hwmon/nct6775-platform.c:199:9: sparse:    unsigned char
+> drivers/hwmon/nct6775-platform.c:199:9: sparse:    void
+> drivers/video/fbdev/omap/hwa742.c:492:5: warning: no previous prototype for 'hwa742_update_window_async' [-Wmissing-prototypes]
+> fs/buffer.c:2254:5: warning: stack frame size (2144) exceeds limit (1024) in 'block_read_full_folio' [-Wframe-larger-than]
+> fs/ntfs/aops.c:378:12: warning: stack frame size (2224) exceeds limit (1024) in 'ntfs_read_folio' [-Wframe-larger-than]
+> kernel/trace/fgraph.c:37:12: warning: no previous prototype for 'ftrace_enable_ftrace_graph_caller' [-Wmissing-prototypes]
+> kernel/trace/fgraph.c:46:12: warning: no previous prototype for 'ftrace_disable_ftrace_graph_caller' [-Wmissing-prototypes]
 
-i will fix it .
-
-sorry for noise...
-
->> +			record-size = <0x8000>;
->> +			console-size = <0x8000>;
->> +			ftrace-size = <0x0>;
->> +			pmsg-size = <0x8000>;
->> +		};
->> +
->>   		secure_tfa_ddr: tfa@9e780000 {
->>   			reg = <0x00 0x9e780000 0x00 0x80000>;
->>   			alignment = <0x1000>;
->> --
->> 2.25.1
->>
-
+Is this report CCed everywhere or there's a reason why netdev@ is CCed?
+I'm trying to figure out we need to care and it's not obvious..
