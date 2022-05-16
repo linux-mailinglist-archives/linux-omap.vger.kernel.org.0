@@ -2,110 +2,122 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E94528AEB
-	for <lists+linux-omap@lfdr.de>; Mon, 16 May 2022 18:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96D76528C19
+	for <lists+linux-omap@lfdr.de>; Mon, 16 May 2022 19:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343830AbiEPQtH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 16 May 2022 12:49:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37610 "EHLO
+        id S244247AbiEPRgg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 16 May 2022 13:36:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343919AbiEPQtF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 May 2022 12:49:05 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DF243CA4C
-        for <linux-omap@vger.kernel.org>; Mon, 16 May 2022 09:49:03 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 24GGmrXj102656;
-        Mon, 16 May 2022 11:48:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1652719733;
-        bh=qktgrjVoaFxUx9CraWPW+wRpskJYOZpvrChLo6uU4io=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=rLez7CL8REYe+d5tAwr1A4EMEU9j6U3dC+1DoBOICGEHsm49oClDSx7eUGVpb97gi
-         8SF5ZTraiiGbAUup+1jH+erXHc6XJLI16n8H/2dJFqu8iI86StBLTRIa7KyV+2VPmK
-         yzrIZYVmkRmmu5gEvHL5vRRP+3ax5O4y7sfGw3xg=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 24GGmrbT008913
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 16 May 2022 11:48:53 -0500
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 16
- May 2022 11:48:53 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 16 May 2022 11:48:53 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 24GGmrVs098837;
-        Mon, 16 May 2022 11:48:53 -0500
-Date:   Mon, 16 May 2022 11:48:53 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Guillaume La Roque <glaroque@baylibre.com>
-CC:     <linux-omap@vger.kernel.org>, <vigneshr@ti.com>, <praneeth@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>, <khilman@baylibre.com>
-Subject: Re: [PATCH v2] arm64: dts: ti: k3-am625-sk: enable ramoops
-Message-ID: <20220516164853.nai7xbmclvvkywf5@party>
-References: <20220516145408.1000678-1-glaroque@baylibre.com>
+        with ESMTP id S1344324AbiEPRgf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 16 May 2022 13:36:35 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EEB31F606
+        for <linux-omap@vger.kernel.org>; Mon, 16 May 2022 10:36:33 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id o12-20020a1c4d0c000000b00393fbe2973dso11367263wmh.2
+        for <linux-omap@vger.kernel.org>; Mon, 16 May 2022 10:36:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=qm/hyYGNx6E0+awyuae5gq8Kj5pYNEmIlldZLbvGEc4=;
+        b=E4vlPnYiGHteAmnsuQWiQcvxwJBgAPo0qKeYV9wJEmhGyPB6rjsGn2fRmlJjwhGwrj
+         4w0TNDQ+NLUXTUcXFDkskLY95p5r50K1eX1JmUytrMOS37peVh1NxqbjkK51YL5VeIJ+
+         e/4A3Pb24pB7f5jg5e1M6M34OgklW6JNo+Kjv9ngrGO26/d+8bBpzJ1cagtbwdn9rQax
+         o/+EeTjmm0z4dtjVFN0NNZDEeiGYNo0Ueh6CGLQm6yZy9j1xralOw8tyDJXVX5urq0HM
+         QeN9jHLLGmRdugWpAwixvRthnNjXoaIirE6/jOaCBBR+Is3RONv7QsMzyVtjNf1GlnPh
+         XCXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=qm/hyYGNx6E0+awyuae5gq8Kj5pYNEmIlldZLbvGEc4=;
+        b=GYUifsgI7ciXyA/+VOkJS7IEOfT7ZZU3khNp0aVzUKZ890NWh84jH6RevTZ2AGJeSo
+         ZF44QiX1T6o3WGCNMdJ/0wWnBbLBUeYd1jINCC0s4SDKxE6GrTcet3C+bppd/QJzQgZa
+         QBe8pj4efA4t5wt6PjPb7wloUKGpdiYWWR85Z/3hkVFg3TjHvCzQ6rJdY0707S19b8lr
+         rXcVktDkyTXlA4NsGeheEfGG8QiLx8kkmp+meBj6yPsJiBIFYqcN8gBuI2nhjTjGJ8k8
+         nafTiyX5VS3VwW7ZPW0+qt4Umt+Mrj3+ptQe6J3M/nkTWcAfF8uQKKLcLonFpozWO4QO
+         /F9g==
+X-Gm-Message-State: AOAM5308fuIGVuOsFlIBusLtBdFgNCLtPIndlA0K2mTMnpryFd7bi396
+        Q3pnuX6AQABUDYZOjlIKM8hRvAqYT59wN5QeHKU=
+X-Google-Smtp-Source: ABdhPJwvFDrDV8i/Tx3oUWBOP0kcjjLdo5Y72Zm14UOiCrPX2cjHvxbx7uQ7AVB7M1kws1lDB+GS7Q==
+X-Received: by 2002:a1c:4456:0:b0:395:b9bf:57 with SMTP id r83-20020a1c4456000000b00395b9bf0057mr25625826wma.21.1652722592176;
+        Mon, 16 May 2022 10:36:32 -0700 (PDT)
+Received: from [192.168.1.177] ([88.127.185.201])
+        by smtp.gmail.com with ESMTPSA id y13-20020a7bc18d000000b003942a244ee4sm6328346wmi.41.2022.05.16.10.36.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 May 2022 10:36:31 -0700 (PDT)
+Message-ID: <86a9798a-5fe6-7705-ed4e-6f5e798c7994@baylibre.com>
+Date:   Mon, 16 May 2022 19:36:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20220516145408.1000678-1-glaroque@baylibre.com>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v2] arm64: dts: ti: k3-am625-sk: enable ramoops
+Content-Language: en-US
+To:     Nishanth Menon <nm@ti.com>
+Cc:     linux-omap@vger.kernel.org, vigneshr@ti.com, praneeth@ti.com,
+        linux-arm-kernel@lists.infradead.org, khilman@baylibre.com
+References: <20220516145408.1000678-1-glaroque@baylibre.com>
+ <20220516164853.nai7xbmclvvkywf5@party>
+From:   Guillaume LA ROQUE <glaroque@baylibre.com>
+In-Reply-To: <20220516164853.nai7xbmclvvkywf5@party>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 16:54-20220516, Guillaume La Roque wrote:
-> Enable ramoops features to easily debug some issues
-> 
-> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
-> Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-> ---
-> Changes in v2:
-> - Apply script create-mem_map.py  with args given by Nishanth Menon
-> - Spelling fix
-> ---
->  arch/arm64/boot/dts/ti/k3-am625-sk.dts | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/ti/k3-am625-sk.dts b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-> index 0de4113ccd5d..dfb16c29a000 100644
-> --- a/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-> +++ b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-> @@ -36,6 +36,15 @@ reserved-memory {
->  		#size-cells = <2>;
->  		ranges;
-> 
-> +		ramoops@0x9ca00000 {
-> +			compatible = "ramoops";
-> +			reg = <0x0 0xe0000000 0x0 0x00100000>;
+Le 16/05/2022 à 18:48, Nishanth Menon a écrit :
+> On 16:54-20220516, Guillaume La Roque wrote:
+>> Enable ramoops features to easily debug some issues
+>>
+>> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+>> Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+>> ---
+>> Changes in v2:
+>> - Apply script create-mem_map.py  with args given by Nishanth Menon
+>> - Spelling fix
+>> ---
+>>   arch/arm64/boot/dts/ti/k3-am625-sk.dts | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/ti/k3-am625-sk.dts b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
+>> index 0de4113ccd5d..dfb16c29a000 100644
+>> --- a/arch/arm64/boot/dts/ti/k3-am625-sk.dts
+>> +++ b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
+>> @@ -36,6 +36,15 @@ reserved-memory {
+>>   		#size-cells = <2>;
+>>   		ranges;
+>>
+>> +		ramoops@0x9ca00000 {
+>> +			compatible = "ramoops";
+>> +			reg = <0x0 0xe0000000 0x0 0x00100000>;
+> I think you intended 0x9ca00000 here?
+>
+> Static checks should have caught this for you. please run them
+> prior to posting?
+sorry for that i forgot to run it and update line .
 
-I think you intended 0x9ca00000 here?
+i will fix it .
 
-Static checks should have caught this for you. please run them
-prior to posting?
-> +			record-size = <0x8000>;
-> +			console-size = <0x8000>;
-> +			ftrace-size = <0x0>;
-> +			pmsg-size = <0x8000>;
-> +		};
-> +
->  		secure_tfa_ddr: tfa@9e780000 {
->  			reg = <0x00 0x9e780000 0x00 0x80000>;
->  			alignment = <0x1000>;
-> --
-> 2.25.1
-> 
+sorry for noise...
 
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+>> +			record-size = <0x8000>;
+>> +			console-size = <0x8000>;
+>> +			ftrace-size = <0x0>;
+>> +			pmsg-size = <0x8000>;
+>> +		};
+>> +
+>>   		secure_tfa_ddr: tfa@9e780000 {
+>>   			reg = <0x00 0x9e780000 0x00 0x80000>;
+>>   			alignment = <0x1000>;
+>> --
+>> 2.25.1
+>>
+
