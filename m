@@ -2,109 +2,162 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C5E52A181
-	for <lists+linux-omap@lfdr.de>; Tue, 17 May 2022 14:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79A4252A75F
+	for <lists+linux-omap@lfdr.de>; Tue, 17 May 2022 17:51:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345669AbiEQM2f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 17 May 2022 08:28:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32866 "EHLO
+        id S241610AbiEQPvv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 17 May 2022 11:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234372AbiEQM2c (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 May 2022 08:28:32 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA79D496AF
-        for <linux-omap@vger.kernel.org>; Tue, 17 May 2022 05:28:31 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id j24so9288931wrb.1
-        for <linux-omap@vger.kernel.org>; Tue, 17 May 2022 05:28:31 -0700 (PDT)
+        with ESMTP id S1350715AbiEQPvD (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 17 May 2022 11:51:03 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2AD5506D0
+        for <linux-omap@vger.kernel.org>; Tue, 17 May 2022 08:51:00 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id t11-20020a17090a6a0b00b001df6f318a8bso2849667pjj.4
+        for <linux-omap@vger.kernel.org>; Tue, 17 May 2022 08:51:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=YrRTOGMgO9zXdnByTZCf3fblVWtGAKIL40Lb6D388lQ=;
-        b=lloC694fCJ2v7wRAkxLMWjNcK8KfUEdFRA+pF3ULM8O9PAD8ZELEzWc3NuIJJOXXmX
-         kj8/vUsDiMoRuQQK+W5QLAPzGdHwQ5YKj+AWXV1SggbyS83Nybdl6lCve6Ex0yNgS0sn
-         uubcOpxdjuye1lYN/TTvUKC8vjrTWn5YPMAMS0PtaaEsT1iHrePN7B5h6IOx821weKEs
-         T+qymkaga2GsQ7Rn24G7Vkm1QPX8sSN8y7jBV7oeK9WWnKW3wcwUaZ9Vq863rYZc4S6C
-         XQmuKd6g4NKPQ/uwTVKEpIcgH2hJTwiEWgT75qqdyPk2d7LTrkIzFQKOwNJCtwbR5Ipy
-         SH/w==
+        bh=sq17Edx2+CFT11B0EldvF6Xr2vsCgtJUsQIXxAbj7HI=;
+        b=YagzcbA0G2v4PjgIfWwGfW5R5OQtPYHgOuCYM8YDVkXHjkRcckMEoB2ewCfNGpyST1
+         Cro1eqxO2ZMUYby+Iz+G4EDD9Th0mz6aE8yxXxT0i9cN1x2TsKztrFU1h+7EYLiSVOHj
+         nDbvCbw66qwalMpIvZfKlVY8bQgfttr6RqZy6+2sxXS9nMowhsIik1uE9s7RlD8b4Ds9
+         b77vK+TOBFWacjODZiFQEWaDn+pl2PL+QHnKcqf1SXBWRLvw0bRrKN9HfPiLa3gejnTN
+         tl9oHRm496fY0DjYKb16HIZAtqYLELfCcnz/d2Y1xBMu4gXYVJ/5g5Yz65G7jXDJKTtJ
+         l4vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=YrRTOGMgO9zXdnByTZCf3fblVWtGAKIL40Lb6D388lQ=;
-        b=SgXYPe8d4sTojRf6Gh8dNAHmfJgOLbK1ctIDn4on4PJhYzJ1n8nC/X9O0f36ijMGXv
-         mgKbtHrxLnSAsU8KoiWnJZqfmTlwb3gX2Q+ZnIWWWjI3sGbxdPx5Dlz9yZXsRXK2AHxz
-         876zNnwS+h/UXYo2THzw1fkfLFHd8LK+4ePMNVLjYVOGrRYiHEA8dMIApKT+s5Pxycvq
-         eaPiG6o0jIi887YkogogyiQmp3zDoz8hwYIwD37rIGLgONL04duQOTQRv8gVhRUlB47H
-         pfxMln9l9o/UJrR8P3cXHDOEw9ay4Ul+I/66rIm1VEMLWsoOAbkt2+KQ2USUd9ZaCI0R
-         rbow==
-X-Gm-Message-State: AOAM5315ih3rIpOr2rhTzq5416jMQP3C5lHv98h9eHRpy9gH3Hr0Pw9T
-        Lqll7mOD9J/paflphEDnqTf9aSkfn77P0aLgRzk=
-X-Google-Smtp-Source: ABdhPJzRz6PWZLnvLsKBaESWu4K8g64TIbExE9OdlnhyFdgzCES/0g6ck3h0/Kt1xqds1GiuyHKYig==
-X-Received: by 2002:a05:6000:110a:b0:20d:131e:bf0c with SMTP id z10-20020a056000110a00b0020d131ebf0cmr4294667wrw.108.1652790510161;
-        Tue, 17 May 2022 05:28:30 -0700 (PDT)
-Received: from localhost.localdomain ([88.127.185.201])
-        by smtp.gmail.com with ESMTPSA id x10-20020adfbb4a000000b0020d0435c97bsm7517928wrg.92.2022.05.17.05.28.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 May 2022 05:28:29 -0700 (PDT)
-From:   Guillaume La Roque <glaroque@baylibre.com>
-To:     linux-omap@vger.kernel.org, nm@ti.com, vigneshr@ti.com
-Cc:     praneeth@ti.com, linux-arm-kernel@lists.infradead.org,
-        khilman@baylibre.com
-Subject: [PATCH v4] arm64: dts: ti: k3-am625-sk: enable ramoops
-Date:   Tue, 17 May 2022 14:28:28 +0200
-Message-Id: <20220517122828.2985179-1-glaroque@baylibre.com>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=sq17Edx2+CFT11B0EldvF6Xr2vsCgtJUsQIXxAbj7HI=;
+        b=DExBn6CvyzrPzxrQHr18nhJlxmon1l1lIPXLkbMcziO/iIf01Y8xnOSbVQ9NIQ3bJV
+         XxaCEwstvJKU+/rdT2vMtE0Q6l0QTvK0cuZarkqhJSbtLpPH5+bDFh4HDuTl8D1zKUAi
+         P/UAB54XN/pgf9pDZvIlbLzuYAJX0GLSaFBJ+Ic/o8JvowI7SMMJ5wQqQJAm1MGDBwuj
+         9YYhODuJpeASAoeYDd5EBq77UBs6riYij8gcGeI90MNvmtxk0ehKG54D+VgCaSW7Gxv/
+         VmX0EzLQPtDcXQPrq+xrqYNBFEvyC8+aVtTItA6XiW3YhnDxACAnCpGuL4qAB4Nx5xc9
+         xA0w==
+X-Gm-Message-State: AOAM5312OUvv4vvt6ME5sJLmNtZHeNjCNeFTuhq7Ewhx03ScTV6X4j73
+        SdZsw/f1h70a3bYK6C1E6I5+L3tW9wmoovzU/m4=
+X-Google-Smtp-Source: ABdhPJwILvkaPqnQMxESyFGDCX1DZKIyZsMXVgFn6t1gP8wuO3clIbcbEZXzm7dEUf6iJrI2KX2L4VtKByQKcUXH/Gk=
+X-Received: by 2002:a17:903:40c5:b0:15e:c7e9:8ae8 with SMTP id
+ t5-20020a17090340c500b0015ec7e98ae8mr22515926pld.151.1652802660241; Tue, 17
+ May 2022 08:51:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a20:d2c7:b0:7f:757b:3407 with HTTP; Tue, 17 May 2022
+ 08:50:59 -0700 (PDT)
+Reply-To: msbelinaya892@gmail.com
+From:   msbelinaya <huisterlui75@gmail.com>
+Date:   Tue, 17 May 2022 15:50:59 +0000
+Message-ID: <CAAcQqWheDEmNyTJvSsCKDpmxuOVALheMBEecrjeBM8Kh-zwhGA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
+        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1035 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [huisterlui75[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [huisterlui75[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [msbelinaya892[at]gmail.com]
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.4 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.1 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Enable ramoops features to easily debug some issues.
+Ik bied mijn vriendschap aan en geloof dat je me met een goed hart
+zult accepteren. Ik werd dringend verzocht contact met u op te nemen
+om te kijken hoe we elkaar het beste kunnen ondersteunen. Ik ben
+mevrouw Kodjovi Hegbor uit Turkije en ik werk als Operations Division
+Manager bij StandardBNP bank limited Turkey. Ik geloof dat het Gods
+wil is dat ik je nu zal ontmoeten. Ik heb een belangrijk zakelijk
+gesprek dat ik met u wil delen en waarvan ik denk dat u hierin
+ge=C3=AFnteresseerd zult zijn, aangezien het verband houdt met uw
+achternaam en u er baat bij zult hebben.
 
-Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
----
-Changes in :
-v4:
-- fix typo in commit message
+ In 2006 opende een burger van uw land een 36-maands niet-ingezetene
+rekening van de kalender bij mijn bank ter waarde van =C2=A3 8.400.000,00.
+De vervaldatum voor deze stortingsovereenkomst was 16 januari 2009.
+Helaas stierf hij bij een fatale aardbeving op 12 mei 2008 in Sichuan,
+China, waarbij ten minste 68.000 mensen omkwamen tijdens een
+zakenreis.
 
-v3:
-- run dtbs_check
+Het management van mijn bank heeft nog niet van zijn overlijden
+gehoord, ik wist ervan omdat hij mijn vriend was en ik zijn
+accountmanager was toen de rekening werd geopend v=C3=B3=C3=B3r mijn promot=
+ie.
+Maar meneer
+ vermeldde bij het openen van een rekening geen
+nabestaanden/erfgenamen en hij was niet getrouwd of had geen kinderen.
+Vorige week vroeg mijn bankdirectie me instructies te geven over wat
+ik met zijn geld moest doen als het contract zou worden verlengd.
 
-v2:
-- Apply script create-mem_map.py  with args given by Nishanth Menon
-- Spelling fix
----
- arch/arm64/boot/dts/ti/k3-am625-sk.dts | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Ik weet dat dit gaat gebeuren en daarom ben ik op zoek geweest naar
+een manier om met de situatie om te gaan, want als mijn
+bankdirecteuren weten dat ze dood zijn en geen erfgenaam hebben, nemen
+ze het geld aan voor persoonlijk gebruik, sommigen niet Ik wil niet
+dat zoiets gebeurt. Dat was toen ik uw achternaam zag, ik was blij en
+vraag nu uw medewerking om u voor te stellen als de
+nabestaanden/erfgenaam van de rekening, aangezien u dezelfde
+achternaam als hij heeft en mijn bankhoofdkantoor de rekening zal
+vrijgeven voor jij. Er is geen risico; de transactie wordt uitgevoerd
+onder een legitieme overeenkomst die u beschermt tegen juridische
+inbreuken.
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am625-sk.dts b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-index 0de4113ccd5d..62d8503b5923 100644
---- a/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am625-sk.dts
-@@ -36,6 +36,15 @@ reserved-memory {
- 		#size-cells = <2>;
- 		ranges;
+Het is beter dat we het geld opeisen dan de bankdirecteuren het te
+laten afnemen, ze zijn al rijk. Ik ben geen hebzuchtige persoon, dus
+ik stel voor dat we het geld gelijk verdelen, 50/50% over beide
+partijen. Met mijn aandeel kan ik mijn eigen bedrijf starten en de
+opbrengst gebruiken voor het goede doel, wat mijn droom was.
 
-+		ramoops@9ca00000 {
-+			compatible = "ramoops";
-+			reg = <0x00 0x9ca00000 0x00 0x00100000>;
-+			record-size = <0x8000>;
-+			console-size = <0x8000>;
-+			ftrace-size = <0x00>;
-+			pmsg-size = <0x8000>;
-+		};
-+
- 		secure_tfa_ddr: tfa@9e780000 {
- 			reg = <0x00 0x9e780000 0x00 0x80000>;
- 			alignment = <0x1000>;
---
-2.25.1
-
+Geef me alsjeblieft je mening over mijn suggestie, ik heb echt je hulp
+nodig bij deze transactie. Ik heb je gekozen om me te helpen, niet
+door mijn eigen toedoen, mijn liefste, maar door God, ik wilde dat je
+weet dat ik de tijd nam om over deze boodschap te bidden voordat ik
+ooit contact met je opnam om je te delen, geef me je mening, en
+alsjeblieft behandel deze informatie als TOP SECRET. Na ontvangst van
+uw antwoord, uitsluitend via mijn persoonlijke e-mailadres,
+msbelinaya892@gmail.com
+geeft u details van de transactie. En een kopie van het
+depositocertificaat van het fonds en de oprichtingsakte van het
+bedrijf dat het fonds heeft opgericht.
+God zegene in afwachting van uw dringende reactie
+Vriendelijke groeten
+Mevr. Kodjovi Hegbor
+msbelinaya892@gmail.com
