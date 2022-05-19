@@ -2,153 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC13852D8C5
-	for <lists+linux-omap@lfdr.de>; Thu, 19 May 2022 17:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90F4B52DAA5
+	for <lists+linux-omap@lfdr.de>; Thu, 19 May 2022 18:52:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236300AbiESPr2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 May 2022 11:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51208 "EHLO
+        id S241234AbiESQwT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 May 2022 12:52:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241373AbiESPqR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 May 2022 11:46:17 -0400
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E887CDF1;
-        Thu, 19 May 2022 08:44:23 -0700 (PDT)
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-        by mx0b-001ae601.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24J66mWF012194;
-        Thu, 19 May 2022 10:43:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=PODMain02222019;
- bh=oil1ZKHs2gIMho1AoeBK9FgMU7gcVZ4wK4kjgOzdSgU=;
- b=VQjZoP93a0c8d+W/ugsjRxH9Fh1c1s3oEgc2mW54Kkr56QBRJ88v6LW8A8/rSjGStAsO
- Nf1wuE4VqmHUd+/RjkSpFuiZ0cMmWa3CdoAK0RCYsILdmBymnKNchfv1FYGaApL7R4fj
- kPxLk4H6KmvxU/TsS1AKvB1RzEZDzrpsOhNLC+OtRHWFmJnim4Yl0ypQBX2NYM2tFmwh
- SlabDEdIZwWaFx6REBIak6ICHrHTatIr57nUQyEjgxgcyiy0INoclm90w5blGBoZOg/a
- io4sDZ82+vQyPAxpgqierRNnmO+F8kkxvNZAAIKN0iQyMoEssAq1im2hGfWe9JzGdOXB PQ== 
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3g28upf5dn-18
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 19 May 2022 10:43:41 -0500
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 19 May
- 2022 16:43:22 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.2375.24 via Frontend
- Transport; Thu, 19 May 2022 16:43:22 +0100
-Received: from algalon.ad.cirrus.com (algalon.ad.cirrus.com [198.90.251.122])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 6025911DA;
-        Thu, 19 May 2022 15:43:22 +0000 (UTC)
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
-To:     <broonie@kernel.org>
-CC:     <lgirdwood@gmail.com>, <kuninori.morimoto.gx@renesas.com>,
-        <nicolas.ferre@microchip.com>, <nsaenz@kernel.org>,
-        <shawnguo@kernel.org>, <linux-imx@nxp.com>,
-        <cezary.rojewski@intel.com>,
-        <pierre-louis.bossart@linux.intel.com>,
-        <linux-mips@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        <linux-amlogic@lists.infradead.org>, <daniel@zonque.org>,
-        <srinivas.kandagatla@linaro.org>,
-        <linux-rockchip@lists.infradead.org>, <krzk@kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-sunxi@lists.linux.dev>, <linux-tegra@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-xtensa@linux-xtensa.org>,
-        <peter.ujfalusi@gmail.com>, <jarkko.nikula@bitmer.com>,
-        <heiko@sntech.de>, <jbrunet@baylibre.com>, <kernel@pengutronix.de>,
-        <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>
-Subject: [PATCH 56/56] ASoC: simple-card-utils: Move snd_soc_component_is_codec to be local
-Date:   Thu, 19 May 2022 16:43:18 +0100
-Message-ID: <20220519154318.2153729-57-ckeepax@opensource.cirrus.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220519154318.2153729-1-ckeepax@opensource.cirrus.com>
-References: <20220519154318.2153729-1-ckeepax@opensource.cirrus.com>
+        with ESMTP id S235521AbiESQwS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 May 2022 12:52:18 -0400
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C79715AEC8;
+        Thu, 19 May 2022 09:52:16 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-2fefb051547so63017427b3.5;
+        Thu, 19 May 2022 09:52:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lHCXvfU913UZzWwkWLW8PuUF55J+NqN7GNP5EdosEmA=;
+        b=PmWqJxxifKIoOgHFXmefLeMf5SNVsk8hDjVTNrBVEGLYoDc1OflT/W/t6tCoRq3bFS
+         Zsj+hHaUHB2vloNW/GMQTopmCmwq5+ADqPsH1BRegbriHDTsEN5pys++wP0kQFgLuKLW
+         BnMAtgGNO3ZV1yLp8Ga+O5Nvcyr/UwaVYNpguYa0dx4bnw2nq7XfK1v1xgEI9PDWxqG9
+         jCQ6bqv9RiFFlOdtMKB1IavNGfFxL9U1LEsr0v4bGra3LlphCkUArMKOk5Kjx0ss0y/7
+         5bgXb9fm6VpyMM3pK7iWkZI340+ZVySJUatMphxu/PMqm6l2a7zVJc3HWyKMnfxNfMIT
+         boOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lHCXvfU913UZzWwkWLW8PuUF55J+NqN7GNP5EdosEmA=;
+        b=OCWMz6gX1ln9BO93B0dBcK69YtMErq/D4rwl34lLcPz0GUGFTXtXik29YfSH2c0f5M
+         xPauNUzyWMRHldUB1+15TfMXkReRwG9x9m/tTCbm394uYBUFynXnMzefvcrVa3jFXZek
+         JW1aS9Q2IJMrpMjNrJFPaBwXtWmEukZCgjoWsCNAEO10/0iAdhYQdq9bdJWpRgkvTYfQ
+         e7Zj9LeQPYGUtrRaxnUChOwDKTnH4zM0HhwTIdwvF2NaUJuoUck4kv952DfxBoc6dPoY
+         KdhnNQZG5QBXDsn7mykc0nJ3JYk5qSxEGq9okO8cMdI3lYnGkh22I6xFa6qYbNgAnIhv
+         7LgQ==
+X-Gm-Message-State: AOAM531z5JXNkf8/tjlyqjdyCbkkiRbFxWl6fk7FjnAaLDtQgyXMAcvM
+        qLVSRqxX8d/MvSFtQgp3wuSxhAQnJvAff9v6Azg=
+X-Google-Smtp-Source: ABdhPJxgwqortp6LMKQqdJfzXMmfQSE/OcnF3FErWG8XOevuRbeXOgq6I2WrPKba3Od1VBXy6oyEfNaFprdUyPboKIk=
+X-Received: by 2002:a0d:cd06:0:b0:2f8:f39c:4cfc with SMTP id
+ p6-20020a0dcd06000000b002f8f39c4cfcmr5740233ywd.495.1652979135944; Thu, 19
+ May 2022 09:52:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: g2VJ5uiOojlv2ZUJ1ZRM-SzjnwXJaEpV
-X-Proofpoint-ORIG-GUID: g2VJ5uiOojlv2ZUJ1ZRM-SzjnwXJaEpV
-X-Proofpoint-Spam-Reason: safe
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <CAGm1_kvEcvzKBb2O7NEa1SDt8MuOQfnN8LQ+voNGUBDR8JpKSg@mail.gmail.com>
+ <YnNb5M+gHI4hIaPG@atomide.com> <CAGm1_kstAbEZXBYwoK4GrFxMmPi=kpmdfJd1WAB8XSE_vNTTNg@mail.gmail.com>
+ <Ynyd9HeFNmGQiovY@atomide.com> <CAK8P3a2wrH9XxGF6uBeQ6J0+KhehxsFO63R6qcwZ1DexH4N=2Q@mail.gmail.com>
+ <CAGm1_ku85dL_zn4=9=OVkS3S3eBH-eqrc-c1UZyvnERbMrW98Q@mail.gmail.com>
+In-Reply-To: <CAGm1_ku85dL_zn4=9=OVkS3S3eBH-eqrc-c1UZyvnERbMrW98Q@mail.gmail.com>
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Thu, 19 May 2022 18:52:04 +0200
+Message-ID: <CAGm1_kvKxe+RFNSxzZq+hy9594ek-s8owneXQqBMy8PxwdHP8Q@mail.gmail.com>
+Subject: Re: am335x: 5.18.x: system stalling
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Tony Lindgren <tony@atomide.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The helper function snd_soc_component_is_codec is based off the
-presence of the non_legacy_dai_naming flag. This isn't super robust
-as CPU side components may also specify this flag, and indeed the
-kernel already contains a couple that do. After componentisation there
-isn't really a totally robust solution to identifying what is a CODEC
-driver, without introducing a flag specifically for that purpose, and
-really the desirable direction to move in is that the distinction
-doesn't matter.
+Hi Arnd,
 
-This patch does two things to try to mitigate these problems. Firstly,
-now that all the other users of the helper function have been removed,
-it makes the helper function local to the driver rather, than being
-part of the core. This should help to discourage any new code from
-being created that depends on the CODEC driver distinction. Secondly,
-it updates the helper function itself to use the endianness flag
-rather than the non_legacy_dai_naming flag. The endianness flag is
-definitely invalid on a CPU side component, so it a more reliable
-indicator that the device is definitely a CODEC. The vast majority of
-buses require the CODEC to set the endianness flag, so the number of
-corner cases should be fairly minimal. It is worth noting that CODECs
-sending audio over SPI, or built into the CPU CODECs are potential
-corner cases, however the hope is that in most cases those types of
-devices do not consitute a simple audio card.
+On Thu, May 12, 2022 at 12:20 PM Yegor Yefremov
+<yegorslists@googlemail.com> wrote:
+>
+> Hi Arnd,
+>
+> On Thu, May 12, 2022 at 10:43 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> >
+> > On Thu, May 12, 2022 at 7:41 AM Tony Lindgren <tony@atomide.com> wrote:
+> > > * Yegor Yefremov <yegorslists@googlemail.com> [220511 14:16]:
+> > > > On Thu, May 5, 2022 at 7:08 AM Tony Lindgren <tony@atomide.com> wrote:
+> > > > > * Yegor Yefremov <yegorslists@googlemail.com> [220504 10:35]:
+> > > > > > Hi Tony, all,
+> > > > > >
+> > > > > > since kernel 5.18.x (5.17.x doesn't show this behavior), the system
+> > > > > > stalls as soon as I invoke the following commands (initializing
+> > > > > > USB-to-CAN converter):
+> > > > > >
+> > > > > > slcand -o -s8 -t hw -S 3000000 /dev/ttyUSB0
+> > > > > > ip link set slcan0 up
+> >
+> > Oh, I missed this part at first and only looked at the backtrace.
+> > Which CAN driver
+> > are you using? It's likely a problem in the kernel driver.
+>
+> I am using the slcan driver [1].
+>
+> > CONFIG_DMA_API_DEBUG is still likely to pinpoint the bug, but I might also
+> > just see it by looking at the right source file.
+>
+> I'll try to get more debug info with CONFIG_DMA_API_DEBUG.
 
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
----
- include/sound/soc-component.h         | 5 -----
- sound/soc/generic/simple-card-utils.c | 7 ++++++-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+DMA_API_DEBUG showed nothing new. But disabling the CPUfreq driver
+"solved" the problem. I have tried different governors and got these
+two groups:
 
-diff --git a/include/sound/soc-component.h b/include/sound/soc-component.h
-index 5a764c3099d3e..5c4cfa70b018c 100644
---- a/include/sound/soc-component.h
-+++ b/include/sound/soc-component.h
-@@ -348,11 +348,6 @@ static inline int snd_soc_component_cache_sync(
- 	return regcache_sync(component->regmap);
- }
- 
--static inline int snd_soc_component_is_codec(struct snd_soc_component *component)
--{
--	return component->driver->non_legacy_dai_naming;
--}
--
- void snd_soc_component_set_aux(struct snd_soc_component *component,
- 			       struct snd_soc_aux_dev *aux);
- int snd_soc_component_init(struct snd_soc_component *component);
-diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
-index 539d7f081bd79..50a9827089335 100644
---- a/sound/soc/generic/simple-card-utils.c
-+++ b/sound/soc/generic/simple-card-utils.c
-@@ -513,6 +513,11 @@ static int asoc_simple_init_dai(struct snd_soc_dai *dai,
- 	return 0;
- }
- 
-+static inline int asoc_simple_component_is_codec(struct snd_soc_component *component)
-+{
-+	return component->driver->endianness;
-+}
-+
- static int asoc_simple_init_dai_link_params(struct snd_soc_pcm_runtime *rtd,
- 					    struct simple_dai_props *dai_props)
- {
-@@ -524,7 +529,7 @@ static int asoc_simple_init_dai_link_params(struct snd_soc_pcm_runtime *rtd,
- 
- 	/* Only Codecs */
- 	for_each_rtd_components(rtd, i, component) {
--		if (!snd_soc_component_is_codec(component))
-+		if (!asoc_simple_component_is_codec(component))
- 			return 0;
- 	}
- 
--- 
-2.30.2
+ondemand, schedutil - cause the problem
+conservative, powersave, performance and userspace - don't cause the problem
 
+So far, I have only seen the same debug output that I've initially
+sent and in most cases, the system stalls without the output.
+
+Yegor
+>
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/can/slcan.c?h=v5.18-rc6
+>
+> Yegor
+> >        Arnd
