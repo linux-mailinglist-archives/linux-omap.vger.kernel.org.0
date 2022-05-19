@@ -2,194 +2,212 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEFBB52DE5C
-	for <lists+linux-omap@lfdr.de>; Thu, 19 May 2022 22:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6961452E0A4
+	for <lists+linux-omap@lfdr.de>; Fri, 20 May 2022 01:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240585AbiESU0L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 19 May 2022 16:26:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34350 "EHLO
+        id S240160AbiESXkW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 19 May 2022 19:40:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244749AbiESU0J (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 May 2022 16:26:09 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C057255A3
-        for <linux-omap@vger.kernel.org>; Thu, 19 May 2022 13:26:06 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id d137so10897548ybc.13
-        for <linux-omap@vger.kernel.org>; Thu, 19 May 2022 13:26:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CWhUbhLhWfCrRC/uOMibPqgcUcH63A95cFj+bxrjJ6M=;
-        b=tlBQXD0Z0G0bCVmfTuvwJ+4NyYHrFfWgzAOUy/kPLlGZ0K8ALe2zTF7b6Zo4T+rBi1
-         9F33AaKTmaTnuzDFCN3PSaqBQXR4absSCcUOz3JLqXQNfta2NON6c1DTfFN9bUZzU1ES
-         lqN5rwzplsHZcGpXDX9K3HNL9pnm24GNnxTY9ST2TCZLDK/GbG4tuqHAihEtr9Nadpcn
-         ZhkDBYQKWawT7+oIQUCxm9K4f4z78QQsLRNrB9CqG4k0zR29JNHFrbo7y4qs5a8F+NO4
-         cAAzyECwGvHJgqSZ42EYSLBsBySW70NVhuRHgKYK8L4yGHouUtHVxeKfuxW2cFzhmuBc
-         KLyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CWhUbhLhWfCrRC/uOMibPqgcUcH63A95cFj+bxrjJ6M=;
-        b=GuIJWA9sN5puvFMMDqOtyObvhxnVXYe1dFFvKS3tfWyj+kGBSaIyK2meayEpEwmJvP
-         rJDxKoM3m85Jvu5ILx6r8sltUzvTUPsSa+tLHsln2ni7SPMEDwWnH+wZYJAEElH5WXlG
-         mBXUfDZXbCIL+Fh0KNDmq50LgUGYyz/d/wg8MFX4fh9Jgt4p84yRpGglusMLhUTwpAgc
-         mMyrZzIOSVscGWujvvqilQO1azfRAvv8bgp6ocQdxtvuZtrXPerMOFmTnLsYRii8rbd6
-         bu9swSiuwlget3FeuDAYNs0YV4CJ8XGz9qJ+heOe5700wl8Ezfs0mKWTeXOaPbeRpSTE
-         A2Jg==
-X-Gm-Message-State: AOAM532dSKW8f67huVmsloz3q6vjchFIU/KZnTZUQSB35jyv58b7wWFz
-        BL58Q/gU747TW/q5/KdNbZPNw/JUprDCEawp0AJvtQ==
-X-Google-Smtp-Source: ABdhPJzBx8hsUYv6eVxmbBnRHhXkhk32U8gz80sAEaPnGEmcYAfFvLs3YVewUbt7MRE5qYYUF3n6kUWKFJRMPquhRQk=
-X-Received: by 2002:a25:2488:0:b0:64e:a74d:fc7e with SMTP id
- k130-20020a252488000000b0064ea74dfc7emr6409187ybk.563.1652991965243; Thu, 19
- May 2022 13:26:05 -0700 (PDT)
+        with ESMTP id S1343649AbiESXkT (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 19 May 2022 19:40:19 -0400
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DCAA11905C;
+        Thu, 19 May 2022 16:40:17 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 568E05C023E;
+        Thu, 19 May 2022 19:40:15 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Thu, 19 May 2022 19:40:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
+        cc:cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1653003615; x=
+        1653090015; bh=iqHByxP/PP0RV5Kp27EEtrVjbBff5eU8E6iDfYSzvlo=; b=v
+        WvrghW/tnB2wQQZ7H1BtAjOy1RhwPLZpgzo98sCQvJhYWwor/HzjJNsV/LVOFbsE
+        YSiG6I57bor0I2nDEC6ZNocpWKkv71xzTjDYt6ZfZ8NcTOw4uLTbONYN6bKYH0PY
+        ZXLXErKuqY/OVSt1aiUR4bNuR2iEWFiDRXePo8UJrjuv+NMyWc7SgXvTTXZClSjS
+        xX/9GfMLAZ8ZS2t+SmXFzd5bG9/XZqH4LhunRvn1mAKETHqh9PDqXC25nNdQWczb
+        Ozc+ESgOxLy8gZ1sJC+Wq7Am0HXvT/m2QJQsf+liwgR8ULL+hRLTOVRO4mvNvxjd
+        KHsL6W3LPExCEUM/TygiQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1653003615; x=
+        1653090015; bh=iqHByxP/PP0RV5Kp27EEtrVjbBff5eU8E6iDfYSzvlo=; b=k
+        pRbno/Gt6gUXFzSSorr0j6sxajaPEN+rwHFd8+jcnA6Sce0eyMe1DAfgUIuR5rln
+        yyI3d7qfzMsS8JltiVQrFJi7K/ZoDyKheaneInXoIGCdVSulwqOTjJorhLCu2Gw7
+        IoRXmbGJ3trZhAv+ZBVHrxN0gMC5BalsJ/SKUO/9f+9Ut6HKvwFdvvQ8z8xsuHUk
+        fxcCGXOOf/BbfqT8Y8VSjsuEJ6GBj8XDHJJ8IRfvpiEixjiRTsOTlez4NEgoU/2g
+        W4aJu6F/kQHejyjCH6arZw/g+aNM+9HBFIdRKkeEFQw/69yhZyT9EcMBkfbZV9md
+        9NuahsBfHX2ficK+iYbDQ==
+X-ME-Sender: <xms:XdWGYgUGUf75UPVgls83XPWiF6A-tBj4e3s97Kb34YKu5oXO3A13_Q>
+    <xme:XdWGYkkqej7Sw873SF-tPbdbpAwSLvqaubcCTMpPfIOnD1JzRCeaEf8RmHncNciRB
+    jroNjyXsoqZ4PKpkg>
+X-ME-Received: <xmr:XdWGYkbvrZwpUnOM1O4-_2tYjgJTQpjZPqXkpDEw0EpgcjUMjLmwhmRAdevmUe4wB8Y-f3nIrmriP-19jvjm7O0yy8ouh7KCEVebaavF9pBHI4yR_-4r_4bKXQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedriedvgddviecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefuvfevfhfhkffffgggjggtgfesthejredttdefjeenucfhrhhomhepufgrmhhu
+    vghlucfjohhllhgrnhguuceoshgrmhhuvghlsehshhholhhlrghnugdrohhrgheqnecugg
+    ftrfgrthhtvghrnhepffdtveekvdegkeeuueetgfetffeileevudekuefhheelvdfhiedt
+    heduhfduhefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepshgrmhhuvghlsehshhholhhlrghnugdrohhrgh
+X-ME-Proxy: <xmx:XdWGYvUwc4jVKeqPla_0-WQCIkx0RnvqDhfHPs1ZzAd8QctkVgY8fQ>
+    <xmx:XdWGYqm6J2stCQX-STAMuroIUM4y_rHHyhG_yTajyWgKhMRCq9JK7Q>
+    <xmx:XdWGYkfsUHQ4XlJCEJ_vR0OyzJAV_JKQMFS6xef23lbxi7aCuM1zAg>
+    <xmx:X9WGYo3IuYUdLigJsZOLgqfeufUYTAN7skI0dQ2vQGpXXTD2m7p_Gw>
+Feedback-ID: i0ad843c9:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 May 2022 19:40:12 -0400 (EDT)
+Subject: Re: [PATCH 22/56] ASoC: sunxi: Update to use set_fmt_new callback
+To:     Charles Keepax <ckeepax@opensource.cirrus.com>, broonie@kernel.org
+Cc:     lgirdwood@gmail.com, kuninori.morimoto.gx@renesas.com,
+        nicolas.ferre@microchip.com, nsaenz@kernel.org,
+        shawnguo@kernel.org, linux-imx@nxp.com, cezary.rojewski@intel.com,
+        pierre-louis.bossart@linux.intel.com, linux-mips@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, daniel@zonque.org,
+        srinivas.kandagatla@linaro.org, linux-rockchip@lists.infradead.org,
+        krzk@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com,
+        heiko@sntech.de, jbrunet@baylibre.com, kernel@pengutronix.de,
+        alsa-devel@alsa-project.org, patches@opensource.cirrus.com
+References: <20220519154318.2153729-1-ckeepax@opensource.cirrus.com>
+ <20220519154318.2153729-23-ckeepax@opensource.cirrus.com>
+From:   Samuel Holland <samuel@sholland.org>
+Message-ID: <948d5418-44ca-2e60-0c1c-0b16f315feba@sholland.org>
+Date:   Thu, 19 May 2022 18:40:11 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <20211214221450.589884-1-luca@lucaceresoli.net>
- <CAL_Jsq+GQTcx1EGKHug2ZcDZufrKM-4k6PB0vQeTCTG42MHzvA@mail.gmail.com>
- <59a23c89-0810-eb28-acd9-7051ac34d438@lucaceresoli.net> <4579940c-27dc-733e-4022-ebea4671c839@lucaceresoli.net>
- <CAL_JsqJ5nr6xJoTv3A6UPMMDXhWKcwSEUA3ux3kK8OMWQxdc6w@mail.gmail.com>
- <YnvnNUrsCOUxMu8A@lpieralisi> <615718f9-151e-20fb-fcb0-56063ae61ca6@lucaceresoli.net>
- <CAGETcx9r4e9PkUFNZ+vUfqOSO5=e9apmBj0+DyOkKEvc4CnsLQ@mail.gmail.com> <ebd3f89b-3487-a610-7583-4ffda01a0dd6@lucaceresoli.net>
-In-Reply-To: <ebd3f89b-3487-a610-7583-4ffda01a0dd6@lucaceresoli.net>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Thu, 19 May 2022 13:25:28 -0700
-Message-ID: <CAGETcx-GWqV2Teq0ufK2946rtB7Q-5Y=uzLN_kMbZ+57Aq127A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] PCI: dra7xx: Fix link removal on probe error
-To:     Luca Ceresoli <luca@lucaceresoli.net>
-Cc:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>, PCI <linux-pci@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Android Kernel Team <kernel-team@android.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220519154318.2153729-23-ckeepax@opensource.cirrus.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, May 17, 2022 at 12:32 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
->
-> Hi Saravana,
->
-> On 14/05/22 05:46, Saravana Kannan wrote:
-> > On Thu, May 12, 2022 at 7:07 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
-> >>
-> >> Hi Lorenzo,
-> >>
-> >> On 11/05/22 18:41, Lorenzo Pieralisi wrote:
-> >>> On Sat, Jan 15, 2022 at 10:02:00AM -0600, Rob Herring wrote:
-> >>>> +Saravana
-> >>>>
-> >>>> On Tue, Jan 11, 2022 at 4:35 AM Luca Ceresoli <luca@lucaceresoli.net> wrote:
-> >>>>>
-> >>>>> Hi Rob,
-> >>>>>
-> >>>>> On 16/12/21 10:08, Luca Ceresoli wrote:
-> >>>>>> Hi Rob,
-> >>>>>>
-> >>>>>> thanks for the quick feedback!
-> >>>>>>
-> >>>>>> On 14/12/21 23:42, Rob Herring wrote:
-> >>>>>>> On Tue, Dec 14, 2021 at 4:15 PM Luca Ceresoli <luca@lucaceresoli.net> wrote:
-> >>>>>>>>
-> >>>>>>>> If a devm_phy_get() calls fails with phy_count==N (N > 0), then N links
-> >>>>>>>> have already been added by device_link_add() and won't be deleted by
-> >>>>>>>> device_link_del() because the code calls 'return' and not 'goto err_link'.
-> >>>>>>>>
-> >>>>>>>> Fix in a very simple way by doing all the devm_phy_get() calls before all
-> >>>>>>>> the device_link_add() calls.
-> >>>>>>>>
-> >>>>>>>> Fixes: 7a4db656a635 ("PCI: dra7xx: Create functional dependency between PCIe and PHY")
-> >>>>>>>> Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
-> >>>>>>>> ---
-> >>>>>>>>  drivers/pci/controller/dwc/pci-dra7xx.c | 2 ++
-> >>>>>>>>  1 file changed, 2 insertions(+)
-> >>>>>>>>
-> >>>>>>>> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-> >>>>>>>> index f7f1490e7beb..2ccc53869e13 100644
-> >>>>>>>> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
-> >>>>>>>> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-> >>>>>>>> @@ -757,7 +757,9 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
-> >>>>>>>>                 phy[i] = devm_phy_get(dev, name);
-> >>>>>>>>                 if (IS_ERR(phy[i]))
-> >>>>>>>>                         return PTR_ERR(phy[i]);
-> >>>>>>>> +       }
-> >>>>>>>>
-> >>>>>>>> +       for (i = 0; i < phy_count; i++) {
-> >>>>>>>>                 link[i] = device_link_add(dev, &phy[i]->dev, DL_FLAG_STATELESS);
-> >>>>>>>
-> >>>>>>> I think this should happen automatically now with fw_devlink being
-> >>>>>>> enabled by default. Can you try?
-> >>>>>>
-> >>>>>> Do you mean removal should be done automatically? I think they are not
-> >>>>>> due to the DL_FLAG_STATELESS flag.
-> >>>>>
-> >>>>> I would love to have feedback because, as said, I think my patch is
-> >>>>> correct, but if I'm wrong (which might well be) I have to drop patch 1
-> >>>>> and rewrite patch 2 in a slightly more complex form.
-> >>>>
-> >>>> I mean that why do you need explicit dependency tracking here when
-> >>>> dependencies on a PHY should happen automatically now. IOW, what is
-> >>>> special about this driver and dependency?
-> >>>
-> >>> Any update on this patch ? I think patch 2 can be merged, please
-> >>> let me know if this one can be dropped.
-> >>
-> >> Thanks for the feedback! You would say yes, you can merge patch 2,
-> >> except it probably does not even apply as it is written in a way that is
-> >> based on the changes in patch 1.
-> >>
-> >> I could rewrite patch 2 to not depend on patch 1 of course, but it
-> >> wouldn't make code simpler, perhaps more complex. And moreover the
-> >> hardware that I used to have access to has phy_count==1 so I could never
-> >> test the failing case, and sadly now I have no access to that hardware.
-> >
-> > Hi Luca,
-> >
-> > The fw_devlink code to create device links from consumers to "phys"
-> > suppliers is pretty well exercised. Most/all Android devices running
-> > 5.10+ kernels (including Pixel 6) use fw_devlink=on to be able to boot
-> > properly.
-> >
-> > So I'd be pretty confident in deleting the device_link_add/del() code
-> > in drivers/pci/controller/dwc/pci-dra7xx.c. The device links should
-> > already be there before the probe is even called.
-> >
-> > Also, if you want to check if the device links (even the 1 phy one you
-> > have) are being created, you can look at /sys/class/devlink to see the
-> > list of all device links that are currently present. You can delete
-> > the code and then use this to check too.
->
-> Thank you for your feedback. Unfortunately as I said I have no access to
-> the hardware, and won't have anymore. I don't think it is a good idea to
-> send a patch that I cannot test on real hardware, especially since it is
-> for a generic hardware that thus might affect others. But I would be
-> glad to review any such patch that might be sent, FWIW.
+On 5/19/22 10:42 AM, Charles Keepax wrote:
+> As part of updating the core to directly tell drivers if they are clock
+> provider or consumer update these CPU side drivers to use the new direct
+> callback.
+> 
+> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> ---
+>  sound/soc/sunxi/sun4i-i2s.c   | 20 ++++++++++----------
+>  sound/soc/sunxi/sun8i-codec.c |  8 ++++----
+>  2 files changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/sound/soc/sunxi/sun4i-i2s.c b/sound/soc/sunxi/sun4i-i2s.c
+> index 7047f71629ab3..872838d3e0a94 100644
+> --- a/sound/soc/sunxi/sun4i-i2s.c
+> +++ b/sound/soc/sunxi/sun4i-i2s.c
+> @@ -702,13 +702,13 @@ static int sun4i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
+>  			   SUN4I_I2S_FMT0_FMT_MASK, val);
+>  
+>  	/* DAI clock master masks */
+> -	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
+> -	case SND_SOC_DAIFMT_CBS_CFS:
+> +	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
+> +	case SND_SOC_DAIFMT_BP_FP:
+>  		/* BCLK and LRCLK master */
+>  		val = SUN4I_I2S_CTRL_MODE_MASTER;
+>  		break;
+>  
+> -	case SND_SOC_DAIFMT_CBM_CFM:
+> +	case SND_SOC_DAIFMT_BC_FC:
+>  		/* BCLK and LRCLK slave */
+>  		val = SUN4I_I2S_CTRL_MODE_SLAVE;
+>  		break;
+> @@ -802,13 +802,13 @@ static int sun8i_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
+>  			   SUN8I_I2S_TX_CHAN_OFFSET(offset));
+>  
+>  	/* DAI clock master masks */
+> -	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
+> -	case SND_SOC_DAIFMT_CBS_CFS:
+> +	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
+> +	case SND_SOC_DAIFMT_BP_FP:
+>  		/* BCLK and LRCLK master */
+>  		val = SUN8I_I2S_CTRL_BCLK_OUT |	SUN8I_I2S_CTRL_LRCK_OUT;
+>  		break;
+>  
+> -	case SND_SOC_DAIFMT_CBM_CFM:
+> +	case SND_SOC_DAIFMT_BC_FC:
+>  		/* BCLK and LRCLK slave */
+>  		val = 0;
+>  		break;
+> @@ -909,13 +909,13 @@ static int sun50i_h6_i2s_set_soc_fmt(const struct sun4i_i2s *i2s,
+>  			   SUN50I_H6_I2S_TX_CHAN_SEL_OFFSET(offset));
+>  
+>  	/* DAI clock master masks */
+> -	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
+> -	case SND_SOC_DAIFMT_CBS_CFS:
+> +	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
+> +	case SND_SOC_DAIFMT_BP_FP:
+>  		/* BCLK and LRCLK master */
+>  		val = SUN8I_I2S_CTRL_BCLK_OUT |	SUN8I_I2S_CTRL_LRCK_OUT;
+>  		break;
+>  
+> -	case SND_SOC_DAIFMT_CBM_CFM:
+> +	case SND_SOC_DAIFMT_BC_FC:
+>  		/* BCLK and LRCLK slave */
+>  		val = 0;
+>  		break;
+> @@ -1081,7 +1081,7 @@ static int sun4i_i2s_set_tdm_slot(struct snd_soc_dai *dai,
+>  
+>  static const struct snd_soc_dai_ops sun4i_i2s_dai_ops = {
+>  	.hw_params	= sun4i_i2s_hw_params,
+> -	.set_fmt	= sun4i_i2s_set_fmt,
+> +	.set_fmt_new	= sun4i_i2s_set_fmt,
+>  	.set_sysclk	= sun4i_i2s_set_sysclk,
+>  	.set_tdm_slot	= sun4i_i2s_set_tdm_slot,
+>  	.trigger	= sun4i_i2s_trigger,
+> diff --git a/sound/soc/sunxi/sun8i-codec.c b/sound/soc/sunxi/sun8i-codec.c
+> index 0bea2162f68d9..6e9ef948d6621 100644
+> --- a/sound/soc/sunxi/sun8i-codec.c
+> +++ b/sound/soc/sunxi/sun8i-codec.c
+> @@ -286,11 +286,11 @@ static int sun8i_codec_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+>  	u32 dsp_format, format, invert, value;
+>  
+>  	/* clock masters */
+> -	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
+> -	case SND_SOC_DAIFMT_CBS_CFS: /* Codec slave, DAI master */
+> +	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
+> +	case SND_SOC_DAIFMT_BP_FP: /* Codec slave, DAI master */
 
-Just to make sure I'm on the same page. I thought you at least had a
-device where phy_count = 1. But looks like you are saying you don't?
+This is a codec driver, and it is only ever used on the codec end of a link, so
+I would not expect it to be changed.
 
-If all you want to check is "phys" have device links created for them
-for whatever random DT device that has a "phys" property, then I can
-test and confirm that for you on whatever platform I have. But if you
-want a test specifically for the device that corresponds to the driver
-you were fixing, then I can't. Let me know.
+Regards,
+Samuel
 
--Saravana
+>  		value = 0x1;
+>  		break;
+> -	case SND_SOC_DAIFMT_CBM_CFM: /* Codec Master, DAI slave */
+> +	case SND_SOC_DAIFMT_BC_FC: /* Codec Master, DAI slave */
+>  		value = 0x0;
+>  		break;
+>  	default:
+> @@ -630,7 +630,7 @@ static int sun8i_codec_hw_free(struct snd_pcm_substream *substream,
+>  }
+>  
+>  static const struct snd_soc_dai_ops sun8i_codec_dai_ops = {
+> -	.set_fmt	= sun8i_codec_set_fmt,
+> +	.set_fmt_new	= sun8i_codec_set_fmt,
+>  	.set_tdm_slot	= sun8i_codec_set_tdm_slot,
+>  	.startup	= sun8i_codec_startup,
+>  	.hw_params	= sun8i_codec_hw_params,
+> 
 
->
-> --
-> Luca
