@@ -2,166 +2,167 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE6BB52ED53
-	for <lists+linux-omap@lfdr.de>; Fri, 20 May 2022 15:39:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 336B552EF2C
+	for <lists+linux-omap@lfdr.de>; Fri, 20 May 2022 17:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349856AbiETNjJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 May 2022 09:39:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34826 "EHLO
+        id S232884AbiETP2R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 May 2022 11:28:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349096AbiETNjI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 May 2022 09:39:08 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7113F169E3B;
-        Fri, 20 May 2022 06:39:07 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id eg11so10806951edb.11;
-        Fri, 20 May 2022 06:39:07 -0700 (PDT)
+        with ESMTP id S237294AbiETP2P (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 May 2022 11:28:15 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749381611EB
+        for <linux-omap@vger.kernel.org>; Fri, 20 May 2022 08:28:13 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id bd25-20020a05600c1f1900b0039485220e16so5161184wmb.0
+        for <linux-omap@vger.kernel.org>; Fri, 20 May 2022 08:28:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=/vZ5EIynCj28UhpMo2WaUDTGXgrMDD6ssuzpbKQFTrE=;
-        b=dbdCdy787bi5RG1nfo93JEf7fRSGqgvdGgWbhi5+jiM2gZq411FflPdY9L2o3Sz097
-         XA9SzdoyvFOw4oNvCmxQtifumEL2ucGkRJdht2gKQbj9YVfuffNrO+QPvuuZxjrqoS0F
-         NfU67GWBYzEpstGDy844RVUmfAl7HNRGvf/LwT4rnlN6DngXc2ZKIaPbBdhEQ53EpZ4s
-         ITsYoJPxw+STd6rZ1MhtfXgofir7SDd7Ohuuh33FWGAKbBMX+xkiGJYwBkluf7rb/Tbk
-         3LkMR2KGcBuBeRhqmlx3nsng24xG35IMWoTed7v6OpPZiYpWbvZKUFT3MZVg1KYI/Bnh
-         bK1Q==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=5E8x4FVCG4g/RN7rMnV9PFAV1qWnSvWM5QdqIp4Vq7k=;
+        b=yB3flR0GH7yb9Y8wc7BfiuVtckbP/9wqbQCRMWsL8b3J6VoBI7GMOeWRlIp6xBiyLr
+         AHCFYizo+NTn9wwC2dqspUHYEU/bpHY7suR7Qtzf9G+MchHu3N4KDBNWM9Cog+VJvfbm
+         b3wSQpzabSemL9H7CUNuzGZV/iVoAfzFCXTe406MTfQw5fRjDC4Tzi8rx9JntAUEs1La
+         Se5jZTnx+dj6dvOBwBwzGygr40w2sRJStTuT/0nluR6xIUQhYUHFfOOKDBrFjbcLsgQ8
+         kCApURu3FkaRquEfLF/848NTlsQSkOzyM2CcPmhVxJAoMEvHjUY1UGimjgSdZq3x0AM3
+         myWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=/vZ5EIynCj28UhpMo2WaUDTGXgrMDD6ssuzpbKQFTrE=;
-        b=rj176+aMvhWNFkb2oyWSikqNSiPZiT21mY9HNuXFUFubMvPDldQrQQvQ7x0ItrvR0R
-         XQK8jYs1YLpSysypjR6hUUZVRXG4rVvHcUp2cG2HYqJkPTM5HSCNEnQvOi/XcTRK2JAH
-         7AVZaeYKMPOBDNPTKCYjnR4tjtbZcadsJ3XMj1DIVaMIHAP3uF1BKjNnJoFiXS7YuUJt
-         ItG2t0559rG5MWAD/yGAbTMF6Dml9FPUMf3seHZ4TAMa9tJ/+BqJ0HNdt4xjmJqM2Tmo
-         xVdIurlbF4hUFiWw8C9MKR+up1AyOWgTC2kel/dJPoanCaxErFH8uGYBRPfTae28BLce
-         miuA==
-X-Gm-Message-State: AOAM531+fTdSWUN6Fq9054rF/Yqcbi0mMce7I8I7EYtTzOKjoE5kqzlA
-        iQkCBMR4QFWwiq3y4qPGnUk=
-X-Google-Smtp-Source: ABdhPJzB4dDO6rQGcvP8GfFmFaDFqb3hZ0xhEwmOtYMgE32gUNPAUosh+C78GjzIs6waR9fAZFTMtw==
-X-Received: by 2002:a05:6402:3488:b0:427:b4ec:991b with SMTP id v8-20020a056402348800b00427b4ec991bmr10869813edc.319.1653053945963;
-        Fri, 20 May 2022 06:39:05 -0700 (PDT)
-Received: from archbook.localnet (84-72-105-84.dclient.hispeed.ch. [84.72.105.84])
-        by smtp.gmail.com with ESMTPSA id b2-20020aa7df82000000b0042abfe32ac8sm4225152edy.30.2022.05.20.06.39.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 May 2022 06:39:05 -0700 (PDT)
-From:   Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
-To:     broonie@kernel.org, Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc:     lgirdwood@gmail.com, kuninori.morimoto.gx@renesas.com,
-        nicolas.ferre@microchip.com, nsaenz@kernel.org,
-        shawnguo@kernel.org, linux-imx@nxp.com, cezary.rojewski@intel.com,
-        pierre-louis.bossart@linux.intel.com, linux-mips@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, daniel@zonque.org,
-        srinivas.kandagatla@linaro.org, linux-rockchip@lists.infradead.org,
-        krzk@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com,
-        heiko@sntech.de, jbrunet@baylibre.com, kernel@pengutronix.de,
-        alsa-devel@alsa-project.org, patches@opensource.cirrus.com
-Subject: Re: [PATCH 18/56] ASoC: rockchip: Update to use set_fmt_new callback
-Date:   Fri, 20 May 2022 15:39:03 +0200
-Message-ID: <4375965.enAZpblka2@archbook>
-In-Reply-To: <20220519154318.2153729-19-ckeepax@opensource.cirrus.com>
-References: <20220519154318.2153729-1-ckeepax@opensource.cirrus.com> <20220519154318.2153729-19-ckeepax@opensource.cirrus.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=5E8x4FVCG4g/RN7rMnV9PFAV1qWnSvWM5QdqIp4Vq7k=;
+        b=PP+Z9fywrck8Myfu1Q6Dq4usGQHfJfl1mW/PUhAktrCz10lo7aCpa5SL9zuhnm4feA
+         WdOfdIcW+UjisB19BXMbYIWGClyNO58N6403XfbuE8dVyXiuP2SuJOU2IeSARXSM5Flz
+         XyflUOSdk0euOByezIK7Xr4YDF/7PEyk2/pRtqXR2kRXRCDoWFqGUt72b1ZYuQdiwlgD
+         +QSqYrGAUYeQ5sDegX1CqStuH4znebNhT/GHOcKoXhnEq5HtZQE6cRV1wgkczjulUtu0
+         axmEUdlpnpItE3P5znglfDSbjklJvZ2KXOnTVExRs99cY692Eh8DiSZkiw+Otp4I5FHY
+         GpgQ==
+X-Gm-Message-State: AOAM530QgiyL8ySO24B/tQYIACHBGgQzN5y/FCLazvu2VEoy0r84wAAi
+        lYPBga8Povyo0ZnCBL8ay92RhA==
+X-Google-Smtp-Source: ABdhPJy+Obtd+PPQDqBECWvKM3CYT5IeaUl1xlBHl9ryqy9MFWl/X3Q6zlQcBCBFMyt6vTMS0QrlUQ==
+X-Received: by 2002:a7b:c414:0:b0:394:21dd:e24f with SMTP id k20-20020a7bc414000000b0039421dde24fmr8777432wmi.133.1653060492002;
+        Fri, 20 May 2022 08:28:12 -0700 (PDT)
+Received: from ?IPV6:2a01:e34:ed2f:f020:b8:a290:ff05:e4c4? ([2a01:e34:ed2f:f020:b8:a290:ff05:e4c4])
+        by smtp.googlemail.com with ESMTPSA id u17-20020a05600c211100b003942a244f4fsm2169682wml.40.2022.05.20.08.28.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 May 2022 08:28:10 -0700 (PDT)
+Message-ID: <156a53a2-c33b-7ec5-3584-41ef25cb9cdd@linaro.org>
+Date:   Fri, 20 May 2022 17:28:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 2/3] clocksource/drivers/timer-ti-dm: Make timer
+ selectable for ARCH_K3
+Content-Language: en-US
+To:     Tony Lindgren <tony@atomide.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, Keerthy <j-keerthy@ti.com>,
+        Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+References: <20220408101715.43697-1-tony@atomide.com>
+ <20220408101715.43697-3-tony@atomide.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20220408101715.43697-3-tony@atomide.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Donnerstag, 19. Mai 2022 17:42:40 CEST Charles Keepax wrote:
-> As part of updating the core to directly tell drivers if they are clock
-> provider or consumer update these CPU side drivers to use the new direct
-> callback.
+On 08/04/2022 12:17, Tony Lindgren wrote:
+> Let's make timer-ti-dm selectable for ARCH_K3, and add a separate option
+> for OMAP_DM_SYSTIMER as there should be no need for it on ARCH_K3.
 > 
-> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+> For older TI SoCs, we are already selecting OMAP_DM_TIMER in
+> arch/arm/mach-omap*/Kconfig. For mach-omap2, we need to now also select
+> OMAP_DM_SYSTIMER.
+> 
+> Cc: Keerthy <j-keerthy@ti.com>
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Vignesh Raghavendra <vigneshr@ti.com>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
 > ---
->  sound/soc/rockchip/rockchip_i2s.c     | 8 ++++----
->  sound/soc/rockchip/rockchip_i2s_tdm.c | 8 ++++----
->  2 files changed, 8 insertions(+), 8 deletions(-)
+>   arch/arm/mach-omap2/Kconfig  | 2 ++
+>   drivers/clocksource/Kconfig  | 8 +++++++-
+>   drivers/clocksource/Makefile | 2 +-
+>   3 files changed, 10 insertions(+), 2 deletions(-)
 > 
-> diff --git a/sound/soc/rockchip/rockchip_i2s.c b/sound/soc/rockchip/rockchip_i2s.c
-> index 4ce5d25793875..0a66c7df323dc 100644
-> --- a/sound/soc/rockchip/rockchip_i2s.c
-> +++ b/sound/soc/rockchip/rockchip_i2s.c
-> @@ -199,13 +199,13 @@ static int rockchip_i2s_set_fmt(struct snd_soc_dai *cpu_dai,
->  
->  	pm_runtime_get_sync(cpu_dai->dev);
->  	mask = I2S_CKR_MSS_MASK;
-> -	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
-> -	case SND_SOC_DAIFMT_CBS_CFS:
-> +	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
-> +	case SND_SOC_DAIFMT_BP_FP:
->  		/* Set source clock in Master mode */
->  		val = I2S_CKR_MSS_MASTER;
->  		i2s->is_master_mode = true;
->  		break;
-> -	case SND_SOC_DAIFMT_CBM_CFM:
-> +	case SND_SOC_DAIFMT_BC_FC:
->  		val = I2S_CKR_MSS_SLAVE;
->  		i2s->is_master_mode = false;
->  		break;
-> @@ -486,7 +486,7 @@ static const struct snd_soc_dai_ops rockchip_i2s_dai_ops = {
->  	.hw_params = rockchip_i2s_hw_params,
->  	.set_bclk_ratio	= rockchip_i2s_set_bclk_ratio,
->  	.set_sysclk = rockchip_i2s_set_sysclk,
-> -	.set_fmt = rockchip_i2s_set_fmt,
-> +	.set_fmt_new = rockchip_i2s_set_fmt,
->  	.trigger = rockchip_i2s_trigger,
->  };
->  
-> diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
-> index 98700e75b82a1..c90afccdae362 100644
-> --- a/sound/soc/rockchip/rockchip_i2s_tdm.c
-> +++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
-> @@ -411,12 +411,12 @@ static int rockchip_i2s_tdm_set_fmt(struct snd_soc_dai *cpu_dai,
->  	}
->  
->  	mask = I2S_CKR_MSS_MASK;
-> -	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
-> -	case SND_SOC_DAIFMT_CBC_CFC:
-> +	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
-> +	case SND_SOC_DAIFMT_BP_FP:
->  		val = I2S_CKR_MSS_MASTER;
->  		i2s_tdm->is_master_mode = true;
->  		break;
-> -	case SND_SOC_DAIFMT_CBP_CFP:
-> +	case SND_SOC_DAIFMT_BC_FC:
->  		val = I2S_CKR_MSS_SLAVE;
->  		i2s_tdm->is_master_mode = false;
->  		break;
-> @@ -1113,7 +1113,7 @@ static const struct snd_soc_dai_ops rockchip_i2s_tdm_dai_ops = {
->  	.hw_params = rockchip_i2s_tdm_hw_params,
->  	.set_bclk_ratio	= rockchip_i2s_tdm_set_bclk_ratio,
->  	.set_sysclk = rockchip_i2s_tdm_set_sysclk,
-> -	.set_fmt = rockchip_i2s_tdm_set_fmt,
-> +	.set_fmt_new = rockchip_i2s_tdm_set_fmt,
->  	.set_tdm_slot = rockchip_dai_tdm_slot,
->  	.trigger = rockchip_i2s_tdm_trigger,
->  };
-> 
+> diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
+> --- a/arch/arm/mach-omap2/Kconfig
+> +++ b/arch/arm/mach-omap2/Kconfig
+> @@ -105,6 +105,7 @@ config ARCH_OMAP2PLUS
+>   	select MACH_OMAP_GENERIC
+>   	select MEMORY
+>   	select MFD_SYSCON
+> +	select OMAP_DM_SYSTIMER
+>   	select OMAP_DM_TIMER
+>   	select OMAP_GPMC
+>   	select PINCTRL
+> @@ -160,6 +161,7 @@ config SOC_OMAP2420
+>   	bool "OMAP2420 support"
+>   	depends on ARCH_OMAP2
+>   	default y
+> +	select OMAP_DM_SYSTIMER
+>   	select OMAP_DM_TIMER
+>   	select SOC_HAS_OMAP2_SDRC
+>   
+> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+> --- a/drivers/clocksource/Kconfig
+> +++ b/drivers/clocksource/Kconfig
+> @@ -22,7 +22,7 @@ config CLKEVT_I8253
+>   config I8253_LOCK
+>   	bool
+>   
+> -config OMAP_DM_TIMER
+> +config OMAP_DM_SYSTIMER
+>   	bool
+>   	select TIMER_OF
+>   
+> @@ -56,6 +56,12 @@ config DIGICOLOR_TIMER
+>   	help
+>   	  Enables the support for the digicolor timer driver.
+>   
+> +config OMAP_DM_TIMER
+> +	tristate "OMAP dual-mode timer driver" if ARCH_K3 || COMPILE_TEST
 
-Please run ./scripts/get_maintainer.pl against the individual patches so
-that I'm included in the recipients of the e-mail as well.
-
-Anyway, for the i2s-tdm parts:
-
-Tested-by: Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
-
-Tested on a RK3566 connected to an RK817 codec.
-
-Regards,
-Nicolas Frattaroli
+Actually, I missed this. Could you convert to a 'bool' there is no 
+module in the timer drivers ATM.
 
 
+
+> +	select TIMER_OF
+> +	help
+> +	  Enables the support for the TI dual-mode timer driver.
+> +
+>   config DW_APB_TIMER
+>   	bool "DW APB timer driver" if COMPILE_TEST
+>   	help
+> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+> --- a/drivers/clocksource/Makefile
+> +++ b/drivers/clocksource/Makefile
+> @@ -18,7 +18,7 @@ obj-$(CONFIG_CLKSRC_MMIO)	+= mmio.o
+>   obj-$(CONFIG_DAVINCI_TIMER)	+= timer-davinci.o
+>   obj-$(CONFIG_DIGICOLOR_TIMER)	+= timer-digicolor.o
+>   obj-$(CONFIG_OMAP_DM_TIMER)	+= timer-ti-dm.o
+> -obj-$(CONFIG_OMAP_DM_TIMER)	+= timer-ti-dm-systimer.o
+> +obj-$(CONFIG_OMAP_DM_SYSTIMER)	+= timer-ti-dm-systimer.o
+>   obj-$(CONFIG_DW_APB_TIMER)	+= dw_apb_timer.o
+>   obj-$(CONFIG_DW_APB_TIMER_OF)	+= dw_apb_timer_of.o
+>   obj-$(CONFIG_FTTMR010_TIMER)	+= timer-fttmr010.o
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
