@@ -2,74 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 336B552EF2C
-	for <lists+linux-omap@lfdr.de>; Fri, 20 May 2022 17:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 931C652F81C
+	for <lists+linux-omap@lfdr.de>; Sat, 21 May 2022 05:40:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232884AbiETP2R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 20 May 2022 11:28:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43762 "EHLO
+        id S239403AbiEUDka (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 20 May 2022 23:40:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237294AbiETP2P (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 May 2022 11:28:15 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749381611EB
-        for <linux-omap@vger.kernel.org>; Fri, 20 May 2022 08:28:13 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id bd25-20020a05600c1f1900b0039485220e16so5161184wmb.0
-        for <linux-omap@vger.kernel.org>; Fri, 20 May 2022 08:28:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=5E8x4FVCG4g/RN7rMnV9PFAV1qWnSvWM5QdqIp4Vq7k=;
-        b=yB3flR0GH7yb9Y8wc7BfiuVtckbP/9wqbQCRMWsL8b3J6VoBI7GMOeWRlIp6xBiyLr
-         AHCFYizo+NTn9wwC2dqspUHYEU/bpHY7suR7Qtzf9G+MchHu3N4KDBNWM9Cog+VJvfbm
-         b3wSQpzabSemL9H7CUNuzGZV/iVoAfzFCXTe406MTfQw5fRjDC4Tzi8rx9JntAUEs1La
-         Se5jZTnx+dj6dvOBwBwzGygr40w2sRJStTuT/0nluR6xIUQhYUHFfOOKDBrFjbcLsgQ8
-         kCApURu3FkaRquEfLF/848NTlsQSkOzyM2CcPmhVxJAoMEvHjUY1UGimjgSdZq3x0AM3
-         myWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=5E8x4FVCG4g/RN7rMnV9PFAV1qWnSvWM5QdqIp4Vq7k=;
-        b=PP+Z9fywrck8Myfu1Q6Dq4usGQHfJfl1mW/PUhAktrCz10lo7aCpa5SL9zuhnm4feA
-         WdOfdIcW+UjisB19BXMbYIWGClyNO58N6403XfbuE8dVyXiuP2SuJOU2IeSARXSM5Flz
-         XyflUOSdk0euOByezIK7Xr4YDF/7PEyk2/pRtqXR2kRXRCDoWFqGUt72b1ZYuQdiwlgD
-         +QSqYrGAUYeQ5sDegX1CqStuH4znebNhT/GHOcKoXhnEq5HtZQE6cRV1wgkczjulUtu0
-         axmEUdlpnpItE3P5znglfDSbjklJvZ2KXOnTVExRs99cY692Eh8DiSZkiw+Otp4I5FHY
-         GpgQ==
-X-Gm-Message-State: AOAM530QgiyL8ySO24B/tQYIACHBGgQzN5y/FCLazvu2VEoy0r84wAAi
-        lYPBga8Povyo0ZnCBL8ay92RhA==
-X-Google-Smtp-Source: ABdhPJy+Obtd+PPQDqBECWvKM3CYT5IeaUl1xlBHl9ryqy9MFWl/X3Q6zlQcBCBFMyt6vTMS0QrlUQ==
-X-Received: by 2002:a7b:c414:0:b0:394:21dd:e24f with SMTP id k20-20020a7bc414000000b0039421dde24fmr8777432wmi.133.1653060492002;
-        Fri, 20 May 2022 08:28:12 -0700 (PDT)
-Received: from ?IPV6:2a01:e34:ed2f:f020:b8:a290:ff05:e4c4? ([2a01:e34:ed2f:f020:b8:a290:ff05:e4c4])
-        by smtp.googlemail.com with ESMTPSA id u17-20020a05600c211100b003942a244f4fsm2169682wml.40.2022.05.20.08.28.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 May 2022 08:28:10 -0700 (PDT)
-Message-ID: <156a53a2-c33b-7ec5-3584-41ef25cb9cdd@linaro.org>
-Date:   Fri, 20 May 2022 17:28:07 +0200
+        with ESMTP id S229992AbiEUDk3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 20 May 2022 23:40:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1802E719C3;
+        Fri, 20 May 2022 20:40:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CA1BCB82F29;
+        Sat, 21 May 2022 03:40:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5909FC385A9;
+        Sat, 21 May 2022 03:40:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653104425;
+        bh=ISVhewo33uJMRv2Ky/67ulMoXXlMw7gDmiWI46L9w/0=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=eYd1fyDxv+zyZg4eUMEEdXBJQxbxiRJdZZ44FBpu2E1xD5TRheZu9ayuX6hayGdSh
+         u8yMUiXSmPAQA9RNfjsYq7NFbWwCDG7AVU4dQzl3goJIXqt4ozetbbzMhmfe5ehj6J
+         446vDEYIJRW36ZN/oOZUzEI6mCKTcSF4nub4EYuXvi71KglTufVnTyTbjq7gd5wVmK
+         SGA7VXgy0Ety3W2Mbfpk2hgU2g/hwmAkshVgL3M0UTFKu5Y/TZ0aYEN5wPkvOPTmNJ
+         3m1QE+aFVLkNY0L7YgNteZkN9roICK2LWr2M1NfG3BEXCatnFl0EM6T22qXugGIxHZ
+         Sn/jDZ4kCrM0Q==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 2/3] clocksource/drivers/timer-ti-dm: Make timer
- selectable for ARCH_K3
-Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, Keerthy <j-keerthy@ti.com>,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-References: <20220408101715.43697-1-tony@atomide.com>
- <20220408101715.43697-3-tony@atomide.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20220408101715.43697-3-tony@atomide.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210904131714.2312-1-len.baker@gmx.com>
+References: <20210904131714.2312-1-len.baker@gmx.com>
+Subject: Re: [PATCH] clk: ti: composite: Prefer kcalloc over open coded arithmetic
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Len Baker <len.baker@gmx.com>, Kees Cook <keescook@chromium.org>,
+        linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+To:     Len Baker <len.baker@gmx.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Tero Kristo <kristo@kernel.org>
+Date:   Fri, 20 May 2022 20:40:23 -0700
+User-Agent: alot/0.10
+Message-Id: <20220521034025.5909FC385A9@smtp.kernel.org>
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -78,91 +57,22 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 08/04/2022 12:17, Tony Lindgren wrote:
-> Let's make timer-ti-dm selectable for ARCH_K3, and add a separate option
-> for OMAP_DM_SYSTIMER as there should be no need for it on ARCH_K3.
-> 
-> For older TI SoCs, we are already selecting OMAP_DM_TIMER in
-> arch/arm/mach-omap*/Kconfig. For mach-omap2, we need to now also select
-> OMAP_DM_SYSTIMER.
-> 
-> Cc: Keerthy <j-keerthy@ti.com>
-> Cc: Nishanth Menon <nm@ti.com>
-> Cc: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
+Quoting Len Baker (2021-09-04 06:17:14)
+> As noted in the "Deprecated Interfaces, Language Features, Attributes,
+> and Conventions" documentation [1], size calculations (especially
+> multiplication) should not be performed in memory allocator (or similar)
+> function arguments due to the risk of them overflowing. This could lead
+> to values wrapping around and a smaller allocation being made than the
+> caller was expecting. Using those allocations could lead to linear
+> overflows of heap memory and other misbehaviors.
+>=20
+> So, use the purpose specific kcalloc() function instead of the argument
+> size * count in the kzalloc() function.
+>=20
+> [1] https://www.kernel.org/doc/html/v5.14/process/deprecated.html#open-co=
+ded-arithmetic-in-allocator-arguments
+>=20
+> Signed-off-by: Len Baker <len.baker@gmx.com>
 > ---
->   arch/arm/mach-omap2/Kconfig  | 2 ++
->   drivers/clocksource/Kconfig  | 8 +++++++-
->   drivers/clocksource/Makefile | 2 +-
->   3 files changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
-> --- a/arch/arm/mach-omap2/Kconfig
-> +++ b/arch/arm/mach-omap2/Kconfig
-> @@ -105,6 +105,7 @@ config ARCH_OMAP2PLUS
->   	select MACH_OMAP_GENERIC
->   	select MEMORY
->   	select MFD_SYSCON
-> +	select OMAP_DM_SYSTIMER
->   	select OMAP_DM_TIMER
->   	select OMAP_GPMC
->   	select PINCTRL
-> @@ -160,6 +161,7 @@ config SOC_OMAP2420
->   	bool "OMAP2420 support"
->   	depends on ARCH_OMAP2
->   	default y
-> +	select OMAP_DM_SYSTIMER
->   	select OMAP_DM_TIMER
->   	select SOC_HAS_OMAP2_SDRC
->   
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -22,7 +22,7 @@ config CLKEVT_I8253
->   config I8253_LOCK
->   	bool
->   
-> -config OMAP_DM_TIMER
-> +config OMAP_DM_SYSTIMER
->   	bool
->   	select TIMER_OF
->   
-> @@ -56,6 +56,12 @@ config DIGICOLOR_TIMER
->   	help
->   	  Enables the support for the digicolor timer driver.
->   
-> +config OMAP_DM_TIMER
-> +	tristate "OMAP dual-mode timer driver" if ARCH_K3 || COMPILE_TEST
 
-Actually, I missed this. Could you convert to a 'bool' there is no 
-module in the timer drivers ATM.
-
-
-
-> +	select TIMER_OF
-> +	help
-> +	  Enables the support for the TI dual-mode timer driver.
-> +
->   config DW_APB_TIMER
->   	bool "DW APB timer driver" if COMPILE_TEST
->   	help
-> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-> --- a/drivers/clocksource/Makefile
-> +++ b/drivers/clocksource/Makefile
-> @@ -18,7 +18,7 @@ obj-$(CONFIG_CLKSRC_MMIO)	+= mmio.o
->   obj-$(CONFIG_DAVINCI_TIMER)	+= timer-davinci.o
->   obj-$(CONFIG_DIGICOLOR_TIMER)	+= timer-digicolor.o
->   obj-$(CONFIG_OMAP_DM_TIMER)	+= timer-ti-dm.o
-> -obj-$(CONFIG_OMAP_DM_TIMER)	+= timer-ti-dm-systimer.o
-> +obj-$(CONFIG_OMAP_DM_SYSTIMER)	+= timer-ti-dm-systimer.o
->   obj-$(CONFIG_DW_APB_TIMER)	+= dw_apb_timer.o
->   obj-$(CONFIG_DW_APB_TIMER_OF)	+= dw_apb_timer_of.o
->   obj-$(CONFIG_FTTMR010_TIMER)	+= timer-fttmr010.o
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Applied to clk-next
