@@ -2,68 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1104530AC0
-	for <lists+linux-omap@lfdr.de>; Mon, 23 May 2022 10:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A400F530A71
+	for <lists+linux-omap@lfdr.de>; Mon, 23 May 2022 10:01:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230226AbiEWHpV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 23 May 2022 03:45:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56408 "EHLO
+        id S229441AbiEWHXv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 23 May 2022 03:23:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230204AbiEWHpU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 May 2022 03:45:20 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F41E617E33
-        for <linux-omap@vger.kernel.org>; Mon, 23 May 2022 00:45:17 -0700 (PDT)
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
+        with ESMTP id S229660AbiEWHXV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 23 May 2022 03:23:21 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485B414D28
+        for <linux-omap@vger.kernel.org>; Mon, 23 May 2022 00:14:50 -0700 (PDT)
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 626FC3FD86
-        for <linux-omap@vger.kernel.org>; Mon, 23 May 2022 06:28:13 +0000 (UTC)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 35B793F1FE
+        for <linux-omap@vger.kernel.org>; Mon, 23 May 2022 06:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1653287293;
-        bh=mhLady9xJOsYFKdyyp5cJp4wqz+mfmHOLOYqLp7Vdvc=;
+        s=20210705; t=1653287449;
+        bh=C4unRTV41Zt0Ep2OyMd9Pp0aJxn+OBEIvDBNhczjUyA=;
         h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=DTf2T2PmmFeUauLn/EVCVEMRIOQY4PuMZVN9kYn7YWcl5h8uIFUhWvBAThiAcQLss
-         2EcrdtTE61rgKqRszLhJ0I3RUInREvfjdxGF1EvkR2ernHMasyv37Fwfcd1GIkaqzM
-         bZV+NqeYY7ShOAtCdmwY9uieO2GxB/5TdWVyULF2e1UC/p+Tq3tOMqunnTP8u3aMR6
-         8dk7tavKCUmgE28HRWqNvfxRD1VtshkxGKRuhIsMFmOVujhWyFpX3m06lPUh0Ndv1u
-         xBF4ZJhWY+Kto25+tsrnLQ52SXmJ9y8sH9aRdGsqjjpAKqHahBP5hPn8lmAyTTKZ0m
-         KHFklWNDM7Dbw==
-Received: by mail-ej1-f72.google.com with SMTP id p7-20020a170906614700b006f87f866117so5424999ejl.21
-        for <linux-omap@vger.kernel.org>; Sun, 22 May 2022 23:28:13 -0700 (PDT)
+        b=Nn76aX3CMRS26du2tqi4+uu5k2toSssJb57j/OFFmQuNKlfs2ffw67VnHy4m3JF3Z
+         lnl67MZd+bqntWCuHt9k8mZbRThilUlIZSRLgs5BAQAWbPeDGJ3NvM1FZBYgkQ6E9L
+         6EhGixl015e1MVxrDFyhg2qJ7u4+x/BIyuWz4kvEA5UzIj7gvnHY6kUuhn5jEWfyUH
+         VYdxRa3CyWe93S14XD4vcCbNRcJZVfs95Za3JK2DpEg/4xp2qAA8SsYwL8kBIxoOe4
+         IlzaVLLK3aYPSVXVCJ4BtfT5ZRjvx/hHPEe1GRvKmQjS9j9khTa0VgGxnauH2tcUPz
+         tNKBRiy7nwbrg==
+Received: by mail-ed1-f69.google.com with SMTP id r8-20020a056402018800b00428b43999feso10027458edv.5
+        for <linux-omap@vger.kernel.org>; Sun, 22 May 2022 23:30:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=mhLady9xJOsYFKdyyp5cJp4wqz+mfmHOLOYqLp7Vdvc=;
-        b=uGXOsycHAP7GCtYSpsCTmODpvgfvXvBD+lQ18HtpNYfi3Z2W5zttkn1JmxPsD4miOA
-         //QR0IClRbMTfduXwxIdAczCrZYIWA1xYceGkW+iZ8H0MstWwFHqxCML6mNjITdwoq00
-         2pynLFzEdm4kRjYvunwZv8ZrAWeFMQs8da+6p7r83i/XTi5+tSw/c7h08tX7RVucfp7t
-         XnjJAMwhIe5lGMdyzMe6RzpHL42uPS3VI0ECU4WDpleXje7x/DChY+B4njWO1nlaSm+A
-         dZ4thIpZqcXeAlC1VsIwDrQ6C5f1R3zkuJlROu3OLRRi1Gh49n5ZN6wnJZqYg7MD7L0F
-         awaQ==
-X-Gm-Message-State: AOAM5332yHt+RlKSNDKFK7fqMduNTWpE1+IHdCJ67s/dpqtjl4sNSgmX
-        Rud69c8T1xluKTiWn3xgBQKpKEv5kCiWDezlRzb1+6mH0sWhanjlLxKoOVIezh+hgp4UPJiEm3A
-        r271vxzvXElQVaJRVXLlqJt90JTBPsNV20/qaKI8=
-X-Received: by 2002:a17:907:7242:b0:6f5:2904:5354 with SMTP id ds2-20020a170907724200b006f529045354mr18968655ejc.452.1653287289985;
-        Sun, 22 May 2022 23:28:09 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyCe9Yjq1im7YJA39o3/MAHjexYIKNJaEWJo31J3DrHB1x7uDcNtM3+yNSeKZzO3xMwortHbg==
-X-Received: by 2002:a17:907:7242:b0:6f5:2904:5354 with SMTP id ds2-20020a170907724200b006f529045354mr18968639ejc.452.1653287289739;
-        Sun, 22 May 2022 23:28:09 -0700 (PDT)
+        bh=C4unRTV41Zt0Ep2OyMd9Pp0aJxn+OBEIvDBNhczjUyA=;
+        b=n/6jh5/V41qNmmsvngMQuZlKRbMGL34Mm2wu+H32tzMQ871DwI/6nYrjNLZf9cDP9r
+         f+7hd7APfOBCYIUUAdSyXsua1fSRbYvLKXA/pASWTTXCP4FU8u/JrWRmIEkza8ZuTpv6
+         hQM1jm9/ylUEB9B1ObihfPzU1jFbalvQ7RMPMUp3qzlW1nE9JWCQ9EwiVF8wkvX63VTi
+         ihtB77bt3R9UrEE8LHU5nFj5axhYbRkdnu+Ck8EG/tK3HcPl9kThcbAT15x9ujCfVBYJ
+         bLU+76/9q8pmxiK0Dc4Gzh/K3BKcH+oYG2KEyxgBZzjApHprpOhySICm2aKvQdBx0yQr
+         kHfw==
+X-Gm-Message-State: AOAM5338mNu4BCUmSovYd2zXFQjAC3FzvqFNZzHypttMm3mxgxEufUWA
+        5MS/P91dG1JpftS7sEjO/O/baGsJbuSjkB7ZKbmIxVG9Nc5aDw9RqC+aZPEnKq/IO4F8elLOpF5
+        VX+pMVq8XwWZafLW1zq0eIUnLk6aRrEKJoPDTcV0=
+X-Received: by 2002:a17:907:a428:b0:6fa:9253:6f88 with SMTP id sg40-20020a170907a42800b006fa92536f88mr19086673ejc.518.1653287449044;
+        Sun, 22 May 2022 23:30:49 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyz5H5Dw8ITnQEI3JZXa1Lb+5tIXG5TbEd0PyYgZOvxcLOU1BT1mcXRA/Ezr8NdgUKeIjlWmA==
+X-Received: by 2002:a17:907:a428:b0:6fa:9253:6f88 with SMTP id sg40-20020a170907a42800b006fa92536f88mr19086659ejc.518.1653287448847;
+        Sun, 22 May 2022 23:30:48 -0700 (PDT)
 Received: from gollum.fritz.box ([194.191.244.86])
-        by smtp.gmail.com with ESMTPSA id 11-20020a17090602cb00b006f3ef214e59sm5785652ejk.191.2022.05.22.23.28.08
+        by smtp.gmail.com with ESMTPSA id g6-20020a056402114600b0042617ba6396sm7737934edw.32.2022.05.22.23.30.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 May 2022 23:28:09 -0700 (PDT)
+        Sun, 22 May 2022 23:30:48 -0700 (PDT)
 From:   Juerg Haefliger <juerg.haefliger@canonical.com>
 X-Google-Original-From: Juerg Haefliger <juergh@canonical.com>
-To:     aaro.koskinen@iki.fi, tony@atomide.com, linux@armlinux.org.uk,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+To:     tony@atomide.com, linux@armlinux.org.uk,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Cc:     linux-kernel@vger.kernel.org,
         Juerg Haefliger <juergh@canonical.com>
-Subject: [PATCH] ARM: omap1: Kconfig: Fix indentation
-Date:   Mon, 23 May 2022 08:28:07 +0200
-Message-Id: <20220523062807.10544-1-juergh@canonical.com>
+Subject: [PATCH] ARM: omap2: Kconfig: Fix indentation
+Date:   Mon, 23 May 2022 08:30:40 +0200
+Message-Id: <20220523063040.10991-1-juergh@canonical.com>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -81,65 +81,38 @@ The convention for indentation seems to be a single tab. Help text is
 further indented by an additional two whitespaces. Fix the lines that
 violate these rules.
 
+While at it, remove an extra empty line.
+
 Signed-off-by: Juerg Haefliger <juergh@canonical.com>
 ---
- arch/arm/mach-omap1/Kconfig | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ arch/arm/mach-omap2/Kconfig | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
-index 208c700c2455..f7088beec7ef 100644
---- a/arch/arm/mach-omap1/Kconfig
-+++ b/arch/arm/mach-omap1/Kconfig
-@@ -59,8 +59,8 @@ config MACH_OMAP_INNOVATOR
- 	bool "TI Innovator"
- 	depends on ARCH_OMAP15XX || ARCH_OMAP16XX
- 	help
--          TI OMAP 1510 or 1610 Innovator board support. Say Y here if you
--          have such a board.
-+	  TI OMAP 1510 or 1610 Innovator board support. Say Y here if you
-+	  have such a board.
+diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
+index 02c253de9b6e..596918fd103c 100644
+--- a/arch/arm/mach-omap2/Kconfig
++++ b/arch/arm/mach-omap2/Kconfig
+@@ -122,7 +122,6 @@ config ARCH_OMAP2PLUS
+ config OMAP_INTERCONNECT_BARRIER
+ 	bool
+ 	select ARM_HEAVY_MB
+-	
  
- config MACH_OMAP_H2
- 	bool "TI H2 Support"
-@@ -87,7 +87,7 @@ config MACH_OMAP_OSK
- 	depends on ARCH_OMAP16XX
- 	help
- 	  TI OMAP 5912 OSK (OMAP Starter Kit) board support. Say Y here
--          if you have such a board.
-+	  if you have such a board.
+ if ARCH_OMAP2PLUS
  
- config OMAP_OSK_MISTRAL
- 	bool "Mistral QVGA board Support"
-@@ -124,10 +124,10 @@ config MACH_OMAP_PALMZ71
- 	bool "Palm Zire71"
- 	depends on ARCH_OMAP15XX
- 	help
--	 Support for the Palm Zire71 PDA. To boot the kernel,
--	 you'll need a PalmOS compatible bootloader; check out
--	 http://hackndev.com/palm/z71 for more information.
--	 Say Y here if you have such a PDA, say N otherwise.
-+	  Support for the Palm Zire71 PDA. To boot the kernel,
-+	  you'll need a PalmOS compatible bootloader; check out
-+	  http://hackndev.com/palm/z71 for more information.
-+	  Say Y here if you have such a PDA, say N otherwise.
+@@ -192,10 +191,10 @@ config MACH_OMAP2_TUSB6010
+ 	default y if MACH_NOKIA_N8X0
  
- config MACH_OMAP_PALMTT
- 	bool "Palm Tungsten|T"
-@@ -173,10 +173,10 @@ config MACH_OMAP_GENERIC
- 	bool "Generic OMAP board"
- 	depends on ARCH_OMAP15XX || ARCH_OMAP16XX
- 	help
--          Support for generic OMAP-1510, 1610 or 1710 board with
--          no FPGA. Can be used as template for porting Linux to
--          custom OMAP boards. Say Y here if you have a custom
--          board.
-+	  Support for generic OMAP-1510, 1610 or 1710 board with
-+	  no FPGA. Can be used as template for porting Linux to
-+	  custom OMAP boards. Say Y here if you have a custom
-+	  board.
+ config MACH_NOKIA_N810
+-       bool
++	bool
  
- endmenu
+ config MACH_NOKIA_N810_WIMAX
+-       bool
++	bool
  
+ config MACH_NOKIA_N8X0
+ 	bool "Nokia N800/N810"
 -- 
 2.32.0
 
