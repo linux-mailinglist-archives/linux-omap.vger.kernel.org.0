@@ -2,69 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13EA5534B98
-	for <lists+linux-omap@lfdr.de>; Thu, 26 May 2022 10:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E223534BCA
+	for <lists+linux-omap@lfdr.de>; Thu, 26 May 2022 10:32:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234448AbiEZITp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 26 May 2022 04:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55770 "EHLO
+        id S238630AbiEZIcr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 26 May 2022 04:32:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236159AbiEZITo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 May 2022 04:19:44 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35069663CF;
-        Thu, 26 May 2022 01:19:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BF503B81ECC;
-        Thu, 26 May 2022 08:19:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86389C34113;
-        Thu, 26 May 2022 08:19:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653553181;
-        bh=ZwmnwNW+ZrV5xS0G9MrfnlHCJv4ENLS1DbNYEam8XCA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=WfPt3D4gVE1h+GVm1v4bJEp9wuNVMs0ZyCjHLc64auY5oiaNe91bvJfVNUWjnaOiD
-         UkwgZElwiDKvYuDbvq9OofQWBifUXIVrdVEFXEtlEP5oKwPT0kPiCCSohl6LT1PiaF
-         hXoaJpabB3LsPb5cLO2YB2stiL2Jvr9/CDHwUrHjwBrM8Dbaa6YyVkLEEW5m07/X5h
-         iuahFv1AJ1gREFWbC5vImGxJ+K89s8E8BA2fSpySjwJoDS7coW4Rj0uS2DweSNdLJm
-         X/fhYEJwUsSYfnqR1UTcUwBttaKeaXu1rTjl1k1iZbooZyfzXlAQAAfV6WnD83En6i
-         1U9tA+HpQuyMQ==
-Received: by mail-ot1-f54.google.com with SMTP id l9-20020a056830268900b006054381dd35so541543otu.4;
-        Thu, 26 May 2022 01:19:41 -0700 (PDT)
-X-Gm-Message-State: AOAM532nlEzsKyqj+SKb4RWe9htu5V7SNay+8NwUTLr/X/WRV7UdsoQa
-        lYjkFqtF7TkaWWNhGh+v2cMU5x+VslQwFQ+WlgQ=
-X-Google-Smtp-Source: ABdhPJwipZoDhxiRgs7RvsnsCdYNuTKKPK79u0HoDv3k4BrOqK8zoM6DbxncwB/UumoYM2QbhOuqNgWY6T7SxtVhhAM=
-X-Received: by 2002:a05:6830:9c2:b0:606:1e0a:cc8d with SMTP id
- y2-20020a05683009c200b006061e0acc8dmr14017603ott.265.1653553180686; Thu, 26
- May 2022 01:19:40 -0700 (PDT)
+        with ESMTP id S233597AbiEZIcq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 26 May 2022 04:32:46 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C6E40A01;
+        Thu, 26 May 2022 01:32:44 -0700 (PDT)
+Received: from mail-yw1-f177.google.com ([209.85.128.177]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MREqy-1oF67j0SBw-00N8ei; Thu, 26 May 2022 10:32:43 +0200
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-2ff7b90e635so7972107b3.5;
+        Thu, 26 May 2022 01:32:42 -0700 (PDT)
+X-Gm-Message-State: AOAM532n56ZQxMFT91DplnjI4UlxvMLpwX5cJfGthcRkihp19TE1VFPf
+        WKymCUc/IyL8ZzF7Enfld3wx3kxFrVpsTOcxFJ4=
+X-Google-Smtp-Source: ABdhPJzd1Td84PUKl1aMompoBi/CI7Ij8UKcDh3J33F17cieCWlpkBhuvBB90C07npKSjm4gZ1dqj3OUo1L9/csGNzA=
+X-Received: by 2002:a81:488c:0:b0:302:549f:ffbc with SMTP id
+ v134-20020a81488c000000b00302549fffbcmr1085051ywa.495.1653553961173; Thu, 26
+ May 2022 01:32:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <YnNb5M+gHI4hIaPG@atomide.com> <CAGm1_kstAbEZXBYwoK4GrFxMmPi=kpmdfJd1WAB8XSE_vNTTNg@mail.gmail.com>
- <Ynyd9HeFNmGQiovY@atomide.com> <CAK8P3a2wrH9XxGF6uBeQ6J0+KhehxsFO63R6qcwZ1DexH4N=2Q@mail.gmail.com>
- <CAGm1_ku85dL_zn4=9=OVkS3S3eBH-eqrc-c1UZyvnERbMrW98Q@mail.gmail.com>
- <CAGm1_kvKxe+RFNSxzZq+hy9594ek-s8owneXQqBMy8PxwdHP8Q@mail.gmail.com>
- <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
- <CAGm1_kuaRr3BFWSq-2v4vT0VbVvMX=kMHQsQ1KZnKe9UEff3MA@mail.gmail.com>
- <Yozpa3DlLLEzBR8W@atomide.com> <CAGm1_ku5EusuSJ9zhYZBRGdRUr8_NYsx3=BZQkuYtNJpq3Tn_w@mail.gmail.com>
- <Yo8cLxktTytqAEV3@atomide.com>
-In-Reply-To: <Yo8cLxktTytqAEV3@atomide.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 26 May 2022 10:19:29 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEr848Jaxfk64wDgFHMmq-CLvgXtH_sfqVC-4DRLwCDqA@mail.gmail.com>
-Message-ID: <CAMj1kXEr848Jaxfk64wDgFHMmq-CLvgXtH_sfqVC-4DRLwCDqA@mail.gmail.com>
-Subject: Re: am335x: 5.18.x: system stalling
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Yegor Yefremov <yegorslists@googlemail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+References: <628ea118.wJYf60YnZco0hs9o%lkp@intel.com>
+In-Reply-To: <628ea118.wJYf60YnZco0hs9o%lkp@intel.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Thu, 26 May 2022 10:32:24 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a10aGYNr=nKZVzv+1n_DRibSCCkoCLuTDtmhZskBMWfyw@mail.gmail.com>
+Message-ID: <CAK8P3a10aGYNr=nKZVzv+1n_DRibSCCkoCLuTDtmhZskBMWfyw@mail.gmail.com>
+Subject: Re: [linux-next:master] BUILD REGRESSION 8cb8311e95e3bb58bd84d6350365f14a718faa6d
+To:     kernel test robot <lkp@intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        "open list:DRM DRIVER FOR QEMU'S CIRRUS DEVICE" 
+        <virtualization@lists.linux-foundation.org>,
+        Networking <netdev@vger.kernel.org>,
+        linux-staging@lists.linux.dev,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        linux-parport@lists.infradead.org,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        kvm list <kvm@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        bpf <bpf@vger.kernel.org>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        Linux Memory Management List <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Provags-ID: V03:K1:PCHqQe4zueVMpS9NgDF2gz9QeCCu3e6TGmy70qhxHLlI0l3tOil
+ 3TFtRnaqRaEZG2VsxMRL/BwWZliZgBFMDmDiMT3VIGVV7w/27RA/2CRb4zSjCOlvy6iPqM+
+ Ix8rIUqF6hC1so72stcjY0PS4GOuwl3eoiB7/wGEVVCCs6sLXUBtn7f33ehfn9C/4yk3dDp
+ HkxtbWvMftl4TNJsT/kdw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:78dHAjsp8rs=:pc1R8fxbsnLyXZ+tRpGQOD
+ uxA9TCI9qUoqcJMUd1AmSehehlkwp4lmW53FlY5vykKfLVp3l4Cy3SqmMT6B6mya5q5MRwxkf
+ m7QZ+C8X14ZCcB5IxiTYJW206aHfgsPNJomi4dTa4Q0GBDu0G1YyyS+b444yzR6Ql+isnCXDE
+ BaopH42n0dgogTvazQMff/ftjtr/9zyvzRmrYLJS4uFRWmD165Bs3C5cNRf1hJrB5k8ZzHeQy
+ K1yMzV8yWnyEKKBtXjoiRqV8bMO7cAnNdGPS5fCO4ftcfO/cecWVCpVWndcEZ9x1nDJg1D8VE
+ cvUIno1cSk0UgIfu2/5XqxpHIcXhPaLTHN/EmRDKT0KHfgLefREyf60nrRRa9uIuoGEMseFnY
+ w7VUgrNB6qMgTvY207Bconmza5huJdYU/eYpERC/rZ5T0FCF5lwvGeIPKZ7ksIlc6ODVPg/ai
+ tN+s/QUqu/oGnRgUX5rqVmFSDRC4Qymxdb5j7XnNsHNyvFnh3L8M/pVipBzZMit++nOOSwv8L
+ lzke+HIGWue2uxhnXmS1o6EKaqH0QnE2h1YczeWOyQqNnaULvHKS9aTWf7jqBdaFw/sR9KtKO
+ E5J/7/HBe64/yJ5lPlU61ObcoAwrtcuuQi3yvImA0w2+y5fJFLOqtRZmuu4Xx1oYJpap7uEYb
+ fOwJXnqP6OLmpV1sQY574fdWBoCBdpIgasOipuT/zal3XqVMNt43wm8BNL4z+dJelXQ5B0e+6
+ E9Ue+mya/1nF3I7PDdxpguLJHREPOu0X43OCAmh3V6MvGos2qozLOWy3Ak1zG17pRyum8eEOn
+ G7OvNUUsj+nY1bIOD5ZJ0jYMjwxjBNBNkH6VJ8PZsuf1SZThl1aBB5NgcoDPH4OaSWZq215Ek
+ FyaWh6mDmdGTBCUZfibUJlxkVMnc/NhNVZHsTg5L8=
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,22 +80,13 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 26 May 2022 at 08:20, Tony Lindgren <tony@atomide.com> wrote:
->
-> * Yegor Yefremov <yegorslists@googlemail.com> [220526 05:45]:
-> > On Tue, May 24, 2022 at 4:19 PM Tony Lindgren <tony@atomide.com> wrote:
-> > > Maybe also try with CONFIG_MUSB_PIO_ONLY=y to see if it makes things
-> > > better or worse :)
-> >
-> > PIO is always the last resort :-) And now it proves it again. With
-> > PIO_ONLY the system doesn't stall.
->
-> OK great :) So it has something to do with drivers/dma/ti/cppi41.c, or
-> with drivers/usb/musb/cppi_dma.c or whatever the dma for am335x here
-> is. Or maybe there's something using stack for buffers being passed to
-> dma again that breaks with vmap stack.
->
+On Wed, May 25, 2022 at 11:35 PM kernel test robot <lkp@intel.com> wrote:
+> .__mulsi3.o.cmd: No such file or directory
+> Makefile:686: arch/h8300/Makefile: No such file or directory
+> Makefile:765: arch/h8300/Makefile: No such file or directory
+> arch/Kconfig:10: can't open file "arch/h8300/Kconfig"
 
-In order to confirm this theory, could you please try rebuilding your
-kernel with CONFIG_VMAP_STACK disabled, and leave everything else as
-before?
+Please stop building h8300  after the asm-generic tree is merged, the
+architecture is getting removed.
+
+        Arnd
