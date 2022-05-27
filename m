@@ -2,43 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52D5C536338
-	for <lists+linux-omap@lfdr.de>; Fri, 27 May 2022 15:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C70365363D3
+	for <lists+linux-omap@lfdr.de>; Fri, 27 May 2022 16:13:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344095AbiE0NM6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 27 May 2022 09:12:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43538 "EHLO
+        id S1344015AbiE0ONG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 27 May 2022 10:13:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235848AbiE0NM6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 May 2022 09:12:58 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2293A127195;
-        Fri, 27 May 2022 06:12:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BE8BBB82504;
-        Fri, 27 May 2022 13:12:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612C0C385A9;
-        Fri, 27 May 2022 13:12:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653657173;
-        bh=6p7oBMm6QzOQnT+oDCahCxyIyMkTov2pRVoC/5qV0Vg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Ur4MvhVOEYu8X+dWTZLVGLtUeUGSQarP/6edtuUKsXuuFYAiWtJ9FscVsgbGRzTs+
-         cc5ouYbGudAgEmXQaO/LYV47GdBCltvHwXmYvpCz/a4wTM/vrRb2t4wPXAV8ZHUoMC
-         V2fZkn2Qta1sql+NivJgcl80ThZ1Or3sPMZQMVB1Lwc5wrbR6HKRVzkB+iwSGBVG15
-         1TAGOX9hjemeGIb/wSTMHVh5Xo1+KAkaLgqs4LOWwI9qrvvSdiwKM5+vX59vQKMF7e
-         /682dMs77CMIky/gGCXkOOk9Wiqs6mAmjbZ0HaKkrJl1o21DXstGcNuzDuQIVHSLhq
-         hWN2wtgQ8KKIA==
-Received: by mail-oi1-f175.google.com with SMTP id w130so5678246oig.0;
-        Fri, 27 May 2022 06:12:53 -0700 (PDT)
-X-Gm-Message-State: AOAM533dsPVn1ZaUcFZeiTm+ZusY7lobDRYpt4HBOArp7JPAy+FwmJ2o
-        m1n67DKQoTmPZZ1/x6dV5VLgPADcm7kLaeZcVmI=
-X-Google-Smtp-Source: ABdhPJw4LvLt21j/5Z86BrQ95Geu5PHkJnYczZRrX6hNjWux11OuOwaYX7mYe+cl+gjqPUv7ftdhzrIRe3/RFP/4Eyw=
-X-Received: by 2002:a05:6808:f88:b0:32b:d10f:cc6b with SMTP id
- o8-20020a0568080f8800b0032bd10fcc6bmr1815761oiw.228.1653657172571; Fri, 27
- May 2022 06:12:52 -0700 (PDT)
+        with ESMTP id S1352175AbiE0ONF (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 27 May 2022 10:13:05 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010313EF29;
+        Fri, 27 May 2022 07:13:03 -0700 (PDT)
+Received: from mail-yb1-f169.google.com ([209.85.219.169]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1Md6hP-1nM5Iz0AHz-00aCDi; Fri, 27 May 2022 16:13:02 +0200
+Received: by mail-yb1-f169.google.com with SMTP id h75so2130558ybg.4;
+        Fri, 27 May 2022 07:13:01 -0700 (PDT)
+X-Gm-Message-State: AOAM5326uBH3o6n3AwZbKqqvJjGbyK//ExTreCJSA5LZMLjbvbeLbnmj
+        BwsPl8M+JHv8R5goNofc06k19GjUo/OSbkLzPNc=
+X-Google-Smtp-Source: ABdhPJx4VVpYTy5OaayC0WnaS3FylqwQg8as6lDMvWNI0dX/pRGzG3EXPxKzwu3/xs10+imWdNHNokzV+CPEj8KKsvA=
+X-Received: by 2002:a25:4f0a:0:b0:64f:6a76:3d8f with SMTP id
+ d10-20020a254f0a000000b0064f6a763d8fmr30918109ybb.134.1653660780782; Fri, 27
+ May 2022 07:13:00 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
  <CAGm1_kuaRr3BFWSq-2v4vT0VbVvMX=kMHQsQ1KZnKe9UEff3MA@mail.gmail.com>
@@ -51,94 +37,83 @@ References: <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
  <YpB0tdMHh/aBlfyk@atomide.com> <CAK8P3a3ocZDD9odfDe_WBeovHXCNU4CSScrmE4HVtLKef_z+EQ@mail.gmail.com>
  <CAGm1_ktOPgUSVjPP44Y49GgFLpDMrECu7eqQu7d2ZvJiOftWAQ@mail.gmail.com>
  <CAK8P3a36s6S2B8PTixxEkmaKXL88NAydTm4abdeC+roGtrUTsw@mail.gmail.com>
- <CAGm1_kvdhqrptEYy8WMfqZqG6gaWoBtAojSW5uXYnyXMVfV=Fw@mail.gmail.com> <CAK8P3a22hmSnS4X93ETLpF7vPtK_F1TD51SK5VvhEz9L9H4i3g@mail.gmail.com>
-In-Reply-To: <CAK8P3a22hmSnS4X93ETLpF7vPtK_F1TD51SK5VvhEz9L9H4i3g@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 27 May 2022 15:12:40 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF2NFxiNm=9ixOncN_wkgg2NrNNm9vE-CGUvpJuThj3JA@mail.gmail.com>
-Message-ID: <CAMj1kXF2NFxiNm=9ixOncN_wkgg2NrNNm9vE-CGUvpJuThj3JA@mail.gmail.com>
+ <CAGm1_kvdhqrptEYy8WMfqZqG6gaWoBtAojSW5uXYnyXMVfV=Fw@mail.gmail.com>
+ <CAK8P3a22hmSnS4X93ETLpF7vPtK_F1TD51SK5VvhEz9L9H4i3g@mail.gmail.com> <CAMj1kXF2NFxiNm=9ixOncN_wkgg2NrNNm9vE-CGUvpJuThj3JA@mail.gmail.com>
+In-Reply-To: <CAMj1kXF2NFxiNm=9ixOncN_wkgg2NrNNm9vE-CGUvpJuThj3JA@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 27 May 2022 16:12:43 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1DnyNvBqdRGHAnHcXBfoNPn4GfUmf_SBGRRU3q3iwwvg@mail.gmail.com>
+Message-ID: <CAK8P3a1DnyNvBqdRGHAnHcXBfoNPn4GfUmf_SBGRRU3q3iwwvg@mail.gmail.com>
 Subject: Re: am335x: 5.18.x: system stalling
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Yegor Yefremov <yegorslists@googlemail.com>,
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Yegor Yefremov <yegorslists@googlemail.com>,
         Tony Lindgren <tony@atomide.com>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
         linux-clk <linux-clk@vger.kernel.org>,
         Stephen Boyd <sboyd@kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Provags-ID: V03:K1:jeHUk/k3X7bUbIOTbEePjRmn4hOSPZpds54znsOYZ+45MiBtTss
+ tidYob4KH+Zyoe79nUFZl9nSkQzej+mVoiLPk8Z68HJw+a+lzB1VOgu6fC45VBYCIbtxdUW
+ 3qx+q6Qi8P5BXC20s7ktPGc/v4geaQHemQR/tJLI1+nIWv8LCepqED5qdYixnTZ/LFe351g
+ SuKhnAYP3EPaG2Y1yV+IA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Vqz0NuqhWUE=:xqe4ZS40iOIi7g+SV/kynv
+ WjnLql/mjSUi5pjd3EXwUjQE1UlSfXLYxGSFo0N83QPp+b+hz/jknZ1kWvgyVGo6wnmZB0cDX
+ FolnjpNXrMR49Pfe9g8CXJPx9BNZww+AEpPCOH4Kpqqf2bXNF8Yo7BWVpQ2eENMnwHvD0BGyU
+ BGM8mmWZzXJ+zfbFYvgv0KhrqyZkxZ+Ums99eM93GGLWU0SKXfWV53AWFudaku1RXrwwm5zaG
+ 6L2wuiOHlJMVgidB4fnm8V5rMgDWy0sVNZ0uY1J3S+kyHNNVL6jfAAb+WUzLc3pDJaqcOySMS
+ E19XwNk7S+sskigp0GWa6oc/tZLLuSx98ncRF+q2BxaQRm/wa6NyYxxiVXZFKDoOg69spsgtI
+ FJSRUfJFgsvT9YjSwZs6A4r3JLcVIzne1S7yZCri07C4QgmJFUvkp8b1XWEYB4H5H0ooE/f2A
+ Z0mhHbFTbMJZe0Im8gLuTIHdDYmfgJojKZIL/O4z1r/3sUkO8g1DP71HypMCDHKTSesAmy94/
+ /vab9i29JxUApQ6oXGSLNgl3ewbzQ3Xck4ax5JXIJZkaqc2jKAXQYrvegRcAz4sQ65oZVEAg5
+ wwmGB2VzGiykOCNmQia/n99SqS/NOSlmnpV2UEJ9+l7+UnQi+e9tqbXZGk1TxDpgesZodHGNR
+ t/99jHoAFDgajrICoDqaVxzOQFolCCu5HUp0xVnFqxqdfldtP19/rshj6xmtsJNDBWDMo1qxF
+ Bd14kbTfHoWvZ58r1zumcsEME5i68y0fqiJhRg==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 27 May 2022 at 14:54, Arnd Bergmann <arnd@arndb.de> wrote:
+On Fri, May 27, 2022 at 3:12 PM Ard Biesheuvel <ardb@kernel.org> wrote:
+> On Fri, 27 May 2022 at 14:54, Arnd Bergmann <arnd@arndb.de> wrote:
+> > On Fri, May 27, 2022 at 11:50 AM Yegor Yefremov <yegorslists@googlemail.com> wrote:
 >
-> On Fri, May 27, 2022 at 11:50 AM Yegor Yefremov
-> <yegorslists@googlemail.com> wrote:
-> >
-> > # zcat /proc/config.gz | grep 'CONFIG_ARCH_MULTI_V6\|CONFIG_SMP'
-> > # CONFIG_ARCH_MULTI_V6 is not set
-> > CONFIG_ARCH_MULTI_V6_V7=y
-> > CONFIG_SMP=y
-> > CONFIG_SMP_ON_UP=y
-> >
-> > No stalls.
-> >
-> > # zcat /proc/config.gz | grep 'CONFIG_ARCH_MULTI_V6\|CONFIG_SMP\|ARCH_OMAP2'
-> > CONFIG_ARCH_MULTI_V6=y
-> > CONFIG_ARCH_MULTI_V6_V7=y
-> > CONFIG_ARCH_OMAP2=y
-> > CONFIG_ARCH_OMAP2PLUS=y
-> > CONFIG_ARCH_OMAP2PLUS_TYPICAL=y
-> >
-> > No stalls.
-> >
-> > As soon as I enable both SMP and OMAP2 options the system stalls.
->
-> Ok, that points to the SMP patching for percpu data, which doesn't happen
-> before the patch, and which is different between loadable modules and
-> the normal code.
->
+> Not just per-cpu data: there is also the 'current' global variable
+> which gets used now instead of the user thread ID register, and this
+> is also different between modules and the core kernel (unless
+> CONFIG_ARM_MODULE_PLTS is disabled)
 
-Not just per-cpu data: there is also the 'current' global variable
-which gets used now instead of the user thread ID register, and this
-is also different between modules and the core kernel (unless
-CONFIG_ARM_MODULE_PLTS is disabled)
+Right, so if the percpu hack doesn't address it, this one might:
 
-I looked at the fdti-sio and slcan modules, and didn't find any
-references to per-CPU offsets when building them using the provided
-.config. I did find some references to __current, but these seem to be
-ignored (they are only emitted to satisfy the "m" inline asm
-constraint in get_domain(), but the parameter is never actually used
-in the assembler code)
+diff --git a/arch/arm/include/asm/current.h b/arch/arm/include/asm/current.h
+index 1e1178bf176d..306d1a4cae40 100644
+--- a/arch/arm/include/asm/current.h
++++ b/arch/arm/include/asm/current.h
+@@ -18,6 +18,8 @@ static __always_inline __attribute_const__ struct
+task_struct *get_current(void)
+ {
+        struct task_struct *cur;
 
++       return __current;
++
+ #if __has_builtin(__builtin_thread_pointer) && \
+     defined(CONFIG_CURRENT_POINTER_IN_TPIDRURO) && \
+     !(defined(CONFIG_THUMB2_KERNEL) && \
 
-> Can you try out this patch to short-circuit the logic and always return
-> the offset for CPU 0? This is obviously broken on SMP machines but
-> would get around the bit of code that is V6+SMP specific.
->
->         Arnd
->
-> diff --git a/arch/arm/include/asm/percpu.h b/arch/arm/include/asm/percpu.h
-> index 7545c87c251f..3057c5fef970 100644
-> --- a/arch/arm/include/asm/percpu.h
-> +++ b/arch/arm/include/asm/percpu.h
-> @@ -25,10 +25,13 @@ static inline void set_my_cpu_offset(unsigned long off)
->         asm volatile("mcr p15, 0, %0, c13, c0, 4" : : "r" (off) : "memory");
->  }
->
-> +extern unsigned long __per_cpu_offset[];
->  static __always_inline unsigned long __my_cpu_offset(void)
->  {
->         unsigned long off;
->
-> +       return __per_cpu_offset[0];
-> +
->         /*
->          * Read TPIDRPRW.
->          * We want to allow caching the value, so avoid using volatile and
+> I looked at the fdti-sio and slcan modules, and didn't find any
+> references to per-CPU offsets when building them using the provided
+> .config. I did find some references to __current, but these seem to be
+> ignored (they are only emitted to satisfy the "m" inline asm
+> constraint in get_domain(), but the parameter is never actually used
+> in the assembler code)
+
+I see some __current references in the musb driver that come from
+tracepoints as well (in omap2plus_defconfig), but these also shouldn't be
+active.
+
+        Arnd
