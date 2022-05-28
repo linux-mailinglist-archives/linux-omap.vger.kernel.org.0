@@ -2,98 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30D8A536D1B
-	for <lists+linux-omap@lfdr.de>; Sat, 28 May 2022 15:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62B2C536E42
+	for <lists+linux-omap@lfdr.de>; Sat, 28 May 2022 22:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235473AbiE1N3d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 28 May 2022 09:29:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41578 "EHLO
+        id S229454AbiE1UAX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 28 May 2022 16:00:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235842AbiE1N3b (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 28 May 2022 09:29:31 -0400
-Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79ADD1BEB5
-        for <linux-omap@vger.kernel.org>; Sat, 28 May 2022 06:29:28 -0700 (PDT)
-Received: by mail-vs1-xe2d.google.com with SMTP id b7so6718822vsq.1
-        for <linux-omap@vger.kernel.org>; Sat, 28 May 2022 06:29:28 -0700 (PDT)
+        with ESMTP id S229459AbiE1UAX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 28 May 2022 16:00:23 -0400
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 289C184A23;
+        Sat, 28 May 2022 13:00:18 -0700 (PDT)
+Received: by mail-ot1-x335.google.com with SMTP id h9-20020a056830400900b0060b03bfe792so5168226ots.12;
+        Sat, 28 May 2022 13:00:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=yHYbw2bx/nsQBLFF3gJlg+vRlUz37DtKoW4ftjnCRHI=;
-        b=Xi3ApVFLNOOWluk36mWVEUZu3dk5y/QtW4TTFQ3J/YX+kiA4CjCpvIXZhT2lf/NG31
-         GMJa2R1LVMyoWH0wPp+BtEjoGS7raU5VLZ5jriCiIA0Qmd+MfslRnHJHdM7EwfD6uB2z
-         s2JN5/rvWkLmqbxnjPl4n1U+Pn+d6IEC7vgPn6Kqy7YcXWX0Crnh0oaGfpBSXr7HJBBs
-         FRqvA6nRroem0/uSeEtR1B678z51GyUpuPqBSo3hIrzz4lR9yEKJQl8KWnc1OToJMGNc
-         Xta9UDxWF0v9Hi5UtfMs1MI1Fbi4nip4OcFj3SmJRbPbgZr8sujEN+xCm+Qs4elMEXNk
-         kFFg==
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=/KLzDOmIX3qxkjLX++pQxe3ly1Uf5qfCdyEeGZRMrK8=;
+        b=DJyM1fGwnWaTVgarAIn6vo+ICUbSBPq904MOk79IGYpchYCRLrPd09FH9w91800JGh
+         UkYsSOxDZ83vv4XGKRDFxTrMDNak9PrxP+D+BHoTAtEuyZ9GZ//yl38w/4x4VB6FZqQz
+         8KlGhKbxYkDV1MH3VynFB7GcTszRK+qCg1GcAqqVEEwiT+41+6dQouFkA7gwsj7i6V4I
+         6yFx94yVBcqDKMoQStwB7kOOiQi5snJd1OjL5K3mqunmnjd7HoKYd/8IskVkhCEt+JCV
+         kG964+uBcphyWRV+xLvoKKLEri4t9eMDNcZ98DI55krwzlA/UE2rSfrfR+IesUV6NZ7h
+         YNLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=yHYbw2bx/nsQBLFF3gJlg+vRlUz37DtKoW4ftjnCRHI=;
-        b=0w2IJgsLqMIOknf7HJN4/DJrcX0uj954WfwW9gHKRtBsYxKK11CgFlhwjwCmNYqkgW
-         o8Ffspp6KGP1Ch+lARJcRUBGAvgCoqGjV6oEUmxsOXwceRX9U3YhVhViW/aJkMMvGXU0
-         C3PZxEsDiwI9zjDtX07v5TIWoC680pr0n+/mJRs5+CwXvZuruxlKEDlhXUWYyRbLgKv1
-         H6t3ySGunNw+W9Mfen4sv7t9BTOpM8IL1HUm8Ur2XP0Shrkvua9Qfn1+CP6Vzo7y4i7y
-         0h85PpeQng9uvOUerdE8tc+3ry3EGOGCvjhwFmCWvXPkDcvGxSvZvdUER9VZS3hlXxmt
-         7Xjw==
-X-Gm-Message-State: AOAM532SGFh38w+hWzHegnPPI3n0gPp6O5rlqcjLN/iTwXbtMsa3faJZ
-        YIUnz3zN6BPVxkDGiSdh+g92gkJ41vd5e+D2X58=
-X-Google-Smtp-Source: ABdhPJz6HXhjANVyyNzrNe2CxlCmFoeTKPLztvqJdkMa4OsVZmsYr22BTxzzpweAMJmN3LMXHRpPsP/LzYGA8XSoke8=
-X-Received: by 2002:a67:ca0b:0:b0:337:bace:569f with SMTP id
- z11-20020a67ca0b000000b00337bace569fmr12926231vsk.19.1653744566964; Sat, 28
- May 2022 06:29:26 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=/KLzDOmIX3qxkjLX++pQxe3ly1Uf5qfCdyEeGZRMrK8=;
+        b=oHqypsjqdkIK6jAvrb4eJOeRdZ4Fb4fz1vQKo1A6Uf+hojwtho+j853YYRD4GUCzJl
+         h/0DYMGa999+XCCYriBsa9u2s/4ycRMVb+OGphXYYrjypDbv3mbo1567gYwila/oWtwh
+         KbPBHTzR8+mmt1Pb6Rr+Mfm/eDY7EpxLRpJmkB3QPfADV8pzflEfbIiShTVLB0XtIDYh
+         S2+2LBvE9sRCfNoC+nRlXnLDaEk9XqoZPLir7e3rWJcEG72XyrlLkoT0dA3lFwr+q4cc
+         k7sk6iE8+fUg42UmrcmkW/0jlw+j0MCQrppIhnSq3yr7nhOkgoiV1+F/HLaQQzmWPbJ0
+         zgsQ==
+X-Gm-Message-State: AOAM5311OprUah42uRVd4gyKEluqdqvf3Rr3oBq36xZ4Z60MqBjCGM0r
+        0ieolvOdNNiIkswJfdYIziFhPipDZY5dRBiE4Uhyf8vm
+X-Google-Smtp-Source: ABdhPJzhRTTaLOpHb1BSjGMpVBAepKYVSPnglt2YA0M4Ryvvi8CwshOaYDYgXo6qcQO6GXJ/VSEYoCB/En8gC/rPqqk=
+X-Received: by 2002:a25:af02:0:b0:64f:72b8:ce50 with SMTP id
+ a2-20020a25af02000000b0064f72b8ce50mr35392183ybh.528.1653766109000; Sat, 28
+ May 2022 12:28:29 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:612c:61a:b0:2bd:1783:dbee with HTTP; Sat, 28 May 2022
- 06:29:26 -0700 (PDT)
-Reply-To: avamedicinemed3@gmail.com
-From:   Dr Ava Smith <mrsnicolemaroisbf@gmail.com>
-Date:   Sat, 28 May 2022 06:29:26 -0700
-Message-ID: <CAAV+NNR98rAGphC9_G5vqGv6iQr7m_40hQEqvbkXvpzB3+z=FA@mail.gmail.com>
-Subject: From Dr Ava Smith from United States
-To:     undisclosed-recipients:;
+References: <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
+ <CAGm1_kuaRr3BFWSq-2v4vT0VbVvMX=kMHQsQ1KZnKe9UEff3MA@mail.gmail.com>
+ <Yozpa3DlLLEzBR8W@atomide.com> <CAGm1_ku5EusuSJ9zhYZBRGdRUr8_NYsx3=BZQkuYtNJpq3Tn_w@mail.gmail.com>
+ <Yo8cLxktTytqAEV3@atomide.com> <CAMj1kXEr848Jaxfk64wDgFHMmq-CLvgXtH_sfqVC-4DRLwCDqA@mail.gmail.com>
+ <CAGm1_ksuNbMvg5tVOHswMRWQyX8ZA_U-49Ge6uoG0xV7x5viHA@mail.gmail.com>
+ <CAK8P3a04Qc3Qkb2s1OmCFVKi=yrLReL4Np0JJYjskMWozBDr7Q@mail.gmail.com>
+ <CAGm1_kvnqOz68UDL=n80kZd1UoUaPGJG10YvkxUnezg1rSf6Lg@mail.gmail.com>
+ <CAK8P3a2qat95d14QDp7HfKmqm8Kw0s0WVeLH=GkgBwH2c7nJ8A@mail.gmail.com>
+ <YpB0tdMHh/aBlfyk@atomide.com> <CAK8P3a3ocZDD9odfDe_WBeovHXCNU4CSScrmE4HVtLKef_z+EQ@mail.gmail.com>
+ <CAGm1_ktOPgUSVjPP44Y49GgFLpDMrECu7eqQu7d2ZvJiOftWAQ@mail.gmail.com>
+ <CAK8P3a36s6S2B8PTixxEkmaKXL88NAydTm4abdeC+roGtrUTsw@mail.gmail.com>
+ <CAGm1_kvdhqrptEYy8WMfqZqG6gaWoBtAojSW5uXYnyXMVfV=Fw@mail.gmail.com>
+ <CAK8P3a22hmSnS4X93ETLpF7vPtK_F1TD51SK5VvhEz9L9H4i3g@mail.gmail.com>
+ <CAMj1kXF2NFxiNm=9ixOncN_wkgg2NrNNm9vE-CGUvpJuThj3JA@mail.gmail.com>
+ <CAK8P3a1DnyNvBqdRGHAnHcXBfoNPn4GfUmf_SBGRRU3q3iwwvg@mail.gmail.com>
+ <CAGm1_kta63UM8um5BB5jOh+r9uFMiGwAiYsrNDOwG3dN-Oo47Q@mail.gmail.com>
+ <CAK8P3a2yaKcEiO-LvH5z5azTEX1XTh=9U2MChRS92dtatceY5g@mail.gmail.com>
+ <CAGm1_kvXaH19nOmP_Dy3nxWpG0UiX7eyauTLB+9Cd2rBovDcEQ@mail.gmail.com>
+ <CAMj1kXFfc-e0+dpLJHj9W+=YS=3i0t1+wxF+4qJ5K-g7pTd+YQ@mail.gmail.com>
+ <CAGm1_ksndacPPpyZknvHip=7Fv+3NxXjyfCm_DDMm4EbcBuBig@mail.gmail.com> <CAK8P3a2VV26MhWz95OwfKz+2k35ee8V876iqdJdZ4o1HuNba8A@mail.gmail.com>
+In-Reply-To: <CAK8P3a2VV26MhWz95OwfKz+2k35ee8V876iqdJdZ4o1HuNba8A@mail.gmail.com>
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Sat, 28 May 2022 21:28:17 +0200
+Message-ID: <CAGm1_ktyCchFwVWhFtrgR621s_fPZJ3u8UmgOPbg7OCOq0h6ZA@mail.gmail.com>
+Subject: Re: am335x: 5.18.x: system stalling
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:e2d listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5011]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mrsnicolemaroisbf[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [avamedicinemed3[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Hello Dear,
-how are you today
-My name is Dr Ava Smith,Am English and French
-I will share pictures and more details about me as soon as i hear from you
-Thanks
-Ava
+On Sat, May 28, 2022 at 3:14 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Sat, May 28, 2022 at 3:01 PM Yegor Yefremov
+> <yegorslists@googlemail.com> wrote:
+> > On Sat, May 28, 2022 at 11:07 AM Ard Biesheuvel <ardb@kernel.org> wrote=
+:
+> > In file included from ./include/linux/irqflags.h:17,
+> >                  from ./arch/arm/include/asm/bitops.h:28,
+> >                  from ./include/linux/bitops.h:33,
+> >                  from ./include/linux/log2.h:12,
+> >                  from kernel/bounds.c:13:
+> > ./arch/arm/include/asm/percpu.h: In function =E2=80=98__my_cpu_offset=
+=E2=80=99:
+> > ./arch/arm/include/asm/percpu.h:32:9: error: =E2=80=98__per_cpu_offset=
+=E2=80=99
+> > undeclared (first use in this function); did you mean
+> > =E2=80=98__my_cpu_offset=E2=80=99?
+> >    32 |  return __per_cpu_offset[0];
+> >       |         ^~~~~~~~~~~~~~~~
+> >       |         __my_cpu_offset
+> > ./arch/arm/include/asm/percpu.h:32:9: note: each undeclared identifier
+> > is reported only once for each function it appears in
+>
+> I think you just missed the line in my patch that adds the
+> "extern unsigned long __per_cpu_offset[];" variable declaration.
+
+My bad.
+
+So, I tried both variants and both led to stalls.
+
+Yegor
