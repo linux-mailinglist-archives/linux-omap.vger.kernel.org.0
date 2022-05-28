@@ -2,48 +2,29 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29994536D0B
-	for <lists+linux-omap@lfdr.de>; Sat, 28 May 2022 15:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF234536D11
+	for <lists+linux-omap@lfdr.de>; Sat, 28 May 2022 15:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345624AbiE1NBT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 28 May 2022 09:01:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58956 "EHLO
+        id S235638AbiE1NOP convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Sat, 28 May 2022 09:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344012AbiE1NBT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 28 May 2022 09:01:19 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F0FC2A;
-        Sat, 28 May 2022 06:01:18 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id p13so524555ybm.1;
-        Sat, 28 May 2022 06:01:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=BKJMVmT6xouVZnKHH1t+32fnxpEdpNO/J4+waPk1SMk=;
-        b=OSiwldFcTD5m1v28Gww4fcj+VFEDJoo9LZC550aWzmPrsNO+3qW8HfpbBnXqjc2Z7g
-         iUa0nnqUgmX7kmYypSvvWacDReI3oP6s0Hw6sfBCI3XPT0zWqSGvcduLBF0K/aGBYQYM
-         gGQ79Awih5OGjE8mybtmmiME5UdTgOWxSzp/xW21WwwRaK7KwgqK9x52mC0eagpBmxWO
-         mkT8btHFMDRHPDRC1YBAGxKYjNYz2hykT2NnYil/KXBuDmUV2Zuy5XW77+sOBFU2qL2U
-         omfNyCRIu6iQzyiiFm/tfXfy6R/fUa7KVWluSOlaYQlhWyht7J1q/+h3h0+o7po8X6JC
-         BBFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=BKJMVmT6xouVZnKHH1t+32fnxpEdpNO/J4+waPk1SMk=;
-        b=e8w0zzDWFoGiH7hHjn9SYOFxFQxpHIRYglyY33r617g2RUNRBXhzmyQ4UJ7TGH7kZV
-         8CphR9UO81dGccRhnIlAyo6pYEULeXw8mbZjTh6FEeFFcEuWFf/n1xe7XIjox5QRadTL
-         RURvTi2TLs2vRtDCG2z5uhAhujSKzhGjRNNJV1QBXyb522lEXY2tHT+4UOnHwLpQLIRR
-         p4ohEAxgsxGG14BpR54Op+dIxKSnc88Ij0WCNoGjQSTqqzv9RSnOaEhBi6+N+7i6coNN
-         tFzbBYFdinwtioR7HmJGhsf7jPxXQK59kXD3rgD1PTfWobl6r2YMJ3yRYvSVYV8XMs65
-         v5tg==
-X-Gm-Message-State: AOAM530gGCHS++IbMu3q6Ys+HgPi53PX6WRrsRG6lceDLB01rA+5wMgT
-        03yoOsITxYNafN0rjS1r4u0IdynXr6y/67cZZJw=
-X-Google-Smtp-Source: ABdhPJzXfiv11UhbK8CnwaYDCRHtEgZ8HuWMSXZRgaP0eVRvLfbXS0aYW8xbo6em4yB3lJyMJlTtX9qVH11oqJXS6/U=
-X-Received: by 2002:a25:af02:0:b0:64f:72b8:ce50 with SMTP id
- a2-20020a25af02000000b0064f72b8ce50mr34013107ybh.528.1653742876917; Sat, 28
- May 2022 06:01:16 -0700 (PDT)
+        with ESMTP id S235631AbiE1NOO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 28 May 2022 09:14:14 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B08D19C01;
+        Sat, 28 May 2022 06:14:10 -0700 (PDT)
+Received: from mail-yb1-f180.google.com ([209.85.219.180]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MCsLo-1o3hh2464m-008rtv; Sat, 28 May 2022 15:14:09 +0200
+Received: by mail-yb1-f180.google.com with SMTP id z186so7842201ybz.3;
+        Sat, 28 May 2022 06:14:08 -0700 (PDT)
+X-Gm-Message-State: AOAM531+PoH+yiquIQU4H1Fwge4ZxyF6R/cO4wE4V4D5Rlm0mVhKs39v
+        xq0GtKTO6T7xPvSTd350RNQ2LqU4e122S9LDlMw=
+X-Google-Smtp-Source: ABdhPJyguWa96+0lPvTeqCEV6/LGQ59wW0u7JuLPaWpR+8VjbwDjqo/tET/Zy7enU3pvsb8nexEPETNryWIm/aRIB2U=
+X-Received: by 2002:a25:bd8b:0:b0:657:8392:55c3 with SMTP id
+ f11-20020a25bd8b000000b00657839255c3mr10466309ybh.452.1653743647744; Sat, 28
+ May 2022 06:14:07 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
  <CAGm1_kuaRr3BFWSq-2v4vT0VbVvMX=kMHQsQ1KZnKe9UEff3MA@mail.gmail.com>
@@ -62,106 +43,67 @@ References: <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
  <CAK8P3a1DnyNvBqdRGHAnHcXBfoNPn4GfUmf_SBGRRU3q3iwwvg@mail.gmail.com>
  <CAGm1_kta63UM8um5BB5jOh+r9uFMiGwAiYsrNDOwG3dN-Oo47Q@mail.gmail.com>
  <CAK8P3a2yaKcEiO-LvH5z5azTEX1XTh=9U2MChRS92dtatceY5g@mail.gmail.com>
- <CAGm1_kvXaH19nOmP_Dy3nxWpG0UiX7eyauTLB+9Cd2rBovDcEQ@mail.gmail.com> <CAMj1kXFfc-e0+dpLJHj9W+=YS=3i0t1+wxF+4qJ5K-g7pTd+YQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXFfc-e0+dpLJHj9W+=YS=3i0t1+wxF+4qJ5K-g7pTd+YQ@mail.gmail.com>
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Sat, 28 May 2022 15:01:05 +0200
-Message-ID: <CAGm1_ksndacPPpyZknvHip=7Fv+3NxXjyfCm_DDMm4EbcBuBig@mail.gmail.com>
+ <CAGm1_kvXaH19nOmP_Dy3nxWpG0UiX7eyauTLB+9Cd2rBovDcEQ@mail.gmail.com>
+ <CAMj1kXFfc-e0+dpLJHj9W+=YS=3i0t1+wxF+4qJ5K-g7pTd+YQ@mail.gmail.com> <CAGm1_ksndacPPpyZknvHip=7Fv+3NxXjyfCm_DDMm4EbcBuBig@mail.gmail.com>
+In-Reply-To: <CAGm1_ksndacPPpyZknvHip=7Fv+3NxXjyfCm_DDMm4EbcBuBig@mail.gmail.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Sat, 28 May 2022 15:13:50 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2VV26MhWz95OwfKz+2k35ee8V876iqdJdZ4o1HuNba8A@mail.gmail.com>
+Message-ID: <CAK8P3a2VV26MhWz95OwfKz+2k35ee8V876iqdJdZ4o1HuNba8A@mail.gmail.com>
 Subject: Re: am335x: 5.18.x: system stalling
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>,
+To:     Yegor Yefremov <yegorslists@googlemail.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Tony Lindgren <tony@atomide.com>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
         linux-clk <linux-clk@vger.kernel.org>,
         Stephen Boyd <sboyd@kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Provags-ID: V03:K1:v/vgM9TyMDPvBXEjHRNt783/GGGVoL+MieqKRMlZvU80/dQGfFq
+ mKuKg7onizq9oHMxN9Xb25XfULbd7XzpATOXrC3f9Y4T91YOnhEm61Pji3NLChygMC0Q6Lu
+ 4Y5X2kckcpOkGViEyZYAeo6EGpcPSh42U+x/TujwMGJfsHrygsilpbiz2I3HhaJGnux3Kj+
+ TLOQiZ4Yh/pG0uFSbqaEQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:nFIkU0Q9HJA=:c4XEXvtRrcz/Jdx7ksqtTk
+ mKYu8nt5Sx8R2vw48WVlLqmBpUhVOkRf1kjGeD0/CJQs8G06xr/OBQv4FLs+Gqm8ubX6w+yRq
+ ZOVYbrYlqRM6vDW6hGgBEyc/8o/LqkH9RKpXY2vrlXzklY2rgiMDdspPCtiCSDZLqdNpwlvXz
+ lE0Z7k8L4WaTxezhkCtcVS11o1Baa/FCyF92vLfUVOuIWFKJ5dEVhPR0YSe7djgA0dDrxY9Jz
+ TcMkMbisTiBeDhCtqPHB6UmxD65kjt5HC0i0uz4VAFmES1y8lNIfhi5rtMrBeZMLtQA+HD3X9
+ 8rqYQAOKLtZKGsqlWaG/tuBiXm/fVWE8inmbI1muR1Y4K13469A8srECHiT8K/oxbV+T/kcJC
+ kFhZKuVljX1ETGRqZABq1SC5mZMVNM3SpT5nRWxl7s680aLO5dLTmZ62K/zRJ69ZTSMcNYy7g
+ CTZvHOvYrqjo8IVVfE1VgqHYlVCCjXKRFG/rvNkHur3asfIKZUwrME3wchnxye6WVHkSyY2Ep
+ blriBG2OpDZifiR4uz3A/kZsZ3PkJpI03wblD4Qc90MyG1z+mWrMz6V00mXTmCfzbKIhGzhc3
+ Yu3JDpnLrK4tks447tSZ+NnGi1bw3YeQESuy4bUsvaZvSmeYELd0TKZ+2+U9YefsGROXCB95z
+ 333vCZr8ItxFgxl0aObMZonZPZJxmmbNI61Iv94PhGEigj3yEPW8aHWhmpJbNL8bbPjEQQ6Q4
+ pYhgC/PWKHDf0bzhmrBzKmZdNe0l3tHjT9FHuw==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, May 28, 2022 at 11:07 AM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> On Sat, 28 May 2022 at 10:29, Yegor Yefremov <yegorslists@googlemail.com>=
- wrote:
-> >
-> > On Sat, May 28, 2022 at 9:53 AM Arnd Bergmann <arnd@arndb.de> wrote:
-> > >
-> > > On Sat, May 28, 2022 at 7:48 AM Yegor Yefremov
-> > > <yegorslists@googlemail.com> wrote:
-> > > >
-> > > > On Fri, May 27, 2022 at 4:13 PM Arnd Bergmann <arnd@arndb.de> wrote=
-:
-> > > > >
-> > > > > On Fri, May 27, 2022 at 3:12 PM Ard Biesheuvel <ardb@kernel.org> =
-wrote:
-> > > > > > On Fri, 27 May 2022 at 14:54, Arnd Bergmann <arnd@arndb.de> wro=
-te:
-> > > > > > > On Fri, May 27, 2022 at 11:50 AM Yegor Yefremov <yegorslists@=
-googlemail.com> wrote:
-> > > > > >
-> > > > > > Not just per-cpu data: there is also the 'current' global varia=
-ble
-> > > > > > which gets used now instead of the user thread ID register, and=
- this
-> > > > > > is also different between modules and the core kernel (unless
-> > > > > > CONFIG_ARM_MODULE_PLTS is disabled)
-> > > > >
-> > > > > Right, so if the percpu hack doesn't address it, this one might:
-> > > > >
-> > > > > diff --git a/arch/arm/include/asm/current.h b/arch/arm/include/as=
-m/current.h
-> > > > > index 1e1178bf176d..306d1a4cae40 100644
-> > > > > --- a/arch/arm/include/asm/current.h
-> > > > > +++ b/arch/arm/include/asm/current.h
-> > > > > @@ -18,6 +18,8 @@ static __always_inline __attribute_const__ stru=
-ct
-> > > > > task_struct *get_current(void)
-> > > > >  {
-> > > > >         struct task_struct *cur;
-> > > > >
-> > > > > +       return __current;
-> > > > > +
-> > > > >  #if __has_builtin(__builtin_thread_pointer) && \
-> > > > >      defined(CONFIG_CURRENT_POINTER_IN_TPIDRURO) && \
-> > > > >      !(defined(CONFIG_THUMB2_KERNEL) && \
-> > > >
-> > > > I have tried this patch and the system still stalls.
-> > >
-> > > Ok, thanks for testing. To clarify: did you test with both the get_cu=
-rrent() and
-> > > __my_cpu_offset() changes applied, or just the get_current() one?
-> >
-> > I have tested only the get_current() one. Should I also test
-> > __my_cpu_offset() separately and combined?
-> >
->
-> That would be helpful, yes.
+On Sat, May 28, 2022 at 3:01 PM Yegor Yefremov
+<yegorslists@googlemail.com> wrote:
+> On Sat, May 28, 2022 at 11:07 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+> In file included from ./include/linux/irqflags.h:17,
+>                  from ./arch/arm/include/asm/bitops.h:28,
+>                  from ./include/linux/bitops.h:33,
+>                  from ./include/linux/log2.h:12,
+>                  from kernel/bounds.c:13:
+> ./arch/arm/include/asm/percpu.h: In function ‘__my_cpu_offset’:
+> ./arch/arm/include/asm/percpu.h:32:9: error: ‘__per_cpu_offset’
+> undeclared (first use in this function); did you mean
+> ‘__my_cpu_offset’?
+>    32 |  return __per_cpu_offset[0];
+>       |         ^~~~~~~~~~~~~~~~
+>       |         __my_cpu_offset
+> ./arch/arm/include/asm/percpu.h:32:9: note: each undeclared identifier
+> is reported only once for each function it appears in
 
-  SYNC    include/config/auto.conf.cmd
-  CC      kernel/bounds.s
-  CALL    scripts/atomic/check-atomics.sh
-In file included from ./include/linux/irqflags.h:17,
-                 from ./arch/arm/include/asm/bitops.h:28,
-                 from ./include/linux/bitops.h:33,
-                 from ./include/linux/log2.h:12,
-                 from kernel/bounds.c:13:
-./arch/arm/include/asm/percpu.h: In function =E2=80=98__my_cpu_offset=E2=80=
-=99:
-./arch/arm/include/asm/percpu.h:32:9: error: =E2=80=98__per_cpu_offset=E2=
-=80=99
-undeclared (first use in this function); did you mean
-=E2=80=98__my_cpu_offset=E2=80=99?
-   32 |  return __per_cpu_offset[0];
-      |         ^~~~~~~~~~~~~~~~
-      |         __my_cpu_offset
-./arch/arm/include/asm/percpu.h:32:9: note: each undeclared identifier
-is reported only once for each function it appears in
+I think you just missed the line in my patch that adds the
+"extern unsigned long __per_cpu_offset[];" variable declaration.
 
-Yegor
+       Arnd
