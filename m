@@ -2,69 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA43E537202
-	for <lists+linux-omap@lfdr.de>; Sun, 29 May 2022 20:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E4A75371B5
+	for <lists+linux-omap@lfdr.de>; Sun, 29 May 2022 17:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231533AbiE2SEF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 29 May 2022 14:04:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48784 "EHLO
+        id S231254AbiE2P5Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 29 May 2022 11:57:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229876AbiE2SEE (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 29 May 2022 14:04:04 -0400
-X-Greylist: delayed 5241 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 29 May 2022 11:04:01 PDT
-Received: from mx.sb-roscoff.fr (mx.sb-roscoff.fr [193.52.39.203])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B61964BD6;
-        Sun, 29 May 2022 11:04:01 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mx.sb-roscoff.fr (Postfix) with ESMTP id 97F95225D65;
-        Sun, 29 May 2022 17:30:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mx.sb-roscoff.fr
-Received: from mx.sb-roscoff.fr ([127.0.0.1])
-        by localhost (mx.sb-roscoff.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id uzxxGK7uxwgL; Sun, 29 May 2022 17:30:43 +0200 (CEST)
-Received: from web11.sb-roscoff.fr (web11.sb-roscoff.fr [192.168.1.181])
-        by mx.sb-roscoff.fr (Postfix) with ESMTP id C5319225BF3;
-        Sun, 29 May 2022 17:28:23 +0200 (CEST)
-Received: from 141.11.28.159
-        (SquirrelMail authenticated user sgarric)
-        by web11.sb-roscoff.fr with HTTP;
-        Sun, 29 May 2022 17:28:24 +0200
-Message-ID: <1bface92207363f7077be37c71aa39a3.squirrel@web11.sb-roscoff.fr>
-Date:   Sun, 29 May 2022 17:28:24 +0200
-Subject: =?iso-8859-1?Q?Gesch=E4ft?=
-From:   "Dave Ramsden" <sgarric@sb-roscoff.fr>
-Reply-To: davrsd1@aol.com
-User-Agent: SquirrelMail/1.4.22
+        with ESMTP id S229782AbiE2P5P (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 29 May 2022 11:57:15 -0400
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EC95B84F
+        for <linux-omap@vger.kernel.org>; Sun, 29 May 2022 08:57:13 -0700 (PDT)
+Received: by mail-ua1-x92b.google.com with SMTP id z15so3114807uad.7
+        for <linux-omap@vger.kernel.org>; Sun, 29 May 2022 08:57:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=33H7bzlF73boyoKARvolMJlGymprQ+hHPrvlaQBxLsY=;
+        b=AeVFakHwl3ShYUBAR+wdaOObcRjyc/4J4NF1aui8ojiGKJ3nldxlTO5LRf+moLwZ8b
+         jPkn+YN7s/pob/eiNionXmdzFcqhA/Y3fNNZeD1uz0D/O8v2Gk5LtCoaKNERUBoJJNm5
+         Zb0v8IpfdOHRyVWSVNnhW2paJ+fGO9xUvNVvSjOJiM+w2Nb7GXc47OQERjR9BWvycwwt
+         0EPqSazouzwwZV046OphnIKEgnrK2OSTuE0zTOluJUGlZM/wnsi2+91UjLS/AjgWtpQD
+         D5Eg3JgqeigtpHkBDFG4vek9r+NKDCsmWAjWYdkIb6UodoQUV74U/OS1I62CQYSeMOFj
+         6WCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=33H7bzlF73boyoKARvolMJlGymprQ+hHPrvlaQBxLsY=;
+        b=rVsyJZxeZjQo9Tr2LH4X/tsmQ6ZnBSgCINLAIC0PpBEIvZNJehcK1tKqtSSxsjNiof
+         kkIVgbd37jmof1V6CLj87sWy2/7jryXUTD46t+X5rupPE1ousrpS9ssg85zyJTebBh+L
+         MkfvoIwnrl8CUmgNr/o5wMrhLE2Zl/dy/zPjdU7by9AsZfQwpGlLIt7H+2eZsEJJvgIW
+         2LR98ZfYDfrLIEtD2z7zsHNfNTTPxOMVIu9cgLA/cQYGCWsG26IvU4l5aGbLQCHljkb3
+         Trv0RyaeQzN+pXLIUlcPxXc/Du7r7u5U+LCcN0NIKzGiXkGyfTTCXQ123FqIQ5bwrFJw
+         AlEg==
+X-Gm-Message-State: AOAM530FerLwE6za25Be1IDyoxnmEZxfJaf4LYFkey7zSSuBpZFbiDI/
+        0M99wy+vXCrb+Y777czBEhOaGPe2TmTcWlfye/UENBPuyBQ=
+X-Google-Smtp-Source: ABdhPJyL2x6MVUkHDYX54WjUueaKVacWuK/Q0kt8PsgUpOOA0Qa8tDhgfYiMmeFbY8lxlLx2xmPfewvciA4Sk1Geac8=
+X-Received: by 2002:a9d:6e97:0:b0:60b:3a60:142b with SMTP id
+ a23-20020a9d6e97000000b0060b3a60142bmr7434793otr.217.1653839822359; Sun, 29
+ May 2022 08:57:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
+Received: by 2002:a05:6358:560a:b0:a3:6e92:e156 with HTTP; Sun, 29 May 2022
+ 08:57:01 -0700 (PDT)
+Reply-To: BAkermarrtin@gmail.com
+From:   Martin Baker <m.evelinemartins@gmail.com>
+Date:   Sun, 29 May 2022 15:57:01 +0000
+Message-ID: <CAEvQOXRgPP5GhpUshtwVJ9oGTJHaFEEej5XOpmhHV+oYOMZHfg@mail.gmail.com>
+Subject: 
 To:     undisclosed-recipients:;
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hello,
 
 
-
-Ich bin Herr. Dave Ramsden und ich arbeiten mit der Bank of England
-zusammen. Ich habe einen lukrativen Geschäftsvorschlag für Sie, den ich
-Ihnen als Antwort auf diese E-Mail mit Einzelheiten zur Prüfung zukommen
-lassen werde.
-
-Bitte senden Sie Ihre Antwort, wenn möglich, auf Englisch, um weitere
-Einzelheiten zu erhalten.
-
-Mit freundlichen Grüßen,
-David Ramsden
-_____________________________________
-Persönlicher Assistent: Sarah Garric
-
+I wrote to you this morning because I have something to tell you, please
+let me know if you read my previous post today.
