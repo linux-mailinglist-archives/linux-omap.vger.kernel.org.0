@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9A5253A808
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 16:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5099853A897
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 16:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351132AbiFAOHI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Jun 2022 10:07:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49692 "EHLO
+        id S1354402AbiFAOJs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Jun 2022 10:09:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355776AbiFAOGX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 10:06:23 -0400
+        with ESMTP id S1354540AbiFAOJC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 10:09:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CB1BB8BDE;
-        Wed,  1 Jun 2022 07:00:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 691D1A33BC;
+        Wed,  1 Jun 2022 07:00:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55AAD61631;
-        Wed,  1 Jun 2022 13:59:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E69C3411D;
-        Wed,  1 Jun 2022 13:59:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2564615B2;
+        Wed,  1 Jun 2022 14:00:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DA6C385B8;
+        Wed,  1 Jun 2022 14:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654091998;
+        s=k20201202; t=1654092033;
         bh=262NN7HEnh2igmL4l1gAU+SUwZl24FoHE7oXfKo85Lc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ojc/+Ei3LDm6FBsmEG8TEqokfXEmZ3hJwc9DZxSsRgvbo/ncrBUMbOE88RXkeLjTS
-         N2YteM21VJHW8kqBe1GLn1/i5te/vHFGUa3HLJZgR9XV0fNQpF+tcHx/2fZtGvBcUt
-         JP4QXgneJo56SzHlB9sgxPuH5a2VpWhczujeLyaJOKcFM3HcRvO01ekN23fkBghKAf
-         UwGnZBFjOSLqV0e9JlHIM9gsPWtcPxLhyLhkeijStA7ZmuN/yuKqgAGWJ4o1FW2uf2
-         vsrE65QvR5rgZvR5Egktsf7UkzxcCp6lr2F57poUPjWCOw90fB4I6kmE2c7/jSaiFB
-         4oVjlqSOOjHaQ==
+        b=moLi92bSuYX0K0vQJCqPmP82cjG+8ezhbwe98k/JjFMln9TfP4AZYVeMHX2V2BlE4
+         UHRqAnOK+B3zDGu5VcPQLdafBIvA714IYjULTQ3Q0ObO7U77WvLSuDOXoZKlaqusNw
+         syhqUwomVr8Q6GhfuBgMGX1lagyHhpFE3EmYxgQ6fO/O7IX4Hj3HsbKy6/lFrc857C
+         wnYydn1vzOuRV0EDLcP2HJN2C3Kf+2JSh+6yP6EuN+hlUWqUAcfXG2dRzQ3uq6DTBv
+         NUmr4VWv6oU3G9AsdizxtzJM/+0oGqErsN/xeCO0NlIiSdA9sicvpYueN23LGpv8TJ
+         Qm2RAVs4GSs0g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
@@ -38,12 +38,12 @@ Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
         Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>,
         paul@pwsan.com, aaro.koskinen@iki.fi, linux@armlinux.org.uk,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 4.19 04/15] ARM: OMAP1: clock: Fix UART rate reporting algorithm
-Date:   Wed,  1 Jun 2022 09:59:39 -0400
-Message-Id: <20220601135951.2005085-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 03/14] ARM: OMAP1: clock: Fix UART rate reporting algorithm
+Date:   Wed,  1 Jun 2022 10:00:16 -0400
+Message-Id: <20220601140027.2005280-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220601135951.2005085-1-sashal@kernel.org>
-References: <20220601135951.2005085-1-sashal@kernel.org>
+In-Reply-To: <20220601140027.2005280-1-sashal@kernel.org>
+References: <20220601140027.2005280-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
