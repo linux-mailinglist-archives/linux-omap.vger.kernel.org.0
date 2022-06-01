@@ -2,105 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47CA2539C5D
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 06:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1BA2539CF7
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 08:08:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235436AbiFAEtJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Jun 2022 00:49:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55170 "EHLO
+        id S1349750AbiFAGIT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Jun 2022 02:08:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234905AbiFAEtI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 00:49:08 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3D9152B31;
-        Tue, 31 May 2022 21:49:07 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id b5so675396plx.10;
-        Tue, 31 May 2022 21:49:07 -0700 (PDT)
+        with ESMTP id S243583AbiFAGIS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 02:08:18 -0400
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D733A5F6;
+        Tue, 31 May 2022 23:08:17 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-306b5b452b1so7510627b3.1;
+        Tue, 31 May 2022 23:08:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xQQdqLGDEyEaJ0q3XFvWz51XQwcwBB1gnP9grs45a0A=;
-        b=l0N4Jd8kgXKz6N4pPkce+78dFAQxuAbgMSVylHnUGhpEqPXBAVOiY0OoZwRy5c+IkW
-         xB5+7Z7sSTibAAqsd7xVrOEMfm+H5pjtwKLOra+t1UhalNkdExB1AJI7wg+LtrywJL2J
-         6BJ9617aJ/gmk/K+56QdPBx1Tod7f1z9qvoFmmrJkDLbTcc+IMnjp/gRKbF9dfuTKc4Y
-         pU7p8gDqZGCsW+6GQxDEu6Hr5+aexGgCW9ZbewgZMBWSmtSeIKb+598CNaU+TPuviGfl
-         vMsoxFcvkd8XFj6gWz/pNEhNAZEUUt0MaU0xa038JYJD4NRoRhhrN3r4O0nk1rxkhw05
-         cmQw==
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gIg3Agwj0lv1Ovj0+uJVN2RThv4snjY10SoUPu90d6Q=;
+        b=E8Pn7wEhBA7UUbUKWYp/6kaUoFeWLX+rNGPsvG7ityirdlwKd3J6p+DTa6kFqXrAVM
+         jq7BNrJB/4Yzi6b2tF8ADSPHx0JKzJdNQAeZOOguVUFPSRxIpYm7pxlxBvIVfexdyJpQ
+         2LUnQjmCdIWCBhvw86e4IvqVHz1VaJcjLIbxm7kimSCYBxWMg6lwFqAuZ1ZFoNvDJf2I
+         6IH8F+1i4sYyu4FnM8AAwTMN3GBwWdQdWWtmJPD0SK3ZAK4yWGOFz5bo+ZSZwbkQuAlH
+         BZFEgU2PS/SvCTmR3/wv2ITIXPqKvtoRhA7H+QRj6U7NNFnHSVwcbP5SQT7EA0HEl48T
+         yYmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xQQdqLGDEyEaJ0q3XFvWz51XQwcwBB1gnP9grs45a0A=;
-        b=urj3kinUDPUjP2MFuEOOaV/8pQ7O/03P+5uJvz3RSKgfsECdbpjqXlp0iSFRsX39d6
-         tyAlBICh7iyxvZ/3yUGRf19hqP7UxoxSitdhdCTAoZAtocwFICMzSXYy7MvBa4BJFyOl
-         QAyjaL3oub+zvbo4sdqDZBl+HwoAZn7+iJeEcYYSXjYpb5GY+XFByeBOgIs2K3O/N58I
-         jTr8vldYvU8GUgxQ01NGlDZffslBd2VuagnT0hlx9DWmb90pAoIiGg8POT/MOooGs6yf
-         nbhe56fqB2RMUbtaelhAIxNHerNY0zcO2noeawsKCtVFy/dakFYSqBw7V0POSGyhGQot
-         MoPA==
-X-Gm-Message-State: AOAM530qnRMC5YDTGWaPYKAkB27dhu7vR1UiPEWS4LI7Y3HdqDH7IViH
-        43amG644Pm/4OKp+QQZcKaw=
-X-Google-Smtp-Source: ABdhPJxaDmfiU+rYQUhJxxGHahVE4aT3yrHtc2NV7ORrbgG83abmkaleOSY268WQG3kwgqwvVdi5zw==
-X-Received: by 2002:a17:90a:de0b:b0:1e3:33e9:6665 with SMTP id m11-20020a17090ade0b00b001e333e96665mr7862047pjv.27.1654058947423;
-        Tue, 31 May 2022 21:49:07 -0700 (PDT)
-Received: from localhost.localdomain ([202.120.234.246])
-        by smtp.googlemail.com with ESMTPSA id p126-20020a622984000000b0050dc76281e4sm315672pfp.190.2022.05.31.21.49.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 May 2022 21:49:07 -0700 (PDT)
-From:   Miaoqian Lin <linmq006@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     linmq006@gmail.com
-Subject: [PATCH] ARM: OMAP2+: Fix refcount leak in omapdss_init_of
-Date:   Wed,  1 Jun 2022 08:48:58 +0400
-Message-Id: <20220601044858.3352-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gIg3Agwj0lv1Ovj0+uJVN2RThv4snjY10SoUPu90d6Q=;
+        b=3gmeZ6f+jM42Cn4Yg0N3PwfdxQkJDBEj1nFHfeXOFrepdv6j+DLrKSsw1gOGZBMD8P
+         bVeTKVVnJuSJRyWq41v21McAQslo+nANSZTSJjcbGasfTFrxUX4Bm7qK0Babj110/GXz
+         R0YHavr3wX8iMDdhlkJq/NFB182b6KG4IZKC2DL/RMT79pDsNpfRfUD31BZnGGdLrLRb
+         lpmmvO2H+HfLQWv+EGO69oZ8ESZfIvYZM/ZoS9E3lBefjB9uvOfCtM+Tdf+LfZ9CojQS
+         oaLl3fEGdmOynSY3JeUaGBL1Pci3pdkUf1xR8br3mOmtuUGzmFo+Ej05rij3BSmv8RmE
+         8KaQ==
+X-Gm-Message-State: AOAM532NDGr0HJRBNISipQWB+WJXR6K6nQMrsRsldJDnKzjx4PDMCCOe
+        mWwo/CyuRLygePGVbW7FzWUSFLt6z7mxDGBV8hagpW3x
+X-Google-Smtp-Source: ABdhPJxBjyPQjxT0htPDNEDKDTsNVs0WVxuFeapdBYPyYvk3cWDHR7gt78mvtng45kr9k0MXZ4TzUg/JWnuYIOQSb9I=
+X-Received: by 2002:a81:184b:0:b0:30c:846e:e2b with SMTP id
+ 72-20020a81184b000000b0030c846e0e2bmr12384622ywy.97.1654063696148; Tue, 31
+ May 2022 23:08:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <CAGm1_ktMOwwhhgVWj3DpCib-WpRzhkjE4d4DN74mz6kdwJk6BA@mail.gmail.com>
+ <YnNagtAtSudCum75@atomide.com> <CAGm1_kv6wYV6ccrGJuGaeR=rffajEBB6H1Mt17iXJeMJg0JozQ@mail.gmail.com>
+ <CAK8P3a1xxODV3ak-JgqBmVvJTUG6W8eQ+_B8ZcbYFAhP+4o2EQ@mail.gmail.com>
+In-Reply-To: <CAK8P3a1xxODV3ak-JgqBmVvJTUG6W8eQ+_B8ZcbYFAhP+4o2EQ@mail.gmail.com>
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Wed, 1 Jun 2022 08:08:04 +0200
+Message-ID: <CAGm1_kuYGMAbO0aB52hRwZp6qALALQ4LvMkNuC=F9Pk4P5BdXg@mail.gmail.com>
+Subject: Re: Linux 5.18.x: sdhci issue
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-omapdss_find_dss_of_node() calls of_find_compatible_node() to get device
-node. of_find_compatible_node() returns a node pointer with refcount
-incremented, we should use of_node_put() on it when done.
-Add missing of_node_put() in later error path and normal path.
+On Tue, May 31, 2022 at 11:23 AM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Tue, May 31, 2022 at 10:28 AM Yegor Yefremov
+> <yegorslists@googlemail.com> wrote:
+> > On Thu, May 5, 2022 at 7:03 AM Tony Lindgren <tony@atomide.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > * Yegor Yefremov <yegorslists@googlemail.com> [220504 09:12]:
+> > > > Hi Tony, all,
+> > > >
+> > > > During the kernel boot I see the following error. The device is still
+> > > > working afterwards. 5.17.5 shows the same behavior. Is this a known
+> > > > issue?
+> > >
+> > > Thanks for reporting it, I was not aware of this one. Might be worth
+> > > bisecting. Adding linux-mmc and Ulf.
+> >
+> > After enabling the CONFIG_DMA_API_DEBUG option, I also get the following error:
+>
+> > [    7.603288]  dma_map_sg_attrs from sdhci_pre_dma_transfer+0xcc/0x134
+> > [    7.609705]  sdhci_pre_dma_transfer from mmc_blk_mq_issue_rq+0x2f4/0xa58
+> > [    7.616462]  mmc_blk_mq_issue_rq from mmc_mq_queue_rq+0x124/0x258
+> > [    7.622604]  mmc_mq_queue_rq from blk_mq_dispatch_rq_list+0x1b8/0x8ac
+> > [    7.629104]  blk_mq_dispatch_rq_list from
+> > blk_mq_do_dispatch_sched+0x2ec/0x350
+> > [    7.636387]  blk_mq_do_dispatch_sched from
+> > __blk_mq_sched_dispatch_requests+0x118/0x170
+> > [    7.644448]  __blk_mq_sched_dispatch_requests from
+> > blk_mq_sched_dispatch_requests+0x34/0x5c
+> > [    7.652859]  blk_mq_sched_dispatch_requests from
+> > __blk_mq_run_hw_queue+0xf8/0x230
+> > [    7.660402]  __blk_mq_run_hw_queue from process_one_work+0x284/0x72c
+>
+> This is the blk_mq code taking things off the queue, so we don't really
+> know how they got put on there at this point. To find that, we'd need to
+> annotate the mmc code with the same kind of check to test the buffer
+> address whenever something gets submitted on the blk_mq queue.
+>
+> Looking at the calls to sg_init*(), I found sdio_io_rw_ext_helper(), which
+> is what all sdio commands pass through. We could annotate that using
+>
+> diff --git a/drivers/mmc/core/sdio_io.c b/drivers/mmc/core/sdio_io.c
+> index 79dbf90216b5..4ab063c50649 100644
+> --- a/drivers/mmc/core/sdio_io.c
+> +++ b/drivers/mmc/core/sdio_io.c
+> @@ -322,6 +322,11 @@ static int sdio_io_rw_ext_helper(struct sdio_func
+> *func, int write,
+>         if (!func || (func->num > 7))
+>                 return -EINVAL;
+>
+> +       WARN_ON_ONCE(memory_intersects(_stext, _etext, buf, size));
+> +       WARN_ON_ONCE(memory_intersects(__start_rodata, __end_rodata,
+> buf, size));
+> +       WARN_ON_ONCE(object_is_on_stack(buf));
+> +       WARN_ON_ONCE(is_vmalloc_or_module_addr(buf));
+> +
+>         /* Do the bulk of the transfer using block mode (if supported). */
+>         if (func->card->cccr.multi_block && (size > sdio_max_byte_size(func))) {
+>                 /* Blocks per command is limited by host count, host transfer
+>
+>  Does that show something new?
+>
+> If this is a block device, the change won't help, but I can't find a good place
+> to hook into that at the moment. mmc_mq_queue_rq() might work, but
+> I think that is still called asynchronously.
 
-Fixes: e0c827aca0730 ("drm/omap: Populate DSS children in omapdss driver")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- arch/arm/mach-omap2/display.c | 2 ++
- 1 file changed, 2 insertions(+)
+No, the patch provides the same output.
 
-diff --git a/arch/arm/mach-omap2/display.c b/arch/arm/mach-omap2/display.c
-index 21413a9b7b6c..ed2cb2649cf6 100644
---- a/arch/arm/mach-omap2/display.c
-+++ b/arch/arm/mach-omap2/display.c
-@@ -259,11 +259,13 @@ static int __init omapdss_init_of(void)
- 
- 	if (!pdev) {
- 		pr_err("Unable to find DSS platform device\n");
-+		of_node_put(node);
- 		return -ENODEV;
- 	}
- 
- 	r = of_platform_populate(node, NULL, NULL, &pdev->dev);
- 	put_device(&pdev->dev);
-+	of_node_put(node);
- 	if (r) {
- 		pr_err("Unable to populate DSS submodule devices\n");
- 		return r;
--- 
-2.25.1
-
+Yegor
