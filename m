@@ -2,55 +2,64 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D611953A8A2
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 16:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACCFA53AD77
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 21:48:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351142AbiFAOLl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Jun 2022 10:11:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50642 "EHLO
+        id S229745AbiFATbQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Jun 2022 15:31:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354644AbiFAOJg (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 10:09:36 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B3DDF61;
-        Wed,  1 Jun 2022 07:01:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 928D3B81AE7;
-        Wed,  1 Jun 2022 14:01:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD29C341C0;
-        Wed,  1 Jun 2022 14:01:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654092065;
-        bh=v3S7+R/sqeurSfR1qnzvW17UXWm4tAY5LvvhEotC0/Q=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WPnj6FY3j1y0HlonOZz4Fsj3VAqv29aTraydBFX3KtM5AUvWqUVlclr8k8LD3Upl3
-         SMJRAU0+/udkw/Y11MwWScLNj5ONEG6EDm0ukLEgapbE4XJ32ljz8N9ucRBeRIdOu/
-         V+3gkR7JN3QDpOZWi++AsNYUViW312qdSKiASw6jnOVfHldwmms7dPuzJ4MGiKiEeU
-         OGAvSU38udtZT6tobSOKCis0237vut9jYQbx5NVwrSYNxwRDLFXpnM+bP+nfmLHyVj
-         MGShB3d5paUWbFkf32RzoSjk/YoqbbTe+QVLdiq8reswwPn7Lk5NMyQOE6TdVloEPL
-         CMaNf1zpW2YCw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>,
-        paul@pwsan.com, aaro.koskinen@iki.fi, linux@armlinux.org.uk,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 4.9 02/11] ARM: OMAP1: clock: Fix UART rate reporting algorithm
-Date:   Wed,  1 Jun 2022 10:00:51 -0400
-Message-Id: <20220601140100.2005469-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220601140100.2005469-1-sashal@kernel.org>
-References: <20220601140100.2005469-1-sashal@kernel.org>
+        with ESMTP id S229729AbiFATbK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 15:31:10 -0400
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B789417CE71
+        for <linux-omap@vger.kernel.org>; Wed,  1 Jun 2022 12:28:47 -0700 (PDT)
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-d39f741ba0so3973242fac.13
+        for <linux-omap@vger.kernel.org>; Wed, 01 Jun 2022 12:28:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
+         :subject:to;
+        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
+        b=DxxMd4k8tG1Z+DI+JxuL9225Cp+S+uInl/poXMcuMZiTQV1c8XJNPCuJB0EN9Fm1lJ
+         tjqO15tZbiRtkiZc869kqZb+gTGwGsofr4Ks/EzA24HoqZkeukApCRLbeWaJgYbzN6Uj
+         DJcyUaN0vgzLiaJiK8SKJwd17XWuJUN7X4OrSO+zy2q+txFdEpb8ifoCAb/ECnGeqxQV
+         22+OgKU21rrXICCeKXN25GVJHEIOuX810V30PW3f8Y111fShlwSlQkBARV9N87g0aoLJ
+         wQNCoaF08Ng768jLDvSBCHYHS21HkQkWfLc+tM30B/O2SgLendb0dLrFE3BY6UlGqUm0
+         gBYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:in-reply-to:references
+         :from:date:message-id:subject:to;
+        bh=Gk4nfCem3ECRa7Gml0J0mN/3RZoOAdfGaQAqyHPKtiI=;
+        b=q5GyR3eS31uuusitGs8rguRxHVJ85RdI/AE4UYAo32FnaqGX2oyBwrbr+8DWYs1IgV
+         RWt6NzsDIxUI7vL/tkPVa8fvkhInrtnlvr90uonoTs9WcN1pXRQPV4CGcgpXpDMVGLck
+         8YRGPmtXq2AlhXUTMBKwBqpp/Tkj5rEGzDDfR3/+wIeUb/CS4l0RZRgysyG/PyGeZVgU
+         NXoX98iJIWhS/+cqAw5jvCrV8M1AHuA8HokXrGf6ZhZUeAzaGv08bGlJ7ZDtS8SS2hVX
+         u1yJIMpB8c4+EBFOv6PT9dN5MnB6cWCx2U4+gyzzO/w8ozrr1rPJMgpt628ZCjrTbPxp
+         JgiA==
+X-Gm-Message-State: AOAM530vvKRFVFDlsnrgUpWzg9XPJWfj/AtEab8RRmQy7GY2Zc93SikJ
+        4aDPFfjnbqi+SlVU3K9jqnV1xY1MJWEEy+kb5NMUn4Mpn90=
+X-Google-Smtp-Source: ABdhPJxRHJ7PowqzwP8FVf7Pao2siL9+mp8F+vsKwg9Hvlld1uXwEH8+vzJyu5zLQk9d57eu+g6BtXkHW1P4ce0P3TA=
+X-Received: by 2002:a05:6870:4619:b0:f1:e78d:fd54 with SMTP id
+ z25-20020a056870461900b000f1e78dfd54mr18175523oao.195.1654111088174; Wed, 01
+ Jun 2022 12:18:08 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:a05:6358:3601:b0:a3:2139:251d with HTTP; Wed, 1 Jun 2022
+ 12:18:07 -0700 (PDT)
+Reply-To: johnwinery@online.ee
+In-Reply-To: <CAFqHCSSUC0MpbjYK8d-GCxOG4b6Qbk2uH3+xQDZte6cPBsxLGA@mail.gmail.com>
+References: <CAFqHCSSUC0MpbjYK8d-GCxOG4b6Qbk2uH3+xQDZte6cPBsxLGA@mail.gmail.com>
+From:   johnwinery <alicejohnson8974@gmail.com>
+Date:   Wed, 1 Jun 2022 12:18:07 -0700
+Message-ID: <CAFqHCSTLW5uHwBqcyU-qn7_jF2jtwt2-CjgdN8-B9nAn9yi+vg@mail.gmail.com>
+Subject: Re:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,35 +67,4 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-
-[ Upstream commit 338d5d476cde853dfd97378d20496baabc2ce3c0 ]
-
-Since its introduction to the mainline kernel, omap1_uart_recalc() helper
-makes incorrect use of clk->enable_bit as a ready to use bitmap mask while
-it only provides the bit number.  Fix it.
-
-Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/mach-omap1/clock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-omap1/clock.c b/arch/arm/mach-omap1/clock.c
-index 034b89499bd7..a3599696e7cc 100644
---- a/arch/arm/mach-omap1/clock.c
-+++ b/arch/arm/mach-omap1/clock.c
-@@ -44,7 +44,7 @@ static DEFINE_SPINLOCK(clockfw_lock);
- unsigned long omap1_uart_recalc(struct clk *clk)
- {
- 	unsigned int val = __raw_readl(clk->enable_reg);
--	return val & clk->enable_bit ? 48000000 : 12000000;
-+	return val & 1 << clk->enable_bit ? 48000000 : 12000000;
- }
- 
- unsigned long omap1_sossi_recalc(struct clk *clk)
--- 
-2.35.1
-
+Greeting ,I had written an earlier mail to you but without response
