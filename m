@@ -2,94 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 372DF539D5C
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 08:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C51C539D6D
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 08:49:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349901AbiFAGpx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Jun 2022 02:45:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36898 "EHLO
+        id S236786AbiFAGtj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Jun 2022 02:49:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349898AbiFAGpp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 02:45:45 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418CF97298;
-        Tue, 31 May 2022 23:45:44 -0700 (PDT)
-Received: from mail-yw1-f182.google.com ([209.85.128.182]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1Mq2rM-1nR8A00ao6-00n5yQ; Wed, 01 Jun 2022 08:45:42 +0200
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-30c2f288f13so7981187b3.7;
-        Tue, 31 May 2022 23:45:41 -0700 (PDT)
-X-Gm-Message-State: AOAM531Ockax7QFc2a3Q5qinwSYu1zDIjuRbcTFYov4J+ulcWOQG+i4o
-        ZvxrbP2tbkH2/CTqP28E8PCu4ASMNlQ4Wl6LFQI=
-X-Google-Smtp-Source: ABdhPJxq9InuUIrimfB3hr7dW///DRy+5BhspFyMzdFTqUL2RwXpKSW+k/VUx3CUHz+Op8OoRjPlxOTXQCqKN2AESqo=
-X-Received: by 2002:a0d:cfc7:0:b0:300:26d2:30eb with SMTP id
- r190-20020a0dcfc7000000b0030026d230ebmr42935803ywd.320.1654065940773; Tue, 31
- May 2022 23:45:40 -0700 (PDT)
+        with ESMTP id S233201AbiFAGti (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 02:49:38 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B68068FFBE;
+        Tue, 31 May 2022 23:49:37 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-30c2f288f13so8057817b3.7;
+        Tue, 31 May 2022 23:49:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tn4Et6t93FSUGeem3X7ovetc352Wa8MqQtL6j/+Jl2w=;
+        b=NX/eMVpqPgoS5ta99ANSUfXB8rkjp+D9lNgyt2QCWXY81tKFIj6M9TT+pH9GNgAQ7f
+         8mWcGx+4/OTzHRSQphCQqXUpkLixASW3D934ODJfUhbVBKOhIuhBLH8Dy//i4J+AMACJ
+         RYFE+yuLMwe0yqr+fdM7pdIFWVGr6C4AphdzpYwhs9OKR344coez0mEEE4xV2IaiD+qZ
+         n8NCNcD9bdqvyqwX5ZhXs1lDd07MOZvD1OnebO+2SlDQpHP0tbQgJ2y/RxHdSRyMrOKU
+         /u1dEO2bF0Y9gUwZJfsOa8R1c+Bf13WNh/2sp/jZIEvPOR+68CwZp5IgEWTQI4YOaW31
+         cY2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tn4Et6t93FSUGeem3X7ovetc352Wa8MqQtL6j/+Jl2w=;
+        b=5CZyavTeOyUwBwlMAtdwe61FjowFsV0Hjy306oZ56q4jX5Bayk11Biffp5G1/2fryi
+         1ZL3/WqArlVtI+ZB7ausCxRzG7CDQYpfQJTlnpNN6ACxJi0ATwK46hX5I7e5Qi00ug8E
+         ecqENVKhQ3u41skcoEjLevncRcQkf62nml9gwFC54K1bZ6s6lrfLv5l+lXwdJQBXNR32
+         kF/kvFs47aCIoO9jfzHc27lQZzK9Xb01QWNqieiK37KW5vAAjafIO+GVv+5A0va+VqOQ
+         C9+Twq6U557EaT4pX5v65gUmAZhj6FcRrivxDlwLUKrrTLcERnpcLVMJqDkA1ZlN4FAj
+         4iJQ==
+X-Gm-Message-State: AOAM53074PLPCA2JJPZ08gEjcKTqbGoi1rqlTEByUZEnN1/w/HeAPVue
+        /PYbIXPhEFnHMasTKjXEl4WkGP5lXDOunN/rS0U=
+X-Google-Smtp-Source: ABdhPJx3tHxRf08E3gMq3C+ZOIKMccYhm0ULmHf3lfdxJldc7wRtCVs46Tnou/OQbCfsPK9CEqnzl6YYBRHEuZudM1I=
+X-Received: by 2002:a81:488c:0:b0:302:549f:ffbc with SMTP id
+ v134-20020a81488c000000b00302549fffbcmr33359120ywa.495.1654066176872; Tue, 31
+ May 2022 23:49:36 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAGm1_ktMOwwhhgVWj3DpCib-WpRzhkjE4d4DN74mz6kdwJk6BA@mail.gmail.com>
  <YnNagtAtSudCum75@atomide.com> <CAGm1_kv6wYV6ccrGJuGaeR=rffajEBB6H1Mt17iXJeMJg0JozQ@mail.gmail.com>
- <CAK8P3a1xxODV3ak-JgqBmVvJTUG6W8eQ+_B8ZcbYFAhP+4o2EQ@mail.gmail.com> <CAGm1_kuYGMAbO0aB52hRwZp6qALALQ4LvMkNuC=F9Pk4P5BdXg@mail.gmail.com>
-In-Reply-To: <CAGm1_kuYGMAbO0aB52hRwZp6qALALQ4LvMkNuC=F9Pk4P5BdXg@mail.gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 1 Jun 2022 08:45:23 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2kEWU+rS55QXwOq04pRv2oEQAdqcGsDj1or04DQ4Uqag@mail.gmail.com>
-Message-ID: <CAK8P3a2kEWU+rS55QXwOq04pRv2oEQAdqcGsDj1or04DQ4Uqag@mail.gmail.com>
+ <CAK8P3a1xxODV3ak-JgqBmVvJTUG6W8eQ+_B8ZcbYFAhP+4o2EQ@mail.gmail.com>
+ <CAGm1_kuYGMAbO0aB52hRwZp6qALALQ4LvMkNuC=F9Pk4P5BdXg@mail.gmail.com> <CAK8P3a2kEWU+rS55QXwOq04pRv2oEQAdqcGsDj1or04DQ4Uqag@mail.gmail.com>
+In-Reply-To: <CAK8P3a2kEWU+rS55QXwOq04pRv2oEQAdqcGsDj1or04DQ4Uqag@mail.gmail.com>
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Wed, 1 Jun 2022 08:49:25 +0200
+Message-ID: <CAGm1_ksYy=fueypVJDfVhf=J-cY8r1yJpBYO9cEK5_CTfn5xQA@mail.gmail.com>
 Subject: Re: Linux 5.18.x: sdhci issue
-To:     Yegor Yefremov <yegorslists@googlemail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Tony Lindgren <tony@atomide.com>,
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Tony Lindgren <tony@atomide.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Linux-OMAP <linux-omap@vger.kernel.org>,
         linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:73Pm1s8KlS1x07jUfJyeHvP2H+5esKuvZWQZ55NDLOdSO9QspLz
- Xxmd1g74Pc3Wzy7c230DTpOdW3kosYKic2COiDPTXJx/td2rKA6P4//oVTyk5Q0gkr7d39s
- u+fSbvq9b7F63qWluq/dvsbpvvKSU17mESb/g0DEmh/aJDptWXFgiJEsd+8yuIoeIjq6S9k
- gTJZUlqVunP1lDIIsURrA==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:4/vqMEyctsw=:3ATQxm3it+ZPqRv2tg/+uN
- qVZm3kLrnEQeuafb0IaetL7broVZrWmdbKZcib+LsbdV/iQfRaDhUHxo78/2TdumPxx4HD6sq
- 32pzlJaRGaEMYg+ccO61NagTt04p9JZZw6Rc2Jwu4liU8ekaPIuchI0EIFfS9oQNWAlIqHv0F
- iVC80NPlUqW0J1E2rb1SXdwjt/VZA/gZL4+51NGasHnjZssMxJbwYlIkIbcDG73H/8M3m7iaU
- fi/tsOJAQrMKlmeJ67gt0orSQLya91IQUYCtcKg0i4fqWRh0O1cBuFdhkUwuxvUQBOB0CedAX
- snxF6bvkffNcVEbHlL4xycXJFImvXzI7c/7WgfGIvgsZy1pNB8izuTrJjue/zCn9E6ABI13XA
- 1r96nGx06a8ECyJJwKYqc0olxFLDl0+T1bejoHsGba1JHmMNFpGvCtkqPPYP690EkKVePNbdI
- WlHwsyq6tnytOjO0/3fAk/pqE9u6A4k5CTyhWkhv/sANhMqlaFckm7XeMc3BDBQ0C+KKqHIHz
- sdDgDJ9J0h6qYwnsc/22ZLoP/RgycdHf6auj93A8PuzAoAvpgD1XAGPuKvR0R1dNTUh5/GmVU
- G0tX9cBijYmXpJqooiWzmLfvKudFIjOozNvGdrb7QuIeHowWYSOYVVlEjqJaePljQgzzIWgGH
- XUVdMjBXauHcoB0IwZqVM6xxVbcIocqxl5r3WSCqz3FfjMCcpd7Jv7CYI9nqh+RyeGx7tEJEA
- FkycQB6wX3xHkSEq76/S6/EGocJw3dUtqhZ+vw==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jun 1, 2022 at 8:08 AM Yegor Yefremov
-<yegorslists@googlemail.com> wrote:
-> On Tue, May 31, 2022 at 11:23 AM Arnd Bergmann <arnd@arndb.de> wrote:
-> > On Tue, May 31, 2022 at 10:28 AM Yegor Yefremov
-> >
-> > +       WARN_ON_ONCE(memory_intersects(_stext, _etext, buf, size));
-> > +       WARN_ON_ONCE(memory_intersects(__start_rodata, __end_rodata,
-> > buf, size));
-> > +       WARN_ON_ONCE(object_is_on_stack(buf));
-> > +       WARN_ON_ONCE(is_vmalloc_or_module_addr(buf));
-> > +
-> >         /* Do the bulk of the transfer using block mode (if supported). */
-> >         if (func->card->cccr.multi_block && (size > sdio_max_byte_size(func))) {
-> >                 /* Blocks per command is limited by host count, host transfer
-> >
-> >  Does that show something new?
-> >
-> > If this is a block device, the change won't help, but I can't find a good place
-> > to hook into that at the moment. mmc_mq_queue_rq() might work, but
-> > I think that is still called asynchronously.
+On Wed, Jun 1, 2022 at 8:45 AM Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> No, the patch provides the same output.
+> On Wed, Jun 1, 2022 at 8:08 AM Yegor Yefremov
+> <yegorslists@googlemail.com> wrote:
+> > On Tue, May 31, 2022 at 11:23 AM Arnd Bergmann <arnd@arndb.de> wrote:
+> > > On Tue, May 31, 2022 at 10:28 AM Yegor Yefremov
+> > >
+> > > +       WARN_ON_ONCE(memory_intersects(_stext, _etext, buf, size));
+> > > +       WARN_ON_ONCE(memory_intersects(__start_rodata, __end_rodata,
+> > > buf, size));
+> > > +       WARN_ON_ONCE(object_is_on_stack(buf));
+> > > +       WARN_ON_ONCE(is_vmalloc_or_module_addr(buf));
+> > > +
+> > >         /* Do the bulk of the transfer using block mode (if supported). */
+> > >         if (func->card->cccr.multi_block && (size > sdio_max_byte_size(func))) {
+> > >                 /* Blocks per command is limited by host count, host transfer
+> > >
+> > >  Does that show something new?
+> > >
+> > > If this is a block device, the change won't help, but I can't find a good place
+> > > to hook into that at the moment. mmc_mq_queue_rq() might work, but
+> > > I think that is still called asynchronously.
+> >
+> > No, the patch provides the same output.
+>
+> Can you say what devices are attached to the mmc controller? Is it
+> an eMMC block device, an SDIO device, or both?
 
-Can you say what devices are attached to the mmc controller? Is it
-an eMMC block device, an SDIO device, or both?
+From DTS point of view: MMC and WiFi (SDIO). Physically, only MMC
+(removable SDcard).
 
-         Arnd
+Yegor
