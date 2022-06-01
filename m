@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 746DA53A783
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 16:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4876D53A85C
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 16:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354151AbiFAOCC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Jun 2022 10:02:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55366 "EHLO
+        id S1354260AbiFAOIF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Jun 2022 10:08:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355217AbiFAOBY (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 10:01:24 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBBA1A5A8F;
-        Wed,  1 Jun 2022 06:57:59 -0700 (PDT)
+        with ESMTP id S1343551AbiFAOEv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 10:04:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F9A8BD31;
+        Wed,  1 Jun 2022 06:58:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8D064B81AE6;
-        Wed,  1 Jun 2022 13:56:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01553C3411E;
-        Wed,  1 Jun 2022 13:56:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 245AE6163F;
+        Wed,  1 Jun 2022 13:58:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9D1C3411D;
+        Wed,  1 Jun 2022 13:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654091814;
-        bh=XHRtkpxftbgTm/PySu+8nLF6MiAvmFtE9vRGXyrzS1U=;
+        s=k20201202; t=1654091896;
+        bh=0vLOqckxqz6FAn6Yj85sK+G/Bi0voXu2VUuWxkW7Bm4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uxWTGPHt5aAIkLKc33FF38Bvd7o+Yw/TJ5GFP6eNVOj9XFNfrlTr3X6jnnX2MEP9D
-         diIHxZJWHxV3ZJmDGYassdsdDO4ZBIvnmTuCpaM/vi3OFxCVhuCRdRBq15USl8U1qM
-         gYY6Kn/dfcni5IHocWmCcErSN/VKeopzHB3/uNXNUgR01j1RyWsifvtkrkd1Ra3DvN
-         /gQiypdQkkQiSZdJ6lXxmdetlkWanwXf/XhunQQcNxmdd6u+qO3AML4I5eu+qYMP3+
-         9bFvgyTLeWBelfFDagKrV8WyI9F1do2F0LusT4wiZjf24qR37G2h7NIDwX/Iv73RyK
-         rgRgtnfkJhsHQ==
+        b=lC5d4Lh9qtas4S0iu2YYA5sI9fdneDx7k0C+QV3B9QIe2/U86ZiQ7fHQvUEJHI1uL
+         5fGWANpql/s2rp0Xop2MwpkSiVtjawGjzUUwWw+AVW8HRl0iCptoPeK3s7Ho2SPHid
+         Q5530QcycOUr25rFpUxqBCHS57u/QL3daH+nSlPceIDxAYysYRfpuzmDnxkJM8P3h/
+         +jIDrOMXYu1YY7foRJFkkq5rZ3XCzP12QsZpBSqFEDqcq7Yhk0bn4GRKKOCqNsYkCn
+         We6PWbXEil0Fgl2NIxWzUR8MQzyRz69GksaX2jfBZziEVyI42WRguz2y103i4NGHl9
+         nduPgBtM1P6JA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
@@ -38,12 +38,12 @@ Cc:     Janusz Krzysztofik <jmkrzyszt@gmail.com>,
         Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>,
         paul@pwsan.com, aaro.koskinen@iki.fi, linux@armlinux.org.uk,
         linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 15/37] ARM: OMAP1: clock: Fix UART rate reporting algorithm
-Date:   Wed,  1 Jun 2022 09:56:00 -0400
-Message-Id: <20220601135622.2003939-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 10/26] ARM: OMAP1: clock: Fix UART rate reporting algorithm
+Date:   Wed,  1 Jun 2022 09:57:43 -0400
+Message-Id: <20220601135759.2004435-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220601135622.2003939-1-sashal@kernel.org>
-References: <20220601135622.2003939-1-sashal@kernel.org>
+In-Reply-To: <20220601135759.2004435-1-sashal@kernel.org>
+References: <20220601135759.2004435-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -75,7 +75,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/mach-omap1/clock.c b/arch/arm/mach-omap1/clock.c
-index 9d4a0ab50a46..d63d5eb8d8fd 100644
+index bd5be82101f3..d89bda12bf3c 100644
 --- a/arch/arm/mach-omap1/clock.c
 +++ b/arch/arm/mach-omap1/clock.c
 @@ -41,7 +41,7 @@ static DEFINE_SPINLOCK(clockfw_lock);
