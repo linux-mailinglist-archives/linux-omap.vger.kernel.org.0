@@ -2,43 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C277539F03
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 10:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BED653A055
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jun 2022 11:29:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350521AbiFAIIR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 1 Jun 2022 04:08:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52460 "EHLO
+        id S1344232AbiFAJ27 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 1 Jun 2022 05:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350524AbiFAIIP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 04:08:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3A3E1C106;
-        Wed,  1 Jun 2022 01:08:13 -0700 (PDT)
+        with ESMTP id S1350422AbiFAJ2M (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 1 Jun 2022 05:28:12 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D71A75C35D;
+        Wed,  1 Jun 2022 02:28:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 825306145B;
-        Wed,  1 Jun 2022 08:08:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AB8C34119;
-        Wed,  1 Jun 2022 08:08:12 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4E1ACB81855;
+        Wed,  1 Jun 2022 09:28:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17C8C36AE2;
+        Wed,  1 Jun 2022 09:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654070893;
-        bh=G8ea8D+q6mHk8aHCvfAHmYO+5MM08v7Btb2LL8ppXE8=;
+        s=k20201202; t=1654075688;
+        bh=iiZO8SpL5l4lZgT8QyC1XjNL9kQkDdoBvgkTrN4vLVk=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=gyOC1Ah3rW/OJqC8//m6qnWPCemrJbT0qQqKOOZzbMhVSiAFDI2E9sUfqJEZr0YHL
-         ds7WLtGL6peOZmEhvwKwF4Xcz1RMIpFLlGQgAjg1zgIdL+ewZ+0qmpIQ9k/uWarP7p
-         QDAGh4OfyHD1vsBdQjH3rjA99/EIBux9MmxRARQZTpNrlDJtrB5c+KFSpmZrID2TiZ
-         XqQkhlrC13X4yxhNv4Z98673Jsa5zCgk4JZquoQ8j2c5koBifCTEntwecO47aSKkhQ
-         1arFUNf1HM3K6mtAHOeS1cWRj/L8v23dt+IHeCEd8MkJ3+7EO16d5ejED412WojWkv
-         R1fvNq29p2FzQ==
-Received: by mail-oi1-f174.google.com with SMTP id v9so1688321oie.5;
-        Wed, 01 Jun 2022 01:08:12 -0700 (PDT)
-X-Gm-Message-State: AOAM532I+51OemQTfgeP47W3Un5Z9C9conO2yFxw4hxKnfMakMg29uyR
-        5cmOo7qsRBf1Un5m6HYPof/MkcuCFpFJ5rTbmcA=
-X-Google-Smtp-Source: ABdhPJwUyfIxbpgUAGZfZsManIFjVvJyso46XAOwsCT8OY8IF2ENvO9U0cj+3Yfiu3Y5TYsl5gt2MRG2K4OXRiXREtY=
-X-Received: by 2002:a05:6808:f88:b0:32b:d10f:cc6b with SMTP id
- o8-20020a0568080f8800b0032bd10fcc6bmr12876264oiw.228.1654070892117; Wed, 01
- Jun 2022 01:08:12 -0700 (PDT)
+        b=uU73KWJIfpz3qFybI0scp3GCBkahzGtsDpXh9WYI/mLNnfFgzNf/HuIr+qxJEFAvV
+         KWj2oviz1umL5FWgZYCWXBjH/4IjLs90alPoRveqo2jnm79XC147Z41bb5QhU0LUnx
+         svxlsXw2ljM8pnSMPD7UtH9LujN6RcTI/O0YmovitemhfgtCoc7aQp2+gRH3nffBhK
+         1quyw52XgPvn4WAW5V/eFhz3IgipLtHieYanCuGh9+udYBYn/N14FpBOPNQdaJBONd
+         TYhnQSK9ov5b2zYlBVrwaHYjQtYYg9EJaXvPc7NM1S5Nx7X9ee6j5bPRgCHVylLXtT
+         4q+zjd9Z505mA==
+Received: by mail-oo1-f49.google.com with SMTP id c17-20020a4ac311000000b0040ea8bf80f2so241801ooq.1;
+        Wed, 01 Jun 2022 02:28:07 -0700 (PDT)
+X-Gm-Message-State: AOAM532ElqGyjKS4BGve90yzrD071Biga2qZ3refNRDNvSvjOx3mJIHk
+        OOLqLjtWQbOwonuTwe2PLhi/Z9pkNDEV4xyUK2M=
+X-Google-Smtp-Source: ABdhPJxC87TPTbcVZH8smwi2BLzzs/bjbciUAZCZE9HPZkXhCIRlx9jtGXFtWXNKKnTeq+qma87ev74oSX4YOitPtrk=
+X-Received: by 2002:a4a:d095:0:b0:40e:65c9:1000 with SMTP id
+ i21-20020a4ad095000000b0040e65c91000mr21520501oor.98.1654075687062; Wed, 01
+ Jun 2022 02:28:07 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
  <CAGm1_kuaRr3BFWSq-2v4vT0VbVvMX=kMHQsQ1KZnKe9UEff3MA@mail.gmail.com>
@@ -67,12 +67,13 @@ References: <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
  <CAGm1_ksF1UPpdeiTnADiQK8MFbvP8-eDhc=yaCL75EsE_pG=-g@mail.gmail.com>
  <CAGm1_ksmXTnEo_Mxk7+S4vs_CQAs5ZHoEOpq9Tq3ZFf7sruX7A@mail.gmail.com>
  <CAK8P3a1nhBnbbocBNkKUKYhw14OYE0WPEyQcJJXzbpW4uASu_Q@mail.gmail.com>
- <CAGm1_kswMZkoV9_DnB71ugVTF_rh5SV2NazkHROwXiFqhxTWYA@mail.gmail.com> <CAK8P3a0Qdav2JaF8yLydxr9amQp30gnY67CVx+ubowUHeG1VeA@mail.gmail.com>
-In-Reply-To: <CAK8P3a0Qdav2JaF8yLydxr9amQp30gnY67CVx+ubowUHeG1VeA@mail.gmail.com>
+ <CAGm1_kswMZkoV9_DnB71ugVTF_rh5SV2NazkHROwXiFqhxTWYA@mail.gmail.com>
+ <CAK8P3a0Qdav2JaF8yLydxr9amQp30gnY67CVx+ubowUHeG1VeA@mail.gmail.com> <CAMj1kXEL48=w08A2t7522y1visAUcnkkq4LA6ERRP_FbCbEgiw@mail.gmail.com>
+In-Reply-To: <CAMj1kXEL48=w08A2t7522y1visAUcnkkq4LA6ERRP_FbCbEgiw@mail.gmail.com>
 From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 1 Jun 2022 10:08:00 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEL48=w08A2t7522y1visAUcnkkq4LA6ERRP_FbCbEgiw@mail.gmail.com>
-Message-ID: <CAMj1kXEL48=w08A2t7522y1visAUcnkkq4LA6ERRP_FbCbEgiw@mail.gmail.com>
+Date:   Wed, 1 Jun 2022 11:27:55 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFmFfQ1oZ-CUcwe+ojSkk+9KBH1azhGrEJ4=-pZgMXX-Q@mail.gmail.com>
+Message-ID: <CAMj1kXFmFfQ1oZ-CUcwe+ojSkk+9KBH1azhGrEJ4=-pZgMXX-Q@mail.gmail.com>
 Subject: Re: am335x: 5.18.x: system stalling
 To:     Arnd Bergmann <arnd@arndb.de>
 Cc:     Yegor Yefremov <yegorslists@googlemail.com>,
@@ -92,45 +93,53 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, 1 Jun 2022 at 09:59, Arnd Bergmann <arnd@arndb.de> wrote:
+On Wed, 1 Jun 2022 at 10:08, Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> On Wed, Jun 1, 2022 at 9:36 AM Yegor Yefremov
-> <yegorslists@googlemail.com> wrote:
-> > On Tue, May 31, 2022 at 5:23 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > > I've pushed a modified branch now, with that fix on the broken commit,
-> > > and another change to make CONFIG_IRQSTACKS user-selectable rather
-> > > than always enabled. That should tell us if the problem is in the SMP
-> > > patching or in the irqstacks.
-> > >
-> > > Can you test the top of this branch with CONFIG_IRQSTACKS disabled,
-> > > and (if that still stalls) retest the fixed commit f0191ea5c2e5 ("[PART 1]
-> > > ARM: implement THREAD_INFO_IN_TASK for uniprocessor systems")?
+> On Wed, 1 Jun 2022 at 09:59, Arnd Bergmann <arnd@arndb.de> wrote:
 > >
-> > 1. the top of this branch with CONFIG_IRQSTACKS disabled stalls
-> > 2. f0191ea5c2e5 with the same config - not
+> > On Wed, Jun 1, 2022 at 9:36 AM Yegor Yefremov
+> > <yegorslists@googlemail.com> wrote:
+> > > On Tue, May 31, 2022 at 5:23 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> > > > I've pushed a modified branch now, with that fix on the broken commit,
+> > > > and another change to make CONFIG_IRQSTACKS user-selectable rather
+> > > > than always enabled. That should tell us if the problem is in the SMP
+> > > > patching or in the irqstacks.
+> > > >
+> > > > Can you test the top of this branch with CONFIG_IRQSTACKS disabled,
+> > > > and (if that still stalls) retest the fixed commit f0191ea5c2e5 ("[PART 1]
+> > > > ARM: implement THREAD_INFO_IN_TASK for uniprocessor systems")?
+> > >
+> > > 1. the top of this branch with CONFIG_IRQSTACKS disabled stalls
+> > > 2. f0191ea5c2e5 with the same config - not
+> >
+> > Ok, perfect, that does narrow down the problem quite a bit: The final
+> > patch has seven changes, all of which can be done individually because
+> > in each case the simplified version in f0191ea5c2e5 is meant to run
+> > the exact same instructions as the version after the change, when running
+> > on a uniprocessor machine such as your am335x.
+> >
+> > You have already shown earlier that the get_current() and
+> > __my_cpu_offset() functions are not to blame here, as reverting
+> > only those does not change the behavior.
+> >
+> > This leaves the is_smp() check in set_current(), and the
+> > four macros in <asm/assembler.h>. I don't see anything obviously
+> > wrong with any of those five, but I would bet on the macros
+> > here. Can you try bisecting into this commit, maybe reverting
+> > the changes to set_current and get_current first, and then
+> > narrowing it down to (hopefully) a single macro that causes the
+> > problem?
+> >
 >
-> Ok, perfect, that does narrow down the problem quite a bit: The final
-> patch has seven changes, all of which can be done individually because
-> in each case the simplified version in f0191ea5c2e5 is meant to run
-> the exact same instructions as the version after the change, when running
-> on a uniprocessor machine such as your am335x.
+> set_current() is never called by the primary CPU, which is why the
+> is_smp() check was removed from there in 57a420435edcb0b94 ("ARM: drop
+> pointless SMP check on secondary startup path").
 >
-> You have already shown earlier that the get_current() and
-> __my_cpu_offset() functions are not to blame here, as reverting
-> only those does not change the behavior.
->
-> This leaves the is_smp() check in set_current(), and the
-> four macros in <asm/assembler.h>. I don't see anything obviously
-> wrong with any of those five, but I would bet on the macros
-> here. Can you try bisecting into this commit, maybe reverting
-> the changes to set_current and get_current first, and then
-> narrowing it down to (hopefully) a single macro that causes the
-> problem?
->
+> So that leaves only the four macros in asm/assembler.h, but I don't
+> see anything obviously wrong with those either.
 
-set_current() is never called by the primary CPU, which is why the
-is_smp() check was removed from there in 57a420435edcb0b94 ("ARM: drop
-pointless SMP check on secondary startup path").
-
-So that leaves only the four macros in asm/assembler.h, but I don't
-see anything obviously wrong with those either.
+I pushed a patch on top of Arnd's branch at the link below that gets
+rid of the subsections, and uses normal branches (and code patching)
+to switch between the thread ID register and the LDR to retrieve the
+CPU offset and the current pointer. I have no explanation whether or
+why it could make a difference, but I think it's worth a try.
