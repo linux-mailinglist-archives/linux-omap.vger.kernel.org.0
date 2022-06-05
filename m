@@ -2,61 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17CEB53D661
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jun 2022 12:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BED653DC65
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Jun 2022 16:59:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234702AbiFDKQm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 4 Jun 2022 06:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49372 "EHLO
+        id S1345296AbiFEO7d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Jun 2022 10:59:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230482AbiFDKQl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 4 Jun 2022 06:16:41 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75EC12CC93;
-        Sat,  4 Jun 2022 03:16:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1654337789;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=k2CeLLJk8IKpfoJJqI76qTO2GTN4yxtENEPA2pWHYqA=;
-    b=QBs1+O8KXbUjcO1J8on5lNuqCDK1imYSBsU9Q0VZBafHzdo8s2v+t0SINrSREEDJEY
-    ChXMYdMXxu+gxT3OtgXoWUxvJGtZ7VeC5eJCKeMn28zLjg7tSxBa7AurabfNSO3lpgXn
-    4t0qEBGWRianAsfAqLHdpR0t+1KvrPS62ofblIYXeD2KUrA1hk9uzl/Kjn9rUQDqIY7T
-    BfkhUXHt017hO8KNyb+XtFY9ib6zfkr3sRkG0MzDLEFCbTgugTs748MitDL3mRExtg1N
-    BYG4rOlIZJsFRlXGxVvGl3gHV2JFA4BZsRw+BNevwDTtL8VjxYSk7QUD9YJjgDsVYCpE
-    gyyg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw43tkwA="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.44.0 DYNA|AUTH)
-    with ESMTPSA id e48d97y54AGTlfJ
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Sat, 4 Jun 2022 12:16:29 +0200 (CEST)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: BUG in mmc: core: Disable card detect during shutdown
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <CAPDyKFrjH8c=2LYkzj81jm7t-sy-EBs3AMzAS7M=LEHsh9qCCA@mail.gmail.com>
-Date:   Sat, 4 Jun 2022 12:16:28 +0200
-Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        kernel@pyra-handheld.com, aTc <atc@k-n-p.org>,
+        with ESMTP id S237838AbiFEO7b (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 Jun 2022 10:59:31 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5561FCE4;
+        Sun,  5 Jun 2022 07:59:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 14EF2B80DAD;
+        Sun,  5 Jun 2022 14:59:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25B3C34115;
+        Sun,  5 Jun 2022 14:59:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654441166;
+        bh=yO8sK4GA4oi2wE61QwnwNeFEL4N9bZFVguHqyvO1Mzg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Rpx0QtvP3OAEnVJTixTh8HY6tbax6mGj7K9c6NngTFlHmc6FTGio7ehu8ftzLojXd
+         jHaDSsX8FnBaLQmHcpHRcLMQuCEWABulcvKVGCBK2MkkTjEPRk6whdEwpogpJPVDpl
+         WtcrQOMi69NEw3mh8dznD94xqkqa9JHwUlUWLdMiHSHUIyNKFK3xvU4PGnYxDNCl4r
+         j2avMjRYrKugCOM5YR1iv8DwLOHOkTT9o1tSv73SRQCw9SxB03htrDU78PFd2fOfoj
+         sU/s8Y5M3kRWkp6mF4I9bIrhWfYsCTIhySfny/dSUmjhvpUdD81STpUhbTe/9z9aS5
+         9s5fkjLZD0kFw==
+Received: by mail-ot1-f47.google.com with SMTP id r14-20020a056830418e00b0060b8da9ff75so9061444otu.11;
+        Sun, 05 Jun 2022 07:59:26 -0700 (PDT)
+X-Gm-Message-State: AOAM5325qOpkiVXoWEkvNDCFXquh2XiqZecBhhxCuIiIe6nbJcqaEyR/
+        B7bmek/PuYQFQxPuHUx7QecEM3QEFVRoS/OoBi4=
+X-Google-Smtp-Source: ABdhPJyCWqBoqXwsEu9hOeuWUnIcpP2DSHl1ydlpagstI1NVmseMrv7ch9qdqJ9amFY2RQLE5GxctR+FAhM0jfEi8Hc=
+X-Received: by 2002:a9d:76d5:0:b0:60b:1882:78bd with SMTP id
+ p21-20020a9d76d5000000b0060b188278bdmr8393936otl.71.1654441165799; Sun, 05
+ Jun 2022 07:59:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
+ <CAGm1_kuaRr3BFWSq-2v4vT0VbVvMX=kMHQsQ1KZnKe9UEff3MA@mail.gmail.com>
+ <Yozpa3DlLLEzBR8W@atomide.com> <CAGm1_ku5EusuSJ9zhYZBRGdRUr8_NYsx3=BZQkuYtNJpq3Tn_w@mail.gmail.com>
+ <Yo8cLxktTytqAEV3@atomide.com> <CAMj1kXEr848Jaxfk64wDgFHMmq-CLvgXtH_sfqVC-4DRLwCDqA@mail.gmail.com>
+ <CAGm1_ksuNbMvg5tVOHswMRWQyX8ZA_U-49Ge6uoG0xV7x5viHA@mail.gmail.com>
+ <CAK8P3a04Qc3Qkb2s1OmCFVKi=yrLReL4Np0JJYjskMWozBDr7Q@mail.gmail.com>
+ <CAGm1_kvnqOz68UDL=n80kZd1UoUaPGJG10YvkxUnezg1rSf6Lg@mail.gmail.com>
+ <CAK8P3a2qat95d14QDp7HfKmqm8Kw0s0WVeLH=GkgBwH2c7nJ8A@mail.gmail.com>
+ <YpB0tdMHh/aBlfyk@atomide.com> <CAK8P3a3ocZDD9odfDe_WBeovHXCNU4CSScrmE4HVtLKef_z+EQ@mail.gmail.com>
+ <CAGm1_ktOPgUSVjPP44Y49GgFLpDMrECu7eqQu7d2ZvJiOftWAQ@mail.gmail.com>
+ <CAK8P3a36s6S2B8PTixxEkmaKXL88NAydTm4abdeC+roGtrUTsw@mail.gmail.com>
+ <CAGm1_kvdhqrptEYy8WMfqZqG6gaWoBtAojSW5uXYnyXMVfV=Fw@mail.gmail.com>
+ <CAK8P3a22hmSnS4X93ETLpF7vPtK_F1TD51SK5VvhEz9L9H4i3g@mail.gmail.com>
+ <CAMj1kXF2NFxiNm=9ixOncN_wkgg2NrNNm9vE-CGUvpJuThj3JA@mail.gmail.com>
+ <CAK8P3a1DnyNvBqdRGHAnHcXBfoNPn4GfUmf_SBGRRU3q3iwwvg@mail.gmail.com>
+ <CAGm1_kta63UM8um5BB5jOh+r9uFMiGwAiYsrNDOwG3dN-Oo47Q@mail.gmail.com>
+ <CAK8P3a2yaKcEiO-LvH5z5azTEX1XTh=9U2MChRS92dtatceY5g@mail.gmail.com>
+ <CAGm1_kvXaH19nOmP_Dy3nxWpG0UiX7eyauTLB+9Cd2rBovDcEQ@mail.gmail.com>
+ <CAMj1kXFfc-e0+dpLJHj9W+=YS=3i0t1+wxF+4qJ5K-g7pTd+YQ@mail.gmail.com>
+ <CAGm1_ksndacPPpyZknvHip=7Fv+3NxXjyfCm_DDMm4EbcBuBig@mail.gmail.com>
+ <CAK8P3a2VV26MhWz95OwfKz+2k35ee8V876iqdJdZ4o1HuNba8A@mail.gmail.com>
+ <CAGm1_ktyCchFwVWhFtrgR621s_fPZJ3u8UmgOPbg7OCOq0h6ZA@mail.gmail.com>
+ <CAK8P3a02uFq4edc_VzPaNQXp_cuLXUMbF4c=k6KATApS9hNHkw@mail.gmail.com>
+ <CAMj1kXEvxP8ULqy7ajT_cSxMzYLJuCjEZGfYBb=F9qOwz-AFaQ@mail.gmail.com>
+ <CAGm1_ksF1UPpdeiTnADiQK8MFbvP8-eDhc=yaCL75EsE_pG=-g@mail.gmail.com>
+ <CAGm1_ksmXTnEo_Mxk7+S4vs_CQAs5ZHoEOpq9Tq3ZFf7sruX7A@mail.gmail.com>
+ <CAK8P3a1nhBnbbocBNkKUKYhw14OYE0WPEyQcJJXzbpW4uASu_Q@mail.gmail.com>
+ <CAGm1_kswMZkoV9_DnB71ugVTF_rh5SV2NazkHROwXiFqhxTWYA@mail.gmail.com>
+ <CAK8P3a0Qdav2JaF8yLydxr9amQp30gnY67CVx+ubowUHeG1VeA@mail.gmail.com>
+ <CAMj1kXEL48=w08A2t7522y1visAUcnkkq4LA6ERRP_FbCbEgiw@mail.gmail.com>
+ <CAMj1kXFmFfQ1oZ-CUcwe+ojSkk+9KBH1azhGrEJ4=-pZgMXX-Q@mail.gmail.com>
+ <CAGm1_ku-tygQJrgvHnvJd0xzb6Vw3t_qdz_VKHJx4YWSxCEryA@mail.gmail.com>
+ <CAMj1kXHUoDQ0xZ4yBx9uT6D9=6xfOsJoWLoOKho_-=Z9uYS30w@mail.gmail.com>
+ <CAGm1_ks8g3RNwOkC8C_B2eYz56cEA7L-6CRdmqmNwSvAg-JP_g@mail.gmail.com>
+ <CAMj1kXH+WR03MX94rd1p7Yz60mfrkOvOx=NYoZ9FCSnqMP4nTw@mail.gmail.com>
+ <CAGm1_kvZ_6tPgfrTc3pH+6TedoU+mvuEXb+7aEp5mXfx516fmA@mail.gmail.com>
+ <CAMj1kXEfKLYYxt9imEO155oxWTzXtWPpF8txGZ-xCs_6vez-WA@mail.gmail.com>
+ <CAGm1_kvJpoDk=G3xYKT5UD5QnjRGr9Npft-8OCgtB9+qCjRtqQ@mail.gmail.com>
+ <CAGm1_kvrivJLsFJaZtr6ojryDZFu3Xmpum8FURoFT9vMr54LUA@mail.gmail.com>
+ <CAK8P3a2113EnZw9BNjCYYmKuNqEk4CtZCC0ydBNNQXetvzTSEg@mail.gmail.com>
+ <CAGm1_kuUVKAxcxENnvsq5AGzeXAeXP6yLmjt1MQSpfjdcvZjng@mail.gmail.com> <CAK8P3a1VeP6YMYV6hh13K1Q3epuO5wRUmTByY7YVVT86J1giqg@mail.gmail.com>
+In-Reply-To: <CAK8P3a1VeP6YMYV6hh13K1Q3epuO5wRUmTByY7YVVT86J1giqg@mail.gmail.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Sun, 5 Jun 2022 16:59:14 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEzK2eEXLHP2OH6APpw+yC66XQafFWs6kMni1i+bDC4uA@mail.gmail.com>
+Message-ID: <CAMj1kXEzK2eEXLHP2OH6APpw+yC66XQafFWs6kMni1i+bDC4uA@mail.gmail.com>
+Subject: Re: am335x: 5.18.x: system stalling
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Yegor Yefremov <yegorslists@googlemail.com>,
         Tony Lindgren <tony@atomide.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-mmc@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FA636A4D-FA8F-48EE-80C4-EDDFD115FB25@goldelico.com>
-References: <55A0788B-03E8-457E-B093-40FD93F1B9F3@goldelico.com>
- <CAPDyKFrjH8c=2LYkzj81jm7t-sy-EBs3AMzAS7M=LEHsh9qCCA@mail.gmail.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-X-Mailer: Apple Mail (2.3445.104.21)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,142 +105,37 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On Fri, 3 Jun 2022 at 22:47, Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Fri, Jun 3, 2022 at 9:11 PM Yegor Yefremov
+> <yegorslists@googlemail.com> wrote:
+> >
+> > With compiled-in drivers the system doesn't stall. All other tests and
+> > related outputs will come next week.
+>
+> Ah, nice!
+>
+> It's probably a reasonable assumption that the smp-patched get_current()
+> is (at least sometimes) broken in modules but working in the kernel itself.
+> I suppose that means in the worst case we can hot-fix the issue by
+> having an 'extern' version of get_current() for the case of
+> armv6+smp+module ;-)
+>
 
-> Am 03.06.2022 um 12:46 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
->=20
-> On Mon, 30 May 2022 at 18:55, H. Nikolaus Schaller <hns@goldelico.com> =
-wrote:
->>=20
->> Hi Ulf,
->> users did report a strange issue that the OMAP5 based Pyra does not
->> shutdown if a kernel 5.10.116 is used.
->>=20
+I've coded something up along those lines, and pushed it to my
+am335x-stall-test branch.
 
-...
+> Maybe start with the ".long 0xe7f001f2" hack I suggested in my last
+> mail. If that gives you an oops for the module case, then we know
+> that the patching doesn't work at all and you don't have to try anything
+> else, otherwise it's more likely that an incorrect instruction sequence
+> is patched in.
+>
 
->> mmc_stop_host() is not called but __mmc_stop_host() is called 4 =
-times.
->> There are 4 active MMC interfaces in the Pyra - 3 for (=C2=B5)SD =
-slots
->> and one for an SDIO WLAN module.
->>=20
->> Now it looks as if 3 of them are properly teared down (two of them
->> seem to have host->slot.cd_irq >=3D 0) but on the fourth call
->> cancel_delayed_work_sync(&host->detect); does not return. This is
->> likely the location of the stall why we don't see a "reboot: Power =
-down"
->>=20
->> Any ideas?
->=20
-> I guess the call to cancel_delayed_work_sync() in __mmc_stop_host()
-> hangs for one of the mmc hosts. This shouldn't happen - and indicates
-> that there is something else being wrong.
+Yeah, I'd be really surprised if the patching misses some occurrences,
+so I have no clue what is going on here.
 
-Yes, you were right...
+Yegor, can you please try my branch with the original config (i.e.,
+slcan and ftdio as modules)
 
->=20
-> See more suggestions below.
->=20
->>=20
->> BR and thanks,
->> Nikolaus
->>=20
->> printk hack:
->>=20
->> void __mmc_stop_host(struct mmc_host *host)
->> {
->> printk("%s 1\n", __func__);
->>        if (host->slot.cd_irq >=3D 0) {
->> printk("%s 2\n", __func__);
->>                mmc_gpio_set_cd_wake(host, false);
->> printk("%s 3\n", __func__);
->>                disable_irq(host->slot.cd_irq);
->> printk("%s 4\n", __func__);
->>        }
->>=20
->>        host->rescan_disable =3D 1;
->> printk("%s 5\n", __func__);
->=20
-> My guess is that it's the same mmc host that causes the hang. I
-> suggest you print the name of the host too, to verify that. Something
-> along the lines of the below.
->=20
-> printk("%s: %s 5\n", mmc_hostname(host), __func__);
-
-To my surprise, this did report an mmc6 host port where the OMAP5 only =
-has 4...
-
-Yes, we have a special driver for the txs02612 sdio switch and voltage =
-translator
-chip to make two ports out of the single mmc2 port of the OMAP5 SoC.
-
-This driver was begun ca. 7 years ago but never finished...
-
-The idea is to make a mmc port have several subports. For the Pyra =
-handheld hardware
-we needed 5 mmc/sdio interfaces but the omap5 only has 4 of them =
-available to us.
-
-So the txs02612 drivers is sitting between the omap5 mmc2 host pins and =
-switches
-between an =C2=B5SD slot and an eMMC.
-
-Therefore, the driver is a mmc client driver (like e.g. the driver of =
-some WiFi chip
-connected to some SDIO port) and provides multiple mmc host interfaces.
-
-It should intercept data transfer requests to its multiple mmc hosts, =
-synchronize
-(or enqueue) them, control the switch gpio and forward requests to the =
-processor's
-mmc host port so that they are processed (after switching).
-
-We never continued to make this work...
-
-What remained is simple code to manually throw the switch through some =
-/sysfs
-control file after doing an eject and before a fresh partprobe.
-
-Still, the probe function of the txs02612 driver does two calls to =
-mmc_add_host().
-These seem to make=20
-
->=20
->>        cancel_delayed_work_sync(&host->detect);
-
-get stuck. Most likely because the initialization is not complete for =
-handling
-card detection.
-
->>=20
->> --- here should be another __mmc_stop_host 6
->> --- and reboot: Power down
->=20
-> When/if you figured out that it's the same host that hangs, you could
-> try to disable that host through the DTS files (add status =3D
-> "disabled" in the device node, for example) - and see if that works.
-
-When not calling mmc_add_host() in our txs02612 driver fragment we can
-properly shut down the OMAP5. That is the solution with the least =
-efforts.
-The other would be to make the txs02612 properly work...
-
-So in summary there is no bug upstream. It is in our tree.
-
-If you are interested in how our code fragment for the txs02612 looks =
-like:
-
-=
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/letux/txs02612
-
-Maybe you have some suggestions to make it work?
-
->=20
-> Kind regards
-> Uffe
-
-BR and thanks,
-Nikolaus
-
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=am335x-stall-test
