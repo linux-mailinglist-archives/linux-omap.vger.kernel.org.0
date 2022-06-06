@@ -2,140 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BED653DC65
-	for <lists+linux-omap@lfdr.de>; Sun,  5 Jun 2022 16:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2817953DFA7
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Jun 2022 04:26:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345296AbiFEO7d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 5 Jun 2022 10:59:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33036 "EHLO
+        id S1352116AbiFFC0i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 5 Jun 2022 22:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237838AbiFEO7b (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 Jun 2022 10:59:31 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5561FCE4;
-        Sun,  5 Jun 2022 07:59:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 14EF2B80DAD;
-        Sun,  5 Jun 2022 14:59:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25B3C34115;
-        Sun,  5 Jun 2022 14:59:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654441166;
-        bh=yO8sK4GA4oi2wE61QwnwNeFEL4N9bZFVguHqyvO1Mzg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Rpx0QtvP3OAEnVJTixTh8HY6tbax6mGj7K9c6NngTFlHmc6FTGio7ehu8ftzLojXd
-         jHaDSsX8FnBaLQmHcpHRcLMQuCEWABulcvKVGCBK2MkkTjEPRk6whdEwpogpJPVDpl
-         WtcrQOMi69NEw3mh8dznD94xqkqa9JHwUlUWLdMiHSHUIyNKFK3xvU4PGnYxDNCl4r
-         j2avMjRYrKugCOM5YR1iv8DwLOHOkTT9o1tSv73SRQCw9SxB03htrDU78PFd2fOfoj
-         sU/s8Y5M3kRWkp6mF4I9bIrhWfYsCTIhySfny/dSUmjhvpUdD81STpUhbTe/9z9aS5
-         9s5fkjLZD0kFw==
-Received: by mail-ot1-f47.google.com with SMTP id r14-20020a056830418e00b0060b8da9ff75so9061444otu.11;
-        Sun, 05 Jun 2022 07:59:26 -0700 (PDT)
-X-Gm-Message-State: AOAM5325qOpkiVXoWEkvNDCFXquh2XiqZecBhhxCuIiIe6nbJcqaEyR/
-        B7bmek/PuYQFQxPuHUx7QecEM3QEFVRoS/OoBi4=
-X-Google-Smtp-Source: ABdhPJyCWqBoqXwsEu9hOeuWUnIcpP2DSHl1ydlpagstI1NVmseMrv7ch9qdqJ9amFY2RQLE5GxctR+FAhM0jfEi8Hc=
-X-Received: by 2002:a9d:76d5:0:b0:60b:1882:78bd with SMTP id
- p21-20020a9d76d5000000b0060b188278bdmr8393936otl.71.1654441165799; Sun, 05
- Jun 2022 07:59:25 -0700 (PDT)
+        with ESMTP id S238058AbiFFC0h (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 5 Jun 2022 22:26:37 -0400
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728C944758
+        for <linux-omap@vger.kernel.org>; Sun,  5 Jun 2022 19:26:36 -0700 (PDT)
+Received: by mail-qt1-x842.google.com with SMTP id x16so6262857qtw.12
+        for <linux-omap@vger.kernel.org>; Sun, 05 Jun 2022 19:26:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=edeevZ54MxyNr2ONaDsC9jI+UtdZjrCL/LCuSFC70Ao=;
+        b=QLAec17iePVHUkXdvZRLDnRtBAm2scfBGR+TWwBFEeGWPxC6fiUQ9fWQgn+4kXwWGE
+         u0yB21awzTwlp/htvdnqOu0aKI7zPNSTRM12OvUlibfh8toDLTkh9L9HOxGlQDZ4XTJ8
+         Lj96GJeSoWbReKttNJinnw7y3d+zLWozrcLAbRazXJaI+clQxJ410lPdb6UgTpMdnrLf
+         DVd/ZQtyzs5twRNx8OBZNQY1nigtIRR4tuxJTiMjGXkJoPbGCz4ESoJXvzFUi1k6caIe
+         g7As7eYjlUDf8+gbBaJPTPGDcoLCjqjsFcUsNQSv9USLFBJ7h2Qh7sxTnebfzpEqEAX+
+         ZCzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=edeevZ54MxyNr2ONaDsC9jI+UtdZjrCL/LCuSFC70Ao=;
+        b=l3RkEqtT8M/CzUguBpvDuFsM9dpo2G784IcN5gJcLabDzqZlKUyKrnhlzuZsb0IiEi
+         OqnEcpYlsm6tUwgZZpxuteMBNzgcXflmXghnJbGS1Mer6UwiWbu9xuNaYK1zb2sjK30Z
+         33Yp9jdrvuAJSan7WprCXpwRamU0xJskc9AqYTmCe72B2jj4UmhpF7OjatfvLOAYLpCe
+         wh+DBRxzjnwZVrKduT4ULeRuR6jX4cSlUwYdYyXaXseANAlexoVLPrIXkXGS5OsNlEJ6
+         ByEuUsjP49jc8CvQ86t/2CPUngejt83oWAIaxu4x70nRe5HHBo51AOjV2WSY8Wdvs6Qq
+         XH9A==
+X-Gm-Message-State: AOAM5304XAZixRE0EmKbcaVZzkuUum1CP9bgaq3GZdpnL6UD94KaN3mi
+        q0AoR153BcrHNMmDEXfgPltE3zdqRfl7ilckozY=
+X-Google-Smtp-Source: ABdhPJzBtKKw3z6f+YkUYAYuUT9IYIJyOStM48l7F4hR8I+d472nzM780wxWEruBZe6uV8FiAZbhpejwTJ53DR/ffSs=
+X-Received: by 2002:a05:622a:13d1:b0:304:c6fb:129d with SMTP id
+ p17-20020a05622a13d100b00304c6fb129dmr16443751qtk.558.1654482395312; Sun, 05
+ Jun 2022 19:26:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAK8P3a1YTBRO_pRZLqbNHwG4DaYA56tn1_E0g3c1VW0B-jz-qg@mail.gmail.com>
- <CAGm1_kuaRr3BFWSq-2v4vT0VbVvMX=kMHQsQ1KZnKe9UEff3MA@mail.gmail.com>
- <Yozpa3DlLLEzBR8W@atomide.com> <CAGm1_ku5EusuSJ9zhYZBRGdRUr8_NYsx3=BZQkuYtNJpq3Tn_w@mail.gmail.com>
- <Yo8cLxktTytqAEV3@atomide.com> <CAMj1kXEr848Jaxfk64wDgFHMmq-CLvgXtH_sfqVC-4DRLwCDqA@mail.gmail.com>
- <CAGm1_ksuNbMvg5tVOHswMRWQyX8ZA_U-49Ge6uoG0xV7x5viHA@mail.gmail.com>
- <CAK8P3a04Qc3Qkb2s1OmCFVKi=yrLReL4Np0JJYjskMWozBDr7Q@mail.gmail.com>
- <CAGm1_kvnqOz68UDL=n80kZd1UoUaPGJG10YvkxUnezg1rSf6Lg@mail.gmail.com>
- <CAK8P3a2qat95d14QDp7HfKmqm8Kw0s0WVeLH=GkgBwH2c7nJ8A@mail.gmail.com>
- <YpB0tdMHh/aBlfyk@atomide.com> <CAK8P3a3ocZDD9odfDe_WBeovHXCNU4CSScrmE4HVtLKef_z+EQ@mail.gmail.com>
- <CAGm1_ktOPgUSVjPP44Y49GgFLpDMrECu7eqQu7d2ZvJiOftWAQ@mail.gmail.com>
- <CAK8P3a36s6S2B8PTixxEkmaKXL88NAydTm4abdeC+roGtrUTsw@mail.gmail.com>
- <CAGm1_kvdhqrptEYy8WMfqZqG6gaWoBtAojSW5uXYnyXMVfV=Fw@mail.gmail.com>
- <CAK8P3a22hmSnS4X93ETLpF7vPtK_F1TD51SK5VvhEz9L9H4i3g@mail.gmail.com>
- <CAMj1kXF2NFxiNm=9ixOncN_wkgg2NrNNm9vE-CGUvpJuThj3JA@mail.gmail.com>
- <CAK8P3a1DnyNvBqdRGHAnHcXBfoNPn4GfUmf_SBGRRU3q3iwwvg@mail.gmail.com>
- <CAGm1_kta63UM8um5BB5jOh+r9uFMiGwAiYsrNDOwG3dN-Oo47Q@mail.gmail.com>
- <CAK8P3a2yaKcEiO-LvH5z5azTEX1XTh=9U2MChRS92dtatceY5g@mail.gmail.com>
- <CAGm1_kvXaH19nOmP_Dy3nxWpG0UiX7eyauTLB+9Cd2rBovDcEQ@mail.gmail.com>
- <CAMj1kXFfc-e0+dpLJHj9W+=YS=3i0t1+wxF+4qJ5K-g7pTd+YQ@mail.gmail.com>
- <CAGm1_ksndacPPpyZknvHip=7Fv+3NxXjyfCm_DDMm4EbcBuBig@mail.gmail.com>
- <CAK8P3a2VV26MhWz95OwfKz+2k35ee8V876iqdJdZ4o1HuNba8A@mail.gmail.com>
- <CAGm1_ktyCchFwVWhFtrgR621s_fPZJ3u8UmgOPbg7OCOq0h6ZA@mail.gmail.com>
- <CAK8P3a02uFq4edc_VzPaNQXp_cuLXUMbF4c=k6KATApS9hNHkw@mail.gmail.com>
- <CAMj1kXEvxP8ULqy7ajT_cSxMzYLJuCjEZGfYBb=F9qOwz-AFaQ@mail.gmail.com>
- <CAGm1_ksF1UPpdeiTnADiQK8MFbvP8-eDhc=yaCL75EsE_pG=-g@mail.gmail.com>
- <CAGm1_ksmXTnEo_Mxk7+S4vs_CQAs5ZHoEOpq9Tq3ZFf7sruX7A@mail.gmail.com>
- <CAK8P3a1nhBnbbocBNkKUKYhw14OYE0WPEyQcJJXzbpW4uASu_Q@mail.gmail.com>
- <CAGm1_kswMZkoV9_DnB71ugVTF_rh5SV2NazkHROwXiFqhxTWYA@mail.gmail.com>
- <CAK8P3a0Qdav2JaF8yLydxr9amQp30gnY67CVx+ubowUHeG1VeA@mail.gmail.com>
- <CAMj1kXEL48=w08A2t7522y1visAUcnkkq4LA6ERRP_FbCbEgiw@mail.gmail.com>
- <CAMj1kXFmFfQ1oZ-CUcwe+ojSkk+9KBH1azhGrEJ4=-pZgMXX-Q@mail.gmail.com>
- <CAGm1_ku-tygQJrgvHnvJd0xzb6Vw3t_qdz_VKHJx4YWSxCEryA@mail.gmail.com>
- <CAMj1kXHUoDQ0xZ4yBx9uT6D9=6xfOsJoWLoOKho_-=Z9uYS30w@mail.gmail.com>
- <CAGm1_ks8g3RNwOkC8C_B2eYz56cEA7L-6CRdmqmNwSvAg-JP_g@mail.gmail.com>
- <CAMj1kXH+WR03MX94rd1p7Yz60mfrkOvOx=NYoZ9FCSnqMP4nTw@mail.gmail.com>
- <CAGm1_kvZ_6tPgfrTc3pH+6TedoU+mvuEXb+7aEp5mXfx516fmA@mail.gmail.com>
- <CAMj1kXEfKLYYxt9imEO155oxWTzXtWPpF8txGZ-xCs_6vez-WA@mail.gmail.com>
- <CAGm1_kvJpoDk=G3xYKT5UD5QnjRGr9Npft-8OCgtB9+qCjRtqQ@mail.gmail.com>
- <CAGm1_kvrivJLsFJaZtr6ojryDZFu3Xmpum8FURoFT9vMr54LUA@mail.gmail.com>
- <CAK8P3a2113EnZw9BNjCYYmKuNqEk4CtZCC0ydBNNQXetvzTSEg@mail.gmail.com>
- <CAGm1_kuUVKAxcxENnvsq5AGzeXAeXP6yLmjt1MQSpfjdcvZjng@mail.gmail.com> <CAK8P3a1VeP6YMYV6hh13K1Q3epuO5wRUmTByY7YVVT86J1giqg@mail.gmail.com>
-In-Reply-To: <CAK8P3a1VeP6YMYV6hh13K1Q3epuO5wRUmTByY7YVVT86J1giqg@mail.gmail.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Sun, 5 Jun 2022 16:59:14 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEzK2eEXLHP2OH6APpw+yC66XQafFWs6kMni1i+bDC4uA@mail.gmail.com>
-Message-ID: <CAMj1kXEzK2eEXLHP2OH6APpw+yC66XQafFWs6kMni1i+bDC4uA@mail.gmail.com>
-Subject: Re: am335x: 5.18.x: system stalling
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Yegor Yefremov <yegorslists@googlemail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Received: by 2002:a05:620a:2948:0:0:0:0 with HTTP; Sun, 5 Jun 2022 19:26:34
+ -0700 (PDT)
+Reply-To: mohammedsaeeda619@gmail.com
+From:   Mohammed Saeed <samejafgbnmn@gmail.com>
+Date:   Sun, 5 Jun 2022 19:26:34 -0700
+Message-ID: <CADB+x=U2+AgrphaVVwJCy03S0fF5NSKE9S3gyo4UVYNQZSbk4Q@mail.gmail.com>
+Subject: Proposal
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=6.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5294]
+        *  1.0 HK_RANDOM_ENVFROM Envelope sender username looks random
+        *  1.0 HK_RANDOM_FROM From username looks random
+        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:842 listed in]
+        [list.dnswl.org]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [samejafgbnmn[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mohammedsaeeda619[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 3 Jun 2022 at 22:47, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Fri, Jun 3, 2022 at 9:11 PM Yegor Yefremov
-> <yegorslists@googlemail.com> wrote:
-> >
-> > With compiled-in drivers the system doesn't stall. All other tests and
-> > related outputs will come next week.
->
-> Ah, nice!
->
-> It's probably a reasonable assumption that the smp-patched get_current()
-> is (at least sometimes) broken in modules but working in the kernel itself.
-> I suppose that means in the worst case we can hot-fix the issue by
-> having an 'extern' version of get_current() for the case of
-> armv6+smp+module ;-)
->
+Salam alaikum,
 
-I've coded something up along those lines, and pushed it to my
-am335x-stall-test branch.
+I am the investment officer of UAE based investment company who are
+ready to fund projects outside UAE, in the form of debt finance. We
+grant loan to both Corporate and private entities at a low interest
+rate of 2% ROI per annum. The terms are very flexible and
+interesting.Kindly revert back if you have projects that needs funding
+for further discussion and negotiation.
 
-> Maybe start with the ".long 0xe7f001f2" hack I suggested in my last
-> mail. If that gives you an oops for the module case, then we know
-> that the patching doesn't work at all and you don't have to try anything
-> else, otherwise it's more likely that an incorrect instruction sequence
-> is patched in.
->
+Thanks
 
-Yeah, I'd be really surprised if the patching misses some occurrences,
-so I have no clue what is going on here.
-
-Yegor, can you please try my branch with the original config (i.e.,
-slcan and ftdio as modules)
-
-https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=am335x-stall-test
+investment officer
