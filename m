@@ -2,289 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0D6F540C20
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jun 2022 20:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDECF542550
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jun 2022 08:54:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351440AbiFGSd4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jun 2022 14:33:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37112 "EHLO
+        id S1346456AbiFHAmf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jun 2022 20:42:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351848AbiFGScv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jun 2022 14:32:51 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5B2E17EC27;
-        Tue,  7 Jun 2022 10:57:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 07188B82239;
-        Tue,  7 Jun 2022 17:57:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE09C3411F;
-        Tue,  7 Jun 2022 17:56:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654624621;
-        bh=mMnzVq9sOLnEiZr3KwVE3vQbEh4GHtFSt5x1NKgBfO4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ltE77oqBlHF6gOWePFZMLzKErSx8ONp9PXKPi7g/YQ+OGeXsvTIGO5eBgDcmUGp0B
-         AUw1B9mDhWIDxL9TDZ0bnrdC9gC2gxxcid8JCy4g2y5hTxHjgMwzZq8WWu/stT0a8g
-         6Mh+GETXZISm1hMEbJDA1BbQZzqDnR/9k9eC2Ri/DdSi7varYHv6FWP/A9yZ0OOw6R
-         FeBM/lWf65u6Cf/e70Lktl/4We1ioe8UZXPXeIqiE/C0ER0+pvuiAXSwOByrq4zvgj
-         PoXG3hj5VVkD9GmDmGA/ADfQ9YvwVLlImXYMjUs74zApJiBz9XJMccfEcFOoaEPriz
-         DHRsWS9XXmlkw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Sasha Levin <sashal@kernel.org>, myungjoo.ham@samsung.com,
-        wens@csie.org, sre@kernel.org, balbi@kernel.org,
-        gregkh@linuxfoundation.org, linux-pm@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 21/51] extcon: Fix extcon_get_extcon_dev() error handling
-Date:   Tue,  7 Jun 2022 13:55:20 -0400
-Message-Id: <20220607175552.479948-21-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220607175552.479948-1-sashal@kernel.org>
-References: <20220607175552.479948-1-sashal@kernel.org>
+        with ESMTP id S1441932AbiFGW6U (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jun 2022 18:58:20 -0400
+X-Greylist: delayed 1826 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Jun 2022 13:03:41 PDT
+Received: from 9.mo575.mail-out.ovh.net (9.mo575.mail-out.ovh.net [46.105.78.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8E332E773
+        for <linux-omap@vger.kernel.org>; Tue,  7 Jun 2022 13:03:41 -0700 (PDT)
+Received: from player698.ha.ovh.net (unknown [10.109.138.64])
+        by mo575.mail-out.ovh.net (Postfix) with ESMTP id C641923C7B
+        for <linux-omap@vger.kernel.org>; Tue,  7 Jun 2022 19:24:48 +0000 (UTC)
+Received: from sk2.org (82-65-25-201.subs.proxad.net [82.65.25.201])
+        (Authenticated sender: steve@sk2.org)
+        by player698.ha.ovh.net (Postfix) with ESMTPSA id 7CF082B4804EA;
+        Tue,  7 Jun 2022 19:24:38 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass (GARM-110S0043757001c-4f3a-4d1c-ba12-6ec75814bbad,
+                    38FB55E0ED6224772C245AF554E1AE62085133ED) smtp.auth=steve@sk2.org
+X-OVh-ClientIp: 82.65.25.201
+From:   Stephen Kitt <steve@sk2.org>
+To:     Antonino Daplas <adaplas@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Helge Deller <deller@gmx.de>, Paul Mackerras <paulus@samba.org>
+Cc:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Stephen Kitt <steve@sk2.org>, linux-omap@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH 6/7] fbdev: omapfb: panel-dsi-cm: Use backlight helper
+Date:   Tue,  7 Jun 2022 21:23:34 +0200
+Message-Id: <20220607192335.1137249-7-steve@sk2.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220607192335.1137249-1-steve@sk2.org>
+References: <20220607192335.1137249-1-steve@sk2.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Ovh-Tracer-Id: 11961560612720903913
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedruddthedgudefjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefuthgvphhhvghnucfmihhtthcuoehsthgvvhgvsehskhdvrdhorhhgqeenucggtffrrghtthgvrhhnpeeghffhleeigffhteeiffelveefhfeiudehkedtgefhgedvleffgfejgfdtveeigeenucfkpheptddrtddrtddrtddpkedvrdeihedrvdehrddvtddunecuvehluhhsthgvrhfuihiivgepfeenucfrrghrrghmpehmohguvgepshhmthhpohhuthdphhgvlhhopehplhgrhigvrheileekrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepshhtvghvvgesshhkvddrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhomhgrphesvhhgvghrrdhkvghrnhgvlhdrohhrghdpoffvtefjohhsthepmhhoheejhe
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+Instead of retrieving the backlight brightness in struct
+backlight_properties manually, and then checking whether the backlight
+should be on at all, use backlight_get_brightness() which does all
+this and insulates this from future changes.
 
-[ Upstream commit 58e4a2d27d3255e4e8c507fdc13734dccc9fc4c7 ]
-
-The extcon_get_extcon_dev() function returns error pointers on error,
-NULL when it's a -EPROBE_DEFER defer situation, and ERR_PTR(-ENODEV)
-when the CONFIG_EXTCON option is disabled.  This is very complicated for
-the callers to handle and a number of them had bugs that would lead to
-an Oops.
-
-In real life, there are two things which prevented crashes.  First,
-error pointers would only be returned if there was bug in the caller
-where they passed a NULL "extcon_name" and none of them do that.
-Second, only two out of the eight drivers will build when CONFIG_EXTCON
-is disabled.
-
-The normal way to write this would be to return -EPROBE_DEFER directly
-when appropriate and return NULL when CONFIG_EXTCON is disabled.  Then
-the error handling is simple and just looks like:
-
-	dev->edev = extcon_get_extcon_dev(acpi_dev_name(adev));
-	if (IS_ERR(dev->edev))
-		return PTR_ERR(dev->edev);
-
-For the two drivers which can build with CONFIG_EXTCON disabled, then
-extcon_get_extcon_dev() will now return NULL which is not treated as an
-error and the probe will continue successfully.  Those two drivers are
-"typec_fusb302" and "max8997-battery".  In the original code, the
-typec_fusb302 driver had an 800ms hang in tcpm_get_current_limit() but
-now that function is a no-op.  For the max8997-battery driver everything
-should continue working as is.
-
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Stephen Kitt <steve@sk2.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-omap@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
 ---
- drivers/extcon/extcon-axp288.c         |  4 ++--
- drivers/extcon/extcon.c                |  4 +++-
- drivers/power/supply/axp288_charger.c  | 17 ++++++++++-------
- drivers/power/supply/charger-manager.c |  7 ++-----
- drivers/power/supply/max8997_charger.c |  8 ++++----
- drivers/usb/dwc3/drd.c                 |  9 ++-------
- drivers/usb/phy/phy-omap-otg.c         |  4 ++--
- drivers/usb/typec/tcpm/fusb302.c       |  4 ++--
- include/linux/extcon.h                 |  2 +-
- 9 files changed, 28 insertions(+), 31 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/extcon/extcon-axp288.c b/drivers/extcon/extcon-axp288.c
-index fdb31954cf2b..8073bc7d3e61 100644
---- a/drivers/extcon/extcon-axp288.c
-+++ b/drivers/extcon/extcon-axp288.c
-@@ -375,8 +375,8 @@ static int axp288_extcon_probe(struct platform_device *pdev)
- 		if (adev) {
- 			info->id_extcon = extcon_get_extcon_dev(acpi_dev_name(adev));
- 			put_device(&adev->dev);
--			if (!info->id_extcon)
--				return -EPROBE_DEFER;
-+			if (IS_ERR(info->id_extcon))
-+				return PTR_ERR(info->id_extcon);
- 
- 			dev_info(dev, "controlling USB role\n");
- 		} else {
-diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
-index e7a9561a826d..9eb92997f3ae 100644
---- a/drivers/extcon/extcon.c
-+++ b/drivers/extcon/extcon.c
-@@ -863,6 +863,8 @@ EXPORT_SYMBOL_GPL(extcon_set_property_capability);
-  * @extcon_name:	the extcon name provided with extcon_dev_register()
-  *
-  * Return the pointer of extcon device if success or ERR_PTR(err) if fail.
-+ * NOTE: This function returns -EPROBE_DEFER so it may only be called from
-+ * probe() functions.
-  */
- struct extcon_dev *extcon_get_extcon_dev(const char *extcon_name)
- {
-@@ -876,7 +878,7 @@ struct extcon_dev *extcon_get_extcon_dev(const char *extcon_name)
- 		if (!strcmp(sd->name, extcon_name))
- 			goto out;
- 	}
--	sd = NULL;
-+	sd = ERR_PTR(-EPROBE_DEFER);
- out:
- 	mutex_unlock(&extcon_dev_list_lock);
- 	return sd;
-diff --git a/drivers/power/supply/axp288_charger.c b/drivers/power/supply/axp288_charger.c
-index fb9db7f43895..22378dad4d9f 100644
---- a/drivers/power/supply/axp288_charger.c
-+++ b/drivers/power/supply/axp288_charger.c
-@@ -832,17 +832,20 @@ static int axp288_charger_probe(struct platform_device *pdev)
- 	info->regmap_irqc = axp20x->regmap_irqc;
- 
- 	info->cable.edev = extcon_get_extcon_dev(AXP288_EXTCON_DEV_NAME);
--	if (info->cable.edev == NULL) {
--		dev_dbg(dev, "%s is not ready, probe deferred\n",
--			AXP288_EXTCON_DEV_NAME);
--		return -EPROBE_DEFER;
-+	if (IS_ERR(info->cable.edev)) {
-+		dev_err_probe(dev, PTR_ERR(info->cable.edev),
-+			      "extcon_get_extcon_dev(%s) failed\n",
-+			      AXP288_EXTCON_DEV_NAME);
-+		return PTR_ERR(info->cable.edev);
- 	}
- 
- 	if (acpi_dev_present(USB_HOST_EXTCON_HID, NULL, -1)) {
- 		info->otg.cable = extcon_get_extcon_dev(USB_HOST_EXTCON_NAME);
--		if (info->otg.cable == NULL) {
--			dev_dbg(dev, "EXTCON_USB_HOST is not ready, probe deferred\n");
--			return -EPROBE_DEFER;
-+		if (IS_ERR(info->otg.cable)) {
-+			dev_err_probe(dev, PTR_ERR(info->otg.cable),
-+				      "extcon_get_extcon_dev(%s) failed\n",
-+				      USB_HOST_EXTCON_NAME);
-+			return PTR_ERR(info->otg.cable);
- 		}
- 		dev_info(dev, "Using " USB_HOST_EXTCON_HID " extcon for usb-id\n");
- 	}
-diff --git a/drivers/power/supply/charger-manager.c b/drivers/power/supply/charger-manager.c
-index d67edb760c94..92db79400a6a 100644
---- a/drivers/power/supply/charger-manager.c
-+++ b/drivers/power/supply/charger-manager.c
-@@ -985,13 +985,10 @@ static int charger_extcon_init(struct charger_manager *cm,
- 	cable->nb.notifier_call = charger_extcon_notifier;
- 
- 	cable->extcon_dev = extcon_get_extcon_dev(cable->extcon_name);
--	if (IS_ERR_OR_NULL(cable->extcon_dev)) {
-+	if (IS_ERR(cable->extcon_dev)) {
- 		pr_err("Cannot find extcon_dev for %s (cable: %s)\n",
- 			cable->extcon_name, cable->name);
--		if (cable->extcon_dev == NULL)
--			return -EPROBE_DEFER;
--		else
--			return PTR_ERR(cable->extcon_dev);
-+		return PTR_ERR(cable->extcon_dev);
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(extcon_mapping); i++) {
-diff --git a/drivers/power/supply/max8997_charger.c b/drivers/power/supply/max8997_charger.c
-index 25207fe2aa68..bfa7a576523d 100644
---- a/drivers/power/supply/max8997_charger.c
-+++ b/drivers/power/supply/max8997_charger.c
-@@ -248,10 +248,10 @@ static int max8997_battery_probe(struct platform_device *pdev)
- 		dev_info(&pdev->dev, "couldn't get charger regulator\n");
- 	}
- 	charger->edev = extcon_get_extcon_dev("max8997-muic");
--	if (IS_ERR_OR_NULL(charger->edev)) {
--		if (!charger->edev)
--			return -EPROBE_DEFER;
--		dev_info(charger->dev, "couldn't get extcon device\n");
-+	if (IS_ERR(charger->edev)) {
-+		dev_err_probe(charger->dev, PTR_ERR(charger->edev),
-+			      "couldn't get extcon device: max8997-muic\n");
-+		return PTR_ERR(charger->edev);
- 	}
- 
- 	if (!IS_ERR(charger->reg) && !IS_ERR_OR_NULL(charger->edev)) {
-diff --git a/drivers/usb/dwc3/drd.c b/drivers/usb/dwc3/drd.c
-index f148b0370f82..81ff21bd405a 100644
---- a/drivers/usb/dwc3/drd.c
-+++ b/drivers/usb/dwc3/drd.c
-@@ -454,13 +454,8 @@ static struct extcon_dev *dwc3_get_extcon(struct dwc3 *dwc)
- 	 * This device property is for kernel internal use only and
- 	 * is expected to be set by the glue code.
- 	 */
--	if (device_property_read_string(dev, "linux,extcon-name", &name) == 0) {
--		edev = extcon_get_extcon_dev(name);
--		if (!edev)
--			return ERR_PTR(-EPROBE_DEFER);
+diff --git a/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c b/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
+index a2c7c5cb1523..236430b5dc52 100644
+--- a/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
++++ b/drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
+@@ -331,13 +331,7 @@ static int dsicm_bl_update_status(struct backlight_device *dev)
+ 	struct panel_drv_data *ddata = dev_get_drvdata(&dev->dev);
+ 	struct omap_dss_device *in = ddata->in;
+ 	int r;
+-	int level;
 -
--		return edev;
--	}
-+	if (device_property_read_string(dev, "linux,extcon-name", &name) == 0)
-+		return extcon_get_extcon_dev(name);
+-	if (dev->props.fb_blank == FB_BLANK_UNBLANK &&
+-			dev->props.power == FB_BLANK_UNBLANK)
+-		level = dev->props.brightness;
+-	else
+-		level = 0;
++	int level = backlight_get_brightness(dev);
  
- 	/*
- 	 * Try to get an extcon device from the USB PHY controller's "port"
-diff --git a/drivers/usb/phy/phy-omap-otg.c b/drivers/usb/phy/phy-omap-otg.c
-index ee0863c6553e..6e6ef8c0bc7e 100644
---- a/drivers/usb/phy/phy-omap-otg.c
-+++ b/drivers/usb/phy/phy-omap-otg.c
-@@ -95,8 +95,8 @@ static int omap_otg_probe(struct platform_device *pdev)
- 		return -ENODEV;
+ 	dev_dbg(&ddata->pdev->dev, "update brightness to %d\n", level);
  
- 	extcon = extcon_get_extcon_dev(config->extcon);
--	if (!extcon)
--		return -EPROBE_DEFER;
-+	if (IS_ERR(extcon))
-+		return PTR_ERR(extcon);
- 
- 	otg_dev = devm_kzalloc(&pdev->dev, sizeof(*otg_dev), GFP_KERNEL);
- 	if (!otg_dev)
-diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index 72f9001b0792..96c55eaf3f80 100644
---- a/drivers/usb/typec/tcpm/fusb302.c
-+++ b/drivers/usb/typec/tcpm/fusb302.c
-@@ -1708,8 +1708,8 @@ static int fusb302_probe(struct i2c_client *client,
- 	 */
- 	if (device_property_read_string(dev, "linux,extcon-name", &name) == 0) {
- 		chip->extcon = extcon_get_extcon_dev(name);
--		if (!chip->extcon)
--			return -EPROBE_DEFER;
-+		if (IS_ERR(chip->extcon))
-+			return PTR_ERR(chip->extcon);
- 	}
- 
- 	chip->vbus = devm_regulator_get(chip->dev, "vbus");
-diff --git a/include/linux/extcon.h b/include/linux/extcon.h
-index 0c19010da77f..685401d94d39 100644
---- a/include/linux/extcon.h
-+++ b/include/linux/extcon.h
-@@ -296,7 +296,7 @@ static inline void devm_extcon_unregister_notifier_all(struct device *dev,
- 
- static inline struct extcon_dev *extcon_get_extcon_dev(const char *extcon_name)
- {
--	return ERR_PTR(-ENODEV);
-+	return NULL;
- }
- 
- static inline struct extcon_dev *extcon_find_edev_by_node(struct device_node *node)
 -- 
-2.35.1
+2.30.2
 
