@@ -2,67 +2,59 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2FEA53FCE1
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jun 2022 13:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A58D9540AB8
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jun 2022 20:23:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239246AbiFGLIS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jun 2022 07:08:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55494 "EHLO
+        id S1351482AbiFGSXj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jun 2022 14:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242518AbiFGLID (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jun 2022 07:08:03 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E05C01053E6
-        for <linux-omap@vger.kernel.org>; Tue,  7 Jun 2022 04:04:09 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id a2so27747783lfc.2
-        for <linux-omap@vger.kernel.org>; Tue, 07 Jun 2022 04:04:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=aO/lSvFaLajkL7Ac/IqTCOTSOPQr+6oNuobROU/TF8k=;
-        b=plZ0JtxWk2Nc24B6pQU1IdzZ7fMFVakDlxjXm1dhZfOhbMC11ALQejl6bnQ4uXxFQq
-         CiRvRizUUB6Q6XOYtz7/pBHYG3DyAdJKKaej8Ki2oFk96Vg4LC8B5NRrQbwIGp50BvQq
-         PCPkamJ/f1O0MGhS4o5loFLInz8co4ctI11OggzRThUimjtNATTeEVur3srhTyvR5aNE
-         UkIncS+2ZcyEDZIzLq6wIxUJfD2flK51qsJ0r3PzGh7yV5Z8nN7KJJePQsOOybCwmYLW
-         GsUb+yluSCn1dtqSGUZvDycBaNNTBCK3iNAg6a5K1Vnz4JR2nK3FrJo1qP6RE2P0bOpK
-         w+Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=aO/lSvFaLajkL7Ac/IqTCOTSOPQr+6oNuobROU/TF8k=;
-        b=0/OWLk3/rr7BLO/lCJKMmXHm2n8OB0dOEGMeQyATbsN3bdmuS4Wx/2aHTxVEEgb17J
-         RLSXPhD1QOpL9Lu6h0ivemVvwVRxcN6YNC1LW3re9eNIqJ556uMx6hGY3fdHRy2sBA8g
-         5WimFV5I70ZDoRr1dFKFuq/bDUhmINkU6+5n8fg28D7qJWTDO8jqr1F5Fjb5nuAnCIAP
-         Ji+LsuxSkASTpEXFCU1Q2Lu+8pEeQiBg+z7ihcDeQs7P3nP1csZh3Kfo5HtmHpG7RDOO
-         b1x7wYNcHaBihOBxmnyG1Rh/NR6Er2YSWe54bgW38gXUE1cg1SeE8+g0udpQz6eLyt64
-         tptw==
-X-Gm-Message-State: AOAM533fAMw/IUjxbdHgGYugYLym0Gj7gJdvNzMRjrJ3viXzLsgOHqZP
-        psTmlK0w74XwMIcUmNjpqqUOzXOgJrHuUZ1+ULYidg==
-X-Google-Smtp-Source: ABdhPJwD90lne0lHTxYJKzLqW7u3faS4ilXkDxuw9Uqee5o04CDWGrVYZ5DTYIRIF+JkxWbqPbdIMnggcfaJZleojrA=
-X-Received: by 2002:a19:ac42:0:b0:478:593c:e6fe with SMTP id
- r2-20020a19ac42000000b00478593ce6femr17856420lfc.254.1654599847422; Tue, 07
- Jun 2022 04:04:07 -0700 (PDT)
+        with ESMTP id S1352102AbiFGSQy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jun 2022 14:16:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FB58CE1E;
+        Tue,  7 Jun 2022 10:50:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DFBFA6159C;
+        Tue,  7 Jun 2022 17:50:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629DCC34115;
+        Tue,  7 Jun 2022 17:50:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654624232;
+        bh=tmYGo+rLkHrEmeRi3CAoeeKOGbYIsLcxEIvkpA80+5w=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=B7sq9soKOmBb9GX3iK3MB6o0uZjFZ5z1gaABX+3gw9lkVSZzaSocVb4tKnADzqxJ/
+         8AeeOIy3T58Ulsb+6TlwNreKePuIweb5EUmmuxRvODc2RjjzwWXARpiCvZAIPlcGjO
+         ils5rh20ELOU1XjaQI/wF26SaOIxvOUhUY/ArfgzC+yM+OciA9xRmCWCBZP+6xLKDC
+         fSkf09ea9RjtDCvJ98FFTgeksKItPNYZoJHEIj8SndE23yvqwUIep/IUIxcK0uzF0H
+         nDtLUQFFHRhrOyyWqUU7c2vAS2PFt14vie9QMVW7+LD68+9bVp/+7eGJoLgJ6azxis
+         Tm4Mk7zUEyXsg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Sasha Levin <sashal@kernel.org>, myungjoo.ham@samsung.com,
+        wens@csie.org, sre@kernel.org, balbi@kernel.org,
+        gregkh@linuxfoundation.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.18 24/68] extcon: Fix extcon_get_extcon_dev() error handling
+Date:   Tue,  7 Jun 2022 13:47:50 -0400
+Message-Id: <20220607174846.477972-24-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220607174846.477972-1-sashal@kernel.org>
+References: <20220607174846.477972-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <55A0788B-03E8-457E-B093-40FD93F1B9F3@goldelico.com>
- <CAPDyKFrjH8c=2LYkzj81jm7t-sy-EBs3AMzAS7M=LEHsh9qCCA@mail.gmail.com> <FA636A4D-FA8F-48EE-80C4-EDDFD115FB25@goldelico.com>
-In-Reply-To: <FA636A4D-FA8F-48EE-80C4-EDDFD115FB25@goldelico.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 7 Jun 2022 13:03:30 +0200
-Message-ID: <CAPDyKFoe5xYyiqNuOjLc4AnF-U_CwTujmNSjkjkW1E4O-8RKig@mail.gmail.com>
-Subject: Re: BUG in mmc: core: Disable card detect during shutdown
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        kernel@pyra-handheld.com, aTc <atc@k-n-p.org>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,151 +63,228 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, 4 Jun 2022 at 12:16, H. Nikolaus Schaller <hns@goldelico.com> wrote=
-:
->
-> Hi,
->
-> > Am 03.06.2022 um 12:46 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
-> >
-> > On Mon, 30 May 2022 at 18:55, H. Nikolaus Schaller <hns@goldelico.com> =
-wrote:
-> >>
-> >> Hi Ulf,
-> >> users did report a strange issue that the OMAP5 based Pyra does not
-> >> shutdown if a kernel 5.10.116 is used.
-> >>
->
-> ...
->
-> >> mmc_stop_host() is not called but __mmc_stop_host() is called 4 times.
-> >> There are 4 active MMC interfaces in the Pyra - 3 for (=C2=B5)SD slots
-> >> and one for an SDIO WLAN module.
-> >>
-> >> Now it looks as if 3 of them are properly teared down (two of them
-> >> seem to have host->slot.cd_irq >=3D 0) but on the fourth call
-> >> cancel_delayed_work_sync(&host->detect); does not return. This is
-> >> likely the location of the stall why we don't see a "reboot: Power dow=
-n"
-> >>
-> >> Any ideas?
-> >
-> > I guess the call to cancel_delayed_work_sync() in __mmc_stop_host()
-> > hangs for one of the mmc hosts. This shouldn't happen - and indicates
-> > that there is something else being wrong.
->
-> Yes, you were right...
->
-> >
-> > See more suggestions below.
-> >
-> >>
-> >> BR and thanks,
-> >> Nikolaus
-> >>
-> >> printk hack:
-> >>
-> >> void __mmc_stop_host(struct mmc_host *host)
-> >> {
-> >> printk("%s 1\n", __func__);
-> >>        if (host->slot.cd_irq >=3D 0) {
-> >> printk("%s 2\n", __func__);
-> >>                mmc_gpio_set_cd_wake(host, false);
-> >> printk("%s 3\n", __func__);
-> >>                disable_irq(host->slot.cd_irq);
-> >> printk("%s 4\n", __func__);
-> >>        }
-> >>
-> >>        host->rescan_disable =3D 1;
-> >> printk("%s 5\n", __func__);
-> >
-> > My guess is that it's the same mmc host that causes the hang. I
-> > suggest you print the name of the host too, to verify that. Something
-> > along the lines of the below.
-> >
-> > printk("%s: %s 5\n", mmc_hostname(host), __func__);
->
-> To my surprise, this did report an mmc6 host port where the OMAP5 only ha=
-s 4...
->
-> Yes, we have a special driver for the txs02612 sdio switch and voltage tr=
-anslator
-> chip to make two ports out of the single mmc2 port of the OMAP5 SoC.
->
-> This driver was begun ca. 7 years ago but never finished...
->
-> The idea is to make a mmc port have several subports. For the Pyra handhe=
-ld hardware
-> we needed 5 mmc/sdio interfaces but the omap5 only has 4 of them availabl=
-e to us.
->
-> So the txs02612 drivers is sitting between the omap5 mmc2 host pins and s=
-witches
-> between an =C2=B5SD slot and an eMMC.
->
-> Therefore, the driver is a mmc client driver (like e.g. the driver of som=
-e WiFi chip
-> connected to some SDIO port) and provides multiple mmc host interfaces.
->
-> It should intercept data transfer requests to its multiple mmc hosts, syn=
-chronize
-> (or enqueue) them, control the switch gpio and forward requests to the pr=
-ocessor's
-> mmc host port so that they are processed (after switching).
->
-> We never continued to make this work...
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-Well, I can imagine that it's just very difficult to make this work properl=
-y.
+[ Upstream commit 58e4a2d27d3255e4e8c507fdc13734dccc9fc4c7 ]
 
-Moreover, the mmc core and its block layer code isn't designed to
-support this type of configuration. For example, the I/O scheduling
-can't work with this setup.
+The extcon_get_extcon_dev() function returns error pointers on error,
+NULL when it's a -EPROBE_DEFER defer situation, and ERR_PTR(-ENODEV)
+when the CONFIG_EXTCON option is disabled.  This is very complicated for
+the callers to handle and a number of them had bugs that would lead to
+an Oops.
 
->
-> What remained is simple code to manually throw the switch through some /s=
-ysfs
-> control file after doing an eject and before a fresh partprobe.
->
-> Still, the probe function of the txs02612 driver does two calls to mmc_ad=
-d_host().
-> These seem to make
->
-> >
-> >>        cancel_delayed_work_sync(&host->detect);
->
-> get stuck. Most likely because the initialization is not complete for han=
-dling
-> card detection.
->
-> >>
-> >> --- here should be another __mmc_stop_host 6
-> >> --- and reboot: Power down
-> >
-> > When/if you figured out that it's the same host that hangs, you could
-> > try to disable that host through the DTS files (add status =3D
-> > "disabled" in the device node, for example) - and see if that works.
->
-> When not calling mmc_add_host() in our txs02612 driver fragment we can
-> properly shut down the OMAP5. That is the solution with the least efforts=
-.
-> The other would be to make the txs02612 properly work...
->
-> So in summary there is no bug upstream. It is in our tree.
+In real life, there are two things which prevented crashes.  First,
+error pointers would only be returned if there was bug in the caller
+where they passed a NULL "extcon_name" and none of them do that.
+Second, only two out of the eight drivers will build when CONFIG_EXTCON
+is disabled.
 
-Thanks for sharing the details.
+The normal way to write this would be to return -EPROBE_DEFER directly
+when appropriate and return NULL when CONFIG_EXTCON is disabled.  Then
+the error handling is simple and just looks like:
 
->
-> If you are interested in how our code fragment for the txs02612 looks lik=
-e:
->
-> https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/hea=
-ds/letux/txs02612
->
-> Maybe you have some suggestions to make it work?
+	dev->edev = extcon_get_extcon_dev(acpi_dev_name(adev));
+	if (IS_ERR(dev->edev))
+		return PTR_ERR(dev->edev);
 
-Sorry, but I have lots of things to do at this point, maybe some other time=
-.
+For the two drivers which can build with CONFIG_EXTCON disabled, then
+extcon_get_extcon_dev() will now return NULL which is not treated as an
+error and the probe will continue successfully.  Those two drivers are
+"typec_fusb302" and "max8997-battery".  In the original code, the
+typec_fusb302 driver had an 800ms hang in tcpm_get_current_limit() but
+now that function is a no-op.  For the max8997-battery driver everything
+should continue working as is.
 
-Kind regards
-Uffe
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/extcon/extcon-axp288.c         |  4 ++--
+ drivers/extcon/extcon.c                |  4 +++-
+ drivers/power/supply/axp288_charger.c  | 17 ++++++++++-------
+ drivers/power/supply/charger-manager.c |  7 ++-----
+ drivers/power/supply/max8997_charger.c |  8 ++++----
+ drivers/usb/dwc3/drd.c                 |  9 ++-------
+ drivers/usb/phy/phy-omap-otg.c         |  4 ++--
+ drivers/usb/typec/tcpm/fusb302.c       |  4 ++--
+ include/linux/extcon.h                 |  2 +-
+ 9 files changed, 28 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/extcon/extcon-axp288.c b/drivers/extcon/extcon-axp288.c
+index 7c6d5857ff25..180be768c215 100644
+--- a/drivers/extcon/extcon-axp288.c
++++ b/drivers/extcon/extcon-axp288.c
+@@ -394,8 +394,8 @@ static int axp288_extcon_probe(struct platform_device *pdev)
+ 		if (adev) {
+ 			info->id_extcon = extcon_get_extcon_dev(acpi_dev_name(adev));
+ 			put_device(&adev->dev);
+-			if (!info->id_extcon)
+-				return -EPROBE_DEFER;
++			if (IS_ERR(info->id_extcon))
++				return PTR_ERR(info->id_extcon);
+ 
+ 			dev_info(dev, "controlling USB role\n");
+ 		} else {
+diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
+index a09e704fd0fa..adb957470c65 100644
+--- a/drivers/extcon/extcon.c
++++ b/drivers/extcon/extcon.c
+@@ -851,6 +851,8 @@ EXPORT_SYMBOL_GPL(extcon_set_property_capability);
+  * @extcon_name:	the extcon name provided with extcon_dev_register()
+  *
+  * Return the pointer of extcon device if success or ERR_PTR(err) if fail.
++ * NOTE: This function returns -EPROBE_DEFER so it may only be called from
++ * probe() functions.
+  */
+ struct extcon_dev *extcon_get_extcon_dev(const char *extcon_name)
+ {
+@@ -864,7 +866,7 @@ struct extcon_dev *extcon_get_extcon_dev(const char *extcon_name)
+ 		if (!strcmp(sd->name, extcon_name))
+ 			goto out;
+ 	}
+-	sd = NULL;
++	sd = ERR_PTR(-EPROBE_DEFER);
+ out:
+ 	mutex_unlock(&extcon_dev_list_lock);
+ 	return sd;
+diff --git a/drivers/power/supply/axp288_charger.c b/drivers/power/supply/axp288_charger.c
+index 19746e658a6a..15219ed43ce9 100644
+--- a/drivers/power/supply/axp288_charger.c
++++ b/drivers/power/supply/axp288_charger.c
+@@ -865,17 +865,20 @@ static int axp288_charger_probe(struct platform_device *pdev)
+ 	info->regmap_irqc = axp20x->regmap_irqc;
+ 
+ 	info->cable.edev = extcon_get_extcon_dev(AXP288_EXTCON_DEV_NAME);
+-	if (info->cable.edev == NULL) {
+-		dev_dbg(dev, "%s is not ready, probe deferred\n",
+-			AXP288_EXTCON_DEV_NAME);
+-		return -EPROBE_DEFER;
++	if (IS_ERR(info->cable.edev)) {
++		dev_err_probe(dev, PTR_ERR(info->cable.edev),
++			      "extcon_get_extcon_dev(%s) failed\n",
++			      AXP288_EXTCON_DEV_NAME);
++		return PTR_ERR(info->cable.edev);
+ 	}
+ 
+ 	if (acpi_dev_present(USB_HOST_EXTCON_HID, NULL, -1)) {
+ 		info->otg.cable = extcon_get_extcon_dev(USB_HOST_EXTCON_NAME);
+-		if (info->otg.cable == NULL) {
+-			dev_dbg(dev, "EXTCON_USB_HOST is not ready, probe deferred\n");
+-			return -EPROBE_DEFER;
++		if (IS_ERR(info->otg.cable)) {
++			dev_err_probe(dev, PTR_ERR(info->otg.cable),
++				      "extcon_get_extcon_dev(%s) failed\n",
++				      USB_HOST_EXTCON_NAME);
++			return PTR_ERR(info->otg.cable);
+ 		}
+ 		dev_info(dev, "Using " USB_HOST_EXTCON_HID " extcon for usb-id\n");
+ 	}
+diff --git a/drivers/power/supply/charger-manager.c b/drivers/power/supply/charger-manager.c
+index d67edb760c94..92db79400a6a 100644
+--- a/drivers/power/supply/charger-manager.c
++++ b/drivers/power/supply/charger-manager.c
+@@ -985,13 +985,10 @@ static int charger_extcon_init(struct charger_manager *cm,
+ 	cable->nb.notifier_call = charger_extcon_notifier;
+ 
+ 	cable->extcon_dev = extcon_get_extcon_dev(cable->extcon_name);
+-	if (IS_ERR_OR_NULL(cable->extcon_dev)) {
++	if (IS_ERR(cable->extcon_dev)) {
+ 		pr_err("Cannot find extcon_dev for %s (cable: %s)\n",
+ 			cable->extcon_name, cable->name);
+-		if (cable->extcon_dev == NULL)
+-			return -EPROBE_DEFER;
+-		else
+-			return PTR_ERR(cable->extcon_dev);
++		return PTR_ERR(cable->extcon_dev);
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(extcon_mapping); i++) {
+diff --git a/drivers/power/supply/max8997_charger.c b/drivers/power/supply/max8997_charger.c
+index 127c73b0b3bd..1ec3535a257d 100644
+--- a/drivers/power/supply/max8997_charger.c
++++ b/drivers/power/supply/max8997_charger.c
+@@ -242,10 +242,10 @@ static int max8997_battery_probe(struct platform_device *pdev)
+ 		dev_info(&pdev->dev, "couldn't get charger regulator\n");
+ 	}
+ 	charger->edev = extcon_get_extcon_dev("max8997-muic");
+-	if (IS_ERR_OR_NULL(charger->edev)) {
+-		if (!charger->edev)
+-			return -EPROBE_DEFER;
+-		dev_info(charger->dev, "couldn't get extcon device\n");
++	if (IS_ERR(charger->edev)) {
++		dev_err_probe(charger->dev, PTR_ERR(charger->edev),
++			      "couldn't get extcon device: max8997-muic\n");
++		return PTR_ERR(charger->edev);
+ 	}
+ 
+ 	if (!IS_ERR(charger->reg) && !IS_ERR_OR_NULL(charger->edev)) {
+diff --git a/drivers/usb/dwc3/drd.c b/drivers/usb/dwc3/drd.c
+index 8cad9e7d3368..4982edd13047 100644
+--- a/drivers/usb/dwc3/drd.c
++++ b/drivers/usb/dwc3/drd.c
+@@ -455,13 +455,8 @@ static struct extcon_dev *dwc3_get_extcon(struct dwc3 *dwc)
+ 	 * This device property is for kernel internal use only and
+ 	 * is expected to be set by the glue code.
+ 	 */
+-	if (device_property_read_string(dev, "linux,extcon-name", &name) == 0) {
+-		edev = extcon_get_extcon_dev(name);
+-		if (!edev)
+-			return ERR_PTR(-EPROBE_DEFER);
+-
+-		return edev;
+-	}
++	if (device_property_read_string(dev, "linux,extcon-name", &name) == 0)
++		return extcon_get_extcon_dev(name);
+ 
+ 	/*
+ 	 * Try to get an extcon device from the USB PHY controller's "port"
+diff --git a/drivers/usb/phy/phy-omap-otg.c b/drivers/usb/phy/phy-omap-otg.c
+index ee0863c6553e..6e6ef8c0bc7e 100644
+--- a/drivers/usb/phy/phy-omap-otg.c
++++ b/drivers/usb/phy/phy-omap-otg.c
+@@ -95,8 +95,8 @@ static int omap_otg_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 
+ 	extcon = extcon_get_extcon_dev(config->extcon);
+-	if (!extcon)
+-		return -EPROBE_DEFER;
++	if (IS_ERR(extcon))
++		return PTR_ERR(extcon);
+ 
+ 	otg_dev = devm_kzalloc(&pdev->dev, sizeof(*otg_dev), GFP_KERNEL);
+ 	if (!otg_dev)
+diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
+index 72f9001b0792..96c55eaf3f80 100644
+--- a/drivers/usb/typec/tcpm/fusb302.c
++++ b/drivers/usb/typec/tcpm/fusb302.c
+@@ -1708,8 +1708,8 @@ static int fusb302_probe(struct i2c_client *client,
+ 	 */
+ 	if (device_property_read_string(dev, "linux,extcon-name", &name) == 0) {
+ 		chip->extcon = extcon_get_extcon_dev(name);
+-		if (!chip->extcon)
+-			return -EPROBE_DEFER;
++		if (IS_ERR(chip->extcon))
++			return PTR_ERR(chip->extcon);
+ 	}
+ 
+ 	chip->vbus = devm_regulator_get(chip->dev, "vbus");
+diff --git a/include/linux/extcon.h b/include/linux/extcon.h
+index 0c19010da77f..685401d94d39 100644
+--- a/include/linux/extcon.h
++++ b/include/linux/extcon.h
+@@ -296,7 +296,7 @@ static inline void devm_extcon_unregister_notifier_all(struct device *dev,
+ 
+ static inline struct extcon_dev *extcon_get_extcon_dev(const char *extcon_name)
+ {
+-	return ERR_PTR(-ENODEV);
++	return NULL;
+ }
+ 
+ static inline struct extcon_dev *extcon_find_edev_by_node(struct device_node *node)
+-- 
+2.35.1
+
