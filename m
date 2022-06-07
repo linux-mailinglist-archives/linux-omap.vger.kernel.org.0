@@ -2,131 +2,220 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3335C53F9A7
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jun 2022 11:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2FEA53FCE1
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jun 2022 13:08:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239533AbiFGJ2O (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 7 Jun 2022 05:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41462 "EHLO
+        id S239246AbiFGLIS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 7 Jun 2022 07:08:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239452AbiFGJ2L (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jun 2022 05:28:11 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4048340D7
-        for <linux-omap@vger.kernel.org>; Tue,  7 Jun 2022 02:28:10 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id w19-20020a9d6393000000b0060aeb359ca8so12535881otk.6
-        for <linux-omap@vger.kernel.org>; Tue, 07 Jun 2022 02:28:10 -0700 (PDT)
+        with ESMTP id S242518AbiFGLID (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 7 Jun 2022 07:08:03 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E05C01053E6
+        for <linux-omap@vger.kernel.org>; Tue,  7 Jun 2022 04:04:09 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id a2so27747783lfc.2
+        for <linux-omap@vger.kernel.org>; Tue, 07 Jun 2022 04:04:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=ohM259uqobJqtM7gttWurWj7P+4iDfPJquHax95olDY=;
-        b=gujHBVxqWIlmngbJHwwatlrY6K2BhXGLJOXKENebOL4hOCXVjvoa+7rQ+wCwOuo7nz
-         8e28HbaszMFtjrNu2xJwHUtJo1p0vWs5cPK29M2FpYQX1yrDGputAW1tF1NfmP59wawm
-         4ciGU9SnxDgRMb84mTOs96+/9zN97uENfqj9/+eZfuG77h5pSaMszmbmnWOwi9m+gNzd
-         5NtwsZACk2ULSP0cRt0MdNUxBuwzIbCfzmloCBb/Ue1QhCyZ8f6GEgrTXVIY7durHnKk
-         UWQF6j7yHnTlxlvI9xCgSzii4NusQH9ADfpyzQwiF9b+OrCBSH3adFs9TwqclNBk9aQF
-         O14A==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=aO/lSvFaLajkL7Ac/IqTCOTSOPQr+6oNuobROU/TF8k=;
+        b=plZ0JtxWk2Nc24B6pQU1IdzZ7fMFVakDlxjXm1dhZfOhbMC11ALQejl6bnQ4uXxFQq
+         CiRvRizUUB6Q6XOYtz7/pBHYG3DyAdJKKaej8Ki2oFk96Vg4LC8B5NRrQbwIGp50BvQq
+         PCPkamJ/f1O0MGhS4o5loFLInz8co4ctI11OggzRThUimjtNATTeEVur3srhTyvR5aNE
+         UkIncS+2ZcyEDZIzLq6wIxUJfD2flK51qsJ0r3PzGh7yV5Z8nN7KJJePQsOOybCwmYLW
+         GsUb+yluSCn1dtqSGUZvDycBaNNTBCK3iNAg6a5K1Vnz4JR2nK3FrJo1qP6RE2P0bOpK
+         w+Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=ohM259uqobJqtM7gttWurWj7P+4iDfPJquHax95olDY=;
-        b=uesLsMgCVoPgXLLXICYSKt2NvRHDFlePpcpQAv5ZuLrc9QJu3rxptezBJwklYB+TmP
-         mMGuw50xjbwzmD8IFljs1UBf+UST9m3uWJpWCYf3y7pEiHbNr82g39di6K3iM97aF0JD
-         v1O+eHYhBTXjcrvMJtA36JEDapOToji+Q9XkMYeSnwOZqqXbs+LnAM1Bfc8vZSZF2hb2
-         XmfyvnaLFj3W/TVTzi/i/7ZNqFRNkZTOHroWyD70XHN+XTEPEcSFgDYmgRDClSS9UHRw
-         +t47brFzD+kUqfYqaztNCm67YvK0hzkg2rzeR4BEfwSLcPkZ8l76jziS/4gP5acJ0CwP
-         p1TQ==
-X-Gm-Message-State: AOAM532B30ZlNFqyf2Zj5OttozFzuJV7QGsS1HHxx3rCmpWtbLgLDSlV
-        UETWzO1c+IlOXM6GBj9Aw/SK3t5aDMbHhT5whjGSc5wYpoeRSkP1
-X-Google-Smtp-Source: ABdhPJxTYNOyqQTj+pRtv7B26L++zgaw4oyR9fAzq9Xjy/qi86fDOL5mMOdKcDA6Petw4QZgBH7CHdeaexgYk1On3ls=
-X-Received: by 2002:a05:6830:919:b0:60a:fe63:e321 with SMTP id
- v25-20020a056830091900b0060afe63e321mr11494607ott.227.1654594080399; Tue, 07
- Jun 2022 02:28:00 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=aO/lSvFaLajkL7Ac/IqTCOTSOPQr+6oNuobROU/TF8k=;
+        b=0/OWLk3/rr7BLO/lCJKMmXHm2n8OB0dOEGMeQyATbsN3bdmuS4Wx/2aHTxVEEgb17J
+         RLSXPhD1QOpL9Lu6h0ivemVvwVRxcN6YNC1LW3re9eNIqJ556uMx6hGY3fdHRy2sBA8g
+         5WimFV5I70ZDoRr1dFKFuq/bDUhmINkU6+5n8fg28D7qJWTDO8jqr1F5Fjb5nuAnCIAP
+         Ji+LsuxSkASTpEXFCU1Q2Lu+8pEeQiBg+z7ihcDeQs7P3nP1csZh3Kfo5HtmHpG7RDOO
+         b1x7wYNcHaBihOBxmnyG1Rh/NR6Er2YSWe54bgW38gXUE1cg1SeE8+g0udpQz6eLyt64
+         tptw==
+X-Gm-Message-State: AOAM533fAMw/IUjxbdHgGYugYLym0Gj7gJdvNzMRjrJ3viXzLsgOHqZP
+        psTmlK0w74XwMIcUmNjpqqUOzXOgJrHuUZ1+ULYidg==
+X-Google-Smtp-Source: ABdhPJwD90lne0lHTxYJKzLqW7u3faS4ilXkDxuw9Uqee5o04CDWGrVYZ5DTYIRIF+JkxWbqPbdIMnggcfaJZleojrA=
+X-Received: by 2002:a19:ac42:0:b0:478:593c:e6fe with SMTP id
+ r2-20020a19ac42000000b00478593ce6femr17856420lfc.254.1654599847422; Tue, 07
+ Jun 2022 04:04:07 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6358:99a5:b0:a2:a1fa:9308 with HTTP; Tue, 7 Jun 2022
- 02:28:00 -0700 (PDT)
-Reply-To: robertbaileys_spende@aol.com
-From:   Robert Baileys <mercymiji.j@gmail.com>
-Date:   Tue, 7 Jun 2022 11:28:00 +0200
-Message-ID: <CAAD1zOZ9bCDqBnjmbC3dQfgC=P2zTqAS=TP3q5qK5TFB5=Q9dQ@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
+References: <55A0788B-03E8-457E-B093-40FD93F1B9F3@goldelico.com>
+ <CAPDyKFrjH8c=2LYkzj81jm7t-sy-EBs3AMzAS7M=LEHsh9qCCA@mail.gmail.com> <FA636A4D-FA8F-48EE-80C4-EDDFD115FB25@goldelico.com>
+In-Reply-To: <FA636A4D-FA8F-48EE-80C4-EDDFD115FB25@goldelico.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 7 Jun 2022 13:03:30 +0200
+Message-ID: <CAPDyKFoe5xYyiqNuOjLc4AnF-U_CwTujmNSjkjkW1E4O-8RKig@mail.gmail.com>
+Subject: Re: BUG in mmc: core: Disable card detect during shutdown
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        kernel@pyra-handheld.com, aTc <atc@k-n-p.org>,
+        Tony Lindgren <tony@atomide.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-mmc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY autolearn=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:329 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mercymiji.j[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-Hallo, lieber Beg=C3=BCnstigter,
+On Sat, 4 Jun 2022 at 12:16, H. Nikolaus Schaller <hns@goldelico.com> wrote=
+:
+>
+> Hi,
+>
+> > Am 03.06.2022 um 12:46 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
+> >
+> > On Mon, 30 May 2022 at 18:55, H. Nikolaus Schaller <hns@goldelico.com> =
+wrote:
+> >>
+> >> Hi Ulf,
+> >> users did report a strange issue that the OMAP5 based Pyra does not
+> >> shutdown if a kernel 5.10.116 is used.
+> >>
+>
+> ...
+>
+> >> mmc_stop_host() is not called but __mmc_stop_host() is called 4 times.
+> >> There are 4 active MMC interfaces in the Pyra - 3 for (=C2=B5)SD slots
+> >> and one for an SDIO WLAN module.
+> >>
+> >> Now it looks as if 3 of them are properly teared down (two of them
+> >> seem to have host->slot.cd_irq >=3D 0) but on the fourth call
+> >> cancel_delayed_work_sync(&host->detect); does not return. This is
+> >> likely the location of the stall why we don't see a "reboot: Power dow=
+n"
+> >>
+> >> Any ideas?
+> >
+> > I guess the call to cancel_delayed_work_sync() in __mmc_stop_host()
+> > hangs for one of the mmc hosts. This shouldn't happen - and indicates
+> > that there is something else being wrong.
+>
+> Yes, you were right...
+>
+> >
+> > See more suggestions below.
+> >
+> >>
+> >> BR and thanks,
+> >> Nikolaus
+> >>
+> >> printk hack:
+> >>
+> >> void __mmc_stop_host(struct mmc_host *host)
+> >> {
+> >> printk("%s 1\n", __func__);
+> >>        if (host->slot.cd_irq >=3D 0) {
+> >> printk("%s 2\n", __func__);
+> >>                mmc_gpio_set_cd_wake(host, false);
+> >> printk("%s 3\n", __func__);
+> >>                disable_irq(host->slot.cd_irq);
+> >> printk("%s 4\n", __func__);
+> >>        }
+> >>
+> >>        host->rescan_disable =3D 1;
+> >> printk("%s 5\n", __func__);
+> >
+> > My guess is that it's the same mmc host that causes the hang. I
+> > suggest you print the name of the host too, to verify that. Something
+> > along the lines of the below.
+> >
+> > printk("%s: %s 5\n", mmc_hostname(host), __func__);
+>
+> To my surprise, this did report an mmc6 host port where the OMAP5 only ha=
+s 4...
+>
+> Yes, we have a special driver for the txs02612 sdio switch and voltage tr=
+anslator
+> chip to make two ports out of the single mmc2 port of the OMAP5 SoC.
+>
+> This driver was begun ca. 7 years ago but never finished...
+>
+> The idea is to make a mmc port have several subports. For the Pyra handhe=
+ld hardware
+> we needed 5 mmc/sdio interfaces but the omap5 only has 4 of them availabl=
+e to us.
+>
+> So the txs02612 drivers is sitting between the omap5 mmc2 host pins and s=
+witches
+> between an =C2=B5SD slot and an eMMC.
+>
+> Therefore, the driver is a mmc client driver (like e.g. the driver of som=
+e WiFi chip
+> connected to some SDIO port) and provides multiple mmc host interfaces.
+>
+> It should intercept data transfer requests to its multiple mmc hosts, syn=
+chronize
+> (or enqueue) them, control the switch gpio and forward requests to the pr=
+ocessor's
+> mmc host port so that they are processed (after switching).
+>
+> We never continued to make this work...
 
-Sie haben diese E-Mail von der Robert Bailey Foundation erhalten. Ich
-bin ein pensionierter Regierungsangestellter aus Harlem und ein
-Powerball-Lotterie-Jackpot-Gewinner von 343,8 Millionen Dollar. Ich
-bin der gr=C3=B6=C3=9Fte Jackpot-Gewinner in der Geschichte der New York Lo=
-ttery
-in Amerika. Ich habe diesen Wettbewerb am 27. Oktober 2018 gewonnen
-und m=C3=B6chte Ihnen mitteilen, dass Google in Kooperation mit Microsoft
-Ihre "E-Mail-Adresse" f=C3=BCr meine Anfrage hat und diese 3.000.000,00
-Millionen Euro kosten wird. Ich spende diese 3 Millionen Euro an Sie,
-um auch Wohlt=C3=A4tigkeitsorganisationen und armen Menschen in Ihrer
-Gemeinde zu helfen, damit wir die Welt zu einem besseren Ort f=C3=BCr alle
-machen k=C3=B6nnen. Bitte besuchen Sie die folgende Website f=C3=BCr weiter=
-e
-Informationen, damit Sie diesen 3 Mio. EUR Ausgaben nicht skeptisch
-gegen=C3=BCberstehen.
-https://nypost.com/2018/11/14/meet-the-winner-of-the-biggest-lottery-jackpo=
-t-in-new-york-history/Sie
-Weitere Best=C3=A4tigungen kann ich auch auf meinem Youtube suchen:
-https://www.youtube.com/watch?v=3DH5vT18Ysavc
-Bitte antworten Sie mir per E-Mail (robertbaileys_spende@aol.com).
-Sie m=C3=BCssen diese E-Mail sofort beantworten, damit die =C3=BCberweisend=
-e
-Bank mit dem Erhalt dieser Spende in H=C3=B6he von 3.000.000,00 Millionen
-Euro beginnen kann.
-Bitte kontaktieren Sie die untenstehende E-Mail-Adresse f=C3=BCr weitere
-Informationen, damit Sie diese Spende von der =C3=BCberweisenden Bank
-erhalten k=C3=B6nnen. E-Mail: robertbaileys_spende@aol.com
+Well, I can imagine that it's just very difficult to make this work properl=
+y.
 
-Gr=C3=BC=C3=9Fe,
-Robert Bailey
-* * * * * * * * * * * * * * * *
+Moreover, the mmc core and its block layer code isn't designed to
+support this type of configuration. For example, the I/O scheduling
+can't work with this setup.
 
-Powerball-Jackpot-Gewinner
-E-Mail: robertbaileys_spende@aol.com
+>
+> What remained is simple code to manually throw the switch through some /s=
+ysfs
+> control file after doing an eject and before a fresh partprobe.
+>
+> Still, the probe function of the txs02612 driver does two calls to mmc_ad=
+d_host().
+> These seem to make
+>
+> >
+> >>        cancel_delayed_work_sync(&host->detect);
+>
+> get stuck. Most likely because the initialization is not complete for han=
+dling
+> card detection.
+>
+> >>
+> >> --- here should be another __mmc_stop_host 6
+> >> --- and reboot: Power down
+> >
+> > When/if you figured out that it's the same host that hangs, you could
+> > try to disable that host through the DTS files (add status =3D
+> > "disabled" in the device node, for example) - and see if that works.
+>
+> When not calling mmc_add_host() in our txs02612 driver fragment we can
+> properly shut down the OMAP5. That is the solution with the least efforts=
+.
+> The other would be to make the txs02612 properly work...
+>
+> So in summary there is no bug upstream. It is in our tree.
+
+Thanks for sharing the details.
+
+>
+> If you are interested in how our code fragment for the txs02612 looks lik=
+e:
+>
+> https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/hea=
+ds/letux/txs02612
+>
+> Maybe you have some suggestions to make it work?
+
+Sorry, but I have lots of things to do at this point, maybe some other time=
+.
+
+Kind regards
+Uffe
