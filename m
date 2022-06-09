@@ -2,219 +2,137 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EB7E544AAB
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jun 2022 13:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42D0E544CE8
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jun 2022 15:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244076AbiFILmt (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Jun 2022 07:42:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39968 "EHLO
+        id S244890AbiFINCc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 9 Jun 2022 09:02:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235161AbiFILmG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Jun 2022 07:42:06 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2E0C1DF873
-        for <linux-omap@vger.kernel.org>; Thu,  9 Jun 2022 04:40:46 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id o7so13610259eja.1
-        for <linux-omap@vger.kernel.org>; Thu, 09 Jun 2022 04:40:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=JDp4i9fK6ZlNgpwtecp/EcLoXznY+8QAd3GbFyU5H28=;
-        b=GqO4nqAq5vON4VyW/I8XiGjnAvDTvOEmxbTGcEuwgRNwxDUoh+YDDMxRp9e9fj5dIV
-         4TyZkU0ItY8LecYZvkhgh0PZcGCiNRn2wBE1z+vbHWtVpqhhgNDHojzJb/3AQVg/JWK2
-         1hH1p4YgKymYTcmUALO7O6P8oiPawE/xguvEU8kafLz/ycxGcSuCOrA34Ddi9yYsEY5e
-         pvD52rLNHJ5xmgIPud28EcrqoQ2yhhNVI4VbizndnoII0wBau1rdJTfeQgBErfcm1Fct
-         T7ERyqI4/tk1uPJmJDxmRmsdhrPafwr0GJEFzqluA8GPcyyftFvgZSJa8NwqNLee+bQX
-         d1pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=JDp4i9fK6ZlNgpwtecp/EcLoXznY+8QAd3GbFyU5H28=;
-        b=c44Jfx9nYUdCKO4q34Sy6siQ0tCv4UlUofIG6NzLY1kDkLOt5uGVx6OhPK/c72hPR0
-         aAYsN0XCa2T+5xUgkjarbqJy5to1M2GkBPZwyUpoiKSBwBC0u2nUEY4fC5RTiZJacNh2
-         +Y12fi9okRZIY98WeP3kCWHK80nnRcHTdtQ270VSbj2MQGd8bQDvDPVZU+ZiQSf89mel
-         HUYIM+eVIW+N9Ml0ykAb5qh+DZFw/rNjKRMc2wClUj6IyhrMCmNX94QDMFSDzOVJEHIC
-         aru0+VBrEuntEjdv7w1Nw3vg07B/a1IKI5jreHMB6pHybPhSXW2fje9752+e3+siTAbT
-         jqIA==
-X-Gm-Message-State: AOAM533leRHMzxMzmTmpKnawpoTtwPJe0IzCas+OFWzqRbpRC6jYHPaH
-        8l3iSFoUsc2fqgXJCOmARZAQRg==
-X-Google-Smtp-Source: ABdhPJwdOJJnQY+KyvjJJDp1BkJ69H0dYCgysCMAgOU2vZcTBzDQVuwXv7e60fCPy1rxWS2umbbfjg==
-X-Received: by 2002:a17:906:b788:b0:711:fc54:e55e with SMTP id dt8-20020a170906b78800b00711fc54e55emr5527011ejb.270.1654774845260;
-        Thu, 09 Jun 2022 04:40:45 -0700 (PDT)
-Received: from localhost.localdomain (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id 10-20020a170906058a00b007101f6f0720sm7760844ejn.120.2022.06.09.04.40.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jun 2022 04:40:44 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        arm@kernel.org, soc@kernel.org,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v2 39/48] ARM: dts: omap: correct gpio-keys properties
-Date:   Thu,  9 Jun 2022 13:40:26 +0200
-Message-Id: <20220609114026.380682-10-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220609113721.379932-1-krzysztof.kozlowski@linaro.org>
-References: <20220609113721.379932-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S235756AbiFINC3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Jun 2022 09:02:29 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E87B527A;
+        Thu,  9 Jun 2022 06:02:27 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id A52461FE71;
+        Thu,  9 Jun 2022 13:02:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1654779746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=WNgY7GyrprNl76LhtyM4yyAr1//LVOR4uCT8xLqGCE8=;
+        b=ojtY10eQLedQ1p8W7bkgtPGLkS2AZjpFLq6Jm7M5r6QmnKTONMm4DEE4c/QdWiGdnShevp
+        eIN6ALkkVVj/WhUF02Ld8MHz00y8tRrFQ0iNR/EUdLO4UR9+Vq8VAuuJcSid16nMNGAGa3
+        XvOmhnJPAVDKUKq8/PtY3J2tLln4dQU=
+Received: from suse.cz (unknown [10.100.208.146])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id 6EA862C141;
+        Thu,  9 Jun 2022 13:02:21 +0000 (UTC)
+Date:   Thu, 9 Jun 2022 15:02:20 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
+        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
+        dinguyen@kernel.org, jonas@southpole.se,
+        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, anup@brainfault.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, rostedt@goodmis.org,
+        john.ogness@linutronix.de, paulmck@kernel.org, frederic@kernel.org,
+        quic_neeraju@quicinc.com, josh@joshtriplett.org,
+        mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+        joel@joelfernandes.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
+        vschneid@redhat.com, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        rcu@vger.kernel.org
+Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
+Message-ID: <YqHvXFdIJfvUDI6e@alley>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144517.444659212@infradead.org>
+ <YqG6URbihTNCk9YR@alley>
+ <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
+ <CA+_sPaoJGrXhNPCs2dKf2J7u07y1xYrRFZBUtkKwzK9GqcHSuQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+_sPaoJGrXhNPCs2dKf2J7u07y1xYrRFZBUtkKwzK9GqcHSuQ@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-gpio-keys children do not use unit addresses.
+On Thu 2022-06-09 20:30:58, Sergey Senozhatsky wrote:
+> My emails are getting rejected... Let me try web-interface
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- arch/arm/boot/dts/am335x-evm.dts                  | 2 --
- arch/arm/boot/dts/am335x-guardian.dts             | 2 --
- arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi | 4 +---
- arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi | 4 +---
- arch/arm/boot/dts/am335x-pcm-953.dtsi             | 4 ++--
- arch/arm/boot/dts/am335x-pepper.dts               | 8 +++-----
- arch/arm/boot/dts/am437x-idk-evm.dts              | 4 +---
- 7 files changed, 8 insertions(+), 20 deletions(-)
+Bad day for mail sending. I have problems as well ;-)
 
-diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
-index 730898310641..25c6ac9913d2 100644
---- a/arch/arm/boot/dts/am335x-evm.dts
-+++ b/arch/arm/boot/dts/am335x-evm.dts
-@@ -94,8 +94,6 @@ &gpio1 26 GPIO_ACTIVE_HIGH		/* Bank1, pin26 */
- 
- 	gpio_keys: volume-keys {
- 		compatible = "gpio-keys";
--		#address-cells = <1>;
--		#size-cells = <0>;
- 		autorepeat;
- 
- 		switch-9 {
-diff --git a/arch/arm/boot/dts/am335x-guardian.dts b/arch/arm/boot/dts/am335x-guardian.dts
-index 1a7e187b1953..f6356266564c 100644
---- a/arch/arm/boot/dts/am335x-guardian.dts
-+++ b/arch/arm/boot/dts/am335x-guardian.dts
-@@ -33,8 +33,6 @@ guardian_buttons: gpio-keys {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&guardian_button_pins>;
- 		compatible = "gpio-keys";
--		#address-cells = <1>;
--		#size-cells = <0>;
- 
- 		select-button {
- 			label = "guardian-select-button";
-diff --git a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
-index 92a0e98ec231..7b40ca9483ca 100644
---- a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
-@@ -166,10 +166,8 @@ &mmc2 {
- &buttons {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&push_button_pins>;
--	#address-cells = <1>;
--	#size-cells = <0>;
- 
--	button@0 {
-+	button-0 {
- 		label = "push_button";
- 		linux,code = <0x100>;
- 		gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
-diff --git a/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi b/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi
-index e7e439a0630a..e0364adb8393 100644
---- a/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi
-@@ -378,10 +378,8 @@ &mmc3 {
- &buttons {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&push_button_pins>;
--	#address-cells = <1>;
--	#size-cells = <0>;
- 
--	button@0 {
-+	button-0 {
- 		label = "push_button";
- 		linux,code = <0x100>;
- 		gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
-diff --git a/arch/arm/boot/dts/am335x-pcm-953.dtsi b/arch/arm/boot/dts/am335x-pcm-953.dtsi
-index 124026fa0d09..dae448040a97 100644
---- a/arch/arm/boot/dts/am335x-pcm-953.dtsi
-+++ b/arch/arm/boot/dts/am335x-pcm-953.dtsi
-@@ -54,14 +54,14 @@ user_buttons: user_buttons {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&user_buttons_pins>;
- 
--		button@0 {
-+		button-0 {
- 			label = "home";
- 			linux,code = <KEY_HOME>;
- 			gpios = <&gpio3 7 GPIO_ACTIVE_HIGH>;
- 			wakeup-source;
- 		};
- 
--		button@1 {
-+		button-1 {
- 			label = "menu";
- 			linux,code = <KEY_MENU>;
- 			gpios = <&gpio3 8 GPIO_ACTIVE_HIGH>;
-diff --git a/arch/arm/boot/dts/am335x-pepper.dts b/arch/arm/boot/dts/am335x-pepper.dts
-index b5e88e627bc1..8691eec33b61 100644
---- a/arch/arm/boot/dts/am335x-pepper.dts
-+++ b/arch/arm/boot/dts/am335x-pepper.dts
-@@ -596,24 +596,22 @@ led1 {
- &buttons {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&user_buttons_pins>;
--	#address-cells = <1>;
--	#size-cells = <0>;
- 
--	button0 {
-+	button-0 {
- 		label = "home";
- 		linux,code = <KEY_HOME>;
- 		gpios = <&gpio1 22 GPIO_ACTIVE_LOW>;
- 		wakeup-source;
- 	};
- 
--	button1 {
-+	button-1 {
- 		label = "menu";
- 		linux,code = <KEY_MENU>;
- 		gpios = <&gpio1 23 GPIO_ACTIVE_LOW>;
- 		wakeup-source;
- 	};
- 
--	buttons2 {
-+	button-2 {
- 		label = "power";
- 		linux,code = <KEY_POWER>;
- 		gpios = <&gpio0 7 GPIO_ACTIVE_LOW>;
-diff --git a/arch/arm/boot/dts/am437x-idk-evm.dts b/arch/arm/boot/dts/am437x-idk-evm.dts
-index d46cd721f27e..123a95f87554 100644
---- a/arch/arm/boot/dts/am437x-idk-evm.dts
-+++ b/arch/arm/boot/dts/am437x-idk-evm.dts
-@@ -102,10 +102,8 @@ gpio_keys: gpio-keys {
- 		compatible = "gpio-keys";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&gpio_keys_pins_default>;
--		#address-cells = <1>;
--		#size-cells = <0>;
- 
--		switch0 {
-+		switch-0 {
- 			label = "power-button";
- 			linux,code = <KEY_POWER>;
- 			gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
--- 
-2.34.1
+> Kudos to Petr for the questions and thanks to PeterZ for the answers.
+> 
+> On Thu, Jun 9, 2022 at 7:02 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> > This is the tracepoint used to spool all of printk into ftrace, I
+> > suspect there's users, but I haven't used it myself.
+> 
+> I'm somewhat curious whether we can actually remove that trace event.
 
+Good question.
+
+Well, I think that it might be useful. It allows to see trace and
+printk messages together.
+
+It was ugly when it was in the console code. The new location
+in vprintk_store() allows to have it even "correctly" sorted
+(timestamp) against other tracing messages.
+
+Best Regards,
+Petr
