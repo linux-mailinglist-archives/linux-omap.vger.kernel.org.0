@@ -2,183 +2,171 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63A495459D7
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Jun 2022 04:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5662545C5B
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Jun 2022 08:37:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237390AbiFJCET (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 9 Jun 2022 22:04:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47268 "EHLO
+        id S1346356AbiFJGh1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 10 Jun 2022 02:37:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242433AbiFJCDx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 9 Jun 2022 22:03:53 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3793EE8E0;
-        Thu,  9 Jun 2022 19:03:21 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id 283EC5C012B;
-        Thu,  9 Jun 2022 22:03:19 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Thu, 09 Jun 2022 22:03:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
-        cc:cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm3; t=1654826599; x=
-        1654912999; bh=auv2y1q/XHGLdEIrA+k3tJpicIXejmP+D7ve/EoZ7GM=; b=T
-        lueWR2anscPTLp0GLpyNG2+xRDvlxqL4hHB649GKDVxE+83H0KogHLzK7+y7p1tl
-        DhCwJiGfhsexGpVmouxwk198ga4JMmAxvc0MPItUHh02vk4LRvUraBFLAjEYzL7H
-        gZcuiRXlvoicEFjgLzVXW800HjEb+HDIcWMTDaizkpQmKHhL77Q8uKOOZz707O40
-        TIz9C4thfrQn3s2q2+xaIwggUvQqHrFUz2TqGq1d4nIqw7xfdbXSW30edDJyuQuH
-        yq3ZTH9aWoSA/finyesptEcxaUPQUKI96Nsq8jdr1mMFqphTsaDNhASvslpIpCZs
-        KuHK82wLrkBr7ibytLhow==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1654826599; x=
-        1654912999; bh=auv2y1q/XHGLdEIrA+k3tJpicIXejmP+D7ve/EoZ7GM=; b=H
-        jaQGVAUFJ+o43qxljJhhhS7u5lZVx5+WEwMvXkqqfGfjYrY4QoCjutwZAnmZEjoi
-        UJkCS7XhYJDA1P48qBCrVwgj71pEU+N52OHb1JTH/DSvb0m3ai5Jy+f+uP4ewgto
-        jCgSFGjRPxUxrZo4gX98NmnppaNPRvC2tURk1H/pTCigjKDBHM6600/pBBy/aDtQ
-        9gG2FmWceVGLRo4xsWSTNiAqaow9F80mCByr562WBl+Sm9MDBq92NOgaHEbLJ8nM
-        mDr5zac63XZVJmWiVE5oiukoidXAgr8j4l85vEPJ0c54Qu3kFJMG2Pyy78sK4Rqo
-        pcjUqTi4+Fa8a0sfFqWAg==
-X-ME-Sender: <xms:ZaaiYna9xxSUqWwOqN2o4LbFxDQu91IYyvn7Ey86UqV2RrC2yZzEfw>
-    <xme:ZaaiYmbLAZJMC-YelQXR7lHVv9B0EGQgCOn61JOLlB4fAvLGnPCLxIQuJS_Jqc5nd
-    -t5T7a4wtpCMDnIsA>
-X-ME-Received: <xmr:ZaaiYp-W6bS5nyInJAR8JRslpyj4PadpQGE-IaOz_bAAWC1bMSMRGVDiT8TLXsxwNr-Y84i1EqQRN_fQ5uv3dGFQwBe77L4PBugRC1gmugy_d1ux0NXfRXQrdw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedruddutddgheegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefuvfevfhfhkffffgggjggtgfesth
-    ejredttdefjeenucfhrhhomhepufgrmhhuvghlucfjohhllhgrnhguuceoshgrmhhuvghl
-    sehshhholhhlrghnugdrohhrgheqnecuggftrfgrthhtvghrnhepleetjeffvdegheektd
-    ekveeuueetffetffehudefueejvddufeduteeiieejveelnecuffhomhgrihhnpehkvghr
-    nhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
-    hrohhmpehsrghmuhgvlhesshhhohhllhgrnhgurdhorhhg
-X-ME-Proxy: <xmx:ZaaiYtpnP-ZI6-J9uVGSSPK2oule0PiJy9MQZ77TQHt5ROhcNr4NMg>
-    <xmx:ZaaiYirYiAV5Vy1rURPPL3TX0xJdFr7XYP3Sz-8v6317Kmg3HYStWg>
-    <xmx:ZaaiYjRiGIEvtRQGbryJCwl4Mz2lfRVOT8dq1v23yOQq8Q4SKY931A>
-    <xmx:Z6aiYvq427nOQFMRmcwWTUq6YZyNTbWxjVLldeY5Zj6xsbSPPt914Q>
-Feedback-ID: i0ad843c9:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 9 Jun 2022 22:03:15 -0400 (EDT)
-Subject: Re: [PATCH 00/56] Specify clock provider directly to CPU DAIs
-To:     Mark Brown <broonie@kernel.org>, ckeepax@opensource.cirrus.com
-Cc:     linux-sunxi@lists.linux.dev, peter.ujfalusi@gmail.com,
-        pierre-louis.bossart@linux.intel.com, linux-imx@nxp.com,
-        krzk@kernel.org, jarkko.nikula@bitmer.com,
-        linux-xtensa@linux-xtensa.org, cezary.rojewski@intel.com,
-        shawnguo@kernel.org, linux-mediatek@lists.infradead.org,
-        nicolas.ferre@microchip.com, patches@opensource.cirrus.com,
-        linux-amlogic@lists.infradead.org, srinivas.kandagatla@linaro.org,
-        daniel@zonque.org, linux-mips@vger.kernel.org,
-        linux-tegra@vger.kernel.org, nsaenz@kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, heiko@sntech.de,
-        alsa-devel@alsa-project.org, kernel@pengutronix.de,
-        jbrunet@baylibre.com,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        linux-rockchip@lists.infradead.org, linux-omap@vger.kernel.org,
-        lgirdwood@gmail.com
-References: <20220519154318.2153729-1-ckeepax@opensource.cirrus.com>
- <165478153064.1052094.1721875477574787769.b4-ty@kernel.org>
-From:   Samuel Holland <samuel@sholland.org>
-Message-ID: <2a498819-dbbf-31c1-4145-bbd2d7179bd8@sholland.org>
-Date:   Thu, 9 Jun 2022 21:03:15 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        with ESMTP id S243195AbiFJGh0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 10 Jun 2022 02:37:26 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E861633A35
+        for <linux-omap@vger.kernel.org>; Thu,  9 Jun 2022 23:37:22 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id a10so10884610wmj.5
+        for <linux-omap@vger.kernel.org>; Thu, 09 Jun 2022 23:37:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Qxlw/2GeYPhBz4i8FzCqobc8aHph2WQJ2uzH+wlAQPM=;
+        b=YvKD/lnZFHPf9Bklm5hR2t0kTgFB1/rXSkgOKvxFTago0OfV/XXVBnr65QfdQ0sIbE
+         X56d5w92lO93EaOJsDJ8oCNGyjZkcJXPRSg9xTkOKhWDw62K7tpcO84Az2vOBRZU/r3+
+         YIHnLV0yk1ox4ibJDxo/xtHUE91KPK5nhGt24yQglgyRLlAN46Y1Z1t0+GvzN7M+MEou
+         tOdQLaDCWTLurM3ng8g7elKpPBlMcfWMNnTz6GEuMIGKZgA7WgUpL2gOP6VsKo5/EHPb
+         626ZTuTKw9tktPSgibPC7QlWbKT0XcsOV4TdzYgmUmuC1ODYErjWurNuno/msyBC5MwG
+         9u4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Qxlw/2GeYPhBz4i8FzCqobc8aHph2WQJ2uzH+wlAQPM=;
+        b=bkqRgZ7MFVLumu9vnznE1ZH8+Zj+QD7q90aD5c5HAg4dbkaXjKQSXti7UPizzpipA/
+         pId369d7DYh4V7tKXh47L/TPO1J+R2dxIkrtTUhynAJWzqTsvWy6ESHR6XEAojqW8JEm
+         b/2gQqVqomtuiYhaxb6s/7OW2W4sgKs/1d7kHgOmV9c+NFldsbRmSJ7cyOHCyg2qZOw0
+         zCYYs/oyzMSF4viTbusOK+Re62I84oVecxKnFftie9O/86I7vM8CUsW4OPjFfBAcir77
+         liTUOaoZuj0StYmGSbZr1OHM1fAaIM4X9imOSZRlTOO+qDin2BGu95jqy9PkX+CxGjXO
+         lWJQ==
+X-Gm-Message-State: AOAM5326bb9ABySjnSeG2PJhZfVRwU8ztfnpYZPf2Cv5s6XtaBjEnnnP
+        VATee/IBu+BVB+nUrqCpxdKZTw==
+X-Google-Smtp-Source: ABdhPJw4Hge4NDaRn0TL71ijVSQhRo1MhCaO3HbTb1tYRGHCORKkku8fnKoEAx9FGxDoG3CaWVnJNw==
+X-Received: by 2002:a1c:4e03:0:b0:39c:5bbc:e0d2 with SMTP id g3-20020a1c4e03000000b0039c5bbce0d2mr7034980wmh.184.1654843041123;
+        Thu, 09 Jun 2022 23:37:21 -0700 (PDT)
+Received: from localhost.localdomain ([2001:861:44c0:66c0:27b0:82d9:d0c6:702a])
+        by smtp.gmail.com with ESMTPSA id 2-20020a05600c228200b0039482d95ab7sm1729030wmf.24.2022.06.09.23.37.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jun 2022 23:37:20 -0700 (PDT)
+From:   Neil Armstrong <narmstrong@baylibre.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Olof Johansson <olof@lixom.net>, arm@kernel.org
+Cc:     Neil Armstrong <narmstrong@baylibre.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        linux-mediatek@lists.infradead.org,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        linux-tegra@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Tero Kristo <kristo@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-omap@vger.kernel.org,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        linux-gpio@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        Kevin Hilman <khilman@baylibre.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>, Nishanth Menon <nm@ti.com>,
+        devicetree@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>,
+        linux-arm-msm@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Samuel Holland <samuel@sholland.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org,
+        Andrew Jeffery <andrew@aj.id.au>, linux-input@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Peter Rosin <peda@axentia.se>,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Andy Gross <agross@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        linux-sunxi@lists.linux.dev,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-samsung-soc@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Li Yang <leoyang.li@nxp.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Wei Xu <xuwei5@hisilicon.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Joel Stanley <joel@jms.id.au>,
+        linux-rockchip@lists.infradead.org
+Subject: Re: (subset) [PATCH v2 00/48] dt-bindings: input: gpio-keys: rework matching children
+Date:   Fri, 10 Jun 2022 08:37:18 +0200
+Message-Id: <165484301356.1384204.15957178175784526690.b4-ty@baylibre.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220609113721.379932-1-krzysztof.kozlowski@linaro.org>
+References: <20220609113721.379932-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <165478153064.1052094.1721875477574787769.b4-ty@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Mark,
+Hi,
 
-On 6/9/22 8:32 AM, Mark Brown wrote:
-> On Thu, 19 May 2022 16:42:22 +0100, Charles Keepax wrote:
->> Currently the set_fmt callback always passes clock provider/consumer
->> with respect to the CODEC. This made sense when the framework was
->> directly broken down into platforms and CODECs. However, as things
->> are now broken down into components which can be connected as either
->> the CPU or CODEC side of a DAI link it simplifies things if each
->> side of the link is just told if it is provider or consumer of the
->> clocks. Making this change allows us to remove one of the last parts
->> of the ASoC core that needs to know if a driver is a CODEC driver,
->> where it flips the clock format specifier if a CODEC driver is used on
->> the CPU side of a DAI link, as well as just being conceptually more
->> consistent with componentisation.
->>
->> [...]
+On Thu, 9 Jun 2022 13:37:21 +0200, Krzysztof Kozlowski wrote:
+> Merging
+> =======
+> 1. dt-bindings: rebased on top of Rob's:
+>    https://lore.kernel.org/all/20220608211207.2058487-1-robh@kernel.org/
 > 
-> Applied to
+> 2. DTS patches are independent. They can be picked up directly by sub-arch
+>    maintainers, by Arnd or Olof, or eventually by me (if you wish).
 > 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-> 
-> Thanks!
-> 
-> [01/56] ASoC: core: Add set_fmt_new callback that directly specifies provider
->         commit: 905f3a04e184854555fc248ca4e692fdbf2f2547
-> [02/56] ASoC: amd: vangogh: Update to use set_fmt_new callback
->         commit: ab890e0f83a65624d20b0ca4a7cb6306b8511558
-> [03/56] ASoC: atmel: Update to use set_fmt_new callback
->         commit: 0fd054a577180cd807992e32c7cd394e54c85903
-> [04/56] ASoC: au1x: Update to use set_fmt_new callback
->         commit: fee11f70849b21a244e6e27d281f3858b671bfea
-> [05/56] ASoC: bcm: Update to use set_fmt_new callback
->         commit: 04ea2404468b7885c560c3673f6f2fd368f305a2
-> [06/56] ASoC: ep93xx: Update to use set_fmt_new callback
->         commit: 5d6124e58d56818249a6266f56d9c3739e72e1bd
-> [07/56] ASoC: dwc: Update to use set_fmt_new callback
->         commit: ca0444f1f7b228ae3b8d1a5c0f0d1b4463171f98
-> [08/56] ASoC: fsl: Update to use set_fmt_new callback
->         commit: 3b14c15a333b8225ea38479e13c0366539d3374a
-> [09/56] ASoC: hisilicon: Update to use set_fmt_new callback
->         commit: 0f362524dd3face4865077a4f7e7e640a95702aa
-> [10/56] ASoC: img: Update to use set_fmt_new callback
->         commit: ed2b384082a678a0c4c8c56deff9e5f46d5e3fca
-> [11/56] ASoC: Intel: Update to use set_fmt_new callback
->         commit: add9ee8c64c617f561a309cdda50104e9e2c12f6
-> [12/56] ASoC: js4740-i2s: Update to use set_fmt_new callback
->         commit: cbb3a19f090d5a41b822caf9ff2058e1c6bc7ea3
-> [13/56] ASoC: mediatek: Update to use set_fmt_new callback
->         commit: 3af99430f8d948a41556156155b0295dec274d41
-> [14/56] ASoC: meson: Update to use set_fmt_new callback
->         commit: f60442bf6eab47aa4ab127aab88afdcc29a09a73
-> [15/56] ASoC: mxs-saif: Update to use set_fmt_new callback
->         commit: f3c0064f1f8e358799c70c7905a09d15c5ec5e5a
-> [16/56] ASoC: pxa: Update to use set_fmt_new callback
->         commit: 84c5b47c8ce4d5059d5e7539d3b44922cc0390e9
-> [17/56] ASoC: qcom: Update to use set_fmt_new callback
->         commit: 1148e16b335f341f36475b646c692b4a71a1855e
-> [18/56] ASoC: rockchip: Update to use set_fmt_new callback
->         commit: 27646d265da1745b2d1d10fec18465631cb1135f
-> [19/56] ASoC: samsung: Update to use set_fmt_new callback
->         commit: 0b491c7c1b2555ef08285fd49a8567f2f9f34ff8
-> [20/56] ASoC: sh: Update to use set_fmt_new callback
->         commit: 2d4dd776e902546389f2d7808ece7fd815aa829c
-> [21/56] ASoC: stm: Update to use set_fmt_new callback
->         commit: 0092dac91ec1c404787841bdd9ecbf3404d1a41c
-> [22/56] ASoC: sunxi: Update to use set_fmt_new callback
->         commit: 7cc3965fde74c9c725ed01de4ac35bc7d562d16a
+> [...]
 
-This patch is wrong, which I pointed out earlier[1]. It will break audio on the
-Allwinner A33 and A64 SoCs. Charles said he would send a v2[2]. Excluding the
-changes to sound/soc/sunxi/sun8i-codec.c from the patch would fix it.
+Thanks, Applied to https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git (v5.20/arm64-dt)
 
-Regards,
-Samuel
+[07/48] arm64: dts: amlogic: correct gpio-keys properties
+        https://git.kernel.org/amlogic/c/4956be9944d1fb23107f27bad8a2cca0fa167443
+[08/48] arm64: dts: amlogic: align gpio-key node names with dtschema
+        https://git.kernel.org/amlogic/c/4fd9afd894ebe5831dbd737e6ca7b6de14da7fda
 
-[1]:
-https://lore.kernel.org/alsa-devel/948d5418-44ca-2e60-0c1c-0b16f315feba@sholland.org/
-[2]:
-https://lore.kernel.org/linux-sunxi/20220520095654.GK38351@ediswmail.ad.cirrus.com/
+These changes has been applied on the intermediate git tree [1].
+
+The v5.20/arm64-dt branch will then be sent via a formal Pull Request to the Linux SoC maintainers
+for inclusion in their intermediate git branches in order to be sent to Linus during
+the next merge window, or sooner if it's a set of fixes.
+
+In the cases of fixes, those will be merged in the current release candidate
+kernel and as soon they appear on the Linux master branch they will be
+backported to the previous Stable and Long-Stable kernels [2].
+
+The intermediate git branches are merged daily in the linux-next tree [3],
+people are encouraged testing these pre-release kernels and report issues on the
+relevant mailing-lists.
+
+If problems are discovered on those changes, please submit a signed-off-by revert
+patch followed by a corrective changeset.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+
+-- 
+Neil
