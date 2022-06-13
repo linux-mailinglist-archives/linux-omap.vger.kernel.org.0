@@ -2,159 +2,162 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 003935481C0
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Jun 2022 10:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2539C548175
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Jun 2022 10:28:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239477AbiFMIHP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Jun 2022 04:07:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56890 "EHLO
+        id S240072AbiFMI0U (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 13 Jun 2022 04:26:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239506AbiFMIHF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Jun 2022 04:07:05 -0400
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-eopbgr140042.outbound.protection.outlook.com [40.107.14.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA443193D5;
-        Mon, 13 Jun 2022 01:07:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kfCCHeYJ8zrTKa83M09fIor8UPAY/a6Mp6uAu4/DJOuIg/5x+RfYGlckwfvCpglAXEHTRHLIxLeh+AjQRDBl91q3mnenaRJpQFgi4ytVklE21WT8/WRWZUxwdNJLDasQnyL0GI/LFp3PlvtP+rqpNAlgi1TTW1jnbQqB58aHKWLyPqc0xfGlor0BnYz5HPQd/2fzZaMwfKxftYwLf1f23dDRyQ1dA+vKH3jEuGUF+0lViClRbn4RQGjpSiwdvi/oqi/YoirvBnaKQf5N9dxGzxL63Eq8qmzgZLh/4P4B04QAHdteoNMIo7k9WSejBNHiOMIEVw2jXCzusMK0B7/zog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+z8i+TTJOQm4Q0Gx2DPrirk9BczMLmUDhv/Pbe8A1gg=;
- b=GkSPV+AmrlnVpLG4YpUFV6ISNLHKx/jCe/KtTgwOGgwcD+GAC9cPuLNmpnIOpxZbhICdoed6D8fzgYY/K+Ijjn+IRqtHZrmqiWmQxzxXEDQkXZdaOGwHHuq1ZaU+/sT6PJ+TAqvcDMEhiWe97ipILvLax9Q+A/MB1Nb33jc57y80LFfIUy1QABaZk/h7bndv8yGSX0tRzPrG4bWtDsw2eQ5WQcn2Alx/NQbPnFyjRCxBoADqZtIzFniJjrCSxBcpho0OLzbjygJm5k470h7AY4NjYdvJFxj7pCwbQfBmZ3bw3qaSted+v5DPWt4jZ5pmUtlSdN3D8E10gwhchFOdUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.200) smtp.rcpttodomain=linaro.org smtp.mailfrom=in.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=in.bosch.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=in.bosch.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+z8i+TTJOQm4Q0Gx2DPrirk9BczMLmUDhv/Pbe8A1gg=;
- b=LPgvKyZVjmlTcK7aekiaARnJ3tREkGb90ycDZmbpYFWbZ9pc+6pXCSXl72BK7TnJBrQWf3oJK0ZrXkOeZQDTXkOjfJbKmo5mzKALezF1JSQnyeMzQxgPBtMvINETRub1bF2l8kg1QHwFXrvfcBDZh9jHjwNAsmLx08g3T2sFyFc=
-Received: from AS8PR04CA0148.eurprd04.prod.outlook.com (2603:10a6:20b:127::33)
- by AM0PR10MB3140.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:189::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.11; Mon, 13 Jun
- 2022 08:07:01 +0000
-Received: from AM5EUR03FT006.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:20b:127:cafe::54) by AS8PR04CA0148.outlook.office365.com
- (2603:10a6:20b:127::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.20 via Frontend
- Transport; Mon, 13 Jun 2022 08:07:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.200)
- smtp.mailfrom=in.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=in.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of in.bosch.com designates
- 139.15.153.200 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.200; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.200) by
- AM5EUR03FT006.mail.protection.outlook.com (10.152.16.122) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5332.12 via Frontend Transport; Mon, 13 Jun 2022 08:07:01 +0000
-Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
- (139.15.153.200) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2375.28; Mon, 13 Jun
- 2022 10:06:58 +0200
-Received: from SI-HUB2000.de.bosch.com (10.4.103.108) by
- SI-EXCAS2001.de.bosch.com (10.139.217.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2375.28; Mon, 13 Jun 2022 10:06:57 +0200
-Received: from localhost.localdomain (10.167.1.123) by SI-HUB2000.de.bosch.com
- (10.4.103.108) with Microsoft SMTP Server id 15.1.2375.28; Mon, 13 Jun 2022
- 10:06:53 +0200
-From:   <Gireesh.Hiremath@in.bosch.com>
-To:     <krzysztof.kozlowski+dt@linaro.org>
-CC:     <m.felsch@pengutronix.de>, <linux-omap@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-input@vger.kernel.org>, <bcousson@baylibre.com>,
-        <tony@atomide.com>, <robh+dt@kernel.org>,
-        <dmitry.torokhov@gmail.com>, <mkorpershoek@baylibre.com>,
-        <davidgow@google.com>, <swboyd@chromium.org>,
-        <fengping.yu@mediatek.com>, <y.oudjana@protonmail.com>,
-        <rdunlap@infradead.org>, <colin.king@intel.com>,
-        <Gireesh.Hiremath@in.bosch.com>, <sjoerd.simons@collabora.co.uk>,
-        <VinayKumar.Shettar@in.bosch.com>,
-        <Govindaraji.Sivanantham@in.bosch.com>,
-        <anaclaudia.dias@de.bosch.com>
-Subject: Re: [v2,2/4] Input: mt-matrix-keypad: Add Bosch mt matrix keypad driver
-Date:   Mon, 13 Jun 2022 08:06:38 +0000
-Message-ID: <20220613080638.1339-1-Gireesh.Hiremath@in.bosch.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20220506072737.1590-2-Gireesh.Hiremath@in.bosch.com>
-References: <20220506072737.1590-2-Gireesh.Hiremath@in.bosch.com>
+        with ESMTP id S239358AbiFMI0R (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Jun 2022 04:26:17 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1225E1EED7;
+        Mon, 13 Jun 2022 01:26:14 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id m125-20020a1ca383000000b0039c63fe5f64so2647384wme.0;
+        Mon, 13 Jun 2022 01:26:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3JSggHLDbkXyuZCKaU+uQ7H5KVpBjE3ZWWl/F0t3JyI=;
+        b=hln/7KIUboOODQa9/Iv7zWAXFI8kFLhiLL+AWnA7ZL0itAJaB93eguKFQupB8Lv94a
+         mnMuLqlfVsMy6aSBFmNweaacWKXWw7aT6TScazfBGhspJqqH/PMOPWdnnnaxNLaf842d
+         D+3NPCattkXMe8VyippSy6AVlz1Q90Igxi/lQII1yr2hkIK0YZRpsj0TKs2Px7tXlVgY
+         915w6r1r+N9IHNGMPf7O4C6rOlcjLzR4xSEqc3Zfq8tMbY0ayFsU19Cug+0HkT25Saig
+         zkxTdXbzsbpEfsV6HhW0WtRME3JJZVdyKx57BtFZ0WE2gh0TSNH76QSkgUTVIoEuHNxT
+         f/gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3JSggHLDbkXyuZCKaU+uQ7H5KVpBjE3ZWWl/F0t3JyI=;
+        b=YRQJp1GBM3OcBer6Bp1WG/lVEMPbsdDfQzMPh5cIijwX90UumIifd1W7M9eZ9tOszB
+         5TKl/a0hV5ldDpz7+f9oV27/cDUZv0Xa/xnwc9fZw9n7CCQCMyb/FtECSzWxIrDXppb/
+         Ye09YW/mZOxpI8n0iwJx5ZMNrEHAvOQb/r/j7oW93vahxjzvyBWWcSxwlkuv2u7wVWQG
+         X5sbWQOGc+JHZxzPSk30elqMZx3J9FHvagdN7/rHVt00R1pTvFtyMh3iUaYo2OSFI5aC
+         k8hMkMwMG9o7FdJHCG6Dxaet7U9Y+D5HPReKeLWn0oj1EOQb+nInIl70eEfpdQYzMesu
+         3K+Q==
+X-Gm-Message-State: AOAM5308RPuyABds5tbz4EScO3Ovyc2GgLPib84QRdAipfTp7gj5CkO5
+        /7msG24JNLD8C5BKoOQn0Qg1EAN/JWJ5bTQ75cw=
+X-Google-Smtp-Source: ABdhPJxgJ3qlsWHXb4q5Q9LeHOXh1hQWbFNdZBk/6atfvyd1YyWRPGtuhT6/ZUDmb0vG1CLuyzfEgHlG2xi/itwptM8=
+X-Received: by 2002:a05:600c:1c9a:b0:39c:7db4:90c3 with SMTP id
+ k26-20020a05600c1c9a00b0039c7db490c3mr13053942wms.161.1655108772491; Mon, 13
+ Jun 2022 01:26:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.167.1.123]
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6b7252c0-d18d-4721-08c7-08da4d13b20b
-X-MS-TrafficTypeDiagnostic: AM0PR10MB3140:EE_
-X-Microsoft-Antispam-PRVS: <AM0PR10MB3140D2DED762A544CDCBEF10A6AB9@AM0PR10MB3140.EURPRD10.PROD.OUTLOOK.COM>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: PvEhW+eSx26Jc36Fcw0miJoOvRNwF+3RSwwZoYdQYonhC8x7bnNH2firGKQNYicskAJowa1epjool3U8e6OVMj1Jtrz7ZgcDaJOJ3D5Z9TWEaYdoxKeoqWR+IoZkiX4U/uTNkMagR3inTmqwnmsQH+Yfv5ICBZe+FoBs+AH853BsUauhJXZ6h99K4aYCEiiHBMdSTw3rqov8maED5Oxl68I2IgdBZLWa8/2BF0uBWoK2T6Y0BJZhaOfnbywrYt9KD8C2VwR9novMEMjrupe86jsNJS5tAV49zHUGvHdlgjx/mkX2PIt50+D/jLoskqIxn1aYolmtpXHgYVG/1Zs9hwnXfjRPk3DSb5wixF4yh7WzhQ7vUwzRznRX1hvCuCJijEvlof9WISs3axIfu4YEoQYLcQLyMd5cjMCC/IAxQKHuNP/TS6CxaEcSqbCpRzrktCx+jh1qmlb1o/yfsu1GeKKTn7vipMIHvXbypNsjWTYCU84olWY+hcWBQBeoRNdmndmxENbnr/ja9gE6OqHs2TrPx/PqMvFyV1ilISi4vgbMB5fZcpTe4YD/q/wrbpBZmQ7+3a0tnN3wRE3hpDbAr9RX2NRmwJW39rjUdqtub+VWaSScrgamsdxoqPqifVRZgsq6iCTTkFIOFU6I4S7wSfebhb/muS5Brm5MBvB17aj5341bEHMsHyfxdR1XIx/o+D/z8FhKyCte5foNzWcfyw==
-X-Forefront-Antispam-Report: CIP:139.15.153.200;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230016)(4636009)(46966006)(40470700004)(36840700001)(4326008)(316002)(1076003)(6666004)(2906002)(186003)(16526019)(47076005)(70586007)(336012)(81166007)(2876002)(36860700001)(70206006)(82960400001)(356005)(54906003)(82310400005)(8676002)(5660300002)(83380400001)(7416002)(8936002)(508600001)(40460700003)(86362001)(107886003)(26005)(2616005)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: in.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2022 08:07:01.2350
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b7252c0-d18d-4721-08c7-08da4d13b20b
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.200];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource: AM5EUR03FT006.eop-EUR03.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB3140
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220608142723.103523089@infradead.org> <20220608144517.251109029@infradead.org>
+In-Reply-To: <20220608144517.251109029@infradead.org>
+From:   Lai Jiangshan <jiangshanlai@gmail.com>
+Date:   Mon, 13 Jun 2022 16:26:01 +0800
+Message-ID: <CAJhGHyCnu_BsKf5STMMJKMWm0NVZ8qXT8Qh=BhhCjSSgwchL3Q@mail.gmail.com>
+Subject: Re: [PATCH 21/36] x86/tdx: Remove TDX_HCALL_ISSUE_STI
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Richard Henderson <rth@twiddle.net>, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        Will Deacon <will@kernel.org>, guoren@kernel.org,
+        bcain@quicinc.com, Huacai Chen <chenhuacai@kernel.org>,
+        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
+        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
+        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, Michael Ellerman <mpe@ellerman.id.au>,
+        benh@kernel.crashing.org, paulus@samba.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        Richard Weinberger <richard@nod.at>,
+        anton.ivanov@cambridgegreys.com,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        acme <acme@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        jolsa@kernel.org, Namhyung Kim <namhyung@kernel.org>,
+        Juergen Gross <jgross@suse.com>, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, VMware Inc <pv-drivers@vmware.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>, chris@zankel.net,
+        jcmvbkbc@gmail.com, rafael@kernel.org, lenb@kernel.org,
+        pavel@ucw.cz, gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, Anup Patel <anup@brainfault.org>,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
+        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
+        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
+        joel@joelfernandes.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
+        vschneid@redhat.com, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        rcu@vger.kernel.org, Isaku Yamahata <isaku.yamahata@gmail.com>,
+        kirill.shutemov@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
-
-Hi Krzysztof,
-
->You wrote pretty long message explaining how the device works, but I
->still do not see the answer to questions - why it cannot be part of
->matrix keypad?
-
-Following are the difference between matrix keypad and Bosch keypad
-make us to add another keypad driver.
-
-matrix keypad:
-	- By hardware schematic, a column GPIO line will intersect only
-	  with row GPIO lines, not with the other column GPIO lines
-	- so, row and column GPIO property are fixed, because of this
-	- key scanning work based on interrupt mode
-	- and key press is determined based on setting column as output,
-	  row GPIO as input and set interrupt to monitor the changes in state,
-	  serve the key pressed in ISR
-
-Bosch keypad:
-    - By hardware schematic column GPIO line can intersect with row GPIO line
-	  as well as other column GPIO lines
-	- so, all GPIO act as row as well as column, because of this
-	- key scanning based on polling mode
-	- a key pressed is determined by setting one of GPIO line as output and
-	  other as input and poll for change in the state of input GPIO lines.
-	  Setting one of a GPIO line as output and remaining GPIO lines as input is on
-	  round robin bases.
+On Wed, Jun 8, 2022 at 10:48 PM Peter Zijlstra <peterz@infradead.org> wrote:
 >
->"It looks like this driver has smaller number of features than
->matrix-keypad, so it should be integrated into the matrix-keypad.
->matrix-keypad features are superset to this one."
+> Now that arch_cpu_idle() is expected to return with IRQs disabled,
+> avoid the useless STI/CLI dance.
 >
->"But anyway this should be just merged into matrix-keypad. It's a
->simpler set of that binding."
+> Per the specs this is supposed to work, but nobody has yet relied up
+> this behaviour so broken implementations are possible.
 
-This keypad driver specific to Bosch measuring tool or similar devices.
-Please let me know to send latest patch which resolves build warning
-and gpiod API support.
+I'm totally newbie here.
 
-Best regards,
-Gireesh Hiremath
+The point of safe_halt() is that STI must be used and be used
+directly before HLT to enable IRQ during the halting and stop
+the halting if there is any IRQ.
+
+In TDX case, STI must be used directly before the hypercall.
+Otherwise, no IRQ can come and the vcpu would be stalled forever.
+
+Although the hypercall has an "irq_disabled" argument.
+But the hypervisor doesn't (and can't) touch the IRQ flags no matter
+what the "irq_disabled" argument is.  The IRQ is not enabled during
+the halting if the IRQ is disabled before the hypercall even if
+irq_disabled=false.
+
+The "irq_disabled" argument is used for workaround purposes:
+https://lore.kernel.org/kvm/c020ee0b90c424a7010e979c9b32a28e9c488a51.1651774251.git.isaku.yamahata@intel.com/
+
+Hope my immature/incorrect reply elicits a real response from
+others.
+
+Thanks
+Lai
