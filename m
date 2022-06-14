@@ -2,41 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE21B54B1AB
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 14:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3321354B374
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 16:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356854AbiFNMm6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Jun 2022 08:42:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51850 "EHLO
+        id S238629AbiFNOhx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jun 2022 10:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243456AbiFNMmq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 08:42:46 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EF0572B243;
-        Tue, 14 Jun 2022 05:41:35 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7CCFF1655;
-        Tue, 14 Jun 2022 05:41:35 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.41.154])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CDCF3F73B;
-        Tue, 14 Jun 2022 05:41:17 -0700 (PDT)
-Date:   Tue, 14 Jun 2022 13:41:13 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        with ESMTP id S238564AbiFNOht (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 10:37:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29696175AA;
+        Tue, 14 Jun 2022 07:37:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7934E617B4;
+        Tue, 14 Jun 2022 14:37:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D478C3411C;
+        Tue, 14 Jun 2022 14:37:34 +0000 (UTC)
+Date:   Tue, 14 Jun 2022 10:37:32 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@kernel.org,
+        linux@armlinux.org.uk, ulli.kroll@googlemail.com,
+        linus.walleij@linaro.org, shawnguo@kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
+        khilman@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
+        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
+        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
+        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+        paulus@samba.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
         aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
         agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
         svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
@@ -44,21 +46,20 @@ Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
         anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
         tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
         dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
-        srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
         sudeep.holla@arm.com, agross@kernel.org,
         bjorn.andersson@linaro.org, anup@brainfault.org,
         thierry.reding@gmail.com, jonathanh@nvidia.com,
         jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
         yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        linux@rasmusvillemoes.dk, john.ogness@linutronix.de,
         paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
         josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
         jiangshanlai@gmail.com, joel@joelfernandes.org,
@@ -81,44 +82,41 @@ Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
         linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
         rcu@vger.kernel.org
-Subject: Re: [PATCH 14/36] cpuidle: Fix rcu_idle_*() usage
-Message-ID: <YqiB6YpVqq4wuDtO@FVFF77S0Q05N>
+Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
+Message-ID: <20220614103732.489ba62b@gandalf.local.home>
+In-Reply-To: <YqHvXFdIJfvUDI6e@alley>
 References: <20220608142723.103523089@infradead.org>
- <20220608144516.808451191@infradead.org>
+        <20220608144517.444659212@infradead.org>
+        <YqG6URbihTNCk9YR@alley>
+        <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
+        <CA+_sPaoJGrXhNPCs2dKf2J7u07y1xYrRFZBUtkKwzK9GqcHSuQ@mail.gmail.com>
+        <YqHvXFdIJfvUDI6e@alley>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220608144516.808451191@infradead.org>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jun 08, 2022 at 04:27:37PM +0200, Peter Zijlstra wrote:
-> --- a/kernel/time/tick-broadcast.c
-> +++ b/kernel/time/tick-broadcast.c
-> @@ -622,9 +622,13 @@ struct cpumask *tick_get_broadcast_onesh
->   * to avoid a deep idle transition as we are about to get the
->   * broadcast IPI right away.
->   */
-> -int tick_check_broadcast_expired(void)
-> +noinstr int tick_check_broadcast_expired(void)
->  {
-> +#ifdef _ASM_GENERIC_BITOPS_INSTRUMENTED_NON_ATOMIC_H
-> +	return arch_test_bit(smp_processor_id(), cpumask_bits(tick_broadcast_force_mask));
-> +#else
->  	return cpumask_test_cpu(smp_processor_id(), tick_broadcast_force_mask);
-> +#endif
->  }
+On Thu, 9 Jun 2022 15:02:20 +0200
+Petr Mladek <pmladek@suse.com> wrote:
 
-This is somewhat not-ideal. :/
+> > I'm somewhat curious whether we can actually remove that trace event.  
+> 
+> Good question.
+> 
+> Well, I think that it might be useful. It allows to see trace and
+> printk messages together.
 
-Could we unconditionally do the arch_test_bit() variant, with a comment, or
-does that not exist in some cases?
+Yes people still use it. I was just asked about it at Kernel Recipes. That
+is, someone wanted printk mixed in with the tracing, and I told them about
+this event (which they didn't know about but was happy to hear that it
+existed).
 
-Thanks,
-Mark.
+-- Steve
