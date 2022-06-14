@@ -2,160 +2,167 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6190C54AF32
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 13:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FDE754B0FD
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 14:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356252AbiFNLUD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Jun 2022 07:20:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42918 "EHLO
+        id S243308AbiFNMgq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jun 2022 08:36:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356220AbiFNLUB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 07:20:01 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 92BC8245A0;
-        Tue, 14 Jun 2022 04:20:00 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 260EE15DB;
-        Tue, 14 Jun 2022 04:20:00 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.41.154])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 47D093F73B;
-        Tue, 14 Jun 2022 04:19:42 -0700 (PDT)
-Date:   Tue, 14 Jun 2022 12:19:29 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
-        srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, anup@brainfault.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
-        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
-        jiangshanlai@gmail.com, joel@joelfernandes.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [PATCH 00/36] cpuidle,rcu: Cleanup the mess
-Message-ID: <YqhuwQjmZyOVSiLI@FVFF77S0Q05N>
-References: <20220608142723.103523089@infradead.org>
+        with ESMTP id S244992AbiFNMfm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 08:35:42 -0400
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B434DF4A
+        for <linux-omap@vger.kernel.org>; Tue, 14 Jun 2022 05:33:00 -0700 (PDT)
+Received: by mail-yb1-xb2b.google.com with SMTP id w2so14896360ybi.7
+        for <linux-omap@vger.kernel.org>; Tue, 14 Jun 2022 05:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hT2JQMlaZc59miZ+XRXQw6fq2XUX3VeltgyAMsSMKwo=;
+        b=iELMhcBck05tLdFPsk80NYlhSbvpWf1ZVnktIH2m81Tj1jCXkUv9NdzoitVPt2sSRI
+         iz1M8biAeldxEKk8GQzN10nQ0kzQBBf80hih1al2wncVw4jdZu+/1TkLhFvz3tGscIFY
+         aWMiqWTB/eXglLT0FrIJiiuJFNEJN3ccX2ICNU50HuGCrCShaQofGjEm0STbscGspWo4
+         Ggqf7D0zWsezOjtHuPdtADsJVVqILAWiWzkWoYA20hAVxClSWE/KPnsPLZw23Dm57ld/
+         eXn46/pcidjqyLg9RsxoKMjDTvGsee6RdMCd5MY6s3624gpashgUkKljTwQ7j9duOEem
+         GeQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hT2JQMlaZc59miZ+XRXQw6fq2XUX3VeltgyAMsSMKwo=;
+        b=Rh0C0z+UPkWbCDb+kQ8iLO3bVRBvWabktKxbKlDkISyNLcqfiLG1CESKKdZPVuA5Ma
+         0LkgXFtpuNqXtD5OqjsxIsCeECLM5E+fOiNCq1smG+ChqiYvI4A1ZqTlcRRoU9QE11OO
+         GxrhFMQis0eduiNgIrRQwjRxosydeovB1V29kmbTuCYMG2uqaD501nnpOgWNF533ouVk
+         JJDNQdE4nDDAqSujbymesld5SHo6+ayqR5PsgZ90rJzTwmOZ7/nmDhn0nN/m5odS7nCr
+         xIBW2axeq6nlTALegeLk8w1jrqHrLDuAlippw6ubUi+zNu7LQg/dxFXV2tKGJoXi5lvG
+         nzGw==
+X-Gm-Message-State: AJIora/lDcOpLH84I+50kHE6ng5Xej8gJMFdc+qEQz/SgpFZjb7WjdnL
+        F110YpJI+uBLn8TaaikmkbiDsvc7gKy6nOdXQgcydZ+0
+X-Google-Smtp-Source: AGRyM1tKcHkkSUpkkdpLFndC/oRTwvvjCxj3nmeTfqhTLT1LE9izMv5dzVxKtyxRDNvBPS+7uHJpV5v6RO7F7lV84z8=
+X-Received: by 2002:a25:cec6:0:b0:65c:98f5:a06a with SMTP id
+ x189-20020a25cec6000000b0065c98f5a06amr4659823ybe.355.1655209979188; Tue, 14
+ Jun 2022 05:32:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220608142723.103523089@infradead.org>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <CAGm1_ku2O3Z7OegxKpq4SnaycvzmgFR7SO1PoZJ3h4P7OHvQYg@mail.gmail.com>
+ <CAPgEAj7wNtgf9sUrL1E14LgrPwiLv=bGcAyhdzns3ZnkH-Qqww@mail.gmail.com> <CAGm1_ksRcRBG+Ns+XJ4YvXyZmnMPXLqBiurhqkphSRR8orZbaw@mail.gmail.com>
+In-Reply-To: <CAGm1_ksRcRBG+Ns+XJ4YvXyZmnMPXLqBiurhqkphSRR8orZbaw@mail.gmail.com>
+From:   Yegor Yefremov <yegorslists@googlemail.com>
+Date:   Tue, 14 Jun 2022 14:32:48 +0200
+Message-ID: <CAGm1_kscjH-hQA+K6OcVJUiwCOrrfgjW5PHRw=Zdci788h9j1A@mail.gmail.com>
+Subject: Re: am335x: GPIOs in userspace
+To:     Drew Fustini <drew@beagleboard.org>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jun 08, 2022 at 04:27:23PM +0200, Peter Zijlstra wrote:
-> Hi All! (omg so many)
+Hi Drew,
 
-Hi Peter,
+On Mon, May 30, 2022 at 12:04 PM Yegor Yefremov
+<yegorslists@googlemail.com> wrote:
+>
+> Hello Drew,
+>
+> On Mon, May 30, 2022 at 12:55 AM Drew Fustini <drew@beagleboard.org> wrote:
+> >
+> > On Fri, May 27, 2022 at 1:01 PM Yegor Yefremov
+> > <yegorslists@googlemail.com> wrote:
+> > >
+> > > I have the following problem. The latest kernel version I am using for
+> > > my devices is 5.4.x. In my DTS I don't explicitly expose the GPIOs to
+> > > the usespace but I can read input both via sysfs as also libgpiod API.
+> > >
+> > > With the newest kernel like 5.17 or 5.18, I can read the same input
+> > > pin but I always read 0. I have also tried to add my GPIOs as
+> > > "default" into the am33xx_pinmux section (the way it is done in [1]) but
+> > > it didn't help.
+> > >
+> > > [1] https://patchwork.kernel.org/project/linux-omap/patch/20200712103717.1219765-1-drew@beagleboard.org/
+> > >
+> > > Regards,
+> > > Yegor
+> >
+> > Hello Yegor,
+> >
+> > Which am335x board are you using?  Is it the PocketBeagle?
+> >
+> > Have you tried reverting abe4e4675dfc ("ARM: dts: am335x-pocketbeagle:
+> > set default mux for gpio pins") to see if the results change?
+> >
+> > Please post the dts files you created or modified so I can better
+> > familiarize myself with your environment.
+> >
+> > Unfortunately, I'm currently traveling with only a BeagleBone Black,
+> > but it might be useful for testing depending on what the issue is.
+>
+> This is a diff to the DTS of our board Baltos ir5221:
+>
+> diff --git a/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+> b/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+> index 2f3872dbf4f4..f596cc60e9c0 100644
+> --- a/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+> +++ b/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+> @@ -18,6 +18,19 @@
+>  };
+>
+>  &am33xx_pinmux {
+> +       compatible = "pinconf-single";
+> +       pinctrl-names = "default";
+> +
+> +       pinctrl-0 =   < &wifi_switch>;
+> +
+> +       wifi_switch: pinmux_wifi_switch {
+> +               pinctrl-single,pins = <
+> +                       AM33XX_PADCONF(AM335X_PIN_SPI0_CS1,
+> PIN_INPUT_PULLUP, MUX_MODE7)      /* spi0_cs1.gpio0[6] wifi switch */
+> +               >;
+> +               pinctrl-single,bias-pullup   =   < 0x10  0x10  0x00  0x18>;
+> +               pinctrl-single,bias-pulldown   = < 0x10  0x00  0x10  0x18>;
+> +       };
+> +
+>         tca6416_pins: pinmux_tca6416_pins {
+>                 pinctrl-single,pins = <
+>                         AM33XX_PADCONF(AM335X_PIN_XDMA_EVENT_INTR1,
+> PIN_INPUT_PULLUP, MUX_MODE7)      /* xdma_event_intr1.gpio0[20]
+> tca6416 stuff */
+>
+> This is my related kernel configuration:
+>
+> # zcat /proc/config.gz | grep "PINCTRL\|PINCONF"
+> CONFIG_PINCTRL=y
+> CONFIG_GENERIC_PINCTRL_GROUPS=y
+> CONFIG_PINCONF=y
+> CONFIG_GENERIC_PINCONF=y
+> CONFIG_DEBUG_PINCTRL=y
+> # CONFIG_PINCTRL_MCP23S08 is not set
+> # CONFIG_PINCTRL_MICROCHIP_SGPIO is not set
+> # CONFIG_PINCTRL_OCELOT is not set
+> # CONFIG_PINCTRL_PALMAS is not set
+> CONFIG_PINCTRL_SINGLE=y
+> # CONFIG_PINCTRL_STMFX is not set
+> # CONFIG_PINCTRL_SX150X is not set
+> CONFIG_PINCTRL_TI_IODELAY=y
+>
+> This command should deliver "1":
+>
+> # gpioget gpiochip0 6
+> [   55.371155] gpio gpiochip0: Persistence not supported for GPIO 6
+> [   55.377503] gpio gpiochip0: registered chardev handle for line 6
+> [   55.383611] gpio gpiochip0: registered chardev handle for 1 lines
+> 0
 
-Sorry for the delay; my plate has also been rather full recently. I'm beginning
-to page this in now.
+I found the problem. Between 5.10 and 5.11 gpiochip assignment has
+changed: gpiochip1 -> gpiochip4. Hence, I'll have to work with gpio
+labels.
 
-> These here few patches mostly clear out the utter mess that is cpuidle vs rcuidle.
-> 
-> At the end of the ride there's only 2 real RCU_NONIDLE() users left
-> 
->   arch/arm64/kernel/suspend.c:            RCU_NONIDLE(__cpu_suspend_exit());
->   drivers/perf/arm_pmu.c:                 RCU_NONIDLE(armpmu_start(event, PERF_EF_RELOAD));
-
-The latter of these is necessary because apparently PM notifiers are called
-with RCU not watching. Is that still the case today (or at the end of this
-series)? If so, that feels like fertile land for more issues (yaey...). If not,
-we should be able to drop this.
-
-I can go dig into that some more.
-
->   kernel/cfi.c:   RCU_NONIDLE({
-> 
-> (the CFI one is likely dead in the kCFI rewrite) and there's only a hand full
-> of trace_.*_rcuidle() left:
-> 
->   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
->   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
->   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, caller_addr);
->   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, caller_addr);
->   kernel/trace/trace_preemptirq.c:                trace_preempt_enable_rcuidle(a0, a1);
->   kernel/trace/trace_preemptirq.c:                trace_preempt_disable_rcuidle(a0, a1);
-> 
-> All of them are in 'deprecated' code that is unused for GENERIC_ENTRY.
-
-I think those are also unused on arm64 too?
-
-If not, I can go attack that.
-
-> I've touched a _lot_ of code that I can't test and likely broken some of it :/
-> In particular, the whole ARM cpuidle stuff was quite involved with OMAP being
-> the absolute 'winner'.
-> 
-> I'm hoping Mark can help me sort the remaining ARM64 bits as he moves that to
-> GENERIC_ENTRY.
-
-Moving to GENERIC_ENTRY as a whole is going to take a tonne of work
-(refactoring both arm64 and the generic portion to be more amenable to each
-other), but we can certainly move closer to that for the bits that matter here.
-
-Maybe we want a STRICT_ENTRY option to get rid of all the deprecated stuff that
-we can select regardless of GENERIC_ENTRY to make that easier.
-
-> I've also got a note that says ARM64 can probably do a WFE based
-> idle state and employ TIF_POLLING_NRFLAG to avoid some IPIs.
-
-Possibly; I'm not sure how much of a win that'll be given that by default we'll
-have a ~10KHz WFE wakeup from the timer, but we could take a peek.
-
-Thanks,
-Mark.
+Regards,
+Yegor
