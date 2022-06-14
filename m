@@ -2,110 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8F4954A0E6
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Jun 2022 23:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6190C54AF32
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 13:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351941AbiFMVKh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 13 Jun 2022 17:10:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34324 "EHLO
+        id S1356252AbiFNLUD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jun 2022 07:20:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238619AbiFMVKR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 13 Jun 2022 17:10:17 -0400
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B7BC2F3A4;
-        Mon, 13 Jun 2022 13:48:09 -0700 (PDT)
-Received: by mail-il1-f172.google.com with SMTP id y16so5137583ili.13;
-        Mon, 13 Jun 2022 13:48:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=/dzRBMIn98y05EN99Sgq5WDsEwo7wpH66xTE6XCo/M4=;
-        b=DK0uhSJYtjiyjLQvTvTq2iUHAujLGBGBiyoTPN+vCrum3bibAC+WLkJ9pTP1QCph3N
-         0MbMWb3j0SpOpgQKxnMDEs/p9N4WJ7tH4moYqsCTez94Qk67ATaGGLekMJnzDBgYVWsE
-         q9i4sJtScHtQJc6fsEP8fzedyvntjY/xTCMYm9Os8uE/1lGfJDAHoC2GkMHt2UPmf1GL
-         Px4osl3EhxDeLmoY+qTnRtrSD/6zLqH8OoVDAaLfJ8zoYSR5kIwV/hwFrwv7LpNqMTkq
-         3a0B6WnFYkP2TXGiU3lijF3kogM8nabC/En/c6MqfDLHQTEH64SwE0qMFMG39OIBuS/D
-         AkpA==
-X-Gm-Message-State: AJIora+1KepHiNcoL+CpPjUXWWIPuT+VEg/BCqu+zMT+QjxiDzXctdpq
-        6IU1aFCUuWzbfUbZMF6DIA==
-X-Google-Smtp-Source: AGRyM1uVO/KYjaDwGOXreGf4KGdEqy/t353ouqbFZgp5s/y6kuWD2fxXl3ut4zPLn500QHJwX/rd6w==
-X-Received: by 2002:a92:ca45:0:b0:2d1:b7cf:26a9 with SMTP id q5-20020a92ca45000000b002d1b7cf26a9mr962751ilo.52.1655153288816;
-        Mon, 13 Jun 2022 13:48:08 -0700 (PDT)
-Received: from robh.at.kernel.org ([69.39.28.171])
-        by smtp.gmail.com with ESMTPSA id c2-20020a92c8c2000000b002d11397f4f9sm4380280ilq.74.2022.06.13.13.48.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 13:48:08 -0700 (PDT)
-Received: (nullmailer pid 56167 invoked by uid 1000);
-        Mon, 13 Jun 2022 20:48:06 -0000
-Date:   Mon, 13 Jun 2022 14:48:06 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Minghuan Lian <minghuan.Lian@nxp.com>,
-        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-        Yue Wang <yue.wang@amlogic.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jonathan Chocron <jonnyc@amazon.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Jesper Nilsson <jesper.nilsson@axis.com>,
-        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Greentime Hu <greentime.hu@sifive.com>,
-        Rahul Tanwar <rtanwar@maxlinear.com>,
-        Srikanth Thokala <srikanth.thokala@intel.com>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Stanimir Varbanov <svarbanov@mm-sol.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Pratyush Anand <pratyush.anand@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
-        Frank Li <Frank.Li@nxp.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-amlogic@lists.infradead.org, linux-arm-kernel@axis.com,
-        linux-rockchip@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v4 15/18] PCI: dwc: Add dw_ prefix to the pcie_port
- structure name
-Message-ID: <20220613204806.GA55629-robh@kernel.org>
-References: <20220610082535.12802-1-Sergey.Semin@baikalelectronics.ru>
- <20220610082535.12802-16-Sergey.Semin@baikalelectronics.ru>
+        with ESMTP id S1356220AbiFNLUB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 07:20:01 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 92BC8245A0;
+        Tue, 14 Jun 2022 04:20:00 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 260EE15DB;
+        Tue, 14 Jun 2022 04:20:00 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.41.154])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 47D093F73B;
+        Tue, 14 Jun 2022 04:19:42 -0700 (PDT)
+Date:   Tue, 14 Jun 2022 12:19:29 +0100
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
+        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
+        dinguyen@kernel.org, jonas@southpole.se,
+        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
+        srivatsa@csail.mit.edu, amakhalov@vmware.com,
+        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
+        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
+        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
+        mturquette@baylibre.com, sboyd@kernel.org,
+        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, anup@brainfault.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
+        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
+        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
+        jiangshanlai@gmail.com, joel@joelfernandes.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+        bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        rcu@vger.kernel.org
+Subject: Re: [PATCH 00/36] cpuidle,rcu: Cleanup the mess
+Message-ID: <YqhuwQjmZyOVSiLI@FVFF77S0Q05N>
+References: <20220608142723.103523089@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220610082535.12802-16-Sergey.Semin@baikalelectronics.ru>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+In-Reply-To: <20220608142723.103523089@infradead.org>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -113,49 +97,65 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Jun 10, 2022 at 11:25:31AM +0300, Serge Semin wrote:
-> All of the DW PCIe core driver entities have names with the dw_ prefix in
-> order to easily distinguish local and common PCIe name spaces. All except
-> the pcie_port structure which contains the DW PCIe Root Port descriptor.
-> For historical reason the structure has retained the original name since
-> commit 340cba6092c2 ("pci: Add PCIe driver for Samsung Exynos") when
-> the DW PCIe IP-core support was added to the kernel. Let's finally fix
-> that by adding the dw_ prefix to the structure name and by adding the _rp
-> suffix to be similar to the EP counterpart. Thus the name will be coherent
-> with the common driver naming policy. It shall make the driver code more
-> readable eliminating visual confusion between the local and generic PCI
-> name spaces.
-> 
-> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> 
-> ---
-> 
-> Changelog v4:
-> - This is a new patch created on the v4 lap of the series.
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c       | 12 +++----
->  drivers/pci/controller/dwc/pci-exynos.c       |  6 ++--
->  drivers/pci/controller/dwc/pci-imx6.c         |  6 ++--
->  drivers/pci/controller/dwc/pci-keystone.c     | 20 +++++------
->  drivers/pci/controller/dwc/pci-layerscape.c   |  2 +-
->  drivers/pci/controller/dwc/pci-meson.c        |  2 +-
->  drivers/pci/controller/dwc/pcie-al.c          |  6 ++--
->  drivers/pci/controller/dwc/pcie-armada8k.c    |  4 +--
->  drivers/pci/controller/dwc/pcie-artpec6.c     |  4 +--
->  .../pci/controller/dwc/pcie-designware-host.c | 36 +++++++++----------
->  .../pci/controller/dwc/pcie-designware-plat.c |  2 +-
->  drivers/pci/controller/dwc/pcie-designware.h  | 30 ++++++++--------
->  drivers/pci/controller/dwc/pcie-dw-rockchip.c |  4 +--
->  drivers/pci/controller/dwc/pcie-fu740.c       |  2 +-
->  drivers/pci/controller/dwc/pcie-histb.c       | 10 +++---
->  drivers/pci/controller/dwc/pcie-intel-gw.c    |  6 ++--
->  drivers/pci/controller/dwc/pcie-keembay.c     |  4 +--
->  drivers/pci/controller/dwc/pcie-kirin.c       |  2 +-
->  drivers/pci/controller/dwc/pcie-qcom.c        |  4 +--
->  drivers/pci/controller/dwc/pcie-spear13xx.c   |  6 ++--
->  drivers/pci/controller/dwc/pcie-tegra194.c    | 22 ++++++------
->  drivers/pci/controller/dwc/pcie-uniphier.c    | 10 +++---
->  drivers/pci/controller/dwc/pcie-visconti.c    |  6 ++--
->  23 files changed, 103 insertions(+), 103 deletions(-)
+On Wed, Jun 08, 2022 at 04:27:23PM +0200, Peter Zijlstra wrote:
+> Hi All! (omg so many)
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Hi Peter,
+
+Sorry for the delay; my plate has also been rather full recently. I'm beginning
+to page this in now.
+
+> These here few patches mostly clear out the utter mess that is cpuidle vs rcuidle.
+> 
+> At the end of the ride there's only 2 real RCU_NONIDLE() users left
+> 
+>   arch/arm64/kernel/suspend.c:            RCU_NONIDLE(__cpu_suspend_exit());
+>   drivers/perf/arm_pmu.c:                 RCU_NONIDLE(armpmu_start(event, PERF_EF_RELOAD));
+
+The latter of these is necessary because apparently PM notifiers are called
+with RCU not watching. Is that still the case today (or at the end of this
+series)? If so, that feels like fertile land for more issues (yaey...). If not,
+we should be able to drop this.
+
+I can go dig into that some more.
+
+>   kernel/cfi.c:   RCU_NONIDLE({
+> 
+> (the CFI one is likely dead in the kCFI rewrite) and there's only a hand full
+> of trace_.*_rcuidle() left:
+> 
+>   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+>   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
+>   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, caller_addr);
+>   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, caller_addr);
+>   kernel/trace/trace_preemptirq.c:                trace_preempt_enable_rcuidle(a0, a1);
+>   kernel/trace/trace_preemptirq.c:                trace_preempt_disable_rcuidle(a0, a1);
+> 
+> All of them are in 'deprecated' code that is unused for GENERIC_ENTRY.
+
+I think those are also unused on arm64 too?
+
+If not, I can go attack that.
+
+> I've touched a _lot_ of code that I can't test and likely broken some of it :/
+> In particular, the whole ARM cpuidle stuff was quite involved with OMAP being
+> the absolute 'winner'.
+> 
+> I'm hoping Mark can help me sort the remaining ARM64 bits as he moves that to
+> GENERIC_ENTRY.
+
+Moving to GENERIC_ENTRY as a whole is going to take a tonne of work
+(refactoring both arm64 and the generic portion to be more amenable to each
+other), but we can certainly move closer to that for the bits that matter here.
+
+Maybe we want a STRICT_ENTRY option to get rid of all the deprecated stuff that
+we can select regardless of GENERIC_ENTRY to make that easier.
+
+> I've also got a note that says ARM64 can probably do a WFE based
+> idle state and employ TIF_POLLING_NRFLAG to avoid some IPIs.
+
+Possibly; I'm not sure how much of a win that'll be given that by default we'll
+have a ~10KHz WFE wakeup from the timer, but we could take a peek.
+
+Thanks,
+Mark.
