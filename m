@@ -2,57 +2,96 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A49154B56E
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 18:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB1A54B5BA
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 18:17:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245410AbiFNQIp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Jun 2022 12:08:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50412 "EHLO
+        id S1344135AbiFNQP1 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jun 2022 12:15:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357071AbiFNQId (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 12:08:33 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1483835AA5;
-        Tue, 14 Jun 2022 09:08:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 6FD10CE1B25;
-        Tue, 14 Jun 2022 16:08:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA653C3411B;
-        Tue, 14 Jun 2022 16:08:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655222909;
-        bh=f6KuiueIv/s3cr+8vOYyA2WSMzAJ801h4xLsZ5d4vCQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SFsM3wa7t0y5/icGPA1hoiUopkaKXnX+CpJLFWVGwSkPa0Qa+k+fznmt3Y/IRdgAv
-         q8oKIyt45anZyqQnBVyf7ijXJq6aD/afzSsX8o5+rU9gr6xZ5V+HuklQOJGmJ02O0Y
-         cSjmb2RSEqIt4H8hR8+gpp846vKuDcYtjRxkzYo2vSYgygE61zxqjfvae9miPVaIcw
-         R1d5VXeNEg5F5q8bdxp5OCJheNQCGau0jUaC4Rz1bEpFy7OouEAR2F5n96+H9iEttu
-         DA/EbzPQhgJJzRGE5DdsGuQ6ZIq9VB64XOlNMizMza2KLLQQnU/d9z78AFcie0XVMp
-         J5oIbSkIiJoPQ==
-Date:   Tue, 14 Jun 2022 17:08:24 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     David Owens <dowens@precisionplanting.com>
-Cc:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ASoC: ti: omap-mcbsp: duplicate sysfs failure after
- PROBE_DEFER
-Message-ID: <YqiyeM2JkDxLIKDe@sirena.org.uk>
-References: <20220614155931.2706437-1-dowens@precisionplanting.com>
+        with ESMTP id S1357083AbiFNQNm (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 12:13:42 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A1CEC37A0E;
+        Tue, 14 Jun 2022 09:13:38 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0EB231691;
+        Tue, 14 Jun 2022 09:13:38 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.41.154])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4946B3F66F;
+        Tue, 14 Jun 2022 09:13:20 -0700 (PDT)
+Date:   Tue, 14 Jun 2022 17:13:16 +0100
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
+        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
+        dinguyen@kernel.org, jonas@southpole.se,
+        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
+        srivatsa@csail.mit.edu, amakhalov@vmware.com,
+        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
+        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
+        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
+        mturquette@baylibre.com, sboyd@kernel.org,
+        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, anup@brainfault.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
+        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
+        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
+        jiangshanlai@gmail.com, joel@joelfernandes.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+        bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        rcu@vger.kernel.org
+Subject: Re: [PATCH 15/36] cpuidle,cpu_pm: Remove RCU fiddling from
+ cpu_pm_{enter,exit}()
+Message-ID: <YqiznJL7qB9uSQ9c@FVFF77S0Q05N>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144516.871305980@infradead.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="GYvOB+ScB/4Az0wW"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220614155931.2706437-1-dowens@precisionplanting.com>
-X-Cookie: DYSLEXICS OF THE WORLD, UNTIE!
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20220608144516.871305980@infradead.org>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,84 +99,65 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, Jun 08, 2022 at 04:27:38PM +0200, Peter Zijlstra wrote:
+> All callers should still have RCU enabled.
 
---GYvOB+ScB/4Az0wW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+IIUC with that true we should be able to drop the RCU_NONIDLE() from
+drivers/perf/arm_pmu.c, as we only needed that for an invocation via a pm
+notifier.
 
-On Tue, Jun 14, 2022 at 10:59:31AM -0500, David Owens wrote:
+I should be able to give that a spin on some hardware.
 
-> The call to sdma_pcm_platform_register() can return PROBE_DEFER, leading
-> to omap_mcbsp_init() being called multiple times.  sysfs node creation
-> fails in subsequent calls to omap_mcbsp_init(), which prevents
-> the driver from ever successfully probing.  The resulting errors can be
-> seen during boot:
->=20
-> [    1.749328] sysfs: cannot create duplicate filename '/devices/platform=
-/68000000.ocp/49022000.mcbsp/max_tx_thres'
-> [    1.759643] CPU: 0 PID: 6 Comm: kworker/u2:0 Not tainted 5.18.0-yocto-=
-standard #1
-> [    1.767181] Hardware name: Generic OMAP36xx (Flattened Device Tree)
-> [    1.773498] Workqueue: events_unbound deferred_probe_work_func
-> [    1.779449]  unwind_backtrace from show_stack+0x10/0x14
-> [    1.784729]  show_stack from sysfs_warn_dup+0x4c/0x60
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ---
+>  kernel/cpu_pm.c |    9 ---------
+>  1 file changed, 9 deletions(-)
+> 
+> --- a/kernel/cpu_pm.c
+> +++ b/kernel/cpu_pm.c
+> @@ -30,16 +30,9 @@ static int cpu_pm_notify(enum cpu_pm_eve
+>  {
+>  	int ret;
+>  
+> -	/*
+> -	 * This introduces a RCU read critical section, which could be
+> -	 * disfunctional in cpu idle. Copy RCU_NONIDLE code to let RCU know
+> -	 * this.
+> -	 */
+> -	rcu_irq_enter_irqson();
+>  	rcu_read_lock();
+>  	ret = raw_notifier_call_chain(&cpu_pm_notifier.chain, event, NULL);
+>  	rcu_read_unlock();
+> -	rcu_irq_exit_irqson();
 
-Please think hard before including complete backtraces in upstream
-reports, they are very large and contain almost no useful information
-relative to their size so often obscure the relevant content in your
-message. If part of the backtrace is usefully illustrative (it often is
-for search engines if nothing else) then it's usually better to pull out
-the relevant sections.
+To make this easier to debug, is it worth adding an assertion that RCU is
+watching here? e.g.
 
-> +++ b/sound/soc/ti/omap-mcbsp.c
-> @@ -1403,6 +1403,10 @@ static int asoc_mcbsp_probe(struct platform_device=
- *pdev)
->         mcbsp->dev =3D &pdev->dev;
->         platform_set_drvdata(pdev, mcbsp);
->=20
-> +       ret =3D sdma_pcm_platform_register(&pdev->dev, "tx", "rx");
-> +       if (ret)
-> +               return ret;
-> +
->         ret =3D omap_mcbsp_init(pdev);
->         if (ret)
->                 return ret;
-> @@ -1412,13 +1416,9 @@ static int asoc_mcbsp_probe(struct platform_device=
- *pdev)
->                 omap_mcbsp_dai.capture.formats =3D SNDRV_PCM_FMTBIT_S16_L=
-E;
->         }
->=20
-> -       ret =3D devm_snd_soc_register_component(&pdev->dev,
-> +       return devm_snd_soc_register_component(&pdev->dev,
->                                               &omap_mcbsp_component,
->                                               &omap_mcbsp_dai, 1);
-> -       if (ret)
-> -               return ret;
-> -
-> -       return sdma_pcm_platform_register(&pdev->dev, "tx", "rx");
+	RCU_LOCKDEP_WARN(!rcu_is_watching(),
+			 "cpu_pm_notify() used illegally from EQS");
+
+>  
+>  	return notifier_to_errno(ret);
 >  }
+> @@ -49,11 +42,9 @@ static int cpu_pm_notify_robust(enum cpu
+>  	unsigned long flags;
+>  	int ret;
+>  
+> -	rcu_irq_enter_irqson();
+>  	raw_spin_lock_irqsave(&cpu_pm_notifier.lock, flags);
+>  	ret = raw_notifier_call_chain_robust(&cpu_pm_notifier.chain, event_up, event_down, NULL);
+>  	raw_spin_unlock_irqrestore(&cpu_pm_notifier.lock, flags);
+> -	rcu_irq_exit_irqson();
 
-It's not clear to me how this fixes the problem, your commit message
-doesn't mention how?  I was expecting to see more error handling paths
-being added to unwind the sysfs allocation, or a conversion to devm.  As
-things stand it's not clear to me that the error won't persist in the
-case where we defer registering the component.
 
---GYvOB+ScB/4Az0wW
-Content-Type: application/pgp-signature; name="signature.asc"
+... and likewise here?
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKosngACgkQJNaLcl1U
-h9DjFwf/WQifCpq8XeOlBLOAvgI3uxiABxHsqoRqe0WDdqyfOiIgCszt2Z77mioC
-FkYGfeIhUiG4PeQENR+LDpKgxL501Is0fRu6G9aRbrYvwRTgkrcA4zNp9nCGRvV/
-9KPONBkkWijwTbh63YuEWZphXpj6D0TcLbZumcIDe9eKwTV2+z95rGUckojuiWUD
-o47x/z9S/n93HwTPzCqFdeVwA8gAmzXYijiMfTRVwAE58ou1CHTd8oNiNQ6Rf/9X
-/dRziXIw6B51hzJH+Q1+18lgkaIrXqpldQ4n45xq5vjI5JEes12ZKK3f+Pyol/u9
-wXQfaVFQBQ9WO9pGNO4AEf3gUsAsSA==
-=DruB
------END PGP SIGNATURE-----
-
---GYvOB+ScB/4Az0wW--
+>  
+>  	return notifier_to_errno(ret);
+>  }
+> 
+> 
