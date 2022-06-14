@@ -2,96 +2,135 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D30E154B7BB
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 19:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B87D54B8C1
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 20:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238962AbiFNRd2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Jun 2022 13:33:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53896 "EHLO
+        id S243974AbiFNSiR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jun 2022 14:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242526AbiFNRdZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 13:33:25 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 77C763056C;
-        Tue, 14 Jun 2022 10:33:23 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD0DD1762;
-        Tue, 14 Jun 2022 10:33:22 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.41.154])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C0913F66F;
-        Tue, 14 Jun 2022 10:33:04 -0700 (PDT)
-Date:   Tue, 14 Jun 2022 18:33:00 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
-        srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, anup@brainfault.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        paulmck@kernel.org, frederic@kernel.org, quic_neeraju@quicinc.com,
-        josh@joshtriplett.org, mathieu.desnoyers@efficios.com,
-        jiangshanlai@gmail.com, joel@joelfernandes.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
-        rcu@vger.kernel.org
-Subject: Re: [PATCH 00/36] cpuidle,rcu: Cleanup the mess
-Message-ID: <YqjGTFEWSJGGOjNA@FVFF77S0Q05N>
-References: <20220608142723.103523089@infradead.org>
- <YqhuwQjmZyOVSiLI@FVFF77S0Q05N>
- <Yqi+Nqz1J8wI5GcX@hirez.programming.kicks-ass.net>
+        with ESMTP id S232018AbiFNSiQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 14:38:16 -0400
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2052.outbound.protection.outlook.com [40.107.100.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92CAF340F5;
+        Tue, 14 Jun 2022 11:38:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=grmRtHBF84N4ptkVePDTzAcwhTcXp8eOdS+n42gkQjMHvgVYoo9Wr43I8XEQnqacuf0vPnGzla2VqhWCY6va1vK6CyF+eNCw4RPNdg9MjMxz1w3z1kps/MuGkbcfRp5DwT3x2YbU09jVd6p3++RDkfD0rUm+D0eULAHSRrZrlWcfeZikWSOY4Kr+LR78mNJ9dfobXFI3r1BY0PHIXb+y3lOn+i52rtKdEy+DckJCCaF/QWv/HFYQnjV35xLgxig8ZlFtmXq6uOPMgtD8cDiLEQAP55bDKdE+fO0DbcG1f8QTN5bjG5hSw9IJEULf1rXDDfOkXKSAjMug8ZI/lkUHmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vmJ+tEcrrXUI1gQDY5X/TpDLFrCY5eIY17NP3wiKpZ8=;
+ b=hr79jOGa4WiFSG7bEO+j9vQZtSQF906tZWoD0AaqGeambukXLc8yopDETD2wIXq0rcz/QTCzAQPEno2tqruonOiKz1V+2CQy8PIQtm+dHnqmQoqpxYV50U5ToX3EumwWs7Fys/HXn1PJTkX9bYme0wPzgNhxLX+JVbVXjcDDUoHH8KzmDoz1rS0hq9cilU5WPHI0hJHOtWxhMjCkpxCBAaawRYZFtwRe95GZBYZ70BrBvzgXSARs7Gb4K6vEPj1ZxlDeqTbOFvbDbWnjVkZ5ZbNqlgpLHPxXjJPojldBTAIfRIt7pzdtpbNODoWyqkpMUZSD3x46W8AOcDY1tzsxuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=precisionplanting.com; dmarc=pass action=none
+ header.from=precisionplanting.com; dkim=pass header.d=precisionplanting.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=precisionplanting365.onmicrosoft.com;
+ s=selector1-precisionplanting365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vmJ+tEcrrXUI1gQDY5X/TpDLFrCY5eIY17NP3wiKpZ8=;
+ b=iUOJ0XLtwA5DBtqdmS1ounAgRtq2t+yGz7KnnU6VAYhcGBKKPMDTAZcIVuJ+RFza67n9+PevTaM8efPHtUsRtqcB+KS6ObO3jT9XQjdBjmm0E7VDkDL/fbufzTNF6oUM0d6HITxMSfzJh1WAg9WsfPJeU9iKqSJQjgW45yV4h/0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=precisionplanting.com;
+Received: from SA1PR22MB3196.namprd22.prod.outlook.com (2603:10b6:806:22b::8)
+ by SJ0PR22MB2638.namprd22.prod.outlook.com (2603:10b6:a03:318::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.22; Tue, 14 Jun
+ 2022 18:38:12 +0000
+Received: from SA1PR22MB3196.namprd22.prod.outlook.com
+ ([fe80::24b0:19e9:a42d:60b0]) by SA1PR22MB3196.namprd22.prod.outlook.com
+ ([fe80::24b0:19e9:a42d:60b0%5]) with mapi id 15.20.5332.020; Tue, 14 Jun 2022
+ 18:38:12 +0000
+Message-ID: <5e95e4e3-6832-653f-0e7a-628c3ef35054@precisionplanting.com>
+Date:   Tue, 14 Jun 2022 13:38:09 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH] ASoC: ti: omap-mcbsp: duplicate sysfs failure after
+ PROBE_DEFER
+Content-Language: en-US
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220614155931.2706437-1-dowens@precisionplanting.com>
+ <YqiyeM2JkDxLIKDe@sirena.org.uk>
+From:   David Owens <dowens@precisionplanting.com>
+In-Reply-To: <YqiyeM2JkDxLIKDe@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: CH2PR04CA0029.namprd04.prod.outlook.com
+ (2603:10b6:610:52::39) To SA1PR22MB3196.namprd22.prod.outlook.com
+ (2603:10b6:806:22b::8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yqi+Nqz1J8wI5GcX@hirez.programming.kicks-ass.net>
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 45ade3b7-916e-4280-a11b-08da4e350904
+X-MS-TrafficTypeDiagnostic: SJ0PR22MB2638:EE_
+X-Microsoft-Antispam-PRVS: <SJ0PR22MB26383F4A18ECF5E65EDF1901C0AA9@SJ0PR22MB2638.namprd22.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 0+uSeuRlOkLVQRelOsO+bY7fdiW2yryS62dBWtpqGkXFNCFqLK7Y/+CDMzucoaYNICnoGWguEd+SVAuQ3vzIni9FSXy9I2mmgIK11IhAaqGhHvQEpvQXXlQiz3JKYUxJVKTmEHs+PhPQyyXA7De4l0BJ5L2sB/sni6Lr8HbvgwUq+uxCywBnzW1ylpbcM2lIBskXk4mNNdIC8pehP09ec3UQaX05+IQDuWW/zKejaMlneRsH5DluaVsPh3g67NAnJlnvU3Gks9LH/HdyffIpnBGgDEfXTeC+GWsjo1TFHJM2f8USK3VevVXkV9iKz97cmaJNllOLpzKvRTNPChT7ZaXBzuWgQ3Km9LtBHf9pf11dck/UZ7SFjLukz8OfzyfSYJMJ38y3z/IrLk3xX+kEwBBZGN20xXIScX1otqtA6MtEbBaBhzmi6BSk+6sO5IOdBuObKQf0i4jL+3P5z6RqF0VXZFAu8jeb0/+r1a3AnN3oi7ER+2xYqEYJ5gY5XzYuo0IPpxE+nN5eEZaCtPGmBBfVCKyd1RUQ4Y8/jspjBurzZthdQWImClebwVCo9Nm1C47WiA8nXfg1VyWA5pAc/GxDdYjb1b3NCTP6KeY71N+L7YuxEt47Ovl7s3wwJqrHtBYypJ1ASVD7XXaXY4Hbm30v/NC93fobttS+tpSusAdob1Skv8ijyRRFc7FXfmX6Nq4/xONVgARhi2/jfFcnc5zoVNYNOPk4EmwRBnZn4K8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR22MB3196.namprd22.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(136003)(346002)(39850400004)(396003)(366004)(66556008)(66946007)(31696002)(54906003)(8676002)(2906002)(38100700002)(4326008)(6916009)(66476007)(86362001)(316002)(52116002)(6512007)(186003)(53546011)(508600001)(6506007)(2616005)(31686004)(8936002)(83380400001)(5660300002)(66574015)(36756003)(6666004)(41300700001)(6486002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UnlQNDJVdUxaQVhRSmlrbmN5T2h5VlllUkMwa2ttR1pnSHhiNWY5TmtEOGNn?=
+ =?utf-8?B?U0I4S0haN0krOTd4NVlZVkcyN0NWYVJ6ZGRSVFhMaDloSGVQV21USE13T1lN?=
+ =?utf-8?B?M3ZHMFdZa1hXcDlWZWkzeTJHbGJzWWU5YXVCNnlnZit1OGg4SlJZRHJaMmpP?=
+ =?utf-8?B?MU52MlJvQXdLbmJQSjlNdkc2ZmRIcWdVcy9MS0tHamo4ZzRSNWhFSURRUDQx?=
+ =?utf-8?B?WEdNZkRoTjloNENKOWpsSVhpc0p1bDhYQVBCc2VxQ1BFZUx4OWwrenJ6OUZI?=
+ =?utf-8?B?dHMyemhsZWRjRHZjNXVETVRZZ0RMUUpiTjBRWUk2ekJlOFRIMm01QXdhOWIr?=
+ =?utf-8?B?QTN6dVk4QlYxR2R1N25wK3VuUytIelpCMzl5bUJUTGdFM05HMVRuM21LdCs4?=
+ =?utf-8?B?czY4ZjArcFBsaFNrU21yYzNxZnQzSHEzYXZsTGhhbkNGTlFlM2dwTTFkNTU2?=
+ =?utf-8?B?aDdSTUJnWHBmNE40WUhYVHBSa2pMRk13MjR1UkZKR2pUb25pRk0zVmF4V2tL?=
+ =?utf-8?B?aUlrVCtFZnZQc3N0MG4zOUNrSXJxbTFBVEdpdWtDa2VzWGZzYStvY0NVRkNn?=
+ =?utf-8?B?KzdiM3ZVTFlnUkIwTkRNL0phVHppbmlZTVN2RG51UXRPdWxEOWt5Sm5OZ3Jz?=
+ =?utf-8?B?czY4UVpNdGhtbFZPNHd3ZFZXRU1nMUhmNmlSZ0ozOWNuQ2NSbXphcjdHQXVC?=
+ =?utf-8?B?dGhNZng0bWJXKy90VFRwT3V1MjhrTllaU1pyUGVVZTQ2MFZBT1hOVjVVVm5i?=
+ =?utf-8?B?WlVPSENLU2V0Snl0ZG9pdTNJaU1qR0l6OGt2ZGkxZ1dkbzJUVEJxeW9tN21B?=
+ =?utf-8?B?YzRJNkI5cFFKcnNNanZDMk5IN2tSVUhMYU4rWkIrT3dwLzdROXNNYVMxbEdr?=
+ =?utf-8?B?Z3dnRkZ4SlZ2czNLekFnaFNwVnZJTzhRSGswQmh3VGFIV0hsVGtCTzJEWUY0?=
+ =?utf-8?B?bW9HTzUzZ2swZmFSZnl1NERXQzF0eURZSEtvRmVzZS8xcHRDMmJDTlJlZXE4?=
+ =?utf-8?B?UXBYM1BPb1RxQ1FaQVpkWmJuK0xlWnlGZ3BDak1FSVdyb2I3U3VNQ2RiNFpk?=
+ =?utf-8?B?azFrek9QTUdDSndmNkw2V2pxc083ZTN4aGFtTFRuWmZkYVlzendwUWlUaFp4?=
+ =?utf-8?B?NzlZZFJwYmhESmUrWllMalZETUc1TzRjVEtLOUJnc1dldGQ0R1M2ellVNG1y?=
+ =?utf-8?B?aTZuL3c4VStQbTNTekg4OGtHUFRLTnBNbGErMC96ZzJwNThwKzgzZkU1UlMx?=
+ =?utf-8?B?d2Npd3V6N0J3VC9TbXZ1WS9NOVVYRk5pdFd6ZFlRa2UyOU1DVHA3VkJFVm1Y?=
+ =?utf-8?B?TEIzVkNhOEVWUDFRYzFFRWFNQ0VPY09iOFZWcWw2Z0kwaDRISEJLazNWS0Vm?=
+ =?utf-8?B?cGdPVzBhUGRUaVNENk5rNENXUDh2T3I0T2hBZmpZdm1IUXN4QUk3MmJReTVY?=
+ =?utf-8?B?ZjBCMkZWSERJWFhwZHpGVWZCWjlYUTFXNC9BNkNwNTBjNTl4dG4yWGNXTTN6?=
+ =?utf-8?B?U0ZBalZpWE80dGc3cWVGakNQMlZXb1FQZmlOT0ZXSHI4QTdETGlIQ1ZEZVVt?=
+ =?utf-8?B?THFzOFVWZUdnYlNPbms0aGRhRmk1aGkrdTZFRFZHU2RkaWlGSy8zV1FUdVpP?=
+ =?utf-8?B?YVpObjN2WndoSWhyUFZ3ek9TQzRNQXhUYmZueFd6WDR3a1VuR1k0bnlNcWpK?=
+ =?utf-8?B?K0JaYm4vRFZsU0ViN3lEeUkybHJIZ1U5TnZRRXR3d25hR0pDd21sWXdwa0Jn?=
+ =?utf-8?B?RUZYaGVobnlUTHArYngrZHZRNldTVHJnNUFCN3lRUzRVQjRDakVaaDc0OTNw?=
+ =?utf-8?B?SnU3VFp5UGJ1aWF3anlvUFJEZ29iQXZPa2NHcUVvYis0V1dlcWd2bE1qcnFW?=
+ =?utf-8?B?TnhNWE1Vc1JiZXJ2eENCdndtN2VHdEFiL1FNQzdjSUN1VFVDSEl6MmhvV0lQ?=
+ =?utf-8?B?YzY5QzVtVjh4ajBUbGhHM3gweVFJVTRxY1plODhJeTA3QnBaYldmWWFpSHMy?=
+ =?utf-8?B?b2xrdm5TSldpNXM1TEVPN0ZWZHRkZ2s1bit5NVNMdWp3RmJLZEdnQlNwNU9W?=
+ =?utf-8?B?ZU9jV010dTV0S1B1clBRNkVSMytrTG15V2tCR3NWSUFvV3g1UWpjL28wTHYy?=
+ =?utf-8?B?YzdmZk53NUpmNjF6dFAybitya2hLeUdiMTVmcGJxV1ZPcEpNN2dJS2VRdzhm?=
+ =?utf-8?B?Njc5MFB6czAyVENuNkpuVHJzaUhYckZxS3YwRFZMUXpab3lyVTVhdWZVNGRU?=
+ =?utf-8?B?M0NlV1ZmaHhHZlZKdzN6WkRIWWpaMm14QXJUdjNrUk5UM0lTOC9MSmhrTlcw?=
+ =?utf-8?B?NDlSV1cycWhCRDdhMzJETGs4OWQ0TmNEOG02UFFGWGZuRkExSDA5eDl4eGpZ?=
+ =?utf-8?Q?LrMZbbnatN3MAu8w59hu6nEILzScrANubyjLHXMgJF56p?=
+X-MS-Exchange-AntiSpam-MessageData-1: 4Nre4XxDNr+kR8PeWys/xvt3p4KXxouLqZdJelUL02f3UBsrJBUbh17M
+X-OriginatorOrg: precisionplanting.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45ade3b7-916e-4280-a11b-08da4e350904
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR22MB3196.namprd22.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2022 18:38:11.9440
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: aa593af2-61f8-4d4f-988a-e9c4c02b7f57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yQRen824crw2SaP98llASE0w84wkrV5XEC65hlqyGSSPRVfr6Tm7kXCMdhhN8y4Gxd/r+RY8qNRfe8VYpsB/qEswHhZLGgNKDb3wV9GNjJo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR22MB2638
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -99,119 +138,80 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Jun 14, 2022 at 06:58:30PM +0200, Peter Zijlstra wrote:
-> On Tue, Jun 14, 2022 at 12:19:29PM +0100, Mark Rutland wrote:
-> > On Wed, Jun 08, 2022 at 04:27:23PM +0200, Peter Zijlstra wrote:
-> > > Hi All! (omg so many)
-> > 
-> > Hi Peter,
-> > 
-> > Sorry for the delay; my plate has also been rather full recently. I'm beginning
-> > to page this in now.
-> 
-> No worries; we all have too much to do ;-)
-> 
-> > > These here few patches mostly clear out the utter mess that is cpuidle vs rcuidle.
-> > > 
-> > > At the end of the ride there's only 2 real RCU_NONIDLE() users left
-> > > 
-> > >   arch/arm64/kernel/suspend.c:            RCU_NONIDLE(__cpu_suspend_exit());
-> > >   drivers/perf/arm_pmu.c:                 RCU_NONIDLE(armpmu_start(event, PERF_EF_RELOAD));
-> > 
-> > The latter of these is necessary because apparently PM notifiers are called
-> > with RCU not watching. Is that still the case today (or at the end of this
-> > series)? If so, that feels like fertile land for more issues (yaey...). If not,
-> > we should be able to drop this.
-> 
-> That should be fixed; fingers crossed :-)
 
-Cool; I'll try to give that a spin when I'm sat next to some relevant hardware. :)
+On 6/14/22 11:08, Mark Brown wrote:
+> On Tue, Jun 14, 2022 at 10:59:31AM -0500, David Owens wrote:
+>
+>> The call to sdma_pcm_platform_register() can return PROBE_DEFER, leading
+>> to omap_mcbsp_init() being called multiple times.  sysfs node creation
+>> fails in subsequent calls to omap_mcbsp_init(), which prevents
+>> the driver from ever successfully probing.  The resulting errors can be
+>> seen during boot:
+>>
+>> [    1.749328] sysfs: cannot create duplicate filename '/devices/platfor=
+m/68000000.ocp/49022000.mcbsp/max_tx_thres'
+>> [    1.759643] CPU: 0 PID: 6 Comm: kworker/u2:0 Not tainted 5.18.0-yocto=
+-standard #1
+>> [    1.767181] Hardware name: Generic OMAP36xx (Flattened Device Tree)
+>> [    1.773498] Workqueue: events_unbound deferred_probe_work_func
+>> [    1.779449]  unwind_backtrace from show_stack+0x10/0x14
+>> [    1.784729]  show_stack from sysfs_warn_dup+0x4c/0x60
+> Please think hard before including complete backtraces in upstream
+> reports, they are very large and contain almost no useful information
+> relative to their size so often obscure the relevant content in your
+> message. If part of the backtrace is usefully illustrative (it often is
+> for search engines if nothing else) then it's usually better to pull out
+> the relevant sections.
+Probably just the "sysfs:" line would suffice.  I'll be sure to limit
+traces in the future, thanks for the tip.
+>> +++ b/sound/soc/ti/omap-mcbsp.c
+>> @@ -1403,6 +1403,10 @@ static int asoc_mcbsp_probe(struct platform_devic=
+e *pdev)
+>>          mcbsp->dev =3D &pdev->dev;
+>>          platform_set_drvdata(pdev, mcbsp);
+>>
+>> +       ret =3D sdma_pcm_platform_register(&pdev->dev, "tx", "rx");
+>> +       if (ret)
+>> +               return ret;
+>> +
+>>          ret =3D omap_mcbsp_init(pdev);
+>>          if (ret)
+>>                  return ret;
+>> @@ -1412,13 +1416,9 @@ static int asoc_mcbsp_probe(struct platform_devic=
+e *pdev)
+>>                  omap_mcbsp_dai.capture.formats =3D SNDRV_PCM_FMTBIT_S16=
+_LE;
+>>          }
+>>
+>> -       ret =3D devm_snd_soc_register_component(&pdev->dev,
+>> +       return devm_snd_soc_register_component(&pdev->dev,
+>>                                                &omap_mcbsp_component,
+>>                                                &omap_mcbsp_dai, 1);
+>> -       if (ret)
+>> -               return ret;
+>> -
+>> -       return sdma_pcm_platform_register(&pdev->dev, "tx", "rx");
+>>   }
+> It's not clear to me how this fixes the problem, your commit message
+> doesn't mention how?  I was expecting to see more error handling paths
+> being added to unwind the sysfs allocation, or a conversion to devm.  As
+> things stand it's not clear to me that the error won't persist in the
+> case where we defer registering the component.
 
-> > >   kernel/cfi.c:   RCU_NONIDLE({
-> > > 
-> > > (the CFI one is likely dead in the kCFI rewrite) and there's only a hand full
-> > > of trace_.*_rcuidle() left:
-> > > 
-> > >   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
-> > >   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
-> > >   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, caller_addr);
-> > >   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, caller_addr);
-> > >   kernel/trace/trace_preemptirq.c:                trace_preempt_enable_rcuidle(a0, a1);
-> > >   kernel/trace/trace_preemptirq.c:                trace_preempt_disable_rcuidle(a0, a1);
-> > > 
-> > > All of them are in 'deprecated' code that is unused for GENERIC_ENTRY.
-> > I think those are also unused on arm64 too?
-> > 
-> > If not, I can go attack that.
-> 
-> My grep spots:
-> 
-> arch/arm64/kernel/entry-common.c:               trace_hardirqs_on();
-> arch/arm64/include/asm/daifflags.h:     trace_hardirqs_off();
-> arch/arm64/include/asm/daifflags.h:             trace_hardirqs_off();
+Moving sdma_pcm_platform_register() before sysfs node creation allowed
+probe to exit with EPROBE_DEFER without needing to unwind sysfs nodes.
+While this worked in my particular case, as you point out it might not
+address all probe deferrals.  I can look for a more robust solution and
+submit as a v2 patch.
 
-Ah; I hadn't realised those used trace_.*_rcuidle() behind the scenes.
+-Dave
 
-That affects local_irq_{enable,disable,restore}() too (which is what the
-daifflags.h bits are emulating), and also the generic entry code's
-irqentry_exit().
-
-So it feels to me like we should be fixing those more generally? e.g. say that
-with a new STRICT_ENTRY[_RCU], we can only call trace_hardirqs_{on,off}() with
-RCU watching, and alter the definition of those?
-
-> The _on thing should be replaced with something like:
-> 
-> 	trace_hardirqs_on_prepare();
-> 	lockdep_hardirqs_on_prepare();
-> 	instrumentation_end();
-> 	rcu_irq_exit();
-> 	lockdep_hardirqs_on(CALLER_ADDR0);
-> 
-> (as I think you know, since you have some of that already). And
-> something similar for the _off thing, but with _off_finish().
-
-Sure; I knew that was necessary for the outermost parts of entry (and I think
-that's all handled), I just hadn't realised that trace_hardirqs_{on,off} did
-the rcuidle thing in the middle.
-
-It'd be nice to not have to open-code the whole sequence everywhere for the
-portions which run after entry and are instrumentable, so (as above) I reckon
-we want to make trace_hardirqs_{on,off}() not do the rcuidle part
-unnecessarily (which IIUC is an end-goal anyway)?
-
-> > > I've touched a _lot_ of code that I can't test and likely broken some of it :/
-> > > In particular, the whole ARM cpuidle stuff was quite involved with OMAP being
-> > > the absolute 'winner'.
-> > > 
-> > > I'm hoping Mark can help me sort the remaining ARM64 bits as he moves that to
-> > > GENERIC_ENTRY.
-> > 
-> > Moving to GENERIC_ENTRY as a whole is going to take a tonne of work
-> > (refactoring both arm64 and the generic portion to be more amenable to each
-> > other), but we can certainly move closer to that for the bits that matter here.
-> 
-> I know ... been there etc.. :-)
-> 
-> > Maybe we want a STRICT_ENTRY option to get rid of all the deprecated stuff that
-> > we can select regardless of GENERIC_ENTRY to make that easier.
-> 
-> Possible yeah.
-> 
-> > > I've also got a note that says ARM64 can probably do a WFE based
-> > > idle state and employ TIF_POLLING_NRFLAG to avoid some IPIs.
-> > 
-> > Possibly; I'm not sure how much of a win that'll be given that by default we'll
-> > have a ~10KHz WFE wakeup from the timer, but we could take a peek.
-> 
-> Ohh.. I didn't know it woke up *that* often. I just know Will made use
-> of it in things like smp_cond_load_relaxed() which would be somewhat
-> similar to a very shallow idle state that looks at the TIF word.
-
-We'll get some saving, I'm just not sure where that falls on the curve of idle
-states. FWIW the wakeup *can* be disabled (and it'd be nice to when we have
-WFxT instructions which take a timeout), it jsut happens to be on by default
-for reasons.
-
-Thanks,
-Mark.
+This email is intended solely for the use of the individual to whom it is a=
+ddressed and may contain confidential and/or privileged material. Any views=
+ or opinions presented are solely those of the author and do not necessaril=
+y represent those of Precision Planting. If you are not the intended recipi=
+ent, be advised that you have received this email in error and that any use=
+, dissemination, forwarding, printing, or copying of this email is strictly=
+ prohibited. Neither AGCO nor the sender accepts any responsibility for vir=
+uses, and it is your responsibility to scan, and virus check the e-mail and=
+ its attachment(s) (if any).
