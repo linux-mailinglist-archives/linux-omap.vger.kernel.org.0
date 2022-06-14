@@ -2,511 +2,215 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A3F54B47E
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 17:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A179354B538
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jun 2022 18:01:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241025AbiFNPV6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 14 Jun 2022 11:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54028 "EHLO
+        id S1355782AbiFNQAa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 14 Jun 2022 12:00:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231856AbiFNPV5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 11:21:57 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7AF3A1AB
-        for <linux-omap@vger.kernel.org>; Tue, 14 Jun 2022 08:21:55 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1o18Ma-0005s7-ND; Tue, 14 Jun 2022 17:21:52 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1o18MX-000VyN-5k; Tue, 14 Jun 2022 17:21:50 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1o18MX-00GGiS-QV; Tue, 14 Jun 2022 17:21:49 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee.jones@linaro.org>
-Cc:     linux-omap@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH] mfd: twl: Remove platform data support
-Date:   Tue, 14 Jun 2022 17:21:48 +0200
-Message-Id: <20220614152148.252820-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S1344649AbiFNQAX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 14 Jun 2022 12:00:23 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2070.outbound.protection.outlook.com [40.107.243.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B9173F885;
+        Tue, 14 Jun 2022 09:00:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YgtMQfWs2HUzf38nDijdwAKIw1Iusm19M2r3ERbG+Dqzwvahp+sLnNzxDr/x0EEM7t1ijzApLHH4+WicQNQkuXWAEm8H6rs/pmZh7TuUbn8+EApgME4j+rD3j+9668vXQbPF/6Sh6U2nQmcbGMDGufEQpjGGh59KlB+LpOiu0g2hcqJHF4/rK7LkQGqXxYdFKoxpuqWRHVl7O69KoIr7VDGAs02rLs/PN0KvfGdUb0h3RYvUg0v2UFvLcTVUNuSrRCWvvpj712Mh/g7ujS98mjKQu1tlS3frmhJlnwXxQDNGk6D2I7oUVM44t1jym1r4Zq3X3ZB2AO2UEEN74bN2HA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Kc7xX0x3AGd/UYMeosIy4d+31oCMZJdCgUDR7o4DINs=;
+ b=gRHlz7tvM3UXgvmIOL4mhvWik2KjuiWX6EP8shQBY2E6OAvYYQvmVIgFGQTZOxIzHb6y8piLzVMvHXsJiTWWXvUC1CwGo4Cpe5RQikNB8SyV58SZ0LRevVNiwbIAddz+M5xdy9HrqK7XChzguCEezsQpq79BgXCTmUftSybYCr1WVC9gfl6QSyOwUJ1r6hO4hf1H4CuexDXv2adHqJGwTx391mvHJ6TRDJyJy0tZcta9pzdsszOXqG2OPasR2fAEJyrgb05oZIG157/MYpVdaziLNJDRKgmygbNtggMeGhovaHj5Rfiq2T4ULWCG+uYd0lc0W+HcYItUwUQxN/WrCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=precisionplanting.com; dmarc=pass action=none
+ header.from=precisionplanting.com; dkim=pass header.d=precisionplanting.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=precisionplanting365.onmicrosoft.com;
+ s=selector1-precisionplanting365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Kc7xX0x3AGd/UYMeosIy4d+31oCMZJdCgUDR7o4DINs=;
+ b=OfU+oBs2VhNrhmpylND90NdkjZWSmIfvClT+OTmi2gtfqN2BZJBjlMbpPt9V6fNpOxeiKGe0U0yKxAW5stbgrOoTA62fEWBjhxTjZbjOhEGIuKG3HnQx7X2NpQfc5dujF6aTHszoPJB32xLuXkbRYWkCipgarG4sVZcggvslxzU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=precisionplanting.com;
+Received: from SA1PR22MB3196.namprd22.prod.outlook.com (2603:10b6:806:22b::8)
+ by MWHPR22MB0288.namprd22.prod.outlook.com (2603:10b6:300:7d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.20; Tue, 14 Jun
+ 2022 16:00:17 +0000
+Received: from SA1PR22MB3196.namprd22.prod.outlook.com
+ ([fe80::24b0:19e9:a42d:60b0]) by SA1PR22MB3196.namprd22.prod.outlook.com
+ ([fe80::24b0:19e9:a42d:60b0%5]) with mapi id 15.20.5332.020; Tue, 14 Jun 2022
+ 16:00:17 +0000
+From:   David Owens <dowens@precisionplanting.com>
+To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     David Owens <dowens@precisionplanting.com>,
+        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: ti: omap-mcbsp: duplicate sysfs failure after PROBE_DEFER
+Date:   Tue, 14 Jun 2022 10:59:31 -0500
+Message-Id: <20220614155931.2706437-1-dowens@precisionplanting.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: CH2PR11CA0007.namprd11.prod.outlook.com
+ (2603:10b6:610:54::17) To SA1PR22MB3196.namprd22.prod.outlook.com
+ (2603:10b6:806:22b::8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14328; h=from:subject; bh=N/AEYunkCP1hposkVOstfforjwHFqFvC+ENyGSBgPmg=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBiqKeIfe3zLFBr79G6zzr60qw01sGY7Y2wscCuJVCa MOT47TyJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYqiniAAKCRDB/BR4rcrsCQX6CA CabekRClaAfRGP2+0g3NggIKAhHI3coZMEJVJqMxN4ympLAfuWoDuDSKmxVDBpp8fqxIcvq430Pt5q Ad9cAsPMxD2rkJB1P21zCnwgrxmU3PcC0nz++zTLiadjSQZiEbKnFmG8ZNd1PrOoFQ5+kn6KgZK6za hhwqbOHKLKx7Lknu/vxUmm4O6/7R/Tke8dsJZF0vsMtQ0yQbBvUJJbO64SlX8ud8gkqn1UuY/4nccJ 8yEY6d3C09NB7lPkg4adZfjYzPIDLZOG0BwzFuBZN2afCHDnvwol/qJyBHXgV//YDMFv+ljNkvSh0q JzKG+DXPM6Qz3GPAMyzTp75KZxaHCM
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8fa70070-9914-43bf-62a9-08da4e1ef9bf
+X-MS-TrafficTypeDiagnostic: MWHPR22MB0288:EE_
+X-Microsoft-Antispam-PRVS: <MWHPR22MB0288C7046171ABDB046D3139C0AA9@MWHPR22MB0288.namprd22.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: BGqETwJfI7UOZoI8OIb89Du8vC+5SYzbHpMDAbBix3Pxt2aJF3rNQBBYMdF3OySXOZQvcc1Se2EViEjlMShNnXA19imyJzlWhPq4hOWJsOi10mCFt7s/nDKzaUFheyNn9GZi2a2NLipA3yNIYQPoogk3i20yAVQQJ5x15I03hMCow/p1iSzW8HR4do4ecVunomYKY951BdbyHx9LlB3hZHAT0Wc7puwtmmcEvmy9nWLRgRLKcM32IRHsB8w7ONr0HCswAIm1/LBBaVssxB29m0IqSWYMPJFxr7rn2L4ih7pXg0UZ5t9V6tjpsoDQO7ftrDnB9UTewd0OuX3yTzaFUuw03mvxZVF8joFbHLu9D71T6PgX0SxD1SKuCP8qVuRjtmstrytcW/Gt0fW++dpbSmSrzPl+VZKvCFNGHAM7F+SIJE5AWS4P4i3p/+QLLCO5rd06OGwxBm6mECoCBKHddnZy55GAWZW0nNW5hbVzBX+yx8XO80pcNskWGSjcXoyRGw0AicimhVVKR+qIuF1NU5Mlckjv+WXtexczGQT381x2DL+FHDFSZ8TzO8lT6+FzM/dpg+FNkBSNA6ZKoHUdpkEAThxzp3B4SK/+ukg/pwWWmxSJ3PjGhdwUFjM4h1g9bFnJH3AdBSyIwjLdIHdmUQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR22MB3196.namprd22.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(396003)(366004)(136003)(346002)(39850400004)(36756003)(110136005)(316002)(83380400001)(86362001)(66574015)(508600001)(2616005)(41300700001)(1076003)(186003)(38100700002)(66476007)(8676002)(4326008)(66946007)(66556008)(6666004)(6506007)(52116002)(5660300002)(2906002)(6486002)(6512007)(8936002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?5PUNwmKAZMcCkLJlZe4TqUoL6tO+6GiM8hKuQ+ET3EJiwnOjs1fS696O9tGq?=
+ =?us-ascii?Q?wwZXPnZtgVs2lFOJb2zr095eAVTvgXxibyQLtwiiVjyEFOuL42bA5Y8Xit3w?=
+ =?us-ascii?Q?33d5k/DGDpP+iOn17joJPI3WWS5YAKVE2tCMkaZ5B3AX2djbFilk5CjXSc8b?=
+ =?us-ascii?Q?yPOu/wKfgCjthVXFUhQeibRR/KSmQF3V3YcOvaYV6xiXZ5LJMYSnKmrK6/Va?=
+ =?us-ascii?Q?iVjH4ZbY0C+sq+4B87JRrb/plTD0yD/69z85SNWySWyj5T6+XpwUucFTg3fA?=
+ =?us-ascii?Q?NVOvkR/vZViEnmCIMHjvHgYUiMFZvQLkza7yHM/wmoOOi7mBwpEt5ssbteln?=
+ =?us-ascii?Q?lVS+SSwRxXpflG8YV9ANpcC6SEszZSat/SyLc+UxTbFQ9/SwAijjD0r6ogyf?=
+ =?us-ascii?Q?NJM1CZvkzG4DGzcL7ViHhPdJds1XemHFEC9VOseYzDVy+yrsdUd0NZkVReia?=
+ =?us-ascii?Q?FtHoLDMZ7SSbKiHvwTVvKSDoooai4Stx5ZTfDRoPrzG9qae27GPoHmNvw7lo?=
+ =?us-ascii?Q?at552JxROqhNa8G2VVarETbapFvY+XK0A+eWZkdGk58Pc0fZKgwLaHqf/gGM?=
+ =?us-ascii?Q?7mDsBVrV+4x+SdbEdue6Jij0rgVvU8qZFaJcPhfkKfFPKlYFHA5bkaL5DD74?=
+ =?us-ascii?Q?jFWuc7r1m8JetDD52RA/XaGbChJzxxG3J9hHUj7+arhJPBlUdt2dkA2Iv6Gf?=
+ =?us-ascii?Q?olKmzhNEmYa4JsZFE2WuRKWIZJBmvtHQ92E7h+WkD9kHP1XBUW7Lf7VNqYJK?=
+ =?us-ascii?Q?C7rzlNrOMpcWmn5+hDb3W1KoTEO57/8kyu3yx8yZMyszI3GSuPnAuuJyz8X4?=
+ =?us-ascii?Q?bqrTB9dokooOnMt2XL/yOKBna8/vFCNMRb4Rj8N3N+1PfplRyTERrM0IgcKt?=
+ =?us-ascii?Q?+dZWHsjYY4WZLG4a2r1sgWf+6uV8KKMeDqLXBKY6kdSumAAk4uiT8U8t/ctp?=
+ =?us-ascii?Q?rDG2YVne7Li5XMphlISvngZD2VWk+aExtKWhIwb6W3YCNq7xOsfY6J+7kXUB?=
+ =?us-ascii?Q?ZA0INhFYlDe4jEqX0w02RMTUvqQtXcrm0SbhlKGStDTHfSeCRDCUKg/RiToQ?=
+ =?us-ascii?Q?HxbooFVV+QA8LQD4OfJ7stUGGAuDT95GHrHVYUZ33/gNcnietzR6WTx6g8s2?=
+ =?us-ascii?Q?DkSxTfryOXUn6ps25Ti73Y+11cvnNlW5y5B50pG/iA3/EaWnbG6U9cAioKFg?=
+ =?us-ascii?Q?G85wK+dI0MyaFujIzzvWMxLvIV0UREZE9g5D8Q3LFbEqsU5RBvvAIgcnhw5o?=
+ =?us-ascii?Q?nhMp0LfGdYcZRaJIwx1j5FhNiXAZ6aKIZSKLbgoP0fE4CTeNeEXSb4EjQjRU?=
+ =?us-ascii?Q?RKhyeo70sbl9rkqQE/5/0HX8zN5q/sotXPyLpz1fieHvPWxnPIbAPyGy3nfX?=
+ =?us-ascii?Q?HIXPudZpdDEnMEbhFAQQxM2hkOEB2sb3QDZD3D+uBb7LOsJmaj5G4aHEeqTc?=
+ =?us-ascii?Q?71zLA8IQPKZa+oTTxo4xsWwZHBPbtwYqa0O6plfrjLG+IepxdqwgRSXjsi1B?=
+ =?us-ascii?Q?yR0wL0JXEMUjh6B8DZMkXaTRW1uFUzDvANvkNFuDgAHqYto2xMBKQNwIiTFz?=
+ =?us-ascii?Q?pY9BpKAYZCzNxszVowkvz96hgIzbRgVxHcbhTj74HmAuJrxSA+Wo1OzaELQ4?=
+ =?us-ascii?Q?HsxAckQpZXW7Rik6qu/JPbFgE7QM/3nlBOy6fOwM4Ih73qjnUQc1T8Zin6J1?=
+ =?us-ascii?Q?apM1NzuAfG1QThnKIpOsFfFgl6SBJmXOrfo7BA2OkxTspeo00nSXmocsFIVO?=
+ =?us-ascii?Q?uGrSxeBzFM14XkxKZdHuHJKDvXK50VUbk34hFdi8uuYYCK8Z7sI9BAVVh1Hi?=
+X-MS-Exchange-AntiSpam-MessageData-1: U68pQXD3mcoYFx6NXYRcMCABMZKgxK7Sczv2kmewSPFl7+tefKVtQdI+
+X-OriginatorOrg: precisionplanting.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fa70070-9914-43bf-62a9-08da4e1ef9bf
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR22MB3196.namprd22.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2022 16:00:17.3651
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: aa593af2-61f8-4d4f-988a-e9c4c02b7f57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4X/F3DFzvOuGFc5jBJwqSkBhc1sZk3w//d5igRn0177LkxRSM+2Yuqd+/zIe3YW3eElsRfEtWMlMqDrBYlbTTMM+lIQ/hwXXNHSrRLqPF+U=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR22MB0288
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-There is no in-tree machine that provides a struct twl4030_platform_data
-since commit e92fc4f04a34 ("ARM: OMAP2+: Drop legacy board file for
-LDP"). So assume dev_get_platdata() returns NULL in twl_probe() and
-simplify accordingly.
+The call to sdma_pcm_platform_register() can return PROBE_DEFER, leading
+to omap_mcbsp_init() being called multiple times.  sysfs node creation
+fails in subsequent calls to omap_mcbsp_init(), which prevents
+the driver from ever successfully probing.  The resulting errors can be
+seen during boot:
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+[    1.749328] sysfs: cannot create duplicate filename '/devices/platform/6=
+8000000.ocp/49022000.mcbsp/max_tx_thres'
+[    1.759643] CPU: 0 PID: 6 Comm: kworker/u2:0 Not tainted 5.18.0-yocto-st=
+andard #1
+[    1.767181] Hardware name: Generic OMAP36xx (Flattened Device Tree)
+[    1.773498] Workqueue: events_unbound deferred_probe_work_func
+[    1.779449]  unwind_backtrace from show_stack+0x10/0x14
+[    1.784729]  show_stack from sysfs_warn_dup+0x4c/0x60
+[    1.789825]  sysfs_warn_dup from sysfs_add_file_mode_ns+0x104/0x150
+[    1.796142]  sysfs_add_file_mode_ns from internal_create_group+0x10c/0x3=
+ac
+[    1.803100]  internal_create_group from asoc_mcbsp_probe+0x270/0x454
+[    1.809539]  asoc_mcbsp_probe from platform_probe+0x58/0xb8
+[    1.815155]  platform_probe from really_probe+0x14c/0x34c
+[    1.820617]  really_probe from __driver_probe_device+0xcc/0x1c0
+[    1.826599]  __driver_probe_device from driver_probe_device+0x30/0xd4
+[    1.833129]  driver_probe_device from __device_attach_driver+0x8c/0xf0
+[    1.839721]  __device_attach_driver from bus_for_each_drv+0x80/0xcc
+[    1.846038]  bus_for_each_drv from __device_attach+0xe4/0x170
+[    1.851837]  __device_attach from bus_probe_device+0x84/0x8c
+[    1.857543]  bus_probe_device from deferred_probe_work_func+0x9c/0xc8
+[    1.864044]  deferred_probe_work_func from process_one_work+0x194/0x3b8
+[    1.870727]  process_one_work from worker_thread+0x200/0x4cc
+[    1.876434]  worker_thread from kthread+0xb8/0xdc
+[    1.881195]  kthread from ret_from_fork+0x14/0x2c
+[    1.885955] Exception stack(0xc1069fb0 to 0xc1069ff8)
+[    1.891052] 9fa0:                                     00000000 00000000 =
+00000000 00000000
+[    1.899291] 9fc0: 00000000 00000000 00000000 00000000 00000000 00000000 =
+00000000 00000000
+[    1.907501] 9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+[    1.914215] omap-mcbsp 49022000.mcbsp: Unable to create additional contr=
+ols
+[    1.921264] omap-mcbsp: probe of 49022000.mcbsp failed with error -17
+[    1.928405] omap-twl4030 sound: devm_snd_soc_register_card() failed: -51=
+7
+
+Signed-off-by: David Owens <dowens@precisionplanting.com>
 ---
- drivers/mfd/twl-core.c  | 323 +---------------------------------------
- include/linux/mfd/twl.h |  55 -------
- 2 files changed, 5 insertions(+), 373 deletions(-)
+ sound/soc/ti/omap-mcbsp.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
-index bd6659cf3bc0..2cb9326f3e61 100644
---- a/drivers/mfd/twl-core.c
-+++ b/drivers/mfd/twl-core.c
-@@ -656,309 +656,6 @@ static inline struct device *add_child(unsigned mod_no, const char *name,
- 		can_wakeup, irq0, irq1);
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index 4479d74f0a45..b7c1fb70cb25 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -1403,6 +1403,10 @@ static int asoc_mcbsp_probe(struct platform_device *=
+pdev)
+        mcbsp->dev =3D &pdev->dev;
+        platform_set_drvdata(pdev, mcbsp);
+
++       ret =3D sdma_pcm_platform_register(&pdev->dev, "tx", "rx");
++       if (ret)
++               return ret;
++
+        ret =3D omap_mcbsp_init(pdev);
+        if (ret)
+                return ret;
+@@ -1412,13 +1416,9 @@ static int asoc_mcbsp_probe(struct platform_device *=
+pdev)
+                omap_mcbsp_dai.capture.formats =3D SNDRV_PCM_FMTBIT_S16_LE;
+        }
+
+-       ret =3D devm_snd_soc_register_component(&pdev->dev,
++       return devm_snd_soc_register_component(&pdev->dev,
+                                              &omap_mcbsp_component,
+                                              &omap_mcbsp_dai, 1);
+-       if (ret)
+-               return ret;
+-
+-       return sdma_pcm_platform_register(&pdev->dev, "tx", "rx");
  }
- 
--static struct device *
--add_regulator_linked(int num, struct regulator_init_data *pdata,
--		struct regulator_consumer_supply *consumers,
--		unsigned num_consumers, unsigned long features)
--{
--	struct twl_regulator_driver_data drv_data;
--
--	/* regulator framework demands init_data ... */
--	if (!pdata)
--		return NULL;
--
--	if (consumers) {
--		pdata->consumer_supplies = consumers;
--		pdata->num_consumer_supplies = num_consumers;
--	}
--
--	if (pdata->driver_data) {
--		/* If we have existing drv_data, just add the flags */
--		struct twl_regulator_driver_data *tmp;
--		tmp = pdata->driver_data;
--		tmp->features |= features;
--	} else {
--		/* add new driver data struct, used only during init */
--		drv_data.features = features;
--		drv_data.set_voltage = NULL;
--		drv_data.get_voltage = NULL;
--		drv_data.data = NULL;
--		pdata->driver_data = &drv_data;
--	}
--
--	/* NOTE:  we currently ignore regulator IRQs, e.g. for short circuits */
--	return add_numbered_child(TWL_MODULE_PM_MASTER, "twl_reg", num,
--		pdata, sizeof(*pdata), false, 0, 0);
--}
--
--static struct device *
--add_regulator(int num, struct regulator_init_data *pdata,
--		unsigned long features)
--{
--	return add_regulator_linked(num, pdata, NULL, 0, features);
--}
--
--/*
-- * NOTE:  We know the first 8 IRQs after pdata->base_irq are
-- * for the PIH, and the next are for the PWR_INT SIH, since
-- * that's how twl_init_irq() sets things up.
-- */
--
--static int
--add_children(struct twl4030_platform_data *pdata, unsigned irq_base,
--		unsigned long features)
--{
--	struct device	*child;
--
--	if (IS_ENABLED(CONFIG_GPIO_TWL4030) && pdata->gpio) {
--		child = add_child(TWL4030_MODULE_GPIO, "twl4030_gpio",
--				pdata->gpio, sizeof(*pdata->gpio),
--				false, irq_base + GPIO_INTR_OFFSET, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_KEYBOARD_TWL4030) && pdata->keypad) {
--		child = add_child(TWL4030_MODULE_KEYPAD, "twl4030_keypad",
--				pdata->keypad, sizeof(*pdata->keypad),
--				true, irq_base + KEYPAD_INTR_OFFSET, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_TWL4030_MADC) && pdata->madc &&
--	    twl_class_is_4030()) {
--		child = add_child(TWL4030_MODULE_MADC, "twl4030_madc",
--				pdata->madc, sizeof(*pdata->madc),
--				true, irq_base + MADC_INTR_OFFSET, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_RTC_DRV_TWL4030)) {
--		/*
--		 * REVISIT platform_data here currently might expose the
--		 * "msecure" line ... but for now we just expect board
--		 * setup to tell the chip "it's always ok to SET_TIME".
--		 * Eventually, Linux might become more aware of such
--		 * HW security concerns, and "least privilege".
--		 */
--		child = add_child(TWL_MODULE_RTC, "twl_rtc", NULL, 0,
--				true, irq_base + RTC_INTR_OFFSET, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_PWM_TWL)) {
--		child = add_child(TWL_MODULE_PWM, "twl-pwm", NULL, 0,
--				  false, 0, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_PWM_TWL_LED)) {
--		child = add_child(TWL_MODULE_LED, "twl-pwmled", NULL, 0,
--				  false, 0, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_TWL4030_USB) && pdata->usb &&
--	    twl_class_is_4030()) {
--
--		static struct regulator_consumer_supply usb1v5 = {
--			.supply =	"usb1v5",
--		};
--		static struct regulator_consumer_supply usb1v8 = {
--			.supply =	"usb1v8",
--		};
--		static struct regulator_consumer_supply usb3v1 = {
--			.supply =	"usb3v1",
--		};
--
--	/* First add the regulators so that they can be used by transceiver */
--		if (IS_ENABLED(CONFIG_REGULATOR_TWL4030)) {
--			/* this is a template that gets copied */
--			struct regulator_init_data usb_fixed = {
--				.constraints.valid_modes_mask =
--					REGULATOR_MODE_NORMAL
--					| REGULATOR_MODE_STANDBY,
--				.constraints.valid_ops_mask =
--					REGULATOR_CHANGE_MODE
--					| REGULATOR_CHANGE_STATUS,
--			};
--
--			child = add_regulator_linked(TWL4030_REG_VUSB1V5,
--						      &usb_fixed, &usb1v5, 1,
--						      features);
--			if (IS_ERR(child))
--				return PTR_ERR(child);
--
--			child = add_regulator_linked(TWL4030_REG_VUSB1V8,
--						      &usb_fixed, &usb1v8, 1,
--						      features);
--			if (IS_ERR(child))
--				return PTR_ERR(child);
--
--			child = add_regulator_linked(TWL4030_REG_VUSB3V1,
--						      &usb_fixed, &usb3v1, 1,
--						      features);
--			if (IS_ERR(child))
--				return PTR_ERR(child);
--
--		}
--
--		child = add_child(TWL_MODULE_USB, "twl4030_usb",
--				pdata->usb, sizeof(*pdata->usb), true,
--				/* irq0 = USB_PRES, irq1 = USB */
--				irq_base + USB_PRES_INTR_OFFSET,
--				irq_base + USB_INTR_OFFSET);
--
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		/* we need to connect regulators to this transceiver */
--		if (IS_ENABLED(CONFIG_REGULATOR_TWL4030) && child) {
--			usb1v5.dev_name = dev_name(child);
--			usb1v8.dev_name = dev_name(child);
--			usb3v1.dev_name = dev_name(child);
--		}
--	}
--
--	if (IS_ENABLED(CONFIG_TWL4030_WATCHDOG) && twl_class_is_4030()) {
--		child = add_child(TWL_MODULE_PM_RECEIVER, "twl4030_wdt", NULL,
--				  0, false, 0, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_INPUT_TWL4030_PWRBUTTON) && twl_class_is_4030()) {
--		child = add_child(TWL_MODULE_PM_MASTER, "twl4030_pwrbutton",
--				  NULL, 0, true, irq_base + 8 + 0, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_MFD_TWL4030_AUDIO) && pdata->audio &&
--	    twl_class_is_4030()) {
--		child = add_child(TWL4030_MODULE_AUDIO_VOICE, "twl4030-audio",
--				pdata->audio, sizeof(*pdata->audio),
--				false, 0, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	/* twl4030 regulators */
--	if (IS_ENABLED(CONFIG_REGULATOR_TWL4030) && twl_class_is_4030()) {
--		child = add_regulator(TWL4030_REG_VPLL1, pdata->vpll1,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VIO, pdata->vio,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VDD1, pdata->vdd1,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VDD2, pdata->vdd2,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VMMC1, pdata->vmmc1,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VDAC, pdata->vdac,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator((features & TWL4030_VAUX2)
--					? TWL4030_REG_VAUX2_4030
--					: TWL4030_REG_VAUX2,
--				pdata->vaux2, features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VINTANA1, pdata->vintana1,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VINTANA2, pdata->vintana2,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VINTDIG, pdata->vintdig,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	/* maybe add LDOs that are omitted on cost-reduced parts */
--	if (IS_ENABLED(CONFIG_REGULATOR_TWL4030) && !(features & TPS_SUBSET)
--	  && twl_class_is_4030()) {
--		child = add_regulator(TWL4030_REG_VPLL2, pdata->vpll2,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VMMC2, pdata->vmmc2,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VSIM, pdata->vsim,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VAUX1, pdata->vaux1,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VAUX3, pdata->vaux3,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--
--		child = add_regulator(TWL4030_REG_VAUX4, pdata->vaux4,
--					features);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_CHARGER_TWL4030) && pdata->bci &&
--			!(features & (TPS_SUBSET | TWL5031))) {
--		child = add_child(TWL_MODULE_MAIN_CHARGE, "twl4030_bci",
--				pdata->bci, sizeof(*pdata->bci), false,
--				/* irq0 = CHG_PRES, irq1 = BCI */
--				irq_base + BCI_PRES_INTR_OFFSET,
--				irq_base + BCI_INTR_OFFSET);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	if (IS_ENABLED(CONFIG_TWL4030_POWER) && pdata->power) {
--		child = add_child(TWL_MODULE_PM_MASTER, "twl4030_power",
--				  pdata->power, sizeof(*pdata->power), false,
--				  0, 0);
--		if (IS_ERR(child))
--			return PTR_ERR(child);
--	}
--
--	return 0;
--}
--
- /*----------------------------------------------------------------------*/
- 
- /*
-@@ -987,8 +684,7 @@ static inline int unprotect_pm_master(void)
- 	return e;
- }
- 
--static void clocks_init(struct device *dev,
--			struct twl4030_clock_init_data *clock)
-+static void clocks_init(struct device *dev)
- {
- 	int e = 0;
- 	struct clk *osc;
-@@ -1018,8 +714,6 @@ static void clocks_init(struct device *dev,
- 	}
- 
- 	ctrl |= HIGH_PERF_SQ;
--	if (clock && clock->ck32k_lowpwr_enable)
--		ctrl |= CK32K_LOWPWR_EN;
- 
- 	e |= unprotect_pm_master();
- 	/* effect->MADC+USB ck en */
-@@ -1063,7 +757,6 @@ static struct of_dev_auxdata twl_auxdata_lookup[] = {
- static int
- twl_probe(struct i2c_client *client, const struct i2c_device_id *id)
- {
--	struct twl4030_platform_data	*pdata = dev_get_platdata(&client->dev);
- 	struct device_node		*node = client->dev.of_node;
- 	struct platform_device		*pdev;
- 	const struct regmap_config	*twl_regmap_config;
-@@ -1071,7 +764,7 @@ twl_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	int				status;
- 	unsigned			i, num_slaves;
- 
--	if (!node && !pdata) {
-+	if (!node) {
- 		dev_err(&client->dev, "no platform data\n");
- 		return -EINVAL;
- 	}
-@@ -1161,7 +854,7 @@ twl_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	twl_priv->ready = true;
- 
- 	/* setup clock framework */
--	clocks_init(&client->dev, pdata ? pdata->clock : NULL);
-+	clocks_init(&client->dev);
- 
- 	/* read TWL IDCODE Register */
- 	if (twl_class_is_4030()) {
-@@ -1209,14 +902,8 @@ twl_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 				 TWL4030_DCDC_GLOBAL_CFG);
- 	}
- 
--	if (node) {
--		if (pdata)
--			twl_auxdata_lookup[0].platform_data = pdata->gpio;
--		status = of_platform_populate(node, NULL, twl_auxdata_lookup,
--					      &client->dev);
--	} else {
--		status = add_children(pdata, irq_base, id->driver_data);
--	}
-+	status = of_platform_populate(node, NULL, twl_auxdata_lookup,
-+				      &client->dev);
- 
- fail:
- 	if (status < 0)
-diff --git a/include/linux/mfd/twl.h b/include/linux/mfd/twl.h
-index 8871cc5188a0..e426938eafd5 100644
---- a/include/linux/mfd/twl.h
-+++ b/include/linux/mfd/twl.h
-@@ -694,61 +694,6 @@ struct twl4030_audio_data {
- 	unsigned int irq_base;
- };
- 
--struct twl4030_platform_data {
--	struct twl4030_clock_init_data		*clock;
--	struct twl4030_bci_platform_data	*bci;
--	struct twl4030_gpio_platform_data	*gpio;
--	struct twl4030_madc_platform_data	*madc;
--	struct twl4030_keypad_data		*keypad;
--	struct twl4030_usb_data			*usb;
--	struct twl4030_power_data		*power;
--	struct twl4030_audio_data		*audio;
--
--	/* Common LDO regulators for TWL4030/TWL6030 */
--	struct regulator_init_data		*vdac;
--	struct regulator_init_data		*vaux1;
--	struct regulator_init_data		*vaux2;
--	struct regulator_init_data		*vaux3;
--	struct regulator_init_data		*vdd1;
--	struct regulator_init_data		*vdd2;
--	struct regulator_init_data		*vdd3;
--	/* TWL4030 LDO regulators */
--	struct regulator_init_data		*vpll1;
--	struct regulator_init_data		*vpll2;
--	struct regulator_init_data		*vmmc1;
--	struct regulator_init_data		*vmmc2;
--	struct regulator_init_data		*vsim;
--	struct regulator_init_data		*vaux4;
--	struct regulator_init_data		*vio;
--	struct regulator_init_data		*vintana1;
--	struct regulator_init_data		*vintana2;
--	struct regulator_init_data		*vintdig;
--	/* TWL6030 LDO regulators */
--	struct regulator_init_data              *vmmc;
--	struct regulator_init_data              *vpp;
--	struct regulator_init_data              *vusim;
--	struct regulator_init_data              *vana;
--	struct regulator_init_data              *vcxio;
--	struct regulator_init_data              *vusb;
--	struct regulator_init_data		*clk32kg;
--	struct regulator_init_data              *v1v8;
--	struct regulator_init_data              *v2v1;
--	/* TWL6032 LDO regulators */
--	struct regulator_init_data		*ldo1;
--	struct regulator_init_data		*ldo2;
--	struct regulator_init_data		*ldo3;
--	struct regulator_init_data		*ldo4;
--	struct regulator_init_data		*ldo5;
--	struct regulator_init_data		*ldo6;
--	struct regulator_init_data		*ldo7;
--	struct regulator_init_data		*ldoln;
--	struct regulator_init_data		*ldousb;
--	/* TWL6032 DCDC regulators */
--	struct regulator_init_data		*smps3;
--	struct regulator_init_data		*smps4;
--	struct regulator_init_data		*vio6025;
--};
--
- struct twl_regulator_driver_data {
- 	int		(*set_voltage)(void *data, int target_uV);
- 	int		(*get_voltage)(void *data);
 
-base-commit: f2906aa863381afb0015a9eb7fefad885d4e5a56
--- 
-2.36.1
+ static int asoc_mcbsp_remove(struct platform_device *pdev)
+--
+2.34.1
 
+This email is intended solely for the use of the individual to whom it is a=
+ddressed and may contain confidential and/or privileged material. Any views=
+ or opinions presented are solely those of the author and do not necessaril=
+y represent those of Precision Planting. If you are not the intended recipi=
+ent, be advised that you have received this email in error and that any use=
+, dissemination, forwarding, printing, or copying of this email is strictly=
+ prohibited. Neither AGCO nor the sender accepts any responsibility for vir=
+uses, and it is your responsibility to scan, and virus check the e-mail and=
+ its attachment(s) (if any).
