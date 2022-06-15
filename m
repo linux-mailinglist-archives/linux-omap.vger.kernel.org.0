@@ -2,117 +2,50 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3BA854C373
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Jun 2022 10:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E15F54C38C
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Jun 2022 10:32:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344805AbiFOI3R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Jun 2022 04:29:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32922 "EHLO
+        id S245205AbiFOIbp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Jun 2022 04:31:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344444AbiFOI3I (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Jun 2022 04:29:08 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6470E33890
-        for <linux-omap@vger.kernel.org>; Wed, 15 Jun 2022 01:29:07 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1o1OOf-0006I8-Ry; Wed, 15 Jun 2022 10:29:05 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1o1OOY-0005jK-G6; Wed, 15 Jun 2022 10:28:58 +0200
-Date:   Wed, 15 Jun 2022 10:28:58 +0200
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     Gireesh.Hiremath@in.bosch.com
-Cc:     krzysztof.kozlowski+dt@linaro.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org, bcousson@baylibre.com,
-        tony@atomide.com, robh+dt@kernel.org, dmitry.torokhov@gmail.com,
-        mkorpershoek@baylibre.com, davidgow@google.com,
-        swboyd@chromium.org, fengping.yu@mediatek.com,
-        y.oudjana@protonmail.com, rdunlap@infradead.org,
-        colin.king@intel.com, sjoerd.simons@collabora.co.uk,
-        VinayKumar.Shettar@in.bosch.com,
-        Govindaraji.Sivanantham@in.bosch.com, anaclaudia.dias@de.bosch.com
-Subject: Re: [v2,2/4] Input: mt-matrix-keypad: Add Bosch mt matrix keypad
- driver
-Message-ID: <20220615082858.vmdhzhkwsv6kdnak@pengutronix.de>
-References: <20220506072737.1590-2-Gireesh.Hiremath@in.bosch.com>
- <20220613080638.1339-1-Gireesh.Hiremath@in.bosch.com>
+        with ESMTP id S245207AbiFOIbN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Jun 2022 04:31:13 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DE5AB49CB7
+        for <linux-omap@vger.kernel.org>; Wed, 15 Jun 2022 01:31:09 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id ED38880FE;
+        Wed, 15 Jun 2022 08:26:23 +0000 (UTC)
+Date:   Wed, 15 Jun 2022 11:31:08 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Yegor Yefremov <yegorslists@googlemail.com>
+Cc:     Drew Fustini <drew@beagleboard.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+Subject: Re: am335x: GPIOs in userspace
+Message-ID: <YqmYzFkO7NgRbbfp@atomide.com>
+References: <CAGm1_ku2O3Z7OegxKpq4SnaycvzmgFR7SO1PoZJ3h4P7OHvQYg@mail.gmail.com>
+ <CAPgEAj7wNtgf9sUrL1E14LgrPwiLv=bGcAyhdzns3ZnkH-Qqww@mail.gmail.com>
+ <CAGm1_ksRcRBG+Ns+XJ4YvXyZmnMPXLqBiurhqkphSRR8orZbaw@mail.gmail.com>
+ <CAGm1_kscjH-hQA+K6OcVJUiwCOrrfgjW5PHRw=Zdci788h9j1A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220613080638.1339-1-Gireesh.Hiremath@in.bosch.com>
-User-Agent: NeoMutt/20180716
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAGm1_kscjH-hQA+K6OcVJUiwCOrrfgjW5PHRw=Zdci788h9j1A@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+* Yegor Yefremov <yegorslists@googlemail.com> [220614 12:32]:
+> I found the problem. Between 5.10 and 5.11 gpiochip assignment has
+> changed: gpiochip1 -> gpiochip4. Hence, I'll have to work with gpio
+> labels.
 
-sry. for jumping in again.
+OK good to hear you found the problem.
 
-On 22-06-13, Gireesh.Hiremath@in.bosch.com wrote:
-> From: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
-> 
-> Hi Krzysztof,
-> 
-> >You wrote pretty long message explaining how the device works, but I
-> >still do not see the answer to questions - why it cannot be part of
-> >matrix keypad?
-> 
-> Following are the difference between matrix keypad and Bosch keypad
-> make us to add another keypad driver.
-> 
-> matrix keypad:
-> 	- By hardware schematic, a column GPIO line will intersect only
-> 	  with row GPIO lines, not with the other column GPIO lines
-> 	- so, row and column GPIO property are fixed, because of this
-> 	- key scanning work based on interrupt mode
-> 	- and key press is determined based on setting column as output,
-> 	  row GPIO as input and set interrupt to monitor the changes in state,
-> 	  serve the key pressed in ISR
-> 
-> Bosch keypad:
->     - By hardware schematic column GPIO line can intersect with row GPIO line
-> 	  as well as other column GPIO lines
-> 	- so, all GPIO act as row as well as column, because of this
-> 	- key scanning based on polling mode
-> 	- a key pressed is determined by setting one of GPIO line as output and
-> 	  other as input and poll for change in the state of input GPIO lines.
-> 	  Setting one of a GPIO line as output and remaining GPIO lines as input is on
-> 	  round robin bases.
-
-Thanks again for listing this here but please get our point, that this
-seems like just another 'mode' for the matrix keypad driver which can be
-selected by the system integrator.
-
-> >"It looks like this driver has smaller number of features than
-> >matrix-keypad, so it should be integrated into the matrix-keypad.
-> >matrix-keypad features are superset to this one."
-> >
-> >"But anyway this should be just merged into matrix-keypad. It's a
-> >simpler set of that binding."
-> 
-> This keypad driver specific to Bosch measuring tool or similar devices.
-
-Once it lands in mainline, it can be used by everyone.
-
-> Please let me know to send latest patch which resolves build warning
-> and gpiod API support.
-
-I would really appreciate if you could integrate your work into matrix
-keypad driver.
-
-Regards,
-  Marco
+Tony
