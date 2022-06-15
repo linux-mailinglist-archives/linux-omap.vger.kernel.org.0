@@ -2,415 +2,293 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF79054C474
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Jun 2022 11:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23B4A54CC39
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Jun 2022 17:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347916AbiFOJRd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Jun 2022 05:17:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56884 "EHLO
+        id S234166AbiFOPKO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 15 Jun 2022 11:10:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347777AbiFOJR2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Jun 2022 05:17:28 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE9A3F304;
-        Wed, 15 Jun 2022 02:17:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655284643; x=1686820643;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YyhEK4s3L7E+aivaywLYIThq17iLzFEVGLISAiATPXw=;
-  b=dOO5kAL65BJWIjEI2fkKJqvJcn1KkOwquVFqbiCbdzC0di5WW5JB28H3
-   8tXU2KNj3Ib4zLnXiqPfw1v69qe9CqL0Hfer3I8D7G05+AsUY9cx8gv7I
-   gOTHnMvF8SkgPtusFYOyyh1HTblG2ijxgnXr28Mh50+D5J8r2kpfQ9wgd
-   LYux9HJqjfs6HuFLOk+Rre3MH9cJFZbnPseeYvKCnjBPsyM/fidZtn0TU
-   XzgSZ8WoMTfYtTXTsawZ/oHaObjrytqKkMbk2xMgHXYsweWohTGOvBqdw
-   fnfvvJkyNSVt0i9vOMOzUrDNbU8+LpSGQttsb9J8zsRsZtcLvQX8A380P
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10378"; a="277685900"
-X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="277685900"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 02:17:23 -0700
-X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="652552017"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 02:17:20 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1o1P9J-000dGZ-V4;
-        Wed, 15 Jun 2022 12:17:17 +0300
-Date:   Wed, 15 Jun 2022 12:17:17 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Johan Hovold <johan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        with ESMTP id S232920AbiFOPKN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Jun 2022 11:10:13 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2082.outbound.protection.outlook.com [40.107.237.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C15E03136A;
+        Wed, 15 Jun 2022 08:10:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cxr2IrYPSL8xTxwKGEcpAW+VXfePKpwO/XIobbDhEWAWxiBwrWSHCUr1IHB9ETaBw2XExB16rBU5M8vbm0w1CXtrqu6I++0/I4r5saS8NpYPXRW2kTtvkVZWvlZcTZ09lEONDPp7ZwtBu17vHs5mecofGQuPnBfB2+YSdiZjuQo5VrNpwwlWRi8iRKAMYm3kIHmX67Zwxb7tgXhOh8+i/wleZXB/fSy19XVag1SCtg6MrUHy68UsEIjKcnmqjZGhKYEQoy1q9GdJRNEUPYcMqsWc6nJEAA2Ww1yBZVPT6rFdWCVGkMYtDnftCuTWZl85YxqEp8Z133Qw/Q6FZ/T9nw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Sb9/To5FprBt50yMAtHhBdm0ff5DnmrhCVTcePy2LLM=;
+ b=mtw09XYI/jPUD57TDOFTUJfaoyVRt9cWGI+d8iYtihXDhoi3yymBFb4/TnJRXixlxahfhFohRosnlOCjLeZ3Y8HyE/lKe1hYSX4Tke1vT/y3rpgw1NAwrHXf7xK1RisW2ntzp8iLZ71zYgXFzeOwRqcWAxyj1e0X+XRAuugbkZ6UzsDnRVa4OkeVrPOxRZammGJ/sGIVjJqTCEVpawW54/0BFkL70M4qirwml3atPCZBl9qpZIay1bw3AWSJGNweEx3bMeYCkj0dqha6/aij75sgqfbUr4UuOg+LG3YvhajHrlZpFYvr/0zFFjGqPxBbYtvLHkJGBVIHtn1Zal1G9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=precisionplanting.com; dmarc=pass action=none
+ header.from=precisionplanting.com; dkim=pass header.d=precisionplanting.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=precisionplanting365.onmicrosoft.com;
+ s=selector1-precisionplanting365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Sb9/To5FprBt50yMAtHhBdm0ff5DnmrhCVTcePy2LLM=;
+ b=Pic5XGCvDbXtqrz4RdCkJUYZ+YLQqjKu3kuT5mS3ulaFmJu7WBRL10c0zDFIKdXHoB2d5SRgd7aWZ0VSgk+fwJsrVEI0EEQssOVqHxVSfkbC1eThTo3rHejSWy0iKPVWaDdqVpk1QuTjbzDNLO9fVTegRtiwwbmzqcTuAqvQyPU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=precisionplanting.com;
+Received: from SA1PR22MB3196.namprd22.prod.outlook.com (2603:10b6:806:22b::8)
+ by SA0PR22MB2272.namprd22.prod.outlook.com (2603:10b6:806:81::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5353.14; Wed, 15 Jun
+ 2022 15:10:09 +0000
+Received: from SA1PR22MB3196.namprd22.prod.outlook.com
+ ([fe80::24b0:19e9:a42d:60b0]) by SA1PR22MB3196.namprd22.prod.outlook.com
+ ([fe80::24b0:19e9:a42d:60b0%5]) with mapi id 15.20.5332.020; Wed, 15 Jun 2022
+ 15:10:09 +0000
+From:   David Owens <dowens@precisionplanting.com>
+To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     David Owens <dowens@precisionplanting.com>,
+        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] serial: core: Start managing serial controllers
- to enable runtime PM
-Message-ID: <YqmjnaawQ2gye/pe@smile.fi.intel.com>
-References: <20220615062455.15490-1-tony@atomide.com>
+Subject: [PATCH v2] ASoC: ti: omap-mcbsp: duplicate sysfs error
+Date:   Wed, 15 Jun 2022 10:09:55 -0500
+Message-Id: <20220615150955.4140789-1-dowens@precisionplanting.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: CH2PR16CA0017.namprd16.prod.outlook.com
+ (2603:10b6:610:50::27) To SA1PR22MB3196.namprd22.prod.outlook.com
+ (2603:10b6:806:22b::8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220615062455.15490-1-tony@atomide.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 50f1bd85-8e5f-4a05-cded-08da4ee12324
+X-MS-TrafficTypeDiagnostic: SA0PR22MB2272:EE_
+X-Microsoft-Antispam-PRVS: <SA0PR22MB2272E82ABEB8D2A68131B1C7C0AD9@SA0PR22MB2272.namprd22.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: NmBhTzbFQY4sfJnfaJUEV7tiEOIX8QvxfkJzE2X7Saoji8Y3PybfMTn+te6X8WMFAa3yMx9SEvd45IhI4wddjaCGgczTUGh3uRfLK7jIipbUbF1LXvkbvCMyY6k28mM/8kwhfCxrKdx0dTLjzWgiaMjvij3UBaOYcE0F/WP7QKgkwFetN7VmCJr0W3qT81/bWUSZDnroBVfk2o0//9GahtN8puX0w48U/7sPKZrAM+TbUdKZ/7WjRmoFJNaLif6b7oUH9rhYBqtdlhSSybAa2PTAQSUbP2Y29G2oOBZVz7b3sh+z+SHdV5dWmIwJTyAW1Z3vgrx8hLT1TU7Nn6qTP1iemX/M3joYif6QDZREGY7h1fwbIDIGNGsfKZXVGxL9pO58EvxvX5OLGU4luKkBMN9oNA5QUilWDxMm+Ilv//RrxhxIepwt6suWWiSlBNU+1HALaTbbIiw4YRkdcgu44dKjTyxK5eYrkmkxtW+7SvfHYsEFrYIvNvwxqP3gchqxRYhob7Q+iuRMrJ7z3xVkp0vTWSFhGIAkSWsBLDfY2z0HW01FGmHvCKiF1f8hW4NqaPmyOZEvZUcPxHpoJnC/xXWUoqs7zni637esTn7gh836aFx79RrtF07oFpc2YjZUV9FttY3u10NCj2fNNl+rJw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR22MB3196.namprd22.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(396003)(366004)(136003)(346002)(39850400004)(66574015)(38100700002)(1076003)(186003)(86362001)(2616005)(41300700001)(66556008)(66946007)(66476007)(4326008)(36756003)(316002)(110136005)(8676002)(8936002)(6666004)(508600001)(6486002)(52116002)(6512007)(5660300002)(83380400001)(6506007)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3SyuF8hYys3+byyz5Cx2CiaFDDfL+efum7ORRGESXB3bOZK6krNRqJOoxTMw?=
+ =?us-ascii?Q?cFjvsxfsCT0au9elLJDKeTtmfOc2nf43DTUxf91DrbCgrOWhLic/gQ49qHIJ?=
+ =?us-ascii?Q?nid+5eQ2d12FM1XPDQlZa0UjlsMa9mthlg9Y1fwLDWxwpHsaA/Q67JZOW75d?=
+ =?us-ascii?Q?fZMeVEwTdWLVagNYceFWT2P1wtATlSv8pNg/HW3bro1Gw2aPTS0g61mgBhQR?=
+ =?us-ascii?Q?ZsXCpN40rE+hNJeNjapLd+FrB34ACbuiktepvuWud7LOWd2KVd7S4MoyTQOT?=
+ =?us-ascii?Q?cZIOttzcUT3X9hrRyjRs6SGfzCwoyC/bYpixd/m05PeFt+vPZELFxN2HStcc?=
+ =?us-ascii?Q?bBqrkjBjA9XOtznD3+u9WtaxAbeDVUqIN2zXp2IbXmpLKlIOZTx7bOqwQyqO?=
+ =?us-ascii?Q?nFlCxzPNsYn+spMAmqCFxyy/Om7rL7bKy6I1mi+5spzK5peoujgbmfWd2MlN?=
+ =?us-ascii?Q?HyMu/bTI9yl3e6Ir4nCWifH0Tg6fctrwtSZ3CkhauIZ1HTJBHzSdGl4qP3eg?=
+ =?us-ascii?Q?fKnmMloldx1sh/BNLLpbzkmUrdgpJS2ETdWu70CboER1FxUWdm1f/01twC+d?=
+ =?us-ascii?Q?3FGXKhfpx75S9YkRvcjYJT7HYlB1A6LDOu9kAIlTrjv7agSldp1+cib8wzOu?=
+ =?us-ascii?Q?Vv63rx9TYXYZTv/QVVzxj1vNm8ZZX/KTgKR+wFC1WXAADakeg7Ih7ZxYT2aE?=
+ =?us-ascii?Q?jbl8io48Szj1ytGyRCG+GgKVzoSF5pT3yrL3nNYcqxnRtd17S1MhoLCfuGcm?=
+ =?us-ascii?Q?K5xruYXXrzoaKPbbVA5/S5pn6fWdfQUURtEvjFVoa7g/yMIITUwV96Jf0KTc?=
+ =?us-ascii?Q?LAuDfnOobcn4WIVb2FmgHtp1kJxX2HP/JAJPP84J38mw+IdEo6PUPFO4sOZ3?=
+ =?us-ascii?Q?p7pN4jEsS2HU15jfELAF/p1G7VdwdRd0Y0P+tsQ4Uf0cKId1FjxHCchPBWv1?=
+ =?us-ascii?Q?3z5Yw9wdX5qb9FSGE5SKtY4fZSwk0I5PdEqSjjn4zpwCbxrS5x1u+cFz2qNW?=
+ =?us-ascii?Q?r1oUlqSKmQcLqiLMH4S5F/bPAVtHhD9b78yTPcuhLwgLGDEJOxtvsQPmyfvZ?=
+ =?us-ascii?Q?w8FY+xtfWKbTbmY3AAxsWWodS3qXnq7+mhQJy568rBV9EDfqZNKdWD3rI6Vu?=
+ =?us-ascii?Q?TY6k24hnZuqrJOtOFgzsblNmNBhKmQG1lQVA3GBNc25m3wMbMeDIo1adkkV4?=
+ =?us-ascii?Q?igFfR1HAHhkUKjknHh+UXnRzz+SBaC8fZtQYsK8fdc53F6J9XbxgBrEpiK76?=
+ =?us-ascii?Q?jee8KEVFi3by7nL6NypztZSYcYyU5w+7EVlMvh1LLZdoUAzuVtNjCxWrul7l?=
+ =?us-ascii?Q?6r+ZSapjcB8PiCVNFY8mDMdDhGP2hC82Y5G5U1Xyl6sz2su1lZ9FT6A2hr/R?=
+ =?us-ascii?Q?cVAbfFsOwuYbs+JEmWG6yMNdHHo8VQdEdojnghK9FMQ27S8185n3Mm8RETbv?=
+ =?us-ascii?Q?iXBvUIZOTdK6XHJwHG/QPezxHKKQ8dfJXeHU0ga1kn+CUgL0hDwgjpnJEyTK?=
+ =?us-ascii?Q?hUmHGfcSwalXFqhhf5Oap2a6KoNdXBG9Lh+sz1hQ2bYgp/Ky7ZvXHw0HtdkA?=
+ =?us-ascii?Q?FIfUXpa9dzhDS7uS4vpwWUKCE92dt8TF+cVv9uBO8SD7r5h4oJekWpxTqwX0?=
+ =?us-ascii?Q?/FjlJTCrqojkSszcBpeAAxE3yT+p+Oc5N5eMO5zLtnLEV2rKmnsP/8wsjfdu?=
+ =?us-ascii?Q?UO8/76jf6O7At+e1hS3BGQgqNg0uXWUeExh5uBvOX+qAlQuO0pGmt6WXFlc/?=
+ =?us-ascii?Q?lK2pB+l4A+nFO/J0JA+GeVR9isXa0I0QV5A1Vz81kKNx8P/astulfHGQS0Kh?=
+X-MS-Exchange-AntiSpam-MessageData-1: +RYWQAs9P0AQ4Z6rcA3L8s1jRR3YpE2qNMJqqRGcXMkvC4eijbgIpziu
+X-OriginatorOrg: precisionplanting.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 50f1bd85-8e5f-4a05-cded-08da4ee12324
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR22MB3196.namprd22.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2022 15:10:09.1975
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: aa593af2-61f8-4d4f-988a-e9c4c02b7f57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9VM8QXTR3RfDRihYPmm0JrXqmpiQnfqGP5Hp53ExJfh1LLx7KXnCSvOZc4Gn/efIAwABTSczairyG4PxC35S1OXzqAz31FtEqyKNcNVbBgQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR22MB2272
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 09:24:55AM +0300, Tony Lindgren wrote:
-> We want to enable runtime PM for serial port device drivers in a generic
-> way. To do this, we want to have the serial core layer manage the
-> registered serial port controllers. For runtime PM, we need a way to find
-> the serial ports for each serial port controller device.
-> 
-> The serial core manages ports. Each serial controller can have multiple
-> ports. As serial core has no struct device, and the serial port device
-> drivers have their own driver data, we cannot currently start making
-> use of serial core generic data easily without changing all the serial
-> port device drivers.
-> 
-> We could consider adding a serial core specific struct device. It would
-> be a child of the serial port device, and would allow us eventually to use
-> device_links to add generic runtime PM calls for example. But as the serial
-> core layer is not a device driver, driver specific features would need to
-> be added, and are probably not justified for a virtual device.
-> 
-> Considering the above, let's improve the serial core layer so we can
-> manage the serial port controllers better. Let's register the controllers
-> with the serial core layer in addition to the serial ports.
-> 
-> To find the serial ports for a controller based on struct device, let's
-> add a new data structure for a serial_controller. Let's add the registered
-> devices into a radix_tree so we can look up the controller easily even
-> with many controllers registered. This allows us to keep track of the
-> runtime PM state for each serial port controller device.
-> 
-> As some serial port device drivers enable runtime PM in their probe before
-> registering with the serial core layer, and some do not enable runtime PM
-> at all currently, we need check the state in the serial core layer on
-> uart_port_startup(). We need to also consider that a serial port device
-> may have multiple ports.
-> 
-> Initially we just want to enable runtime PM for all the serial port
-> controller devices. This allows us to add runtime PM calls and properly
-> handle any errors without a need for serial layer specific runtime PM
-> wrapper functions.
-> 
-> After this patch no functional changes for the serial port device drivers
-> are intended. For most cases, we just enable runtime PM and keep the
-> runtime PM usage count until all the serial controller ports are
-> unregistered. For drivers implementing runtime PM, we just keep track of
-> the configuration.
-> 
-> The serial core layer has the following use cases to deal with:
-> 
-> - If a serial port device driver does not implement runtime PM, the
->   device state is set to active state, and the runtime PM usage count
->   is kept until the last port for a device is unregistered
-> 
-> - If a serial port device driver implements runtime PM, the runtime PM
->   usage count is kept until the last port for the device is unregistered
-> 
-> - If a serial port device driver implements runtime PM autosuspend,
->   autosuspend is not prevented. This currently gets set only for the
->   8250_omap driver to keep runtime PM working for it
-> 
-> For system suspend, things should be mostly detached from the runtime PM.
-> The serial port device drivers may call pm_runtime_force_suspend() and
-> pm_runtime_force_resume() as needed.
+Convert to managed versions of sysfs and clk allocation to simplify
+unbinding and error handling in probe.  Managed sysfs node
+creation specifically addresses the following error seen the second time
+probe is attempted after sdma_pcm_platform_register() previously requsted
+probe deferral:
 
-LGTM,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+sysfs: cannot create duplicate filename '/devices/platform/68000000.ocp/490=
+22000.mcbsp/max_tx_thres'
 
-A couple of nit-picks below.
+Signed-off-by: David Owens <dowens@precisionplanting.com>
+---
+ sound/soc/ti/omap-mcbsp-priv.h |  2 --
+ sound/soc/ti/omap-mcbsp-st.c   | 21 ++++-----------------
+ sound/soc/ti/omap-mcbsp.c      | 26 ++++----------------------
+ 3 files changed, 8 insertions(+), 41 deletions(-)
 
-> Suggested-by: Johan Hovold <johan@kernel.org>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
-> 
-> Changes since v1:
-> 
-> - Use kref as suggested by Andy
-> 
-> - Fix memory leak on error as noted by Andy
-> 
-> - Use use unsigned char for supports_autosuspend as suggested by Andy
-> 
-> - Coding style improvments as suggested by Andy
-> 
-> ---
->  drivers/tty/serial/8250/8250_core.c |   1 +
->  drivers/tty/serial/8250/8250_omap.c |   1 +
->  drivers/tty/serial/serial_core.c    | 148 ++++++++++++++++++++++++++++
->  include/linux/serial_core.h         |   3 +
->  4 files changed, 153 insertions(+)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-> --- a/drivers/tty/serial/8250/8250_core.c
-> +++ b/drivers/tty/serial/8250/8250_core.c
-> @@ -995,6 +995,7 @@ int serial8250_register_8250_port(const struct uart_8250_port *up)
->  		uart->port.regshift     = up->port.regshift;
->  		uart->port.iotype       = up->port.iotype;
->  		uart->port.flags        = up->port.flags | UPF_BOOT_AUTOCONF;
-> +		uart->port.supports_autosuspend = up->port.supports_autosuspend;
->  		uart->bugs		= up->bugs;
->  		uart->port.mapbase      = up->port.mapbase;
->  		uart->port.mapsize      = up->port.mapsize;
-> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-> --- a/drivers/tty/serial/8250/8250_omap.c
-> +++ b/drivers/tty/serial/8250/8250_omap.c
-> @@ -1338,6 +1338,7 @@ static int omap8250_probe(struct platform_device *pdev)
->  	up.rs485_start_tx = serial8250_em485_start_tx;
->  	up.rs485_stop_tx = serial8250_em485_stop_tx;
->  	up.port.has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
-> +	up.port.supports_autosuspend = 1;
->  
->  	ret = of_alias_get_id(np, "serial");
->  	if (ret < 0) {
-> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> --- a/drivers/tty/serial/serial_core.c
-> +++ b/drivers/tty/serial/serial_core.c
-> @@ -16,7 +16,9 @@
->  #include <linux/console.h>
->  #include <linux/gpio/consumer.h>
->  #include <linux/of.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/proc_fs.h>
-> +#include <linux/radix-tree.h>
->  #include <linux/seq_file.h>
->  #include <linux/device.h>
->  #include <linux/serial.h> /* for serial_state and serial_icounter_struct */
-> @@ -30,6 +32,25 @@
->  #include <linux/irq.h>
->  #include <linux/uaccess.h>
->  
-> +/*
-> + * Serial port device specific data for serial core.
-> + *
-> + * Each port device can have multiple ports with struct uart_state allocated
-> + * for each port. The array of ports is kept in struct uart_driver.
-> + */
-> +struct serial_controller {
-> +	struct device *dev;			/* Serial port device */
+diff --git a/sound/soc/ti/omap-mcbsp-priv.h b/sound/soc/ti/omap-mcbsp-priv.=
+h
+index 7865cda4bf0a..da519ea1f303 100644
+--- a/sound/soc/ti/omap-mcbsp-priv.h
++++ b/sound/soc/ti/omap-mcbsp-priv.h
+@@ -316,8 +316,6 @@ static inline int omap_mcbsp_read(struct omap_mcbsp *mc=
+bsp, u16 reg,
 
-Serial port device is a bit unclear for non-prepared reader. Perhaps add
-the word "physical" or another to specify the nature of the device (because
-to me "serial port device" sounds like a duplication of something in struct
-uart_port, but I have doubts).
+ /* Sidetone specific API */
+ int omap_mcbsp_st_init(struct platform_device *pdev);
+-void omap_mcbsp_st_cleanup(struct platform_device *pdev);
+-
+ int omap_mcbsp_st_start(struct omap_mcbsp *mcbsp);
+ int omap_mcbsp_st_stop(struct omap_mcbsp *mcbsp);
 
-> +	struct uart_driver *drv;		/* For port specific uart_state */
-> +	struct kref ref;			/* Enable count for runtime PM */
-> +	unsigned long implements_pm_runtime:1;
-> +	unsigned long supports_autosuspend:1;
-> +};
-> +
-> +/*
-> + * Serial core port device instances. Update protected by port_mutex.
-> + */
-> +static RADIX_TREE(serial_core_devices, GFP_NOWAIT);
-> +
->  /*
->   * This is used to lock changes in serial line configuration.
->   */
-> @@ -175,6 +196,125 @@ static void uart_port_dtr_rts(struct uart_port *uport, int raise)
->  		uart_clear_mctrl(uport, TIOCM_DTR | TIOCM_RTS);
->  }
->  
-> +/* Called from uart_add_one_port() with port_mutex held */
-> +static int serial_core_pm_runtime_start(struct uart_port *port)
-> +{
-> +	struct uart_state *state = port->state;
-> +	struct serial_controller *controller = state->controller;
-> +	struct device *dev = port->dev;
-> +	int ret = 0;
-> +
-> +	if (kref_get_unless_zero(&controller->ref))
-> +		return 0;
-> +
-> +	/* Init controller device on first reference */
-> +	kref_init(&controller->ref);
-> +
-> +	/* Always enable autosuspend and consider child devices for serdev */
-> +	pm_runtime_use_autosuspend(dev);
-> +	pm_suspend_ignore_children(dev, false);
-> +
-> +	/*
-> +	 * If the port driver did not enable runtime PM in probe, do it now.
-> +	 * Devices that did not enable runtime PM get set active so we can
-> +	 * properly handle the returned errors for runtime PM calls.
-> +	 */
-> +	if (!pm_runtime_enabled(dev)) {
-> +		pm_runtime_set_active(dev);
-> +		pm_runtime_enable(dev);
-> +	} else {
-> +		controller->implements_pm_runtime = 1;
-> +	}
-> +
-> +	/*
-> +	 * Keep the port device enabled unless autosuspend is supported.
-> +	 * Released on port shutdown.
-> +	 */
-> +	if (!controller->supports_autosuspend) {
-> +		ret = pm_runtime_resume_and_get(dev);
-> +		if (ret < 0) {
-> +			pm_runtime_dont_use_autosuspend(dev);
-> +			pm_runtime_disable(dev);
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +/* Clean up the runtime PM settings done on serial_core_register_port() */
-> +static void serial_core_pm_runtime_cleanup(struct kref *ref)
-> +{
-> +	struct serial_controller *controller =
-> +		 container_of(ref, struct serial_controller, ref);
-> +	struct device *dev = controller->dev;
-> +
-> +	pm_runtime_dont_use_autosuspend(dev);
-> +	pm_suspend_ignore_children(dev, true);
-> +	if (!controller->supports_autosuspend)
-> +		pm_runtime_put_sync(dev);
-> +	if (!controller->implements_pm_runtime) {
-> +		pm_runtime_set_suspended(dev);
-> +		pm_runtime_disable(dev);
-> +	}
-> +}
-> +
-> +/* Called from uart_remove_one_port() and on error path with port_mutex held */
-> +static void serial_core_unregister_port(struct uart_port *port)
-> +{
-> +	unsigned long idx = (unsigned long)port->dev;
-> +	struct serial_controller *controller;
-> +
-> +	/* Check for a registered controller, no struct device early on */
-> +	controller = radix_tree_lookup(&serial_core_devices, idx);
-> +	if (!controller)
-> +		return;
-> +
-> +	kref_put(&controller->ref, serial_core_pm_runtime_cleanup);
-> +
-> +	controller = radix_tree_delete(&serial_core_devices, idx);
-> +	kfree(controller);
-> +}
-> +
-> +/* Called from uart_add_one_port() with port_mutex held */
-> +static int serial_core_register_port(struct uart_port *port,
-> +				     struct uart_driver *drv)
-> +{
-> +	unsigned long idx = (unsigned long)port->dev;
-> +	struct serial_controller *controller;
-> +	int ret;
-> +
-> +	if (!idx)
-> +		return 0;
-> +
-> +	controller = radix_tree_lookup(&serial_core_devices, idx);
-> +	if (controller) {
-> +		port->state->controller = controller;
-> +		WARN_ON(port->supports_autosuspend != controller->supports_autosuspend);
-> +		return serial_core_pm_runtime_start(port);
-> +	}
-> +
-> +	controller = kzalloc(sizeof(*controller), GFP_KERNEL);
-> +	if (!controller)
-> +		return -ENOMEM;
-> +
-> +	controller->drv = drv;
-> +	controller->dev = port->dev;
-> +	controller->supports_autosuspend = port->supports_autosuspend;
-> +	port->state->controller = controller;
-> +
-> +	ret = radix_tree_insert(&serial_core_devices, idx, controller);
-> +	if (ret) {
-> +		kfree(controller);
-> +		return ret;
-> +	}
-> +
-> +	ret = serial_core_pm_runtime_start(port);
-> +	if (ret < 0)
-> +		serial_core_unregister_port(port);
-> +
-> +	return ret;
-> +}
-> +
->  /*
->   * Startup the port.  This will be called once per open.  All calls
->   * will be serialised by the per-port mutex.
-> @@ -2956,6 +3096,10 @@ int uart_add_one_port(struct uart_driver *drv, struct uart_port *uport)
->  		goto out;
->  	}
->  
-> +	ret = serial_core_register_port(uport, drv);
-> +	if (ret)
-> +		goto out;
-> +
->  	/*
->  	 * If this port is in use as a console then the spinlock is already
->  	 * initialised.
-> @@ -2979,6 +3123,7 @@ int uart_add_one_port(struct uart_driver *drv, struct uart_port *uport)
->  				    GFP_KERNEL);
->  	if (!uport->tty_groups) {
->  		ret = -ENOMEM;
-> +		serial_core_unregister_port(uport);
->  		goto out;
->  	}
->  	uport->tty_groups[0] = &tty_dev_attr_group;
-> @@ -3048,6 +3193,9 @@ int uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
->  		goto out;
->  	}
->  	uport->flags |= UPF_DEAD;
-> +
-> +	serial_core_unregister_port(uport);
-> +
->  	mutex_unlock(&port->mutex);
->  
->  	/*
-> diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-> --- a/include/linux/serial_core.h
-> +++ b/include/linux/serial_core.h
-> @@ -250,6 +250,7 @@ struct uart_port {
->  	unsigned char		hub6;			/* this should be in the 8250 driver */
->  	unsigned char		suspended;
->  	unsigned char		console_reinit;
-> +	unsigned char		supports_autosuspend;
->  	const char		*name;			/* port name */
->  	struct attribute_group	*attr_group;		/* port specific attributes */
->  	const struct attribute_group **tty_groups;	/* all attributes (serial core use only) */
-> @@ -285,6 +286,8 @@ enum uart_pm_state {
->   * This is the state information which is persistent across opens.
->   */
->  struct uart_state {
-> +	struct serial_controller *controller;
+diff --git a/sound/soc/ti/omap-mcbsp-st.c b/sound/soc/ti/omap-mcbsp-st.c
+index 0bc7d26c660a..402a57a502e6 100644
+--- a/sound/soc/ti/omap-mcbsp-st.c
++++ b/sound/soc/ti/omap-mcbsp-st.c
+@@ -292,14 +292,11 @@ static ssize_t st_taps_store(struct device *dev,
 
-While good looking here, I believe resource wise is better to leave @port to be
-the first member. The rationale is to get rid of pointer arithmetics at compile
-time (and I believe the port is used much more and in more critical places).
-However, I dunno if it will get a lot of benefit, would be nice to see
-bloat-o-meter output for your variant and my proposal.
+ static DEVICE_ATTR_RW(st_taps);
 
->  	struct tty_port		port;
->  
->  	enum uart_pm_state	pm_state;
-> -- 
-> 2.36.1
+-static const struct attribute *sidetone_attrs[] =3D {
++static struct attribute *sidetone_attrs[] =3D {
+        &dev_attr_st_taps.attr,
+        NULL,
+ };
+-
+-static const struct attribute_group sidetone_attr_group =3D {
+-       .attrs =3D (struct attribute **)sidetone_attrs,
+-};
++ATTRIBUTE_GROUPS(sidetone);
 
--- 
-With Best Regards,
-Andy Shevchenko
+ int omap_mcbsp_st_start(struct omap_mcbsp *mcbsp)
+ {
+@@ -347,7 +344,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+        if (!st_data)
+                return -ENOMEM;
 
+-       st_data->mcbsp_iclk =3D clk_get(mcbsp->dev, "ick");
++       st_data->mcbsp_iclk =3D devm_clk_get(mcbsp->dev, "ick");
+        if (IS_ERR(st_data->mcbsp_iclk)) {
+                dev_warn(mcbsp->dev,
+                         "Failed to get ick, sidetone might be broken\n");
+@@ -359,7 +356,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+        if (!st_data->io_base_st)
+                return -ENOMEM;
 
+-       ret =3D sysfs_create_group(&mcbsp->dev->kobj, &sidetone_attr_group)=
+;
++       ret =3D devm_device_add_group(mcbsp->dev, &sidetone_group);
+        if (ret)
+                return ret;
+
+@@ -368,16 +365,6 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+        return 0;
+ }
+
+-void omap_mcbsp_st_cleanup(struct platform_device *pdev)
+-{
+-       struct omap_mcbsp *mcbsp =3D platform_get_drvdata(pdev);
+-
+-       if (mcbsp->st_data) {
+-               sysfs_remove_group(&mcbsp->dev->kobj, &sidetone_attr_group)=
+;
+-               clk_put(mcbsp->st_data->mcbsp_iclk);
+-       }
+-}
+-
+ static int omap_mcbsp_st_info_volsw(struct snd_kcontrol *kcontrol,
+                                    struct snd_ctl_elem_info *uinfo)
+ {
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index 4479d74f0a45..395493a2d965 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -595,16 +595,13 @@ static ssize_t dma_op_mode_store(struct device *dev,
+
+ static DEVICE_ATTR_RW(dma_op_mode);
+
+-static const struct attribute *additional_attrs[] =3D {
++static struct attribute *additional_attrs[] =3D {
+        &dev_attr_max_tx_thres.attr,
+        &dev_attr_max_rx_thres.attr,
+        &dev_attr_dma_op_mode.attr,
+        NULL,
+ };
+-
+-static const struct attribute_group additional_attr_group =3D {
+-       .attrs =3D (struct attribute **)additional_attrs,
+-};
++ATTRIBUTE_GROUPS(additional);
+
+ /*
+  * McBSP1 and McBSP3 are directly mapped on 1610 and 1510.
+@@ -702,8 +699,7 @@ static int omap_mcbsp_init(struct platform_device *pdev=
+)
+                mcbsp->max_tx_thres =3D max_thres(mcbsp) - 0x10;
+                mcbsp->max_rx_thres =3D max_thres(mcbsp) - 0x10;
+
+-               ret =3D sysfs_create_group(&mcbsp->dev->kobj,
+-                                        &additional_attr_group);
++               ret =3D devm_device_add_group(mcbsp->dev, &additional_group=
+);
+                if (ret) {
+                        dev_err(mcbsp->dev,
+                                "Unable to create additional controls\n");
+@@ -711,16 +707,7 @@ static int omap_mcbsp_init(struct platform_device *pde=
+v)
+                }
+        }
+
+-       ret =3D omap_mcbsp_st_init(pdev);
+-       if (ret)
+-               goto err_st;
+-
+-       return 0;
+-
+-err_st:
+-       if (mcbsp->pdata->buffer_size)
+-               sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_grou=
+p);
+-       return ret;
++       return omap_mcbsp_st_init(pdev);
+ }
+
+ /*
+@@ -1431,11 +1418,6 @@ static int asoc_mcbsp_remove(struct platform_device =
+*pdev)
+        if (cpu_latency_qos_request_active(&mcbsp->pm_qos_req))
+                cpu_latency_qos_remove_request(&mcbsp->pm_qos_req);
+
+-       if (mcbsp->pdata->buffer_size)
+-               sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_grou=
+p);
+-
+-       omap_mcbsp_st_cleanup(pdev);
+-
+        return 0;
+ }
+
+--
+2.34.1
+
+This email is intended solely for the use of the individual to whom it is a=
+ddressed and may contain confidential and/or privileged material. Any views=
+ or opinions presented are solely those of the author and do not necessaril=
+y represent those of Precision Planting. If you are not the intended recipi=
+ent, be advised that you have received this email in error and that any use=
+, dissemination, forwarding, printing, or copying of this email is strictly=
+ prohibited. Neither AGCO nor the sender accepts any responsibility for vir=
+uses, and it is your responsibility to scan, and virus check the e-mail and=
+ its attachment(s) (if any).
