@@ -2,101 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1C1754D990
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jun 2022 07:11:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A74F854DB63
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jun 2022 09:19:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346632AbiFPFLO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jun 2022 01:11:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38614 "EHLO
+        id S1347281AbiFPHSN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Jun 2022 03:18:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbiFPFLM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Jun 2022 01:11:12 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA18558E72;
-        Wed, 15 Jun 2022 22:11:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655356270; x=1686892270;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=NkEFYvNXfkRiyQzrKr5w73UFu/bNjvCsd8osZsw1FkQ=;
-  b=fSxT62GXW1uxpxMMMowHxS5yZ6Veu9TYnr/t88PvBquBKZwEfSeW/RMZ
-   Ng5dAVC5qymZlqW4m/MhCTQlAZcReXjEnRdmdKetYGPsy/u154+oqaXBn
-   TQBw5qGehLFSt5XtvfdUAcTBFCBuKwh9fkfsy5jXPRJW8V8e6Oszv4UiT
-   nMR7IcS7Z6rWonXcCue0oEESnknGDmdfmwVQ1fZbJIKhprP+1qHUWAgsN
-   FQgdvhTZiaxbWSawapdW8uDlQTlazhca8hFkjdHN2tUsGIF9cYx+s+sr0
-   Mkwwkv6/4vPEijDoH+j3E59js7TH9n9Juy1Fq5U1cbJGjzAYcavpXMcc4
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10379"; a="276741256"
-X-IronPort-AV: E=Sophos;i="5.91,304,1647327600"; 
-   d="scan'208";a="276741256"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 22:11:10 -0700
-X-IronPort-AV: E=Sophos;i="5.91,304,1647327600"; 
-   d="scan'208";a="641365226"
-Received: from rongch2-mobl.ccr.corp.intel.com (HELO [10.249.174.230]) ([10.249.174.230])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 22:11:05 -0700
-Subject: Re: [linux-next:master] BUILD REGRESSION
- 8cb8311e95e3bb58bd84d6350365f14a718faa6d
-To:     Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        "open list:DRM DRIVER FOR QEMU'S CIRRUS DEVICE" 
-        <virtualization@lists.linux-foundation.org>,
-        Networking <netdev@vger.kernel.org>,
-        linux-staging@lists.linux.dev,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        linux-parport@lists.infradead.org,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        kvm list <kvm@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        bpf <bpf@vger.kernel.org>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
-        Linux Memory Management List <linux-mm@kvack.org>
-References: <628ea118.wJYf60YnZco0hs9o%lkp@intel.com>
- <CAK8P3a10aGYNr=nKZVzv+1n_DRibSCCkoCLuTDtmhZskBMWfyw@mail.gmail.com>
-From:   "Chen, Rong A" <rong.a.chen@intel.com>
-Message-ID: <7a9f0c2d-f1e9-dd2f-6836-26d08bfa45a0@intel.com>
-Date:   Thu, 16 Jun 2022 13:11:03 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.12.0
+        with ESMTP id S229535AbiFPHSN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Jun 2022 03:18:13 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1AE67275E2;
+        Thu, 16 Jun 2022 00:18:11 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 71086812F;
+        Thu, 16 Jun 2022 07:13:19 +0000 (UTC)
+Date:   Thu, 16 Jun 2022 10:18:05 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Yegor Yefremov <yegorslists@googlemail.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        linux-mmc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: Linux 5.18.x: sdhci issue
+Message-ID: <YqrZLWp4Nyhd5v1d@atomide.com>
+References: <CAGm1_ktMOwwhhgVWj3DpCib-WpRzhkjE4d4DN74mz6kdwJk6BA@mail.gmail.com>
+ <YnNagtAtSudCum75@atomide.com>
+ <CAGm1_ktACExigtZUYFWria8=cxhy6x6vDGpLcaZAvnE9G3Bz_A@mail.gmail.com>
+ <YqmTXqXLala7Li/+@atomide.com>
+ <CAGm1_kvM0p=T4L4vDpXj2quMCPqoBidztsLaAsKYCYCGpvVnng@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAK8P3a10aGYNr=nKZVzv+1n_DRibSCCkoCLuTDtmhZskBMWfyw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGm1_kvM0p=T4L4vDpXj2quMCPqoBidztsLaAsKYCYCGpvVnng@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 5/26/2022 4:32 PM, Arnd Bergmann wrote:
-> On Wed, May 25, 2022 at 11:35 PM kernel test robot <lkp@intel.com> wrote:
->> .__mulsi3.o.cmd: No such file or directory
->> Makefile:686: arch/h8300/Makefile: No such file or directory
->> Makefile:765: arch/h8300/Makefile: No such file or directory
->> arch/Kconfig:10: can't open file "arch/h8300/Kconfig"
+* Yegor Yefremov <yegorslists@googlemail.com> [220615 08:54]:
+> Hi Tony,
 > 
-> Please stop building h8300  after the asm-generic tree is merged, the
-> architecture is getting removed.
+> On Wed, Jun 15, 2022 at 10:08 AM Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > * Yegor Yefremov <yegorslists@googlemail.com> [220615 09:40]:
+> > > Hi Tony, Ulf,
+> > >
+> > > On Thu, May 5, 2022 at 7:03 AM Tony Lindgren <tony@atomide.com> wrote:
+> > > >
+> > > > Hi,
+> > > >
+> > > > * Yegor Yefremov <yegorslists@googlemail.com> [220504 09:12]:
+> > > > > Hi Tony, all,
+> > > > >
+> > > > > During the kernel boot I see the following error. The device is still
+> > > > > working afterwards. 5.17.5 shows the same behavior. Is this a known
+> > > > > issue?
+> > > >
+> > > > Thanks for reporting it, I was not aware of this one. Might be worth
+> > > > bisecting. Adding linux-mmc and Ulf.
+> > >
+> > > This is my bisect result:
+> > >
+> > > f433e8aac6b94218394c6e7b80bb89e4e79c9549 is the first bad commit
+> > > commit f433e8aac6b94218394c6e7b80bb89e4e79c9549
+> > > Author: Tony Lindgren <tony@atomide.com>
+> > > Date:   Fri Oct 15 13:47:18 2021 +0300
+> > >
+> > >     mmc: sdhci-omap: Implement PM runtime functions
+> > >
+> > >     Implement PM runtime functions and enable autosuspend.
+> > >
+> > >     Note that we save context in probe to avoid restoring invalid context
+> > >     on the first resume. For system suspend, we have the new PM runtime
+> > >     functions do most of the work.
+> > >
+> > >     Signed-off-by: Tony Lindgren <tony@atomide.com>
+> > >     Link: https://lore.kernel.org/r/20211015104720.52240-5-tony@atomide.com
+> > >     Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> >
+> > OK thanks this makes sense based on what Arnd replied a few days ago.
+> >
+> > Regards,
 > 
->          Arnd
-> 
+> Your patch did the trick: all warnings/errors are gone. Thanks
+> everyone for the help.
 
-Hi Arnd,
+OK thanks for testing, will send out a proper patch today for this.
 
-Thanks for the advice, we have stopped building h8300 for new kernel.
+Regards,
 
-Best Regards,
-Rong Chen
+Tony
