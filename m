@@ -2,219 +2,101 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5303C54D6A9
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jun 2022 02:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1C1754D990
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jun 2022 07:11:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356763AbiFPAz4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 15 Jun 2022 20:55:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56598 "EHLO
+        id S1346632AbiFPFLO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Jun 2022 01:11:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350750AbiFPAzV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 15 Jun 2022 20:55:21 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29B935839C
-        for <linux-omap@vger.kernel.org>; Wed, 15 Jun 2022 17:54:44 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id s37so92599pfg.11
-        for <linux-omap@vger.kernel.org>; Wed, 15 Jun 2022 17:54:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=JDp4i9fK6ZlNgpwtecp/EcLoXznY+8QAd3GbFyU5H28=;
-        b=sQFWVugTKfxkM3FYLe8fA9qt8IbPmRaJCz6KfPIj9CmpsllvH84Mg3v8tQ6IhPc3SS
-         zc8Dtc4c8u9Hl8Ow22OSqpjd6wyCAFkRjyHiiad8/aYi69QpE0IqQMfVlD7xaj4b9VBa
-         0l/ZkdJPB4EwB+KCvM1bl4Okes4z29IqbXC4kMKu3a8fLCrsslykIIB/f5nooNIkZjXl
-         suYIwd3Vtj0XIgpo2TLLQlZ5886Y8K+MYCh4WfzVO/hOl9Dku/MMeLqYhkzBVG1HR/F4
-         ocsmZWX0x9onjWimnY8ko3zyqpSSv89tr2whubCAiby6jnXK83QOFnbVwDH6ljEDQIYv
-         z0Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=JDp4i9fK6ZlNgpwtecp/EcLoXznY+8QAd3GbFyU5H28=;
-        b=V4yahUqkNZ86C8RrU2eAgdXhSswkoKMuZJ8eyIXBF10PoOu/sfOdna6UBDKuhYnH5Z
-         lDsS65QCce1UdpZmaMCTDFPrq5M5q2Vm5nAj1jRqQbygh2ad+ZA6W02m/6JapXL6wG99
-         R1z+YPSLv/PaF2wtQhO9LGUbQTgCw43BPEo0awpv8nKBVsqhSJWtfV+UPsOLDzHBYh8f
-         2nikmHZ8MVhJiv2EQuh3A1tKDkMPp4Z3ZjlK5iuywvjgoWMOgH/EHoQivO0yOsk+xCk2
-         L0mj1Yfm7z+vKMB/rYNZDEi79RdtjAy8/me+K7kIcQDCOi1/u1Cs0nIYbLjtDi7rINDn
-         /tRw==
-X-Gm-Message-State: AJIora9G7CoTgsmf2QhhRl4PfXvl4l7Yy/Cc42zrM+7qaUx3MLiejlvP
-        ds13OJ6zdQp7WhHk1cCiCiZm0g==
-X-Google-Smtp-Source: AGRyM1v6FOhhaKzh+JdhBC9cu610BDMkWk1LO+sEVJbXFRIOwm8ZKRuSwp9M2dzz1kigPNKkrweZEA==
-X-Received: by 2002:a63:1566:0:b0:405:3aa3:23de with SMTP id 38-20020a631566000000b004053aa323demr2137255pgv.528.1655340882982;
-        Wed, 15 Jun 2022 17:54:42 -0700 (PDT)
-Received: from krzk-bin.. ([192.77.111.2])
-        by smtp.gmail.com with ESMTPSA id p4-20020a170902780400b0016760c06b76sm233660pll.194.2022.06.15.17.54.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 17:54:42 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     arm@kernel.org, soc@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Olof Johansson <olof@lixom.net>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3 33/40] ARM: dts: omap: correct gpio-keys properties
-Date:   Wed, 15 Jun 2022 17:53:26 -0700
-Message-Id: <20220616005333.18491-33-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220616005224.18391-1-krzysztof.kozlowski@linaro.org>
-References: <20220616005224.18391-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S229694AbiFPFLM (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Jun 2022 01:11:12 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA18558E72;
+        Wed, 15 Jun 2022 22:11:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655356270; x=1686892270;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=NkEFYvNXfkRiyQzrKr5w73UFu/bNjvCsd8osZsw1FkQ=;
+  b=fSxT62GXW1uxpxMMMowHxS5yZ6Veu9TYnr/t88PvBquBKZwEfSeW/RMZ
+   Ng5dAVC5qymZlqW4m/MhCTQlAZcReXjEnRdmdKetYGPsy/u154+oqaXBn
+   TQBw5qGehLFSt5XtvfdUAcTBFCBuKwh9fkfsy5jXPRJW8V8e6Oszv4UiT
+   nMR7IcS7Z6rWonXcCue0oEESnknGDmdfmwVQ1fZbJIKhprP+1qHUWAgsN
+   FQgdvhTZiaxbWSawapdW8uDlQTlazhca8hFkjdHN2tUsGIF9cYx+s+sr0
+   Mkwwkv6/4vPEijDoH+j3E59js7TH9n9Juy1Fq5U1cbJGjzAYcavpXMcc4
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10379"; a="276741256"
+X-IronPort-AV: E=Sophos;i="5.91,304,1647327600"; 
+   d="scan'208";a="276741256"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 22:11:10 -0700
+X-IronPort-AV: E=Sophos;i="5.91,304,1647327600"; 
+   d="scan'208";a="641365226"
+Received: from rongch2-mobl.ccr.corp.intel.com (HELO [10.249.174.230]) ([10.249.174.230])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 22:11:05 -0700
+Subject: Re: [linux-next:master] BUILD REGRESSION
+ 8cb8311e95e3bb58bd84d6350365f14a718faa6d
+To:     Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        "open list:DRM DRIVER FOR QEMU'S CIRRUS DEVICE" 
+        <virtualization@lists.linux-foundation.org>,
+        Networking <netdev@vger.kernel.org>,
+        linux-staging@lists.linux.dev,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        linux-parport@lists.infradead.org,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        kvm list <kvm@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        bpf <bpf@vger.kernel.org>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        Linux Memory Management List <linux-mm@kvack.org>
+References: <628ea118.wJYf60YnZco0hs9o%lkp@intel.com>
+ <CAK8P3a10aGYNr=nKZVzv+1n_DRibSCCkoCLuTDtmhZskBMWfyw@mail.gmail.com>
+From:   "Chen, Rong A" <rong.a.chen@intel.com>
+Message-ID: <7a9f0c2d-f1e9-dd2f-6836-26d08bfa45a0@intel.com>
+Date:   Thu, 16 Jun 2022 13:11:03 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAK8P3a10aGYNr=nKZVzv+1n_DRibSCCkoCLuTDtmhZskBMWfyw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-9.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-gpio-keys children do not use unit addresses.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- arch/arm/boot/dts/am335x-evm.dts                  | 2 --
- arch/arm/boot/dts/am335x-guardian.dts             | 2 --
- arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi | 4 +---
- arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi | 4 +---
- arch/arm/boot/dts/am335x-pcm-953.dtsi             | 4 ++--
- arch/arm/boot/dts/am335x-pepper.dts               | 8 +++-----
- arch/arm/boot/dts/am437x-idk-evm.dts              | 4 +---
- 7 files changed, 8 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
-index 730898310641..25c6ac9913d2 100644
---- a/arch/arm/boot/dts/am335x-evm.dts
-+++ b/arch/arm/boot/dts/am335x-evm.dts
-@@ -94,8 +94,6 @@ &gpio1 26 GPIO_ACTIVE_HIGH		/* Bank1, pin26 */
- 
- 	gpio_keys: volume-keys {
- 		compatible = "gpio-keys";
--		#address-cells = <1>;
--		#size-cells = <0>;
- 		autorepeat;
- 
- 		switch-9 {
-diff --git a/arch/arm/boot/dts/am335x-guardian.dts b/arch/arm/boot/dts/am335x-guardian.dts
-index 1a7e187b1953..f6356266564c 100644
---- a/arch/arm/boot/dts/am335x-guardian.dts
-+++ b/arch/arm/boot/dts/am335x-guardian.dts
-@@ -33,8 +33,6 @@ guardian_buttons: gpio-keys {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&guardian_button_pins>;
- 		compatible = "gpio-keys";
--		#address-cells = <1>;
--		#size-cells = <0>;
- 
- 		select-button {
- 			label = "guardian-select-button";
-diff --git a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
-index 92a0e98ec231..7b40ca9483ca 100644
---- a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
-@@ -166,10 +166,8 @@ &mmc2 {
- &buttons {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&push_button_pins>;
--	#address-cells = <1>;
--	#size-cells = <0>;
- 
--	button@0 {
-+	button-0 {
- 		label = "push_button";
- 		linux,code = <0x100>;
- 		gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
-diff --git a/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi b/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi
-index e7e439a0630a..e0364adb8393 100644
---- a/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-moxa-uc-8100-common.dtsi
-@@ -378,10 +378,8 @@ &mmc3 {
- &buttons {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&push_button_pins>;
--	#address-cells = <1>;
--	#size-cells = <0>;
- 
--	button@0 {
-+	button-0 {
- 		label = "push_button";
- 		linux,code = <0x100>;
- 		gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
-diff --git a/arch/arm/boot/dts/am335x-pcm-953.dtsi b/arch/arm/boot/dts/am335x-pcm-953.dtsi
-index 124026fa0d09..dae448040a97 100644
---- a/arch/arm/boot/dts/am335x-pcm-953.dtsi
-+++ b/arch/arm/boot/dts/am335x-pcm-953.dtsi
-@@ -54,14 +54,14 @@ user_buttons: user_buttons {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&user_buttons_pins>;
- 
--		button@0 {
-+		button-0 {
- 			label = "home";
- 			linux,code = <KEY_HOME>;
- 			gpios = <&gpio3 7 GPIO_ACTIVE_HIGH>;
- 			wakeup-source;
- 		};
- 
--		button@1 {
-+		button-1 {
- 			label = "menu";
- 			linux,code = <KEY_MENU>;
- 			gpios = <&gpio3 8 GPIO_ACTIVE_HIGH>;
-diff --git a/arch/arm/boot/dts/am335x-pepper.dts b/arch/arm/boot/dts/am335x-pepper.dts
-index b5e88e627bc1..8691eec33b61 100644
---- a/arch/arm/boot/dts/am335x-pepper.dts
-+++ b/arch/arm/boot/dts/am335x-pepper.dts
-@@ -596,24 +596,22 @@ led1 {
- &buttons {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&user_buttons_pins>;
--	#address-cells = <1>;
--	#size-cells = <0>;
- 
--	button0 {
-+	button-0 {
- 		label = "home";
- 		linux,code = <KEY_HOME>;
- 		gpios = <&gpio1 22 GPIO_ACTIVE_LOW>;
- 		wakeup-source;
- 	};
- 
--	button1 {
-+	button-1 {
- 		label = "menu";
- 		linux,code = <KEY_MENU>;
- 		gpios = <&gpio1 23 GPIO_ACTIVE_LOW>;
- 		wakeup-source;
- 	};
- 
--	buttons2 {
-+	button-2 {
- 		label = "power";
- 		linux,code = <KEY_POWER>;
- 		gpios = <&gpio0 7 GPIO_ACTIVE_LOW>;
-diff --git a/arch/arm/boot/dts/am437x-idk-evm.dts b/arch/arm/boot/dts/am437x-idk-evm.dts
-index d46cd721f27e..123a95f87554 100644
---- a/arch/arm/boot/dts/am437x-idk-evm.dts
-+++ b/arch/arm/boot/dts/am437x-idk-evm.dts
-@@ -102,10 +102,8 @@ gpio_keys: gpio-keys {
- 		compatible = "gpio-keys";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&gpio_keys_pins_default>;
--		#address-cells = <1>;
--		#size-cells = <0>;
- 
--		switch0 {
-+		switch-0 {
- 			label = "power-button";
- 			linux,code = <KEY_POWER>;
- 			gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
--- 
-2.34.1
+On 5/26/2022 4:32 PM, Arnd Bergmann wrote:
+> On Wed, May 25, 2022 at 11:35 PM kernel test robot <lkp@intel.com> wrote:
+>> .__mulsi3.o.cmd: No such file or directory
+>> Makefile:686: arch/h8300/Makefile: No such file or directory
+>> Makefile:765: arch/h8300/Makefile: No such file or directory
+>> arch/Kconfig:10: can't open file "arch/h8300/Kconfig"
+> 
+> Please stop building h8300  after the asm-generic tree is merged, the
+> architecture is getting removed.
+> 
+>          Arnd
+> 
 
+Hi Arnd,
+
+Thanks for the advice, we have stopped building h8300 for new kernel.
+
+Best Regards,
+Rong Chen
