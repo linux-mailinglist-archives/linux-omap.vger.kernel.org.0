@@ -2,93 +2,232 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C20FD54E9B6
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jun 2022 21:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A3B154EB1F
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jun 2022 22:28:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229672AbiFPTB0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jun 2022 15:01:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54334 "EHLO
+        id S1378223AbiFPU1Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Jun 2022 16:27:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230304AbiFPTB0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Jun 2022 15:01:26 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8778B22B0C
-        for <linux-omap@vger.kernel.org>; Thu, 16 Jun 2022 12:01:24 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id a10so2138496pju.3
-        for <linux-omap@vger.kernel.org>; Thu, 16 Jun 2022 12:01:24 -0700 (PDT)
+        with ESMTP id S1378486AbiFPU1H (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Jun 2022 16:27:07 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF1575B89B;
+        Thu, 16 Jun 2022 13:27:01 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id s1so1713733ilj.0;
+        Thu, 16 Jun 2022 13:27:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=6u9SuyoV4rwZynHy4OzwKp1LTmBPADb0OFV7qZFLCkI=;
-        b=Lu1tccTFCp52f5i1RIGjUqBjdtLHs/MHuUa5fbz+X+tCWxVHJKunkPoc0qePz5PqRD
-         BowKIZ09zVLCYLVZ8CA1WxW3BxhmRNNS6LDe0Z7me4GQ0wRhUUkgnDo5/d3VL9R8ickU
-         LXby5nlsmu2rnzoMl7nDzsFhDhM6EIZtkolKaoRf4JtPgvUU3zZYY0Ur3LAxD1BYu8zl
-         i/2jrI2hNYlKJf4mDrbTQ1EBeSUsorGE/3NANq3HXE0P+Mec9b13MnQT+xCC0y0E+iv1
-         NjVcNfw4+pDD4uyDTeRA8jNGD/YwtESZ5lzOajk/T9WwGOW1VKjZJi4jeXPnECRQ0xPA
-         lPmQ==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SsJY7P3jisvIHHNgMnMfhfTU+j7BrzVjUHUb60jK/yY=;
+        b=gmVDginzPKhGopFMuxnIaJgoXctH5rT+joAZIaV5r2mT3QTDOWq8ECncyWDHnXL1dC
+         oHxC/EYQHWI5/hwcOTcP/96DoHeM83/PhmVTEc3RqdOcCujBPtAIWn+mMDheKN4Wak7m
+         qr4gToYI1blM9ThtKQWGJQJZAxjnySq/LdT57Bk1sQkQ6pTNXluZX2CqUKy4uN9f0ZRt
+         Pw7Gar5N3qd6NO4VSnFrQEPFZ8gA0YBwRtvfiFwfYwYlip/FhCTDI+uGDxyjYh31+ogs
+         DXd7wr2QhMIJ3H5eQD7wZmQRWsoOYGIZMlewoYqcL+MzKUm5F40rJbsbJLT3+arBVeJh
+         bAng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=6u9SuyoV4rwZynHy4OzwKp1LTmBPADb0OFV7qZFLCkI=;
-        b=gN605V8TYc8KM6plbGc/uzArstLjnjXOdf0oBt56wvey6eK1/BQCIU1+ssEqHCST9e
-         NKShsL3JOO4LBoQLMAEE0q4hdpXMEc4hTCPaPtDY5138ap3BPBmBeRc25XHybQjZebJJ
-         4aY2Ir9nMM7/qvDYjvln45XC9AueXsgKG6JT97lzq4lgttiuZFjaeU5x8wat9wvTGXDg
-         DEUJYFVNUY7xi8B2iNkVYKafZRX60f2AIIGzCzm0vYSnr2IWIvdADLJ9uQwpqvfzbKpl
-         mSw/mtS4LjZpiAhzNCQi1O41ny9Cw+Ie60oSP1RvXGYOYpfUi8N15V+QT1tc0a/Sirxe
-         /nrQ==
-X-Gm-Message-State: AJIora9u3OHjPOvLxurwFOPTrNonIxmzTedqIyxSFZUfrMdpWd6ArMWY
-        IeUclb5WI4YJ89tUJJz4GBGCOg==
-X-Google-Smtp-Source: AGRyM1uq3Hk4Vr4YBrZMpmZHfBiHq4rsjfZbCVhb+0PBLPOcPnMAYD9KCp2TFf7KiKOUEVk0Eqejgg==
-X-Received: by 2002:a17:90a:2b08:b0:1ea:bc00:7383 with SMTP id x8-20020a17090a2b0800b001eabc007383mr6481972pjc.139.1655406084004;
-        Thu, 16 Jun 2022 12:01:24 -0700 (PDT)
-Received: from google.com ([192.77.111.2])
-        by smtp.gmail.com with ESMTPSA id w1-20020a623001000000b0050dc762816fsm2114903pfw.73.2022.06.16.12.01.22
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SsJY7P3jisvIHHNgMnMfhfTU+j7BrzVjUHUb60jK/yY=;
+        b=hbiWX+NcItIZTkDztNnkrTsfc+muHPw67JRooVO4ofcGe5ru+p1LpRD1nFn9iEZWm6
+         Q6GJPX3UEIo14vyGDDz7R74YZ0nxVz98FcjYnxFPSW7jrtuYZrE/XnyrNT+3tknPyoUc
+         cW2h3YNHOH1egpZENASDh4G33iFoqs3a3QhII3zYJBQ/A6/Va3CNTlIXAxyn1P+3ZXYL
+         VPS1O1VUniYf5lL0FuNgd2aa9REWTfh0Ke8LyfKiRX4ZacMQb7E/kiAwiJaIR5tjNk4B
+         iv6qH2+wSbphNY+rUFp9aR4rUfGIZN7ojckTFc02ie42npddFdGfbpBxAmU4qymeFnxk
+         /3FA==
+X-Gm-Message-State: AJIora+JwA8ugowvLpwmCPx3OvuwrxQ8pcqXO+IUIWJBclQ/KwiKZihi
+        NdVWmvgplOJ6zG2fXHvjbqBub0p4JUlXb8h/
+X-Google-Smtp-Source: AGRyM1vvlN1n/ci4DNl2/+810XdfpCysIlotnk/8vNyQ0FNGYJtIclLv00X8l27SSYgIDNEUdtOU/A==
+X-Received: by 2002:a05:6e02:1c44:b0:2d7:6bc3:9960 with SMTP id d4-20020a056e021c4400b002d76bc39960mr3935563ilg.194.1655411221180;
+        Thu, 16 Jun 2022 13:27:01 -0700 (PDT)
+Received: from tremont-lap.lan ([2604:2d80:d289:7400:7af5:ac5e:1454:9e62])
+        by smtp.gmail.com with ESMTPSA id n4-20020a02a904000000b0032e583132e4sm1283700jam.123.2022.06.16.13.26.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jun 2022 12:01:23 -0700 (PDT)
-Date:   Thu, 16 Jun 2022 20:01:16 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: Re: [PATCH] mfd: twl: Remove platform data support
-Message-ID: <Yqt9/Ol16GveVIIN@google.com>
-References: <20220614152148.252820-1-u.kleine-koenig@pengutronix.de>
+        Thu, 16 Jun 2022 13:27:00 -0700 (PDT)
+From:   David Owens <daowens01@gmail.com>
+X-Google-Original-From: David Owens <dowens@precisionplanting.com>
+To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     David Owens <dowens@precisionplanting.com>,
+        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3] ASoC: ti: omap-mcbsp: duplicate sysfs error
+Date:   Thu, 16 Jun 2022 15:26:45 -0500
+Message-Id: <20220616202645.1645972-1-dowens@precisionplanting.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220614152148.252820-1-u.kleine-koenig@pengutronix.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, 14 Jun 2022, Uwe Kleine-König wrote:
+Convert to managed versions of sysfs and clk allocation to simplify
+unbinding and error handling in probe.  Managed sysfs node
+creation specifically addresses the following error seen the second time
+probe is attempted after sdma_pcm_platform_register() previously requested
+probe deferral:
 
-> There is no in-tree machine that provides a struct twl4030_platform_data
-> since commit e92fc4f04a34 ("ARM: OMAP2+: Drop legacy board file for
-> LDP"). So assume dev_get_platdata() returns NULL in twl_probe() and
-> simplify accordingly.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/mfd/twl-core.c  | 323 +---------------------------------------
->  include/linux/mfd/twl.h |  55 -------
->  2 files changed, 5 insertions(+), 373 deletions(-)
+sysfs: cannot create duplicate filename '/devices/platform/68000000.ocp/49022000.mcbsp/max_tx_thres'
 
-Applied, thanks.
+Signed-off-by: David Owens <dowens@precisionplanting.com>
+---
 
+Changes in v3:
+ * Whitespace changes only to allow clean applly
+
+Changes in v2:
+ * Improved error handling
+
+---
+ sound/soc/ti/omap-mcbsp-priv.h |  2 --
+ sound/soc/ti/omap-mcbsp-st.c   | 21 ++++-----------------
+ sound/soc/ti/omap-mcbsp.c      | 26 ++++----------------------
+ 3 files changed, 8 insertions(+), 41 deletions(-)
+
+diff --git a/sound/soc/ti/omap-mcbsp-priv.h b/sound/soc/ti/omap-mcbsp-priv.h
+index 7865cda4bf0a..da519ea1f303 100644
+--- a/sound/soc/ti/omap-mcbsp-priv.h
++++ b/sound/soc/ti/omap-mcbsp-priv.h
+@@ -316,8 +316,6 @@ static inline int omap_mcbsp_read(struct omap_mcbsp *mcbsp, u16 reg,
+ 
+ /* Sidetone specific API */
+ int omap_mcbsp_st_init(struct platform_device *pdev);
+-void omap_mcbsp_st_cleanup(struct platform_device *pdev);
+-
+ int omap_mcbsp_st_start(struct omap_mcbsp *mcbsp);
+ int omap_mcbsp_st_stop(struct omap_mcbsp *mcbsp);
+ 
+diff --git a/sound/soc/ti/omap-mcbsp-st.c b/sound/soc/ti/omap-mcbsp-st.c
+index 0bc7d26c660a..402a57a502e6 100644
+--- a/sound/soc/ti/omap-mcbsp-st.c
++++ b/sound/soc/ti/omap-mcbsp-st.c
+@@ -292,14 +292,11 @@ static ssize_t st_taps_store(struct device *dev,
+ 
+ static DEVICE_ATTR_RW(st_taps);
+ 
+-static const struct attribute *sidetone_attrs[] = {
++static struct attribute *sidetone_attrs[] = {
+ 	&dev_attr_st_taps.attr,
+ 	NULL,
+ };
+-
+-static const struct attribute_group sidetone_attr_group = {
+-	.attrs = (struct attribute **)sidetone_attrs,
+-};
++ATTRIBUTE_GROUPS(sidetone);
+ 
+ int omap_mcbsp_st_start(struct omap_mcbsp *mcbsp)
+ {
+@@ -347,7 +344,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+ 	if (!st_data)
+ 		return -ENOMEM;
+ 
+-	st_data->mcbsp_iclk = clk_get(mcbsp->dev, "ick");
++	st_data->mcbsp_iclk = devm_clk_get(mcbsp->dev, "ick");
+ 	if (IS_ERR(st_data->mcbsp_iclk)) {
+ 		dev_warn(mcbsp->dev,
+ 			 "Failed to get ick, sidetone might be broken\n");
+@@ -359,7 +356,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+ 	if (!st_data->io_base_st)
+ 		return -ENOMEM;
+ 
+-	ret = sysfs_create_group(&mcbsp->dev->kobj, &sidetone_attr_group);
++	ret = devm_device_add_group(mcbsp->dev, &sidetone_group);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -368,16 +365,6 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-void omap_mcbsp_st_cleanup(struct platform_device *pdev)
+-{
+-	struct omap_mcbsp *mcbsp = platform_get_drvdata(pdev);
+-
+-	if (mcbsp->st_data) {
+-		sysfs_remove_group(&mcbsp->dev->kobj, &sidetone_attr_group);
+-		clk_put(mcbsp->st_data->mcbsp_iclk);
+-	}
+-}
+-
+ static int omap_mcbsp_st_info_volsw(struct snd_kcontrol *kcontrol,
+ 				    struct snd_ctl_elem_info *uinfo)
+ {
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index 4479d74f0a45..395493a2d965 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -595,16 +595,13 @@ static ssize_t dma_op_mode_store(struct device *dev,
+ 
+ static DEVICE_ATTR_RW(dma_op_mode);
+ 
+-static const struct attribute *additional_attrs[] = {
++static struct attribute *additional_attrs[] = {
+ 	&dev_attr_max_tx_thres.attr,
+ 	&dev_attr_max_rx_thres.attr,
+ 	&dev_attr_dma_op_mode.attr,
+ 	NULL,
+ };
+-
+-static const struct attribute_group additional_attr_group = {
+-	.attrs = (struct attribute **)additional_attrs,
+-};
++ATTRIBUTE_GROUPS(additional);
+ 
+ /*
+  * McBSP1 and McBSP3 are directly mapped on 1610 and 1510.
+@@ -702,8 +699,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+ 		mcbsp->max_tx_thres = max_thres(mcbsp) - 0x10;
+ 		mcbsp->max_rx_thres = max_thres(mcbsp) - 0x10;
+ 
+-		ret = sysfs_create_group(&mcbsp->dev->kobj,
+-					 &additional_attr_group);
++		ret = devm_device_add_group(mcbsp->dev, &additional_group);
+ 		if (ret) {
+ 			dev_err(mcbsp->dev,
+ 				"Unable to create additional controls\n");
+@@ -711,16 +707,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	ret = omap_mcbsp_st_init(pdev);
+-	if (ret)
+-		goto err_st;
+-
+-	return 0;
+-
+-err_st:
+-	if (mcbsp->pdata->buffer_size)
+-		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
+-	return ret;
++	return omap_mcbsp_st_init(pdev);
+ }
+ 
+ /*
+@@ -1431,11 +1418,6 @@ static int asoc_mcbsp_remove(struct platform_device *pdev)
+ 	if (cpu_latency_qos_request_active(&mcbsp->pm_qos_req))
+ 		cpu_latency_qos_remove_request(&mcbsp->pm_qos_req);
+ 
+-	if (mcbsp->pdata->buffer_size)
+-		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
+-
+-	omap_mcbsp_st_cleanup(pdev);
+-
+ 	return 0;
+ }
+ 
 -- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.34.1
+
