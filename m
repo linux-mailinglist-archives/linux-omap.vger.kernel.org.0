@@ -2,91 +2,158 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FC4E54E57D
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jun 2022 16:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DCDB54E5F4
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jun 2022 17:24:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376523AbiFPO5q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jun 2022 10:57:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36582 "EHLO
+        id S1377424AbiFPPYi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 16 Jun 2022 11:24:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233481AbiFPO5o (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Jun 2022 10:57:44 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BCFC24F3E;
-        Thu, 16 Jun 2022 07:57:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 51554B823E0;
-        Thu, 16 Jun 2022 14:57:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B281C34114;
-        Thu, 16 Jun 2022 14:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655391458;
-        bh=Q/PnTzhXRBmKrI0PFPrXpgukiy9ng7otJtD++t+syas=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fSqYvQr14hkhuxDT1yqOrr+i4qHaWON6KtgtBD7V4tE1J8Dx7+Nheja2S8ISmL7/R
-         cWZTMYVBFDgkSIHGPrLSR7SVflZuov9jVVgQqA45iGv2dDNigOU9Gks+JSGdscrdIL
-         2uiUGXsSzbxulyTEP5YtmSoyECR20Eab+qQ38MeDydLE1wWEVxYstTtHhRhwZ1pH2E
-         71ucsOabMGOtPXzvsXo7S8V1HoUtptE7zgeOJjZUheaBifwR1IgP7cFkaprIkJP3AX
-         xzAMKt+gb76pcKhq9VO9YKKtClpaAKETxGNWyDMQ6RzFIU/GmmmjVVLcuxfyH+8oa4
-         +rVFHxpQ2Q/kQ==
-Date:   Thu, 16 Jun 2022 15:57:33 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     David Owens <dowens@precisionplanting.com>
-Cc:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] ASoC: ti: omap-mcbsp: duplicate sysfs error
-Message-ID: <YqtE3Wu4Ku7fh7D4@sirena.org.uk>
-References: <20220615150955.4140789-1-dowens@precisionplanting.com>
+        with ESMTP id S233993AbiFPPYh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Jun 2022 11:24:37 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF5DA338B6;
+        Thu, 16 Jun 2022 08:24:34 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id h23so2736478lfe.4;
+        Thu, 16 Jun 2022 08:24:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wERZkRXyaF/yhUHrF2+CwLMtx6qioAnoch5k8zt02BE=;
+        b=qqev2nWuJtHKAy2NRmgs7KQtMEfFyXYr973lcTQ/3gb9Beq26TLw01HNBtP3bJBXJ/
+         9c714prPoCM6uBK+03SL5aSsfQhv3fAyuKSotWljo93Y6QQE/AilHY5SdoWot6/arMsu
+         bOtdzk50B5G0lHoJSg8h0jW8mAKDUdVRWwHYbjjwLET1EFVqYe1COubiG+Tmqe176asL
+         aGKeMdH/RTBGm4aZKhVmRIKSjDyvGz5NPoSxWwsePZ2PokI6ktESypzQ+0dgULgcIznz
+         GqkxLGEWSW5GDe0agVs4pdkAf4+3sf89wqlbygw3gA7rL+FicZ9uUI/cGvwREfbP/yXj
+         OQVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wERZkRXyaF/yhUHrF2+CwLMtx6qioAnoch5k8zt02BE=;
+        b=JjdA4JArbobMIghLQ6F9JEGIDr+4fccN1N9U/SkyTw/b+0UzfLHLlW+ThRgl5dSOtv
+         BljZWuWH0OxtSIDVfmu4FQqfVd9hzFD5BKm5Cw5qxWN9sAxWr/m85kVpmJoPkxLaqZNM
+         hMnKMr7fzIjCpFxPpauZ/Wbe68qwg5F80dOcjUlCcbjGnaS3+RO/CQhVy6jV8luwGxWC
+         0Tic4hYaopsSfsORB0xNhaAUdxHJkZ0xqwaiyXMdI4CawFQujLIaIzLL78mUkRxsiqCH
+         xJFsHgMtT+KmBvlMKBRsgyEA1Es2Te9MsEsn+YoRFSiTi7CmENJE9yWzcJZ08QBcWjFN
+         loYg==
+X-Gm-Message-State: AJIora84wTHXVThNh6hY79E0mejZx308Oag7SpXW8sC193kSvre7OAST
+        pEQAtSAVzb9SbKeLZYjbCGQ=
+X-Google-Smtp-Source: AGRyM1um5hqlsEfM5M/bxVqMCqjhSFQ0nHg9h/eo9duBqbu7PtPlevoJ43ArQk9DCohkn0hDcQVYqg==
+X-Received: by 2002:a05:6512:249:b0:479:a3c:de with SMTP id b9-20020a056512024900b004790a3c00demr3114355lfo.128.1655393073057;
+        Thu, 16 Jun 2022 08:24:33 -0700 (PDT)
+Received: from localhost.localdomain (91-159-150-230.elisa-laajakaista.fi. [91.159.150.230])
+        by smtp.gmail.com with ESMTPSA id t27-20020a192d5b000000b0047dab95a0d5sm273830lft.109.2022.06.16.08.24.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jun 2022 08:24:32 -0700 (PDT)
+From:   Peter Ujfalusi <peter.ujfalusi@gmail.com>
+To:     tony@atomide.com, lee.jones@linaro.org
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] mfd: twl4030-audio: Drop legacy, non DT boot support
+Date:   Thu, 16 Jun 2022 18:31:58 +0300
+Message-Id: <20220616153158.29302-1-peter.ujfalusi@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="dtd9UxDP2fBlpOtG"
-Content-Disposition: inline
-In-Reply-To: <20220615150955.4140789-1-dowens@precisionplanting.com>
-X-Cookie: I think my career is ruined!
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Legacy or non DT boot is no longer possible on systems where the
+tw4030/5030 is used.
 
---dtd9UxDP2fBlpOtG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Drop the support for handling legacy pdata.
 
-On Wed, Jun 15, 2022 at 10:09:55AM -0500, David Owens wrote:
-> Convert to managed versions of sysfs and clk allocation to simplify
-> unbinding and error handling in probe.  Managed sysfs node
-> creation specifically addresses the following error seen the second time
-> probe is attempted after sdma_pcm_platform_register() previously requsted
-> probe deferral:
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+---
+ drivers/mfd/twl4030-audio.c | 29 ++++++-----------------------
+ 1 file changed, 6 insertions(+), 23 deletions(-)
 
-This doesn't apply against current code (either for-5.19 or for-5.20),
-please check and resend.
+diff --git a/drivers/mfd/twl4030-audio.c b/drivers/mfd/twl4030-audio.c
+index 4536d829b43e..c61da99e9681 100644
+--- a/drivers/mfd/twl4030-audio.c
++++ b/drivers/mfd/twl4030-audio.c
+@@ -144,14 +144,10 @@ unsigned int twl4030_audio_get_mclk(void)
+ }
+ EXPORT_SYMBOL_GPL(twl4030_audio_get_mclk);
+ 
+-static bool twl4030_audio_has_codec(struct twl4030_audio_data *pdata,
+-			      struct device_node *parent)
++static bool twl4030_audio_has_codec(struct device_node *parent)
+ {
+ 	struct device_node *node;
+ 
+-	if (pdata && pdata->codec)
+-		return true;
+-
+ 	node = of_get_child_by_name(parent, "codec");
+ 	if (node) {
+ 		of_node_put(node);
+@@ -161,14 +157,10 @@ static bool twl4030_audio_has_codec(struct twl4030_audio_data *pdata,
+ 	return false;
+ }
+ 
+-static bool twl4030_audio_has_vibra(struct twl4030_audio_data *pdata,
+-			      struct device_node *node)
++static bool twl4030_audio_has_vibra(struct device_node *node)
+ {
+ 	int vibra;
+ 
+-	if (pdata && pdata->vibra)
+-		return true;
+-
+ 	if (!of_property_read_u32(node, "ti,enable-vibra", &vibra) && vibra)
+ 		return true;
+ 
+@@ -178,14 +170,13 @@ static bool twl4030_audio_has_vibra(struct twl4030_audio_data *pdata,
+ static int twl4030_audio_probe(struct platform_device *pdev)
+ {
+ 	struct twl4030_audio *audio;
+-	struct twl4030_audio_data *pdata = dev_get_platdata(&pdev->dev);
+ 	struct device_node *node = pdev->dev.of_node;
+ 	struct mfd_cell *cell = NULL;
+ 	int ret, childs = 0;
+ 	u8 val;
+ 
+-	if (!pdata && !node) {
+-		dev_err(&pdev->dev, "Platform data is missing\n");
++	if (!node) {
++		dev_err(&pdev->dev, "Only DT boot si supported\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -222,22 +213,14 @@ static int twl4030_audio_probe(struct platform_device *pdev)
+ 	audio->resource[TWL4030_AUDIO_RES_APLL].reg = TWL4030_REG_APLL_CTL;
+ 	audio->resource[TWL4030_AUDIO_RES_APLL].mask = TWL4030_APLL_EN;
+ 
+-	if (twl4030_audio_has_codec(pdata, node)) {
++	if (twl4030_audio_has_codec(node)) {
+ 		cell = &audio->cells[childs];
+ 		cell->name = "twl4030-codec";
+-		if (pdata) {
+-			cell->platform_data = pdata->codec;
+-			cell->pdata_size = sizeof(*pdata->codec);
+-		}
+ 		childs++;
+ 	}
+-	if (twl4030_audio_has_vibra(pdata, node)) {
++	if (twl4030_audio_has_vibra(node)) {
+ 		cell = &audio->cells[childs];
+ 		cell->name = "twl4030-vibra";
+-		if (pdata) {
+-			cell->platform_data = pdata->vibra;
+-			cell->pdata_size = sizeof(*pdata->vibra);
+-		}
+ 		childs++;
+ 	}
+ 
+-- 
+2.36.1
 
---dtd9UxDP2fBlpOtG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKrRNwACgkQJNaLcl1U
-h9A8dQf+OVItQpQi15+ykEglfxmtFxqiwDLZB/YmOYAJcJ5MQ30z+ZlB/KffQ1VS
-PF7MzKVQFXT1QSsTDsasRla7+U+TlIweloDb0VL8RnIIua42Oz5WtDWuksTtl54z
-J3UBrBzeo4SQwRHCFJhpCGpv7wRPUyKE2XzACuCK19UGyxroKiqLROqS6C359XKt
-ekpRODoc5on1BugbOvEgRYdRL4GuKfkt32GY1zfNlPXa0VTMTVVHg92XYQQqBilf
-N3EF/pAnOIljK/k6UJNhAaM4xCSAPeupRWZZsaPizrEWFqHMYIs7E2kGsS0URGaB
-x6sda4Z59uT4xrSCsYP7lIRz70cPWA==
-=c5ec
------END PGP SIGNATURE-----
-
---dtd9UxDP2fBlpOtG--
