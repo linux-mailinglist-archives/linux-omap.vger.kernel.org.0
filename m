@@ -2,79 +2,91 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1C9454FAC5
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jun 2022 18:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E465154FB11
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jun 2022 18:30:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383076AbiFQQGX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Jun 2022 12:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52960 "EHLO
+        id S1383296AbiFQQ36 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jun 2022 12:29:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382943AbiFQQGT (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 12:06:19 -0400
-X-Greylist: delayed 1496 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 09:06:18 PDT
-Received: from sv220.xserver.jp (sv220.xserver.jp [202.226.39.121])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B03186F5;
-        Fri, 17 Jun 2022 09:06:18 -0700 (PDT)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw2.xserver.jp)
-Received: from webmail.xserver.ne.jp (webmail.xserver.ne.jp [210.188.201.183])
-        by sv220.xserver.jp (Postfix) with ESMTPA id 038CD12025F434;
-        Sat, 18 Jun 2022 00:16:31 +0900 (JST)
+        with ESMTP id S1383299AbiFQQ3y (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 12:29:54 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7DB242A24
+        for <linux-omap@vger.kernel.org>; Fri, 17 Jun 2022 09:29:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 707F4B82A33
+        for <linux-omap@vger.kernel.org>; Fri, 17 Jun 2022 16:29:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D154DC3411B;
+        Fri, 17 Jun 2022 16:29:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655483391;
+        bh=8lIyfl6cLa0jSZ4rrQjgGG9QXNu4BOP9MO1nbLqDdLo=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=hYtqErNIDh/G1tDlX/Gzd3hNB+flGgum09vIYQJuYIFxJjvLZRa/tscQu9LOaPW/6
+         alWYxfOJ0rIouFHSzLzI+DmX7MblakbKEAiWwh8PDIIdnom1XEl0n4yJa8xtbPh4Se
+         s3YbkjaxHtitZk9Qv17eolMl/qhubOExjXGYrHHYJjgTp1S2ljLtYDytN9cBbA2dkJ
+         N9JphuDvQGzriMAS6F2s1VuijRkycdwwWsyicPIFZMjaISr4HNVfhOPvkAWf6iKymA
+         ojjjTeb+fwH5KHOZYWJD2R4uPkUiyMYuxx0dWt7gv9MMHI+vOjMYRsnc02wcCJqCEp
+         rzDhqaD8ewH1Q==
+From:   Mark Brown <broonie@kernel.org>
+To:     peter.ujfalusi@gmail.com, lgirdwood@gmail.com
+Cc:     jarkko.nikula@bitmer.com, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, aaro.koskinen@iki.fi, tony@atomide.com
+In-Reply-To: <20220616153521.29701-1-peter.ujfalusi@gmail.com>
+References: <20220616153521.29701-1-peter.ujfalusi@gmail.com>
+Subject: Re: [PATCH] ASoC: twl4030: Drop legacy, non DT boot support
+Message-Id: <165548338955.901499.17638246583616685807.b4-ty@kernel.org>
+Date:   Fri, 17 Jun 2022 17:29:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 17 Jun 2022 23:16:31 +0800
-From:   Steve Dibenedetto <y-kitsuya@bell-group.co.jp>
-To:     undisclosed-recipients:;
-Subject: THIS IS VERY CONFIDENTIAL
-Reply-To: stevedibenedetto17@gmail.com
-Mail-Reply-To: stevedibenedetto17@gmail.com
-Message-ID: <ec1bb68d0d72aa3e007bad8b0e72f08f@bell-group.co.jp>
-X-Sender: y-kitsuya@bell-group.co.jp
-User-Agent: Roundcube Webmail/1.2.0
-X-Spam-Status: Yes, score=6.9 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,ODD_FREEM_REPTO,
-        SPF_HELO_PASS,SPF_SOFTFAIL,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [stevedibenedetto17[at]gmail.com]
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.6 ODD_FREEM_REPTO Has unusual reply-to header
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, 16 Jun 2022 18:35:21 +0300, Peter Ujfalusi wrote:
+> Legacy or non DT boot is no longer possible on systems where the
+> tw4030/5030 is used.
+> 
+> Drop the support for handling legacy pdata and replace it with a local
+> board_params struct to allow further cleanups on the mfd side.
+> 
+> 
+> [...]
 
+Applied to
 
--- 
-Hello,
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-My name is Steve Dibenedetto.I apologize to have contacted you this way
-without a direct relationship. There is an opportunity to collaborate
-with me in the sourcing of some materials needed by our company for
-production of the different medicines we are researching.
+Thanks!
 
-I'm aware that this might be totally outside your professional
-specialization, but it will be a great source for generating extra
-revenue. I  discovered a manufacturer who can supply us at a lower rate
-than our company's previous purchases.
-I will give you more specific details when/if I receive feedback from
-you showing interest.
+[1/1] ASoC: twl4030: Drop legacy, non DT boot support
+      commit: 7adadfb06b9839fa7d9de0cde7ad57a3be3665f0
 
-Warm Regards
-Steve Dibenedetto
-Production & Control Manager,
-Green Field Laboratories
-Gothic House, Barker Gate,
-Nottingham, NG1 1JU,
-United Kingdom.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
