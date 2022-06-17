@@ -2,47 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E465154FB11
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jun 2022 18:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F13654FCC3
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jun 2022 20:14:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383296AbiFQQ36 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Jun 2022 12:29:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42790 "EHLO
+        id S1383562AbiFQSM4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jun 2022 14:12:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383299AbiFQQ3y (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 12:29:54 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7DB242A24
-        for <linux-omap@vger.kernel.org>; Fri, 17 Jun 2022 09:29:53 -0700 (PDT)
+        with ESMTP id S1383595AbiFQSMq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 14:12:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACBFE038;
+        Fri, 17 Jun 2022 11:12:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 707F4B82A33
-        for <linux-omap@vger.kernel.org>; Fri, 17 Jun 2022 16:29:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D154DC3411B;
-        Fri, 17 Jun 2022 16:29:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9364661F41;
+        Fri, 17 Jun 2022 18:12:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA29FC341C5;
+        Fri, 17 Jun 2022 18:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655483391;
-        bh=8lIyfl6cLa0jSZ4rrQjgGG9QXNu4BOP9MO1nbLqDdLo=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=hYtqErNIDh/G1tDlX/Gzd3hNB+flGgum09vIYQJuYIFxJjvLZRa/tscQu9LOaPW/6
-         alWYxfOJ0rIouFHSzLzI+DmX7MblakbKEAiWwh8PDIIdnom1XEl0n4yJa8xtbPh4Se
-         s3YbkjaxHtitZk9Qv17eolMl/qhubOExjXGYrHHYJjgTp1S2ljLtYDytN9cBbA2dkJ
-         N9JphuDvQGzriMAS6F2s1VuijRkycdwwWsyicPIFZMjaISr4HNVfhOPvkAWf6iKymA
-         ojjjTeb+fwH5KHOZYWJD2R4uPkUiyMYuxx0dWt7gv9MMHI+vOjMYRsnc02wcCJqCEp
-         rzDhqaD8ewH1Q==
+        s=k20201202; t=1655489563;
+        bh=bUPFzcA2bwrfrcLXD7x3oRlhBEAEkGwIHCdUjnjME3U=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TzEkn0jgFwCR+zHucfSU4ACpiT+fNkS2SkFZmgsY4v8y5M3CnzX+KS6IUY8wdxqZv
+         bPLoZOVE6WGVIg4R5nrb0saH0gbx+9qBInXQ7heDbJSX8lK99o/MiR2N3JljAbl+Oc
+         CHZfNqt4+z7CCQ60+9dGyhQG57CnXBJ5hiaQBq7wd0Zn+i7HklQdvGyT+nOeCs0T0K
+         nPdmfyat8StE/e95a3xGNcHoNzE8dcYkRMwuLn5EGmwVPd/8upE+ubrIKgU2QFOCOB
+         JUuoF3x8Z8kSPF89Xm2v3RZQF8VoEdbTFhp7XhKPcsZWVbiPv7cJ60RiD+VZK88Ppb
+         9JEPbYeNFIQTg==
+Date:   Fri, 17 Jun 2022 19:12:37 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     peter.ujfalusi@gmail.com, lgirdwood@gmail.com
-Cc:     jarkko.nikula@bitmer.com, alsa-devel@alsa-project.org,
-        linux-omap@vger.kernel.org, aaro.koskinen@iki.fi, tony@atomide.com
-In-Reply-To: <20220616153521.29701-1-peter.ujfalusi@gmail.com>
-References: <20220616153521.29701-1-peter.ujfalusi@gmail.com>
-Subject: Re: [PATCH] ASoC: twl4030: Drop legacy, non DT boot support
-Message-Id: <165548338955.901499.17638246583616685807.b4-ty@kernel.org>
-Date:   Fri, 17 Jun 2022 17:29:49 +0100
+To:     David Owens <daowens01@gmail.com>
+Cc:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        David Owens <dowens@precisionplanting.com>,
+        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] ASoC: ti: omap-mcbsp: duplicate sysfs error
+Message-ID: <YqzEFX1rIRIwJCnl@sirena.org.uk>
+References: <20220616202645.1645972-1-dowens@precisionplanting.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="u2XbzTKFvyqRa/q5"
+Content-Disposition: inline
+In-Reply-To: <20220616202645.1645972-1-dowens@precisionplanting.com>
+X-Cookie: My life is a patio of fun!
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -53,40 +61,66 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, 16 Jun 2022 18:35:21 +0300, Peter Ujfalusi wrote:
-> Legacy or non DT boot is no longer possible on systems where the
-> tw4030/5030 is used.
-> 
-> Drop the support for handling legacy pdata and replace it with a local
-> board_params struct to allow further cleanups on the mfd side.
-> 
-> 
-> [...]
 
-Applied to
+--u2XbzTKFvyqRa/q5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+On Thu, Jun 16, 2022 at 03:26:45PM -0500, David Owens wrote:
+> Convert to managed versions of sysfs and clk allocation to simplify
+> unbinding and error handling in probe.  Managed sysfs node
+> creation specifically addresses the following error seen the second time
+> probe is attempted after sdma_pcm_platform_register() previously requested
+> probe deferral:
 
-Thanks!
+This breaks an x86 allmodconfig build:
 
-[1/1] ASoC: twl4030: Drop legacy, non DT boot support
-      commit: 7adadfb06b9839fa7d9de0cde7ad57a3be3665f0
+In file included from /build/stage/linux/include/linux/kobject.h:20,
+                 from /build/stage/linux/include/linux/module.h:21,
+                 from /build/stage/linux/sound/soc/ti/omap-mcbsp.c:12:
+/build/stage/linux/sound/soc/ti/omap-mcbsp.c:604:18: error: =E2=80=98additi=
+onal_groups=E2=80=99 defined but not used [-Werror=3Dunused-variable]
+  604 | ATTRIBUTE_GROUPS(additional);
+      |                  ^~~~~~~~~~
+/build/stage/linux/include/linux/sysfs.h:154:38: note: in definition of mac=
+ro =E2=80=98__ATTRIBUTE_GROUPS=E2=80=99
+  154 | static const struct attribute_group *_name##_groups[] =3D {       \
+      |                                      ^~~~~
+/build/stage/linux/sound/soc/ti/omap-mcbsp.c:604:1: note: in expansion of m=
+acro =E2=80=98ATTRIBUTE_GROUPS=E2=80=99
+  604 | ATTRIBUTE_GROUPS(additional);
+      | ^~~~~~~~~~~~~~~~
+In file included from /build/stage/linux/include/linux/kobject.h:20,
+                 from /build/stage/linux/include/linux/module.h:21,
+                 from /build/stage/linux/sound/soc/ti/omap-mcbsp-st.c:12:
+/build/stage/linux/sound/soc/ti/omap-mcbsp-st.c:299:18: error: =E2=80=98sid=
+etone_groups=E2=80=99 defined but not used [-Werror=3Dunused-variable]
+  299 | ATTRIBUTE_GROUPS(sidetone);
+      |                  ^~~~~~~~
+/build/stage/linux/include/linux/sysfs.h:154:38: note: in definition of mac=
+ro =E2=80=98__ATTRIBUTE_GROUPS=E2=80=99
+  154 | static const struct attribute_group *_name##_groups[] =3D {       \
+      |                                      ^~~~~
+/build/stage/linux/sound/soc/ti/omap-mcbsp-st.c:299:1: note: in expansion o=
+f macro =E2=80=98ATTRIBUTE_GROUPS=E2=80=99
+  299 | ATTRIBUTE_GROUPS(sidetone);
+      | ^~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+--u2XbzTKFvyqRa/q5
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKsxBQACgkQJNaLcl1U
+h9CbVAf/bLEYqN9UltUUtE4QfUjkIThFiIGPqM6T7Lr0oitKtqpZGp9i2uqREP8Y
+67Eks5a6Zs3SZr7ERZ4nYj/rurE+Jd5YgjxQ5SnGtj8tEFEe6/bzOmCzql0eyRX/
+VuFTxyaDKi7QwfejecS3lQIxtWKLbUKw3rRBTF8LMH55Hnw2/oCNYL9djV80lena
+GoaJVJYcxFU5Glv4J0ISgs1Oih1rHpI8SegCxqpdiHH2mPELxGB7BcyIyLS3x9yb
+BL0dxS8LNRDmakViC8B2csXBjMIq310UogmzfMGyTtV2o/bijJ2eM0LiORCPOAGh
+EdOyjsMBlX00w5lh3tyDdOYltpf8IQ==
+=VZEL
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+--u2XbzTKFvyqRa/q5--
