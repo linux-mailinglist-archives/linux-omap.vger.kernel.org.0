@@ -2,117 +2,114 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF5D954F100
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jun 2022 08:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33B4254F1D6
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jun 2022 09:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234463AbiFQGZj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Jun 2022 02:25:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40610 "EHLO
+        id S229664AbiFQHZo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jun 2022 03:25:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230307AbiFQGZj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 02:25:39 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08D184B40B;
-        Thu, 16 Jun 2022 23:25:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655447138; x=1686983138;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9jX8x1B0yyMxIR5oC5RaasA8RuJ4KOsyAyVIyowaP3U=;
-  b=Dr+rNexBITT+LV2qVZ8tyb1DOL5ojTAn6eHpI1zy+3PUKv/3SgJs2387
-   SvaZqs4QYXQyLEVu7PQKN49HNCcinMvZ95uSD0sdMGscJhpVQMkMTwPVJ
-   VaChYboxD8r50Rywu3IhP6xRd16pGTEMgHTWh8kS3mWkj4Oqj16j+mj00
-   a4NZOucUCl1WliNE6Z3GF3D+fyxD+L0Pwebl52P4Uri4PEVVqpQozaEzs
-   RmoX26JAWymW0LErq+EeF8Y5mDc0CMb/ctI3hSInjQWAkRVukiyofBI1j
-   QAkULj8Ve4mkKztGcXiYibQN5ZUYUTitpqhFxwi/Cltj9OE+ZQfL8i0PH
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="365784557"
-X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
-   d="scan'208";a="365784557"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2022 23:25:37 -0700
-X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
-   d="scan'208";a="641906970"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.33.57])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2022 23:25:34 -0700
-Message-ID: <173521c9-2e5c-8301-1dcf-b6f692866ef2@intel.com>
-Date:   Fri, 17 Jun 2022 09:25:31 +0300
+        with ESMTP id S1380206AbiFQHZn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 03:25:43 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1773A65D01;
+        Fri, 17 Jun 2022 00:25:42 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id D16F15C0151;
+        Fri, 17 Jun 2022 03:25:38 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Fri, 17 Jun 2022 03:25:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=cc
+        :cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm1; t=1655450738; x=
+        1655537138; bh=t6QXcNLzauxbqf0PNTG8MvaAdoQQFis6uQHBpNA5m+I=; b=n
+        r/26OCnEDIr6jYGUp00hxr/NMoxkf6xXfRuhMockkxh6n/wloYbpla88d1SGLc3P
+        BtUBgD8RZGZwQq1VPEdFsxTpp0vbEShL/ls6VxYlg3QMzR0vwLar8HSi00UlQ0gL
+        CH0ldBnQE8fgusDetIp4GspeBfNwxFV/Kux0Hx5Gn4thT/XQgU8PMW4HgsFFcXRm
+        Zivnb/+Onrj1LGZ5AHx2nvHV0C75KC/tYxnCCabt/MYKO/z8c0fQcLinaQbHGkZ/
+        ReDK0Ixt6XyqgHi5Jl8vZzwm7V5ELSXQsKa2v6qLRWnUgG5G2P5dohWhsokjAjTc
+        L+OzZ1aV3f76OQGSJyChg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1655450738; x=
+        1655537138; bh=t6QXcNLzauxbqf0PNTG8MvaAdoQQFis6uQHBpNA5m+I=; b=C
+        kYUa18GGhGd0oZQ43NnZDN3+5y/3awo+Sws0Pq3eb6UKVOekXJ4Y7ZEHvLp36JHj
+        tycJVtu9HwZf6jSnqxW4zSYXVJbe86AaaXxlWH7q4QH3qe9lRa6jd+fNATp9LPAT
+        uMB4hcgr49bGrbUHs5jLTWfsDcAY1XnxmodGaA/DgxKZG0akk8naBHEsjI+9wBbi
+        bdBT2GvJE4pNDjc9Q1xJKM5StazQkLXgIHK2oujsy/VM2X0INDscm2W7ndAJ5rcf
+        mBBIfmMwMR/jziK5WAQT6SO63sjbrOoLYrgXG/T1UfFrVqW/5w3OIEWPJWQoFPkh
+        /k+4PB1FRuFRA5/pGTzAw==
+X-ME-Sender: <xms:cCysYuGbj_tXIkPunEurAIwroXW5XpxjXpF4QSJbzxhbPXclwax6XA>
+    <xme:cCysYvWgkzuxSA4c7vUx_UbBJT8gLLCv-uNPJbxN_6t01QjqR06uBZtc0l9wxHzhR
+    zr0LWaTeAJNrwG7Sv4>
+X-ME-Received: <xmr:cCysYoL-s8_MAzYdUOgHxl_upF4_8dJ4RyvHl_ZD6Qzg5t8bcXrIWoJ5sq56JxsiML5p_3EqajNOb9VnX0x1uY0f2nUbuWm7o5g4tUo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedruddvgedguddujecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthhqredttddtvdenucfhrhhomhepofgr
+    gihimhgvucftihhprghrugcuoehmrgigihhmvgestggvrhhnohdrthgvtghhqeenucggtf
+    frrghtthgvrhhnpeetgfelgefggeekkefggfeludeiudffjeffgeevveekjedukedtudeu
+    teefteefgfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehmrgigihhmvgestggvrhhnohdrthgvtghh
+X-ME-Proxy: <xmx:cCysYoGVB8cZQ7yOz48SmLfp873hgDRpdEpPRutGsvxTCLizycl41w>
+    <xmx:cCysYkVSvHtiRSBPNAhrPCzXsNP5d45QhqafU_iIo0w9pj_rG6ibZQ>
+    <xmx:cCysYrOhmw8cG_xUkAWqqi3Xw5qv0x5wtJ9n4l4N9ZI1Bu5NZbr7WA>
+    <xmx:ciysYvyJISiAd-XGF0UUbZ-Rv8dPZGqNpVjs7CZjxA6lvgGh5OS30A>
+Feedback-ID: i8771445c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 17 Jun 2022 03:25:36 -0400 (EDT)
+Date:   Fri, 17 Jun 2022 09:25:33 +0200
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc:     broonie@kernel.org, lgirdwood@gmail.com,
+        kuninori.morimoto.gx@renesas.com, airlied@linux.ie,
+        daniel@ffwll.ch, vkoul@kernel.org, nicolas.ferre@microchip.com,
+        nsaenz@kernel.org, shawnguo@kernel.org, linux-imx@nxp.com,
+        cezary.rojewski@intel.com, pierre-louis.bossart@linux.intel.com,
+        linux-mips@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        daniel@zonque.org, srinivas.kandagatla@linaro.org,
+        linux-rockchip@lists.infradead.org, krzk@kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com,
+        heiko@sntech.de, jbrunet@baylibre.com, kernel@pengutronix.de,
+        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
+        dri-devel@lists.freedesktop.org,
+        linux-rpi-kernel@lists.infradead.org
+Subject: Re: [PATCH 03/96] drm/vc4: Migrate to new style legacy DAI naming
+ flag
+Message-ID: <20220617072533.foajsg6z3c2js3nb@houat>
+References: <20220616143429.1324494-1-ckeepax@opensource.cirrus.com>
+ <20220616143429.1324494-4-ckeepax@opensource.cirrus.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Firefox/91.0 Thunderbird/91.9.1
-Subject: Re: [PATCH] mmc: sdhci-omap: Fix a lockdep warning for PM runtime
- init
-Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Chunyan Zhang <zhang.chunyan@linaro.org>,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org,
-        Yegor Yefremov <yegorslists@googlemail.com>,
-        Arnd Bergmann <arnd@arndb.de>
-References: <20220617040300.30321-1-tony@atomide.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20220617040300.30321-1-tony@atomide.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20220616143429.1324494-4-ckeepax@opensource.cirrus.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 17/06/22 07:03, Tony Lindgren wrote:
-> We need hardware enabled early in probe to detect capabilities, but must
-> not call sdhci_runtime_resume_host() until sdhci_setup_host() has been
-> called. Let's check for an initialized controller like we already do
-> for context restore.
+On Thu, Jun 16, 2022 at 03:32:56PM +0100, Charles Keepax wrote:
+> Change the legacy DAI naming flag from opting in to the new scheme
+> (non_legacy_dai_naming), to opting out of it (legacy_dai_naming).
+> This driver appears to be on the CPU side of the DAI link and
+> currently uses the legacy naming, so add the new flag.
+>=20
+> Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-Begs the question: why not prevent runtime pm until after sdhci_setup_host().
-Maybe expand the commit message explanation a bit?
+Acked-by: Maxime Ripard <maxime@cerno.tech>
 
-> 
-> Fixes: f433e8aac6b9 ("mmc: sdhci-omap: Implement PM runtime functions")
-> Reported-by: Yegor Yefremov <yegorslists@googlemail.com>
-> Suggested-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  drivers/mmc/host/sdhci-omap.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
-> --- a/drivers/mmc/host/sdhci-omap.c
-> +++ b/drivers/mmc/host/sdhci-omap.c
-> @@ -1441,7 +1441,8 @@ static int __maybe_unused sdhci_omap_runtime_suspend(struct device *dev)
->  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
->  	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
->  
-> -	sdhci_runtime_suspend_host(host);
-> +	if (omap_host->con != -EINVAL)
-> +		sdhci_runtime_suspend_host(host);
->  
->  	sdhci_omap_context_save(omap_host);
->  
-> @@ -1458,10 +1459,10 @@ static int __maybe_unused sdhci_omap_runtime_resume(struct device *dev)
->  
->  	pinctrl_pm_select_default_state(dev);
->  
-> -	if (omap_host->con != -EINVAL)
-> +	if (omap_host->con != -EINVAL) {
->  		sdhci_omap_context_restore(omap_host);
-> -
-> -	sdhci_runtime_resume_host(host, 0);
-> +		sdhci_runtime_resume_host(host, 0);
-> +	}
->  
->  	return 0;
->  }
-
+Thanks!
+Maxime
