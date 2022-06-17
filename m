@@ -2,166 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 489BD54EC74
-	for <lists+linux-omap@lfdr.de>; Thu, 16 Jun 2022 23:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3815454F03F
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jun 2022 06:27:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379151AbiFPVW4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 16 Jun 2022 17:22:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42700 "EHLO
+        id S1345930AbiFQE1J (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jun 2022 00:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378999AbiFPVWx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 16 Jun 2022 17:22:53 -0400
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783DC1EC6A;
-        Thu, 16 Jun 2022 14:22:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655414572; x=1686950572;
-  h=date:from:to:cc:subject:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eIVB2Wcg0d4KNkOlM5BOJs0iOIDhUm5jxxQVobMAAIM=;
-  b=RP2YCFWJTKa74eNpADc52RfwyjDAvZ8LbqtQ+29QXXL8TwRbvjSWS7Ba
-   pq99M69aIQ9JNjTvJTyVDW//G+jY7TSkumi1VWip/2CpHCCXM6c6TDOdt
-   ovkJ3Yi3iryHnvVyD2y26qw2tMuSleKA/emETgYWmPoT1kmV2lQAziBjw
-   O3q86x2LyuYnnhk+Vs+DKTvFCxrgF97TC4OmRtb6/SSLEM/JP4XfqNzIy
-   uBWpPFsIMbGc2UKu+E2AO9bfY2POAwfylNkeUEpgS6fQsCe6X4buSH60h
-   /gpL6lhB831yaHj1bisym9RyaHXfKLRndrfm290x2hFX1FL/TzwTh4/0s
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="259207705"
-X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
-   d="scan'208";a="259207705"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2022 14:22:51 -0700
-X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
-   d="scan'208";a="560027674"
-Received: from jacob-builder.jf.intel.com (HELO jacob-builder) ([10.7.198.157])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2022 14:22:51 -0700
-Date:   Thu, 16 Jun 2022 14:26:56 -0700
-From:   Jacob Pan <jacob.jun.pan@linux.intel.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
-        amakhalov@vmware.com, pv-drivers@vmware.com,
-        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
-        gregkh@linuxfoundation.org, mturquette@baylibre.com,
-        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, anup@brainfault.org,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        Arnd Bergmann <arnd@arndb.de>, yury.norov@gmail.com,
-        andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
-        rostedt@goodmis.org, pmladek@suse.com, senozhatsky@chromium.org,
-        john.ogness@linutronix.de, paulmck@kernel.org, frederic@kernel.org,
-        quic_neeraju@quicinc.com, josh@joshtriplett.org,
-        mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-        joel@joelfernandes.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
-        vschneid@redhat.com, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
-        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
-        rcu@vger.kernel.org, jacob.jun.pan@linux.intel.com
-Subject: Re: [PATCH 04/36] cpuidle,intel_idle: Fix CPUIDLE_FLAG_IRQ_ENABLE
-Message-ID: <20220616142656.4b1acc4a@jacob-builder>
-In-Reply-To: <Yqb45vclY2KVL0wZ@hirez.programming.kicks-ass.net>
-References: <20220608142723.103523089@infradead.org>
-        <20220608144516.172460444@infradead.org>
-        <20220609164921.5e61711d@jacob-builder>
-        <Yqb45vclY2KVL0wZ@hirez.programming.kicks-ass.net>
-Organization: OTC
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        with ESMTP id S229781AbiFQE1I (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 00:27:08 -0400
+X-Greylist: delayed 1846 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Jun 2022 21:27:07 PDT
+Received: from mail-m963.mail.126.com (mail-m963.mail.126.com [123.126.96.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0168A663F0
+        for <linux-omap@vger.kernel.org>; Thu, 16 Jun 2022 21:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=FK3+6
+        hlQB3HGXoQhyC6dprNvmAP51TusZx/O2PywBRE=; b=UWafGE1UiUdqxOtFRJ1tx
+        PJYNaoA6tu9+k2wp6y2wvijB1R4W67Xni+Miw+8cbNisIho0StWZxTqdfiNQKrho
+        0iI56/xxFwV3vjZ57TA7mvHiCGwwkLNAVEDTptvfHbjxiEDanJdZ+ADl0quZVKex
+        arCWJuFt98w3/H3Z1YikgQ=
+Received: from localhost.localdomain (unknown [124.16.139.61])
+        by smtp8 (Coremail) with SMTP id NORpCgAHu49F+6tiYaBRFw--.26457S2;
+        Fri, 17 Jun 2022 11:55:57 +0800 (CST)
+From:   Liang He <windhl@126.com>
+To:     tony@atomide.com, linux@armlinux.org.uk
+Cc:     windhl@126.com, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] arm: mach-omap2: omap4-common: Fix refcount leak bug
+Date:   Fri, 17 Jun 2022 11:55:48 +0800
+Message-Id: <20220617035548.4003393-1-windhl@126.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: NORpCgAHu49F+6tiYaBRFw--.26457S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWruFyfGr18WFyxAryfuF4DJwb_yoWfJFgEqw
+        n2g395Jrsag3Z3Ka47Ca15Gr4jgw1rWrs7W3s7ZF15Ka1UJr43ArZ2vas2yryDX3yrKrW3
+        ZFZFyw4Fkw1avjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUUVWlJUUUUU==
+X-Originating-IP: [124.16.139.61]
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi7Q0jF1pEANzlIQAAsS
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Peter,
+In omap4_sram_init(), of_find_compatible_node() will return a node
+pointer with refcount incremented. We should use of_node_put() when
+it is not used anymore.
 
-On Mon, 13 Jun 2022 10:44:22 +0200, Peter Zijlstra <peterz@infradead.org>
-wrote:
+Signed-off-by: Liang He <windhl@126.com>
+---
+ arch/arm/mach-omap2/omap4-common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> On Thu, Jun 09, 2022 at 04:49:21PM -0700, Jacob Pan wrote:
-> > Hi Peter,
-> > 
-> > On Wed, 08 Jun 2022 16:27:27 +0200, Peter Zijlstra
-> > <peterz@infradead.org> wrote:
-> >   
-> > > Commit c227233ad64c ("intel_idle: enable interrupts before C1 on
-> > > Xeons") wrecked intel_idle in two ways:
-> > > 
-> > >  - must not have tracing in idle functions
-> > >  - must return with IRQs disabled
-> > > 
-> > > Additionally, it added a branch for no good reason.
-> > > 
-> > > Fixes: c227233ad64c ("intel_idle: enable interrupts before C1 on
-> > > Xeons") Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > > ---
-> > >  drivers/idle/intel_idle.c |   48
-> > > +++++++++++++++++++++++++++++++++++----------- 1 file changed, 37
-> > > insertions(+), 11 deletions(-)
-> > > 
-> > > --- a/drivers/idle/intel_idle.c
-> > > +++ b/drivers/idle/intel_idle.c
-> > > @@ -129,21 +137,37 @@ static unsigned int mwait_substates __in
-> > >   *
-> > >   * Must be called under local_irq_disable().
-> > >   */  
-> > nit: this comment is no long true, right?  
-> 
-> It still is, all the idle routines are called with interrupts disabled,
-> but must also exit with interrupts disabled.
-> 
-> If the idle method requires interrupts to be enabled, it must be sure to
-> disable them again before returning. Given all the RCU/tracing concerns
-> it must use raw_local_irq_*() for this though.
-Makes sense, it is just little confusing when the immediate caller does
-raw_local_irq_enable() which does not cancel out local_irq_disable().
+diff --git a/arch/arm/mach-omap2/omap4-common.c b/arch/arm/mach-omap2/omap4-common.c
+index 6d1eb4eefefe..e981bf57e64f 100644
+--- a/arch/arm/mach-omap2/omap4-common.c
++++ b/arch/arm/mach-omap2/omap4-common.c
+@@ -135,6 +135,7 @@ static int __init omap4_sram_init(void)
+ 		pr_warn("%s:Unable to allocate sram needed to handle errata I688\n",
+ 			__func__);
+ 	sram_pool = of_gen_pool_get(np, "sram", 0);
++	of_node_put(np);
+ 	if (!sram_pool)
+ 		pr_warn("%s:Unable to get sram pool needed to handle errata I688\n",
+ 			__func__);
+-- 
+2.25.1
 
-Thanks,
-
-Jacob
