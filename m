@@ -2,97 +2,75 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 963EE5501F4
-	for <lists+linux-omap@lfdr.de>; Sat, 18 Jun 2022 04:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 012ED5501DA
+	for <lists+linux-omap@lfdr.de>; Sat, 18 Jun 2022 04:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230264AbiFRCTo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Jun 2022 22:19:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36592 "EHLO
+        id S232864AbiFRCGg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jun 2022 22:06:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229615AbiFRCTo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 22:19:44 -0400
-X-Greylist: delayed 1880 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 19:19:42 PDT
-Received: from m15112.mail.126.com (m15112.mail.126.com [220.181.15.112])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 433356A026
-        for <linux-omap@vger.kernel.org>; Fri, 17 Jun 2022 19:19:41 -0700 (PDT)
+        with ESMTP id S230301AbiFRCGf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 22:06:35 -0400
+Received: from mail-m963.mail.126.com (mail-m963.mail.126.com [123.126.96.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 852BF6BFCF;
+        Fri, 17 Jun 2022 19:06:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=EjjGP
-        vuthmf5Z8jDqlrttQfgUbB5nVt8z60LWABfKwI=; b=bD7Xe2LRBrupq2bCnTEke
-        H1XOZLfVavb55KglvUsMqxl7ikYqccbgIWYeJK7Z4uMQFYhzoblIvSgkLfrk17D+
-        GJVbNeI0hH/vAkeA5AG2DA24sIrMIvF+VntLIJ5NaQKc9B3FwcjobBGAMpFtS8JT
-        GQOtZtltIHSvepaMshxAIQ=
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=EAsCU
+        KKeiwY5QLBCLD7SywZlE+l74qoFoWfMvGpQHv0=; b=cOVoDSiURhPxJq7MmGH7E
+        8id3oXGzTAyz7CAQsZzx4empc38ABwgfvJo23GS5zIbOnpFYoBpOypI7bzdvageo
+        OPCo90Nk5ZHvC046/A3ejAzfiPBYbKqsDjInZLcMhICZ1SxcV9tnZdje1BuyBD0+
+        EEVseGHEwfTFyWoxJb3hmg=
 Received: from localhost.localdomain (unknown [124.16.139.61])
-        by smtp2 (Coremail) with SMTP id DMmowACXBAHDLq1ifz5mDg--.23118S2;
-        Sat, 18 Jun 2022 09:47:48 +0800 (CST)
+        by smtp8 (Coremail) with SMTP id NORpCgCHGocMM61iFnKOFw--.45543S2;
+        Sat, 18 Jun 2022 10:06:05 +0800 (CST)
 From:   Liang He <windhl@126.com>
 To:     tony@atomide.com, linux@armlinux.org.uk
 Cc:     windhl@126.com, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] arm/mach-omap2: Fix refcount leak bug in omap_hwmod.c
-Date:   Sat, 18 Jun 2022 09:47:47 +0800
-Message-Id: <20220618014747.4055279-1-windhl@126.com>
+Subject: [PATCH] arm: mach-omap2: pdata-quirks: Fix refcount leak bug
+Date:   Sat, 18 Jun 2022 10:06:03 +0800
+Message-Id: <20220618020603.4055792-1-windhl@126.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DMmowACXBAHDLq1ifz5mDg--.23118S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KrW7Cr1ktr4rXr1xGF1xZrb_yoW8GrW5p3
-        92k395tr1UWws7J3yktFyqqrW29w1DCrWqyr9xCw1Ika1DCr4rZr4rtF90k345JFWru3WF
-        yF4Fyw17W3Z8u3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z__MakUUUUU=
+X-CM-TRANSID: NORpCgCHGocMM61iFnKOFw--.45543S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtF1rtw13Cr4xGr45Aw13Arb_yoWxtFX_Xw
+        n3Ka1xXrn3Jw4Iqr1Dtr4fGr1vvwsIgrsrW34IqFn0kayUXFy7Ar4qya92qFWDuFW5K3yY
+        qr4kCw15u3W2gjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUUyCJJUUUUU==
 X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbizgUkF18RPUQLLQAAsp
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuA0kF2JVj6tbagAAsk
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In _init(), of_find_node_by_name() will return a node pointer with
-refcount incremented. We should use of_node_put() in fail path or
-when it is not used anymore.
-
-NOTE: As the ref will be passed from 'bus' to 'np' by the xx_lookup(),
-in normal exit path, we should call of_node_put() at the end use of 'np',
-not the end use of 'bus'.
+In pdata_quirks_init_clocks(), the loop contains
+of_find_node_by_name() but without corresponding of_node_put().
 
 Signed-off-by: Liang He <windhl@126.com>
 ---
- arch/arm/mach-omap2/omap_hwmod.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/mach-omap2/pdata-quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
-index 31d1a21f6041..007e73cc0471 100644
---- a/arch/arm/mach-omap2/omap_hwmod.c
-+++ b/arch/arm/mach-omap2/omap_hwmod.c
-@@ -2365,6 +2365,7 @@ static int __init _init(struct omap_hwmod *oh, void *data)
+diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
+index 13f1b89f74b8..5b99d602c87b 100644
+--- a/arch/arm/mach-omap2/pdata-quirks.c
++++ b/arch/arm/mach-omap2/pdata-quirks.c
+@@ -540,6 +540,8 @@ pdata_quirks_init_clocks(const struct of_device_id *omap_dt_match_table)
  
- 	r = _init_mpu_rt_base(oh, NULL, index, np);
- 	if (r < 0) {
-+		of_node_put(bus);
- 		WARN(1, "omap_hwmod: %s: doesn't have mpu register target base\n",
- 		     oh->name);
- 		return 0;
-@@ -2372,6 +2373,7 @@ static int __init _init(struct omap_hwmod *oh, void *data)
- 
- 	r = _init_clocks(oh, np);
- 	if (r < 0) {
-+		of_node_put(bus);
- 		WARN(1, "omap_hwmod: %s: couldn't init clocks\n", oh->name);
- 		return -EINVAL;
- 	}
-@@ -2385,6 +2387,8 @@ static int __init _init(struct omap_hwmod *oh, void *data)
- 			parse_module_flags(oh, child);
- 	}
- 
-+	of_node_put(bus);
+ 		of_platform_populate(np, omap_dt_match_table,
+ 				     omap_auxdata_lookup, NULL);
 +
- 	oh->_state = _HWMOD_STATE_INITIALIZED;
++		of_node_put(np);
+ 	}
+ }
  
- 	return 0;
 -- 
 2.25.1
 
