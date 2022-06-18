@@ -2,125 +2,97 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F13654FCC3
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jun 2022 20:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 963EE5501F4
+	for <lists+linux-omap@lfdr.de>; Sat, 18 Jun 2022 04:19:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383562AbiFQSM4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 17 Jun 2022 14:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45594 "EHLO
+        id S230264AbiFRCTo (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 17 Jun 2022 22:19:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383595AbiFQSMq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 14:12:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACBFE038;
-        Fri, 17 Jun 2022 11:12:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9364661F41;
-        Fri, 17 Jun 2022 18:12:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA29FC341C5;
-        Fri, 17 Jun 2022 18:12:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655489563;
-        bh=bUPFzcA2bwrfrcLXD7x3oRlhBEAEkGwIHCdUjnjME3U=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TzEkn0jgFwCR+zHucfSU4ACpiT+fNkS2SkFZmgsY4v8y5M3CnzX+KS6IUY8wdxqZv
-         bPLoZOVE6WGVIg4R5nrb0saH0gbx+9qBInXQ7heDbJSX8lK99o/MiR2N3JljAbl+Oc
-         CHZfNqt4+z7CCQ60+9dGyhQG57CnXBJ5hiaQBq7wd0Zn+i7HklQdvGyT+nOeCs0T0K
-         nPdmfyat8StE/e95a3xGNcHoNzE8dcYkRMwuLn5EGmwVPd/8upE+ubrIKgU2QFOCOB
-         JUuoF3x8Z8kSPF89Xm2v3RZQF8VoEdbTFhp7XhKPcsZWVbiPv7cJ60RiD+VZK88Ppb
-         9JEPbYeNFIQTg==
-Date:   Fri, 17 Jun 2022 19:12:37 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     David Owens <daowens01@gmail.com>
-Cc:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Jarkko Nikula <jarkko.nikula@bitmer.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        David Owens <dowens@precisionplanting.com>,
-        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ASoC: ti: omap-mcbsp: duplicate sysfs error
-Message-ID: <YqzEFX1rIRIwJCnl@sirena.org.uk>
-References: <20220616202645.1645972-1-dowens@precisionplanting.com>
+        with ESMTP id S229615AbiFRCTo (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 17 Jun 2022 22:19:44 -0400
+X-Greylist: delayed 1880 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 19:19:42 PDT
+Received: from m15112.mail.126.com (m15112.mail.126.com [220.181.15.112])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 433356A026
+        for <linux-omap@vger.kernel.org>; Fri, 17 Jun 2022 19:19:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=EjjGP
+        vuthmf5Z8jDqlrttQfgUbB5nVt8z60LWABfKwI=; b=bD7Xe2LRBrupq2bCnTEke
+        H1XOZLfVavb55KglvUsMqxl7ikYqccbgIWYeJK7Z4uMQFYhzoblIvSgkLfrk17D+
+        GJVbNeI0hH/vAkeA5AG2DA24sIrMIvF+VntLIJ5NaQKc9B3FwcjobBGAMpFtS8JT
+        GQOtZtltIHSvepaMshxAIQ=
+Received: from localhost.localdomain (unknown [124.16.139.61])
+        by smtp2 (Coremail) with SMTP id DMmowACXBAHDLq1ifz5mDg--.23118S2;
+        Sat, 18 Jun 2022 09:47:48 +0800 (CST)
+From:   Liang He <windhl@126.com>
+To:     tony@atomide.com, linux@armlinux.org.uk
+Cc:     windhl@126.com, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] arm/mach-omap2: Fix refcount leak bug in omap_hwmod.c
+Date:   Sat, 18 Jun 2022 09:47:47 +0800
+Message-Id: <20220618014747.4055279-1-windhl@126.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="u2XbzTKFvyqRa/q5"
-Content-Disposition: inline
-In-Reply-To: <20220616202645.1645972-1-dowens@precisionplanting.com>
-X-Cookie: My life is a patio of fun!
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: DMmowACXBAHDLq1ifz5mDg--.23118S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KrW7Cr1ktr4rXr1xGF1xZrb_yoW8GrW5p3
+        92k395tr1UWws7J3yktFyqqrW29w1DCrWqyr9xCw1Ika1DCr4rZr4rtF90k345JFWru3WF
+        yF4Fyw17W3Z8u3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z__MakUUUUU=
+X-Originating-IP: [124.16.139.61]
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbizgUkF18RPUQLLQAAsp
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+In _init(), of_find_node_by_name() will return a node pointer with
+refcount incremented. We should use of_node_put() in fail path or
+when it is not used anymore.
 
---u2XbzTKFvyqRa/q5
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+NOTE: As the ref will be passed from 'bus' to 'np' by the xx_lookup(),
+in normal exit path, we should call of_node_put() at the end use of 'np',
+not the end use of 'bus'.
 
-On Thu, Jun 16, 2022 at 03:26:45PM -0500, David Owens wrote:
-> Convert to managed versions of sysfs and clk allocation to simplify
-> unbinding and error handling in probe.  Managed sysfs node
-> creation specifically addresses the following error seen the second time
-> probe is attempted after sdma_pcm_platform_register() previously requested
-> probe deferral:
+Signed-off-by: Liang He <windhl@126.com>
+---
+ arch/arm/mach-omap2/omap_hwmod.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-This breaks an x86 allmodconfig build:
+diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
+index 31d1a21f6041..007e73cc0471 100644
+--- a/arch/arm/mach-omap2/omap_hwmod.c
++++ b/arch/arm/mach-omap2/omap_hwmod.c
+@@ -2365,6 +2365,7 @@ static int __init _init(struct omap_hwmod *oh, void *data)
+ 
+ 	r = _init_mpu_rt_base(oh, NULL, index, np);
+ 	if (r < 0) {
++		of_node_put(bus);
+ 		WARN(1, "omap_hwmod: %s: doesn't have mpu register target base\n",
+ 		     oh->name);
+ 		return 0;
+@@ -2372,6 +2373,7 @@ static int __init _init(struct omap_hwmod *oh, void *data)
+ 
+ 	r = _init_clocks(oh, np);
+ 	if (r < 0) {
++		of_node_put(bus);
+ 		WARN(1, "omap_hwmod: %s: couldn't init clocks\n", oh->name);
+ 		return -EINVAL;
+ 	}
+@@ -2385,6 +2387,8 @@ static int __init _init(struct omap_hwmod *oh, void *data)
+ 			parse_module_flags(oh, child);
+ 	}
+ 
++	of_node_put(bus);
++
+ 	oh->_state = _HWMOD_STATE_INITIALIZED;
+ 
+ 	return 0;
+-- 
+2.25.1
 
-In file included from /build/stage/linux/include/linux/kobject.h:20,
-                 from /build/stage/linux/include/linux/module.h:21,
-                 from /build/stage/linux/sound/soc/ti/omap-mcbsp.c:12:
-/build/stage/linux/sound/soc/ti/omap-mcbsp.c:604:18: error: =E2=80=98additi=
-onal_groups=E2=80=99 defined but not used [-Werror=3Dunused-variable]
-  604 | ATTRIBUTE_GROUPS(additional);
-      |                  ^~~~~~~~~~
-/build/stage/linux/include/linux/sysfs.h:154:38: note: in definition of mac=
-ro =E2=80=98__ATTRIBUTE_GROUPS=E2=80=99
-  154 | static const struct attribute_group *_name##_groups[] =3D {       \
-      |                                      ^~~~~
-/build/stage/linux/sound/soc/ti/omap-mcbsp.c:604:1: note: in expansion of m=
-acro =E2=80=98ATTRIBUTE_GROUPS=E2=80=99
-  604 | ATTRIBUTE_GROUPS(additional);
-      | ^~~~~~~~~~~~~~~~
-In file included from /build/stage/linux/include/linux/kobject.h:20,
-                 from /build/stage/linux/include/linux/module.h:21,
-                 from /build/stage/linux/sound/soc/ti/omap-mcbsp-st.c:12:
-/build/stage/linux/sound/soc/ti/omap-mcbsp-st.c:299:18: error: =E2=80=98sid=
-etone_groups=E2=80=99 defined but not used [-Werror=3Dunused-variable]
-  299 | ATTRIBUTE_GROUPS(sidetone);
-      |                  ^~~~~~~~
-/build/stage/linux/include/linux/sysfs.h:154:38: note: in definition of mac=
-ro =E2=80=98__ATTRIBUTE_GROUPS=E2=80=99
-  154 | static const struct attribute_group *_name##_groups[] =3D {       \
-      |                                      ^~~~~
-/build/stage/linux/sound/soc/ti/omap-mcbsp-st.c:299:1: note: in expansion o=
-f macro =E2=80=98ATTRIBUTE_GROUPS=E2=80=99
-  299 | ATTRIBUTE_GROUPS(sidetone);
-      | ^~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-
---u2XbzTKFvyqRa/q5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKsxBQACgkQJNaLcl1U
-h9CbVAf/bLEYqN9UltUUtE4QfUjkIThFiIGPqM6T7Lr0oitKtqpZGp9i2uqREP8Y
-67Eks5a6Zs3SZr7ERZ4nYj/rurE+Jd5YgjxQ5SnGtj8tEFEe6/bzOmCzql0eyRX/
-VuFTxyaDKi7QwfejecS3lQIxtWKLbUKw3rRBTF8LMH55Hnw2/oCNYL9djV80lena
-GoaJVJYcxFU5Glv4J0ISgs1Oih1rHpI8SegCxqpdiHH2mPELxGB7BcyIyLS3x9yb
-BL0dxS8LNRDmakViC8B2csXBjMIq310UogmzfMGyTtV2o/bijJ2eM0LiORCPOAGh
-EdOyjsMBlX00w5lh3tyDdOYltpf8IQ==
-=VZEL
------END PGP SIGNATURE-----
-
---u2XbzTKFvyqRa/q5--
