@@ -2,97 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 198655518A7
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Jun 2022 14:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC4085518B5
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Jun 2022 14:20:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242410AbiFTMTI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Jun 2022 08:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36832 "EHLO
+        id S242362AbiFTMUr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jun 2022 08:20:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242272AbiFTMTF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Jun 2022 08:19:05 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 794595F6F;
-        Mon, 20 Jun 2022 05:19:04 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d5so9563724plo.12;
-        Mon, 20 Jun 2022 05:19:04 -0700 (PDT)
+        with ESMTP id S242511AbiFTMUq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Jun 2022 08:20:46 -0400
+Received: from mail-yw1-x1141.google.com (mail-yw1-x1141.google.com [IPv6:2607:f8b0:4864:20::1141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEB2812ADA
+        for <linux-omap@vger.kernel.org>; Mon, 20 Jun 2022 05:20:44 -0700 (PDT)
+Received: by mail-yw1-x1141.google.com with SMTP id 00721157ae682-317803b61e5so72973617b3.1
+        for <linux-omap@vger.kernel.org>; Mon, 20 Jun 2022 05:20:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
+        h=mime-version:reply-to:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=G116oHrS6xPawz1p7YlGPW002yjrm+RWYps59Z2K3Js=;
-        b=bQ3h43AIQpxpWNQaiBLocOnzDTZ7buSOL0mz19NlUnhzLU5ap878WMs1BFn61KUgj+
-         NJM3YnYD8RdcyXovFq820Sr+ixX+2/d36WK0I82Kkhvg8CMQYkl88F95R0w9RP8Ef6jw
-         1Bz9QbxEdsbALjrEATq3d8jBUVzUM0Ar6fUTTqTY+9FxcpgIpNHbC67pFpKDGTT4bkBk
-         Lx7KPkIsOKiYHwhM9A0Dzo32AQpbgduoJ2/WKC4FeIizee5vi/DbRjJmPuJWXpyQOeHM
-         z+ePZea2G9eTqgi1mFzENPhnkF9XM4HU3QhkjAkWjToSrt8HaswFOpprPCR6Ms0Fp7IQ
-         /wAw==
+        bh=8CixyhtW4bpMZebGIfIbzqTKr4PU04HBrOOMbXiEuzA=;
+        b=ihwgKFTrcct+0AsLw5aN5+F3m+AMP9hgEvGbLEyRiYeGYAK0a2QAQKASaAqFBgS6QI
+         OMs6XCeApRIvqcvr4fA8/1Bjgi5dfqwjcffGG7vvI34LiKFICFJWKrVt8t3uPa02CccD
+         E+JqGG2s1qaof9WkkNGg1OdCwNoCW2rDzfd+TmkRzT58YBSEepl8hXdOUkQuW7pkoQ/A
+         QWGsNGIYTkkcGuxrsD1wS/Z9t/34RCy8fWLF81mTXL/01L6bTxT45FNKLtkO1KbxH8ky
+         YhivvzhKeFesuwu+/DPoRNsSzTRPOULrxwFQVb7Lthzau5LeIlpVjVM97L2HhyfAigya
+         zOJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=G116oHrS6xPawz1p7YlGPW002yjrm+RWYps59Z2K3Js=;
-        b=VOn7Pb+cD/RS4Cq7Z7aoxcgwiFfIGTNgSeMA1k3dg4H2skG3UNQ+CSqkE+Fo/RSpRy
-         YFreEjYER/4e2uueJv5mcoTFSGcIPv9wALAJxZyZ/miwB9ROul1vGMoTvgeHLv+cCji4
-         OIzVyxixwPKegDmFrXaGBvJFowNbz+HiRyVuZN5W8TFz0fuAnb98VDwDa5Fjoy83pEiN
-         Og2zQrJj6ra2X2KTA68+jfIyeraBOcJw+Xh76o13JjtnZeVET04rJZ4dwoLmfFf5rGq6
-         n/UQb2LaUo5cp/mI1DjvFSCuLaxONhmQxNiV24K/U4wCvDCKqYwyl/OwLHVcNJm6pYLj
-         PEqw==
-X-Gm-Message-State: AJIora9f3H6EoL18POlUcjL5nxTwoaNBh5HnYBq/u7tHRS0JrUovbk+C
-        Nb2+d35IPcA8mK0CJZvC90o=
-X-Google-Smtp-Source: AGRyM1sUC8evC+f5PKK5DpcdqH/W0moQU/CHSv+aQrDCs/vVJib+j3xnh+/izPRDQMZhpVLBdI8p8g==
-X-Received: by 2002:a17:903:41cd:b0:16a:f48:c357 with SMTP id u13-20020a17090341cd00b0016a0f48c357mr13447166ple.21.1655727543869;
-        Mon, 20 Jun 2022 05:19:03 -0700 (PDT)
-Received: from linux-server-us.. ([172.247.46.202])
-        by smtp.gmail.com with ESMTPSA id u15-20020a170902714f00b00168c1668a49sm8477165plm.85.2022.06.20.05.19.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jun 2022 05:19:03 -0700 (PDT)
-From:   YuTong Chang <mtwget@gmail.com>
-To:     bcousson@baylibre.com
-Cc:     tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        YuTong Chang <mtwget@gmail.com>
-Subject: [PATCH v1] ARM: dts: am33xx: Fix MMCHS0 dma properties
-Date:   Mon, 20 Jun 2022 05:19:00 -0700
-Message-Id: <20220620121900.5196-1-mtwget@gmail.com>
-X-Mailer: git-send-email 2.36.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=8CixyhtW4bpMZebGIfIbzqTKr4PU04HBrOOMbXiEuzA=;
+        b=gzlpUnn8Xmm+UR9okgCD7mOmwVgXNbpX/XB1TM7jgl3+2IApQPJkgqlM/6C4dLdBdG
+         Rg3SIWkn/NdpD+VKLyJZgvNageokGE66wu/JUeI1uTfU7tYEADODFTtIHhInHA8QZS1O
+         Qc4IEqNM7VlPE04HS+TyA97/5E1matymCUGCoB2+HcW0jcia4bKaxZMh2DrML2iVy8gZ
+         eC5ejfS0phGlCUIuRf31o6KScMgQZ85qgHconV71jNREtMoc/BxQpOldrU6y2ZXiu+ue
+         seHYqsq+xQMCI5tVyq/jtWLpyaPE74XSN7hyJzwXHuxtqi81lVB8dNTvfJWu5A5gx5R6
+         Lu1Q==
+X-Gm-Message-State: AJIora+HPG8afSJbkUu66z1mcuXs+L5QJ/v2u54U/3tz5J8HEHgk3fuO
+        Hj90ESP/A0tkGYy4HN9nfIRvba+ELvFuWBwJEJY=
+X-Google-Smtp-Source: AGRyM1sxnopSBtvxcOOj4mu2EyBAWPYrvltwwQBxkImUwpxOz8oOQkU2UdSSYAUFWrbogPcvRanQWNH1K87nRui6ozc=
+X-Received: by 2002:a05:690c:108:b0:2e5:b91a:195b with SMTP id
+ bd8-20020a05690c010800b002e5b91a195bmr27692417ywb.44.1655727643884; Mon, 20
+ Jun 2022 05:20:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7010:a626:b0:2d9:cb4f:1109 with HTTP; Mon, 20 Jun 2022
+ 05:20:43 -0700 (PDT)
+Reply-To: golsonfinancial@gmail.com
+From:   OLSON FINANCIAL GROUP <yaufatima03@gmail.com>
+Date:   Mon, 20 Jun 2022 05:20:43 -0700
+Message-ID: <CAG0VYfpvg+n7iVbkiUq=a23O1=4fyE=tEmz7-VL=t=t90urWAA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-According to technical manual(table 11-24), the DMA of MMCHS0 should be
-direct mapped.
-
-Signed-off-by: YuTong Chang <mtwget@gmail.com>
----
-v1: Cleaned up coding style and addressed review comments
-
- arch/arm/boot/dts/am33xx-l4.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
-index 7da42a5b959c..7e50fe633d8a 100644
---- a/arch/arm/boot/dts/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/am33xx-l4.dtsi
-@@ -1502,8 +1502,7 @@ SYSC_OMAP2_SOFTRESET |
- 			mmc1: mmc@0 {
- 				compatible = "ti,am335-sdhci";
- 				ti,needs-special-reset;
--				dmas = <&edma_xbar 24 0 0
--					&edma_xbar 25 0 0>;
-+				dmas = <&edma 24 0>, <&edma 25 0>;
- 				dma-names = "tx", "rx";
- 				interrupts = <64>;
- 				reg = <0x0 0x1000>;
--- 
-2.36.1
-
+--=20
+Guten Tag, brauchen Sie einen Finanzassistenten? Ich meine, um einen
+zuverl=C3=A4ssigen Finanzassistenten zu garantieren? Sie ben=C3=B6tigen ein
+verl=C3=A4ssliches Kreditangebot? Garantiertes Darlehensangebot zu einem
+Zinssatz von nur 2% f=C3=BCr den Zeitraum von 1 bis 40 Jahren F=C3=BCr weit=
+ere
+Informationen kontaktieren Sie mich bei Interesse per E-Mail:
+golsonfinancial@gmail.com....
