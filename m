@@ -2,91 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1536E551FF1
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Jun 2022 17:11:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7D855520B5
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Jun 2022 17:25:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235564AbiFTPLT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Jun 2022 11:11:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36898 "EHLO
+        id S243670AbiFTPZO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jun 2022 11:25:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241643AbiFTPJz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Jun 2022 11:09:55 -0400
-Received: from m15111.mail.126.com (m15111.mail.126.com [220.181.15.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D9C5E24957
-        for <linux-omap@vger.kernel.org>; Mon, 20 Jun 2022 07:56:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=3eKGN
-        YWL67QmLkoPrbS4HWxqUhh00seNg2vEcPJVrT0=; b=bNLwxeyDUadqZMV6bcH3X
-        eJx4UmDeNLzXSSiW0wg7aowRbEs0k5GCJj4Yd4NJvyM/DVdOXH2HqPajaU/iCEY9
-        bgGLt6s9nRTxkJsJfarVjYrCUYJdxFdwmgcCts0o1CEQHhh9uptSMY+b2NIm01AF
-        BvwrSs+R0ZP6M7U6720/IA=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-        by smtp1 (Coremail) with SMTP id C8mowAD3xDWTirBiBZkQFA--.60220S2;
-        Mon, 20 Jun 2022 22:56:19 +0800 (CST)
-From:   Liang He <windhl@126.com>
-To:     tony@atomide.com, p.zabel@pengutronix.de
-Cc:     windhl@126.com, linux-omap@vger.kernel.org
-Subject: [PATCH v2] bus/ti-sys: Fix refcount leak bugs
-Date:   Mon, 20 Jun 2022 22:56:19 +0800
-Message-Id: <20220620145619.4074665-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S243880AbiFTPYt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Jun 2022 11:24:49 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56CF2BDE;
+        Mon, 20 Jun 2022 08:21:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 92735B8120C;
+        Mon, 20 Jun 2022 15:21:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE862C3411B;
+        Mon, 20 Jun 2022 15:21:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655738515;
+        bh=DRPgAE5eSHKVuERQNm8HAW9Y8Oo6XD7HXWlbayBgLEA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=V2zEVThMzyBiHx3VZPGncWjhdETsYG7K3XNyZ/nVnOWb41ap5Fwi0m+93UgHhygT1
+         rCmADDC7NKmXBnJsgoq19Zmah1q6Gh8w+UCjKn9mUIM2wdXPHETxnT0sTcPqlhUZDw
+         NGHYl/bY5/7g4ZwA9kLXETF3dBq4viE95KjtfDd3AtwBB0STQ6YaTz6BK8Uss4EgjA
+         Jy13HfhrUflwCzgA2tr3UrRV+UxbFOodQ6UIIYvcMs0+r/7/s3977QYPxskJqJdSej
+         rPdg8TjSkCTlksEH6+dvV0VZf0CIul4CAUIoZHgz6EMboeDl9APnXGxBDwKWM3z/I4
+         twwNPp0lKT4qw==
+From:   Mark Brown <broonie@kernel.org>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH] ARM: dts: am33xx: Map baseboard EEPROM on BeagleBone Black
+Date:   Mon, 20 Jun 2022 16:21:50 +0100
+Message-Id: <20220620152150.708664-1-broonie@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=800; h=from:subject; bh=DRPgAE5eSHKVuERQNm8HAW9Y8Oo6XD7HXWlbayBgLEA=; b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBisJBTSR3QEXrnym9ZH3pqR0OSRaCQHg5tEe7chXs2 aq5kWCCJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYrCQUwAKCRAk1otyXVSH0CR0B/ 49mt6bum3wynGu6kkKGkZctn0lbG4ZaxQG2ijynk+yJyxOYTRPKLC8eTunpnZHTbUbglE3Of3eZ5tv pOfgP9Y6K0wZ4in4LbLShUBIhjI0582tEk2p0CYynKW9Jqsed1DcOj8dqaeBj6FkvcvFIDQ3ZYSKgx 8kKoqNsEn76V39EAaBrjuvQz/txMHbFvYSTVx5sp0P8LQiixiNKqfluvD5yqJGXojX5vX2L8iFnSV8 Rq+n16lKmofn0tSM5uIZ1zWWdsASHaNu/O91laWlBuQCDnYHGcKNCl23oX268v8+UruUOLfaBI8B8s kbT08fGC/SjZnawlxa2zkE4rwjLmJV
+X-Developer-Key: i=broonie@kernel.org; a=openpgp; fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: C8mowAD3xDWTirBiBZkQFA--.60220S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Gw1fCr15CF4xur1rCF1kAFb_yoWkZrX_Zr
-        nagr47Ary8Gr40qw4UZrZxZFZ5ZrZ5Wrs3uas3Kw43A340y34rAFn8XFWvqw13uFZYvFZ8
-        KrsxZa48JwnrZjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUUyrW3UUUUU==
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuBQmF2JVj80kCAAAsE
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In sysc_init_stdout_path(), there is only one of_node_put() for the
-second of_find_node_by_path(). However, we need to add one of_node_put()
-for the first of_find_node_by_path().
+The identification EEPROM on the BeagleBone Black baseboard is supplied
+by VDD_3V3A which is supplied by LDO4 on the PMIC. Map this as per the DT
+binding for the EEPROM. Since this supply is always-on this has no
+practical impact but it does silence a warning at boot due to using a dummy
+regulator.
 
-In sysc_init_static_data(), we need one of_node_put() for the
-of_find_node_by_path() to keep refcount balance.
-
-Signed-off-by: Liang He <windhl@126.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- changelog:
+ arch/arm/boot/dts/am335x-boneblack.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- v2: merge two bugs into one commit
- v1: only find the bug in sysc_init_static_data()
-
-
- drivers/bus/ti-sysc.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 9a7d12332fad..85a1003eb8e2 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -751,6 +751,7 @@ static void sysc_init_stdout_path(struct sysc *ddata)
- 		goto err;
- 
- 	uart = of_get_property(np, "stdout-path", NULL);
-+	of_node_put(np);
- 	if (!uart)
- 		goto err;
- 
-@@ -3138,6 +3139,7 @@ static int sysc_init_static_data(struct sysc *ddata)
- 		np = of_find_node_by_path("/ocp");
- 		WARN_ONCE(np && of_device_is_compatible(np, "simple-bus"),
- 			  "ti-sysc: Incomplete old dtb, please update\n");
-+		of_node_put(np);
- 		break;
- 	default:
- 		break;
+diff --git a/arch/arm/boot/dts/am335x-boneblack.dts b/arch/arm/boot/dts/am335x-boneblack.dts
+index 9312197316f0..b956e2f60fe0 100644
+--- a/arch/arm/boot/dts/am335x-boneblack.dts
++++ b/arch/arm/boot/dts/am335x-boneblack.dts
+@@ -168,3 +168,7 @@ &gpio3 {
+ 		"NC",
+ 		"NC";
+ };
++
++&baseboard_eeprom {
++	vcc-supply = <&ldo4_reg>;
++};
 -- 
-2.25.1
+2.30.2
 
