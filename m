@@ -2,47 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BED75521A4
-	for <lists+linux-omap@lfdr.de>; Mon, 20 Jun 2022 17:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2ADE552416
+	for <lists+linux-omap@lfdr.de>; Mon, 20 Jun 2022 20:38:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243022AbiFTPy5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 20 Jun 2022 11:54:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53538 "EHLO
+        id S242587AbiFTShz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 20 Jun 2022 14:37:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbiFTPy5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Jun 2022 11:54:57 -0400
-Received: from mail-m965.mail.126.com (mail-m965.mail.126.com [123.126.96.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A8D931D33D
-        for <linux-omap@vger.kernel.org>; Mon, 20 Jun 2022 08:54:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=5dn32
-        gPbrVIGVw+wSe7v6SJ3wdZJ9bQ8bEOiRJat8mI=; b=JXTHIgGdREtxxgvra76ll
-        gibvbb4TH94Jej9AZNBqpN0V15ZBvGXlTHGHJGZGwQ3owq/Rpl6nZu9uELQJbY1Q
-        vHqgKzwoAGcA9wiO0IbTGy2mI3ptJ0ZvfgWxWBX1Pzk+QyHD4NhQm5Kdf4VnVt42
-        1DizOLlolbPM1GjZeZdKso=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-        by smtp10 (Coremail) with SMTP id NuRpCgBnf4AumLBiZhoWFA--.25613S2;
-        Mon, 20 Jun 2022 23:54:23 +0800 (CST)
-From:   Liang He <windhl@126.com>
-To:     tony@atomide.com, linux@armlinux.org.uk
-Cc:     windhl@126.com, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v2] arm/mach-omap2: Fix refcount leak bugs
-Date:   Mon, 20 Jun 2022 23:54:21 +0800
-Message-Id: <20220620155421.4076532-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S245707AbiFTShy (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 20 Jun 2022 14:37:54 -0400
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 849CD60E2;
+        Mon, 20 Jun 2022 11:37:52 -0700 (PDT)
+Received: by mail-io1-xd31.google.com with SMTP id i16so11973781ioa.6;
+        Mon, 20 Jun 2022 11:37:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+oH+TPeRhTKU3xFkxsat+dvsRM7MxvHpnqcOtBFJGWE=;
+        b=K8c8ZPs4V2dyjx7nJQ3tzGLI8rSprOWvjkiKUGMerOx3lpPm+2zDQg4t7im7qK2gTG
+         gFCEHQ/AuvmTg5ZTZtpzafQt2KM7nFVzZpKbc0kh34DER0jNKMPGloQnKGwp6RX+d4NI
+         nvf3Ua6f+zz9uzPnp3FhF1O64iw5Elk44BdF0oc1OaCOomK6bviRs1PgzvG/819XGzCw
+         30XEQ3dPTsXciUh2uOu53+JytdUlCoUD1VfjiXbFNoDcqZHZA4XQADxZhYkuTC+Hydx5
+         YJovyd/LilKxHqXgCAu7n/o04ghnK/CBvP3+yB1JX3jWySIYHYV6yoAdQ5D1GnHPhvRt
+         2xyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+oH+TPeRhTKU3xFkxsat+dvsRM7MxvHpnqcOtBFJGWE=;
+        b=yLEEnqXmPYhMiOV/Fst3DbKoq8SBZ4VTVr9FndGe0bYJAkBW249sCZ70e1HJXjF8V5
+         vO/9tt5HvjXkmwjyAKZpjuzFtTd/MPlsfzPeRB2GuUm4CM5/j850FaSp+12aiyCTOBWV
+         6vj/quM9lmt/L7rrKp30OrD81N5ZJksqKx5al6aD36w8M11FYAtpB3xi20upuLpP20Cr
+         bEV1RxU++Qrul2EDEtE8Ccpd88cgKhzgTn/g8DnD5ymLA0D67Vwnufy+FUxZcJ800Lus
+         BbU1e6QOcjuDRmCTQVL/ccVyVbCxRJ1ZwGeasjOiTzDN5AHFlGYIvo1DL3BTnC/wkbm7
+         FXWg==
+X-Gm-Message-State: AJIora8x7LkCJcnK95es60Y8g0PH15P2XPPIId567PJx2FBw/EE5sBKv
+        7d3lfyk/L1IWavI8DyrXnzM=
+X-Google-Smtp-Source: AGRyM1t5U1hn+TO2QIcNsREgogNYuCoKr0CzZQnzLWSzRcBlsTk9/uFcgmidlislKg1ykuUSuL8woQ==
+X-Received: by 2002:a02:6d2b:0:b0:332:1027:a2dc with SMTP id m43-20020a026d2b000000b003321027a2dcmr13722194jac.65.1655750271681;
+        Mon, 20 Jun 2022 11:37:51 -0700 (PDT)
+Received: from tremont-lap.lan ([2604:2d80:d289:7400:db6b:f24e:bef:c8f8])
+        by smtp.gmail.com with ESMTPSA id g4-20020a056e020d0400b002d90c9077a2sm2142588ilj.57.2022.06.20.11.37.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jun 2022 11:37:50 -0700 (PDT)
+From:   David Owens <daowens01@gmail.com>
+X-Google-Original-From: David Owens <dowens@precisionplanting.com>
+To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     David Owens <daowens01@gmail.com>,
+        David Owens <dowens@precisionplanting.com>,
+        alsa-devel@alsa-project.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4] ASoC: ti: omap-mcbsp: duplicate sysfs error
+Date:   Mon, 20 Jun 2022 13:37:43 -0500
+Message-Id: <20220620183744.3176557-1-dowens@precisionplanting.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: NuRpCgBnf4AumLBiZhoWFA--.25613S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxurW5ZryrWr48CF1fKFyUWrg_yoW5uFyUp3
-        4vk3yv9r1UWwsrG3ykt34vqrWxtw1kWrWjyrWYk34xZan7ArWfAF1ftasIka43JrWru3Wr
-        ZF10y3WUXa1qy37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UeT5JUUUUU=
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi3A8mF1pEDw0grwAAsx
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,108 +74,131 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We need to add of_node_put() to keep refcount balance for of_find_xxx()
-which will return a node pointer with refcount incremented.
+From: David Owens <daowens01@gmail.com>
 
-Signed-off-by: Liang He <windhl@126.com>
+Convert to managed versions of sysfs and clk allocation to simplify
+unbinding and error handling in probe.  Managed sysfs node
+creation specifically addresses the following error seen the second time
+probe is attempted after sdma_pcm_platform_register() previously requsted
+probe deferral:
+
+sysfs: cannot create duplicate filename '/devices/platform/68000000.ocp/49022000.mcbsp/max_tx_thres'
+
+Signed-off-by: David Owens <dowens@precisionplanting.com>
 ---
- changelog:
 
- v2:(1) we find several new leak bugs
-    (2) we merge all mach-omap2 related bugs in to one commit
+Changes in v4:
+ * Reverted change that added use ATTRIBUTE_GROUP and left the attribute
+   structs as-is to fix compilation error and lessen the area of impact.
 
- v1: we send a patch for each missing of_node_put bug 
+Changes in v3:
+ * Whitespace changes only to allow clean apply
 
+Changes in v2:
+ * Improved error handling
 
+---
+ sound/soc/ti/omap-mcbsp-priv.h |  2 --
+ sound/soc/ti/omap-mcbsp-st.c   | 14 ++------------
+ sound/soc/ti/omap-mcbsp.c      | 19 ++-----------------
+ 3 files changed, 4 insertions(+), 31 deletions(-)
 
- arch/arm/mach-omap2/display.c      | 1 +
- arch/arm/mach-omap2/omap4-common.c | 1 +
- arch/arm/mach-omap2/omap_hwmod.c   | 6 ++++++
- arch/arm/mach-omap2/pdata-quirks.c | 2 ++
- 4 files changed, 10 insertions(+)
-
-diff --git a/arch/arm/mach-omap2/display.c b/arch/arm/mach-omap2/display.c
-index 21413a9b7b6c..eb09a25e3b45 100644
---- a/arch/arm/mach-omap2/display.c
-+++ b/arch/arm/mach-omap2/display.c
-@@ -211,6 +211,7 @@ static int __init omapdss_init_fbdev(void)
- 	node = of_find_node_by_name(NULL, "omap4_padconf_global");
- 	if (node)
- 		omap4_dsi_mux_syscon = syscon_node_to_regmap(node);
-+	of_node_put(node);
+diff --git a/sound/soc/ti/omap-mcbsp-priv.h b/sound/soc/ti/omap-mcbsp-priv.h
+index 7865cda4bf0a..da519ea1f303 100644
+--- a/sound/soc/ti/omap-mcbsp-priv.h
++++ b/sound/soc/ti/omap-mcbsp-priv.h
+@@ -316,8 +316,6 @@ static inline int omap_mcbsp_read(struct omap_mcbsp *mcbsp, u16 reg,
  
+ /* Sidetone specific API */
+ int omap_mcbsp_st_init(struct platform_device *pdev);
+-void omap_mcbsp_st_cleanup(struct platform_device *pdev);
+-
+ int omap_mcbsp_st_start(struct omap_mcbsp *mcbsp);
+ int omap_mcbsp_st_stop(struct omap_mcbsp *mcbsp);
+ 
+diff --git a/sound/soc/ti/omap-mcbsp-st.c b/sound/soc/ti/omap-mcbsp-st.c
+index 0bc7d26c660a..7e8179cae92e 100644
+--- a/sound/soc/ti/omap-mcbsp-st.c
++++ b/sound/soc/ti/omap-mcbsp-st.c
+@@ -347,7 +347,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+ 	if (!st_data)
+ 		return -ENOMEM;
+ 
+-	st_data->mcbsp_iclk = clk_get(mcbsp->dev, "ick");
++	st_data->mcbsp_iclk = devm_clk_get(mcbsp->dev, "ick");
+ 	if (IS_ERR(st_data->mcbsp_iclk)) {
+ 		dev_warn(mcbsp->dev,
+ 			 "Failed to get ick, sidetone might be broken\n");
+@@ -359,7 +359,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+ 	if (!st_data->io_base_st)
+ 		return -ENOMEM;
+ 
+-	ret = sysfs_create_group(&mcbsp->dev->kobj, &sidetone_attr_group);
++	ret = devm_device_add_group(mcbsp->dev, &sidetone_attr_group);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -368,16 +368,6 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
  	return 0;
  }
-diff --git a/arch/arm/mach-omap2/omap4-common.c b/arch/arm/mach-omap2/omap4-common.c
-index 6d1eb4eefefe..e981bf57e64f 100644
---- a/arch/arm/mach-omap2/omap4-common.c
-+++ b/arch/arm/mach-omap2/omap4-common.c
-@@ -135,6 +135,7 @@ static int __init omap4_sram_init(void)
- 		pr_warn("%s:Unable to allocate sram needed to handle errata I688\n",
- 			__func__);
- 	sram_pool = of_gen_pool_get(np, "sram", 0);
-+	of_node_put(np);
- 	if (!sram_pool)
- 		pr_warn("%s:Unable to get sram pool needed to handle errata I688\n",
- 			__func__);
-diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
-index 31d1a21f6041..814546c10bb8 100644
---- a/arch/arm/mach-omap2/omap_hwmod.c
-+++ b/arch/arm/mach-omap2/omap_hwmod.c
-@@ -2365,6 +2365,7 @@ static int __init _init(struct omap_hwmod *oh, void *data)
  
- 	r = _init_mpu_rt_base(oh, NULL, index, np);
- 	if (r < 0) {
-+		of_node_put(bus);
- 		WARN(1, "omap_hwmod: %s: doesn't have mpu register target base\n",
- 		     oh->name);
- 		return 0;
-@@ -2372,6 +2373,7 @@ static int __init _init(struct omap_hwmod *oh, void *data)
+-void omap_mcbsp_st_cleanup(struct platform_device *pdev)
+-{
+-	struct omap_mcbsp *mcbsp = platform_get_drvdata(pdev);
+-
+-	if (mcbsp->st_data) {
+-		sysfs_remove_group(&mcbsp->dev->kobj, &sidetone_attr_group);
+-		clk_put(mcbsp->st_data->mcbsp_iclk);
+-	}
+-}
+-
+ static int omap_mcbsp_st_info_volsw(struct snd_kcontrol *kcontrol,
+ 				    struct snd_ctl_elem_info *uinfo)
+ {
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index 58d8e200a7b9..9fb7cf0c9f88 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -702,8 +702,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+ 		mcbsp->max_tx_thres = max_thres(mcbsp) - 0x10;
+ 		mcbsp->max_rx_thres = max_thres(mcbsp) - 0x10;
  
- 	r = _init_clocks(oh, np);
- 	if (r < 0) {
-+		of_node_put(bus);
- 		WARN(1, "omap_hwmod: %s: couldn't init clocks\n", oh->name);
- 		return -EINVAL;
- 	}
-@@ -2385,6 +2387,8 @@ static int __init _init(struct omap_hwmod *oh, void *data)
- 			parse_module_flags(oh, child);
- 	}
- 
-+	of_node_put(bus);
-+
- 	oh->_state = _HWMOD_STATE_INITIALIZED;
- 
- 	return 0;
-@@ -3648,6 +3652,7 @@ static void __init omap_hwmod_setup_earlycon_flags(void)
- 	np = of_find_node_by_path("/chosen");
- 	if (np) {
- 		uart = of_get_property(np, "stdout-path", NULL);
-+		of_node_put(np);
- 		if (uart) {
- 			np = of_find_node_by_path(uart);
- 			if (np) {
-@@ -3661,6 +3666,7 @@ static void __init omap_hwmod_setup_earlycon_flags(void)
- 				}
- 				if (oh)
- 					oh->flags |= DEBUG_OMAPUART_FLAGS;
-+				of_node_put(np);
- 			}
+-		ret = sysfs_create_group(&mcbsp->dev->kobj,
+-					 &additional_attr_group);
++		ret = devm_device_add_group(mcbsp->dev, &additional_attr_group);
+ 		if (ret) {
+ 			dev_err(mcbsp->dev,
+ 				"Unable to create additional controls\n");
+@@ -711,16 +710,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
  		}
  	}
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
-index 13f1b89f74b8..5b99d602c87b 100644
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -540,6 +540,8 @@ pdata_quirks_init_clocks(const struct of_device_id *omap_dt_match_table)
  
- 		of_platform_populate(np, omap_dt_match_table,
- 				     omap_auxdata_lookup, NULL);
-+
-+		of_node_put(np);
- 	}
+-	ret = omap_mcbsp_st_init(pdev);
+-	if (ret)
+-		goto err_st;
+-
+-	return 0;
+-
+-err_st:
+-	if (mcbsp->pdata->buffer_size)
+-		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
+-	return ret;
++	return omap_mcbsp_st_init(pdev);
+ }
+ 
+ /*
+@@ -1431,11 +1421,6 @@ static int asoc_mcbsp_remove(struct platform_device *pdev)
+ 	if (cpu_latency_qos_request_active(&mcbsp->pm_qos_req))
+ 		cpu_latency_qos_remove_request(&mcbsp->pm_qos_req);
+ 
+-	if (mcbsp->pdata->buffer_size)
+-		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
+-
+-	omap_mcbsp_st_cleanup(pdev);
+-
+ 	return 0;
  }
  
 -- 
-2.25.1
+2.34.1
 
