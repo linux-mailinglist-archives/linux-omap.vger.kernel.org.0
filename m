@@ -2,70 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 610F1552B47
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Jun 2022 08:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67135552E00
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Jun 2022 11:11:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239480AbiFUGti (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Jun 2022 02:49:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59830 "EHLO
+        id S1347543AbiFUJL0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Jun 2022 05:11:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231830AbiFUGti (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jun 2022 02:49:38 -0400
-Received: from smtpbg.qq.com (smtpbg123.qq.com [175.27.65.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5890C18B00;
-        Mon, 20 Jun 2022 23:49:33 -0700 (PDT)
-X-QQ-mid: bizesmtp67t1655794159tvdomlb5
-Received: from ubuntu.localdomain ( [106.117.99.68])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Tue, 21 Jun 2022 14:49:07 +0800 (CST)
-X-QQ-SSF: 01000000007000109000B00A0000000
-X-QQ-FEAT: Jd++W0FxedFbCOgIqkryRVlgpglI3RiACg/Upg/4XQ4UW2GGHJ6LvdChpNRjD
-        Xu15wWAwIZyH5VmlK1N6HVhvzrDuEfbpgJGB0jsSHLPpqDy+yqj7c63FJn33Q6OZ89dyn5J
-        2I03ZSgEKtS9mt3de/55s/oBoQDgFPCZg5PItGAtjgSwZxaUgeCPmTj7xtuB52onN+idHlT
-        P3av2Er27nUXaMl3ifYbsjVU79VWA/ao4wNTRnKbgkYSAsLtoYqjrftC5DCNse9HHlV+GpY
-        ml5ETNxBSW4nQq+RP3bFVDVl9qTpcST5zJ6P9IYqpjfSLAdkLhlITDRr0wk5P80oyrXuKkT
-        cyt3wwMqWiVtB1BJ5M=
-X-QQ-GoodBg: 0
-From:   Jiang Jian <jiangjian@cdjrlc.com>
-To:     deller@gmx.de
-Cc:     jiangjian@cdjrlc.com, linux-omap@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] video: fbdev: aligned '*' each line
-Date:   Tue, 21 Jun 2022 14:49:04 +0800
-Message-Id: <20220621064904.27644-1-jiangjian@cdjrlc.com>
-X-Mailer: git-send-email 2.17.1
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam8
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S1346528AbiFUJLZ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jun 2022 05:11:25 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C16C45F52;
+        Tue, 21 Jun 2022 02:11:24 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 9CB90809F;
+        Tue, 21 Jun 2022 09:06:25 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     linux-clk@vger.kernel.org
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Tero Kristo <t-kristo@ti.com>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH] clk: ti: Fix missing of_node_get() ti_find_clock_provider()
+Date:   Tue, 21 Jun 2022 12:11:18 +0300
+Message-Id: <20220621091118.33930-1-tony@atomide.com>
+X-Mailer: git-send-email 2.36.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Consider '*' alignment in comments
+For ti_find_clock_provider() we want to return the np with refcount
+incremented. However we are missing of_node_get() for the
+clock-output-names case that causes refcount warnings.
 
-Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
+Fixes: 51f661ef9a10 ("clk: ti: Add ti_find_clock_provider() to use clock-output-names")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/ti/clk.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c
-index 6fbfeb01b315..170463a7e1f4 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi_phy.c
-@@ -143,7 +143,7 @@ int hdmi_phy_configure(struct hdmi_phy_data *phy, unsigned long hfbitclk,
- 	/*
- 	 * In OMAP5+, the HFBITCLK must be divided by 2 before issuing the
- 	 * HDMI_PHYPWRCMD_LDOON command.
--	*/
-+	 */
- 	if (phy_feat->bist_ctrl)
- 		REG_FLD_MOD(phy->base, HDMI_TXPHY_BIST_CONTROL, 1, 11, 11);
+diff --git a/drivers/clk/ti/clk.c b/drivers/clk/ti/clk.c
+--- a/drivers/clk/ti/clk.c
++++ b/drivers/clk/ti/clk.c
+@@ -135,6 +135,7 @@ static struct device_node *ti_find_clock_provider(struct device_node *from,
+ 			continue;
  
+ 		if (!strncmp(n, tmp, strlen(tmp))) {
++			of_node_get(np);
+ 			found = true;
+ 			break;
+ 		}
 -- 
-2.17.1
-
+2.36.1
