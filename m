@@ -2,120 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A96FE552E1B
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Jun 2022 11:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED685552EC6
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Jun 2022 11:41:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343867AbiFUJUG (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Jun 2022 05:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32866 "EHLO
+        id S1349291AbiFUJk0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 21 Jun 2022 05:40:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236786AbiFUJUF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jun 2022 05:20:05 -0400
-Received: from m15113.mail.126.com (m15113.mail.126.com [220.181.15.113])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6496E1ADB4;
-        Tue, 21 Jun 2022 02:20:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=OioeI
-        UwveB01yCM+VPPqI1R3Pqe3irBtSPlm0YsmgTY=; b=L31esixI0W4w90QdeVeCz
-        yBDQE6ekgUx/V6yT9+YgUNAxYK+3vtbs+Y9WEn1cdLKbpFL8PCXpGlkr1ZE9H/rd
-        lRNxaxP40azlqnju4TN6Vs4xH2efE45nR5yTw85KKQaXp2XwxFTvuzSljT8r5dS4
-        3Ni6NH/ST3kDe9nKXWyLqA=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-        by smtp3 (Coremail) with SMTP id DcmowADngJIqjbFiNtMuDw--.56908S2;
-        Tue, 21 Jun 2022 17:19:39 +0800 (CST)
-From:   Liang He <windhl@126.com>
-To:     andre.przywara@arm.com, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, tony@atomide.com
-Cc:     windhl@126.com, linux-arm-kernel@lists.infradead.org,
-        linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: [PATCH] arm/mach: Hold reference returned by of_find_xxx APIs
-Date:   Tue, 21 Jun 2022 17:19:37 +0800
-Message-Id: <20220621091937.4082422-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1349302AbiFUJkJ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jun 2022 05:40:09 -0400
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB0F227CF6
+        for <linux-omap@vger.kernel.org>; Tue, 21 Jun 2022 02:39:56 -0700 (PDT)
+Received: by mail-ua1-x92f.google.com with SMTP id o21so4818419uat.6
+        for <linux-omap@vger.kernel.org>; Tue, 21 Jun 2022 02:39:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
+        b=NKhg6kSkfnglJlsPDVUWhCY3Iibudx7OhZC5CePFgeNekYJKNrcmU8wB8gkktmjPqY
+         f0o4DET3nwW7oGb1WQAmWVCm6yLISrVrQXMY/9qoCppMNLX7K/jA/JZ+JMs1mNT38j+N
+         qSlM2vTiSOIkQo5cZ6oY4dkMVda7fWn0vzKRT295Q67AStI8u0BTanvw38uSxo4IMvFm
+         mtbeFJOQugEk6bmbrSLJZHxNWvSEoU0AT9TQz59V3jAGDZbWiI6U0Fx8UlroTYMr9wGQ
+         +xC78kHT5AZK7k/f6wmWhdDj3ThC5Cy20ctCKCcYvb/idPExEpgvQXB/UX/ziCu3vO07
+         Q2/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
+        b=MS1OFmSUhr6A2TDkqBWmOyt88/RE9o2hk3CVcDGzr3fVZTP7eHDRzb1pZF6quEhwAL
+         jyjcztk/2T6n/VqwaZNl/OajiZjgC+xgHrzPL3z0VtlT2/jVUcp6bz7NNaKlHVSHnnMe
+         ciV9+My3WJBjCM+J2aeJcwTl9wyBU0YDK3N44PHttT+xijnB26t3Mw6gtQoouXsUdJsh
+         oLjP9m+fnrN1M3wbz7xtNhBcBfSXv049GNxcfiR/Oo5nYgUL6G6iuKfUrZoPnDW4P/7I
+         NOS4iAXTNlpB/tAPe5i617keeWpncTLukIbSAJS0WybBSNmoQElMOC7g+aapCpclD32r
+         e0HA==
+X-Gm-Message-State: AJIora/RG3WxQyNcWcpwEE88SqAjpg9aDY2115C2GOf2ZJ5t2z7G8al+
+        p/ufHquwa5fPbuA0/Q9YGMqJ2nXxf54XQcQI6DFA9F57fTOsvUok
+X-Google-Smtp-Source: AGRyM1sTF/SvvxCyraPE52znD36ZX02jNmxmam87lP8bWzXT3yTfChS1a9JgJI9LjBXh9tpS4qLO5E/t+5efudcEruY=
+X-Received: by 2002:a0d:d7c7:0:b0:317:bfe8:4f2 with SMTP id
+ z190-20020a0dd7c7000000b00317bfe804f2mr12417910ywd.276.1655804384555; Tue, 21
+ Jun 2022 02:39:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DcmowADngJIqjbFiNtMuDw--.56908S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tryUJr4DZFWkuF1xArWrZrb_yoW8KrW3pw
-        1Du390kr18W3W7Ga4xCFW8ZF4j9a1v9r4jq3y5CFy2qws7Z348CF1Fv34YkFn8XrWkAFWr
-        Ar10k3W8Xa1kXwUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUfHbUUUUU=
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi2gsnF1uwMQHIcQAAsD
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7010:e10a:b0:2d9:e631:94d0 with HTTP; Tue, 21 Jun 2022
+ 02:39:44 -0700 (PDT)
+Reply-To: dimitryedik@gmail.com
+From:   Dimitry Edik <lsbthdwrds@gmail.com>
+Date:   Tue, 21 Jun 2022 02:39:44 -0700
+Message-ID: <CAGrL05aBO8rbFuij24J-APa+Luis69gEjhj35iv_GZfkHCVYDQ@mail.gmail.com>
+Subject: Dear Partner,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
+        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:92f listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [lsbthdwrds[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
+        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In highbank_init_irq(), tegra_init_irq() and omap4_cpcap_init(),
-we should hold the reference returned by of_find_xxx APIs and
-use it to call of_node_put() for refcount balance.
+Hello Dear,
 
-Signed-off-by: Liang He <windhl@126.com>
----
- arch/arm/mach-highbank/highbank.c | 6 +++++-
- arch/arm/mach-omap2/pmic-cpcap.c  | 5 ++++-
- arch/arm/mach-tegra/irq.c         | 6 +++++-
- 3 files changed, 14 insertions(+), 3 deletions(-)
+My Name is Dimitry Edik from Russia A special assistance to my Russia
+boss who deals in oil import and export He was killed by the Ukraine
+soldiers at the border side. He supplied
+oil to the Philippines company and he was paid over 90 per cent of the
+transaction and the remaining $18.6 Million dollars have been paid into a
+Taiwan bank in the Philippines..i want a partner that will assist me
+with the claims. Is a (DEAL ) 40% for you and 60% for me
+I have all information for the claims.
+Kindly read and reply to me back is 100 per cent risk-free
 
-diff --git a/arch/arm/mach-highbank/highbank.c b/arch/arm/mach-highbank/highbank.c
-index db607955a7e4..4f50000377b8 100644
---- a/arch/arm/mach-highbank/highbank.c
-+++ b/arch/arm/mach-highbank/highbank.c
-@@ -50,10 +50,14 @@ static void highbank_l2c310_write_sec(unsigned long val, unsigned reg)
- 
- static void __init highbank_init_irq(void)
- {
-+	struct device_node *np;
-+
- 	irqchip_init();
- 
--	if (of_find_compatible_node(NULL, NULL, "arm,cortex-a9"))
-+	np = of_find_compatible_node(NULL, NULL, "arm,cortex-a9");
-+	if (np)
- 		highbank_scu_map_io();
-+	of_node_put(np);
- }
- 
- static void highbank_power_off(void)
-diff --git a/arch/arm/mach-omap2/pmic-cpcap.c b/arch/arm/mach-omap2/pmic-cpcap.c
-index 668dc84fd31e..a7368d657aa8 100644
---- a/arch/arm/mach-omap2/pmic-cpcap.c
-+++ b/arch/arm/mach-omap2/pmic-cpcap.c
-@@ -238,8 +238,11 @@ static struct omap_voltdm_pmic omap4_fan_iva = {
- int __init omap4_cpcap_init(void)
- {
- 	struct voltagedomain *voltdm;
-+	struct device_node *np;
- 
--	if (!of_find_compatible_node(NULL, NULL, "motorola,cpcap"))
-+	np = of_find_compatible_node(NULL, NULL, "motorola,cpcap");
-+	of_node_put(np);
-+	if (!np)
- 		return -ENODEV;
- 
- 	voltdm = voltdm_lookup("mpu");
-diff --git a/arch/arm/mach-tegra/irq.c b/arch/arm/mach-tegra/irq.c
-index 4e1ee70b2a3f..2aeac041bcb9 100644
---- a/arch/arm/mach-tegra/irq.c
-+++ b/arch/arm/mach-tegra/irq.c
-@@ -88,7 +88,11 @@ static const struct of_device_id tegra_ictlr_match[] __initconst = {
- 
- void __init tegra_init_irq(void)
- {
--	if (WARN_ON(!of_find_matching_node(NULL, tegra_ictlr_match)))
-+	struct device_node *np;
-+
-+	np = of_find_matching_node(NULL, tegra_ictlr_match);
-+	of_node_put(np);
-+	if (WARN_ON(!np))
- 		pr_warn("Outdated DT detected, suspend/resume will NOT work\n");
- 
- 	tegra114_gic_cpu_pm_registration();
--- 
-2.25.1
-
+Yours Sincerely
+Dimitry Edik
