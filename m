@@ -2,75 +2,62 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 961435539DC
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Jun 2022 20:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C3C554201
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jun 2022 07:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233517AbiFUS5L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 21 Jun 2022 14:57:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52268 "EHLO
+        id S1355691AbiFVFJ4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Jun 2022 01:09:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350789AbiFUS5K (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 21 Jun 2022 14:57:10 -0400
-Received: from smtpbg.qq.com (smtpbg136.qq.com [106.55.201.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E985B2A26F;
-        Tue, 21 Jun 2022 11:57:04 -0700 (PDT)
-X-QQ-mid: bizesmtp81t1655837745tf77ccv4
-Received: from ubuntu.localdomain ( [106.117.99.68])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Wed, 22 Jun 2022 02:55:40 +0800 (CST)
-X-QQ-SSF: 01000000008000B0B000B00A0000000
-X-QQ-FEAT: OgQh5dxRN5wbavA1GfzuufKZqLUg4wAI9+JIV47vYKEuw9sHuek563x2EmWfR
-        kUKQViagBIljkrsybiRSNkrMi6wkuyggXAxdkvDVJtwanDJJ8c8QRNHn2z1Ot0T9EvTHnPW
-        M2UkZD8DJRDIA9R830uknoMgoCkgyQfYIXib8KN8Y43WCgQVDTgKM4pzuDn1YettdaXVutc
-        0K/I0zkp+PKvgPqGjTXeEYgQhN7TwPhP3D910qO+BIQ9NKmMm4f/gSIGFAPwVp4FHM5WCPD
-        DAtYyuHoD86E9umdDIYD668uz5v8lsQSQe7vZUuQ9d/ssCeeueTkIRukdpENqNDc6HfONnM
-        kjmHDaXMESyv6oqCY0=
-X-QQ-GoodBg: 0
-From:   Jiang Jian <jiangjian@cdjrlc.com>
-To:     deller@gmx.de
-Cc:     arnd@arndb.de, tony@atomide.com, jiangjian@cdjrlc.com,
-        jmkrzyszt@gmail.com, linux-fbdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] video: fbdev: omap: Remove duplicate 'the' in two places.
-Date:   Wed, 22 Jun 2022 02:55:38 +0800
-Message-Id: <20220621185538.6072-1-jiangjian@cdjrlc.com>
-X-Mailer: git-send-email 2.17.1
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam7
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S1347664AbiFVFJz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Jun 2022 01:09:55 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1103435878;
+        Tue, 21 Jun 2022 22:09:55 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id E3129809F;
+        Wed, 22 Jun 2022 05:04:54 +0000 (UTC)
+Date:   Wed, 22 Jun 2022 08:09:53 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>
+Cc:     Chunyan Zhang <zhang.chunyan@linaro.org>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org,
+        Yegor Yefremov <yegorslists@googlemail.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] mmc: sdhci-omap: Fix a lockdep warning for PM runtime
+ init
+Message-ID: <YrKkIRyhHnVcCyZt@atomide.com>
+References: <20220617040300.30321-1-tony@atomide.com>
+ <173521c9-2e5c-8301-1dcf-b6f692866ef2@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <173521c9-2e5c-8301-1dcf-b6f692866ef2@intel.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-file: drivers/video/fbdev/omap/sossi.c
-line: 362
-     * We set explicitly the the bus_pick_count as well, although
-changed to
-     * We set explicitly the bus_pick_count as well, although
+* Adrian Hunter <adrian.hunter@intel.com> [220617 06:20]:
+> On 17/06/22 07:03, Tony Lindgren wrote:
+> > We need hardware enabled early in probe to detect capabilities, but must
+> > not call sdhci_runtime_resume_host() until sdhci_setup_host() has been
+> > called. Let's check for an initialized controller like we already do
+> > for context restore.
+> 
+> Begs the question: why not prevent runtime pm until after sdhci_setup_host().
+> Maybe expand the commit message explanation a bit?
 
-Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
----
- drivers/video/fbdev/omap/sossi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sure will add some comments for why sdhci_omap_set_capabilities() is needed
+before sdhci_setup_host() and post v2.
 
-diff --git a/drivers/video/fbdev/omap/sossi.c b/drivers/video/fbdev/omap/sossi.c
-index c90eb8ca58af..66aff6cd1df0 100644
---- a/drivers/video/fbdev/omap/sossi.c
-+++ b/drivers/video/fbdev/omap/sossi.c
-@@ -359,7 +359,7 @@ static void sossi_set_bits_per_cycle(int bpc)
- 	int bus_pick_count, bus_pick_width;
- 
- 	/*
--	 * We set explicitly the the bus_pick_count as well, although
-+	 * We set explicitly the bus_pick_count as well, although
- 	 * with remapping/reordering disabled it will be calculated by HW
- 	 * as (32 / bus_pick_width).
- 	 */
--- 
-2.17.1
+Thanks,
 
+Tony
