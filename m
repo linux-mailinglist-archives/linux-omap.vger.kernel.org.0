@@ -2,73 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D78C554E7A
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jun 2022 17:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F4455550A
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jun 2022 21:48:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358909AbiFVPEP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 22 Jun 2022 11:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36666 "EHLO
+        id S1376536AbiFVTsQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 22 Jun 2022 15:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358872AbiFVPD5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Jun 2022 11:03:57 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C5493DDE2
-        for <linux-omap@vger.kernel.org>; Wed, 22 Jun 2022 08:03:51 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-101ec2d6087so12323826fac.3
-        for <linux-omap@vger.kernel.org>; Wed, 22 Jun 2022 08:03:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
-        b=lmXhPRDXrnlbYClAFJkfHZYdowqXsf1nTuDLZnU/Y1W/T6TJ8ApbIv950i47frAtN/
-         OtndHJQoWJG+weygm2GuosJduERMEzUHLtTF4oGKopzqXa+c5O1ob2p5JuwuGNaCZz0D
-         0k2iO6ZG6gpeVsjTt5A+NLMvCH8qDkpG8Ex3xIMBpunG6BNJWrlCGLJYo7boJK6pvBIx
-         W4x550ST0gVpK9sdxwL58OfMVVl7H7xG/39bSvJCxipLUGbdwSBY6WRzvY6hd28wfB/N
-         vDKUfqITg8PxsgA4g6gEDGmS0K0dBg3KSntFmGDvcmLKkvSy/F4e+TYysqkO/txSQBCJ
-         afFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
-        b=FOMKJDHI3luyF2Fib7j66UnXTf5XLbLHkJth9ZweTxT0LWgcciXG6d2DI66WbUwjaW
-         I0xK8pTMcgKFZ+s5adCDqbQIHDQdXfZLM5mJM6peQhf8gsbJFvjrrWPtFEJ0OxQ56aqU
-         xyD6bb7wxXBVLSYWJYxrmouvNw/MY+3kipVfZQlG8jlGZpcEuRKhDZ6n0cBfxAJJFNX0
-         KEg/FzinfH587oA//x5wOcp4dhdNh0t5BkfT3UcJbj3ktWSAbYDmx7pyGn/YaLd/7XR8
-         fMfJCQSVFDVTHN8MrFphwy1mxDnYSPUEWOxI4LzBaTyVQHa3IqBYtPdpcY8zMvuwQ/3X
-         GI7w==
-X-Gm-Message-State: AJIora+kK5CVib/KoMTy5YirHEf0e3uVVDg/ybvWRVM0vetQKxymMM4w
-        tjh4Jl5Q355Wp52TIJ4I946jhEP/t3vpZ8LcU0n7M9v44ihfCz6y
-X-Google-Smtp-Source: AGRyM1ulxotWsDV/SS5wzW6q4zt5LXu3F658bS4StYWI/FgPuIBqBz38zqk7aydOTm9FXxU+wDfnf428k+eRTEG/aD8=
-X-Received: by 2002:a17:90b:1988:b0:1ec:f52d:90d4 with SMTP id
- mv8-20020a17090b198800b001ecf52d90d4mr1796737pjb.70.1655910220864; Wed, 22
- Jun 2022 08:03:40 -0700 (PDT)
+        with ESMTP id S1359444AbiFVTsO (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 22 Jun 2022 15:48:14 -0400
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8E492DD60;
+        Wed, 22 Jun 2022 12:48:09 -0700 (PDT)
+Received: from [46.183.103.8] (helo=phil.sntech)
+        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <heiko@sntech.de>)
+        id 1o46KG-0004LY-G0; Wed, 22 Jun 2022 21:47:45 +0200
+From:   Heiko Stuebner <heiko@sntech.de>
+To:     soc@kernel.org, Olof Johansson <olof@lixom.net>, arm@kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     Heiko Stuebner <heiko@sntech.de>, openbmc@lists.ozlabs.org,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Joel Stanley <joel@jms.id.au>, linux-arm-msm@vger.kernel.org,
+        Shawn Guo <shawnguo@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-aspeed@lists.ozlabs.org,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-input@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andy Gross <agross@kernel.org>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Wei Xu <xuwei5@hisilicon.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        devicetree@vger.kernel.org, Peter Rosin <peda@axentia.se>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Fabio Estevam <festevam@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Li Yang <leoyang.li@nxp.com>, linux-tegra@vger.kernel.org,
+        linux-gpio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-omap@vger.kernel.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Tero Kristo <kristo@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Andrew Jeffery <andrew@aj.id.au>, Andrew Lunn <andrew@lunn.ch>,
+        Nishanth Menon <nm@ti.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-mediatek@lists.infradead.org
+Subject: Re: (subset) [PATCH v3 00/40] dt-bindings: input: gpio-keys: rework matching children
+Date:   Wed, 22 Jun 2022 21:47:36 +0200
+Message-Id: <165592714968.3933570.9891201783444800337.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220616005224.18391-1-krzysztof.kozlowski@linaro.org>
+References: <20220616005224.18391-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Received: by 2002:a17:903:2308:b0:16a:1b3f:f74b with HTTP; Wed, 22 Jun 2022
- 08:03:40 -0700 (PDT)
-Reply-To: sales0212@asonmedsystemsinc.com
-From:   Prasad Ronni <lerwickfinance7@gmail.com>
-Date:   Wed, 22 Jun 2022 16:03:40 +0100
-Message-ID: <CAFkto5vTxj70kORZJZdwOGowXjsZ399eo6DJj=8T==7paSuHTw@mail.gmail.com>
-Subject: Service Needed.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,RCVD_IN_SBL_CSS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Wed, 15 Jun 2022 17:52:24 -0700, Krzysztof Kozlowski wrote:
+> Merging
+> =======
+> 1. dt-bindings: rebased on top of Rob's:
+>    https://lore.kernel.org/all/20220608211207.2058487-1-robh@kernel.org/
+> 
+> 2. DTS patches are independent. They can be picked up directly by sub-arch
+>    maintainers, by Arnd or Olof, or eventually by me (if you wish).
+> 
+> [...]
+
+Applied, thanks!
+
+[26/40] arm64: dts: rockchip: align gpio-key node names with dtschema
+        commit: 517ed0ffd3cc691bef747288d51d01d2705b2251
+
+        In the pinenote dts the original patch changed "cover" to
+        switch, so to keep the cover information intact, I changed
+        the node to "switch-cover" ... similar to other "switch-lid"
+        instances in some other Rockchip devicetrees.
+
+[27/40] ARM: dts: rockchip: align gpio-key node names with dtschema
+        commit: 271e2c92285075a890c58cba9ad5979a8959f6ff
+[28/40] ARM: dts: rockchip: rk3288-tinker: correct gpio-keys properties
+        commit: e5a3cbe8b45b0a436a39cc969b7bcc8353248018
+
+Best regards,
 -- 
-Hi,
-
-Are you currently open to work as our executive company representative
-on contractual basis working remotely? If yes, we will be happy to
-share more details. Looking forward to your response.
-
-Regards,
+Heiko Stuebner <heiko@sntech.de>
