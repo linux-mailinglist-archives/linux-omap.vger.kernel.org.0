@@ -2,54 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3040055CC7D
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Jun 2022 15:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0FD355C8B9
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Jun 2022 14:55:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233863AbiF0K5F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Jun 2022 06:57:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54190 "EHLO
+        id S237533AbiF0Lsz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Jun 2022 07:48:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233852AbiF0K5E (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jun 2022 06:57:04 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 055A9646F;
-        Mon, 27 Jun 2022 03:57:04 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 23E3F8106;
-        Mon, 27 Jun 2022 10:51:53 +0000 (UTC)
-Date:   Mon, 27 Jun 2022 13:57:02 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: am33xx: Map baseboard EEPROM on BeagleBone
- Black
-Message-ID: <YrmM/nCKXwcqK6n1@atomide.com>
-References: <20220620152150.708664-1-broonie@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220620152150.708664-1-broonie@kernel.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S238361AbiF0LsV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jun 2022 07:48:21 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63462FD10
+        for <linux-omap@vger.kernel.org>; Mon, 27 Jun 2022 04:40:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1656330041;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=6gF+EtlMk3gTGWSABVOVEZv/1/nvZ6L2CYZCHCa/pVE=;
+    b=WyTM3I+wnCu0BLkmHa/A4LLD7ymjUaOUKVf5tJj9LM8K10X1S2HUCZvt+SC+quTOsO
+    MUVuVUQwLKz9SZdyOJrO2Ye7RONI9FMQKZYphhPyWsvhNeIClkAolNp9vQLgBPh+Kk4U
+    XA2Mj/YiMjbW61rY71EzMpl+sVaaWX+cfY1vqURGjiSn166zC91Q26n8tNpP2MmrqBUj
+    R/R2acqtQ927qfXAqSq3lFzeyo7fSmBJqe2JNiijeZauqqVpAAUKusuiwuMILl0owevB
+    rpAgTxP7wC21UZ5YdEdKx2m/IrqJAelBml76syi+pcnh80vPE6MFXSo67Jp/7Jl2BCkh
+    Fpmw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw43tlAA="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+    by smtp.strato.de (RZmta 47.46.0 DYNA|AUTH)
+    with ESMTPSA id qc786ey5RBeeCnf
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Mon, 27 Jun 2022 13:40:40 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
+Subject: Re: Pandora audio using machine_is_omap3_pandora() check
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <Yrl92RILZwhQOP+e@atomide.com>
+Date:   Mon, 27 Jun 2022 13:40:40 +0200
+Cc:     Grazvydas Ignotas <notasas@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
+        alsa-devel@alsa-project.org,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Stefan Leichter <sle85276@gmx.de>, Grond <grond66@riseup.net>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B6EFBA88-2311-4455-82CB-3E5382C92B4E@goldelico.com>
+References: <Yrl92RILZwhQOP+e@atomide.com>
+To:     Tony Lindgren <tony@atomide.com>
+X-Mailer: Apple Mail (2.3445.104.21)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Mark Brown <broonie@kernel.org> [220620 18:17]:
-> The identification EEPROM on the BeagleBone Black baseboard is supplied
-> by VDD_3V3A which is supplied by LDO4 on the PMIC. Map this as per the DT
-> binding for the EEPROM. Since this supply is always-on this has no
-> practical impact but it does silence a warning at boot due to using a dummy
-> regulator.
+Hi Tony,
 
-Thanks applying into omap-for-v5.20/dt. Sorry looks like I missed your
-earlier patch somehow.
+> Am 27.06.2022 um 11:52 schrieb Tony Lindgren <tony@atomide.com>:
+>=20
+> Hi Grazvydas,
+>=20
+> Arnd noticed that pandora audio is using machine_is_omap3_pandora() =
+check
+> that never succeeds for devicetree booting machines. Looks like this =
+has
+> been broken at some point many years ago with the devicetree =
+conversion.
+>=20
+> Does anybody have an interest in fixing this driver?
 
-Regards,
+we already have fixes by Stefan Leichter and Grond here (incl. removing =
+any call to machine_is_omap3_pandora):
 
-Tony
+	=
+https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
+s/letux/sound-soc
+
+But I don't know who can volunteer to run this series through the =
+upstreaming discussions
+and do regression tests (AFAIR the Pandora of Grond is broken and he has =
+no replacement).
+
+BR,
+NIkolaus=
