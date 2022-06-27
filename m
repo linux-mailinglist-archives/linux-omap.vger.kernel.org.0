@@ -2,37 +2,26 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F84A55C42E
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Jun 2022 14:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 820A255D739
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Jun 2022 15:18:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235947AbiF0M2m (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Jun 2022 08:28:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32958 "EHLO
+        id S236504AbiF0NsU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Jun 2022 09:48:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235907AbiF0M2W (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jun 2022 08:28:22 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C767363F4;
-        Mon, 27 Jun 2022 05:28:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 92733B81110;
-        Mon, 27 Jun 2022 12:28:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28F7C3411D;
-        Mon, 27 Jun 2022 12:28:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1656332899;
-        bh=ItpgoEcOuwDEFm+eFghMeChypkh3vU8dbMK2C/PstZk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=1Pzi1/gcvjNfq0hTLc2246UYLr1cBss+sqkSAubLHFv005K2lJhz/KgtJq0as3QSN
-         YoyVuLjwAMvFv8mn7Ysasd3NK1lDlUI8ECSp+h1GOD0XAsmSlAXz85XZwoi6GMCPfe
-         eyyHKtgLIi2ya+3tyMXACRZSaq+SGyR9ewTfOLZQ=
-Date:   Mon, 27 Jun 2022 14:16:47 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Tony Lindgren <tony@atomide.com>
+        with ESMTP id S236525AbiF0NsU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jun 2022 09:48:20 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 73935247;
+        Mon, 27 Jun 2022 06:48:15 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 6ED768106;
+        Mon, 27 Jun 2022 13:43:04 +0000 (UTC)
+Date:   Mon, 27 Jun 2022 16:48:13 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
         Jiri Slaby <jirislaby@kernel.org>,
         Johan Hovold <johan@kernel.org>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
@@ -41,58 +30,72 @@ Cc:     Andy Shevchenko <andriy.shevchenko@intel.com>,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 1/1] serial: core: Start managing serial controllers
  to enable runtime PM
-Message-ID: <Yrmfr3GfXYhclKXA@kroah.com>
+Message-ID: <Yrm1HaUtjTMcSIE+@atomide.com>
 References: <20220615062455.15490-1-tony@atomide.com>
+ <Yrmfr3GfXYhclKXA@kroah.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220615062455.15490-1-tony@atomide.com>
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <Yrmfr3GfXYhclKXA@kroah.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 09:24:55AM +0300, Tony Lindgren wrote:
-> We want to enable runtime PM for serial port device drivers in a generic
-> way. To do this, we want to have the serial core layer manage the
-> registered serial port controllers. For runtime PM, we need a way to find
-> the serial ports for each serial port controller device.
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> [220627 12:23]:
+> On Wed, Jun 15, 2022 at 09:24:55AM +0300, Tony Lindgren wrote:
+> > We want to enable runtime PM for serial port device drivers in a generic
+> > way. To do this, we want to have the serial core layer manage the
+> > registered serial port controllers. For runtime PM, we need a way to find
+> > the serial ports for each serial port controller device.
+> > 
+> > The serial core manages ports. Each serial controller can have multiple
+> > ports. As serial core has no struct device, and the serial port device
+> > drivers have their own driver data, we cannot currently start making
+> > use of serial core generic data easily without changing all the serial
+> > port device drivers.
 > 
-> The serial core manages ports. Each serial controller can have multiple
-> ports. As serial core has no struct device, and the serial port device
-> drivers have their own driver data, we cannot currently start making
-> use of serial core generic data easily without changing all the serial
-> port device drivers.
+> Really?  Why not make struct uart_port a real struct device?
 
-Really?  Why not make struct uart_port a real struct device?
+Okie dokie
 
-> We could consider adding a serial core specific struct device. It would
-> be a child of the serial port device, and would allow us eventually to use
-> device_links to add generic runtime PM calls for example. But as the serial
-> core layer is not a device driver, driver specific features would need to
-> be added, and are probably not justified for a virtual device.
+> > We could consider adding a serial core specific struct device. It would
+> > be a child of the serial port device, and would allow us eventually to use
+> > device_links to add generic runtime PM calls for example. But as the serial
+> > core layer is not a device driver, driver specific features would need to
+> > be added, and are probably not justified for a virtual device.
+> 
+> I think it's very justified, let's not paper over this whole thing by
+> adding a kref stuck in in the middle and trying to hook up the PM code
+> to it, instead of just using all of the PM logic that the driver model
+> already provides.
 
-I think it's very justified, let's not paper over this whole thing by
-adding a kref stuck in in the middle and trying to hook up the PM code
-to it, instead of just using all of the PM logic that the driver model
-already provides.
+OK. Having the serial controller be the parent device for the port device
+will make runtime PM work as designed :)
 
-> Considering the above, let's improve the serial core layer so we can
-> manage the serial port controllers better. Let's register the controllers
-> with the serial core layer in addition to the serial ports.
+> > Considering the above, let's improve the serial core layer so we can
+> > manage the serial port controllers better. Let's register the controllers
+> > with the serial core layer in addition to the serial ports.
+> 
+> Why can't controllers be a device as well?
 
-Why can't controllers be a device as well?
+The controllers are devices already probed by the serial port drivers.
+What's missing is mapping the ports (as devices based on the comments
+above) to the controller devices. I don't think we need another struct
+device for the serial controller in addition to the serial port driver
+device and it's child port devices.
 
-Let's try to work with the driver model here, not work around it, if at
-all possible.  We never did a full conversion of the serial layer to the
-driver core all those decades ago.  Perhaps now is the time to really do
-that.
+> Let's try to work with the driver model here, not work around it, if at
+> all possible.  We never did a full conversion of the serial layer to the
+> driver core all those decades ago.  Perhaps now is the time to really do
+> that.
 
-thanks,
+Yes so it seems.
 
-greg k-h
+Regards,
+
+Tony
