@@ -2,97 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F40C559D7B
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jun 2022 17:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50CB355D967
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Jun 2022 15:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232137AbiFXPiC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 24 Jun 2022 11:38:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44900 "EHLO
+        id S231908AbiF0GNi (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Jun 2022 02:13:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232382AbiFXPiA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 24 Jun 2022 11:38:00 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56432A46B
-        for <linux-omap@vger.kernel.org>; Fri, 24 Jun 2022 08:37:57 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id i67-20020a1c3b46000000b003a03567d5e9so1893007wma.1
-        for <linux-omap@vger.kernel.org>; Fri, 24 Jun 2022 08:37:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=IGWWvGYMbJMzHNjMbMwN/PgKeHvUTnFkfiEKD4OboOU=;
-        b=dctimEgMCr/Ncq3rV7xZgljVKZJ5didIgUqFkPEb1mNuKIbZdvBp1rDgMlHMd6oelI
-         lzQUNV4tQ2OOJh2BAYCh518YxoCPym36nK6FZlYHqxcF/eKourkKVXdiQZH8zYAxv6ln
-         hrdk2e1h1GV4+mpJLrbIE9G6YBhsxCbo5RR7bQgeqFv4RdXfRJ7qKTAlsHdcspiVM/aI
-         M3K44TCX8WYnKSKx2LxQZ9XddSWV4ljzAiYxIVH4jj1b6BrXH5oI2WSnm9QbEKsNhKa3
-         4s+rVNxEc4ba5BgKv5qfHF9vp8MK5aUUxNKWHNLx/WRKwBEYh/tQY+ChHg4tr9OU8MjX
-         Y0aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=IGWWvGYMbJMzHNjMbMwN/PgKeHvUTnFkfiEKD4OboOU=;
-        b=kMujs9ejdbAODUgkjgwxet5iUnCaIi9i5zBtHUSBUafg9E0ORG9Eng4aNf/y6XCnHC
-         pP/VUp5hFqE/d6ePSKentX5uh4S3Ji+qh+NzEZM+JI81t//Es4pYyoWww0fpIl2R+uDW
-         DTWAk5boXyCaKCShGh0qgqWa5JFurKIsmmb6I8+TtRRqM88CLcqzPy0ZCS6BNu2bLdIg
-         i3dEj2t9aM7HT/dUNZkFlhas4Oxj3h+uMbS+TaZRyrWhsC1GjIUQVqYT0cH3onapvbqj
-         4FKBTh3IblyeWL+6a4rfsri+BrLvwUZi35Uvshyf8ZKKCMp0mCPMvHTu/3N3z5k/e3ZK
-         aofA==
-X-Gm-Message-State: AJIora9rVbw7ls4ZaaIw5IJ2TUrHVGIErPSV6+rdIAhxx0kqRf38A+oy
-        8jXQINH+HU2NHhgqlQYYig2ILg==
-X-Google-Smtp-Source: AGRyM1uxz26dArL1HDuhnHUPyQcp+dojHE88iHnjWFPwQfSmo5RIw/FZdyx3sebIjsfZagXwHsvh7A==
-X-Received: by 2002:a05:600c:29d3:b0:397:4730:ee75 with SMTP id s19-20020a05600c29d300b003974730ee75mr4619787wmd.149.1656085075899;
-        Fri, 24 Jun 2022 08:37:55 -0700 (PDT)
-Received: from [192.168.0.237] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id bh7-20020a05600c3d0700b0039c948dbb61sm3135904wmb.26.2022.06.24.08.37.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jun 2022 08:37:55 -0700 (PDT)
-Message-ID: <8dc2a434-15bc-c602-0272-fdb6159fc0d1@linaro.org>
-Date:   Fri, 24 Jun 2022 17:37:54 +0200
+        with ESMTP id S229850AbiF0GNh (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jun 2022 02:13:37 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 226FF2718;
+        Sun, 26 Jun 2022 23:13:35 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 671878120;
+        Mon, 27 Jun 2022 06:08:24 +0000 (UTC)
+Date:   Mon, 27 Jun 2022 09:13:33 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Chunyan Zhang <zhang.chunyan@linaro.org>,
+        Faiz Abbas <faiz_abbas@ti.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org,
+        Yegor Yefremov <yegorslists@googlemail.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v2 1/1] mmc: sdhci-omap: Fix a lockdep warning for PM
+ runtime init
+Message-ID: <YrlKjZHJ37PHy9af@atomide.com>
+References: <20220622051215.34063-1-tony@atomide.com>
+ <CAPDyKFpNBQK3QZk-+5-4YB8=2O3sxwj5-nThd00ayp7FHSjUSA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v2] ARM: dts: am33xx: Fix MMCHS0 dma properties
-Content-Language: en-US
-To:     YuTong Chang <mtwget@gmail.com>, bcousson@baylibre.com
-Cc:     tony@atomide.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-omap@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220620124146.5330-1-mtwget@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220620124146.5330-1-mtwget@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpNBQK3QZk-+5-4YB8=2O3sxwj5-nThd00ayp7FHSjUSA@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 20/06/2022 14:41, YuTong Chang wrote:
-> According to technical manual(table 11-24), the DMA of MMCHS0 should be
-> direct mapped.
+* Ulf Hansson <ulf.hansson@linaro.org> [220623 12:55]:
+> On Wed, 22 Jun 2022 at 07:12, Tony Lindgren <tony@atomide.com> wrote:
+> >
+> > We need runtime PM enabled early in probe before sdhci_setup_host() for
+> > sdhci_omap_set_capabilities(). But on the first runtime resume we must
+> > not call sdhci_runtime_resume_host() as sdhci_setup_host() has not been
+> > called yet. Let's check for an initialized controller like we already do
+> > for context restore to fix a lockdep warning.
 > 
-> Signed-off-by: YuTong Chang <mtwget@gmail.com>
-> ---
-> v1 -> v2: Cleaned up coding style and addressed review comments
+> Thanks for explaining the background to the problem. However, looking
+> a bit closer I am worried that the error path in ->probe() is broken
+> too.
+> 
+> It seems in the error path, at the label "err_rpm_put", there is a
+> call to pm_runtime_put_autosuspend(). This doesn't really guarantee
+> that the ->runtime_suspend() callback will be invoked, which I guess
+> is the assumption, don't you think?
 
-Please add Acked-by/Reviewed-by tags when posting new versions. However,
-there's no need to repost patches *only* to add the tags. The upstream
-maintainer will do that for acks received on the version they apply.
+OK I'll check and send a separate patch for that.
 
-https://elixir.bootlin.com/linux/v5.17/source/Documentation/process/submitting-patches.rst#L540
+> That said, I wonder if it would not be easier to convert the ->probe()
+> function to make use of pm_runtime_get_noresume() and
+> pm_runtime_set_active() instead. In this way the ->probe() function
+> becomes responsible of turning on/off the resources "manually" that it
+> requires to probe (and when it fails to probe), while we can keep the
+> ->runtime_suspend|resume() callbacks simpler.
+> 
+> Did that make sense to you?
 
-If a tag was not added on purpose, please state why and what changed.
+Simpler would be better :) We need to call pm_runtime_get_sync() at some
+point though to enable the parent device hierarchy. Just calling the
+sdhci_omap runtime functions is not enough. And we still need to check
+for the valid context too. Also I'm not convinced that calling
+pm_runtime_get_sync() on the parent device would do the right thing on
+old omap3 devices without bigger changes.. But maybe you have some better
+ideas that I'm not considering.
 
+Regards,
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-
-Best regards,
-Krzysztof
+Tony
