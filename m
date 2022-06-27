@@ -2,94 +2,139 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0FD355C8B9
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Jun 2022 14:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8586255E2D0
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Jun 2022 15:36:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237533AbiF0Lsz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 27 Jun 2022 07:48:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45228 "EHLO
+        id S238650AbiF0Lxn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 27 Jun 2022 07:53:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238361AbiF0LsV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jun 2022 07:48:21 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63462FD10
-        for <linux-omap@vger.kernel.org>; Mon, 27 Jun 2022 04:40:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1656330041;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=6gF+EtlMk3gTGWSABVOVEZv/1/nvZ6L2CYZCHCa/pVE=;
-    b=WyTM3I+wnCu0BLkmHa/A4LLD7ymjUaOUKVf5tJj9LM8K10X1S2HUCZvt+SC+quTOsO
-    MUVuVUQwLKz9SZdyOJrO2Ye7RONI9FMQKZYphhPyWsvhNeIClkAolNp9vQLgBPh+Kk4U
-    XA2Mj/YiMjbW61rY71EzMpl+sVaaWX+cfY1vqURGjiSn166zC91Q26n8tNpP2MmrqBUj
-    R/R2acqtQ927qfXAqSq3lFzeyo7fSmBJqe2JNiijeZauqqVpAAUKusuiwuMILl0owevB
-    rpAgTxP7wC21UZ5YdEdKx2m/IrqJAelBml76syi+pcnh80vPE6MFXSo67Jp/7Jl2BCkh
-    Fpmw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj4Qpw9iZeHWElw43tlAA="
-X-RZG-CLASS-ID: mo00
-Received: from imac.fritz.box
-    by smtp.strato.de (RZmta 47.46.0 DYNA|AUTH)
-    with ESMTPSA id qc786ey5RBeeCnf
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-        (Client did not present a certificate);
-    Mon, 27 Jun 2022 13:40:40 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
-Subject: Re: Pandora audio using machine_is_omap3_pandora() check
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <Yrl92RILZwhQOP+e@atomide.com>
-Date:   Mon, 27 Jun 2022 13:40:40 +0200
-Cc:     Grazvydas Ignotas <notasas@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
-        alsa-devel@alsa-project.org,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Stefan Leichter <sle85276@gmx.de>, Grond <grond66@riseup.net>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B6EFBA88-2311-4455-82CB-3E5382C92B4E@goldelico.com>
-References: <Yrl92RILZwhQOP+e@atomide.com>
-To:     Tony Lindgren <tony@atomide.com>
-X-Mailer: Apple Mail (2.3445.104.21)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S239037AbiF0LxE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 27 Jun 2022 07:53:04 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C653DF53;
+        Mon, 27 Jun 2022 04:47:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1656330456;
+  x=1687866456;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HvYHOeFy99wGwq/w2fx0FEcTo66gkhtePc7lFcpF/fs=;
+  b=YrScMb56OEuqc9o6FhUutnD/8QeywtmPSgdmJVGgOjiGve7Rk4JVR94p
+   OmgEcEZZtvVnYg8H2pm66ekaT1ksGnX3BD5bOVro6njJDTuf4P469THMN
+   nukZ0UD0zMDP+exFbknv/aXk3yp/hLUO3AwzMyfAEDqViKimHRbJFcCqj
+   vTG9e9Z4s3IVfxlIa2PH0qbwNz8C9FPt8SVzBbpx5WW+iY5uHelZJoQr1
+   D5B6lJizOvq4fYM5wA1G06UvpmU/v3/JPbH/N4iF1nZQpHIShZ2imSQwK
+   7l6oF+7nq2WGcKczL2gV8rLQzkKmvhes81lHwLspEL7qHaFMYXlnpkkLE
+   g==;
+Date:   Mon, 27 Jun 2022 13:47:33 +0200
+From:   Jesper Nilsson <Jesper.Nilsson@axis.com>
+To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
+CC:     Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Richard Zhu <hongxing.zhu@nxp.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Minghuan Lian <minghuan.Lian@nxp.com>,
+        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+        Yue Wang <yue.wang@Amlogic.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Jonathan Chocron <jonnyc@amazon.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Jesper Nilsson <Jesper.Nilsson@axis.com>,
+        Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Greentime Hu <greentime.hu@sifive.com>,
+        Rahul Tanwar <rtanwar@maxlinear.com>,
+        Srikanth Thokala <srikanth.thokala@intel.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Stanimir Varbanov <svarbanov@mm-sol.com>,
+        Pratyush Anand <pratyush.anand@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+        Frank Li <Frank.Li@nxp.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-samsung-soc@vger.kernel.org" 
+        <linux-samsung-soc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-amlogic@lists.infradead.org" 
+        <linux-amlogic@lists.infradead.org>,
+        linux-arm-kernel <linux-arm-kernel@axis.com>,
+        "linux-rockchip@lists.infradead.org" 
+        <linux-rockchip@lists.infradead.org>,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH RESEND v5 15/18] PCI: dwc: Add dw_ prefix to the
+ pcie_port structure name
+Message-ID: <20220627114733.GG13332@axis.com>
+References: <20220624143428.8334-1-Sergey.Semin@baikalelectronics.ru>
+ <20220624143428.8334-16-Sergey.Semin@baikalelectronics.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20220624143428.8334-16-Sergey.Semin@baikalelectronics.ru>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Tony,
+On Fri, Jun 24, 2022 at 04:34:25PM +0200, Serge Semin wrote:
+> All of the DW PCIe core driver entities have names with the dw_ prefix in
+> order to easily distinguish local and common PCIe name spaces. All except
+> the pcie_port structure which contains the DW PCIe Root Port descriptor.
+> For historical reason the structure has retained the original name since
+> commit 340cba6092c2 ("pci: Add PCIe driver for Samsung Exynos") when
+> the DW PCIe IP-core support was added to the kernel. Let's finally fix
+> that by adding the dw_ prefix to the structure name and by adding the _rp
+> suffix to be similar to the EP counterpart. Thus the name will be coherent
+> with the common driver naming policy. It shall make the driver code more
+> readable eliminating visual confusion between the local and generic PCI
+> name spaces.
+> 
+> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-> Am 27.06.2022 um 11:52 schrieb Tony Lindgren <tony@atomide.com>:
->=20
-> Hi Grazvydas,
->=20
-> Arnd noticed that pandora audio is using machine_is_omap3_pandora() =
-check
-> that never succeeds for devicetree booting machines. Looks like this =
-has
-> been broken at some point many years ago with the devicetree =
-conversion.
->=20
-> Does anybody have an interest in fixing this driver?
+Sorry, I never replied in the thread for the last patch,
+your reasoning for not changing the parameter name made sense.
 
-we already have fixes by Stefan Leichter and Grond here (incl. removing =
-any call to machine_is_omap3_pandora):
+For the ARTPEC-6 parts,
 
-	=
-https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
-s/letux/sound-soc
+Acked-by: Jesper Nilsson <jesper.nilsson@axis.com>
 
-But I don't know who can volunteer to run this series through the =
-upstreaming discussions
-and do regression tests (AFAIR the Pandora of Grond is broken and he has =
-no replacement).
-
-BR,
-NIkolaus=
+/^JN - Jesper Nilsson
+-- 
+               Jesper Nilsson -- jesper.nilsson@axis.com
