@@ -2,139 +2,204 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1965560875
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Jun 2022 20:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1A8560B36
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Jun 2022 22:43:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232635AbiF2SDn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Jun 2022 14:03:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43942 "EHLO
+        id S229890AbiF2UnT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 29 Jun 2022 16:43:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232524AbiF2SDJ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Jun 2022 14:03:09 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 063DC3EA81;
-        Wed, 29 Jun 2022 11:03:00 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id i8-20020a17090aee8800b001ecc929d14dso1683557pjz.0;
-        Wed, 29 Jun 2022 11:03:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=XIpnrguJEOYbKZ/v8Ohl00ltB40XiJTO7XeAlWHCLZU=;
-        b=EFhfK5fl6aJsuSEIcibs1IuZPmDn92r/vQdES53J3+85yqk5ieLBCuem/gCxhqDBO8
-         OlyOtiuosuifGLOOE+NtKKBb+ri2UQpPkQr8WGAZ6MakibRX9Jxm0iT9fKbuQWvB6t+a
-         1TQHB6/NAj7VyHwMjty0bvXraLl3StzkvduCg9mDVnw+aXfXNaGX2zImJvPbCueja+2H
-         63F9RtCUxyPlYwnOMRNEtmA/m1JiVk/0nAvGSqkuVgiudRnRBdlK5J3Yr0u9Y3bwiao5
-         +Fl5ofb+S1x+xvyI0OBXNF/U1igKRlMsesYwBsOC0xUXz69K4EIbd14KP1TKuose0zRO
-         BrIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=XIpnrguJEOYbKZ/v8Ohl00ltB40XiJTO7XeAlWHCLZU=;
-        b=dAPoK/ajRqJJ0zbLFjiwxnIXLn7RWL/YlTYJfFD38mp9C78yWGpxaj7WUq5Lns1omb
-         oG9yFN9h1vfPlm3kcJpFSrRmi9oav7LR7Z2R84pXU3O4IML1Kw8GJxY0N6RBZx44NNVO
-         +60pivEEhcL+08Jzcj0zI2FsNQfpxrxhjL5Vbf/8bYltperKqTiJODZ5H4LQvQreW7yH
-         KwxfTsngWufV3YnCs3S9qtHaWpPRLTWYkOjHzQ8paP+svZeL1v+F6kvOOriqAkkw8VA+
-         lLAoEocZR4TczzMdaCQHeag2eyjqWSY4u7RC2XRGJRu/xuJCQl+xFOjMjBiy3zNAw86Q
-         8V0A==
-X-Gm-Message-State: AJIora/rNvcZK9BpHQOkwsPvkDEp3jb5WU9XdmtJ7HN7rHd1ItUuyyoZ
-        ZSXN/MPImRuOS1v7PrOtrkMWQiMaDAI=
-X-Google-Smtp-Source: AGRyM1vyCTkFgmXF12mnOiBHZeYMSiqKsWZgCTEodWOkPVE2BBWtmZcyCSUyLjU6zi2W79i9BoPDTA==
-X-Received: by 2002:a17:90b:4f41:b0:1ed:712:fd80 with SMTP id pj1-20020a17090b4f4100b001ed0712fd80mr6895890pjb.224.1656525779089;
-        Wed, 29 Jun 2022 11:02:59 -0700 (PDT)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id s7-20020a17090302c700b00168e83eda56sm11736371plk.3.2022.06.29.11.02.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jun 2022 11:02:58 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     stable@vger.kernel.org
-Cc:     Stefan Agner <stefan@agner.ch>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>,
-        Tony Lindgren <tony@atomide.com>,
-        Hans Ulli Kroll <ulli.kroll@googlemail.com>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        Andre Przywara <andre.przywara@arm.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Jian Cai <caij2003@gmail.com>,
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT),
-        linux-kernel@vger.kernel.org (open list),
-        linux-crypto@vger.kernel.org (open list:CRYPTO API),
-        linux-omap@vger.kernel.org (open list:OMAP2+ SUPPORT),
-        clang-built-linux@googlegroups.com (open list:CLANG/LLVM BUILD SUPPORT),
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH stable 5.4 11/11] crypto: arm/ghash-ce - define fpu before fpu registers are referenced
-Date:   Wed, 29 Jun 2022 11:02:27 -0700
-Message-Id: <20220629180227.3408104-12-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220629180227.3408104-1-f.fainelli@gmail.com>
-References: <20220629180227.3408104-1-f.fainelli@gmail.com>
+        with ESMTP id S229745AbiF2UnS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Jun 2022 16:43:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6391821241
+        for <linux-omap@vger.kernel.org>; Wed, 29 Jun 2022 13:43:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1B1C60A1E
+        for <linux-omap@vger.kernel.org>; Wed, 29 Jun 2022 20:43:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B16C341CC
+        for <linux-omap@vger.kernel.org>; Wed, 29 Jun 2022 20:43:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656535396;
+        bh=ds5+xsPIagNwPl3Z4A5TavHTNPqV/6jafhXXZEluXek=;
+        h=From:Date:Subject:To:Cc:From;
+        b=d+fmV9Ev98gKGm/ASCGyU7H3DQPJiptxyFq/utE1khFtnh1UA0qbliC/sUI6HYAXi
+         /ZBstrBS1F5qp8Nu5kNwzPpRB4TusBxYJHkMySbFg6Cl5rBstMX8LomOdBeC3L/MV+
+         VeHUxIcLuDd2JFI5vMXa5AXOhJt1Vz2PVmnYaO6/awnCvabGWQfMZ2Pgs1Q057tXiB
+         PVbA01euE2tw0yeWnvDiDKXtNWyp56pQygL0IFr4A8bW5na25iTx1jqKcJaElbff3d
+         7l+dUv4zqH84u6WZ6nlOKdPtg4EcnPfmAP+7zDKHo1TPwd9n8r3YfMJ9c+d51FW/aA
+         7k3WFZxAaLTFA==
+Received: by mail-yb1-f177.google.com with SMTP id l11so30047708ybu.13
+        for <linux-omap@vger.kernel.org>; Wed, 29 Jun 2022 13:43:16 -0700 (PDT)
+X-Gm-Message-State: AJIora+h9POBXY6lpFZcULOhzem8bb98ghV/IoA4NPBxR+pjbXY6e/aP
+        aMf/aQTd07fuYVRxSKtCkBXNrpC+yiuaB87/IFA=
+X-Google-Smtp-Source: AGRyM1s0u+VXnAyJrYbHo+9/7dGEySBa5UU3o37SweEJABhpN1WmxepLhwqoZpp2BYg9EL3tX0PbrooNI4CikirU/pM=
+X-Received: by 2002:a25:760e:0:b0:66c:95eb:6c69 with SMTP id
+ r14-20020a25760e000000b0066c95eb6c69mr5667796ybc.106.1656535395240; Wed, 29
+ Jun 2022 13:43:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Wed, 29 Jun 2022 22:42:58 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
+Message-ID: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
+Subject: Scheduling (unused) board file removal for linux-6.x
+To:     Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
+        Lennert Buytenhek <kernel@wantstofly.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Mauri Sandberg <maukka@ext.kapsi.fi>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Stefan Agner <stefan@agner.ch>
+With the multiplatform work completed in the past merge window, and the
+scheduled deprecation of the Samsung s3c platforms, I decided to have a
+look at the remaining board files. There are 196 remaining boards, down
+from 489 boards ten years ago, but my estimate is that only few of those
+ever booted a linux-5.x kernel, and even less for future kernels. The
+question is how to find out which ones are still used, and which ones
+can go.
 
-commit 7548bf8c17d84607c106bd45d81834afd95a2edb upstream
+I would propose that we start by changing the assumption that all boards
+might be used, instead assuming that they are all outdated unless someone
+says that they actually prefer to keep it in the kernel.  I have started
+a list of all 196 boards and annotated the ones that look like candidates
+for removal [1]. If a board you use is on that list, please either reply
+here or add a comment in the document.
 
-Building ARMv7 with Clang's integrated assembler leads to errors such
-as:
-arch/arm/crypto/ghash-ce-core.S:34:11: error: register name expected
- t3l .req d16
-          ^
+Unless someone has a better idea for how to proceed, I would allow
+six months for users to speak up and then remove the orphaned board
+files for the release following the LTS kernel. I can't list all boards
+individually, so here is a breakdown by platform:
 
-Since no FPU has selected yet Clang considers d16 not a valid register.
-Moving the FPU directive on-top allows Clang to parse the registers and
-allows to successfully build this file with Clang's integrated assembler.
+s3c24xx
 
-Signed-off-by: Stefan Agner <stefan@agner.ch>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- arch/arm/crypto/ghash-ce-core.S | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+These are all scheduled for removal in early 2023 already, once the next
+longterm stable kernel is out. No changes here, but it seems useful
+to use the same timeline for removing unused board files of the other
+platforms together.
 
-diff --git a/arch/arm/crypto/ghash-ce-core.S b/arch/arm/crypto/ghash-ce-core.S
-index 534c9647726d..9f51e3fa4526 100644
---- a/arch/arm/crypto/ghash-ce-core.S
-+++ b/arch/arm/crypto/ghash-ce-core.S
-@@ -8,6 +8,9 @@
- #include <linux/linkage.h>
- #include <asm/assembler.h>
- 
-+	.arch		armv8-a
-+	.fpu		crypto-neon-fp-armv8
-+
- 	SHASH		.req	q0
- 	T1		.req	q1
- 	XL		.req	q2
-@@ -88,8 +91,6 @@
- 	T3_H		.req	d17
- 
- 	.text
--	.arch		armv8-a
--	.fpu		crypto-neon-fp-armv8
- 
- 	.macro		__pmull_p64, rd, rn, rm, b1, b2, b3, b4
- 	vmull.p64	\rd, \rn, \rm
--- 
-2.25.1
+s3c64xx
 
+There are ten board files, which are currently scheduled for removal in
+2024, along with the DT based boards for this SoC. We can still decide
+to throw out some of the board files earlier though, while keeping the
+platform around.
+
+cns3xxx
+
+There is only one reference board here, the actual products that were
+previously supported, none of the board files from openwrt (now gone) made
+it in, and the DT support was never completed, so the entire platform can
+go away. We could also consider dropping the other arm11mpcore platforms
+(oxnas and the mpcore variants of realview/integrator) at the same time,
+since there are known issues with the CPU core.
+
+iop32x
+
+Some of the NAS devices were still in use two years ago as they have
+a lot of RAM for an ARMv5 based machine, not sure if they still are
+used. If they are, a DT conversion similar to what we did for ixp4xx
+should be possible.
+
+pxa
+
+There are a ton of boards on this one, including seven with qemu support,
+but based on IRC discussions, my feeling is that everyone who worked on
+this has already lost interest a few years ago. There is rudimentary DT
+support, so it may be helpful to pick one or two boards (gumstix?) with
+good qemu support and keep them around for conversion to DT, while
+removing all other boards.
+
+mmp
+
+This already has better DT support than pxa, at least for the ARMv7
+based SoCs. The remaining nine board files are all candidates for removal.
+
+sa1100
+
+Similar to PXA, work on this appears to have stopped. Russell probably
+still has an Assabet or some other machine, but I don't know if he
+still plans to keep using new kernels on those. The only machine with
+qemu support is Collie (Sharp SL-5500), so if we keep any boards at all,
+then this should be kept as well. Probably no point doing a DT conversion
+here though.
+
+rpc
+
+Russell is the only known user, and is likely to keep this one around
+for as long as gcc can still build kernels (it needs gcc-8 or older).
+
+footbridge
+
+Three machines, most notably the NetWinder that a few people still have.
+I assume Russell wants to keep the machines working that he still has.
+ep93xx
+
+These are still used, and the platform includes the only remaining two
+board files that were added after linux-3.0. DT support is probably
+doable now that common-clk works. Need information about which boards
+are important.
+
+omap1
+
+common-clk and multiplatform support just landed. There are three boards
+that are likely to be in use (ams-delta, osk and nokia770) and two boards
+supported by qemu (sx1 and palmte), so we may want to keep those and
+try to eventually convert them to DT. The rest can probably get retired.
+
+davinci
+
+DT conversion has stalled, and there are 12 remaining board files,
+mostly for evaluation machines. No idea if any are still in use.
+
+orion5x
+
+DT conversion depends on stalled work for PCI. 16 boards never got
+converted because of this, still enabled in Debian.  Can probably drop the
+reference boards and the machines with less than 64MB. Debian_on_Buffalo
+project apparently tries to keep these working, but there is also some
+new interest in finishing DT conversion.
+
+mv78xx0
+
+Similar to orion5x, but lacking DT support completely. Only three
+machines: one NAS and two reference design.
+
+dove
+
+Two board files, both of which have (incomplete) DT support as well.
+Russell previously wanted to keep these around, not sure if he still
+cares.
+
+         Arnd
+
+[1] https://docs.google.com/spreadsheets/d/1PL4dUUSieeXHzZhAn_Rnix32OTiCfN33sCQejpvI6ng/edit#gid=0
