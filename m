@@ -2,87 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A983560B4E
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Jun 2022 22:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFADA560BA3
+	for <lists+linux-omap@lfdr.de>; Wed, 29 Jun 2022 23:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229774AbiF2U7Q (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 29 Jun 2022 16:59:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45712 "EHLO
+        id S230418AbiF2VUb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-omap@lfdr.de>); Wed, 29 Jun 2022 17:20:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbiF2U7P (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Jun 2022 16:59:15 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E014B3E5D2
-        for <linux-omap@vger.kernel.org>; Wed, 29 Jun 2022 13:59:14 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id l2-20020a05600c4f0200b0039c55c50482so402684wmq.0
-        for <linux-omap@vger.kernel.org>; Wed, 29 Jun 2022 13:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=f/RrlWKl28cVEJBLpgVFRaPER2f/TZX/XOdzqsJeiNU=;
-        b=iJJZRw2X6WM9FkoUsgRMcuvCVmsFCc6eM8XjKqSs8HbEkRtrZWKT4lCSl9iQXCDNzX
-         INM50JM3gMCaC7moYCSgiDV32S+GJC4PYcXd81vScyG3rc0wjcI9b84N0i/uWB4qRWIn
-         fbeMYUQvavGJuV2lhSE4pJ5VaCG0jlnZg7IBYUdDtgikSv6zUKXoikTFUXwy3dDYpKX5
-         DEi9hR977ezG7Cvd5w3id+3aUv+7CaoMDzdQkvwqMcri9EJovZheNcHfg6wczgZEnynn
-         fa0mU+Yx5AAf4PujEXYWCTaChug/p72pbWKMy2Xw8HxASacTWyGkGpFJlsxGHW7jw+Yd
-         cwUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=f/RrlWKl28cVEJBLpgVFRaPER2f/TZX/XOdzqsJeiNU=;
-        b=RmxWkaaRJ3O4/QBpVn7S9u4r2euS4ihEvqeXKxpozcdSxySWLi56D/PpEQV47Js0QD
-         QGxbLEeR0e2d4/Ry+1wNuZyRQElDCxXFBoGF4wQJIAXq3DxQHU7PbVgw1XgaMEUGJg5K
-         ka+uB8Jv9yWXtZGlB1v8Vm89WVyD0cr09e17qCtc/DwgUp8FI2vtObHlFhyoGND5kmtC
-         jhYwhPOHALwN8bz8xOfDvj6EBbICoH5C2WMBu0S/jlZSsHgesTDNlExloTUxzJr3bAOP
-         ihXjlxgoTNv1NuPer06b+Vs5tonx3srxcCHBFgw05MuT8pBDj98a4tv1mZbR7i6cA2O1
-         snCQ==
-X-Gm-Message-State: AJIora9l29lLIxUMvf1co7FWW0rXycSMLxx48/Q9XHYkZ3o2dKHZ4nqo
-        GUopC1JcTMl1ysXEBmhuAdQ=
-X-Google-Smtp-Source: AGRyM1uR+UWqIBwLudnuoYxbKwP5YlSzW6MLeHf57AP/MKXEB0UTGDFKpE5RS+HwgorX5qK9J996+g==
-X-Received: by 2002:a1c:7403:0:b0:3a0:4d65:b1a5 with SMTP id p3-20020a1c7403000000b003a04d65b1a5mr5808071wmc.197.1656536353342;
-        Wed, 29 Jun 2022 13:59:13 -0700 (PDT)
-Received: from giga-mm.localdomain ([195.245.18.14])
-        by smtp.gmail.com with ESMTPSA id v6-20020a05600c12c600b0039c811077d3sm4183626wmd.22.2022.06.29.13.59.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jun 2022 13:59:12 -0700 (PDT)
-Message-ID: <0010bbe738eb6853f49f07a6eb6043e0e7f426a8.camel@gmail.com>
-Subject: Re: Scheduling (unused) board file removal for linux-6.x
-From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Cc:     Russell King <rmk+kernel@armlinux.org.uk>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Lennert Buytenhek <kernel@wantstofly.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Mauri Sandberg <maukka@ext.kapsi.fi>
-Date:   Wed, 29 Jun 2022 22:59:11 +0200
-In-Reply-To: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
-References: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.1 
+        with ESMTP id S229741AbiF2VU3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 29 Jun 2022 17:20:29 -0400
+Received: from hostingweb31-40.netsons.net (hostingweb31-40.netsons.net [89.40.174.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C99113F79;
+        Wed, 29 Jun 2022 14:20:28 -0700 (PDT)
+Received: from [37.161.29.0] (port=43545 helo=[192.168.131.30])
+        by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <luca@lucaceresoli.net>)
+        id 1o6f6m-000BzC-Qd;
+        Wed, 29 Jun 2022 23:20:25 +0200
+Message-ID: <d682fb60-c254-f89e-5d6d-cdf7aa752939@lucaceresoli.net>
+Date:   Wed, 29 Jun 2022 23:20:04 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+From:   Luca Ceresoli <luca@lucaceresoli.net>
+Subject: Re: [PATCH 6/6] i2c: Make remove callback return void
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Wolfram Sang <wsa@kernel.org>
+Cc:     linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-integrity@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-gpio@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, chrome-platform@lists.linux.dev,
+        linux-rpi-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-mtd@lists.infradead.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net, linux-pm@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-mediatek@lists.infradead.org
+References: <20220628140313.74984-1-u.kleine-koenig@pengutronix.de>
+ <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
+Content-Language: en-US
+In-Reply-To: <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lucaceresoli.net
+X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
+X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -91,18 +74,52 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello Arnd!
+Hi,
 
-On Wed, 2022-06-29 at 22:42 +0200, Arnd Bergmann wrote:
-> ep93xx
->=20
-> These are still used, and the platform includes the only remaining two
-> board files that were added after linux-3.0. DT support is probably
-> doable now that common-clk works. Need information about which boards
-> are important.
+[keeping only individuals and lists in Cc to avoid bounces]
 
-I'm still maintaining/able to test CONFIG_MACH_EDB93XX (edb93xx.c).
+On 28/06/22 16:03, Uwe Kleine-König wrote:
+> From: Uwe Kleine-König <uwe@kleine-koenig.org>
+> 
+> The value returned by an i2c driver's remove function is mostly ignored.
+> (Only an error message is printed if the value is non-zero that the
+> error is ignored.)
+> 
+> So change the prototype of the remove function to return no value. This
+> way driver authors are not tempted to assume that passing an error to
+> the upper layer is a good idea. All drivers are adapted accordingly.
+> There is no intended change of behaviour, all callbacks were prepared to
+> return 0 before.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
---=20
-Alexander Sverdlin.
+For versaclock:
 
+> diff --git a/drivers/clk/clk-versaclock5.c b/drivers/clk/clk-versaclock5.c
+> index e7be3e54b9be..657493ecce4c 100644
+> --- a/drivers/clk/clk-versaclock5.c
+> +++ b/drivers/clk/clk-versaclock5.c
+> @@ -1138,7 +1138,7 @@ static int vc5_probe(struct i2c_client *client)
+>  	return ret;
+>  }
+>  
+> -static int vc5_remove(struct i2c_client *client)
+> +static void vc5_remove(struct i2c_client *client)
+>  {
+>  	struct vc5_driver_data *vc5 = i2c_get_clientdata(client);
+>  
+> @@ -1146,8 +1146,6 @@ static int vc5_remove(struct i2c_client *client)
+>  
+>  	if (vc5->chip_info->flags & VC5_HAS_INTERNAL_XTAL)
+>  		clk_unregister_fixed_rate(vc5->pin_xin);
+> -
+> -	return 0;
+>  }
+>  
+>  static int __maybe_unused vc5_suspend(struct device *dev)
+
+Reviewed-by: Luca Ceresoli <luca@lucaceresoli.net>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
+-- 
+Luca
