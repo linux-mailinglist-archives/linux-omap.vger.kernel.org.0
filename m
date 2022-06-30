@@ -2,56 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 344275613D6
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Jun 2022 09:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3669F5615AA
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Jun 2022 11:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232516AbiF3H6R (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Jun 2022 03:58:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50766 "EHLO
+        id S233589AbiF3JIu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Jun 2022 05:08:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229813AbiF3H6R (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Jun 2022 03:58:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D236E12750
-        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 00:58:15 -0700 (PDT)
+        with ESMTP id S233658AbiF3JIs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Jun 2022 05:08:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90B9815714
+        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 02:08:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 224EB61B5D
-        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 07:58:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8105FC341D1
-        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 07:58:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4452CB82935
+        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 09:08:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED29C34115
+        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 09:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656575894;
-        bh=Ps6Dcta2rW4mpLJqA+U5Dcb7HCD9i5hvIIhWrSmkeow=;
+        s=k20201202; t=1656580125;
+        bh=d2GC3Kr/0R7xW3ukZbdxYhtG8FVMuwCG9n9VhvA8HTQ=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=fiNaennfL591w/C4UpaXC1oFdWFhejw1muiIO8ROeEDpCaC8fSuGsH0FqANJHAnYz
-         CwRPxxTVBnuaeMlDh66FICO2AXopKZKyKT7TOgF+3uDWmMtOMcS4MpTMMa1w4Qa8GL
-         8p4f38ZX+g+aDji9knnag77elkWbMnKW2ePnbHSDQcYVDMs9A8krvTvIP/FLIvLemE
-         /vjmcrXd9BVue1HTKBXL7PS8I2SMxsdjLxE3+Uw8MPSZ/dgCT2CvS3HPvbGBeXoamS
-         RzGNWxR1qBXy5LJFnus83CO8IJJh9GKhibumwUrVKFRWwvHvptFVCRrx9M4E84nC1J
-         llID1XLNAqa+Q==
-Received: by mail-yb1-f178.google.com with SMTP id d5so32336333yba.5
-        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 00:58:14 -0700 (PDT)
-X-Gm-Message-State: AJIora80FwWihoUH78J4XTw8ZvJ09aywE/7UDijhvIUT3b7ZgN6P3aRJ
-        c30x0cT5i65+Xh/rocs8Ad5j9ZOnnXHum9s7LbA=
-X-Google-Smtp-Source: AGRyM1sFDX+qSnpHzw+YUX518USnDjL7vuIXpK+mApLLhThhrAqJHGvb6OgrlJDrV/8Sh8roSHsE9EWB21O1iz+G9QQ=
+        b=jq/qlPgSzQYzy0Nx8KKWREoqbo/0H4/Y+uLismUmhDdDHPS+Q7KraXrwaYCuJ7FTL
+         wwZe/MMYTDXt5Xytnuhe0Q2n4uQlcdgJqRku6tnxaOx0CxvjfFhpn/PArouXLtZ0ZQ
+         AdAKy+502pjtH8vAF/u9QLPeP1Fw2wOdUYnhBoDH23qwc1mi7Kd9LZC0KnsvAr/AM7
+         Wyz/EBa+E37nOQKV+JyxThTwIoSMdOv7rhXtTSdWMsyTqe4RtWWg/dzkIhnlw70r/5
+         y5tdAG9H1Kq8CcrVry/ZOSMODZN7pNpM47y71mBZa9DAG7OJRmRkLVI6zxwkeUH/ol
+         JOP0oIVJeWm+Q==
+Received: by mail-yb1-f182.google.com with SMTP id x184so29877183ybg.12
+        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 02:08:44 -0700 (PDT)
+X-Gm-Message-State: AJIora8P8otpuQHigtksp2A1YDoGYr6OK72AMAu/V/CIT9ug5+I+xOPO
+        2XIxbikt5Pc7KJRz+n44UUiFHXmQrjT4YkxPB44=
+X-Google-Smtp-Source: AGRyM1tqttjKVcNFNUyZyZg5rAIRUsDrR228cjUjV2kLZTD7ELo7zMtXZoQzo32ly0lkvM73qU7TjJQ+pZpGS2ysWgY=
 X-Received: by 2002:a25:d60d:0:b0:66c:c951:3eb1 with SMTP id
- n13-20020a25d60d000000b0066cc9513eb1mr8109405ybg.550.1656575893515; Thu, 30
- Jun 2022 00:58:13 -0700 (PDT)
+ n13-20020a25d60d000000b0066cc9513eb1mr8382337ybg.550.1656580124062; Thu, 30
+ Jun 2022 02:08:44 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
- <CAL_JsqJof4gtkYoxbiVSCe147ADNpgasqEgnP5LR8+t8ZRgfyA@mail.gmail.com>
-In-Reply-To: <CAL_JsqJof4gtkYoxbiVSCe147ADNpgasqEgnP5LR8+t8ZRgfyA@mail.gmail.com>
+ <1413e8b9-5e55-e121-926e-38cb66d152ee@kernel.org>
+In-Reply-To: <1413e8b9-5e55-e121-926e-38cb66d152ee@kernel.org>
 From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Thu, 30 Jun 2022 09:57:56 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a39ENT4-FsdqgCT5P1k7-CoBjgz2znGcqqPJoyVmViKAA@mail.gmail.com>
-Message-ID: <CAK8P3a39ENT4-FsdqgCT5P1k7-CoBjgz2znGcqqPJoyVmViKAA@mail.gmail.com>
+Date:   Thu, 30 Jun 2022 11:08:26 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2br8pmFf=SG9OzZOPfyw36kOxKiyMLm_KWfsQPOnqyRg@mail.gmail.com>
+Message-ID: <CAK8P3a2br8pmFf=SG9OzZOPfyw36kOxKiyMLm_KWfsQPOnqyRg@mail.gmail.com>
 Subject: Re: Scheduling (unused) board file removal for linux-6.x
-To:     Rob Herring <robh@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Russell King <rmk+kernel@armlinux.org.uk>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         Alim Akhtar <alim.akhtar@samsung.com>,
         Krzysztof Halasa <khalasa@piap.pl>,
@@ -84,30 +83,27 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jun 30, 2022 at 12:53 AM Rob Herring <robh@kernel.org> wrote:
-> On Wed, Jun 29, 2022 at 2:44 PM Arnd Bergmann <arnd@kernel.org> wrote:
-> > pxa
+On Thu, Jun 30, 2022 at 9:10 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> On 29/06/2022 22:42, Arnd Bergmann wrote:
 > >
-> > There are a ton of boards on this one, including seven with qemu support,
-> > but based on IRC discussions, my feeling is that everyone who worked on
-> > this has already lost interest a few years ago. There is rudimentary DT
-> > support, so it may be helpful to pick one or two boards (gumstix?) with
-> > good qemu support and keep them around for conversion to DT, while
-> > removing all other boards.
+> > s3c64xx
+> >
+> > There are ten board files, which are currently scheduled for removal in
+> > 2024, along with the DT based boards for this SoC. We can still decide
+> > to throw out some of the board files earlier though, while keeping the
+> > platform around.
 >
-> FWIW, u-boot is removing all PXA support.
+> I would keep all s3c24xx/s3c64xx boards till the platform drop. Removing
+> few boards before platform won't give us huge benefits... and anyway
+> just 1 and 2 years and they all will be gone.
 
-I had a look at what boards are left in u-boot at the moment and found 41
-board numbers for machines that can still boot (older) kernels using ATAG.
-Almost all of them require DT in the mainline kernel already though, the
-only two exceptions are:
+I think there is benefit in throwing out some unused s3c64xx boards
+even earlier, as this would simplify some treewide cleanups that have to
+touch every board file, and potentially let us drop some peripheral
+device drivers that have no other users and no DT probing.
 
-* pxa270-colibri (getting removed from u-boot now), and
-* davinci da850evm (kernel has both DT and a board file)
+Ten boards is of course not a lot, but it's still about a third of the
+board files I have currently marked as sticking around past early
+2023.
 
-All other SoCs on my list already have no u-boot support at all.
-For davinci, u-boot supports the same three boards as the kernel
-using DT, on PXA the colibri has been the last one standing for a
-while now.
-
-       Arnd
+        Arnd
