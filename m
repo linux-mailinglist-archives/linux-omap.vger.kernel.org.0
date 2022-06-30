@@ -2,61 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CE1D561946
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Jun 2022 13:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAABF5619EF
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Jun 2022 14:10:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbiF3Lcl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Jun 2022 07:32:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47804 "EHLO
+        id S233788AbiF3MKy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Jun 2022 08:10:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235106AbiF3LcZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Jun 2022 07:32:25 -0400
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF91523BA
-        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 04:32:24 -0700 (PDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-317a66d62dfso175813527b3.7
-        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 04:32:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8TNN5Ia8y6v+Tooa5CWuukdin5G+eRY0Q8ziLcBYBC8=;
-        b=huJGaUDi8lyWMcge6fyskMHcncy+uvpZEruaU46yy9/NBt4TWNwYhPGYP5n9pKLqj4
-         ZhZNlPB3hFMbxZ6ySPUmwnue3TIMnPhGOOPHngMGa7dhRcYinq1H0p6MThJ1XNOCrh8j
-         yx/GmttrdoDXy3R7rS//LF3mjTPw1dxlAn285nm2tzifxJbnHKTbmlCMb6NpegVgoAtJ
-         HSSTNgsh9hXkWlTNdxGAwVt81Mg3NzeleK7ZZ9aeLalEvdamrtI0jlep5Rm1E6mRO18+
-         e1A8QiqZn+PvFiL0J6jZDYA3mUS3D6ySxQhoq3rzbSQzycDh6Vcc84J3pGJd5XRaxox2
-         hK5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8TNN5Ia8y6v+Tooa5CWuukdin5G+eRY0Q8ziLcBYBC8=;
-        b=jImYHdHTc7ys+OBb30UXM4hhHOrqWXPNvrJOH2egF3F7g8qe/RHdvWqWdjG8mwpvsw
-         NotfOYHHiep2Z4irFtuAVKiZyrEITsOm1BDmEfcBVfJ3T4170xXAzNhCIem/srIAOE0Y
-         GTFlB5cbNZv/jAiHsGmsj08/Tpn10BtHqodMMO9yM/mEe+/+dAgfHeDg8sj6rOw4fS/R
-         e2MZYB9yL48zjSEYChIevGvfPxs58OHnV7h8AkYH5pRiJmEvRrAEbPTjkWgSGOCnckTX
-         RT9Ut2ZKf3qh21Fn0Z+0AqM8/6DqFRXmYTVs/9DvaR7t6sz096L7tBO7XDa+XC1ICIt3
-         M5lA==
-X-Gm-Message-State: AJIora90/MnEkez+gECKuZeaeaaGyrw3/byIYySMTjb/J44dOwdpdcAw
-        YF4wqlMchR22GxFeQBAoh+tQvo9yKS9jL8tM6bodVQ==
-X-Google-Smtp-Source: AGRyM1u0aiGHNpXToi0vrrAHXMGb5cF6xPDiugvBBBxEAIHtHqplZQ/UrIqwpG63pezpGXXlPTffCZwa4ghLn1rFUdg=
-X-Received: by 2002:a0d:d487:0:b0:318:48dd:95b3 with SMTP id
- w129-20020a0dd487000000b0031848dd95b3mr10417522ywd.140.1656588743342; Thu, 30
- Jun 2022 04:32:23 -0700 (PDT)
+        with ESMTP id S232835AbiF3MKx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Jun 2022 08:10:53 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AABF457B3
+        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 05:10:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 34C85B82A4F
+        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 12:10:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1633C341D2
+        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 12:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656591050;
+        bh=9rfiaoeTXYExqEyN2w9WKYBmFOpIJvL+l8e5gD6IE8w=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=EbwfTT7WticRk1NohZ0QLFJgZzaEM44EfdSG/U0yR020TFbr5gJoElndfwuRo63X8
+         //QITiY/vEftOD1ePT0MNxTy7Rs28Vts2FaeZkCE6iImGIpsrfCVlZEnJmee3fA361
+         ovD6QSnh54PJtczCFDaoqYu4PghtO90AiqoKrxXCvGjGt2vT6/DtUPHokSWYufNuMN
+         zdxzCT9imHMohLFog2KUyyB56/2skP8iMb/rsOjMdPS7eTQ0EJsRgP+eegtulUietr
+         nlevH9dT4Y5AwmWj0Eu1KQYgHBao+j2ySMPGdoPQXEvU+6/umZATyY2gqkIS4eBqo4
+         I+ofW3FY2uoMQ==
+Received: by mail-yb1-f173.google.com with SMTP id o19so26820003ybg.2
+        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 05:10:49 -0700 (PDT)
+X-Gm-Message-State: AJIora+cOCqkeekadxLx0iZzrYYAYoIW7VCp6GYwKUG995KObeowLa7e
+        DI5PvpbvEWSzH7e+iEPSimhg7c+xleotWTum2AQ=
+X-Google-Smtp-Source: AGRyM1upUqUMAikPmDztiCcn91myQ+vwpyNXXTYryzkqjY2QiZJTKZfoWy8BFfd+3npRtpNPHoNfyeMYT1YUFzBKKbI=
+X-Received: by 2002:a05:6902:120f:b0:668:2228:9627 with SMTP id
+ s15-20020a056902120f00b0066822289627mr9486338ybu.134.1656591048874; Thu, 30
+ Jun 2022 05:10:48 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
-In-Reply-To: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 30 Jun 2022 13:32:11 +0200
-Message-ID: <CACRpkdY2_ZbmcSuuMB9t5bB-tGE0iAc-nE26JwxidRFocRahSw@mail.gmail.com>
+ <1413e8b9-5e55-e121-926e-38cb66d152ee@kernel.org> <CAK8P3a2br8pmFf=SG9OzZOPfyw36kOxKiyMLm_KWfsQPOnqyRg@mail.gmail.com>
+ <7ae70216-d29e-6555-5b0f-6ab4d5632970@kernel.org>
+In-Reply-To: <7ae70216-d29e-6555-5b0f-6ab4d5632970@kernel.org>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Thu, 30 Jun 2022 14:10:31 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2zc6rP+frkuT4S5wDJDyxnihij8M4coDcfABJRKb-yOg@mail.gmail.com>
+Message-ID: <CAK8P3a2zc6rP+frkuT4S5wDJDyxnihij8M4coDcfABJRKb-yOg@mail.gmail.com>
 Subject: Re: Scheduling (unused) board file removal for linux-6.x
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
-        Aswath Govindraju <a-govindraju@ti.com>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
 Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Russell King <rmk+kernel@armlinux.org.uk>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Alim Akhtar <alim.akhtar@samsung.com>,
         Krzysztof Halasa <khalasa@piap.pl>,
         Daniel Mack <daniel@zonque.org>,
@@ -76,10 +72,13 @@ Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Gregory CLEMENT <gregory.clement@bootlin.com>,
         Lennert Buytenhek <kernel@wantstofly.org>,
         Marc Zyngier <maz@kernel.org>,
-        Mauri Sandberg <maukka@ext.kapsi.fi>
+        Mauri Sandberg <maukka@ext.kapsi.fi>,
+        Mark Brown <broonie@kernel.org>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Tomasz Figa <tfiga@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -88,76 +87,46 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Arnd,
-
-thanks for looking into this!
-
-On Wed, Jun 29, 2022 at 10:43 PM Arnd Bergmann <arnd@kernel.org> wrote:
-
-> pxa
-
-This looks like something that would be interesting to pick up and maintain
-with DT support, if and only if there are devices with enough memory.
-
-However I doubt there is interest.
-
-I think the palmtops/PDAs are a bit outdated as enthusiast/hobbyist platforms
-with screens because those people will use PostmarketOS with
-cheap old tablets and phones these days.
-
-> sa1100
+On Thu, Jun 30, 2022 at 11:22 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> On 30/06/2022 11:08, Arnd Bergmann wrote:
+> > On Thu, Jun 30, 2022 at 9:10 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >> On 29/06/2022 22:42, Arnd Bergmann wrote:
+> >>>
+> >>> s3c64xx
+> >>>
+> >>> There are ten board files, which are currently scheduled for removal in
+> >>> 2024, along with the DT based boards for this SoC. We can still decide
+> >>> to throw out some of the board files earlier though, while keeping the
+> >>> platform around.
+> >>
+> >> I would keep all s3c24xx/s3c64xx boards till the platform drop. Removing
+> >> few boards before platform won't give us huge benefits... and anyway
+> >> just 1 and 2 years and they all will be gone.
+> >
+> > I think there is benefit in throwing out some unused s3c64xx boards
+> > even earlier, as this would simplify some treewide cleanups that have to
+> > touch every board file, and potentially let us drop some peripheral
+> > device drivers that have no other users and no DT probing.
+> >
+> > Ten boards is of course not a lot, but it's still about a third of the
+> > board files I have currently marked as sticking around past early
+> > 2023.
 >
-> Similar to PXA, work on this appears to have stopped. Russell probably
-> still has an Assabet or some other machine, but I don't know if he
-> still plans to keep using new kernels on those. The only machine with
-> qemu support is Collie (Sharp SL-5500), so if we keep any boards at all,
-> then this should be kept as well. Probably no point doing a DT conversion
-> here though.
+> OK, if you have some idea which one could be the candidates.
+> Unfortunately I cannot provide here inputs - I have no clue which of S3C
+> boards have users.
 
-My interest is to have something to test that CPU_SA1100 is working
-on and I've been using the HP3600.
+The only one I know of is MACH_WLF_CRAGG_6410, as Mark Brown
+has pointed this one out as being used as the testbed for Wolfson/Cirrus
+audio codecs. The machine is also the only one that shows being worked
+on from the git history. The last patches I found that look like they were
+boot tested on other machines include work by Kukjin Kim in 2015 and by
+Sergio Prado in 2016, but I don't see which boards they were using, and
+I don't think they still care. Thomasz Figa had access to multiple
+machines back in 2014, but he converted those to use DT.
 
-If I wanna keep doing that I should bite the bullet and convert it to
-DT and multiplatform like I did with everything else I need for testing.
-Else I deserve to have it removed on me and I can resurrect it
-using DT if I want.
+If we follow the same approach that I'm suggesting for the other
+platforms and nobody else speaks up, that would leave only the DT
+boards plus the Cragganmore.
 
-> footbridge
->
-> Three machines, most notably the NetWinder that a few people still have.
-> I assume Russell wants to keep the machines working that he still has.
-> ep93xx
->
-> These are still used, and the platform includes the only remaining two
-> board files that were added after linux-3.0. DT support is probably
-> doable now that common-clk works. Need information about which boards
-> are important.
-
-I'm using the NetWinder to test that CPU_SA110 is still working.
-
-Same thing: if it matters enough to me I should convert it to DT
-and multiplatform.
-
-Someone said (ha ha only serious) to convert it to ACPI if it should
-live on since it is a desktop machine...
-
-> davinci
->
-> DT conversion has stalled, and there are 12 remaining board files,
-> mostly for evaluation machines. No idea if any are still in use.
-
-TI is semi-actively maintaining DaVinci, I wonder if we can send
-the message that this needs to be converted to DT pronto to live
-on?
-
-Paging Aswath @TI, who just a few days ago sent some
-suspend/resume patches for GPIO:
-https://lore.kernel.org/linux-gpio/20220613054310.21186-1-a-govindraju@ti.com/
-
-Aswath: can you perhaps raise this internally at TI? Thanks!
-
-Patches also came from Nokia (!) last year see
-ea4ab99cb58cc9f8d64c0961ff9a059825f304cf
-
-Yours,
-Linus Walleij
+       Arnd
