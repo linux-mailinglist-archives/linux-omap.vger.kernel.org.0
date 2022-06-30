@@ -2,63 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A8765612D3
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Jun 2022 08:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BADC5612D7
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Jun 2022 08:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231852AbiF3G4o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 30 Jun 2022 02:56:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56538 "EHLO
+        id S229676AbiF3G7K (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 30 Jun 2022 02:59:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbiF3G4n (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Jun 2022 02:56:43 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D18DA31205;
-        Wed, 29 Jun 2022 23:56:42 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id F132780CD;
-        Thu, 30 Jun 2022 06:51:25 +0000 (UTC)
-Date:   Thu, 30 Jun 2022 09:56:40 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Colin Foster <colin.foster@in-advantage.com>
-Cc:     Stephen Boyd <sboyd@kernel.org>, Tero Kristo <kristo@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: use-after-free warnings in 5.19-rcX kernel
-Message-ID: <Yr1JKPLQRj/IM21m@atomide.com>
-References: <20220630043558.GA1985665@euler>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220630043558.GA1985665@euler>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229552AbiF3G7K (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 30 Jun 2022 02:59:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A8A19C11
+        for <linux-omap@vger.kernel.org>; Wed, 29 Jun 2022 23:59:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 92D1360B18
+        for <linux-omap@vger.kernel.org>; Thu, 30 Jun 2022 06:59:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB728C34115;
+        Thu, 30 Jun 2022 06:59:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656572348;
+        bh=nXoOnX/dpotdeDYsVNTtmBjj+uiv/rrQ9xaBLJoLats=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=mk03BIyni5YBJhBt9NOBJMN6Yp6bAnKxn//8egeNgjKOlf/PiKzHTWCxnSC1N1GgW
+         W8zDJBr1wOXvI9tTpra6wfAxgiqHwziz8DY+mGWwuQr77TKr1mxXvDTsgVDHB/1Wgg
+         CrW76wjAKPqaTwuivK35wTHDsUu2WYbYYsy0tIIhHBb0+qO+oL7dpCZhwhcuSPLycz
+         I7iSocrn2susfkt0HURtpIiUe/s8AcAVL6pKQg4StFG7cZ199jWBmm9ChjLMwuMZir
+         7/VX2CDftCwv11k/tDZBataJnbnFSp6RUcN7haDHRXdHTyoU1Kb3rfNs7uvren8XTj
+         o4U+qQ8u091wQ==
+Received: from 82-132-234-38.dab.02.net ([82.132.234.38] helo=wait-a-minute.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1o6o8n-004GEs-GJ;
+        Thu, 30 Jun 2022 07:59:05 +0100
+Date:   Thu, 30 Jun 2022 07:59:15 +0100
+Message-ID: <87pmiqeiws.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
+        Lennert Buytenhek <kernel@wantstofly.org>,
+        Mauri Sandberg <maukka@ext.kapsi.fi>
+Subject: Re: Scheduling (unused) board file removal for linux-6.x
+In-Reply-To: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
+References: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 82.132.234.38
+X-SA-Exim-Rcpt-To: arnd@kernel.org, linux-arm-kernel@lists.infradead.org, rmk+kernel@armlinux.org.uk, krzk@kernel.org, linus.walleij@linaro.org, alim.akhtar@samsung.com, khalasa@piap.pl, daniel@zonque.org, haojian.zhuang@gmail.com, robert.jarzmik@free.fr, marek.vasut@gmail.com, lkundrak@v3.sk, alexander.sverdlin@gmail.com, hsweeten@visionengravers.com, linux-omap@vger.kernel.org, tony@atomide.com, aaro.koskinen@iki.fi, nsekhar@ti.com, brgl@bgdev.pl, andrew@lunn.ch, sebastian.hesselbarth@gmail.com, gregory.clement@bootlin.com, kernel@wantstofly.org, maukka@ext.kapsi.fi
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-* Colin Foster <colin.foster@in-advantage.com> [220630 04:30]:
-> Hi Tony,
+On Wed, 29 Jun 2022 21:42:58 +0100,
+Arnd Bergmann <arnd@kernel.org> wrote:
 > 
-> I'm running a beaglebone black and doing some dev on the
-> next-next/master line. I noticed a lot of messages coming by during
-> boot, and more recently a change that shouldn't have made a difference
-> seems to stop me from booting.
+> With the multiplatform work completed in the past merge window, and the
+> scheduled deprecation of the Samsung s3c platforms, I decided to have a
+> look at the remaining board files. There are 196 remaining boards, down
+> from 489 boards ten years ago, but my estimate is that only few of those
+> ever booted a linux-5.x kernel, and even less for future kernels. The
+> question is how to find out which ones are still used, and which ones
+> can go.
 > 
-> The commit in question is commit: ec7aa25fa483 ("ARM: dts: Use clock-output-names for am3")
-> Prior to this commit, the boot seems fine. After this commit, I get
-> several warnings.
+> I would propose that we start by changing the assumption that all boards
+> might be used, instead assuming that they are all outdated unless someone
+> says that they actually prefer to keep it in the kernel.  I have started
+> a list of all 196 boards and annotated the ones that look like candidates
+> for removal [1]. If a board you use is on that list, please either reply
+> here or add a comment in the document.
+> 
+> Unless someone has a better idea for how to proceed, I would allow
+> six months for users to speak up and then remove the orphaned board
+> files for the release following the LTS kernel. I can't list all boards
+> individually, so here is a breakdown by platform:
+> 
 
-This should be fixed with:
+[...]
 
-[PATCH] clk: ti: Fix missing of_node_get() ti_find_clock_provider()
-https://lore.kernel.org/linux-clk/20220621091118.33930-1-tony@atomide.com/
+> pxa
+> 
+> There are a ton of boards on this one, including seven with qemu support,
+> but based on IRC discussions, my feeling is that everyone who worked on
+> this has already lost interest a few years ago. There is rudimentary DT
+> support, so it may be helpful to pick one or two boards (gumstix?) with
+> good qemu support and keep them around for conversion to DT, while
+> removing all other boards.
 
-Can you please give it a try?
+For the two boards I used to maintain (Zeus and Viper), I'm happy to
+see them go. Should anyone want to take over and bring them into this
+decade, I'm happy to provide the HW I still have (although getting HW
+was never a problem with PXA, and it probably is simply that people
+have, just like I did, lost interest).
 
-Regards,
+[...]
 
-Tony
+> footbridge
+> 
+> Three machines, most notably the NetWinder that a few people still have.
+> I assume Russell wants to keep the machines working that he still has.
+
+I still have a Netwinder that I switch on once in a while to check
+that it is still alive (I last booted 5.18 on it, and maintain a
+couple of ugly hacks to allow an old Debian to run on it). This isn't
+a practical machine by any modern standard, but I'd like to keep it
+around for the same reasons I still have an Alpha LCA4 (nostalgia).
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
