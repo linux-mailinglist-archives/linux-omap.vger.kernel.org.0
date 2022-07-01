@@ -2,53 +2,56 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 689295631FE
-	for <lists+linux-omap@lfdr.de>; Fri,  1 Jul 2022 12:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2236456328D
+	for <lists+linux-omap@lfdr.de>; Fri,  1 Jul 2022 13:28:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237135AbiGAKyR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 1 Jul 2022 06:54:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52148 "EHLO
+        id S233758AbiGAL0n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 1 Jul 2022 07:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237079AbiGAKyM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Jul 2022 06:54:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16D237E022
-        for <linux-omap@vger.kernel.org>; Fri,  1 Jul 2022 03:54:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A49E0624F2
-        for <linux-omap@vger.kernel.org>; Fri,  1 Jul 2022 10:54:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDFBC341D4
-        for <linux-omap@vger.kernel.org>; Fri,  1 Jul 2022 10:54:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656672845;
-        bh=vOz9kGDXmswAhcXU73kOmUhwVOeiHd/ROAZlEgpangY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=kgrN0zyi1e0Px54UsdDglRYTqqWrIDg5y0JD0GmxnHIE2YXw4IievsVccGmuPRWwx
-         hPhXK82L31gXltqr7+Kv4zQSG9JV0voLzo7q73kuwNMNBOCkvN8Z7i44lhhkEiw9kI
-         kxi5510uj81RbaYjcpA6/Cz/hasL0arryAXFTytqnB/31vvZZnDoW6XN3vzZdZ5s2G
-         Kocd/79uCmvs3uf0wWtGH6CKY/bZT3+KbciypRtqt7QxWEKXD7JsczI9i6nlSuf6zi
-         fIhZnrjBPmLz8TcqOMjKMX+iHTSVhwaW3aVS1ZN8c5jaWxnL1/PveZnWk3N5HjA1zk
-         yS2AKZH46cXKg==
-Received: by mail-yb1-f180.google.com with SMTP id x184so3318368ybg.12
-        for <linux-omap@vger.kernel.org>; Fri, 01 Jul 2022 03:54:05 -0700 (PDT)
-X-Gm-Message-State: AJIora+pEpB/d0bmT8Xaj/zZfI4XVGhyftzVeuEHVEamTHJyyCoCsSep
-        qo6XdRd0okf4SPQia3BTHo4wSfbW42XbHmZd7X0=
-X-Google-Smtp-Source: AGRyM1skGc+VeYXewG0ZKTrGjWrguk6pl7Saz5eD5HUjyc2GwwyJ3dSFcGeS0lHr0GsNrwN0zr5nzMSVui1QDqIwOp0=
-X-Received: by 2002:a05:6902:120f:b0:668:2228:9627 with SMTP id
- s15-20020a056902120f00b0066822289627mr15197410ybu.134.1656672843858; Fri, 01
- Jul 2022 03:54:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
- <CACRpkdY2_ZbmcSuuMB9t5bB-tGE0iAc-nE26JwxidRFocRahSw@mail.gmail.com>
-In-Reply-To: <CACRpkdY2_ZbmcSuuMB9t5bB-tGE0iAc-nE26JwxidRFocRahSw@mail.gmail.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Fri, 1 Jul 2022 12:53:46 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2yh1Uh9+YP42ekt3LB9oTfEg0WMB5FVqwp40qHb6vWFg@mail.gmail.com>
-Message-ID: <CAK8P3a2yh1Uh9+YP42ekt3LB9oTfEg0WMB5FVqwp40qHb6vWFg@mail.gmail.com>
+        with ESMTP id S231535AbiGAL0m (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 1 Jul 2022 07:26:42 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A2EE81482
+        for <linux-omap@vger.kernel.org>; Fri,  1 Jul 2022 04:26:38 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id e28so2830315wra.0
+        for <linux-omap@vger.kernel.org>; Fri, 01 Jul 2022 04:26:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-transfer-encoding:user-agent:mime-version;
+        bh=aFHV/YMyug+JphlF30utQBBa958Nn0h36N40YpiodWY=;
+        b=HhIFIBIBVOEQZ43PCt4qVvnj90SFOytyATiPSXA1PQ4Wrtjzrbqb2pRFAgiz88UQ4j
+         zwUdLkBJNqeWR/AoeUwQGk+FeLcrW4hs/4FcBYGsFhnVN6OANn9x1mn7ZUAbl1O6RnOU
+         3Hj6ts3H7dAXZ8Fi0OFkzMZEg3ew9/RTTnbfgNNbUlstmkpqPcTFAtgBhtVm64zQWrDf
+         By3LE01qj5Fma382fB+dUDUfzC4RWKIobavkId1qWt8ZmKoADqIR84TQkwZFhtWxef7H
+         bFPKNe3raX6ZCrVGFTQNK7QIoeafCwVp8jSIfZQZtISnJZUWScihusylobMjbwevrxp7
+         p4Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:content-transfer-encoding:user-agent:mime-version;
+        bh=aFHV/YMyug+JphlF30utQBBa958Nn0h36N40YpiodWY=;
+        b=otidJuy55tttLbCG3JmryuUvBoCMGyIogU6O/2ZkrCeGOS6ptzcWifffD+JuKkbsMa
+         rjtfnArWtmFV7XiiSPgicIin3xi0GnHQKO/6Lv/96TFkXQgKKg6RpcJKFA64XI6f9+xf
+         mVsVIlg29nb/k/OUsdGuGs/XzROXtEqsPARAQKUbvs3RUE7X356tonYsd6+a2UA72m0c
+         xPwKq1C9+g77xfktkB/CGfB4nF2MYqCHLcF5O6/x9E/dJyEs7IBSK49zQ76Rde6VadXw
+         B2pZR/y8r0CspFZjN1gJ4p90zXO8/ZiAVsRLxrMZH4yS7oOy4AnPI+ZawtLuMuCAHrxI
+         hgVg==
+X-Gm-Message-State: AJIora/peuSRJ/G+WXreYueqD3YVPBGOW06cNKVbtV3Wi0DFsAm50OMu
+        VQPMFFBEInQ7po2D6mSckDU=
+X-Google-Smtp-Source: AGRyM1vDLt9ogZuQmWWAq9U3qG0jo9yagjt4xqDQvEF5giJnSAi9LrJV+jpTa7fxutGuW834mJEddw==
+X-Received: by 2002:adf:e60e:0:b0:21b:a4d1:74fc with SMTP id p14-20020adfe60e000000b0021ba4d174fcmr12648987wrm.703.1656674797090;
+        Fri, 01 Jul 2022 04:26:37 -0700 (PDT)
+Received: from giga-mm.localdomain ([195.245.18.14])
+        by smtp.gmail.com with ESMTPSA id s8-20020a05600c384800b0039c948dbb61sm10360020wmr.26.2022.07.01.04.26.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Jul 2022 04:26:36 -0700 (PDT)
+Message-ID: <742b1630657a25a6396cb13008226437929bd8e6.camel@gmail.com>
 Subject: Re: Scheduling (unused) board file removal for linux-6.x
-To:     Linus Walleij <linus.walleij@linaro.org>
+From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
+To:     Arnd Bergmann <arnd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>
 Cc:     Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
         Aswath Govindraju <a-govindraju@ti.com>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
@@ -61,7 +64,6 @@ Cc:     Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Marek Vasut <marek.vasut@gmail.com>,
         Lubomir Rintel <lkundrak@v3.sk>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
         Hartley Sweeten <hsweeten@visionengravers.com>,
         linux-omap <linux-omap@vger.kernel.org>,
         Tony Lindgren <tony@atomide.com>,
@@ -74,72 +76,36 @@ Cc:     Matija Glavinic Pecotic <matija.glavinic-pecotic.ext@nokia.com>,
         Lennert Buytenhek <kernel@wantstofly.org>,
         Marc Zyngier <maz@kernel.org>,
         Mauri Sandberg <maukka@ext.kapsi.fi>
+Date:   Fri, 01 Jul 2022 13:26:35 +0200
+In-Reply-To: <CAK8P3a2yh1Uh9+YP42ekt3LB9oTfEg0WMB5FVqwp40qHb6vWFg@mail.gmail.com>
+References: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
+         <CACRpkdY2_ZbmcSuuMB9t5bB-tGE0iAc-nE26JwxidRFocRahSw@mail.gmail.com>
+         <CAK8P3a2yh1Uh9+YP42ekt3LB9oTfEg0WMB5FVqwp40qHb6vWFg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Jun 30, 2022 at 1:32 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> On Wed, Jun 29, 2022 at 10:43 PM Arnd Bergmann <arnd@kernel.org> wrote:
-> >
-> > sa1100
-> >
-> > Similar to PXA, work on this appears to have stopped. Russell probably
-> > still has an Assabet or some other machine, but I don't know if he
-> > still plans to keep using new kernels on those. The only machine with
-> > qemu support is Collie (Sharp SL-5500), so if we keep any boards at all,
-> > then this should be kept as well. Probably no point doing a DT conversion
-> > here though.
->
-> My interest is to have something to test that CPU_SA1100 is working
-> on and I've been using the HP3600.
+Hi!
 
-Ok. I have a H3600 and a Collie (with 64MB) here myself, though I
-have no plans to do anything with these. I've marked the assabet,
-h3600 and collie for staying around now.
+On Fri, 2022-07-01 at 12:53 +0200, Arnd Bergmann wrote:
+> > Patches also came from Nokia (!) last year see
+> > ea4ab99cb58cc9f8d64c0961ff9a059825f304cf
+>=20
+> I would assume that both have been for keystone2 or k3, which
+> share a lot of the drivers with davinci and are widely used with DT.
 
-> If I wanna keep doing that I should bite the bullet and convert it to
-> DT and multiplatform like I did with everything else I need for testing.
-> Else I deserve to have it removed on me and I can resurrect it
-> using DT if I want.
+Indeed, this is for Keystone 2.
 
-My feeling is that it's not worth going there for any of the three
-StrongARM platforms: rpc has a deadline in a few years when the
-compiler stops working, and sa1100 machines are mostly limited
-to 32MB (sometimes 64MB).
+--=20
+Alexander Sverdlin.
 
-footbridge is probably the easiest out of the lot. I can resend
-my patch to remove ebsa285 add-in mode, and I also have
-some patches for cleaning up the ISA DMA.
-
-> > davinci
-> >
-> > DT conversion has stalled, and there are 12 remaining board files,
-> > mostly for evaluation machines. No idea if any are still in use.
->
-> TI is semi-actively maintaining DaVinci, I wonder if we can send
-> the message that this needs to be converted to DT pronto to live
-> on?
-
-I assume Sekhar and Bartosz have a plan. As Tony said, the
-important machines are the DA850 ones that are already converted.
-
-> Paging Aswath @TI, who just a few days ago sent some
-> suspend/resume patches for GPIO:
-> https://lore.kernel.org/linux-gpio/20220613054310.21186-1-a-govindraju@ti.com/
->
-> Aswath: can you perhaps raise this internally at TI? Thanks!
->
-> Patches also came from Nokia (!) last year see
-> ea4ab99cb58cc9f8d64c0961ff9a059825f304cf
-
-I would assume that both have been for keystone2 or k3, which
-share a lot of the drivers with davinci and are widely used with DT.
-
-        Arnd
