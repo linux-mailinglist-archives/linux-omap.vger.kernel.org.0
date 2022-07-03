@@ -2,72 +2,153 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C07D56421E
-	for <lists+linux-omap@lfdr.de>; Sat,  2 Jul 2022 20:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC46E564404
+	for <lists+linux-omap@lfdr.de>; Sun,  3 Jul 2022 06:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232312AbiGBSf6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 2 Jul 2022 14:35:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40662 "EHLO
+        id S232539AbiGCD6f (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 2 Jul 2022 23:58:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230212AbiGBSf5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Jul 2022 14:35:57 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A493DF97
-        for <linux-omap@vger.kernel.org>; Sat,  2 Jul 2022 11:35:56 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id k14so4245222qtm.3
-        for <linux-omap@vger.kernel.org>; Sat, 02 Jul 2022 11:35:56 -0700 (PDT)
+        with ESMTP id S232003AbiGCD6N (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 2 Jul 2022 23:58:13 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16AEFBE12
+        for <linux-omap@vger.kernel.org>; Sat,  2 Jul 2022 20:57:31 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id l81so8913496oif.9
+        for <linux-omap@vger.kernel.org>; Sat, 02 Jul 2022 20:57:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=c0efiEkVxtTkTFENAKnUNGf6D7Eoa+H/DnhrKy6xKHg=;
-        b=dy7RiF5WSA4xMhK4EH3Q7wGpFRdYM0GWxdexLnFl0Xme8q4JQSLFs2FGW3QaWXvChW
-         TrbRrkdpCiXQm2WtTmKwO1If6K//JGUlo549IPGiOpQ+SbFtCjD7Svbr3K3kkmp3qklq
-         mv6Fx+HtJM34P0wvKSkl/9fZbiEWgrvC6iSgdxrXGuvXN3BMPtcjnRMBE//QiFcbGGwj
-         ofZzg5EgnGe1mYzWwbpustB0ZUAgJl3rviITzgq/fi2nLidYVXPDTyFmUIIHhBPa29I9
-         e8cHgjzBzixrobc1Tov3kSsKizS3ul3K3ww6SPrlOg+0sHEKKc0EE31zWk8eUvhe+tUM
-         MWOA==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=S2PQt3HxkBxUYjC+VtlXEq4NoCpstcc7waq7Ie+ZSSw=;
+        b=LcxkuQlcBom6K7cYz2cObFcKqvmFziGvIewxr5CVdQDXpiVs4Qe1p9/ma3MjpEBl0m
+         LdiaLTeEwxUPT1iylGK2uBRwa96fvGW0y6QRWq5F+NZCFL6N1e6TXJlkAQCGEx5XaKBZ
+         bMXT/f+ogoq6vs4TCzgBdramsCAz0nmWRD4br2nzTC8FHRTsVjgo15di4+fdqYbsWQIV
+         4/vga7HK3myEs7r2HcBsoYeS5QL/sXXpo879hazt2tPiyyJMP+yzm9vvBM9i2od8IqAh
+         LSpFzHsWhZD+5n1ToMnLkj0S4zSlSFpghH27+UmeVqnGiX+vxJHJBYAk1fLnQfBbxsFF
+         J2sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=c0efiEkVxtTkTFENAKnUNGf6D7Eoa+H/DnhrKy6xKHg=;
-        b=bHnK58WPTWOhh1K0BxpW8tABwjfdk72ltQZj11WfSTAZhfySWca5OYJ2X7KkJ6+Ub1
-         Jj4GJgqO1yGkq2HwWmYQQEfpgtUN7fw0+0267D6d/sxckdeaAtjn5WchUV28BnW3kMRa
-         lOBjPE+pNHUkn8jwcB3ZhvJvPxbHQdZAlu7v0gFPI0bQG+WbCeY+m1FOvFtysccH6E0t
-         2CWjHzMueINp8jMa77dAi3VfZ18Hi3Pw98hie89KEP+DFxUVf8CEevB8h2vHuQaMS6L0
-         iGExsbgu96bb5yT0uhYY5Ct2n60CCtlS8vJ75DD5eF5swx9rSMOgYbcDQRnett60YL+Z
-         3wpg==
-X-Gm-Message-State: AJIora91q8VkaQJbE0X3D6tFu2w+Ae/eHMyh1Vo7XxJrxT/sOnHHgAAu
-        zWjjF4WBPZUoYvJlS+Lc9dsTY917k8A4rjwXdYw=
-X-Google-Smtp-Source: AGRyM1tuUrO1s9mVkcZsenvEuqkKIx4rr8fY6nhnqcIatYXLFQNbNljia6due1pNmoQixIYJ1e4e9S6H1lWufptlctk=
-X-Received: by 2002:ac8:7d52:0:b0:319:51f0:e418 with SMTP id
- h18-20020ac87d52000000b0031951f0e418mr18068008qtb.481.1656786955313; Sat, 02
- Jul 2022 11:35:55 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=S2PQt3HxkBxUYjC+VtlXEq4NoCpstcc7waq7Ie+ZSSw=;
+        b=ufCpnQtC2mmYHsDxAZEuyEh1fmXM5DI9fVb7fkIx2vc83rvhq03NHvyNpSYexL2VaF
+         wePIZsbpTlmSCpKA/Cg8Ia7NAE5bygHV/xE/r/IUmB+I5yL1y1L32sYlvIKwheUPzH0h
+         K7c6lHBvcEgL/AcRkO3kDPd87MSNDxzmd4DUT6n5RmRxNebl5xTMyheXXqmx0vxxEOYu
+         gJrkaDMet209+QWazMGUgkcdXnCyheCKgSZswVgL2Z9ncG4JdGVEOa03LOJSE2OCvkic
+         Py5X/KAefEIzdA6eG7u1ZrHgXd95ccTWJ/mIzDERkqZAbo53BaJ7jalmp9V352+XQOW+
+         APAQ==
+X-Gm-Message-State: AJIora9c+30o4yRkcTBCDkHhAAI4fQOTJlK0o22Vot4zkEdgOicxp+Oa
+        qt++CwX/rYq9rkY+FkXsUmBrVQ==
+X-Google-Smtp-Source: AGRyM1vPsLVLSd2YTyZeBHDlHn82rVPH0GlTr+Bdo5oMuTiVoQgn60DY/3PL3sh3O2ct5ts3e02W/w==
+X-Received: by 2002:a05:6808:1b25:b0:32e:e59c:3901 with SMTP id bx37-20020a0568081b2500b0032ee59c3901mr13881725oib.186.1656820650648;
+        Sat, 02 Jul 2022 20:57:30 -0700 (PDT)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id 25-20020aca0f19000000b0032e5d0b5d5fsm12965910oip.58.2022.07.02.20.57.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Jul 2022 20:57:29 -0700 (PDT)
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Olof Johansson <olof@lixom.net>, soc@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, arm@kernel.org
+Cc:     Li Yang <leoyang.li@nxp.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Tero Kristo <kristo@kernel.org>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        Scott Branden <sbranden@broadcom.com>,
+        linux-rockchip@lists.infradead.org,
+        Russell King <linux@armlinux.org.uk>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-sunxi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-tegra@vger.kernel.org,
+        Khuong Dinh <khuong@os.amperecomputing.com>,
+        linux-gpio@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
+        linux-amlogic@lists.infradead.org,
+        Fabio Estevam <festevam@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Heiko Stuebner <heiko@sntech.de>, Nishanth Menon <nm@ti.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Peter Rosin <peda@axentia.se>,
+        linux-arm-kernel@lists.infradead.org,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        openbmc@lists.ozlabs.org,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Andy Gross <agross@kernel.org>, Wei Xu <xuwei5@hisilicon.com>,
+        linux-omap@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        Ray Jui <rjui@broadcom.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-input@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        Chen-Yu Tsai <wens@csie.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>
+Subject: Re: (subset) [PATCH v2 00/48] dt-bindings: input: gpio-keys: rework matching children
+Date:   Sat,  2 Jul 2022 22:56:25 -0500
+Message-Id: <165682055971.445910.5189932421143220440.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220609113721.379932-1-krzysztof.kozlowski@linaro.org>
+References: <20220609113721.379932-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Received: by 2002:a05:6214:2464:0:0:0:0 with HTTP; Sat, 2 Jul 2022 11:35:54
- -0700 (PDT)
-Reply-To: anwarialima4@gmail.com
-From:   Alima Anwari <shellymarkevka81@gmail.com>
-Date:   Sat, 2 Jul 2022 18:35:54 +0000
-Message-ID: <CAJLhD936Vvh5BhiBEF5+Lj41xe_o4E=8=iiStvK0LWprE8-8PQ@mail.gmail.com>
-Subject: Good Day
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, 9 Jun 2022 13:37:21 +0200, Krzysztof Kozlowski wrote:
+> Merging
+> =======
+> 1. dt-bindings: rebased on top of Rob's:
+>    https://lore.kernel.org/all/20220608211207.2058487-1-robh@kernel.org/
+> 
+> 2. DTS patches are independent. They can be picked up directly by sub-arch
+>    maintainers, by Arnd or Olof, or eventually by me (if you wish).
+> 
+> [...]
+
+Applied, thanks!
+
+[27/48] arm64: dts: qcom: align gpio-key node names with dtschema
+        commit: b08f5cbd69dcd25f5ab2a0798fe3836a97a9d7c6
+[28/48] arm64: dts: qcom: correct gpio-keys properties
+        commit: 5a4b0b853a2914403746b0a1decab695202ff242
+[29/48] arm64: dts: qcom: sdm630-sony-xperia-nile: drop unneeded status from gpio-keys
+        commit: 9d8840f6ee426b6dfcb65bdf39e2898652e2b1e5
+[30/48] arm64: dts: qcom: align led node names with dtschema
+        commit: 3cfe94d660a8ebc19e78ea0a4781d7e9a1054c65
+
+Best regards,
 -- 
-Hello dear friend, i'm Alima Anwari from Afghanistan, please reply
-back to me and have an urgent issue to share with you. I will be waiting
-for your response.
-Thanks.
-Alima.
+Bjorn Andersson <bjorn.andersson@linaro.org>
