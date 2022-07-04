@@ -2,332 +2,160 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9CA3565028
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Jul 2022 11:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB151565084
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Jul 2022 11:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233385AbiGDI7F (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 4 Jul 2022 04:59:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58854 "EHLO
+        id S233614AbiGDJOJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 4 Jul 2022 05:14:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232642AbiGDI7E (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Jul 2022 04:59:04 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB451A8
-        for <linux-omap@vger.kernel.org>; Mon,  4 Jul 2022 01:59:02 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-317a66d62dfso75537327b3.7
-        for <linux-omap@vger.kernel.org>; Mon, 04 Jul 2022 01:59:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nimq+qnEBV3S/TWpgw4n+PUBI35utbNIAEjimUoZKpg=;
-        b=SpuXb/gz2BHEVSFkQ6tqVz+kai4l2F4jhhNg5m44Iv+ds0QgGXYfzQpuh+3T5QFMeB
-         Ia0Pru+kucQXFjOHrMMUCgP7eBOtlFN61NZRuwNN6nTtKU+7NUx2EpqOMOMT0OILQDB2
-         ZcCgXLgQzeq9+8wczJ+wtSbWeKJk4cAkkNTaaPrYHlOcDoYxoPJTJ1u2aak+dEn8EHzf
-         WBp4W/8LSuQPszRPGcVoRLW9c1S1tdhbY2Vvhmq8Erlwn7yYyX+oGBZiJVz7waP7SVzb
-         2pEaRAzbWLdgrQX0UHjd+zd0Ycx0RUYHyB5hov95iT3+DIyIwk14iyh0zSxCmAA/uKYW
-         GE6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nimq+qnEBV3S/TWpgw4n+PUBI35utbNIAEjimUoZKpg=;
-        b=OmjIm2zCQX00hhOlk0Ela50M0JdG3s8GheBVP/S/c+6R/ssD6KFjfGeFzAvs9XtJMz
-         sl++q3stCmYT4PkxFAJ2sLH4R/qJ9qC4BaV8DdFsO2dl6R9nD8f04XgAPrs4oAo3W7TL
-         WXi1O5qjl2R7KgOmmp0DqXvEONgmd37YqrlDK9POr5hEsMHS2wzh6ucsme4Aq1txDJLK
-         HFCJkQHeKQDsNej0PJF7wCn/xR2UC66NqtL7jSAvHDyo2juvROqhqBCCAjQOvbF2oupJ
-         O224r0ESoOWAqg9/fIm/aY3l1eQ2avzU2IBxlmGz7ERC57P/jwMHlQ7kqUohDxg0AeWg
-         u46g==
-X-Gm-Message-State: AJIora+EYKl3CM6Jh+ORu99YDxNwwVKL0uab3wAKrNvuJ7a8EHm3hWOC
-        up/KfZHroO9E6PF0bH1SFc/szr4JdxUQBIuLGPo=
-X-Google-Smtp-Source: AGRyM1sCPDVsdKzQVEArJF7XjhhRYunC5832PsfbOX/drqxgDkEzl9O/0/zCREtOL/ebcP+bGts8zpWhO5odtmmK/KY=
-X-Received: by 2002:a81:1148:0:b0:31c:ad1f:774f with SMTP id
- 69-20020a811148000000b0031cad1f774fmr1234722ywr.13.1656925141706; Mon, 04 Jul
- 2022 01:59:01 -0700 (PDT)
+        with ESMTP id S233602AbiGDJOI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 4 Jul 2022 05:14:08 -0400
+X-Greylist: delayed 365 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 04 Jul 2022 02:14:05 PDT
+Received: from forward500o.mail.yandex.net (forward500o.mail.yandex.net [37.140.190.195])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56F1559F
+        for <linux-omap@vger.kernel.org>; Mon,  4 Jul 2022 02:14:05 -0700 (PDT)
+Received: from myt6-3955a48a7d81.qloud-c.yandex.net (myt6-3955a48a7d81.qloud-c.yandex.net [IPv6:2a02:6b8:c12:1eae:0:640:3955:a48a])
+        by forward500o.mail.yandex.net (Yandex) with ESMTP id 6CC8B941E30;
+        Mon,  4 Jul 2022 12:07:56 +0300 (MSK)
+Received: from myt6-efff10c3476a.qloud-c.yandex.net (myt6-efff10c3476a.qloud-c.yandex.net [2a02:6b8:c12:13a3:0:640:efff:10c3])
+        by myt6-3955a48a7d81.qloud-c.yandex.net (mxback/Yandex) with ESMTP id WtpAH9XoiH-7rgSn5e0;
+        Mon, 04 Jul 2022 12:07:56 +0300
+X-Yandex-Fwd: 2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maquefel.me; s=mail; t=1656925676;
+        bh=ylrYf8PpQpTbCgt5wlDXxvDehvWCSIYx9cl/kaQvPMM=;
+        h=In-Reply-To:Subject:Cc:To:From:References:Date:Message-ID;
+        b=Lwo65iQZDIiFLs9OaDlsAnqVarhvp8YUlej3NqKHsRwarmYlmG2jM5h4YsQAeLL/l
+         TqTJuZHgOhtRVNHuu5eMaoHauHkwVEXuh5KcfDJyIHoBdY7grGP2LN9W1DzeSMPBuX
+         x8jYTnTj3F+SJkeTyV0cTvF4baiprinF9zy7fiBE=
+Authentication-Results: myt6-3955a48a7d81.qloud-c.yandex.net; dkim=pass header.i=@maquefel.me
+Received: by myt6-efff10c3476a.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id ch8JReNEaj-7pNK2hKw;
+        Mon, 04 Jul 2022 12:07:52 +0300
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (Client certificate not present)
+Date:   Mon, 4 Jul 2022 12:07:49 +0300
+From:   Nikita Shubin <nikita.shubin@maquefel.me>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Lukasz Majewski <lukma@denx.de>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
+        Lennert Buytenhek <kernel@wantstofly.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Mauri Sandberg <maukka@ext.kapsi.fi>
+Subject: Re: Scheduling (unused) board file removal for linux-6.x
+Message-ID: <20220704120749.7a742c2c@redslave.neermore.group>
+In-Reply-To: <CAK8P3a1ZhFiPPR=tkLgsMB8pFjFoqiuD9GacTWBn0KM4nNynNQ@mail.gmail.com>
+References: <CAK8P3a0Z9vGEQbVRBo84bSyPFM-LF+hs5w8ZA51g2Z+NsdtDQA@mail.gmail.com>
+        <0010bbe738eb6853f49f07a6eb6043e0e7f426a8.camel@gmail.com>
+        <CAK8P3a0QDgKfHxri0YOj_4nJdGOD9ALRdCseb2EmJ36S7FrBaQ@mail.gmail.com>
+        <ba286beeecaa0f11fce3d90ac4904ca7df310c22.camel@gmail.com>
+        <CAK8P3a1ZhFiPPR=tkLgsMB8pFjFoqiuD9GacTWBn0KM4nNynNQ@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <CAGm1_ktXBp-sz3Dud_G0iqOG=vA=Xp-bj-icwNLVgq-AMqKO7A@mail.gmail.com>
- <72686231-c372-a4fe-347e-39470790fa65@kernel.org> <CAGm1_kvRuWY7t2d_BtuSLGEL1u4njRqha=D0f7eN9F5XG8GrLQ@mail.gmail.com>
- <CAGm1_kuucv71AdPkSW8Eog2T9rZRA3uiL4+ok-aWCVsj-z2eew@mail.gmail.com>
- <5a36197d-7ed5-c06a-0a7e-73b808526dcd@kernel.org> <feff53c6-a38c-1592-b3ef-1ff236da17f9@kernel.org>
- <CAGm1_kvQ-NA4topLTu2hrQqx6picci8d+AeMVBtw44nJ7mYVow@mail.gmail.com> <25109f4c-110f-b534-1c5a-c571b5c70333@kernel.org>
-In-Reply-To: <25109f4c-110f-b534-1c5a-c571b5c70333@kernel.org>
-From:   Yegor Yefremov <yegorslists@googlemail.com>
-Date:   Mon, 4 Jul 2022 10:58:50 +0200
-Message-ID: <CAGm1_ku0pGqfi8a++jNYeYNk1Hv9QgxsjKqOtetk8QzrTcFtPg@mail.gmail.com>
-Subject: Re: raw/omap2: erasing issue
-To:     Roger Quadros <rogerq@kernel.org>
-Cc:     linux-mtd@lists.infradead.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        miquel.raynal@bootlin.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Roger,
+Hello Arnd and Alexander!
 
-On Thu, Jun 30, 2022 at 1:22 PM Roger Quadros <rogerq@kernel.org> wrote:
->
-> Hi Yegor,
->
-> On 29/06/2022 17:23, Yegor Yefremov wrote:
-> > Hi Roger,
-> >
-> > On Wed, Jun 29, 2022 at 3:44 PM Roger Quadros <rogerq@kernel.org> wrote:
-> >>
-> >> Hi Yegor,
-> >>
-> >> On 29/06/2022 14:33, Roger Quadros wrote:
-> >>> Hi Yegor,
-> >>>
-> >>> On 28/06/2022 14:59, Yegor Yefremov wrote:
-> >>>> On Tue, Jun 28, 2022 at 1:57 PM Yegor Yefremov
-> >>>> <yegorslists@googlemail.com> wrote:
-> >>>>>
-> >>>>> Hi Roger,
-> >>>>>
-> >>>>> On Tue, Jun 28, 2022 at 1:44 PM Roger Quadros <rogerq@kernel.org> wrote:
-> >>>>>>
-> >>>>>> Hi Yegor,
-> >>>>>>
-> >>>>>> On 28/06/2022 13:48, Yegor Yefremov wrote:
-> >>>>>>> Since linux 5.17 I get the following issue when doing ubiformat:
-> >>>>>>>
-> >>>>>>> # ubiformat -y /dev/mtd5
-> >>>>>>> ubiformat: mtd5 (nand), size 265945088 bytes (253.6 MiB), 2029
-> >>>>>>> eraseblocks of 131072 bytes (128.0 KiB), min. I/O size 2048 bytes
-> >>>>>>> libscan: scanning eraseblock 1097 -- 54 % complete  eth1 timed out to bring up
-> >>>>>>> libscan: scanning eraseblock 2028 -- 100 % complete
-> >>>>>>> ubiformat: 2001 eraseblocks have valid erase counter, mean value is 9
-> >>>>>>> ubiformat: 2 eraseblocks are supposedly empty
-> >>>>>>> ubiformat: 26 bad eraseblocks found, numbers: 3, 4, 5, 6, 8, 9, 10,
-> >>>>>>> 11, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 29, 30,
-> >>>>>>> 31, 32
-> >>>>>>
-> >>>>>> I'm guessing these bad blocks recently added due to the offending patch?
-> >>>>>
-> >>>>> Yes.
-> >>>>>
-> >>>>>>> ubiformat: formatting eras[   33.644323] nand: nand_erase_nand:
-> >>>>>>> attempt to erase a bad block at page 0x00000d40
-> >>>>>>> ubiformat: formatting eraseblock 28[   33.658809] nand:
-> >>>>>>> nand_erase_nand: attempt to erase a bad block at page 0x00000d80
-> >>>>>>> ubiformat: formatting eraseblock 29 --  1 % [   33.674531] nand:
-> >>>>>>> nand_erase_nand: attempt to erase a bad block at page 0x00000dc0
-> >>>>>>> ubiformat: formatting eraseblock 30 --  1 % complete [   33.684508]
-> >>>>>>> nand: nand_erase_nand: attempt to erase a bad block at page 0x00000e00
-> >>>>>>> ubiformat: formatting eraseblock 34 --  1 % complete  libmtd: error!:
-> >>>>>>> MEMERASE64 ioctl failed for eraseblock 34 (mtd5)
-> >>>>>>>         error 5 (Input/output error)
-> >>>>>>>
-> >>>>>>> ubiformat: error!: failed to erase eraseblock 34
-> >>>>>>>            error 5 (Input/output error)
-> >>>>>>> ubiformat: marking block 34 bad
-> >>>>>>> ubiformat: formatting eraseblock 35 --  1 % complete  libmtd: error!:
-> >>>>>>> MEMERASE64 ioctl failed for eraseblock 35 (mtd5)
-> >>>>>>>         error 5 (Input/output error)
-> >>>>>>>
-> >>>>>>> ubiformat: error!: failed to erase eraseblock 35
-> >>>>>>>            error 5 (Input/output error)
-> >>>>>>> ubiformat: marking block 35 bad
-> >>>>>>> ubiformat: formatting eraseblock 36 --  1 % complete  libmtd: error!:
-> >>>>>>> MEMERASE64 ioctl failed for eraseblock 36 (mtd5)
-> >>>>>>>         error 5 (Input/output error)
-> >>>>>>>
-> >>>>>>> ubiformat: error!: failed to erase eraseblock 36
-> >>>>>>>            error 5 (Input/output error)
-> >>>>>>> ubiformat: marking block 36 bad
-> >>>>>>> ubiformat: formatting eraseblock 37 --  1 % complete  libmtd: error!:
-> >>>>>>> MEMERASE64 ioctl failed for eraseblock 37 (mtd5)
-> >>>>>>>         error 5 (Input/output error)
-> >>>>>>>
-> >>>>>>> ubiformat: error!: failed to erase eraseblock 37
-> >>>>>>>            error 5 (Input/output error)
-> >>>>>>> ubiformat: marking block 37 bad
-> >>>>>>>
-> >>>>>>> ubiformat: error!: consecutive bad blocks exceed limit: 4, bad flash?
-> >>>>>>> # [   36.322563] vwl1271: disabling
-> >>>>>>>
-> >>>>>>> git bisect pointed to the following commit:
-> >>>>>>>
-> >>>>>>> a9e849efca4f9c7732ea4a81f13ec96208994b22 is the first bad commit
-> >>>>>>> commit a9e849efca4f9c7732ea4a81f13ec96208994b22
-> >>>>>>> Author: Roger Quadros <rogerq@kernel.org>
-> >>>>>>> Date:   Thu Dec 9 11:04:55 2021 +0200
-> >>>>>>>
-> >>>>>>>     mtd: rawnand: omap2: move to exec_op interface
-> >>>>>>>
-> >>>>>>>     Stop using legacy interface and move to the exec_op interface.
-> >>>>>>>
-> >>>>>>>     Signed-off-by: Roger Quadros <rogerq@kernel.org>
-> >>>>>>>     Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> >>>>>>>     Link: https://lore.kernel.org/linux-mtd/20211209090458.24830-4-rogerq@kernel.org
-> >>>>>>>
-> >>>>>>> :040000 040000 2341051b8aa8e6b554b8a44d2934f76d1aa460c4
-> >>>>>>> c1727080ff16c403f4ad5ed840acc90127b632f8 M      drivers
-> >>>>>>>
-> >>>>>>> Info to my NAND flash:
-> >>>>>>>
-> >>>>>>> [    5.695760] nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xda
-> >>>>>>> [    5.702193] nand: Micron MT29F2G08ABAEAWP
-> >>>>>>> [    5.706356] nand: 256 MiB, SLC, erase size: 128 KiB, page size:
-> >>>>>>> 2048, OOB size: 64
-> >>>>>>> [    5.714204] nand: using OMAP_ECC_BCH8_CODE_HW ECC scheme
-> >>>>>>> [    5.719673] 6 cmdlinepart partitions found on MTD device omap2-nand.0
-> >>>>>>> [    5.726232] Creating 6 MTD partitions on "omap2-nand.0":
-> >>>>>>> [    5.731594] 0x000000000000-0x000000020000 : "SPL"
-> >>>>>>> [    5.737788] mtdblock: MTD device 'SPL' is NAND, please consider
-> >>>>>>> using UBI block devices instead.
-> >>>>>>> [    5.750113] 0x000000020000-0x000000040000 : "SPL.backup1"
-> >>>>>>> [    5.756916] mtdblock: MTD device 'SPL.backup1' is NAND, please
-> >>>>>>> consider using UBI block devices instead.
-> >>>>>>> [    5.769870] 0x000000040000-0x000000060000 : "SPL.backup2"
-> >>>>>>> [    5.776695] mtdblock: MTD device 'SPL.backup2' is NAND, please
-> >>>>>>> consider using UBI block devices instead.
-> >>>>>>> [    5.789559] 0x000000060000-0x000000080000 : "SPL.backup3"
-> >>>>>>> [    5.796423] mtdblock: MTD device 'SPL.backup3' is NAND, please
-> >>>>>>> consider using UBI block devices instead.
-> >>>>>>> [    5.809341] 0x000000080000-0x000000260000 : "u-boot"
-> >>>>>>> [    5.816652] mtdblock: MTD device 'u-boot' is NAND, please consider
-> >>>>>>> using UBI block devices instead.
-> >>>>>>> [    5.829189] 0x000000260000-0x000010000000 : "UBI"
-> >>>>>>> [    5.971508] mtdblock: MTD device 'UBI' is NAND, please consider
-> >>>>>>> using UBI block devices instead.
-> >>>>>>>
-> >>>>>>
-> >>>>>> What platform are you on?
-> >>>>>> I do remember testing this on omap3-beagle but it does not use BCH8 ECC scheme.
-> >>>>>
-> >>>>> I am on am335x [1]
-> >>>>>
-> >>>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/am335x-baltos-ir5221.dts?h=v5.19-rc4
-> >>>>
-> >>>> NAND node definition [1]:
-> >>>>
-> >>>> &gpmc {
-> >>>> pinctrl-names = "default";
-> >>>> pinctrl-0 = <&nandflash_pins_s0>;
-> >>>> ranges = <0 0 0x08000000 0x10000000>; /* CS0: NAND */
-> >>>> status = "okay";
-> >>>>
-> >>>> nand@0,0 {
-> >>>> compatible = "ti,omap2-nand";
-> >>>> reg = <0 0 4>; /* CS0, offset 0, IO size 4 */
-> >>>> interrupt-parent = <&gpmc>;
-> >>>> interrupts = <0 IRQ_TYPE_NONE>, /* fifoevent */
-> >>>>     <1 IRQ_TYPE_NONE>; /* termcount */
-> >>>> rb-gpios = <&gpmc 0 GPIO_ACTIVE_HIGH>; /* gpmc_wait0 */
-> >>>> nand-bus-width = <8>;
-> >>>> ti,nand-ecc-opt = "bch8";
-> >>>> ti,nand-xfer-type = "polled";
-> >>>
-> >>> Could you please change this to "prefetch-polled" and see if it fixes the issue?
-> >>>
-> >>
-> >> I tried to set ti,nand-xfer-type to "polled" on beagle-c4 board and could not reproduce the issue
-> >> I will need your help please to debug this issue.
-> >>
-> >> Could you please apply the below patch on top of commit a9e849efca4f9c7732ea4a81f13ec96208994b22
-> >> and send me the full kernel log and output of ubiformat command?
-> >
-> > I'll post the data later.
-> >
-> > The test with the "prefetch-polled" setting looks promising:
-> >
-> > 1. ubiformat runs without issues
-> > 2. I can boot from NAND after "cat MLO > /dev/mtdblock0", etc.
-> > 3. the kernel can mount UBIFS as rootfs
-> >
-> > The only issue I have for now, is that barebox fails to correctly
-> > mount the first partition (the second with UBIFS rootfs - no problem).
-> > This is how I write to NAND:
-> >
-> > ubiformat -y /dev/mtd5
-> > ubiattach -p /dev/mtd5
-> > ubimkvol /dev/ubi0 -N kernel -s 56MiB
-> > mount -t ubifs ubi0:kernel /mnt
-> > cp kernel-fit.itb /mnt
-> > umount /mnt
-> > ubimkvol /dev/ubi0 -N rootfs -s 180MiB
-> > ubiupdatevol /dev/ubi0_1 rootfs.ubifs
-> >
-> > barebox log:
-> >
-> > Booting from NAND
-> > ubi0: scanning is finished
-> > ubi0: registering /dev/nand0.UBI.ubi
-> > ubi0: registering kernel as /dev/nand0.UBI.ubi.kernel
-> > ubi0: registering rootfs as /dev/nand0.UBI.ubi.rootfs
-> > ubi0: attached mtd0 (name "nand0.UBI", size 253 MiB) to ubi0
-> > ubi0: PEB size: 131072 bytes (128 KiB), LEB size: 129024 bytes
-> > ubi0: min./max. I/O unit sizes: 2048/2048, sub-page size 512
-> > ubi0: VID header offset: 512 (aligned 512), data offset: 2048
-> > ubi0: good PEBs: 1999, bad PEBs: 30, corrupted PEBs: 0
->
-> Note that we now have 30 bad PEBs. I suppose these are not
-> really bad and we need to somehow clear bad block status for these.
+On Sun, 3 Jul 2022 18:11:36 +0200
+Arnd Bergmann <arnd@kernel.org> wrote:
 
-Do you mean using u-boot's "nand scrab"? So far, I didn't found any
-other option. There are numerous threads both mtd and barebox mailing
-lists but no implementation.
-
-Unfortunately, I don't have the initial BBT info. So let's hope the
-system can handle this.
-
-Btw, I have applied your debug patch and executed a ubiformat command
-but the debug messages weren't triggered.
-
-Yegor
-
-> > ubi0: user volume: 2, internal volumes: 1, max. volumes count: 128
-> > ubi0: max/mean erase counter: 19/13, WL threshold: 65536, image
-> > sequence number: 1371250241
-> > ubi0: available PEBs: 64, total reserved PEBs: 1935, PEBs reserved for
-> > bad PEB handling: 10
->
-> Only 10 PEBs reserved for bad PEB handling. So this might be causing
-> the error while mounting the first volume.
->
-> > UBIFS error (ubi0:0): 8fe548c7: bad superblock, error 13
-> >         magic          0x6101831
-> >         crc            0xfb86a857
-> >         node_type      6 (superblock node)
-> >         group_type     0 (no node group)
-> >         sqnum          2
-> >         len            4096
-> >         key_hash       0 (R5)
-> >         key_fmt        0 (simple)
-> >         flags          0x8
-> >         big_lpt        0
-> >         space_fixup    0
-> >         min_io_size    2048
-> >         leb_size       129024
-> >         leb_cnt        456
-> >         max_leb_cnt    456
-> >         max_bud_bytes  2451456
-> >         log_lebs       3
-> >         lpt_lebs       2
-> >         orph_lebs      2
-> >         jhead_cnt      1
-> >         fanout         8
-> >         lsave_cnt      256
-> >         default_compr  3
-> >         rp_size        2877235
-> >         rp_uid         0
-> >         rp_gid         0
-> >         fmt_version    5
-> >         time_gran      1000000000
-> >         UUID           87fa45e8
-> > ubifs ubifs0: probe failed: Invalid argument
-> > mount: Invalid argument
+> On Sun, Jul 3, 2022 at 1:24 PM Alexander Sverdlin
+> <alexander.sverdlin@gmail.com> wrote:
+> > Hello Nikita, Lukasz, Hartley,
+> > On Thu, 2022-06-30 at 09:42 +0200, Arnd Bergmann wrote:  
+> > > > > ep93xx
+> > > > >
+> > > > > These are still used, and the platform includes the only
+> > > > > remaining two board files that were added after linux-3.0. DT
+> > > > > support is probably doable now that common-clk works. Need
+> > > > > information about which boards are important.  
+> > > >
+> > > > I'm still maintaining/able to test CONFIG_MACH_EDB93XX
+> > > > (edb93xx.c).  
+> > >
+> > > Noted, thanks! We'll leave them in for 2023 then.
+> > >
+> > > Any thoughts on long-term uses for the platform? Do you know of
+> > > users of any products other than the reference boards that would
+> > > justify doing a DT conversion, or do we just delete the platform
+> > > another time?  
 > >
-> > Yegor
->
-> cheers,
-> -roger
+> > what are your projections for EP93xx support?
+> >
+> > I'm personally a bit pessimistic about DT conversion because
+> > existing partition tables were already challenged by the kernel
+> > growth. It has at least grown +60% with the same config since 2006.
+> > This makes me think that 2023 EOL for this SoC might be feasible.  
+> 
+> I don't think converting the platform to DT will make the space
+> problem noticeably
+> worse, as the DT infrastructure is already enabled unconditionally
+> since the multiplatform enablement. There are probably a few more
+> lines that need to be added to parse DT properties in a couple of
+> drivers, but removing the board files
+> will save a bit as well.
+> 
+> There is little hope of stopping the general accumulation of code
+> bloat through, so any boards that are hitting a size limit are
+> probably at the end of their lives
+> regardless.
+> 
+>          Arnd
+
+On the bright side i have a working (bootable with UBIFS rootfs)
+dt-based version of ts7250. Did almost a year ago, but unfortunately
+got caught by RISC-V bustle, Sorry for github links:
+
+Almost "clean" branch:
+https://github.com/maquefel/linux/tree/ep93xx_dt_rework 
+
+Dirty, last known good branch:
+https://github.com/maquefel/linux/tree/gpio/devel-ep93xx-rework-v6
+
+But all my users moved from ts7250 usage to other products, so i am
+okay if it vanishes from main tree...
+
+I have a dozen of ts7250, even with TS-DIO24, TS-SER4, CAN etc..., if
+someone is interested in Device Tree version of ep93xx/ts7250, it's not
+a problem for me to finalize the current work on the top of most recent
+version, but i can test only on ts7250.
+
+Yours,
+Nikita Shubin.
+
+
+
+
+
+
+
+
