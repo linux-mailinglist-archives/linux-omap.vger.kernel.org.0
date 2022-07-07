@@ -2,79 +2,100 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1202569174
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Jul 2022 20:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5906556978A
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Jul 2022 03:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234389AbiGFSMn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 6 Jul 2022 14:12:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55104 "EHLO
+        id S234876AbiGGBeE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 6 Jul 2022 21:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234144AbiGFSM0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Jul 2022 14:12:26 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8C7829C9A
-        for <linux-omap@vger.kernel.org>; Wed,  6 Jul 2022 11:12:24 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id o3-20020a17090a744300b001ef8f7f3dddso8061345pjk.3
-        for <linux-omap@vger.kernel.org>; Wed, 06 Jul 2022 11:12:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=mN3P8hPLWEZdYq/Iq2iVxFahPajjklJmxF0PKn78//uClSCt4VG2U88hiC+11v16xh
-         y1SqfQca+JNBVAZI3ePM63ZbF/Ll2WyFBxkuWhi0DbjFZD7bQcGvjfRIWz9nOeUbfrNN
-         Hn12zBv/BHEjrzhK9FyYZgJ+0yDe9gXNRwyhqCay9zO0NttAB/+uaRHDNofm5fJJ4uyL
-         UE2EskqpdPqCBWA33nmN+zOjdnlOoGQz4kYyfy27QOsJGqWsEfVgJUCLFJ7tUYFz1it3
-         polGmHqOxVGn/C/jOAMwwxKSSJA7dpPm8rxHhFZfT3QwVHikUfVhjEQAyBYj6En6JhiK
-         ztug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=h0ZslgqQ94UM3iGDYCZGEx8ZwvbYHY5ZrQARiO/Kpbc=;
-        b=hLeIOHnBcbyVKtoRzaq5w4dRt1pHxA1lN1rwUQB3U62xTxmc2mW+ZdKZC8RcuThqzx
-         1qSuBYSUkM3ijqLpgD4t2aMYBuUcJug3WQJ7lEfpi8cqBgu74LlGVOcmJ+jkT1xgtcgY
-         2EfuDYTPHeRfVcClO7EllnG9Toe77d6PU5/eIzuxxICS3o8sfQkR05zZMxEipHDEVP7r
-         ZbNN1x5vSUwmabDAvzbjtXZNCzLSdOL2rRzctUmzc5YLTOpl6GHsH4jRwdEqJKwFEr+3
-         oiC2eSM/qubJyKKSIQYAhOcDmv0goZ4EBiYJX3SMT7VHRxGnrUeHASHHBnYTKakjN2Aw
-         wpSw==
-X-Gm-Message-State: AJIora91E3FzoMSUQtLO+7z/hEH45h3gzwSCG9OM+pK9LuyucgkUbl6K
-        MNnHbBNsN0QKrr5q1OytANNyFx60wDiXP3P/PQY=
-X-Google-Smtp-Source: AGRyM1tSYQD1ua0CTRUtypz3YJM8n3hdcH3c6IIFHPkFLrrLRVN/+BPxkQjsmeSTaVke5NPWeFiSOZZnJAKztGQjykw=
-X-Received: by 2002:a17:903:22c7:b0:16b:fa15:63d4 with SMTP id
- y7-20020a17090322c700b0016bfa1563d4mr7832109plg.2.1657131143717; Wed, 06 Jul
- 2022 11:12:23 -0700 (PDT)
+        with ESMTP id S234889AbiGGBeC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 6 Jul 2022 21:34:02 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F2F2ED65
+        for <linux-omap@vger.kernel.org>; Wed,  6 Jul 2022 18:33:59 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2671XuiC018721;
+        Wed, 6 Jul 2022 20:33:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1657157636;
+        bh=2hV4yAhibiXXfo3vfWVagKC5tdsyHsYjdHP2fkFDgJs=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=pfZvAtmEZG9s/CfQNsgooRCN+B/B4/u/PZwfhG5qqmBkgA4SbE0nmOtA8n80FXZk+
+         QlHrorFn5k7ym4PCQGbnUCHUjo0ZimtLBug4ryx7mTvlQY6CPi0MuDTXf4D09GxWDO
+         pKn39ChCfwLhq4AkhUVcNPP68yKDcQY1iKcWHvRE=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2671Xuio043230
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 6 Jul 2022 20:33:56 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Wed, 6
+ Jul 2022 20:33:56 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Wed, 6 Jul 2022 20:33:56 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2671XtWr019968;
+        Wed, 6 Jul 2022 20:33:55 -0500
+From:   Nishanth Menon <nm@ti.com>
+To:     <glaroque@baylibre.com>, <vigneshr@ti.com>,
+        <linux-omap@vger.kernel.org>
+CC:     Nishanth Menon <nm@ti.com>, <linux-arm-kernel@lists.infradead.org>,
+        <praneeth@ti.com>, <khilman@baylibre.com>
+Subject: Re: [PATCH v4] arm64: dts: ti: k3-am625-sk: enable ramoops
+Date:   Wed, 6 Jul 2022 20:33:55 -0500
+Message-ID: <165715760732.14184.3989595493247484427.b4-ty@ti.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20220517122828.2985179-1-glaroque@baylibre.com>
+References: <20220517122828.2985179-1-glaroque@baylibre.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a11:688:b0:2b8:44d7:af7d with HTTP; Wed, 6 Jul 2022
- 11:12:23 -0700 (PDT)
-Reply-To: lilywilliam989@gmail.com
-From:   Lily William <sidimadi424@gmail.com>
-Date:   Wed, 6 Jul 2022 10:12:23 -0800
-Message-ID: <CAMKkZLv4y_z0FHKzrstmY9iWS6F=dqe-=gTuDKKGrJQyOX5=9w@mail.gmail.com>
-Subject: Hi Dear,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Dear,
+Hi Guillaume La Roque,
 
-My name is Dr Lily William from the United States.I am a French and
-American nationality (dual) living in the U.S and sometimes in France
-for Work Purpose.
+On Tue, 17 May 2022 14:28:28 +0200, Guillaume La Roque wrote:
+> Enable ramoops features to easily debug some issues.
+> 
+> 
 
-I hope you consider my friend request. I will share some of my pics
-and more details about myself when I get your response.
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
 
-Thanks
+[1/1] arm64: dts: ti: k3-am625-sk: Enable ramoops
+      commit: e2788887b33f00c4fabbfa251c8efb6bec1fba2e
 
-With love
-Lily
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] git://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+
