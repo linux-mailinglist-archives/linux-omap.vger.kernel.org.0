@@ -2,125 +2,168 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 327AE56D72D
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Jul 2022 09:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED2BA56FF9F
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Jul 2022 13:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbiGKH4B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 11 Jul 2022 03:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38306 "EHLO
+        id S229591AbiGKLBP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 11 Jul 2022 07:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229686AbiGKH4A (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Jul 2022 03:56:00 -0400
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56836193FD
-        for <linux-omap@vger.kernel.org>; Mon, 11 Jul 2022 00:55:59 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id t26-20020a9d775a000000b006168f7563daso3521180otl.2
-        for <linux-omap@vger.kernel.org>; Mon, 11 Jul 2022 00:55:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=q6o9JVRE687hr1p3UnsWW+UGjb7NYoGpQcgQLTRc/EA=;
-        b=NcB3UWoeVTuWWYfvJO9tjkVrw3frvptajR4mjcMeGyPHf6dekvpbXb5CMnFL3QpEZX
-         kphzplbp6KSSr0yxOZpTFG7PTT8wp5WLxNkbFbphzVoPdlUqHjISy1xNOEb3fqUv1P2y
-         vgT1CQr1jNZJEgcCrd6lmkzRFM6AUz4nv5kzYHNIMpyAzxXJR7RJXHNQLpQ3869RazMm
-         Zlzcj/SpqStyj3RgwqDAb4VzYs2Ec7sg1uDgvHZVXnUJ1Xw1Jpfxzucm1QHdQorhwHTC
-         OnX/DP3OEh1U6k48Jnj2IJPwB7zmdSoRhvbHM3aB6Z+O0saMxmS87poHSXZrTvjKf4WY
-         xGLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=q6o9JVRE687hr1p3UnsWW+UGjb7NYoGpQcgQLTRc/EA=;
-        b=UOLoOlVl8MQqTUnVUCFRv1yKKHB8QFFdG4zrhsJjQPsTzs7vkN+AGezx3tu2oweK7z
-         HUAHD5S9kpdIPdPYtxc0UQhY97xzE0bOLAp5NfNSa4fMUz3a4cZyjhIxk1qptIS8bSiU
-         bjTpXw/oSmFymDmescIL9QorkCZI3xeZB4R/I2xUK6oxKSRgO2jC94ozfVaMiSK/3rTM
-         mZGZiTTtukakeaDJECOxF65YGg5N8YRcytOSfAYa1YcWsozxeimwSojZoq+tkfH6xfEi
-         hyn1loSGvlJK/qH79HWly24SSeLaCo4Sc3rwkpTGloZehdtDS9FczrmKItrnAkb0JsYl
-         7fgA==
-X-Gm-Message-State: AJIora/1c4fipKptBCcMOQN7OzrH5uTBEG9ptYfjQIyEvfYPTebwTfcK
-        wqhPZwGU665Mxq8IKTzAeo4l4zaTprnm/c/LyG0=
-X-Google-Smtp-Source: AGRyM1vOyjTiq8QRa61DwTw/ayzCHAhd8qSwJW9Ev/hRl7untuLhXMC8MqGy3BlFnqIW6KvMSQ7uxudPaA7oxPsNKC4=
-X-Received: by 2002:a05:6830:4489:b0:61c:55ca:ecf3 with SMTP id
- r9-20020a056830448900b0061c55caecf3mr121888otv.198.1657526158492; Mon, 11 Jul
- 2022 00:55:58 -0700 (PDT)
-MIME-Version: 1.0
-Sender: dafsgsgasfsggg@gmail.com
-Received: by 2002:a05:6838:bd4f:0:0:0:0 with HTTP; Mon, 11 Jul 2022 00:55:58
- -0700 (PDT)
-From:   "carlsen.monika" <carlsen.monika@gmail.com>
-Date:   Mon, 11 Jul 2022 08:55:58 +0100
-X-Google-Sender-Auth: gdOU22b4ufiZ9yWy_FGoLmZhyL4
-Message-ID: <CANR0r5OL1zuC0BCGRAQg80egaba07exbvUhktjkNPLyfM0sLiA@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        with ESMTP id S229644AbiGKLBA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 11 Jul 2022 07:01:00 -0400
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C37D4B9D97
+        for <linux-omap@vger.kernel.org>; Mon, 11 Jul 2022 03:05:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1657533936;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=jm3y9Kft/NAhzSqkrL0ZwCbK7AJeFsLGl5vdNzBN+zE=;
+    b=cwNlTRgFTRs3TjeutF1Y9w2tLSi8iiI5EEpDv7awE6JCQ1etb2VZZdeINJXBmEwdOI
+    58bf+Ozw22yFPAItA1sZaT0tiICXiwbtDmB+0lrHtb39vaGiyFHqsIy2VFBQQTNbbrmK
+    V9/ZZUwPIUhSXI/EI9zOULReB2s7ng8HkE0fCVANlTkRKQjKfRY7lDbPJ2taMGj2ySkp
+    RJbXezByWkyqrBHEtZYssH9rRy8wYVFq32Gsa6wjsK4c3+M9re+BDMnbQti8HjRSjJ85
+    X/9YfSw39xDF/YOo1dPAha0tiSljR5iRHYSZGao1zuNbBmvWotauSwhkdARRh3minUG+
+    8LWw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGfqmU="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+    by smtp.strato.de (RZmta 47.46.1 DYNA|AUTH)
+    with ESMTPSA id x1817fy6BA5aq6V
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Mon, 11 Jul 2022 12:05:36 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
+Subject: Re: Pandora audio using machine_is_omap3_pandora() check
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <e0c913bb-1dee-a089-00cb-0c81a53603e4@gmx.de>
+Date:   Mon, 11 Jul 2022 12:05:35 +0200
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Grazvydas Ignotas <notasas@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
+        alsa-devel@alsa-project.org,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Grond <grond66@riseup.net>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <466F8216-E9A0-4FCE-838D-43A5322C15C1@goldelico.com>
+References: <Yrl92RILZwhQOP+e@atomide.com>
+ <B6EFBA88-2311-4455-82CB-3E5382C92B4E@goldelico.com>
+ <Yrm2dl9EtIb5IYhi@atomide.com> <e0c913bb-1dee-a089-00cb-0c81a53603e4@gmx.de>
+To:     Stefan Leichter <sle85276@gmx.de>
+X-Mailer: Apple Mail (2.3445.104.21)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:342 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [dafsgsgasfsggg[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  2.9 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
+Hi,
 
-    CHARITY DONATION Please read carefully, I know it is true that
-this letter may come to you as a surprise. I came across your e-mail
-contact through a private search while in need of your assistance. am
-writing this mail to you with heavy sorrow in my heart, I have chose
-to reach out to you through Internet because it still remains the
-fastest medium of communication. I sent this mail praying it will
-found you in a good condition of health, since I myself are in a very
-critical health condition in which I sleep every night without knowing
-if I may be alive to see the next day.
 
-Am Mrs.Monika John Carlsen, wife of late Mr John Carlsen, a widow
-suffering from long time illness. I have some funds I inherited from
-my late husband, the sum of ($11.000.000,eleven million dollars) my
-Doctor told me recently that I have serious sickness which is cancer
-problem. What disturbs me most is my stroke sickness. Having known my
-condition, I decided to donate this fund to a good person that will
-utilize it the way am going to instruct herein. I need a very honest
-and God fearing person who can claim this money and use it for Charity
-works, for orphanages, widows and also build schools for less
-privileges that will be named after my late husband if possible and to
-promote the word of God and the effort that the house of God is
-maintained.
+> Am 05.07.2022 um 23:39 schrieb Stefan Leichter <sle85276@gmx.de>:
+>=20
+> Hi,
+>=20
+> Am 27.06.22 um 15:53 schrieb Tony Lindgren:
+>> * H. Nikolaus Schaller <hns@goldelico.com> [220627 11:36]:
+>>> Hi Tony,
+>>>=20
+>>>> Am 27.06.2022 um 11:52 schrieb Tony Lindgren <tony@atomide.com>:
+>>>>=20
+>>>> Hi Grazvydas,
+>>>>=20
+>>>> Arnd noticed that pandora audio is using machine_is_omap3_pandora() =
+check
+>>>> that never succeeds for devicetree booting machines. Looks like =
+this has
+>>>> been broken at some point many years ago with the devicetree =
+conversion.
+>>>>=20
+>>>> Does anybody have an interest in fixing this driver?
+>>>=20
+>>> we already have fixes by Stefan Leichter and Grond here (incl. =
+removing any call to machine_is_omap3_pandora):
+>>>=20
+>>> 	=
+https://git.goldelico.com/?p=3Dletux-kernel.git;a=3Dshortlog;h=3Drefs/head=
+s/letux/sound-soc
+>>=20
+>> OK :)
+>>=20
+>>> But I don't know who can volunteer to run this series through the =
+upstreaming discussions
+>>> and do regression tests (AFAIR the Pandora of Grond is broken and he =
+has no replacement).
+>=20
+> I hope that Grond's Pandora didn't break because of experiments to get =
+the sound working.
 
-I do not want a situation where this money will be used in an ungodly
-manners. That is why am taking this decision. am not afraid of death
-so I know where am going. I accept this decision because I do not have
-any child who will inherit this money after I die. Please I want your
-sincerely and urgent answer to know if you will be able to execute
-this project, and I will give you more information on how the fund
-will be transferred to your bank account. am waiting for your reply,
+We tried to analyse but it is unilekely. It may just be wear somewhere =
+else.
+I also see XUDF error reports from I2C from time to time and it seems to =
+depend a little on battery charge.
+Difficult to pinpoint.
 
-Best Regards
-Mrs.Monika John Carlsen,
+>=20
+>>=20
+>> Probably best that Stefan and Grond do it :) Not sure what the =
+minimal fix
+>> for the mainline kernel might be to get things at least try to probe.
+>>=20
+>=20
+> Well, I think I'm not the right person to try to mainline the patches, =
+but if nobody else like to volunteer I will give it a try. Be warned, I =
+have no experience with mainlining patches, even not with kernel =
+programming at all. Therefore I need someone holding my hand. Does =
+anybody volunteer?
+
+Yes, we all :)
+
+Basically the task is to
+a) shape (i.e. rebase, edit) the patches according the rules: =
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html
+b) add Signed-Offs etc.
+c) compile test
+d) git format-patch
+e) ./scripts/checkpatch.pl and fix any reported weaknesses
+f) send by mail to this audience (perhaps check with ./MAINTAINERS)
+
+>=20
+> I had a look to the branch Nikolaus pointed out. Here are some =
+questions about the patches in the branch:
+>=20
+> - It seams to me the branch doesn't support any longer to compile the =
+driver directly into the kernel. Am I correct?
+
+Hm. It still should? What makes you think so?
+
+> - There are three patches from Andreas and Nikolaus in the beginning =
+of the branch. Are this patched needed to be mainlined too?
+
+No, they are not related to the Pandora but its cousin the GTA04.
+
+> - Two of my patches are super seeded by the patches from Grond. My =
+guess it that the patches needs to be squashed together?
+
+Yes.
+
+> - Where should I send the patches? The current audience might be a =
+little bit large?
+
+The audience is usually defined by ./MAINTAINERS
+And whoever could contribute in review.
+
+BR and thanks,
+Nikolaus
+
+
