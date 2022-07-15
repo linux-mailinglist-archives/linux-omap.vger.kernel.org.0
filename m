@@ -2,97 +2,61 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE5A574706
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Jul 2022 10:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10A00575D68
+	for <lists+linux-omap@lfdr.de>; Fri, 15 Jul 2022 10:27:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237124AbiGNIhF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 14 Jul 2022 04:37:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60814 "EHLO
+        id S232043AbiGOI0r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 15 Jul 2022 04:26:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236481AbiGNIg5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 14 Jul 2022 04:36:57 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC433F333
-        for <linux-omap@vger.kernel.org>; Thu, 14 Jul 2022 01:36:51 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id v14so1570062wra.5
-        for <linux-omap@vger.kernel.org>; Thu, 14 Jul 2022 01:36:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=nfF93HFABydKtKUN6hm08YjvNRh2G4i7biDP0iGWKm0CJI/6tO/7ASVGiMVbrFcvre
-         dFe7LS0o6XmnC1olR6EZQT61Pk5CcDXk8EOCE/ZUPQPC2WOF08wHjQNTI98f51BXkTW7
-         5dyslKzFlMJ1FAFUBcS5XSZMuJJQc0mVGS8sJL1EcuApFLh9MbSY3DeHMChVpm6lylO2
-         ZiD2YD5TYnCnW1RYesj2zabgr2TZokupGOdRW5Wg1Wsic5Yzi6a7GNVAIH/aFq924Tv4
-         l/BLkapdJUQdDh1nnfELCxBLwNTsd2zSHh12MGEWr6e9uOYA2kL+ohlW7KhzBK2CbHvs
-         dAHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=WPTssZSGRu7Kw833wd9oznKe/B3tG3yBt/8e0vqF58Ys4Wq5OptPdYcq73nYf9d0UT
-         DG40UUIXEVfA9gvKUtC3lPla+leYxzGg+VVnJ5014iXuNHS/ulkOnbrH4Lp9AZr+1pvy
-         pCapWkUT/FyNQPCRPEpYFtQe1HypOWcPe1WPk+eeMnli7+FLaCuBNIH4Za2Qhvggyk0W
-         Y5U4PjIbouLH8Z8d/6eBvr88ZJPyMNmnAw2otkAZusiRcxbZpLltRzbpJNoLDdp2kivJ
-         CbCbGSgFYH0GGYLDp1s/pe0eTksEe2wmb2yhik9x3fPeaCWi6hMDJUgppxNNOFahMq1k
-         lOvw==
-X-Gm-Message-State: AJIora+xtz3UGP7LK3XxcpFSSkxFJ3LHuffCrW5kCYXUG2aFx7Axxezd
-        oObGHK25si58A7Ozyj3olGH05C+edSaVJx0i43M5kvqV/nabFg==
-X-Google-Smtp-Source: AGRyM1sBAY02anFyAAkYvB61573ohyB+lIVHvdune1I2St249pttaSZdeqZISv5rckThyg5u7Q/retQg6yCpkFrJ9YI=
-X-Received: by 2002:a05:6512:1307:b0:47f:baa4:52c5 with SMTP id
- x7-20020a056512130700b0047fbaa452c5mr4350443lfu.103.1657787798421; Thu, 14
- Jul 2022 01:36:38 -0700 (PDT)
+        with ESMTP id S232187AbiGOI0q (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 15 Jul 2022 04:26:46 -0400
+X-Greylist: delayed 447 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 15 Jul 2022 01:26:45 PDT
+Received: from mail.connexion24.pl (mail.connexion24.pl [141.94.21.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEABE3D596
+        for <linux-omap@vger.kernel.org>; Fri, 15 Jul 2022 01:26:45 -0700 (PDT)
+Received: by mail.connexion24.pl (Postfix, from userid 1002)
+        id 63DACA830D; Fri, 15 Jul 2022 08:16:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=connexion24.pl;
+        s=mail; t=1657873117;
+        bh=ChRcLNpIfKnVgp03/tSyWuRw1tWSTk/OEiEnuZMWs58=;
+        h=Date:From:To:Subject:From;
+        b=nfX+G5q452N0vW3Td7mX8MXgm1H4n3bRWC/NGhF38jlK6Egl+RXnK1qFsHRUX0Yk5
+         xy/rdBtt/HHjdyuBDeeKUT7EgCbZVC1CwHce4rMYbuyz1gVlICOyWvqEIyN7yV9Req
+         WxPNUZ7D+DJag3WtW67FNEfvrfKVFGctNzwVZmFHcxBy4mPAd9uM3xkCz1trebVfV/
+         9PJWIZBsn7GLNGBevE3SHE2iwHSf/9fvpOCxYJyNcCnjmBIhXCU946rxcYV7SzS+M5
+         HgEfwcTZxGajF6zvpcsbQfbTlN2VmckvPBotjUh5kfceUiNHi7DdThek+AOsGCqpjR
+         0oPdfyoyOiDuw==
+Received: by mail.connexion24.pl for <linux-omap@vger.kernel.org>; Fri, 15 Jul 2022 08:16:12 GMT
+Message-ID: <20220715064500-0.1.4m.esy0.0.jlrihrt58g@connexion24.pl>
+Date:   Fri, 15 Jul 2022 08:16:12 GMT
+From:   "Norbert Karecki" <norbert.karecki@connexion24.pl>
+To:     <linux-omap@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.connexion24.pl
 MIME-Version: 1.0
-Received: by 2002:a2e:9041:0:0:0:0:0 with HTTP; Thu, 14 Jul 2022 01:36:37
- -0700 (PDT)
-Reply-To: abdwabbomaddahm@gmail.com
-From:   Abdwabbo Maddah <abdwabbomaddah746@gmail.com>
-Date:   Thu, 14 Jul 2022 09:36:37 +0100
-Message-ID: <CAFC-3idDfFB0Mmtq-N-n6z5Ly7T-KDCJtvbc0UgtirMnTLYTCg@mail.gmail.com>
-Subject: Get back to me... URGENT
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:42a listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4731]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [abdwabbomaddah746[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [abdwabbomaddah746[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL,SPF_HELO_NONE,
+        SPF_PASS,URIBL_SBL_A autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
--- 
-Dear,
-I had sent you a mail but i don't think you received it that's why am
-writing you again.It is important you get back to me as soon as you
-can.
-Abd-Wabbo Maddah
+Dzie=C5=84 dobry,
+
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
+
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
+
+
+Pozdrawiam,
+Norbert Karecki
