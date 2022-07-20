@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4361B57AC8F
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Jul 2022 03:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D328157AD31
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Jul 2022 03:33:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240829AbiGTBXN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Jul 2022 21:23:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45938 "EHLO
+        id S229690AbiGTBZJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Jul 2022 21:25:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241721AbiGTBTa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Jul 2022 21:19:30 -0400
+        with ESMTP id S237518AbiGTBXt (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Jul 2022 21:23:49 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28DFC6D9C0;
-        Tue, 19 Jul 2022 18:15:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC3572EC5;
+        Tue, 19 Jul 2022 18:17:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1A005B81DE2;
-        Wed, 20 Jul 2022 01:15:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86838C341CB;
-        Wed, 20 Jul 2022 01:15:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A7A7FB81DE7;
+        Wed, 20 Jul 2022 01:17:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14ACEC36AE2;
+        Wed, 20 Jul 2022 01:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658279739;
-        bh=JRE4eCEHL7qHZzSMJ0Aj8TxGJBqLd3iO3wdnG87vjeU=;
+        s=k20201202; t=1658279827;
+        bh=RqGXJUEV+udnJj0vft105RkHj94e+5R2bTLqMsjWMAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y52Chdi5AYqO+xzUuIdDlOEuk84sRYJTymSXrQcWoCONzFbZobQ6DWFzLniwYcGTL
-         5/T5yOVYvjZU1/qmXmkaFcq/tgKwQypjzPFyCxtJgOTzJhj5ANh72BDNkAaKyt7CeK
-         t0Jn7xliRJQCHD2TGCSCl5JQHtmSBlU5EFuDNTVN/dEs0iRRDV9xCXOIvnYLmvaa7w
-         0lt0fhgGXAqesOQW/19lt8lfvp2j4yBOwT9vZu4h/n2RDp18N9Hey/FZ8a3QmqywWI
-         lEzZxuQc2LqpEmlcfCaQoWs//SaQYafrIW9xmN2VY3KKPNNuyTm+Muk7BuQ44mn/LK
-         t37GXl1FKwbfA==
+        b=sBpJ+LRUOXFaGCzpWKOGSfxTGtHdifWnGBXj0/VY3YYyZSLWWE2AFMg2sF9V+0IBZ
+         NIKCRq14oRJDrzcdRBmYhOzuKD56erbARc/Ke9//S1EaWxc4IKJwJQUixmVmwHKmY3
+         3QiBtrN3XjGoOSKdHSKKPnkc3XTaKIO5YxQQMTiWYGF32HQBOUx7GV4sfVNhPnDRJ/
+         X5FHzbObUQMXk+P3o/T5AUi96mHo3E6GZUMXqV67b0EPNGzQ6aXjV96zFR1pxt5Ph/
+         k9JjPBuW+scqT+qmNr8KYx2laaelfKYJLuYR+Jn+fczx0VCRaVBNyH9bGsArraf5bf
+         MGBW9MMcfOYZA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     David Owens <daowens01@gmail.com>,
@@ -40,12 +40,12 @@ Cc:     David Owens <daowens01@gmail.com>,
         jarkko.nikula@bitmer.com, lgirdwood@gmail.com, perex@perex.cz,
         tiwai@suse.com, alsa-devel@alsa-project.org,
         linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 28/42] ASoC: ti: omap-mcbsp: duplicate sysfs error
-Date:   Tue, 19 Jul 2022 21:13:36 -0400
-Message-Id: <20220720011350.1024134-28-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 15/25] ASoC: ti: omap-mcbsp: duplicate sysfs error
+Date:   Tue, 19 Jul 2022 21:16:06 -0400
+Message-Id: <20220720011616.1024753-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220720011350.1024134-1-sashal@kernel.org>
-References: <20220720011350.1024134-1-sashal@kernel.org>
+In-Reply-To: <20220720011616.1024753-1-sashal@kernel.org>
+References: <20220720011616.1024753-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -134,10 +134,10 @@ index 0bc7d26c660a..7e8179cae92e 100644
  				    struct snd_ctl_elem_info *uinfo)
  {
 diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index 4479d74f0a45..9933b33c80ca 100644
+index 6025b30bbe77..119e9053d83f 100644
 --- a/sound/soc/ti/omap-mcbsp.c
 +++ b/sound/soc/ti/omap-mcbsp.c
-@@ -702,8 +702,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+@@ -703,8 +703,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
  		mcbsp->max_tx_thres = max_thres(mcbsp) - 0x10;
  		mcbsp->max_rx_thres = max_thres(mcbsp) - 0x10;
  
@@ -147,7 +147,7 @@ index 4479d74f0a45..9933b33c80ca 100644
  		if (ret) {
  			dev_err(mcbsp->dev,
  				"Unable to create additional controls\n");
-@@ -711,16 +710,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+@@ -712,16 +711,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
  		}
  	}
  
@@ -165,7 +165,7 @@ index 4479d74f0a45..9933b33c80ca 100644
  }
  
  /*
-@@ -1431,11 +1421,6 @@ static int asoc_mcbsp_remove(struct platform_device *pdev)
+@@ -1432,11 +1422,6 @@ static int asoc_mcbsp_remove(struct platform_device *pdev)
  	if (cpu_latency_qos_request_active(&mcbsp->pm_qos_req))
  		cpu_latency_qos_remove_request(&mcbsp->pm_qos_req);
  
