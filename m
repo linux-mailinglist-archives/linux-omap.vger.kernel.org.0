@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 294F257AB98
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Jul 2022 03:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4361B57AC8F
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Jul 2022 03:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240898AbiGTBO2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Jul 2022 21:14:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33638 "EHLO
+        id S240829AbiGTBXN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Jul 2022 21:23:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240943AbiGTBN7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Jul 2022 21:13:59 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CCA067C8C;
-        Tue, 19 Jul 2022 18:12:55 -0700 (PDT)
+        with ESMTP id S241721AbiGTBTa (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Jul 2022 21:19:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28DFC6D9C0;
+        Tue, 19 Jul 2022 18:15:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1C56EB81DC0;
-        Wed, 20 Jul 2022 01:12:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84030C341C6;
-        Wed, 20 Jul 2022 01:12:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1A005B81DE2;
+        Wed, 20 Jul 2022 01:15:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86838C341CB;
+        Wed, 20 Jul 2022 01:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658279572;
+        s=k20201202; t=1658279739;
         bh=JRE4eCEHL7qHZzSMJ0Aj8TxGJBqLd3iO3wdnG87vjeU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bmuM9g4Y6LS3qTW/btb5nmAf8ucPH6x8KnZr3M2nIULxRFJEkx8oKc3tFouLWZQH+
-         L19tRFpQkBw5HCUgbcP02ypqI0mOaYnOtB5jeoOiFuhmuGWEVDSrzNOeF4m1eflgmg
-         gUSrSqGobp4apMiLJyS2h2/JfBLDKi8nOz7xn4XA0gDT+9SpT2gHmtw1U4+P4qO+v3
-         nffRa0g4l1yU6pPq2Y+MK1ZTgArl38VAEHjnXVs1/ZqvlxCIjYWathtyFEci5erPXp
-         8JPj3j/+NZ0J14na31EmsJq872l3yi3oYaL3fDhDi6V5sfpR+7LjJ/5oQRd+LgC0CX
-         7KCJoO055wroQ==
+        b=Y52Chdi5AYqO+xzUuIdDlOEuk84sRYJTymSXrQcWoCONzFbZobQ6DWFzLniwYcGTL
+         5/T5yOVYvjZU1/qmXmkaFcq/tgKwQypjzPFyCxtJgOTzJhj5ANh72BDNkAaKyt7CeK
+         t0Jn7xliRJQCHD2TGCSCl5JQHtmSBlU5EFuDNTVN/dEs0iRRDV9xCXOIvnYLmvaa7w
+         0lt0fhgGXAqesOQW/19lt8lfvp2j4yBOwT9vZu4h/n2RDp18N9Hey/FZ8a3QmqywWI
+         lEzZxuQc2LqpEmlcfCaQoWs//SaQYafrIW9xmN2VY3KKPNNuyTm+Muk7BuQ44mn/LK
+         t37GXl1FKwbfA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     David Owens <daowens01@gmail.com>,
@@ -40,12 +40,12 @@ Cc:     David Owens <daowens01@gmail.com>,
         jarkko.nikula@bitmer.com, lgirdwood@gmail.com, perex@perex.cz,
         tiwai@suse.com, alsa-devel@alsa-project.org,
         linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.18 36/54] ASoC: ti: omap-mcbsp: duplicate sysfs error
-Date:   Tue, 19 Jul 2022 21:10:13 -0400
-Message-Id: <20220720011031.1023305-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 28/42] ASoC: ti: omap-mcbsp: duplicate sysfs error
+Date:   Tue, 19 Jul 2022 21:13:36 -0400
+Message-Id: <20220720011350.1024134-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220720011031.1023305-1-sashal@kernel.org>
-References: <20220720011031.1023305-1-sashal@kernel.org>
+In-Reply-To: <20220720011350.1024134-1-sashal@kernel.org>
+References: <20220720011350.1024134-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
