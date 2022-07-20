@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D328157AD31
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Jul 2022 03:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29F2A57ACD7
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Jul 2022 03:32:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229690AbiGTBZJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Jul 2022 21:25:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57570 "EHLO
+        id S242094AbiGTB0v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 19 Jul 2022 21:26:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237518AbiGTBXt (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Jul 2022 21:23:49 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC3572EC5;
-        Tue, 19 Jul 2022 18:17:10 -0700 (PDT)
+        with ESMTP id S241929AbiGTBZj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Jul 2022 21:25:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303F074CE3;
+        Tue, 19 Jul 2022 18:18:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A7A7FB81DE7;
-        Wed, 20 Jul 2022 01:17:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14ACEC36AE2;
-        Wed, 20 Jul 2022 01:17:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E00C2617EB;
+        Wed, 20 Jul 2022 01:17:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052CAC341CA;
+        Wed, 20 Jul 2022 01:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658279827;
-        bh=RqGXJUEV+udnJj0vft105RkHj94e+5R2bTLqMsjWMAE=;
+        s=k20201202; t=1658279879;
+        bh=sjgCMzzlr0pgAEg0sZVpHJj8s3ynOX+/T3ir9+DuS+o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sBpJ+LRUOXFaGCzpWKOGSfxTGtHdifWnGBXj0/VY3YYyZSLWWE2AFMg2sF9V+0IBZ
-         NIKCRq14oRJDrzcdRBmYhOzuKD56erbARc/Ke9//S1EaWxc4IKJwJQUixmVmwHKmY3
-         3QiBtrN3XjGoOSKdHSKKPnkc3XTaKIO5YxQQMTiWYGF32HQBOUx7GV4sfVNhPnDRJ/
-         X5FHzbObUQMXk+P3o/T5AUi96mHo3E6GZUMXqV67b0EPNGzQ6aXjV96zFR1pxt5Ph/
-         k9JjPBuW+scqT+qmNr8KYx2laaelfKYJLuYR+Jn+fczx0VCRaVBNyH9bGsArraf5bf
-         MGBW9MMcfOYZA==
+        b=KDAVb+6Alc/YosFC8CnRYpqkZelGLgCjDA6IK9ob914yEVXAM0VP3nezGcyZUKRgt
+         rdGdSI18Xm3enwoYuRG3FHUjgBUqbhl6KpFdtHS2mJ3AzRN+KbnUnzL9PFRa9LBuwk
+         1NAn2Ijqicg3Wj5Q1N+3bGTLu95G3sqlKGRKEZWHp8YU+r+36IFg0LuRZ+L9fsnaO9
+         q1rtg0K5zYyLI1cCt3LCBA26bTIN3kEaaoHkXKocwr9YxbsqHuf0BPcq6Q1mdngaiP
+         KMvTcZmOmNhMdAuQEZqQYFg1O74JBzJn5roXe60whk+sw1F7hHM3ZxEpqM0vzUZYmV
+         MrzkLQBBl7nOA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     David Owens <daowens01@gmail.com>,
@@ -40,12 +40,12 @@ Cc:     David Owens <daowens01@gmail.com>,
         jarkko.nikula@bitmer.com, lgirdwood@gmail.com, perex@perex.cz,
         tiwai@suse.com, alsa-devel@alsa-project.org,
         linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 15/25] ASoC: ti: omap-mcbsp: duplicate sysfs error
-Date:   Tue, 19 Jul 2022 21:16:06 -0400
-Message-Id: <20220720011616.1024753-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 10/16] ASoC: ti: omap-mcbsp: duplicate sysfs error
+Date:   Tue, 19 Jul 2022 21:17:24 -0400
+Message-Id: <20220720011730.1025099-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220720011616.1024753-1-sashal@kernel.org>
-References: <20220720011616.1024753-1-sashal@kernel.org>
+In-Reply-To: <20220720011730.1025099-1-sashal@kernel.org>
+References: <20220720011730.1025099-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -95,10 +95,10 @@ index 7865cda4bf0a..da519ea1f303 100644
  int omap_mcbsp_st_stop(struct omap_mcbsp *mcbsp);
  
 diff --git a/sound/soc/ti/omap-mcbsp-st.c b/sound/soc/ti/omap-mcbsp-st.c
-index 0bc7d26c660a..7e8179cae92e 100644
+index 1a3fe854e856..23dc35192e39 100644
 --- a/sound/soc/ti/omap-mcbsp-st.c
 +++ b/sound/soc/ti/omap-mcbsp-st.c
-@@ -347,7 +347,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+@@ -350,7 +350,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
  	if (!st_data)
  		return -ENOMEM;
  
@@ -107,7 +107,7 @@ index 0bc7d26c660a..7e8179cae92e 100644
  	if (IS_ERR(st_data->mcbsp_iclk)) {
  		dev_warn(mcbsp->dev,
  			 "Failed to get ick, sidetone might be broken\n");
-@@ -359,7 +359,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+@@ -362,7 +362,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
  	if (!st_data->io_base_st)
  		return -ENOMEM;
  
@@ -116,7 +116,7 @@ index 0bc7d26c660a..7e8179cae92e 100644
  	if (ret)
  		return ret;
  
-@@ -368,16 +368,6 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
+@@ -371,16 +371,6 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
  	return 0;
  }
  
@@ -134,10 +134,10 @@ index 0bc7d26c660a..7e8179cae92e 100644
  				    struct snd_ctl_elem_info *uinfo)
  {
 diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index 6025b30bbe77..119e9053d83f 100644
+index 3273b317fa3b..8f9d4a2c1d71 100644
 --- a/sound/soc/ti/omap-mcbsp.c
 +++ b/sound/soc/ti/omap-mcbsp.c
-@@ -703,8 +703,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+@@ -706,8 +706,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
  		mcbsp->max_tx_thres = max_thres(mcbsp) - 0x10;
  		mcbsp->max_rx_thres = max_thres(mcbsp) - 0x10;
  
@@ -147,7 +147,7 @@ index 6025b30bbe77..119e9053d83f 100644
  		if (ret) {
  			dev_err(mcbsp->dev,
  				"Unable to create additional controls\n");
-@@ -712,16 +711,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+@@ -715,16 +714,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
  		}
  	}
  
@@ -165,9 +165,9 @@ index 6025b30bbe77..119e9053d83f 100644
  }
  
  /*
-@@ -1432,11 +1422,6 @@ static int asoc_mcbsp_remove(struct platform_device *pdev)
- 	if (cpu_latency_qos_request_active(&mcbsp->pm_qos_req))
- 		cpu_latency_qos_remove_request(&mcbsp->pm_qos_req);
+@@ -1435,11 +1425,6 @@ static int asoc_mcbsp_remove(struct platform_device *pdev)
+ 	if (pm_qos_request_active(&mcbsp->pm_qos_req))
+ 		pm_qos_remove_request(&mcbsp->pm_qos_req);
  
 -	if (mcbsp->pdata->buffer_size)
 -		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
