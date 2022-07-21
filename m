@@ -2,53 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29F2A57ACD7
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Jul 2022 03:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A417957CCFA
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Jul 2022 16:13:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242094AbiGTB0v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 19 Jul 2022 21:26:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60112 "EHLO
+        id S230191AbiGUONq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Jul 2022 10:13:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241929AbiGTBZj (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 19 Jul 2022 21:25:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303F074CE3;
-        Tue, 19 Jul 2022 18:18:00 -0700 (PDT)
+        with ESMTP id S229506AbiGUONn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Jul 2022 10:13:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB3152893;
+        Thu, 21 Jul 2022 07:13:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E00C2617EB;
-        Wed, 20 Jul 2022 01:17:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052CAC341CA;
-        Wed, 20 Jul 2022 01:17:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 07F5861F82;
+        Thu, 21 Jul 2022 14:13:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C56C3411E;
+        Thu, 21 Jul 2022 14:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658279879;
-        bh=sjgCMzzlr0pgAEg0sZVpHJj8s3ynOX+/T3ir9+DuS+o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KDAVb+6Alc/YosFC8CnRYpqkZelGLgCjDA6IK9ob914yEVXAM0VP3nezGcyZUKRgt
-         rdGdSI18Xm3enwoYuRG3FHUjgBUqbhl6KpFdtHS2mJ3AzRN+KbnUnzL9PFRa9LBuwk
-         1NAn2Ijqicg3Wj5Q1N+3bGTLu95G3sqlKGRKEZWHp8YU+r+36IFg0LuRZ+L9fsnaO9
-         q1rtg0K5zYyLI1cCt3LCBA26bTIN3kEaaoHkXKocwr9YxbsqHuf0BPcq6Q1mdngaiP
-         KMvTcZmOmNhMdAuQEZqQYFg1O74JBzJn5roXe60whk+sw1F7hHM3ZxEpqM0vzUZYmV
-         MrzkLQBBl7nOA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     David Owens <daowens01@gmail.com>,
-        David Owens <dowens@precisionplanting.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, peter.ujfalusi@gmail.com,
-        jarkko.nikula@bitmer.com, lgirdwood@gmail.com, perex@perex.cz,
-        tiwai@suse.com, alsa-devel@alsa-project.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 10/16] ASoC: ti: omap-mcbsp: duplicate sysfs error
-Date:   Tue, 19 Jul 2022 21:17:24 -0400
-Message-Id: <20220720011730.1025099-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220720011730.1025099-1-sashal@kernel.org>
-References: <20220720011730.1025099-1-sashal@kernel.org>
+        s=k20201202; t=1658412821;
+        bh=EPecOnRHvam2B9sAJCT0OBa+3aX5JmCDR+0inavW5vo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oRQ70x6nGh2glXxglojpBQHnTR4hurQ2zeuuLjLqKvR+Q+2JXmkt2I+S3jcBy2078
+         h0eDVZac7ctNYah6Fa3Ne06zk/tm4v+8KdKJl4NAYp19fNSGpySE/VFc1YuK61+eCe
+         RrcwtuQ10LYRWhb67YeUB/8htFx4d3ljOCC1wWjs8c4+nOfg6BkwJbW+3diPc4OUee
+         rK7mewt4yfy/EHoiO84A0upUYiYWfuFzB8dDkUfLD0FR5i/Ysfn24GI4bOfJgFPEht
+         pSDfiIXyTC6ZI4zWEmq7fGY6s9e8vzbP9g5TWaECjcTQIix1PW+z5fTe/0o7A9sXvr
+         r1IRTYd3cTVjQ==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Alexander Shiyan <shc_work@mail.ru>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Taichi Sugaya <sugaya.taichi@socionext.com>,
+        Takao Orito <orito.takao@socionext.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-oxnas@groups.io, linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        linux-sh@vger.kernel.org
+Subject: [PATCH 0/6] ARM: defconfig cleanups
+Date:   Thu, 21 Jul 2022 16:13:19 +0200
+Message-Id: <20220721141325.2413920-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -59,124 +94,183 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: David Owens <daowens01@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f0d96937d31c4615a6418e4bed5cee50a952040e ]
+In the process of deprecating board files, I had to modify some defconfig
+files and ran into the same problem as everyone else that a lot of
+them are rather outdated. With some scripting, I managed to split out
+a preparation patch that puts all lines into the expected order without
+actually changing the contents.
 
-Convert to managed versions of sysfs and clk allocation to simplify
-unbinding and error handling in probe.  Managed sysfs node
-creation specifically addresses the following error seen the second time
-probe is attempted after sdma_pcm_platform_register() previously requsted
-probe deferral:
+This helped doing the cleanup separately per Kconfig option that needed
+to be addressed. I only did a small portion of the follow-up changes
+to get to the point of being able to rebase my board changes on top,
+but I did manage to address some bugs that have crept in.
 
-sysfs: cannot create duplicate filename '/devices/platform/68000000.ocp/49022000.mcbsp/max_tx_thres'
+If there are no objections, I'd apply this set to the arm/defconfig
+branch of the soc tree directly.
 
-Signed-off-by: David Owens <dowens@precisionplanting.com>
-Link: https://lore.kernel.org/r/20220620183744.3176557-1-dowens@precisionplanting.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/soc/ti/omap-mcbsp-priv.h |  2 --
- sound/soc/ti/omap-mcbsp-st.c   | 14 ++------------
- sound/soc/ti/omap-mcbsp.c      | 19 ++-----------------
- 3 files changed, 4 insertions(+), 31 deletions(-)
+      Arnd
 
-diff --git a/sound/soc/ti/omap-mcbsp-priv.h b/sound/soc/ti/omap-mcbsp-priv.h
-index 7865cda4bf0a..da519ea1f303 100644
---- a/sound/soc/ti/omap-mcbsp-priv.h
-+++ b/sound/soc/ti/omap-mcbsp-priv.h
-@@ -316,8 +316,6 @@ static inline int omap_mcbsp_read(struct omap_mcbsp *mcbsp, u16 reg,
- 
- /* Sidetone specific API */
- int omap_mcbsp_st_init(struct platform_device *pdev);
--void omap_mcbsp_st_cleanup(struct platform_device *pdev);
--
- int omap_mcbsp_st_start(struct omap_mcbsp *mcbsp);
- int omap_mcbsp_st_stop(struct omap_mcbsp *mcbsp);
- 
-diff --git a/sound/soc/ti/omap-mcbsp-st.c b/sound/soc/ti/omap-mcbsp-st.c
-index 1a3fe854e856..23dc35192e39 100644
---- a/sound/soc/ti/omap-mcbsp-st.c
-+++ b/sound/soc/ti/omap-mcbsp-st.c
-@@ -350,7 +350,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
- 	if (!st_data)
- 		return -ENOMEM;
- 
--	st_data->mcbsp_iclk = clk_get(mcbsp->dev, "ick");
-+	st_data->mcbsp_iclk = devm_clk_get(mcbsp->dev, "ick");
- 	if (IS_ERR(st_data->mcbsp_iclk)) {
- 		dev_warn(mcbsp->dev,
- 			 "Failed to get ick, sidetone might be broken\n");
-@@ -362,7 +362,7 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
- 	if (!st_data->io_base_st)
- 		return -ENOMEM;
- 
--	ret = sysfs_create_group(&mcbsp->dev->kobj, &sidetone_attr_group);
-+	ret = devm_device_add_group(mcbsp->dev, &sidetone_attr_group);
- 	if (ret)
- 		return ret;
- 
-@@ -371,16 +371,6 @@ int omap_mcbsp_st_init(struct platform_device *pdev)
- 	return 0;
- }
- 
--void omap_mcbsp_st_cleanup(struct platform_device *pdev)
--{
--	struct omap_mcbsp *mcbsp = platform_get_drvdata(pdev);
--
--	if (mcbsp->st_data) {
--		sysfs_remove_group(&mcbsp->dev->kobj, &sidetone_attr_group);
--		clk_put(mcbsp->st_data->mcbsp_iclk);
--	}
--}
--
- static int omap_mcbsp_st_info_volsw(struct snd_kcontrol *kcontrol,
- 				    struct snd_ctl_elem_info *uinfo)
- {
-diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index 3273b317fa3b..8f9d4a2c1d71 100644
---- a/sound/soc/ti/omap-mcbsp.c
-+++ b/sound/soc/ti/omap-mcbsp.c
-@@ -706,8 +706,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
- 		mcbsp->max_tx_thres = max_thres(mcbsp) - 0x10;
- 		mcbsp->max_rx_thres = max_thres(mcbsp) - 0x10;
- 
--		ret = sysfs_create_group(&mcbsp->dev->kobj,
--					 &additional_attr_group);
-+		ret = devm_device_add_group(mcbsp->dev, &additional_attr_group);
- 		if (ret) {
- 			dev_err(mcbsp->dev,
- 				"Unable to create additional controls\n");
-@@ -715,16 +714,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
- 		}
- 	}
- 
--	ret = omap_mcbsp_st_init(pdev);
--	if (ret)
--		goto err_st;
--
--	return 0;
--
--err_st:
--	if (mcbsp->pdata->buffer_size)
--		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
--	return ret;
-+	return omap_mcbsp_st_init(pdev);
- }
- 
- /*
-@@ -1435,11 +1425,6 @@ static int asoc_mcbsp_remove(struct platform_device *pdev)
- 	if (pm_qos_request_active(&mcbsp->pm_qos_req))
- 		pm_qos_remove_request(&mcbsp->pm_qos_req);
- 
--	if (mcbsp->pdata->buffer_size)
--		sysfs_remove_group(&mcbsp->dev->kobj, &additional_attr_group);
--
--	omap_mcbsp_st_cleanup(pdev);
--
- 	return 0;
- }
- 
+Arnd Bergmann (6):
+  ARM: refresh defconfig files
+  ARM: defconfig: remove irda remnants
+  ARM: defconfig: remove stale CONFIG_ZBOOT_ROM entries
+  ARM: defconfig: address renamed CONFIG_DEBUG_INFO=y
+  ARM: defconfig: remove broken CONFIG_THUMB disables
+  ARM: defconfig: kill remnants of CONFIG_LEDS
+
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Claudiu Beznea <claudiu.beznea@microchip.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Alexander Shiyan <shc_work@mail.ru>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Vladimir Zapolskiy <vz@mleia.com>
+Cc: Taichi Sugaya <sugaya.taichi@socionext.com>
+Cc: Takao Orito <orito.takao@socionext.com>
+Cc: Liviu Dudau <liviu.dudau@arm.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Gregory Clement <gregory.clement@bootlin.com>
+Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Neil Armstrong <narmstrong@baylibre.com>
+Cc: Dinh Nguyen <dinguyen@kernel.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-aspeed@lists.ozlabs.org
+Cc: bcm-kernel-feedback-list@broadcom.com
+Cc: linux-rpi-kernel@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Cc: linux-oxnas@groups.io
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-sunxi@lists.linux.dev
+Cc: linux-tegra@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+
+ arch/arm/configs/am200epdkit_defconfig    |  28 ++---
+ arch/arm/configs/aspeed_g4_defconfig      |  17 ++-
+ arch/arm/configs/aspeed_g5_defconfig      |  17 ++-
+ arch/arm/configs/assabet_defconfig        |  19 ++-
+ arch/arm/configs/at91_dt_defconfig        |  10 +-
+ arch/arm/configs/axm55xx_defconfig        |  26 ++--
+ arch/arm/configs/badge4_defconfig         |  17 +--
+ arch/arm/configs/bcm2835_defconfig        |  38 +++---
+ arch/arm/configs/cerfcube_defconfig       |  24 ++--
+ arch/arm/configs/clps711x_defconfig       |   6 +-
+ arch/arm/configs/cm_x300_defconfig        |  28 ++---
+ arch/arm/configs/cns3420vb_defconfig      |  20 ++--
+ arch/arm/configs/colibri_pxa270_defconfig |  41 +++----
+ arch/arm/configs/colibri_pxa300_defconfig |  12 +-
+ arch/arm/configs/collie_defconfig         |  22 ++--
+ arch/arm/configs/corgi_defconfig          |  51 ++++----
+ arch/arm/configs/davinci_all_defconfig    |  28 ++---
+ arch/arm/configs/dove_defconfig           |  32 +++--
+ arch/arm/configs/ep93xx_defconfig         |  18 ++-
+ arch/arm/configs/eseries_pxa_defconfig    |  36 ++----
+ arch/arm/configs/exynos_defconfig         |  24 ++--
+ arch/arm/configs/ezx_defconfig            |  74 ++++++------
+ arch/arm/configs/footbridge_defconfig     |  31 ++---
+ arch/arm/configs/h3600_defconfig          |  16 +--
+ arch/arm/configs/h5000_defconfig          |  20 ++--
+ arch/arm/configs/hackkit_defconfig        |  12 +-
+ arch/arm/configs/hisi_defconfig           |  24 ++--
+ arch/arm/configs/imx_v4_v5_defconfig      |  10 +-
+ arch/arm/configs/imx_v6_v7_defconfig      |   8 +-
+ arch/arm/configs/integrator_defconfig     |   2 +-
+ arch/arm/configs/iop32x_defconfig         |  23 ++--
+ arch/arm/configs/ixp4xx_defconfig         |   1 -
+ arch/arm/configs/jornada720_defconfig     |  16 +--
+ arch/arm/configs/keystone_defconfig       |  64 +++++-----
+ arch/arm/configs/lart_defconfig           |  21 ++--
+ arch/arm/configs/lpc18xx_defconfig        |  16 ++-
+ arch/arm/configs/lpc32xx_defconfig        |  12 +-
+ arch/arm/configs/lpd270_defconfig         |  11 +-
+ arch/arm/configs/lubbock_defconfig        |  21 ++--
+ arch/arm/configs/magician_defconfig       |  41 +++----
+ arch/arm/configs/mainstone_defconfig      |  15 ++-
+ arch/arm/configs/milbeaut_m10v_defconfig  |   6 +-
+ arch/arm/configs/mini2440_defconfig       |   8 +-
+ arch/arm/configs/mmp2_defconfig           |  32 +++--
+ arch/arm/configs/moxart_defconfig         |  20 ++--
+ arch/arm/configs/mps2_defconfig           |  18 ++-
+ arch/arm/configs/multi_v4t_defconfig      |   6 +-
+ arch/arm/configs/multi_v5_defconfig       |  14 +--
+ arch/arm/configs/multi_v7_defconfig       |  62 +++++-----
+ arch/arm/configs/mv78xx0_defconfig        |  36 +++---
+ arch/arm/configs/mvebu_v5_defconfig       |  32 +++--
+ arch/arm/configs/mvebu_v7_defconfig       |   4 +-
+ arch/arm/configs/mxs_defconfig            |   6 +-
+ arch/arm/configs/neponset_defconfig       |  30 ++---
+ arch/arm/configs/netwinder_defconfig      |  18 +--
+ arch/arm/configs/nhk8815_defconfig        |   8 +-
+ arch/arm/configs/omap1_defconfig          |  80 ++++++-------
+ arch/arm/configs/omap2plus_defconfig      |  17 ++-
+ arch/arm/configs/orion5x_defconfig        |  36 +++---
+ arch/arm/configs/oxnas_v6_defconfig       |  14 +--
+ arch/arm/configs/palmz72_defconfig        |  16 ++-
+ arch/arm/configs/pcm027_defconfig         |  24 ++--
+ arch/arm/configs/pleb_defconfig           |   8 +-
+ arch/arm/configs/pxa168_defconfig         |  22 ++--
+ arch/arm/configs/pxa255-idp_defconfig     |  21 ++--
+ arch/arm/configs/pxa3xx_defconfig         |  20 ++--
+ arch/arm/configs/pxa910_defconfig         |  26 ++--
+ arch/arm/configs/pxa_defconfig            | 140 ++++++++++------------
+ arch/arm/configs/qcom_defconfig           |  62 +++++-----
+ arch/arm/configs/realview_defconfig       |   8 +-
+ arch/arm/configs/rpc_defconfig            |  20 ++--
+ arch/arm/configs/s3c2410_defconfig        |  12 +-
+ arch/arm/configs/s3c6400_defconfig        |   4 +-
+ arch/arm/configs/s5pv210_defconfig        |   6 +-
+ arch/arm/configs/sama5_defconfig          |   8 +-
+ arch/arm/configs/sama7_defconfig          |   8 +-
+ arch/arm/configs/shannon_defconfig        |  10 +-
+ arch/arm/configs/simpad_defconfig         |  29 ++---
+ arch/arm/configs/socfpga_defconfig        |   8 +-
+ arch/arm/configs/spear13xx_defconfig      |  18 +--
+ arch/arm/configs/spear3xx_defconfig       |  12 +-
+ arch/arm/configs/spear6xx_defconfig       |  10 +-
+ arch/arm/configs/spitz_defconfig          |  51 ++++----
+ arch/arm/configs/stm32_defconfig          |  18 ++-
+ arch/arm/configs/sunxi_defconfig          |   2 +-
+ arch/arm/configs/tct_hammer_defconfig     |  14 +--
+ arch/arm/configs/tegra_defconfig          |  20 ++--
+ arch/arm/configs/trizeps4_defconfig       |  66 +++++-----
+ arch/arm/configs/u8500_defconfig          |   2 +-
+ arch/arm/configs/versatile_defconfig      |   4 +-
+ arch/arm/configs/vexpress_defconfig       |   8 +-
+ arch/arm/configs/vf610m4_defconfig        |   2 +-
+ arch/arm/configs/viper_defconfig          |  30 +++--
+ arch/arm/configs/vt8500_v6_v7_defconfig   |   2 +-
+ arch/arm/configs/xcep_defconfig           |  32 +++--
+ arch/arm/configs/zeus_defconfig           |  28 ++---
+ arch/arm64/configs/defconfig              |   2 +-
+ arch/sh/configs/ecovec24_defconfig        |   2 -
+ 100 files changed, 989 insertions(+), 1189 deletions(-)
+
 -- 
-2.35.1
+2.29.2
 
