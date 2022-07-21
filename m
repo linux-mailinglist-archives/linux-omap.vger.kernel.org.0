@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A417957CCFA
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Jul 2022 16:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E834057CD05
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Jul 2022 16:14:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230191AbiGUONq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Jul 2022 10:13:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52362 "EHLO
+        id S230060AbiGUOOS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Jul 2022 10:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbiGUONn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Jul 2022 10:13:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB3152893;
-        Thu, 21 Jul 2022 07:13:42 -0700 (PDT)
+        with ESMTP id S231514AbiGUOOE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Jul 2022 10:14:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E2EB5A165;
+        Thu, 21 Jul 2022 07:14:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07F5861F82;
-        Thu, 21 Jul 2022 14:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C56C3411E;
-        Thu, 21 Jul 2022 14:13:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0484261F7C;
+        Thu, 21 Jul 2022 14:14:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F99C341C6;
+        Thu, 21 Jul 2022 14:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658412821;
-        bh=EPecOnRHvam2B9sAJCT0OBa+3aX5JmCDR+0inavW5vo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=oRQ70x6nGh2glXxglojpBQHnTR4hurQ2zeuuLjLqKvR+Q+2JXmkt2I+S3jcBy2078
-         h0eDVZac7ctNYah6Fa3Ne06zk/tm4v+8KdKJl4NAYp19fNSGpySE/VFc1YuK61+eCe
-         RrcwtuQ10LYRWhb67YeUB/8htFx4d3ljOCC1wWjs8c4+nOfg6BkwJbW+3diPc4OUee
-         rK7mewt4yfy/EHoiO84A0upUYiYWfuFzB8dDkUfLD0FR5i/Ysfn24GI4bOfJgFPEht
-         pSDfiIXyTC6ZI4zWEmq7fGY6s9e8vzbP9g5TWaECjcTQIix1PW+z5fTe/0o7A9sXvr
-         r1IRTYd3cTVjQ==
+        s=k20201202; t=1658412842;
+        bh=wBwn/3S4U/C+84mEJ1IIISlBToX1u/euXvSyxyIrCUM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=RAUv897MdqL08oMA4IJEguFP+btJBsOYtLvZrYbgFhbxhG1g37ZxkmZOU2RpuJFvQ
+         qI0jKi0ooJ47oW1zpOD7k3l2oNv1P218qYFJaZIEXmClWAcIlj5VZ9JIC31AfIezee
+         VVHwTWfqzMwNxsKTiVwPykNnQ4MBVmCi1c/gVg0IQPtX3X4AARg/yaBaarDCwQkhwb
+         opvD7qhKKClonzCM7/biQ/jiI+Ih5fh52hSiEaRdP0QX0zPXXGYKzWH5wPjUj7qo9b
+         Mg/c7uEeMiHRkRBThQvM6crgXOUtqooZDSbDmxDZih0zQWwANcpgrElcJvau1lVbuU
+         JNXxYGGqv9zGg==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     Arnd Bergmann <arnd@arndb.de>,
@@ -79,10 +79,12 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         linux-oxnas@groups.io, linux-stm32@st-md-mailman.stormreply.com,
         linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
         linux-sh@vger.kernel.org
-Subject: [PATCH 0/6] ARM: defconfig cleanups
-Date:   Thu, 21 Jul 2022 16:13:19 +0200
-Message-Id: <20220721141325.2413920-1-arnd@kernel.org>
+Subject: [PATCH 2/6] ARM: defconfig: remove irda remnants
+Date:   Thu, 21 Jul 2022 16:13:21 +0200
+Message-Id: <20220721141325.2413920-3-arnd@kernel.org>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20220721141325.2413920-1-arnd@kernel.org>
+References: <20220721141325.2413920-1-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -96,181 +98,299 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-In the process of deprecating board files, I had to modify some defconfig
-files and ran into the same problem as everyone else that a lot of
-them are rather outdated. With some scripting, I managed to split out
-a preparation patch that puts all lines into the expected order without
-actually changing the contents.
+A couple of ARM defconfig files (and one for sh) still refer to the
+IRDA options that were removed in linux-4.14. Remove the entries
+as well now.
 
-This helped doing the cleanup separately per Kconfig option that needed
-to be addressed. I only did a small portion of the follow-up changes
-to get to the point of being able to rebase my board changes on top,
-but I did manage to address some bugs that have crept in.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/arm/configs/assabet_defconfig        |  3 ---
+ arch/arm/configs/badge4_defconfig         |  5 -----
+ arch/arm/configs/clps711x_defconfig       |  2 --
+ arch/arm/configs/colibri_pxa270_defconfig |  7 -------
+ arch/arm/configs/corgi_defconfig          |  5 -----
+ arch/arm/configs/eseries_pxa_defconfig    |  7 -------
+ arch/arm/configs/footbridge_defconfig     |  9 ---------
+ arch/arm/configs/h3600_defconfig          |  4 ----
+ arch/arm/configs/jornada720_defconfig     |  4 ----
+ arch/arm/configs/lart_defconfig           |  7 -------
+ arch/arm/configs/magician_defconfig       |  9 ---------
+ arch/arm/configs/pxa_defconfig            | 10 ----------
+ arch/arm/configs/simpad_defconfig         |  6 ------
+ arch/arm/configs/spitz_defconfig          |  5 -----
+ arch/arm/configs/trizeps4_defconfig       |  8 --------
+ arch/sh/configs/ecovec24_defconfig        |  2 --
+ 16 files changed, 93 deletions(-)
 
-If there are no objections, I'd apply this set to the arm/defconfig
-branch of the soc tree directly.
-
-      Arnd
-
-Arnd Bergmann (6):
-  ARM: refresh defconfig files
-  ARM: defconfig: remove irda remnants
-  ARM: defconfig: remove stale CONFIG_ZBOOT_ROM entries
-  ARM: defconfig: address renamed CONFIG_DEBUG_INFO=y
-  ARM: defconfig: remove broken CONFIG_THUMB disables
-  ARM: defconfig: kill remnants of CONFIG_LEDS
-
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Claudiu Beznea <claudiu.beznea@microchip.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Ray Jui <rjui@broadcom.com>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: Alexander Shiyan <shc_work@mail.ru>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: NXP Linux Team <linux-imx@nxp.com>
-Cc: Vladimir Zapolskiy <vz@mleia.com>
-Cc: Taichi Sugaya <sugaya.taichi@socionext.com>
-Cc: Takao Orito <orito.takao@socionext.com>
-Cc: Liviu Dudau <liviu.dudau@arm.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>
-Cc: Gregory Clement <gregory.clement@bootlin.com>
-Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Neil Armstrong <narmstrong@baylibre.com>
-Cc: Dinh Nguyen <dinguyen@kernel.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Chen-Yu Tsai <wens@csie.org>
-Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-Cc: Samuel Holland <samuel@sholland.org>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Jonathan Hunter <jonathanh@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-aspeed@lists.ozlabs.org
-Cc: bcm-kernel-feedback-list@broadcom.com
-Cc: linux-rpi-kernel@lists.infradead.org
-Cc: linux-samsung-soc@vger.kernel.org
-Cc: linux-omap@vger.kernel.org
-Cc: linux-oxnas@groups.io
-Cc: linux-stm32@st-md-mailman.stormreply.com
-Cc: linux-sunxi@lists.linux.dev
-Cc: linux-tegra@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-
- arch/arm/configs/am200epdkit_defconfig    |  28 ++---
- arch/arm/configs/aspeed_g4_defconfig      |  17 ++-
- arch/arm/configs/aspeed_g5_defconfig      |  17 ++-
- arch/arm/configs/assabet_defconfig        |  19 ++-
- arch/arm/configs/at91_dt_defconfig        |  10 +-
- arch/arm/configs/axm55xx_defconfig        |  26 ++--
- arch/arm/configs/badge4_defconfig         |  17 +--
- arch/arm/configs/bcm2835_defconfig        |  38 +++---
- arch/arm/configs/cerfcube_defconfig       |  24 ++--
- arch/arm/configs/clps711x_defconfig       |   6 +-
- arch/arm/configs/cm_x300_defconfig        |  28 ++---
- arch/arm/configs/cns3420vb_defconfig      |  20 ++--
- arch/arm/configs/colibri_pxa270_defconfig |  41 +++----
- arch/arm/configs/colibri_pxa300_defconfig |  12 +-
- arch/arm/configs/collie_defconfig         |  22 ++--
- arch/arm/configs/corgi_defconfig          |  51 ++++----
- arch/arm/configs/davinci_all_defconfig    |  28 ++---
- arch/arm/configs/dove_defconfig           |  32 +++--
- arch/arm/configs/ep93xx_defconfig         |  18 ++-
- arch/arm/configs/eseries_pxa_defconfig    |  36 ++----
- arch/arm/configs/exynos_defconfig         |  24 ++--
- arch/arm/configs/ezx_defconfig            |  74 ++++++------
- arch/arm/configs/footbridge_defconfig     |  31 ++---
- arch/arm/configs/h3600_defconfig          |  16 +--
- arch/arm/configs/h5000_defconfig          |  20 ++--
- arch/arm/configs/hackkit_defconfig        |  12 +-
- arch/arm/configs/hisi_defconfig           |  24 ++--
- arch/arm/configs/imx_v4_v5_defconfig      |  10 +-
- arch/arm/configs/imx_v6_v7_defconfig      |   8 +-
- arch/arm/configs/integrator_defconfig     |   2 +-
- arch/arm/configs/iop32x_defconfig         |  23 ++--
- arch/arm/configs/ixp4xx_defconfig         |   1 -
- arch/arm/configs/jornada720_defconfig     |  16 +--
- arch/arm/configs/keystone_defconfig       |  64 +++++-----
- arch/arm/configs/lart_defconfig           |  21 ++--
- arch/arm/configs/lpc18xx_defconfig        |  16 ++-
- arch/arm/configs/lpc32xx_defconfig        |  12 +-
- arch/arm/configs/lpd270_defconfig         |  11 +-
- arch/arm/configs/lubbock_defconfig        |  21 ++--
- arch/arm/configs/magician_defconfig       |  41 +++----
- arch/arm/configs/mainstone_defconfig      |  15 ++-
- arch/arm/configs/milbeaut_m10v_defconfig  |   6 +-
- arch/arm/configs/mini2440_defconfig       |   8 +-
- arch/arm/configs/mmp2_defconfig           |  32 +++--
- arch/arm/configs/moxart_defconfig         |  20 ++--
- arch/arm/configs/mps2_defconfig           |  18 ++-
- arch/arm/configs/multi_v4t_defconfig      |   6 +-
- arch/arm/configs/multi_v5_defconfig       |  14 +--
- arch/arm/configs/multi_v7_defconfig       |  62 +++++-----
- arch/arm/configs/mv78xx0_defconfig        |  36 +++---
- arch/arm/configs/mvebu_v5_defconfig       |  32 +++--
- arch/arm/configs/mvebu_v7_defconfig       |   4 +-
- arch/arm/configs/mxs_defconfig            |   6 +-
- arch/arm/configs/neponset_defconfig       |  30 ++---
- arch/arm/configs/netwinder_defconfig      |  18 +--
- arch/arm/configs/nhk8815_defconfig        |   8 +-
- arch/arm/configs/omap1_defconfig          |  80 ++++++-------
- arch/arm/configs/omap2plus_defconfig      |  17 ++-
- arch/arm/configs/orion5x_defconfig        |  36 +++---
- arch/arm/configs/oxnas_v6_defconfig       |  14 +--
- arch/arm/configs/palmz72_defconfig        |  16 ++-
- arch/arm/configs/pcm027_defconfig         |  24 ++--
- arch/arm/configs/pleb_defconfig           |   8 +-
- arch/arm/configs/pxa168_defconfig         |  22 ++--
- arch/arm/configs/pxa255-idp_defconfig     |  21 ++--
- arch/arm/configs/pxa3xx_defconfig         |  20 ++--
- arch/arm/configs/pxa910_defconfig         |  26 ++--
- arch/arm/configs/pxa_defconfig            | 140 ++++++++++------------
- arch/arm/configs/qcom_defconfig           |  62 +++++-----
- arch/arm/configs/realview_defconfig       |   8 +-
- arch/arm/configs/rpc_defconfig            |  20 ++--
- arch/arm/configs/s3c2410_defconfig        |  12 +-
- arch/arm/configs/s3c6400_defconfig        |   4 +-
- arch/arm/configs/s5pv210_defconfig        |   6 +-
- arch/arm/configs/sama5_defconfig          |   8 +-
- arch/arm/configs/sama7_defconfig          |   8 +-
- arch/arm/configs/shannon_defconfig        |  10 +-
- arch/arm/configs/simpad_defconfig         |  29 ++---
- arch/arm/configs/socfpga_defconfig        |   8 +-
- arch/arm/configs/spear13xx_defconfig      |  18 +--
- arch/arm/configs/spear3xx_defconfig       |  12 +-
- arch/arm/configs/spear6xx_defconfig       |  10 +-
- arch/arm/configs/spitz_defconfig          |  51 ++++----
- arch/arm/configs/stm32_defconfig          |  18 ++-
- arch/arm/configs/sunxi_defconfig          |   2 +-
- arch/arm/configs/tct_hammer_defconfig     |  14 +--
- arch/arm/configs/tegra_defconfig          |  20 ++--
- arch/arm/configs/trizeps4_defconfig       |  66 +++++-----
- arch/arm/configs/u8500_defconfig          |   2 +-
- arch/arm/configs/versatile_defconfig      |   4 +-
- arch/arm/configs/vexpress_defconfig       |   8 +-
- arch/arm/configs/vf610m4_defconfig        |   2 +-
- arch/arm/configs/viper_defconfig          |  30 +++--
- arch/arm/configs/vt8500_v6_v7_defconfig   |   2 +-
- arch/arm/configs/xcep_defconfig           |  32 +++--
- arch/arm/configs/zeus_defconfig           |  28 ++---
- arch/arm64/configs/defconfig              |   2 +-
- arch/sh/configs/ecovec24_defconfig        |   2 -
- 100 files changed, 989 insertions(+), 1189 deletions(-)
-
+diff --git a/arch/arm/configs/assabet_defconfig b/arch/arm/configs/assabet_defconfig
+index db80b8193e66..ae7354550a63 100644
+--- a/arch/arm/configs/assabet_defconfig
++++ b/arch/arm/configs/assabet_defconfig
+@@ -16,9 +16,6 @@ CONFIG_NET=y
+ CONFIG_UNIX=y
+ CONFIG_INET=y
+ # CONFIG_IPV6 is not set
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_SA1100_FIR=m
+ CONFIG_PCCARD=y
+ CONFIG_PCMCIA_SA1100=y
+ CONFIG_MTD=y
+diff --git a/arch/arm/configs/badge4_defconfig b/arch/arm/configs/badge4_defconfig
+index cdf3e3f99942..3a46dce304c4 100644
+--- a/arch/arm/configs/badge4_defconfig
++++ b/arch/arm/configs/badge4_defconfig
+@@ -17,11 +17,6 @@ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+ CONFIG_INET=y
+ # CONFIG_IPV6 is not set
+-CONFIG_IRDA=y
+-CONFIG_IRLAN=y
+-CONFIG_IRCOMM=y
+-CONFIG_IRDA_ULTRA=y
+-CONFIG_SA1100_FIR=y
+ CONFIG_BT=m
+ CONFIG_BT_HCIUART=m
+ CONFIG_BT_HCIVHCI=m
+diff --git a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
+index b56d82d4eacd..8d86599e4de3 100644
+--- a/arch/arm/configs/clps711x_defconfig
++++ b/arch/arm/configs/clps711x_defconfig
+@@ -22,8 +22,6 @@ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+ CONFIG_INET=y
+ # CONFIG_IPV6 is not set
+-CONFIG_IRDA=y
+-CONFIG_IRTTY_SIR=y
+ # CONFIG_WIRELESS is not set
+ CONFIG_MTD=y
+ CONFIG_MTD_CMDLINE_PARTS=y
+diff --git a/arch/arm/configs/colibri_pxa270_defconfig b/arch/arm/configs/colibri_pxa270_defconfig
+index 14bc9a1e185b..c3d15b8dfc39 100644
+--- a/arch/arm/configs/colibri_pxa270_defconfig
++++ b/arch/arm/configs/colibri_pxa270_defconfig
+@@ -35,13 +35,6 @@ CONFIG_IP_PNP_BOOTP=y
+ # CONFIG_IPV6 is not set
+ CONFIG_NETFILTER=y
+ CONFIG_VLAN_8021Q=m
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRCOMM=m
+-CONFIG_IRDA_ULTRA=y
+-CONFIG_IRDA_CACHE_LAST_LSAP=y
+-CONFIG_IRDA_FAST_RR=y
+-CONFIG_IRTTY_SIR=m
+ CONFIG_BT=m
+ CONFIG_BT_RFCOMM=m
+ CONFIG_BT_RFCOMM_TTY=y
+diff --git a/arch/arm/configs/corgi_defconfig b/arch/arm/configs/corgi_defconfig
+index 8bc19fc9ca6c..126ddc2a0d09 100644
+--- a/arch/arm/configs/corgi_defconfig
++++ b/arch/arm/configs/corgi_defconfig
+@@ -56,11 +56,6 @@ CONFIG_IP6_NF_MATCH_RT=m
+ CONFIG_IP6_NF_FILTER=m
+ CONFIG_IP6_NF_MANGLE=m
+ CONFIG_IP6_NF_RAW=m
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRNET=m
+-CONFIG_IRCOMM=m
+-CONFIG_PXA_FICP=m
+ CONFIG_BT=m
+ CONFIG_BT_RFCOMM=m
+ CONFIG_BT_RFCOMM_TTY=y
+diff --git a/arch/arm/configs/eseries_pxa_defconfig b/arch/arm/configs/eseries_pxa_defconfig
+index 5c58aa407897..a8db4f45a68d 100644
+--- a/arch/arm/configs/eseries_pxa_defconfig
++++ b/arch/arm/configs/eseries_pxa_defconfig
+@@ -25,13 +25,6 @@ CONFIG_NET=y
+ CONFIG_UNIX=y
+ CONFIG_INET=y
+ # CONFIG_IPV6 is not set
+-CONFIG_IRDA=y
+-CONFIG_IRLAN=m
+-CONFIG_IRCOMM=m
+-CONFIG_IRDA_ULTRA=y
+-CONFIG_IRDA_CACHE_LAST_LSAP=y
+-CONFIG_IRDA_FAST_RR=y
+-CONFIG_PXA_FICP=y
+ CONFIG_CFG80211=m
+ CONFIG_MAC80211=m
+ CONFIG_MAC80211_RC_PID=y
+diff --git a/arch/arm/configs/footbridge_defconfig b/arch/arm/configs/footbridge_defconfig
+index 10905e53067c..2c4e15261d42 100644
+--- a/arch/arm/configs/footbridge_defconfig
++++ b/arch/arm/configs/footbridge_defconfig
+@@ -29,15 +29,6 @@ CONFIG_IP_PNP_BOOTP=y
+ CONFIG_SYN_COOKIES=y
+ # CONFIG_IPV6 is not set
+ CONFIG_ATM=y
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRNET=m
+-CONFIG_IRCOMM=m
+-CONFIG_IRDA_ULTRA=y
+-CONFIG_IRDA_CACHE_LAST_LSAP=y
+-CONFIG_IRDA_FAST_RR=y
+-CONFIG_IRDA_DEBUG=y
+-CONFIG_WINBOND_FIR=m
+ CONFIG_PARPORT=y
+ CONFIG_PARPORT_PC=y
+ CONFIG_PARPORT_PC_FIFO=y
+diff --git a/arch/arm/configs/h3600_defconfig b/arch/arm/configs/h3600_defconfig
+index 6066aea1d9c2..1bf143e69de3 100644
+--- a/arch/arm/configs/h3600_defconfig
++++ b/arch/arm/configs/h3600_defconfig
+@@ -15,10 +15,6 @@ CONFIG_NET=y
+ CONFIG_UNIX=y
+ CONFIG_INET=y
+ # CONFIG_IPV6 is not set
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRNET=m
+-CONFIG_IRCOMM=m
+ # CONFIG_WIRELESS is not set
+ CONFIG_PCCARD=y
+ CONFIG_PCMCIA_SA1100=y
+diff --git a/arch/arm/configs/jornada720_defconfig b/arch/arm/configs/jornada720_defconfig
+index 0521f427efce..6c99a48e2812 100644
+--- a/arch/arm/configs/jornada720_defconfig
++++ b/arch/arm/configs/jornada720_defconfig
+@@ -17,10 +17,6 @@ CONFIG_INET=y
+ CONFIG_IP_MULTICAST=y
+ # CONFIG_IPV6 is not set
+ CONFIG_NETFILTER=y
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRCOMM=m
+-CONFIG_SA1100_FIR=m
+ CONFIG_PCCARD=y
+ CONFIG_PCMCIA_SA1100=y
+ CONFIG_BLK_DEV_LOOP=y
+diff --git a/arch/arm/configs/lart_defconfig b/arch/arm/configs/lart_defconfig
+index f4966d033a65..a414fe01ef52 100644
+--- a/arch/arm/configs/lart_defconfig
++++ b/arch/arm/configs/lart_defconfig
+@@ -20,13 +20,6 @@ CONFIG_UNIX=y
+ CONFIG_INET=y
+ CONFIG_SYN_COOKIES=y
+ # CONFIG_IPV6 is not set
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRNET=m
+-CONFIG_IRCOMM=m
+-CONFIG_IRDA_CACHE_LAST_LSAP=y
+-CONFIG_IRDA_DEBUG=y
+-CONFIG_SA1100_FIR=m
+ CONFIG_MTD=y
+ CONFIG_MTD_DEBUG=y
+ CONFIG_MTD_DEBUG_VERBOSE=1
+diff --git a/arch/arm/configs/magician_defconfig b/arch/arm/configs/magician_defconfig
+index aaddc07c16d9..75a15efa6e06 100644
+--- a/arch/arm/configs/magician_defconfig
++++ b/arch/arm/configs/magician_defconfig
+@@ -35,15 +35,6 @@ CONFIG_IP_PNP=y
+ # CONFIG_INET_XFRM_MODE_BEET is not set
+ # CONFIG_INET_DIAG is not set
+ # CONFIG_IPV6 is not set
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRCOMM=m
+-CONFIG_IRDA_ULTRA=y
+-CONFIG_IRDA_CACHE_LAST_LSAP=y
+-CONFIG_IRDA_FAST_RR=y
+-CONFIG_IRDA_DEBUG=y
+-CONFIG_IRTTY_SIR=m
+-CONFIG_PXA_FICP=m
+ CONFIG_BT=m
+ CONFIG_BT_RFCOMM=m
+ CONFIG_BT_RFCOMM_TTY=y
+diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
+index ed92947244a1..d3fc216de6fa 100644
+--- a/arch/arm/configs/pxa_defconfig
++++ b/arch/arm/configs/pxa_defconfig
+@@ -115,16 +115,6 @@ CONFIG_BRIDGE=m
+ CONFIG_VLAN_8021Q=m
+ CONFIG_IEEE802154=y
+ CONFIG_DNS_RESOLVER=y
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRNET=m
+-CONFIG_IRCOMM=m
+-CONFIG_IRDA_ULTRA=y
+-CONFIG_IRDA_CACHE_LAST_LSAP=y
+-CONFIG_IRDA_FAST_RR=y
+-CONFIG_IRDA_DEBUG=y
+-CONFIG_IRTTY_SIR=m
+-CONFIG_PXA_FICP=m
+ CONFIG_BT=m
+ CONFIG_BT_RFCOMM=m
+ CONFIG_BT_RFCOMM_TTY=y
+diff --git a/arch/arm/configs/simpad_defconfig b/arch/arm/configs/simpad_defconfig
+index 042f9626e0ee..0e1871fc8311 100644
+--- a/arch/arm/configs/simpad_defconfig
++++ b/arch/arm/configs/simpad_defconfig
+@@ -23,12 +23,6 @@ CONFIG_IP_PNP=y
+ CONFIG_IP_PNP_DHCP=y
+ CONFIG_IP_PNP_BOOTP=y
+ # CONFIG_IPV6 is not set
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRNET=m
+-CONFIG_IRCOMM=m
+-CONFIG_IRTTY_SIR=m
+-CONFIG_SA1100_FIR=m
+ CONFIG_BT=m
+ CONFIG_BT_RFCOMM=m
+ CONFIG_BT_RFCOMM_TTY=y
+diff --git a/arch/arm/configs/spitz_defconfig b/arch/arm/configs/spitz_defconfig
+index 4630aac47a8e..7757d26396c1 100644
+--- a/arch/arm/configs/spitz_defconfig
++++ b/arch/arm/configs/spitz_defconfig
+@@ -53,11 +53,6 @@ CONFIG_IP6_NF_MATCH_RT=m
+ CONFIG_IP6_NF_FILTER=m
+ CONFIG_IP6_NF_MANGLE=m
+ CONFIG_IP6_NF_RAW=m
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRNET=m
+-CONFIG_IRCOMM=m
+-CONFIG_PXA_FICP=m
+ CONFIG_BT=m
+ CONFIG_BT_RFCOMM=m
+ CONFIG_BT_RFCOMM_TTY=y
+diff --git a/arch/arm/configs/trizeps4_defconfig b/arch/arm/configs/trizeps4_defconfig
+index db0444aada48..01a0901120e8 100644
+--- a/arch/arm/configs/trizeps4_defconfig
++++ b/arch/arm/configs/trizeps4_defconfig
+@@ -38,14 +38,6 @@ CONFIG_IP_PNP_BOOTP=y
+ # CONFIG_IPV6 is not set
+ CONFIG_NETFILTER=y
+ CONFIG_VLAN_8021Q=m
+-CONFIG_IRDA=m
+-CONFIG_IRLAN=m
+-CONFIG_IRNET=m
+-CONFIG_IRCOMM=m
+-CONFIG_IRDA_ULTRA=y
+-CONFIG_IRDA_CACHE_LAST_LSAP=y
+-CONFIG_IRDA_FAST_RR=y
+-CONFIG_IRTTY_SIR=m
+ CONFIG_BT=m
+ CONFIG_BT_RFCOMM=m
+ CONFIG_BT_RFCOMM_TTY=y
+diff --git a/arch/sh/configs/ecovec24_defconfig b/arch/sh/configs/ecovec24_defconfig
+index d90d29d44469..e699e2e04128 100644
+--- a/arch/sh/configs/ecovec24_defconfig
++++ b/arch/sh/configs/ecovec24_defconfig
+@@ -29,8 +29,6 @@ CONFIG_IP_PNP_DHCP=y
+ # CONFIG_INET_XFRM_MODE_TUNNEL is not set
+ # CONFIG_INET_XFRM_MODE_BEET is not set
+ # CONFIG_IPV6 is not set
+-CONFIG_IRDA=y
+-CONFIG_SH_SIR=y
+ CONFIG_MTD=y
+ CONFIG_MTD_CMDLINE_PARTS=y
+ CONFIG_MTD_BLOCK=y
 -- 
 2.29.2
 
