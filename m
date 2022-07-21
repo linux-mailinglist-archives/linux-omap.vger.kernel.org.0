@@ -2,223 +2,234 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E77957CE74
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Jul 2022 17:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 756B857CE78
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Jul 2022 17:04:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230428AbiGUPD3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 21 Jul 2022 11:03:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50768 "EHLO
+        id S229781AbiGUPEE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 21 Jul 2022 11:04:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiGUPD3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Jul 2022 11:03:29 -0400
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D4F484EFE
-        for <linux-omap@vger.kernel.org>; Thu, 21 Jul 2022 08:03:28 -0700 (PDT)
-Received: from macbook.musicnaut.iki.fi (85-76-14-0-nat.elisa-mobile.fi [85.76.14.0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: aaro.koskinen)
-        by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 9B7571B0009A;
-        Thu, 21 Jul 2022 18:03:22 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-        t=1658415803;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=wmUr7P7loIwU+O4/xUYMlcD7PoCmV1mZmwnEsc7cOac=;
-        b=U1sZIU9ylMc+aBWQfJ15FiaGvIpWrFiZvKzO/uG7PI+G4zNPIaOVzxeKC3JpYP3dhqqRuw
-        5Xf4trT0YDgC78hooPsIlW+oybHzSqEnS7C6X5xAR/MuNxvJGOvXcBLtuHH8dgF2huwF47
-        Wn7GgrbvWMnQ8qPc80DV25DMF8pCnTYC7g0QhrbgeMDDYdrnQwUGtMP22PnGvamRo4H9UV
-        +RnkT9qok8k933Irzcq1eX/l1zeV+3elbUSJMD03WzfbFvRAdKNo7jbEaSv08JUDfrxQA5
-        8qbbD6nvKxkSwO68NIuMiqXc10qXBAVfSBGtcSHZwojjq2e1g25zfdrBzLVq1g==
-Date:   Thu, 21 Jul 2022 18:03:20 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Arnd Bergmann <arnd@arndb.de>,
+        with ESMTP id S229475AbiGUPEE (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 21 Jul 2022 11:04:04 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE90E84ED4;
+        Thu, 21 Jul 2022 08:04:02 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id va17so3718246ejb.0;
+        Thu, 21 Jul 2022 08:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=WZY3t0NZGuTXsMWoX5QYWqWMtkxGTr+i/nc1XlDM8Y4=;
+        b=NmgQ5WvuD8XqtCLLQuc6YUtqO0ImP9P0gljqHUyvnWjzwyFODmpUxqKyeGPpAc9cXC
+         Yb5y2d5LWhWPIY4F/+7CH4r/8gGB/HM9GVwBsWsXHyE5jms4sSkSwE6lyuCaWSF450WD
+         EdCxSH0zb68yesikhcpmtdXjhpdpLSBGyP279WP5/CHD9tXIayCrsVAhuKP82sP6NI2x
+         pEOVEKiAcq+YN6aQUgOICVdp+1bTikZF7+UVgAOGVZBpqK3tAztbVluyVm0RM9YIkym6
+         cb1zde7IGcSvaL0JptydfsA2H/6GyOikZZwFVu8Qr8DeJ+FoT5FmPShXTQ+PQnyaTjaU
+         QbwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=WZY3t0NZGuTXsMWoX5QYWqWMtkxGTr+i/nc1XlDM8Y4=;
+        b=QF6coiZ9Kuvpb39jEWrFGrypaJqFF5+jf1cw+FgMoHYke9xjOsOb+uznuxkiwivBM+
+         kXTnIeCI6QZdOCQsn6meJ7OPon8X+fgoqHlY1RV3qqu2x9ianMFsy8kLVEp4weX/oYdO
+         4ZdgOpPqRvtYJfmoIsZr79ZZWItSSNm6BI0RQFGSos1+lY6A27/qli4BzU8itDaj0SnR
+         J3/p4zcAumzaPNaTfunsqj9WYc/Yh3MpULSVfcoVOmEqEZXArDN6Xrr7CO9JDjIbTq1P
+         LcNpwbAJOiHVRzBAE8QAwy1buM5hvm/PTE02vebb6ZOlT74o/9FPiE4tBAodLwtSKLnM
+         HB2g==
+X-Gm-Message-State: AJIora+pvn4KCYUS6TMIOPXE2eVh2fCdBjXqUkH826i0Mzs6kiXMYORs
+        upz/MxzhuGdKqYx/Kmavsrk=
+X-Google-Smtp-Source: AGRyM1tx4qgDiPlw73OnGDJULo2qk1SNBkaYXmyBBcKtmntG8pWEIhoIv9VtYkaGcyjuJQmc48QmDQ==
+X-Received: by 2002:a17:907:75ce:b0:72b:305f:5985 with SMTP id jl14-20020a17090775ce00b0072b305f5985mr40127216ejc.527.1658415841341;
+        Thu, 21 Jul 2022 08:04:01 -0700 (PDT)
+Received: from jernej-laptop.localnet (86-58-13-89.dynamic.telemach.net. [86.58.13.89])
+        by smtp.gmail.com with ESMTPSA id w17-20020a056402071100b0043aa17dc199sm1097785edx.90.2022.07.21.08.03.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Jul 2022 08:04:00 -0700 (PDT)
+From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To:     linux-arm-kernel@lists.infradead.org,
+        Arnd Bergmann <arnd@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Alexander Shiyan <shc_work@mail.ru>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Taichi Sugaya <sugaya.taichi@socionext.com>,
+        Takao Orito <orito.takao@socionext.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
         Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Subject: Re: [PATCH 10/13] ARM: omap1: add Kconfig dependencies for unused
- boards
-Message-ID: <20220721150320.GA9385@macbook.musicnaut.iki.fi>
-References: <20220721141722.2414719-1-arnd@kernel.org>
- <20220721141722.2414719-11-arnd@kernel.org>
+        Tony Lindgren <tony@atomide.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Samuel Holland <samuel@sholland.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-oxnas@groups.io, linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        linux-sh@vger.kernel.org
+Subject: Re: [PATCH 1/6] ARM: refresh defconfig files
+Date:   Thu, 21 Jul 2022 17:03:56 +0200
+Message-ID: <2073800.OBFZWjSADL@jernej-laptop>
+In-Reply-To: <20220721141325.2413920-2-arnd@kernel.org>
+References: <20220721141325.2413920-1-arnd@kernel.org> <20220721141325.2413920-2-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220721141722.2414719-11-arnd@kernel.org>
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1658415803; a=rsa-sha256;
-        cv=none;
-        b=CrwmEAxgeIdvsFyvAs+J9W2Ae60rZbGzJL5B+Q7eP+SDYTQmzDr9u+JWOfL8AqVTJZJ8a5
-        Ox0hBdBCz/cjWrBY9YNIWxSQO/gmXQo4eqSEKNPk97onldbVWUOTgz2mmbpJ/AooX4qsz5
-        GCi56TaGpdqqbaDnRgTcOTCfnXo/md145zzEpLkVqCo6dIg+TvFjN+Lu/oFyK6J9pDvPb/
-        /hgajIGBBSM9oi1uUXbRVPfN3SGyBH4mEk4A14BI7lxfQ9KNa4gwl4nAz8qvL11MhAVwbq
-        A6GBEuqqjFuN5suCT7D8SJO5Fpz13HQFgBtV6Td6iS3ucc1c6g14PuRrkEe+Lg==
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-        s=lahtoruutu; t=1658415802;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=wmUr7P7loIwU+O4/xUYMlcD7PoCmV1mZmwnEsc7cOac=;
-        b=gQjjnLL/fOMxdgP762hO/fQ/zrned3csXWYaOQN5tHz5pM4bdSiKSmZnAUuG1u7b9wpnZh
-        Tdnf0nzSKkWrN8t2T/90g50HGEoiqsOs92wNrdZ2CBJrg20DP5bWURmBBK52ImRQwu25Yi
-        +7KGZBOq6JKw7OORVCoFrIv2KdWf3obAZrT1bdGF2KDZk8pPRUT+f5cHeWEj3rwU8tLnx2
-        fcGyI7hl8DrVTtmaujOEb4Ey2kLHc+TXS+eRIKBryneSq7G9A0jmfZycV9MFGU3VRuxsT9
-        CKnW1aUK+VA41lBsT4cfSrnygpqjT/byjvMd7U/eOY3OOcWKeCM/pi4Ib5ZQuQ==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-On Thu, Jul 21, 2022 at 04:17:19PM +0200, Arnd Bergmann wrote:
+Dne =C4=8Detrtek, 21. julij 2022 ob 16:13:20 CEST je Arnd Bergmann napisal(=
+a):
 > From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Legacy board files with no known users are planned to get removed in
-> early 2023, and this covers the majority of the omap1 boards as well.
-> 
-> According to Tony, the actual users are all on OSK, Nokia770, and
-> AMS-Delta. Additionally, the sx1 and palmte boards are supported by qemu,
-> which is convenient for testing, so all five stay around past the initial
-> board removal.
-
-Actually also Palm TE gets tested with real hardware, I haven't got the
-kernel working on QEMU.
-
-> As omap1 is now part of the multiplatform build and uses the common-clk
-> framework, it has become easier to convert these to use devicetree
-> based booting in the future.
-> 
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-
-Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-
-> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: linux-omap@vger.kernel.org
+>=20
+> A lot of Kconfig options have changed over the years, and we tend
+> to not do a blind 'make defconfig' to refresh the files, to ensure
+> we catch options that should not have gone away.
+>=20
+> I used some a bit of scripting to only rework the bits where an
+> option moved around in any of the defconfig files, without also
+> dropping any of the other lines, to make it clearer which options
+> we no longer have.
+>=20
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
->  arch/arm/configs/omap1_defconfig |  9 ---------
->  arch/arm/mach-omap1/Kconfig      | 10 ++++++++++
->  2 files changed, 10 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/arm/configs/omap1_defconfig b/arch/arm/configs/omap1_defconfig
-> index 3f72d2ff7644..54a9f50122af 100644
-> --- a/arch/arm/configs/omap1_defconfig
-> +++ b/arch/arm/configs/omap1_defconfig
-> @@ -25,17 +25,8 @@ CONFIG_ARCH_OMAP850=y
->  CONFIG_ARCH_OMAP16XX=y
->  # CONFIG_OMAP_MUX is not set
->  CONFIG_OMAP_RESET_CLOCKS=y
-> -CONFIG_MACH_OMAP_INNOVATOR=y
-> -CONFIG_MACH_OMAP_H2=y
-> -CONFIG_MACH_OMAP_H3=y
-> -CONFIG_MACH_HERALD=y
->  CONFIG_MACH_OMAP_OSK=y
-> -CONFIG_MACH_OMAP_PERSEUS2=y
-> -CONFIG_MACH_OMAP_FSAMPLE=y
-> -CONFIG_MACH_VOICEBLUE=y
->  CONFIG_MACH_OMAP_PALMTE=y
-> -CONFIG_MACH_OMAP_PALMZ71=y
-> -CONFIG_MACH_OMAP_PALMTT=y
->  CONFIG_MACH_SX1=y
->  CONFIG_MACH_NOKIA770=y
->  CONFIG_MACH_AMS_DELTA=y
-> diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
-> index cbeb2b3ba86e..538a960257cc 100644
-> --- a/arch/arm/mach-omap1/Kconfig
-> +++ b/arch/arm/mach-omap1/Kconfig
-> @@ -132,6 +132,7 @@ comment "OMAP Board Type"
->  config MACH_OMAP_INNOVATOR
->  	bool "TI Innovator"
->  	depends on ARCH_OMAP15XX || ARCH_OMAP16XX
-> +	depends on UNUSED_BOARD_FILES
->  	help
->            TI OMAP 1510 or 1610 Innovator board support. Say Y here if you
->            have such a board.
-> @@ -139,6 +140,7 @@ config MACH_OMAP_INNOVATOR
->  config MACH_OMAP_H2
->  	bool "TI H2 Support"
->  	depends on ARCH_OMAP16XX
-> +	depends on UNUSED_BOARD_FILES
->  	help
->  	  TI OMAP 1610/1611B H2 board support. Say Y here if you have such
->  	  a board.
-> @@ -146,6 +148,7 @@ config MACH_OMAP_H2
->  config MACH_OMAP_H3
->  	bool "TI H3 Support"
->  	depends on ARCH_OMAP16XX
-> +	depends on UNUSED_BOARD_FILES
->  	help
->  	  TI OMAP 1710 H3 board support. Say Y here if you have such
->  	  a board.
-> @@ -153,6 +156,7 @@ config MACH_OMAP_H3
->  config MACH_HERALD
->  	bool "HTC Herald"
->  	depends on ARCH_OMAP850
-> +	depends on UNUSED_BOARD_FILES
->  	help
->  	  HTC Herald smartphone support (AKA T-Mobile Wing, ...)
->  
-> @@ -166,6 +170,7 @@ config MACH_OMAP_OSK
->  config OMAP_OSK_MISTRAL
->  	bool "Mistral QVGA board Support"
->  	depends on MACH_OMAP_OSK
-> +	depends on UNUSED_BOARD_FILES
->  	help
->  	  The OSK supports an optional add-on board with a Quarter-VGA
->  	  touchscreen, PDA-ish buttons, a resume button, bicolor LED,
-> @@ -174,6 +179,7 @@ config OMAP_OSK_MISTRAL
->  config MACH_OMAP_PERSEUS2
->  	bool "TI Perseus2"
->  	depends on ARCH_OMAP730
-> +	depends on UNUSED_BOARD_FILES
->  	help
->  	  Support for TI OMAP 730 Perseus2 board. Say Y here if you have such
->  	  a board.
-> @@ -181,6 +187,7 @@ config MACH_OMAP_PERSEUS2
->  config MACH_OMAP_FSAMPLE
->  	bool "TI F-Sample"
->  	depends on ARCH_OMAP730
-> +	depends on UNUSED_BOARD_FILES
->  	help
->  	  Support for TI OMAP 850 F-Sample board. Say Y here if you have such
->  	  a board.
-> @@ -197,6 +204,7 @@ config MACH_OMAP_PALMTE
->  config MACH_OMAP_PALMZ71
->  	bool "Palm Zire71"
->  	depends on ARCH_OMAP15XX
-> +	depends on UNUSED_BOARD_FILES
->  	help
->  	 Support for the Palm Zire71 PDA. To boot the kernel,
->  	 you'll need a PalmOS compatible bootloader; check out
-> @@ -206,6 +214,7 @@ config MACH_OMAP_PALMZ71
->  config MACH_OMAP_PALMTT
->  	bool "Palm Tungsten|T"
->  	depends on ARCH_OMAP15XX
-> +	depends on UNUSED_BOARD_FILES
->  	help
->  	  Support for the Palm Tungsten|T PDA. To boot the kernel, you'll
->  	  need a PalmOS compatible bootloader (Garux); check out
-> @@ -246,6 +255,7 @@ config MACH_AMS_DELTA
->  config MACH_OMAP_GENERIC
->  	bool "Generic OMAP board"
->  	depends on ARCH_OMAP15XX || ARCH_OMAP16XX
-> +	depends on UNUSED_BOARD_FILES
->  	help
->            Support for generic OMAP-1510, 1610 or 1710 board with
->            no FPGA. Can be used as template for porting Linux to
-> -- 
-> 2.29.2
-> 
+>  arch/arm/configs/am200epdkit_defconfig    |  26 ++---
+>  arch/arm/configs/aspeed_g4_defconfig      |  16 +--
+>  arch/arm/configs/aspeed_g5_defconfig      |  16 +--
+>  arch/arm/configs/assabet_defconfig        |   8 +-
+>  arch/arm/configs/at91_dt_defconfig        |  10 +-
+>  arch/arm/configs/axm55xx_defconfig        |  22 ++--
+>  arch/arm/configs/badge4_defconfig         |   8 +-
+>  arch/arm/configs/bcm2835_defconfig        |  36 +++----
+>  arch/arm/configs/cerfcube_defconfig       |  16 +--
+>  arch/arm/configs/clps711x_defconfig       |   2 +-
+>  arch/arm/configs/cm_x300_defconfig        |  26 ++---
+>  arch/arm/configs/cns3420vb_defconfig      |  18 ++--
+>  arch/arm/configs/colibri_pxa270_defconfig |  32 +++---
+>  arch/arm/configs/colibri_pxa300_defconfig |  10 +-
+>  arch/arm/configs/collie_defconfig         |  20 ++--
+>  arch/arm/configs/corgi_defconfig          |  44 ++++----
+>  arch/arm/configs/davinci_all_defconfig    |  26 ++---
+>  arch/arm/configs/dove_defconfig           |  28 ++---
+>  arch/arm/configs/ep93xx_defconfig         |  16 +--
+>  arch/arm/configs/eseries_pxa_defconfig    |  26 ++---
+>  arch/arm/configs/exynos_defconfig         |  20 ++--
+>  arch/arm/configs/ezx_defconfig            |  72 ++++++-------
+>  arch/arm/configs/footbridge_defconfig     |  14 +--
+>  arch/arm/configs/h3600_defconfig          |  10 +-
+>  arch/arm/configs/h5000_defconfig          |  18 ++--
+>  arch/arm/configs/hackkit_defconfig        |   4 +-
+>  arch/arm/configs/hisi_defconfig           |  24 ++---
+>  arch/arm/configs/imx_v4_v5_defconfig      |   8 +-
+>  arch/arm/configs/imx_v6_v7_defconfig      |   8 +-
+>  arch/arm/configs/integrator_defconfig     |   2 +-
+>  arch/arm/configs/iop32x_defconfig         |  20 ++--
+>  arch/arm/configs/jornada720_defconfig     |  10 +-
+>  arch/arm/configs/keystone_defconfig       |  62 +++++------
+>  arch/arm/configs/lart_defconfig           |   6 +-
+>  arch/arm/configs/lpc18xx_defconfig        |  12 +--
+>  arch/arm/configs/lpc32xx_defconfig        |   8 +-
+>  arch/arm/configs/lpd270_defconfig         |   6 +-
+>  arch/arm/configs/lubbock_defconfig        |  10 +-
+>  arch/arm/configs/magician_defconfig       |  30 +++---
+>  arch/arm/configs/mainstone_defconfig      |   4 +-
+>  arch/arm/configs/milbeaut_m10v_defconfig  |   6 +-
+>  arch/arm/configs/mini2440_defconfig       |   6 +-
+>  arch/arm/configs/mmp2_defconfig           |  28 ++---
+>  arch/arm/configs/moxart_defconfig         |  18 ++--
+>  arch/arm/configs/mps2_defconfig           |  14 +--
+>  arch/arm/configs/multi_v4t_defconfig      |   4 +-
+>  arch/arm/configs/multi_v5_defconfig       |  12 +--
+>  arch/arm/configs/multi_v7_defconfig       |  62 +++++------
+>  arch/arm/configs/mv78xx0_defconfig        |  32 +++---
+>  arch/arm/configs/mvebu_v5_defconfig       |  28 ++---
+>  arch/arm/configs/mvebu_v7_defconfig       |   2 +-
+>  arch/arm/configs/mxs_defconfig            |   4 +-
+>  arch/arm/configs/neponset_defconfig       |  24 ++---
+>  arch/arm/configs/netwinder_defconfig      |  10 +-
+>  arch/arm/configs/nhk8815_defconfig        |   6 +-
+>  arch/arm/configs/omap1_defconfig          |  74 ++++++-------
+>  arch/arm/configs/omap2plus_defconfig      |  16 +--
+>  arch/arm/configs/orion5x_defconfig        |  32 +++---
+>  arch/arm/configs/oxnas_v6_defconfig       |  14 +--
+>  arch/arm/configs/palmz72_defconfig        |  14 +--
+>  arch/arm/configs/pcm027_defconfig         |  22 ++--
+>  arch/arm/configs/pleb_defconfig           |   6 +-
+>  arch/arm/configs/pxa168_defconfig         |  18 ++--
+>  arch/arm/configs/pxa255-idp_defconfig     |  10 +-
+>  arch/arm/configs/pxa3xx_defconfig         |  18 ++--
+>  arch/arm/configs/pxa910_defconfig         |  22 ++--
+>  arch/arm/configs/pxa_defconfig            | 126 +++++++++++-----------
+>  arch/arm/configs/qcom_defconfig           |  60 +++++------
+>  arch/arm/configs/realview_defconfig       |   8 +-
+>  arch/arm/configs/rpc_defconfig            |  18 ++--
+>  arch/arm/configs/s3c2410_defconfig        |   8 +-
+>  arch/arm/configs/s3c6400_defconfig        |   2 +-
+>  arch/arm/configs/s5pv210_defconfig        |   4 +-
+>  arch/arm/configs/sama5_defconfig          |   8 +-
+>  arch/arm/configs/sama7_defconfig          |   8 +-
+>  arch/arm/configs/shannon_defconfig        |   8 +-
+>  arch/arm/configs/simpad_defconfig         |  18 ++--
+>  arch/arm/configs/socfpga_defconfig        |   4 +-
+>  arch/arm/configs/spear13xx_defconfig      |  16 +--
+>  arch/arm/configs/spear3xx_defconfig       |  10 +-
+>  arch/arm/configs/spear6xx_defconfig       |   8 +-
+>  arch/arm/configs/spitz_defconfig          |  44 ++++----
+>  arch/arm/configs/stm32_defconfig          |  14 +--
+>  arch/arm/configs/sunxi_defconfig          |   2 +-
 
-A.
+=46or sunxi:
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+
+Best regards,
+Jernej
+
+>  arch/arm/configs/tct_hammer_defconfig     |  12 +--
+>  arch/arm/configs/tegra_defconfig          |  18 ++--
+>  arch/arm/configs/trizeps4_defconfig       |  58 +++++-----
+>  arch/arm/configs/u8500_defconfig          |   2 +-
+>  arch/arm/configs/versatile_defconfig      |   4 +-
+>  arch/arm/configs/vexpress_defconfig       |   4 +-
+>  arch/arm/configs/vf610m4_defconfig        |   2 +-
+>  arch/arm/configs/viper_defconfig          |  28 ++---
+>  arch/arm/configs/vt8500_v6_v7_defconfig   |   2 +-
+>  arch/arm/configs/xcep_defconfig           |  30 +++---
+>  arch/arm/configs/zeus_defconfig           |  26 ++---
+
+
+
