@@ -2,290 +2,377 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EE0457DBA5
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Jul 2022 09:58:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C990557E0FA
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Jul 2022 13:49:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234695AbiGVH6d (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 Jul 2022 03:58:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50274 "EHLO
+        id S230134AbiGVLtq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 22 Jul 2022 07:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbiGVH6c (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 22 Jul 2022 03:58:32 -0400
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E919A6BB;
-        Fri, 22 Jul 2022 00:58:28 -0700 (PDT)
-Received: (Authenticated sender: gregory.clement@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 3A3F460002;
-        Fri, 22 Jul 2022 07:58:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1658476704;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=J6BappVIJW2LxYwsHqvB0JW6bS9ffn3CmqTgWunNsoQ=;
-        b=dlGmslDPmhE5PzC3/mIxGv+yZ1imsh0uO2+5P26YXleDkETrq5tupFYDqfmySbWhXs/Nb/
-        Os3r2SNXvOWmlkyM8TMaE3OixnzXsZVd0dRJxLsdFgSN4rcJj0Ra+Q6O5bUmIS3mwT/xEC
-        jCdBu3Lun0lRJRcoj0mu0bQH8ncIb1CQp5+1LZcZKcQc22iCA0yvnYXh+/6KrMcfxDy7Br
-        pXln0bw9l86YY4sDXWleevW+G+OH8SBMVzM291i07eTGe1/7tdLNBQ/FQqinKJOKMc+rwv
-        pM29hcOlstYbNEvhs8Ix0ra0Q6aucdQXTEK2LwJ6Ubj+2SRFxi8TfZd2b3Ftyw==
-From:   Gregory CLEMENT <gregory.clement@bootlin.com>
-To:     Arnd Bergmann <arnd@kernel.org>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Taichi Sugaya <sugaya.taichi@socionext.com>,
-        Takao Orito <orito.takao@socionext.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-oxnas@groups.io, linux-stm32@st-md-mailman.stormreply.com,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-        linux-sh@vger.kernel.org
-Subject: Re: [PATCH 0/6] ARM: defconfig cleanups
-In-Reply-To: <20220721141325.2413920-1-arnd@kernel.org>
-References: <20220721141325.2413920-1-arnd@kernel.org>
-Date:   Fri, 22 Jul 2022 09:58:14 +0200
-Message-ID: <87o7xhpoix.fsf@BL-laptop>
+        with ESMTP id S229704AbiGVLtq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 22 Jul 2022 07:49:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 096A0B9A00
+        for <linux-omap@vger.kernel.org>; Fri, 22 Jul 2022 04:49:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B5C560A0F
+        for <linux-omap@vger.kernel.org>; Fri, 22 Jul 2022 11:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70369C341C6;
+        Fri, 22 Jul 2022 11:49:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658490583;
+        bh=X3xEvGaz7dWnNadLxOWKEgel3srcA6PpLv1LLYoE/Lk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=JPQkUfNaXP2MRFDQQjJw8mxYRqbouEw11mrTMWIH9CVcELNBsdHZx8rml/1H0gQyG
+         aIaaMk4aUNOSJzVhwXWli8Bitz4eo0FpcQeUK6Tm+p8iv87zuj1OLWwQfqeIKOEqPn
+         nFovgCgEF/Q53MyHwdxfY8ZjF44D6Dl0dOWLDtI5M7RGjeKpZObdBwS6bxeco4XviH
+         2WddLb+A3ZYf7NNeecnONI1MTF94WgM/RkH8F9zJ9P5v4iGFR6jAZwTU+m/u7lnhVV
+         bHiLWsg5+bV0Po974LkOpeET6OmvDuNvM1wnW+NDpUZp4KRnP072wktkoJlNR7YKwk
+         NkzgazcojIHNA==
+Message-ID: <f3c97bb1-bc15-ba04-80d5-29c9401051d1@kernel.org>
+Date:   Fri, 22 Jul 2022 17:19:38 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: raw/omap2: erasing issue
+Content-Language: en-US
+To:     Yegor Yefremov <yegorslists@googlemail.com>
+Cc:     linux-mtd@lists.infradead.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        miquel.raynal@bootlin.com
+References: <CAGm1_ktXBp-sz3Dud_G0iqOG=vA=Xp-bj-icwNLVgq-AMqKO7A@mail.gmail.com>
+ <72686231-c372-a4fe-347e-39470790fa65@kernel.org>
+ <CAGm1_kvRuWY7t2d_BtuSLGEL1u4njRqha=D0f7eN9F5XG8GrLQ@mail.gmail.com>
+ <CAGm1_kuucv71AdPkSW8Eog2T9rZRA3uiL4+ok-aWCVsj-z2eew@mail.gmail.com>
+ <5a36197d-7ed5-c06a-0a7e-73b808526dcd@kernel.org>
+ <feff53c6-a38c-1592-b3ef-1ff236da17f9@kernel.org>
+ <CAGm1_kvQ-NA4topLTu2hrQqx6picci8d+AeMVBtw44nJ7mYVow@mail.gmail.com>
+ <25109f4c-110f-b534-1c5a-c571b5c70333@kernel.org>
+ <CAGm1_ku0pGqfi8a++jNYeYNk1Hv9QgxsjKqOtetk8QzrTcFtPg@mail.gmail.com>
+ <981dfc27-cbe5-9672-3647-397e6416578b@kernel.org>
+ <CAGm1_kuXTuhoB1-K=_bFLBicWi5PWuejwO0yhPC6E41RZxe10w@mail.gmail.com>
+ <CAGm1_kuDRuxWGW3rZgaNMNiTm-rUuWe=-5pD0BqRJZBTYtW=EA@mail.gmail.com>
+ <3f04c503-7f48-3c39-083a-aec076706deb@kernel.org>
+ <CAGm1_ksO92fvs8Wsq0oJzqDkGtROh=Be7gDW9NUJtRF3PP9RCw@mail.gmail.com>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <CAGm1_ksO92fvs8Wsq0oJzqDkGtROh=Be7gDW9NUJtRF3PP9RCw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Arnd Bergmann <arnd@kernel.org> writes:
+Hi Yegor,
 
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> In the process of deprecating board files, I had to modify some defconfig
-> files and ran into the same problem as everyone else that a lot of
-> them are rather outdated. With some scripting, I managed to split out
-> a preparation patch that puts all lines into the expected order without
-> actually changing the contents.
->
-> This helped doing the cleanup separately per Kconfig option that needed
-> to be addressed. I only did a small portion of the follow-up changes
-> to get to the point of being able to rebase my board changes on top,
-> but I did manage to address some bugs that have crept in.
->
-> If there are no objections, I'd apply this set to the arm/defconfig
-> branch of the soc tree directly.
+On 11/07/2022 10:24, Yegor Yefremov wrote:
+> Hi Roger,
+> 
+> On Sun, Jul 10, 2022 at 8:52 AM Roger Quadros <rogerq@kernel.org> wrote:
+>>
+>> Hello Yegor,
+>>
+>> On 05/07/2022 17:46, Yegor Yefremov wrote:
+>>> Hi Roger,
+>>>
+>>> On Mon, Jul 4, 2022 at 12:31 PM Yegor Yefremov
+>>> <yegorslists@googlemail.com> wrote:
+>>>>
+>>>> Hi Roger,
+>>>>
+>>>> On Mon, Jul 4, 2022 at 12:28 PM Roger Quadros <rogerq@kernel.org> wrote:
+>>>>>
+>>>>> Hello Yegor,
+>>>>>
+>>>>> On 04/07/2022 14:28, Yegor Yefremov wrote:
+>>>>>> Hi Roger,
+>>>>>>
+>>>>>> On Thu, Jun 30, 2022 at 1:22 PM Roger Quadros <rogerq@kernel.org> wrote:
+>>>>>>>
+>>>>>>> Hi Yegor,
+>>>>>>> llo
+>>>>>>> On 29/06/2022 17:23, Yegor Yefremov wrote:
+>>>>>>>> Hi Roger,
+>>>>>>>>
+>>>>>>>> On Wed, Jun 29, 2022 at 3:44 PM Roger Quadros <rogerq@kernel.org> wrote:
+>>>>>>>>>
+>>>>>>>>> Hi Yegor,
+>>>>>>>>>
+>>>>>>>>> On 29/06/2022 14:33, Roger Quadros wrote:
+>>>>>>>>>> Hi Yegor,
+>>>>>>>>>>
+>>>>>>>>>> On 28/06/2022 14:59, Yegor Yefremov wrote:
+>>>>>>>>>>> On Tue, Jun 28, 2022 at 1:57 PM Yegor Yefremov
+>>>>>>>>>>> <yegorslists@googlemail.com> wrote:
+>>>>>>>>>>>>
+>>>>>>>>>>>> Hi Roger,
+>>>>>>>>>>>>
+>>>>>>>>>>>> On Tue, Jun 28, 2022 at 1:44 PM Roger Quadros <rogerq@kernel.org> wrote:
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Hi Yegor,
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> On 28/06/2022 13:48, Yegor Yefremov wrote:
+>>>>>>>>>>>>>> Since linux 5.17 I get the following issue when doing ubiformat:
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> # ubiformat -y /dev/mtd5
+>>>>>>>>>>>>>> ubiformat: mtd5 (nand), size 265945088 bytes (253.6 MiB), 2029
+>>>>>>>>>>>>>> eraseblocks of 131072 bytes (128.0 KiB), min. I/O size 2048 bytes
+>>>>>>>>>>>>>> libscan: scanning eraseblock 1097 -- 54 % complete  eth1 timed out to bring up
+>>>>>>>>>>>>>> libscan: scanning eraseblock 2028 -- 100 % complete
+>>>>>>>>>>>>>> ubiformat: 2001 eraseblocks have valid erase counter, mean value is 9
+>>>>>>>>>>>>>> ubiformat: 2 eraseblocks are supposedly empty
+>>>>>>>>>>>>>> ubiformat: 26 bad eraseblocks found, numbers: 3, 4, 5, 6, 8, 9, 10,
+>>>>>>>>>>>>>> 11, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 29, 30,
+>>>>>>>>>>>>>> 31, 32
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> I'm guessing these bad blocks recently added due to the offending patch?
+>>>>>>>>>>>>
+>>>>>>>>>>>> Yes.
+>>>>>>>>>>>>
+>>>>>>>>>>>>>> ubiformat: formatting eras[   33.644323] nand: nand_erase_nand:
+>>>>>>>>>>>>>> attempt to erase a bad block at page 0x00000d40
+>>>>>>>>>>>>>> ubiformat: formatting eraseblock 28[   33.658809] nand:
+>>>>>>>>>>>>>> nand_erase_nand: attempt to erase a bad block at page 0x00000d80
+>>>>>>>>>>>>>> ubiformat: formatting eraseblock 29 --  1 % [   33.674531] nand:
+>>>>>>>>>>>>>> nand_erase_nand: attempt to erase a bad block at page 0x00000dc0
+>>>>>>>>>>>>>> ubiformat: formatting eraseblock 30 --  1 % complete [   33.684508]
+>>>>>>>>>>>>>> nand: nand_erase_nand: attempt to erase a bad block at page 0x00000e00
+>>>>>>>>>>>>>> ubiformat: formatting eraseblock 34 --  1 % complete  libmtd: error!:
+>>>>>>>>>>>>>> MEMERASE64 ioctl failed for eraseblock 34 (mtd5)
+>>>>>>>>>>>>>>         error 5 (Input/output error)
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> ubiformat: error!: failed to erase eraseblock 34
+>>>>>>>>>>>>>>            error 5 (Input/output error)
+>>>>>>>>>>>>>> ubiformat: marking block 34 bad
+>>>>>>>>>>>>>> ubiformat: formatting eraseblock 35 --  1 % complete  libmtd: error!:
+>>>>>>>>>>>>>> MEMERASE64 ioctl failed for eraseblock 35 (mtd5)
+>>>>>>>>>>>>>>         error 5 (Input/output error)
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> ubiformat: error!: failed to erase eraseblock 35
+>>>>>>>>>>>>>>            error 5 (Input/output error)
+>>>>>>>>>>>>>> ubiformat: marking block 35 bad
+>>>>>>>>>>>>>> ubiformat: formatting eraseblock 36 --  1 % complete  libmtd: error!:
+>>>>>>>>>>>>>> MEMERASE64 ioctl failed for eraseblock 36 (mtd5)
+>>>>>>>>>>>>>>         error 5 (Input/output error)
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> ubiformat: error!: failed to erase eraseblock 36
+>>>>>>>>>>>>>>            error 5 (Input/output error)
+>>>>>>>>>>>>>> ubiformat: marking block 36 bad
+>>>>>>>>>>>>>> ubiformat: formatting eraseblock 37 --  1 % complete  libmtd: error!:
+>>>>>>>>>>>>>> MEMERASE64 ioctl failed for eraseblock 37 (mtd5)
+>>>>>>>>>>>>>>         error 5 (Input/output error)
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> ubiformat: error!: failed to erase eraseblock 37
+>>>>>>>>>>>>>>            error 5 (Input/output error)
+>>>>>>>>>>>>>> ubiformat: marking block 37 bad
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> ubiformat: error!: consecutive bad blocks exceed limit: 4, bad flash?
+>>>>>>>>>>>>>> # [   36.322563] vwl1271: disabling
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> git bisect pointed to the following commit:
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> a9e849efca4f9c7732ea4a81f13ec96208994b22 is the first bad commit
+>>>>>>>>>>>>>> commit a9e849efca4f9c7732ea4a81f13ec96208994b22
+>>>>>>>>>>>>>> Author: Roger Quadros <rogerq@kernel.org>
+>>>>>>>>>>>>>> Date:   Thu Dec 9 11:04:55 2021 +0200
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>     mtd: rawnand: omap2: move to exec_op interface
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>     Stop using legacy interface and move to the exec_op interface.
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>     Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>>>>>>>>>>>>>>     Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+>>>>>>>>>>>>>>     Link: https://lore.kernel.org/linux-mtd/20211209090458.24830-4-rogerq@kernel.org
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> :040000 040000 2341051b8aa8e6b554b8a44d2934f76d1aa460c4
+>>>>>>>>>>>>>> c1727080ff16c403f4ad5ed840acc90127b632f8 M      drivers
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> Info to my NAND flash:
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> [    5.695760] nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xda
+>>>>>>>>>>>>>> [    5.702193] nand: Micron MT29F2G08ABAEAWP
+>>>>>>>>>>>>>> [    5.706356] nand: 256 MiB, SLC, erase size: 128 KiB, page size:
+>>>>>>>>>>>>>> 2048, OOB size: 64
+>>>>>>>>>>>>>> [    5.714204] nand: using OMAP_ECC_BCH8_CODE_HW ECC scheme
+>>>>>>>>>>>>>> [    5.719673] 6 cmdlinepart partitions found on MTD device omap2-nand.0
+>>>>>>>>>>>>>> [    5.726232] Creating 6 MTD partitions on "omap2-nand.0":
+>>>>>>>>>>>>>> [    5.731594] 0x000000000000-0x000000020000 : "SPL"
+>>>>>>>>>>>>>> [    5.737788] mtdblock: MTD device 'SPL' is NAND, please consider
+>>>>>>>>>>>>>> using UBI block devices instead.
+>>>>>>>>>>>>>> [    5.750113] 0x000000020000-0x000000040000 : "SPL.backup1"
+>>>>>>>>>>>>>> [    5.756916] mtdblock: MTD device 'SPL.backup1' is NAND, please
+>>>>>>>>>>>>>> consider using UBI block devices instead.
+>>>>>>>>>>>>>> [    5.769870] 0x000000040000-0x000000060000 : "SPL.backup2"
+>>>>>>>>>>>>>> [    5.776695] mtdblock: MTD device 'SPL.backup2' is NAND, please
+>>>>>>>>>>>>>> consider using UBI block devices instead.
+>>>>>>>>>>>>>> [    5.789559] 0x000000060000-0x000000080000 : "SPL.backup3"
+>>>>>>>>>>>>>> [    5.796423] mtdblock: MTD device 'SPL.backup3' is NAND, please
+>>>>>>>>>>>>>> consider using UBI block devices instead.
+>>>>>>>>>>>>>> [    5.809341] 0x000000080000-0x000000260000 : "u-boot"
+>>>>>>>>>>>>>> [    5.816652] mtdblock: MTD device 'u-boot' is NAND, please consider
+>>>>>>>>>>>>>> using UBI block devices instead.
+>>>>>>>>>>>>>> [    5.829189] 0x000000260000-0x000010000000 : "UBI"
+>>>>>>>>>>>>>> [    5.971508] mtdblock: MTD device 'UBI' is NAND, please consider
+>>>>>>>>>>>>>> using UBI block devices instead.
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> What platform are you on?
+>>>>>>>>>>>>> I do remember testing this on omap3-beagle but it does not use BCH8 ECC scheme.
+>>>>>>>>>>>>
+>>>>>>>>>>>> I am on am335x [1]
+>>>>>>>>>>>>
+>>>>>>>>>>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/am335x-baltos-ir5221.dts?h=v5.19-rc4
+>>>>>>>>>>>
+>>>>>>>>>>> NAND node definition [1]:
+>>>>>>>>>>>
+>>>>>>>>>>> &gpmc {
+>>>>>>>>>>> pinctrl-names = "default";
+>>>>>>>>>>> pinctrl-0 = <&nandflash_pins_s0>;
+>>>>>>>>>>> ranges = <0 0 0x08000000 0x10000000>; /* CS0: NAND */
+>>>>>>>>>>> status = "okay";
+>>>>>>>>>>>
+>>>>>>>>>>> nand@0,0 {
+>>>>>>>>>>> compatible = "ti,omap2-nand";
+>>>>>>>>>>> reg = <0 0 4>; /* CS0, offset 0, IO size 4 */
+>>>>>>>>>>> interrupt-parent = <&gpmc>;
+>>>>>>>>>>> interrupts = <0 IRQ_TYPE_NONE>, /* fifoevent */
+>>>>>>>>>>>     <1 IRQ_TYPE_NONE>; /* termcount */
+>>>>>>>>>>> rb-gpios = <&gpmc 0 GPIO_ACTIVE_HIGH>; /* gpmc_wait0 */
+>>>>>>>>>>> nand-bus-width = <8>;
+>>>>>>>>>>> ti,nand-ecc-opt = "bch8";
+>>>>>>>>>>> ti,nand-xfer-type = "polled";
+>>>>>>>>>>
+>>>>>>>>>> Could you please change this to "prefetch-polled" and see if it fixes the issue?
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> I tried to set ti,nand-xfer-type to "polled" on beagle-c4 board and could not reproduce the issue
+>>>>>>>>> I will need your help please to debug this issue.
+>>>>>>>>>
+>>>>>>>>> Could you please apply the below patch on top of commit a9e849efca4f9c7732ea4a81f13ec96208994b22
+>>>>>>>>> and send me the full kernel log and output of ubiformat command?
+>>>>>>>>
+>>>>>>>> I'll post the data later.
+>>>>>>>>
+>>>>>>>> The test with the "prefetch-polled" setting looks promising:
+>>>>>>>>
+>>>>>>>> 1. ubiformat runs without issues
+>>>>>>>> 2. I can boot from NAND after "cat MLO > /dev/mtdblock0", etc.
+>>>>>>>> 3. the kernel can mount UBIFS as rootfs
+>>>>>>>>
+>>>>>>>> The only issue I have for now, is that barebox fails to correctly
+>>>>>>>> mount the first partition (the second with UBIFS rootfs - no problem).
+>>>>>>>> This is how I write to NAND:
+>>>>>>>>
+>>>>>>>> ubiformat -y /dev/mtd5
+>>>>>>>> ubiattach -p /dev/mtd5
+>>>>>>>> ubimkvol /dev/ubi0 -N kernel -s 56MiB
+>>>>>>>> mount -t ubifs ubi0:kernel /mnt
+>>>>>>>> cp kernel-fit.itb /mnt
+>>>>>>>> umount /mnt
+>>>>>>>> ubimkvol /dev/ubi0 -N rootfs -s 180MiB
+>>>>>>>> ubiupdatevol /dev/ubi0_1 rootfs.ubifs
+>>>>>>>>
+>>>>>>>> barebox log:
+>>>>>>>>
+>>>>>>>> Booting from NAND
+>>>>>>>> ubi0: scanning is finished
+>>>>>>>> ubi0: registering /dev/nand0.UBI.ubi
+>>>>>>>> ubi0: registering kernel as /dev/nand0.UBI.ubi.kernel
+>>>>>>>> ubi0: registering rootfs as /dev/nand0.UBI.ubi.rootfs
+>>>>>>>> ubi0: attached mtd0 (name "nand0.UBI", size 253 MiB) to ubi0
+>>>>>>>> ubi0: PEB size: 131072 bytes (128 KiB), LEB size: 129024 bytes
+>>>>>>>> ubi0: min./max. I/O unit sizes: 2048/2048, sub-page size 512
+>>>>>>>> ubi0: VID header offset: 512 (aligned 512), data offset: 2048
+>>>>>>>> ubi0: good PEBs: 1999, bad PEBs: 30, corrupted PEBs: 0
+>>>>>>>
+>>>>>>> Note that we now have 30 bad PEBs. I suppose these are not
+>>>>>>> really bad and we need to somehow clear bad block status for these.
+>>>>>>
+>>>>>> Do you mean using u-boot's "nand scrab"? So far, I didn't found any
+>>>>>> other option. There are numerous threads both mtd and barebox mailing
+>>>>>> lists but no implementation.
+>>>>>>
+>>>>>> Unfortunately, I don't have the initial BBT info. So let's hope the
+>>>>>> system can handle this.
+>>>>>
+>>>>>
+>>>>> "nand scrub" will mark all sectors not-bad so doesn't look like the best option.
+>>>>> I was wondering if there is a better way to selectively mark individual sectors not bad.
+>>>>
+>>>> Haven't found anything suitable so far.
+>>>>
+>>>>>>
+>>>>>> Btw, I have applied your debug patch and executed a ubiformat command
+>>>>>> but the debug messages weren't triggered.
+>>>>>
+>>>>> That is because you no longer see errors during nand erase. Did you try
+>>>>> going back to ti,nand-xfer-type = "polled" ?
+>>>>
+>>>> I have applied the patch to a9e849efca4f9c7732ea4a81f13ec96208994b22
+>>>> and at that time our DTS still has xfer type as "polled" and ubiformat
+>>>> command failed as expected.
+>>>
+>>> I think the issue is solved. The bootloader was actually complaining
+>>> about the missing zstd support. I could see this with the latest
+>>> barebox version (2022.06).
+>>>
+>>> I've also switched to "ti,nand-xfer-type = "prefetch-dma";" as other DTS do.
+>>
+>> Just to conclude,
+>> 1) Barebox issue was barebox configuration related.
+>> 2) NAND erase issue was fixed by switching to "prefetch-dma" or "prefetch-polled"
+> 
+> This is correct.
+> 
+>> Does the issue still happen with "polled"? If yes it might be due to too less
+>> GPMC timing value for Read/Busy signalling.
+> 
+> What particular setting do you mean?
+> 
+>                 gpmc,sync-clk-ps = <0>;
+>                 gpmc,cs-on-ns = <0>;
+>                 gpmc,cs-rd-off-ns = <44>;
+>                 gpmc,cs-wr-off-ns = <44>;
+>                 gpmc,adv-on-ns = <6>;
+>                 gpmc,adv-rd-off-ns = <34>;
+>                 gpmc,adv-wr-off-ns = <44>;
+>                 gpmc,we-on-ns = <0>;
+>                 gpmc,we-off-ns = <40>;
+>                 gpmc,oe-on-ns = <0>;
+>                 gpmc,oe-off-ns = <54>;
+>                 gpmc,access-ns = <64>;
+>                 gpmc,rd-cycle-ns = <82>;
+>                 gpmc,wr-cycle-ns = <82>;
+>                 gpmc,bus-turnaround-ns = <0>;
+>                 gpmc,cycle2cycle-delay-ns = <0>;
+>                 gpmc,clk-activation-ns = <0>;
+>                 gpmc,wr-access-ns = <40>;
+>                 gpmc,wr-data-mux-bus-ns = <0>;
+> 
+> I just copied the settings from am335x-evm.dts.
 
-For mvebu related SoCs (orion5x, dove, mv78xx0, ...)
+If the NAND part is not the same as that on am335x-evm then you might need
+to adjust those settings to better suit the actual NAND part on the board.
 
-Acked-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+cheers,
+-roger
 
-Thanks,
-
-Gregory
-
-
->
->       Arnd
->
-> Arnd Bergmann (6):
->   ARM: refresh defconfig files
->   ARM: defconfig: remove irda remnants
->   ARM: defconfig: remove stale CONFIG_ZBOOT_ROM entries
->   ARM: defconfig: address renamed CONFIG_DEBUG_INFO=y
->   ARM: defconfig: remove broken CONFIG_THUMB disables
->   ARM: defconfig: kill remnants of CONFIG_LEDS
->
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Cc: Claudiu Beznea <claudiu.beznea@microchip.com>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Ray Jui <rjui@broadcom.com>
-> Cc: Scott Branden <sbranden@broadcom.com>
-> Cc: Alexander Shiyan <shc_work@mail.ru>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Cc: Alim Akhtar <alim.akhtar@samsung.com>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: NXP Linux Team <linux-imx@nxp.com>
-> Cc: Vladimir Zapolskiy <vz@mleia.com>
-> Cc: Taichi Sugaya <sugaya.taichi@socionext.com>
-> Cc: Takao Orito <orito.takao@socionext.com>
-> Cc: Liviu Dudau <liviu.dudau@arm.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Andrew Lunn <andrew@lunn.ch>
-> Cc: Gregory Clement <gregory.clement@bootlin.com>
-> Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Neil Armstrong <narmstrong@baylibre.com>
-> Cc: Dinh Nguyen <dinguyen@kernel.org>
-> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-> Cc: Chen-Yu Tsai <wens@csie.org>
-> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Cc: Samuel Holland <samuel@sholland.org>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-aspeed@lists.ozlabs.org
-> Cc: bcm-kernel-feedback-list@broadcom.com
-> Cc: linux-rpi-kernel@lists.infradead.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: linux-omap@vger.kernel.org
-> Cc: linux-oxnas@groups.io
-> Cc: linux-stm32@st-md-mailman.stormreply.com
-> Cc: linux-sunxi@lists.linux.dev
-> Cc: linux-tegra@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
->
->  arch/arm/configs/am200epdkit_defconfig    |  28 ++---
->  arch/arm/configs/aspeed_g4_defconfig      |  17 ++-
->  arch/arm/configs/aspeed_g5_defconfig      |  17 ++-
->  arch/arm/configs/assabet_defconfig        |  19 ++-
->  arch/arm/configs/at91_dt_defconfig        |  10 +-
->  arch/arm/configs/axm55xx_defconfig        |  26 ++--
->  arch/arm/configs/badge4_defconfig         |  17 +--
->  arch/arm/configs/bcm2835_defconfig        |  38 +++---
->  arch/arm/configs/cerfcube_defconfig       |  24 ++--
->  arch/arm/configs/clps711x_defconfig       |   6 +-
->  arch/arm/configs/cm_x300_defconfig        |  28 ++---
->  arch/arm/configs/cns3420vb_defconfig      |  20 ++--
->  arch/arm/configs/colibri_pxa270_defconfig |  41 +++----
->  arch/arm/configs/colibri_pxa300_defconfig |  12 +-
->  arch/arm/configs/collie_defconfig         |  22 ++--
->  arch/arm/configs/corgi_defconfig          |  51 ++++----
->  arch/arm/configs/davinci_all_defconfig    |  28 ++---
->  arch/arm/configs/dove_defconfig           |  32 +++--
->  arch/arm/configs/ep93xx_defconfig         |  18 ++-
->  arch/arm/configs/eseries_pxa_defconfig    |  36 ++----
->  arch/arm/configs/exynos_defconfig         |  24 ++--
->  arch/arm/configs/ezx_defconfig            |  74 ++++++------
->  arch/arm/configs/footbridge_defconfig     |  31 ++---
->  arch/arm/configs/h3600_defconfig          |  16 +--
->  arch/arm/configs/h5000_defconfig          |  20 ++--
->  arch/arm/configs/hackkit_defconfig        |  12 +-
->  arch/arm/configs/hisi_defconfig           |  24 ++--
->  arch/arm/configs/imx_v4_v5_defconfig      |  10 +-
->  arch/arm/configs/imx_v6_v7_defconfig      |   8 +-
->  arch/arm/configs/integrator_defconfig     |   2 +-
->  arch/arm/configs/iop32x_defconfig         |  23 ++--
->  arch/arm/configs/ixp4xx_defconfig         |   1 -
->  arch/arm/configs/jornada720_defconfig     |  16 +--
->  arch/arm/configs/keystone_defconfig       |  64 +++++-----
->  arch/arm/configs/lart_defconfig           |  21 ++--
->  arch/arm/configs/lpc18xx_defconfig        |  16 ++-
->  arch/arm/configs/lpc32xx_defconfig        |  12 +-
->  arch/arm/configs/lpd270_defconfig         |  11 +-
->  arch/arm/configs/lubbock_defconfig        |  21 ++--
->  arch/arm/configs/magician_defconfig       |  41 +++----
->  arch/arm/configs/mainstone_defconfig      |  15 ++-
->  arch/arm/configs/milbeaut_m10v_defconfig  |   6 +-
->  arch/arm/configs/mini2440_defconfig       |   8 +-
->  arch/arm/configs/mmp2_defconfig           |  32 +++--
->  arch/arm/configs/moxart_defconfig         |  20 ++--
->  arch/arm/configs/mps2_defconfig           |  18 ++-
->  arch/arm/configs/multi_v4t_defconfig      |   6 +-
->  arch/arm/configs/multi_v5_defconfig       |  14 +--
->  arch/arm/configs/multi_v7_defconfig       |  62 +++++-----
->  arch/arm/configs/mv78xx0_defconfig        |  36 +++---
->  arch/arm/configs/mvebu_v5_defconfig       |  32 +++--
->  arch/arm/configs/mvebu_v7_defconfig       |   4 +-
->  arch/arm/configs/mxs_defconfig            |   6 +-
->  arch/arm/configs/neponset_defconfig       |  30 ++---
->  arch/arm/configs/netwinder_defconfig      |  18 +--
->  arch/arm/configs/nhk8815_defconfig        |   8 +-
->  arch/arm/configs/omap1_defconfig          |  80 ++++++-------
->  arch/arm/configs/omap2plus_defconfig      |  17 ++-
->  arch/arm/configs/orion5x_defconfig        |  36 +++---
->  arch/arm/configs/oxnas_v6_defconfig       |  14 +--
->  arch/arm/configs/palmz72_defconfig        |  16 ++-
->  arch/arm/configs/pcm027_defconfig         |  24 ++--
->  arch/arm/configs/pleb_defconfig           |   8 +-
->  arch/arm/configs/pxa168_defconfig         |  22 ++--
->  arch/arm/configs/pxa255-idp_defconfig     |  21 ++--
->  arch/arm/configs/pxa3xx_defconfig         |  20 ++--
->  arch/arm/configs/pxa910_defconfig         |  26 ++--
->  arch/arm/configs/pxa_defconfig            | 140 ++++++++++------------
->  arch/arm/configs/qcom_defconfig           |  62 +++++-----
->  arch/arm/configs/realview_defconfig       |   8 +-
->  arch/arm/configs/rpc_defconfig            |  20 ++--
->  arch/arm/configs/s3c2410_defconfig        |  12 +-
->  arch/arm/configs/s3c6400_defconfig        |   4 +-
->  arch/arm/configs/s5pv210_defconfig        |   6 +-
->  arch/arm/configs/sama5_defconfig          |   8 +-
->  arch/arm/configs/sama7_defconfig          |   8 +-
->  arch/arm/configs/shannon_defconfig        |  10 +-
->  arch/arm/configs/simpad_defconfig         |  29 ++---
->  arch/arm/configs/socfpga_defconfig        |   8 +-
->  arch/arm/configs/spear13xx_defconfig      |  18 +--
->  arch/arm/configs/spear3xx_defconfig       |  12 +-
->  arch/arm/configs/spear6xx_defconfig       |  10 +-
->  arch/arm/configs/spitz_defconfig          |  51 ++++----
->  arch/arm/configs/stm32_defconfig          |  18 ++-
->  arch/arm/configs/sunxi_defconfig          |   2 +-
->  arch/arm/configs/tct_hammer_defconfig     |  14 +--
->  arch/arm/configs/tegra_defconfig          |  20 ++--
->  arch/arm/configs/trizeps4_defconfig       |  66 +++++-----
->  arch/arm/configs/u8500_defconfig          |   2 +-
->  arch/arm/configs/versatile_defconfig      |   4 +-
->  arch/arm/configs/vexpress_defconfig       |   8 +-
->  arch/arm/configs/vf610m4_defconfig        |   2 +-
->  arch/arm/configs/viper_defconfig          |  30 +++--
->  arch/arm/configs/vt8500_v6_v7_defconfig   |   2 +-
->  arch/arm/configs/xcep_defconfig           |  32 +++--
->  arch/arm/configs/zeus_defconfig           |  28 ++---
->  arch/arm64/configs/defconfig              |   2 +-
->  arch/sh/configs/ecovec24_defconfig        |   2 -
->  100 files changed, 989 insertions(+), 1189 deletions(-)
->
-> -- 
-> 2.29.2
->
-
--- 
-Gregory Clement, Bootlin
-Embedded Linux and Kernel engineering
-http://bootlin.com
+> 
+> Yegor
+> 
+>> Can you please send a patch with the fix? Thanks!
+>>
+>>>
+>>> Thanks for your help.
+>>>
+>>> Yegor
+>>
+>> cheers,
+>> -roger
