@@ -2,143 +2,403 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E3F757E53A
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Jul 2022 19:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB845580021
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Jul 2022 15:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236019AbiGVRRY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 22 Jul 2022 13:17:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39512 "EHLO
+        id S233500AbiGYNtI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 25 Jul 2022 09:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235992AbiGVRRW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 22 Jul 2022 13:17:22 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A76912AC4D
-        for <linux-omap@vger.kernel.org>; Fri, 22 Jul 2022 10:17:20 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id m12so7597998lfj.4
-        for <linux-omap@vger.kernel.org>; Fri, 22 Jul 2022 10:17:20 -0700 (PDT)
+        with ESMTP id S234269AbiGYNtH (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 Jul 2022 09:49:07 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A5510550
+        for <linux-omap@vger.kernel.org>; Mon, 25 Jul 2022 06:49:05 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id oy13so20694265ejb.1
+        for <linux-omap@vger.kernel.org>; Mon, 25 Jul 2022 06:49:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=kKlkNDy7IkULxlqR/cm5H8XjRPA1VC1UXnLKGJxFlME=;
-        b=kBc+EnEOjMvGg2ZacnNtByBS5zqpdyDA3715FeJnzHEz8i7uQ3YazW37ESeq6Bt/Xs
-         xfZxUKs2P9eMWf6y8K6/VFe7VOybuL/G6VLN3AIKAgqfVnwnDcWIaWqMeBD90b1cHJEm
-         CrGy0+PfYoICbO7lBsY1q6kAKWV6HYUaZI6Pxj9bQK+3VRbuFAmNR6timpbiAbfNAD1h
-         RgrdIYtHkCLgg+QKCKOKx3J8mbJQ8vlMXmwgS5nuRcsGKH/WiePo8hsKWsIvPjTXvgG5
-         74rE/woUGUEcCuZI9zWfuFtnmKLvL6vpUJWmdAEsEulykLv048QBWoQr4lEKzl+ShQ0H
-         hidA==
+        d=googlemail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=iNR+8bvTtJ1JNm1FULwRyfWVRLu7ziA8GWYkRRVOTEo=;
+        b=DUSEaBTHhagj+Phydg9/Xbc7brln6S/EzSeTT2gghFyGr7B4AA2LYEV9oWgw9WagzP
+         d7JIpd8Dw97cfQvTps8U1ztvddETpwyE0QMEWiwTRmgz0AKnK1JJNv5euJ1bkic2XY/1
+         851mcrnwcCmGN10utIHAa4wP6R08zTeQKRdHh5R0K94Phj48cR6Msu4RVF/e3jjCDCD+
+         nkgTUpTRwatjiq0cUtJ9ciJXUiEWmhYBRKQzgXAnuwwMrdwi43P+idHeF/7WiVNo8IJF
+         95HbA7MTO2Dk/WLIfKNaMqNNXf/omIWBBB/NNqjvvzyfc1AM9jNIQVU2JnrAuRGZC3F4
+         L9Nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=kKlkNDy7IkULxlqR/cm5H8XjRPA1VC1UXnLKGJxFlME=;
-        b=DFZmN8/5F+xvUNlAb4ljWTobn1YtLy0rsSdwN12Moc1oIRX5JG6UTUbmJ3m01XByl9
-         Fy/ivuDGgKngsJCAxU+julsyknBLrkBRC0hP7044Njlh6kMLRS1YRF6FDIWJIKDIpAqd
-         tASjJHqATYv6HIK0HclszU13Tarq6O8KhPty0mrStgjnRVvch3l5DS/r09irFjpNO+KG
-         ZO5FKTL3UBSUdlpAlly8vG/0m9kYdsO1Yrvu7qto6zVXG+jtlyrq+P8WnGhqjspzvqmM
-         Rrl2fDz00G75Q1TURKU49e3KtSQaGr8LR2XuxmtunzDE049JBO9LUtkhD0dldLzY8NoM
-         5+9g==
-X-Gm-Message-State: AJIora8qmHyHSYHrFCHAITvWc9bL7R2JG1S7H0iQ5rF4bcJiG6xSO7YW
-        9jj/HKmH4fHqsvIYId6o6qJXpQ==
-X-Google-Smtp-Source: AGRyM1tCkKIh7mn6CioEd8be2QKiJ6B5weamVHcEf6LV7UC4qd+9bgwV6JWvuVCeXL6DaArFJ0VqEA==
-X-Received: by 2002:a05:6512:b84:b0:48a:7d72:407c with SMTP id b4-20020a0565120b8400b0048a7d72407cmr183405lfv.537.1658510238975;
-        Fri, 22 Jul 2022 10:17:18 -0700 (PDT)
-Received: from [192.168.10.173] (93.81-167-86.customer.lyse.net. [81.167.86.93])
-        by smtp.gmail.com with ESMTPSA id e6-20020a05651236c600b0048a72437127sm962811lfs.42.2022.07.22.10.17.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Jul 2022 10:17:18 -0700 (PDT)
-Message-ID: <3c3bccc2-786f-45f2-fe30-3e0c9f95da63@linaro.org>
-Date:   Fri, 22 Jul 2022 19:17:15 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 4/6] ARM: defconfig: address renamed CONFIG_DEBUG_INFO=y
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Taichi Sugaya <sugaya.taichi@socionext.com>,
-        Takao Orito <orito.takao@socionext.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        "moderated list:BROADCOM BCM2835 ARM ARCHITECTURE" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES" 
-        <linux-samsung-soc@vger.kernel.org>,
-        linux-omap <linux-omap@vger.kernel.org>, linux-oxnas@groups.io,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-sunxi@lists.linux.dev,
-        "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>
-References: <20220721141325.2413920-1-arnd@kernel.org>
- <20220721141325.2413920-5-arnd@kernel.org>
- <e83c98f9-f32a-6bfd-71b6-9aba22aa7abb@linaro.org>
- <CAK8P3a0yc_iZ1dqbReckvune6KszCPvysCX9okYoaU-by+YRhQ@mail.gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <CAK8P3a0yc_iZ1dqbReckvune6KszCPvysCX9okYoaU-by+YRhQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=iNR+8bvTtJ1JNm1FULwRyfWVRLu7ziA8GWYkRRVOTEo=;
+        b=eeqdCJ0a2+LLZAiB5eMR65LwMUt+azfW6eps6iaMUBkaYCip0lMLqCrqRx/XoibJp6
+         vJU0RYRR5ZrdqVbgqnZrGhcwYF7tYYhp0UUEemuBQf5spOTIKd79iw6VvXqck16XN5DM
+         bsGJs7m1A1a83JPQnVRS/v0q3M29YGAhjw+ctnm1sm9xqTynpMzUfDofvWeRehJKeJ9N
+         d4hHSVJhzU6EhOEA2SPBDyiLPoeWdDxdj+8vl3R6hDaaPtG/V1LOUidKTEG3+gew/0Va
+         xpPRCCOIYyAPO7uj5TEYfGXFD7I5RwYT9L1Wr3UPPzGmg0jT5uY0k5huUQsfFf7wm8KQ
+         dv5Q==
+X-Gm-Message-State: AJIora98jggLDIalsOfRK4c3vrjvxtyJBgasTbRfmSknN+DuA4VQllGF
+        mHnwFDwl3QcsjmyzBn/0GKu1QQWbLzI=
+X-Google-Smtp-Source: AGRyM1sZpTwTaMLDpNLbUOYy4UOUJYroWLYRd7nqkQVbZZ4SouXcpUYsI5gjzRZLMRxbt1UsrSG/zg==
+X-Received: by 2002:a17:907:160c:b0:72f:1031:2184 with SMTP id hb12-20020a170907160c00b0072f10312184mr9947870ejc.355.1658756944043;
+        Mon, 25 Jul 2022 06:49:04 -0700 (PDT)
+Received: from development1.visionsystems.de (mail.visionsystems.de. [213.209.99.202])
+        by smtp.gmail.com with ESMTPSA id k20-20020a17090632d400b006fee7b5dff2sm5404670ejk.143.2022.07.25.06.49.03
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 25 Jul 2022 06:49:03 -0700 (PDT)
+From:   yegorslists@googlemail.com
+To:     linux-omap@vger.kernel.org
+Cc:     tony@atomide.com, robh+dt@kernel.org,
+        Yegor Yefremov <yegorslists@googlemail.com>
+Subject: [PATCH 1/5] ARM: dts: am335x-baltos: add GPIO names for ir3220 and ir5221 devices
+Date:   Mon, 25 Jul 2022 15:48:53 +0200
+Message-Id: <20220725134857.855-1-yegorslists@googlemail.com>
+X-Mailer: git-send-email 2.17.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UPPERCASE_50_75 autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 21/07/2022 22:43, Arnd Bergmann wrote:
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-> I'd rather keep them together: while removing the DEBUG_INFO is
-> now a NOP, keeping the two changes together explains much better
-> why this is done and is atomically needed based on the single patch
-> that caused the change.
-> 
-> It's the same with the LEDS patch that replaces the CONFIG_LEDS
-> option with CONFIG_NEW_LEDS.
+Add GPIO names for both SoC and TCA6416 lines.
 
-OK,
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ arch/arm/boot/dts/am335x-baltos-ir3220.dts | 148 +++++++++++++++++++++
+ arch/arm/boot/dts/am335x-baltos-ir5221.dts | 148 +++++++++++++++++++++
+ 2 files changed, 296 insertions(+)
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+diff --git a/arch/arm/boot/dts/am335x-baltos-ir3220.dts b/arch/arm/boot/dts/am335x-baltos-ir3220.dts
+index 2123bd589484..087e084506d2 100644
+--- a/arch/arm/boot/dts/am335x-baltos-ir3220.dts
++++ b/arch/arm/boot/dts/am335x-baltos-ir3220.dts
+@@ -91,6 +91,10 @@
+ 		interrupts = <20 IRQ_TYPE_EDGE_RISING>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&tca6416_pins>;
++		gpio-line-names = "GP_IN0", "GP_IN1", "GP_IN2", "GP_IN3",
++				  "GP_OUT0", "GP_OUT1", "GP_OUT2", "GP_OUT3",
++				  "ModeA0", "ModeA1", "ModeA2", "ModeA3",
++				  "ModeB0", "ModeB1", "ModeB2", "ModeB3";
+ 	};
+ };
+ 
+@@ -123,3 +127,147 @@
+ 	pinctrl-0 = <&mmc1_pins>;
+ 	cd-gpios = <&gpio2 18 GPIO_ACTIVE_LOW>;
+ };
++
++&gpio0 {
++	gpio-line-names =
++		"MDIO",
++		"MDC",
++		"UART2_RX",
++		"UART2_TX",
++		"I2C1_SDA",
++		"I2C1_SCL",
++		"WLAN_BTN",
++		"W_DISABLE",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"UART1_CTSN",
++		"UART1_RTSN",
++		"UART1_RX",
++		"UART1_TX",
++		"onrisc:blue:wlan",
++		"onrisc:green:app",
++		"USB0_DRVVBUS",
++		"ETH2_INT",
++		"TCA6416_INT",
++		"RMII1_TXD1",
++		"MMC1_DAT0",
++		"MMC1_DAT1",
++		"NC",
++		"NC",
++		"MMC1_DAT2",
++		"MMC1_DAT3",
++		"RMII1_TXD0",
++		"NC",
++		"GPMC_WAIT0",
++		"GPMC_WP_N";
++};
++
++&gpio1 {
++	gpio-line-names =
++		"GPMC_AD0",
++		"GPMC_AD1",
++		"GPMC_AD2",
++		"GPMC_AD3",
++		"GPMC_AD4",
++		"GPMC_AD5",
++		"GPMC_AD6",
++		"GPMC_AD7",
++		"NC",
++		"NC",
++		"CONSOLE_RX",
++		"CONSOLE_TX",
++		"UART2_DTR",
++		"UART2_DSR",
++		"UART2_DCD",
++		"UART2_RI",
++		"RGMII2_TCTL",
++		"RGMII2_RCTL",
++		"RGMII2_TD3",
++		"RGMII2_TD2",
++		"RGMII2_TD1",
++		"RGMII2_TD0",
++		"RGMII2_TCLK",
++		"RGMII2_RCLK",
++		"RGMII2_RD3",
++		"RGMII2_RD2",
++		"RGMII2_RD1",
++		"RGMII2_RD0",
++		"PMIC_INT1",
++		"GPMC_CSN0_Flash",
++		"MMC1_CLK",
++		"MMC1_CMD";
++};
++
++&gpio2 {
++	gpio-line-names =
++		"GPMC_CSN3_BUS",
++		"GPMC_CLK",
++		"GPMC_ADVN_ALE",
++		"GPMC_OEN_RE_N",
++		"GPMC_WE_N",
++		"GPMC_BEN0_CLE",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"SD_CD",
++		"SD_WP",
++		"RMII1_RXD1",
++		"RMII1_RXD0",
++		"UART1_DTR",
++		"UART1_DSR",
++		"UART1_DCD",
++		"UART1_RI",
++		"MMC0_DAT3",
++		"MMC0_DAT2",
++		"MMC0_DAT1",
++		"MMC0_DAT0",
++		"MMC0_CLK",
++		"MMC0_CMD";
++};
++
++&gpio3 {
++	gpio-line-names =
++		"onrisc:red:power",
++		"RMII1_CRS_DV",
++		"RMII1_RXER",
++		"RMII1_TXEN",
++		"3G_PWR_EN",
++		"UART2_CTSN",
++		"UART2_RTSN",
++		"WLAN_IRQ",
++		"WLAN_EN",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"USB1_DRVVBUS",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC";
++};
+diff --git a/arch/arm/boot/dts/am335x-baltos-ir5221.dts b/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+index 2f3872dbf4f4..faeb39aab60a 100644
+--- a/arch/arm/boot/dts/am335x-baltos-ir5221.dts
++++ b/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+@@ -99,6 +99,10 @@
+ 		interrupts = <20 IRQ_TYPE_EDGE_RISING>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&tca6416_pins>;
++		gpio-line-names = "GP_IN0", "GP_IN1", "GP_IN2", "GP_IN3",
++				  "GP_OUT0", "GP_OUT1", "GP_OUT2", "GP_OUT3",
++				  "ModeA0", "ModeA1", "ModeA2", "ModeA3",
++				  "ModeB0", "ModeB1", "ModeB2", "ModeB3";
+ 	};
+ };
+ 
+@@ -147,3 +151,147 @@
+ 	pinctrl-0 = <&mmc1_pins>;
+ 	cd-gpios = <&gpio2 18 GPIO_ACTIVE_LOW>;
+ };
++
++&gpio0 {
++	gpio-line-names =
++		"MDIO",
++		"MDC",
++		"UART2_RX",
++		"UART2_TX",
++		"I2C1_SDA",
++		"I2C1_SCL",
++		"WLAN_BTN",
++		"W_DISABLE",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"UART1_CTSN",
++		"UART1_RTSN",
++		"UART1_RX",
++		"UART1_TX",
++		"onrisc:blue:wlan",
++		"onrisc:green:app",
++		"USB0_DRVVBUS",
++		"ETH2_INT",
++		"TCA6416_INT",
++		"RMII1_TXD1",
++		"MMC1_DAT0",
++		"MMC1_DAT1",
++		"NC",
++		"NC",
++		"MMC1_DAT2",
++		"MMC1_DAT3",
++		"RMII1_TXD0",
++		"NC",
++		"GPMC_WAIT0",
++		"GPMC_WP_N";
++};
++
++&gpio1 {
++	gpio-line-names =
++		"GPMC_AD0",
++		"GPMC_AD1",
++		"GPMC_AD2",
++		"GPMC_AD3",
++		"GPMC_AD4",
++		"GPMC_AD5",
++		"GPMC_AD6",
++		"GPMC_AD7",
++		"DCAN1_TX",
++		"DCAN1_RX",
++		"CONSOLE_RX",
++		"CONSOLE_TX",
++		"UART2_DTR",
++		"UART2_DSR",
++		"UART2_DCD",
++		"UART2_RI",
++		"RGMII2_TCTL",
++		"RGMII2_RCTL",
++		"RGMII2_TD3",
++		"RGMII2_TD2",
++		"RGMII2_TD1",
++		"RGMII2_TD0",
++		"RGMII2_TCLK",
++		"RGMII2_RCLK",
++		"RGMII2_RD3",
++		"RGMII2_RD2",
++		"RGMII2_RD1",
++		"RGMII2_RD0",
++		"PMIC_INT1",
++		"GPMC_CSN0_Flash",
++		"MMC1_CLK",
++		"MMC1_CMD";
++};
++
++&gpio2 {
++	gpio-line-names =
++		"GPMC_CSN3_BUS",
++		"GPMC_CLK",
++		"GPMC_ADVN_ALE",
++		"GPMC_OEN_RE_N",
++		"GPMC_WE_N",
++		"GPMC_BEN0_CLE",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"SD_CD",
++		"SD_WP",
++		"RMII1_RXD1",
++		"RMII1_RXD0",
++		"UART1_DTR",
++		"UART1_DSR",
++		"UART1_DCD",
++		"UART1_RI",
++		"MMC0_DAT3",
++		"MMC0_DAT2",
++		"MMC0_DAT1",
++		"MMC0_DAT0",
++		"MMC0_CLK",
++		"MMC0_CMD";
++};
++
++&gpio3 {
++	gpio-line-names =
++		"onrisc:red:power",
++		"RMII1_CRS_DV",
++		"RMII1_RXER",
++		"RMII1_TXEN",
++		"3G_PWR_EN",
++		"UART2_CTSN",
++		"UART2_RTSN",
++		"WLAN_IRQ",
++		"WLAN_EN",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"USB1_DRVVBUS",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC";
++};
+-- 
+2.17.0
 
-
-Best regards,
-Krzysztof
