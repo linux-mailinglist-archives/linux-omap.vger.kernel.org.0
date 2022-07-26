@@ -2,57 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1606F580F23
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Jul 2022 10:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BF67580F21
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Jul 2022 10:35:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238545AbiGZIfC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Jul 2022 04:35:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50594 "EHLO
+        id S238549AbiGZIfD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jul 2022 04:35:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238555AbiGZIe5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Jul 2022 04:34:57 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D2230F59
-        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:56 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id z23so24617523eju.8
-        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:56 -0700 (PDT)
+        with ESMTP id S238578AbiGZIfA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Jul 2022 04:35:00 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D34131208
+        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:57 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id fy29so24756144ejc.12
+        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=pwfHwwPoipMAt+FzM0J4eEZ+R+++ABQMXdscP1duHJc=;
-        b=RojzscHVtblO/jXIKxk2zsGYbRnBE+fPkycy+qHV85a5fRXQAHoZltNwlJqBPiO4UA
-         xMaIs2g1L1Gl7mOmnd4uXJNEPYhwFQpgjSleaOuAz+4OZYdpOl2aMGJ0MVmiksF4vKIg
-         EPftgdjy2jFwFdEYGjUltZPfvKAVOAkm9rn+OCJXuoT0cq/5YJY1g0YC9BPy7zohBYNz
-         E4tEcXZGLZbf2zsNdEY5hq5m6Gr+85BCYD5cZcW28IrY05JXkHmpRCi3e0UvQ2vZQDXH
-         I21uUZH6/QVyHYncHgnu1Y68N6U3c0pPZx3t7gIsVumUkC+WV62edPKwWg1jb87VnXes
-         pKAw==
+        bh=3yBQznUo5RrVPIUPYF/c/MTxWoEmNrCVbSj4iz/iGKk=;
+        b=k8W6Wajk90v6PvqZQy3IzDjM05pItr5jI8T3PwnO90/PJxkO5/2V/4+3dZtqcfmWuG
+         s+xjDWAUn6I4pmAn69rx2zRyq6qxChXSZY2kwCX0LX9EF30tLDpVNUgx8/BQR1iTA9Ng
+         ay6FXAqrtN0J7zSWh8R2cfel0FM4dvE/++FD7sPAD0Ua2pNvV+UbCXEPu54WKMB19joc
+         U+450kKuWdFxirrbQfjcXQDKmY4dcOmS7BJ966h444jRkxrOnMyUuLCpgNzsFzPvgsGe
+         kvMxAEKNrYtQ2RIYxvxwZLuuvsToEsRrjZ+Gdrgsth2RqG4F0P5gxd2PGHYUZTiAopfZ
+         Hz2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=pwfHwwPoipMAt+FzM0J4eEZ+R+++ABQMXdscP1duHJc=;
-        b=JFX6hYUegt+zVs1SFuezNFU22erKgltGTnmOtZAGoJonwoidtfCfa8RrfESmPY01GH
-         paw2UadEdBBdG3H8OtCne4WxPkCEAoaGyWNBmt7wdTCglEn038Wv4rLYv7dT7K1spLkA
-         Rn5vR6zY4YQF9cZ6/aAuxkCaVnlYLvq2OppysTGqXHxUvtFO+vBqnlOCdjKBYGg0ppra
-         kTd1v+1Ay8xWHjJtW+8d8Ksh9G5rt4u2Ey56aSGZV/b6V2Y8l8e6fn6++dau3PjmXbCB
-         no6JIQA8XgSbyLfaFO3P8D0QyTzAoRDv5215LKYFiGDutBKMcEJ5TpMDy1obX87Vwiom
-         Ppiw==
-X-Gm-Message-State: AJIora/zNP6MKPGFGE3Kq5Cv45mIh2yXdne+SCixL24QXzC18xwlzuE/
-        /FZPF7KzDgWVRsQ9UrHh/pT8XH30uL4=
-X-Google-Smtp-Source: AGRyM1vuuirCroPDafyOn3+ZsoPYl/7/F7ybSTsfF8KROgmC2wcokfqZflGOGpNw7Tw86dogKhh/Eg==
-X-Received: by 2002:a17:906:dc95:b0:72f:ab47:1692 with SMTP id cs21-20020a170906dc9500b0072fab471692mr12919807ejc.319.1658824494510;
-        Tue, 26 Jul 2022 01:34:54 -0700 (PDT)
+        bh=3yBQznUo5RrVPIUPYF/c/MTxWoEmNrCVbSj4iz/iGKk=;
+        b=B66uzGoW22AufyLm0VxtLxWXoFAonMB+GAj7jwdk5y4CtssKLEIYzt+KL5vo3/jqJ2
+         DuqeItK7qpLDiH50N0BFHshlZgJP8+0MI9BYRmLgu2iv7Vz71BMsK+DmyWv5KLBoaaJD
+         zYNJakKH92n52xDQy0UqwyZdmkG0sHCIWt4Cl5BHaZeMwS3/Ok8u6iaNYdXWDBoH0JWI
+         X8FnQ7ymhzI2M1G+n1UFmxm/t5LX9thpWjewKZHRehVzYzWEYFuqXIdzkDQ45LvnAWgV
+         QwhiOmi7eUzkmacpgoVWB0GC2m28IzISwgMVnu4rU7VZ2+XJTS0ZfUOXxxW3gMqDIUkE
+         ddnQ==
+X-Gm-Message-State: AJIora+XPgsXffpWjZpbRQSIyAdJcn5h+GWix1h4NdGcB/Tzgr6g4bVb
+        /NW0v2Sa33RRK7g0Hr5SP1zI2bDnC+Q=
+X-Google-Smtp-Source: AGRyM1t9M+JDP+6ft0yB1coRGONFetDHt3qq/2PGyT79+IkRVdU8PKY6Z4KeylhnrQjWpglsrCUWbA==
+X-Received: by 2002:a17:906:fc6:b0:72f:d080:416 with SMTP id c6-20020a1709060fc600b0072fd0800416mr8577547ejk.1.1658824495618;
+        Tue, 26 Jul 2022 01:34:55 -0700 (PDT)
 Received: from development1.visionsystems.de (mail.visionsystems.de. [213.209.99.202])
-        by smtp.gmail.com with ESMTPSA id rh9-20020a17090720e900b006f3ef214ddesm6171848ejb.68.2022.07.26.01.34.53
+        by smtp.gmail.com with ESMTPSA id rh9-20020a17090720e900b006f3ef214ddesm6171848ejb.68.2022.07.26.01.34.55
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 26 Jul 2022 01:34:54 -0700 (PDT)
+        Tue, 26 Jul 2022 01:34:55 -0700 (PDT)
 From:   yegorslists@googlemail.com
 To:     linux-omap@vger.kernel.org
 Cc:     tony@atomide.com, robh+dt@kernel.org,
         Yegor Yefremov <yegorslists@googlemail.com>
-Subject: [PATCH v2 4/5] ARM: dts: am335x-netcom: add GPIO names for NetCom Plus 8-port devices
-Date:   Tue, 26 Jul 2022 10:34:43 +0200
-Message-Id: <20220726083444.10159-4-yegorslists@googlemail.com>
+Subject: [PATCH v2 5/5] ARM: dts: am335x-netcom: add GPIO names for NetCom Plus 2-port devices
+Date:   Tue, 26 Jul 2022 10:34:44 +0200
+Message-Id: <20220726083444.10159-5-yegorslists@googlemail.com>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20220726083444.10159-1-yegorslists@googlemail.com>
 References: <20220726083444.10159-1-yegorslists@googlemail.com>
@@ -68,54 +68,21 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Add GPIO names for both SoC and TCA6416 lines.
+Add GPIO names for SoC lines.
 
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
 Changes:
 	v1 -> v2: no changes
 
- arch/arm/boot/dts/am335x-netcom-plus-8xx.dts | 156 +++++++++++++++++++
- 1 file changed, 156 insertions(+)
+ arch/arm/boot/dts/am335x-netcom-plus-2xx.dts | 144 +++++++++++++++++++
+ 1 file changed, 144 insertions(+)
 
-diff --git a/arch/arm/boot/dts/am335x-netcom-plus-8xx.dts b/arch/arm/boot/dts/am335x-netcom-plus-8xx.dts
-index 96dffd3ffd85..ad3adc7679f9 100644
---- a/arch/arm/boot/dts/am335x-netcom-plus-8xx.dts
-+++ b/arch/arm/boot/dts/am335x-netcom-plus-8xx.dts
-@@ -71,6 +71,10 @@
- 		interrupts = <20 IRQ_TYPE_EDGE_RISING>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&tca6416_pins>;
-+		gpio-line-names = "GP_IN0", "GP_IN1", "GP_IN2", "GP_IN3",
-+				  "GP_IN4", "GP_IN5", "GP_IN6", "GP_IN7",
-+				  "GP_OUT0", "GP_OUT1", "GP_OUT2", "GP_OUT3",
-+				  "GP_OUT4", "GP_OUT5", "GP_OUT6", "GP_OUT7";
- 	};
- };
- 
-@@ -86,6 +90,10 @@
- 		reg = <0x20>;
- 		gpio-controller;
- 		#gpio-cells = <2>;
-+		gpio-line-names = "CH1_M0", "CH1_M1", "CH1_M2", "CH1_M3",
-+				  "CH2_M0", "CH2_M1", "CH2_M2", "CH2_M3",
-+				  "CH3_M0", "CH3_M1", "CH3_M2", "CH3_M3",
-+				  "CH4_M0", "CH4_M1", "CH4_M2", "CH4_M3";
- 	};
- 
- 	tca6416c: gpio@21 {
-@@ -93,6 +101,10 @@
- 		reg = <0x21>;
- 		gpio-controller;
- 		#gpio-cells = <2>;
-+		gpio-line-names = "CH5_M0", "CH5_M1", "CH5_M2", "CH5_M3",
-+				  "CH6_M0", "CH6_M1", "CH6_M2", "CH6_M3",
-+				  "CH7_M0", "CH7_M1", "CH7_M2", "CH7_M3",
-+				  "CH8_M0", "CH8_M1", "CH8_M2", "CH8_M3";
- 	};
- };
- 
-@@ -113,3 +125,147 @@
+diff --git a/arch/arm/boot/dts/am335x-netcom-plus-2xx.dts b/arch/arm/boot/dts/am335x-netcom-plus-2xx.dts
+index c6cc1c6218a9..6ed886c3306b 100644
+--- a/arch/arm/boot/dts/am335x-netcom-plus-2xx.dts
++++ b/arch/arm/boot/dts/am335x-netcom-plus-2xx.dts
+@@ -93,3 +93,147 @@
  	ti,dual-emac-pvid = <2>;
  	phy-handle = <&phy1>;
  };
@@ -124,8 +91,8 @@ index 96dffd3ffd85..ad3adc7679f9 100644
 +	gpio-line-names =
 +		"MDIO",
 +		"MDC",
-+		"NC",
-+		"NC",
++		"UART2_RX",
++		"UART2_TX",
 +		"I2C1_SDA",
 +		"I2C1_SCL",
 +		"NC",
@@ -134,10 +101,10 @@ index 96dffd3ffd85..ad3adc7679f9 100644
 +		"NC",
 +		"NC",
 +		"NC",
-+		"I2C2_SDA",
-+		"I2C2_SCL",
-+		"NC",
-+		"NC",
++		"UART1_CTSN",
++		"UART1_RTSN",
++		"UART1_RX",
++		"UART1_TX",
 +		"onrisc:blue:wlan",
 +		"onrisc:green:app",
 +		"USB0_DRVVBUS",
@@ -170,10 +137,10 @@ index 96dffd3ffd85..ad3adc7679f9 100644
 +		"NC",
 +		"CONSOLE_RX",
 +		"CONSOLE_TX",
-+		"SW2_0_alt",
-+		"SW2_1_alt",
-+		"SW2_2_alt",
-+		"SW2_3_alt",
++		"UART2_DTR",
++		"UART2_DSR",
++		"UART2_DCD",
++		"UART2_RI",
 +		"RGMII2_TCTL",
 +		"RGMII2_RCTL",
 +		"RGMII2_TD3",
@@ -216,10 +183,10 @@ index 96dffd3ffd85..ad3adc7679f9 100644
 +		"SW2_1",
 +		"NC",
 +		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
++		"UART1_DTR",
++		"UART1_DSR",
++		"UART1_DCD",
++		"UART1_RI",
 +		"MMC0_DAT3",
 +		"MMC0_DAT2",
 +		"MMC0_DAT1",
@@ -234,9 +201,9 @@ index 96dffd3ffd85..ad3adc7679f9 100644
 +		"NC",
 +		"NC",
 +		"NC",
-+		"3G_PWR_EN",
 +		"NC",
-+		"NC",
++		"UART2_CTSN",
++		"UART2_RTSN",
 +		"WLAN_IRQ",
 +		"WLAN_EN",
 +		"SW2_2",
@@ -244,10 +211,10 @@ index 96dffd3ffd85..ad3adc7679f9 100644
 +		"NC",
 +		"NC",
 +		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
-+		"NC",
++		"ModeA0",
++		"ModeA1",
++		"ModeA2",
++		"ModeA3",
 +		"NC",
 +		"NC",
 +		"NC",
