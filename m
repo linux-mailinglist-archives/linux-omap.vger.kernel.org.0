@@ -2,57 +2,57 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C463580F1F
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Jul 2022 10:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C33DA580F22
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Jul 2022 10:35:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238543AbiGZIe5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 26 Jul 2022 04:34:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50540 "EHLO
+        id S230218AbiGZIfB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jul 2022 04:35:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238565AbiGZIez (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Jul 2022 04:34:55 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EAA031209
-        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:54 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id ss3so24740843ejc.11
-        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:53 -0700 (PDT)
+        with ESMTP id S238460AbiGZIe4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Jul 2022 04:34:56 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34EF531212
+        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:55 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id mf4so24908950ejc.3
+        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=OMRkpNgu5S+nvpLzhFipQUup2HgjOsZquv3zjAuxoik=;
-        b=NZd6Bq+SkY4aRfNpHecwExElzalhCtMCehtI7Q9W2K7f6K42yAduja6hQDFmCY26+C
-         GfiS4kEiJ9OHCZs5Hiniecfkm8D3rYhUuWrTKjMuvVsmiPpQGhlt6Xdzcbn19pLStaNo
-         ZWGuJ/zp3X+3Gaivk7wornKUQnKwXVgp0kJI2HvHcwt6TT2rSlKysv7o+gJT8EKptImM
-         gT/A35XyErYTQJQGtRkmuulTa0qnD90H3mC3UzBAFvf3HLDSSs6LQeRFbTnjEnUGE9E3
-         oVcFleqay/IwLjK42SZRTH5LzA1dfSS0xvf7dXM4YjQ2Fy71tq6DHKdPCfWH7KLPB/Yl
-         izvQ==
+        bh=GXilQ+OPAeFe/iC0g4c+nKlt4iXDssXeIzGINlYOLV0=;
+        b=Wg/+b4dKRJnvk19CCd5kv9hwswQesIBthHfqLjXM7/dQjhbpkX8YPHB6ztLuZkew45
+         rMUMdflw0/DwMpQ6NiCHZSfYev5d/a8S+lyMO4/Wve7EgvD2KODx256RnEX8it/58RYB
+         YrhlWamJb/fvMmuErkgr+v3dnS8WWvc/vBqQAiv5bSQLHmg4PMRIl55uqSyhmJFPpBHo
+         JJcQNwVTsD7j5EpLiYhMNFl0yBJKGzTTyIgdRSgFk74GSxU6wO2DtWHctbmPi6RPD0IU
+         +AZi2XKVUQq7Q/pMpS/HqLlBNYih8u5dFWzv/8ey1V4zQieLj9trreZWv4Lz4k3GOq/4
+         6OLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=OMRkpNgu5S+nvpLzhFipQUup2HgjOsZquv3zjAuxoik=;
-        b=nB0rxV1Upy8TY5irBnvtRGjDTl4BA3C/6tJj9AQaU+3hV69SLlXlp86e8gFARqveJ1
-         Fkb83j6YL3NYztDV11qukjNttUDw+TUD6I1BKwKwfT+CKiH5AfbU78BFu6xmGyMCRIQK
-         BxqmV44KbB/uFxYGWuq/CfzRLgxQCEmkUjAF4JLMxaRRZUsG+tWk5zjxxbMxND4SMIo2
-         Yvg0ReHm9/KylkxYyEvokFazy8Ac6QONE3+da7ZgiP1j/ucwIljUfhtXkgcQ9/HjgMvm
-         7m2U/zj5N0kPIzGXNXADbp8bCZj4Nyo6c7cCXq92Ho3QwYdUpSmY0ngmKJvSx61CxNiv
-         S7Bw==
-X-Gm-Message-State: AJIora/qgoYt8kR/nsjopzYEVVB0m1aNgcL2hO8pQz+ZPyznm5IluzNc
-        9blKyn7DP0a2rkfnzPlEEylC9ZkCapY=
-X-Google-Smtp-Source: AGRyM1v7UTn5Bb/u9GRKm7RJlVFa2tIA+BlPvYtYuPkQ52ovTdKB72wlKkr8eTwOR4mbW91NH9GZ8Q==
-X-Received: by 2002:a17:907:97c2:b0:72b:9ec4:9a60 with SMTP id js2-20020a17090797c200b0072b9ec49a60mr13396501ejc.154.1658824491954;
-        Tue, 26 Jul 2022 01:34:51 -0700 (PDT)
+        bh=GXilQ+OPAeFe/iC0g4c+nKlt4iXDssXeIzGINlYOLV0=;
+        b=FvRxk32uycxrARB5nXfA2kS8t4cYIwFlHFO6NF3s5rl2dlJf9fyYgMvjmbW2DEnaH3
+         CE5cFby8IiENJpGPyCpuJdxAHcG3HszXIsNTIkDhL4pMPY7+4xVrzaLEjWb6qqAgJjvH
+         3wRWl6iT8YdMdBcuP7GCXtLXlBxQxEWG03JpJdwjEhrKnu7yAhtA5Vio80JScuwZ/Qeu
+         CiZcEbiJa5lPznLzr5MM6SpH2j6Dt4Nw5c8C/EnKGQY4YPIaxf+h55LGkpgKeesWusju
+         e/efK0VjKdL+yd2sGdh46xdYkTgt8oGimpqwzNQm1+qZagaUmM9t30QUezbpm4bJaeap
+         Z6EQ==
+X-Gm-Message-State: AJIora/F1WLv/p19V3MDIel/mfbcx/UxLPuvwfybsvhD2j8UY++mdmDr
+        MV2iZU7MkuDqW1aVUy8zotznbnZ9BDY=
+X-Google-Smtp-Source: AGRyM1uk4huz4tjNNTqjLo2Lsfh0TsdkjLijaTV57Ak69Sgs8E+RUNxdJkd1MAI83BEmK2Ic5TJ6sA==
+X-Received: by 2002:a17:907:7fa5:b0:72b:755a:b77e with SMTP id qk37-20020a1709077fa500b0072b755ab77emr13098115ejc.474.1658824493258;
+        Tue, 26 Jul 2022 01:34:53 -0700 (PDT)
 Received: from development1.visionsystems.de (mail.visionsystems.de. [213.209.99.202])
-        by smtp.gmail.com with ESMTPSA id rh9-20020a17090720e900b006f3ef214ddesm6171848ejb.68.2022.07.26.01.34.51
+        by smtp.gmail.com with ESMTPSA id rh9-20020a17090720e900b006f3ef214ddesm6171848ejb.68.2022.07.26.01.34.52
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 26 Jul 2022 01:34:51 -0700 (PDT)
+        Tue, 26 Jul 2022 01:34:52 -0700 (PDT)
 From:   yegorslists@googlemail.com
 To:     linux-omap@vger.kernel.org
 Cc:     tony@atomide.com, robh+dt@kernel.org,
         Yegor Yefremov <yegorslists@googlemail.com>
-Subject: [PATCH v2 2/5] ARM: dts: am335x-baltos: add GPIO names for ir2110 device
-Date:   Tue, 26 Jul 2022 10:34:41 +0200
-Message-Id: <20220726083444.10159-2-yegorslists@googlemail.com>
+Subject: [PATCH v2 3/5] ARM: dts: am335x-netcan: add GPIO names for NetCAN Plus device
+Date:   Tue, 26 Jul 2022 10:34:42 +0200
+Message-Id: <20220726083444.10159-3-yegorslists@googlemail.com>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20220726083444.10159-1-yegorslists@googlemail.com>
 References: <20220726083444.10159-1-yegorslists@googlemail.com>
@@ -73,18 +73,18 @@ Add GPIO names for SoC lines.
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
 Changes:
-	v1 -> v2: remove unrelated changes i.e. commenting MMC CD pin
+	v1 -> v2: no changes
 
- arch/arm/boot/dts/am335x-baltos-ir2110.dts | 144 +++++++++++++++++++++
+ arch/arm/boot/dts/am335x-netcan-plus-1xx.dts | 144 +++++++++++++++++++
  1 file changed, 144 insertions(+)
 
-diff --git a/arch/arm/boot/dts/am335x-baltos-ir2110.dts b/arch/arm/boot/dts/am335x-baltos-ir2110.dts
-index daf4cb398070..75992eec830f 100644
---- a/arch/arm/boot/dts/am335x-baltos-ir2110.dts
-+++ b/arch/arm/boot/dts/am335x-baltos-ir2110.dts
-@@ -81,3 +81,147 @@
- 	pinctrl-0 = <&mmc1_pins>;
- 	cd-gpios = <&gpio1 15 GPIO_ACTIVE_LOW>;
+diff --git a/arch/arm/boot/dts/am335x-netcan-plus-1xx.dts b/arch/arm/boot/dts/am335x-netcan-plus-1xx.dts
+index 57e756b0f192..2e049489ac06 100644
+--- a/arch/arm/boot/dts/am335x-netcan-plus-1xx.dts
++++ b/arch/arm/boot/dts/am335x-netcan-plus-1xx.dts
+@@ -85,3 +85,147 @@
+ 
+ 	status = "okay";
  };
 +
 +&gpio0 {
@@ -101,23 +101,23 @@ index daf4cb398070..75992eec830f 100644
 +		"NC",
 +		"NC",
 +		"NC",
-+		"UART1_CTSN",
-+		"UART1_RTSN",
-+		"UART1_RX",
-+		"UART1_TX",
++		"NC",
++		"NC",
++		"can_data",
++		"can_error",
 +		"onrisc:blue:wlan",
 +		"onrisc:green:app",
 +		"USB0_DRVVBUS",
 +		"ETH2_INT",
 +		"NC",
-+		"RMII1_TXD1",
++		"NC",
 +		"MMC1_DAT0",
 +		"MMC1_DAT1",
 +		"NC",
 +		"NC",
 +		"MMC1_DAT2",
 +		"MMC1_DAT3",
-+		"RMII1_TXD0",
++		"NC",
 +		"NC",
 +		"GPMC_WAIT0",
 +		"GPMC_WP_N";
@@ -133,14 +133,14 @@ index daf4cb398070..75992eec830f 100644
 +		"GPMC_AD5",
 +		"GPMC_AD6",
 +		"GPMC_AD7",
-+		"NC",
-+		"NC",
++		"DCAN1_TX",
++		"DCAN1_RX",
 +		"CONSOLE_RX",
 +		"CONSOLE_TX",
 +		"NC",
 +		"NC",
 +		"NC",
-+		"SD_CD",
++		"NC",
 +		"RGMII2_TCTL",
 +		"RGMII2_RCTL",
 +		"RGMII2_TD3",
@@ -181,12 +181,12 @@ index daf4cb398070..75992eec830f 100644
 +		"NC",
 +		"SW2_0",
 +		"SW2_1",
-+		"RMII1_RXD1",
-+		"RMII1_RXD0",
-+		"UART1_DTR",
-+		"UART1_DSR",
-+		"UART1_DCD",
-+		"UART1_RI",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
 +		"MMC0_DAT3",
 +		"MMC0_DAT2",
 +		"MMC0_DAT1",
@@ -198,9 +198,9 @@ index daf4cb398070..75992eec830f 100644
 +&gpio3 {
 +	gpio-line-names =
 +		"onrisc:red:power",
-+		"RMII1_CRS_DV",
-+		"RMII1_RXER",
-+		"RMII1_TXEN",
++		"NC",
++		"NC",
++		"NC",
 +		"NC",
 +		"NC",
 +		"NC",
