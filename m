@@ -2,155 +2,406 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD5145806AF
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Jul 2022 23:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3639580F20
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Jul 2022 10:35:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237029AbiGYV3i (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 25 Jul 2022 17:29:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49264 "EHLO
+        id S238522AbiGZIe4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 26 Jul 2022 04:34:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237367AbiGYV2x (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 25 Jul 2022 17:28:53 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB2D252B6
-        for <linux-omap@vger.kernel.org>; Mon, 25 Jul 2022 14:27:55 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id u14-20020a05600c00ce00b003a323062569so7096267wmm.4
-        for <linux-omap@vger.kernel.org>; Mon, 25 Jul 2022 14:27:55 -0700 (PDT)
+        with ESMTP id S238545AbiGZIey (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 26 Jul 2022 04:34:54 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E46730F7F
+        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:51 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id b11so24787751eju.10
+        for <linux-omap@vger.kernel.org>; Tue, 26 Jul 2022 01:34:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linexp-org.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=fQwrODMneSzL3hNZushZmArM7t54Sdd+4j1p+OO3JS8=;
-        b=wAqIxUamNgGfpXlAtv5dRL3vUzGyBJmyD2ekYHrdDe8vQTZ/ycyXgh882FiO+8X5xh
-         9rfkhRLXg0mb7GqSGcNY1W7GdCLS8uNloydV6P0oUp0sjyxtYJTlAYkEHNKQIuAsB+He
-         8lF3OcbuLRLQHqPRgZ7gADkIOAPHmuDuPARzJSylftVm7ZM1IgS74UB+Un5KRHhZ3v0V
-         cB1xOICwt+Vvwy1ZXGUBw2fxXy0xr/qT+m2pc3f5nhPtT3suqe2PVfOtCng/j7YSTtqs
-         Y28PjSzufx88vVPjnchNtaso0n2S5pcXwxlyjwrwX4K3n1123qPqLkUmTYrmGMfBqmJG
-         bgQw==
+        d=googlemail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=oxMe95mJDdFDKShhYpfA9lzs8EwLfAxOTaV/SZ2cGj8=;
+        b=RuPRvjVDr243qHFB+DFAuEyxk14SEA5UDc8BvTBUwPI5l/mBZ9DHxgs+FtGl8er2pd
+         ZGOVW4OHkjrO5ufMLwKbccKh8KGBAl5VypK4aCxEpF6HoqTJgGBuueOyzcRRv9cDevSo
+         nMYhkt4ihxyQ2GJDxBdO6F05p3J/pAmJ0DDArIvd3YhZF29z/P4pnt75DAwnO+HuIVIU
+         MHwqQZ9eeLPYRrq5kxCWJiS+3GP48ppevxu+Yyq7xIYT0IxGVW51mXIsFOgZe3hdALd6
+         F4ZLB4KYiqrIpdy/HuRwPENgnHoqxrCG6MGFaVgEy1kmCKUz7/jfG96X7n9V5DaPJKkt
+         ZTDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=fQwrODMneSzL3hNZushZmArM7t54Sdd+4j1p+OO3JS8=;
-        b=BS4CEOLNMJgu0GrtmOg+P67CRKhzkoka6kXjuS0ODeRB9fDpll+vO9cBfCbS1gEZzx
-         agQD16ZeQAQUh0rBdY72ISnL0Nr0tg6Oe1IRIRchb6ZdEvbrIPU1geI0GGoePC1dn2sw
-         HeWPHyMN3WkLqWto80OcN19c6FqQEMpeU8W921Jsr+i2pllv4IMRK7qCpG7Xa2UrAW/j
-         UNCTJGCFf77i5HDnPAhyLzuVNxJDqm6fcrmQ3GJ0GGYUfD11tDqztOkhnoo8FJQ/hd3N
-         eTpVmP5QfeRNbVNmqqNghTzWCUjF898xn1rLBzPJI/TeNdH2I+k2ig6q4G/7ReSoIknA
-         yWGQ==
-X-Gm-Message-State: AJIora+3NKdSOaC6jqsrVGbokQ7jgZNpr4dYPBVpagjfAd4vFEd2aNov
-        CJIomDhkiKm6vb/wyut117X62A==
-X-Google-Smtp-Source: AGRyM1tbvETSoIRv7uuZ9n4quQqOkazqYwKqHrQODDUEp+EUyJvLC5o19BvGxgtpTnCBj1LhJX76jg==
-X-Received: by 2002:a05:600c:1552:b0:3a3:2e4c:bd0a with SMTP id f18-20020a05600c155200b003a32e4cbd0amr18447864wmg.82.1658784472932;
-        Mon, 25 Jul 2022 14:27:52 -0700 (PDT)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:1780:8e54:dd38:6668])
-        by smtp.gmail.com with ESMTPSA id r17-20020a5d52d1000000b0021d68a504cbsm12668772wrv.94.2022.07.25.14.27.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jul 2022 14:27:52 -0700 (PDT)
-From:   Daniel Lezcano <daniel.lezcano@linexp.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     rui.zhang@intel.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, khilman@baylibre.com,
-        abailon@baylibre.com, lukasz.luba@arm.com, broonie@kernel.org,
-        damien.lemoal@opensource.wdc.com, heiko@sntech.de,
-        hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
-        talel@amazon.com, thierry.reding@gmail.com, digetx@gmail.com,
-        jonathanh@nvidia.com, anarsoul@gmail.com, tiny.windzz@gmail.com,
-        baolin.wang7@gmail.com, f.fainelli@gmail.com,
-        bjorn.andersson@linaro.org, mcoquelin.stm32@gmail.com,
-        glaroque@baylibre.com, miquel.raynal@bootlin.com,
-        shawnguo@kernel.org, niklas.soderlund@ragnatech.se,
-        matthias.bgg@gmail.com, j-keerthy@ti.com,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        linux-omap@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER)
-Subject: [PATCH v2 24/32] thermal/drivers/ti-soc: Switch to new of API
-Date:   Mon, 25 Jul 2022 23:26:29 +0200
-Message-Id: <20220725212637.2818207-25-daniel.lezcano@linexp.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220725212637.2818207-1-daniel.lezcano@linexp.org>
-References: <20220725212637.2818207-1-daniel.lezcano@linexp.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=oxMe95mJDdFDKShhYpfA9lzs8EwLfAxOTaV/SZ2cGj8=;
+        b=D7nNHpMWnMcmfZprm4cC4wT3uxm3AmG5+STrYL5DjDosIbueQHe2eBLikUKb7/dXe8
+         Pwrr6Uk4NqTdmw3xz8TDC961ccPvTk+q9LkliA1qgfV2nqhCy6znjQmmH246Ui2Y4XJp
+         2xoGYRTuPGfkMJVhNy1A36v+esqDCbMAiDf0/L95jXv/kTMlv40i2bK67rcOzHnkTl3j
+         VPJ+9LSmB6eH26+fEb8OtgXV0ON9gYiLEqogqUobcx8hoFIf6nJWlZdv9rh59UoEIkLy
+         GoUpHSuV3ngXDCTKZnGpZtuAUvHwlqM4sj2/xc3nmoBGr0B/8fhrjQCY8bVKIX16OnyI
+         uRLg==
+X-Gm-Message-State: AJIora+6HLkDXq1og/JipTPO6zIoaIuEze81JK1k0cTvIBvmlbZpMA5N
+        oF779btp4kjdDEoKow+ySz85Z7R0OZA=
+X-Google-Smtp-Source: AGRyM1vi90HuBYRRzfZbzVpLZqd5zgVEWpDcn104eJ7yKF47+ghkkFhCBRF8o9DSHTGFtiX2X4T+vg==
+X-Received: by 2002:a17:907:a0c7:b0:72f:b205:112 with SMTP id hw7-20020a170907a0c700b0072fb2050112mr12958030ejc.559.1658824489828;
+        Tue, 26 Jul 2022 01:34:49 -0700 (PDT)
+Received: from development1.visionsystems.de (mail.visionsystems.de. [213.209.99.202])
+        by smtp.gmail.com with ESMTPSA id rh9-20020a17090720e900b006f3ef214ddesm6171848ejb.68.2022.07.26.01.34.48
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 26 Jul 2022 01:34:49 -0700 (PDT)
+From:   yegorslists@googlemail.com
+To:     linux-omap@vger.kernel.org
+Cc:     tony@atomide.com, robh+dt@kernel.org,
+        Yegor Yefremov <yegorslists@googlemail.com>
+Subject: [PATCH v2 1/5] ARM: dts: am335x-baltos: add GPIO names for ir3220 and ir5221 devices
+Date:   Tue, 26 Jul 2022 10:34:40 +0200
+Message-Id: <20220726083444.10159-1-yegorslists@googlemail.com>
+X-Mailer: git-send-email 2.17.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UPPERCASE_50_75 autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The thermal OF code has a new API allowing to migrate the OF
-initialization to a simpler approach. The ops are no longer device
-tree specific and are the generic ones provided by the core code.
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Convert the ops to the thermal_zone_device_ops format and use the new
-API to register the thermal zone with these generic ops.
+Add GPIO names for both SoC and TCA6416 lines.
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linexp.org>
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- .../thermal/ti-soc-thermal/ti-thermal-common.c   | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Changes:
+	v1 -> v2: no changes
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-index 703039d8b937..8a9055bd376e 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -65,10 +65,10 @@ static inline int ti_thermal_hotspot_temperature(int t, int s, int c)
- 
- /* thermal zone ops */
- /* Get temperature callback function for thermal zone */
--static inline int __ti_thermal_get_temp(void *devdata, int *temp)
-+static inline int __ti_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
- {
- 	struct thermal_zone_device *pcb_tz = NULL;
--	struct ti_thermal_data *data = devdata;
-+	struct ti_thermal_data *data = tz->devdata;
- 	struct ti_bandgap *bgp;
- 	const struct ti_temp_sensor *s;
- 	int ret, tmp, slope, constant;
-@@ -85,8 +85,8 @@ static inline int __ti_thermal_get_temp(void *devdata, int *temp)
- 		return ret;
- 
- 	/* Default constants */
--	slope = thermal_zone_get_slope(data->ti_thermal);
--	constant = thermal_zone_get_offset(data->ti_thermal);
-+	slope = thermal_zone_get_slope(tz);
-+	constant = thermal_zone_get_offset(tz);
- 
- 	pcb_tz = data->pcb_tz;
- 	/* In case pcb zone is available, use the extrapolation rule with it */
-@@ -107,9 +107,9 @@ static inline int __ti_thermal_get_temp(void *devdata, int *temp)
- 	return ret;
- }
- 
--static int __ti_thermal_get_trend(void *p, int trip, enum thermal_trend *trend)
-+static int __ti_thermal_get_trend(struct thermal_zone_device *tz, int trip, enum thermal_trend *trend)
- {
--	struct ti_thermal_data *data = p;
-+	struct ti_thermal_data *data = tz->devdata;
- 	struct ti_bandgap *bgp;
- 	int id, tr, ret = 0;
- 
-@@ -130,7 +130,7 @@ static int __ti_thermal_get_trend(void *p, int trip, enum thermal_trend *trend)
- 	return 0;
- }
- 
--static const struct thermal_zone_of_device_ops ti_of_thermal_ops = {
-+static const struct thermal_zone_device_ops ti_of_thermal_ops = {
- 	.get_temp = __ti_thermal_get_temp,
- 	.get_trend = __ti_thermal_get_trend,
+ arch/arm/boot/dts/am335x-baltos-ir3220.dts | 148 +++++++++++++++++++++
+ arch/arm/boot/dts/am335x-baltos-ir5221.dts | 148 +++++++++++++++++++++
+ 2 files changed, 296 insertions(+)
+
+diff --git a/arch/arm/boot/dts/am335x-baltos-ir3220.dts b/arch/arm/boot/dts/am335x-baltos-ir3220.dts
+index 2123bd589484..087e084506d2 100644
+--- a/arch/arm/boot/dts/am335x-baltos-ir3220.dts
++++ b/arch/arm/boot/dts/am335x-baltos-ir3220.dts
+@@ -91,6 +91,10 @@
+ 		interrupts = <20 IRQ_TYPE_EDGE_RISING>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&tca6416_pins>;
++		gpio-line-names = "GP_IN0", "GP_IN1", "GP_IN2", "GP_IN3",
++				  "GP_OUT0", "GP_OUT1", "GP_OUT2", "GP_OUT3",
++				  "ModeA0", "ModeA1", "ModeA2", "ModeA3",
++				  "ModeB0", "ModeB1", "ModeB2", "ModeB3";
+ 	};
  };
-@@ -170,7 +170,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
- 		return -EINVAL;
  
- 	/* in case this is specified by DT */
--	data->ti_thermal = devm_thermal_zone_of_sensor_register(bgp->dev, id,
-+	data->ti_thermal = devm_thermal_of_zone_register(bgp->dev, id,
- 					data, &ti_of_thermal_ops);
- 	if (IS_ERR(data->ti_thermal)) {
- 		dev_err(bgp->dev, "thermal zone device is NULL\n");
+@@ -123,3 +127,147 @@
+ 	pinctrl-0 = <&mmc1_pins>;
+ 	cd-gpios = <&gpio2 18 GPIO_ACTIVE_LOW>;
+ };
++
++&gpio0 {
++	gpio-line-names =
++		"MDIO",
++		"MDC",
++		"UART2_RX",
++		"UART2_TX",
++		"I2C1_SDA",
++		"I2C1_SCL",
++		"WLAN_BTN",
++		"W_DISABLE",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"UART1_CTSN",
++		"UART1_RTSN",
++		"UART1_RX",
++		"UART1_TX",
++		"onrisc:blue:wlan",
++		"onrisc:green:app",
++		"USB0_DRVVBUS",
++		"ETH2_INT",
++		"TCA6416_INT",
++		"RMII1_TXD1",
++		"MMC1_DAT0",
++		"MMC1_DAT1",
++		"NC",
++		"NC",
++		"MMC1_DAT2",
++		"MMC1_DAT3",
++		"RMII1_TXD0",
++		"NC",
++		"GPMC_WAIT0",
++		"GPMC_WP_N";
++};
++
++&gpio1 {
++	gpio-line-names =
++		"GPMC_AD0",
++		"GPMC_AD1",
++		"GPMC_AD2",
++		"GPMC_AD3",
++		"GPMC_AD4",
++		"GPMC_AD5",
++		"GPMC_AD6",
++		"GPMC_AD7",
++		"NC",
++		"NC",
++		"CONSOLE_RX",
++		"CONSOLE_TX",
++		"UART2_DTR",
++		"UART2_DSR",
++		"UART2_DCD",
++		"UART2_RI",
++		"RGMII2_TCTL",
++		"RGMII2_RCTL",
++		"RGMII2_TD3",
++		"RGMII2_TD2",
++		"RGMII2_TD1",
++		"RGMII2_TD0",
++		"RGMII2_TCLK",
++		"RGMII2_RCLK",
++		"RGMII2_RD3",
++		"RGMII2_RD2",
++		"RGMII2_RD1",
++		"RGMII2_RD0",
++		"PMIC_INT1",
++		"GPMC_CSN0_Flash",
++		"MMC1_CLK",
++		"MMC1_CMD";
++};
++
++&gpio2 {
++	gpio-line-names =
++		"GPMC_CSN3_BUS",
++		"GPMC_CLK",
++		"GPMC_ADVN_ALE",
++		"GPMC_OEN_RE_N",
++		"GPMC_WE_N",
++		"GPMC_BEN0_CLE",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"SD_CD",
++		"SD_WP",
++		"RMII1_RXD1",
++		"RMII1_RXD0",
++		"UART1_DTR",
++		"UART1_DSR",
++		"UART1_DCD",
++		"UART1_RI",
++		"MMC0_DAT3",
++		"MMC0_DAT2",
++		"MMC0_DAT1",
++		"MMC0_DAT0",
++		"MMC0_CLK",
++		"MMC0_CMD";
++};
++
++&gpio3 {
++	gpio-line-names =
++		"onrisc:red:power",
++		"RMII1_CRS_DV",
++		"RMII1_RXER",
++		"RMII1_TXEN",
++		"3G_PWR_EN",
++		"UART2_CTSN",
++		"UART2_RTSN",
++		"WLAN_IRQ",
++		"WLAN_EN",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"USB1_DRVVBUS",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC";
++};
+diff --git a/arch/arm/boot/dts/am335x-baltos-ir5221.dts b/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+index 2f3872dbf4f4..faeb39aab60a 100644
+--- a/arch/arm/boot/dts/am335x-baltos-ir5221.dts
++++ b/arch/arm/boot/dts/am335x-baltos-ir5221.dts
+@@ -99,6 +99,10 @@
+ 		interrupts = <20 IRQ_TYPE_EDGE_RISING>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&tca6416_pins>;
++		gpio-line-names = "GP_IN0", "GP_IN1", "GP_IN2", "GP_IN3",
++				  "GP_OUT0", "GP_OUT1", "GP_OUT2", "GP_OUT3",
++				  "ModeA0", "ModeA1", "ModeA2", "ModeA3",
++				  "ModeB0", "ModeB1", "ModeB2", "ModeB3";
+ 	};
+ };
+ 
+@@ -147,3 +151,147 @@
+ 	pinctrl-0 = <&mmc1_pins>;
+ 	cd-gpios = <&gpio2 18 GPIO_ACTIVE_LOW>;
+ };
++
++&gpio0 {
++	gpio-line-names =
++		"MDIO",
++		"MDC",
++		"UART2_RX",
++		"UART2_TX",
++		"I2C1_SDA",
++		"I2C1_SCL",
++		"WLAN_BTN",
++		"W_DISABLE",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"UART1_CTSN",
++		"UART1_RTSN",
++		"UART1_RX",
++		"UART1_TX",
++		"onrisc:blue:wlan",
++		"onrisc:green:app",
++		"USB0_DRVVBUS",
++		"ETH2_INT",
++		"TCA6416_INT",
++		"RMII1_TXD1",
++		"MMC1_DAT0",
++		"MMC1_DAT1",
++		"NC",
++		"NC",
++		"MMC1_DAT2",
++		"MMC1_DAT3",
++		"RMII1_TXD0",
++		"NC",
++		"GPMC_WAIT0",
++		"GPMC_WP_N";
++};
++
++&gpio1 {
++	gpio-line-names =
++		"GPMC_AD0",
++		"GPMC_AD1",
++		"GPMC_AD2",
++		"GPMC_AD3",
++		"GPMC_AD4",
++		"GPMC_AD5",
++		"GPMC_AD6",
++		"GPMC_AD7",
++		"DCAN1_TX",
++		"DCAN1_RX",
++		"CONSOLE_RX",
++		"CONSOLE_TX",
++		"UART2_DTR",
++		"UART2_DSR",
++		"UART2_DCD",
++		"UART2_RI",
++		"RGMII2_TCTL",
++		"RGMII2_RCTL",
++		"RGMII2_TD3",
++		"RGMII2_TD2",
++		"RGMII2_TD1",
++		"RGMII2_TD0",
++		"RGMII2_TCLK",
++		"RGMII2_RCLK",
++		"RGMII2_RD3",
++		"RGMII2_RD2",
++		"RGMII2_RD1",
++		"RGMII2_RD0",
++		"PMIC_INT1",
++		"GPMC_CSN0_Flash",
++		"MMC1_CLK",
++		"MMC1_CMD";
++};
++
++&gpio2 {
++	gpio-line-names =
++		"GPMC_CSN3_BUS",
++		"GPMC_CLK",
++		"GPMC_ADVN_ALE",
++		"GPMC_OEN_RE_N",
++		"GPMC_WE_N",
++		"GPMC_BEN0_CLE",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"SD_CD",
++		"SD_WP",
++		"RMII1_RXD1",
++		"RMII1_RXD0",
++		"UART1_DTR",
++		"UART1_DSR",
++		"UART1_DCD",
++		"UART1_RI",
++		"MMC0_DAT3",
++		"MMC0_DAT2",
++		"MMC0_DAT1",
++		"MMC0_DAT0",
++		"MMC0_CLK",
++		"MMC0_CMD";
++};
++
++&gpio3 {
++	gpio-line-names =
++		"onrisc:red:power",
++		"RMII1_CRS_DV",
++		"RMII1_RXER",
++		"RMII1_TXEN",
++		"3G_PWR_EN",
++		"UART2_CTSN",
++		"UART2_RTSN",
++		"WLAN_IRQ",
++		"WLAN_EN",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"USB1_DRVVBUS",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC",
++		"NC";
++};
 -- 
-2.25.1
+2.17.0
 
