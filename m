@@ -2,106 +2,155 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C557C586EDF
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Aug 2022 18:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 037DD58733C
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Aug 2022 23:26:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232995AbiHAQnb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 1 Aug 2022 12:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37718 "EHLO
+        id S234532AbiHAVZu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 1 Aug 2022 17:25:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233958AbiHAQn3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 1 Aug 2022 12:43:29 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE4CC1CB2D
-        for <linux-omap@vger.kernel.org>; Mon,  1 Aug 2022 09:43:26 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id w15so3832080ljw.1
-        for <linux-omap@vger.kernel.org>; Mon, 01 Aug 2022 09:43:26 -0700 (PDT)
+        with ESMTP id S235236AbiHAVYv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 1 Aug 2022 17:24:51 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A9A481C8
+        for <linux-omap@vger.kernel.org>; Mon,  1 Aug 2022 14:24:01 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id j1so7243394wrw.1
+        for <linux-omap@vger.kernel.org>; Mon, 01 Aug 2022 14:24:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=q9Slei3vdZHf3BWZhWjxjnYHcSiTDd6lLLw5COAJJH4=;
-        b=bf7kmBr/SgfZ1wV4nI5vTAndNdYUbiAGmhGqIym6rX1OX0IxSa121QCCLjtfPTtP/q
-         Ji+y0OXbVSONjuLK/7HvTPJ0m6T7C2i8zva8hRhi9PAc4NLMf2QcGCMsVKAR/4SoxG8P
-         QCVBFNb+TBSE6hOTyUwwlUWtblNmcAsvavL/vwkHJhwxC5HKcnSuNdd2JaoddtOnq0f2
-         l8L1cTnZHt01Ad2nR5db4ZRgjujP4vZ5Nbd+R/n0bCKSy+6DchnTG1m2WXhoILL//vjC
-         4hQ2rR4QddBHqcFb8uNfmIzBTiaeke8T1siffGxdfn9eTO7JBIN070YbQDUKkrumHKo5
-         1fZg==
+        d=linexp-org.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc;
+        bh=fQwrODMneSzL3hNZushZmArM7t54Sdd+4j1p+OO3JS8=;
+        b=7p+CjkFGKSQi35uasn1I3nC8Ivn3QGuamMVh8OMTFvATCqAwxvcKhJ4fWBUs0X37rg
+         1x49X71uxJ+JIWRFnXCkWQoWVTge4O+YhBXNP6qLWujn6XgGu7UjbpG2P7tI+infzAaP
+         NEx6kvhlLJg0YQGgevzh2S02rHQQem7JjI9S2DHPRecvo06U6A1dzOQp7lgOruWddOwV
+         bznRgIbJpqcSeoyFwtGL/gn8DGToZy60EX78L8l/obXwB3UfkCBw4MrdWLIH9ejDxMzA
+         SHtdstwoNAg3g/E1qxfPmKd1MRd+XxcG6x/QewBcNRDgBPLKdsY+UmEmK0NKpF8dGRgm
+         3ARQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=q9Slei3vdZHf3BWZhWjxjnYHcSiTDd6lLLw5COAJJH4=;
-        b=zXiiNUx1ZBT0sEDdaEAsfTsHO6g/yyLPktX2nwQiPdB2m8Pj22/lgPC/fVBZWoIAWe
-         64wwQbwnpOV4hb+mtIavIAOn4ZaXx5Qv6udBX0p0aEo2HSPdqniVido4k4efOEm3pGQ7
-         zO6ByvbQsBWE6DHg0PsYd8B2VZXCZMZPXLn3sbvfo3u64xhAEZgG4/HqAQyjmuI1gdyl
-         Dbr+1rUIdsxW5Zz/7LnLtE6rlocVhKyvQQnf9Mgku3h259WGgdHnC3N/jkOCWQpaJInP
-         EycGigBp4hGOE3Wuvkyqo0jDa1fttmR6fU/8L1Erx0Rm8vFVwd2BtnsQn0tahPH8s3W2
-         VJMg==
-X-Gm-Message-State: ACgBeo1xRcOlq23KakcP7jOR1i7OtmsWNKjiSdIIalNIxkvdL6RodfFC
-        6iLlmC2YoNsFRpVIbdj+j86OZ69pr7pavZzFYX8=
-X-Google-Smtp-Source: AA6agR515/n1OMi0vRWF0LCNYzDsADnnMxK25Yt6CRjhyA+ZrhMbjmB0DBADjlTnR+ktgvNpDDCS04nHCVe1WUuUnWY=
-X-Received: by 2002:a2e:3806:0:b0:25e:48ff:a218 with SMTP id
- f6-20020a2e3806000000b0025e48ffa218mr3294471lja.292.1659372205210; Mon, 01
- Aug 2022 09:43:25 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=fQwrODMneSzL3hNZushZmArM7t54Sdd+4j1p+OO3JS8=;
+        b=USkel9AWK3LQczuhZG0jxh00L//unsXznDPhG98uVFIr/SUNF8gLzC+XwrgYqQVpgQ
+         mlvqP/XsrU8guooVqryMk90MNDDsEkWakwNM0RWfEv7rnBbTG7i4zm5/YIru9+x1X+TB
+         5gspV2fY818u5KYSvCj/zQSd2+AlNBYXcatfAtaqknLNAyfMNXolMFtS5M147I0HjkfW
+         mYsG5iQtB2qvkH6wkJyCnuHH6HpYqjV/s6IsRPo7zvhBiubFl3O50YNoLsN0GXk8ND1w
+         hfNfc0dvnRy9S70yXhhnVZ4txIPb7mJo04dt8bpJEnxPnKIZvswLN2BTLa8Ik6raeFtf
+         6W4g==
+X-Gm-Message-State: ACgBeo3v7roqI9FAPIN01lTBiRYM6RX0Ft7VUxTw2UGEP+3FJBiw9vqx
+        t22aDtt+6leqyJKs1XeR/q9c5A==
+X-Google-Smtp-Source: AA6agR5gxjnhIhcm2aWRQ7S0rlS9V5GLVEtm+FGT8nMQNHuNVnBHScn86jTXsRtYkJ8hm0husOpLKA==
+X-Received: by 2002:adf:ee4b:0:b0:21e:8e1a:8f3c with SMTP id w11-20020adfee4b000000b0021e8e1a8f3cmr10979273wro.346.1659389041182;
+        Mon, 01 Aug 2022 14:24:01 -0700 (PDT)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:d00:ceb8:9c09:1302])
+        by smtp.gmail.com with ESMTPSA id c7-20020adffb07000000b0021e501519d3sm12995285wrr.67.2022.08.01.14.23.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Aug 2022 14:24:00 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linexp.org>
+To:     daniel.lezcano@linaro.org, rafael@kernel.org
+Cc:     rui.zhang@intel.com, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, khilman@baylibre.com,
+        abailon@baylibre.com, lukasz.luba@arm.com, broonie@kernel.org,
+        damien.lemoal@opensource.wdc.com, heiko@sntech.de,
+        hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
+        talel@amazon.com, thierry.reding@gmail.com, digetx@gmail.com,
+        jonathanh@nvidia.com, anarsoul@gmail.com, tiny.windzz@gmail.com,
+        baolin.wang7@gmail.com, f.fainelli@gmail.com,
+        bjorn.andersson@linaro.org, mcoquelin.stm32@gmail.com,
+        glaroque@baylibre.com, miquel.raynal@bootlin.com,
+        shawnguo@kernel.org, niklas.soderlund@ragnatech.se,
+        matthias.bgg@gmail.com, j-keerthy@ti.com,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        linux-omap@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER)
+Subject: [PATCH v4 24/32] thermal/drivers/ti-soc: Switch to new of API
+Date:   Mon,  1 Aug 2022 23:22:36 +0200
+Message-Id: <20220801212244.1124867-25-daniel.lezcano@linexp.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220801212244.1124867-1-daniel.lezcano@linexp.org>
+References: <20220801212244.1124867-1-daniel.lezcano@linexp.org>
 MIME-Version: 1.0
-Received: by 2002:aa6:cb52:0:b0:1fa:aaed:e6d9 with HTTP; Mon, 1 Aug 2022
- 09:43:24 -0700 (PDT)
-From:   Bright Gawayn <gben68387@gmail.com>
-Date:   Mon, 1 Aug 2022 22:13:24 +0530
-Message-ID: <CAG1+V0xy74Pa_JLx+ze1qhQfmiuJXdNJ4_AvNnskoiwRCHFd=g@mail.gmail.com>
-Subject: Lucrative business proposal very urgent!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.9 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:244 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5162]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [gben68387[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [gben68387[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  3.5 ADVANCE_FEE_3_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-        *  2.5 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello dear My name is Mr Bright Gawayn,  It's my pleasure to contact you today.
+The thermal OF code has a new API allowing to migrate the OF
+initialization to a simpler approach. The ops are no longer device
+tree specific and are the generic ones provided by the core code.
 
-We use a certain raw material in our pharmaceutical firm for the
-manufacture of animal vaccines and many more.
+Convert the ops to the thermal_zone_device_ops format and use the new
+API to register the thermal zone with these generic ops.
 
-My intention is to give you the new contact information of the local
-manufacturer of this raw material in India and every details regarding
-how to supply the material to my company if you're interested, my
-company pays in advance for this material.
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linexp.org>
+---
+ .../thermal/ti-soc-thermal/ti-thermal-common.c   | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Due to some reasons, which I will explain in my next email, I cannot
-procure this material and supply it to my company myself due to the
-fact that I am a staff in the company.
+diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+index 703039d8b937..8a9055bd376e 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
++++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+@@ -65,10 +65,10 @@ static inline int ti_thermal_hotspot_temperature(int t, int s, int c)
+ 
+ /* thermal zone ops */
+ /* Get temperature callback function for thermal zone */
+-static inline int __ti_thermal_get_temp(void *devdata, int *temp)
++static inline int __ti_thermal_get_temp(struct thermal_zone_device *tz, int *temp)
+ {
+ 	struct thermal_zone_device *pcb_tz = NULL;
+-	struct ti_thermal_data *data = devdata;
++	struct ti_thermal_data *data = tz->devdata;
+ 	struct ti_bandgap *bgp;
+ 	const struct ti_temp_sensor *s;
+ 	int ret, tmp, slope, constant;
+@@ -85,8 +85,8 @@ static inline int __ti_thermal_get_temp(void *devdata, int *temp)
+ 		return ret;
+ 
+ 	/* Default constants */
+-	slope = thermal_zone_get_slope(data->ti_thermal);
+-	constant = thermal_zone_get_offset(data->ti_thermal);
++	slope = thermal_zone_get_slope(tz);
++	constant = thermal_zone_get_offset(tz);
+ 
+ 	pcb_tz = data->pcb_tz;
+ 	/* In case pcb zone is available, use the extrapolation rule with it */
+@@ -107,9 +107,9 @@ static inline int __ti_thermal_get_temp(void *devdata, int *temp)
+ 	return ret;
+ }
+ 
+-static int __ti_thermal_get_trend(void *p, int trip, enum thermal_trend *trend)
++static int __ti_thermal_get_trend(struct thermal_zone_device *tz, int trip, enum thermal_trend *trend)
+ {
+-	struct ti_thermal_data *data = p;
++	struct ti_thermal_data *data = tz->devdata;
+ 	struct ti_bandgap *bgp;
+ 	int id, tr, ret = 0;
+ 
+@@ -130,7 +130,7 @@ static int __ti_thermal_get_trend(void *p, int trip, enum thermal_trend *trend)
+ 	return 0;
+ }
+ 
+-static const struct thermal_zone_of_device_ops ti_of_thermal_ops = {
++static const struct thermal_zone_device_ops ti_of_thermal_ops = {
+ 	.get_temp = __ti_thermal_get_temp,
+ 	.get_trend = __ti_thermal_get_trend,
+ };
+@@ -170,7 +170,7 @@ int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id,
+ 		return -EINVAL;
+ 
+ 	/* in case this is specified by DT */
+-	data->ti_thermal = devm_thermal_zone_of_sensor_register(bgp->dev, id,
++	data->ti_thermal = devm_thermal_of_zone_register(bgp->dev, id,
+ 					data, &ti_of_thermal_ops);
+ 	if (IS_ERR(data->ti_thermal)) {
+ 		dev_err(bgp->dev, "thermal zone device is NULL\n");
+-- 
+2.25.1
 
-Please get back to me as soon as possible for full detail if you are interested.
-
-Thanks and regards
-Bright.
