@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84D7858C083
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Aug 2022 03:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E45A258C0DF
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Aug 2022 03:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243301AbiHHBwa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 7 Aug 2022 21:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37734 "EHLO
+        id S243629AbiHHBzf (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 7 Aug 2022 21:55:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243549AbiHHBvP (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 7 Aug 2022 21:51:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D74018B04;
-        Sun,  7 Aug 2022 18:38:13 -0700 (PDT)
+        with ESMTP id S243500AbiHHBx6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 7 Aug 2022 21:53:58 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADD31AF2D;
+        Sun,  7 Aug 2022 18:39:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F11360DF5;
-        Mon,  8 Aug 2022 01:38:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8FEC4347C;
-        Mon,  8 Aug 2022 01:38:11 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9C45FB80DDF;
+        Mon,  8 Aug 2022 01:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3D3C433D6;
+        Mon,  8 Aug 2022 01:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659922692;
-        bh=f/BuLTN4u7KLUgN1z0stkr4+2cfAX1Qvcl3cgUYEets=;
+        s=k20201202; t=1659922738;
+        bh=E2WSbuDq4C8F2YgMV7Map4BepoZ8zpRFLXYj2ouMi6k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DNAbbU67OlAS+gA8PWHzHRFyPXPRLcL6p6Pcc4MRH6dB0rSSh13ZW2GqiD+iwnDlJ
-         AsN5iV9Vvw0eBLOAbV0MabeFN+WWYKXna4chAGNPJQYsugZqraJFAqXAweEy0hbIyi
-         iUTFYFYnjvb/YSJDz3CLOwTfhaZmu0x/we6+OHROBx4mF2j9v3YSPnnUYJq8K+KNjw
-         lCqUtpv/n9MVITEmgLphIBz8FlIY0dfRh1iNco83APJ1Eq5J8FUKGGVwhbTwrq23b8
-         hzrCajj9gQGjNyyMdTwzbCUUCAPrsiTm4d5YWiM9ymL7LQhvRpslYUZOTu5q9NJVFY
-         Si+v7l3yU3vvA==
+        b=tJbGuO3OriTtKOtZ3GrV013Dw+jx2xvX5uHCgL1zKaEW0fFDx67q1FCZ2Kswaac8i
+         PgHGvUk9q7oe7Kvg4o2KJbLVY9P+s17xBLf6b1BE39lqfQjoYY+LmKGVFr9TFoR8QH
+         gfoq1iAQvK1OJ9T10mp+kfKpb+9o5fW3RIMWk3BufoIqUanQYviYpK8L4HAWyefQNM
+         PEwk84HoEe4HgN35pIL8XT0YWsOAw1mUV3CIrnJTDNvVcFtuCBlLAOy2eAQi9I5koS
+         nrznxU7+AMpJ0te9mqFLjecWdNH3h63LyRn8gWnTS7Ui/VpgNc0heoiLIoN78JVGYC
+         RWJ9BIWYEfopQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Liang He <windhl@126.com>, Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>, linux@armlinux.org.uk,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 18/29] ARM: OMAP2+: display: Fix refcount leak bug
-Date:   Sun,  7 Aug 2022 21:37:28 -0400
-Message-Id: <20220808013741.316026-18-sashal@kernel.org>
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.4 14/23] ARM: OMAP2+: display: Fix refcount leak bug
+Date:   Sun,  7 Aug 2022 21:38:21 -0400
+Message-Id: <20220808013832.316381-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220808013741.316026-1-sashal@kernel.org>
-References: <20220808013741.316026-1-sashal@kernel.org>
+In-Reply-To: <20220808013832.316381-1-sashal@kernel.org>
+References: <20220808013832.316381-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,7 +73,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm/mach-omap2/display.c b/arch/arm/mach-omap2/display.c
-index 6098666e928d..fc635eed73ab 100644
+index 1bd64f6ba8cf..d3b531d5d920 100644
 --- a/arch/arm/mach-omap2/display.c
 +++ b/arch/arm/mach-omap2/display.c
 @@ -211,6 +211,7 @@ static int __init omapdss_init_fbdev(void)
