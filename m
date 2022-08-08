@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DD0158BF8C
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Aug 2022 03:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC9258C02E
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Aug 2022 03:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242664AbiHHBmN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 7 Aug 2022 21:42:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41642 "EHLO
+        id S243073AbiHHBss (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 7 Aug 2022 21:48:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243062AbiHHBlr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 7 Aug 2022 21:41:47 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 512E313D35;
-        Sun,  7 Aug 2022 18:35:21 -0700 (PDT)
+        with ESMTP id S243141AbiHHBsU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 7 Aug 2022 21:48:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E04BB167EC;
+        Sun,  7 Aug 2022 18:37:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 98705B80DCF;
-        Mon,  8 Aug 2022 01:35:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B62C43140;
-        Mon,  8 Aug 2022 01:35:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 905F560EB5;
+        Mon,  8 Aug 2022 01:37:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16925C433D6;
+        Mon,  8 Aug 2022 01:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659922518;
-        bh=lN24LFKC2NWslvWPfsezsUuZEr7kWkBTZ/LrqMh9pO8=;
+        s=k20201202; t=1659922627;
+        bh=uY13mo9qtASTnrLurEscpXAMDs4UVUh1xoWThPdMtxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SCnms4uz4EiYURnsmi7kQLQkZaka4fPqOwu4ZhCVNP7yIc5T9/t8dJlCHTiIGomg+
-         DZ+PIk4Arnk4GzkhFSlLh09T8Qq2SurBxd6pCS65rUIFe5Byh0Ff/sVFVhDEELBGMb
-         732749T9dPtdWVeUGEI8Ey//l8EhZER54lzt1ZJXMhIY/AkbFsATGzQz5mc5/PIPw9
-         2avr9CnH4ctuBjJklJ1RaXii6mvSpPU8LtrCIk7nVhDO6FMxYaHQkFuq1lSZyHBUr4
-         b0jYOLEzfUhZn/2wd99TD3NA75/TsEfKm9rYCjHZ+4LfYML5voOeLBFy2okcJlYOY6
-         DdJuxY6+mFNzg==
+        b=mQrj/6IZANINTSp2BJzqmESCr9Hc1B5UnnRfF1EGZpZaOPRVdGBJXJnsfuQpqyAtF
+         c8teL0yG/7tid7392uoL462baxs0w5XTnDB6ud7WcC0YZH46MO5XoeX4iz7WR2j/dK
+         0OV5aGTWXGb8iWlVn+2PT1Z2M/naQrpjTOy72lseabkETimap2fS9gALGd5jPFBl+H
+         Z8f+xthYqzGP9jyicRlqlRdM07XKtV9MxTrx66+mHbEAlOyvGjaUo3Y8KQNzRa5POe
+         0wFFilt28vNLCZMIHnbDaikI2TYjh1S1ONsghqszbWUbpvptmz+wtcETzvd0A24LyA
+         j4FGml9zfcneg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Liang He <windhl@126.com>, Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>, linux@armlinux.org.uk,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.18 35/53] ARM: OMAP2+: pdata-quirks: Fix refcount leak bug
-Date:   Sun,  7 Aug 2022 21:33:30 -0400
-Message-Id: <20220808013350.314757-35-sashal@kernel.org>
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 28/45] ARM: OMAP2+: display: Fix refcount leak bug
+Date:   Sun,  7 Aug 2022 21:35:32 -0400
+Message-Id: <20220808013551.315446-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220808013350.314757-1-sashal@kernel.org>
-References: <20220808013350.314757-1-sashal@kernel.org>
+In-Reply-To: <20220808013551.315446-1-sashal@kernel.org>
+References: <20220808013551.315446-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -58,32 +58,32 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Liang He <windhl@126.com>
 
-[ Upstream commit 5cdbab96bab314c6f2f5e4e8b8a019181328bf5f ]
+[ Upstream commit 50b87a32a79bca6e275918a711fb8cc55e16d739 ]
 
-In pdata_quirks_init_clocks(), the loop contains
-of_find_node_by_name() but without corresponding of_node_put().
+In omapdss_init_fbdev(), of_find_node_by_name() will return a node
+pointer with refcount incremented. We should use of_node_put() when
+it is not used anymore.
 
 Signed-off-by: Liang He <windhl@126.com>
-Message-Id: <20220618020603.4055792-1-windhl@126.com>
+Message-Id: <20220617145803.4050918-1-windhl@126.com>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/pdata-quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-omap2/display.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
-index e7fd29a502a0..af9d8c432af0 100644
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -551,6 +551,8 @@ pdata_quirks_init_clocks(const struct of_device_id *omap_dt_match_table)
+diff --git a/arch/arm/mach-omap2/display.c b/arch/arm/mach-omap2/display.c
+index 21413a9b7b6c..eb09a25e3b45 100644
+--- a/arch/arm/mach-omap2/display.c
++++ b/arch/arm/mach-omap2/display.c
+@@ -211,6 +211,7 @@ static int __init omapdss_init_fbdev(void)
+ 	node = of_find_node_by_name(NULL, "omap4_padconf_global");
+ 	if (node)
+ 		omap4_dsi_mux_syscon = syscon_node_to_regmap(node);
++	of_node_put(node);
  
- 		of_platform_populate(np, omap_dt_match_table,
- 				     omap_auxdata_lookup, NULL);
-+
-+		of_node_put(np);
- 	}
+ 	return 0;
  }
- 
 -- 
 2.35.1
 
