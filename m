@@ -2,74 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B493758D4B0
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Aug 2022 09:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AAA458D80B
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Aug 2022 13:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237465AbiHIHf5 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Aug 2022 03:35:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55506 "EHLO
+        id S239836AbiHILbE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Aug 2022 07:31:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239263AbiHIHf3 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Aug 2022 03:35:29 -0400
-X-Greylist: delayed 783 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 09 Aug 2022 00:35:07 PDT
-Received: from mx5.cs.washington.edu (mx5.cs.washington.edu [IPv6:2607:4000:200:11::6a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 622052124D
-        for <linux-omap@vger.kernel.org>; Tue,  9 Aug 2022 00:35:07 -0700 (PDT)
-Received: from mx5.cs.washington.edu (localhost [IPv6:0:0:0:0:0:0:0:1])
-        by mx5.cs.washington.edu (8.17.1/8.17.1/1.26) with ESMTP id 2797LJOS139036;
-        Tue, 9 Aug 2022 00:21:19 -0700
-Received: from attu7.cs.washington.edu (attu7.cs.washington.edu [IPv6:2607:4000:200:10:0:0:0:86])
-        (authenticated bits=128)
-        by mx5.cs.washington.edu (8.17.1/8.17.1/1.26) with ESMTPSA id 2797LF1p139032
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-        Tue, 9 Aug 2022 00:21:16 -0700
-Received: from attu7.cs.washington.edu (localhost [127.0.0.1])
-        by attu7.cs.washington.edu (8.15.2/8.15.2/1.23) with ESMTP id 2797LFCU1734120;
-        Tue, 9 Aug 2022 00:21:15 -0700
-Received: (from klee33@localhost)
-        by attu7.cs.washington.edu (8.15.2/8.15.2/Submit/1.2) id 2797L9Bv1734086;
-        Tue, 9 Aug 2022 00:21:09 -0700
-From:   Kenneth Lee <klee33@uw.edu>
-To:     bcousson@baylibre.com, paul@pwsan.com, tony@atomide.com
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Kenneth Lee <klee33@uw.edu>
-Subject: [PATCH] ARM: OMAP2+: hwmod: Use kzalloc for allocating only one element
-Date:   Tue,  9 Aug 2022 00:20:50 -0700
-Message-Id: <20220809072050.1733996-1-klee33@uw.edu>
-X-Mailer: git-send-email 2.31.1
+        with ESMTP id S239907AbiHILaq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Aug 2022 07:30:46 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADDE195B2;
+        Tue,  9 Aug 2022 04:30:44 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 279BUPum006208;
+        Tue, 9 Aug 2022 06:30:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1660044625;
+        bh=+DACkBDSrKIpgBdmU5fA9yyzJiQ302qqvnbGNS/kuws=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=sTV3JNLELwibr7QAETx4OGu1p3aTQHrcO9hcB9/ZWgRxrSxs/9p1N2CVb2sZQiqQa
+         VSQ2UPUOE6G/OhqW9ozoELR1ihncQPjEeauR16Jtu5d5kFvOsr22qd3fBdGKuaiOMB
+         RMg80eDD+/bTuk7WK6CQGiIHE22YKaAHKiZkf1Gw=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 279BUP1W017832
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 9 Aug 2022 06:30:25 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 9
+ Aug 2022 06:30:24 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Tue, 9 Aug 2022 06:30:24 -0500
+Received: from [10.24.69.79] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 279BULwT122324;
+        Tue, 9 Aug 2022 06:30:21 -0500
+Message-ID: <27860709-db8f-49be-fec7-a76496bfb948@ti.com>
+Date:   Tue, 9 Aug 2022 17:00:20 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [EXTERNAL] Re: [RESEND PATCH] net: ethernet: ti: davinci_mdio:
+ Add workaround for errata i2329
+Content-Language: en-US
+To:     Andrew Lunn <andrew@lunn.ch>
+CC:     <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <linux-omap@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <kishon@ti.com>,
+        <vigneshr@ti.com>
+References: <20220808111229.11951-1-r-gunasekaran@ti.com>
+ <YvFubdCiU7J8Ufi4@lunn.ch>
+From:   Ravi Gunasekaran <r-gunasekaran@ti.com>
+In-Reply-To: <YvFubdCiU7J8Ufi4@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Use kzalloc(...) rather than kcalloc(1, ...) because the number of
-elements we are specifying in this case is 1, so kzalloc would
-accomplish the same thing and we can simplify.
+Hello Andrew,
 
-Signed-off-by: Kenneth Lee <klee33@uw.edu>
----
- arch/arm/mach-omap2/omap_hwmod.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 09/08/22 1:43 am, Andrew Lunn wrote:
+>> +static int davinci_mdio_sw_read(struct mii_bus *bus, int phy_id, int phy_reg)
+>> +{
+>> +	struct davinci_mdio_data *data = bus->priv;
+>> +	u32 reg, i;
+>> +	int ret;
+>> +	u8 ack;
+>> +
+>> +	if (phy_reg & ~PHY_REG_MASK || phy_id & ~PHY_ID_MASK)
+>> +		return -EINVAL;
+>> +
+>> +	ret = pm_runtime_get_sync(data->dev);
+>> +	if (ret < 0) {
+>> +		pm_runtime_put_noidle(data->dev);
+>> +		return ret;
+>> +	}
+>> +
+>> +	davinci_mdio_disable(data);
+>> +	davinci_mdio_enable_manual_mode(data);
+>> +	davinci_mdio_sw_preamble(data);
+>> +
+>> +	davinci_mdio_sw_clr_bit(data, MDIO_MDCLK);
+>> +	davinci_mdio_sw_set_bit(data, MDIO_OE);
+>> +
+>> +	 /* Issue clause 22 MII read function {0,1,1,0} */
+>> +	davinci_mdio_man_send_pattern(data, C22_BITRANGE, C22_READ_PATTERN);
+>> +
+>> +	/* Send the device number MSB first */
+>> +	davinci_mdio_man_send_pattern(data, PHY_BITRANGE, phy_id);
+>> +
+>> +	/* Send the register number MSB first */
+>> +	davinci_mdio_man_send_pattern(data, PHY_BITRANGE, phy_reg);
+>> +
+>> +	/* Send turn around cycles */
+>> +	davinci_mdio_sw_clr_bit(data, MDIO_OE);
+>> +
+>> +	davinci_mdio_toggle_man_bit(data, MDIO_MDCLK);
+>> +
+>> +	ack = davinci_mdio_test_man_bit(data, MDIO_PIN);
+>> +	davinci_mdio_toggle_man_bit(data, MDIO_MDCLK);
+>> +
+>> +	reg = 0;
+>> +	if (ack == 0) {
+>> +		for (i = MDIO_BITRANGE; i; i = i >> 1) {
+>> +			if (davinci_mdio_test_man_bit(data, MDIO_PIN))
+>> +				reg |= i;
+>> +
+>> +			davinci_mdio_toggle_man_bit(data, MDIO_MDCLK);
+>> +		}
+>> +	} else {
+>> +		for (i = MDIO_BITRANGE; i; i = i >> 1)
+>> +			davinci_mdio_toggle_man_bit(data, MDIO_MDCLK);
+>> +
+>> +		reg = 0xFFFF;
+>> +	}
+>> +
+>> +	davinci_mdio_sw_clr_bit(data, MDIO_MDCLK);
+>> +	davinci_mdio_sw_set_bit(data, MDIO_MDCLK);
+>> +	davinci_mdio_sw_set_bit(data, MDIO_MDCLK);
+>> +	davinci_mdio_toggle_man_bit(data, MDIO_MDCLK);
+> 
+> You appear to of re-invented drivers/net/mdio/mdio-bitbang.c
+> 
+> If there is a reason this cannot be used, please at least state it in
+> the commit message.
+>
+Thanks for reviewing the patch. Since mdiobb_{read,write}() are exported, I can 
+invoke these in my mdio read/write implementation. I will rework and send the v2 patch
 
-diff --git a/arch/arm/mach-omap2/omap_hwmod.c b/arch/arm/mach-omap2/omap_hwmod.c
-index 31d1a21f6041..da0381051207 100644
---- a/arch/arm/mach-omap2/omap_hwmod.c
-+++ b/arch/arm/mach-omap2/omap_hwmod.c
-@@ -3455,7 +3455,7 @@ static int omap_hwmod_allocate_module(struct device *dev, struct omap_hwmod *oh,
- 	}
- 
- 	if (list_empty(&oh->slave_ports)) {
--		oi = kcalloc(1, sizeof(*oi), GFP_KERNEL);
-+		oi = kzalloc(sizeof(*oi), GFP_KERNEL);
- 		if (!oi)
- 			goto out_free_class;
- 
+>      Andrew
+
 -- 
-2.31.1
-
+Regards,
+Ravi
