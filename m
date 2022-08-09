@@ -2,115 +2,106 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 250CC58E27E
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Aug 2022 00:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E7BE58E2FA
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Aug 2022 00:17:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229717AbiHIWFv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 9 Aug 2022 18:05:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50404 "EHLO
+        id S230024AbiHIWQg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 9 Aug 2022 18:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229989AbiHIWF2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Aug 2022 18:05:28 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC05ADFC6
-        for <linux-omap@vger.kernel.org>; Tue,  9 Aug 2022 15:05:26 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id n4so13987300wrp.10
-        for <linux-omap@vger.kernel.org>; Tue, 09 Aug 2022 15:05:26 -0700 (PDT)
+        with ESMTP id S230013AbiHIWPU (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 9 Aug 2022 18:15:20 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C880D25E87
+        for <linux-omap@vger.kernel.org>; Tue,  9 Aug 2022 15:15:15 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id r69so6092754pgr.2
+        for <linux-omap@vger.kernel.org>; Tue, 09 Aug 2022 15:15:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=v9HOYNemLB65v2s3X2Chh/1DsPPvYHZYg0+K/15aDgQ=;
-        b=bFg1GUKpiDV2Wa5Z/VYETOFzVV963xVsUH3QvrLhSGNNWPp/xqMyOGX0Zhl/qKKmxm
-         Ad7Osv2Yqq93VYOQQMjNugMHyQJ1xs+ZaGpl+qsYoyeFEHJX0gGV/noCTwbzy978WuGO
-         lZVYICEtV3/CnRGA0iJjDqUggzqzsx2gp7OyOBwwNf+Bk7wBGi/aiGzmcwavyZ0YAmuZ
-         tMpTgI/zmUYFxNZn9SJh3d9XqXtZc2k/9ZBt8cObjbPdZBF8lvUREOO73qEPf/bNYT2v
-         a6iNxynWotqme7RyFH++cw2Ra0e/e7OmEY/Q7Rv6ssADcG53xF2TE5kxFQtXsrlceanf
-         s3kg==
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=QTP95oQi+RYhXbI8sz4RyTZp0RSE4jP48cyyUmWbTiK1ItvOHbADVtjkGHK/8zFbqv
+         EIzUG3d4HgG5eAQxnVHuBpH33ycuIiNpMEXk8S0LHARhhQGb6AufQVVn/40aQfLvP77W
+         778oK7qnpGZXO0Q2aGCYT4Mad4FGDHlh1br3s7D4D+9Vr7gPQrhXDR8bwR1fyz6kQ1n2
+         /mI7/+oIm6xqfpBjeRephfywWnzvzUcqvvdKwYuFsxmTm/GRVEQb9jKfBsLPvHEPeyBR
+         SLk52BQ10Zm7GZ4Mv5gugSKJZhGFXVOipaGDVsAOq6ABLyMrmGMv+5RYTjL3cqduwO+M
+         O1Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=v9HOYNemLB65v2s3X2Chh/1DsPPvYHZYg0+K/15aDgQ=;
-        b=wFhxoE7tsqHZznLTMGXPUGVCDVs50mMUvXIEzIJAPmk7J5Yd+M1UPSdPSpSOZkvKN/
-         W3q3XUp63JIfOFlJQpeekfFp0fsYTUDMrP3vcAjG1izG1r6v/KHg9lm2344/RngsXbKH
-         q7RdnAkGLf2uD2+CQw2aQBk4JCTOK3m4KZ+UNbQA4mlNFQaUu5c2IJcQgbXc0mUxWu8e
-         WkI8nD3HwDnpswJCwkj3qOo9Ugpto1W7+FahPgqSUqAHy/ovoXdZjaxODywV6D23BDRN
-         N/jiZ9oFwdVtdPKDSONOx7IMK3SRnojNqzdX6kjLc7g0RX7bCpdHGGKzUK+pp7T63Kqz
-         KE5w==
-X-Gm-Message-State: ACgBeo3k8si5wgCce7t9gmocn6pr/sf0vSoOHGIUQagb7e3Z0hPTK9v0
-        gTWDnGRGOQm0TrW5U0gf5MD21A==
-X-Google-Smtp-Source: AA6agR5IekVvgBURn6hz3jtsSLj3jSB1ikOgx3VaKNEVj6epeJRQ6Y5gecqcxCHvhKAWmzCetU715g==
-X-Received: by 2002:a05:6000:1ac8:b0:220:6af3:935d with SMTP id i8-20020a0560001ac800b002206af3935dmr15261728wry.549.1660082726323;
-        Tue, 09 Aug 2022 15:05:26 -0700 (PDT)
-Received: from localhost.localdomain (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.gmail.com with ESMTPSA id m21-20020a05600c3b1500b003a317ee3036sm293583wms.2.2022.08.09.15.05.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Aug 2022 15:05:25 -0700 (PDT)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     rui.zhang@intel.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, Amit Kucheria <amitk@kernel.org>,
-        linux-omap@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER)
-Subject: [PATCH v2 22/26] thermal/drivers/ti: Remove unused macros ti_thermal_get_trip_value() / ti_thermal_trip_is_valid()
-Date:   Wed, 10 Aug 2022 00:04:32 +0200
-Message-Id: <20220809220436.711020-23-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220809220436.711020-1-daniel.lezcano@linaro.org>
-References: <20220809220436.711020-1-daniel.lezcano@linaro.org>
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=07Z/lQ2RANCWgHRD9HZwXPG712NLFRka/FFyOlpycvNuKS3GOjC5iGWJ2ThNm/IOxZ
+         A7RHJKFMSzB0dRft3a0/5GJab3Q3PAyQ33Ti0uRI5IjUzom96m31PBjMhY3Ov+LxVKTe
+         hpLkqrQCx2ytJDr4hjAC21euHcAvy1gYSWWhirB/7yY88c4caO8d++7TG9FxwiGxVhAY
+         xFj1Zkx+Kx7CxE4LZs7e5q+L1sgleEeHDW4xanPpPnKqzeHv0mnAuZZyyte1oKeY41UQ
+         mfcrQixdVl1z7ROjIHiNjeWiDBUumsRBy2c55d5BsdAtg5yctaAsHBS2y63PpkenXzqf
+         eu2A==
+X-Gm-Message-State: ACgBeo2o/iCN97W+czxy8JzIss9VWQPYZlUQcxr8sfzy65q8AKFJW3O4
+        dTlHYlFu7ATkwcek8NeNtCmHIrx6aoe4eKC8v1GIJjZaOtzecQ==
+X-Google-Smtp-Source: AA6agR7pJ6r7fhR2kV9XLe+oV3h+/ej1weqLnpTQS1YP5ule1vsDwGSNCnOW6LlEIY2xTapZFY+hu5KXPqSjTYpoaJM=
+X-Received: by 2002:a63:4642:0:b0:41b:d353:c5c7 with SMTP id
+ v2-20020a634642000000b0041bd353c5c7mr20359415pgk.568.1660083303718; Tue, 09
+ Aug 2022 15:15:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Received: by 2002:a05:6a10:e8a6:b0:2d4:fb1c:cc5e with HTTP; Tue, 9 Aug 2022
+ 15:15:03 -0700 (PDT)
+Reply-To: wijh555@gmail.com
+From:   "Dr. Ali Moses" <alimoses07@gmail.com>
+Date:   Tue, 9 Aug 2022 15:15:03 -0700
+Message-ID: <CADWzZe65tcOX2+bMZfMLLauGpHEQ9Cdv814nLU=uQvKzDFrEVg@mail.gmail.com>
+Subject: Good Day,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:52b listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [alimoses07[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [wijh555[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [alimoses07[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The macros:
-
-ti_thermal_get_trip_value()
- ti_thermal_trip_is_valid()
-
-are unused. Remove them.
-
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/thermal/ti-soc-thermal/ti-thermal.h | 15 ---------------
- 1 file changed, 15 deletions(-)
-
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal.h b/drivers/thermal/ti-soc-thermal/ti-thermal.h
-index c388ecf31834..4fd2c20182d7 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal.h
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal.h
-@@ -38,21 +38,6 @@
- /* Update rates */
- #define FAST_TEMP_MONITORING_RATE				250
- 
--/* helper macros */
--/**
-- * ti_thermal_get_trip_value - returns trip temperature based on index
-- * @i:	trip index
-- */
--#define ti_thermal_get_trip_value(i)					\
--	(OMAP_TRIP_HOT + ((i) * OMAP_TRIP_STEP))
--
--/**
-- * ti_thermal_is_valid_trip - check for trip index
-- * @i:	trip index
-- */
--#define ti_thermal_is_valid_trip(trip)				\
--	((trip) >= 0 && (trip) < OMAP_TRIP_NUMBER)
--
- #ifdef CONFIG_TI_THERMAL
- int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id, char *domain);
- int ti_thermal_remove_sensor(struct ti_bandgap *bgp, int id);
 -- 
-2.34.1
+Hello,
+We the Board Directors believe you are in good health, doing great and
+with the hope that this mail will meet you in good condition, We are
+privileged and delighted to reach you via email" And we are urgently
+waiting to hear from you. and again your number is not connecting.
 
+My regards,
+Dr. Ali Moses..
+
+Sincerely,
+Prof. Chin Guang
