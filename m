@@ -2,77 +2,152 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD5A58FCEB
-	for <lists+linux-omap@lfdr.de>; Thu, 11 Aug 2022 14:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D7F8590B44
+	for <lists+linux-omap@lfdr.de>; Fri, 12 Aug 2022 06:35:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235499AbiHKM5X (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 11 Aug 2022 08:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43210 "EHLO
+        id S229594AbiHLEf2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 12 Aug 2022 00:35:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234179AbiHKM5W (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 11 Aug 2022 08:57:22 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CB952454;
-        Thu, 11 Aug 2022 05:57:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=Y337MJSA/Q1fxg27bDPNlL67w+5ryxHouJMKKVdLkVs=; b=g0XMfQXUAoVD39WhOESUNwXRFc
-        PgE9IfThQimRu1Yp7PFuvINko+VOiozYvpMIrQX9S8OIBVgdKYrAzYwDBBQsYMAMzji8swNUo/X2d
-        tbDoK+8/sxFnn7cDI/syPDoKNvb9mPYE/LgrpSg6BM//Jk4TAdMjOTjoFWJbQWHX+1qU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1oM7kI-00D1sL-C1; Thu, 11 Aug 2022 14:57:06 +0200
-Date:   Thu, 11 Aug 2022 14:57:06 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Ravi Gunasekaran <r-gunasekaran@ti.com>
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, kishon@ti.com,
-        vigneshr@ti.com
-Subject: Re: [PATCH v2 net-next] net: ethernet: ti: davinci_mdio: Add
- workaround for errata i2329
-Message-ID: <YvT8ovgHz2j7yOQP@lunn.ch>
-References: <20220810111345.31200-1-r-gunasekaran@ti.com>
- <YvRNpAdG7/edUEc+@lunn.ch>
- <9d17ab9f-1679-4af1-f85c-a538cb330d7b@ti.com>
+        with ESMTP id S236387AbiHLEf1 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 12 Aug 2022 00:35:27 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 028F05925A
+        for <linux-omap@vger.kernel.org>; Thu, 11 Aug 2022 21:35:25 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-324ec5a9e97so191730407b3.7
+        for <linux-omap@vger.kernel.org>; Thu, 11 Aug 2022 21:35:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc;
+        bh=m/u0OQNcK6WLQ8YRwiHl6NaU06ssTUJCYuMG15+ZS1k=;
+        b=w3omfvsy9ZZIm8gFmEWlECrda6oZMt1vsZZQNNa7vA6YNhBRRfenX1dnMcRD7XxU8k
+         5/I12jbJ+Kmw6PvZ2i9e4weOcxpl30w4qfWoe2AIiQAH4tqvzERwmWH93byasedP1NRH
+         K0sgJRHdGRYPXyop74jnRos7N4WoFkuq+Yn9w2YjTdSzY3b5n04Q3cczBpwTGKERCrhr
+         yfV2UPPyrywDcNGH7gtc9xI7cr43PftaQY8V/6M/Xh9Ab52KofQD03q3muGqrcQEnCvo
+         pubG/ynkx4TMvQMHGiHyG5OvWKgbRVLGFshW5KhzePVEeCZ2EnA/dzvk29dRPwilyWzM
+         KABw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
+        bh=m/u0OQNcK6WLQ8YRwiHl6NaU06ssTUJCYuMG15+ZS1k=;
+        b=aS9451nS/9ZfPCgL5nxOOdMxlPsFsPj9zmUq1wgjYCy/bz1Gho76DB1HB7y8YgKopW
+         D5xsXMXKoHbZWB/gKD42cJ94PAYSlPJ3w81MHyJNF5Y6EbPJbqfMWlf9Ft8iVZg/gUvQ
+         gmxjXAEM6VdlaIUr+6PjXoBkcgwgeCTz0b6K4xGWyfK7/XiuTLR6XqGvz08O8pFBvZMl
+         rbQahDIenmNAhj02nlnnjn/QWt7e8780tGpn1d7Y1PU0Efq02z//mcyvMDcSEVbtsujd
+         pd+xLcNF3L7LivsBn2vQZTtKnBmt0p2UMMDInTSAJsrV3UrtemLN6f39IJ5AKV1SwH0g
+         NbxQ==
+X-Gm-Message-State: ACgBeo3KW1gwuWk6lydpeEZPG/YGozKq6fKlWQWQ1GgHNGdWOts7U06Y
+        6FlPU4ok3TYbVn32+d4+H7D0AgAkOUGFxHZvIslqQQ==
+X-Google-Smtp-Source: AA6agR5Pdd3iB2032+2rT25Yjp4RON2rJ1jN2byswnxfUC4cUX18fpGQ7WkZ/GY+xY3EQg3B/kDr1Cb0O6OMdTP0Y30=
+X-Received: by 2002:a81:1ec4:0:b0:31d:e31f:1b6e with SMTP id
+ e187-20020a811ec4000000b0031de31f1b6emr2294072ywe.11.1660278924132; Thu, 11
+ Aug 2022 21:35:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9d17ab9f-1679-4af1-f85c-a538cb330d7b@ti.com>
+References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+ <1642587791-13222-4-git-send-email-ivo.g.dimitrov.75@gmail.com>
+ <5b6d3e7f-c638-fdc7-5080-44d34abed610@ideasonboard.com> <a3ed3a2c-86ce-1c85-e8aa-c08b54ad1a43@gmail.com>
+In-Reply-To: <a3ed3a2c-86ce-1c85-e8aa-c08b54ad1a43@gmail.com>
+From:   Yongqin Liu <yongqin.liu@linaro.org>
+Date:   Fri, 12 Aug 2022 12:35:12 +0800
+Message-ID: <CAMSo37XdZSZUHLWJj373DdtOBA9=uD8SJ7ywWCYF2pU1i4cB_g@mail.gmail.com>
+Subject: Re: [PATCH 3/3] drm: omapdrm: Do no allocate non-scanout GEMs through DMM/TILER
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, tomba@kernel.org,
+        airlied@linux.ie, daniel@ffwll.ch, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        merlijn@wizzup.org, tony@atomide.com,
+        "Bajjuri, Praneeth" <praneeth@ti.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-> Devices may or may not be configured for runtime autosuspend, and perhaps
-> may not even use runtime PM. pm_runtime_enabled() and the autosuspend
-> configuration could be addressed by checking against
-> dev->power.use_autosuspend flag. But if the runtime PM functions are added
-> to the bit banging core, would it not restrict the usage of
-> pm_runtime_put_*() variants for others?
+Hi, Ivaylo, Tomi
 
-My assumption is, any calls to pm_runtime_* functions will effectively
-do nothing if the driver does not have support for it. I could be
-wrong about this, and it jumps through a NULL pointer and explodes,
-but that would be a bad design.
+We have one X15 Android AOSP master build, it could not have the home
+screen displayed
+on the hdmi monitor connected with this change, with the following
+message printed on the serial console
+    [  607.404205] omapdrm omapdrm.0: Failed to setup plane plane-0
+    [  607.410522] omapdrm omapdrm.0: Failed to setup plane plane-1
+    [  607.416381] omapdrm omapdrm.0: Failed to setup plane plane-2
+    [  607.422088] omapdrm omapdrm.0: Failed to setup plane plane-3
 
-> There is atleast one device sh_eth, which is not configured for autosuspend
-> but uses the bit bang core in sh_mdiobb_read() and invokes regular runtime
-> PM functions.
+   # for details, please check the link here: http://ix.io/47m1
 
-And that is the point of moving it into the core. It would of just
-worked for you.
+It will work with home screen displayed on the hdmi monitor if this
+change is reverted.
 
-If you don't feel comfortable with making this unconditional, please
-put runtime pm enabled version of mdiobb_read/mdiobb_write() in the
-core and swap sh_eth and any other drivers to using them.
+Is this the broken problem you talked about here?
 
-       Andrew
+And could you please give some suggestions on how to have the x15
+Android build work with this change?
+
+Thanks,
+Yongqin Liu
+On Thu, 17 Feb 2022 at 23:29, Ivaylo Dimitrov
+<ivo.g.dimitrov.75@gmail.com> wrote:
+>
+>
+>
+> On 17.02.22 =D0=B3. 14:46 =D1=87., Tomi Valkeinen wrote:
+> > Hi,
+> >
+> > On 19/01/2022 12:23, Ivaylo Dimitrov wrote:
+> >> On devices with DMM, all allocations are done through either DMM or
+> >> TILER.
+> >> DMM/TILER being a limited resource means that such allocations will st=
+art
+> >> to fail before actual free memory is exhausted. What is even worse is
+> >> that
+> >> with time DMM/TILER space gets fragmented to the point that even if we
+> >> have
+> >> enough free DMM/TILER space and free memory, allocation fails because
+> >> there
+> >> is no big enough free block in DMM/TILER space.
+> >>
+> >> Such failures can be easily observed with OMAP xorg DDX, for example -
+> >> starting few GUI applications (so buffers for their windows are
+> >> allocated)
+> >> and then rotating landscape<->portrait while closing and opening new
+> >> windows soon results in allocation failures.
+> >>
+> >> Fix that by mapping buffers through DMM/TILER only when really needed,
+> >> like, for scanout buffers.
+> >
+> > Doesn't this break users that get a buffer from omapdrm and expect it t=
+o
+> > be contiguous?
+> >
+>
+> If you mean dumb buffer, then no, this does not break users as dumb
+> buffers are allocated as scanout:
+>
+> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/omapdrm/om=
+ap_gem.c#L603
+>
+> If you mean omap_bo allocated buffers, then if users want
+> linear(scanout) buffer, then they request it explicitly by passing
+> OMAP_BO_SCANOUT.
+>
+> Ivo
+
+
+
+--=20
+Best Regards,
+Yongqin Liu
+---------------------------------------------------------------
+#mailing list
+linaro-android@lists.linaro.org
+http://lists.linaro.org/mailman/listinfo/linaro-android
