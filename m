@@ -2,49 +2,49 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67359592093
-	for <lists+linux-omap@lfdr.de>; Sun, 14 Aug 2022 17:29:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE9EA59215F
+	for <lists+linux-omap@lfdr.de>; Sun, 14 Aug 2022 17:36:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240293AbiHNP26 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 14 Aug 2022 11:28:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38846 "EHLO
+        id S240831AbiHNPgs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 14 Aug 2022 11:36:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239893AbiHNP2h (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 14 Aug 2022 11:28:37 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F6B8AE51;
-        Sun, 14 Aug 2022 08:28:34 -0700 (PDT)
+        with ESMTP id S240841AbiHNPfn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 14 Aug 2022 11:35:43 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B42B91D0D4;
+        Sun, 14 Aug 2022 08:31:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1D461B80B56;
-        Sun, 14 Aug 2022 15:28:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F787C433D6;
-        Sun, 14 Aug 2022 15:28:30 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 28C10B80B7E;
+        Sun, 14 Aug 2022 15:31:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EDBBC433C1;
+        Sun, 14 Aug 2022 15:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660490911;
-        bh=oOazxn9uOIeeULy3xFLCdFRAGjrwMz6aIQQcYwFNT4I=;
+        s=k20201202; t=1660491063;
+        bh=iH0xs1aznksIjZ+3Vqg855Ho1Rtx6UHUTvn7YGNKpHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JJIBNEN8SwoczU64vFpo6bKC0z+HeZdweoFGqi8c/nbomjnxkyWgvYqhH/Os9ATTJ
-         OKnHuJJwoGA182aJeJ/wC0Xinq0QgdJ+i6KWvTyst/GQmTiwX5M70Ybh9gcQy033+m
-         xZQ/uBprUqtskts5Agi4+5TldXbBCQYx8lnsNkJ3DFYCS0nXmSojsePTelXp3jrLg7
-         aS9rFUXu0Qsk0FU3YnRYXxqgscHRWKIbgxBTzsy+PBsdqP+aJrz5XnBcA20RiLkBgd
-         SXR3IE85g9QNt2YeoFHsaPD4mfLE9r5239XM1M4fRNpHWiH3YIX59oHhwZ6Di7j4Zk
-         lujc6TC8GQfnA==
+        b=im6N+S48egVvPXiQgQfUL7Eni4X2BJIkUoEjR60jZNTRh7j51MDaQ+NfAnZR39wlK
+         G+L3tCzWW8k6zV0Ri6pW6Y9Jy2WTawgNftZ444flhAuLm1vB+pI+uHFbFFhQVY79eG
+         pBnX8c6cEzttAvBy+UOTJEWMJLRptPEzOCEP0pGaP1eMpGtD/U2g4HWT5rljGqV3JF
+         7lHhqzL4sYviNBiRGn7usSqW+pWFm4tWbqFgr2mEJG2Bmz7WSY9Z42lWBIXGw7oR+6
+         GIG54dSqpm2NE+ePU7gWTqCXZVAy9LCVCON1HxS8KF8vpTNFkXwGh6rh4+6nF8Wl8Y
+         OlEuEShDkk7sg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
         Stephen Boyd <sboyd@kernel.org>,
         Tero Kristo <kristo@kernel.org>,
         Sasha Levin <sashal@kernel.org>, mturquette@baylibre.com,
-        robh@kernel.org, jakobkoschel@gmail.com, Julia.Lawall@inria.fr,
+        robh@kernel.org, Julia.Lawall@inria.fr, jakobkoschel@gmail.com,
         linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.19 17/64] clk: ti: Stop using legacy clkctrl names for omap4 and 5
-Date:   Sun, 14 Aug 2022 11:23:50 -0400
-Message-Id: <20220814152437.2374207-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.18 14/56] clk: ti: Stop using legacy clkctrl names for omap4 and 5
+Date:   Sun, 14 Aug 2022 11:29:44 -0400
+Message-Id: <20220814153026.2377377-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220814152437.2374207-1-sashal@kernel.org>
-References: <20220814152437.2374207-1-sashal@kernel.org>
+In-Reply-To: <20220814153026.2377377-1-sashal@kernel.org>
+References: <20220814153026.2377377-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -719,10 +719,10 @@ index 90e0a9ea6351..b4aff76eb373 100644
  };
  
 diff --git a/drivers/clk/ti/clkctrl.c b/drivers/clk/ti/clkctrl.c
-index 617360e20d86..e23bf0458632 100644
+index 064066e9e85b..bc9cd7ed7d57 100644
 --- a/drivers/clk/ti/clkctrl.c
 +++ b/drivers/clk/ti/clkctrl.c
-@@ -528,10 +528,6 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
+@@ -529,10 +529,6 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
  	char *c;
  	u16 soc_mask = 0;
  
