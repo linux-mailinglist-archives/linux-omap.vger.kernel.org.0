@@ -2,37 +2,39 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB5C3592F4C
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Aug 2022 15:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D461592F82
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Aug 2022 15:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231962AbiHONDm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 Aug 2022 09:03:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42810 "EHLO
+        id S242722AbiHONNZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Aug 2022 09:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229895AbiHONDl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Aug 2022 09:03:41 -0400
+        with ESMTP id S232465AbiHONNX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Aug 2022 09:13:23 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0D8A71182B;
-        Mon, 15 Aug 2022 06:03:40 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 60EAA80FB;
-        Mon, 15 Aug 2022 12:56:48 +0000 (UTC)
-Date:   Mon, 15 Aug 2022 16:03:37 +0300
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EC42713E30;
+        Mon, 15 Aug 2022 06:13:19 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 89A8C80FB;
+        Mon, 15 Aug 2022 13:06:26 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Ladislav Michl <ladis@linux-mips.org>,
+        Nishanth Menon <nm@ti.com>, Suman Anna <s-anna@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] clocksource/drivers/timer-ti-dm: Fix compile test warning
-Message-ID: <YvpEKWftsukBchlO@atomide.com>
-References: <20220815120334.51887-1-tony@atomide.com>
- <CAK8P3a120ekWQzOLLfDF5jVHJ6XKpz5fKRrh8R-yk6S9PmoeTA@mail.gmail.com>
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/9] Clean-up timer-ti-dm a bit
+Date:   Mon, 15 Aug 2022 16:12:41 +0300
+Message-Id: <20220815131250.34603-1-tony@atomide.com>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a120ekWQzOLLfDF5jVHJ6XKpz5fKRrh8R-yk6S9PmoeTA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -42,39 +44,42 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Arnd Bergmann <arnd@arndb.de> [220815 12:48]:
-> On Mon, Aug 15, 2022 at 2:03 PM Tony Lindgren <tony@atomide.com> wrote:
-> >
-> > We can get a warning with COMPILE_TEST enabled for omap_timer_match
-> > for 'omap_timer_match' defined but not used.
-> >
-> > Fixes: ab0bbef3ae0f ("clocksource/drivers/timer-ti-dm: Make timer selectable for ARCH_K3")
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: Tony Lindgren <tony@atomide.com>
-> > ---
-> >  drivers/clocksource/timer-ti-dm.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-> > --- a/drivers/clocksource/timer-ti-dm.c
-> > +++ b/drivers/clocksource/timer-ti-dm.c
-> > @@ -1040,7 +1040,7 @@ static const struct dmtimer_platform_data am6_pdata = {
-> >         .timer_ops = &dmtimer_ops,
-> >  };
-> >
-> > -static const struct of_device_id omap_timer_match[] = {
-> > +static const __maybe_unused struct of_device_id omap_timer_match[] = {
-> >         {
-> >                 .compatible = "ti,omap2420-timer",
-> >         },
-> 
-> I think a better way to address this is to remove the of_match_ptr()
-> usage from the driver. The only reason to use of_match_ptr() is to save
-> a few bytes on machines that don't have CONFIG_OF enabled, but this
-> driver is not used on such machines any more.
+Hi all,
 
-OK makes sense, will send v2 patch.
+This series of changes cleans up timer-ti-dm a bit. After this series we
+can start replacing the custom PWM related functions with standard
+Linux frameworks and use things like clk_set_duty_cycle().
 
-Thanks,
+I have only tested this on K3 and omap2+ devices, I don't have any
+omap1 devices online right now. Aaro & Janusz, if you could give this
+series a quick boot test for omap1 that would be great.
+
+The patches are against v6.0-rc1.
+
+Regards,
 
 Tony
+
+
+Tony Lindgren (9):
+  clocksource/drivers/timer-ti-dm: Drop unused functions
+  clocksource/drivers/timer-ti-dm: Simplify register reads with
+    dmtimer_read()
+  clocksource/drivers/timer-ti-dm: Simplify register writes with
+    dmtimer_write()
+  clocksource/drivers/timer-ti-dm: Simplify register access further
+  clocksource/drivers/timer-ti-dm: Move private defines to the driver
+  clocksource/drivers/timer-ti-dm: Use runtime PM directly and check
+    errors
+  clocksource/drivers/timer-ti-dm: Move struct omap_dm_timer fields to
+    driver
+  clocksource/drivers/timer-ti-dm: Add flag to detect omap1
+  clocksource/drivers/timer-ti-dm: Get clock in probe with
+    devm_clk_get()
+
+ drivers/clocksource/timer-ti-dm.c | 681 +++++++++++++++++++-----------
+ include/clocksource/timer-ti-dm.h | 112 -----
+ 2 files changed, 429 insertions(+), 364 deletions(-)
+
+-- 
+2.37.1
