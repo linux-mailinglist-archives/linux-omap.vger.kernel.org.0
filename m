@@ -2,39 +2,32 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18536592F91
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Aug 2022 15:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E56F6592F9D
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Aug 2022 15:16:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242845AbiHONOO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 15 Aug 2022 09:14:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53510 "EHLO
+        id S232476AbiHONQv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 15 Aug 2022 09:16:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242826AbiHONOM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Aug 2022 09:14:12 -0400
+        with ESMTP id S229490AbiHONQu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 15 Aug 2022 09:16:50 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DFFF61CB16;
-        Mon, 15 Aug 2022 06:13:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 98BEA6301;
+        Mon, 15 Aug 2022 06:16:49 -0700 (PDT)
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 84FA78225;
-        Mon, 15 Aug 2022 13:06:50 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 2CD7E80FB;
+        Mon, 15 Aug 2022 13:09:57 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>
-Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Nishanth Menon <nm@ti.com>, Suman Anna <s-anna@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 9/9] clocksource/drivers/timer-ti-dm: Get clock in probe with devm_clk_get()
-Date:   Mon, 15 Aug 2022 16:12:50 +0300
-Message-Id: <20220815131250.34603-10-tony@atomide.com>
+Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        kernel test robot <lkp@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH v2 1/1] clocksource/drivers/timer-ti-dm: Fix compile test warning
+Date:   Mon, 15 Aug 2022 16:16:41 +0300
+Message-Id: <20220815131642.35116-1-tony@atomide.com>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220815131250.34603-1-tony@atomide.com>
-References: <20220815131250.34603-1-tony@atomide.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
@@ -46,69 +39,35 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can simplify the code a bit by getting the clock in probe, and using
-devm_clk_get(). This will also make further changes easier as the clock
-is available in probe instead of prepare.
+We can get a warning with COMPILE_TEST enabled for omap_timer_match
+for 'omap_timer_match' defined but not used.
 
+Fixes: ab0bbef3ae0f ("clocksource/drivers/timer-ti-dm: Make timer selectable for ARCH_K3")
+Reported-by: kernel test robot <lkp@intel.com>
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Tony Lindgren <tony@atomide.com>
+
 ---
- drivers/clocksource/timer-ti-dm.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+
+Changes since v1:
+
+- Remove of_match_ptr() instead of adding __maybe_unused as suggested by Arnd
+
+---
+ drivers/clocksource/timer-ti-dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
 --- a/drivers/clocksource/timer-ti-dm.c
 +++ b/drivers/clocksource/timer-ti-dm.c
-@@ -473,18 +473,6 @@ static int omap_dm_timer_prepare(struct dmtimer *timer)
- 	struct device *dev = &timer->pdev->dev;
- 	int rc;
- 
--	/*
--	 * FIXME: OMAP1 devices do not use the clock framework for dmtimers so
--	 * do not call clk_get() for these devices.
--	 */
--	if (!timer->omap1) {
--		timer->fclk = clk_get(&timer->pdev->dev, "fck");
--		if (WARN_ON_ONCE(IS_ERR(timer->fclk))) {
--			dev_err(&timer->pdev->dev, ": No fclk handle.\n");
--			return -EINVAL;
--		}
--	}
--
- 	rc = pm_runtime_resume_and_get(dev);
- 	if (rc)
- 		return rc;
-@@ -650,8 +638,6 @@ static int omap_dm_timer_free(struct omap_dm_timer *cookie)
- 	if (unlikely(!timer))
- 		return -EINVAL;
- 
--	clk_put(timer->fclk);
--
- 	WARN_ON(!timer->reserved);
- 	timer->reserved = 0;
- 	return 0;
-@@ -1098,7 +1084,6 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
- 	if (timer->irq < 0)
- 		return timer->irq;
- 
--	timer->fclk = ERR_PTR(-ENODEV);
- 	timer->io_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(timer->io_base))
- 		return PTR_ERR(timer->io_base);
-@@ -1122,6 +1107,15 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
- 
- 	timer->omap1 = timer->capability & OMAP_TIMER_NEEDS_RESET;
- 
-+	/* OMAP1 devices do not yet use the clock framework for dmtimers */
-+	if (!timer->omap1) {
-+		timer->fclk = devm_clk_get(dev, "fck");
-+		if (IS_ERR(timer->fclk))
-+			return PTR_ERR(timer->fclk);
-+	} else {
-+		timer->fclk = ERR_PTR(-ENODEV);
-+	}
-+
- 	if (!(timer->capability & OMAP_TIMER_ALWON)) {
- 		timer->nb.notifier_call = omap_timer_context_notifier;
- 		cpu_pm_register_notifier(&timer->nb);
+@@ -1081,7 +1081,7 @@ static struct platform_driver omap_dm_timer_driver = {
+ 	.remove = omap_dm_timer_remove,
+ 	.driver = {
+ 		.name   = "omap_timer",
+-		.of_match_table = of_match_ptr(omap_timer_match),
++		.of_match_table = omap_timer_match,
+ 		.pm = &omap_dm_timer_pm_ops,
+ 	},
+ };
 -- 
 2.37.1
