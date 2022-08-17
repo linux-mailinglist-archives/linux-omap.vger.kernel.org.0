@@ -2,298 +2,463 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1812559684C
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Aug 2022 06:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84730596C40
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Aug 2022 11:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232280AbiHQEws (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 17 Aug 2022 00:52:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42184 "EHLO
+        id S232435AbiHQJpv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 17 Aug 2022 05:45:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232202AbiHQEwq (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Aug 2022 00:52:46 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7297F7963F
-        for <linux-omap@vger.kernel.org>; Tue, 16 Aug 2022 21:52:44 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-32a17d3bba2so203021507b3.9
-        for <linux-omap@vger.kernel.org>; Tue, 16 Aug 2022 21:52:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc;
-        bh=P+P7U2dHcH7HvKdIM34nR5zTB1057uLXCO9nJeUpApE=;
-        b=mInliz2MDp3Y2l0zLTVTwFKtILUmFyBlHw3FlaOd6SS7mQ5Eb2y2m04Jw/NqPlQreV
-         g5xXktTWhDRD4/VNBp1yizy48nHp/Vok2EuGpI/ddA62h3Sb122HX6Qtf+OP5y1gq3/O
-         vo+k/SGsKTuT43xLS5sIT3ECxsBSl1tuT57awW6MoNe2A/poRkUozM+mw4UMv/9UZ3Gh
-         JZNp77vAcNzp/IknxliP1A0kf1ShqGpCBiVQUrZLstDWp+N/6KuDVKEEtCSzFChEDE76
-         3ayfxifKTcpccrmxNEZvLX52svkIq5YJ9p7sSTjS8H1T4HpoCbd9+jiNVMC7/10ObMPI
-         AzQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
-        bh=P+P7U2dHcH7HvKdIM34nR5zTB1057uLXCO9nJeUpApE=;
-        b=pPmOb+9aguvBEcCOFeAU1XZfgv+m0MJ8qNbIWMPSfsGHotcNexBneM1UbpHp1FPOGk
-         szgwaj7+9QZvEM0CUSouDcaQFifEb3h4SwGVDKvZUyy/+xycXzL4arr2QxZanMko+Vd+
-         PiE6uhmnnRNDxS62dTsW9NyqNv0st3Tyq6fwR1XUaryqcAPt56aChP9pISuP8LKItbIN
-         YVEq3gnoxvzsLhHbJMfEm/8CW78rmkbmCADgyu+At8I06eBlUGcbk43IILrcr/bpDVwa
-         WToSKIuswO+GaG+D/Wr737mhNJKsEJ9kXFdwkkB3z55TfzNn0onuTZhgZBcqksDJX0eE
-         I2hg==
-X-Gm-Message-State: ACgBeo2sMb8mTCtidTRXZCUmcCho7r33uEBFujqR/fhAnq/UdlTeG7gb
-        n1mwD4YsFeDBnlM9IQEVjFZ19pXlLaZDw9gPsE++2r67AeggjA==
-X-Google-Smtp-Source: AA6agR4n9oAPiASwsUuBj7VCDanSfJyRQbFukds9m7aRqQZqh5v6CSqLW42Mr30/VlqZmXCPVbQX4WEOqI6qpJpB2kE=
-X-Received: by 2002:a25:2b01:0:b0:68a:6dff:4a87 with SMTP id
- r1-20020a252b01000000b0068a6dff4a87mr7229961ybr.364.1660711963618; Tue, 16
- Aug 2022 21:52:43 -0700 (PDT)
+        with ESMTP id S230402AbiHQJpr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 17 Aug 2022 05:45:47 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B54A69F49;
+        Wed, 17 Aug 2022 02:45:46 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 27H9jLvq110379;
+        Wed, 17 Aug 2022 04:45:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1660729521;
+        bh=HGpq7tVVTWlwZ0ZMf6FNPsqizH4eSWDVet6S21Oyjbw=;
+        h=From:To:CC:Subject:Date;
+        b=jbfV0QrIvWjLpSTo6J2oEfMn5J5H8LyEpDzDEophyeljRkVyq9sabSL+VP9qDU5cA
+         ryXgnlfL4AW1Es/fRB/I8S3/ThEZPSMl+UsnWdkmDfRiGJO09EBw6JgVJ2A00cLe5n
+         l3c15xYQVe3Bbh3hrrmlkG4dAnJQukFUPT43ANus=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 27H9jLud012584
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 17 Aug 2022 04:45:21 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Wed, 17
+ Aug 2022 04:45:21 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
+ Frontend Transport; Wed, 17 Aug 2022 04:45:20 -0500
+Received: from uda0500640.dal.design.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 27H9jG4f027302;
+        Wed, 17 Aug 2022 04:45:17 -0500
+From:   Ravi Gunasekaran <r-gunasekaran@ti.com>
+To:     <andrew@lunn.ch>
+CC:     <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <linux-omap@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <kishon@ti.com>, <vigneshr@ti.com>, <lkp@intel.com>,
+        <r-gunasekaran@ti.com>
+Subject: [PATCH v3 net-next] net: ethernet: ti: davinci_mdio: Add workaround for errata i2329
+Date:   Wed, 17 Aug 2022 15:14:06 +0530
+Message-ID: <20220817094406.10658-1-r-gunasekaran@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <1642587791-13222-4-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <5b6d3e7f-c638-fdc7-5080-44d34abed610@ideasonboard.com> <a3ed3a2c-86ce-1c85-e8aa-c08b54ad1a43@gmail.com>
- <CAMSo37XdZSZUHLWJj373DdtOBA9=uD8SJ7ywWCYF2pU1i4cB_g@mail.gmail.com>
- <ed4fe238-4fcd-1253-658f-18fe1e1f13b0@gmail.com> <CAMSo37V3U5nYng77jzSnKH73CTLhGYQJu11Q5wRt289se5nFJw@mail.gmail.com>
- <4128aed0-211a-d12a-6a86-deb4457d39f7@gmail.com>
-In-Reply-To: <4128aed0-211a-d12a-6a86-deb4457d39f7@gmail.com>
-From:   Yongqin Liu <yongqin.liu@linaro.org>
-Date:   Wed, 17 Aug 2022 12:52:32 +0800
-Message-ID: <CAMSo37W-DePLDP=zk-nY6FGcZuk0QzHj4=usrieyV0TNcNfbXw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] drm: omapdrm: Do no allocate non-scanout GEMs through DMM/TILER
-To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, tomba@kernel.org,
-        airlied@linux.ie, daniel@ffwll.ch, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        merlijn@wizzup.org, tony@atomide.com,
-        "Bajjuri, Praneeth" <praneeth@ti.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi, Ivaylo
+On the CPSW and ICSS peripherals, there is a possibility that the MDIO
+interface returns corrupt data on MDIO reads or writes incorrect data
+on MDIO writes. There is also a possibility for the MDIO interface to
+become unavailable until the next peripheral reset.
 
-On Mon, 15 Aug 2022 at 14:23, Ivaylo Dimitrov
-<ivo.g.dimitrov.75@gmail.com> wrote:
->
-> Hi Liu,
->
-> On 14.08.22 =D0=B3. 17:27 =D1=87., Yongqin Liu wrote:
-> > Hi, IvayIo
-> >
-> > Thanks very much for the reply!
-> >
-> > On Sat, 13 Aug 2022 at 14:58, Ivaylo Dimitrov
-> > <ivo.g.dimitrov.75@gmail.com> wrote:
-> >>
-> >> Hi Liu,
-> >>
-> >> On 12.08.22 =D0=B3. 7:35 =D1=87., Yongqin Liu wrote:
-> >>> Hi, Ivaylo, Tomi
-> >>>
-> >>> We have one X15 Android AOSP master build, it could not have the home
-> >>> screen displayed
-> >>> on the hdmi monitor connected with this change, with the following
-> >>> message printed on the serial console
-> >>>       [  607.404205] omapdrm omapdrm.0: Failed to setup plane plane-0
-> >>>       [  607.410522] omapdrm omapdrm.0: Failed to setup plane plane-1
-> >>>       [  607.416381] omapdrm omapdrm.0: Failed to setup plane plane-2
-> >>>       [  607.422088] omapdrm omapdrm.0: Failed to setup plane plane-3
-> >>>
-> >>>      # for details, please check the link here: http://ix.io/47m1
-> >>>
-> >>> It will work with home screen displayed on the hdmi monitor if this
-> >>> change is reverted.
-> >>>
-> >>> Is this the broken problem you talked about here?
-> >>>
-> >>> And could you please give some suggestions on how to have the x15
-> >>> Android build work with this change?
-> >>>
-> >>
-> >> Make sure scanout (i.e. those to be displayed) buffers are actually
-> >> allocated as such - OMAP_BO_SCANOUT flag must be set when calling
-> >> omap_bo_new().
-> >
-> > I am not familiar with this area, I am sorry if I asked quite silly que=
-stions:(
-> > I googled omap_bo_new, and found it's a function of libdrm here[1], is
-> > it what you meant here?
-> >
->
-> Yes, calling this function from userspace ends in kernel code the
-> $subject patch is part of.
->
-> > If it's the omap_bo_new that we should pass OMAP_BO_SCANOUT when it is =
-called,
-> > then is it the correct way to update omap_bo_new to add the OMAP_BO_SCA=
-NOUT flag
-> > before it calls omap_bo_new_impl?
-> >
->
-> omap_bo_new() is fine and does not need any updates/fixes, it is the
-> code that uses it (whoever it is, I am not familiar with the userspace
-> you are using) that shall pass correct flags (third parameter) when
-> calling it.
+The workaround is to configure the MDIO in manual mode and disable the
+MDIO state machine and emulate the MDIO protocol by reading and writing
+appropriate fields in MDIO_MANUAL_IF_REG register of the MDIO controller
+to manipulate the MDIO clock and data pins.
 
-Sorry, I do not get the point here.
-Like you said, the code that calls omap_bo_new needs to pass OMAP_BO_SCANOU=
-T,
-then IMO omap_bo_new should be the best place to add the OMAP_BO_SCANOUT fl=
-ag,
-(like via flags =3D flags | OMAP_BO_SCANOUT), that could help avoid
-missing the flag by some code,
-and also avoids hacks/changes on the possible blob binaries.
+More details about the errata i2329 and the workaround is available in:
+https://www.ti.com/lit/er/sprz487a/sprz487a.pdf
 
-Do I misunderstand somewhere?
-Or is there some case that OMAP_BO_SCANOUT shouldn't be passed when
-omap_bo_new is called?
+Add implementation to disable MDIO state machine, configure MDIO in manual
+mode and achieve MDIO read and writes via MDIO Bitbanging
 
-> BTW you shall really find who and how uses OMAP BO API, in theory it
-> might use ioctls directly and not call omap_bo_xxx functions.
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Reported-by: kernel test robot <lkp@intel.com>
+---
+Changelog:
 
-Do you mean the DRM_OMAP_GEM_NEW ioctl api?
-There is no place in the AOSP tree to call that except the
-omap_bo_new_impl function,
-which is called by the omap_bo_new and omap_bo_new_tiled functions.
-The omap_bo_new should not be called with the OMAP_BO_TILED flag,
-while the omap_bo_new_tiled should be called with the OMAP_BO_TILED flag
+v2 -> v3:
+1. Remove PHY ID and register validation check
+2. Fix the compile error reported by kernel test robot
 
-Regarding to the omap_bo_new function, there are 2 places call it in
-the AOSP tree:
-#1 ./external/libkmsxx/kms++/src/omap/omapframebuffer.cpp
-#2 ./device/ti/beagle_x15/gpu/gralloc.am57x.so
+v1 -> v2:
+1. Use the existing MDIO bitbang framework
 
-#1 seems not used in AOSP yet, and #2 is one blob binary we do not
-have the source for.
+v1: https://lore.kernel.org/netdev/20220808111229.11951-1-r-gunasekaran@ti.com/
+v2: https://lore.kernel.org/netdev/20220810111345.31200-1-r-gunasekaran@ti.com/
 
-> strace
-> would be your friend there. or gdb, or whatever tools are used on
-> android. Or put some printfs() in omap_bo_new() that output the PID of
-> the calling process, etc.
+ drivers/net/ethernet/ti/davinci_mdio.c | 242 +++++++++++++++++++++++--
+ 1 file changed, 231 insertions(+), 11 deletions(-)
 
-Thanks a lot for these great suggestions! Will use them when possible.
+diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
+index ea3772618043..946b9753ccfb 100644
+--- a/drivers/net/ethernet/ti/davinci_mdio.c
++++ b/drivers/net/ethernet/ti/davinci_mdio.c
+@@ -26,6 +26,8 @@
+ #include <linux/of_device.h>
+ #include <linux/of_mdio.h>
+ #include <linux/pinctrl/consumer.h>
++#include <linux/mdio-bitbang.h>
++#include <linux/sys_soc.h>
+ 
+ /*
+  * This timeout definition is a worst-case ultra defensive measure against
+@@ -41,6 +43,7 @@
+ 
+ struct davinci_mdio_of_param {
+ 	int autosuspend_delay_ms;
++	bool manual_mode;
+ };
+ 
+ struct davinci_mdio_regs {
+@@ -49,6 +52,15 @@ struct davinci_mdio_regs {
+ #define CONTROL_IDLE		BIT(31)
+ #define CONTROL_ENABLE		BIT(30)
+ #define CONTROL_MAX_DIV		(0xffff)
++#define CONTROL_CLKDIV		GENMASK(15, 0)
++
++#define MDIO_MAN_MDCLK_O	BIT(2)
++#define MDIO_MAN_OE		BIT(1)
++#define MDIO_MAN_PIN		BIT(0)
++#define MDIO_MANUALMODE		BIT(31)
++
++#define MDIO_PIN               0
++
+ 
+ 	u32	alive;
+ 	u32	link;
+@@ -59,7 +71,9 @@ struct davinci_mdio_regs {
+ 	u32	userintmasked;
+ 	u32	userintmaskset;
+ 	u32	userintmaskclr;
+-	u32	__reserved_1[20];
++	u32	manualif;
++	u32	poll;
++	u32	__reserved_1[18];
+ 
+ 	struct {
+ 		u32	access;
+@@ -79,6 +93,7 @@ static const struct mdio_platform_data default_pdata = {
+ 
+ struct davinci_mdio_data {
+ 	struct mdio_platform_data pdata;
++	struct mdiobb_ctrl bb_ctrl;
+ 	struct davinci_mdio_regs __iomem *regs;
+ 	struct clk	*clk;
+ 	struct device	*dev;
+@@ -90,6 +105,7 @@ struct davinci_mdio_data {
+ 	 */
+ 	bool		skip_scan;
+ 	u32		clk_div;
++	bool		manual_mode;
+ };
+ 
+ static void davinci_mdio_init_clk(struct davinci_mdio_data *data)
+@@ -128,9 +144,122 @@ static void davinci_mdio_enable(struct davinci_mdio_data *data)
+ 	writel(data->clk_div | CONTROL_ENABLE, &data->regs->control);
+ }
+ 
+-static int davinci_mdio_reset(struct mii_bus *bus)
++static void davinci_mdio_disable(struct davinci_mdio_data *data)
++{
++	u32 reg;
++
++	/* Disable MDIO state machine */
++	reg = readl(&data->regs->control);
++
++	reg &= ~CONTROL_CLKDIV;
++	reg |= data->clk_div;
++
++	reg &= ~CONTROL_ENABLE;
++	writel(reg, &data->regs->control);
++}
++
++static void davinci_mdio_enable_manual_mode(struct davinci_mdio_data *data)
++{
++	u32 reg;
++	/* set manual mode */
++	reg = readl(&data->regs->poll);
++	reg |= MDIO_MANUALMODE;
++	writel(reg, &data->regs->poll);
++}
++
++static void davinci_set_mdc(struct mdiobb_ctrl *ctrl, int level)
++{
++	struct davinci_mdio_data *data;
++	u32 reg;
++
++	data = container_of(ctrl, struct davinci_mdio_data, bb_ctrl);
++	reg = readl(&data->regs->manualif);
++
++	if (level)
++		reg |= MDIO_MAN_MDCLK_O;
++	else
++		reg &= ~MDIO_MAN_MDCLK_O;
++
++	writel(reg, &data->regs->manualif);
++}
++
++static void davinci_set_mdio_dir(struct mdiobb_ctrl *ctrl, int output)
++{
++	struct davinci_mdio_data *data;
++	u32 reg;
++
++	data = container_of(ctrl, struct davinci_mdio_data, bb_ctrl);
++	reg = readl(&data->regs->manualif);
++
++	if (output)
++		reg |= MDIO_MAN_OE;
++	else
++		reg &= ~MDIO_MAN_OE;
++
++	writel(reg, &data->regs->manualif);
++}
++
++static void  davinci_set_mdio_data(struct mdiobb_ctrl *ctrl, int value)
++{
++	struct davinci_mdio_data *data;
++	u32 reg;
++
++	data = container_of(ctrl, struct davinci_mdio_data, bb_ctrl);
++	reg = readl(&data->regs->manualif);
++
++	if (value)
++		reg |= MDIO_MAN_PIN;
++	else
++		reg &= ~MDIO_MAN_PIN;
++
++	writel(reg, &data->regs->manualif);
++}
++
++static int davinci_get_mdio_data(struct mdiobb_ctrl *ctrl)
++{
++	struct davinci_mdio_data *data;
++	unsigned long reg;
++
++	data = container_of(ctrl, struct davinci_mdio_data, bb_ctrl);
++	reg = readl(&data->regs->manualif);
++	return test_bit(MDIO_PIN, &reg);
++}
++
++static int davinci_mdiobb_read(struct mii_bus *bus, int phy, int reg)
++{
++	int ret;
++
++	ret = pm_runtime_resume_and_get(bus->parent);
++	if (ret < 0)
++		return ret;
++
++	ret = mdiobb_read(bus, phy, reg);
++
++	pm_runtime_mark_last_busy(bus->parent);
++	pm_runtime_put_autosuspend(bus->parent);
++
++	return ret;
++}
++
++static int davinci_mdiobb_write(struct mii_bus *bus, int phy, int reg,
++				u16 val)
++{
++	int ret;
++
++	ret = pm_runtime_resume_and_get(bus->parent);
++	if (ret < 0)
++		return ret;
++
++	ret = mdiobb_write(bus, phy, reg, val);
++
++	pm_runtime_mark_last_busy(bus->parent);
++	pm_runtime_put_autosuspend(bus->parent);
++
++	return ret;
++}
++
++static int davinci_mdio_common_reset(struct davinci_mdio_data *data)
+ {
+-	struct davinci_mdio_data *data = bus->priv;
+ 	u32 phy_mask, ver;
+ 	int ret;
+ 
+@@ -138,6 +267,11 @@ static int davinci_mdio_reset(struct mii_bus *bus)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	if (data->manual_mode) {
++		davinci_mdio_disable(data);
++		davinci_mdio_enable_manual_mode(data);
++	}
++
+ 	/* wait for scan logic to settle */
+ 	msleep(PHY_MAX_ADDR * data->access_time);
+ 
+@@ -171,6 +305,23 @@ static int davinci_mdio_reset(struct mii_bus *bus)
+ 	return 0;
+ }
+ 
++static int davinci_mdio_reset(struct mii_bus *bus)
++{
++	struct davinci_mdio_data *data = bus->priv;
++
++	return davinci_mdio_common_reset(data);
++}
++
++static int davinci_mdiobb_reset(struct mii_bus *bus)
++{
++	struct mdiobb_ctrl *ctrl = bus->priv;
++	struct davinci_mdio_data *data;
++
++	data = container_of(ctrl, struct davinci_mdio_data, bb_ctrl);
++
++	return davinci_mdio_common_reset(data);
++}
++
+ /* wait until hardware is ready for another user access */
+ static inline int wait_for_user_access(struct davinci_mdio_data *data)
+ {
+@@ -318,6 +469,28 @@ static int davinci_mdio_probe_dt(struct mdio_platform_data *data,
+ 	return 0;
+ }
+ 
++struct k3_mdio_soc_data {
++	bool manual_mode;
++};
++
++static const struct k3_mdio_soc_data am65_mdio_soc_data = {
++	.manual_mode = true,
++};
++
++static const struct soc_device_attribute k3_mdio_socinfo[] = {
++	{ .family = "AM62X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
++	{ .family = "AM64X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
++	{ .family = "AM64X", .revision = "SR2.0", .data = &am65_mdio_soc_data },
++	{ .family = "AM65X", .revision = "SR1.0", .data = &am65_mdio_soc_data },
++	{ .family = "AM65X", .revision = "SR2.0", .data = &am65_mdio_soc_data },
++	{ .family = "J7200", .revision = "SR1.0", .data = &am65_mdio_soc_data },
++	{ .family = "J7200", .revision = "SR2.0", .data = &am65_mdio_soc_data },
++	{ .family = "J721E", .revision = "SR1.0", .data = &am65_mdio_soc_data },
++	{ .family = "J721E", .revision = "SR2.0", .data = &am65_mdio_soc_data },
++	{ .family = "J721S2", .revision = "SR1.0", .data = &am65_mdio_soc_data},
++	{ /* sentinel */ },
++};
++
+ #if IS_ENABLED(CONFIG_OF)
+ static const struct davinci_mdio_of_param of_cpsw_mdio_data = {
+ 	.autosuspend_delay_ms = 100,
+@@ -331,6 +504,14 @@ static const struct of_device_id davinci_mdio_of_mtable[] = {
+ MODULE_DEVICE_TABLE(of, davinci_mdio_of_mtable);
+ #endif
+ 
++static const struct mdiobb_ops davinci_mdiobb_ops = {
++	.owner = THIS_MODULE,
++	.set_mdc = davinci_set_mdc,
++	.set_mdio_dir = davinci_set_mdio_dir,
++	.set_mdio_data = davinci_set_mdio_data,
++	.get_mdio_data = davinci_get_mdio_data,
++};
++
+ static int davinci_mdio_probe(struct platform_device *pdev)
+ {
+ 	struct mdio_platform_data *pdata = dev_get_platdata(&pdev->dev);
+@@ -345,7 +526,26 @@ static int davinci_mdio_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENOMEM;
+ 
+-	data->bus = devm_mdiobus_alloc(dev);
++	data->manual_mode = false;
++	data->bb_ctrl.ops = &davinci_mdiobb_ops;
++
++	if (IS_ENABLED(CONFIG_OF) && dev->of_node) {
++		const struct soc_device_attribute *soc_match_data;
++
++		soc_match_data = soc_device_match(k3_mdio_socinfo);
++		if (soc_match_data && soc_match_data->data) {
++			const struct k3_mdio_soc_data *socdata =
++						soc_match_data->data;
++
++			data->manual_mode = socdata->manual_mode;
++		}
++	}
++
++	if (data->manual_mode)
++		data->bus = alloc_mdio_bitbang(&data->bb_ctrl);
++	else
++		data->bus = devm_mdiobus_alloc(dev);
++
+ 	if (!data->bus) {
+ 		dev_err(dev, "failed to alloc mii bus\n");
+ 		return -ENOMEM;
+@@ -371,11 +571,20 @@ static int davinci_mdio_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	data->bus->name		= dev_name(dev);
+-	data->bus->read		= davinci_mdio_read;
+-	data->bus->write	= davinci_mdio_write;
+-	data->bus->reset	= davinci_mdio_reset;
++
++	if (data->manual_mode) {
++		data->bus->read		= davinci_mdiobb_read;
++		data->bus->write	= davinci_mdiobb_write;
++		data->bus->reset	= davinci_mdiobb_reset;
++
++		dev_info(dev, "Configuring MDIO in manual mode\n");
++	} else {
++		data->bus->read		= davinci_mdio_read;
++		data->bus->write	= davinci_mdio_write;
++		data->bus->reset	= davinci_mdio_reset;
++		data->bus->priv		= data;
++	}
+ 	data->bus->parent	= dev;
+-	data->bus->priv		= data;
+ 
+ 	data->clk = devm_clk_get(dev, "fck");
+ 	if (IS_ERR(data->clk)) {
+@@ -433,9 +642,13 @@ static int davinci_mdio_remove(struct platform_device *pdev)
+ {
+ 	struct davinci_mdio_data *data = platform_get_drvdata(pdev);
+ 
+-	if (data->bus)
++	if (data->bus) {
+ 		mdiobus_unregister(data->bus);
+ 
++		if (data->manual_mode)
++			free_mdio_bitbang(data->bus);
++	}
++
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+@@ -452,7 +665,9 @@ static int davinci_mdio_runtime_suspend(struct device *dev)
+ 	ctrl = readl(&data->regs->control);
+ 	ctrl &= ~CONTROL_ENABLE;
+ 	writel(ctrl, &data->regs->control);
+-	wait_for_idle(data);
++
++	if (!data->manual_mode)
++		wait_for_idle(data);
+ 
+ 	return 0;
+ }
+@@ -461,7 +676,12 @@ static int davinci_mdio_runtime_resume(struct device *dev)
+ {
+ 	struct davinci_mdio_data *data = dev_get_drvdata(dev);
+ 
+-	davinci_mdio_enable(data);
++	if (data->manual_mode) {
++		davinci_mdio_disable(data);
++		davinci_mdio_enable_manual_mode(data);
++	} else {
++		davinci_mdio_enable(data);
++	}
+ 	return 0;
+ }
+ #endif
+-- 
+2.17.1
 
-> > And another question is that, since the userspace(libdrm) will be used
-> > to work with different kernel versions,
-> > like the old 4.14, 4.19, etc, do you think there will be problem to
-> > pass  OMAP_BO_SCANOUT
-> > from the userspace side with the old kernels(which does not have this c=
-hange)?
-> > does this change need to be backported to the old kernel versions?
->
-> There should not be any issue. The changes could be backported if one
-> hits the issues this $series is fixing, but there is no need.
-
-Thanks for the confirmation!
-I just boot-tested with adding OMAP_BO_SCANOUT in the omap_bo_new function,
-and it worked with the current 4.14, 4.19, and the mainline kernels.
-# via adding line "flags =3D flags | OMAP_BO_SCANOUT" in the omap_bo_new fu=
-nction.
-
-> >
-> > And the last question is that, omap_bo_new might be called by some
-> > property binaries what not everyone
-> > could get the source to update, for such case what's your suggestions?
-> >
->
-> Hard to say without knowing what that library would be.
->
-> When I hit issues with closed blobs, sometimes I reverse-engineer them
-> to fix the issue, example:
->
-> https://github.com/maemo-leste/sgx-ddk-um/tree/master/dbm
->
-> This is REed libdbm from sgx-ddk-um 1.17.4948957, that is responsible
-> for allocating BOs (what omap_bo_new() does) but it uses DUMB buffers
-> API, instead of OMAP BO API.
->
-> I guess you are using some older version of sgx-ddk-um, so you may fix
-> in similar way. Or binary patch.
-
-The blob binary that calls omap_bo_new is the gralloc.am57x.so here[2]:
-any suggestions with it?
-# sorry, I am not able to find out how you did the reverse-engineer
-work# with the dbm repository shared here,
-# not sure if you could give some tutorial steps for the similar
-reverse-engineer# work with gralloc.am57x.so
-
-[2]: https://android.googlesource.com/device/ti/beagle-x15/+/refs/heads/mas=
-ter/gpu/gralloc.am57x.so
-
-Thanks,
-Yongqin Liu
-
-> >>> On Thu, 17 Feb 2022 at 23:29, Ivaylo Dimitrov
-> >>> <ivo.g.dimitrov.75@gmail.com> wrote:
-> >>>>
-> >>>>
-> >>>>
-> >>>> On 17.02.22 =D0=B3. 14:46 =D1=87., Tomi Valkeinen wrote:
-> >>>>> Hi,
-> >>>>>
-> >>>>> On 19/01/2022 12:23, Ivaylo Dimitrov wrote:
-> >>>>>> On devices with DMM, all allocations are done through either DMM o=
-r
-> >>>>>> TILER.
-> >>>>>> DMM/TILER being a limited resource means that such allocations wil=
-l start
-> >>>>>> to fail before actual free memory is exhausted. What is even worse=
- is
-> >>>>>> that
-> >>>>>> with time DMM/TILER space gets fragmented to the point that even i=
-f we
-> >>>>>> have
-> >>>>>> enough free DMM/TILER space and free memory, allocation fails beca=
-use
-> >>>>>> there
-> >>>>>> is no big enough free block in DMM/TILER space.
-> >>>>>>
-> >>>>>> Such failures can be easily observed with OMAP xorg DDX, for examp=
-le -
-> >>>>>> starting few GUI applications (so buffers for their windows are
-> >>>>>> allocated)
-> >>>>>> and then rotating landscape<->portrait while closing and opening n=
-ew
-> >>>>>> windows soon results in allocation failures.
-> >>>>>>
-> >>>>>> Fix that by mapping buffers through DMM/TILER only when really nee=
-ded,
-> >>>>>> like, for scanout buffers.
-> >>>>>
-> >>>>> Doesn't this break users that get a buffer from omapdrm and expect =
-it to
-> >>>>> be contiguous?
-> >>>>>
-> >>>>
-> >>>> If you mean dumb buffer, then no, this does not break users as dumb
-> >>>> buffers are allocated as scanout:
-> >>>>
-> >>>> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/omapd=
-rm/omap_gem.c#L603
-> >>>>
-> >>>> If you mean omap_bo allocated buffers, then if users want
-> >>>> linear(scanout) buffer, then they request it explicitly by passing
-> >>>> OMAP_BO_SCANOUT.
-> >>>>
-> >>>> Ivo
-> >>>
-> >>>
-> >>>
-> >
-> >
-> >
-
-
-
---=20
-Best Regards,
-Yongqin Liu
----------------------------------------------------------------
-#mailing list
-linaro-android@lists.linaro.org
-http://lists.linaro.org/mailman/listinfo/linaro-android
