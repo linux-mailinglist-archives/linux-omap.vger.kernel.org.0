@@ -2,99 +2,547 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C7759870C
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Aug 2022 17:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76C14598ED6
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Aug 2022 23:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344208AbiHRPKw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 18 Aug 2022 11:10:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46892 "EHLO
+        id S1346414AbiHRVJu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 18 Aug 2022 17:09:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344173AbiHRPKo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Aug 2022 11:10:44 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17940BD742;
-        Thu, 18 Aug 2022 08:10:44 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id a4so2096583wrq.1;
-        Thu, 18 Aug 2022 08:10:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=HDI1guW7fTa+RVY8P7QOf7gM0cs1vrvzc2yBNv9u5SE=;
-        b=pi18Uu3bBrZTRbAXiS6PuQjqgRje84joS1DXu7tygGEijyzcK9P+MFJZcya/f8R+ZN
-         /r3sAu7PcgwrG8tjJABO5xNZd32kSvx+hrg4SNO5XKW7rhc+ZKrgDeeuhKCq25nHaRuX
-         fQRJGdnjnKXf5wvjzF+sQtXu0GLKBnpQdE6/c+H4CMLkqZgB0N8QTJxfHBruKMhm1tr8
-         hjpxtzDdiVNQxjjGEO3L5yhAQaR+DLNahI9yvN589uvWkW4o87iuepUGrPNnqyDtAHio
-         m/R5qvSWifN/WGVBGnwUFDU+I9dOedFeW5FujqJgkrngnYJir7Ey3UBIB0Zp+qPjei6C
-         Q9RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=HDI1guW7fTa+RVY8P7QOf7gM0cs1vrvzc2yBNv9u5SE=;
-        b=Ub1GeEYOV/ciO/MijcfL0JWLWetVzFpJwvvvtb8gXv478F7FnNSvZ9TMf+p1PJinzp
-         5bWLX76Y91IqouyvisX8ID+XVib59iPJ4cAAVv7i1LmEvi8HUrOT/wqCiUipU1dQ30Tj
-         cObeAsJPcejtEv571FLKrXyzj7OtI1yRwJo4LaZhH2bEJ5ItI67Zmq3IXKt7JRfnzylc
-         3xWSxcSQx76FU3A5L1P283+SyGhSl7VI+3OdwF4hiBsFrklPKFpYJW2LPWSTkbFssd7U
-         vAKQjX4M/kSf2ovA/NVv53yWZVYI2Otv5GLA1TWkcgmO2Cbf5tzb7Yj/Ljaf+UV5Gh10
-         jSsQ==
-X-Gm-Message-State: ACgBeo01mtl3Szgv68KZy0Q5/24gxszeZ4fvMOMNhiS/U8rE7V3Y5Ir2
-        mI3ftSZLaNQMP0bnSKt4qnw=
-X-Google-Smtp-Source: AA6agR5sKQZY1jZx3FWEs8Qil3XXRCsi5pQaditAs9pKXE5Vd5G0X3PIU8DmysByDd5tYjAjOC3RvQ==
-X-Received: by 2002:a5d:4907:0:b0:21f:bc42:989 with SMTP id x7-20020a5d4907000000b0021fbc420989mr1894232wrq.375.1660835442418;
-        Thu, 18 Aug 2022 08:10:42 -0700 (PDT)
-Received: from hoboy.vegasvil.org ([185.228.40.98])
-        by smtp.gmail.com with ESMTPSA id q1-20020a056000136100b0021d80f53324sm1763997wrz.7.2022.08.18.08.10.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Aug 2022 08:10:41 -0700 (PDT)
-Date:   Thu, 18 Aug 2022 08:10:39 -0700
-From:   Richard Cochran <richardcochran@gmail.com>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Tony Lindgren <tony@atomide.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Shannon Nelson <snelson@pensando.io>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Dmitry Osipenko <digetx@gmail.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Mark Brown <broonie@kernel.org>,
-        William Zhang <william.zhang@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 06/11] ARM: defconfig: drop CONFIG_PTP_1588_CLOCK=y
-Message-ID: <Yv5Wb/nbOW2vJH5Y@hoboy.vegasvil.org>
-References: <20220818135522.3143514-1-arnd@kernel.org>
- <20220818135737.3143895-1-arnd@kernel.org>
- <20220818135737.3143895-5-arnd@kernel.org>
+        with ESMTP id S1346606AbiHRVJV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Aug 2022 17:09:21 -0400
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAF85D6327
+        for <linux-omap@vger.kernel.org>; Thu, 18 Aug 2022 14:04:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding; s=k1; bh=jAGdiy01QjFZdMcr7H4GvPmESRt
+        lhhyjFBPKrBE08G8=; b=DPdnNW+K+4OBDy3EK9Yw4qVPRXZdxcEfrenNKyobftK
+        Eu6+V1T6NJgFMeZJYrpu+LJ9JogvK36qaYT/EvB7R5EwrKHB71/BvTY5JfL/zWL+
+        yTGuYH/dly1rDHNn7nCeLJYxT0hgTpNY4xLYIxDfgQb6WBrN/4kHp+LHuAMrpJEE
+        =
+Received: (qmail 3961765 invoked from network); 18 Aug 2022 23:01:19 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:01:19 +0200
+X-UD-Smtp-Session: l3s3148p1@fy11SIrmy80ucref
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Alexander Shiyan <shc_work@mail.ru>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Russell King <linux@armlinux.org.uk>,
+        Andres Salomon <dilinger@queued.net>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thomas Winischhofer <thomas@winischhofer.net>,
+        linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-geode@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: [PATCH] video: move from strlcpy with unused retval to strscpy
+Date:   Thu, 18 Aug 2022 23:01:17 +0200
+Message-Id: <20220818210118.7541-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220818135737.3143895-5-arnd@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Aug 18, 2022 at 03:57:15PM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> PTP support is now enabled by default for configurations with
-> ethernet support, so drop the redundant entries in defconfig
-> files.
-> 
-> Fixes: e5f31552674e ("ethernet: fix PTP_1588_CLOCK dependencies")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Follow the advice of the below link and prefer 'strscpy' in this
+subsystem. Conversion is 1:1 because the return value is not used.
+Generated by a coccinelle script.
 
-Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+ drivers/video/console/sticore.c                | 2 +-
+ drivers/video/fbdev/aty/atyfb_base.c           | 2 +-
+ drivers/video/fbdev/aty/radeon_base.c          | 2 +-
+ drivers/video/fbdev/bw2.c                      | 2 +-
+ drivers/video/fbdev/cirrusfb.c                 | 2 +-
+ drivers/video/fbdev/clps711x-fb.c              | 2 +-
+ drivers/video/fbdev/core/fbcon.c               | 2 +-
+ drivers/video/fbdev/cyber2000fb.c              | 8 ++++----
+ drivers/video/fbdev/ffb.c                      | 2 +-
+ drivers/video/fbdev/geode/gx1fb_core.c         | 6 +++---
+ drivers/video/fbdev/gxt4500.c                  | 2 +-
+ drivers/video/fbdev/i740fb.c                   | 2 +-
+ drivers/video/fbdev/imxfb.c                    | 2 +-
+ drivers/video/fbdev/matrox/matroxfb_base.c     | 6 +++---
+ drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 2 +-
+ drivers/video/fbdev/pxa168fb.c                 | 2 +-
+ drivers/video/fbdev/pxafb.c                    | 2 +-
+ drivers/video/fbdev/s3fb.c                     | 2 +-
+ drivers/video/fbdev/simplefb.c                 | 2 +-
+ drivers/video/fbdev/sis/sis_main.c             | 4 ++--
+ drivers/video/fbdev/sm501fb.c                  | 2 +-
+ drivers/video/fbdev/sstfb.c                    | 2 +-
+ drivers/video/fbdev/sunxvr1000.c               | 2 +-
+ drivers/video/fbdev/sunxvr2500.c               | 2 +-
+ drivers/video/fbdev/sunxvr500.c                | 2 +-
+ drivers/video/fbdev/tcx.c                      | 2 +-
+ drivers/video/fbdev/tdfxfb.c                   | 4 ++--
+ drivers/video/fbdev/tgafb.c                    | 2 +-
+ drivers/video/fbdev/tridentfb.c                | 2 +-
+ 29 files changed, 38 insertions(+), 38 deletions(-)
+
+diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
+index bd4dc97d4d34..db568f67e4dc 100644
+--- a/drivers/video/console/sticore.c
++++ b/drivers/video/console/sticore.c
+@@ -290,7 +290,7 @@ static char default_sti_path[21] __read_mostly;
+ static int __init sti_setup(char *str)
+ {
+ 	if (str)
+-		strlcpy (default_sti_path, str, sizeof (default_sti_path));
++		strscpy(default_sti_path, str, sizeof(default_sti_path));
+ 	
+ 	return 1;
+ }
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index a3e6faed7745..14eb718bd67c 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -3891,7 +3891,7 @@ static int __init atyfb_setup(char *options)
+ 			 && (!strncmp(this_opt, "Mach64:", 7))) {
+ 			static unsigned char m64_num;
+ 			static char mach64_str[80];
+-			strlcpy(mach64_str, this_opt + 7, sizeof(mach64_str));
++			strscpy(mach64_str, this_opt + 7, sizeof(mach64_str));
+ 			if (!store_video_par(mach64_str, m64_num)) {
+ 				m64_num++;
+ 				mach64_count = m64_num;
+diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
+index 6851f47613e1..73b07c77a4e1 100644
+--- a/drivers/video/fbdev/aty/radeon_base.c
++++ b/drivers/video/fbdev/aty/radeon_base.c
+@@ -1980,7 +1980,7 @@ static int radeon_set_fbinfo(struct radeonfb_info *rinfo)
+ 	info->screen_base = rinfo->fb_base;
+ 	info->screen_size = rinfo->mapped_vram;
+ 	/* Fill fix common fields */
+-	strlcpy(info->fix.id, rinfo->name, sizeof(info->fix.id));
++	strscpy(info->fix.id, rinfo->name, sizeof(info->fix.id));
+         info->fix.smem_start = rinfo->fb_base_phys;
+         info->fix.smem_len = rinfo->video_ram;
+         info->fix.type = FB_TYPE_PACKED_PIXELS;
+diff --git a/drivers/video/fbdev/bw2.c b/drivers/video/fbdev/bw2.c
+index e7702fe1fe7d..6403ae07970d 100644
+--- a/drivers/video/fbdev/bw2.c
++++ b/drivers/video/fbdev/bw2.c
+@@ -182,7 +182,7 @@ static int bw2_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg)
+ 
+ static void bw2_init_fix(struct fb_info *info, int linebytes)
+ {
+-	strlcpy(info->fix.id, "bwtwo", sizeof(info->fix.id));
++	strscpy(info->fix.id, "bwtwo", sizeof(info->fix.id));
+ 
+ 	info->fix.type = FB_TYPE_PACKED_PIXELS;
+ 	info->fix.visual = FB_VISUAL_MONO01;
+diff --git a/drivers/video/fbdev/cirrusfb.c b/drivers/video/fbdev/cirrusfb.c
+index a41a75841e10..2a9fa06881b5 100644
+--- a/drivers/video/fbdev/cirrusfb.c
++++ b/drivers/video/fbdev/cirrusfb.c
+@@ -1999,7 +1999,7 @@ static int cirrusfb_set_fbinfo(struct fb_info *info)
+ 	}
+ 
+ 	/* Fill fix common fields */
+-	strlcpy(info->fix.id, cirrusfb_board_info[cinfo->btype].name,
++	strscpy(info->fix.id, cirrusfb_board_info[cinfo->btype].name,
+ 		sizeof(info->fix.id));
+ 
+ 	/* monochrome: only 1 memory plane */
+diff --git a/drivers/video/fbdev/clps711x-fb.c b/drivers/video/fbdev/clps711x-fb.c
+index 771ce1f76951..a1061c2f1640 100644
+--- a/drivers/video/fbdev/clps711x-fb.c
++++ b/drivers/video/fbdev/clps711x-fb.c
+@@ -326,7 +326,7 @@ static int clps711x_fb_probe(struct platform_device *pdev)
+ 	info->var.vmode = FB_VMODE_NONINTERLACED;
+ 	info->fix.type = FB_TYPE_PACKED_PIXELS;
+ 	info->fix.accel = FB_ACCEL_NONE;
+-	strlcpy(info->fix.id, CLPS711X_FB_NAME, sizeof(info->fix.id));
++	strscpy(info->fix.id, CLPS711X_FB_NAME, sizeof(info->fix.id));
+ 	fb_videomode_to_var(&info->var, &cfb->mode);
+ 
+ 	ret = fb_alloc_cmap(&info->cmap, BIT(CLPS711X_FB_BPP_MAX), 0);
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index cf9ac4da0a82..4a032fcf0d14 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -412,7 +412,7 @@ static int __init fb_console_setup(char *this_opt)
+ 
+ 	while ((options = strsep(&this_opt, ",")) != NULL) {
+ 		if (!strncmp(options, "font:", 5)) {
+-			strlcpy(fontname, options + 5, sizeof(fontname));
++			strscpy(fontname, options + 5, sizeof(fontname));
+ 			continue;
+ 		}
+ 		
+diff --git a/drivers/video/fbdev/cyber2000fb.c b/drivers/video/fbdev/cyber2000fb.c
+index d45355b9a58c..8f041f9b14c7 100644
+--- a/drivers/video/fbdev/cyber2000fb.c
++++ b/drivers/video/fbdev/cyber2000fb.c
+@@ -1134,7 +1134,7 @@ int cyber2000fb_attach(struct cyberpro_info *info, int idx)
+ 		info->fb_size	      = int_cfb_info->fb.fix.smem_len;
+ 		info->info	      = int_cfb_info;
+ 
+-		strlcpy(info->dev_name, int_cfb_info->fb.fix.id,
++		strscpy(info->dev_name, int_cfb_info->fb.fix.id,
+ 			sizeof(info->dev_name));
+ 	}
+ 
+@@ -1229,7 +1229,7 @@ static int cyber2000fb_ddc_getsda(void *data)
+ 
+ static int cyber2000fb_setup_ddc_bus(struct cfb_info *cfb)
+ {
+-	strlcpy(cfb->ddc_adapter.name, cfb->fb.fix.id,
++	strscpy(cfb->ddc_adapter.name, cfb->fb.fix.id,
+ 		sizeof(cfb->ddc_adapter.name));
+ 	cfb->ddc_adapter.owner		= THIS_MODULE;
+ 	cfb->ddc_adapter.class		= I2C_CLASS_DDC;
+@@ -1304,7 +1304,7 @@ static int cyber2000fb_i2c_getscl(void *data)
+ 
+ static int cyber2000fb_i2c_register(struct cfb_info *cfb)
+ {
+-	strlcpy(cfb->i2c_adapter.name, cfb->fb.fix.id,
++	strscpy(cfb->i2c_adapter.name, cfb->fb.fix.id,
+ 		sizeof(cfb->i2c_adapter.name));
+ 	cfb->i2c_adapter.owner = THIS_MODULE;
+ 	cfb->i2c_adapter.algo_data = &cfb->i2c_algo;
+@@ -1500,7 +1500,7 @@ static int cyber2000fb_setup(char *options)
+ 		if (strncmp(opt, "font:", 5) == 0) {
+ 			static char default_font_storage[40];
+ 
+-			strlcpy(default_font_storage, opt + 5,
++			strscpy(default_font_storage, opt + 5,
+ 				sizeof(default_font_storage));
+ 			default_font = default_font_storage;
+ 			continue;
+diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
+index b3d580e57221..7cba3969a970 100644
+--- a/drivers/video/fbdev/ffb.c
++++ b/drivers/video/fbdev/ffb.c
+@@ -883,7 +883,7 @@ static void ffb_init_fix(struct fb_info *info)
+ 	} else
+ 		ffb_type_name = "Elite 3D";
+ 
+-	strlcpy(info->fix.id, ffb_type_name, sizeof(info->fix.id));
++	strscpy(info->fix.id, ffb_type_name, sizeof(info->fix.id));
+ 
+ 	info->fix.type = FB_TYPE_PACKED_PIXELS;
+ 	info->fix.visual = FB_VISUAL_TRUECOLOR;
+diff --git a/drivers/video/fbdev/geode/gx1fb_core.c b/drivers/video/fbdev/geode/gx1fb_core.c
+index 5d34d89fb665..e41204ecb0e3 100644
+--- a/drivers/video/fbdev/geode/gx1fb_core.c
++++ b/drivers/video/fbdev/geode/gx1fb_core.c
+@@ -410,13 +410,13 @@ static void __init gx1fb_setup(char *options)
+ 			continue;
+ 
+ 		if (!strncmp(this_opt, "mode:", 5))
+-			strlcpy(mode_option, this_opt + 5, sizeof(mode_option));
++			strscpy(mode_option, this_opt + 5, sizeof(mode_option));
+ 		else if (!strncmp(this_opt, "crt:", 4))
+ 			crt_option = !!simple_strtoul(this_opt + 4, NULL, 0);
+ 		else if (!strncmp(this_opt, "panel:", 6))
+-			strlcpy(panel_option, this_opt + 6, sizeof(panel_option));
++			strscpy(panel_option, this_opt + 6, sizeof(panel_option));
+ 		else
+-			strlcpy(mode_option, this_opt, sizeof(mode_option));
++			strscpy(mode_option, this_opt, sizeof(mode_option));
+ 	}
+ }
+ #endif
+diff --git a/drivers/video/fbdev/gxt4500.c b/drivers/video/fbdev/gxt4500.c
+index e5475ae1e158..94588b809ebf 100644
+--- a/drivers/video/fbdev/gxt4500.c
++++ b/drivers/video/fbdev/gxt4500.c
+@@ -650,7 +650,7 @@ static int gxt4500_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	cardtype = ent->driver_data;
+ 	par->refclk_ps = cardinfo[cardtype].refclk_ps;
+ 	info->fix = gxt4500_fix;
+-	strlcpy(info->fix.id, cardinfo[cardtype].cardname,
++	strscpy(info->fix.id, cardinfo[cardtype].cardname,
+ 		sizeof(info->fix.id));
+ 	info->pseudo_palette = par->pseudo_palette;
+ 
+diff --git a/drivers/video/fbdev/i740fb.c b/drivers/video/fbdev/i740fb.c
+index 7f09a0daaaa2..bd30d8314b68 100644
+--- a/drivers/video/fbdev/i740fb.c
++++ b/drivers/video/fbdev/i740fb.c
+@@ -159,7 +159,7 @@ static int i740fb_setup_ddc_bus(struct fb_info *info)
+ {
+ 	struct i740fb_par *par = info->par;
+ 
+-	strlcpy(par->ddc_adapter.name, info->fix.id,
++	strscpy(par->ddc_adapter.name, info->fix.id,
+ 		sizeof(par->ddc_adapter.name));
+ 	par->ddc_adapter.owner		= THIS_MODULE;
+ 	par->ddc_adapter.class		= I2C_CLASS_DDC;
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index d97d7456d15a..94f3bc637fc8 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -681,7 +681,7 @@ static int imxfb_init_fbinfo(struct platform_device *pdev)
+ 
+ 	fbi->devtype = pdev->id_entry->driver_data;
+ 
+-	strlcpy(info->fix.id, IMX_NAME, sizeof(info->fix.id));
++	strscpy(info->fix.id, IMX_NAME, sizeof(info->fix.id));
+ 
+ 	info->fix.type			= FB_TYPE_PACKED_PIXELS;
+ 	info->fix.type_aux		= 0;
+diff --git a/drivers/video/fbdev/matrox/matroxfb_base.c b/drivers/video/fbdev/matrox/matroxfb_base.c
+index 236521b19daf..68bba2688f4c 100644
+--- a/drivers/video/fbdev/matrox/matroxfb_base.c
++++ b/drivers/video/fbdev/matrox/matroxfb_base.c
+@@ -2383,9 +2383,9 @@ static int __init matroxfb_setup(char *options) {
+ 		else if (!strncmp(this_opt, "mem:", 4))
+ 			mem = simple_strtoul(this_opt+4, NULL, 0);
+ 		else if (!strncmp(this_opt, "mode:", 5))
+-			strlcpy(videomode, this_opt+5, sizeof(videomode));
++			strscpy(videomode, this_opt + 5, sizeof(videomode));
+ 		else if (!strncmp(this_opt, "outputs:", 8))
+-			strlcpy(outputs, this_opt+8, sizeof(outputs));
++			strscpy(outputs, this_opt + 8, sizeof(outputs));
+ 		else if (!strncmp(this_opt, "dfp:", 4)) {
+ 			dfp_type = simple_strtoul(this_opt+4, NULL, 0);
+ 			dfp = 1;
+@@ -2455,7 +2455,7 @@ static int __init matroxfb_setup(char *options) {
+ 			else if (!strcmp(this_opt, "dfp"))
+ 				dfp = value;
+ 			else {
+-				strlcpy(videomode, this_opt, sizeof(videomode));
++				strscpy(videomode, this_opt, sizeof(videomode));
+ 			}
+ 		}
+ 	}
+diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+index afa688e754b9..5ccddcfce722 100644
+--- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
++++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+@@ -1331,7 +1331,7 @@ static void clear_fb_info(struct fb_info *fbi)
+ {
+ 	memset(&fbi->var, 0, sizeof(fbi->var));
+ 	memset(&fbi->fix, 0, sizeof(fbi->fix));
+-	strlcpy(fbi->fix.id, MODULE_NAME, sizeof(fbi->fix.id));
++	strscpy(fbi->fix.id, MODULE_NAME, sizeof(fbi->fix.id));
+ }
+ 
+ static int omapfb_free_all_fbmem(struct omapfb2_device *fbdev)
+diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
+index e943300d23e8..d5d0bbd39213 100644
+--- a/drivers/video/fbdev/pxa168fb.c
++++ b/drivers/video/fbdev/pxa168fb.c
+@@ -640,7 +640,7 @@ static int pxa168fb_probe(struct platform_device *pdev)
+ 	info->flags = FBINFO_DEFAULT | FBINFO_PARTIAL_PAN_OK |
+ 		      FBINFO_HWACCEL_XPAN | FBINFO_HWACCEL_YPAN;
+ 	info->node = -1;
+-	strlcpy(info->fix.id, mi->id, 16);
++	strscpy(info->fix.id, mi->id, 16);
+ 	info->fix.type = FB_TYPE_PACKED_PIXELS;
+ 	info->fix.type_aux = 0;
+ 	info->fix.xpanstep = 0;
+diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
+index 66cfc3e9d3cf..696ac5431180 100644
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -2042,7 +2042,7 @@ static int __init pxafb_setup_options(void)
+ 		return -ENODEV;
+ 
+ 	if (options)
+-		strlcpy(g_options, options, sizeof(g_options));
++		strscpy(g_options, options, sizeof(g_options));
+ 
+ 	return 0;
+ }
+diff --git a/drivers/video/fbdev/s3fb.c b/drivers/video/fbdev/s3fb.c
+index 5069f6f67923..67b63a753cb2 100644
+--- a/drivers/video/fbdev/s3fb.c
++++ b/drivers/video/fbdev/s3fb.c
+@@ -248,7 +248,7 @@ static int s3fb_setup_ddc_bus(struct fb_info *info)
+ {
+ 	struct s3fb_info *par = info->par;
+ 
+-	strlcpy(par->ddc_adapter.name, info->fix.id,
++	strscpy(par->ddc_adapter.name, info->fix.id,
+ 		sizeof(par->ddc_adapter.name));
+ 	par->ddc_adapter.owner		= THIS_MODULE;
+ 	par->ddc_adapter.class		= I2C_CLASS_DDC;
+diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
+index cf2a90ecd64e..e770b4a356b5 100644
+--- a/drivers/video/fbdev/simplefb.c
++++ b/drivers/video/fbdev/simplefb.c
+@@ -355,7 +355,7 @@ static int simplefb_regulators_get(struct simplefb_par *par,
+ 		if (!p || p == prop->name)
+ 			continue;
+ 
+-		strlcpy(name, prop->name,
++		strscpy(name, prop->name,
+ 			strlen(prop->name) - strlen(SUPPLY_SUFFIX) + 1);
+ 		regulator = devm_regulator_get_optional(&pdev->dev, name);
+ 		if (IS_ERR(regulator)) {
+diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
+index f28fd69d5eb7..d6bcc9d60b2d 100644
+--- a/drivers/video/fbdev/sis/sis_main.c
++++ b/drivers/video/fbdev/sis/sis_main.c
+@@ -1872,7 +1872,7 @@ sisfb_get_fix(struct fb_fix_screeninfo *fix, int con, struct fb_info *info)
+ 
+ 	memset(fix, 0, sizeof(struct fb_fix_screeninfo));
+ 
+-	strlcpy(fix->id, ivideo->myid, sizeof(fix->id));
++	strscpy(fix->id, ivideo->myid, sizeof(fix->id));
+ 
+ 	mutex_lock(&info->mm_lock);
+ 	fix->smem_start  = ivideo->video_base + ivideo->video_offset;
+@@ -5867,7 +5867,7 @@ static int sisfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 			ivideo->cardnumber++;
+ 	}
+ 
+-	strlcpy(ivideo->myid, chipinfo->chip_name, sizeof(ivideo->myid));
++	strscpy(ivideo->myid, chipinfo->chip_name, sizeof(ivideo->myid));
+ 
+ 	ivideo->warncount = 0;
+ 	ivideo->chip_id = pdev->device;
+diff --git a/drivers/video/fbdev/sm501fb.c b/drivers/video/fbdev/sm501fb.c
+index 6a52eba64559..fce6cfbadfd6 100644
+--- a/drivers/video/fbdev/sm501fb.c
++++ b/drivers/video/fbdev/sm501fb.c
+@@ -1719,7 +1719,7 @@ static int sm501fb_init_fb(struct fb_info *fb, enum sm501_controller head,
+ 		enable = 0;
+ 	}
+ 
+-	strlcpy(fb->fix.id, fbname, sizeof(fb->fix.id));
++	strscpy(fb->fix.id, fbname, sizeof(fb->fix.id));
+ 
+ 	memcpy(&par->ops,
+ 	       (head == HEAD_CRT) ? &sm501fb_ops_crt : &sm501fb_ops_pnl,
+diff --git a/drivers/video/fbdev/sstfb.c b/drivers/video/fbdev/sstfb.c
+index 27d4b0ace2d6..cd4d640f9477 100644
+--- a/drivers/video/fbdev/sstfb.c
++++ b/drivers/video/fbdev/sstfb.c
+@@ -1382,7 +1382,7 @@ static int sstfb_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto fail;
+ 	}
+ 	sst_get_memsize(info, &fix->smem_len);
+-	strlcpy(fix->id, spec->name, sizeof(fix->id));
++	strscpy(fix->id, spec->name, sizeof(fix->id));
+ 
+ 	printk(KERN_INFO "%s (revision %d) with %s dac\n",
+ 		fix->id, par->revision, par->dac_sw.name);
+diff --git a/drivers/video/fbdev/sunxvr1000.c b/drivers/video/fbdev/sunxvr1000.c
+index 15b079505a00..490bd9a14763 100644
+--- a/drivers/video/fbdev/sunxvr1000.c
++++ b/drivers/video/fbdev/sunxvr1000.c
+@@ -80,7 +80,7 @@ static int gfb_set_fbinfo(struct gfb_info *gp)
+ 	info->pseudo_palette = gp->pseudo_palette;
+ 
+ 	/* Fill fix common fields */
+-	strlcpy(info->fix.id, "gfb", sizeof(info->fix.id));
++	strscpy(info->fix.id, "gfb", sizeof(info->fix.id));
+         info->fix.smem_start = gp->fb_base_phys;
+         info->fix.smem_len = gp->fb_size;
+         info->fix.type = FB_TYPE_PACKED_PIXELS;
+diff --git a/drivers/video/fbdev/sunxvr2500.c b/drivers/video/fbdev/sunxvr2500.c
+index 1d3bacd9d5ac..1279b02234f8 100644
+--- a/drivers/video/fbdev/sunxvr2500.c
++++ b/drivers/video/fbdev/sunxvr2500.c
+@@ -84,7 +84,7 @@ static int s3d_set_fbinfo(struct s3d_info *sp)
+ 	info->pseudo_palette = sp->pseudo_palette;
+ 
+ 	/* Fill fix common fields */
+-	strlcpy(info->fix.id, "s3d", sizeof(info->fix.id));
++	strscpy(info->fix.id, "s3d", sizeof(info->fix.id));
+         info->fix.smem_start = sp->fb_base_phys;
+         info->fix.smem_len = sp->fb_size;
+         info->fix.type = FB_TYPE_PACKED_PIXELS;
+diff --git a/drivers/video/fbdev/sunxvr500.c b/drivers/video/fbdev/sunxvr500.c
+index 9daf17b11106..f7b463633ba0 100644
+--- a/drivers/video/fbdev/sunxvr500.c
++++ b/drivers/video/fbdev/sunxvr500.c
+@@ -207,7 +207,7 @@ static int e3d_set_fbinfo(struct e3d_info *ep)
+ 	info->pseudo_palette = ep->pseudo_palette;
+ 
+ 	/* Fill fix common fields */
+-	strlcpy(info->fix.id, "e3d", sizeof(info->fix.id));
++	strscpy(info->fix.id, "e3d", sizeof(info->fix.id));
+         info->fix.smem_start = ep->fb_base_phys;
+         info->fix.smem_len = ep->fb_size;
+         info->fix.type = FB_TYPE_PACKED_PIXELS;
+diff --git a/drivers/video/fbdev/tcx.c b/drivers/video/fbdev/tcx.c
+index 1638a40fed22..01d87f53324d 100644
+--- a/drivers/video/fbdev/tcx.c
++++ b/drivers/video/fbdev/tcx.c
+@@ -333,7 +333,7 @@ tcx_init_fix(struct fb_info *info, int linebytes)
+ 	else
+ 		tcx_name = "TCX24";
+ 
+-	strlcpy(info->fix.id, tcx_name, sizeof(info->fix.id));
++	strscpy(info->fix.id, tcx_name, sizeof(info->fix.id));
+ 
+ 	info->fix.type = FB_TYPE_PACKED_PIXELS;
+ 	info->fix.visual = FB_VISUAL_PSEUDOCOLOR;
+diff --git a/drivers/video/fbdev/tdfxfb.c b/drivers/video/fbdev/tdfxfb.c
+index 67e37a62b07c..8a8122f8bfeb 100644
+--- a/drivers/video/fbdev/tdfxfb.c
++++ b/drivers/video/fbdev/tdfxfb.c
+@@ -1264,7 +1264,7 @@ static int tdfxfb_setup_ddc_bus(struct tdfxfb_i2c_chan *chan, const char *name,
+ {
+ 	int rc;
+ 
+-	strlcpy(chan->adapter.name, name, sizeof(chan->adapter.name));
++	strscpy(chan->adapter.name, name, sizeof(chan->adapter.name));
+ 	chan->adapter.owner		= THIS_MODULE;
+ 	chan->adapter.class		= I2C_CLASS_DDC;
+ 	chan->adapter.algo_data		= &chan->algo;
+@@ -1293,7 +1293,7 @@ static int tdfxfb_setup_i2c_bus(struct tdfxfb_i2c_chan *chan, const char *name,
+ {
+ 	int rc;
+ 
+-	strlcpy(chan->adapter.name, name, sizeof(chan->adapter.name));
++	strscpy(chan->adapter.name, name, sizeof(chan->adapter.name));
+ 	chan->adapter.owner		= THIS_MODULE;
+ 	chan->adapter.algo_data		= &chan->algo;
+ 	chan->adapter.dev.parent	= dev;
+diff --git a/drivers/video/fbdev/tgafb.c b/drivers/video/fbdev/tgafb.c
+index ae0cf5540636..1fff5fd7ab51 100644
+--- a/drivers/video/fbdev/tgafb.c
++++ b/drivers/video/fbdev/tgafb.c
+@@ -1344,7 +1344,7 @@ tgafb_init_fix(struct fb_info *info)
+ 		memory_size = 16777216;
+ 	}
+ 
+-	strlcpy(info->fix.id, tga_type_name, sizeof(info->fix.id));
++	strscpy(info->fix.id, tga_type_name, sizeof(info->fix.id));
+ 
+ 	info->fix.type = FB_TYPE_PACKED_PIXELS;
+ 	info->fix.type_aux = 0;
+diff --git a/drivers/video/fbdev/tridentfb.c b/drivers/video/fbdev/tridentfb.c
+index 319131bd72cf..cda095420ee8 100644
+--- a/drivers/video/fbdev/tridentfb.c
++++ b/drivers/video/fbdev/tridentfb.c
+@@ -270,7 +270,7 @@ static int tridentfb_setup_ddc_bus(struct fb_info *info)
+ {
+ 	struct tridentfb_par *par = info->par;
+ 
+-	strlcpy(par->ddc_adapter.name, info->fix.id,
++	strscpy(par->ddc_adapter.name, info->fix.id,
+ 		sizeof(par->ddc_adapter.name));
+ 	par->ddc_adapter.owner		= THIS_MODULE;
+ 	par->ddc_adapter.class		= I2C_CLASS_DDC;
+-- 
+2.35.1
+
