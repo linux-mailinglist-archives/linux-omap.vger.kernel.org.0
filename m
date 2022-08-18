@@ -2,357 +2,238 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4924759816A
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Aug 2022 12:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9999F5984EF
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Aug 2022 15:56:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243865AbiHRKYE (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 18 Aug 2022 06:24:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38970 "EHLO
+        id S245376AbiHRN4l (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 18 Aug 2022 09:56:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244083AbiHRKX6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Aug 2022 06:23:58 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B26132EE2;
-        Thu, 18 Aug 2022 03:23:56 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id dc19so2356475ejb.12;
-        Thu, 18 Aug 2022 03:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc;
-        bh=RplyATs+5DTF+YjIK0v2cAulFjYeMsWMYti/7PKKBuw=;
-        b=aYjcQom1/ahKC99eD3zz7Xglze6giU8J2ONzA84VxCMaIbHNGLMuhyFWrKrc+9w/1J
-         4VZv0IBDRqeKF0tXVlAit6fA9CsV+A1eVnQL2R5sASz7/3OxN9ShJVhlWdvzSv1HkuFI
-         dJ6gYEJONKWNzT0MRY5YI1hynADfkMlkaC2gxfCLf2+AsrO64rwP+jurziekwEpwhDmQ
-         uP9HIpDstS2HSBfNzMMsjDsBX0UjCwW1pvhOLsH9yARayXn0FtJyMnY4wLacNOMCyQjD
-         aXvun4f7NuepMwHxyPCQz3gsmpFnuYlFm8TijqSeMT9ZPG4wwNHv3zw3olu1Ynu3cYUM
-         mTxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject
-         :x-gm-message-state:from:to:cc;
-        bh=RplyATs+5DTF+YjIK0v2cAulFjYeMsWMYti/7PKKBuw=;
-        b=CXVvW+Ep89+8zvOu3unaLkaCqJc0MYisXDv3bFLEA0B3RHVzRVDXol/uTpbkfhiVmT
-         xtZK9k7kZWDDXAO6Fy+i436Ds8+JkjbVlXhDv+MebxnnfyDTaeHGjG2DDv+LliyzkiKh
-         SL+0HTQ9iDsqwdyX52DEqSKKHcl5dpIUf19rPn6nlApkPPFNNqLezJV8B1Vntdvtifet
-         fJlbkeHlowpx3Mo4BxLp6oklZYu95uWpnZ/xb/oX0yYRhyairCT+NfZWlQs5c+gDh/9K
-         bwdKjVBVOJTFylJ0F19i/QoubnGPVWw7p8zkM9QbSEqC2qRX7tyvPgYQXIceiKvBupHj
-         cB/g==
-X-Gm-Message-State: ACgBeo351uBO1sUIGPJ2MqMgMRsa0wP6HOi0QqwCIuBxsoWI+cypiCBs
-        /gvjGHx/BjZFepyJSYqw4ME=
-X-Google-Smtp-Source: AA6agR7v55O6fmuAibhOnU4DaDnmMfWOyg0+OpOuC63m83RUwzfpGMQ5bnZdUFMXatCXdS01KS0sHg==
-X-Received: by 2002:a17:906:9bfa:b0:730:cd06:ba3f with SMTP id de58-20020a1709069bfa00b00730cd06ba3fmr1501168ejc.224.1660818234767;
-        Thu, 18 Aug 2022 03:23:54 -0700 (PDT)
-Received: from [192.168.1.10] ([46.249.74.23])
-        by smtp.googlemail.com with ESMTPSA id a21-20020a50ff15000000b00445bda73fbesm880047edu.33.2022.08.18.03.23.52
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Aug 2022 03:23:53 -0700 (PDT)
-Subject: Re: [PATCH 3/3] drm: omapdrm: Do no allocate non-scanout GEMs through
- DMM/TILER
-To:     Yongqin Liu <yongqin.liu@linaro.org>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc:     tomba@kernel.org, airlied@linux.ie, daniel@ffwll.ch,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, merlijn@wizzup.org, tony@atomide.com,
-        "Bajjuri, Praneeth" <praneeth@ti.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <1642587791-13222-4-git-send-email-ivo.g.dimitrov.75@gmail.com>
- <5b6d3e7f-c638-fdc7-5080-44d34abed610@ideasonboard.com>
- <a3ed3a2c-86ce-1c85-e8aa-c08b54ad1a43@gmail.com>
- <CAMSo37XdZSZUHLWJj373DdtOBA9=uD8SJ7ywWCYF2pU1i4cB_g@mail.gmail.com>
- <ed4fe238-4fcd-1253-658f-18fe1e1f13b0@gmail.com>
- <CAMSo37V3U5nYng77jzSnKH73CTLhGYQJu11Q5wRt289se5nFJw@mail.gmail.com>
- <4128aed0-211a-d12a-6a86-deb4457d39f7@gmail.com>
- <CAMSo37W-DePLDP=zk-nY6FGcZuk0QzHj4=usrieyV0TNcNfbXw@mail.gmail.com>
-From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Message-ID: <da2a661e-9da0-850c-3067-8c1e8d5531bc@gmail.com>
-Date:   Thu, 18 Aug 2022 13:23:46 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Firefox/60.0 Thunderbird/60.6.1
+        with ESMTP id S245396AbiHRN4X (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Aug 2022 09:56:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DD58B7284;
+        Thu, 18 Aug 2022 06:55:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1AFE616F4;
+        Thu, 18 Aug 2022 13:55:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D466C433D6;
+        Thu, 18 Aug 2022 13:55:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660830939;
+        bh=fHzcBNlzGIZpl1xhXWFZNUDkhjIsfNqXuL0NTcnbSpk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=a1Rz0rDFPWuA7x8HY71a9klDTS7phrO7CnzcNYqrI/L2GvFT+RZWZyoewgnd3RMoG
+         3V1zaan4Wz2R1xAXJ5Pvrwoi9ky/RDZGOzCFsMhiIVd11yOr3RIr25wBN5VyaAVJUX
+         cMyEaaJGETJ/OS892Rjm1jP7uo02MXutvpbI7b30rOaNWAgSoKnZ/XuLBvVUH0OuMq
+         buenYGD5g12Wtfp3Jh+iPkwxWxUj1UDyvXSTpK11YHA+JcXOQC/ZC6i+HIVtMRema+
+         XERxdZknt9iTB3KXMzp0sz8ZSvkWFS2BVNNEmzz09TETaH0JS0MvNCskXudG5AQWiq
+         Wgl/naXAHsAZA==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Qin Jian <qinjian@cqplus1.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>, Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?q?=C5=81ukasz=20Stelmach?= <l.stelmach@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Shannon Nelson <snelson@pensando.io>,
+        Peter Chen <peter.chen@nxp.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Felipe Balbi <balbi@ti.com>, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: [PATCH 00/11] ARM: defconfig cleanup
+Date:   Thu, 18 Aug 2022 15:55:21 +0200
+Message-Id: <20220818135522.3143514-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <CAMSo37W-DePLDP=zk-nY6FGcZuk0QzHj4=usrieyV0TNcNfbXw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+From: Arnd Bergmann <arnd@arndb.de>
 
-On 17.08.22 г. 7:52 ч., Yongqin Liu wrote:
-> Hi, Ivaylo
-> 
-> On Mon, 15 Aug 2022 at 14:23, Ivaylo Dimitrov
-> <ivo.g.dimitrov.75@gmail.com> wrote:
->>
->> Hi Liu,
->>
->> On 14.08.22 г. 17:27 ч., Yongqin Liu wrote:
->>> Hi, IvayIo
->>>
->>> Thanks very much for the reply!
->>>
->>> On Sat, 13 Aug 2022 at 14:58, Ivaylo Dimitrov
->>> <ivo.g.dimitrov.75@gmail.com> wrote:
->>>>
->>>> Hi Liu,
->>>>
->>>> On 12.08.22 г. 7:35 ч., Yongqin Liu wrote:
->>>>> Hi, Ivaylo, Tomi
->>>>>
->>>>> We have one X15 Android AOSP master build, it could not have the home
->>>>> screen displayed
->>>>> on the hdmi monitor connected with this change, with the following
->>>>> message printed on the serial console
->>>>>        [  607.404205] omapdrm omapdrm.0: Failed to setup plane plane-0
->>>>>        [  607.410522] omapdrm omapdrm.0: Failed to setup plane plane-1
->>>>>        [  607.416381] omapdrm omapdrm.0: Failed to setup plane plane-2
->>>>>        [  607.422088] omapdrm omapdrm.0: Failed to setup plane plane-3
->>>>>
->>>>>       # for details, please check the link here: http://ix.io/47m1
->>>>>
->>>>> It will work with home screen displayed on the hdmi monitor if this
->>>>> change is reverted.
->>>>>
->>>>> Is this the broken problem you talked about here?
->>>>>
->>>>> And could you please give some suggestions on how to have the x15
->>>>> Android build work with this change?
->>>>>
->>>>
->>>> Make sure scanout (i.e. those to be displayed) buffers are actually
->>>> allocated as such - OMAP_BO_SCANOUT flag must be set when calling
->>>> omap_bo_new().
->>>
->>> I am not familiar with this area, I am sorry if I asked quite silly questions:(
->>> I googled omap_bo_new, and found it's a function of libdrm here[1], is
->>> it what you meant here?
->>>
->>
->> Yes, calling this function from userspace ends in kernel code the
->> $subject patch is part of.
->>
->>> If it's the omap_bo_new that we should pass OMAP_BO_SCANOUT when it is called,
->>> then is it the correct way to update omap_bo_new to add the OMAP_BO_SCANOUT flag
->>> before it calls omap_bo_new_impl?
->>>
->>
->> omap_bo_new() is fine and does not need any updates/fixes, it is the
->> code that uses it (whoever it is, I am not familiar with the userspace
->> you are using) that shall pass correct flags (third parameter) when
->> calling it.
-> 
-> Sorry, I do not get the point here.
-> Like you said, the code that calls omap_bo_new needs to pass OMAP_BO_SCANOUT,
-> then IMO omap_bo_new should be the best place to add the OMAP_BO_SCANOUT flag,
-> (like via flags = flags | OMAP_BO_SCANOUT), that could help avoid
-> missing the flag by some code,
-> and also avoids hacks/changes on the possible blob binaries.
-> 
-> Do I misunderstand somewhere?
-> Or is there some case that OMAP_BO_SCANOUT shouldn't be passed when
-> omap_bo_new is called?
-> 
+I have continued the cleanup of the multi_*_defconfig files, and
+reordered the other files according to the 'make savedefconfig'
+output as before.
 
-Exactly. You need to pass OMAP_BO_SCANOUT only when you want your 
-buffers to be 'scanout' buffers(i.e. buffers that can be displayed on 
-screen), which is not always the case - there is no need offscreen 
-buffers or pixmaps to be scanout capable, for example. There are more 
-cases like that.
+I would like to queue these up for 6.1, though the last two
+should probably be considered bugfixes and merged for 6.0.
 
-The problem is that scanout buffer on OMAP4 allocate additional 
-resources in DMM/TILER (a piece of hardware) and those resources are 
-limited. Not only that, but DMM/TILER memory space eventually gets 
-fragmented over time (if you have lots of allocataoins/deallocations) 
-and you will start getting ENOMEM (or similar) errors.
+Since a third of the defconfig files are for machines that
+are now marked as unused, I skipped those files. There are still
+a few things that get removed by 'make savedefconfig' as they
+now get selected by some driver:
 
-Ofc, in your particular use case you may never hit such issues.
+-CONFIG_SERIAL_BCM63XX=y
+-CONFIG_SND_AUDIO_GRAPH_CARD=m
+-CONFIG_NEW_LEDS=y
+-CONFIG_LEDS_TRIGGERS=y
+-CONFIG_TEGRA20_APB_DMA=y
 
->> BTW you shall really find who and how uses OMAP BO API, in theory it
->> might use ioctls directly and not call omap_bo_xxx functions.
-> 
-> Do you mean the DRM_OMAP_GEM_NEW ioctl api?
-> There is no place in the AOSP tree to call that except the
-> omap_bo_new_impl function,
-> which is called by the omap_bo_new and omap_bo_new_tiled functions.
-> The omap_bo_new should not be called with the OMAP_BO_TILED flag,
-> while the omap_bo_new_tiled should be called with the OMAP_BO_TILED flag
-> 
-> Regarding to the omap_bo_new function, there are 2 places call it in
-> the AOSP tree:
-> #1 ./external/libkmsxx/kms++/src/omap/omapframebuffer.cpp
-> #2 ./device/ti/beagle_x15/gpu/gralloc.am57x.so
-> 
-> #1 seems not used in AOSP yet, and #2 is one blob binary we do not
-> have the source for.
-> 
+I think for those we should follow up with patches to remove the
+'select' statements.
 
-I would bet on gralloc.am57x.so.
+       Arnd
 
->> strace
->> would be your friend there. or gdb, or whatever tools are used on
->> android. Or put some printfs() in omap_bo_new() that output the PID of
->> the calling process, etc.
-> 
-> Thanks a lot for these great suggestions! Will use them when possible.
-> 
->>> And another question is that, since the userspace(libdrm) will be used
->>> to work with different kernel versions,
->>> like the old 4.14, 4.19, etc, do you think there will be problem to
->>> pass  OMAP_BO_SCANOUT
->>> from the userspace side with the old kernels(which does not have this change)?
->>> does this change need to be backported to the old kernel versions?
->>
->> There should not be any issue. The changes could be backported if one
->> hits the issues this $series is fixing, but there is no need.
-> 
-> Thanks for the confirmation!
-> I just boot-tested with adding OMAP_BO_SCANOUT in the omap_bo_new function,
-> and it worked with the current 4.14, 4.19, and the mainline kernels.
-> # via adding line "flags = flags | OMAP_BO_SCANOUT" in the omap_bo_new function.
-> 
-
-sure, the point is that with this change *every* BO will be allocated as 
-scanout BO, potentially leading to the above explained issues.
-
->>>
->>> And the last question is that, omap_bo_new might be called by some
->>> property binaries what not everyone
->>> could get the source to update, for such case what's your suggestions?
->>>
->>
->> Hard to say without knowing what that library would be.
->>
->> When I hit issues with closed blobs, sometimes I reverse-engineer them
->> to fix the issue, example:
->>
->> https://github.com/maemo-leste/sgx-ddk-um/tree/master/dbm
->>
->> This is REed libdbm from sgx-ddk-um 1.17.4948957, that is responsible
->> for allocating BOs (what omap_bo_new() does) but it uses DUMB buffers
->> API, instead of OMAP BO API.
->>
->> I guess you are using some older version of sgx-ddk-um, so you may fix
->> in similar way. Or binary patch.
-> 
-> The blob binary that calls omap_bo_new is the gralloc.am57x.so here[2]:
-> any suggestions with it?
-> # sorry, I am not able to find out how you did the reverse-engineer
-> work# with the dbm repository shared here,
-> # not sure if you could give some tutorial steps for the similar
-> reverse-engineer# work with gralloc.am57x.so
-> 
-
-Sorry, but it is like if you ask me to provide you with a tutorial on 
-how to do brain surgery :)
-
-> [2]: https://android.googlesource.com/device/ti/beagle-x15/+/refs/heads/master/gpu/gralloc.am57x.so
-> 
-
-I investigated this a bit and it seems it calls omap_bo_new() in a 
-wrapper function like:
-
-bo = omap_bo_new(dev, -page_size & (size + page_size - 1), ((param5 & 
-0x800000) != 0) | OMAP_BO_WC | OMAP_BO_MEM_CONTIG);
-
-Didn't investigate further what param5 is, but it controls if 
-OMAP_BO_SCANOUT is passed to omap_bo_new or not.
-
-However, this library was not made with upstream kernel in mind, as 
-AFAIK OMAP_BO_MEM_CONTIG never made it upstream:
-
-https://yhbt.net/lore/all/2580272.MiZDHyRxZo@avalon/T/
-
-@Tomi - any comment?
-
-So, you have couple of options:
-
-1. Ask TI for upstream-compatible library.
-2. Try to push OMAP_BO_MEM_CONTIG patch upstream.
-3. Modify omap_bo_new() to something like:
-
-.
-.
-.
-#define OMAP_BO_MEM_CONTIG	0x00000008	/* only use contiguous dma mem */
-.
-.
-.
-if (flags & OMAP_BO_MEM_CONTIG)
-   flags |= OMAP_BO_SCANOUT;
-.
-.
-.
-
-This will not achieve exactly what OMAP_BO_MEM_CONTIG is supposed to do, 
-but should make it work, at least.
-
-Regards,
-Ivo
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Claudiu Beznea <claudiu.beznea@microchip.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: NXP Linux Team <linux-imx@nxp.com>
+Cc: Vladimir Zapolskiy <vz@mleia.com>
+Cc: Liviu Dudau <liviu.dudau@arm.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Gregory Clement <gregory.clement@bootlin.com>
+Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Magnus Damm <magnus.damm@gmail.com>
+Cc: Dinh Nguyen <dinguyen@kernel.org>
+Cc: Qin Jian <qinjian@cqplus1.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Bin Liu <b-liu@ti.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Tudor Ambarus <tudor.ambarus@microchip.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: "Łukasz Stelmach" <l.stelmach@samsung.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Richard Cochran <richardcochran@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Shannon Nelson <snelson@pensando.io>
+Cc: Peter Chen <peter.chen@nxp.com>
+Cc: Stefan Wahren <stefan.wahren@i2se.com>
+Cc: Felipe Balbi <balbi@ti.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-sunxi@lists.linux.dev
+Cc: linux-tegra@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
 
 
-> Thanks,
-> Yongqin Liu
-> 
->>>>> On Thu, 17 Feb 2022 at 23:29, Ivaylo Dimitrov
->>>>> <ivo.g.dimitrov.75@gmail.com> wrote:
->>>>>>
->>>>>>
->>>>>>
->>>>>> On 17.02.22 г. 14:46 ч., Tomi Valkeinen wrote:
->>>>>>> Hi,
->>>>>>>
->>>>>>> On 19/01/2022 12:23, Ivaylo Dimitrov wrote:
->>>>>>>> On devices with DMM, all allocations are done through either DMM or
->>>>>>>> TILER.
->>>>>>>> DMM/TILER being a limited resource means that such allocations will start
->>>>>>>> to fail before actual free memory is exhausted. What is even worse is
->>>>>>>> that
->>>>>>>> with time DMM/TILER space gets fragmented to the point that even if we
->>>>>>>> have
->>>>>>>> enough free DMM/TILER space and free memory, allocation fails because
->>>>>>>> there
->>>>>>>> is no big enough free block in DMM/TILER space.
->>>>>>>>
->>>>>>>> Such failures can be easily observed with OMAP xorg DDX, for example -
->>>>>>>> starting few GUI applications (so buffers for their windows are
->>>>>>>> allocated)
->>>>>>>> and then rotating landscape<->portrait while closing and opening new
->>>>>>>> windows soon results in allocation failures.
->>>>>>>>
->>>>>>>> Fix that by mapping buffers through DMM/TILER only when really needed,
->>>>>>>> like, for scanout buffers.
->>>>>>>
->>>>>>> Doesn't this break users that get a buffer from omapdrm and expect it to
->>>>>>> be contiguous?
->>>>>>>
->>>>>>
->>>>>> If you mean dumb buffer, then no, this does not break users as dumb
->>>>>> buffers are allocated as scanout:
->>>>>>
->>>>>> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/omapdrm/omap_gem.c#L603
->>>>>>
->>>>>> If you mean omap_bo allocated buffers, then if users want
->>>>>> linear(scanout) buffer, then they request it explicitly by passing
->>>>>> OMAP_BO_SCANOUT.
->>>>>>
->>>>>> Ivo
->>>>>
->>>>>
->>>>>
->>>
->>>
->>>
-> 
-> 
-> 
+Arnd Bergmann (11):
+  ARM: defconfig: reorder defconfig files
+  ARM: defconfig: clean up multi_v4t and multi_v5 configs
+  ARM: defconfig: drop CONFIG_NET_VENDOR_ASIX=y
+  ARM: defconfig: drop CONFIG_SERIAL_OMAP references
+  ARM: defconfig: drop CONFIG_DRM_RCAR_LVDS
+  ARM: defconfig: drop CONFIG_PTP_1588_CLOCK=y
+  ARM: defconfig: drop CONFIG_SND_SOC_FSL_SAI
+  ARM: defconfig: drop CONFIG_USB_FSL_USB2
+  ARM: defconfig: drop CONFIG_MICROCHIP_PIT64B
+  ARM: defconfig: fix CONFIG_SND_SOC_AC97_CODEC name
+  musb: fix USB_MUSB_TUSB6010 dependency
+
+ arch/arm/configs/at91_dt_defconfig   |  2 +-
+ arch/arm/configs/dove_defconfig      |  2 +-
+ arch/arm/configs/exynos_defconfig    |  2 +-
+ arch/arm/configs/imx_v6_v7_defconfig |  2 +-
+ arch/arm/configs/keystone_defconfig  |  7 +++----
+ arch/arm/configs/lpc18xx_defconfig   |  2 +-
+ arch/arm/configs/mmp2_defconfig      |  2 +-
+ arch/arm/configs/mps2_defconfig      |  2 +-
+ arch/arm/configs/multi_v4t_defconfig |  2 --
+ arch/arm/configs/multi_v5_defconfig  |  3 +--
+ arch/arm/configs/multi_v7_defconfig  | 22 +++++++---------------
+ arch/arm/configs/mvebu_v5_defconfig  |  2 +-
+ arch/arm/configs/mxs_defconfig       |  4 ++--
+ arch/arm/configs/omap1_defconfig     |  2 +-
+ arch/arm/configs/omap2plus_defconfig |  7 ++-----
+ arch/arm/configs/orion5x_defconfig   |  2 +-
+ arch/arm/configs/pxa168_defconfig    |  2 +-
+ arch/arm/configs/pxa910_defconfig    |  2 +-
+ arch/arm/configs/pxa_defconfig       |  2 +-
+ arch/arm/configs/s3c6400_defconfig   |  2 +-
+ arch/arm/configs/s5pv210_defconfig   |  2 +-
+ arch/arm/configs/sama5_defconfig     |  6 +++---
+ arch/arm/configs/sama7_defconfig     |  4 ++--
+ arch/arm/configs/shmobile_defconfig  |  2 +-
+ arch/arm/configs/socfpga_defconfig   |  6 +++---
+ arch/arm/configs/sp7021_defconfig    |  2 +-
+ arch/arm/configs/spear13xx_defconfig |  2 +-
+ arch/arm/configs/spear3xx_defconfig  |  2 +-
+ arch/arm/configs/spear6xx_defconfig  |  2 +-
+ arch/arm/configs/stm32_defconfig     |  2 +-
+ arch/arm/configs/sunxi_defconfig     |  2 +-
+ arch/arm/configs/tegra_defconfig     |  2 +-
+ arch/arm/configs/vexpress_defconfig  |  2 +-
+ drivers/usb/musb/Kconfig             |  2 +-
+ 34 files changed, 48 insertions(+), 63 deletions(-)
+
+-- 
+2.29.2
+
