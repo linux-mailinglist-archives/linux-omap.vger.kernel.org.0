@@ -2,57 +2,58 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F172598514
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Aug 2022 16:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C49159851A
+	for <lists+linux-omap@lfdr.de>; Thu, 18 Aug 2022 16:00:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245450AbiHRN6W (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 18 Aug 2022 09:58:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34056 "EHLO
+        id S245514AbiHRN7o (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 18 Aug 2022 09:59:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245467AbiHRN6H (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Aug 2022 09:58:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46F11B7756;
-        Thu, 18 Aug 2022 06:58:07 -0700 (PDT)
+        with ESMTP id S245454AbiHRN7Z (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Aug 2022 09:59:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B5C67179;
+        Thu, 18 Aug 2022 06:58:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4AE4616F8;
-        Thu, 18 Aug 2022 13:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8E1C433C1;
-        Thu, 18 Aug 2022 13:58:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 590C1616D6;
+        Thu, 18 Aug 2022 13:58:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83D8C433C1;
+        Thu, 18 Aug 2022 13:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660831086;
-        bh=AdTKGhR3ZoSq3QjtGA2FJAdfGi00v8hiRPln1cuwBGI=;
+        s=k20201202; t=1660831137;
+        bh=b8vt69Qw477yM8JIOVSGHYEMcdgBcpySmH+QDCFvREI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HKIinNsrHytow9Dx2L2W+cW4VJxiYbHQ3FsnCJxNa5P/g03TAe/3LVDUXhMVyw5RC
-         QTga7hlm4tduUdWJTAOVSnHDzGDWHJ8uHztAxmHYmBtmhKdmsSSEiYCp8IYqfCcQyV
-         vpsgH6lZFVIxwdRVtf5hnCyXrF7uFKESO6zqRgQJX7eq9bXQp6YETRWfdO1jJhi5Ur
-         cXIDZQWZJSUIfuSTXZ+eWm3eBfgIfAFdNLhusxedfD/hL4gw5/jhPGm3yCXuERVCIA
-         KHX8xAwa5G+4fYG0VoBKN3tVDU05aVar+Y9dbBfnJ0YUCA+ZXPoyMzhRgAua9wzPeL
-         zoobriewRCBDw==
+        b=muoubQR1vF3zI+qMAoLPrSRs/OGngZZcUC/I2h0qUVoxX3jGQq6Tt2unaA20wpQR3
+         oq7OU5/MJxa98aD/+npZmPZt0eOPeUx0wxEyv3ueqr7ZC+9yq0eQiAEH+2r0CWnLBg
+         BDeeVB1UsmpLI2rylEKG6mR1AG3xedJpdxVjCsJA8q/4yeup8LEehdwvIAB4AHhtmq
+         ynasq1+AdOU2IcR+O74ErhRKMxgV4L5slBfWOu433t+xFvQf4Ex7Q4jYqFLSfNIFFr
+         EBSXZ0vksPBaI8+klXRRUFfmTdKsDrgp/Rgp1DXaLIK3Asme3RPvWUH1FEMXS0Q18N
+         nedEQcd+JW6Fw==
 From:   Arnd Bergmann <arnd@kernel.org>
 To:     linux-arm-kernel@lists.infradead.org,
-        Tony Lindgren <tony@atomide.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
+        Tony Lindgren <tony@atomide.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Shannon Nelson <snelson@pensando.io>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     Sudeep Holla <sudeep.holla@arm.com>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
         Joel Stanley <joel@jms.id.au>,
         Florian Fainelli <f.fainelli@gmail.com>,
-        Thierry Reding <treding@nvidia.com>,
         Dmitry Osipenko <digetx@gmail.com>,
+        Thierry Reding <treding@nvidia.com>,
         Mark Brown <broonie@kernel.org>,
         William Zhang <william.zhang@broadcom.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Michael Walle <michael@walle.cc>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Adam Ford <aford173@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: [PATCH 04/11] ARM: defconfig: drop CONFIG_SERIAL_OMAP references
-Date:   Thu, 18 Aug 2022 15:57:13 +0200
-Message-Id: <20220818135737.3143895-3-arnd@kernel.org>
+        Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH 06/11] ARM: defconfig: drop CONFIG_PTP_1588_CLOCK=y
+Date:   Thu, 18 Aug 2022 15:57:15 +0200
+Message-Id: <20220818135737.3143895-5-arnd@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20220818135737.3143895-1-arnd@kernel.org>
 References: <20220818135522.3143514-1-arnd@kernel.org>
@@ -71,44 +72,54 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-This driver is mutually exclusive with the new 8250_OMAP
-driver, so 'make defconfig' turns it off already. Drop
-the reference now.
+PTP support is now enabled by default for configurations with
+ethernet support, so drop the redundant entries in defconfig
+files.
 
-Fixes: 077e1cde78c3 ("ARM: omap2plus_defconfig: Enable 8250_OMAP")
-Fixes: f98d45145e6a ("ARM: multi_v7_defconfig: Enable 8250-omap serial driver and use it by default")
+Fixes: e5f31552674e ("ethernet: fix PTP_1588_CLOCK dependencies")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm/configs/multi_v7_defconfig  | 2 --
- arch/arm/configs/omap2plus_defconfig | 2 --
- 2 files changed, 4 deletions(-)
+ arch/arm/configs/keystone_defconfig  | 1 -
+ arch/arm/configs/multi_v7_defconfig  | 1 -
+ arch/arm/configs/omap2plus_defconfig | 1 -
+ 3 files changed, 3 deletions(-)
 
+diff --git a/arch/arm/configs/keystone_defconfig b/arch/arm/configs/keystone_defconfig
+index 97f958d55019..4a5b9adbf2a1 100644
+--- a/arch/arm/configs/keystone_defconfig
++++ b/arch/arm/configs/keystone_defconfig
+@@ -152,7 +152,6 @@ CONFIG_SPI=y
+ CONFIG_SPI_CADENCE_QUADSPI=y
+ CONFIG_SPI_DAVINCI=y
+ CONFIG_SPI_SPIDEV=y
+-CONFIG_PTP_1588_CLOCK=y
+ CONFIG_PINCTRL_SINGLE=y
+ CONFIG_GPIOLIB=y
+ CONFIG_GPIO_SYSFS=y
 diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
-index ecf743b3409d..4cfe795981c8 100644
+index b3669cf855b3..a523591798cb 100644
 --- a/arch/arm/configs/multi_v7_defconfig
 +++ b/arch/arm/configs/multi_v7_defconfig
-@@ -377,8 +377,6 @@ CONFIG_SERIAL_MSM=y
- CONFIG_SERIAL_MSM_CONSOLE=y
- CONFIG_SERIAL_VT8500=y
- CONFIG_SERIAL_VT8500_CONSOLE=y
--CONFIG_SERIAL_OMAP=y
--CONFIG_SERIAL_OMAP_CONSOLE=y
- CONFIG_SERIAL_BCM63XX=y
- CONFIG_SERIAL_BCM63XX_CONSOLE=y
- CONFIG_SERIAL_XILINX_PS_UART=y
+@@ -462,7 +462,6 @@ CONFIG_SPI_TEGRA20_SLINK=y
+ CONFIG_SPI_XILINX=y
+ CONFIG_SPI_SPIDEV=y
+ CONFIG_SPMI=y
+-CONFIG_PTP_1588_CLOCK=y
+ CONFIG_PINCTRL_AS3722=y
+ CONFIG_PINCTRL_MICROCHIP_SGPIO=y
+ CONFIG_PINCTRL_OCELOT=y
 diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index e273365838cb..89cda0877c52 100644
+index 89cda0877c52..39c89576ab2b 100644
 --- a/arch/arm/configs/omap2plus_defconfig
 +++ b/arch/arm/configs/omap2plus_defconfig
-@@ -419,8 +419,6 @@ CONFIG_SERIAL_8250_DETECT_IRQ=y
- CONFIG_SERIAL_8250_RSA=y
- CONFIG_SERIAL_8250_OMAP=y
- CONFIG_SERIAL_OF_PLATFORM=y
--CONFIG_SERIAL_OMAP=y
--CONFIG_SERIAL_OMAP_CONSOLE=y
- CONFIG_SERIAL_DEV_BUS=y
- CONFIG_I2C_CHARDEV=y
- CONFIG_SPI=y
+@@ -428,7 +428,6 @@ CONFIG_SPI_TI_QSPI=m
+ CONFIG_HSI=m
+ CONFIG_OMAP_SSI=m
+ CONFIG_SSI_PROTOCOL=m
+-CONFIG_PTP_1588_CLOCK=y
+ CONFIG_PINCTRL_SINGLE=y
+ CONFIG_DEBUG_GPIO=y
+ CONFIG_GPIO_SYSFS=y
 -- 
 2.29.2
 
