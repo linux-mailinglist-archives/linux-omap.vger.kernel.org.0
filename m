@@ -2,547 +2,181 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76C14598ED6
-	for <lists+linux-omap@lfdr.de>; Thu, 18 Aug 2022 23:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F27D599589
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Aug 2022 08:57:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346414AbiHRVJu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 18 Aug 2022 17:09:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55750 "EHLO
+        id S241842AbiHSG5B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Aug 2022 02:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346606AbiHRVJV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 18 Aug 2022 17:09:21 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAF85D6327
-        for <linux-omap@vger.kernel.org>; Thu, 18 Aug 2022 14:04:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding; s=k1; bh=jAGdiy01QjFZdMcr7H4GvPmESRt
-        lhhyjFBPKrBE08G8=; b=DPdnNW+K+4OBDy3EK9Yw4qVPRXZdxcEfrenNKyobftK
-        Eu6+V1T6NJgFMeZJYrpu+LJ9JogvK36qaYT/EvB7R5EwrKHB71/BvTY5JfL/zWL+
-        yTGuYH/dly1rDHNn7nCeLJYxT0hgTpNY4xLYIxDfgQb6WBrN/4kHp+LHuAMrpJEE
-        =
-Received: (qmail 3961765 invoked from network); 18 Aug 2022 23:01:19 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 18 Aug 2022 23:01:19 +0200
-X-UD-Smtp-Session: l3s3148p1@fy11SIrmy80ucref
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Alexander Shiyan <shc_work@mail.ru>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Russell King <linux@armlinux.org.uk>,
-        Andres Salomon <dilinger@queued.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Thomas Winischhofer <thomas@winischhofer.net>,
-        linux-parisc@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-geode@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: [PATCH] video: move from strlcpy with unused retval to strscpy
-Date:   Thu, 18 Aug 2022 23:01:17 +0200
-Message-Id: <20220818210118.7541-1-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S243277AbiHSG5A (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Aug 2022 02:57:00 -0400
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80074.outbound.protection.outlook.com [40.107.8.74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99790DEB7E;
+        Thu, 18 Aug 2022 23:56:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CQ19/TYjSC24TqExKYqvKbP7QB5kPtHweVOXwvArybjJu9YhSnFj266CKztld/V0qqsMXm/+jzntRorDvS4BHJPaDkxe4HoCPAgi1smzu0ygrSqdwgPwiEJ4plMFTD7x1xwT4U+6RPfrs1V9Tg+UEZ/QEIHagEMNkszOjWvP/ODIct0gd10DlpEiNgCAA6NuN1TsuFMgCX4xChh2ofDw+AzmWtjZhVNYn1VQtoCiD3l9flPRDi6eH+a6NzT2uschQiwGnE9hfaxTEPR9IRSWZ+N+anVfpC1M/tEoMpkMPY+KzMDWXqi+BkgsNLaFdaCtI9KMUmR3vJ+K+w4MULBNkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NsUDtTqL0N0P/Sl6KzGG5FV7LIXkfS2//QVG8rdN1h8=;
+ b=aF+/f2HbdV8RByJ3iRCSI/C5vgqW33HO++trSI+lLltZ9Akbp2uX/8P2ms6f9syVs3mXg9buJv0Nfg+MG9FMKpw1OlECg706pmh9HLHElwYasU7BpyjyiEAPHkyrAZdWwW63dMsKVg2SlNXWNA13JHhkuYSxD8apvz7J9xp8TdUl0+nrVfiJnY0SjJ32t0h9P5K4gK0Z4b5SVU3ii15aD9qzPcdQczhTdGcYm+/wcVBVCqG2EaVJ6Jv0lwFiNrn2AK+WH4pTfSv+HRN5c7JfUhdzQDbB4LPfB6CEuT9+OFv/Jq+fD9RSGuus4rA6rwr4O2vyZf6muDcS7Dr/eWX0xQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.200) smtp.rcpttodomain=linaro.org smtp.mailfrom=in.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=in.bosch.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=in.bosch.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NsUDtTqL0N0P/Sl6KzGG5FV7LIXkfS2//QVG8rdN1h8=;
+ b=Y/OLC2l8B4LDz8GjOXm8ZEsWHVr6IoEE+uFiJJwLT0Xr8t+YjIOivOc3FV58W6xCtzomFWPGeUyxajMPgmlpof5q6bZbiK4g138gl8CvYPvTqVCDZmJNC96aP07x27vpeu9MIIsWKX6J2IxFFC+8jBsxVZ1+6Yb9Qu8O4DFg+hA=
+Received: from DU2PR04CA0304.eurprd04.prod.outlook.com (2603:10a6:10:2b5::9)
+ by AM7PR10MB3463.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:139::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.10; Fri, 19 Aug
+ 2022 06:56:55 +0000
+Received: from DBAEUR03FT007.eop-EUR03.prod.protection.outlook.com
+ (2603:10a6:10:2b5:cafe::68) by DU2PR04CA0304.outlook.office365.com
+ (2603:10a6:10:2b5::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5546.19 via Frontend
+ Transport; Fri, 19 Aug 2022 06:56:55 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.200)
+ smtp.mailfrom=in.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=in.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of in.bosch.com designates
+ 139.15.153.200 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.200; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.200) by
+ DBAEUR03FT007.mail.protection.outlook.com (100.127.142.161) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5546.15 via Frontend Transport; Fri, 19 Aug 2022 06:56:54 +0000
+Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
+ (139.15.153.200) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2375.31; Fri, 19 Aug
+ 2022 08:56:54 +0200
+Received: from SI-HUB2000.de.bosch.com (10.4.103.108) by
+ SI-EXCAS2000.de.bosch.com (10.139.217.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.31; Fri, 19 Aug 2022 08:56:52 +0200
+Received: from localhost.localdomain (10.167.0.81) by SI-HUB2000.de.bosch.com
+ (10.4.103.108) with Microsoft SMTP Server id 15.1.2375.31; Fri, 19 Aug 2022
+ 08:56:49 +0200
+From:   <Gireesh.Hiremath@in.bosch.com>
+To:     <krzysztof.kozlowski+dt@linaro.org>
+CC:     <m.felsch@pengutronix.de>, <linux-omap@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-input@vger.kernel.org>, <bcousson@baylibre.com>,
+        <tony@atomide.com>, <robh+dt@kernel.org>,
+        <dmitry.torokhov@gmail.com>, <mkorpershoek@baylibre.com>,
+        <davidgow@google.com>, <swboyd@chromium.org>,
+        <fengping.yu@mediatek.com>, <y.oudjana@protonmail.com>,
+        <rdunlap@infradead.org>, <colin.king@intel.com>,
+        <Gireesh.Hiremath@in.bosch.com>, <sjoerd.simons@collabora.co.uk>,
+        <VinayKumar.Shettar@in.bosch.com>,
+        <Govindaraji.Sivanantham@in.bosch.com>,
+        <anaclaudia.dias@de.bosch.com>
+Subject: Re: [v2,2/4] Input: mt-matrix-keypad: Add Bosch mt matrix keypad driver
+Date:   Fri, 19 Aug 2022 06:56:33 +0000
+Message-ID: <20220819065633.9510-1-Gireesh.Hiremath@in.bosch.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20220506072737.1590-2-Gireesh.Hiremath@in.bosch.com>
+References: <20220506072737.1590-2-Gireesh.Hiremath@in.bosch.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.167.0.81]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0fcf8426-92ed-4e26-baa1-08da81b00097
+X-MS-TrafficTypeDiagnostic: AM7PR10MB3463:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sV8A9NqapxdIOyZim5+oXcG4M8lhzxAhyy8Xl4Wyxn3fXh4sSRG/53XkxeIPqk087i+xVJI9uAVY+58e+lyz4Q0zH+tX04Z5cNKsAtwwLSTpmel0svvzGzgAuIujT58pq4pASVJ0sCbH8ZdkjCxUccgzw6fGwApNjnU94vfWzJp1vt7n8MYC6VIsBYmnm2BsRdqNLax54ka6iCKTzonws39pi8EvJH45W9fiLpCQMfOrbrLxMjXdI2BlgHl69Yp7Y/sEOI66qEubu1WVN27n2ZAm9B+0b8ZNAB2mRGF2uPiSirqmFamdfxMD2cXIK3FPZEfUoIdjfMKVUhqsW7/eYHhbotOl6mB6hfCTFSOI7ribNwa1sjPUzBDdpwQ/rjkXU8m+eMrGIYKqbWjg8qvxAIumGp8dbcc6ori6DbZ9khBpQ61HI7+OpSRXM85qKzSzlAWS7LyJepC3OeRoDVbaLqFpAwnw3KlC7uOkrP8xiPXFia0phs3kZtn6gqmoTJDDYipCyGvgoNpzFFcYwJ1e5aNwgvbA4UcHvPn32iwzFuJw/1TAKcO7FYJK51PodG/IOCH9sj3XJWqGS/TVuzOVMM/hiGkTGgRKuZPLcXJAAV/58HrjeDJPrbKKmNcv2Fww2HfZ1mzSJz0EsJUKYAix2oOglHAB5d621m2ZTuslMdazoGTCITLWvTOs8PfB563eOEjy/xaWNXFGAxgzCx8/J5PehfKx2qzX/lZIMp9gNn3RpXNjSObjfmneHqPejU8W/XKVRrGy2XdSaaS9sdkqRVt4L65vycFzYisq5Vy6NMv4rVv0HCnJB4jU8uWK1TuM
+X-Forefront-Antispam-Report: CIP:139.15.153.200;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230016)(4636009)(346002)(376002)(136003)(396003)(39860400002)(36840700001)(46966006)(40470700004)(41300700001)(40480700001)(7416002)(478600001)(86362001)(70586007)(70206006)(2876002)(8676002)(4326008)(316002)(6666004)(5660300002)(54906003)(336012)(186003)(16526019)(1076003)(107886003)(2616005)(47076005)(83380400001)(2906002)(82310400005)(26005)(8936002)(81166007)(36860700001)(82960400001)(356005)(40460700003)(82740400003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: in.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2022 06:56:54.9423
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fcf8426-92ed-4e26-baa1-08da81b00097
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.200];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource: DBAEUR03FT007.eop-EUR03.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3463
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Follow the advice of the below link and prefer 'strscpy' in this
-subsystem. Conversion is 1:1 because the return value is not used.
-Generated by a coccinelle script.
+From: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
 
-Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/video/console/sticore.c                | 2 +-
- drivers/video/fbdev/aty/atyfb_base.c           | 2 +-
- drivers/video/fbdev/aty/radeon_base.c          | 2 +-
- drivers/video/fbdev/bw2.c                      | 2 +-
- drivers/video/fbdev/cirrusfb.c                 | 2 +-
- drivers/video/fbdev/clps711x-fb.c              | 2 +-
- drivers/video/fbdev/core/fbcon.c               | 2 +-
- drivers/video/fbdev/cyber2000fb.c              | 8 ++++----
- drivers/video/fbdev/ffb.c                      | 2 +-
- drivers/video/fbdev/geode/gx1fb_core.c         | 6 +++---
- drivers/video/fbdev/gxt4500.c                  | 2 +-
- drivers/video/fbdev/i740fb.c                   | 2 +-
- drivers/video/fbdev/imxfb.c                    | 2 +-
- drivers/video/fbdev/matrox/matroxfb_base.c     | 6 +++---
- drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 2 +-
- drivers/video/fbdev/pxa168fb.c                 | 2 +-
- drivers/video/fbdev/pxafb.c                    | 2 +-
- drivers/video/fbdev/s3fb.c                     | 2 +-
- drivers/video/fbdev/simplefb.c                 | 2 +-
- drivers/video/fbdev/sis/sis_main.c             | 4 ++--
- drivers/video/fbdev/sm501fb.c                  | 2 +-
- drivers/video/fbdev/sstfb.c                    | 2 +-
- drivers/video/fbdev/sunxvr1000.c               | 2 +-
- drivers/video/fbdev/sunxvr2500.c               | 2 +-
- drivers/video/fbdev/sunxvr500.c                | 2 +-
- drivers/video/fbdev/tcx.c                      | 2 +-
- drivers/video/fbdev/tdfxfb.c                   | 4 ++--
- drivers/video/fbdev/tgafb.c                    | 2 +-
- drivers/video/fbdev/tridentfb.c                | 2 +-
- 29 files changed, 38 insertions(+), 38 deletions(-)
+Hi Krzysztof,
 
-diff --git a/drivers/video/console/sticore.c b/drivers/video/console/sticore.c
-index bd4dc97d4d34..db568f67e4dc 100644
---- a/drivers/video/console/sticore.c
-+++ b/drivers/video/console/sticore.c
-@@ -290,7 +290,7 @@ static char default_sti_path[21] __read_mostly;
- static int __init sti_setup(char *str)
- {
- 	if (str)
--		strlcpy (default_sti_path, str, sizeof (default_sti_path));
-+		strscpy(default_sti_path, str, sizeof(default_sti_path));
- 	
- 	return 1;
- }
-diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
-index a3e6faed7745..14eb718bd67c 100644
---- a/drivers/video/fbdev/aty/atyfb_base.c
-+++ b/drivers/video/fbdev/aty/atyfb_base.c
-@@ -3891,7 +3891,7 @@ static int __init atyfb_setup(char *options)
- 			 && (!strncmp(this_opt, "Mach64:", 7))) {
- 			static unsigned char m64_num;
- 			static char mach64_str[80];
--			strlcpy(mach64_str, this_opt + 7, sizeof(mach64_str));
-+			strscpy(mach64_str, this_opt + 7, sizeof(mach64_str));
- 			if (!store_video_par(mach64_str, m64_num)) {
- 				m64_num++;
- 				mach64_count = m64_num;
-diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
-index 6851f47613e1..73b07c77a4e1 100644
---- a/drivers/video/fbdev/aty/radeon_base.c
-+++ b/drivers/video/fbdev/aty/radeon_base.c
-@@ -1980,7 +1980,7 @@ static int radeon_set_fbinfo(struct radeonfb_info *rinfo)
- 	info->screen_base = rinfo->fb_base;
- 	info->screen_size = rinfo->mapped_vram;
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, rinfo->name, sizeof(info->fix.id));
-+	strscpy(info->fix.id, rinfo->name, sizeof(info->fix.id));
-         info->fix.smem_start = rinfo->fb_base_phys;
-         info->fix.smem_len = rinfo->video_ram;
-         info->fix.type = FB_TYPE_PACKED_PIXELS;
-diff --git a/drivers/video/fbdev/bw2.c b/drivers/video/fbdev/bw2.c
-index e7702fe1fe7d..6403ae07970d 100644
---- a/drivers/video/fbdev/bw2.c
-+++ b/drivers/video/fbdev/bw2.c
-@@ -182,7 +182,7 @@ static int bw2_ioctl(struct fb_info *info, unsigned int cmd, unsigned long arg)
- 
- static void bw2_init_fix(struct fb_info *info, int linebytes)
- {
--	strlcpy(info->fix.id, "bwtwo", sizeof(info->fix.id));
-+	strscpy(info->fix.id, "bwtwo", sizeof(info->fix.id));
- 
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.visual = FB_VISUAL_MONO01;
-diff --git a/drivers/video/fbdev/cirrusfb.c b/drivers/video/fbdev/cirrusfb.c
-index a41a75841e10..2a9fa06881b5 100644
---- a/drivers/video/fbdev/cirrusfb.c
-+++ b/drivers/video/fbdev/cirrusfb.c
-@@ -1999,7 +1999,7 @@ static int cirrusfb_set_fbinfo(struct fb_info *info)
- 	}
- 
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, cirrusfb_board_info[cinfo->btype].name,
-+	strscpy(info->fix.id, cirrusfb_board_info[cinfo->btype].name,
- 		sizeof(info->fix.id));
- 
- 	/* monochrome: only 1 memory plane */
-diff --git a/drivers/video/fbdev/clps711x-fb.c b/drivers/video/fbdev/clps711x-fb.c
-index 771ce1f76951..a1061c2f1640 100644
---- a/drivers/video/fbdev/clps711x-fb.c
-+++ b/drivers/video/fbdev/clps711x-fb.c
-@@ -326,7 +326,7 @@ static int clps711x_fb_probe(struct platform_device *pdev)
- 	info->var.vmode = FB_VMODE_NONINTERLACED;
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.accel = FB_ACCEL_NONE;
--	strlcpy(info->fix.id, CLPS711X_FB_NAME, sizeof(info->fix.id));
-+	strscpy(info->fix.id, CLPS711X_FB_NAME, sizeof(info->fix.id));
- 	fb_videomode_to_var(&info->var, &cfb->mode);
- 
- 	ret = fb_alloc_cmap(&info->cmap, BIT(CLPS711X_FB_BPP_MAX), 0);
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index cf9ac4da0a82..4a032fcf0d14 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -412,7 +412,7 @@ static int __init fb_console_setup(char *this_opt)
- 
- 	while ((options = strsep(&this_opt, ",")) != NULL) {
- 		if (!strncmp(options, "font:", 5)) {
--			strlcpy(fontname, options + 5, sizeof(fontname));
-+			strscpy(fontname, options + 5, sizeof(fontname));
- 			continue;
- 		}
- 		
-diff --git a/drivers/video/fbdev/cyber2000fb.c b/drivers/video/fbdev/cyber2000fb.c
-index d45355b9a58c..8f041f9b14c7 100644
---- a/drivers/video/fbdev/cyber2000fb.c
-+++ b/drivers/video/fbdev/cyber2000fb.c
-@@ -1134,7 +1134,7 @@ int cyber2000fb_attach(struct cyberpro_info *info, int idx)
- 		info->fb_size	      = int_cfb_info->fb.fix.smem_len;
- 		info->info	      = int_cfb_info;
- 
--		strlcpy(info->dev_name, int_cfb_info->fb.fix.id,
-+		strscpy(info->dev_name, int_cfb_info->fb.fix.id,
- 			sizeof(info->dev_name));
- 	}
- 
-@@ -1229,7 +1229,7 @@ static int cyber2000fb_ddc_getsda(void *data)
- 
- static int cyber2000fb_setup_ddc_bus(struct cfb_info *cfb)
- {
--	strlcpy(cfb->ddc_adapter.name, cfb->fb.fix.id,
-+	strscpy(cfb->ddc_adapter.name, cfb->fb.fix.id,
- 		sizeof(cfb->ddc_adapter.name));
- 	cfb->ddc_adapter.owner		= THIS_MODULE;
- 	cfb->ddc_adapter.class		= I2C_CLASS_DDC;
-@@ -1304,7 +1304,7 @@ static int cyber2000fb_i2c_getscl(void *data)
- 
- static int cyber2000fb_i2c_register(struct cfb_info *cfb)
- {
--	strlcpy(cfb->i2c_adapter.name, cfb->fb.fix.id,
-+	strscpy(cfb->i2c_adapter.name, cfb->fb.fix.id,
- 		sizeof(cfb->i2c_adapter.name));
- 	cfb->i2c_adapter.owner = THIS_MODULE;
- 	cfb->i2c_adapter.algo_data = &cfb->i2c_algo;
-@@ -1500,7 +1500,7 @@ static int cyber2000fb_setup(char *options)
- 		if (strncmp(opt, "font:", 5) == 0) {
- 			static char default_font_storage[40];
- 
--			strlcpy(default_font_storage, opt + 5,
-+			strscpy(default_font_storage, opt + 5,
- 				sizeof(default_font_storage));
- 			default_font = default_font_storage;
- 			continue;
-diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
-index b3d580e57221..7cba3969a970 100644
---- a/drivers/video/fbdev/ffb.c
-+++ b/drivers/video/fbdev/ffb.c
-@@ -883,7 +883,7 @@ static void ffb_init_fix(struct fb_info *info)
- 	} else
- 		ffb_type_name = "Elite 3D";
- 
--	strlcpy(info->fix.id, ffb_type_name, sizeof(info->fix.id));
-+	strscpy(info->fix.id, ffb_type_name, sizeof(info->fix.id));
- 
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.visual = FB_VISUAL_TRUECOLOR;
-diff --git a/drivers/video/fbdev/geode/gx1fb_core.c b/drivers/video/fbdev/geode/gx1fb_core.c
-index 5d34d89fb665..e41204ecb0e3 100644
---- a/drivers/video/fbdev/geode/gx1fb_core.c
-+++ b/drivers/video/fbdev/geode/gx1fb_core.c
-@@ -410,13 +410,13 @@ static void __init gx1fb_setup(char *options)
- 			continue;
- 
- 		if (!strncmp(this_opt, "mode:", 5))
--			strlcpy(mode_option, this_opt + 5, sizeof(mode_option));
-+			strscpy(mode_option, this_opt + 5, sizeof(mode_option));
- 		else if (!strncmp(this_opt, "crt:", 4))
- 			crt_option = !!simple_strtoul(this_opt + 4, NULL, 0);
- 		else if (!strncmp(this_opt, "panel:", 6))
--			strlcpy(panel_option, this_opt + 6, sizeof(panel_option));
-+			strscpy(panel_option, this_opt + 6, sizeof(panel_option));
- 		else
--			strlcpy(mode_option, this_opt, sizeof(mode_option));
-+			strscpy(mode_option, this_opt, sizeof(mode_option));
- 	}
- }
- #endif
-diff --git a/drivers/video/fbdev/gxt4500.c b/drivers/video/fbdev/gxt4500.c
-index e5475ae1e158..94588b809ebf 100644
---- a/drivers/video/fbdev/gxt4500.c
-+++ b/drivers/video/fbdev/gxt4500.c
-@@ -650,7 +650,7 @@ static int gxt4500_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	cardtype = ent->driver_data;
- 	par->refclk_ps = cardinfo[cardtype].refclk_ps;
- 	info->fix = gxt4500_fix;
--	strlcpy(info->fix.id, cardinfo[cardtype].cardname,
-+	strscpy(info->fix.id, cardinfo[cardtype].cardname,
- 		sizeof(info->fix.id));
- 	info->pseudo_palette = par->pseudo_palette;
- 
-diff --git a/drivers/video/fbdev/i740fb.c b/drivers/video/fbdev/i740fb.c
-index 7f09a0daaaa2..bd30d8314b68 100644
---- a/drivers/video/fbdev/i740fb.c
-+++ b/drivers/video/fbdev/i740fb.c
-@@ -159,7 +159,7 @@ static int i740fb_setup_ddc_bus(struct fb_info *info)
- {
- 	struct i740fb_par *par = info->par;
- 
--	strlcpy(par->ddc_adapter.name, info->fix.id,
-+	strscpy(par->ddc_adapter.name, info->fix.id,
- 		sizeof(par->ddc_adapter.name));
- 	par->ddc_adapter.owner		= THIS_MODULE;
- 	par->ddc_adapter.class		= I2C_CLASS_DDC;
-diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-index d97d7456d15a..94f3bc637fc8 100644
---- a/drivers/video/fbdev/imxfb.c
-+++ b/drivers/video/fbdev/imxfb.c
-@@ -681,7 +681,7 @@ static int imxfb_init_fbinfo(struct platform_device *pdev)
- 
- 	fbi->devtype = pdev->id_entry->driver_data;
- 
--	strlcpy(info->fix.id, IMX_NAME, sizeof(info->fix.id));
-+	strscpy(info->fix.id, IMX_NAME, sizeof(info->fix.id));
- 
- 	info->fix.type			= FB_TYPE_PACKED_PIXELS;
- 	info->fix.type_aux		= 0;
-diff --git a/drivers/video/fbdev/matrox/matroxfb_base.c b/drivers/video/fbdev/matrox/matroxfb_base.c
-index 236521b19daf..68bba2688f4c 100644
---- a/drivers/video/fbdev/matrox/matroxfb_base.c
-+++ b/drivers/video/fbdev/matrox/matroxfb_base.c
-@@ -2383,9 +2383,9 @@ static int __init matroxfb_setup(char *options) {
- 		else if (!strncmp(this_opt, "mem:", 4))
- 			mem = simple_strtoul(this_opt+4, NULL, 0);
- 		else if (!strncmp(this_opt, "mode:", 5))
--			strlcpy(videomode, this_opt+5, sizeof(videomode));
-+			strscpy(videomode, this_opt + 5, sizeof(videomode));
- 		else if (!strncmp(this_opt, "outputs:", 8))
--			strlcpy(outputs, this_opt+8, sizeof(outputs));
-+			strscpy(outputs, this_opt + 8, sizeof(outputs));
- 		else if (!strncmp(this_opt, "dfp:", 4)) {
- 			dfp_type = simple_strtoul(this_opt+4, NULL, 0);
- 			dfp = 1;
-@@ -2455,7 +2455,7 @@ static int __init matroxfb_setup(char *options) {
- 			else if (!strcmp(this_opt, "dfp"))
- 				dfp = value;
- 			else {
--				strlcpy(videomode, this_opt, sizeof(videomode));
-+				strscpy(videomode, this_opt, sizeof(videomode));
- 			}
- 		}
- 	}
-diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-index afa688e754b9..5ccddcfce722 100644
---- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-+++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
-@@ -1331,7 +1331,7 @@ static void clear_fb_info(struct fb_info *fbi)
- {
- 	memset(&fbi->var, 0, sizeof(fbi->var));
- 	memset(&fbi->fix, 0, sizeof(fbi->fix));
--	strlcpy(fbi->fix.id, MODULE_NAME, sizeof(fbi->fix.id));
-+	strscpy(fbi->fix.id, MODULE_NAME, sizeof(fbi->fix.id));
- }
- 
- static int omapfb_free_all_fbmem(struct omapfb2_device *fbdev)
-diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
-index e943300d23e8..d5d0bbd39213 100644
---- a/drivers/video/fbdev/pxa168fb.c
-+++ b/drivers/video/fbdev/pxa168fb.c
-@@ -640,7 +640,7 @@ static int pxa168fb_probe(struct platform_device *pdev)
- 	info->flags = FBINFO_DEFAULT | FBINFO_PARTIAL_PAN_OK |
- 		      FBINFO_HWACCEL_XPAN | FBINFO_HWACCEL_YPAN;
- 	info->node = -1;
--	strlcpy(info->fix.id, mi->id, 16);
-+	strscpy(info->fix.id, mi->id, 16);
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.type_aux = 0;
- 	info->fix.xpanstep = 0;
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index 66cfc3e9d3cf..696ac5431180 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2042,7 +2042,7 @@ static int __init pxafb_setup_options(void)
- 		return -ENODEV;
- 
- 	if (options)
--		strlcpy(g_options, options, sizeof(g_options));
-+		strscpy(g_options, options, sizeof(g_options));
- 
- 	return 0;
- }
-diff --git a/drivers/video/fbdev/s3fb.c b/drivers/video/fbdev/s3fb.c
-index 5069f6f67923..67b63a753cb2 100644
---- a/drivers/video/fbdev/s3fb.c
-+++ b/drivers/video/fbdev/s3fb.c
-@@ -248,7 +248,7 @@ static int s3fb_setup_ddc_bus(struct fb_info *info)
- {
- 	struct s3fb_info *par = info->par;
- 
--	strlcpy(par->ddc_adapter.name, info->fix.id,
-+	strscpy(par->ddc_adapter.name, info->fix.id,
- 		sizeof(par->ddc_adapter.name));
- 	par->ddc_adapter.owner		= THIS_MODULE;
- 	par->ddc_adapter.class		= I2C_CLASS_DDC;
-diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
-index cf2a90ecd64e..e770b4a356b5 100644
---- a/drivers/video/fbdev/simplefb.c
-+++ b/drivers/video/fbdev/simplefb.c
-@@ -355,7 +355,7 @@ static int simplefb_regulators_get(struct simplefb_par *par,
- 		if (!p || p == prop->name)
- 			continue;
- 
--		strlcpy(name, prop->name,
-+		strscpy(name, prop->name,
- 			strlen(prop->name) - strlen(SUPPLY_SUFFIX) + 1);
- 		regulator = devm_regulator_get_optional(&pdev->dev, name);
- 		if (IS_ERR(regulator)) {
-diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
-index f28fd69d5eb7..d6bcc9d60b2d 100644
---- a/drivers/video/fbdev/sis/sis_main.c
-+++ b/drivers/video/fbdev/sis/sis_main.c
-@@ -1872,7 +1872,7 @@ sisfb_get_fix(struct fb_fix_screeninfo *fix, int con, struct fb_info *info)
- 
- 	memset(fix, 0, sizeof(struct fb_fix_screeninfo));
- 
--	strlcpy(fix->id, ivideo->myid, sizeof(fix->id));
-+	strscpy(fix->id, ivideo->myid, sizeof(fix->id));
- 
- 	mutex_lock(&info->mm_lock);
- 	fix->smem_start  = ivideo->video_base + ivideo->video_offset;
-@@ -5867,7 +5867,7 @@ static int sisfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			ivideo->cardnumber++;
- 	}
- 
--	strlcpy(ivideo->myid, chipinfo->chip_name, sizeof(ivideo->myid));
-+	strscpy(ivideo->myid, chipinfo->chip_name, sizeof(ivideo->myid));
- 
- 	ivideo->warncount = 0;
- 	ivideo->chip_id = pdev->device;
-diff --git a/drivers/video/fbdev/sm501fb.c b/drivers/video/fbdev/sm501fb.c
-index 6a52eba64559..fce6cfbadfd6 100644
---- a/drivers/video/fbdev/sm501fb.c
-+++ b/drivers/video/fbdev/sm501fb.c
-@@ -1719,7 +1719,7 @@ static int sm501fb_init_fb(struct fb_info *fb, enum sm501_controller head,
- 		enable = 0;
- 	}
- 
--	strlcpy(fb->fix.id, fbname, sizeof(fb->fix.id));
-+	strscpy(fb->fix.id, fbname, sizeof(fb->fix.id));
- 
- 	memcpy(&par->ops,
- 	       (head == HEAD_CRT) ? &sm501fb_ops_crt : &sm501fb_ops_pnl,
-diff --git a/drivers/video/fbdev/sstfb.c b/drivers/video/fbdev/sstfb.c
-index 27d4b0ace2d6..cd4d640f9477 100644
---- a/drivers/video/fbdev/sstfb.c
-+++ b/drivers/video/fbdev/sstfb.c
-@@ -1382,7 +1382,7 @@ static int sstfb_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		goto fail;
- 	}
- 	sst_get_memsize(info, &fix->smem_len);
--	strlcpy(fix->id, spec->name, sizeof(fix->id));
-+	strscpy(fix->id, spec->name, sizeof(fix->id));
- 
- 	printk(KERN_INFO "%s (revision %d) with %s dac\n",
- 		fix->id, par->revision, par->dac_sw.name);
-diff --git a/drivers/video/fbdev/sunxvr1000.c b/drivers/video/fbdev/sunxvr1000.c
-index 15b079505a00..490bd9a14763 100644
---- a/drivers/video/fbdev/sunxvr1000.c
-+++ b/drivers/video/fbdev/sunxvr1000.c
-@@ -80,7 +80,7 @@ static int gfb_set_fbinfo(struct gfb_info *gp)
- 	info->pseudo_palette = gp->pseudo_palette;
- 
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, "gfb", sizeof(info->fix.id));
-+	strscpy(info->fix.id, "gfb", sizeof(info->fix.id));
-         info->fix.smem_start = gp->fb_base_phys;
-         info->fix.smem_len = gp->fb_size;
-         info->fix.type = FB_TYPE_PACKED_PIXELS;
-diff --git a/drivers/video/fbdev/sunxvr2500.c b/drivers/video/fbdev/sunxvr2500.c
-index 1d3bacd9d5ac..1279b02234f8 100644
---- a/drivers/video/fbdev/sunxvr2500.c
-+++ b/drivers/video/fbdev/sunxvr2500.c
-@@ -84,7 +84,7 @@ static int s3d_set_fbinfo(struct s3d_info *sp)
- 	info->pseudo_palette = sp->pseudo_palette;
- 
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, "s3d", sizeof(info->fix.id));
-+	strscpy(info->fix.id, "s3d", sizeof(info->fix.id));
-         info->fix.smem_start = sp->fb_base_phys;
-         info->fix.smem_len = sp->fb_size;
-         info->fix.type = FB_TYPE_PACKED_PIXELS;
-diff --git a/drivers/video/fbdev/sunxvr500.c b/drivers/video/fbdev/sunxvr500.c
-index 9daf17b11106..f7b463633ba0 100644
---- a/drivers/video/fbdev/sunxvr500.c
-+++ b/drivers/video/fbdev/sunxvr500.c
-@@ -207,7 +207,7 @@ static int e3d_set_fbinfo(struct e3d_info *ep)
- 	info->pseudo_palette = ep->pseudo_palette;
- 
- 	/* Fill fix common fields */
--	strlcpy(info->fix.id, "e3d", sizeof(info->fix.id));
-+	strscpy(info->fix.id, "e3d", sizeof(info->fix.id));
-         info->fix.smem_start = ep->fb_base_phys;
-         info->fix.smem_len = ep->fb_size;
-         info->fix.type = FB_TYPE_PACKED_PIXELS;
-diff --git a/drivers/video/fbdev/tcx.c b/drivers/video/fbdev/tcx.c
-index 1638a40fed22..01d87f53324d 100644
---- a/drivers/video/fbdev/tcx.c
-+++ b/drivers/video/fbdev/tcx.c
-@@ -333,7 +333,7 @@ tcx_init_fix(struct fb_info *info, int linebytes)
- 	else
- 		tcx_name = "TCX24";
- 
--	strlcpy(info->fix.id, tcx_name, sizeof(info->fix.id));
-+	strscpy(info->fix.id, tcx_name, sizeof(info->fix.id));
- 
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.visual = FB_VISUAL_PSEUDOCOLOR;
-diff --git a/drivers/video/fbdev/tdfxfb.c b/drivers/video/fbdev/tdfxfb.c
-index 67e37a62b07c..8a8122f8bfeb 100644
---- a/drivers/video/fbdev/tdfxfb.c
-+++ b/drivers/video/fbdev/tdfxfb.c
-@@ -1264,7 +1264,7 @@ static int tdfxfb_setup_ddc_bus(struct tdfxfb_i2c_chan *chan, const char *name,
- {
- 	int rc;
- 
--	strlcpy(chan->adapter.name, name, sizeof(chan->adapter.name));
-+	strscpy(chan->adapter.name, name, sizeof(chan->adapter.name));
- 	chan->adapter.owner		= THIS_MODULE;
- 	chan->adapter.class		= I2C_CLASS_DDC;
- 	chan->adapter.algo_data		= &chan->algo;
-@@ -1293,7 +1293,7 @@ static int tdfxfb_setup_i2c_bus(struct tdfxfb_i2c_chan *chan, const char *name,
- {
- 	int rc;
- 
--	strlcpy(chan->adapter.name, name, sizeof(chan->adapter.name));
-+	strscpy(chan->adapter.name, name, sizeof(chan->adapter.name));
- 	chan->adapter.owner		= THIS_MODULE;
- 	chan->adapter.algo_data		= &chan->algo;
- 	chan->adapter.dev.parent	= dev;
-diff --git a/drivers/video/fbdev/tgafb.c b/drivers/video/fbdev/tgafb.c
-index ae0cf5540636..1fff5fd7ab51 100644
---- a/drivers/video/fbdev/tgafb.c
-+++ b/drivers/video/fbdev/tgafb.c
-@@ -1344,7 +1344,7 @@ tgafb_init_fix(struct fb_info *info)
- 		memory_size = 16777216;
- 	}
- 
--	strlcpy(info->fix.id, tga_type_name, sizeof(info->fix.id));
-+	strscpy(info->fix.id, tga_type_name, sizeof(info->fix.id));
- 
- 	info->fix.type = FB_TYPE_PACKED_PIXELS;
- 	info->fix.type_aux = 0;
-diff --git a/drivers/video/fbdev/tridentfb.c b/drivers/video/fbdev/tridentfb.c
-index 319131bd72cf..cda095420ee8 100644
---- a/drivers/video/fbdev/tridentfb.c
-+++ b/drivers/video/fbdev/tridentfb.c
-@@ -270,7 +270,7 @@ static int tridentfb_setup_ddc_bus(struct fb_info *info)
- {
- 	struct tridentfb_par *par = info->par;
- 
--	strlcpy(par->ddc_adapter.name, info->fix.id,
-+	strscpy(par->ddc_adapter.name, info->fix.id,
- 		sizeof(par->ddc_adapter.name));
- 	par->ddc_adapter.owner		= THIS_MODULE;
- 	par->ddc_adapter.class		= I2C_CLASS_DDC;
--- 
-2.35.1
+>>> You wrote pretty long message explaining how the device works, but I
+>>> still do not see the answer to questions - why it cannot be part of
+>>> matrix keypad?
+>> 
+>> Following are the difference between matrix keypad and Bosch keypad
+>> make us to add another keypad driver.
+>> 
+>> matrix keypad:
+>> 	- By hardware schematic, a column GPIO line will intersect only
+>> 	  with row GPIO lines, not with the other column GPIO lines
+>> 	- so, row and column GPIO property are fixed, because of this
+>> 	- key scanning work based on interrupt mode
+>> 	- and key press is determined based on setting column as output,
+>> 	  row GPIO as input and set interrupt to monitor the changes in state,
+>> 	  serve the key pressed in ISR
+>> 
+>> Bosch keypad:
+>>     - By hardware schematic column GPIO line can intersect with row GPIO line
+>> 	  as well as other column GPIO lines
+>> 	- so, all GPIO act as row as well as column, because of this
+>> 	- key scanning based on polling mode
+>> 	- a key pressed is determined by setting one of GPIO line as output and
+>> 	  other as input and poll for change in the state of input GPIO lines.
+>> 	  Setting one of a GPIO line as output and remaining GPIO lines as input is on
+>> 	  round robin bases.
+>
+>Which is still not the answer "why it cannot be part of matrix keypad?".
+>To me looks similar enough, although maybe not exactly superset of the
+>other.
 
+I have merged the Bosch keypad in to the matrix keypad
+and sending version v3 patches to support that.
+
+v3-0001-driver-input-matric-keypad-switch-to-gpiod.patch
+v3-0002-driver-input-matric-keypad-add-reduced-matrix-sup.patch
+v3-0003-dt-bindings-input-gpio-matrix-keypad-add-reduced-.patch 
+
+>
+>>>
+>>> "It looks like this driver has smaller number of features than
+>>> matrix-keypad, so it should be integrated into the matrix-keypad.
+>>> matrix-keypad features are superset to this one."
+>>>
+>>> "But anyway this should be just merged into matrix-keypad. It's a
+>>> simpler set of that binding."
+>> 
+>> This keypad driver specific to Bosch measuring tool or similar devices.
+>> Please let me know to send latest patch which resolves build warning
+>> and gpiod API support.
+>
+>That's a poor reason not to merge into existing driver... I am sorry,
+>but our entire Linux kernel concept is to integrate, not duplicate. If
+>each of vendors wanted their own feature, we would have unmanageable
+>monstrosity with millions of drivers doing almost the same...
+>
+>
+>Best regards,
+>Krzysztof
+>
+
+Best regards,
+Gireesh Hiremath
