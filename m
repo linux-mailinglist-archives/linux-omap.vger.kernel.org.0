@@ -2,54 +2,53 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0D0A599869
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Aug 2022 11:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BD8659999F
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Aug 2022 12:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348099AbiHSJSB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 19 Aug 2022 05:18:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52236 "EHLO
+        id S1348051AbiHSKRu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 19 Aug 2022 06:17:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348073AbiHSJR7 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Aug 2022 05:17:59 -0400
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 755FCF4392;
-        Fri, 19 Aug 2022 02:17:58 -0700 (PDT)
-Received: by mail-oi1-f171.google.com with SMTP id q184so4194190oif.1;
-        Fri, 19 Aug 2022 02:17:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=p1fTT14mThGLEnUJzebZNUEmZIwatmKiQNsPLBHI5iY=;
-        b=kBfeia/XUVgX0NjH4njVgp10Xc+G+28B7su+3eLWJGuGhpg+B6pi63D7X7ze0vV6ap
-         TF7KX4NW+jKdP61KoE0V40tmQa/s+NfkO9m9S+h+YkUQ2AMiYQlIzG9nwFhSjbxflmr9
-         5WGyFoW9cIf5hKib/FNGaA4zPJJ3MIzH3fM1cEkJ5dENjMsz2irwnfI6OFN07HoQtB8K
-         iHRS+5U+nLzWrpXRLrv4S6HpjT1Y1BjUMEtLrIfb0YcTXARrisPlFl9FkIG3IAQQGiJ0
-         mIuccOKwveXBwwNIyrsQlZrzcZrS0i1gIOiFTiiMI+2EIVIMxmirctiPgpdUkOnW8PpT
-         iNaw==
-X-Gm-Message-State: ACgBeo2t22LqTqksUVWW4/4tRBNGwS5vxFL9yJgdw/kF81HLq89yOwXr
-        ydoie4ybEhlLIPaADnA4Gf/G1GmAoBk5HQ==
-X-Google-Smtp-Source: AA6agR7hZqcd16EjL3RuiBwYvUhrQuTVo7VMNddPUiVSBB02kjqZEYsLOygKuKvn+l2N3NaYliFvvg==
-X-Received: by 2002:a05:6808:10ce:b0:344:e898:3584 with SMTP id s14-20020a05680810ce00b00344e8983584mr2827050ois.36.1660900677604;
-        Fri, 19 Aug 2022 02:17:57 -0700 (PDT)
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com. [209.85.160.52])
-        by smtp.gmail.com with ESMTPSA id k38-20020a4a94a9000000b004354a4412edsm841634ooi.29.2022.08.19.02.17.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Aug 2022 02:17:56 -0700 (PDT)
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-11c5ee9bf43so4597042fac.5;
-        Fri, 19 Aug 2022 02:17:56 -0700 (PDT)
-X-Received: by 2002:a25:cbcf:0:b0:695:2d3b:366 with SMTP id
- b198-20020a25cbcf000000b006952d3b0366mr1673997ybg.365.1660900664907; Fri, 19
- Aug 2022 02:17:44 -0700 (PDT)
+        with ESMTP id S1347328AbiHSKRs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 19 Aug 2022 06:17:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22D0DDAEED;
+        Fri, 19 Aug 2022 03:17:48 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B20B4616D7;
+        Fri, 19 Aug 2022 10:17:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBBCC43143;
+        Fri, 19 Aug 2022 10:17:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660904267;
+        bh=bBGGs+VaVwa9GZVrl+mfip/PNxqOhyRiV5mtJK9gULA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=LSwaVI8rUzMmO/Ct43XNW9RruD+qxBI8tnG2OoF/s63ywpKDgUlWIi/aLX949UKPN
+         jM20X3grcEAWH38fx5/oYHEV7F5sTeuvwCDPVnMMG53ff2UByclp++LklueQkXypFU
+         H7c9/JJp/RjyIB8BwC52gvvAYZIk2WNxpCZz5cJXuJNC06FJis2sLmU6k3EGL09lKc
+         Jb0xsF7kl1AKAIK0xmR/ofWHEdPxStI2V1NvsgZa+z5y1Ow/2cxRWkgNKh/52pgoWK
+         DCt8ZOZFDA7eTYb7MHgMkmQVIDOYTuxR00NmLv1qFt7npxJhkX1i5DzsxxCLPXCGpY
+         yOQjDCPKxSuDQ==
+Received: by mail-ej1-f46.google.com with SMTP id gb36so7910196ejc.10;
+        Fri, 19 Aug 2022 03:17:47 -0700 (PDT)
+X-Gm-Message-State: ACgBeo3V1Hsa3QBjLGdI35DnZzMYK7sNyj2Mkp+8WtQFYukn/rhgCEFm
+        ByD7GnwBR/nTb0IY/PPcL4cNUxMrhXswDraLMTg=
+X-Google-Smtp-Source: AA6agR5J9QREsVSQar6+cAcI+eQkL21ldizqJ/P5eBUIHXbbNTd/IG0qShM+KxoLNU3uFpfrKuXX255VS5DFZKFqEjU=
+X-Received: by 2002:a05:6402:2751:b0:443:d90a:43d4 with SMTP id
+ z17-20020a056402275100b00443d90a43d4mr5657123edd.368.1660904254658; Fri, 19
+ Aug 2022 03:17:34 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220818135522.3143514-1-arnd@kernel.org> <20220818135522.3143514-2-arnd@kernel.org>
-In-Reply-To: <20220818135522.3143514-2-arnd@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 19 Aug 2022 11:17:33 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXEXQNeOQGnYTQG58nHwB8YwLQ5q1vaje7kPQexrAMsRA@mail.gmail.com>
-Message-ID: <CAMuHMdXEXQNeOQGnYTQG58nHwB8YwLQ5q1vaje7kPQexrAMsRA@mail.gmail.com>
+ <CAMuHMdXEXQNeOQGnYTQG58nHwB8YwLQ5q1vaje7kPQexrAMsRA@mail.gmail.com>
+In-Reply-To: <CAMuHMdXEXQNeOQGnYTQG58nHwB8YwLQ5q1vaje7kPQexrAMsRA@mail.gmail.com>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Fri, 19 Aug 2022 12:17:16 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0kJVLEFqS0E=Lv2=HE9dbmjgA=_T2NX4zhq7EHvk4DBg@mail.gmail.com>
+Message-ID: <CAK8P3a0kJVLEFqS0E=Lv2=HE9dbmjgA=_T2NX4zhq7EHvk4DBg@mail.gmail.com>
 Subject: Re: [PATCH 01/11] ARM: defconfig: reorder defconfig files
-To:     Arnd Bergmann <arnd@kernel.org>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
 Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Russell King <linux@armlinux.org.uk>,
@@ -108,64 +107,31 @@ Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-tegra <linux-tegra@vger.kernel.org>,
         USB list <linux-usb@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Arnd,
-
-On Thu, Aug 18, 2022 at 3:55 PM Arnd Bergmann <arnd@kernel.org> wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On Fri, Aug 19, 2022 at 11:17 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
 >
-> The debug-info and can subystem options have moved around in the
-> 'savedefconfig' output, so fix these up to reduce the clutter
-> from the savedefconfig command.
+> This may cause conflicts with the usual refresh I plan to do for
+> v6.0-rc1, which will be very similar to
+> https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/commit/?id=517d634d376042ab797d9feeb94236ad4cb03396
+> So it may be better to drop this part.
 >
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> However, that decision is up to you, as you will have to handle the
+> conflict when merging renesas-arm-defconfig-for-v6.0-tag1 later ;-)
+> But sfr might complain before...
 
-Thanks for your patch!
+I'm not too worried here, if you just do the 'savedefconfig' step, you
+should get
+the same change and the mergetool will figure it out. In case there is a nasty
+context conflict, you could just send that part early so I can resolve it.
 
-> --- a/arch/arm/configs/shmobile_defconfig
-> +++ b/arch/arm/configs/shmobile_defconfig
-> @@ -33,7 +33,6 @@ CONFIG_INET=y
->  CONFIG_IP_PNP=y
->  CONFIG_IP_PNP_DHCP=y
->  CONFIG_CAN=y
-> -CONFIG_CAN_RCAR=y
->  CONFIG_PCI=y
->  CONFIG_PCI_MSI=y
->  CONFIG_PCI_RCAR_GEN2=y
-> @@ -57,6 +56,7 @@ CONFIG_RAVB=y
->  CONFIG_SMSC911X=y
->  CONFIG_MICREL_PHY=y
->  CONFIG_SMSC_PHY=y
-> +CONFIG_CAN_RCAR=y
->  CONFIG_INPUT_EVDEV=y
->  CONFIG_KEYBOARD_GPIO=y
->  # CONFIG_INPUT_MOUSE is not set
-
-This may cause conflicts with the usual refresh I plan to do for
-v6.0-rc1, which will be very similar to
-https://git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/commit/?id=517d634d376042ab797d9feeb94236ad4cb03396
-So it may be better to drop this part.
-
-However, that decision is up to you, as you will have to handle the
-conflict when merging renesas-arm-defconfig-for-v6.0-tag1 later ;-)
-But sfr might complain before...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+       Arnd
