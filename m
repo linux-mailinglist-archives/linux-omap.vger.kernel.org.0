@@ -2,86 +2,98 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2562759C605
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Aug 2022 20:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5803D59C6F0
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Aug 2022 20:47:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235789AbiHVSW7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Aug 2022 14:22:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45548 "EHLO
+        id S235283AbiHVSrU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Aug 2022 14:47:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232132AbiHVSW6 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Aug 2022 14:22:58 -0400
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D178047B97;
-        Mon, 22 Aug 2022 11:22:57 -0700 (PDT)
-Received: by mail-oi1-f181.google.com with SMTP id v125so13234528oie.0;
-        Mon, 22 Aug 2022 11:22:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=0Qoldrnk1OOisFOprUKbgJfO+ztr4gzIbivup1sV7ig=;
-        b=t+2EpcIV1uUS4QVlzbL43gyDj7JlL26Sotyp1vNgtp0uNb8JfGrvoUhOYsbzGP7yOe
-         AWcyaof0/LMcz7KOE49uFyVxylKdqYzwVscoq5riPLvO7UzXRfGzcvmDQfaueljTt4X9
-         uI6MDNyyq5T+0m7vEhoWOb55XJx0Zw8DuUhH8NSeu/8NGxcOZhxbCrtx3L0QzA/1hUv4
-         +IdFGbk7xGXYOjx9TAHDHJ8C6ae54ezzaYY127yfuIHgcfzzMQXZJZ+83taHBsIR3vdQ
-         o/px8BDoqpm18EusmS7uZsItX8xv8rQ3Bf5FngV720+/pnRtTM3pAZMuyJP3yypRfG7f
-         QWtw==
-X-Gm-Message-State: ACgBeo2yHWi09A5eAQZty0vuiOS/DykxAdqVoqO7FpZDn78fBloi5C6J
-        62fAjPuSkKO+m5+WhIQlmQ==
-X-Google-Smtp-Source: AA6agR6W2WOiZtmbA+066xdS7uLzllg7qZidjvvWBjMfuzyQ2cDQHRcW3NbhntdvtXkdXa+pc7crqQ==
-X-Received: by 2002:aca:2110:0:b0:343:26cf:c6cf with SMTP id 16-20020aca2110000000b0034326cfc6cfmr12281154oiz.276.1661192576902;
-        Mon, 22 Aug 2022 11:22:56 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id g22-20020a056830161600b0063715f7eef8sm3025060otr.38.2022.08.22.11.22.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Aug 2022 11:22:56 -0700 (PDT)
-Received: (nullmailer pid 107284 invoked by uid 1000);
-        Mon, 22 Aug 2022 18:22:55 -0000
-Date:   Mon, 22 Aug 2022 13:22:55 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Gireesh.Hiremath@in.bosch.com
-Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-        bcousson@baylibre.com, tony@atomide.com,
-        krzysztof.kozlowski+dt@linaro.org, dmitry.torokhov@gmail.com,
-        mkorpershoek@baylibre.com, davidgow@google.com,
-        m.felsch@pengutronix.de, swboyd@chromium.org,
-        fengping.yu@mediatek.com, y.oudjana@protonmail.com,
-        rdunlap@infradead.org, colin.king@intel.com,
-        sjoerd.simons@collabora.co.uk, VinayKumar.Shettar@in.bosch.com,
-        Govindaraji.Sivanantham@in.bosch.com, anaclaudia.dias@de.bosch.com
-Subject: Re: [PATCH v3 3/3] dt-bindings: input: gpio-matrix-keypad: add
- reduced matrix keypad bindings definition
-Message-ID: <20220822182255.GA97986-robh@kernel.org>
-References: <20220819065946.9572-1-Gireesh.Hiremath@in.bosch.com>
- <20220819065946.9572-3-Gireesh.Hiremath@in.bosch.com>
+        with ESMTP id S237684AbiHVSoz (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Aug 2022 14:44:55 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E822B3885;
+        Mon, 22 Aug 2022 11:43:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661193803; x=1692729803;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ysLY52QIaymnVb5gk/TwZwHIvVe0JIPygRIZPu439/o=;
+  b=Gly/p7hJDDv3as0HTekGjSHoJVbVrcZwJ9GSbSDtmzxrESoDTQv5NLfE
+   vmAfj2j4BHkm53YbJfUaxmI0f1Ov3Df943pxiIP8Nh3Iv8UcY5BUY23IU
+   ZkikiE1PINqi8XO1lkwAqmfG/vbAd98joKHXnpgifTvtnu7al0PFmMng2
+   M2bzJamnP9+kntwCnn/M/p5/D+8CZfZggadOea2JhPZwc4yB/T7Rya3HR
+   aoWZatAoyxOW17c8TqMm9ddS1AfMgWv0xD5uk9fQ8uhOQlJD/w5ZWsjpr
+   kKmIPx4cq0ftNySBolgrqNkNMemKgklWrGRMZvhkZZQWnvCTwUHrwYVx6
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10447"; a="280464728"
+X-IronPort-AV: E=Sophos;i="5.93,255,1654585200"; 
+   d="scan'208";a="280464728"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2022 11:43:22 -0700
+X-IronPort-AV: E=Sophos;i="5.93,255,1654585200"; 
+   d="scan'208";a="669671123"
+Received: from apascali-mobl2.ger.corp.intel.com (HELO pbossart-mobl3.home) ([10.252.42.21])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2022 11:43:19 -0700
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+To:     alsa-devel@alsa-project.org
+Cc:     tiwai@suse.de, broonie@kernel.org,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Chao Song <chao.song@intel.com>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Jarkko Nikula <jarkko.nikula@bitmer.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        linux-omap@vger.kernel.org (open list:OMAP AUDIO SUPPORT),
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 5/5] ASoC: ti: omap-mcbsp: remove useless assignment
+Date:   Mon, 22 Aug 2022 20:42:39 +0200
+Message-Id: <20220822184239.169757-6-pierre-louis.bossart@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220822184239.169757-1-pierre-louis.bossart@linux.intel.com>
+References: <20220822184239.169757-1-pierre-louis.bossart@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220819065946.9572-3-Gireesh.Hiremath@in.bosch.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, Aug 19, 2022 at 06:59:46AM +0000, Gireesh.Hiremath@in.bosch.com wrote:
-> From: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
-> 
-> Add binding definition for the support of the reduced matrix
-> keypad driver.
-> 
-> Signed-off-by: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
-> ---
->  .../bindings/input/gpio-matrix-keypad.txt     | 96 +++++++++++++++++++
->  1 file changed, 96 insertions(+)
+sound/soc/ti/omap-mcbsp.c:617:10: style: Variable 'ret' is assigned a
+value that is never used. [unreadVariable]
+ int ret = 0;
+         ^
 
-This needs to be converted to DT schema first for this level of change.
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Chao Song <chao.song@intel.com>
+---
+ sound/soc/ti/omap-mcbsp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Rob
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index 0b377bb7737fd..7c539a41a6a34 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -614,7 +614,7 @@ static int omap_mcbsp_init(struct platform_device *pdev)
+ {
+ 	struct omap_mcbsp *mcbsp = platform_get_drvdata(pdev);
+ 	struct resource *res;
+-	int ret = 0;
++	int ret;
+ 
+ 	spin_lock_init(&mcbsp->lock);
+ 	mcbsp->free = true;
+-- 
+2.34.1
+
