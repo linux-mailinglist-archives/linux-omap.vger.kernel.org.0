@@ -2,102 +2,133 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56C2E59C8E3
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Aug 2022 21:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3B0659CB6F
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Aug 2022 00:30:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238593AbiHVTcA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 22 Aug 2022 15:32:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38936 "EHLO
+        id S237469AbiHVW3x (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 22 Aug 2022 18:29:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239107AbiHVTaz (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Aug 2022 15:30:55 -0400
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82EDB5A2DA;
-        Mon, 22 Aug 2022 12:26:11 -0700 (PDT)
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-11c896b879bso14115638fac.3;
-        Mon, 22 Aug 2022 12:26:11 -0700 (PDT)
+        with ESMTP id S232069AbiHVW3w (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 22 Aug 2022 18:29:52 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836A94DF24;
+        Mon, 22 Aug 2022 15:29:51 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id s11so15727357edd.13;
+        Mon, 22 Aug 2022 15:29:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=/3thP+mHORVN1UNe40EhQ8iMMZcP1HoSVYhpg6mkUhc=;
+        b=hupnvRuYarDUj8pqHqorOQ6o0gOjPEws5p1WxCanT8igi8mAc8W+7UkWfwnGO0yBkv
+         /irhwCeNMPVMzzKRl1CMI+GYLW2AqTq77plpW+DQOxSK65ZTCS9gjjEeyk0HDEydiP0E
+         qRWHVwuxc11uPoqPbDZmmNRzDF/wg6eT8n7BKdfQriUf/TDqZ7QXlqKmbBeUenVGZtYe
+         J8sxezLzTP9oI38EapP17ri9CTKq1cf6iBdqjXL6q/J/Gtb1jWTeyt1IYwFhFUxHKekU
+         hQkdpdqCErpmLZRb2YKhgC0KZYzG98MR/dWHNM4tdCHjdLfMN6jISSTlvpV7e3k8ax3g
+         3iIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=wfja3dpgpGFQd71CyL+Eqxhc94bh068SJCYS3i8QECM=;
-        b=HgIvu92TsIdeaHEFEzFI2Rp0/9dvXoX6rDx5ntv6ma/PzNgdbdmCRh8WE9YQWiA5GD
-         FlE3v98+/8zVheE1Q143O0693EyvHdYqMDAZM7kW4jGAbvnCuulICEOemYQOj4rhSAgh
-         udLOYs5rqkVsgUmNHmMlQ2RXB7apriUUCIdhXP9vzc/DimEz9/VLDwzYObVJlLXJ4iPz
-         tuffssZ7iHv9ae4UeWDQ8AiqijEfadWtlO/53u9Vl9a/VrJdNa0hFreZ1r4hG+KL6xXN
-         N4e53Ic1M+GWN6CGfnX0x+xxyWelDEhqABJAIfcigi8/wSbN6RSy3HzW/2LQMPxbauWo
-         FcFg==
-X-Gm-Message-State: ACgBeo0dqrFj5A6jDHKtlLV7orSFYR7HPsU/bG//+K19pWMmVAylnu6l
-        S3e/mhZTHuc/35ODcpMZag==
-X-Google-Smtp-Source: AA6agR5lq+EcF8u5MMVPUiMEfbyTX71703uezHObOPXLNPPPqslQkYADJa6bf1poUrTi7HAaKRzczQ==
-X-Received: by 2002:a05:6870:58a1:b0:118:8649:ab9e with SMTP id be33-20020a05687058a100b001188649ab9emr10124932oab.5.1661196370735;
-        Mon, 22 Aug 2022 12:26:10 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id 187-20020aca05c4000000b00343459324besm2739811oif.49.2022.08.22.12.26.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Aug 2022 12:26:10 -0700 (PDT)
-Received: (nullmailer pid 315358 invoked by uid 1000);
-        Mon, 22 Aug 2022 19:26:09 -0000
-Date:   Mon, 22 Aug 2022 14:26:09 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Mithil Bavishi <bavishimithil@gmail.com>
-Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        dmitry.torokhov@gmail.com, krzysztof.kozlowski+dt@linaro.org,
-        lee@kernel.org, sre@kernel.org, tony@atomide.com,
-        linux@armlinux.org.uk, contact@paulk.fr
-Subject: Re: [PATCH 09/10] dt-bindings: input: Rename twl4030-pwrbutton to
- twl-pwrbutton
-Message-ID: <20220822192609.GA310932-robh@kernel.org>
-References: <20220820071659.1215-1-bavishimithil@gmail.com>
- <20220820071659.1215-10-bavishimithil@gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=/3thP+mHORVN1UNe40EhQ8iMMZcP1HoSVYhpg6mkUhc=;
+        b=2qpautWU4p3W4SfiN1zVd2FN5E0DrvfsygIeOz/i0COPXO4y8tzswzeR6JZ9UTKwCK
+         Z6CO1XI1V3W5ztDRudLx81qXKdSCVy0z40LzeeQXNHGV6TJ08G9n6CmFTk1oUpvp5w+3
+         VBV0pD/9J2IS2S4+HMyOQyyMRjo1GQTxTVrroaUmmib44sV/ipjJs/I6XiiZ8cygI3no
+         xOgqIlVch8u9EGxZxXjE3pxD4N7CgQsVFSDzViBBGTlQHbgnOJcIcaMs4upOMrlWn38t
+         ZnPQ0KmpDOy0W6o6bpSr779hF+mlyBu3sjibG6cyXWUJ8h76KfrxgUb/8ZmJLnkNhRF/
+         rXgA==
+X-Gm-Message-State: ACgBeo2rWe2KZvymqo8RbmpGhfPhDd6+zvcZSFvU1VrHJ82t6lRBFag1
+        iEIyFg1GGdruPZp2lM8PHme2DxMbUv4NLDktbDM=
+X-Google-Smtp-Source: AA6agR6exfNNZZYmvy4j+IlG1xxaLbf/OSs9Pl6Hic+tGxiQJAKjYcSUq33M5bsYi1c0NyB+wbgFKBBmk0PE7BDNzSo=
+X-Received: by 2002:a05:6402:ca4:b0:446:540b:3486 with SMTP id
+ cn4-20020a0564020ca400b00446540b3486mr1002770edb.392.1661207390101; Mon, 22
+ Aug 2022 15:29:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220820071659.1215-10-bavishimithil@gmail.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20220815131250.34603-1-tony@atomide.com>
+In-Reply-To: <20220815131250.34603-1-tony@atomide.com>
+From:   Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Date:   Tue, 23 Aug 2022 00:29:38 +0200
+Message-ID: <CAGfqbt5R3LEECvzpGZOx5pB+iL=B+hptLTkBLNk6MBHWZoW-yQ@mail.gmail.com>
+Subject: Re: [PATCH 0/9] Clean-up timer-ti-dm a bit
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Ladislav Michl <ladis@linux-mips.org>,
+        Nishanth Menon <nm@ti.com>, Suman Anna <s-anna@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
+        HK_RANDOM_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sat, Aug 20, 2022 at 12:46:59PM +0530, Mithil Bavishi wrote:
-> This changes the Documentation of the twl4030-pwrbutton to
-> make it more generic as it can support other chips than
-> twl4030 as well.
+Hi Tony,
 
-This should be part of patch 4.
+On Monday, 15 August 2022 15:12:41 CEST Tony Lindgren wrote:
+> Hi all,
+>
+> This series of changes cleans up timer-ti-dm a bit. After this series we
+> can start replacing the custom PWM related functions with standard
+> Linux frameworks and use things like clk_set_duty_cycle().
+>
+> I have only tested this on K3 and omap2+ devices, I don't have any
+> omap1 devices online right now. Aaro & Janusz, if you could give this
+> series a quick boot test for omap1 that would be great.
 
-> 
-> Signed-off-by: Mithil Bavishi <bavishimithil@gmail.com>
-> ---
->  .../input/{twl4030-pwrbutton.txt => twl-pwrbutton.txt}        | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->  rename Documentation/devicetree/bindings/input/{twl4030-pwrbutton.txt => twl-pwrbutton.txt} (81%)
-> 
-> diff --git a/Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt b/Documentation/devicetree/bindings/input/twl-pwrbutton.txt
-> similarity index 81%
-> rename from Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt
-> rename to Documentation/devicetree/bindings/input/twl-pwrbutton.txt
-> index 9a0b765d3..43addc04d 100644
-> --- a/Documentation/devicetree/bindings/input/twl4030-pwrbutton.txt
-> +++ b/Documentation/devicetree/bindings/input/twl-pwrbutton.txt
-> @@ -1,6 +1,6 @@
-> -Texas Instruments TWL family (twl4030) pwrbutton module
-> +Texas Instruments TWL family pwrbutton module
->  
-> -This module is part of the TWL4030. For more details about the whole
-> +This module is part of a TWL chip. For more details about the whole
->  chip see Documentation/devicetree/bindings/mfd/twl-family.txt.
->  
->  This module provides a simple power button event via an Interrupt.
-> -- 
-> 2.25.1
-> 
-> 
+AFAICS, OMAP1 timer-ti-dm compatible "omap_timer" device requires OMAP16xx
+at least, while I only have OMAP15xx.  Then, my testing (successful) was
+limited to a single function -- omap_dm_timer_modify_idlect_mask() -- which
+is called on any OMAP1 as long as CONFIG_OMAP_DM_TIMER is set (requires
+CONFIG_COMPILE_TEST).  However, I've reviewed the series and it looks good
+to me.  I'm only not sure if we may expect any external users of
+omap_dm_timer_get_irq(), if not than we could make it local to the driver while
+being at it.
+
+For the whole series:
+Reviewed-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+
+Thanks,
+Janusz
+
+
+>
+> The patches are against v6.0-rc1.
+>
+> Regards,
+>
+> Tony
+>
+>
+> Tony Lindgren (9):
+>   clocksource/drivers/timer-ti-dm: Drop unused functions
+>   clocksource/drivers/timer-ti-dm: Simplify register reads with
+>     dmtimer_read()
+>   clocksource/drivers/timer-ti-dm: Simplify register writes with
+>     dmtimer_write()
+>   clocksource/drivers/timer-ti-dm: Simplify register access further
+>   clocksource/drivers/timer-ti-dm: Move private defines to the driver
+>   clocksource/drivers/timer-ti-dm: Use runtime PM directly and check
+>     errors
+>   clocksource/drivers/timer-ti-dm: Move struct omap_dm_timer fields to
+>     driver
+>   clocksource/drivers/timer-ti-dm: Add flag to detect omap1
+>   clocksource/drivers/timer-ti-dm: Get clock in probe with
+>     devm_clk_get()
+>
+>  drivers/clocksource/timer-ti-dm.c | 681 +++++++++++++++++++-----------
+>  include/clocksource/timer-ti-dm.h | 112 -----
+>  2 files changed, 429 insertions(+), 364 deletions(-)
+>
+>
