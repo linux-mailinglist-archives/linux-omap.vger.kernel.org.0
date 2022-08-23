@@ -2,78 +2,132 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E767C59D0FD
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Aug 2022 08:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E1B259D233
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Aug 2022 09:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239864AbiHWGCD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Aug 2022 02:02:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
+        id S240969AbiHWH2n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Aug 2022 03:28:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240446AbiHWGCD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Aug 2022 02:02:03 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 462145FF48;
-        Mon, 22 Aug 2022 23:02:02 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id EE54280F9;
-        Tue, 23 Aug 2022 05:54:54 +0000 (UTC)
-Date:   Tue, 23 Aug 2022 09:02:00 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Ladislav Michl <ladis@linux-mips.org>,
-        Nishanth Menon <nm@ti.com>, Suman Anna <s-anna@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 0/9] Clean-up timer-ti-dm a bit
-Message-ID: <YwRtWCu5niFOqYVS@atomide.com>
-References: <20220815131250.34603-1-tony@atomide.com>
- <CAGfqbt5R3LEECvzpGZOx5pB+iL=B+hptLTkBLNk6MBHWZoW-yQ@mail.gmail.com>
+        with ESMTP id S241009AbiHWH2R (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Aug 2022 03:28:17 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57EEC642ED
+        for <linux-omap@vger.kernel.org>; Tue, 23 Aug 2022 00:27:47 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id r16so15889436wrm.6
+        for <linux-omap@vger.kernel.org>; Tue, 23 Aug 2022 00:27:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile-fr.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=hQh8Ka1syQsKSvmOQKR3o9DYOsDuzDyZAiwXNBYwiQE=;
+        b=t5gIcaRntnlPJc1ZzW5PVzkebBdQWqWlTCogUshJLt6C/R+GAI56tyZxjMrjrJRn0U
+         jGo581cWMkFCU/OlbNpITv+MbFokvU7c8tU/+DGgtMNJxA68JhVet97sX5iRL68uTII4
+         IAjNo45uAN6753BQbXRt9cZqiV/oOh9Xl0aA6JDIrZBQ9RogJSQOdhYkG+iiJDB7UzgT
+         +nlbPdoT3Wp/CS01cGE+b/2T3SIqvCo4WQ3+SgJjKT0klC2LzmZIl4qZsNKv57WC/N05
+         uBV4OqJQif/irbfMLmdYP3JlddHsOLS7CfoAx3eQkCWlJ3MX+AxOrpLWuBAan2seKPwY
+         Hr9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=hQh8Ka1syQsKSvmOQKR3o9DYOsDuzDyZAiwXNBYwiQE=;
+        b=XCa0+5728Bnd89hp7nd3jTy3EDFM0PW9B4AqGZMXSC/cwcVC8EplfNHnYE97tzGLyh
+         fzTvZtI6v5CLE5G1Wf30YbNQtRxnssiUOdZAhssC9Q+Id3aQcKgXSfpOukWpYq4SGR5P
+         75sAV5OlSWvkUhM+WyHKk9w2qNXLW0Zxl1NhJ+1V0IigkGc3DVZ4vdlesgmcJSviz+M1
+         v8xf04YaDYPoKrDLimGGGwhqrlDLpdnToGiYUYi7889JFqqqme1Z2ZaSxbypyzmD+lPe
+         QNjh1FIFrfdnuLknrN3qPkaesViH86wOrp9w7P6jiMpVTiLuZIKsrxbjT4hMhBlKA15Y
+         LRjw==
+X-Gm-Message-State: ACgBeo3sBhU1MkZA/T0XIJhR99EUbXxWz7dLMt3g60HYi97XJMDTxLTY
+        f0GkM9ALY9kdPTES8cBbLH+XsmCnetZh5A==
+X-Google-Smtp-Source: AA6agR5qDROY0NYH+kbIjhCkLt4MlOgbY3hZrPauas8w4vidtcydsqFKsUZ8Htv/HCy6EEufUPDmiA==
+X-Received: by 2002:adf:d1c4:0:b0:220:7a85:ad7c with SMTP id b4-20020adfd1c4000000b002207a85ad7cmr12045801wrd.128.1661239665843;
+        Tue, 23 Aug 2022 00:27:45 -0700 (PDT)
+Received: from P-NTS-Evian.home (2a01cb058f8a18001c97b8d1b477d53f.ipv6.abo.wanadoo.fr. [2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f])
+        by smtp.gmail.com with ESMTPSA id k13-20020a7bc30d000000b003a5c75bd36fsm19999390wmj.10.2022.08.23.00.27.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Aug 2022 00:27:45 -0700 (PDT)
+From:   Romain Naour <romain.naour@smile.fr>
+To:     linux-omap@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, bcousson@baylibre.com,
+        tony@atomide.com, Romain Naour <romain.naour@skf.com>,
+        Romain Naour <romain.naour@smile.fr>,
+        Roger Quadros <rogerq@kernel.org>
+Subject: [PATCHv2] ARM: dts: am5748: keep usb4_tm disabled
+Date:   Tue, 23 Aug 2022 09:27:42 +0200
+Message-Id: <20220823072742.351368-1-romain.naour@smile.fr>
+X-Mailer: git-send-email 2.34.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGfqbt5R3LEECvzpGZOx5pB+iL=B+hptLTkBLNk6MBHWZoW-yQ@mail.gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-* Janusz Krzysztofik <jmkrzyszt@gmail.com> [220822 22:22]:
-> Hi Tony,
-> 
-> On Monday, 15 August 2022 15:12:41 CEST Tony Lindgren wrote:
-> > Hi all,
-> >
-> > This series of changes cleans up timer-ti-dm a bit. After this series we
-> > can start replacing the custom PWM related functions with standard
-> > Linux frameworks and use things like clk_set_duty_cycle().
-> >
-> > I have only tested this on K3 and omap2+ devices, I don't have any
-> > omap1 devices online right now. Aaro & Janusz, if you could give this
-> > series a quick boot test for omap1 that would be great.
-> 
-> AFAICS, OMAP1 timer-ti-dm compatible "omap_timer" device requires OMAP16xx
-> at least, while I only have OMAP15xx.  Then, my testing (successful) was
-> limited to a single function -- omap_dm_timer_modify_idlect_mask() -- which
-> is called on any OMAP1 as long as CONFIG_OMAP_DM_TIMER is set (requires
-> CONFIG_COMPILE_TEST).  However, I've reviewed the series and it looks good
-> to me.  I'm only not sure if we may expect any external users of
-> omap_dm_timer_get_irq(), if not than we could make it local to the driver while
-> being at it.
+From: Romain Naour <romain.naour@skf.com>
 
-OK thanks for testing. And thanks for spotting that omap_dm_timer_get_irq()
-can be static, I'll post a separate patch for that.
+Commit bcbb63b80284 ("ARM: dts: dra7: Separate AM57 dtsi files")
+disabled usb4_tm for am5748 devices since USB4 IP is not present
+in this SoC.
 
-Regards,
+The commit log explained the difference between AM5 and DRA7 families:
 
-Tony
+AM5 and DRA7 SoC families have different set of modules in them so the
+SoC sepecific dtsi files need to be separated.
+
+e.g. Some of the major differences between AM576 and DRA76
+
+		DRA76x	AM576x
+
+USB3		x
+USB4		x
+ATL		x
+VCP		x
+MLB		x
+ISS		x
+PRU-ICSS1		x
+PRU-ICSS2		x
+
+Then commit 176f26bcd41a ("ARM: dts: Add support for dra762 abz
+package") removed usb4_tm part from am5748.dtsi and introcuded new
+ti-sysc errors in dmesg:
+
+ti-sysc 48940000.target-module: clock get error for fck: -2
+ti-sysc: probe of 48940000.target-module failed with error -2
+
+Fixes: 176f26bcd41a ("ARM: dts: Add support for dra762 abz package")
+
+Signed-off-by: Romain Naour <romain.naour@skf.com>
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+Cc: Roger Quadros <rogerq@kernel.org>
+---
+Issue reproduced on a AM5749 CPU using a 5.10 kernel from ti-linux-kernel:
+https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/?h=linux-5.10.y
+
+v2: improved commit log to ease patch backport
+---
+ arch/arm/boot/dts/am5748.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm/boot/dts/am5748.dtsi b/arch/arm/boot/dts/am5748.dtsi
+index c260aa1a85bd..a1f029e9d1f3 100644
+--- a/arch/arm/boot/dts/am5748.dtsi
++++ b/arch/arm/boot/dts/am5748.dtsi
+@@ -25,6 +25,10 @@ &usb3_tm {
+ 	status = "disabled";
+ };
+ 
++&usb4_tm {
++	status = "disabled";
++};
++
+ &atl_tm {
+ 	status = "disabled";
+ };
+-- 
+2.34.3
+
