@@ -2,100 +2,149 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFB4F59E0F3
-	for <lists+linux-omap@lfdr.de>; Tue, 23 Aug 2022 14:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E6159E430
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Aug 2022 15:32:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357801AbiHWLme (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 23 Aug 2022 07:42:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60184 "EHLO
+        id S241717AbiHWN2r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 23 Aug 2022 09:28:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358468AbiHWLly (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Aug 2022 07:41:54 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82AB4785BC
-        for <linux-omap@vger.kernel.org>; Tue, 23 Aug 2022 02:29:24 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id h24so16250190wrb.8
-        for <linux-omap@vger.kernel.org>; Tue, 23 Aug 2022 02:29:23 -0700 (PDT)
+        with ESMTP id S241755AbiHWN22 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 23 Aug 2022 09:28:28 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94395157D19
+        for <linux-omap@vger.kernel.org>; Tue, 23 Aug 2022 03:28:25 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id u15so17817655ejt.6
+        for <linux-omap@vger.kernel.org>; Tue, 23 Aug 2022 03:28:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=b5SqvktMLhNdA3mMaOmzLY6p2cT5md25GAzVuMoc4r4=;
-        b=CIp0kiP5yLD5kCI5UiDO5IlEgewnVN+5NJDKY0BQOcuMfrfzjlyZW9FNLVmiUTybS+
-         qvxGi43zIhsaCgvMi5VTXrLCUTs+c9COja1v/TXJCkF5MSNvp6RsIZJEYuLmP/altkxe
-         Oz1HJhPIYL6gHiggAuF5Orb+8BcZ7uXTp+/FGiVimmgvJV2oUl0nnTJLfOkpl7ePesaY
-         hnxofDecgzIsB3aUOstMzBJbtzunQJnI6ijG7+6/Xt8aBFsW8I8lgeXoU/rMoeyTXOqJ
-         jfaIb0hT0b5XPOn/l3xmfiC9hHS/w+vLIVBQdh9fi5AhRt99K/lwa2DThLqKsDjxxNnk
-         byLQ==
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc;
+        bh=tDoKHJNCxvovH/OdGSUDSJIA93fGME4N3+WprjnQxsw=;
+        b=iy5C4EFbb1VSRZHG1k7DNq8EVOcOse15as56mgI63fVSvBtJWf0mRirwQie4lPceEn
+         zBbPdZ+yNs4YcmaEuOAA0Cj/lben3WOd78Rhu7t4cTiL3FhOmC0p9FjRH/dVmPXn+SUV
+         BwJ9ywyeAUI6yIGpfmqOgSQ9K6Tm6onWBTRR1Tf1XVVv7U05adHOI7u06xWRiGhOgN2k
+         OagBBMGShyhXjFhrL1VL4aZBb2EmwiXNfhIakTyWquoE/eiCbCkX0B6Qob+VxSYwq1L3
+         DTX2zHJvGV61RptgNj2fF/R7RhNIUSizPxuzNEcuCAVgz7ue6re1x41b6d+1oEBrJa5E
+         s1uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=b5SqvktMLhNdA3mMaOmzLY6p2cT5md25GAzVuMoc4r4=;
-        b=ToqheFjISCvA85pi+L8jqt+9TefetJSixAmqN/f2+8AQNSMY/0W98v2T1YnxcedGrx
-         dvHp84k1bhoEVM5P5JZpzybuLUSRgB6QHmYiP116b/Uj4Fxo+3RpGed1I4E9NpTy+CJw
-         vEgz1RUpOqcsVY9D2eE50MXEofmzpnKUCcg/bthP+S2YKjxq3UFvZaOOH2JPAFX1loM3
-         B7f4PK81mKhELrWtN4zY5WbNGboAW62T0GTXHRwEHLNPnUk4rFBNwpp5y7XcRINhtKUC
-         R0ySywj0VMno041J1j9faFfbu8c9jUkGimyfvRtolKUPH71IWQzEMbGAF3eieRO01Rq1
-         vI4w==
-X-Gm-Message-State: ACgBeo2FRpAFnVKkj/ssWRqSDI31QCj4n+UqD2mmXfRY65wHO2S3m+iu
-        jQ/6qXN0DihjvfU5CqQ84eS7DQ==
-X-Google-Smtp-Source: AA6agR4YYoSedYVviurRFDL2MlH/IvkuklQao1Lewjf01WxdkCHF4BXPKT/acLkLZeVw7OZxj5trNQ==
-X-Received: by 2002:a5d:59c3:0:b0:225:512d:23b8 with SMTP id v3-20020a5d59c3000000b00225512d23b8mr5786037wry.505.1661246962417;
-        Tue, 23 Aug 2022 02:29:22 -0700 (PDT)
-Received: from ?IPV6:2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f? (2a01cb058f8a18001c97b8d1b477d53f.ipv6.abo.wanadoo.fr. [2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f])
-        by smtp.gmail.com with ESMTPSA id c19-20020a05600c4a1300b003a30fbde91dsm19014200wmp.20.2022.08.23.02.29.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Aug 2022 02:29:21 -0700 (PDT)
-Message-ID: <c62649f0-2be1-459c-bfa5-4c94a3e4300f@smile.fr>
-Date:   Tue, 23 Aug 2022 11:29:21 +0200
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc;
+        bh=tDoKHJNCxvovH/OdGSUDSJIA93fGME4N3+WprjnQxsw=;
+        b=LCDB9mwjXLmEwP8dIsZts0ZW1ekNfsa7qVey4obGryagmXYUwTCh00mB6Mk8QIr9PZ
+         uCiY8TXr/ZVv/SiyrZ0GPVRB+WDd9nkfHiKK0KZPv/lwR0qsyj1fRBhMW2MRilh4b9YF
+         k8A5KFIker22x+OU2vtVUtWzr70Qkuem1mYQIinE42bNazWaGRG1WIeEpPCyLooxXAuS
+         I3/AzgAcxxQzisr4lhaUGGPdjV7/W8SUSOh3zQ2ArS6mEJqp5/ushJ73yCo7rCEWqIp8
+         PpzIjyoC0+lUc+ITLKjEpCNwIEEtBx7/mPiJ3XYx5IdDILgEKgQtyoMH9rCSFtm4B3nS
+         im1g==
+X-Gm-Message-State: ACgBeo1D7JI5n6UrYJzKJPSL4XXmR+lqyexLmdD+u5tM6HREy53uzoYs
+        ma8Pu+Vl6T7YrWuo9PVsgMJoxWVWzMweHX/U6fljow==
+X-Google-Smtp-Source: AA6agR7THiCEgefB2sdBBcvdIqgG2vu6qMqwFvww/Dwz6e69ZMVbaQHWEyotbW7T0Rv1YiQcTrclrQ4Eo0hJrTZ/3Nw=
+X-Received: by 2002:a17:907:e8c:b0:73d:8146:9aa1 with SMTP id
+ ho12-20020a1709070e8c00b0073d81469aa1mr6396366ejc.253.1661250415034; Tue, 23
+ Aug 2022 03:26:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] clk: ti: Fix reference imbalance in
- ti_find_clock_provider
-Content-Language: en-US
-To:     Stephen Boyd <sboyd@kernel.org>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Michael Turquette <mturquette@baylibre.com>
-Cc:     linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>
-References: <63d9211f-d5ce-562e-358a-50f26c7caf35@siemens.com>
- <20220819212337.AECB9C433D6@smtp.kernel.org>
-From:   Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <20220819212337.AECB9C433D6@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 23 Aug 2022 15:56:43 +0530
+Message-ID: <CA+G9fYvos=FHZwtGj-fo3TEdWGnw7rZQ=+Gavn=ZA6LCC2_zJw@mail.gmail.com>
+Subject: [next] arm: drivers/net/ethernet/ti/davinci_mdio.c:649: undefined
+ reference to `free_mdio_bitbang'
+To:     open list <linux-kernel@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>, lkft-triage@lists.linaro.org,
+        regressions@lists.linux.dev,
+        Linux-Next Mailing List <linux-next@vger.kernel.org>
+Cc:     Ravi Gunasekaran <r-gunasekaran@ti.com>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hello,
+arm builds failed on Linux next-20220823 tag for the following builds.
 
-Le 19/08/2022 à 23:23, Stephen Boyd a écrit :
-> Quoting Jan Kiszka (2022-08-08 15:26:58)
->> From: Jan Kiszka <jan.kiszka@siemens.com>
->>
->> When a clock is found via clock-output-names, we need to reference it
->> explicitly to match of_find_node_by_name behavior. Failing to do so
->> causes warnings like this:
->>
-> 
-> Is this superseeded by
-> https://lore.kernel.org/r/20220621091118.33930-1-tony@atomide.com?
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-I noticed the same issue and tested separately with both patches.
+Regressions found on arm:
+   - build-clang-nightly-keystone_defconfig
+   - build-clang-13-keystone_defconfig
+   - build-gcc-10-omap2plus_defconfig
+   - build-gcc-8-davinci_all_defconfig
+   - build-gcc-11-davinci_all_defconfig
+   - build-clang-14-omap2plus_defconfig
+   - build-clang-14-keystone_defconfig
+   - build-gcc-10-davinci_all_defconfig
+   - build-clang-14-davinci_all_defconfig
+   - build-clang-11-davinci_all_defconfig
+   - build-gcc-9-davinci_all_defconfig
+   - build-gcc-9-omap2plus_defconfig
+   - build-clang-11-omap2plus_defconfig
+   - build-clang-12-davinci_all_defconfig
+   - build-clang-13-davinci_all_defconfig
+   - build-clang-12-keystone_defconfig
+   - build-gcc-8-omap2plus_defconfig
+   - build-clang-13-omap2plus_defconfig
+   - build-gcc-11-omap2plus_defconfig
+   - build-gcc-8-keystone_defconfig
+   - build-gcc-10-keystone_defconfig
+   - build-clang-nightly-omap2plus_defconfig
+   - build-clang-nightly-davinci_all_defconfig
+   - build-gcc-9-keystone_defconfig
+   - build-gcc-11-keystone_defconfig
+   - build-clang-11-keystone_defconfig
+   - build-clang-12-omap2plus_defconfig
 
-Indeed, this patch is not needed anymore with "[PATCH] clk: ti: Fix missing
-of_node_get() ti_find_clock_provider()" applied.
 
-Best regards,
-Romain
+Build error:
+-------------
+arm-linux-gnueabihf-ld: drivers/net/ethernet/ti/davinci_mdio.o: in
+function `davinci_mdio_remove':
+drivers/net/ethernet/ti/davinci_mdio.c:649: undefined reference to
+`free_mdio_bitbang'
+arm-linux-gnueabihf-ld: drivers/net/ethernet/ti/davinci_mdio.o: in
+function `davinci_mdio_probe':
+drivers/net/ethernet/ti/davinci_mdio.c:545: undefined reference to
+`alloc_mdio_bitbang'
+arm-linux-gnueabihf-ld: drivers/net/ethernet/ti/davinci_mdio.o: in
+function `davinci_mdiobb_read':
+drivers/net/ethernet/ti/davinci_mdio.c:236: undefined reference to `mdiobb_read'
+arm-linux-gnueabihf-ld: drivers/net/ethernet/ti/davinci_mdio.o: in
+function `davinci_mdiobb_write':
+drivers/net/ethernet/ti/davinci_mdio.c:253: undefined reference to
+`mdiobb_write'
+make[1]: *** [Makefile:1250: vmlinux] Error 1
+
+
+metadata:
+---------
+Build: https://builds.tuxbuild.com/2DkF0UFq3NZAwUKNFLTyWfDPqem/
+config: https://builds.tuxbuild.com/2DkF0UFq3NZAwUKNFLTyWfDPqem/config
+git_describe: next-20220823
+git_repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
+git_sha: 05477f3653b82d8b3bcf39d2937d9893124976db
+git_short_log: 05477f3653b8 ("Add linux-next specific files for 20220823")
+
+Steps to reproduce:
+# To install tuxmake on your system globally:
+# sudo pip3 install -U tuxmake
+
+# See https://docs.tuxmake.org/ for complete documentation.
+# Original tuxmake command with fragments listed below.
+
+tuxmake --runtime podman --target-arch arm --toolchain gcc-11
+--kconfig omap2plus_defconfig
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
