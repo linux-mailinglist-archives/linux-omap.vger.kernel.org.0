@@ -2,74 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D12B25A0993
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Aug 2022 09:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DBCA5A097D
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Aug 2022 09:09:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236566AbiHYHJy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Aug 2022 03:09:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43520 "EHLO
+        id S236745AbiHYHJB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Aug 2022 03:09:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235442AbiHYHJx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Aug 2022 03:09:53 -0400
-X-Greylist: delayed 304 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 25 Aug 2022 00:09:50 PDT
-Received: from out30-42.freemail.mail.aliyun.com (unknown [115.124.30.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 689FA11455;
-        Thu, 25 Aug 2022 00:09:50 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R381e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0VNCEMA-_1661411080;
-Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0VNCEMA-_1661411080)
-          by smtp.aliyun-inc.com;
-          Thu, 25 Aug 2022 15:04:40 +0800
-From:   Yang Li <yang.lee@linux.alibaba.com>
-To:     tony@atomide.com
-Cc:     lgirdwood@gmail.com, broonie@kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH -next] regulator: drivers: Remove unnecessary print function dev_err()
-Date:   Thu, 25 Aug 2022 15:04:38 +0800
-Message-Id: <20220825070438.128093-1-yang.lee@linux.alibaba.com>
-X-Mailer: git-send-email 2.20.1.7.g153144c
+        with ESMTP id S236760AbiHYHI6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Aug 2022 03:08:58 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCBD7B297;
+        Thu, 25 Aug 2022 00:08:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C5D22B826BB;
+        Thu, 25 Aug 2022 07:08:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27030C433C1;
+        Thu, 25 Aug 2022 07:08:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661411335;
+        bh=Yb79srIHHHRqEV9IEdXHmJDug/ymtENp7GNc0jNwWjA=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=F1E98vqWoeZ0NL7MIOtc6T3GXoTpyxYuyfkQyoY/ekLRjhy2c9BuqLlW5FspVyTQF
+         WjMO/i4JwRXOcQhQyDdZ5Wi8asOdepAkEo72/VjLmya9VvhPdUbVbwQTUoI6Ad2vFY
+         jvpuZfnXHf4srDxtJphIVtX3oGDS4VzYHsoaS1tfzqnU++Yqt3ErwS9DuPW9pbi4/f
+         0ZyzL8zhCuSW7MDYk+p+TUEgJs8Fh3psZeBc04aYyK3N5v6tpbOD46iIx/w5WMcYub
+         Oba6203NPfWiZNwHhcPmNHcb9eBlidIfLl+R96sK0/aNKxiMMFYhhOl0Ghn1UYA5fo
+         SN06who4/sAKA==
+Message-ID: <d986aee3-9fd4-4f3b-f742-725833a70338@kernel.org>
+Date:   Thu, 25 Aug 2022 10:08:51 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.1 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,RDNS_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,
-        URIBL_BLOCKED,USER_IN_DEF_SPF_WL autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCHv2] ARM: dts: am5748: keep usb4_tm disabled
+Content-Language: en-US
+To:     Romain Naour <romain.naour@smile.fr>, linux-omap@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, bcousson@baylibre.com,
+        tony@atomide.com, Romain Naour <romain.naour@skf.com>
+References: <20220823072742.351368-1-romain.naour@smile.fr>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20220823072742.351368-1-romain.naour@smile.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The print function dev_err() is redundant because
-platform_get_irq_byname() already prints an error.
+On 23/08/2022 10:27, Romain Naour wrote:
+> From: Romain Naour <romain.naour@skf.com>
+> 
+> Commit bcbb63b80284 ("ARM: dts: dra7: Separate AM57 dtsi files")
+> disabled usb4_tm for am5748 devices since USB4 IP is not present
+> in this SoC.
+> 
+> The commit log explained the difference between AM5 and DRA7 families:
+> 
+> AM5 and DRA7 SoC families have different set of modules in them so the
+> SoC sepecific dtsi files need to be separated.
+> 
+> e.g. Some of the major differences between AM576 and DRA76
+> 
+> 		DRA76x	AM576x
+> 
+> USB3		x
+> USB4		x
+> ATL		x
+> VCP		x
+> MLB		x
+> ISS		x
+> PRU-ICSS1		x
+> PRU-ICSS2		x
+> 
+> Then commit 176f26bcd41a ("ARM: dts: Add support for dra762 abz
+> package") removed usb4_tm part from am5748.dtsi and introcuded new
+> ti-sysc errors in dmesg:
+> 
+> ti-sysc 48940000.target-module: clock get error for fck: -2
+> ti-sysc: probe of 48940000.target-module failed with error -2
+> 
+> Fixes: 176f26bcd41a ("ARM: dts: Add support for dra762 abz package")
+> 
+> Signed-off-by: Romain Naour <romain.naour@skf.com>
+> Signed-off-by: Romain Naour <romain.naour@smile.fr>
+> Cc: Roger Quadros <rogerq@kernel.org>
+> ---
+> Issue reproduced on a AM5749 CPU using a 5.10 kernel from ti-linux-kernel:
+> https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/?h=linux-5.10.y
+> 
+> v2: improved commit log to ease patch backport
+> ---
+>  arch/arm/boot/dts/am5748.dtsi | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=1986
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
----
- drivers/regulator/tps65219-regulator.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
 
-diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-index 7ba2594e437c..ab16e6665625 100644
---- a/drivers/regulator/tps65219-regulator.c
-+++ b/drivers/regulator/tps65219-regulator.c
-@@ -363,11 +363,9 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
- 		irq_type = &tps65219_regulator_irq_types[i];
- 
- 		irq = platform_get_irq_byname(pdev, irq_type->irq_name);
--		if (irq < 0) {
--			dev_err(tps->dev, "Failed to get IRQ %s: %d\n",
--				irq_type->irq_name, irq);
-+		if (irq < 0)
- 			return -EINVAL;
--		}
-+
- 		irq_data[i].dev = tps->dev;
- 		irq_data[i].type = irq_type;
- 
--- 
-2.20.1.7.g153144c
-
+cheers,
+-roger
