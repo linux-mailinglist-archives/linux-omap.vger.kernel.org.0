@@ -2,141 +2,169 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1D755A19E2
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Aug 2022 21:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1D065A1B17
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Aug 2022 23:32:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234643AbiHYT7k (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Aug 2022 15:59:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60216 "EHLO
+        id S243402AbiHYVcw (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Aug 2022 17:32:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233657AbiHYT7j (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Aug 2022 15:59:39 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CE82981B;
-        Thu, 25 Aug 2022 12:59:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 5F413CE29AA;
-        Thu, 25 Aug 2022 19:59:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2609C433C1;
-        Thu, 25 Aug 2022 19:59:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661457574;
-        bh=MxUP2JHg8QwMYl+xwMnMOML01dgAM84sIH3ZqdpLtV4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=p7Vbh6xeDJd3jcip6S0cWeGwM/c8kv/xToP/nuFffRC7Fv3s2y2xWNBhu8Z117l3V
-         f1pRSyc5nNzDBx+7FmP4lU06B8hFZ/mU3IDR6M1+mWEZWjAqfs7eIzUQI9Mnniu+i+
-         /hrE6UMyikcYMNSnY48UtnTBF2kLPbC92q/VHTyf+9hyTuRH+O62P+lOY57xvJOgln
-         TPndr7a0M7mR4vmnGJ7te6VDOFtV+SeBieIbUaaaU70Yb7sR0lHg/jXq+i9wrk6/E0
-         N2LVJFDFJh1jIg2zYF3k35hh9mtw4xEYhaWnS60QLVV2m1wkHii2RI8aSieqDQ0LIy
-         7uDHKIVppCCig==
-Received: by mail-ua1-f54.google.com with SMTP id d14so32779ual.9;
-        Thu, 25 Aug 2022 12:59:34 -0700 (PDT)
-X-Gm-Message-State: ACgBeo1/exjemPhlDazlenj9ALXIoeaFPJeiNRuljxIktwj1PVonWLcJ
-        2un/Ed6xXo958nSyvLWqIZp6+5qraA7oGJRB5g==
-X-Google-Smtp-Source: AA6agR7LaEu19VG0BnXmAdnMXB3Ngs2NMPE+dUCbgUSp0a1yNey5mW4XZWSmeU0hwjn7oHXypwGk/L9W7lhkniojaJY=
-X-Received: by 2002:ab0:4565:0:b0:395:b672:508 with SMTP id
- r92-20020ab04565000000b00395b6720508mr2155494uar.63.1661457573681; Thu, 25
- Aug 2022 12:59:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220825170327.674446-1-ardb@kernel.org>
-In-Reply-To: <20220825170327.674446-1-ardb@kernel.org>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 25 Aug 2022 14:59:22 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKnmK+FGRCMz=LOCieHwC7xg9dqZVRd=i1chE=9UUuEsA@mail.gmail.com>
-Message-ID: <CAL_JsqKnmK+FGRCMz=LOCieHwC7xg9dqZVRd=i1chE=9UUuEsA@mail.gmail.com>
-Subject: Re: [RFC PATCH] usb: reduce kernel log spam on driver registration
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        with ESMTP id S233208AbiHYVcv (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Aug 2022 17:32:51 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88008BD741;
+        Thu, 25 Aug 2022 14:32:50 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id e20so25646921wri.13;
+        Thu, 25 Aug 2022 14:32:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc;
+        bh=EqzBE2zZDGLUoXZ6/uzFpkdW0uwLXRH/ZxpTVcEz4RY=;
+        b=qRHXiAAEFxUcduAYJZefohZKXO+X74fsUPVcUnRRNf+vtvMwz8JzmfaFa/1seliOel
+         N5+yl3sLaJJlffdQq01u8PTRL9UQxM/PoiC7ftzfbX51Aq8ANtKnXVyaXgD923wBKQqx
+         rBg83MrdCs3pKmg8CGmdCWsr4aZh99glKYt7zXjnFcbfRHvzafycELQgPgmSYOf7BN47
+         3MaiDabh9OZ1Utit2EFvQvYo7b9K4nHYjvp9OZyLoiy4FQG3LnBO8IAQNX5J9l2cb7T5
+         rtgQnl9eXZzPWaaixqRuGQhKVWXU5V00NS72L6T+gCoNDqeMumddMdJCTb3+B406bi49
+         Wkgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=EqzBE2zZDGLUoXZ6/uzFpkdW0uwLXRH/ZxpTVcEz4RY=;
+        b=Yg87BBXQ477pUjuAauM9xKfhIdmjd7vFJqzw63OYNQJ7DlzjR7HyGyzASeckQ5lc6T
+         qzZsfbekazBDzOpNfQfDbNbWE1lwIV7+JdjfulQb+iiT1HjTsSYEYXLsJxRPaUGwNhsL
+         8RIXF1oEeL51bmeJmJOyK/AcZorjxDQYn7w4LLrDdhogDP+LtRu9Es74BY2LbrROVXfJ
+         KgLL7mGQl68DVIE+4FIeVXXSnfEJvODSN93eNrRqixLLNkTAn3j0oW/BsGrIDiZwzR9K
+         +JMHirE8wDh/II3ZrHqMlMfKLquiP340DPEGSZX8FoGniO1pgQ7FxtoZ9ONufgSvjUiV
+         tMYg==
+X-Gm-Message-State: ACgBeo37NzhVRHJF6O+9kf5vr9+xGM1ocxIZjv60Kh7Kp7PcdwUkDqi4
+        S0ZLlNjEcnCkV3EsgUzkbZA=
+X-Google-Smtp-Source: AA6agR4t8yoF99sRe2L0fBzRS1+im+UO4VTke2Bd+B09oSf0uCYPQMeZRw3swuBH9PBDTRwnH39EJA==
+X-Received: by 2002:a05:6000:701:b0:225:3f77:9793 with SMTP id bs1-20020a056000070100b002253f779793mr3124854wrb.202.1661463169088;
+        Thu, 25 Aug 2022 14:32:49 -0700 (PDT)
+Received: from kista.localnet (82-149-1-172.dynamic.telemach.net. [82.149.1.172])
+        by smtp.gmail.com with ESMTPSA id n3-20020a05600c3b8300b003a319b67f64sm14167595wms.0.2022.08.25.14.32.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Aug 2022 14:32:48 -0700 (PDT)
+From:   Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To:     linux-arm-kernel@lists.infradead.org,
+        Arnd Bergmann <arnd@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux USB List <linux-usb@vger.kernel.org>,
-        Nancy Yuen <yuenn@google.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Patrice Chotard <patrice.chotard@foss.st.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Patrick Venture <venture@google.com>,
-        Tali Perry <tali.perry1@gmail.com>,
         Claudiu Beznea <claudiu.beznea@microchip.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Benjamin Fair <benjaminfair@google.com>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Qin Jian <qinjian@cqplus1.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Samuel Holland <samuel@sholland.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>, Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Shannon Nelson <snelson@pensando.io>,
+        Peter Chen <peter.chen@nxp.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Felipe Balbi <balbi@ti.com>, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH 01/11] ARM: defconfig: reorder defconfig files
+Date:   Thu, 25 Aug 2022 23:32:46 +0200
+Message-ID: <4207673.ejJDZkT8p0@kista>
+In-Reply-To: <20220818135522.3143514-2-arnd@kernel.org>
+References: <20220818135522.3143514-1-arnd@kernel.org> <20220818135522.3143514-2-arnd@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Aug 25, 2022 at 12:04 PM Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> Drivers are typically supposed to be quiet unless they are actually
-> probed, but for some reason, USB host controllers seem to be exempt from
-> this rule, and happily broadcast their existence into the kernel log at
-> boot even if the hardware in question is nowhere to be found.
->
-> Let's fix that, and remove these pr_info() calls.
->
-> Cc: Alan Stern <stern@rowland.harvard.edu>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Cc: Claudiu Beznea <claudiu.beznea@microchip.com>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Cc: Alim Akhtar <alim.akhtar@samsung.com>
-> Cc: Avi Fishman <avifishman70@gmail.com>
-> Cc: Tomer Maimon <tmaimon77@gmail.com>
-> Cc: Tali Perry <tali.perry1@gmail.com>
-> Cc: Patrick Venture <venture@google.com>
-> Cc: Nancy Yuen <yuenn@google.com>
-> Cc: Benjamin Fair <benjaminfair@google.com>
-> Cc: Patrice Chotard <patrice.chotard@foss.st.com>
-> Cc: Vladimir Zapolskiy <vz@mleia.com>
-> Cc: linux-usb@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-samsung-soc@vger.kernel.org
-> Cc: linux-omap@vger.kernel.org
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Dne =C4=8Detrtek, 18. avgust 2022 ob 15:55:22 CEST je Arnd Bergmann napisal=
+(a):
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> The debug-info and can subystem options have moved around in the
+> 'savedefconfig' output, so fix these up to reduce the clutter
+> from the savedefconfig command.
+>=20
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
->  drivers/usb/host/ehci-atmel.c    | 1 -
->  drivers/usb/host/ehci-exynos.c   | 1 -
->  drivers/usb/host/ehci-fsl.c      | 2 --
->  drivers/usb/host/ehci-hcd.c      | 1 -
->  drivers/usb/host/ehci-npcm7xx.c  | 2 --
->  drivers/usb/host/ehci-omap.c     | 2 --
->  drivers/usb/host/ehci-orion.c    | 2 --
->  drivers/usb/host/ehci-pci.c      | 2 --
->  drivers/usb/host/ehci-platform.c | 2 --
->  drivers/usb/host/ehci-spear.c    | 2 --
->  drivers/usb/host/ehci-st.c       | 2 --
->  drivers/usb/host/fotg210-hcd.c   | 1 -
->  drivers/usb/host/ohci-at91.c     | 1 -
->  drivers/usb/host/ohci-da8xx.c    | 1 -
->  drivers/usb/host/ohci-exynos.c   | 1 -
->  drivers/usb/host/ohci-hcd.c      | 1 -
->  drivers/usb/host/ohci-nxp.c      | 2 --
->  drivers/usb/host/ohci-omap.c     | 2 --
->  drivers/usb/host/ohci-pci.c      | 2 --
->  drivers/usb/host/ohci-platform.c | 2 --
->  drivers/usb/host/ohci-pxa27x.c   | 2 --
->  drivers/usb/host/ohci-s3c2410.c  | 1 -
->  drivers/usb/host/ohci-spear.c    | 2 --
->  drivers/usb/host/ohci-st.c       | 2 --
->  24 files changed, 39 deletions(-)
+>  arch/arm/configs/at91_dt_defconfig   |  2 +-
+>  arch/arm/configs/dove_defconfig      |  2 +-
+>  arch/arm/configs/exynos_defconfig    |  2 +-
+>  arch/arm/configs/imx_v6_v7_defconfig |  2 +-
+>  arch/arm/configs/keystone_defconfig  |  6 +++---
+>  arch/arm/configs/lpc18xx_defconfig   |  2 +-
+>  arch/arm/configs/mmp2_defconfig      |  2 +-
+>  arch/arm/configs/mps2_defconfig      |  2 +-
+>  arch/arm/configs/multi_v5_defconfig  |  2 +-
+>  arch/arm/configs/multi_v7_defconfig  | 12 ++++++------
+>  arch/arm/configs/mvebu_v5_defconfig  |  2 +-
+>  arch/arm/configs/mxs_defconfig       |  4 ++--
+>  arch/arm/configs/omap1_defconfig     |  2 +-
+>  arch/arm/configs/omap2plus_defconfig |  4 ++--
+>  arch/arm/configs/orion5x_defconfig   |  2 +-
+>  arch/arm/configs/pxa168_defconfig    |  2 +-
+>  arch/arm/configs/pxa910_defconfig    |  2 +-
+>  arch/arm/configs/pxa_defconfig       |  2 +-
+>  arch/arm/configs/s3c6400_defconfig   |  2 +-
+>  arch/arm/configs/s5pv210_defconfig   |  2 +-
+>  arch/arm/configs/sama5_defconfig     |  6 +++---
+>  arch/arm/configs/sama7_defconfig     |  4 ++--
+>  arch/arm/configs/shmobile_defconfig  |  2 +-
+>  arch/arm/configs/socfpga_defconfig   |  6 +++---
+>  arch/arm/configs/sp7021_defconfig    |  2 +-
+>  arch/arm/configs/spear13xx_defconfig |  2 +-
+>  arch/arm/configs/spear3xx_defconfig  |  2 +-
+>  arch/arm/configs/spear6xx_defconfig  |  2 +-
+>  arch/arm/configs/stm32_defconfig     |  2 +-
+>  arch/arm/configs/sunxi_defconfig     |  2 +-
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+=46or sunxi:
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-I've had the same patch sitting around since 3.15...
+Best regards,
+Jernej
 
-Rob
+
+
