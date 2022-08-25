@@ -2,543 +2,431 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73EB55A1695
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Aug 2022 18:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DA7A5A179B
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Aug 2022 19:03:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243054AbiHYQVD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Aug 2022 12:21:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43266 "EHLO
+        id S231305AbiHYRDx (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Aug 2022 13:03:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243034AbiHYQVC (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Aug 2022 12:21:02 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34E4537F97;
-        Thu, 25 Aug 2022 09:20:58 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id bq23so19862119lfb.7;
-        Thu, 25 Aug 2022 09:20:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=mUYPXlQOQOnvqcx8ioEudx6RfnF80tz1ErnV2NXlaQM=;
-        b=Hg1XpZK239x8hTzWIxSxRexEy3SARIHEM0X1EnWNHe8vyhowi+jFqQUJszg4JXQrgl
-         FNtpnzTTs5IOT2IT2JmZ6IzOnPo2IewDc3OmJH8Sr0TQzMsMXRstlnG5ItgMQrK5IqWf
-         xKRWU1iX09h4iCZW9MXnYXF/M4hCa8G0R+EEWBJcEdPWedGHEJor9KgceTMRg6YiS8cp
-         qj8Cn5Hn9iwPPgCidk/xM7i5XBde+4wjzoCzD6WqFlDTTZUr5tj/KSzKRnzPt92OryoK
-         K3uMUFsjl+fcmHngYgFvBuygJBaoNddUuFMOoECennDnmt7WtnJZH75X3iJ3Eer6UhJ5
-         ZO2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=mUYPXlQOQOnvqcx8ioEudx6RfnF80tz1ErnV2NXlaQM=;
-        b=UWqMYg9OBt7oN3gicH6H31tN5xgUKnRpwuzpzq52Oksz0FSsszeZLGbdyln2fOMoLW
-         t13Ih5TaAEvo8bHPiFhFSLMwBrYA+jgZB3FocQgHx3vDoV6w/qwPJgWvcf0XjbTmTZsB
-         zvkvaT7trUwu50Vvdf9k/2ul8+iNkeIf6NKuWwdTZLU+so1RC6SnOZhHy3I8fE/bt3vA
-         MOCj75VNT5OFPKDpAaxGj3iuuZja2vV6Avwj7805hS28v4OX1fW4X5O4sXCfORnFe6Ap
-         Z0Dh8WjEPGAU8AzMh87NvuZaRVtzH8i14jZWDhqZdyeryvValg9SlhBbi1Rg0vfWe7Mk
-         GQeA==
-X-Gm-Message-State: ACgBeo1FcfNjXMvj8C0AvHqoBt8rrGDOorgZ+8WPtYbJXUAJ3ZWZxK0M
-        s/7qR5CQH2EtWHcmQU5FJKw=
-X-Google-Smtp-Source: AA6agR4mSuqcHou86H5PRd3w0x0ClNJWnY0N8wkNiwNAgVrBHrlbFCRC5nVYCmBc/1azSWmunU60hw==
-X-Received: by 2002:a05:6512:3e09:b0:492:f8e5:5eb5 with SMTP id i9-20020a0565123e0900b00492f8e55eb5mr1365521lfv.498.1661444457036;
-        Thu, 25 Aug 2022 09:20:57 -0700 (PDT)
-Received: from numbers.lan ([2001:2002:2f8:bfc5:2dd2:9869:8c01:77b2])
-        by smtp.gmail.com with ESMTPSA id k1-20020ac257c1000000b00492df838a40sm556267lfo.280.2022.08.25.09.20.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Aug 2022 09:20:56 -0700 (PDT)
-From:   Stefan Hansson <newbie13xd@gmail.com>
-To:     Russell King <linux@armlinux.org.uk>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
+        with ESMTP id S233066AbiHYRDw (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Aug 2022 13:03:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF079B7753;
+        Thu, 25 Aug 2022 10:03:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1BD61B826BE;
+        Thu, 25 Aug 2022 17:03:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02F2C433D6;
+        Thu, 25 Aug 2022 17:03:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661447027;
+        bh=SVgM04PseV435mC0a8STTWiNexw2L/dQTT5kWiUNEvo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tnt0MOhLzeuJLEUeNANV/Ib2xTP2E5Q5HKwy8Rs8uF65j+B7a+jUq6nHOUxNkXjm9
+         hFezOrMMxH200AnNkqcI9wti4ytfSEaH457GmekbPYEVaD+hbIVLrr/mYB/cldeFMr
+         7KOso8fo7UxmaWz6kN0sbbTyRVWZFahQhhF/dEuzP2hVe/cqNa/z7iTF3hcYfSp6Lj
+         l3Y/tuSkDlBaXCiIonX4tpmPkdyhoPmaSJKuQwivympyzI15PdwuN6DjojQw+WeRrV
+         IoqgYv4w3xmDwQjTlF+5Q1g1jYQUbpO+9CEwJ3YLJeH41xnOvoQevMWdEQubmy9DK/
+         8vcJ+YBOrvg0g==
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Alim Akhtar <alim.akhtar@samsung.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Taichi Sugaya <sugaya.taichi@socionext.com>,
-        Takao Orito <orito.takao@socionext.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        Vladimir Zapolskiy <vz@mleia.com>, linux-usb@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-oxnas@groups.io, linux-arm-msm@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
-        linux-tegra@vger.kernel.org, arnd@arndb.de, olof@lixom.net,
-        soc@kernel.org
-Cc:     Stefan Hansson <newbie13xd@gmail.com>
-Subject: [RESEND PATCH] ARM: configs: replace CONFIG_NO_HZ=y with CONFIG_NO_HZ_IDLE=y
-Date:   Thu, 25 Aug 2022 18:20:35 +0200
-Message-Id: <20220825162034.5901-1-newbie13xd@gmail.com>
-X-Mailer: git-send-email 2.37.2
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: [RFC PATCH] usb: reduce kernel log spam on driver registration
+Date:   Thu, 25 Aug 2022 19:03:27 +0200
+Message-Id: <20220825170327.674446-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13493; i=ardb@kernel.org; h=from:subject; bh=SVgM04PseV435mC0a8STTWiNexw2L/dQTT5kWiUNEvo=; b=owEB7QES/pANAwAKAcNPIjmS2Y8kAcsmYgBjB6teqp+suHncM8Nc6gfG94bYTOaZ7d/2Ui6Xdtci KqLMgDiJAbMEAAEKAB0WIQT72WJ8QGnJQhU3VynDTyI5ktmPJAUCYwerXgAKCRDDTyI5ktmPJAUPC/ 97oSVp+bkrQe6AnQqEh8vdWNV5qBbPcNMa3RCM2RqD8t8QMXsGdEckI4KZTgQR2UF2W5Cw5sqGgUQu P21izKnKWuj5TXSQo+CTcXh7iqaQ08ANzoJpFMyTehq8sBSjHUxW/3uL/9ujSBX/DkzM4lpolNaIat 9lQs8mWAyfMBdpFgS9FG0HYFM7MZrY+0zKGn5Ec2EEFGb0Fw6ULYtvDcPkTN1+mh3mjVh66kl0cDjM 8L4pB348A93PIHbYYZ5yOrBOOj3ggElXvBwe70Xrh2yOJc7sSHyQ7aI9BliyiEkGMER8AatjyyGkh5 3sWYLflvnO/3C2nZoiLXY3wUgZXqlfgDF6QHfj04MPkBjNGIaUB+brYBi0ag0co6PAWqA4dm/Yz5Ci cT41XOGnoWAyfm+UGK6tRxqX8IuX4BQNvDm9lpTcT9PH8Vs+ew9NUE5Nic3zVhLwS7mSOa0Lv2SrO5 VZBjQsw7r4EXv09d9Mt1z0hFyqN0eaGt0rbw1t0ZN/LIM=
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-According to https://www.kernel.org/doc/html/latest/timers/no_hz.html,
-CONFIG_NO_HZ=y should be replaced by CONFIG_NO_HZ_IDLE=y for newer
-kernels, so let's reflect that in the 32-bit ARM defconfigs.
+Drivers are typically supposed to be quiet unless they are actually
+probed, but for some reason, USB host controllers seem to be exempt from
+this rule, and happily broadcast their existence into the kernel log at
+boot even if the hardware in question is nowhere to be found.
 
-Signed-off-by: Stefan Hansson <newbie13xd@gmail.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> # Samsung
+Let's fix that, and remove these pr_info() calls.
+
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org> 
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Claudiu Beznea <claudiu.beznea@microchip.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Avi Fishman <avifishman70@gmail.com>
+Cc: Tomer Maimon <tmaimon77@gmail.com>
+Cc: Tali Perry <tali.perry1@gmail.com>
+Cc: Patrick Venture <venture@google.com>
+Cc: Nancy Yuen <yuenn@google.com>
+Cc: Benjamin Fair <benjaminfair@google.com>
+Cc: Patrice Chotard <patrice.chotard@foss.st.com>
+Cc: Vladimir Zapolskiy <vz@mleia.com>
+Cc: linux-usb@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-omap@vger.kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm/configs/bcm2835_defconfig       | 2 +-
- arch/arm/configs/cm_x300_defconfig       | 2 +-
- arch/arm/configs/davinci_all_defconfig   | 2 +-
- arch/arm/configs/dove_defconfig          | 2 +-
- arch/arm/configs/exynos_defconfig        | 2 +-
- arch/arm/configs/ezx_defconfig           | 2 +-
- arch/arm/configs/hisi_defconfig          | 2 +-
- arch/arm/configs/imx_v4_v5_defconfig     | 2 +-
- arch/arm/configs/imx_v6_v7_defconfig     | 2 +-
- arch/arm/configs/integrator_defconfig    | 2 +-
- arch/arm/configs/lpc32xx_defconfig       | 2 +-
- arch/arm/configs/magician_defconfig      | 2 +-
- arch/arm/configs/milbeaut_m10v_defconfig | 2 +-
- arch/arm/configs/moxart_defconfig        | 2 +-
- arch/arm/configs/multi_v5_defconfig      | 2 +-
- arch/arm/configs/multi_v7_defconfig      | 2 +-
- arch/arm/configs/mv78xx0_defconfig       | 2 +-
- arch/arm/configs/mvebu_v5_defconfig      | 2 +-
- arch/arm/configs/mxs_defconfig           | 2 +-
- arch/arm/configs/omap1_defconfig         | 2 +-
- arch/arm/configs/omap2plus_defconfig     | 2 +-
- arch/arm/configs/orion5x_defconfig       | 2 +-
- arch/arm/configs/oxnas_v6_defconfig      | 2 +-
- arch/arm/configs/pcm027_defconfig        | 2 +-
- arch/arm/configs/pxa168_defconfig        | 2 +-
- arch/arm/configs/pxa910_defconfig        | 2 +-
- arch/arm/configs/pxa_defconfig           | 2 +-
- arch/arm/configs/qcom_defconfig          | 2 +-
- arch/arm/configs/s5pv210_defconfig       | 2 +-
- arch/arm/configs/shmobile_defconfig      | 2 +-
- arch/arm/configs/sunxi_defconfig         | 2 +-
- arch/arm/configs/tegra_defconfig         | 2 +-
- arch/arm/configs/vt8500_v6_v7_defconfig  | 2 +-
- arch/arm/configs/xcep_defconfig          | 2 +-
- 34 files changed, 34 insertions(+), 34 deletions(-)
+ drivers/usb/host/ehci-atmel.c    | 1 -
+ drivers/usb/host/ehci-exynos.c   | 1 -
+ drivers/usb/host/ehci-fsl.c      | 2 --
+ drivers/usb/host/ehci-hcd.c      | 1 -
+ drivers/usb/host/ehci-npcm7xx.c  | 2 --
+ drivers/usb/host/ehci-omap.c     | 2 --
+ drivers/usb/host/ehci-orion.c    | 2 --
+ drivers/usb/host/ehci-pci.c      | 2 --
+ drivers/usb/host/ehci-platform.c | 2 --
+ drivers/usb/host/ehci-spear.c    | 2 --
+ drivers/usb/host/ehci-st.c       | 2 --
+ drivers/usb/host/fotg210-hcd.c   | 1 -
+ drivers/usb/host/ohci-at91.c     | 1 -
+ drivers/usb/host/ohci-da8xx.c    | 1 -
+ drivers/usb/host/ohci-exynos.c   | 1 -
+ drivers/usb/host/ohci-hcd.c      | 1 -
+ drivers/usb/host/ohci-nxp.c      | 2 --
+ drivers/usb/host/ohci-omap.c     | 2 --
+ drivers/usb/host/ohci-pci.c      | 2 --
+ drivers/usb/host/ohci-platform.c | 2 --
+ drivers/usb/host/ohci-pxa27x.c   | 2 --
+ drivers/usb/host/ohci-s3c2410.c  | 1 -
+ drivers/usb/host/ohci-spear.c    | 2 --
+ drivers/usb/host/ohci-st.c       | 2 --
+ 24 files changed, 39 deletions(-)
 
-diff --git a/arch/arm/configs/bcm2835_defconfig b/arch/arm/configs/bcm2835_defconfig
-index c4d2e2334b6e..a51babd178c2 100644
---- a/arch/arm/configs/bcm2835_defconfig
-+++ b/arch/arm/configs/bcm2835_defconfig
-@@ -1,6 +1,6 @@
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_BSD_PROCESS_ACCT=y
-diff --git a/arch/arm/configs/cm_x300_defconfig b/arch/arm/configs/cm_x300_defconfig
-index 31f41159bef2..95144e380b4b 100644
---- a/arch/arm/configs/cm_x300_defconfig
-+++ b/arch/arm/configs/cm_x300_defconfig
-@@ -1,7 +1,7 @@
- CONFIG_LOCALVERSION="-cm-x300"
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=18
-diff --git a/arch/arm/configs/davinci_all_defconfig b/arch/arm/configs/davinci_all_defconfig
-index fc71a03a9c8c..821d966c95a5 100644
---- a/arch/arm/configs/davinci_all_defconfig
-+++ b/arch/arm/configs/davinci_all_defconfig
-@@ -1,6 +1,6 @@
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
-diff --git a/arch/arm/configs/dove_defconfig b/arch/arm/configs/dove_defconfig
-index 16ed5c110e8d..233da1101aa0 100644
---- a/arch/arm/configs/dove_defconfig
-+++ b/arch/arm/configs/dove_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_EXPERT=y
-diff --git a/arch/arm/configs/exynos_defconfig b/arch/arm/configs/exynos_defconfig
-index 1ce74f46e114..17a968e5d706 100644
---- a/arch/arm/configs/exynos_defconfig
-+++ b/arch/arm/configs/exynos_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_CGROUPS=y
-diff --git a/arch/arm/configs/ezx_defconfig b/arch/arm/configs/ezx_defconfig
-index 1a41391d7367..d6cc84048622 100644
---- a/arch/arm/configs/ezx_defconfig
-+++ b/arch/arm/configs/ezx_defconfig
-@@ -1,7 +1,7 @@
- CONFIG_LOCALVERSION="-ezx200910312315"
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_LOG_BUF_SHIFT=14
-diff --git a/arch/arm/configs/hisi_defconfig b/arch/arm/configs/hisi_defconfig
-index 1db5356b1ccd..0376a65e8bc1 100644
---- a/arch/arm/configs/hisi_defconfig
-+++ b/arch/arm/configs/hisi_defconfig
-@@ -1,4 +1,4 @@
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_BLK_DEV_INITRD=y
-diff --git a/arch/arm/configs/imx_v4_v5_defconfig b/arch/arm/configs/imx_v4_v5_defconfig
-index bfa2a95638af..711a79e9be00 100644
---- a/arch/arm/configs/imx_v4_v5_defconfig
-+++ b/arch/arm/configs/imx_v4_v5_defconfig
-@@ -1,6 +1,6 @@
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_LOG_BUF_SHIFT=14
-diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
-index fb283059daa0..6407f3a588f4 100644
---- a/arch/arm/configs/imx_v6_v7_defconfig
-+++ b/arch/arm/configs/imx_v6_v7_defconfig
-@@ -1,6 +1,6 @@
- CONFIG_KERNEL_LZO=y
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BPF_SYSCALL=y
- CONFIG_PREEMPT_VOLUNTARY=y
-diff --git a/arch/arm/configs/integrator_defconfig b/arch/arm/configs/integrator_defconfig
-index 9ca43c84b452..61711d4bbf74 100644
---- a/arch/arm/configs/integrator_defconfig
-+++ b/arch/arm/configs/integrator_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
-diff --git a/arch/arm/configs/lpc32xx_defconfig b/arch/arm/configs/lpc32xx_defconfig
-index 8a41fe4e62f1..fabb66a53350 100644
---- a/arch/arm/configs/lpc32xx_defconfig
-+++ b/arch/arm/configs/lpc32xx_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
-diff --git a/arch/arm/configs/magician_defconfig b/arch/arm/configs/magician_defconfig
-index 9cbb63c69436..5a8776f6aba3 100644
---- a/arch/arm/configs/magician_defconfig
-+++ b/arch/arm/configs/magician_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
-diff --git a/arch/arm/configs/milbeaut_m10v_defconfig b/arch/arm/configs/milbeaut_m10v_defconfig
-index 8620061e19a8..03e7e8969fc9 100644
---- a/arch/arm/configs/milbeaut_m10v_defconfig
-+++ b/arch/arm/configs/milbeaut_m10v_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
-diff --git a/arch/arm/configs/moxart_defconfig b/arch/arm/configs/moxart_defconfig
-index 082a38a14c12..ea31f116d577 100644
---- a/arch/arm/configs/moxart_defconfig
-+++ b/arch/arm/configs/moxart_defconfig
-@@ -1,6 +1,6 @@
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
-diff --git a/arch/arm/configs/multi_v5_defconfig b/arch/arm/configs/multi_v5_defconfig
-index e0be0e0023f3..1d97179c1e55 100644
---- a/arch/arm/configs/multi_v5_defconfig
-+++ b/arch/arm/configs/multi_v5_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_LOG_BUF_SHIFT=19
-diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
-index d9257854c941..4278468e5093 100644
---- a/arch/arm/configs/multi_v7_defconfig
-+++ b/arch/arm/configs/multi_v7_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
-diff --git a/arch/arm/configs/mv78xx0_defconfig b/arch/arm/configs/mv78xx0_defconfig
-index a53ccd49f8ff..877c5150a987 100644
---- a/arch/arm/configs/mv78xx0_defconfig
-+++ b/arch/arm/configs/mv78xx0_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_LOG_BUF_SHIFT=14
-diff --git a/arch/arm/configs/mvebu_v5_defconfig b/arch/arm/configs/mvebu_v5_defconfig
-index ef3a33ebc29a..0b0017ab598c 100644
---- a/arch/arm/configs/mvebu_v5_defconfig
-+++ b/arch/arm/configs/mvebu_v5_defconfig
-@@ -1,6 +1,6 @@
- CONFIG_SYSVIPC=y
- CONFIG_FHANDLE=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_LOG_BUF_SHIFT=19
-diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
-index 155553ee06f4..c874662c2ee9 100644
---- a/arch/arm/configs/mxs_defconfig
-+++ b/arch/arm/configs/mxs_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT_VOLUNTARY=y
- CONFIG_TASKSTATS=y
-diff --git a/arch/arm/configs/omap1_defconfig b/arch/arm/configs/omap1_defconfig
-index 54a9f50122af..ac6628b234be 100644
---- a/arch/arm/configs/omap1_defconfig
-+++ b/arch/arm/configs/omap1_defconfig
-@@ -1,6 +1,6 @@
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_BSD_PROCESS_ACCT=y
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 99d015cf8919..e2cb19da033a 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -2,7 +2,7 @@ CONFIG_KERNEL_LZMA=y
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
- CONFIG_AUDIT=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_IKCONFIG=y
-diff --git a/arch/arm/configs/orion5x_defconfig b/arch/arm/configs/orion5x_defconfig
-index 1311d9583fcc..e2da9a8e28a4 100644
---- a/arch/arm/configs/orion5x_defconfig
-+++ b/arch/arm/configs/orion5x_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_LOG_BUF_SHIFT=14
-diff --git a/arch/arm/configs/oxnas_v6_defconfig b/arch/arm/configs/oxnas_v6_defconfig
-index 5c163a9d1429..70a67b3fc91b 100644
---- a/arch/arm/configs/oxnas_v6_defconfig
-+++ b/arch/arm/configs/oxnas_v6_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
-diff --git a/arch/arm/configs/pcm027_defconfig b/arch/arm/configs/pcm027_defconfig
-index 06bc9a8fef90..a392312a13ce 100644
---- a/arch/arm/configs/pcm027_defconfig
-+++ b/arch/arm/configs/pcm027_defconfig
-@@ -1,6 +1,6 @@
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_BSD_PROCESS_ACCT=y
-diff --git a/arch/arm/configs/pxa168_defconfig b/arch/arm/configs/pxa168_defconfig
-index 70d327895ccf..b4768f873b87 100644
---- a/arch/arm/configs/pxa168_defconfig
-+++ b/arch/arm/configs/pxa168_defconfig
-@@ -4,7 +4,7 @@ CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_MACH_ASPENITE=y
- CONFIG_MACH_ZYLONITE2=y
- CONFIG_MACH_AVENGERS_LITE=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_AEABI=y
-diff --git a/arch/arm/configs/pxa910_defconfig b/arch/arm/configs/pxa910_defconfig
-index 5072bde71508..d61a1e5c8e37 100644
---- a/arch/arm/configs/pxa910_defconfig
-+++ b/arch/arm/configs/pxa910_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_LOG_BUF_SHIFT=14
-diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
-index ce3f4ed50498..efc2fe7c50b0 100644
---- a/arch/arm/configs/pxa_defconfig
-+++ b/arch/arm/configs/pxa_defconfig
-@@ -1,7 +1,7 @@
- CONFIG_SYSVIPC=y
- CONFIG_POSIX_MQUEUE=y
- CONFIG_FHANDLE=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_BSD_PROCESS_ACCT=y
-diff --git a/arch/arm/configs/qcom_defconfig b/arch/arm/configs/qcom_defconfig
-index 0eeefbe60d06..12b82c662359 100644
---- a/arch/arm/configs/qcom_defconfig
-+++ b/arch/arm/configs/qcom_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
-diff --git a/arch/arm/configs/s5pv210_defconfig b/arch/arm/configs/s5pv210_defconfig
-index 789e900a8a08..d5daef2a966c 100644
---- a/arch/arm/configs/s5pv210_defconfig
-+++ b/arch/arm/configs/s5pv210_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_CGROUPS=y
-diff --git a/arch/arm/configs/shmobile_defconfig b/arch/arm/configs/shmobile_defconfig
-index a29bebb3742e..ecf004ece838 100644
---- a/arch/arm/configs/shmobile_defconfig
-+++ b/arch/arm/configs/shmobile_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_CGROUPS=y
-diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
-index 3d14827e0a31..5c0806103a6f 100644
---- a/arch/arm/configs/sunxi_defconfig
-+++ b/arch/arm/configs/sunxi_defconfig
-@@ -1,4 +1,4 @@
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
-diff --git a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
-index 71400af6cef4..ea9178a38b97 100644
---- a/arch/arm/configs/tegra_defconfig
-+++ b/arch/arm/configs/tegra_defconfig
-@@ -1,5 +1,5 @@
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT=y
- CONFIG_IKCONFIG=y
-diff --git a/arch/arm/configs/vt8500_v6_v7_defconfig b/arch/arm/configs/vt8500_v6_v7_defconfig
-index cb8d38e9562a..41607a84abc8 100644
---- a/arch/arm/configs/vt8500_v6_v7_defconfig
-+++ b/arch/arm/configs/vt8500_v6_v7_defconfig
-@@ -1,4 +1,4 @@
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_ARCH_MULTI_V6=y
-diff --git a/arch/arm/configs/xcep_defconfig b/arch/arm/configs/xcep_defconfig
-index 0453948d52ef..ea59e4b6bfc5 100644
---- a/arch/arm/configs/xcep_defconfig
-+++ b/arch/arm/configs/xcep_defconfig
-@@ -1,7 +1,7 @@
- CONFIG_LOCALVERSION=".xcep-itech"
- # CONFIG_LOCALVERSION_AUTO is not set
- CONFIG_SYSVIPC=y
--CONFIG_NO_HZ=y
-+CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_IKCONFIG=y
+diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
+index 05d41fd65f25..0e995019c1df 100644
+--- a/drivers/usb/host/ehci-atmel.c
++++ b/drivers/usb/host/ehci-atmel.c
+@@ -239,7 +239,6 @@ static int __init ehci_atmel_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+ 	ehci_init_driver(&ehci_atmel_hc_driver, &ehci_atmel_drv_overrides);
+ 	return platform_driver_register(&ehci_atmel_driver);
+ }
+diff --git a/drivers/usb/host/ehci-exynos.c b/drivers/usb/host/ehci-exynos.c
+index 1a9b7572e17f..a65e365e3a04 100644
+--- a/drivers/usb/host/ehci-exynos.c
++++ b/drivers/usb/host/ehci-exynos.c
+@@ -347,7 +347,6 @@ static int __init ehci_exynos_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+ 	ehci_init_driver(&exynos_ehci_hc_driver, &exynos_overrides);
+ 	return platform_driver_register(&exynos_ehci_driver);
+ }
+diff --git a/drivers/usb/host/ehci-fsl.c b/drivers/usb/host/ehci-fsl.c
+index 896c0d107f72..9cea785934e5 100644
+--- a/drivers/usb/host/ehci-fsl.c
++++ b/drivers/usb/host/ehci-fsl.c
+@@ -722,8 +722,6 @@ static int __init ehci_fsl_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info(DRV_NAME ": " DRIVER_DESC "\n");
+-
+ 	ehci_init_driver(&fsl_ehci_hc_driver, &ehci_fsl_overrides);
+ 
+ 	fsl_ehci_hc_driver.product_desc =
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 684164fa9716..a1930db0da1c 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -1351,7 +1351,6 @@ static int __init ehci_hcd_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	printk(KERN_INFO "%s: " DRIVER_DESC "\n", hcd_name);
+ 	set_bit(USB_EHCI_LOADED, &usb_hcds_loaded);
+ 	if (test_bit(USB_UHCI_LOADED, &usb_hcds_loaded) ||
+ 			test_bit(USB_OHCI_LOADED, &usb_hcds_loaded))
+diff --git a/drivers/usb/host/ehci-npcm7xx.c b/drivers/usb/host/ehci-npcm7xx.c
+index 6b5a7a873e01..4321ac6b11cc 100644
+--- a/drivers/usb/host/ehci-npcm7xx.c
++++ b/drivers/usb/host/ehci-npcm7xx.c
+@@ -191,8 +191,6 @@ static int __init ehci_npcm7xx_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ehci_init_driver(&ehci_npcm7xx_hc_driver, NULL);
+ 	return platform_driver_register(&npcm7xx_ehci_hcd_driver);
+ }
+diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
+index 8c45bc17a580..7dd984722a7f 100644
+--- a/drivers/usb/host/ehci-omap.c
++++ b/drivers/usb/host/ehci-omap.c
+@@ -284,8 +284,6 @@ static int __init ehci_omap_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ehci_init_driver(&ehci_omap_hc_driver, &ehci_omap_overrides);
+ 	return platform_driver_register(&ehci_hcd_omap_driver);
+ }
+diff --git a/drivers/usb/host/ehci-orion.c b/drivers/usb/host/ehci-orion.c
+index 3626758b3e2a..2c8b1e6f1fff 100644
+--- a/drivers/usb/host/ehci-orion.c
++++ b/drivers/usb/host/ehci-orion.c
+@@ -361,8 +361,6 @@ static int __init ehci_orion_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ehci_init_driver(&ehci_orion_hc_driver, &orion_overrides);
+ 	return platform_driver_register(&ehci_orion_driver);
+ }
+diff --git a/drivers/usb/host/ehci-pci.c b/drivers/usb/host/ehci-pci.c
+index 9937c5a7efc2..9581952d999a 100644
+--- a/drivers/usb/host/ehci-pci.c
++++ b/drivers/usb/host/ehci-pci.c
+@@ -423,8 +423,6 @@ static int __init ehci_pci_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ehci_init_driver(&ehci_pci_hc_driver, &pci_overrides);
+ 
+ 	/* Entries for the PCI suspend/resume callbacks are special */
+diff --git a/drivers/usb/host/ehci-platform.c b/drivers/usb/host/ehci-platform.c
+index 6924f0316e9a..50491eea9409 100644
+--- a/drivers/usb/host/ehci-platform.c
++++ b/drivers/usb/host/ehci-platform.c
+@@ -529,8 +529,6 @@ static int __init ehci_platform_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ehci_init_driver(&ehci_platform_hc_driver, &platform_overrides);
+ 	return platform_driver_register(&ehci_platform_driver);
+ }
+diff --git a/drivers/usb/host/ehci-spear.c b/drivers/usb/host/ehci-spear.c
+index 3694e450a11a..13369289d9cc 100644
+--- a/drivers/usb/host/ehci-spear.c
++++ b/drivers/usb/host/ehci-spear.c
+@@ -167,8 +167,6 @@ static int __init ehci_spear_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ehci_init_driver(&ehci_spear_hc_driver, &spear_overrides);
+ 	return platform_driver_register(&spear_ehci_hcd_driver);
+ }
+diff --git a/drivers/usb/host/ehci-st.c b/drivers/usb/host/ehci-st.c
+index f74433aac948..1086078133f8 100644
+--- a/drivers/usb/host/ehci-st.c
++++ b/drivers/usb/host/ehci-st.c
+@@ -346,8 +346,6 @@ static int __init ehci_platform_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ehci_init_driver(&ehci_platform_hc_driver, &platform_overrides);
+ 	return platform_driver_register(&ehci_platform_driver);
+ }
+diff --git a/drivers/usb/host/fotg210-hcd.c b/drivers/usb/host/fotg210-hcd.c
+index f8c111e08a0d..3d1dbcf4c073 100644
+--- a/drivers/usb/host/fotg210-hcd.c
++++ b/drivers/usb/host/fotg210-hcd.c
+@@ -5692,7 +5692,6 @@ static int __init fotg210_hcd_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+ 	set_bit(USB_EHCI_LOADED, &usb_hcds_loaded);
+ 	if (test_bit(USB_UHCI_LOADED, &usb_hcds_loaded) ||
+ 			test_bit(USB_OHCI_LOADED, &usb_hcds_loaded))
+diff --git a/drivers/usb/host/ohci-at91.c b/drivers/usb/host/ohci-at91.c
+index 98326465e2dc..adf0998f0299 100644
+--- a/drivers/usb/host/ohci-at91.c
++++ b/drivers/usb/host/ohci-at91.c
+@@ -699,7 +699,6 @@ static int __init ohci_at91_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+ 	ohci_init_driver(&ohci_at91_hc_driver, &ohci_at91_drv_overrides);
+ 
+ 	/*
+diff --git a/drivers/usb/host/ohci-da8xx.c b/drivers/usb/host/ohci-da8xx.c
+index 1371b0c249ec..d4818e8d652b 100644
+--- a/drivers/usb/host/ohci-da8xx.c
++++ b/drivers/usb/host/ohci-da8xx.c
+@@ -551,7 +551,6 @@ static int __init ohci_da8xx_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", DRV_NAME);
+ 	ohci_init_driver(&ohci_da8xx_hc_driver, &da8xx_overrides);
+ 
+ 	/*
+diff --git a/drivers/usb/host/ohci-exynos.c b/drivers/usb/host/ohci-exynos.c
+index 5f5e8a64c8e2..a060be6ae274 100644
+--- a/drivers/usb/host/ohci-exynos.c
++++ b/drivers/usb/host/ohci-exynos.c
+@@ -310,7 +310,6 @@ static int __init ohci_exynos_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+ 	ohci_init_driver(&exynos_ohci_hc_driver, &exynos_overrides);
+ 	return platform_driver_register(&exynos_ohci_driver);
+ }
+diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
+index c4c821c2288c..0457dd9f6c19 100644
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -1276,7 +1276,6 @@ static int __init ohci_hcd_mod_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	printk(KERN_INFO "%s: " DRIVER_DESC "\n", hcd_name);
+ 	pr_debug ("%s: block sizes: ed %zd td %zd\n", hcd_name,
+ 		sizeof (struct ed), sizeof (struct td));
+ 	set_bit(USB_OHCI_LOADED, &usb_hcds_loaded);
+diff --git a/drivers/usb/host/ohci-nxp.c b/drivers/usb/host/ohci-nxp.c
+index 106a6bcefb08..5b32e683e367 100644
+--- a/drivers/usb/host/ohci-nxp.c
++++ b/drivers/usb/host/ohci-nxp.c
+@@ -275,8 +275,6 @@ static int __init ohci_nxp_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ohci_init_driver(&ohci_nxp_hc_driver, NULL);
+ 	return platform_driver_register(&ohci_hcd_nxp_driver);
+ }
+diff --git a/drivers/usb/host/ohci-omap.c b/drivers/usb/host/ohci-omap.c
+index f5bc9c8bdc9a..cb29701df911 100644
+--- a/drivers/usb/host/ohci-omap.c
++++ b/drivers/usb/host/ohci-omap.c
+@@ -423,8 +423,6 @@ static int __init ohci_omap_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ohci_init_driver(&ohci_omap_hc_driver, &omap_overrides);
+ 	return platform_driver_register(&ohci_hcd_omap_driver);
+ }
+diff --git a/drivers/usb/host/ohci-pci.c b/drivers/usb/host/ohci-pci.c
+index 41efe927d8f3..a146b2d3ef0b 100644
+--- a/drivers/usb/host/ohci-pci.c
++++ b/drivers/usb/host/ohci-pci.c
+@@ -306,8 +306,6 @@ static int __init ohci_pci_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ohci_init_driver(&ohci_pci_hc_driver, &pci_overrides);
+ 
+ #ifdef	CONFIG_PM
+diff --git a/drivers/usb/host/ohci-platform.c b/drivers/usb/host/ohci-platform.c
+index 0adae6265127..6d56b52966c7 100644
+--- a/drivers/usb/host/ohci-platform.c
++++ b/drivers/usb/host/ohci-platform.c
+@@ -346,8 +346,6 @@ static int __init ohci_platform_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ohci_init_driver(&ohci_platform_hc_driver, &platform_overrides);
+ 	return platform_driver_register(&ohci_platform_driver);
+ }
+diff --git a/drivers/usb/host/ohci-pxa27x.c b/drivers/usb/host/ohci-pxa27x.c
+index ab4f610a0140..f2504b884e92 100644
+--- a/drivers/usb/host/ohci-pxa27x.c
++++ b/drivers/usb/host/ohci-pxa27x.c
+@@ -608,8 +608,6 @@ static int __init ohci_pxa27x_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ohci_init_driver(&ohci_pxa27x_hc_driver, &pxa27x_overrides);
+ 	ohci_pxa27x_hc_driver.hub_control = pxa27x_ohci_hub_control;
+ 
+diff --git a/drivers/usb/host/ohci-s3c2410.c b/drivers/usb/host/ohci-s3c2410.c
+index 12264c048601..7207c7a3cf49 100644
+--- a/drivers/usb/host/ohci-s3c2410.c
++++ b/drivers/usb/host/ohci-s3c2410.c
+@@ -474,7 +474,6 @@ static int __init ohci_s3c2410_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+ 	ohci_init_driver(&ohci_s3c2410_hc_driver, NULL);
+ 
+ 	/*
+diff --git a/drivers/usb/host/ohci-spear.c b/drivers/usb/host/ohci-spear.c
+index 9b81f420656d..71a3f18fe1be 100644
+--- a/drivers/usb/host/ohci-spear.c
++++ b/drivers/usb/host/ohci-spear.c
+@@ -179,8 +179,6 @@ static int __init ohci_spear_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ohci_init_driver(&ohci_spear_hc_driver, &spear_overrides);
+ 	return platform_driver_register(&spear_ohci_hcd_driver);
+ }
+diff --git a/drivers/usb/host/ohci-st.c b/drivers/usb/host/ohci-st.c
+index ac796ccd93ef..2e542a344aae 100644
+--- a/drivers/usb/host/ohci-st.c
++++ b/drivers/usb/host/ohci-st.c
+@@ -324,8 +324,6 @@ static int __init ohci_platform_init(void)
+ 	if (usb_disabled())
+ 		return -ENODEV;
+ 
+-	pr_info("%s: " DRIVER_DESC "\n", hcd_name);
+-
+ 	ohci_init_driver(&ohci_platform_hc_driver, &platform_overrides);
+ 	return platform_driver_register(&ohci_platform_driver);
+ }
 -- 
-2.37.2
+2.35.1
 
