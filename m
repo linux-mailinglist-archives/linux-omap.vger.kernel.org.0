@@ -2,88 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FD905A07D0
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Aug 2022 06:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5D5F5A08E9
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Aug 2022 08:35:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229437AbiHYEVL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 25 Aug 2022 00:21:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33120 "EHLO
+        id S233740AbiHYGfh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 25 Aug 2022 02:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230338AbiHYEVK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Aug 2022 00:21:10 -0400
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23F6E2A73D;
-        Wed, 24 Aug 2022 21:21:08 -0700 (PDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
-        by bmailout2.hostsharing.net (Postfix) with ESMTPS id 1351B2800095B;
-        Thu, 25 Aug 2022 06:21:06 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 074654A8C2; Thu, 25 Aug 2022 06:21:06 +0200 (CEST)
-Date:   Thu, 25 Aug 2022 06:21:06 +0200
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Ferry Toth <fntoth@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-        Andre Edich <andre.edich@microchip.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>, kernelci-results@groups.io,
-        bot@kernelci.org, gtucker@collabora.com, stable@vger.kernel.org,
-        netdev@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: stable-rc/linux-5.18.y bisection: baseline.login on panda
-Message-ID: <20220825042106.GA16015@wunner.de>
-References: <63068874.170a0220.2f9fc.b822@mx.google.com>
- <YwaqZ1+zm78vl4L1@sirena.org.uk>
+        with ESMTP id S230338AbiHYGff (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 25 Aug 2022 02:35:35 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D6129E887
+        for <linux-omap@vger.kernel.org>; Wed, 24 Aug 2022 23:35:34 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id m3so21250016lfg.10
+        for <linux-omap@vger.kernel.org>; Wed, 24 Aug 2022 23:35:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=EvKjZn6Jwen4vu3P72obwS4c6ve0NpMMiuM5nFUjsc4=;
+        b=hA4GPgaoc/uO4LTyPl6C3Xt+kHB33H1tgfQHneoEsl2dH6kJVkPkiVqziKkgko6psm
+         sykCnNuBjKSGW65OLNnTjZsc1gMvL8pxzST7G8ZaC26d1V9GnCb8gADMrX52Pg5WmWCC
+         MFk+i+s7g5Oj+JlpHgSvV2gIhBbpO8NKxa5qw7xPHWMlOMRk1AL6omhiRuXnNvaZnV7C
+         hzs9IqK1KglzKfqWlH1w0ETUDb9CENa5j95XHDtoTAK8Tdo/Y/REu5u5q9EduEq8Rjsd
+         lawoJlipNd21qz0GU9CDOlfVn2/cLAWisLJlvtML6nXytSjRYSh6PEQckm243xqW+hR8
+         iTUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=EvKjZn6Jwen4vu3P72obwS4c6ve0NpMMiuM5nFUjsc4=;
+        b=BbganfkkR5QVLg1LrbgOR4g99CZ4DIJzKXls9YIQa5AZnTzBbkQg0uC7rKI1pNqsnq
+         bckOcI+Vr5+27dulc5GRkMShdFrvkP3LNQrdNB27JZjznCR4Q9g7nFQb5nKrXilbc6us
+         ntenQI514uyRQ50CnzPKGLqInjr4/oVBr5wXmXSOlSe6XZC90XatmI7g88NcJbUEhNWp
+         bYCJjMAmGMXS+YTRAcGyjy7YN/L6fnKilZ4LlhC+CH1og0R+MUKBJ/zLNcDr7+APwuxz
+         3SK7ywTH2Sp9egkuhR9pwO4khiNPnbQEWs0qK3dyOOdfjRnDPFUysg/P+mLEseeMpxs/
+         O6Ew==
+X-Gm-Message-State: ACgBeo1USVrJboMQgG50eLiBh145OdFTpQ8zs8c03ObAow4OX1gtwLAZ
+        yT1Gswhvwe5Te8X7K8ReFgT2yg==
+X-Google-Smtp-Source: AA6agR4MXfi9uA9HEyxEy5/qdbVPXms4C7TdYuwdEmdffkyYQy/oAl819Jf7A8eMC6blyL3NxEOxFA==
+X-Received: by 2002:a19:6a05:0:b0:492:f775:6f43 with SMTP id u5-20020a196a05000000b00492f7756f43mr638867lfu.10.1661409332398;
+        Wed, 24 Aug 2022 23:35:32 -0700 (PDT)
+Received: from [192.168.0.71] (82.131.98.15.cable.starman.ee. [82.131.98.15])
+        by smtp.gmail.com with ESMTPSA id k16-20020a05651c10b000b00260fdfdd23csm329602ljn.109.2022.08.24.23.35.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Aug 2022 23:35:31 -0700 (PDT)
+Message-ID: <3ea10afc-61f4-a5ac-aef9-16ddc6f845e6@linaro.org>
+Date:   Thu, 25 Aug 2022 09:35:29 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YwaqZ1+zm78vl4L1@sirena.org.uk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH] ARM: configs: replace CONFIG_NO_HZ=y with
+ CONFIG_NO_HZ_IDLE=y
+Content-Language: en-US
+To:     Stefan Hansson <newbie13xd@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Taichi Sugaya <sugaya.taichi@socionext.com>,
+        Takao Orito <orito.takao@socionext.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-oxnas@groups.io, linux-arm-msm@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
+        linux-tegra@vger.kernel.org
+References: <20220822161018.16101-1-newbie13xd@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220822161018.16101-1-newbie13xd@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Aug 24, 2022 at 11:47:03PM +0100, Mark Brown wrote:
-> On Wed, Aug 24, 2022 at 01:22:12PM -0700, KernelCI bot wrote:
-> The KernelCI bisection bot identified 7eea9a60703ca ("usbnet: smsc95xx:
-> Forward PHY interrupts to PHY driver to avoid polling") as causing a
-> boot regression on Panda in v5.18.  The board stops detecting a link
-> which breks NFS boot:
+On 22/08/2022 19:10, Stefan Hansson wrote:
+> According to https://www.kernel.org/doc/html/latest/timers/no_hz.html,
+> CONFIG_NO_HZ=y should be replaced by CONFIG_NO_HZ_IDLE=y for newer
+> kernels, so let's reflect that in the 32-bit ARM defconfigs.
 > 
-> <6>[    4.953613] smsc95xx 2-1.1:1.0 eth0: register 'smsc95xx' at usb-4a064c00.ehci-1.1, smsc95xx USB 2.0 Ethernet, 02:03:01:8c:13:b0
-> <6>[    5.032928] smsc95xx 2-1.1:1.0 eth0: hardware isn't capable of remote wakeup
-> <6>[    5.044036] smsc95xx 2-1.1:1.0 eth0: Link is Down
-> <6>[   25.053924] Waiting up to 100 more seconds for network.
-> <6>[   45.074005] Waiting up to 80 more seconds for network.
-> <6>[   65.093933] Waiting up to 60 more seconds for network.
-> <6>[   85.123992] Waiting up to 40 more seconds for network.
-> <6>[  105.143951] Waiting up to 20 more seconds for network.
-> <5>[  125.084014] Sending DHCP requests ...... timed out!
+> Signed-off-by: Stefan Hansson <newbie13xd@gmail.com>
 
-Looks like v5.19 boots fine (with the offending commit), so only
-v5.18-stable and v5.15-stable are affected:
 
-https://storage.kernelci.org/stable-rc/linux-5.19.y/v5.19.3-366-g32f80a5b58e2/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-panda.html
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> # Samsung
 
-The offending commit was a new feature introduced in v5.19,
-it deliberately wasn't tagged for stable.  Aggressively
-backporting such new features always carries a risk of
-regressions.
-
-Off the cuff I don't see that a prerequisite commit is missing
-in stable kernels.  So just reverting the offending commit in
-v5.18-stable and v5.15-stable (but not in v5.19-stable) might
-be the simplest solution.
-
-Thanks,
-
-Lukas
+Best regards,
+Krzysztof
