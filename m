@@ -2,88 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAD5E5A20AB
-	for <lists+linux-omap@lfdr.de>; Fri, 26 Aug 2022 08:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4CAD5A20B1
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Aug 2022 08:11:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231932AbiHZGKd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 26 Aug 2022 02:10:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56308 "EHLO
+        id S234316AbiHZGLv (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 26 Aug 2022 02:11:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbiHZGKc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 26 Aug 2022 02:10:32 -0400
-Received: from smtp.smtpout.orange.fr (smtp03.smtpout.orange.fr [80.12.242.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A52DA2ED41
-        for <linux-omap@vger.kernel.org>; Thu, 25 Aug 2022 23:10:31 -0700 (PDT)
-Received: from [192.168.1.18] ([90.11.190.129])
-        by smtp.orange.fr with ESMTPA
-        id RSXzoogIBBDYDRSXzooGkT; Fri, 26 Aug 2022 08:10:29 +0200
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 26 Aug 2022 08:10:29 +0200
-X-ME-IP: 90.11.190.129
-Message-ID: <a2804b0d-01d3-c6f2-d681-bec104870408@wanadoo.fr>
-Date:   Fri, 26 Aug 2022 08:10:26 +0200
+        with ESMTP id S229591AbiHZGLu (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 26 Aug 2022 02:11:50 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AE6B6E2F5;
+        Thu, 25 Aug 2022 23:11:48 -0700 (PDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MDTts0WSXznTll;
+        Fri, 26 Aug 2022 14:09:25 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 26 Aug 2022 14:11:46 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Fri, 26 Aug
+ 2022 14:11:45 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-omap@vger.kernel.org>
+CC:     <jneanne@baylibre.com>, <broonie@kernel.org>
+Subject: [PATCH -next] regulator: tps65219: change tps65219_regulator_irq_types to static
+Date:   Fri, 26 Aug 2022 14:19:41 +0800
+Message-ID: <20220826061941.1814723-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH -next] regulator: drivers: Remove unnecessary print
- function dev_err()
-Content-Language: en-US
-To:     Yang Li <yang.lee@linux.alibaba.com>, tony@atomide.com
-Cc:     lgirdwood@gmail.com, broonie@kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Abaci Robot <abaci@linux.alibaba.com>
-References: <20220825070438.128093-1-yang.lee@linux.alibaba.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20220825070438.128093-1-yang.lee@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Le 25/08/2022 à 09:04, Yang Li a écrit :
-> The print function dev_err() is redundant because
-> platform_get_irq_byname() already prints an error.
-> 
-> Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=1986
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-> ---
->   drivers/regulator/tps65219-regulator.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-> index 7ba2594e437c..ab16e6665625 100644
-> --- a/drivers/regulator/tps65219-regulator.c
-> +++ b/drivers/regulator/tps65219-regulator.c
-> @@ -363,11 +363,9 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
->   		irq_type = &tps65219_regulator_irq_types[i];
->   
->   		irq = platform_get_irq_byname(pdev, irq_type->irq_name);
-> -		if (irq < 0) {
-> -			dev_err(tps->dev, "Failed to get IRQ %s: %d\n",
-> -				irq_type->irq_name, irq);
-> +		if (irq < 0)
->   			return -EINVAL;
-> -		}
-> +
->   		irq_data[i].dev = tps->dev;
->   		irq_data[i].type = irq_type;
->   
+tps65219_regulator_irq_types is only used in tps65219-regulator.c now,
+change it to static.
 
-Hi,
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ drivers/regulator/tps65219-regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-just in case it has an importance, this is not exactly the same.
-Previously, the error was related to 'pdev', now it is related to 'tps' 
-and we have:
-	'struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);'
+diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
+index 7ba2594e437c..934bf52bbd85 100644
+--- a/drivers/regulator/tps65219-regulator.c
++++ b/drivers/regulator/tps65219-regulator.c
+@@ -30,7 +30,7 @@ struct tps65219_regulator_irq_type {
+ 	unsigned long event;
+ };
+ 
+-struct tps65219_regulator_irq_type tps65219_regulator_irq_types[] = {
++static struct tps65219_regulator_irq_type tps65219_regulator_irq_types[] = {
+ 	{ "LDO3_SCG", "LDO3", "short circuit to ground", REGULATOR_EVENT_REGULATION_OUT },
+ 	{ "LDO3_OC", "LDO3", "overcurrent", REGULATOR_EVENT_OVER_CURRENT },
+ 	{ "LDO3_UV", "LDO3", "undervoltage", REGULATOR_EVENT_UNDER_VOLTAGE },
+-- 
+2.25.1
 
-I don't think it really matters, but just in case...
-
-CJ
