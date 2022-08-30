@@ -2,56 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 086345A69CB
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Aug 2022 19:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B6585A6BA3
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Aug 2022 20:02:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231374AbiH3RXZ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Aug 2022 13:23:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34398 "EHLO
+        id S232039AbiH3SCs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Aug 2022 14:02:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231346AbiH3RWn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Aug 2022 13:22:43 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33ECF2416;
-        Tue, 30 Aug 2022 10:20:50 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7C3E2B81C35;
-        Tue, 30 Aug 2022 17:20:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB21DC433C1;
-        Tue, 30 Aug 2022 17:20:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661880047;
-        bh=150roaC0CNIdd5b+cfmwKH6lTavcFXqnMha7Lc8lO5g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NAna+t3I9XfWr8j0C6GGhKqIUB0y6GhddjSZrgtiqXrFmgBIGT83aJ1YEGsKFu8Rj
-         IImmn77OwftNI1kdOKVN9Qxe1ftJE0wbK+qhhS1gAAFQ1/cPdOQTuubuMO7K2ywWtk
-         9YtuRNuIchzq1IUg9YNouPpqnqlnb7xzMkSn4j5mQpJqZ/9aUBmkX5I01qtd+P6sst
-         RD7Nk/DUhJpNmQ6g0yZ+fedgpEmgplp/ySqgugaQeY5JhYctSOT+9XtnJfD9DJqtGt
-         w3H+IlebBDmrtwAOrTGwy5AlxKna8XbBMVjO3pk2unEPukaNMf1P2Iz9565E44rVcV
-         Smqx48WusyY0g==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Yu Zhe <yuzhe@nfschina.com>, Helge Deller <deller@gmx.de>,
-        Sasha Levin <sashal@kernel.org>, arnd@arndb.de,
-        tony@atomide.com, b.zolnierkie@samsung.com,
-        jiapeng.chong@linux.alibaba.com, guozhengkui@vivo.com,
-        gustavoars@kernel.org, linux-fbdev@vger.kernel.org,
-        linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.19 27/33] fbdev: omapfb: Fix tests for platform_get_irq() failure
-Date:   Tue, 30 Aug 2022 13:18:18 -0400
-Message-Id: <20220830171825.580603-27-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220830171825.580603-1-sashal@kernel.org>
-References: <20220830171825.580603-1-sashal@kernel.org>
+        with ESMTP id S231495AbiH3SC0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Aug 2022 14:02:26 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B629D3452
+        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 11:01:59 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id q16so12197885ljp.8
+        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 11:01:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc;
+        bh=al+Xtg+cfhLeP0/zAYTi1riRGZYXian07ih5lmqeHsI=;
+        b=Pm5Qif4vSyD2VTwBU1s73gBXVtU0WTNoG4UCg6TSCXxTcsJNnpK75qIlpbi8TFKx4M
+         1lbjnpAkwuK0/a2vRI214LWtY66+U+LUsfLCNSb3wZcdZfbpY0YCxrWQTnzcw2DpBl/R
+         yFRgMzV6ItMEl8iG+J2hu3T3nqm5yuOKaUg80VlfrB85b8y9eqqWjSnhILSKLi8Wq/6T
+         Q8U9PZg22vQ9OPgzmDZk2QGta51kInCdXEcBWJ19c67Y3nIWdVgdLcHzkQENxSIq+5XX
+         +2IgoSvkL6/gljpJJCrOFK1pHv7AJLVSDqRQS+tY5FXGU/Y/MHaLAADvj2tv+72HDTDT
+         +b5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc;
+        bh=al+Xtg+cfhLeP0/zAYTi1riRGZYXian07ih5lmqeHsI=;
+        b=HMHYDv2C332tOfwRMyMEXbjPhZpreGLo7YqJA6naqvaqmLbNO5JLCa9T2hyv6BPTXT
+         18u/G2fWlLpLHW1URyvW+EGb0cwY2dSxIyYVmgOT093s9b2KTK4oH9etP1qDkcyWnjb3
+         nUjkuxwCBNS5qGUE+gT2BF3B1spwJtr2zxNtlW5IhYQdzArKiaJpG7/RXbJdC9ZOo1fI
+         aLkxBf7PtQaafBfaMgkx2j4D11788WS2d9sQFM00XQkzYQZgQylLIy4bpiL4UWgoPh7Q
+         lihiRmNrT1lPDuwWge4TS2kKoDGTmpnZ18UmCyNBp71BQH7hiXYN/jVxX4mXE2aFrfUr
+         NbFA==
+X-Gm-Message-State: ACgBeo0E8v331RBIIvXBjAyNNyPi7qC3CVaBDLFxxBtU+jYgCXOsmWu1
+        WmJP9IIsyAh1PiGicQZcRXloKA==
+X-Google-Smtp-Source: AA6agR522yCw3HpoWy/h+YuQykZosQn1end89kl6tikcdKJnEc62U93C9wFOvKLx/YuNPGBUHOdRAA==
+X-Received: by 2002:a2e:1613:0:b0:267:8c60:148f with SMTP id w19-20020a2e1613000000b002678c60148fmr1136172ljd.262.1661882517049;
+        Tue, 30 Aug 2022 11:01:57 -0700 (PDT)
+Received: from krzk-bin.. (balticom-73-99-134.balticom.lv. [109.73.99.134])
+        by smtp.gmail.com with ESMTPSA id n25-20020a05651203f900b0048abf3a550asm1676499lfq.224.2022.08.30.11.01.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Aug 2022 11:01:56 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     linux-kernel@vger.kernel.org, tony@atomide.com,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        linux-omap@vger.kernel.org, krzysztof.kozlowski@linaro.org,
+        krzysztof.kozlowski+dt@linaro.org, bcousson@baylibre.com
+Subject: Re: [PATCH] ARM: dts: am335x: drop panel endpoint unit address
+Date:   Tue, 30 Aug 2022 21:01:53 +0300
+Message-Id: <166188251000.15253.8711282037817342680.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220810130212.400371-1-krzysztof.kozlowski@linaro.org>
+References: <20220810130212.400371-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,41 +71,18 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Yu Zhe <yuzhe@nfschina.com>
+On Wed, 10 Aug 2022 16:02:12 +0300, Krzysztof Kozlowski wrote:
+> The endpoint in panel port node should not have unit address:
+> 
+>   am335x-evmsk.dtb: panel: port:endpoint@0: 'reg' is a required property
+> 
+> 
 
-[ Upstream commit acf4c6205e862304681234a6a4375b478af12552 ]
+Applied, thanks!
 
-The platform_get_irq() returns negative error codes.  It can't actually
-return zero.
+[1/1] ARM: dts: am335x: drop panel endpoint unit address
+      https://git.kernel.org/krzk/linux-dt/c/007cf8d4cbbbf467c9d4ef318fc32a592af32a83
 
-Signed-off-by: Yu Zhe <yuzhe@nfschina.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/video/fbdev/omap/omapfb_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-index 292fcb0a24fc9..6ff237cee7f87 100644
---- a/drivers/video/fbdev/omap/omapfb_main.c
-+++ b/drivers/video/fbdev/omap/omapfb_main.c
-@@ -1643,14 +1643,14 @@ static int omapfb_do_probe(struct platform_device *pdev,
- 		goto cleanup;
- 	}
- 	fbdev->int_irq = platform_get_irq(pdev, 0);
--	if (!fbdev->int_irq) {
-+	if (fbdev->int_irq < 0) {
- 		dev_err(&pdev->dev, "unable to get irq\n");
- 		r = ENXIO;
- 		goto cleanup;
- 	}
- 
- 	fbdev->ext_irq = platform_get_irq(pdev, 1);
--	if (!fbdev->ext_irq) {
-+	if (fbdev->ext_irq < 0) {
- 		dev_err(&pdev->dev, "unable to get irq\n");
- 		r = ENXIO;
- 		goto cleanup;
+Best regards,
 -- 
-2.35.1
-
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
