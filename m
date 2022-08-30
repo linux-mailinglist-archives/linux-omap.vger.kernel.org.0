@@ -2,135 +2,45 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29C765A5FBB
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Aug 2022 11:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB2B45A6250
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Aug 2022 13:44:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbiH3JrC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Aug 2022 05:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51398 "EHLO
+        id S230225AbiH3LoN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Aug 2022 07:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbiH3JrA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Aug 2022 05:47:00 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 374D5A4B1C
-        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 02:46:57 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id w8so5696532lft.12
-        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 02:46:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=ARnBgTXJwj6DmQt+EzTT3aM9SP3zEs9cq/60/7HSjsk=;
-        b=SlkCjvpLZ7rwqWZjZ83/UodBCExhC9lqb5k0nl4bFW/y6HKNX7q+hNL+CwANK2QPHQ
-         Gr6yM7ON2sXs1mzTaBd/aVvPsMH5qSS4QLOERxRONxemGRvu0XsYMOUV5FVbtREPhxee
-         gYd0fb0IOePEX9EK3tepxbFdMhpXMB4QUCpkbEHosiju27IBSK4r+b3fAymsMwUpQXZs
-         U22Xy1Ris3KbVFgDocctFjBRG1q7A4yclKZYzA7nFvuhKwlueLxt2q/9+ucQC/hRH7do
-         BFglFL9dLkWfw03nY/Fy2fZCl5RyQDw3qia2EGJF39UhOZ1SyFrdWQnljF725E/Y+okO
-         FCGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=ARnBgTXJwj6DmQt+EzTT3aM9SP3zEs9cq/60/7HSjsk=;
-        b=7GJ657Ge/STYY2gyOeqtPC5t1KoCDK0PlzaEpLRmc7VDQGop1RQHhwvuBCQoZOXNHV
-         +pOaL+xflnVAcjjFPhCHJzvpCO+JOZcHZWx9Jr0VIJS844J6J2P4ibHiDHg79jUEpyH2
-         u4MXbCAsfMrgtcPnxsWOFMql91wW/hCJTgfzzl8+VKGBhA9iqZRVYdo0X36P32/Hm7PK
-         a3SFtWjvm4uX8EWgnlhHKG7z6E3CNJW/eBRyTNz4mtAmKv9sVPX4SS3ibyCnRItflq0x
-         bReXdfUU4bejhiWQ2OppfBWqBxXeRVZavXbJj3ORTtPrz7kpAk0qXYo/eZlt9zEY3fDk
-         FH0Q==
-X-Gm-Message-State: ACgBeo306IV8UmkcVhgJ1iRDOn1WdvUQFOl00hERZuaz0GpyWOYdWQ1J
-        v1EK6VLsoVTpykRjG45JY8sVmC83WhbwAvVZjp0=
-X-Google-Smtp-Source: AA6agR4e7vv3rYEHPAmYlgqT4CHZnZmiHX++FxH0tia4po2x7kGbWA0tJQKo9IcRCnmCChpFc+zVBA==
-X-Received: by 2002:a05:6512:328d:b0:494:8238:1c with SMTP id p13-20020a056512328d00b004948238001cmr177671lfe.416.1661852816203;
-        Tue, 30 Aug 2022 02:46:56 -0700 (PDT)
-Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
-        by smtp.gmail.com with ESMTPSA id f14-20020a05651c02ce00b00261c30d71e5sm1637304ljo.67.2022.08.30.02.46.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Aug 2022 02:46:55 -0700 (PDT)
-Message-ID: <b6dae743-8910-1cc2-9b3f-382c6a926b4c@linaro.org>
-Date:   Tue, 30 Aug 2022 12:46:53 +0300
+        with ESMTP id S230334AbiH3Lny (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Aug 2022 07:43:54 -0400
+X-Greylist: delayed 1094 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 30 Aug 2022 04:43:06 PDT
+Received: from kolaboit.default-fqdn.com (unknown [165.227.163.247])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A4FF2BCBB
+        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 04:43:06 -0700 (PDT)
+Received: by kolaboit (Postfix, from userid 1038)
+        id DD0F850064; Tue, 30 Aug 2022 11:24:50 +0000 (UTC)
+To:     linux-omap@vger.kernel.org
+Subject: Telegram: TOP 3 Handelsroboter, die Menschen zu Millionaren machen
+Date:   Tue, 30 Aug 2022 11:24:50 +0000
+From:   Constantina <marcin@constantina.pl>
+Reply-To: marcin@constantina.pl
+Message-ID: <be43283e426e3ecdbf07d7e13336723b@www.constantina.pl>
+X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v4 4/6] mfd: drivers: Add TI TPS65219 PMIC support
-Content-Language: en-US
-To:     Markus Schneider-Pargmann <msp@baylibre.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee@kernel.org>, Tony Lindgren <tony@atomide.com>,
-        nm@ti.com, kristo@kernel.org
-Cc:     Jerome Neanne <jneanne@baylibre.com>, khilman@baylibre.com,
-        narmstrong@baylibre.com, j-keerthy@ti.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org
-References: <20220825150224.826258-1-msp@baylibre.com>
- <20220825150224.826258-5-msp@baylibre.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220825150224.826258-5-msp@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,LOTS_OF_MONEY,
+        RCVD_IN_VALIDITY_RPBL,RDNS_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_CR_SURBL,URIBL_PH_SURBL autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 25/08/2022 18:02, Markus Schneider-Pargmann wrote:
-> From: Jerome Neanne <jneanne@baylibre.com>
-> 
-> The TPS65219 is a power management IC PMIC designed to supply a wide
-> range of SoCs in both portable and stationary applications. Any SoC can
-> control TPS65219 over a standard I2C interface.
-> 
-> It contains the following components:
-> - Regulators.
-> - Over Temperature warning and Shut down.
-> - GPIOs
-> - Multi Function Pins (MFP)
-> - power-button
-> 
-> This patch adds support for tps65219 PMIC. At this time only
-> the functionalities listed below are made available:
-> 
-> - Regulators probe and functionalities
-> - warm and cold reset support
-> - SW shutdown support
-> - Regulator warnings via IRQs
-> - Power-button via IRQ
-> 
-> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
-> ---
-> 
-> Notes:
->     Changes in v4:
->     - Removed unused fields from struct tps65219
->     - Added description for the fields in struct tps65219
->     - Fixed coding style
->     - Squash all patches into one mfd patch
->     - Call devm_mfd_add_devices multiple times to clean up the code
->     - Remove debug prints and fixup other messages
->     - Use new_probe instead of probe
-> 
->  MAINTAINERS                  |   1 +
->  drivers/mfd/Kconfig          |  14 ++
->  drivers/mfd/Makefile         |   1 +
->  drivers/mfd/tps65219.c       | 357 +++++++++++++++++++++++++++++++++++
->  include/linux/mfd/tps65219.h | 345 +++++++++++++++++++++++++++++++++
+Message Body:
+Millionen von Dollar in Kryptowahrung in nur wenigen Monaten http://bitcoin-xt.pinkflamemedia.com/news-4138
 
-Use subject prefixes matching the subsystem (git log --oneline -- ...).
+--
+Wiadomość z Constantina
 
-Best regards,
-Krzysztof
