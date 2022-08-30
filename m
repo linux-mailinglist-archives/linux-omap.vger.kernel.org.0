@@ -2,43 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 061885A5D4C
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Aug 2022 09:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C765A5FBB
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Aug 2022 11:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231252AbiH3Hrm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Aug 2022 03:47:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47468 "EHLO
+        id S229715AbiH3JrC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Aug 2022 05:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230366AbiH3Hrl (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Aug 2022 03:47:41 -0400
-Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.154.221.58])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC7FA2A8F
-        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 00:47:36 -0700 (PDT)
-X-QQ-mid: bizesmtp86t1661845652tlk0wfuu
-Received: from localhost.localdomain ( [182.148.13.26])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Tue, 30 Aug 2022 15:47:26 +0800 (CST)
-X-QQ-SSF: 01000000000000B0C000000A0000000
-X-QQ-FEAT: ritJ6yQ+u74NYs0KfEsv97r4l2pahlCofJwhpVxtFM50sUOtnz3Q8LGJldDeY
-        2ez3/wPxmifowRNpDwC3YWtSD7AeXwS8UERiMe9YWKGCKJdDgTHips0mT/riUE1QwfSZcJ5
-        /MfdB4Ke2YH+vdHkiNSaSR9c4JzEnpOXCAi1lZzr3lbpGTrnsNN1yyPAtEeRIJQ5EHkhxcI
-        TBSeWyU5MBLDt8TaiqR/41b/Gyn5sye2OSyXJ7KcVqu18UI1GbcdAWOnocn/BVdGrZ+CcAr
-        rCo26/VYjrW7V8GIal3MWwieGFyceMDCy+G9PO7R72U+ACeW+sK9Euhzl1pJttzKs7BFGjm
-        waQKF8eMpGJTMMgQ5FAJGGLelbEeZ4fiqC0m2tYM0FIH0cQ+wU=
-X-QQ-GoodBg: 0
-From:   Shaomin Deng <dengshaomin@cdjrlc.com>
-To:     tony@atomide.com, linux-omap@vger.kernel.org
-Cc:     Shaomin Deng <dengshaomin@cdjrlc.com>
-Subject: [PATCH] bus: ti-sysc: Fix double word in comments
-Date:   Tue, 30 Aug 2022 03:47:26 -0400
-Message-Id: <20220830074726.12943-1-dengshaomin@cdjrlc.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S229558AbiH3JrA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Aug 2022 05:47:00 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 374D5A4B1C
+        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 02:46:57 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id w8so5696532lft.12
+        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 02:46:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=ARnBgTXJwj6DmQt+EzTT3aM9SP3zEs9cq/60/7HSjsk=;
+        b=SlkCjvpLZ7rwqWZjZ83/UodBCExhC9lqb5k0nl4bFW/y6HKNX7q+hNL+CwANK2QPHQ
+         Gr6yM7ON2sXs1mzTaBd/aVvPsMH5qSS4QLOERxRONxemGRvu0XsYMOUV5FVbtREPhxee
+         gYd0fb0IOePEX9EK3tepxbFdMhpXMB4QUCpkbEHosiju27IBSK4r+b3fAymsMwUpQXZs
+         U22Xy1Ris3KbVFgDocctFjBRG1q7A4yclKZYzA7nFvuhKwlueLxt2q/9+ucQC/hRH7do
+         BFglFL9dLkWfw03nY/Fy2fZCl5RyQDw3qia2EGJF39UhOZ1SyFrdWQnljF725E/Y+okO
+         FCGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=ARnBgTXJwj6DmQt+EzTT3aM9SP3zEs9cq/60/7HSjsk=;
+        b=7GJ657Ge/STYY2gyOeqtPC5t1KoCDK0PlzaEpLRmc7VDQGop1RQHhwvuBCQoZOXNHV
+         +pOaL+xflnVAcjjFPhCHJzvpCO+JOZcHZWx9Jr0VIJS844J6J2P4ibHiDHg79jUEpyH2
+         u4MXbCAsfMrgtcPnxsWOFMql91wW/hCJTgfzzl8+VKGBhA9iqZRVYdo0X36P32/Hm7PK
+         a3SFtWjvm4uX8EWgnlhHKG7z6E3CNJW/eBRyTNz4mtAmKv9sVPX4SS3ibyCnRItflq0x
+         bReXdfUU4bejhiWQ2OppfBWqBxXeRVZavXbJj3ORTtPrz7kpAk0qXYo/eZlt9zEY3fDk
+         FH0Q==
+X-Gm-Message-State: ACgBeo306IV8UmkcVhgJ1iRDOn1WdvUQFOl00hERZuaz0GpyWOYdWQ1J
+        v1EK6VLsoVTpykRjG45JY8sVmC83WhbwAvVZjp0=
+X-Google-Smtp-Source: AA6agR4e7vv3rYEHPAmYlgqT4CHZnZmiHX++FxH0tia4po2x7kGbWA0tJQKo9IcRCnmCChpFc+zVBA==
+X-Received: by 2002:a05:6512:328d:b0:494:8238:1c with SMTP id p13-20020a056512328d00b004948238001cmr177671lfe.416.1661852816203;
+        Tue, 30 Aug 2022 02:46:56 -0700 (PDT)
+Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
+        by smtp.gmail.com with ESMTPSA id f14-20020a05651c02ce00b00261c30d71e5sm1637304ljo.67.2022.08.30.02.46.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Aug 2022 02:46:55 -0700 (PDT)
+Message-ID: <b6dae743-8910-1cc2-9b3f-382c6a926b4c@linaro.org>
+Date:   Tue, 30 Aug 2022 12:46:53 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH v4 4/6] mfd: drivers: Add TI TPS65219 PMIC support
+Content-Language: en-US
+To:     Markus Schneider-Pargmann <msp@baylibre.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee@kernel.org>, Tony Lindgren <tony@atomide.com>,
+        nm@ti.com, kristo@kernel.org
+Cc:     Jerome Neanne <jneanne@baylibre.com>, khilman@baylibre.com,
+        narmstrong@baylibre.com, j-keerthy@ti.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-omap@vger.kernel.org
+References: <20220825150224.826258-1-msp@baylibre.com>
+ <20220825150224.826258-5-msp@baylibre.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220825150224.826258-5-msp@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,26 +87,50 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Delete the repeated word "the" in comments.
+On 25/08/2022 18:02, Markus Schneider-Pargmann wrote:
+> From: Jerome Neanne <jneanne@baylibre.com>
+> 
+> The TPS65219 is a power management IC PMIC designed to supply a wide
+> range of SoCs in both portable and stationary applications. Any SoC can
+> control TPS65219 over a standard I2C interface.
+> 
+> It contains the following components:
+> - Regulators.
+> - Over Temperature warning and Shut down.
+> - GPIOs
+> - Multi Function Pins (MFP)
+> - power-button
+> 
+> This patch adds support for tps65219 PMIC. At this time only
+> the functionalities listed below are made available:
+> 
+> - Regulators probe and functionalities
+> - warm and cold reset support
+> - SW shutdown support
+> - Regulator warnings via IRQs
+> - Power-button via IRQ
+> 
+> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+> ---
+> 
+> Notes:
+>     Changes in v4:
+>     - Removed unused fields from struct tps65219
+>     - Added description for the fields in struct tps65219
+>     - Fixed coding style
+>     - Squash all patches into one mfd patch
+>     - Call devm_mfd_add_devices multiple times to clean up the code
+>     - Remove debug prints and fixup other messages
+>     - Use new_probe instead of probe
+> 
+>  MAINTAINERS                  |   1 +
+>  drivers/mfd/Kconfig          |  14 ++
+>  drivers/mfd/Makefile         |   1 +
+>  drivers/mfd/tps65219.c       | 357 +++++++++++++++++++++++++++++++++++
+>  include/linux/mfd/tps65219.h | 345 +++++++++++++++++++++++++++++++++
 
-Signed-off-by: Shaomin Deng <dengshaomin@cdjrlc.com>
----
- drivers/bus/ti-sysc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Use subject prefixes matching the subsystem (git log --oneline -- ...).
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 51d772bb8046..2386e8013e18 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -915,7 +915,7 @@ static int sysc_check_registers(struct sysc *ddata)
-  * within the interconnect target module range. For example, SGX has
-  * them at offset 0x1fc00 in the 32MB module address space. And cpsw
-  * has them at offset 0x1200 in the CPSW_WR child. Usually the
-- * the interconnect target module registers are at the beginning of
-+ * interconnect target module registers are at the beginning of
-  * the module range though.
-  */
- static int sysc_ioremap(struct sysc *ddata)
--- 
-2.35.1
-
+Best regards,
+Krzysztof
