@@ -2,50 +2,42 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E16245A5055
-	for <lists+linux-omap@lfdr.de>; Mon, 29 Aug 2022 17:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 061885A5D4C
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Aug 2022 09:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbiH2Pjc (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 29 Aug 2022 11:39:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37848 "EHLO
+        id S231252AbiH3Hrm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 30 Aug 2022 03:47:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbiH2Pj2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 29 Aug 2022 11:39:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70CCB915DC;
-        Mon, 29 Aug 2022 08:39:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 111D9611A5;
-        Mon, 29 Aug 2022 15:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D38C433B5;
-        Mon, 29 Aug 2022 15:39:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661787561;
-        bh=tDx2vf/E5986u3hCddTmtMxyX6w8Hn5pq5J64HWUT8Q=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=MTNyTD1KetefBMcnCPRg17sVFv1r3r4ALBkwsFMAULSnhf8mf5dOexjuCWo8zPatm
-         o5vGnDRAoLqQXTXXkKZGI1GrsbgHOaNosUyuHNOL5kZWjcfp4et0K1H7oqsfA6uWTt
-         iYMR/c7+XjDLcij6ZWuQp13SIn/ot5VbHwtevwoBo02TpIZRPzrQj4SWlkrVzDdtIt
-         QlqCdU7RIF6tIN/kkael6NMtkmMJSduMO93rdQJfU6TRXg463KCEj0Tk6nwA3XNZYj
-         hW8MS/wu7wXzNqUiIziA33nDJh5L05c8onA/zZLBPHO4kvnBGjcnLRTmacRgAmn0h4
-         uFxB1zfTPMC6g==
-From:   Mark Brown <broonie@kernel.org>
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Cc:     jneanne@baylibre.com
-In-Reply-To: <20220826061941.1814723-1-yangyingliang@huawei.com>
-References: <20220826061941.1814723-1-yangyingliang@huawei.com>
-Subject: Re: [PATCH -next] regulator: tps65219: change tps65219_regulator_irq_types to static
-Message-Id: <166178756042.812665.11210670721222958758.b4-ty@kernel.org>
-Date:   Mon, 29 Aug 2022 16:39:20 +0100
+        with ESMTP id S230366AbiH3Hrl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Aug 2022 03:47:41 -0400
+Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.154.221.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC7FA2A8F
+        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 00:47:36 -0700 (PDT)
+X-QQ-mid: bizesmtp86t1661845652tlk0wfuu
+Received: from localhost.localdomain ( [182.148.13.26])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Tue, 30 Aug 2022 15:47:26 +0800 (CST)
+X-QQ-SSF: 01000000000000B0C000000A0000000
+X-QQ-FEAT: ritJ6yQ+u74NYs0KfEsv97r4l2pahlCofJwhpVxtFM50sUOtnz3Q8LGJldDeY
+        2ez3/wPxmifowRNpDwC3YWtSD7AeXwS8UERiMe9YWKGCKJdDgTHips0mT/riUE1QwfSZcJ5
+        /MfdB4Ke2YH+vdHkiNSaSR9c4JzEnpOXCAi1lZzr3lbpGTrnsNN1yyPAtEeRIJQ5EHkhxcI
+        TBSeWyU5MBLDt8TaiqR/41b/Gyn5sye2OSyXJ7KcVqu18UI1GbcdAWOnocn/BVdGrZ+CcAr
+        rCo26/VYjrW7V8GIal3MWwieGFyceMDCy+G9PO7R72U+ACeW+sK9Euhzl1pJttzKs7BFGjm
+        waQKF8eMpGJTMMgQ5FAJGGLelbEeZ4fiqC0m2tYM0FIH0cQ+wU=
+X-QQ-GoodBg: 0
+From:   Shaomin Deng <dengshaomin@cdjrlc.com>
+To:     tony@atomide.com, linux-omap@vger.kernel.org
+Cc:     Shaomin Deng <dengshaomin@cdjrlc.com>
+Subject: [PATCH] bus: ti-sysc: Fix double word in comments
+Date:   Tue, 30 Aug 2022 03:47:26 -0400
+Message-Id: <20220830074726.12943-1-dengshaomin@cdjrlc.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.10.0-dev-65ba7
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,36 +46,26 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 26 Aug 2022 14:19:41 +0800, Yang Yingliang wrote:
-> tps65219_regulator_irq_types is only used in tps65219-regulator.c now,
-> change it to static.
-> 
-> 
+Delete the repeated word "the" in comments.
 
-Applied to
+Signed-off-by: Shaomin Deng <dengshaomin@cdjrlc.com>
+---
+ drivers/bus/ti-sysc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   broonie/regulator.git for-next
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 51d772bb8046..2386e8013e18 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -915,7 +915,7 @@ static int sysc_check_registers(struct sysc *ddata)
+  * within the interconnect target module range. For example, SGX has
+  * them at offset 0x1fc00 in the 32MB module address space. And cpsw
+  * has them at offset 0x1200 in the CPSW_WR child. Usually the
+- * the interconnect target module registers are at the beginning of
++ * interconnect target module registers are at the beginning of
+  * the module range though.
+  */
+ static int sysc_ioremap(struct sysc *ddata)
+-- 
+2.35.1
 
-Thanks!
-
-[1/1] regulator: tps65219: change tps65219_regulator_irq_types to static
-      commit: b662748ff2e8ff99daabdfbd928270f25f29a9fd
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
