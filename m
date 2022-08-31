@@ -2,132 +2,81 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 378355A6EE4
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Aug 2022 23:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D65935A7691
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Aug 2022 08:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230121AbiH3VKd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 30 Aug 2022 17:10:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54502 "EHLO
+        id S230096AbiHaGaI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 31 Aug 2022 02:30:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229720AbiH3VKd (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 30 Aug 2022 17:10:33 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B875351A30
-        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 14:10:30 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id z23so9816206ljk.1
-        for <linux-omap@vger.kernel.org>; Tue, 30 Aug 2022 14:10:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=zsv0fXDRFNG0o0kTF5uK9dhDcINlwzDzRZQMKgUm1Mo=;
-        b=vDnaEAwi0/Oc6WndmwlXjg1M9hS6HFY4cuwHIfBzEBMIb8ZQlfJCx9Gc+trc8bCbwI
-         FtXuBLbUXMhQnX/VJ4Ly7wxkcFaPTpzNDYtbDA5cH3vKpIiJjlqvuDlgJzd9FU0FmgiA
-         TFgR4Dk+/qmm+4VlWAVOb4rVC54Z1sQcshWSeJbRLrvenWVH2Yzv2NggIE/WzVjjzih0
-         Bt9as3cBgqblmAMMOL8q1n6ar4sdE21MzN+Myt2+d1bp7kJ0rhnsFiy7MQFD/mxCMfTE
-         adwa10ORrKs7VQTJixcEEpAnig0rqzMzB22v00MH7lH5nlyuYbxxHK60AxaQnG1uYbMv
-         3lWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=zsv0fXDRFNG0o0kTF5uK9dhDcINlwzDzRZQMKgUm1Mo=;
-        b=wFdfz7JI8OBZ6j5Cn2MJZues52enNUaNwhXW496gW7iBdbK+7jdtqHhXs91NJZcB+J
-         OTOPhj7fv1HSToRBZ6kb+KAjsWSjrJIWlwHfThjOwK6FgZpVnznA53fkrZp9HkaKxrJ5
-         ebz1h9lTKfisy/mhI95vMr88biPCiO6IxH74AAbiDHocovGnOILhCyuGuH9w6peUT0bl
-         LmITGmC+QXkBiTJn8DbGmNRXYBUnEdYCm4GcluK0dksv5WJ/faTfASYGjBjXsdIwoSrT
-         r1CtQMyGdrFhSOvws8OAbY+1JhUZGlu2yFnYX+3MFS9fGPwasnqIUfPI1WSiS+Z/LQGF
-         ZFsg==
-X-Gm-Message-State: ACgBeo3Z1PV/mPj6TTB88mwMjFRm5AbCcZaNIc/DihDV4+0d7P9KUBGr
-        UJXwHbsCtr93igdGGAQdDnRFDlDv6bCoZox9
-X-Google-Smtp-Source: AA6agR5CRmnEdGro4zTsz/lvOrkwpR+4mj2ph/lr2pWwZgyoXiVmIlSFnex/FMrQL9fIeGhyz1B66g==
-X-Received: by 2002:a2e:a4c5:0:b0:266:132a:aae0 with SMTP id p5-20020a2ea4c5000000b00266132aaae0mr2744286ljm.158.1661893828761;
-        Tue, 30 Aug 2022 14:10:28 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id m9-20020ac24249000000b00492f37e428asm1728910lfl.172.2022.08.30.14.10.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Aug 2022 14:10:28 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Maciej Falkowski <maciej.falkowski9@gmail.com>
-Subject: [PATCH] ARM: OMAP1: Move h2 LEDs to GPIO lookup table
-Date:   Tue, 30 Aug 2022 23:08:20 +0200
-Message-Id: <20220830210820.396517-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S230181AbiHaGaI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 Aug 2022 02:30:08 -0400
+Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.155.67.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592A018344;
+        Tue, 30 Aug 2022 23:30:05 -0700 (PDT)
+X-QQ-mid: bizesmtp90t1661927397tim9ya37
+Received: from localhost.localdomain ( [182.148.13.26])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Wed, 31 Aug 2022 14:29:55 +0800 (CST)
+X-QQ-SSF: 01000000000000D0E000000A0000000
+X-QQ-FEAT: xqT8U4SkSpjl2BYBjpdXeIHxB6l763bCgnuv/RMHG+IiW8h7mRfk3zCKX2TA1
+        8QPD8aSRHUfhX9cbUzIIqBn6j3940Pt178XqyPBBjjG4v4kWfeC7IwOrYR4PZzTssdl+JRb
+        ZQ1tl1wOvDC+B85pfcXB4EVJiDxzCNtgOrzsUg173YjUC3CzxdNNXXIn4EDSYwYisn+Swk8
+        kJ6rRsfDrNuO0W3rBWgEYAV3LEWeyYGhpv/J+lKaqZtogw6HSEU4OGwOdTB6Jqi+N5dxXBe
+        qFDLvsV3A1B0irj+cDLcS5WB+InPzuHQB00hpkL6Q0BlXtzslbn4xSx64yJOSx6DLRpdop/
+        qdrUX9iHQFokOEF4mAjBzaAFVQykmr3TSd+pxz0x2poR9o6h9yx7kos5e0NFwYXtHxWSS6V
+X-QQ-GoodBg: 0
+From:   Jilin Yuan <yuanjilin@cdjrlc.com>
+To:     tony@atomide.com, linux@armlinux.org.uk
+Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jilin Yuan <yuanjilin@cdjrlc.com>
+Subject: [PATCH] ARM: OMAP2+: fix repeated words in comments
+Date:   Wed, 31 Aug 2022 14:29:49 +0800
+Message-Id: <20220831062949.12369-1-yuanjilin@cdjrlc.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,RCVD_IN_PBL,
+        RCVD_IN_SBL_CSS,RCVD_IN_XBL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  3.3 RCVD_IN_PBL RBL: Received via a relay in Spamhaus PBL
+        *      [43.155.67.158 listed in zen.spamhaus.org]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *  0.4 RCVD_IN_XBL RBL: Received via a relay in Spamhaus XBL
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This converts the the H2 GPIO LEDs to use a machine lookup
-table.
+Delete the redundant word 'from'.
 
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: Maciej Falkowski <maciej.falkowski9@gmail.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
 ---
- arch/arm/mach-omap1/board-h2.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap2/cm33xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap1/board-h2.c b/arch/arm/mach-omap1/board-h2.c
-index f28a4c3ea501..9301a5fca44e 100644
---- a/arch/arm/mach-omap1/board-h2.c
-+++ b/arch/arm/mach-omap1/board-h2.c
-@@ -47,6 +47,7 @@
+diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
+index d61fa06117b4..c824d4e3db63 100644
+--- a/arch/arm/mach-omap2/cm33xx.c
++++ b/arch/arm/mach-omap2/cm33xx.c
+@@ -5,7 +5,7 @@
+  * Copyright (C) 2011-2012 Texas Instruments Incorporated - https://www.ti.com/
+  * Vaibhav Hiremath <hvaibhav@ti.com>
+  *
+- * Reference taken from from OMAP4 cminst44xx.c
++ * Reference taken from OMAP4 cminst44xx.c
+  */
  
- /* The first 16 SoC GPIO lines are on this GPIO chip */
- #define OMAP_GPIO_LABEL			"gpio-0-15"
-+#define OMAP_MPUIO_LABEL		"mpuio"
- 
- /* At OMAP1610 Innovator the Ethernet is directly connected to CS1 */
- #define OMAP1610_ETHR_START		0x04000300
-@@ -276,12 +277,10 @@ static const struct gpio_led h2_gpio_led_pins[] = {
- 	{
- 		.name		= "h2:red",
- 		.default_trigger = "heartbeat",
--		.gpio		= 3,
- 	},
- 	{
- 		.name		= "h2:green",
- 		.default_trigger = "cpu0",
--		.gpio		= OMAP_MPUIO(4),
- 	},
- };
- 
-@@ -290,6 +289,14 @@ static struct gpio_led_platform_data h2_gpio_led_data = {
- 	.num_leds	= ARRAY_SIZE(h2_gpio_led_pins),
- };
- 
-+static struct gpiod_lookup_table h2_leds_gpio_table = {
-+	.table = {
-+		GPIO_LOOKUP_IDX(OMAP_GPIO_LABEL, 3, NULL, 0, 0),
-+		GPIO_LOOKUP_IDX(OMAP_MPUIO_LABEL, 4, NULL, 1, 0),
-+		{ },
-+	},
-+};
-+
- static struct platform_device h2_gpio_leds = {
- 	.name	= "leds-gpio",
- 	.id	= -1,
-@@ -417,6 +424,7 @@ static void __init h2_init(void)
- 	/* GPIO based LEDs */
- 	omap_cfg_reg(P18_1610_GPIO3);
- 	omap_cfg_reg(MPUIO4);
-+	gpiod_add_lookup_table(&h2_leds_gpio_table);
- 
- 	h2_smc91x_resources[1].start = gpio_to_irq(0);
- 	h2_smc91x_resources[1].end = gpio_to_irq(0);
+ #include <linux/kernel.h>
 -- 
-2.37.2
+2.36.1
 
