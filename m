@@ -2,81 +2,227 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D65935A7691
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Aug 2022 08:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 426F65A7992
+	for <lists+linux-omap@lfdr.de>; Wed, 31 Aug 2022 10:56:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230096AbiHaGaI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 31 Aug 2022 02:30:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
+        id S231738AbiHaI4S (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 31 Aug 2022 04:56:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230181AbiHaGaI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 Aug 2022 02:30:08 -0400
-Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.155.67.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592A018344;
-        Tue, 30 Aug 2022 23:30:05 -0700 (PDT)
-X-QQ-mid: bizesmtp90t1661927397tim9ya37
-Received: from localhost.localdomain ( [182.148.13.26])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Wed, 31 Aug 2022 14:29:55 +0800 (CST)
-X-QQ-SSF: 01000000000000D0E000000A0000000
-X-QQ-FEAT: xqT8U4SkSpjl2BYBjpdXeIHxB6l763bCgnuv/RMHG+IiW8h7mRfk3zCKX2TA1
-        8QPD8aSRHUfhX9cbUzIIqBn6j3940Pt178XqyPBBjjG4v4kWfeC7IwOrYR4PZzTssdl+JRb
-        ZQ1tl1wOvDC+B85pfcXB4EVJiDxzCNtgOrzsUg173YjUC3CzxdNNXXIn4EDSYwYisn+Swk8
-        kJ6rRsfDrNuO0W3rBWgEYAV3LEWeyYGhpv/J+lKaqZtogw6HSEU4OGwOdTB6Jqi+N5dxXBe
-        qFDLvsV3A1B0irj+cDLcS5WB+InPzuHQB00hpkL6Q0BlXtzslbn4xSx64yJOSx6DLRpdop/
-        qdrUX9iHQFokOEF4mAjBzaAFVQykmr3TSd+pxz0x2poR9o6h9yx7kos5e0NFwYXtHxWSS6V
-X-QQ-GoodBg: 0
-From:   Jilin Yuan <yuanjilin@cdjrlc.com>
-To:     tony@atomide.com, linux@armlinux.org.uk
-Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jilin Yuan <yuanjilin@cdjrlc.com>
-Subject: [PATCH] ARM: OMAP2+: fix repeated words in comments
-Date:   Wed, 31 Aug 2022 14:29:49 +0800
-Message-Id: <20220831062949.12369-1-yuanjilin@cdjrlc.com>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S231733AbiHaIz5 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 31 Aug 2022 04:55:57 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 767B95B069
+        for <linux-omap@vger.kernel.org>; Wed, 31 Aug 2022 01:55:06 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id k18so7502082lji.13
+        for <linux-omap@vger.kernel.org>; Wed, 31 Aug 2022 01:55:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=lnl267LttqWe2usDLJlWLuZ0tm1nJ6Hhdwia6TRWNNo=;
+        b=tAKs2+0n+cIiiXUwPXFlhU2KFcSzHpC2eY0PjZmqCjxG/am0USbUKAsaQ+dS1v3S7F
+         60DL8zX0WG4TD0FBO+v3VrqWW4VyvBZXR6uTABYESTRmrl4UqPB5lzfUe43igchdZjuj
+         oYhV2+6aNaJsZ2iMzCtOrEuIvaqnanukl+fAnsamTE4oousVIpO/V7BFJqRvxHInG4cw
+         X30o3nTNtxzpD0CUNXmT2WDvcoGIWH/f2gXC2+U406+t2ruEuIpO7353DEl3S8vDQw6v
+         C1+G7hyH2xJggd/MFbiIcTel1Amb+5qLquc0PZFkZyWnPNRHDglCToxXKp8k64hEcNMw
+         rxmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=lnl267LttqWe2usDLJlWLuZ0tm1nJ6Hhdwia6TRWNNo=;
+        b=BA9H/CN2ESuY+WboMh/9ZGi8r2aiDJLTrcezXJKZq+3bGgBXW4lOGN9Q7py+8Q6XN/
+         +46LlXXZSrFxF/uku2AFnB9qHCPy53UX9FQ636xTN4ebIg/0d0Th1JEo1sGjB570lI82
+         PIubofTTCqmj+RfjfURPDmmjcbGSR1ev4l/jRV8l0F58SiP9mt6TSQfyCmYN3TGM3jb4
+         Z9YMHvROq61QpQDeCXY3lEdd+mFNK5eGjkrvia9zIQHuIMLZi9ZAw/PJ7GguonRArasz
+         cvoPXRY3QT02Ej3D5tV0AH72i8BUOvfNFE155Id7ipQlEtjqCD5gHmwyC75dfoH2AJyc
+         b+NA==
+X-Gm-Message-State: ACgBeo29nQlOhlZJclZ6wBaRUffPmK764XF+u8SegI87MzLnrL7REOYO
+        UZAY3UnhCqrgxErCzqz9Af5E1w==
+X-Google-Smtp-Source: AA6agR57Lx9exXXbeKImW3GP2VbSitZpMsi1LmCtb7hDyTtS8nOgBPh+Z+p6Sht3I+zR85yh0wfXmA==
+X-Received: by 2002:a2e:a551:0:b0:25f:eb63:2588 with SMTP id e17-20020a2ea551000000b0025feb632588mr8273782ljn.9.1661936103697;
+        Wed, 31 Aug 2022 01:55:03 -0700 (PDT)
+Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+        by smtp.gmail.com with ESMTPSA id u19-20020a05651220d300b004946c99e78asm988047lfr.277.2022.08.31.01.55.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Aug 2022 01:55:03 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Cory Maccarrone <darkstar6262@gmail.com>,
+        linux-omap@vger.kernel.org
+Subject: [PATCH] mfd/omap1: htc-i2cpld: Convert to a pure GPIO driver
+Date:   Wed, 31 Aug 2022 10:53:01 +0200
+Message-Id: <20220831085301.490906-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,RCVD_IN_PBL,
-        RCVD_IN_SBL_CSS,RCVD_IN_XBL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  3.3 RCVD_IN_PBL RBL: Received via a relay in Spamhaus PBL
-        *      [43.155.67.158 listed in zen.spamhaus.org]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *  0.4 RCVD_IN_XBL RBL: Received via a relay in Spamhaus XBL
-        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-        *      [score: 0.0000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Delete the redundant word 'from'.
+Instead of passing GPIO numbers pertaining to ourselves through
+platform data, just request GPIO descriptors from our own GPIO
+chips and use them, and cut down on the unnecessary complexity.
 
-Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Cory Maccarrone <darkstar6262@gmail.com>
+Cc: linux-omap@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- arch/arm/mach-omap2/cm33xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+If one of the OMAP1 people can provide an ACK then it's best
+if Lee takes this into the MFD tree.
+---
+ arch/arm/mach-omap1/board-htcherald.c |  9 ----
+ drivers/mfd/htc-i2cpld.c              | 59 ++++++++++++---------------
+ include/linux/htcpld.h                |  2 -
+ 3 files changed, 26 insertions(+), 44 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
-index d61fa06117b4..c824d4e3db63 100644
---- a/arch/arm/mach-omap2/cm33xx.c
-+++ b/arch/arm/mach-omap2/cm33xx.c
-@@ -5,7 +5,7 @@
-  * Copyright (C) 2011-2012 Texas Instruments Incorporated - https://www.ti.com/
-  * Vaibhav Hiremath <hvaibhav@ti.com>
-  *
-- * Reference taken from from OMAP4 cminst44xx.c
-+ * Reference taken from OMAP4 cminst44xx.c
-  */
+diff --git a/arch/arm/mach-omap1/board-htcherald.c b/arch/arm/mach-omap1/board-htcherald.c
+index ec049cee49c6..291d294b5824 100644
+--- a/arch/arm/mach-omap1/board-htcherald.c
++++ b/arch/arm/mach-omap1/board-htcherald.c
+@@ -141,13 +141,6 @@
+ #define HTCPLD_GPIO_DOWN_DPAD		HTCPLD_BASE(7, 4)
+ #define HTCPLD_GPIO_ENTER_DPAD		HTCPLD_BASE(7, 3)
  
- #include <linux/kernel.h>
+-/*
+- * The htcpld chip requires a gpio write to a specific line
+- * to re-enable interrupts after one has occurred.
+- */
+-#define HTCPLD_GPIO_INT_RESET_HI	HTCPLD_BASE(2, 7)
+-#define HTCPLD_GPIO_INT_RESET_LO	HTCPLD_BASE(2, 0)
+-
+ /* Chip 5 */
+ #define HTCPLD_IRQ_RIGHT_KBD		HTCPLD_IRQ(0, 7)
+ #define HTCPLD_IRQ_UP_KBD		HTCPLD_IRQ(0, 6)
+@@ -348,8 +341,6 @@ static struct htcpld_chip_platform_data htcpld_chips[] = {
+ };
+ 
+ static struct htcpld_core_platform_data htcpld_pfdata = {
+-	.int_reset_gpio_hi = HTCPLD_GPIO_INT_RESET_HI,
+-	.int_reset_gpio_lo = HTCPLD_GPIO_INT_RESET_LO,
+ 	.i2c_adapter_id	   = 1,
+ 
+ 	.chip		   = htcpld_chips,
+diff --git a/drivers/mfd/htc-i2cpld.c b/drivers/mfd/htc-i2cpld.c
+index 417b0355d904..a6d47ce27efe 100644
+--- a/drivers/mfd/htc-i2cpld.c
++++ b/drivers/mfd/htc-i2cpld.c
+@@ -20,7 +20,9 @@
+ #include <linux/irq.h>
+ #include <linux/spinlock.h>
+ #include <linux/htcpld.h>
+-#include <linux/gpio.h>
++#include <linux/gpio/driver.h>
++#include <linux/gpio/machine.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/slab.h>
+ 
+ struct htcpld_chip {
+@@ -58,8 +60,8 @@ struct htcpld_data {
+ 	uint               irq_start;
+ 	int                nirqs;
+ 	uint               chained_irq;
+-	unsigned int       int_reset_gpio_hi;
+-	unsigned int       int_reset_gpio_lo;
++	struct gpio_desc   *int_reset_gpio_hi;
++	struct gpio_desc   *int_reset_gpio_lo;
+ 
+ 	/* htcpld info */
+ 	struct htcpld_chip *chip;
+@@ -196,9 +198,9 @@ static irqreturn_t htcpld_handler(int irq, void *dev)
+ 	 * be asserted.
+ 	 */
+ 	if (htcpld->int_reset_gpio_hi)
+-		gpio_set_value(htcpld->int_reset_gpio_hi, 1);
++		gpiod_set_value(htcpld->int_reset_gpio_hi, 1);
+ 	if (htcpld->int_reset_gpio_lo)
+-		gpio_set_value(htcpld->int_reset_gpio_lo, 0);
++		gpiod_set_value(htcpld->int_reset_gpio_lo, 0);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -562,35 +564,26 @@ static int htcpld_core_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	/* Request the GPIO(s) for the int reset and set them up */
+-	if (pdata->int_reset_gpio_hi) {
+-		ret = gpio_request(pdata->int_reset_gpio_hi, "htcpld-core");
+-		if (ret) {
+-			/*
+-			 * If it failed, that sucks, but we can probably
+-			 * continue on without it.
+-			 */
+-			dev_warn(dev, "Unable to request int_reset_gpio_hi -- interrupts may not work\n");
+-			htcpld->int_reset_gpio_hi = 0;
+-		} else {
+-			htcpld->int_reset_gpio_hi = pdata->int_reset_gpio_hi;
+-			gpio_set_value(htcpld->int_reset_gpio_hi, 1);
+-		}
+-	}
++	htcpld->int_reset_gpio_hi = gpiochip_request_own_desc(&htcpld->chip[2].chip_out,
++							      7, "htcpld-core", GPIO_ACTIVE_HIGH,
++							      GPIOD_OUT_HIGH);
++	if (!htcpld->int_reset_gpio_hi)
++		/*
++		 * If it failed, that sucks, but we can probably
++		 * continue on without it.
++		 */
++		dev_warn(dev, "Unable to request int_reset_gpio_hi -- interrupts may not work\n");
+ 
+-	if (pdata->int_reset_gpio_lo) {
+-		ret = gpio_request(pdata->int_reset_gpio_lo, "htcpld-core");
+-		if (ret) {
+-			/*
+-			 * If it failed, that sucks, but we can probably
+-			 * continue on without it.
+-			 */
+-			dev_warn(dev, "Unable to request int_reset_gpio_lo -- interrupts may not work\n");
+-			htcpld->int_reset_gpio_lo = 0;
+-		} else {
+-			htcpld->int_reset_gpio_lo = pdata->int_reset_gpio_lo;
+-			gpio_set_value(htcpld->int_reset_gpio_lo, 0);
+-		}
+-	}
++
++	htcpld->int_reset_gpio_lo = gpiochip_request_own_desc(&htcpld->chip[2].chip_out,
++							      0, "htcpld-core", GPIO_ACTIVE_HIGH,
++							      GPIOD_OUT_LOW);
++	if (!htcpld->int_reset_gpio_lo)
++		/*
++		 * If it failed, that sucks, but we can probably
++		 * continue on without it.
++		 */
++		dev_warn(dev, "Unable to request int_reset_gpio_lo -- interrupts may not work\n");
+ 
+ 	dev_info(dev, "Initialized successfully\n");
+ 	return 0;
+diff --git a/include/linux/htcpld.h b/include/linux/htcpld.h
+index 842fce69ac06..5f8ac9b1d724 100644
+--- a/include/linux/htcpld.h
++++ b/include/linux/htcpld.h
+@@ -13,8 +13,6 @@ struct htcpld_chip_platform_data {
+ };
+ 
+ struct htcpld_core_platform_data {
+-	unsigned int                      int_reset_gpio_hi;
+-	unsigned int                      int_reset_gpio_lo;
+ 	unsigned int                      i2c_adapter_id;
+ 
+ 	struct htcpld_chip_platform_data  *chip;
 -- 
-2.36.1
+2.37.2
 
