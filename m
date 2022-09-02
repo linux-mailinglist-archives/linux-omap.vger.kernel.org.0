@@ -2,134 +2,156 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 394DD5AAAF9
-	for <lists+linux-omap@lfdr.de>; Fri,  2 Sep 2022 11:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 588945AB42D
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Sep 2022 16:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235531AbiIBJLd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 2 Sep 2022 05:11:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58314 "EHLO
+        id S236402AbiIBOvk (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 2 Sep 2022 10:51:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234836AbiIBJLc (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Sep 2022 05:11:32 -0400
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2073.outbound.protection.outlook.com [40.107.20.73])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3209979FB;
-        Fri,  2 Sep 2022 02:11:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UVy1EmRO2Ijnd8s0c3GcLQMkpWSNW77d3Ntp+H9dM6Uh4huNIRDzioRzp5NL+27aoGDfhBsFz7ItGk4RMONw51TMa/GckxorKrkb/kl3XgyRaCtP5JB+H2jFr1nPeVszHGA9+x8LupzH7FX2o6Wd1RU+epL35SIVoP6qOvHNLOK/HgwUqrHgJAE3ahP50VBc2aATSnvTP1RFo61OJcdlV0MU22OEV2jGEGB1W/IJE9wNODxju0zO/BA/otmNDu2PAgT9criHamRAKas1p8Vys5oJvkjKe+4a9cq/InqUdqSF0dfZi8v8tCe4vEy0s90R6JnALWoyTlzzhr2vy6QRvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FYJ+DnDcwvzKIB5SPuCxcJxEu1REjYn3keTA74iTLyE=;
- b=PN/Vvz5x4NWFvqPbJtJNoxbniK0SqK0yjk3gS+YXdrOBSzArGdWRwz3EREruE7pOljrLNGmvo0weHwbfeP/G7txThDnRDNAxEOLdju5iWz0wxpBp46fi6CQQHBzaePfiMFZJndwUILqt3uWDa094lhH2HtE4ZL/uE69C13LCunJw/BexSt8PR6wC21eZxMxuucjYJoZfzyTTes6GHG2BTPmC30ZcwxMJgkRELY3Fu7DU18eil94e20uxCyjXAyVPGJz7+BWWr0n2ERwZLATOCZju4sCjn88PiGzNogjhbIBtp+91bikCGFG+N0VqQOdmYSec6jagmeHJRd/dNiGgDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 194.138.21.74) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=siemens.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=siemens.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FYJ+DnDcwvzKIB5SPuCxcJxEu1REjYn3keTA74iTLyE=;
- b=tcw3WAHGLzKwE520M7vqTq1SqAgE6/usKQhIIVNXWfQTXIWYqYKFTHxzj68MPfIPwTzCrOrexaDSbzU3gxKCbBSxRlcQKV0hKnYPk7y8I+GNBdBeLL7u+KyMYLAXEU9MuUGBbg6OxOq8vqO5Q4TSP8kxRXqMVIIyMIGFu6r6mZPD8UgAA+5M+byjLghSHDRBDPqks6pYCwqlKgqmbhslotJHB1qZdJpYivsyF+wbWcHgnp6aL5MGxzzZ1OCvkWP2S6WS4c3Gm598e4nWJ/E7fRGxuCViR4fkcYTIO6GCOsRxVhF+Pa4O3cKwGtVPgNXNGgobVCsUyALxNTkxFGkUyw==
-Received: from DB7PR02CA0021.eurprd02.prod.outlook.com (2603:10a6:10:52::34)
- by GVXPR10MB5933.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:4::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.10; Fri, 2 Sep
- 2022 09:11:30 +0000
-Received: from DB5EUR01FT024.eop-EUR01.prod.protection.outlook.com
- (2603:10a6:10:52:cafe::f2) by DB7PR02CA0021.outlook.office365.com
- (2603:10a6:10:52::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.14 via Frontend
- Transport; Fri, 2 Sep 2022 09:11:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 194.138.21.74)
- smtp.mailfrom=siemens.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=siemens.com;
-Received-SPF: Pass (protection.outlook.com: domain of siemens.com designates
- 194.138.21.74 as permitted sender) receiver=protection.outlook.com;
- client-ip=194.138.21.74; helo=hybrid.siemens.com; pr=C
-Received: from hybrid.siemens.com (194.138.21.74) by
- DB5EUR01FT024.mail.protection.outlook.com (10.152.4.236) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5588.10 via Frontend Transport; Fri, 2 Sep 2022 09:11:29 +0000
-Received: from DEMCHDC8WBA.ad011.siemens.net (139.25.226.105) by
- DEMCHDC8VQA.ad011.siemens.net (194.138.21.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.12; Fri, 2 Sep 2022 11:11:29 +0200
-Received: from bennie-lenovo.fritz.box (139.21.146.191) by
- DEMCHDC8WBA.ad011.siemens.net (139.25.226.105) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.12; Fri, 2 Sep 2022 11:10:47 +0200
-From:   "B. Niedermayr" <benedikt.niedermayr@siemens.com>
-To:     <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>
-CC:     <rogerq@kernel.org>, <tony@atomide.com>, <krzk@kernel.org>,
-        <robh+dt@kernel.org>
-Subject: [PATCH v2 3/3] dt-bindings: memory-controllers: gpmc-child: Add binding for wait-pin-polarity
-Date:   Fri, 2 Sep 2022 11:10:28 +0200
-Message-ID: <20220902091028.1346952-4-benedikt.niedermayr@siemens.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220902091028.1346952-1-benedikt.niedermayr@siemens.com>
-References: <20220902091028.1346952-1-benedikt.niedermayr@siemens.com>
+        with ESMTP id S236905AbiIBOvS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 2 Sep 2022 10:51:18 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFD18785BA;
+        Fri,  2 Sep 2022 07:13:49 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id kk26so4111281ejc.11;
+        Fri, 02 Sep 2022 07:13:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date;
+        bh=HkrATxSxYMCe0d7NXJjjTPjg+fttoARS4eUl41blu5w=;
+        b=NduYS7PCIsDXxPfL5Br7uVDo6RJM9+ySlErZm3KCBet1l9r9TwuYska2u8fCRMcgLh
+         9gk9DIwT2CfgR7fatE4fZVIUJYo+EmLf/jnHm4x1NasKUeRdh13RNA7myulovXTISfwo
+         ZYVfnt8ABe656b1pt7Fb8E9f7zw7NjpOMPMj7lUv2PB5HjAri2NeRq63Bmb5SE9vPlnz
+         Rz0qylx892+bw7HCiV56kkyMpUNo8l8lFoHPw8qt95ndKdKQyGYHnhzvILpVrXVt8i1C
+         UjE10Te6DqlEq9YMKKWE167ORfDCWTWPLBesimByIFz2ryw59ToSpdPovCM5apRBeR7g
+         MJnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=HkrATxSxYMCe0d7NXJjjTPjg+fttoARS4eUl41blu5w=;
+        b=fufYgc7aYRs3tHQBkgC2ix6G6ctWdboVtbldxbr9fKN7IOd9DmKE2V2ttlyPTJX6L0
+         VsudhkEQ1QquYzfNCVo8I+dq7qt5NKqM/3A4IaI+ao9TJlk3R6VqkWvHquRH+zxTVhK/
+         1ycuk2n6CLA3Z0PSol/82Ut+rCZ3J3zcKsizTb+2Ff+ToX5LIgA9V6WqaL3Vzo0VtvAU
+         sldEHoEzZoeaaRD63hIzdYfokSn6uNwMfkpf0BtknX+CK+k64TcVLOOgsfZgxBqtvXSY
+         6unonbpwNmv0Gpu2k4LLzW2kjNqj3mHZu1zt3jljZYOmC4wWLG19qjy+9L/FqVSPLAh3
+         wjqg==
+X-Gm-Message-State: ACgBeo2GmQR+JndVmxJIDewR6FMUhGSElbw7mWXeAmJ4OAcwuMx4Z1l4
+        KZjOsK6M4XaXphbBbL0c35U=
+X-Google-Smtp-Source: AA6agR7LpAO/9YUwEpkixKSLf8mxhsTi6MQ1eOya0YVrrolkRNNl5OdpQemWUcoLGnp5qDqB6fulGA==
+X-Received: by 2002:a17:907:3f0a:b0:730:994f:8d57 with SMTP id hq10-20020a1709073f0a00b00730994f8d57mr26794680ejc.538.1662128028496;
+        Fri, 02 Sep 2022 07:13:48 -0700 (PDT)
+Received: from [192.168.1.10] ([46.249.74.23])
+        by smtp.googlemail.com with ESMTPSA id gk1-20020a17090790c100b007420aaba67esm1320609ejb.36.2022.09.02.07.13.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 02 Sep 2022 07:13:47 -0700 (PDT)
+Subject: Re: [PATCH 3/3] drm: omapdrm: Do no allocate non-scanout GEMs through
+ DMM/TILER
+To:     Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Yongqin Liu <yongqin.liu@linaro.org>, Andrew Davis <afd@ti.com>
+Cc:     "Bajjuri, Praneeth" <praneeth@ti.com>, airlied@linux.ie,
+        merlijn@wizzup.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, tony@atomide.com,
+        linux-omap@vger.kernel.org, Sumit Semwal <sumit.semwal@linaro.org>
+References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+ <1642587791-13222-4-git-send-email-ivo.g.dimitrov.75@gmail.com>
+ <5b6d3e7f-c638-fdc7-5080-44d34abed610@ideasonboard.com>
+ <a3ed3a2c-86ce-1c85-e8aa-c08b54ad1a43@gmail.com>
+ <CAMSo37XdZSZUHLWJj373DdtOBA9=uD8SJ7ywWCYF2pU1i4cB_g@mail.gmail.com>
+ <ed4fe238-4fcd-1253-658f-18fe1e1f13b0@gmail.com>
+ <CAMSo37V3U5nYng77jzSnKH73CTLhGYQJu11Q5wRt289se5nFJw@mail.gmail.com>
+ <4128aed0-211a-d12a-6a86-deb4457d39f7@gmail.com>
+ <CAMSo37W-DePLDP=zk-nY6FGcZuk0QzHj4=usrieyV0TNcNfbXw@mail.gmail.com>
+ <da2a661e-9da0-850c-3067-8c1e8d5531bc@gmail.com>
+ <CAMSo37VXNQeR0qZgzZONBwp_4z9CuUSJJJzhM7k+K39BcwvW6A@mail.gmail.com>
+ <235621d0-2141-5ef9-bcd4-5c48b985b3a0@gmail.com>
+ <5dc2c212-4967-ab2d-c016-f3b3a854fe32@ti.com>
+ <CAMSo37W+Z2hn_wJ9At1nyJX6XnpZx9JLXJv9g6DoqoaqqjUATw@mail.gmail.com>
+ <0eb026d9-faaa-68cb-cdcd-7d031acfbb03@gmail.com>
+ <db245ada-2f2e-c65d-ef14-35ea4adda123@ideasonboard.com>
+From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Message-ID: <9ba1a8a3-fd3e-7879-8f47-ec991888d5f7@gmail.com>
+Date:   Fri, 2 Sep 2022 17:13:34 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Firefox/60.0 Thunderbird/60.6.1
 MIME-Version: 1.0
+In-Reply-To: <db245ada-2f2e-c65d-ef14-35ea4adda123@ideasonboard.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [139.21.146.191]
-X-ClientProxiedBy: DEMCHDC8A0A.ad011.siemens.net (139.25.226.106) To
- DEMCHDC8WBA.ad011.siemens.net (139.25.226.105)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 915d2e49-b9f0-4fff-7494-08da8cc31f3e
-X-MS-TrafficTypeDiagnostic: GVXPR10MB5933:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: m3wJTSQ4SE/GKWGwKtgbYYVRB08o+d//+Sf0LvelG+dXNVUjU+yKpMH/Q789WtH58zyGoql/nv4xt9JFpgoYjkk7QbbodOpCI3wah7QIQu5z8q8G7q+Vyrh2zv2fXwGBBMhn81eF98ibDLGE3s0Ra1Q+EW7d++sO3OR4nIi1cttH6sNElx6xyCcVvhBE87KbseJkzc0eZY6ejxcDFtp0WnlORTavgKSYEt0ARVHA/JUEqPfqmYO7F7QQ8qMLuhGl9Ik1tGRbL8YEhkDEsl61+2CEjNWxvZcVh1PgNtZNed+Y4N8JFWCsYKIGchoDyY1wmPyhObRP9/SxeDjGuX2Gt3CGkhOsPgtKk+IotoGENmDqdQ3qVv7S/YSFSWf12oZEvz9UZZ0Yh5nmqwnBH2bVXV9k6JMegOo+xwQhjCiaMGVeVlDnBUhLPxhB/m9wz3Rn+DjH/RQyXLIcPy2YrTBIh+iWA4oFWseseWUeD2PyZQVSo9UUIfW9e7xf8VOMiCZIuE17F1lZdsXc24cxPz+/2Z0+iJ0Jg73JeQiFaix5ahLZNrnUy+HawVmAjgimsJI4aZuASg65hgM1135tF1wmvG736EawQXLtcK9Zrbl3FWI6K8CUFzrZP9oUbrU1qEExZjxy5tbDE900k2xEFC7QWLnNNICD/QFCL+RbBIDbyuRUxGiZ3djAacEjIFOtnqXOHzuZhYfAHLicfxUAzUds++JfnLXe10XiIWSP5P738416fr3ew40QxXoJDHA46tcEOL3JX5ssYql3ZKZP7kzaIA==
-X-Forefront-Antispam-Report: CIP:194.138.21.74;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:hybrid.siemens.com;PTR:hybrid.siemens.com;CAT:NONE;SFS:(13230016)(4636009)(136003)(346002)(376002)(396003)(39860400002)(36840700001)(40470700004)(46966006)(47076005)(1076003)(86362001)(8676002)(956004)(16526019)(2616005)(336012)(186003)(82960400001)(356005)(82740400003)(7636003)(7596003)(8936002)(5660300002)(36860700001)(2906002)(40460700003)(36756003)(4326008)(70586007)(70206006)(40480700001)(6666004)(82310400005)(478600001)(26005)(110136005)(54906003)(316002)(41300700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2022 09:11:29.6263
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 915d2e49-b9f0-4fff-7494-08da8cc31f3e
-X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=38ae3bcd-9579-4fd4-adda-b42e1495d55a;Ip=[194.138.21.74];Helo=[hybrid.siemens.com]
-X-MS-Exchange-CrossTenant-AuthSource: DB5EUR01FT024.eop-EUR01.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR10MB5933
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
 
-Add a new dt-binding for the wait-pin-polarity property
 
-Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
----
- .../bindings/memory-controllers/ti,gpmc-child.yaml         | 7 +++++++
- 1 file changed, 7 insertions(+)
+On 30.08.22 г. 21:23 ч., Tomi Valkeinen wrote:
+> On 30/08/2022 21:08, Ivaylo Dimitrov wrote:
+> 
+>>>>          flags &= ~OMAP_BO_TILED_MASK;
+>>>>          flags |= 0x00000008;
+>>>>          flags |= OMAP_BO_WC;
+>>>>
+>>>>          bo = omap_bo_new(dev, size, flags);
+>>>>
+>>>> As you can see we use 0x00000008 (OMAP_BO_MEM_CONTIG) unconditionally.
+>>>> This was a hack added since even non-scanout buffers sometimes need
+>>>> to be contiguous (video decoder surfaces), but we had no way back
+>>
+>> Hmm, why would video decoder need linear memory? No MMU?
+> 
+> Not sure about this case, but many/most IPs don't have MMU. E.g. CSI-2 
+> or parallel capture.
+> 
+>>>> If you tell me what the code should look like, I can rebuild the
+>>>> lib and post a copy.
+>>>>
+>>>> Long term, I'd like to start using DMA-BUF Heaps for CMA memory
+>>>> allocations in gralloc and elsewhere, then drop out the DMM/TILER
+>>>> support from OMAPDRM, since it never really belonged there in
+>>>> the first place (being a IOMMU unrelated to the display/GPU).
+>>>>
+>>
+>> Umm, how will we rotate scanout buffers then?
+> 
+> Didn't we discuss this earlier in this thread. Or some other thread. 
+> Related to VRFB... I'm not sure =).
+> 
 
-diff --git a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
-index 6e3995bb1630..7c721206f10b 100644
---- a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
-+++ b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
-@@ -230,6 +230,13 @@ properties:
-       Wait-pin used by client. Must be less than "gpmc,num-waitpins".
-     $ref: /schemas/types.yaml#/definitions/uint32
- 
-+  gpmc,wait-pin-polarity:
-+    description: |
-+      Wait-pin polarity used by the clien. It relates to the pin defined
-+      with "gpmc,wait-pin".
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    default: 0
-+
-   gpmc,wait-on-read:
-     description: Enables wait monitoring on reads.
-     type: boolean
--- 
-2.25.1
+Yeah, I think so. VRFB is still on my list though, along with TE support 
+for droid4 :).
 
+> Anyway, neither VRFB nor DMM/TILER are part of the DSS. They're part of 
+> the memory subsystem. They can be used without DSS being in the setup. 
+> Thus the code for VRFB and DMM/TILER should not be in the DSS driver.
+>
+
+Makes sense.
+
+> The DSS driver should still, of course, support DMM/TILER (and maybe 
+> VRFB some day) in the "use" sense, i.e. so that DSS can use the 
+> DMM/TILER provided from another driver.
+> 
+
+Ah, this is what I was missing all the time, for some reason I was left 
+with the impression that userland will have to know about those details. 
+Now it is clear.
+
+> But how exactly that's to be implemented, I don't know.
+> 
+
+Seems Andrew has an idea.
+
+Ivo
+
+>   Tomi
