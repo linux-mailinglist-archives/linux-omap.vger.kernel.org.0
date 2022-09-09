@@ -2,104 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE1D5B1C57
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Sep 2022 14:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DABC5B2EC9
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Sep 2022 08:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231577AbiIHMKS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 8 Sep 2022 08:10:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43822 "EHLO
+        id S230425AbiIIGYy (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 9 Sep 2022 02:24:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231579AbiIHMJv (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 8 Sep 2022 08:09:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F64D11C15A;
-        Thu,  8 Sep 2022 05:09:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F76F61CD4;
-        Thu,  8 Sep 2022 12:09:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383B9C433D6;
-        Thu,  8 Sep 2022 12:09:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662638956;
-        bh=CJzMkou4A5airz5MIJinR+0yTfkpqS3kDaVetJ0jYr4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=kcGsFITJO/bFq1DS3O6S+lx7s5KtJ4nlgo0u9HumiWYm76GkD3y5X7eTqp9rNPfJz
-         mEFA48ubjKEo6YifSlG4Bha0r3Eo7f8sXl8bdFXSAUZyj7MIGJTvKlLv3vtX6TS5PY
-         L59qhKsOSGyrF4zRgTmmm6ribhflTMisd9gzBW5gQS9Q/frRprHYdgDSgp2jiMEW/M
-         ITwo0QPf7LDhdtk2LxG1+ROIQinUuTfxkziiMgtRqTJDBiCeZ9vAMqK9vMcE1hGGXA
-         v3yx3257WLWwGNae4cvuxcznutLZiwkVaKALrntiK2TL++GXgYPrC8bQz8mxQT6Agu
-         M5R06mqkXIJ9g==
-Message-ID: <70a2fec4-e7b9-e8ed-4d8a-d547003dbb9e@kernel.org>
-Date:   Thu, 8 Sep 2022 15:09:08 +0300
+        with ESMTP id S230427AbiIIGYs (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 9 Sep 2022 02:24:48 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0864C222BA
+        for <linux-omap@vger.kernel.org>; Thu,  8 Sep 2022 23:24:43 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id z22-20020a056830129600b0063711f456ceso484298otp.7
+        for <linux-omap@vger.kernel.org>; Thu, 08 Sep 2022 23:24:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
+        b=WcH6UHGbsWFkewU/wT0fJawZxX15Zl4hkDGkeADuGdJGmv3t1iQNtgSoMnFwdIiKsl
+         x0SFF8bkohRdk9mKGKM+s9gauDKjJXrvYE2yTKQmchoZQEeCIon6bMdclwr30NYYePtN
+         LlWsahNYX+ZnmYtHuo+L3HiSHKxAxOAJsjY/zT5bRdtKkslqggYR6PeuSVU/Upq3p6Lx
+         v7+3Sl0ycmpNJAkDyyfB3vDmj0Ku1DLMT5UNXcPYiD+ne677L4tBdx+wZ+UEyMq3qhuC
+         L3qiWtmRltydGdTH8yRtHUUCoYBmNYblSu9kOey2R0GaJCd4zJFwUrFzR3gFC4Ma5YBK
+         ywXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
+        b=NRqkjNigAwF19fLzBWURTZpvPh41EF3RDjbZABCP5xCd+SwvzyAFVq3Kt9YECLrOHr
+         ujo+N2cvJTqTS9Zn/zF2Dp+g6ZmOo8ANeFEkktMzRSg42hA42qMEJP3jLRLhMLxKgiYm
+         jTm0ohZhneR8MkUgrP2Eg4tnZQ2p3DfyMan+FlDazqPErVbVI3MHJR2nQJwtYWw0FjXk
+         qlgMAa8Up1oWH0IC8UmhpHdd5IUP328/7QRdWkmisjFcj3DaubTPchPtMnS9hib3b3MU
+         WfIficwLpmxkanqNUvTNTqBZ4RtrUTesrKvXoNx9D7qM56ZAHCKsG3XUNcz/BL933/8F
+         n5Dw==
+X-Gm-Message-State: ACgBeo1KHO83xnTOhv/p/JElxLdudDoGzUYS22P+EX8QAyxYiV/W5Nin
+        bPHJ5bz1NU43U0K7FnOP213mAfYV17FVLM+30H4=
+X-Google-Smtp-Source: AA6agR5oQwYexb5IuYa5dQgOTrJVTByrVtuS9dapD7VlJ47FKqY17GiN0xDTC5NddRnxIwHXasBmKTYYBxKZ43rAUg0=
+X-Received: by 2002:a9d:6e0e:0:b0:652:6ed2:eb83 with SMTP id
+ e14-20020a9d6e0e000000b006526ed2eb83mr3789515otr.308.1662704682511; Thu, 08
+ Sep 2022 23:24:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v3 3/3] dt-bindings: memory-controllers: gpmc-child: add
- wait-pin polarity
-Content-Language: en-US
-To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     tony@atomide.com, krzysztof.kozlowski@linaro.org,
-        robh+dt@kernel.org
-References: <20220906124747.1767318-1-benedikt.niedermayr@siemens.com>
- <20220906124747.1767318-5-benedikt.niedermayr@siemens.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20220906124747.1767318-5-benedikt.niedermayr@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-10.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6358:c27:b0:bc:944f:7c4e with HTTP; Thu, 8 Sep 2022
+ 23:24:42 -0700 (PDT)
+Reply-To: stefanopessina14@gmail.com
+From:   Stefano Pessina <prniceugochukwu@gmail.com>
+Date:   Thu, 8 Sep 2022 23:24:42 -0700
+Message-ID: <CA+eeEkAUSxvd2fRt0O=B0KtG8hzLpcviCGXBvO_1bui7P5TghQ@mail.gmail.com>
+Subject: Donation
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:344 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [stefanopessina14[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [prniceugochukwu[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Benedikt,
-
-
-On 06/09/2022 15:47, B. Niedermayr wrote:
-> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-> 
-> The GPMC controller has the ability to configure the polarity for the
-> wait pin. The current properties do not allow this configuration.
-> This binding directly configures the WAITPIN<X>POLARITY bit
-> in the GPMC_CONFIG register.
-> 
-> Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-> ---
->  .../bindings/memory-controllers/ti,gpmc-child.yaml          | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
-> index 6e3995bb1630..a115b544a407 100644
-> --- a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
-> +++ b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
-> @@ -230,6 +230,12 @@ properties:
->        Wait-pin used by client. Must be less than "gpmc,num-waitpins".
->      $ref: /schemas/types.yaml#/definitions/uint32
->  
-> +  gpmc,wait-pin-active-low:
-> +    description: |
-> +      Set the polarity for the selected wait pin to active low.
-> +      Defaults to active high if this is not set.
-> +    type: boolean
-> +
-
-I just checked that the default behaviour is active low.
-Reset value of the polarity register field is 0, which means active low.
-
-We will need to use the property "gpmc,wait-pin-active-high" instead.
-
-Sorry for not catching this earlier.
-
->    gpmc,wait-on-read:
->      description: Enables wait monitoring on reads.
->      type: boolean
-
-cheers,
--roger
+-- 
+I am Stefano Pessina, an  Italian business tycoon, investor, and
+philanthropist. the vice chairman, chief executive officer (CEO), and
+the single largest shareholder of Walgreens Boots Alliance. I gave
+away 25 percent of my personal wealth to charity. And I also pledged
+to give away the rest of 25% this year 2022 to Individuals.. I have
+decided to donate $2,200,000.00 to you. If you are interested in my
+donation, do contact me for more info
