@@ -2,172 +2,112 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09CB05B58F5
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Sep 2022 13:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B2765B61E4
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Sep 2022 21:51:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229927AbiILLET (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Sep 2022 07:04:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44612 "EHLO
+        id S229584AbiILTu7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Sep 2022 15:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229872AbiILLES (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Sep 2022 07:04:18 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 694B9240AA;
-        Mon, 12 Sep 2022 04:04:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 08D2EB80CB7;
-        Mon, 12 Sep 2022 11:04:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAE3C433D6;
-        Mon, 12 Sep 2022 11:04:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662980654;
-        bh=DmabOioRzklG+bbZ2I16FOiymU5bebFOCVF91CBoRCQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=bengJI+cLu/+t6vEhIrf7XyvJYGO2t/P3TWJ53MCqHe9/kEE1LeWxUgo5owZC8ndT
-         NohsWN9PwspKEjBLY1Wuq0WdsXS92I5rMUcLQ71viO0lopY3/UPECjA2w1Ag1QpnpP
-         9izvefVplCdgzjUg1mX3D+pVVV+opJZ7RgbneAtSEjjhepnpFMpeAh/FnacdiTvG2W
-         Iy2AxFztXPIGataB55lH5yVQzDWbYGZeZsw4swCeTD8p9dyyBzgIZdgAl1U9s/cKJe
-         epI4z1EcjgyunqBpE4cXGO4tmzw/JJaL09J3mKyift1wR8hOjAdmlw5WmEhM839voe
-         zRGNPIGWL7xMA==
-Message-ID: <8326572f-8a88-6e8b-edda-7730a0a3597d@kernel.org>
-Date:   Mon, 12 Sep 2022 14:04:10 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v3 3/3] dt-bindings: memory-controllers: gpmc-child: add
- wait-pin polarity
-Content-Language: en-US
-To:     "Niedermayr, BENEDIKT" <benedikt.niedermayr@siemens.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Cc:     "tony@atomide.com" <tony@atomide.com>,
-        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>
-References: <20220906124747.1767318-1-benedikt.niedermayr@siemens.com>
- <20220906124747.1767318-5-benedikt.niedermayr@siemens.com>
- <70a2fec4-e7b9-e8ed-4d8a-d547003dbb9e@kernel.org>
- <125ea34a12928fcdd8ef118eced8b2c59039d2ab.camel@siemens.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <125ea34a12928fcdd8ef118eced8b2c59039d2ab.camel@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229575AbiILTu6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Sep 2022 15:50:58 -0400
+Received: from mail-ua1-x949.google.com (mail-ua1-x949.google.com [IPv6:2607:f8b0:4864:20::949])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EAB3476F5
+        for <linux-omap@vger.kernel.org>; Mon, 12 Sep 2022 12:50:57 -0700 (PDT)
+Received: by mail-ua1-x949.google.com with SMTP id o43-20020ab0596e000000b0038421e4c7deso2995479uad.19
+        for <linux-omap@vger.kernel.org>; Mon, 12 Sep 2022 12:50:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date;
+        bh=gQRJcVGVry+O+rO0ClNB2v9fZHzTw/QBigbLMMx2lx4=;
+        b=qL4m/RexaXk1mzhmuPHOla2wkRlr9DJpg+3jV4dsmZ4U/uKncjqKf36W4zf52rWGz7
+         xV3j0xkv+Jl1prJK4yrGOiITEqwx6kaQBAdfsaLTg5/6aoljklvy6PJeNIdNToEaLn53
+         We4o9T+piGhVRQAqwAOvF7xgsCwdLNNO8nyjtml9dw5YN7Uz//YhsMDiwjVtQ5KcArV9
+         Wxv1Ost1gpBOfJaTjtuJXcwooKsvoKn8Lw51HtNkr7NE8V1hvETVOKQGoU8vW097dU6k
+         EFPClS9vg+5sU33mJ6TzGQ7V1JBAG1oY1RNZelI4WN5jzy7zSsUhbQmAR7FB+SSYSwhC
+         82NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=gQRJcVGVry+O+rO0ClNB2v9fZHzTw/QBigbLMMx2lx4=;
+        b=3rvMSl3qK8ctaz6GjcIfbamSHES0D0g4yhzDYTZOB2Z4TTAnGXDLwRM5jOt++XN3/M
+         AAb2h9Bkdwb08KRyperzq3sMcdTvRhbvLcqyX02ufIxyKY2P3I6YGKi8wmCm1fCe78RE
+         WW9aD9M/tZim5T0zxTQ3H/7aDhy1DvHlzw4gSGezbQSS7XoUzOXpOebX7ME0oeHjf1Bw
+         qKHeeuB6MvtXImfXVBJyxCHjbShN9Nmo9GWvTBHvQYRhgJwuyFQuZhFiLwCpYp8bFzVL
+         H4kP3fBhm+PNj7tIrHpkzBZslUxqOUT5/Rd1VVHYESO6mngQZO1rd/KLnd+IlOZ8i5uj
+         UIqg==
+X-Gm-Message-State: ACgBeo1MEomWXiNoctSrV/j2hg43DRUCiuStgOLeoZBjas9ydiHpHqoT
+        5dy0HdubkT7lqDlOeAL4sL2qT5RsLw==
+X-Google-Smtp-Source: AA6agR7rJ+0cHLUZrt4DFI/aWWTLh81TsF5sCMpgejD4ykJrhUmdF8T/XLQdjfvjQq4m/De/l6Eg2aQYPg==
+X-Received: from nhuck.c.googlers.com ([fda3:e722:ac3:cc00:14:4d90:c0a8:39cc])
+ (user=nhuck job=sendgmr) by 2002:a1f:2a4b:0:b0:39e:8dc0:75e0 with SMTP id
+ q72-20020a1f2a4b000000b0039e8dc075e0mr8961536vkq.37.1663012256093; Mon, 12
+ Sep 2022 12:50:56 -0700 (PDT)
+Date:   Mon, 12 Sep 2022 12:50:19 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.37.2.789.g6183377224-goog
+Message-ID: <20220912195023.810319-1-nhuck@google.com>
+Subject: [PATCH] net: ethernet: ti: davinci_emac: Fix return type of emac_dev_xmit
+From:   Nathan Huckleberry <nhuck@google.com>
+Cc:     Nathan Huckleberry <nhuck@google.com>,
+        Dan Carpenter <error27@gmail.com>, llvm@lists.linux.dev,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Maxim Kiselev <bigunclemax@gmail.com>,
+        Minghao Chi <chi.minghao@zte.com.cn>,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MISSING_HEADERS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Benedikt,
+The ndo_start_xmit field in net_device_ops is expected to be of type
+netdev_tx_t (*ndo_start_xmit)(struct sk_buff *skb, struct net_device *dev).
 
-On 12/09/2022 10:43, Niedermayr, BENEDIKT wrote:
-> On Thu, 2022-09-08 at 15:09 +0300, Roger Quadros wrote:
->> Benedikt,
->>
->>
->> On 06/09/2022 15:47, B. Niedermayr wrote:
->>> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
->>>
->>> The GPMC controller has the ability to configure the polarity for
->>> the
->>> wait pin. The current properties do not allow this configuration.
->>> This binding directly configures the WAITPIN<X>POLARITY bit
->>> in the GPMC_CONFIG register.
->>>
->>> Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com
->>>>
->>> ---
->>>  .../bindings/memory-controllers/ti,gpmc-child.yaml          | 6
->>> ++++++
->>>  1 file changed, 6 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/memory-
->>> controllers/ti,gpmc-child.yaml
->>> b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-
->>> child.yaml
->>> index 6e3995bb1630..a115b544a407 100644
->>> --- a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-
->>> child.yaml
->>> +++ b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-
->>> child.yaml
->>> @@ -230,6 +230,12 @@ properties:
->>>        Wait-pin used by client. Must be less than "gpmc,num-
->>> waitpins".
->>>      $ref: /schemas/types.yaml#/definitions/uint32
->>>  
->>> +  gpmc,wait-pin-active-low:
->>> +    description: |
->>> +      Set the polarity for the selected wait pin to active low.
->>> +      Defaults to active high if this is not set.
->>> +    type: boolean
->>> +
->>
->> I just checked that the default behaviour is active low.
->> Reset value of the polarity register field is 0, which means active
->> low.
->>
->> We will need to use the property "gpmc,wait-pin-active-high" instead.
->>
->> Sorry for not catching this earlier.
-> 
-> It's ok. No worries.
-> 
-> Well, the Datasheets are telling me different reset values here. 
-> The am335x TRM (Rev. Q) defines the reset value of WAIT1PINPOLARITY as
-> 0x0, whereas the am64x TRM (Rev. C) defines the reset value of WAIT1PIN
-> POLARITY as 0x1. The am64x TRM also defines different reset values for 
-> WAIT0PINPOLARITY and WAIT1PINPOLARITY.
-> 
-> The interesting thing is that I'm currently working on an am335x
-> platform and I dumped the GPMC_CONFIG register and got 0x00000a00
-> (WAIT1PINPOLARITY == 0x1). So It doesn't behave like the TRM specifies.
+The mismatched return type breaks forward edge kCFI since the underlying
+function definition does not match the function hook definition.
 
-I can confirm the same behaviour on am642 EVM as well.
-I get 0xa00 on reading GPMC_CONFIG.
+The return type of emac_dev_xmit should be changed from int to
+netdev_tx_t.
 
-> 
-> 
-> Nevertheless, I'm setting the WAITXPINPOLARITY bits in both cases
-> accordingly.  
-> 0x0 in case "gpmc,wait-pin-active-low" is set and 0x1 in case
-> "gpmc,wait-pin-active-low" is not set. So the reset value is always
-> overwritten.
-> 
-> 
-> Using "gpmc,wait-pin-active-high" rather than "gpmc,wait-pin-active-low
-> " is also ok for me, but it feels more like a cosmetic thing at this
-> point. 
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1703
+Cc: llvm@lists.linux.dev
+Signed-off-by: Nathan Huckleberry <nhuck@google.com>
+---
+ drivers/net/ethernet/ti/davinci_emac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-My main concern is for legacy platforms not specifying the property in DT.
-Earlier we were not touching the WAITPINPOLARITY config and now we are
-so we might break some legacy platforms that don't specify
-the polarity and we flip it here.
+diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
+index 2a3e4e842fa5..e203a5984f03 100644
+--- a/drivers/net/ethernet/ti/davinci_emac.c
++++ b/drivers/net/ethernet/ti/davinci_emac.c
+@@ -949,7 +949,7 @@ static void emac_tx_handler(void *token, int len, int status)
+  *
+  * Returns success(NETDEV_TX_OK) or error code (typically out of desc's)
+  */
+-static int emac_dev_xmit(struct sk_buff *skb, struct net_device *ndev)
++static netdev_tx_t emac_dev_xmit(struct sk_buff *skb, struct net_device *ndev)
+ {
+ 	struct device *emac_dev = &ndev->dev;
+ 	int ret_code;
+-- 
+2.37.2.789.g6183377224-goog
 
-Fortunately, there are only few boards using gpmc wait-pin and mostly wait-pin 0
-for which there is no discrepancy as far as wait-pin reset value is concerned.
-
-logicpd-torpedo-baseboard.dtsi:		gpmc,wait-pin = <0>;
-omap3-devkit8000-common.dtsi:		gpmc,wait-pin = <0>;
-Binary file omap3-devkit8000.dtb matches
-Binary file omap3-devkit8000-lcd43.dtb matches
-Binary file omap3-devkit8000-lcd70.dtb matches
-omap3-lilly-a83x.dtsi:		gpmc,wait-pin = <0>;
-Binary file omap3-lilly-dbb056.dtb matches
-Binary file omap3-zoom3.dtb matches
-
-Only 1 board is using wait-pin 1
-omap-zoom-common.dtsi:		gpmc,wait-pin = <1>;
-
-from OMP36xx TRM, here are the reset values
-WAIT3PINPOLARITY 0x1
-WAIT2PINPOLARITY 0x0
-WAIT1PINPOLARITY 0x1
-WAIT0PINPOLARITY 0x0
-
-cheers,
--roger
