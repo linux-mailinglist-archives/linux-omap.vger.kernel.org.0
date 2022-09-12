@@ -2,259 +2,172 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CAC25B586A
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Sep 2022 12:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09CB05B58F5
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Sep 2022 13:04:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbiILK2n (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 12 Sep 2022 06:28:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49880 "EHLO
+        id S229927AbiILLET (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 12 Sep 2022 07:04:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230187AbiILK2k (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Sep 2022 06:28:40 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0016B386A2;
-        Mon, 12 Sep 2022 03:28:38 -0700 (PDT)
-Received: from mercury (unknown [185.122.133.20])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        with ESMTP id S229872AbiILLES (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 12 Sep 2022 07:04:18 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 694B9240AA;
+        Mon, 12 Sep 2022 04:04:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: sre)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id B7B256601FE0;
-        Mon, 12 Sep 2022 11:28:37 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1662978517;
-        bh=DRiZC5zI3w4caCIF0yPN0iBcoObFd36g1UxxkKSXqgQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=M4BzXAj26aLaZmdDj4BImvIfeWREijDpm2B8zCBilMMWF9oGicJ0hITLLrr5f9y74
-         C+ZqG//Lc1lwKZefepmYeGPis009R2ZQUPqeWOErugyfJ8l2mVECA8t0ojmQ8RYRbN
-         7iddZ0DcsLusCLzZxKG90rwHvBHimtf0TgL0TC4EUMwAzsv3MbE3OU00VDXSGWDuDl
-         7aKShpsTj1Lh9CiTlI+F6/SALVXMxe1wO4fJC+ODcP1h9vV5tzBe/8nmrGiJpCGOaX
-         lf08Db8RLQG8YXvU2lWjlGC9tzINW4SyesnxpHdgGFZfcD6OftcN6KYv5oWm8sVA/6
-         6zsLXIA7ijVJQ==
-Received: by mercury (Postfix, from userid 1000)
-        id 403B81063360; Sun, 11 Sep 2022 14:55:45 +0200 (CEST)
-Date:   Sun, 11 Sep 2022 14:55:45 +0200
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Mithil Bavishi <bavishimithil@gmail.com>
-Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        dmitry.torokhov@gmail.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, lee@kernel.org,
-        tony@atomide.com, linux@armlinux.org.uk, contact@paulk.fr
-Subject: Re: [PATCH 03/10] power: reset: Add TWL6030 power driver, with
- minimal support for power off
-Message-ID: <20220911125545.73afzbirtnsdbmgo@mercury.elektranox.org>
-References: <20220820071659.1215-1-bavishimithil@gmail.com>
- <20220820071659.1215-4-bavishimithil@gmail.com>
+        by ams.source.kernel.org (Postfix) with ESMTPS id 08D2EB80CB7;
+        Mon, 12 Sep 2022 11:04:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAE3C433D6;
+        Mon, 12 Sep 2022 11:04:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662980654;
+        bh=DmabOioRzklG+bbZ2I16FOiymU5bebFOCVF91CBoRCQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=bengJI+cLu/+t6vEhIrf7XyvJYGO2t/P3TWJ53MCqHe9/kEE1LeWxUgo5owZC8ndT
+         NohsWN9PwspKEjBLY1Wuq0WdsXS92I5rMUcLQ71viO0lopY3/UPECjA2w1Ag1QpnpP
+         9izvefVplCdgzjUg1mX3D+pVVV+opJZ7RgbneAtSEjjhepnpFMpeAh/FnacdiTvG2W
+         Iy2AxFztXPIGataB55lH5yVQzDWbYGZeZsw4swCeTD8p9dyyBzgIZdgAl1U9s/cKJe
+         epI4z1EcjgyunqBpE4cXGO4tmzw/JJaL09J3mKyift1wR8hOjAdmlw5WmEhM839voe
+         zRGNPIGWL7xMA==
+Message-ID: <8326572f-8a88-6e8b-edda-7730a0a3597d@kernel.org>
+Date:   Mon, 12 Sep 2022 14:04:10 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="kq6iicrq5qwpzlb4"
-Content-Disposition: inline
-In-Reply-To: <20220820071659.1215-4-bavishimithil@gmail.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v3 3/3] dt-bindings: memory-controllers: gpmc-child: add
+ wait-pin polarity
+Content-Language: en-US
+To:     "Niedermayr, BENEDIKT" <benedikt.niedermayr@siemens.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Cc:     "tony@atomide.com" <tony@atomide.com>,
+        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+References: <20220906124747.1767318-1-benedikt.niedermayr@siemens.com>
+ <20220906124747.1767318-5-benedikt.niedermayr@siemens.com>
+ <70a2fec4-e7b9-e8ed-4d8a-d547003dbb9e@kernel.org>
+ <125ea34a12928fcdd8ef118eced8b2c59039d2ab.camel@siemens.com>
+From:   Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <125ea34a12928fcdd8ef118eced8b2c59039d2ab.camel@siemens.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Benedikt,
 
---kq6iicrq5qwpzlb4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 12/09/2022 10:43, Niedermayr, BENEDIKT wrote:
+> On Thu, 2022-09-08 at 15:09 +0300, Roger Quadros wrote:
+>> Benedikt,
+>>
+>>
+>> On 06/09/2022 15:47, B. Niedermayr wrote:
+>>> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
+>>>
+>>> The GPMC controller has the ability to configure the polarity for
+>>> the
+>>> wait pin. The current properties do not allow this configuration.
+>>> This binding directly configures the WAITPIN<X>POLARITY bit
+>>> in the GPMC_CONFIG register.
+>>>
+>>> Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com
+>>>>
+>>> ---
+>>>  .../bindings/memory-controllers/ti,gpmc-child.yaml          | 6
+>>> ++++++
+>>>  1 file changed, 6 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/memory-
+>>> controllers/ti,gpmc-child.yaml
+>>> b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-
+>>> child.yaml
+>>> index 6e3995bb1630..a115b544a407 100644
+>>> --- a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-
+>>> child.yaml
+>>> +++ b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-
+>>> child.yaml
+>>> @@ -230,6 +230,12 @@ properties:
+>>>        Wait-pin used by client. Must be less than "gpmc,num-
+>>> waitpins".
+>>>      $ref: /schemas/types.yaml#/definitions/uint32
+>>>  
+>>> +  gpmc,wait-pin-active-low:
+>>> +    description: |
+>>> +      Set the polarity for the selected wait pin to active low.
+>>> +      Defaults to active high if this is not set.
+>>> +    type: boolean
+>>> +
+>>
+>> I just checked that the default behaviour is active low.
+>> Reset value of the polarity register field is 0, which means active
+>> low.
+>>
+>> We will need to use the property "gpmc,wait-pin-active-high" instead.
+>>
+>> Sorry for not catching this earlier.
+> 
+> It's ok. No worries.
+> 
+> Well, the Datasheets are telling me different reset values here. 
+> The am335x TRM (Rev. Q) defines the reset value of WAIT1PINPOLARITY as
+> 0x0, whereas the am64x TRM (Rev. C) defines the reset value of WAIT1PIN
+> POLARITY as 0x1. The am64x TRM also defines different reset values for 
+> WAIT0PINPOLARITY and WAIT1PINPOLARITY.
+> 
+> The interesting thing is that I'm currently working on an am335x
+> platform and I dumped the GPMC_CONFIG register and got 0x00000a00
+> (WAIT1PINPOLARITY == 0x1). So It doesn't behave like the TRM specifies.
 
-Hi,
+I can confirm the same behaviour on am642 EVM as well.
+I get 0xa00 on reading GPMC_CONFIG.
 
-On Sat, Aug 20, 2022 at 12:46:53PM +0530, Mithil Bavishi wrote:
-> From: Paul Kocialkowski <contact@paulk.fr>
->=20
-> This adds a TWL6030 power driver, that currently only supports powering
-> off the device when the TWL is used as system power controller.
->=20
-> This driver might be extended to support more power-related features of t=
-he
-> TWL6030.
->=20
-> Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
-> Signed-off-by: Mithil Bavishi <bavishimithil@gmail.com>
-> ---
->  drivers/power/reset/Kconfig         | 10 ++++
->  drivers/power/reset/Makefile        |  1 +
->  drivers/power/reset/twl6030-power.c | 93 +++++++++++++++++++++++++++++
->  3 files changed, 104 insertions(+)
->  create mode 100644 drivers/power/reset/twl6030-power.c
->=20
-> diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
-> index 39117b697..5156b1613 100644
-> --- a/drivers/power/reset/Kconfig
-> +++ b/drivers/power/reset/Kconfig
-> @@ -316,3 +316,13 @@ config TWL4030_POWER
->            and load scripts controlling which resources are switched off/=
-on
->            or reset when a sleep, wakeup or warm reset event occurs.
->  endif
-> +
-> +config TWL6030_POWER
-> +	bool "TI TWL6030 power resources"
-> +	depends on TWL4030_CORE && ARM
-> +	help
-> +	  Say yes here if you want to use the power resources on the
-> +	  TWL6030 family chips.
-> +
-> +	  When used as system power controller, this driver allows turning off
-> +	  the main power supply.
-> diff --git a/drivers/power/reset/Makefile b/drivers/power/reset/Makefile
-> index e9db25b09..692d51cef 100644
-> --- a/drivers/power/reset/Makefile
-> +++ b/drivers/power/reset/Makefile
-> @@ -37,3 +37,4 @@ obj-$(CONFIG_POWER_RESET_SC27XX) +=3D sc27xx-poweroff.o
->  obj-$(CONFIG_NVMEM_REBOOT_MODE) +=3D nvmem-reboot-mode.o
->  obj-$(CONFIG_POWER_MLXBF) +=3D pwr-mlxbf.o
->  obj-$(CONFIG_TWL4030_POWER) +=3D twl4030-power.o
-> +obj-$(CONFIG_TWL6030_POWER) +=3D twl6030-power.o
-> diff --git a/drivers/power/reset/twl6030-power.c b/drivers/power/reset/tw=
-l6030-power.c
-> new file mode 100644
-> index 000000000..78c8a02a3
-> --- /dev/null
-> +++ b/drivers/power/reset/twl6030-power.c
-> @@ -0,0 +1,93 @@
-> +/*
-> + * TWL6030 power
-> + *
-> + * Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
-> + *
-> + * This file is subject to the terms and conditions of the GNU General
-> + * Public License. See the file "COPYING" in the main directory of this
-> + * archive for more details.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
+> 
+> 
+> Nevertheless, I'm setting the WAITXPINPOLARITY bits in both cases
+> accordingly.  
+> 0x0 in case "gpmc,wait-pin-active-low" is set and 0x1 in case
+> "gpmc,wait-pin-active-low" is not set. So the reset value is always
+> overwritten.
+> 
+> 
+> Using "gpmc,wait-pin-active-high" rather than "gpmc,wait-pin-active-low
+> " is also ok for me, but it feels more like a cosmetic thing at this
+> point. 
 
-Please use SPDX format for license.
+My main concern is for legacy platforms not specifying the property in DT.
+Earlier we were not touching the WAITPINPOLARITY config and now we are
+so we might break some legacy platforms that don't specify
+the polarity and we flip it here.
 
-> +
-> +#include <linux/module.h>
-> +#include <linux/pm.h>
-> +#include <linux/mfd/twl.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +
-> +#define TWL6030_PHOENIX_DEV_ON		0x25
-> +
-> +#define TWL6030_PHOENIX_APP_DEVOFF	BIT(0)
-> +#define TWL6030_PHOENIX_CON_DEVOFF	BIT(1)
-> +#define TWL6030_PHOENIX_MOD_DEVOFF	BIT(2)
-> +
-> +void twl6030_power_off(void)
-> +{
-> +	int err;
-> +
-> +	err =3D twl_i2c_write_u8(TWL6030_MODULE_ID0, TWL6030_PHOENIX_APP_DEVOFF=
- |
-> +		TWL6030_PHOENIX_CON_DEVOFF | TWL6030_PHOENIX_MOD_DEVOFF,
-> +		TWL6030_PHOENIX_DEV_ON);
-> +	if (err)
-> +		pr_err("TWL6030 Unable to power off\n");
-> +}
-> +
-> +static bool twl6030_power_use_poweroff(struct device_node *node)
-> +{
-> +	if (of_property_read_bool(node, "ti,system-power-controller"))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +#ifdef CONFIG_OF
-> +static const struct of_device_id twl6030_power_of_match[] =3D {
-> +	{
-> +		.compatible =3D "ti,twl6030-power",
-> +	},
-> +	{ },
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, twl6030_power_of_match);
-> +#endif	/* CONFIG_OF */
-> +
-> +static int twl6030_power_probe(struct platform_device *pdev)
-> +{
-> +	struct device_node *node =3D pdev->dev.of_node;
-> +
-> +	if (!node) {
-> +		dev_err(&pdev->dev, "Platform data is missing\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Board has to be wired properly to use this feature */
-> +	if (twl6030_power_use_poweroff(node) && !pm_power_off)
-> +		pm_power_off =3D twl6030_power_off;
+Fortunately, there are only few boards using gpmc wait-pin and mostly wait-pin 0
+for which there is no discrepancy as far as wait-pin reset value is concerned.
 
-Please devm_register_sys_off_handler or devm_register_power_off_handler().
+logicpd-torpedo-baseboard.dtsi:		gpmc,wait-pin = <0>;
+omap3-devkit8000-common.dtsi:		gpmc,wait-pin = <0>;
+Binary file omap3-devkit8000.dtb matches
+Binary file omap3-devkit8000-lcd43.dtb matches
+Binary file omap3-devkit8000-lcd70.dtb matches
+omap3-lilly-a83x.dtsi:		gpmc,wait-pin = <0>;
+Binary file omap3-lilly-dbb056.dtb matches
+Binary file omap3-zoom3.dtb matches
 
-> +
-> +	return 0;
-> +}
-> +
-> +static int twl6030_power_remove(struct platform_device *pdev)
-> +{
-> +	return 0;
-> +}
+Only 1 board is using wait-pin 1
+omap-zoom-common.dtsi:		gpmc,wait-pin = <1>;
 
-Empty remove function can be removed.
+from OMP36xx TRM, here are the reset values
+WAIT3PINPOLARITY 0x1
+WAIT2PINPOLARITY 0x0
+WAIT1PINPOLARITY 0x1
+WAIT0PINPOLARITY 0x0
 
-> +
-> +static struct platform_driver twl6030_power_driver =3D {
-> +	.driver =3D {
-> +		.name	=3D "twl6030_power",
-> +		.of_match_table =3D of_match_ptr(twl6030_power_of_match),
-
-The driver is not useful without CONFIG_OF, so you can just remove the
-#ifdef around twl6030_power_of_match and drop of_match_ptr here.
-
--- Sebastian
-
-> +	},
-> +	.probe		=3D twl6030_power_probe,
-> +	.remove		=3D twl6030_power_remove,
-> +};
-> +
-> +module_platform_driver(twl6030_power_driver);
-> +
-> +MODULE_AUTHOR("Paul Kocialkowski <contact@paulk.fr>");
-> +MODULE_DESCRIPTION("Power management for TWL6030");
-> +MODULE_LICENSE("GPL");
-> --=20
-> 2.25.1
->=20
-
---kq6iicrq5qwpzlb4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmMd2s0ACgkQ2O7X88g7
-+pq7pA//c8rhoEaTQYCtLWztRJSjzmHr9CN0dA3thpfcfumLKVuJwZ8G7nzx60Ye
-vaiDHTiN5yAjh6Ahwmm+qNuljUDIkt2bmLCSVGn+YimpHq1Rh+hl6JSsXIkdFQ8c
-Ko/R8PwW/kGRlh87aD2Doeau1CBU3uU4XZ0xhc1cm0BLCgaPHSRN9Gq7ClQgrb6h
-tgAoe/dAeV3fNusbsUhIKcX9AfGVl8tchy5Vg2AdSdIQGI2HlV2kOZrx+eP0CUm2
-XIE1VtlED5ApAaYcsVSOSEgU/YjB9Q1ME70ZyW5rpTNs6IEQ/jHZ7szZEQwcLHrm
-LgcDH8BS8KTiglbSc/L+PhSyRHQBVe47o1aI8Nu5PNXS/B4EkG92twf1fJ/T4lRE
-lKWj8vs4swRI0jyQC/mwtpfPuxxHysmFoKzR2evPlZ7IIaa84of7biwWEERrv083
-AAiVcdyGbaPFq81NZgjNyOxs4wLK8WrLkwUhuqr278aeUi656xPGSYPh0pHv/qsR
-ZG4Uqyv1luV3ZyhAavMgqZHJRZHDxxPBaHYmoVOJdZ/byF0G9t5W1ZOsopFtm7Wi
-8L+feuz3X2Vg6cVW487ryhbcEL82BrIKdb5t1GkNTsGE4SOhlHzZSCvyD0xBrwGP
-cqwSkgMEx8OzgIxY+x/x6uGk4vx2hDoebvhG9yH7DNYJ0IE5ST8=
-=rfEv
------END PGP SIGNATURE-----
-
---kq6iicrq5qwpzlb4--
+cheers,
+-roger
