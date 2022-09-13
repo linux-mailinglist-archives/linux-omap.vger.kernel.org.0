@@ -2,90 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE3F5B6A82
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Sep 2022 11:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65A165B6CE2
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Sep 2022 14:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231556AbiIMJRs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Sep 2022 05:17:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45620 "EHLO
+        id S232031AbiIMMOd (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 13 Sep 2022 08:14:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231506AbiIMJRp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Sep 2022 05:17:45 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73D95B7D2
-        for <linux-omap@vger.kernel.org>; Tue, 13 Sep 2022 02:17:44 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id bg5-20020a05600c3c8500b003a7b6ae4eb2so12947124wmb.4
-        for <linux-omap@vger.kernel.org>; Tue, 13 Sep 2022 02:17:44 -0700 (PDT)
+        with ESMTP id S232029AbiIMMOb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Sep 2022 08:14:31 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0360E4E
+        for <linux-omap@vger.kernel.org>; Tue, 13 Sep 2022 05:14:28 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id az24-20020a05600c601800b003a842e4983cso9397450wmb.0
+        for <linux-omap@vger.kernel.org>; Tue, 13 Sep 2022 05:14:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=ptSq3Svo4+b1TidsJn6ZUIUmysoM5J9grskyUr7sykc=;
-        b=GVxo614YVRjtNRdN1Z5AIMPDoc41sG+XHVm2ohsWehhhlH9B6kZTrr54Zx+oyZTXAn
-         kh5cpA449d5kCYebink/7iv03k82x5Z9e2QVNKNzPh826A7kdH4cetXLRDIazzuO3xRC
-         CVAUUofEv/QDc5C4k/SsZwg6Imt35rSKiLp4YOQfORGCGsnJiecPxuDydqv9SaMYtrdp
-         YrYwI9yGI8/JaVSfLYUxs5J7/XLKzZPv4SjkrghBp4z7ZsNigyedwy9Y5VAo+Okhoc/1
-         6ieFTg9xjLfAPxmAawThozlh9d/B3CPBvVU7R61Qu5pdjdujfHd96q1KGc2b17S/XBhv
-         UNIA==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date;
+        bh=B7iT+oQq30oC0oSLQJw888zIvH4fncBMdo2JDHB2lvA=;
+        b=OUDJ6XTzz3nxOeEUmEuwfHwDK9Zwi5DJPsJuXpzMkKgf/XgsNXuseY5rphebORxivq
+         6IeglrWFML4rT9BaHc+j9JgHDl7hirgxyRjJaFso+50lAjpxKiz1J/969oBRkMRHO5xP
+         mujbY7f9XOuIJK9qGYrFk0uGHuAnkdmpSFy886nhRjv+8KRh4UZE5IxBvsPbrppssp7B
+         O99jr2Ggd43kk5YbyTURuDXNMFqNefnYYMW0RuebruN9fXJ2xprzRXW34AiInsBjbWLY
+         hm1NdFQMC9k94/NBdYtUT+HhdQhDNBZIPf5UE8zGsQi4vOJEhMrG6RqIOU3RVaQZlzUH
+         a23w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=ptSq3Svo4+b1TidsJn6ZUIUmysoM5J9grskyUr7sykc=;
-        b=uSpc0I2gqDB3B02fd3QZ2yzCM7UgZ6uiwGmDvZgDZw6dI7z6jKYoziOIz78G4F64c6
-         xsGCGTKwfWr2V68ZME2lHFBGdvboFFuOvjznuIOUN3OSaQO6MP/jid6QrRKeD1qEVtkH
-         iQvOH8ezz9IKCkxNmAHMYf4J9yumfXdVwpIiWwLHhwCPGtffMOm/Ej/5KP0feSfX/m0L
-         a6Udbr+p/T/vvvfEmZ3v6cPvNfPXIRc/yqPPcZJuJyY1YdxiDzbDKNbPB1jRGM3jWob+
-         Dak+IbdotlHAIi9L1NKY99hfackFjNbSkTgUbubeh43Ia75romUWbWXAWAeD/xS2qTB9
-         I+iw==
-X-Gm-Message-State: ACgBeo04iuCmk+f9eiigrWHRnxwROx0Y5kgYejU7Sj/EFzEf+/Ig1Fjg
-        TwOc1fJGEX17UG2Qf7hDw99pkw==
-X-Google-Smtp-Source: AA6agR4c8Xn/5MYNeO9EkH/19VCi9VcV6o/f975UuiiJoTdV184nE0y3Ae6RMZwogomDh2xyW8xXqQ==
-X-Received: by 2002:a05:600c:35cc:b0:3a6:f08:9b1 with SMTP id r12-20020a05600c35cc00b003a60f0809b1mr1613421wmq.22.1663060663115;
-        Tue, 13 Sep 2022 02:17:43 -0700 (PDT)
-Received: from [10.119.22.201] ([89.101.193.70])
-        by smtp.gmail.com with ESMTPSA id l2-20020a05600c4f0200b003b4924493bfsm5764638wmq.9.2022.09.13.02.17.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Sep 2022 02:17:42 -0700 (PDT)
-Message-ID: <fe13c70b-8712-eef2-0342-782802027edc@linaro.org>
-Date:   Tue, 13 Sep 2022 11:17:41 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v3 0/3] omap-gpmc wait pin additions
-Content-Language: en-US
-To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     rogerq@kernel.org, tony@atomide.com, robh+dt@kernel.org
-References: <20220906124747.1767318-1-benedikt.niedermayr@siemens.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220906124747.1767318-1-benedikt.niedermayr@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=B7iT+oQq30oC0oSLQJw888zIvH4fncBMdo2JDHB2lvA=;
+        b=voASiHKndm86rTYbGHpXpqOstLy2onufuuVk24kZCBrhlMCZKaamiHpRwAme0I7R6Q
+         EcVCbnDvXZs0CUDyEFEu5bCH33Yhrc0eFLD4ZxdDGV+uV7tD8m+qH8gu4mKBCXYDuIRL
+         I6azMMoJzAW6zvwA4z+1lxybvq8/dZE9YcsFJ47mir3VrQrQR8byQdMB6guqHxjEPTkr
+         LA3PbYXsqegAzIJ8ocBeFBcFJ2lY++RkKFxu4YBdmm0UeQF3PAhVUdxKZpnyYrYjMv5U
+         QBN7NmNyHrmzXGdh2KMA3/mu49pKSnsNB1Slg9eAD4F009MdHw81338Fd/koSEuBadsu
+         aCpQ==
+X-Gm-Message-State: ACgBeo2dtfF10PJzYcuK1P5V2mSNdArRr9eGk0wRiQuqWTNJDmea0ts7
+        ghTv7OfTKbKQvyhZ/Pr3PlwqsQ==
+X-Google-Smtp-Source: AA6agR6jYsMQPv0E7C75YnpeWAaTVUlPh6qM5jvRT3/s2FgrrEMMciK7pORhVD/DwSiUUJNsM9cumA==
+X-Received: by 2002:a1c:7315:0:b0:3a5:ff61:4080 with SMTP id d21-20020a1c7315000000b003a5ff614080mr2191186wmb.196.1663071267110;
+        Tue, 13 Sep 2022 05:14:27 -0700 (PDT)
+Received: from localhost.localdomain (192.201.68.85.rev.sfr.net. [85.68.201.192])
+        by smtp.gmail.com with ESMTPSA id p10-20020adf9d8a000000b00228634628f1sm10512230wre.110.2022.09.13.05.14.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Sep 2022 05:14:26 -0700 (PDT)
+From:   Jerome Neanne <jneanne@baylibre.com>
+To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
+        will@kernel.org, lee.jones@linaro.org, tony@atomide.com
+Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
+        msp@baylibre.com, j-keerthy@ti.com, jneanne@baylibre.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v5 0/6] Add support for TI TPS65219 PMIC.
+Date:   Tue, 13 Sep 2022 14:14:13 +0200
+Message-Id: <20220913121419.15420-1-jneanne@baylibre.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 06/09/2022 14:47, B. Niedermayr wrote:
-> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-> 
-> Currently it is not possible to configure the WAIT0PINPOLARITY and 
-> WAIT1PINPOLARITY bits of the GPMC_CONFIG register directly via 
-> device tree properties.
-> 
+Hi everyone,
 
-Just a disclaimer:
-This waits in my inbox for a week, it's not ignored. Unfortunately it
-will need to wait a bit more, due to traveling / ELCE. I see some
-discussion going, though.
+bindings and regulator are already there as it is based on the regulator tree branch for-6.1:
+https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git
 
-Best regards,
-Krzysztof
+Changes in v5:
+- Remove pm_power_off functionality as it is unused in ARM64 systems
+- Change mfd subject to prefixes matching subsystem
+
+Validation:
+regulator: tps65219: Fix .bypass_val_on setting
+reported by Axel Lin has been validated on board. 
+
+Regards,
+Jerome
+
+Previous versions:
+v4 - https://lore.kernel.org/lkml/20220825150224.826258-1-msp@baylibre.com/
+v3 - https://lore.kernel.org/lkml/20220805121852.21254-1-jneanne@baylibre.com/
+v2 - https://lore.kernel.org/lkml/20220726103355.17684-1-jneanne@baylibre.com/
+v1 - https://lore.kernel.org/lkml/20220719091742.3221-1-jneanne@baylibre.com/
+
+
+Jerome Neanne (5):
+  DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC support for AM642 SK
+    board.
+  DONOTMERGE: arm64: dts: ti: Add pinmux and irq mapping for TPS65219
+    external interrupts
+  DONOTMERGE: arm64: dts: ti: k3-am642-sk: Enable tps65219 power-button
+  mfd: tps65219: Add driver for TI TPS65219 PMIC
+  arm64: defconfig: Add tps65219 as modules
+
+Markus Schneider-Pargmann (1):
+  Input: Add tps65219 interrupt driven powerbutton
+
+ MAINTAINERS                             |   1 +
+ arch/arm64/boot/dts/ti/k3-am642-sk.dts  | 115 ++++++++
+ arch/arm64/configs/defconfig            |   3 +
+ drivers/input/misc/Kconfig              |  10 +
+ drivers/input/misc/Makefile             |   1 +
+ drivers/input/misc/tps65219-pwrbutton.c | 149 ++++++++++
+ drivers/mfd/Kconfig                     |  14 +
+ drivers/mfd/Makefile                    |   1 +
+ drivers/mfd/tps65219.c                  | 320 ++++++++++++++++++++++
+ include/linux/mfd/tps65219.h            | 345 ++++++++++++++++++++++++
+ 10 files changed, 959 insertions(+)
+ create mode 100644 drivers/input/misc/tps65219-pwrbutton.c
+ create mode 100644 drivers/mfd/tps65219.c
+ create mode 100644 include/linux/mfd/tps65219.h
+
+-- 
+2.17.1
+
