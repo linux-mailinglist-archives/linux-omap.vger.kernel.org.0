@@ -2,76 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E777D5B820B
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 09:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E40E5B8335
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 10:43:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbiINHcX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Sep 2022 03:32:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57530 "EHLO
+        id S229945AbiINInz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Sep 2022 04:43:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229850AbiINHcW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 03:32:22 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F374B6FA38
-        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 00:32:20 -0700 (PDT)
-Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 6567C80F0;
-        Wed, 14 Sep 2022 07:24:27 +0000 (UTC)
-From:   Tony Lindgren <tony@atomide.com>
-To:     soc@kernel.org
-Cc:     arm@kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        "Tony Lindgren" <tony@atomide.com>
-Subject: [GIT PULL] SoC fixes for omaps
-Date:   Wed, 14 Sep 2022 10:32:16 +0300
-Message-Id: <pull-1663140667-273537@atomide.com>
-X-Mailer: git-send-email 2.37.1
+        with ESMTP id S229852AbiINIni (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 04:43:38 -0400
+Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.155.67.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56F2F1091;
+        Wed, 14 Sep 2022 01:43:36 -0700 (PDT)
+X-QQ-mid: bizesmtp79t1663145002t9q1ohmd
+Received: from localhost.localdomain ( [125.70.163.64])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Wed, 14 Sep 2022 16:43:20 +0800 (CST)
+X-QQ-SSF: 01000000002000E0G000B00A0000000
+X-QQ-FEAT: RFp2QSjOiS4lyMvRhzy066XqcWoc4c4T2YPtMR49gMfuCrBujKXRx9Mh5KpH9
+        AytrNYeF9QZbqHnbU+CIVYvLuLJf4zE3n7czPCGfZrkAwytzHeJvuF519ju1KQIYCJSVt12
+        WXCkIfcirc/Was1sPyQSIdpGsaNSBguQarPVT3LK6UWl+yBF/CBaE3fJEjovr6sBeVDZyEN
+        DKtUo51K3doALtzEl/C/4ASNlHifzTZCnKC16VsuySbIUb00YXmAAaTlXtrbhZEvprtIG+b
+        YYMirDd9yLedqHhqxU28yjg6bM417zkpDDio5M4KpdfDZYu0HWYs95Ple+XvBY/g7bDRHM2
+        GFS8u8SLWi/mx6bZ3HYPX1Yit+3/xol4ukK9gdJ6OHla1XqgpSZkJBig8ovmBno+m3bQVqV
+        v/vwsh/VMLztNlyFM+ld+A==
+X-QQ-GoodBg: 0
+From:   Jilin Yuan <yuanjilin@cdjrlc.com>
+To:     tony@atomide.com, linux@armlinux.org.uk
+Cc:     linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jilin Yuan <yuanjilin@cdjrlc.com>
+Subject: [PATCH] ARM: OMAP2+: fix repeated words in comments
+Date:   Wed, 14 Sep 2022 16:43:15 +0800
+Message-Id: <20220914084315.40165-1-yuanjilin@cdjrlc.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
+X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,RCVD_IN_PBL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: "Tony Lindgren" <tony@atomide.com>
+Delete the redundant word 'from'.
 
-The following changes since commit 0b3acd1cc0222953035d18176b1e4aa06624fd6e:
+Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
+---
+ arch/arm/mach-omap2/cm33xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Merge tag 'driver-core-6.0-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core (2022-09-02 10:55:23 -0700)
+diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
+index d61fa06117b4..c824d4e3db63 100644
+--- a/arch/arm/mach-omap2/cm33xx.c
++++ b/arch/arm/mach-omap2/cm33xx.c
+@@ -5,7 +5,7 @@
+  * Copyright (C) 2011-2012 Texas Instruments Incorporated - https://www.ti.com/
+  * Vaibhav Hiremath <hvaibhav@ti.com>
+  *
+- * Reference taken from from OMAP4 cminst44xx.c
++ * Reference taken from OMAP4 cminst44xx.c
+  */
+ 
+ #include <linux/kernel.h>
+-- 
+2.36.1
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap tags/omap-for-6.0/fixes-signed
-
-for you to fetch changes up to 2a906db2824b75444982f5e9df870106982afca8:
-
-  Merge branch 'am5748-fix' into fixes (2022-09-06 09:45:27 +0300)
-
-----------------------------------------------------------------
-Two fixes for omaps
-
-A fix to remove usb4 from am5748 as it does not exist on the SoC, and
-a fix for am335x mmc dma that wired direct and should not use the xbar.
-
-Note that the am5748 fix depends on the recent deferred probe regression
-fixes to boot. I ended up picking the merge commit to base it on as it
-describes what got fixed quite nicely rather than a -rc tag.
-
-----------------------------------------------------------------
-Romain Naour (1):
-      ARM: dts: am5748: keep usb4_tm disabled
-
-Tony Lindgren (1):
-      Merge branch 'am5748-fix' into fixes
-
-YuTong Chang (1):
-      ARM: dts: am33xx: Fix MMCHS0 dma properties
-
- arch/arm/boot/dts/am33xx-l4.dtsi | 3 +--
- arch/arm/boot/dts/am5748.dtsi    | 4 ++++
- 2 files changed, 5 insertions(+), 2 deletions(-)
