@@ -2,118 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ECF65B89FD
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 16:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A880E5B8AA3
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 16:34:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229830AbiINOJU (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Sep 2022 10:09:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39638 "EHLO
+        id S230123AbiINOd6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Sep 2022 10:33:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbiINOIm (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 10:08:42 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD36D17E2E
-        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 07:08:20 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id t14so25902569wrx.8
-        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 07:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date;
-        bh=wxovnf5KPHC5iL/G2DCCvsq9cB2n/hhE49OVBFVzwkI=;
-        b=UqiPJZo0zb7b3pl7nCEzK05u/NTFiHU3ZI7CkUrRxxWSsqLwKkS4Jq07/Ub5UZ7fLq
-         tz4z9x77jnKvG7Ydxd0x+fM1yn+fi81vrpHi7o3jlKcksFShCfUuUDCT9hcvlLgce5lD
-         Wy/l8Qfi8cZwMGPEjXhInoSDezWIdJmX42JWqCCa3HCKYsho0JT7vloD7VLdz2tyU7pR
-         I5KpmwU/4j7AQTLw6JAi+eys/NuXEIQNxQ17zZXtkp7Y4B88N5lC9aW91A/tpvbm9tlM
-         3wfJvp+uhmFug+Twd+LgmXN4BtdNv7LPZ4g7ULxd59H16VD6ebruFKV0sQ5cS6QKnHdy
-         3HuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=wxovnf5KPHC5iL/G2DCCvsq9cB2n/hhE49OVBFVzwkI=;
-        b=ivKVY5W1t5sCYkNDmU0vzc2WFyH2izMP5jHmXYVII7rZE1tWp6dkuu4I7a2U4aIBPa
-         9GFct4OWU917aseP2w4J8IrwBKbwFmhMZTj1Wbwsqb135jPbGgHlylc8yhj0r9U2nMvp
-         Qq1i/VFI/0n33Vn345HtcVErguu3qckyoFUNNSh5W/tIZISDdEBo2Zc6wXSF1gvAhLsN
-         RuN8ciqP2MyejTZ9IEjmru2+syWjJAIlgs9KibivzB1oVLAdJpNA/vHN55xIu04fepUJ
-         vjT0r4GDmIedAVoF/7UlHTR7e+MSGmR9Y1QcVEJliNANBaS9rmv4yCfyE62KArbNAIXT
-         bReA==
-X-Gm-Message-State: ACgBeo1d4CWIIYP5JmFB0bCxxYAuev7hL+42PKMIsxqTM/s80C5drvbM
-        nRaafgwm5VfhBE+ejrOcjnuunA==
-X-Google-Smtp-Source: AA6agR6Absj8GXw3jd9aGn1MlDbl9A+FWp3Yi/6SrE3er+NdSEeNTSLIMKQDRP5aWpYxFLzcv1WO9g==
-X-Received: by 2002:a5d:60ca:0:b0:228:d77e:4b25 with SMTP id x10-20020a5d60ca000000b00228d77e4b25mr22059161wrt.139.1663164498366;
-        Wed, 14 Sep 2022 07:08:18 -0700 (PDT)
-Received: from jerome-BL.theccd.local ([89.101.193.66])
-        by smtp.gmail.com with ESMTPSA id z12-20020a5d654c000000b00228e1e90822sm13303767wrv.112.2022.09.14.07.08.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Sep 2022 07:08:17 -0700 (PDT)
-From:   Jerome Neanne <jneanne@baylibre.com>
-To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
-        will@kernel.org, lee.jones@linaro.org, tony@atomide.com,
-        vigneshr@ti.com, bjorn.andersson@linaro.org, shawnguo@kernel.org,
-        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
-        marcel.ziswiler@toradex.com, vkoul@kernel.org,
-        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com
-Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
-        msp@baylibre.com, j-keerthy@ti.com, jneanne@baylibre.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v5 6/6] arm64: defconfig: Add tps65219 as modules
-Date:   Wed, 14 Sep 2022 16:07:58 +0200
-Message-Id: <20220914140758.7582-7-jneanne@baylibre.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220914140758.7582-1-jneanne@baylibre.com>
-References: <20220914140758.7582-1-jneanne@baylibre.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230102AbiINOd4 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 10:33:56 -0400
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60DC7A531
+        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 07:33:55 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed50:e925:8cbe:2e99:b03b])
+        by xavier.telenet-ops.be with bizsmtp
+        id KqZi280123vs4GX01qZiFR; Wed, 14 Sep 2022 16:33:53 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1oYTSQ-005B5L-24; Wed, 14 Sep 2022 16:33:42 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1oYTS6-000zWz-Vs; Wed, 14 Sep 2022 16:33:22 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Russell King <linux@armlinux.org.uk>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Robert Foss <robert.foss@linaro.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2 0/3] dt-bindings: display: bridge: nxp,tda998x: Json-schema conversion and fixes
+Date:   Wed, 14 Sep 2022 16:33:19 +0200
+Message-Id: <cover.1663165552.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This adds defconfig option to support TPS65219 PMIC, MFD, Regulators
-and power-button.
+	Hi all,
 
-Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
----
- arch/arm64/configs/defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+This patch series converts the NXP TDA998x HDMI transmitter Device Tree
+binding documentation to json-schema, after a few customary fixes.
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index d5b2d2dd4904..d64e00355fcd 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -406,6 +406,7 @@ CONFIG_TOUCHSCREEN_GOODIX=m
- CONFIG_TOUCHSCREEN_EDT_FT5X06=m
- CONFIG_INPUT_MISC=y
- CONFIG_INPUT_PM8941_PWRKEY=y
-+CONFIG_INPUT_TPS65219_PWRBUTTON=m
- CONFIG_INPUT_PM8XXX_VIBRATOR=m
- CONFIG_INPUT_PWM_BEEPER=m
- CONFIG_INPUT_PWM_VIBRA=m
-@@ -639,6 +640,7 @@ CONFIG_MFD_SPMI_PMIC=y
- CONFIG_MFD_RK808=y
- CONFIG_MFD_SEC_CORE=y
- CONFIG_MFD_SL28CPLD=y
-+CONFIG_MFD_TPS65219=m
- CONFIG_MFD_ROHM_BD718XX=y
- CONFIG_MFD_WCD934X=m
- CONFIG_REGULATOR_FIXED_VOLTAGE=y
-@@ -666,6 +668,7 @@ CONFIG_REGULATOR_QCOM_SPMI=y
- CONFIG_REGULATOR_RK808=y
- CONFIG_REGULATOR_S2MPS11=y
- CONFIG_REGULATOR_TPS65132=m
-+CONFIG_REGULATOR_TPS65219=m
- CONFIG_REGULATOR_VCTRL=m
- CONFIG_RC_CORE=m
- CONFIG_RC_DECODERS=y
+Changes compared to v1:
+  - Add maximum to video-ports,
+  - Drop unneeded maxItems for audio-ports,
+  - Complete port descriptions.
+
+Thanks for your comments!
+
+[1] "[PATCH 0/3] dt-bindings: display: bridge: nxp,tda998x: Json-schema
+    conversion and fixes"
+    https://lore.kernel.org/r/cover.1634822085.git.geert+renesas@glider.be/
+
+Geert Uytterhoeven (3):
+  ARM: dts: am335x: Fix TDA998x ports addressing
+  [RFC] arm64: dts: renesas: cat874: Drop bogus clocks property
+  dt-bindings: display: bridge: nxp,tda998x: Convert to json-schema
+
+ .../bindings/display/bridge/nxp,tda998x.yaml  | 109 ++++++++++++++++++
+ .../bindings/display/bridge/tda998x.txt       |  54 ---------
+ arch/arm/boot/dts/am335x-boneblack-hdmi.dtsi  |   7 +-
+ arch/arm/boot/dts/am335x-myirtech-myd.dts     |   7 +-
+ .../boot/dts/renesas/r8a774c0-cat874.dts      |   1 -
+ 5 files changed, 121 insertions(+), 57 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
+ delete mode 100644 Documentation/devicetree/bindings/display/bridge/tda998x.txt
+
 -- 
-2.17.1
+2.25.1
 
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
