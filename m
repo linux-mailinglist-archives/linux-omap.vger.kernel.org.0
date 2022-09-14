@@ -2,83 +2,71 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17B6D5B8989
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 15:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 004945B89E5
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 16:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbiINNzz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Sep 2022 09:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46698 "EHLO
+        id S229437AbiINOIJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Sep 2022 10:08:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiINNzy (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 09:55:54 -0400
-X-Greylist: delayed 398 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 14 Sep 2022 06:55:50 PDT
-Received: from wnew1-smtp.messagingengine.com (wnew1-smtp.messagingengine.com [64.147.123.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAA3777551
-        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 06:55:50 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.west.internal (Postfix) with ESMTP id C34082B05E66;
-        Wed, 14 Sep 2022 09:49:11 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Wed, 14 Sep 2022 09:49:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm1; t=1663163351; x=1663166951; bh=rHC0R1uWCT
-        vHo0njot+yizSuN1Uq7u3C4tmft5uzYXA=; b=KSARzjhaYTx5DnUZoTr5dr5qtg
-        eqQjU8FvDxvi17T+67z+1/c5CMlqFP4qu1vtNOgFs6P5YyjsQ7xQmdbOZmxvChlW
-        4TvEpFwnAiD+e9YVR5N9QtR5un44cXQltZ/aCiTHJZBRVO6vwlo4i9e6pa1jHYBR
-        oAHaui7NzZ6G8pXuNr42WjniNB7qSptbu2ANzHoRXar+TXxvj34+BDmdtN+brQ7o
-        ktslDXQns5TVsCnCeGAVWvDrJnEsEhsMalQ3gFbrUe/Fzgo1PgjgIxaYpglABDRd
-        YlVUlDvZx/eHJ2zthH3eIayLcj+brzYEjI96Pp3pQW2glBZ10m3ywDoUgdvQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1663163351; x=1663166951; bh=rHC0R1uWCTvHo0njot+yizSuN1Uq
-        7u3C4tmft5uzYXA=; b=oL5lznS7eYezjkhP2npyEtyeQ6xgZVVQCSO5O2Wl/7mi
-        W3lR86JS3EPNokAEZ3NrsZBYvuakjCvt8J3fT1bY7OPMGx/62I9oQQYCFkvLwACM
-        nldr+CrNTi0WjiAbpbEzQX1yxHvBMRLAYQXzAudMggfVuP1SFkCpDOjAv978h93M
-        QeBdIcl/+v6wHh5808hv4ecnBl2GScBaJhAW0kXQmKiW5xkZw3sbzIOlXCtJskGy
-        OA4T07zCK/m3qJCnUT+s/YjYpHgFNbk6A535lYSp5LivmZWPtyJqISrJKU+bHc/u
-        /s7+aeezWL6DUfSFD4RpJnqcEQcpIo6EiOJxYsLSWg==
-X-ME-Sender: <xms:1tshY5glAl1ZyEagiRvnOX4-uu3Dwd8kNXciDJQcbgGkIC9a1SAKOw>
-    <xme:1tshY-Ctxkdb6yHLkePfwPTpAEprHbtlRiEcWs_F7pryw2_hCz0UFvxDyQ4-JOqL9
-    3CSLbXfKLshASnaZXc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeduiedgjeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhephfdtlefhtedttedvtedvueeugedvueelueduvefhuefhuefgvddtveevvdff
-    hfdunecuffhomhgrihhnpehlihhnrghrohdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:1tshY5Ggr5HzbtyoDZD8ah5bHFVLdsr5OuNn90dmMsSfT1Fv49b2HQ>
-    <xmx:1tshY-QPmdpDs16zzVpnqo7hH9t3u7u4IFK7qYNnOkypwCRxwEqiRQ>
-    <xmx:1tshY2xg5jHAWCXD3lPBGFT1lyj763sFtB1AhW9G-y-ruewzD2CVng>
-    <xmx:19shY6_TsSlg2wHmlJk_mt5G4MbAJdY2d8rBHmV7v1r79vtNzLm8mbpmPfc>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 1900AB60086; Wed, 14 Sep 2022 09:49:10 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-934-g6274855a4c-fm-20220913.002-g6274855a
-Mime-Version: 1.0
-Message-Id: <97b5728e-e8ed-44a6-a777-a7f56370761a@www.fastmail.com>
-In-Reply-To: <CA+G9fYsaxK30=z0vBcNW-NRVHHkWxaoSNDt1bE-mfXQquMONKQ@mail.gmail.com>
-References: <CA+G9fYsaxK30=z0vBcNW-NRVHHkWxaoSNDt1bE-mfXQquMONKQ@mail.gmail.com>
-Date:   Wed, 14 Sep 2022 15:48:48 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Naresh Kamboju" <naresh.kamboju@linaro.org>,
-        "Tony Lindgren" <tony@atomide.com>,
-        "Philipp Zabel" <p.zabel@pengutronix.de>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "open list" <linux-kernel@vger.kernel.org>
-Cc:     lkft-triage@lists.linaro.org
-Subject: Re: x15: kernel crash: LR is at sysc_enable_opt_clocks
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        with ESMTP id S229491AbiINOII (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 10:08:08 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2838729C
+        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 07:08:06 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id bq9so25915764wrb.4
+        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 07:08:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date;
+        bh=BQx+uulNm6R/5MluC29SBYikinFCFdCK/W6Yr3LL0NM=;
+        b=tBqFjbufT5zyCZh4goHZYvwhwCDPB27j2IaHqyGOwX2wVO6zkyH1o1Pg0d9BKXi2Xw
+         Zp2bCedRU4ZK/m+ynqTqyXtyy/LM53N2/fqB4cEcZNuLMCTIfyP4EhQ1lxuaCGyxJWuG
+         y3Y0K6ZFSpUaCXpIHnnoyRBUnZHcp62JznYg0ssscGpILnvD792fI2eaoYOiJXgYTYzb
+         nAcv/LGXVEt9MNbozhzg2OQXVmtFJCxABV9HXsmzIV8AHgewZTG3fw2oRSsvI7eQj1rP
+         xSGy3ZQekEaFuHoyLu/DHZ0Owo0wmg06jtESI5Xpl517RZByYMYy8R8AS6BMZmBrBvbH
+         Xj9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=BQx+uulNm6R/5MluC29SBYikinFCFdCK/W6Yr3LL0NM=;
+        b=Ysv2wQp6Mni6RgOMENoewgqzRvVw2Jrsu/4DQrKMP6T8k2phwiyuK8JLXdlop5L0qb
+         hq08GQ89VpdoYBe2z1Tq6jB2THDhmq3DvHleNvXRNQnG1wdk4IDiUnPFxSDCBwpUcRNn
+         XhbSGpKRMPpRhujaI0EPFf492K7B/QKpn9ktyG+/ZPDCIcOjuGtmigfDUaKNOAJHVOgt
+         VEE3N0rI2gfM2FYwE2L1y8eh+lF76RoXdPgVuZs1CHYU9thoJ8hyENr7TkDMXxP1ZNFt
+         2/7DB50n5o4DhI/ES3cMMap7ASWnWNWDLDoYKKjNBhMx9P7T3XCoV5uT2XAsKZASFKQN
+         0x/g==
+X-Gm-Message-State: ACgBeo2EFsppshY5HLH66d1aXKDw0RXSLkexp3ufc0tu95znsRoYDgmu
+        8Ig6a/NPJsZQrbLZQQdQi0TDWg==
+X-Google-Smtp-Source: AA6agR7OawfsHtKM6YfVpzKrUfvlbNaTzo2vS9gItttBHh6BEj+5IBvnK+cCx6IeQa21iHV4NMeaDA==
+X-Received: by 2002:a5d:6b8c:0:b0:228:db02:711e with SMTP id n12-20020a5d6b8c000000b00228db02711emr21213583wrx.218.1663164484681;
+        Wed, 14 Sep 2022 07:08:04 -0700 (PDT)
+Received: from jerome-BL.theccd.local ([89.101.193.66])
+        by smtp.gmail.com with ESMTPSA id z12-20020a5d654c000000b00228e1e90822sm13303767wrv.112.2022.09.14.07.08.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Sep 2022 07:08:04 -0700 (PDT)
+From:   Jerome Neanne <jneanne@baylibre.com>
+To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
+        will@kernel.org, lee.jones@linaro.org, tony@atomide.com,
+        vigneshr@ti.com, bjorn.andersson@linaro.org, shawnguo@kernel.org,
+        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
+        marcel.ziswiler@toradex.com, vkoul@kernel.org,
+        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com
+Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
+        msp@baylibre.com, j-keerthy@ti.com, jneanne@baylibre.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v5 0/6] Add support for TI TPS65219 PMIC.
+Date:   Wed, 14 Sep 2022 16:07:52 +0200
+Message-Id: <20220914140758.7582-1-jneanne@baylibre.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,51 +74,57 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Sep 14, 2022, at 2:46 PM, Naresh Kamboju wrote:
-> Following kernel crash noticed on arm TI x15 device while booting the
-> mainline kernel 6.0.0-rc4.
->
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> [    3.059600] random: crng init done
-> [    3.059631] 8<--- cut here ---
-> [    3.066101] Unable to handle kernel paging request at virtual
-> address adacafae
-> [    3.073394] [adacafae] *pgd=00000000
-> [    3.076995] Internal error: Oops: 5 [#1] SMP ARM
+Hi everyone,
+
+Sending again v5 adding missing maintainers to the initial list.
+bindings and regulator are already there as it is based on the regulator tree branch for-6.1:
+https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git
+
+Changes in v5:
+- Remove pm_power_off functionality as it is unused in ARM64 systems
+- Change mfd subject to prefixes matching subsystem
+
+Validation:
+regulator: tps65219: Fix .bypass_val_on setting
+reported by Axel Lin has been validated on board. 
+
+Regards,
+Jerome
+
+Previous versions:
+v4 - https://lore.kernel.org/lkml/20220825150224.826258-1-msp@baylibre.com/
+v3 - https://lore.kernel.org/lkml/20220805121852.21254-1-jneanne@baylibre.com/
+v2 - https://lore.kernel.org/lkml/20220726103355.17684-1-jneanne@baylibre.com/
+v1 - https://lore.kernel.org/lkml/20220719091742.3221-1-jneanne@baylibre.com/
 
 
-> [    3.781494]  clk_enable from sysc_enable_opt_clocks+0x4c/0xa0
-> [    3.787261]  sysc_enable_opt_clocks from sysc_probe+0xda0/0x1598
-> [    3.793304]  sysc_probe from platform_probe+0x64/0xc0
+Jerome Neanne (5):
+  DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC support for AM642 SK
+    board.
+  DONOTMERGE: arm64: dts: ti: Add pinmux and irq mapping for TPS65219
+    external interrupts
+  DONOTMERGE: arm64: dts: ti: k3-am642-sk: Enable tps65219 power-button
+  mfd: tps65219: Add driver for TI TPS65219 PMIC
+  arm64: defconfig: Add tps65219 as modules
 
-So it's getting an invalid clk pointer in sysc_enable_opt_clocks.
+Markus Schneider-Pargmann (1):
+  Input: Add tps65219 interrupt driven powerbutton
 
-> [    3.798400]  platform_probe from really_probe+0xe8/0x41c
-> [    3.803741]  really_probe from __driver_probe_device+0xa8/0x20c
-> [    3.809692]  __driver_probe_device from driver_probe_device+0x38/0xc8
-> [    3.816192]  driver_probe_device from __device_attach_driver+0xb4/0x130
-> [    3.822845]  __device_attach_driver from bus_for_each_drv+0x84/0xc8
-> [    3.829162]  bus_for_each_drv from __device_attach+0xb0/0x210
-> [    3.834930]  __device_attach from bus_probe_device+0x8c/0x94
-> [    3.840637]  bus_probe_device from device_add+0x3ec/0x924
-> [    3.846069]  device_add from of_platform_device_create_pdata+0x98/0xc8
-> [    3.852630]  of_platform_device_create_pdata from
-> of_platform_bus_create+0x200/0x4d8
-> [    3.860412]  of_platform_bus_create from of_platform_populate+0x9c/0x138
-> [    3.867156]  of_platform_populate from simple_pm_bus_probe+0xac/0xd0
-> [    3.873565]  simple_pm_bus_probe from platform_probe+0x64/0xc0
-> [    3.879425]  platform_probe from really_probe+0xe8/0x41c
+ MAINTAINERS                             |   1 +
+ arch/arm64/boot/dts/ti/k3-am642-sk.dts  | 115 ++++++++
+ arch/arm64/configs/defconfig            |   3 +
+ drivers/input/misc/Kconfig              |  10 +
+ drivers/input/misc/Makefile             |   1 +
+ drivers/input/misc/tps65219-pwrbutton.c | 149 ++++++++++
+ drivers/mfd/Kconfig                     |  14 +
+ drivers/mfd/Makefile                    |   1 +
+ drivers/mfd/tps65219.c                  | 320 ++++++++++++++++++++++
+ include/linux/mfd/tps65219.h            | 345 ++++++++++++++++++++++++
+ 10 files changed, 959 insertions(+)
+ create mode 100644 drivers/input/misc/tps65219-pwrbutton.c
+ create mode 100644 drivers/mfd/tps65219.c
+ create mode 100644 include/linux/mfd/tps65219.h
 
-It looks strange to recursively go through simple_pm_bus_probe()
-here four times before getting to the ti,sysc driver.
+-- 
+2.17.1
 
->
-> Full test log link,
->   - https://lkft.validation.linaro.org/scheduler/job/5508159
->
-
-What is the easiest way to find out how long this job
-has been failing, and what the last successful build
-was?
-
-       Arnd
