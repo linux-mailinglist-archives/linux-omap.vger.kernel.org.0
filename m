@@ -2,260 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 605045B8AA2
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 16:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB865B8F4E
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 21:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230102AbiINOd7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Sep 2022 10:33:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57304 "EHLO
+        id S229640AbiINThp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Sep 2022 15:37:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230101AbiINOd5 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 10:33:57 -0400
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EA0E7E037
-        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 07:33:55 -0700 (PDT)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed50:e925:8cbe:2e99:b03b])
-        by baptiste.telenet-ops.be with bizsmtp
-        id KqZi2800s3vs4GX01qZiPV; Wed, 14 Sep 2022 16:33:55 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1oYTSP-005B5L-Rc; Wed, 14 Sep 2022 16:33:41 +0200
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1oYTS7-000zXm-2p; Wed, 14 Sep 2022 16:33:23 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Russell King <linux@armlinux.org.uk>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 3/3] dt-bindings: display: bridge: nxp,tda998x: Convert to json-schema
-Date:   Wed, 14 Sep 2022 16:33:22 +0200
-Message-Id: <1224e757ec958f8b29ec66e783a7ee805c339d84.1663165552.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1663165552.git.geert+renesas@glider.be>
-References: <cover.1663165552.git.geert+renesas@glider.be>
+        with ESMTP id S229562AbiINTho (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 15:37:44 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C89F7331D
+        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 12:37:43 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id s10so18896927ljp.5
+        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 12:37:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=2vJHlqQj2D5js5r0I2Y1BVF4byvG2P2spYzFG+ucJkc=;
+        b=n+vDqW96e9+hkUfdQfMkm5GdTw+646b5y459jTh54cM7t/SC+3KWoCQvpxB6syQwof
+         z+mT9IskAHI+kGC32OS832VU7CGxhw++6kSQNE+KrIUCJJlKWhaLNv9HehKwV8lC8g20
+         kapZL1FHHIDHCBOH2vslppH2TuTSZ6xsT6N3qDjiOLGH/n0NuOj74t247zIF6vtgUpR3
+         YczvUEEsH58WpGyltnIEnNxfN+g+i5mpdlkUxxlaW6s2VXMH1MtK0vIrX9R3LVGRGlTs
+         3PvX971/+u2VtNzePembNL7p7Uh7m0SuPTYZYqk78S+L7xsJFfw2pD0nFlr+2P74rGIZ
+         /Fzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=2vJHlqQj2D5js5r0I2Y1BVF4byvG2P2spYzFG+ucJkc=;
+        b=h1e2iLYkjJ+MVUsZ0IbgEdDD2co0MVcX6xbBusb1dLdLsX5Yd9f0Mr9FdXlz2U5dBH
+         Sq77anI9gFKU8Dlj/P95vsqv+L9xvL5+c2DVWJKhB7qE3MvM/CCYu8y1+mpjAfXZYatW
+         x3x1wfDaMXGy++p58ZHNxhhDkKXMfkzvOAShxyayWF6exz2+R1ye5hBQlh8q0JjtWWmt
+         Nmb/KPoIffZyECy2C2jmhHwYucvYT4cNwe2AlEwiaIYs0VYS1wO9ap44b5bfwGTwLjrv
+         Sz7VpAbnH43U1apbTskdEZitLyuU10VTDxemTC5LNjA2zicWkvsAghPQ0Nv8Gwlk25f2
+         gg6A==
+X-Gm-Message-State: ACgBeo0lE+ZGZGLJCnGcO4oYXGK56p421qdziVAHVtCRjxT7baozbAlz
+        VdA0QAdckIIO6tt1ZP2G4iqjNeR5AZv3U0Rz9SQ=
+X-Google-Smtp-Source: AA6agR5+NYzhL+T62zYMcXLtd9mhoQSGS3rlcpQRT0eBqNbctq7W+DaUbS5JZgT20+cJq1PH42+EX0oc0JjA5Ia9U/k=
+X-Received: by 2002:a2e:a314:0:b0:26c:1e32:506f with SMTP id
+ l20-20020a2ea314000000b0026c1e32506fmr2384645lje.162.1663184261537; Wed, 14
+ Sep 2022 12:37:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a2e:a583:0:0:0:0:0 with HTTP; Wed, 14 Sep 2022 12:37:40
+ -0700 (PDT)
+Reply-To: bodeg41@gmail.com
+From:   Bode George <fbiinvestigationf1@gmail.com>
+Date:   Wed, 14 Sep 2022 20:37:40 +0100
+Message-ID: <CAB01aPrvTeSLbry23c-1T3O82Tj2M9JO4XqerEtngh9NezmQmw@mail.gmail.com>
+Subject: For Your Attention:
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5234]
+        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:242 listed in]
+        [list.dnswl.org]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [fbiinvestigationf1[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [fbiinvestigationf1[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [bodeg41[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Convert the NXP TDA998x HDMI transmitter Device Tree binding
-documentation to json-schema.
-
-Add missing "#sound-dai-cells" property.
-Add ports hierarchy, as an alternative to port.
-Drop pinctrl properties, as they do not belong here.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-v2:
-  - Add maximum to video-ports,
-  - Drop unneeded maxItems for audio-ports,
-  - Complete port descriptions.
----
- .../bindings/display/bridge/nxp,tda998x.yaml  | 109 ++++++++++++++++++
- .../bindings/display/bridge/tda998x.txt       |  54 ---------
- 2 files changed, 109 insertions(+), 54 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
- delete mode 100644 Documentation/devicetree/bindings/display/bridge/tda998x.txt
-
-diff --git a/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
-new file mode 100644
-index 0000000000000000..c4bf543974737b5c
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
-@@ -0,0 +1,109 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: NXP TDA998x HDMI transmitter
-+
-+maintainers:
-+  - Russell King <linux@armlinux.org.uk>
-+
-+properties:
-+  compatible:
-+    const: nxp,tda998x
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  video-ports:
-+    default: 0x230145
-+    maximum: 0xffffff
-+    description:
-+      24 bits value which defines how the video controller output is wired to
-+      the TDA998x input.
-+
-+  audio-ports:
-+    description:
-+      Array of 8-bit values, 2 values per DAI (Documentation/sound/soc/dai.rst).
-+      The implementation allows one or two DAIs.
-+      If two DAIs are defined, they must be of different type.
-+    $ref: /schemas/types.yaml#/definitions/uint32-matrix
-+    items:
-+      minItems: 1
-+      items:
-+        - description: |
-+            The first value defines the DAI type: TDA998x_SPDIF or TDA998x_I2S
-+            (see include/dt-bindings/display/tda998x.h).
-+        - description:
-+            The second value defines the tda998x AP_ENA reg content when the
-+            DAI in question is used.
-+
-+  '#sound-dai-cells':
-+    enum: [ 0, 1 ]
-+
-+  nxp,calib-gpios:
-+    maxItems: 1
-+    description:
-+      Calibration GPIO, which must correspond with the gpio used for the
-+      TDA998x interrupt pin.
-+
-+  port:
-+    $ref: /schemas/graph.yaml#/properties/port
-+    description: Parallel input port
-+
-+  ports:
-+    $ref: /schemas/graph.yaml#/properties/ports
-+
-+    properties:
-+      port@0:
-+        type: object
-+        description: Parallel input port
-+
-+      port@1:
-+        type: object
-+        description: HDMI output port
-+
-+required:
-+  - compatible
-+  - reg
-+
-+oneOf:
-+  - required:
-+      - port
-+  - required:
-+      - ports
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/display/tda998x.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        tda998x: hdmi-encoder@70 {
-+            compatible = "nxp,tda998x";
-+            reg = <0x70>;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
-+            video-ports = <0x230145>;
-+
-+            #sound-dai-cells = <1>;
-+                         /* DAI-format / AP_ENA reg value */
-+            audio-ports = <TDA998x_SPDIF 0x04>,
-+                          <TDA998x_I2S 0x03>;
-+
-+            port {
-+                tda998x_in: endpoint {
-+                    remote-endpoint = <&lcdc_0>;
-+                };
-+            };
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/display/bridge/tda998x.txt b/Documentation/devicetree/bindings/display/bridge/tda998x.txt
-deleted file mode 100644
-index f5a02f61dd36f1c6..0000000000000000
---- a/Documentation/devicetree/bindings/display/bridge/tda998x.txt
-+++ /dev/null
-@@ -1,54 +0,0 @@
--Device-Tree bindings for the NXP TDA998x HDMI transmitter
--
--Required properties;
--  - compatible: must be "nxp,tda998x"
--
--  - reg: I2C address
--
--Required node:
--  - port: Input port node with endpoint definition, as described
--        in Documentation/devicetree/bindings/graph.txt
--
--Optional properties:
--  - interrupts: interrupt number and trigger type
--	default: polling
--
--  - pinctrl-0: pin control group to be used for
--	screen plug/unplug interrupt.
--
--  - pinctrl-names: must contain a "default" entry.
--
--  - video-ports: 24 bits value which defines how the video controller
--	output is wired to the TDA998x input - default: <0x230145>
--
--  - audio-ports: array of 8-bit values, 2 values per one DAI[1].
--	The first value defines the DAI type: TDA998x_SPDIF or TDA998x_I2S[2].
--	The second value defines the tda998x AP_ENA reg content when the DAI
--	in question is used. The implementation allows one or two DAIs. If two
--	DAIs are defined, they must be of different type.
--
--  - nxp,calib-gpios: calibration GPIO, which must correspond with the
--	gpio used for the TDA998x interrupt pin.
--
--[1] Documentation/sound/soc/dai.rst
--[2] include/dt-bindings/display/tda998x.h
--
--Example:
--
--#include <dt-bindings/display/tda998x.h>
--
--	tda998x: hdmi-encoder {
--		compatible = "nxp,tda998x";
--		reg = <0x70>;
--		interrupt-parent = <&gpio0>;
--		interrupts = <27 2>;		/* falling edge */
--		pinctrl-0 = <&pmx_camera>;
--		pinctrl-names = "default";
--		video-ports = <0x230145>;
--
--		#sound-dai-cells = <2>;
--			     /*	DAI-format	AP_ENA reg value */
--		audio-ports = <	TDA998x_SPDIF	0x04
--				TDA998x_I2S	0x03>;
--
--	};
 -- 
-2.25.1
+Dear Friend
 
+I need a Reliable, Honest and trust worthy person like you to receive
+my fund for our benefit or investing it into any lucrative investment
+opportunity in your country
+
+or around the globe as you may deem it fit. I have investment interest
+in your country with this fund but if investment is not in your own
+interest, whether investment
+
+or not investment, this fund as you receive it will be of immense
+benefit to both of us. Therefore, please contact me immediately for
+more details and requirements.
+
+Best Regards,
+Bode George
