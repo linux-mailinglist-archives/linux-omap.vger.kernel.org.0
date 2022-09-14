@@ -2,49 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A456D5B7FA3
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 05:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 637CB5B8198
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 08:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229795AbiINDq0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 13 Sep 2022 23:46:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59996 "EHLO
+        id S229823AbiINGqR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Sep 2022 02:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbiINDqW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 13 Sep 2022 23:46:22 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93F1C6AA2A;
-        Tue, 13 Sep 2022 20:46:20 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.53])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MS5kN6MCtzlVj0;
-        Wed, 14 Sep 2022 11:42:20 +0800 (CST)
-Received: from cgs.huawei.com (10.244.148.83) by
- kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 14 Sep 2022 11:46:17 +0800
-From:   Gaosheng Cui <cuigaosheng1@huawei.com>
-To:     <rostedt@goodmis.org>, <mingo@redhat.com>, <linux@armlinux.org.uk>,
-        <tony@atomide.com>, <bcousson@baylibre.com>, <paul@pwsan.com>,
-        <krzysztof.kozlowski@linaro.org>, <alim.akhtar@samsung.com>,
-        <stefan@agner.ch>, <rmk+kernel@armlinux.org.uk>,
-        <linus.walleij@linaro.org>, <broonie@kernel.org>,
-        <sebastian.reichel@collabora.co.uk>, <cuigaosheng1@huawei.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <linux-samsung-soc@vger.kernel.org>
-Subject: [PATCH 3/3] ARM: ftrace: remove unused ftrace_graph_caller_old() declaration
-Date:   Wed, 14 Sep 2022 11:46:15 +0800
-Message-ID: <20220914034615.1240860-4-cuigaosheng1@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220914034615.1240860-1-cuigaosheng1@huawei.com>
-References: <20220914034615.1240860-1-cuigaosheng1@huawei.com>
+        with ESMTP id S229658AbiINGqP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 02:46:15 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82001647F5
+        for <linux-omap@vger.kernel.org>; Tue, 13 Sep 2022 23:46:14 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id k9so24161157wri.0
+        for <linux-omap@vger.kernel.org>; Tue, 13 Sep 2022 23:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=ImmVW0/zlsxHuw+mi1Y/IEzHEHB3es0bsHMSoWAgL4k=;
+        b=u+lq0otXn+KFbHR11SKSKZ+asxqc1H4lSrT/Aw6f7w3zGwHYtEcttBGlS3k8gKusPG
+         CbAJlMmhtPy1LkGly9A9yChqyYDjJW7gM4oBWv3nDjPFnQHa/Kp8rgF53AAr3yxlQWd5
+         Qm4Ps0L9LvLibt7KC7weO7oGIwK+NPyXTKaI+3RlkXNGKXTrQt0FQlKYUz2HBojG+r9B
+         c7epBJr25jHh+OXIfSVGIBw2hxbLjLEfVVDzityV4J5ck0ywrGpKOehQZpkkwm40jOgL
+         q6U+WQpjIvrtpwE2Gqxei7ZILJsEtOcgd6qUVfZQvbCufQBQ84wc4wn4Gs5pz2OJ6EU+
+         pCmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=ImmVW0/zlsxHuw+mi1Y/IEzHEHB3es0bsHMSoWAgL4k=;
+        b=eQtRUziWx05JMNjvozllwr8TWOcAtu2bkA4RUvuys4Rf4PYMBPeffHNLGfWhmXwFb+
+         cvx/4pvfV73bVB3Vvx8wrisfLhqjLgHn1BAOwEPqs/gzU5SzjR/XhFO/atXEWdOlzr4R
+         3/1Rsq8D4NS4AszNOGW2Y8HC6TfQAn+XVYlVxTd1OCDRlMDBsDlz/2UD0miJPw89gEU5
+         0Kdi3JUZQndR7FxXrSBmUs7+d0gBUBxb5QbBNpNlmCrxtgNXOIKoGAZZ2ggg3C3B3mUz
+         aZeoeIC1g3weqRKGXHzniDhdHt5gRu7RLrzNH5SplDG5SyGtRvJvMJArZh8hHEu8Y+B3
+         Gg9w==
+X-Gm-Message-State: ACgBeo1Pb7x3HdbMlmmJSoK+5PLBjonbHvlmfRGew644aajk3Hr9cRPh
+        XTev6pKpGMTXIc2pvryUvBzIFA==
+X-Google-Smtp-Source: AA6agR4+sQtyB4wK6jRKjx2OlMzlixZ167jBff5k7cF+FUTrqgsIco8SvtKudY3At2GX0GTDOP0o3Q==
+X-Received: by 2002:a05:6000:1861:b0:22a:bb41:886d with SMTP id d1-20020a056000186100b0022abb41886dmr5011968wri.661.1663137973060;
+        Tue, 13 Sep 2022 23:46:13 -0700 (PDT)
+Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
+        by smtp.gmail.com with ESMTPSA id t16-20020adfe110000000b00229b76f872asm14930035wrz.27.2022.09.13.23.46.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Sep 2022 23:46:11 -0700 (PDT)
+Date:   Wed, 14 Sep 2022 07:46:04 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Jerome Neanne <jneanne@baylibre.com>
+Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
+        will@kernel.org, tony@atomide.com, afd@ti.com,
+        khilman@baylibre.com, narmstrong@baylibre.com, msp@baylibre.com,
+        j-keerthy@ti.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-input@vger.kernel.org, linux-omap@vger.kernel.org,
+        Lee Jones <lee@kernel.org>
+Subject: Re: [PATCH v5 4/6] mfd: tps65219: Add driver for TI TPS65219 PMIC
+Message-ID: <YyF4rDbR/lwblAVt@google.com>
+References: <20220913121419.15420-1-jneanne@baylibre.com>
+ <20220913121419.15420-5-jneanne@baylibre.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.244.148.83]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220913121419.15420-5-jneanne@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,27 +77,41 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-All uses of ftrace_graph_caller_old() were removed by
-commit d3c61619568c ("ARM: 8788/1: ftrace: remove old
-mcount support"), so remove the declaration, too.
+On Tue, 13 Sep 2022, Jerome Neanne wrote:
 
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
----
- arch/arm/kernel/ftrace.c | 1 -
- 1 file changed, 1 deletion(-)
+> The TPS65219 is a power management IC PMIC designed to supply a wide
+> range of SoCs in both portable and stationary applications. Any SoC can
+> control TPS65219 over a standard I2C interface.
+> 
+> It contains the following components:
+> - Regulators.
+> - Over Temperature warning and Shut down.
+> - GPIOs
+> - Multi Function Pins (MFP)
+> - power-button
+> 
+> This patch adds support for tps65219 PMIC. At this time only
+> the functionalities listed below are made available:
+> 
+> - Regulators probe and functionalities
+> - warm and cold reset support
+> - SW shutdown support
+> - Regulator warnings via IRQs
+> - Power-button via IRQ
+> 
+> Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+> Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+> ---
+>  MAINTAINERS                  |   1 +
+>  drivers/mfd/Kconfig          |  14 ++
+>  drivers/mfd/Makefile         |   1 +
+>  drivers/mfd/tps65219.c       | 320 ++++++++++++++++++++++++++++++++
+>  include/linux/mfd/tps65219.h | 345 +++++++++++++++++++++++++++++++++++
+>  5 files changed, 681 insertions(+)
+>  create mode 100644 drivers/mfd/tps65219.c
+>  create mode 100644 include/linux/mfd/tps65219.h
 
-diff --git a/arch/arm/kernel/ftrace.c b/arch/arm/kernel/ftrace.c
-index a0b6d1e3812f..0320cfba5b74 100644
---- a/arch/arm/kernel/ftrace.c
-+++ b/arch/arm/kernel/ftrace.c
-@@ -261,7 +261,6 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
- #ifdef CONFIG_DYNAMIC_FTRACE
- extern unsigned long ftrace_graph_call;
- extern unsigned long ftrace_graph_call_old;
--extern void ftrace_graph_caller_old(void);
- extern unsigned long ftrace_graph_regs_call;
- extern void ftrace_graph_regs_caller(void);
- 
+Please resend this to the email indicated in MAINTAINERS.
+
 -- 
-2.25.1
-
+DEPRECATED: Please use lee@kernel.org
