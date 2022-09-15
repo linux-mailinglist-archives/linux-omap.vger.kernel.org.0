@@ -2,125 +2,82 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D39E5B9A2E
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Sep 2022 13:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B86905B9BA5
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Sep 2022 15:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230268AbiIOL5H (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Sep 2022 07:57:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51796 "EHLO
+        id S229729AbiIONNz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Sep 2022 09:13:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229851AbiIOL4v (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Sep 2022 07:56:51 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ED022E9E6
-        for <linux-omap@vger.kernel.org>; Thu, 15 Sep 2022 04:55:25 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id f20so22101129edf.6
-        for <linux-omap@vger.kernel.org>; Thu, 15 Sep 2022 04:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=M7j8Wq+Qgoxo2feoUrGIlbgyuQ9Y4KTVW+CWmU6EScA=;
-        b=YESKSZ0L+xHFDrBOqekkQhaV5vs8n+3L2l0Tb5v9dvm1ooLyKYmi+q1kMoc0/WfQDB
-         Mtt03k0zq9itctDnNMnYKCCyrRRVc1qONtwj7szETlK5Hg1j/oW7/6qJ3PmZTmPbVJdg
-         4WfqgINfVA9kf87zxYaX2OcVMpCBGU/6LatUb0JWNrdW8CLDKys+XV0JnDWdZFf7z23L
-         eE238TGdWtN6C1Bg1sTFCPQXNmd/6naV/KLzGIRxclyuPHqQ80NkqPfMabUTjBV2ldzk
-         MwbxwzbcolRyp7+NFOQpOv8IK7U/KoAIewaXU4tJwSHryh+OSNC3LaxFzK6NShnRtcwr
-         vTpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=M7j8Wq+Qgoxo2feoUrGIlbgyuQ9Y4KTVW+CWmU6EScA=;
-        b=dbKWUinvsFBpXyS18/kyNLlF1jGnLfjp96rRLjx8mmd21plLp3QIuYIUihwFBPyVok
-         pcRDGS5kMehGlDrmMGB0RbqRjT2UXbX/4I+JLBoBw2CE6kjn3G+Mso2DmUtrbX+2bbze
-         jrxxPCfeCGQP7NRL8LoD7sovRw7DfAI5KjelhoGRFHuIy9Dt6b0dNtnfugZiysX5cpet
-         xQ7nkKAjb/wWz8UJq8XNbBPngtTpmLgITLcIoEqXnrY+xXtkEXSbKKJcm2TxZwOpmvWl
-         LAegI6ooWppSiS4biNmUxzSxZjE8wBXOHoCcIfF2YXt0jLPZiU0Y/tPX7pqnT7jBpE2+
-         qllQ==
-X-Gm-Message-State: ACgBeo1MD2ga7t58JFd9h3VutBtrXRj+1YF/V/Z3PlKjE2+LjWrxD9JZ
-        +7IveoL0aDUsXb7s1hSLgTYyAtBHcwefDURy/Vomeg==
-X-Google-Smtp-Source: AA6agR4GL/WyxfbKj4KYCdQna+Sg60ruchLW5sOzvZb+GM6um91YJOr0+dw3sIkPUiL0O9IkdsIaf4bq9D4BflLaO2M=
-X-Received: by 2002:a05:6402:400e:b0:44f:1b9d:9556 with SMTP id
- d14-20020a056402400e00b0044f1b9d9556mr33758964eda.208.1663242924057; Thu, 15
- Sep 2022 04:55:24 -0700 (PDT)
+        with ESMTP id S229531AbiIONNx (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Sep 2022 09:13:53 -0400
+X-Greylist: delayed 1868 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Sep 2022 06:13:51 PDT
+Received: from m1524.mail.126.com (m1524.mail.126.com [220.181.15.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A67254AD69
+        for <linux-omap@vger.kernel.org>; Thu, 15 Sep 2022 06:13:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=bUqev
+        mQkiasDs3rj+QQsV1i1zWnd/VIJCE87i0de9uY=; b=Qtrnai/RD8yyZGcOI8sLH
+        P+FNDQX1VIHf8st9/9CDs79ktZoNJOPZrX/hFUuPqHnxGFQ8OCWv3p5ZGBkzrKeP
+        9QBzro4fWf6E7DyFue1a8fsq601mCyLmePHK3yGYZvFYyBqTAvgjN4Rfn7YdYJkQ
+        H06Re2zSe3YwqqQR1RUDuE=
+Received: from windhl$126.com ( [8.219.73.50, 14.29.82.34] ) by
+ ajax-webmail-wmsvr24 (Coremail) ; Thu, 15 Sep 2022 20:41:36 +0800 (CST)
+X-Originating-IP: [8.219.73.50, 14.29.82.34]
+Date:   Thu, 15 Sep 2022 20:41:36 +0800 (CST)
+From:   "Liang He" <windhl@126.com>
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     tony@atomide.com, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, chenmengda2009@163.com
+Subject: Re:Re: [PATCH] ARM: OMAP2+: Hold reference returned from
+ of_find_xxx API
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
+ Copyright (c) 2002-2022 www.mailtech.cn 126com
+In-Reply-To: <YyMMttSW97iYbkfL@shell.armlinux.org.uk>
+References: <20220915014258.3999504-1-windhl@126.com>
+ <YyMMttSW97iYbkfL@shell.armlinux.org.uk>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-References: <CA+G9fYsaxK30=z0vBcNW-NRVHHkWxaoSNDt1bE-mfXQquMONKQ@mail.gmail.com>
- <97b5728e-e8ed-44a6-a777-a7f56370761a@www.fastmail.com>
-In-Reply-To: <97b5728e-e8ed-44a6-a777-a7f56370761a@www.fastmail.com>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 15 Sep 2022 17:25:12 +0530
-Message-ID: <CA+G9fYsUEmhHT_YsZSvLBiUStuTPJ_DW4Gp0=p7umvfpngSABA@mail.gmail.com>
-Subject: Re: x15: kernel crash: LR is at sysc_enable_opt_clocks
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <7b0dd7d7.76f8.183412b3f13.Coremail.windhl@126.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: GMqowACHjyeBHSNjemV2AA--.38320W
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi2hp9F1uwMvl-+gABsO
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Arnd,
-
-On Wed, 14 Sept 2022 at 19:19, Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Wed, Sep 14, 2022, at 2:46 PM, Naresh Kamboju wrote:
-> > Following kernel crash noticed on arm TI x15 device while booting the
-> > mainline kernel 6.0.0-rc4.
-> >
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > [    3.059600] random: crng init done
-> > [    3.059631] 8<--- cut here ---
-> > [    3.066101] Unable to handle kernel paging request at virtual
-> > address adacafae
-> > [    3.073394] [adacafae] *pgd=00000000
-> > [    3.076995] Internal error: Oops: 5 [#1] SMP ARM
->
->
-> > [    3.781494]  clk_enable from sysc_enable_opt_clocks+0x4c/0xa0
-> > [    3.787261]  sysc_enable_opt_clocks from sysc_probe+0xda0/0x1598
-> > [    3.793304]  sysc_probe from platform_probe+0x64/0xc0
->
-> So it's getting an invalid clk pointer in sysc_enable_opt_clocks.
->
-> > [    3.798400]  platform_probe from really_probe+0xe8/0x41c
-> > [    3.803741]  really_probe from __driver_probe_device+0xa8/0x20c
-> > [    3.809692]  __driver_probe_device from driver_probe_device+0x38/0xc8
-> > [    3.816192]  driver_probe_device from __device_attach_driver+0xb4/0x130
-> > [    3.822845]  __device_attach_driver from bus_for_each_drv+0x84/0xc8
-> > [    3.829162]  bus_for_each_drv from __device_attach+0xb0/0x210
-> > [    3.834930]  __device_attach from bus_probe_device+0x8c/0x94
-> > [    3.840637]  bus_probe_device from device_add+0x3ec/0x924
-> > [    3.846069]  device_add from of_platform_device_create_pdata+0x98/0xc8
-> > [    3.852630]  of_platform_device_create_pdata from
-> > of_platform_bus_create+0x200/0x4d8
-> > [    3.860412]  of_platform_bus_create from of_platform_populate+0x9c/0x138
-> > [    3.867156]  of_platform_populate from simple_pm_bus_probe+0xac/0xd0
-> > [    3.873565]  simple_pm_bus_probe from platform_probe+0x64/0xc0
-> > [    3.879425]  platform_probe from really_probe+0xe8/0x41c
->
-> It looks strange to recursively go through simple_pm_bus_probe()
-> here four times before getting to the ti,sysc driver.
->
-> >
-> > Full test log link,
-> >   - https://lkft.validation.linaro.org/scheduler/job/5508159
-> >
->
-> What is the easiest way to find out how long this job
-> has been failing, and what the last successful build
-> was?
-
-It is not reproducible easily and I have checked when it got
-started but failed to find it. Because on v6.0-rc3 kernel the x15
-did not boot pass.
-
-- Naresh
+CgoKQXQgMjAyMi0wOS0xNSAxOToyOTo1OCwgIlJ1c3NlbGwgS2luZyAoT3JhY2xlKSIgPGxpbnV4
+QGFybWxpbnV4Lm9yZy51az4gd3JvdGU6Cj5PbiBUaHUsIFNlcCAxNSwgMjAyMiBhdCAwOTo0Mjo1
+OEFNICswODAwLCBMaWFuZyBIZSB3cm90ZToKPj4gSW4gb21hcDRfdHdsX2luaXQoKSwgd2Ugc2hv
+dWxkIGhvbGQgdGhlIHJlZmVyZW5jZSByZXR1cm5lZCBmcm9tCj4+IG9mX2ZpbmRfY29tcGF0aWJs
+ZV9ub2RlKCkgd2hpY2ggaGFzIGluY3JlYXNlZCB0aGUgcmVmY291bnQgYW5kCj4+IHRoZW4gY2Fs
+bCBvZl9ub2RlX3B1dCgpIHdpdGggaXQgd2hlbiBkb25lLgo+PiAKPj4gRml4ZXM6IGNjZDM2OTQ1
+NWEyMyAoIkFSTTogT01BUDIrOiBSZW1vdmUgYm9ndXMgd2FybmluZ3MgZm9yIG1hY2hpbmVzIHdp
+dGhvdXQgdHdsIFBNSUMiKQo+PiBTaWduZWQtb2ZmLWJ5OiBMaWFuZyBIZSA8d2luZGhsQDEyNi5j
+b20+Cj4+IFNpZ25lZC1vZmYtYnk6IE1lbmdkYSBDaGVuIDxjaGVubWVuZ2RhMjAwOUAxNjMuY29t
+Pgo+PiAtLS0KPj4gIGFyY2gvYXJtL21hY2gtb21hcDIvb21hcF90d2wuYyB8IDYgKysrKy0tCj4+
+ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+PiAKPj4g
+ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcDIvb21hcF90d2wuYyBiL2FyY2gvYXJtL21h
+Y2gtb21hcDIvb21hcF90d2wuYwo+PiBpbmRleCBkNGRhYjA0MTMyNGQuLjA3YjVmMTcwNjZjZSAx
+MDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwMi9vbWFwX3R3bC5jCj4+ICsrKyBiL2Fy
+Y2gvYXJtL21hY2gtb21hcDIvb21hcF90d2wuYwo+PiBAQCAtMjEzLDExICsyMTMsMTMgQEAgc3Rh
+dGljIHN0cnVjdCBvbWFwX3ZvbHRkbV9wbWljIG9tYXA0X2NvcmVfcG1pYyA9IHsKPj4gIGludCBf
+X2luaXQgb21hcDRfdHdsX2luaXQodm9pZCkKPj4gIHsKPj4gIAlzdHJ1Y3Qgdm9sdGFnZWRvbWFp
+biAqdm9sdGRtOwo+PiArCXN0cnVjdCBkZXZpY2Vfbm9kZSAqbnA7Cj4+ICAKPj4gIAlpZiAoIWNw
+dV9pc19vbWFwNDR4eCgpIHx8Cj4+IC0JICAgIG9mX2ZpbmRfY29tcGF0aWJsZV9ub2RlKE5VTEws
+IE5VTEwsICJtb3Rvcm9sYSxjcGNhcCIpKQo+PiArCSAgICAobnAgPSBvZl9maW5kX2NvbXBhdGli
+bGVfbm9kZShOVUxMLCBOVUxMLCAibW90b3JvbGEsY3BjYXAiKSkpIHsKPj4gKwkJb2Zfbm9kZV9w
+dXQobnApOwo+Cj5UaGlzIGlzIGJ1Z2d5IC0gaWYgY3B1X2lzX29tYXA0NHh4KCkgaXMgZmFsc2Us
+IHRoZW4gbnAgd2lsbCBub3QgYmUKPmluaXRpYWxpc2VkLiBUaGUgc2ltcGxlIHNvbHV0aW9uIGlz
+IHRvIGluaXRpYWxpc2UgbnAgdG8gTlVMTC4KPgoKVGhhbmtzLCBJIHdpbGwgc2VuZCBhIG5ldyB2
+ZXJzaW9uIHNvb24uCgpMaWFuZwoKPi0tIAo+Uk1LJ3MgUGF0Y2ggc3lzdGVtOiBodHRwczovL3d3
+dy5hcm1saW51eC5vcmcudWsvZGV2ZWxvcGVyL3BhdGNoZXMvCj5GVFRQIGlzIGhlcmUhIDQwTWJw
+cyBkb3duIDEwTWJwcyB1cC4gRGVjZW50IGNvbm5lY3Rpdml0eSBhdCBsYXN0IQo=
