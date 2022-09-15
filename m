@@ -2,113 +2,85 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EB865B8F4E
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Sep 2022 21:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B77E5B9245
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Sep 2022 03:43:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbiINThp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 14 Sep 2022 15:37:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49272 "EHLO
+        id S229767AbiIOBnm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 14 Sep 2022 21:43:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbiINTho (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 15:37:44 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C89F7331D
-        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 12:37:43 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id s10so18896927ljp.5
-        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 12:37:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=2vJHlqQj2D5js5r0I2Y1BVF4byvG2P2spYzFG+ucJkc=;
-        b=n+vDqW96e9+hkUfdQfMkm5GdTw+646b5y459jTh54cM7t/SC+3KWoCQvpxB6syQwof
-         z+mT9IskAHI+kGC32OS832VU7CGxhw++6kSQNE+KrIUCJJlKWhaLNv9HehKwV8lC8g20
-         kapZL1FHHIDHCBOH2vslppH2TuTSZ6xsT6N3qDjiOLGH/n0NuOj74t247zIF6vtgUpR3
-         YczvUEEsH58WpGyltnIEnNxfN+g+i5mpdlkUxxlaW6s2VXMH1MtK0vIrX9R3LVGRGlTs
-         3PvX971/+u2VtNzePembNL7p7Uh7m0SuPTYZYqk78S+L7xsJFfw2pD0nFlr+2P74rGIZ
-         /Fzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=2vJHlqQj2D5js5r0I2Y1BVF4byvG2P2spYzFG+ucJkc=;
-        b=h1e2iLYkjJ+MVUsZ0IbgEdDD2co0MVcX6xbBusb1dLdLsX5Yd9f0Mr9FdXlz2U5dBH
-         Sq77anI9gFKU8Dlj/P95vsqv+L9xvL5+c2DVWJKhB7qE3MvM/CCYu8y1+mpjAfXZYatW
-         x3x1wfDaMXGy++p58ZHNxhhDkKXMfkzvOAShxyayWF6exz2+R1ye5hBQlh8q0JjtWWmt
-         Nmb/KPoIffZyECy2C2jmhHwYucvYT4cNwe2AlEwiaIYs0VYS1wO9ap44b5bfwGTwLjrv
-         Sz7VpAbnH43U1apbTskdEZitLyuU10VTDxemTC5LNjA2zicWkvsAghPQ0Nv8Gwlk25f2
-         gg6A==
-X-Gm-Message-State: ACgBeo0lE+ZGZGLJCnGcO4oYXGK56p421qdziVAHVtCRjxT7baozbAlz
-        VdA0QAdckIIO6tt1ZP2G4iqjNeR5AZv3U0Rz9SQ=
-X-Google-Smtp-Source: AA6agR5+NYzhL+T62zYMcXLtd9mhoQSGS3rlcpQRT0eBqNbctq7W+DaUbS5JZgT20+cJq1PH42+EX0oc0JjA5Ia9U/k=
-X-Received: by 2002:a2e:a314:0:b0:26c:1e32:506f with SMTP id
- l20-20020a2ea314000000b0026c1e32506fmr2384645lje.162.1663184261537; Wed, 14
- Sep 2022 12:37:41 -0700 (PDT)
+        with ESMTP id S230039AbiIOBnj (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 14 Sep 2022 21:43:39 -0400
+Received: from mail-m965.mail.126.com (mail-m965.mail.126.com [123.126.96.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0282C8D3EE
+        for <linux-omap@vger.kernel.org>; Wed, 14 Sep 2022 18:43:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=26gGZ
+        Tw4OQNkXxJ3ttJM4G7oxdRW1/QI2logWeIh9Kg=; b=I9KcWGGB4aQup4YrXdBHs
+        xqBowB94+Rnm+RhXWZqD72qUQWyBeQYmcXTF1grdd8MBBp1R2ZWFFMcv1gembVZQ
+        ekHfklCoUWow0iIBpF7T4JKVbG7+K92T8LO3F8EUeeVDMcR0SA65Geb/4HQuwM1i
+        Vn9n3DDJJI/l+ko2Rnzg7M=
+Received: from localhost.localdomain (unknown [124.16.139.61])
+        by smtp10 (Coremail) with SMTP id NuRpCgD3+jolgyJj993WBg--.27316S2;
+        Thu, 15 Sep 2022 09:43:03 +0800 (CST)
+From:   Liang He <windhl@126.com>
+To:     tony@atomide.com, linux@armlinux.org.uk,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc:     windhl@126.com, chenmengda2009@163.com
+Subject: [PATCH] ARM: OMAP2+: Hold reference returned from of_find_xxx API
+Date:   Thu, 15 Sep 2022 09:42:58 +0800
+Message-Id: <20220915014258.3999504-1-windhl@126.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a2e:a583:0:0:0:0:0 with HTTP; Wed, 14 Sep 2022 12:37:40
- -0700 (PDT)
-Reply-To: bodeg41@gmail.com
-From:   Bode George <fbiinvestigationf1@gmail.com>
-Date:   Wed, 14 Sep 2022 20:37:40 +0100
-Message-ID: <CAB01aPrvTeSLbry23c-1T3O82Tj2M9JO4XqerEtngh9NezmQmw@mail.gmail.com>
-Subject: For Your Attention:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5234]
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:242 listed in]
-        [list.dnswl.org]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [fbiinvestigationf1[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [fbiinvestigationf1[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [bodeg41[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: NuRpCgD3+jolgyJj993WBg--.27316S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrurykJFy5tF4xAw1rCFyrCrg_yoWkZwc_A3
+        Z2gws3Xr1FyF40gw1DCr45ursYkws5Cr47Wa4IqrW5Ka1aqw43XFsFvr9rJrW5ua17GrW3
+        AFn7ur4rA34DGjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRWWl97UUUUU==
+X-Originating-IP: [124.16.139.61]
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi2gd9F1uwMvZ1YAAAsN
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+In omap4_twl_init(), we should hold the reference returned from
+of_find_compatible_node() which has increased the refcount and
+then call of_node_put() with it when done.
+
+Fixes: ccd369455a23 ("ARM: OMAP2+: Remove bogus warnings for machines without twl PMIC")
+Signed-off-by: Liang He <windhl@126.com>
+Signed-off-by: Mengda Chen <chenmengda2009@163.com>
+---
+ arch/arm/mach-omap2/omap_twl.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-omap2/omap_twl.c b/arch/arm/mach-omap2/omap_twl.c
+index d4dab041324d..07b5f17066ce 100644
+--- a/arch/arm/mach-omap2/omap_twl.c
++++ b/arch/arm/mach-omap2/omap_twl.c
+@@ -213,11 +213,13 @@ static struct omap_voltdm_pmic omap4_core_pmic = {
+ int __init omap4_twl_init(void)
+ {
+ 	struct voltagedomain *voltdm;
++	struct device_node *np;
+ 
+ 	if (!cpu_is_omap44xx() ||
+-	    of_find_compatible_node(NULL, NULL, "motorola,cpcap"))
++	    (np = of_find_compatible_node(NULL, NULL, "motorola,cpcap"))) {
++		of_node_put(np);
+ 		return -ENODEV;
+-
++	}
+ 	voltdm = voltdm_lookup("mpu");
+ 	omap_voltage_register_pmic(voltdm, &omap4_mpu_pmic);
+ 
 -- 
-Dear Friend
+2.25.1
 
-I need a Reliable, Honest and trust worthy person like you to receive
-my fund for our benefit or investing it into any lucrative investment
-opportunity in your country
-
-or around the globe as you may deem it fit. I have investment interest
-in your country with this fund but if investment is not in your own
-interest, whether investment
-
-or not investment, this fund as you receive it will be of immense
-benefit to both of us. Therefore, please contact me immediately for
-more details and requirements.
-
-Best Regards,
-Bode George
