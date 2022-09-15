@@ -2,82 +2,105 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B86905B9BA5
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Sep 2022 15:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E0EB5B9BB9
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Sep 2022 15:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229729AbiIONNz (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Sep 2022 09:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50850 "EHLO
+        id S229785AbiIONUa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Sep 2022 09:20:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiIONNx (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Sep 2022 09:13:53 -0400
-X-Greylist: delayed 1868 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Sep 2022 06:13:51 PDT
-Received: from m1524.mail.126.com (m1524.mail.126.com [220.181.15.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A67254AD69
-        for <linux-omap@vger.kernel.org>; Thu, 15 Sep 2022 06:13:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=bUqev
-        mQkiasDs3rj+QQsV1i1zWnd/VIJCE87i0de9uY=; b=Qtrnai/RD8yyZGcOI8sLH
-        P+FNDQX1VIHf8st9/9CDs79ktZoNJOPZrX/hFUuPqHnxGFQ8OCWv3p5ZGBkzrKeP
-        9QBzro4fWf6E7DyFue1a8fsq601mCyLmePHK3yGYZvFYyBqTAvgjN4Rfn7YdYJkQ
-        H06Re2zSe3YwqqQR1RUDuE=
-Received: from windhl$126.com ( [8.219.73.50, 14.29.82.34] ) by
- ajax-webmail-wmsvr24 (Coremail) ; Thu, 15 Sep 2022 20:41:36 +0800 (CST)
-X-Originating-IP: [8.219.73.50, 14.29.82.34]
-Date:   Thu, 15 Sep 2022 20:41:36 +0800 (CST)
-From:   "Liang He" <windhl@126.com>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     tony@atomide.com, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, chenmengda2009@163.com
-Subject: Re:Re: [PATCH] ARM: OMAP2+: Hold reference returned from
- of_find_xxx API
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
- Copyright (c) 2002-2022 www.mailtech.cn 126com
-In-Reply-To: <YyMMttSW97iYbkfL@shell.armlinux.org.uk>
-References: <20220915014258.3999504-1-windhl@126.com>
- <YyMMttSW97iYbkfL@shell.armlinux.org.uk>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
-MIME-Version: 1.0
-Message-ID: <7b0dd7d7.76f8.183412b3f13.Coremail.windhl@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: GMqowACHjyeBHSNjemV2AA--.38320W
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi2hp9F1uwMvl-+gABsO
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S229735AbiIONU0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Sep 2022 09:20:26 -0400
+Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com [66.111.4.221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FEA07F091;
+        Thu, 15 Sep 2022 06:20:19 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 90FBC580746;
+        Thu, 15 Sep 2022 09:20:18 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Thu, 15 Sep 2022 09:20:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1663248018; x=1663251618; bh=xNZO8Qd7cg
+        pPkf8PCEJfzLRPTqkkIBdXmgwHoAWKT4A=; b=a2xJhjmzELPuUYfPbItYy4aOcO
+        Y07OJ1Oap76mVHpiWU5QXbe7Ma56vPyqdGBugwY4nNJLcma3aHq2HW0ZaLE6LkFJ
+        VhBq1ItbSUahnmt5X7CDF8W5cGBiUQa5YWlVvC5T7cTmOmwdIxeIdA7W2wt3MqW7
+        SdQuR7xrEcisxypsjFAKK6MgTx4uiuajVfVTMHjM3EJrxUF40PtaKmCyuIN1xHnO
+        1Hf7IsM1gmsBFF2+/C6ehKkvXlacwEprK1vD8jT8D84LqtiHKp/WiEhjl8Wn2Vx2
+        mm4Y/l01xWVL+SI3bqaP7akl7joDtP4nKTDLulgrTJiME/Iv6bd4HpFnl03Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1663248018; x=1663251618; bh=xNZO8Qd7cgpPkf8PCEJfzLRPTqkk
+        IBdXmgwHoAWKT4A=; b=AC+eqk5j1hCMlAhv/CbSd2vX7v0n/1oWUl3zgydiilXh
+        pQJfLN+hxyBPbYTFVBw3iraZ5wR2HP2Bpn94gdnb2pY6fBFredejsfhS9501Ev5i
+        dvzP6JSRsRsMv7YnYsk2w686/HiqfDe09ONU3TCxA90eQIHyf4BWJa0qeA+u957F
+        J5gejJ92r5ztanSYoxx/Vci/mesp5wQiIX98C3gaRxOZ/KYCVLQeLNg8H4yT+5tY
+        sOVW5eZQ6HP6HWJrVIoeD/eo5qxrD+iBeyhfBkTVfZwdWLqiPGtuPZLXkCTgfeAC
+        Q2xMAkBdVqmOmT81DtWyB0Nl7A2OArGzIvkAoS4ioQ==
+X-ME-Sender: <xms:kSYjY_lFyaC_26S5k1rP0yuDPZRsfVyRP33z-_6-dK6bdJfwbaOT2Q>
+    <xme:kSYjYy2dEgJulF0ZUhlZQS6PutbACfM1NChAFgpMCMjn6wlCcH_1a2OSQagG3Vwtb
+    UV9z90KDl_IBp9w7_k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedukedgieehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:kSYjY1qy_31JJmykt3aa1wW7ndq6gn61m-XvgXuxeI23MNaGDcEu1g>
+    <xmx:kSYjY3k49xvf17FkDoNncvHrrPlMdoZeRXHn5x4rhbQk3uSWIKfRWw>
+    <xmx:kSYjY92Fzz65jCZ2YrLlCnfaboWBMn_c878YlpR_nNon5NzL2tyWZg>
+    <xmx:kiYjY2wxgbXkMfDzyifaNnC2CFw-yGmwRBgOvQRaKN7ylinRfKh9tw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id D1532B60089; Thu, 15 Sep 2022 09:20:17 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-935-ge4ccd4c47b-fm-20220914.001-ge4ccd4c4
+Mime-Version: 1.0
+Message-Id: <ac63bc50-3375-4877-a4f3-aa998cb148f9@www.fastmail.com>
+In-Reply-To: <CA+G9fYsUEmhHT_YsZSvLBiUStuTPJ_DW4Gp0=p7umvfpngSABA@mail.gmail.com>
+References: <CA+G9fYsaxK30=z0vBcNW-NRVHHkWxaoSNDt1bE-mfXQquMONKQ@mail.gmail.com>
+ <97b5728e-e8ed-44a6-a777-a7f56370761a@www.fastmail.com>
+ <CA+G9fYsUEmhHT_YsZSvLBiUStuTPJ_DW4Gp0=p7umvfpngSABA@mail.gmail.com>
+Date:   Thu, 15 Sep 2022 15:19:56 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Naresh Kamboju" <naresh.kamboju@linaro.org>
+Cc:     "Tony Lindgren" <tony@atomide.com>,
+        "Philipp Zabel" <p.zabel@pengutronix.de>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "open list" <linux-kernel@vger.kernel.org>,
+        lkft-triage@lists.linaro.org
+Subject: Re: x15: kernel crash: LR is at sysc_enable_opt_clocks
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-CgoKQXQgMjAyMi0wOS0xNSAxOToyOTo1OCwgIlJ1c3NlbGwgS2luZyAoT3JhY2xlKSIgPGxpbnV4
-QGFybWxpbnV4Lm9yZy51az4gd3JvdGU6Cj5PbiBUaHUsIFNlcCAxNSwgMjAyMiBhdCAwOTo0Mjo1
-OEFNICswODAwLCBMaWFuZyBIZSB3cm90ZToKPj4gSW4gb21hcDRfdHdsX2luaXQoKSwgd2Ugc2hv
-dWxkIGhvbGQgdGhlIHJlZmVyZW5jZSByZXR1cm5lZCBmcm9tCj4+IG9mX2ZpbmRfY29tcGF0aWJs
-ZV9ub2RlKCkgd2hpY2ggaGFzIGluY3JlYXNlZCB0aGUgcmVmY291bnQgYW5kCj4+IHRoZW4gY2Fs
-bCBvZl9ub2RlX3B1dCgpIHdpdGggaXQgd2hlbiBkb25lLgo+PiAKPj4gRml4ZXM6IGNjZDM2OTQ1
-NWEyMyAoIkFSTTogT01BUDIrOiBSZW1vdmUgYm9ndXMgd2FybmluZ3MgZm9yIG1hY2hpbmVzIHdp
-dGhvdXQgdHdsIFBNSUMiKQo+PiBTaWduZWQtb2ZmLWJ5OiBMaWFuZyBIZSA8d2luZGhsQDEyNi5j
-b20+Cj4+IFNpZ25lZC1vZmYtYnk6IE1lbmdkYSBDaGVuIDxjaGVubWVuZ2RhMjAwOUAxNjMuY29t
-Pgo+PiAtLS0KPj4gIGFyY2gvYXJtL21hY2gtb21hcDIvb21hcF90d2wuYyB8IDYgKysrKy0tCj4+
-ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+PiAKPj4g
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcDIvb21hcF90d2wuYyBiL2FyY2gvYXJtL21h
-Y2gtb21hcDIvb21hcF90d2wuYwo+PiBpbmRleCBkNGRhYjA0MTMyNGQuLjA3YjVmMTcwNjZjZSAx
-MDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwMi9vbWFwX3R3bC5jCj4+ICsrKyBiL2Fy
-Y2gvYXJtL21hY2gtb21hcDIvb21hcF90d2wuYwo+PiBAQCAtMjEzLDExICsyMTMsMTMgQEAgc3Rh
-dGljIHN0cnVjdCBvbWFwX3ZvbHRkbV9wbWljIG9tYXA0X2NvcmVfcG1pYyA9IHsKPj4gIGludCBf
-X2luaXQgb21hcDRfdHdsX2luaXQodm9pZCkKPj4gIHsKPj4gIAlzdHJ1Y3Qgdm9sdGFnZWRvbWFp
-biAqdm9sdGRtOwo+PiArCXN0cnVjdCBkZXZpY2Vfbm9kZSAqbnA7Cj4+ICAKPj4gIAlpZiAoIWNw
-dV9pc19vbWFwNDR4eCgpIHx8Cj4+IC0JICAgIG9mX2ZpbmRfY29tcGF0aWJsZV9ub2RlKE5VTEws
-IE5VTEwsICJtb3Rvcm9sYSxjcGNhcCIpKQo+PiArCSAgICAobnAgPSBvZl9maW5kX2NvbXBhdGli
-bGVfbm9kZShOVUxMLCBOVUxMLCAibW90b3JvbGEsY3BjYXAiKSkpIHsKPj4gKwkJb2Zfbm9kZV9w
-dXQobnApOwo+Cj5UaGlzIGlzIGJ1Z2d5IC0gaWYgY3B1X2lzX29tYXA0NHh4KCkgaXMgZmFsc2Us
-IHRoZW4gbnAgd2lsbCBub3QgYmUKPmluaXRpYWxpc2VkLiBUaGUgc2ltcGxlIHNvbHV0aW9uIGlz
-IHRvIGluaXRpYWxpc2UgbnAgdG8gTlVMTC4KPgoKVGhhbmtzLCBJIHdpbGwgc2VuZCBhIG5ldyB2
-ZXJzaW9uIHNvb24uCgpMaWFuZwoKPi0tIAo+Uk1LJ3MgUGF0Y2ggc3lzdGVtOiBodHRwczovL3d3
-dy5hcm1saW51eC5vcmcudWsvZGV2ZWxvcGVyL3BhdGNoZXMvCj5GVFRQIGlzIGhlcmUhIDQwTWJw
-cyBkb3duIDEwTWJwcyB1cC4gRGVjZW50IGNvbm5lY3Rpdml0eSBhdCBsYXN0IQo=
+On Thu, Sep 15, 2022, at 1:55 PM, Naresh Kamboju wrote:
+> On Wed, 14 Sept 2022 at 19:19, Arnd Bergmann <arnd@arndb.de> wrote:
+>>
+>> What is the easiest way to find out how long this job
+>> has been failing, and what the last successful build
+>> was?
+>
+> It is not reproducible easily and I have checked when it got
+> started but failed to find it. Because on v6.0-rc3 kernel the x15
+> did not boot pass.
+
+To clarify my question: how to I look up on the website what the
+previous results for this boot were? Surely it must have passed
+at some point, and I would like to know e.g. whether this test
+setup booted 5.19, but I don't know how I see that.
+
+     Arnd
