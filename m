@@ -2,90 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 135165B9997
-	for <lists+linux-omap@lfdr.de>; Thu, 15 Sep 2022 13:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D39E5B9A2E
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Sep 2022 13:57:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbiIOLaN (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Sep 2022 07:30:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51968 "EHLO
+        id S230268AbiIOL5H (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 15 Sep 2022 07:57:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229712AbiIOLaL (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Sep 2022 07:30:11 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6C1223BC8
-        for <linux-omap@vger.kernel.org>; Thu, 15 Sep 2022 04:30:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=TWsIrszG1AUUN64KBWKTE94mHdxzbqFx2i9yzCNJGJk=; b=hK4xxpXftpuWCD6fWdDplvYqAH
-        XRbFeOMKdITt9YtoGuIcwtJaOJ/uHCxBGwuM3A68oc3QcQ7BtJpG3khhcK71S3MR2IrKgpHbhpJMx
-        oFO6FfNyIjfpOuWWKWV7M07w+o8lMijrlabv0n4bIJyj6hK2ylGaFOHp6gwyfrXlaXSvbxuGFTrzu
-        nHyrARqyV3IjlRjNupPFJeD4n5yP1UK9ATGYXvGW0jBhXxTE4KPN078htsYm3i/nvcVEkoe7f6f9T
-        BEejtbYE+MPu8fbP8H2Vt7ksSnpymcOLOqDRVnJV8sFG18Lxrh6JZChAvtXpqj0JorabLvbw5zwir
-        uR/+fmsg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34346)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1oYn4F-0005W9-8M; Thu, 15 Sep 2022 12:30:03 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1oYn4A-0002Zs-EK; Thu, 15 Sep 2022 12:29:58 +0100
-Date:   Thu, 15 Sep 2022 12:29:58 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Liang He <windhl@126.com>
-Cc:     tony@atomide.com, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, chenmengda2009@163.com
-Subject: Re: [PATCH] ARM: OMAP2+: Hold reference returned from of_find_xxx API
-Message-ID: <YyMMttSW97iYbkfL@shell.armlinux.org.uk>
-References: <20220915014258.3999504-1-windhl@126.com>
+        with ESMTP id S229851AbiIOL4v (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Sep 2022 07:56:51 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ED022E9E6
+        for <linux-omap@vger.kernel.org>; Thu, 15 Sep 2022 04:55:25 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id f20so22101129edf.6
+        for <linux-omap@vger.kernel.org>; Thu, 15 Sep 2022 04:55:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=M7j8Wq+Qgoxo2feoUrGIlbgyuQ9Y4KTVW+CWmU6EScA=;
+        b=YESKSZ0L+xHFDrBOqekkQhaV5vs8n+3L2l0Tb5v9dvm1ooLyKYmi+q1kMoc0/WfQDB
+         Mtt03k0zq9itctDnNMnYKCCyrRRVc1qONtwj7szETlK5Hg1j/oW7/6qJ3PmZTmPbVJdg
+         4WfqgINfVA9kf87zxYaX2OcVMpCBGU/6LatUb0JWNrdW8CLDKys+XV0JnDWdZFf7z23L
+         eE238TGdWtN6C1Bg1sTFCPQXNmd/6naV/KLzGIRxclyuPHqQ80NkqPfMabUTjBV2ldzk
+         MwbxwzbcolRyp7+NFOQpOv8IK7U/KoAIewaXU4tJwSHryh+OSNC3LaxFzK6NShnRtcwr
+         vTpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=M7j8Wq+Qgoxo2feoUrGIlbgyuQ9Y4KTVW+CWmU6EScA=;
+        b=dbKWUinvsFBpXyS18/kyNLlF1jGnLfjp96rRLjx8mmd21plLp3QIuYIUihwFBPyVok
+         pcRDGS5kMehGlDrmMGB0RbqRjT2UXbX/4I+JLBoBw2CE6kjn3G+Mso2DmUtrbX+2bbze
+         jrxxPCfeCGQP7NRL8LoD7sovRw7DfAI5KjelhoGRFHuIy9Dt6b0dNtnfugZiysX5cpet
+         xQ7nkKAjb/wWz8UJq8XNbBPngtTpmLgITLcIoEqXnrY+xXtkEXSbKKJcm2TxZwOpmvWl
+         LAegI6ooWppSiS4biNmUxzSxZjE8wBXOHoCcIfF2YXt0jLPZiU0Y/tPX7pqnT7jBpE2+
+         qllQ==
+X-Gm-Message-State: ACgBeo1MD2ga7t58JFd9h3VutBtrXRj+1YF/V/Z3PlKjE2+LjWrxD9JZ
+        +7IveoL0aDUsXb7s1hSLgTYyAtBHcwefDURy/Vomeg==
+X-Google-Smtp-Source: AA6agR4GL/WyxfbKj4KYCdQna+Sg60ruchLW5sOzvZb+GM6um91YJOr0+dw3sIkPUiL0O9IkdsIaf4bq9D4BflLaO2M=
+X-Received: by 2002:a05:6402:400e:b0:44f:1b9d:9556 with SMTP id
+ d14-20020a056402400e00b0044f1b9d9556mr33758964eda.208.1663242924057; Thu, 15
+ Sep 2022 04:55:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220915014258.3999504-1-windhl@126.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+References: <CA+G9fYsaxK30=z0vBcNW-NRVHHkWxaoSNDt1bE-mfXQquMONKQ@mail.gmail.com>
+ <97b5728e-e8ed-44a6-a777-a7f56370761a@www.fastmail.com>
+In-Reply-To: <97b5728e-e8ed-44a6-a777-a7f56370761a@www.fastmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 15 Sep 2022 17:25:12 +0530
+Message-ID: <CA+G9fYsUEmhHT_YsZSvLBiUStuTPJ_DW4Gp0=p7umvfpngSABA@mail.gmail.com>
+Subject: Re: x15: kernel crash: LR is at sysc_enable_opt_clocks
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        lkft-triage@lists.linaro.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Sep 15, 2022 at 09:42:58AM +0800, Liang He wrote:
-> In omap4_twl_init(), we should hold the reference returned from
-> of_find_compatible_node() which has increased the refcount and
-> then call of_node_put() with it when done.
-> 
-> Fixes: ccd369455a23 ("ARM: OMAP2+: Remove bogus warnings for machines without twl PMIC")
-> Signed-off-by: Liang He <windhl@126.com>
-> Signed-off-by: Mengda Chen <chenmengda2009@163.com>
-> ---
->  arch/arm/mach-omap2/omap_twl.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap2/omap_twl.c b/arch/arm/mach-omap2/omap_twl.c
-> index d4dab041324d..07b5f17066ce 100644
-> --- a/arch/arm/mach-omap2/omap_twl.c
-> +++ b/arch/arm/mach-omap2/omap_twl.c
-> @@ -213,11 +213,13 @@ static struct omap_voltdm_pmic omap4_core_pmic = {
->  int __init omap4_twl_init(void)
->  {
->  	struct voltagedomain *voltdm;
-> +	struct device_node *np;
->  
->  	if (!cpu_is_omap44xx() ||
-> -	    of_find_compatible_node(NULL, NULL, "motorola,cpcap"))
-> +	    (np = of_find_compatible_node(NULL, NULL, "motorola,cpcap"))) {
-> +		of_node_put(np);
+Hi Arnd,
 
-This is buggy - if cpu_is_omap44xx() is false, then np will not be
-initialised. The simple solution is to initialise np to NULL.
+On Wed, 14 Sept 2022 at 19:19, Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Wed, Sep 14, 2022, at 2:46 PM, Naresh Kamboju wrote:
+> > Following kernel crash noticed on arm TI x15 device while booting the
+> > mainline kernel 6.0.0-rc4.
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > [    3.059600] random: crng init done
+> > [    3.059631] 8<--- cut here ---
+> > [    3.066101] Unable to handle kernel paging request at virtual
+> > address adacafae
+> > [    3.073394] [adacafae] *pgd=00000000
+> > [    3.076995] Internal error: Oops: 5 [#1] SMP ARM
+>
+>
+> > [    3.781494]  clk_enable from sysc_enable_opt_clocks+0x4c/0xa0
+> > [    3.787261]  sysc_enable_opt_clocks from sysc_probe+0xda0/0x1598
+> > [    3.793304]  sysc_probe from platform_probe+0x64/0xc0
+>
+> So it's getting an invalid clk pointer in sysc_enable_opt_clocks.
+>
+> > [    3.798400]  platform_probe from really_probe+0xe8/0x41c
+> > [    3.803741]  really_probe from __driver_probe_device+0xa8/0x20c
+> > [    3.809692]  __driver_probe_device from driver_probe_device+0x38/0xc8
+> > [    3.816192]  driver_probe_device from __device_attach_driver+0xb4/0x130
+> > [    3.822845]  __device_attach_driver from bus_for_each_drv+0x84/0xc8
+> > [    3.829162]  bus_for_each_drv from __device_attach+0xb0/0x210
+> > [    3.834930]  __device_attach from bus_probe_device+0x8c/0x94
+> > [    3.840637]  bus_probe_device from device_add+0x3ec/0x924
+> > [    3.846069]  device_add from of_platform_device_create_pdata+0x98/0xc8
+> > [    3.852630]  of_platform_device_create_pdata from
+> > of_platform_bus_create+0x200/0x4d8
+> > [    3.860412]  of_platform_bus_create from of_platform_populate+0x9c/0x138
+> > [    3.867156]  of_platform_populate from simple_pm_bus_probe+0xac/0xd0
+> > [    3.873565]  simple_pm_bus_probe from platform_probe+0x64/0xc0
+> > [    3.879425]  platform_probe from really_probe+0xe8/0x41c
+>
+> It looks strange to recursively go through simple_pm_bus_probe()
+> here four times before getting to the ti,sysc driver.
+>
+> >
+> > Full test log link,
+> >   - https://lkft.validation.linaro.org/scheduler/job/5508159
+> >
+>
+> What is the easiest way to find out how long this job
+> has been failing, and what the last successful build
+> was?
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+It is not reproducible easily and I have checked when it got
+started but failed to find it. Because on v6.0-rc3 kernel the x15
+did not boot pass.
+
+- Naresh
