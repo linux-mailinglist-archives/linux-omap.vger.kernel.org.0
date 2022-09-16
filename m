@@ -2,77 +2,135 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31E075BA614
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Sep 2022 06:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5EEF5BA813
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Sep 2022 10:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbiIPEw3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Sep 2022 00:52:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48382 "EHLO
+        id S229967AbiIPIWa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Sep 2022 04:22:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbiIPEwW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Sep 2022 00:52:22 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 04881A0318;
-        Thu, 15 Sep 2022 21:52:16 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id E8FD280A7;
-        Fri, 16 Sep 2022 04:44:19 +0000 (UTC)
-Date:   Fri, 16 Sep 2022 07:52:14 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org
-Subject: Re: x15: kernel crash: LR is at sysc_enable_opt_clocks
-Message-ID: <YyQA/oKmurTV72Oy@atomide.com>
-References: <CA+G9fYsaxK30=z0vBcNW-NRVHHkWxaoSNDt1bE-mfXQquMONKQ@mail.gmail.com>
- <97b5728e-e8ed-44a6-a777-a7f56370761a@www.fastmail.com>
- <CA+G9fYsUEmhHT_YsZSvLBiUStuTPJ_DW4Gp0=p7umvfpngSABA@mail.gmail.com>
- <ac63bc50-3375-4877-a4f3-aa998cb148f9@www.fastmail.com>
+        with ESMTP id S230060AbiIPIW2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Sep 2022 04:22:28 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A557A4B02;
+        Fri, 16 Sep 2022 01:22:27 -0700 (PDT)
+Received: from deskari.lan (91-158-154-79.elisa-laajakaista.fi [91.158.154.79])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id D34E447C;
+        Fri, 16 Sep 2022 10:22:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1663316545;
+        bh=hpg4UG3hzUHvt7Ik3NpeIHYlyIr08/SNo0QIP0pZbhQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=njQp0mx3q31gaZwxxmRcrjnbQTErZPbstRIBcXHnOx77SsfEYK2NFBVp6shVS9HTa
+         DGNJAL4pdfocZL/+WXe3nHiz/Ar9fRRhiAYMC4mX7zdhclAu09QvLA0+QKojP1ixkV
+         poXb0wW/VwxvwxL8s6Es2zuWsOtriDd4d9bZl/Cg=
+From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+To:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH 1/2] drm/omap: dsi: Fix excessive stack usage
+Date:   Fri, 16 Sep 2022 11:22:05 +0300
+Message-Id: <20220916082206.167427-1-tomi.valkeinen@ideasonboard.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ac63bc50-3375-4877-a4f3-aa998cb148f9@www.fastmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+dsi_dump_dsi_irqs(), a function used for debugfs prints, has a large
+struct in its frame, which can result in:
 
-* Arnd Bergmann <arnd@arndb.de> [220915 13:12]:
-> On Thu, Sep 15, 2022, at 1:55 PM, Naresh Kamboju wrote:
-> > On Wed, 14 Sept 2022 at 19:19, Arnd Bergmann <arnd@arndb.de> wrote:
-> >>
-> >> What is the easiest way to find out how long this job
-> >> has been failing, and what the last successful build
-> >> was?
-> >
-> > It is not reproducible easily and I have checked when it got
-> > started but failed to find it. Because on v6.0-rc3 kernel the x15
-> > did not boot pass.
-> 
-> To clarify my question: how to I look up on the website what the
-> previous results for this boot were? Surely it must have passed
-> at some point, and I would like to know e.g. whether this test
-> setup booted 5.19, but I don't know how I see that.
+drivers/gpu/drm/omapdrm/dss/dsi.c:1126:1: warning: the frame size of 1060 bytes is larger than 1024 bytes [-Wframe-larger-than=]
 
-Yeah it would be good to know if v5.19 boots OK. And if this happens on
-every boot, or only sometimes. I have not seen this on beagle-x15.
+As the performance of the function is of no concern, let's allocate the
+struct with kmalloc instead.
 
-Note that booting will fail between v6.0-rc1 until -rc4 because of
-because of the fwlink deferred probe issue. The issue did not get fixed
-until -rc4 with [0] below. Those fixes would need to be carried along
-if trying to bisect this between v5.19 and the v6.0-rc series.
+Compile-tested only.
 
-Regards,
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reported-by: kernel test robot <lkp@intel.com>
+---
+ drivers/gpu/drm/omapdrm/dss/dsi.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-Tony
+diff --git a/drivers/gpu/drm/omapdrm/dss/dsi.c b/drivers/gpu/drm/omapdrm/dss/dsi.c
+index a6845856cbce..4c1084eb0175 100644
+--- a/drivers/gpu/drm/omapdrm/dss/dsi.c
++++ b/drivers/gpu/drm/omapdrm/dss/dsi.c
+@@ -1039,22 +1039,26 @@ static int dsi_dump_dsi_irqs(struct seq_file *s, void *p)
+ {
+ 	struct dsi_data *dsi = s->private;
+ 	unsigned long flags;
+-	struct dsi_irq_stats stats;
++	struct dsi_irq_stats *stats;
++
++	stats = kmalloc(sizeof(*stats), GFP_KERNEL);
++	if (!stats)
++		return -ENOMEM;
+ 
+ 	spin_lock_irqsave(&dsi->irq_stats_lock, flags);
+ 
+-	stats = dsi->irq_stats;
++	*stats = dsi->irq_stats;
+ 	memset(&dsi->irq_stats, 0, sizeof(dsi->irq_stats));
+ 	dsi->irq_stats.last_reset = jiffies;
+ 
+ 	spin_unlock_irqrestore(&dsi->irq_stats_lock, flags);
+ 
+ 	seq_printf(s, "period %u ms\n",
+-			jiffies_to_msecs(jiffies - stats.last_reset));
++			jiffies_to_msecs(jiffies - stats->last_reset));
+ 
+-	seq_printf(s, "irqs %d\n", stats.irq_count);
++	seq_printf(s, "irqs %d\n", stats->irq_count);
+ #define PIS(x) \
+-	seq_printf(s, "%-20s %10d\n", #x, stats.dsi_irqs[ffs(DSI_IRQ_##x)-1]);
++	seq_printf(s, "%-20s %10d\n", #x, stats->dsi_irqs[ffs(DSI_IRQ_##x)-1]);
+ 
+ 	seq_printf(s, "-- DSI%d interrupts --\n", dsi->module_id + 1);
+ 	PIS(VC0);
+@@ -1078,10 +1082,10 @@ static int dsi_dump_dsi_irqs(struct seq_file *s, void *p)
+ 
+ #define PIS(x) \
+ 	seq_printf(s, "%-20s %10d %10d %10d %10d\n", #x, \
+-			stats.vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
+-			stats.vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
+-			stats.vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
+-			stats.vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
++			stats->vc_irqs[0][ffs(DSI_VC_IRQ_##x)-1], \
++			stats->vc_irqs[1][ffs(DSI_VC_IRQ_##x)-1], \
++			stats->vc_irqs[2][ffs(DSI_VC_IRQ_##x)-1], \
++			stats->vc_irqs[3][ffs(DSI_VC_IRQ_##x)-1]);
+ 
+ 	seq_printf(s, "-- VC interrupts --\n");
+ 	PIS(CS);
+@@ -1097,7 +1101,7 @@ static int dsi_dump_dsi_irqs(struct seq_file *s, void *p)
+ 
+ #define PIS(x) \
+ 	seq_printf(s, "%-20s %10d\n", #x, \
+-			stats.cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
++			stats->cio_irqs[ffs(DSI_CIO_IRQ_##x)-1]);
+ 
+ 	seq_printf(s, "-- CIO interrupts --\n");
+ 	PIS(ERRSYNCESC1);
+@@ -1122,6 +1126,8 @@ static int dsi_dump_dsi_irqs(struct seq_file *s, void *p)
+ 	PIS(ULPSACTIVENOT_ALL1);
+ #undef PIS
+ 
++	kfree(stats);
++
+ 	return 0;
+ }
+ #endif
+-- 
+2.34.1
 
-[0] Commit 0b3acd1cc022 ("Merge tag 'driver-core-6.0-rc4' of
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core")
