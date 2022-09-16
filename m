@@ -2,69 +2,69 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07A205BACF7
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Sep 2022 14:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DD145BACFD
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Sep 2022 14:08:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231273AbiIPMIS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Sep 2022 08:08:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59158 "EHLO
+        id S230512AbiIPMIV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Sep 2022 08:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231346AbiIPMIM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Sep 2022 08:08:12 -0400
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2043.outbound.protection.outlook.com [40.107.22.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3837DAFACE;
-        Fri, 16 Sep 2022 05:08:07 -0700 (PDT)
+        with ESMTP id S231266AbiIPMIN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Sep 2022 08:08:13 -0400
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2061d.outbound.protection.outlook.com [IPv6:2a01:111:f400:7d00::61d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D5F1B07DD;
+        Fri, 16 Sep 2022 05:08:11 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=a9ZETFevpkng5xqOX5sgogf9/oKek83WTX7k10YAgmXWdZuJjkF9UzhTEp368W0nR+bQ27jKMmt+AIGxu5ZrOKhCwJq0VArHURHiU3O+buJfIzV2RZZxBVGyIIK5+pUTnFj+dvXt3FIE8tXLGZ2+5xK3UaqFL/tRGUIyODtMC6oFAsMnAdpbfPajT8iObBaOdRmFCD08C9p9lAjk5wBOTeH/MVEUAiwV5fP/zI5N3/scGJcAli/nx60T86HPeKfuV9xf54zSrrtj/honvhv788uNxksfq2ug9qQAvgWRww+4D44sCMjmTsVsDVb9kjCsQwwjqfcOH/gTUxqvIW1DaA==
+ b=gOECUFYPrZm9XxVNcvhC4RAr+ZSXWCXmvzFBvEMBf77eXeTAvcoRzZxY4slEeRg2NYH+m2RPWFo3TfHzj0m6KlVRz3dKXdyG/Wuj8Juz1gFtz4nF5Mb/WFFrh6tHV8lXR0dkBXaKpPjh+tAYVJv68QdyJRJ/jlYHkQ9fjNSyJwxoaL0a1g+Mq2KAUK0KIThiCvFths8I0wOlAzvlhKFAso1E2FawMIJaTceG7EA5ty0Ox9QqvzyALBb/T8lYr+A6tEbbLi3CIyOLCmAjrEcS2mnXECqdSYPid/Dm0/DdytyqzqtPu+OJREpJNdxxp5R1i7tPm/Rq2UKamQXROzmkcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W+FPLwy3gra3QskfEclDY4irHmV/m5jRGYSoBiM8Zpw=;
- b=XnzicytU3VHWM0eTtKnBaTvhm8WmcUD5iGDpP4M072PUWqlyeZCYmYB36z8ZE9J/NCkZB4AncukK1ZNg9V+mYCCVA6QOq1jUM34p13MBKS8fP+7AH6IhQ/9hMZ+aZuURsFA25v37KmIUe/No3HDPBZ01VIx7g6kFnPW43rXDXY5BeMuGkyfZ5zMtHm2E1M5I1h1BU3r5tZDllBMvyJ8gUWEeAaFGhh5E/6UqbbIYpIkkBLNNnh0aWAy36XOwy+TKcK1whGyExZOsy9x76vr0hpDH0MnnYwJ+UA83jVSO4SwLc3sXOOzRorC7i6w0XIUMyujioeZFHgyt6N3gUozL2A==
+ bh=f8OSsBGWL2fu9pifgQy0rHy2ryaiWNNvHdS60SZAXM8=;
+ b=IgJy9gpGfRuFLz8HwCPGa15Z6GGAhRo+K6HqUuOh2/lryz0KJ3yJftF1Mj4k6g0rlRY5PuQdSSOJxvwzSsMfwqlOZvqfXHi/3YuXO6O/0rLohw/R85UAZNTdxgAkhZgBdHdXdLH6+4ojgsUvyRgqSsbkT4DRe97zF5QKbdCYrfrdO8/EIOm5tZ6QKb5y1/kFUhouToxx5UbAblJC2MKLFH6VmenyPDE/q5Pr4eGT5ggWbyZnPT+WKRPQEOcqYvza9N5O/ixUtz8H3mZ/fpFukvXemBT/iaVVFTQ9JvPBzcw4r2kI1+cfoy1/WF+khS80hXRs0RhLGM7NN98MXTD6gQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 194.138.21.74) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=siemens.com;
+ 194.138.21.76) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=siemens.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=siemens.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W+FPLwy3gra3QskfEclDY4irHmV/m5jRGYSoBiM8Zpw=;
- b=HgfkzRUZkKrKQKv+gwohskytfSpwAesWWZYvhdlUtLr3Pq/DM8V0lM74wKkgf4yKY1xVBDlvufD3BU5AGPoCwVCSXirs1xzWQUGknGEVeS+9CI5jNA4CyAZcmaEa4bcjT7O0rzjIMG3ckJlU0dmj5L6NtzhQ5+OfbwrmSI8mNpGe4ItcQXBpXjpx+MJ8Jde/pfk2bYtUnyK+4mKQZOxh4HMWgyVT36ZLw5hxzo3DlY8ghpqr1T8wLoJpNdWSk+i1FoDm+nYE4HdAhWzkxMy89zRJ9sGJVXbMF6yi9cv9wQhIo0t0iBWWkStEOsTM1aZ7plw31g4tqtjMEwZ/6a0ErQ==
-Received: from GV3P280CA0051.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:9::35) by
- AS1PR10MB5392.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:48d::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.14; Fri, 16 Sep
- 2022 12:08:05 +0000
-Received: from HE1EUR01FT063.eop-EUR01.prod.protection.outlook.com
- (2603:10a6:150:9:cafe::f) by GV3P280CA0051.outlook.office365.com
- (2603:10a6:150:9::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.15 via Frontend
- Transport; Fri, 16 Sep 2022 12:08:05 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 194.138.21.74)
+ bh=f8OSsBGWL2fu9pifgQy0rHy2ryaiWNNvHdS60SZAXM8=;
+ b=Qs/a2COvQ28BFPoBp9iLRbLpLqnb+GLqqZ4hidpitxh1riwkM7z0R9n9xDvMht5VPtV/8wO7IYcJGfVR5lVyRdyKv/B5czyGEYduF7BBEHXMbD01C42TaYB+tKIxWUQCNChHJKcwZipmqafDt2/kIyF3FmijT3hokwfOmY48iCtkcgw2j9J1VdUIuKJUYabONldpSDLRtUcJFQXQjkMAbYHBwXD/G524Vv3RqtpeNflemK2THFRps3qoMZm+QHYWteaAMi40GV5oFpTQWejiYn+YyFiGx9YPozFGOkdyGeq72c5VwNAOJhg/JY2lUczc0NNHRwpOOipBzys4kV7kIQ==
+Received: from AM5PR1001CA0039.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:206:15::16) by VE1PR10MB3936.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:800:16a::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.16; Fri, 16 Sep
+ 2022 12:08:07 +0000
+Received: from VE1EUR01FT021.eop-EUR01.prod.protection.outlook.com
+ (2603:10a6:206:15:cafe::5b) by AM5PR1001CA0039.outlook.office365.com
+ (2603:10a6:206:15::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.16 via Frontend
+ Transport; Fri, 16 Sep 2022 12:08:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 194.138.21.76)
  smtp.mailfrom=siemens.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=siemens.com;
 Received-SPF: Pass (protection.outlook.com: domain of siemens.com designates
- 194.138.21.74 as permitted sender) receiver=protection.outlook.com;
- client-ip=194.138.21.74; helo=hybrid.siemens.com; pr=C
-Received: from hybrid.siemens.com (194.138.21.74) by
- HE1EUR01FT063.mail.protection.outlook.com (10.152.1.51) with Microsoft SMTP
+ 194.138.21.76 as permitted sender) receiver=protection.outlook.com;
+ client-ip=194.138.21.76; helo=hybrid.siemens.com; pr=C
+Received: from hybrid.siemens.com (194.138.21.76) by
+ VE1EUR01FT021.mail.protection.outlook.com (10.152.2.223) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5632.12 via Frontend Transport; Fri, 16 Sep 2022 12:08:05 +0000
+ 15.20.5632.12 via Frontend Transport; Fri, 16 Sep 2022 12:08:06 +0000
 Received: from DEMCHDC89XA.ad011.siemens.net (139.25.226.103) by
- DEMCHDC8VQA.ad011.siemens.net (194.138.21.74) with Microsoft SMTP Server
+ DEMCHDC8VSA.ad011.siemens.net (194.138.21.76) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.12; Fri, 16 Sep 2022 14:08:01 +0200
+ 15.2.1118.12; Fri, 16 Sep 2022 14:08:06 +0200
 Received: from bennie-lenovo.fritz.box (144.145.220.65) by
  DEMCHDC89XA.ad011.siemens.net (139.25.226.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.12; Fri, 16 Sep 2022 14:08:00 +0200
+ 15.1.2507.12; Fri, 16 Sep 2022 14:08:06 +0200
 From:   "B. Niedermayr" <benedikt.niedermayr@siemens.com>
 To:     <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>
 CC:     <rogerq@kernel.org>, <tony@atomide.com>,
         <krzysztof.kozlowski@linaro.org>, <robh+dt@kernel.org>
-Subject: [PATCH v5 2/3] memory: omap-gpmc: add support for wait pin polarity
-Date:   Fri, 16 Sep 2022 14:07:48 +0200
-Message-ID: <20220916120749.2517727-3-benedikt.niedermayr@siemens.com>
+Subject: [PATCH v5 3/3] dt-bindings: memory-controllers: gpmc-child: add wait-pin polarity
+Date:   Fri, 16 Sep 2022 14:07:49 +0200
+Message-ID: <20220916120749.2517727-4-benedikt.niedermayr@siemens.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220916120749.2517727-1-benedikt.niedermayr@siemens.com>
 References: <20220916120749.2517727-1-benedikt.niedermayr@siemens.com>
@@ -75,41 +75,39 @@ X-Originating-IP: [144.145.220.65]
 X-ClientProxiedBy: DEMCHDC89XA.ad011.siemens.net (139.25.226.103) To
  DEMCHDC89XA.ad011.siemens.net (139.25.226.103)
 X-TM-AS-Product-Ver: SMEX-14.0.0.3080-8.6.1018-26680.007
-X-TM-AS-Result: No-10--11.619300-8.000000
-X-TMASE-MatchedRID: POsRPqSDEnZ2JssOPetOeImIDnzSS8mZE34mKqQRiel+J3gtIe0gA2tq
-        QgJyb0BRWgm4fq9o0LPhkjv78Hej4ekIezYN3SFOKPXQFKk5uQGTCob0Yf2X3j8Ckw9b/GFeTJD
-        l9FKHbrlHpEd1UrzmFY4nd5BIQmYqQjWDB8SvIeIkrBjqqIzVOO/Pzxjxyhd5EVuC0eNRYvJ7xI
-        KEgZq/AeJiUqjHevI0F51v32DYCPs5GnFStuFoW0vAMVBNN3ewEnwQg0CZxZurm7DrUlmNkIAy6
-        p60ZV62fJ5/bZ6npdjKayT/BQTiGpefsKoW209bhhQN2X8ImVVHZZcelBAWAp1ZWdlQ94S0ahpn
-        rRh/388=
+X-TM-AS-Result: No-10--9.764200-8.000000
+X-TMASE-MatchedRID: FgBlj4RFa/fEuqVdWhBa8X8otomh/kVbH9B97WCZlj2VyEX4i+SWU0yQ
+        5fRSh265B0L0/Ut7x1D47Xv617HbR+THRSYVdIx5q9dxv4TizKefv2cITmCgNtfeP+V/VXwsm2C
+        Uy/KcAJ4RxZBQI0dbZ/WKGThQ2qZNfKZSSl2fkbJNVVoqlq60cKPFjJEFr+oldywMrbEEeHuNo+
+        PRbWqfRMprJP8FBOIaSV75InlJNiVWinQHdvOEPaUSlfmMuqTbB6/NalQ+MetfLg8e3/TOYg==
 X-TM-AS-User-Approved-Sender: No
 X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--11.619300-8.000000
+X-TMASE-Result: 10--9.764200-8.000000
 X-TMASE-Version: SMEX-14.0.0.3080-8.6.1018-26680.007
-X-TM-SNTS-SMTP: 18D638CE024905B1A5EEE6137C9942F082B02C652B858DCBB557C510CEEAA18B2000:8
+X-TM-SNTS-SMTP: D6C2432536DEF1B57229023358F3385994EC9B5EE406E35E2474F5590CE04B8B2000:8
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1EUR01FT063:EE_|AS1PR10MB5392:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48131a6d-6b18-4b91-aa12-08da97dc1c80
+X-MS-TrafficTypeDiagnostic: VE1EUR01FT021:EE_|VE1PR10MB3936:EE_
+X-MS-Office365-Filtering-Correlation-Id: bcf16aac-2b3d-4a53-93a7-08da97dc1d86
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bH7yoWVGEssySiz0tdAr0lRzSBvdD4A/y88csUbUb0K7RSFYcj7Lp3wPCrage1BFYFBeVtVR1wIlVxXndERD/W8kKnfaFZTLZSjHLQyhIww/Zl0bL4ryTfDl9raqMzKb1LTRlBbiuPaF1X6mSUemyxwgQzclEB4z6N/5JMG2ga9G4FfNTOx751+Rvc/tFZ1vOHhjd7e1yyWpureWLViPCVGdpMUbiXI4Osun7qnKiVemsYxkSCabshELNxgpC7g5IlPxN/MuSTmI1x2YYPhJ6QCpxZVspv9QOrcBOZZlAdHO95toKJsUx8keMctqPl5lapkJrWTqS/9vYEFmW8hOCguAwqX7D0e3lU63KRbAcsYjCU0FBeoXzedRln0AQ+3I06sx9MC5uzSfXDT1Dc2Ogzg1sdcbgOKaIfFltrWt2jd2TE5JRdFWUeXMU4HAucdXfRNu0/5pdzD3B4F+/JWzs4hQbvymazL022h1DYJtgkoJZELvGwJYZD/sNKdpXKYnbP4hxGqljyGCL5ljKUVNyR7+iPxFNTfFvxkDpGv3g6D/xvUGM9X+0pNVNrE8FxkqJaxBPVuyl8g5ld/kXQU2cCYUkMDdL7w4oscXuoTEFoaa2npECw2gd0qXr2b6XBTIdjTCb7E3djZL+l6KlLS2exovlIyQvFgXvBmRmQqrbpFeGl3/iIUlAQ+V93pn3MOL/HPkiUi0y96O/irihDHutXzixGnh4xTpux+L7rCCHAFTUYPVhQ4GRH4zR3UmI9mfFOm2WAjzhmzqrY3g6gNeSw==
-X-Forefront-Antispam-Report: CIP:194.138.21.74;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:hybrid.siemens.com;PTR:hybrid.siemens.com;CAT:NONE;SFS:(13230022)(4636009)(346002)(136003)(39860400002)(376002)(396003)(451199015)(36840700001)(40470700004)(46966006)(7596003)(16526019)(70586007)(110136005)(4326008)(70206006)(54906003)(7636003)(956004)(2616005)(2906002)(356005)(82740400003)(186003)(40480700001)(1076003)(47076005)(8676002)(8936002)(82960400001)(5660300002)(36756003)(41300700001)(82310400005)(336012)(26005)(36860700001)(478600001)(316002)(86362001)(6666004)(40460700003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: PTeEIpnccWrRCTQ1fIsjTN6wbzEuVLC171f9aRmzQLeOcqmLdMfkBBA+FAmiBYc0rmOVme5jOJY0lXO+jet5lo1/Sz8bzr9XyuDKce5rPZDqocu5OYocKDuyaWxaJ0dPz5wdRfbFOtRznpssRHWc3x4nhied9LKGbipytkXor/MJ5p0T4V/vh3XO+EHivIF1Ur29Aa9XTxG5DWH3yXSQvjzeagioiEg4qtqxMImqL3rim5k3Wp7YNcBe7ln/mWnPEZMht92Gh4YMT1Kstx13zSQJpz78yQo2iV+gkYyf/RAo4ltwUkwSy6iKhbNJyyAcq8hqCa+0Uz+RCOVH199mBCx1vx5p2CuS+bpRQeA6MsZtEoeyGJdyqbxKn0mUDmw9KQIrWml1CikeIavSgDOq2sPyAx28x/zcrpIc8IAU7GudZPFPE5O4WB1D2SjOG6BrgY1qOc+QI1WYLyMeWHyDkPht2CtXR+j+DIlO6Se+HqvYhDffShqmIYDYjG5aex72AGwfNpEFe2ERTZ58M+4a0Bf+U0KeQCvf7iWJ7lo+wsUnWitfQXRahKZt6Gx8QkD7oRKtaji+Cca7/RBR5DuVICWGOqe6oJRXEs5cCO8E7WXSKuodjpvjU3Jaf5oZY5/EgmyWVkiJE0wcsDPg/++4ixhdRpXeu14TCVEmMyz0rtba3EjNbexATeTxRIMmGmBe3mpGiL2zJNXeyRB7t98mN+obRWHvChVo8qnDqXtfvrs6rpywYUp2hJCqv0hAaviD/UVwYLadeD5IVf1otWLjlWGAULnTioUDC79KIcVEUvFIdKyRiRO73f2odfGawsJj
+X-Forefront-Antispam-Report: CIP:194.138.21.76;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:hybrid.siemens.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(136003)(346002)(376002)(39860400002)(396003)(451199015)(40470700004)(36840700001)(46966006)(8676002)(316002)(8936002)(5660300002)(54906003)(86362001)(4326008)(70206006)(70586007)(110136005)(82960400001)(36860700001)(82740400003)(47076005)(40460700003)(41300700001)(6666004)(956004)(478600001)(26005)(2616005)(81166007)(16526019)(336012)(186003)(1076003)(356005)(40480700001)(82310400005)(36756003)(2906002)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2022 12:08:05.2046
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2022 12:08:06.9679
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48131a6d-6b18-4b91-aa12-08da97dc1c80
+X-MS-Exchange-CrossTenant-Network-Message-Id: bcf16aac-2b3d-4a53-93a7-08da97dc1d86
 X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=38ae3bcd-9579-4fd4-adda-b42e1495d55a;Ip=[194.138.21.74];Helo=[hybrid.siemens.com]
-X-MS-Exchange-CrossTenant-AuthSource: HE1EUR01FT063.eop-EUR01.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=38ae3bcd-9579-4fd4-adda-b42e1495d55a;Ip=[194.138.21.76];Helo=[hybrid.siemens.com]
+X-MS-Exchange-CrossTenant-AuthSource: VE1EUR01FT021.eop-EUR01.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR10MB5392
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR10MB3936
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -118,94 +116,35 @@ X-Mailing-List: linux-omap@vger.kernel.org
 
 From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
 
-The waitpin polarity can be configured via the WAITPIN<X>POLARITY bits
-in the GPMC_CONFIG register. This is currently not supported by the
-driver. This patch adds support for setting the required register bits
-with the "gpmc,wait-pin-polarity" dt-property.
+The GPMC controller has the ability to configure the polarity for the
+wait pin. The current properties do not allow this configuration.
+This binding directly configures the WAITPIN<X>POLARITY bit
+in the GPMC_CONFIG register by setting the gpmc,wait-pin-polarity
+dt-property.
 
 Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
 ---
- drivers/memory/omap-gpmc.c              | 27 +++++++++++++++++++++++++
- include/linux/platform_data/gpmc-omap.h |  6 ++++++
- 2 files changed, 33 insertions(+)
+ .../bindings/memory-controllers/ti,gpmc-child.yaml         | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index ea495e93766b..2853fc28bccc 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -132,6 +132,7 @@
- #define GPMC_CONFIG_DEV_SIZE	0x00000002
- #define GPMC_CONFIG_DEV_TYPE	0x00000003
+diff --git a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
+index 6e3995bb1630..8e541acdb1ff 100644
+--- a/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
++++ b/Documentation/devicetree/bindings/memory-controllers/ti,gpmc-child.yaml
+@@ -230,6 +230,13 @@ properties:
+       Wait-pin used by client. Must be less than "gpmc,num-waitpins".
+     $ref: /schemas/types.yaml#/definitions/uint32
  
-+#define GPMC_CONFIG_WAITPINPOLARITY(pin)	(BIT(pin) << 8)
- #define GPMC_CONFIG1_WRAPBURST_SUPP     (1 << 31)
- #define GPMC_CONFIG1_READMULTIPLE_SUPP  (1 << 30)
- #define GPMC_CONFIG1_READTYPE_ASYNC     (0 << 29)
-@@ -1882,6 +1883,17 @@ int gpmc_cs_program_settings(int cs, struct gpmc_settings *p)
- 
- 	gpmc_cs_write_reg(cs, GPMC_CS_CONFIG1, config1);
- 
-+	if (p->wait_pin_polarity != WAITPINPOLARITY_DEFAULT) {
-+		config1 = gpmc_read_reg(GPMC_CONFIG);
++  gpmc,wait-pin-polarity:
++    description: |
++      Set the desired polarity for the selected wait pin.
++      0 for active low, 1 for active high.
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [0, 1]
 +
-+		if (p->wait_pin_polarity == WAITPINPOLARITY_ACTIVE_LOW)
-+			config1 &= ~GPMC_CONFIG_WAITPINPOLARITY(p->wait_pin);
-+		else if (p->wait_pin_polarity == WAITPINPOLARITY_ACTIVE_HIGH)
-+			config1 |= GPMC_CONFIG_WAITPINPOLARITY(p->wait_pin);
-+
-+		gpmc_write_reg(GPMC_CONFIG, config1);
-+	}
-+
- 	return 0;
- }
- 
-@@ -1981,7 +1993,22 @@ void gpmc_read_settings_dt(struct device_node *np, struct gpmc_settings *p)
- 				__func__);
- 	}
- 
-+	p->wait_pin_polarity = WAITPINPOLARITY_DEFAULT;
-+
- 	if (!of_property_read_u32(np, "gpmc,wait-pin", &p->wait_pin)) {
-+		if (!of_property_read_u32(np, "gpmc,wait-pin-polarity",
-+					  &p->wait_pin_polarity)) {
-+			if (p->wait_pin_polarity != WAITPINPOLARITY_ACTIVE_HIGH &&
-+			    p->wait_pin_polarity != WAITPINPOLARITY_ACTIVE_LOW &&
-+			    p->wait_pin_polarity != WAITPINPOLARITY_DEFAULT) {
-+				pr_err("%s: Invalid wait-pin-polarity (pin: %d, pol: %d)\n",
-+				       __func__, p->wait_pin, p->wait_pin_polarity);
-+				p->wait_pin_polarity = WAITPINPOLARITY_DEFAULT;
-+			}
-+		} else {
-+			pr_err("%s: Failed to read gpmc,wait-pin-polarity\n", __func__);
-+		}
-+
- 		p->wait_on_read = of_property_read_bool(np,
- 							"gpmc,wait-on-read");
- 		p->wait_on_write = of_property_read_bool(np,
-diff --git a/include/linux/platform_data/gpmc-omap.h b/include/linux/platform_data/gpmc-omap.h
-index c9cc4e32435d..c46c28069c31 100644
---- a/include/linux/platform_data/gpmc-omap.h
-+++ b/include/linux/platform_data/gpmc-omap.h
-@@ -136,6 +136,11 @@ struct gpmc_device_timings {
- #define GPMC_MUX_AAD			1	/* Addr-Addr-Data multiplex */
- #define GPMC_MUX_AD			2	/* Addr-Data multiplex */
- 
-+/* Wait pin polarity values */
-+#define WAITPINPOLARITY_DEFAULT -1
-+#define WAITPINPOLARITY_ACTIVE_LOW 0
-+#define WAITPINPOLARITY_ACTIVE_HIGH 1
-+
- struct gpmc_settings {
- 	bool burst_wrap;	/* enables wrap bursting */
- 	bool burst_read;	/* enables read page/burst mode */
-@@ -149,6 +154,7 @@ struct gpmc_settings {
- 	u32 device_width;	/* device bus width (8 or 16 bit) */
- 	u32 mux_add_data;	/* multiplex address & data */
- 	u32 wait_pin;		/* wait-pin to be used */
-+	u32 wait_pin_polarity;	/* wait-pin polarity */
- };
- 
- /* Data for each chip select */
+   gpmc,wait-on-read:
+     description: Enables wait monitoring on reads.
+     type: boolean
 -- 
 2.34.1
 
