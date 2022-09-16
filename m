@@ -2,107 +2,121 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1105E5BA88D
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Sep 2022 10:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD8B85BA8B5
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Sep 2022 10:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230263AbiIPIvH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 16 Sep 2022 04:51:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57856 "EHLO
+        id S231171AbiIPIyh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Sep 2022 04:54:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230486AbiIPIu4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Sep 2022 04:50:56 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B69A831C;
-        Fri, 16 Sep 2022 01:50:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 91C09B8236E;
-        Fri, 16 Sep 2022 08:50:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53B7C433C1;
-        Fri, 16 Sep 2022 08:50:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663318246;
-        bh=r3bkzNMOCn2xHdYiUy9dIp4wjERKZqka5pJYVf/I0rE=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=mFsfWg59Jflzdl04r8/e8bgPyQp/zW8a6jH+HWVMGCVLFH7109JOaKXxd3IcmmWD1
-         7thXhgZ372v2aGadCyXjih8SJ7VYhw4OKBv6EIex7DEeefYQrHbuH8MtOf0T57sTGd
-         syTXxJm5+Zj4CM+7dxh7W314VNk5TrIlLibezAJFjKwtYO+Gh+Psfbfpsfuks8ycOU
-         sHjSJ6bO3AVZ++YVxFhRNeBIWDlJht9Nij5cmSWLUxFtW8FQbeHLOGBN+o1eaUERlC
-         W8zNCap7AuXAVRLgZrH5VDJt80/de5RZYUkwbK8uI3N5l6cL8CpBjQM3lbAxmlo1Qr
-         KzK9l/ZD0LSfg==
-Message-ID: <6c8f1bfd-2aab-c9e3-4fe8-2e555b969e3a@kernel.org>
-Date:   Fri, 16 Sep 2022 11:50:42 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v4 1/3] memory: omap-gpmc: allow shared wait pins
-Content-Language: en-US
-To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     tony@atomide.com, krzysztof.kozlowski@linaro.org,
-        robh+dt@kernel.org
-References: <20220915091333.2425306-1-benedikt.niedermayr@siemens.com>
- <20220915091333.2425306-2-benedikt.niedermayr@siemens.com>
-From:   Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20220915091333.2425306-2-benedikt.niedermayr@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230488AbiIPIyI (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Sep 2022 04:54:08 -0400
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816AAA9254;
+        Fri, 16 Sep 2022 01:53:08 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.nyi.internal (Postfix) with ESMTP id DC374580E35;
+        Fri, 16 Sep 2022 04:53:07 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Fri, 16 Sep 2022 04:53:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1663318387; x=1663321987; bh=ZFtMGAa129
+        Cr8RDhpd8v9Ui9QHwxY8QKFU+/h7fj6XQ=; b=gWg3mZo9s5TlBI9yv/BxqQZOZw
+        1ZfOCrayhnJUa/V3wtJz10UO0UQK6jZEugRvKOuadIbjJVIjE14dJfLzqufIyl7T
+        JKWXguoxPYQqk7GGGLVhSy7CWoJudeWl7/iPpMnlyxUY/o/q/ex35KoNJH+8fZR9
+        ZdrXrnRXkSJ5LTpt2rEEX/0+fMAQBFNU8HvzUSyokM3iSUYYe8FUPWEMhGOx5t6o
+        fQ1wsSaf0vDuNvhS3sUSnMZNqx5jqU1mpUhBTr3ScsQJSZ3+Bdqs9e4Tz7YC7X44
+        HT+6q5l2Q3HlsBeh86zSd3vmpBlLYBJPwe3ZQ8V9Dp3rpqgQyjW0rlDxAscg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1663318387; x=1663321987; bh=ZFtMGAa129Cr8RDhpd8v9Ui9QHwx
+        Y8QKFU+/h7fj6XQ=; b=GMfE+QHqHY8DvFPc5wS/gYUVndeUmb4XlY9Ge1HmYh76
+        /55jOjdVCT0SWUNI3C3P7yKinX6eFYD7MKqX9pdbftMKRkKoRGlutyophwC+0DkM
+        CgtzbwfCI6gUc9wOVCRSPO8HGjpTo0mvVDlnHfxBT7CjGySv1Vf3DkTGgoObp9FQ
+        26eMpo+C6swJEXjWeEaL2jA+ONEPeE3BFQlmElfCBLOlPFk6pBNcrtTJ5sH+tXs7
+        3DNxfIB3yNWo1Nt8TEZeMtFzFN5+wgXzyw/5Bg1LjTL0VUxoFZqffsH0idAyQfYL
+        oVXKJstZj1GsWqkra9GbpGB4xY+THRN/1suOODNryQ==
+X-ME-Sender: <xms:cjkkYxByAD8WY1jjqGvKcu6gaN_-LLv2lpPQnPdpZ1w-USi0zNjbYQ>
+    <xme:cjkkY_gMYYhvDZAqPcC2VzRCSKeS5OIpOcofZzCTJbTIHvgo07HZ2jusfF8uL7KRL
+    YoZaIuNPmNb92aTf6U>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedvtddguddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepgeetiefhjedvhfeffffhvddvvdffgfetvdetiefghefhheduffeljeeuuddv
+    lefgnecuffhomhgrihhnpehprghsthgvsghinhdrtghomhenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:cjkkY8mt-T6hs-vzmr2eDer5cUMI6T9SKNR5CnF5rblc4_T2aHh0Cw>
+    <xmx:cjkkY7wAoerWWOo6_Rf1Er1y_JnDclRfJ2nRtmSQPMfTPjPc7iPD7A>
+    <xmx:cjkkY2T8yX6G_uqsNQdRU31LHhBv96s3Kq3LaVgtB15dcvFtp6CSSg>
+    <xmx:czkkYzJVIfwPMEUT1-cOqx74WLNWWcAIEzuUZb3vyBqda3a7DTAtSA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id B8C3AB60086; Fri, 16 Sep 2022 04:53:06 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-935-ge4ccd4c47b-fm-20220914.001-ge4ccd4c4
+Mime-Version: 1.0
+Message-Id: <e020ff7a-d58e-481d-bb1c-980fe5e13c3e@www.fastmail.com>
+In-Reply-To: <6c0d4973-7f7e-1893-58b2-9bbe19160045@ideasonboard.com>
+References: <202209160259.7f3Z5krO-lkp@intel.com>
+ <9b4152e9-34cb-4ed6-b5e3-ef045b40dff2@www.fastmail.com>
+ <6c0d4973-7f7e-1893-58b2-9bbe19160045@ideasonboard.com>
+Date:   Fri, 16 Sep 2022 10:52:46 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>,
+        "kernel test robot" <lkp@intel.com>
+Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        "Linus Walleij" <linus.walleij@linaro.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "Tomi Valkeinen" <tomi.valkeinen@ti.com>,
+        dri-devel@lists.freedesktop.org
+Subject: Re: drivers/gpu/drm/omapdrm/dss/dsi.c:1126:1: warning: the frame size of 1060
+ bytes is larger than 1024 bytes
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+On Fri, Sep 16, 2022, at 10:24 AM, Tomi Valkeinen wrote:
+> On 15/09/2022 21:49, Arnd Bergmann wrote:
+>> On Thu, Sep 15, 2022, at 8:17 PM, kernel test robot wrote:
+>> I think hte problem is that struct dsi_irq_stats is just too
+>> large, at 776 bytes. The interrupts are disabled during a copy
+>> from 'dsi->irq_stats' into 'stats'. A trivial workaround would
+>> avoid the local copy and keep interrupts disabled through
+>> the entire function so it can operate directly on the source
+>> data, but that would introduce a longer time with irqs disabled,
+>> which might be bad as well.
+>> 
+>> Since this is only called from a debugfs file, and reading that
+>> file is probably not performance critical itself, maybe
+>> using kmalloc on the large structure would be best.
+>
+> I think that makes sense. I have sent a patch using kmalloc.
+>
+> Oddly enough, I was not able to reproduce the warning with my normal 
+> toolchain, gcc-arm-11.2-2022.02-x86_64-arm-none-linux-gnueabihf. I even 
+> reduced the frame size limit to 700, and saw warnings from other places, 
+> but not from omapdrm.
 
-On 15/09/2022 12:13, B. Niedermayr wrote:
-> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-> 
-> Newer kernels refuse to probe when using the same wait pin for
-> different chipselect regions.
-> 
-> But this may be a usecase when connecting for example FPGA or ASIC
-> modules to the gpmc, which only got one wait pin installed.
-> 
-> Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-> ---
->  drivers/memory/omap-gpmc.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-> index d9bf1c2ac319..e3674a15b934 100644
-> --- a/drivers/memory/omap-gpmc.c
-> +++ b/drivers/memory/omap-gpmc.c
-> @@ -2221,9 +2221,13 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
->  							 GPIO_ACTIVE_HIGH,
->  							 GPIOD_IN);
->  		if (IS_ERR(waitpin_desc)) {
-> -			dev_err(&pdev->dev, "invalid wait-pin: %d\n", wait_pin);
->  			ret = PTR_ERR(waitpin_desc);
-> -			goto err;
-> +			if (ret == -EBUSY) {
-> +				dev_info(&pdev->dev, "shared wait-pin: %d\n", wait_pin);
+I had another look and found that this only happens with
+CONFIG_INIT_STACK_ALL_PATTERN=y or CONFIG_INIT_STACK_ALL_ZERO=y,
+which are only available with gcc-12.x or clang.
 
-What if this GPI was taken by someone other than us for wait-pin usage?
-e.g. some other device driver for GPI usage?
+It looks like without that, gcc can reduce the size of the
+on-stack variable by only copying the members that it actually
+needs, see https://pastebin.com/8dDRE1bX for the gcc-11
+output.
 
-In that case that GPIO functionality will break if we now start using it for wait-pin usage. Right?
-
-One solution could be keep track if we reserved that pin for wait-pin usage
-and if so sharing the wait-pin for wait-pin usage is fine.
-
-> +			} else {
-> +				dev_err(&pdev->dev, "invalid wait-pin: %d\n", wait_pin);
-> +				goto err;
-> +			}
->  		}
->  	}
->  
-
-cheers,
--roger
+      Arnd
