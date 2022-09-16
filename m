@@ -2,92 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A689E5BA48C
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Sep 2022 04:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31E075BA614
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Sep 2022 06:52:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229820AbiIPCJW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 15 Sep 2022 22:09:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38786 "EHLO
+        id S229980AbiIPEw3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 16 Sep 2022 00:52:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229712AbiIPCJV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 15 Sep 2022 22:09:21 -0400
-Received: from m15112.mail.126.com (m15112.mail.126.com [220.181.15.112])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CDC2D50052
-        for <linux-omap@vger.kernel.org>; Thu, 15 Sep 2022 19:09:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=00UQj
-        91QcI2u6oqdc4ozbRGnDjj3gxPzMJuGZ/j4xNw=; b=cy3nhJ/h6c7cM0NZMUG5T
-        sotjUxh/gWldz+8n9zjk0KdAFBv3l7qTp9IAECHoELr5aV0BL15Y9jSonEQl5dpr
-        N/X5oh0IWmQexlgTgp2/Y0xpKDyU5EfZA4m6JTyRaPw33CrA+cYFEQUw9szzRjfN
-        XpX32ctruWB7ICC8Qgkz90=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-        by smtp2 (Coremail) with SMTP id DMmowADn72O22iNjbo2ABg--.5998S2;
-        Fri, 16 Sep 2022 10:08:56 +0800 (CST)
-From:   Liang He <windhl@126.com>
-To:     tony@atomide.com, linux@armlinux.org.uk, linux-omap@vger.kernel.org
-Cc:     windhl@126.com, chenmengda2009@163.com
-Subject: [PATCH v2] ARM: OMAP2+: Hold reference returned from of_find_xxx API
-Date:   Fri, 16 Sep 2022 10:08:54 +0800
-Message-Id: <20220916020854.4089679-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229938AbiIPEwW (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 16 Sep 2022 00:52:22 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 04881A0318;
+        Thu, 15 Sep 2022 21:52:16 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id E8FD280A7;
+        Fri, 16 Sep 2022 04:44:19 +0000 (UTC)
+Date:   Fri, 16 Sep 2022 07:52:14 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        lkft-triage@lists.linaro.org
+Subject: Re: x15: kernel crash: LR is at sysc_enable_opt_clocks
+Message-ID: <YyQA/oKmurTV72Oy@atomide.com>
+References: <CA+G9fYsaxK30=z0vBcNW-NRVHHkWxaoSNDt1bE-mfXQquMONKQ@mail.gmail.com>
+ <97b5728e-e8ed-44a6-a777-a7f56370761a@www.fastmail.com>
+ <CA+G9fYsUEmhHT_YsZSvLBiUStuTPJ_DW4Gp0=p7umvfpngSABA@mail.gmail.com>
+ <ac63bc50-3375-4877-a4f3-aa998cb148f9@www.fastmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DMmowADn72O22iNjbo2ABg--.5998S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ww13CF1fXr4kGF4rWF17Jrb_yoW8XF4UpF
-        9Ik3909ryUWw1xG3yqqr1xuFWjgw4kWr48ArZ8C34fXw4v9ayvv342va4Yvr1rXFWkAFWr
-        JF12yFWxWFn0qr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U5WrZUUUUU=
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi7Rl+F1pEAuXCeAAAse
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac63bc50-3375-4877-a4f3-aa998cb148f9@www.fastmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-In omap4_twl_init(), we should hold the reference returned from
-of_find_compatible_node() which has increased the refcount and
-then call of_node_put() with it when done.
+Hi,
 
-Note that we should initialize 'np' with NULL, otherwise there
-will be a bug to call of_node_put() with uninitialized 'np'
-when cpu_is_omap44xx() is false.
+* Arnd Bergmann <arnd@arndb.de> [220915 13:12]:
+> On Thu, Sep 15, 2022, at 1:55 PM, Naresh Kamboju wrote:
+> > On Wed, 14 Sept 2022 at 19:19, Arnd Bergmann <arnd@arndb.de> wrote:
+> >>
+> >> What is the easiest way to find out how long this job
+> >> has been failing, and what the last successful build
+> >> was?
+> >
+> > It is not reproducible easily and I have checked when it got
+> > started but failed to find it. Because on v6.0-rc3 kernel the x15
+> > did not boot pass.
+> 
+> To clarify my question: how to I look up on the website what the
+> previous results for this boot were? Surely it must have passed
+> at some point, and I would like to know e.g. whether this test
+> setup booted 5.19, but I don't know how I see that.
 
-Fixes: ccd369455a23 ("ARM: OMAP2+: Remove bogus warnings for machines without twl PMIC")
-Co-developed-by: Mengda Chen <chenmengda2009@163.com>
-Signed-off-by: Mengda Chen <chenmengda2009@163.com>
-Signed-off-by: Liang He <windhl@126.com>
----
+Yeah it would be good to know if v5.19 boots OK. And if this happens on
+every boot, or only sometimes. I have not seen this on beagle-x15.
 
- v2: (1) initialize 'np' with NULL, advised by Russell King 
-     (2) we use proper Co-developed-by tag based on kernel doc
+Note that booting will fail between v6.0-rc1 until -rc4 because of
+because of the fwlink deferred probe issue. The issue did not get fixed
+until -rc4 with [0] below. Those fixes would need to be carried along
+if trying to bisect this between v5.19 and the v6.0-rc series.
 
- arch/arm/mach-omap2/omap_twl.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Regards,
 
-diff --git a/arch/arm/mach-omap2/omap_twl.c b/arch/arm/mach-omap2/omap_twl.c
-index d4dab041324d..d56b33187244 100644
---- a/arch/arm/mach-omap2/omap_twl.c
-+++ b/arch/arm/mach-omap2/omap_twl.c
-@@ -213,10 +213,13 @@ static struct omap_voltdm_pmic omap4_core_pmic = {
- int __init omap4_twl_init(void)
- {
- 	struct voltagedomain *voltdm;
-+	struct device_node *np = NULL;
- 
- 	if (!cpu_is_omap44xx() ||
--	    of_find_compatible_node(NULL, NULL, "motorola,cpcap"))
-+	    (np = of_find_compatible_node(NULL, NULL, "motorola,cpcap"))) {
-+		of_node_put(np);
- 		return -ENODEV;
-+	}
- 
- 	voltdm = voltdm_lookup("mpu");
- 	omap_voltage_register_pmic(voltdm, &omap4_mpu_pmic);
--- 
-2.25.1
+Tony
 
+[0] Commit 0b3acd1cc022 ("Merge tag 'driver-core-6.0-rc4' of
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core")
