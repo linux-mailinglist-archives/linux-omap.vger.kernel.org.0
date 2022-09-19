@@ -2,67 +2,68 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FD455BC573
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Sep 2022 11:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6313F5BC593
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Sep 2022 11:38:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229994AbiISJer (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 19 Sep 2022 05:34:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50808 "EHLO
+        id S229700AbiISJin (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 19 Sep 2022 05:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230015AbiISJeo (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Sep 2022 05:34:44 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49A346435
-        for <linux-omap@vger.kernel.org>; Mon, 19 Sep 2022 02:34:42 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id a10so305201ljq.0
-        for <linux-omap@vger.kernel.org>; Mon, 19 Sep 2022 02:34:42 -0700 (PDT)
+        with ESMTP id S229706AbiISJim (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 19 Sep 2022 05:38:42 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBD8A1D326
+        for <linux-omap@vger.kernel.org>; Mon, 19 Sep 2022 02:38:41 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id u18so45971164lfo.8
+        for <linux-omap@vger.kernel.org>; Mon, 19 Sep 2022 02:38:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date;
-        bh=FTO4xkFBPcb9bkHA3D6SXnppwQjXCtQZXKOlomcgrAk=;
-        b=eVjkluKs/rylrd2SQ4adyExMc49NPWBdXvdUrnNaf/b/xoVD6A+vjiX+rRyQwLjZlR
-         bc6gcBqwKgov0ihhYEuz4aYElsMk8MTvdLl2Xhk421uXtk1/4dTBWp7ZaJl848ga8l7K
-         oz1kocjIZkYhM727tbSBEVe9lyQjM3ndwf6NqSgq4rAP5W/lpYWB8KmtLzzjwrXCXuCF
-         2Xz5GIl2GPTPd0BsxxuSJlmKKRFNwu5skY77QP6AFA7yDoyN89XN24U21ARiw7DpXKS0
-         EItL2mUHgUdONellW/I5Be5qEtYTkBnQVSR14lf13od3mLcKWOZPn5nnXjw654GmhIqt
-         FQ3Q==
+        bh=VJimzBdVCtfgS8uCmHW6ptZG5H95UCJL58R73+bcUzo=;
+        b=ggetqmZugjx7COrp1WBrIR/W6P8NW8I7XMS+drsAeLOzArF90aIiNVOy7zgeflf70t
+         YjQqhV5GjyLWWWN6KlSfg0hDxeKDhNmTqSstIwDSkbdx975ejBJILtJUdYcOcj2cIVBv
+         MJjlZWhbE1tvDtAeoDKQHtni5nwHPv4F+J2VOxukj18BWMbt1oedyjFDVkQIR2pMoX3W
+         GZWDhsSqmPp1x6djWwokuTIut+t5kp7YghckXPrYU9uVifCmyoIEcQQCGIg0sDV60LU5
+         TbuYUEsayCesJhKvvf1uQntnJzCEcs6kW1CuC3Fx8bROjGpXfxvGa2fN9evufcmekgo9
+         +pAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=FTO4xkFBPcb9bkHA3D6SXnppwQjXCtQZXKOlomcgrAk=;
-        b=M2i8xjHDcy+okXGIxjYKB72KBia2772/ZjepKyaCvbyZJwBzJWc/zozME4lUlEgNph
-         au1iXiYcjedK3VElQiq1VKNFGcN1y9uxV26QQxlNd2RQRSgWK8O+Gd9Xbe/lhDE8CD9o
-         UaPw6JNTY6m4q1IbCZUT6ZF3KFuKgbgofAzMpbDmPp3qfZx6PQeAL/HFa7nZlnAhY9HI
-         ugKcI21Pa6P9VV0snJsS5pTLF7EPlrLbxJxfmfn9JNi0oHq4c61MWOv63lxHy1tkqk/7
-         C6DSwVkNvzmkL6XzIe46uYgGOq/uNEMjxROWIVR4Qw3FJWsZ4ehKgtxfJFaaHY9mYmCG
-         vh5Q==
-X-Gm-Message-State: ACrzQf3wl8BFhCoIYukoPAldLPLDJc5ZyjwwT8pc8QnbO9fTxRacL6KE
-        qlLTAG6J1KSJEfDqtrDI1Z9VJA==
-X-Google-Smtp-Source: AMsMyM4TbZ3FGhqOfzaGNia+xVWSc5lybYfSCEesK4NE9CksMo2FcZAzVtb0gT4NDS3RbZOUPgNCPg==
-X-Received: by 2002:a05:651c:305:b0:26a:915f:45e8 with SMTP id a5-20020a05651c030500b0026a915f45e8mr4936704ljp.6.1663580080599;
-        Mon, 19 Sep 2022 02:34:40 -0700 (PDT)
+        bh=VJimzBdVCtfgS8uCmHW6ptZG5H95UCJL58R73+bcUzo=;
+        b=XscuzNxI68II8AvsF2witYq7+fgKVDyueQmMe9UmTltuh0jrN3T4tKU/PVn0rUfTZy
+         f+y2pQ9TsvfG+C9Mt0O+yAxPBeSUQoZI5jxHxf45nOyjy+C5eSz+WXbLa8tI//4jONYm
+         9AEaFR/EBwjrMqPXYAnGahqlX63Gd1XoCsOUgAY+AXdoDn21hz5pkeAQm6IIhnHKDZTW
+         H7fDPZa9wMl+EO0KGMf+jJ8I5c7zSEPqtshHil+aNjT+IYGXjYCeqf9/wp5zhKQ2EnFh
+         6H/T/k5ZaJOp5yIMgFXsJAG6coBfWUs4h5WcVc1EJU8w5nOvE9+d5gR5wwprbgszGaT8
+         uQhA==
+X-Gm-Message-State: ACrzQf0V1izTOF6pQHqR/3b17BLWEkx1raexCKF4Ly4hlco7fpjyP+yp
+        v0CLP4EqVh4yCjv+yZFyO03QJw==
+X-Google-Smtp-Source: AMsMyM5TaSJssuJzH24HVBt1+dktVcXRxMnTBik6Q6/oKgURMUa6pRcdLnmtl1pzarraziayZ505UQ==
+X-Received: by 2002:ac2:5f1a:0:b0:497:e106:e597 with SMTP id 26-20020ac25f1a000000b00497e106e597mr6157114lfq.135.1663580319883;
+        Mon, 19 Sep 2022 02:38:39 -0700 (PDT)
 Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id o1-20020a2ebd81000000b0026c0158b87csm4330841ljq.29.2022.09.19.02.34.39
+        by smtp.gmail.com with ESMTPSA id b4-20020a056512070400b004946c99e78asm5103217lfs.277.2022.09.19.02.38.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 02:34:40 -0700 (PDT)
-Message-ID: <5d4d9412-6445-f3a3-0f86-6c41a37dca70@linaro.org>
-Date:   Mon, 19 Sep 2022 11:34:39 +0200
+        Mon, 19 Sep 2022 02:38:39 -0700 (PDT)
+Message-ID: <6dd3d41b-eb75-3754-8a17-a8cb4bc838a8@linaro.org>
+Date:   Mon, 19 Sep 2022 11:38:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.13.0
-Subject: Re: [PATCH v5 1/3] memory: omap-gpmc: allow shared wait pins
+Subject: Re: [PATCH v5 2/3] memory: omap-gpmc: add support for wait pin
+ polarity
 Content-Language: en-US
 To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
         linux-omap@vger.kernel.org, devicetree@vger.kernel.org
 Cc:     rogerq@kernel.org, tony@atomide.com, robh+dt@kernel.org
 References: <20220916120749.2517727-1-benedikt.niedermayr@siemens.com>
- <20220916120749.2517727-2-benedikt.niedermayr@siemens.com>
+ <20220916120749.2517727-3-benedikt.niedermayr@siemens.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220916120749.2517727-2-benedikt.niedermayr@siemens.com>
+In-Reply-To: <20220916120749.2517727-3-benedikt.niedermayr@siemens.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -77,52 +78,115 @@ X-Mailing-List: linux-omap@vger.kernel.org
 On 16/09/2022 14:07, B. Niedermayr wrote:
 > From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
 > 
-> Newer kernels refuse to probe when using the same wait pin for
-> different chipselect regions.
-> But this may be a usecase when connecting for example FPGA or ASIC
-> modules to the gpmc, which only got one wait pin installed.
-> 
-> The wait-pin allocation is now tracked by the gpmc driver in order
-> to be sure that the wait pin has been indeed requested by gpmc.
-> Therefore the "wait_pin_alloc_mask" has been introduced.
+> The waitpin polarity can be configured via the WAITPIN<X>POLARITY bits
+> in the GPMC_CONFIG register. This is currently not supported by the
+> driver. This patch adds support for setting the required register bits
+> with the "gpmc,wait-pin-polarity" dt-property.
 > 
 > Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
 > ---
->  drivers/memory/omap-gpmc.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
+>  drivers/memory/omap-gpmc.c              | 27 +++++++++++++++++++++++++
+>  include/linux/platform_data/gpmc-omap.h |  6 ++++++
+>  2 files changed, 33 insertions(+)
 > 
 > diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-> index d9bf1c2ac319..ea495e93766b 100644
+> index ea495e93766b..2853fc28bccc 100644
 > --- a/drivers/memory/omap-gpmc.c
 > +++ b/drivers/memory/omap-gpmc.c
-> @@ -232,6 +232,7 @@ struct gpmc_device {
->  	int irq;
->  	struct irq_chip irq_chip;
->  	struct gpio_chip gpio_chip;
-> +	unsigned long wait_pin_alloc_mask;
->  	int nirqs;
->  	struct resource *data;
->  };
-> @@ -2221,9 +2222,16 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
->  							 GPIO_ACTIVE_HIGH,
->  							 GPIOD_IN);
->  		if (IS_ERR(waitpin_desc)) {
-> -			dev_err(&pdev->dev, "invalid wait-pin: %d\n", wait_pin);
->  			ret = PTR_ERR(waitpin_desc);
-> -			goto err;
-> +			if (ret == -EBUSY &&
-> +			    test_bit(wait_pin, &gpmc->wait_pin_alloc_mask)) {
-> +				dev_info(&pdev->dev, "shared wait-pin: %d\n", wait_pin);
-> +			} else {
-> +				dev_err(&pdev->dev, "invalid wait-pin: %d\n", wait_pin);
-> +				goto err;
+> @@ -132,6 +132,7 @@
+>  #define GPMC_CONFIG_DEV_SIZE	0x00000002
+>  #define GPMC_CONFIG_DEV_TYPE	0x00000003
+>  
+> +#define GPMC_CONFIG_WAITPINPOLARITY(pin)	(BIT(pin) << 8)
+>  #define GPMC_CONFIG1_WRAPBURST_SUPP     (1 << 31)
+>  #define GPMC_CONFIG1_READMULTIPLE_SUPP  (1 << 30)
+>  #define GPMC_CONFIG1_READTYPE_ASYNC     (0 << 29)
+> @@ -1882,6 +1883,17 @@ int gpmc_cs_program_settings(int cs, struct gpmc_settings *p)
+>  
+>  	gpmc_cs_write_reg(cs, GPMC_CS_CONFIG1, config1);
+>  
+> +	if (p->wait_pin_polarity != WAITPINPOLARITY_DEFAULT) {
+> +		config1 = gpmc_read_reg(GPMC_CONFIG);
+> +
+> +		if (p->wait_pin_polarity == WAITPINPOLARITY_ACTIVE_LOW)
+> +			config1 &= ~GPMC_CONFIG_WAITPINPOLARITY(p->wait_pin);
+> +		else if (p->wait_pin_polarity == WAITPINPOLARITY_ACTIVE_HIGH)
+> +			config1 |= GPMC_CONFIG_WAITPINPOLARITY(p->wait_pin);
+> +
+> +		gpmc_write_reg(GPMC_CONFIG, config1);
+
+What happens if wait pin is shared and you have different polarities in
+both of devices?
+
+> +	}
+> +
+>  	return 0;
+>  }
+>  
+> @@ -1981,7 +1993,22 @@ void gpmc_read_settings_dt(struct device_node *np, struct gpmc_settings *p)
+>  				__func__);
+>  	}
+>  
+> +	p->wait_pin_polarity = WAITPINPOLARITY_DEFAULT;
+> +
+>  	if (!of_property_read_u32(np, "gpmc,wait-pin", &p->wait_pin)) {
+> +		if (!of_property_read_u32(np, "gpmc,wait-pin-polarity",
+> +					  &p->wait_pin_polarity)) {
+> +			if (p->wait_pin_polarity != WAITPINPOLARITY_ACTIVE_HIGH &&
+> +			    p->wait_pin_polarity != WAITPINPOLARITY_ACTIVE_LOW &&
+> +			    p->wait_pin_polarity != WAITPINPOLARITY_DEFAULT) {
+
+WAITPINPOLARITY_DEFAULT is not allowed in DT, so you can skip it.
+
+> +				pr_err("%s: Invalid wait-pin-polarity (pin: %d, pol: %d)\n",
+
+dev_err, not pr_err
+
+> +				       __func__, p->wait_pin, p->wait_pin_polarity);
+
+Skip __func__
+
+> +				p->wait_pin_polarity = WAITPINPOLARITY_DEFAULT;
 > +			}
 > +		} else {
-> +			set_bit(wait_pin, &gpmc->wait_pin_alloc_mask);
->  		}
+> +			pr_err("%s: Failed to read gpmc,wait-pin-polarity\n", __func__);
 
-And how do you handle shared pin when the original owner unbinds?
+Ditto.
 
+> +		}
+> +
+>  		p->wait_on_read = of_property_read_bool(np,
+>  							"gpmc,wait-on-read");
+>  		p->wait_on_write = of_property_read_bool(np,
+> diff --git a/include/linux/platform_data/gpmc-omap.h b/include/linux/platform_data/gpmc-omap.h
+> index c9cc4e32435d..c46c28069c31 100644
+> --- a/include/linux/platform_data/gpmc-omap.h
+> +++ b/include/linux/platform_data/gpmc-omap.h
+> @@ -136,6 +136,11 @@ struct gpmc_device_timings {
+>  #define GPMC_MUX_AAD			1	/* Addr-Addr-Data multiplex */
+>  #define GPMC_MUX_AD			2	/* Addr-Data multiplex */
+>  
+> +/* Wait pin polarity values */
+> +#define WAITPINPOLARITY_DEFAULT -1
+
+Missing prefix. This is a global header.
+
+> +#define WAITPINPOLARITY_ACTIVE_LOW 0
+> +#define WAITPINPOLARITY_ACTIVE_HIGH 1
+> +
+>  struct gpmc_settings {
+>  	bool burst_wrap;	/* enables wrap bursting */
+>  	bool burst_read;	/* enables read page/burst mode */
+> @@ -149,6 +154,7 @@ struct gpmc_settings {
+>  	u32 device_width;	/* device bus width (8 or 16 bit) */
+>  	u32 mux_add_data;	/* multiplex address & data */
+>  	u32 wait_pin;		/* wait-pin to be used */
+> +	u32 wait_pin_polarity;	/* wait-pin polarity */
+
+Skip the comment. You just copied the name of variable. Such comments
+are useless.
+
+We do not have KPIs in kernel to achieve some comment-ratio...
 
 Best regards,
 Krzysztof
