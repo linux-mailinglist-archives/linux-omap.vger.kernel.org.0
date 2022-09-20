@@ -2,203 +2,257 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D1F5BE25A
-	for <lists+linux-omap@lfdr.de>; Tue, 20 Sep 2022 11:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B5AA5BE2C4
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Sep 2022 12:14:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230433AbiITJsa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 20 Sep 2022 05:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59870 "EHLO
+        id S229836AbiITKMl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 20 Sep 2022 06:12:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231228AbiITJsF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Sep 2022 05:48:05 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F636F269
-        for <linux-omap@vger.kernel.org>; Tue, 20 Sep 2022 02:48:01 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id a2so2844965lfb.6
-        for <linux-omap@vger.kernel.org>; Tue, 20 Sep 2022 02:48:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=M5WxUofFBoJGfewHDqk33FaOZhqYQWwaYYDWCY1yPeM=;
-        b=pkbvSiJnTxNSDnIs0YANOzMkL0jrhfjohngvVNEK4zUhkdlLCdg0OY9QOT24Sq13pp
-         QdDar2j7J4TX8RlyDyDwqWSMzBbX8MBry4Spju+CU0UeVF4nGfM3oCUAqorARKpYbZN7
-         rUFha05CwNwJD8aqOQqKCQi/phTaGC1qJ9P0hcmFl/TcpoIcbWepXzXoPf8ZqakhMp3m
-         x2h2l6uekM3txJvgC9wDe91+Gqm6jpPidoP0PMB4MZKSvCWpXVta+FtpAFeiauxy2p6B
-         rcxN23D8lhKnm7+loheKYyWMhCFnujW63kYsZxHzXb+kJy5jfX4+GJ6Re+XZBvcHh51H
-         ubbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=M5WxUofFBoJGfewHDqk33FaOZhqYQWwaYYDWCY1yPeM=;
-        b=qlCeV5S6jHhsuAaFmSHcZiVuo76Z69kMpVwoVzj1McBMnwF9AGxWDlrYM46tt6LJm/
-         bFlYTRQAGntD3rtgFgIeelbpJa0nlTf0pkQ1VVlVnQJ2E8R4ZF+XOmEH724Mk/khlwPW
-         ZEXsvFOs3WqKBuYYnHUhP9IOmJX0asieEUm+i/bn+m4mbRDufyQx2mxrh5wxTn0fcK7k
-         feIf5/askTllNI/Jfm/dp9U2csTvj3cb2+LiTLqBqHfLbzao+lzfcS3voJFhqCrcLHC+
-         JKvToA/ZMGNDGAR59UCVLRC086yj6dENXr8IYqmyfruAba0WuHURkiqrg4CKbeaMwA5v
-         OUPQ==
-X-Gm-Message-State: ACrzQf3RkK9s+2KS1XOwcgFOo/bFuSe1z4CtSFe52OMJqmQVJlml4qKN
-        jp89ObAgh2z1UI95cAzhSvnt7A==
-X-Google-Smtp-Source: AMsMyM6qdaOps+CLLadhvSGUjgNrQf17CgzUUetIXjsWF2aZi36wEY0NaE1WEj8RUpjFvTs57ZGLyQ==
-X-Received: by 2002:a05:6512:3daa:b0:49f:966f:254a with SMTP id k42-20020a0565123daa00b0049f966f254amr4579474lfv.73.1663667279350;
-        Tue, 20 Sep 2022 02:47:59 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id k12-20020a192d0c000000b004984ab5956dsm224516lfj.202.2022.09.20.02.47.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Sep 2022 02:47:58 -0700 (PDT)
-Message-ID: <0afa173f-9f7f-b2c8-7abc-2384ee46429d@linaro.org>
-Date:   Tue, 20 Sep 2022 11:47:58 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v5 2/3] memory: omap-gpmc: add support for wait pin
- polarity
-Content-Language: en-US
-To:     "Niedermayr, BENEDIKT" <benedikt.niedermayr@siemens.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        with ESMTP id S230081AbiITKMb (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Sep 2022 06:12:31 -0400
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on0612.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0e::612])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3829E5580;
+        Tue, 20 Sep 2022 03:12:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gD+pruj2YY9OkjIDjiep8GYUD29h8uLGW1fPSu0A0XJmWOkKNPzLnegzrt4CpGP8BMZuCSBFQrX7SK5geXXvu3rUkuROB7hSIOa7aSmOC2sT4oWLBcrJ+0MPRAFRpbzs93m2UB8HzEgsxXOuvZ2NRYOalCmDGonU4sVueAi/lHlS26nLlaCJHjqXXNNwzhk2GYFgJbytWnVTQzxl1SXXlFpre0vXiPUK7JnbF7Cdp5nCmQO+TzFsQ7KVfNFfvkmcnMWW1iSYz7vg+eeZxFqrxwbvwVmb7qxoz4hiX7fzIQVr+UfZyL8PEBgN9w8zbbYSDynvOS1ZUUwh+lYBUjS6eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GdhdZYyP0DwWiwpopuFhYMaWvLm49EYU4O4+wvRyh3w=;
+ b=oTDxFKiBJ6Wtlhu9wyyU86wFHTAQYs7So24gYO9/Y3/4PsggI7hBlAbdIl1xUdySz1ONBwmINM2ZwMWXelAJTlNa2U7yGlFbX5YscW0iF87/VY2Y0/0awOMUegA+k3osLrGp5Gs0QIvNfY1f1drr2c87wGwATkFR+T3ay7AwwSPUYTAGjtj0ab90qn/mQH5Pi9Rc1lGTdC4vdfJPMq/CLOXFEKo/Wxuiip+4wilLn9QIi3iP090m7jZtCNt1MRTXBmZVNPweWapeJUyLhQ2FzZiCyHlu1kfF4uz1YAoqJ+Qnf63mnCVfh+WXZMFnacQ8d+Jao7XYWOiQvZ8Fiiw9Ew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
+ dkim=pass header.d=siemens.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GdhdZYyP0DwWiwpopuFhYMaWvLm49EYU4O4+wvRyh3w=;
+ b=Ep6lDzWr8F29WHrEpFggmPkBaHtPN7kf1fnWvaD4Yt1KjY5B+5klWtUPwstDY6SovcNbbWSAhkIQze7Bm+HXLYWtWTXu6ZbFAb2V1VC4+UDl6vXSEpC62ognLatHGTJDOlkjC4+4Vjh/6tH8c34eGJKA/VQGsddwzVXaitKx/geG4sY6bsJMjIsgdKfE7lDqhHN2I6/3Yl7kGpdCAVWi/+bKe2dGf+F+es1Hqt8wY4fX3zzDXz0UWOXo88JePkry7VaLykXidtsB6G5Gf/0xgEMWR08mZgkGpr2lE0q1h/085dMyXHPSiLr24upVOyd0f3hoRJsPoy2NpmQAqbLknA==
+Received: from AS1PR10MB5507.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:47d::15)
+ by DB8PR10MB3628.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:134::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5632.21; Tue, 20 Sep
+ 2022 10:12:25 +0000
+Received: from AS1PR10MB5507.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::5da0:3f4f:28d7:dd79]) by AS1PR10MB5507.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::5da0:3f4f:28d7:dd79%7]) with mapi id 15.20.5654.014; Tue, 20 Sep 2022
+ 10:12:25 +0000
+From:   "Niedermayr, BENEDIKT" <benedikt.niedermayr@siemens.com>
+To:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "krzysztof.kozlowski@linaro.org" <krzysztof.kozlowski@linaro.org>,
         "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Cc:     "rogerq@kernel.org" <rogerq@kernel.org>,
+CC:     "rogerq@kernel.org" <rogerq@kernel.org>,
         "tony@atomide.com" <tony@atomide.com>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>
+Subject: Re: [PATCH v5 2/3] memory: omap-gpmc: add support for wait pin
+ polarity
+Thread-Topic: [PATCH v5 2/3] memory: omap-gpmc: add support for wait pin
+ polarity
+Thread-Index: AQHYzAuajWmeLYXeQ0i8d4Z1OtIEx63mvdaAgAEyVgCAABorAIAACbIAgAAG1AA=
+Date:   Tue, 20 Sep 2022 10:12:25 +0000
+Message-ID: <df05bbf214c92fcda6d7b003b49f20fd8755b97c.camel@siemens.com>
 References: <20220916120749.2517727-1-benedikt.niedermayr@siemens.com>
- <20220916120749.2517727-3-benedikt.niedermayr@siemens.com>
- <6dd3d41b-eb75-3754-8a17-a8cb4bc838a8@linaro.org>
- <f6f59421ac9b0e2c0b85918282c33f325726c4bd.camel@siemens.com>
- <cdc59072-648c-ce53-b9a5-b796d379e575@linaro.org>
- <24e5fa6065f68a25226b4aee02b8f900b630befa.camel@siemens.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <24e5fa6065f68a25226b4aee02b8f900b630befa.camel@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+         <20220916120749.2517727-3-benedikt.niedermayr@siemens.com>
+         <6dd3d41b-eb75-3754-8a17-a8cb4bc838a8@linaro.org>
+         <f6f59421ac9b0e2c0b85918282c33f325726c4bd.camel@siemens.com>
+         <cdc59072-648c-ce53-b9a5-b796d379e575@linaro.org>
+         <24e5fa6065f68a25226b4aee02b8f900b630befa.camel@siemens.com>
+         <0afa173f-9f7f-b2c8-7abc-2384ee46429d@linaro.org>
+In-Reply-To: <0afa173f-9f7f-b2c8-7abc-2384ee46429d@linaro.org>
+Reply-To: "Niedermayr, BENEDIKT" <benedikt.niedermayr@siemens.com>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siemens.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS1PR10MB5507:EE_|DB8PR10MB3628:EE_
+x-ms-office365-filtering-correlation-id: 24ef2f84-6920-4c7f-4bfc-08da9af09d7d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: lgurJk9hJ+2FAh21xyTPgScIu803dwdibg3PNQQOeNLtmjv9605oseWR/MkEHaKuFIBUWXNYLlDd19lS0Rx1sSNtTQzeYKqnk39wkN+uhYW7IBn07F0lvc5siLu0UloKUGWjA1uO+BM4JQb0BW9o+T+PSK3W4J93bPTrkBj0gyfCdlw07jtnlFBL019Vj4hhXN0hA4xLXkSpaAuz/DFzwDVABzyQvT6IiKEbkxujRYxO/M1fulhCadKc/xWmxWCvTTwxgJlL1KfMn/ZCYyjFoIfQkZ9bOgy2+9oiElDDxFPuyVOiKCzceWMWm7NVsFtnUIWCCUcuJsBFyjmyrzcwFHYAH+UG0PYIpULeDKo/u8uBrKnih5H0Est9wygb+MV3SgQn6gJRq4jVvrrJXEa2LZt9z+fkX0TgIe0nkYUOaG5T3u8+3jwrLzpSuvAHw6oKBXPCdu/AlR+if0b7Aw3N6b10z7ZqVWROmbw1/iDuJPzV7chRBmMcwBFcVyKZlC7Q7EoxoIaIpF2FZTkwOddWkcuyABJI/i6WrsuJ2rMXeAbSp50cPeVxG6t+9vRVtiQkGzKKxM36/PxH+yAict6zAbzZ1Xqfh4QHWHEp94uuWcEvJSHeU6v931mNhiYgpSk7jIQ7B9fca6Lcli0dyQ9L4CQhVuGMIyyUsEwBCEtJ6H4UrZa/BGPuDKlWPybKIIlB24ODRP8N9TBsiFzj9WVvwJfnv+9YMqa1GKJuMJOAK2s7RkZC90hk0iOt7UbOhuvwgr4Y5ERHG9mX9z9v+ZU1FA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS1PR10MB5507.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(396003)(39860400002)(366004)(346002)(136003)(451199015)(110136005)(54906003)(2616005)(5660300002)(316002)(186003)(83380400001)(53546011)(8936002)(86362001)(3450700001)(6512007)(38100700002)(76116006)(4326008)(36756003)(6486002)(6506007)(2906002)(38070700005)(66446008)(71200400001)(82960400001)(478600001)(64756008)(66556008)(8676002)(66476007)(66946007)(122000001)(91956017)(41300700001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?anJ4ZzJWVHpaSUw2S0NaMG9IZ0p3Y3hOQ2IydXhybHlaWVdocndiejVlb2tj?=
+ =?utf-8?B?L2R2emlGakRvZTZ1dlNUM0VNTFR0eUVJbDNQM1NoTFZha0JxeXdZaHZJeDFW?=
+ =?utf-8?B?RnlreXdPUzU3K2J1ZkRkcXFIRHlLZVcvK0lwUHdBZXZVSTM0SnM4MlZoSnJE?=
+ =?utf-8?B?WDFzQytmQnBlcjNNeWhEekRVU0VCYTRJZkJETWUvWThMUkRVaVFQdkl4STJh?=
+ =?utf-8?B?d1d1Zkw5ZUM1QlZkVTNPQWNya0lHZVBxUGI4Wi9kZ3k0Q2hKejlYRk9ud3dZ?=
+ =?utf-8?B?YzlydngzelZTRE55RUV5N1BuN1VCNG9YYW04TnR6WEJDcDAyQmpLbXI5dlhK?=
+ =?utf-8?B?R0tKYmU4SnlncnZFdFJUQUxwRm1WaGNXVGZoTnE3Uy85QmFtS2tnbFhMdnFx?=
+ =?utf-8?B?bDhzdi9tWHNZQlJJajdGeHdsRHRwYUFLTk5BaUgvWFM2b1hENWJZR1Z1bXhL?=
+ =?utf-8?B?dXhlTlVuSjFWTU1WQTR4VnR1bWdGQ3VONURNS0JHOHlxTWpTT05vWkVsNlMx?=
+ =?utf-8?B?d1daZkZtNW91RjZQaUgzM29BYlBFeS9vY2tnem1DZmpSU1pSV1REcHZQWGMy?=
+ =?utf-8?B?Y1NnQnFmUXZHYVhUSnd6aXFtdDhXRm12VGs0b1BVZFpHVTgybnNpUFczTDBi?=
+ =?utf-8?B?ZGxpNisrM29qYW91UE5BeERQazNwTUxMaHRhMFk3OUM5dmRmNWhyVVh3QzVi?=
+ =?utf-8?B?ZlN6Wkl0OHl5bnhoemlMclRwRmpqUzNNSGNqLzFXcWUzaEx0TjJrcUUxWGFI?=
+ =?utf-8?B?WkRXZENkTk9hS3U1VWlMazg1NzZiM210RWcyK3dVYVZNM3Y0WUF4UEhlSFZU?=
+ =?utf-8?B?amNocStYNzJzdW5wRStLM3cvaEpWTGE4c256Mnc3UlU0SjhUaVU3MklYK05t?=
+ =?utf-8?B?WENqOWpMTDdNMjRPcHhHR01HZ0FSZzFmY1FOL21EN3UrYTBqbENLRnMzUzFQ?=
+ =?utf-8?B?dXE4RmZsQkE4WmF5bVpZTHVKNTN6aFBJaEJ4bVdnZ1l0QzRjZ0tFL0h1SHVq?=
+ =?utf-8?B?SVNuc3hzVjhqNjFyRFBOV0ZmUk9TQlR6NndUWWVnQjlUdGl1OFNyZVZpZ09n?=
+ =?utf-8?B?dWtlOEJqWGU2RGR2eVZ6Um81ZEpVL1g3VE5BQWxWcDFVYW9pV21sNW5BQWxn?=
+ =?utf-8?B?a3JvcUtFTERScllXeDgxSVN0clcvc25YcFRSOTk3Tzh3UStOSWU0SytDSHZv?=
+ =?utf-8?B?SUZGOWdzT3JiMk9KMS9JNW9QUDVITlpVcGVVYXo3dDN1eWhXc0RGRExuVmh6?=
+ =?utf-8?B?NlJIcUtBaG9BeE9hNDdvSkJSL291RnVwMi9GV0hkbjNLcGI1ZVhGUjdVMktJ?=
+ =?utf-8?B?N0NXRzNKWjE5aXlhalZ1Y1JlZExJS3BYNkFvU0s3TUdKc3VqUkVMU3ZZbXZp?=
+ =?utf-8?B?Y1FXSkFJK2VSbEExWFBWamlXQWZLWVdJM0xMd3NWbW9vbEV2aWNFRVR5Wmx4?=
+ =?utf-8?B?MmtnQkdRVzlCY2hOZk9DZWpTOEU4ampHMjNqYUZNdStQNGd1SmNocTFqbUwy?=
+ =?utf-8?B?Y0RNUjhUZW50MWs3Q09LbEt3dnlpb3FYUDNMc2FvYS9adzhlTXJIS0RxeUpK?=
+ =?utf-8?B?WmJxTVlJQS93cTBkdW85RUR3dzhXRGFXbmFKRXBMY1FnUDZFL1dsOWY0d3pO?=
+ =?utf-8?B?TWZjbXpsdmZ2TjR2V1p3R0xZQTh4WHdMN3dHQ3l0QWpVSllydDNYdUZGelkw?=
+ =?utf-8?B?OGJHU25jODFKNE5IZ3M3MjVZRVRGdFhWQXBzd2VzVENCT3ZDOUloYk01NHNx?=
+ =?utf-8?B?L2ZWY3hDT0FlN1doN3VWUnp2bHYyRHN4QWMzM3ozOXlSc0JHNzFkTXpLQjh0?=
+ =?utf-8?B?RlR5RnFjU2NnM1Y1ckZlUWtoZWF5V0U0bC9ac2VxWDRLTXdPS2dNYnM3ZFd3?=
+ =?utf-8?B?THBkeTNWSTFIbTEyZVNEMGM5UHdNOUpWZHB6VW9KamNwbG5mQWlCQXNZbjdY?=
+ =?utf-8?B?V1NvYmZnanhFRnh3Z1loK0hnRnk0cWtKM3FXb1VVWDVadDdxVDVUOStOeWo5?=
+ =?utf-8?B?dEI1SmZabU1zK1MyL0tjK09zUVFjV0pyNlp4TERiKzFoNjF3WnFURDdvY1U1?=
+ =?utf-8?B?UHNoVnQyYndPRDNJdmFhazJpVFUwTE1MdjJxY1IrQzRRY1ZkQmRiVGs1bW1j?=
+ =?utf-8?B?L2tuTitGbE4wL25QR08vUWsvdFFac1BhNENCdURveml6MnBlc3ByVWVIaEU4?=
+ =?utf-8?B?cGNmdzNoTEUwWXVMVVR1dGhlNC85VjVtVFMvVkVTU2ZUc1VXcFdEYzR3dk9v?=
+ =?utf-8?Q?MdmmJS5D9EO6tDsq7kTr1y2EZjk9U64W8LVkRWFoNE=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9F547AE947C1124EBF8E9F83AE3258DB@EURPRD10.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: siemens.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS1PR10MB5507.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24ef2f84-6920-4c7f-4bfc-08da9af09d7d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2022 10:12:25.0940
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6IzeElEG52qVQI7z/vxcDjjSOxLe6pOJZmVKdwp57Im5i6WEvyHP8TjcXGNHIUOo8/cqVdijqhTkh+VJkKgC918rIjBQGYri++qHce5orQU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3628
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 20/09/2022 11:13, Niedermayr, BENEDIKT wrote:
-> Hi Krzysztof,
-> 
-> On Tue, 2022-09-20 at 09:39 +0200, Krzysztof Kozlowski wrote:
->> On 19/09/2022 15:25, Niedermayr, BENEDIKT wrote:
->>> Hi Krzysztof,
->>>
->>> On Mon, 2022-09-19 at 11:38 +0200, Krzysztof Kozlowski wrote:
->>>> On 16/09/2022 14:07, B. Niedermayr wrote:
->>>>> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
->>>>>
->>>>> The waitpin polarity can be configured via the WAITPIN<X>POLARITY bits
->>>>> in the GPMC_CONFIG register. This is currently not supported by the
->>>>> driver. This patch adds support for setting the required register bits
->>>>> with the "gpmc,wait-pin-polarity" dt-property.
->>>>>
->>>>> Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
->>>>> ---
->>>>>  drivers/memory/omap-gpmc.c              | 27 +++++++++++++++++++++++++
->>>>>  include/linux/platform_data/gpmc-omap.h |  6 ++++++
->>>>>  2 files changed, 33 insertions(+)
->>>>>
->>>>> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
->>>>> index ea495e93766b..2853fc28bccc 100644
->>>>> --- a/drivers/memory/omap-gpmc.c
->>>>> +++ b/drivers/memory/omap-gpmc.c
->>>>> @@ -132,6 +132,7 @@
->>>>>  #define GPMC_CONFIG_DEV_SIZE	0x00000002
->>>>>  #define GPMC_CONFIG_DEV_TYPE	0x00000003
->>>>>  
->>>>> +#define GPMC_CONFIG_WAITPINPOLARITY(pin)	(BIT(pin) << 8)
->>>>>  #define GPMC_CONFIG1_WRAPBURST_SUPP     (1 << 31)
->>>>>  #define GPMC_CONFIG1_READMULTIPLE_SUPP  (1 << 30)
->>>>>  #define GPMC_CONFIG1_READTYPE_ASYNC     (0 << 29)
->>>>> @@ -1882,6 +1883,17 @@ int gpmc_cs_program_settings(int cs, struct gpmc_settings *p)
->>>>>  
->>>>>  	gpmc_cs_write_reg(cs, GPMC_CS_CONFIG1, config1);
->>>>>  
->>>>> +	if (p->wait_pin_polarity != WAITPINPOLARITY_DEFAULT) {
->>>>> +		config1 = gpmc_read_reg(GPMC_CONFIG);
->>>>> +
->>>>> +		if (p->wait_pin_polarity == WAITPINPOLARITY_ACTIVE_LOW)
->>>>> +			config1 &= ~GPMC_CONFIG_WAITPINPOLARITY(p->wait_pin);
->>>>> +		else if (p->wait_pin_polarity == WAITPINPOLARITY_ACTIVE_HIGH)
->>>>> +			config1 |= GPMC_CONFIG_WAITPINPOLARITY(p->wait_pin);
->>>>> +
->>>>> +		gpmc_write_reg(GPMC_CONFIG, config1);
->>>>
->>>> What happens if wait pin is shared and you have different polarities in
->>>> both of devices?
->>> In this case the second one wins and will overwrite the polarity of the first one.
->>> But that would be the result of a misconfiguration in the DT.
->>
->> In many cases drivers do not accept blindly a DT, but perform some basic
->> sanity on it, especially if mistake is easy to make (e.g. with
->> overlays). Such design of DT is just fragile. Schema cannot validate it,
->> driver does not care, mistake is quite possible.
-> 
-> Ok, that makes sense. I'm going to implement this in v6.
->>
->>> I'm not sure how to proceed here? Does it make sense to add a check for different 
->>> waitpin polarities?
->>
->> I don't know. I would just disallow such sharing entirely or disallow
->> sharing if DT is misconfigured.
->>
->>
->>>
->>>>> +	}
->>>>> +
->>>>>  	return 0;
->>>>>  }
->>>>>  
->>>>> @@ -1981,7 +1993,22 @@ void gpmc_read_settings_dt(struct device_node *np, struct gpmc_settings *p)
->>>>>  				__func__);
->>>>>  	}
->>>>>  
->>>>> +	p->wait_pin_polarity = WAITPINPOLARITY_DEFAULT;
->>>>> +
->>>>>  	if (!of_property_read_u32(np, "gpmc,wait-pin", &p->wait_pin)) {
->>>>> +		if (!of_property_read_u32(np, "gpmc,wait-pin-polarity",
->>>>> +					  &p->wait_pin_polarity)) {
->>>>> +			if (p->wait_pin_polarity != WAITPINPOLARITY_ACTIVE_HIGH &&
->>>>> +			    p->wait_pin_polarity != WAITPINPOLARITY_ACTIVE_LOW &&
->>>>> +			    p->wait_pin_polarity != WAITPINPOLARITY_DEFAULT) {
->>>>
->>>> WAITPINPOLARITY_DEFAULT is not allowed in DT, so you can skip it.
->>> This value is not assigned from the DT. It is only assigned within the GPMC and serves as a init
->>> value (right before the if clause). This helps in case no configuration from DT is done where the 
->>> GPMC registers should stay untouched.
->>
->> I don't see it. Your code is:
->>
->> p->wait_pin_polarity = WAITPINPOLARITY_DEFAULT;
->> # and DT has WAITPINPOLARITY_DEFAULT
->> if (....) {
->>   pr_err
->>   p->wait_pin_polarity = WAITPINPOLARITY_DEFAULT;
->> } else {
->>   pr_err
->> }
->>
-> Maybe I dont't get what you mean with DT in this context.
-> 
-> What I meant is that the value WAITPINPOLARITY_DEFAULT is not directly extracted from the DT but is assigned in case
-> "gpmc,wait-pin-polarity" is not set or has an invalid value. In any case the p->wait_pin_polarity should have
-> at least the init value assigned so we can make proper decisions in gpmc_cs_program_settings().
-> 
-> Maybe I need some clarification what exatly is forbidden here.
-
-I commented exactly below the line which I question. I don't question
-other lines. So let me be a bit more specific:
-
-Why do you need
-"p->wait_pin_polarity != WAITPINPOLARITY_DEFAULT"
-? Can you write a scenario where this is useful?
-
-Best regards,
-Krzysztof
+SGkgS3J6eXN6dG9mLA0KDQpPbiBUdWUsIDIwMjItMDktMjAgYXQgMTE6NDcgKzAyMDAsIEtyenlz
+enRvZiBLb3psb3dza2kgd3JvdGU6DQo+IE9uIDIwLzA5LzIwMjIgMTE6MTMsIE5pZWRlcm1heXIs
+IEJFTkVESUtUIHdyb3RlOg0KPiA+IEhpIEtyenlzenRvZiwNCj4gPiANCj4gPiBPbiBUdWUsIDIw
+MjItMDktMjAgYXQgMDk6MzkgKzAyMDAsIEtyenlzenRvZiBLb3psb3dza2kgd3JvdGU6DQo+ID4g
+PiBPbiAxOS8wOS8yMDIyIDE1OjI1LCBOaWVkZXJtYXlyLCBCRU5FRElLVCB3cm90ZToNCj4gPiA+
+ID4gSGkgS3J6eXN6dG9mLA0KPiA+ID4gPiANCj4gPiA+ID4gT24gTW9uLCAyMDIyLTA5LTE5IGF0
+IDExOjM4ICswMjAwLCBLcnp5c3p0b2YgS296bG93c2tpIHdyb3RlOg0KPiA+ID4gPiA+IE9uIDE2
+LzA5LzIwMjIgMTQ6MDcsIEIuIE5pZWRlcm1heXIgd3JvdGU6DQo+ID4gPiA+ID4gPiBGcm9tOiBC
+ZW5lZGlrdCBOaWVkZXJtYXlyIDxiZW5lZGlrdC5uaWVkZXJtYXlyQHNpZW1lbnMuY29tPg0KPiA+
+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiBUaGUgd2FpdHBpbiBwb2xhcml0eSBjYW4gYmUgY29uZmln
+dXJlZCB2aWEgdGhlIFdBSVRQSU48WD5QT0xBUklUWSBiaXRzDQo+ID4gPiA+ID4gPiBpbiB0aGUg
+R1BNQ19DT05GSUcgcmVnaXN0ZXIuIFRoaXMgaXMgY3VycmVudGx5IG5vdCBzdXBwb3J0ZWQgYnkg
+dGhlDQo+ID4gPiA+ID4gPiBkcml2ZXIuIFRoaXMgcGF0Y2ggYWRkcyBzdXBwb3J0IGZvciBzZXR0
+aW5nIHRoZSByZXF1aXJlZCByZWdpc3RlciBiaXRzDQo+ID4gPiA+ID4gPiB3aXRoIHRoZSAiZ3Bt
+Yyx3YWl0LXBpbi1wb2xhcml0eSIgZHQtcHJvcGVydHkuDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4g
+PiA+IFNpZ25lZC1vZmYtYnk6IEJlbmVkaWt0IE5pZWRlcm1heXIgPGJlbmVkaWt0Lm5pZWRlcm1h
+eXJAc2llbWVucy5jb20+DQo+ID4gPiA+ID4gPiAtLS0NCj4gPiA+ID4gPiA+ICBkcml2ZXJzL21l
+bW9yeS9vbWFwLWdwbWMuYyAgICAgICAgICAgICAgfCAyNyArKysrKysrKysrKysrKysrKysrKysr
+KysrDQo+ID4gPiA+ID4gPiAgaW5jbHVkZS9saW51eC9wbGF0Zm9ybV9kYXRhL2dwbWMtb21hcC5o
+IHwgIDYgKysrKysrDQo+ID4gPiA+ID4gPiAgMiBmaWxlcyBjaGFuZ2VkLCAzMyBpbnNlcnRpb25z
+KCspDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21lbW9y
+eS9vbWFwLWdwbWMuYyBiL2RyaXZlcnMvbWVtb3J5L29tYXAtZ3BtYy5jDQo+ID4gPiA+ID4gPiBp
+bmRleCBlYTQ5NWU5Mzc2NmIuLjI4NTNmYzI4YmNjYyAxMDA2NDQNCj4gPiA+ID4gPiA+IC0tLSBh
+L2RyaXZlcnMvbWVtb3J5L29tYXAtZ3BtYy5jDQo+ID4gPiA+ID4gPiArKysgYi9kcml2ZXJzL21l
+bW9yeS9vbWFwLWdwbWMuYw0KPiA+ID4gPiA+ID4gQEAgLTEzMiw2ICsxMzIsNyBAQA0KPiA+ID4g
+PiA+ID4gICNkZWZpbmUgR1BNQ19DT05GSUdfREVWX1NJWkUJMHgwMDAwMDAwMg0KPiA+ID4gPiA+
+ID4gICNkZWZpbmUgR1BNQ19DT05GSUdfREVWX1RZUEUJMHgwMDAwMDAwMw0KPiA+ID4gPiA+ID4g
+IA0KPiA+ID4gPiA+ID4gKyNkZWZpbmUgR1BNQ19DT05GSUdfV0FJVFBJTlBPTEFSSVRZKHBpbikJ
+KEJJVChwaW4pIDw8IDgpDQo+ID4gPiA+ID4gPiAgI2RlZmluZSBHUE1DX0NPTkZJRzFfV1JBUEJV
+UlNUX1NVUFAgICAgICgxIDw8IDMxKQ0KPiA+ID4gPiA+ID4gICNkZWZpbmUgR1BNQ19DT05GSUcx
+X1JFQURNVUxUSVBMRV9TVVBQICAoMSA8PCAzMCkNCj4gPiA+ID4gPiA+ICAjZGVmaW5lIEdQTUNf
+Q09ORklHMV9SRUFEVFlQRV9BU1lOQyAgICAgKDAgPDwgMjkpDQo+ID4gPiA+ID4gPiBAQCAtMTg4
+Miw2ICsxODgzLDE3IEBAIGludCBncG1jX2NzX3Byb2dyYW1fc2V0dGluZ3MoaW50IGNzLCBzdHJ1
+Y3QgZ3BtY19zZXR0aW5ncyAqcCkNCj4gPiA+ID4gPiA+ICANCj4gPiA+ID4gPiA+ICAJZ3BtY19j
+c193cml0ZV9yZWcoY3MsIEdQTUNfQ1NfQ09ORklHMSwgY29uZmlnMSk7DQo+ID4gPiA+ID4gPiAg
+DQo+ID4gPiA+ID4gPiArCWlmIChwLT53YWl0X3Bpbl9wb2xhcml0eSAhPSBXQUlUUElOUE9MQVJJ
+VFlfREVGQVVMVCkgew0KPiA+ID4gPiA+ID4gKwkJY29uZmlnMSA9IGdwbWNfcmVhZF9yZWcoR1BN
+Q19DT05GSUcpOw0KPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gKwkJaWYgKHAtPndhaXRfcGlu
+X3BvbGFyaXR5ID09IFdBSVRQSU5QT0xBUklUWV9BQ1RJVkVfTE9XKQ0KPiA+ID4gPiA+ID4gKwkJ
+CWNvbmZpZzEgJj0gfkdQTUNfQ09ORklHX1dBSVRQSU5QT0xBUklUWShwLT53YWl0X3Bpbik7DQo+
+ID4gPiA+ID4gPiArCQllbHNlIGlmIChwLT53YWl0X3Bpbl9wb2xhcml0eSA9PSBXQUlUUElOUE9M
+QVJJVFlfQUNUSVZFX0hJR0gpDQo+ID4gPiA+ID4gPiArCQkJY29uZmlnMSB8PSBHUE1DX0NPTkZJ
+R19XQUlUUElOUE9MQVJJVFkocC0+d2FpdF9waW4pOw0KPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+
+ID4gKwkJZ3BtY193cml0ZV9yZWcoR1BNQ19DT05GSUcsIGNvbmZpZzEpOw0KPiA+ID4gPiA+IA0K
+PiA+ID4gPiA+IFdoYXQgaGFwcGVucyBpZiB3YWl0IHBpbiBpcyBzaGFyZWQgYW5kIHlvdSBoYXZl
+IGRpZmZlcmVudCBwb2xhcml0aWVzIGluDQo+ID4gPiA+ID4gYm90aCBvZiBkZXZpY2VzPw0KPiA+
+ID4gPiBJbiB0aGlzIGNhc2UgdGhlIHNlY29uZCBvbmUgd2lucyBhbmQgd2lsbCBvdmVyd3JpdGUg
+dGhlIHBvbGFyaXR5IG9mIHRoZSBmaXJzdCBvbmUuDQo+ID4gPiA+IEJ1dCB0aGF0IHdvdWxkIGJl
+IHRoZSByZXN1bHQgb2YgYSBtaXNjb25maWd1cmF0aW9uIGluIHRoZSBEVC4NCj4gPiA+IA0KPiA+
+ID4gSW4gbWFueSBjYXNlcyBkcml2ZXJzIGRvIG5vdCBhY2NlcHQgYmxpbmRseSBhIERULCBidXQg
+cGVyZm9ybSBzb21lIGJhc2ljDQo+ID4gPiBzYW5pdHkgb24gaXQsIGVzcGVjaWFsbHkgaWYgbWlz
+dGFrZSBpcyBlYXN5IHRvIG1ha2UgKGUuZy4gd2l0aA0KPiA+ID4gb3ZlcmxheXMpLiBTdWNoIGRl
+c2lnbiBvZiBEVCBpcyBqdXN0IGZyYWdpbGUuIFNjaGVtYSBjYW5ub3QgdmFsaWRhdGUgaXQsDQo+
+ID4gPiBkcml2ZXIgZG9lcyBub3QgY2FyZSwgbWlzdGFrZSBpcyBxdWl0ZSBwb3NzaWJsZS4NCj4g
+PiANCj4gPiBPaywgdGhhdCBtYWtlcyBzZW5zZS4gSSdtIGdvaW5nIHRvIGltcGxlbWVudCB0aGlz
+IGluIHY2Lg0KPiA+ID4gPiBJJ20gbm90IHN1cmUgaG93IHRvIHByb2NlZWQgaGVyZT8gRG9lcyBp
+dCBtYWtlIHNlbnNlIHRvIGFkZCBhIGNoZWNrIGZvciBkaWZmZXJlbnQgDQo+ID4gPiA+IHdhaXRw
+aW4gcG9sYXJpdGllcz8NCj4gPiA+IA0KPiA+ID4gSSBkb24ndCBrbm93LiBJIHdvdWxkIGp1c3Qg
+ZGlzYWxsb3cgc3VjaCBzaGFyaW5nIGVudGlyZWx5IG9yIGRpc2FsbG93DQo+ID4gPiBzaGFyaW5n
+IGlmIERUIGlzIG1pc2NvbmZpZ3VyZWQuDQo+ID4gPiANCj4gPiA+IA0KPiA+ID4gPiA+ID4gKwl9
+DQo+ID4gPiA+ID4gPiArDQo+ID4gPiA+ID4gPiAgCXJldHVybiAwOw0KPiA+ID4gPiA+ID4gIH0N
+Cj4gPiA+ID4gPiA+ICANCj4gPiA+ID4gPiA+IEBAIC0xOTgxLDcgKzE5OTMsMjIgQEAgdm9pZCBn
+cG1jX3JlYWRfc2V0dGluZ3NfZHQoc3RydWN0IGRldmljZV9ub2RlICpucCwgc3RydWN0IGdwbWNf
+c2V0dGluZ3MgKnApDQo+ID4gPiA+ID4gPiAgCQkJCV9fZnVuY19fKTsNCj4gPiA+ID4gPiA+ICAJ
+fQ0KPiA+ID4gPiA+ID4gIA0KPiA+ID4gPiA+ID4gKwlwLT53YWl0X3Bpbl9wb2xhcml0eSA9IFdB
+SVRQSU5QT0xBUklUWV9ERUZBVUxUOw0KPiA+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ID4gIAlpZiAo
+IW9mX3Byb3BlcnR5X3JlYWRfdTMyKG5wLCAiZ3BtYyx3YWl0LXBpbiIsICZwLT53YWl0X3Bpbikp
+IHsNCj4gPiA+ID4gPiA+ICsJCWlmICghb2ZfcHJvcGVydHlfcmVhZF91MzIobnAsICJncG1jLHdh
+aXQtcGluLXBvbGFyaXR5IiwNCj4gPiA+ID4gPiA+ICsJCQkJCSAgJnAtPndhaXRfcGluX3BvbGFy
+aXR5KSkgew0KPiA+ID4gPiA+ID4gKwkJCWlmIChwLT53YWl0X3Bpbl9wb2xhcml0eSAhPSBXQUlU
+UElOUE9MQVJJVFlfQUNUSVZFX0hJR0ggJiYNCj4gPiA+ID4gPiA+ICsJCQkgICAgcC0+d2FpdF9w
+aW5fcG9sYXJpdHkgIT0gV0FJVFBJTlBPTEFSSVRZX0FDVElWRV9MT1cgJiYNCj4gPiA+ID4gPiA+
+ICsJCQkgICAgcC0+d2FpdF9waW5fcG9sYXJpdHkgIT0gV0FJVFBJTlBPTEFSSVRZX0RFRkFVTFQp
+IHsNCj4gPiA+ID4gPiANCj4gPiA+ID4gPiBXQUlUUElOUE9MQVJJVFlfREVGQVVMVCBpcyBub3Qg
+YWxsb3dlZCBpbiBEVCwgc28geW91IGNhbiBza2lwIGl0Lg0KPiA+ID4gPiBUaGlzIHZhbHVlIGlz
+IG5vdCBhc3NpZ25lZCBmcm9tIHRoZSBEVC4gSXQgaXMgb25seSBhc3NpZ25lZCB3aXRoaW4gdGhl
+IEdQTUMgYW5kIHNlcnZlcyBhcyBhIGluaXQNCj4gPiA+ID4gdmFsdWUgKHJpZ2h0IGJlZm9yZSB0
+aGUgaWYgY2xhdXNlKS4gVGhpcyBoZWxwcyBpbiBjYXNlIG5vIGNvbmZpZ3VyYXRpb24gZnJvbSBE
+VCBpcyBkb25lIHdoZXJlIHRoZSANCj4gPiA+ID4gR1BNQyByZWdpc3RlcnMgc2hvdWxkIHN0YXkg
+dW50b3VjaGVkLg0KPiA+ID4gDQo+ID4gPiBJIGRvbid0IHNlZSBpdC4gWW91ciBjb2RlIGlzOg0K
+PiA+ID4gDQo+ID4gPiBwLT53YWl0X3Bpbl9wb2xhcml0eSA9IFdBSVRQSU5QT0xBUklUWV9ERUZB
+VUxUOw0KPiA+ID4gIyBhbmQgRFQgaGFzIFdBSVRQSU5QT0xBUklUWV9ERUZBVUxUDQo+ID4gPiBp
+ZiAoLi4uLikgew0KPiA+ID4gICBwcl9lcnINCj4gPiA+ICAgcC0+d2FpdF9waW5fcG9sYXJpdHkg
+PSBXQUlUUElOUE9MQVJJVFlfREVGQVVMVDsNCj4gPiA+IH0gZWxzZSB7DQo+ID4gPiAgIHByX2Vy
+cg0KPiA+ID4gfQ0KPiA+ID4gDQo+ID4gTWF5YmUgSSBkb250J3QgZ2V0IHdoYXQgeW91IG1lYW4g
+d2l0aCBEVCBpbiB0aGlzIGNvbnRleHQuDQo+ID4gDQo+ID4gV2hhdCBJIG1lYW50IGlzIHRoYXQg
+dGhlIHZhbHVlIFdBSVRQSU5QT0xBUklUWV9ERUZBVUxUIGlzIG5vdCBkaXJlY3RseSBleHRyYWN0
+ZWQgZnJvbSB0aGUgRFQgYnV0IGlzIGFzc2lnbmVkIGluIGNhc2UNCj4gPiAiZ3BtYyx3YWl0LXBp
+bi1wb2xhcml0eSIgaXMgbm90IHNldCBvciBoYXMgYW4gaW52YWxpZCB2YWx1ZS4gSW4gYW55IGNh
+c2UgdGhlIHAtPndhaXRfcGluX3BvbGFyaXR5IHNob3VsZCBoYXZlDQo+ID4gYXQgbGVhc3QgdGhl
+IGluaXQgdmFsdWUgYXNzaWduZWQgc28gd2UgY2FuIG1ha2UgcHJvcGVyIGRlY2lzaW9ucyBpbiBn
+cG1jX2NzX3Byb2dyYW1fc2V0dGluZ3MoKS4NCj4gPiANCj4gPiBNYXliZSBJIG5lZWQgc29tZSBj
+bGFyaWZpY2F0aW9uIHdoYXQgZXhhdGx5IGlzIGZvcmJpZGRlbiBoZXJlLg0KPiANCj4gSSBjb21t
+ZW50ZWQgZXhhY3RseSBiZWxvdyB0aGUgbGluZSB3aGljaCBJIHF1ZXN0aW9uLiBJIGRvbid0IHF1
+ZXN0aW9uDQo+IG90aGVyIGxpbmVzLiBTbyBsZXQgbWUgYmUgYSBiaXQgbW9yZSBzcGVjaWZpYzoN
+Cj4gDQo+IFdoeSBkbyB5b3UgbmVlZA0KPiAicC0+d2FpdF9waW5fcG9sYXJpdHkgIT0gV0FJVFBJ
+TlBPTEFSSVRZX0RFRkFVTFQiDQo+ID8gQ2FuIHlvdSB3cml0ZSBhIHNjZW5hcmlvIHdoZXJlIHRo
+aXMgaXMgdXNlZnVsPw0KPiANCk9rLiBJIHRoaW5rIEkgZ290IHlvdSBub3cuIFNvcnJ5IEknbSBy
+ZWxhdGl2ZWx5IG5ldyB0byBPU1MgY29udHJpYnV0aW9ucywgc28gcGxlYXNlIGJlIHBhdGllbnQg
+d2l0aCBtZS4uLg0KDQpJZiBJIHJlbW92ZSB0aGF0IHBhcnQgb2YgdGhlIGlmIGNsYXVzZSwgdGhl
+biBhbiBlcnJvciBtZXNzYWdlIHdvdWxkIGJlIHByaW50ZWQgaW4gY2FzZSAicC0+d2FpdF9waW5f
+cG9sYXJpdHkgPT0gV0FJVFBJTlBPTEFSSVRZX0RFRkFVTFQiLg0KQnV0IHRoaXMgaXMgYSBub3Qg
+YW4gZXJyb3IgY2FzZS4gV0FJVFBJTlBPTEFSSVRZX0RFRkFVTFQgaXMgYSB2YWxpZCB2YWx1ZSwg
+aXMgYXNzaWduZWQgcmlnaHQgYmVmb3JlIHRoZSBpZiBjbGF1c2UgYXMgYW4gaW5pdCB2YWx1ZShu
+b3QgZXh0cmFjdGVkIGZyb20gRFQpLA0KYW5kIGxlYWRzIHRvIG5vdCB0b3VjaGluZyB0aGUgR1BN
+Q19DT05GSUcgcmVnaXN0ZXIgaW4gZ3BtY19jc19wcm9ncmFtX3NldHRpbmdzKCkuDQpTbyBpbiBn
+cG1jX2NzX3Byb2dyYW1fc2V0dGluZ3MoKSBpZjoNCiAgICBwLT53YWl0X3Bpbl9wb2xhcml0eSAh
+PSBXQUlUUElOUE9MQVJJVFlfQUNUSVZFX0hJR0ggLT4gSXNzdWUgYSB3cml0ZSB0byB0aGUgR1BN
+Q19DT05GSUcgcmVnaXN0ZXINCiAgICBwLT53YWl0X3Bpbl9wb2xhcml0eSAhPSBXQUlUUElOUE9M
+QVJJVFlfQUNUSVZFX0xPVyAgLT4gSXNzdWEgYSB3cml0ZSB0byB0aGUgR1BNQ19DT05GSUcgcmVn
+aXN0ZXINCiAgICBwLT53YWl0X3Bpbl9wb2xhcml0eSAhPSBXQUlUUElOUE9MQVJJVFlfREVGQVVM
+VCAgICAgLT4gRG8gbm90IHRvdWNoIHRoZSBHUE1DX0NPTkZJRyByZWdpc3Rlcg0KDQpXZSB3YW50
+IHRvIHByZXNlcnZlIHRoZSByZXNldCB2YWx1ZSBvZiB0aGUgR1BNQ19DT05GSUcgcmVnaXN0ZXIg
+aW4gY2FzZSB0aGUgRFQgZG9lcyBub3QgdXNlIHRoZSAiZ3BtYyx3YWl0LXBpbi1wb2xhcml0eSIg
+cHJvcGVydHkuIE90aGVyd2lzZQ0Kd2UgbWlnaHQgYnJlYWsgcGxhdGZvcm1zIHdoaWNoIHJlbHkg
+b24gdGhlc2UgcmVzZXQgdmFsdWVzLiANCg0KPiBCZXN0IHJlZ2FyZHMsDQo+IEtyenlzenRvZg0K
+Q2hlZXJzLA0KYmVuZWRpa3QNCg==
