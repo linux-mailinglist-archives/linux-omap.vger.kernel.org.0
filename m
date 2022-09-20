@@ -2,25 +2,25 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D79C5BE693
+	by mail.lfdr.de (Postfix) with ESMTP id 00CF45BE692
 	for <lists+linux-omap@lfdr.de>; Tue, 20 Sep 2022 15:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbiITNBQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S229998AbiITNBQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Tue, 20 Sep 2022 09:01:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35106 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230123AbiITNBP (ORCPT
+        with ESMTP id S229925AbiITNBP (ORCPT
         <rfc822;linux-omap@vger.kernel.org>); Tue, 20 Sep 2022 09:01:15 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2351E617C
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C22CA3A14F
         for <linux-omap@vger.kernel.org>; Tue, 20 Sep 2022 06:01:13 -0700 (PDT)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4MX1lj3Lwmz14QvS;
-        Tue, 20 Sep 2022 20:57:05 +0800 (CST)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.53])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4MX1ny6q1nzHp9W;
+        Tue, 20 Sep 2022 20:59:02 +0800 (CST)
 Received: from cgs.huawei.com (10.244.148.83) by
  kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 20 Sep 2022 21:01:10 +0800
+ 15.1.2375.31; Tue, 20 Sep 2022 21:01:11 +0800
 From:   Gaosheng Cui <cuigaosheng1@huawei.com>
 To:     <paul@pwsan.com>, <tony@atomide.com>, <linux@armlinux.org.uk>,
         <khilman@kernel.org>, <daniel@zonque.org>,
@@ -28,10 +28,12 @@ To:     <paul@pwsan.com>, <tony@atomide.com>, <linux@armlinux.org.uk>,
         <cuigaosheng1@huawei.com>
 CC:     <linux-omap@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH 0/3] Remove unused declarations from arm
-Date:   Tue, 20 Sep 2022 21:01:07 +0800
-Message-ID: <20220920130110.1104272-1-cuigaosheng1@huawei.com>
+Subject: [PATCH 1/3] ARM: OMAP2+: Remove orphan declarations from arch/arm/mach-omap2/pm.h
+Date:   Tue, 20 Sep 2022 21:01:08 +0800
+Message-ID: <20220920130110.1104272-2-cuigaosheng1@huawei.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220920130110.1104272-1-cuigaosheng1@huawei.com>
+References: <20220920130110.1104272-1-cuigaosheng1@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -47,21 +49,29 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This series contains a few cleanup patches, to remove unused
-declarations which have been removed. Thanks!
+omap24xx_idle_loop_suspend() and omap24xx_idle_loop_suspend_sz have
+been removed since commit 088e8806c411 ("ARM: OMAP2xxx: PM: enter
+WFI via inline asm if CORE stays active"), so remove them.
 
-Gaosheng Cui (3):
-  ARM: OMAP2+: Remove orphan declarations from arch/arm/mach-omap2/pm.h
-  ARM: OMAP2+: clock: Remove orphan declarations from
-    arch/arm/mach-omap2/clock.h
-  ARM: pxa: remove orphan colibri_pxa3xx_init_mmc from
-    arch/arm/mach-pxa/colibri.h
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+---
+ arch/arm/mach-omap2/pm.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
- arch/arm/mach-omap2/clock.h | 3 ---
- arch/arm/mach-omap2/pm.h    | 3 ---
- arch/arm/mach-pxa/colibri.h | 6 ------
- 3 files changed, 12 deletions(-)
-
+diff --git a/arch/arm/mach-omap2/pm.h b/arch/arm/mach-omap2/pm.h
+index 80e84ae66aee..e7af528653a2 100644
+--- a/arch/arm/mach-omap2/pm.h
++++ b/arch/arm/mach-omap2/pm.h
+@@ -58,9 +58,6 @@ extern void pm_dbg_update_time(struct powerdomain *pwrdm, int prev);
+ #endif /* CONFIG_PM_DEBUG */
+ 
+ /* 24xx */
+-extern void omap24xx_idle_loop_suspend(void);
+-extern unsigned int omap24xx_idle_loop_suspend_sz;
+-
+ extern void omap24xx_cpu_suspend(u32 dll_ctrl, void __iomem *sdrc_dlla_ctrl,
+ 					void __iomem *sdrc_power);
+ extern unsigned int omap24xx_cpu_suspend_sz;
 -- 
 2.25.1
 
