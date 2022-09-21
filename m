@@ -2,113 +2,109 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 368BE5BFB6B
-	for <lists+linux-omap@lfdr.de>; Wed, 21 Sep 2022 11:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3562B5E5592
+	for <lists+linux-omap@lfdr.de>; Wed, 21 Sep 2022 23:52:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231766AbiIUJpJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 21 Sep 2022 05:45:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44824 "EHLO
+        id S230494AbiIUVwR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 21 Sep 2022 17:52:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231769AbiIUJoB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Sep 2022 05:44:01 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C05799320A
-        for <linux-omap@vger.kernel.org>; Wed, 21 Sep 2022 02:43:59 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id c11so8861141wrp.11
-        for <linux-omap@vger.kernel.org>; Wed, 21 Sep 2022 02:43:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=v9HOYNemLB65v2s3X2Chh/1DsPPvYHZYg0+K/15aDgQ=;
-        b=rHEU2V/5h7AUju8XBTiGugYh57qpJGzWG4/z/sjkKjsCe8H+5YNWYGeY0tjhKUXFIM
-         d6VhnbR3sMKtq04xyakS6XUxNbS4hwVZ4ADa1Ro5qrEExkJ9CSaVmZaY2jkw+BiW9FtT
-         HC3zcaLEeOhh25OY9xq66LqOLApy2085B+wjmlMD+WrZ+V5U1WcLeRz2YNrB2shhQRm3
-         eTsvw1LLmkNR1jxdoQjKJawH4hjt0JUeUXXVeTV9dm2YE1hLVJtvWn39i38YjqI9wvto
-         mRtq6M/HgvUngXsZHUiobXGbYwaTz8CFhpxOL34Mq1YT1QWLbG8I4v/JNh3zKAS88D2Z
-         Uwdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=v9HOYNemLB65v2s3X2Chh/1DsPPvYHZYg0+K/15aDgQ=;
-        b=jeJFeBJLPLiASvoFTHJne0OoEp2tjnaQXUheYC9vrBVW0JPs1Aou7Ofg1GWNv+AerJ
-         lCaW+0/GCm7L+pciMzbaafXiEH2fyNqjiPADvCZ9LZ19nojRY69V9+WXHs3M9gP+F/+K
-         kEbQFppZ9SJZedgfxRnrrCQFQSi4mW+1S/dBFseFFp/Z4jXaIb2tkhs32EJwTaILkGKy
-         97xjtbfXFSsJxb9ofZtuxLnCOCHvKtCL+YWZARu1EbmCn7otsL++om7xF2DFwcj4caoh
-         uFUrMViyNJL78a8FTPSwU7QcRheT+TP6kGC5K88OMSg4kKEV1f1G1DzZvpXG+3y7jwL9
-         SE8Q==
-X-Gm-Message-State: ACrzQf0aK9bJK2z2T5fMyBdsVWhM3C/rVS8hK+RTv+Oxxy/QuVEFoA//
-        nOjzhMYDCBH5Z6M8+1Wy6qftwA==
-X-Google-Smtp-Source: AMsMyM4EbiNhabTwa86yTniIUhffp+MRd+tRP/UupO9SXRQXndeFlIhugsjyS8hcyVe7KKdCvNG/ZQ==
-X-Received: by 2002:adf:ee89:0:b0:228:7bdf:47d with SMTP id b9-20020adfee89000000b002287bdf047dmr16160602wro.641.1663753439002;
-        Wed, 21 Sep 2022 02:43:59 -0700 (PDT)
-Received: from mai.. (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.gmail.com with ESMTPSA id r123-20020a1c2b81000000b003a62052053csm2763917wmr.18.2022.09.21.02.43.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 02:43:58 -0700 (PDT)
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        rui.zhang@intel.com, Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>, Amit Kucheria <amitk@kernel.org>,
-        linux-omap@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER)
-Subject: [PATCH v4 26/30] thermal/drivers/ti: Remove unused macros ti_thermal_get_trip_value() / ti_thermal_trip_is_valid()
-Date:   Wed, 21 Sep 2022 11:42:39 +0200
-Message-Id: <20220921094244.606948-27-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220921094244.606948-1-daniel.lezcano@linaro.org>
-References: <20220921094244.606948-1-daniel.lezcano@linaro.org>
+        with ESMTP id S230484AbiIUVwA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 21 Sep 2022 17:52:00 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 91597A7203;
+        Wed, 21 Sep 2022 14:51:48 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE5D51684;
+        Wed, 21 Sep 2022 14:51:53 -0700 (PDT)
+Received: from e126311.manchester.arm.com (unknown [10.57.76.246])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6F35F3F73B;
+        Wed, 21 Sep 2022 14:51:19 -0700 (PDT)
+Date:   Wed, 21 Sep 2022 22:51:10 +0100
+From:   Kajetan Puchalski <kajetan.puchalski@arm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
+        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
+        dinguyen@kernel.org, jonas@southpole.se,
+        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, konrad.dybcio@somainline.org,
+        anup@brainfault.org, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
+        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
+        cl@linux.com, rostedt@goodmis.org, pmladek@suse.com,
+        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+        bristot@redhat.com, vschneid@redhat.com, fweisbec@gmail.com,
+        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+        dvyukov@google.com, vincenzo.frascino@arm.com,
+        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH v2 07/44] cpuidle,psci: Push RCU-idle into driver
+Message-ID: <YyuHTgRh7t6vYjHw@e126311.manchester.arm.com>
+References: <20220919095939.761690562@infradead.org>
+ <20220919101520.802976773@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220919101520.802976773@infradead.org>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The macros:
+On Mon, Sep 19, 2022 at 11:59:46AM +0200, Peter Zijlstra wrote:
+> Doing RCU-idle outside the driver, only to then temporarily enable it
+> again, at least twice, before going idle is daft.
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-ti_thermal_get_trip_value()
- ti_thermal_trip_is_valid()
+Tried it on Pixel 6 running psci_idle, looks good with no apparent issues.
 
-are unused. Remove them.
-
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/thermal/ti-soc-thermal/ti-thermal.h | 15 ---------------
- 1 file changed, 15 deletions(-)
-
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal.h b/drivers/thermal/ti-soc-thermal/ti-thermal.h
-index c388ecf31834..4fd2c20182d7 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal.h
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal.h
-@@ -38,21 +38,6 @@
- /* Update rates */
- #define FAST_TEMP_MONITORING_RATE				250
- 
--/* helper macros */
--/**
-- * ti_thermal_get_trip_value - returns trip temperature based on index
-- * @i:	trip index
-- */
--#define ti_thermal_get_trip_value(i)					\
--	(OMAP_TRIP_HOT + ((i) * OMAP_TRIP_STEP))
--
--/**
-- * ti_thermal_is_valid_trip - check for trip index
-- * @i:	trip index
-- */
--#define ti_thermal_is_valid_trip(trip)				\
--	((trip) >= 0 && (trip) < OMAP_TRIP_NUMBER)
--
- #ifdef CONFIG_TI_THERMAL
- int ti_thermal_expose_sensor(struct ti_bandgap *bgp, int id, char *domain);
- int ti_thermal_remove_sensor(struct ti_bandgap *bgp, int id);
--- 
-2.34.1
-
+Tested-by: Kajetan Puchalski <kajetan.puchalski@arm.com>
