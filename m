@@ -2,92 +2,87 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA9B15E8128
-	for <lists+linux-omap@lfdr.de>; Fri, 23 Sep 2022 19:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 470D25E9121
+	for <lists+linux-omap@lfdr.de>; Sun, 25 Sep 2022 07:37:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231317AbiIWRxu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 23 Sep 2022 13:53:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51192 "EHLO
+        id S229794AbiIYFh3 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 25 Sep 2022 01:37:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbiIWRxr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 23 Sep 2022 13:53:47 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D67112C6A1;
-        Fri, 23 Sep 2022 10:53:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663955626; x=1695491626;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=t6K0dRAorrnNaUoJ2fzA0TiDE5e3dyyKs6gmKdLULpg=;
-  b=Cm7twJx/L5O5oj/JDhwDpU/PxYR/7rvUSDeXCa/VWeqGxknuutc26GvE
-   Ldv3QaJKhYclgmnqYi09sws/gOixcR62F3iNtZmBLO9m2Wht0VZ3pGVoS
-   s/K8MndVSMk3jSC7giPx9kHTikL7CzY3El+p2nAnSuyYHGgIDvjV8raIF
-   kBU7cgNjQQouSVQ2/uTpc7OgFv3nncRasqtw4kfHn1BI/S00yYZSjH2xn
-   Sla/6KhCi0iNQYZK1BvW2mAeK/MdhjJ0E12QMsDC2DWxx0xzRwEOeeE5y
-   +n0eF2gKZra/JvJvNM7C840n+YbseHc+mBrZhwbMywIrJEYKZi9AhVTvM
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10479"; a="299373724"
-X-IronPort-AV: E=Sophos;i="5.93,339,1654585200"; 
-   d="scan'208";a="299373724"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 10:53:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,339,1654585200"; 
-   d="scan'208";a="949104142"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 23 Sep 2022 10:53:44 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id EFD1BF7; Fri, 23 Sep 2022 20:54:01 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-omap@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Tony Lindgren <tony@atomide.com>, Lee Jones <lee@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] mfd: twl4030: Add missed linux/device.h header
-Date:   Fri, 23 Sep 2022 20:54:01 +0300
-Message-Id: <20220923175401.8723-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S229469AbiIYFh3 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 25 Sep 2022 01:37:29 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 659EC3C8C8;
+        Sat, 24 Sep 2022 22:37:28 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id q15-20020a17090a304f00b002002ac83485so3984170pjl.0;
+        Sat, 24 Sep 2022 22:37:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=2lQ3BKfmLItfKW5iLMtD4GleXGk399C68O79h/sEFPs=;
+        b=caOqhE6TdmSe4LdFUykrQAp/rz28oAuZwcrTiImwcUO8DJTL+W8K+qz5CDx1H2RIy8
+         C9UYa4OBhCHM+z1/edkDYItWaQHbRGZoNF+W/H2lKTKbQ2gCHp9hyK30y8z1prqOvcPV
+         dSV2cu3WFCbAWy5rV3fKHEQlzLnB6NzCP+7HWcmpkBd2yOyg52NvvCVUj+V0GM6tVdCH
+         P95g8F9MQ4c2vOGqfuszEUjjWpjwSD85Jjvj2LKCw8dG8MUwEEXJFUaLUcMXQQ5TLuAQ
+         lnQB5yOokTrRH1KSXXDwQoaMSELTF6VfbrG9Yg2yZAicdu8CcZoRRwKJ1OIIqZ2yWjsH
+         iNcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=2lQ3BKfmLItfKW5iLMtD4GleXGk399C68O79h/sEFPs=;
+        b=NQTdDSsDrQ2Nt8oD+houmS4ZF9asZ4ds12GolzFMEZ18Fd5ftusumWl+zL7iGWDB8g
+         co8+3F1ntDsz0TSovzjan6fpKy1ErLal91ecTEWLouBpMwB6hCC76vfbFpQBiyVcyd7Q
+         9Pj3bH3nqSSAzDlICXyIbE4V/OE8hFj1ehY2k59EHKuT7ItoaQy4nLfsg6kD4KyZ49xL
+         Cy6sygLhKAfjKIRSRvii9oUmF3QtV9vE/BcWjeEMY92uYsxlH9aUcbcivLGm8xe75HAi
+         sq3JpTiOqqNG8vkP6Be/wS141khcLKfnAjgTnDRTZUA3V25HC8OZW+sFTdQpkokjZyho
+         /JCA==
+X-Gm-Message-State: ACrzQf1UaYon3WW/vGGLeM9VG4rAwkRKYXRtCouawnzzjlOzp+eyXflk
+        7op9XDGv31ToLmJSfCGikKAsf2lQn+Q=
+X-Google-Smtp-Source: AMsMyM7ltiRZUUklIiF3Q+79l79GwNDk0BM13OrOw4u4Q9pOmaCzRSCMZTG4Vq6B1veZK3acNUfrzw==
+X-Received: by 2002:a17:902:b085:b0:178:3af4:31b2 with SMTP id p5-20020a170902b08500b001783af431b2mr16511098plr.122.1664084247757;
+        Sat, 24 Sep 2022 22:37:27 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:37c:3916:9a45:14cc])
+        by smtp.gmail.com with ESMTPSA id d18-20020a170902ced200b001783f964fe3sm8689674plg.113.2022.09.24.22.37.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Sep 2022 22:37:27 -0700 (PDT)
+Date:   Sat, 24 Sep 2022 22:37:24 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Cc:     tony@atomide.com, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
+Subject: Re: [PATCH] Input: twl4030-vibra - Drop legacy, non DT boot support
+Message-ID: <Yy/pFF+Y6Fvq3bmd@google.com>
+References: <20220616153323.29464-1-peter.ujfalusi@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220616153323.29464-1-peter.ujfalusi@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-With compile testing on non-OMAP platforms compiler might be not happy:
+On Thu, Jun 16, 2022 at 06:33:23PM +0300, Peter Ujfalusi wrote:
+> Legacy or non DT boot is no longer possible on systems where the
+> tw4030/5030 is used.
+> 
+> Drop the support for handling legacy pdata.
+> 
+> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
 
-In function ‘twl4030_sih_setup’:
-  error: implicit declaration of function ‘dev_err’ [-Werror=implicit-function-declaration]
-  error: implicit declaration of function ‘dev_info’ [-Werror=implicit-function-declaration]
-In function ‘twl4030_init_irq’:
-  error: invalid use of undefined type ‘struct device’
+Applied, thank you.
 
-Add missed header.
+I suppose you will be dropping definition of struct twl4030_vibra_data
+from include/linux/mfd/twl.h as well?
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/mfd/twl4030-irq.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks.
 
-diff --git a/drivers/mfd/twl4030-irq.c b/drivers/mfd/twl4030-irq.c
-index 4f576f0160a9..87496c1cb8bc 100644
---- a/drivers/mfd/twl4030-irq.c
-+++ b/drivers/mfd/twl4030-irq.c
-@@ -14,6 +14,7 @@
-  * by syed khasim <x0khasim@ti.com>
-  */
- 
-+#include <linux/device.h>
- #include <linux/export.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
 -- 
-2.35.1
-
+Dmitry
