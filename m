@@ -2,166 +2,119 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA5295EC6AA
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Sep 2022 16:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72A6B5EC89D
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Sep 2022 17:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233087AbiI0Ojr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Sep 2022 10:39:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52800 "EHLO
+        id S231432AbiI0PxO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Sep 2022 11:53:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233120AbiI0OjW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Sep 2022 10:39:22 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B3647BA9
-        for <linux-omap@vger.kernel.org>; Tue, 27 Sep 2022 07:35:24 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id c7so11109267ljm.12
-        for <linux-omap@vger.kernel.org>; Tue, 27 Sep 2022 07:35:24 -0700 (PDT)
+        with ESMTP id S232140AbiI0Pww (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Sep 2022 11:52:52 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 076771B95FC;
+        Tue, 27 Sep 2022 08:52:20 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id z20so2580534plb.10;
+        Tue, 27 Sep 2022 08:52:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=/clpfezaOe8mLPrQfl3pX+kpaqNYyTiLhiE5Y1A/Axg=;
-        b=ZyxJ0VAXz3Yx6wVEKSkMktMdGFJ+xOEWNqSzclwgt627nnfNxbSWBkdUOdDVZIdPeO
-         ztKr1AfIi1u6h4wPXg0FlTTwg/AM2jMJONWfS9196v7E7IgYRPzJ/YrgMBsmiV4AGi9E
-         BZtY7qdtZg80u0PwB1t3FI+gH9HiiKMDR+3fhvMlpQyVAM74KbmRPelfIgKkO5/eRmIe
-         WQf37Y2jfiKxOBPKiXsa/rTdHymfI3YNyXBi8U3BLwu6w0/Q9bF0gsmUdr9B01p8PSGW
-         sbBayxucHNKPWzlzFqQi0sB/QK0yX49GQwHuULeeybmD+opaRa0BiJ7ZQ7WIosw7tFch
-         UDSQ==
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=p0YcyRlyNYPjC2yUE5rEWl59Rr2Y1jMOfDRIiIcxunI=;
+        b=dkXzWr3tMEIvoAgqt/Db887cORt7DqQtdkeWbrjlb2qlMwLXEQIaWpbGozZKdyLaVd
+         R1DVx2Z+gxzrYamD8qxUGpiW/IRMrNfIFlXoRpGauQvLS/kH/R9DUuTlOd7zPHb6r0eU
+         NjVb3OtdHd1JgAHb1XLwkrUCOTJnJS7Gt0dj7cl/qa8hapLXHk9JYq6TH3uEzU4OmKvM
+         QWLpQVpba/hi7UWAhhHXbpDyoN7dOuIg2X0TdNiHkLlykXZNPwtGPG3mNgotflsdc+j+
+         TSUffuh88J0HJmoGS8JF9rlUMozrn9weVuQQYbinMqtddwgSa86uULTUVKHSRXKRpyt3
+         ZNKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=/clpfezaOe8mLPrQfl3pX+kpaqNYyTiLhiE5Y1A/Axg=;
-        b=WFX76fAefZetCEb/XaC9hwt7h8uJuZpgWB4Mm9N114GfU5CJzeITWjPIJLXWbksUIp
-         Dc+QupdOWiBccgofllqNZnyUHJzd/V5C9KORbmfX+LeK9RbnLco3cAN3R120/CvFNA70
-         kWwr6vaGQMk5t8Rr1H2aeCd9BO2OO53+DwIV5khtZrGutkKgzlfDXWZnZMqd6u+IUpSn
-         KbaH+F3VuMCmUCxwXh0MW5JMuJ+kgUVNWlWVh41BfS4Oa/pVXCdJzf2sihvbLF6PBrVO
-         RjJB3fshcAnOZcyFTrIKhIkKI/Wl+zNMdVhMp/n3IlLRETsJcKdEzyeidL+52Od60pWl
-         yE1Q==
-X-Gm-Message-State: ACrzQf26cji07e2aK7jwy667wydVinSlTJ4YEM9bz0QzlibGEflr0hEU
-        ywdGJ4XyTbzwLSmiTVxLF0HJ3w==
-X-Google-Smtp-Source: AMsMyM6PT4U1pTFDQtF2QivAJie+RqkxW7ZZSiD2PM7A3oNR4iAzYYKKhCpfzt7mx7GPKsQjtnSovA==
-X-Received: by 2002:a05:651c:23a1:b0:26d:9eb6:7b60 with SMTP id bk33-20020a05651c23a100b0026d9eb67b60mr3329748ljb.208.1664289321468;
-        Tue, 27 Sep 2022 07:35:21 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id k4-20020a05651239c400b0048b143c09c2sm178450lfu.259.2022.09.27.07.35.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Sep 2022 07:35:20 -0700 (PDT)
-Message-ID: <5e269e1a-8819-a326-90e0-a020cb2c0d73@linaro.org>
-Date:   Tue, 27 Sep 2022 17:35:19 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v5 00/30] Rework the trip points creation
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>, rafael@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        rui.zhang@intel.com, Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Peter Kaestle <peter@piie.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Broadcom Kernel Team <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Lukasz Luba <lukasz.luba@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Antoine Tenart <atenart@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Dmitry Osipenko <digetx@gmail.com>, netdev@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=p0YcyRlyNYPjC2yUE5rEWl59Rr2Y1jMOfDRIiIcxunI=;
+        b=Rg+sVcmJHbA3UYHF1qbfLjDP/vQeLHlPCDMTu5f6OS8vPlVUtHL754akHTcRkZY/lm
+         Y6YEF4YpzPJvjfZLc6bdPWr9+Fi5sBCDG3EAC2Dh0bKrSoHHB+Ll06v6+iMdXuVNp9an
+         bOGfIH9WaFHCf/OB2D0wPWblW+5mejTab26DQY/sfbqWY65evZ1jOrC7SAuM0X6BrcbW
+         bMjqBIi9oeG+xPev/DknQLmC7/vU72UvwQd8A3FTBX8qAMbt8lfDkXm22pLcuYRUzYsL
+         GKDukWE8FfW1LqwBqA3pfr5cGi2uk0E1aHGhHZeeMfOwqIzbjAYBnW6ynBymz4vIIXKZ
+         lbXw==
+X-Gm-Message-State: ACrzQf2qS+3hdtuHXjYlGJ1n11wdefC3WCwoYRaaVWMObuERtRG8r6G1
+        kgE37R7WFEtC2wt5rsm7yns=
+X-Google-Smtp-Source: AMsMyM4lQReHf55/5V7GZv01jZKvTie0sNuH+pDIoCDbLJjFZzEASOE06VVWXvBuUWH42yBTlZyW8A==
+X-Received: by 2002:a17:903:240b:b0:178:a475:6644 with SMTP id e11-20020a170903240b00b00178a4756644mr28086716plo.96.1664293940295;
+        Tue, 27 Sep 2022 08:52:20 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:9739:ab49:3830:2cbb])
+        by smtp.gmail.com with ESMTPSA id d190-20020a6336c7000000b0041cd2417c66sm1770777pga.18.2022.09.27.08.52.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Sep 2022 08:52:19 -0700 (PDT)
+Date:   Tue, 27 Sep 2022 08:52:15 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Jerome Neanne <jneanne@baylibre.com>
+Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        nm@ti.com, kristo@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        catalin.marinas@arm.com, will@kernel.org, lee@kernel.org,
+        tony@atomide.com, vigneshr@ti.com, bjorn.andersson@linaro.org,
+        shawnguo@kernel.org, geert+renesas@glider.be,
+        dmitry.baryshkov@linaro.org, marcel.ziswiler@toradex.com,
+        vkoul@kernel.org, biju.das.jz@bp.renesas.com, arnd@arndb.de,
+        jeff@labundy.com, afd@ti.com, khilman@baylibre.com,
+        narmstrong@baylibre.com, msp@baylibre.com, j-keerthy@ti.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
         linux-omap@vger.kernel.org
-References: <20220927143239.376737-1-daniel.lezcano@linaro.org>
-Content-Language: en-GB
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20220927143239.376737-1-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Subject: Re: [PATCH v5 5/6] Input: Add tps65219 interrupt driven powerbutton
+Message-ID: <YzMcL/wktFyKO06K@google.com>
+References: <20220927083520.15766-1-jneanne@baylibre.com>
+ <20220927083520.15766-6-jneanne@baylibre.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220927083520.15766-6-jneanne@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Daniel,
+Hi Jerome,
 
-On 27/09/2022 17:32, Daniel Lezcano wrote:
+On Tue, Sep 27, 2022 at 10:35:19AM +0200, Jerome Neanne wrote:
+> +static int tps65219_pb_probe(struct platform_device *pdev)
+> +{
+> +	struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
+> +	struct device *dev = &pdev->dev;
+> +	struct tps65219_pwrbutton *pwr;
+> +	struct input_dev *idev;
+> +	int error;
+> +	int push_irq;
+> +	int release_irq;
+> +
+> +	pwr = devm_kzalloc(dev, sizeof(*pwr), GFP_KERNEL);
+> +	if (!pwr)
+> +		return -ENOMEM;
+> +
+> +	idev = devm_input_allocate_device(dev);
+> +	if (!idev)
+> +		return -ENOMEM;
+> +
+> +	idev->name = pdev->name;
+> +	snprintf(pwr->phys, sizeof(pwr->phys), "%s/input0",
+> +		 pdev->name);
+> +	idev->phys = pwr->phys;
+> +	idev->dev.parent = dev;
 
-[skipped]
+As I mentioned in my previous email, this assignment is not needed given
+that devm_input_allocate_device() is used. Otherwise:
 
->   drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |   2 -
->   .../ethernet/chelsio/cxgb4/cxgb4_thermal.c    |  41 +----
->   drivers/platform/x86/acerhdf.c                |  73 +++-----
->   drivers/thermal/armada_thermal.c              |  39 ++---
->   drivers/thermal/broadcom/bcm2835_thermal.c    |   8 +-
->   drivers/thermal/da9062-thermal.c              |  52 +-----
->   drivers/thermal/gov_bang_bang.c               |  39 +++--
->   drivers/thermal/gov_fair_share.c              |  18 +-
->   drivers/thermal/gov_power_allocator.c         |  51 +++---
->   drivers/thermal/gov_step_wise.c               |  22 ++-
->   drivers/thermal/hisi_thermal.c                |  11 +-
->   drivers/thermal/imx_thermal.c                 |  72 +++-----
->   .../int340x_thermal/int340x_thermal_zone.c    |  33 ++--
->   .../int340x_thermal/int340x_thermal_zone.h    |   4 +-
->   .../processor_thermal_device.c                |  10 +-
->   drivers/thermal/intel/x86_pkg_temp_thermal.c  | 120 +++++++------
->   drivers/thermal/qcom/qcom-spmi-temp-alarm.c   |  39 ++---
->   drivers/thermal/rcar_gen3_thermal.c           |   2 +-
->   drivers/thermal/rcar_thermal.c                |  53 +-----
->   drivers/thermal/samsung/exynos_tmu.c          |  57 +++----
->   drivers/thermal/st/st_thermal.c               |  47 +----
->   drivers/thermal/tegra/soctherm.c              |  33 ++--
->   drivers/thermal/tegra/tegra30-tsensor.c       |  17 +-
->   drivers/thermal/thermal_core.c                | 161 +++++++++++++++---
->   drivers/thermal/thermal_core.h                |  24 +--
->   drivers/thermal/thermal_helpers.c             |  28 +--
->   drivers/thermal/thermal_netlink.c             |  21 +--
->   drivers/thermal/thermal_of.c                  | 116 -------------
->   drivers/thermal/thermal_sysfs.c               | 133 +++++----------
->   drivers/thermal/ti-soc-thermal/ti-thermal.h   |  15 --
->   drivers/thermal/uniphier_thermal.c            |  27 ++-
->   include/linux/thermal.h                       |  10 ++
->   32 files changed, 559 insertions(+), 819 deletions(-)
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
+Please feel free to merge through MFD tree.
 
-Could you please cc mailing lists on all patches? It's really hard to 
-determine whether qcom changes are correct without seeing other patches.
+Thanks.
 
 -- 
-With best wishes
 Dmitry
-
