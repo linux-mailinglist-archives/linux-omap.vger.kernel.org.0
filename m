@@ -2,76 +2,73 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72A6B5EC89D
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Sep 2022 17:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60AB45ECA78
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Sep 2022 19:07:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231432AbiI0PxO (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Sep 2022 11:53:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36396 "EHLO
+        id S232874AbiI0RHX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Sep 2022 13:07:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232140AbiI0Pww (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Sep 2022 11:52:52 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 076771B95FC;
-        Tue, 27 Sep 2022 08:52:20 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id z20so2580534plb.10;
-        Tue, 27 Sep 2022 08:52:20 -0700 (PDT)
+        with ESMTP id S232310AbiI0RHC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Sep 2022 13:07:02 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614127F126;
+        Tue, 27 Sep 2022 10:07:01 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id i26so16637937lfp.11;
+        Tue, 27 Sep 2022 10:07:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=p0YcyRlyNYPjC2yUE5rEWl59Rr2Y1jMOfDRIiIcxunI=;
-        b=dkXzWr3tMEIvoAgqt/Db887cORt7DqQtdkeWbrjlb2qlMwLXEQIaWpbGozZKdyLaVd
-         R1DVx2Z+gxzrYamD8qxUGpiW/IRMrNfIFlXoRpGauQvLS/kH/R9DUuTlOd7zPHb6r0eU
-         NjVb3OtdHd1JgAHb1XLwkrUCOTJnJS7Gt0dj7cl/qa8hapLXHk9JYq6TH3uEzU4OmKvM
-         QWLpQVpba/hi7UWAhhHXbpDyoN7dOuIg2X0TdNiHkLlykXZNPwtGPG3mNgotflsdc+j+
-         TSUffuh88J0HJmoGS8JF9rlUMozrn9weVuQQYbinMqtddwgSa86uULTUVKHSRXKRpyt3
-         ZNKA==
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=BaEFTF84Sq9es7HLhqX2u2yUo9a+LYXjNYWykwUDGuI=;
+        b=ieRIRTzg5cPUgSPupmXj6itXG2BPhwAkJ4XIFPNoHaJm4diHLiZmi3TUCIb9Lr9r1X
+         2kp5lnGmm+a9YravKvDSZXcSkyNUL63aXdZzEpLWB8JwqasokAwViNnT6gwiZwkWXwOm
+         jJpG1aseCosvIPcWQEbolBXukZRZe8cr660Zctf7gIreX2JKz+1luCmNV87xz2m51dXZ
+         7VBQ4g8vL2WWiiK6fr0WraQliPXPE4rD88RSG14hpAiAElrmzSYcy1JPHkeJOeqERLRf
+         xVU9fA/xCbZfWXDTsth55mHqeJx6CYXG35l8ZqPslq3h0yrfErkdgAh0zQxkdqoGzjPQ
+         jYtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=p0YcyRlyNYPjC2yUE5rEWl59Rr2Y1jMOfDRIiIcxunI=;
-        b=Rg+sVcmJHbA3UYHF1qbfLjDP/vQeLHlPCDMTu5f6OS8vPlVUtHL754akHTcRkZY/lm
-         Y6YEF4YpzPJvjfZLc6bdPWr9+Fi5sBCDG3EAC2Dh0bKrSoHHB+Ll06v6+iMdXuVNp9an
-         bOGfIH9WaFHCf/OB2D0wPWblW+5mejTab26DQY/sfbqWY65evZ1jOrC7SAuM0X6BrcbW
-         bMjqBIi9oeG+xPev/DknQLmC7/vU72UvwQd8A3FTBX8qAMbt8lfDkXm22pLcuYRUzYsL
-         GKDukWE8FfW1LqwBqA3pfr5cGi2uk0E1aHGhHZeeMfOwqIzbjAYBnW6ynBymz4vIIXKZ
-         lbXw==
-X-Gm-Message-State: ACrzQf2qS+3hdtuHXjYlGJ1n11wdefC3WCwoYRaaVWMObuERtRG8r6G1
-        kgE37R7WFEtC2wt5rsm7yns=
-X-Google-Smtp-Source: AMsMyM4lQReHf55/5V7GZv01jZKvTie0sNuH+pDIoCDbLJjFZzEASOE06VVWXvBuUWH42yBTlZyW8A==
-X-Received: by 2002:a17:903:240b:b0:178:a475:6644 with SMTP id e11-20020a170903240b00b00178a4756644mr28086716plo.96.1664293940295;
-        Tue, 27 Sep 2022 08:52:20 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:9739:ab49:3830:2cbb])
-        by smtp.gmail.com with ESMTPSA id d190-20020a6336c7000000b0041cd2417c66sm1770777pga.18.2022.09.27.08.52.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Sep 2022 08:52:19 -0700 (PDT)
-Date:   Tue, 27 Sep 2022 08:52:15 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Jerome Neanne <jneanne@baylibre.com>
-Cc:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        nm@ti.com, kristo@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        catalin.marinas@arm.com, will@kernel.org, lee@kernel.org,
-        tony@atomide.com, vigneshr@ti.com, bjorn.andersson@linaro.org,
-        shawnguo@kernel.org, geert+renesas@glider.be,
-        dmitry.baryshkov@linaro.org, marcel.ziswiler@toradex.com,
-        vkoul@kernel.org, biju.das.jz@bp.renesas.com, arnd@arndb.de,
-        jeff@labundy.com, afd@ti.com, khilman@baylibre.com,
-        narmstrong@baylibre.com, msp@baylibre.com, j-keerthy@ti.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH v5 5/6] Input: Add tps65219 interrupt driven powerbutton
-Message-ID: <YzMcL/wktFyKO06K@google.com>
-References: <20220927083520.15766-1-jneanne@baylibre.com>
- <20220927083520.15766-6-jneanne@baylibre.com>
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=BaEFTF84Sq9es7HLhqX2u2yUo9a+LYXjNYWykwUDGuI=;
+        b=T+j2T9xP3U5u29ddNnsKApyk58/GMh39UkE5QZKofdw7DXuGGE80I+nbFbEot4nNfP
+         K2unmD8W2JNreHQwnFzs8hIJT3wrOnhq4UrKDeWr02LC0ljxwtzfkfOG9pQMMZy8IOH9
+         bI6h5JfJG8Vzgb4TcHx37d2RRo1AwuofyHJj4P7SDLj8sA9aEZDpf2agEns8+ihApRF6
+         P6x8MSoSucKW++MbgdcQwq1K54XgD768F1Sc+1aXE9abbulymQ/q/G3OQOxA0hrwqy/z
+         zxKwmMVEkoUDE4CaZ29s93fMg+I0vjydm4TpSg3oSQJUkUxqh2ua+oGdjwYQr06pV3X5
+         LdZA==
+X-Gm-Message-State: ACrzQf3eUWa7ledcbSTGzK10FtqwiL8WnWDMLhLkqiNagDp0Jd2n2tuq
+        DmeEOIsvJHYSEI4YrLfpQAdrD4UPKb3x2Q==
+X-Google-Smtp-Source: AMsMyM6DCoL7ElzUr0JSiL4FuAECxj7Iz3V0niMElOla8pFSXPXxil2ys5+8+ptHFLNdO6Mt9VoCDg==
+X-Received: by 2002:a05:6512:311a:b0:498:f5dc:799d with SMTP id n26-20020a056512311a00b00498f5dc799dmr11249789lfb.501.1664298419426;
+        Tue, 27 Sep 2022 10:06:59 -0700 (PDT)
+Received: from [10.0.0.127] (91-159-150-230.elisa-laajakaista.fi. [91.159.150.230])
+        by smtp.gmail.com with ESMTPSA id x9-20020a056512078900b004a031805c8bsm213873lfr.106.2022.09.27.10.06.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Sep 2022 10:06:58 -0700 (PDT)
+Message-ID: <7fcb754f-2067-38b7-3224-f5e2cd12165a@gmail.com>
+Date:   Tue, 27 Sep 2022 20:07:19 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220927083520.15766-6-jneanne@baylibre.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH 2/3] dma/ti: convert k3-udma to module
+To:     Kevin Hilman <khilman@baylibre.com>, dmaengine@vger.kernel.org
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Nicolas Frayer <nfrayer@baylibre.com>
+References: <20220926181848.2917639-1-khilman@baylibre.com>
+ <20220926181848.2917639-3-khilman@baylibre.com>
+ <11cf284c-d0d6-0687-b70b-2245ff8d6fcd@gmail.com>
+ <7hczbhg7ij.fsf@baylibre.com>
+Content-Language: en-US
+From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+In-Reply-To: <7hczbhg7ij.fsf@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,41 +77,33 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Jerome,
 
-On Tue, Sep 27, 2022 at 10:35:19AM +0200, Jerome Neanne wrote:
-> +static int tps65219_pb_probe(struct platform_device *pdev)
-> +{
-> +	struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
-> +	struct device *dev = &pdev->dev;
-> +	struct tps65219_pwrbutton *pwr;
-> +	struct input_dev *idev;
-> +	int error;
-> +	int push_irq;
-> +	int release_irq;
-> +
-> +	pwr = devm_kzalloc(dev, sizeof(*pwr), GFP_KERNEL);
-> +	if (!pwr)
-> +		return -ENOMEM;
-> +
-> +	idev = devm_input_allocate_device(dev);
-> +	if (!idev)
-> +		return -ENOMEM;
-> +
-> +	idev->name = pdev->name;
-> +	snprintf(pwr->phys, sizeof(pwr->phys), "%s/input0",
-> +		 pdev->name);
-> +	idev->phys = pwr->phys;
-> +	idev->dev.parent = dev;
 
-As I mentioned in my previous email, this assignment is not needed given
-that devm_input_allocate_device() is used. Otherwise:
+On 27/09/2022 00:17, Kevin Hilman wrote:
+> 
+>> I did liked the 'hack' that the dev_* prints contained the actual type
+>> of the DMA (udma/bcdma/pktdma), but it is not working via modules,
+>> unless the driver init parts are split out and the bulk is kept as a
+>> library.
+>>
+>> I had this half way implemented in my wip, but never got the chance to
+>> finalize it.
+> 
+> I guess that could always be done as a second path if needed, but I
+> wanted to keep this module conversion as simple as possible at first.
+> 
+>> But, one can get the info via the address, so...
+> 
+> Shall I take this "so..." as an acked-by?  ;)
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+For this patch, definitely:
 
-Please feel free to merge through MFD tree.
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
 
-Thanks.
+> 
+> Kevin
+> 
+> 
 
 -- 
-Dmitry
+Péter
