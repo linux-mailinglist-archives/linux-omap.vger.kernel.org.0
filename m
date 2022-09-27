@@ -2,105 +2,128 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ADAB5EBCD1
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Sep 2022 10:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 794E05EBD6A
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Sep 2022 10:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231134AbiI0IKj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Sep 2022 04:10:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52652 "EHLO
+        id S231645AbiI0IgP (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Sep 2022 04:36:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiI0IKM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Sep 2022 04:10:12 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D39249DB5A
-        for <linux-omap@vger.kernel.org>; Tue, 27 Sep 2022 01:04:09 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 28R842Uj016992;
-        Tue, 27 Sep 2022 03:04:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1664265843;
-        bh=ceqTG+49s5IwExJgcZZSEi61X5cZ0q6qhdOGp/K+RGo=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=fGQkGETrAMmA8eaPAvw/PVMYIEVBqBbmDZnEa5tykhpWdL6UfTpk/yo51icr7V3gZ
-         krmfhtiqgJlARgseRgZzCdo3iN1n5qPpUbpmetxEz5D74RtmPSaqBwrFN7S0o4ecRt
-         tHJYTHTATZ25+7LWD3K4kA0nnIwN7NXy3X+0TalI=
-Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 28R8420g026639
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 27 Sep 2022 03:04:02 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Tue, 27
- Sep 2022 03:04:02 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Tue, 27 Sep 2022 03:04:02 -0500
-Received: from [172.24.145.182] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 28R840CP012071;
-        Tue, 27 Sep 2022 03:04:01 -0500
-Message-ID: <714a68ee-a211-ea63-1da7-5962dbad9f39@ti.com>
-Date:   Tue, 27 Sep 2022 13:34:00 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: prueth: IEP driver doesn't probe anymore
-Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>,
-        Romain Naour <romain.naour@smile.fr>
-CC:     Linux-OMAP <linux-omap@vger.kernel.org>,
-        "rogerq@kernel.org >> Roger Quadros" <rogerq@kernel.org>,
-        Md Danish Anwar <danishanwar@ti.com>
-References: <9aced000-5e66-50b9-1e1b-28ff96871d42@smile.fr>
- <28dc112e-94ce-ca21-2e35-97074f251b97@smile.fr>
- <edf56bca-3f90-5cac-7c21-085f4a563dac@smile.fr>
- <YzKa8csiFaJik79O@atomide.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-In-Reply-To: <YzKa8csiFaJik79O@atomide.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231663AbiI0Ifl (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Sep 2022 04:35:41 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B130412A81
+        for <linux-omap@vger.kernel.org>; Tue, 27 Sep 2022 01:35:27 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id o5so6061992wms.1
+        for <linux-omap@vger.kernel.org>; Tue, 27 Sep 2022 01:35:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date;
+        bh=Wgzj4PEma5PTYVT9ZoB1Xyd1riKSuBv/hZE/DnlehtA=;
+        b=dhVS1R/5nouuaVhxiWKee3goPDCx1/Zb9H2ran+I5j0m2f/soQPt4tau/DCtke8DZm
+         4tBmSjPN0W1R9SKYH9wUMzPLh1tX8y+BnNwHfTpef6y2CDRXBzNvs97wqjVWvlqoZrFy
+         blZQ65qCmymBjpQHysBpwu115sn2FUuN3LdFdXAIqZjivi0d6fevLy5hUG53mnVJUsZs
+         bdtP8v8lVNRm4qMb1moZdTUGMUxVTz9SAC0Bk7nrywjzujjX0G64n7WH2poxOmXf3BHh
+         b4z11LEac58P31f438pempIAe+4VozUWPkCHGtNjOKZ9nkWyzXxQyZmMDcEUzkub/UCG
+         Lbaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=Wgzj4PEma5PTYVT9ZoB1Xyd1riKSuBv/hZE/DnlehtA=;
+        b=ysyLxlU7Nwt7tLJx11y4aERwCsy3EWxG/cQ5yZuUE0GqYqgXtqrkSHg9K35eSnouFU
+         MdEtH8aYvV+OjUDF8XyWqBmwkF9M3Uefuq7Bh4I370tSChnUa3rGtx/VdS5v7lt4zXMN
+         Slu5rW+qpj1bMQbTb+ml+csQlF81jPhuo9L/iboxiHpWjE5WHo5ab75Wn873f8EtZiap
+         l1cHLV7353J/WfCFYeDtlRQQuVV0QtHOeM3mP9OA6j6eUXcA8eS0PPKCVAdCPv7ANlA/
+         82VmIOBcTsWHvEOzvkFlw4Cxy6h08DtK5vWGGHyFv5A8R/93/Y1HPiiSG/jAwjSAeSj0
+         7/jQ==
+X-Gm-Message-State: ACrzQf2MMGADqKxPd+IE8wNprePdVvLeELKfHBv60owXpe3PKODkOpmv
+        laQjsW+tUeHE/l75wB4KH0XReQ==
+X-Google-Smtp-Source: AMsMyM7xzvDY5xB8UD85ebsPVp6soLExVLIxGPsyigmSohRtp+2G9pnLZ+jOaw80MTkGpyYvAt5A0A==
+X-Received: by 2002:a7b:c40e:0:b0:3b3:3faa:10c2 with SMTP id k14-20020a7bc40e000000b003b33faa10c2mr1776728wmi.32.1664267726249;
+        Tue, 27 Sep 2022 01:35:26 -0700 (PDT)
+Received: from localhost.localdomain (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id n30-20020a05600c501e00b003b492b30822sm1122120wmr.2.2022.09.27.01.35.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Sep 2022 01:35:25 -0700 (PDT)
+From:   Jerome Neanne <jneanne@baylibre.com>
+To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
+        will@kernel.org, lee@kernel.org, tony@atomide.com, vigneshr@ti.com,
+        bjorn.andersson@linaro.org, shawnguo@kernel.org,
+        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
+        marcel.ziswiler@toradex.com, vkoul@kernel.org,
+        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com
+Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
+        msp@baylibre.com, j-keerthy@ti.com, jneanne@baylibre.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v5 0/6] Add support for TI TPS65219 PMIC.
+Date:   Tue, 27 Sep 2022 10:35:14 +0200
+Message-Id: <20220927083520.15766-1-jneanne@baylibre.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+Hi everyone,
+
+Sending again v5 changing deprecated mail for Lee Jones.
+bindings and regulator are already there as it is based on the regulator tree branch for-6.1:
+https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git
+
+Changes in v5:
+- Remove pm_power_off functionality as it is unused in ARM64 systems
+- Change mfd subject to prefixes matching subsystem
+
+Validation:
+regulator: tps65219: Fix .bypass_val_on setting
+reported by Axel Lin has been validated on board. 
+
+Regards,
+Jerome
+
+Previous versions:
+v4 - https://lore.kernel.org/lkml/20220825150224.826258-1-msp@baylibre.com/
+v3 - https://lore.kernel.org/lkml/20220805121852.21254-1-jneanne@baylibre.com/
+v2 - https://lore.kernel.org/lkml/20220726103355.17684-1-jneanne@baylibre.com/
+v1 - https://lore.kernel.org/lkml/20220719091742.3221-1-jneanne@baylibre.com/
 
 
-On 27/09/22 12:10, Tony Lindgren wrote:
-> Hi,
-> 
-> * Romain Naour <romain.naour@smile.fr> [220921 08:13]:
->> Ok, I understand what's going on...
->>
->> The issue appear on the merge commit since on a omap side there was the switch
->> to ti-sysc (devicetree interconnect description) and on upstream side there was
->> a change on driver core behavior with fw_devlink=on being set by default:
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=ea718c699055c8566eb64432388a04974c43b2ea
-> 
-> OK good to hear it's not the change to ti-sysc. That should be all pretty
-> much standard Linux driver related changes.
-> 
->> Actually the issue is really on the TI's prueth and IEP driver whith
->> fw_devlink=on. The IEP driver probe correctly with fw_devlink=permissive.
-> 
-> Argh not again, the fw_devlink changes seem to be causing all kind of
-> issues. Any ideas what the issue here might be? It might be worth testing
-> with v6.0-rc7 too as it has a series of fixes to related issues.
-> 
+Jerome Neanne (5):
+  DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC support for AM642 SK
+    board.
+  DONOTMERGE: arm64: dts: ti: Add pinmux and irq mapping for TPS65219
+    external interrupts
+  DONOTMERGE: arm64: dts: ti: k3-am642-sk: Enable tps65219 power-button
+  mfd: tps65219: Add driver for TI TPS65219 PMIC
+  arm64: defconfig: Add tps65219 as modules
 
-Could you also try [1] from Puranjay's series? He did have to rework
-pru_rproc_get()/pru_rproc_put() a bit to fix few probe failures seen
-only on > 5.11 kernels.
+Markus Schneider-Pargmann (1):
+  Input: Add tps65219 interrupt driven powerbutton
 
-[1] https://lore.kernel.org/netdev/20220406094358.7895-3-p-mohan@ti.com/
+ MAINTAINERS                             |   1 +
+ arch/arm64/boot/dts/ti/k3-am642-sk.dts  | 115 ++++++++
+ arch/arm64/configs/defconfig            |   3 +
+ drivers/input/misc/Kconfig              |  10 +
+ drivers/input/misc/Makefile             |   1 +
+ drivers/input/misc/tps65219-pwrbutton.c | 149 ++++++++++
+ drivers/mfd/Kconfig                     |  14 +
+ drivers/mfd/Makefile                    |   1 +
+ drivers/mfd/tps65219.c                  | 320 ++++++++++++++++++++++
+ include/linux/mfd/tps65219.h            | 345 ++++++++++++++++++++++++
+ 10 files changed, 959 insertions(+)
+ create mode 100644 drivers/input/misc/tps65219-pwrbutton.c
+ create mode 100644 drivers/mfd/tps65219.c
+ create mode 100644 include/linux/mfd/tps65219.h
 
 -- 
-Regards
-Vignesh
+2.17.1
+
