@@ -2,117 +2,161 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A2635EBD83
-	for <lists+linux-omap@lfdr.de>; Tue, 27 Sep 2022 10:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 326605EBF53
+	for <lists+linux-omap@lfdr.de>; Tue, 27 Sep 2022 12:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230329AbiI0Ig7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 27 Sep 2022 04:36:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44530 "EHLO
+        id S231715AbiI0KL0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 27 Sep 2022 06:11:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231616AbiI0IgK (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Sep 2022 04:36:10 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD2B20F7D
-        for <linux-omap@vger.kernel.org>; Tue, 27 Sep 2022 01:35:51 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id bk15so6080105wrb.13
-        for <linux-omap@vger.kernel.org>; Tue, 27 Sep 2022 01:35:50 -0700 (PDT)
+        with ESMTP id S231786AbiI0KLY (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 27 Sep 2022 06:11:24 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEAC825C1
+        for <linux-omap@vger.kernel.org>; Tue, 27 Sep 2022 03:11:20 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id c11so14165927wrp.11
+        for <linux-omap@vger.kernel.org>; Tue, 27 Sep 2022 03:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date;
-        bh=wxovnf5KPHC5iL/G2DCCvsq9cB2n/hhE49OVBFVzwkI=;
-        b=UkqqOpPVPVDImx9bgWxR6E7nSNp47HRYWNmcrb0PR+agi8lTeA4L0ONGurjzu3Mdzj
-         V5Jr5TvP9HiR3noHMtbRxN00k1hZ/LyDTuvh31Hd1hgFZm2Iwe21AoaQfx3NXWndUrjA
-         mVI26+PZI6jBdxjodzaKIVkzPUCRA0P5Sa6tlgFGofcbOsqC/lPyMILG+R4953kwfg5j
-         PpDvO2gFH8RVP+z6RDyiAipux/OjAL7PZ0ybu1HqPfbaDVZlCFuohQ4D+nzaloW6qyt9
-         McgQGbvnuDEYUOnFEnXlogHwjqSZIt7IyUyLOWzf6XkqtlqVzGc5rtkr4ZT0cY7HtsMp
-         8sjw==
+        d=smile-fr.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=dsxQ8Hghp4gOYoJ8Y2v6Xoic/JUbFpESDpnr6QJo/pY=;
+        b=niFwwh9hYYj7lnORJj+1/9bCkYvqJXUuv2/E9qMvTDMZhQQv1iT5S5pqixTzDhZTNb
+         bZrexqi+5/TFNw1SUdPovjuP55txd/Pz2kd7UxoQ05NYbxw7Uj4RSUVo59RZewUxHCpN
+         OpA8aCN9ZjFuoJUz4PDUkr9z+dYvgx6DHWLT1Vx/SH1toKWptEgJmyxKHFuemilPgjff
+         1VKRx/aXjmbrT1nB6Q2rYWOo0inTPBmpIuJRlUOB4N/s5skVIUHd88bln+HKGduyDwlh
+         zlrqDMtx1z3kEXTUqq5IWCNk9+8ydsL7ZnUDn18Hrja0vJ2h7d9Hh5UaYtVI9q7+Kci7
+         BPgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=wxovnf5KPHC5iL/G2DCCvsq9cB2n/hhE49OVBFVzwkI=;
-        b=Mw1Q/wNb0+QeegvBcwaiVnCifMGtJK0Ri1/Mp8lXRuVf3V+Xui1UxQsRXhorZqI7ey
-         byJU8C8dOz60AODe8TF/Xwy54YK4Wi8VxNoyvdpu5xRelzvFJJeMmqareGnfat/s0Ccq
-         pzwgePPdkXGwzDfmU/fmvPCFVvpo76GWj76rr2KXVmGjNoKf35xMxTkawERh//t7Harw
-         eUUL0dH+IIkyEN31jbvSDV3Ho6cs81sM2+SdFlVjb4UXdqMGJ78K0q2l5+EGbsLPxQJh
-         IGeHpmtgFTt5Ws0UeICNS++a6WSIfQH1eBXyI3CCLJp/0CSX3/WLMZ6PwJY5zqHrVOuU
-         Z1/A==
-X-Gm-Message-State: ACrzQf3L7B4/M4UfV1kG0gmy1lmlZmfRm+A0p+YWpYdZuHF6i3YYJz5F
-        IgDWKFnlJ+FpUXmafBodU3LOwQ==
-X-Google-Smtp-Source: AMsMyM6ODLNqJ9ymtQdYGh+Rm894BS+CNfsgKvcSY19/1pxMn2NEmnOG/8CEslYfiE98vqP7au7bjw==
-X-Received: by 2002:a5d:47c1:0:b0:22a:5858:993b with SMTP id o1-20020a5d47c1000000b0022a5858993bmr15649108wrc.99.1664267749510;
-        Tue, 27 Sep 2022 01:35:49 -0700 (PDT)
-Received: from localhost.localdomain (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
-        by smtp.gmail.com with ESMTPSA id n30-20020a05600c501e00b003b492b30822sm1122120wmr.2.2022.09.27.01.35.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Sep 2022 01:35:49 -0700 (PDT)
-From:   Jerome Neanne <jneanne@baylibre.com>
-To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
-        will@kernel.org, lee@kernel.org, tony@atomide.com, vigneshr@ti.com,
-        bjorn.andersson@linaro.org, shawnguo@kernel.org,
-        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
-        marcel.ziswiler@toradex.com, vkoul@kernel.org,
-        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com
-Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
-        msp@baylibre.com, j-keerthy@ti.com, jneanne@baylibre.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v5 6/6] arm64: defconfig: Add tps65219 as modules
-Date:   Tue, 27 Sep 2022 10:35:20 +0200
-Message-Id: <20220927083520.15766-7-jneanne@baylibre.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220927083520.15766-1-jneanne@baylibre.com>
-References: <20220927083520.15766-1-jneanne@baylibre.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        bh=dsxQ8Hghp4gOYoJ8Y2v6Xoic/JUbFpESDpnr6QJo/pY=;
+        b=2Z1y5zAePVVNyS7jzkZRe5vIb+Tj6t1vOdDdAxJseOGUpMLOVAKmW07FL6cjGSuYWc
+         YCzCmv5c7auBeZq6V3nD6mwAq9FD3rE2awHe7fU8BTB8IAgLorEPcOKj0sl4pGSd54E8
+         +Id0rJanueOIUY/nu4bue5ETD8E+9OxasLjmY10tviQz+vCwLk1NpocnCW3api/iBXLO
+         hh8BpbgxxNy4lRg+FOxnyLOwn/+xuncBaViY6VJdwPgS+QDIOvDtcAOTt7dKxikNRXPe
+         ZQtZQzIDG3+rKmm0t7a7ZGOpF9VEQNQR0DQyRdfYJJYH6KurICK3zeHrPoe0Rb7jWp70
+         fgSg==
+X-Gm-Message-State: ACrzQf1M2iqNQ6oFTsxWPHQZ/t5nfruZECJenwK+LFkUOhkokuPB0IpY
+        zjOzI3yzMmmYAxmXtbrzzhGtkw==
+X-Google-Smtp-Source: AMsMyM5AtLQmWT9dn//YzVEDl3oBQMpK7cwe1yBO/blahzYPmH20oGw8HwmilnzgUOXd/I3BR3I45w==
+X-Received: by 2002:a5d:6c6f:0:b0:22a:7778:6ea2 with SMTP id r15-20020a5d6c6f000000b0022a77786ea2mr16687232wrz.15.1664273479334;
+        Tue, 27 Sep 2022 03:11:19 -0700 (PDT)
+Received: from ?IPV6:2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f? (2a01cb058f8a18001c97b8d1b477d53f.ipv6.abo.wanadoo.fr. [2a01:cb05:8f8a:1800:1c97:b8d1:b477:d53f])
+        by smtp.gmail.com with ESMTPSA id w10-20020a05600c474a00b003b4ac05a8a4sm17144459wmo.27.2022.09.27.03.11.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Sep 2022 03:11:18 -0700 (PDT)
+Message-ID: <276295a7-c6e0-5200-f6da-9c7298c914be@smile.fr>
+Date:   Tue, 27 Sep 2022 12:11:18 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: prueth: IEP driver doesn't probe anymore
+Content-Language: en-US
+To:     Vignesh Raghavendra <vigneshr@ti.com>,
+        Tony Lindgren <tony@atomide.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        "rogerq@kernel.org >> Roger Quadros" <rogerq@kernel.org>,
+        Md Danish Anwar <danishanwar@ti.com>
+References: <9aced000-5e66-50b9-1e1b-28ff96871d42@smile.fr>
+ <28dc112e-94ce-ca21-2e35-97074f251b97@smile.fr>
+ <edf56bca-3f90-5cac-7c21-085f4a563dac@smile.fr>
+ <YzKa8csiFaJik79O@atomide.com> <714a68ee-a211-ea63-1da7-5962dbad9f39@ti.com>
+From:   Romain Naour <romain.naour@smile.fr>
+In-Reply-To: <714a68ee-a211-ea63-1da7-5962dbad9f39@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        URI_HEX autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This adds defconfig option to support TPS65219 PMIC, MFD, Regulators
-and power-button.
+Hi All,
 
-Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
----
- arch/arm64/configs/defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+Le 27/09/2022 à 10:04, Vignesh Raghavendra a écrit :
+> 
+> 
+> On 27/09/22 12:10, Tony Lindgren wrote:
+>> Hi,
+>>
+>> * Romain Naour <romain.naour@smile.fr> [220921 08:13]:
+>>> Ok, I understand what's going on...
+>>>
+>>> The issue appear on the merge commit since on a omap side there was the switch
+>>> to ti-sysc (devicetree interconnect description) and on upstream side there was
+>>> a change on driver core behavior with fw_devlink=on being set by default:
+>>>
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=ea718c699055c8566eb64432388a04974c43b2ea
+>>
+>> OK good to hear it's not the change to ti-sysc. That should be all pretty
+>> much standard Linux driver related changes.
+>>
+>>> Actually the issue is really on the TI's prueth and IEP driver whith
+>>> fw_devlink=on. The IEP driver probe correctly with fw_devlink=permissive.
+>>
+>> Argh not again, the fw_devlink changes seem to be causing all kind of
+>> issues. Any ideas what the issue here might be? It might be worth testing
+>> with v6.0-rc7 too as it has a series of fixes to related issues.
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index d5b2d2dd4904..d64e00355fcd 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -406,6 +406,7 @@ CONFIG_TOUCHSCREEN_GOODIX=m
- CONFIG_TOUCHSCREEN_EDT_FT5X06=m
- CONFIG_INPUT_MISC=y
- CONFIG_INPUT_PM8941_PWRKEY=y
-+CONFIG_INPUT_TPS65219_PWRBUTTON=m
- CONFIG_INPUT_PM8XXX_VIBRATOR=m
- CONFIG_INPUT_PWM_BEEPER=m
- CONFIG_INPUT_PWM_VIBRA=m
-@@ -639,6 +640,7 @@ CONFIG_MFD_SPMI_PMIC=y
- CONFIG_MFD_RK808=y
- CONFIG_MFD_SEC_CORE=y
- CONFIG_MFD_SL28CPLD=y
-+CONFIG_MFD_TPS65219=m
- CONFIG_MFD_ROHM_BD718XX=y
- CONFIG_MFD_WCD934X=m
- CONFIG_REGULATOR_FIXED_VOLTAGE=y
-@@ -666,6 +668,7 @@ CONFIG_REGULATOR_QCOM_SPMI=y
- CONFIG_REGULATOR_RK808=y
- CONFIG_REGULATOR_S2MPS11=y
- CONFIG_REGULATOR_TPS65132=m
-+CONFIG_REGULATOR_TPS65219=m
- CONFIG_REGULATOR_VCTRL=m
- CONFIG_RC_CORE=m
- CONFIG_RC_DECODERS=y
--- 
-2.17.1
+I rebased the prueth + IEP series on v6.0-rc7 and indeed the driver probe
+correctly but with some delay due deferred probe.
 
+[    9.568817] remoteproc remoteproc0: 4b234000.pru is available
+[    9.580505] remoteproc remoteproc1: 4b238000.pru is available
+[    9.625701] remoteproc remoteproc2: 4b2b4000.pru is available
+[    9.632110] remoteproc remoteproc3: 4b2b8000.pru is available
+[    9.932952] prueth pruss1_eth: unable to get IEP
+[   10.238098] prueth pruss1_eth: unable to get IEP
+[   10.469421] prueth pruss1_eth: unable to get IEP
+[   10.675445] prueth pruss1_eth: unable to get IEP
+[   10.885589] prueth pruss1_eth: unable to get IEP
+[   11.117126] prueth pruss1_eth: unable to get IEP
+[   11.755462] prueth pruss1_eth: unable to get IEP
+[   12.316192] prueth pruss1_eth: unable to get IEP
+[   13.387969] prueth pruss1_eth: unable to get IEP
+[   14.175750] prueth pruss1_eth: unable to get IEP
+[   14.388671] prueth pruss1_eth: unable to get IEP
+[   14.648406] prueth pruss1_eth: unable to get IEP
+[   16.946716] prueth pruss1_eth: unable to get IEP
+[   25.037414] remoteproc remoteproc1: powering up 4b238000.pru
+[   25.056793] remoteproc remoteproc1: Booting fw image
+ti-pruss/am57xx-pru1-prueth-fw.elf, size 6952
+[   25.065856] remoteproc remoteproc1: unsupported resource 5
+[   25.071472] remoteproc remoteproc1: remote processor 4b238000.pru is now up
+[   25.157104] remoteproc remoteproc0: powering up 4b234000.pru
+[   25.165527] remoteproc remoteproc0: Booting fw image
+ti-pruss/am57xx-pru0-prueth-fw.elf, size 6920
+[   25.174713] remoteproc remoteproc0: unsupported resource 5
+[   25.180328] remoteproc remoteproc0: remote processor 4b234000.pru is now up
+[   27.047607] prueth pruss1_eth eth4: Link is Up - 100Mbps/Full - flow control off
+
+
+>>
+> 
+> Could you also try [1] from Puranjay's series? He did have to rework
+> pru_rproc_get()/pru_rproc_put() a bit to fix few probe failures seen
+> only on > 5.11 kernels.
+> 
+> [1] https://lore.kernel.org/netdev/20220406094358.7895-3-p-mohan@ti.com/
+> 
+
+Thank for the link, I actually had a look to this series and updated the pru
+remote proc driver.
+
+Note: The RFC series "PRUSS Remoteproc, Platform APIS, and Ethernet Driver"
+doesn't include yet the prueth driver for AM57xx so I had to fixup this driver
+when needed. It would be great if the support for the AM57xx can be included in
+the next submission [1].
+
+[1]
+https://lore.kernel.org/linux-remoteproc/992019ad-5c58-d420-8a18-a82228f8e086@smile.fr/
+
+Best regards,
+Romain
