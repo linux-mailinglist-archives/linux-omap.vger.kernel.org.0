@@ -2,94 +2,118 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0482A5EDF6F
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Sep 2022 17:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA36B5EE08B
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Sep 2022 17:34:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234591AbiI1PAX (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Sep 2022 11:00:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35684 "EHLO
+        id S233832AbiI1Pd6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Sep 2022 11:33:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234628AbiI1PAF (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Sep 2022 11:00:05 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1412BE2E;
-        Wed, 28 Sep 2022 08:00:00 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id e18so8691854wmq.3;
-        Wed, 28 Sep 2022 08:00:00 -0700 (PDT)
+        with ESMTP id S234077AbiI1Pdr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Sep 2022 11:33:47 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA4A2250C;
+        Wed, 28 Sep 2022 08:33:46 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id a13so2651434edj.0;
+        Wed, 28 Sep 2022 08:33:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date;
-        bh=fFiLND83FCjvj8QwqbyEssDIGtRuYehgQzyyJqOIdyc=;
-        b=UQ3q/e1ke5sijr2KhSsWJYHOGV0H+c97fEYqLx2EepdISeaRTbn66VWqkWHMsT5aPv
-         frhEcMl4SIyG5IbklWvidgmPSFFWZZLWxLstHaeON/YLji3GVTkAVaSdAsiJVBCGTAHX
-         nsri/LyBsmour2b96MFsXtebmyN/+Yjz/XWNzbqK5HSHy5vuHEVnU3pSMvbykqqweDpF
-         mrLCM7WJkqZ5/qtHpAnU2JdxEycaDKXpxU/F1sWNKgX7pkOPzLAz42fDCuwNkLD6Vb+9
-         qTWE+0tt9IkVQWUT+EqkCW4QRW5NtQ+cWVb18bhYVKLbgTwyl6fMeXeeTtdHPXHdjoZ4
-         k/eQ==
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date;
+        bh=KNIp28Vg2+4pQl3orQy7BU43XkMc7f8YIquq5ddfBI4=;
+        b=qwxVZLk5e7WxfKVc6LTnjvOI9rpDqepST84IrkzPOTOMDwefLnEdnunZwvzHTe3iSc
+         pqFfQr2zrScidy3XLEifSbpKEwAimlDgS5A0OHcS78n9ByxHBV79u6W9fbYlXqR2oXVK
+         vaZ1OZ/6RmFcGyiRx9KhOJDRl6bmx1t4OKRRkGCjVwCkGJL6lYbwIXb+678i6svDUgVQ
+         4VjOzmiC/VQLj+9Ro5p/eAqYhrkU7USqyfAa8p2olMn0/prIXqPhP3s1c2q8pzh7COWC
+         i61cEq8QoW3i0oRRt5c6Q06POspOSqDRMOfClSrrO6pbhxCOyD5mn9H0Dfc2otXXnev/
+         8c6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=fFiLND83FCjvj8QwqbyEssDIGtRuYehgQzyyJqOIdyc=;
-        b=zQCVz6XOS748eShP4CPR+AZPm6K7Z5u8fEJOmAQCzFjIE/8acEl2OMm4Ou+d4BmkvU
-         lX0RyeUm79QdMv68ETVwPYkaygE+LUayr0qz4r4NK3cw3egq9iqFC9ywOV1mDG0BH24J
-         9LpmSS/Z/n15VVVNIvGEBZCKWnKuW/1cXASTf95u37z1i7Cssig6+NSOyfm7NYj8SBrB
-         bU8kPL2IS+VVNf3MHMaC+/qMwM/zZ3LAWWIZAJL2+ywnVD972li19TOlnegHG/SLkUlj
-         4FM576H0qgoXeb8fhwYoLLydIdPSNscgC1Ajk5ITj9D7A2SFL5+oK7PhvKkqZ7i2rdOR
-         v15Q==
-X-Gm-Message-State: ACrzQf282mBO/zwnrU5WwUvpeDybP/Ndrp1Cpf03yHnY4rL8u2dq+DS6
-        rAM2gScT+rk02IYGC4m2ts8=
-X-Google-Smtp-Source: AMsMyM7lrfFC0VKPitQtgOmDtxRV+EymVgDdvtALG/htkm0zTcSAR6tU3+XXNjhkGB8g3q/eEEnlBw==
-X-Received: by 2002:a05:600c:3b12:b0:3b4:a6ea:1399 with SMTP id m18-20020a05600c3b1200b003b4a6ea1399mr7157848wms.49.1664377199052;
-        Wed, 28 Sep 2022 07:59:59 -0700 (PDT)
-Received: from Red ([2a01:cb1d:3d5:a100:264b:feff:fe03:2806])
-        by smtp.googlemail.com with ESMTPSA id x14-20020adfec0e000000b0022a297950cesm4547101wrn.23.2022.09.28.07.59.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Sep 2022 07:59:58 -0700 (PDT)
-Date:   Wed, 28 Sep 2022 16:59:56 +0200
-From:   Corentin Labbe <clabbe.montjoie@gmail.com>
-To:     Kevin Hilman <khilman@baylibre.com>
-Cc:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        dmaengine@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Nicolas Frayer <nfrayer@baylibre.com>
-Subject: Re: [PATCH v2 2/3] dma/ti: convert k3-udma to module
-Message-ID: <YzRhbNd4Dse+zLSb@Red>
-References: <20220927230804.4085579-1-khilman@baylibre.com>
- <20220927230804.4085579-3-khilman@baylibre.com>
+        bh=KNIp28Vg2+4pQl3orQy7BU43XkMc7f8YIquq5ddfBI4=;
+        b=1nNni0lyVYf5YnYoUgBlVA2vxzlnr560qYZOvLC2yeiqzRqOHAxr5aysJY8IlDVoD4
+         6MrmkSaVueEj5W1ie1osuj6MEa5HlRdkdaAlFIxBuGz4VG0O/01q3+W+5+Jtk23SO/uO
+         LdcRkGNqaDeG8YHNOG7UOQBg/y4XRQjS8VHh0se6l2e2B0Gbb2QtXDJ9uwEIo4/QfRf4
+         cUTjsEujZkZz6BKqwVvTSqqxLDQBQKUIUxgyCHmILBl3rzhW28IkCi/6BkLiCE1p+MDQ
+         6DIn5A+1eGCOgyXc3b9ShhEXErdbb0mP6HKxRM+IgG9VoTHy5hEzoFthb68SqI27uVC0
+         cWfQ==
+X-Gm-Message-State: ACrzQf1+BOgD1qBvi5OCzblW+yWQizz+uthbZcnRtDfEeGbEnHYdZFwZ
+        OmlA+lPf43nPd8KI/c34F1g=
+X-Google-Smtp-Source: AMsMyM5+q4BALEJHomkCJjf1F1WzkkZpWcfT7BBbpNEiZ+8TLJTDa/XkfVxH5XAWhjEAXBfytGGtpw==
+X-Received: by 2002:a05:6402:4402:b0:453:6a9:ef8a with SMTP id y2-20020a056402440200b0045306a9ef8amr32663754eda.85.1664379224594;
+        Wed, 28 Sep 2022 08:33:44 -0700 (PDT)
+Received: from [192.168.1.10] ([46.249.74.23])
+        by smtp.googlemail.com with ESMTPSA id t7-20020a170906a10700b0074136cac2e7sm2539149ejy.81.2022.09.28.08.33.43
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 28 Sep 2022 08:33:43 -0700 (PDT)
+Subject: Re: [RFC PATCH 0/5] 8250_omap fixes for testing
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Romain Naour <romain.naour@smile.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20220928072934.48359-1-tony@atomide.com>
+From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Message-ID: <e14b82f6-9a08-579d-6e4e-dac05543ba96@gmail.com>
+Date:   Wed, 28 Sep 2022 18:33:42 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Firefox/60.0 Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <20220928072934.48359-1-tony@atomide.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220927230804.4085579-3-khilman@baylibre.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Le Tue, Sep 27, 2022 at 04:08:03PM -0700, Kevin Hilman a �crit :
-> Currently k3-udma driver is built as separate platform drivers with a
-> shared probe and identical code path, just differnet platform data.
-> 
-> To enable to build as module, convert the separate platform driver
-> into a single module_platform_driver with the data selection done via
-> compatible string and of_match.  The separate of_match tables are also
-> combined into a single table to avoid the multiple calls to
-> of_match_node()
-> 
-> Since all modern TI platforms using this are DT enabled, the removal
-> of separate platform_drivers shoul should nave no functional change.
-> 
-Hello
+Hi Tony,
 
-You have some typo in last sentence. (extra shoul, nave->have)
+On 28.09.22 г. 10:29 ч., Tony Lindgren wrote:
+> Hi all,
+> 
+> Here are some 8250_omap fixes for testing. I'm not sure if the first patch
+> fixes the issue reported. I'm not sure if I've seen that one, so please test.
+> 
+> The other patches are for all kind of issues I started running into after
+> testing rebinding the driver.
 
-Regards
+It seems the external abort I was seeing on reboot/poweroff on my d4 is 
+no longer here after applying the series, feel free to add:
+
+Tested-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+
+> 
+> These are tagged RFC as we're close to the merge window, I'll repost the
+> series probably after -rc1 after folks have tested this a bit. It seems
+> that all these issues have been around for quite a long time.
+> 
+> Regards,
+> 
+> Tony
+> 
+> 
+> Tony Lindgren (5):
+>    serial: 8250: omap: Fix missing PM runtime calls for
+>      omap8250_set_mctrl()
+>    serial: 8250: omap: Fix unpaired pm_runtime_put_sync() in
+>      omap8250_remove()
+>    serial: 8250: omap: Flush PM QOS work on remove
+>    serial: 8250: omap: Fix imprecise external abort for omap_8250_pm()
+>    serial: 8250: omap: Fix life cycle issues for interrupt handlers
+> 
+>   drivers/tty/serial/8250/8250_omap.c | 140 +++++++++++++++++-----------
+>   1 file changed, 84 insertions(+), 56 deletions(-)
+> 
