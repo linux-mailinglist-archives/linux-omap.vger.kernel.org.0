@@ -2,89 +2,72 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1595D5ED5C3
-	for <lists+linux-omap@lfdr.de>; Wed, 28 Sep 2022 09:15:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54AAE5ED651
+	for <lists+linux-omap@lfdr.de>; Wed, 28 Sep 2022 09:37:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233342AbiI1HPF (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 28 Sep 2022 03:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58230 "EHLO
+        id S233294AbiI1Hhu (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 28 Sep 2022 03:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233315AbiI1HPD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Sep 2022 03:15:03 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B167C15734;
-        Wed, 28 Sep 2022 00:14:56 -0700 (PDT)
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 28S7Ebg0065997;
-        Wed, 28 Sep 2022 02:14:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1664349277;
-        bh=F9c9kYNufz7ig/6Cx1Q4VpArre0AWDUO2cP2JP9tKi0=;
-        h=From:To:CC:Subject:Date;
-        b=WOHxHf2YWP+2ckGmEk3haCUCGVo3k3m+QlwsZ3ViUnDgkmSO3o5Yval+9ejC5hTyF
-         qeHZwA1oF9hboDY6uNHHlGtb13s2qau4Zds+acJajCcLcTueyjyCcoUF7KneFrmx7r
-         XisQ5h1YxKXNSe7TG+3oNXNsummdGLOOm+3O9sS0=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 28S7EbQs114589
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 28 Sep 2022 02:14:37 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Wed, 28
- Sep 2022 02:14:37 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Wed, 28 Sep 2022 02:14:37 -0500
-Received: from a0393678ub.dal.design.ti.com (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 28S7EX4c103835;
-        Wed, 28 Sep 2022 02:14:34 -0500
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-To:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-CC:     =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-        Rob Herring <robh@kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        with ESMTP id S233691AbiI1HhV (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 28 Sep 2022 03:37:21 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C70BD10B21C;
+        Wed, 28 Sep 2022 00:36:22 -0700 (PDT)
+Received: from hillo.muru.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTP id 14B8D80B3;
+        Wed, 28 Sep 2022 07:21:35 +0000 (UTC)
+From:   Tony Lindgren <tony@atomide.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Johan Hovold <johan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>
-Subject: [PATCH] MAINTAINERS: Add Vignesh Raghavendra as maintainer of TI DRA7XX/J721E driver
-Date:   Wed, 28 Sep 2022 12:44:18 +0530
-Message-ID: <20220928071418.30456-1-kishon@ti.com>
-X-Mailer: git-send-email 2.17.1
+        linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Romain Naour <romain.naour@smile.fr>
+Subject: [RFC PATCH 0/5] 8250_omap fixes for testing
+Date:   Wed, 28 Sep 2022 10:29:29 +0300
+Message-Id: <20220928072934.48359-1-tony@atomide.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Add Vignesh Raghavendra as maintainer of TI DRA7XX/J721E driver.
+Hi all,
 
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Here are some 8250_omap fixes for testing. I'm not sure if the first patch
+fixes the issue reported. I'm not sure if I've seen that one, so please test.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index efada49e2e2e..c368f5aa7429 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15667,7 +15667,7 @@ F:	Documentation/devicetree/bindings/pci/snps,dw-pcie-ep.yaml
- F:	drivers/pci/controller/dwc/*designware*
- 
- PCI DRIVER FOR TI DRA7XX/J721E
--M:	Kishon Vijay Abraham I <kishon@ti.com>
-+M:	Vignesh Raghavendra <vigneshr@ti.com>
- L:	linux-omap@vger.kernel.org
- L:	linux-pci@vger.kernel.org
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+The other patches are for all kind of issues I started running into after
+testing rebinding the driver.
+
+These are tagged RFC as we're close to the merge window, I'll repost the
+series probably after -rc1 after folks have tested this a bit. It seems
+that all these issues have been around for quite a long time.
+
+Regards,
+
+Tony
+
+
+Tony Lindgren (5):
+  serial: 8250: omap: Fix missing PM runtime calls for
+    omap8250_set_mctrl()
+  serial: 8250: omap: Fix unpaired pm_runtime_put_sync() in
+    omap8250_remove()
+  serial: 8250: omap: Flush PM QOS work on remove
+  serial: 8250: omap: Fix imprecise external abort for omap_8250_pm()
+  serial: 8250: omap: Fix life cycle issues for interrupt handlers
+
+ drivers/tty/serial/8250/8250_omap.c | 140 +++++++++++++++++-----------
+ 1 file changed, 84 insertions(+), 56 deletions(-)
+
 -- 
-2.17.1
-
+2.37.3
