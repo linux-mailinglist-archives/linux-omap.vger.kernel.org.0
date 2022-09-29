@@ -2,86 +2,155 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 825FA5EFD7E
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Sep 2022 21:00:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C44935EFE04
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Sep 2022 21:36:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229837AbiI2TAK (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Sep 2022 15:00:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58106 "EHLO
+        id S230006AbiI2TgC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Sep 2022 15:36:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbiI2TAI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Sep 2022 15:00:08 -0400
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CA8B32AAF;
-        Thu, 29 Sep 2022 12:00:05 -0700 (PDT)
-Received: by mail-oo1-f48.google.com with SMTP id c22-20020a4a4f16000000b00474a44441c8so739061oob.7;
-        Thu, 29 Sep 2022 12:00:05 -0700 (PDT)
+        with ESMTP id S229805AbiI2TgB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Sep 2022 15:36:01 -0400
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD2D75F9A6;
+        Thu, 29 Sep 2022 12:35:59 -0700 (PDT)
+Received: by mail-qk1-f177.google.com with SMTP id k12so1517246qkj.8;
+        Thu, 29 Sep 2022 12:35:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=OFGMKTBIKXzY7RbnuxUcCfHrcyPmoIfq3/ekm8IS/J8=;
-        b=TFbVuewu+PEL934ErJNlF1GFMWSHL9ec6JkeJf5xQ2cJAP+HtxzEqWAkuwaPsecQyk
-         CHBlQcs+Ci49Xlxgn+P2YNzGA1XNuObYCkQ6MQ/NiS1b1c7Ba+1mjGc1PaocSfRdGRPr
-         91ScDG1MlSQg9jZ5muEBnAtRlB8qaN1ztcC0Of+jLdWB5EE/G+hlGNw/eT6Rib+tVbys
-         sf8YSYvfTjlDoLBkYANyJXA3lTw/+FNfGMkg+HQ0GER+MwgnrH9stLgDnAST4Lf1PB9n
-         G001opXAHYiXvM7R+TvIOT8Mvw4MOryYkl7DLnnI0ndZLIAHO48XkTnFI086KW5Ema85
-         MwFw==
-X-Gm-Message-State: ACrzQf1ClNnYjx7d8vTGp3FGpgV2yAu9pFWlKxQunfQqELTznczmVwTM
-        6tvv/9nqGmiuOCOyHciT8g==
-X-Google-Smtp-Source: AMsMyM78l0bKta6KhJ9yd5tzxZmfami/B6QFg0q57ma0qwy3bufYEde44Dv8ZGNeO+Wh6aEnbrO5gg==
-X-Received: by 2002:a9d:73cc:0:b0:659:9686:5563 with SMTP id m12-20020a9d73cc000000b0065996865563mr2149968otk.40.1664478004395;
-        Thu, 29 Sep 2022 12:00:04 -0700 (PDT)
-Received: from macbook.herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id s4-20020aca5e04000000b0033b31480f38sm35548oib.34.2022.09.29.12.00.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Sep 2022 12:00:03 -0700 (PDT)
-Received: (nullmailer pid 2580297 invoked by uid 1000);
-        Thu, 29 Sep 2022 19:00:03 -0000
-Date:   Thu, 29 Sep 2022 14:00:03 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Rob Herring <robh+dt@kernel.org>, Keerthy <j-keerthy@ti.com>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Nishanth Menon <nm@ti.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
-        Grygorii Strashko <grygorii.strashko@ti.com>
-Subject: Re: [PATCH] dt-bindings: timer: Add power-domains for TI timer-dm on
- K3
-Message-ID: <166447799743.2580140.1277507917394548082.robh@kernel.org>
-References: <20220919112357.64997-1-tony@atomide.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=mTAlcKpePLUmoa2PPlLgnnpbbR37vsLCkLJsK3FMOMM=;
+        b=zonwpLQcKQG+p2EU8QstcgW8hyoj+hCye+Gp+61vVgzBiB56Aubi5H1NSfomPzhVsA
+         Zxro0mDXhF9BDRkdtR1Pjgrbo4vANCoeGbndss/IRw3qq7TuNlMTkIFbLBpswp13mvtt
+         kK0gYEwokxJPlqpr8FAG+t1LaEBKxdxmrIyVkxLdwrUP37mG2ZwwFbmHMKt+pBFXdOst
+         8MzsJniTYqeFtIxm7e3sVgZANp37M5v4hSQ53mh56YUzN+IIh/nWd4TVba9h0mi2KyoV
+         Dz77r5JHBkMVnjEMWaVVfOGIzHc+UKx8evxnRkHK6tmgi9gMZiA/TWPpPMQhq4MrvDdV
+         BGHQ==
+X-Gm-Message-State: ACrzQf11s1ZFzyh6D7Auax7/3wMtv0laiaSaLNiEljkKcUcGwuUC/8YT
+        jThOBetiYo28V+NwTDT0xA0kKbSCujtI9zLOQkA=
+X-Google-Smtp-Source: AMsMyM6nwPbbMnzN+TFVkeFoMqPTRrzMun/9SaGI62vQ28n3j95zFU2xk6dTQ3pv+9rh/XRcMovC6IXcuteR1RYwINI=
+X-Received: by 2002:a05:620a:290d:b0:6b6:1a92:d88a with SMTP id
+ m13-20020a05620a290d00b006b61a92d88amr3634308qkp.58.1664480158981; Thu, 29
+ Sep 2022 12:35:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220919112357.64997-1-tony@atomide.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+References: <20220928210059.891387-1-daniel.lezcano@linaro.org>
+ <d0be3159-8094-aed1-d9b1-c4b16d88d67c@linaro.org> <CAJZ5v0hOFoe0KqEimFv9pgmiAOzuRoLjdqoScr53ErNFU4AAPA@mail.gmail.com>
+ <ae86fc5a-0521-3dde-c2ea-8679c0ec4831@linaro.org>
+In-Reply-To: <ae86fc5a-0521-3dde-c2ea-8679c0ec4831@linaro.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 29 Sep 2022 21:35:48 +0200
+Message-ID: <CAJZ5v0jrWamTTXcHabSk=6cmm4pEx0_ebiECKZRfrX_vS85YYg@mail.gmail.com>
+Subject: Re: [PATCH v7 00/29] Rework the trip points creation
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "Zhang, Rui" <rui.zhang@intel.com>,
+        Raju Rangoju <rajur@chelsio.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Peter Kaestle <peter@piie.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Broadcom Kernel Team <bcm-kernel-feedback-list@broadcom.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Antoine Tenart <atenart@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Dmitry Osipenko <digetx@gmail.com>,
+        netdev <netdev@vger.kernel.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        linux-rpi-kernel@lists.infradead.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Linux Samsung SoC <linux-samsung-soc@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, 19 Sep 2022 14:23:57 +0300, Tony Lindgren wrote:
-> On K3 SoCs, the power-domains property is needed. On the earlier SoCs,
-> the power-domains property is handled by the interconnect target module
-> parent device.
-> 
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-> Cc: Keerthy <j-keerthy@ti.com>
-> Cc: Nishanth Menon <nm@ti.com>
-> Cc: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: Tony Lindgren <tony@atomide.com>
-> ---
->  .../devicetree/bindings/timer/ti,timer-dm.yaml  | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
-> 
+On Thu, Sep 29, 2022 at 4:57 PM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+>
+> On 29/09/2022 15:58, Rafael J. Wysocki wrote:
+> > On Thu, Sep 29, 2022 at 2:26 PM Daniel Lezcano
+> > <daniel.lezcano@linaro.org> wrote:
+> >>
+> >>
+> >> Hi Rafael,
+> >>
+> >> are you happy with the changes?
+> >
+> > I'll have a look and let you know.
+>
+> Great, thanks
 
-Applied, thanks!
+Well, because you have not added the history of changes to the
+patches, that will take more time than it would otherwise.
+
+Generally, please always add information on what has changed in the
+patch between different versions of it.
+
+> >> I would like to integrate those changes with the thermal pull request
+> >
+> > Sure, but it looks like you've got only a few ACKs for these patches
+> > from the driver people.
+> >
+> > Wouldn't it be prudent to give them some more time to review the changes?
+>
+> Well I would say I received the ACKs from the drivers which are actively
+> maintained. Others are either not with a dedicated maintainer or not a
+> reactive one. The first iteration of the series is from August 5th. So
+> it has been 2 months.
+>
+> I pinged for imx, armada and tegra two weeks ago.
+
+OK
+
+> The st, hisilicon drivers fall under the thermal maintainers umbrella
+>
+> There are three series coming after this series to be posted. I would
+> like to go forward in the process of cleaning up the framework. IMO two
+> months is enough to let the maintainers pay attention to the changes,
+> especially if we do a gentle ping and there are seven versions.
+>
+> And after that comes the thermal_zone_device_register() parameters
+> simplification :)
+
+Well, that's all fine, but I don't want people to get surprised by
+significant changes they haven't expected and I want to avoid missing
+anything subtle.
