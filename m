@@ -2,133 +2,212 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E0E75EEF0E
-	for <lists+linux-omap@lfdr.de>; Thu, 29 Sep 2022 09:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A9F5EEF26
+	for <lists+linux-omap@lfdr.de>; Thu, 29 Sep 2022 09:35:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235248AbiI2HbS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 29 Sep 2022 03:31:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54064 "EHLO
+        id S235217AbiI2Hfh (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 29 Sep 2022 03:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235026AbiI2HbQ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Sep 2022 03:31:16 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 453521257B7
-        for <linux-omap@vger.kernel.org>; Thu, 29 Sep 2022 00:31:13 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id g1so935797lfu.12
-        for <linux-omap@vger.kernel.org>; Thu, 29 Sep 2022 00:31:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=d2EazhJPJSbwMcP0nRzwyGojAz7jhGIxDxpFS+S8wS4=;
-        b=du0lWC60PB/jENlb0ba14brLNTgO/3DRWot41R5k3uTVz+24nP0HL0BjGYCMm95mr5
-         BNPOsJXPrBecasKO/4qlBapwV9Vk1MORFh/AI+5khaDupzZXiCRMLYlaPQmhPIs0fHC5
-         61a0SgFNd1bo75he6Oc53j8W4ssb2A1Xoerac/pU59704OyLHhAtMVxwnAmXul6rBN7/
-         dkDvQgvbCQvydmJigpKdMTvayu4WJ4qDzSy/jkoHCdjfNX7fCJ0lpySU5GjsxY1W5WRg
-         gPyi7UY8h0W+7uV9sa6V8XnVoTYDEBTwTchp9qibd2MzuQY1/sTmJIvsj0wjrl7NExbu
-         JHAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=d2EazhJPJSbwMcP0nRzwyGojAz7jhGIxDxpFS+S8wS4=;
-        b=pMtbHbT7fUGHH4snZtM/pYFbXuafEIQf4/epxQN/fKVnwCkaGzGLquhJeroA1dcIuI
-         4ViH8naDbaV62JSn/oBlVAtEMVKQA/pfHpghkrkevQHalcqaX1BwXFXzaff0ds6PE9PW
-         83dYDAjdSUsA4hPosZk7iTSAYEbDI63XAqdO39QKz8QR/Zbtahnb1/C9BmNVFMc5OlL9
-         MzovXqU6swtwU9WySrs4WQ7ZhXlntHwGWCh8dTsqETnYOMNy0HryLnp4fR7Y06dqXeNq
-         dZEIhRqTVzryomo5j8xR9fFcm/aXxMS8gjQlHjVAfwPsqThzF6N1FEoo+fFyuWoFvR+V
-         ov7w==
-X-Gm-Message-State: ACrzQf3gtQXwCnQkiN9/fMrzSRyA0y8bkW7eF+kq0hIx77iqQJ7xxxFa
-        3h3shFAjYHrrKGjKRQgvLo2BLQ==
-X-Google-Smtp-Source: AMsMyM5CKgW4S6Mj6aaX7feZSKj0JYhQYbjagNlBJnXfen43EhgyNrhEeSF02sHPuLu5XZa8/PUkvQ==
-X-Received: by 2002:a19:6b01:0:b0:499:b6fb:fcf2 with SMTP id d1-20020a196b01000000b00499b6fbfcf2mr753900lfa.622.1664436671624;
-        Thu, 29 Sep 2022 00:31:11 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id d22-20020a196b16000000b00497ac35ae1esm702592lfa.85.2022.09.29.00.31.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Sep 2022 00:31:11 -0700 (PDT)
-Message-ID: <1ddfd9c5-7986-3ff7-bcf8-409bc1250076@linaro.org>
-Date:   Thu, 29 Sep 2022 09:31:09 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH v7 09/29] thermal/drivers/exynos: Replace
- of_thermal_is_trip_valid() by thermal_zone_get_trip()
-Content-Language: en-US
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>, rafael@kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        rui.zhang@intel.com, Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Peter Kaestle <peter@piie.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Broadcom Kernel Team <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Lukasz Luba <lukasz.luba@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund@ragnatech.se>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Antoine Tenart <atenart@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Dmitry Osipenko <digetx@gmail.com>, netdev@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
+        with ESMTP id S234980AbiI2Hfd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 29 Sep 2022 03:35:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 101B5B24AA;
+        Thu, 29 Sep 2022 00:35:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B8AD62061;
+        Thu, 29 Sep 2022 07:35:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E42C433C1;
+        Thu, 29 Sep 2022 07:35:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664436931;
+        bh=w8sJ2aK2xXxhf+av8iYHPcJJb02anv8Gm2kYalcXmG8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oPbJBbT6nFJF6TlfilrR/VeMWyzuU7XF5DB7MXMJjZPE1raOmnEZyWd86dsXdqzRH
+         6319F3k3MTvZ+C17cm23MYjS4KnEtdZ9fwconk+gtSaRa6jr9IsXvzefr27k+fTNjP
+         uiNYQ81UuaBnfE73pmE2ajNQBuAKMq9nUEyEijRBiAUavFSQGNTeIv2Mtwnj3bAMTb
+         dy7lTPFjuGExyRhqagTJRQhxXnkLifpuMy51dzyxL1vnfD+es2OTLfRPWVtmC2Xsox
+         Y5LcAyAUNXzFMZs6WctogBJ7G9loegDG07yOX5LRg/rCyVNsM+ZAY0ddPhc6aWcdHV
+         Pv60cEcj4zkMw==
+Date:   Thu, 29 Sep 2022 13:05:27 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Kevin Hilman <khilman@baylibre.com>
+Cc:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        dmaengine@vger.kernel.org, linux-omap@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org
-References: <20220928210059.891387-1-daniel.lezcano@linaro.org>
- <20220928210059.891387-10-daniel.lezcano@linaro.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220928210059.891387-10-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        Nicolas Frayer <nfrayer@baylibre.com>
+Subject: Re: [PATCH v2 2/3] dma/ti: convert k3-udma to module
+Message-ID: <YzVKv8zJDU0Sm0Iu@matsya>
+References: <20220927230804.4085579-1-khilman@baylibre.com>
+ <20220927230804.4085579-3-khilman@baylibre.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220927230804.4085579-3-khilman@baylibre.com>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 28/09/2022 23:00, Daniel Lezcano wrote:
-> The thermal_zone_get_trip() does the same check as
-> of_thermal_is_trip_valid(). Replace the call to
-> of_thermal_is_trip_valid() by thermal_zone_get_trip().
+On 27-09-22, 16:08, Kevin Hilman wrote:
+> Currently k3-udma driver is built as separate platform drivers with a
+> shared probe and identical code path, just differnet platform data.
 > 
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> To enable to build as module, convert the separate platform driver
+> into a single module_platform_driver with the data selection done via
+> compatible string and of_match.  The separate of_match tables are also
+> combined into a single table to avoid the multiple calls to
+> of_match_node()
+> 
+> Since all modern TI platforms using this are DT enabled, the removal
+> of separate platform_drivers shoul should nave no functional change.
 
-I think I acked it...
+drop extra shoul
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Please change subsystem tag to dmaengine: ti: xxxx for this and next
+patch
 
-Best regards,
-Krzysztof
+> 
+> Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+> Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>                                                                                                                            
 
+this has trailing whitespaces, maybe copy paste error
+
+
+> ---
+>  drivers/dma/ti/Kconfig        |  4 ++--
+>  drivers/dma/ti/k3-udma-glue.c |  5 ++++-
+>  drivers/dma/ti/k3-udma.c      | 40 +++++------------------------------
+>  3 files changed, 11 insertions(+), 38 deletions(-)
+> 
+> diff --git a/drivers/dma/ti/Kconfig b/drivers/dma/ti/Kconfig
+> index 79618fac119a..f196be3b222f 100644
+> --- a/drivers/dma/ti/Kconfig
+> +++ b/drivers/dma/ti/Kconfig
+> @@ -35,7 +35,7 @@ config DMA_OMAP
+>  	  DMA engine is found on OMAP and DRA7xx parts.
+>  
+>  config TI_K3_UDMA
+> -	bool "Texas Instruments UDMA support"
+> +	tristate "Texas Instruments UDMA support"
+>  	depends on ARCH_K3
+>  	depends on TI_SCI_PROTOCOL
+>  	depends on TI_SCI_INTA_IRQCHIP
+> @@ -48,7 +48,7 @@ config TI_K3_UDMA
+>  	  DMA engine is used in AM65x and j721e.
+>  
+>  config TI_K3_UDMA_GLUE_LAYER
+> -	bool "Texas Instruments UDMA Glue layer for non DMAengine users"
+> +	tristate "Texas Instruments UDMA Glue layer for non DMAengine users"
+>  	depends on ARCH_K3
+>  	depends on TI_K3_UDMA
+>  	help
+> diff --git a/drivers/dma/ti/k3-udma-glue.c b/drivers/dma/ti/k3-udma-glue.c
+> index 4fdd9f06b723..c29de4695ae7 100644
+> --- a/drivers/dma/ti/k3-udma-glue.c
+> +++ b/drivers/dma/ti/k3-udma-glue.c
+> @@ -6,6 +6,7 @@
+>   *
+>   */
+>  
+> +#include <linux/module.h>
+>  #include <linux/atomic.h>
+>  #include <linux/delay.h>
+>  #include <linux/dma-mapping.h>
+> @@ -1433,4 +1434,6 @@ static int __init k3_udma_glue_class_init(void)
+>  {
+>  	return class_register(&k3_udma_glue_devclass);
+>  }
+> -arch_initcall(k3_udma_glue_class_init);
+> +
+> +module_init(k3_udma_glue_class_init);
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+> index 2f0d2c68c93c..7239ff31c8c5 100644
+> --- a/drivers/dma/ti/k3-udma.c
+> +++ b/drivers/dma/ti/k3-udma.c
+> @@ -5,6 +5,7 @@
+>   */
+>  
+>  #include <linux/kernel.h>
+> +#include <linux/module.h>
+>  #include <linux/delay.h>
+>  #include <linux/dmaengine.h>
+>  #include <linux/dma-mapping.h>
+> @@ -4318,18 +4319,10 @@ static const struct of_device_id udma_of_match[] = {
+>  		.compatible = "ti,j721e-navss-mcu-udmap",
+>  		.data = &j721e_mcu_data,
+>  	},
+> -	{ /* Sentinel */ },
+> -};
+> -
+> -static const struct of_device_id bcdma_of_match[] = {
+>  	{
+>  		.compatible = "ti,am64-dmss-bcdma",
+>  		.data = &am64_bcdma_data,
+>  	},
+> -	{ /* Sentinel */ },
+> -};
+> -
+> -static const struct of_device_id pktdma_of_match[] = {
+>  	{
+>  		.compatible = "ti,am64-dmss-pktdma",
+>  		.data = &am64_pktdma_data,
+> @@ -5254,14 +5247,9 @@ static int udma_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
+>  
+>  	match = of_match_node(udma_of_match, dev->of_node);
+> -	if (!match)
+> -		match = of_match_node(bcdma_of_match, dev->of_node);
+>  	if (!match) {
+> -		match = of_match_node(pktdma_of_match, dev->of_node);
+> -		if (!match) {
+> -			dev_err(dev, "No compatible match found\n");
+> -			return -ENODEV;
+> -		}
+> +		dev_err(dev, "No compatible match found\n");
+> +		return -ENODEV;
+>  	}
+>  	ud->match_data = match->data;
+>  
+> @@ -5494,27 +5482,9 @@ static struct platform_driver udma_driver = {
+>  	},
+>  	.probe		= udma_probe,
+>  };
+> -builtin_platform_driver(udma_driver);
+>  
+> -static struct platform_driver bcdma_driver = {
+> -	.driver = {
+> -		.name	= "ti-bcdma",
+> -		.of_match_table = bcdma_of_match,
+> -		.suppress_bind_attrs = true,
+> -	},
+> -	.probe		= udma_probe,
+> -};
+> -builtin_platform_driver(bcdma_driver);
+> -
+> -static struct platform_driver pktdma_driver = {
+> -	.driver = {
+> -		.name	= "ti-pktdma",
+> -		.of_match_table = pktdma_of_match,
+> -		.suppress_bind_attrs = true,
+> -	},
+> -	.probe		= udma_probe,
+> -};
+> -builtin_platform_driver(pktdma_driver);
+> +module_platform_driver(udma_driver);
+> +MODULE_LICENSE("GPL v2");
+>  
+>  /* Private interfaces to UDMA */
+>  #include "k3-udma-private.c"
+> -- 
+> 2.34.0
+
+-- 
+~Vinod
