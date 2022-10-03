@@ -2,52 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 507055F2D8B
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Oct 2022 11:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 144305F2DCB
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Oct 2022 11:30:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231337AbiJCJ3T (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Oct 2022 05:29:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57994 "EHLO
+        id S230244AbiJCJa0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Oct 2022 05:30:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231501AbiJCJ2L (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Oct 2022 05:28:11 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D116474D8
-        for <linux-omap@vger.kernel.org>; Mon,  3 Oct 2022 02:27:08 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id j7so10422641wrr.3
-        for <linux-omap@vger.kernel.org>; Mon, 03 Oct 2022 02:27:08 -0700 (PDT)
+        with ESMTP id S230392AbiJCJ3X (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Oct 2022 05:29:23 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12BEA5142D
+        for <linux-omap@vger.kernel.org>; Mon,  3 Oct 2022 02:27:31 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id ay36so6615351wmb.0
+        for <linux-omap@vger.kernel.org>; Mon, 03 Oct 2022 02:27:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=G/YO0fJeKfkSzRqdgqFU3ij4yJaDOnZPHmbsRpXJf/A=;
-        b=m8PGB4q8KhZuJG6l/iwZ3mhCBCZ/XAWQq4HqyyeOlZmJsxaKnDIAvHfvP2B8cpfI+q
-         YM3K1cyu4sxjpaAmCPBWvKeeLa1EEb6ZJka1ItuxPrMZjKEz4ETXfhJIEemzcWj0kgOo
-         2KT0FPG0besMn6ElRxhEiGyzaGdQKW034dZ8e78COMrF9oCqOLlC/zD6Ee37125Ew5kC
-         eHySFW2YcmjFQ7yyql3CyGezaW6mb/IC6/a2GHQLVO/CebhgzwsMSL95rI42xQdFf75t
-         azAlJ7AqS+tkSm4dNRK7WkHqo2z2tdE2lgmIbaWzQFs8BSmD9yfLseDkCDgSJ6HOiUMe
-         /HRg==
+        bh=vcQTbtSOs9FbsFbv8V2t/E69I1IFg9ZKCW8F5npsSmY=;
+        b=R37CjcAls3wd1FeIxzfgGcdNMGz0TY2UO5rzbcPnZ6nyJvuS/AKbzrI4k1+YtBteec
+         LUg4DwYU1HuAQqZoLPdI8XUUCOLv8Gvy5t41UknnayL2IySh5CI2rCzLCi5XEbccffuk
+         r+jsrU6gWCt8DkCxxmjp/e8L8XYyvPwRMJ4MukxW0foc/SVFf3v1kls5QTgktMKFwgQE
+         lTyzuFSciaaIF7tKi4wA2cDW7QyZ76Y7B6S0XoL6BOzkS9Y6Dl4HWuKCXV8TtKXMi3aY
+         As3Su/txxuE8vVINy5cqOScN4XhnjhjjYIVIxTVXuV60V77KBRFbqygmCoePdg5jUwP5
+         TIfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=G/YO0fJeKfkSzRqdgqFU3ij4yJaDOnZPHmbsRpXJf/A=;
-        b=ZiwgeeEhe1AYO0MiQ58EhmeIodP8TV5gH8XcvGJg/Wu7xA5Ow1c0+dmH4QmgwqlRXB
-         0pIsprn3yHzBuJhGF9Su4tpk2VyDSwSFBDXYwxspq5Qk1b7yf/1An7+BwyWfxoEoVVXL
-         NgfJx9FAZhY7ypTexpUk9i362BX0iAw9NVpQxpPt+8Mxe09CVABPVSFm4c3KjYsl2bi/
-         R9w+JfESx9F1PRhy8RRPQFWdbFxEDwrziLqgU+qNZkMFjQikL8COXcO1XzUPwc/cD9pG
-         OGBpkgwwy18KTuRpofn816iCi0vUMfuXQeah1N3K9Tas51H0JJYyYKtZ+f8TdxKWOXWu
-         vhmw==
-X-Gm-Message-State: ACrzQf1Ky/5Nt2tRtDmyJalXV29kmZKNTxEOCzNHOqjEVHiJhnlP8Iet
-        rePp0a6IwAS5z+EffW9SOahG+g==
-X-Google-Smtp-Source: AMsMyM7gsn52CUx5wrjtjzaxGVsGC7FPsBHbuCD2UcRFhsLzFWaoemeyB4TfY2JmOJO152GiXW+J+w==
-X-Received: by 2002:a5d:56c8:0:b0:22e:32c5:d397 with SMTP id m8-20020a5d56c8000000b0022e32c5d397mr4824209wrw.462.1664789227584;
-        Mon, 03 Oct 2022 02:27:07 -0700 (PDT)
+        bh=vcQTbtSOs9FbsFbv8V2t/E69I1IFg9ZKCW8F5npsSmY=;
+        b=UFmUdER1EEiv7Vfo2euiiuMf1Hx97xNx3XiMaf6MB+4N62DPWZ1xsYO/ouE4e3vS0K
+         R83oacnw3u5x2ZIHveByrmO3RYoojf84R31ZdnyHMSQY1NDbhWcZCWm1VqH+1i/W+M1V
+         HtT0Un8SYjM6OVSc9D41rl8vm5fwYnduyTo4VzQKjWh0P8DsqWtdulvwzS1DBWinQPKY
+         XmZv9bVn1F3dL4l6PooDSHqHK2QE/LKHsg3yrP3/gpulPMZ+C+JiE8M80XYR0/UuBw49
+         7XBbqWmohiIEAX65CGh8kcdivQqQNXqJvbKipoDn4jo8KYAW0ri+q44DGkby0dZnJx67
+         VJNQ==
+X-Gm-Message-State: ACrzQf0q/f8gcIvUkJMGA+dU+NkobRyKSu9Bqv4kPQ3t+F5n8sy6jDMg
+        abck11PLqxbhvu/D9/oc7NGWBA==
+X-Google-Smtp-Source: AMsMyM6aFBS9fF7Bo0y7wdB80uq5x3btXVAOKWL+4niKzO1Mr3ihtors7d3wYKVMqn0DamhprQbJgA==
+X-Received: by 2002:a05:600c:1c19:b0:3b4:c1cb:d46d with SMTP id j25-20020a05600c1c1900b003b4c1cbd46dmr6231994wms.172.1664789231000;
+        Mon, 03 Oct 2022 02:27:11 -0700 (PDT)
 Received: from mai.. ([2a05:6e02:1041:c10:f3a:9f5e:1605:a75a])
-        by smtp.gmail.com with ESMTPSA id ay3-20020a5d6f03000000b0022cc157bf26sm9707520wrb.85.2022.10.03.02.27.04
+        by smtp.gmail.com with ESMTPSA id ay3-20020a5d6f03000000b0022cc157bf26sm9707520wrb.85.2022.10.03.02.27.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Oct 2022 02:27:07 -0700 (PDT)
+        Mon, 03 Oct 2022 02:27:10 -0700 (PDT)
 From:   Daniel Lezcano <daniel.lezcano@linaro.org>
 To:     daniel.lezcano@linaro.org, rafael@kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
@@ -95,9 +95,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-omap@vger.kernel.org
-Subject: [PATCH v8 16/29] thermal/of: Remove of_thermal_get_ntrips()
-Date:   Mon,  3 Oct 2022 11:25:49 +0200
-Message-Id: <20221003092602.1323944-17-daniel.lezcano@linaro.org>
+Subject: [PATCH v8 17/29] thermal/of: Remove of_thermal_is_trip_valid()
+Date:   Mon,  3 Oct 2022 11:25:50 +0200
+Message-Id: <20221003092602.1323944-18-daniel.lezcano@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221003092602.1323944-1-daniel.lezcano@linaro.org>
 References: <20221003092602.1323944-1-daniel.lezcano@linaro.org>
@@ -105,68 +105,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The thermal OF code uses the generic trip points to initialize the
-thermal zone. Consequently thermal_zone_get_num_trips() can be used
-and the of_thermal_get_ntrips() is no longer needed. Remove it.
+There is no benefit with the of_thermal_is_trip_valid() function as it
+does the check the thermal_zone_get_trip() is already doing for the
+sake of getting the trip point.
+
+As all the calls have been replaced by thermal_zone_get_trip(), there
+is no more users of of_thermal_is_trip_valid().
+
+Remove the function.
 
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/thermal/thermal_core.h |  5 -----
- drivers/thermal/thermal_of.c   | 16 ----------------
- 2 files changed, 21 deletions(-)
+ drivers/thermal/thermal_core.h | 10 ----------
+ drivers/thermal/thermal_of.c   | 19 -------------------
+ 2 files changed, 29 deletions(-)
 
 diff --git a/drivers/thermal/thermal_core.h b/drivers/thermal/thermal_core.h
-index c5990a3fcf8a..b00fc1913734 100644
+index b00fc1913734..e9b3af6c2084 100644
 --- a/drivers/thermal/thermal_core.h
 +++ b/drivers/thermal/thermal_core.h
-@@ -139,13 +139,8 @@ thermal_cooling_device_stats_update(struct thermal_cooling_device *cdev,
+@@ -138,16 +138,6 @@ thermal_cooling_device_stats_update(struct thermal_cooling_device *cdev,
+ #endif /* CONFIG_THERMAL_STATISTICS */
  
  /* device tree support */
- #ifdef CONFIG_THERMAL_OF
--int of_thermal_get_ntrips(struct thermal_zone_device *);
- bool of_thermal_is_trip_valid(struct thermal_zone_device *, int);
- #else
--static inline int of_thermal_get_ntrips(struct thermal_zone_device *tz)
+-#ifdef CONFIG_THERMAL_OF
+-bool of_thermal_is_trip_valid(struct thermal_zone_device *, int);
+-#else
+-static inline bool of_thermal_is_trip_valid(struct thermal_zone_device *tz,
+-					    int trip)
 -{
--	return 0;
+-	return false;
 -}
- static inline bool of_thermal_is_trip_valid(struct thermal_zone_device *tz,
- 					    int trip)
- {
+-#endif
+-
+ int thermal_zone_device_is_enabled(struct thermal_zone_device *tz);
+ 
+ #endif /* __THERMAL_CORE_H__ */
 diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index 2f533fc94917..89afa59c4915 100644
+index 89afa59c4915..4e54d62720dc 100644
 --- a/drivers/thermal/thermal_of.c
 +++ b/drivers/thermal/thermal_of.c
-@@ -19,22 +19,6 @@
+@@ -19,25 +19,6 @@
  
  #include "thermal_core.h"
  
 -/**
-- * of_thermal_get_ntrips - function to export number of available trip
-- *			   points.
-- * @tz: pointer to a thermal zone
+- * of_thermal_is_trip_valid - function to check if trip point is valid
 - *
-- * This function is a globally visible wrapper to get number of trip points
-- * stored in the local struct __thermal_zone
+- * @tz:	pointer to a thermal zone
+- * @trip:	trip point to evaluate
 - *
-- * Return: number of available trip points, -ENODEV when data not available
+- * This function is responsible for checking if passed trip point is valid
+- *
+- * Return: true if trip point is valid, false otherwise
 - */
--int of_thermal_get_ntrips(struct thermal_zone_device *tz)
+-bool of_thermal_is_trip_valid(struct thermal_zone_device *tz, int trip)
 -{
--	return tz->num_trips;
--}
--EXPORT_SYMBOL_GPL(of_thermal_get_ntrips);
+-	if (trip >= tz->num_trips || trip < 0)
+-		return false;
 -
- /**
-  * of_thermal_is_trip_valid - function to check if trip point is valid
-  *
+-	return true;
+-}
+-EXPORT_SYMBOL_GPL(of_thermal_is_trip_valid);
+-
+ static int of_thermal_set_trip_hyst(struct thermal_zone_device *tz, int trip,
+ 				    int hyst)
+ {
 -- 
 2.34.1
 
