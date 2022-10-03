@@ -2,287 +2,84 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69DFC5F2FE2
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Oct 2022 13:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B8385F3014
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Oct 2022 14:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229539AbiJCL4c (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Oct 2022 07:56:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53396 "EHLO
+        id S229763AbiJCMRg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Oct 2022 08:17:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbiJCL43 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Oct 2022 07:56:29 -0400
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C30D4F1A5;
-        Mon,  3 Oct 2022 04:56:28 -0700 (PDT)
-Received: by mail-qk1-f175.google.com with SMTP id k12so6355263qkj.8;
-        Mon, 03 Oct 2022 04:56:28 -0700 (PDT)
+        with ESMTP id S229477AbiJCMRf (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Oct 2022 08:17:35 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55FF38466
+        for <linux-omap@vger.kernel.org>; Mon,  3 Oct 2022 05:17:33 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id a13so14326601edj.0
+        for <linux-omap@vger.kernel.org>; Mon, 03 Oct 2022 05:17:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=UhWZV/mad6F4RpZvlHXFs+zp/JmucbtO6Fa9rpbOMEk=;
+        b=xkyPQRCYvXGiLcBvY9yC5upyusGgl/Pv3MufgQUsf9USbnVo9raFRMfG6EjJJk/wFE
+         tl0tWn7rkOIQ/XiH2EerwSC6Ran7LO/QW30Neqa0vT/M+U1xgIow98QDUfjds+tlD5aO
+         k1nkisLaX+3JU5bE3FkIjA4DCew7aQHqgHSgKolrPgltlM6WFixfDW6kIJ8bXth0RZfs
+         hfrH/d4cPAbrNkCtpZI+XVv5qJxkuSw6GQls4cr+h2QmOJC/owme92Nc2NXktmGkA8f/
+         KEt4DmiiBxlloKnt3NBCr/Wbx4fP395aSDX5qSZiRPQw25Hd5o/tFNlGkauf/M+xOISZ
+         2+sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WitNOf6WBeNmu77lsn7kACwTyf0tIcs7nBCxwgdcQsc=;
-        b=JblJdVZJHNu6dAYBd986ggG1XshqKu8jN1X+Qn2hlyLhPN2gS8TNzbZtbaNFNjDzcv
-         EtLliRJuX+F7coOo30/Gz1iuALGngevAgNUuNAdIrSBVGTEGui87K3UYIuA5e2whJoIo
-         YZoRVWjGSJOtVqpV5mRuv9PNPkJLGaTLhvbrib9u1xEtS1bqGI1aDIQiANXk0yHOOQds
-         kdnD2elzyBnFlY4ioj2Li2n4un8Q3j/T0NjgDOoQlllUClVdsZ1AYsjafjrOr9iNftog
-         1/1tdRWufXIiCzkPJjobiHrgAMieARYDijI6vz4NpU6xzCaN05JgRUMhN4/mBc6JyoWd
-         7d8w==
-X-Gm-Message-State: ACrzQf3kTj098frc7SX25UM5LpS63QIKdIflauM+RFYJY8QtL66c+tNx
-        u0suCzAEHebQ8P8SeMhVxBcIf7YV0RuYjoZNdhY=
-X-Google-Smtp-Source: AMsMyM6gK4Lpk9U29mVa1xe8BWRFfH9VFbqDWp91XeWepB1sC9vs6HtLeg7T4HHwhuWsguU1iWWGBGWooT36YUjNN0U=
-X-Received: by 2002:a37:a907:0:b0:6cb:be29:ac72 with SMTP id
- s7-20020a37a907000000b006cbbe29ac72mr13323935qke.505.1664798187356; Mon, 03
- Oct 2022 04:56:27 -0700 (PDT)
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=UhWZV/mad6F4RpZvlHXFs+zp/JmucbtO6Fa9rpbOMEk=;
+        b=ayXt78iQnjkt2lAJ87lkSL7wesbo432jH+hJEh79nbN+JZQMV6T8yHkPLb3hdKUZBt
+         yrRb9PnGNZtxOrtjEw+Y+1tTKEXHwzzxPJ7dQZNFyn95bXhfSbcJZIPAtH9VOSe2U7Jy
+         s1NAqo0kJ86QlOqYqCge15PlD1tjsExJlAyXqkff1qvh1rqDqIysai8jLYv2PPuhC2eB
+         tg7MjOFPdG/BZQj8QAoOOsv/VrtXnda6J4zBurAUMCv8veeZDFcPNq6n0CjTVgXB5t1I
+         kfoKLdsgH/rYNMcstm6/s23ZjHCH7sOo8CAmx0WaIPHARIXEPrgYa9NQ9hdZlkQtW0zV
+         QJ+A==
+X-Gm-Message-State: ACrzQf1GxMCgm92jMf6mg1itGPscEvuzotTtWHr9PNY2ja8Uv70EgHBU
+        KBc/lZqjSgZGi08xoxXgE5ZWAkH2oLz+lEcqcY2Dmw==
+X-Google-Smtp-Source: AMsMyM5bXQWrSdbav4mhiBEbAe2E6/Y8TidOXR2A9WaFyx6N9CtVVV3NU2QBrVpCbj9WTvew7OeZfg88TE8PBCP3C/Y=
+X-Received: by 2002:a05:6402:2690:b0:452:3a85:8b28 with SMTP id
+ w16-20020a056402269000b004523a858b28mr17987078edd.158.1664799452346; Mon, 03
+ Oct 2022 05:17:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221003092602.1323944-1-daniel.lezcano@linaro.org> <20221003092602.1323944-4-daniel.lezcano@linaro.org>
-In-Reply-To: <20221003092602.1323944-4-daniel.lezcano@linaro.org>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 3 Oct 2022 13:56:16 +0200
-Message-ID: <CAJZ5v0jjHH1S=+i2i=TOERtgEmxFmm_SAJBXEwoJunQATH3pLQ@mail.gmail.com>
-Subject: Re: [PATCH v8 03/29] thermal/core: Add a generic thermal_zone_set_trip()
- function
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     rafael@kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, rui.zhang@intel.com,
-        Raju Rangoju <rajur@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Peter Kaestle <peter@piie.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        Broadcom Kernel Team <bcm-kernel-feedback-list@broadcom.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Support Opensource <support.opensource@diasemi.com>,
-        Lukasz Luba <lukasz.luba@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Keerthy <j-keerthy@ti.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Antoine Tenart <atenart@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Dmitry Osipenko <digetx@gmail.com>, netdev@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org
+References: <20220914034615.1240860-1-cuigaosheng1@huawei.com> <20220914034615.1240860-4-cuigaosheng1@huawei.com>
+In-Reply-To: <20220914034615.1240860-4-cuigaosheng1@huawei.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 3 Oct 2022 14:17:21 +0200
+Message-ID: <CACRpkdZPB9hm7kMUzpMdNu9RP94vgvxkrQ70OGb_Qm8k--2zsQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] ARM: ftrace: remove unused ftrace_graph_caller_old() declaration
+To:     Gaosheng Cui <cuigaosheng1@huawei.com>
+Cc:     rostedt@goodmis.org, mingo@redhat.com, linux@armlinux.org.uk,
+        tony@atomide.com, bcousson@baylibre.com, paul@pwsan.com,
+        krzysztof.kozlowski@linaro.org, alim.akhtar@samsung.com,
+        stefan@agner.ch, rmk+kernel@armlinux.org.uk, broonie@kernel.org,
+        sebastian.reichel@collabora.co.uk,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-samsung-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 3, 2022 at 11:26 AM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
->
-> The thermal zone ops defines a set_trip callback where we can invoke
-> the backend driver to set an interrupt for the next trip point
-> temperature being crossed the way up or down, or setting the low level
-> with the hysteresis.
->
-> The ops is only called from the thermal sysfs code where the userspace
-> has the ability to modify a trip point characteristic.
->
-> With the effort of encapsulating the thermal framework core code,
-> let's create a thermal_zone_set_trip() which is the writable side of
-> the thermal_zone_get_trip() and put there all the ops encapsulation.
->
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+On Wed, Sep 14, 2022 at 5:46 AM Gaosheng Cui <cuigaosheng1@huawei.com> wrote:
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> All uses of ftrace_graph_caller_old() were removed by
+> commit d3c61619568c ("ARM: 8788/1: ftrace: remove old
+> mcount support"), so remove the declaration, too.
+>
+> Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-> ---
->  V8:
->    - pretty one line condition and parenthesis removal (Rafael J. Wysocki)
-> ---
->  drivers/thermal/thermal_core.c  | 46 +++++++++++++++++++++++++++++
->  drivers/thermal/thermal_sysfs.c | 52 +++++++++++----------------------
->  include/linux/thermal.h         |  3 ++
->  3 files changed, 66 insertions(+), 35 deletions(-)
->
-> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-> index 16ef91dc102f..3a9915824e67 100644
-> --- a/drivers/thermal/thermal_core.c
-> +++ b/drivers/thermal/thermal_core.c
-> @@ -1211,6 +1211,52 @@ int thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
->  }
->  EXPORT_SYMBOL_GPL(thermal_zone_get_trip);
->
-> +int thermal_zone_set_trip(struct thermal_zone_device *tz, int trip_id,
-> +                         const struct thermal_trip *trip)
-> +{
-> +       struct thermal_trip t;
-> +       int ret = -EINVAL;
-> +
-> +       mutex_lock(&tz->lock);
-> +
-> +       if (!tz->ops->set_trip_temp && !tz->ops->set_trip_hyst && !tz->trips)
-> +               goto out;
-> +
-> +       ret = __thermal_zone_get_trip(tz, trip_id, &t);
-> +       if (ret)
-> +               goto out;
-> +
-> +       if (t.type != trip->type) {
-> +               ret = -EINVAL;
-> +               goto out;
-> +       }
-> +
-> +       if (t.temperature != trip->temperature && tz->ops->set_trip_temp) {
-> +               ret = tz->ops->set_trip_temp(tz, trip_id, trip->temperature);
-> +               if (ret)
-> +                       goto out;
-> +       }
-> +
-> +       if (t.hysteresis != trip->hysteresis && tz->ops->set_trip_hyst) {
-> +               ret = tz->ops->set_trip_hyst(tz, trip_id, trip->hysteresis);
-> +               if (ret)
-> +                       goto out;
-> +       }
-> +
-> +       if (tz->trips && (t.temperature != trip->temperature || t.hysteresis != trip->hysteresis))
-> +               tz->trips[trip_id] = *trip;
-> +out:
-> +       mutex_unlock(&tz->lock);
-> +
-> +       if (!ret) {
-> +               thermal_notify_tz_trip_change(tz->id, trip_id, trip->type,
-> +                                             trip->temperature, trip->hysteresis);
-> +               thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
-> +       }
-> +
-> +       return ret;
-> +}
-> +
->  /**
->   * thermal_zone_device_register_with_trips() - register a new thermal zone device
->   * @type:      the thermal zone device type
-> diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
-> index 6c45194aaabb..8d7b25ab67c2 100644
-> --- a/drivers/thermal/thermal_sysfs.c
-> +++ b/drivers/thermal/thermal_sysfs.c
-> @@ -115,32 +115,19 @@ trip_point_temp_store(struct device *dev, struct device_attribute *attr,
->         struct thermal_trip trip;
->         int trip_id, ret;
->
-> -       if (!tz->ops->set_trip_temp && !tz->trips)
-> -               return -EPERM;
-> -
->         if (sscanf(attr->attr.name, "trip_point_%d_temp", &trip_id) != 1)
->                 return -EINVAL;
->
-> -       if (kstrtoint(buf, 10, &trip.temperature))
-> -               return -EINVAL;
-> -
-> -       if (tz->ops->set_trip_temp) {
-> -               ret = tz->ops->set_trip_temp(tz, trip_id, trip.temperature);
-> -               if (ret)
-> -                       return ret;
-> -       }
-> -
-> -       if (tz->trips)
-> -               tz->trips[trip_id].temperature = trip.temperature;
-> -
->         ret = thermal_zone_get_trip(tz, trip_id, &trip);
->         if (ret)
->                 return ret;
->
-> -       thermal_notify_tz_trip_change(tz->id, trip_id, trip.type,
-> -                                     trip.temperature, trip.hysteresis);
-> +       if (kstrtoint(buf, 10, &trip.temperature))
-> +               return -EINVAL;
->
-> -       thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
-> +       ret = thermal_zone_set_trip(tz, trip_id, &trip);
-> +       if (ret)
-> +               return ret;
->
->         return count;
->  }
-> @@ -168,29 +155,24 @@ trip_point_hyst_store(struct device *dev, struct device_attribute *attr,
->                       const char *buf, size_t count)
->  {
->         struct thermal_zone_device *tz = to_thermal_zone(dev);
-> -       int trip, ret;
-> -       int temperature;
-> -
-> -       if (!tz->ops->set_trip_hyst)
-> -               return -EPERM;
-> +       struct thermal_trip trip;
-> +       int trip_id, ret;
->
-> -       if (sscanf(attr->attr.name, "trip_point_%d_hyst", &trip) != 1)
-> +       if (sscanf(attr->attr.name, "trip_point_%d_hyst", &trip_id) != 1)
->                 return -EINVAL;
->
-> -       if (kstrtoint(buf, 10, &temperature))
-> -               return -EINVAL;
-> +       ret = thermal_zone_get_trip(tz, trip_id, &trip);
-> +       if (ret)
-> +               return ret;
->
-> -       /*
-> -        * We are not doing any check on the 'temperature' value
-> -        * here. The driver implementing 'set_trip_hyst' has to
-> -        * take care of this.
-> -        */
-> -       ret = tz->ops->set_trip_hyst(tz, trip, temperature);
-> +       if (kstrtoint(buf, 10, &trip.hysteresis))
-> +               return -EINVAL;
->
-> -       if (!ret)
-> -               thermal_zone_set_trips(tz);
-> +       ret = thermal_zone_set_trip(tz, trip_id, &trip);
-> +       if (ret)
-> +               return ret;
->
-> -       return ret ? ret : count;
-> +       return count;
->  }
->
->  static ssize_t
-> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> index feb8b61df746..66373f872237 100644
-> --- a/include/linux/thermal.h
-> +++ b/include/linux/thermal.h
-> @@ -338,6 +338,9 @@ static inline void devm_thermal_of_zone_unregister(struct device *dev,
->  int thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
->                           struct thermal_trip *trip);
->
-> +int thermal_zone_set_trip(struct thermal_zone_device *tz, int trip_id,
-> +                         const struct thermal_trip *trip);
-> +
->  int thermal_zone_get_num_trips(struct thermal_zone_device *tz);
->
->  int thermal_zone_get_crit_temp(struct thermal_zone_device *tz, int *temp);
-> --
-> 2.34.1
->
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+
+Please put this into Russell's patch tracker.
+
+Yours,
+Linus Walleij
