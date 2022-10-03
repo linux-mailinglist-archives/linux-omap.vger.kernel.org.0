@@ -2,55 +2,55 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B3A5F32A8
-	for <lists+linux-omap@lfdr.de>; Mon,  3 Oct 2022 17:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F0935F37B2
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Oct 2022 23:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229549AbiJCPhH (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 3 Oct 2022 11:37:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36300 "EHLO
+        id S229811AbiJCV1r (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 3 Oct 2022 17:27:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230148AbiJCPgp (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Oct 2022 11:36:45 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ED8F2ED48
-        for <linux-omap@vger.kernel.org>; Mon,  3 Oct 2022 08:36:38 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id f11so14669505wrm.6
-        for <linux-omap@vger.kernel.org>; Mon, 03 Oct 2022 08:36:38 -0700 (PDT)
+        with ESMTP id S229747AbiJCV1Q (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 3 Oct 2022 17:27:16 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EB4C558E5
+        for <linux-omap@vger.kernel.org>; Mon,  3 Oct 2022 14:18:12 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id r6so18516736wru.8
+        for <linux-omap@vger.kernel.org>; Mon, 03 Oct 2022 14:18:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date;
-        bh=XNKN62ufy1+xZwjokTiFAK6DG0fkYs2uyoDmdXUsmfk=;
-        b=joStem3d8drVJs049ako4kuE59txaO6NDwV0bfhPO1a6au6KSg1jl9JsQbZC3bw7u+
-         FD6FayZuGqdzNjFvhzr644aHDEG6eCiaS9OElKxDfveQgku8qAOD+P94IxzfUncnx8IO
-         RK+0MVu0VdhcKkFmQsLSyILE5TNyJbkDMhEFSgk6kG9xiR+G48J4fbd7Ydqu9lfNyuxm
-         tvzmrPwJsIDRpFq4+XQKhrZjD3+bkaJPRtm2Df97oP5CxhB+whhXaMyK76P9RB4KrQx9
-         WR8EWkAW9tn/Zis7k+FaXmzNAPD5b79QWJRpBzgishcYEQtk6m/FkQliHjtVn56Kmtc7
-         3OuA==
+        bh=Axxsa4o83JxVySF0VeMEEgQfzZQEKD42u7jzjyEhlTA=;
+        b=Xj5R/xtYz0KVD8v36F7VJfwh0AouVJWpEaeGMIJV93h8iQ0EYzDjZ1zTozM6TufDg3
+         0KM9P0ctFd3Fs7cUhCJjrwScSreI+E9HIlZm/OZ/bkI1nqVDTey0WZYSWgaiEJfegKim
+         /LJw/rCP1DeHLNdozCvsBhU3yFjf4n80/pMNtq1T8zjTiJ36lahBrdTiZ9jB1PlJPLG4
+         eJpf94uwUzubWN/ss3zYtJJ37EO6J2ndTIECOcuK/YgL77S2SyUyW/wFzGVFObQ+WgbF
+         g4KiY4ITBf4jbBVOTXr5v4v+khxASQWurI+57sRxRT8flp5xOw8DV2jJif41PPNbicf0
+         Or4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=XNKN62ufy1+xZwjokTiFAK6DG0fkYs2uyoDmdXUsmfk=;
-        b=IBLF839yGcio5DjQlpJHmPXa2LlDyIJWNhr5P9+bj7tltc52Z0ZC4pgRK7ivufsCEs
-         C0mPSPZImYDlubcEz/d3IsXSNkeeJeYpjZ7SoL893GfBuobQ9r6qzMxPn4KGv7z1QSsO
-         CeLVQpunLLRKADUlxsIYdyfpO0WwnIw/zfzsD/q4zyTf19wxtnlarnUIVVwVFuLvhrp3
-         OiopBV9GprmfU4jaoaBR3AAU1AwVh+C2l9W1ci6MMo6Zs+Qihr5PmT+xH8ZB7Ipzx+eR
-         zGQcuUVjsKEb0qadpThThV747++4MjZnuYjks+s0+y2ZtXxKzo18DKV+fIzQVJdfsXV0
-         IYsA==
-X-Gm-Message-State: ACrzQf0N7DMnBN9qyGCTNZiB6pSTOvu6Kgg4Caugs+w2qOYuygiSuLLX
-        XvGmFPBBsrS7xr3B59V7bjX1Kg==
-X-Google-Smtp-Source: AMsMyM5sZ5raF+DNJ/cTSf5EVIWxvlZeClNcXX2TDk8N8PojssLE59qDPC1gOPTXuAj69kjJPYFesg==
-X-Received: by 2002:a05:6000:1c0e:b0:22e:2c39:1da6 with SMTP id ba14-20020a0560001c0e00b0022e2c391da6mr7285770wrb.588.1664811396754;
-        Mon, 03 Oct 2022 08:36:36 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:f3a:9f5e:1605:a75a? ([2a05:6e02:1041:c10:f3a:9f5e:1605:a75a])
-        by smtp.googlemail.com with ESMTPSA id v17-20020a5d43d1000000b0022e049586c5sm8599784wrr.28.2022.10.03.08.36.34
+        bh=Axxsa4o83JxVySF0VeMEEgQfzZQEKD42u7jzjyEhlTA=;
+        b=vyj7xIza0Osot5nsxNep3FjFKI1R+LbtiTwGjIZXIQybIX6Uib7oIOgWS1jIhQZ9b4
+         cNMecNaPnaeElmFDvolnyNk35gxDFbsHfvrlamOd8jUkZI1am1soUPkOa5QOZYsLyT11
+         3ytg7CyLDHTFg+kMd1EE3xLwikcbFAqykfbxgiZNmJzd3gvdkexU063lu+kuIJU268XA
+         /hhVpHdygKqRTW9T/6K7zAIVcjos7H6LHWBuR7i1EdeMPxQSF0KOwl1tmBMlIQY7wqR5
+         vLaZAp9WuO5Q+KVgHWQ+pSTAc3i8P95jRM7DHCO0Rf4O6ZAwCKjLBk0RcSlLMs8JiTWu
+         hdyA==
+X-Gm-Message-State: ACrzQf1diZFVCMD+gdMZFJqIbRDRvMwYeDkwNUCqjCXS5uKfbx//TyyX
+        UsiazoE1cni4qVUfbbF3cxjpLw==
+X-Google-Smtp-Source: AMsMyM5ldop9A6R5ttlN72dKmImyDiKX+QeWExu9pLifC5OYYNjcvQZwV3oYzqRijrfGYgHtgvvn7Q==
+X-Received: by 2002:a05:6000:2ad:b0:228:cf8f:fe85 with SMTP id l13-20020a05600002ad00b00228cf8ffe85mr14608289wry.94.1664831890494;
+        Mon, 03 Oct 2022 14:18:10 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:c456:8337:99aa:2667? ([2a05:6e02:1041:c10:c456:8337:99aa:2667])
+        by smtp.googlemail.com with ESMTPSA id g10-20020a05600c4eca00b003a62400724bsm14660100wmq.0.2022.10.03.14.18.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Oct 2022 08:36:36 -0700 (PDT)
-Message-ID: <d8533a76-9626-dcc2-f3fb-de878d2603df@linaro.org>
-Date:   Mon, 3 Oct 2022 17:36:34 +0200
+        Mon, 03 Oct 2022 14:18:09 -0700 (PDT)
+Message-ID: <c3258cb2-9a56-d048-5738-1132331a157d@linaro.org>
+Date:   Mon, 3 Oct 2022 23:18:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
@@ -82,8 +82,7 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -254,7 +253,8 @@ On 03/10/2022 16:10, Marek Szyprowski wrote:
 > I've tested this v8 patchset after fixing the issue with Exynos TMU with
 > https://lore.kernel.org/all/20221003132943.1383065-1-daniel.lezcano@linaro.org/
 > patch and I got the following lockdep warning on all Exynos-based boards:
->
+> 
+> 
 > ======================================================
 > WARNING: possible circular locking dependency detected
 > 6.0.0-rc1-00083-ge5c9d117223e #12945 Not tainted
@@ -268,8 +268,169 @@ On 03/10/2022 16:10, Marek Szyprowski wrote:
 > 
 > which lock already depends on the new lock.
 
-Investigating ...
+I'm wondering if the problem is not already there and related to 
+data->lock ...
 
+Doesn't the thermal zone lock already prevent racy access to the data 
+structure?
+
+Another question: if the sensor clock is disabled after reading it, how 
+does the hardware update the temperature and detect the programed 
+threshold is crossed?
+
+> the existing dependency chain (in reverse order) is:
+> 
+> -> #1 (&tz->lock){+.+.}-{3:3}:
+>          mutex_lock_nested+0x1c/0x24
+>          thermal_zone_get_trip+0x20/0x44
+>          exynos_tmu_initialize+0x144/0x1e0
+>          exynos_tmu_probe+0x2b0/0x728
+>          platform_probe+0x5c/0xb8
+>          really_probe+0xe0/0x414
+>          __driver_probe_device+0xa0/0x208
+>          driver_probe_device+0x30/0xc0
+>          __driver_attach+0xf0/0x1f0
+>          bus_for_each_dev+0x70/0xb0
+>          bus_add_driver+0x174/0x218
+>          driver_register+0x88/0x11c
+>          do_one_initcall+0x64/0x380
+>          kernel_init_freeable+0x1c0/0x224
+>          kernel_init+0x18/0x12c
+>          ret_from_fork+0x14/0x2c
+>          0x0
+> 
+> -> #0 (&data->lock#2){+.+.}-{3:3}:
+>          lock_acquire+0x124/0x3e4
+>          __mutex_lock+0x90/0x948
+>          mutex_lock_nested+0x1c/0x24
+>          exynos_get_temp+0x3c/0xc8
+>          __thermal_zone_get_temp+0x5c/0x12c
+>          thermal_zone_device_update.part.0+0x78/0x528
+>          __thermal_cooling_device_register.part.0+0x298/0x354
+>          __cpufreq_cooling_register.constprop.0+0x138/0x218
+>          of_cpufreq_cooling_register+0x48/0x8c
+>          cpufreq_online+0x8d0/0xb2c
+>          cpufreq_add_dev+0xb0/0xec
+>          subsys_interface_register+0x108/0x118
+>          cpufreq_register_driver+0x15c/0x380
+>          dt_cpufreq_probe+0x2e4/0x434
+>          platform_probe+0x5c/0xb8
+>          really_probe+0xe0/0x414
+>          __driver_probe_device+0xa0/0x208
+>          driver_probe_device+0x30/0xc0
+>          __driver_attach+0xf0/0x1f0
+>          bus_for_each_dev+0x70/0xb0
+>          bus_add_driver+0x174/0x218
+>          driver_register+0x88/0x11c
+>          do_one_initcall+0x64/0x380
+>          kernel_init_freeable+0x1c0/0x224
+>          kernel_init+0x18/0x12c
+>          ret_from_fork+0x14/0x2c
+>          0x0
+> 
+> other info that might help us debug this:
+> 
+>    Possible unsafe locking scenario:
+> 
+>          CPU0                    CPU1
+>          ----                    ----
+>     lock(&tz->lock);
+>                                  lock(&data->lock#2);
+>                                  lock(&tz->lock);
+>     lock(&data->lock#2);
+> 
+>    *** DEADLOCK ***
+> 
+> 5 locks held by swapper/0/1:
+>    #0: c1c8648c (&dev->mutex){....}-{3:3}, at: __driver_attach+0xe4/0x1f0
+>    #1: c1210434 (cpu_hotplug_lock){++++}-{0:0}, at:
+> cpufreq_register_driver+0xc4/0x380
+>    #2: c1ed8298 (subsys mutex#8){+.+.}-{3:3}, at:
+> subsys_interface_register+0x4c/0x118
+>    #3: c131f944 (thermal_list_lock){+.+.}-{3:3}, at:
+> __thermal_cooling_device_register.part.0+0x238/0x354
+>    #4: c2979b94 (&tz->lock){+.+.}-{3:3}, at:
+> thermal_zone_device_update.part.0+0x3c/0x528
+> 
+> stack backtrace:
+> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.0.0-rc1-00083-ge5c9d117223e
+> #12945
+> Hardware name: Samsung Exynos (Flattened Device Tree)
+>    unwind_backtrace from show_stack+0x10/0x14
+>    show_stack from dump_stack_lvl+0x58/0x70
+>    dump_stack_lvl from check_noncircular+0xf0/0x158
+>    check_noncircular from __lock_acquire+0x15e8/0x2a7c
+>    __lock_acquire from lock_acquire+0x124/0x3e4
+>    lock_acquire from __mutex_lock+0x90/0x948
+>    __mutex_lock from mutex_lock_nested+0x1c/0x24
+>    mutex_lock_nested from exynos_get_temp+0x3c/0xc8
+>    exynos_get_temp from __thermal_zone_get_temp+0x5c/0x12c
+>    __thermal_zone_get_temp from thermal_zone_device_update.part.0+0x78/0x528
+>    thermal_zone_device_update.part.0 from
+> __thermal_cooling_device_register.part.0+0x298/0x354
+>    __thermal_cooling_device_register.part.0 from
+> __cpufreq_cooling_register.constprop.0+0x138/0x218
+>    __cpufreq_cooling_register.constprop.0 from
+> of_cpufreq_cooling_register+0x48/0x8c
+>    of_cpufreq_cooling_register from cpufreq_online+0x8d0/0xb2c
+>    cpufreq_online from cpufreq_add_dev+0xb0/0xec
+>    cpufreq_add_dev from subsys_interface_register+0x108/0x118
+>    subsys_interface_register from cpufreq_register_driver+0x15c/0x380
+>    cpufreq_register_driver from dt_cpufreq_probe+0x2e4/0x434
+>    dt_cpufreq_probe from platform_probe+0x5c/0xb8
+>    platform_probe from really_probe+0xe0/0x414
+>    really_probe from __driver_probe_device+0xa0/0x208
+>    __driver_probe_device from driver_probe_device+0x30/0xc0
+>    driver_probe_device from __driver_attach+0xf0/0x1f0
+>    __driver_attach from bus_for_each_dev+0x70/0xb0
+>    bus_for_each_dev from bus_add_driver+0x174/0x218
+>    bus_add_driver from driver_register+0x88/0x11c
+>    driver_register from do_one_initcall+0x64/0x380
+>    do_one_initcall from kernel_init_freeable+0x1c0/0x224
+>    kernel_init_freeable from kernel_init+0x18/0x12c
+>    kernel_init from ret_from_fork+0x14/0x2c
+> Exception stack(0xf082dfb0 to 0xf082dff8)
+> ...
+> 
+> Let me know if You need anything more to test.
+> 
+> 
+>> drivers/net/ethernet/chelsio/cxgb4/cxgb4.h | 2 -
+>> .../ethernet/chelsio/cxgb4/cxgb4_thermal.c | 41 +----
+>> drivers/platform/x86/acerhdf.c | 73 +++-----
+>> drivers/thermal/armada_thermal.c | 39 ++---
+>> drivers/thermal/broadcom/bcm2835_thermal.c | 8 +-
+>> drivers/thermal/da9062-thermal.c | 52 +-----
+>> drivers/thermal/gov_bang_bang.c | 39 +++--
+>> drivers/thermal/gov_fair_share.c | 18 +-
+>> drivers/thermal/gov_power_allocator.c | 51 +++---
+>> drivers/thermal/gov_step_wise.c | 22 ++-
+>> drivers/thermal/hisi_thermal.c | 11 +-
+>> drivers/thermal/imx_thermal.c | 72 +++-----
+>> .../int340x_thermal/int340x_thermal_zone.c | 33 ++--
+>> .../int340x_thermal/int340x_thermal_zone.h | 4 +-
+>> .../processor_thermal_device.c | 10 +-
+>> drivers/thermal/intel/x86_pkg_temp_thermal.c | 120 +++++++------
+>> drivers/thermal/qcom/qcom-spmi-temp-alarm.c | 39 ++---
+>> drivers/thermal/rcar_gen3_thermal.c | 2 +-
+>> drivers/thermal/rcar_thermal.c | 53 +-----
+>> drivers/thermal/samsung/exynos_tmu.c | 57 +++----
+>> drivers/thermal/st/st_thermal.c | 47 +----
+>> drivers/thermal/tegra/soctherm.c | 33 ++--
+>> drivers/thermal/tegra/tegra30-tsensor.c | 17 +-
+>> drivers/thermal/thermal_core.c | 160 +++++++++++++++---
+>> drivers/thermal/thermal_core.h | 24 +--
+>> drivers/thermal/thermal_helpers.c | 28 +--
+>> drivers/thermal/thermal_netlink.c | 21 +--
+>> drivers/thermal/thermal_of.c | 116 -------------
+>> drivers/thermal/thermal_sysfs.c | 133 +++++----------
+>> drivers/thermal/ti-soc-thermal/ti-thermal.h | 15 --
+>> drivers/thermal/uniphier_thermal.c | 27 ++-
+>> include/linux/thermal.h | 10 ++
+>> 32 files changed, 559 insertions(+), 818 deletions(-)
+>>
+> Best regards
+> 
 
 
 -- 
