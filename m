@@ -1,78 +1,120 @@
 Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from out1.vger.email (unknown [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E170C5F3CFE
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Oct 2022 09:04:23 +0200 (CEST)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 812C35F4151
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Oct 2022 13:04:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229700AbiJDHEW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 4 Oct 2022 03:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42520 "EHLO
+        id S229607AbiJDLEp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 4 Oct 2022 07:04:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229674AbiJDHEU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Oct 2022 03:04:20 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FB513869A
-        for <linux-omap@vger.kernel.org>; Tue,  4 Oct 2022 00:04:18 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id b6so14265878ljr.10
-        for <linux-omap@vger.kernel.org>; Tue, 04 Oct 2022 00:04:18 -0700 (PDT)
+        with ESMTP id S229848AbiJDLEk (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Oct 2022 07:04:40 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A40C53
+        for <linux-omap@vger.kernel.org>; Tue,  4 Oct 2022 04:04:36 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id u21so7196749pfc.13
+        for <linux-omap@vger.kernel.org>; Tue, 04 Oct 2022 04:04:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=EX68fILOrwkOw/PWHtfiPH8faXfSotP5mMz4zz7I7/g=;
-        b=fVkDYuJlzK8TnoBXd94hS7wwEGwyM0fsPXGgCHKTRKZj0+uRSBSG6Uf+1FmbY3ffeV
-         LKy2/1RPpkF5/HVZrxQ18kFNwOptiK1MN61fDMC3Mfv5P03QCjAJxm48HrzeMy5QjvUQ
-         MM+Pvh6Phog5w5CFudrq3InDNNbzbxpQEsmC0SXkkf6vMwq83LH72syJsXObzz6tZXa7
-         oN/6rgrne2cvuFtRXwa+1AlWhEKJe/DcEE8w3lTMwDFZmjoCoxs34TteES+2iuXkeWY6
-         UrojuvSmTsG9VsSjscoWPZxWmozEOfcxfLCxlTfxY1usSDu/uP9Jdu9lg9Bs86QemMQJ
-         fjIQ==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=+dGyZLAFgGMTjfv/XBtu0TYoOq7FF1Gy12H3Maj7VZQ=;
+        b=J/vrmB9Kw/kUjuLA94+GiSaAb/ysKsHCJMt0q/b5C4hTvjWvpD/4gYcz8wiDYH+wDu
+         VauelbAc6rvn6GfwX8AzvYum0016wmpfk7JfWsZRIuqW+7uz8x5trzhgQfsbK6Oez4C2
+         oI3/xkCQmxaR27+SGOcFsxA52mzB06l623Nv5Xai/ZW6o0aFNiEoJd0NtydxpISZgCqY
+         Huu19sneopcpPoTb7AatH5ql62Y6l79ODVmUp4xYd601QVsvCsOcL4Dye3nIrsebtAO/
+         TFi2QIhE77HgLndavZo56yiYGlFlIpX3fKxDC/yQxRz8ukXbuLPZ751WaoRstUHwOqJr
+         oOYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=EX68fILOrwkOw/PWHtfiPH8faXfSotP5mMz4zz7I7/g=;
-        b=6AREvCjB7xKL/c/T+KWhQR/iDrdbXV3Gg7uNACO9541Qlm9/SZTTaW8+kEiwykkGQ6
-         xuPhgZbjcfGFPvMLfM1CbaFcrIjBHj+vJjsHZ58Qfy/6o0AWHq+S6SfZHxmoTeJOtij4
-         nDVmXEceuooioExfd04+DYibsnbbJkOE0WIEORJMYGqt+les/iX27Mze9J36qCOB0l0C
-         gx2FvB1zuNvdLSFatZI1Fm0UZ6SEbT/gRl/fhKw4R4OtzqrftxbsP29Gb7d1Ryy/yRCf
-         jUXKUjYBc5rKSapFqd47exvfFbVWzgmgIxi+/9fBPJieuGnuOJkwHT/FLt5CZ8Rp+O6J
-         9tJA==
-X-Gm-Message-State: ACrzQf1R/TIMuIdyKNbRA6K9Z7oSfJpZfSiA6LgRoQePzij5MK+ZEBgx
-        bd2qGVlvb9BfCeCp6VlFME79Jw==
-X-Google-Smtp-Source: AMsMyM5wBl4VWP8SnFYrzTlQSS6dvEnLzeGbwmH/+keuzXujb3Qv3VSvV8HrMvyMEbNMQiYEzLqu9g==
-X-Received: by 2002:a2e:96d0:0:b0:26a:8a3c:861e with SMTP id d16-20020a2e96d0000000b0026a8a3c861emr7466095ljj.54.1664867056449;
-        Tue, 04 Oct 2022 00:04:16 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id y22-20020a197516000000b004946bb30469sm1786837lfe.82.2022.10.04.00.04.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Oct 2022 00:04:15 -0700 (PDT)
-Message-ID: <6d58c08e-1537-f1ab-2883-baf869650ef2@linaro.org>
-Date:   Tue, 4 Oct 2022 09:04:15 +0200
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=+dGyZLAFgGMTjfv/XBtu0TYoOq7FF1Gy12H3Maj7VZQ=;
+        b=dSJA8jTPNMS5Ii+Z1njvHTLRqJ191ToTLXC3f1IZcL0GPM9EtXrCD3d7+uIIHGhx8a
+         86/QZccB5gKEa2rlqlzzAS1OgFKmObRMMMldOloj2EgysuuPYR4X2GR7n4iBp67LZ7oZ
+         EgEItX+fZQ9aMmFZue6qhvjlMhCkxe98UXJwoZP21Sm3uJsOW2jJMzWoa/o/HH8OsPBr
+         F7JGfY98YKkZ3nn2wpxd+5IY7YuOYfe7JytvRvHSLlA2OUPIuFxIiXrLqKPezaKeqYsd
+         zJ5PzyFhZE3i36IUHXedul6kLklfz+KqRp440f0irAsWyAy10UPEvJ444okpXcZfzFyu
+         7QyA==
+X-Gm-Message-State: ACrzQf1Bo9qwbMp2COFO71n75gNt8Od3RZIiGRsi99vAnFewI3UAWJvn
+        maFH9RoRJgzJsJ0/IEGTkpEY1IsLxDhfaOtk+nM2vw==
+X-Google-Smtp-Source: AMsMyM47WQGEEYS8ORE4jd8BkC5HxomBqw3qkNOIDDeZpMqnq0xrIZB9jUW0aBX+JhUuuIkJBe/Q8EmYOwJGbohmCJY=
+X-Received: by 2002:a63:90c1:0:b0:450:75b5:29fe with SMTP id
+ a184-20020a6390c1000000b0045075b529femr6949580pge.541.1664881475536; Tue, 04
+ Oct 2022 04:04:35 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [RFC v1 1/1] arm: dts: omap4: pcm959: add initial support for
- phytec pcm959
-Content-Language: en-US
-To:     Colin Foster <colin.foster@in-advantage.com>,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc:     Tony Lindgren <tony@atomide.com>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, soc@kernel.org,
-        Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>
-References: <20221004024012.1386218-1-colin.foster@in-advantage.com>
- <20221004024012.1386218-2-colin.foster@in-advantage.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221004024012.1386218-2-colin.foster@in-advantage.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+References: <20220919095939.761690562@infradead.org> <20220919101521.139727471@infradead.org>
+In-Reply-To: <20220919101521.139727471@infradead.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 4 Oct 2022 13:03:57 +0200
+Message-ID: <CAPDyKFqTWd4W5Ofk76CtC4X43dxBTNHtmY9YzN355-vpviLsPw@mail.gmail.com>
+Subject: Re: [PATCH v2 12/44] cpuidle,dt: Push RCU-idle into driver
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     juri.lelli@redhat.com, rafael@kernel.org, catalin.marinas@arm.com,
+        linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org,
+        pavel@ucw.cz, agordeev@linux.ibm.com, linux-arch@vger.kernel.org,
+        vincent.guittot@linaro.org, mpe@ellerman.id.au,
+        chenhuacai@kernel.org, christophe.leroy@csgroup.eu,
+        linux-acpi@vger.kernel.org, agross@kernel.org,
+        geert@linux-m68k.org, linux-imx@nxp.com, vgupta@kernel.org,
+        mattst88@gmail.com, mturquette@baylibre.com, sammy@sammy.net,
+        pmladek@suse.com, linux-pm@vger.kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-um@lists.infradead.org, npiggin@gmail.com,
+        tglx@linutronix.de, linux-omap@vger.kernel.org,
+        dietmar.eggemann@arm.com, andreyknvl@gmail.com,
+        gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, senozhatsky@chromium.org,
+        svens@linux.ibm.com, jolsa@kernel.org, tj@kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        mark.rutland@arm.com, linux-ia64@vger.kernel.org,
+        dave.hansen@linux.intel.com,
+        virtualization@lists.linux-foundation.org,
+        James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com,
+        thierry.reding@gmail.com, kernel@xen0n.name, cl@linux.com,
+        linux-s390@vger.kernel.org, vschneid@redhat.com,
+        john.ogness@linutronix.de, ysato@users.sourceforge.jp,
+        linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de,
+        daniel.lezcano@linaro.org, jonathanh@nvidia.com, dennis@kernel.org,
+        lenb@kernel.org, linux-xtensa@linux-xtensa.org,
+        kernel@pengutronix.de, gor@linux.ibm.com,
+        linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev,
+        shorne@gmail.com, chris@zankel.net, sboyd@kernel.org,
+        dinguyen@kernel.org, bristot@redhat.com,
+        alexander.shishkin@linux.intel.com, fweisbec@gmail.com,
+        lpieralisi@kernel.org, atishp@atishpatra.org,
+        linux@rasmusvillemoes.dk, kasan-dev@googlegroups.com,
+        will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org,
+        linux-csky@vger.kernel.org, pv-drivers@vmware.com,
+        linux-snps-arc@lists.infradead.org, mgorman@suse.de,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        ulli.kroll@googlemail.com, linux-clk@vger.kernel.org,
+        rostedt@goodmis.org, ink@jurassic.park.msu.ru, bcain@quicinc.com,
+        tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
+        ryabinin.a.a@gmail.com, sudeep.holla@arm.com, shawnguo@kernel.org,
+        davem@davemloft.net, dalias@libc.org, tony@atomide.com,
+        amakhalov@vmware.com, konrad.dybcio@somainline.org,
+        bjorn.andersson@linaro.org, glider@google.com, hpa@zytor.com,
+        sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-riscv@lists.infradead.org, vincenzo.frascino@arm.com,
+        anton.ivanov@cambridgegreys.com, jonas@southpole.se,
+        yury.norov@gmail.com, richard@nod.at, x86@kernel.org,
+        linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu,
+        hca@linux.ibm.com, richard.henderson@linaro.org,
+        stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org,
+        acme@kernel.org, paul.walmsley@sifive.com,
+        linux-tegra@vger.kernel.org, namhyung@kernel.org,
+        andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org,
+        dvyukov@google.com, jgross@suse.com, monstr@monstr.eu,
+        linux-mips@vger.kernel.org, palmer@dabbelt.com,
+        anup@brainfault.org, bp@alien8.de, johannes@sipsolutions.net,
+        linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,588 +123,175 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 04/10/2022 04:40, Colin Foster wrote:
-> The Phytec PCM-959 is a development platform for the Phytec PCM-049 SOM.
-> Add initial functionality for the board. The verified interfaces and
-> peripherals are listed below for the SOM (PCM-049) and the dev board
-> (PCM-959)
-> 
-> The omap2plus_defconfig was used for testing. Only the On-board LEDs
-> required CONFIG_LEDS_PCA9532 addition.
-> 
-> PCM-049:
-> i2c1
->   * EEPROM at 0x50
->   * TMP102 (hwmon) at 0x4b
-> twl6030
-> GPMC
->   * Ethernet
->   * Flash
-> Serial (ttyS2 console)
-> 
-> PCM959:
-> MMC1
-> On-board LEDs (with CONFIG_LEDS_PCA9532)
-> 
-> Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+On Mon, 19 Sept 2022 at 12:18, Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> Doing RCU-idle outside the driver, only to then temporarily enable it
+> again before going idle is daft.
+>
+> Notably: this converts all dt_init_idle_driver() and
+> __CPU_PM_CPU_IDLE_ENTER() users for they are inextrably intertwined.
+>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+Kind regards
+Uffe
+
 > ---
->  arch/arm/boot/dts/Makefile                  |   1 +
->  arch/arm/boot/dts/omap4-phytec-pcm-049.dtsi | 352 ++++++++++++++++++++
->  arch/arm/boot/dts/omap4-phytec-pcm-959.dts  | 130 ++++++++
->  3 files changed, 483 insertions(+)
->  create mode 100644 arch/arm/boot/dts/omap4-phytec-pcm-049.dtsi
->  create mode 100644 arch/arm/boot/dts/omap4-phytec-pcm-959.dts
-> 
-> diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-> index 27eec8e670ec..ef225150c5d7 100644
-> --- a/arch/arm/boot/dts/Makefile
-> +++ b/arch/arm/boot/dts/Makefile
-> @@ -949,6 +949,7 @@ dtb-$(CONFIG_ARCH_OMAP4) += \
->  	omap4-panda.dtb \
->  	omap4-panda-a4.dtb \
->  	omap4-panda-es.dtb \
-> +	omap4-phytec-pcm-959.dtb \
->  	omap4-sdp.dtb \
->  	omap4-sdp-es23plus.dtb \
->  	omap4-var-dvk-om44.dtb \
-> diff --git a/arch/arm/boot/dts/omap4-phytec-pcm-049.dtsi b/arch/arm/boot/dts/omap4-phytec-pcm-049.dtsi
-> new file mode 100644
-> index 000000000000..05b5cd581f15
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/omap4-phytec-pcm-049.dtsi
-> @@ -0,0 +1,352 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2022 Innovative Advantage, Inc.
-> + */
-> +#include <dt-bindings/input/input.h>
-> +
-> +/ {
-> +	memory@80000000 {
-> +		device_type = "memory";
-> +		reg = <0x80000000 0x40000000>; /* 1 GB */
-> +	};
-> +
-> +	reserved-memory {
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		ranges;
-> +
-> +		dsp_memory_region: dsp-memory@98000000 {
-> +			compatible = "shared-dma-pool";
-> +			reg = <0x98000000 0x800000>;
-> +			reusable;
-> +			status = "okay";
-> +		};
-> +
-> +		ipu_memory_region: ipu-memory@98800000 {
-> +			compatible = "shared-dma-pool";
-> +			reg = <0x98800000 0x7000000>;
-> +			reusable;
-> +			status = "okay";
-> +		};
-> +	};
-> +
-> +	chosen {
-> +		stdout-path = &uart3;
-> +	};
-> +
-> +	leds: leds {
+>  arch/arm/mach-omap2/cpuidle34xx.c    |    4 ++--
+>  drivers/acpi/processor_idle.c        |    2 ++
+>  drivers/cpuidle/cpuidle-arm.c        |    1 +
+>  drivers/cpuidle/cpuidle-big_little.c |    8 ++++++--
+>  drivers/cpuidle/cpuidle-psci.c       |    1 +
+>  drivers/cpuidle/cpuidle-qcom-spm.c   |    1 +
+>  drivers/cpuidle/cpuidle-riscv-sbi.c  |    1 +
+>  drivers/cpuidle/dt_idle_states.c     |    2 +-
+>  include/linux/cpuidle.h              |    4 ++++
+>  9 files changed, 19 insertions(+), 5 deletions(-)
+>
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -1200,6 +1200,8 @@ static int acpi_processor_setup_lpi_stat
+>                 state->target_residency = lpi->min_residency;
+>                 if (lpi->arch_flags)
+>                         state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+> +               if (lpi->entry_method == ACPI_CSTATE_FFH)
+> +                       state->flags |= CPUIDLE_FLAG_RCU_IDLE;
 
-Does not look like you tested the DTS against bindings. Please run `make
-dtbs_check` (see Documentation/devicetree/bindings/writing-schema.rst
-for instructions).
+I assume the state index here will never be 0?
 
-> +		status = "okay";
+If not, it may lead to that acpi_processor_ffh_lpi_enter() may trigger
+CPU_PM_CPU_IDLE_ENTER_PARAM() to call ct_cpuidle_enter|exit() for an
+idle-state that doesn't have the CPUIDLE_FLAG_RCU_IDLE bit set.
 
-By default it is okay. If you override, override by label.
+>                 state->enter = acpi_idle_lpi_enter;
+>                 drv->safe_state_index = i;
+>         }
+> --- a/drivers/cpuidle/cpuidle-arm.c
+> +++ b/drivers/cpuidle/cpuidle-arm.c
+> @@ -53,6 +53,7 @@ static struct cpuidle_driver arm_idle_dr
+>          * handler for idle state index 0.
+>          */
+>         .states[0] = {
+> +               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
 
-> +		compatible = "gpio-leds";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <
-> +			&led_gpio_pins
-> +		>;
-> +
-> +		heartbeat {
+Comparing arm64 and arm32 idle-states/idle-drivers, the $subject
+series ends up setting the CPUIDLE_FLAG_RCU_IDLE for the ARM WFI idle
+state (state zero), but only for the arm64 and psci cases (mostly
+arm64). For arm32 we would need to update the ARM_CPUIDLE_WFI_STATE
+too, as that is what most arm32 idle-drivers are using. My point is,
+the code becomes a bit inconsistent.
 
-led-heartbeat or led-0
+Perhaps it's easier to avoid setting the CPUIDLE_FLAG_RCU_IDLE bit for
+all of the ARM WFI idle states, for both arm64 and arm32?
 
-> +			label = "modul:red:status1";
-> +			gpios = <&gpio5 0x18 GPIO_ACTIVE_HIGH>; /* GPIO 152 */
-> +			linux,default-trigger = "heartbeat";
-> +		};
-> +
-> +		mmc {
+>                 .enter                  = arm_enter_idle_state,
+>                 .exit_latency           = 1,
+>                 .target_residency       = 1,
+> --- a/drivers/cpuidle/cpuidle-big_little.c
+> +++ b/drivers/cpuidle/cpuidle-big_little.c
+> @@ -64,7 +64,8 @@ static struct cpuidle_driver bl_idle_lit
+>                 .enter                  = bl_enter_powerdown,
+>                 .exit_latency           = 700,
+>                 .target_residency       = 2500,
+> -               .flags                  = CPUIDLE_FLAG_TIMER_STOP,
+> +               .flags                  = CPUIDLE_FLAG_TIMER_STOP |
+> +                                         CPUIDLE_FLAG_RCU_IDLE,
+>                 .name                   = "C1",
+>                 .desc                   = "ARM little-cluster power down",
+>         },
+> @@ -85,7 +86,8 @@ static struct cpuidle_driver bl_idle_big
+>                 .enter                  = bl_enter_powerdown,
+>                 .exit_latency           = 500,
+>                 .target_residency       = 2000,
+> -               .flags                  = CPUIDLE_FLAG_TIMER_STOP,
+> +               .flags                  = CPUIDLE_FLAG_TIMER_STOP |
+> +                                         CPUIDLE_FLAG_RCU_IDLE,
+>                 .name                   = "C1",
+>                 .desc                   = "ARM big-cluster power down",
+>         },
+> @@ -124,11 +126,13 @@ static int bl_enter_powerdown(struct cpu
+>                                 struct cpuidle_driver *drv, int idx)
+>  {
+>         cpu_pm_enter();
+> +       ct_idle_enter();
+>
+>         cpu_suspend(0, bl_powerdown_finisher);
+>
+>         /* signals the MCPM core that CPU is out of low power state */
+>         mcpm_cpu_powered_up();
+> +       ct_idle_exit();
+>
+>         cpu_pm_exit();
+>
+> --- a/drivers/cpuidle/cpuidle-psci.c
+> +++ b/drivers/cpuidle/cpuidle-psci.c
+> @@ -357,6 +357,7 @@ static int psci_idle_init_cpu(struct dev
+>          * PSCI idle states relies on architectural WFI to be represented as
+>          * state index 0.
+>          */
+> +       drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
+>         drv->states[0].enter = psci_enter_idle_state;
+>         drv->states[0].exit_latency = 1;
+>         drv->states[0].target_residency = 1;
+> --- a/drivers/cpuidle/cpuidle-qcom-spm.c
+> +++ b/drivers/cpuidle/cpuidle-qcom-spm.c
+> @@ -72,6 +72,7 @@ static struct cpuidle_driver qcom_spm_id
+>         .owner = THIS_MODULE,
+>         .states[0] = {
+>                 .enter                  = spm_enter_idle_state,
+> +               .flags                  = CPUIDLE_FLAG_RCU_IDLE,
+>                 .exit_latency           = 1,
+>                 .target_residency       = 1,
+>                 .power_usage            = UINT_MAX,
+> --- a/drivers/cpuidle/cpuidle-riscv-sbi.c
+> +++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
+> @@ -332,6 +332,7 @@ static int sbi_cpuidle_init_cpu(struct d
+>         drv->cpumask = (struct cpumask *)cpumask_of(cpu);
+>
+>         /* RISC-V architectural WFI to be represented as state index 0. */
+> +       drv->states[0].flags = CPUIDLE_FLAG_RCU_IDLE;
+>         drv->states[0].enter = sbi_cpuidle_enter_state;
+>         drv->states[0].exit_latency = 1;
+>         drv->states[0].target_residency = 1;
+> --- a/drivers/cpuidle/dt_idle_states.c
+> +++ b/drivers/cpuidle/dt_idle_states.c
+> @@ -77,7 +77,7 @@ static int init_state_node(struct cpuidl
+>         if (err)
+>                 desc = state_node->name;
+>
+> -       idle_state->flags = 0;
+> +       idle_state->flags = CPUIDLE_FLAG_RCU_IDLE;
+>         if (of_property_read_bool(state_node, "local-timer-stop"))
+>                 idle_state->flags |= CPUIDLE_FLAG_TIMER_STOP;
+>         /*
+> --- a/include/linux/cpuidle.h
+> +++ b/include/linux/cpuidle.h
+> @@ -282,14 +282,18 @@ extern s64 cpuidle_governor_latency_req(
+>         int __ret = 0;                                                  \
+>                                                                         \
+>         if (!idx) {                                                     \
+> +               ct_idle_enter();                                        \
 
-ditto
+According to my comment above, we should then drop these calls to
+ct_idle_enter and ct_idle_exit() here. Right?
 
-> +			label = "modul:green:status2";
-> +			gpios = <&gpio5 0x19 GPIO_ACTIVE_HIGH>; /* GPIO 153 */
-> +			linux,default-trigger = "mmc0";
-> +		};
-> +	};
-> +};
-> +
-> +&omap4_pmx_core {
-> +	i2c1_pins: pinmux_i2c1_pins {
+>                 cpu_do_idle();                                          \
+> +               ct_idle_exit();                                         \
+>                 return idx;                                             \
+>         }                                                               \
+>                                                                         \
+>         if (!is_retention)                                              \
+>                 __ret =  cpu_pm_enter();                                \
+>         if (!__ret) {                                                   \
+> +               ct_idle_enter();                                        \
+>                 __ret = low_level_idle_enter(state);                    \
+> +               ct_idle_exit();                                         \
+>                 if (!is_retention)                                      \
+>                         cpu_pm_exit();                                  \
+>         }                                                               \
+>
 
-No underscores in node names. Use hyphen/dash
-
-
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x122, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c1_scl */
-> +			OMAP4_IOPAD(0x124, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c1_sda */
-> +		>;
-> +	};
-> +
-> +	i2c3_pins: pinmux_i2c3_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x12a, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c3_scl */
-> +			OMAP4_IOPAD(0x12c, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c3_sda */
-> +		>;
-> +	};
-> +
-> +	i2c4_pins: pinmux_i2c4_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x12e, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c4_scl */
-> +			OMAP4_IOPAD(0x130, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c4_sda */
-> +		>;
-> +	};
-> +
-> +	uart1_pins: pinmux_uart1_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x126, PIN_INPUT_PULLUP | MUX_MODE1)	/* uart1_rx */
-> +			OMAP4_IOPAD(0x128, PIN_INPUT_PULLUP | MUX_MODE1)	/* uart1_tx */
-> +		>;
-> +	};
-> +
-> +	led_gpio_pins: pinmux_leds_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x156, PIN_OUTPUT | MUX_MODE3)	/* gpio_152 */
-> +			OMAP4_IOPAD(0x158, PIN_OUTPUT | MUX_MODE3)	/* gpio_153 */
-> +		>;
-> +	};
-> +
-> +	pinctrl_tempsense: pinmux_pinctrl_tempsense_pins{
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x154, PIN_INPUT_PULLUP | MUX_MODE3)	/* gpio_151 */
-> +		>;
-> +	};
-> +
-> +	gpmc_pins: gpmc_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x40, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad0 */
-> +			OMAP4_IOPAD(0x42, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad1 */
-> +			OMAP4_IOPAD(0x44, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad2 */
-> +			OMAP4_IOPAD(0x46, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad3 */
-> +			OMAP4_IOPAD(0x48, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad4 */
-> +			OMAP4_IOPAD(0x4a, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad5 */
-> +			OMAP4_IOPAD(0x4c, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad6 */
-> +			OMAP4_IOPAD(0x4e, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad7 */
-> +			OMAP4_IOPAD(0x50, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad8 */
-> +			OMAP4_IOPAD(0x52, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad9 */
-> +			OMAP4_IOPAD(0x54, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad10 */
-> +			OMAP4_IOPAD(0x56, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad11 */
-> +			OMAP4_IOPAD(0x58, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad12 */
-> +			OMAP4_IOPAD(0x5a, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad13 */
-> +			OMAP4_IOPAD(0x5c, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad14 */
-> +			OMAP4_IOPAD(0x5e, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad15 */
-> +
-> +			OMAP4_IOPAD(0x60, PIN_OUTPUT | MUX_MODE0)		/* gpmc_a16 */
-> +			OMAP4_IOPAD(0x62, PIN_OUTPUT | MUX_MODE0)		/* gpmc_a17 */
-> +			OMAP4_IOPAD(0x64, PIN_OUTPUT | MUX_MODE0)		/* gpmc_a18 */
-> +			OMAP4_IOPAD(0x66, PIN_OUTPUT | MUX_MODE0)		/* gpmc_a19 */
-> +			OMAP4_IOPAD(0x68, PIN_OUTPUT | MUX_MODE0)		/* gpmc_a20 */
-> +			OMAP4_IOPAD(0x6a, PIN_OUTPUT | MUX_MODE0)		/* gpmc_a21 */
-> +			OMAP4_IOPAD(0x6c, PIN_OUTPUT | MUX_MODE0)		/* gpmc_a22 */
-> +			OMAP4_IOPAD(0x6e, PIN_OUTPUT | MUX_MODE0)		/* gpmc_a23 */
-> +
-> +			OMAP4_IOPAD(0x82, PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* gpmc_noe */
-> +			OMAP4_IOPAD(0x84, PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* gpmc_nwe */
-> +
-> +			OMAP4_IOPAD(0x7c, PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* gpmc_nwp */
-> +			OMAP4_IOPAD(0x80, PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* gpmc_nadv_ale */
-> +			OMAP4_IOPAD(0x86, PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* gpmc_nbe0_cle */
-> +			OMAP4_IOPAD(0x8a, PIN_INPUT_PULLUP | MUX_MODE0)		/* gpmc_wait0 */
-> +			OMAP4_IOPAD(0x8c, PIN_INPUT_PULLUP | MUX_MODE0)		/* gpmc_wait1 */
-> +
-> +			OMAP4_IOPAD(0x74, PIN_OUTPUT_PULLUP | MUX_MODE0)	/* gpmc_ncs0 */
-> +			OMAP4_IOPAD(0x76, PIN_OUTPUT_PULLUP | MUX_MODE0)	/* gpmc_ncs1 */
-> +			OMAP4_IOPAD(0x92, PIN_OUTPUT_PULLUP | MUX_MODE0)	/* gpmc_ncs5 */
-> +		>;
-> +	};
-> +
-> +	ethernet_pins: ethernet_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x114, PIN_INPUT | MUX_MODE3)		/* gpio_121 */
-> +		>;
-> +	};
-> +
-> +	tps62361_pins: pinmux_tps62361_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x19c, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpio_182 */
-> +		>;
-> +	};
-> +
-> +	mmc1_pins: pinmux_mmc1_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x0e2, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_clk */
-> +			OMAP4_IOPAD(0x0e4, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_cmd */
-> +			OMAP4_IOPAD(0x0e6, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_dat0 */
-> +			OMAP4_IOPAD(0x0e8, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_dat1 */
-> +			OMAP4_IOPAD(0x0ea, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_dat2 */
-> +			OMAP4_IOPAD(0x0ec, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_dat3 */
-> +		>;
-> +	};
-> +
-> +};
-> +
-> +&omap4_pmx_wkup {
-> +	ethernet_wkgpio_pins: pinmux_ethernet_wkpins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x66, PIN_OUTPUT | MUX_MODE3)
-> +		>;
-> +	};
-> +};
-> +
-> +&i2c1 {
-> +	status = "okay";
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&i2c1_pins>;
-> +
-> +	clock-frequency = <400000>;
-> +
-> +	twl: twl@48 {
-
-Please put compatible first in list of properties (and follow same order
-in "required"). It's the most important piece, so we want it to be the
-first to see. It also follows the convention of DTS, where compatible is
-expected to be first.
-
-> +		reg = <0x48>;
-> +		status = "okay";
-
-No need
-
-> +		/* IRQ# = 7 */
-> +		interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>; /* IRQ_SYS_1N cascaded to gic */
-> +	};
-> +
-> +	core_vdd_reg: tps62361@60 {
-
-Node names should be generic.
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-> +		compatible = "ti,tps62361";
-> +		reg = <0x60>;
-> +		status = "okay";
-
-No need
-
-
-> +
-> +		regulator-name = "tps62361-vout";
-> +		regulator-min-microvolt = <500000>;
-> +		regulator-max-microvolt = <1500000>;
-> +		regulator-coupled-max-spread = <300000>;
-> +		regulator-max-step-microvolt = <100000>;
-> +		regulator-boot-on;
-> +		regulator-always-on;
-> +		ti,vsel0-gpio = <&gpio5 22 GPIO_ACTIVE_HIGH>;
-> +		ti,vsel0-state-high;
-> +	};
-> +
-> +	temperature-sensor@4b {
-> +		compatible = "ti,tmp102";
-> +		reg = <0x4b>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_tempsense>;
-> +		interrupt-parent = <&gpio5>;
-> +		interrupts = <23 IRQ_TYPE_LEVEL_LOW>;
-> +		#thermal-sensor-cells = <1>;
-> +	};
-> +
-> +	eeprom@50 {
-> +		compatible = "atmel,24c32";
-> +		reg = <0x50>;
-> +	};
-> +};
-> +
-> +#include "twl6030.dtsi"
-> +#include "twl6030_omap4.dtsi"
-> +
-> +&i2c2 {
-> +	status = "disabled";
-> +};
-> +
-> +&i2c3 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&i2c3_pins>;
-> +	status = "okay";
-> +
-> +	clock-frequency = <100000>;
-> +};
-> +
-> +&i2c4 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&i2c4_pins>;
-> +	status = "disabled";
-> +
-> +	clock-frequency = <400000>;
-> +};
-> +
-> +&vmmc {
-> +	ti,retain-on-reset;
-> +};
-> +
-> +&mmc1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&mmc1_pins>;
-> +
-> +	vmmc-supply = <&vmmc>;
-> +	bus-width = <4>;
-> +	status = "okay";
-> +};
-> +
-> +&mmc2 {
-> +	status = "disabled";
-> +};
-> +
-> +&mmc3 {
-> +	status = "disabled";
-> +};
-> +
-> +&mmc4 {
-> +	status = "disabled";
-> +};
-> +
-> +&mmc5 {
-> +	status = "disabled";
-> +};
-> +
-> +&uart1 {
-> +	status = "okay";
-> +};
-> +
-> +&uart2 {
-> +	status = "okay";
-> +};
-> +
-> +&uart3 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&uart3_pins>;
-> +	status = "okay";
-> +};
-> +
-> +&uart4 {
-> +	status = "disabled";
-> +};
-> +
-> +&elm {
-> +	status = "okay";
-> +};
-> +
-> +#include "omap-gpmc-smsc9221.dtsi"
-> +
-> +&gpmc {
-> +	ranges = <5 0 0x2c000000 0x01000000>,
-> +		 <0 0 0x08000000 0x01000000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <
-> +		&gpmc_pins
-> +		>;
-> +	status = "okay";
-> +
-> +	nandflash: nand@0,0 {
-> +		compatible = "ti,omap2-nand";
-> +		reg = <0 0 4>;
-> +		interrupt-parent = <&gpmc>;
-> +		rb-gpios = <&gpmc 0 GPIO_ACTIVE_HIGH>;
-> +		nand-bus-width = <16>;
-> +		ti,nand-ecc-opt = "bch8";
-> +		ti,elm-id=<&elm>;
-> +		linux,mtd-name = "micron,nand";
-> +		gpmc,device-nand = "true";
-> +		gpmc,device-width = <1>;
-> +
-> +		gpmc,sync-clk-ps = <0>;
-> +		gpmc,cs-on-ns = <0>;
-> +		gpmc,cs-rd-off-ns = <44>;
-> +		gpmc,cs-wr-off-ns = <44>;
-> +		gpmc,adv-rd-off-ns = <34>;
-> +		gpmc,adv-wr-off-ns = <44>;
-> +		gpmc,we-off-ns = <40>;
-> +		gpmc,oe-off-ns = <54>;
-> +		gpmc,access-ns = <64>;
-> +		gpmc,rd-cycle-ns = <82>;
-> +		gpmc,wr-cycle-ns = <82>;
-> +		gpmc,wr-access-ns = <40>;
-> +		gpmc,wr-data-mux-bus-ns = <0>;
-> +
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +	};
-> +
-> +	ethernet@gpmc {
-> +		reg = <5 0 0xff>;
-> +
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <
-> +			&ethernet_pins
-> +			&ethernet_wkgpio_pins
-> +		>;
-> +
-> +		/* Either GPIO 103 or GPIO 121. Use 121 to match the reference design */
-> +		interrupt-parent = <&gpio4>;
-> +		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
-> +		status = "okay";
-
-Is it a new node or override?
-
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/omap4-phytec-pcm-959.dts b/arch/arm/boot/dts/omap4-phytec-pcm-959.dts
-> new file mode 100644
-> index 000000000000..dca2b1dd4d51
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/omap4-phytec-pcm-959.dts
-> @@ -0,0 +1,130 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2022 Innovative Advantage, Inc.
-> + */
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/leds/leds-pca9532.h>
-> +#include "omap4460.dtsi"
-> +#include "omap4-phytec-pcm-049.dtsi"
-> +
-> +/ {
-> +	model = "Phytec PCM-959 Eval Board";
-> +	compatible = "ti,omap4460", "ti,omap4430", "ti,omap4";
-
-RFC or not, you need to:
-1. Use dedicated board compatible.
-2. Document the compatible in bindings.
-
-> +};
-> +
-> +&omap4_pmx_core {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <
-> +		&sr_wkup_pins
-> +		&fref_xtal_in_pins
-> +		&fref_clk3_out_pins
-> +		&gpio_wk7_pins
-> +		&fref_clk4_out_pins
-> +		&sys_pins
-> +		&tps62361_pins
-> +	>;
-> +
-> +	status = "okay";
-> +
-> +	uart3_pins: pinmux_uart3_pins {
-
-No underscores in node names.
-
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x140, PIN_INPUT_PULLUP | MUX_MODE0)	/* uart3_cts */
-> +			OMAP4_IOPAD(0x142, PIN_OUTPUT | MUX_MODE0)		/* uart3_rts */
-> +			OMAP4_IOPAD(0x11c, PIN_INPUT | MUX_MODE0)		/* uart3_rx */
-> +			OMAP4_IOPAD(0x11e, PIN_OUTPUT | MUX_MODE0)		/* uart3_tx */
-> +		>;
-> +	};
-> +
-> +	uart2_pins: pinmux_uart2_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x118, PIN_INPUT_PULLUP | MUX_MODE0)	/* uart2_cts */
-> +			OMAP4_IOPAD(0x11a, PIN_OUTPUT | MUX_MODE0)		/* uart2_rts */
-> +			OMAP4_IOPAD(0x11c, PIN_INPUT_PULLUP | MUX_MODE0)	/* uart2_rx */
-> +			OMAP4_IOPAD(0x11e, PIN_OUTPUT | MUX_MODE0)		/* uart2_tx */
-> +		>;
-> +	};
-> +};
-> +
-> +&gpio1_target {
-> +	 ti,no-reset-on-init;
-> +};
-> +
-> +&omap4_pmx_wkup {
-> +	sr_wkup_pins: pinmux_sr_wkup_pins {
-
-Eh...
-
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x4a, PIN_INPUT_PULLUP | MUX_MODE0)		/* sr_scl */
-> +			OMAP4_IOPAD(0x4c, PIN_INPUT_PULLUP | MUX_MODE0)		/* sr_sda */
-> +		>;
-> +	};
-> +
-> +	fref_xtal_in_pins: pinmux_fref_xtal_in_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x4e, PIN_OUTPUT | MUX_MODE0)		/* fref_xtal_in */
-> +		>;
-> +	};
-> +
-> +	fref_clk3_out_pins: pinmux_fref_clk3_out_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x58, PIN_OUTPUT | MUX_MODE0)		/* fref_clk3_out */
-> +		>;
-> +	};
-> +
-> +	gpio_wk7_pins: pinmux_gpio_wk7_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x5a, PIN_INPUT | MUX_MODE3)		/* fref_clk4_req */
-> +		>;
-> +	};
-> +
-> +	fref_clk4_out_pins: pinmux_fref_clk4_out_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x5c, PIN_OUTPUT | MUX_MODE0)		/* fref_clk4_out */
-> +		>;
-> +	};
-> +
-> +	sys_pins: pinmux_sys_pins {
-> +		pinctrl-single,pins = <
-> +			OMAP4_IOPAD(0x5e, PIN_INPUT | MUX_MODE0)		/* sys_32k */
-> +			OMAP4_IOPAD(0x60, PIN_OUTPUT | MUX_MODE0)		/* sys_nrespwron */
-> +			OMAP4_IOPAD(0x62, PIN_OUTPUT | MUX_MODE0)		/* sys_nreswarm */
-> +			OMAP4_IOPAD(0x64, PIN_OUTPUT_PULLUP | MUX_MODE0)	/* sys_pwr_req */
-> +			OMAP4_IOPAD(0x66, PIN_OUTPUT | MUX_MODE0)		/* sys_pwron_reset_out */
-> +			OMAP4_IOPAD(0x68, PIN_OUTPUT | MUX_MODE0)		/* sys_boot6 */
-> +			OMAP4_IOPAD(0x6a, PIN_OUTPUT | MUX_MODE0)		/* sys_boot7 */
-> +		>;
-> +	};
-> +};
-> +
-> +&i2c4 {
-> +	status = "okay";
-> +
-> +	leddim: leddimmer@62 {
-
-Just 'led@62'
-
-> +		compatible = "nxp,pca9533";
-> +		reg = <0x62>;
-> +
-> +		led1 {
-
-led-1
-
-> +			label = "board:red:free_use1";
-> +			linux,default-trigger = "none";
-> +			type = <PCA9532_TYPE_LED>;
-> +		};
-> +
-> +		led2 {
-
-led-2
-
-> +			label = "board:yellow:free_use2";
-> +			linux,default-trigger = "none";
-> +			type = <PCA9532_TYPE_LED>;
-
-
-Best regards,
-Krzysztof
-
+Kind regards
+Uffe
