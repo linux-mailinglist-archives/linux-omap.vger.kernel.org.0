@@ -1,72 +1,67 @@
 Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from out1.vger.email (unknown [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A5A5F48FA
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Oct 2022 19:55:42 +0200 (CEST)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 1A9C25F4AF7
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Oct 2022 23:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229526AbiJDRzj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 4 Oct 2022 13:55:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43790 "EHLO
+        id S229515AbiJDVfL (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 4 Oct 2022 17:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbiJDRzi (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Oct 2022 13:55:38 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9652627FFB;
-        Tue,  4 Oct 2022 10:55:31 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id a10so16221379ljq.0;
-        Tue, 04 Oct 2022 10:55:31 -0700 (PDT)
+        with ESMTP id S229581AbiJDVfK (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Oct 2022 17:35:10 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28DA4520AB;
+        Tue,  4 Oct 2022 14:35:08 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id b15so5906836pje.1;
+        Tue, 04 Oct 2022 14:35:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=QgxCTgKtdvmNPdjkMmoM5ghrfxtt0usDYHhdkKKlo+A=;
-        b=Wt4WMLyZojZ8tIIStbBRyyF1UQUyrL4Shkojh6ysp/OMiuLxu+WcxMQ4Rk9g4xX3VX
-         OfnevgIJ4NOBEDi/p0g40h9nMseLV/2XDs0ey7YuRiStKJ2+EDbXFsue1N+wGwmwIthU
-         Ab3rO8sFRNOAKBtuWYgYmN0JsSBointi1FjwyEW7nzc/2wHLHhG0sdLea7tpMBqM0atW
-         JiUQD3lEh3milMFrLX2YO7nJ9pUPD8eW3vErU/IeKWIS+4DzF/fX/3town3xRTxGF+T/
-         n3AAXUXj1d4r6u9U/aPkFZhi23YfkKHFnSHMhlHHiDxntUNQuxT/atD61BP3RM/g1bCC
-         hRQw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=VxhM66mMMUQbnYR8BIES2RN9lh3AWlJeJAa9Fgty5So=;
+        b=b7hC7vRRtEXFCYyZxaj+EWPRsUKYnWuZw1FX9KcRCTkqra5waRPl9Fuay2F/ST4gKv
+         9mPF4JXkqPUt5hVTvqoO5WBb2giRQA9m7FnGPisbRUA4MLLANY6y2hy7ojM0YScGNe7c
+         n70gRO+i+la2JZXG1iZLHLLWmIS11kTMZnYrPo+wjhveK3EbYEwDkIH25gTeMsTcbh6g
+         H68D4y6359V0uTFPPDRWtrikkYx69Ad/JPfRmQ5LU5MYopdRj1muucD6AChnea85oQ3W
+         DFjEDGXOrVknN4vI3CKBP+7iJV+LMyq2/M33uyfOeQYIqBbNLOQ5hmPtCd+2xhHvf75K
+         zqbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=QgxCTgKtdvmNPdjkMmoM5ghrfxtt0usDYHhdkKKlo+A=;
-        b=vnWT/4I//YIYvfMmAwCUHIy74z+yOydrJpOFkPAGXLIJEeTZB6+pROp2pVIl5r5P5P
-         7lqXjVCfVQqv4e1lj3epWUW/aj8ut/jCtgkSqZ1sNpk3mbFlN/JzrZG7/hp5Q9ELayyr
-         ZQT9a3WCgPQHLUaz7JLieXNXDydl72BOn4ZXQXvGlIXJgd9OadcYk72CAzoruNAVKOzT
-         7sa6XanknPreGJz3SDUK8fbEqgUNVurdyEuKg2Jpa9W0JesnY4K8XPiLS2PkSmkmJSe/
-         XIFNgL18/Z7ipVCI2QQrpTewUmoCHC3EEzDnd2J1OlwwsHyXjG3OBYuZd2NJHWB4VS6d
-         P7Ng==
-X-Gm-Message-State: ACrzQf3wd5jTtHZtQfydend2F5dfWPXeYF56X5AHE6WPK5P6terOo1B/
-        N2RleQpjnSnAPOb58amNbdg=
-X-Google-Smtp-Source: AMsMyM67m/p+B2iHeDWVa4IzXzN0UNOn9ODz6/pOGFynbscR/dhyWkTcGGZq8jGKwrHiJy//qApwnA==
-X-Received: by 2002:a2e:5d6:0:b0:26d:d28b:4858 with SMTP id 205-20020a2e05d6000000b0026dd28b4858mr4011645ljf.445.1664906129874;
-        Tue, 04 Oct 2022 10:55:29 -0700 (PDT)
-Received: from [10.0.0.100] (host-185-69-38-8.kaisa-laajakaista.fi. [185.69.38.8])
-        by smtp.gmail.com with ESMTPSA id x7-20020a2e9c87000000b0026dcfe9c7dasm929090lji.14.2022.10.04.10.55.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Oct 2022 10:55:29 -0700 (PDT)
-Message-ID: <9bdee3dd-3bfa-3965-ad4a-11c6a3308928@gmail.com>
-Date:   Tue, 4 Oct 2022 20:55:56 +0300
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=VxhM66mMMUQbnYR8BIES2RN9lh3AWlJeJAa9Fgty5So=;
+        b=oNNHWm3E7UoZJSSrWxwcKUF1Kdn2APq79MEmW432LbQWyMnQAVj1Wd+jN0qy+ja+L7
+         Vhypxqvl897UydGgfmQMcTbq3+OzUGpwdtAsyrmIiSsE6crwvhrHq0inMwbmc7EQEzrX
+         T55FQ6u5Ul0LyzHTRiP/VPeopB7oTHojtm3+eBcicoTyZlCqBKPMeamr7vdKM7Fvpu5V
+         gtnX0LQ39iDt0a9ney8CmYujnMtim7g/RxlE+ALo2be92AuzWGrwIqW2JcCUnLm3K+O5
+         SVxRp525JmZS8g9bjyzwHNLCKrUI2CBUUvkfPP9U9gicstLaGbGQ8O9cdUD3QEQxEXTs
+         h4tg==
+X-Gm-Message-State: ACrzQf2+Kvejz9wI4nQECXdn6DcTt3EpGgzM18PKR3xd8tsWO1hGL/gq
+        htdM3Tjl4+Rq5K/YExFRjP1f0q5aWW4=
+X-Google-Smtp-Source: AMsMyM4Xo0MrP6m95yQTu2zoNqaIxVAFAUc1CXY3o4Q9AcskF1uInnflpvVWA0f39QpbEFM2jal3JA==
+X-Received: by 2002:a17:90a:aa96:b0:205:bb67:a85f with SMTP id l22-20020a17090aaa9600b00205bb67a85fmr1652256pjq.202.1664919307565;
+        Tue, 04 Oct 2022 14:35:07 -0700 (PDT)
+Received: from dtor-ws.mtv.corp.google.com ([2620:15c:9d:2:978:a034:8ff4:b4b5])
+        by smtp.gmail.com with ESMTPSA id y187-20020a6232c4000000b0055f209690c0sm7675219pfy.50.2022.10.04.14.35.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Oct 2022 14:35:06 -0700 (PDT)
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/4] ARM: dts: omap3-n900: fix LCD reset line polarity
+Date:   Tue,  4 Oct 2022 14:35:00 -0700
+Message-Id: <20221004213503.848262-1-dmitry.torokhov@gmail.com>
+X-Mailer: git-send-email 2.38.0.rc1.362.ged0d419d3c-goog
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH v3 0/3] dma/ti: enable udma and psil to be built as
- modules
-Content-Language: en-US
-To:     Kevin Hilman <khilman@baylibre.com>, dmaengine@vger.kernel.org
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Nicolas Frayer <nfrayer@baylibre.com>
-References: <20220929234820.940048-1-khilman@baylibre.com>
-From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
-In-Reply-To: <20220929234820.940048-1-khilman@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,42 +70,31 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Kevin,
+The LCD driver (panel-sony-acx565akm), when probing, starts with line
+driven low, and then toggles it to high and keeps it there. Also, the
+line is driven low when powering off the device, and ls released when
+powering it back on. This means that the reset line should be described
+as "active low" in DTS. This will be important when the driver is
+converted to gpiod API which respects the polarity declared in DTS.
 
-On 30/09/2022 02:48, Kevin Hilman wrote:
-> Enable the UDMA driver & glue and PSIL lib to be built & loaded as modules.
->                                                                                                                                                                                 
-> The defauilt Kconfig settings are not changed, so default upstream is
-> still to be built in.  This series just enables the option to build as
-> modules.
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+ arch/arm/boot/dts/omap3-n900.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for the updates, I can re-affirm my ack:
-
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-
-> 
-> v2-v3:
-> - change dma/ prefix to dmaengine:
-> - rework Makefile order for PSIL lib
-> 
-> v1->v2:
-> - rework PSIL lib into a single .ko
-> 
-> Kevin Hilman (3):
->    of/irq: export of_msi_get_domain
->    dma/ti: convert k3-udma to module
->    dma/ti: convert PSIL to be buildable as module
-> 
->   drivers/dma/ti/Kconfig        |  7 +++---
->   drivers/dma/ti/Makefile       | 15 +++++++------
->   drivers/dma/ti/k3-psil.c      |  2 ++
->   drivers/dma/ti/k3-udma-glue.c |  5 ++++-
->   drivers/dma/ti/k3-udma.c      | 40 +++++------------------------------
->   drivers/of/irq.c              |  1 +
->   6 files changed, 24 insertions(+), 46 deletions(-)
-> 
-> 
-> base-commit: 568035b01cfb107af8d2e4bd2fb9aea22cf5b868
-
+diff --git a/arch/arm/boot/dts/omap3-n900.dts b/arch/arm/boot/dts/omap3-n900.dts
+index dd7971556449..c2e5bde19452 100644
+--- a/arch/arm/boot/dts/omap3-n900.dts
++++ b/arch/arm/boot/dts/omap3-n900.dts
+@@ -1038,7 +1038,7 @@ lcd: acx565akm@2 {
+ 		pinctrl-0 = <&acx565akm_pins>;
+ 
+ 		label = "lcd";
+-		reset-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>; /* 90 */
++		reset-gpios = <&gpio3 26 GPIO_ACTIVE_LOW>; /* 90 */
+ 
+ 		port {
+ 			lcd_in: endpoint {
 -- 
-Péter
+2.38.0.rc1.362.ged0d419d3c-goog
+
