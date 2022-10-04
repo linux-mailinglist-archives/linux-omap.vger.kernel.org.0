@@ -1,166 +1,116 @@
 Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDF1A5F483D
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Oct 2022 19:20:25 +0200 (CEST)
+Received: from out1.vger.email (unknown [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 32A5A5F48FA
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Oct 2022 19:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229754AbiJDRUW (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 4 Oct 2022 13:20:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59486 "EHLO
+        id S229526AbiJDRzj (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 4 Oct 2022 13:55:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229921AbiJDRUD (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Oct 2022 13:20:03 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5B16010C4;
-        Tue,  4 Oct 2022 10:19:54 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A163E1A32;
-        Tue,  4 Oct 2022 10:20:00 -0700 (PDT)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.38.139])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2E7683F792;
-        Tue,  4 Oct 2022 10:19:38 -0700 (PDT)
-Date:   Tue, 4 Oct 2022 18:19:33 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
-        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
-        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
-        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
-        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
-        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
-        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
-        dinguyen@kernel.org, jonas@southpole.se,
-        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
-        James.Bottomley@HansenPartnership.com, deller@gmx.de,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
-        srivatsa@csail.mit.edu, amakhalov@vmware.com,
-        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
-        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
-        mturquette@baylibre.com, sboyd@kernel.org,
-        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
-        sudeep.holla@arm.com, agross@kernel.org,
-        bjorn.andersson@linaro.org, konrad.dybcio@somainline.org,
-        anup@brainfault.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
-        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
-        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
-        cl@linux.com, rostedt@goodmis.org, pmladek@suse.com,
-        senozhatsky@chromium.org, john.ogness@linutronix.de,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
-        bristot@redhat.com, vschneid@redhat.com, fweisbec@gmail.com,
-        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-        dvyukov@google.com, vincenzo.frascino@arm.com,
-        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-perf-users@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v2 33/44] ftrace: WARN on rcuidle
-Message-ID: <YzxrJYjKxy/vUc5n@FVFF77S0Q05N.cambridge.arm.com>
-References: <20220919095939.761690562@infradead.org>
- <20220919101522.573936213@infradead.org>
+        with ESMTP id S229489AbiJDRzi (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 4 Oct 2022 13:55:38 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9652627FFB;
+        Tue,  4 Oct 2022 10:55:31 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id a10so16221379ljq.0;
+        Tue, 04 Oct 2022 10:55:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=QgxCTgKtdvmNPdjkMmoM5ghrfxtt0usDYHhdkKKlo+A=;
+        b=Wt4WMLyZojZ8tIIStbBRyyF1UQUyrL4Shkojh6ysp/OMiuLxu+WcxMQ4Rk9g4xX3VX
+         OfnevgIJ4NOBEDi/p0g40h9nMseLV/2XDs0ey7YuRiStKJ2+EDbXFsue1N+wGwmwIthU
+         Ab3rO8sFRNOAKBtuWYgYmN0JsSBointi1FjwyEW7nzc/2wHLHhG0sdLea7tpMBqM0atW
+         JiUQD3lEh3milMFrLX2YO7nJ9pUPD8eW3vErU/IeKWIS+4DzF/fX/3town3xRTxGF+T/
+         n3AAXUXj1d4r6u9U/aPkFZhi23YfkKHFnSHMhlHHiDxntUNQuxT/atD61BP3RM/g1bCC
+         hRQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=QgxCTgKtdvmNPdjkMmoM5ghrfxtt0usDYHhdkKKlo+A=;
+        b=vnWT/4I//YIYvfMmAwCUHIy74z+yOydrJpOFkPAGXLIJEeTZB6+pROp2pVIl5r5P5P
+         7lqXjVCfVQqv4e1lj3epWUW/aj8ut/jCtgkSqZ1sNpk3mbFlN/JzrZG7/hp5Q9ELayyr
+         ZQT9a3WCgPQHLUaz7JLieXNXDydl72BOn4ZXQXvGlIXJgd9OadcYk72CAzoruNAVKOzT
+         7sa6XanknPreGJz3SDUK8fbEqgUNVurdyEuKg2Jpa9W0JesnY4K8XPiLS2PkSmkmJSe/
+         XIFNgL18/Z7ipVCI2QQrpTewUmoCHC3EEzDnd2J1OlwwsHyXjG3OBYuZd2NJHWB4VS6d
+         P7Ng==
+X-Gm-Message-State: ACrzQf3wd5jTtHZtQfydend2F5dfWPXeYF56X5AHE6WPK5P6terOo1B/
+        N2RleQpjnSnAPOb58amNbdg=
+X-Google-Smtp-Source: AMsMyM67m/p+B2iHeDWVa4IzXzN0UNOn9ODz6/pOGFynbscR/dhyWkTcGGZq8jGKwrHiJy//qApwnA==
+X-Received: by 2002:a2e:5d6:0:b0:26d:d28b:4858 with SMTP id 205-20020a2e05d6000000b0026dd28b4858mr4011645ljf.445.1664906129874;
+        Tue, 04 Oct 2022 10:55:29 -0700 (PDT)
+Received: from [10.0.0.100] (host-185-69-38-8.kaisa-laajakaista.fi. [185.69.38.8])
+        by smtp.gmail.com with ESMTPSA id x7-20020a2e9c87000000b0026dcfe9c7dasm929090lji.14.2022.10.04.10.55.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Oct 2022 10:55:29 -0700 (PDT)
+Message-ID: <9bdee3dd-3bfa-3965-ad4a-11c6a3308928@gmail.com>
+Date:   Tue, 4 Oct 2022 20:55:56 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220919101522.573936213@infradead.org>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH v3 0/3] dma/ti: enable udma and psil to be built as
+ modules
+Content-Language: en-US
+To:     Kevin Hilman <khilman@baylibre.com>, dmaengine@vger.kernel.org
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Nicolas Frayer <nfrayer@baylibre.com>
+References: <20220929234820.940048-1-khilman@baylibre.com>
+From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+In-Reply-To: <20220929234820.940048-1-khilman@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Sep 19, 2022 at 12:00:12PM +0200, Peter Zijlstra wrote:
-> CONFIG_GENERIC_ENTRY disallows any and all tracing when RCU isn't
-> enabled.
-> 
-> XXX if s390 (the only other GENERIC_ENTRY user as of this writing)
-> isn't comfortable with this, we could switch to
-> HAVE_NOINSTR_VALIDATION which is x86_64 only atm.
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  include/linux/tracepoint.h |   13 ++++++++++++-
->  kernel/trace/trace.c       |    3 +++
->  2 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> --- a/include/linux/tracepoint.h
-> +++ b/include/linux/tracepoint.h
-> @@ -178,6 +178,16 @@ static inline struct tracepoint *tracepo
->  #endif /* CONFIG_HAVE_STATIC_CALL */
->  
->  /*
-> + * CONFIG_GENERIC_ENTRY archs are expected to have sanitized entry and idle
-> + * code that disallow any/all tracing/instrumentation when RCU isn't watching.
-> + */
-> +#ifdef CONFIG_GENERIC_ENTRY
-> +#define RCUIDLE_COND(rcuidle)	(rcuidle)
-> +#else
-> +#define RCUIDLE_COND(rcuidle)	(rcuidle && in_nmi())
-> +#endif
+Hi Kevin,
 
-Could we make this depend on ARCH_WANTS_NO_INSTR instead?
+On 30/09/2022 02:48, Kevin Hilman wrote:
+> Enable the UDMA driver & glue and PSIL lib to be built & loaded as modules.
+>                                                                                                                                                                                 
+> The defauilt Kconfig settings are not changed, so default upstream is
+> still to be built in.  This series just enables the option to build as
+> modules.
 
-That'll allow arm64 to check this even though we're not using the generic entry
-code (and there's lots of work necessary to make that possible...).
+Thanks for the updates, I can re-affirm my ack:
 
-Thanks,
-Mark.
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
 
-> +
-> +/*
->   * it_func[0] is never NULL because there is at least one element in the array
->   * when the array itself is non NULL.
->   */
-> @@ -189,7 +199,8 @@ static inline struct tracepoint *tracepo
->  			return;						\
->  									\
->  		/* srcu can't be used from NMI */			\
-> -		WARN_ON_ONCE(rcuidle && in_nmi());			\
-> +		if (WARN_ON_ONCE(RCUIDLE_COND(rcuidle)))		\
-> +			return;						\
->  									\
->  		/* keep srcu and sched-rcu usage consistent */		\
->  		preempt_disable_notrace();				\
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -3104,6 +3104,9 @@ void __trace_stack(struct trace_array *t
->  		return;
->  	}
->  
-> +	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_GENERIC_ENTRY)))
-> +		return;
-> +
->  	/*
->  	 * When an NMI triggers, RCU is enabled via ct_nmi_enter(),
->  	 * but if the above rcu_is_watching() failed, then the NMI
+> 
+> v2-v3:
+> - change dma/ prefix to dmaengine:
+> - rework Makefile order for PSIL lib
+> 
+> v1->v2:
+> - rework PSIL lib into a single .ko
+> 
+> Kevin Hilman (3):
+>    of/irq: export of_msi_get_domain
+>    dma/ti: convert k3-udma to module
+>    dma/ti: convert PSIL to be buildable as module
+> 
+>   drivers/dma/ti/Kconfig        |  7 +++---
+>   drivers/dma/ti/Makefile       | 15 +++++++------
+>   drivers/dma/ti/k3-psil.c      |  2 ++
+>   drivers/dma/ti/k3-udma-glue.c |  5 ++++-
+>   drivers/dma/ti/k3-udma.c      | 40 +++++------------------------------
+>   drivers/of/irq.c              |  1 +
+>   6 files changed, 24 insertions(+), 46 deletions(-)
 > 
 > 
+> base-commit: 568035b01cfb107af8d2e4bd2fb9aea22cf5b868
+
+-- 
+Péter
