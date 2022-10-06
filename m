@@ -2,126 +2,195 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 315035F589C
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Oct 2022 18:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B27B65F613B
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Oct 2022 08:55:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229985AbiJEQyV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 5 Oct 2022 12:54:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51770 "EHLO
+        id S229671AbiJFGzR (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 6 Oct 2022 02:55:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230096AbiJEQyU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 5 Oct 2022 12:54:20 -0400
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 168E24B9A8;
-        Wed,  5 Oct 2022 09:54:19 -0700 (PDT)
-Received: by mail-pf1-f172.google.com with SMTP id a26so7312736pfg.7;
-        Wed, 05 Oct 2022 09:54:19 -0700 (PDT)
+        with ESMTP id S229633AbiJFGzQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 6 Oct 2022 02:55:16 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A8D72F38A
+        for <linux-omap@vger.kernel.org>; Wed,  5 Oct 2022 23:55:14 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id bq9so1161966wrb.4
+        for <linux-omap@vger.kernel.org>; Wed, 05 Oct 2022 23:55:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mpnbl0sOHmjZXpRaPHZuxhEh+P6N/msQTLYNVhfBBe8=;
+        b=MiPZCFMrd8ZJnITo2QNV97U1PS/R+5ZaOpCPg1dg0ozuIl6v8QxOhznFxmMRbJFt61
+         +KQ26aFgOClHddDkzpBN5Ti5bjTzZazFn9IOccCqYNGZm83luL0MAi2ZIMoiLBhbdpI9
+         ErI4nhBYVAiDsh8U0oXUCxVcV8bop7IuJT7Ik70JSybZ18r2+2UEeGXI8zLnhalxuyPK
+         D72/xbL0hdoGvzz5uUDTnekoAkjXs/FrL4Ugud+EDDTaZGiQrY2Xuz1ety4QCzOavUyl
+         +n3MfQtsIn5LI92EpTTgt2DO7DNNtKRNghaJz8p+7n59IVXb/QZmDJ0puWLNYB+9gbop
+         agyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=GFGmeXwzImdz1h+PmMN1s24FBEmejNYEC+q1xWfXEck=;
-        b=JWf5VAz03AB4CkFEpVkfUEWgtmAjJ4wGjWY6babOa0PJChJcZ0ezYXykprUlrHwiZI
-         v4HeZ+6jF5Zc9NjJfsUXsfGdHdhUlxn+xq8+UZhFtyFx10UOs5HuapVHHEEV1dBSSZKO
-         KJB5TzZHCYSU9kh0p88M7P0C8IefFbGGgDi1G1GSt1/qTXGXsuU46m0CugrWM7VM16Ij
-         RGFlghN5WfCPvJH5qA8zH13aK7nx54zJbv9rOfw076haEwshRGTTLkH5rvY0F/2rF6cE
-         SDmINa9yM5lYV92oWR8yDyMsUAg7unn74YelZwFnJPrRzziKhlqSe/C0uegYbM6TGUdR
-         Z4yA==
-X-Gm-Message-State: ACrzQf1lcWB49zedkrBYX6YwlzM9c5IM6GtxENQxzEP5otYjmzY10mkW
-        QrgsR6WdcKI8yP5lU4tDIQ4=
-X-Google-Smtp-Source: AMsMyM5oX6qSPQ4HG3bu8E8hjU3lPQSUd8WrMcNcjR4MljBf6naYCl5wsAAwQMON9m5RMKfn4/SRMQ==
-X-Received: by 2002:a62:2985:0:b0:544:77d4:f43b with SMTP id p127-20020a622985000000b0054477d4f43bmr726456pfp.9.1664988858370;
-        Wed, 05 Oct 2022 09:54:18 -0700 (PDT)
-Received: from [192.168.3.219] ([98.51.102.78])
-        by smtp.gmail.com with ESMTPSA id j16-20020a170902da9000b00176c6738d13sm10795484plx.169.2022.10.05.09.54.12
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mpnbl0sOHmjZXpRaPHZuxhEh+P6N/msQTLYNVhfBBe8=;
+        b=JsGCPzHHF6H77jHSLcDluISZ21xnxEiWkPxoyNORsxkjYIWkClVylIFE7J0taeHUR1
+         W2q0/g9r0x3UjkHRuJXqRHm5+xE1HWXLhEkD8OCHtOI/I1khxuJQO1hQAyqpbZjE92DY
+         Ifg84fTzn2P2/WLZXBtYXe7I6vz71Qj/fMnIbrqF+DRlxxSQLkFjx5ofVgsk3nLOW1O7
+         q60DqF1ApQgLDapO7ux6ZwahjCOrEcuu3hIg6Aa8b9pNnucWCBGJtqjwBMDRp47o87HW
+         HmJ9JxwHrkO5eoO4Rr3P3j+izHXmNMYjOcunfqWOs4CuwnKFDsGhGJR2Stw6KOCkvxJa
+         hNMA==
+X-Gm-Message-State: ACrzQf0uVeLu1kdPJGagKCbgFx6mplB8i8rh4tObnnyQHrhMM+JqcZKS
+        ugHc5nEAauVjKhG8RBw1IDfws98gUiHWog==
+X-Google-Smtp-Source: AMsMyM4tUv+yoGLPcmLIx0TCLkILd2ZuyZqPgL+k6wTXzf/o8aVrTs7qe5sYTzmE/qACZEBJdXpwZw==
+X-Received: by 2002:a05:6000:806:b0:22a:36df:2663 with SMTP id bt6-20020a056000080600b0022a36df2663mr1873670wrb.423.1665039312765;
+        Wed, 05 Oct 2022 23:55:12 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:86cc:fff3:d44b:9793? ([2a05:6e02:1041:c10:86cc:fff3:d44b:9793])
+        by smtp.googlemail.com with ESMTPSA id a5-20020adfeec5000000b0022e2c38f8basm14459474wrp.14.2022.10.05.23.55.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Oct 2022 09:54:17 -0700 (PDT)
-Message-ID: <e0ea0b0a-5077-de37-046f-62902aca93b6@acm.org>
-Date:   Wed, 5 Oct 2022 09:54:11 -0700
+        Wed, 05 Oct 2022 23:55:12 -0700 (PDT)
+Message-ID: <97201878-3bb8-eac5-7fac-a690322ac43a@linaro.org>
+Date:   Thu, 6 Oct 2022 08:55:10 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [RFC PATCH 01/21] block: add and use init tagset helper
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v8 00/29] Rework the trip points creation
 Content-Language: en-US
-To:     Chaitanya Kulkarni <kch@nvidia.com>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+To:     Marek Szyprowski <m.szyprowski@samsung.com>
+Cc:     linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        rui.zhang@intel.com,
+        Broadcom Kernel Team <bcm-kernel-feedback-list@broadcom.com>,
+        Support Opensource <support.opensource@diasemi.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Andy Gross <agross@kernel.org>,
+        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>, netdev@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-nvme@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-scsi@vger.kernel.org, axboe@kernel.dk, efremov@linux.com,
-        josef@toxicpanda.com, idryomov@gmail.com,
-        dongsheng.yang@easystack.cn, haris.iqbal@ionos.com,
-        jinpu.wang@ionos.com, mst@redhat.com, jasowang@redhat.com,
-        pbonzini@redhat.com, stefanha@redhat.com, ohad@wizery.com,
-        andersson@kernel.org, baolin.wang@linux.alibaba.com,
-        richard@nod.at, miquel.raynal@bootlin.com, vigneshr@ti.com,
-        marcan@marcan.st, sven@svenpeter.dev, alyssa@rosenzweig.io,
-        kbusch@kernel.org, hch@lst.de, sagi@grimberg.me, sth@linux.ibm.com,
-        hoeppner@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, jejb@linux.ibm.com,
-        martin.petersen@oracle.com, hare@suse.de, bhelgaas@google.com,
-        john.garry@huawei.com, mcgrof@kernel.org,
-        christophe.jaillet@wanadoo.fr, vaibhavgupta40@gmail.com,
-        wsa+renesas@sang-engineering.com, johannes.thumshirn@wdc.com,
-        ming.lei@redhat.com, shinichiro.kawasaki@wdc.com,
-        vincent.fu@samsung.com, christoph.boehmwalder@linbit.com,
-        joel@jms.id.au, vincent.whitchurch@axis.com, nbd@other.debian.org,
-        ceph-devel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, asahi@lists.linux.dev
-References: <20221005032257.80681-1-kch@nvidia.com>
- <20221005032257.80681-2-kch@nvidia.com>
- <6fee2d7a-7fd1-73ee-2911-87a4ed3e8769@opensource.wdc.com>
- <CAPDyKFpBpiydQn+=24CqtaH_qa3tQfN2gQSiUrHCjnLSuy4=Kg@mail.gmail.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <CAPDyKFpBpiydQn+=24CqtaH_qa3tQfN2gQSiUrHCjnLSuy4=Kg@mail.gmail.com>
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-omap@vger.kernel.org, rafael@kernel.org
+References: <CGME20221003092704eucas1p2875c1f996dfd60a58f06cf986e02e8eb@eucas1p2.samsung.com>
+ <20221003092602.1323944-1-daniel.lezcano@linaro.org>
+ <8cdd1927-da38-c23e-fa75-384694724b1c@samsung.com>
+ <c3258cb2-9a56-d048-5738-1132331a157d@linaro.org>
+ <851008bf-145d-224c-87a8-cb6ec1e9addb@linaro.org>
+ <207c1979-0da2-b05d-fead-6880ad956b90@samsung.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <207c1979-0da2-b05d-fead-6880ad956b90@samsung.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10/5/22 02:47, Ulf Hansson wrote:
-> On Wed, 5 Oct 2022 at 07:11, Damien Le Moal <damien.lemoal@opensource.wdc.com> wrote:
->> On 10/5/22 12:22, Chaitanya Kulkarni wrote:
->>> +void blk_mq_init_tag_set(struct blk_mq_tag_set *set,
->>> +             const struct blk_mq_ops *ops, unsigned int nr_hw_queues,
->>> +             unsigned int queue_depth, unsigned int cmd_size, int numa_node,
->>> +             unsigned int timeout, unsigned int flags, void *driver_data)
+
+Hi Marek,
+
+On 05/10/2022 15:05, Marek Szyprowski wrote:
+> 
+> On 05.10.2022 14:37, Daniel Lezcano wrote:
 >>
->> That is an awful lot of arguments... I would be tempted to say pack all
->> these into a struct but then that would kind of negate this patchset goal.
->> Using a function with that many arguments will be error prone, and hard to
->> review... Not a fan.
+>> Hi Marek,
+>>
+>> On 03/10/2022 23:18, Daniel Lezcano wrote:
+>>
+>> [ ... ]
+>>
+>>>> I've tested this v8 patchset after fixing the issue with Exynos TMU
+>>>> with
+>>>> https://lore.kernel.org/all/20221003132943.1383065-1-daniel.lezcano@linaro.org/
+>>>>
+>>>> patch and I got the following lockdep warning on all Exynos-based
+>>>> boards:
+>>>>
+>>>>
+>>>> ======================================================
+>>>> WARNING: possible circular locking dependency detected
+>>>> 6.0.0-rc1-00083-ge5c9d117223e #12945 Not tainted
+>>>> ------------------------------------------------------
+>>>> swapper/0/1 is trying to acquire lock:
+>>>> c1ce66b0 (&data->lock#2){+.+.}-{3:3}, at: exynos_get_temp+0x3c/0xc8
+>>>>
+>>>> but task is already holding lock:
+>>>> c2979b94 (&tz->lock){+.+.}-{3:3}, at:
+>>>> thermal_zone_device_update.part.0+0x3c/0x528
+>>>>
+>>>> which lock already depends on the new lock.
+>>>
+>>> I'm wondering if the problem is not already there and related to
+>>> data->lock ...
+>>>
+>>> Doesn't the thermal zone lock already prevent racy access to the data
+>>> structure?
+>>>
+>>> Another question: if the sensor clock is disabled after reading it,
+>>> how does the hardware update the temperature and detect the programed
+>>> threshold is crossed?
+>>
+>> just a gentle ping, as the fix will depend on your answer ;)
+>>
+> Sorry, I've been busy with other stuff. I thought I will fix this once I
+> find a bit of spare time.
+
+Ok, that is great if you can find time to fix it up because I've other 
+drivers to convert to the generic thermal trips.
+
+
+> IMHO the clock management is a bit over-engineered, as there is little
+> (if any) benefit from such fine grade clock management. That clock is
+> needed only for the AHB related part of the TMU (reading/writing the
+> registers). The IRQ generation and temperature measurement is clocked
+> from so called 'sclk' (special clock).
 > 
-> I completely agree.
-> 
-> But there is also another problem going down this route. If/when we
-> realize that there is another parameter needed in the blk_mq_tag_set.
-> Today that's quite easy to add (assuming the parameter can be
-> optional), without changing the blk_mq_init_tag_set() interface.
+> I also briefly looked at the code and the internal lock doesn't look to
+> be really necessary assuming that the thermal core already serializes
+> all the calls.
 
-Hi Chaitanya,
+I looked at the code and I think the driver can be simplified (fixed?) 
+even more.
 
-Please consider to drop the entire patch series. In addition to the 
-disadvantages mentioned above I'd like to mention the following 
-disadvantages:
-* Replacing named member assignments with positional arguments in a
-   function call makes code harder to read and harder to verify.
-* This patch series makes tree-wide changes without improving the code
-   in a substantial way.
+IIUC, the sensor has multiple trip point interrupts, so if the device 
+tree is describing more trip points than the sensor supports, there is a 
+warning and the number of trip point is capped.
 
-Thanks,
+IMO that can be simplified by using two trip point interrupt because the 
+thermal_zone_device_update() will call the set_trips callback with the 
+new boundaries. IOW, the thermal framework sets a new trip point 
+interrupt when one is crossed.
 
-Bart.
+That should result in the simplification of the tmu_control as well as 
+the tmu_probe function. As well as removing the limitation of the number 
+of trip points.
 
+In order to have that correctly working, the 'set_trips' ops must be 
+used to call the tmu_control callback instead of calling it in tmu_probe.
+
+The intialization workflow should be:
+
+probe->...
+  ->thermal_zone_device_register()
+   ->thermal_zone_device_update()
+    ->update_trip_points()
+     ->ops->set_trips()
+       ->tmu_control()
+
+Also, replace the workqueue by a threaded interrupt.
+
+Does it make sense?
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
