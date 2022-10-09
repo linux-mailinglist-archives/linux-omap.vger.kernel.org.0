@@ -2,35 +2,35 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7DC35F9229
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Oct 2022 00:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89F4A5F92BE
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Oct 2022 00:50:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233035AbiJIWql (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 9 Oct 2022 18:46:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36790 "EHLO
+        id S233090AbiJIWus (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 9 Oct 2022 18:50:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232404AbiJIWok (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 9 Oct 2022 18:44:40 -0400
+        with ESMTP id S233155AbiJIWtn (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 9 Oct 2022 18:49:43 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C01F44552;
-        Sun,  9 Oct 2022 15:23:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C9445F47;
+        Sun,  9 Oct 2022 15:26:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0C45BB80D33;
-        Sun,  9 Oct 2022 22:22:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EC7C433C1;
-        Sun,  9 Oct 2022 22:22:22 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9AA65B80DD4;
+        Sun,  9 Oct 2022 22:23:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59652C433C1;
+        Sun,  9 Oct 2022 22:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665354144;
-        bh=y5mG2GGzIztP7Kf9lsArphK1NBU+oWQ6vI5czE0seOE=;
+        s=k20201202; t=1665354231;
+        bh=CZxDqO3ZdwGsbtJSi3dwrars4sfBH0axnpz3JL0XgT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UD7Y+t8KooPUxgAjVPyYN+mgm3nzZFJZR9NUjy5HlGE3VFRh3PiZjJLkDqlV8Ogws
-         WFe91f09oqUf23LrOmWj+r0C+SJFlxDqMWA2mETBNpXbexNnA7HE1oHLv/Ns+mAN1M
-         VdIqJIaaxGDvDZ8/jwMJKF/PDSLdWLRGgHaPHBcsUSYUN+x1qasYGa5ttTPhQj9OV9
-         cJESLn6fiYFKJ7NBuUimAVfSsxTuIb2AlzWaYMxEPtyKuVAvO3A+la+TAj5yWDLKVl
-         iRZ8Uvt8aoFJW7zqv16CDrmhnBLopJi0AoY1RRtpbkJKi7keKGyNEC4HRnfGX1jGqv
-         LiydWX+ecCzEA==
+        b=C1K9kmdAFuorhRtKUmq8ffJUQO8woKkLOKsP5TzmR6Nf3EoCQ8GERhFV81LFF+PBf
+         /xT+GA71WMgC8X1qJulLyRDHP6IOL7iiZnxXfyebtZp4ESB2mHV1ooXwnNKIYbYXJ4
+         nsKWV0F+3X2Yjy9ZNPLB3G7eDTAwkLMDLwMc9scNDjmT2X0s4wnwGKKwEUxAXajVIu
+         i5JGmvjiMwQBvOmSWSEti/2RCAO9VL0yxmsDJdMyHKq/eHWyxzRGNYz8n+mLD8J17q
+         AuZd4wgt6sUj9rUZeCUyTBQ3TEn/91Bc1KdHaKujiX5/+l6lg/z/NGUsads7ZcT2y+
+         XEcwSXYvxaykw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Nathan Huckleberry <nhuck@google.com>,
@@ -39,16 +39,16 @@ Cc:     Nathan Huckleberry <nhuck@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>, davem@davemloft.net,
         edumazet@google.com, pabeni@redhat.com, ndesaulniers@google.com,
-        prabhakar.mahadev-lad.rj@bp.renesas.com, petrm@nvidia.com,
-        khalasa@piap.pl, bigunclemax@gmail.com,
-        wsa+renesas@sang-engineering.com, chi.minghao@zte.com.cn,
+        prabhakar.mahadev-lad.rj@bp.renesas.com, mw@semihalf.com,
+        petrm@nvidia.com, wsa+renesas@sang-engineering.com,
+        bigunclemax@gmail.com, chi.minghao@zte.com.cn,
         linux-omap@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 17/34] net: ethernet: ti: davinci_emac: Fix return type of emac_dev_xmit
-Date:   Sun,  9 Oct 2022 18:21:11 -0400
-Message-Id: <20221009222129.1218277-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 15/29] net: ethernet: ti: davinci_emac: Fix return type of emac_dev_xmit
+Date:   Sun,  9 Oct 2022 18:22:50 -0400
+Message-Id: <20221009222304.1218873-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221009222129.1218277-1-sashal@kernel.org>
-References: <20221009222129.1218277-1-sashal@kernel.org>
+In-Reply-To: <20221009222304.1218873-1-sashal@kernel.org>
+References: <20221009222304.1218873-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -88,10 +88,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
-index ad5293571af4..1dbba3e8ce50 100644
+index fac59032bf83..47a7c40f576e 100644
 --- a/drivers/net/ethernet/ti/davinci_emac.c
 +++ b/drivers/net/ethernet/ti/davinci_emac.c
-@@ -942,7 +942,7 @@ static void emac_tx_handler(void *token, int len, int status)
+@@ -941,7 +941,7 @@ static void emac_tx_handler(void *token, int len, int status)
   *
   * Returns success(NETDEV_TX_OK) or error code (typically out of desc's)
   */
