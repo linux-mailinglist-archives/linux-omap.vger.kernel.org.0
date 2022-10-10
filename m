@@ -2,103 +2,76 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 870F35F931C
-	for <lists+linux-omap@lfdr.de>; Mon, 10 Oct 2022 00:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C6855F9A7E
+	for <lists+linux-omap@lfdr.de>; Mon, 10 Oct 2022 09:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233931AbiJIW4L (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 9 Oct 2022 18:56:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48868 "EHLO
+        id S230437AbiJJHzQ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 10 Oct 2022 03:55:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233895AbiJIWyO (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 9 Oct 2022 18:54:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C541B4A128;
-        Sun,  9 Oct 2022 15:29:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D81460DD5;
-        Sun,  9 Oct 2022 22:27:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209A7C433C1;
-        Sun,  9 Oct 2022 22:27:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665354463;
-        bh=ghDC2JzNsdRhtz2HD3XyUozmlKJwAlnnnYqKEva3Eh4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e/BBmtqt1rZNRT+oWMXfnIGnT9atnckCMeIm3jsg5/wt6Uyd3rbM7kL/NLoo34b3M
-         WYvPaxt8WZ1q6KDXjiN1HHkWq0l9gVadOOCcfxNhwJFDirMHqsqOFXvPvfYJ9/bMeP
-         ApHBmdE6adWSjJ9LqQjyyQp9sn3ObK4/qObhGaMa/o1dV8j9Nmy+F+jjQ2BMbpBxJt
-         HEez8qgZZ82MmPsgTP0oZS7z6jCtohhj9MksZPBOv2r0f7T7tQX2KbmCZqHION59/R
-         wMZ2mhZ6UKvwTLhbef37xUoxiuslhLV9Yf9T1KJSm5Vq/LG0gkI5SvQATH+yvllB7B
-         023DFVgObLhxg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nathan Huckleberry <nhuck@google.com>,
-        Dan Carpenter <error27@gmail.com>, llvm@lists.linux.dev,
-        Nathan Chancellor <nathan@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, davem@davemloft.net,
-        edumazet@google.com, pabeni@redhat.com, ndesaulniers@google.com,
-        prabhakar.mahadev-lad.rj@bp.renesas.com, chi.minghao@zte.com.cn,
-        leon@kernel.org, bigunclemax@gmail.com, linux-omap@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 10/16] net: ethernet: ti: davinci_emac: Fix return type of emac_dev_xmit
-Date:   Sun,  9 Oct 2022 18:27:06 -0400
-Message-Id: <20221009222713.1220394-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221009222713.1220394-1-sashal@kernel.org>
-References: <20221009222713.1220394-1-sashal@kernel.org>
+        with ESMTP id S229596AbiJJHzP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 Oct 2022 03:55:15 -0400
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD4031DA70;
+        Mon, 10 Oct 2022 00:55:12 -0700 (PDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 21BA768AA6; Mon, 10 Oct 2022 09:55:05 +0200 (CEST)
+Date:   Mon, 10 Oct 2022 09:55:04 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     Chaitanya Kulkarni <kch@nvidia.com>, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-mtd@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-nvme@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-scsi@vger.kernel.org, axboe@kernel.dk, efremov@linux.com,
+        josef@toxicpanda.com, idryomov@gmail.com,
+        dongsheng.yang@easystack.cn, haris.iqbal@ionos.com,
+        jinpu.wang@ionos.com, mst@redhat.com, jasowang@redhat.com,
+        pbonzini@redhat.com, stefanha@redhat.com, ohad@wizery.com,
+        andersson@kernel.org, baolin.wang@linux.alibaba.com,
+        ulf.hansson@linaro.org, richard@nod.at, miquel.raynal@bootlin.com,
+        vigneshr@ti.com, marcan@marcan.st, sven@svenpeter.dev,
+        alyssa@rosenzweig.io, kbusch@kernel.org, hch@lst.de,
+        sagi@grimberg.me, sth@linux.ibm.com, hoeppner@linux.ibm.com,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, jejb@linux.ibm.com,
+        martin.petersen@oracle.com, hare@suse.de, bhelgaas@google.com,
+        john.garry@huawei.com, christophe.jaillet@wanadoo.fr,
+        vaibhavgupta40@gmail.com, wsa+renesas@sang-engineering.com,
+        damien.lemoal@opensource.wdc.com, johannes.thumshirn@wdc.com,
+        bvanassche@acm.org, ming.lei@redhat.com,
+        shinichiro.kawasaki@wdc.com, vincent.fu@samsung.com,
+        christoph.boehmwalder@linbit.com, joel@jms.id.au,
+        vincent.whitchurch@axis.com, nbd@other.debian.org,
+        ceph-devel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, asahi@lists.linux.dev
+Subject: Re: [RFC PATCH 00/21] block: add and use init tagset helper
+Message-ID: <20221010075504.GA21272@lst.de>
+References: <20221005032257.80681-1-kch@nvidia.com> <Y0BvRaVO0iUVmHgB@bombadil.infradead.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y0BvRaVO0iUVmHgB@bombadil.infradead.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-From: Nathan Huckleberry <nhuck@google.com>
+On Fri, Oct 07, 2022 at 11:26:13AM -0700, Luis Chamberlain wrote:
+> *If* there were commonalities at init and these could be broken up into
+> common groups, each having their own set of calls, then we simplify and
+> can abstract these. I say this without doing a complete review of the
+> removals, but if there really isn't much of commonalities I tend to
+> agree with Bart that open coding this is better.
 
-[ Upstream commit 5972ca946098487c5155fe13654743f9010f5ed5 ]
-
-The ndo_start_xmit field in net_device_ops is expected to be of type
-netdev_tx_t (*ndo_start_xmit)(struct sk_buff *skb, struct net_device *dev).
-
-The mismatched return type breaks forward edge kCFI since the underlying
-function definition does not match the function hook definition.
-
-The return type of emac_dev_xmit should be changed from int to
-netdev_tx_t.
-
-Reported-by: Dan Carpenter <error27@gmail.com>
-Link: https://github.com/ClangBuiltLinux/linux/issues/1703
-Cc: llvm@lists.linux.dev
-Signed-off-by: Nathan Huckleberry <nhuck@google.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20220912195023.810319-1-nhuck@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/ti/davinci_emac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
-index 37162492e263..ebf22429c349 100644
---- a/drivers/net/ethernet/ti/davinci_emac.c
-+++ b/drivers/net/ethernet/ti/davinci_emac.c
-@@ -955,7 +955,7 @@ static void emac_tx_handler(void *token, int len, int status)
-  *
-  * Returns success(NETDEV_TX_OK) or error code (typically out of desc's)
-  */
--static int emac_dev_xmit(struct sk_buff *skb, struct net_device *ndev)
-+static netdev_tx_t emac_dev_xmit(struct sk_buff *skb, struct net_device *ndev)
- {
- 	struct device *emac_dev = &ndev->dev;
- 	int ret_code;
--- 
-2.35.1
-
+The commonality is that there are various required or optional
+fields to fill out.  I actually have a WIP series to make the tag_set
+dynamically allocated and refcounted to fix some long standing life time
+issues.  That creates a new alloc helper that will take a few mandatory
+arguments and would heavily clash with this series.
