@@ -2,51 +2,51 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D14755FB41A
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 16:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF655FB41D
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 16:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229975AbiJKOGD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        id S229942AbiJKOGD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
         Tue, 11 Oct 2022 10:06:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbiJKOGA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 10:06:00 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311468B2DA
-        for <linux-omap@vger.kernel.org>; Tue, 11 Oct 2022 07:05:56 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id l32so1055444wms.2
-        for <linux-omap@vger.kernel.org>; Tue, 11 Oct 2022 07:05:56 -0700 (PDT)
+        with ESMTP id S229901AbiJKOGB (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 10:06:01 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32B4890831
+        for <linux-omap@vger.kernel.org>; Tue, 11 Oct 2022 07:06:00 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id l16-20020a05600c4f1000b003c6c0d2a445so2144747wmq.4
+        for <linux-omap@vger.kernel.org>; Tue, 11 Oct 2022 07:05:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JcaFOKZyiS3+I2osyalTT+TO0sy9sHe6rL6zc8VNAUU=;
-        b=Qb8JETzFWj62avgqJnKeCBzLel/wA3p733CwJz8qtRjZ79GeqOp/HRtwpk6dFn2kqE
-         lh6awZJ1Uerm/QHQXpU0uUsA89pk4UlfayQWlQpC76Kkxsp8Ca877TBI3Y9ElzJ3+JbM
-         N5lpzkzvK52OoQ38LlWh2D8iRgX6pQfoYu3GXFLFDVCJAr1GwZfnTPVaR4VcFtNRmSUd
-         JOi0SnpaMph+pBxDYHazUEPIxnhiGvbGVkuEV0GUhjmmrGwVFbGAzzy04xEErsVWyJOB
-         BAj9yI0fVXLmEIZKGPuq6EF3G3JP2zjdBjo10mvj6T8xVBRvvxbWpnM6fKQsvVb2iS+0
-         0O3w==
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zGKP5Wt8s+Izp0RT7HfI6dIBI6KAZhMJfhNjmmY98W4=;
+        b=0jZ85si3lcqz6puGo3fHjV7qR1zMaGMjVnFhPPRcQm7IcNHYpCCrKI56gc9vwOpgCs
+         mMm7y0MROB4DyaU9NxzFE2W3XO55p8S8zrW9AWMudVZdnSmIcttrpjMEttZp2VbuF6SV
+         +ULAjcBkpn2UKzquWyVEj/jTpSpUsPD/1hjlwmS9dYvqwrebgsWHI9vY7bxEZqSRQEne
+         stzv3vHw+i1xybtXgP3UG3QifKdy2/+SLuwcPaS4onUUdCb1aeKN3taS7ph25UiICoQi
+         W2/0Te6WLivP9BI1iQGPs2CJE1ldN2ayKWjg5zb+wrWQWCOwLuvZrHnErCoK1xVGuQpM
+         DjGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JcaFOKZyiS3+I2osyalTT+TO0sy9sHe6rL6zc8VNAUU=;
-        b=SBmMMfwsWmVg7ES5FPwNleqsSN6QQcklmONwP5NV61SFIJ77CVBA1vNENmGZhbDWAg
-         +NxW5lSPYr30Y1z+j4Rd6KdHq++8ZiMStC+O7luDW3qaMhy1vAq49vCLEryNVjqNaPKQ
-         507mh1HNPCO0QHp4C+Usx5EcsSDGKVG29wFkGxilVjpZCm+ZxOyWGbe23v10Big2daGs
-         uGdVRtNeKpDXO8wXJOJr6e8fcbdGoxeI6yhri0D2FaGJQcmUAqZKdsd+lsPq505zNjUf
-         CRgd4ePCA7z1pOGqu0G+Huroe968vmYC+u5HQdWQVXjGUqD+RaWPb1i/RTFqrjdWCPIH
-         0u8A==
-X-Gm-Message-State: ACrzQf0LjhD9wvC1nVBAV6+4CBfpyJ22ua5+afFKG2YgsuWRT9kRfy2X
-        3d2Wfeeb3+b3oOOvjqDOgSIIIg==
-X-Google-Smtp-Source: AMsMyM51kNiy2OQX6zFt2Ln9Qp8sp2w2oHjrFzWWJ5n7mgfX/EzIc4GEtVta1JL+fuztvdtzrpURkA==
-X-Received: by 2002:a05:600c:a09:b0:3b9:f70f:aa72 with SMTP id z9-20020a05600c0a0900b003b9f70faa72mr23744191wmp.97.1665497155263;
-        Tue, 11 Oct 2022 07:05:55 -0700 (PDT)
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zGKP5Wt8s+Izp0RT7HfI6dIBI6KAZhMJfhNjmmY98W4=;
+        b=Y7veDu4eo2Fn1fM2ClzNzeTaAV1eA93TMCmPrxag94XuI4dOz743kMqbh3AG/oLRcp
+         bv8ofSttmLDwSn52vJz+gO12WMQ6FaeMpc3GjtftH4iRejoamBGmJaY3yZMyU+qc2z4d
+         1vuE1i8NiDEgAMydwMPrwcUJnLg93+Z51HBhSBw6N0G5RUkXPH4HegqzPr6CPMYKUMio
+         5YdW3C4Csv5uudmW3vdJ9FQTvj6ChG3FkGjoMA41esK8ceFtMN9f2FrW3V/1ZmnMPU+S
+         qrFM3TEK5eTPuqMp+5BcSy5/qGpdgK1JDZmq8VFx1xSF1prftZJFDaTcQYSsz8e01sNI
+         SBMA==
+X-Gm-Message-State: ACrzQf0kY7n7QF24tKDDvYW4r47ZHaY47Ni5U1v0vxvGz6CC8o0gFJdR
+        tevHF4dHmaVVhOBEPSAYsrusTg==
+X-Google-Smtp-Source: AMsMyM5pRyEpZYwEZyRIicfTqHvc1ihkwoIkKFvGdPUs8Qxtd2B0fD7FAOoGYydk6EeT3kZv+flQCw==
+X-Received: by 2002:a1c:f30d:0:b0:3c3:7c80:67f4 with SMTP id q13-20020a1cf30d000000b003c37c8067f4mr14604486wmq.86.1665497158377;
+        Tue, 11 Oct 2022 07:05:58 -0700 (PDT)
 Received: from localhost.localdomain (192.201.68.85.rev.sfr.net. [85.68.201.192])
-        by smtp.gmail.com with ESMTPSA id z2-20020a5d44c2000000b0022e55f40bc7sm11437453wrr.82.2022.10.11.07.05.53
+        by smtp.gmail.com with ESMTPSA id z2-20020a5d44c2000000b0022e55f40bc7sm11437453wrr.82.2022.10.11.07.05.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Oct 2022 07:05:54 -0700 (PDT)
+        Tue, 11 Oct 2022 07:05:57 -0700 (PDT)
 From:   Jerome Neanne <jneanne@baylibre.com>
 To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
         nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
@@ -61,65 +61,169 @@ Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
         linux-omap@vger.kernel.org
-Subject: [PATCH v6 0/6] Add support for TI TPS65219 PMIC.
-Date:   Tue, 11 Oct 2022 16:05:43 +0200
-Message-Id: <20221011140549.16761-1-jneanne@baylibre.com>
+Subject: [PATCH v6 1/6] DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC support for AM642 SK board.
+Date:   Tue, 11 Oct 2022 16:05:44 +0200
+Message-Id: <20221011140549.16761-2-jneanne@baylibre.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20221011140549.16761-1-jneanne@baylibre.com>
+References: <20221011140549.16761-1-jneanne@baylibre.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi everyone,
+Add support fot the TI Power Management IC TPS65219
+on the AM642 SKEVM board.
 
-bindings and regulator are already there as it is based on the regulator tree branch for-6.1:
-https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git
-All review feedback except one have been integrated in v5. Waiting ack/nack for mfd part. 
+Needed for driver testing but official board support pending.
+TI commitment is required before board upstream kick-off.
 
-Changes in v6:
-- Remove not needed dev assignment reported by Dmitry Torokhov in Input. 
+Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+---
+ arch/arm64/boot/dts/ti/k3-am642-sk.dts | 104 +++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
-Regards,
-Jerome
-
-Previous versions:
-v5 - https://lore.kernel.org/lkml/20220913121419.15420-1-jneanne@baylibre.com/
-v4 - https://lore.kernel.org/lkml/20220825150224.826258-1-msp@baylibre.com/
-v3 - https://lore.kernel.org/lkml/20220805121852.21254-1-jneanne@baylibre.com/
-v2 - https://lore.kernel.org/lkml/20220726103355.17684-1-jneanne@baylibre.com/
-v1 - https://lore.kernel.org/lkml/20220719091742.3221-1-jneanne@baylibre.com/
-
-Jerome Neanne (5):
-  DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC support for AM642 SK
-    board.
-  DONOTMERGE: arm64: dts: ti: Add pinmux and irq mapping for TPS65219
-    external interrupts
-  DONOTMERGE: arm64: dts: ti: k3-am642-sk: Enable tps65219 power-button
-  mfd: tps65219: Add driver for TI TPS65219 PMIC
-  arm64: defconfig: Add tps65219 as modules
-
-Markus Schneider-Pargmann (1):
-  Input: Add tps65219 interrupt driven powerbutton
-
- MAINTAINERS                             |   1 +
- arch/arm64/boot/dts/ti/k3-am642-sk.dts  | 115 ++++++++
- arch/arm64/configs/defconfig            |   3 +
- drivers/input/misc/Kconfig              |  10 +
- drivers/input/misc/Makefile             |   1 +
- drivers/input/misc/tps65219-pwrbutton.c | 148 ++++++++++
- drivers/mfd/Kconfig                     |  14 +
- drivers/mfd/Makefile                    |   1 +
- drivers/mfd/tps65219.c                  | 320 ++++++++++++++++++++++
- include/linux/mfd/tps65219.h            | 345 ++++++++++++++++++++++++
- 10 files changed, 958 insertions(+)
- create mode 100644 drivers/input/misc/tps65219-pwrbutton.c
- create mode 100644 drivers/mfd/tps65219.c
- create mode 100644 include/linux/mfd/tps65219.h
-
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-sk.dts b/arch/arm64/boot/dts/ti/k3-am642-sk.dts
+index 2620469a7517..565b50810579 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am642-sk.dts
+@@ -150,6 +150,20 @@
+ 		vin-supply = <&com8_ls_en>;
+ 		gpio = <&main_gpio0 48 GPIO_ACTIVE_HIGH>;
+ 	};
++
++	vsel_sd_nddr: gpio-regulator {
++		compatible = "regulator-gpio";
++		pinctrl-names = "default";
++		pinctrl-0 = <&vsel_sd_nddr_pins_default>;
++		regulator-name = "tps65219-LDO1-SEL-SD";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-boot-on;
++		vin-supply = <&ldo1_reg>;
++		gpios = <&main_gpio0 45 GPIO_ACTIVE_HIGH>;
++		states = <1800000 0x0>,
++			 <3300000 0x1>;
++	};
+ };
+ 
+ &main_pmx0 {
+@@ -181,6 +195,13 @@
+ 		>;
+ 	};
+ 
++	main_i2c0_pins_default: main-i2c0-pins-default {
++		pinctrl-single,pins = <
++			AM64X_IOPAD(0x0260, PIN_INPUT_PULLUP, 0) /* (A18) I2C0_SCL */
++			AM64X_IOPAD(0x0264, PIN_INPUT_PULLUP, 0) /* (B18) I2C0_SDA */
++		>;
++	};
++
+ 	main_i2c1_pins_default: main-i2c1-pins-default {
+ 		pinctrl-single,pins = <
+ 			AM64X_IOPAD(0x0268, PIN_INPUT_PULLUP, 0) /* (C18) I2C1_SCL */
+@@ -267,6 +288,12 @@
+ 			AM64X_IOPAD(0x00bc, PIN_INPUT, 7) /* (U8) GPIO0_46 */
+ 		>;
+ 	};
++
++	vsel_sd_nddr_pins_default: vsel-sd-nddr-pins-default {
++		pinctrl-single,pins = <
++			AM64X_IOPAD(0x00b8, PIN_INPUT, 7) /* (Y7) PRG1_PRU0_GPO0.GPIO0_45 */
++		>;
++	};
+ };
+ 
+ &mcu_uart0 {
+@@ -315,6 +342,83 @@
+ 	status = "disabled";
+ };
+ 
++&main_i2c0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&main_i2c0_pins_default>;
++	clock-frequency = <400000>;
++	status = "okay";
++
++	tps65219: pmic@30 {
++		compatible = "ti,tps65219";
++		reg = <0x30>;
++		system-power-controller;
++
++		buck1-supply = <&vcc_3v3_sys>;
++		buck2-supply = <&vcc_3v3_sys>;
++		buck3-supply = <&vcc_3v3_sys>;
++		ldo1-supply = <&vcc_3v3_sys>;
++		ldo2-supply = <&buck2_reg>;
++		ldo3-supply = <&vcc_3v3_sys>;
++		ldo4-supply = <&vcc_3v3_sys>;
++
++		regulators {
++			buck1_reg: buck1 {
++				regulator-name = "VDD_CORE";
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <1000000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			buck2_reg: buck2 {
++				regulator-name = "VCC1V8";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			buck3_reg: buck3 {
++				regulator-name = "VDD_LPDDR4";
++				regulator-min-microvolt = <1100000>;
++				regulator-max-microvolt = <1100000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			ldo1_reg: ldo1 {
++				regulator-name = "VDDSHV_SD_IO_PMIC";
++				regulator-min-microvolt = <1000000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-allow-bypass;
++			};
++
++			ldo2_reg: ldo2 {
++				regulator-name = "VDDAR_CORE";
++				regulator-min-microvolt = <850000>;
++				regulator-max-microvolt = <850000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			ldo3_reg: ldo3 {
++				regulator-name = "VDDA_1V8";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			ldo4_reg: ldo4 {
++				regulator-name = "VDD_PHY_2V5";
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <2500000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++		};
++	};
++};
+ &main_i2c1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_i2c1_pins_default>;
 -- 
 2.17.1
 
