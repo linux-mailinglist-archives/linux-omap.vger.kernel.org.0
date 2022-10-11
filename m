@@ -2,117 +2,125 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B825FB42E
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 16:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C201A5FB439
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 16:07:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230149AbiJKOGl (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Oct 2022 10:06:41 -0400
+        id S230104AbiJKOHg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Oct 2022 10:07:36 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230061AbiJKOGV (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 10:06:21 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D93F95AF7
-        for <linux-omap@vger.kernel.org>; Tue, 11 Oct 2022 07:06:12 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id w18so21794483wro.7
-        for <linux-omap@vger.kernel.org>; Tue, 11 Oct 2022 07:06:12 -0700 (PDT)
+        with ESMTP id S230020AbiJKOHQ (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 10:07:16 -0400
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972AA97EE6;
+        Tue, 11 Oct 2022 07:06:56 -0700 (PDT)
+Received: by mail-qv1-xf33.google.com with SMTP id i9so9020763qvo.0;
+        Tue, 11 Oct 2022 07:06:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wxovnf5KPHC5iL/G2DCCvsq9cB2n/hhE49OVBFVzwkI=;
-        b=DH/SoT0wITUGF88uMh2ROZmuK9cjDJ/nRr7WDfE6px/3tX7Vfr/FoOIiUTYOiF9+jn
-         YOgqQ9e6jW0sLB4AaevSHG290ExfzAHTsCX3fZ6MQ9HEhO0L4fN2tVcy7q/N8nHLz5m9
-         ReL3op0wFuQfvyR+iVM0q2QSUewHTIArPrNCzOzWBp/QTCF7tdAjoAHIO+BFzLskVJvq
-         ljjr9D8gzXA0iJy/MjR/TUkUsOEyeaGz0s1tPS/UC1ND0BhmA8TL1K4ATUIUUJwGDJbI
-         X5CZd9FGV0tQY89IxA+cyNYCVa3ej10B7kU7MnpTbWY9De+alEnJIrk9Suj7KL5f50ie
-         ESKg==
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+HNmks9UCwWqSHnlQF/VVdsqmuEvvfPoRyptBcZQL9k=;
+        b=msa4PNVS9ssC3unsAJLPN4JOFKLQnZ9nJ9j+hgYWqa1WhYjBC+QwGXiYJ3RoUZR8tP
+         +5svgHV23iWwxKwBeCwvj1cZCmLQmUWOHKZxyC7KTcQbKkQzAY3XBv7X3SUCt37EasWv
+         1fIkEclsAjhGKWUMP6B2ZJzMBDXaRpIzDayFbG7EuBYP/daJFFMYEila/eO6cWfrGfb7
+         Cmt0jTmSQ3BcE03XlDBjwLSR72Ynu5+MeTr/72s8g6zvvG8SmF8XQSIMChsgR+9vNcyz
+         QBqgvCFYTwNQXFhloJG6fu6twmg8Cx2kUUEh86vaVsaMNml6NqsqmUGM8oYehfmsWrk0
+         DljA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wxovnf5KPHC5iL/G2DCCvsq9cB2n/hhE49OVBFVzwkI=;
-        b=6/tFg1BhyrvaNKKSo7MjNY+ZLLAX5yyOj0MIwTj51GXDgbXuo38Oy0mIzxycaoe3IE
-         nx5Qjx83xjlZ45+WXfzWkHUPGQc71+gaDAjfU54K5kut1giuNegCFazkLA7fBX/THOUw
-         nFw+fS75PnvsxJ+3Wf8TZyFJA88KRjuczX4/smj5fl9MqBq1oRVAoaufEnZMvVSb4v5o
-         0y3lN+m//jFWMMjWQE4rawub1P5fkxpytARJ4mgdbBWox0KiqIx6Daa2UauAf6l8Yh3X
-         gnfs5eQKnWLKfpCFUy7gj69XNAEZw45w0hhvbfJOi0enjCicDXlZIXN93DnIFDrEpBTq
-         jE8Q==
-X-Gm-Message-State: ACrzQf3ZnLPxfJB6WizaRFHlvZdEQKQ+MpqzWrKUqvDGiw4S/N9Izh8Z
-        t10MBcqgAW8VYCwmXM5yu81dDA==
-X-Google-Smtp-Source: AMsMyM7St/4AzKTmYF8VoJKAU/rwjst+scZir1Gz1v9WV1F9VbgDMyy8GRFqA5twBa7xST+afZ5cpw==
-X-Received: by 2002:a5d:6745:0:b0:22f:ed4:65d7 with SMTP id l5-20020a5d6745000000b0022f0ed465d7mr12823623wrw.259.1665497171065;
-        Tue, 11 Oct 2022 07:06:11 -0700 (PDT)
-Received: from localhost.localdomain (192.201.68.85.rev.sfr.net. [85.68.201.192])
-        by smtp.gmail.com with ESMTPSA id z2-20020a5d44c2000000b0022e55f40bc7sm11437453wrr.82.2022.10.11.07.06.09
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+HNmks9UCwWqSHnlQF/VVdsqmuEvvfPoRyptBcZQL9k=;
+        b=Gc0rySmtR1rRriErhE5p7Fo3aYsskBRhX9FpG2Z1h9Xq7/lKcIwmUe/XYr9VCMO/D7
+         K0BkDu9WsObFoVOwhN5q/yyvfuxA9WQdOXTuLUoFlaAw5/TIzU/zZCef7FuOgey7cIIM
+         G7WvFe/lWJeoOrTdHC561xVegfdrLlJfspvjV0XpTeQ8lTfDzu7j/nAnKsTJ5m8jN6Pl
+         gDmaShjVVMXccqM/T8WMeAkty2tljZvcD52uhAkCsIGICOtu7+O91IGrpaAAfNGHbqQl
+         HMPvVR9hO391sg/WW/bYOBRxrcNETr1wBm54ZgdSLl2T8mERJHoLFlHspYGIiuWB7Y3v
+         gwgw==
+X-Gm-Message-State: ACrzQf10/ShO0Wuv0OZCIAr8xSesJoX0zTGryLMEZk6fwXYoga36QDVo
+        Bl00fjvDDmGJ4LSsOcpYkrZgH14TjUA=
+X-Google-Smtp-Source: AMsMyM7rlMH3XCKtXyssekGp5zIMw6llth321QMJ/MedxUU3Cti/Cd4XretvhoDGKAdO59kuU7aXkQ==
+X-Received: by 2002:a17:902:b48b:b0:182:42ce:5779 with SMTP id y11-20020a170902b48b00b0018242ce5779mr11547325plr.103.1665497203869;
+        Tue, 11 Oct 2022 07:06:43 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:bff:9bd3:c2da:5f42])
+        by smtp.gmail.com with ESMTPSA id b2-20020a170902ed0200b00176d347e9a7sm8574045pld.233.2022.10.11.07.06.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Oct 2022 07:06:10 -0700 (PDT)
-From:   Jerome Neanne <jneanne@baylibre.com>
-To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
-        will@kernel.org, lee@kernel.org, tony@atomide.com, vigneshr@ti.com,
-        bjorn.andersson@linaro.org, shawnguo@kernel.org,
-        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
-        marcel.ziswiler@toradex.com, vkoul@kernel.org,
-        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com
-Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
-        msp@baylibre.com, j-keerthy@ti.com, jneanne@baylibre.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v6 6/6] arm64: defconfig: Add tps65219 as modules
-Date:   Tue, 11 Oct 2022 16:05:49 +0200
-Message-Id: <20221011140549.16761-7-jneanne@baylibre.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20221011140549.16761-1-jneanne@baylibre.com>
-References: <20221011140549.16761-1-jneanne@baylibre.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        Tue, 11 Oct 2022 07:06:43 -0700 (PDT)
+Date:   Tue, 11 Oct 2022 07:06:40 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] ARM: dts: omap3-n900: fix LCD reset line polarity
+Message-ID: <Y0V4cLGbYe4j+ls6@google.com>
+References: <20221004213503.848262-1-dmitry.torokhov@gmail.com>
+ <Y0UDEtQlN5Y9h7BU@atomide.com>
+ <20221011123726.elsr53ue7nxzhvww@mercury.elektranox.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221011123726.elsr53ue7nxzhvww@mercury.elektranox.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-This adds defconfig option to support TPS65219 PMIC, MFD, Regulators
-and power-button.
+Hi Sebastian,
 
-Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
-Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
----
- arch/arm64/configs/defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+On Tue, Oct 11, 2022 at 02:37:26PM +0200, Sebastian Reichel wrote:
+> Hi,
+> 
+> On Tue, Oct 11, 2022 at 08:45:54AM +0300, Tony Lindgren wrote:
+> > * Dmitry Torokhov <dmitry.torokhov@gmail.com> [221004 21:26]:
+> > > The LCD driver (panel-sony-acx565akm), when probing, starts with line
+> > > driven low, and then toggles it to high and keeps it there. Also, the
+> > > line is driven low when powering off the device, and ls released when
+> > > powering it back on. This means that the reset line should be described
+> > > as "active low" in DTS. This will be important when the driver is
+> > > converted to gpiod API which respects the polarity declared in DTS.
+> > 
+> > We should ensure these patches get merged together with the driver
+> > change to avoid breaking LCD for booting. Probably no need to have
+> > the driver quirk handling for inverted polartity in this case.
+> > 
+> > It's probably easiest to have an immutable branch for the driver
+> > changes I can base the dts changes on. Or I can ack the dts changes
+> > if they get merged with the driver.
+> 
+> Both drivers are already using gpiod API:
+> 
+> drivers/gpu/drm/panel/panel-sony-acx565akm.c
+> drivers/gpu/drm/panel/panel-dsi-cm.c
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index d5b2d2dd4904..d64e00355fcd 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -406,6 +406,7 @@ CONFIG_TOUCHSCREEN_GOODIX=m
- CONFIG_TOUCHSCREEN_EDT_FT5X06=m
- CONFIG_INPUT_MISC=y
- CONFIG_INPUT_PM8941_PWRKEY=y
-+CONFIG_INPUT_TPS65219_PWRBUTTON=m
- CONFIG_INPUT_PM8XXX_VIBRATOR=m
- CONFIG_INPUT_PWM_BEEPER=m
- CONFIG_INPUT_PWM_VIBRA=m
-@@ -639,6 +640,7 @@ CONFIG_MFD_SPMI_PMIC=y
- CONFIG_MFD_RK808=y
- CONFIG_MFD_SEC_CORE=y
- CONFIG_MFD_SL28CPLD=y
-+CONFIG_MFD_TPS65219=m
- CONFIG_MFD_ROHM_BD718XX=y
- CONFIG_MFD_WCD934X=m
- CONFIG_REGULATOR_FIXED_VOLTAGE=y
-@@ -666,6 +668,7 @@ CONFIG_REGULATOR_QCOM_SPMI=y
- CONFIG_REGULATOR_RK808=y
- CONFIG_REGULATOR_S2MPS11=y
- CONFIG_REGULATOR_TPS65132=m
-+CONFIG_REGULATOR_TPS65219=m
- CONFIG_REGULATOR_VCTRL=m
- CONFIG_RC_CORE=m
- CONFIG_RC_DECODERS=y
+I was looking at
+
+drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c
+drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
+
+which are not using gpiod. Should they be retired?
+
+> 
+> So this just breaks things.
+
+I missed the drivers in drivers/gpu/... and I see that they essentially
+abuse gpiod API as gpiod_set_value() operates on logical level
+(active/inactive) and not absolute (high/low). They should either use
+the gpiod_*_raw() variants, or they should be adjusted to do the proper
+thing together with the accompanying DTS change.
+
+What are your preferences?
+
+Thanks.
+
 -- 
-2.17.1
-
+Dmitry
