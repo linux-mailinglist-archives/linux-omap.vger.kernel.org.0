@@ -2,70 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2A6D5FB2B1
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 14:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 240865FB3AF
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 15:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229739AbiJKMyJ (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Oct 2022 08:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52416 "EHLO
+        id S229903AbiJKNsn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Oct 2022 09:48:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbiJKMyI (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 08:54:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79CE6AA3E;
-        Tue, 11 Oct 2022 05:54:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 731056118B;
-        Tue, 11 Oct 2022 12:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD79C433D6;
-        Tue, 11 Oct 2022 12:54:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665492846;
-        bh=nh65NVKv0f/DCts1WL21izVNMZRkVYtBQtPfD3HlRy8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SLmbr4qtja7crhjbRR+UprzGTbAjLxtTWlZM+NmKJZt5pfW1FwGqtTe9b71cQJBby
-         ygsrz3MmzE3UjfbdO/fOPTtZDHgVznjjSXxQXxjp0lNBoPVbqGAbkVQE3m94Xgp6wo
-         iH9L0l/qWEVJOcuJlWGnk1MC+Q1/SuD26HCy1vJEKAB5ZcBm9VJ2aRVtC+PslGFoTP
-         48oniDRVXdyeOhaGkqoE5+oyskCkNLfBkmDTek8tHqCiKgjckLkBWX5HSY8u2gfb2a
-         ztSSpEINz19kcXycB2Ay76BTrz+CUXraoSBizfWsgDZxox88d1NwAxSqIeI6YGUpGt
-         mAIZMzRUcurZA==
-Date:   Tue, 11 Oct 2022 08:54:05 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Tony Lindgren <tony@atomide.com>, Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <kristo@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernelci-results@groups.io, bot@kernelci.org,
-        gtucker@collabora.com, stable@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-clk@vger.kernel.org
-Subject: Re: stable-rc/linux-5.10.y bisection: baseline.login on panda
-Message-ID: <Y0VnbVAyHng7KHI4@sashalap>
-References: <6341c30d.170a0220.2bfa7.6117@mx.google.com>
- <Y0QB/9dmTwd1tx11@sirena.org.uk>
+        with ESMTP id S230004AbiJKNs0 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 09:48:26 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD8AE77555;
+        Tue, 11 Oct 2022 06:48:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665496105; x=1697032105;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QHbuyb2S/uUcVxyF/lwXUqAZuHdBPKm0sW+WbMyb3sc=;
+  b=Pj4BNK+rzzSTyBXemPpBH2NMgeihtQKzOP08GkE32BBDFHsEGUAOjS/g
+   YtBTzP+IhzjASx0CQoxtsOGSgggsc6r1ZngggideScpztEHBpvubxJvM/
+   PrBL8xLU0ZS173Xl1LBsRCKZZsUhVi7fKD8k2d9jHx/MqBAXkHRDZRdt4
+   jP4ZP+oPiaF9m0MFT6RAOay9XKsfteS6LOUKuYpRkK5k6bSbSgcvtu+/L
+   naYmNshmjYqukJl6ZQrLY6QTS7HynU+I2J6mqh2J4UJJdOFmwMHwDGHsu
+   Dh8DYhwk1KYkPnYhlJoeIytZJScs+etnJw5/us2S84x9IdC3nJtnr0iej
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="303244167"
+X-IronPort-AV: E=Sophos;i="5.95,176,1661842800"; 
+   d="scan'208";a="303244167"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2022 06:48:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="695068698"
+X-IronPort-AV: E=Sophos;i="5.95,176,1661842800"; 
+   d="scan'208";a="695068698"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004.fm.intel.com with ESMTP; 11 Oct 2022 06:48:19 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oiFcH-005KIR-1Z;
+        Tue, 11 Oct 2022 16:48:17 +0300
+Date:   Tue, 11 Oct 2022 16:48:17 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Kent Gibson <warthog618@gmail.com>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+        linux-actions@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+        openbmc@lists.ozlabs.org, linux-rpi-kernel@lists.infradead.org,
+        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
+        linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org
+Subject: Re: [PATCH v2 02/36] gpiolib: cdev: Add missed header(s)
+Message-ID: <Y0V0IXF3sASTGdMU@smile.fi.intel.com>
+References: <20221010201453.77401-1-andriy.shevchenko@linux.intel.com>
+ <20221010201453.77401-3-andriy.shevchenko@linux.intel.com>
+ <Y0SyVwjDl7NGfTPn@sol>
+ <CAHp75Vf4oS8g0zxgismtLrzsJ7AE-bdMEq+GAzx2=Mwnhuk3UA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y0QB/9dmTwd1tx11@sirena.org.uk>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAHp75Vf4oS8g0zxgismtLrzsJ7AE-bdMEq+GAzx2=Mwnhuk3UA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 10, 2022 at 12:29:03PM +0100, Mark Brown wrote:
->The KernelCI bisection bot bisected a boot failure on the 5.10-rc stable
->tree on Panda to d86c6447ee250 ("clk: ti: Stop using legacy clkctrl names
->for omap4") in the v5.10 stable tree.  There's a lot of clock related
->warnings/errors including:
+On Tue, Oct 11, 2022 at 11:05:42AM +0300, Andy Shevchenko wrote:
+> On Tue, Oct 11, 2022 at 3:02 AM Kent Gibson <warthog618@gmail.com> wrote:
+> > On Mon, Oct 10, 2022 at 11:14:18PM +0300, Andy Shevchenko wrote:
 
-I'll revert it, thanks!
+...
+
+> > > -#include <linux/gpio.h>
+> > >  #include <linux/gpio/driver.h>
+> > > +#include <linux/gpio.h>
+> > > +#include <linux/hte.h>
+> >
+> > Ok with the hte re-order.
+> >
+> > But moving the gpio subsystem header after the gpio/driver is not
+> > alphabetical ('.' precedes '/') and it read better and made more sense
+> > to me the way it was.
+> 
+> I see, I guess this is vim sort vs shell sort. Strange, they should
+> follow the locale settings...
+
+I have checked, the shell and vim sort gave the same result as in this patch.
 
 -- 
-Thanks,
-Sasha
+With Best Regards,
+Andy Shevchenko
+
+
