@@ -2,104 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 240865FB3AF
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 15:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D14755FB41A
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 16:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229903AbiJKNsn (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Oct 2022 09:48:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49830 "EHLO
+        id S229975AbiJKOGD (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Oct 2022 10:06:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230004AbiJKNs0 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 09:48:26 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD8AE77555;
-        Tue, 11 Oct 2022 06:48:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665496105; x=1697032105;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QHbuyb2S/uUcVxyF/lwXUqAZuHdBPKm0sW+WbMyb3sc=;
-  b=Pj4BNK+rzzSTyBXemPpBH2NMgeihtQKzOP08GkE32BBDFHsEGUAOjS/g
-   YtBTzP+IhzjASx0CQoxtsOGSgggsc6r1ZngggideScpztEHBpvubxJvM/
-   PrBL8xLU0ZS173Xl1LBsRCKZZsUhVi7fKD8k2d9jHx/MqBAXkHRDZRdt4
-   jP4ZP+oPiaF9m0MFT6RAOay9XKsfteS6LOUKuYpRkK5k6bSbSgcvtu+/L
-   naYmNshmjYqukJl6ZQrLY6QTS7HynU+I2J6mqh2J4UJJdOFmwMHwDGHsu
-   Dh8DYhwk1KYkPnYhlJoeIytZJScs+etnJw5/us2S84x9IdC3nJtnr0iej
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="303244167"
-X-IronPort-AV: E=Sophos;i="5.95,176,1661842800"; 
-   d="scan'208";a="303244167"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2022 06:48:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="695068698"
-X-IronPort-AV: E=Sophos;i="5.95,176,1661842800"; 
-   d="scan'208";a="695068698"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP; 11 Oct 2022 06:48:19 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oiFcH-005KIR-1Z;
-        Tue, 11 Oct 2022 16:48:17 +0300
-Date:   Tue, 11 Oct 2022 16:48:17 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Kent Gibson <warthog618@gmail.com>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-actions@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-rpi-kernel@lists.infradead.org,
-        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
-        linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH v2 02/36] gpiolib: cdev: Add missed header(s)
-Message-ID: <Y0V0IXF3sASTGdMU@smile.fi.intel.com>
-References: <20221010201453.77401-1-andriy.shevchenko@linux.intel.com>
- <20221010201453.77401-3-andriy.shevchenko@linux.intel.com>
- <Y0SyVwjDl7NGfTPn@sol>
- <CAHp75Vf4oS8g0zxgismtLrzsJ7AE-bdMEq+GAzx2=Mwnhuk3UA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vf4oS8g0zxgismtLrzsJ7AE-bdMEq+GAzx2=Mwnhuk3UA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229942AbiJKOGA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 10:06:00 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311468B2DA
+        for <linux-omap@vger.kernel.org>; Tue, 11 Oct 2022 07:05:56 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id l32so1055444wms.2
+        for <linux-omap@vger.kernel.org>; Tue, 11 Oct 2022 07:05:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JcaFOKZyiS3+I2osyalTT+TO0sy9sHe6rL6zc8VNAUU=;
+        b=Qb8JETzFWj62avgqJnKeCBzLel/wA3p733CwJz8qtRjZ79GeqOp/HRtwpk6dFn2kqE
+         lh6awZJ1Uerm/QHQXpU0uUsA89pk4UlfayQWlQpC76Kkxsp8Ca877TBI3Y9ElzJ3+JbM
+         N5lpzkzvK52OoQ38LlWh2D8iRgX6pQfoYu3GXFLFDVCJAr1GwZfnTPVaR4VcFtNRmSUd
+         JOi0SnpaMph+pBxDYHazUEPIxnhiGvbGVkuEV0GUhjmmrGwVFbGAzzy04xEErsVWyJOB
+         BAj9yI0fVXLmEIZKGPuq6EF3G3JP2zjdBjo10mvj6T8xVBRvvxbWpnM6fKQsvVb2iS+0
+         0O3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JcaFOKZyiS3+I2osyalTT+TO0sy9sHe6rL6zc8VNAUU=;
+        b=SBmMMfwsWmVg7ES5FPwNleqsSN6QQcklmONwP5NV61SFIJ77CVBA1vNENmGZhbDWAg
+         +NxW5lSPYr30Y1z+j4Rd6KdHq++8ZiMStC+O7luDW3qaMhy1vAq49vCLEryNVjqNaPKQ
+         507mh1HNPCO0QHp4C+Usx5EcsSDGKVG29wFkGxilVjpZCm+ZxOyWGbe23v10Big2daGs
+         uGdVRtNeKpDXO8wXJOJr6e8fcbdGoxeI6yhri0D2FaGJQcmUAqZKdsd+lsPq505zNjUf
+         CRgd4ePCA7z1pOGqu0G+Huroe968vmYC+u5HQdWQVXjGUqD+RaWPb1i/RTFqrjdWCPIH
+         0u8A==
+X-Gm-Message-State: ACrzQf0LjhD9wvC1nVBAV6+4CBfpyJ22ua5+afFKG2YgsuWRT9kRfy2X
+        3d2Wfeeb3+b3oOOvjqDOgSIIIg==
+X-Google-Smtp-Source: AMsMyM51kNiy2OQX6zFt2Ln9Qp8sp2w2oHjrFzWWJ5n7mgfX/EzIc4GEtVta1JL+fuztvdtzrpURkA==
+X-Received: by 2002:a05:600c:a09:b0:3b9:f70f:aa72 with SMTP id z9-20020a05600c0a0900b003b9f70faa72mr23744191wmp.97.1665497155263;
+        Tue, 11 Oct 2022 07:05:55 -0700 (PDT)
+Received: from localhost.localdomain (192.201.68.85.rev.sfr.net. [85.68.201.192])
+        by smtp.gmail.com with ESMTPSA id z2-20020a5d44c2000000b0022e55f40bc7sm11437453wrr.82.2022.10.11.07.05.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Oct 2022 07:05:54 -0700 (PDT)
+From:   Jerome Neanne <jneanne@baylibre.com>
+To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        nm@ti.com, kristo@kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
+        will@kernel.org, lee@kernel.org, tony@atomide.com, vigneshr@ti.com,
+        bjorn.andersson@linaro.org, shawnguo@kernel.org,
+        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
+        marcel.ziswiler@toradex.com, vkoul@kernel.org,
+        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com
+Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
+        msp@baylibre.com, j-keerthy@ti.com, jneanne@baylibre.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v6 0/6] Add support for TI TPS65219 PMIC.
+Date:   Tue, 11 Oct 2022 16:05:43 +0200
+Message-Id: <20221011140549.16761-1-jneanne@baylibre.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Oct 11, 2022 at 11:05:42AM +0300, Andy Shevchenko wrote:
-> On Tue, Oct 11, 2022 at 3:02 AM Kent Gibson <warthog618@gmail.com> wrote:
-> > On Mon, Oct 10, 2022 at 11:14:18PM +0300, Andy Shevchenko wrote:
+Hi everyone,
 
-...
+bindings and regulator are already there as it is based on the regulator tree branch for-6.1:
+https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git
+All review feedback except one have been integrated in v5. Waiting ack/nack for mfd part. 
 
-> > > -#include <linux/gpio.h>
-> > >  #include <linux/gpio/driver.h>
-> > > +#include <linux/gpio.h>
-> > > +#include <linux/hte.h>
-> >
-> > Ok with the hte re-order.
-> >
-> > But moving the gpio subsystem header after the gpio/driver is not
-> > alphabetical ('.' precedes '/') and it read better and made more sense
-> > to me the way it was.
-> 
-> I see, I guess this is vim sort vs shell sort. Strange, they should
-> follow the locale settings...
+Changes in v6:
+- Remove not needed dev assignment reported by Dmitry Torokhov in Input. 
 
-I have checked, the shell and vim sort gave the same result as in this patch.
+Regards,
+Jerome
+
+Previous versions:
+v5 - https://lore.kernel.org/lkml/20220913121419.15420-1-jneanne@baylibre.com/
+v4 - https://lore.kernel.org/lkml/20220825150224.826258-1-msp@baylibre.com/
+v3 - https://lore.kernel.org/lkml/20220805121852.21254-1-jneanne@baylibre.com/
+v2 - https://lore.kernel.org/lkml/20220726103355.17684-1-jneanne@baylibre.com/
+v1 - https://lore.kernel.org/lkml/20220719091742.3221-1-jneanne@baylibre.com/
+
+Jerome Neanne (5):
+  DONOTMERGE: arm64: dts: ti: Add TI TPS65219 PMIC support for AM642 SK
+    board.
+  DONOTMERGE: arm64: dts: ti: Add pinmux and irq mapping for TPS65219
+    external interrupts
+  DONOTMERGE: arm64: dts: ti: k3-am642-sk: Enable tps65219 power-button
+  mfd: tps65219: Add driver for TI TPS65219 PMIC
+  arm64: defconfig: Add tps65219 as modules
+
+Markus Schneider-Pargmann (1):
+  Input: Add tps65219 interrupt driven powerbutton
+
+ MAINTAINERS                             |   1 +
+ arch/arm64/boot/dts/ti/k3-am642-sk.dts  | 115 ++++++++
+ arch/arm64/configs/defconfig            |   3 +
+ drivers/input/misc/Kconfig              |  10 +
+ drivers/input/misc/Makefile             |   1 +
+ drivers/input/misc/tps65219-pwrbutton.c | 148 ++++++++++
+ drivers/mfd/Kconfig                     |  14 +
+ drivers/mfd/Makefile                    |   1 +
+ drivers/mfd/tps65219.c                  | 320 ++++++++++++++++++++++
+ include/linux/mfd/tps65219.h            | 345 ++++++++++++++++++++++++
+ 10 files changed, 958 insertions(+)
+ create mode 100644 drivers/input/misc/tps65219-pwrbutton.c
+ create mode 100644 drivers/mfd/tps65219.c
+ create mode 100644 include/linux/mfd/tps65219.h
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.17.1
 
