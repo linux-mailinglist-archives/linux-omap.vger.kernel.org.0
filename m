@@ -2,195 +2,102 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36E715FAF9B
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 11:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C493B5FB0A5
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 12:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229675AbiJKJsI (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Oct 2022 05:48:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47186 "EHLO
+        id S229477AbiJKKoY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Oct 2022 06:44:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbiJKJsG (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 05:48:06 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A64CE74CCF;
-        Tue, 11 Oct 2022 02:48:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1665481685; x=1697017685;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=X7aXXVOlBHDkw90nWzBrfDp5Pw/UBVwOZTwSGqIfCIg=;
-  b=0e3UWfuIG/JB4Av1WelvWAb9yetgVoyybARnXFP6YSAI/8q73ZcKwL0a
-   0zkgf3CKzRgkAI/mqLdD4E9aFetOZhUCxmgCTjtWvOxDbC1H5Hx7fnYlM
-   BrnvbP51jGfNKr09Lv1KRIAG1B8MnLaUJhcJ+rvGiJqjqjpPLrP/j70wo
-   uFeff7KkwrPVRxRWviMGTTANl/Y7NuP50jxYZgXkZtmAVo/xf8XbtqXnG
-   Q8Ius6eg1oRVtDLL/H/LEutLGYfSb6EI/gypEuts6pBafA1Ax6mcmEpSk
-   Hysjn2aKgeT4WKpKa/Ii279BdjH4maJ99ieuDWQ8nt7KD+M2jy2UeObpg
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.95,176,1661842800"; 
-   d="scan'208";a="178123604"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 11 Oct 2022 02:48:01 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.12; Tue, 11 Oct 2022 02:47:59 -0700
-Received: from localhost (10.10.115.15) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.12 via Frontend
- Transport; Tue, 11 Oct 2022 02:47:58 -0700
-Date:   Tue, 11 Oct 2022 11:52:33 +0200
-From:   Horatiu Vultur <horatiu.vultur@microchip.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     Marc Zyngier <maz@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
-        "Kent Gibson" <warthog618@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Billy Tsai <billy_tsai@aspeedtech.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Samuel Holland <samuel@sholland.org>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Phil Edworthy <phil.edworthy@renesas.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Fabien Dessenne <fabien.dessenne@foss.st.com>,
-        Prathamesh Shete <pshete@nvidia.com>,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        <linux-gpio@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-media@vger.kernel.org>, <linux-actions@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>, <openbmc@lists.ozlabs.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
-        <linux-mediatek@lists.infradead.org>, <linux-mips@vger.kernel.org>,
-        <linux-riscv@lists.infradead.org>, <linux-omap@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-renesas-soc@vger.kernel.org>,
-        <linux-samsung-soc@vger.kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Patrice Chotard <patrice.chotard@foss.st.com>,
-        Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Joel Stanley <joel@jms.id.au>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        "Broadcom internal kernel review list" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Dong Aisheng <aisheng.dong@nxp.com>,
-        "Fabio Estevam" <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        "Sascha Hauer" <s.hauer@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        "Andy Shevchenko" <andy@kernel.org>,
-        Sean Wang <sean.wang@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        "Sebastian Hesselbarth" <sebastian.hesselbarth@gmail.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        "Ludovic Desroches" <ludovic.desroches@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        "Andy Gross" <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>,
-        <soc@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        "Emil Renner Berthing" <kernel@esmil.dk>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH v2 17/36] pinctrl: ocelot: Add missed header(s)
-Message-ID: <20221011095233.jk2vypndisz2wgn6@soft-dev3-1.localhost>
-References: <20221010201453.77401-1-andriy.shevchenko@linux.intel.com>
- <20221010201453.77401-18-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229475AbiJKKoX (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 06:44:23 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EB08C039;
+        Tue, 11 Oct 2022 03:44:20 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id t4so8326038wmj.5;
+        Tue, 11 Oct 2022 03:44:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QAciK97rt6oCnZL2z3e7Ty/+ML2bZUrUvtiPEGHd6rE=;
+        b=aTXCkzCKfFNb9TavJAorvhjcNcIn6HAYkqR4K0JI6vM5TJUm25MPXUcS7OWeKyhHhd
+         Mvyxqv7q8mDn3IHQm9sQlebV5hI/9YxpqfSeg/Un/kBH8NG4FEiUB0mcyY/JCKSQMsjD
+         3T12kb3itiWuJk/FjGUXpw53AKvWLBMEHqeq6Yan+2ovPEFv8BvjIu1KMgyN0bPKHaxs
+         CxYMEUINP1Co1sYD6umCc96nirjoX91bEWaMtvN739MHsWhgtnctnOkDhdBU/oWhfBHK
+         0XO9e9kU+41ijSosETaUjcTIcOSIMJ5Tmo2qnf2/etbUlnMUtc6viENmGZvODslUMusn
+         Uhsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QAciK97rt6oCnZL2z3e7Ty/+ML2bZUrUvtiPEGHd6rE=;
+        b=tLqnUT3Lv5jagDfmG2EaAfQ5qZLmYAsIO/BXEcYDmpXdx8X4/EJPxgKOKP+DU/KInC
+         dYiiDT0wogPWe9CWAKyXjCG6ngeqo0xhtOvSPqBwFQrRhbTFLqOvUKWO1hSpIR0cWrfB
+         MVjmHtFUFuZgEM1USVqMpk7fcIPKZHXKqdpto1yPJG0HCTaWat80bMvjPjXO1JmuUqxC
+         7kpcOt6v/hVuGGXXWmA4qf6avPZAMjGgnWec5yOgnCSZeJG0S6stA9xyVU1gahqeBjYC
+         7OfWT1miqojjD2jfo4IwF2fcY/wPoyVg/hpmLkELADhC2xfaVy/DLx86QqTzRZtBCENI
+         d0Vw==
+X-Gm-Message-State: ACrzQf2iQ/MDQt4Zv4y6I23PIBzKrObXy9PUFnTiPQiaDgIYEmIZh/IN
+        0jYV5C/N0s3eJW1C2AB4Kbo=
+X-Google-Smtp-Source: AMsMyM4YGBzDEa/LxEz2jOVlhmvF5plZCSfFgUk1WZyAHi6DxH6YCLTRZzfSM3hvW4sn1dkScEiM9A==
+X-Received: by 2002:a05:600c:414b:b0:3b4:a655:720f with SMTP id h11-20020a05600c414b00b003b4a655720fmr22186501wmm.92.1665485058831;
+        Tue, 11 Oct 2022 03:44:18 -0700 (PDT)
+Received: from tp440p.steeds.sam ([41.215.150.62])
+        by smtp.gmail.com with ESMTPSA id u11-20020a5d6acb000000b0022afedf3c87sm11055624wrw.105.2022.10.11.03.44.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Oct 2022 03:44:18 -0700 (PDT)
+Date:   Tue, 11 Oct 2022 12:44:11 +0200
+From:   Sicelo <absicsz@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        maemo-leste@lists.dyne.org, Felipe Balbi <balbi@kernel.org>,
+        phone-devel@vger.kernel.org, Bin Liu <b-liu@ti.com>,
+        Rob Herring <robh@kernel.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [maemo-leste] USB PHY Initialization Fails on Nokia N900 Since
+ 5.19
+Message-ID: <Y0VI+/XJs8nsazwE@tp440p.steeds.sam>
+References: <Y0PhEOl+MwlQ8HAD@tp440p.steeds.sam>
+ <Y0UBindrJa1ptyR0@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221010201453.77401-18-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <Y0UBindrJa1ptyR0@atomide.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The 10/10/2022 23:14, Andy Shevchenko wrote:
+On Tue, Oct 11, 2022 at 08:39:22AM +0300, Tony Lindgren wrote:
+> To me it seems that we now somehow have a probe issue for musb depending
+> on how it gets probed depending on the following line:
 > 
-> Do not imply that some of the generic headers may be always included.
-> Instead, include explicitly what we are direct user of.
+> device_set_of_node_from_dev(&musb->dev, &pdev->dev);
 > 
-> While at it, sort headers alphabetically.
+> I think commit 239071064732 ("partially Revert "usb: musb: Set the DT node
+> on the child device"") fixed the issue for omap3 that still uses hwmod
+> by removing the device_set_of_node_from_dev(). However, it somehow broke
+> SoCs using ti-sysc like omap4.
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
+> My guess is commit 239071064732 will fix the issue for you?
 
-Acked-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Hi Tony
 
->  drivers/pinctrl/pinctrl-ocelot.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/pinctrl/pinctrl-ocelot.c b/drivers/pinctrl/pinctrl-ocelot.c
-> index 647e91490bac..a9343c242cd5 100644
-> --- a/drivers/pinctrl/pinctrl-ocelot.c
-> +++ b/drivers/pinctrl/pinctrl-ocelot.c
-> @@ -13,15 +13,17 @@
->  #include <linux/of_device.h>
->  #include <linux/of_irq.h>
->  #include <linux/of_platform.h>
-> -#include <linux/pinctrl/pinctrl.h>
-> -#include <linux/pinctrl/pinmux.h>
-> -#include <linux/pinctrl/pinconf.h>
-> -#include <linux/pinctrl/pinconf-generic.h>
->  #include <linux/platform_device.h>
->  #include <linux/regmap.h>
->  #include <linux/reset.h>
->  #include <linux/slab.h>
-> 
-> +#include <linux/pinctrl/consumer.h>
-> +#include <linux/pinctrl/pinconf-generic.h>
-> +#include <linux/pinctrl/pinconf.h>
-> +#include <linux/pinctrl/pinctrl.h>
-> +#include <linux/pinctrl/pinmux.h>
-> +
->  #include "core.h"
->  #include "pinconf.h"
->  #include "pinmux.h"
-> --
-> 2.35.1
-> 
+Thanks for the suggestion. However, 239071064732 does not fix it for me.
+With that in place, there is no trace created automatically, but dmesg
+shows:
 
--- 
-/Horatiu
+  [    1.389648] musb-hdrc musb-hdrc.0.auto: error -ENXIO: IRQ mc not found
+
+I wonder if there is something to update on the N900 dts perhaps, in
+connection with the recent musb changes?
+
+Regards
+
