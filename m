@@ -2,102 +2,115 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C493B5FB0A5
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 12:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 480C05FB281
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 14:37:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229477AbiJKKoY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 11 Oct 2022 06:44:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38912 "EHLO
+        id S229577AbiJKMhe (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Oct 2022 08:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiJKKoX (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 06:44:23 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EB08C039;
-        Tue, 11 Oct 2022 03:44:20 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id t4so8326038wmj.5;
-        Tue, 11 Oct 2022 03:44:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QAciK97rt6oCnZL2z3e7Ty/+ML2bZUrUvtiPEGHd6rE=;
-        b=aTXCkzCKfFNb9TavJAorvhjcNcIn6HAYkqR4K0JI6vM5TJUm25MPXUcS7OWeKyhHhd
-         Mvyxqv7q8mDn3IHQm9sQlebV5hI/9YxpqfSeg/Un/kBH8NG4FEiUB0mcyY/JCKSQMsjD
-         3T12kb3itiWuJk/FjGUXpw53AKvWLBMEHqeq6Yan+2ovPEFv8BvjIu1KMgyN0bPKHaxs
-         CxYMEUINP1Co1sYD6umCc96nirjoX91bEWaMtvN739MHsWhgtnctnOkDhdBU/oWhfBHK
-         0XO9e9kU+41ijSosETaUjcTIcOSIMJ5Tmo2qnf2/etbUlnMUtc6viENmGZvODslUMusn
-         Uhsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QAciK97rt6oCnZL2z3e7Ty/+ML2bZUrUvtiPEGHd6rE=;
-        b=tLqnUT3Lv5jagDfmG2EaAfQ5qZLmYAsIO/BXEcYDmpXdx8X4/EJPxgKOKP+DU/KInC
-         dYiiDT0wogPWe9CWAKyXjCG6ngeqo0xhtOvSPqBwFQrRhbTFLqOvUKWO1hSpIR0cWrfB
-         MVjmHtFUFuZgEM1USVqMpk7fcIPKZHXKqdpto1yPJG0HCTaWat80bMvjPjXO1JmuUqxC
-         7kpcOt6v/hVuGGXXWmA4qf6avPZAMjGgnWec5yOgnCSZeJG0S6stA9xyVU1gahqeBjYC
-         7OfWT1miqojjD2jfo4IwF2fcY/wPoyVg/hpmLkELADhC2xfaVy/DLx86QqTzRZtBCENI
-         d0Vw==
-X-Gm-Message-State: ACrzQf2iQ/MDQt4Zv4y6I23PIBzKrObXy9PUFnTiPQiaDgIYEmIZh/IN
-        0jYV5C/N0s3eJW1C2AB4Kbo=
-X-Google-Smtp-Source: AMsMyM4YGBzDEa/LxEz2jOVlhmvF5plZCSfFgUk1WZyAHi6DxH6YCLTRZzfSM3hvW4sn1dkScEiM9A==
-X-Received: by 2002:a05:600c:414b:b0:3b4:a655:720f with SMTP id h11-20020a05600c414b00b003b4a655720fmr22186501wmm.92.1665485058831;
-        Tue, 11 Oct 2022 03:44:18 -0700 (PDT)
-Received: from tp440p.steeds.sam ([41.215.150.62])
-        by smtp.gmail.com with ESMTPSA id u11-20020a5d6acb000000b0022afedf3c87sm11055624wrw.105.2022.10.11.03.44.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Oct 2022 03:44:18 -0700 (PDT)
-Date:   Tue, 11 Oct 2022 12:44:11 +0200
-From:   Sicelo <absicsz@gmail.com>
+        with ESMTP id S229451AbiJKMhd (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 08:37:33 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DA247CB40;
+        Tue, 11 Oct 2022 05:37:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 252E4B815A6;
+        Tue, 11 Oct 2022 12:37:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40EFC433D7;
+        Tue, 11 Oct 2022 12:37:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665491849;
+        bh=6CIknBN6DSmcDQHW95giaoBg1f++mvKDzGjR39nYXK8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=litudYE329apnqs2pGEJMIXKhAg0+WBta+eRLI04tmSwIDITaYYd3fM6+9wmznuHf
+         JHkLJsp83st/zsdT1QnRSrzC5UdABkBHAg63uv0C0OcaOUYiuUqzDaP7Mp0RwGyuLb
+         /x7izuqOk160JQNJRtLAYHs9h+B7BOgDf3Nu7MbVrI7fBjUfOkiKI4CltuLHJGd5Nx
+         cKMm+dSCFvQT55LFFU/O9FTR2FOigWseqRT14ToRlexBkJRC8Mz2OszTKEFzhPWinA
+         oNDN3nDAcBs7Fal6dfz0KJ7ZsEJisLTTKmPQfq6pfEGTl0cKkQhly3KRGKq/T8wqRQ
+         HEP6Z04v6XOOg==
+Received: by mercury (Postfix, from userid 1000)
+        id BC5CE1064D61; Tue, 11 Oct 2022 14:37:26 +0200 (CEST)
+Date:   Tue, 11 Oct 2022 14:37:26 +0200
+From:   Sebastian Reichel <sre@kernel.org>
 To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        maemo-leste@lists.dyne.org, Felipe Balbi <balbi@kernel.org>,
-        phone-devel@vger.kernel.org, Bin Liu <b-liu@ti.com>,
-        Rob Herring <robh@kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [maemo-leste] USB PHY Initialization Fails on Nokia N900 Since
- 5.19
-Message-ID: <Y0VI+/XJs8nsazwE@tp440p.steeds.sam>
-References: <Y0PhEOl+MwlQ8HAD@tp440p.steeds.sam>
- <Y0UBindrJa1ptyR0@atomide.com>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] ARM: dts: omap3-n900: fix LCD reset line polarity
+Message-ID: <20221011123726.elsr53ue7nxzhvww@mercury.elektranox.org>
+References: <20221004213503.848262-1-dmitry.torokhov@gmail.com>
+ <Y0UDEtQlN5Y9h7BU@atomide.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="st6zuozv63braxzg"
 Content-Disposition: inline
-In-Reply-To: <Y0UBindrJa1ptyR0@atomide.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <Y0UDEtQlN5Y9h7BU@atomide.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Oct 11, 2022 at 08:39:22AM +0300, Tony Lindgren wrote:
-> To me it seems that we now somehow have a probe issue for musb depending
-> on how it gets probed depending on the following line:
-> 
-> device_set_of_node_from_dev(&musb->dev, &pdev->dev);
-> 
-> I think commit 239071064732 ("partially Revert "usb: musb: Set the DT node
-> on the child device"") fixed the issue for omap3 that still uses hwmod
-> by removing the device_set_of_node_from_dev(). However, it somehow broke
-> SoCs using ti-sysc like omap4.
-> 
-> My guess is commit 239071064732 will fix the issue for you?
 
-Hi Tony
+--st6zuozv63braxzg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the suggestion. However, 239071064732 does not fix it for me.
-With that in place, there is no trace created automatically, but dmesg
-shows:
+Hi,
 
-  [    1.389648] musb-hdrc musb-hdrc.0.auto: error -ENXIO: IRQ mc not found
+On Tue, Oct 11, 2022 at 08:45:54AM +0300, Tony Lindgren wrote:
+> * Dmitry Torokhov <dmitry.torokhov@gmail.com> [221004 21:26]:
+> > The LCD driver (panel-sony-acx565akm), when probing, starts with line
+> > driven low, and then toggles it to high and keeps it there. Also, the
+> > line is driven low when powering off the device, and ls released when
+> > powering it back on. This means that the reset line should be described
+> > as "active low" in DTS. This will be important when the driver is
+> > converted to gpiod API which respects the polarity declared in DTS.
+>=20
+> We should ensure these patches get merged together with the driver
+> change to avoid breaking LCD for booting. Probably no need to have
+> the driver quirk handling for inverted polartity in this case.
+>=20
+> It's probably easiest to have an immutable branch for the driver
+> changes I can base the dts changes on. Or I can ack the dts changes
+> if they get merged with the driver.
 
-I wonder if there is something to update on the N900 dts perhaps, in
-connection with the recent musb changes?
+Both drivers are already using gpiod API:
 
-Regards
+drivers/gpu/drm/panel/panel-sony-acx565akm.c
+drivers/gpu/drm/panel/panel-dsi-cm.c
 
+So this just breaks things.
+
+-- Sebastian
+
+--st6zuozv63braxzg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmNFY3gACgkQ2O7X88g7
++ppABg//U+RTuiDkx3hmsy4n39Pd+7oMisWb9D2dE4ILhkVJFHwuG66GIO8nBwMa
+YBLWUuS/5y60Uz6TZWzGJ3eYQk9V7KLXs9TGThqy1luG/sbQA7PC1VoUDsaIaiF0
+GgIlkW7/H8oEcoCnMTR2dzHWm5DtJ9ElcamJvZTYIVtLWx9eErVkfViD12imESc1
+C3EhdFp3fdaBlj5R17BaBEBXDW8abHZ49S2erL9PopRd4WpKCBBgVPbFaoetAEuQ
+hlDWiC1TrthF2aMr6EaXjSVtdK+dpi9lkYOAvQedFvAfzszC9LB0gfebMuD0dm0M
+baNelPT/rHt/ppNbq7CEVyglQ3gJ0guKnLYPLs8CTuHYJa0FGFnB3qObVi7mA0cp
+oQOkFdUxVuTDFspyjl2PqTDn94bLG8W4Pqh5jNcauKn0gRJqV2An8dnNMZoVGtq3
+DTRZCTgcPKDjxjNVA5E1ClLiDuf+JvXUVvqU1IFmGZuPbuqRyi6P5zcInmoX+MJA
+Uh0t+HmdzKmygU7EKvDDmVClazfGGOUfEIfBSalJ+5ul/nKBcMsvVH9yj8y2P91R
+grHGqbtNHenjfniU1qEqVDWTeKdlMztQ6NTNBjMLn3pBao4WN4weE+Pc2r0kdxwF
+8bKhFGxxvJdNg2kbjX1xoxQGyRy0yGAQW4GV38+9sS05U+yebLM=
+=l0si
+-----END PGP SIGNATURE-----
+
+--st6zuozv63braxzg--
