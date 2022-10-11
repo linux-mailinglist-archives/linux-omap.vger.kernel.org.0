@@ -2,193 +2,77 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDEF05FAACC
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 04:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A5E45FABD6
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Oct 2022 07:16:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbiJKC4p (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 10 Oct 2022 22:56:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54460 "EHLO
+        id S229506AbiJKFQC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 11 Oct 2022 01:16:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229786AbiJKC4m (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 10 Oct 2022 22:56:42 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3314E6259
-        for <linux-omap@vger.kernel.org>; Mon, 10 Oct 2022 19:56:40 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id fw14so11326087pjb.3
-        for <linux-omap@vger.kernel.org>; Mon, 10 Oct 2022 19:56:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eY6/yimYvoONiMO8pWSoqGtMa9qBuMUAo/bdP9lOba0=;
-        b=St4FezU9O7eQJTgTbgQ3mlkvzUgcaFOmGoS6fdofTzsS1eKPT2mljImssPXI+Y1Rqc
-         WAtcVBQFwcJWAI1Xn0kmEDfsOWpPTM1rwy9e0/jweWYZhcW3bSRihweGkMgkFrf49L/S
-         ougV8x2YLvsuSHJVWbHPxAjymhZlrdBRSfbPMetPXI3d8528oLanaqszgIjsyWcJxCec
-         RplspHGcXRVrZHhm3YLHBP2MThUZYt1l+u3w6nNEbK/gAalPObii9Y23LTB9h+xo5MZL
-         Q2olX6pqHr7fnJjbkDUcbicgWKLEOHuxY/ZmaY8NhBASe9hAP1FfwULvv+vyB/p7aAJi
-         dcZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eY6/yimYvoONiMO8pWSoqGtMa9qBuMUAo/bdP9lOba0=;
-        b=kkYRK3sAmjl/dskqqw1gOj0O1KRPTr8TSB8oEufzHG4yq8zrDzJpkLobpB76AvkN0r
-         nVVWdy023ne5HtfvtxsAmSGyHmJ1mYnfx12PnY4CBQldJvbzhA7lQlCeyqcE4aVLQGXZ
-         DVxnrezFo5WAUtiIUpoR+aWIUOaXpln85mJRmkNjQnCfZ2/jyP2poADyYpfXXYBCAPd1
-         7xQW9awR7B81w1G10S42iA+NMmDBzaSiuNlFkzlePk8JflBrVjChEGYqxJR0I+xq7O1Y
-         RRaENYMORWjzuuVsgR+mmLUAZXBdIwGnStP1FLX4oC5ZuMxLr2NHGTMyV1Pf8DntXiqE
-         oK0A==
-X-Gm-Message-State: ACrzQf04uRuQRnR1hr43oZOOxuiGJelga9SCtW4kZGfRqT1jTxhABn24
-        IGWXxVYICHmyz+fqxy7wSDfS9g==
-X-Google-Smtp-Source: AMsMyM5hXN0QiS8uqUcGpHD6JFZFALVhwI9j6zQ14TE/WoAuVWWVc4TcEEwMdmsILP6ZiXwLtzx0bQ==
-X-Received: by 2002:a17:90a:ad82:b0:20c:feb2:bceb with SMTP id s2-20020a17090aad8200b0020cfeb2bcebmr15457131pjq.93.1665456999661;
-        Mon, 10 Oct 2022 19:56:39 -0700 (PDT)
-Received: from localhost ([122.172.86.128])
-        by smtp.gmail.com with ESMTPSA id z17-20020aa79911000000b005623df48a39sm7942588pff.13.2022.10.10.19.56.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Oct 2022 19:56:39 -0700 (PDT)
-Date:   Tue, 11 Oct 2022 08:26:36 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Marc Zyngier <maz@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
-        Kent Gibson <warthog618@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Billy Tsai <billy_tsai@aspeedtech.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Phil Edworthy <phil.edworthy@renesas.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Fabien Dessenne <fabien.dessenne@foss.st.com>,
-        Prathamesh Shete <pshete@nvidia.com>,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        linux-gpio@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-media@vger.kernel.org, linux-actions@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-rpi-kernel@lists.infradead.org, alsa-devel@alsa-project.org,
-        patches@opensource.cirrus.com, linux-mediatek@lists.infradead.org,
-        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Patrice Chotard <patrice.chotard@foss.st.com>,
-        Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Joel Stanley <joel@jms.id.au>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Dong Aisheng <aisheng.dong@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Sean Wang <sean.wang@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Haojian Zhuang <haojian.zhuang@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Shiraz Hashim <shiraz.linux.kernel@gmail.com>, soc@kernel.org,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH v2 22/36] pinctrl: spear: Add missed header(s)
-Message-ID: <20221011025636.glm7wxtg4oo6c2j2@vireshk-i7>
-References: <20221010201453.77401-1-andriy.shevchenko@linux.intel.com>
- <20221010201453.77401-23-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229494AbiJKFQC (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 11 Oct 2022 01:16:02 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B051B58DE4;
+        Mon, 10 Oct 2022 22:16:00 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 75A0480FE;
+        Tue, 11 Oct 2022 05:07:12 +0000 (UTC)
+Date:   Tue, 11 Oct 2022 08:15:58 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Stephen Boyd <sboyd@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Tero Kristo <kristo@kernel.org>, kernelci-results@groups.io,
+        bot@kernelci.org, gtucker@collabora.com, stable@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-clk@vger.kernel.org
+Subject: Re: stable-rc/linux-5.10.y bisection: baseline.login on panda
+Message-ID: <Y0T8DhAawSA3GYw7@atomide.com>
+References: <6341c30d.170a0220.2bfa7.6117@mx.google.com>
+ <Y0QB/9dmTwd1tx11@sirena.org.uk>
+ <20221011005552.62D85C433D6@smtp.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221010201453.77401-23-andriy.shevchenko@linux.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20221011005552.62D85C433D6@smtp.kernel.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 10-10-22, 23:14, Andy Shevchenko wrote:
-> Do not imply that some of the generic headers may be always included.
-> Instead, include explicitly what we are direct user of.
+* Stephen Boyd <sboyd@kernel.org> [221011 00:47]:
+> Quoting Mark Brown (2022-10-10 04:29:03)
+> > The KernelCI bisection bot bisected a boot failure on the 5.10-rc stable
+> > tree on Panda to d86c6447ee250 ("clk: ti: Stop using legacy clkctrl names
+> > for omap4") in the v5.10 stable tree.  There's a lot of clock related
+> > warnings/errors including:
+> > 
+> > <4>[    0.000000] WARNING: CPU: 0 PID: 0 at drivers/clk/clk.c:3778 __clk_register+0x464/0x868
+> > <4>[    0.000000] ti_dt_clocks_register: failed to lookup clock node abe-clkctrl:0008:24, ret=-517
+> > <4>[    0.416076] omap_hwmod: debugss: cannot _init_clocks
+> > <4>[    0.421447] ------------[ cut here ]------------
+> > <4>[    0.426513] WARNING: CPU: 0 PID: 1 at arch/arm/mach-omap2/omap_hwmod.c:2371 _init+0x428/0x488
+> > 
+> > (there's a *lot* of probe deferrals and hwmods that fail to init). The
+> > last output from the kernel is:
+> > 
+> > <3>[   10.523590] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for 1410000 Vs max 1316660
+> > <6>[   10.531890] Power Management for TI OMAP4+ devices.
+> > <4>[   10.537048] OMAP4 PM: u-boot >= v2012.07 is required for full PM support
+> > <5>[   10.544555] Loading compiled-in X.509 certificates
+> > 
+> > I've left the full report from the bot with more information including
+> > full logs and a reported-by tag below:
 > 
-> While at it, sort headers alphabetically.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/pinctrl/spear/pinctrl-spear.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pinctrl/spear/pinctrl-spear.c b/drivers/pinctrl/spear/pinctrl-spear.c
-> index e0543c1ad641..18de2e70ea50 100644
-> --- a/drivers/pinctrl/spear/pinctrl-spear.c
-> +++ b/drivers/pinctrl/spear/pinctrl-spear.c
-> @@ -19,11 +19,13 @@
->  #include <linux/of.h>
->  #include <linux/of_address.h>
->  #include <linux/of_gpio.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/seq_file.h>
-> +#include <linux/slab.h>
-> +
->  #include <linux/pinctrl/machine.h>
->  #include <linux/pinctrl/pinctrl.h>
->  #include <linux/pinctrl/pinmux.h>
-> -#include <linux/platform_device.h>
-> -#include <linux/slab.h>
->  
->  #include "pinctrl-spear.h"
+> I don't think we want that commit on stable. It depends on a DT change
+> that may not be present. Tony?
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Correct, that commit depends on devicetree data being available.
 
--- 
-viresh
+Regards,
+
+Tony
