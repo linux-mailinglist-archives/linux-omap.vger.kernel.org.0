@@ -2,107 +2,113 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC6C5FC5C3
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Oct 2022 15:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB7B65FC679
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Oct 2022 15:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229471AbiJLNAa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Oct 2022 09:00:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57846 "EHLO
+        id S230018AbiJLNaY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Oct 2022 09:30:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbiJLNA2 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Oct 2022 09:00:28 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B7647B97
-        for <linux-omap@vger.kernel.org>; Wed, 12 Oct 2022 06:00:27 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id x13so7818220qkg.11
-        for <linux-omap@vger.kernel.org>; Wed, 12 Oct 2022 06:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=S7I3Cz5+U5x6cIXGPA8p9f0gJdwGq7AR9Xznrk5pZ2M=;
-        b=RUfyxSq7fmq5cjgnShru5p1DpyftvUBe1/f4hzQ1PmJ0Q+GHCzHTY5hwtO2C/v6jmA
-         RdI0LdVobKGxBm018dRryOu+/vONbFYUGHH8VK+S6syziEp9u13ceqVcILGEWqE+gB8x
-         pzGZhXVOU9KAEMQ0PqAWNxSgMj9x4I2IG1yHTDSYLgJINCC576qp8CQJMXENZBksoCbC
-         mrSeZySI5K76K1GGVat8g9kSTpEcbayeMVJBZWij4QjvOV/JVIdDZdOkUx8wxGPyzCbO
-         rq079Sc6EayGR5GZE87XrvXw+jkLbvXG2G/Rqr4s09/Mj/r9iWeNZuGTMsR0D2QNDdtT
-         Ulzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S7I3Cz5+U5x6cIXGPA8p9f0gJdwGq7AR9Xznrk5pZ2M=;
-        b=IV7pYPbGXGVsF+th54deVudVur/DUYKHgqh7dZTsTSIEq9485/JUwsm8+phUxANIda
-         Vk2Ix06D2Eaq97pfgjVY+/Bb3FvqpsIVDEQTncDoLAt7sqZFi8yaLnPayPhawzOoO58l
-         pzGjqmgz7fPnRondjlnm3T0UmGuGls4KiOI+xEXPYKoE5GJHVUdSe0XwgpsdwET1H2Tv
-         bQeR8AJxiHrIvLEXczqsWJAITqFLdKbgirn1sNw4I7YytJB/lKyswPCMCQvjXEekinxD
-         Qu9Kdi6m4r5n/CHEUEer1Rn8C7L1Ae1bXhyI0mhVgJSpUt//g4dmnevR7oP9PLkEbddJ
-         3nUw==
-X-Gm-Message-State: ACrzQf1LWcweJ/rfg8gJZZ8IROriNGBdgZH3M9ULbeKx2WxoAYZBBL7W
-        IOf6MBfVTQdypBpgMe7kDuR3nQ==
-X-Google-Smtp-Source: AMsMyM4h65oRCdBS2LVLH3asi+Dz8Bht/2Ex4MGomFkxTgfupyoOTY1kejOISNYZo3eiUk2ujujm/g==
-X-Received: by 2002:a05:620a:280d:b0:6cf:ab57:a130 with SMTP id f13-20020a05620a280d00b006cfab57a130mr20372720qkp.749.1665579625333;
-        Wed, 12 Oct 2022 06:00:25 -0700 (PDT)
-Received: from [192.168.1.57] (cpe-72-225-192-120.nyc.res.rr.com. [72.225.192.120])
-        by smtp.gmail.com with ESMTPSA id s4-20020a05620a254400b006bbc09af9f5sm15488418qko.101.2022.10.12.06.00.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Oct 2022 06:00:24 -0700 (PDT)
-Message-ID: <fc1e5799-20ea-de37-6693-e2ea0fb87f13@linaro.org>
-Date:   Wed, 12 Oct 2022 09:00:22 -0400
+        with ESMTP id S229639AbiJLNaP (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Oct 2022 09:30:15 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9270430F52;
+        Wed, 12 Oct 2022 06:30:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665581413; x=1697117413;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tV/ZvJGYw4mf000OleNKwCzv+JZQjAKj+4wcxHqkOco=;
+  b=KBAP1bzGYBopo76rIC6lrcKVeErWW3djiYCE+y19TFQ0KVRhKEKGUUwT
+   Jh6E2QG5ET8AjdIk+8eqEoC8ELx/D8P8h7BXu12xY9y8dO/1VOOFOpa62
+   mT/JMANpA/P1/h6H2z7nCVvH5bfQVSW7V/W0yDt5ZhUi3zZ+HdOc8sE4U
+   VzOf4Oy2cuyhJFvDdpnCqwu96fn1TNI32kUIx+aH00uIXh9Ps/MMFttyZ
+   DAGQlbK9KVC4ktS9/wm0mhonD0zddiFEWckekW66H+J2efVjW+Ai8DY1u
+   XW3q4Gzgl9WY44mfxxdAmFecGYxX5feCqFQyDASBM8tQh8qYYxYoVcTaa
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="331285190"
+X-IronPort-AV: E=Sophos;i="5.95,179,1661842800"; 
+   d="scan'208";a="331285190"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2022 06:30:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="626766256"
+X-IronPort-AV: E=Sophos;i="5.95,179,1661842800"; 
+   d="scan'208";a="626766256"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga002.jf.intel.com with ESMTP; 12 Oct 2022 06:30:07 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oiboD-005qlS-1e;
+        Wed, 12 Oct 2022 16:30:05 +0300
+Date:   Wed, 12 Oct 2022 16:30:05 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Kent Gibson <warthog618@gmail.com>
+Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-gpio@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-media@vger.kernel.org, linux-actions@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-rpi-kernel@lists.infradead.org, alsa-devel@alsa-project.org,
+        patches@opensource.cirrus.com, linux-mediatek@lists.infradead.org,
+        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-omap@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org
+Subject: Re: [PATCH v2 02/36] gpiolib: cdev: Add missed header(s)
+Message-ID: <Y0bBXSHyxpdTGxoU@smile.fi.intel.com>
+References: <20221010201453.77401-1-andriy.shevchenko@linux.intel.com>
+ <20221010201453.77401-3-andriy.shevchenko@linux.intel.com>
+ <Y0SyVwjDl7NGfTPn@sol>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH v6 6/6] arm64: defconfig: Add tps65219 as modules
-Content-Language: en-US
-To:     jerome Neanne <jneanne@baylibre.com>, lgirdwood@gmail.com,
-        broonie@kernel.org, robh+dt@kernel.org, nm@ti.com,
-        kristo@kernel.org, dmitry.torokhov@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
-        will@kernel.org, lee@kernel.org, tony@atomide.com, vigneshr@ti.com,
-        bjorn.andersson@linaro.org, shawnguo@kernel.org,
-        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
-        marcel.ziswiler@toradex.com, vkoul@kernel.org,
-        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com
-Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
-        msp@baylibre.com, j-keerthy@ti.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-input@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20221011140549.16761-1-jneanne@baylibre.com>
- <20221011140549.16761-7-jneanne@baylibre.com>
- <72b9809e-d6d7-862a-26b8-221d14ea4322@linaro.org>
- <60507e87-cf92-13d9-29d0-83f18a648f4b@baylibre.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <60507e87-cf92-13d9-29d0-83f18a648f4b@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y0SyVwjDl7NGfTPn@sol>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 12/10/2022 04:39, jerome Neanne wrote:
->> You explained what you did, which is easily visible. You did not explain
->> why you are doing it.
->>
->> Best regards,
->> Krzysztof
->>
-> Thanks for pointing me to the detailed guidelines
-> I'm new to upstream and not well aware of all good practices.
-> 
-> Would below commit message be more suitable:
-> 
-> Add support for the TPS65219 PMIC by enabling MFD, regulator and 
-> power-button drivers.  All drivers enabled as modules.
+On Tue, Oct 11, 2022 at 08:01:27AM +0800, Kent Gibson wrote:
+> On Mon, Oct 10, 2022 at 11:14:18PM +0300, Andy Shevchenko wrote:
 
-This still says only what you did. I still does not explain why.
+...
 
-Best regards,
-Krzysztof
+> > -#include <linux/gpio.h>
+> >  #include <linux/gpio/driver.h>
+> > +#include <linux/gpio.h>
+
+> But moving the gpio subsystem header after the gpio/driver is not
+> alphabetical ('.' precedes '/') and it read better and made more sense
+> to me the way it was.
+
+Okay, I will move it back.
+
+...
+
+> > +#include <linux/seq_file.h>
+> 
+> I wasn't aware that we use anything from seq_file.
+> What am I missing?
+
+
+Eventually I can answer to your question: the commit 0ae3109a8391
+("gpiolib: cdev: add fdinfo output for line request file descriptors")
+is what you are missing.
+
+That said, we need this patch.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
