@@ -2,149 +2,107 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 231B35FC411
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Oct 2022 12:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AC6C5FC5C3
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Oct 2022 15:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbiJLK6W (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Oct 2022 06:58:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56156 "EHLO
+        id S229471AbiJLNAa (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Oct 2022 09:00:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbiJLK6W (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Oct 2022 06:58:22 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6087BE52A;
-        Wed, 12 Oct 2022 03:58:20 -0700 (PDT)
-Received: from [192.168.1.15] (91-158-154-79.elisa-laajakaista.fi [91.158.154.79])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 190C74D3;
-        Wed, 12 Oct 2022 12:58:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1665572298;
-        bh=BgxmEpIDccFdToTX7Z6D+hkKVivGDpmok28YRsBRxow=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=JxX7HBWEFcM4zvWEkeo4CSC62Bn9bKNk0ilk2ymCAfq33isaBc7kaaAQ51dEKGtH1
-         uZSC6Jhz+7FLHHVSRA4U/YstdCFREWpywLQ8Vw4zPBJOYlSvb93Nhl6+4iLSrXZygr
-         QT/MGVU4hypPYTa5zLA9xC59xKQ6jiUV2o90R1I4=
-Message-ID: <41373c20-3b97-ac47-81c8-75bf1bbe3a38@ideasonboard.com>
-Date:   Wed, 12 Oct 2022 13:58:15 +0300
+        with ESMTP id S229526AbiJLNA2 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Oct 2022 09:00:28 -0400
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B7647B97
+        for <linux-omap@vger.kernel.org>; Wed, 12 Oct 2022 06:00:27 -0700 (PDT)
+Received: by mail-qk1-x72b.google.com with SMTP id x13so7818220qkg.11
+        for <linux-omap@vger.kernel.org>; Wed, 12 Oct 2022 06:00:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=S7I3Cz5+U5x6cIXGPA8p9f0gJdwGq7AR9Xznrk5pZ2M=;
+        b=RUfyxSq7fmq5cjgnShru5p1DpyftvUBe1/f4hzQ1PmJ0Q+GHCzHTY5hwtO2C/v6jmA
+         RdI0LdVobKGxBm018dRryOu+/vONbFYUGHH8VK+S6syziEp9u13ceqVcILGEWqE+gB8x
+         pzGZhXVOU9KAEMQ0PqAWNxSgMj9x4I2IG1yHTDSYLgJINCC576qp8CQJMXENZBksoCbC
+         mrSeZySI5K76K1GGVat8g9kSTpEcbayeMVJBZWij4QjvOV/JVIdDZdOkUx8wxGPyzCbO
+         rq079Sc6EayGR5GZE87XrvXw+jkLbvXG2G/Rqr4s09/Mj/r9iWeNZuGTMsR0D2QNDdtT
+         Ulzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S7I3Cz5+U5x6cIXGPA8p9f0gJdwGq7AR9Xznrk5pZ2M=;
+        b=IV7pYPbGXGVsF+th54deVudVur/DUYKHgqh7dZTsTSIEq9485/JUwsm8+phUxANIda
+         Vk2Ix06D2Eaq97pfgjVY+/Bb3FvqpsIVDEQTncDoLAt7sqZFi8yaLnPayPhawzOoO58l
+         pzGjqmgz7fPnRondjlnm3T0UmGuGls4KiOI+xEXPYKoE5GJHVUdSe0XwgpsdwET1H2Tv
+         bQeR8AJxiHrIvLEXczqsWJAITqFLdKbgirn1sNw4I7YytJB/lKyswPCMCQvjXEekinxD
+         Qu9Kdi6m4r5n/CHEUEer1Rn8C7L1Ae1bXhyI0mhVgJSpUt//g4dmnevR7oP9PLkEbddJ
+         3nUw==
+X-Gm-Message-State: ACrzQf1LWcweJ/rfg8gJZZ8IROriNGBdgZH3M9ULbeKx2WxoAYZBBL7W
+        IOf6MBfVTQdypBpgMe7kDuR3nQ==
+X-Google-Smtp-Source: AMsMyM4h65oRCdBS2LVLH3asi+Dz8Bht/2Ex4MGomFkxTgfupyoOTY1kejOISNYZo3eiUk2ujujm/g==
+X-Received: by 2002:a05:620a:280d:b0:6cf:ab57:a130 with SMTP id f13-20020a05620a280d00b006cfab57a130mr20372720qkp.749.1665579625333;
+        Wed, 12 Oct 2022 06:00:25 -0700 (PDT)
+Received: from [192.168.1.57] (cpe-72-225-192-120.nyc.res.rr.com. [72.225.192.120])
+        by smtp.gmail.com with ESMTPSA id s4-20020a05620a254400b006bbc09af9f5sm15488418qko.101.2022.10.12.06.00.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Oct 2022 06:00:24 -0700 (PDT)
+Message-ID: <fc1e5799-20ea-de37-6693-e2ea0fb87f13@linaro.org>
+Date:   Wed, 12 Oct 2022 09:00:22 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH 1/4] ARM: dts: omap3-n900: fix LCD reset line polarity
+ Thunderbird/102.3.2
+Subject: Re: [PATCH v6 6/6] arm64: defconfig: Add tps65219 as modules
 Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221004213503.848262-1-dmitry.torokhov@gmail.com>
- <Y0UDEtQlN5Y9h7BU@atomide.com>
- <20221011123726.elsr53ue7nxzhvww@mercury.elektranox.org>
- <Y0V4cLGbYe4j+ls6@google.com> <Y0V99Agad6Ma+yTC@atomide.com>
- <Y0V/82JsRVZh6PlL@google.com> <Y0WCCw8k+KTuvdWX@atomide.com>
-From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-In-Reply-To: <Y0WCCw8k+KTuvdWX@atomide.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     jerome Neanne <jneanne@baylibre.com>, lgirdwood@gmail.com,
+        broonie@kernel.org, robh+dt@kernel.org, nm@ti.com,
+        kristo@kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
+        will@kernel.org, lee@kernel.org, tony@atomide.com, vigneshr@ti.com,
+        bjorn.andersson@linaro.org, shawnguo@kernel.org,
+        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
+        marcel.ziswiler@toradex.com, vkoul@kernel.org,
+        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com
+Cc:     afd@ti.com, khilman@baylibre.com, narmstrong@baylibre.com,
+        msp@baylibre.com, j-keerthy@ti.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-input@vger.kernel.org, linux-omap@vger.kernel.org
+References: <20221011140549.16761-1-jneanne@baylibre.com>
+ <20221011140549.16761-7-jneanne@baylibre.com>
+ <72b9809e-d6d7-862a-26b8-221d14ea4322@linaro.org>
+ <60507e87-cf92-13d9-29d0-83f18a648f4b@baylibre.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <60507e87-cf92-13d9-29d0-83f18a648f4b@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-On 11/10/2022 17:47, Tony Lindgren wrote:
-> * Dmitry Torokhov <dmitry.torokhov@gmail.com> [221011 14:30]:
->> On Tue, Oct 11, 2022 at 05:30:12PM +0300, Tony Lindgren wrote:
->>> * Dmitry Torokhov <dmitry.torokhov@gmail.com> [221011 13:57]:
->>>> Hi Sebastian,
->>>>
->>>> On Tue, Oct 11, 2022 at 02:37:26PM +0200, Sebastian Reichel wrote:
->>>>> Hi,
->>>>>
->>>>> On Tue, Oct 11, 2022 at 08:45:54AM +0300, Tony Lindgren wrote:
->>>>>> * Dmitry Torokhov <dmitry.torokhov@gmail.com> [221004 21:26]:
->>>>>>> The LCD driver (panel-sony-acx565akm), when probing, starts with line
->>>>>>> driven low, and then toggles it to high and keeps it there. Also, the
->>>>>>> line is driven low when powering off the device, and ls released when
->>>>>>> powering it back on. This means that the reset line should be described
->>>>>>> as "active low" in DTS. This will be important when the driver is
->>>>>>> converted to gpiod API which respects the polarity declared in DTS.
->>>>>>
->>>>>> We should ensure these patches get merged together with the driver
->>>>>> change to avoid breaking LCD for booting. Probably no need to have
->>>>>> the driver quirk handling for inverted polartity in this case.
->>>>>>
->>>>>> It's probably easiest to have an immutable branch for the driver
->>>>>> changes I can base the dts changes on. Or I can ack the dts changes
->>>>>> if they get merged with the driver.
->>>>>
->>>>> Both drivers are already using gpiod API:
->>>>>
->>>>> drivers/gpu/drm/panel/panel-sony-acx565akm.c
->>>>> drivers/gpu/drm/panel/panel-dsi-cm.c
->>>>
->>>> I was looking at
->>>>
->>>> drivers/video/fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c
->>>> drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c
->>>
->>> Ah OK that explains :)
->>>
->>>> which are not using gpiod. Should they be retired?
->>>
->>> Yes we should just get rid of them with omapdrm working just fine.
+On 12/10/2022 04:39, jerome Neanne wrote:
+>> You explained what you did, which is easily visible. You did not explain
+>> why you are doing it.
 >>
->> Will you be submitting such patches? I'd like to get rid of
->> of_get_named_gpio() and friends if I can...
+>> Best regards,
+>> Krzysztof
+>>
+> Thanks for pointing me to the detailed guidelines
+> I'm new to upstream and not well aware of all good practices.
 > 
-> Adding Tomi to Cc, my guess is he already has such patches and knows
-> better which ones can go :)
+> Would below commit message be more suitable:
+> 
+> Add support for the TPS65219 PMIC by enabling MFD, regulator and 
+> power-button drivers.  All drivers enabled as modules.
 
-To be honest, I haven't really even had a glance towards fbdev for a 
-long time.
+This still says only what you did. I still does not explain why.
 
-There is one thing that omapdrm doesn't support, which is VRFB rotation. 
-I cannot say if the users of those above-mentioned panels require VRFB.
-
->>>>> So this just breaks things.
->>>>
->>>> I missed the drivers in drivers/gpu/... and I see that they essentially
->>>> abuse gpiod API as gpiod_set_value() operates on logical level
->>>> (active/inactive) and not absolute (high/low). They should either use
->>>> the gpiod_*_raw() variants, or they should be adjusted to do the proper
->>>> thing together with the accompanying DTS change.
->>>>
->>>> What are your preferences?
->>>
->>> Seems like high/low at the connected device end is what we should use,
->>> right? Otherwise things will misbehave if the panel is connected to
->>> some other SoC possibly.
->>
->> It is exactly because of this case the driver should use active/inactive
->> and follow polarity described in DTS. If the driver does:
->>
->> 	gpiod_set_value_cansleep(d->reset, 1);
->>
->> then if DTS is saying that the reset line is active low, under the wraps
->> the line will be driven to "0", but if DTS is saying that the line is
->> active high, then the very same call will drive the line to "1".
->>
->> This allows accommodating different designs without having to change the
->> driver code.
-
-Isn't breaking an old dts file quite a bad thing? Why not just add a 
-comment to the .dts and to the driver about the situation. I don't quite 
-see that the fixing the dts (And, if done properly, adding a boot time 
-fixup for old dtbs) and changing the drivers is worth the hassle.
-
-Unless we see new users for these drivers, which would require the new 
-users to write broken dts files.
-
-  Tomi
+Best regards,
+Krzysztof
 
