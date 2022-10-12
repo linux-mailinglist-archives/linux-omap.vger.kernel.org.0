@@ -2,101 +2,124 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFCF85FC93B
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Oct 2022 18:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 251C05FCA18
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Oct 2022 19:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230025AbiJLQ1U (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 12 Oct 2022 12:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38914 "EHLO
+        id S229454AbiJLR4H (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 12 Oct 2022 13:56:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbiJLQ1O (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Oct 2022 12:27:14 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202C0F87FC;
-        Wed, 12 Oct 2022 09:27:08 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 29CGR5Ap081558;
-        Wed, 12 Oct 2022 11:27:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1665592025;
-        bh=eEflHbY1KhW3sZo2AHyNqzl4B6Y/mZETpmBCk/G9yGY=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=MLMfbwnQfXO7O0lfz9NY58tmwUQtsZnhkQuVASZBmQvQadbbP5+7vZ7/mvoGWNhzG
-         yO1DmMfEqlyVppx3RQ0vcJ2bzjL0hxKRGgF8El0cJ67i4qRQkj4COP+gvMRfHXbdPg
-         IFgCAbF5NgeGS31xLBT1yCkr/zXfniFgZ5OHeRIY=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 29CGR5Df015385
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 12 Oct 2022 11:27:05 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Wed, 12
- Oct 2022 11:27:04 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Wed, 12 Oct 2022 11:27:05 -0500
-Received: from [10.250.234.181] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 29CGR06C079753;
-        Wed, 12 Oct 2022 11:27:01 -0500
-Message-ID: <a559e9fa-b560-06fb-8555-5af22f47539e@ti.com>
-Date:   Wed, 12 Oct 2022 21:57:00 +0530
+        with ESMTP id S229587AbiJLR4H (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 12 Oct 2022 13:56:07 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 258F2D73E2
+        for <linux-omap@vger.kernel.org>; Wed, 12 Oct 2022 10:56:03 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id q10-20020a17090a304a00b0020b1d5f6975so2807936pjl.0
+        for <linux-omap@vger.kernel.org>; Wed, 12 Oct 2022 10:56:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rn/UDIcscu5abOpP3v+WUHTT/jflHG0HmbSWAfN3l54=;
+        b=4uAbc7fbIErK5qUn9SAy5Jkng45r6O6mebcOQfFPXDS9n30sCnvMd2bwu66lRPOFKN
+         XTKsR/xQAfifYS1nMUKITEX9xpFSYVcZMEq/LSWrJAQY6lWma5wLwE4d+OZkYtIe8Or+
+         5/uvyXEjFfQmFRVROMktn/nNrZSrQoDJ2fHnzgwti4B/C0sXkDmi2dWoGBl+eEkUBYuy
+         Oo0NLkrKyf7qVI6YWXhdS+9JFEkj22AUtFeB9PIOcx7btBOOqspiVy6ibskfNJ2YzOGd
+         JMd/zxLaLtZkiwscZcR69ubsR4sVifHLLmIY9VtxgMpqfkTFSxER1TCwhm5gOVmWDd/p
+         btXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rn/UDIcscu5abOpP3v+WUHTT/jflHG0HmbSWAfN3l54=;
+        b=f1L8EHmup3BCsuywflgtSdtq+SZ97TtX/qXj1eLRqYXnxPTp4KxuvxjCFoIzy5epb/
+         2YQpm5ddANywX3aG4s+FHYEyNOCe834XEC8k2AgUU20rK7mvgTd/W/sj9XeThVsIXhna
+         njkFT31rnBUQuWWBav0GqKyxQFWM81HNCYCYbjg/UO6WUEqkHKrD0mHwOLMu3R+r2UAG
+         lTZHfY28asSs/gBf3YR8fXhVkqjtz0rssBzjtRmTGKWgd91obOHYCyl9QSIto9Qjhe0s
+         7HL2TPMjLLhhOeqjqmMKcwjwtsvMFY2ePXKGKpW+ZyCtLSoDYRi9rduX0pm6bsSeTaeY
+         jEQg==
+X-Gm-Message-State: ACrzQf1bY5mwjM0nDe0Ilp76/byxsJ3eav8okaZjLybY0vgmzpmCeHwu
+        qsOy2/F03Ermr4PVqVX0aJGhxw==
+X-Google-Smtp-Source: AMsMyM7zr66pcJj/ae8owjpIzOJuITFx/A8rJzNZeOjMKqUvNZKR6cxqEkmXqJO5rLkZ/6ZIhCu+MA==
+X-Received: by 2002:a17:90b:17cf:b0:20d:72eb:fd0c with SMTP id me15-20020a17090b17cf00b0020d72ebfd0cmr6377751pjb.217.1665597362585;
+        Wed, 12 Oct 2022 10:56:02 -0700 (PDT)
+Received: from localhost ([75.172.140.17])
+        by smtp.gmail.com with ESMTPSA id l6-20020a170902f68600b0017f92246e4dsm11047925plg.181.2022.10.12.10.56.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Oct 2022 10:56:01 -0700 (PDT)
+From:   Kevin Hilman <khilman@baylibre.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        jerome Neanne <jneanne@baylibre.com>, lgirdwood@gmail.com,
+        broonie@kernel.org, robh+dt@kernel.org, nm@ti.com,
+        kristo@kernel.org, dmitry.torokhov@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, catalin.marinas@arm.com,
+        will@kernel.org, lee@kernel.org, tony@atomide.com, vigneshr@ti.com,
+        bjorn.andersson@linaro.org, shawnguo@kernel.org,
+        geert+renesas@glider.be, dmitry.baryshkov@linaro.org,
+        marcel.ziswiler@toradex.com, vkoul@kernel.org,
+        biju.das.jz@bp.renesas.com, arnd@arndb.de, jeff@labundy.com
+Cc:     afd@ti.com, narmstrong@baylibre.com, msp@baylibre.com,
+        j-keerthy@ti.com, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-input@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v6 6/6] arm64: defconfig: Add tps65219 as modules
+In-Reply-To: <fc1e5799-20ea-de37-6693-e2ea0fb87f13@linaro.org>
+References: <20221011140549.16761-1-jneanne@baylibre.com>
+ <20221011140549.16761-7-jneanne@baylibre.com>
+ <72b9809e-d6d7-862a-26b8-221d14ea4322@linaro.org>
+ <60507e87-cf92-13d9-29d0-83f18a648f4b@baylibre.com>
+ <fc1e5799-20ea-de37-6693-e2ea0fb87f13@linaro.org>
+Date:   Wed, 12 Oct 2022 10:56:00 -0700
+Message-ID: <7hzge1hqof.fsf@baylibre.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH] counter: ti-ecap-capture: fix IS_ERR() vs NULL check
-Content-Language: en-US
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Julien Panis <jpanis@baylibre.com>
-CC:     William Breathitt Gray <william.gray@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-iio@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <Y0bUbZvfDJHBG9C6@kili>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-In-Reply-To: <Y0bUbZvfDJHBG9C6@kili>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
 
-On 12/10/22 8:21 pm, Dan Carpenter wrote:
-> The devm_counter_alloc() function returns NULL on error.  It doesn't
-> return error pointers.
-> 
-> Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> On 12/10/2022 04:39, jerome Neanne wrote:
+>>> You explained what you did, which is easily visible. You did not explain
+>>> why you are doing it.
+>>>
+>>> Best regards,
+>>> Krzysztof
+>>>
+>> Thanks for pointing me to the detailed guidelines
+>> I'm new to upstream and not well aware of all good practices.
+>> 
+>> Would below commit message be more suitable:
+>> 
+>> Add support for the TPS65219 PMIC by enabling MFD, regulator and 
+>> power-button drivers.  All drivers enabled as modules.
+>
+> This still says only what you did. I still does not explain why.
 
-Acked-by: Vignesh Raghavendra <vigneshr@ti.com>
+Jerome, maybe adding a bit of preamble like:
 
-Thanks for the fix!
+"Development boards from TI include the TPS65219 PMIC.  Add support..."
 
-> ---
->  drivers/counter/ti-ecap-capture.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-> index af10de30aba5..8104d02bb5a4 100644
-> --- a/drivers/counter/ti-ecap-capture.c
-> +++ b/drivers/counter/ti-ecap-capture.c
-> @@ -479,8 +479,8 @@ static int ecap_cnt_probe(struct platform_device *pdev)
->  	int ret;
->  
->  	counter_dev = devm_counter_alloc(dev, sizeof(*ecap_dev));
-> -	if (IS_ERR(counter_dev))
-> -		return PTR_ERR(counter_dev);
-> +	if (!counter_dev)
-> +		return -ENOMEM;
->  
->  	counter_dev->name = ECAP_DRV_NAME;
->  	counter_dev->parent = dev;
+Krzysztof, I'm the first to argue for descriptive/verbose changelogs,
+but IMO, this is getting a little bit nit-picky.
+
+The series adds a new driver, DTS and defconfig patches to enable
+support the new driver.  The "why" for changes to defconfig changes like
+this are kind of implied/obvious, and there is lots of precedent for
+changelogs of defconfig changes for simple drivers to simply say "enable
+X and Y".
+
+If my above suggesion is not enough, please make a suggestion for what
+you think would qualify as an appropritate changelong that answers "why"
+for a simple driver change.
+
+Kevin
+
+
+
+
