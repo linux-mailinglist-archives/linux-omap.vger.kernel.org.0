@@ -2,117 +2,94 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47E2D5FF0DD
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Oct 2022 17:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 922755FF145
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Oct 2022 17:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229940AbiJNPLq (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 14 Oct 2022 11:11:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38002 "EHLO
+        id S230311AbiJNP0v (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 14 Oct 2022 11:26:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbiJNPLn (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Oct 2022 11:11:43 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54C871CF54B;
-        Fri, 14 Oct 2022 08:11:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665760302; x=1697296302;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=N/njfTWM92urhDh1tc8kt06mInCQV3hTHb5sdf7xqk0=;
-  b=bYM9g6tVvtVxav3WaIrakhmyROkTIIboxfH+Snti7Ci8xFZNO4FolujL
-   thOBhsuC2TfFHL04DoRxG5S2eUY/pAV0ZXb0LWpYmunDj/ubmUPdfkPSY
-   lNHnGkeaZMzKLb684jH0zXNvWWJdgTnh0v0EcW4qCAjgpfJ+TBq5lwWg2
-   1euRJ0TRDrJx5ddSw44StElwH8iUvgQNGC6z3xIaZe9/ef+zoNkL0R21m
-   AGZv/jOUPRKHS0+dy0loDJ4uj3Bzkmpsh04Qo5X4rRcPoI2vhFmADfEF4
-   D/1eSZezcYNv2aMlKCnX02TtPb5jFtE3vkhoYLsQg15GaZf6PSNlwT/Er
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10500"; a="369587630"
-X-IronPort-AV: E=Sophos;i="5.95,184,1661842800"; 
-   d="scan'208";a="369587630"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2022 08:11:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10500"; a="660758830"
-X-IronPort-AV: E=Sophos;i="5.95,184,1661842800"; 
-   d="scan'208";a="660758830"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001.jf.intel.com with ESMTP; 14 Oct 2022 08:11:36 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ojMLW-006yCQ-0e;
-        Fri, 14 Oct 2022 18:11:34 +0300
-Date:   Fri, 14 Oct 2022 18:11:33 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-actions@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-rpi-kernel@lists.infradead.org,
-        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
-        linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: Re: [rft, PATCH v2 00/36] pinctrl: Clean up and add missed headers
-Message-ID: <Y0l8JTQQvLzRejk1@smile.fi.intel.com>
-References: <20221010201453.77401-1-andriy.shevchenko@linux.intel.com>
- <0684f480-2092-d520-2c8e-bd9a2dca47e3@gmail.com>
- <CAHp75VdDjyUAZBTaoPOe5oA3f_5xRznAooq08=Eff4F1AZyVOQ@mail.gmail.com>
+        with ESMTP id S230120AbiJNP0u (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 14 Oct 2022 11:26:50 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59F264CA17;
+        Fri, 14 Oct 2022 08:26:49 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 29EFQj4x047297;
+        Fri, 14 Oct 2022 10:26:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1665761205;
+        bh=cr+gOCZHdw+5ge9BgUDYqRul2Hv7vIzX24DwiHzRaxA=;
+        h=From:To:CC:Subject:Date;
+        b=sdgSgr9WcohTrO2iISuD6dKKtYbMyW9e1RzSpKWgEDPi8Iip2OQTzBuu4M9vXZAqh
+         s1Ih7zZR6bO3UyXao8GcFWJmvdpk2HksgadbB0tYr1WYR9TYAdKfIFkEB8NzeT/W7j
+         UDE836fx0heLA8c3FQziwaC6SNpXhCFFP0+fhxR4=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 29EFQjrT002902
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 14 Oct 2022 10:26:45 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Fri, 14
+ Oct 2022 10:26:44 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
+ Frontend Transport; Fri, 14 Oct 2022 10:26:44 -0500
+Received: from ula0226330.dal.design.ti.com (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 29EFQhPA102295;
+        Fri, 14 Oct 2022 10:26:44 -0500
+From:   Andrew Davis <afd@ti.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Andrew Davis <afd@ti.com>
+Subject: [PATCH 0/2] AM57x EVM Device Tree Overlays
+Date:   Fri, 14 Oct 2022 10:26:41 -0500
+Message-ID: <20221014152643.28745-1-afd@ti.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75VdDjyUAZBTaoPOe5oA3f_5xRznAooq08=Eff4F1AZyVOQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Oct 12, 2022 at 01:04:10PM +0300, Andy Shevchenko wrote:
-> On Tue, Oct 11, 2022 at 11:56 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
-> > On 10/10/2022 1:14 PM, Andy Shevchenko wrote:
-> > > Currently the header inclusion inside the pinctrl headers seems more arbitrary
-> > > than logical. This series is basically out of two parts:
-> > > - add missed headers to the pin control drivers / users
-> > > - clean up the headers of pin control subsystem
-> > >
-> > > The idea is to have this series to be pulled after -rc1 by the GPIO and
-> > > pin control subsystems, so all new drivers will utilize cleaned up headers
-> > > of the pin control.
-> > >
-> > > Please, review and comment.
-> >
-> > Did you really need to split this on a per-driver basis as opposed to
-> > just a treewide drivers/pinctrl, drivers/media and drivers/gpiolib patch
-> > set?
-> >
-> > 36 patches seems needlessly high when 4 patches could have achieve the
-> > same outcome.
-> 
-> I can combine them if maintainers ask for that, nevertheless for Intel
-> pin control and GPIO drivers, which I care more about, I would like to
-> leave as separate changes (easy to see in history what was done).
+Hello all,
 
-I can now tell why I don't like to combine. While doing a revert (it's not
-related to GPIO nor to pin control), it appears that I reverted extra bits
-as merge conflict resolution. This is per se is not an issue, but when
-I tried to find and reapply that missed piece I can't, because the patch
-is combined and Git simply ignores to have
-`git cherry-pick _something in the past_` done.
+These is an uncontroversial (hopefully) DT Overlay to support the
+TI AM57x EVM. More complex cases are staged and ready to follow but
+wanted to test the water with this one.
 
-But again, up to maintainers.
+For some reason dtbs_check does not get run on overlays, this
+will need further investigation to fix in kbuild. For now I ran
+it through manually but am not 100% sure it actually checked it,
+so double checks here very welcome.
+
+Series depends on https://www.spinics.net/lists/kernel/msg4548509.html
+
+Thanks,
+Andrew
+
+Andrew Davis (2):
+  ARM: dts: ti: Add AM57xx GP EVM board support
+  ARM: dts: ti: Add AM57xx GP EVM Rev A3 board support
+
+ arch/arm/boot/dts/Makefile        |   4 +
+ arch/arm/boot/dts/am57xx-evm.dtso | 127 ++++++++++++++++++++++++++++++
+ 2 files changed, 131 insertions(+)
+ create mode 100644 arch/arm/boot/dts/am57xx-evm.dtso
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.37.3
 
