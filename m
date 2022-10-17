@@ -2,76 +2,147 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D10B95FFAF2
-	for <lists+linux-omap@lfdr.de>; Sat, 15 Oct 2022 17:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9A9B600949
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Oct 2022 10:53:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbiJOPWC (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 15 Oct 2022 11:22:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41964 "EHLO
+        id S230332AbiJQIxM (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Oct 2022 04:53:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbiJOPWB (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 15 Oct 2022 11:22:01 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 261365071D
-        for <linux-omap@vger.kernel.org>; Sat, 15 Oct 2022 08:21:59 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id z30so4268715qkz.13
-        for <linux-omap@vger.kernel.org>; Sat, 15 Oct 2022 08:21:59 -0700 (PDT)
+        with ESMTP id S230377AbiJQIw6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Oct 2022 04:52:58 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A0763BC44
+        for <linux-omap@vger.kernel.org>; Mon, 17 Oct 2022 01:52:37 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id w18so23267357ejq.11
+        for <linux-omap@vger.kernel.org>; Mon, 17 Oct 2022 01:52:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aSj2S9Un3EVGBeZd8+66WcpyREiqpWSS4QHbbbjlUv8=;
-        b=hBcZffNqe4UodfMFClKnLCbGd+rpK1rSfy11SIdMQCojBlqzQQrSs0/QA+f47uPPvL
-         4DOoi/ZAIvdcfpGUO+mb+H9DlfZ/L99U92xSKKJ7nJ5d7VgCVorLUPR4/Q2XAlkXrIYA
-         Mr4dEVKA9YZNo8L6nqV+IzXw1O/ygKO+vVAK9LikucMcTn8pVGNadZaZ0p8rsPOZ92bW
-         SjGXxCZczAPEkzbdC7rKpPIZQaQ/6TefowqFHANXiJeOGQBtj4cqjjECqsBUkw8NdR5K
-         4EgePQ5yb4/BEF3RIIjUQw2HXYnraaUg6fXt4xpuJwOXbbREU6bDb+iWkorK9lbBNfTk
-         zFSw==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=RSHN6l2+g+4OGMRyyb272PZL53GFhvSEXhliSYcOFd8=;
+        b=X6igH+Jie1S0VzS+zWZR6N7qO4+ZzW3su1dA/ypmDVJf0+sLibI/eRdvYybkZNB8Fx
+         tRph14UQHSGL+gvGfpqalTHJJwJDMkweJLXyu+ihhEn44rt6Z1pH1cskikX2WSNqbaZC
+         eShz98OUWT/q7B0kNz7WoRHxGEoZ5MnMFQ5RxlSov34h3ToWZQ8qMXG0lZb28Bu3LY9e
+         vVssMEHBwniESvUS5h1nw5HmNA8myx5ybU2ZB6tz1y8UFYLXqoJHtbIT5KwF4Z3nG1wB
+         hZ6XEUAiFUtt4VlyKNAroIKcIhJkuwaxi7YNrvbPMud5aqref871a8W8oOBGPBf0anja
+         e9gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSj2S9Un3EVGBeZd8+66WcpyREiqpWSS4QHbbbjlUv8=;
-        b=MMQ1jVk/OU/snjNaAI92d6i/ln3ZdIkY5g3LvdcIobAWVF1Hsf0ouuxJ+GpZ+MeFfs
-         bD8z6Pqm81ZP2SiCCsSqb6ctZThMAVoHe1aQsXqfeXhIOXAqljGJpQSFf6a8Bqgjx9Yp
-         YjrbO9hcomF59mLXycSUYPqVZJB1Y9ZtYgpsfX8JmxjlZzIeTRp/hI0v7X3HFW43kq0S
-         4c8g0e9PXumT+75AM8249dU/MbfUCHfCw6Z+zz5MN2y/tVSwD3mIyYGrTEhvxegjcGVb
-         yt1TujTurv2S7SBCvtHTwTIdmtZWVDhrKBiCGve94CquSyUBNuKinDthEEmHRfHW4uRc
-         CCfQ==
-X-Gm-Message-State: ACrzQf2ZjaSMVK/RosGP5mCxwl5yKJCVFe2MFPbT4+zlxxmITIH93nQG
-        u2tyoPp99oiU5N68dJgkgTJV/w==
-X-Google-Smtp-Source: AMsMyM6+qBjZpB0tZstgLEGUTo0DG9vbQbQoI+P5I/vR/nOwzPqK0xcPix+nYXsYMG95ODaJ0tSV8w==
-X-Received: by 2002:a05:620a:404c:b0:6d9:9fa1:535e with SMTP id i12-20020a05620a404c00b006d99fa1535emr2163659qko.509.1665847318275;
-        Sat, 15 Oct 2022 08:21:58 -0700 (PDT)
-Received: from ?IPV6:2601:42:0:3450:9477:c2f0:ddea:ea08? ([2601:42:0:3450:9477:c2f0:ddea:ea08])
-        by smtp.gmail.com with ESMTPSA id do10-20020a05620a2b0a00b006ecf030ef15sm5237199qkb.65.2022.10.15.08.21.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Oct 2022 08:21:57 -0700 (PDT)
-Message-ID: <c2fce6e4-6292-0d5a-7f16-b2a4fd06a185@linaro.org>
-Date:   Sat, 15 Oct 2022 11:21:55 -0400
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RSHN6l2+g+4OGMRyyb272PZL53GFhvSEXhliSYcOFd8=;
+        b=DQx8W0h/jXWKMII1uGXI501yxK5T1Re5bJBUjeIvHs7BuudK4GDm0F6wu3KV0EQ9PC
+         dcsnChFzjNHwbZ2Yg/dPulskyxR99fg/iGQ3noUts/S34nHs8iGh2avUPXs4wA1Lp6eu
+         kuAHcCBv8EwtP7vmlz/gQcOGWeE9SmzwTWrmz5bJFLDyTXgb/rEjZ6OeLxxu3Krfr3vQ
+         5uAwp3hidlPVTHZvKTkH8pl2khw1tVUYG0Ag8t5xqM9qyV0M9ARLo4sf3ridS7f3rp1d
+         p0r22RNydDKpT+SJUTXTtd4O0J2uWxQlcS7xqPATDRlOAgJEiv6ZhKuqV0gh5vzT0IP3
+         Y9Vw==
+X-Gm-Message-State: ACrzQf2olS+ERYvrRpG1sQT9a81oGWjkzWSNlBqKs0JLENeNWkdvOEPJ
+        dUc6fNyeYaU9U7OSdz0hZEwtnB7/pFLNtlhYeF9WhA==
+X-Google-Smtp-Source: AMsMyM4xXsX24thv22hzdvInSfyg/7yTP/iUIEUiXEmAdaX/1vHBYb0+Be/bfRhSQyyTc1ooPZanlVL4emxNWtmN+mY=
+X-Received: by 2002:a17:907:a06b:b0:78d:d25f:b726 with SMTP id
+ ia11-20020a170907a06b00b0078dd25fb726mr7837040ejc.203.1665996755146; Mon, 17
+ Oct 2022 01:52:35 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH 1/2] ARM: dts: ti: Add AM57xx GP EVM board support
-Content-Language: en-US
-To:     Andrew Davis <afd@ti.com>,
-        =?UTF-8?Q?Beno=c3=aet_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>, Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221014152643.28745-1-afd@ti.com>
- <20221014152643.28745-2-afd@ti.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221014152643.28745-2-afd@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+References: <20221010201453.77401-1-andriy.shevchenko@linux.intel.com> <20221010201453.77401-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20221010201453.77401-2-andriy.shevchenko@linux.intel.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 17 Oct 2022 10:52:24 +0200
+Message-ID: <CACRpkdbdzFR-a_xh8EjLMAshTeesOYhD3-_Bkc=vi7iK72ZKtA@mail.gmail.com>
+Subject: Re: [PATCH v2 01/36] gpiolib: tegra186: Add missed header(s)
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Marc Zyngier <maz@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+        Kent Gibson <warthog618@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Billy Tsai <billy_tsai@aspeedtech.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Fabien Dessenne <fabien.dessenne@foss.st.com>,
+        Prathamesh Shete <pshete@nvidia.com>,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        linux-gpio@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-media@vger.kernel.org, linux-actions@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+        linux-rpi-kernel@lists.infradead.org, alsa-devel@alsa-project.org,
+        patches@opensource.cirrus.com, linux-mediatek@lists.infradead.org,
+        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-omap@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Andrew Jeffery <andrew@aj.id.au>,
+        Joel Stanley <joel@jms.id.au>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Dong Aisheng <aisheng.dong@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Sean Wang <sean.wang@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Haojian Zhuang <haojian.zhuang@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Shiraz Hashim <shiraz.linux.kernel@gmail.com>, soc@kernel.org,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,168 +151,17 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 14/10/2022 11:26, Andrew Davis wrote:
-> The AM57xx GP EVM boards are built on top the AM57xx BeagleBoard-X15.
-> The EVM extends the BeagleBoard by adding a touchscreen, some buttons,
-> and a handful of peripheral extension slots.
-> 
-> Being a plugin extension of an existing standalone board; we define
-> the am57xx-evm as a composite-DTB of the base am57xx-beagle-x15
-> and a new am57xx-evm overlay.
-> 
-> Signed-off-by: Tero Kristo <t-kristo@ti.com>
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ti.com>
-> Signed-off-by: Suman Anna <s-anna@ti.com>
-> Signed-off-by: Andrew Davis <afd@ti.com>
-> ---
->  arch/arm/boot/dts/Makefile        |   2 +
->  arch/arm/boot/dts/am57xx-evm.dtso | 127 ++++++++++++++++++++++++++++++
->  2 files changed, 129 insertions(+)
->  create mode 100644 arch/arm/boot/dts/am57xx-evm.dtso
-> 
-> diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-> index 6aa7dc4db2fc..767220502021 100644
-> --- a/arch/arm/boot/dts/Makefile
-> +++ b/arch/arm/boot/dts/Makefile
-> @@ -984,10 +984,12 @@ dtb-$(CONFIG_SOC_OMAP5) += \
->  	omap5-igep0050.dtb \
->  	omap5-sbc-t54.dtb \
->  	omap5-uevm.dtb
-> +am57xx-evm-dtbs := am57xx-beagle-x15.dtb am57xx-evm.dtbo
->  dtb-$(CONFIG_SOC_DRA7XX) += \
->  	am57xx-beagle-x15.dtb \
->  	am57xx-beagle-x15-revb1.dtb \
->  	am57xx-beagle-x15-revc.dtb \
-> +	am57xx-evm.dtb \
->  	am5729-beagleboneai.dtb \
->  	am57xx-cl-som-am57x.dtb \
->  	am57xx-sbc-am57x.dtb \
-> diff --git a/arch/arm/boot/dts/am57xx-evm.dtso b/arch/arm/boot/dts/am57xx-evm.dtso
-> new file mode 100644
-> index 000000000000..6678aaef66ee
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/am57xx-evm.dtso
-> @@ -0,0 +1,127 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * DT overlay for AM57xx GP EVM boards
-> + *
-> + * Copyright (C) 2020-2022 Texas Instruments Incorporated - https://www.ti.com/
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +#include <dt-bindings/interrupt-controller/irq.h>
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/input/input.h>
-> +
-> +&{/} {
-> +	compatible = "ti,am5728-evm", "ti,am572x-beagle-x15", "ti,am5728", "ti,dra742", "ti,dra74", "ti,dra7";
+On Mon, Oct 10, 2022 at 10:15 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 
-You should start documenting these...
+> Do not imply that some of the generic headers may be always included.
+> Instead, include explicitly what we are direct user of.
+>
+> While at it, sort headers alphabetically.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> +	model = "TI AM5728 EVM";
-> +
-> +	aliases {
-> +		display0 = "/display";
-> +		display1 = "/connector"; // Fixme: &lcd0 and &hdmi0 could be
-> +					 // resolved here correcly based on
-> +					 // information in the base dtb symbol
-> +					 // table with a fix in dtc
-> +	};
-> +
-> +	gpio-keys {
-> +		compatible = "gpio-keys";
-> +
-> +		button-user1 {
-> +			gpios = <&gpio2 23 GPIO_ACTIVE_LOW>;
-> +			label = "USER1";
-> +			linux,code = <BTN_1>;
-> +		};
-> +
-> +		button-user2 {
-> +			gpios = <&gpio2 25 GPIO_ACTIVE_LOW>;
-> +			label = "USER2";
-> +			linux,code = <BTN_2>;
-> +		};
-> +
-> +		button-user3 {
-> +			gpios = <&gpio2 28 GPIO_ACTIVE_LOW>;
-> +			label = "USER3";
-> +			linux,code = <BTN_3>;
-> +		};
-> +
-> +		button-user4 {
-> +			gpios = <&gpio2 24 GPIO_ACTIVE_LOW>;
-> +			label = "USER4";
-> +			linux,code = <BTN_4>;
-> +		};
-> +
-> +		button-user5 {
-> +			gpios = <&gpio2 20 GPIO_ACTIVE_LOW>;
-> +			label = "USER5";
-> +			linux,code = <BTN_5>;
-> +		};
-> +	};
-> +
-> +	lcd0: display {
-> +		compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
-> +		backlight = <&lcd_bl>;
-> +		enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-> +		label = "lcd";
-> +
-> +		port {
-> +			lcd_in: endpoint {
-> +				remote-endpoint = <&dpi_out>;
-> +			};
-> +		};
-> +	};
-> +
-> +	lcd_bl: backlight {
-> +		compatible = "pwm-backlight";
-> +		brightness-levels = <0 243 245 247 249 251 252 253 255>;
-> +		default-brightness-level = <8>;
-> +		pwms = <&ehrpwm1 0 50000 0>;
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Don't you have here PWM flag?
-
-> +	};
-> +};
-> +
-> +&ehrpwm1 {
-> +	status = "okay";
-> +};
-> +
-> +&epwmss1 {
-> +	status = "okay";
-> +};
-> +
-> +&i2c5 {
-> +	status = "okay";
-> +	clock-frequency = <400000>;
-> +
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +
-> +	pixcir_ts@5c {
-
-No underscores in node names.
-
-Node names should be generic.
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-> +		compatible = "pixcir,pixcir_tangoc";
-> +		attb-gpio = <&gpio2 4 GPIO_ACTIVE_HIGH>;
-> +		interrupt-parent = <&gpio2>;
-> +		interrupts = <4 0>;
-
-Use proper flags (and not NONE).
-
-> +		reg = <0x5c>;
-> +		reset-gpio = <&gpio2 6 GPIO_ACTIVE_HIGH>;
-> +		touchscreen-size-x = <1024>;
-> +		touchscreen-size-y = <600>;
-Best regards,
-Krzysztof
-
+Yours,
+Linus Walleij
