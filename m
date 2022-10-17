@@ -2,115 +2,99 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1683600F1D
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Oct 2022 14:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 699FD6013D4
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Oct 2022 18:47:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230284AbiJQMU2 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 17 Oct 2022 08:20:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42122 "EHLO
+        id S229725AbiJQQrS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 17 Oct 2022 12:47:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230460AbiJQMUW (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Oct 2022 08:20:22 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D9F22A72C;
-        Mon, 17 Oct 2022 05:20:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666009208; x=1697545208;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RmYFEN28phqSp8mG6aCLWFWEADNDyPYb/TiMHr0QPNc=;
-  b=bVrtCfRzZZIwP1YbPM3XmRuzNXEqz+fQAYCNhezuppRKF/9rPVJRZf/i
-   GHi6Cg5886LJa+CG4OPtuG4EZe+nzoLzYAswlVoEwKGx23DvxQ3X3MXye
-   sYcZOxYsrbIPYTwXOddhqDu+Jo5zOzIqC1skO9k74UDSlhvKcBIqmEnWz
-   5xQrfHmwi8bXZL4Wo6TZV+kLE1EDjNpCAOkhFbW6TqlZLqLdoW7xDiQFc
-   gNFWxuP/2BxjKj/BeUQQtWmhtvg7d5+t9Y+3BL+Xwxfg3199PbuP7b18p
-   gcBOjG2N4j+oTWx2HNZz936uYkf0PshtHGwCdzUBhZK1BLzyYjB4gB3Ve
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10502"; a="332320293"
-X-IronPort-AV: E=Sophos;i="5.95,191,1661842800"; 
-   d="scan'208";a="332320293"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2022 05:18:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10502"; a="623207818"
-X-IronPort-AV: E=Sophos;i="5.95,191,1661842800"; 
-   d="scan'208";a="623207818"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 17 Oct 2022 05:18:20 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1okP4U-008mkH-2E;
-        Mon, 17 Oct 2022 15:18:18 +0300
-Date:   Mon, 17 Oct 2022 15:18:18 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-        linux-actions@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-        openbmc@lists.ozlabs.org, linux-rpi-kernel@lists.infradead.org,
-        alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
-        linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: Re: [rft, PATCH v2 00/36] pinctrl: Clean up and add missed headers
-Message-ID: <Y01ICtqd8uy/4/Mb@smile.fi.intel.com>
-References: <20221010201453.77401-1-andriy.shevchenko@linux.intel.com>
- <CACRpkdZ1M3ckw+jFgvMqG4jvR-t_44GPoZ6ZDXszwZCJr-cDpg@mail.gmail.com>
- <Y00f5exY2fM6IwZ+@smile.fi.intel.com>
- <CACRpkdYmSOGtFz8W_RRkDqMXRRBOSB9jqSn65Sah90bf3Gm59g@mail.gmail.com>
+        with ESMTP id S229594AbiJQQrR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 17 Oct 2022 12:47:17 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB6221FF9F
+        for <linux-omap@vger.kernel.org>; Mon, 17 Oct 2022 09:47:16 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id a13so16972019edj.0
+        for <linux-omap@vger.kernel.org>; Mon, 17 Oct 2022 09:47:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gVq1slC8WyteXvk7RgIypCJejBcKboJNQiDOlth57NM=;
+        b=WLhZOoL0+ZlT3dtpqnUUanAxr3S3mdBeaPUVrfBjeO6OTToxShZto4EIoSHhXL+A+o
+         3X4OIFRZc6kNM/uFgD9++gNH2IR0kY0OzVjf5t2eSpPUgDgPswtp4G913D9XCgQFaT9j
+         m03i19GeBSu59zjOA0uFAw0k/etEpSuDmanmc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gVq1slC8WyteXvk7RgIypCJejBcKboJNQiDOlth57NM=;
+        b=Jjim5ojzFzgymjX9VuwASBy8FGdWkDnQAJRFpH2D8g9DAzeFeRizd4beQrFyCKxxhc
+         4iOJHkozWrpnCltifNoGyej381qXvw64wVfGDPj2RyEhjLbLdrD8qQ1t9XDoO0ka0QvA
+         DTqaytu48yBoZkz8LqR9MaX/ru0cHC+yukf3p++Tblrcyc3kilKcJLyq6YObwTUeZooT
+         aOdv+7+/XnnVgug8YEu4Zwd//RCTk5fFEsYLNHATFxu9X9VYhtc+AvNy7eLqR/UQxUtm
+         yEakj7/nRkBk8i0T4gI5qYto2ZSxZUjCNYZnEo9n95Urr3Ig2xrMHVAEYe3XI4TRqQPG
+         B8rw==
+X-Gm-Message-State: ACrzQf2AJ3xeh31nxCWxcCf+lDUcAmFwmKjR6gJitrQ9b8/CmBG0ntsF
+        bIGy4bC6KxEbew8SOkVFefV7Xg==
+X-Google-Smtp-Source: AMsMyM7JzS8qgO6HKr9k/3n5USEcYA/w3vjO4D99E/pC1lnADlVjuncf3w8SKHgf2bailRsMya+j4A==
+X-Received: by 2002:a05:6402:2706:b0:45d:aaae:e74a with SMTP id y6-20020a056402270600b0045daaaee74amr3392104edd.72.1666025235279;
+        Mon, 17 Oct 2022 09:47:15 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-95-244-101-110.retail.telecomitalia.it. [95.244.101.110])
+        by smtp.gmail.com with ESMTPSA id va30-20020a17090711de00b0078d61c5db0asm6316887ejb.49.2022.10.17.09.47.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Oct 2022 09:47:14 -0700 (PDT)
+From:   Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Amarula patchwork <linux-amarula@amarulasolutions.com>,
+        michael@amarulasolutions.com,
+        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <kristo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH] clk: ti: mux: don't free `parent_names' on kzalloc() failure
+Date:   Mon, 17 Oct 2022 18:46:46 +0200
+Message-Id: <20221017164646.4193618-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACRpkdYmSOGtFz8W_RRkDqMXRRBOSB9jqSn65Sah90bf3Gm59g@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        SUSPICIOUS_RECIPS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 17, 2022 at 11:58:03AM +0200, Linus Walleij wrote:
-> On Mon, Oct 17, 2022 at 11:27 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Mon, Oct 17, 2022 at 11:02:09AM +0200, Linus Walleij wrote:
-> > > On Mon, Oct 10, 2022 at 10:15 PM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > >
-> > > > Currently the header inclusion inside the pinctrl headers seems more arbitrary
-> > > > than logical. This series is basically out of two parts:
-> > > > - add missed headers to the pin control drivers / users
-> > > > - clean up the headers of pin control subsystem
-> > > >
-> > > > The idea is to have this series to be pulled after -rc1 by the GPIO and
-> > > > pin control subsystems, so all new drivers will utilize cleaned up headers
-> > > > of the pin control.
-> > >
-> > > Aha I see you want to send a pull request so I backed out the applied patches
-> > > from the series for now.
-> >
-> > Can I consider all that you answered to as Rb tag?
-> 
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Although no operation is performed by kfree() on a NULL pointer, it's
+however suboptimal and semantically wrong doing it.
 
-Thank you!
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-> I haven't reviewed in detail but I fully trust you to do the right thing
-> and fix any fallout so will happily pull this.
+---
 
-The plan is to push this to Linux Next for a couple of days and then I'll send
-PR to you and Bart.
+ drivers/clk/ti/mux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/clk/ti/mux.c b/drivers/clk/ti/mux.c
+index 46b45b3e8319..1f924db2ad98 100644
+--- a/drivers/clk/ti/mux.c
++++ b/drivers/clk/ti/mux.c
+@@ -182,7 +182,7 @@ static void of_mux_clk_setup(struct device_node *node)
+ 	}
+ 	parent_names = kzalloc((sizeof(char *) * num_parents), GFP_KERNEL);
+ 	if (!parent_names)
+-		goto cleanup;
++		return;
+ 
+ 	of_clk_parent_fill(node, parent_names, num_parents);
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.32.0
 
