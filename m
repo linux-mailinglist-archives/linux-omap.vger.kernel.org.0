@@ -2,112 +2,140 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9305C602C75
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Oct 2022 15:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A131F603075
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Oct 2022 18:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbiJRNIA (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Oct 2022 09:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55810 "EHLO
+        id S231317AbiJRQED (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Tue, 18 Oct 2022 12:04:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbiJRNH4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Oct 2022 09:07:56 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12603C6950;
-        Tue, 18 Oct 2022 06:07:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666098475; x=1697634475;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sEQGqXRBwnqb8HWOCi92bXpDgq1DcIK6JeLU6KGQmhU=;
-  b=CpqjtYF41V8MLGIiXWK0qubbqKjLFQqYlBatPKpj3lpciNHFOUAj6Okg
-   4NXwnwuo+HhwmkyufYnRraKxMesHb6ACsYeT1717ICwGhkyof2l8pou3m
-   fePS+HYV+aL8L4HzVll9FEtSrc4HJojwzWOEQiB1hjUa/78DqN0GdnCcP
-   Pfn1XNEiqMMlSq/F0FgUjMiikCbPdacBdz3AK+3ZX525KJROm9puZAD17
-   c4yDFqRFZRtMyolMYr0F3fAENyZ1XW6s5/aRUQZaAx9+2AxQSC20Tzi4g
-   NZukQ+YWvtQPzklNP3Ae/ZEIk99UpNGa6TLdaIxf50ay3wrP8GM7whH4J
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10504"; a="368126208"
-X-IronPort-AV: E=Sophos;i="5.95,193,1661842800"; 
-   d="scan'208";a="368126208"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2022 06:07:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10504"; a="659781896"
-X-IronPort-AV: E=Sophos;i="5.95,193,1661842800"; 
-   d="scan'208";a="659781896"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 18 Oct 2022 06:07:49 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1okmJu-009NCP-2i;
-        Tue, 18 Oct 2022 16:07:46 +0300
-Date:   Tue, 18 Oct 2022 16:07:46 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Kent Gibson <warthog618@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-media@vger.kernel.org, linux-actions@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
-        linux-rpi-kernel@lists.infradead.org, alsa-devel@alsa-project.org,
-        patches@opensource.cirrus.com, linux-mediatek@lists.infradead.org,
-        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-omap@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH v2 36/36] pinctrl: Clean up headers
-Message-ID: <Y06lIq+2+MPRL45W@smile.fi.intel.com>
-References: <20221010201453.77401-1-andriy.shevchenko@linux.intel.com>
- <20221010201453.77401-37-andriy.shevchenko@linux.intel.com>
- <d63088d7-202b-a550-01e5-345a22de5f7d@amd.com>
- <CAMuHMdUfdQnisexfs4yLjeKs-LUPY1HjChrgeNjNL1qSErir9Q@mail.gmail.com>
- <Y0UyOWALxSFai2w6@smile.fi.intel.com>
- <CAMuHMdVU-cTBMzgBrbzA9+ZYybVS8kdYaA9spU9oDfqrLMvCuA@mail.gmail.com>
+        with ESMTP id S231193AbiJRQEA (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Oct 2022 12:04:00 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9725291863
+        for <linux-omap@vger.kernel.org>; Tue, 18 Oct 2022 09:03:57 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id t16so1943225edd.2
+        for <linux-omap@vger.kernel.org>; Tue, 18 Oct 2022 09:03:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8JlbMErcGNycCCtodyD6GpAsyH/iGxyyMdZWiKDQlaU=;
+        b=mxSI9U6ANwBzyr2DzsUzEZ5jHidPM/I7Z91CgyqWEgjleLppoOBKuSA3cHaE6L7Vki
+         UrFxXOXbRGPO6Fj91mhIQOqLC7PRzKhDFMUX6/7XYewOA17AIyLTwyxRRLEe5rB55XXk
+         9WHTSp6t0S0SQRb4u99G6OnjP7E70rJxF+Kns=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8JlbMErcGNycCCtodyD6GpAsyH/iGxyyMdZWiKDQlaU=;
+        b=VynjWLLdJGy9RYvY37hyuB5i4LxYjeG2q0mK2g/qQBpK5uW9Qw3ov67Fs+OZVi8AN9
+         c3ncp/q95JVzqI2BkEZKCpXZQTw9J3dqg9rQjm8tJEDwkCV7WRao7NW509GUVtYjDzV5
+         D6ZxLbZWye+DMczQQpBjEhgb7p6635nNTHPWJIKJZFod93TzcLyXd9GPOIioyV67UBr0
+         RKqFjN12VsjuGshZO+MB8U3qHUHIycwUiGnx4YeINvnV+Pv3EC1wwMkrkxvshBsocvVa
+         UfkxTGA3opHkw8BzkUmmRv/h78wv0fQv3nhfrYALqLSpqTAub6MErso0naWBzXbJ/DjQ
+         AxIA==
+X-Gm-Message-State: ACrzQf1cLQzviKhz8+l9oMDv5Ex3nzm92/CWBoWwUk1WG4f+njO05Q8/
+        lJyMnkRkTXLyfzyTTJ0DRM1Hbw==
+X-Google-Smtp-Source: AMsMyM6xjsmr9XJ9txggMYCY5z0x99O51/w/iMiWSELcLeiATsV4UQaetsN4klbWvJZEOp88XURIMQ==
+X-Received: by 2002:a05:6402:34cd:b0:45d:a345:764 with SMTP id w13-20020a05640234cd00b0045da3450764mr3286646edc.415.1666109035532;
+        Tue, 18 Oct 2022 09:03:55 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-95-244-101-110.retail.telecomitalia.it. [95.244.101.110])
+        by smtp.gmail.com with ESMTPSA id j10-20020a17090623ea00b007919ba4295esm1166014ejg.216.2022.10.18.09.03.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Oct 2022 09:03:54 -0700 (PDT)
+From:   Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Amarula patchwork <linux-amarula@amarulasolutions.com>,
+        michael@amarulasolutions.com,
+        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+        kernel test robot <lkp@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tero Kristo <kristo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
+        linux-omap@vger.kernel.org
+Subject: [PATCH v2] clk: ti: dra7-atl: don't allocate `parent_names' variable
+Date:   Tue, 18 Oct 2022 18:03:52 +0200
+Message-Id: <20221018160352.1591428-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVU-cTBMzgBrbzA9+ZYybVS8kdYaA9spU9oDfqrLMvCuA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Tue, Oct 18, 2022 at 03:04:44PM +0200, Geert Uytterhoeven wrote:
-> On Tue, Oct 11, 2022 at 11:07 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Oct 11, 2022 at 10:46:30AM +0200, Geert Uytterhoeven wrote:
-> > > On Tue, Oct 11, 2022 at 9:31 AM Basavaraj Natikar <bnatikar@amd.com> wrote:
+The `parent_names' variable was freed also in case of kzalloc() error.
+Instead of modifying the code to perform a proper memory release, I
+decided to fix the bug by not allocating memory.
+Since only one parent name is referenced, it is not necessary to
+allocate this variable at runtime and therefore you can avoid calling
+the kzalloc() function. This simplifies the code (even calls to kfree
+can be removed) and improves the performance of the routine.
 
-...
+Note: Although no operation is performed by kfree() on a NULL pointer,
+it was however suboptimal and semantically wrong doing it.
 
-> > > I can confirm adding
-> > >
-> > >     #include <linux/pinctrl/pinconf.h>
-> > >
-> > > to drivers/pinctrl/renesas/pinctrl-rzn1.c and drivers/pinctrl/pinctrl-single.c
-> > > fixes the issues I was seeing with shmobile_defconfig and (out-of-tree)
-> > > renesas_defconfig.
-> >
-> > I will add this, thank you for reporting.
-> 
-> Same for drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c.
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Reported-by: kernel test robot <lkp@intel.com>
 
-Thanks!
+---
 
-Not only. I have updated all of them (but missed zynq (it is in today's Linux
-Next).
+Changes in v2:
+- Fix compiling error
+- Add kernel test robot's Reported-by tag.
 
+ drivers/clk/ti/clk-dra7-atl.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/clk/ti/clk-dra7-atl.c b/drivers/clk/ti/clk-dra7-atl.c
+index ff4d6a951681..78482d1a4a33 100644
+--- a/drivers/clk/ti/clk-dra7-atl.c
++++ b/drivers/clk/ti/clk-dra7-atl.c
+@@ -164,7 +164,7 @@ static void __init of_dra7_atl_clock_setup(struct device_node *node)
+ {
+ 	struct dra7_atl_desc *clk_hw = NULL;
+ 	struct clk_init_data init = { NULL };
+-	const char **parent_names = NULL;
++	const char *parent_names[1];
+ 	const char *name;
+ 	struct clk *clk;
+ 
+@@ -188,24 +188,17 @@ static void __init of_dra7_atl_clock_setup(struct device_node *node)
+ 		goto cleanup;
+ 	}
+ 
+-	parent_names = kzalloc(sizeof(char *), GFP_KERNEL);
+-
+-	if (!parent_names)
+-		goto cleanup;
+-
+ 	parent_names[0] = of_clk_get_parent_name(node, 0);
+ 
+ 	init.parent_names = parent_names;
+ 
+ 	clk = ti_clk_register(NULL, &clk_hw->hw, name);
+-
+ 	if (!IS_ERR(clk)) {
+ 		of_clk_add_provider(node, of_clk_src_simple_get, clk);
+-		kfree(parent_names);
+ 		return;
+ 	}
++
+ cleanup:
+-	kfree(parent_names);
+ 	kfree(clk_hw);
+ }
+ CLK_OF_DECLARE(dra7_atl_clock, "ti,dra7-atl-clock", of_dra7_atl_clock_setup);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.32.0
 
