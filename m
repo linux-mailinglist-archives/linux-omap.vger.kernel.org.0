@@ -2,71 +2,52 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A131F603075
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Oct 2022 18:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89B33604799
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Oct 2022 15:42:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231317AbiJRQED (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Tue, 18 Oct 2022 12:04:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34982 "EHLO
+        id S229592AbiJSNmT (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 19 Oct 2022 09:42:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231193AbiJRQEA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Tue, 18 Oct 2022 12:04:00 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9725291863
-        for <linux-omap@vger.kernel.org>; Tue, 18 Oct 2022 09:03:57 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id t16so1943225edd.2
-        for <linux-omap@vger.kernel.org>; Tue, 18 Oct 2022 09:03:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8JlbMErcGNycCCtodyD6GpAsyH/iGxyyMdZWiKDQlaU=;
-        b=mxSI9U6ANwBzyr2DzsUzEZ5jHidPM/I7Z91CgyqWEgjleLppoOBKuSA3cHaE6L7Vki
-         UrFxXOXbRGPO6Fj91mhIQOqLC7PRzKhDFMUX6/7XYewOA17AIyLTwyxRRLEe5rB55XXk
-         9WHTSp6t0S0SQRb4u99G6OnjP7E70rJxF+Kns=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8JlbMErcGNycCCtodyD6GpAsyH/iGxyyMdZWiKDQlaU=;
-        b=VynjWLLdJGy9RYvY37hyuB5i4LxYjeG2q0mK2g/qQBpK5uW9Qw3ov67Fs+OZVi8AN9
-         c3ncp/q95JVzqI2BkEZKCpXZQTw9J3dqg9rQjm8tJEDwkCV7WRao7NW509GUVtYjDzV5
-         D6ZxLbZWye+DMczQQpBjEhgb7p6635nNTHPWJIKJZFod93TzcLyXd9GPOIioyV67UBr0
-         RKqFjN12VsjuGshZO+MB8U3qHUHIycwUiGnx4YeINvnV+Pv3EC1wwMkrkxvshBsocvVa
-         UfkxTGA3opHkw8BzkUmmRv/h78wv0fQv3nhfrYALqLSpqTAub6MErso0naWBzXbJ/DjQ
-         AxIA==
-X-Gm-Message-State: ACrzQf1cLQzviKhz8+l9oMDv5Ex3nzm92/CWBoWwUk1WG4f+njO05Q8/
-        lJyMnkRkTXLyfzyTTJ0DRM1Hbw==
-X-Google-Smtp-Source: AMsMyM6xjsmr9XJ9txggMYCY5z0x99O51/w/iMiWSELcLeiATsV4UQaetsN4klbWvJZEOp88XURIMQ==
-X-Received: by 2002:a05:6402:34cd:b0:45d:a345:764 with SMTP id w13-20020a05640234cd00b0045da3450764mr3286646edc.415.1666109035532;
-        Tue, 18 Oct 2022 09:03:55 -0700 (PDT)
-Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-95-244-101-110.retail.telecomitalia.it. [95.244.101.110])
-        by smtp.gmail.com with ESMTPSA id j10-20020a17090623ea00b007919ba4295esm1166014ejg.216.2022.10.18.09.03.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Oct 2022 09:03:54 -0700 (PDT)
-From:   Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Amarula patchwork <linux-amarula@amarulasolutions.com>,
-        michael@amarulasolutions.com,
-        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-        kernel test robot <lkp@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Tero Kristo <kristo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Subject: [PATCH v2] clk: ti: dra7-atl: don't allocate `parent_names' variable
-Date:   Tue, 18 Oct 2022 18:03:52 +0200
-Message-Id: <20221018160352.1591428-1-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.32.0
+        with ESMTP id S232822AbiJSNln (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 19 Oct 2022 09:41:43 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91ED2DBD;
+        Wed, 19 Oct 2022 06:29:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7949FB8201E;
+        Wed, 19 Oct 2022 13:28:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946C5C433D6;
+        Wed, 19 Oct 2022 13:28:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666186102;
+        bh=QLdJKSFkl5cNch6YWy028NXYBYaR4Mm59JRe5twJVfM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KTCl/FFlseTActg+uY7KGwN3IickSQAifQjatLRVvIxKwdH8jfYuJgh5XPYy0kAv0
+         t/GVuObg3TaKppM27/9cjGIGeh8BCFatRdv9q2pbBFSWfwTprTWYUW4VYZXJC1IGmH
+         3zCepn5VU/UDFCC6wAXo40sRd8LV9pfyatsM4tfQ9VUzF9IBs37fimm1/kmC5tv7uH
+         bcqFqGysf4p69E4AsXrQ7hHEegQurTbJW7+CugTtpbj6YaOnoGhUype160QzDlZuO3
+         Z1UcKSkOL1sMHkyCOfzZhWvgFlCvQZ0M3wJO6haLc/luReXkYHmvzzz2YRLF0L79ja
+         wswqGUnjUCkug==
+Date:   Wed, 19 Oct 2022 18:58:18 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Kevin Hilman <khilman@baylibre.com>
+Cc:     Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        dmaengine@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Nicolas Frayer <nfrayer@baylibre.com>
+Subject: Re: [PATCH v3 0/3] dma/ti: enable udma and psil to be built as
+ modules
+Message-ID: <Y0/7cumzrrGx74N9@matsya>
+References: <20220929234820.940048-1-khilman@baylibre.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220929234820.940048-1-khilman@baylibre.com>
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,68 +55,14 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-The `parent_names' variable was freed also in case of kzalloc() error.
-Instead of modifying the code to perform a proper memory release, I
-decided to fix the bug by not allocating memory.
-Since only one parent name is referenced, it is not necessary to
-allocate this variable at runtime and therefore you can avoid calling
-the kzalloc() function. This simplifies the code (even calls to kfree
-can be removed) and improves the performance of the routine.
+On 29-09-22, 16:48, Kevin Hilman wrote:
+> Enable the UDMA driver & glue and PSIL lib to be built & loaded as modules.                                                                                                   
+>                                                                                                                                                                                
+> The defauilt Kconfig settings are not changed, so default upstream is                                                                                                          
+> still to be built in.  This series just enables the option to build as                                                                                                         
+> modules.      
 
-Note: Although no operation is performed by kfree() on a NULL pointer,
-it was however suboptimal and semantically wrong doing it.
+Applied, thanks
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Reported-by: kernel test robot <lkp@intel.com>
-
----
-
-Changes in v2:
-- Fix compiling error
-- Add kernel test robot's Reported-by tag.
-
- drivers/clk/ti/clk-dra7-atl.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/clk/ti/clk-dra7-atl.c b/drivers/clk/ti/clk-dra7-atl.c
-index ff4d6a951681..78482d1a4a33 100644
---- a/drivers/clk/ti/clk-dra7-atl.c
-+++ b/drivers/clk/ti/clk-dra7-atl.c
-@@ -164,7 +164,7 @@ static void __init of_dra7_atl_clock_setup(struct device_node *node)
- {
- 	struct dra7_atl_desc *clk_hw = NULL;
- 	struct clk_init_data init = { NULL };
--	const char **parent_names = NULL;
-+	const char *parent_names[1];
- 	const char *name;
- 	struct clk *clk;
- 
-@@ -188,24 +188,17 @@ static void __init of_dra7_atl_clock_setup(struct device_node *node)
- 		goto cleanup;
- 	}
- 
--	parent_names = kzalloc(sizeof(char *), GFP_KERNEL);
--
--	if (!parent_names)
--		goto cleanup;
--
- 	parent_names[0] = of_clk_get_parent_name(node, 0);
- 
- 	init.parent_names = parent_names;
- 
- 	clk = ti_clk_register(NULL, &clk_hw->hw, name);
--
- 	if (!IS_ERR(clk)) {
- 		of_clk_add_provider(node, of_clk_src_simple_get, clk);
--		kfree(parent_names);
- 		return;
- 	}
-+
- cleanup:
--	kfree(parent_names);
- 	kfree(clk_hw);
- }
- CLK_OF_DECLARE(dra7_atl_clock, "ti,dra7-atl-clock", of_dra7_atl_clock_setup);
 -- 
-2.32.0
-
+~Vinod
