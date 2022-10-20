@@ -2,80 +2,120 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0CB1605968
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Oct 2022 10:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 097C16061FC
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Oct 2022 15:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230055AbiJTILs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Oct 2022 04:11:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59914 "EHLO
+        id S230495AbiJTNlm (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 20 Oct 2022 09:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231139AbiJTILr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Oct 2022 04:11:47 -0400
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2DB414139B
-        for <linux-omap@vger.kernel.org>; Thu, 20 Oct 2022 01:11:45 -0700 (PDT)
-Received: by mail-vs1-xe2a.google.com with SMTP id k67so2752640vsk.2
-        for <linux-omap@vger.kernel.org>; Thu, 20 Oct 2022 01:11:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5N8lPe1XOL7dthAABmxNE/Who0jOwYrtUTHVIao6zcs=;
-        b=kiD3MWQitxEu2Dl0H23PRbujZ4wWF7l8I0GIw/GwbxolZC16M2xJH+9KXNtIqRPh1q
-         7xFFRHZ+WrtEM3+z8mOW+6XXjFpw3/qj9x2+X7bBcVtxzNDu2ZvT5wtYq9QUl3DRV+rV
-         fwoAqlqyJjWdsk/XQGQdnufRAAVuk092DgiK5Lih/Ht6n2qp0/52Yh8Wd7HiuFo/+b1J
-         BzYz43K2WIaCLtiEwh6ZfKc21krqN0K/dF2sF0Wwlo+SvfCjy3xpNeP7D+bDRVeQrYTC
-         MVUfsOKr2AVoi8gGMnLpRBqaLXBUBy/oXnJMVvNHJbzWOT4Ed3MMueaAkamPt6uQYlIB
-         nMqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5N8lPe1XOL7dthAABmxNE/Who0jOwYrtUTHVIao6zcs=;
-        b=YAU2JoKriTUNQgNtfv7d2as3nKa+EHdyYf4Nq9MYy3eXUoIS9gbyGYA8+/sg+NSsc/
-         eZD8tC4UC7to/EcUCbT1Oql3kMHgnvVKcO3zsmjewX9GFiw6/P/JusrPx2Cu0PLRzMln
-         VeGJVz6k1sglxe+V8x1+bWoFuKSE5eDypg/r2/t1G8MWTzvO4rMpRDh0GUPOBZzHy1m2
-         /fDtrHzHVRq00Esvk1UVoajaL4FxMHzPmLkmUmHKLj6NAMLrSzVlrHf4IJqtl+98xoCB
-         2uG57q3oUDFH6pyT7RR8IYj2ugOSkjWQ1mgnKH1mEQE3+2BKk4pjztPTBaqXuBm0B/zO
-         qg6w==
-X-Gm-Message-State: ACrzQf1AQYp4oP0vC18WISaI7VR3+eBRAOTRFXQiprpIgF9ESI01PQAd
-        0UoOSPIFkqh0RMeODMUST5oui4lmHKymTxDzlwc=
-X-Google-Smtp-Source: AMsMyM640DS/H9GS1KitKf25/H3iFShcrOF4LOG7nlB5Otnhv2sRIxZRY/zI32lal2zWrNg0O/yV1G4Xfp8gDVaAbLM=
-X-Received: by 2002:a05:6102:31b6:b0:3a6:eeec:a566 with SMTP id
- d22-20020a05610231b600b003a6eeeca566mr6169461vsh.28.1666253503951; Thu, 20
- Oct 2022 01:11:43 -0700 (PDT)
+        with ESMTP id S230026AbiJTNla (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Oct 2022 09:41:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE051A7A0E;
+        Thu, 20 Oct 2022 06:41:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DC9CBB82661;
+        Thu, 20 Oct 2022 13:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D035C433D6;
+        Thu, 20 Oct 2022 13:41:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666273263;
+        bh=YsFcTa55ZQFPp0hOeLu/vtpfvJF13IE3dXu8sPusS9k=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=hU++4MKiV/tZw08OHjSB/oNvjhtwTriYLPcXmwNHrx6ihtwizIERxo4J4tQEN8tgX
+         v9P9FZeP7pJVvvhPp4mMLX6+xLZFjPxd1mwHaVC3PSR0A2Xu1V1undmXZUzEZ7VspG
+         2L+wHLz33YyRgaTWoo5qCOv6EZ2xKsGz3sVmnvKypMPxB/PweR1DkK0sJDol7K9csR
+         d0Ts5e8L9ueAV+RKCpLMpWqI00I6HMGeE9n8cDPjZl3lwCEeir7Iq79yJk6hebfEc+
+         i9pSIPC2g9AiGCJ3u0ln5kSGw7fmSunAOAsr1r++MsYawyYPNdg/ynUHjWOnPkyR+6
+         +gqMZktB2QLWQ==
+Date:   Thu, 20 Oct 2022 08:41:01 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Lorenzo Pieralisi <lpieralisi@kernel.org>, kbuild-all@lists.01.org,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Tom Joseph <tjoseph@cadence.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Minghuan Lian <minghuan.Lian@nxp.com>,
+        Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Toan Le <toan@os.amperecomputing.com>,
+        Joyce Ooi <joyce.ooi@intel.com>, Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Daire McNamara <daire.mcnamara@microchip.com>,
+        Shawn Lin <shawn.lin@rock-chips.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>,
+        Michal Simek <monstr@monstr.eu>,
+        bcm-kernel-feedback-list@broadcom.com, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-tegra@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH] PCI: Remove unnecessary of_irq.h includes
+Message-ID: <20221020134101.GA90102@bhelgaas>
 MIME-Version: 1.0
-Received: by 2002:a59:b3cf:0:b0:2eb:39a2:8ad9 with HTTP; Thu, 20 Oct 2022
- 01:11:43 -0700 (PDT)
-Reply-To: golsonfinancial@gmail.com
-From:   OLSON FINANCIAL GROUP <maryammadu3@gmail.com>
-Date:   Thu, 20 Oct 2022 01:11:43 -0700
-Message-ID: <CAAzf6ycyQai9mUZNwUdWGQXvJE-BdubJ3MZGF0BUAJ2vJ_E9og@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202210201618.NsgGYbMI-lkp@intel.com>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
---=20
-H Guten Morgen, Frau/Herr,
-Ben=C3=B6tigen Sie dringend einen Kredit, um ein Haus oder ein Auto zu
-kaufen? oder ben=C3=B6tigen Sie ein Gesch=C3=A4fts- oder Privatdarlehen, um=
- zu
-investieren? ein neues Gesch=C3=A4ft er=C3=B6ffnen, Rechnungen bezahlen? Un=
-d
-zahlen Sie uns die Installationen zur=C3=BCck? Wir sind ein zertifiziertes
-Finanzunternehmen. Wir bieten Privatpersonen und Unternehmen Kredite
-an. Wir bieten zuverl=C3=A4ssige Kredite zu einem sehr niedrigen Zinssatz
-von 2 %. F=C3=BCr weitere Informationen
-mailen Sie uns an: golsonfinancial@gmail.com........
+On Thu, Oct 20, 2022 at 04:09:37PM +0800, kernel test robot wrote:
+> Hi Bjorn,
+> 
+> I love your patch! Yet something to improve:
+> 
+> [auto build test ERROR on helgaas-pci/next]
+> [also build test ERROR on xilinx-xlnx/master rockchip/for-next linus/master v6.1-rc1 next-20221020]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Bjorn-Helgaas/PCI-Remove-unnecessary-of_irq-h-includes/20221020-100633
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git next
+> patch link:    https://lore.kernel.org/r/20221019195452.37606-1-helgaas%40kernel.org
+> patch subject: [PATCH] PCI: Remove unnecessary of_irq.h includes
+> config: ia64-randconfig-r026-20221020
+> compiler: ia64-linux-gcc (GCC) 12.1.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://github.com/intel-lab-lkp/linux/commit/273a24b16a40ffd6a64c6c55aecbfae00a1cd996
+>         git remote add linux-review https://github.com/intel-lab-lkp/linux
+>         git fetch --no-tags linux-review Bjorn-Helgaas/PCI-Remove-unnecessary-of_irq-h-includes/20221020-100633
+>         git checkout 273a24b16a40ffd6a64c6c55aecbfae00a1cd996
+>         # save the config file
+>         mkdir build_dir && cp config build_dir/.config
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=ia64 SHELL=/bin/bash drivers/pci/controller/
+
+FYI, the instructions above didn't work for me.  Missing "config".
+
+  $ git remote add linux-review https://github.com/intel-lab-lkp/linux
+  $ git fetch --no-tags linux-review Bjorn-Helgaas/PCI-Remove-unnecessary-of_irq-h-includes/20221020-100633
+  $ git checkout 273a24b16a40ffd6a64c6c55aecbfae00a1cd996
+  HEAD is now at 273a24b16a40 PCI: Remove unnecessary of_irq.h includes
+  $ mkdir build_dir && cp config build_dir/.config
+  cp: cannot stat 'config': No such file or directory
+
+  $ COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=ia64 SHELL=/bin/bash drivers/pci/controller/
+  Compiler will be installed in /home/bjorn/0day
+  Cannot find ia64-linux under https://download.01.org/0day-ci/cross-package check /tmp/0day-ci-crosstool-files
+  Please set new url, e.g. export URL=https://cdn.kernel.org/pub/tools/crosstool/files/bin/x86_64
+  gcc crosstool install failed
+  Install gcc cross compiler failed
+  setup_crosstool failed
+
