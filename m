@@ -2,111 +2,168 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0DD1607171
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Oct 2022 09:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14BCC60719B
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Oct 2022 10:03:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229910AbiJUHvs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Oct 2022 03:51:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59994 "EHLO
+        id S229906AbiJUIDS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Oct 2022 04:03:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229817AbiJUHvr (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Oct 2022 03:51:47 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3F3923B6BE;
-        Fri, 21 Oct 2022 00:51:45 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 503915C00A5;
-        Fri, 21 Oct 2022 03:51:43 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Fri, 21 Oct 2022 03:51:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm2; t=1666338703; x=1666425103; bh=Bb2mHnT1JP
-        70JzG2D69kGVHJtQMGKIn402mRECKC4F4=; b=YJndt3bVrfFKDrdAek/qsaZKfC
-        GIY2+JfgU75WsfND4cO4kRG3x+O+L72Sx4MhBQ1Mrt3o7WTkd2pY6UjdmMLwfF+9
-        6FmMOPyH5dNToYT0vWd/jvRIe21+raA7qoHdxaYFHtyMiE4yzGfCAHpbE9Mhwmw2
-        XDX4OWes+gg95jH50EkrKu5BcIGHEna27w6XkRO3+A7xOU3kTEGzrzZn6M/Qstdq
-        AQMHP8oRaJRAHtDmzKR+txQuwt2kccfz20uYH3pyCih6kdhdcP7EnZPfd9VSF2LX
-        21PVkV4JX2DuEZaA2ucVt01O08H1WGOn2e30kjQMozGtQTARP12lAnQkC/Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1666338703; x=1666425103; bh=Bb2mHnT1JP70JzG2D69kGVHJtQMG
-        KIn402mRECKC4F4=; b=P8j9ROzxMhxfBLefQQ/EED3Qm8fMars4PuUmKq6vKSiw
-        hBKNIvZx//r/DeiaVUPTqpRU0AxT0vdIpk3SooqlFDv2HxYrbtIO5z7b6cjp8c91
-        BKG4jFAHl7cLSRjKtJTAhSmQA9II+sVD7FafJYfZrWEi8CTl6NcJc2J+l756NSlp
-        oRzHJY1ullMZJlB807oCWUDci32NCfjGeuGq/lGU67u4r7+IVYb65gSr9ofl+peo
-        8Hpd0gbmuYClvPA5HCdruWC0hTk2//MzSlQkfdO7YqeE7/ia5ndAfiNCLbO1IiBJ
-        hCCP8LZFHlHjLZlR5EEJckEmkCNqHcjnUKB8Zl0gQw==
-X-ME-Sender: <xms:jk9SY2r6Ig5ji619KxJgCjJET4nnh55Y6oEwwGrI6QBBsuE3Zm3m0A>
-    <xme:jk9SY0r3jX90q8rFlAOcq1IX21hQp7gikJAG4I4MmNBJe4YKbs2uwHdAi_k3hoPK7
-    IGa7tK9K9yRzkjiaOw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeeljedguddvjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
-    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:jk9SY7MeN_fxobJB-fqC_YlU-Ev85a3NcnYPyvb8hSin8RUKeNxIjA>
-    <xmx:jk9SY15Q9JM-W1-0jZaaUQug-1DZcRbyiYgA8wnVRbMMz01Tn3lfwA>
-    <xmx:jk9SY15wJlZo0WGK_pfL_XK54dYpRLPtNFkYon57j9T99kVGHhkx1g>
-    <xmx:j09SY5qo-mVAQ0XblG-tDD1wHSfn7K4EOn_k433Fz7n4rOmjGuUzzQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 35876B60086; Fri, 21 Oct 2022 03:51:42 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1047-g9e4af4ada4-fm-20221005.001-g9e4af4ad
-Mime-Version: 1.0
-Message-Id: <09cbb91f-bea8-4c22-9c1c-26d933ca1a94@app.fastmail.com>
-In-Reply-To: <20221019173437.GB41568@darkstar.musicnaut.iki.fi>
-References: <20221019144119.3848027-1-arnd@kernel.org>
- <20221019150410.3851944-1-arnd@kernel.org>
- <20221019150410.3851944-14-arnd@kernel.org>
- <20221019173437.GB41568@darkstar.musicnaut.iki.fi>
-Date:   Fri, 21 Oct 2022 09:51:20 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Aaro Koskinen" <aaro.koskinen@iki.fi>,
-        "Arnd Bergmann" <arnd@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        "Paul Walmsley" <paul@pwsan.com>,
-        "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
-        "Tony Lindgren" <tony@atomide.com>, linux-kernel@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Kevin Hilman" <khilman@kernel.org>,
-        "Mark Brown" <broonie@kernel.org>,
-        "Felipe Balbi" <balbi@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Alan Stern" <stern@rowland.harvard.edu>, "Bin Liu" <b-liu@ti.com>,
-        "Helge Deller" <deller@gmx.de>, linux-usb@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 14/17] ARM: omap1: remove dead code
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229789AbiJUIDL (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Oct 2022 04:03:11 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07788249D20;
+        Fri, 21 Oct 2022 01:03:10 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id bs14so2617559ljb.9;
+        Fri, 21 Oct 2022 01:03:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Eut+q0KfsYmTJrRf2CkFUmnxmAlkH/IplJp4TkrJndA=;
+        b=O86H85ID2TK1WkMsHY3glNLuQzqtZD2fE3vxLXsfaR++Bs+JvGdF98SSyXEmeT3wD8
+         2cRBk/4NeeOdoY53GSorJhNd6vCv+BKlTIkpiaLdKVK5Dq1SMn/Wzr1YxQvYi5lf6JoQ
+         8fPcYjM0MstDhaNcHpGtVykDAklE2+P57T5S5JsVi4t32iTTwlf2PLeHf3RQ61588LYG
+         CpOfy478cTkv+LzdtVzqrSCMVgbOF5VGqDMy8kXW6Ze/PdyoNP4ZEjeoLS/RvS+/7HXs
+         vHzRWLtgpUi+FD4eqTV3Xy/9aSUi4ESACAz4eLz/QvaBzDjdOG9KhMMpyk9RxlC7KunW
+         FM+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Eut+q0KfsYmTJrRf2CkFUmnxmAlkH/IplJp4TkrJndA=;
+        b=H4grWPYrvs1y9FMlua9hZHhSut+iCh6wayLtfsCZsXw0Fl5+xWhnce7/yflx0LbT86
+         3703p9YIxDaGh/E+YyYIlHzAGKVwu4G3ZdwOJ4NkuF2oJ5lZIo9wAc0IZgidSPVXMcef
+         QS4Ag7p9VSl2k6CEEoiJQbftLZQuQFLJp2Lffp6wfPoG8k0fumN4ws0AIZvQDelegchM
+         aSZutf3JtSj9LmUNjqymm0fECqum5/0PTqI7uyOhuaOQjC4aohSOCAZgTZurMbSBgPMh
+         rqYeAkyT8uuo1orqPA8K3pJiyrvaY6NsxeMz420pjeTYHOYOnSdZ3HbNIelVicDZ8sMi
+         YeHg==
+X-Gm-Message-State: ACrzQf0x4VevrxF2uTQDadmdQ7PDFlrIwDkLPAaLOJeNtQC7GBiePJPB
+        gh9vW3MF+XLZiFfkgIDq3BphM5G/9oO3NA==
+X-Google-Smtp-Source: AMsMyM4z1qpSgLAFD+7+G/GqFnHixVFPB1iFZ9ePaHc+ynujqVOZSna6EoyivBspQsH+ExjB7H0tMw==
+X-Received: by 2002:a2e:bf16:0:b0:26d:8eb4:609b with SMTP id c22-20020a2ebf16000000b0026d8eb4609bmr6182391ljr.124.1666339388228;
+        Fri, 21 Oct 2022 01:03:08 -0700 (PDT)
+Received: from localhost.localdomain (host-185-69-38-8.kaisa-laajakaista.fi. [185.69.38.8])
+        by smtp.gmail.com with ESMTPSA id e11-20020a05651236cb00b00497aae401edsm3060720lfs.109.2022.10.21.01.03.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Oct 2022 01:03:07 -0700 (PDT)
+From:   Peter Ujfalusi <peter.ujfalusi@gmail.com>
+To:     tony@atomide.com, lee.jones@linaro.org
+Cc:     linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mfd: twl4030-audio: Drop legacy, non DT boot support
+Date:   Fri, 21 Oct 2022 11:12:18 +0300
+Message-Id: <20221021081218.2654-1-peter.ujfalusi@gmail.com>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Wed, Oct 19, 2022, at 19:34, Aaro Koskinen wrote:
-> Hi,
->
-> On Wed, Oct 19, 2022 at 05:03:36PM +0200, Arnd Bergmann wrote:
->>  drivers/usb/phy/phy-isp1301-omap.c | 91 +-----------------------------
->
-> This driver and config option ISP1301_OMAP can be deleted altogether as
-> there are no users after H2/H3 boards are gone.
+Legacy or non DT boot is no longer possible on systems where the
+tw4030/5030 is used.
 
-Good catch! I'll split the driver removal out as a separate patch
-then and remove this bit here.
+Drop the support for handling legacy pdata.
 
-     Arnd
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+---
+Hi,
+
+Changes since v1:
+- the node NULL check is dropped from the probe as it is redundant
+
+Regards,
+Peter
+
+ drivers/mfd/twl4030-audio.c | 30 ++++--------------------------
+ 1 file changed, 4 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/mfd/twl4030-audio.c b/drivers/mfd/twl4030-audio.c
+index 4536d829b43e..02865100b44d 100644
+--- a/drivers/mfd/twl4030-audio.c
++++ b/drivers/mfd/twl4030-audio.c
+@@ -144,14 +144,10 @@ unsigned int twl4030_audio_get_mclk(void)
+ }
+ EXPORT_SYMBOL_GPL(twl4030_audio_get_mclk);
+ 
+-static bool twl4030_audio_has_codec(struct twl4030_audio_data *pdata,
+-			      struct device_node *parent)
++static bool twl4030_audio_has_codec(struct device_node *parent)
+ {
+ 	struct device_node *node;
+ 
+-	if (pdata && pdata->codec)
+-		return true;
+-
+ 	node = of_get_child_by_name(parent, "codec");
+ 	if (node) {
+ 		of_node_put(node);
+@@ -161,14 +157,10 @@ static bool twl4030_audio_has_codec(struct twl4030_audio_data *pdata,
+ 	return false;
+ }
+ 
+-static bool twl4030_audio_has_vibra(struct twl4030_audio_data *pdata,
+-			      struct device_node *node)
++static bool twl4030_audio_has_vibra(struct device_node *node)
+ {
+ 	int vibra;
+ 
+-	if (pdata && pdata->vibra)
+-		return true;
+-
+ 	if (!of_property_read_u32(node, "ti,enable-vibra", &vibra) && vibra)
+ 		return true;
+ 
+@@ -178,17 +170,11 @@ static bool twl4030_audio_has_vibra(struct twl4030_audio_data *pdata,
+ static int twl4030_audio_probe(struct platform_device *pdev)
+ {
+ 	struct twl4030_audio *audio;
+-	struct twl4030_audio_data *pdata = dev_get_platdata(&pdev->dev);
+ 	struct device_node *node = pdev->dev.of_node;
+ 	struct mfd_cell *cell = NULL;
+ 	int ret, childs = 0;
+ 	u8 val;
+ 
+-	if (!pdata && !node) {
+-		dev_err(&pdev->dev, "Platform data is missing\n");
+-		return -EINVAL;
+-	}
+-
+ 	audio = devm_kzalloc(&pdev->dev, sizeof(struct twl4030_audio),
+ 			     GFP_KERNEL);
+ 	if (!audio)
+@@ -222,22 +208,14 @@ static int twl4030_audio_probe(struct platform_device *pdev)
+ 	audio->resource[TWL4030_AUDIO_RES_APLL].reg = TWL4030_REG_APLL_CTL;
+ 	audio->resource[TWL4030_AUDIO_RES_APLL].mask = TWL4030_APLL_EN;
+ 
+-	if (twl4030_audio_has_codec(pdata, node)) {
++	if (twl4030_audio_has_codec(node)) {
+ 		cell = &audio->cells[childs];
+ 		cell->name = "twl4030-codec";
+-		if (pdata) {
+-			cell->platform_data = pdata->codec;
+-			cell->pdata_size = sizeof(*pdata->codec);
+-		}
+ 		childs++;
+ 	}
+-	if (twl4030_audio_has_vibra(pdata, node)) {
++	if (twl4030_audio_has_vibra(node)) {
+ 		cell = &audio->cells[childs];
+ 		cell->name = "twl4030-vibra";
+-		if (pdata) {
+-			cell->platform_data = pdata->vibra;
+-			cell->pdata_size = sizeof(*pdata->vibra);
+-		}
+ 		childs++;
+ 	}
+ 
+-- 
+2.38.1
+
