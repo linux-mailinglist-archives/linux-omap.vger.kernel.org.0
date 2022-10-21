@@ -2,90 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA8BA607082
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Oct 2022 08:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0DD1607171
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Oct 2022 09:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230084AbiJUGwg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Oct 2022 02:52:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
+        id S229910AbiJUHvs (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Oct 2022 03:51:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230106AbiJUGwe (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Oct 2022 02:52:34 -0400
+        with ESMTP id S229817AbiJUHvr (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Oct 2022 03:51:47 -0400
 Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729BD22E8DE;
-        Thu, 20 Oct 2022 23:52:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3F3923B6BE;
+        Fri, 21 Oct 2022 00:51:45 -0700 (PDT)
 Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 6C5815C007F;
-        Fri, 21 Oct 2022 02:52:31 -0400 (EDT)
+        by mailout.nyi.internal (Postfix) with ESMTP id 503915C00A5;
+        Fri, 21 Oct 2022 03:51:43 -0400 (EDT)
 Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Fri, 21 Oct 2022 02:52:31 -0400
+  by compute3.internal (MEProxy); Fri, 21 Oct 2022 03:51:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
         :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm2; t=1666335151; x=1666421551; bh=asFMH01gIy
-        FuLLt84XhpsavdGbikk/Zr70yYHFNA5r4=; b=tmmE+zyWqZsaV1HNHXmexsKCRZ
-        cTGaKpie3Ix8/C9msO3j7jjW6V++ZSgrCc/D8wECWflD2w77EVwUT4ZDJI4/qcDa
-        AE+VHQAznpHOe3oxin/wy0H7Jo04+zv8pXMIZDRqNYKa7QklC3Cl0vigmK7m0AEx
-        jx4A+td7c0SMHEJZVt6BhAUTnDzWRhZ9MfDQtZxrfpDQrShjDhD3SXdwd+IKTxAI
-        ZlRdzDXxtI9oe5QhZuvE6Vh3SgZNQgA+Thl0nO742KhzJJmNXR4asTqNJtVzEXKw
-        nLbhugd9XR3xVQIgR9sNyfKv+DM6ICYPVRj+7tuFLcBrlxWvHEZtTmiUJv3A==
+        :subject:to:to; s=fm2; t=1666338703; x=1666425103; bh=Bb2mHnT1JP
+        70JzG2D69kGVHJtQMGKIn402mRECKC4F4=; b=YJndt3bVrfFKDrdAek/qsaZKfC
+        GIY2+JfgU75WsfND4cO4kRG3x+O+L72Sx4MhBQ1Mrt3o7WTkd2pY6UjdmMLwfF+9
+        6FmMOPyH5dNToYT0vWd/jvRIe21+raA7qoHdxaYFHtyMiE4yzGfCAHpbE9Mhwmw2
+        XDX4OWes+gg95jH50EkrKu5BcIGHEna27w6XkRO3+A7xOU3kTEGzrzZn6M/Qstdq
+        AQMHP8oRaJRAHtDmzKR+txQuwt2kccfz20uYH3pyCih6kdhdcP7EnZPfd9VSF2LX
+        21PVkV4JX2DuEZaA2ucVt01O08H1WGOn2e30kjQMozGtQTARP12lAnQkC/Bg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
         :feedback-id:from:from:in-reply-to:in-reply-to:message-id
         :mime-version:references:reply-to:sender:subject:subject:to:to
         :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1666335151; x=1666421551; bh=asFMH01gIyFuLLt84XhpsavdGbik
-        k/Zr70yYHFNA5r4=; b=kCOatloKYNVOBJC3olA9k9hCbIwlxdKz89aA/Z58vRei
-        9lF6wbuChyuHTmzK1sc/5zb1M9ITUeNuFi1Qnmt8Ylcp3S8LtMToKa47i81KnVUn
-        pKaYJSDOMcqY5XM1uIM8a19oVoZvqIfhzU1X2pRzpCooHtDS9LFbVzR7GEcdGtHL
-        AklcoevJjyfziK/7t/uavCUXSXqEEVMLG/OrSxEbgY3S5JVdkTlRp0Z4RJitL/+e
-        0ERI0xWyGGrXd2+d5YSKUTWnNw4Arew5r/fl7dC/5kvsW4oQj/ac1iCAQLFRY1/q
-        XMZ34TsU+xO6zNgCM1pN8wwV1egVuBvELVnsf+ph8Q==
-X-ME-Sender: <xms:rkFSY7b52o4SSS29ii51024C6Tx9E3noQFHWuRk6VKm_aOR-UZKzQA>
-    <xme:rkFSY6byU9_2HIcQmGIOp1DUsd0lSnFXIvrb605VOlHM0RkwJGbTS-mIbt6ZO5aIY
-    0gt_IjGFwCVawZFB94>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeeljedgudduhecutefuodetggdotefrod
+        fm3; t=1666338703; x=1666425103; bh=Bb2mHnT1JP70JzG2D69kGVHJtQMG
+        KIn402mRECKC4F4=; b=P8j9ROzxMhxfBLefQQ/EED3Qm8fMars4PuUmKq6vKSiw
+        hBKNIvZx//r/DeiaVUPTqpRU0AxT0vdIpk3SooqlFDv2HxYrbtIO5z7b6cjp8c91
+        BKG4jFAHl7cLSRjKtJTAhSmQA9II+sVD7FafJYfZrWEi8CTl6NcJc2J+l756NSlp
+        oRzHJY1ullMZJlB807oCWUDci32NCfjGeuGq/lGU67u4r7+IVYb65gSr9ofl+peo
+        8Hpd0gbmuYClvPA5HCdruWC0hTk2//MzSlQkfdO7YqeE7/ia5ndAfiNCLbO1IiBJ
+        hCCP8LZFHlHjLZlR5EEJckEmkCNqHcjnUKB8Zl0gQw==
+X-ME-Sender: <xms:jk9SY2r6Ig5ji619KxJgCjJET4nnh55Y6oEwwGrI6QBBsuE3Zm3m0A>
+    <xme:jk9SY0r3jX90q8rFlAOcq1IX21hQp7gikJAG4I4MmNBJe4YKbs2uwHdAi_k3hoPK7
+    IGa7tK9K9yRzkjiaOw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeeljedguddvjecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
     enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
     rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeu
-    feehudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:rkFSY9_MJx9tKvhvQ5lwCt0Zb3IV3YOYY3pCycDfPWnv71sUpdgg3w>
-    <xmx:rkFSYxoBeoqaIgsY93umf4TjZTfSZAS5scg5cHiLigOO9T8BZHkFJw>
-    <xmx:rkFSY2qYK18DaISpgzqWb_yvcq_kGLQgKvWFftU45cRPvZmabuJJrQ>
-    <xmx:r0FSYzQVLjlAZPdjc9KdCUd8H-_UiL5nj-YrhWIpq4YNRLBe_QmjzA>
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:jk9SY7MeN_fxobJB-fqC_YlU-Ev85a3NcnYPyvb8hSin8RUKeNxIjA>
+    <xmx:jk9SY15Q9JM-W1-0jZaaUQug-1DZcRbyiYgA8wnVRbMMz01Tn3lfwA>
+    <xmx:jk9SY15wJlZo0WGK_pfL_XK54dYpRLPtNFkYon57j9T99kVGHhkx1g>
+    <xmx:j09SY5qo-mVAQ0XblG-tDD1wHSfn7K4EOn_k433Fz7n4rOmjGuUzzQ>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id A2DA1B60086; Fri, 21 Oct 2022 02:52:30 -0400 (EDT)
+        id 35876B60086; Fri, 21 Oct 2022 03:51:42 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.7.0-alpha0-1047-g9e4af4ada4-fm-20221005.001-g9e4af4ad
 Mime-Version: 1.0
-Message-Id: <de36ec6b-2e7c-48eb-9682-f60d8e4011da@app.fastmail.com>
-In-Reply-To: <20221020193511.GB3019@t60.musicnaut.iki.fi>
+Message-Id: <09cbb91f-bea8-4c22-9c1c-26d933ca1a94@app.fastmail.com>
+In-Reply-To: <20221019173437.GB41568@darkstar.musicnaut.iki.fi>
 References: <20221019144119.3848027-1-arnd@kernel.org>
  <20221019150410.3851944-1-arnd@kernel.org>
- <20221019150410.3851944-13-arnd@kernel.org>
- <20221019171541.GA41568@darkstar.musicnaut.iki.fi>
- <1b632df1-7e3c-456d-8629-dc36efd9fe15@app.fastmail.com>
- <20221020193511.GB3019@t60.musicnaut.iki.fi>
-Date:   Fri, 21 Oct 2022 08:52:10 +0200
+ <20221019150410.3851944-14-arnd@kernel.org>
+ <20221019173437.GB41568@darkstar.musicnaut.iki.fi>
+Date:   Fri, 21 Oct 2022 09:51:20 +0200
 From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Aaro Koskinen" <aaro.koskinen@iki.fi>
-Cc:     "Arnd Bergmann" <arnd@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
+To:     "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+        "Arnd Bergmann" <arnd@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        "Paul Walmsley" <paul@pwsan.com>,
         "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
         "Tony Lindgren" <tony@atomide.com>, linux-kernel@vger.kernel.org,
         Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Lee Jones" <lee@kernel.org>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>,
+        "Kevin Hilman" <khilman@kernel.org>,
+        "Mark Brown" <broonie@kernel.org>,
         "Felipe Balbi" <balbi@kernel.org>,
         "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        linux-i2c@vger.kernel.org,
-        "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH 13/17] ARM: omap1: remove unused board files
+        "Alan Stern" <stern@rowland.harvard.edu>, "Bin Liu" <b-liu@ti.com>,
+        "Helge Deller" <deller@gmx.de>, linux-usb@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 14/17] ARM: omap1: remove dead code
 Content-Type: text/plain
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
@@ -97,47 +97,16 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Thu, Oct 20, 2022, at 21:35, Aaro Koskinen wrote:
-> On Thu, Oct 20, 2022 at 09:11:11AM +0200, Arnd Bergmann wrote:
->> On Wed, Oct 19, 2022, at 19:15, Aaro Koskinen wrote:
->> > On Wed, Oct 19, 2022 at 05:03:35PM +0200, Arnd Bergmann wrote:
->> >> All board support that was marked as 'unused' earlier can
->> >> now be removed, leaving the five machines that that still
->> >> had someone using them in 2022, or that are supported in
->> >> qemu.
->> > [...]
->> >>  config OMAP_OSK_MISTRAL
->> >>  	bool "Mistral QVGA board Support"
->> >>  	depends on MACH_OMAP_OSK
->> >> -	depends on UNUSED_BOARD_FILES
->> >>  	help
->> >>  	  The OSK supports an optional add-on board with a Quarter-VGA
->> >>  	  touchscreen, PDA-ish buttons, a resume button, bicolor LED,
->> >>  	  and camera connector.  Say Y here if you have this board.
->> >
->> > Shouldn't this go away as well?
->> 
->> No, this one was incorrectly annotated, it's not actually
->> a board but it's an option for the OSK board that is not
->> getting removed. I considered making a separate patch
->> for removing the dependency, but that didn't seem worth it.
+On Wed, Oct 19, 2022, at 19:34, Aaro Koskinen wrote:
+> Hi,
 >
-> OK. For the record, I don't think anyone has this add-on board anymore,
-> and it has probably never been tested with the mainline kernel, so
-> it's likely in the "dead code" category... Maybe it could be changed to
-> "BROKEN", then the related OSK LCD panel stuff could be deleted later
-> on too.
+> On Wed, Oct 19, 2022 at 05:03:36PM +0200, Arnd Bergmann wrote:
+>>  drivers/usb/phy/phy-isp1301-omap.c | 91 +-----------------------------
+>
+> This driver and config option ISP1301_OMAP can be deleted altogether as
+> there are no users after H2/H3 boards are gone.
 
-Ok, good to know. I left it in place for now because Tony originally
-listed it as a likely used machine along with NOKIA770 and
-AMS_DELTA [1], but I don't have anyone listed specifically as a
-user for it.
+Good catch! I'll split the driver removal out as a separate patch
+then and remove this bit here.
 
-It's not too late to revisit this list if you think it helps to
-get rid of it. I can see that drivers/mtd/tps65010.c and
-drivers/pcmcia/omap_cf.c become orphaned without it and can
-probably get removed as well then.
-
-      Arnd
-
-[1] https://lore.kernel.org/linux-arm-kernel/20220721150320.GA9385@macbook.musicnaut.iki.fi/
+     Arnd
