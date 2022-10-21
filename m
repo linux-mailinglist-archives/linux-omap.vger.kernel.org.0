@@ -2,160 +2,142 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4DCB606CAE
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Oct 2022 02:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA8BA607082
+	for <lists+linux-omap@lfdr.de>; Fri, 21 Oct 2022 08:52:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229834AbiJUAw6 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Thu, 20 Oct 2022 20:52:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42658 "EHLO
+        id S230084AbiJUGwg (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 21 Oct 2022 02:52:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229817AbiJUAw4 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Thu, 20 Oct 2022 20:52:56 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 910C6230AB2;
-        Thu, 20 Oct 2022 17:52:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666313571; x=1697849571;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=t8eukQQRNGfAZeDiwMZwSJzWT294/JgXyPrPo/qNp6g=;
-  b=ZtK6dDj5xf+TztAflG22tT3twX9N2MOfJNYt9kLPReA22KyumiiCZL0+
-   dLvl3N84uoPnESmxTok4D14AoGegrz6byJF2ERX9bljD+Mecda458TqjS
-   9aOLT7ltQxfaGxsizcACSwc5pc+/vOMg0WFslwGeXehMjC1D0efbNoU03
-   6Qy3qFFvjEpHQBad6HTZ3Nx6mSaKWQ/Wluc1msHXnlMEd+hIQ22wMNvcF
-   jN+1KHmFBRGMEgD2uHOc2wPG3XPX8Eepfn4MowSNn1dK/PKsisQdcLfJx
-   OBHTt38hFHowgOFIRIbcanptldJX57WmgJ2ojPWhzovO/+C5MnAzjLd9W
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="294275824"
-X-IronPort-AV: E=Sophos;i="5.95,200,1661842800"; 
-   d="scan'208";a="294275824"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2022 17:52:50 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="608037424"
-X-IronPort-AV: E=Sophos;i="5.95,200,1661842800"; 
-   d="scan'208";a="608037424"
-Received: from rongch2-mobl.ccr.corp.intel.com (HELO [10.249.172.222]) ([10.249.172.222])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2022 17:52:42 -0700
-Subject: Re: [kbuild-all] Re: [PATCH] PCI: Remove unnecessary of_irq.h
- includes
-To:     Bjorn Helgaas <helgaas@kernel.org>,
-        kernel test robot <lkp@intel.com>
-Cc:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>, llvm@lists.linux.dev,
-        Minghuan Lian <minghuan.Lian@nxp.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>,
-        Toan Le <toan@os.amperecomputing.com>,
-        linux-riscv@lists.infradead.org,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Rob Herring <robh@kernel.org>, Joyce Ooi <joyce.ooi@intel.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        bcm-kernel-feedback-list@broadcom.com,
+        with ESMTP id S230106AbiJUGwe (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Oct 2022 02:52:34 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729BD22E8DE;
+        Thu, 20 Oct 2022 23:52:32 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 6C5815C007F;
+        Fri, 21 Oct 2022 02:52:31 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Fri, 21 Oct 2022 02:52:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm2; t=1666335151; x=1666421551; bh=asFMH01gIy
+        FuLLt84XhpsavdGbikk/Zr70yYHFNA5r4=; b=tmmE+zyWqZsaV1HNHXmexsKCRZ
+        cTGaKpie3Ix8/C9msO3j7jjW6V++ZSgrCc/D8wECWflD2w77EVwUT4ZDJI4/qcDa
+        AE+VHQAznpHOe3oxin/wy0H7Jo04+zv8pXMIZDRqNYKa7QklC3Cl0vigmK7m0AEx
+        jx4A+td7c0SMHEJZVt6BhAUTnDzWRhZ9MfDQtZxrfpDQrShjDhD3SXdwd+IKTxAI
+        ZlRdzDXxtI9oe5QhZuvE6Vh3SgZNQgA+Thl0nO742KhzJJmNXR4asTqNJtVzEXKw
+        nLbhugd9XR3xVQIgR9sNyfKv+DM6ICYPVRj+7tuFLcBrlxWvHEZtTmiUJv3A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm3; t=1666335151; x=1666421551; bh=asFMH01gIyFuLLt84XhpsavdGbik
+        k/Zr70yYHFNA5r4=; b=kCOatloKYNVOBJC3olA9k9hCbIwlxdKz89aA/Z58vRei
+        9lF6wbuChyuHTmzK1sc/5zb1M9ITUeNuFi1Qnmt8Ylcp3S8LtMToKa47i81KnVUn
+        pKaYJSDOMcqY5XM1uIM8a19oVoZvqIfhzU1X2pRzpCooHtDS9LFbVzR7GEcdGtHL
+        AklcoevJjyfziK/7t/uavCUXSXqEEVMLG/OrSxEbgY3S5JVdkTlRp0Z4RJitL/+e
+        0ERI0xWyGGrXd2+d5YSKUTWnNw4Arew5r/fl7dC/5kvsW4oQj/ac1iCAQLFRY1/q
+        XMZ34TsU+xO6zNgCM1pN8wwV1egVuBvELVnsf+ph8Q==
+X-ME-Sender: <xms:rkFSY7b52o4SSS29ii51024C6Tx9E3noQFHWuRk6VKm_aOR-UZKzQA>
+    <xme:rkFSY6byU9_2HIcQmGIOp1DUsd0lSnFXIvrb605VOlHM0RkwJGbTS-mIbt6ZO5aIY
+    0gt_IjGFwCVawZFB94>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeeljedgudduhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeu
+    feehudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:rkFSY9_MJx9tKvhvQ5lwCt0Zb3IV3YOYY3pCycDfPWnv71sUpdgg3w>
+    <xmx:rkFSYxoBeoqaIgsY93umf4TjZTfSZAS5scg5cHiLigOO9T8BZHkFJw>
+    <xmx:rkFSY2qYK18DaISpgzqWb_yvcq_kGLQgKvWFftU45cRPvZmabuJJrQ>
+    <xmx:r0FSYzQVLjlAZPdjc9KdCUd8H-_UiL5nj-YrhWIpq4YNRLBe_QmjzA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id A2DA1B60086; Fri, 21 Oct 2022 02:52:30 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-1047-g9e4af4ada4-fm-20221005.001-g9e4af4ad
+Mime-Version: 1.0
+Message-Id: <de36ec6b-2e7c-48eb-9682-f60d8e4011da@app.fastmail.com>
+In-Reply-To: <20221020193511.GB3019@t60.musicnaut.iki.fi>
+References: <20221019144119.3848027-1-arnd@kernel.org>
+ <20221019150410.3851944-1-arnd@kernel.org>
+ <20221019150410.3851944-13-arnd@kernel.org>
+ <20221019171541.GA41568@darkstar.musicnaut.iki.fi>
+ <1b632df1-7e3c-456d-8629-dc36efd9fe15@app.fastmail.com>
+ <20221020193511.GB3019@t60.musicnaut.iki.fi>
+Date:   Fri, 21 Oct 2022 08:52:10 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Aaro Koskinen" <aaro.koskinen@iki.fi>
+Cc:     "Arnd Bergmann" <arnd@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
-        Shawn Lin <shawn.lin@rock-chips.com>,
-        Ray Jui <rjui@broadcom.com>, linux-tegra@vger.kernel.org,
-        linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>,
-        Roy Zang <roy.zang@nxp.com>, Michal Simek <monstr@monstr.eu>,
-        kbuild-all@lists.01.org, Scott Branden <sbranden@broadcom.com>,
-        Daire McNa mara <daire.mcnamara@microchip.com>,
-        linux-kernel@vger.kernel.org, Tom Joseph <tjoseph@cadence.com>,
-        linuxppc-dev@lists.ozlabs.org
-References: <20221020150731.GA121202@bhelgaas>
-From:   "Chen, Rong A" <rong.a.chen@intel.com>
-Message-ID: <9ac1f194-cef3-68bf-25e2-4bc6c0dbefce@intel.com>
-Date:   Fri, 21 Oct 2022 08:52:40 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.12.0
-MIME-Version: 1.0
-In-Reply-To: <20221020150731.GA121202@bhelgaas>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
+        "Tony Lindgren" <tony@atomide.com>, linux-kernel@vger.kernel.org,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        "Lee Jones" <lee@kernel.org>,
+        "Ulf Hansson" <ulf.hansson@linaro.org>,
+        "Felipe Balbi" <balbi@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        linux-i2c@vger.kernel.org,
+        "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH 13/17] ARM: omap1: remove unused board files
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
+On Thu, Oct 20, 2022, at 21:35, Aaro Koskinen wrote:
+> On Thu, Oct 20, 2022 at 09:11:11AM +0200, Arnd Bergmann wrote:
+>> On Wed, Oct 19, 2022, at 19:15, Aaro Koskinen wrote:
+>> > On Wed, Oct 19, 2022 at 05:03:35PM +0200, Arnd Bergmann wrote:
+>> >> All board support that was marked as 'unused' earlier can
+>> >> now be removed, leaving the five machines that that still
+>> >> had someone using them in 2022, or that are supported in
+>> >> qemu.
+>> > [...]
+>> >>  config OMAP_OSK_MISTRAL
+>> >>  	bool "Mistral QVGA board Support"
+>> >>  	depends on MACH_OMAP_OSK
+>> >> -	depends on UNUSED_BOARD_FILES
+>> >>  	help
+>> >>  	  The OSK supports an optional add-on board with a Quarter-VGA
+>> >>  	  touchscreen, PDA-ish buttons, a resume button, bicolor LED,
+>> >>  	  and camera connector.  Say Y here if you have this board.
+>> >
+>> > Shouldn't this go away as well?
+>> 
+>> No, this one was incorrectly annotated, it's not actually
+>> a board but it's an option for the OSK board that is not
+>> getting removed. I considered making a separate patch
+>> for removing the dependency, but that didn't seem worth it.
+>
+> OK. For the record, I don't think anyone has this add-on board anymore,
+> and it has probably never been tested with the mainline kernel, so
+> it's likely in the "dead code" category... Maybe it could be changed to
+> "BROKEN", then the related OSK LCD panel stuff could be deleted later
+> on too.
 
+Ok, good to know. I left it in place for now because Tony originally
+listed it as a likely used machine along with NOKIA770 and
+AMS_DELTA [1], but I don't have anyone listed specifically as a
+user for it.
 
-On 10/20/2022 11:07 PM, Bjorn Helgaas wrote:
-> On Thu, Oct 20, 2022 at 10:13:10PM +0800, kernel test robot wrote:
->> Hi Bjorn,
->>
->> I love your patch! Yet something to improve:
->>
->> [auto build test ERROR on helgaas-pci/next]
->> [also build test ERROR on xilinx-xlnx/master rockchip/for-next linus/master v6.1-rc1 next-20221020]
->> [If your patch is applied to the wrong git tree, kindly drop us a note.
->> And when submitting patch, we suggest to use '--base' as documented in
->> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->>
->> url:    https://github.com/intel-lab-lkp/linux/commits/Bjorn-Helgaas/PCI-Remove-unnecessary-of_irq-h-includes/20221020-100633
->> base:   https://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci.git next
->> patch link:    https://lore.kernel.org/r/20221019195452.37606-1-helgaas%40kernel.org
->> patch subject: [PATCH] PCI: Remove unnecessary of_irq.h includes
->> config: s390-randconfig-r044-20221019
->> compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project 791a7ae1ba3efd6bca96338e10ffde557ba83920)
->> reproduce (this is a W=1 build):
->>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->>          chmod +x ~/bin/make.cross
->>          # install s390 cross compiling tool for clang build
->>          # apt-get install binutils-s390x-linux-gnu
->>          # https://github.com/intel-lab-lkp/linux/commit/273a24b16a40ffd6a64c6c55aecbfae00a1cd996
->>          git remote add linux-review https://github.com/intel-lab-lkp/linux
->>          git fetch --no-tags linux-review Bjorn-Helgaas/PCI-Remove-unnecessary-of_irq-h-includes/20221020-100633
->>          git checkout 273a24b16a40ffd6a64c6c55aecbfae00a1cd996
->>          # save the config file
->>          mkdir build_dir && cp config build_dir/.config
->>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=s390 SHELL=/bin/bash drivers/pci/controller/
-> 
-> Maybe more user error?
-> 
->    $ COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=s390 SHELL=/bin/bash drivers/pci/controller/
->    Compiler will be installed in /home/bjorn/0day
->    make --keep-going HOSTCC=/home/bjorn/0day/clang/bin/clang CC=/home/bjorn/0day/clang/bin/clang OBJCOPY=/usr/s390x-linux-gnu/bin/objcopy AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJDUMP=llvm-objdump OBJSIZE=llvm-size READELF=llvm-readelf HOSTCXX=clang++ HOSTAR=llvm-ar CROSS_COMPILE=s390x-linux-gnu- --jobs=16 W=1 O=build_dir ARCH=s390 SHELL=/bin/bash drivers/pci/controller/
->    make[1]: Entering directory '/home/bjorn/linux/build_dir'
->      SYNC    include/config/auto.conf.cmd
->      GEN     Makefile
->    scripts/Kconfig.include:40: linker 's390x-linux-gnu-ld' not found
+It's not too late to revisit this list if you think it helps to
+get rid of it. I can see that drivers/mtd/tps65010.c and
+drivers/pcmcia/omap_cf.c become orphaned without it and can
+probably get removed as well then.
 
+      Arnd
 
-Hi Bjorn,
-
-You may need to install the below package, or similar package for other OS:
-
-$ dpkg -S /usr/bin/s390x-linux-gnu-ld
-binutils-s390x-linux-gnu: /usr/bin/s390x-linux-gnu-ld
-
- >>          # install s390 cross compiling tool for clang build
- >>          # apt-get install binutils-s390x-linux-gnu
-
-Best Regards,
-Rong Chen
-
->    make[3]: *** [../scripts/kconfig/Makefile:77: syncconfig] Error 1
->    make[2]: *** [../Makefile:697: syncconfig] Error 2
->    make[1]: *** [/home/bjorn/linux/Makefile:798: include/config/auto.conf.cmd] Error 2
->    make[1]: Failed to remake makefile 'include/config/auto.conf.cmd'.
->    make[1]: Failed to remake makefile 'include/config/auto.conf'.
->      GEN     Makefile
->    Error: kernelrelease not valid - run 'make prepare' to update it
->    ../scripts/mkcompile_h: 19: s390x-linux-gnu-ld: not found
->    make[1]: Target 'drivers/pci/controller/' not remade because of errors.
->    make[1]: Leaving directory '/home/bjorn/linux/build_dir'
->    make: *** [Makefile:231: __sub-make] Error 2
->    make: Target 'drivers/pci/controller/' not remade because of errors.
-> _______________________________________________
-> kbuild-all mailing list -- kbuild-all@lists.01.org
-> To unsubscribe send an email to kbuild-all-leave@lists.01.org
-> 
+[1] https://lore.kernel.org/linux-arm-kernel/20220721150320.GA9385@macbook.musicnaut.iki.fi/
