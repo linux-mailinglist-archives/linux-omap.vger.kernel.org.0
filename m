@@ -2,70 +2,104 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2468D60849C
-	for <lists+linux-omap@lfdr.de>; Sat, 22 Oct 2022 07:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 426D6608B15
+	for <lists+linux-omap@lfdr.de>; Sat, 22 Oct 2022 11:34:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbiJVFgS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 22 Oct 2022 01:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
+        id S230332AbiJVJey (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 22 Oct 2022 05:34:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229765AbiJVFgR (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Oct 2022 01:36:17 -0400
-Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.154.221.58])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB03A28B1FC;
-        Fri, 21 Oct 2022 22:36:13 -0700 (PDT)
-X-QQ-mid: bizesmtp63t1666416969tzmap60o
-Received: from localhost.localdomain ( [182.148.15.254])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Sat, 22 Oct 2022 13:36:08 +0800 (CST)
-X-QQ-SSF: 01000000000000C0E000000A0000000
-X-QQ-FEAT: r/cTxDoDoiHtF+qYAVJu9vtCCJV3DBLH0AuDzXdVIaIYzdJI/plmbSJG/poTi
-        f8FWgJBNC5GsvpMTk4rwvAGIK011LhmQ5n+pNVuhZn6maA/82oSYG/rPr+JaIHgYa7K3trM
-        6I+bAlbLZqLQUDKOhd3sIU/Z8R7oSpQyAf8yKUURdYGKz8UeHxucVcYo3jwWkokZL2wgucQ
-        zJLO62qhpuecQLB7oe5kpnoaTIrslVOTLDmuzKLb41DtQJ9gzF6m7n11JLvTT65hUGl7x+K
-        q46k3W9AohUOS2SSk0LY34u4sbk+SJvnDKHdGDahcWNOOMsjE4yYNwoaQrZasGZLSKG6Zys
-        dia0Ke3OIkT+kBXwmjjBs1FieekT2ZnGfaH1z9x8AdicvwltCU=
-X-QQ-GoodBg: 0
-From:   wangjianli <wangjianli@cdjrlc.com>
-To:     tony@atomide.com
-Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        wangjianli <wangjianli@cdjrlc.com>
-Subject: [PATCH] drivers/bus: fix repeated words in comments
-Date:   Sat, 22 Oct 2022 13:36:02 +0800
-Message-Id: <20221022053602.24624-1-wangjianli@cdjrlc.com>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S231578AbiJVJeN (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Oct 2022 05:34:13 -0400
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA313DD383
+        for <linux-omap@vger.kernel.org>; Sat, 22 Oct 2022 01:45:09 -0700 (PDT)
+Received: by mail-oi1-x22b.google.com with SMTP id l5so5774835oif.7
+        for <linux-omap@vger.kernel.org>; Sat, 22 Oct 2022 01:45:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=nNMBkCIwl/6gK+toGqNRGG/YLL0fF324bx1qaOH1y4x3OIjxLq/HHYoLEQ6DIXVMhZ
+         yBP/JqjfeKgn2zVw2pvLxCg6MQgOccj9D0PS+BxibSDKUMZPqFuO1BH9rucwVtk0imfk
+         Uf1JB6y6hh5nwSF4l3nIHzMcJeO23qzW5xyKvOUo02NXv/UxA+fb1xfQ7gd0wj97+Png
+         rtJzhayXE1f7/T0HHp6tTaPH4f4DE9rtLLXyoMLmdIeuEqEwHYp6KAIXioE2APt9Vqok
+         QcnzNnKCtevhk7rrd2+8KLFUz2JMtjuKTuyIwbz60pUc4RihSWynNyvtYnVRFpjOFC8v
+         n2WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:sender:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
+        b=dI5HNPocB14+xgBgqSiMDjegaBCF802TwanyWx/pEbnFuUwJbQrnF0rarpzDszssI/
+         L/IpKc8Hrxrc6Fyfj17EEZ+BIiacYtbIryx7N4/HtUABIxWjAZj6JZR/13gz/OByCEdL
+         5HyOMBF5+ZxH8P8r/iS2gB2VuVjfEgPUXwjOELMLf0GGt76C9Ajj3DfadOWMqTawM7sa
+         oe3OzmVj6ENLH4GoiiblNgs4mOqWHcY/3vOgnD0qeRi+o6pFWrHCYtIw/YOQXOolK8q8
+         2c3n0XdHqEY2dQ+5m7IF46jb4E1X8p745rrLGTA5UNPW7NgjWQOqHBv6EQRsGHhZ9Hd7
+         vDRg==
+X-Gm-Message-State: ACrzQf3Io14mkrCAO1SscINhqDs1Hu48ndTHaLO6t71PxSfyq6zsz4RS
+        pgLbEjm8RzJSpfNf93kH9fZ5T+d9Rkn/tYQ+iUJqpjq2Knw=
+X-Google-Smtp-Source: AMsMyM7DV/UQjMDmfWUDARQEST583xXUpUhZuwI6Yo6QWpU1NylqbjJLzURvxWrib8B1x1GiMXZKxXX9K7ug1XjFr6Y=
+X-Received: by 2002:a05:6808:13d2:b0:355:1770:c6ef with SMTP id
+ d18-20020a05680813d200b003551770c6efmr21666671oiw.284.1666427448022; Sat, 22
+ Oct 2022 01:30:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr7
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Reply-To: mrs.susanelwoodhara17@gmail.com
+Sender: mrs.arawayann01@gmail.com
+Received: by 2002:a05:6838:aea5:0:0:0:0 with HTTP; Sat, 22 Oct 2022 01:30:47
+ -0700 (PDT)
+From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
+Date:   Sat, 22 Oct 2022 08:30:47 +0000
+X-Google-Sender-Auth: UfMdHY-IGn2vy7vhRxwr3_PMsYw
+Message-ID: <CAAOf0OErkdBB+pkMfQKO+67_RwCPJjBUpQs9uCH=U1CN1QD5=w@mail.gmail.com>
+Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.4 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:22b listed in]
+        [list.dnswl.org]
+        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.7747]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mrs.arawayann01[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mrs.susanelwoodhara17[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mrs.susanelwoodhara17[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  3.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Delete the redundant word 'the'.
+GOD BLESS YOU AS YOU REPLY URGENTLY
 
-Signed-off-by: wangjianli <wangjianli@cdjrlc.com>
----
- drivers/bus/ti-sysc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 9a7d12332fad..a864f24d6b4f 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -912,7 +912,7 @@ static int sysc_check_registers(struct sysc *ddata)
-  * Note that the interconnect target module registers can be anywhere
-  * within the interconnect target module range. For example, SGX has
-  * them at offset 0x1fc00 in the 32MB module address space. And cpsw
-- * has them at offset 0x1200 in the CPSW_WR child. Usually the
-+ * has them at offset 0x1200 in the CPSW_WR child. Usually
-  * the interconnect target module registers are at the beginning of
-  * the module range though.
-  */
--- 
-2.36.1
-
+ Hello Dear,
+Greetings, I am contacting you regarding an important information i
+have for you please reply to confirm your email address and for more
+details Thanks
+Regards
+Mrs Susan Elwood Hara.
