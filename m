@@ -2,82 +2,70 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D1FB6079F3
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Oct 2022 16:52:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2468D60849C
+	for <lists+linux-omap@lfdr.de>; Sat, 22 Oct 2022 07:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbiJUOwb (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 21 Oct 2022 10:52:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58974 "EHLO
+        id S229761AbiJVFgS (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 22 Oct 2022 01:36:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiJUOwa (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 21 Oct 2022 10:52:30 -0400
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC54539B8E;
-        Fri, 21 Oct 2022 07:52:29 -0700 (PDT)
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-1321a1e94b3so3857793fac.1;
-        Fri, 21 Oct 2022 07:52:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6QlvEZdCqgxNR+lZRpUq3doxR2q3WHpw4WcV2BBWb8k=;
-        b=DQcBcxEh8qAHe3OHC7f+k4ZG/NLt9cJjBfBdkLyphS6i+WaDIL61dFlSHKjJ7rWqiX
-         tmasrX46HeaiosBLKMv/UQn4YW1VMXf7pYwYoIRb8nJLCaba258xxWMeElLna6/FIwxm
-         vKl0D6DPAo+x7YUkn/Mc4lWmCcQfNelskfIKWeQooXzEOAESQeaxz8IjOQRKwFqwD90D
-         qrpHQ0XVsgCvjX6HkVIfZQrtm52la6nqsesT5/ARfw10bG/Px1nFUv0feAB90iLerSWa
-         23v3AZaFQSzPNve0RjTEppsgA1JfKN7shQA+Wi9+dkRzTCCnk560wZeR5W4Y36RQkQfY
-         cRRQ==
-X-Gm-Message-State: ACrzQf0GmL43w1EEOko9FI6rUuHv1bCA9lZrnjB86xOJdBWsiBDZFmCw
-        xrbC6AlAmSDCu5O9o+3K5w==
-X-Google-Smtp-Source: AMsMyM7qbJrS0n3aNo8NhFTsYDSbaO5y8VIbgq9g3ZX4vwrfWqW8unzAeVmfF4HnAa6rhS6zBuicQA==
-X-Received: by 2002:a05:6870:2108:b0:132:f883:2378 with SMTP id f8-20020a056870210800b00132f8832378mr12208420oae.77.1666363948946;
-        Fri, 21 Oct 2022 07:52:28 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id w24-20020a4a9d18000000b0047f94375092sm8759640ooj.40.2022.10.21.07.52.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Oct 2022 07:52:28 -0700 (PDT)
-Received: (nullmailer pid 3722054 invoked by uid 1000);
-        Fri, 21 Oct 2022 14:52:30 -0000
-Date:   Fri, 21 Oct 2022 09:52:30 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>
-Cc:     devicetree@vger.kernel.org, robh+dt@kernel.org, tony@atomide.com,
-        linux-omap@vger.kernel.org, krzysztof.kozlowski@linaro.org,
-        rogerq@kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: memory-controllers: gpmc-child: add
- wait-pin polarity
-Message-ID: <166636394620.3721929.16610201673432595208.robh@kernel.org>
-References: <20221021081612.591613-1-benedikt.niedermayr@siemens.com>
- <20221021081612.591613-3-benedikt.niedermayr@siemens.com>
+        with ESMTP id S229765AbiJVFgR (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 22 Oct 2022 01:36:17 -0400
+Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.154.221.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB03A28B1FC;
+        Fri, 21 Oct 2022 22:36:13 -0700 (PDT)
+X-QQ-mid: bizesmtp63t1666416969tzmap60o
+Received: from localhost.localdomain ( [182.148.15.254])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Sat, 22 Oct 2022 13:36:08 +0800 (CST)
+X-QQ-SSF: 01000000000000C0E000000A0000000
+X-QQ-FEAT: r/cTxDoDoiHtF+qYAVJu9vtCCJV3DBLH0AuDzXdVIaIYzdJI/plmbSJG/poTi
+        f8FWgJBNC5GsvpMTk4rwvAGIK011LhmQ5n+pNVuhZn6maA/82oSYG/rPr+JaIHgYa7K3trM
+        6I+bAlbLZqLQUDKOhd3sIU/Z8R7oSpQyAf8yKUURdYGKz8UeHxucVcYo3jwWkokZL2wgucQ
+        zJLO62qhpuecQLB7oe5kpnoaTIrslVOTLDmuzKLb41DtQJ9gzF6m7n11JLvTT65hUGl7x+K
+        q46k3W9AohUOS2SSk0LY34u4sbk+SJvnDKHdGDahcWNOOMsjE4yYNwoaQrZasGZLSKG6Zys
+        dia0Ke3OIkT+kBXwmjjBs1FieekT2ZnGfaH1z9x8AdicvwltCU=
+X-QQ-GoodBg: 0
+From:   wangjianli <wangjianli@cdjrlc.com>
+To:     tony@atomide.com
+Cc:     linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+        wangjianli <wangjianli@cdjrlc.com>
+Subject: [PATCH] drivers/bus: fix repeated words in comments
+Date:   Sat, 22 Oct 2022 13:36:02 +0800
+Message-Id: <20221022053602.24624-1-wangjianli@cdjrlc.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221021081612.591613-3-benedikt.niedermayr@siemens.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr7
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Fri, 21 Oct 2022 10:16:12 +0200, B. Niedermayr wrote:
-> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-> 
-> The GPMC controller has the ability to configure the polarity for the
-> wait pin. The current properties do not allow this configuration.
-> This binding directly configures the WAITPIN<X>POLARITY bit
-> in the GPMC_CONFIG register by setting the "ti,wait-pin-polarity"
-> dt-property.
-> 
-> Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
-> ---
->  .../bindings/memory-controllers/ti,gpmc-child.yaml         | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
+Delete the redundant word 'the'.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: wangjianli <wangjianli@cdjrlc.com>
+---
+ drivers/bus/ti-sysc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 9a7d12332fad..a864f24d6b4f 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -912,7 +912,7 @@ static int sysc_check_registers(struct sysc *ddata)
+  * Note that the interconnect target module registers can be anywhere
+  * within the interconnect target module range. For example, SGX has
+  * them at offset 0x1fc00 in the 32MB module address space. And cpsw
+- * has them at offset 0x1200 in the CPSW_WR child. Usually the
++ * has them at offset 0x1200 in the CPSW_WR child. Usually
+  * the interconnect target module registers are at the beginning of
+  * the module range though.
+  */
+-- 
+2.36.1
+
