@@ -2,120 +2,450 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1711B60B425
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Oct 2022 19:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4396660B855
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Oct 2022 21:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230332AbiJXR3l (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Oct 2022 13:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33666 "EHLO
+        id S230342AbiJXToY (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Oct 2022 15:44:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234412AbiJXR3E (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Oct 2022 13:29:04 -0400
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C8D76570;
-        Mon, 24 Oct 2022 09:05:04 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id F1F3D320076F;
-        Mon, 24 Oct 2022 12:02:34 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Mon, 24 Oct 2022 12:02:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm2; t=1666627354; x=1666713754; bh=icgj1uEJtY
-        GqD+reQlzk/FX1027W4qJc11yfxx1nfMc=; b=nRqqed7n0WSU2HtMrYyagXLHLM
-        gLuRmUsCVCXHU/RLF4lT4ap4gp3ey/2LEHxivyi5fv2nZDTdshlQufjb1RZA3MXa
-        1q1ZPNRLIHhr6DShmhfTc+mVqVkkNpGShcQR4X3aBM5sJunyHZDlv/tqX3P5l4Kv
-        HjwBSCGZ9Zbj6GDvsWhZv/tOHYACYXUc/pIdVzV2jveqTpgPiua9laO4x81yf0s6
-        SHGJggjidU/tdKwliTWYSzbubdcBwVDK9sPIgWE2w3StxY8qRrll+r5VW/z+vuCf
-        VfU4TNwL9t8EFM7v1wYPWtHTPtWE287kCy22qRfVNXomPevpgrjfnO56cAzw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1666627354; x=1666713754; bh=icgj1uEJtYGqD+reQlzk/FX1027W
-        4qJc11yfxx1nfMc=; b=PERaMDbQvT7LbZ1a44RxhBL1rnm0QUbi4YhIxyinUgVQ
-        VXa7OY7rg3UTa9/TBEnbY2F7TGP46qkeD+QTpl8kt71ZWZVh1flQDrBLwGx8RFVK
-        UZ4M6o2dFUe/Ei7xqf/bBXsvVgVV5chRJrBIv++ipQy9aNizf5FPRqxSLDV09U2u
-        YN+gn+WGr476zEeKpP9UsVECaN3c3QEMhL0tk0dDPlpBHn6JfEBeiSNdhkJxkeyf
-        OGv16/YbD9atIm/yyRQyAg2O0YorodyU5PUOjLsDxOsvw801u2yA8NgfyI9EJuAQ
-        5T9y6Y78j5SWRhm3SEC46xJQyJNjx0pmX+K0LAWTYA==
-X-ME-Sender: <xms:GbdWYwZpHEjlXgYqJ_RgZXrgHK2kX7V8gCxtAhZZYyQbEEEzL5bbiQ>
-    <xme:GbdWY7Y38odImXBlQ8YBzr0UKl5tIPWyxybTq4kvIJv6RT0btfgzSp9_zhLUReWLi
-    N5RIvLINv4gRlM1mNI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrgedtgedgleduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:GbdWY6-UV6cQpRp_iU48UVeoa2XEV97G3-x1rFcVP2uAFBqoqr2X7g>
-    <xmx:GbdWY6r0Fgi5TFudIfOQEkT3ZmkOaVzfQ8_NS71kZRc5hO_UCykcag>
-    <xmx:GbdWY7qskkY867NII9Da03ZLdV2vK5OXmJQ1hf6nPQLC_JoGY51WYA>
-    <xmx:GrdWY0Q_PzX2yUhax7ARpo-QVtdDbdYzf6mICseHbVsx2DBy5z6wyQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 9D0F2B60086; Mon, 24 Oct 2022 12:02:33 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1047-g9e4af4ada4-fm-20221005.001-g9e4af4ad
-Mime-Version: 1.0
-Message-Id: <aa4195a9-f6be-4600-82df-8b5d1035ebd5@app.fastmail.com>
-In-Reply-To: <Y1YnT+/ZdoglcdS4@atomide.com>
-References: <20221019144119.3848027-1-arnd@kernel.org>
- <20221019150410.3851944-1-arnd@kernel.org>
- <20221019150410.3851944-13-arnd@kernel.org>
- <20221019171541.GA41568@darkstar.musicnaut.iki.fi>
- <1b632df1-7e3c-456d-8629-dc36efd9fe15@app.fastmail.com>
- <20221020193511.GB3019@t60.musicnaut.iki.fi>
- <de36ec6b-2e7c-48eb-9682-f60d8e4011da@app.fastmail.com>
- <20221021111101.GC3019@t60.musicnaut.iki.fi> <Y1YnT+/ZdoglcdS4@atomide.com>
-Date:   Mon, 24 Oct 2022 18:02:13 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Tony Lindgren" <tony@atomide.com>,
-        "Aaro Koskinen" <aaro.koskinen@iki.fi>
-Cc:     "Arnd Bergmann" <arnd@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        "Lee Jones" <lee@kernel.org>,
-        "Ulf Hansson" <ulf.hansson@linaro.org>,
-        "Felipe Balbi" <balbi@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        linux-i2c@vger.kernel.org,
-        "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH 13/17] ARM: omap1: remove unused board files
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S233230AbiJXTno (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Oct 2022 15:43:44 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E2B1CF1A4;
+        Mon, 24 Oct 2022 11:12:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1F76CB81203;
+        Mon, 24 Oct 2022 15:38:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BD6C433D7;
+        Mon, 24 Oct 2022 15:38:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666625920;
+        bh=pQKambcMoMCDDOPbMIokIUA6JiYO5icPGAl1zr7IYUo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=jzlG6zbKejGSByvSyoIJktSpkAFmsQmAEiwKNH+baRdNCJ4TgY2aOzV60kpH8lGRF
+         Bj6wziA8G9SVpl+NQwyD/cDaUBPlMD/lTXIJgkOOSqKwzqKDnO0VUQdctPP6AYwI4J
+         k67DIitqYGlHcySOvzXWbdoInHwQQaQCIhIq/uNGqL1IgnNh+g2VdoUplwX6lXG1eO
+         /7Bx7A7/MBmQIJjb1saNQrRU01Ogcp7WtakOgVZoCA6+Ufp8upF2cUnQeDGviurRwu
+         ckhx9TMZ9UrtE2Oe5eAgcX1+qKcZhW9viKhV+pXSssD4BPZt/ngKEojQh6P3ls9E0o
+         I8dNPIBgAA2Iw==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 09/10] ARM: omap2: remove unused omap2_pm_init
+Date:   Mon, 24 Oct 2022 17:38:13 +0200
+Message-Id: <20221024153814.254652-10-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20221024153814.254652-1-arnd@kernel.org>
+References: <20221024153814.254652-1-arnd@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Mon, Oct 24, 2022, at 07:49, Tony Lindgren wrote:
-> * Aaro Koskinen <aaro.koskinen@iki.fi> [221021 11:02]:
->> I was only referring to this Mistral add-on board and related display
->> drivers.
->> 
->> The main OSK board support is still needed and used.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Ok, got it.
+The omap2420_init_late() and omap2430_init_late() functions
+are never called. Removing them also shows that the entire
+arch/arm/mach-omap2/pm24xx.c file is unused and can be
+removed.
 
-> I'm pretty sure I have that display, but I was booting my OSK in a
-> rack anyways so I rarely saw the LCD in use. No objections from me
-> for removing the LCD support for OSK if nobody is using it.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/arm/mach-omap2/Makefile |   1 -
+ arch/arm/mach-omap2/common.h |   9 -
+ arch/arm/mach-omap2/io.c     |  10 --
+ arch/arm/mach-omap2/pm24xx.c | 312 -----------------------------------
+ 4 files changed, 332 deletions(-)
+ delete mode 100644 arch/arm/mach-omap2/pm24xx.c
 
-I was going to leave Mistral in, thinking it's just a device definition,
-but upon closer look I found that this is a somewhat annoyingly
-written part that hardcodes GPIO numbers in unusual ways, so I'm
-adding a patch to remove it now.
+diff --git a/arch/arm/mach-omap2/Makefile b/arch/arm/mach-omap2/Makefile
+index 43b44e0858c1..daf21127c82f 100644
+--- a/arch/arm/mach-omap2/Makefile
++++ b/arch/arm/mach-omap2/Makefile
+@@ -80,7 +80,6 @@ obj-$(CONFIG_ARCH_OMAP4)		+= $(omap-4-5-pm-common)
+ obj-$(CONFIG_SOC_OMAP5)			+= $(omap-4-5-pm-common)
+ 
+ ifeq ($(CONFIG_PM),y)
+-obj-$(CONFIG_ARCH_OMAP2)		+= pm24xx.o
+ obj-$(CONFIG_ARCH_OMAP2)		+= sleep24xx.o
+ obj-$(CONFIG_ARCH_OMAP3)		+= pm34xx.o sleep34xx.o
+ omap-4-5-pm-common			+= pm44xx.o
+diff --git a/arch/arm/mach-omap2/common.h b/arch/arm/mach-omap2/common.h
+index 112e7966107c..ebf0266e1943 100644
+--- a/arch/arm/mach-omap2/common.h
++++ b/arch/arm/mach-omap2/common.h
+@@ -44,15 +44,6 @@
+ extern int (*omap_pm_soc_init)(void);
+ int omap_pm_nop_init(void);
+ 
+-#if defined(CONFIG_PM) && defined(CONFIG_ARCH_OMAP2)
+-int omap2_pm_init(void);
+-#else
+-static inline int omap2_pm_init(void)
+-{
+-	return 0;
+-}
+-#endif
+-
+ #if defined(CONFIG_PM) && defined(CONFIG_ARCH_OMAP3)
+ int omap3_pm_init(void);
+ #else
+diff --git a/arch/arm/mach-omap2/io.c b/arch/arm/mach-omap2/io.c
+index e45a3ce97085..81cb175c2dbe 100644
+--- a/arch/arm/mach-omap2/io.c
++++ b/arch/arm/mach-omap2/io.c
+@@ -435,11 +435,6 @@ void __init omap2420_init_early(void)
+ 	omap_clk_soc_init = omap2420_dt_clk_init;
+ 	rate_table = omap2420_rate_table;
+ }
+-
+-void __init omap2420_init_late(void)
+-{
+-	omap_pm_soc_init = omap2_pm_init;
+-}
+ #endif
+ 
+ #ifdef CONFIG_SOC_OMAP2430
+@@ -459,11 +454,6 @@ void __init omap2430_init_early(void)
+ 	omap_clk_soc_init = omap2430_dt_clk_init;
+ 	rate_table = omap2430_rate_table;
+ }
+-
+-void __init omap2430_init_late(void)
+-{
+-	omap_pm_soc_init = omap2_pm_init;
+-}
+ #endif
+ 
+ /*
+diff --git a/arch/arm/mach-omap2/pm24xx.c b/arch/arm/mach-omap2/pm24xx.c
+deleted file mode 100644
+index 6953c47d8dc6..000000000000
+--- a/arch/arm/mach-omap2/pm24xx.c
++++ /dev/null
+@@ -1,312 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * OMAP2 Power Management Routines
+- *
+- * Copyright (C) 2005 Texas Instruments, Inc.
+- * Copyright (C) 2006-2008 Nokia Corporation
+- *
+- * Written by:
+- * Richard Woodruff <r-woodruff2@ti.com>
+- * Tony Lindgren
+- * Juha Yrjola
+- * Amit Kucheria <amit.kucheria@nokia.com>
+- * Igor Stoppa <igor.stoppa@nokia.com>
+- *
+- * Based on pm.c for omap1
+- */
+-
+-#include <linux/cpu_pm.h>
+-#include <linux/suspend.h>
+-#include <linux/sched.h>
+-#include <linux/proc_fs.h>
+-#include <linux/interrupt.h>
+-#include <linux/sysfs.h>
+-#include <linux/module.h>
+-#include <linux/delay.h>
+-#include <linux/clk.h>
+-#include <linux/clk-provider.h>
+-#include <linux/irq.h>
+-#include <linux/time.h>
+-
+-#include <asm/fncpy.h>
+-
+-#include <asm/mach/time.h>
+-#include <asm/mach/irq.h>
+-#include <asm/mach-types.h>
+-#include <asm/system_misc.h>
+-
+-#include <linux/omap-dma.h>
+-
+-#include "soc.h"
+-#include "common.h"
+-#include "clock.h"
+-#include "prm2xxx.h"
+-#include "prm-regbits-24xx.h"
+-#include "cm2xxx.h"
+-#include "cm-regbits-24xx.h"
+-#include "sdrc.h"
+-#include "sram.h"
+-#include "pm.h"
+-#include "control.h"
+-#include "powerdomain.h"
+-#include "clockdomain.h"
+-
+-static void (*omap2_sram_suspend)(u32 dllctrl, void __iomem *sdrc_dlla_ctrl,
+-				  void __iomem *sdrc_power);
+-
+-static struct powerdomain *mpu_pwrdm, *core_pwrdm;
+-static struct clockdomain *dsp_clkdm, *mpu_clkdm, *wkup_clkdm, *gfx_clkdm;
+-
+-static struct clk *osc_ck, *emul_ck;
+-
+-static int omap2_enter_full_retention(void)
+-{
+-	u32 l;
+-
+-	/* There is 1 reference hold for all children of the oscillator
+-	 * clock, the following will remove it. If no one else uses the
+-	 * oscillator itself it will be disabled if/when we enter retention
+-	 * mode.
+-	 */
+-	clk_disable(osc_ck);
+-
+-	/* Clear old wake-up events */
+-	/* REVISIT: These write to reserved bits? */
+-	omap_prm_clear_mod_irqs(CORE_MOD, PM_WKST1, ~0);
+-	omap_prm_clear_mod_irqs(CORE_MOD, OMAP24XX_PM_WKST2, ~0);
+-	omap_prm_clear_mod_irqs(WKUP_MOD, PM_WKST, ~0);
+-
+-	pwrdm_set_next_pwrst(core_pwrdm, PWRDM_POWER_RET);
+-	pwrdm_set_next_pwrst(mpu_pwrdm, PWRDM_POWER_RET);
+-
+-	/* Workaround to kill USB */
+-	l = omap_ctrl_readl(OMAP2_CONTROL_DEVCONF0) | OMAP24XX_USBSTANDBYCTRL;
+-	omap_ctrl_writel(l, OMAP2_CONTROL_DEVCONF0);
+-
+-	/* One last check for pending IRQs to avoid extra latency due
+-	 * to sleeping unnecessarily. */
+-	if (omap_irq_pending())
+-		goto no_sleep;
+-
+-	/* Jump to SRAM suspend code */
+-	omap2_sram_suspend(sdrc_read_reg(SDRC_DLLA_CTRL),
+-			   OMAP_SDRC_REGADDR(SDRC_DLLA_CTRL),
+-			   OMAP_SDRC_REGADDR(SDRC_POWER));
+-
+-no_sleep:
+-	clk_enable(osc_ck);
+-
+-	/* clear CORE wake-up events */
+-	omap_prm_clear_mod_irqs(CORE_MOD, PM_WKST1, ~0);
+-	omap_prm_clear_mod_irqs(CORE_MOD, OMAP24XX_PM_WKST2, ~0);
+-
+-	/* wakeup domain events - bit 1: GPT1, bit5 GPIO */
+-	omap_prm_clear_mod_irqs(WKUP_MOD, PM_WKST, 0x4 | 0x1);
+-
+-	/* MPU domain wake events */
+-	omap_prm_clear_mod_irqs(OCP_MOD, OMAP2_PRCM_IRQSTATUS_MPU_OFFSET, 0x1);
+-
+-	omap_prm_clear_mod_irqs(OCP_MOD, OMAP2_PRCM_IRQSTATUS_MPU_OFFSET, 0x20);
+-
+-	pwrdm_set_next_pwrst(mpu_pwrdm, PWRDM_POWER_ON);
+-	pwrdm_set_next_pwrst(core_pwrdm, PWRDM_POWER_ON);
+-
+-	return 0;
+-}
+-
+-static int sti_console_enabled;
+-
+-static int omap2_allow_mpu_retention(void)
+-{
+-	if (!omap2xxx_cm_mpu_retention_allowed())
+-		return 0;
+-	if (sti_console_enabled)
+-		return 0;
+-
+-	return 1;
+-}
+-
+-static void omap2_enter_mpu_retention(void)
+-{
+-	const int zero = 0;
+-
+-	/* The peripherals seem not to be able to wake up the MPU when
+-	 * it is in retention mode. */
+-	if (omap2_allow_mpu_retention()) {
+-		/* REVISIT: These write to reserved bits? */
+-		omap_prm_clear_mod_irqs(CORE_MOD, PM_WKST1, ~0);
+-		omap_prm_clear_mod_irqs(CORE_MOD, OMAP24XX_PM_WKST2, ~0);
+-		omap_prm_clear_mod_irqs(WKUP_MOD, PM_WKST, ~0);
+-
+-		/* Try to enter MPU retention */
+-		pwrdm_set_next_pwrst(mpu_pwrdm, PWRDM_POWER_RET);
+-
+-	} else {
+-		/* Block MPU retention */
+-		pwrdm_set_next_pwrst(mpu_pwrdm, PWRDM_POWER_ON);
+-	}
+-
+-	/* WFI */
+-	asm("mcr p15, 0, %0, c7, c0, 4" : : "r" (zero) : "memory", "cc");
+-
+-	pwrdm_set_next_pwrst(mpu_pwrdm, PWRDM_POWER_ON);
+-}
+-
+-static int omap2_can_sleep(void)
+-{
+-	if (omap2xxx_cm_fclks_active())
+-		return 0;
+-	if (__clk_is_enabled(osc_ck))
+-		return 0;
+-
+-	return 1;
+-}
+-
+-static void omap2_pm_idle(void)
+-{
+-	int error;
+-
+-	if (omap_irq_pending())
+-		return;
+-
+-	error = cpu_cluster_pm_enter();
+-	if (error || !omap2_can_sleep()) {
+-		omap2_enter_mpu_retention();
+-		goto out_cpu_cluster_pm;
+-	}
+-
+-	omap2_enter_full_retention();
+-
+-out_cpu_cluster_pm:
+-	cpu_cluster_pm_exit();
+-}
+-
+-static void __init prcm_setup_regs(void)
+-{
+-	int i, num_mem_banks;
+-	struct powerdomain *pwrdm;
+-
+-	/*
+-	 * Enable autoidle
+-	 * XXX This should be handled by hwmod code or PRCM init code
+-	 */
+-	omap2_prm_write_mod_reg(OMAP24XX_AUTOIDLE_MASK, OCP_MOD,
+-			  OMAP2_PRCM_SYSCONFIG_OFFSET);
+-
+-	/*
+-	 * Set CORE powerdomain memory banks to retain their contents
+-	 * during RETENTION
+-	 */
+-	num_mem_banks = pwrdm_get_mem_bank_count(core_pwrdm);
+-	for (i = 0; i < num_mem_banks; i++)
+-		pwrdm_set_mem_retst(core_pwrdm, i, PWRDM_POWER_RET);
+-
+-	pwrdm_set_logic_retst(core_pwrdm, PWRDM_POWER_RET);
+-
+-	pwrdm_set_logic_retst(mpu_pwrdm, PWRDM_POWER_RET);
+-
+-	/* Force-power down DSP, GFX powerdomains */
+-
+-	pwrdm = clkdm_get_pwrdm(dsp_clkdm);
+-	pwrdm_set_next_pwrst(pwrdm, PWRDM_POWER_OFF);
+-
+-	pwrdm = clkdm_get_pwrdm(gfx_clkdm);
+-	pwrdm_set_next_pwrst(pwrdm, PWRDM_POWER_OFF);
+-
+-	/* Enable hardware-supervised idle for all clkdms */
+-	clkdm_for_each(omap_pm_clkdms_setup, NULL);
+-	clkdm_add_wkdep(mpu_clkdm, wkup_clkdm);
+-
+-	omap_common_suspend_init(omap2_enter_full_retention);
+-
+-	/* REVISIT: Configure number of 32 kHz clock cycles for sys_clk
+-	 * stabilisation */
+-	omap2_prm_write_mod_reg(15 << OMAP_SETUP_TIME_SHIFT, OMAP24XX_GR_MOD,
+-				OMAP2_PRCM_CLKSSETUP_OFFSET);
+-
+-	/* Configure automatic voltage transition */
+-	omap2_prm_write_mod_reg(2 << OMAP_SETUP_TIME_SHIFT, OMAP24XX_GR_MOD,
+-				OMAP2_PRCM_VOLTSETUP_OFFSET);
+-	omap2_prm_write_mod_reg(OMAP24XX_AUTO_EXTVOLT_MASK |
+-				(0x1 << OMAP24XX_SETOFF_LEVEL_SHIFT) |
+-				OMAP24XX_MEMRETCTRL_MASK |
+-				(0x1 << OMAP24XX_SETRET_LEVEL_SHIFT) |
+-				(0x0 << OMAP24XX_VOLT_LEVEL_SHIFT),
+-				OMAP24XX_GR_MOD, OMAP2_PRCM_VOLTCTRL_OFFSET);
+-
+-	/* Enable wake-up events */
+-	omap2_prm_write_mod_reg(OMAP24XX_EN_GPIOS_MASK | OMAP24XX_EN_GPT1_MASK,
+-				WKUP_MOD, PM_WKEN);
+-
+-	/* Enable SYS_CLKEN control when all domains idle */
+-	omap2_prm_set_mod_reg_bits(OMAP_AUTOEXTCLKMODE_MASK, OMAP24XX_GR_MOD,
+-				   OMAP2_PRCM_CLKSRC_CTRL_OFFSET);
+-}
+-
+-int __init omap2_pm_init(void)
+-{
+-	u32 l;
+-
+-	printk(KERN_INFO "Power Management for OMAP2 initializing\n");
+-	l = omap2_prm_read_mod_reg(OCP_MOD, OMAP2_PRCM_REVISION_OFFSET);
+-	printk(KERN_INFO "PRCM revision %d.%d\n", (l >> 4) & 0x0f, l & 0x0f);
+-
+-	/* Look up important powerdomains */
+-
+-	mpu_pwrdm = pwrdm_lookup("mpu_pwrdm");
+-	if (!mpu_pwrdm)
+-		pr_err("PM: mpu_pwrdm not found\n");
+-
+-	core_pwrdm = pwrdm_lookup("core_pwrdm");
+-	if (!core_pwrdm)
+-		pr_err("PM: core_pwrdm not found\n");
+-
+-	/* Look up important clockdomains */
+-
+-	mpu_clkdm = clkdm_lookup("mpu_clkdm");
+-	if (!mpu_clkdm)
+-		pr_err("PM: mpu_clkdm not found\n");
+-
+-	wkup_clkdm = clkdm_lookup("wkup_clkdm");
+-	if (!wkup_clkdm)
+-		pr_err("PM: wkup_clkdm not found\n");
+-
+-	dsp_clkdm = clkdm_lookup("dsp_clkdm");
+-	if (!dsp_clkdm)
+-		pr_err("PM: dsp_clkdm not found\n");
+-
+-	gfx_clkdm = clkdm_lookup("gfx_clkdm");
+-	if (!gfx_clkdm)
+-		pr_err("PM: gfx_clkdm not found\n");
+-
+-
+-	osc_ck = clk_get(NULL, "osc_ck");
+-	if (IS_ERR(osc_ck)) {
+-		printk(KERN_ERR "could not get osc_ck\n");
+-		return -ENODEV;
+-	}
+-
+-	if (cpu_is_omap242x()) {
+-		emul_ck = clk_get(NULL, "emul_ck");
+-		if (IS_ERR(emul_ck)) {
+-			printk(KERN_ERR "could not get emul_ck\n");
+-			clk_put(osc_ck);
+-			return -ENODEV;
+-		}
+-	}
+-
+-	prcm_setup_regs();
+-
+-	/*
+-	 * We copy the assembler sleep/wakeup routines to SRAM.
+-	 * These routines need to be in SRAM as that's the only
+-	 * memory the MPU can see when it wakes up after the entire
+-	 * chip enters idle.
+-	 */
+-	omap2_sram_suspend = omap_sram_push(omap24xx_cpu_suspend,
+-					    omap24xx_cpu_suspend_sz);
+-
+-	arm_pm_idle = omap2_pm_idle;
+-
+-	return 0;
+-}
+-- 
+2.29.2
 
-     Arnd
