@@ -2,44 +2,43 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C07F46099CC
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Oct 2022 07:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 191BA6099F6
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Oct 2022 07:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbiJXF2g (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Mon, 24 Oct 2022 01:28:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46778 "EHLO
+        id S230063AbiJXFpr (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Mon, 24 Oct 2022 01:45:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbiJXF2g (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Oct 2022 01:28:36 -0400
+        with ESMTP id S229908AbiJXFpq (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Mon, 24 Oct 2022 01:45:46 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D7DEC7B29E;
-        Sun, 23 Oct 2022 22:28:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 43CA664FE;
+        Sun, 23 Oct 2022 22:45:45 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id F082D822A;
-        Mon, 24 Oct 2022 05:19:19 +0000 (UTC)
-Date:   Mon, 24 Oct 2022 08:28:32 +0300
+        by muru.com (Postfix) with ESMTPS id DCA15822A;
+        Mon, 24 Oct 2022 05:36:30 +0000 (UTC)
+Date:   Mon, 24 Oct 2022 08:45:43 +0300
 From:   Tony Lindgren <tony@atomide.com>
-To:     Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-omap@vger.kernel.org, Lee Jones <lee@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Felipe Balbi <balbi@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, Nishanth Menon <nm@ti.com>,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH] serial: 8250_omap: remove wait loop from Errata i202
- workaround
-Message-ID: <Y1YigD1lEWRbT8eH@atomide.com>
-References: <20221013112339.2540767-1-matthias.schiffer@ew.tq-group.com>
- <ea90b0ba-61bf-e56e-5120-9771122838cf@linux.intel.com>
- <Y00bmec4hvWxtnB5@linutronix.de>
- <c91216ec-c7e7-df7b-463-ec17c76b7bc2@linux.intel.com>
+        linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH 13/17] ARM: omap1: remove unused board files
+Message-ID: <Y1YmhwPeekQ/OSWL@atomide.com>
+References: <20221019144119.3848027-1-arnd@kernel.org>
+ <20221019150410.3851944-1-arnd@kernel.org>
+ <20221019150410.3851944-13-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c91216ec-c7e7-df7b-463-ec17c76b7bc2@linux.intel.com>
+In-Reply-To: <20221019150410.3851944-13-arnd@kernel.org>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,68 +47,12 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi,
-
-Adding Nishanth to Cc also.
-
-* Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221017 12:06]:
-> On Mon, 17 Oct 2022, Sebastian Andrzej Siewior wrote:
+* Arnd Bergmann <arnd@kernel.org> [221019 15:08]:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> > On 2022-10-17 11:12:41 [+0300], Ilpo Järvinen wrote:
-> > > On Thu, 13 Oct 2022, Matthias Schiffer wrote:
-> > > 
-> > > > We were occasionally seeing the "Errata i202: timedout" on an AM335x
-> > > > board when repeatedly opening and closing a UART connected to an active
-> > > > sender. As new input may arrive at any time, it is possible to miss the
-> > > > "RX FIFO empty" condition, forcing the loop to wait until it times out.
-> > > 
-> > > I can see this problem could occur and why your patch fixes it.
-> > > 
-> > > > Nothing in the i202 Advisory states that such a wait is even necessary;
-> > > > other FIFO clear functions like serial8250_clear_fifos() do not wait
-> > > > either. For this reason, it seems safe to remove the wait, fixing the
-> > > > mentioned issue.
-> > > 
-> > > Checking the commit that added this driver and the loop along with it, 
-> > > there was no information why it would be needed there either.
-> > 
-> > I don't remember all the details but I do remember that I never hit it.
-> > The idea back then was to document what appears the problem and then
-> > once there is a reproducer address it _or_ when there is another problem
-> > check if it aligns with the output here (so that _this_ problem's origin
-> > could be this). This was part of address all known chip erratas and
-> > copied from omap-serial at the time so that the 8250 does not miss
-> > anything.
-> > Looking closer, this is still part of the omap-serial driver and it was
-> > introduced in commit
-> >    0003450964357 ("omap2/3/4: serial: errata i202: fix for MDR1 access")
-> 
-> I found that one too but it doesn't give any explanation for it either.
-> In fact, the wait for empty is mysteriously missing from the itemized
-> description of the workaround in the commit message.
-> 
-> > If someone found a way to trigger this output which is unrelated to the
-> > expected cause then this is clearly not helping nor intended.
-> > 
-> > I would prefer to keep the loop and replace the disturbing output with a
-> > comment describing _why_ the FIFO might remain non-empty after a flush.
-> > 
-> > In worst cases that loop causes a delay of less than 0.5ms while setting
-> > a baud rate so I doubt that this is causing a real problem.
+> All board support that was marked as 'unused' earlier can
+> now be removed, leaving the five machines that that still
+> had someone using them in 2022, or that are supported in
+> qemu.
 
-This sounds like a safe solution for me if it's needed.
-
-> > Either way I would like to see Tony's ACK before this is getting removed
-> > as suggested in this patch.
-> 
-> Thanks for chimming in.
-> 
-> I went to do some lore searching and came across this thread (it should 
-> be added with Link: tag the patch regardless of its final form):
->   https://lore.kernel.org/linux-omap/4BBF61FE.3060807@ti.com/
-
-Nishanth, do you have any more info on checking for fifo empty here?
-
-Regards,
-
-Tony
+Acked-by: Tony Lindgren <tony@atomide.com>
