@@ -2,163 +2,103 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC0EA60DB04
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Oct 2022 08:14:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4C060E5B2
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Oct 2022 18:47:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229995AbiJZGOV (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Oct 2022 02:14:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55232 "EHLO
+        id S233807AbiJZQr4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Oct 2022 12:47:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232127AbiJZGOU (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Oct 2022 02:14:20 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3B3B8788;
-        Tue, 25 Oct 2022 23:14:19 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 29Q6Dfh1112657;
-        Wed, 26 Oct 2022 01:13:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1666764821;
-        bh=muYLAl87MpFKBWjWXoppAR+Krltf1/A+GYyPpKJuEPI=;
-        h=Date:To:CC:References:From:Subject:In-Reply-To;
-        b=yZf6aXD4PMrSIYbkCUNao3VAYgkm4djFF8S8b7pioJeBr/Z9HY33Il5FjcnrzC4PF
-         0qdFFKBxxtF3kvkRUs85DJJUQmginvMgIDSU7qwhCLp3Y2XpXOYOrrXWinJd5ZvzlU
-         o5weyH5bKtdC+36B3mmA+XyHXzmYsunRGPneXx0E=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 29Q6Dfah031498
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 26 Oct 2022 01:13:41 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Wed, 26
- Oct 2022 01:13:41 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Wed, 26 Oct 2022 01:13:41 -0500
-Received: from [10.250.234.133] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 29Q6DaRi009046;
-        Wed, 26 Oct 2022 01:13:37 -0500
-Message-ID: <93932c6b-4be1-3c3c-2cef-e97fe9415745@ti.com>
-Date:   Wed, 26 Oct 2022 11:43:36 +0530
+        with ESMTP id S233779AbiJZQry (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Oct 2022 12:47:54 -0400
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31735F9707
+        for <linux-omap@vger.kernel.org>; Wed, 26 Oct 2022 09:47:53 -0700 (PDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id t16so11971029qvm.9
+        for <linux-omap@vger.kernel.org>; Wed, 26 Oct 2022 09:47:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9pFTE78kst/vKn4eCc/U/+wA4I2bSXL1KteJZdxZbf8=;
+        b=VWngGKd00l/aHB6OUoq30ponveK3ej9tdg8RS2juEplU7PdDey1nOjIuQR5rcVxdbM
+         cEBYlPJW6888IRrs3M25OtvJv4WtlC7+TYqIo9sDWn3n8+S6ECkOu/H5mBHyR4XMOEaH
+         VSmNJk+1aUINdCmACJQPyYZ1nxht2XYb8Pqsnuo/ojdxfB85n0iZNoHnNcGEw/upk5yC
+         6Cw37TpRuEvZSmpBh+UPBjblsTrM4G5nrXZkGYqeL5YBuy+Gvg0Ha/rGUIJKRMOe6KI/
+         w1S1AWd/gcADOwR+WFtyOtZkpLxPbMEkxHREhcywbQknSUlwKwKb+1wDIozwRleN8ZnZ
+         3NVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9pFTE78kst/vKn4eCc/U/+wA4I2bSXL1KteJZdxZbf8=;
+        b=FH1UxO1V2Q1vul241AFm/mEDK93RcCi/gnxnIXUx5keshH9G+orLpE9FHn+qxaRsDA
+         wmULIimN+gXkSOtEhZdgBSiu4b9b5uw87GJ5m4FkT5HcsFNMsxNJh1z8uyDo0GhmPe56
+         EuJzDJsNJ+Y2VbgSaBjvyOgNT66Ym5I6MbBGIvs+dOl5DqARaiv3gknsi4x55D5YnPkQ
+         +kPgbfstytx/7IgNkSY96+VdsALUX6MsbRhwvICfWbc+MbrHYP+osF+FUORQzF+jj5Gb
+         j+FosezfKOuaBMl+979Y6ocipRs/wfcB13ksyzG2wQB4p9f5nzLuIkenAkS2EpNKUW74
+         XEIg==
+X-Gm-Message-State: ACrzQf2e9VTHKtY3O6fajvx7Xa2guq9nX3GHdBCFuMkRWSQKyA/dqSA2
+        Zhih9e27tBtL79oaChH/3R9s9w==
+X-Google-Smtp-Source: AMsMyM53h58tjhIcrbODqrgr1LtrQZj+a0fONXss6Zi/lvIwP0m0b0WNjI6y3bPJsl5MiRTmC40OBA==
+X-Received: by 2002:a05:6214:ccd:b0:4bb:663c:8018 with SMTP id 13-20020a0562140ccd00b004bb663c8018mr17087369qvx.24.1666802872422;
+        Wed, 26 Oct 2022 09:47:52 -0700 (PDT)
+Received: from [192.168.1.11] ([64.57.193.93])
+        by smtp.gmail.com with ESMTPSA id s16-20020a05620a255000b006cbe3be300esm4207134qko.12.2022.10.26.09.47.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Oct 2022 09:47:51 -0700 (PDT)
+Message-ID: <733bebc5-f632-aa53-0c91-b858fa87848a@linaro.org>
+Date:   Wed, 26 Oct 2022 12:47:50 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.0
+Subject: Re: [PATCH 1/2] memory: omap-gpmc: wait pin additions
 Content-Language: en-US
-To:     Tony Lindgren <tony@atomide.com>,
-        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-CC:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, Nishanth Menon <nm@ti.com>,
-        <linux-omap@vger.kernel.org>
-References: <20221013112339.2540767-1-matthias.schiffer@ew.tq-group.com>
- <ea90b0ba-61bf-e56e-5120-9771122838cf@linux.intel.com>
- <Y00bmec4hvWxtnB5@linutronix.de>
- <c91216ec-c7e7-df7b-463-ec17c76b7bc2@linux.intel.com>
- <Y1YigD1lEWRbT8eH@atomide.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH] serial: 8250_omap: remove wait loop from Errata i202
- workaround
-In-Reply-To: <Y1YigD1lEWRbT8eH@atomide.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org
+Cc:     robh+dt@kernel.org, rogerq@kernel.org, tony@atomide.com
+References: <20221021081612.591613-1-benedikt.niedermayr@siemens.com>
+ <20221021081612.591613-2-benedikt.niedermayr@siemens.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221021081612.591613-2-benedikt.niedermayr@siemens.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-
-
-On 24/10/22 10:58 am, Tony Lindgren wrote:
-> Hi,
+On 21/10/2022 04:16, B. Niedermayr wrote:
+> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
 > 
-> Adding Nishanth to Cc also.
+> This patch introduces support for setting the wait-pin polarity as well
+> as using the same wait-pin for different CS regions.
 > 
-> * Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> [221017 12:06]:
->> On Mon, 17 Oct 2022, Sebastian Andrzej Siewior wrote:
->>
->>> On 2022-10-17 11:12:41 [+0300], Ilpo Järvinen wrote:
->>>> On Thu, 13 Oct 2022, Matthias Schiffer wrote:
->>>>
->>>>> We were occasionally seeing the "Errata i202: timedout" on an AM335x
->>>>> board when repeatedly opening and closing a UART connected to an active
->>>>> sender. As new input may arrive at any time, it is possible to miss the
->>>>> "RX FIFO empty" condition, forcing the loop to wait until it times out.
->>>>
->>>> I can see this problem could occur and why your patch fixes it.
->>>>
->>>>> Nothing in the i202 Advisory states that such a wait is even necessary;
->>>>> other FIFO clear functions like serial8250_clear_fifos() do not wait
->>>>> either. For this reason, it seems safe to remove the wait, fixing the
->>>>> mentioned issue.
->>>>
->>>> Checking the commit that added this driver and the loop along with it, 
->>>> there was no information why it would be needed there either.
->>>
->>> I don't remember all the details but I do remember that I never hit it.
->>> The idea back then was to document what appears the problem and then
->>> once there is a reproducer address it _or_ when there is another problem
->>> check if it aligns with the output here (so that _this_ problem's origin
->>> could be this). This was part of address all known chip erratas and
->>> copied from omap-serial at the time so that the 8250 does not miss
->>> anything.
->>> Looking closer, this is still part of the omap-serial driver and it was
->>> introduced in commit
->>>    0003450964357 ("omap2/3/4: serial: errata i202: fix for MDR1 access")
->>
->> I found that one too but it doesn't give any explanation for it either.
->> In fact, the wait for empty is mysteriously missing from the itemized
->> description of the workaround in the commit message.
->>
->>> If someone found a way to trigger this output which is unrelated to the
->>> expected cause then this is clearly not helping nor intended.
->>>
->>> I would prefer to keep the loop and replace the disturbing output with a
->>> comment describing _why_ the FIFO might remain non-empty after a flush.
->>>
->>> In worst cases that loop causes a delay of less than 0.5ms while setting
->>> a baud rate so I doubt that this is causing a real problem.
+> The waitpin polarity can be configured via the WAITPIN<X>POLARITY bits
+> in the GPMC_CONFIG register. This is currently not supported by the
+> driver. This patch adds support for setting the required register bits
+> with the "ti,wait-pin-polarity" dt-property.
 > 
-> This sounds like a safe solution for me if it's needed.
+> The wait-pin can also be shared between different CS regions for special
+> usecases. Therefore GPMC must keep track of wait-pin allocations, so it
+> knows that either GPMC itself or another driver has the ownership.
 > 
->>> Either way I would like to see Tony's ACK before this is getting removed
->>> as suggested in this patch.
->>
->> Thanks for chimming in.
->>
->> I went to do some lore searching and came across this thread (it should 
->> be added with Link: tag the patch regardless of its final form):
->>   https://lore.kernel.org/linux-omap/4BBF61FE.3060807@ti.com/
-> 
-> Nishanth, do you have any more info on checking for fifo empty here?
-> 
+> Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
 
-At least TRMs of newer SoCs such as AM654 [0] have following note:
+This is v8, not v1. Please mark your patches appropriately.
 
-NOTE : Bits UART_FCR[2] TX_FIFO_CLEAR and UART_FCR[1] RX_FIFO_CLEAR are
+Roger,
 
-automatically cleared by hardware after 4 × UARTi_ICLK + 5 × UARTi_FCLK
-clock cycles.
+Any comments from you? You were reviewing previous sets, so does it look
+good now?
 
-This delay is needed to finish the resetting of the corresponding FIFO
-and DMA control
- registers.
+Best regards,
+Krzysztof
 
-I guess we can drop FIFO empty check and instead add above delay
-required for FIFOs to be reset.
-
-[0] https://www.ti.com/lit/pdf/spruid7e 12.1.5.4.6 UART FIFO Management
-
-
-Regards
-Vignesh
