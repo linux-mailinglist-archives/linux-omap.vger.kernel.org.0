@@ -2,103 +2,90 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD4C060E5B2
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Oct 2022 18:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 344E760E5E6
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Oct 2022 18:58:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233807AbiJZQr4 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Oct 2022 12:47:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49162 "EHLO
+        id S234031AbiJZQ6A (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Wed, 26 Oct 2022 12:58:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233779AbiJZQry (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Oct 2022 12:47:54 -0400
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31735F9707
-        for <linux-omap@vger.kernel.org>; Wed, 26 Oct 2022 09:47:53 -0700 (PDT)
-Received: by mail-qv1-xf2b.google.com with SMTP id t16so11971029qvm.9
-        for <linux-omap@vger.kernel.org>; Wed, 26 Oct 2022 09:47:53 -0700 (PDT)
+        with ESMTP id S233951AbiJZQ54 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Oct 2022 12:57:56 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B337A7AA9
+        for <linux-omap@vger.kernel.org>; Wed, 26 Oct 2022 09:57:54 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id l28so10369229qtv.4
+        for <linux-omap@vger.kernel.org>; Wed, 26 Oct 2022 09:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9pFTE78kst/vKn4eCc/U/+wA4I2bSXL1KteJZdxZbf8=;
-        b=VWngGKd00l/aHB6OUoq30ponveK3ej9tdg8RS2juEplU7PdDey1nOjIuQR5rcVxdbM
-         cEBYlPJW6888IRrs3M25OtvJv4WtlC7+TYqIo9sDWn3n8+S6ECkOu/H5mBHyR4XMOEaH
-         VSmNJk+1aUINdCmACJQPyYZ1nxht2XYb8Pqsnuo/ojdxfB85n0iZNoHnNcGEw/upk5yC
-         6Cw37TpRuEvZSmpBh+UPBjblsTrM4G5nrXZkGYqeL5YBuy+Gvg0Ha/rGUIJKRMOe6KI/
-         w1S1AWd/gcADOwR+WFtyOtZkpLxPbMEkxHREhcywbQknSUlwKwKb+1wDIozwRleN8ZnZ
-         3NVQ==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=39zVf9R/98IkfHV6BFJsXRxxZg1xnTjTxQIsdJiOcew=;
+        b=X5y1fmrCjW85hx7fsN6BIlPYn6rHULO8Hu2S4Qh5zCoXU6nVu0ZqUfi0CUI+1tvYLk
+         ZsvaYRJ5JSBCrgYuzGZNbpZl28eLvabraJBBO7NMB8PnU0S2pZ/oh38L2SE9gHlPpwF3
+         q38J/lykr4v/Tc9IU15jygAn0dOc8L+d2KYtYs7OuxLW5zYWc5YBcOvezHc2bKLZFsZw
+         upjHmbgk16X+lDhAiyT0CQJSDJVwVovjUJBsCHy3PWNliI4LfiQvI6V7WgN0DCCdvpPQ
+         N81tP1f0DL95yBvhez/qBpghWKJowcJ3yPn9bEhH5TNDzWvtQMeKMpWVnMBxAc42Uwff
+         B6kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9pFTE78kst/vKn4eCc/U/+wA4I2bSXL1KteJZdxZbf8=;
-        b=FH1UxO1V2Q1vul241AFm/mEDK93RcCi/gnxnIXUx5keshH9G+orLpE9FHn+qxaRsDA
-         wmULIimN+gXkSOtEhZdgBSiu4b9b5uw87GJ5m4FkT5HcsFNMsxNJh1z8uyDo0GhmPe56
-         EuJzDJsNJ+Y2VbgSaBjvyOgNT66Ym5I6MbBGIvs+dOl5DqARaiv3gknsi4x55D5YnPkQ
-         +kPgbfstytx/7IgNkSY96+VdsALUX6MsbRhwvICfWbc+MbrHYP+osF+FUORQzF+jj5Gb
-         j+FosezfKOuaBMl+979Y6ocipRs/wfcB13ksyzG2wQB4p9f5nzLuIkenAkS2EpNKUW74
-         XEIg==
-X-Gm-Message-State: ACrzQf2e9VTHKtY3O6fajvx7Xa2guq9nX3GHdBCFuMkRWSQKyA/dqSA2
-        Zhih9e27tBtL79oaChH/3R9s9w==
-X-Google-Smtp-Source: AMsMyM53h58tjhIcrbODqrgr1LtrQZj+a0fONXss6Zi/lvIwP0m0b0WNjI6y3bPJsl5MiRTmC40OBA==
-X-Received: by 2002:a05:6214:ccd:b0:4bb:663c:8018 with SMTP id 13-20020a0562140ccd00b004bb663c8018mr17087369qvx.24.1666802872422;
-        Wed, 26 Oct 2022 09:47:52 -0700 (PDT)
-Received: from [192.168.1.11] ([64.57.193.93])
-        by smtp.gmail.com with ESMTPSA id s16-20020a05620a255000b006cbe3be300esm4207134qko.12.2022.10.26.09.47.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Oct 2022 09:47:51 -0700 (PDT)
-Message-ID: <733bebc5-f632-aa53-0c91-b858fa87848a@linaro.org>
-Date:   Wed, 26 Oct 2022 12:47:50 -0400
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH 1/2] memory: omap-gpmc: wait pin additions
-Content-Language: en-US
-To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org
-Cc:     robh+dt@kernel.org, rogerq@kernel.org, tony@atomide.com
-References: <20221021081612.591613-1-benedikt.niedermayr@siemens.com>
- <20221021081612.591613-2-benedikt.niedermayr@siemens.com>
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=39zVf9R/98IkfHV6BFJsXRxxZg1xnTjTxQIsdJiOcew=;
+        b=az6WuFRFoVpdsyzYQdTEEwe0ywmtj2nwxQ465ZhqpftI22feC0n3rAg1pBqQT16uF3
+         94j6vwlnaqfWcL0F2FdB2APBXj47ICYn1Wwf2lI1ExVUAezvjIhr5QChElLz9k4WVh+M
+         nLcFsc1uNdjXPFkwDiI3+L0R2ydhJ6nH0OfBuV7ly11CFspJlIRfwNFmAfH2N8M7sjh0
+         oSVRk8KeSYWS1wCMeBRCA+OM68UA9SUTxsxXpGA8CX7Mhb5TQW71g2HXuwrT+MAIbzGx
+         Hx9Hl/MB728ddu0jahOra1F5jiTvybMuzqA0fq5Iu7q/ohdgbPHMInpay1ecu+ufPqt5
+         tWzg==
+X-Gm-Message-State: ACrzQf0NhGFgtssVSlFkImncu3yK3HP0NRgM23o8utOTofV9kF8uFEYJ
+        9Ub8s2U3bfgUn5jhavcFRbjLdw==
+X-Google-Smtp-Source: AMsMyM4AQYLCc23YRXpnyqA8fZ37GgTsEY6YyjnlOWAHnu8UufZA64N8DqdNdsAgBlQVVW54Il2L7Q==
+X-Received: by 2002:ac8:5f54:0:b0:39c:ce86:65dd with SMTP id y20-20020ac85f54000000b0039cce8665ddmr35882941qta.285.1666803473958;
+        Wed, 26 Oct 2022 09:57:53 -0700 (PDT)
+Received: from krzk-bin.. ([64.57.193.93])
+        by smtp.gmail.com with ESMTPSA id g21-20020a05620a40d500b006ee8874f5fasm4360759qko.53.2022.10.26.09.57.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Oct 2022 09:57:53 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221021081612.591613-2-benedikt.niedermayr@siemens.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To:     devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-omap@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: omap: correct indentation
+Date:   Wed, 26 Oct 2022 12:57:43 -0400
+Message-Id: <166680346261.49767.5909154065398299258.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221002092002.68880-1-krzysztof.kozlowski@linaro.org>
+References: <20221002092002.68880-1-krzysztof.kozlowski@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On 21/10/2022 04:16, B. Niedermayr wrote:
-> From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
+On Sun, 2 Oct 2022 11:20:02 +0200, Krzysztof Kozlowski wrote:
+> Do not use spaces for indentation.
 > 
-> This patch introduces support for setting the wait-pin polarity as well
-> as using the same wait-pin for different CS regions.
 > 
-> The waitpin polarity can be configured via the WAITPIN<X>POLARITY bits
-> in the GPMC_CONFIG register. This is currently not supported by the
-> driver. This patch adds support for setting the required register bits
-> with the "ti,wait-pin-polarity" dt-property.
-> 
-> The wait-pin can also be shared between different CS regions for special
-> usecases. Therefore GPMC must keep track of wait-pin allocations, so it
-> knows that either GPMC itself or another driver has the ownership.
-> 
-> Signed-off-by: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
 
-This is v8, not v1. Please mark your patches appropriately.
+Applied, thanks!
 
-Roger,
-
-Any comments from you? You were reviewing previous sets, so does it look
-good now?
+[1/1] ARM: dts: omap: correct indentation
+      https://git.kernel.org/krzk/linux-dt/c/8ae9c7a69fa14e95d032e64d8d758e3f85bee132
 
 Best regards,
-Krzysztof
-
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
