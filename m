@@ -2,90 +2,88 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CA4260E5F2
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Oct 2022 18:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D7A60F2F5
+	for <lists+linux-omap@lfdr.de>; Thu, 27 Oct 2022 10:57:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234086AbiJZQ6I (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Wed, 26 Oct 2022 12:58:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47720 "EHLO
+        id S235108AbiJ0I5j (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Thu, 27 Oct 2022 04:57:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234000AbiJZQ57 (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Wed, 26 Oct 2022 12:57:59 -0400
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CBC59AC11
-        for <linux-omap@vger.kernel.org>; Wed, 26 Oct 2022 09:57:57 -0700 (PDT)
-Received: by mail-qt1-x834.google.com with SMTP id w29so3268159qtv.9
-        for <linux-omap@vger.kernel.org>; Wed, 26 Oct 2022 09:57:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cw8Lu/nQQlzhzTL10tzeDgp/jy8BsPpF+rlfLrRcyN8=;
-        b=euX8EZYonvHctlnqgw4g4DrpHpWeKzU4dH1zN89SY7X0p3B+C4H5P/S01aDJ/Hfavc
-         85ERgyQny3gfjrEPQLOq4a0NIDKeToV7G8DCIZ+cDs5sVfBYAWDzHAO/nHHAGJDsSodq
-         /6d2z+/EK4rYJCmj12JcRrONlDyTgscTLW/jaMq99+psKaDrmncj0l0xhXE9lJexDAiZ
-         KpY4Ed542LoNhwqzR4PMTU7Tx1t+10SKOo34ox18erkmxSO0ekY7q6IhnbRAuVa7873Q
-         xDMoeqUj3DqYDo2gvUC4MQ2E3n2/yroAUu9i+Ri/0jV8CsCoJDI1Ktjosp6rBfvOvujs
-         XcZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cw8Lu/nQQlzhzTL10tzeDgp/jy8BsPpF+rlfLrRcyN8=;
-        b=vKbtDS48m82oF83rCaleTJFPEiCld7dJ4TM8o+IkrpUVUh4NdtWL04UMkJCTgjpGQI
-         QvM+giLMH8xEX/auBdz562BukkyZrF9EebwTf+HXmKHVcYWsGp7C8mUT6V6jlSkWG3Fh
-         L0RK5Iwf4QRFCY0KyzMO11ZgLrGjVRpjX/Cw55KwSdiDcTZQgdy5jxFLAZyRXeU5J3rK
-         AKUPJb8vuomit2cuDjwO+c2HDN17qDO9gbSQk68uDb6Pj88NoehsKGANngkzWFrDNqNw
-         t18eNqFslZYq2vH45oVIFcHtz4DsWdhpnXp7DHaixMlDGLk8TkAceP53Bj1Q+PoOCXi7
-         AiTg==
-X-Gm-Message-State: ACrzQf3gOZj44ZC7PNMUKPBSnxDxAcNwsuMc75LZQ/9DPeWcAyfbegX6
-        7QUGLfyjXZmNUvZBlwPHNYYhHg==
-X-Google-Smtp-Source: AMsMyM56+TJJXBIoEqLeE0nQ00qzkhNR5Zixg8AxhMZz/SGfFeHt9tR2a1kFAmxd1/7ssYQcejFGmg==
-X-Received: by 2002:a05:622a:34e:b0:39c:8965:549 with SMTP id r14-20020a05622a034e00b0039c89650549mr37591547qtw.268.1666803477017;
-        Wed, 26 Oct 2022 09:57:57 -0700 (PDT)
-Received: from krzk-bin.. ([64.57.193.93])
-        by smtp.gmail.com with ESMTPSA id g21-20020a05620a40d500b006ee8874f5fasm4360759qko.53.2022.10.26.09.57.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Oct 2022 09:57:56 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-omap@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: ti: correct indentation
-Date:   Wed, 26 Oct 2022 12:57:45 -0400
-Message-Id: <166680346261.49767.5822216815717858081.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221002092010.69030-1-krzysztof.kozlowski@linaro.org>
-References: <20221002092010.69030-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S234173AbiJ0I5i (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Thu, 27 Oct 2022 04:57:38 -0400
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CB2E159A0B;
+        Thu, 27 Oct 2022 01:57:37 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 29R8vK5P054058;
+        Thu, 27 Oct 2022 03:57:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1666861040;
+        bh=Awevj19YTqJDXvTjsPtw7D4zHpBiZJxzCr+c7G9q6NA=;
+        h=From:To:CC:Subject:Date;
+        b=gpyp/0Jm4Ws5Ca4Xke/X+mazm6Ai/0vwb2t9ve75Byervueg9Nd/rLg+Fz63wrFPX
+         /O0Q5R3JV4aFLOoc+zy9JsFS77goz15opk2JzhNCQb/+X8N2X/2mRAwl/LlIs7DwUz
+         q0+N7EJEdzswFDxT63HFHWheW2ZxYVhfF03h/blA=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 29R8vKDL122957
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 27 Oct 2022 03:57:20 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Thu, 27
+ Oct 2022 03:57:19 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
+ Frontend Transport; Thu, 27 Oct 2022 03:57:19 -0500
+Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 29R8vIFS082141;
+        Thu, 27 Oct 2022 03:57:19 -0500
+From:   Achal Verma <a-verma1@ti.com>
+To:     Tom Joseph <tjoseph@cadence.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Wilczy_ski <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Achal Verma <a-verma1@ti.com>,
+        Milind Parab <mparab@cadence.com>
+Subject: [PATCH 0/2] Add support to build pci-j721e as a module.
+Date:   Thu, 27 Oct 2022 14:27:16 +0530
+Message-ID: <20221027085718.291510-1-a-verma1@ti.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-On Sun, 2 Oct 2022 11:20:10 +0200, Krzysztof Kozlowski wrote:
-> Do not use spaces for indentation.
-> 
-> 
+Patch series add support to build pci-j721e as module (requires
+pcie-cadence library to be built as module).
 
-Applied, thanks!
+Achal Verma (2):
+  PCI: cadence: Add support to build pcie-cadence library as module.
+  PCI: j721e: Add support to build pci-j721e as module.
 
-[1/1] ARM: dts: ti: correct indentation
-      https://git.kernel.org/krzk/linux-dt/c/cfc35a16f42e15cf5d9f070205c4be6a873caaa2
+ drivers/pci/controller/cadence/Kconfig             | 12 ++++++------
+ drivers/pci/controller/cadence/pci-j721e.c         |  6 +++++-
+ drivers/pci/controller/cadence/pcie-cadence-ep.c   |  4 ++++
+ drivers/pci/controller/cadence/pcie-cadence-host.c |  5 +++++
+ drivers/pci/controller/cadence/pcie-cadence.c      |  9 +++++++++
+ drivers/pci/controller/cadence/pcie-cadence.h      |  4 ++--
+ 6 files changed, 31 insertions(+), 9 deletions(-)
 
-Best regards,
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+2.17.1
+
