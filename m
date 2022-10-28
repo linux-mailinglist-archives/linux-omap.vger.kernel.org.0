@@ -2,21 +2,21 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC341610EA4
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Oct 2022 12:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 909B8610EB3
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Oct 2022 12:38:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230432AbiJ1Kgp (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Fri, 28 Oct 2022 06:36:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42950 "EHLO
+        id S229576AbiJ1Kip (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Fri, 28 Oct 2022 06:38:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230448AbiJ1KgM (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Oct 2022 06:36:12 -0400
+        with ESMTP id S230448AbiJ1KiS (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Fri, 28 Oct 2022 06:38:18 -0400
 Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 36CEF3DF07;
-        Fri, 28 Oct 2022 03:36:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 91A581C73D8;
+        Fri, 28 Oct 2022 03:38:17 -0700 (PDT)
 Received: from hillo.muru.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTP id 7978A8186;
-        Fri, 28 Oct 2022 10:26:47 +0000 (UTC)
+        by muru.com (Postfix) with ESMTP id 0056A8061;
+        Fri, 28 Oct 2022 10:28:52 +0000 (UTC)
 From:   Tony Lindgren <tony@atomide.com>
 To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         Thomas Gleixner <tglx@linutronix.de>
@@ -26,11 +26,10 @@ Cc:     Grygorii Strashko <grygorii.strashko@ti.com>,
         Nishanth Menon <nm@ti.com>, Suman Anna <s-anna@ti.com>,
         Vignesh Raghavendra <vigneshr@ti.com>,
         linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Subject: [PATCH] clocksource/drivers/timer-ti-dm: Make timer_get_irq static
-Date:   Fri, 28 Oct 2022 13:36:04 +0300
-Message-Id: <20221028103604.40385-1-tony@atomide.com>
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] clocksource/drivers/timer-ti-dm: Clear settings on probe and free
+Date:   Fri, 28 Oct 2022 13:38:13 +0300
+Message-Id: <20221028103813.40783-1-tony@atomide.com>
 X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -42,39 +41,58 @@ Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-We can make timer_get_irq() static as noted by Janusz. It is only used by
-omap_rproc_get_timer_irq() via platform data.
+Clear the timer control register on driver probe and omap_dm_timer_free().
+Otherwise we assume the consumer driver takes care of properly
+initializing timer interrupts on PWM driver module reload for example.
 
-Reported-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+AFAIK this is not currently needed as a fix, I just happened to run into
+this while cleaning up things.
+
 Signed-off-by: Tony Lindgren <tony@atomide.com>
 ---
- drivers/clocksource/timer-ti-dm.c | 2 +-
- include/clocksource/timer-ti-dm.h | 2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ drivers/clocksource/timer-ti-dm.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
 --- a/drivers/clocksource/timer-ti-dm.c
 +++ b/drivers/clocksource/timer-ti-dm.c
-@@ -643,7 +643,7 @@ static int omap_dm_timer_free(struct omap_dm_timer *cookie)
+@@ -633,6 +633,8 @@ static struct omap_dm_timer *omap_dm_timer_request_by_node(struct device_node *n
+ static int omap_dm_timer_free(struct omap_dm_timer *cookie)
+ {
+ 	struct dmtimer *timer;
++	struct device *dev;
++	int rc;
+ 
+ 	timer = to_dmtimer(cookie);
+ 	if (unlikely(!timer))
+@@ -640,6 +642,17 @@ static int omap_dm_timer_free(struct omap_dm_timer *cookie)
+ 
+ 	WARN_ON(!timer->reserved);
+ 	timer->reserved = 0;
++
++	dev = &timer->pdev->dev;
++	rc = pm_runtime_resume_and_get(dev);
++	if (rc)
++		return rc;
++
++	/* Clear timer configuration */
++	dmtimer_write(timer, OMAP_TIMER_CTRL_REG, 0);
++
++	pm_runtime_put_sync(dev);
++
  	return 0;
  }
  
--int omap_dm_timer_get_irq(struct omap_dm_timer *cookie)
-+static int omap_dm_timer_get_irq(struct omap_dm_timer *cookie)
- {
- 	struct dmtimer *timer = to_dmtimer(cookie);
- 	if (timer)
-diff --git a/include/clocksource/timer-ti-dm.h b/include/clocksource/timer-ti-dm.h
---- a/include/clocksource/timer-ti-dm.h
-+++ b/include/clocksource/timer-ti-dm.h
-@@ -62,8 +62,6 @@
- struct omap_dm_timer {
- };
+@@ -1135,6 +1148,10 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
+ 			goto err_disable;
+ 		}
+ 		__omap_dm_timer_init_regs(timer);
++
++		/* Clear timer configuration */
++		dmtimer_write(timer, OMAP_TIMER_CTRL_REG, 0);
++
+ 		pm_runtime_put(dev);
+ 	}
  
--int omap_dm_timer_get_irq(struct omap_dm_timer *timer);
--
- u32 omap_dm_timer_modify_idlect_mask(u32 inputmask);
- 
- /*
 -- 
 2.37.3
