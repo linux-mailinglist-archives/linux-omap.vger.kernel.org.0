@@ -2,46 +2,46 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E301D6124E3
-	for <lists+linux-omap@lfdr.de>; Sat, 29 Oct 2022 20:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFEAF6124E6
+	for <lists+linux-omap@lfdr.de>; Sat, 29 Oct 2022 20:27:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229441AbiJ2SZ0 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sat, 29 Oct 2022 14:25:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51036 "EHLO
+        id S229718AbiJ2S1B (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sat, 29 Oct 2022 14:27:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229686AbiJ2SZZ (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sat, 29 Oct 2022 14:25:25 -0400
+        with ESMTP id S229616AbiJ2S1B (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sat, 29 Oct 2022 14:27:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A9B02CC9C;
-        Sat, 29 Oct 2022 11:25:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80F0730541;
+        Sat, 29 Oct 2022 11:27:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07C5360B9C;
-        Sat, 29 Oct 2022 18:25:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB13C433C1;
-        Sat, 29 Oct 2022 18:25:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FB6C60B95;
+        Sat, 29 Oct 2022 18:27:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B39FC433C1;
+        Sat, 29 Oct 2022 18:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667067923;
-        bh=fk7p0OBEKADdDAykc2nChzzCU3c5n8VRunSlpw/uRtQ=;
+        s=k20201202; t=1667068019;
+        bh=T6AeQnqwmiCfQHwNRX1h7E9TLa+6NVNkHRBqVTGWtLY=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=giLgFdhxzhL/uXBZBe3W4KDqMum9mc/a98aK8aoHfzEZD3gloLkMt51JSGuq2YBZh
-         ez6wM4IGP2RxqShiXC9tyAq4qHosHN+VFDipSY/xecSKzLivRMDySCM4W3s8MMzx3e
-         KuoBeEz+M0s4+CyemdvNPChM9RpIJke8DBraf0naNhjVOlQDiL/8AkVetyy72alPuP
-         Bsa18uCx04FUznIB/Kr6RrV9qFz2GWoB7mCos1yxeZHKT0jFP9Zfq941QaVP+tx5db
-         eVg+GMqZZstiFJJAICfGoK6fGkotgcsOvOn5xZDVo6WLWjiMVRVq6odQuwwn8Yst3A
-         /hlEH+iu+u7Ng==
-Message-ID: <46361c9f-8773-07e7-c125-f16b8b7a352b@kernel.org>
-Date:   Sat, 29 Oct 2022 21:25:17 +0300
+        b=Bw+HRVSXCWTvsdAtrhL4WXRyTiJXkOjfKULx9ohs73TaapHVliI7paJtZQtJTud+3
+         uUvVEvtnfQ7/d4jHdG97jJPyu4nlVqL1KFQdjmOPh9Qc5IyFfvKEhOSFy/ZJequ0/m
+         uHfLQQk3bd/8BS7HrcGVDvaydVkeCw4it8hzzsVQEYuXIUUkVqnSJQK3emDgKD1Zmz
+         swRIUxqwIjqGt09eyMAsNc7tQJ9ESW5GrtzcLCZIFPBmohxW6hIHShlB3RaGmYRDty
+         AzeezlUNCPIiMPfPKSPbvS41IhZ21ETx0JunDCksivqZgCn7/cqaBE36yWERiJcyLw
+         FC4ueKsQTVrrQ==
+Message-ID: <dd37a216-855e-44d4-7ab1-6ecde620312e@kernel.org>
+Date:   Sat, 29 Oct 2022 21:26:55 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
 Subject: Re: [PATCH v8 0/2] gpmc wait pin additions
 Content-Language: en-US
 To:     "B. Niedermayr" <benedikt.niedermayr@siemens.com>,
-        devicetree@vger.kernel.org, linux-omap@vger.kernel.org,
-        ", krzysztof.kozlowski"@linaro.org
-Cc:     robh+dt@kernel.org, tony@atomide.com
+        devicetree@vger.kernel.org, linux-omap@vger.kernel.org
+Cc:     krzysztof.kozlowski@linaro.org, robh+dt@kernel.org,
+        tony@atomide.com
 References: <20221021081612.591613-1-benedikt.niedermayr@siemens.com>
 From:   Roger Quadros <rogerq@kernel.org>
 In-Reply-To: <20221021081612.591613-1-benedikt.niedermayr@siemens.com>
@@ -56,6 +56,8 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
+
+
 
 On 21/10/2022 11:16, B. Niedermayr wrote:
 > From: Benedikt Niedermayr <benedikt.niedermayr@siemens.com>
@@ -127,14 +129,9 @@ On 21/10/2022 11:16, B. Niedermayr wrote:
 >  include/linux/platform_data/gpmc-omap.h       |   8 ++
 >  3 files changed, 124 insertions(+), 13 deletions(-)
 
-For this series.
+for this series
 
 Reviewed-by: Roger Quadros <rogerq@kernel.org>
-
-> 
-> --
-> 2.25.1
-> 
 
 cheers,
 -roger
