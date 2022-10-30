@@ -2,158 +2,161 @@ Return-Path: <linux-omap-owner@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB047612AA5
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Oct 2022 14:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E750612D45
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Oct 2022 23:15:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229867AbiJ3NBB (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
-        Sun, 30 Oct 2022 09:01:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47578 "EHLO
+        id S229542AbiJ3WO7 (ORCPT <rfc822;lists+linux-omap@lfdr.de>);
+        Sun, 30 Oct 2022 18:14:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbiJ3NBA (ORCPT
-        <rfc822;linux-omap@vger.kernel.org>); Sun, 30 Oct 2022 09:01:00 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6475B7DA
-        for <linux-omap@vger.kernel.org>; Sun, 30 Oct 2022 06:00:58 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id kt23so23349257ejc.7
-        for <linux-omap@vger.kernel.org>; Sun, 30 Oct 2022 06:00:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=cnm35rG8dnbniH3bAdsis2He6cISe2Pf5wrYV6j4Yuo=;
-        b=cBXwkIsKoN24vWlka5PMTG3c035GP+NNP31VTvKk/ovhdAguA9PbpUp6uDFTpc+1c6
-         3gnedIZ6l+tDi611G64eg4QQ5ceCfjHFuJAnoIllowDtcEyxO+RWGugtPxtISGjYjtpS
-         FGySmk4Q6UXqEnpwpOsb6BNHeeoT8Hh6DNIvc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cnm35rG8dnbniH3bAdsis2He6cISe2Pf5wrYV6j4Yuo=;
-        b=zSDtR5mX0ueBZwOmroqagvtT52X7v/Si9xPbQsW+x+HIIqoOLw8jO+iJMoOTIFZgZk
-         UX5BVBgmArNkz6zzLEBgKOi/ViIvbXrAjlEYmJM18m2vRLmA2UU+DyNvVoJXeD6czuxV
-         A+N+FeUALGTq4fOlnEeBfOJ7fUNnFTBo6byyMLCLfqa3Q6i6/4JOWp42FQqgaFM1dA27
-         3jgiwqhbHZDUlxHxfs/zz4Kvi0fMx6AmBJHuyWgCcYTetLUnHl1ojuxgRSl/s0iOQkoK
-         DjSg+5jy+OAeRwrcO6/3qwXGTXrNIBUcfD+eXvUoqzs+AEP+KhdmXEIhKHvu3awGjGvy
-         32xg==
-X-Gm-Message-State: ACrzQf2DeyVn1NBFcPrEIDltoSxjB5jY1e1EMGTo7BEftuAa29f3Afv2
-        wb6m2dKF4ZFeEOiAU57Q7WooKv0fMr2aTJ+z/HA+RA==
-X-Google-Smtp-Source: AMsMyM4NetBq4ut/QzVWMIts/JGh74r3MvWVZbbPWGZD2uBgHT+KD14ty4JVz9cs6pVTghOuapmPpBHAw0T1nDpVIoc=
-X-Received: by 2002:a17:906:4c4b:b0:7ad:a197:b58e with SMTP id
- d11-20020a1709064c4b00b007ada197b58emr8190502ejw.203.1667134857432; Sun, 30
- Oct 2022 06:00:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20221018160352.1591428-1-dario.binacchi@amarulasolutions.com> <20221028002710.89A81C43470@smtp.kernel.org>
-In-Reply-To: <20221028002710.89A81C43470@smtp.kernel.org>
-From:   Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date:   Sun, 30 Oct 2022 14:00:46 +0100
-Message-ID: <CABGWkvp1iMN-4XDN_ifg6uyvQbpRzNyat_eDziWY75Cf_hCpQw@mail.gmail.com>
-Subject: Re: [PATCH v2] clk: ti: dra7-atl: don't allocate `parent_names' variable
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Amarula patchwork <linux-amarula@amarulasolutions.com>,
-        michael@amarulasolutions.com, kernel test robot <lkp@intel.com>,
-        Allison Randal <allison@lohutok.net>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Tero Kristo <kristo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org,
-        linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S229500AbiJ3WO6 (ORCPT
+        <rfc822;linux-omap@vger.kernel.org>); Sun, 30 Oct 2022 18:14:58 -0400
+X-Greylist: delayed 346 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 30 Oct 2022 15:14:56 PDT
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B38996252;
+        Sun, 30 Oct 2022 15:14:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1667167733;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=5GKqb3fJ85fHPjXJt80eik+WVjp9pR4mDfmF41kXhHg=;
+    b=s9uXJgSv+HC6ad9c+vpI+b+5GQtBF3WGF5L3kMRqk4/84LDwPJYHlnbWGjyfkKLEY1
+    e4eyOa+uDhSejmmXQ/PtQp8GdzO28hUoDvmwiCBo3digVXneWO0TZkamgWXfyXLQpCpl
+    F34XK/YHqL3iMHQI2m3qAU4PoDx1LF+VWhMExFVYBPMa/KtBAkbeHry1vRrCXLb4i/Ii
+    WxoWm3pS3rlYGNhqBM8vOcZpcJzYPYL5RDgJe7vks/8GN8oXz7WD3FrM4cvmsjo2x0Tu
+    Svc/SaebelINoiSqbgw8+qzlsa/c94YLMuoMQQnY4l01Pi/8fQsei8/dxdGkXZQANEYU
+    CAaw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Apz9PSN6LgsXcGeqXQ="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+    by smtp.strato.de (RZmta 48.2.1 DYNA|AUTH)
+    with ESMTPSA id v55d69y9UM8rLaY
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+    Sun, 30 Oct 2022 23:08:53 +0100 (CET)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.21\))
+Subject: Re: [PATCH 3/3] drm: omapdrm: Do no allocate non-scanout GEMs through
+ DMM/TILER
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <1642587791-13222-4-git-send-email-ivo.g.dimitrov.75@gmail.com>
+Date:   Sun, 30 Oct 2022 23:08:52 +0100
+Cc:     tomba@kernel.org, airlied@linux.ie, daniel@ffwll.ch,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-omap@vger.kernel.org, merlijn@wizzup.org, tony@atomide.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4B3F8E50-3472-4AED-9A77-3E265DF8C928@goldelico.com>
+References: <1642587791-13222-1-git-send-email-ivo.g.dimitrov.75@gmail.com>
+ <1642587791-13222-4-git-send-email-ivo.g.dimitrov.75@gmail.com>
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+X-Mailer: Apple Mail (2.3445.104.21)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-omap.vger.kernel.org>
 X-Mailing-List: linux-omap@vger.kernel.org
 
-Hi Stephen,
+Hi Ivaylo,
 
-On Fri, Oct 28, 2022 at 2:27 AM Stephen Boyd <sboyd@kernel.org> wrote:
->
-> Quoting Dario Binacchi (2022-10-18 09:03:52)
-> > diff --git a/drivers/clk/ti/clk-dra7-atl.c b/drivers/clk/ti/clk-dra7-atl.c
-> > index ff4d6a951681..78482d1a4a33 100644
-> > --- a/drivers/clk/ti/clk-dra7-atl.c
-> > +++ b/drivers/clk/ti/clk-dra7-atl.c
-> > @@ -188,24 +188,17 @@ static void __init of_dra7_atl_clock_setup(struct device_node *node)
-> >                 goto cleanup;
-> >         }
-> >
-> > -       parent_names = kzalloc(sizeof(char *), GFP_KERNEL);
-> > -
-> > -       if (!parent_names)
-> > -               goto cleanup;
-> > -
-> >         parent_names[0] = of_clk_get_parent_name(node, 0);
->
-> Can you use struct clk_parent_data instead and assign index to 0? Then
-> we don't even need to use of_clk_get_parent_name() here.
+it took a while until I found time to test newer kernels (mainline + =
+Letux additions)
+on the OMAP5 Pyra but unfortunately I did not get screen display for =
+v6.1. Even worse,
+the console was flooded by
 
-I tried to test your suggestions on another platform (I don't have the
-hw to test the driver change) but if I
-don't add pdata.name = of_clk_get_parent_name () the board boot up fails.
-
-As far I can see from the clk_core_populate_parent_map()
-
-....
-/* Copy everything over because it might be __initdata */
-for (i = 0, parent = parents; i < num_parents; i++, parent++) {
-    parent->index = -1;
-    if (parent_names) {
-        /* throw a WARN if any entries are NULL */
-       WARN(!parent_names[i],
-            "%s: invalid NULL in %s's .parent_names\n",
-            __func__, core->name);
-        ret = clk_cpy_name(&parent->name, parent_names[i],
-                                        true);
-    } else if (parent_data) {
-        parent->hw = parent_data[i].hw;
-        parent->index = parent_data[i].index;
-        ret = clk_cpy_name(&parent->fw_name,
-                                         parent_data[i].fw_name, false);
-        if (!ret)
-            ret = clk_cpy_name(&parent->name,
-                                            parent_data[i].name,
-                                            false);
+[   39.419846] WARNING: CPU: 0 PID: 3673 at =
+drivers/bus/omap_l3_noc.c:139 l3_interrupt_handler+0x23c/0x330
+[   39.429914] 44000000.l3-noc:L3 Custom Error: MASTER MPU TARGET GPMC =
+(Idle): Data Access in Supervisor mode during Functional access
 ...
 
+making the system unuseable.
 
-The function clk_cpy_name() is called with the parameter "mus_exist"
-to true in the path "parent_names" and false
-in the path "parent_data". Therefore, in the path "parent_data" it is
-allowed that parent-> name is not set.
-In doing so, therefore, the change would not even be backward compatible.
+After doing some manual bisect by installing different kernel versions =
+on the boot SD card,
+I was able to identify that it crept in between v5.18 and v5.19-rc1. A =
+git bisect on this
+range (adding Letux patches on top of each bisect base) did reveal this =
+patch as the first bad one.
 
-So, IMHO, there are 2 possible options:
- 1 okay to use parent_data, but we keep using of_clk_get_parent_name
-() to set parent_data::name.
- 2 okay to use the version v2 of the patch.
+After reverting it seems as if I can use any v5.19 .. v6.1-rc2 kernel =
+without issues.
 
-What do you think?
+Now I wonder why this patch breaks my system?
 
-Thanks and regards,
-Dario
-
--- 
-
-Dario Binacchi
-
-Embedded Linux Developer
-
-dario.binacchi@amarulasolutions.com
-
-__________________________________
+BR and thanks,
+Nikolaus
 
 
-Amarula Solutions SRL
+> Am 19.01.2022 um 11:23 schrieb Ivaylo Dimitrov =
+<ivo.g.dimitrov.75@gmail.com>:
+>=20
+> On devices with DMM, all allocations are done through either DMM or =
+TILER.
+> DMM/TILER being a limited resource means that such allocations will =
+start
+> to fail before actual free memory is exhausted. What is even worse is =
+that
+> with time DMM/TILER space gets fragmented to the point that even if we =
+have
+> enough free DMM/TILER space and free memory, allocation fails because =
+there
+> is no big enough free block in DMM/TILER space.
+>=20
+> Such failures can be easily observed with OMAP xorg DDX, for example -
+> starting few GUI applications (so buffers for their windows are =
+allocated)
+> and then rotating landscape<->portrait while closing and opening new
+> windows soon results in allocation failures.
+>=20
+> Fix that by mapping buffers through DMM/TILER only when really needed,
+> like, for scanout buffers.
+>=20
+> Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+> ---
+> drivers/gpu/drm/omapdrm/omap_gem.c | 12 ++++++++----
+> 1 file changed, 8 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c =
+b/drivers/gpu/drm/omapdrm/omap_gem.c
+> index 41c1a6d..cf57179 100644
+> --- a/drivers/gpu/drm/omapdrm/omap_gem.c
+> +++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+> @@ -821,10 +821,12 @@ int omap_gem_pin(struct drm_gem_object *obj, =
+dma_addr_t *dma_addr)
+> 			if (ret)
+> 				goto fail;
+>=20
+> -			if (priv->has_dmm) {
+> -				ret =3D omap_gem_pin_tiler(obj);
+> -				if (ret)
+> -					goto fail;
+> +			if (omap_obj->flags & OMAP_BO_SCANOUT) {
+> +				if (priv->has_dmm) {
+> +					ret =3D omap_gem_pin_tiler(obj);
+> +					if (ret)
+> +						goto fail;
+> +				}
+> 			}
+> 		} else {
+> 			refcount_inc(&omap_obj->pin_cnt);
+> @@ -861,6 +863,8 @@ static void omap_gem_unpin_locked(struct =
+drm_gem_object *obj)
+> 			kfree(omap_obj->sgt);
+> 			omap_obj->sgt =3D NULL;
+> 		}
+> +		if (!(omap_obj->flags & OMAP_BO_SCANOUT))
+> +			return;
+> 		if (priv->has_dmm) {
+> 			ret =3D tiler_unpin(omap_obj->block);
+> 			if (ret) {
+> --=20
+> 1.9.1
+>=20
 
-Via Le Canevare 30, 31100 Treviso, Veneto, IT
-
-T. +39 042 243 5310
-info@amarulasolutions.com
-
-www.amarulasolutions.com
